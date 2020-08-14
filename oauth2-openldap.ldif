@@ -1,0 +1,294 @@
+dn: cn=oauth,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: oauth
+olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.1 NAME 'oauthCode'
+        DESC 'OAuth 2.0 Authorization Code'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.2 NAME 'oauthClientID'
+        DESC 'Authorized client'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.3 NAME 'oauthRedirectURI'
+        DESC 'Authorization Code Redirection URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.4 NAME 'oauthResponseType'
+        DESC 'OAuth 2.0 response type'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.5 NAME 'oauthScope'
+        DESC 'OAuth 2.0 scope value'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.6 NAME 'oauthNonce'
+        DESC 'OAuth 2.0 nonce'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.7 NAME 'oauthAuthorizationDate'
+        DESC 'Access token issue date'
+        EQUALITY generalizedTimeMatch
+        ORDERING generalizedTimeOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.8 NAME 'oauthCodeChallenge'
+        DESC 'OAuth 2.0 nonce'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.9 NAME 'oauthCodeChallengeMethod'
+        DESC 'OAuth 2.0 nonce'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.10 NAME 'oauthClientSecret'
+        DESC 'Client secret'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.11 NAME 'oauthClientSecretExpDate'
+        DESC 'Client secret expiration date/time'
+        EQUALITY generalizedTimeMatch
+        ORDERING generalizedTimeOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.12 NAME 'oauthIssueDate'
+        DESC 'Client identifier issue date/time'
+        EQUALITY generalizedTimeMatch
+        ORDERING generalizedTimeOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.13 NAME 'oauthGrantType'
+        DESC 'OAuth 2.0 grant type'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.14 NAME 'oauthTokenLifetime'
+        DESC 'OAuth 2.0 refresh token lifetime, in seconds'
+        EQUALITY integerMatch
+        ORDERING integerOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.15 NAME 'oauthClientName'
+        DESC 'Client name'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.16 NAME 'oauthClientContact'
+        DESC 'Client name'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.17 NAME 'oauthClientURI'
+        DESC 'Client URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.18 NAME 'oauthLogoURI'
+        DESC 'Logo URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.19 NAME 'oauthTermsOfServiceURI'
+        DESC 'Terms of service URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.20 NAME 'oauthPolicyURI'
+        DESC 'Policy URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.21 NAME 'oauthJWKURI'
+        DESC 'JWK set URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.22 NAME 'oauthJWK'
+        DESC 'JWK set JSON'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.23 NAME 'oauthSoftwareID'
+        DESC 'Software identifier'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.24 NAME 'oauthSoftwareVersion'
+        DESC 'Software version'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.25 NAME 'oauthToken'
+        DESC 'OAuth 2.0 Token'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.26 NAME 'oauthTokenType'
+        DESC 'OAuth 2.0 Token'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.27 NAME 'oauthAccessToken'
+        DESC 'OAuth 2.0 access token'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.28 NAME 'oauthRefreshToken'
+        DESC 'OAuth 2.0 refresh token'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.1 NAME 'oauthClient'
+        DESC 'OAuth 2.0 Authorization Code'
+        SUP top
+        STRUCTURAL
+        MUST  oauthClientID
+        MAY ( description $
+              oauthClientName $
+              oauthClientContact $
+              oauthClientURI $
+              oauthLogoURI $
+              oauthIssueDate $
+              oauthClientSecret $
+              oauthClientSecretExpDate $
+              oauthGrantType $
+              oauthResponseType $
+              oauthScope $
+              oauthTermsOfServiceURI $
+              oauthPolicyURI $
+              oauthJWKURI $
+              oauthJWK $
+              oauthSoftwareID $
+              oauthSoftwareVersion )
+        )
+        X-ORIGIN 'OAuth 2.0' )
+olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.2 NAME 'oauthAuthorizationCode'
+        DESC 'OAuth 2.0 Authorization Code'
+        SUP top
+        STRUCTURAL
+        MUST  oauthCode
+        MAY ( description $
+              oauthCode $
+              oauthClientID $
+              oauthRedirectURI $
+              oauthResponseType $
+              oauthScope $
+              oauthNonce $
+              oauthAuthorizationDate $
+              oauthCodeChallenge $
+              oauthCodeChallengeMethod )
+        X-ORIGIN 'OAuth 2.0' )
+olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.3 NAME 'oauthToken'
+        DESC 'OAuth 2.0 Token'
+        SUP top
+        STRUCTURAL
+        MUST  oauthToken
+        MAY ( description $
+              oauthClientID $
+              oauthTokenType $
+              oauthAccessToken $
+              oauthRefreshToken $
+              oauthScope $
+              oauthIssueDate $
+              oauthTokenLifetime )
+        X-ORIGIN 'OAuth 2.0' )

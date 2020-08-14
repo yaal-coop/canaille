@@ -1,0 +1,34 @@
+{% if user %}
+<style>pre{white-space:wrap}</style>
+<div>Logged in as <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
+
+{% for client in clients %}
+<strong>Client</strong>
+<ul>
+  {%- for key in client.must -%}
+      {%- if key in client.attrs and client.attrs[key] -%}
+          {%- for value in client.attrs[key] -%}
+          <li><strong>{{ key }}: </strong>{{ value }}</li>
+          {%- endfor -%}
+      {%- endif -%}
+  {%- endfor -%}
+  {%- for key in client.may -%}
+      {%- if key in client.attrs and client.attrs[key] -%}
+          {%- for value in client.attrs[key] -%}
+          <li><strong>{{ key }}: </strong>{{ value }}</li>
+          {%- endfor -%}
+      {%- endif -%}
+  {%- endfor -%}
+
+</ul>
+<hr>
+{% endfor %}
+
+<br><a href="{{ url_for('.create_client') }}">Create Client</a>
+
+{% else %}
+<form action="" method="post">
+  <input type="text" name="username" placeholder="username">
+  <button type="submit">Login / Signup</button>
+</form>
+{% endif %}

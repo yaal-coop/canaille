@@ -1,0 +1,27 @@
+dn: ou=users,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: users
+
+dn: ou=clients,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: clients
+
+dn: ou=tokens,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: tokens
+
+dn: ou=authorizations,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: authorizations
+
+dn: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
+objectclass: person
+cn: Jane Doe
+sn: Doe
+userpassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
+
+dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
+objectclass: person
+cn: John Doe
+sn: Doe
+userpassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
