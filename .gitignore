@@ -1,0 +1,6 @@
+*.sqlite
+*.pyc
+venv/*
+.*@neomake*
+.ash_history
+.python_history

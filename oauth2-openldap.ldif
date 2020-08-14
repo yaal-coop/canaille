@@ -238,6 +238,15 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.28 NAME 'oauthRefreshToken'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.29 NAME 'oauthTokenEndpointAuthMethod'
+        DESC 'OAuth 2.0 Token endpoint authentication method'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0 Dynamic Client Registration Protocol' )
 olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -247,6 +256,7 @@ olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.1 NAME 'oauthClient'
               oauthClientName $
               oauthClientContact $
               oauthClientURI $
+              oauthRedirectURI $
               oauthLogoURI $
               oauthIssueDate $
               oauthClientSecret $
@@ -258,6 +268,7 @@ olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.1 NAME 'oauthClient'
               oauthPolicyURI $
               oauthJWKURI $
               oauthJWK $
+              oauthTokenEndpointAuthMethod $
               oauthSoftwareID $
               oauthSoftwareVersion )
         )

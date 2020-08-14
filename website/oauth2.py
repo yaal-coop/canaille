@@ -1,66 +1,90 @@
-import datetime
-from authlib.integrations.flask_oauth2 import (
-    AuthorizationServer,
-    ResourceProtector,
+from authlib.integrations.flask_oauth2 import AuthorizationServer, ResourceProtector
+from authlib.oauth2.rfc6749.grants import (
+    AuthorizationCodeGrant as _AuthorizationCodeGrant,
+    ResourceOwnerPasswordCredentialsGrant as _ResourceOwnerPasswordCredentialsGrant,
+    RefreshTokenGrant as _RefreshTokenGrant,
 )
-from authlib.oauth2.rfc6749 import grants, util
-from authlib.oauth2.rfc6750 import BearerTokenValidator
-from authlib.oauth2.rfc7009 import RevocationEndpoint
-from authlib.oauth2.rfc7636 import CodeChallenge
-from .models import User, Client, Authorization, Token
+from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
+from authlib.oidc.core.grants import (
+    OpenIDCode as _OpenIDCode,
+    OpenIDImplicitGrant as _OpenIDImplicitGrant,
+    OpenIDHybridGrant as _OpenIDHybridGrant,
+)
+from authlib.oidc.core import UserInfo
+from werkzeug.security import gen_salt
+from .models import Client, AuthorizationCode, Token, User
+
+DUMMY_JWT_CONFIG = {
+    "key": "secret-key",
+    "alg": "HS256",
+    "iss": "https://authlib.org",
+    "exp": 3600,
+}
 
 
-class AuthorizationCodeGrant(grants.AuthorizationCodeGrant):
-    TOKEN_ENDPOINT_AUTH_METHODS = [
-        "client_secret_basic",
-        "client_secret_post",
-        "none",
-    ]
+def exists_nonce(nonce, req):
+    exists = AuthorizationCode.query.filter_by(
+        client_id=req.client_id, nonce=nonce
+    ).first()
+    return bool(exists)
 
-    def save_authorization_code(self, code, request):
-        raise NotImplementedError()
-        code_challenge = request.data.get("code_challenge")
-        code_challenge_method = request.data.get("code_challenge_method")
-        auth_code = Authorization(
-            code=code,
-            client_id=request.client.client_id,
-            redirect_uri=request.redirect_uri,
-            scope=request.scope,
-            user_id=request.user.id,
-            code_challenge=code_challenge,
-            code_challenge_method=code_challenge_method,
-        )
-        #db.session.add(auth_code)
-        #db.session.commit()
-        return auth_code
 
-    def query_authorization_code(self, code, client):
-        raise NotImplementedError()
-        auth_code = Authorization.query.filter_by(
+def generate_user_info(user, scope):
+    return UserInfo(sub=str(user.id), name=user.username)
+
+
+def create_authorization_code(client, grant_user, request):
+    raise NotImplementedError()
+    code = gen_salt(48)
+    nonce = request.data.get("nonce")
+    item = AuthorizationCode(
+        code=code,
+        client_id=client.client_id,
+        redirect_uri=request.redirect_uri,
+        scope=request.scope,
+        user_id=grant_user.id,
+        nonce=nonce,
+    )
+    return code
+
+
+class AuthorizationCodeGrant(_AuthorizationCodeGrant):
+    def create_authorization_code(self, client, grant_user, request):
+        return create_authorization_code(client, grant_user, request)
+
+    def parse_authorization_code(self, code, client):
+        item = AuthorizationCode.query.filter_by(
             code=code, client_id=client.client_id
         ).first()
-        if auth_code and not auth_code.is_expired():
-            return auth_code
+        if item and not item.is_expired():
+            return item
 
     def delete_authorization_code(self, authorization_code):
         raise NotImplementedError()
-        pass
-        #db.session.delete(authorization_code)
-        #db.session.commit()
 
     def authenticate_user(self, authorization_code):
-        raise NotImplementedError()
         return User.query.get(authorization_code.user_id)
 
 
-class PasswordGrant(grants.ResourceOwnerPasswordCredentialsGrant):
+class OpenIDCode(_OpenIDCode):
+    def exists_nonce(self, nonce, request):
+        return exists_nonce(nonce, request)
+
+    def get_jwt_config(self, grant):
+        return DUMMY_JWT_CONFIG
+
+    def generate_user_info(self, user, scope):
+        return generate_user_info(user, scope)
+
+
+class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username, password):
         user = User.get(username)
         if user is not None and user.check_password(password):
             return user
 
 
-class RefreshTokenGrant(grants.RefreshTokenGrant):
+class RefreshTokenGrant(_RefreshTokenGrant):
     def authenticate_refresh_token(self, refresh_token):
         raise NotImplementedError()
         token = Token.query.filter_by(refresh_token=refresh_token).first()
@@ -74,8 +98,30 @@ class RefreshTokenGrant(grants.RefreshTokenGrant):
     def revoke_old_credential(self, credential):
         raise NotImplementedError()
         credential.revoked = True
-        #db.session.add(credential)
-        #db.session.commit()
+
+class ImplicitGrant(_OpenIDImplicitGrant):
+    def exists_nonce(self, nonce, request):
+        return exists_nonce(nonce, request)
+
+    def get_jwt_config(self, grant):
+        return DUMMY_JWT_CONFIG
+
+    def generate_user_info(self, user, scope):
+        return generate_user_info(user, scope)
+
+
+class HybridGrant(_OpenIDHybridGrant):
+    def create_authorization_code(self, client, grant_user, request):
+        return create_authorization_code(client, grant_user, request)
+
+    def exists_nonce(self, nonce, request):
+        return exists_nonce(nonce, request)
+
+    def get_jwt_config(self):
+        return DUMMY_JWT_CONFIG
+
+    def generate_user_info(self, user, scope):
+        return generate_user_info(user, scope)
 
 
 def query_client(client_id):
@@ -83,28 +129,10 @@ def query_client(client_id):
 
 
 def save_token(token, request):
-    client_id, client_secret = util.extract_basic_authorization(request.headers)
-    t = Token(
-        authzAccessToken=token['access_token'],
-        authzScopeValue=token['scope'],
-        authzAccessTokenIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
-        authzSubject=request.user.dn,
-        authzClientID=client_id,
-        authzRefreshTokenSecret=token['refresh_token'],
-        authzAccessTokenLifetime=str(token['expires_in']),
-        # ??? = token['type']
-    )
-    t.save()
-    return t
+    raise NotImplementedError()
 
-class RevocationEndpoint(RevocationEndpoint):
-    def query_token(self, token, token_type_hint, client):
-        raise NotImplementedError()
 
-    def revoke_token(self, token):
-        raise NotImplementedError()
-
-class BearerTokenValidator(BearerTokenValidator):
+class BearerTokenValidator(_BearerTokenValidator):
     def authenticate_token(self, token_string):
         return Token.get(token_string)
 
@@ -114,20 +142,19 @@ class BearerTokenValidator(BearerTokenValidator):
     def token_revoked(self, token):
         return False
 
-authorization = AuthorizationServer(query_client=query_client, save_token=save_token)
+
+authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
 
 
 def config_oauth(app):
-    authorization.init_app(app)
+    authorization.init_app(app, query_client=query_client, save_token=save_token)
 
-    # support all grants
-    authorization.register_grant(grants.ImplicitGrant)
-    authorization.register_grant(grants.ClientCredentialsGrant)
-    authorization.register_grant(AuthorizationCodeGrant, [CodeChallenge(required=True)])
+    authorization.register_grant(
+        AuthorizationCodeGrant, [OpenIDCode(require_nonce=True)]
+    )
+    authorization.register_grant(ImplicitGrant)
+    authorization.register_grant(HybridGrant)
     authorization.register_grant(PasswordGrant)
-    authorization.register_grant(RefreshTokenGrant)
-
-    authorization.register_endpoint(RevocationEndpoint)
 
     require_oauth.register_token_validator(BearerTokenValidator())
