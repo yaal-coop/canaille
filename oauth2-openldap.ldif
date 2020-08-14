@@ -1,7 +1,7 @@
 dn: cn=oauth,cn=schema,cn=config
 objectClass: olcSchemaConfig
 cn: oauth
-olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.1 NAME 'oauthCode'
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.1 NAME 'oauthCode'
         DESC 'OAuth 2.0 Authorization Code'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -10,7 +10,7 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.1 NAME 'oauthCode'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.2 NAME 'oauthClientID'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.2 NAME 'oauthClientID'
         DESC 'Authorized client'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -19,7 +19,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.2 NAME 'oauthClientID'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.3 NAME 'oauthRedirectURI'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.3 NAME 'oauthRedirectURI'
         DESC 'Authorization Code Redirection URI'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -28,7 +28,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.3 NAME 'oauthRedirectURI'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.4 NAME 'oauthResponseType'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.4 NAME 'oauthResponseType'
         DESC 'OAuth 2.0 response type'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -36,7 +36,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.4 NAME 'oauthResponseType'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.5 NAME 'oauthScope'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.5 NAME 'oauthScope'
         DESC 'OAuth 2.0 scope value'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -44,7 +44,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.5 NAME 'oauthScope'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.6 NAME 'oauthNonce'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.6 NAME 'oauthNonce'
         DESC 'OAuth 2.0 nonce'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -52,7 +52,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.6 NAME 'oauthNonce'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.7 NAME 'oauthAuthorizationDate'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.7 NAME 'oauthAuthorizationDate'
         DESC 'Access token issue date'
         EQUALITY generalizedTimeMatch
         ORDERING generalizedTimeOrderingMatch
@@ -60,7 +60,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.7 NAME 'oauthAuthorizationDate'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.8 NAME 'oauthCodeChallenge'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.8 NAME 'oauthCodeChallenge'
         DESC 'OAuth 2.0 nonce'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -68,7 +68,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.8 NAME 'oauthCodeChallenge'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.9 NAME 'oauthCodeChallengeMethod'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.9 NAME 'oauthCodeChallengeMethod'
         DESC 'OAuth 2.0 nonce'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -76,7 +76,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.9 NAME 'oauthCodeChallengeMethod'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.10 NAME 'oauthClientSecret'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.10 NAME 'oauthClientSecret'
         DESC 'Client secret'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -85,7 +85,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.10 NAME 'oauthClientSecret'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.11 NAME 'oauthClientSecretExpDate'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.11 NAME 'oauthClientSecretExpDate'
         DESC 'Client secret expiration date/time'
         EQUALITY generalizedTimeMatch
         ORDERING generalizedTimeOrderingMatch
@@ -93,7 +93,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.11 NAME 'oauthClientSecretExpDate'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.12 NAME 'oauthIssueDate'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.12 NAME 'oauthIssueDate'
         DESC 'Client identifier issue date/time'
         EQUALITY generalizedTimeMatch
         ORDERING generalizedTimeOrderingMatch
@@ -101,7 +101,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.12 NAME 'oauthIssueDate'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.13 NAME 'oauthGrantType'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.13 NAME 'oauthGrantType'
         DESC 'OAuth 2.0 grant type'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -109,7 +109,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.13 NAME 'oauthGrantType'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.14 NAME 'oauthTokenLifetime'
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.14 NAME 'oauthTokenLifetime'
         DESC 'OAuth 2.0 refresh token lifetime, in seconds'
         EQUALITY integerMatch
         ORDERING integerOrderingMatch
@@ -117,7 +117,7 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.14 NAME 'oauthTokenLifetime'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.15 NAME 'oauthClientName'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.15 NAME 'oauthClientName'
         DESC 'Client name'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -125,7 +125,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.15 NAME 'oauthClientName'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.16 NAME 'oauthClientContact'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.16 NAME 'oauthClientContact'
         DESC 'Client name'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -133,7 +133,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.16 NAME 'oauthClientContact'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.17 NAME 'oauthClientURI'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.17 NAME 'oauthClientURI'
         DESC 'Client URI'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -141,7 +141,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.17 NAME 'oauthClientURI'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.18 NAME 'oauthLogoURI'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.18 NAME 'oauthLogoURI'
         DESC 'Logo URI'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -150,7 +150,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.18 NAME 'oauthLogoURI'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.19 NAME 'oauthTermsOfServiceURI'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.19 NAME 'oauthTermsOfServiceURI'
         DESC 'Terms of service URI'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -158,7 +158,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.19 NAME 'oauthTermsOfServiceURI'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.20 NAME 'oauthPolicyURI'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.20 NAME 'oauthPolicyURI'
         DESC 'Policy URI'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -166,7 +166,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.20 NAME 'oauthPolicyURI'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.21 NAME 'oauthJWKURI'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.21 NAME 'oauthJWKURI'
         DESC 'JWK set URI'
         EQUALITY caseIgnoreMatch
         ORDERING caseIgnoreOrderingMatch
@@ -175,7 +175,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.21 NAME 'oauthJWKURI'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.22 NAME 'oauthJWK'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.22 NAME 'oauthJWK'
         DESC 'JWK set JSON'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -184,7 +184,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.22 NAME 'oauthJWK'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.23 NAME 'oauthSoftwareID'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.23 NAME 'oauthSoftwareID'
         DESC 'Software identifier'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -193,7 +193,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.23 NAME 'oauthSoftwareID'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.24 NAME 'oauthSoftwareVersion'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.24 NAME 'oauthSoftwareVersion'
         DESC 'Software version'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -202,7 +202,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.24 NAME 'oauthSoftwareVersion'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.25 NAME 'oauthToken'
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.25 NAME 'oauthToken'
         DESC 'OAuth 2.0 Token'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -211,7 +211,7 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.25 NAME 'oauthToken'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.26 NAME 'oauthTokenType'
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.26 NAME 'oauthTokenType'
         DESC 'OAuth 2.0 Token'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -220,7 +220,7 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.26 NAME 'oauthTokenType'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.27 NAME 'oauthAccessToken'
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.27 NAME 'oauthAccessToken'
         DESC 'OAuth 2.0 access token'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -229,7 +229,7 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.27 NAME 'oauthAccessToken'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.28 NAME 'oauthRefreshToken'
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.28 NAME 'oauthRefreshToken'
         DESC 'OAuth 2.0 refresh token'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -238,7 +238,7 @@ olcAttributeTypes: (  1.3.6.1.4.1.40805.1.1.28 NAME 'oauthRefreshToken'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
-olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.29 NAME 'oauthTokenEndpointAuthMethod'
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.29 NAME 'oauthTokenEndpointAuthMethod'
         DESC 'OAuth 2.0 Token endpoint authentication method'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
@@ -247,7 +247,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.40805.1.1.29 NAME 'oauthTokenEndpointAuthMethod
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0 Dynamic Client Registration Protocol' )
-olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.1 NAME 'oauthClient'
+olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
         STRUCTURAL
@@ -273,7 +273,7 @@ olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.1 NAME 'oauthClient'
               oauthSoftwareVersion )
         )
         X-ORIGIN 'OAuth 2.0' )
-olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.2 NAME 'oauthAuthorizationCode'
+olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
         STRUCTURAL
@@ -289,7 +289,7 @@ olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.2 NAME 'oauthAuthorizationCode'
               oauthCodeChallenge $
               oauthCodeChallengeMethod )
         X-ORIGIN 'OAuth 2.0' )
-olcObjectClasses: ( 1.3.6.1.4.1.40805.1.2.3 NAME 'oauthToken'
+olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         DESC 'OAuth 2.0 Token'
         SUP top
         STRUCTURAL
