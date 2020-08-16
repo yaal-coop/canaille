@@ -17,8 +17,6 @@ class LDAPObjectHelper:
     base = None
     id = None
 
-    # TODO If ldap attribute is SINGLE-VALUE, do not bother with lists
-
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
         for k, v in kwargs.items():
@@ -58,6 +56,26 @@ class LDAPObjectHelper:
                 cls._object_class_by_name[name] = oc
 
         return cls._object_class_by_name
+
+    @classmethod
+    def attr_type_by_name(cls):
+        if cls._attribute_type_by_name:
+            return cls._attribute_type_by_name
+
+        res = g.ldap.search_s(
+            "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
+        )
+        subschema_entry = res[0]
+        subschema_subentry = ldap.cidict.cidict(subschema_entry[1])
+        subschema = ldap.schema.SubSchema(subschema_subentry)
+        attribute_type_oids = subschema.listall(ldap.schema.models.AttributeType)
+        cls._attribute_type_by_name = {}
+        for oid in attribute_type_oids:
+            oc = subschema.get_obj(ldap.schema.models.AttributeType, oid)
+            for name in oc.names:
+                cls._attribute_type_by_name[name] = oc
+
+        return cls._attribute_type_by_name
 
     def save(self):
         try:
@@ -106,16 +124,23 @@ class LDAPObjectHelper:
         ]
 
     def __getattr__(self, name):
-        if (self.may and name in self.may) or (self.must and name in self.must):
+        if (not self.may or name not in self.may) and (not self.must or name not in self.must):
+            return super().__getattribute__(name)
+
+        if not self._attribute_type_by_name[name].single_value:
             return self.attrs.get(name, [])
-        return super().__getattribute__(name)
+
+        return self.attrs.get(name, [None])[0]
 
     def __setattr__(self, name, value):
         super().__setattr__(name, value)
         if not isinstance(value, list):
             value = [value]
         if (self.may and name in self.may) or (self.must and name in self.must):
-            self.attrs[name] = value
+            if self._attribute_type_by_name[name].single_value:
+                self.attrs[name] = [value]
+            else:
+                self.attrs[name] = value
 
 
 class User(LDAPObjectHelper):
@@ -124,7 +149,7 @@ class User(LDAPObjectHelper):
     id = "cn"
 
     def __repr__(self):
-        return self.cn[0]
+        return self.cn
 
     def check_password(self, password):
         return password == "valid"
@@ -136,25 +161,25 @@ class Client(LDAPObjectHelper, ClientMixin):
     id = "oauthClientID"
 
     def get_client_id(self):
-        return self.oauthClientID[0]
+        return self.oauthClientID
 
     def get_default_redirect_uri(self):
-        return self.oauthRedirectURI[0]
+        return self.oauthRedirectURI
 
     def get_allowed_scope(self, scope):
-        return self.oauthScope[0]
+        return self.oauthScope
 
     def check_redirect_uri(self, redirect_uri):
         return redirect_uri in self.oauthRedirectURI
 
     def has_client_secret(self):
-        return self.oauthClientSecret and self.oauthClientSecret[0]
+        return self.oauthClientSecret and self.oauthClientSecret
 
     def check_client_secret(self, client_secret):
-        return client_secret == self.oauthClientSecret[0]
+        return client_secret == self.oauthClientSecret
 
     def check_token_endpoint_auth_method(self, method):
-        return method == self.oauthTokenEndpointAuthMethod[0]
+        return method == self.oauthTokenEndpointAuthMethod
 
     def check_response_type(self, response_type):
         return response_type in self.oauthResponseType
@@ -201,10 +226,10 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
     id = "oauthCode"
 
     def get_redirect_uri(self):
-        return Client.get(self.authzClientID[0]).oauthRedirectURI[0]
+        return Client.get(self.authzClientID).oauthRedirectURI
 
     def get_scope(self):
-        return self.oauth2ScopeValue[0]
+        return self.oauth2ScopeValue
 
     def is_refresh_token_active(self):
         if self.revoked:
@@ -228,18 +253,18 @@ class Token(LDAPObjectHelper, TokenMixin):
     id = "oauthAccessToken"
 
     def get_client_id(self):
-        return self.authzClientID[0]
+        return self.authzClientID
 
     def get_scope(self):
         return " ".join(self.oauthScope)
 
     def get_expires_in(self):
-        return int(self.oauthTokenLifetime[0])
+        return int(self.oauthTokenLifetime)
 
     def get_expires_at(self):
-        issue_date = datetime.datetime.strptime(self.oauthIssueDate[0], "%Y%m%d%H%M%SZ")
+        issue_date = datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
         issue_timestamp = (issue_date - datetime.datetime(1970, 1, 1)).total_seconds()
-        return issue_timestamp + int(self.oauthTokenLifetime[0])
+        return issue_timestamp + int(self.oauthTokenLifetime)
 
     def is_refresh_token_active(self):
         if self.revoked:
