@@ -196,7 +196,7 @@ class Client(LDAPObjectHelper, ClientMixin):
 
 
 class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
-    objectClass = ["oauth2AuthorizationCode"]
+    objectClass = ["oauthAuthorizationCode"]
     base = "ou=authorizations,dc=mydomain,dc=tld"
     id = "oauthCode"
 
@@ -223,25 +223,23 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
 
 
 class Token(LDAPObjectHelper, TokenMixin):
-    objectClass = ["oauth2Token"]
+    objectClass = ["oauthToken"]
     base = "ou=tokens,dc=mydomain,dc=tld"
-    id = "oauthToken"
+    id = "oauthAccessToken"
 
     def get_client_id(self):
         return self.authzClientID[0]
 
     def get_scope(self):
-        return self.authzScopeValue[0]
+        return " ".join(self.oauthScope)
 
     def get_expires_in(self):
-        return int(self.authzAccessTokenLifetime[0])
+        return int(self.oauthTokenLifetime[0])
 
     def get_expires_at(self):
-        issue_date = datetime.datetime.strptime(
-            self.authzAccessTokenIssueDate[0], "%Y%m%d%H%M%SZ"
-        )
+        issue_date = datetime.datetime.strptime(self.oauthIssueDate[0], "%Y%m%d%H%M%SZ")
         issue_timestamp = (issue_date - datetime.datetime(1970, 1, 1)).total_seconds()
-        return issue_timestamp + int(self.authzAccessTokenLifetime[0])
+        return issue_timestamp + int(self.oauthTokenLifetime[0])
 
     def is_refresh_token_active(self):
         if self.revoked:

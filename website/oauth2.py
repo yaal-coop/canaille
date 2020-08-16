@@ -1,3 +1,4 @@
+import datetime
 from authlib.integrations.flask_oauth2 import AuthorizationServer, ResourceProtector
 from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
@@ -99,6 +100,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
         raise NotImplementedError()
         credential.revoked = True
 
+
 class ImplicitGrant(_OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
@@ -129,7 +131,17 @@ def query_client(client_id):
 
 
 def save_token(token, request):
-    raise NotImplementedError()
+    now = datetime.datetime.now()
+    token = Token(
+        oauthTokenType=token["token_type"],
+        oauthAccessToken=token["access_token"],
+        oauthRefreshToken=token["refresh_token"],
+        oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
+        oauthTokenLifetime=str(token["expires_in"]),
+        oauthScope=token["scope"].split(" "),
+        oauthClientID=request.client.oauthClientID[0],
+    )
+    token.save()
 
 
 class BearerTokenValidator(_BearerTokenValidator):
