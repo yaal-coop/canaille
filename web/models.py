@@ -100,13 +100,10 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
         return self.oauthRedirectURI
 
     def get_scope(self):
-        return self.oauth2ScopeValue
+        return self.oauthScope
 
-    def is_refresh_token_active(self):
-        if self.revoked:
-            return False
-        expires_at = self.issued_at + self.expires_in * 2
-        return expires_at >= time.time()
+    def get_nonce(self):
+        return self.oauthNonce
 
     def get_client_id(self):
         return self.oauthClientID
@@ -116,6 +113,10 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
 
     def get_expires_at(self):
         return datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ") + datetime.timedelta(seconds=int(self.oauthAuthorizationLifetime))
+
+    def get_auth_time(self):
+        auth_time = datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ")
+        return (auth_time - datetime.datetime(1970, 1, 1)).total_seconds()
 
 
 class Token(LDAPObjectHelper, TokenMixin):

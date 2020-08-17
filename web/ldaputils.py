@@ -41,6 +41,9 @@ class LDAPObjectHelper:
         for k, v in kwargs.items():
             self.__setattr__(k, v)
 
+    def delete(self):
+        raise NotImplementedError()
+
     @property
     def dn(self):
         if not self.id in self.attrs:

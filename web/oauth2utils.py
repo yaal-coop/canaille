@@ -31,7 +31,7 @@ def exists_nonce(nonce, req):
 
 
 def generate_user_info(user, scope):
-    return UserInfo(sub=str(user.id), name=user.username)
+    return UserInfo(sub=str(user.dn), name=user.sn)
 
 
 def create_authorization_code(client, grant_user, request):
@@ -63,10 +63,10 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
             return item[0]
 
     def delete_authorization_code(self, authorization_code):
-        raise NotImplementedError()
+        authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        return User.query.get(authorization_code.user_id)
+        return User.get(authorization_code.oauthSubject)
 
 
 class OpenIDCode(_OpenIDCode):
@@ -134,16 +134,17 @@ def query_client(client_id):
 
 def save_token(token, request):
     now = datetime.datetime.now()
-    token = Token(
+    t = Token(
         oauthTokenType=token["token_type"],
         oauthAccessToken=token["access_token"],
-        oauthRefreshToken=token["refresh_token"],
         oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
         oauthTokenLifetime=str(token["expires_in"]),
         oauthScope=token["scope"],
         oauthClientID=request.client.oauthClientID[0],
     )
-    token.save()
+    if "refresh_token" in token:
+        t.oauthRefreshToken=token["refresh_token"],
+    t.save()
 
 
 class BearerTokenValidator(_BearerTokenValidator):
