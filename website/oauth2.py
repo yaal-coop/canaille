@@ -138,7 +138,7 @@ def save_token(token, request):
         oauthRefreshToken=token["refresh_token"],
         oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
         oauthTokenLifetime=str(token["expires_in"]),
-        oauthScope=token["scope"].split(" "),
+        oauthScope=token["scope"],
         oauthClientID=request.client.oauthClientID[0],
     )
     token.save()

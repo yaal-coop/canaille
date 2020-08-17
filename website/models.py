@@ -12,6 +12,7 @@ from authlib.oauth2.rfc6749 import (
 
 class LDAPObjectHelper:
     _object_class_by_name = None
+    _attribute_type_by_name = None
     may = None
     must = None
     base = None
@@ -127,7 +128,7 @@ class LDAPObjectHelper:
         if (not self.may or name not in self.may) and (not self.must or name not in self.must):
             return super().__getattribute__(name)
 
-        if not self._attribute_type_by_name[name].single_value:
+        if not self.attr_type_by_name() or not self.attr_type_by_name()[name].single_value:
             return self.attrs.get(name, [])
 
         return self.attrs.get(name, [None])[0]
@@ -137,7 +138,7 @@ class LDAPObjectHelper:
         if not isinstance(value, list):
             value = [value]
         if (self.may and name in self.may) or (self.must and name in self.must):
-            if self._attribute_type_by_name[name].single_value:
+            if self.attr_type_by_name()[name].single_value:
                 self.attrs[name] = [value]
             else:
                 self.attrs[name] = value
@@ -149,7 +150,7 @@ class User(LDAPObjectHelper):
     id = "cn"
 
     def __repr__(self):
-        return self.cn
+        return self.cn[0]
 
     def check_password(self, password):
         return password == "valid"
@@ -173,7 +174,7 @@ class Client(LDAPObjectHelper, ClientMixin):
         return redirect_uri in self.oauthRedirectURI
 
     def has_client_secret(self):
-        return self.oauthClientSecret and self.oauthClientSecret
+        return bool(self.oauthClientSecret)
 
     def check_client_secret(self, client_secret):
         return client_secret == self.oauthClientSecret

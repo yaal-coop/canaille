@@ -25,13 +25,16 @@ def home():
         if not user:
             user = User(cn=username, sn=username)
             user.save()
+
         session["user_dn"] = user.dn
         return redirect("/")
+
     user = current_user()
     if user:
         clients = Client.filter()
     else:
         clients = []
+
     return render_template("home.html", user=user, clients=clients)
 
 
@@ -44,8 +47,10 @@ def create_client():
     user = current_user()
     if not user:
         return redirect("/")
+
     if request.method == "GET":
         return render_template("create_client.html")
+
     form = request.form
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
@@ -76,13 +81,16 @@ def authorize():
         except OAuth2Error as error:
             return jsonify(dict(error.get_body()))
         return render_template("authorize.html", user=user, grant=grant)
+
     if not user and "username" in request.form:
         username = request.form.get("username")
         user = User.get(username)
+
     if request.form["confirm"]:
         grant_user = user
     else:
         grant_user = None
+
     return authorization.create_authorization_response(grant_user=grant_user)
 
 

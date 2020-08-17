@@ -25,7 +25,6 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.3 NAME 'oauthRedirectURI'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
-        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.4 NAME 'oauthResponseType'
