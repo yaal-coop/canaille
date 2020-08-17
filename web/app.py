@@ -12,8 +12,10 @@ from .routes import bp
 def create_app(config=None):
     app = Flask(__name__)
 
-    config = toml.load(os.environ.get("CONFIG", "config.toml"))
-    app.config.from_mapping(config)
+    app.config.from_mapping(
+        {"OAUTH2_REFRESH_TOKEN_GENERATOR": True,}
+    )
+    app.config.from_mapping(toml.load(os.environ.get("CONFIG", "config.toml")))
 
     app.url_map.strict_slashes = False
 
@@ -25,7 +27,9 @@ def setup_app(app):
     @app.before_request
     def before_request():
         g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
-        g.ldap.simple_bind_s(app.config["LDAP"]["BIND_USER"], app.config["LDAP"]["BIND_PW"])
+        g.ldap.simple_bind_s(
+            app.config["LDAP"]["BIND_USER"], app.config["LDAP"]["BIND_PW"]
+        )
 
     @app.after_request
     def after_request(response):
@@ -47,17 +51,17 @@ def setup_app(app):
 
     @babel.localeselector
     def get_locale():
-        user = getattr(g, 'user', None)
+        user = getattr(g, "user", None)
         if user is not None:
             return user.locale
 
         if app.config.get("LANGUAGE"):
             return app.config.get("LANGUAGE")
 
-        return request.accept_languages.best_match(['fr', 'en'])
+        return request.accept_languages.best_match(["fr", "en"])
 
     @babel.timezoneselector
     def get_timezone():
-        user = getattr(g, 'user', None)
+        user = getattr(g, "user", None)
         if user is not None:
             return user.timezone

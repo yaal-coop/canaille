@@ -125,10 +125,15 @@ class LDAPObjectHelper:
         ]
 
     def __getattr__(self, name):
-        if (not self.may or name not in self.may) and (not self.must or name not in self.must):
+        if (not self.may or name not in self.may) and (
+            not self.must or name not in self.must
+        ):
             return super().__getattribute__(name)
 
-        if not self.attr_type_by_name() or not self.attr_type_by_name()[name].single_value:
+        if (
+            not self.attr_type_by_name()
+            or not self.attr_type_by_name()[name].single_value
+        ):
             return self.attrs.get(name, [])
 
         return self.attrs.get(name, [None])[0]
