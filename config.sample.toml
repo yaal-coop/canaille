@@ -1,0 +1,6 @@
+SECRET_KEY = "change me before you go in production"
+
+[LDAP]
+URI = "ldaps://ldap.mydomain.tld"
+BIND_USER = "cn=admin,dc=mydomain,dc=tld"
+BIND_PW = "admin"

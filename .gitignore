@@ -4,3 +4,4 @@ venv/*
 .*@neomake*
 .ash_history
 .python_history
+config.toml
