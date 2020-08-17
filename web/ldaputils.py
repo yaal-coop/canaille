@@ -26,9 +26,7 @@ class LDAPObjectHelper:
 
     def __repr__(self):
         return "<{} {}={}>".format(
-            self.__class__.__name__,
-            self.id,
-            getattr(self, self.id)
+            self.__class__.__name__, self.id, getattr(self, self.id)
         )
 
     def keys(self):
@@ -42,7 +40,7 @@ class LDAPObjectHelper:
             self.__setattr__(k, v)
 
     def delete(self):
-        raise NotImplementedError()
+        g.ldap.delete_s(self.dn)
 
     @property
     def dn(self):

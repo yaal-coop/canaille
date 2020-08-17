@@ -105,17 +105,17 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
     def get_nonce(self):
         return self.oauthNonce
 
-    def get_client_id(self):
-        return self.oauthClientID
-
-    def get_expires_in(self):
-        return self.oauthAuthorizationLifetime
-
-    def get_expires_at(self):
-        return datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ") + datetime.timedelta(seconds=int(self.oauthAuthorizationLifetime))
+    def is_expired(self):
+        return (
+            datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ")
+            + datetime.timedelta(seconds=int(self.oauthAuthorizationLifetime))
+            < datetime.datetime.now()
+        )
 
     def get_auth_time(self):
-        auth_time = datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ")
+        auth_time = datetime.datetime.strptime(
+            self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ"
+        )
         return (auth_time - datetime.datetime(1970, 1, 1)).total_seconds()
 
 

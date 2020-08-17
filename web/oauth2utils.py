@@ -24,9 +24,7 @@ DUMMY_JWT_CONFIG = {
 
 
 def exists_nonce(nonce, req):
-    exists = AuthorizationCode.query.filter_by(
-        client_id=req.client_id, nonce=nonce
-    ).first()
+    exists = AuthorizationCode.filter(oauthClientID=req.client_id, oauthNonce=nonce)
     return bool(exists)
 
 
@@ -43,7 +41,7 @@ def create_authorization_code(client, grant_user, request):
         oauthClientID=client.oauthClientID,
         oauthRedirectURI=request.redirect_uri or client.oauthRedirectURIs[0],
         oauthScope=request.scope,
-        oauthNonce=nonce or "nonce", #TODO
+        oauthNonce=nonce,
         oauthAuthorizationDate=now.strftime("%Y%m%d%H%M%SZ"),
         oauthAuthorizationLifetime=str(84000),
     )
@@ -59,7 +57,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         item = AuthorizationCode.filter(
             oauthCode=code, oauthClientID=client.oauthClientID
         )
-        if item and not item[0].get_expires_at() < datetime.datetime.now():
+        if item and not item[0].is_expired():
             return item[0]
 
     def delete_authorization_code(self, authorization_code):
@@ -143,7 +141,7 @@ def save_token(token, request):
         oauthClientID=request.client.oauthClientID[0],
     )
     if "refresh_token" in token:
-        t.oauthRefreshToken=token["refresh_token"],
+        t.oauthRefreshToken = (token["refresh_token"],)
     t.save()
 
 
