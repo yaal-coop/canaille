@@ -25,6 +25,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.3 NAME 'oauthRedirectURI'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.4 NAME 'oauthResponseType'
@@ -49,6 +50,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.6 NAME 'oauthNonce'
         ORDERING caseExactOrderingMatch
         SUBSTR caseExactSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.7 NAME 'oauthAuthorizationDate'
@@ -251,6 +253,31 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.29 NAME 'oauthTokenEndpointAuthMethod
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0 Dynamic Client Registration Protocol' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.30 NAME 'oauthSubject'
+        DESC 'OAuth 2.0 Token subject'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0 Dynamic Client Registration Protocol' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.31 NAME 'oauthRedirectURIs'
+        DESC 'Authorization Code Redirection URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.32 NAME 'oauthAuthorizationLifetime'
+        DESC 'OAuth 2.0 authorization code lifetime, in seconds'
+        EQUALITY integerMatch
+        ORDERING integerOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -260,7 +287,7 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthClientName $
               oauthClientContact $
               oauthClientURI $
-              oauthRedirectURI $
+              oauthRedirectURIs $
               oauthLogoURI $
               oauthIssueDate $
               oauthClientSecret $
@@ -283,13 +310,14 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
         STRUCTURAL
         MUST  oauthCode
         MAY ( description $
-              oauthCode $
               oauthClientID $
+              oauthSubject $
               oauthRedirectURI $
               oauthResponseType $
               oauthScope $
               oauthNonce $
               oauthAuthorizationDate $
+              oauthAuthorizationLifetime $
               oauthCodeChallenge $
               oauthCodeChallengeMethod )
         X-ORIGIN 'OAuth 2.0' )
@@ -300,6 +328,7 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         MUST  oauthAccessToken
         MAY ( description $
               oauthClientID $
+              oauthSubject $
               oauthTokenType $
               oauthRefreshToken $
               oauthScope $

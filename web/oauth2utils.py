@@ -35,18 +35,20 @@ def generate_user_info(user, scope):
 
 
 def create_authorization_code(client, grant_user, request):
-    raise NotImplementedError()
-    code = gen_salt(48)
     nonce = request.data.get("nonce")
-    item = AuthorizationCode(
-        code=code,
-        client_id=client.client_id,
-        redirect_uri=request.redirect_uri,
-        scope=request.scope,
-        user_id=grant_user.id,
-        nonce=nonce,
+    now = datetime.datetime.now()
+    code = AuthorizationCode(
+        oauthCode=gen_salt(48),
+        oauthSubject=grant_user,
+        oauthClientID=client.oauthClientID,
+        oauthRedirectURI=request.redirect_uri or client.oauthRedirectURIs[0],
+        oauthScope=request.scope,
+        oauthNonce=nonce or "nonce", #TODO
+        oauthAuthorizationDate=now.strftime("%Y%m%d%H%M%SZ"),
+        oauthAuthorizationLifetime=str(84000),
     )
-    return code
+    code.save()
+    return code.oauthCode
 
 
 class AuthorizationCodeGrant(_AuthorizationCodeGrant):
@@ -54,11 +56,11 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return create_authorization_code(client, grant_user, request)
 
     def parse_authorization_code(self, code, client):
-        item = AuthorizationCode.query.filter_by(
-            code=code, client_id=client.client_id
-        ).first()
-        if item and not item.is_expired():
-            return item
+        item = AuthorizationCode.filter(
+            oauthCode=code, oauthClientID=client.oauthClientID
+        )
+        if item and not item[0].get_expires_at() < datetime.datetime.now():
+            return item[0]
 
     def delete_authorization_code(self, authorization_code):
         raise NotImplementedError()

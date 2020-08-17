@@ -1,7 +1,7 @@
 import ldap
 import os
 import toml
-from . import routes, clients
+from . import routes, clients, oauth
 
 from flask import Flask, g, request
 from flask_babel import Babel
@@ -39,6 +39,7 @@ def setup_app(app):
 
     config_oauth(app)
     app.register_blueprint(routes.bp)
+    app.register_blueprint(oauth.bp, url_prefix="/oauth")
     app.register_blueprint(clients.bp, url_prefix="/client")
 
     babel = Babel(app)

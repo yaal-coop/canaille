@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+
+{% block content %}
+<div class="ui clearing segment">
+    {% if logo_url %}
+        <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+    {% else %}
+        <i class="massive sign in icon"></i>
+    {% endif %}
+
+    <h2 class="ui center aligned header">
+        <div class="content">
+            {{ _("Sign in at %(website)s", website=website_name) }}
+        </div>
+        <div class="sub header">{% trans %}Log-in and manage your authorizations.{% endtrans %}</div>
+    </h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="ui attached message {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    {{ sui.render_form(form, _("Sign in"), action=request.url) }}
+</div>
+{% endblock %}

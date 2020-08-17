@@ -14,11 +14,12 @@ class User(LDAPObjectHelper):
     base = "ou=users,dc=mydomain,dc=tld"
     id = "cn"
 
-    def __repr__(self):
-        return self.cn[0]
-
     def check_password(self, password):
         return password == "valid"
+
+    @property
+    def name(self):
+        return self.cn[0]
 
 
 class Client(LDAPObjectHelper, ClientMixin):
@@ -34,13 +35,13 @@ class Client(LDAPObjectHelper, ClientMixin):
         return self.oauthClientID
 
     def get_default_redirect_uri(self):
-        return self.oauthRedirectURI
+        return self.oauthRedirectURIs[0]
 
     def get_allowed_scope(self, scope):
         return self.oauthScope
 
     def check_redirect_uri(self, redirect_uri):
-        return redirect_uri in self.oauthRedirectURI
+        return redirect_uri in self.oauthRedirectURIs
 
     def has_client_secret(self):
         return bool(self.oauthClientSecret)
@@ -96,7 +97,7 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
     id = "oauthCode"
 
     def get_redirect_uri(self):
-        return Client.get(self.authzClientID).oauthRedirectURI
+        return self.oauthRedirectURI
 
     def get_scope(self):
         return self.oauth2ScopeValue
@@ -108,13 +109,13 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
         return expires_at >= time.time()
 
     def get_client_id(self):
-        return self.client_id
+        return self.oauthClientID
 
     def get_expires_in(self):
-        return self.expires_in
+        return self.oauthAuthorizationLifetime
 
     def get_expires_at(self):
-        return self.issued_at + self.expires_in
+        return datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ") + datetime.timedelta(seconds=int(self.oauthAuthorizationLifetime))
 
 
 class Token(LDAPObjectHelper, TokenMixin):

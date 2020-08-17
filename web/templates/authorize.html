@@ -1,28 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="ui segment">
-<p>The application <strong>{{grant.client.client_name}}</strong> is requesting:
-<strong>{{ grant.request.scope }}</strong>
-</p>
+<div class="ui center aligned segment">
+    {% if client.oauthLogoURI %}
+        <img class="ui centered tiny image" src="{{ client.oauthLogoURI }}" alt="{{ client.oauthClientName }}">
+    {% endif %}
 
-<p>
-  from You - a.k.a. <strong>{{ user.username }}</strong>
-</p>
+    <p>{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</p>
+    <p>
+        <strong>{{ grant.request.scope }}</strong>
+    </p>
 
-<form action="" method="post">
-  <label>
-    <input type="checkbox" name="confirm">
-    <span>Consent?</span>
-  </label>
-  {% if not user %}
-  <p>You haven't logged in. Log in with:</p>
-  <div>
-    <input type="text" name="username">
-  </div>
-  {% endif %}
-  <br>
-  <button>Submit</button>
-</form>
+    <p>{{ gettext('from: %(user)s', user=user.name) }}</p>
+
+    <div class="ui buttons">
+        <form action="{{ request.url }}" method="post">
+            <input type="hidden" name="answer" value="deny" />
+            <input type="submit" class="ui negative button" value="{% trans %}Deny{% endtrans %}" />
+        </form>
+
+        <form action="{{ request.url }}" method="post">
+            <input type="hidden" name="answer" value="logout" />
+            <input type="submit" class="ui button" value="{% trans %}Switch user{% endtrans %}" />
+        </form>
+
+        <form action="{{ request.url }}" method="post">
+            <input type="hidden" name="answer" value="accept" />
+            <input type="submit" class="ui positive button" value="{% trans %}Accept{% endtrans %}" />
+        </form>
+    </div>
 </div>
 {% endblock %}

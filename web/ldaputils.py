@@ -24,6 +24,13 @@ class LDAPObjectHelper:
             self.may.extend(oc.may)
             self.must.extend(oc.must)
 
+    def __repr__(self):
+        return "<{} {}={}>".format(
+            self.__class__.__name__,
+            self.id,
+            getattr(self, self.id)
+        )
+
     def keys(self):
         return self.must + self.may
 

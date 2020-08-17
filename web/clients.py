@@ -33,7 +33,7 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld"},
     )
-    oauthRedirectURI = wtforms.fields.html5.URLField(
+    oauthRedirectURIs = wtforms.fields.html5.URLField(
         gettext("Redirect URIs"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld/callback"},
@@ -129,7 +129,7 @@ def add():
         oauthClientContact=form["oauthClientContact"].data,
         oauthClientURI=form["oauthClientURI"].data,
         oauthGrantType=form["oauthGrantType"].data,
-        oauthRedirectURI=[form["oauthRedirectURI"].data],
+        oauthRedirectURIs=[form["oauthRedirectURIs"].data],
         oauthResponseType=form["oauthResponseType"].data,
         oauthScope=form["oauthScope"].data.split(" "),
         oauthTokenEndpointAuthMethod=form["oauthTokenEndpointAuthMethod"].data,
@@ -157,7 +157,7 @@ def edit(client_id):
     client = Client.get(client_id)
     data = dict(client)
     data["oauthScope"] = " ".join(data["oauthScope"])
-    data["oauthRedirectURI"] = data["oauthRedirectURI"][0]
+    data["oauthRedirectURIs"] = data["oauthRedirectURIs"][0]
     form = ClientAdd(request.form or None, data=data, client=client)
 
     if not request.form:
@@ -175,7 +175,7 @@ def edit(client_id):
             oauthClientContact=form["oauthClientContact"].data,
             oauthClientURI=form["oauthClientURI"].data,
             oauthGrantType=form["oauthGrantType"].data,
-            oauthRedirectURI=[form["oauthRedirectURI"].data],
+            oauthRedirectURIs=[form["oauthRedirectURIs"].data],
             oauthResponseType=form["oauthResponseType"].data,
             oauthScope=form["oauthScope"].data.split(" "),
             oauthTokenEndpointAuthMethod=form["oauthTokenEndpointAuthMethod"].data,
