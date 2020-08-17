@@ -1,0 +1,14 @@
+body {
+    background: #F8F8F8;
+}
+
+.container {
+    padding: 1em;
+    width: 800px;
+    margin: auto;
+}
+
+.logo img{
+    max-width: 50px;
+    max-height: 50px;
+}

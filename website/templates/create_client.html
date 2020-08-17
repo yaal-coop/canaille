@@ -1,9 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ui segment">
+
 <style>
   label, label > span { display: block; }
   label { margin: 15px 0; }
 </style>
-
-<a href="/">Home</a>
 
 <form action="" method="post">
   <label>
@@ -40,3 +43,6 @@
   </label>
   <button>Submit</button>
 </form>
+
+</div>
+{% endblock %}

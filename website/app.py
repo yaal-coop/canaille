@@ -38,6 +38,13 @@ def setup_app(app):
 
     babel = Babel(app)
 
+    @app.context_processor
+    def global_processor():
+        return {
+            "logo_url": app.config.get("LOGO"),
+            "website_name": app.config.get("NAME"),
+        }
+
     @babel.localeselector
     def get_locale():
         user = getattr(g, 'user', None)

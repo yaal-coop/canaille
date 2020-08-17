@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ui segment">
 {% if user %}
 <style>pre{white-space:wrap}</style>
 <div>{{ _('Logged in as') }} <strong>{{user}}</strong> (<a href="{{ url_for('.logout') }}">Log Out</a>)</div>
@@ -32,3 +36,6 @@
   <button type="submit">Login / Signup</button>
 </form>
 {% endif %}
+
+</div>
+{% endblock %}

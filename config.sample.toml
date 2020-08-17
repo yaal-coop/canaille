@@ -1,4 +1,6 @@
 SECRET_KEY = "change me before you go in production"
+NAME = MyDomain
+# LOGO = "https://path/to/your/organization/logo.png"
 
 # If unset, language is detected
 LANGUAGE = 'en'

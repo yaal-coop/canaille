@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ui segment">
 <p>The application <strong>{{grant.client.client_name}}</strong> is requesting:
 <strong>{{ grant.request.scope }}</strong>
 </p>
@@ -20,3 +24,5 @@
   <br>
   <button>Submit</button>
 </form>
+</div>
+{% endblock %}
