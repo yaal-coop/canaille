@@ -1,5 +1,8 @@
 SECRET_KEY = "change me before you go in production"
 
+# If unset, language is detected
+LANGUAGE = 'en'
+
 [LDAP]
 URI = "ldaps://ldap.mydomain.tld"
 BIND_USER = "cn=admin,dc=mydomain,dc=tld"

@@ -1,7 +1,9 @@
 import ldap
 import os
 import toml
-from flask import Flask, g
+
+from flask import Flask, g, request
+from flask_babel import Babel
 
 from .oauth2 import config_oauth
 from .routes import bp
@@ -33,3 +35,22 @@ def setup_app(app):
 
     config_oauth(app)
     app.register_blueprint(bp, url_prefix="")
+
+    babel = Babel(app)
+
+    @babel.localeselector
+    def get_locale():
+        user = getattr(g, 'user', None)
+        if user is not None:
+            return user.locale
+
+        if app.config.get("LANGUAGE"):
+            return app.config.get("LANGUAGE")
+
+        return request.accept_languages.best_match(['fr', 'en'])
+
+    @babel.timezoneselector
+    def get_timezone():
+        user = getattr(g, 'user', None)
+        if user is not None:
+            return user.timezone
