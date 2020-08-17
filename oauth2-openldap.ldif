@@ -122,6 +122,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.15 NAME 'oauthClientName'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.16 NAME 'oauthClientContact'
@@ -130,6 +131,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.16 NAME 'oauthClientContact'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.17 NAME 'oauthClientURI'
@@ -138,6 +140,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.17 NAME 'oauthClientURI'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.18 NAME 'oauthLogoURI'
@@ -155,6 +158,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.19 NAME 'oauthTermsOfServiceURI'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.20 NAME 'oauthPolicyURI'
@@ -163,6 +167,7 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.20 NAME 'oauthPolicyURI'
         ORDERING caseIgnoreOrderingMatch
         SUBSTR caseIgnoreSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.21 NAME 'oauthJWKURI'

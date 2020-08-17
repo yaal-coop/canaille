@@ -9,6 +9,7 @@ RUN pip install --requirement /app/requirements.txt
 WORKDIR /app
 USER oauthserver
 
+ENV FLASK_APP=web
 ENV FLASK_ENV=development
 ENV AUTHLIB_INSECURE_TRANSPORT=1
 

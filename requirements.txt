@@ -1,5 +1,6 @@
 authlib
 flask
-flask - babel
-python - ldap
+flask-babel
+flask-wtf
+python-ldap
 toml

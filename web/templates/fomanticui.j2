@@ -1,0 +1,49 @@
+{% macro render_field(field, label_visible=true) -%}
+<div class="field {{ kwargs.pop('class_', '') }} {% if field.errors %} error{% endif %}">
+{% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
+    {{ field.label() }}
+{% endif %}
+    {% if field.errors %}
+    {% for error in field.errors %}
+    <div class="ui error message">
+        <p>{{ error }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if field.type in ("SelectField", "SelectMultipleField") %}
+        {{ field(class_="ui dropdown multiple", **kwargs) }}
+    {% else %}
+        {{ field(**kwargs) }}
+    {% endif %}
+</div>
+
+{%- endmacro %}
+
+{% macro render_form(
+    form,
+    action_text='submit',
+    class_='',
+    btn_class='ui right floated primary button',
+    action=none,
+    id=none) -%}
+<form method="POST"
+      id="{{ id or form.__class__.__name__|lower }}"
+      action="{{ action or form.action }}"
+      role="form"
+      enctype="multipart/form-data"
+      class="ui form {{ class_ }}"
+      >
+    {{ form.hidden_tag() if form.hidden_tag }}
+    {% if caller %}
+        {{ caller() }}
+    {% else %}
+        {% for field in form %}
+            {{ render_field(field) }}
+        {% endfor %}
+    {% endif %}
+    {% if action_text %}
+    <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+    {% endif %}
+</form>
+{%- endmacro %}

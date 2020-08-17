@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block title %}Accueil{% endblock %}</title>
+    <title>{% block title %}{% trans %}OpenID Connect LDAP Bridge{% endtrans %}{% endblock %}</title>
     <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
     <link href="/static/css/base.css" rel="stylesheet">
     {% block style %}{% endblock %}
@@ -28,6 +28,18 @@
                 </a>
             </div>
             {% endif %}
+            <a class="item" href="{{ url_for('web.clients.index') }}">
+                <i class="plug icon"></i>
+                {% trans %}Clients{% endtrans %}
+            </a>
+            <a class="item" href="/">
+                <i class="key icon"></i>
+                {% trans %}Tokens{% endtrans %}
+            </a>
+            <a class="item" href="/">
+                <i class="user secret icon"></i>
+                {% trans %}Codes{% endtrans %}
+            </a>
         </nav>
         {% endblock %}
         <div class="content">
