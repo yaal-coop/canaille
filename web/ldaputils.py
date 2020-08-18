@@ -8,6 +8,7 @@ class LDAPObjectHelper:
     may = None
     must = None
     base = None
+    root_dn = None
     id = None
 
     def __init__(self, dn=None, **kwargs):
@@ -29,6 +30,10 @@ class LDAPObjectHelper:
             self.__class__.__name__, self.id, getattr(self, self.id)
         )
 
+    @classmethod
+    def ldap(cls):
+        return g.ldap
+
     def keys(self):
         return self.must + self.may
 
@@ -40,20 +45,37 @@ class LDAPObjectHelper:
             self.__setattr__(k, v)
 
     def delete(self):
-        g.ldap.delete_s(self.dn)
+        self.ldap().delete_s(self.dn)
 
     @property
     def dn(self):
         if not self.id in self.attrs:
             return None
-        return f"{self.id}={self.attrs[self.id][0]},{self.base}"
+        return f"{self.id}={self.attrs[self.id][0]},{self.base},{self.root_dn}"
 
     @classmethod
-    def ocs_by_name(cls):
+    def initialize(cls, conn=None):
+        conn = conn or cls.ldap()
+        cls.ocs_by_name(conn)
+        cls.attr_type_by_name(conn)
+
+        dn = f"{cls.base},{cls.root_dn}"
+        conn.add_s(
+            dn,
+            [
+                ("objectClass", [b"organizationalUnit"]),
+                ("ou", [cls.base.encode("utf-8")]),
+            ],
+        )
+
+    @classmethod
+    def ocs_by_name(cls, conn=None):
         if cls._object_class_by_name:
             return cls._object_class_by_name
 
-        res = g.ldap.search_s(
+        conn = conn or cls.ldap()
+
+        res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
         )
         subschema_entry = res[0]
@@ -69,11 +91,13 @@ class LDAPObjectHelper:
         return cls._object_class_by_name
 
     @classmethod
-    def attr_type_by_name(cls):
+    def attr_type_by_name(cls, conn=None):
         if cls._attribute_type_by_name:
             return cls._attribute_type_by_name
 
-        res = g.ldap.search_s(
+        conn = conn or cls.ldap()
+
+        res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
         )
         subschema_entry = res[0]
@@ -88,9 +112,10 @@ class LDAPObjectHelper:
 
         return cls._attribute_type_by_name
 
-    def save(self):
+    def save(self, conn=None):
+        conn = conn or self.ldap()
         try:
-            match = bool(g.ldap.search_s(self.dn, ldap.SCOPE_SUBTREE))
+            match = bool(conn.search_s(self.dn, ldap.SCOPE_SUBTREE))
         except ldap.NO_SUCH_OBJECT:
             match = False
 
@@ -99,19 +124,19 @@ class LDAPObjectHelper:
                 (ldap.MOD_REPLACE, k, [elt.encode("utf-8") for elt in v])
                 for k, v in self.attrs.items()
             ]
-            g.ldap.modify_s(self.dn, attributes)
+            conn.modify_s(self.dn, attributes)
 
         else:
             attributes = [
                 (k, [elt.encode("utf-8") for elt in v]) for k, v in self.attrs.items()
             ]
-            g.ldap.add_s(self.dn, attributes)
+            conn.add_s(self.dn, attributes)
 
     @classmethod
     def get(cls, dn):
         if "=" not in dn:
-            dn = f"{cls.id}={dn},{cls.base}"
-        result = g.ldap.search_s(dn, ldap.SCOPE_SUBTREE)
+            dn = f"{cls.id}={dn},{cls.base},{cls.root_dn}"
+        result = cls.ldap().search_s(dn, ldap.SCOPE_SUBTREE)
 
         if not result:
             return None
@@ -127,7 +152,8 @@ class LDAPObjectHelper:
         class_filter = "".join([f"(objectClass={oc})" for oc in cls.objectClass])
         arg_filter = "".join(f"({k}={v})" for k, v in kwargs.items())
         ldapfilter = f"(&{class_filter}{arg_filter})"
-        result = g.ldap.search_s(base or cls.base, ldap.SCOPE_SUBTREE, ldapfilter)
+        base = base or f"{cls.base},{cls.root_dn}"
+        result = cls.ldap().search_s(base, ldap.SCOPE_SUBTREE, ldapfilter)
 
         return [
             cls(**{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},)

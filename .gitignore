@@ -1,7 +1,9 @@
 *.sqlite
 *.pyc
 venv/*
+env
 .*@neomake*
 .ash_history
 .python_history
 config.toml
+.tox

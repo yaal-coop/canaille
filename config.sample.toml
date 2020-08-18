@@ -6,6 +6,7 @@ NAME = "MyDomain"
 LANGUAGE = "en"
 
 [LDAP]
-URI = "ldaps://ldap.mydomain.tld"
-BIND_USER = "cn=admin,dc=mydomain,dc=tld"
+URI = "ldap://ldap"
+ROOT_DN = "dc=mydomain,dc=tld"
+BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"

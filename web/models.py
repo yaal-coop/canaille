@@ -11,7 +11,7 @@ from .ldaputils import LDAPObjectHelper
 
 class User(LDAPObjectHelper):
     objectClass = ["person"]
-    base = "ou=users,dc=mydomain,dc=tld"
+    base = "ou=users"
     id = "cn"
 
     def check_password(self, password):
@@ -24,7 +24,7 @@ class User(LDAPObjectHelper):
 
 class Client(LDAPObjectHelper, ClientMixin):
     objectClass = ["oauthClient"]
-    base = "ou=clients,dc=mydomain,dc=tld"
+    base = "ou=clients"
     id = "oauthClientID"
 
     @property
@@ -93,7 +93,7 @@ class Client(LDAPObjectHelper, ClientMixin):
 
 class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
     objectClass = ["oauthAuthorizationCode"]
-    base = "ou=authorizations,dc=mydomain,dc=tld"
+    base = "ou=authorizations"
     id = "oauthCode"
 
     def get_redirect_uri(self):
@@ -121,7 +121,7 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
 
 class Token(LDAPObjectHelper, TokenMixin):
     objectClass = ["oauthToken"]
-    base = "ou=tokens,dc=mydomain,dc=tld"
+    base = "ou=tokens"
     id = "oauthAccessToken"
 
     def get_client_id(self):
