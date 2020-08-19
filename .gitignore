@@ -7,3 +7,6 @@ env
 .python_history
 config.toml
 .tox
+.coverage
+.coverage.*
+htmlcov

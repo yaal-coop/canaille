@@ -3,6 +3,4 @@ flask
 flask-babel
 flask-wtf
 python-ldap
-pytest
 toml
-pdbpp
