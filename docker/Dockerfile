@@ -1,10 +1,10 @@
 FROM python:3-alpine
 
-COPY requirements.txt /app/
+RUN adduser -D -h /app oauthserver
+COPY --chown=oauthserver:oauthserver . /app/
 RUN apk add curl libldap libffi su-exec
 RUN apk add --virtual .dev-dependencies gcc musl-dev openldap-dev libffi-dev
-RUN adduser -D -h /app oauthserver
-RUN pip install --requirement /app/requirements.txt
+RUN pip install /app/
 
 WORKDIR /app
 USER oauthserver
@@ -12,7 +12,5 @@ USER oauthserver
 ENV FLASK_APP=web
 ENV FLASK_ENV=development
 ENV AUTHLIB_INSECURE_TRANSPORT=1
-
-COPY --chown=oauthserver:oauthserver . /app/
 
 ENTRYPOINT [ "flask", "run", "--host", "0.0.0.0" ]

@@ -1,3 +1,4 @@
+import ldap
 import time
 import datetime
 from authlib.common.encoding import json_loads, json_dumps
@@ -6,6 +7,7 @@ from authlib.oauth2.rfc6749 import (
     TokenMixin,
     AuthorizationCodeMixin,
 )
+from flask import current_app
 from .ldaputils import LDAPObjectHelper
 
 
@@ -15,7 +17,14 @@ class User(LDAPObjectHelper):
     id = "cn"
 
     def check_password(self, password):
-        return password == "valid"
+        conn = ldap.initialize(current_app.config["LDAP"]["URI"])
+        try:
+            conn.simple_bind_s(self.dn, password)
+            return True
+        except ldap.INVALID_CREDENTIALS:
+            return False
+        finally:
+            conn.unbind_s()
 
     @property
     def name(self):

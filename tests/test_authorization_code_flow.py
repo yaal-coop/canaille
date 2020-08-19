@@ -16,7 +16,7 @@ def test_success(testclient, slapd_connection, user, client):
     assert 200 == res.status_code
 
     res.form["login"] = user.name
-    res.form["password"] = "valid"
+    res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
     assert 302 == res.status_code
 

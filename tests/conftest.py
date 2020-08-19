@@ -129,4 +129,7 @@ def client(app, slapd_connection):
 def user(app, slapd_connection):
     u = User(cn="John Doe", sn="Doe",)
     u.save(slapd_connection)
+    slapd_connection.passwd_s(
+        u.dn.encode("utf-8"), None, "correct horse battery staple".encode("utf-8"),
+    )
     return u

@@ -8,7 +8,7 @@ def test_success(testclient, slapd_connection, user, client):
         params=dict(
             grant_type="password",
             username=user.name,
-            password="valid",
+            password="correct horse battery staple",
             scope="profile",
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
