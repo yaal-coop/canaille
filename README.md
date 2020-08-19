@@ -6,7 +6,7 @@ It authenticates your LDAP users, and do not need any additional database to wor
 
 ## Install
 
-First you need to install the schemas into your LDAP server.
+First you need to install the schemas into your LDAP server. There are several ways to achieve this:
 
 ### Option 1: Add the schema into your filesystem
 
