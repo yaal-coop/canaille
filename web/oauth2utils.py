@@ -141,7 +141,7 @@ def save_token(token, request):
         oauthClientID=request.client.oauthClientID[0],
     )
     if "refresh_token" in token:
-        t.oauthRefreshToken = (token["refresh_token"],)
+        t.oauthRefreshToken = token["refresh_token"]
     t.save()
 
 

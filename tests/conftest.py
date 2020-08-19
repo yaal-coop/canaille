@@ -66,6 +66,8 @@ def slapd_connection(slapd_server):
 
 @pytest.fixture
 def app(slapd_server, slapd_connection):
+    os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+
     LDAPObjectHelper.root_dn = slapd_server.suffix
     Client.initialize(slapd_connection)
     User.initialize(slapd_connection)
@@ -75,6 +77,7 @@ def app(slapd_server, slapd_connection):
     app = create_app(
         {
             "LDAP": {
+                "ROOT_DN": slapd_server.suffix,
                 "URI": slapd_server.ldap_uri,
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
@@ -82,6 +85,14 @@ def app(slapd_server, slapd_connection):
         }
     )
     return app
+
+
+@pytest.fixture
+def testclient(app):
+    app.config["TESTING"] = True
+
+    with app.test_client() as client:
+        yield client
 
 
 @pytest.fixture
