@@ -1,32 +1,46 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request, session, flash, url_for
 from flask import render_template, redirect, jsonify
-from .models import User, Client
+from flask_babel import gettext
+
+from .forms import LoginForm
+from .flaskutils import current_user
+from .models import User
 from .oauth2utils import require_oauth
 
 
 bp = Blueprint(__name__, "home")
 
 
-@bp.route("/", methods=("GET", "POST"))
-def home():
-    if request.method == "POST":
-        username = request.form.get("username")
-        user = User.get(username)
+@bp.route("/")
+def index():
+    if not current_user():
+        return redirect(url_for("web.routes.login"))
 
-        if not user:
-            user = User(cn=username, sn=username)
-            user.save()
+    return render_template("home.html")
 
-        session["user_dn"] = user.dn
-        return redirect("/")
 
-    clients = Client.filter()
-    return render_template("home.html", clients=clients)
+@bp.route("/login", methods=("GET", "POST"))
+def login():
+    form = LoginForm(request.form or None)
+
+    if request.form:
+        if not form.validate():
+            flash(gettext("Login failed, please check your information"), "error")
+            return render_template("login.html", form=form)
+
+        user = User.get(form.login.data)
+        if not user or not user.login(form.password.data):
+            flash(gettext("Login failed, please check your information"), "error")
+            return render_template("login.html", form=form)
+        return redirect(url_for("web.routes.index"))
+
+    return render_template("login.html", form=form)
 
 
 @bp.route("/logout")
 def logout():
-    del session["user_dn"]
+    if "user_dn" in session:
+        del session["user_dn"]
     return redirect("/")
 
 

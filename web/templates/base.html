@@ -23,27 +23,35 @@
 <body>
     <div class="container">
         {% block menu %}
-        <nav class="ui labeled icon menu">
-            {% if logo_url %}
-            <div class="header item">
-                <a href="/" class="logo">
-                    <img class="ui image" src="{{ logo_url }}" alt="{{ website_name }}" />
+            {% if user %}
+            <nav class="ui labeled icon menu">
+                {% if logo_url %}
+                <div class="header item">
+                    <a href="/" class="logo">
+                        <img class="ui image" src="{{ logo_url }}" alt="{{ website_name }}" />
+                    </a>
+                </div>
+                {% endif %}
+                {% if user.admin %}
+                <a class="item" href="{{ url_for('web.clients.index') }}">
+                    <i class="plug icon"></i>
+                    {% trans %}Clients{% endtrans %}
                 </a>
-            </div>
+                <a class="item" href="/">
+                    <i class="key icon"></i>
+                    {% trans %}Tokens{% endtrans %}
+                </a>
+                <a class="item" href="/">
+                    <i class="user secret icon"></i>
+                    {% trans %}Codes{% endtrans %}
+                </a>
+                {% endif %}
+                <a class="item" href="{{ url_for('web.routes.logout') }}">
+                    <i class="sign out alternate icon"></i>
+                    {% trans %}Log out{% endtrans %}
+                </a>
+            </nav>
             {% endif %}
-            <a class="item" href="{{ url_for('web.clients.index') }}">
-                <i class="plug icon"></i>
-                {% trans %}Clients{% endtrans %}
-            </a>
-            <a class="item" href="/">
-                <i class="key icon"></i>
-                {% trans %}Tokens{% endtrans %}
-            </a>
-            <a class="item" href="/">
-                <i class="user secret icon"></i>
-                {% trans %}Codes{% endtrans %}
-            </a>
-        </nav>
         {% endblock %}
         <div class="content">
             {% block content %}{% endblock %}

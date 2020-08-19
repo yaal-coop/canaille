@@ -1,30 +1,19 @@
-import wtforms
 from authlib.oauth2 import OAuth2Error
 from flask import Blueprint, request, session, redirect
 from flask import render_template, jsonify, flash
 from flask_babel import gettext
-from flask_wtf import FlaskForm
 from .models import User, Client
 from .oauth2utils import authorization
+from .forms import LoginForm
+from .flaskutils import current_user
 
 
 bp = Blueprint(__name__, "oauth")
 
 
-class LoginForm(FlaskForm):
-    login = wtforms.StringField(
-        gettext("Username"),
-        validators=[wtforms.validators.DataRequired()],
-        render_kw={"placeholder": "mdupont"},
-    )
-    password = wtforms.PasswordField(
-        gettext("Password"), validators=[wtforms.validators.DataRequired()]
-    )
-
-
 @bp.route("/authorize", methods=["GET", "POST"])
 def authorize():
-    user = User.get(session["user_dn"]) if "user_dn" in session else None
+    user = current_user()
     client = Client.get(request.values["client_id"])
 
     if not user:
@@ -37,11 +26,10 @@ def authorize():
             return render_template("login.html", form=form)
 
         user = User.get(form.login.data)
-        if not user or not user.check_password(form.password.data):
+        if not user or not user.login(form.password.data):
             flash(gettext("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
-        session["user_dn"] = form.login.data
         return redirect(request.url)
 
     if request.method == "GET":

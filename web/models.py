@@ -7,7 +7,7 @@ from authlib.oauth2.rfc6749 import (
     TokenMixin,
     AuthorizationCodeMixin,
 )
-from flask import current_app
+from flask import current_app, session
 from .ldaputils import LDAPObjectHelper
 
 
@@ -15,6 +15,29 @@ class User(LDAPObjectHelper):
     objectClass = ["person"]
     base = "ou=users"
     id = "cn"
+    admin = False
+
+    @classmethod
+    def get(cls, dn, filter=None, conn=None):
+        conn = conn or cls.ldap()
+
+        user = super().get(dn, filter, conn)
+        admin_filter = current_app.config["LDAP"].get("ADMIN_FILTER")
+        if (
+            admin_filter
+            and user
+            and conn.search_s(user.dn, ldap.SCOPE_SUBTREE, admin_filter)
+        ):
+
+            user.admin = True
+        return user
+
+    def login(self, password):
+        if not self.check_password(password):
+            return False
+
+        session["user_dn"] = self.dn
+        return True
 
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])

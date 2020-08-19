@@ -3,11 +3,12 @@ import os
 import toml
 from . import routes, clients, oauth
 
-from flask import Flask, g, request
+from flask import Flask, g, request, render_template
 from flask_babel import Babel
 
-from .oauth2utils import config_oauth
+from .flaskutils import current_user
 from .ldaputils import LDAPObjectHelper
+from .oauth2utils import config_oauth
 
 
 def create_app(config=None):
@@ -54,6 +55,7 @@ def setup_app(app):
         return {
             "logo_url": app.config.get("LOGO"),
             "website_name": app.config.get("NAME"),
+            "user": current_user(),
         }
 
     @babel.localeselector
@@ -72,3 +74,15 @@ def setup_app(app):
         user = getattr(g, "user", None)
         if user is not None:
             return user.timezone
+
+    @app.errorhandler(403)
+    def unauthorized(e):
+        return render_template("error.html", error=403), 403
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("error.html", error=404), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        return render_template("error.html", error=500), 500

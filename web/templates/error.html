@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ui error message">
+    {% if error == 400 %}
+    Accès interdit.
+    {% elif error == 404 %}
+    Page non trouvée.
+    {% elif error == 500 %}
+    Erreur technique.
+    {% endif %}
+</div>
+{% endblock %}

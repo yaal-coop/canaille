@@ -19,7 +19,7 @@ def test_success(testclient, slapd_connection, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token, slapd_connection)
+    token = Token.get(access_token, conn=slapd_connection)
     assert token is not None
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})

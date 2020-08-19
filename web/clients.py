@@ -6,12 +6,14 @@ from flask_wtf import FlaskForm
 from flask_babel import gettext
 from werkzeug.security import gen_salt
 from .models import Client
+from .flaskutils import admin_needed
 
 
 bp = Blueprint(__name__, "clients")
 
 
 @bp.route("/")
+@admin_needed()
 def index():
     clients = Client.filter()
     return render_template("client_list.html", clients=clients)
@@ -107,6 +109,7 @@ class ClientAdd(FlaskForm):
 
 
 @bp.route("/add", methods=["GET", "POST"])
+@admin_needed()
 def add():
     form = ClientAdd(request.form or None)
 
@@ -153,6 +156,7 @@ def add():
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
+@admin_needed()
 def edit(client_id):
     client = Client.get(client_id)
     data = dict(client)
