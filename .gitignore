@@ -10,3 +10,6 @@ config.toml
 .coverage
 .coverage.*
 htmlcov
+*.egg-info
+build
+dist

@@ -1,6 +1,0 @@
-authlib
-flask
-flask-babel
-flask-wtf
-python-ldap
-toml
