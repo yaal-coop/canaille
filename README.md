@@ -5,7 +5,7 @@ oidc-ldap-bridge is a simple OpenID Connect provider based upon OpenLDAP.
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 - OAuth/OpenID Connect support.
 - Authentication against a LDAP directory.
-- No additional database requirerequired. Everything is stored in your OpenLDAP server.
+- No additional database required. Everything is stored in your OpenLDAP server.
 - The code is easy to read and easy to edit in case you want to write a patch
 
 ## Install
