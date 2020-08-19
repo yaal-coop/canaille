@@ -31,4 +31,6 @@ python38:
 coverage:
   image: python:3.8
   stage: test
-  script: tox -e coverage
+  script:
+    - tox -e coverage
+    - coveralls

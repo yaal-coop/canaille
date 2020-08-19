@@ -1,0 +1,4 @@
+---
+repo_token: x4ZFJTt1lUonRGI1AJBF8eNlj8Wvs5Kmb
+service_name: gitlab-ci
+parallel: true
