@@ -86,6 +86,7 @@ def app(slapd_server):
                 "URI": slapd_server.ldap_uri,
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
+                "USER_FILTER": "(|(uid={login})(mail={login}))",
             },
         }
     )
@@ -127,9 +128,6 @@ def client(app, slapd_connection):
 
 @pytest.fixture
 def user(app, slapd_connection):
-    u = User(cn="John Doe", sn="Doe")
+    u = User(cn="John Doe", sn="Doe", uid="user", userpassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz")
     u.save(slapd_connection)
-    slapd_connection.passwd_s(
-        u.dn.encode("utf-8"), None, "correct horse battery staple".encode("utf-8"),
-    )
     return u

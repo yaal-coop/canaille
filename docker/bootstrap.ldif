@@ -16,12 +16,18 @@ ou: authorizations
 
 dn: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
 objectclass: person
+objectclass: uidobject
+objectclass: simpleSecurityObject
 cn: Jane Doe
 sn: Doe
+uid: admin
 userpassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 
 dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
 objectclass: person
+objectclass: uidobject
+objectclass: simpleSecurityObject
 cn: John Doe
 sn: Doe
+uid: user
 userpassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X

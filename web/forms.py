@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 
 class LoginForm(FlaskForm):
     login = wtforms.StringField(
-        gettext("Username"),
+        gettext("Login"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "mdupont"},
     )

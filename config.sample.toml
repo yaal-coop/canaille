@@ -11,4 +11,5 @@ ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"
 
+USER_FILTER = "(|(uid={login})(cn={login}))"
 ADMIN_FILTER = "cn=Jane Doe"
