@@ -3,6 +3,7 @@ import ldap.ldapobject
 import os
 import pytest
 import slapdtest
+from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 from web import create_app
 from web.models import User, Client, Token, AuthorizationCode
@@ -50,6 +51,15 @@ def slapd_server():
             + "\n"
         )
 
+        conn = ldap.ldapobject.SimpleLDAPObject(slapd.ldap_uri)
+        conn.simple_bind_s(slapd.root_dn, slapd.root_pw)
+        LDAPObjectHelper.root_dn = slapd.suffix
+        Client.initialize(conn)
+        User.initialize(conn)
+        Token.initialize(conn)
+        AuthorizationCode.initialize(conn)
+        conn.unbind_s()
+
         yield slapd
     finally:
         slapd.stop()
@@ -65,23 +75,18 @@ def slapd_connection(slapd_server):
 
 
 @pytest.fixture
-def app(slapd_server, slapd_connection):
+def app(slapd_server):
     os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
-
-    LDAPObjectHelper.root_dn = slapd_server.suffix
-    Client.initialize(slapd_connection)
-    User.initialize(slapd_connection)
-    Token.initialize(slapd_connection)
-    AuthorizationCode.initialize(slapd_connection)
 
     app = create_app(
         {
+            "SECRET_KEY": gen_salt(24),
             "LDAP": {
                 "ROOT_DN": slapd_server.suffix,
                 "URI": slapd_server.ldap_uri,
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
-            }
+            },
         }
     )
     return app
@@ -90,9 +95,7 @@ def app(slapd_server, slapd_connection):
 @pytest.fixture
 def testclient(app):
     app.config["TESTING"] = True
-
-    with app.test_client() as client:
-        yield client
+    return TestApp(app)
 
 
 @pytest.fixture
@@ -118,6 +121,7 @@ def client(app, slapd_connection):
         oauthTokenEndpointAuthMethod="client_secret_basic",
     )
     c.save(slapd_connection)
+
     return c
 
 

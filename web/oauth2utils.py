@@ -53,7 +53,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
     def create_authorization_code(self, client, grant_user, request):
         return create_authorization_code(client, grant_user, request)
 
-    def parse_authorization_code(self, code, client):
+    def query_authorization_code(self, code, client):
         item = AuthorizationCode.filter(
             oauthCode=code, oauthClientID=client.oauthClientID
         )
