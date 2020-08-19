@@ -12,7 +12,6 @@ from authlib.oidc.core.grants import (
     OpenIDHybridGrant as _OpenIDHybridGrant,
 )
 from authlib.oidc.core import UserInfo
-from werkzeug.security import gen_salt
 from .models import Client, AuthorizationCode, Token, User
 
 DUMMY_JWT_CONFIG = {
@@ -32,14 +31,14 @@ def generate_user_info(user, scope):
     return UserInfo(sub=str(user.dn), name=user.sn)
 
 
-def create_authorization_code(client, grant_user, request):
+def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
     now = datetime.datetime.now()
     code = AuthorizationCode(
-        oauthCode=gen_salt(48),
-        oauthSubject=grant_user,
-        oauthClientID=client.oauthClientID,
-        oauthRedirectURI=request.redirect_uri or client.oauthRedirectURIs[0],
+        oauthCode=code,
+        oauthSubject=request.user,
+        oauthClientID=request.client.oauthClientID,
+        oauthRedirectURI=request.redirect_uri or request.client.oauthRedirectURIs[0],
         oauthScope=request.scope,
         oauthNonce=nonce,
         oauthAuthorizationDate=now.strftime("%Y%m%d%H%M%SZ"),
@@ -50,8 +49,8 @@ def create_authorization_code(client, grant_user, request):
 
 
 class AuthorizationCodeGrant(_AuthorizationCodeGrant):
-    def create_authorization_code(self, client, grant_user, request):
-        return create_authorization_code(client, grant_user, request)
+    def save_authorization_code(self, code, request):
+        return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
         item = AuthorizationCode.filter(
@@ -113,8 +112,8 @@ class ImplicitGrant(_OpenIDImplicitGrant):
 
 
 class HybridGrant(_OpenIDHybridGrant):
-    def create_authorization_code(self, client, grant_user, request):
-        return create_authorization_code(client, grant_user, request)
+    def save_authorization_code(self, code, request):
+        return save_authorization_code(code, request)
 
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
