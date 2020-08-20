@@ -24,14 +24,10 @@ def login():
     form = LoginForm(request.form or None)
 
     if request.form:
-        if not form.validate():
+        if not form.validate() or not User.login(form.login.data, form.password.data):
             flash(gettext("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
-        user = User.get(form.login.data)
-        if not user or not user.login(form.password.data):
-            flash(gettext("Login failed, please check your information"), "error")
-            return render_template("login.html", form=form)
         return redirect(url_for("web.routes.index"))
 
     return render_template("login.html", form=form)

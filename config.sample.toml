@@ -11,5 +11,11 @@ ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"
 
+# Filter to match users on sign in. Supports a variable
+# {login}. For sigin against uid or mail use:
+# USER_FILTER = "(|(uid={login})(mail={login}))"
 USER_FILTER = "(|(uid={login})(cn={login}))"
+
+# Filter to match admin users. If your server has memberof
+# you can filter against group membership
 ADMIN_FILTER = "cn=Jane Doe"

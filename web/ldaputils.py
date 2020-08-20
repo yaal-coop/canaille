@@ -133,10 +133,14 @@ class LDAPObjectHelper:
             conn.add_s(self.dn, attributes)
 
     @classmethod
-    def get(cls, dn, filter=None, conn=None):
+    def get(cls, dn=None, filter=None, conn=None):
         conn = conn or cls.ldap()
-        if "=" not in dn:
+
+        if dn is None:
+            dn = f"{cls.base},{cls.root_dn}"
+        elif "=" not in dn:
             dn = f"{cls.id}={dn},{cls.base},{cls.root_dn}"
+
         result = conn.search_s(dn, ldap.SCOPE_SUBTREE, filter)
 
         if not result:

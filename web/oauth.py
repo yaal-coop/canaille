@@ -21,12 +21,7 @@ def authorize():
         if request.method == "GET":
             return render_template("login.html", form=form)
 
-        if not form.validate():
-            flash(gettext("Login failed, please check your information"), "error")
-            return render_template("login.html", form=form)
-
-        user = User.get(form.login.data)
-        if not user or not user.login(form.password.data):
+        if not form.validate() or not User.login(form.login.data, form.password.data):
             flash(gettext("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 

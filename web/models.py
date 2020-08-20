@@ -18,7 +18,7 @@ class User(LDAPObjectHelper):
     admin = False
 
     @classmethod
-    def get(cls, dn, filter=None, conn=None):
+    def get(cls, dn=None, filter=None, conn=None):
         conn = conn or cls.ldap()
 
         user = super().get(dn, filter, conn)
@@ -32,12 +32,15 @@ class User(LDAPObjectHelper):
             user.admin = True
         return user
 
-    def login(self, password):
-        if not self.check_password(password):
-            return False
+    @classmethod
+    def login(cls, login, password):
+        filter = current_app.config["LDAP"].get("USER_FILTER").format(login=login)
+        user = User.get(filter=filter)
+        if not user or not user.check_password(password):
+            return None
 
-        session["user_dn"] = self.dn
-        return True
+        session["user_dn"] = user.dn
+        return user
 
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])

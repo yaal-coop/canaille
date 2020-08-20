@@ -49,3 +49,17 @@ def test_login_no_password(testclient, slapd_connection, user, client):
     res = res.form.submit()
     assert 200 == res.status_code
     assert b"Login failed, please check your information" in res.body
+
+
+def test_login_with_alternate_attribute(testclient, slapd_connection, user, client):
+    res = testclient.get("/login")
+    assert 200 == res.status_code
+
+    res.form["login"] = "user"
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit()
+    res = res.follow()
+    assert 200 == res.status_code
+
+    with testclient.session_transaction() as session:
+        assert user.dn == session.get("user_dn")
