@@ -23,7 +23,7 @@
 <body>
     <div class="container">
         {% block menu %}
-            {% if user %}
+            {% if user and menu %}
             <nav class="ui labeled icon menu">
                 {% if logo_url %}
                 <div class="header item">

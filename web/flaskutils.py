@@ -29,7 +29,7 @@ def admin_needed():
             user = current_user()
             if not user:
                 abort(403)
-            if not user.is_admin:
+            if not user.admin:
                 abort(404)
             return view_function(*args, **kwargs)
 

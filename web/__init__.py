@@ -56,6 +56,7 @@ def setup_app(app):
             "logo_url": app.config.get("LOGO"),
             "website_name": app.config.get("NAME"),
             "user": current_user(),
+            "menu": True,
         }
 
     @babel.localeselector

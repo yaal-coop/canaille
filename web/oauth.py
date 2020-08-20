@@ -19,11 +19,11 @@ def authorize():
     if not user:
         form = LoginForm(request.form or None)
         if request.method == "GET":
-            return render_template("login.html", form=form)
+            return render_template("login.html", form=form, menu=False)
 
         if not form.validate() or not User.login(form.login.data, form.password.data):
             flash(gettext("Login failed, please check your information"), "error")
-            return render_template("login.html", form=form)
+            return render_template("login.html", form=form, menu=False)
 
         return redirect(request.url)
 
@@ -33,7 +33,9 @@ def authorize():
         except OAuth2Error as error:
             return jsonify(dict(error.get_body()))
 
-        return render_template("authorize.html", user=user, grant=grant, client=client)
+        return render_template(
+            "authorize.html", user=user, grant=grant, client=client, menu=False
+        )
 
     if request.form["answer"] == "logout":
         del session["user_dn"]
