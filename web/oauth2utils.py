@@ -4,6 +4,8 @@ from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
     ResourceOwnerPasswordCredentialsGrant as _ResourceOwnerPasswordCredentialsGrant,
     RefreshTokenGrant as _RefreshTokenGrant,
+    ImplicitGrant,
+    ClientCredentialsGrant,
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oidc.core.grants import (
@@ -79,9 +81,7 @@ class OpenIDCode(_OpenIDCode):
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username, password):
-        user = User.get(username)
-        if user is not None and user.check_password(password):
-            return user
+        return User.login(username, password)
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):
@@ -100,28 +100,35 @@ class RefreshTokenGrant(_RefreshTokenGrant):
         credential.revoked = True
 
 
-class ImplicitGrant(_OpenIDImplicitGrant):
+class OpenIDImplicitGrant(_OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
+        raise NotImplementedError()
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self, grant):
+        raise NotImplementedError()
         return DUMMY_JWT_CONFIG
 
     def generate_user_info(self, user, scope):
+        raise NotImplementedError()
         return generate_user_info(user, scope)
 
 
-class HybridGrant(_OpenIDHybridGrant):
+class OpenIDHybridGrant(_OpenIDHybridGrant):
     def save_authorization_code(self, code, request):
+        raise NotImplementedError()
         return save_authorization_code(code, request)
 
     def exists_nonce(self, nonce, request):
+        raise NotImplementedError()
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self):
+        raise NotImplementedError()
         return DUMMY_JWT_CONFIG
 
     def generate_user_info(self, user, scope):
+        raise NotImplementedError()
         return generate_user_info(user, scope)
 
 
@@ -162,11 +169,14 @@ require_oauth = ResourceProtector()
 def config_oauth(app):
     authorization.init_app(app, query_client=query_client, save_token=save_token)
 
+    authorization.register_grant(PasswordGrant)
+    authorization.register_grant(ImplicitGrant)
+    authorization.register_grant(ClientCredentialsGrant)
+
     authorization.register_grant(
         AuthorizationCodeGrant, [OpenIDCode(require_nonce=True)]
     )
-    authorization.register_grant(ImplicitGrant)
-    authorization.register_grant(HybridGrant)
-    authorization.register_grant(PasswordGrant)
+    authorization.register_grant(OpenIDImplicitGrant)
+    authorization.register_grant(OpenIDHybridGrant)
 
     require_oauth.register_token_validator(BearerTokenValidator())

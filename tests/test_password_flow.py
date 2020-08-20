@@ -15,7 +15,7 @@ def test_success(testclient, slapd_connection, user, client):
     )
     assert 200 == res.status_code
 
-    assert res.json["scope"] == ["openid", "profile"]
+    assert res.json["scope"] == "openid profile"
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 

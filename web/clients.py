@@ -46,6 +46,8 @@ class ClientAdd(FlaskForm):
         choices=[
             ("password", "password"),
             ("authorization_code", "authorization_code"),
+            ("implicit", "implicit"),
+            ("hybrid", "hybrid"),
         ],
         default=["authorization_code"],
     )
@@ -58,7 +60,7 @@ class ClientAdd(FlaskForm):
     oauthResponseType = wtforms.SelectMultipleField(
         gettext("Response types"),
         validators=[wtforms.validators.DataRequired()],
-        choices=[("code", "code")],
+        choices=[("code", "code"), ("token", "token"), ("id_token", "id_token")],
         default=["code"],
     )
     oauthTokenEndpointAuthMethod = wtforms.SelectField(

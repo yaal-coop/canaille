@@ -6,6 +6,7 @@ from authlib.oauth2.rfc6749 import (
     ClientMixin,
     TokenMixin,
     AuthorizationCodeMixin,
+    util,
 )
 from flask import current_app, session
 from .ldaputils import LDAPObjectHelper
@@ -73,7 +74,7 @@ class Client(LDAPObjectHelper, ClientMixin):
         return self.oauthRedirectURIs[0]
 
     def get_allowed_scope(self, scope):
-        return self.oauthScope
+        return util.list_to_scope(self.oauthScope)
 
     def check_redirect_uri(self, redirect_uri):
         return redirect_uri in self.oauthRedirectURIs
