@@ -24,7 +24,9 @@ def login():
     form = LoginForm(request.form or None)
 
     if request.form:
-        if not form.validate() or not User.login(form.login.data, form.password.data):
+        if not form.validate() or not User.authenticate(
+            form.login.data, form.password.data, True
+        ):
             flash(gettext("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
@@ -35,8 +37,8 @@ def login():
 
 @bp.route("/logout")
 def logout():
-    if "user_dn" in session:
-        del session["user_dn"]
+    if current_user():
+        current_user().logout()
     return redirect("/")
 
 

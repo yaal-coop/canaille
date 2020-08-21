@@ -34,14 +34,25 @@ class User(LDAPObjectHelper):
         return user
 
     @classmethod
-    def login(cls, login, password):
+    def authenticate(cls, login, password, signin=False):
         filter = current_app.config["LDAP"].get("USER_FILTER").format(login=login)
         user = User.get(filter=filter)
         if not user or not user.check_password(password):
             return None
 
-        session["user_dn"] = user.dn
+        if signin:
+            user.login()
+
         return user
+
+    def login(self):
+        session["user_dn"] = self.dn
+
+    def logout(self):
+        try:
+            del session["user_dn"]
+        except KeyError:
+            pass
 
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])
