@@ -89,7 +89,7 @@ class Client(LDAPObjectHelper, ClientMixin):
         return method == self.oauthTokenEndpointAuthMethod
 
     def check_response_type(self, response_type):
-        return response_type in self.oauthResponseType
+        return all(r in self.oauthResponseType for r in response_type.split(" "))
 
     def check_grant_type(self, grant_type):
         return grant_type in self.oauthGrantType

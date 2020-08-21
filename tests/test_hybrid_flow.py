@@ -7,7 +7,7 @@ def test_success(testclient, slapd_connection, user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
-            response_type=["code", "token"],
+            response_type="code token",
             client_id=client.oauthClientID,
             scope="openid profile",
             nonce="somenonce",
@@ -27,24 +27,13 @@ def test_success(testclient, slapd_connection, user, client):
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
-    params = parse_qs(urlsplit(res.location).query)
+    params = parse_qs(urlsplit(res.location).fragment)
+
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
     assert authcode is not None
 
-    res = testclient.post(
-        "/oauth/token",
-        params=dict(
-            grant_type="authorization_code",
-            code=code,
-            scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
-        ),
-        headers={"Authorization": f"Basic {client_credentials(client)}"},
-    )
-    assert 200 == res.status_code
-    access_token = res.json["access_token"]
-
+    access_token = params["access_token"][0]
     token = Token.get(access_token, conn=slapd_connection)
     assert token is not None
 

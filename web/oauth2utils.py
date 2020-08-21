@@ -14,6 +14,7 @@ from authlib.oidc.core.grants import (
     OpenIDHybridGrant as _OpenIDHybridGrant,
 )
 from authlib.oidc.core import UserInfo
+from werkzeug.security import gen_salt
 from .models import Client, AuthorizationCode, Token, User
 
 DUMMY_JWT_CONFIG = {
@@ -115,12 +116,14 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
 
 
 class OpenIDHybridGrant(_OpenIDHybridGrant):
+    def create_authorization_code(self, client, grant_user, request):
+        code = gen_salt(48)
+        return self.save_authorization_code(code, request)
+
     def save_authorization_code(self, code, request):
-        raise NotImplementedError()
         return save_authorization_code(code, request)
 
     def exists_nonce(self, nonce, request):
-        raise NotImplementedError()
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self):
