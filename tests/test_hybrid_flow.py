@@ -42,10 +42,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     assert {"foo": "bar"} == res.json
 
 
-def test_oidc_hybrid(testclient, slapd_connection, user, client):
-    with testclient.session_transaction() as sess:
-        sess["user_dn"] = user.dn
-
+def test_oidc_hybrid(testclient, slapd_connection, logged_user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -73,8 +70,8 @@ def test_oidc_hybrid(testclient, slapd_connection, user, client):
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, "secret-key")
-    assert user.dn == claims['sub']
-    assert user.sn == claims['name']
+    assert logged_user.dn == claims['sub']
+    assert logged_user.sn == claims['name']
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code

@@ -136,3 +136,10 @@ def user(app, slapd_connection):
     )
     u.save(slapd_connection)
     return u
+
+
+@pytest.fixture
+def logged_user(user, testclient):
+    with testclient.session_transaction() as sess:
+        sess["user_dn"] = user.dn
+    return user

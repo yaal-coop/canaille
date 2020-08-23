@@ -103,15 +103,13 @@ class RefreshTokenGrant(_RefreshTokenGrant):
 
 class OpenIDImplicitGrant(_OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
-        raise NotImplementedError()
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant):
-        raise NotImplementedError()
+    def get_jwt_config(self, grant=None):
         return DUMMY_JWT_CONFIG
 
     def generate_user_info(self, user, scope):
-        raise NotImplementedError()
+        user = User.get(user)
         return generate_user_info(user, scope)
 
 
