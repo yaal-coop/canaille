@@ -72,7 +72,9 @@ def test_oidc_hybrid(testclient, slapd_connection, user, client):
     assert token is not None
 
     id_token = params["id_token"][0]
-#    claims = jwt.decode(id_token, None)
+    claims = jwt.decode(id_token, "secret-key")
+    assert user.dn == claims['sub']
+    assert user.sn == claims['name']
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code
