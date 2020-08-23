@@ -70,8 +70,10 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client):
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, "secret-key")
-    assert logged_user.dn == claims['sub']
-    assert logged_user.sn == claims['name']
+    assert logged_user.uid[0] == claims['sub']
+    assert logged_user.cn[0] == claims['name']
+    assert "toto@yolo.com" == claims['email']
+    assert client.oauthClientID == claims['aud']
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code

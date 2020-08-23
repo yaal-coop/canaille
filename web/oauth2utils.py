@@ -31,7 +31,29 @@ def exists_nonce(nonce, req):
 
 
 def generate_user_info(user, scope):
-    return UserInfo(sub=str(user.dn), name=user.sn)
+    return UserInfo(
+        sub=user.uid[0],
+        name=user.sn[0],
+        email="toto@yolo.com",
+        phone_number=user.telephoneNumber,
+#        given_name
+#        family_name,
+#        middle_name,
+#        nickname,
+#        preferred_username,
+#        profile,
+#        picture,
+#        website,
+#        email,
+#        email_verified,
+#        gender,
+#        birthdate,
+#        zoneinfo,
+#        locale,
+#        phone_number_verified,
+#        address,
+#        updated_at,
+    )
 
 
 def save_authorization_code(code, request):
@@ -144,7 +166,7 @@ def save_token(token, request):
         oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
         oauthTokenLifetime=str(token["expires_in"]),
         oauthScope=token["scope"],
-        oauthClientID=request.client.oauthClientID[0],
+        oauthClientID=request.client.oauthClientID,
     )
     if "refresh_token" in token:
         t.oauthRefreshToken = token["refresh_token"]
