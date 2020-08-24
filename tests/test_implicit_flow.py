@@ -84,9 +84,9 @@ def test_oidc_implicit(testclient, slapd_connection, user, client):
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, "secret-key")
-    assert user.uid[0] == claims['sub']
-    assert user.sn[0] == claims['name']
-    assert client.oauthClientID == claims['aud']
+    assert user.uid[0] == claims["sub"]
+    assert user.cn[0] == claims["name"]
+    assert [client.oauthClientID] == claims["aud"]
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert (200, "application/json") == (res.status_code, res.content_type)

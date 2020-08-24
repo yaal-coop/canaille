@@ -88,6 +88,17 @@ def app(slapd_server):
                 "BIND_PW": slapd_server.root_pw,
                 "USER_FILTER": "(|(uid={login})(cn={login}))",
             },
+            "JWT": {
+                "KEY": "secret-key",
+                "ALG": "HS256",
+                "ISS": "http://mydomain.tld",
+                "EXP": 3600,
+                "MAPPING": {
+                    "SUB": "uid",
+                    "NAME": "cn",
+                    "PHONE_NUMBER": "telephoneNumber",
+                },
+            },
         }
     )
     return app

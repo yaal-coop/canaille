@@ -14,15 +14,9 @@ from authlib.oidc.core.grants import (
     OpenIDHybridGrant as _OpenIDHybridGrant,
 )
 from authlib.oidc.core import UserInfo
+from flask import current_app
 from werkzeug.security import gen_salt
 from .models import Client, AuthorizationCode, Token, User
-
-DUMMY_JWT_CONFIG = {
-    "key": "secret-key",
-    "alg": "HS256",
-    "iss": "https://authlib.org",
-    "exp": 3600,
-}
 
 
 def exists_nonce(nonce, req):
@@ -30,30 +24,49 @@ def exists_nonce(nonce, req):
     return bool(exists)
 
 
+def get_jwt_config(grant):
+    return {
+        "key": current_app.config["JWT"]["KEY"],
+        "alg": current_app.config["JWT"]["ALG"],
+        "iss": current_app.config["JWT"]["ISS"],
+        "exp": current_app.config["JWT"]["EXP"],
+    }
+
+
 def generate_user_info(user, scope):
-    return UserInfo(
-        sub=user.uid[0],
-        name=user.sn[0],
-        email="toto@yolo.com",
-        phone_number=user.telephoneNumber,
-#        given_name
-#        family_name,
-#        middle_name,
-#        nickname,
-#        preferred_username,
-#        profile,
-#        picture,
-#        website,
-#        email,
-#        email_verified,
-#        gender,
-#        birthdate,
-#        zoneinfo,
-#        locale,
-#        phone_number_verified,
-#        address,
-#        updated_at,
-    )
+    fields = ["sub"]
+    if "profile" in scope:
+        fields += [
+            "name",
+            "family_name",
+            "given_name",
+            "nickname",
+            "preferred_username",
+            "profile",
+            "picture",
+            "website",
+            "gender",
+            "birthdate",
+            "zoneinfo",
+            "locale",
+            "updated_at",
+        ]
+    if "email" in scope:
+        fields += ["email", "email_verified"]
+    if "address" in scope:
+        fields += ["address"]
+    if "phone" in scope:
+        fields += ["phone_number", "phone_number_verified"]
+
+    data = {}
+    for field in fields:
+        ldap_field_match = current_app.config["JWT"]["MAPPING"].get(field.upper())
+        if ldap_field_match and getattr(user, ldap_field_match, None):
+            data[field] = getattr(user, ldap_field_match)
+            if isinstance(data[field], list):
+                data[field] = data[field][0]
+
+    return UserInfo(**data)
 
 
 def save_authorization_code(code, request):
@@ -96,7 +109,7 @@ class OpenIDCode(_OpenIDCode):
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self, grant):
-        return DUMMY_JWT_CONFIG
+        return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
         return generate_user_info(user, scope)
@@ -128,7 +141,7 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self, grant=None):
-        return DUMMY_JWT_CONFIG
+        return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
         user = User.get(user)
@@ -146,8 +159,8 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self):
-        return DUMMY_JWT_CONFIG
+    def get_jwt_config(self, grant=None):
+        return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
         user = User.get(user)
