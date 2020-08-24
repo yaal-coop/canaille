@@ -182,9 +182,9 @@ class Token(LDAPObjectHelper, TokenMixin):
     @revoked.setter
     def revoked(self, value):
         if value:
-            self.oauthRevoked = "true"
+            self.oauthRevoked = "TRUE"
         else:
-            self.oauthRevoked = "false"
+            self.oauthRevoked = "FALSE"
 
     def get_client_id(self):
         return self.oauthClientID

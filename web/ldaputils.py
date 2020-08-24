@@ -113,6 +113,14 @@ class LDAPObjectHelper:
 
         return cls._attribute_type_by_name
 
+    def reload(self, conn=None):
+        conn = conn or self.ldap()
+        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE)
+        self.changes = {}
+        self.attrs = {
+            k: [elt.decode("utf-8") for elt in v] for k, v in result[0][1].items()
+        }
+
     def save(self, conn=None):
         conn = conn or self.ldap()
         try:

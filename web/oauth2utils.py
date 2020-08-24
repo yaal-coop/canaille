@@ -8,6 +8,7 @@ from authlib.oauth2.rfc6749.grants import (
     ClientCredentialsGrant,
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
+from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
 from authlib.oauth2.rfc7636 import CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
 from authlib.oidc.core.grants import (
@@ -198,6 +199,32 @@ class BearerTokenValidator(_BearerTokenValidator):
         return token.revoked
 
 
+class RevocationEndpoint(_RevocationEndpoint):
+    def query_token(self, token, token_type_hint, client):
+        if token_type_hint == "access_token":
+            return Token.filter(
+                oauthClientID=client.oauthClientID, oauthAccessToken=token
+            )
+        elif token_type_hint == "refresh_token":
+            return Token.filter(
+                oauthClientID=client.oauthClientID, oauthRefreshToken=token
+            )
+
+        item = Token.filter(oauthClientID=client.oauthClientID, oauthAccessToken=token)
+        if item:
+            return item[0]
+
+        item = Token.filter(oauthClientID=client.oauthClientID, oauthRefreshToken=token)
+        if item:
+            return item[0]
+
+        return None
+
+    def revoke_token(self, token):
+        token.revoked = True
+        token.save()
+
+
 class IntrospectionEndpoint(_IntrospectionEndpoint):
     def query_token(self, token, token_type_hint, client):
         if token_type_hint == "access_token":
@@ -252,3 +279,4 @@ def config_oauth(app):
     require_oauth.register_token_validator(BearerTokenValidator())
 
     authorization.register_endpoint(IntrospectionEndpoint)
+    authorization.register_endpoint(RevocationEndpoint)
