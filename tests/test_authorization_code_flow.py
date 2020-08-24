@@ -63,6 +63,12 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     assert 200 == res.status_code
 
     res.form["login"] = logged_user.name
+    res.form["password"] = "wrong password"
+    res = res.form.submit()
+    assert 200 == res.status_code
+    assert b"Login failed, please check your information" in res.body
+
+    res.form["login"] = logged_user.name
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
     assert 302 == res.status_code
