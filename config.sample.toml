@@ -25,10 +25,11 @@ KEY = "secret-key"
 ALG = "HS256"
 ISS = "http://mydomain.tld"
 EXP = 3600
-MAPPING =
-    SUB = "uid"
-    NAME = "cn"
-    PHONE_NUMBER = "telephoneNumber"
+
+[JWT.MAPPING]
+SUB = "uid"
+NAME = "cn"
+PHONE_NUMBER = "telephoneNumber"
 # EXAMPLE OF MAPPING FOR inetOrgPerson
 #     PHONE_NUMBER = "telephoneNumber"
 #     EMAIL = "mail"

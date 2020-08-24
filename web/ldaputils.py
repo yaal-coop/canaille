@@ -13,6 +13,7 @@ class LDAPObjectHelper:
 
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
+        self.changes = {}
         for k, v in kwargs.items():
             self.attrs[k] = [v] if not isinstance(v, list) else v
         self.attrs.setdefault("objectClass", self.objectClass)
@@ -120,17 +121,34 @@ class LDAPObjectHelper:
             match = False
 
         if match:
+            mods = {
+                k: v
+                for k, v in self.changes.items()
+                if v and v[0] and self.attrs.get(k) != v
+            }
             attributes = [
                 (ldap.MOD_REPLACE, k, [elt.encode("utf-8") for elt in v])
-                for k, v in self.attrs.items()
+                for k, v in mods.items()
             ]
             conn.modify_s(self.dn, attributes)
 
         else:
+            mods = {}
+            for k, v in self.attrs.items():
+                if v and v[0]:
+                    mods[k] = v
+            for k, v in self.changes.items():
+                if v and v[0]:
+                    mods[k] = v
+
             attributes = [
-                (k, [elt.encode("utf-8") for elt in v]) for k, v in self.attrs.items()
+                (k, [elt.encode("utf-8") for elt in v]) for k, v in mods.items()
             ]
             conn.add_s(self.dn, attributes)
+
+        for k, v in self.changes.items():
+            self.attrs[k] = v
+        self.changes = {}
 
     @classmethod
     def get(cls, dn=None, filter=None, conn=None):
@@ -175,15 +193,15 @@ class LDAPObjectHelper:
             not self.attr_type_by_name()
             or not self.attr_type_by_name()[name].single_value
         ):
-            return self.attrs.get(name, [])
+            return self.changes.get(name, self.attrs.get(name, []))
 
-        return self.attrs.get(name, [None])[0]
+        return self.changes.get(name, self.attrs.get(name, [None]))[0]
 
     def __setattr__(self, name, value):
         super().__setattr__(name, value)
 
         if (self.may and name in self.may) or (self.must and name in self.must):
             if self.attr_type_by_name()[name].single_value:
-                self.attrs[name] = [value]
+                self.changes[name] = [value]
             else:
-                self.attrs[name] = value
+                self.changes[name] = value
