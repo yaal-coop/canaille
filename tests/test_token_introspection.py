@@ -1,7 +1,7 @@
 from . import client_credentials
 
 
-def test_token_introspection(testclient, user, client, token, slapd_connection):
+def test_token_introspection(testclient, user, client, token):
     res = testclient.post(
         "/oauth/introspect",
         params=dict(token=token.oauthAccessToken,),
@@ -20,3 +20,13 @@ def test_token_introspection(testclient, user, client, token, slapd_connection):
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
     } == res.json
+
+
+def test_token_invalid(testclient, client):
+    res = testclient.post(
+        "/oauth/introspect",
+        params=dict(token="invalid"),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+    )
+    assert 200 == res.status_code
+    assert {"active": False,} == res.json
