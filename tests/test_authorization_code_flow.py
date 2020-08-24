@@ -141,7 +141,6 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     token = Token.get(access_token, conn=slapd_connection)
     assert token is not None
 
-    print("------------------------------------")
     res = testclient.post(
         "/oauth/token",
         params=dict(

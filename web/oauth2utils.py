@@ -8,6 +8,8 @@ from authlib.oauth2.rfc6749.grants import (
     ClientCredentialsGrant,
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
+from authlib.oauth2.rfc7636 import CodeChallenge
+from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
 from authlib.oidc.core.grants import (
     OpenIDCode as _OpenIDCode,
     OpenIDImplicitGrant as _OpenIDImplicitGrant,
@@ -81,6 +83,8 @@ def save_authorization_code(code, request):
         oauthNonce=nonce,
         oauthAuthorizationDate=now.strftime("%Y%m%d%H%M%SZ"),
         oauthAuthorizationLifetime=str(84000),
+        oauthCodeChallenge=request.data.get("code_challenge"),
+        oauthCodeChallengeMethod=request.data.get("code_challenge_method"),
     )
     code.save()
     return code.oauthCode
@@ -178,9 +182,8 @@ def save_token(token, request):
         oauthTokenLifetime=str(token["expires_in"]),
         oauthScope=token["scope"],
         oauthClientID=request.client.oauthClientID,
+        oauthRefreshToken=token.get("refresh_token"),
     )
-    if "refresh_token" in token:
-        t.oauthRefreshToken = token["refresh_token"]
     t.save()
 
 
@@ -193,6 +196,38 @@ class BearerTokenValidator(_BearerTokenValidator):
 
     def token_revoked(self, token):
         return False
+
+
+class IntrospectionEndpoint(_IntrospectionEndpoint):
+    def query_token(self, token, token_type_hint, client):
+        if token_type_hint == "access_token":
+            tok = Token.filter(oauthAccessToken=token)
+        elif token_type_hint == "refresh_token":
+            tok = Token.filter(oauthRefreshToken=token)
+        else:
+            tok = Token.filter(oauthAccessToken=token)
+            if not tok:
+                tok = Token.filter(oauthRefreshToken=token)
+        if tok:
+            tok = tok[0]
+            if tok.oauthClientID == client.oauthClientID:
+                return tok
+            # if has_introspect_permission(client):
+            #    return tok
+
+    def introspect_token(self, token):
+        return {
+            "active": True,
+            "client_id": token.oauthClientID,
+            "token_type": token.oauthTokenType,
+            "username": User.get(token.oauthSubject).name,
+            "scope": token.get_scope(),
+            "sub": token.oauthSubject,
+            "aud": token.oauthClientID,
+            "iss": current_app.config["JWT"]["ISS"],
+            "exp": token.get_expires_at(),
+            "iat": token.get_issued_at(),
+        }
 
 
 authorization = AuthorizationServer()
@@ -208,9 +243,12 @@ def config_oauth(app):
     authorization.register_grant(ClientCredentialsGrant)
 
     authorization.register_grant(
-        AuthorizationCodeGrant, [OpenIDCode(require_nonce=True)]
+        AuthorizationCodeGrant,
+        [OpenIDCode(require_nonce=True), CodeChallenge(required=False)],
     )
     authorization.register_grant(OpenIDImplicitGrant)
     authorization.register_grant(OpenIDHybridGrant)
 
     require_oauth.register_token_validator(BearerTokenValidator())
+
+    authorization.register_endpoint(IntrospectionEndpoint)

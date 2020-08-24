@@ -91,7 +91,7 @@ def app(slapd_server):
             "JWT": {
                 "KEY": "secret-key",
                 "ALG": "HS256",
-                "ISS": "http://mydomain.tld",
+                "ISS": "https://mydomain.tld",
                 "EXP": 3600,
                 "MAPPING": {
                     "SUB": "uid",
@@ -153,6 +153,22 @@ def user(app, slapd_connection):
     )
     u.save(slapd_connection)
     return u
+
+
+@pytest.fixture
+def token(slapd_connection, client, user):
+    t = Token(
+        oauthAccessToken=gen_salt(48),
+        oauthClientID=client.oauthClientID,
+        oauthSubject=user.dn,
+        oauthTokenType=None,
+        oauthRefreshToken=gen_salt(48),
+        oauthScope="openid profile",
+        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+        oauthTokenLifetime=str(3600),
+    )
+    t.save(slapd_connection)
+    return t
 
 
 @pytest.fixture

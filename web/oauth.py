@@ -3,7 +3,7 @@ from flask import Blueprint, request, session, redirect
 from flask import render_template, jsonify, flash
 from flask_babel import gettext
 from .models import User, Client
-from .oauth2utils import authorization
+from .oauth2utils import authorization, IntrospectionEndpoint
 from .forms import LoginForm
 from .flaskutils import current_user
 
@@ -56,3 +56,8 @@ def authorize():
 @bp.route("/token", methods=["POST"])
 def issue_token():
     return authorization.create_token_response()
+
+
+@bp.route("/introspect", methods=["POST"])
+def introspect_token():
+    return authorization.create_endpoint_response(IntrospectionEndpoint.ENDPOINT_NAME)

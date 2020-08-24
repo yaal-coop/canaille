@@ -165,6 +165,10 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
         )
         return (auth_time - datetime.datetime(1970, 1, 1)).total_seconds()
 
+    @property
+    def code_challenge(self):
+        return self.oauthCodeChallenge
+
 
 class Token(LDAPObjectHelper, TokenMixin):
     objectClass = ["oauthToken"]
@@ -180,6 +184,10 @@ class Token(LDAPObjectHelper, TokenMixin):
     def get_expires_in(self):
         return int(self.oauthTokenLifetime)
 
+    def get_issued_at(self):
+        issue_date = datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+        return (issue_date - datetime.datetime(1970, 1, 1)).total_seconds()
+
     def get_expires_at(self):
         issue_date = datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
         issue_timestamp = (issue_date - datetime.datetime(1970, 1, 1)).total_seconds()
@@ -193,3 +201,7 @@ class Token(LDAPObjectHelper, TokenMixin):
             + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
             >= datetime.datetime.now()
         )
+
+    @property
+    def revoked(self):
+        return False
