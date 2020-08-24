@@ -172,7 +172,7 @@ class Token(LDAPObjectHelper, TokenMixin):
     id = "oauthAccessToken"
 
     def get_client_id(self):
-        return self.authzClientID
+        return self.oauthClientID
 
     def get_scope(self):
         return " ".join(self.oauthScope)
@@ -186,7 +186,10 @@ class Token(LDAPObjectHelper, TokenMixin):
         return issue_timestamp + int(self.oauthTokenLifetime)
 
     def is_refresh_token_active(self):
-        if self.revoked:
-            return False
-        expires_at = self.issued_at + self.expires_in * 2
-        return expires_at >= time.time()
+        # if self.revoked:
+        #    return False
+        return (
+            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
+            >= datetime.datetime.now()
+        )

@@ -2,7 +2,7 @@ from . import client_credentials
 from web.models import Token
 
 
-def test_success(testclient, slapd_connection, user, client):
+def test_password_flow(testclient, slapd_connection, user, client):
     res = testclient.post(
         "/oauth/token",
         params=dict(

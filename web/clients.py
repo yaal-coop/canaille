@@ -48,8 +48,9 @@ class ClientAdd(FlaskForm):
             ("authorization_code", "authorization_code"),
             ("implicit", "implicit"),
             ("hybrid", "hybrid"),
+            ("refresh_token", "refresh_token"),
         ],
-        default=["authorization_code"],
+        default=["authorization_code", "refresh_token"],
     )
     oauthScope = wtforms.TextField(
         gettext("Scope"),

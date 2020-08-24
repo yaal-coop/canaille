@@ -122,18 +122,16 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
 class RefreshTokenGrant(_RefreshTokenGrant):
     def authenticate_refresh_token(self, refresh_token):
-        raise NotImplementedError()
-        token = Token.query.filter_by(refresh_token=refresh_token).first()
-        if token and token.is_refresh_token_active():
-            return token
+        token = Token.filter(oauthRefreshToken=refresh_token)
+        if token and token[0].is_refresh_token_active():
+            return token[0]
 
     def authenticate_user(self, credential):
-        raise NotImplementedError()
-        return User.query.get(credential.user_id)
+        return User.get(credential.oauthSubject)
 
     def revoke_old_credential(self, credential):
-        raise NotImplementedError()
-        credential.revoked = True
+        # TODO: implement revokation
+        pass
 
 
 class OpenIDImplicitGrant(_OpenIDImplicitGrant):
@@ -206,6 +204,7 @@ def config_oauth(app):
 
     authorization.register_grant(PasswordGrant)
     authorization.register_grant(ImplicitGrant)
+    authorization.register_grant(RefreshTokenGrant)
     authorization.register_grant(ClientCredentialsGrant)
 
     authorization.register_grant(
