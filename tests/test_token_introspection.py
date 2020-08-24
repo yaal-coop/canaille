@@ -29,4 +29,4 @@ def test_token_invalid(testclient, client):
         headers={"Authorization": f"Basic {client_credentials(client)}"},
     )
     assert 200 == res.status_code
-    assert {"active": False,} == res.json
+    assert {"active": False} == res.json

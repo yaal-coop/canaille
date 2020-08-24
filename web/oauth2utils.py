@@ -195,7 +195,7 @@ class BearerTokenValidator(_BearerTokenValidator):
         return False
 
     def token_revoked(self, token):
-        return False
+        return token.revoked
 
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):

@@ -275,6 +275,13 @@ attributetype (  1.3.6.1.4.1.56207.1.1.32 NAME 'oauthAuthorizationLifetime'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+attributetype (  1.3.6.1.4.1.56207.1.1.33 NAME 'oauthRevoked'
+        DESC 'OAuth 2.0 token or code revoked'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -316,7 +323,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
               oauthAuthorizationDate $
               oauthAuthorizationLifetime $
               oauthCodeChallenge $
-              oauthCodeChallengeMethod )
+              oauthCodeChallengeMethod $
+              oauthRevoked )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         DESC 'OAuth 2.0 Token'
@@ -330,5 +338,6 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
               oauthRefreshToken $
               oauthScope $
               oauthIssueDate $
-              oauthTokenLifetime )
+              oauthTokenLifetime $
+              oauthRevoked )
         X-ORIGIN 'OAuth 2.0' )
