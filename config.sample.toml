@@ -5,6 +5,9 @@ NAME = "MyDomain"
 # If unset, language is detected
 LANGUAGE = "en"
 
+# Path to the RFC8414 metadata file
+OAUTH2_METADATA_FILE = "oauth-authorization-server"
+
 [LDAP]
 URI = "ldap://ldap"
 ROOT_DN = "dc=mydomain,dc=tld"
