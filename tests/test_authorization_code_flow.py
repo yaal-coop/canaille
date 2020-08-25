@@ -164,6 +164,9 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
 
 
 def test_code_challenge(testclient, slapd_connection, logged_user, client):
+    client.oauthTokenEndpointAuthMethod = "none"
+    client.save(slapd_connection)
+
     code_verifier = gen_salt(48)
     code_challenge = create_s256_code_challenge(code_verifier)
 
@@ -197,8 +200,8 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
             scope="profile",
             code_verifier=code_verifier,
             redirect_uri=client.oauthRedirectURIs[0],
+            client_id=client.oauthClientID,
         ),
-        headers={"Authorization": f"Basic {client_credentials(client)}"},
     )
     assert 200 == res.status_code
     access_token = res.json["access_token"]
@@ -209,3 +212,6 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code
     assert {"foo": "bar"} == res.json
+
+    client.oauthTokenEndpointAuthMethod = "client_secret_basic"
+    client.save(slapd_connection)

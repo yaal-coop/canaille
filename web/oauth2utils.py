@@ -92,6 +92,8 @@ def save_authorization_code(code, request):
 
 
 class AuthorizationCodeGrant(_AuthorizationCodeGrant):
+    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
 
