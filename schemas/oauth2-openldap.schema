@@ -64,6 +64,7 @@ attributetype ( 1.3.6.1.4.1.56207.1.1.8 NAME 'oauthCodeChallenge'
         ORDERING caseExactOrderingMatch
         SUBSTR caseExactSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 attributetype ( 1.3.6.1.4.1.56207.1.1.9 NAME 'oauthCodeChallengeMethod'
@@ -72,6 +73,7 @@ attributetype ( 1.3.6.1.4.1.56207.1.1.9 NAME 'oauthCodeChallengeMethod'
         ORDERING caseExactOrderingMatch
         SUBSTR caseExactSubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 attributetype ( 1.3.6.1.4.1.56207.1.1.10 NAME 'oauthClientSecret'

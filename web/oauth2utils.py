@@ -9,7 +9,7 @@ from authlib.oauth2.rfc6749.grants import (
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
-from authlib.oauth2.rfc7636 import CodeChallenge
+from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
 from authlib.oidc.core.grants import (
     OpenIDCode as _OpenIDCode,
@@ -255,6 +255,14 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
         }
+
+
+class CodeChallenge(_CodeChallenge):
+    def get_authorization_code_challenge(self, authorization_code):
+        return authorization_code.oauthCodeChallenge
+
+    def get_authorization_code_challenge_method(self, authorization_code):
+        return authorization_code.oauthCodeChallengeMethod
 
 
 authorization = AuthorizationServer()
