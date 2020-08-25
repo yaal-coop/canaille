@@ -279,7 +279,7 @@ def config_oauth(app):
 
     authorization.register_grant(
         AuthorizationCodeGrant,
-        [OpenIDCode(require_nonce=True), CodeChallenge(required=False)],
+        [OpenIDCode(require_nonce=True), CodeChallenge(required=True)],
     )
     authorization.register_grant(OpenIDImplicitGrant)
     authorization.register_grant(OpenIDHybridGrant)
