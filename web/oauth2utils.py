@@ -135,8 +135,8 @@ class RefreshTokenGrant(_RefreshTokenGrant):
         return User.get(credential.oauthSubject)
 
     def revoke_old_credential(self, credential):
-        # TODO: implement revokation
-        pass
+        credential.revoke = True
+        credential.save()
 
 
 class OpenIDImplicitGrant(_OpenIDImplicitGrant):
