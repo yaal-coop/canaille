@@ -1,5 +1,4 @@
 import ldap
-import time
 import datetime
 from authlib.common.encoding import json_loads, json_dumps
 from authlib.oauth2.rfc6749 import (
