@@ -15,7 +15,8 @@ First you need to install the schemas into your LDAP server. There are several w
 ### Option 1: Add the schema into your filesystem
 
 ```bash
-sudo cp schema/* /etc/openldap/schema # or /etc/ldap/schema
+test -d /etc/openldap/schema && sudo cp schema/* /etc/openldap/schema
+test -d /etc/ldap/schema && sudo cp schema/* /etc/ldap/schema
 sudo service slapd restart
 ```
 
