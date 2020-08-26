@@ -71,7 +71,7 @@ def revoke_token():
 
 @bp.route("/jwks.json")
 def jwks():
-    #TODO: Do not share secrets here!
+    # TODO: Do not share secrets here!
     key = urlsafe_b64encode(current_app.config["JWT"]["KEY"].encode("utf-8")).decode(
         "utf-8"
     )

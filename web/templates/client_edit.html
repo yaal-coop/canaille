@@ -15,18 +15,20 @@
     {% endwith %}
     <div class="ui attached clearing segment">
         <div class="ui form">
-            <div class="field">
-                <label>{% trans %}ID{% endtrans %}</label>
-                <input type="text" value="{{ client.oauthClientID }}" readonly>
-            </div>
-            <div class="field">
-                <label>{% trans %}Secret{% endtrans %}</label>
-                <input type="text" value="{{ client.oauthClientSecret }}" readonly>
-            </div>
-            <div class="field">
-                <label>{% trans %}Issued at{% endtrans %}</label>
-                <input type="text" value="{{ client.issue_date }}" readonly>
-            </div>
+            <form id="readonly">
+                <div class="field">
+                    <label>{% trans %}ID{% endtrans %}</label>
+                    <input type="text" value="{{ client.oauthClientID }}" readonly name="oauthClientID">
+                </div>
+                <div class="field">
+                    <label>{% trans %}Secret{% endtrans %}</label>
+                    <input type="text" value="{{ client.oauthClientSecret }}" readonly name="oauthClientSecret">
+                </div>
+                <div class="field">
+                    <label>{% trans %}Issued at{% endtrans %}</label>
+                    <input type="text" value="{{ client.issue_date }}" readonly name="oauthIssueDate">
+                </div>
+            </form>
         </div>
 
         {{ sui.render_form(form, _("Confirm")) }}

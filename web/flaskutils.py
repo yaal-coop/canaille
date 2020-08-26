@@ -27,10 +27,8 @@ def admin_needed():
         @wraps(view_function)
         def decorator(*args, **kwargs):
             user = current_user()
-            if not user:
+            if not user or not user.admin:
                 abort(403)
-            if not user.admin:
-                abort(404)
             return view_function(*args, **kwargs)
 
         return decorator

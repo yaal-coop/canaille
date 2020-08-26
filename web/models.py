@@ -26,6 +26,7 @@ class User(LDAPObjectHelper):
         if (
             admin_filter
             and user
+            and user.dn
             and conn.search_s(user.dn, ldap.SCOPE_SUBTREE, admin_filter)
         ):
 

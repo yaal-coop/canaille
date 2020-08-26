@@ -87,6 +87,7 @@ def app(slapd_server):
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
                 "USER_FILTER": "(|(uid={login})(cn={login}))",
+                "ADMIN_FILTER": "uid=admin",
             },
             "JWT": {
                 "KEY": "secret-key",
@@ -156,6 +157,18 @@ def user(app, slapd_connection):
 
 
 @pytest.fixture
+def admin(app, slapd_connection):
+    u = User(
+        cn="Jane Doe",
+        sn="Doe",
+        uid="admin",
+        userpassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+    )
+    u.save(slapd_connection)
+    return u
+
+
+@pytest.fixture
 def token(slapd_connection, client, user):
     t = Token(
         oauthAccessToken=gen_salt(48),
@@ -176,3 +189,10 @@ def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
         sess["user_dn"] = user.dn
     return user
+
+
+@pytest.fixture
+def logged_admin(admin, testclient):
+    with testclient.session_transaction() as sess:
+        sess["user_dn"] = admin.dn
+    return admin

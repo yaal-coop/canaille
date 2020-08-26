@@ -20,7 +20,7 @@ def index():
 
 
 class ClientAdd(FlaskForm):
-    oauthClientName = wtforms.TextField(
+    oauthClientName = wtforms.StringField(
         gettext("Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "Client Name"},
@@ -52,7 +52,7 @@ class ClientAdd(FlaskForm):
         ],
         default=["authorization_code", "refresh_token"],
     )
-    oauthScope = wtforms.TextField(
+    oauthScope = wtforms.StringField(
         gettext("Scope"),
         validators=[wtforms.validators.Optional()],
         default="openid profile",
@@ -89,17 +89,17 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/policy.html"},
     )
-    oauthSoftwareID = wtforms.TextField(
+    oauthSoftwareID = wtforms.StringField(
         gettext("Software ID"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "xyz"},
     )
-    oauthSoftwareVersion = wtforms.TextField(
+    oauthSoftwareVersion = wtforms.StringField(
         gettext("Software Version"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "1.0"},
     )
-    oauthJWK = wtforms.TextField(
+    oauthJWK = wtforms.StringField(
         gettext("JWK"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
