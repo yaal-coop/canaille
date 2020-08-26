@@ -14,7 +14,12 @@ from .oauth2utils import config_oauth
 def create_app(config=None):
     app = Flask(__name__)
 
-    app.config.from_mapping({"OAUTH2_REFRESH_TOKEN_GENERATOR": True})
+    app.config.from_mapping(
+        {
+            "SESSION_COOKIE_NAME": "oidc-ldap-bridge",
+            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
+        }
+    )
     if config:
         app.config.from_mapping(config)
     elif "CONFIG" in os.environ:
