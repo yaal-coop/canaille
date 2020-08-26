@@ -7,9 +7,7 @@
     <title>{% block title %}{% trans %}OpenID Connect LDAP Bridge{% endtrans %}{% endblock %}</title>
     <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
     <link href="/static/css/base.css" rel="stylesheet">
-    {% if logo_url %}
-    <link rel="icon" href="{{ logo_url }}">
-    {% endif %}
+    {% if logo_url %}<link rel="icon" href="{{ logo_url }}">{% endif %}
     {% block style %}{% endblock %}
 
     <!--[if lt IE 9]>
@@ -32,19 +30,29 @@
                     </a>
                 </div>
                 {% endif %}
-                {% if user.admin %}
-                <a class="item" href="{{ url_for('web.clients.index') }}">
-                    <i class="plug icon"></i>
-                    {% trans %}Clients{% endtrans %}
-                </a>
-                <a class="item" href="{{ url_for('web.tokens.index') }}">
+                <a class="item" href="{{ url_for('web.tokens.tokens') }}">
                     <i class="key icon"></i>
-                    {% trans %}Tokens{% endtrans %}
+                    {% trans %}My accesses{% endtrans %}
                 </a>
-                <a class="item" href="{{ url_for('web.authorizations.index') }}">
-                    <i class="user secret icon"></i>
-                    {% trans %}Codes{% endtrans %}
-                </a>
+                {% if user.admin %}
+                <div class="ui dropdown item">
+                    <i class="settings icon"></i>
+                    Admin
+                    <div class="menu">
+                    <a class="item" href="{{ url_for('web.admin.clients.index') }}">
+                        <i class="plug icon"></i>
+                        {% trans %}Clients{% endtrans %}
+                    </a>
+                    <a class="item" href="{{ url_for('web.admin.tokens.index') }}">
+                        <i class="key icon"></i>
+                        {% trans %}Tokens{% endtrans %}
+                    </a>
+                    <a class="item" href="{{ url_for('web.admin.authorizations.index') }}">
+                        <i class="user secret icon"></i>
+                        {% trans %}Codes{% endtrans %}
+                    </a>
+                    </div>
+                </div>
                 {% endif %}
                 <a class="item" href="{{ url_for('web.routes.logout') }}">
                     <i class="sign out alternate icon"></i>

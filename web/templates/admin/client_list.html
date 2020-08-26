@@ -14,7 +14,7 @@
 {% block content %}
 
 <div class="ui segment">
-    <a class="ui primary button" href="{{ url_for('web.clients.add') }}">{% trans %}Add client{% endtrans %}</a>
+    <a class="ui primary button" href="{{ url_for('web.admin.clients.add') }}">{% trans %}Add client{% endtrans %}</a>
 </div>
 
 <table class="ui table">
@@ -25,7 +25,7 @@
     </thead>
     {% for client in clients %}
     <tr>
-        <td><a href="{{ url_for('web.clients.edit', client_id=client.oauthClientID) }}">{{ client.oauthClientName }}</a></td>
+        <td><a href="{{ url_for('web.admin.clients.edit', client_id=client.oauthClientID) }}">{{ client.oauthClientName }}</a></td>
         <td><a href="{{ client.oauthClientURI }}">{{ client.oauthClientURI }}</a></td>
         <td>{{ client.issue_date }}</td>
     </tr>

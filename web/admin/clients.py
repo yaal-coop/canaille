@@ -5,8 +5,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_babel import gettext
 from werkzeug.security import gen_salt
-from .models import Client
-from .flaskutils import admin_needed
+from web.models import Client
+from web.flaskutils import admin_needed
 
 
 bp = Blueprint(__name__, "clients")
@@ -16,7 +16,7 @@ bp = Blueprint(__name__, "clients")
 @admin_needed()
 def index():
     clients = Client.filter()
-    return render_template("client_list.html", clients=clients)
+    return render_template("admin/client_list.html", clients=clients)
 
 
 class ClientAdd(FlaskForm):
@@ -117,14 +117,14 @@ def add():
     form = ClientAdd(request.form or None)
 
     if not request.form:
-        return render_template("client_add.html", form=form)
+        return render_template("admin/client_add.html", form=form)
 
     if not form.validate():
         flash(
             gettext("The client has not been added. Please check your information."),
             "error",
         )
-        return render_template("client_add.html", form=form)
+        return render_template("admin/client_add.html", form=form)
 
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
@@ -155,7 +155,7 @@ def add():
         gettext("The client has been created."), "success",
     )
 
-    return redirect(url_for("web.clients.edit", client_id=client_id))
+    return redirect(url_for("web.admin.clients.edit", client_id=client_id))
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
@@ -168,7 +168,7 @@ def edit(client_id):
     form = ClientAdd(request.form or None, data=data, client=client)
 
     if not request.form:
-        return render_template("client_edit.html", form=form, client=client)
+        return render_template("admin/client_edit.html", form=form, client=client)
 
     if not form.validate():
         flash(
@@ -199,4 +199,4 @@ def edit(client_id):
             gettext("The client has been edited."), "success",
         )
 
-    return render_template("client_edit.html", form=form, client=client)
+    return render_template("admin/client_edit.html", form=form, client=client)

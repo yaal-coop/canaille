@@ -1,11 +1,15 @@
 import ldap
 import os
 import toml
-from . import routes, clients, oauth, tokens, authorizations
-
 from flask import Flask, g, request, render_template
 from flask_babel import Babel
 
+import web.tokens
+import web.admin.tokens
+import web.admin.authorizations
+import web.admin.clients
+import web.routes
+import web.oauth
 from .flaskutils import current_user
 from .ldaputils import LDAPObjectHelper
 from .oauth2utils import config_oauth
@@ -35,11 +39,14 @@ def setup_app(app):
     app.url_map.strict_slashes = False
 
     config_oauth(app)
-    app.register_blueprint(routes.bp)
-    app.register_blueprint(oauth.bp, url_prefix="/oauth")
-    app.register_blueprint(clients.bp, url_prefix="/client")
-    app.register_blueprint(tokens.bp, url_prefix="/token")
-    app.register_blueprint(authorizations.bp, url_prefix="/authorization")
+    app.register_blueprint(web.routes.bp)
+    app.register_blueprint(web.oauth.bp, url_prefix="/oauth")
+    app.register_blueprint(web.tokens.bp, url_prefix="/token")
+    app.register_blueprint(web.admin.tokens.bp, url_prefix="/admin/token")
+    app.register_blueprint(
+        web.admin.authorizations.bp, url_prefix="/admin/authorization"
+    )
+    app.register_blueprint(admin.clients.bp, url_prefix="/admin/client")
 
     babel = Babel(app)
 

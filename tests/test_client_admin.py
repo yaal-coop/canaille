@@ -2,20 +2,20 @@ from web.models import Client
 
 
 def test_no_logged_no_access(testclient):
-    testclient.get("/client", status=403)
+    testclient.get("/admin/client", status=403)
 
 
 def test_no_admin_no_access(testclient, logged_user):
-    testclient.get("/client", status=403)
+    testclient.get("/admin/client", status=403)
 
 
 def test_client_list(testclient, client, logged_admin):
-    res = testclient.get("/client")
+    res = testclient.get("/admin/client")
     assert client.oauthClientName in res.text
 
 
 def test_client_add(testclient, logged_admin, slapd_connection):
-    res = testclient.get("/client/add")
+    res = testclient.get("/admin/client/add")
     data = {
         "oauthClientName": "foobar",
         "oauthClientContact": "foo@bar.com",
@@ -52,7 +52,7 @@ def test_client_add(testclient, logged_admin, slapd_connection):
 
 
 def test_client_edit(testclient, client, logged_admin, slapd_connection):
-    res = testclient.get("/client/edit/" + client.oauthClientID)
+    res = testclient.get("/admin/client/edit/" + client.oauthClientID)
     data = {
         "oauthClientName": "foobar",
         "oauthClientContact": "foo@bar.com",
