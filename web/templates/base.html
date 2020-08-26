@@ -37,11 +37,11 @@
                     <i class="plug icon"></i>
                     {% trans %}Clients{% endtrans %}
                 </a>
-                <a class="item" href="/">
+                <a class="item" href="{{ url_for('web.tokens.index') }}">
                     <i class="key icon"></i>
                     {% trans %}Tokens{% endtrans %}
                 </a>
-                <a class="item" href="/">
+                <a class="item" href="{{ url_for('web.authorizations.index') }}">
                     <i class="user secret icon"></i>
                     {% trans %}Codes{% endtrans %}
                 </a>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+
+{% block content %}
+<div class="loginform">
+    <h3 class="ui top attached header">
+        {% trans %}View a authorization{% endtrans %}
+    </h3>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="ui attached message {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endwith %}
+    <div class="ui attached clearing segment">
+        <ul>
+        {% for attr in authorization.may %}
+            <li>{{ attr }}: {{ authorization[attr] }}</li>
+        {% endfor %}
+        {% for attr in authorization.must %}
+            <li>{{ attr }}: {{ authorization[attr] }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -143,6 +143,10 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
     base = "ou=authorizations"
     id = "oauthCode"
 
+    @property
+    def issue_date(self):
+        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+
     def get_redirect_uri(self):
         return self.oauthRedirectURI
 
@@ -174,6 +178,10 @@ class Token(LDAPObjectHelper, TokenMixin):
     objectClass = ["oauthToken"]
     base = "ou=tokens"
     id = "oauthAccessToken"
+
+    @property
+    def issue_date(self):
+        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
 
     @property
     def revoked(self):
