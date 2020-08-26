@@ -5,3 +5,4 @@
 - Admin tokens screen
 - Admin codes screen
 - Admin client screen unit tests
+- Limit login attempts by time interval
