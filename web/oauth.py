@@ -1,6 +1,7 @@
+from authlib.common.encoding import urlsafe_b64encode
 from authlib.oauth2 import OAuth2Error
 from flask import Blueprint, request, session, redirect
-from flask import render_template, jsonify, flash
+from flask import render_template, jsonify, flash, current_app
 from flask_babel import gettext
 from .models import User, Client
 from .oauth2utils import authorization, IntrospectionEndpoint, RevocationEndpoint
@@ -66,3 +67,12 @@ def introspect_token():
 @bp.route("/revoke", methods=["POST"])
 def revoke_token():
     return authorization.create_endpoint_response(RevocationEndpoint.ENDPOINT_NAME)
+
+
+@bp.route("/jwks.json")
+def jwks():
+    #TODO: Do not share secrets here!
+    key = urlsafe_b64encode(current_app.config["JWT"]["KEY"].encode("utf-8")).decode(
+        "utf-8"
+    )
+    return jsonify({"keys": [{"kid": None, "kty": "oct", "k": key}]})
