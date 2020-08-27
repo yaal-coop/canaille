@@ -15,8 +15,7 @@ bp = Blueprint(__name__, "home")
 def index():
     if not current_user():
         return redirect(url_for("web.routes.login"))
-
-    return render_template("home.html")
+    return redirect(url_for("web.tokens.tokens"))
 
 
 @bp.route("/login", methods=("GET", "POST"))

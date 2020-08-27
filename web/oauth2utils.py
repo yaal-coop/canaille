@@ -37,6 +37,7 @@ def get_jwt_config(grant):
 
 
 def generate_user_info(user, scope):
+    user = User.get(user)
     fields = ["sub"]
     if "profile" in scope:
         fields += [
@@ -108,7 +109,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        return User.get(authorization_code.oauthSubject)
+        return User.get(authorization_code.oauthSubject).dn
 
 
 class OpenIDCode(_OpenIDCode):
@@ -124,7 +125,7 @@ class OpenIDCode(_OpenIDCode):
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username, password):
-        return User.authenticate(username, password)
+        return User.authenticate(username, password).dn
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):
@@ -134,7 +135,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return token[0]
 
     def authenticate_user(self, credential):
-        return User.get(credential.oauthSubject)
+        return User.get(credential.oauthSubject).dn
 
     def revoke_old_credential(self, credential):
         credential.revoked = True
@@ -149,7 +150,6 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
         return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
-        user = User.get(user)
         return generate_user_info(user, scope)
 
 
@@ -168,7 +168,6 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
         return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
-        user = User.get(user)
         return generate_user_info(user, scope)
 
 
@@ -186,6 +185,7 @@ def save_token(token, request):
         oauthScope=token["scope"],
         oauthClientID=request.client.oauthClientID,
         oauthRefreshToken=token.get("refresh_token"),
+        oauthSubject=request.user,
     )
     t.save()
 

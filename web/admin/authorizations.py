@@ -10,7 +10,9 @@ bp = Blueprint(__name__, "authorizations")
 @admin_needed()
 def index():
     authorizations = AuthorizationCode.filter()
-    return render_template("admin/authorization_list.html", authorizations=authorizations)
+    return render_template(
+        "admin/authorization_list.html", authorizations=authorizations
+    )
 
 
 @bp.route("/<authorization_id>", methods=["GET", "POST"])

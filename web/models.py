@@ -184,6 +184,12 @@ class Token(LDAPObjectHelper, TokenMixin):
         return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
 
     @property
+    def expire_date(self):
+        return datetime.datetime.strptime(
+            self.oauthIssueDate, "%Y%m%d%H%M%SZ"
+        ) + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
+
+    @property
     def revoked(self):
         return self.oauthRevoked in ("yes", "YES", 1, "on", "ON", "TRUE", "true")
 
@@ -216,8 +222,4 @@ class Token(LDAPObjectHelper, TokenMixin):
         if self.revoked:
             return False
 
-        return (
-            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-            + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
-            >= datetime.datetime.now()
-        )
+        return self.expire_date >= datetime.datetime.now()

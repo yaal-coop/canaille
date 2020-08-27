@@ -40,7 +40,8 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token is not None
+    assert token.oauthClientID == client.oauthClientID
+    assert token.oauthSubject == logged_user.dn
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code
@@ -100,7 +101,8 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token is not None
+    assert token.oauthClientID == client.oauthClientID
+    assert token.oauthSubject == logged_user.dn
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code
@@ -147,7 +149,8 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     res = testclient.post(
         "/oauth/token",
         params=dict(
-            grant_type="refresh_token", refresh_token=res.json["refresh_token"],
+            grant_type="refresh_token",
+            refresh_token=res.json["refresh_token"],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
     )
@@ -207,7 +210,8 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token is not None
+    assert token.oauthClientID == client.oauthClientID
+    assert token.oauthSubject == logged_user.dn
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code

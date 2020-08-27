@@ -9,6 +9,7 @@ def test_login_and_out(testclient, slapd_connection, user, client):
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
     res = res.follow()
+    res = res.follow()
     assert 200 == res.status_code
 
     with testclient.session_transaction() as session:
@@ -58,6 +59,8 @@ def test_login_with_alternate_attribute(testclient, slapd_connection, user, clie
     res.form["login"] = "user"
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
+    res = res.follow()
+    assert 302 == res.status_code
     res = res.follow()
     assert 200 == res.status_code
 

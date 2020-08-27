@@ -1,8 +1,6 @@
 - RFC 8414
 - Extract ldaputils in another library
 - Admin filter
-- User "Manage my permissions" screen
-- Admin tokens screen
-- Admin codes screen
 - Limit login attempts by time interval
 - Cleanup LDAP connections
+- Test with wrong inputs

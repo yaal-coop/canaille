@@ -13,9 +13,10 @@ def user_needed():
     def wrapper(view_function):
         @wraps(view_function)
         def decorator(*args, **kwargs):
-            if not current_user():
+            user = current_user()
+            if not user:
                 abort(403)
-            return view_function(*args, **kwargs)
+            return view_function(*args, user=user, **kwargs)
 
         return decorator
 

@@ -12,22 +12,58 @@
 {% endblock %}
 
 {% block content %}
-
-<table class="ui table">
-    <thead>
-        <th>{% trans %}Token{% endtrans %}</th>
-        <th>{% trans %}Client{% endtrans %}</th>
-        <th>{% trans %}Subject{% endtrans %}</th>
-        <th>{% trans %}Created{% endtrans %}</th>
-    </thead>
-    {% for token in tokens %}
-    <tr>
-        <td><a href="{{ url_for('web.admin.tokens.view', token_id=token.oauthAccessToken) }}">{{ token.oauthAccessToken }}</a></td>
-        <td><a href="{{ url_for('web.admin.clients.edit', client_id=token.oauthClientID) }}">{{ token.oauthClientID }}</a></td>
-        <td>{{ token.oauthSubject }}</td>
-        <td>{{ token.issue_date }}</td>
-    </tr>
+    <div class="ui segment">
+    <h1 class="ui header">{% trans %}My accesses{% endtrans %}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="ui attached message {{ category }}">
+        {{ message }}
+    </div>
     {% endfor %}
-</table>
+    {% endwith %}
 
+    {% if tokens %}
+    <div class="ui cards">
+        {% for token in tokens %}
+        {% set client = clients[token.oauthClientID] %}
+        <div class="ui card">
+            <div class="content">
+                {% if client.oauthLogoURI %}
+                    <img class="right floated mini ui image" src="{{ client.oauthLogoURI }}">
+                {% endif %}
+                {% if client.oauthClientURI %}
+                    <a href="{{ client.oauthClientURI }}" class="header">{{ client.oauthClientName }}</a>
+                {% else %}
+                    <div class="header">{{ client.oauthClientName }}</div>
+                {% endif %}
+                <div class="meta">{% trans %}From:{% endtrans %} {{ token.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                <div class="meta">{% trans %}Until:{% endtrans %} {{ token.expire_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                <div class="meta"><span class="ui small text">{{ token.oauthAccessToken }}</span></div>
+                <div class="description">
+                    <p>{% trans %}Has access to:{% endtrans %}</p>
+                    <ul>
+                        {% for s in token.oauthScope[0].split(" ") %}
+                            <li>{{ s }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <a class="ui bottom attached button" href="{{ url_for('web.tokens.delete', token_id=token.oauthAccessToken ) }}">
+                <i class="remove icon"></i>
+                {% trans %}Remove access{% endtrans %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="ui center aligned">
+        <i class="massive smile outline icon image ui"></i>
+
+    <h2 class="ui center aligned header">
+        <div class="content">{% trans %}Nothing here{% endtrans %}</div>
+        <div class="sub header">{% trans %}You did not authorize applications yet.{% endtrans %}</div>
+    </h2>
+    </div>
+    {% endif %}
+    </div>
 {% endblock %}

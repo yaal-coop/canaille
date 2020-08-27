@@ -152,7 +152,8 @@ def add():
     )
     client.save()
     flash(
-        gettext("The client has been created."), "success",
+        gettext("The client has been created."),
+        "success",
     )
 
     return redirect(url_for("web.admin.clients.edit", client_id=client_id))
@@ -196,7 +197,8 @@ def edit(client_id):
         )
         client.save()
         flash(
-            gettext("The client has been edited."), "success",
+            gettext("The client has been edited."),
+            "success",
         )
 
     return render_template("admin/client_edit.html", form=form, client=client)

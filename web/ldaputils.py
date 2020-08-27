@@ -181,13 +181,22 @@ class LDAPObjectHelper:
     @classmethod
     def filter(cls, base=None, **kwargs):
         class_filter = "".join([f"(objectClass={oc})" for oc in cls.objectClass])
-        arg_filter = "".join(f"({k}={v})" for k, v in kwargs.items())
+        arg_filter = ""
+        for k, v in kwargs.items():
+            if not isinstance(v, list):
+                arg_filter += f"({k}={v})"
+            elif len(v) == 1:
+                arg_filter += f"({k}={v[0]})"
+            else:
+                arg_filter += "(|" + "".join([f"({k}={_v})" for _v in v]) + ")"
         ldapfilter = f"(&{class_filter}{arg_filter})"
         base = base or f"{cls.base},{cls.root_dn}"
         result = cls.ldap().search_s(base, ldap.SCOPE_SUBTREE, ldapfilter)
 
         return [
-            cls(**{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},)
+            cls(
+                **{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},
+            )
             for _, args in result
         ]
 
