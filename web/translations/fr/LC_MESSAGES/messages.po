@@ -2,27 +2,272 @@
 # Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# Éloi Rivard <eloi@yaal.fr>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-17 11:20+0200\n"
-"PO-Revision-Date: 2020-08-17 11:20+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: fr\n"
-"Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Report-Msgid-Bugs-To: contact@yaal.fr\n"
+"POT-Creation-Date: 2020-08-27 14:31+0200\n"
+"PO-Revision-Date: 2020-08-27 14:40+0200\n"
+"Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
+"Language: fr_FR\n"
+"Language-Team: French - France <equipe@yaal.fr>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
-#: website/templates/home.html:3
-msgid "Logged in as"
-msgstr "Connecté en tant que"
+#: web/forms.py:8
+msgid "Login"
+msgstr "Connexion"
 
-#: website/templates/home.html:27
-msgid "Create Client"
-msgstr "Créer un client"
+#: web/forms.py:13
+msgid "Password"
+msgstr "Mot de passe"
 
+#: web/oauth.py:28 web/routes.py:29
+msgid "Login failed, please check your information"
+msgstr "La connexion a échoué, veuillez vérifier vos informations."
+
+#: web/oauth.py:45
+msgid "You have been successfully logged out."
+msgstr "Vous avez été déconnectés."
+
+#: web/tokens.py:30
+msgid "Could not delete this access"
+msgstr "Impossible de supprimer cet accès."
+
+#: web/tokens.py:35
+msgid "The access has been revoked"
+msgstr "L'accès a été révoqué."
+
+#: web/admin/clients.py:24 web/templates/admin/client_list.html:22
+msgid "Name"
+msgstr "Nom"
+
+#: web/admin/clients.py:29
+msgid "Contact"
+msgstr "Contact"
+
+#: web/admin/clients.py:34
+msgid "URI"
+msgstr "URI"
+
+#: web/admin/clients.py:39
+msgid "Redirect URIs"
+msgstr "URIs de redirection"
+
+#: web/admin/clients.py:44
+msgid "Grant types"
+msgstr "Grant types"
+
+#: web/admin/clients.py:56
+msgid "Scope"
+msgstr "Scope"
+
+#: web/admin/clients.py:62
+msgid "Response types"
+msgstr "Types de réponse"
+
+#: web/admin/clients.py:68
+msgid "Token Endpoint Auth Method"
+msgstr "Token Endpoint Auth Method"
+
+#: web/admin/clients.py:78
+msgid "Logo URI"
+msgstr "URI du logo"
+
+#: web/admin/clients.py:83
+msgid "Terms of service URI"
+msgstr "URI des conditions d'utilisation"
+
+#: web/admin/clients.py:88
+msgid "Policy URI"
+msgstr "URI de la politique de confidentialité"
+
+#: web/admin/clients.py:93
+msgid "Software ID"
+msgstr "ID du logiciel"
+
+#: web/admin/clients.py:98
+msgid "Software Version"
+msgstr "Version du logiciel"
+
+#: web/admin/clients.py:103
+msgid "JWK"
+msgstr "JWK"
+
+#: web/admin/clients.py:108
+msgid "JKW URI"
+msgstr "URI du JWK"
+
+#: web/admin/clients.py:124
+msgid "The client has not been added. Please check your information."
+msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
+
+#: web/admin/clients.py:155
+msgid "The client has been created."
+msgstr "Le client a été créé."
+
+#: web/admin/clients.py:176
+msgid "The client has not been edited. Please check your information."
+msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
+
+#: web/admin/clients.py:200
+msgid "The client has been edited."
+msgstr "Le client a été édité."
+
+#: web/templates/authorize.html:9
+#, python-format
+msgid "The application %(name)s is requesting access to:"
+msgstr "L'application %(name)s demande un accès à :"
+
+#: web/templates/authorize.html:14
+#, python-format
+msgid "from: %(user)s"
+msgstr "pour : %(user)s"
+
+#: web/templates/authorize.html:19
+msgid "Deny"
+msgstr "Refuser"
+
+#: web/templates/authorize.html:24
+msgid "Switch user"
+msgstr "Changer d'utilisateur"
+
+#: web/templates/authorize.html:29
+msgid "Accept"
+msgstr "Accepter"
+
+#: web/templates/base.html:7
+msgid "OpenID Connect LDAP Bridge"
+msgstr "OpendID Connect LDAP Bridge"
+
+#: web/templates/base.html:35 web/templates/token_list.html:16
+msgid "My accesses"
+msgstr "Mes accès"
+
+#: web/templates/base.html:44
+msgid "Clients"
+msgstr "Clients"
+
+#: web/templates/base.html:48
+msgid "Tokens"
+msgstr "Jetons"
+
+#: web/templates/base.html:52
+msgid "Codes"
+msgstr "Codes"
+
+#: web/templates/base.html:59
+msgid "Log out"
+msgstr "Déconnexion"
+
+#: web/templates/login.html:14
+#, python-format
+msgid "Sign in at %(website)s"
+msgstr "Connexion à %(website)s"
+
+#: web/templates/login.html:16
+msgid "Log-in and manage your authorizations."
+msgstr "Connectez-vous et gérez vos autorisations."
+
+#: web/templates/login.html:27
+msgid "Sign in"
+msgstr "Se connecter"
+
+#: web/templates/token_list.html:39
+msgid "From:"
+msgstr "À partir de :"
+
+#: web/templates/token_list.html:40
+msgid "Until:"
+msgstr "Jusqu'à :"
+
+#: web/templates/token_list.html:43
+msgid "Has access to:"
+msgstr "A accès à :"
+
+#: web/templates/token_list.html:53
+msgid "Remove access"
+msgstr "Supprimer l'accès"
+
+#: web/templates/token_list.html:63
+msgid "Nothing here"
+msgstr "Rien ici"
+
+#: web/templates/token_list.html:64
+msgid "You did not authorize applications yet."
+msgstr ""
+"Vous n'avez pas encore autorisé d'application à accéder à votre profil."
+
+#: web/templates/admin/authorization_list.html:18
+#: web/templates/admin/token_list.html:18
+msgid "Token"
+msgstr "Jeton"
+
+#: web/templates/admin/authorization_list.html:19
+#: web/templates/admin/token_list.html:19
+msgid "Client"
+msgstr "Client"
+
+#: web/templates/admin/authorization_list.html:20
+#: web/templates/admin/token_list.html:20
+msgid "Subject"
+msgstr "Utilisateur"
+
+#: web/templates/admin/authorization_list.html:21
+#: web/templates/admin/client_list.html:24
+#: web/templates/admin/token_list.html:21
+msgid "Created"
+msgstr "Créé"
+
+#: web/templates/admin/authorization_view.html:7
+msgid "View a authorization"
+msgstr "Voir une autorisation"
+
+#: web/templates/admin/client_add.html:7
+msgid "Add a client"
+msgstr "Ajouter un client"
+
+#: web/templates/admin/client_add.html:17
+#: web/templates/admin/client_edit.html:34
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: web/templates/admin/client_edit.html:7
+msgid "Edit a client"
+msgstr "Éditer un client"
+
+#: web/templates/admin/client_edit.html:20
+msgid "ID"
+msgstr "ID"
+
+#: web/templates/admin/client_edit.html:24
+msgid "Secret"
+msgstr "Secret"
+
+#: web/templates/admin/client_edit.html:28
+msgid "Issued at"
+msgstr "Créé le"
+
+#: web/templates/admin/client_list.html:17
+msgid "Add client"
+msgstr "Ajouter un client"
+
+#: web/templates/admin/client_list.html:23
+msgid "URL"
+msgstr "URL"
+
+#: web/templates/admin/token_view.html:7
+msgid "View a token"
+msgstr "Voir un jeton"
+
+#~ msgid "Logged in as"
+#~ msgstr "Connecté en tant que"
+
+#~ msgid "Create Client"
+#~ msgstr "Créer un client"

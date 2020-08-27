@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-17 11:20+0200\n"
+"POT-Creation-Date: 2020-08-27 14:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,248 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: website/templates/home.html:3
-msgid "Logged in as"
+#: web/forms.py:8
+msgid "Login"
 msgstr ""
 
-#: website/templates/home.html:27
-msgid "Create Client"
+#: web/forms.py:13
+msgid "Password"
+msgstr ""
+
+#: web/oauth.py:28 web/routes.py:29
+msgid "Login failed, please check your information"
+msgstr ""
+
+#: web/oauth.py:45
+msgid "You have been successfully logged out."
+msgstr ""
+
+#: web/tokens.py:30
+msgid "Could not delete this access"
+msgstr ""
+
+#: web/tokens.py:35
+msgid "The access has been revoked"
+msgstr ""
+
+#: web/admin/clients.py:24 web/templates/admin/client_list.html:22
+msgid "Name"
+msgstr ""
+
+#: web/admin/clients.py:29
+msgid "Contact"
+msgstr ""
+
+#: web/admin/clients.py:34
+msgid "URI"
+msgstr ""
+
+#: web/admin/clients.py:39
+msgid "Redirect URIs"
+msgstr ""
+
+#: web/admin/clients.py:44
+msgid "Grant types"
+msgstr ""
+
+#: web/admin/clients.py:56
+msgid "Scope"
+msgstr ""
+
+#: web/admin/clients.py:62
+msgid "Response types"
+msgstr ""
+
+#: web/admin/clients.py:68
+msgid "Token Endpoint Auth Method"
+msgstr ""
+
+#: web/admin/clients.py:78
+msgid "Logo URI"
+msgstr ""
+
+#: web/admin/clients.py:83
+msgid "Terms of service URI"
+msgstr ""
+
+#: web/admin/clients.py:88
+msgid "Policy URI"
+msgstr ""
+
+#: web/admin/clients.py:93
+msgid "Software ID"
+msgstr ""
+
+#: web/admin/clients.py:98
+msgid "Software Version"
+msgstr ""
+
+#: web/admin/clients.py:103
+msgid "JWK"
+msgstr ""
+
+#: web/admin/clients.py:108
+msgid "JKW URI"
+msgstr ""
+
+#: web/admin/clients.py:124
+msgid "The client has not been added. Please check your information."
+msgstr ""
+
+#: web/admin/clients.py:155
+msgid "The client has been created."
+msgstr ""
+
+#: web/admin/clients.py:176
+msgid "The client has not been edited. Please check your information."
+msgstr ""
+
+#: web/admin/clients.py:200
+msgid "The client has been edited."
+msgstr ""
+
+#: web/templates/authorize.html:9
+#, python-format
+msgid "The application %(name)s is requesting access to:"
+msgstr ""
+
+#: web/templates/authorize.html:14
+#, python-format
+msgid "from: %(user)s"
+msgstr ""
+
+#: web/templates/authorize.html:19
+msgid "Deny"
+msgstr ""
+
+#: web/templates/authorize.html:24
+msgid "Switch user"
+msgstr ""
+
+#: web/templates/authorize.html:29
+msgid "Accept"
+msgstr ""
+
+#: web/templates/base.html:7
+msgid "OpenID Connect LDAP Bridge"
+msgstr ""
+
+#: web/templates/base.html:35 web/templates/token_list.html:16
+msgid "My accesses"
+msgstr ""
+
+#: web/templates/base.html:44
+msgid "Clients"
+msgstr ""
+
+#: web/templates/base.html:48
+msgid "Tokens"
+msgstr ""
+
+#: web/templates/base.html:52
+msgid "Codes"
+msgstr ""
+
+#: web/templates/base.html:59
+msgid "Log out"
+msgstr ""
+
+#: web/templates/login.html:14
+#, python-format
+msgid "Sign in at %(website)s"
+msgstr ""
+
+#: web/templates/login.html:16
+msgid "Log-in and manage your authorizations."
+msgstr ""
+
+#: web/templates/login.html:27
+msgid "Sign in"
+msgstr ""
+
+#: web/templates/token_list.html:39
+msgid "From:"
+msgstr ""
+
+#: web/templates/token_list.html:40
+msgid "Until:"
+msgstr ""
+
+#: web/templates/token_list.html:43
+msgid "Has access to:"
+msgstr ""
+
+#: web/templates/token_list.html:53
+msgid "Remove access"
+msgstr ""
+
+#: web/templates/token_list.html:63
+msgid "Nothing here"
+msgstr ""
+
+#: web/templates/token_list.html:64
+msgid "You did not authorize applications yet."
+msgstr ""
+
+#: web/templates/admin/authorization_list.html:18
+#: web/templates/admin/token_list.html:18
+msgid "Token"
+msgstr ""
+
+#: web/templates/admin/authorization_list.html:19
+#: web/templates/admin/token_list.html:19
+msgid "Client"
+msgstr ""
+
+#: web/templates/admin/authorization_list.html:20
+#: web/templates/admin/token_list.html:20
+msgid "Subject"
+msgstr ""
+
+#: web/templates/admin/authorization_list.html:21
+#: web/templates/admin/client_list.html:24
+#: web/templates/admin/token_list.html:21
+msgid "Created"
+msgstr ""
+
+#: web/templates/admin/authorization_view.html:7
+msgid "View a authorization"
+msgstr ""
+
+#: web/templates/admin/client_add.html:7
+msgid "Add a client"
+msgstr ""
+
+#: web/templates/admin/client_add.html:17
+#: web/templates/admin/client_edit.html:34
+msgid "Confirm"
+msgstr ""
+
+#: web/templates/admin/client_edit.html:7
+msgid "Edit a client"
+msgstr ""
+
+#: web/templates/admin/client_edit.html:20
+msgid "ID"
+msgstr ""
+
+#: web/templates/admin/client_edit.html:24
+msgid "Secret"
+msgstr ""
+
+#: web/templates/admin/client_edit.html:28
+msgid "Issued at"
+msgstr ""
+
+#: web/templates/admin/client_list.html:17
+msgid "Add client"
+msgstr ""
+
+#: web/templates/admin/client_list.html:23
+msgid "URL"
+msgstr ""
+
+#: web/templates/admin/token_view.html:7
+msgid "View a token"
 msgstr ""
 

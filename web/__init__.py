@@ -46,7 +46,7 @@ def setup_app(app):
     app.register_blueprint(
         web.admin.authorizations.bp, url_prefix="/admin/authorization"
     )
-    app.register_blueprint(admin.clients.bp, url_prefix="/admin/client")
+    app.register_blueprint(web.admin.clients.bp, url_prefix="/admin/client")
 
     babel = Babel(app)
 
