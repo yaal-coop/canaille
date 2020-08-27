@@ -23,7 +23,7 @@
     {% endwith %}
 
     {% if tokens %}
-    <div class="ui cards">
+    <div class="ui centered cards">
         {% for token in tokens %}
         {% set client = clients[token.oauthClientID] %}
         <div class="ui card">
