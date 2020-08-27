@@ -81,6 +81,9 @@ def app(slapd_server):
     app = create_app(
         {
             "SECRET_KEY": gen_salt(24),
+            "OAUTH2_METADATA_FILE": "conf/oauth-authorization-server.sample.json",
+            "OIDC_METADATA_FILE": "conf/openid-configuration.sample.json",
+
             "LDAP": {
                 "ROOT_DN": slapd_server.suffix,
                 "URI": slapd_server.ldap_uri,

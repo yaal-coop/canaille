@@ -14,3 +14,5 @@ htmlcov
 build
 dist
 python-ldap-test*
+conf/oauth-authorization-server.json
+conf/openid-configuration.json

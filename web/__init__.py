@@ -4,12 +4,13 @@ import toml
 from flask import Flask, g, request, render_template
 from flask_babel import Babel
 
-import web.tokens
 import web.admin.tokens
 import web.admin.authorizations
 import web.admin.clients
-import web.routes
 import web.oauth
+import web.routes
+import web.tokens
+import web.well_known
 from .flaskutils import current_user
 from .ldaputils import LDAPObjectHelper
 from .oauth2utils import config_oauth
@@ -31,7 +32,10 @@ def create_app(config=None):
     elif os.path.exists("conf/config.toml"):
         app.config.from_mapping(toml.load("conf/config.toml"))
     else:
-        raise Exception("No configuration file found.")
+        raise Exception(
+            "No configuration file found. "
+            "Either create conf/config.toml or set the 'CONFIG' variable environment."
+        )
 
     setup_app(app)
     return app
@@ -44,6 +48,7 @@ def setup_app(app):
     app.register_blueprint(web.routes.bp)
     app.register_blueprint(web.oauth.bp, url_prefix="/oauth")
     app.register_blueprint(web.tokens.bp, url_prefix="/token")
+    app.register_blueprint(web.well_known.bp, url_prefix="/.well-known")
     app.register_blueprint(web.admin.tokens.bp, url_prefix="/admin/token")
     app.register_blueprint(
         web.admin.authorizations.bp, url_prefix="/admin/authorization"

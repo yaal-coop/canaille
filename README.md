@@ -3,10 +3,10 @@
 oidc-ldap-bridge is a simple OpenID Connect provider based upon OpenLDAP.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
-- OAuth/OpenID Connect support.
-- Authentication against a LDAP directory.
-- No additional database required. Everything is stored in your OpenLDAP server.
-- The code is easy to read and easy to edit in case you want to write a patch
+- OAuth/OpenID Connect support;
+- Authentication against a LDAP directory;
+- No additional database required. Everything is stored in your OpenLDAP server;
+- The code is easy to read and easy to edit in case you want to write a patch.
 
 ## Install
 
@@ -36,6 +36,8 @@ To run the tests, you just need to run `tox`.
 To try a development environment, you can run the docker image and then open https://127.0.0.1:5000
 
 ```bash
-cp config.sample.toml config.toml
+cp conf/config.sample.toml conf/config.toml
+cp conf/oauth-authorization-server.sample.json conf/oauth-authorization-server
+cp conf/openid-configuration.sample.json conf/openid-configuration
 docker-compose up
 ```

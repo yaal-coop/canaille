@@ -4,3 +4,4 @@
 - Limit login attempts by time interval
 - Cleanup LDAP connections
 - Test with wrong inputs
+- Manage several redirect uris when adding a client
