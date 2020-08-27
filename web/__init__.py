@@ -28,8 +28,10 @@ def create_app(config=None):
         app.config.from_mapping(config)
     elif "CONFIG" in os.environ:
         app.config.from_mapping(toml.load(os.environ.get("CONFIG")))
-    elif os.path.exists("config.toml"):
-        app.config.from_mapping(toml.load("config.toml"))
+    elif os.path.exists("conf/config.toml"):
+        app.config.from_mapping(toml.load("conf/config.toml"))
+    else:
+        raise Exception("No configuration file found.")
 
     setup_app(app)
     return app

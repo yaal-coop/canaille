@@ -6,7 +6,8 @@ NAME = "MyDomain"
 LANGUAGE = "en"
 
 # Path to the RFC8414 metadata file
-OAUTH2_METADATA_FILE = "oauth-authorization-server"
+OAUTH2_METADATA_FILE = "conf/oauth-authorization-server"
+OIDC_METADATA_FILE = "conf/openid_configuration"
 
 [LDAP]
 URI = "ldap://ldap"
