@@ -4,6 +4,7 @@ import toml
 from flask import Flask, g, request, render_template
 from flask_babel import Babel
 
+import web.admin
 import web.admin.tokens
 import web.admin.authorizations
 import web.admin.clients
