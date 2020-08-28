@@ -25,9 +25,10 @@ USER_FILTER = "(|(uid={login})(cn={login}))"
 ADMIN_FILTER = "cn=Jane Doe"
 
 [JWT]
-KEY = "secret-key"
-ALG = "HS256"
-ISS = "http://mydomain.tld"
+PUBLIC_KEY = "conf/public.pem"
+PRIVATE_KEY = "conf/private.pem"
+KTY = "RSA"
+ALG = "RS256"
 EXP = 3600
 
 [JWT.MAPPING]

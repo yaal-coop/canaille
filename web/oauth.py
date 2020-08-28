@@ -1,4 +1,4 @@
-from authlib.common.encoding import urlsafe_b64encode
+from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
 from flask import Blueprint, request, session, redirect
 from flask import render_template, jsonify, flash, current_app
@@ -71,8 +71,19 @@ def revoke_token():
 
 @bp.route("/jwks.json")
 def jwks():
-    # TODO: Do not share secrets here!
-    key = urlsafe_b64encode(current_app.config["JWT"]["KEY"].encode("utf-8")).decode(
-        "utf-8"
+    with open(current_app.config["JWT"]["PUBLIC_KEY"]) as fd:
+        pubkey = fd.read()
+
+    obj = jwk.dumps(pubkey, current_app.config["JWT"]["KTY"])
+    return jsonify(
+        {
+            "keys": [
+                {
+                    "kid": None,
+                    "use": "sig",
+                    "alg": current_app.config["JWT"]["ALG"],
+                    **obj,
+                }
+            ]
+        }
     )
-    return jsonify({"keys": [{"kid": None, "kty": "oct", "k": key}]})

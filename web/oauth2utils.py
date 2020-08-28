@@ -28,12 +28,13 @@ def exists_nonce(nonce, req):
 
 
 def get_jwt_config(grant):
-    return {
-        "key": current_app.config["JWT"]["KEY"],
-        "alg": current_app.config["JWT"]["ALG"],
-        "iss": current_app.config["JWT"]["ISS"],
-        "exp": current_app.config["JWT"]["EXP"],
-    }
+    with open(current_app.config["JWT"]["PRIVATE_KEY"]) as pk:
+        return {
+            "key": pk.read(),
+            "alg": current_app.config["JWT"]["ALG"],
+            "iss": authorization.metadata["issuer"],
+            "exp": current_app.config["JWT"]["EXP"],
+        }
 
 
 def generate_user_info(user, scope):
@@ -253,7 +254,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "scope": token.get_scope(),
             "sub": token.oauthSubject,
             "aud": token.oauthClientID,
-            "iss": current_app.config["JWT"]["ISS"],
+            "iss": authorization.metadata["issuer"],
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
         }

@@ -47,7 +47,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     client.save(slapd_connection)
 
 
-def test_oidc_implicit(testclient, slapd_connection, user, client):
+def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
     client.oauthGrantType = ["token id_token"]
     client.oauthTokenEndpointAuthMethod = "none"
 
@@ -83,7 +83,7 @@ def test_oidc_implicit(testclient, slapd_connection, user, client):
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, "secret-key")
+    claims = jwt.decode(id_token, keypair[1])
     assert user.uid[0] == claims["sub"]
     assert user.cn[0] == claims["name"]
     assert [client.oauthClientID] == claims["aud"]

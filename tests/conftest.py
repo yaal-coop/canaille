@@ -3,6 +3,9 @@ import ldap.ldapobject
 import os
 import pytest
 import slapdtest
+from cryptography.hazmat.primitives import serialization as crypto_serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 from web import create_app
@@ -26,6 +29,37 @@ class CustomSlapdObject(slapdtest.SlapdObject):
         config = super().gen_config()
         self.openldap_schema_files = previous
         return config
+
+
+@pytest.fixture(scope="session")
+def keypair():
+    key = rsa.generate_private_key(
+        backend=crypto_default_backend(), public_exponent=65537, key_size=2048
+    )
+    private_key = key.private_bytes(
+        crypto_serialization.Encoding.PEM,
+        crypto_serialization.PrivateFormat.PKCS8,
+        crypto_serialization.NoEncryption(),
+    )
+    public_key = key.public_key().public_bytes(
+        crypto_serialization.Encoding.OpenSSH, crypto_serialization.PublicFormat.OpenSSH
+    )
+    return private_key, public_key
+
+
+@pytest.fixture
+def keypair_path(keypair, tmp_path):
+    private_key, public_key = keypair
+
+    private_key_path = os.path.join(tmp_path, "private.pem")
+    with open(private_key_path, "wb") as fd:
+        fd.write(private_key)
+
+    public_key_path = os.path.join(tmp_path, "public.pem")
+    with open(public_key_path, "wb") as fd:
+        fd.write(public_key)
+
+    return private_key_path, public_key_path
 
 
 @pytest.fixture(scope="session")
@@ -75,15 +109,15 @@ def slapd_connection(slapd_server):
 
 
 @pytest.fixture
-def app(slapd_server):
+def app(slapd_server, keypair_path):
     os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+    private_key_path, public_key_path = keypair_path
 
     app = create_app(
         {
             "SECRET_KEY": gen_salt(24),
             "OAUTH2_METADATA_FILE": "conf/oauth-authorization-server.sample.json",
             "OIDC_METADATA_FILE": "conf/openid-configuration.sample.json",
-
             "LDAP": {
                 "ROOT_DN": slapd_server.suffix,
                 "URI": slapd_server.ldap_uri,
@@ -93,9 +127,10 @@ def app(slapd_server):
                 "ADMIN_FILTER": "uid=admin",
             },
             "JWT": {
-                "KEY": "secret-key",
-                "ALG": "HS256",
-                "ISS": "https://mydomain.tld",
+                "PUBLIC_KEY": public_key_path,
+                "PRIVATE_KEY": private_key_path,
+                "ALG": "RS256",
+                "KTY": "RSA",
                 "EXP": 3600,
                 "MAPPING": {
                     "SUB": "uid",
