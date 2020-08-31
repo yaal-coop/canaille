@@ -23,7 +23,7 @@
     ["code", "token", "id_token", "code token",
      "code id_token", "token id_token"],
   "service_documentation":
-    "http://mydomain.tld/documentation.html",
+    "https://mydomain.tld/documentation.html",
   "ui_locales_supported":
     ["en-US", "en-GB", "en-CA", "fr-FR", "fr-CA"]
 }

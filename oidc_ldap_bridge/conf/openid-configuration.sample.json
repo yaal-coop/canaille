@@ -58,7 +58,7 @@
   "claims_parameter_supported":
     true,
   "service_documentation":
-    "http://mydomain.tld/oauth/service_documentation.html",
+    "https://mydomain.tld/oauth/service_documentation.html",
   "ui_locales_supported":
     ["en-US", "en-GB", "en-CA", "fr-FR", "fr-CA"]
 }
