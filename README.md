@@ -12,7 +12,9 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 First you need to install the schemas into your LDAP server. There are several ways to achieve this:
 
-### Option 1: Add the schema into your filesystem
+### LDAP schemas
+
+#### Option 1: Add the schema into your filesystem
 
 ```bash
 test -d /etc/openldap/schema && sudo cp schema/* /etc/openldap/schema
@@ -20,11 +22,13 @@ test -d /etc/ldap/schema && sudo cp schema/* /etc/ldap/schema
 sudo service slapd restart
 ```
 
-### Option 2: Use slapadd
+#### Option 2: Use slapadd
 
 ```bash
 sudo slapadd -n0 -l schema/*.ldif
 ```
+
+### Web interface
 
 Then you can deploy the code either by copying the git repository or installing the pip package:
 
