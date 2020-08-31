@@ -6,8 +6,8 @@ NAME = "MyDomain"
 LANGUAGE = "en"
 
 # Path to the RFC8414 metadata file
-OAUTH2_METADATA_FILE = "conf/oauth-authorization-server.json"
-OIDC_METADATA_FILE = "conf/openid-configuration.json"
+OAUTH2_METADATA_FILE = "oidc_ldap_bridge/conf/oauth-authorization-server.json"
+OIDC_METADATA_FILE = "oidc_ldap_bridge/conf/openid-configuration.json"
 
 [LDAP]
 URI = "ldap://ldap"
@@ -25,8 +25,8 @@ USER_FILTER = "(|(uid={login})(cn={login}))"
 ADMIN_FILTER = "cn=Jane Doe"
 
 [JWT]
-PUBLIC_KEY = "conf/public.pem"
-PRIVATE_KEY = "conf/private.pem"
+PUBLIC_KEY = "oidc_ldap_bridge/conf/public.pem"
+PRIVATE_KEY = "oidc_ldap_bridge/conf/private.pem"
 KTY = "RSA"
 ALG = "RS256"
 EXP = 3600

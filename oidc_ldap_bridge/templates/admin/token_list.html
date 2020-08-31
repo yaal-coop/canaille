@@ -22,8 +22,8 @@
     </thead>
     {% for token in tokens %}
     <tr>
-        <td><a href="{{ url_for('web.admin.tokens.view', token_id=token.oauthAccessToken) }}">{{ token.oauthAccessToken }}</a></td>
-        <td><a href="{{ url_for('web.admin.clients.edit', client_id=token.oauthClientID) }}">{{ token.oauthClientID }}</a></td>
+        <td><a href="{{ url_for('oidc_ldap_bridge.admin.tokens.view', token_id=token.oauthAccessToken) }}">{{ token.oauthAccessToken }}</a></td>
+        <td><a href="{{ url_for('oidc_ldap_bridge.admin.clients.edit', client_id=token.oauthClientID) }}">{{ token.oauthClientID }}</a></td>
         <td>{{ token.oauthSubject }}</td>
         <td>{{ token.issue_date }}</td>
     </tr>

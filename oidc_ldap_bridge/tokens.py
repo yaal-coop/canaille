@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_babel import gettext
-from web.models import Token, Client
-from web.flaskutils import user_needed
+from oidc_ldap_bridge.models import Token, Client
+from oidc_ldap_bridge.flaskutils import user_needed
 
 
 bp = Blueprint(__name__, "tokens")
@@ -34,4 +34,4 @@ def delete(user, token_id):
         token.save()
         flash(gettext("The access has been revoked"), "success")
 
-    return redirect(url_for("web.tokens.tokens"))
+    return redirect(url_for("oidc_ldap_bridge.tokens.tokens"))

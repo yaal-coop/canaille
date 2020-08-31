@@ -1,5 +1,5 @@
 from . import client_credentials
-from web.models import Token
+from oidc_ldap_bridge.models import Token
 
 
 def test_password_flow(testclient, slapd_connection, user, client):

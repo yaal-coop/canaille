@@ -1,0 +1,6 @@
+include schemas/*
+include oidc_ldap_bridge/conf/*.sample.*
+graft oidc_ldap_bridge/templates
+graft oidc_ldap_bridge/translations
+graft oidc_ldap_bridge/static
+exclude tests/*

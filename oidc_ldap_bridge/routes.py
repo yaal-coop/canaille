@@ -14,8 +14,8 @@ bp = Blueprint(__name__, "home")
 @bp.route("/")
 def index():
     if not current_user():
-        return redirect(url_for("web.routes.login"))
-    return redirect(url_for("web.tokens.tokens"))
+        return redirect(url_for("oidc_ldap_bridge.routes.login"))
+    return redirect(url_for("oidc_ldap_bridge.tokens.tokens"))
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -29,7 +29,7 @@ def login():
             flash(gettext("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
-        return redirect(url_for("web.routes.index"))
+        return redirect(url_for("oidc_ldap_bridge.routes.index"))
 
     return render_template("login.html", form=form)
 

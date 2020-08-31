@@ -13,19 +13,21 @@
 
 {% block content %}
 
+<div class="ui segment">
+    <a class="ui primary button" href="{{ url_for('oidc_ldap_bridge.admin.clients.add') }}">{% trans %}Add client{% endtrans %}</a>
+</div>
+
 <table class="ui table">
     <thead>
-        <th>{% trans %}Token{% endtrans %}</th>
-        <th>{% trans %}Client{% endtrans %}</th>
-        <th>{% trans %}Subject{% endtrans %}</th>
+        <th>{% trans %}Name{% endtrans %}</th>
+        <th>{% trans %}URL{% endtrans %}</th>
         <th>{% trans %}Created{% endtrans %}</th>
     </thead>
-    {% for authorization in authorizations %}
+    {% for client in clients %}
     <tr>
-        <td><a href="{{ url_for('web.admin.authorizations.view', authorization_id=authorization.oauthCode) }}">{{ authorization.oauthCode }}</a></td>
-        <td><a href="{{ url_for('web.admin.clients.edit', client_id=authorization.oauthClientID) }}">{{ authorization.oauthClientID }}</a></td>
-        <td>{{ authorization.oauthSubject }}</td>
-        <td>{{ authorization.issue_date }}</td>
+        <td><a href="{{ url_for('oidc_ldap_bridge.admin.clients.edit', client_id=client.oauthClientID) }}">{{ client.oauthClientName }}</a></td>
+        <td><a href="{{ client.oauthClientURI }}">{{ client.oauthClientURI }}</a></td>
+        <td>{{ client.issue_date }}</td>
     </tr>
     {% endfor %}
 </table>

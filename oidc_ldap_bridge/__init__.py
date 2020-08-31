@@ -4,14 +4,14 @@ import toml
 from flask import Flask, g, request, render_template
 from flask_babel import Babel
 
-import web.admin
-import web.admin.tokens
-import web.admin.authorizations
-import web.admin.clients
-import web.oauth
-import web.routes
-import web.tokens
-import web.well_known
+import oidc_ldap_bridge.admin
+import oidc_ldap_bridge.admin.tokens
+import oidc_ldap_bridge.admin.authorizations
+import oidc_ldap_bridge.admin.clients
+import oidc_ldap_bridge.oauth
+import oidc_ldap_bridge.routes
+import oidc_ldap_bridge.tokens
+import oidc_ldap_bridge.well_known
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
@@ -22,6 +22,7 @@ from .oauth2utils import config_oauth
 
 def create_app(config=None):
     app = Flask(__name__)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
 
     app.config.from_mapping(
         {
@@ -33,8 +34,8 @@ def create_app(config=None):
         app.config.from_mapping(config)
     elif "CONFIG" in os.environ:
         app.config.from_mapping(toml.load(os.environ.get("CONFIG")))
-    elif os.path.exists("conf/config.toml"):
-        app.config.from_mapping(toml.load("conf/config.toml"))
+    elif os.path.exists(os.path.join(dir_path, "conf", "config.toml")):
+        app.config.from_mapping(toml.load(os.path.join(dir_path, "conf", "config.toml")))
     else:
         raise Exception(
             "No configuration file found. "
@@ -84,15 +85,15 @@ def setup_app(app):
     app.url_map.strict_slashes = False
 
     config_oauth(app)
-    app.register_blueprint(web.routes.bp)
-    app.register_blueprint(web.oauth.bp, url_prefix="/oauth")
-    app.register_blueprint(web.tokens.bp, url_prefix="/token")
-    app.register_blueprint(web.well_known.bp, url_prefix="/.well-known")
-    app.register_blueprint(web.admin.tokens.bp, url_prefix="/admin/token")
+    app.register_blueprint(oidc_ldap_bridge.routes.bp)
+    app.register_blueprint(oidc_ldap_bridge.oauth.bp, url_prefix="/oauth")
+    app.register_blueprint(oidc_ldap_bridge.tokens.bp, url_prefix="/token")
+    app.register_blueprint(oidc_ldap_bridge.well_known.bp, url_prefix="/.well-known")
+    app.register_blueprint(oidc_ldap_bridge.admin.tokens.bp, url_prefix="/admin/token")
     app.register_blueprint(
-        web.admin.authorizations.bp, url_prefix="/admin/authorization"
+        oidc_ldap_bridge.admin.authorizations.bp, url_prefix="/admin/authorization"
     )
-    app.register_blueprint(web.admin.clients.bp, url_prefix="/admin/client")
+    app.register_blueprint(oidc_ldap_bridge.admin.clients.bp, url_prefix="/admin/client")
 
     babel = Babel(app)
 

@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import session, abort
-from web.models import User
+from oidc_ldap_bridge.models import User
 
 
 def current_user():

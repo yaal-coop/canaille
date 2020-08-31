@@ -48,7 +48,7 @@
                     </ul>
                 </div>
             </div>
-            <a class="ui bottom attached button" href="{{ url_for('web.tokens.delete', token_id=token.oauthAccessToken ) }}">
+            <a class="ui bottom attached button" href="{{ url_for('oidc_ldap_bridge.tokens.delete', token_id=token.oauthAccessToken ) }}">
                 <i class="remove icon"></i>
                 {% trans %}Remove access{% endtrans %}
             </a>

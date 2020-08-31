@@ -1,4 +1,4 @@
-from web.models import Client
+from oidc_ldap_bridge.models import Client
 
 
 def test_no_logged_no_access(testclient):

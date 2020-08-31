@@ -26,7 +26,18 @@ sudo service slapd restart
 sudo slapadd -n0 -l schema/*.ldif
 ```
 
-TBD
+Then you can deploy the code either by copying the git repository or installing the pip package:
+
+```bash
+pip install oidc_ldap_bridge
+```
+
+Finally you have to run the website in a WSGI server:
+
+```bash
+pip install gunicorn
+gunicorn "oidc_ldap_bridge:create_app()"
+```
 
 ## Contribute
 
@@ -36,8 +47,8 @@ To run the tests, you just need to run `tox`.
 To try a development environment, you can run the docker image and then open https://127.0.0.1:5000
 
 ```bash
-cp conf/config.sample.toml conf/config.toml
-cp conf/oauth-authorization-server.sample.json conf/oauth-authorization-server
-cp conf/openid-configuration.sample.json conf/openid-configuration
+cp oidc_ldap_bridge/conf/config.sample.toml oidc_ldap_bridge/conf/config.toml
+cp oidc_ldap_bridge/conf/oauth-authorization-server.sample.json oidc_ldap_bridge/conf/oauth-authorization-server.json
+cp oidc_ldap_bridge/conf/openid-configuration.sample.json oidc_ldap_bridge/conf/openid-configuration.json
 docker-compose up
 ```

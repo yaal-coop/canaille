@@ -5,8 +5,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_babel import gettext
 from werkzeug.security import gen_salt
-from web.models import Client
-from web.flaskutils import admin_needed
+from oidc_ldap_bridge.models import Client
+from oidc_ldap_bridge.flaskutils import admin_needed
 
 
 bp = Blueprint(__name__, "clients")
@@ -156,7 +156,7 @@ def add():
         "success",
     )
 
-    return redirect(url_for("web.admin.clients.edit", client_id=client_id))
+    return redirect(url_for("oidc_ldap_bridge.admin.clients.edit", client_id=client_id))
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])

@@ -12,8 +12,8 @@ RUN pip install /app/
 WORKDIR /app
 USER oauthserver
 
-ENV FLASK_APP=web
+ENV FLASK_APP=oidc_ldap_bridge
 ENV FLASK_ENV=development
 ENV AUTHLIB_INSECURE_TRANSPORT=1
 
-ENTRYPOINT [ "flask", "run", "--host", "0.0.0.0" ]
+ENTRYPOINT [ "flask", "run", "--host", "0.0.0.0", "--extra-files", "oidc_ldap_bridge/conf/config.toml" ]

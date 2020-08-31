@@ -14,8 +14,8 @@ htmlcov
 build
 dist
 python-ldap-test*
-conf/oauth-authorization-server.json
-conf/openid-configuration.json
-conf/*.pem
-conf/*.pub
-conf/*.key
+oidc_ldap_bridge/conf/oauth-authorization-server.json
+oidc_ldap_bridge/conf/openid-configuration.json
+oidc_ldap_bridge/conf/*.pem
+oidc_ldap_bridge/conf/*.pub
+oidc_ldap_bridge/conf/*.key
