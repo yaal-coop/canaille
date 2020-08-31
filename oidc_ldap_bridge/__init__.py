@@ -35,7 +35,9 @@ def create_app(config=None):
     elif "CONFIG" in os.environ:
         app.config.from_mapping(toml.load(os.environ.get("CONFIG")))
     elif os.path.exists(os.path.join(dir_path, "conf", "config.toml")):
-        app.config.from_mapping(toml.load(os.path.join(dir_path, "conf", "config.toml")))
+        app.config.from_mapping(
+            toml.load(os.path.join(dir_path, "conf", "config.toml"))
+        )
     else:
         raise Exception(
             "No configuration file found. "
@@ -93,7 +95,9 @@ def setup_app(app):
     app.register_blueprint(
         oidc_ldap_bridge.admin.authorizations.bp, url_prefix="/admin/authorization"
     )
-    app.register_blueprint(oidc_ldap_bridge.admin.clients.bp, url_prefix="/admin/client")
+    app.register_blueprint(
+        oidc_ldap_bridge.admin.clients.bp, url_prefix="/admin/client"
+    )
 
     babel = Babel(app)
 
