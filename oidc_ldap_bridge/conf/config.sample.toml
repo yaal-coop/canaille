@@ -1,11 +1,17 @@
+# The flask secret key for cookies. You MUST change this.
 SECRET_KEY = "change me before you go in production"
+
+# Your organization name.
 NAME = "MyDomain"
+
+# You can display a logo to be recognized on login screens
 # LOGO = "https://path/to/your/organization/logo.png"
 
 # If unset, language is detected
-LANGUAGE = "en"
+# LANGUAGE = "en"
 
-# Path to the RFC8414 metadata file
+# Path to the RFC8414 metadata file. You should update those files
+# with your production URLs.
 OAUTH2_METADATA_FILE = "oidc_ldap_bridge/conf/oauth-authorization-server.json"
 OIDC_METADATA_FILE = "oidc_ldap_bridge/conf/openid-configuration.json"
 
@@ -16,7 +22,7 @@ BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"
 
 # Filter to match users on sign in. Supports a variable
-# {login}. For sigin against uid or mail use:
+# {login}. For sigin against either uid or mail use:
 # USER_FILTER = "(|(uid={login})(mail={login}))"
 USER_FILTER = "(|(uid={login})(cn={login}))"
 
@@ -25,6 +31,9 @@ USER_FILTER = "(|(uid={login})(cn={login}))"
 # ADMIN_FILTER = "uid=admin"
 ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
 
+# The jwt configuration. You can generate a RSA keypair with:
+# ssh-keygen -t rsa -b 4096 -m PEM -f private.pem
+# openssl rsa -in private.pem -pubout -outform PEM -out public.pem
 [JWT]
 PUBLIC_KEY = "oidc_ldap_bridge/conf/public.pem"
 PRIVATE_KEY = "oidc_ldap_bridge/conf/private.pem"
@@ -38,12 +47,12 @@ EXP = 3600
 SUB = "uid"
 NAME = "cn"
 PHONE_NUMBER = "telephoneNumber"
-# EXAMPLE OF MAPPING FOR inetOrgPerson
-#     PHONE_NUMBER = "telephoneNumber"
-#     EMAIL = "mail"
-#     GIVEN_NAME = "givenName"
-#     PREFERRED_USERNAME = "displayName"
-#     FAMILIY_NAME = "
-#     LOCALE = "preferredLanguage"
-#     PICTURE = "photo"
-#     ADDRESS = "postalAddress"
+# An example of mapping for inetOrgPerson:
+# PHONE_NUMBER = "telephoneNumber"
+# EMAIL = "mail"
+# GIVEN_NAME = "givenName"
+# PREFERRED_USERNAME = "displayName"
+# FAMILIY_NAME = "
+# LOCALE = "preferredLanguage"
+# PICTURE = "photo"
+# ADDRESS = "postalAddress"
