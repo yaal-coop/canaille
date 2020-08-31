@@ -1,3 +1,5 @@
+⚠ OpenID Connect LDAP Bridge is under development. Do not use in production yet. ⚠
+
 # OpenID Connect LDAP Bridge
 
 oidc-ldap-bridge is a simple OpenID Connect provider based upon OpenLDAP.
