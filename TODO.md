@@ -1,6 +1,5 @@
 - RFC 8414
 - Extract ldaputils in another library
-- Admin filter
 - Limit login attempts by time interval
 - Cleanup LDAP connections
 - Test with wrong inputs

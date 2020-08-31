@@ -22,7 +22,8 @@ USER_FILTER = "(|(uid={login})(cn={login}))"
 
 # Filter to match admin users. If your server has memberof
 # you can filter against group membership
-ADMIN_FILTER = "cn=Jane Doe"
+# ADMIN_FILTER = "uid=admin"
+ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
 
 [JWT]
 PUBLIC_KEY = "oidc_ldap_bridge/conf/public.pem"
