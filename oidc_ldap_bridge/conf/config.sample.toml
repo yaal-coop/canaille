@@ -15,6 +15,9 @@ NAME = "MyDomain"
 OAUTH2_METADATA_FILE = "oidc_ldap_bridge/conf/oauth-authorization-server.json"
 OIDC_METADATA_FILE = "oidc_ldap_bridge/conf/openid-configuration.json"
 
+# If you have a sentry instance, you can set its dsn here:
+# SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
+
 [LDAP]
 URI = "ldap://ldap"
 ROOT_DN = "dc=mydomain,dc=tld"

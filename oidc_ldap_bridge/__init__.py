@@ -23,6 +23,14 @@ from .ldaputils import LDAPObjectHelper
 from .oauth2utils import config_oauth
 from .models import User
 
+try:  # pragma: no cover
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+
+    SENTRY = True
+except Exception:
+    SENTRY = False
+
 
 def create_app(config=None):
     app = Flask(__name__)
@@ -89,6 +97,9 @@ def setup_dev_keypair(app):
 
 def setup_app(app):
     app.url_map.strict_slashes = False
+
+    if SENTRY and app.config.get("SENTRY_DSN"):
+        sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
     base = app.config["LDAP"]["USER_BASE"]
     if base.endswith(app.config["LDAP"]["ROOT_DN"]):
