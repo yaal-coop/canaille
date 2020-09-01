@@ -4,3 +4,4 @@
 - Cleanup LDAP connections
 - Test with wrong inputs
 - Manage several redirect uris when adding a client
+- Special page when schemas are not installed (NO_SUCH_OBJECT exception)
