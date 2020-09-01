@@ -21,6 +21,9 @@ ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"
 
+# Where to search for users?
+USER_BASE = "ou=users,dc=mydomain,dc=tld"
+
 # Filter to match users on sign in. Supports a variable
 # {login}. For sigin against either uid or mail use:
 # USER_FILTER = "(|(uid={login})(mail={login}))"

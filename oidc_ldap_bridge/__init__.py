@@ -1,8 +1,6 @@
 import ldap
 import os
 import toml
-from flask import Flask, g, request, render_template
-from flask_babel import Babel
 
 import oidc_ldap_bridge.admin
 import oidc_ldap_bridge.admin.tokens
@@ -12,12 +10,18 @@ import oidc_ldap_bridge.oauth
 import oidc_ldap_bridge.routes
 import oidc_ldap_bridge.tokens
 import oidc_ldap_bridge.well_known
+
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
+
+from flask import Flask, g, request, render_template
+from flask_babel import Babel
+
 from .flaskutils import current_user
 from .ldaputils import LDAPObjectHelper
 from .oauth2utils import config_oauth
+from .models import User
 
 
 def create_app(config=None):
@@ -85,6 +89,11 @@ def setup_dev_keypair(app):
 
 def setup_app(app):
     app.url_map.strict_slashes = False
+
+    base = app.config["LDAP"]["USER_BASE"]
+    if base.endswith(app.config["LDAP"]["ROOT_DN"]):
+        base = base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
+    User.base = base
 
     config_oauth(app)
     app.register_blueprint(oidc_ldap_bridge.routes.bp)

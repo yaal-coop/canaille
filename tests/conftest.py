@@ -89,6 +89,7 @@ def slapd_server():
         conn.simple_bind_s(slapd.root_dn, slapd.root_pw)
         LDAPObjectHelper.root_dn = slapd.suffix
         Client.initialize(conn)
+        User.base = "ou=users"
         User.initialize(conn)
         Token.initialize(conn)
         AuthorizationCode.initialize(conn)
@@ -123,6 +124,7 @@ def app(slapd_server, keypair_path):
                 "URI": slapd_server.ldap_uri,
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
+                "USER_BASE": "ou=users",
                 "USER_FILTER": "(|(uid={login})(cn={login}))",
                 "ADMIN_FILTER": "uid=admin",
             },
