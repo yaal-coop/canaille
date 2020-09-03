@@ -105,31 +105,40 @@ def setup_ldap_tree(app):
 
 
 def setup_app(app):
-    app.url_map.strict_slashes = False
-
     if SENTRY and app.config.get("SENTRY_DSN"):
         sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
-    base = app.config["LDAP"]["USER_BASE"]
-    if base.endswith(app.config["LDAP"]["ROOT_DN"]):
-        base = base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
-    User.base = base
+    try:
+        base = app.config["LDAP"]["USER_BASE"]
+        if base.endswith(app.config["LDAP"]["ROOT_DN"]):
+            base = base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
+        User.base = base
 
-    config_oauth(app)
-    setup_ldap_tree(app)
-    app.register_blueprint(oidc_ldap_bridge.routes.bp)
-    app.register_blueprint(oidc_ldap_bridge.oauth.bp, url_prefix="/oauth")
-    app.register_blueprint(oidc_ldap_bridge.tokens.bp, url_prefix="/token")
-    app.register_blueprint(oidc_ldap_bridge.well_known.bp, url_prefix="/.well-known")
-    app.register_blueprint(oidc_ldap_bridge.admin.tokens.bp, url_prefix="/admin/token")
-    app.register_blueprint(
-        oidc_ldap_bridge.admin.authorizations.bp, url_prefix="/admin/authorization"
-    )
-    app.register_blueprint(
-        oidc_ldap_bridge.admin.clients.bp, url_prefix="/admin/client"
-    )
+        app.url_map.strict_slashes = False
 
-    babel = Babel(app)
+        config_oauth(app)
+        setup_ldap_tree(app)
+        app.register_blueprint(oidc_ldap_bridge.routes.bp)
+        app.register_blueprint(oidc_ldap_bridge.oauth.bp, url_prefix="/oauth")
+        app.register_blueprint(oidc_ldap_bridge.tokens.bp, url_prefix="/token")
+        app.register_blueprint(
+            oidc_ldap_bridge.well_known.bp, url_prefix="/.well-known"
+        )
+        app.register_blueprint(
+            oidc_ldap_bridge.admin.tokens.bp, url_prefix="/admin/token"
+        )
+        app.register_blueprint(
+            oidc_ldap_bridge.admin.authorizations.bp, url_prefix="/admin/authorization"
+        )
+        app.register_blueprint(
+            oidc_ldap_bridge.admin.clients.bp, url_prefix="/admin/client"
+        )
+
+        babel = Babel(app)
+    except Exception as exc:
+        if SENTRY and app.config.get("SENTRY_DSN"):
+            raise
+        sentry_sdk.capture_exception(exc)
 
     @app.before_request
     def before_request():
