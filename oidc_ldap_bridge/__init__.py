@@ -109,6 +109,7 @@ def setup_app(app):
         sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
     try:
+        LDAPObjectHelper.root_dn = app.config["LDAP"]["ROOT_DN"]
         base = app.config["LDAP"]["USER_BASE"]
         if base.endswith(app.config["LDAP"]["ROOT_DN"]):
             base = base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
@@ -142,7 +143,6 @@ def setup_app(app):
 
     @app.before_request
     def before_request():
-        LDAPObjectHelper.root_dn = app.config["LDAP"]["ROOT_DN"]
         g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
         g.ldap.simple_bind_s(
             app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
