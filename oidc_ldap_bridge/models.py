@@ -70,7 +70,7 @@ class User(LDAPObjectHelper):
 
 class Client(LDAPObjectHelper, ClientMixin):
     objectClass = ["oauthClient"]
-    base = "ou=clients"
+    base = "ou=clients,ou=oauth"
     id = "oauthClientID"
 
     @property
@@ -139,7 +139,7 @@ class Client(LDAPObjectHelper, ClientMixin):
 
 class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
     objectClass = ["oauthAuthorizationCode"]
-    base = "ou=authorizations"
+    base = "ou=authorizations,ou=oauth"
     id = "oauthCode"
 
     @property
@@ -175,7 +175,7 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
 
 class Token(LDAPObjectHelper, TokenMixin):
     objectClass = ["oauthToken"]
-    base = "ou=tokens"
+    base = "ou=tokens,ou=oauth"
     id = "oauthAccessToken"
 
     @property

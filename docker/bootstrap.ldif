@@ -2,15 +2,19 @@ dn: ou=users,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: users
 
-dn: ou=clients,dc=mydomain,dc=tld
+dn: ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: clients
 
-dn: ou=tokens,dc=mydomain,dc=tld
+dn: ou=clients,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: clients
+
+dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: tokens
 
-dn: ou=groups,dc=mydomain,dc=tld
+dn: ou=groups,ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: groups
 

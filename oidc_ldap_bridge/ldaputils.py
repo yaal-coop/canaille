@@ -60,14 +60,21 @@ class LDAPObjectHelper:
         cls.ocs_by_name(conn)
         cls.attr_type_by_name(conn)
 
-        dn = f"{cls.base},{cls.root_dn}"
-        conn.add_s(
-            dn,
-            [
-                ("objectClass", [b"organizationalUnit"]),
-                ("ou", [cls.base.encode("utf-8")]),
-            ],
-        )
+        acc = ""
+        for organizationalUnit in cls.base.split(",")[::-1]:
+            v = organizationalUnit.split("=")[1]
+            dn = f"{organizationalUnit}{acc},{cls.root_dn}"
+            acc = f",{organizationalUnit}"
+            try:
+                conn.add_s(
+                    dn,
+                    [
+                        ("objectClass", [b"organizationalUnit"]),
+                        ("ou", [v.encode("utf-8")]),
+                    ],
+                )
+            except ldap.ALREADY_EXISTS:
+                pass
 
     @classmethod
     def ocs_by_name(cls, conn=None):
