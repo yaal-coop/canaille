@@ -21,7 +21,7 @@ from flask_babel import Babel
 from .flaskutils import current_user
 from .ldaputils import LDAPObjectHelper
 from .oauth2utils import config_oauth
-from .models import User
+from .models import User, Token, AuthorizationCode, Client
 
 try:  # pragma: no cover
     import sentry_sdk
@@ -95,6 +95,16 @@ def setup_dev_keypair(app):
         fd.write(private_key)
 
 
+def setup_ldap_tree(app):
+    conn = ldap.initialize(app.config["LDAP"]["URI"])
+    conn.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
+    User.initialize(conn)
+    Token.initialize(conn)
+    AuthorizationCode.initialize(conn)
+    Client.initialize(conn)
+    conn.unbind_s()
+
+
 def setup_app(app):
     app.url_map.strict_slashes = False
 
@@ -107,6 +117,7 @@ def setup_app(app):
     User.base = base
 
     config_oauth(app)
+    setup_ldap_tree(app)
     app.register_blueprint(oidc_ldap_bridge.routes.bp)
     app.register_blueprint(oidc_ldap_bridge.oauth.bp, url_prefix="/oauth")
     app.register_blueprint(oidc_ldap_bridge.tokens.bp, url_prefix="/token")
