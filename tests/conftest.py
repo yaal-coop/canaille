@@ -87,6 +87,10 @@ def slapd_server():
 
         LDAPObjectHelper.root_dn = slapd.suffix
         User.base = "ou=users"
+        conn = ldap.ldapobject.SimpleLDAPObject(slapd.ldap_uri)
+        conn.simple_bind_s(slapd.root_dn, slapd.root_pw)
+        User.initialize(conn)
+        conn.unbind_s()
 
         yield slapd
     finally:

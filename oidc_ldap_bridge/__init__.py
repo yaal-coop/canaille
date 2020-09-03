@@ -98,7 +98,6 @@ def setup_dev_keypair(app):
 def setup_ldap_tree(app):
     conn = ldap.initialize(app.config["LDAP"]["URI"])
     conn.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
-    User.initialize(conn)
     Token.initialize(conn)
     AuthorizationCode.initialize(conn)
     Client.initialize(conn)
