@@ -18,13 +18,13 @@ dn: ou=groups,ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: groups
 
-dn: cn=users,ou=groups,dc=mydomain,dc=tld
+dn: cn=users,ou=groups,ou=oauth,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: users
 member: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
 member: cn=John Doe,ou=users,dc=mydomain,dc=tld
 
-dn: cn=admins,ou=groups,dc=mydomain,dc=tld
+dn: cn=admins,ou=groups,ou=oauth,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: admins
 member: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
@@ -41,8 +41,8 @@ cn: Jane Doe
 sn: Doe
 uid: admin
 userpassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
-memberof: cn=admins,ou=groups,dc=mydomain,dc=tld
-memberof: cn=users,ou=groups,dc=mydomain,dc=tld
+memberof: cn=admins,ou=groups,ou=oauth,dc=mydomain,dc=tld
+memberof: cn=users,ou=groups,ou=oauth,dc=mydomain,dc=tld
 
 dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
 objectclass: person
@@ -52,4 +52,4 @@ cn: John Doe
 sn: Doe
 uid: user
 userpassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
-memberof: cn=users,ou=groups,dc=mydomain,dc=tld
+memberof: cn=users,ou=groups,ou=oauth,dc=mydomain,dc=tld
