@@ -40,7 +40,7 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClientID == client.oauthClientID
+    assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
@@ -101,7 +101,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClientID == client.oauthClientID
+    assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
@@ -210,7 +210,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClientID == client.oauthClientID
+    assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})

@@ -200,7 +200,7 @@ class Token(LDAPObjectHelper, TokenMixin):
             self.oauthRevoked = "FALSE"
 
     def get_client_id(self):
-        return self.oauthClientID
+        return Client.get(self.oauthClient).oauthClientID
 
     def get_scope(self):
         return " ".join(self.oauthScope)

@@ -254,10 +254,9 @@ attributetype ( 1.3.6.1.4.1.56207.1.1.29 NAME 'oauthTokenEndpointAuthMethod'
         X-ORIGIN 'OAuth 2.0 Dynamic Client Registration Protocol' )
 attributetype ( 1.3.6.1.4.1.56207.1.1.30 NAME 'oauthSubject'
         DESC 'OAuth 2.0 Token subject'
-        EQUALITY caseExactMatch
-        ORDERING caseExactOrderingMatch
+        EQUALITY distinguishedNameMatch
         SUBSTR caseExactSubstringsMatch
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0 Dynamic Client Registration Protocol' )
@@ -281,6 +280,14 @@ attributetype (  1.3.6.1.4.1.56207.1.1.33 NAME 'oauthRevoked'
         DESC 'OAuth 2.0 token or code revoked'
         EQUALITY booleanMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+attributetypes ( 1.3.6.1.4.1.56207.1.1.34 NAME 'oauthClient'
+        DESC 'Authorized client'
+        EQUALITY distinguishedNameMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
@@ -316,7 +323,7 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
         STRUCTURAL
         MUST  oauthCode
         MAY ( description $
-              oauthClientID $
+              oauthClient $
               oauthSubject $
               oauthRedirectURI $
               oauthResponseType $
@@ -334,7 +341,7 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         STRUCTURAL
         MUST  oauthAccessToken
         MAY ( description $
-              oauthClientID $
+              oauthClient $
               oauthSubject $
               oauthTokenType $
               oauthRefreshToken $

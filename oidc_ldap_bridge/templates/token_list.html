@@ -25,7 +25,7 @@
     {% if tokens %}
     <div class="ui centered cards">
         {% for token in tokens %}
-        {% set client = clients[token.oauthClientID] %}
+        {% set client = clients[token.oauthClient] %}
         <div class="ui card">
             <div class="content">
                 {% if client.oauthLogoURI %}

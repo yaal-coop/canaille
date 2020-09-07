@@ -12,12 +12,8 @@ bp = Blueprint(__name__, "tokens")
 def tokens(user):
     tokens = Token.filter(oauthSubject=user.dn)
     tokens = [t for t in tokens if t.is_refresh_token_active()]
-    client_ids = list(set(t.oauthClientID for t in tokens))
-    clients = (
-        {c.oauthClientID: c for c in Client.filter(oauthClientID=client_ids)}
-        if client_ids
-        else {}
-    )
+    client_dns = list(set(t.oauthClient for t in tokens))
+    clients = {dn: Client.get(dn) for dn in client_dns}
     return render_template("token_list.html", tokens=tokens, clients=clients)
 
 

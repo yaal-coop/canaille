@@ -80,7 +80,7 @@ def save_authorization_code(code, request):
     code = AuthorizationCode(
         oauthCode=code,
         oauthSubject=request.user,
-        oauthClientID=request.client.oauthClientID,
+        oauthClient=request.client.dn,
         oauthRedirectURI=request.redirect_uri or request.client.oauthRedirectURIs[0],
         oauthScope=request.scope,
         oauthNonce=nonce,
@@ -100,9 +100,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = AuthorizationCode.filter(
-            oauthCode=code, oauthClientID=client.oauthClientID
-        )
+        item = AuthorizationCode.filter(oauthCode=code, oauthClient=client.dn)
         if item and not item[0].is_expired():
             return item[0]
 
@@ -184,7 +182,7 @@ def save_token(token, request):
         oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
         oauthTokenLifetime=str(token["expires_in"]),
         oauthScope=token["scope"],
-        oauthClientID=request.client.oauthClientID,
+        oauthClient=request.client.dn,
         oauthRefreshToken=token.get("refresh_token"),
         oauthSubject=request.user,
     )
@@ -205,19 +203,15 @@ class BearerTokenValidator(_BearerTokenValidator):
 class RevocationEndpoint(_RevocationEndpoint):
     def query_token(self, token, token_type_hint, client):
         if token_type_hint == "access_token":
-            return Token.filter(
-                oauthClientID=client.oauthClientID, oauthAccessToken=token
-            )
+            return Token.filter(oauthClient=client.dn, oauthAccessToken=token)
         elif token_type_hint == "refresh_token":
-            return Token.filter(
-                oauthClientID=client.oauthClientID, oauthRefreshToken=token
-            )
+            return Token.filter(oauthClient=client.dn, oauthRefreshToken=token)
 
-        item = Token.filter(oauthClientID=client.oauthClientID, oauthAccessToken=token)
+        item = Token.filter(oauthClient=client.dn, oauthAccessToken=token)
         if item:
             return item[0]
 
-        item = Token.filter(oauthClientID=client.oauthClientID, oauthRefreshToken=token)
+        item = Token.filter(oauthClient=client.dn, oauthRefreshToken=token)
         if item:
             return item[0]
 
@@ -240,20 +234,21 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
                 tok = Token.filter(oauthRefreshToken=token)
         if tok:
             tok = tok[0]
-            if tok.oauthClientID == client.oauthClientID:
+            if tok.oauthClient == client.dn:
                 return tok
             # if has_introspect_permission(client):
             #    return tok
 
     def introspect_token(self, token):
+        client_id = Client.get(token.oauthClient).oauthClientID
         return {
             "active": True,
-            "client_id": token.oauthClientID,
+            "client_id": client_id,
             "token_type": token.oauthTokenType,
             "username": User.get(token.oauthSubject).name,
             "scope": token.get_scope(),
             "sub": token.oauthSubject,
-            "aud": token.oauthClientID,
+            "aud": client_id,
             "iss": authorization.metadata["issuer"],
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),

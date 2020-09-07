@@ -12,12 +12,12 @@ def test_token_introspection(testclient, user, client, token):
     assert 200 == res.status_code
     assert {
         "active": True,
-        "client_id": token.oauthClientID,
+        "client_id": client.oauthClientID,
         "token_type": token.oauthTokenType,
         "username": user.name,
         "scope": token.get_scope(),
         "sub": token.oauthSubject,
-        "aud": token.oauthClientID,
+        "aud": client.oauthClientID,
         "iss": "https://mydomain.tld",
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
