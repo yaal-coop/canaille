@@ -182,11 +182,11 @@ def client(app, slapd_connection):
 
 
 @pytest.fixture
-def authorization(app, slapd_connection):
+def authorization(app, slapd_connection, user):
     a = AuthorizationCode(
         oauthCode="my-code",
         oauthClientID="client-id",
-        oauthSubject="user-id",
+        oauthSubject=user.dn,
         oauthRedirectURI="https://foo.bar/callback",
         oauthResponseType="code",
         oauthScope="openid profile",
