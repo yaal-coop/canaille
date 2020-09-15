@@ -1,12 +1,17 @@
+import ldap
 from functools import wraps
 from flask import session, abort
 from oidc_ldap_bridge.models import User
 
 
 def current_user():
-    if "user_dn" in session:
+    if "user_dn" not in session:
+        return None
+
+    try:
         return User.get(session["user_dn"])
-    return None
+    except ldap.NO_SUCH_OBJECT:
+        return None
 
 
 def user_needed():
