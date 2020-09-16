@@ -45,8 +45,9 @@ class LDAPObjectHelper:
         for k, v in kwargs.items():
             self.__setattr__(k, v)
 
-    def delete(self):
-        self.ldap().delete_s(self.dn)
+    def delete(self, conn=None):
+        conn = conn or self.ldap()
+        conn.delete_s(self.dn)
 
     @property
     def dn(self):
@@ -186,7 +187,8 @@ class LDAPObjectHelper:
         return o
 
     @classmethod
-    def filter(cls, base=None, **kwargs):
+    def filter(cls, base=None, conn=None, **kwargs):
+        conn = conn or cls.ldap()
         class_filter = "".join([f"(objectClass={oc})" for oc in cls.objectClass])
         arg_filter = ""
         for k, v in kwargs.items():
@@ -198,7 +200,7 @@ class LDAPObjectHelper:
                 arg_filter += "(|" + "".join([f"({k}={_v})" for _v in v]) + ")"
         ldapfilter = f"(&{class_filter}{arg_filter})"
         base = base or f"{cls.base},{cls.root_dn}"
-        result = cls.ldap().search_s(base, ldap.SCOPE_SUBTREE, ldapfilter)
+        result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter)
 
         return [
             cls(
