@@ -9,7 +9,7 @@ services:
     volumes:
       - ./docker/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-boostrap.ldif:ro
       - ./schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
-    command: --copy-service
+    command: --copy-service --loglevel debug
     ports:
       - 5389:389
       - 5636:636
