@@ -1,3 +1,4 @@
+import datetime
 from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
 from flask import Blueprint, request, session, redirect
@@ -42,6 +43,7 @@ def authorize():
         oauthClient=client.dn,
         oauthSubject=user.dn,
     )
+    consents = [c for c in consents if not c.oauthRevokationDate]
     consent = consents[0] if consents else None
 
     if request.method == "GET":
@@ -63,6 +65,7 @@ def authorize():
                 oauthClient=client.dn,
                 oauthSubject=user.dn,
                 oauthScope=scopes,
+                oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
             )
 
         consent.save()

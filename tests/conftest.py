@@ -242,6 +242,18 @@ def token(slapd_connection, client, user):
 
 
 @pytest.fixture
+def consent(slapd_connection, client, user):
+    t = Consent(
+        oauthClient=client.dn,
+        oauthSubject=user.dn,
+        oauthScope=["openid", "profile"],
+        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+    )
+    t.save(slapd_connection)
+    return t
+
+
+@pytest.fixture
 def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
         sess["user_dn"] = user.dn

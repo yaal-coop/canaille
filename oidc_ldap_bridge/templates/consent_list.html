@@ -13,7 +13,7 @@
 
 {% block content %}
     <div class="ui segment">
-    <h1 class="ui header">{% trans %}My tokens{% endtrans %}</h1>
+    <h1 class="ui header">{% trans %}My consents{% endtrans %}</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
     <div class="ui attached message {{ category }}">
@@ -22,10 +22,10 @@
     {% endfor %}
     {% endwith %}
 
-    {% if tokens %}
+    {% if consents %}
     <div class="ui centered cards">
-        {% for token in tokens %}
-        {% set client = clients[token.oauthClient] %}
+        {% for consent in consents %}
+        {% set client = clients[consent.oauthClient] %}
         <div class="ui card">
             <div class="content">
                 {% if client.oauthLogoURI %}
@@ -36,21 +36,22 @@
                 {% else %}
                     <div class="header">{{ client.oauthClientName }}</div>
                 {% endif %}
-                <div class="meta">{% trans %}From:{% endtrans %} {{ token.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
-                <div class="meta">{% trans %}Until:{% endtrans %} {{ token.expire_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
-                <div class="meta"><span class="ui small text">{{ token.oauthAccessToken }}</span></div>
+                <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                {% if consent.oauthRevokationDate %}
+                <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                {% endif %}
                 <div class="description">
                     <p>{% trans %}Has access to:{% endtrans %}</p>
                     <ul>
-                        {% for s in token.oauthScope[0].split(" ") %}
+                        {% for s in consent.oauthScope %}
                             <li>{{ s }}</li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <a class="ui bottom attached button" href="{{ url_for('oidc_ldap_bridge.tokens.delete', token_id=token.oauthAccessToken ) }}">
+            <a class="ui bottom attached button" href="{{ url_for('oidc_ldap_bridge.consents.delete', consent_id=consent.cn[0] ) }}">
                 <i class="remove icon"></i>
-                {% trans %}Remove token{% endtrans %}
+                {% trans %}Remove access{% endtrans %}
             </a>
         </div>
         {% endfor %}

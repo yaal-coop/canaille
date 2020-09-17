@@ -364,4 +364,8 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.4 NAME 'oauthConsent'
               oauthClient $
               oauthScope
         )
+        MAY (
+              oauthIssueDate $
+              oauthRevokationDate
+        )
         X-ORIGIN 'OAuth 2.0' )

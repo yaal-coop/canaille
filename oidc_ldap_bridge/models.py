@@ -228,3 +228,29 @@ class Consent(LDAPObjectHelper):
             kwargs["cn"] = str(uuid.uuid4())
 
         super().__init__(*args, **kwargs)
+
+    @property
+    def issue_date(self):
+        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+
+    @property
+    def revokation_date(self):
+        return datetime.datetime.strptime(self.oauthRevokationDate, "%Y%m%d%H%M%SZ")
+
+    def revoke(self):
+        self.oauthRevokationDate = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
+        self.save()
+
+        tokens = Token.filter(
+            oauthClient=self.oauthClient,
+            oauthSubject=self.oauthSubject,
+        )
+        for t in tokens:
+            a = [scope not in t.oauthScope[0] for scope in self.oauthScope]
+            if t.revoked or any(
+                scope not in t.oauthScope[0] for scope in self.oauthScope
+            ):
+                continue
+
+            t.oauthRevokationDate = self.oauthRevokationDate
+            t.save()
