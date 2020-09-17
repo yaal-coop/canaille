@@ -195,7 +195,7 @@ def authorization(app, slapd_connection, user, client):
         oauthAuthorizationLifetime="3600",
         oauthCodeChallenge="challenge",
         oauthCodeChallengeMethod="method",
-        oauthRevoked="FALSE",
+        oauthRevokation="",
     )
     a.save(slapd_connection)
     return a

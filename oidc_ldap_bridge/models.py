@@ -191,14 +191,7 @@ class Token(LDAPObjectHelper, TokenMixin):
 
     @property
     def revoked(self):
-        return self.oauthRevoked in ("yes", "YES", 1, "on", "ON", "TRUE", "true")
-
-    @revoked.setter
-    def revoked(self, value):
-        if value:
-            self.oauthRevoked = "TRUE"
-        else:
-            self.oauthRevoked = "FALSE"
+        return bool(self.oauthRevokationDate)
 
     def get_client_id(self):
         return Client.get(self.oauthClient).oauthClientID
@@ -219,7 +212,7 @@ class Token(LDAPObjectHelper, TokenMixin):
         return int(issue_timestamp) + int(self.oauthTokenLifetime)
 
     def is_refresh_token_active(self):
-        if self.revoked:
+        if self.oauthRevokationDate:
             return False
 
         return self.expire_date >= datetime.datetime.now()

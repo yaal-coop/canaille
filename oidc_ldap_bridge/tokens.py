@@ -1,3 +1,4 @@
+import datetime
 from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_babel import gettext
 from oidc_ldap_bridge.models import Token, Client
@@ -26,7 +27,7 @@ def delete(user, token_id):
         flash(gettext("Could not delete this access"), "error")
 
     else:
-        token.revoked = True
+        token.oauthRevokationDate = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
         token.save()
         flash(gettext("The access has been revoked"), "success")
 

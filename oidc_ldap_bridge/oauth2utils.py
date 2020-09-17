@@ -137,7 +137,9 @@ class RefreshTokenGrant(_RefreshTokenGrant):
         return User.get(credential.oauthSubject).dn
 
     def revoke_old_credential(self, credential):
-        credential.revoked = True
+        credential.oauthRevokationDate = datetime.datetime.now().strftime(
+            "%Y%m%d%H%M%SZ"
+        )
         credential.save()
 
 
@@ -197,7 +199,7 @@ class BearerTokenValidator(_BearerTokenValidator):
         return False
 
     def token_revoked(self, token):
-        return token.revoked
+        return bool(token.oauthRevokationDate)
 
 
 class RevocationEndpoint(_RevocationEndpoint):
@@ -218,7 +220,7 @@ class RevocationEndpoint(_RevocationEndpoint):
         return None
 
     def revoke_token(self, token):
-        token.revoked = True
+        token.oauthRevokationDate = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
         token.save()
 
 

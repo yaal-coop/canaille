@@ -14,5 +14,5 @@ def test_client_list(testclient, slapd_connection, client, token, logged_user):
     assert 200 == res.status_code
     assert token.oauthAccessToken not in res.text
 
-    token.revoked = False
+    token.oauthRevokationDate = ""
     token.save(conn=slapd_connection)

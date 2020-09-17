@@ -141,7 +141,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
     old_token = Token.get(access_token, conn=slapd_connection)
     assert old_token is not None
-    assert not old_token.revoked
+    assert not old_token.oauthRevokationDate
 
     res = testclient.post(
         "/oauth/token",
@@ -156,7 +156,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     new_token = Token.get(access_token, conn=slapd_connection)
     assert new_token is not None
     old_token.reload(slapd_connection)
-    assert old_token.revoked
+    assert old_token.oauthRevokationDate
 
     res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
     assert 200 == res.status_code
