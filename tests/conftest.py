@@ -9,7 +9,7 @@ from cryptography.hazmat.backends import default_backend as crypto_default_backe
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 from oidc_ldap_bridge import create_app
-from oidc_ldap_bridge.models import User, Client, Token, AuthorizationCode
+from oidc_ldap_bridge.models import User, Client, Token, AuthorizationCode, Consent
 from oidc_ldap_bridge.ldaputils import LDAPObjectHelper
 
 
@@ -253,3 +253,10 @@ def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
         sess["user_dn"] = admin.dn
     return admin
+
+
+@pytest.fixture(autouse=True)
+def cleanups(slapd_connection):
+    yield
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)

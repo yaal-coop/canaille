@@ -350,3 +350,14 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
               oauthTokenLifetime $
               oauthRevoked )
         X-ORIGIN 'OAuth 2.0' )
+objectclass ( 1.3.6.1.4.1.56207.1.2.4 NAME 'oauthConsent'
+        DESC 'OAuth 2.0 User consents'
+        SUP top
+        STRUCTURAL
+        MUST  (
+              cn $
+              oauthSubject $
+              oauthClient $
+              oauthScope
+        )
+        X-ORIGIN 'OAuth 2.0' )

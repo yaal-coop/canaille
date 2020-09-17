@@ -21,7 +21,7 @@ from flask_babel import Babel
 from .flaskutils import current_user
 from .ldaputils import LDAPObjectHelper
 from .oauth2utils import config_oauth
-from .models import User, Token, AuthorizationCode, Client
+from .models import User, Token, AuthorizationCode, Client, Consent
 
 try:  # pragma: no cover
     import sentry_sdk
@@ -101,6 +101,7 @@ def setup_ldap_tree(app):
     Token.initialize(conn)
     AuthorizationCode.initialize(conn)
     Client.initialize(conn)
+    Consent.initialize(conn)
     conn.unbind_s()
 
 

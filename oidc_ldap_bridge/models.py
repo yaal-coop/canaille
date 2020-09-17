@@ -1,5 +1,6 @@
-import ldap
 import datetime
+import ldap
+import uuid
 from authlib.common.encoding import json_loads, json_dumps
 from authlib.oauth2.rfc6749 import (
     ClientMixin,
@@ -222,3 +223,15 @@ class Token(LDAPObjectHelper, TokenMixin):
             return False
 
         return self.expire_date >= datetime.datetime.now()
+
+
+class Consent(LDAPObjectHelper):
+    objectClass = ["oauthConsent"]
+    base = "ou=consents,ou=oauth"
+    id = "cn"
+
+    def __init__(self, *args, **kwargs):
+        if "cn" not in kwargs:
+            kwargs["cn"] = str(uuid.uuid4())
+
+        super().__init__(*args, **kwargs)
