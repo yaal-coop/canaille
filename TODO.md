@@ -7,3 +7,5 @@
 - Special page when schemas are not installed (NO_SUCH_OBJECT exception)
 - Display a page for consents.
 - Removing a consent should revoke all related tokens.
+- User admin
+- Consents admin
