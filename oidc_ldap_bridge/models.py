@@ -246,7 +246,6 @@ class Consent(LDAPObjectHelper):
             oauthSubject=self.oauthSubject,
         )
         for t in tokens:
-            a = [scope not in t.oauthScope[0] for scope in self.oauthScope]
             if t.revoked or any(
                 scope not in t.oauthScope[0] for scope in self.oauthScope
             ):
