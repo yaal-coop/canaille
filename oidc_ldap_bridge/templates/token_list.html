@@ -13,7 +13,7 @@
 
 {% block content %}
     <div class="ui segment">
-    <h1 class="ui header">{% trans %}My accesses{% endtrans %}</h1>
+    <h1 class="ui header">{% trans %}My tokens{% endtrans %}</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
     <div class="ui attached message {{ category }}">
