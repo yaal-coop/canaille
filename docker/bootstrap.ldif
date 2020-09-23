@@ -18,22 +18,22 @@ cn: admins
 member: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
 
 dn: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
-objectclass: person
-objectclass: uidobject
-objectclass: simpleSecurityObject
+objectclass: top
+objectclass: inetOrgPerson
 cn: Jane Doe
 sn: Doe
 uid: admin
+mail: admin@mydomain.tld
 userpassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 memberof: cn=admins,ou=groups,dc=mydomain,dc=tld
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
 
 dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
-objectclass: person
-objectclass: uidobject
-objectclass: simpleSecurityObject
+objectclass: top
+objectclass: inetOrgPerson
 cn: John Doe
 sn: Doe
 uid: user
+mail: user@mydomain.tld
 userpassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld

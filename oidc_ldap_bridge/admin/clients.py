@@ -55,7 +55,7 @@ class ClientAdd(FlaskForm):
     oauthScope = wtforms.StringField(
         gettext("Scope"),
         validators=[wtforms.validators.Optional()],
-        default="openid profile",
+        default="openid profile email",
         render_kw={"placeholder": "openid profile"},
     )
     oauthResponseType = wtforms.SelectMultipleField(
