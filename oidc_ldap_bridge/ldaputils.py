@@ -16,8 +16,8 @@ class LDAPObject:
         self.attrs = {}
         self.changes = {}
 
-        if hasattr(self, "objectClass") and not "objectClass" in kwargs:
-            kwargs["objectClass"] = self.objectClass
+        if hasattr(self, "object_class") and not "objectClass" in kwargs:
+            kwargs["objectClass"] = self.object_class
 
         for k, v in kwargs.items():
             self.attrs[k] = [v] if not isinstance(v, list) else v
@@ -199,8 +199,8 @@ class LDAPObject:
     def filter(cls, base=None, conn=None, **kwargs):
         conn = conn or cls.ldap()
         class_filter = (
-            "".join([f"(objectClass={oc})" for oc in cls.objectClass])
-            if hasattr(cls, "objectClass")
+            "".join([f"(objectClass={oc})" for oc in cls.object_class])
+            if hasattr(cls, "object_class")
             else None
         )
         arg_filter = ""

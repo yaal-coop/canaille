@@ -69,7 +69,7 @@ class User(LDAPObject):
 
 
 class Client(LDAPObject, ClientMixin):
-    objectClass = ["oauthClient"]
+    object_class = ["oauthClient"]
     base = "ou=clients,ou=oauth"
     id = "oauthClientID"
 
@@ -138,7 +138,7 @@ class Client(LDAPObject, ClientMixin):
 
 
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
-    objectClass = ["oauthAuthorizationCode"]
+    object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     id = "oauthCode"
 
@@ -174,7 +174,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 
 
 class Token(LDAPObject, TokenMixin):
-    objectClass = ["oauthToken"]
+    object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     id = "oauthAccessToken"
 
@@ -218,7 +218,7 @@ class Token(LDAPObject, TokenMixin):
 
 
 class Consent(LDAPObject):
-    objectClass = ["oauthConsent"]
+    object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     id = "cn"
 
