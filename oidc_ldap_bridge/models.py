@@ -13,7 +13,6 @@ from .ldaputils import LDAPObjectHelper
 
 
 class User(LDAPObjectHelper):
-    objectClass = ["person", "simpleSecurityObject", "uidObject"]
     id = "cn"
     admin = False
 

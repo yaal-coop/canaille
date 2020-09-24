@@ -204,6 +204,7 @@ def authorization(app, slapd_connection, user, client):
 @pytest.fixture
 def user(app, slapd_connection):
     u = User(
+        objectClass=["person", "simpleSecurityObject", "uidObject"],
         cn="John Doe",
         sn="Doe",
         uid="user",
@@ -216,6 +217,7 @@ def user(app, slapd_connection):
 @pytest.fixture
 def admin(app, slapd_connection):
     u = User(
+        objectClass=["person", "simpleSecurityObject", "uidObject"],
         cn="Jane Doe",
         sn="Doe",
         uid="admin",

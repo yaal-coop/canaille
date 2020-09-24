@@ -10,18 +10,27 @@ class LDAPObjectHelper:
     base = None
     root_dn = None
     id = None
+    ocs = None
 
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
         self.changes = {}
+
+        if hasattr(self, "objectClass") and not "objectClass" in kwargs:
+            kwargs["objectClass"] = self.objectClass
+
         for k, v in kwargs.items():
             self.attrs[k] = [v] if not isinstance(v, list) else v
-        self.attrs.setdefault("objectClass", self.objectClass)
 
-        by_name = self.ocs_by_name()
-        ocs = [by_name[name] for name in self.objectClass]
         self.may = []
         self.must = []
+        if "objectClass" in kwargs:
+            self.update_ldap_attributes()
+
+    def update_ldap_attributes(self):
+        by_name = self.ocs_by_name()
+        ocs = [by_name[name] for name in self.attrs["objectClass"]]
+
         for oc in ocs:
             self.may.extend(oc.may)
             self.must.extend(oc.must)
@@ -189,7 +198,11 @@ class LDAPObjectHelper:
     @classmethod
     def filter(cls, base=None, conn=None, **kwargs):
         conn = conn or cls.ldap()
-        class_filter = "".join([f"(objectClass={oc})" for oc in cls.objectClass])
+        class_filter = (
+            "".join([f"(objectClass={oc})" for oc in cls.objectClass])
+            if hasattr(cls, "objectClass")
+            else None
+        )
         arg_filter = ""
         for k, v in kwargs.items():
             if not isinstance(v, list):
@@ -198,7 +211,7 @@ class LDAPObjectHelper:
                 arg_filter += f"({k}={v[0]})"
             else:
                 arg_filter += "(|" + "".join([f"({k}={_v})" for _v in v]) + ")"
-        ldapfilter = f"(&{class_filter}{arg_filter})"
+        ldapfilter = f"(&{class_filter}{arg_filter})" if class_filter else arg_filter
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter)
 
