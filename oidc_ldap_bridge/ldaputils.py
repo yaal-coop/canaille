@@ -2,7 +2,7 @@ import ldap
 from flask import g
 
 
-class LDAPObjectHelper:
+class LDAPObject:
     _object_class_by_name = None
     _attribute_type_by_name = None
     may = None

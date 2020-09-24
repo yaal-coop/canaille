@@ -9,10 +9,10 @@ from authlib.oauth2.rfc6749 import (
     util,
 )
 from flask import current_app, session
-from .ldaputils import LDAPObjectHelper
+from .ldaputils import LDAPObject
 
 
-class User(LDAPObjectHelper):
+class User(LDAPObject):
     id = "cn"
     admin = False
 
@@ -68,7 +68,7 @@ class User(LDAPObjectHelper):
         return self.cn[0]
 
 
-class Client(LDAPObjectHelper, ClientMixin):
+class Client(LDAPObject, ClientMixin):
     objectClass = ["oauthClient"]
     base = "ou=clients,ou=oauth"
     id = "oauthClientID"
@@ -137,7 +137,7 @@ class Client(LDAPObjectHelper, ClientMixin):
         )
 
 
-class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
+class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     objectClass = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     id = "oauthCode"
@@ -173,7 +173,7 @@ class AuthorizationCode(LDAPObjectHelper, AuthorizationCodeMixin):
         return self.oauthCodeChallenge
 
 
-class Token(LDAPObjectHelper, TokenMixin):
+class Token(LDAPObject, TokenMixin):
     objectClass = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     id = "oauthAccessToken"
@@ -217,7 +217,7 @@ class Token(LDAPObjectHelper, TokenMixin):
         return self.expire_date >= datetime.datetime.now()
 
 
-class Consent(LDAPObjectHelper):
+class Consent(LDAPObject):
     objectClass = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     id = "cn"

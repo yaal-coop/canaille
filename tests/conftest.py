@@ -10,7 +10,7 @@ from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 from oidc_ldap_bridge import create_app
 from oidc_ldap_bridge.models import User, Client, Token, AuthorizationCode, Consent
-from oidc_ldap_bridge.ldaputils import LDAPObjectHelper
+from oidc_ldap_bridge.ldaputils import LDAPObject
 
 
 class CustomSlapdObject(slapdtest.SlapdObject):
@@ -85,7 +85,7 @@ def slapd_server():
             + "\n"
         )
 
-        LDAPObjectHelper.root_dn = slapd.suffix
+        LDAPObject.root_dn = slapd.suffix
         User.base = "ou=users"
         conn = ldap.ldapobject.SimpleLDAPObject(slapd.ldap_uri)
         conn.simple_bind_s(slapd.root_dn, slapd.root_pw)

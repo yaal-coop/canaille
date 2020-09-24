@@ -20,7 +20,7 @@ from flask import Flask, g, request, render_template
 from flask_babel import Babel
 
 from .flaskutils import current_user
-from .ldaputils import LDAPObjectHelper
+from .ldaputils import LDAPObject
 from .oauth2utils import config_oauth
 from .models import User, Token, AuthorizationCode, Client, Consent
 
@@ -111,7 +111,7 @@ def setup_app(app):
         sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
     try:
-        LDAPObjectHelper.root_dn = app.config["LDAP"]["ROOT_DN"]
+        LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
         base = app.config["LDAP"]["USER_BASE"]
         if base.endswith(app.config["LDAP"]["ROOT_DN"]):
             base = base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
