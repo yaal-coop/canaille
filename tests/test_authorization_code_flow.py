@@ -43,9 +43,11 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
     assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
 
 def test_logout_login(testclient, slapd_connection, logged_user, client):
@@ -101,9 +103,11 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
 
 def test_refresh_token(testclient, slapd_connection, logged_user, client):
@@ -158,9 +162,11 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     old_token.reload(slapd_connection)
     assert old_token.oauthRevokationDate
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
 
 def test_code_challenge(testclient, slapd_connection, logged_user, client):
@@ -210,9 +216,11 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
     client.save(slapd_connection)

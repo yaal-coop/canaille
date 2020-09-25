@@ -38,9 +38,11 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     token = Token.get(access_token, conn=slapd_connection)
     assert token is not None
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert (200, "application/json") == (res.status_code, res.content_type)
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
@@ -88,9 +90,11 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
     assert user.cn[0] == claims["name"]
     assert [client.oauthClientID] == claims["aud"]
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert (200, "application/json") == (res.status_code, res.content_type)
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"

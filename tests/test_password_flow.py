@@ -22,6 +22,8 @@ def test_password_flow(testclient, slapd_connection, user, client):
     token = Token.get(access_token, conn=slapd_connection)
     assert token is not None
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json

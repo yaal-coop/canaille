@@ -37,9 +37,11 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     token = Token.get(access_token, conn=slapd_connection)
     assert token is not None
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json
 
 
 def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair):
@@ -74,6 +76,8 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair)
     assert logged_user.cn[0] == claims["name"]
     assert [client.oauthClientID] == claims["aud"]
 
-    res = testclient.get("/api/me", headers={"Authorization": f"Bearer {access_token}"})
+    res = testclient.get(
+        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+    )
     assert 200 == res.status_code
-    assert {"foo": "bar"} == res.json
+    assert {"name": "John Doe", "sub": "user"} == res.json

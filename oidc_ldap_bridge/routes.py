@@ -39,9 +39,3 @@ def logout():
     if current_user():
         current_user().logout()
     return redirect("/")
-
-
-@bp.route("/api/me")
-@require_oauth("profile")
-def api_me():
-    return jsonify(foo="bar")

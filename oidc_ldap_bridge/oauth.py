@@ -1,11 +1,18 @@
 import datetime
+from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
 from flask import Blueprint, request, session, redirect
 from flask import render_template, jsonify, flash, current_app
 from flask_babel import gettext
 from .models import User, Client, Consent
-from .oauth2utils import authorization, IntrospectionEndpoint, RevocationEndpoint
+from .oauth2utils import (
+    authorization,
+    IntrospectionEndpoint,
+    RevocationEndpoint,
+    generate_user_info,
+    require_oauth,
+)
 from .forms import LoginForm
 from .flaskutils import current_user
 
@@ -120,4 +127,12 @@ def jwks():
                 }
             ]
         }
+    )
+
+
+@bp.route("/userinfo")
+@require_oauth("profile")
+def userinfo():
+    return jsonify(
+        generate_user_info(current_token.oauthSubject, current_token.oauthScope[0])
     )
