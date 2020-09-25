@@ -21,9 +21,11 @@ dn: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: Jane Doe
+gn: Jane
 sn: Doe
 uid: admin
 mail: admin@mydomain.tld
+telephoneNumber: 555-000-000
 userpassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 memberof: cn=admins,ou=groups,dc=mydomain,dc=tld
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
@@ -32,8 +34,10 @@ dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: John Doe
+gn: John
 sn: Doe
 uid: user
 mail: user@mydomain.tld
+telephoneNumber: 555-000-001
 userpassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
