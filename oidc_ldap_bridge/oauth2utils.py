@@ -66,8 +66,8 @@ def generate_user_info(user, scope):
     data = {}
     for field in fields:
         ldap_field_match = current_app.config["JWT"]["MAPPING"].get(field.upper())
-        if ldap_field_match and getattr(user, ldap_field_match, None):
-            data[field] = getattr(user, ldap_field_match)
+        if ldap_field_match and ldap_field_match in user.attrs:
+            data[field] = user.__getattr__(ldap_field_match)
             if isinstance(data[field], list):
                 data[field] = data[field][0]
 

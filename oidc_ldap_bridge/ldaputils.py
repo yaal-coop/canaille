@@ -10,7 +10,6 @@ class LDAPObject:
     base = None
     root_dn = None
     id = None
-    ocs = None
 
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
@@ -29,11 +28,21 @@ class LDAPObject:
 
     def update_ldap_attributes(self):
         by_name = self.ocs_by_name()
-        ocs = [by_name[name] for name in self.attrs["objectClass"]]
+        ocs = {by_name[name] for name in self.attrs["objectClass"]}
+        done = set()
 
-        for oc in ocs:
+        while len(ocs) > 0:
+            oc = ocs.pop()
+            done.add(oc)
+            for ocsup in oc.sup:
+                if ocsup not in done:
+                    ocs.add(by_name[ocsup])
+
             self.may.extend(oc.may)
             self.must.extend(oc.must)
+
+        self.may = list(set(self.may))
+        self.must = list(set(self.must))
 
     def __repr__(self):
         return "<{} {}={}>".format(
@@ -192,6 +201,7 @@ class LDAPObject:
         o = cls(
             **{k: [elt.decode("utf-8") for elt in v] for k, v in result[0][1].items()}
         )
+        o.update_ldap_attributes()
 
         return o
 
