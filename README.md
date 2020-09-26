@@ -51,6 +51,7 @@ Contributions are welcome!
 To run the tests, you just need to run `tox`.
 
 To try a development environment, you can run the docker image and then open https://127.0.0.1:5000
+You can then connect with user *admin* and password *admin* to access an admin account, or user *user* and password *user* for a regular one.
 
 ```bash
 cp oidc_ldap_bridge/conf/config.sample.toml oidc_ldap_bridge/conf/config.toml
