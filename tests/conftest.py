@@ -80,6 +80,10 @@ def slapd_server():
                     "dn: " + slapd.root_dn,
                     "objectClass: applicationProcess",
                     "cn: " + slapd.root_cn,
+                    "",
+                    "dn: ou=users," + slapd.suffix,
+                    "objectClass: organizationalUnit",
+                    "ou: users",
                 ]
             )
             + "\n"
@@ -87,10 +91,6 @@ def slapd_server():
 
         LDAPObject.root_dn = slapd.suffix
         User.base = "ou=users"
-        conn = ldap.ldapobject.SimpleLDAPObject(slapd.ldap_uri)
-        conn.simple_bind_s(slapd.root_dn, slapd.root_pw)
-        User.initialize(conn)
-        conn.unbind_s()
 
         yield slapd
     finally:
@@ -150,6 +150,7 @@ def testclient(app):
 
 @pytest.fixture
 def client(app, slapd_connection):
+    Client.ocs_by_name(slapd_connection)
     c = Client(
         oauthClientID=gen_salt(24),
         oauthClientName="Some client",
@@ -183,6 +184,7 @@ def client(app, slapd_connection):
 
 @pytest.fixture
 def authorization(app, slapd_connection, user, client):
+    AuthorizationCode.ocs_by_name(slapd_connection)
     a = AuthorizationCode(
         oauthCode="my-code",
         oauthClient=client.dn,
@@ -203,6 +205,7 @@ def authorization(app, slapd_connection, user, client):
 
 @pytest.fixture
 def user(app, slapd_connection):
+    User.ocs_by_name(slapd_connection)
     u = User(
         objectClass=["person", "simpleSecurityObject", "uidObject"],
         cn="John Doe",
@@ -216,6 +219,7 @@ def user(app, slapd_connection):
 
 @pytest.fixture
 def admin(app, slapd_connection):
+    User.ocs_by_name(slapd_connection)
     u = User(
         objectClass=["person", "simpleSecurityObject", "uidObject"],
         cn="Jane Doe",
@@ -229,6 +233,7 @@ def admin(app, slapd_connection):
 
 @pytest.fixture
 def token(slapd_connection, client, user):
+    Token.ocs_by_name(slapd_connection)
     t = Token(
         oauthAccessToken=gen_salt(48),
         oauthClient=client.dn,
@@ -245,6 +250,7 @@ def token(slapd_connection, client, user):
 
 @pytest.fixture
 def consent(slapd_connection, client, user):
+    Consent.ocs_by_name(slapd_connection)
     t = Consent(
         oauthClient=client.dn,
         oauthSubject=user.dn,
