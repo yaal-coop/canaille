@@ -193,5 +193,5 @@ def setup_app(app):
 
     except Exception as exc:
         if SENTRY and app.config.get("SENTRY_DSN"):
-            raise
-        sentry_sdk.capture_exception(exc)
+            sentry_sdk.capture_exception(exc)
+        raise
