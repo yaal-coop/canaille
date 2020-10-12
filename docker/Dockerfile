@@ -1,8 +1,5 @@
 FROM python:3-alpine
 
-# Until https://github.com/lepture/authlib/pull/261 is merged
-RUN apk add git
-
 RUN adduser -D -h /app oauthserver
 COPY --chown=oauthserver:oauthserver . /app/
 RUN apk add curl libldap libffi su-exec
