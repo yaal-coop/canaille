@@ -18,7 +18,6 @@ from authlib.oidc.core.grants import (
 )
 from authlib.oidc.core import UserInfo
 from flask import current_app
-from werkzeug.security import gen_salt
 from .models import Client, AuthorizationCode, Token, User
 
 
@@ -155,10 +154,6 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
 
 
 class OpenIDHybridGrant(_OpenIDHybridGrant):
-    def create_authorization_code(self, client, grant_user, request):
-        code = gen_salt(48)
-        return self.save_authorization_code(code, request)
-
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
 
