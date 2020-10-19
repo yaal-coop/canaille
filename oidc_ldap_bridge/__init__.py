@@ -8,7 +8,7 @@ import oidc_ldap_bridge.admin.authorizations
 import oidc_ldap_bridge.admin.clients
 import oidc_ldap_bridge.consents
 import oidc_ldap_bridge.oauth
-import oidc_ldap_bridge.routes
+import oidc_ldap_bridge.account
 import oidc_ldap_bridge.tokens
 import oidc_ldap_bridge.well_known
 
@@ -121,7 +121,7 @@ def setup_app(app):
 
         config_oauth(app)
         setup_ldap_tree(app)
-        app.register_blueprint(oidc_ldap_bridge.routes.bp)
+        app.register_blueprint(oidc_ldap_bridge.account.bp)
         app.register_blueprint(oidc_ldap_bridge.oauth.bp, url_prefix="/oauth")
         app.register_blueprint(oidc_ldap_bridge.consents.bp, url_prefix="/consent")
         app.register_blueprint(oidc_ldap_bridge.tokens.bp, url_prefix="/token")
