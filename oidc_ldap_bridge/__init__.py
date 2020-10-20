@@ -149,7 +149,7 @@ def setup_app(app):
             if app.config.get("LANGUAGE"):
                 return app.config.get("LANGUAGE")
 
-            return request.accept_languages.best_match(["fr", "en"])
+            return request.accept_languages.best_match(["fr_FR", "en_US"])
 
         @babel.timezoneselector
         def get_timezone():
