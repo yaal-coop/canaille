@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-08-27 14:31+0200\n"
-"PO-Revision-Date: 2020-08-27 14:40+0200\n"
+"POT-Creation-Date: 2020-10-20 11:48+0200\n"
+"PO-Revision-Date: 2020-10-20 11:51+0200\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -20,249 +20,313 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 "X-Generator: Gtranslator 3.36.0\n"
 
-#: web/forms.py:8
-msgid "Login"
-msgstr "Connexion"
-
-#: web/forms.py:13
-msgid "Password"
-msgstr "Mot de passe"
-
-#: web/oauth.py:28 web/routes.py:29
+#: oidc_ldap_bridge/account.py:28 oidc_ldap_bridge/oauth.py:42
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
-#: web/oauth.py:45
-msgid "You have been successfully logged out."
-msgstr "Vous avez été déconnectés."
+#: oidc_ldap_bridge/account.py:56
+msgid "Profile edition failed."
+msgstr "L'édition du profil a échoué."
 
-#: web/tokens.py:30
+#: oidc_ldap_bridge/account.py:59
+msgid "Profile updated successfuly."
+msgstr "Le profil a été mis à jour avec succès."
+
+#: oidc_ldap_bridge/consents.py:26 oidc_ldap_bridge/tokens.py:27
 msgid "Could not delete this access"
 msgstr "Impossible de supprimer cet accès."
 
-#: web/tokens.py:35
+#: oidc_ldap_bridge/consents.py:30 oidc_ldap_bridge/tokens.py:32
 msgid "The access has been revoked"
 msgstr "L'accès a été révoqué."
 
-#: web/admin/clients.py:24 web/templates/admin/client_list.html:22
+#: oidc_ldap_bridge/forms.py:8
+msgid "Login"
+msgstr "Connexion"
+
+#: oidc_ldap_bridge/forms.py:13
+msgid "Password"
+msgstr "Mot de passe"
+
+#: oidc_ldap_bridge/forms.py:19
+msgid "Username"
+msgstr "Identifiant"
+
+#: oidc_ldap_bridge/forms.py:23
+msgid "Given name"
+msgstr "Prénom"
+
+#: oidc_ldap_bridge/forms.py:24
+msgid "Family Name"
+msgstr "Nom de famille"
+
+#: oidc_ldap_bridge/forms.py:30
+msgid "Email address"
+msgstr "Courriel"
+
+#: oidc_ldap_bridge/forms.py:32
+msgid "Phone number"
+msgstr "Numéro de téléphone"
+
+#: oidc_ldap_bridge/oauth.py:86
+msgid "You have been successfully logged out."
+msgstr "Vous avez été déconnectés."
+
+#: oidc_ldap_bridge/admin/clients.py:24
+#: oidc_ldap_bridge/templates/admin/client_list.html:22
 msgid "Name"
 msgstr "Nom"
 
-#: web/admin/clients.py:29
+#: oidc_ldap_bridge/admin/clients.py:29
 msgid "Contact"
 msgstr "Contact"
 
-#: web/admin/clients.py:34
+#: oidc_ldap_bridge/admin/clients.py:34
 msgid "URI"
 msgstr "URI"
 
-#: web/admin/clients.py:39
+#: oidc_ldap_bridge/admin/clients.py:39
 msgid "Redirect URIs"
 msgstr "URIs de redirection"
 
-#: web/admin/clients.py:44
+#: oidc_ldap_bridge/admin/clients.py:44
 msgid "Grant types"
 msgstr "Grant types"
 
-#: web/admin/clients.py:56
+#: oidc_ldap_bridge/admin/clients.py:56
 msgid "Scope"
 msgstr "Scope"
 
-#: web/admin/clients.py:62
+#: oidc_ldap_bridge/admin/clients.py:62
 msgid "Response types"
 msgstr "Types de réponse"
 
-#: web/admin/clients.py:68
+#: oidc_ldap_bridge/admin/clients.py:68
 msgid "Token Endpoint Auth Method"
 msgstr "Token Endpoint Auth Method"
 
-#: web/admin/clients.py:78
+#: oidc_ldap_bridge/admin/clients.py:78
 msgid "Logo URI"
 msgstr "URI du logo"
 
-#: web/admin/clients.py:83
+#: oidc_ldap_bridge/admin/clients.py:83
 msgid "Terms of service URI"
 msgstr "URI des conditions d'utilisation"
 
-#: web/admin/clients.py:88
+#: oidc_ldap_bridge/admin/clients.py:88
 msgid "Policy URI"
 msgstr "URI de la politique de confidentialité"
 
-#: web/admin/clients.py:93
+#: oidc_ldap_bridge/admin/clients.py:93
 msgid "Software ID"
 msgstr "ID du logiciel"
 
-#: web/admin/clients.py:98
+#: oidc_ldap_bridge/admin/clients.py:98
 msgid "Software Version"
 msgstr "Version du logiciel"
 
-#: web/admin/clients.py:103
+#: oidc_ldap_bridge/admin/clients.py:103
 msgid "JWK"
 msgstr "JWK"
 
-#: web/admin/clients.py:108
+#: oidc_ldap_bridge/admin/clients.py:108
 msgid "JKW URI"
 msgstr "URI du JWK"
 
-#: web/admin/clients.py:124
+#: oidc_ldap_bridge/admin/clients.py:124
 msgid "The client has not been added. Please check your information."
 msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
 
-#: web/admin/clients.py:155
+#: oidc_ldap_bridge/admin/clients.py:155
 msgid "The client has been created."
 msgstr "Le client a été créé."
 
-#: web/admin/clients.py:176
+#: oidc_ldap_bridge/admin/clients.py:176
 msgid "The client has not been edited. Please check your information."
 msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 
-#: web/admin/clients.py:200
+#: oidc_ldap_bridge/admin/clients.py:200
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
-#: web/templates/authorize.html:9
+#: oidc_ldap_bridge/templates/authorize.html:9
 #, python-format
 msgid "The application %(name)s is requesting access to:"
 msgstr "L'application %(name)s demande un accès à :"
 
-#: web/templates/authorize.html:14
+#: oidc_ldap_bridge/templates/authorize.html:14
 #, python-format
 msgid "from: %(user)s"
 msgstr "pour : %(user)s"
 
-#: web/templates/authorize.html:19
+#: oidc_ldap_bridge/templates/authorize.html:19
 msgid "Deny"
 msgstr "Refuser"
 
-#: web/templates/authorize.html:24
+#: oidc_ldap_bridge/templates/authorize.html:24
 msgid "Switch user"
 msgstr "Changer d'utilisateur"
 
-#: web/templates/authorize.html:29
+#: oidc_ldap_bridge/templates/authorize.html:29
 msgid "Accept"
 msgstr "Accepter"
 
-#: web/templates/base.html:7
+#: oidc_ldap_bridge/templates/base.html:7
 msgid "OpenID Connect LDAP Bridge"
 msgstr "OpendID Connect LDAP Bridge"
 
-#: web/templates/base.html:35 web/templates/token_list.html:16
-msgid "My accesses"
-msgstr "Mes accès"
+#: oidc_ldap_bridge/templates/base.html:35
+#: oidc_ldap_bridge/templates/profile.html:8
+msgid "My profile"
+msgstr "Mon profil"
 
-#: web/templates/base.html:44
+#: oidc_ldap_bridge/templates/base.html:39
+#: oidc_ldap_bridge/templates/consent_list.html:16
+msgid "My consents"
+msgstr "Mes autorisations"
+
+#: oidc_ldap_bridge/templates/base.html:43
+#: oidc_ldap_bridge/templates/token_list.html:16
+msgid "My tokens"
+msgstr "Mes jetons"
+
+#: oidc_ldap_bridge/templates/base.html:52
 msgid "Clients"
 msgstr "Clients"
 
-#: web/templates/base.html:48
+#: oidc_ldap_bridge/templates/base.html:56
 msgid "Tokens"
 msgstr "Jetons"
 
-#: web/templates/base.html:52
+#: oidc_ldap_bridge/templates/base.html:60
 msgid "Codes"
 msgstr "Codes"
 
-#: web/templates/base.html:59
+#: oidc_ldap_bridge/templates/base.html:64
+msgid "Consents"
+msgstr "Autorisations"
+
+#: oidc_ldap_bridge/templates/base.html:71
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: web/templates/login.html:14
-#, python-format
-msgid "Sign in at %(website)s"
-msgstr "Connexion à %(website)s"
-
-#: web/templates/login.html:16
-msgid "Log-in and manage your authorizations."
-msgstr "Connectez-vous et gérez vos autorisations."
-
-#: web/templates/login.html:27
-msgid "Sign in"
-msgstr "Se connecter"
-
-#: web/templates/token_list.html:39
+#: oidc_ldap_bridge/templates/consent_list.html:39
+#: oidc_ldap_bridge/templates/token_list.html:39
 msgid "From:"
 msgstr "À partir de :"
 
-#: web/templates/token_list.html:40
-msgid "Until:"
-msgstr "Jusqu'à :"
+#: oidc_ldap_bridge/templates/consent_list.html:41
+msgid "Revoked:"
+msgstr "Révoqué le :"
 
-#: web/templates/token_list.html:43
+#: oidc_ldap_bridge/templates/consent_list.html:44
+#: oidc_ldap_bridge/templates/token_list.html:43
 msgid "Has access to:"
 msgstr "A accès à :"
 
-#: web/templates/token_list.html:53
+#: oidc_ldap_bridge/templates/consent_list.html:54
 msgid "Remove access"
 msgstr "Supprimer l'accès"
 
-#: web/templates/token_list.html:63
+#: oidc_ldap_bridge/templates/consent_list.html:64
+#: oidc_ldap_bridge/templates/token_list.html:63
 msgid "Nothing here"
 msgstr "Rien ici"
 
-#: web/templates/token_list.html:64
+#: oidc_ldap_bridge/templates/consent_list.html:65
+#: oidc_ldap_bridge/templates/token_list.html:64
 msgid "You did not authorize applications yet."
 msgstr ""
 "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
 
-#: web/templates/admin/authorization_list.html:18
-#: web/templates/admin/token_list.html:18
+#: oidc_ldap_bridge/templates/login.html:14
+#, python-format
+msgid "Sign in at %(website)s"
+msgstr "Connexion à %(website)s"
+
+#: oidc_ldap_bridge/templates/login.html:16
+msgid "Log-in and manage your authorizations."
+msgstr "Connectez-vous et gérez vos autorisations."
+
+#: oidc_ldap_bridge/templates/login.html:27
+msgid "Sign in"
+msgstr "Se connecter"
+
+#: oidc_ldap_bridge/templates/profile.html:11
+msgid "Edit your personal informations"
+msgstr "Éditez vos informations personnelles"
+
+#: oidc_ldap_bridge/templates/profile.html:23
+msgid "Edit"
+msgstr "Éditer"
+
+#: oidc_ldap_bridge/templates/token_list.html:40
+msgid "Until:"
+msgstr "Jusqu'à :"
+
+#: oidc_ldap_bridge/templates/token_list.html:53
+msgid "Remove token"
+msgstr "Supprimer le jeton"
+
+#: oidc_ldap_bridge/templates/admin/authorization_list.html:18
+#: oidc_ldap_bridge/templates/admin/token_list.html:18
 msgid "Token"
 msgstr "Jeton"
 
-#: web/templates/admin/authorization_list.html:19
-#: web/templates/admin/token_list.html:19
+#: oidc_ldap_bridge/templates/admin/authorization_list.html:19
+#: oidc_ldap_bridge/templates/admin/token_list.html:19
 msgid "Client"
 msgstr "Client"
 
-#: web/templates/admin/authorization_list.html:20
-#: web/templates/admin/token_list.html:20
+#: oidc_ldap_bridge/templates/admin/authorization_list.html:20
+#: oidc_ldap_bridge/templates/admin/token_list.html:20
 msgid "Subject"
 msgstr "Utilisateur"
 
-#: web/templates/admin/authorization_list.html:21
-#: web/templates/admin/client_list.html:24
-#: web/templates/admin/token_list.html:21
+#: oidc_ldap_bridge/templates/admin/authorization_list.html:21
+#: oidc_ldap_bridge/templates/admin/client_list.html:24
+#: oidc_ldap_bridge/templates/admin/token_list.html:21
 msgid "Created"
 msgstr "Créé"
 
-#: web/templates/admin/authorization_view.html:7
+#: oidc_ldap_bridge/templates/admin/authorization_view.html:7
 msgid "View a authorization"
 msgstr "Voir une autorisation"
 
-#: web/templates/admin/client_add.html:7
+#: oidc_ldap_bridge/templates/admin/client_add.html:7
 msgid "Add a client"
 msgstr "Ajouter un client"
 
-#: web/templates/admin/client_add.html:17
-#: web/templates/admin/client_edit.html:34
+#: oidc_ldap_bridge/templates/admin/client_add.html:17
+#: oidc_ldap_bridge/templates/admin/client_edit.html:34
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: web/templates/admin/client_edit.html:7
+#: oidc_ldap_bridge/templates/admin/client_edit.html:7
 msgid "Edit a client"
 msgstr "Éditer un client"
 
-#: web/templates/admin/client_edit.html:20
+#: oidc_ldap_bridge/templates/admin/client_edit.html:20
 msgid "ID"
 msgstr "ID"
 
-#: web/templates/admin/client_edit.html:24
+#: oidc_ldap_bridge/templates/admin/client_edit.html:24
 msgid "Secret"
 msgstr "Secret"
 
-#: web/templates/admin/client_edit.html:28
+#: oidc_ldap_bridge/templates/admin/client_edit.html:28
 msgid "Issued at"
 msgstr "Créé le"
 
-#: web/templates/admin/client_list.html:17
+#: oidc_ldap_bridge/templates/admin/client_list.html:17
 msgid "Add client"
 msgstr "Ajouter un client"
 
-#: web/templates/admin/client_list.html:23
+#: oidc_ldap_bridge/templates/admin/client_list.html:23
 msgid "URL"
 msgstr "URL"
 
-#: web/templates/admin/token_view.html:7
+#: oidc_ldap_bridge/templates/admin/token_view.html:7
 msgid "View a token"
 msgstr "Voir un jeton"
 
@@ -271,3 +335,6 @@ msgstr "Voir un jeton"
 
 #~ msgid "Create Client"
 #~ msgstr "Créer un client"
+
+#~ msgid "My accesses"
+#~ msgstr "Mes accès"
