@@ -28,8 +28,13 @@ python38:
   stage: test
   script: tox -e py38
 
+python39:
+  image: python:3.9
+  stage: test
+  script: tox -e py39
+
 coverage:
-  image: python:3.8
+  image: python:3.9
   stage: test
   script:
     - tox -e coverage
