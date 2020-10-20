@@ -42,7 +42,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
         "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
     )
     assert (200, "application/json") == (res.status_code, res.content_type)
-    assert {"name": "John Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "sub": "user", "family_name": "Doe"} == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
@@ -94,7 +94,7 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
         "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
     )
     assert (200, "application/json") == (res.status_code, res.content_type)
-    assert {"name": "John Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "sub": "user", "family_name": "Doe"} == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"

@@ -26,4 +26,4 @@ def test_password_flow(testclient, slapd_connection, user, client):
         "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
     )
     assert 200 == res.status_code
-    assert {"name": "John Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "sub": "user", "family_name": "Doe"} == res.json

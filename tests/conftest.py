@@ -15,6 +15,12 @@ from oidc_ldap_bridge.ldaputils import LDAPObject
 
 class CustomSlapdObject(slapdtest.SlapdObject):
     custom_schema_files = ("oauth2-openldap.schema",)
+    openldap_schema_files = (
+        "core.schema",
+        "cosine.schema",
+        "nis.schema",
+        "inetorgperson.schema",
+    )
 
     def _ln_schema_files(self, *args, **kwargs):
         dir_path = os.path.join(
@@ -135,6 +141,12 @@ def app(slapd_server, keypair_path):
                     "SUB": "uid",
                     "NAME": "cn",
                     "PHONE_NUMBER": "telephoneNumber",
+                    "EMAIL": "mail",
+                    "GIVEN_NAME": "givenName",
+                    "FAMILY_NAME": "sn",
+                    "PREFERRED_USERNAME": "displayName",
+                    "LOCALE": "preferredLanguage",
+                    "PICTURE": "photo",
                 },
             },
         }
