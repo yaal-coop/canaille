@@ -1,11 +1,10 @@
-from flask import Blueprint, request, flash, url_for
-from flask import render_template, redirect, jsonify
+from flask import Blueprint, request, flash, url_for, current_app
+from flask import render_template, redirect
 from flask_babel import gettext
 
-from .forms import LoginForm
-from .flaskutils import current_user
+from .forms import LoginForm, ProfileForm
+from .flaskutils import current_user, user_needed
 from .models import User
-from .oauth2utils import require_oauth
 
 
 bp = Blueprint(__name__, "home")
@@ -15,7 +14,7 @@ bp = Blueprint(__name__, "home")
 def index():
     if not current_user():
         return redirect(url_for("oidc_ldap_bridge.account.login"))
-    return redirect(url_for("oidc_ldap_bridge.tokens.tokens"))
+    return redirect(url_for("oidc_ldap_bridge.account.profile"))
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -39,3 +38,32 @@ def logout():
     if current_user():
         current_user().logout()
     return redirect("/")
+
+
+@bp.route("/profile", methods=("GET", "POST"))
+@user_needed()
+def profile(user):
+    claims = current_app.config["JWT"]["MAPPING"]
+    data = {
+        k.lower(): getattr(user, v)[0]
+        if getattr(user, v) and isinstance(getattr(user, v), list)
+        else getattr(user, v) or ""
+        for k, v in claims.items()
+    }
+    form = ProfileForm(request.form or None, data=data)
+    if request.form:
+        if not form.validate():
+            flash(gettext("Profile edition failed."), "error")
+
+        else:
+            flash(gettext("Profile updated successfuly."), "success")
+            for attribute in form:
+                model_attribute_name = claims.get(attribute.name.upper())
+                if not model_attribute_name or not hasattr(user, model_attribute_name):
+                    continue
+
+                user[model_attribute_name] = [attribute.data]
+
+            user.save()
+
+    return render_template("profile.html", form=form)

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+
+{% block content %}
+<div class="ui clearing segment">
+    <h2 class="ui center aligned header">
+        <div class="content">
+            {{ _("My profile") }}
+        </div>
+        <div class="sub header">
+            {% trans %}Edit your personal informations{% endtrans %}
+        </div>
+    </h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="ui attached message {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    {{ sui.render_form(form, _("Edit"), action=request.url) }}
+</div>
+{% endblock %}

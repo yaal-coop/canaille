@@ -59,6 +59,9 @@ class LDAPObject:
     def __getitem__(self, item):
         return getattr(self, item)
 
+    def __setitem__(self, item, value):
+        return setattr(self, item, value)
+
     def update(self, **kwargs):
         for k, v in kwargs.items():
             self.__setattr__(k, v)

@@ -30,6 +30,10 @@
                     </a>
                 </div>
                 {% endif %}
+                <a class="item" href="{{ url_for('oidc_ldap_bridge.account.profile') }}">
+                    <i class="id card icon"></i>
+                    {% trans %}My profile{% endtrans %}
+                </a>
                 <a class="item" href="{{ url_for('oidc_ldap_bridge.consents.consents') }}">
                     <i class="handshake icon"></i>
                     {% trans %}My consents{% endtrans %}
