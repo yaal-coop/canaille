@@ -37,7 +37,7 @@ def get_jwt_config(grant):
 
 
 def generate_user_info(user, scope):
-    user = User.get(user)
+    user = User.get(dn=user)
     fields = ["sub"]
     if "profile" in scope:
         fields += [
@@ -107,7 +107,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        return User.get(authorization_code.oauthSubject).dn
+        return User.get(dn=authorization_code.oauthSubject).dn
 
 
 class OpenIDCode(_OpenIDCode):
@@ -133,7 +133,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return token[0]
 
     def authenticate_user(self, credential):
-        return User.get(credential.oauthSubject).dn
+        return User.get(dn=credential.oauthSubject).dn
 
     def revoke_old_credential(self, credential):
         credential.oauthRevokationDate = datetime.datetime.now().strftime(
@@ -242,7 +242,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "active": True,
             "client_id": client_id,
             "token_type": token.oauthTokenType,
-            "username": User.get(token.oauthSubject).name,
+            "username": User.get(dn=token.oauthSubject).name,
             "scope": token.get_scope(),
             "sub": token.oauthSubject,
             "aud": client_id,

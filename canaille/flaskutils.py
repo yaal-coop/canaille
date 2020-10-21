@@ -9,7 +9,7 @@ def current_user():
         return None
 
     try:
-        return User.get(session["user_dn"])
+        return User.get(dn=session["user_dn"])
     except ldap.NO_SUCH_OBJECT:
         return None
 

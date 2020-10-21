@@ -125,18 +125,12 @@ def setup_app(app):
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
         app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
         app.register_blueprint(canaille.tokens.bp, url_prefix="/token")
-        app.register_blueprint(
-            canaille.well_known.bp, url_prefix="/.well-known"
-        )
-        app.register_blueprint(
-            canaille.admin.tokens.bp, url_prefix="/admin/token"
-        )
+        app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
+        app.register_blueprint(canaille.admin.tokens.bp, url_prefix="/admin/token")
         app.register_blueprint(
             canaille.admin.authorizations.bp, url_prefix="/admin/authorization"
         )
-        app.register_blueprint(
-            canaille.admin.clients.bp, url_prefix="/admin/client"
-        )
+        app.register_blueprint(canaille.admin.clients.bp, url_prefix="/admin/client")
 
         babel = Babel(app)
 

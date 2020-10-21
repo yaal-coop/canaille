@@ -17,10 +17,14 @@ class User(LDAPObject):
     admin = False
 
     @classmethod
-    def get(cls, dn=None, filter=None, conn=None):
+    def get(cls, login=None, dn=None, filter=None, conn=None):
         conn = conn or cls.ldap()
 
+        if login:
+            filter = current_app.config["LDAP"].get("USER_FILTER").format(login=login)
+
         user = super().get(dn, filter, conn)
+
         admin_filter = current_app.config["LDAP"].get("ADMIN_FILTER")
         if (
             admin_filter
@@ -34,8 +38,7 @@ class User(LDAPObject):
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
-        filter = current_app.config["LDAP"].get("USER_FILTER").format(login=login)
-        user = User.get(filter=filter)
+        user = User.get(login)
         if not user or not user.check_password(password):
             return None
 
