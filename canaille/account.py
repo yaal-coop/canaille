@@ -13,8 +13,8 @@ bp = Blueprint(__name__, "home")
 @bp.route("/")
 def index():
     if not current_user():
-        return redirect(url_for("oidc_ldap_bridge.account.login"))
-    return redirect(url_for("oidc_ldap_bridge.account.profile"))
+        return redirect(url_for("canaille.account.login"))
+    return redirect(url_for("canaille.account.profile"))
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -28,7 +28,7 @@ def login():
             flash(gettext("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
-        return redirect(url_for("oidc_ldap_bridge.account.index"))
+        return redirect(url_for("canaille.account.index"))
 
     return render_template("login.html", form=form)
 

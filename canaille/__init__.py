@@ -2,15 +2,15 @@ import ldap
 import os
 import toml
 
-import oidc_ldap_bridge.admin
-import oidc_ldap_bridge.admin.tokens
-import oidc_ldap_bridge.admin.authorizations
-import oidc_ldap_bridge.admin.clients
-import oidc_ldap_bridge.consents
-import oidc_ldap_bridge.oauth
-import oidc_ldap_bridge.account
-import oidc_ldap_bridge.tokens
-import oidc_ldap_bridge.well_known
+import canaille.admin
+import canaille.admin.tokens
+import canaille.admin.authorizations
+import canaille.admin.clients
+import canaille.consents
+import canaille.oauth
+import canaille.account
+import canaille.tokens
+import canaille.well_known
 
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -39,7 +39,7 @@ def create_app(config=None):
 
     app.config.from_mapping(
         {
-            "SESSION_COOKIE_NAME": "oidc-ldap-bridge",
+            "SESSION_COOKIE_NAME": "canaille",
             "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
         }
     )
@@ -121,21 +121,21 @@ def setup_app(app):
 
         config_oauth(app)
         setup_ldap_tree(app)
-        app.register_blueprint(oidc_ldap_bridge.account.bp)
-        app.register_blueprint(oidc_ldap_bridge.oauth.bp, url_prefix="/oauth")
-        app.register_blueprint(oidc_ldap_bridge.consents.bp, url_prefix="/consent")
-        app.register_blueprint(oidc_ldap_bridge.tokens.bp, url_prefix="/token")
+        app.register_blueprint(canaille.account.bp)
+        app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
+        app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
+        app.register_blueprint(canaille.tokens.bp, url_prefix="/token")
         app.register_blueprint(
-            oidc_ldap_bridge.well_known.bp, url_prefix="/.well-known"
+            canaille.well_known.bp, url_prefix="/.well-known"
         )
         app.register_blueprint(
-            oidc_ldap_bridge.admin.tokens.bp, url_prefix="/admin/token"
+            canaille.admin.tokens.bp, url_prefix="/admin/token"
         )
         app.register_blueprint(
-            oidc_ldap_bridge.admin.authorizations.bp, url_prefix="/admin/authorization"
+            canaille.admin.authorizations.bp, url_prefix="/admin/authorization"
         )
         app.register_blueprint(
-            oidc_ldap_bridge.admin.clients.bp, url_prefix="/admin/client"
+            canaille.admin.clients.bp, url_prefix="/admin/client"
         )
 
         babel = Babel(app)

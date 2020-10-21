@@ -20,313 +20,313 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 "X-Generator: Gtranslator 3.36.0\n"
 
-#: oidc_ldap_bridge/account.py:28 oidc_ldap_bridge/oauth.py:42
+#: canaille/account.py:28 canaille/oauth.py:42
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
-#: oidc_ldap_bridge/account.py:56
+#: canaille/account.py:56
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: oidc_ldap_bridge/account.py:59
+#: canaille/account.py:59
 msgid "Profile updated successfuly."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: oidc_ldap_bridge/consents.py:26 oidc_ldap_bridge/tokens.py:27
+#: canaille/consents.py:26 canaille/tokens.py:27
 msgid "Could not delete this access"
 msgstr "Impossible de supprimer cet accès."
 
-#: oidc_ldap_bridge/consents.py:30 oidc_ldap_bridge/tokens.py:32
+#: canaille/consents.py:30 canaille/tokens.py:32
 msgid "The access has been revoked"
 msgstr "L'accès a été révoqué."
 
-#: oidc_ldap_bridge/forms.py:8
+#: canaille/forms.py:8
 msgid "Login"
 msgstr "Connexion"
 
-#: oidc_ldap_bridge/forms.py:13
+#: canaille/forms.py:13
 msgid "Password"
 msgstr "Mot de passe"
 
-#: oidc_ldap_bridge/forms.py:19
+#: canaille/forms.py:19
 msgid "Username"
 msgstr "Identifiant"
 
-#: oidc_ldap_bridge/forms.py:23
+#: canaille/forms.py:23
 msgid "Given name"
 msgstr "Prénom"
 
-#: oidc_ldap_bridge/forms.py:24
+#: canaille/forms.py:24
 msgid "Family Name"
 msgstr "Nom de famille"
 
-#: oidc_ldap_bridge/forms.py:30
+#: canaille/forms.py:30
 msgid "Email address"
 msgstr "Courriel"
 
-#: oidc_ldap_bridge/forms.py:32
+#: canaille/forms.py:32
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: oidc_ldap_bridge/oauth.py:86
+#: canaille/oauth.py:86
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnectés."
 
-#: oidc_ldap_bridge/admin/clients.py:24
-#: oidc_ldap_bridge/templates/admin/client_list.html:22
+#: canaille/admin/clients.py:24
+#: canaille/templates/admin/client_list.html:22
 msgid "Name"
 msgstr "Nom"
 
-#: oidc_ldap_bridge/admin/clients.py:29
+#: canaille/admin/clients.py:29
 msgid "Contact"
 msgstr "Contact"
 
-#: oidc_ldap_bridge/admin/clients.py:34
+#: canaille/admin/clients.py:34
 msgid "URI"
 msgstr "URI"
 
-#: oidc_ldap_bridge/admin/clients.py:39
+#: canaille/admin/clients.py:39
 msgid "Redirect URIs"
 msgstr "URIs de redirection"
 
-#: oidc_ldap_bridge/admin/clients.py:44
+#: canaille/admin/clients.py:44
 msgid "Grant types"
 msgstr "Grant types"
 
-#: oidc_ldap_bridge/admin/clients.py:56
+#: canaille/admin/clients.py:56
 msgid "Scope"
 msgstr "Scope"
 
-#: oidc_ldap_bridge/admin/clients.py:62
+#: canaille/admin/clients.py:62
 msgid "Response types"
 msgstr "Types de réponse"
 
-#: oidc_ldap_bridge/admin/clients.py:68
+#: canaille/admin/clients.py:68
 msgid "Token Endpoint Auth Method"
 msgstr "Token Endpoint Auth Method"
 
-#: oidc_ldap_bridge/admin/clients.py:78
+#: canaille/admin/clients.py:78
 msgid "Logo URI"
 msgstr "URI du logo"
 
-#: oidc_ldap_bridge/admin/clients.py:83
+#: canaille/admin/clients.py:83
 msgid "Terms of service URI"
 msgstr "URI des conditions d'utilisation"
 
-#: oidc_ldap_bridge/admin/clients.py:88
+#: canaille/admin/clients.py:88
 msgid "Policy URI"
 msgstr "URI de la politique de confidentialité"
 
-#: oidc_ldap_bridge/admin/clients.py:93
+#: canaille/admin/clients.py:93
 msgid "Software ID"
 msgstr "ID du logiciel"
 
-#: oidc_ldap_bridge/admin/clients.py:98
+#: canaille/admin/clients.py:98
 msgid "Software Version"
 msgstr "Version du logiciel"
 
-#: oidc_ldap_bridge/admin/clients.py:103
+#: canaille/admin/clients.py:103
 msgid "JWK"
 msgstr "JWK"
 
-#: oidc_ldap_bridge/admin/clients.py:108
+#: canaille/admin/clients.py:108
 msgid "JKW URI"
 msgstr "URI du JWK"
 
-#: oidc_ldap_bridge/admin/clients.py:124
+#: canaille/admin/clients.py:124
 msgid "The client has not been added. Please check your information."
 msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
 
-#: oidc_ldap_bridge/admin/clients.py:155
+#: canaille/admin/clients.py:155
 msgid "The client has been created."
 msgstr "Le client a été créé."
 
-#: oidc_ldap_bridge/admin/clients.py:176
+#: canaille/admin/clients.py:176
 msgid "The client has not been edited. Please check your information."
 msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 
-#: oidc_ldap_bridge/admin/clients.py:200
+#: canaille/admin/clients.py:200
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
-#: oidc_ldap_bridge/templates/authorize.html:9
+#: canaille/templates/authorize.html:9
 #, python-format
 msgid "The application %(name)s is requesting access to:"
 msgstr "L'application %(name)s demande un accès à :"
 
-#: oidc_ldap_bridge/templates/authorize.html:14
+#: canaille/templates/authorize.html:14
 #, python-format
 msgid "from: %(user)s"
 msgstr "pour : %(user)s"
 
-#: oidc_ldap_bridge/templates/authorize.html:19
+#: canaille/templates/authorize.html:19
 msgid "Deny"
 msgstr "Refuser"
 
-#: oidc_ldap_bridge/templates/authorize.html:24
+#: canaille/templates/authorize.html:24
 msgid "Switch user"
 msgstr "Changer d'utilisateur"
 
-#: oidc_ldap_bridge/templates/authorize.html:29
+#: canaille/templates/authorize.html:29
 msgid "Accept"
 msgstr "Accepter"
 
-#: oidc_ldap_bridge/templates/base.html:7
+#: canaille/templates/base.html:7
 msgid "OpenID Connect LDAP Bridge"
 msgstr "OpendID Connect LDAP Bridge"
 
-#: oidc_ldap_bridge/templates/base.html:35
-#: oidc_ldap_bridge/templates/profile.html:8
+#: canaille/templates/base.html:35
+#: canaille/templates/profile.html:8
 msgid "My profile"
 msgstr "Mon profil"
 
-#: oidc_ldap_bridge/templates/base.html:39
-#: oidc_ldap_bridge/templates/consent_list.html:16
+#: canaille/templates/base.html:39
+#: canaille/templates/consent_list.html:16
 msgid "My consents"
 msgstr "Mes autorisations"
 
-#: oidc_ldap_bridge/templates/base.html:43
-#: oidc_ldap_bridge/templates/token_list.html:16
+#: canaille/templates/base.html:43
+#: canaille/templates/token_list.html:16
 msgid "My tokens"
 msgstr "Mes jetons"
 
-#: oidc_ldap_bridge/templates/base.html:52
+#: canaille/templates/base.html:52
 msgid "Clients"
 msgstr "Clients"
 
-#: oidc_ldap_bridge/templates/base.html:56
+#: canaille/templates/base.html:56
 msgid "Tokens"
 msgstr "Jetons"
 
-#: oidc_ldap_bridge/templates/base.html:60
+#: canaille/templates/base.html:60
 msgid "Codes"
 msgstr "Codes"
 
-#: oidc_ldap_bridge/templates/base.html:64
+#: canaille/templates/base.html:64
 msgid "Consents"
 msgstr "Autorisations"
 
-#: oidc_ldap_bridge/templates/base.html:71
+#: canaille/templates/base.html:71
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: oidc_ldap_bridge/templates/consent_list.html:39
-#: oidc_ldap_bridge/templates/token_list.html:39
+#: canaille/templates/consent_list.html:39
+#: canaille/templates/token_list.html:39
 msgid "From:"
 msgstr "À partir de :"
 
-#: oidc_ldap_bridge/templates/consent_list.html:41
+#: canaille/templates/consent_list.html:41
 msgid "Revoked:"
 msgstr "Révoqué le :"
 
-#: oidc_ldap_bridge/templates/consent_list.html:44
-#: oidc_ldap_bridge/templates/token_list.html:43
+#: canaille/templates/consent_list.html:44
+#: canaille/templates/token_list.html:43
 msgid "Has access to:"
 msgstr "A accès à :"
 
-#: oidc_ldap_bridge/templates/consent_list.html:54
+#: canaille/templates/consent_list.html:54
 msgid "Remove access"
 msgstr "Supprimer l'accès"
 
-#: oidc_ldap_bridge/templates/consent_list.html:64
-#: oidc_ldap_bridge/templates/token_list.html:63
+#: canaille/templates/consent_list.html:64
+#: canaille/templates/token_list.html:63
 msgid "Nothing here"
 msgstr "Rien ici"
 
-#: oidc_ldap_bridge/templates/consent_list.html:65
-#: oidc_ldap_bridge/templates/token_list.html:64
+#: canaille/templates/consent_list.html:65
+#: canaille/templates/token_list.html:64
 msgid "You did not authorize applications yet."
 msgstr ""
 "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
 
-#: oidc_ldap_bridge/templates/login.html:14
+#: canaille/templates/login.html:14
 #, python-format
 msgid "Sign in at %(website)s"
 msgstr "Connexion à %(website)s"
 
-#: oidc_ldap_bridge/templates/login.html:16
+#: canaille/templates/login.html:16
 msgid "Log-in and manage your authorizations."
 msgstr "Connectez-vous et gérez vos autorisations."
 
-#: oidc_ldap_bridge/templates/login.html:27
+#: canaille/templates/login.html:27
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: oidc_ldap_bridge/templates/profile.html:11
+#: canaille/templates/profile.html:11
 msgid "Edit your personal informations"
 msgstr "Éditez vos informations personnelles"
 
-#: oidc_ldap_bridge/templates/profile.html:23
+#: canaille/templates/profile.html:23
 msgid "Edit"
 msgstr "Éditer"
 
-#: oidc_ldap_bridge/templates/token_list.html:40
+#: canaille/templates/token_list.html:40
 msgid "Until:"
 msgstr "Jusqu'à :"
 
-#: oidc_ldap_bridge/templates/token_list.html:53
+#: canaille/templates/token_list.html:53
 msgid "Remove token"
 msgstr "Supprimer le jeton"
 
-#: oidc_ldap_bridge/templates/admin/authorization_list.html:18
-#: oidc_ldap_bridge/templates/admin/token_list.html:18
+#: canaille/templates/admin/authorization_list.html:18
+#: canaille/templates/admin/token_list.html:18
 msgid "Token"
 msgstr "Jeton"
 
-#: oidc_ldap_bridge/templates/admin/authorization_list.html:19
-#: oidc_ldap_bridge/templates/admin/token_list.html:19
+#: canaille/templates/admin/authorization_list.html:19
+#: canaille/templates/admin/token_list.html:19
 msgid "Client"
 msgstr "Client"
 
-#: oidc_ldap_bridge/templates/admin/authorization_list.html:20
-#: oidc_ldap_bridge/templates/admin/token_list.html:20
+#: canaille/templates/admin/authorization_list.html:20
+#: canaille/templates/admin/token_list.html:20
 msgid "Subject"
 msgstr "Utilisateur"
 
-#: oidc_ldap_bridge/templates/admin/authorization_list.html:21
-#: oidc_ldap_bridge/templates/admin/client_list.html:24
-#: oidc_ldap_bridge/templates/admin/token_list.html:21
+#: canaille/templates/admin/authorization_list.html:21
+#: canaille/templates/admin/client_list.html:24
+#: canaille/templates/admin/token_list.html:21
 msgid "Created"
 msgstr "Créé"
 
-#: oidc_ldap_bridge/templates/admin/authorization_view.html:7
+#: canaille/templates/admin/authorization_view.html:7
 msgid "View a authorization"
 msgstr "Voir une autorisation"
 
-#: oidc_ldap_bridge/templates/admin/client_add.html:7
+#: canaille/templates/admin/client_add.html:7
 msgid "Add a client"
 msgstr "Ajouter un client"
 
-#: oidc_ldap_bridge/templates/admin/client_add.html:17
-#: oidc_ldap_bridge/templates/admin/client_edit.html:34
+#: canaille/templates/admin/client_add.html:17
+#: canaille/templates/admin/client_edit.html:34
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: oidc_ldap_bridge/templates/admin/client_edit.html:7
+#: canaille/templates/admin/client_edit.html:7
 msgid "Edit a client"
 msgstr "Éditer un client"
 
-#: oidc_ldap_bridge/templates/admin/client_edit.html:20
+#: canaille/templates/admin/client_edit.html:20
 msgid "ID"
 msgstr "ID"
 
-#: oidc_ldap_bridge/templates/admin/client_edit.html:24
+#: canaille/templates/admin/client_edit.html:24
 msgid "Secret"
 msgstr "Secret"
 
-#: oidc_ldap_bridge/templates/admin/client_edit.html:28
+#: canaille/templates/admin/client_edit.html:28
 msgid "Issued at"
 msgstr "Créé le"
 
-#: oidc_ldap_bridge/templates/admin/client_list.html:17
+#: canaille/templates/admin/client_list.html:17
 msgid "Add client"
 msgstr "Ajouter un client"
 
-#: oidc_ldap_bridge/templates/admin/client_list.html:23
+#: canaille/templates/admin/client_list.html:23
 msgid "URL"
 msgstr "URL"
 
-#: oidc_ldap_bridge/templates/admin/token_view.html:7
+#: canaille/templates/admin/token_view.html:7
 msgid "View a token"
 msgstr "Voir un jeton"
 

@@ -1,7 +1,7 @@
 import ldap
 from functools import wraps
 from flask import session, abort
-from oidc_ldap_bridge.models import User
+from canaille.models import User
 
 
 def current_user():

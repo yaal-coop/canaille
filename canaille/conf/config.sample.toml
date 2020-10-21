@@ -12,8 +12,8 @@ NAME = "MyDomain"
 
 # Path to the RFC8414 metadata file. You should update those files
 # with your production URLs.
-OAUTH2_METADATA_FILE = "oidc_ldap_bridge/conf/oauth-authorization-server.json"
-OIDC_METADATA_FILE = "oidc_ldap_bridge/conf/openid-configuration.json"
+OAUTH2_METADATA_FILE = "canaille/conf/oauth-authorization-server.json"
+OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
 
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
@@ -41,8 +41,8 @@ ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
 # ssh-keygen -t rsa -b 4096 -m PEM -f private.pem
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem
 [JWT]
-PUBLIC_KEY = "oidc_ldap_bridge/conf/public.pem"
-PRIVATE_KEY = "oidc_ldap_bridge/conf/private.pem"
+PUBLIC_KEY = "canaille/conf/public.pem"
+PRIVATE_KEY = "canaille/conf/private.pem"
 KTY = "RSA"
 ALG = "RS256"
 EXP = 3600

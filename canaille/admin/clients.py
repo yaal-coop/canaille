@@ -5,8 +5,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_babel import gettext
 from werkzeug.security import gen_salt
-from oidc_ldap_bridge.models import Client
-from oidc_ldap_bridge.flaskutils import admin_needed
+from canaille.models import Client
+from canaille.flaskutils import admin_needed
 
 
 bp = Blueprint(__name__, "clients")
@@ -156,7 +156,7 @@ def add():
         "success",
     )
 
-    return redirect(url_for("oidc_ldap_bridge.admin.clients.edit", client_id=client_id))
+    return redirect(url_for("canaille.admin.clients.edit", client_id=client_id))
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])

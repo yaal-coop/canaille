@@ -1,8 +1,9 @@
-⚠ OpenID Connect LDAP Bridge is under development. Do not use in production yet. ⚠
+⚠ Canaille is under development. Do not use in production yet. ⚠
 
-# OpenID Connect LDAP Bridge
+# Canaille
 
-oidc-ldap-bridge is a simple OpenID Connect provider based upon OpenLDAP.
+Canaille is a French word meaning *rascal*, and is pronounced approximatively **Can I?**,
+as in *Can I access this data please?*. It is a simple OpenID Connect provider based upon OpenLDAP.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 - OAuth/OpenID Connect support;
@@ -35,14 +36,14 @@ sudo slapadd -n0 -l schema/*.ldif
 Then you can deploy the code either by copying the git repository or installing the pip package:
 
 ```bash
-pip install oidc_ldap_bridge
+pip install canaille
 ```
 
 Finally you have to run the website in a WSGI server:
 
 ```bash
 pip install gunicorn
-gunicorn "oidc_ldap_bridge:create_app()"
+gunicorn "canaille:create_app()"
 ```
 
 ## Contribute
@@ -54,8 +55,8 @@ To try a development environment, you can run the docker image and then open htt
 You can then connect with user *admin* and password *admin* to access an admin account, or user *user* and password *user* for a regular one.
 
 ```bash
-cp oidc_ldap_bridge/conf/config.sample.toml oidc_ldap_bridge/conf/config.toml
-cp oidc_ldap_bridge/conf/oauth-authorization-server.sample.json oidc_ldap_bridge/conf/oauth-authorization-server.json
-cp oidc_ldap_bridge/conf/openid-configuration.sample.json oidc_ldap_bridge/conf/openid-configuration.json
+cp canaille/conf/config.sample.toml canaille/conf/config.toml
+cp canaille/conf/oauth-authorization-server.sample.json canaille/conf/oauth-authorization-server.json
+cp canaille/conf/openid-configuration.sample.json canaille/conf/openid-configuration.json
 docker-compose up
 ```

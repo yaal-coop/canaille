@@ -49,7 +49,7 @@
                     </ul>
                 </div>
             </div>
-            <a class="ui bottom attached button" href="{{ url_for('oidc_ldap_bridge.consents.delete', consent_id=consent.cn[0] ) }}">
+            <a class="ui bottom attached button" href="{{ url_for('canaille.consents.delete', consent_id=consent.cn[0] ) }}">
                 <i class="remove icon"></i>
                 {% trans %}Remove access{% endtrans %}
             </a>

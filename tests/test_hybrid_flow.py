@@ -1,6 +1,6 @@
 from authlib.jose import jwt
 from urllib.parse import urlsplit, parse_qs
-from oidc_ldap_bridge.models import AuthorizationCode, Token
+from canaille.models import AuthorizationCode, Token
 
 
 def test_oauth_hybrid(testclient, slapd_connection, user, client):

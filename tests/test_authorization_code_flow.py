@@ -1,7 +1,7 @@
 from . import client_credentials
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from urllib.parse import urlsplit, parse_qs
-from oidc_ldap_bridge.models import AuthorizationCode, Token, Consent
+from canaille.models import AuthorizationCode, Token, Consent
 from werkzeug.security import gen_salt
 
 

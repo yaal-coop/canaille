@@ -1,6 +1,6 @@
 from authlib.jose import jwt
 from urllib.parse import urlsplit, parse_qs
-from oidc_ldap_bridge.models import Token
+from canaille.models import Token
 
 
 def test_oauth_implicit(testclient, slapd_connection, user, client):

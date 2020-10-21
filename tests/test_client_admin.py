@@ -1,4 +1,4 @@
-from oidc_ldap_bridge.models import Client
+from canaille.models import Client
 
 
 def test_no_logged_no_access(testclient):

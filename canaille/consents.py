@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_babel import gettext
-from oidc_ldap_bridge.models import Consent, Client
-from oidc_ldap_bridge.flaskutils import user_needed
+from canaille.models import Consent, Client
+from canaille.flaskutils import user_needed
 
 
 bp = Blueprint(__name__, "consents")
@@ -31,4 +31,4 @@ def delete(user, consent_id):
         consent.revoke()
         flash(gettext("The access has been revoked"), "success")
 
-    return redirect(url_for("oidc_ldap_bridge.consents.consents"))
+    return redirect(url_for("canaille.consents.consents"))

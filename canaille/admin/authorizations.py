@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
-from oidc_ldap_bridge.models import AuthorizationCode
-from oidc_ldap_bridge.flaskutils import admin_needed
+from canaille.models import AuthorizationCode
+from canaille.flaskutils import admin_needed
 
 
 bp = Blueprint(__name__, "authorizations")

@@ -32,17 +32,17 @@
             </div>
             {% endif %}
             <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                href="{{ url_for('oidc_ldap_bridge.account.profile') }}">
+                href="{{ url_for('canaille.account.profile') }}">
                 <i class="id card icon"></i>
                 {% trans %}My profile{% endtrans %}
             </a>
             <a class="item {% if menuitem == "consents" %}active{% endif %}"
-                href="{{ url_for('oidc_ldap_bridge.consents.consents') }}">
+                href="{{ url_for('canaille.consents.consents') }}">
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
             <a class="item {% if menuitem == "tokens" %}active{% endif %}"
-                href="{{ url_for('oidc_ldap_bridge.tokens.tokens') }}">
+                href="{{ url_for('canaille.tokens.tokens') }}">
                 <i class="key icon"></i>
                 {% trans %}My tokens{% endtrans %}
             </a>
@@ -51,15 +51,15 @@
                 <i class="settings icon"></i>
                 Admin
                 <div class="menu">
-                    <a class="item" href="{{ url_for('oidc_ldap_bridge.admin.clients.index') }}">
+                    <a class="item" href="{{ url_for('canaille.admin.clients.index') }}">
                     <i class="plug icon"></i>
                     {% trans %}Clients{% endtrans %}
                 </a>
-                <a class="item" href="{{ url_for('oidc_ldap_bridge.admin.tokens.index') }}">
+                <a class="item" href="{{ url_for('canaille.admin.tokens.index') }}">
                     <i class="key icon"></i>
                     {% trans %}Tokens{% endtrans %}
                 </a>
-                <a class="item" href="{{ url_for('oidc_ldap_bridge.admin.authorizations.index') }}">
+                <a class="item" href="{{ url_for('canaille.admin.authorizations.index') }}">
                     <i class="user secret icon"></i>
                     {% trans %}Codes{% endtrans %}
                 </a>
@@ -70,7 +70,7 @@
                 </div>
             </div>
             {% endif %}
-            <a class="item" href="{{ url_for('oidc_ldap_bridge.account.logout') }}">
+            <a class="item" href="{{ url_for('canaille.account.logout') }}">
                 <i class="sign out alternate icon"></i>
                 {% trans %}Log out{% endtrans %}
             </a>

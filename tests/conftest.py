@@ -8,9 +8,9 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
-from oidc_ldap_bridge import create_app
-from oidc_ldap_bridge.models import User, Client, Token, AuthorizationCode, Consent
-from oidc_ldap_bridge.ldaputils import LDAPObject
+from canaille import create_app
+from canaille.models import User, Client, Token, AuthorizationCode, Consent
+from canaille.ldaputils import LDAPObject
 
 
 class CustomSlapdObject(slapdtest.SlapdObject):
@@ -120,8 +120,8 @@ def app(slapd_server, keypair_path):
     app = create_app(
         {
             "SECRET_KEY": gen_salt(24),
-            "OAUTH2_METADATA_FILE": "oidc_ldap_bridge/conf/oauth-authorization-server.sample.json",
-            "OIDC_METADATA_FILE": "oidc_ldap_bridge/conf/openid-configuration.sample.json",
+            "OAUTH2_METADATA_FILE": "canaille/conf/oauth-authorization-server.sample.json",
+            "OIDC_METADATA_FILE": "canaille/conf/openid-configuration.sample.json",
             "LDAP": {
                 "ROOT_DN": slapd_server.suffix,
                 "URI": slapd_server.ldap_uri,
