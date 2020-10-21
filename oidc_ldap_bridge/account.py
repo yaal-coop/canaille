@@ -51,18 +51,21 @@ def profile(user):
         for k, v in claims.items()
     }
     form = ProfileForm(request.form or None, data=data)
+
     if request.form:
         if not form.validate():
             flash(gettext("Profile edition failed."), "error")
 
         else:
-            flash(gettext("Profile updated successfuly."), "success")
             for attribute in form:
                 model_attribute_name = claims.get(attribute.name.upper())
                 if not model_attribute_name or not hasattr(user, model_attribute_name):
                     continue
 
                 user[model_attribute_name] = [attribute.data]
+
+            if not form.password1.data or user.set_password(form.password1.data):
+                flash(gettext("Profile updated successfuly."), "success")
 
             user.save()
 

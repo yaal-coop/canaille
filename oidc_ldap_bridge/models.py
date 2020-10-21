@@ -63,6 +63,21 @@ class User(LDAPObject):
         finally:
             conn.unbind_s()
 
+    def set_password(self, password, conn=None):
+        conn = conn or self.ldap()
+
+        try:
+            conn.passwd_s(
+                self.dn,
+                None,
+                password.encode("utf-8"),
+            )
+
+        except ldap.LDAPError:
+            return False
+
+        return True
+
     @property
     def name(self):
         return self.cn[0]

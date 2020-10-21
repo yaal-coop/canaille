@@ -42,3 +42,15 @@ class ProfileForm(FlaskForm):
     )
     #    picture = wtforms.StringField(_("Photo"))
     #    website = wtforms.fields.html5.URLField(_("Website"))
+
+    password1 = wtforms.PasswordField(
+        _("Password"),
+        validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
+    )
+    password2 = wtforms.PasswordField(
+        _("Password confirmation"),
+    )
+
+    def validate_password2(self, field):
+        if self.password1.data and self.password1.data != field.data:
+            raise wtforms.ValidationError(_("Password and confirmation are different."))
