@@ -1,12 +1,23 @@
-body {
-    background: #F8F8F8;
+@media only screen and (min-width: 1200px) {
+    .ui.ui.ui.container:not(.fluid) {
+        width: 770px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
-.container {
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .ui.ui.ui.container:not(.fluid) {
+        width: 790px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+body {
+    background: #F8F8F8;
     padding: 1em;
-    min-width: 320px;
-    max-width: 800px;
-    margin: auto;
 }
 
 .logo img{
