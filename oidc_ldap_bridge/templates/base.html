@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>{% block title %}{% trans %}OpenID Connect LDAP Bridge{% endtrans %}{% endblock %}</title>
+
     <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
     <link href="/static/css/base.css" rel="stylesheet">
     {% if logo_url %}<link rel="icon" href="{{ logo_url }}">{% endif %}
@@ -22,7 +24,7 @@
     <div class="container">
         {% block menu %}
             {% if user and menu %}
-            <nav class="ui labeled icon menu">
+            <nav class="ui stackable labeled icon menu">
                 {% if logo_url %}
                 <div class="header item">
                     <a href="/" class="logo">
