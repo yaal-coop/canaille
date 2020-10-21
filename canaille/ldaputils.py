@@ -196,7 +196,10 @@ class LDAPObject:
         elif "=" not in dn:
             dn = f"{cls.id}={dn},{cls.base},{cls.root_dn}"
 
-        result = conn.search_s(dn, ldap.SCOPE_SUBTREE, filter)
+        try:
+            result = conn.search_s(dn, ldap.SCOPE_SUBTREE, filter)
+        except ldap.LDAPError:
+            result = None
 
         if not result:
             return None
