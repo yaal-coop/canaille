@@ -1,4 +1,7 @@
-{% macro render_field(field, label_visible=true) -%}
+{% macro render_field(
+    field,
+    label_visible=true,
+    icon=none) -%}
 <div class="field {{ kwargs.pop('class_', '') }} {% if field.errors %} error{% endif %}">
 {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
     {{ field.label() }}
@@ -11,10 +14,19 @@
     {% endfor %}
     {% endif %}
 
+    {% if icon %}
+        <div class="ui left icon input">
+        <i class="{{ icon }} icon"></i>
+    {% endif %}
+
     {% if field.type in ("SelectField", "SelectMultipleField") %}
         {{ field(class_="ui dropdown multiple", **kwargs) }}
     {% else %}
         {{ field(**kwargs) }}
+    {% endif %}
+
+    {% if icon %}
+        </div>
     {% endif %}
 </div>
 
