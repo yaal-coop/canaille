@@ -15,7 +15,9 @@ def tokens(user):
     tokens = [t for t in tokens if t.is_refresh_token_active()]
     client_dns = list(set(t.oauthClient for t in tokens))
     clients = {dn: Client.get(dn) for dn in client_dns}
-    return render_template("token_list.html", tokens=tokens, clients=clients)
+    return render_template(
+        "token_list.html", tokens=tokens, clients=clients, menuitem="tokens"
+    )
 
 
 @bp.route("/delete/<token_id>")

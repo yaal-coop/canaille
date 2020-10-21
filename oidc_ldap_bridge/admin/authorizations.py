@@ -19,4 +19,6 @@ def index():
 @admin_needed()
 def view(authorization_id):
     authorization = AuthorizationCode.get(authorization_id)
-    return render_template("admin/authorization_view.html", authorization=authorization)
+    return render_template(
+        "admin/authorization_view.html", authorization=authorization, menuitem="admin"
+    )

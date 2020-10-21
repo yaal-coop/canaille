@@ -10,11 +10,11 @@ bp = Blueprint(__name__, "tokens")
 @admin_needed()
 def index():
     tokens = Token.filter()
-    return render_template("admin/token_list.html", tokens=tokens)
+    return render_template("admin/token_list.html", tokens=tokens, menuitem="admin")
 
 
 @bp.route("/<token_id>", methods=["GET", "POST"])
 @admin_needed()
 def view(token_id):
     token = Token.get(token_id)
-    return render_template("admin/token_view.html", token=token)
+    return render_template("admin/token_view.html", token=token, menuitem="admin")

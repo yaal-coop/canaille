@@ -14,7 +14,9 @@ def consents(user):
     consents = [c for c in consents if not c.oauthRevokationDate]
     client_dns = list(set(t.oauthClient for t in consents))
     clients = {dn: Client.get(dn) for dn in client_dns}
-    return render_template("consent_list.html", consents=consents, clients=clients)
+    return render_template(
+        "consent_list.html", consents=consents, clients=clients, menuitem="consents"
+    )
 
 
 @bp.route("/delete/<consent_id>")

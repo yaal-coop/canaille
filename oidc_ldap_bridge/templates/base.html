@@ -31,24 +31,27 @@
                 </a>
             </div>
             {% endif %}
-            <a class="item" href="{{ url_for('oidc_ldap_bridge.account.profile') }}">
+            <a class="item {% if menuitem == "profile" %}active{% endif %}"
+                href="{{ url_for('oidc_ldap_bridge.account.profile') }}">
                 <i class="id card icon"></i>
                 {% trans %}My profile{% endtrans %}
             </a>
-            <a class="item" href="{{ url_for('oidc_ldap_bridge.consents.consents') }}">
+            <a class="item {% if menuitem == "consents" %}active{% endif %}"
+                href="{{ url_for('oidc_ldap_bridge.consents.consents') }}">
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
-            <a class="item" href="{{ url_for('oidc_ldap_bridge.tokens.tokens') }}">
+            <a class="item {% if menuitem == "tokens" %}active{% endif %}"
+                href="{{ url_for('oidc_ldap_bridge.tokens.tokens') }}">
                 <i class="key icon"></i>
                 {% trans %}My tokens{% endtrans %}
             </a>
             {% if user.admin %}
-            <div class="ui dropdown item">
+            <div class="ui dropdown item {% if menuitem == "admin" %}active{% endif %}">
                 <i class="settings icon"></i>
                 Admin
                 <div class="menu">
-                <a class="item" href="{{ url_for('oidc_ldap_bridge.admin.clients.index') }}">
+                    <a class="item" href="{{ url_for('oidc_ldap_bridge.admin.clients.index') }}">
                     <i class="plug icon"></i>
                     {% trans %}Clients{% endtrans %}
                 </a>

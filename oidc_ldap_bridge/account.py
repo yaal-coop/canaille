@@ -69,4 +69,4 @@ def profile(user):
 
             user.save()
 
-    return render_template("profile.html", form=form)
+    return render_template("profile.html", form=form, menuitem="profile")
