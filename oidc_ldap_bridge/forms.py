@@ -7,10 +7,16 @@ class LoginForm(FlaskForm):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired()],
-        render_kw={"placeholder": "mdupont"},
+        render_kw={
+            "placeholder": "mdupont",
+            "spellcheck": "false",
+            "autocorrect": "off",
+            "inputmode": "email",
+        },
     )
     password = wtforms.PasswordField(
-        _("Password"), validators=[wtforms.validators.DataRequired()]
+        _("Password"),
+        validators=[wtforms.validators.DataRequired()],
     )
 
 
@@ -21,10 +27,20 @@ class ProfileForm(FlaskForm):
     )
     #    name = wtforms.StringField(_("Name"))
     given_name = wtforms.StringField(
-        _("Given name"), render_kw={"placeholder": _("John")}
+        _("Given name"),
+        render_kw={
+            "placeholder": _("John"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
     )
     family_name = wtforms.StringField(
-        _("Family Name"), render_kw={"placeholder": _("Doe")}
+        _("Family Name"),
+        render_kw={
+            "placeholder": _("Doe"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
     )
     # preferred_username = wtforms.StringField(_("Preferred username"))
     #    gender = wtforms.StringField(_("Gender"))
@@ -34,7 +50,11 @@ class ProfileForm(FlaskForm):
     email = wtforms.fields.html5.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
-        render_kw={"placeholder": _("jane@doe.com")},
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
     )
     # address = wtforms.StringField(_("Address"))
     phone_number = wtforms.fields.html5.TelField(
