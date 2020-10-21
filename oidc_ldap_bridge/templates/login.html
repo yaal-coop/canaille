@@ -24,6 +24,18 @@
     {% endfor %}
     {% endwith %}
 
-    {{ sui.render_form(form, _("Sign in"), action=request.url) }}
+    <form method="POST"
+      id="{{ form.id or form.__class__.__name__|lower }}"
+      action="{{ request.url }}"
+      role="form"
+      class="ui form"
+      >
+
+        {{ form.hidden_tag() if form.hidden_tag }}
+        {{ sui.render_field(form.login, icon="user") }}
+        {{ sui.render_field(form.password, icon="lock") }}
+
+        <button type="submit" class="ui right floated primary button">{{ _("Sign in") }}</button>
+    </form>
 </div>
 {% endblock %}
