@@ -18,3 +18,27 @@ def test_profile(testclient, slapd_connection, logged_user):
     assert ["family_name"] == logged_user.sn
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
+
+
+def test_bad_email(testclient, slapd_connection, logged_user):
+    res = testclient.get("/profile")
+    assert 200 == res.status_code
+
+    res.form["email"] = "john@doe.com"
+
+    res = res.form.submit()
+    assert 200 == res.status_code
+
+    assert ["john@doe.com"] == logged_user.mail
+
+    res = testclient.get("/profile")
+    assert 200 == res.status_code
+
+    res.form["email"] = "yolo"
+
+    res = res.form.submit()
+    assert 200 == res.status_code
+
+    logged_user.reload(slapd_connection)
+
+    assert ["john@doe.com"] == logged_user.mail

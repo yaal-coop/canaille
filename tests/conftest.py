@@ -223,6 +223,7 @@ def user(app, slapd_connection):
         cn="John Doe",
         sn="Doe",
         uid="user",
+        mail="john@doe.com",
         userpassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
     u.save(slapd_connection)
@@ -237,6 +238,7 @@ def admin(app, slapd_connection):
         cn="Jane Doe",
         sn="Doe",
         uid="admin",
+        mail="jane@doe.com",
         userpassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
     u.save(slapd_connection)
