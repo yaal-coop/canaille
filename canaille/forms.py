@@ -8,7 +8,7 @@ class LoginForm(FlaskForm):
         _("Login"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={
-            "placeholder": "mdupont",
+            "placeholder": _("jane@doe.com"),
             "spellcheck": "false",
             "autocorrect": "off",
             "inputmode": "email",
@@ -17,6 +17,32 @@ class LoginForm(FlaskForm):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
+    )
+
+
+class ForgottenPasswordForm(FlaskForm):
+    login = wtforms.StringField(
+        _("Login"),
+        validators=[wtforms.validators.DataRequired()],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
+class PasswordResetForm(FlaskForm):
+    password = wtforms.PasswordField(
+        _("Password"), validators=[wtforms.validators.DataRequired()]
+    )
+    confirmation = wtforms.PasswordField(
+        _("Password confirmation"),
+        validators=[
+            wtforms.validators.EqualTo(
+                "password", _("Password and confirmation do not match.")
+            ),
+        ],
     )
 
 
@@ -42,7 +68,7 @@ class ProfileForm(FlaskForm):
             "autocorrect": "off",
         },
     )
-    # preferred_username = wtforms.StringField(_("Preferred username"))
+    #    preferred_username = wtforms.StringField(_("Preferred username"))
     #    gender = wtforms.StringField(_("Gender"))
     #    birthdate = wtforms.fields.html5.DateField(_("Birth date"))
     #    zoneinfo = wtforms.StringField(_("Zoneinfo"))
@@ -56,7 +82,7 @@ class ProfileForm(FlaskForm):
             "autocorrect": "off",
         },
     )
-    # address = wtforms.StringField(_("Address"))
+    #    address = wtforms.StringField(_("Address"))
     phone_number = wtforms.fields.html5.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     )
@@ -73,4 +99,4 @@ class ProfileForm(FlaskForm):
 
     def validate_password2(self, field):
         if self.password1.data and self.password1.data != field.data:
-            raise wtforms.ValidationError(_("Password and confirmation are different."))
+            raise wtforms.ValidationError(_("Password and confirmation do not match."))

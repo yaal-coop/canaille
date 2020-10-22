@@ -36,6 +36,7 @@
         {{ sui.render_field(form.password, icon="lock") }}
 
         <button type="submit" class="ui right floated primary button">{{ _("Sign in") }}</button>
+        <a type="button" class="ui right floated button" href="{{ url_for('canaille.account.forgotten') }}">{{ _("Forgotten password") }}</a>
     </form>
 </div>
 {% endblock %}

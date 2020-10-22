@@ -4,6 +4,9 @@ SECRET_KEY = "change me before you go in production"
 # Your organization name.
 NAME = "MyDomain"
 
+# The interface on which canaille will be served
+# URL = "https://auth.mydomain.tld"
+
 # You can display a logo to be recognized on login screens
 # LOGO = "https://path/to/your/organization/logo.png"
 
@@ -59,3 +62,11 @@ FAMILY_NAME = "sn"
 PREFERRED_USERNAME = "displayName"
 LOCALE = "preferredLanguage"
 PICTURE = "photo"
+
+[SMTP]
+HOST = "localhost"
+PORT = 25
+TLS = false
+LOGIN = "smtp_user"
+PASSWORD = "smtp_password"
+FROM_ADDR = "admin@mydomain.tld"

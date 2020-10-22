@@ -149,6 +149,14 @@ def app(slapd_server, keypair_path):
                     "PICTURE": "photo",
                 },
             },
+            "SMTP": {
+                "HOST": "localhost",
+                "PORT": 25,
+                "TLS": False,
+                "LOGIN": "smtp_login",
+                "PASSWORD": "smtp_password",
+                "FROM_ADDR": "admin@mydomain.tld",
+            },
         }
     )
     return app
@@ -224,7 +232,7 @@ def user(app, slapd_connection):
         sn="Doe",
         uid="user",
         mail="john@doe.com",
-        userpassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
     u.save(slapd_connection)
     return u
@@ -239,7 +247,7 @@ def admin(app, slapd_connection):
         sn="Doe",
         uid="admin",
         mail="jane@doe.com",
-        userpassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
     u.save(slapd_connection)
     return u
