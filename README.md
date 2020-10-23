@@ -52,7 +52,7 @@ You might want to clean up your database to avoid it growing too much. You can r
 expired tokens and authorization codes with:
 
 ```
-    flask clean
+env CONFIG=/path/to/config.toml FASK_APP=canaille flask clean
 ```
 
 ## Contribute
