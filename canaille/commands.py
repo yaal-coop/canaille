@@ -2,7 +2,7 @@ from flask import Blueprint, current_app
 from canaille.models import AuthorizationCode, Token
 
 
-bp = Blueprint("commands", __name__)
+bp = Blueprint("commands", __name__, cli_group=None)
 
 
 @bp.cli.command("clean")
