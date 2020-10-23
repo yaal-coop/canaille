@@ -7,6 +7,9 @@ bp = Blueprint("commands", __name__, cli_group=None)
 
 @bp.cli.command("clean")
 def clean():
+    """
+    Remove expired tokens and authorization codes.
+    """
     from canaille import setup_ldap, teardown_ldap
 
     setup_ldap(current_app)
