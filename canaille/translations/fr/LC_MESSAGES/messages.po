@@ -8,72 +8,127 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-10-20 11:48+0200\n"
-"PO-Revision-Date: 2020-10-20 11:51+0200\n"
+"POT-Creation-Date: 2020-10-23 13:31+0200\n"
+"PO-Revision-Date: 2020-10-23 13:37+0200\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 "X-Generator: Gtranslator 3.36.0\n"
 
-#: canaille/account.py:28 canaille/oauth.py:42
+#: canaille/account.py:32 canaille/oauth.py:42
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
-#: canaille/account.py:56
+#: canaille/account.py:61
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: canaille/account.py:59
+#: canaille/account.py:72
 msgid "Profile updated successfuly."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: canaille/consents.py:26 canaille/tokens.py:27
+#: canaille/account.py:94
+msgid "Could not send the password reset link."
+msgstr "Impossible d'envoyer le lien de réinitialisation."
+
+#: canaille/account.py:101 canaille/account.py:149
+msgid "A password reset link has been sent at your email address."
+msgstr "Un lien de réinitialisation vous a été envoyé à votre adresse."
+
+#: canaille/account.py:112
+msgid "Password reset on {website_name}"
+msgstr "Réinitialisation du mot de passe sur {website_name}"
+
+#: canaille/account.py:115
+msgid ""
+"To reset your password on {website_name}, visit the following link :\n"
+"{url}"
+msgstr ""
+"Pour réinitialiser votre mot de passe sur {website_name}, veuillez vous "
+"rendre sur le lien suivant : {url }"
+
+#: canaille/account.py:144
+msgid "Could not reset your password"
+msgstr "Impossible de réinitialiser votre mot de passe"
+
+#: canaille/account.py:162
+msgid "The password reset link that brought you here was invalid."
+msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
+
+#: canaille/account.py:171
+msgid "Your password has been updated successfuly"
+msgstr "Votre mot de passe a correctement été mis à jour."
+
+#: canaille/consents.py:28 canaille/tokens.py:29
 msgid "Could not delete this access"
 msgstr "Impossible de supprimer cet accès."
 
-#: canaille/consents.py:30 canaille/tokens.py:32
+#: canaille/consents.py:32 canaille/tokens.py:34
 msgid "The access has been revoked"
 msgstr "L'accès a été révoqué."
 
-#: canaille/forms.py:8
+#: canaille/forms.py:8 canaille/forms.py:25
 msgid "Login"
 msgstr "Connexion"
 
-#: canaille/forms.py:13
+#: canaille/forms.py:11 canaille/forms.py:28 canaille/forms.py:80
+msgid "jane@doe.com"
+msgstr "martin@dupont.fr"
+
+#: canaille/forms.py:18 canaille/forms.py:37 canaille/forms.py:93
 msgid "Password"
 msgstr "Mot de passe"
 
-#: canaille/forms.py:19
+#: canaille/forms.py:40 canaille/forms.py:97
+msgid "Password confirmation"
+msgstr "Confirmation du mot de passe"
+
+#: canaille/forms.py:43 canaille/forms.py:102
+msgid "Password and confirmation do not match."
+msgstr "Le mot de passe et sa confirmation ne correspondent pas."
+
+#: canaille/forms.py:51
 msgid "Username"
 msgstr "Identifiant"
 
-#: canaille/forms.py:23
+#: canaille/forms.py:56
 msgid "Given name"
 msgstr "Prénom"
 
-#: canaille/forms.py:24
+#: canaille/forms.py:58
+msgid "John"
+msgstr "Martin"
+
+#: canaille/forms.py:64
 msgid "Family Name"
 msgstr "Nom de famille"
 
-#: canaille/forms.py:30
+#: canaille/forms.py:66
+msgid "Doe"
+msgstr "Dupont"
+
+#: canaille/forms.py:77
 msgid "Email address"
 msgstr "Courriel"
 
-#: canaille/forms.py:32
+#: canaille/forms.py:87
 msgid "Phone number"
 msgstr "Numéro de téléphone"
+
+#: canaille/forms.py:87
+msgid "555-000-555"
+msgstr "06 01 02 03 04"
 
 #: canaille/oauth.py:86
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnectés."
 
-#: canaille/admin/clients.py:24
-#: canaille/templates/admin/client_list.html:22
+#: canaille/admin/clients.py:24 canaille/templates/admin/client_list.html:22
 msgid "Name"
 msgstr "Nom"
 
@@ -141,11 +196,11 @@ msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
 msgid "The client has been created."
 msgstr "Le client a été créé."
 
-#: canaille/admin/clients.py:176
+#: canaille/admin/clients.py:178
 msgid "The client has not been edited. Please check your information."
 msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 
-#: canaille/admin/clients.py:200
+#: canaille/admin/clients.py:202
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
@@ -171,42 +226,39 @@ msgstr "Changer d'utilisateur"
 msgid "Accept"
 msgstr "Accepter"
 
-#: canaille/templates/base.html:7
-msgid "OpenID Connect LDAP Bridge"
-msgstr "OpendID Connect LDAP Bridge"
+#: canaille/templates/base.html:8
+msgid "OpenID Connect Server"
+msgstr "OpenID Connect Server"
 
-#: canaille/templates/base.html:35
-#: canaille/templates/profile.html:8
+#: canaille/templates/base.html:37 canaille/templates/profile.html:8
 msgid "My profile"
 msgstr "Mon profil"
 
-#: canaille/templates/base.html:39
-#: canaille/templates/consent_list.html:16
+#: canaille/templates/base.html:42 canaille/templates/consent_list.html:16
 msgid "My consents"
 msgstr "Mes autorisations"
 
-#: canaille/templates/base.html:43
-#: canaille/templates/token_list.html:16
+#: canaille/templates/base.html:47 canaille/templates/token_list.html:16
 msgid "My tokens"
 msgstr "Mes jetons"
 
-#: canaille/templates/base.html:52
+#: canaille/templates/base.html:56
 msgid "Clients"
 msgstr "Clients"
 
-#: canaille/templates/base.html:56
+#: canaille/templates/base.html:60
 msgid "Tokens"
 msgstr "Jetons"
 
-#: canaille/templates/base.html:60
+#: canaille/templates/base.html:64
 msgid "Codes"
 msgstr "Codes"
 
-#: canaille/templates/base.html:64
+#: canaille/templates/base.html:68
 msgid "Consents"
 msgstr "Autorisations"
 
-#: canaille/templates/base.html:71
+#: canaille/templates/base.html:75
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -239,6 +291,37 @@ msgid "You did not authorize applications yet."
 msgstr ""
 "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
 
+#: canaille/templates/forgotten-password.html:7
+#: canaille/templates/login.html:39
+msgid "Forgotten password"
+msgstr "Mot de passe oublié"
+
+#: canaille/templates/forgotten-password.html:17
+msgid ""
+"\n"
+"        After this form is sent, if the email address or the login you "
+"provided\n"
+"        exists, you will receive an email containing a link that will allow "
+"you\n"
+"        to reset your password.\n"
+"        "
+msgstr ""
+"\n"
+"        Après envoi de ce formulaire, si l'identifiant ou l'adresse email "
+"que\n"
+"        vous indiquez existe, vous recevrez un email contenant un lien qui\n"
+"        vous permettra de ré-initialiser votre mot de passe.\n"
+"        "
+
+#: canaille/templates/forgotten-password.html:34
+#: canaille/templates/login.html:38
+msgid "Sign in"
+msgstr "Se connecter"
+
+#: canaille/templates/forgotten-password.html:35
+msgid "Login page"
+msgstr "Page de connexion"
+
 #: canaille/templates/login.html:14
 #, python-format
 msgid "Sign in at %(website)s"
@@ -248,10 +331,6 @@ msgstr "Connexion à %(website)s"
 msgid "Log-in and manage your authorizations."
 msgstr "Connectez-vous et gérez vos autorisations."
 
-#: canaille/templates/login.html:27
-msgid "Sign in"
-msgstr "Se connecter"
-
 #: canaille/templates/profile.html:11
 msgid "Edit your personal informations"
 msgstr "Éditez vos informations personnelles"
@@ -259,6 +338,11 @@ msgstr "Éditez vos informations personnelles"
 #: canaille/templates/profile.html:23
 msgid "Edit"
 msgstr "Éditer"
+
+#: canaille/templates/reset-password.html:7
+#: canaille/templates/reset-password.html:17
+msgid "Password reset"
+msgstr "Réinitialisation du mot de passe"
 
 #: canaille/templates/token_list.html:40
 msgid "Until:"
@@ -338,3 +422,6 @@ msgstr "Voir un jeton"
 
 #~ msgid "My accesses"
 #~ msgstr "Mes accès"
+
+#~ msgid "OpenID Connect LDAP Bridge"
+#~ msgstr "OpendID Connect LDAP Bridge"

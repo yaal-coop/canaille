@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-20 11:48+0200\n"
+"POT-Creation-Date: 2020-10-23 13:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,60 +17,113 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: canaille/account.py:28 canaille/oauth.py:42
+#: canaille/account.py:32 canaille/oauth.py:42
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/account.py:56
+#: canaille/account.py:61
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:59
+#: canaille/account.py:72
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/consents.py:26 canaille/tokens.py:27
+#: canaille/account.py:94
+msgid "Could not send the password reset link."
+msgstr ""
+
+#: canaille/account.py:101 canaille/account.py:149
+msgid "A password reset link has been sent at your email address."
+msgstr ""
+
+#: canaille/account.py:112
+msgid "Password reset on {website_name}"
+msgstr ""
+
+#: canaille/account.py:115
+msgid ""
+"To reset your password on {website_name}, visit the following link :\n"
+"{url}"
+msgstr ""
+
+#: canaille/account.py:144
+msgid "Could not reset your password"
+msgstr ""
+
+#: canaille/account.py:162
+msgid "The password reset link that brought you here was invalid."
+msgstr ""
+
+#: canaille/account.py:171
+msgid "Your password has been updated successfuly"
+msgstr ""
+
+#: canaille/consents.py:28 canaille/tokens.py:29
 msgid "Could not delete this access"
 msgstr ""
 
-#: canaille/consents.py:30 canaille/tokens.py:32
+#: canaille/consents.py:32 canaille/tokens.py:34
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/forms.py:8
+#: canaille/forms.py:8 canaille/forms.py:25
 msgid "Login"
 msgstr ""
 
-#: canaille/forms.py:13
+#: canaille/forms.py:11 canaille/forms.py:28 canaille/forms.py:80
+msgid "jane@doe.com"
+msgstr ""
+
+#: canaille/forms.py:18 canaille/forms.py:37 canaille/forms.py:93
 msgid "Password"
 msgstr ""
 
-#: canaille/forms.py:19
+#: canaille/forms.py:40 canaille/forms.py:97
+msgid "Password confirmation"
+msgstr ""
+
+#: canaille/forms.py:43 canaille/forms.py:102
+msgid "Password and confirmation do not match."
+msgstr ""
+
+#: canaille/forms.py:51
 msgid "Username"
 msgstr ""
 
-#: canaille/forms.py:23
+#: canaille/forms.py:56
 msgid "Given name"
 msgstr ""
 
-#: canaille/forms.py:24
+#: canaille/forms.py:58
+msgid "John"
+msgstr ""
+
+#: canaille/forms.py:64
 msgid "Family Name"
 msgstr ""
 
-#: canaille/forms.py:30
+#: canaille/forms.py:66
+msgid "Doe"
+msgstr ""
+
+#: canaille/forms.py:77
 msgid "Email address"
 msgstr ""
 
-#: canaille/forms.py:32
+#: canaille/forms.py:87
 msgid "Phone number"
+msgstr ""
+
+#: canaille/forms.py:87
+msgid "555-000-555"
 msgstr ""
 
 #: canaille/oauth.py:86
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/admin/clients.py:24
-#: canaille/templates/admin/client_list.html:22
+#: canaille/admin/clients.py:24 canaille/templates/admin/client_list.html:22
 msgid "Name"
 msgstr ""
 
@@ -138,11 +191,11 @@ msgstr ""
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/admin/clients.py:176
+#: canaille/admin/clients.py:178
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/admin/clients.py:200
+#: canaille/admin/clients.py:202
 msgid "The client has been edited."
 msgstr ""
 
@@ -168,42 +221,39 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: canaille/templates/base.html:7
-msgid "OpenID Connect LDAP Bridge"
+#: canaille/templates/base.html:8
+msgid "OpenID Connect Server"
 msgstr ""
 
-#: canaille/templates/base.html:35
-#: canaille/templates/profile.html:8
+#: canaille/templates/base.html:37 canaille/templates/profile.html:8
 msgid "My profile"
 msgstr ""
 
-#: canaille/templates/base.html:39
-#: canaille/templates/consent_list.html:16
+#: canaille/templates/base.html:42 canaille/templates/consent_list.html:16
 msgid "My consents"
 msgstr ""
 
-#: canaille/templates/base.html:43
-#: canaille/templates/token_list.html:16
+#: canaille/templates/base.html:47 canaille/templates/token_list.html:16
 msgid "My tokens"
 msgstr ""
 
-#: canaille/templates/base.html:52
+#: canaille/templates/base.html:56
 msgid "Clients"
 msgstr ""
 
-#: canaille/templates/base.html:56
+#: canaille/templates/base.html:60
 msgid "Tokens"
 msgstr ""
 
-#: canaille/templates/base.html:60
+#: canaille/templates/base.html:64
 msgid "Codes"
 msgstr ""
 
-#: canaille/templates/base.html:64
+#: canaille/templates/base.html:68
 msgid "Consents"
 msgstr ""
 
-#: canaille/templates/base.html:71
+#: canaille/templates/base.html:75
 msgid "Log out"
 msgstr ""
 
@@ -235,6 +285,31 @@ msgstr ""
 msgid "You did not authorize applications yet."
 msgstr ""
 
+#: canaille/templates/forgotten-password.html:7
+#: canaille/templates/login.html:39
+msgid "Forgotten password"
+msgstr ""
+
+#: canaille/templates/forgotten-password.html:17
+msgid ""
+"\n"
+"        After this form is sent, if the email address or the login you "
+"provided\n"
+"        exists, you will receive an email containing a link that will "
+"allow you\n"
+"        to reset your password.\n"
+"        "
+msgstr ""
+
+#: canaille/templates/forgotten-password.html:34
+#: canaille/templates/login.html:38
+msgid "Sign in"
+msgstr ""
+
+#: canaille/templates/forgotten-password.html:35
+msgid "Login page"
+msgstr ""
+
 #: canaille/templates/login.html:14
 #, python-format
 msgid "Sign in at %(website)s"
@@ -244,16 +319,17 @@ msgstr ""
 msgid "Log-in and manage your authorizations."
 msgstr ""
 
-#: canaille/templates/login.html:27
-msgid "Sign in"
-msgstr ""
-
 #: canaille/templates/profile.html:11
 msgid "Edit your personal informations"
 msgstr ""
 
 #: canaille/templates/profile.html:23
 msgid "Edit"
+msgstr ""
+
+#: canaille/templates/reset-password.html:7
+#: canaille/templates/reset-password.html:17
+msgid "Password reset"
 msgstr ""
 
 #: canaille/templates/token_list.html:40
