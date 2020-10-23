@@ -234,6 +234,13 @@ class Token(LDAPObject, TokenMixin):
 
         return self.expire_date >= datetime.datetime.now()
 
+    def is_expired(self):
+        return (
+            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
+            < datetime.datetime.now()
+        )
+
 
 class Consent(LDAPObject):
     object_class = ["oauthConsent"]

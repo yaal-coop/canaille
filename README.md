@@ -46,6 +46,15 @@ pip install gunicorn
 gunicorn "canaille:create_app()"
 ```
 
+## Recurrent jobs
+
+You might want to clean up your database to avoid it growing too much. You can regularly delete
+expired tokens and authorization codes with:
+
+```
+    flask clean
+```
+
 ## Contribute
 
 Contributions are welcome!

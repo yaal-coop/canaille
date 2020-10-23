@@ -7,6 +7,7 @@ import canaille.admin.tokens
 import canaille.admin.authorizations
 import canaille.admin.clients
 import canaille.consents
+import canaille.commands
 import canaille.oauth
 import canaille.account
 import canaille.tokens
@@ -106,6 +107,16 @@ def setup_ldap_tree(app):
     conn.unbind_s()
 
 
+def setup_ldap(app):
+    g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
+    g.ldap.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
+
+
+def teardown_ldap(app):
+    if "ldap" in g:
+        g.ldap.unbind_s()
+
+
 def setup_app(app):
     if SENTRY and app.config.get("SENTRY_DSN"):
         sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
@@ -123,6 +134,7 @@ def setup_app(app):
         setup_ldap_tree(app)
         app.register_blueprint(canaille.account.bp)
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
+        app.register_blueprint(canaille.commands.bp)
         app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
         app.register_blueprint(canaille.tokens.bp, url_prefix="/token")
         app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
@@ -153,15 +165,11 @@ def setup_app(app):
 
         @app.before_request
         def before_request():
-            g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
-            g.ldap.simple_bind_s(
-                app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
-            )
+            setup_ldap(app)
 
         @app.after_request
         def after_request(response):
-            if "ldap" in g:
-                g.ldap.unbind_s()
+            teardown_ldap(app)
             return response
 
         @app.context_processor
