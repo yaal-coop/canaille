@@ -6,10 +6,11 @@ Canaille is a French word meaning *rascal*, and is pronounced approximatively **
 as in *Can I access this data please?*. It is a simple OpenID Connect provider based upon OpenLDAP.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
-- OAuth/OpenID Connect support;
 - Authentication against a LDAP directory;
-- No additional database required. Everything is stored in your OpenLDAP server;
-- The code is easy to read and easy to edit in case you want to write a patch.
+- OAuth/OpenID Connect support;
+- No outdated or exotic protocol support;
+- No additional database required. Everything is stored in your LDAP server;
+- The code is easy to read and easy to edit.
 
 ## Install
 
