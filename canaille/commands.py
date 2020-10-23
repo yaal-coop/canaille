@@ -19,4 +19,4 @@ def clean():
         if a.is_expired():
             a.delete()
 
-    teardown_ldap()
+    teardown_ldap(current_app)
