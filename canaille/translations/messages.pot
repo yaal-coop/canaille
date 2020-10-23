@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-23 13:31+0200\n"
+"POT-Creation-Date: 2020-10-23 13:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -302,8 +302,7 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:34
-#: canaille/templates/login.html:38
-msgid "Sign in"
+msgid "Send"
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:35
@@ -317,6 +316,10 @@ msgstr ""
 
 #: canaille/templates/login.html:16
 msgid "Log-in and manage your authorizations."
+msgstr ""
+
+#: canaille/templates/login.html:38
+msgid "Sign in"
 msgstr ""
 
 #: canaille/templates/profile.html:11
