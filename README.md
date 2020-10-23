@@ -2,8 +2,8 @@
 
 # Canaille
 
-Canaille is a French word meaning *rascal*, and is pronounced approximatively **Can I?**,
-as in *Can I access this data please?*. It is a simple OpenID Connect provider based upon OpenLDAP.
+Canaille is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
+as in *Can I access your data?* Canaille is a simple OpenID Connect provider based upon a LDAP database.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 - Authentication against a LDAP directory;
