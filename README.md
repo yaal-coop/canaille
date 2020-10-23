@@ -17,7 +17,11 @@ First you need to install the schemas into your LDAP server. There are several w
 
 ### LDAP schemas
 
-#### Option 1: Add the schema into your filesystem
+As of OpenLDAP 2.4, two configuration methods are available:
+- The [deprecated](https://www.openldap.org/doc/admin24/slapdconf2.html) one, based on a configuration file (generally `/etc/ldap/slapd.conf`);
+- The new one, based on a configuration directory (generally `/etc/ldap/slapd.d`).
+
+#### Old fashion: Copy the schemas in your filesystem
 
 ```bash
 test -d /etc/openldap/schema && sudo cp schema/* /etc/openldap/schema
@@ -25,10 +29,11 @@ test -d /etc/ldap/schema && sudo cp schema/* /etc/ldap/schema
 sudo service slapd restart
 ```
 
-#### Option 2: Use slapadd
+#### New fashion: Use slapadd to add the schemas
 
 ```bash
 sudo slapadd -n0 -l schema/*.ldif
+sudo service slapd restart
 ```
 
 ### Web interface
