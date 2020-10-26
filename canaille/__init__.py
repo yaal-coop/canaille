@@ -181,6 +181,10 @@ def setup_app(app):
                 "menu": True,
             }
 
+        @app.errorhandler(400)
+        def bad_request(e):
+            return render_template("error.html", error=400), 400
+
         @app.errorhandler(403)
         def unauthorized(e):
             return render_template("error.html", error=403), 403

@@ -3,11 +3,13 @@
 {% block content %}
 <div class="ui error message">
     {% if error == 400 %}
-    Accès interdit.
+        {% trans %}Bad request{% endtrans %}
+    {% elif error == 403 %}
+        {% trans %}Unauthorized{% endtrans %}
     {% elif error == 404 %}
-    Page non trouvée.
+        {% trans %}Page not found{% endtrans %}
     {% elif error == 500 %}
-    Erreur technique.
+        {% trans %}Technical problem{% endtrans %}
     {% endif %}
 </div>
 {% endblock %}

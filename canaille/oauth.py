@@ -2,7 +2,7 @@ import datetime
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
-from flask import Blueprint, request, session, redirect
+from flask import Blueprint, request, session, redirect, abort
 from flask import render_template, jsonify, flash, current_app
 from flask_babel import gettext
 from .models import User, Client, Consent
@@ -22,8 +22,11 @@ bp = Blueprint(__name__, "oauth")
 
 @bp.route("/authorize", methods=["GET", "POST"])
 def authorize():
+    if "client_id" not in request.args:
+        abort(400)
+
     user = current_user()
-    client = Client.get(request.values["client_id"])
+    client = Client.get(request.args["client_id"])
     scopes = request.args.get("scope", "").split(" ")
 
     # LOGIN

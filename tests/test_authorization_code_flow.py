@@ -341,3 +341,13 @@ def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):
     )
     assert 200 == res.status_code
     assert "consent_required" == res.json.get("error")
+
+
+def test_incomplete_requests(testclient, slapd_connection, logged_user, client):
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+        ),
+        status=400,
+    )
