@@ -25,8 +25,11 @@ def authorize():
     if "client_id" not in request.args:
         abort(400)
 
-    user = current_user()
     client = Client.get(request.args["client_id"])
+    if not client:
+        abort(400)
+
+    user = current_user()
     scopes = request.args.get("scope", "").split(" ")
 
     # LOGIN
