@@ -20,7 +20,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     )
     assert (200, "text/html") == (res.status_code, res.content_type)
 
-    res.form["login"] = user.name
+    res.form["login"] = "user"
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
     assert 302 == res.status_code
@@ -28,7 +28,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     res = res.follow()
     assert (200, "text/html") == (res.status_code, res.content_type), res.json
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
@@ -66,7 +66,7 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
     )
     assert (200, "text/html") == (res.status_code, res.content_type)
 
-    res.form["login"] = user.name
+    res.form["login"] = "user"
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
     assert 302 == res.status_code
@@ -74,7 +74,7 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
     res = res.follow()
     assert (200, "text/html") == (res.status_code, res.content_type), res.json
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])

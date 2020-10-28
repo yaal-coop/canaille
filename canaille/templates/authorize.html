@@ -13,20 +13,17 @@
 
     <p>{{ gettext('from: %(user)s', user=user.name) }}</p>
 
-    <div class="ui buttons">
-        <form action="{{ request.url }}" method="post" id="deny">
-            <input type="hidden" name="answer" value="deny" />
-            <input type="submit" class="ui negative button" value="{% trans %}Deny{% endtrans %}" />
-        </form>
-
-        <form action="{{ request.url }}" method="post" id="logout">
-            <input type="hidden" name="answer" value="logout" />
-            <input type="submit" class="ui button" value="{% trans %}Switch user{% endtrans %}" />
-        </form>
-
-        <form action="{{ request.url }}" method="post" id="accept">
-            <input type="hidden" name="answer" value="accept" />
-            <input type="submit" class="ui positive button" value="{% trans %}Accept{% endtrans %}" />
+    <div class="ui stackable buttons">
+        <form action="{{ request.url }}" method="post">
+            <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
+                {% trans %}Deny{% endtrans %}
+            </button>
+            <button name="answer" type="submit" class="ui button" value="logout" id="logout">
+                {% trans %}Switch user{% endtrans %}
+            </button>
+            <button name="answer" type="submit" class="ui positive button" value="accept" id="accept">
+                {% trans %}Accept{% endtrans %}
+            </button>
         </form>
     </div>
 </div>

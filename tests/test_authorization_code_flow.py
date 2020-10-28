@@ -17,7 +17,7 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
     )
     assert 200 == res.status_code
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
@@ -62,7 +62,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     )
     assert 200 == res.status_code
 
-    res = res.forms["logout"].submit()
+    res = res.form.submit(name="answer", value="logout")
     assert 302 == res.status_code
     res = res.follow()
     assert 200 == res.status_code
@@ -80,7 +80,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     res = res.follow()
 
     assert 200 == res.status_code
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
 
     assert 302 == res.status_code
     assert res.location.startswith(client.oauthRedirectURIs[0])
@@ -125,7 +125,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     )
     assert 200 == res.status_code
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
@@ -192,7 +192,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     )
     assert 200 == res.status_code
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
@@ -245,7 +245,7 @@ def test_authorization_code_flow_when_consent_already_given(
     )
     assert 200 == res.status_code
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])

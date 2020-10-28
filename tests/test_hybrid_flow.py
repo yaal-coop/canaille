@@ -23,7 +23,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     res = res.follow()
     assert (200, "text/html") == (res.status_code, res.content_type), res.json
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
@@ -56,7 +56,7 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair)
     )
     assert (200, "text/html") == (res.status_code, res.content_type), res.json
 
-    res = res.forms["accept"].submit()
+    res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
