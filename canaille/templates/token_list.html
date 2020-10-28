@@ -13,7 +13,15 @@
 
 {% block content %}
     <div class="ui segment">
-    <h1 class="ui header">{% trans %}My tokens{% endtrans %}</h1>
+    <h2 class="ui center aligned header">
+        <div class="content">
+            {{ _("My tokens") }}
+        </div>
+        <div class="sub header">
+            {% trans %}Consult and revoke the authorization you gave to websites.{% endtrans %}
+        </div>
+    </h2>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
     <div class="ui attached message {{ category }}">
