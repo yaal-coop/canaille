@@ -71,34 +71,35 @@ def authorize():
         except OAuth2Error as error:
             return jsonify(dict(error.get_body()))
 
-        if consent:
-            consent.oauthScope = list(set(scopes + consents[0].oauthScope))
-        else:
-            consent = Consent(
-                oauthClient=client.dn,
-                oauthSubject=user.dn,
-                oauthScope=scopes,
-                oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
-            )
-
-        consent.save()
-
         return render_template(
             "authorize.html", user=user, grant=grant, client=client, menu=False
         )
 
-    if request.form["answer"] == "logout":
-        del session["user_dn"]
-        flash(gettext("You have been successfully logged out."), "success")
-        return redirect(request.url)
+    if request.method == "POST":
+        if request.form["answer"] == "logout":
+            del session["user_dn"]
+            flash(gettext("You have been successfully logged out."), "success")
+            return redirect(request.url)
 
-    if request.form["answer"] == "deny":
-        grant_user = None
+        if request.form["answer"] == "deny":
+            grant_user = None
 
-    if request.form["answer"] == "accept":
-        grant_user = user.dn
+        if request.form["answer"] == "accept":
+            grant_user = user.dn
 
-    return authorization.create_authorization_response(grant_user=grant_user)
+            if consent:
+                consent.oauthScope = list(set(scopes + consents[0].oauthScope))
+            else:
+
+                consent = Consent(
+                    oauthClient=client.dn,
+                    oauthSubject=user.dn,
+                    oauthScope=scopes,
+                    oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+                )
+                consent.save()
+
+        return authorization.create_authorization_response(grant_user=grant_user)
 
 
 @bp.route("/token", methods=["POST"])

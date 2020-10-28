@@ -78,8 +78,11 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     res = res.form.submit()
     assert 302 == res.status_code
     res = res.follow()
-    assert 302 == res.status_code
 
+    assert 200 == res.status_code
+    res = res.forms["accept"].submit()
+
+    assert 302 == res.status_code
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
