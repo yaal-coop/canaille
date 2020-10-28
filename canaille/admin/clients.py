@@ -3,7 +3,7 @@ import wtforms
 import wtforms.fields.html5
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
-from flask_babel import gettext
+from flask_babel import lazy_gettext as _
 from werkzeug.security import gen_salt
 from canaille.models import Client
 from canaille.flaskutils import admin_needed
@@ -21,27 +21,27 @@ def index():
 
 class ClientAdd(FlaskForm):
     oauthClientName = wtforms.StringField(
-        gettext("Name"),
+        _("Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "Client Name"},
     )
     oauthClientContact = wtforms.fields.html5.EmailField(
-        gettext("Contact"),
+        _("Contact"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "admin@mydomain.tld"},
     )
     oauthClientURI = wtforms.fields.html5.URLField(
-        gettext("URI"),
+        _("URI"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld"},
     )
     oauthRedirectURIs = wtforms.fields.html5.URLField(
-        gettext("Redirect URIs"),
+        _("Redirect URIs"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld/callback"},
     )
     oauthGrantType = wtforms.SelectMultipleField(
-        gettext("Grant types"),
+        _("Grant types"),
         validators=[wtforms.validators.DataRequired()],
         choices=[
             ("password", "password"),
@@ -53,19 +53,19 @@ class ClientAdd(FlaskForm):
         default=["authorization_code", "refresh_token"],
     )
     oauthScope = wtforms.StringField(
-        gettext("Scope"),
+        _("Scope"),
         validators=[wtforms.validators.Optional()],
         default="openid profile email",
         render_kw={"placeholder": "openid profile"},
     )
     oauthResponseType = wtforms.SelectMultipleField(
-        gettext("Response types"),
+        _("Response types"),
         validators=[wtforms.validators.DataRequired()],
         choices=[("code", "code"), ("token", "token"), ("id_token", "id_token")],
         default=["code"],
     )
     oauthTokenEndpointAuthMethod = wtforms.SelectField(
-        gettext("Token Endpoint Auth Method"),
+        _("Token Endpoint Auth Method"),
         validators=[wtforms.validators.DataRequired()],
         choices=[
             ("client_secret_basic", "client_secret_basic"),
@@ -75,37 +75,37 @@ class ClientAdd(FlaskForm):
         default="client_secret_basic",
     )
     oauthLogoURI = wtforms.fields.html5.URLField(
-        gettext("Logo URI"),
+        _("Logo URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/logo.png"},
     )
     oauthTermsOfServiceURI = wtforms.fields.html5.URLField(
-        gettext("Terms of service URI"),
+        _("Terms of service URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/tos.html"},
     )
     oauthPolicyURI = wtforms.fields.html5.URLField(
-        gettext("Policy URI"),
+        _("Policy URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/policy.html"},
     )
     oauthSoftwareID = wtforms.StringField(
-        gettext("Software ID"),
+        _("Software ID"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "xyz"},
     )
     oauthSoftwareVersion = wtforms.StringField(
-        gettext("Software Version"),
+        _("Software Version"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "1.0"},
     )
     oauthJWK = wtforms.StringField(
-        gettext("JWK"),
+        _("JWK"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
     oauthJWKURI = wtforms.fields.html5.URLField(
-        gettext("JKW URI"),
+        _("JKW URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
@@ -121,7 +121,7 @@ def add():
 
     if not form.validate():
         flash(
-            gettext("The client has not been added. Please check your information."),
+            _("The client has not been added. Please check your information."),
             "error",
         )
         return render_template("admin/client_add.html", form=form, menuitem="admin")
@@ -152,7 +152,7 @@ def add():
     )
     client.save()
     flash(
-        gettext("The client has been created."),
+        _("The client has been created."),
         "success",
     )
 
@@ -175,7 +175,7 @@ def edit(client_id):
 
     if not form.validate():
         flash(
-            gettext("The client has not been edited. Please check your information."),
+            _("The client has not been edited. Please check your information."),
             "error",
         )
 
@@ -199,7 +199,7 @@ def edit(client_id):
         )
         client.save()
         flash(
-            gettext("The client has been edited."),
+            _("The client has been edited."),
             "success",
         )
 
