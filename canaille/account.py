@@ -1,6 +1,8 @@
+import base64
 import email.message
 import hashlib
 import smtplib
+import urllib.request
 
 from flask import Blueprint, request, flash, url_for, current_app
 from flask import render_template, redirect
@@ -109,6 +111,16 @@ def forgotten():
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
     )[1:]
+    logo = None
+    logo_extension = None
+    if current_app.config.get("LOGO"):
+        logo_extension = current_app.config["LOGO"].split(".")[-1]
+        try:
+            with urllib.request.urlopen(current_app.config.get("LOGO")) as f:
+                logo = base64.b64encode(f.read()).decode("utf-8")
+        except (urllib.error.HTTPError, urllib.error.URLError):
+            pass
+
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config.get("NAME", reset_url)
     )
@@ -124,7 +136,8 @@ def forgotten():
         site_name=current_app.config.get("NAME", reset_url),
         site_url=current_app.config.get("URL", base_url),
         reset_url=reset_url,
-        logo=current_app.config.get("LOGO"),
+        logo=logo,
+        logo_extension=logo_extension,
     )
 
     msg = email.message.EmailMessage()
