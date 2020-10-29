@@ -1,6 +1,7 @@
 import base64
 import email.message
 import hashlib
+import logging
 import smtplib
 import urllib.request
 
@@ -168,6 +169,7 @@ def forgotten():
 
     except OSError:
         flash(_("Could not reset your password"), "error")
+        logging.exception("Could not send password reset email")
         success = False
 
     if success:
