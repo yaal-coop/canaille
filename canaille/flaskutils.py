@@ -35,7 +35,7 @@ def admin_needed():
             user = current_user()
             if not user or not user.admin:
                 abort(403)
-            return view_function(*args, **kwargs)
+            return view_function(*args, user=user, **kwargs)
 
         return decorator
 

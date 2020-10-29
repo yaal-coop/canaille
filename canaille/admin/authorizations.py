@@ -8,7 +8,7 @@ bp = Blueprint(__name__, "authorizations")
 
 @bp.route("/")
 @admin_needed()
-def index():
+def index(user):
     authorizations = AuthorizationCode.filter()
     return render_template(
         "admin/authorization_list.html", authorizations=authorizations
@@ -17,7 +17,7 @@ def index():
 
 @bp.route("/<authorization_id>", methods=["GET", "POST"])
 @admin_needed()
-def view(authorization_id):
+def view(user, authorization_id):
     authorization = AuthorizationCode.get(authorization_id)
     return render_template(
         "admin/authorization_view.html", authorization=authorization, menuitem="admin"

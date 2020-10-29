@@ -14,7 +14,7 @@ bp = Blueprint(__name__, "clients")
 
 @bp.route("/")
 @admin_needed()
-def index():
+def index(user):
     clients = Client.filter()
     return render_template("admin/client_list.html", clients=clients, menuitem="admin")
 
@@ -113,7 +113,7 @@ class ClientAdd(FlaskForm):
 
 @bp.route("/add", methods=["GET", "POST"])
 @admin_needed()
-def add():
+def add(user):
     form = ClientAdd(request.form or None)
 
     if not request.form:
@@ -161,7 +161,7 @@ def add():
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
 @admin_needed()
-def edit(client_id):
+def edit(user, client_id):
     client = Client.get(client_id)
     data = dict(client)
     data["oauthScope"] = " ".join(data["oauthScope"])
