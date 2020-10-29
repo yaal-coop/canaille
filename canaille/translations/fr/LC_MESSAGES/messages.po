@@ -50,7 +50,7 @@ msgid ""
 "{url}"
 msgstr ""
 "Pour réinitialiser votre mot de passe sur {website_name}, veuillez vous "
-"rendre sur le lien suivant : {url }"
+"rendre sur le lien suivant : {url}"
 
 #: canaille/account.py:144
 msgid "Could not reset your password"

@@ -103,12 +103,12 @@ def forgotten():
         return render_template("forgotten-password.html", form=form)
 
     recipient = user.mail
-    base_url = current_app.config.get("URL") or request.base_url
+    base_url = current_app.config.get("URL") or request.url_root
     url = base_url + url_for(
         "canaille.account.reset",
-        uid=user.uid,
+        uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
-    )
+    )[1:]
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config.get("NAME", url)
     )
