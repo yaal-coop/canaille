@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-23 13:40+0200\n"
+"POT-Creation-Date: 2020-10-29 08:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: canaille/account.py:32 canaille/oauth.py:42
+#: canaille/account.py:32 canaille/oauth.py:48
 msgid "Login failed, please check your information"
 msgstr ""
 
@@ -119,7 +119,7 @@ msgstr ""
 msgid "555-000-555"
 msgstr ""
 
-#: canaille/oauth.py:86
+#: canaille/oauth.py:81
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -213,11 +213,11 @@ msgstr ""
 msgid "Deny"
 msgstr ""
 
-#: canaille/templates/authorize.html:24
+#: canaille/templates/authorize.html:22
 msgid "Switch user"
 msgstr ""
 
-#: canaille/templates/authorize.html:29
+#: canaille/templates/authorize.html:25
 msgid "Accept"
 msgstr ""
 
@@ -229,11 +229,11 @@ msgstr ""
 msgid "My profile"
 msgstr ""
 
-#: canaille/templates/base.html:42 canaille/templates/consent_list.html:16
+#: canaille/templates/base.html:42 canaille/templates/consent_list.html:18
 msgid "My consents"
 msgstr ""
 
-#: canaille/templates/base.html:47 canaille/templates/token_list.html:16
+#: canaille/templates/base.html:47 canaille/templates/token_list.html:18
 msgid "My tokens"
 msgstr ""
 
@@ -257,32 +257,53 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
-#: canaille/templates/consent_list.html:39
-#: canaille/templates/token_list.html:39
+#: canaille/templates/consent_list.html:21
+#: canaille/templates/token_list.html:21
+msgid "Consult and revoke the authorization you gave to websites."
+msgstr ""
+
+#: canaille/templates/consent_list.html:47
+#: canaille/templates/token_list.html:47
 msgid "From:"
 msgstr ""
 
-#: canaille/templates/consent_list.html:41
+#: canaille/templates/consent_list.html:49
 msgid "Revoked:"
 msgstr ""
 
-#: canaille/templates/consent_list.html:44
-#: canaille/templates/token_list.html:43
+#: canaille/templates/consent_list.html:52
+#: canaille/templates/token_list.html:51
 msgid "Has access to:"
 msgstr ""
 
-#: canaille/templates/consent_list.html:54
+#: canaille/templates/consent_list.html:62
 msgid "Remove access"
 msgstr ""
 
-#: canaille/templates/consent_list.html:64
-#: canaille/templates/token_list.html:63
+#: canaille/templates/consent_list.html:72
+#: canaille/templates/token_list.html:71
 msgid "Nothing here"
 msgstr ""
 
-#: canaille/templates/consent_list.html:65
-#: canaille/templates/token_list.html:64
+#: canaille/templates/consent_list.html:73
+#: canaille/templates/token_list.html:72
 msgid "You did not authorize applications yet."
+msgstr ""
+
+#: canaille/templates/error.html:6
+msgid "Bad request"
+msgstr ""
+
+#: canaille/templates/error.html:8
+msgid "Unauthorized"
+msgstr ""
+
+#: canaille/templates/error.html:10
+msgid "Page not found"
+msgstr ""
+
+#: canaille/templates/error.html:12
+msgid "Technical problem"
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:7
@@ -335,11 +356,11 @@ msgstr ""
 msgid "Password reset"
 msgstr ""
 
-#: canaille/templates/token_list.html:40
+#: canaille/templates/token_list.html:48
 msgid "Until:"
 msgstr ""
 
-#: canaille/templates/token_list.html:53
+#: canaille/templates/token_list.html:61
 msgid "Remove token"
 msgstr ""
 

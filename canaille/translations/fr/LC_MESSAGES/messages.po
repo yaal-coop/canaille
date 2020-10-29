@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-10-23 13:40+0200\n"
-"PO-Revision-Date: 2020-10-23 13:37+0200\n"
+"POT-Creation-Date: 2020-10-29 08:31+0100\n"
+"PO-Revision-Date: 2020-10-29 08:32+0100\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -18,8 +18,9 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
-#: canaille/account.py:32 canaille/oauth.py:42
+#: canaille/account.py:32 canaille/oauth.py:48
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
@@ -73,7 +74,7 @@ msgstr "L'accès a été révoqué."
 
 #: canaille/forms.py:8 canaille/forms.py:25
 msgid "Login"
-msgstr "Connexion"
+msgstr "Identifiant"
 
 #: canaille/forms.py:11 canaille/forms.py:28 canaille/forms.py:80
 msgid "jane@doe.com"
@@ -123,7 +124,7 @@ msgstr "Numéro de téléphone"
 msgid "555-000-555"
 msgstr "06 01 02 03 04"
 
-#: canaille/oauth.py:86
+#: canaille/oauth.py:81
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnectés."
 
@@ -217,11 +218,11 @@ msgstr "pour : %(user)s"
 msgid "Deny"
 msgstr "Refuser"
 
-#: canaille/templates/authorize.html:24
+#: canaille/templates/authorize.html:22
 msgid "Switch user"
 msgstr "Changer d'utilisateur"
 
-#: canaille/templates/authorize.html:29
+#: canaille/templates/authorize.html:25
 msgid "Accept"
 msgstr "Accepter"
 
@@ -233,11 +234,11 @@ msgstr "OpenID Connect Server"
 msgid "My profile"
 msgstr "Mon profil"
 
-#: canaille/templates/base.html:42 canaille/templates/consent_list.html:16
+#: canaille/templates/base.html:42 canaille/templates/consent_list.html:18
 msgid "My consents"
 msgstr "Mes autorisations"
 
-#: canaille/templates/base.html:47 canaille/templates/token_list.html:16
+#: canaille/templates/base.html:47 canaille/templates/token_list.html:18
 msgid "My tokens"
 msgstr "Mes jetons"
 
@@ -261,33 +262,55 @@ msgstr "Autorisations"
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: canaille/templates/consent_list.html:39
-#: canaille/templates/token_list.html:39
+#: canaille/templates/consent_list.html:21
+#: canaille/templates/token_list.html:21
+msgid "Consult and revoke the authorization you gave to websites."
+msgstr "Consultez et révoquez les autorisation que vous avez données."
+
+#: canaille/templates/consent_list.html:47
+#: canaille/templates/token_list.html:47
 msgid "From:"
 msgstr "À partir de :"
 
-#: canaille/templates/consent_list.html:41
+#: canaille/templates/consent_list.html:49
 msgid "Revoked:"
 msgstr "Révoqué le :"
 
-#: canaille/templates/consent_list.html:44
-#: canaille/templates/token_list.html:43
+#: canaille/templates/consent_list.html:52
+#: canaille/templates/token_list.html:51
 msgid "Has access to:"
 msgstr "A accès à :"
 
-#: canaille/templates/consent_list.html:54
+#: canaille/templates/consent_list.html:62
 msgid "Remove access"
 msgstr "Supprimer l'accès"
 
-#: canaille/templates/consent_list.html:64
-#: canaille/templates/token_list.html:63
+#: canaille/templates/consent_list.html:72
+#: canaille/templates/token_list.html:71
 msgid "Nothing here"
 msgstr "Rien ici"
 
-#: canaille/templates/consent_list.html:65
-#: canaille/templates/token_list.html:64
+#: canaille/templates/consent_list.html:73
+#: canaille/templates/token_list.html:72
 msgid "You did not authorize applications yet."
-msgstr "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
+msgstr ""
+"Vous n'avez pas encore autorisé d'application à accéder à votre profil."
+
+#: canaille/templates/error.html:6
+msgid "Bad request"
+msgstr "Mauvaise reqûete"
+
+#: canaille/templates/error.html:8
+msgid "Unauthorized"
+msgstr "Accès interdit"
+
+#: canaille/templates/error.html:10
+msgid "Page not found"
+msgstr "Page non trouvée"
+
+#: canaille/templates/error.html:12
+msgid "Technical problem"
+msgstr "Problème technique"
 
 #: canaille/templates/forgotten-password.html:7
 #: canaille/templates/login.html:39
@@ -299,16 +322,15 @@ msgid ""
 "\n"
 "        After this form is sent, if the email address or the login you "
 "provided\n"
-"        exists, you will receive an email containing a link that will "
-"allow you\n"
+"        exists, you will receive an email containing a link that will allow "
+"you\n"
 "        to reset your password.\n"
 "        "
 msgstr ""
 "\n"
-"        Après envoi de ce formulaire, si l'identifiant ou l'adresse email"
-" que\n"
-"        vous indiquez existe, vous recevrez un email contenant un lien "
-"qui\n"
+"        Après envoi de ce formulaire, si l'identifiant ou l'adresse email "
+"que\n"
+"        vous indiquez existe, vous recevrez un email contenant un lien qui\n"
 "        vous permettra de ré-initialiser votre mot de passe.\n"
 "        "
 
@@ -346,11 +368,11 @@ msgstr "Éditer"
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: canaille/templates/token_list.html:40
+#: canaille/templates/token_list.html:48
 msgid "Until:"
 msgstr "Jusqu'à :"
 
-#: canaille/templates/token_list.html:53
+#: canaille/templates/token_list.html:61
 msgid "Remove token"
 msgstr "Supprimer le jeton"
 
@@ -427,4 +449,3 @@ msgstr "Voir un jeton"
 
 #~ msgid "OpenID Connect LDAP Bridge"
 #~ msgstr "OpendID Connect LDAP Bridge"
-
