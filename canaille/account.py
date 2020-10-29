@@ -105,12 +105,13 @@ def forgotten():
         return render_template("forgotten-password.html", form=form)
 
     recipient = user.mail
-    base_url = current_app.config.get("URL") or request.url_root
-    reset_url = base_url + url_for(
+    base_url = url_for("canaille.account.index", _external=True)
+    reset_url = url_for(
         "canaille.account.reset",
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
-    )[1:]
+        _external=True,
+    )
     logo = None
     logo_extension = None
     if current_app.config.get("LOGO"):
@@ -128,13 +129,13 @@ def forgotten():
     text_body = render_template(
         "mail/reset.txt",
         site_name=current_app.config.get("NAME", reset_url),
-        site_url=current_app.config.get("URL", base_url),
+        site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
         "mail/reset.html",
         site_name=current_app.config.get("NAME", reset_url),
-        site_url=current_app.config.get("URL", base_url),
+        site_url=base_url,
         reset_url=reset_url,
         logo=logo,
         logo_extension=logo_extension,

@@ -11,12 +11,13 @@ bp = Blueprint(__name__, "clients")
 @bp.route("/reset.html")
 @admin_needed()
 def reset_html(user):
-    base_url = current_app.config.get("URL") or request.url_root
-    reset_url = base_url + url_for(
+    base_url = url_for("canaille.account.index", _external=True)
+    reset_url = url_for(
         "canaille.account.reset",
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
-    )[1:]
+        _external=True,
+    )
 
     logo = None
     logo_extension = None
@@ -31,7 +32,7 @@ def reset_html(user):
     return render_template(
         "mail/reset.html",
         site_name=current_app.config.get("NAME", reset_url),
-        site_url=current_app.config.get("URL", base_url),
+        site_url=base_url,
         reset_url=reset_url,
         logo=logo,
         logo_extension=logo_extension,
@@ -41,16 +42,17 @@ def reset_html(user):
 @bp.route("/reset.txt")
 @admin_needed()
 def reset_txt(user):
-    base_url = current_app.config.get("URL") or request.url_root
-    reset_url = base_url + url_for(
+    base_url = url_for("canaille.account.index", _external=True)
+    reset_url = url_for(
         "canaille.account.reset",
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
-    )[1:]
+        _external=True,
+    )
 
     return render_template(
         "mail/reset.txt",
         site_name=current_app.config.get("NAME", reset_url),
-        site_url=current_app.config.get("URL", base_url),
+        site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
