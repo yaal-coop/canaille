@@ -41,11 +41,6 @@
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
-            <a class="item {% if menuitem == "tokens" %}active{% endif %}"
-                href="{{ url_for('canaille.tokens.tokens') }}">
-                <i class="key icon"></i>
-                {% trans %}My tokens{% endtrans %}
-            </a>
             {% if user.admin %}
             <div class="ui dropdown item {% if menuitem == "admin" %}active{% endif %}">
                 <i class="settings icon"></i>

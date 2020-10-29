@@ -2,7 +2,9 @@ def test_no_logged_no_access(testclient):
     testclient.get("/consent", status=403)
 
 
-def test_client_list(testclient, slapd_connection, client, consent, logged_user, token):
+def test_consent_list(
+    testclient, slapd_connection, client, consent, logged_user, token
+):
     res = testclient.get("/consent")
     assert 200 == res.status_code
     assert client.oauthClientName in res.text
