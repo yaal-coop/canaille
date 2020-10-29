@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-10-29 08:31+0100\n"
-"PO-Revision-Date: 2020-10-29 08:32+0100\n"
+"POT-Creation-Date: 2020-10-29 11:50+0100\n"
+"PO-Revision-Date: 2020-10-29 11:50+0100\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -36,7 +36,7 @@ msgstr "Le profil a été mis à jour avec succès."
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:101 canaille/account.py:149
+#: canaille/account.py:101 canaille/account.py:161
 msgid "A password reset link has been sent at your email address."
 msgstr "Un lien de réinitialisation vous a été envoyé à votre adresse."
 
@@ -44,31 +44,23 @@ msgstr "Un lien de réinitialisation vous a été envoyé à votre adresse."
 msgid "Password reset on {website_name}"
 msgstr "Réinitialisation du mot de passe sur {website_name}"
 
-#: canaille/account.py:115
-msgid ""
-"To reset your password on {website_name}, visit the following link :\n"
-"{url}"
-msgstr ""
-"Pour réinitialiser votre mot de passe sur {website_name}, veuillez vous "
-"rendre sur le lien suivant : {url}"
-
-#: canaille/account.py:144
+#: canaille/account.py:156
 msgid "Could not reset your password"
 msgstr "Impossible de réinitialiser votre mot de passe"
 
-#: canaille/account.py:162
+#: canaille/account.py:174
 msgid "The password reset link that brought you here was invalid."
 msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
-#: canaille/account.py:171
+#: canaille/account.py:183
 msgid "Your password has been updated successfuly"
 msgstr "Votre mot de passe a correctement été mis à jour."
 
-#: canaille/consents.py:28 canaille/tokens.py:29
+#: canaille/consents.py:28
 msgid "Could not delete this access"
 msgstr "Impossible de supprimer cet accès."
 
-#: canaille/consents.py:32 canaille/tokens.py:34
+#: canaille/consents.py:32
 msgid "The access has been revoked"
 msgstr "L'accès a été révoqué."
 
@@ -238,37 +230,31 @@ msgstr "Mon profil"
 msgid "My consents"
 msgstr "Mes autorisations"
 
-#: canaille/templates/base.html:47 canaille/templates/token_list.html:18
-msgid "My tokens"
-msgstr "Mes jetons"
-
-#: canaille/templates/base.html:56
+#: canaille/templates/base.html:51
 msgid "Clients"
 msgstr "Clients"
 
-#: canaille/templates/base.html:60
+#: canaille/templates/base.html:55
 msgid "Tokens"
 msgstr "Jetons"
 
-#: canaille/templates/base.html:64
+#: canaille/templates/base.html:59
 msgid "Codes"
 msgstr "Codes"
 
-#: canaille/templates/base.html:68
+#: canaille/templates/base.html:63
 msgid "Consents"
 msgstr "Autorisations"
 
-#: canaille/templates/base.html:75
+#: canaille/templates/base.html:70
 msgid "Log out"
 msgstr "Déconnexion"
 
 #: canaille/templates/consent_list.html:21
-#: canaille/templates/token_list.html:21
 msgid "Consult and revoke the authorization you gave to websites."
 msgstr "Consultez et révoquez les autorisation que vous avez données."
 
 #: canaille/templates/consent_list.html:47
-#: canaille/templates/token_list.html:47
 msgid "From:"
 msgstr "À partir de :"
 
@@ -277,7 +263,6 @@ msgid "Revoked:"
 msgstr "Révoqué le :"
 
 #: canaille/templates/consent_list.html:52
-#: canaille/templates/token_list.html:51
 msgid "Has access to:"
 msgstr "A accès à :"
 
@@ -286,12 +271,10 @@ msgid "Remove access"
 msgstr "Supprimer l'accès"
 
 #: canaille/templates/consent_list.html:72
-#: canaille/templates/token_list.html:71
 msgid "Nothing here"
 msgstr "Rien ici"
 
 #: canaille/templates/consent_list.html:73
-#: canaille/templates/token_list.html:72
 msgid "You did not authorize applications yet."
 msgstr ""
 "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
@@ -368,14 +351,6 @@ msgstr "Éditer"
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: canaille/templates/token_list.html:48
-msgid "Until:"
-msgstr "Jusqu'à :"
-
-#: canaille/templates/token_list.html:61
-msgid "Remove token"
-msgstr "Supprimer le jeton"
-
 #: canaille/templates/admin/authorization_list.html:18
 #: canaille/templates/admin/token_list.html:18
 msgid "Token"
@@ -438,6 +413,46 @@ msgstr "URL"
 msgid "View a token"
 msgstr "Voir un jeton"
 
+#: canaille/templates/mail/reset.html:28 canaille/templates/mail/reset.txt:1
+msgid "Password reinitialisation"
+msgstr "Réinitialisation du mot de passe"
+
+#: canaille/templates/mail/reset.html:33
+#, python-format
+msgid ""
+"\n"
+"                Someone, probably you, asked for a password reinitialization "
+"link at %(site_name)s. If you did not asked for this email, please ignore "
+"it. I you need to reset your password, please click on the blue button below "
+"and follow the instructions.\n"
+"                "
+msgstr ""
+"\n"
+"               Quelqu'un, probablement vous, a demandé un lien de "
+"réinitialisation de votre mot de passe pour le site %(site_name)s. Si vous "
+"n'êtes pas à l'origine de ce message, veuillez l'ignorer. Si vous voulez "
+"réinitialiser votre mot de passe, veuillez cliquer sur le bouton bleu ci-"
+"dessous, et suivre les instructions qui vous seront soumises.\n"
+"               "
+
+#: canaille/templates/mail/reset.html:40 canaille/templates/mail/reset.txt:5
+msgid "Reset password"
+msgstr "Réinitialiser votre mot de passe"
+
+#: canaille/templates/mail/reset.txt:3
+#, python-format
+msgid ""
+"Someone, probably you, asked for a password reinitialization link at "
+"%(site_name)s. If you did not asked for this email, please ignore it. I you "
+"need to reset your password, please click on the link below and follow the "
+"instructions."
+msgstr ""
+"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
+"mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
+"ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
+"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
+"qui vous seront soumises."
+
 #~ msgid "Logged in as"
 #~ msgstr "Connecté en tant que"
 
@@ -449,3 +464,19 @@ msgstr "Voir un jeton"
 
 #~ msgid "OpenID Connect LDAP Bridge"
 #~ msgstr "OpendID Connect LDAP Bridge"
+
+#~ msgid ""
+#~ "To reset your password on {website_name}, visit the following link :\n"
+#~ "{url}"
+#~ msgstr ""
+#~ "Pour réinitialiser votre mot de passe sur {website_name}, veuillez vous "
+#~ "rendre sur le lien suivant : {url}"
+
+#~ msgid "My tokens"
+#~ msgstr "Mes jetons"
+
+#~ msgid "Until:"
+#~ msgstr "Jusqu'à :"
+
+#~ msgid "Remove token"
+#~ msgstr "Supprimer le jeton"

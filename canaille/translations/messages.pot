@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-29 08:31+0100\n"
+"POT-Creation-Date: 2020-10-29 11:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:101 canaille/account.py:149
+#: canaille/account.py:101 canaille/account.py:161
 msgid "A password reset link has been sent at your email address."
 msgstr ""
 
@@ -41,29 +41,23 @@ msgstr ""
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/account.py:115
-msgid ""
-"To reset your password on {website_name}, visit the following link :\n"
-"{url}"
-msgstr ""
-
-#: canaille/account.py:144
+#: canaille/account.py:156
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:162
+#: canaille/account.py:174
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:171
+#: canaille/account.py:183
 msgid "Your password has been updated successfuly"
 msgstr ""
 
-#: canaille/consents.py:28 canaille/tokens.py:29
+#: canaille/consents.py:28
 msgid "Could not delete this access"
 msgstr ""
 
-#: canaille/consents.py:32 canaille/tokens.py:34
+#: canaille/consents.py:32
 msgid "The access has been revoked"
 msgstr ""
 
@@ -233,37 +227,31 @@ msgstr ""
 msgid "My consents"
 msgstr ""
 
-#: canaille/templates/base.html:47 canaille/templates/token_list.html:18
-msgid "My tokens"
-msgstr ""
-
-#: canaille/templates/base.html:56
+#: canaille/templates/base.html:51
 msgid "Clients"
 msgstr ""
 
-#: canaille/templates/base.html:60
+#: canaille/templates/base.html:55
 msgid "Tokens"
 msgstr ""
 
-#: canaille/templates/base.html:64
+#: canaille/templates/base.html:59
 msgid "Codes"
 msgstr ""
 
-#: canaille/templates/base.html:68
+#: canaille/templates/base.html:63
 msgid "Consents"
 msgstr ""
 
-#: canaille/templates/base.html:75
+#: canaille/templates/base.html:70
 msgid "Log out"
 msgstr ""
 
 #: canaille/templates/consent_list.html:21
-#: canaille/templates/token_list.html:21
 msgid "Consult and revoke the authorization you gave to websites."
 msgstr ""
 
 #: canaille/templates/consent_list.html:47
-#: canaille/templates/token_list.html:47
 msgid "From:"
 msgstr ""
 
@@ -272,7 +260,6 @@ msgid "Revoked:"
 msgstr ""
 
 #: canaille/templates/consent_list.html:52
-#: canaille/templates/token_list.html:51
 msgid "Has access to:"
 msgstr ""
 
@@ -281,12 +268,10 @@ msgid "Remove access"
 msgstr ""
 
 #: canaille/templates/consent_list.html:72
-#: canaille/templates/token_list.html:71
 msgid "Nothing here"
 msgstr ""
 
 #: canaille/templates/consent_list.html:73
-#: canaille/templates/token_list.html:72
 msgid "You did not authorize applications yet."
 msgstr ""
 
@@ -356,14 +341,6 @@ msgstr ""
 msgid "Password reset"
 msgstr ""
 
-#: canaille/templates/token_list.html:48
-msgid "Until:"
-msgstr ""
-
-#: canaille/templates/token_list.html:61
-msgid "Remove token"
-msgstr ""
-
 #: canaille/templates/admin/authorization_list.html:18
 #: canaille/templates/admin/token_list.html:18
 msgid "Token"
@@ -424,5 +401,33 @@ msgstr ""
 
 #: canaille/templates/admin/token_view.html:7
 msgid "View a token"
+msgstr ""
+
+#: canaille/templates/mail/reset.html:28 canaille/templates/mail/reset.txt:1
+msgid "Password reinitialisation"
+msgstr ""
+
+#: canaille/templates/mail/reset.html:33
+#, python-format
+msgid ""
+"\n"
+"                Someone, probably you, asked for a password "
+"reinitialization link at %(site_name)s. If you did not asked for this "
+"email, please ignore it. I you need to reset your password, please click "
+"on the blue button below and follow the instructions.\n"
+"                "
+msgstr ""
+
+#: canaille/templates/mail/reset.html:40 canaille/templates/mail/reset.txt:5
+msgid "Reset password"
+msgstr ""
+
+#: canaille/templates/mail/reset.txt:3
+#, python-format
+msgid ""
+"Someone, probably you, asked for a password reinitialization link at "
+"%(site_name)s. If you did not asked for this email, please ignore it. I "
+"you need to reset your password, please click on the link below and "
+"follow the instructions."
 msgstr ""
 

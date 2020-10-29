@@ -3,9 +3,10 @@ import os
 import toml
 
 import canaille.admin
-import canaille.admin.tokens
 import canaille.admin.authorizations
 import canaille.admin.clients
+import canaille.admin.mail
+import canaille.admin.tokens
 import canaille.consents
 import canaille.commands
 import canaille.oauth
@@ -141,6 +142,7 @@ def setup_app(app):
             canaille.admin.authorizations.bp, url_prefix="/admin/authorization"
         )
         app.register_blueprint(canaille.admin.clients.bp, url_prefix="/admin/client")
+        app.register_blueprint(canaille.admin.mail.bp, url_prefix="/admin/mail")
 
         babel = Babel(app)
 

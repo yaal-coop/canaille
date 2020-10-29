@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width"/>
+        <style type="text/css" style="font-weight: 300">
+            @import url({{ url_for('static', filename='fonts/lato.css', _external=True) }});
+        </style>
+        <!-- <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
+        <style>
+body {
+    background: #F8F8F8;
+    padding: 1em;
+    margin: auto;
+    max-width: 800px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+}
+        </style>-->
+    </head>
+    <body style="box-sizing: inherit; height: 100%; overflow-x: hidden; min-width: 320px; font-size: 14px; line-height: 1.4285em; color: rgba(0,0,0,.87); background: #F8F8F8; padding: 1em; margin: auto; max-width: 800px; font-family: 'Lato', sans-serif; font-weight: 400;">
+        <div class="ui segment" style="line-height: 1.4285em; color: rgba(0,0,0,.87); font-family: 'Lato', sans-serif; font-weight: 400; box-sizing: inherit; position: relative; background: #fff; box-shadow: 0 1px 2px 0 rgba(34,36,38,.15); margin: 1rem 0; padding: 1em 1em; border-radius: .28571429rem; border: 1px solid rgba(34,36,38,.15); font-size: 1rem; margin-top: 0; margin-bottom: 0;">
+            <h3 class="ui top attached header" style="box-sizing: inherit; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; font-weight: 700; line-height: 1.28571429em; text-transform: none; color: rgba(0,0,0,.87); font-size: 1.28571429rem; background: #fff; padding: .78571429rem 1rem; margin: 0 -1px 0 -1px; box-shadow: none; border: 1px solid #d4d4d5; border-radius: .28571429rem .28571429rem 0 0;">
+                {% if logo %}
+                    <img class="ui image" src="{{ logo }}" alt="{{ site_name }}" style="font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; font-weight: 700; line-height: 1.28571429em; text-transform: none; color: rgba(0,0,0,.87); font-size: 1.28571429rem; box-sizing: inherit; border-style: none; position: relative; max-width: 50px; max-height:50px; background-color: transparent; display: inline-block; margin-top: .14285714em; width: 2.5em; height: auto; vertical-align: middle;">
+                {% endif %}
+                <div class="content" style="font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; font-weight: 700; line-height: 1.28571429em; text-transform: none; color: rgba(0,0,0,.87); font-size: 1.28571429rem; box-sizing: inherit; display: inline-block; padding-left: .75rem; vertical-align: middle;">
+                {% trans %}Password reinitialisation{% endtrans %}
+                </div>
+            </h3>
+
+            <div class="ui attached message" style="font-family: 'Lato', sans-serif; font-weight: 400; box-sizing: inherit; position: relative; min-height: 1em; background: #f8f8f9; padding: 1em 1.5em; line-height: 1.4285em; color: rgba(0,0,0,.87); transition: opacity .1s ease,color .1s ease,background .1s ease,box-shadow .1s ease,-webkit-box-shadow .1s ease; font-size: 1em; margin-bottom: -1px; box-shadow: 0 0 0 1px rgba(34,36,38,.15) inset; margin-left: -1px; margin-right: -1px; margin-top: -1px; border-radius: 0;">
+                {% trans %}
+                Someone, probably you, asked for a password reinitialization link at {{ site_name }}. If you did not asked for this email, please ignore it. I you need to reset your password, please click on the blue button below and follow the instructions.
+                {% endtrans %}
+            </div>
+
+            <div class="ui attached stackable buttons" style="line-height: 1.4285em; color: rgba(0,0,0,.87); font-family: 'Lato', sans-serif; font-weight: 400; box-sizing: inherit; -webkit-box-orient: horizontal; -webkit-box-direction: normal; flex-direction: row; font-size: 0; vertical-align: baseline; margin: 0 .25em 0 0; position: relative; display: flex; border-radius: 0; width: auto!important; z-index: auto; margin-left: -1px; margin-right: -1px; box-shadow: none;">
+                <a class="ui button" href="{{ site_url }}" style="-webkit-box-direction: normal; box-sizing: inherit; cursor: pointer; display: inline-block; min-height: 1em; outline: 0; border: none; vertical-align: baseline; background: #e0e1e2 none; color: rgba(0,0,0,.6); font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; padding: .78571429em 1.5em .78571429em; text-transform: none; text-shadow: none; font-weight: 700; line-height: 1em; font-style: normal; text-align: center; text-decoration: none; user-select: none; transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease,-webkit-box-shadow .1s ease; will-change: auto; -webkit-tap-highlight-color: transparent; font-size: 1rem; -webkit-box-flex: 1; flex: 1 0 auto; margin: 0; border-left: none; margin-left: 0; border-radius: 0; box-shadow: 0 0 0 1px transparent inset,0 0 0 0 rgba(34,36,38,.15) inset;">{{ site_name }}</a>
+                <a class="ui primary button" href="{{ reset_url }}" style="-webkit-box-direction: normal; box-sizing: inherit; cursor: pointer; display: inline-block; min-height: 1em; outline: 0; border: none; vertical-align: baseline; background: #e0e1e2 none; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; padding: .78571429em 1.5em .78571429em; text-transform: none; font-weight: 700; line-height: 1em; font-style: normal; text-align: center; text-decoration: none; user-select: none; transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease,-webkit-box-shadow .1s ease; will-change: auto; -webkit-tap-highlight-color: transparent; font-size: 1rem; background-color: #2185d0; color: #fff; text-shadow: none; background-image: none; -webkit-box-flex: 1; flex: 1 0 auto; margin: 0; border-radius: 0; box-shadow: 0 0 0 1px transparent inset,0 0 0 0 rgba(34,36,38,.15) inset;">{% trans %}Reset password{% endtrans %}</a>
+            </div>
+        </div>
+    </body>
+</html>

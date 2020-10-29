@@ -1,0 +1,6 @@
+# {% trans %}Password reinitialisation{% endtrans %}
+
+{% trans %}Someone, probably you, asked for a password reinitialization link at {{ site_name }}. If you did not asked for this email, please ignore it. I you need to reset your password, please click on the link below and follow the instructions.{% endtrans %}
+
+{% trans %}Reset password{% endtrans %}: {{ reset_url }}
+{{ site_name }}: {{ site_url }}

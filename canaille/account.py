@@ -104,20 +104,32 @@ def forgotten():
 
     recipient = user.mail
     base_url = current_app.config.get("URL") or request.url_root
-    url = base_url + url_for(
+    reset_url = base_url + url_for(
         "canaille.account.reset",
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
     )[1:]
     subject = _("Password reset on {website_name}").format(
-        website_name=current_app.config.get("NAME", url)
+        website_name=current_app.config.get("NAME", reset_url)
     )
-    text_body = _(
-        "To reset your password on {website_name}, visit the following link :\n{url}"
-    ).format(website_name=current_app.config.get("NAME", url), url=url)
+
+    text_body = render_template(
+        "mail/reset.txt",
+        site_name=current_app.config.get("NAME", reset_url),
+        site_url=current_app.config.get("URL", base_url),
+        reset_url=reset_url,
+    )
+    html_body = render_template(
+        "mail/reset.html",
+        site_name=current_app.config.get("NAME", reset_url),
+        site_url=current_app.config.get("URL", base_url),
+        reset_url=reset_url,
+        logo=current_app.config.get("LOGO"),
+    )
 
     msg = email.message.EmailMessage()
     msg.set_content(text_body)
+    msg.add_alternative(html_body, subtype="html")
     msg["Subject"] = subject
     msg["From"] = current_app.config["SMTP"]["FROM_ADDR"]
     msg["To"] = recipient
