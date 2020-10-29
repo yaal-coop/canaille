@@ -1,30 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="ui center aligned segment">
+<div class="ui segment">
     {% if client.oauthLogoURI %}
         <img class="ui centered tiny image" src="{{ client.oauthLogoURI }}" alt="{{ client.oauthClientName }}">
     {% endif %}
 
-    <p>{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</p>
-    <p>
-        <strong>{{ grant.request.scope }}</strong>
-    </p>
+    <div class="ui center aligned container">
+        {{ gettext('You are logged id as: %(name)s', name=user.name) }}
+    </div>
 
-    <p>{{ gettext('from: %(user)s', user=user.name) }}</p>
+    <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</h3>
 
-    <div class="ui stackable buttons">
-        <form action="{{ request.url }}" method="post">
-            <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
-                {% trans %}Deny{% endtrans %}
-            </button>
-            <button name="answer" type="submit" class="ui button" value="logout" id="logout">
-                {% trans %}Switch user{% endtrans %}
-            </button>
-            <button name="answer" type="submit" class="ui positive button" value="accept" id="accept">
-                {% trans %}Accept{% endtrans %}
-            </button>
-        </form>
+    <div class="ui divided items">
+    {% for claim in grant.request.scope.split(" ") %}
+    <div class="item">
+        {% if claim in claims %}
+        <div>
+            <i class="{{ claims[claim][0] }} large icon"></i>
+            {{ claims[claim][1] }}
+        </div>
+        {% else %}
+        <div class="ui tiny image">
+            <i class="huge user icon"></i>
+            {{ claim }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="ui center aligned container">
+        <div class="ui stackable buttons">
+            <form action="{{ request.url }}" method="post">
+                <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
+                    {% trans %}Deny{% endtrans %}
+                </button>
+                <button name="answer" type="submit" class="ui button" value="logout" id="logout">
+                    {% trans %}Switch user{% endtrans %}
+                </button>
+                <button name="answer" type="submit" class="ui primary button" value="accept" id="accept">
+                    {% trans %}Accept{% endtrans %}
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -4,7 +4,7 @@ from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
 from flask import Blueprint, request, session, redirect, abort
 from flask import render_template, jsonify, flash, current_app
-from flask_babel import gettext
+from flask_babel import gettext, lazy_gettext as _
 from .models import User, Client, Consent
 from .oauth2utils import (
     authorization,
@@ -18,6 +18,16 @@ from .flaskutils import current_user
 
 
 bp = Blueprint(__name__, "oauth")
+
+CLAIMS = {
+    "profile": (
+        "id card outline",
+        _("Personnal information about yourself, such as your name or your gender."),
+    ),
+    "email": ("at", _("Your email address.")),
+    "address": ("envelope open outline", _("Your postal address.")),
+    "phone": ("phone", _("Your phone number.")),
+}
 
 
 @bp.route("/authorize", methods=["GET", "POST"])
@@ -72,7 +82,12 @@ def authorize():
             return jsonify(dict(error.get_body()))
 
         return render_template(
-            "authorize.html", user=user, grant=grant, client=client, menu=False
+            "authorize.html",
+            user=user,
+            grant=grant,
+            client=client,
+            claims=CLAIMS,
+            menu=False,
         )
 
     if request.method == "POST":

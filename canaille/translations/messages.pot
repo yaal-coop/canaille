@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-29 11:50+0100\n"
+"POT-Creation-Date: 2020-10-29 15:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,39 +17,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: canaille/account.py:32 canaille/oauth.py:48
+#: canaille/account.py:35 canaille/oauth.py:58
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/account.py:61
+#: canaille/account.py:64
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:72
+#: canaille/account.py:75
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:94
+#: canaille/account.py:97
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:101 canaille/account.py:161
+#: canaille/account.py:104 canaille/account.py:177
 msgid "A password reset link has been sent at your email address."
 msgstr ""
 
-#: canaille/account.py:112
+#: canaille/account.py:126
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/account.py:156
+#: canaille/account.py:171
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:174
+#: canaille/account.py:190
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:183
+#: canaille/account.py:199
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -113,7 +113,23 @@ msgstr ""
 msgid "555-000-555"
 msgstr ""
 
-#: canaille/oauth.py:81
+#: canaille/oauth.py:25
+msgid "Personnal information about yourself, such as your name or your gender."
+msgstr ""
+
+#: canaille/oauth.py:27
+msgid "Your email address."
+msgstr ""
+
+#: canaille/oauth.py:28
+msgid "Your postal address."
+msgstr ""
+
+#: canaille/oauth.py:29
+msgid "Your phone number."
+msgstr ""
+
+#: canaille/oauth.py:96
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -193,25 +209,25 @@ msgstr ""
 msgid "The client has been edited."
 msgstr ""
 
-#: canaille/templates/authorize.html:9
+#: canaille/templates/authorize.html:10
+#, python-format
+msgid "You are logged id as: %(name)s"
+msgstr ""
+
+#: canaille/templates/authorize.html:13
 #, python-format
 msgid "The application %(name)s is requesting access to:"
 msgstr ""
 
-#: canaille/templates/authorize.html:14
-#, python-format
-msgid "from: %(user)s"
-msgstr ""
-
-#: canaille/templates/authorize.html:19
+#: canaille/templates/authorize.html:37
 msgid "Deny"
 msgstr ""
 
-#: canaille/templates/authorize.html:22
+#: canaille/templates/authorize.html:40
 msgid "Switch user"
 msgstr ""
 
-#: canaille/templates/authorize.html:25
+#: canaille/templates/authorize.html:43
 msgid "Accept"
 msgstr ""
 
