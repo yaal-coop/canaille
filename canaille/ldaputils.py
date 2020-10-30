@@ -45,9 +45,12 @@ class LDAPObject:
         self.must = list(set(self.must))
 
     def __repr__(self):
-        return "<{} {}={}>".format(
-            self.__class__.__name__, self.id, getattr(self, self.id)
-        )
+        try:
+            id = getattr(self, self.id)
+        except AttributeError:
+            id = "?"
+
+        return "<{} {}={}>".format(self.__class__.__name__, self.id, id)
 
     @classmethod
     def ldap(cls):
@@ -229,7 +232,7 @@ class LDAPObject:
                 arg_filter += "(|" + "".join([f"({k}={_v})" for _v in v]) + ")"
         ldapfilter = f"(&{class_filter}{arg_filter})" if class_filter else arg_filter
         base = base or f"{cls.base},{cls.root_dn}"
-        result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter)
+        result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
 
         return [
             cls(
