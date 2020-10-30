@@ -12,8 +12,8 @@ def test_password_flow(testclient, slapd_connection, user, client):
             scope="profile",
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
 
     assert res.json["scope"] == "openid profile"
     assert res.json["token_type"] == "Bearer"
@@ -23,7 +23,8 @@ def test_password_flow(testclient, slapd_connection, user, client):
     assert token is not None
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "sub": "user", "family_name": "Doe"} == res.json

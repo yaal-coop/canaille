@@ -6,8 +6,7 @@ def test_login_and_out(testclient, slapd_connection, user):
     with testclient.session_transaction() as session:
         assert session.get("user_dn") is None
 
-    res = testclient.get("/login")
-    assert 200 == res.status_code
+    res = testclient.get("/login", status=200)
 
     res.form["login"] = "John Doe"
     res.form["password"] = "correct horse battery staple"
@@ -32,8 +31,7 @@ def test_login_wrong_password(testclient, slapd_connection, user):
     with testclient.session_transaction() as session:
         assert session.get("user_dn") is None
 
-    res = testclient.get("/login")
-    assert 200 == res.status_code
+    res = testclient.get("/login", status=200)
 
     res.form["login"] = "John Doe"
     res.form["password"] = "incorrect horse"
@@ -46,8 +44,7 @@ def test_login_no_password(testclient, slapd_connection, user):
     with testclient.session_transaction() as session:
         assert session.get("user_dn") is None
 
-    res = testclient.get("/login")
-    assert 200 == res.status_code
+    res = testclient.get("/login", status=200)
 
     res.form["login"] = "John Doe"
     res.form["password"] = ""
@@ -57,8 +54,7 @@ def test_login_no_password(testclient, slapd_connection, user):
 
 
 def test_login_with_alternate_attribute(testclient, slapd_connection, user):
-    res = testclient.get("/login")
-    assert 200 == res.status_code
+    res = testclient.get("/login", status=200)
 
     res.form["login"] = "user"
     res.form["password"] = "correct horse battery staple"
@@ -74,8 +70,7 @@ def test_login_with_alternate_attribute(testclient, slapd_connection, user):
 
 @mock.patch("smtplib.SMTP")
 def test_password_forgotten(SMTP, testclient, slapd_connection, user):
-    res = testclient.get("/reset")
-    assert 200 == res.status_code
+    res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"
     res = res.form.submit()
@@ -87,8 +82,7 @@ def test_password_forgotten(SMTP, testclient, slapd_connection, user):
 
 @mock.patch("smtplib.SMTP")
 def test_password_forgotten_invalid_form(SMTP, testclient, slapd_connection, user):
-    res = testclient.get("/reset")
-    assert 200 == res.status_code
+    res = testclient.get("/reset", status=200)
 
     res.form["login"] = ""
     res = res.form.submit()
@@ -100,8 +94,7 @@ def test_password_forgotten_invalid_form(SMTP, testclient, slapd_connection, use
 
 @mock.patch("smtplib.SMTP")
 def test_password_forgotten_invalid(SMTP, testclient, slapd_connection, user):
-    res = testclient.get("/reset")
-    assert 200 == res.status_code
+    res = testclient.get("/reset", status=200)
 
     res.form["login"] = "i-dont-really-exist"
     res = res.form.submit()
@@ -117,8 +110,7 @@ def test_password_reset(testclient, slapd_connection, user):
     with testclient.app.app_context():
         hash = profile_hash("user", user.userPassword[0])
 
-    res = testclient.get("/reset/user/" + hash)
-    assert 200 == res.status_code
+    res = testclient.get("/reset/user/" + hash, status=200)
 
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
@@ -155,8 +147,7 @@ def test_password_reset_bad_password(testclient, slapd_connection, user):
     with testclient.app.app_context():
         hash = profile_hash("user", user.userPassword[0])
 
-    res = testclient.get("/reset/user/" + hash)
-    assert 200 == res.status_code
+    res = testclient.get("/reset/user/" + hash, status=200)
 
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "typo"

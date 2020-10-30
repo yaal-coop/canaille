@@ -14,8 +14,8 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
             scope="profile",
             nonce="somenonce",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
 
     res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
@@ -35,8 +35,8 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
             redirect_uri=client.oauthRedirectURIs[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
@@ -44,9 +44,10 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
     assert token.oauthSubject == logged_user.dn
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
 
 
@@ -59,8 +60,8 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
             scope="profile",
             nonce="somenonce",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
 
     res = res.form.submit(name="answer", value="logout")
     assert 302 == res.status_code
@@ -98,8 +99,8 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
             redirect_uri=client.oauthRedirectURIs[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
@@ -107,9 +108,10 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     assert token.oauthSubject == logged_user.dn
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
 
 
@@ -122,8 +124,8 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
             scope="profile",
             nonce="somenonce",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
 
     res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
@@ -143,8 +145,8 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
             redirect_uri=client.oauthRedirectURIs[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     access_token = res.json["access_token"]
     old_token = Token.get(access_token, conn=slapd_connection)
     assert old_token is not None
@@ -157,8 +159,8 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
             refresh_token=res.json["refresh_token"],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     access_token = res.json["access_token"]
     new_token = Token.get(access_token, conn=slapd_connection)
     assert new_token is not None
@@ -166,9 +168,10 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     assert old_token.oauthRevokationDate
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
 
 
@@ -189,8 +192,8 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
             scope="profile",
             nonce="somenonce",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
 
     res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
@@ -211,8 +214,8 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
             redirect_uri=client.oauthRedirectURIs[0],
             client_id=client.oauthClientID,
         ),
+        status=200,
     )
-    assert 200 == res.status_code
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
@@ -220,9 +223,10 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     assert token.oauthSubject == logged_user.dn
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
 
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
@@ -242,8 +246,8 @@ def test_authorization_code_flow_when_consent_already_given(
             scope="profile",
             nonce="somenonce",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
 
     res = res.form.submit(name="answer", value="accept")
     assert 302 == res.status_code
@@ -268,8 +272,8 @@ def test_authorization_code_flow_when_consent_already_given(
             redirect_uri=client.oauthRedirectURIs[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert "access_token" in res.json
 
     res = testclient.get(
@@ -326,8 +330,8 @@ def test_prompt_not_logged(testclient, slapd_connection, user, client):
             nonce="somenonce",
             prompt="none",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
     assert "login_required" == res.json.get("error")
 
 
@@ -341,6 +345,6 @@ def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):
             nonce="somenonce",
             prompt="none",
         ),
+        status=200,
     )
-    assert 200 == res.status_code
     assert "consent_required" == res.json.get("error")

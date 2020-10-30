@@ -38,9 +38,10 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     assert token is not None
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
 
 
@@ -77,7 +78,8 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair)
     assert [client.oauthClientID] == claims["aud"]
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
