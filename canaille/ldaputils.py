@@ -75,9 +75,13 @@ class LDAPObject:
 
     @property
     def dn(self):
-        if not self.id in self.attrs:
+        if self.id in self.changes:
+            id = self.changes[self.id][0]
+        elif self.id in self.attrs:
+            id = self.attrs[self.id][0]
+        else:
             return None
-        return f"{self.id}={self.attrs[self.id][0]},{self.base},{self.root_dn}"
+        return f"{self.id}={id},{self.base},{self.root_dn}"
 
     @classmethod
     def initialize(cls, conn=None):
