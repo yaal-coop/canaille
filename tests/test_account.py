@@ -34,7 +34,7 @@ def test_login_wrong_password(testclient, slapd_connection, user):
     res.form["login"] = "John Doe"
     res.form["password"] = "incorrect horse"
     res = res.form.submit(status=200)
-    assert b"Login failed, please check your information" in res.body
+    assert "Login failed, please check your information" in res.text
 
 
 def test_login_no_password(testclient, slapd_connection, user):
@@ -46,7 +46,7 @@ def test_login_no_password(testclient, slapd_connection, user):
     res.form["login"] = "John Doe"
     res.form["password"] = ""
     res = res.form.submit(status=200)
-    assert b"Login failed, please check your information" in res.body
+    assert "Login failed, please check your information" in res.text
 
 
 def test_login_with_alternate_attribute(testclient, slapd_connection, user):

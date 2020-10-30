@@ -68,7 +68,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     res.form["login"] = logged_user.name
     res.form["password"] = "wrong password"
     res = res.form.submit(status=200)
-    assert b"Login failed, please check your information" in res.body
+    assert "Login failed, please check your information" in res.text
 
     res.form["login"] = logged_user.name
     res.form["password"] = "correct horse battery staple"
