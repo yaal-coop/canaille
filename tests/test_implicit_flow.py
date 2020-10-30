@@ -18,18 +18,16 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
             nonce="somenonce",
         ),
     )
-    assert (200, "text/html") == (res.status_code, res.content_type)
+    assert "text/html" == res.content_type
 
     res.form["login"] = "user"
     res.form["password"] = "correct horse battery staple"
-    res = res.form.submit()
-    assert 302 == res.status_code
+    res = res.form.submit(status=302)
 
     res = res.follow()
-    assert (200, "text/html") == (res.status_code, res.content_type), res.json
+    assert "text/html" == res.content_type, res.json
 
-    res = res.form.submit(name="answer", value="accept")
-    assert 302 == res.status_code
+    res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).fragment)
@@ -41,7 +39,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     res = testclient.get(
         "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
     )
-    assert (200, "application/json") == (res.status_code, res.content_type)
+    assert "application/json" == res.content_type
     assert {"name": "John Doe", "sub": "user", "family_name": "Doe"} == res.json
 
     client.oauthGrantType = ["code"]
@@ -64,18 +62,16 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
             nonce="somenonce",
         ),
     )
-    assert (200, "text/html") == (res.status_code, res.content_type)
+    assert "text/html" == res.content_type
 
     res.form["login"] = "user"
     res.form["password"] = "correct horse battery staple"
-    res = res.form.submit()
-    assert 302 == res.status_code
+    res = res.form.submit(status=302)
 
-    res = res.follow()
-    assert (200, "text/html") == (res.status_code, res.content_type), res.json
+    res = res.follow(status=200)
+    assert "text/html" == res.content_type, res.json
 
-    res = res.form.submit(name="answer", value="accept")
-    assert 302 == res.status_code
+    res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).fragment)
@@ -91,9 +87,11 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
     assert [client.oauthClientID] == claims["aud"]
 
     res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
     )
-    assert (200, "application/json") == (res.status_code, res.content_type)
+    assert "application/json" == res.content_type
     assert {"name": "John Doe", "sub": "user", "family_name": "Doe"} == res.json
 
     client.oauthGrantType = ["code"]

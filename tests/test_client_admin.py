@@ -35,12 +35,10 @@ def test_client_add(testclient, logged_admin, slapd_connection):
     }
     for k, v in data.items():
         res.form[k] = v
-    res = res.form.submit()
 
-    assert 302 == res.status_code
-    res = res.follow()
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
 
-    assert 200 == res.status_code
     client_id = res.forms["readonly"]["oauthClientID"].value
     client = Client.get(client_id, conn=slapd_connection)
     for k, v in data.items():
@@ -72,9 +70,8 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection):
     }
     for k, v in data.items():
         res.forms["clientadd"][k] = v
-    res = res.forms["clientadd"].submit()
+    res = res.forms["clientadd"].submit(status=200)
 
-    assert 200 == res.status_code
     client.reload(conn=slapd_connection)
     for k, v in data.items():
         client_value = getattr(client, k)

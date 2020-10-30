@@ -17,8 +17,7 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept")
-    assert 302 == res.status_code
+    res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -63,27 +62,21 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="logout")
-    assert 302 == res.status_code
-    res = res.follow()
-    assert 200 == res.status_code
+    res = res.form.submit(name="answer", value="logout", status=302)
+    res = res.follow(status=200)
 
     res.form["login"] = logged_user.name
     res.form["password"] = "wrong password"
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
     assert b"Login failed, please check your information" in res.body
 
     res.form["login"] = logged_user.name
     res.form["password"] = "correct horse battery staple"
-    res = res.form.submit()
-    assert 302 == res.status_code
-    res = res.follow()
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
 
-    assert 200 == res.status_code
-    res = res.form.submit(name="answer", value="accept")
+    res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert 302 == res.status_code
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -127,8 +120,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept")
-    assert 302 == res.status_code
+    res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -195,8 +187,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept")
-    assert 302 == res.status_code
+    res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -249,8 +240,7 @@ def test_authorization_code_flow_when_consent_already_given(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept")
-    assert 302 == res.status_code
+    res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -284,8 +274,8 @@ def test_authorization_code_flow_when_consent_already_given(
             scope="profile",
             nonce="somenonce",
         ),
+        status=302,
     )
-    assert 302 == res.status_code
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
@@ -307,8 +297,8 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
             nonce="somenonce",
             prompt="none",
         ),
+        status=302,
     )
-    assert 302 == res.status_code
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params

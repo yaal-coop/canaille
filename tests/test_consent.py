@@ -9,11 +9,9 @@ def test_consent_list(
     assert client.oauthClientName in res.text
     assert not token.revoked
 
-    res = testclient.get(f"/consent/delete/{consent.cn[0]}")
-    assert 302 == res.status_code
+    res = testclient.get(f"/consent/delete/{consent.cn[0]}", status=302)
 
-    res = res.follow()
-    assert 200 == res.status_code
+    res = res.follow(status=200)
     assert client.oauthClientName not in res.text
 
     token.reload(conn=slapd_connection)

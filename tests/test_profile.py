@@ -7,8 +7,7 @@ def test_profile(testclient, slapd_connection, logged_user):
     res.form["email"] = "email@mydomain.tld"
     res.form["phone_number"] = "555-666-777"
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     logged_user.reload(slapd_connection)
 
@@ -27,8 +26,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
 
     res.form["email"] = "john@doe.com"
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     assert ["john@doe.com"] == logged_user.mail
 
@@ -36,8 +34,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
 
     res.form["email"] = "yolo"
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     logged_user.reload(slapd_connection)
 
@@ -50,8 +47,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "new_password"
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     with testclient.app.app_context():
         assert logged_user.check_password("new_password")
@@ -61,8 +57,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
     res.form["password1"] = "correct horse battery staple"
     res.form["password2"] = "correct horse battery staple"
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
@@ -74,8 +69,7 @@ def test_password_change_fail(testclient, slapd_connection, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "other_password"
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
@@ -85,8 +79,7 @@ def test_password_change_fail(testclient, slapd_connection, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = ""
 
-    res = res.form.submit()
-    assert 200 == res.status_code
+    res = res.form.submit(status=200)
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")

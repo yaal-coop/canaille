@@ -8,8 +8,8 @@ def test_token_introspection(testclient, user, client, token):
             token=token.oauthAccessToken,
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {
         "active": True,
         "client_id": client.oauthClientID,
@@ -29,6 +29,6 @@ def test_token_invalid(testclient, client):
         "/oauth/introspect",
         params=dict(token="invalid"),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
     )
-    assert 200 == res.status_code
     assert {"active": False} == res.json
