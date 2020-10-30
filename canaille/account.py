@@ -58,6 +58,7 @@ def profile(user):
         for k, v in claims.items()
     }
     form = ProfileForm(request.form or None, data=data)
+    form.sub.render_kw["readonly"] = "true"
 
     if request.form:
         if not form.validate():

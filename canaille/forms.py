@@ -50,7 +50,7 @@ class PasswordResetForm(FlaskForm):
 class ProfileForm(FlaskForm):
     sub = wtforms.StringField(
         _("Username"),
-        render_kw={"readonly": "true"},
+        render_kw={"placeholder": _("jdoe")},
     )
     #    name = wtforms.StringField(_("Name"))
     given_name = wtforms.StringField(
