@@ -152,7 +152,7 @@ def app(slapd_server, keypair_path):
             "SMTP": {
                 "HOST": "localhost",
                 "PORT": 25,
-                "TLS": False,
+                "TLS": True,
                 "LOGIN": "smtp_login",
                 "PASSWORD": "smtp_password",
                 "FROM_ADDR": "admin@mydomain.tld",
