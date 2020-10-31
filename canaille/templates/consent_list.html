@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'flask.j2' as flask %}
 
 {% block style %}
     <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
@@ -22,13 +23,7 @@
         </div>
     </h2>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-    <div class="ui attached message {{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endwith %}
+    {{ flask.messages() }}
 
     {% if consents %}
     <div class="ui centered cards">

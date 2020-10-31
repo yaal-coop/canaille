@@ -1,18 +1,15 @@
 {% extends 'base.html' %}
 {% import 'fomanticui.j2' as sui %}
+{% import 'flask.j2' as flask %}
 
 {% block content %}
 <div class="loginform">
     <h3 class="ui top attached header">
         {% trans %}Add a client{% endtrans %}
     </h3>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for category, message in messages %}
-    <div class="ui attached message {{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endwith %}
+
+    {{ flask.messages() }}
+
     <div class="ui attached clearing segment">
         {{ sui.render_form(form, _("Confirm")) }}
     </div>

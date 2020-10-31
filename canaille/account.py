@@ -43,6 +43,8 @@ def login():
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
+        user = User.get(form.login.data)
+        flash(_(f"Connection successful. Welcome {user.name}"), "success")
         return redirect(url_for("canaille.account.index"))
 
     return render_template("login.html", form=form)
@@ -50,8 +52,12 @@ def login():
 
 @bp.route("/logout")
 def logout():
-    if current_user():
-        current_user().logout()
+    user = current_user()
+    if user:
+        flash(
+            _(f"You have been disconnected. See you next time {user.name}"), "success"
+        )
+        user.logout()
     return redirect("/")
 
 
