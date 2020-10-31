@@ -5,8 +5,16 @@ import logging
 import smtplib
 import urllib.request
 
-from flask import Blueprint, request, flash, url_for, current_app
-from flask import render_template, redirect
+from flask import (
+    Blueprint,
+    request,
+    flash,
+    url_for,
+    current_app,
+    abort,
+    render_template,
+    redirect,
+)
 from flask_babel import gettext as _
 
 from .forms import LoginForm, ProfileForm, PasswordResetForm, ForgottenPasswordForm
@@ -21,7 +29,7 @@ bp = Blueprint(__name__, "home")
 def index():
     if not current_user():
         return redirect(url_for("canaille.account.login"))
-    return redirect(url_for("canaille.account.profile"))
+    return redirect(url_for("canaille.account.profile", subject=current_user().uid[0]))
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -47,9 +55,11 @@ def logout():
     return redirect("/")
 
 
-@bp.route("/profile", methods=("GET", "POST"))
+@bp.route("/profile/<subject>", methods=("GET", "POST"))
 @user_needed()
-def profile(user):
+def profile(user, subject):
+    subject == user.uid[0] or abort(403)
+
     claims = current_app.config["JWT"]["MAPPING"]
     data = {
         k.lower(): getattr(user, v)[0]
@@ -198,6 +208,6 @@ def reset(uid, hash):
         user.login()
 
         flash(_("Your password has been updated successfuly"), "success")
-        return redirect(url_for("canaille.account.profile", user_id=uid))
+        return redirect(url_for("canaille.account.profile", subject=uid))
 
     return render_template("reset-password.html", form=form, uid=uid, hash=hash)

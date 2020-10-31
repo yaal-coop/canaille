@@ -1,5 +1,5 @@
 def test_profile(testclient, slapd_connection, logged_user):
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["sub"] = "user"
     res.form["given_name"] = "given_name"
@@ -22,7 +22,7 @@ def test_profile(testclient, slapd_connection, logged_user):
 
 
 def test_bad_email(testclient, slapd_connection, logged_user):
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["email"] = "john@doe.com"
 
@@ -30,7 +30,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
 
     assert ["john@doe.com"] == logged_user.mail
 
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["email"] = "yolo"
 
@@ -42,7 +42,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
 
 
 def test_password_change(testclient, slapd_connection, logged_user):
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["password1"] = "new_password"
     res.form["password2"] = "new_password"
@@ -52,7 +52,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
     with testclient.app.app_context():
         assert logged_user.check_password("new_password")
 
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["password1"] = "correct horse battery staple"
     res.form["password2"] = "correct horse battery staple"
@@ -64,7 +64,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
 
 
 def test_password_change_fail(testclient, slapd_connection, logged_user):
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["password1"] = "new_password"
     res.form["password2"] = "other_password"
@@ -74,7 +74,7 @@ def test_password_change_fail(testclient, slapd_connection, logged_user):
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
 
-    res = testclient.get("/profile", status=200)
+    res = testclient.get("/profile/user", status=200)
 
     res.form["password1"] = "new_password"
     res.form["password2"] = ""

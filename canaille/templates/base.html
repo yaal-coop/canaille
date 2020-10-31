@@ -32,7 +32,7 @@
             </div>
             {% endif %}
             <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                href="{{ url_for('canaille.account.profile') }}">
+                href="{{ url_for('canaille.account.profile', subject=user.uid[0]) }}">
                 <i class="id card icon"></i>
                 {% trans %}My profile{% endtrans %}
             </a>
