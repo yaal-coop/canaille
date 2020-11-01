@@ -17,8 +17,14 @@ from flask import (
 )
 from flask_babel import gettext as _
 
-from .forms import LoginForm, ProfileForm, PasswordResetForm, ForgottenPasswordForm
-from .flaskutils import current_user, user_needed
+from .forms import (
+    LoginForm,
+    AddProfileForm,
+    EditProfileForm,
+    PasswordResetForm,
+    ForgottenPasswordForm,
+)
+from .flaskutils import current_user, user_needed, admin_needed
 from .models import User
 
 
@@ -29,7 +35,9 @@ bp = Blueprint(__name__, "home")
 def index():
     if not current_user():
         return redirect(url_for("canaille.account.login"))
-    return redirect(url_for("canaille.account.profile", subject=current_user().uid[0]))
+    return redirect(
+        url_for("canaille.account.profile_edition", username=current_user().uid[0])
+    )
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -44,7 +52,7 @@ def login():
             return render_template("login.html", form=form)
 
         user = User.get(form.login.data)
-        flash(_(f"Connection successful. Welcome {user.name}"), "success")
+        flash(_("Connection successful. Welcome %(user)s", user=user.name), "success")
         return redirect(url_for("canaille.account.index"))
 
     return render_template("login.html", form=form)
@@ -55,25 +63,87 @@ def logout():
     user = current_user()
     if user:
         flash(
-            _(f"You have been disconnected. See you next time {user.name}"), "success"
+            _("You have been disconnected. See you next time %(user)s", user=user.name),
+            "success",
         )
         user.logout()
     return redirect("/")
 
 
-@bp.route("/profile/<subject>", methods=("GET", "POST"))
-@user_needed()
-def profile(user, subject):
-    subject == user.uid[0] or abort(403)
+@bp.route("/users")
+@admin_needed()
+def users(user):
+    users = User.filter(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+    return render_template("users.html", users=users, menuitem="users")
 
+
+@bp.route("/profile", methods=("GET", "POST"))
+@admin_needed()
+def profile_creation(user):
     claims = current_app.config["JWT"]["MAPPING"]
+    form = AddProfileForm(request.form or None)
+    try:
+        del form.sub.render_kw["readonly"]
+    except KeyError:
+        pass
+
+    if request.form:
+        if not form.validate():
+            flash(_("User creation failed."), "error")
+
+        else:
+            user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+            for attribute in form:
+                model_attribute_name = claims.get(attribute.name.upper())
+                if (
+                    not model_attribute_name
+                    or model_attribute_name not in user.must + user.may
+                ):
+                    continue
+
+                user[model_attribute_name] = [attribute.data]
+
+            user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
+            user.save()
+
+            flash(_("User creation succeed."), "success")
+
+            return redirect(
+                url_for("canaille.account.profile_edition", username=user.uid[0])
+            )
+
+    return render_template(
+        "profile.html", form=form, menuitem="users", edited_user=None
+    )
+
+
+@bp.route("/profile/<username>", methods=("GET", "POST"))
+@user_needed()
+def profile_edition(user, username):
+    user.admin or username == user.uid[0] or abort(403)
+
+    if request.method == "GET" or request.form.get("action") == "edit":
+        return profile_edit(user, username)
+
+    if request.form.get("action") == "delete":
+        return profile_delete(user, username)
+
+    abort(400)
+
+
+def profile_edit(user, username):
+    menuitem = "profile" if username == user.uid[0] else "users"
+    claims = current_app.config["JWT"]["MAPPING"]
+    if username != user.uid[0]:
+        user = User.get(username) or abort(404)
+
     data = {
         k.lower(): getattr(user, v)[0]
         if getattr(user, v) and isinstance(getattr(user, v), list)
         else getattr(user, v) or ""
         for k, v in claims.items()
     }
-    form = ProfileForm(request.form or None, data=data)
+    form = EditProfileForm(request.form or None, data=data)
     form.sub.render_kw["readonly"] = "true"
 
     if request.form:
@@ -83,7 +153,10 @@ def profile(user, subject):
         else:
             for attribute in form:
                 model_attribute_name = claims.get(attribute.name.upper())
-                if not model_attribute_name or not hasattr(user, model_attribute_name):
+                if (
+                    not model_attribute_name
+                    or model_attribute_name not in user.must + user.may
+                ):
                     continue
 
                 user[model_attribute_name] = [attribute.data]
@@ -93,7 +166,24 @@ def profile(user, subject):
 
             user.save()
 
-    return render_template("profile.html", form=form, menuitem="profile")
+    return render_template(
+        "profile.html", form=form, menuitem=menuitem, edited_user=user
+    )
+
+
+def profile_delete(user, username):
+    self_deletion = username == user.uid[0]
+    if self_deletion:
+        user.logout()
+    else:
+        user = User.get(username) or abort(404)
+
+    flash(_("The user %(user)s has been sucessfuly deleted", user=user.name), "success")
+    user.delete()
+
+    if self_deletion:
+        return redirect(url_for("canaille.account.index"))
+    return redirect(url_for("canaille.account.users"))
 
 
 def profile_hash(user, password):
@@ -214,6 +304,6 @@ def reset(uid, hash):
         user.login()
 
         flash(_("Your password has been updated successfuly"), "success")
-        return redirect(url_for("canaille.account.profile", subject=uid))
+        return redirect(url_for("canaille.account.profile_edition", username=uid))
 
     return render_template("reset-password.html", form=form, uid=uid, hash=hash)

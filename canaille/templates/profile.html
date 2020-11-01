@@ -2,18 +2,70 @@
 {% import 'fomanticui.j2' as sui %}
 {% import 'flask.j2' as flask %}
 
+{% block script %}
+    <script src="/static/js/profile.js"></script>
+{% endblock %}
+
 {% block content %}
+{% if user.admin and edited_user %}
+<div class="ui basic modal">
+    <div class="ui icon header">
+        <i class="user minus icon"></i>
+        {% trans %}User deletion{% endtrans %}
+    </div>
+    <div class="content">
+        <p>{{ _("Are you sure you want to delete this user? This action is unrevokable and all the data about this user will be removed.") }}</p>
+    </div>
+    <div class="actions">
+        <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+        <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
+    </div>
+</div>
+{% endif %}
+
 <div class="ui clearing segment">
     <h2 class="ui center aligned header">
         <div class="content">
-            {{ _("My profile") }}
+            {% if not edited_user %}
+                {% trans %}User creation{% endtrans %}
+            {% elif user.uid == edited_user.uid %}
+                {% trans %}My profile{% endtrans %}
+            {% else %}
+                {% trans %}User profile edition{% endtrans %}
+            {% endif %}
+
         </div>
         <div class="sub header">
-            {% trans %}Edit your personal informations{% endtrans %}
+            {% if not edited_user %}
+                {% trans %}Create a new user account{% endtrans %}
+            {% elif user.uid == edited_user.uid %}
+                {% trans %}Edit your personal informations{% endtrans %}
+            {% else %}
+                {% trans %}Edit informations about an user{% endtrans %}
+            {% endif %}
         </div>
     </h2>
 
-    {{ flask.messages() }}
-    {{ sui.render_form(form, _("Edit"), action=request.url) }}
+    <form method="POST"
+      id="{{ form.__class__.__name__|lower }}"
+      action="{{ request.url }}"
+      role="form"
+      enctype="multipart/form-data"
+      class="ui form"
+      >
+
+        {{ flask.messages() }}
+
+        {{ sui.render_fields(form) }}
+
+        <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
+            {{ _("Send") }}
+        </button>
+        {% if user.admin and edited_user %}
+        <button type="submit" class="ui right floated negative button confirm" name="action" value="delete" id="delete">
+            {{ _("Delete the user") }}
+        </button>
+        {% endif %}
+    </form>
 </div>
 {% endblock %}

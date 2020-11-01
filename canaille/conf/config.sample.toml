@@ -36,6 +36,9 @@ USER_BASE = "ou=users,dc=mydomain,dc=tld"
 # USER_FILTER = "(|(uid={login})(mail={login}))"
 USER_FILTER = "(|(uid={login})(cn={login}))"
 
+# A class to use for creating new users
+USER_CLASS = "inetOrgPerson"
+
 # Filter to match admin users. If your server has memberof
 # you can filter against group membership
 # ADMIN_FILTER = "uid=admin"

@@ -51,6 +51,7 @@ class ProfileForm(FlaskForm):
     sub = wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
+        validators=[wtforms.validators.DataRequired()],
     )
     #    name = wtforms.StringField(_("Name"))
     given_name = wtforms.StringField(
@@ -90,6 +91,12 @@ class ProfileForm(FlaskForm):
     #    picture = wtforms.StringField(_("Photo"))
     #    website = wtforms.fields.html5.URLField(_("Website"))
 
+    def validate_password2(self, field):
+        if self.password1.data and self.password1.data != field.data:
+            raise wtforms.ValidationError(_("Password and confirmation do not match."))
+
+
+class EditProfileForm(ProfileForm):
     password1 = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
@@ -98,6 +105,15 @@ class ProfileForm(FlaskForm):
         _("Password confirmation"),
     )
 
-    def validate_password2(self, field):
-        if self.password1.data and self.password1.data != field.data:
-            raise wtforms.ValidationError(_("Password and confirmation do not match."))
+
+class AddProfileForm(ProfileForm):
+    password1 = wtforms.PasswordField(
+        _("Password"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Length(min=8),
+        ],
+    )
+    password2 = wtforms.PasswordField(
+        _("Password confirmation"),
+    )

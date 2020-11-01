@@ -129,7 +129,8 @@ def app(slapd_server, keypair_path):
                 "BIND_PW": slapd_server.root_pw,
                 "USER_BASE": "ou=users",
                 "USER_FILTER": "(|(uid={login})(cn={login}))",
-                "ADMIN_FILTER": "uid=admin",
+                "USER_CLASS": "inetOrgPerson",
+                "ADMIN_FILTER": "(|(uid=admin)(sn=admin))",
             },
             "JWT": {
                 "PUBLIC_KEY": public_key_path,

@@ -32,7 +32,7 @@
             </div>
             {% endif %}
             <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                href="{{ url_for('canaille.account.profile', subject=user.uid[0]) }}">
+                href="{{ url_for('canaille.account.profile_edition', username=user.uid[0]) }}">
                 <i class="id card icon"></i>
                 {% trans %}My profile{% endtrans %}
             </a>
@@ -41,6 +41,13 @@
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
+            {% if user.admin %}
+            <a class="item {% if menuitem == "users" %}active{% endif %}"
+                href="{{ url_for('canaille.account.users') }}">
+                <i class="users icon"></i>
+                {% trans %}Users{% endtrans %}
+            </a>
+            {% endif %}
             {% if user.admin %}
             <div class="ui dropdown item {% if menuitem == "admin" %}active{% endif %}">
                 <i class="settings icon"></i>
