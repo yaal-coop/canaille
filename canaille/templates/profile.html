@@ -56,7 +56,22 @@
 
         {{ flask.messages() }}
 
-        {{ sui.render_fields(form) }}
+        {{ sui.render_field(form.csrf_token) }}
+
+        <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
+        <div class="two fields">
+            {{ sui.render_field(form.given_name) }}
+            {{ sui.render_field(form.family_name) }}
+        </div>
+        {{ sui.render_field(form.email) }}
+        {{ sui.render_field(form.phone_number) }}
+
+        <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
+        {{ sui.render_field(form.sub) }}
+        <div class="two fields">
+            {{ sui.render_field(form.password1) }}
+            {{ sui.render_field(form.password2) }}
+        </div>
 
         <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
             {{ _("Send") }}

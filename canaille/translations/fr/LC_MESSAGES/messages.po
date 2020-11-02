@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-11-01 12:32+0100\n"
-"PO-Revision-Date: 2020-11-01 12:38+0100\n"
+"POT-Creation-Date: 2020-11-02 11:37+0100\n"
+"PO-Revision-Date: 2020-11-02 11:38+0100\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -367,7 +367,7 @@ msgstr ""
 "        "
 
 #: canaille/templates/forgotten-password.html:36
-#: canaille/templates/profile.html:62
+#: canaille/templates/profile.html:77
 msgid "Send"
 msgstr "Envoyer"
 
@@ -428,7 +428,15 @@ msgstr "Éditez vos informations personnelles"
 msgid "Edit informations about an user"
 msgstr "Éditez les informations d'un utilisateur"
 
-#: canaille/templates/profile.html:66
+#: canaille/templates/profile.html:61
+msgid "Personal information"
+msgstr "Informations personnelles"
+
+#: canaille/templates/profile.html:69
+msgid "Account information"
+msgstr "Informations sur le compte"
+
+#: canaille/templates/profile.html:81
 msgid "Delete the user"
 msgstr "Supprimer l'utilisateur"
 
