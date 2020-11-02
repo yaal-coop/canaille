@@ -15,6 +15,7 @@ from .ldaputils import LDAPObject
 class User(LDAPObject):
     id = "cn"
     admin = False
+    moderator = False
 
     @classmethod
     def get(cls, login=None, dn=None, filter=None, conn=None):
@@ -26,6 +27,7 @@ class User(LDAPObject):
         user = super().get(dn, filter, conn)
 
         admin_filter = current_app.config["LDAP"].get("ADMIN_FILTER")
+        moderator_filter = current_app.config["LDAP"].get("USER_ADMIN_FILTER")
         if (
             admin_filter
             and user
@@ -34,6 +36,17 @@ class User(LDAPObject):
         ):
 
             user.admin = True
+            user.moderator = True
+
+        elif (
+            moderator_filter
+            and user
+            and user.dn
+            and conn.search_s(user.dn, ldap.SCOPE_SUBTREE, moderator_filter)
+        ):
+
+            user.moderator = True
+
         return user
 
     @classmethod

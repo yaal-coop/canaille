@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-{% if user.admin and edited_user %}
+{% if user.moderator and edited_user %}
 <div class="ui basic modal">
     <div class="ui icon header">
         <i class="user minus icon"></i>
@@ -76,7 +76,7 @@
         <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
             {{ _("Send") }}
         </button>
-        {% if user.admin and edited_user %}
+        {% if user.moderator and edited_user %}
         <button type="submit" class="ui right floated negative button confirm" name="action" value="delete" id="delete">
             {{ _("Delete the user") }}
         </button>

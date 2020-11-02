@@ -41,7 +41,7 @@
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
-            {% if user.admin %}
+            {% if user.moderator %}
             <a class="item {% if menuitem == "users" %}active{% endif %}"
                 href="{{ url_for('canaille.account.users') }}">
                 <i class="users icon"></i>

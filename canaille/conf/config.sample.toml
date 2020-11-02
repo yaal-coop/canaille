@@ -39,10 +39,17 @@ USER_FILTER = "(|(uid={login})(cn={login}))"
 # A class to use for creating new users
 USER_CLASS = "inetOrgPerson"
 
-# Filter to match admin users. If your server has memberof
-# you can filter against group membership
+# Filter to match super admin users. Super admins can manage
+# OAuth clients, tokens and authorizations. If your LDAP server has
+# the 'memberof' overlay, you can filter against group membership.
 # ADMIN_FILTER = "uid=admin"
 ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
+
+# Filter to match super admin users. User admins can edit, create
+# and delete user accounts. If your LDAP server has the 'memberof'
+# overlay, you can filter against group membership.
+# USER_ADMIN_FILTER = "uid=moderator"
+USER_ADMIN_FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
 
 # The jwt configuration. You can generate a RSA keypair with:
 # ssh-keygen -t rsa -b 4096 -m PEM -f private.pem

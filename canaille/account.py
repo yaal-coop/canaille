@@ -24,7 +24,7 @@ from .forms import (
     PasswordResetForm,
     ForgottenPasswordForm,
 )
-from .flaskutils import current_user, user_needed, admin_needed
+from .flaskutils import current_user, user_needed, moderator_needed
 from .models import User
 
 
@@ -71,14 +71,14 @@ def logout():
 
 
 @bp.route("/users")
-@admin_needed()
+@moderator_needed()
 def users(user):
     users = User.filter(objectClass=current_app.config["LDAP"]["USER_CLASS"])
     return render_template("users.html", users=users, menuitem="users")
 
 
 @bp.route("/profile", methods=("GET", "POST"))
-@admin_needed()
+@moderator_needed()
 def profile_creation(user):
     claims = current_app.config["JWT"]["MAPPING"]
     form = AddProfileForm(request.form or None)
@@ -120,7 +120,7 @@ def profile_creation(user):
 @bp.route("/profile/<username>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, username):
-    user.admin or username == user.uid[0] or abort(403)
+    user.moderator or username == user.uid[0] or abort(403)
 
     if request.method == "GET" or request.form.get("action") == "edit":
         return profile_edit(user, username)

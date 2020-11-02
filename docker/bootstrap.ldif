@@ -17,6 +17,11 @@ objectclass: groupOfNames
 cn: admins
 member: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
 
+dn: cn=moderators,ou=groups,dc=mydomain,dc=tld
+objectclass: groupOfNames
+cn: moderators
+member: cn=Jack Doe,ou=users,dc=mydomain,dc=tld
+
 dn: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
@@ -29,6 +34,18 @@ telephoneNumber: 555-000-000
 userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 memberof: cn=admins,ou=groups,dc=mydomain,dc=tld
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
+
+dn: cn=Jack Doe,ou=users,dc=mydomain,dc=tld
+objectclass: top
+objectclass: inetOrgPerson
+cn: Jack Doe
+gn: Jack
+sn: Doe
+uid: moderator
+mail: moderator@mydomain.tld
+telephoneNumber: 555-000-002
+userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
+memberof: cn=moderators,ou=groups,dc=mydomain,dc=tld
 
 dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
 objectclass: top

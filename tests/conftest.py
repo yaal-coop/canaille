@@ -131,6 +131,7 @@ def app(slapd_server, keypair_path):
                 "USER_FILTER": "(|(uid={login})(cn={login}))",
                 "USER_CLASS": "inetOrgPerson",
                 "ADMIN_FILTER": "(|(uid=admin)(sn=admin))",
+                "USER_ADMIN_FILTER": "(|(uid=moderator)(sn=moderator))",
             },
             "JWT": {
                 "PUBLIC_KEY": public_key_path,
@@ -255,6 +256,21 @@ def admin(app, slapd_connection):
 
 
 @pytest.fixture
+def moderator(app, slapd_connection):
+    User.ocs_by_name(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Jack Doe",
+        sn="Doe",
+        uid="moderator",
+        mail="jack@doe.com",
+        userPassword="{SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag",
+    )
+    u.save(slapd_connection)
+    return u
+
+
+@pytest.fixture
 def token(slapd_connection, client, user):
     Token.ocs_by_name(slapd_connection)
     t = Token(
@@ -296,6 +312,13 @@ def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
         sess["user_dn"] = admin.dn
     return admin
+
+
+@pytest.fixture
+def logged_moderator(moderator, testclient):
+    with testclient.session_transaction() as sess:
+        sess["user_dn"] = moderator.dn
+    return moderator
 
 
 @pytest.fixture(autouse=True)

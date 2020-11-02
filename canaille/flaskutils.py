@@ -28,6 +28,20 @@ def user_needed():
     return wrapper
 
 
+def moderator_needed():
+    def wrapper(view_function):
+        @wraps(view_function)
+        def decorator(*args, **kwargs):
+            user = current_user()
+            if not user or not user.moderator:
+                abort(403)
+            return view_function(*args, user=user, **kwargs)
+
+        return decorator
+
+    return wrapper
+
+
 def admin_needed():
     def wrapper(view_function):
         @wraps(view_function)

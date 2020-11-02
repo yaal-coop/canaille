@@ -96,12 +96,14 @@ def test_simple_user_cannot_edit_other(testclient, logged_user):
     testclient.get("/users", status=403)
 
 
-def test_admin_bad_request(testclient, logged_admin):
+def test_admin_bad_request(testclient, logged_moderator):
     testclient.post("/profile/admin", {"action": "foobar"}, status=400)
     testclient.get("/profile/foobar", status=404)
 
 
-def test_user_creation_edition_and_deletion(testclient, slapd_connection, logged_admin):
+def test_user_creation_edition_and_deletion(
+    testclient, slapd_connection, logged_moderator
+):
     # The user does not exist.
     res = testclient.get("/users", status=200)
     with testclient.app.app_context():
