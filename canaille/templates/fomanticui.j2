@@ -5,7 +5,9 @@
     container=true) -%}
 
 {% if container %}
-<div class="field {{ kwargs.pop('class_', '') }} {% if field.errors %} error{% endif %}">
+    <div class="field {{ kwargs.pop('class_', '') }}
+        {%- if field.errors %} error{% endif -%}
+        {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}">
 {% endif %}
 
 {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
