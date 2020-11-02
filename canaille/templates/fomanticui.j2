@@ -1,8 +1,13 @@
 {% macro render_field(
     field,
     label_visible=true,
-    icon=none) -%}
+    icon=none,
+    container=true) -%}
+
+{% if container %}
 <div class="field {{ kwargs.pop('class_', '') }} {% if field.errors %} error{% endif %}">
+{% endif %}
+
 {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
     {{ field.label() }}
 {% endif %}
@@ -29,7 +34,10 @@
     {% if icon %}
         </div>
     {% endif %}
+
+{% if container %}
 </div>
+{% endif %}
 
 {%- endmacro %}
 
