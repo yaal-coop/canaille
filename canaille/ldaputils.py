@@ -196,35 +196,24 @@ class LDAPObject:
 
     @classmethod
     def get(cls, dn=None, filter=None, conn=None):
-        conn = conn or cls.ldap()
-
-        if dn is None:
-            dn = f"{cls.base},{cls.root_dn}"
-        elif "=" not in dn:
-            dn = f"{cls.id}={dn},{cls.base},{cls.root_dn}"
-
         try:
-            result = conn.search_s(dn, ldap.SCOPE_SUBTREE, filter)
-        except ldap.LDAPError:
-            result = None
-
-        if not result:
+            return cls.filter(dn, filter, conn)[0]
+        except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 
-        o = cls(
-            **{k: [elt.decode("utf-8") for elt in v] for k, v in result[0][1].items()}
-        )
-        o.update_ldap_attributes()
-
-        return o
-
     @classmethod
-    def filter(cls, base=None, conn=None, **kwargs):
+    def filter(cls, base=None, filter=None, conn=None, **kwargs):
         conn = conn or cls.ldap()
+
+        if base is None:
+            base = f"{cls.base},{cls.root_dn}"
+        elif "=" not in base:
+            base = f"{cls.id}={base},{cls.base},{cls.root_dn}"
+
         class_filter = (
             "".join([f"(objectClass={oc})" for oc in cls.object_class])
             if hasattr(cls, "object_class")
-            else None
+            else ""
         )
         arg_filter = ""
         for k, v in kwargs.items():
@@ -234,7 +223,9 @@ class LDAPObject:
                 arg_filter += f"({k}={v[0]})"
             else:
                 arg_filter += "(|" + "".join([f"({k}={_v})" for _v in v]) + ")"
-        ldapfilter = f"(&{class_filter}{arg_filter})" if class_filter else arg_filter
+
+        filter = filter or ""
+        ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
 
