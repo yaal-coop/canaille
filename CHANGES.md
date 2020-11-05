@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved password recovery email. #14 #26
 - Use flask `SERVER_NAME` configuration variable instead of `URL`. #24
 - Improved consents page. #27
+- Admin user page. #8
+- Project logo. #29
 
 ### Fixed
 
