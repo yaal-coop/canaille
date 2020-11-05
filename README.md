@@ -1,8 +1,8 @@
-⚠ Canaille is under development. Do not use in production yet. ⚠
+<div align="center">
+    <img src="canaille/static/img/canaille-full.png" height="200" alt="Canaille" />
+</div>
 
-# Canaille
-
-Canaille is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
+**Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
 as in *Can I access your data?* Canaille is a simple OpenID Connect provider based upon a LDAP database.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
@@ -13,6 +13,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 - The code is easy to read and easy to edit.
 
 ## Install
+
+⚠ Canaille is under heavy development and may not fit a production environment yet. ⚠
 
 First you need to install the schemas into your LDAP server. There are several ways to achieve this:
 

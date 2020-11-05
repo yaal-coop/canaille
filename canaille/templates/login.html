@@ -5,7 +5,9 @@
 {% block content %}
 <div class="ui clearing segment">
     {% if logo_url %}
-        <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+        <a href="{{ url_for('canaille.account.index') }}">
+            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+        </a>
     {% else %}
         <i class="massive sign in icon image ui"></i>
     {% endif %}

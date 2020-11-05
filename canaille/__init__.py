@@ -176,6 +176,7 @@ def setup_app(app):
         def global_processor():
             return {
                 "logo_url": app.config.get("LOGO"),
+                "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
                 "website_name": app.config.get("NAME"),
                 "user": current_user(),
                 "menu": True,
