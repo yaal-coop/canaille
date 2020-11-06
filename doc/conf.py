@@ -37,6 +37,7 @@ language = None
 exclude_patterns = []
 pygments_style = "sphinx"
 todo_include_todos = False
+autodoc_mock_imports = ["ldap"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
