@@ -19,14 +19,13 @@ Screenshots
   :width: 225
   :alt: Login
 
-.. image:: _static/consent.png
-  :width: 225
-  :alt: Consent
-
 .. image:: _static/profile.png
   :width: 225
   :alt: Profile
 
+.. image:: _static/consent.png
+  :width: 225
+  :alt: Consent
 
 Table of contents
 =================

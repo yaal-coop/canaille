@@ -1,17 +1,32 @@
 #!/usr/bin/env python3
 
+import configparser
+import mock
 import os
 import sys
-import pkg_resources
 
-sys.path.insert(0, os.path.abspath("../.."))
-sys.path.insert(0, os.path.abspath("../../canaille"))
+sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("../canaille"))
 
-import canaille
+
+# Readthedocs does not support C modules, so
+# we have to mock them.
+
+
+class Mock(mock.MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return mock.MagicMock()
+
+
+MOCK_MODULES = ["ldap"]
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
+config = configparser.ConfigParser()
+config.read("../setup.cfg")
 
 # -- General configuration ------------------------------------------------
 
-rqmt = pkg_resources.require("canaille")[0]
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -30,14 +45,12 @@ project = "canaille"
 copyright = "2020, Yaal"
 author = "Yaal"
 
-version = "%s.%s" % tuple(map(int, rqmt.version.split(".")[:2]))
-release = rqmt.version
-
+release = config["metadata"]["version"]
+version = "%s.%s" % tuple(map(int, release.split(".")[:2]))
 language = None
 exclude_patterns = []
 pygments_style = "sphinx"
 todo_include_todos = False
-autodoc_mock_imports = ["ldap"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),

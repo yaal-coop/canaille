@@ -1,4 +1,12 @@
---editable .
+authlib
+click
+email_validator
+flask
+flask-babel
+flask-wtf
+mock
+sentry-sdk[flask]
 sphinx
 sphinx-rtd-theme
 sphinx-issues
+toml
