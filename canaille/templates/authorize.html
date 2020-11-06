@@ -6,10 +6,6 @@
         <img class="ui centered tiny image" src="{{ client.oauthLogoURI }}" alt="{{ client.oauthClientName }}">
     {% endif %}
 
-    <div class="ui center aligned container">
-        {{ gettext('You are logged id as: %(name)s', name=user.name) }}
-    </div>
-
     <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</h3>
 
     <div class="ui divided items">
@@ -28,6 +24,10 @@
         {% endif %}
     </div>
     {% endfor %}
+    </div>
+
+    <div class="ui center aligned container">
+        {{ gettext('You are logged id as: %(name)s', name=user.name) }}
     </div>
 
     <div class="ui center aligned container">
