@@ -33,6 +33,11 @@ python39:
   stage: test
   script: tox -e py39
 
+doc:
+  image: python:3.9
+  stage: test
+  script: tox -e doc
+
 coverage:
   image: python:3.9
   stage: test

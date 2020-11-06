@@ -1,0 +1,11 @@
+---
+version: 2
+python:
+  install:
+    - method: pip
+      path: .
+      requirements:
+        - recommonmark
+        - sphinx
+        - sphinx-rtd-theme
+        - sphinx-issues
