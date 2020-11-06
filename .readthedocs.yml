@@ -5,7 +5,4 @@ python:
     - method: pip
       path: .
       requirements:
-        - recommonmark
-        - sphinx
-        - sphinx-rtd-theme
-        - sphinx-issues
+        - doc/requirements.txt

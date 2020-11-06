@@ -1,0 +1,4 @@
+--editable .
+sphinx
+sphinx-rtd-theme
+sphinx-issues
