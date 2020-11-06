@@ -24,4 +24,5 @@ You can then connect with user *admin* and password *admin* to access an admin a
     cp canaille/conf/config.sample.toml canaille/conf/config.toml
     cp canaille/conf/oauth-authorization-server.sample.json canaille/conf/oauth-authorization-server.json
     cp canaille/conf/openid-configuration.sample.json canaille/conf/openid-configuration.json
+    cd dev
     docker-compose up
