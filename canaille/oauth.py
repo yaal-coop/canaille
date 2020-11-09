@@ -88,6 +88,7 @@ def authorize():
             client=client,
             claims=CLAIMS,
             menu=False,
+            ignored_claims=["openid"],
         )
 
     if request.method == "POST":

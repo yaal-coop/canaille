@@ -10,19 +10,21 @@
 
     <div class="ui divided items">
     {% for claim in grant.request.scope.split(" ") %}
-    <div class="item">
-        {% if claim in claims %}
-        <div>
-            <i class="{{ claims[claim][0] }} large icon"></i>
-            {{ claims[claim][1] }}
-        </div>
-        {% else %}
-        <div class="ui tiny image">
-            <i class="huge user icon"></i>
-            {{ claim }}
+        {% if claim not in ignored_claims %}
+        <div class="item">
+            {% if claim in claims %}
+            <div>
+                <i class="{{ claims[claim][0] }} large icon"></i>
+                {{ claims[claim][1] }}
+            </div>
+            {% else %}
+            <div class="ui tiny image">
+                <i class="huge user icon"></i>
+                {{ claim }}
+            </div>
+            {% endif %}
         </div>
         {% endif %}
-    </div>
     {% endfor %}
     </div>
 

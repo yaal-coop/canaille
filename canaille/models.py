@@ -106,7 +106,11 @@ class Client(LDAPObject, ClientMixin):
 
     @property
     def issue_date(self):
-        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+        return (
+            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            if self.oauthIssueDate
+            else None
+        )
 
     def get_client_id(self):
         return self.oauthClientID
@@ -175,7 +179,11 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 
     @property
     def issue_date(self):
-        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+        return (
+            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            if self.oauthIssueDate
+            else None
+        )
 
     def get_redirect_uri(self):
         return self.oauthRedirectURI
@@ -211,7 +219,11 @@ class Token(LDAPObject, TokenMixin):
 
     @property
     def issue_date(self):
-        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+        return (
+            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            if self.oauthIssueDate
+            else None
+        )
 
     @property
     def expire_date(self):
@@ -268,7 +280,11 @@ class Consent(LDAPObject):
 
     @property
     def issue_date(self):
-        return datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+        return (
+            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            if self.oauthIssueDate
+            else None
+        )
 
     @property
     def revokation_date(self):
