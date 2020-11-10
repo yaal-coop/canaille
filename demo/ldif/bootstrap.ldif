@@ -58,3 +58,45 @@ mail: user@mydomain.tld
 telephoneNumber: 555-000-001
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
+
+dn: ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: oauth
+
+dn: ou=clients,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: clients
+
+dn: oauthClientID=1JGkkzCbeHpGtlqgI5EENByf,ou=clients,ou=oauth,dc=mydomain,dc=tld
+objectclass: oauthClient
+oauthClientID: 1JGkkzCbeHpGtlqgI5EENByf
+oauthClientSecret: 2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x
+oauthClientName: Client1
+oauthClientContact: admin@mydomain.tld
+oauthClientURI: http://localhost:5001
+oauthRedirectURIs: http://localhost:5001/authorize
+oauthGrantType: authorization_code
+oauthGrantType: refresh_token
+oauthScope: openid
+oauthScope: profile
+oauthScope: email
+oauthResponseType: code
+oauthResponseType: id_token
+oauthTokenEndpointAuthMethod: client_secret_basic
+
+dn: oauthClientID=gn4yFN7GDykL7QP8v8gS9YfV,ou=clients,ou=oauth,dc=mydomain,dc=tld
+objectclass: oauthClient
+oauthClientID: gn4yFN7GDykL7QP8v8gS9YfV
+oauthClientSecret: ouFJE5WpICt6hxTyf8icXPeeklMektMY4gV0Rmf3aY60VElA
+oauthClientName: Client2
+oauthClientContact: admin@mydomain.tld
+oauthClientURI: http://localhost:5002
+oauthRedirectURIs: http://localhost:5002/authorize
+oauthGrantType: authorization_code
+oauthGrantType: refresh_token
+oauthScope: openid
+oauthScope: profile
+oauthScope: email
+oauthResponseType: code
+oauthResponseType: id_token
+oauthTokenEndpointAuthMethod: client_secret_basic

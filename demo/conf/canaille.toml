@@ -1,0 +1,87 @@
+# The flask secret key for cookies. You MUST change this.
+SECRET_KEY = "change me before you go in production"
+
+# Your organization name.
+NAME = "Canaille"
+
+# The interface on which canaille will be served
+# SERVER_NAME = "auth.mydomain.tld"
+# PREFERRED_URL_SCHEME = "https"
+
+# You can display a logo to be recognized on login screens
+LOGO = "/static/img/canaille-head.png"
+
+# Your favicon. If unset the LOGO will be used.
+FAVICON = "/static/img/canaille-c.png"
+
+# If unset, language is detected
+# LANGUAGE = "en"
+
+# Path to the RFC8414 metadata file. You should update those files
+# with your production URLs.
+OAUTH2_METADATA_FILE = "conf/oauth-authorization-server.json"
+OIDC_METADATA_FILE = "conf/openid-configuration.json"
+
+# If you have a sentry instance, you can set its dsn here:
+# SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
+
+[LDAP]
+URI = "ldap://127.0.0.1:5389"
+ROOT_DN = "dc=mydomain,dc=tld"
+BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+BIND_PW = "admin"
+
+# Where to search for users?
+USER_BASE = "ou=users,dc=mydomain,dc=tld"
+
+# Filter to match users on sign in. Supports a variable
+# {login}. For sigin against either uid or mail use:
+# USER_FILTER = "(|(uid={login})(mail={login}))"
+USER_FILTER = "(|(uid={login})(cn={login}))"
+
+# A class to use for creating new users
+USER_CLASS = "inetOrgPerson"
+
+# Filter to match super admin users. Super admins can manage
+# OAuth clients, tokens and authorizations. If your LDAP server has
+# the 'memberof' overlay, you can filter against group membership.
+# ADMIN_FILTER = "uid=admin"
+ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
+
+# Filter to match super admin users. User admins can edit, create
+# and delete user accounts. If your LDAP server has the 'memberof'
+# overlay, you can filter against group membership.
+# USER_ADMIN_FILTER = "uid=moderator"
+USER_ADMIN_FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
+
+# The jwt configuration. You can generate a RSA keypair with:
+# ssh-keygen -t rsa -b 4096 -m PEM -f private.pem
+# openssl rsa -in private.pem -pubout -outform PEM -out public.pem
+[JWT]
+PUBLIC_KEY = "conf/public.pem"
+PRIVATE_KEY = "conf/private.pem"
+KTY = "RSA"
+ALG = "RS256"
+EXP = 3600
+
+[JWT.MAPPING]
+# Mapping between JWT fields and LDAP attributes from your
+# User objectClass. Default values fits inetOrgPerson.
+SUB = "uid"
+NAME = "cn"
+PHONE_NUMBER = "telephoneNumber"
+EMAIL = "mail"
+GIVEN_NAME = "givenName"
+FAMILY_NAME = "sn"
+PREFERRED_USERNAME = "displayName"
+LOCALE = "preferredLanguage"
+PICTURE = "photo"
+ADDRESS = "postalAddress"
+
+[SMTP]
+HOST = "localhost"
+PORT = 25
+TLS = false
+LOGIN = "smtp_user"
+PASSWORD = "smtp_password"
+FROM_ADDR = "admin@mydomain.tld"

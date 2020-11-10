@@ -1,0 +1,4 @@
+slapd: ./slapd.sh
+canaille: env AUTHLIB_INSECURE_TRANSPORT=1 FLASK_ENV=development CONFIG=conf/canaille.toml FLASK_APP=../../canaille env/bin/flask run --extra-files conf/canaille.toml
+client1: env FLASK_ENV=development CONFIG=../conf/client1.cfg FLASK_APP=client env/bin/flask run --port=5001
+client2: env FLASK_ENV=development CONFIG=../conf/client2.cfg FLASK_APP=client env/bin/flask run --port=5002
