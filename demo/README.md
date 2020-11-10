@@ -1,9 +1,7 @@
 # Demo and development
 
-To check out how canaille looks like, or to start contributions, just run it!
-
-- If you have *OpenLDAP* installed on your system, run: `./run.sh`.
-- If you prefer using docker, you can also run `docker-compose up`.
+To check out how canaille looks like, or to start contributions, just run it with `./run.sh`!
+You need to have either `OpenLDAP`, or `docker` plus `docker-compose` installed on your system.
 
 Then you have access to:
 
