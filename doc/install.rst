@@ -49,7 +49,7 @@ Finally you have to run the website in a WSGI server:
     gunicorn "canaille:create_app()"
 
 Recurrent jobs
-##############
+==============
 
 You might want to clean up your database to avoid it growing too much. You can regularly delete
 expired tokens and authorization codes with:
