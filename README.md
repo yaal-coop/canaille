@@ -24,6 +24,6 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 ⚠ Canaille is under heavy development and may not fit a production environment yet. ⚠
 
-- Please have a look on our [documentation](https://canaille.readthedocs.io>);
-- To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/install.html);
-- To **contribute** canaille, please read the [contribution guide](https://canaille.readthedocs.io/contributing.html>).
+- Please have a look on our [documentation](https://canaille.readthedocs.io);
+- To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/en/latest/install.html);
+- To **contribute** canaille, please read the [contribution guide](https://canaille.readthedocs.io/en/latest/contributing.html).

@@ -11,6 +11,6 @@ Then you have access to:
 
 The canaille server has some default users:
 
-- A regular user which login and password are *user*;
-- A moderator user which login and password are *moderator*;
-- An admin user which admin and password are *admin*.
+- A regular user which login and password are **user**;
+- A moderator user which login and password are **moderator**;
+- An admin user which admin and password are **admin**.

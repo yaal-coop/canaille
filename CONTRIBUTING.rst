@@ -16,12 +16,19 @@ We use `black` to format our code. Please apply `black` on your patches before s
 Development environment
 -----------------------
 
-To try a development environment, you can run the docker image and then open https://127.0.0.1:5000 to access the canaille server.
-Two dummy clients are available at https://127.0.0.1:5001 and https://127.0.0.1:5002
-You can then connect with user *admin* and password *admin* to access an admin account, or user *user* and password *user* for a regular one.
-
 .. code-block:: console
 
     cd demo
     ./run.sh
-    # or 'docker-compose up' if you prefer docker
+
+Then you have access to:
+
+- A canaille server at http://127.0.0.1:5000
+- A dummy client at http://127.0.0.1:5001
+- Another dummy client at http://127.0.0.1:5002
+
+The canaille server has some default users:
+
+- A regular user which login and password are **user**;
+- A moderator user which login and password are **moderator**;
+- An admin user which admin and password are **admin**.
