@@ -24,3 +24,12 @@ body {
     max-width: 50px;
     max-height: 50px;
 }
+
+footer {
+    font-size: x-small;
+    text-align: center;
+}
+
+footer a {
+    color: #B0B0B0;
+}

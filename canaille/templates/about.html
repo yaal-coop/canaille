@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+{% import 'flask.j2' as flask %}
+
+{% block content %}
+<div class="ui clearing segment">
+    <a href="{{ url_for('canaille.account.index') }}">
+        <img class="ui tiny centered image" src="/static/img/canaille-head.png" alt="{{ website_name }}">
+    </a>
+
+    {{ flask.messages() }}
+    <h2 class="ui center aligned header">
+        <div class="content">
+            {{ _("About canaille") }}
+        </div>
+        <div class="sub header">{% trans %}Free and open-source identity provider.{% endtrans %}</div>
+    </h2>
+    <p style="text-align: center">
+        {{ gettext("Version %(version)s", version=version) }} ·
+        <a href="https://gitlab.com/yaal/canaille">{% trans %}Source code{% endtrans %}</a> ·
+        <a href="https://canaille.readthedocs.io">{% trans %}Documentation{% endtrans %}</a>
+    </p>
+
+</div>
+{% endblock %}

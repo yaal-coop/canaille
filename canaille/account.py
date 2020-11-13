@@ -1,6 +1,7 @@
 import base64
 import email.message
 import hashlib
+import pkg_resources
 import logging
 import smtplib
 import urllib.request
@@ -38,6 +39,12 @@ def index():
     return redirect(
         url_for("canaille.account.profile_edition", username=current_user().uid[0])
     )
+
+
+@bp.route("/about")
+def about():
+    version = pkg_resources.get_distribution("canaille").version
+    return render_template("about.html", version=version)
 
 
 @bp.route("/login", methods=("GET", "POST"))
