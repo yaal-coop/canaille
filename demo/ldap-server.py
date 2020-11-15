@@ -1,27 +1,22 @@
 import logging
 import slapdtest
-from slapdtest._slapdtest import combined_logger
 
 
-class DevSlapdObject(slapdtest.SlapdObject):
-    openldap_schema_files = (
+slapd = slapdtest.SlapdObject(
+    suffix="dc=mydomain,dc=tld",
+    root_cn="admin",
+    root_pw="admin",
+    port=5389,
+    log_level=logging.INFO,
+    openldap_schema_files=(
         "core.ldif",
         "cosine.ldif",
         "nis.ldif",
         "inetorgperson.ldif",
         "../schemas/oauth2-openldap.ldif",
-        "ldif/memberof.ldif"
+        "ldif/memberof.ldif",
     )
-    suffix = "dc=mydomain,dc=tld"
-    root_cn = "admin"
-    root_pw = "admin"
-    _log = combined_logger("slapd-demo-server", logging.INFO)
-
-    def _avail_tcp_port(self):
-        return 5389
-
-
-slapd = DevSlapdObject()
+)
 slapd.start()
 
 try:
