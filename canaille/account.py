@@ -39,7 +39,10 @@ def index():
 
 @bp.route("/about")
 def about():
-    version = pkg_resources.get_distribution("canaille").version
+    try:
+        version = pkg_resources.get_distribution("canaille").version
+    except pkg_resources.DistributionNotFound:
+        version = "git"
     return render_template("about.html", version=version)
 
 
