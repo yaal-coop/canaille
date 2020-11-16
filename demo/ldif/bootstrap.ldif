@@ -59,6 +59,17 @@ telephoneNumber: 555-000-001
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
 
+dn: cn=James Doe,ou=users,dc=mydomain,dc=tld
+objectclass: top
+objectclass: inetOrgPerson
+cn: James Doe
+gn: James
+sn: Doe
+uid: james
+mail: james@mydomain.tld
+telephoneNumber: 555-000-003
+memberof: cn=users,ou=groups,dc=mydomain,dc=tld
+
 dn: ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: oauth

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-11-02 11:37+0100\n"
-"PO-Revision-Date: 2020-11-02 11:38+0100\n"
+"POT-Creation-Date: 2020-11-16 15:36+0100\n"
+"PO-Revision-Date: 2020-11-16 15:36+0100\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -17,65 +17,82 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.8.1\n"
 "X-Generator: Gtranslator 3.38.0\n"
 
-#: canaille/account.py:51 canaille/oauth.py:58
+#: canaille/account.py:58 canaille/oauth.py:58
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
-#: canaille/account.py:55
+#: canaille/account.py:61
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
 
-#: canaille/account.py:66
+#: canaille/account.py:72
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Vous avez été déconnectés. À bientôt %(user)s"
 
-#: canaille/account.py:92
+#: canaille/account.py:89
+msgid "Could not send the password initialization link."
+msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
+
+#: canaille/account.py:103
+msgid "Password initialization on {website_name}"
+msgstr "Initialisation de votre mot de passe sur {website_name}"
+
+#: canaille/account.py:131
+msgid "A password initialization link has been sent at your email address."
+msgstr ""
+"Un lien d'initialisation de mot de passe a été envoyé à votre adresse email."
+
+#: canaille/account.py:135
+msgid "Could not send the password initialization email"
+msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
+
+#: canaille/account.py:159
 msgid "User creation failed."
 msgstr "La création de l'utilisateur a échoué."
 
-#: canaille/account.py:109
+#: canaille/account.py:176
 msgid "User creation succeed."
 msgstr "La création de l'utilisateur a réussi."
 
-#: canaille/account.py:151
+#: canaille/account.py:218
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: canaille/account.py:165
+#: canaille/account.py:232
 msgid "Profile updated successfuly."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: canaille/account.py:181
+#: canaille/account.py:248
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/account.py:204
+#: canaille/account.py:271
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:211 canaille/account.py:284
+#: canaille/account.py:278 canaille/account.py:321
 msgid "A password reset link has been sent at your email address."
 msgstr "Un lien de réinitialisation vous a été envoyé à votre adresse."
 
-#: canaille/account.py:233
+#: canaille/account.py:293
 msgid "Password reset on {website_name}"
 msgstr "Réinitialisation du mot de passe sur {website_name}"
 
-#: canaille/account.py:278
+#: canaille/account.py:324
 msgid "Could not reset your password"
 msgstr "Impossible de réinitialiser votre mot de passe"
 
-#: canaille/account.py:297
+#: canaille/account.py:338
 msgid "The password reset link that brought you here was invalid."
 msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
-#: canaille/account.py:306
+#: canaille/account.py:347
 msgid "Your password has been updated successfuly"
 msgstr "Votre mot de passe a correctement été mis à jour."
 
@@ -160,7 +177,7 @@ msgstr "Votre adresse postale."
 msgid "Your phone number."
 msgstr "Votre numéro de téléphone."
 
-#: canaille/oauth.py:96
+#: canaille/oauth.py:97
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnectés."
 
@@ -241,25 +258,46 @@ msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
-#: canaille/templates/authorize.html:10
-#, python-format
-msgid "You are logged id as: %(name)s"
-msgstr "Vous êtes identifiés en tant que : %(name)s"
+#: canaille/templates/about.html:14
+msgid "About canaille"
+msgstr "À propos de canaille"
 
-#: canaille/templates/authorize.html:13
+#: canaille/templates/about.html:16
+msgid "Free and open-source identity provider."
+msgstr "Fournisseur d'identité numérique libre"
+
+#: canaille/templates/about.html:19
+#, python-format
+msgid "Version %(version)s"
+msgstr "Version %(version)s"
+
+#: canaille/templates/about.html:20
+msgid "Source code"
+msgstr "Code source"
+
+#: canaille/templates/about.html:21
+msgid "Documentation"
+msgstr "Documentation"
+
+#: canaille/templates/authorize.html:9
 #, python-format
 msgid "The application %(name)s is requesting access to:"
 msgstr "L'application %(name)s demande un accès à :"
 
-#: canaille/templates/authorize.html:37
+#: canaille/templates/authorize.html:32
+#, python-format
+msgid "You are logged id as: %(name)s"
+msgstr "Vous êtes identifiés en tant que : %(name)s"
+
+#: canaille/templates/authorize.html:39
 msgid "Deny"
 msgstr "Refuser"
 
-#: canaille/templates/authorize.html:40
+#: canaille/templates/authorize.html:42
 msgid "Switch user"
 msgstr "Changer d'utilisateur"
 
-#: canaille/templates/authorize.html:43
+#: canaille/templates/authorize.html:45
 msgid "Accept"
 msgstr "Accepter"
 
@@ -344,8 +382,43 @@ msgstr "Page non trouvée"
 msgid "Technical problem"
 msgstr "Problème technique"
 
+#: canaille/templates/firstlogin.html:12
+msgid "First login"
+msgstr "Première connexion"
+
+#: canaille/templates/firstlogin.html:19
+msgid ""
+"\n"
+"        It seems this is the first time you are logging here. In order to "
+"finalize your\n"
+"        account configuration, you need to set a password to your account. "
+"We will send\n"
+"        you an email containing a link that will allow you to set a "
+"password. Please click\n"
+"        on the blue button below to send the email.\n"
+"        "
+msgstr ""
+"\n"
+"        Il semblerait que ce soit la première fois que vous vous connectez "
+"ici. Afin de finaliser\n"
+"        la configuration de votre compte, vous devez choisir un mot de "
+"passe. Nous allons vous\n"
+"        envoyer un courriel contenant un lien qui vous permettra de choisir "
+"un mot de passe.\n"
+"        Veuillez cliquer sur le bouton bleu ci-dessous pour envoyer le "
+"courriel."
+
+#: canaille/templates/firstlogin.html:35
+msgid "Send the initialization email"
+msgstr "Envoyer le courriel d'initialisation"
+
+#: canaille/templates/firstlogin.html:36
+#: canaille/templates/forgotten-password.html:37
+msgid "Login page"
+msgstr "Page de connexion"
+
 #: canaille/templates/forgotten-password.html:12
-#: canaille/templates/login.html:34
+#: canaille/templates/login.html:36
 msgid "Forgotten password"
 msgstr "Mot de passe oublié"
 
@@ -371,20 +444,16 @@ msgstr ""
 msgid "Send"
 msgstr "Envoyer"
 
-#: canaille/templates/forgotten-password.html:37
-msgid "Login page"
-msgstr "Page de connexion"
-
-#: canaille/templates/login.html:15
+#: canaille/templates/login.html:17
 #, python-format
 msgid "Sign in at %(website)s"
 msgstr "Connexion à %(website)s"
 
-#: canaille/templates/login.html:17
+#: canaille/templates/login.html:19
 msgid "Log-in and manage your authorizations."
 msgstr "Connectez-vous et gérez vos autorisations."
 
-#: canaille/templates/login.html:33
+#: canaille/templates/login.html:35
 msgid "Sign in"
 msgstr "Se connecter"
 
@@ -515,9 +584,51 @@ msgstr "URL"
 msgid "View a token"
 msgstr "Voir un jeton"
 
-#: canaille/templates/mail/reset.html:28 canaille/templates/mail/reset.txt:1
+#: canaille/templates/mail/firstlogin.html:28
+#: canaille/templates/mail/reset.txt:1
+msgid "Password initialization"
+msgstr "Initialisation du mot de passe"
+
+#: canaille/templates/mail/firstlogin.html:33
+#: canaille/templates/mail/reset.txt:3
+#, python-format
+msgid ""
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the blue button below and follow the "
+"instructions."
+msgstr ""
+"Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
+"devons mettre en place un mot de passe. Veuillez cliquer sur le bouton bleu, "
+"et suivre les instructions qui vous seront présentées."
+
+#: canaille/templates/mail/firstlogin.html:40
+#: canaille/templates/mail/reset.txt:5
+msgid "Initialize password"
+msgstr "Initialiser mon mot de passe"
+
+#: canaille/templates/mail/firstlogin.txt:1
+#: canaille/templates/mail/reset.html:28
 msgid "Password reinitialisation"
 msgstr "Réinitialisation du mot de passe"
+
+#: canaille/templates/mail/firstlogin.txt:3
+#, python-format
+msgid ""
+"Someone, probably you, asked for a password reinitialization link at "
+"%(site_name)s. If you did not asked for this email, please ignore it. I you "
+"need to reset your password, please click on the link below and follow the "
+"instructions."
+msgstr ""
+"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
+"mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
+"ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
+"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
+"qui vous seront soumises."
+
+#: canaille/templates/mail/firstlogin.txt:5
+#: canaille/templates/mail/reset.html:40
+msgid "Reset password"
+msgstr "Réinitialiser votre mot de passe"
 
 #: canaille/templates/mail/reset.html:33
 #, python-format
@@ -536,24 +647,6 @@ msgstr ""
 "réinitialiser votre mot de passe, veuillez cliquer sur le bouton bleu ci-"
 "dessous, et suivre les instructions qui vous seront soumises.\n"
 "               "
-
-#: canaille/templates/mail/reset.html:40 canaille/templates/mail/reset.txt:5
-msgid "Reset password"
-msgstr "Réinitialiser votre mot de passe"
-
-#: canaille/templates/mail/reset.txt:3
-#, python-format
-msgid ""
-"Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. I you "
-"need to reset your password, please click on the link below and follow the "
-"instructions."
-msgstr ""
-"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
-"mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
-"ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
-"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
-"qui vous seront soumises."
 
 #~ msgid "Logged in as"
 #~ msgstr "Connecté en tant que"

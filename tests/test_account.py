@@ -1,5 +1,6 @@
 import mock
 from canaille.account import profile_hash
+from canaille.models import User
 
 
 def test_login_and_out(testclient, slapd_connection, user):
@@ -60,6 +61,26 @@ def test_login_with_alternate_attribute(testclient, slapd_connection, user):
 
     with testclient.session_transaction() as session:
         assert user.dn == session.get("user_dn")
+
+
+def test_user_without_password_first_login(testclient, slapd_connection):
+    User.ocs_by_name(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+    )
+    u.save(slapd_connection)
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "Temp User"
+    res.form["password"] = "anything"
+    res = res.form.submit(status=302).follow(status=200)
+
+    assert "First login" in res
+    u.delete(conn=slapd_connection)
 
 
 @mock.patch("smtplib.SMTP")

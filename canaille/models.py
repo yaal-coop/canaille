@@ -69,6 +69,9 @@ class User(LDAPObject):
         except KeyError:
             pass
 
+    def has_password(self):
+        return bool(self.userPassword)
+
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])
         try:

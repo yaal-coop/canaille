@@ -48,13 +48,16 @@ def login():
     form = LoginForm(request.form or None)
 
     if request.form:
+        user = User.get(form.login.data)
+        if user and not user.has_password():
+            return redirect(url_for("canaille.account.firstlogin", uid=user.uid[0]))
+
         if not form.validate() or not User.authenticate(
             form.login.data, form.password.data, True
         ):
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
-        user = User.get(form.login.data)
         flash(_("Connection successful. Welcome %(user)s", user=user.name), "success")
         return redirect(url_for("canaille.account.index"))
 
@@ -71,6 +74,67 @@ def logout():
         )
         user.logout()
     return redirect("/")
+
+
+@bp.route("/firstlogin/<uid>", methods=("GET", "POST"))
+def firstlogin(uid):
+    user = User.get(uid)
+    user and not user.has_password() or abort(404)
+
+    form = ForgottenPasswordForm(request.form or None, data={"login": uid})
+    if not request.form:
+        return render_template("firstlogin.html", form=form, uid=uid)
+
+    if not form.validate():
+        flash(_("Could not send the password initialization link."), "error")
+        return render_template("firstlogin.html", form=form, uid=uid)
+
+    base_url = url_for("canaille.account.index", _external=True)
+    reset_url = url_for(
+        "canaille.account.reset",
+        uid=user.uid[0],
+        hash=profile_hash(
+            user.uid[0], user.userPassword[0] if user.has_password() else ""
+        ),
+        _external=True,
+    )
+    logo, logo_extension = base64logo()
+
+    subject = _("Password initialization on {website_name}").format(
+        website_name=current_app.config.get("NAME", reset_url)
+    )
+    text_body = render_template(
+        "mail/firstlogin.txt",
+        site_name=current_app.config.get("NAME", reset_url),
+        site_url=base_url,
+        reset_url=reset_url,
+    )
+    html_body = render_template(
+        "mail/firstlogin.html",
+        site_name=current_app.config.get("NAME", reset_url),
+        site_url=base_url,
+        reset_url=reset_url,
+        logo=logo,
+        logo_extension=logo_extension,
+    )
+
+    success = send_email(
+        subject=subject,
+        sender=current_app.config["SMTP"]["FROM_ADDR"],
+        recipient=user.mail,
+        text=text_body,
+        html=html_body,
+    )
+
+    if success:
+        flash(
+            _("A password initialization link has been sent at your email address."),
+            "success",
+        )
+    else:
+        flash(_("Could not send the password initialization email"), "error")
+
+    return render_template("firstlogin.html", form=form, uid=uid)
 
 
 @bp.route("/users")
@@ -215,12 +279,13 @@ def forgotten():
         )
         return render_template("forgotten-password.html", form=form)
 
-    recipient = user.mail
     base_url = url_for("canaille.account.index", _external=True)
     reset_url = url_for(
         "canaille.account.reset",
         uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.userPassword[0]),
+        hash=profile_hash(
+            user.uid[0], user.userPassword[0] if user.has_password() else ""
+        ),
         _external=True,
     )
     logo, logo_extension = base64logo()
@@ -228,7 +293,6 @@ def forgotten():
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config.get("NAME", reset_url)
     )
-
     text_body = render_template(
         "mail/reset.txt",
         site_name=current_app.config.get("NAME", reset_url),
@@ -247,7 +311,7 @@ def forgotten():
     success = send_email(
         subject=subject,
         sender=current_app.config["SMTP"]["FROM_ADDR"],
-        recipient=recipient,
+        recipient=user.mail,
         text=text_body,
         html=html_body,
     )
@@ -267,7 +331,9 @@ def reset(uid, hash):
     form = PasswordResetForm(request.form)
     user = User.get(uid)
 
-    if not user or hash != profile_hash(user.uid[0], user.userPassword[0]):
+    if not user or hash != profile_hash(
+        user.uid[0], user.userPassword[0] if user.has_password() else ""
+    ):
         flash(
             _("The password reset link that brought you here was invalid."),
             "error",

@@ -1,7 +1,7 @@
 Extract the messages with:
 
 ```
-pybabel extract --mapping-file canaille/translations/babel.cfg --output-file canaille/translations/messages.pot .
+pybabel extract --mapping-file canaille/translations/babel.cfg --output-file canaille/translations/messages.pot canaille
 ```
 
 Add a new language with:
