@@ -1,4 +1,7 @@
 import base64
+import email.message
+import logging
+import smtplib
 import urllib.request
 from flask import current_app, request
 
@@ -27,3 +30,35 @@ def base64logo():
         logo_extension = None
 
     return logo, logo_extension
+
+
+def send_email(subject, sender, recipient, text, html):
+    msg = email.message.EmailMessage()
+    msg.set_content(text)
+    msg.add_alternative(html, subtype="html")
+    msg["Subject"] = subject
+    msg["From"] = sender
+    msg["To"] = recipient
+
+    try:
+        with smtplib.SMTP(
+            host=current_app.config["SMTP"]["HOST"],
+            port=current_app.config["SMTP"]["PORT"],
+        ) as smtp:
+            if current_app.config["SMTP"].get("TLS"):
+                smtp.starttls()
+            if current_app.config["SMTP"].get("LOGIN"):
+                smtp.login(
+                    user=current_app.config["SMTP"]["LOGIN"],
+                    password=current_app.config["SMTP"].get("PASSWORD"),
+                )
+            smtp.send_message(msg)
+
+    except smtplib.SMTPRecipientsRefused:
+        pass
+
+    except OSError:
+        logging.exception("Could not send password reset email")
+        return False
+
+    return True

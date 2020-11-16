@@ -1,8 +1,5 @@
-import email.message
 import hashlib
 import pkg_resources
-import logging
-import smtplib
 
 from flask import (
     Blueprint,
@@ -23,7 +20,7 @@ from .forms import (
     PasswordResetForm,
     ForgottenPasswordForm,
 )
-from .apputils import base64logo
+from .apputils import base64logo, send_email
 from .flaskutils import current_user, user_needed, moderator_needed
 from .models import User
 
@@ -247,40 +244,20 @@ def forgotten():
         logo_extension=logo_extension,
     )
 
-    msg = email.message.EmailMessage()
-    msg.set_content(text_body)
-    msg.add_alternative(html_body, subtype="html")
-    msg["Subject"] = subject
-    msg["From"] = current_app.config["SMTP"]["FROM_ADDR"]
-    msg["To"] = recipient
-
-    success = True
-    try:
-        with smtplib.SMTP(
-            host=current_app.config["SMTP"]["HOST"],
-            port=current_app.config["SMTP"]["PORT"],
-        ) as smtp:
-            if current_app.config["SMTP"].get("TLS"):
-                smtp.starttls()
-            if current_app.config["SMTP"].get("LOGIN"):
-                smtp.login(
-                    user=current_app.config["SMTP"]["LOGIN"],
-                    password=current_app.config["SMTP"].get("PASSWORD"),
-                )
-            smtp.send_message(msg)
-
-    except smtplib.SMTPRecipientsRefused:
-        pass
-
-    except OSError:
-        flash(_("Could not reset your password"), "error")
-        logging.exception("Could not send password reset email")
-        success = False
+    success = send_email(
+        subject=subject,
+        sender=current_app.config["SMTP"]["FROM_ADDR"],
+        recipient=recipient,
+        text=text_body,
+        html=html_body,
+    )
 
     if success:
         flash(
             _("A password reset link has been sent at your email address."), "success"
         )
+    else:
+        flash(_("Could not reset your password"), "error")
 
     return render_template("forgotten-password.html", form=form)
 
