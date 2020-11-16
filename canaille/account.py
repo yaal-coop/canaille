@@ -1,10 +1,8 @@
-import base64
 import email.message
 import hashlib
 import pkg_resources
 import logging
 import smtplib
-import urllib.request
 
 from flask import (
     Blueprint,
@@ -25,6 +23,7 @@ from .forms import (
     PasswordResetForm,
     ForgottenPasswordForm,
 )
+from .apputils import base64logo
 from .flaskutils import current_user, user_needed, moderator_needed
 from .models import User
 
@@ -227,15 +226,7 @@ def forgotten():
         hash=profile_hash(user.uid[0], user.userPassword[0]),
         _external=True,
     )
-    logo = None
-    logo_extension = None
-    if current_app.config.get("LOGO"):
-        logo_extension = current_app.config["LOGO"].split(".")[-1]
-        try:
-            with urllib.request.urlopen(current_app.config.get("LOGO")) as f:
-                logo = base64.b64encode(f.read()).decode("utf-8")
-        except (urllib.error.HTTPError, urllib.error.URLError):
-            pass
+    logo, logo_extension = base64logo()
 
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config.get("NAME", reset_url)
