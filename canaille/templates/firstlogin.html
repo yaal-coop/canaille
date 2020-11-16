@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+{% import 'flask.j2' as flask %}
+
+{% block content %}
+<div class="loginform">
+    <h3 class="ui top attached header">
+        {% if logo_url %}
+            <img class="ui image" src="{{ logo_url }}">
+        {% endif %}
+        <div class="content">
+        {% trans %}First login{% endtrans %}
+        </div>
+    </h3>
+
+    {{ flask.messages() }}
+
+    <div class="ui attached message">
+        {% trans %}
+        It seems this is the first time you are logging here. In order to finalize your
+        account configuration, you need to set a password to your account. We will send
+        you an email containing a link that will allow you to set a password. Please click
+        on the blue button below to send the email.
+        {% endtrans %}
+    </div>
+    <div class="ui attached clearing segment">
+        <form method="POST"
+          id="{{ reset }}"
+          action="{{ url_for('canaille.account.firstlogin', uid=uid) }}"
+          role="form"
+          >
+
+            {{ form.hidden_tag() if form.hidden_tag }}
+
+            <button type="submit" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
+            <a type="button" class="ui right floated button" href="{{ url_for('canaille.account.login') }}">{{ _("Login page") }}</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
