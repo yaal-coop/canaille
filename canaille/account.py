@@ -131,7 +131,7 @@ def firstlogin(uid):
 
     if success:
         flash(
-            _("A password initialization link has been sent at your email address."),
+            _("A password initialization link has been sent at your email address. You should receive it within 10 minutes."),
             "success",
         )
     else:
@@ -278,7 +278,7 @@ def forgotten():
 
     if not user:
         flash(
-            _("A password reset link has been sent at your email address."), "success"
+            _("A password reset link has been sent at your email address. You should receive it within 10 minutes."), "success"
         )
         return render_template("forgotten-password.html", form=form)
 
@@ -321,7 +321,7 @@ def forgotten():
 
     if success:
         flash(
-            _("A password reset link has been sent at your email address."), "success"
+            _("A password reset link has been sent at your email address. You should receive it within 10 minutes."), "success"
         )
     else:
         flash(_("Could not reset your password"), "error")
