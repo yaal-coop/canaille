@@ -1,6 +1,5 @@
 import datetime
 import wtforms
-import wtforms.fields.html5
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as _
@@ -25,17 +24,17 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "Client Name"},
     )
-    oauthClientContact = wtforms.fields.html5.EmailField(
+    oauthClientContact = wtforms.EmailField(
         _("Contact"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "admin@mydomain.tld"},
     )
-    oauthClientURI = wtforms.fields.html5.URLField(
+    oauthClientURI = wtforms.URLField(
         _("URI"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld"},
     )
-    oauthRedirectURIs = wtforms.fields.html5.URLField(
+    oauthRedirectURIs = wtforms.URLField(
         _("Redirect URIs"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld/callback"},
@@ -74,17 +73,17 @@ class ClientAdd(FlaskForm):
         ],
         default="client_secret_basic",
     )
-    oauthLogoURI = wtforms.fields.html5.URLField(
+    oauthLogoURI = wtforms.URLField(
         _("Logo URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/logo.png"},
     )
-    oauthTermsOfServiceURI = wtforms.fields.html5.URLField(
+    oauthTermsOfServiceURI = wtforms.URLField(
         _("Terms of service URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/tos.html"},
     )
-    oauthPolicyURI = wtforms.fields.html5.URLField(
+    oauthPolicyURI = wtforms.URLField(
         _("Policy URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/policy.html"},
@@ -104,7 +103,7 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
-    oauthJWKURI = wtforms.fields.html5.URLField(
+    oauthJWKURI = wtforms.URLField(
         _("JKW URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},

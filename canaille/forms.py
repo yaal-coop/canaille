@@ -1,5 +1,4 @@
 import wtforms
-import wtforms.fields.html5
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 
@@ -72,10 +71,10 @@ class ProfileForm(FlaskForm):
     )
     #    preferred_username = wtforms.StringField(_("Preferred username"))
     #    gender = wtforms.StringField(_("Gender"))
-    #    birthdate = wtforms.fields.html5.DateField(_("Birth date"))
+    #    birthdate = wtforms.DateField(_("Birth date"))
     #    zoneinfo = wtforms.StringField(_("Zoneinfo"))
     #    locale = wtforms.StringField(_("Language"))
-    email = wtforms.fields.html5.EmailField(
+    email = wtforms.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
         render_kw={
@@ -85,11 +84,11 @@ class ProfileForm(FlaskForm):
         },
     )
     #    address = wtforms.StringField(_("Address"))
-    phone_number = wtforms.fields.html5.TelField(
+    phone_number = wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     )
     #    picture = wtforms.StringField(_("Photo"))
-    #    website = wtforms.fields.html5.URLField(_("Website"))
+    #    website = wtforms.URLField(_("Website"))
 
     def validate_password2(self, field):
         if self.password1.data and self.password1.data != field.data:
