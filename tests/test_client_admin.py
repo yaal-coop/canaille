@@ -36,7 +36,7 @@ def test_client_add(testclient, logged_admin, slapd_connection):
     for k, v in data.items():
         res.form[k] = v
 
-    res = res.form.submit(status=302)
+    res = res.form.submit(status=302, name="action", value="edit")
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["oauthClientID"].value
@@ -70,7 +70,7 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection):
     }
     for k, v in data.items():
         res.forms["clientadd"][k] = v
-    res = res.forms["clientadd"].submit(status=200)
+    res = res.forms["clientadd"].submit(status=200, name="action", value="edit")
 
     client.reload(conn=slapd_connection)
     for k, v in data.items():
@@ -79,3 +79,8 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection):
             assert v == " ".join(client_value)
         else:
             assert v == client_value
+
+    res.forms["clientadd"].submit(status=302, name="action", value="delete").follow(
+        status=200
+    )
+    assert Client.get(client.oauthClientID, conn=slapd_connection) is None

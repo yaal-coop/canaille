@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'flask.j2' as flask %}
 
 {% block style %}
     <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
@@ -12,6 +13,8 @@
 {% endblock %}
 
 {% block content %}
+
+{{ flask.messages() }}
 
 <div class="ui segment">
     <a class="ui primary button" href="{{ url_for('canaille.admin.clients.add') }}">{% trans %}Add client{% endtrans %}</a>

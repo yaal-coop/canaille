@@ -2,7 +2,25 @@
 {% import 'fomanticui.j2' as sui %}
 {% import 'flask.j2' as flask %}
 
+{% block script %}
+    <script src="/static/js/admin/client_edit.js"></script>
+{% endblock %}
+
 {% block content %}
+<div class="ui basic modal">
+    <div class="ui icon header">
+        <i class="trash icon"></i>
+        {% trans %}Client deletion{% endtrans %}
+    </div>
+    <div class="content">
+        <p>{{ _("Are you sure you want to delete this client? This action is unrevokable and all the data about this client will be removed.") }}</p>
+    </div>
+    <div class="actions">
+        <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+        <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
+    </div>
+</div>
+
 <div class="loginform">
     <h3 class="ui top attached header">
         {% trans %}Edit a client{% endtrans %}
@@ -28,7 +46,23 @@
             </form>
         </div>
 
-        {{ sui.render_form(form, _("Confirm")) }}
+    <form method="POST"
+      id="{{ form.__class__.__name__|lower }}"
+      action="{{ form.action }}"
+      role="form"
+      enctype="multipart/form-data"
+      class="ui form"
+      >
+
+        {{ sui.render_fields(form) }}
+
+        <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
+            {{ _("Edit") }}
+        </button>
+        <button type="submit" class="ui right floated negative button confirm" name="action" value="delete" id="delete">
+            {{ _("Delete the client") }}
+        </button>
+    </form>
     </div>
 </div>
 {% endblock %}

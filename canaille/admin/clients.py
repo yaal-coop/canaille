@@ -1,6 +1,6 @@
 import datetime
 import wtforms
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, abort
 from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as _
 from werkzeug.security import gen_salt
@@ -161,6 +161,16 @@ def add(user):
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
 @admin_needed()
 def edit(user, client_id):
+    if request.method == "GET" or request.form.get("action") == "edit":
+        return client_edit(client_id)
+
+    if request.form.get("action") == "delete":
+        return client_delete(client_id)
+
+    abort(400)
+
+
+def client_edit(client_id):
     client = Client.get(client_id)
     data = dict(client)
     data["oauthScope"] = " ".join(data["oauthScope"])
@@ -205,3 +215,13 @@ def edit(user, client_id):
     return render_template(
         "admin/client_edit.html", form=form, client=client, menuitem="admin"
     )
+
+
+def client_delete(client_id):
+    client = Client.get(client_id) or abort(404)
+    flash(
+        _("The client has been deleted."),
+        "success",
+    )
+    client.delete()
+    return redirect(url_for("canaille.admin.clients.index"))
