@@ -41,6 +41,7 @@ doc:
 coverage:
   image: python:3.9
   stage: test
+  allow_failure: true
   script:
     - tox -e coverage
     - coveralls
