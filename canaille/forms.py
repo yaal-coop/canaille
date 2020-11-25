@@ -95,8 +95,9 @@ class ProfileForm(FlaskForm):
     )
     password2 = wtforms.PasswordField(
         _("Password confirmation"),
+        validators=[
+            wtforms.validators.EqualTo(
+                "password1", message=_("Password and confirmation do not match.")
+            )
+        ],
     )
-
-    def validate_password2(self, field):
-        if self.password1.data and self.password1.data != field.data:
-            raise wtforms.ValidationError(_("Password and confirmation do not match."))
