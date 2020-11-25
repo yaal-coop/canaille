@@ -61,6 +61,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
     res.form["password2"] = "correct horse battery staple"
 
     res = res.form.submit(name="action", value="edit", status=200)
+    assert "Profile updated successfuly" in res
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")

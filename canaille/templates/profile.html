@@ -46,6 +46,8 @@
         </div>
     </h2>
 
+    {{ flask.messages() }}
+
     <form method="POST"
       id="{{ form.__class__.__name__|lower }}"
       action="{{ request.url }}"
@@ -53,8 +55,6 @@
       enctype="multipart/form-data"
       class="ui form"
       >
-
-        {{ flask.messages() }}
 
         {{ sui.render_field(form.csrf_token) }}
 
