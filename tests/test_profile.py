@@ -117,11 +117,6 @@ def test_user_creation_edition_and_deletion(
     res.form["family_name"] = "Abitbol"
     res.form["email"] = "george@abitbol.com"
     res.form["phone_number"] = "555-666-888"
-
-    # Passwords have been forgotten
-    res = res.form.submit(name="action", value="edit", status=200)
-    with testclient.app.app_context():
-        assert User.get("george", conn=slapd_connection) is None
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
 

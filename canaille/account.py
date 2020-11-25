@@ -15,8 +15,7 @@ from flask_babel import gettext as _
 
 from .forms import (
     LoginForm,
-    AddProfileForm,
-    EditProfileForm,
+    ProfileForm,
     PasswordResetForm,
     ForgottenPasswordForm,
 )
@@ -153,7 +152,7 @@ def users(user):
 @moderator_needed()
 def profile_creation(user):
     claims = current_app.config["JWT"]["MAPPING"]
-    form = AddProfileForm(request.form or None)
+    form = ProfileForm(request.form or None)
     try:
         del form.sub.render_kw["readonly"]
     except KeyError:
@@ -215,7 +214,7 @@ def profile_edit(user, username):
         else getattr(user, v) or ""
         for k, v in claims.items()
     }
-    form = EditProfileForm(request.form or None, data=data)
+    form = ProfileForm(request.form or None, data=data)
     form.sub.render_kw["readonly"] = "true"
 
     if request.form:
