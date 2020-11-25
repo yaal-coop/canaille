@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-23 09:15+0100\n"
+"POT-Creation-Date: 2020-11-25 15:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,54 +45,54 @@ msgid ""
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:138
+#: canaille/account.py:140
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:162
+#: canaille/account.py:164
 msgid "User creation failed."
 msgstr ""
 
-#: canaille/account.py:179
+#: canaille/account.py:181
 msgid "User creation succeed."
 msgstr ""
 
-#: canaille/account.py:221
+#: canaille/account.py:223
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:235
+#: canaille/account.py:237
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:251
+#: canaille/account.py:253
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:274
+#: canaille/account.py:276
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:281 canaille/account.py:324
+#: canaille/account.py:283 canaille/account.py:329
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:296
+#: canaille/account.py:301
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/account.py:327
+#: canaille/account.py:335
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:341
+#: canaille/account.py:349
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:350
+#: canaille/account.py:358
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -104,60 +104,60 @@ msgstr ""
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/forms.py:9 canaille/forms.py:26
+#: canaille/forms.py:8 canaille/forms.py:25
 msgid "Login"
 msgstr ""
 
-#: canaille/forms.py:12 canaille/forms.py:29 canaille/forms.py:82
+#: canaille/forms.py:11 canaille/forms.py:28 canaille/forms.py:81
 msgid "jane@doe.com"
 msgstr ""
 
-#: canaille/forms.py:19 canaille/forms.py:38 canaille/forms.py:101
-#: canaille/forms.py:111
+#: canaille/forms.py:18 canaille/forms.py:37 canaille/forms.py:100
+#: canaille/forms.py:110
 msgid "Password"
 msgstr ""
 
-#: canaille/forms.py:41 canaille/forms.py:105 canaille/forms.py:118
+#: canaille/forms.py:40 canaille/forms.py:104 canaille/forms.py:117
 msgid "Password confirmation"
 msgstr ""
 
-#: canaille/forms.py:44 canaille/forms.py:96
+#: canaille/forms.py:43 canaille/forms.py:95
 msgid "Password and confirmation do not match."
 msgstr ""
 
-#: canaille/forms.py:52
+#: canaille/forms.py:51
 msgid "Username"
 msgstr ""
 
-#: canaille/forms.py:53
+#: canaille/forms.py:52
 msgid "jdoe"
 msgstr ""
 
-#: canaille/forms.py:58
+#: canaille/forms.py:57
 msgid "Given name"
 msgstr ""
 
-#: canaille/forms.py:60
+#: canaille/forms.py:59
 msgid "John"
 msgstr ""
 
-#: canaille/forms.py:66
+#: canaille/forms.py:65
 msgid "Family Name"
 msgstr ""
 
-#: canaille/forms.py:68
+#: canaille/forms.py:67
 msgid "Doe"
 msgstr ""
 
-#: canaille/forms.py:79
+#: canaille/forms.py:78
 msgid "Email address"
 msgstr ""
 
-#: canaille/forms.py:89 canaille/templates/users.html:24
+#: canaille/forms.py:88 canaille/templates/users.html:24
 msgid "Phone number"
 msgstr ""
 
-#: canaille/forms.py:89
+#: canaille/forms.py:88
 msgid "555-000-555"
 msgstr ""
 
@@ -181,81 +181,85 @@ msgstr ""
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/admin/clients.py:24 canaille/templates/admin/client_list.html:22
+#: canaille/admin/clients.py:23 canaille/templates/admin/client_list.html:25
 #: canaille/templates/users.html:22
 msgid "Name"
 msgstr ""
 
-#: canaille/admin/clients.py:29
+#: canaille/admin/clients.py:28
 msgid "Contact"
 msgstr ""
 
-#: canaille/admin/clients.py:34
+#: canaille/admin/clients.py:33
 msgid "URI"
 msgstr ""
 
-#: canaille/admin/clients.py:39
+#: canaille/admin/clients.py:38
 msgid "Redirect URIs"
 msgstr ""
 
-#: canaille/admin/clients.py:44
+#: canaille/admin/clients.py:43
 msgid "Grant types"
 msgstr ""
 
-#: canaille/admin/clients.py:56
+#: canaille/admin/clients.py:55
 msgid "Scope"
 msgstr ""
 
-#: canaille/admin/clients.py:62
+#: canaille/admin/clients.py:61
 msgid "Response types"
 msgstr ""
 
-#: canaille/admin/clients.py:68
+#: canaille/admin/clients.py:67
 msgid "Token Endpoint Auth Method"
 msgstr ""
 
-#: canaille/admin/clients.py:78
+#: canaille/admin/clients.py:77
 msgid "Logo URI"
 msgstr ""
 
-#: canaille/admin/clients.py:83
+#: canaille/admin/clients.py:82
 msgid "Terms of service URI"
 msgstr ""
 
-#: canaille/admin/clients.py:88
+#: canaille/admin/clients.py:87
 msgid "Policy URI"
 msgstr ""
 
-#: canaille/admin/clients.py:93
+#: canaille/admin/clients.py:92
 msgid "Software ID"
 msgstr ""
 
-#: canaille/admin/clients.py:98
+#: canaille/admin/clients.py:97
 msgid "Software Version"
 msgstr ""
 
-#: canaille/admin/clients.py:103
+#: canaille/admin/clients.py:102
 msgid "JWK"
 msgstr ""
 
-#: canaille/admin/clients.py:108
+#: canaille/admin/clients.py:107
 msgid "JKW URI"
 msgstr ""
 
-#: canaille/admin/clients.py:124
+#: canaille/admin/clients.py:123
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/admin/clients.py:155
+#: canaille/admin/clients.py:154
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/admin/clients.py:178
+#: canaille/admin/clients.py:187
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/admin/clients.py:202
+#: canaille/admin/clients.py:211
 msgid "The client has been edited."
+msgstr ""
+
+#: canaille/admin/clients.py:223
+msgid "The client has been deleted."
 msgstr ""
 
 #: canaille/templates/about.html:14 canaille/templates/base.html:90
@@ -451,10 +455,12 @@ msgid ""
 " all the data about this user will be removed."
 msgstr ""
 
+#: canaille/templates/admin/client_edit.html:19
 #: canaille/templates/profile.html:20
 msgid "Cancel"
 msgstr ""
 
+#: canaille/templates/admin/client_edit.html:20
 #: canaille/templates/profile.html:21
 msgid "Delete"
 msgstr ""
@@ -520,7 +526,7 @@ msgid "Subject"
 msgstr ""
 
 #: canaille/templates/admin/authorization_list.html:21
-#: canaille/templates/admin/client_list.html:24
+#: canaille/templates/admin/client_list.html:27
 #: canaille/templates/admin/token_list.html:21
 msgid "Created"
 msgstr ""
@@ -534,31 +540,48 @@ msgid "Add a client"
 msgstr ""
 
 #: canaille/templates/admin/client_add.html:14
-#: canaille/templates/admin/client_edit.html:31
 msgid "Confirm"
 msgstr ""
 
-#: canaille/templates/admin/client_edit.html:8
+#: canaille/templates/admin/client_edit.html:13
+msgid "Client deletion"
+msgstr ""
+
+#: canaille/templates/admin/client_edit.html:16
+msgid ""
+"Are you sure you want to delete this client? This action is unrevokable "
+"and all the data about this client will be removed."
+msgstr ""
+
+#: canaille/templates/admin/client_edit.html:26
 msgid "Edit a client"
 msgstr ""
 
-#: canaille/templates/admin/client_edit.html:17
+#: canaille/templates/admin/client_edit.html:35
 msgid "ID"
 msgstr ""
 
-#: canaille/templates/admin/client_edit.html:21
+#: canaille/templates/admin/client_edit.html:39
 msgid "Secret"
 msgstr ""
 
-#: canaille/templates/admin/client_edit.html:25
+#: canaille/templates/admin/client_edit.html:43
 msgid "Issued at"
 msgstr ""
 
-#: canaille/templates/admin/client_list.html:17
+#: canaille/templates/admin/client_edit.html:60
+msgid "Edit"
+msgstr ""
+
+#: canaille/templates/admin/client_edit.html:63
+msgid "Delete the client"
+msgstr ""
+
+#: canaille/templates/admin/client_list.html:20
 msgid "Add client"
 msgstr ""
 
-#: canaille/templates/admin/client_list.html:23
+#: canaille/templates/admin/client_list.html:26
 msgid "URL"
 msgstr ""
 
