@@ -8,10 +8,12 @@ def current_user():
     if "user_dn" not in session:
         return None
 
-    try:
-        return User.get(dn=session["user_dn"])
-    except ldap.NO_SUCH_OBJECT:
-        return None
+    user = User.get(dn=session["user_dn"])
+
+    if not user:
+        del session["user_dn"]
+
+    return user
 
 
 def user_needed():

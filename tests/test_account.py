@@ -165,3 +165,25 @@ def test_password_reset_bad_password(testclient, slapd_connection, user):
 
     with testclient.app.app_context():
         assert user.check_password("correct horse battery staple")
+
+
+def test_user_deleted_in_session(testclient, slapd_connection):
+    User.ocs_by_name(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Jake Doe",
+        sn="Jake",
+        uid="jake",
+        mail="jake@doe.com",
+        userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+    )
+    u.save(slapd_connection)
+    with testclient.session_transaction() as sess:
+        sess["user_dn"] = u.dn
+
+    testclient.get("/profile/jake", status=200)
+    u.delete(conn=slapd_connection)
+
+    testclient.get("/profile/jake", status=403)
+    with testclient.session_transaction() as sess:
+        assert "user_dn" not in sess
