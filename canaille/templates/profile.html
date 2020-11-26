@@ -56,21 +56,36 @@
       class="ui form"
       >
 
-        {{ sui.render_field(form.csrf_token) }}
+        {#{ sui.render_field(form.csrf_token) }#}
 
         <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
         <div class="two fields">
-            {{ sui.render_field(form.given_name) }}
-            {{ sui.render_field(form.family_name) }}
+            {% if "givenName" in form %}
+                {{ sui.render_field(form.givenName) }}
+            {% endif %}
+            {% if "sn" in form %}
+                {{ sui.render_field(form.sn) }}
+            {% endif %}
         </div>
-        {{ sui.render_field(form.email) }}
-        {{ sui.render_field(form.phone_number) }}
+        {% if "mail" in form %}
+            {{ sui.render_field(form.mail) }}
+        {% endif %}
+        {% if "telephoneNumber" in form %}
+            {{ sui.render_field(form.telephoneNumber) }}
+        {% endif %}
+        {% if "employeeNumber" in form %}
+            {{ sui.render_field(form.employeeNumber) }}
+        {% endif %}
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
-        {{ sui.render_field(form.sub) }}
+        {% if "uid" in form %}
+            {{ sui.render_field(form.uid) }}
+        {% endif %}
         <div class="two fields">
-            {{ sui.render_field(form.password1) }}
-            {{ sui.render_field(form.password2) }}
+            {% if "password1" in form %}
+                {{ sui.render_field(form.password1) }}
+                {{ sui.render_field(form.password2) }}
+            {% endif %}
         </div>
 
         <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">

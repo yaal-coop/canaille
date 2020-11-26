@@ -15,9 +15,9 @@ from flask_babel import gettext as _
 
 from .forms import (
     LoginForm,
-    ProfileForm,
     PasswordResetForm,
     ForgottenPasswordForm,
+    profile_form,
 )
 from .apputils import base64logo, send_email
 from .flaskutils import current_user, user_needed, moderator_needed
@@ -151,10 +151,11 @@ def users(user):
 @bp.route("/profile", methods=("GET", "POST"))
 @moderator_needed()
 def profile_creation(user):
-    claims = current_app.config["JWT"]["MAPPING"]
-    form = ProfileForm(request.form or None)
+    form = profile_form(current_app.config["LDAP"]["FIELDS"])
+    form.process(request.form or None)
     try:
-        del form.sub.render_kw["readonly"]
+        if "uid" in form:
+            del form["uid"].render_kw["readonly"]
     except KeyError:
         pass
 
@@ -165,14 +166,14 @@ def profile_creation(user):
         else:
             user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
             for attribute in form:
-                model_attribute_name = claims.get(attribute.name.upper())
-                if (
-                    not model_attribute_name
-                    or model_attribute_name not in user.must + user.may
-                ):
-                    continue
+                if attribute.name in user.may + user.must:
+                    if user.attr_type_by_name()[attribute.name].single_value:
+                        user[attribute.name] = attribute.data
+                    else:
+                        user[attribute.name] = [attribute.data]
 
-                user[model_attribute_name] = [attribute.data]
+            if not form["password1"].data or user.set_password(form["password1"].data):
+                flash(_("Profile updated successfuly."), "success")
 
             user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
             user.save()
@@ -204,18 +205,20 @@ def profile_edition(user, username):
 
 def profile_edit(user, username):
     menuitem = "profile" if username == user.uid[0] else "users"
-    claims = current_app.config["JWT"]["MAPPING"]
+    fields = current_app.config["LDAP"]["FIELDS"]
     if username != user.uid[0]:
         user = User.get(username) or abort(404)
 
     data = {
-        k.lower(): getattr(user, v)[0]
-        if getattr(user, v) and isinstance(getattr(user, v), list)
-        else getattr(user, v) or ""
-        for k, v in claims.items()
+        k: getattr(user, k)[0]
+        if getattr(user, k) and isinstance(getattr(user, k), list)
+        else getattr(user, k) or ""
+        for k in fields
+        if hasattr(user, k)
     }
-    form = ProfileForm(request.form or None, data=data)
-    form.sub.render_kw["readonly"] = "true"
+    form = profile_form(fields)
+    form.process(request.form or None, data=data)
+    form["uid"].render_kw["readonly"] = "true"
 
     if request.form:
         if not form.validate():
@@ -223,16 +226,13 @@ def profile_edit(user, username):
 
         else:
             for attribute in form:
-                model_attribute_name = claims.get(attribute.name.upper())
-                if (
-                    not model_attribute_name
-                    or model_attribute_name not in user.must + user.may
-                ):
-                    continue
+                if attribute.name in user.may + user.must:
+                    if user.attr_type_by_name()[attribute.name].single_value:
+                        user[attribute.name] = attribute.data
+                    else:
+                        user[attribute.name] = [attribute.data]
 
-                user[model_attribute_name] = [attribute.data]
-
-            if not form.password1.data or user.set_password(form.password1.data):
+            if not form["password1"].data or user.set_password(form["password1"].data):
                 flash(_("Profile updated successfuly."), "success")
 
             user.save()

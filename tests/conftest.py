@@ -132,6 +132,15 @@ def app(slapd_server, keypair_path):
                 "USER_CLASS": "inetOrgPerson",
                 "ADMIN_FILTER": "(|(uid=admin)(sn=admin))",
                 "USER_ADMIN_FILTER": "(|(uid=moderator)(sn=moderator))",
+                "FIELDS": [
+                    "uid",
+                    "mail",
+                    "givenName",
+                    "sn",
+                    "userPassword",
+                    "telephoneNumber",
+                    "employeeNumber",
+                ],
             },
             "JWT": {
                 "PUBLIC_KEY": public_key_path,
