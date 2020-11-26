@@ -31,6 +31,7 @@ sn: Doe
 uid: admin
 mail: admin@mydomain.tld
 telephoneNumber: 555-000-000
+employeeNumber: 1000
 userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 memberof: cn=admins,ou=groups,dc=mydomain,dc=tld
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
@@ -44,6 +45,7 @@ sn: Doe
 uid: moderator
 mail: moderator@mydomain.tld
 telephoneNumber: 555-000-002
+employeeNumber: 1002
 userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
 memberof: cn=moderators,ou=groups,dc=mydomain,dc=tld
 
@@ -56,6 +58,7 @@ sn: Doe
 uid: user
 mail: user@mydomain.tld
 telephoneNumber: 555-000-001
+employeeNumber: 1001
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
 

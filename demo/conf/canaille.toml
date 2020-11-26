@@ -54,6 +54,19 @@ ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
 # USER_ADMIN_FILTER = "uid=moderator"
 USER_ADMIN_FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
 
+# The list of ldap fields you want to be editable by the
+# users.
+FIELDS = [
+  "uid",
+  "mail",
+  "givenName",
+  "sn",
+  "userPassword",
+  "telephoneNumber",
+  "employeeNumber",
+# "photo",
+]
+
 # The jwt configuration. You can generate a RSA keypair with:
 # ssh-keygen -t rsa -b 4096 -m PEM -f private.pem
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem

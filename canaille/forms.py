@@ -1,4 +1,5 @@
 import wtforms
+import wtforms.form
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 
@@ -46,35 +47,30 @@ class PasswordResetForm(FlaskForm):
     )
 
 
-class ProfileForm(FlaskForm):
-    sub = wtforms.StringField(
+PROFILE_FORM_FIELDS = dict(
+    uid=wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
         validators=[wtforms.validators.DataRequired()],
-    )
-    #    name = wtforms.StringField(_("Name"))
-    given_name = wtforms.StringField(
+    ),
+    cn=wtforms.StringField(_("Name")),
+    givenName=wtforms.StringField(
         _("Given name"),
         render_kw={
             "placeholder": _("John"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
-    )
-    family_name = wtforms.StringField(
+    ),
+    sn=wtforms.StringField(
         _("Family Name"),
         render_kw={
             "placeholder": _("Doe"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
-    )
-    #    preferred_username = wtforms.StringField(_("Preferred username"))
-    #    gender = wtforms.StringField(_("Gender"))
-    #    birthdate = wtforms.DateField(_("Birth date"))
-    #    zoneinfo = wtforms.StringField(_("Zoneinfo"))
-    #    locale = wtforms.StringField(_("Language"))
-    email = wtforms.EmailField(
+    ),
+    mail=wtforms.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
         render_kw={
@@ -82,22 +78,38 @@ class ProfileForm(FlaskForm):
             "spellcheck": "false",
             "autocorrect": "off",
         },
-    )
-    #    address = wtforms.StringField(_("Address"))
-    phone_number = wtforms.TelField(
+    ),
+    telephoneNumber=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
-    )
-    #    picture = wtforms.StringField(_("Photo"))
-    #    website = wtforms.URLField(_("Website"))
-    password1 = wtforms.PasswordField(
+    ),
+    photo=wtforms.StringField(_("Photo")),
+    password1=wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
-    )
-    password2 = wtforms.PasswordField(
+    ),
+    password2=wtforms.PasswordField(
         _("Password confirmation"),
         validators=[
             wtforms.validators.EqualTo(
                 "password1", message=_("Password and confirmation do not match.")
             )
         ],
-    )
+    ),
+    employeeNumber=wtforms.StringField(
+        _("Number"),
+        render_kw={
+            "placeholder": _("1234"),
+        },
+    ),
+)
+
+
+def profile_form(field_names):
+    if "userPassword" in field_names:
+        field_names += ["password1", "password2"]
+    fields = {
+        name: PROFILE_FORM_FIELDS.get(name)
+        for name in field_names
+        if PROFILE_FORM_FIELDS.get(name)
+    }
+    return wtforms.form.BaseForm(fields)

@@ -4,13 +4,15 @@ from canaille.models import User
 def test_profile(testclient, slapd_connection, logged_user):
     res = testclient.get("/profile/user", status=200)
 
-    res.form["sub"] = "user"
-    res.form["given_name"] = "given_name"
-    res.form["family_name"] = "family_name"
-    res.form["email"] = "email@mydomain.tld"
-    res.form["phone_number"] = "555-666-777"
+    res.form["uid"] = "user"
+    res.form["givenName"] = "given_name"
+    res.form["sn"] = "family_name"
+    res.form["mail"] = "email@mydomain.tld"
+    res.form["telephoneNumber"] = "555-666-777"
+    res.form["employeeNumber"] = 666
 
     res = res.form.submit(name="action", value="edit", status=200)
+    assert "Profile updated successfuly." in res, str(res)
 
     logged_user.reload(slapd_connection)
 
@@ -19,6 +21,7 @@ def test_profile(testclient, slapd_connection, logged_user):
     assert ["family_name"] == logged_user.sn
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
+    assert "666" == logged_user.employeeNumber
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
@@ -27,7 +30,7 @@ def test_profile(testclient, slapd_connection, logged_user):
 def test_bad_email(testclient, slapd_connection, logged_user):
     res = testclient.get("/profile/user", status=200)
 
-    res.form["email"] = "john@doe.com"
+    res.form["mail"] = "john@doe.com"
 
     res = res.form.submit(name="action", value="edit", status=200)
 
@@ -35,7 +38,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
 
     res = testclient.get("/profile/user", status=200)
 
-    res.form["email"] = "yolo"
+    res.form["mail"] = "yolo"
 
     res = res.form.submit(name="action", value="edit", status=200)
 
@@ -113,11 +116,11 @@ def test_user_creation_edition_and_deletion(
 
     # Fill the profile for a new user.
     res = testclient.get("/profile", status=200)
-    res.form["sub"] = "george"
-    res.form["given_name"] = "George"
-    res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
-    res.form["phone_number"] = "555-666-888"
+    res.form["uid"] = "george"
+    res.form["givenName"] = "George"
+    res.form["sn"] = "Abitbol"
+    res.form["mail"] = "george@abitbol.com"
+    res.form["telephoneNumber"] = "555-666-888"
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
 
@@ -126,7 +129,7 @@ def test_user_creation_edition_and_deletion(
     with testclient.app.app_context():
         assert "George" == User.get("george", conn=slapd_connection).givenName[0]
     assert "george" in testclient.get("/users", status=200).text
-    res.form["given_name"] = "Georgio"
+    res.form["givenName"] = "Georgio"
 
     # User have been edited
     res = res.form.submit(name="action", value="edit", status=200)
