@@ -1,6 +1,7 @@
 import base64
 import urllib.request
 from flask import Blueprint, render_template, current_app, url_for, request
+from flask_babel import gettext as _
 from canaille.flaskutils import admin_needed
 from canaille.account import profile_hash
 
@@ -39,6 +40,9 @@ def reset_html(user):
         reset_url=reset_url,
         logo=logo,
         logo_extension=logo_extension,
+        title=_("Password reset on {website_name}").format(
+            website_name=current_app.config.get("NAME", reset_url)
+        ),
     )
 
 
