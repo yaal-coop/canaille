@@ -1,6 +1,6 @@
 import base64
 import urllib.request
-from flask import Blueprint, render_template, current_app, request, url_for
+from flask import Blueprint, render_template, current_app, url_for, request
 from canaille.flaskutils import admin_needed
 from canaille.account import profile_hash
 
@@ -21,10 +21,13 @@ def reset_html(user):
 
     logo = None
     logo_extension = None
-    if current_app.config.get("LOGO"):
-        logo_extension = current_app.config["LOGO"].split(".")[-1]
+    logo_url = current_app.config.get("LOGO")
+    if logo_url:
+        logo_extension = logo_url.split(".")[-1]
+        if not logo_url.startswith("http"):
+            logo_url = "{}/{}".format(request.host_url, logo_url)
         try:
-            with urllib.request.urlopen(current_app.config.get("LOGO")) as f:
+            with urllib.request.urlopen(logo_url) as f:
                 logo = base64.b64encode(f.read()).decode("utf-8")
         except (urllib.error.HTTPError, urllib.error.URLError):
             pass
