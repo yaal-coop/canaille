@@ -1,17 +1,18 @@
-import base64
 import email.message
 import logging
+import mimetypes
 import smtplib
 import urllib.request
+from email.utils import make_msgid
 from flask import current_app, request
 
 
-def base64logo():
+def logo():
     logo_url = current_app.config.get("LOGO")
     if not logo_url:
-        return None, None
+        return None, None, None
 
-    logo_extension = logo_url.split(".")[-1]
+    logo_filename = logo_url.split("/")[-1]
     if not logo_url.startswith("http"):
         if current_app.config.get("SERVER_NAME"):
             logo_url = "{}://{}/{}".format(
@@ -24,22 +25,30 @@ def base64logo():
 
     try:
         with urllib.request.urlopen(logo_url) as f:
-            logo = base64.b64encode(f.read()).decode("utf-8")
+            logo_raw = f.read()
     except (urllib.error.HTTPError, urllib.error.URLError):
-        logo = None
-        logo_extension = None
+        logo_filename = None
+        logo_raw = None
 
-    return logo, logo_extension
+    domain = current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
+    logo_cid = make_msgid(domain=domain)
+    return logo_cid, logo_filename, logo_raw
 
 
-def send_email(subject, sender, recipient, text, html):
+def send_email(subject, recipient, text, html, sender=None, attachements=None):
     msg = email.message.EmailMessage()
     msg.set_content(text)
     msg.add_alternative(html, subtype="html")
     msg["Subject"] = subject
-    msg["From"] = sender
+    msg["From"] = sender or current_app.config["SMTP"]["FROM_ADDR"]
     msg["To"] = recipient
 
+    attachements = attachements or []
+    for cid, filename, value in attachements:
+        maintype, subtype = mimetypes.guess_type(filename)[0].split("/")
+        msg.get_payload()[1].add_related(
+            value, maintype=maintype, subtype=subtype, cid=cid
+        )
     try:
         with smtplib.SMTP(
             host=current_app.config["SMTP"]["HOST"],

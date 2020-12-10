@@ -19,7 +19,7 @@ from .forms import (
     ForgottenPasswordForm,
     profile_form,
 )
-from .apputils import base64logo, send_email
+from .apputils import logo, send_email
 from .flaskutils import current_user, user_needed, moderator_needed
 from .models import User
 
@@ -100,7 +100,7 @@ def firstlogin(uid):
         ),
         _external=True,
     )
-    logo, logo_extension = base64logo()
+    logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Password initialization on {website_name}").format(
         website_name=current_app.config.get("NAME", reset_url)
@@ -116,16 +116,15 @@ def firstlogin(uid):
         site_name=current_app.config.get("NAME", reset_url),
         site_url=base_url,
         reset_url=reset_url,
-        logo=logo,
-        logo_extension=logo_extension,
+        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
     )
 
     success = send_email(
         subject=subject,
-        sender=current_app.config["SMTP"]["FROM_ADDR"],
         recipient=user.mail,
         text=text_body,
         html=html_body,
+        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
     if success:
@@ -295,7 +294,7 @@ def forgotten():
         ),
         _external=True,
     )
-    logo, logo_extension = base64logo()
+    logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config.get("NAME", reset_url)
@@ -311,16 +310,15 @@ def forgotten():
         site_name=current_app.config.get("NAME", reset_url),
         site_url=base_url,
         reset_url=reset_url,
-        logo=logo,
-        logo_extension=logo_extension,
+        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
     )
 
     success = send_email(
         subject=subject,
-        sender=current_app.config["SMTP"]["FROM_ADDR"],
         recipient=user.mail,
         text=text_body,
         html=html_body,
+        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
     if success:
