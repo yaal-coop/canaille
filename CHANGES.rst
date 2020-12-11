@@ -20,6 +20,7 @@ Added
 - Improved consents page. :issue:`27`
 - Admin user page. :issue:`8`
 - Project logo. :pr:`29`
+- Admins can impersonate users. :issue:`39`
 - Admins can remove clients. :pr:`45`
 
 Fixed
