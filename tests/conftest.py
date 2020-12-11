@@ -312,21 +312,21 @@ def consent(slapd_connection, client, user):
 @pytest.fixture
 def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = user.dn
+        sess["user_dn"] = [user.dn]
     return user
 
 
 @pytest.fixture
 def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = admin.dn
+        sess["user_dn"] = [admin.dn]
     return admin
 
 
 @pytest.fixture
 def logged_moderator(moderator, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = moderator.dn
+        sess["user_dn"] = [moderator.dn]
     return moderator
 
 

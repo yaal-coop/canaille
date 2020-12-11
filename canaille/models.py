@@ -61,12 +61,15 @@ class User(LDAPObject):
         return user
 
     def login(self):
-        session["user_dn"] = self.dn
+        try:
+            session["user_dn"] = session["user_dn"] + [self.dn]
+        except KeyError:
+            session["user_dn"] = [self.dn]
 
     def logout(self):
         try:
-            del session["user_dn"]
-        except KeyError:
+            session["user_dn"].pop()
+        except (IndexError, KeyError):
             pass
 
     def has_password(self):

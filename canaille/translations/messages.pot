@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-11-26 11:41+0100\n"
+"POT-Creation-Date: 2020-12-11 12:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.1\n"
+"Generated-By: Babel 2.9.0\n"
 
 #: canaille/account.py:60 canaille/oauth.py:58
 msgid "Login failed, please check your information"
@@ -39,60 +39,60 @@ msgstr ""
 msgid "Password initialization on {website_name}"
 msgstr ""
 
-#: canaille/account.py:133
+#: canaille/account.py:132
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:139
+#: canaille/account.py:138
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:164
+#: canaille/account.py:163
 msgid "User creation failed."
 msgstr ""
 
-#: canaille/account.py:181
-msgid "User creation succeed."
-msgstr ""
-
-#: canaille/account.py:224
-msgid "Profile edition failed."
-msgstr ""
-
-#: canaille/account.py:238
+#: canaille/account.py:175 canaille/account.py:243
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:254
+#: canaille/account.py:180
+msgid "User creation succeed."
+msgstr ""
+
+#: canaille/account.py:232
+msgid "Profile edition failed."
+msgstr ""
+
+#: canaille/account.py:259
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:277
+#: canaille/account.py:282
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:284 canaille/account.py:330
+#: canaille/account.py:289 canaille/account.py:334
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:302
+#: canaille/account.py:307 canaille/admin/mail.py:29
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/account.py:336
+#: canaille/account.py:340
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:350
+#: canaille/account.py:354
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:359
+#: canaille/account.py:363
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -440,7 +440,7 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:36
-#: canaille/templates/profile.html:89
+#: canaille/templates/profile.html:92
 msgid "Send"
 msgstr ""
 
@@ -501,11 +501,15 @@ msgstr ""
 msgid "Personal information"
 msgstr ""
 
-#: canaille/templates/profile.html:77
+#: canaille/templates/profile.html:80
 msgid "Account information"
 msgstr ""
 
-#: canaille/templates/profile.html:93
+#: canaille/templates/profile.html:96
+msgid "Impersonate"
+msgstr ""
+
+#: canaille/templates/profile.html:101
 msgid "Delete the user"
 msgstr ""
 
@@ -601,27 +605,28 @@ msgstr ""
 msgid "View a token"
 msgstr ""
 
-#: canaille/templates/mail/firstlogin.html:28
+#: canaille/templates/mail/firstlogin.html:19
 #: canaille/templates/mail/reset.txt:1
 msgid "Password initialization"
 msgstr ""
 
-#: canaille/templates/mail/firstlogin.html:33
-#: canaille/templates/mail/reset.txt:3
+#: canaille/templates/mail/firstlogin.html:27
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the blue button below and follow"
-" the instructions."
+"\n"
+"                In order to finalize your account configuration at "
+"%(site_name)s, we need to setup your password. Please click on the blue "
+"button below and follow the instructions.\n"
+"                "
 msgstr ""
 
-#: canaille/templates/mail/firstlogin.html:40
+#: canaille/templates/mail/firstlogin.html:38
 #: canaille/templates/mail/reset.txt:5
 msgid "Initialize password"
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.txt:1
-#: canaille/templates/mail/reset.html:28
+#: canaille/templates/mail/reset.html:19
 msgid "Password reinitialisation"
 msgstr ""
 
@@ -635,11 +640,11 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.txt:5
-#: canaille/templates/mail/reset.html:40
+#: canaille/templates/mail/reset.html:38
 msgid "Reset password"
 msgstr ""
 
-#: canaille/templates/mail/reset.html:33
+#: canaille/templates/mail/reset.html:27
 #, python-format
 msgid ""
 "\n"
@@ -648,5 +653,13 @@ msgid ""
 "email, please ignore it. I you need to reset your password, please click "
 "on the blue button below and follow the instructions.\n"
 "                "
+msgstr ""
+
+#: canaille/templates/mail/reset.txt:3
+#, python-format
+msgid ""
+"In order to finalize your account configuration at %(site_name)s, we need"
+" to setup your password. Please click on the blue button below and follow"
+" the instructions."
 msgstr ""
 

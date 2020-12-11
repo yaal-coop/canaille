@@ -15,7 +15,7 @@ slapd = slapdtest.SlapdObject(
         "inetorgperson.ldif",
         "../schemas/oauth2-openldap.ldif",
         "ldif/memberof.ldif",
-    )
+    ),
 )
 slapd.start()
 

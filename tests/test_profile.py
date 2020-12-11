@@ -156,7 +156,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
     )
     admin.save(slapd_connection)
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = admin.dn
+        sess["user_dn"] = [admin.dn]
 
     res = testclient.get("/profile/temp")
     res = (
@@ -169,4 +169,4 @@ def test_admin_self_deletion(testclient, slapd_connection):
         assert User.get("temp", conn=slapd_connection) is None
 
     with testclient.session_transaction() as sess:
-        "user_dn" not in sess
+        assert not sess.get("user_dn")

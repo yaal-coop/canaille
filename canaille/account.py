@@ -20,7 +20,7 @@ from .forms import (
     profile_form,
 )
 from .apputils import logo, send_email
-from .flaskutils import current_user, user_needed, moderator_needed
+from .flaskutils import current_user, user_needed, moderator_needed, admin_needed
 from .models import User
 
 
@@ -186,6 +186,14 @@ def profile_creation(user):
     return render_template(
         "profile.html", form=form, menuitem="users", edited_user=None
     )
+
+
+@bp.route("/impersonate/<username>")
+@admin_needed()
+def impersonate(user, username):
+    u = User.get(username) or abort(404)
+    u.login()
+    return redirect(url_for("canaille.account.index"))
 
 
 @bp.route("/profile/<username>", methods=("GET", "POST"))

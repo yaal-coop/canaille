@@ -1,11 +1,12 @@
 import mock
+from canaille.flaskutils import current_user
 from canaille.account import profile_hash
 from canaille.models import User
 
 
 def test_login_and_out(testclient, slapd_connection, user):
     with testclient.session_transaction() as session:
-        assert session.get("user_dn") is None
+        assert not session.get("user_dn")
 
     res = testclient.get("/login", status=200)
 
@@ -16,19 +17,19 @@ def test_login_and_out(testclient, slapd_connection, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert user.dn == session.get("user_dn")
+        assert [user.dn] == session.get("user_dn")
 
     res = testclient.get("/logout")
     res = res.follow(status=302)
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert session.get("user_dn") is None
+        assert not session.get("user_dn")
 
 
 def test_login_wrong_password(testclient, slapd_connection, user):
     with testclient.session_transaction() as session:
-        assert session.get("user_dn") is None
+        assert not session.get("user_dn")
 
     res = testclient.get("/login", status=200)
 
@@ -40,7 +41,7 @@ def test_login_wrong_password(testclient, slapd_connection, user):
 
 def test_login_no_password(testclient, slapd_connection, user):
     with testclient.session_transaction() as session:
-        assert session.get("user_dn") is None
+        assert not session.get("user_dn")
 
     res = testclient.get("/login", status=200)
 
@@ -60,7 +61,7 @@ def test_login_with_alternate_attribute(testclient, slapd_connection, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert user.dn == session.get("user_dn")
+        assert [user.dn] == session.get("user_dn")
 
 
 def test_user_without_password_first_login(testclient, slapd_connection):
@@ -178,12 +179,31 @@ def test_user_deleted_in_session(testclient, slapd_connection):
         userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
     u.save(slapd_connection)
-    with testclient.session_transaction() as sess:
-        sess["user_dn"] = u.dn
+    testclient.get("/profile/jake", status=403)
+
+    with testclient.session_transaction() as session:
+        session["user_dn"] = [u.dn]
 
     testclient.get("/profile/jake", status=200)
     u.delete(conn=slapd_connection)
 
     testclient.get("/profile/jake", status=403)
-    with testclient.session_transaction() as sess:
-        assert "user_dn" not in sess
+    with testclient.session_transaction() as session:
+        assert not session.get("user_dn")
+
+
+def test_impersonate(testclient, slapd_connection, logged_admin, user):
+    res = testclient.get("/", status=302).follow(status=200)
+    assert "admin" == res.form["uid"].value
+
+    res = (
+        testclient.get("/impersonate/user", status=302)
+        .follow(status=302)
+        .follow(status=200)
+    )
+    assert "user" == res.form["uid"].value
+
+    testclient.get("/logout", status=302).follow(status=302).follow(status=200)
+
+    res = testclient.get("/", status=302).follow(status=200)
+    assert "admin" == res.form["uid"].value

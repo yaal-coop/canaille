@@ -1,17 +1,24 @@
-import ldap
 from functools import wraps
 from flask import session, abort
 from canaille.models import User
 
 
 def current_user():
-    if "user_dn" not in session:
+    if not session.get("user_dn"):
         return None
 
-    user = User.get(dn=session["user_dn"])
+    if not isinstance(session.get("user_dn"), list):
+        del session["user_dn"]
+        return None
+
+    dn = session["user_dn"][-1]
+    user = User.get(dn=dn)
 
     if not user:
-        del session["user_dn"]
+        try:
+            session["user_dn"] = session["user_dn"][:-1]
+        except IndexError:
+            del session["user_dn"]
 
     return user
 
