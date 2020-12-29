@@ -62,13 +62,22 @@ class User(LDAPObject):
 
     def login(self):
         try:
-            session["user_dn"] = session["user_dn"] + [self.dn]
+            previous = (
+                session["user_dn"]
+                if isinstance(session["user_dn"], list)
+                else [session["user_dn"]]
+            )
+            session["user_dn"] = previous + [self.dn]
         except KeyError:
             session["user_dn"] = [self.dn]
 
+    @classmethod
     def logout(self):
         try:
-            session["user_dn"].pop()
+            if isinstance(session["user_dn"], list):
+                session["user_dn"].pop()
+            else:
+                del session["user_dn"]
         except (IndexError, KeyError):
             pass
 

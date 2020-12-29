@@ -57,6 +57,7 @@ def login():
         if not form.validate() or not User.authenticate(
             form.login.data, form.password.data, True
         ):
+            User.logout()
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
