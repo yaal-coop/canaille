@@ -39,7 +39,10 @@ try:
     )
 
     with open("ldif/bootstrap.ldif") as fd:
-        slapd.ldapadd(fd.read())
+        try:
+            slapd.ldapadd(fd.read())
+        except RuntimeError:
+            pass
 
     slapd.wait()
 finally:
