@@ -157,7 +157,7 @@ def app(slapd_server, keypair_path):
                     "FAMILY_NAME": "sn",
                     "PREFERRED_USERNAME": "displayName",
                     "LOCALE": "preferredLanguage",
-                    "PICTURE": "photo",
+                    "PICTURE": "jpegPhoto",
                 },
             },
             "SMTP": {

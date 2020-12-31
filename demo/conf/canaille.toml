@@ -67,7 +67,7 @@ FIELDS = [
   "userPassword",
   "telephoneNumber",
   "employeeNumber",
-# "photo",
+#  "jpegPhoto",
 ]
 
 # The jwt configuration. You can generate a RSA keypair with:

@@ -67,7 +67,7 @@ FIELDS = [
   "userPassword",
   "telephoneNumber",
   "employeeNumber",
-# "photo",
+# "jpegPhoto",
 ]
 
 # The jwt configuration. You can generate a RSA keypair with:
@@ -91,7 +91,7 @@ GIVEN_NAME = "givenName"
 FAMILY_NAME = "sn"
 PREFERRED_USERNAME = "displayName"
 LOCALE = "preferredLanguage"
-PICTURE = "photo"
+PICTURE = "jpegPhoto"
 ADDRESS = "postalAddress"
 
 [SMTP]
