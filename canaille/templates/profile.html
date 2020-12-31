@@ -98,7 +98,11 @@
         {% endif %}
         {% if user.moderator and edited_user %}
         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
-            {{ _("Delete the user") }}
+            {% if user.uid != edited_user.uid %}
+                {{ _("Delete the user") }}
+            {% else %}
+                {{ _("Delete my account") }}
+            {% endif %}
         </button>
         {% endif %}
     </form>

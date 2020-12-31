@@ -7,7 +7,7 @@ pybabel extract --mapping-file canaille/translations/babel.cfg --output-file can
 Add a new language with:
 
 ```
-pybabel init --input-file messages.pot --output-dir translations --locale <LANG>
+pybabel init --input-file canaille/translations/messages.pot --output-dir canaille/translations --locale <LANG>
 ```
 
 Update the catalogs with:

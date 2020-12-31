@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-12-11 12:03+0100\n"
-"PO-Revision-Date: 2020-12-11 12:04+0100\n"
+"POT-Creation-Date: 2020-12-31 12:40+0100\n"
+"PO-Revision-Date: 2020-12-31 12:40+0100\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -534,9 +534,13 @@ msgstr "Informations sur le compte"
 msgid "Impersonate"
 msgstr "Prendre l'identité"
 
-#: canaille/templates/profile.html:101
+#: canaille/templates/profile.html:102
 msgid "Delete the user"
 msgstr "Supprimer l'utilisateur"
+
+#: canaille/templates/profile.html:104
+msgid "Delete my account"
+msgstr "Supprimer mon compte"
 
 #: canaille/templates/reset-password.html:12
 #: canaille/templates/reset-password.html:19

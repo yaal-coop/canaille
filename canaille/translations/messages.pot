@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-12-11 12:03+0100\n"
+"POT-Creation-Date: 2020-12-31 12:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -509,8 +509,12 @@ msgstr ""
 msgid "Impersonate"
 msgstr ""
 
-#: canaille/templates/profile.html:101
+#: canaille/templates/profile.html:102
 msgid "Delete the user"
+msgstr ""
+
+#: canaille/templates/profile.html:104
+msgid "Delete my account"
 msgstr ""
 
 #: canaille/templates/reset-password.html:12
