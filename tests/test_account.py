@@ -1,5 +1,4 @@
 import mock
-from canaille.flaskutils import current_user
 from canaille.account import profile_hash
 from canaille.models import User
 
@@ -207,3 +206,21 @@ def test_impersonate(testclient, slapd_connection, logged_admin, user):
 
     res = testclient.get("/", status=302).follow(status=200)
     assert "admin" == res.form["uid"].value
+
+
+def test_wrong_login(testclient, slapd_connection, user):
+    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "invalid"
+    res.form["password"] = "incorrect horse"
+    res = res.form.submit(status=200)
+    assert "The login 'invalid' does not exist" in res.text
+
+    testclient.app.config["HIDE_INVALID_LOGINS"] = False
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "invalid"
+    res.form["password"] = "incorrect horse"
+    res = res.form.submit(status=200)
+    assert "The login 'invalid' does not exist" not in res.text

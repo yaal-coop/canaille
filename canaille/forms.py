@@ -1,8 +1,10 @@
 import wtforms
 import wtforms.form
+from flask import current_app
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
+from .models import User
 
 
 class LoginForm(FlaskForm):
@@ -20,6 +22,14 @@ class LoginForm(FlaskForm):
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
     )
+
+    def validate_login(self, field):
+        if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
+            field.data
+        ):
+            raise wtforms.ValidationError(
+                _("The login '{login}' does not exist").format(login=field.data)
+            )
 
 
 class ForgottenPasswordForm(FlaskForm):

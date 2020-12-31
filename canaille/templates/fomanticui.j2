@@ -25,6 +25,10 @@
         {{ field(**kwargs) }}
     {% endif %}
 
+    {% if icon %}
+        </div>
+    {% endif %}
+
     {% if field.errors %}
     {% for error in field.errors %}
     <div class="ui pointing red basic label">
@@ -32,11 +36,6 @@
     </div>
     {% endfor %}
     {% endif %}
-
-    {% if icon %}
-        </div>
-    {% endif %}
-
 {% if container %}
 </div>
 {% endif %}

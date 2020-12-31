@@ -171,12 +171,11 @@ class LDAPObject:
                 if v and v[0] and self.attrs.get(k) != v
             }
             attributes = [
-                (ldap.MOD_REPLACE, k, [
-                    elt.encode("utf-8")
-                    if isinstance(elt, str)
-                    else elt
-                    for elt in v
-                ])
+                (
+                    ldap.MOD_REPLACE,
+                    k,
+                    [elt.encode("utf-8") if isinstance(elt, str) else elt for elt in v],
+                )
                 for k, v in mods.items()
             ]
             conn.modify_s(self.dn, attributes)
@@ -191,12 +190,7 @@ class LDAPObject:
                     mods[k] = v
 
             attributes = [
-                (k, [
-                    elt.encode("utf-8")
-                    if isinstance(elt, str)
-                    else elt
-                    for elt in v
-                ])
+                (k, [elt.encode("utf-8") if isinstance(elt, str) else elt for elt in v])
                 for k, v in mods.items()
             ]
             conn.add_s(self.dn, attributes)
