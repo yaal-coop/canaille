@@ -2,6 +2,7 @@ import wtforms
 import wtforms.form
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
 
 
 class LoginForm(FlaskForm):
@@ -82,7 +83,7 @@ PROFILE_FORM_FIELDS = dict(
     telephoneNumber=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     ),
-    photo=wtforms.StringField(_("Photo")),
+    jpegPhoto=FileField(_("Photo"), validators=[FileRequired()]),
     password1=wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],

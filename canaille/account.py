@@ -12,7 +12,7 @@ from flask import (
     redirect,
 )
 from flask_babel import gettext as _
-
+from werkzeug.datastructures import CombinedMultiDict, FileStorage
 from .forms import (
     LoginForm,
     PasswordResetForm,
@@ -152,7 +152,7 @@ def users(user):
 @moderator_needed()
 def profile_creation(user):
     form = profile_form(current_app.config["LDAP"]["FIELDS"])
-    form.process(request.form or None)
+    form.process(CombinedMultiDict((request.files, request.form)) or None)
     try:
         if "uid" in form:
             del form["uid"].render_kw["readonly"]
@@ -167,10 +167,15 @@ def profile_creation(user):
             user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
             for attribute in form:
                 if attribute.name in user.may + user.must:
-                    if user.attr_type_by_name()[attribute.name].single_value:
-                        user[attribute.name] = attribute.data
+                    if isinstance(attribute.data, FileStorage):
+                        data = attribute.data.stream.read()
                     else:
-                        user[attribute.name] = [attribute.data]
+                        data = attribute.data
+
+                    if user.attr_type_by_name()[attribute.name].single_value:
+                        user[attribute.name] = data
+                    else:
+                        user[attribute.name] = [data]
 
             if not form["password1"].data or user.set_password(form["password1"].data):
                 flash(_("Profile updated successfuly."), "success")
@@ -225,7 +230,7 @@ def profile_edit(user, username):
         if hasattr(user, k)
     }
     form = profile_form(fields)
-    form.process(request.form or None, data=data)
+    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
     form["uid"].render_kw["readonly"] = "true"
 
     if request.form:
@@ -235,10 +240,15 @@ def profile_edit(user, username):
         else:
             for attribute in form:
                 if attribute.name in user.may + user.must:
-                    if user.attr_type_by_name()[attribute.name].single_value:
-                        user[attribute.name] = attribute.data
+                    if isinstance(attribute.data, FileStorage):
+                        data = attribute.data.stream.read()
                     else:
-                        user[attribute.name] = [attribute.data]
+                        data = attribute.data
+
+                    if user.attr_type_by_name()[attribute.name].single_value:
+                        user[attribute.name] = data
+                    else:
+                        user[attribute.name] = [data]
 
             if not form["password1"].data or user.set_password(form["password1"].data):
                 flash(_("Profile updated successfuly."), "success")
