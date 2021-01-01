@@ -8,6 +8,7 @@ def test_password_forgotten(SMTP, testclient, slapd_connection, user):
     res.form["login"] = "user"
     res = res.form.submit(status=200)
     assert "A password reset link has been sent at your email address." in res.text
+    assert "Send again" in res.text
 
     SMTP.assert_called_once_with(host="localhost", port=25)
 

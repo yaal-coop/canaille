@@ -2,14 +2,14 @@
 # Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
-# Éloi Rivard <eloi@yaal.fr>, 2020.
+# Éloi Rivard <eloi@yaal.fr>, 2020-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2020-12-31 19:41+0100\n"
-"PO-Revision-Date: 2020-12-31 19:42+0100\n"
+"POT-Creation-Date: 2021-01-01 15:28+0100\n"
+"PO-Revision-Date: 2021-01-01 15:29+0100\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
@@ -111,81 +111,81 @@ msgstr "Impossible de supprimer cet accès."
 msgid "The access has been revoked"
 msgstr "L'accès a été révoqué."
 
-#: canaille/forms.py:12 canaille/forms.py:32
+#: canaille/forms.py:12 canaille/forms.py:37
 msgid "Login"
 msgstr "Identifiant"
 
-#: canaille/forms.py:15 canaille/forms.py:35 canaille/forms.py:83
+#: canaille/forms.py:15 canaille/forms.py:40 canaille/forms.py:96
 msgid "jane@doe.com"
 msgstr "martin@dupont.fr"
 
-#: canaille/forms.py:22 canaille/forms.py:44 canaille/forms.py:93
+#: canaille/forms.py:22 canaille/forms.py:57 canaille/forms.py:106
 msgid "Password"
 msgstr "Mot de passe"
 
-#: canaille/forms.py:28
+#: canaille/forms.py:31 canaille/forms.py:51
 msgid "The login '{login}' does not exist"
 msgstr "L'identifiant '{login}' n'existe pas"
 
-#: canaille/forms.py:47 canaille/forms.py:97
+#: canaille/forms.py:60 canaille/forms.py:110
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: canaille/forms.py:50 canaille/forms.py:100
+#: canaille/forms.py:63 canaille/forms.py:113
 msgid "Password and confirmation do not match."
 msgstr "Le mot de passe et sa confirmation ne correspondent pas."
 
-#: canaille/forms.py:58
+#: canaille/forms.py:71
 msgid "Username"
 msgstr "Identifiant"
 
-#: canaille/forms.py:59
+#: canaille/forms.py:72
 msgid "jdoe"
 msgstr "mdupont"
 
-#: canaille/admin/clients.py:23 canaille/forms.py:62
+#: canaille/admin/clients.py:23 canaille/forms.py:75
 #: canaille/templates/admin/client_list.html:25
 #: canaille/templates/users.html:22
 msgid "Name"
 msgstr "Nom"
 
-#: canaille/forms.py:64
+#: canaille/forms.py:77
 msgid "Given name"
 msgstr "Prénom"
 
-#: canaille/forms.py:66
+#: canaille/forms.py:79
 msgid "John"
 msgstr "Martin"
 
-#: canaille/forms.py:72
+#: canaille/forms.py:85
 msgid "Family Name"
 msgstr "Nom de famille"
 
-#: canaille/forms.py:74
+#: canaille/forms.py:87
 msgid "Doe"
 msgstr "Dupont"
 
-#: canaille/forms.py:80
+#: canaille/forms.py:93
 msgid "Email address"
 msgstr "Courriel"
 
-#: canaille/forms.py:89 canaille/templates/users.html:24
+#: canaille/forms.py:102 canaille/templates/users.html:24
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: canaille/forms.py:89
+#: canaille/forms.py:102
 msgid "555-000-555"
 msgstr "06 01 02 03 04"
 
-#: canaille/forms.py:91
+#: canaille/forms.py:104
 msgid "Photo"
 msgstr "Photo"
 
-#: canaille/forms.py:105
+#: canaille/forms.py:118
 msgid "Number"
 msgstr "Numéro"
 
-#: canaille/forms.py:107
+#: canaille/forms.py:120
 msgid "1234"
 msgstr "1234"
 
@@ -440,7 +440,7 @@ msgid "Send the initialization email"
 msgstr "Envoyer le courriel d'initialisation"
 
 #: canaille/templates/firstlogin.html:36
-#: canaille/templates/forgotten-password.html:37
+#: canaille/templates/forgotten-password.html:43
 msgid "Login page"
 msgstr "Page de connexion"
 
@@ -466,7 +466,11 @@ msgstr ""
 "        vous permettra de ré-initialiser votre mot de passe.\n"
 "        "
 
-#: canaille/templates/forgotten-password.html:36
+#: canaille/templates/forgotten-password.html:38
+msgid "Send again"
+msgstr "Envoyer à nouveau"
+
+#: canaille/templates/forgotten-password.html:40
 #: canaille/templates/profile.html:92
 msgid "Send"
 msgstr "Envoyer"

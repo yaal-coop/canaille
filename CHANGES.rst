@@ -21,6 +21,7 @@ Added
 - Admin user page. :issue:`8`
 - Project logo. :pr:`29`
 - Admins can impersonate users. :issue:`39`
+- Forgotten page UX improvement. :pr:`43`
 - Admins can remove clients. :pr:`45`
 - Option `HIDE_INVALID_LOGIN` that can be unactivated to let the user know if
   the login he attempt to sign in with exists or not. :pr:`48`
