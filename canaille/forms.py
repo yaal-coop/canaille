@@ -43,6 +43,14 @@ class ForgottenPasswordForm(FlaskForm):
         },
     )
 
+    def validate_login(self, field):
+        if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
+            field.data
+        ):
+            raise wtforms.ValidationError(
+                _("The login '{login}' does not exist").format(login=field.data)
+            )
+
 
 class PasswordResetForm(FlaskForm):
     password = wtforms.PasswordField(

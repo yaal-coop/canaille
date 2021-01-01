@@ -107,11 +107,21 @@ def test_password_forgotten_invalid_form(SMTP, testclient, slapd_connection, use
 
 @mock.patch("smtplib.SMTP")
 def test_password_forgotten_invalid(SMTP, testclient, slapd_connection, user):
+    testclient.app.config["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "i-dont-really-exist"
     res = res.form.submit(status=200)
     assert "A password reset link has been sent at your email address." in res.text
+    assert "The login 'i-dont-really-exist' does not exist" not in res.text
+
+    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    res = testclient.get("/reset", status=200)
+
+    res.form["login"] = "i-dont-really-exist"
+    res = res.form.submit(status=200)
+    assert "A password reset link has been sent at your email address." not in res.text
+    assert "The login 'i-dont-really-exist' does not exist" in res.text
 
     SMTP.assert_not_called()
 
@@ -209,14 +219,6 @@ def test_impersonate(testclient, slapd_connection, logged_admin, user):
 
 
 def test_wrong_login(testclient, slapd_connection, user):
-    testclient.app.config["HIDE_INVALID_LOGINS"] = True
-
-    res = testclient.get("/login", status=200)
-    res.form["login"] = "invalid"
-    res.form["password"] = "incorrect horse"
-    res = res.form.submit(status=200)
-    assert "The login 'invalid' does not exist" in res.text
-
     testclient.app.config["HIDE_INVALID_LOGINS"] = False
 
     res = testclient.get("/login", status=200)
@@ -224,3 +226,11 @@ def test_wrong_login(testclient, slapd_connection, user):
     res.form["password"] = "incorrect horse"
     res = res.form.submit(status=200)
     assert "The login 'invalid' does not exist" not in res.text
+
+    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "invalid"
+    res.form["password"] = "incorrect horse"
+    res = res.form.submit(status=200)
+    assert "The login 'invalid' does not exist" in res.text
