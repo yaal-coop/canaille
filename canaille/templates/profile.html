@@ -7,14 +7,20 @@
 {% endblock %}
 
 {% block content %}
-{% if user.moderator and edited_user %}
+{% if self_deletion or (user.moderator and edited_user) %}
 <div class="ui basic modal">
     <div class="ui icon header">
         <i class="user minus icon"></i>
-        {% trans %}User deletion{% endtrans %}
+        {% trans %}Account deletion{% endtrans %}
     </div>
     <div class="content">
-        <p>{{ _("Are you sure you want to delete this user? This action is unrevokable and all the data about this user will be removed.") }}</p>
+        <p>
+        {% if user.uid != edited_user.uid %}
+            {{ _("Are you sure you want to delete this user? This action is unrevokable and all the data about this user will be removed.") }}
+        {% else %}
+            {{ _("Are you sure you want to delete your account? This action is unrevokable and all your data will be removed forever.") }}
+        {% endif %}
+        </p>
     </div>
     <div class="actions">
         <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
@@ -96,7 +102,7 @@
             {{ _("Impersonate") }}
         </a>
         {% endif %}
-        {% if user.moderator and edited_user %}
+        {% if user.moderator and edited_user or self_deletion %}
         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
             {% if user.uid != edited_user.uid %}
                 {{ _("Delete the user") }}

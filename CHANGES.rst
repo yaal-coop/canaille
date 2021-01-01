@@ -20,6 +20,7 @@ Added
 - Improved consents page. :issue:`27`
 - Admin user page. :issue:`8`
 - Project logo. :pr:`29`
+- User account self-deletion can be enabled in the configuration with `SELF_DELETION`. :issue:`35`
 - Admins can impersonate users. :issue:`39`
 - Forgotten page UX improvement. :pr:`43`
 - Admins can remove clients. :pr:`45`

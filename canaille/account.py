@@ -190,7 +190,11 @@ def profile_creation(user):
             )
 
     return render_template(
-        "profile.html", form=form, menuitem="users", edited_user=None
+        "profile.html",
+        form=form,
+        menuitem="users",
+        edited_user=None,
+        self_deletion=False,
     )
 
 
@@ -256,7 +260,11 @@ def profile_edit(user, username):
             user.save()
 
     return render_template(
-        "profile.html", form=form, menuitem=menuitem, edited_user=user
+        "profile.html",
+        form=form,
+        menuitem=menuitem,
+        edited_user=user,
+        self_deletion=current_app.config.get("SELF_DELETION", True),
     )
 
 

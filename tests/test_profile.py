@@ -142,31 +142,3 @@ def test_user_creation_edition_and_deletion(
     with testclient.app.app_context():
         assert User.get("george", conn=slapd_connection) is None
     assert "george" not in res.text
-
-
-def test_admin_self_deletion(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
-    admin = User(
-        objectClass=["inetOrgPerson"],
-        cn="Temp admin",
-        sn="admin",
-        uid="temp",
-        mail="temp@temp.com",
-        userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
-    )
-    admin.save(slapd_connection)
-    with testclient.session_transaction() as sess:
-        sess["user_dn"] = [admin.dn]
-
-    res = testclient.get("/profile/temp")
-    res = (
-        res.form.submit(name="action", value="delete", status=302)
-        .follow(status=302)
-        .follow(status=200)
-    )
-
-    with testclient.app.app_context():
-        assert User.get("temp", conn=slapd_connection) is None
-
-    with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
