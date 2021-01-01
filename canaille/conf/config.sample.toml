@@ -35,6 +35,10 @@ OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
 # wether the login exists or not.
 # HIDE_INVALID_LOGINS = false
 
+# SELF_DELETION controls the ability for a user to delete his own
+# account. The default value is true.
+# SELF_DELETION = true
+
 [LDAP]
 URI = "ldap://ldap"
 ROOT_DN = "dc=mydomain,dc=tld"
