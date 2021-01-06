@@ -15,9 +15,9 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 # Screenshots
 
 <div align="center">
-    <img src="doc/_static/login.png" width="225" alt="Canaille" />
-    <img src="doc/_static/profile.png" width="225" alt="Canaille" />
-    <img src="doc/_static/consent.png" width="225" alt="Canaille" />
+    <img src="doc/_static/login.png" width="225" alt="Canaille login page" />
+    <img src="doc/_static/profile.png" width="225" alt="Canaille profile page" />
+    <img src="doc/_static/consent.png" width="225" alt="Canaille consent page" />
 </div>
 
 # Try it!
