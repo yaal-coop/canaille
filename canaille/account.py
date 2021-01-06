@@ -92,6 +92,20 @@ def firstlogin(uid):
         flash(_("Could not send the password initialization link."), "error")
         return render_template("firstlogin.html", form=form, uid=uid)
 
+    if send_password_initialization_mail(user):
+        flash(
+            _(
+                "A password initialization link has been sent at your email address. You should receive it within 10 minutes."
+            ),
+            "success",
+        )
+    else:
+        flash(_("Could not send the password initialization email"), "error")
+
+    return render_template("firstlogin.html", form=form, uid=uid)
+
+
+def send_password_initialization_mail(user):
     base_url = url_for("canaille.account.index", _external=True)
     reset_url = url_for(
         "canaille.account.reset",
@@ -120,25 +134,13 @@ def firstlogin(uid):
         logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
     )
 
-    success = send_email(
+    return send_email(
         subject=subject,
         recipient=user.mail,
         text=text_body,
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
-
-    if success:
-        flash(
-            _(
-                "A password initialization link has been sent at your email address. You should receive it within 10 minutes."
-            ),
-            "success",
-        )
-    else:
-        flash(_("Could not send the password initialization email"), "error")
-
-    return render_template("firstlogin.html", form=form, uid=uid)
 
 
 @bp.route("/users")
@@ -178,12 +180,10 @@ def profile_creation(user):
                         user[attribute.name] = [data]
 
             if not form["password1"].data or user.set_password(form["password1"].data):
-                flash(_("Profile updated successfuly."), "success")
+                flash(_("User creation succeed."), "success")
 
             user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
             user.save()
-
-            flash(_("User creation succeed."), "success")
 
             return redirect(
                 url_for("canaille.account.profile_edition", username=user.uid[0])
@@ -216,6 +216,19 @@ def profile_edition(user, username):
 
     if request.form.get("action") == "delete":
         return profile_delete(user, username)
+
+    if request.form.get("action") == "password-initialization-mail":
+        if send_password_initialization_mail(user):
+            flash(
+                _(
+                    "A password initialization link has been sent at the user email address. It should be received within 10 minutes."
+                ),
+                "success",
+            )
+        else:
+            flash(_("Could not send the password initialization email"), "error")
+
+        return profile_edit(user, username)
 
     abort(400)
 
@@ -254,7 +267,9 @@ def profile_edit(user, username):
                     else:
                         user[attribute.name] = [data]
 
-            if not form["password1"].data or user.set_password(form["password1"].data):
+            if (
+                not form["password1"].data or user.set_password(form["password1"].data)
+            ) and request.form["action"] == "edit":
                 flash(_("Profile updated successfuly."), "success")
 
             user.save()

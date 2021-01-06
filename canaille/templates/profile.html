@@ -59,7 +59,7 @@
       action="{{ request.url }}"
       role="form"
       enctype="multipart/form-data"
-      class="ui form"
+      class="ui form{% if user.moderator and edited_user and not edited_user.has_password() %} warning{% endif %}"
       >
 
         {#{ sui.render_field(form.csrf_token) }#}
@@ -87,6 +87,27 @@
         {% if "uid" in form %}
             {{ sui.render_field(form.uid) }}
         {% endif %}
+        {% if user.moderator and edited_user and not edited_user.has_password() %}
+        <div class="ui message warning">
+            {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
+                <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
+                    {% trans %}Send again{% endtrans %}
+                </button>
+            {% else %}
+                <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
+                    {% trans %}Send{% endtrans %}
+                </button>
+            {% endif %}
+            <div class="header">
+                {% trans %}This user does not have a password yet{% endtrans %}
+            </div>
+            <ul>
+                <li>{% trans %}Set a password using this form;{% endtrans %}</li>
+                <li>{% trans %}send the user a password initialization mail, by clicking this button;{% endtrans %}</li>
+                <li>{% trans %}or simply wait for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
+            </ul>
+        </div>
+        {% endif %}
         <div class="two fields">
             {% if "password1" in form %}
                 {{ sui.render_field(form.password1) }}
@@ -95,7 +116,7 @@
         </div>
 
         <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
-            {{ _("Send") }}
+            {{ _("Submit") }}
         </button>
         {% if user.admin and edited_user and user.uid != edited_user.uid %}
         <a href="{{ url_for('canaille.account.impersonate', username=edited_user.uid[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate">

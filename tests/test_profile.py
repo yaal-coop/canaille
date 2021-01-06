@@ -1,3 +1,4 @@
+import mock
 from canaille.models import User
 
 
@@ -142,3 +143,36 @@ def test_user_creation_edition_and_deletion(
     with testclient.app.app_context():
         assert User.get("george", conn=slapd_connection) is None
     assert "george" not in res.text
+
+
+@mock.patch("smtplib.SMTP")
+def test_first_login_mail_button(SMTP, testclient, slapd_connection, logged_admin):
+    User.ocs_by_name(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+    )
+    u.save(slapd_connection)
+
+    res = testclient.get("/profile/temp", status=200)
+    assert "This user does not have a password yet" in res
+    assert "Send" in res
+
+    res = res.form.submit(
+        name="action", value="password-initialization-mail", status=200
+    )
+    assert (
+        "A password initialization link has been sent at the user email address. It should be received within 10 minutes."
+        in res
+    )
+    assert "Send again" in res
+
+    u.reload(slapd_connection)
+    u.userPassword = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
+    u.save(slapd_connection)
+
+    res = testclient.get("/profile/temp", status=200)
+    assert "This user does not have a password yet" not in res
