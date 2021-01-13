@@ -218,6 +218,7 @@ def profile_edition(user, username):
         return profile_delete(user, username)
 
     if request.form.get("action") == "password-initialization-mail":
+        user = User.get(username) or abort(404)
         if send_password_initialization_mail(user):
             flash(
                 _(
