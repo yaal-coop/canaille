@@ -59,7 +59,7 @@
       action="{{ request.url }}"
       role="form"
       enctype="multipart/form-data"
-      class="ui form{% if user.moderator and edited_user and not edited_user.has_password() %} warning{% endif %}"
+      class="ui form info{% if user.moderator and edited_user and not edited_user.has_password() %} warning{% endif %}"
       >
 
         {#{ sui.render_field(form.csrf_token) }#}
@@ -87,7 +87,20 @@
         {% if "uid" in form %}
             {{ sui.render_field(form.uid) }}
         {% endif %}
-        {% if user.moderator and edited_user and not edited_user.has_password() %}
+
+        {% if not edited_user %}
+        <div class="ui message info">
+            <div class="header">
+                {% trans %}User password is not mandatory{% endtrans %}
+            </div>
+            <p>{% trans %}The user password can be set:{% endtrans %}</p>
+            <ul class="ui list">
+                <li>{% trans %}by filling this form;{% endtrans %}</li>
+                <li>{% trans %}by sending the user a password initialization mail, after the account creation;{% endtrans %}</li>
+                <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
+            </ul>
+        </div>
+        {% elif user.moderator and not edited_user.has_password() %}
         <div class="ui message warning">
             {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
                 <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
@@ -101,10 +114,11 @@
             <div class="header">
                 {% trans %}This user does not have a password yet{% endtrans %}
             </div>
-            <ul>
-                <li>{% trans %}Set a password using this form;{% endtrans %}</li>
-                <li>{% trans %}send the user a password initialization mail, by clicking this button;{% endtrans %}</li>
-                <li>{% trans %}or simply wait for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
+            <p>{% trans %}You can solve this by:{% endtrans %}</p>
+            <ul class="ui list">
+                <li>{% trans %}setting a password using this form;{% endtrans %}</li>
+                <li>{% trans %}sending the user a password initialization mail, by clicking this button;{% endtrans %}</li>
+                <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
             </ul>
         </div>
         {% endif %}
