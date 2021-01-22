@@ -1,4 +1,3 @@
-import hashlib
 import pkg_resources
 
 from flask import (
@@ -19,8 +18,12 @@ from .forms import (
     ForgottenPasswordForm,
     profile_form,
 )
-from .apputils import logo, send_email
 from .flaskutils import current_user, user_needed, moderator_needed, admin_needed
+from .mails import (
+    send_password_initialization_mail,
+    send_password_reset_mail,
+    profile_hash,
+)
 from .models import User
 
 
@@ -103,44 +106,6 @@ def firstlogin(uid):
         flash(_("Could not send the password initialization email"), "error")
 
     return render_template("firstlogin.html", form=form, uid=uid)
-
-
-def send_password_initialization_mail(user):
-    base_url = url_for("canaille.account.index", _external=True)
-    reset_url = url_for(
-        "canaille.account.reset",
-        uid=user.uid[0],
-        hash=profile_hash(
-            user.uid[0], user.userPassword[0] if user.has_password() else ""
-        ),
-        _external=True,
-    )
-    logo_cid, logo_filename, logo_raw = logo()
-
-    subject = _("Password initialization on {website_name}").format(
-        website_name=current_app.config.get("NAME", reset_url)
-    )
-    text_body = render_template(
-        "mail/firstlogin.txt",
-        site_name=current_app.config.get("NAME", reset_url),
-        site_url=base_url,
-        reset_url=reset_url,
-    )
-    html_body = render_template(
-        "mail/firstlogin.html",
-        site_name=current_app.config.get("NAME", reset_url),
-        site_url=base_url,
-        reset_url=reset_url,
-        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
-    )
-
-    return send_email(
-        subject=subject,
-        recipient=user.mail,
-        text=text_body,
-        html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
-    )
 
 
 @bp.route("/users")
@@ -231,6 +196,20 @@ def profile_edition(user, username):
 
         return profile_edit(user, username)
 
+    if request.form.get("action") == "password-reset-mail":
+        user = User.get(username) or abort(404)
+        if send_password_reset_mail(user):
+            flash(
+                _(
+                    "A password reset link has been sent at the user email address. It should be received within 10 minutes."
+                ),
+                "success",
+            )
+        else:
+            flash(_("Could not send the password reset email"), "error")
+
+        return profile_edit(user, username)
+
     abort(400)
 
 
@@ -299,14 +278,6 @@ def profile_delete(user, username):
     return redirect(url_for("canaille.account.users"))
 
 
-def profile_hash(user, password):
-    return hashlib.sha256(
-        current_app.config["SECRET_KEY"].encode("utf-8")
-        + user.encode("utf-8")
-        + password.encode("utf-8")
-    ).hexdigest()
-
-
 @bp.route("/reset", methods=["GET", "POST"])
 def forgotten():
     form = ForgottenPasswordForm(request.form)
@@ -328,41 +299,7 @@ def forgotten():
         )
         return render_template("forgotten-password.html", form=form)
 
-    base_url = url_for("canaille.account.index", _external=True)
-    reset_url = url_for(
-        "canaille.account.reset",
-        uid=user.uid[0],
-        hash=profile_hash(
-            user.uid[0], user.userPassword[0] if user.has_password() else ""
-        ),
-        _external=True,
-    )
-    logo_cid, logo_filename, logo_raw = logo()
-
-    subject = _("Password reset on {website_name}").format(
-        website_name=current_app.config.get("NAME", reset_url)
-    )
-    text_body = render_template(
-        "mail/reset.txt",
-        site_name=current_app.config.get("NAME", reset_url),
-        site_url=base_url,
-        reset_url=reset_url,
-    )
-    html_body = render_template(
-        "mail/reset.html",
-        site_name=current_app.config.get("NAME", reset_url),
-        site_url=base_url,
-        reset_url=reset_url,
-        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
-    )
-
-    success = send_email(
-        subject=subject,
-        recipient=user.mail,
-        text=text_body,
-        html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
-    )
+    success = send_password_reset_mail(user)
 
     if success:
         flash(

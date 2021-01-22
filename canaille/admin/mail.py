@@ -1,9 +1,7 @@
-import base64
-import urllib.request
-from flask import Blueprint, render_template, current_app, url_for, request
+from flask import Blueprint, render_template, current_app, url_for
 from flask_babel import gettext as _
 from canaille.flaskutils import admin_needed
-from canaille.account import profile_hash
+from canaille.mails import profile_hash
 
 
 bp = Blueprint(__name__, "clients")

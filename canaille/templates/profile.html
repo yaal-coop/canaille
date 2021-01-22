@@ -88,7 +88,15 @@
             {{ sui.render_field(form.uid) }}
         {% endif %}
 
+        <div class="two fields">
+            {% if "password1" in form %}
+                {{ sui.render_field(form.password1) }}
+                {{ sui.render_field(form.password2) }}
+            {% endif %}
+        </div>
+
         {% if not edited_user %}
+
         <div class="ui message info">
             <div class="header">
                 {% trans %}User password is not mandatory{% endtrans %}
@@ -100,7 +108,9 @@
                 <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
             </ul>
         </div>
+
         {% elif user.moderator and not edited_user.has_password() %}
+
         <div class="ui message warning">
             {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
                 <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
@@ -108,7 +118,7 @@
                 </button>
             {% else %}
                 <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
-                    {% trans %}Send{% endtrans %}
+                    {% trans %}Send email{% endtrans %}
                 </button>
             {% endif %}
             <div class="header">
@@ -121,13 +131,24 @@
                 <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
             </ul>
         </div>
-        {% endif %}
-        <div class="two fields">
-            {% if "password1" in form %}
-                {{ sui.render_field(form.password1) }}
-                {{ sui.render_field(form.password2) }}
+
+        {% elif user.moderator and edited_user.uid != user.uid and edited_user.has_password() %}
+
+        <div class="ui message info">
+            <button type="submit" name="action" value="password-reset-mail" class="ui right floated button">
+            {% if request.method == "POST" and request.form.action == "password-reset-mail" %}
+                    {% trans %}Send again{% endtrans %}
+            {% else %}
+                    {% trans %}Send mail{% endtrans %}
             {% endif %}
+            </button>
+            <div class="header">
+                {% trans %}Password reset{% endtrans %}
+            </div>
+            <p>{% trans %}If the user has forgotten his password, you can send him a password reset email by clicking this button.{% endtrans %}</p>
         </div>
+
+        {% endif %}
 
         <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
             {{ _("Submit") }}
