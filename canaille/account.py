@@ -9,11 +9,13 @@ from flask import (
     abort,
     render_template,
     redirect,
+    session,
 )
 from flask_babel import gettext as _
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
 from .forms import (
     LoginForm,
+    PasswordForm,
     PasswordResetForm,
     ForgottenPasswordForm,
     profile_form,
@@ -57,17 +59,45 @@ def login():
         if user and not user.has_password():
             return redirect(url_for("canaille.account.firstlogin", uid=user.uid[0]))
 
-        if not form.validate() or not User.authenticate(
-            form.login.data, form.password.data, True
-        ):
+        if not form.validate():
             User.logout()
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
+        session["attempt_login"] = form.login.data
+        return redirect(url_for("canaille.account.password"))
+
+    return render_template("login.html", form=form)
+
+
+@bp.route("/password", methods=("GET", "POST"))
+def password():
+    if "attempt_login" not in session:
+        return redirect(url_for("canaille.account.login"))
+
+    form = PasswordForm(request.form or None)
+
+    if request.form:
+        user = User.get(session["attempt_login"])
+        if user and not user.has_password():
+            return redirect(url_for("canaille.account.firstlogin", uid=user.uid[0]))
+
+        if not form.validate() or not User.authenticate(
+            session["attempt_login"], form.password.data, True
+        ):
+            User.logout()
+            flash(_("Login failed, please check your information"), "error")
+            return render_template(
+                "password.html", form=form, username=session["attempt_login"]
+            )
+
+        del session["attempt_login"]
         flash(_("Connection successful. Welcome %(user)s", user=user.name), "success")
         return redirect(url_for("canaille.account.index"))
 
-    return render_template("login.html", form=form)
+    return render_template(
+        "password.html", form=form, username=session["attempt_login"]
+    )
 
 
 @bp.route("/logout")

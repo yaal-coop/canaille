@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-22 18:22+0100\n"
+"POT-Creation-Date: 2021-01-23 22:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,90 +17,90 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: canaille/account.py:64 canaille/oauth.py:58
+#: canaille/account.py:64 canaille/account.py:89 canaille/oauth.py:58
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/account.py:67
+#: canaille/account.py:95
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
-#: canaille/account.py:78
+#: canaille/account.py:108
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr ""
 
-#: canaille/account.py:95
+#: canaille/account.py:125
 msgid "Could not send the password initialization link."
 msgstr ""
 
-#: canaille/account.py:100
+#: canaille/account.py:130
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:106 canaille/account.py:195
+#: canaille/account.py:136 canaille/account.py:225
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:131
+#: canaille/account.py:161
 msgid "User creation failed."
 msgstr ""
 
-#: canaille/account.py:148
+#: canaille/account.py:178
 msgid "User creation succeed."
 msgstr ""
 
-#: canaille/account.py:189
+#: canaille/account.py:219
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:203
+#: canaille/account.py:233
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:209
+#: canaille/account.py:239
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/account.py:235
+#: canaille/account.py:265
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:253
+#: canaille/account.py:283
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:273
+#: canaille/account.py:303
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:288
+#: canaille/account.py:318
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:295 canaille/account.py:306
+#: canaille/account.py:325 canaille/account.py:336
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:312
+#: canaille/account.py:342
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:326
+#: canaille/account.py:356
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:335
+#: canaille/account.py:365
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -112,81 +112,81 @@ msgstr ""
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/forms.py:12 canaille/forms.py:37
+#: canaille/forms.py:12 canaille/forms.py:44
 msgid "Login"
 msgstr ""
 
-#: canaille/forms.py:15 canaille/forms.py:40 canaille/forms.py:96
+#: canaille/forms.py:15 canaille/forms.py:47 canaille/forms.py:103
 msgid "jane@doe.com"
 msgstr ""
 
-#: canaille/forms.py:22 canaille/forms.py:57 canaille/forms.py:106
-msgid "Password"
-msgstr ""
-
-#: canaille/forms.py:31 canaille/forms.py:51
+#: canaille/forms.py:27 canaille/forms.py:58
 msgid "The login '{login}' does not exist"
 msgstr ""
 
-#: canaille/forms.py:60 canaille/forms.py:110
+#: canaille/forms.py:33 canaille/forms.py:64 canaille/forms.py:113
+msgid "Password"
+msgstr ""
+
+#: canaille/forms.py:67 canaille/forms.py:117
 msgid "Password confirmation"
 msgstr ""
 
-#: canaille/forms.py:63 canaille/forms.py:113
+#: canaille/forms.py:70 canaille/forms.py:120
 msgid "Password and confirmation do not match."
 msgstr ""
 
-#: canaille/forms.py:71
+#: canaille/forms.py:78
 msgid "Username"
 msgstr ""
 
-#: canaille/forms.py:72
+#: canaille/forms.py:79
 msgid "jdoe"
 msgstr ""
 
-#: canaille/admin/clients.py:23 canaille/forms.py:75
+#: canaille/admin/clients.py:23 canaille/forms.py:82
 #: canaille/templates/admin/client_list.html:25
 #: canaille/templates/users.html:22
 msgid "Name"
 msgstr ""
 
-#: canaille/forms.py:77
+#: canaille/forms.py:84
 msgid "Given name"
 msgstr ""
 
-#: canaille/forms.py:79
+#: canaille/forms.py:86
 msgid "John"
 msgstr ""
 
-#: canaille/forms.py:85
+#: canaille/forms.py:92
 msgid "Family Name"
 msgstr ""
 
-#: canaille/forms.py:87
+#: canaille/forms.py:94
 msgid "Doe"
 msgstr ""
 
-#: canaille/forms.py:93
+#: canaille/forms.py:100
 msgid "Email address"
 msgstr ""
 
-#: canaille/forms.py:102 canaille/templates/users.html:24
+#: canaille/forms.py:109 canaille/templates/users.html:24
 msgid "Phone number"
 msgstr ""
 
-#: canaille/forms.py:102
+#: canaille/forms.py:109
 msgid "555-000-555"
 msgstr ""
 
-#: canaille/forms.py:104
+#: canaille/forms.py:111
 msgid "Photo"
 msgstr ""
 
-#: canaille/forms.py:118
+#: canaille/forms.py:125
 msgid "Number"
 msgstr ""
 
-#: canaille/forms.py:120
+#: canaille/forms.py:127
 msgid "1234"
 msgstr ""
 
@@ -444,7 +444,7 @@ msgid "Login page"
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:12
-#: canaille/templates/login.html:36
+#: canaille/templates/login.html:38 canaille/templates/password.html:35
 msgid "Forgotten password"
 msgstr ""
 
@@ -477,8 +477,26 @@ msgstr ""
 msgid "Log-in and manage your authorizations."
 msgstr ""
 
-#: canaille/templates/login.html:35
+#: canaille/templates/login.html:37
+msgid "Continue"
+msgstr ""
+
+#: canaille/templates/password.html:17
+#, python-format
+msgid "Sign in as %(username)s"
+msgstr ""
+
+#: canaille/templates/password.html:19
+msgid "Please enter your password for this account."
+msgstr ""
+
+#: canaille/templates/password.html:34
 msgid "Sign in"
+msgstr ""
+
+#: canaille/templates/password.html:36
+#, python-format
+msgid "I am not %(username)s"
 msgstr ""
 
 #: canaille/templates/profile.html:14

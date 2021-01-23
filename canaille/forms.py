@@ -18,10 +18,6 @@ class LoginForm(FlaskForm):
             "inputmode": "email",
         },
     )
-    password = wtforms.PasswordField(
-        _("Password"),
-        validators=[wtforms.validators.DataRequired()],
-    )
 
     def validate_login(self, field):
         if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
@@ -30,6 +26,17 @@ class LoginForm(FlaskForm):
             raise wtforms.ValidationError(
                 _("The login '{login}' does not exist").format(login=field.data)
             )
+
+
+class PasswordForm(FlaskForm):
+    password = wtforms.PasswordField(
+        _("Password"),
+        validators=[wtforms.validators.DataRequired()],
+    )
+
+
+class FullLoginForm(LoginForm, PasswordForm):
+    pass
 
 
 class ForgottenPasswordForm(FlaskForm):

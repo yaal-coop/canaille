@@ -13,7 +13,7 @@ from .oauth2utils import (
     generate_user_info,
     require_oauth,
 )
-from .forms import LoginForm
+from .forms import FullLoginForm
 from .flaskutils import current_user
 
 
@@ -48,7 +48,7 @@ def authorize():
         if request.args.get("prompt") == "none":
             return jsonify({"error": "login_required"})
 
-        form = LoginForm(request.form or None)
+        form = FullLoginForm(request.form or None)
         if request.method == "GET":
             return render_template("login.html", form=form, menu=False)
 
