@@ -62,10 +62,7 @@ def authorize():
 
     # CONSENT
 
-    consents = Consent.filter(
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-    )
+    consents = Consent.filter(oauthClient=client.dn, oauthSubject=user.dn,)
     consents = [c for c in consents if not c.oauthRevokationDate]
     consent = consents[0] if consents else None
 

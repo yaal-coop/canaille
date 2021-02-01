@@ -4,9 +4,7 @@ from . import client_credentials
 def test_token_introspection(testclient, user, client, token):
     res = testclient.post(
         "/oauth/introspect",
-        params=dict(
-            token=token.oauthAccessToken,
-        ),
+        params=dict(token=token.oauthAccessToken,),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )

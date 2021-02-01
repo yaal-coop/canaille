@@ -6,9 +6,7 @@ def test_token_revocation(testclient, user, client, token, slapd_connection):
 
     res = testclient.post(
         "/oauth/revoke",
-        params=dict(
-            token=token.oauthAccessToken,
-        ),
+        params=dict(token=token.oauthAccessToken,),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )

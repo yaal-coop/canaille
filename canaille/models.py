@@ -99,9 +99,7 @@ class User(LDAPObject):
 
         try:
             conn.passwd_s(
-                self.dn,
-                None,
-                password.encode("utf-8"),
+                self.dn, None, password.encode("utf-8"),
             )
 
         except ldap.LDAPError:
@@ -310,8 +308,7 @@ class Consent(LDAPObject):
         self.save()
 
         tokens = Token.filter(
-            oauthClient=self.oauthClient,
-            oauthSubject=self.oauthSubject,
+            oauthClient=self.oauthClient, oauthSubject=self.oauthSubject,
         )
         for t in tokens:
             if t.revoked or any(
