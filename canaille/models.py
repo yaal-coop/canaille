@@ -99,7 +99,9 @@ class User(LDAPObject):
 
         try:
             conn.passwd_s(
-                self.dn, None, password.encode("utf-8"),
+                self.dn,
+                None,
+                password.encode("utf-8"),
             )
 
         except ldap.LDAPError:
@@ -161,29 +163,6 @@ class Client(LDAPObject, ClientMixin):
             client_secret_expires_at=self.client_secret_expires_at,
         )
 
-    @property
-    def client_metadata(self):
-        if "client_metadata" in self.__dict__:
-            return self.__dict__["client_metadata"]
-        if self._client_metadata:
-            data = json_loads(self._client_metadata)
-            self.__dict__["client_metadata"] = data
-            return data
-        return {}
-
-    def set_client_metadata(self, value):
-        self._client_metadata = json_dumps(value)
-
-    @property
-    def redirect_uris(self):
-        return self.client_metadata.get("redirect_uris", [])
-
-    @property
-    def token_endpoint_auth_method(self):
-        return self.client_metadata.get(
-            "token_endpoint_auth_method", "client_secret_basic"
-        )
-
 
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     object_class = ["oauthAuthorizationCode"]
@@ -219,10 +198,6 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
             self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ"
         )
         return int((auth_time - datetime.datetime(1970, 1, 1)).total_seconds())
-
-    @property
-    def code_challenge(self):
-        return self.oauthCodeChallenge
 
 
 class Token(LDAPObject, TokenMixin):
@@ -308,7 +283,8 @@ class Consent(LDAPObject):
         self.save()
 
         tokens = Token.filter(
-            oauthClient=self.oauthClient, oauthSubject=self.oauthSubject,
+            oauthClient=self.oauthClient,
+            oauthSubject=self.oauthSubject,
         )
         for t in tokens:
             if t.revoked or any(
