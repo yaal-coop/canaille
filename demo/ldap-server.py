@@ -1,14 +1,14 @@
 import logging
-import slapdtest
+import slapd
 
 
-slapd = slapdtest.SlapdObject(
+slapd = slapd.Slapd(
     suffix="dc=mydomain,dc=tld",
     root_cn="admin",
     root_pw="admin",
     port=5389,
     log_level=logging.INFO,
-    openldap_schema_files=(
+    schemas=(
         "core.ldif",
         "cosine.ldif",
         "nis.ldif",

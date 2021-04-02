@@ -11,8 +11,7 @@ if ! test -d "$DIR/env"; then
 
     virtualenv "$DIR/env"
     $DIR/env/bin/pip install --editable "$DIR/.."
-    $DIR/env/bin/pip install honcho requests
-    $DIR/env/bin/pip install --upgrade git+https://github.com/azmeuk/python-ldap.git
+    $DIR/env/bin/pip install honcho requests slapd
 fi
 
 env "PWD=$DIR" $DIR/env/bin/honcho start
