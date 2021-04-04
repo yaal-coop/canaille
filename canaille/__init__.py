@@ -8,7 +8,7 @@ import canaille.admin.clients
 import canaille.admin.mail
 import canaille.admin.tokens
 import canaille.consents
-import canaille.commands
+import canaille.commands.clean
 import canaille.oauth
 import canaille.account
 import canaille.well_known
@@ -131,7 +131,7 @@ def setup_app(app):
         setup_ldap_tree(app)
         app.register_blueprint(canaille.account.bp)
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
-        app.register_blueprint(canaille.commands.bp)
+        app.register_blueprint(canaille.commands.clean.bp)
         app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
         app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
         app.register_blueprint(canaille.admin.tokens.bp, url_prefix="/admin/token")
