@@ -9,7 +9,7 @@ from cryptography.hazmat.backends import default_backend as crypto_default_backe
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 from canaille import create_app
-from canaille.models import User, Client, Token, AuthorizationCode, Consent
+from canaille.models import User, Client, Token, AuthorizationCode, Consent, Group
 from canaille.ldaputils import LDAPObject
 
 
@@ -93,6 +93,10 @@ def slapd_server():
                     "dn: ou=users," + slapd.suffix,
                     "objectClass: organizationalUnit",
                     "ou: users",
+                    "",
+                    "dn: ou=groups," + slapd.suffix,
+                    "objectClass: organizationalUnit",
+                    "ou: groups",
                 ]
             )
             + "\n"
@@ -100,6 +104,7 @@ def slapd_server():
 
         LDAPObject.root_dn = slapd.suffix
         User.base = "ou=users"
+        Group.base = "ou=groups"
 
         yield slapd
     finally:
@@ -143,7 +148,11 @@ def app(slapd_server, keypair_path):
                     "userPassword",
                     "telephoneNumber",
                     "employeeNumber",
+                    "groups",
                 ],
+                "GROUP_BASE": "ou=groups",
+                "GROUP_CLASS": "groupOfNames",
+                "GROUP_NAME_ATTRIBUTE": "cn",
             },
             "JWT": {
                 "PUBLIC_KEY": public_key_path,
@@ -338,3 +347,14 @@ def cleanups(slapd_connection):
     yield
     for consent in Consent.filter(conn=slapd_connection):
         consent.delete(conn=slapd_connection)
+
+@pytest.fixture
+def foo_group(user, slapd_connection):
+    Group.ocs_by_name(slapd_connection)
+    g = Group(
+        objectClass = ["groupOfNames"],
+        member=[user.dn],
+        cn="foo",
+    )
+    g.save(slapd_connection)
+    return g

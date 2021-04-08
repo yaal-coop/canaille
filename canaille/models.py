@@ -16,6 +16,7 @@ class User(LDAPObject):
     id = "cn"
     admin = False
     moderator = False
+    _groups = []
 
     @classmethod
     def get(cls, login=None, dn=None, filter=None, conn=None):
@@ -112,6 +113,27 @@ class User(LDAPObject):
     @property
     def name(self):
         return self.cn[0]
+
+
+    @property
+    def groups(self):
+        return self._groups
+
+    @groups.setter
+    def groups(self, value):
+        self._groups = value
+
+
+class Group(LDAPObject):
+    id = "cn"
+
+    @classmethod
+    def available_groups(cls, conn=None):
+        conn = conn or cls.ldap()
+        groups = cls.filter(objectClass=current_app.config["LDAP"].get("GROUP_CLASS"), conn=conn)
+        Group.attr_type_by_name(conn=conn)
+        attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
+        return [(group[attribute][0], group.dn) for group in groups]
 
 
 class Client(LDAPObject, ClientMixin):

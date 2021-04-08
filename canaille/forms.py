@@ -127,6 +127,7 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("1234"),
         },
     ),
+    groups=wtforms.SelectMultipleField(_("Groups"), choices=["foo", "bar"])
 )
 
 
