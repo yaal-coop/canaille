@@ -2,9 +2,9 @@ import mock
 from canaille.models import User
 
 
-def test_profile(testclient, slapd_connection, logged_user, foo_group):
+def test_profile(testclient, slapd_connection, logged_user, groups):
     res = testclient.get("/profile/user", status=200)
-    assert res.form["groups"].options == [('foo', False, 'foo')]
+    assert set(res.form["groups"].options) == set([("foo", False, "foo"), ("bar", False, "bar")])
 
     res.form["uid"] = "user"
     res.form["givenName"] = "given_name"

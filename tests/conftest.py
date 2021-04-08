@@ -358,3 +358,14 @@ def foo_group(user, slapd_connection):
     )
     g.save(slapd_connection)
     return g
+
+@pytest.fixture
+def groups(foo_group, admin, slapd_connection):
+    Group.ocs_by_name(slapd_connection)
+    bar_group = Group(
+        objectClass = ["groupOfNames"],
+        member=[admin.dn],
+        cn="bar",
+    )
+    bar_group.save(slapd_connection)
+    return (foo_group, bar_group)
