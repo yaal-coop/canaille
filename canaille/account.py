@@ -279,7 +279,6 @@ def profile_edit(user, username):
                 not form["password1"].data or user.set_password(form["password1"].data)
             ) and request.form["action"] == "edit":
                 flash(_("Profile updated successfuly."), "success")
-
             user.save()
 
     return render_template(

@@ -2,9 +2,11 @@ import mock
 from canaille.models import User
 
 
-def test_profile(testclient, slapd_connection, logged_user, groups):
+def test_profile(testclient, slapd_server, slapd_connection, logged_user, groups):
     res = testclient.get("/profile/user", status=200)
-    assert set(res.form["groups"].options) == set([("foo", False, "foo"), ("bar", False, "bar")])
+    assert set(res.form["groups"].options) == set([("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "foo"), ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar")])
+    assert "memberOf: cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat()
+    assert "memberOf: cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" not in slapd_server.slapcat()
 
     res.form["uid"] = "user"
     res.form["givenName"] = "given_name"
@@ -12,19 +14,21 @@ def test_profile(testclient, slapd_connection, logged_user, groups):
     res.form["mail"] = "email@mydomain.tld"
     res.form["telephoneNumber"] = "555-666-777"
     res.form["employeeNumber"] = 666
-    res.form["groups"] = ["foo", "bar"]
+    res.form["groups"] = ["cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org"]
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    logged_user.reload(slapd_connection)
+    assert "memberOf: cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat()
+    assert "memberOf: cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat()
 
+    logged_user.reload(slapd_connection)
     assert ["user"] == logged_user.uid
     assert ["given_name"] == logged_user.givenName
     assert ["family_name"] == logged_user.sn
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
     assert "666" == logged_user.employeeNumber
-    assert ["foo", "bar"] == logged_user.groups
+    assert groups == logged_user.groups
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")

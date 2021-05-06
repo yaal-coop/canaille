@@ -114,14 +114,32 @@ class User(LDAPObject):
     def name(self):
         return self.cn[0]
 
-
     @property
     def groups(self):
-        return self._groups
+        if hasattr(self.changes, "memberOf"):
+            return [Group.get(group_dn) for group_dn in self.changes["memberOf"]]
+        elif hasattr(self.attrs, "memberOf"):
+            return [Group.get(group_dn) for group_dn in self.attrs["memberOf"]]
+        return []
+        # return self._groups
 
     @groups.setter
-    def groups(self, value):
-        self._groups = value
+    def groups(self, values):
+        # self._groups = values
+        self.changes["memberOf"] = values
+        #MemberOf is a Virtual Attribute. This implies You can not monitor the MemberOf attribute for changes
+        #https://ldapwiki.com/wiki/MemberOf
+        # Cet attribut virtuel est utile dans le cas des groupes dynamiques
+        # groupes statiques versus dynamiques https://www.vincentliefooghe.net/content/ldap-les-types-groupes
+        # pour les groupes statiques c'est plus simple, on peut faire une recherche simple pour connaître tous les groupes affectés à un utlisateur
+        # mais groupes dynamiques plus adaptés au grands groupes
+
+    # def save(self, conn=None):
+    #     super().save(conn=None)
+    #     for group in self.groups:
+    #         if not self in group.members:
+    #             group.members = [member.dn for member in group.members] + [self.dn]
+    #             group.save()
 
 
 class Group(LDAPObject):
@@ -134,6 +152,18 @@ class Group(LDAPObject):
         Group.attr_type_by_name(conn=conn)
         attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
         return [(group[attribute][0], group.dn) for group in groups]
+
+    @property
+    def members(self):
+        if hasattr(self.changes, "member"):
+            return [User.get(user_dn) for user_dn in self.changes["member"]]
+        elif hasattr(self.attrs, "member"):
+            return [Group.get(user_dn) for user_dn in self.attrs["member"]]
+        return []
+
+    @members.setter
+    def members(self, values):
+        self.changes["member"] = values
 
 
 class Client(LDAPObject, ClientMixin):

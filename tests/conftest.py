@@ -153,6 +153,7 @@ def app(slapd_server, keypair_path):
                 "GROUP_BASE": "ou=groups",
                 "GROUP_CLASS": "groupOfNames",
                 "GROUP_NAME_ATTRIBUTE": "cn",
+                "USER_GROUP_ATTRIBUTE": "memberOf", #USER_GROUP_SEARCH?
             },
             "JWT": {
                 "PUBLIC_KEY": public_key_path,
