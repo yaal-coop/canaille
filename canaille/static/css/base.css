@@ -33,3 +33,8 @@ footer {
 footer a {
     color: #B0B0B0;
 }
+
+/* Fix button appearance for semantic-ui on webkit */
+[type=button] {
+    -webkit-appearance: none;
+}
