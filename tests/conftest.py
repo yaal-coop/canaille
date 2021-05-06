@@ -2,7 +2,7 @@ import datetime
 import ldap.ldapobject
 import os
 import pytest
-import slapdtest
+import slapd
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
@@ -13,14 +13,15 @@ from canaille.models import User, Client, Token, AuthorizationCode, Consent
 from canaille.ldaputils import LDAPObject
 
 
-class CustomSlapdObject(slapdtest.SlapdObject):
-    custom_schema_files = ("oauth2-openldap.schema",)
-    openldap_schema_files = (
-        "core.schema",
-        "cosine.schema",
-        "nis.schema",
-        "inetorgperson.schema",
-    )
+class CustomSlapdObject(slapd.Slapd):
+    def __init__(self):
+        super().__init__(schemas = (
+            "core.ldif",
+            "cosine.ldif",
+            "nis.ldif",
+            "inetorgperson.ldif",
+            "schemas/oauth2-openldap.ldif",
+        ))
 
     def _ln_schema_files(self, *args, **kwargs):
         dir_path = os.path.join(
