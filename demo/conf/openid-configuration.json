@@ -54,6 +54,7 @@
      "name", "given_name", "family_name", "nickname",
      "profile", "picture", "website",
      "email", "email_verified", "locale", "zoneinfo",
+     "nonce",
      "http://localhost:5000/claims/groups"],
   "claims_parameter_supported":
     true,
