@@ -79,7 +79,12 @@ FIELDS = [
   "telephoneNumber",
   "employeeNumber",
 #  "jpegPhoto",
+  "groups",
 ]
+
+GROUP_BASE = "ou=groups"
+GROUP_CLASS = "groupOfNames"
+GROUP_NAME_ATTRIBUTE = "cn"
 
 # The jwt configuration. You can generate a RSA keypair with:
 # ssh-keygen -t rsa -b 4096 -m PEM -f private.pem

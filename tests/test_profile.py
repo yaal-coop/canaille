@@ -5,8 +5,8 @@ from canaille.models import User
 def test_profile(testclient, slapd_server, slapd_connection, logged_user, groups):
     res = testclient.get("/profile/user", status=200)
     assert set(res.form["groups"].options) == set([("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "foo"), ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar")])
-    assert "memberOf: cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat()
-    assert "memberOf: cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" not in slapd_server.slapcat()
+    assert "memberOf: cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" not in slapd_server.slapcat().stdout.decode("utf-8")
+    assert "memberOf: cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" not in slapd_server.slapcat().stdout.decode("utf-8")
 
     res.form["uid"] = "user"
     res.form["givenName"] = "given_name"
@@ -18,8 +18,8 @@ def test_profile(testclient, slapd_server, slapd_connection, logged_user, groups
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    assert "memberOf: cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat()
-    assert "memberOf: cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat()
+    assert "memberOf: cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat().stdout.decode("utf-8")
+    assert "memberOf: cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org" in slapd_server.slapcat().stdout.decode("utf-8")
 
     logged_user.reload(slapd_connection)
     assert ["user"] == logged_user.uid

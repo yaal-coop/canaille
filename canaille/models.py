@@ -116,17 +116,17 @@ class User(LDAPObject):
 
     @property
     def groups(self):
-        if hasattr(self.changes, "memberOf"):
-            return [Group.get(group_dn) for group_dn in self.changes["memberOf"]]
-        elif hasattr(self.attrs, "memberOf"):
-            return [Group.get(group_dn) for group_dn in self.attrs["memberOf"]]
-        return []
-        # return self._groups
+        # if hasattr(self.changes, "memberOf"):
+        #     return [Group.get(group_dn) for group_dn in self.changes["memberOf"]]
+        # elif hasattr(self.attrs, "memberOf"):
+        #     return [Group.get(group_dn) for group_dn in self.attrs["memberOf"]]
+        # return []
+        return [Group.get(dn=group_dn) for group_dn in self._groups]
 
     @groups.setter
     def groups(self, values):
-        # self._groups = values
-        self.changes["memberOf"] = values
+        self._groups = values
+        # self.changes["memberOf"] = values
         #MemberOf is a Virtual Attribute. This implies You can not monitor the MemberOf attribute for changes
         #https://ldapwiki.com/wiki/MemberOf
         # Cet attribut virtuel est utile dans le cas des groupes dynamiques
@@ -134,12 +134,12 @@ class User(LDAPObject):
         # pour les groupes statiques c'est plus simple, on peut faire une recherche simple pour connaître tous les groupes affectés à un utlisateur
         # mais groupes dynamiques plus adaptés au grands groupes
 
-    # def save(self, conn=None):
-    #     super().save(conn=None)
-    #     for group in self.groups:
-    #         if not self in group.members:
-    #             group.members = [member.dn for member in group.members] + [self.dn]
-    #             group.save()
+    def save(self, conn=None):
+        super().save(conn=conn)
+        for group in self.groups:
+            if not self.dn in group.member:
+                group.member = group.member + [self.dn]
+                group.save()
 
 
 class Group(LDAPObject):
@@ -153,18 +153,8 @@ class Group(LDAPObject):
         attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
         return [(group[attribute][0], group.dn) for group in groups]
 
-    @property
-    def members(self):
-        if hasattr(self.changes, "member"):
-            return [User.get(user_dn) for user_dn in self.changes["member"]]
-        elif hasattr(self.attrs, "member"):
-            return [Group.get(user_dn) for user_dn in self.attrs["member"]]
-        return []
-
-    @members.setter
-    def members(self, values):
-        self.changes["member"] = values
-
+    def get_members(self, conn=None):
+        return [User.get(dn=user_dn, conn=conn) for user_dn in self.member]
 
 class Client(LDAPObject, ClientMixin):
     object_class = ["oauthClient"]
