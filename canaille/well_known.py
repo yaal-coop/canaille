@@ -2,7 +2,7 @@ import json
 from flask import Blueprint, jsonify, current_app
 
 
-bp = Blueprint(__name__, "home")
+bp = Blueprint("home", __name__)
 
 
 @bp.route("/oauth-authorization-server")

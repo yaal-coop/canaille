@@ -13,9 +13,9 @@ def profile_hash(user, password):
 
 
 def send_password_reset_mail(user):
-    base_url = url_for("canaille.account.index", _external=True)
+    base_url = url_for("account.index", _external=True)
     reset_url = url_for(
-        "canaille.account.reset",
+        "account.reset",
         uid=user.uid[0],
         hash=profile_hash(
             user.uid[0], user.userPassword[0] if user.has_password() else ""
@@ -51,9 +51,9 @@ def send_password_reset_mail(user):
 
 
 def send_password_initialization_mail(user):
-    base_url = url_for("canaille.account.index", _external=True)
+    base_url = url_for("account.index", _external=True)
     reset_url = url_for(
-        "canaille.account.reset",
+        "account.reset",
         uid=user.uid[0],
         hash=profile_hash(
             user.uid[0], user.userPassword[0] if user.has_password() else ""

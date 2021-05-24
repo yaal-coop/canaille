@@ -154,7 +154,7 @@
             {{ _("Submit") }}
         </button>
         {% if user.admin and edited_user and user.uid != edited_user.uid %}
-        <a href="{{ url_for('canaille.account.impersonate', username=edited_user.uid[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate">
+        <a href="{{ url_for('account.impersonate', username=edited_user.uid[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate">
             {{ _("Impersonate") }}
         </a>
         {% endif %}

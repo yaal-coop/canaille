@@ -15,13 +15,15 @@ from canaille.ldaputils import LDAPObject
 
 class CustomSlapdObject(slapd.Slapd):
     def __init__(self):
-        super().__init__(schemas = (
-            "core.ldif",
-            "cosine.ldif",
-            "nis.ldif",
-            "inetorgperson.ldif",
-            "schemas/oauth2-openldap.ldif",
-        ))
+        super().__init__(
+            schemas=(
+                "core.ldif",
+                "cosine.ldif",
+                "nis.ldif",
+                "inetorgperson.ldif",
+                "schemas/oauth2-openldap.ldif",
+            )
+        )
 
     def _ln_schema_files(self, *args, **kwargs):
         dir_path = os.path.join(

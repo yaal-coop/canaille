@@ -4,15 +4,15 @@ from canaille.flaskutils import admin_needed
 from canaille.mails import profile_hash
 
 
-bp = Blueprint(__name__, "clients")
+bp = Blueprint("admin_mails", __name__)
 
 
 @bp.route("/reset.html")
 @admin_needed()
 def reset_html(user):
-    base_url = url_for("canaille.account.index", _external=True)
+    base_url = url_for("account.index", _external=True)
     reset_url = url_for(
-        "canaille.account.reset",
+        "account.reset",
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
         _external=True,
@@ -33,9 +33,9 @@ def reset_html(user):
 @bp.route("/reset.txt")
 @admin_needed()
 def reset_txt(user):
-    base_url = url_for("canaille.account.index", _external=True)
+    base_url = url_for("account.index", _external=True)
     reset_url = url_for(
-        "canaille.account.reset",
+        "account.reset",
         uid=user.uid[0],
         hash=profile_hash(user.uid[0], user.userPassword[0]),
         _external=True,

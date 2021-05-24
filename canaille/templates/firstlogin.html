@@ -26,14 +26,14 @@
     <div class="ui attached clearing segment">
         <form method="POST"
           id="{{ reset }}"
-          action="{{ url_for('canaille.account.firstlogin', uid=uid) }}"
+          action="{{ url_for('account.firstlogin', uid=uid) }}"
           role="form"
           >
 
             {{ form.hidden_tag() if form.hidden_tag }}
 
             <button type="submit" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
-            <a type="button" class="ui right floated button" href="{{ url_for('canaille.account.login') }}">{{ _("Login page") }}</a>
+            <a type="button" class="ui right floated button" href="{{ url_for('account.login') }}">{{ _("Login page") }}</a>
         </form>
     </div>
 </div>

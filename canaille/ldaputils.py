@@ -235,7 +235,9 @@ class LDAPObject:
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
 
         return [
-            cls(**{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},)
+            cls(
+                **{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},
+            )
             for _, args in result
         ]
 

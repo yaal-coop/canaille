@@ -32,18 +32,18 @@
             </div>
             {% endif %}
             <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                href="{{ url_for('canaille.account.profile_edition', username=user.uid[0]) }}">
+                href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
                 <i class="id card icon"></i>
                 {% trans %}My profile{% endtrans %}
             </a>
             <a class="item {% if menuitem == "consents" %}active{% endif %}"
-                href="{{ url_for('canaille.consents.consents') }}">
+                href="{{ url_for('consents.consents') }}">
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
             {% if user.moderator %}
             <a class="item {% if menuitem == "users" %}active{% endif %}"
-                href="{{ url_for('canaille.account.users') }}">
+                href="{{ url_for('account.users') }}">
                 <i class="users icon"></i>
                 {% trans %}Users{% endtrans %}
             </a>
@@ -53,15 +53,15 @@
                 <i class="settings icon"></i>
                 Admin
                 <div class="menu">
-                    <a class="item" href="{{ url_for('canaille.admin.clients.index') }}">
+                    <a class="item" href="{{ url_for('admin_clients.index') }}">
                     <i class="plug icon"></i>
                     {% trans %}Clients{% endtrans %}
                 </a>
-                <a class="item" href="{{ url_for('canaille.admin.tokens.index') }}">
+                <a class="item" href="{{ url_for('admin_tokens.index') }}">
                     <i class="key icon"></i>
                     {% trans %}Tokens{% endtrans %}
                 </a>
-                <a class="item" href="{{ url_for('canaille.admin.authorizations.index') }}">
+                <a class="item" href="{{ url_for('admin_authorizations.index') }}">
                     <i class="user secret icon"></i>
                     {% trans %}Codes{% endtrans %}
                 </a>
@@ -72,7 +72,7 @@
                 </div>
             </div>
             {% endif %}
-            <a class="item" href="{{ url_for('canaille.account.logout') }}">
+            <a class="item" href="{{ url_for('account.logout') }}">
                 <i class="sign out alternate icon"></i>
                 {% trans %}Log out{% endtrans %}
             </a>
@@ -87,7 +87,7 @@
     </div>
 
     <footer>
-        <a href="{{ url_for('canaille.account.about') }}">{{ _("About canaille") }}</a>
+        <a href="{{ url_for('account.about') }}">{{ _("About canaille") }}</a>
     </footer>
     <script src="/static/jquery/jquery.min.js"></script>
     <script src="/static/fomanticui/semantic.min.js"></script>

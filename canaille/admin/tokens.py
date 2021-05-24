@@ -3,7 +3,7 @@ from canaille.models import Token
 from canaille.flaskutils import admin_needed
 
 
-bp = Blueprint(__name__, "tokens")
+bp = Blueprint("admin_tokens", __name__)
 
 
 @bp.route("/")

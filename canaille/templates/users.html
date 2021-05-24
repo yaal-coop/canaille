@@ -14,7 +14,7 @@
 {% block content %}
 
 <div class="ui segment">
-    <a class="ui primary button" href="{{ url_for('canaille.account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
+    <a class="ui primary button" href="{{ url_for('account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
 </div>
 
 <table class="ui table">
@@ -25,7 +25,7 @@
     </thead>
     {% for user in users %}
     <tr>
-        <td><a href="{{ url_for('canaille.account.profile_edition', username=user.uid[0]) }}">{{ user.name }}</a></td>
+        <td><a href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">{{ user.name }}</a></td>
         <td><a href="mailto:{{ user.mail[0] }}">{{ user.mail[0] }}</a></td>
         <td>{{ user.telephoneNumber[0] }}</td>
     </tr>

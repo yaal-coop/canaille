@@ -4,7 +4,7 @@ from canaille.models import Consent, Client
 from canaille.flaskutils import user_needed
 
 
-bp = Blueprint(__name__, "consents")
+bp = Blueprint("consents", __name__)
 
 
 @bp.route("/")
@@ -31,4 +31,4 @@ def delete(user, consent_id):
         consent.revoke()
         flash(gettext("The access has been revoked"), "success")
 
-    return redirect(url_for("canaille.consents.consents"))
+    return redirect(url_for("consents.consents"))

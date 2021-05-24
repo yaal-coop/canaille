@@ -29,16 +29,14 @@ from .mails import (
 from .models import User
 
 
-bp = Blueprint(__name__, "home")
+bp = Blueprint("account", __name__)
 
 
 @bp.route("/")
 def index():
     if not current_user():
-        return redirect(url_for("canaille.account.login"))
-    return redirect(
-        url_for("canaille.account.profile_edition", username=current_user().uid[0])
-    )
+        return redirect(url_for("account.login"))
+    return redirect(url_for("account.profile_edition", username=current_user().uid[0]))
 
 
 @bp.route("/about")
@@ -57,7 +55,7 @@ def login():
     if request.form:
         user = User.get(form.login.data)
         if user and not user.has_password():
-            return redirect(url_for("canaille.account.firstlogin", uid=user.uid[0]))
+            return redirect(url_for("account.firstlogin", uid=user.uid[0]))
 
         if not form.validate():
             User.logout()
@@ -65,7 +63,7 @@ def login():
             return render_template("login.html", form=form)
 
         session["attempt_login"] = form.login.data
-        return redirect(url_for("canaille.account.password"))
+        return redirect(url_for("account.password"))
 
     return render_template("login.html", form=form)
 
@@ -73,14 +71,14 @@ def login():
 @bp.route("/password", methods=("GET", "POST"))
 def password():
     if "attempt_login" not in session:
-        return redirect(url_for("canaille.account.login"))
+        return redirect(url_for("account.login"))
 
     form = PasswordForm(request.form or None)
 
     if request.form:
         user = User.get(session["attempt_login"])
         if user and not user.has_password():
-            return redirect(url_for("canaille.account.firstlogin", uid=user.uid[0]))
+            return redirect(url_for("account.firstlogin", uid=user.uid[0]))
 
         if not form.validate() or not User.authenticate(
             session["attempt_login"], form.password.data, True
@@ -93,7 +91,7 @@ def password():
 
         del session["attempt_login"]
         flash(_("Connection successful. Welcome %(user)s", user=user.name), "success")
-        return redirect(url_for("canaille.account.index"))
+        return redirect(url_for("account.index"))
 
     return render_template(
         "password.html", form=form, username=session["attempt_login"]
@@ -180,9 +178,7 @@ def profile_creation(user):
             user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
             user.save()
 
-            return redirect(
-                url_for("canaille.account.profile_edition", username=user.uid[0])
-            )
+            return redirect(url_for("account.profile_edition", username=user.uid[0]))
 
     return render_template(
         "profile.html",
@@ -198,7 +194,7 @@ def profile_creation(user):
 def impersonate(user, username):
     u = User.get(username) or abort(404)
     u.login()
-    return redirect(url_for("canaille.account.index"))
+    return redirect(url_for("account.index"))
 
 
 @bp.route("/profile/<username>", methods=("GET", "POST"))
@@ -304,8 +300,8 @@ def profile_delete(user, username):
     user.delete()
 
     if self_deletion:
-        return redirect(url_for("canaille.account.index"))
-    return redirect(url_for("canaille.account.users"))
+        return redirect(url_for("account.index"))
+    return redirect(url_for("account.users"))
 
 
 @bp.route("/reset", methods=["GET", "POST"])
@@ -353,15 +349,16 @@ def reset(uid, hash):
         user.uid[0], user.userPassword[0] if user.has_password() else ""
     ):
         flash(
-            _("The password reset link that brought you here was invalid."), "error",
+            _("The password reset link that brought you here was invalid."),
+            "error",
         )
-        return redirect(url_for("canaille.account.index"))
+        return redirect(url_for("account.index"))
 
     if request.form and form.validate():
         user.set_password(form.password.data)
         user.login()
 
         flash(_("Your password has been updated successfuly"), "success")
-        return redirect(url_for("canaille.account.profile_edition", username=uid))
+        return redirect(url_for("account.profile_edition", username=uid))
 
     return render_template("reset-password.html", form=form, uid=uid, hash=hash)

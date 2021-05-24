@@ -3,7 +3,7 @@ from canaille.models import AuthorizationCode
 from canaille.flaskutils import admin_needed
 
 
-bp = Blueprint(__name__, "authorizations")
+bp = Blueprint("admin_authorizations", __name__)
 
 
 @bp.route("/")
