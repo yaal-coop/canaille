@@ -48,7 +48,14 @@ class User(LDAPObject):
 
             user.moderator = True
 
+        if user:
+            user.load_groups(conn=conn)
+
         return user
+
+    def load_groups(self, conn=None):
+        group_filter = current_app.config["LDAP"].get("GROUP_FILTER").format(user=self)
+        self._groups = Group.filter(filter=group_filter, conn=conn)
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
@@ -121,26 +128,19 @@ class User(LDAPObject):
         # elif hasattr(self.attrs, "memberOf"):
         #     return [Group.get(group_dn) for group_dn in self.attrs["memberOf"]]
         # return []
+        return self._groups
         return [Group.get(dn=group_dn) for group_dn in self._groups]
 
-    @groups.setter
-    def groups(self, values):
-        self._groups = values
-        # self.changes["memberOf"] = values
-        #MemberOf is a Virtual Attribute. This implies You can not monitor the MemberOf attribute for changes
-        #https://ldapwiki.com/wiki/MemberOf
-        # Cet attribut virtuel est utile dans le cas des groupes dynamiques
-        # groupes statiques versus dynamiques https://www.vincentliefooghe.net/content/ldap-les-types-groupes
-        # pour les groupes statiques c'est plus simple, on peut faire une recherche simple pour connaître tous les groupes affectés à un utlisateur
-        # mais groupes dynamiques plus adaptés au grands groupes
-
-    def save(self, conn=None):
-        super().save(conn=conn)
-        for group in self.groups:
-            if not self.dn in group.member:
-                group.member = group.member + [self.dn]
-                group.save()
-
+    def set_groups(self, values, conn=None):
+        before = self._groups
+        after = [v if isinstance(v, Group) else Group.get(dn=v, conn=conn) for v in values]
+        to_add = set(after) - set(before)
+        to_del = set(before) - set(after)
+        for group in to_add:
+            group.add_member(self, conn=conn)
+        for group in to_del:
+            group.remove_member(self, conn=conn)
+        self._groups = after
 
 class Group(LDAPObject):
     id = "cn"
@@ -155,6 +155,14 @@ class Group(LDAPObject):
 
     def get_members(self, conn=None):
         return [User.get(dn=user_dn, conn=conn) for user_dn in self.member]
+
+    def add_member(self, user, conn=None):
+        self.member = self.member + [user.dn]
+        self.save(conn=conn)
+
+    def remove_member(self, user, conn=None):
+        self.member = [m for m in self.member if m != user.dn]
+        self.save(conn=conn)
 
 class Client(LDAPObject, ClientMixin):
     object_class = ["oauthClient"]

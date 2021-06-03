@@ -153,7 +153,7 @@ def app(slapd_server, keypair_path):
                 "GROUP_BASE": "ou=groups",
                 "GROUP_CLASS": "groupOfNames",
                 "GROUP_NAME_ATTRIBUTE": "cn",
-                "USER_GROUP_ATTRIBUTE": "memberOf", #USER_GROUP_SEARCH?
+                "GROUP_FILTER": "(member={user.dn})"
             },
             "JWT": {
                 "PUBLIC_KEY": public_key_path,
@@ -350,7 +350,7 @@ def cleanups(slapd_connection):
         consent.delete(conn=slapd_connection)
 
 @pytest.fixture
-def foo_group(user, slapd_connection):
+def foo_group(app, user, slapd_connection):
     Group.ocs_by_name(slapd_connection)
     g = Group(
         objectClass = ["groupOfNames"],
@@ -358,15 +358,23 @@ def foo_group(user, slapd_connection):
         cn="foo",
     )
     g.save(slapd_connection)
+    with app.app_context():
+        user.load_groups(conn=slapd_connection)
     return g
 
 @pytest.fixture
-def groups(foo_group, admin, slapd_connection):
+def bar_group(app, admin, slapd_connection):
     Group.ocs_by_name(slapd_connection)
-    bar_group = Group(
+    g = Group(
         objectClass = ["groupOfNames"],
         member=[admin.dn],
         cn="bar",
     )
-    bar_group.save(slapd_connection)
+    g.save(slapd_connection)
+    with app.app_context():
+        admin.load_groups(conn=slapd_connection)
+    return g
+    
+@pytest.fixture
+def groups(foo_group, bar_group, slapd_connection):
     return (foo_group, bar_group)

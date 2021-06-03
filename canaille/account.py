@@ -273,7 +273,7 @@ def profile_edit(user, username):
                     else:
                         user[attribute.name] = [data]
                 elif attribute.name == "groups":
-                    user.groups = attribute.data
+                    user.set_groups(attribute.data)
 
             if (
                 not form["password1"].data or user.set_password(form["password1"].data)
