@@ -2,27 +2,49 @@ import mock
 from canaille.models import User
 
 
-def test_profile(testclient, slapd_connection, logged_user):
+def test_profile(
+    testclient, slapd_server, slapd_connection, logged_user, admin, foo_group, bar_group
+):
     res = testclient.get("/profile/user", status=200)
+    assert set(res.form["groups"].options) == set(
+        [
+            ("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", True, "foo"),
+            ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar"),
+        ]
+    )
+    assert logged_user.groups == [foo_group]
+    assert foo_group.member == [logged_user.dn]
+    assert bar_group.member == [admin.dn]
+    assert res.form["groups"].attrs["disabled"]
+    assert res.form["uid"].attrs["readonly"]
 
-    res.form["uid"] = "user"
+    res.form["uid"] = "toto"
     res.form["givenName"] = "given_name"
     res.form["sn"] = "family_name"
     res.form["mail"] = "email@mydomain.tld"
     res.form["telephoneNumber"] = "555-666-777"
     res.form["employeeNumber"] = 666
-
+    res.form["groups"] = [
+        "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+        "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+    ]
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    logged_user.reload(slapd_connection)
-
+    with testclient.app.app_context():
+        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
     assert ["user"] == logged_user.uid
     assert ["given_name"] == logged_user.givenName
     assert ["family_name"] == logged_user.sn
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
     assert "666" == logged_user.employeeNumber
+
+    foo_group.reload(slapd_connection)
+    bar_group.reload(slapd_connection)
+    assert logged_user.groups == [foo_group]
+    assert foo_group.member == [logged_user.dn]
+    assert bar_group.member == [admin.dn]
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
@@ -107,7 +129,7 @@ def test_admin_bad_request(testclient, logged_moderator):
 
 
 def test_user_creation_edition_and_deletion(
-    testclient, slapd_connection, logged_moderator
+    testclient, slapd_connection, logged_moderator, foo_group, bar_group
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
@@ -128,14 +150,29 @@ def test_user_creation_edition_and_deletion(
     # User have been created
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
     with testclient.app.app_context():
-        assert "George" == User.get("george", conn=slapd_connection).givenName[0]
+        george = User.get("george", conn=slapd_connection)
+        assert "George" == george.givenName[0]
+        assert george.groups == []
     assert "george" in testclient.get("/users", status=200).text
+    assert "disabled" not in res.form["groups"].attrs
+
     res.form["givenName"] = "Georgio"
+    res.form["groups"] = [
+        "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+        "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+    ]
 
     # User have been edited
     res = res.form.submit(name="action", value="edit", status=200)
     with testclient.app.app_context():
-        assert "Georgio" == User.get("george", conn=slapd_connection).givenName[0]
+        george = User.get("george", conn=slapd_connection)
+        assert "Georgio" == george.givenName[0]
+    foo_group.reload(slapd_connection)
+    bar_group.reload(slapd_connection)
+    assert george.dn in set(foo_group.member)
+    assert george.dn in set(bar_group.member)
+    assert set(george.groups) == {foo_group, bar_group}
+    assert "george" in testclient.get("/users", status=200).text
     assert "george" in testclient.get("/users", status=200).text
 
     # User have been deleted.

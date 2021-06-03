@@ -23,7 +23,7 @@ from flask_babel import Babel
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
 from .oauth2utils import config_oauth
-from .models import User, Token, AuthorizationCode, Client, Consent
+from .models import User, Token, AuthorizationCode, Client, Consent, Group
 
 try:  # pragma: no cover
     import sentry_sdk
@@ -123,10 +123,12 @@ def setup_app(app):
 
     try:
         LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
-        base = app.config["LDAP"]["USER_BASE"]
-        if base.endswith(app.config["LDAP"]["ROOT_DN"]):
-            base = base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
-        User.base = base
+        user_base = app.config["LDAP"]["USER_BASE"]
+        if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
+            user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
+        User.base = user_base
+        group_base = app.config["LDAP"]["GROUP_BASE"]
+        Group.base = group_base
 
         app.url_map.strict_slashes = False
 

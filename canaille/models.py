@@ -16,6 +16,7 @@ class User(LDAPObject):
     id = "cn"
     admin = False
     moderator = False
+    _groups = []
 
     @classmethod
     def get(cls, login=None, dn=None, filter=None, conn=None):
@@ -47,7 +48,16 @@ class User(LDAPObject):
 
             user.moderator = True
 
+        if user:
+            user.load_groups(conn=conn)
+
         return user
+
+    def load_groups(self, conn=None):
+        group_filter = (
+            current_app.config["LDAP"].get("GROUP_USER_FILTER").format(user=self)
+        )
+        self._groups = Group.filter(filter=group_filter, conn=conn)
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
@@ -112,6 +122,48 @@ class User(LDAPObject):
     @property
     def name(self):
         return self.cn[0]
+
+    @property
+    def groups(self):
+        return self._groups
+
+    def set_groups(self, values, conn=None):
+        before = self._groups
+        after = [
+            v if isinstance(v, Group) else Group.get(dn=v, conn=conn) for v in values
+        ]
+        to_add = set(after) - set(before)
+        to_del = set(before) - set(after)
+        for group in to_add:
+            group.add_member(self, conn=conn)
+        for group in to_del:
+            group.remove_member(self, conn=conn)
+        self._groups = after
+
+
+class Group(LDAPObject):
+    id = "cn"
+
+    @classmethod
+    def available_groups(cls, conn=None):
+        conn = conn or cls.ldap()
+        groups = cls.filter(
+            objectClass=current_app.config["LDAP"].get("GROUP_CLASS"), conn=conn
+        )
+        Group.attr_type_by_name(conn=conn)
+        attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
+        return [(group[attribute][0], group.dn) for group in groups]
+
+    def get_members(self, conn=None):
+        return [User.get(dn=user_dn, conn=conn) for user_dn in self.member]
+
+    def add_member(self, user, conn=None):
+        self.member = self.member + [user.dn]
+        self.save(conn=conn)
+
+    def remove_member(self, user, conn=None):
+        self.member = [m for m in self.member if m != user.dn]
+        self.save(conn=conn)
 
 
 class Client(LDAPObject, ClientMixin):
