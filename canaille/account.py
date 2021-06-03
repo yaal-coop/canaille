@@ -239,11 +239,13 @@ def profile_edition(user, username):
     abort(400)
 
 
-def profile_edit(user, username):
-    menuitem = "profile" if username == user.uid[0] else "users"
+def profile_edit(editor, username):
+    menuitem = "profile" if username == editor.uid[0] else "users"
     fields = current_app.config["LDAP"]["FIELDS"]
-    if username != user.uid[0]:
+    if username != editor.uid[0]:
         user = User.get(username) or abort(404)
+    else:
+        user = editor
 
     data = {
         k: getattr(user, k)[0]
@@ -252,9 +254,13 @@ def profile_edit(user, username):
         for k in fields
         if hasattr(user, k)
     }
+    if "groups" in fields:
+        data["groups"] = [g.dn for g in user.groups]
     form = profile_form(fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
     form["uid"].render_kw["readonly"] = "true"
+    if "groups" in form and not editor.admin and not editor.moderator:
+        form["groups"].render_kw["disabled"] = "true"
 
     if request.form:
         if not form.validate():
@@ -262,7 +268,10 @@ def profile_edit(user, username):
 
         else:
             for attribute in form:
-                if attribute.name in user.may + user.must:
+                if (
+                    attribute.name in user.may + user.must
+                    and not attribute.name == "uid"
+                ):
                     if isinstance(attribute.data, FileStorage):
                         data = attribute.data.stream.read()
                     else:
@@ -272,12 +281,13 @@ def profile_edit(user, username):
                         user[attribute.name] = data
                     else:
                         user[attribute.name] = [data]
+                elif attribute.name == "groups" and (editor.admin or editor.moderator):
+                    user.set_groups(attribute.data)
 
             if (
                 not form["password1"].data or user.set_password(form["password1"].data)
             ) and request.form["action"] == "edit":
                 flash(_("Profile updated successfuly."), "success")
-
             user.save()
 
     return render_template(

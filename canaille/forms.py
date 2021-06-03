@@ -4,7 +4,7 @@ from flask import current_app
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from .models import User
+from .models import User, Group
 
 
 class LoginForm(FlaskForm):
@@ -138,4 +138,10 @@ def profile_form(field_names):
         for name in field_names
         if PROFILE_FORM_FIELDS.get(name)
     }
+    if "groups" in field_names:
+        fields["groups"] = wtforms.SelectMultipleField(
+            _("Groups"),
+            choices=[(group[1], group[0]) for group in Group.available_groups()],
+            render_kw={},
+        )
     return wtforms.form.BaseForm(fields)

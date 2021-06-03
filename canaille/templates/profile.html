@@ -82,6 +82,9 @@
         {% if "employeeNumber" in form %}
             {{ sui.render_field(form.employeeNumber) }}
         {% endif %}
+        {% if "groups" in form %}
+            {{ sui.render_field(form.groups) }}
+        {% endif %}
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
         {% if "uid" in form %}

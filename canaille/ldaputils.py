@@ -263,3 +263,16 @@ class LDAPObject:
                 self.changes[name] = [value]
             else:
                 self.changes[name] = value
+
+    def __eq__(self, other):
+        return (
+            self.may == other.may
+            and self.must == other.must
+            and all(
+                getattr(self, attr) == getattr(other, attr)
+                for attr in self.may + self.must
+            )
+        )
+
+    def __hash__(self):
+        return hash(self.dn)
