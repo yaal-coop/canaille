@@ -2,9 +2,16 @@ import mock
 from canaille.models import User
 
 
-def test_profile(testclient, slapd_server, slapd_connection, logged_user, admin, foo_group, bar_group):
+def test_profile(
+    testclient, slapd_server, slapd_connection, logged_user, admin, foo_group, bar_group
+):
     res = testclient.get("/profile/user", status=200)
-    assert set(res.form["groups"].options) == set([("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "foo"), ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar")])
+    assert set(res.form["groups"].options) == set(
+        [
+            ("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", True, "foo"),
+            ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar"),
+        ]
+    )
     assert logged_user.groups == [foo_group]
     assert foo_group.member == [logged_user.dn]
     assert bar_group.member == [admin.dn]
@@ -15,7 +22,10 @@ def test_profile(testclient, slapd_server, slapd_connection, logged_user, admin,
     res.form["mail"] = "email@mydomain.tld"
     res.form["telephoneNumber"] = "555-666-777"
     res.form["employeeNumber"] = 666
-    res.form["groups"] = ["cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org"]
+    res.form["groups"] = [
+        "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+        "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+    ]
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
@@ -33,7 +43,6 @@ def test_profile(testclient, slapd_server, slapd_connection, logged_user, admin,
     assert set(foo_group.member) == {logged_user.dn}
     assert set(bar_group.member) == {admin.dn, logged_user.dn}
     assert set(logged_user.groups) == {foo_group, bar_group}
-
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")

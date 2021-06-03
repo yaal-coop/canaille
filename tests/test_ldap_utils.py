@@ -1,5 +1,6 @@
 from canaille.models import Group
 
+
 def test_equality(slapd_connection, foo_group, bar_group):
     Group.attr_type_by_name(conn=slapd_connection)
     assert foo_group != bar_group
