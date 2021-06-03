@@ -15,8 +15,10 @@ def test_profile(
     assert logged_user.groups == [foo_group]
     assert foo_group.member == [logged_user.dn]
     assert bar_group.member == [admin.dn]
+    assert res.form["groups"].attrs["disabled"]
+    assert res.form["uid"].attrs["readonly"]
 
-    res.form["uid"] = "user"
+    res.form["uid"] = "toto"
     res.form["givenName"] = "given_name"
     res.form["sn"] = "family_name"
     res.form["mail"] = "email@mydomain.tld"
@@ -40,9 +42,9 @@ def test_profile(
 
     foo_group.reload(slapd_connection)
     bar_group.reload(slapd_connection)
-    assert set(foo_group.member) == {logged_user.dn}
-    assert set(bar_group.member) == {admin.dn, logged_user.dn}
-    assert set(logged_user.groups) == {foo_group, bar_group}
+    assert logged_user.groups == [foo_group]
+    assert foo_group.member == [logged_user.dn]
+    assert bar_group.member == [admin.dn]
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
@@ -127,7 +129,7 @@ def test_admin_bad_request(testclient, logged_moderator):
 
 
 def test_user_creation_edition_and_deletion(
-    testclient, slapd_connection, logged_moderator
+    testclient, slapd_connection, logged_moderator, foo_group, bar_group
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
@@ -148,14 +150,29 @@ def test_user_creation_edition_and_deletion(
     # User have been created
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
     with testclient.app.app_context():
-        assert "George" == User.get("george", conn=slapd_connection).givenName[0]
+        george = User.get("george", conn=slapd_connection)
+        assert "George" == george.givenName[0]
+        assert george.groups == []
     assert "george" in testclient.get("/users", status=200).text
+    assert "disabled" not in res.form["groups"].attrs
+
     res.form["givenName"] = "Georgio"
+    res.form["groups"] = [
+        "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+        "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+    ]
 
     # User have been edited
     res = res.form.submit(name="action", value="edit", status=200)
     with testclient.app.app_context():
-        assert "Georgio" == User.get("george", conn=slapd_connection).givenName[0]
+        george = User.get("george", conn=slapd_connection)
+        assert "Georgio" == george.givenName[0]
+    foo_group.reload(slapd_connection)
+    bar_group.reload(slapd_connection)
+    assert george.dn in set(foo_group.member)
+    assert george.dn in set(bar_group.member)
+    assert set(george.groups) == {foo_group, bar_group}
+    assert "george" in testclient.get("/users", status=200).text
     assert "george" in testclient.get("/users", status=200).text
 
     # User have been deleted.
