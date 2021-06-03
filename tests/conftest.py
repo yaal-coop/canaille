@@ -215,7 +215,7 @@ def client(app, slapd_connection):
             "refresh_token",
         ],
         oauthResponseType=["code", "token", "id_token"],
-        oauthScope=["openid", "profile"],
+        oauthScope=["openid", "profile", "groups"],
         oauthTermsOfServiceURI="https://mydomain.tld/tos",
         oauthPolicyURI="https://mydomain.tld/policy",
         oauthJWKURI="https://mydomain.tld/jwk",
@@ -361,7 +361,10 @@ def foo_group(app, user, slapd_connection):
     g.save(slapd_connection)
     with app.app_context():
         user.load_groups(conn=slapd_connection)
-    return g
+    yield g
+    user._groups = []
+    g.delete(conn=slapd_connection)
+
 
 
 @pytest.fixture
@@ -375,7 +378,9 @@ def bar_group(app, admin, slapd_connection):
     g.save(slapd_connection)
     with app.app_context():
         admin.load_groups(conn=slapd_connection)
-    return g
+    yield g
+    admin._groups = []
+    g.delete(conn=slapd_connection)
 
 
 @pytest.fixture

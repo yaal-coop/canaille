@@ -61,6 +61,8 @@ def generate_user_info(user, scope):
         fields += ["address"]
     if "phone" in scope:
         fields += ["phone_number", "phone_number_verified"]
+    if "groups" in scope:
+        fields += ["groups"]
 
     data = {}
     for field in fields:
@@ -69,6 +71,9 @@ def generate_user_info(user, scope):
             data[field] = user.__getattr__(ldap_field_match)
             if isinstance(data[field], list):
                 data[field] = data[field][0]
+        if field == "groups":
+            group_name_attr = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
+            data[field] = [getattr(g, group_name_attr)[0] for g in user.groups]
 
     return UserInfo(**data)
 

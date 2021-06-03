@@ -27,6 +27,7 @@ CLAIMS = {
     "email": ("at", _("Your email address.")),
     "address": ("envelope open outline", _("Your postal address.")),
     "phone": ("phone", _("Your phone number.")),
+    "groups": ("users", _("Groups you are belonging to")),
 }
 
 

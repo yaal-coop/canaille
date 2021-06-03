@@ -53,7 +53,10 @@
             <h2 class="ui header">{{ name }}</h2>
             <div>
             {% if user %}
-                Welcome {{ user.name }}
+                <p>Welcome {{ user.name }}</p>
+                {% if user.groups %}
+                <p>You're a member of the following groups: {{ user.groups }}</p>
+                {% endif %}
             {% else %}
                 Welcome, please <a href="{{ url_for('login') }}">log-in</a>.
             {% endif %}
