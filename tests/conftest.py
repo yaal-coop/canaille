@@ -366,7 +366,6 @@ def foo_group(app, user, slapd_connection):
     g.delete(conn=slapd_connection)
 
 
-
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
     Group.ocs_by_name(slapd_connection)
