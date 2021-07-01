@@ -154,6 +154,11 @@ class Group(LDAPObject):
         attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
         return [(group[attribute][0], group.dn) for group in groups]
 
+    @property
+    def name(self):
+        attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
+        return self[attribute][0]
+
     def get_members(self, conn=None):
         return [User.get(dn=user_dn, conn=conn) for user_dn in self.member]
 

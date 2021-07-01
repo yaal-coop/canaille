@@ -380,8 +380,3 @@ def bar_group(app, admin, slapd_connection):
     yield g
     admin._groups = []
     g.delete(conn=slapd_connection)
-
-
-@pytest.fixture
-def groups(foo_group, bar_group, slapd_connection):
-    return (foo_group, bar_group)

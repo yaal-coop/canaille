@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+{% import 'flask.j2' as flask %}
+
+{% block content %}
+{% if edited_group %}
+<div class="ui segment">
+    <h2 class="ui header">{% trans %}Members{% endtrans %}</h2>
+    <ul>
+        {% for member in members %}
+        <div class="ui left icon">
+            <i class="user icon"></i>
+            <a href="{{ url_for('account.profile_edition', username=member.uid[0]) }}">{{ member.name }}</a></li>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="ui clearing segment">
+    <h2 class="ui center aligned header">
+        <div class="content">
+            {% if not edited_group %}
+                {% trans %}Group creation{% endtrans %}
+            {% else %}
+                {% trans %}Group edition{% endtrans %}
+            {% endif %}
+        </div>
+        
+        <div class="sub header">
+            {% if not edited_group %}
+                {% trans %}Create a new group{% endtrans %}
+            {% else %}
+                {% trans %}Edit informations about a group{% endtrans %}
+            {% endif %}
+        </div>
+    </h2>
+
+    {{ flask.messages() }}
+
+    <form method="POST"
+    id="{{ form.__class__.__name__|lower }}"
+    action="{{ request.url }}"
+    role="form"
+    class="ui form"
+    >
+        {{ form.hidden_tag() if form.hidden_tag }}
+        {{ sui.render_field(form.name) }}
+        <button type="submit" class="ui right floated primary button">
+            {% if not edited_group %}
+                {% trans %}Create group{% endtrans %}
+            {% else %}
+                {% trans %}Submit{% endtrans %}
+            {% endif %}
+        </button>
+    </form>
+</div>
+{% endblock %}

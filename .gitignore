@@ -19,3 +19,4 @@ canaille/conf/openid-configuration.json
 canaille/conf/*.pem
 canaille/conf/*.pub
 canaille/conf/*.key
+.vscode

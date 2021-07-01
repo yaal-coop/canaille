@@ -145,3 +145,13 @@ def profile_form(field_names):
             render_kw={},
         )
     return wtforms.form.BaseForm(fields)
+
+
+class GroupForm(FlaskForm):
+    name = wtforms.StringField(
+        _("Name"),
+        validators=[wtforms.validators.DataRequired()],
+        render_kw={
+            "placeholder": _("group"),
+        },
+    )
