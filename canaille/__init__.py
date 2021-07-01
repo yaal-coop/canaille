@@ -1,3 +1,4 @@
+import datetime
 import ldap
 import os
 import toml
@@ -17,7 +18,7 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 
-from flask import Flask, g, request, render_template
+from flask import Flask, g, request, render_template, session
 from flask_babel import Babel
 
 from .flaskutils import current_user
@@ -173,6 +174,11 @@ def setup_app(app):
         def after_request(response):
             teardown_ldap(app)
             return response
+
+        @app.before_request
+        def make_session_permanent():
+            session.permanent = True
+            app.permanent_session_lifetime = datetime.timedelta(days=365)
 
         @app.context_processor
         def global_processor():
