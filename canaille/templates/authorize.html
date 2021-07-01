@@ -33,8 +33,8 @@
     </div>
 
     <div class="ui center aligned container">
-        <div class="ui stackable buttons">
-            <form action="{{ request.url }}" method="post">
+        <form action="{{ request.url }}" method="post">
+            <div class="ui stackable buttons">
                 <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
                     {% trans %}Deny{% endtrans %}
                 </button>
@@ -44,8 +44,8 @@
                 <button name="answer" type="submit" class="ui primary button" value="accept" id="accept">
                     {% trans %}Accept{% endtrans %}
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
