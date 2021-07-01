@@ -254,8 +254,10 @@ def profile_edit(editor, username):
         for k in fields
         if hasattr(user, k)
     }
+
     if "groups" in fields:
         data["groups"] = [g.dn for g in user.groups]
+
     form = profile_form(fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
     form["uid"].render_kw["readonly"] = "true"

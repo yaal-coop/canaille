@@ -54,10 +54,13 @@ class User(LDAPObject):
         return user
 
     def load_groups(self, conn=None):
-        group_filter = (
-            current_app.config["LDAP"].get("GROUP_USER_FILTER").format(user=self)
-        )
-        self._groups = Group.filter(filter=group_filter, conn=conn)
+        try:
+            group_filter = current_app.config["LDAP"]["GROUP_USER_FILTER"].format(
+                user=self
+            )
+            self._groups = Group.filter(filter=group_filter, conn=conn)
+        except KeyError:
+            pass
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
@@ -147,11 +150,14 @@ class Group(LDAPObject):
     @classmethod
     def available_groups(cls, conn=None):
         conn = conn or cls.ldap()
-        groups = cls.filter(
-            objectClass=current_app.config["LDAP"].get("GROUP_CLASS"), conn=conn
-        )
+        try:
+            attribute = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
+            object_class = current_app.config["LDAP"]["GROUP_CLASS"]
+        except KeyError:
+            return []
+
+        groups = cls.filter(objectClass=object_class, conn=conn)
         Group.attr_type_by_name(conn=conn)
-        attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
         return [(group[attribute][0], group.dn) for group in groups]
 
     def get_members(self, conn=None):

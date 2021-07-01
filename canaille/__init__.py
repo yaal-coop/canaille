@@ -128,7 +128,7 @@ def setup_app(app):
         if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
             user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
         User.base = user_base
-        group_base = app.config["LDAP"]["GROUP_BASE"]
+        group_base = app.config["LDAP"].get("GROUP_BASE")
         Group.base = group_base
 
         app.url_map.strict_slashes = False

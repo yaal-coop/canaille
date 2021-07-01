@@ -138,7 +138,7 @@ def profile_form(field_names):
         for name in field_names
         if PROFILE_FORM_FIELDS.get(name)
     }
-    if "groups" in field_names:
+    if "groups" in field_names and Group.available_groups():
         fields["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[(group[1], group[0]) for group in Group.available_groups()],
