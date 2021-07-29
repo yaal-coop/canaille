@@ -1,3 +1,5 @@
+{% import 'flask.j2' as flask %}
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -87,6 +89,7 @@
 
     <div class="ui container">
         <div class="content">
+            {{ flask.messages() }}
             {% block content %}{% endblock %}
         </div>
     </div>

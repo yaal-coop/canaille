@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% import 'fomanticui.j2' as sui %}
-{% import 'flask.j2' as flask %}
 
 {% block script %}
     <script src="/static/js/confirm.js"></script>
@@ -51,8 +50,6 @@
             {% endif %}
         </div>
     </h2>
-
-    {{ flask.messages() }}
 
     <form method="POST"
       id="{{ form.__class__.__name__|lower }}"
