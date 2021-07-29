@@ -155,3 +155,9 @@ class GroupForm(FlaskForm):
             "placeholder": _("group"),
         },
     )
+
+    def validate_name(self, field):
+        if Group.get(field.data):
+            raise wtforms.ValidationError(
+                _("The group '{group}' already exists").format(group=field.data)
+            )
