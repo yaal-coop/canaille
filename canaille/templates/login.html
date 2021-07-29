@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% import 'fomanticui.j2' as sui %}
-{% import 'flask.j2' as flask %}
 
 {% block content %}
 <div class="ui clearing segment">
@@ -18,8 +17,6 @@
         </div>
         <div class="sub header">{% trans %}Log-in and manage your authorizations.{% endtrans %}</div>
     </h2>
-
-    {{ flask.messages() }}
 
     <form method="POST"
       id="{{ form.id or form.__class__.__name__|lower }}"

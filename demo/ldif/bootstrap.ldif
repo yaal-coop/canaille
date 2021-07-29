@@ -94,6 +94,7 @@ oauthGrantType: refresh_token
 oauthScope: openid
 oauthScope: profile
 oauthScope: email
+oauthScope: groups
 oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic
@@ -111,6 +112,7 @@ oauthGrantType: refresh_token
 oauthScope: openid
 oauthScope: profile
 oauthScope: email
+oauthScope: groups
 oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% import 'flask.j2' as flask %}
 
 {% block style %}
     <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
@@ -22,8 +21,6 @@
             {% trans %}Consult and revoke the authorization you gave to websites.{% endtrans %}
         </div>
     </h2>
-
-    {{ flask.messages() }}
 
     {% if consents %}
     <div class="ui centered cards">

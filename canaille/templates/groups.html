@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="ui segment">
+    <a class="ui primary button" href="{{ url_for('groups.create_group') }}">{% trans %}Add a group{% endtrans %}</a>
+</div>
+
+<div class="ui segment">
+    <h2 class="ui header">{% trans %}Groups{% endtrans %}</h2>
+    <ul>
+        {% for group in groups %}
+            <div class="ui left icon">
+                <i class="users icon"></i>
+                <a href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

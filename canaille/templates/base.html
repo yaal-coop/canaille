@@ -1,3 +1,5 @@
+{% import 'flask.j2' as flask %}
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -47,6 +49,11 @@
                 <i class="users icon"></i>
                 {% trans %}Users{% endtrans %}
             </a>
+            <a class="item {% if menuitem == "groups" %}active{% endif %}"
+                href="{{ url_for('groups.groups') }}">
+                <i class="users cog icon"></i>
+                {% trans %}Groups{% endtrans %}
+            </a>
             {% endif %}
             {% if user.admin %}
             <div class="ui dropdown item {% if menuitem == "admin" %}active{% endif %}">
@@ -82,6 +89,7 @@
 
     <div class="ui container">
         <div class="content">
+            {{ flask.messages() }}
             {% block content %}{% endblock %}
         </div>
     </div>

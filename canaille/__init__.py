@@ -12,6 +12,7 @@ import canaille.consents
 import canaille.commands.clean
 import canaille.oauth
 import canaille.account
+import canaille.groups
 import canaille.well_known
 
 from cryptography.hazmat.primitives import serialization as crypto_serialization
@@ -136,6 +137,7 @@ def setup_app(app):
         config_oauth(app)
         setup_ldap_tree(app)
         app.register_blueprint(canaille.account.bp)
+        app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
         app.register_blueprint(canaille.commands.clean.bp)
         app.register_blueprint(canaille.consents.bp, url_prefix="/consent")

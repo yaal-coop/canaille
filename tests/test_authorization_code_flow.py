@@ -47,7 +47,7 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
 
 
 def test_logout_login(testclient, slapd_connection, logged_user, client):
@@ -105,7 +105,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
 
 
 def test_refresh_token(testclient, slapd_connection, logged_user, client):
@@ -164,7 +164,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
 
 
 def test_code_challenge(testclient, slapd_connection, logged_user, client):
@@ -218,7 +218,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
 
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
     client.save(slapd_connection)

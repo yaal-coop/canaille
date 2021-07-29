@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% import 'fomanticui.j2' as sui %}
-{% import 'flask.j2' as flask %}
 
 {% block script %}
     <script src="/static/js/admin/client_edit.js"></script>
@@ -25,8 +24,6 @@
     <h3 class="ui top attached header">
         {% trans %}Edit a client{% endtrans %}
     </h3>
-
-    {{ flask.messages() }}
 
     <div class="ui attached clearing segment">
         <div class="ui form">

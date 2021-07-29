@@ -1,9 +1,10 @@
 from authlib.jose import jwt
 from urllib.parse import urlsplit, parse_qs
-from canaille.models import AuthorizationCode, Token
+from canaille.models import AuthorizationCode, Token, User
 
 
 def test_oauth_hybrid(testclient, slapd_connection, user, client):
+    User.attr_type_by_name(slapd_connection)
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -41,7 +42,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
 
 
 def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair):
@@ -80,4 +81,4 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair)
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user"} == res.json
+    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json

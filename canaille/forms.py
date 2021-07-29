@@ -145,3 +145,19 @@ def profile_form(field_names):
             render_kw={},
         )
     return wtforms.form.BaseForm(fields)
+
+
+class GroupForm(FlaskForm):
+    name = wtforms.StringField(
+        _("Name"),
+        validators=[wtforms.validators.DataRequired()],
+        render_kw={
+            "placeholder": _("group"),
+        },
+    )
+
+    def validate_name(self, field):
+        if Group.get(field.data):
+            raise wtforms.ValidationError(
+                _("The group '{group}' already exists").format(group=field.data)
+            )

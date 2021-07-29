@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% import 'fomanticui.j2' as sui %}
+
+{% block script %}
+    <script src="/static/js/confirm.js"></script>
+{% endblock %}
+
+{% block content %}
+{% if edited_group %}
+<div class="ui basic modal">
+    <div class="ui icon header">
+        <i class="trash alternate icon"></i>
+        {% trans %}Group deletion{% endtrans %}
+    </div>
+    <div class="content">
+        <p>
+            {% trans %}Are you sure you want to delete this group? This action is unrevokable and all the data about this group will be removed.{% endtrans %}
+        </p>
+    </div>
+    <div class="actions">
+        <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+        <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
+    </div>
+</div>
+{% endif %}
+
+{% if edited_group %}
+<div class="ui segment">
+    <h2 class="ui header">{% trans %}Members{% endtrans %}</h2>
+    <ul>
+        {% for member in members %}
+        <div class="ui left icon">
+            <i class="user icon"></i>
+            <a href="{{ url_for('account.profile_edition', username=member.uid[0]) }}">{{ member.name }}</a></li>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="ui clearing segment">
+    <h2 class="ui center aligned header">
+        <div class="content">
+            {% if not edited_group %}
+                {% trans %}Group creation{% endtrans %}
+            {% else %}
+                {% trans %}Group edition{% endtrans %}
+            {% endif %}
+        </div>
+        
+        <div class="sub header">
+            {% if not edited_group %}
+                {% trans %}Create a new group{% endtrans %}
+            {% else %}
+                {% trans %}Edit informations about a group{% endtrans %}
+            {% endif %}
+        </div>
+    </h2>
+
+    <form method="POST"
+    id="{{ form.__class__.__name__|lower }}"
+    action="{{ request.url }}"
+    role="form"
+    class="ui form"
+    >
+        {{ form.hidden_tag() if form.hidden_tag }}
+        {{ sui.render_field(form.name) }}
+        {% if not edited_group %}
+        <p>
+            {% trans %}Because group cannot be empty, you will be added to the group. You can remove you later by editing your profile when you will have added other members to the group.{% endtrans %}
+        </p>    
+        {% endif %}
+        <button type="submit" class="ui right floated primary button" name="action" value="edit">
+            {% if not edited_group %}
+                {% trans %}Create group{% endtrans %}
+            {% else %}
+                {% trans %}Submit{% endtrans %}
+            {% endif %}
+        </button>
+        {% if edited_group %}
+        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
+            {% trans %}Delete group{% endtrans %}
+        </button>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}
