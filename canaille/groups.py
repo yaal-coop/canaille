@@ -44,6 +44,16 @@ def create_group(user):
 @moderator_needed()
 def group(user, groupname):
     group = Group.get(groupname) or abort(404)
+    
+    if request.method == "GET" or request.form.get("action") == "edit":
+        return edit_group(group)
+
+    if request.form.get("action") == "delete":
+        return delete_group(group)
+
+    abort(400)
+
+def edit_group(group):
     form = GroupForm(request.form or None, data={"name": group.name})
     form["name"].render_kw["disabled"] = "true" 
 
@@ -60,3 +70,7 @@ def group(user, groupname):
         members=group.get_members()
     )
 
+def delete_group(group):
+    flash(_("The group %(group)s has been sucessfully deleted", group=group.name), "success")
+    group.delete()
+    return redirect(url_for("groups.groups"))

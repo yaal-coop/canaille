@@ -2,7 +2,29 @@
 {% import 'fomanticui.j2' as sui %}
 {% import 'flask.j2' as flask %}
 
+{% block script %}
+    <script src="/static/js/confirm.js"></script>
+{% endblock %}
+
 {% block content %}
+{% if edited_group %}
+<div class="ui basic modal">
+    <div class="ui icon header">
+        <i class="trash alternate icon"></i>
+        {% trans %}Group deletion{% endtrans %}
+    </div>
+    <div class="content">
+        <p>
+            {% trans %}Are you sure you want to delete this group? This action is unrevokable and all the data about this group will be removed.{% endtrans %}
+        </p>
+    </div>
+    <div class="actions">
+        <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+        <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
+    </div>
+</div>
+{% endif %}
+
 {% if edited_group %}
 <div class="ui segment">
     <h2 class="ui header">{% trans %}Members{% endtrans %}</h2>
@@ -46,13 +68,23 @@
     >
         {{ form.hidden_tag() if form.hidden_tag }}
         {{ sui.render_field(form.name) }}
-        <button type="submit" class="ui right floated primary button">
+        {% if not edited_group %}
+        <p>
+            {% trans %}Because group cannot be empty, you will be added to the group. You can remove you later by editing your profile when you will have added other members to the group.{% endtrans %}
+        </p>    
+        {% endif %}
+        <button type="submit" class="ui right floated primary button" name="action" value="edit">
             {% if not edited_group %}
                 {% trans %}Create group{% endtrans %}
             {% else %}
                 {% trans %}Submit{% endtrans %}
             {% endif %}
         </button>
+        {% if edited_group %}
+        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
+            {% trans %}Delete group{% endtrans %}
+        </button>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

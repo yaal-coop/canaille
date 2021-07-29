@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% import 'flask.j2' as flask %}
 
 {% block content %}
+{{ flask.messages() }}
+
 <div class="ui segment">
     <a class="ui primary button" href="{{ url_for('groups.create_group') }}">{% trans %}Add a group{% endtrans %}</a>
 </div>

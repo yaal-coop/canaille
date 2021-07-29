@@ -33,7 +33,7 @@ def test_set_groups(app, slapd_connection, user, foo_group, bar_group):
         assert user.dn in foo_dns
         assert user.dn not in bar_dns
 
-def test_group_creation(testclient, slapd_connection, logged_moderator, foo_group):
+def test_moderator_can_create_edit_and_delete_group(testclient, slapd_connection, logged_moderator, foo_group):
     # The group does not exist
     res = testclient.get("/groups", status=200)
     with testclient.app.app_context():
@@ -59,7 +59,7 @@ def test_group_creation(testclient, slapd_connection, logged_moderator, foo_grou
     res = testclient.get("/groups/bar", status=200)
     res.form["name"] = "bar2"
 
-    res = res.form.submit(status=200)
+    res = res.form.submit(name="action", value="edit", status=200)
 
     with testclient.app.app_context():
         bar_group = Group.get("bar", conn=slapd_connection)
@@ -69,4 +69,13 @@ def test_group_creation(testclient, slapd_connection, logged_moderator, foo_grou
         for member in members:
             assert member.name in res.text
     
-    # TODO: Group is deleted
+    # Group is deleted
+    res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
+    with testclient.app.app_context():
+        assert Group.get("bar", conn=slapd_connection) is None
+    assert "The group bar has been sucessfully deleted" in res.text
+
+def test_simple_user_cannot_view_or_edit_groups(testclient, slapd_connection, logged_user, foo_group):
+    testclient.get("/groups", status=403)
+    testclient.get("/groups/add", status=403)
+    testclient.get("/groups/foo", status=403)
