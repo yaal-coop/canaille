@@ -20,8 +20,8 @@ Old fashion: Copy the schemas in your filesystem
 
 .. code-block:: console
 
-    test -d /etc/openldap/schema && sudo cp schema/* /etc/openldap/schema
-    test -d /etc/ldap/schema && sudo cp schema/* /etc/ldap/schema
+    test -d /etc/openldap/schema && sudo cp schemas/* /etc/openldap/schema
+    test -d /etc/ldap/schema && sudo cp schemas/* /etc/ldap/schema
     sudo service slapd restart
 
 New fashion: Use slapadd to add the schemas
@@ -29,7 +29,7 @@ New fashion: Use slapadd to add the schemas
 
 .. code-block:: console
 
-    sudo slapadd -n0 -l schema/*.ldif
+    sudo slapadd -n0 -l schemas/*.ldif
     sudo service slapd restart
 
 Web interface
