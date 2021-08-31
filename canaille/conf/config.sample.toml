@@ -44,6 +44,7 @@ URI = "ldap://ldap"
 ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"
+TIMEOUT =
 
 # Where to search for users?
 USER_BASE = "ou=users,dc=mydomain,dc=tld"
