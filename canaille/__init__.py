@@ -101,6 +101,8 @@ def setup_dev_keypair(app):
 
 def setup_ldap_tree(app):
     conn = ldap.initialize(app.config["LDAP"]["URI"])
+    if app.config["LDAP"].get("TIMEOUT"):
+        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
     conn.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
     Token.initialize(conn)
     AuthorizationCode.initialize(conn)
