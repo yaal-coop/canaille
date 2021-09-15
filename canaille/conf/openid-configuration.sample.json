@@ -20,6 +20,8 @@
     "https://mydomain.tld/oauth/jwks.json",
   "registration_endpoint":
     "https://mydomain.tld/oauth/register",
+  "introspection_endpoint":
+    "https://mydomain.tld/oauth/introspect",
   "scopes_supported":
     ["openid", "profile", "email", "address",
     "phone", "groups"],

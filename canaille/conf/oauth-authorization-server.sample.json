@@ -12,6 +12,8 @@
     ["RS256", "ES256"],
   "userinfo_endpoint":
     "https://mydomain.tld/oauth/userinfo",
+  "introspection_endpoint":
+    "https://mydomain.tld/oauth/introspect",
   "jwks_uri":
     "https://mydomain.tld/oauth/jwks.json",
   "registration_endpoint":

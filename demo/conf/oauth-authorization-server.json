@@ -16,6 +16,8 @@
     "http://localhost:5000/oauth/jwks.json",
   "registration_endpoint":
     "http://localhost:5000/oauth/register",
+  "introspection_endpoint":
+    "https://mydomain.tld/oauth/introspect",
   "scopes_supported":
     ["openid", "profile", "email", "address",
      "phone", "groups"],
