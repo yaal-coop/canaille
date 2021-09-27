@@ -259,7 +259,7 @@ msgstr "Votre numéro de téléphone."
 
 #: canaille/oauth.py:30
 msgid "Groups you are belonging to"
-msgstr "Les groupes dans lesquels vous êtes"
+msgstr "Les groupes auxquels vous appartenez"
 
 #: canaille/oauth.py:98
 msgid "You have been successfully logged out."
