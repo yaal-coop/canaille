@@ -41,10 +41,7 @@ def create_app(config=None):
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     app.config.from_mapping(
-        {
-            "SESSION_COOKIE_NAME": "canaille",
-            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
-        }
+        {"SESSION_COOKIE_NAME": "canaille", "OAUTH2_REFRESH_TOKEN_GENERATOR": True,}
     )
     if config:
         app.config.from_mapping(config)

@@ -47,7 +47,12 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json
 
 
 def test_logout_login(testclient, slapd_connection, logged_user, client):
@@ -105,7 +110,12 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json
 
 
 def test_refresh_token(testclient, slapd_connection, logged_user, client):
@@ -147,8 +157,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     res = testclient.post(
         "/oauth/token",
         params=dict(
-            grant_type="refresh_token",
-            refresh_token=res.json["refresh_token"],
+            grant_type="refresh_token", refresh_token=res.json["refresh_token"],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -164,7 +173,12 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json
 
 
 def test_code_challenge(testclient, slapd_connection, logged_user, client):
@@ -218,7 +232,12 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json
 
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
     client.save(slapd_connection)
@@ -306,9 +325,7 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
 
 def test_prompt_not_logged(testclient, slapd_connection, user, client):
     Consent(
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthScope=["openid", "profile"],
+        oauthClient=client.dn, oauthSubject=user.dn, oauthScope=["openid", "profile"],
     ).save(conn=slapd_connection)
 
     res = testclient.get(

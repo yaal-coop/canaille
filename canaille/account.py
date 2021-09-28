@@ -361,8 +361,7 @@ def reset(uid, hash):
         user.uid[0], user.userPassword[0] if user.has_password() else ""
     ):
         flash(
-            _("The password reset link that brought you here was invalid."),
-            "error",
+            _("The password reset link that brought you here was invalid."), "error",
         )
         return redirect(url_for("account.index"))
 

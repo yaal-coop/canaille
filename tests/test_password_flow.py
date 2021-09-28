@@ -27,4 +27,9 @@ def test_password_flow(testclient, slapd_connection, user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "sub": "user", "family_name": "Doe", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "sub": "user",
+        "family_name": "Doe",
+        "groups": [],
+    } == res.json

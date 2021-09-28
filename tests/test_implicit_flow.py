@@ -40,7 +40,12 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
         "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
     )
     assert "application/json" == res.content_type
-    assert {"name": "John Doe", "sub": "user", "family_name": "Doe", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "sub": "user",
+        "family_name": "Doe",
+        "groups": [],
+    } == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
@@ -92,14 +97,21 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
         status=200,
     )
     assert "application/json" == res.content_type
-    assert {"name": "John Doe", "sub": "user", "family_name": "Doe", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "sub": "user",
+        "family_name": "Doe",
+        "groups": [],
+    } == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
     client.save(slapd_connection)
 
 
-def test_oidc_implicit_with_group(testclient, keypair, slapd_connection, user, client, foo_group):
+def test_oidc_implicit_with_group(
+    testclient, keypair, slapd_connection, user, client, foo_group
+):
     client.oauthGrantType = ["token id_token"]
     client.oauthTokenEndpointAuthMethod = "none"
 
@@ -145,7 +157,12 @@ def test_oidc_implicit_with_group(testclient, keypair, slapd_connection, user, c
         status=200,
     )
     assert "application/json" == res.content_type
-    assert {"name": "John Doe", "sub": "user", "family_name": "Doe", "groups": ["foo"]} == res.json
+    assert {
+        "name": "John Doe",
+        "sub": "user",
+        "family_name": "Doe",
+        "groups": ["foo"],
+    } == res.json
 
     client.oauthGrantType = ["code"]
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"

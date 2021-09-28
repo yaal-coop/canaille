@@ -353,11 +353,7 @@ def cleanups(slapd_connection):
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
     Group.ocs_by_name(slapd_connection)
-    g = Group(
-        objectClass=["groupOfNames"],
-        member=[user.dn],
-        cn="foo",
-    )
+    g = Group(objectClass=["groupOfNames"], member=[user.dn], cn="foo",)
     g.save(slapd_connection)
     with app.app_context():
         user.load_groups(conn=slapd_connection)
@@ -369,11 +365,7 @@ def foo_group(app, user, slapd_connection):
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
     Group.ocs_by_name(slapd_connection)
-    g = Group(
-        objectClass=["groupOfNames"],
-        member=[admin.dn],
-        cn="bar",
-    )
+    g = Group(objectClass=["groupOfNames"], member=[admin.dn], cn="bar",)
     g.save(slapd_connection)
     with app.app_context():
         admin.load_groups(conn=slapd_connection)

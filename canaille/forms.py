@@ -30,8 +30,7 @@ class LoginForm(FlaskForm):
 
 class PasswordForm(FlaskForm):
     password = wtforms.PasswordField(
-        _("Password"),
-        validators=[wtforms.validators.DataRequired()],
+        _("Password"), validators=[wtforms.validators.DataRequired()],
     )
 
 
@@ -122,10 +121,7 @@ PROFILE_FORM_FIELDS = dict(
         ],
     ),
     employeeNumber=wtforms.StringField(
-        _("Number"),
-        render_kw={
-            "placeholder": _("1234"),
-        },
+        _("Number"), render_kw={"placeholder": _("1234"),},
     ),
 )
 
@@ -151,9 +147,7 @@ class GroupForm(FlaskForm):
     name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
-        render_kw={
-            "placeholder": _("group"),
-        },
+        render_kw={"placeholder": _("group"),},
     )
 
     def validate_name(self, field):

@@ -42,7 +42,12 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json
 
 
 def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair):
@@ -81,4 +86,9 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair)
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {"name": "John Doe", "family_name": "Doe", "sub": "user", "groups": []} == res.json
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json

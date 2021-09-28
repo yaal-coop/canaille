@@ -120,8 +120,7 @@ def add(user):
 
     if not form.validate():
         flash(
-            _("The client has not been added. Please check your information."),
-            "error",
+            _("The client has not been added. Please check your information."), "error",
         )
         return render_template("admin/client_add.html", form=form, menuitem="admin")
 
@@ -151,8 +150,7 @@ def add(user):
     )
     client.save()
     flash(
-        _("The client has been created."),
-        "success",
+        _("The client has been created."), "success",
     )
 
     return redirect(url_for("admin_clients.edit", client_id=client_id))
@@ -208,8 +206,7 @@ def client_edit(client_id):
         )
         client.save()
         flash(
-            _("The client has been edited."),
-            "success",
+            _("The client has been edited."), "success",
         )
 
     return render_template(
@@ -220,8 +217,7 @@ def client_edit(client_id):
 def client_delete(client_id):
     client = Client.get(client_id) or abort(404)
     flash(
-        _("The client has been deleted."),
-        "success",
+        _("The client has been deleted."), "success",
     )
     client.delete()
     return redirect(url_for("admin_clients.index"))
