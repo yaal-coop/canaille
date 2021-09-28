@@ -2,8 +2,17 @@ import datetime
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
-from flask import Blueprint, request, session, redirect, abort
-from flask import render_template, jsonify, flash, current_app
+from flask import (
+    current_app,
+    Blueprint,
+    request,
+    session,
+    redirect,
+    abort,
+    render_template,
+    jsonify,
+    flash,
+)
 from flask_babel import gettext, lazy_gettext as _
 from .models import User, Client, Consent
 from .oauth2utils import (
@@ -33,6 +42,12 @@ CLAIMS = {
 
 @bp.route("/authorize", methods=["GET", "POST"])
 def authorize():
+    current_app.logger.debug(
+        "authorization endpoint request:\nGET: %s\nPOST: %s",
+        request.args.to_dict(flat=False),
+        request.form.to_dict(flat=False),
+    )
+
     if "client_id" not in request.args:
         abort(400)
 
@@ -113,22 +128,40 @@ def authorize():
                 )
                 consent.save()
 
-        return authorization.create_authorization_response(grant_user=grant_user)
+        response = authorization.create_authorization_response(grant_user=grant_user)
+        current_app.logger.debug(
+            "authorization endpoint response: %s", response.location
+        )
+        return response
 
 
 @bp.route("/token", methods=["POST"])
 def issue_token():
-    return authorization.create_token_response()
+    current_app.logger.debug(
+        "token endpoint request: POST: %s", request.form.to_dict(flat=False)
+    )
+    response = authorization.create_token_response()
+    return response
 
 
 @bp.route("/introspect", methods=["POST"])
 def introspect_token():
-    return authorization.create_endpoint_response(IntrospectionEndpoint.ENDPOINT_NAME)
+    current_app.logger.debug(
+        "introspection endpoint request: POST: %s", request.form.to_dict(flat=False)
+    )
+    response = authorization.create_endpoint_response(
+        IntrospectionEndpoint.ENDPOINT_NAME
+    )
+    return response
 
 
 @bp.route("/revoke", methods=["POST"])
 def revoke_token():
-    return authorization.create_endpoint_response(RevocationEndpoint.ENDPOINT_NAME)
+    current_app.logger.debug(
+        "revokation endpoint request: POST: %s", request.form.to_dict(flat=False)
+    )
+    response = authorization.create_endpoint_response(RevocationEndpoint.ENDPOINT_NAME)
+    return response
 
 
 @bp.route("/jwks.json")
@@ -154,6 +187,11 @@ def jwks():
 @bp.route("/userinfo")
 @require_oauth("profile")
 def userinfo():
-    return jsonify(
+    current_app.logger.debug(
+        "userinfo endpoint request: POST: %s", request.form.to_dict(flat=False)
+    )
+    response = jsonify(
         generate_user_info(current_token.oauthSubject, current_token.oauthScope[0])
     )
+    current_app.logger.debug("userinfo endpoint response: %s", response)
+    return response
