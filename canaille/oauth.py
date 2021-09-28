@@ -87,12 +87,16 @@ def authorize():
             return authorization.create_authorization_response(grant_user=user.dn)
 
         elif request.args.get("prompt") == "none":
-            return jsonify({"error": "consent_required"})
+            response = {"error": "consent_required"}
+            current_app.logger.debug("authorization endpoint response: %s", response)
+            return jsonify(response)
 
         try:
             grant = authorization.validate_consent_request(end_user=user)
         except OAuth2Error as error:
-            return jsonify(dict(error.get_body()))
+            response = dict(error.get_body())
+            current_app.logger.debug("authorization endpoint response: %s", response)
+            return jsonify(response)
 
         return render_template(
             "authorize.html",
@@ -141,6 +145,7 @@ def issue_token():
         "token endpoint request: POST: %s", request.form.to_dict(flat=False)
     )
     response = authorization.create_token_response()
+    current_app.logger.debug("token endpoint response: %s", response.json)
     return response
 
 
@@ -190,8 +195,8 @@ def userinfo():
     current_app.logger.debug(
         "userinfo endpoint request: POST: %s", request.form.to_dict(flat=False)
     )
-    response = jsonify(
-        generate_user_info(current_token.oauthSubject, current_token.oauthScope[0])
+    response = generate_user_info(
+        current_token.oauthSubject, current_token.oauthScope[0]
     )
     current_app.logger.debug("userinfo endpoint response: %s", response)
-    return response
+    return jsonify(response)
