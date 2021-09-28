@@ -30,7 +30,7 @@ cd demo
 
 # Documentation
 
-⚠ Canaille is under heavy development and may not fit a production environment yet. ⚠
+⚠ Canaille is under heavy development and may not fit a production environment yet. However, [contributions](CONTRIBUTING.rst) are welcome! ⚠
 
 - Please have a look on our [documentation](https://canaille.readthedocs.io);
 - To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/en/latest/install.html);
