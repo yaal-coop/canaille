@@ -7,7 +7,7 @@ as in *Can I access your data?* Canaille is a simple account manager and an Open
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 - Authentication and user profile edition against a LDAP directory;
-- « I forgot my password » emails;
+- "I forgot my password" emails;
 - OpenID Connect support;
 - No outdated or exotic protocol support;
 - No additional database required. Everything is stored in your LDAP server;
