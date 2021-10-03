@@ -14,7 +14,7 @@ def test_token_introspection(testclient, user, client, token):
         "token_type": token.oauthTokenType,
         "username": user.name,
         "scope": token.get_scope(),
-        "sub": token.oauthSubject,
+        "sub": user.uid[0],
         "aud": client.oauthClientID,
         "iss": "https://mydomain.tld",
         "exp": token.get_expires_at(),
