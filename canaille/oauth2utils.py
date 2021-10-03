@@ -243,13 +243,14 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
     def introspect_token(self, token):
         client_id = Client.get(token.oauthClient).oauthClientID
+        user = User.get(dn=token.oauthSubject)
         return {
             "active": True,
             "client_id": client_id,
             "token_type": token.oauthTokenType,
-            "username": User.get(dn=token.oauthSubject).name,
+            "username": user.name,
             "scope": token.get_scope(),
-            "sub": token.oauthSubject,
+            "sub": user.uid[0],
             "aud": client_id,
             "iss": authorization.metadata["issuer"],
             "exp": token.get_expires_at(),
