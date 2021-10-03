@@ -78,7 +78,10 @@ def authorize():
 
     # CONSENT
 
-    consents = Consent.filter(oauthClient=client.dn, oauthSubject=user.dn,)
+    consents = Consent.filter(
+        oauthClient=client.dn,
+        oauthSubject=user.dn,
+    )
     consents = [c for c in consents if not c.oauthRevokationDate]
     consent = consents[0] if consents else None
 
@@ -157,6 +160,7 @@ def introspect_token():
     response = authorization.create_endpoint_response(
         IntrospectionEndpoint.ENDPOINT_NAME
     )
+    current_app.logger.debug("introspection endpoint response: %s", response.json)
     return response
 
 
@@ -166,6 +170,7 @@ def revoke_token():
         "revokation endpoint request: POST: %s", request.form.to_dict(flat=False)
     )
     response = authorization.create_endpoint_response(RevocationEndpoint.ENDPOINT_NAME)
+    current_app.logger.debug("revokation endpoint response: %s", response.json)
     return response
 
 
