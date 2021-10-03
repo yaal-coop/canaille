@@ -198,7 +198,7 @@ def jwks():
 @require_oauth("profile")
 def userinfo():
     current_app.logger.debug(
-        "userinfo endpoint request: POST: %s", request.form.to_dict(flat=False)
+        "userinfo endpoint request: %s", request.args
     )
     response = generate_user_info(
         current_token.oauthSubject, current_token.oauthScope[0]
