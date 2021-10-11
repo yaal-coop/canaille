@@ -41,7 +41,10 @@ def create_app(config=None):
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     app.config.from_mapping(
-        {"SESSION_COOKIE_NAME": "canaille", "OAUTH2_REFRESH_TOKEN_GENERATOR": True,}
+        {
+            "SESSION_COOKIE_NAME": "canaille",
+            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
+        }
     )
     if config:
         app.config.from_mapping(config)
@@ -59,10 +62,14 @@ def create_app(config=None):
 
     setup_dev_keypair(app)
 
-    if not os.path.exists(app.config["JWT"]["PUBLIC_KEY"]) or not os.path.exists(
-        app.config["JWT"]["PRIVATE_KEY"]
-    ):
-        raise Exception("Invalid keypair")
+    if not os.path.exists(app.config["JWT"]["PUBLIC_KEY"]):
+        raise Exception(f'Public key does not exist {app.config["JWT"]["PUBLIC_KEY"]}')
+
+    if not os.path.exists(app.config["JWT"]["PRIVATE_KEY"]):
+        raise Exception(
+            f'Private key does not exist {app.config["JWT"]["PRIVATE_KEY"]}'
+        )
+
     setup_app(app)
 
     return app
