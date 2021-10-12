@@ -121,68 +121,71 @@ def slapd_connection(slapd_server):
 
 
 @pytest.fixture
-def app(slapd_server, keypair_path):
-    os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+def configuration(slapd_server, smtpd, keypair_path):
+    smtpd.config.use_starttls = True
     private_key_path, public_key_path = keypair_path
+    return {
+        "SECRET_KEY": gen_salt(24),
+        "OAUTH2_METADATA_FILE": "canaille/conf/oauth-authorization-server.sample.json",
+        "OIDC_METADATA_FILE": "canaille/conf/openid-configuration.sample.json",
+        "LDAP": {
+            "ROOT_DN": slapd_server.suffix,
+            "URI": slapd_server.ldap_uri,
+            "BIND_DN": slapd_server.root_dn,
+            "BIND_PW": slapd_server.root_pw,
+            "USER_BASE": "ou=users",
+            "USER_FILTER": "(|(uid={login})(cn={login}))",
+            "USER_CLASS": "inetOrgPerson",
+            "ADMIN_FILTER": "(|(uid=admin)(sn=admin))",
+            "USER_ADMIN_FILTER": "(|(uid=moderator)(sn=moderator))",
+            "FIELDS": [
+                "uid",
+                "mail",
+                "givenName",
+                "sn",
+                "userPassword",
+                "telephoneNumber",
+                "employeeNumber",
+                "groups",
+            ],
+            "GROUP_BASE": "ou=groups",
+            "GROUP_CLASS": "groupOfNames",
+            "GROUP_NAME_ATTRIBUTE": "cn",
+            "GROUP_USER_FILTER": "(member={user.dn})",
+        },
+        "JWT": {
+            "PUBLIC_KEY": public_key_path,
+            "PRIVATE_KEY": private_key_path,
+            "ALG": "RS256",
+            "KTY": "RSA",
+            "EXP": 3600,
+            "MAPPING": {
+                "SUB": "uid",
+                "NAME": "cn",
+                "PHONE_NUMBER": "telephoneNumber",
+                "EMAIL": "mail",
+                "GIVEN_NAME": "givenName",
+                "FAMILY_NAME": "sn",
+                "PREFERRED_USERNAME": "displayName",
+                "LOCALE": "preferredLanguage",
+                "PICTURE": "jpegPhoto",
+            },
+        },
+        "SMTP": {
+            "HOST": smtpd.hostname,
+            "PORT": smtpd.port,
+            "TLS": True,
+            "LOGIN": smtpd.config.login_username,
+            "PASSWORD": smtpd.config.login_password,
+            "FROM_ADDR": "admin@mydomain.tld",
+        },
+    }
 
-    app = create_app(
-        {
-            "SECRET_KEY": gen_salt(24),
-            "OAUTH2_METADATA_FILE": "canaille/conf/oauth-authorization-server.sample.json",
-            "OIDC_METADATA_FILE": "canaille/conf/openid-configuration.sample.json",
-            "LDAP": {
-                "ROOT_DN": slapd_server.suffix,
-                "URI": slapd_server.ldap_uri,
-                "BIND_DN": slapd_server.root_dn,
-                "BIND_PW": slapd_server.root_pw,
-                "USER_BASE": "ou=users",
-                "USER_FILTER": "(|(uid={login})(cn={login}))",
-                "USER_CLASS": "inetOrgPerson",
-                "ADMIN_FILTER": "(|(uid=admin)(sn=admin))",
-                "USER_ADMIN_FILTER": "(|(uid=moderator)(sn=moderator))",
-                "FIELDS": [
-                    "uid",
-                    "mail",
-                    "givenName",
-                    "sn",
-                    "userPassword",
-                    "telephoneNumber",
-                    "employeeNumber",
-                    "groups",
-                ],
-                "GROUP_BASE": "ou=groups",
-                "GROUP_CLASS": "groupOfNames",
-                "GROUP_NAME_ATTRIBUTE": "cn",
-                "GROUP_USER_FILTER": "(member={user.dn})",
-            },
-            "JWT": {
-                "PUBLIC_KEY": public_key_path,
-                "PRIVATE_KEY": private_key_path,
-                "ALG": "RS256",
-                "KTY": "RSA",
-                "EXP": 3600,
-                "MAPPING": {
-                    "SUB": "uid",
-                    "NAME": "cn",
-                    "PHONE_NUMBER": "telephoneNumber",
-                    "EMAIL": "mail",
-                    "GIVEN_NAME": "givenName",
-                    "FAMILY_NAME": "sn",
-                    "PREFERRED_USERNAME": "displayName",
-                    "LOCALE": "preferredLanguage",
-                    "PICTURE": "jpegPhoto",
-                },
-            },
-            "SMTP": {
-                "HOST": "localhost",
-                "PORT": 25,
-                "TLS": True,
-                "LOGIN": "smtp_login",
-                "PASSWORD": "smtp_password",
-                "FROM_ADDR": "admin@mydomain.tld",
-            },
-        }
-    )
+
+@pytest.fixture
+def app(configuration):
+    os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+    app = create_app(configuration)
     return app
 
 
@@ -346,14 +349,21 @@ def logged_moderator(moderator, testclient):
 @pytest.fixture(autouse=True)
 def cleanups(slapd_connection):
     yield
-    for consent in Consent.filter(conn=slapd_connection):
-        consent.delete(conn=slapd_connection)
+    try:
+        for consent in Consent.filter(conn=slapd_connection):
+            consent.delete(conn=slapd_connection)
+    except Exception:
+        pass
 
 
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
     Group.ocs_by_name(slapd_connection)
-    g = Group(objectClass=["groupOfNames"], member=[user.dn], cn="foo",)
+    g = Group(
+        objectClass=["groupOfNames"],
+        member=[user.dn],
+        cn="foo",
+    )
     g.save(slapd_connection)
     with app.app_context():
         user.load_groups(conn=slapd_connection)
@@ -365,7 +375,11 @@ def foo_group(app, user, slapd_connection):
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
     Group.ocs_by_name(slapd_connection)
-    g = Group(objectClass=["groupOfNames"], member=[admin.dn], cn="bar",)
+    g = Group(
+        objectClass=["groupOfNames"],
+        member=[admin.dn],
+        cn="bar",
+    )
     g.save(slapd_connection)
     with app.app_context():
         admin.load_groups(conn=slapd_connection)

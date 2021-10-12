@@ -1,3 +1,5 @@
+import ldap
+import smtplib
 import os
 
 from cryptography.hazmat.primitives import serialization as crypto_serialization
@@ -11,6 +13,28 @@ def validate(config, validate_remote=False):
 
     if not os.path.exists(config["JWT"]["PRIVATE_KEY"]):
         raise Exception(f'Private key does not exist {config["JWT"]["PRIVATE_KEY"]}')
+
+    if not validate_remote:
+        return
+
+    conn = ldap.initialize(config["LDAP"]["URI"])
+    if config["LDAP"].get("TIMEOUT"):
+        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"]["TIMEOUT"])
+    conn.simple_bind_s(config["LDAP"]["BIND_DN"], config["LDAP"]["BIND_PW"])
+    conn.unbind_s()
+
+    with smtplib.SMTP(
+        host=config["SMTP"]["HOST"],
+        port=config["SMTP"]["PORT"],
+    ) as smtp:
+        if config["SMTP"].get("TLS"):
+            smtp.starttls()
+
+        if config["SMTP"].get("LOGIN"):
+            smtp.login(
+                user=config["SMTP"]["LOGIN"],
+                password=config["SMTP"].get("PASSWORD"),
+            )
 
 
 def setup_dev_keypair(config):
