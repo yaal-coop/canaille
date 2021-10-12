@@ -10,9 +10,9 @@ def clean():
     """
     Remove expired tokens and authorization codes.
     """
-    from canaille import setup_ldap, teardown_ldap
+    from canaille import setup_ldap_connection, teardown_ldap_connection
 
-    setup_ldap(current_app)
+    setup_ldap_connection(current_app)
 
     for t in Token.filter():
         if t.is_expired():
@@ -22,4 +22,4 @@ def clean():
         if a.is_expired():
             a.delete()
 
-    teardown_ldap(current_app)
+    teardown_ldap_connection(current_app)

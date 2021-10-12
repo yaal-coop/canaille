@@ -9,15 +9,12 @@ import canaille.admin.clients
 import canaille.admin.mail
 import canaille.admin.tokens
 import canaille.consents
+import canaille.configuration
 import canaille.commands.clean
 import canaille.oauth
 import canaille.account
 import canaille.groups
 import canaille.well_known
-
-from cryptography.hazmat.primitives import serialization as crypto_serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.backends import default_backend as crypto_default_backend
 
 from flask import Flask, g, request, render_template, session
 from flask_babel import Babel
@@ -60,47 +57,13 @@ def create_app(config=None):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    setup_dev_keypair(app)
+    if not os.environ.get("FLASK_ENV") == "development":
+        canaille.configuration.setup_dev_keypair(app.config)
 
-    if not os.path.exists(app.config["JWT"]["PUBLIC_KEY"]):
-        raise Exception(f'Public key does not exist {app.config["JWT"]["PUBLIC_KEY"]}')
-
-    if not os.path.exists(app.config["JWT"]["PRIVATE_KEY"]):
-        raise Exception(
-            f'Private key does not exist {app.config["JWT"]["PRIVATE_KEY"]}'
-        )
-
+    canaille.configuration.validate(app.config)
     setup_app(app)
 
     return app
-
-
-def setup_dev_keypair(app):
-    if not os.environ.get("FLASK_ENV") == "development":
-        return
-
-    if os.path.exists(app.config["JWT"]["PUBLIC_KEY"]) or os.path.exists(
-        app.config["JWT"]["PRIVATE_KEY"]
-    ):
-        return
-
-    key = rsa.generate_private_key(
-        backend=crypto_default_backend(), public_exponent=65537, key_size=2048
-    )
-    private_key = key.private_bytes(
-        crypto_serialization.Encoding.PEM,
-        crypto_serialization.PrivateFormat.PKCS8,
-        crypto_serialization.NoEncryption(),
-    )
-    public_key = key.public_key().public_bytes(
-        crypto_serialization.Encoding.OpenSSH, crypto_serialization.PublicFormat.OpenSSH
-    )
-
-    with open(app.config["JWT"]["PUBLIC_KEY"], "wb") as fd:
-        fd.write(public_key)
-
-    with open(app.config["JWT"]["PRIVATE_KEY"], "wb") as fd:
-        fd.write(private_key)
 
 
 def setup_ldap_tree(app):
@@ -115,12 +78,12 @@ def setup_ldap_tree(app):
     conn.unbind_s()
 
 
-def setup_ldap(app):
+def setup_ldap_connection(app):
     g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
     g.ldap.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
 
 
-def teardown_ldap(app):
+def teardown_ldap_connection(app):
     if "ldap" in g:
         g.ldap.unbind_s()
 
@@ -176,11 +139,11 @@ def setup_app(app):
 
         @app.before_request
         def before_request():
-            setup_ldap(app)
+            setup_ldap_connection(app)
 
         @app.after_request
         def after_request(response):
-            teardown_ldap(app)
+            teardown_ldap_connection(app)
             return response
 
         @app.before_request
