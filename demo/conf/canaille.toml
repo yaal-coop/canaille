@@ -89,11 +89,11 @@ GROUP_NAME_ATTRIBUTE = "cn"
 GROUP_USER_FILTER = "(member={user.dn})"
 
 # The jwt configuration. You can generate a RSA keypair with:
-# ssh-keygen -t rsa -b 4096 -m PEM -f private.pem
+# openssl genrsa -out private.pem 4096
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem
 [JWT]
-PUBLIC_KEY = "conf/public.pem"
 PRIVATE_KEY = "conf/private.pem"
+PUBLIC_KEY = "conf/public.pem"
 KTY = "RSA"
 ALG = "RS256"
 EXP = 3600

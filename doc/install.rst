@@ -32,20 +32,41 @@ New fashion: Use slapadd to add the schemas
     sudo slapadd -n0 -l schemas/*.ldif
     sudo service slapd restart
 
-Web interface
-=============
+Canaille installation
+=====================
 
-Then you can deploy the code either by copying the git repository or installing the pip package:
+Choose a path to store the canaille sources, for instance `/opt/canaille`. The install canaille there in a virtualenv.
 
 .. code-block:: console
 
-    pip install canaille
+    sudo mkdir /etc/canaille
+    sudo virtualenv /etc/canaille
+    sudo /etc/canaille/bin/pip install canaille
+
+
+Configuration
+=============
+
+Choose a path to store your configuration, for instance `/etc/canaille` and then copy the sample configuration there. You should also generate a keypair that canaille will use to sign tokens.
+
+.. code-block:: console
+
+    sudo mkdir /etc/canaille
+
+    sudo openssl genrsa -out private.pem 4096
+    sudo openssl rsa -in private.pem -pubout -outform PEM -out public.pem
+
+    sudo cp canaille/conf/config.sample.toml /etc/canaille/config.toml
+    sudo cp canaille/conf/openid-configuration.sample.json /etc/canaille/openid-configuration.json
+
+Web interface
+=============
 
 Finally you have to run the website in a WSGI server:
 
 .. code-block:: console
 
-    pip install gunicorn
+    sudo /opt/canaille/bin/pip install gunicorn
     gunicorn "canaille:create_app()"
 
 Recurrent jobs
@@ -56,4 +77,4 @@ expired tokens and authorization codes with:
 
 .. code-block:: console
 
-    env CONFIG=/path/to/config.toml FASK_APP=canaille flask clean
+    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/flask clean
