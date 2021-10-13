@@ -63,7 +63,7 @@ Then check your configuration file with the following command:
 
 .. code-block:: console
 
-    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/canaille check
+    env CONFIG=/etc/canaille/config.toml /opt/canaille/bin/canaille check
 
 
 Web interface
