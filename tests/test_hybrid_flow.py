@@ -50,7 +50,9 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     } == res.json
 
 
-def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair):
+def test_oidc_hybrid(
+    testclient, slapd_connection, logged_user, client, keypair, other_client
+):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -79,7 +81,7 @@ def test_oidc_hybrid(testclient, slapd_connection, logged_user, client, keypair)
     claims = jwt.decode(id_token, keypair[1])
     assert logged_user.uid[0] == claims["sub"]
     assert logged_user.cn[0] == claims["name"]
-    assert [client.oauthClientID] == claims["aud"]
+    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",

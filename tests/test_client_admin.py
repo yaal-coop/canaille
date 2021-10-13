@@ -32,15 +32,17 @@ def test_client_add(testclient, logged_admin, slapd_connection):
         "oauthSoftwareVersion": "1",
         "oauthJWK": "jwk",
         "oauthJWKURI": "https://foo.bar/jwks.json",
+        "oauthAudience": [],
     }
     for k, v in data.items():
-        res.form[k] = v
+        res.form[k].force_value(v)
 
     res = res.form.submit(status=302, name="action", value="edit")
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["oauthClientID"].value
     client = Client.get(client_id, conn=slapd_connection)
+    data["oauthAudience"] = [client.dn]
     for k, v in data.items():
         client_value = getattr(client, k)
         if k == "oauthScope":
@@ -49,7 +51,7 @@ def test_client_add(testclient, logged_admin, slapd_connection):
             assert v == client_value
 
 
-def test_client_edit(testclient, client, logged_admin, slapd_connection):
+def test_client_edit(testclient, client, logged_admin, slapd_connection, other_client):
     res = testclient.get("/admin/client/edit/" + client.oauthClientID)
     data = {
         "oauthClientName": "foobar",
@@ -67,12 +69,17 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection):
         "oauthSoftwareVersion": "1",
         "oauthJWK": "jwk",
         "oauthJWKURI": "https://foo.bar/jwks.json",
+        "oauthAudience": [client.dn, other_client.dn],
     }
     for k, v in data.items():
-        res.forms["clientadd"][k] = v
+        res.forms["clientadd"][k].force_value(v)
     res = res.forms["clientadd"].submit(status=200, name="action", value="edit")
 
-    client.reload(conn=slapd_connection)
+    assert (
+        "The client has not been edited. Please check your information." not in res.text
+    )
+
+    client = Client.get(client.dn, conn=slapd_connection)
     for k, v in data.items():
         client_value = getattr(client, k)
         if k == "oauthScope":

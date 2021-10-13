@@ -197,7 +197,7 @@ def testclient(app):
 
 
 @pytest.fixture
-def client(app, slapd_connection):
+def client(app, slapd_connection, other_client):
     Client.ocs_by_name(slapd_connection)
     c = Client(
         oauthClientID=gen_salt(24),
@@ -225,6 +225,42 @@ def client(app, slapd_connection):
         oauthJWKURI="https://mydomain.tld/jwk",
         oauthTokenEndpointAuthMethod="client_secret_basic",
     )
+    c.oauthAudience = [c.dn, other_client.dn]
+    c.save(slapd_connection)
+
+    return c
+
+
+@pytest.fixture
+def other_client(app, slapd_connection):
+    Client.ocs_by_name(slapd_connection)
+    c = Client(
+        oauthClientID=gen_salt(24),
+        oauthClientName="Some other client",
+        oauthClientContact="contact@myotherdomain.tld",
+        oauthClientURI="https://myotherdomain.tld",
+        oauthRedirectURIs=[
+            "https://myotherdomain.tld/redirect1",
+            "https://myotherdomain.tld/redirect2",
+        ],
+        oauthLogoURI="https://myotherdomain.tld/logo.png",
+        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%S%MZ"),
+        oauthClientSecret=gen_salt(48),
+        oauthGrantType=[
+            "password",
+            "authorization_code",
+            "implicit",
+            "hybrid",
+            "refresh_token",
+        ],
+        oauthResponseType=["code", "token", "id_token"],
+        oauthScope=["openid", "profile", "groups"],
+        oauthTermsOfServiceURI="https://myotherdomain.tld/tos",
+        oauthPolicyURI="https://myotherdomain.tld/policy",
+        oauthJWKURI="https://myotherdomain.tld/jwk",
+        oauthTokenEndpointAuthMethod="client_secret_basic",
+    )
+    c.oauthAudience = [c.dn]
     c.save(slapd_connection)
 
     return c
@@ -301,6 +337,7 @@ def token(slapd_connection, client, user):
     Token.ocs_by_name(slapd_connection)
     t = Token(
         oauthAccessToken=gen_salt(48),
+        oauthAudience=[client.dn],
         oauthClient=client.dn,
         oauthSubject=user.dn,
         oauthTokenType=None,

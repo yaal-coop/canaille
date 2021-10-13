@@ -125,6 +125,10 @@ class OpenIDCode(_OpenIDCode):
     def generate_user_info(self, user, scope):
         return generate_user_info(user, scope)
 
+    def get_audiences(self, request):
+        client = request.client
+        return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
+
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username, password):
@@ -157,6 +161,10 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
     def generate_user_info(self, user, scope):
         return generate_user_info(user, scope)
 
+    def get_audiences(self, request):
+        client = request.client
+        return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
+
 
 class OpenIDHybridGrant(_OpenIDHybridGrant):
     def save_authorization_code(self, code, request):
@@ -170,6 +178,11 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
     def generate_user_info(self, user, scope):
         return generate_user_info(user, scope)
+
+    def get_audiences(self, request):
+        client = request.client
+        print(client)
+        return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
 
 
 def query_client(client_id):
@@ -187,6 +200,7 @@ def save_token(token, request):
         oauthClient=request.client.dn,
         oauthRefreshToken=token.get("refresh_token"),
         oauthSubject=request.user,
+        oauthAudience=request.client.oauthAudience,
     )
     t.save()
 
@@ -244,6 +258,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
     def introspect_token(self, token):
         client_id = Client.get(token.oauthClient).oauthClientID
         user = User.get(dn=token.oauthSubject)
+        audience = [Client.get(aud).oauthClientID for aud in token.oauthAudience]
         return {
             "active": True,
             "client_id": client_id,
@@ -251,7 +266,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "username": user.name,
             "scope": token.get_scope(),
             "sub": user.uid[0],
-            "aud": client_id,
+            "aud": audience,
             "iss": authorization.metadata["issuer"],
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
