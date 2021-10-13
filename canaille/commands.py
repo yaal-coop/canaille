@@ -1,4 +1,5 @@
 import click
+import sys
 
 from canaille import create_app
 from canaille.models import AuthorizationCode, Token
@@ -30,3 +31,17 @@ def clean():
             a.delete()
 
     teardown_ldap_connection(current_app)
+
+
+@cli.command()
+@with_appcontext
+def check():
+    """
+    Check the configuration file.
+    """
+    from canaille.configuration import validate, ConfigurationException
+    try:
+        validate(current_app.config, validate_remote=True)
+    except ConfigurationException as exc:
+        print(exc)
+        sys.exit(1)

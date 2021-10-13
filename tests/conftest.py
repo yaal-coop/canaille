@@ -152,6 +152,7 @@ def configuration(slapd_server, smtpd, keypair_path):
             "GROUP_CLASS": "groupOfNames",
             "GROUP_NAME_ATTRIBUTE": "cn",
             "GROUP_USER_FILTER": "(member={user.dn})",
+            "TIMEOUT": 0.1,
         },
         "JWT": {
             "PUBLIC_KEY": public_key_path,
