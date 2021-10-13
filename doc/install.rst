@@ -77,4 +77,4 @@ expired tokens and authorization codes with:
 
 .. code-block:: console
 
-    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/flask clean
+    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/canaille clean

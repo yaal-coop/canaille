@@ -1,5 +1,5 @@
 import datetime
-from canaille.commands.clean import clean
+from canaille.commands import cli
 from canaille.models import AuthorizationCode, Token
 from werkzeug.security import gen_salt
 
@@ -45,7 +45,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
     assert token.is_expired()
 
     runner = testclient.app.test_cli_runner()
-    runner.invoke(clean)
+    runner.invoke(cli, ["clean"])
 
     assert not AuthorizationCode.get("my-code", conn=slapd_connection)
     assert not Token.get("my-token", conn=slapd_connection)

@@ -1,11 +1,18 @@
-from flask import Blueprint, current_app
+import click
+
+from canaille import create_app
 from canaille.models import AuthorizationCode, Token
+from flask import current_app
+from flask.cli import with_appcontext, FlaskGroup
 
 
-bp = Blueprint("clean", __name__, cli_group=None)
+@click.group(cls=FlaskGroup, create_app=create_app)
+def cli():
+    pass
 
 
-@bp.cli.command("clean")
+@cli.command()
+@with_appcontext
 def clean():
     """
     Remove expired tokens and authorization codes.
