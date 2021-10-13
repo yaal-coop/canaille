@@ -79,6 +79,8 @@ def setup_ldap_tree(app):
 
 def setup_ldap_connection(app):
     g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
+    if app.config["LDAP"].get("TIMEOUT"):
+        g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
     g.ldap.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
 
 

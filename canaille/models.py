@@ -98,6 +98,12 @@ class User(LDAPObject):
 
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])
+
+        if current_app.config["LDAP"].get("TIMEOUT"):
+            conn.set_option(
+                ldap.OPT_NETWORK_TIMEOUT, current_app.config["LDAP"]["TIMEOUT"]
+            )
+
         try:
             conn.simple_bind_s(self.dn, password)
             return True
@@ -111,7 +117,9 @@ class User(LDAPObject):
 
         try:
             conn.passwd_s(
-                self.dn, None, password.encode("utf-8"),
+                self.dn,
+                None,
+                password.encode("utf-8"),
             )
 
         except ldap.LDAPError:
@@ -343,7 +351,8 @@ class Consent(LDAPObject):
         self.save()
 
         tokens = Token.filter(
-            oauthClient=self.oauthClient, oauthSubject=self.oauthSubject,
+            oauthClient=self.oauthClient,
+            oauthSubject=self.oauthSubject,
         )
         for t in tokens:
             if t.revoked or any(
