@@ -3,8 +3,22 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
-[Unreleased]
-============
+[0.0.3] - 2021-10-13
+====================
+
+Added
+*****
+
+- Two-steps sign-in :issue:`49`
+- Tokens can have several audiences. :issue:`62` :pr:`9`
+- Configuration check command. :issue:`66` :pr:`8`
+- Groups managament. :issue:`12` :pr:`6`
+
+Fixed
+*****
+
+- Introspection access bugfix. :issue:`63` :pr:`10`
+- Introspection sub claim. :issue:`64` :pr:`7`
 
 [0.0.2] - 2021-01-06
 ====================
