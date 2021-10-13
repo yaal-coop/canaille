@@ -59,6 +59,13 @@ Choose a path to store your configuration, for instance `/etc/canaille` and then
     sudo cp canaille/conf/config.sample.toml /etc/canaille/config.toml
     sudo cp canaille/conf/openid-configuration.sample.json /etc/canaille/openid-configuration.json
 
+Then check your configuration file with the following command:
+
+.. code-block:: console
+
+    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/canaille check
+
+
 Web interface
 =============
 
@@ -77,4 +84,4 @@ expired tokens and authorization codes with:
 
 .. code-block:: console
 
-    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/flask clean
+    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/canaille clean

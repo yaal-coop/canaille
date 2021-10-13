@@ -10,7 +10,6 @@ import canaille.admin.mail
 import canaille.admin.tokens
 import canaille.consents
 import canaille.configuration
-import canaille.commands.clean
 import canaille.oauth
 import canaille.account
 import canaille.groups
@@ -108,7 +107,6 @@ def setup_app(app):
         app.register_blueprint(canaille.account.bp)
         app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
-        app.register_blueprint(canaille.commands.clean.bp)
         app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
         app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
         app.register_blueprint(canaille.admin.tokens.bp, url_prefix="/admin/token")

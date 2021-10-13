@@ -1,4 +1,3 @@
-import mock
 from canaille.models import User
 
 
@@ -182,8 +181,7 @@ def test_user_creation_edition_and_deletion(
     assert "george" not in res.text
 
 
-@mock.patch("smtplib.SMTP")
-def test_first_login_mail_button(SMTP, testclient, slapd_connection, logged_admin):
+def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_admin):
     User.ocs_by_name(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
@@ -206,7 +204,7 @@ def test_first_login_mail_button(SMTP, testclient, slapd_connection, logged_admi
         in res
     )
     assert "Send again" in res
-    SMTP.assert_called_once_with(host="localhost", port=25)
+    assert len(smtpd.messages) == 1
 
     u.reload(slapd_connection)
     u.userPassword = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
@@ -216,8 +214,7 @@ def test_first_login_mail_button(SMTP, testclient, slapd_connection, logged_admi
     assert "This user does not have a password yet" not in res
 
 
-@mock.patch("smtplib.SMTP")
-def test_email_reset_button(SMTP, testclient, slapd_connection, logged_admin):
+def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     User.ocs_by_name(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
@@ -230,7 +227,7 @@ def test_email_reset_button(SMTP, testclient, slapd_connection, logged_admin):
     u.save(slapd_connection)
 
     res = testclient.get("/profile/temp", status=200)
-    assert "If the user has forgotten his password" in res
+    assert "If the user has forgotten his password" in res, res.text
     assert "Send" in res
 
     res = res.form.submit(name="action", value="password-reset-mail", status=200)
@@ -239,4 +236,4 @@ def test_email_reset_button(SMTP, testclient, slapd_connection, logged_admin):
         in res
     )
     assert "Send again" in res
-    SMTP.assert_called_once_with(host="localhost", port=25)
+    assert len(smtpd.messages) == 1
