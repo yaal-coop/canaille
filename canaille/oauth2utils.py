@@ -250,10 +250,8 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
                 tok = Token.filter(oauthRefreshToken=token)
         if tok:
             tok = tok[0]
-            if tok.oauthClient == client.dn:
+            if client.dn in tok.oauthAudience:
                 return tok
-            # if has_introspect_permission(client):
-            #    return tok
 
     def introspect_token(self, token):
         client_id = Client.get(token.oauthClient).oauthClientID
