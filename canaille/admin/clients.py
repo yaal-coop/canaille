@@ -18,6 +18,12 @@ def index(user):
     return render_template("admin/client_list.html", clients=clients, menuitem="admin")
 
 
+def client_audiences():
+    return [
+        (client.dn, client.oauthClientName) for client in Client.filter()
+    ]
+
+
 class ClientAdd(FlaskForm):
     oauthClientName = wtforms.StringField(
         _("Name"),
@@ -73,6 +79,12 @@ class ClientAdd(FlaskForm):
         ],
         default="client_secret_basic",
     )
+    oauthAudience = wtforms.SelectMultipleField(
+        _("Token audiences"),
+        validators=[wtforms.validators.Optional()],
+        choices=client_audiences,
+        validate_choice=False,
+    )
     oauthLogoURI = wtforms.URLField(
         _("Logo URI"),
         validators=[wtforms.validators.Optional()],
@@ -120,7 +132,8 @@ def add(user):
 
     if not form.validate():
         flash(
-            _("The client has not been added. Please check your information."), "error",
+            _("The client has not been added. Please check your information."),
+            "error",
         )
         return render_template("admin/client_add.html", form=form, menuitem="admin")
 
@@ -148,9 +161,11 @@ def add(user):
         if form["oauthTokenEndpointAuthMethod"].data == "none"
         else gen_salt(48),
     )
+    client.oauthAudience = [client.dn]
     client.save()
     flash(
-        _("The client has been created."), "success",
+        _("The client has been created."),
+        "success",
     )
 
     return redirect(url_for("admin_clients.edit", client_id=client_id))
@@ -203,10 +218,12 @@ def client_edit(client_id):
             oauthSoftwareVersion=form["oauthSoftwareVersion"].data,
             oauthJWK=form["oauthJWK"].data,
             oauthJWKURI=form["oauthJWKURI"].data,
+            oauthAudience=form["oauthAudience"].data,
         )
         client.save()
         flash(
-            _("The client has been edited."), "success",
+            _("The client has been edited."),
+            "success",
         )
 
     return render_template(
@@ -217,7 +234,8 @@ def client_edit(client_id):
 def client_delete(client_id):
     client = Client.get(client_id) or abort(404)
     flash(
-        _("The client has been deleted."), "success",
+        _("The client has been deleted."),
+        "success",
     )
     client.delete()
     return redirect(url_for("admin_clients.index"))

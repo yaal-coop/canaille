@@ -52,7 +52,9 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     client.save(slapd_connection)
 
 
-def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
+def test_oidc_implicit(
+    testclient, keypair, slapd_connection, user, client, other_client
+):
     client.oauthGrantType = ["token id_token"]
     client.oauthTokenEndpointAuthMethod = "none"
 
@@ -89,7 +91,7 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
     claims = jwt.decode(id_token, keypair[1])
     assert user.uid[0] == claims["sub"]
     assert user.cn[0] == claims["name"]
-    assert [client.oauthClientID] == claims["aud"]
+    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -110,7 +112,7 @@ def test_oidc_implicit(testclient, keypair, slapd_connection, user, client):
 
 
 def test_oidc_implicit_with_group(
-    testclient, keypair, slapd_connection, user, client, foo_group
+    testclient, keypair, slapd_connection, user, client, foo_group, other_client
 ):
     client.oauthGrantType = ["token id_token"]
     client.oauthTokenEndpointAuthMethod = "none"
@@ -148,7 +150,7 @@ def test_oidc_implicit_with_group(
     claims = jwt.decode(id_token, keypair[1])
     assert user.uid[0] == claims["sub"]
     assert user.cn[0] == claims["name"]
-    assert [client.oauthClientID] == claims["aud"]
+    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
     assert ["foo"] == claims["groups"]
 
     res = testclient.get(

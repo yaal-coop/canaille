@@ -1,11 +1,12 @@
 from . import client_credentials
+from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from urllib.parse import urlsplit, parse_qs
 from canaille.models import AuthorizationCode, Token, Consent
 from werkzeug.security import gen_salt
 
 
-def test_authorization_code_flow(testclient, slapd_connection, logged_user, client):
+def test_authorization_code_flow(testclient, slapd_connection, logged_user, client, keypair, other_client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -36,11 +37,17 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
-    access_token = res.json["access_token"]
 
+    access_token = res.json["access_token"]
     token = Token.get(access_token, conn=slapd_connection)
     assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn
+
+    id_token = res.json["id_token"]
+    claims = jwt.decode(id_token, keypair[1])
+    assert logged_user.uid[0] == claims["sub"]
+    assert logged_user.cn[0] == claims["name"]
+    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -99,8 +106,8 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
-    access_token = res.json["access_token"]
 
+    access_token = res.json["access_token"]
     token = Token.get(access_token, conn=slapd_connection)
     assert token.oauthClient == client.dn
     assert token.oauthSubject == logged_user.dn

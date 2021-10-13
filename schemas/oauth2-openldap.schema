@@ -59,7 +59,7 @@ attributetype ( 1.3.6.1.4.1.56207.1.1.7 NAME 'oauthAuthorizationDate'
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 attributetype ( 1.3.6.1.4.1.56207.1.1.8 NAME 'oauthCodeChallenge'
-        DESC 'OAuth 2.0 nonce'
+        DESC 'OAuth 2.0 code challenge'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
         SUBSTR caseExactSubstringsMatch
@@ -68,7 +68,7 @@ attributetype ( 1.3.6.1.4.1.56207.1.1.8 NAME 'oauthCodeChallenge'
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
 attributetype ( 1.3.6.1.4.1.56207.1.1.9 NAME 'oauthCodeChallengeMethod'
-        DESC 'OAuth 2.0 nonce'
+        DESC 'OAuth 2.0 code challenge method'
         EQUALITY caseExactMatch
         ORDERING caseExactOrderingMatch
         SUBSTR caseExactSubstringsMatch
@@ -292,6 +292,13 @@ attributetypes ( 1.3.6.1.4.1.56207.1.1.34 NAME 'oauthClient'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+attributetypes ( 1.3.6.1.4.1.56207.1.1.35 NAME 'oauthAudience'
+        DESC 'Token Audience'
+        EQUALITY distinguishedNameMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -315,7 +322,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthJWK $
               oauthTokenEndpointAuthMethod $
               oauthSoftwareID $
-              oauthSoftwareVersion )
+              oauthSoftwareVersion $
+              oauthAudience)
         )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
@@ -349,7 +357,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
               oauthScope $
               oauthIssueDate $
               oauthTokenLifetime $
-              oauthRevokationDate )
+              oauthRevokationDate $
+              oauthAudience )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.4 NAME 'oauthConsent'
         DESC 'OAuth 2.0 User consents'
