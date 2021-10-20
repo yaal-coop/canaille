@@ -27,10 +27,13 @@ Old fashion: Copy the schemas in your filesystem
 New fashion: Use slapadd to add the schemas
 -------------------------------------------
 
+Be careful to stop your ldap server before running `slapadd`
+
 .. code-block:: console
 
+    sudo service slapd stop
     sudo slapadd -n0 -l schemas/*.ldif
-    sudo service slapd restart
+    sudo service slapd start
 
 Canaille installation
 =====================
