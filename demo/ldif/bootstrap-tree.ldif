@@ -1,0 +1,19 @@
+dn: ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: oauth
+
+dn: ou=clients,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: clients
+
+dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: tokens
+
+dn: ou=consents,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: consents
+
+dn: ou=codes,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: codes

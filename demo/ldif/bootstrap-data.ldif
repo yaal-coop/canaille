@@ -73,14 +73,6 @@ mail: james@mydomain.tld
 telephoneNumber: 555-000-003
 memberof: cn=users,ou=groups,dc=mydomain,dc=tld
 
-dn: ou=oauth,dc=mydomain,dc=tld
-objectclass: organizationalUnit
-ou: oauth
-
-dn: ou=clients,ou=oauth,dc=mydomain,dc=tld
-objectclass: organizationalUnit
-ou: clients
-
 dn: oauthClientID=1JGkkzCbeHpGtlqgI5EENByf,ou=clients,ou=oauth,dc=mydomain,dc=tld
 objectclass: oauthClient
 oauthClientID: 1JGkkzCbeHpGtlqgI5EENByf

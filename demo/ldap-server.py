@@ -38,7 +38,13 @@ try:
         + "\n"
     )
 
-    with open("ldif/bootstrap.ldif") as fd:
+    with open("ldif/bootstrap-tree.ldif") as fd:
+        try:
+            slapd.ldapadd(fd.read())
+        except RuntimeError:
+            pass
+
+    with open("ldif/bootstrap-data.ldif") as fd:
         try:
             slapd.ldapadd(fd.read())
         except RuntimeError:
