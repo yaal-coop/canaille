@@ -120,6 +120,11 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
+    oauthPreconsent = wtforms.BooleanField(
+        _("Pre-consent"),
+        validators=[wtforms.validators.Optional()],
+        default=False,
+    )
 
 
 @bp.route("/add", methods=["GET", "POST"])
@@ -157,6 +162,7 @@ def add(user):
         oauthSoftwareVersion=form["oauthSoftwareVersion"].data,
         oauthJWK=form["oauthJWK"].data,
         oauthJWKURI=form["oauthJWKURI"].data,
+        oauthPreconsent="TRUE" if form["oauthPreconsent"].data else "FALSE",
         oauthClientSecret=""
         if form["oauthTokenEndpointAuthMethod"].data == "none"
         else gen_salt(48),
@@ -184,10 +190,11 @@ def edit(user, client_id):
 
 
 def client_edit(client_id):
-    client = Client.get(client_id)
+    client = Client.get(client_id) or abort(404)
     data = dict(client)
     data["oauthScope"] = " ".join(data["oauthScope"])
     data["oauthRedirectURIs"] = data["oauthRedirectURIs"][0]
+    data["oauthPreconsent"] = client.preconsent
     form = ClientAdd(request.form or None, data=data, client=client)
 
     if not request.form:
@@ -219,6 +226,7 @@ def client_edit(client_id):
             oauthJWK=form["oauthJWK"].data,
             oauthJWKURI=form["oauthJWKURI"].data,
             oauthAudience=form["oauthAudience"].data,
+            oauthPreconsent="TRUE" if form["oauthPreconsent"].data else "FALSE",
         )
         client.save()
         flash(
