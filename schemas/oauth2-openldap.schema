@@ -299,6 +299,13 @@ attributetypes ( 1.3.6.1.4.1.56207.1.1.35 NAME 'oauthAudience'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+attributetypes ( 1.3.6.1.4.1.56207.1.1.36 NAME 'oauthPreconsent'
+        DESC 'OAuth client pre-consentment'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -323,7 +330,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthTokenEndpointAuthMethod $
               oauthSoftwareID $
               oauthSoftwareVersion $
-              oauthAudience)
+              oauthAudience $
+              oauthPreconsent )
         )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'

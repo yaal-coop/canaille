@@ -195,6 +195,10 @@ class Client(LDAPObject, ClientMixin):
             else None
         )
 
+    @property
+    def preconsent(self):
+        return self.oauthPreconsent and self.oauthPreconsent.lower() == "true"
+
     def get_client_id(self):
         return self.oauthClientID
 

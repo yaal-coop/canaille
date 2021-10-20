@@ -6,7 +6,9 @@ from canaille.models import AuthorizationCode, Token, Consent
 from werkzeug.security import gen_salt
 
 
-def test_authorization_code_flow(testclient, slapd_connection, logged_user, client, keypair, other_client):
+def test_authorization_code_flow(
+    testclient, slapd_connection, logged_user, client, keypair, other_client
+):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -19,6 +21,65 @@ def test_authorization_code_flow(testclient, slapd_connection, logged_user, clie
     )
 
     res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.oauthRedirectURIs[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    assert authcode is not None
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="profile",
+            redirect_uri=client.oauthRedirectURIs[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = Token.get(access_token, conn=slapd_connection)
+    assert token.oauthClient == client.dn
+    assert token.oauthSubject == logged_user.dn
+
+    id_token = res.json["id_token"]
+    claims = jwt.decode(id_token, keypair[1])
+    assert logged_user.uid[0] == claims["sub"]
+    assert logged_user.cn[0] == claims["name"]
+    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
+
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )
+    assert {
+        "name": "John Doe",
+        "family_name": "Doe",
+        "sub": "user",
+        "groups": [],
+    } == res.json
+
+
+def test_authorization_code_flow_preconsented(
+    testclient, slapd_connection, logged_user, client, keypair, other_client
+):
+    client.oauthPreconsent = "TRUE"
+    client.save(conn=slapd_connection)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.oauthClientID,
+            scope="profile",
+            nonce="somenonce",
+        ),
+        status=302,
+    )
 
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -164,7 +225,8 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     res = testclient.post(
         "/oauth/token",
         params=dict(
-            grant_type="refresh_token", refresh_token=res.json["refresh_token"],
+            grant_type="refresh_token",
+            refresh_token=res.json["refresh_token"],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -332,7 +394,9 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
 
 def test_prompt_not_logged(testclient, slapd_connection, user, client):
     Consent(
-        oauthClient=client.dn, oauthSubject=user.dn, oauthScope=["openid", "profile"],
+        oauthClient=client.dn,
+        oauthSubject=user.dn,
+        oauthScope=["openid", "profile"],
     ).save(conn=slapd_connection)
 
     res = testclient.get(

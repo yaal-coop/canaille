@@ -86,7 +86,9 @@ def authorize():
     consent = consents[0] if consents else None
 
     if request.method == "GET":
-        if consent and all(scope in set(consent.oauthScope) for scope in scopes):
+        if client.preconsent or (
+            consent and all(scope in set(consent.oauthScope) for scope in scopes)
+        ):
             return authorization.create_authorization_response(grant_user=user.dn)
 
         elif request.args.get("prompt") == "none":
@@ -197,9 +199,7 @@ def jwks():
 @bp.route("/userinfo")
 @require_oauth("profile")
 def userinfo():
-    current_app.logger.debug(
-        "userinfo endpoint request: %s", request.args
-    )
+    current_app.logger.debug("userinfo endpoint request: %s", request.args)
     response = generate_user_info(
         current_token.oauthSubject, current_token.oauthScope[0]
     )
