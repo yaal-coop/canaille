@@ -2,6 +2,7 @@ import ldap
 import os
 import smtplib
 import socket
+import uuid
 
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -31,12 +32,13 @@ def validate(config, validate_remote=False):
 
 
 def validate_ldap_configuration(config):
+    from canaille.models import User, Group
+
     try:
         conn = ldap.initialize(config["LDAP"]["URI"])
         if config["LDAP"].get("TIMEOUT"):
             conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"]["TIMEOUT"])
         conn.simple_bind_s(config["LDAP"]["BIND_DN"], config["LDAP"]["BIND_PW"])
-        conn.unbind_s()
 
     except ldap.SERVER_DOWN as exc:
         raise ConfigurationException(
@@ -47,6 +49,57 @@ def validate_ldap_configuration(config):
         raise ConfigurationException(
             f'LDAP authentication failed with user \'{config["LDAP"]["BIND_DN"]}\''
         ) from exc
+
+    try:
+        User.ocs_by_name(conn)
+        user = User(
+            objectClass=["inetOrgPerson"],
+            cn=f"canaille_{uuid.uuid4()}",
+            sn=f"canaille_{uuid.uuid4()}",
+            uid=f"canaille_{uuid.uuid4()}",
+            mail=f"canaille_{uuid.uuid4()}@mydomain.tld",
+            userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        )
+        user.save(conn)
+        user.delete(conn)
+
+    except ldap.INSUFFICIENT_ACCESS as exc:
+        raise ConfigurationException(
+            f'LDAP  user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
+            f'users at \'{config["LDAP"]["USER_BASE"]}\''
+        ) from exc
+
+    try:
+        Group.ocs_by_name(conn)
+
+        user = User(
+            objectClass=["inetOrgPerson"],
+            cn=f"canaille_{uuid.uuid4()}",
+            sn=f"canaille_{uuid.uuid4()}",
+            uid=f"canaille_{uuid.uuid4()}",
+            mail=f"canaille_{uuid.uuid4()}@mydomain.tld",
+            userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        )
+        user.save(conn)
+
+        group = Group(
+            objectClass=["groupOfNames"],
+            cn=f"canaille_{uuid.uuid4()}",
+            member=[user.dn],
+        )
+        group.save(conn)
+        group.delete(conn)
+
+    except ldap.INSUFFICIENT_ACCESS as exc:
+        raise ConfigurationException(
+            f'LDAP  user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
+            f'groups at \'{config["LDAP"]["GROUP_BASE"]}\''
+        ) from exc
+
+    finally:
+        user.delete(conn)
+
+    conn.unbind_s()
 
 
 def validate_smtp_configuration(config):
