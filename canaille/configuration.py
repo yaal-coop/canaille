@@ -65,7 +65,7 @@ def validate_ldap_configuration(config):
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise ConfigurationException(
-            f'LDAP  user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
+            f'LDAP user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
             f'users at \'{config["LDAP"]["USER_BASE"]}\''
         ) from exc
 
@@ -92,7 +92,7 @@ def validate_ldap_configuration(config):
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise ConfigurationException(
-            f'LDAP  user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
+            f'LDAP user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
             f'groups at \'{config["LDAP"]["GROUP_BASE"]}\''
         ) from exc
 
