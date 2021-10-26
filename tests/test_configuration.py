@@ -1,3 +1,5 @@
+import ldap
+import mock
 import pytest
 from canaille.commands import cli
 from canaille.configuration import validate, ConfigurationException
@@ -45,6 +47,34 @@ def test_ldap_connection_remote_ldap_wrong_credentials(configuration):
         match=r"LDAP authentication failed with user",
     ):
         validate(configuration, validate_remote=True)
+
+
+def test_ldap_cannot_create_users(configuration):
+    from canaille.models import User
+
+    def fake_init(*args, **kwarg):
+        raise ldap.INSUFFICIENT_ACCESS
+
+    with mock.patch.object(User, "__init__", fake_init):
+        with pytest.raises(
+            ConfigurationException,
+            match=r"cannot create users at",
+        ):
+            validate(configuration, validate_remote=True)
+
+
+def test_ldap_cannot_create_groups(configuration):
+    from canaille.models import Group
+
+    def fake_init(*args, **kwarg):
+        raise ldap.INSUFFICIENT_ACCESS
+
+    with mock.patch.object(Group, "__init__", fake_init):
+        with pytest.raises(
+            ConfigurationException,
+            match=r"cannot create groups at",
+        ):
+            validate(configuration, validate_remote=True)
 
 
 def test_smtp_connection_remote_smtp_unreachable(configuration):
