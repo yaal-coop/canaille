@@ -12,7 +12,7 @@ function usage {
 }
 
 function run {
-    if ! type python > /dev/null 2>&1; then
+    if ! type python > /dev/null 2>&1 && ! type python3 > /dev/null 2>&1; then
         echo "Cannot start the LDAP server. Please install python on your system."
         return 1
     fi
