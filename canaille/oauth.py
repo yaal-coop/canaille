@@ -135,7 +135,7 @@ def authorize():
                     oauthScope=scopes,
                     oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
                 )
-                consent.save()
+            consent.save()
 
         response = authorization.create_authorization_response(grant_user=grant_user)
         current_app.logger.debug(

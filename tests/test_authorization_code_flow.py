@@ -369,6 +369,75 @@ def test_authorization_code_flow_when_consent_already_given(
     assert "code" in params
 
 
+def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
+    testclient, slapd_connection, logged_user, client
+):
+    assert not Consent.filter(conn=slapd_connection)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.oauthClientID,
+            scope="profile",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.oauthRedirectURIs[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    assert authcode is not None
+
+    consents = Consent.filter(
+        oauthClient=client.dn, oauthSubject=logged_user.dn, conn=slapd_connection
+    )
+    assert "profile" in consents[0].oauthScope
+    assert "groups" not in consents[0].oauthScope
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="profile",
+            redirect_uri=client.oauthRedirectURIs[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    assert "access_token" in res.json
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.oauthClientID,
+            scope="profile groups",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.oauthRedirectURIs[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    assert authcode is not None
+
+    consents = Consent.filter(
+        oauthClient=client.dn, oauthSubject=logged_user.dn, conn=slapd_connection
+    )
+    assert "profile" in consents[0].oauthScope
+    assert "groups" in consents[0].oauthScope
+
+
 def test_prompt_none(testclient, slapd_connection, logged_user, client):
     Consent(
         oauthClient=client.dn,
