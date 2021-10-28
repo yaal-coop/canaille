@@ -8,12 +8,25 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 
+ROOT = os.path.dirname(os.path.abspath(__file__))
+
 
 class ConfigurationException(Exception):
     pass
 
 
 def validate(config, validate_remote=False):
+    validate_keypair(config)
+    validate_theme(config)
+
+    if not validate_remote:
+        return
+
+    validate_ldap_configuration(config)
+    validate_smtp_configuration(config)
+
+
+def validate_keypair(config):
     if not os.path.exists(config["JWT"]["PUBLIC_KEY"]):
         raise ConfigurationException(
             f'Public key does not exist {config["JWT"]["PUBLIC_KEY"]}'
@@ -23,12 +36,6 @@ def validate(config, validate_remote=False):
         raise ConfigurationException(
             f'Private key does not exist {config["JWT"]["PRIVATE_KEY"]}'
         )
-
-    if not validate_remote:
-        return
-
-    validate_ldap_configuration(config)
-    validate_smtp_configuration(config)
 
 
 def validate_ldap_configuration(config):
@@ -125,6 +132,16 @@ def validate_smtp_configuration(config):
         raise ConfigurationException(
             f'SMTP authentication failed with user \'{config["SMTP"]["LOGIN"]}\''
         ) from exc
+
+
+def validate_theme(config):
+    if not config.get("THEME"):
+        return
+
+    if not os.path.exists(config["THEME"]) and not os.path.exists(
+        os.path.join(ROOT, "themes", config["THEME"])
+    ):
+        raise ConfigurationException(f'Cannot find theme \'{config["THEME"]}\'')
 
 
 def setup_dev_keypair(config):

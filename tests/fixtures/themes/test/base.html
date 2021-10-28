@@ -1,0 +1,107 @@
+{% import 'flask.j2' as flask %}
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>{% block title %}{{ website_name|default("Canaille") }} {% trans %}authorization interface{% endtrans %}{% endblock %}</title>
+
+    <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
+    <link href="/static/fonts/lato.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+    {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
+    {% block style %}{% endblock %}
+
+    <!--[if lt IE 9]>
+        <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
+        <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    {% block menu %}
+        {% if user and menu %}
+        <nav class="ui stackable labeled icon menu container">
+            {% if logo_url %}
+            <div class="header item">
+                <a href="/" class="logo">
+                    <img class="ui image" src="{{ logo_url }}" alt="{{ website_name }}" />
+                </a>
+            </div>
+            {% endif %}
+            <a class="item {% if menuitem == "profile" %}active{% endif %}"
+                href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
+                <i class="id card icon"></i>
+                {% trans %}My profile{% endtrans %}
+            </a>
+            <a class="item {% if menuitem == "consents" %}active{% endif %}"
+                href="{{ url_for('consents.consents') }}">
+                <i class="handshake icon"></i>
+                {% trans %}My consents{% endtrans %}
+            </a>
+            {% if user.moderator %}
+            <a class="item {% if menuitem == "users" %}active{% endif %}"
+                href="{{ url_for('account.users') }}">
+                <i class="users icon"></i>
+                {% trans %}Users{% endtrans %}
+            </a>
+            <a class="item {% if menuitem == "groups" %}active{% endif %}"
+                href="{{ url_for('groups.groups') }}">
+                <i class="users cog icon"></i>
+                {% trans %}Groups{% endtrans %}
+            </a>
+            {% endif %}
+            {% if user.admin %}
+            <div class="ui dropdown item {% if menuitem == "admin" %}active{% endif %}">
+                <i class="settings icon"></i>
+                Admin
+                <div class="menu">
+                    <a class="item" href="{{ url_for('admin_clients.index') }}">
+                    <i class="plug icon"></i>
+                    {% trans %}Clients{% endtrans %}
+                </a>
+                <a class="item" href="{{ url_for('admin_tokens.index') }}">
+                    <i class="key icon"></i>
+                    {% trans %}Tokens{% endtrans %}
+                </a>
+                <a class="item" href="{{ url_for('admin_authorizations.index') }}">
+                    <i class="user secret icon"></i>
+                    {% trans %}Codes{% endtrans %}
+                </a>
+                <a class="item" href="">
+                    <i class="handshake icon"></i>
+                    {% trans %}Consents{% endtrans %}
+                </a>
+                </div>
+            </div>
+            {% endif %}
+            <a class="item" href="{{ url_for('account.logout') }}">
+                <i class="sign out alternate icon"></i>
+                {% trans %}Log out{% endtrans %}
+            </a>
+        </nav>
+        {% endif %}
+    {% endblock %}
+
+    <div class="ui container">
+        <div class="content">
+            {{ flask.messages() }}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <footer>
+        <a href="{{ url_for('account.about') }}">{{ _("About canaille") }}</a>
+    </footer>
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/fomanticui/semantic.min.js"></script>
+    <script src="/static/js/base.js"></script>
+    {% block script %}{% endblock %}
+
+    TEST_THEME
+</body>
+</html>

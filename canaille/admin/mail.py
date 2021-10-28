@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, current_app, url_for
+from flask import Blueprint, current_app, url_for
+from flask_themer import render_template
 from flask_babel import gettext as _
 from canaille.flaskutils import admin_needed
 from canaille.mails import profile_hash

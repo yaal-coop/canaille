@@ -17,6 +17,11 @@ LOGO = "/static/img/canaille-head.png"
 # Your favicon. If unset the LOGO will be used.
 FAVICON = "/static/img/canaille-c.png"
 
+# The name of a theme in the 'theme' directory, or an absolute path
+# to a theme. Defaults to 'default'. Theming is done with
+# https://github.com/tktech/flask-themer
+# THEME = "default"
+
 # If unset, language is detected
 # LANGUAGE = "en"
 

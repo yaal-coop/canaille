@@ -1,6 +1,7 @@
 import datetime
 import wtforms
-from flask import Blueprint, render_template, request, flash, redirect, url_for, abort
+from flask import Blueprint, request, flash, redirect, url_for, abort
+from flask_themer import render_template
 from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as _
 from werkzeug.security import gen_salt

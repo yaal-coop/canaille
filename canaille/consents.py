@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, flash, redirect, url_for
+from flask_themer import render_template
 from flask_babel import gettext
 from canaille.models import Consent, Client
 from canaille.flaskutils import user_needed

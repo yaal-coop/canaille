@@ -9,11 +9,11 @@ from flask import (
     session,
     redirect,
     abort,
-    render_template,
     jsonify,
     flash,
 )
 from flask_babel import gettext, lazy_gettext as _
+from flask_themer import render_template
 from .models import User, Client, Consent
 from .oauth2utils import (
     authorization,
