@@ -11,6 +11,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 - OpenID Connect support;
 - No outdated or exotic protocol support;
 - No additional database required. Everything is stored in your LDAP server;
+- Customizable, themable;
 - The code is easy to read and easy to edit, and you should!
 
 # Screenshots

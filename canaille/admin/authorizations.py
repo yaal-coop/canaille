@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint
+from flask_themer import render_template
 from canaille.models import AuthorizationCode
 from canaille.flaskutils import admin_needed
 

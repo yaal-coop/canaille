@@ -1,6 +1,7 @@
 import hashlib
-from flask import url_for, render_template, current_app
+from flask import url_for, current_app
 from flask_babel import gettext as _
+from flask_themer import render_template
 from .apputils import logo, send_email
 
 

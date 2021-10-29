@@ -7,11 +7,11 @@ from flask import (
     url_for,
     current_app,
     abort,
-    render_template,
     redirect,
     session,
 )
 from flask_babel import gettext as _
+from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
 from .forms import (
     LoginForm,

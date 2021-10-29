@@ -15,8 +15,9 @@ import canaille.account
 import canaille.groups
 import canaille.well_known
 
-from flask import Flask, g, request, render_template, session
+from flask import Flask, g, request, session
 from flask_babel import Babel
+from flask_themer import Themer, render_template, FileSystemThemeLoader
 
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
@@ -120,6 +121,18 @@ def setup_app(app):
 
         babel = Babel(app)
 
+        additional_themes_dir = (
+            os.path.dirname(app.config["THEME"])
+            if app.config.get("THEME") and os.path.exists(app.config["THEME"])
+            else None
+        )
+        themer = Themer(
+            app,
+            loaders=[FileSystemThemeLoader(additional_themes_dir)]
+            if additional_themes_dir
+            else None,
+        )
+
         @babel.localeselector
         def get_locale():
             user = getattr(g, "user", None)
@@ -136,6 +149,11 @@ def setup_app(app):
             user = getattr(g, "user", None)
             if user is not None:
                 return user.timezone
+
+        @themer.current_theme_loader
+        def get_current_theme():
+            # if config['THEME'] may be a theme name or an absolute path
+            return app.config.get("THEME", "default").split("/")[-1]
 
         @app.before_request
         def before_request():

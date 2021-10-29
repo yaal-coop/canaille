@@ -1,8 +1,11 @@
 import ldap
 import mock
+import os
 import pytest
+from canaille import create_app
 from canaille.commands import cli
 from canaille.configuration import validate, ConfigurationException
+from flask_webtest import TestApp
 
 
 def test_ldap_connection_no_remote(configuration):
@@ -104,3 +107,43 @@ def test_check_command_fail(testclient):
     testclient.app.config["LDAP"]["URI"] = "ldap://invalid-ldap.com"
     runner = testclient.app.test_cli_runner()
     runner.invoke(cli, ["check"])
+
+
+@pytest.fixture
+def themed_testclient(app, configuration):
+    configuration["TESTING"] = True
+
+    root = os.path.dirname(os.path.abspath(__file__))
+    test_theme_path = os.path.join(root, "fixtures", "themes", "test")
+    configuration["THEME"] = test_theme_path
+
+    configuration["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+    app = create_app(configuration)
+
+    return TestApp(app)
+
+
+def test_theme(testclient, themed_testclient):
+    res = testclient.get("/login")
+    assert "TEST_THEME" not in res
+
+    res = themed_testclient.get("/login")
+    assert "TEST_THEME" in res
+
+
+def test_invalid_theme(configuration):
+    validate(configuration, validate_remote=False)
+
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Cannot find theme",
+    ):
+        configuration["THEME"] = "invalid"
+        validate(configuration, validate_remote=False)
+
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Cannot find theme",
+    ):
+        configuration["THEME"] = "/path/to/invalid"
+        validate(configuration, validate_remote=False)

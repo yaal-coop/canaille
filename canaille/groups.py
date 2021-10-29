@@ -1,6 +1,5 @@
 from flask import (
     Blueprint,
-    render_template,
     redirect,
     url_for,
     request,
@@ -9,6 +8,7 @@ from flask import (
     abort,
 )
 from flask_babel import gettext as _
+from flask_themer import render_template
 
 from .flaskutils import moderator_needed
 from .forms import GroupForm
