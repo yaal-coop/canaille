@@ -171,7 +171,11 @@ class Group(LDAPObject):
         return self[attribute][0]
 
     def get_members(self, conn=None):
-        return [User.get(dn=user_dn, conn=conn) for user_dn in self.member]
+        return [
+            User.get(dn=user_dn, conn=conn)
+            for user_dn in self.member
+            if User.get(dn=user_dn, conn=conn)
+        ]
 
     def add_member(self, user, conn=None):
         self.member = self.member + [user.dn]
