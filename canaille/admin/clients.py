@@ -19,9 +19,7 @@ def index(user):
 
 
 def client_audiences():
-    return [
-        (client.dn, client.oauthClientName) for client in Client.filter()
-    ]
+    return [(client.dn, client.oauthClientName) for client in Client.filter()]
 
 
 class ClientAdd(FlaskForm):

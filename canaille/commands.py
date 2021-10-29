@@ -40,6 +40,7 @@ def check():
     Check the configuration file.
     """
     from canaille.configuration import validate, ConfigurationException
+
     try:
         validate(current_app.config, validate_remote=True)
     except ConfigurationException as exc:
