@@ -56,7 +56,7 @@ def create_app(config=None):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if not os.environ.get("FLASK_ENV") == "development":
+    if os.environ.get("FLASK_ENV") == "development":
         canaille.configuration.setup_dev_keypair(app.config)
 
     canaille.configuration.validate(app.config)
