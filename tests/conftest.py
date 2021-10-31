@@ -128,6 +128,7 @@ def configuration(slapd_server, smtpd, keypair_path):
         "SECRET_KEY": gen_salt(24),
         "OAUTH2_METADATA_FILE": "canaille/conf/oauth-authorization-server.sample.json",
         "OIDC_METADATA_FILE": "canaille/conf/openid-configuration.sample.json",
+        "LOGGING": {},
         "LDAP": {
             "ROOT_DN": slapd_server.suffix,
             "URI": slapd_server.ldap_uri,

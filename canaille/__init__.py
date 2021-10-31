@@ -18,6 +18,7 @@ import canaille.well_known
 from flask import Flask, g, request, session
 from flask_babel import Babel
 from flask_themer import Themer, render_template, FileSystemThemeLoader
+from logging.config import dictConfig
 
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
@@ -90,11 +91,42 @@ def teardown_ldap_connection(app):
         g.ldap.unbind_s()
 
 
+def setup_logging(app):
+    log_level = app.config.get("LOGGING", {}).get("LEVEL", "WARNING")
+    if not app.config.get("LOGGING", {}).get("PATH"):
+        handler = {
+            "class": "logging.StreamHandler",
+            "stream": "ext://flask.logging.wsgi_errors_stream",
+            "formatter": "default",
+        }
+    else:
+        handler = {
+            "class": "logging.handlers.WatchedFileHandler",
+            "filename": app.config["LOGGING"]["PATH"],
+            "formatter": "default",
+        }
+
+    dictConfig(
+        {
+            "version": 1,
+            "formatters": {
+                "default": {
+                    "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+                }
+            },
+            "handlers": {"wsgi": handler},
+            "root": {"level": log_level, "handlers": ["wsgi"]},
+        }
+    )
+
+
 def setup_app(app):
     if SENTRY and app.config.get("SENTRY_DSN"):
         sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
     try:
+        setup_logging(app)
+
         LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
         user_base = app.config["LDAP"]["USER_BASE"]
         if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):

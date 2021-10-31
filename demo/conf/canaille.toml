@@ -44,6 +44,17 @@ OIDC_METADATA_FILE = "conf/openid-configuration.json"
 # account. The default value is true.
 # SELF_DELETION = true
 
+[LOGGING]
+# LEVEL can be one value among:
+# DEBUG, INFO, WARNING, ERROR, CRITICAL
+# Defaults to WARNING
+# LEVEL = "WARNING"
+LEVEL = "DEBUG"
+
+# The path of the log file. If not set (the default) logs are
+# written in the standard error output.
+# PATH = ""
+
 [LDAP]
 URI = "ldap://127.0.0.1:5389"
 ROOT_DN = "dc=mydomain,dc=tld"
