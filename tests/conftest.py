@@ -183,13 +183,13 @@ def configuration(slapd_server, smtpd, keypair_path):
             "FROM_ADDR": "admin@mydomain.tld",
         },
     }
-    setup_ldap_tree(conf)
     return conf
 
 
 @pytest.fixture
 def app(configuration):
     os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+    setup_ldap_tree(configuration)
     app = create_app(configuration)
     return app
 

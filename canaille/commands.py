@@ -52,7 +52,7 @@ def check():
 @with_appcontext
 def install():
     """
-    Installs nubla.
+    Installs canaille elements from the configuration.
     """
     from canaille.installation import install
     from canaille.configuration import validate, ConfigurationException
