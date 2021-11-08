@@ -23,7 +23,7 @@ from logging.config import dictConfig
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
 from .oauth2utils import config_oauth
-from .models import User, Token, AuthorizationCode, Client, Consent, Group
+from .models import User, Group
 
 try:  # pragma: no cover
     import sentry_sdk
@@ -65,18 +65,6 @@ def create_app(config=None):
     setup_app(app)
 
     return app
-
-
-def setup_ldap_tree(app):
-    conn = ldap.initialize(app.config["LDAP"]["URI"])
-    if app.config["LDAP"].get("TIMEOUT"):
-        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
-    conn.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
-    Token.initialize(conn)
-    AuthorizationCode.initialize(conn)
-    Client.initialize(conn)
-    Consent.initialize(conn)
-    conn.unbind_s()
 
 
 def setup_ldap_connection(app):
@@ -138,7 +126,6 @@ def setup_app(app):
         app.url_map.strict_slashes = False
 
         config_oauth(app)
-        setup_ldap_tree(app)
         app.register_blueprint(canaille.account.bp)
         app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")

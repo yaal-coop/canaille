@@ -46,3 +46,21 @@ def check():
     except ConfigurationException as exc:
         print(exc)
         sys.exit(1)
+
+
+@cli.command()
+@with_appcontext
+def install():
+    """
+    Installs nubla.
+    """
+    from canaille.installation import install
+    from canaille.configuration import validate, ConfigurationException
+
+    try:
+        validate(current_app.config, validate_remote=True)
+        install(current_app.config)
+
+    except ConfigurationException as exc:
+        print(exc)
+        sys.exit(1)

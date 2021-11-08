@@ -10,6 +10,7 @@ from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 from canaille import create_app
 from canaille.models import User, Client, Token, AuthorizationCode, Consent, Group
+from canaille.installation import setup_ldap_tree
 from canaille.ldaputils import LDAPObject
 
 
@@ -124,7 +125,7 @@ def slapd_connection(slapd_server):
 def configuration(slapd_server, smtpd, keypair_path):
     smtpd.config.use_starttls = True
     private_key_path, public_key_path = keypair_path
-    return {
+    conf = {
         "SECRET_KEY": gen_salt(24),
         "OAUTH2_METADATA_FILE": "canaille/conf/oauth-authorization-server.sample.json",
         "OIDC_METADATA_FILE": "canaille/conf/openid-configuration.sample.json",
@@ -182,6 +183,8 @@ def configuration(slapd_server, smtpd, keypair_path):
             "FROM_ADDR": "admin@mydomain.tld",
         },
     }
+    setup_ldap_tree(conf)
+    return conf
 
 
 @pytest.fixture
@@ -199,7 +202,6 @@ def testclient(app):
 
 @pytest.fixture
 def client(app, slapd_connection, other_client):
-    Client.ocs_by_name(slapd_connection)
     c = Client(
         oauthClientID=gen_salt(24),
         oauthClientName="Some client",
@@ -234,7 +236,6 @@ def client(app, slapd_connection, other_client):
 
 @pytest.fixture
 def other_client(app, slapd_connection):
-    Client.ocs_by_name(slapd_connection)
     c = Client(
         oauthClientID=gen_salt(24),
         oauthClientName="Some other client",
@@ -269,7 +270,6 @@ def other_client(app, slapd_connection):
 
 @pytest.fixture
 def authorization(app, slapd_connection, user, client):
-    AuthorizationCode.ocs_by_name(slapd_connection)
     a = AuthorizationCode(
         oauthCode="my-code",
         oauthClient=client.dn,
@@ -335,7 +335,6 @@ def moderator(app, slapd_connection):
 
 @pytest.fixture
 def token(slapd_connection, client, user):
-    Token.ocs_by_name(slapd_connection)
     t = Token(
         oauthAccessToken=gen_salt(48),
         oauthAudience=[client.dn],
@@ -353,7 +352,6 @@ def token(slapd_connection, client, user):
 
 @pytest.fixture
 def consent(slapd_connection, client, user):
-    Consent.ocs_by_name(slapd_connection)
     t = Consent(
         oauthClient=client.dn,
         oauthSubject=user.dn,
