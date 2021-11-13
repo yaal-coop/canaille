@@ -3,6 +3,7 @@ import ldap
 import os
 import toml
 
+import canaille.account
 import canaille.admin
 import canaille.admin.authorizations
 import canaille.admin.clients
@@ -10,8 +11,8 @@ import canaille.admin.mail
 import canaille.admin.tokens
 import canaille.consents
 import canaille.configuration
+import canaille.installation
 import canaille.oauth
-import canaille.account
 import canaille.groups
 import canaille.well_known
 
@@ -34,7 +35,7 @@ except Exception:
     SENTRY = False
 
 
-def create_app(config=None):
+def create_app(config=None, validate=True):
     app = Flask(__name__)
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -59,9 +60,11 @@ def create_app(config=None):
         )
 
     if os.environ.get("FLASK_ENV") == "development":
-        canaille.configuration.setup_dev_keypair(app.config)
+        canaille.installation.setup_keypair(app.config)
 
-    canaille.configuration.validate(app.config)
+    if validate:
+        canaille.configuration.validate(app.config)
+
     setup_app(app)
 
     return app

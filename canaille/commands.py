@@ -55,10 +55,9 @@ def install():
     Installs canaille elements from the configuration.
     """
     from canaille.installation import install
-    from canaille.configuration import validate, ConfigurationException
+    from canaille.configuration import ConfigurationException
 
     try:
-        validate(current_app.config, validate_remote=True)
         install(current_app.config)
 
     except ConfigurationException as exc:
