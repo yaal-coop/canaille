@@ -106,8 +106,8 @@ class LDAPObject:
                 pass
 
     @classmethod
-    def ocs_by_name(cls, conn=None):
-        if cls._object_class_by_name:
+    def ocs_by_name(cls, conn=None, force=False):
+        if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
         conn = conn or cls.ldap()
@@ -128,8 +128,8 @@ class LDAPObject:
         return cls._object_class_by_name
 
     @classmethod
-    def attr_type_by_name(cls, conn=None):
-        if cls._attribute_type_by_name:
+    def attr_type_by_name(cls, conn=None, force=False):
+        if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
         conn = conn or cls.ldap()
