@@ -33,13 +33,18 @@ python39:
   stage: test
   script: tox -e py39
 
+python310:
+  image: python:3.10
+  stage: test
+  script: tox -e py310
+
 doc:
-  image: python:3.9
+  image: python:3.10
   stage: test
   script: tox -e doc
 
 coverage:
-  image: python:3.9
+  image: python:3.10
   stage: test
   allow_failure: true
   script:
