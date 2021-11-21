@@ -132,7 +132,9 @@ class OpenIDCode(_OpenIDCode):
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     def authenticate_user(self, username, password):
-        return User.authenticate(username, password).dn
+        user = User.authenticate(username, password)
+        if user:
+            return user.dn
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):
