@@ -133,6 +133,8 @@ class OpenIDCode(_OpenIDCode):
 
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
+    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+
     def authenticate_user(self, username, password):
         user = User.authenticate(username, password)
         if user:
