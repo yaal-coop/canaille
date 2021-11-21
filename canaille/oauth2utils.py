@@ -112,7 +112,9 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        return User.get(dn=authorization_code.oauthSubject).dn
+        user = User.get(dn=authorization_code.oauthSubject)
+        if user:
+            return user.dn
 
 
 class OpenIDCode(_OpenIDCode):
@@ -144,7 +146,9 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return token[0]
 
     def authenticate_user(self, credential):
-        return User.get(dn=credential.oauthSubject).dn
+        user = User.get(dn=credential.oauthSubject)
+        if user:
+            return user.dn
 
     def revoke_old_credential(self, credential):
         credential.oauthRevokationDate = datetime.datetime.now().strftime(
