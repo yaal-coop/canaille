@@ -3,6 +3,7 @@ import ldap
 import os
 import toml
 
+import canaille.account
 import canaille.admin
 import canaille.admin.authorizations
 import canaille.admin.clients
@@ -10,8 +11,8 @@ import canaille.admin.mail
 import canaille.admin.tokens
 import canaille.consents
 import canaille.configuration
+import canaille.installation
 import canaille.oauth
-import canaille.account
 import canaille.groups
 import canaille.well_known
 
@@ -23,7 +24,7 @@ from logging.config import dictConfig
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
 from .oauth2utils import config_oauth
-from .models import User, Token, AuthorizationCode, Client, Consent, Group
+from .models import User, Group
 
 try:  # pragma: no cover
     import sentry_sdk
@@ -34,7 +35,7 @@ except Exception:
     SENTRY = False
 
 
-def create_app(config=None):
+def create_app(config=None, validate=True):
     app = Flask(__name__)
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -59,24 +60,14 @@ def create_app(config=None):
         )
 
     if os.environ.get("FLASK_ENV") == "development":
-        canaille.configuration.setup_dev_keypair(app.config)
+        canaille.installation.setup_keypair(app.config)
 
-    canaille.configuration.validate(app.config)
+    if validate:
+        canaille.configuration.validate(app.config)
+
     setup_app(app)
 
     return app
-
-
-def setup_ldap_tree(app):
-    conn = ldap.initialize(app.config["LDAP"]["URI"])
-    if app.config["LDAP"].get("TIMEOUT"):
-        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
-    conn.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
-    Token.initialize(conn)
-    AuthorizationCode.initialize(conn)
-    Client.initialize(conn)
-    Consent.initialize(conn)
-    conn.unbind_s()
 
 
 def setup_ldap_connection(app):
@@ -138,7 +129,6 @@ def setup_app(app):
         app.url_map.strict_slashes = False
 
         config_oauth(app)
-        setup_ldap_tree(app)
         app.register_blueprint(canaille.account.bp)
         app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")

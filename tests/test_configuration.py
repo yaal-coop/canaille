@@ -3,7 +3,6 @@ import mock
 import os
 import pytest
 from canaille import create_app
-from canaille.commands import cli
 from canaille.configuration import validate, ConfigurationException
 from flask_webtest import TestApp
 
@@ -96,17 +95,6 @@ def test_smtp_connection_remote_smtp_wrong_credentials(configuration):
         match=r"SMTP authentication failed with user",
     ):
         validate(configuration, validate_remote=True)
-
-
-def test_check_command(testclient):
-    runner = testclient.app.test_cli_runner()
-    runner.invoke(cli, ["check"])
-
-
-def test_check_command_fail(testclient):
-    testclient.app.config["LDAP"]["URI"] = "ldap://invalid-ldap.com"
-    runner = testclient.app.test_cli_runner()
-    runner.invoke(cli, ["check"])
 
 
 @pytest.fixture

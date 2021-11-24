@@ -46,3 +46,20 @@ def check():
     except ConfigurationException as exc:
         print(exc)
         sys.exit(1)
+
+
+@cli.command()
+@with_appcontext
+def install():
+    """
+    Installs canaille elements from the configuration.
+    """
+    from canaille.installation import install
+    from canaille.configuration import ConfigurationException
+
+    try:
+        install(current_app.config)
+
+    except ConfigurationException as exc:
+        print(exc)
+        sys.exit(1)
