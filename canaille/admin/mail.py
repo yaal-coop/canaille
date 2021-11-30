@@ -15,7 +15,7 @@ def reset_html(user):
     reset_url = url_for(
         "account.reset",
         uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.userPassword[0]),
+        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
         _external=True,
     )
 
@@ -38,7 +38,7 @@ def reset_txt(user):
     reset_url = url_for(
         "account.reset",
         uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.userPassword[0]),
+        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
         _external=True,
     )
 

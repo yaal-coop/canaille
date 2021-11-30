@@ -358,7 +358,7 @@ def reset(uid, hash):
     user = User.get(uid)
 
     if not user or hash != profile_hash(
-        user.uid[0], user.userPassword[0] if user.has_password() else ""
+        user.uid[0], user.mail[0], user.userPassword[0] if user.has_password() else ""
     ):
         flash(
             _("The password reset link that brought you here was invalid."),

@@ -5,11 +5,12 @@ from flask_themer import render_template
 from .apputils import logo, send_email
 
 
-def profile_hash(user, password):
+def profile_hash(user, email, password=None):
     return hashlib.sha256(
         current_app.config["SECRET_KEY"].encode("utf-8")
         + user.encode("utf-8")
-        + password.encode("utf-8")
+        + email.encode("utf-8")
+        + (password.encode("utf-8") if password else b"")
     ).hexdigest()
 
 
@@ -19,7 +20,9 @@ def send_password_reset_mail(user):
         "account.reset",
         uid=user.uid[0],
         hash=profile_hash(
-            user.uid[0], user.userPassword[0] if user.has_password() else ""
+            user.uid[0],
+            user.mail[0],
+            user.userPassword[0] if user.has_password() else "",
         ),
         _external=True,
     )
@@ -57,7 +60,9 @@ def send_password_initialization_mail(user):
         "account.reset",
         uid=user.uid[0],
         hash=profile_hash(
-            user.uid[0], user.userPassword[0] if user.has_password() else ""
+            user.uid[0],
+            user.mail[0],
+            user.userPassword[0] if user.has_password() else "",
         ),
         _external=True,
     )

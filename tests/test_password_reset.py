@@ -5,7 +5,7 @@ def test_password_reset(testclient, slapd_connection, user):
     user.attr_type_by_name(conn=slapd_connection)
     user.reload(conn=slapd_connection)
     with testclient.app.app_context():
-        hash = profile_hash("user", user.userPassword[0])
+        hash = profile_hash("user", user.mail[0], user.userPassword[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
 
@@ -40,7 +40,7 @@ def test_password_reset_bad_password(testclient, slapd_connection, user):
     user.attr_type_by_name(conn=slapd_connection)
     user.reload(conn=slapd_connection)
     with testclient.app.app_context():
-        hash = profile_hash("user", user.userPassword[0])
+        hash = profile_hash("user", user.mail[0], user.userPassword[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
 
