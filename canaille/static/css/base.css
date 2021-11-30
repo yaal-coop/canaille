@@ -38,3 +38,7 @@ footer a {
 [type=button] {
     -webkit-appearance: none;
 }
+
+.ui.form .field > label {
+    display: inline-block;
+}

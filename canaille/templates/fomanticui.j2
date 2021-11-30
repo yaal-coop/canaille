@@ -12,6 +12,7 @@
 
 {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
     {{ field.label() }}
+    {% if "required" in field.flags %}<span class="required-star">*</span>{% endif %}
 {% endif %}
 
     {% if icon %}
