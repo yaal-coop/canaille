@@ -1,4 +1,5 @@
 import pkg_resources
+import wtforms
 
 from flask import (
     Blueprint,
@@ -13,7 +14,9 @@ from flask import (
 from flask_babel import gettext as _
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
+from .apputils import b64_to_obj, profile_hash
 from .forms import (
+    InvitationForm,
     LoginForm,
     PasswordForm,
     PasswordResetForm,
@@ -24,7 +27,6 @@ from .flaskutils import current_user, user_needed, moderator_needed, admin_neede
 from .mails import (
     send_password_initialization_mail,
     send_password_reset_mail,
-    profile_hash,
 )
 from .models import User
 
@@ -143,6 +145,16 @@ def users(user):
     return render_template("users.html", users=users, menuitem="users")
 
 
+@bp.route("/invite", methods=["GET", "POST"])
+@moderator_needed()
+def user_invitation(user):
+    form = InvitationForm(request.form or None)
+    if request.form and form.validate():
+        pass
+
+    return render_template("invite.html", form=form, menuitems="users")
+
+
 @bp.route("/profile", methods=("GET", "POST"))
 @moderator_needed()
 def profile_creation(user):
@@ -156,28 +168,10 @@ def profile_creation(user):
 
     if request.form:
         if not form.validate():
-            flash(_("User creation failed."), "error")
+            flash(_("User account creation failed."), "error")
 
         else:
-            user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
-            for attribute in form:
-                if attribute.name in user.may + user.must:
-                    if isinstance(attribute.data, FileStorage):
-                        data = attribute.data.stream.read()
-                    else:
-                        data = attribute.data
-
-                    if user.attr_type_by_name()[attribute.name].single_value:
-                        user[attribute.name] = data
-                    else:
-                        user[attribute.name] = [data]
-
-            if not form["password1"].data or user.set_password(form["password1"].data):
-                flash(_("User creation succeed."), "success")
-
-            user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
-            user.save()
-
+            profile_create(current_app, form)
             return redirect(url_for("account.profile_edition", username=user.uid[0]))
 
     return render_template(
@@ -189,12 +183,74 @@ def profile_creation(user):
     )
 
 
-@bp.route("/impersonate/<username>")
-@admin_needed()
-def impersonate(user, username):
-    u = User.get(username) or abort(404)
-    u.login()
-    return redirect(url_for("account.index"))
+@bp.route("/register/<data>/<hash>", methods=["GET", "POST"])
+def registration(data, hash):
+    data = b64_to_obj(data)
+
+    if hash != profile_hash(**data):
+        flash(
+            _("The invitation link that brought you here was invalid."),
+            "error",
+        )
+        return redirect(url_for("public.index"))
+
+    form = profile_form(current_app.config["LDAP"]["FIELDS"])
+    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
+    try:
+        if "uid" in form:
+            del form["uid"].render_kw["readonly"]
+    except KeyError:
+        pass
+
+    form["password1"].validators = [
+        wtforms.validators.DataRequired(),
+        wtforms.validators.Length(min=8),
+    ]
+    form["password2"].validators = [
+        wtforms.validators.DataRequired(),
+        wtforms.validators.Length(min=8),
+    ]
+    form["password1"].flags.required = True
+    form["password2"].flags.required = True
+
+    if request.form:
+        if not form.validate():
+            flash(_("User account creation failed."), "error")
+
+        else:
+            user = profile_create(current_app, form)
+            user.login()
+            return redirect(url_for("account.profile_edition", username=user.uid[0]))
+
+    return render_template(
+        "profile.html",
+        form=form,
+        menuitem="users",
+        edited_user=None,
+        self_deletion=False,
+    )
+
+
+def profile_create(current_app, form):
+    user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+    for attribute in form:
+        if attribute.name in user.may + user.must:
+            if isinstance(attribute.data, FileStorage):
+                data = attribute.data.stream.read()
+            else:
+                data = attribute.data
+
+            if user.attr_type_by_name()[attribute.name].single_value:
+                user[attribute.name] = data
+            else:
+                user[attribute.name] = [data]
+
+    if not form["password1"].data or user.set_password(form["password1"].data):
+        flash(_("User account creation succeed."), "success")
+
+    user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
+    user.save()
+    return user
 
 
 @bp.route("/profile/<username>", methods=("GET", "POST"))
@@ -314,6 +370,14 @@ def profile_delete(user, username):
     if self_deletion:
         return redirect(url_for("account.index"))
     return redirect(url_for("account.users"))
+
+
+@bp.route("/impersonate/<username>")
+@admin_needed()
+def impersonate(user, username):
+    u = User.get(username) or abort(404)
+    u.login()
+    return redirect(url_for("account.index"))
 
 
 @bp.route("/reset", methods=["GET", "POST"])

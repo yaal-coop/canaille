@@ -1,0 +1,6 @@
+# {% trans %}Account creation{% endtrans %}
+
+{% trans %}You have been invited to create an account at {{ site_name }}. To proceed you can click on the link below and follow the instructions.{% endtrans %}
+
+{% trans %}Initialize password{% endtrans %}: {{ registration_url }}
+{{ site_name }}: {{ site_url }}

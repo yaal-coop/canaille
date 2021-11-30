@@ -1,10 +1,28 @@
+import base64
 import email.message
+import hashlib
+import json
 import logging
 import mimetypes
 import smtplib
 import urllib.request
 from email.utils import make_msgid
 from flask import current_app, request
+
+
+def obj_to_b64(obj):
+    return base64.b64encode(json.dumps(obj).encode("utf-8")).decode("utf-8")
+
+
+def b64_to_obj(string):
+    return json.loads(base64.b64decode(string.encode("utf-8")).decode("utf-8"))
+
+
+def profile_hash(*args):
+    return hashlib.sha256(
+        current_app.config["SECRET_KEY"].encode("utf-8")
+        + obj_to_b64(args).encode("utf-8")
+    ).hexdigest()
 
 
 def logo():

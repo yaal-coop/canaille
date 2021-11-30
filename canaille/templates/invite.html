@@ -1,0 +1,35 @@
+{% extends theme('base.html') %}
+{% import 'fomanticui.j2' as fui %}
+
+{% block content %}
+<div class="loginform">
+    <div class="ui attached message">
+        {% trans %}
+        After this form is sent, the recipient your indicated will receive an email
+        containing an account creation link.
+        {% endtrans %}
+    </div>
+    <div class="ui attached clearing segment">
+        <form method="POST"
+          id="{{ form.id or form.__class__.__name__|lower }}"
+          action="{{ request.url }}"
+          role="form"
+          class="ui form"
+          >
+          {{ form.hidden_tag() if form.hidden_tag }}
+            {{ fui.render_field(form.uid, icon="user") }}
+            {{ fui.render_field(form.mail, icon="mail") }}
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
+                        {{ _("Create a user") }}
+                    </a>
+                    <button type="submit" class="ui right floated primary button">
+                        {{ _("Send the invitation") }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

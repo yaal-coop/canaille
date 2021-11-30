@@ -1,17 +1,7 @@
-import hashlib
 from flask import url_for, current_app
 from flask_babel import gettext as _
 from flask_themer import render_template
-from .apputils import logo, send_email
-
-
-def profile_hash(user, email, password=None):
-    return hashlib.sha256(
-        current_app.config["SECRET_KEY"].encode("utf-8")
-        + user.encode("utf-8")
-        + email.encode("utf-8")
-        + (password.encode("utf-8") if password else b"")
-    ).hexdigest()
+from .apputils import logo, send_email, profile_hash
 
 
 def send_password_reset_mail(user):

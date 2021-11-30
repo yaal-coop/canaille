@@ -161,3 +161,20 @@ class GroupForm(FlaskForm):
             raise wtforms.ValidationError(
                 _("The group '{group}' already exists").format(group=field.data)
             )
+
+
+class InvitationForm(FlaskForm):
+    uid = wtforms.StringField(
+        _("Username"),
+        render_kw={"placeholder": _("jdoe")},
+        validators=[wtforms.validators.DataRequired()],
+    )
+    mail = wtforms.EmailField(
+        _("Email address"),
+        validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
