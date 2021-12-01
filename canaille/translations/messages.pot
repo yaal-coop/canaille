@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-01 12:11+0100\n"
+"POT-Creation-Date: 2021-12-01 12:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,74 +41,78 @@ msgid ""
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:137 canaille/account.py:320
+#: canaille/account.py:137 canaille/account.py:319
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:191 canaille/account.py:261
+#: canaille/account.py:166
+msgid "An error happened whilen sending the invitation link."
+msgstr ""
+
+#: canaille/account.py:190 canaille/account.py:260
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/account.py:212 canaille/account.py:229
+#: canaille/account.py:211 canaille/account.py:228
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:219
+#: canaille/account.py:218
 msgid "Your account has already been created."
 msgstr ""
 
-#: canaille/account.py:292
+#: canaille/account.py:291
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:314
+#: canaille/account.py:313
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:328
+#: canaille/account.py:327
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:334
+#: canaille/account.py:333
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/account.py:368
+#: canaille/account.py:367
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:391
+#: canaille/account.py:390
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:410
+#: canaille/account.py:409
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:433
+#: canaille/account.py:432
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:440 canaille/account.py:451
+#: canaille/account.py:439 canaille/account.py:450
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:457
+#: canaille/account.py:456
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:471
+#: canaille/account.py:470
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:480
+#: canaille/account.py:479
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -208,6 +212,7 @@ msgid "1234"
 msgstr ""
 
 #: canaille/forms.py:157 canaille/forms.py:200 canaille/templates/groups.html:9
+#: canaille/themes/default/base.html:55
 msgid "Groups"
 msgstr ""
 
@@ -245,7 +250,7 @@ msgstr ""
 msgid "Password initialization on {website_name}"
 msgstr ""
 
-#: canaille/mails.py:90
+#: canaille/mails.py:91
 msgid "You have been invited to create an account on {website_name}"
 msgstr ""
 
@@ -361,7 +366,7 @@ msgstr ""
 msgid "Invitation on {website_name}"
 msgstr ""
 
-#: canaille/templates/about.html:12
+#: canaille/templates/about.html:12 canaille/themes/default/base.html:98
 msgid "About canaille"
 msgstr ""
 
@@ -404,7 +409,7 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: canaille/templates/consent_list.html:18
+#: canaille/templates/consent_list.html:18 canaille/themes/default/base.html:44
 msgid "My consents"
 msgstr ""
 
@@ -661,7 +666,7 @@ msgstr ""
 msgid "User creation"
 msgstr ""
 
-#: canaille/templates/profile.html:37
+#: canaille/templates/profile.html:37 canaille/themes/default/base.html:39
 msgid "My profile"
 msgstr ""
 
@@ -934,5 +939,33 @@ msgid ""
 "In order to finalize your account configuration at %(site_name)s, we need"
 " to setup your password. Please click on the link below and follow the "
 "instructions."
+msgstr ""
+
+#: canaille/themes/default/base.html:10
+msgid "authorization interface"
+msgstr ""
+
+#: canaille/themes/default/base.html:50
+msgid "Users"
+msgstr ""
+
+#: canaille/themes/default/base.html:65
+msgid "Clients"
+msgstr ""
+
+#: canaille/themes/default/base.html:69
+msgid "Tokens"
+msgstr ""
+
+#: canaille/themes/default/base.html:73
+msgid "Codes"
+msgstr ""
+
+#: canaille/themes/default/base.html:77
+msgid "Consents"
+msgstr ""
+
+#: canaille/themes/default/base.html:84
+msgid "Log out"
 msgstr ""
 
