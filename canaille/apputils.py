@@ -57,9 +57,18 @@ def send_email(subject, recipient, text, html, sender=None, attachements=None):
     msg = email.message.EmailMessage()
     msg.set_content(text)
     msg.add_alternative(html, subtype="html")
+
     msg["Subject"] = subject
-    msg["From"] = sender or current_app.config["SMTP"]["FROM_ADDR"]
     msg["To"] = recipient
+
+    if sender:
+        msg["From"] = sender
+    elif current_app.config.get("NAME"):
+        msg["From"] = '"{}" <{}>'.format(
+            current_app.config.get("NAME"), current_app.config["SMTP"]["FROM_ADDR"]
+        )
+    else:
+        msg["From"] = current_app.config["SMTP"]["FROM_ADDR"]
 
     attachements = attachements or []
     for cid, filename, value in attachements:
