@@ -92,13 +92,13 @@ def send_invitation_mail(email, registration_url):
         website_name=current_app.config.get("NAME", registration_url)
     )
     text_body = render_template(
-        "mail/firstlogin.txt",
+        "mail/invitation.txt",
         site_name=current_app.config.get("NAME", registration_url),
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
-        "mail/firstlogin.html",
+        "mail/invitation.html",
         site_name=current_app.config.get("NAME", registration_url),
         site_url=base_url,
         registration_url=registration_url,
