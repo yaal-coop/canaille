@@ -189,14 +189,6 @@ def profile_creation(user):
     )
 
 
-@bp.route("/impersonate/<username>")
-@admin_needed()
-def impersonate(user, username):
-    u = User.get(username) or abort(404)
-    u.login()
-    return redirect(url_for("account.index"))
-
-
 @bp.route("/profile/<username>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, username):
@@ -314,6 +306,14 @@ def profile_delete(user, username):
     if self_deletion:
         return redirect(url_for("account.index"))
     return redirect(url_for("account.users"))
+
+
+@bp.route("/impersonate/<username>")
+@admin_needed()
+def impersonate(user, username):
+    u = User.get(username) or abort(404)
+    u.login()
+    return redirect(url_for("account.index"))
 
 
 @bp.route("/reset", methods=["GET", "POST"])
