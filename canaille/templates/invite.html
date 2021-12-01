@@ -1,0 +1,92 @@
+{% extends theme('base.html') %}
+{% import 'fomanticui.j2' as fui %}
+
+{% block script %}
+    <script src="/static/js/invite.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="invitationform">
+    {% if success %}
+
+    <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Invitation sent") }}
+            </div>
+        </h2>
+    </div>
+
+    <div class="ui attached success message">
+        {% set email = form.mail.data %}
+        {% trans %}This invitation link has been to {{ email }}{% endtrans %}
+        {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
+    </div>
+
+    <div class="ui attached segment">
+        <div class="ui center aligned container">
+            <div class="ui fields">
+                <div class="ui action input">
+                    <input type="text" value="{{ registration_url }}" readonly id="copy-text">
+                    <button class="ui primary right labeled icon button" id="copy-button">
+                        <i class="copy icon"></i>
+                        {% trans %}Copy{% endtrans %}
+                    </button>
+                </div>
+            </div>
+            <br>
+            <div class="ui stackable buttons">
+                <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
+                    {{ _("Create a user") }}
+                </a>
+                <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="impersonate" id="impersonate">
+                    {{ _("Invite another user") }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+
+    <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Invitate an user") }}
+            </div>
+        </h2>
+    </div>
+
+    <div class="ui attached message">
+        {% trans %}
+        After this form is sent, the recipient your indicated will receive an email
+        containing an account creation link.
+        {% endtrans %}
+    </div>
+
+    <div class="ui attached segment">
+        <form method="POST"
+          id="{{ form.id or form.__class__.__name__|lower }}"
+          action="{{ request.url }}"
+          role="form"
+          class="ui form"
+          >
+          {{ form.hidden_tag() if form.hidden_tag }}
+            {{ fui.render_field(form.uid, icon="user") }}
+            {{ fui.render_field(form.mail, icon="mail") }}
+            {{ fui.render_field(form.groups) }}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
+                        {{ _("Create a user") }}
+                    </a>
+                    <button type="submit" class="ui right floated primary button">
+                        {{ _("Send the invitation") }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

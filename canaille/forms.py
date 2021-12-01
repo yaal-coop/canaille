@@ -7,6 +7,20 @@ from flask_wtf.file import FileField, FileRequired
 from .models import User, Group
 
 
+def unique_login(form, field):
+    if User.get(field.data):
+        raise wtforms.ValidationError(
+            _("The login '{login}' already exists").format(login=field.data)
+        )
+
+
+def unique_email(form, field):
+    if User.get(filter=f"(mail={field.data})"):
+        raise wtforms.ValidationError(
+            _("The email '{email}' already exists").format(email=field.data)
+        )
+
+
 class LoginForm(FlaskForm):
     login = wtforms.StringField(
         _("Login"),
@@ -161,3 +175,29 @@ class GroupForm(FlaskForm):
             raise wtforms.ValidationError(
                 _("The group '{group}' already exists").format(group=field.data)
             )
+
+
+class InvitationForm(FlaskForm):
+    uid = wtforms.StringField(
+        _("Username"),
+        render_kw={"placeholder": _("jdoe")},
+        validators=[wtforms.validators.DataRequired(), unique_login],
+    )
+    mail = wtforms.EmailField(
+        _("Email address"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Email(),
+            unique_email,
+        ],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+    groups = wtforms.SelectMultipleField(
+        _("Groups"),
+        choices=lambda: [(group[1], group[0]) for group in Group.available_groups()],
+        render_kw={},
+    )
