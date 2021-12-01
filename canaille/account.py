@@ -266,6 +266,7 @@ def registration(data, hash):
         else:
             user = profile_create(current_app, form)
             user.login()
+            flash(_("You account has been created successfuly."), "success")
             return redirect(url_for("account.profile_edition", username=user.uid[0]))
 
     return render_template(
