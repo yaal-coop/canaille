@@ -156,7 +156,7 @@ def profile_creation(user):
 
     if request.form:
         if not form.validate():
-            flash(_("User creation failed."), "error")
+            flash(_("User account creation failed."), "error")
 
         else:
             user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
