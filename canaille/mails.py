@@ -1,17 +1,7 @@
-import hashlib
 from flask import url_for, current_app
 from flask_babel import gettext as _
 from flask_themer import render_template
-from .apputils import logo, send_email
-
-
-def profile_hash(user, email, password=None):
-    return hashlib.sha256(
-        current_app.config["SECRET_KEY"].encode("utf-8")
-        + user.encode("utf-8")
-        + email.encode("utf-8")
-        + (password.encode("utf-8") if password else b"")
-    ).hexdigest()
+from .apputils import logo, send_email, profile_hash
 
 
 def send_password_reset_mail(user):
@@ -88,6 +78,35 @@ def send_password_initialization_mail(user):
     return send_email(
         subject=subject,
         recipient=user.mail,
+        text=text_body,
+        html=html_body,
+        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )
+
+def send_invitation_mail(email, registration_url):
+    base_url = url_for("account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("You have been invited to create an account on {website_name}").format(
+        website_name=current_app.config.get("NAME", registration_url)
+    )
+    text_body = render_template(
+        "mail/firstlogin.txt",
+        site_name=current_app.config.get("NAME", registration_url),
+        site_url=base_url,
+        registration_url=registration_url,
+    )
+    html_body = render_template(
+        "mail/firstlogin.html",
+        site_name=current_app.config.get("NAME", registration_url),
+        site_url=base_url,
+        registration_url=registration_url,
+        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=email,
         text=text_body,
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
