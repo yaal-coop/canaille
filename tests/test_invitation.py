@@ -33,7 +33,8 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group):
     res = res.follow(status=200)
 
     with testclient.app.app_context():
-        assert User.get("someone", conn=slapd_connection)
+        user = User.get("someone", conn=slapd_connection)
+        assert user.check_password("whatever")
 
     with testclient.session_transaction() as sess:
         assert "user_dn" in sess

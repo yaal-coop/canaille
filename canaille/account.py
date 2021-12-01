@@ -292,11 +292,13 @@ def profile_create(current_app, form):
             else:
                 user[attribute.name] = [data]
 
-    if not form["password1"].data or user.set_password(form["password1"].data):
-        flash(_("User account creation succeed."), "success")
-
     user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
     user.save()
+
+    if not form["password1"].data or user.set_password(form["password1"].data):
+        flash(_("User account creation succeed."), "success")
+        user.save()
+
     return user
 
 

@@ -152,6 +152,8 @@ def test_user_creation_edition_and_deletion(
         george = User.get("george", conn=slapd_connection)
         assert "George" == george.givenName[0]
         assert george.groups == []
+        assert george.check_password("totoyolo")
+
     assert "george" in testclient.get("/users", status=200).text
     assert "disabled" not in res.form["groups"].attrs
 
@@ -166,6 +168,8 @@ def test_user_creation_edition_and_deletion(
     with testclient.app.app_context():
         george = User.get("george", conn=slapd_connection)
         assert "Georgio" == george.givenName[0]
+        assert george.check_password("totoyolo")
+
     foo_group.reload(slapd_connection)
     bar_group.reload(slapd_connection)
     assert george.dn in set(foo_group.member)
