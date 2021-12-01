@@ -162,9 +162,8 @@ def user_invitation(user):
         )
 
         success = send_invitation_mail(form.mail.data, registration_url)
-        # if not success:
-        #    flash(_("An error happened whilen sending the invitation link."), "error")
-        success = True
+        if not success:
+            flash(_("An error happened whilen sending the invitation link."), "error")
 
     return render_template(
         "invite.html",

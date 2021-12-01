@@ -83,6 +83,7 @@ def send_password_initialization_mail(user):
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
+
 def send_invitation_mail(email, registration_url):
     base_url = url_for("account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
