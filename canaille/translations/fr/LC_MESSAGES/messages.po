@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2021-12-01 12:34+0100\n"
-"PO-Revision-Date: 2021-12-01 12:35+0100\n"
+"POT-Creation-Date: 2021-12-01 12:48+0100\n"
+"PO-Revision-Date: 2021-12-01 12:48+0100\n"
 "Last-Translator: Camille <camille@yaal.coop>\n"
 "Language: fr\n"
 "Language-Team: French <contact@yaal.coop>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Un lien d'initialisation de votre mot de passe vous a été envoyé par mail. "
 "Vous devriez le recevoir d'ici une dizaine de minutes."
 
-#: canaille/account.py:137 canaille/account.py:319
+#: canaille/account.py:137 canaille/account.py:323
 msgid "Could not send the password initialization email"
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
 
@@ -55,11 +55,11 @@ msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
 msgid "An error happened whilen sending the invitation link."
 msgstr "Une erreur est survenue durant l'envoi du lien d'invitation"
 
-#: canaille/account.py:190 canaille/account.py:260
+#: canaille/account.py:190 canaille/account.py:264
 msgid "User account creation failed."
 msgstr "La création du compte utilisateur a échoué."
 
-#: canaille/account.py:211 canaille/account.py:228
+#: canaille/account.py:211 canaille/account.py:232
 msgid "The invitation link that brought you here was invalid."
 msgstr "Le lien d'invitation qui vous a amené ici est invalide."
 
@@ -67,11 +67,15 @@ msgstr "Le lien d'invitation qui vous a amené ici est invalide."
 msgid "Your account has already been created."
 msgstr "Votre compte a déjà été créé."
 
-#: canaille/account.py:291
+#: canaille/account.py:225
+msgid "You are already logged in, you cannot create an account."
+msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
+
+#: canaille/account.py:295
 msgid "User account creation succeed."
 msgstr "La création du compte utilisateur a réussi."
 
-#: canaille/account.py:313
+#: canaille/account.py:317
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within 10 minutes."
@@ -79,7 +83,7 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "mail. Il devrait arriver d'ici une dizaine de minutes."
 
-#: canaille/account.py:327
+#: canaille/account.py:331
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within 10 minutes."
@@ -87,28 +91,28 @@ msgstr ""
 "Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
 "mail. Il devrait arriver d'ici une dizaine de minutes."
 
-#: canaille/account.py:333
+#: canaille/account.py:337
 msgid "Could not send the password reset email"
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:367
+#: canaille/account.py:371
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: canaille/account.py:390
+#: canaille/account.py:394
 msgid "Profile updated successfuly."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: canaille/account.py:409
+#: canaille/account.py:413
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/account.py:432
+#: canaille/account.py:436
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:439 canaille/account.py:450
+#: canaille/account.py:443 canaille/account.py:454
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
@@ -116,15 +120,15 @@ msgstr ""
 "Un lien de ré-initialisation de votre mot de passe vous a été envoyé par "
 "mail. Vous devriez le recevoir d'ici une dizaine de minutes."
 
-#: canaille/account.py:456
+#: canaille/account.py:460
 msgid "Could not reset your password"
 msgstr "Impossible de réinitialiser votre mot de passe"
 
-#: canaille/account.py:470
+#: canaille/account.py:474
 msgid "The password reset link that brought you here was invalid."
 msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
-#: canaille/account.py:479
+#: canaille/account.py:483
 msgid "Your password has been updated successfuly"
 msgstr "Votre mot de passe a correctement été mis à jour."
 

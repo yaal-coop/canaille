@@ -221,6 +221,10 @@ def registration(data, hash):
         return redirect(url_for("account.index"))
 
     if current_user():
+        flash(
+            _("You are already logged in, you cannot create an account."),
+            "error",
+        )
         return redirect(url_for("account.index"))
 
     if hash != profile_hash(*data):
