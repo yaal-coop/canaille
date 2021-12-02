@@ -9,9 +9,57 @@ from canaille.apputils import obj_to_b64
 bp = Blueprint("admin_mails", __name__)
 
 
+@bp.route("/")
+@admin_needed()
+def mail_index(user):
+    return render_template("admin/mails.html")
+
+
+@bp.route("/password-init.html")
+@admin_needed()
+def password_init_html(user):
+    base_url = url_for("account.index", _external=True)
+    reset_url = url_for(
+        "account.reset",
+        uid=user.uid[0],
+        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
+        _external=True,
+    )
+
+    return render_template(
+        "mail/firstlogin.html",
+        site_name=current_app.config.get("NAME", reset_url),
+        site_url=base_url,
+        reset_url=reset_url,
+        logo=current_app.config.get("LOGO"),
+        title=_("Password initialization on {website_name}").format(
+            website_name=current_app.config.get("NAME", reset_url)
+        ),
+    )
+
+
+@bp.route("/password-init.txt")
+@admin_needed()
+def password_init_txt(user):
+    base_url = url_for("account.index", _external=True)
+    reset_url = url_for(
+        "account.reset",
+        uid=user.uid[0],
+        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
+        _external=True,
+    )
+
+    return render_template(
+        "mail/firstlogin.txt",
+        site_name=current_app.config.get("NAME", reset_url),
+        site_url=current_app.config.get("SERVER_NAME", base_url),
+        reset_url=reset_url,
+    )
+
+
 @bp.route("/reset.html")
 @admin_needed()
-def reset_html(user):
+def password_reset_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
@@ -34,7 +82,7 @@ def reset_html(user):
 
 @bp.route("/reset.txt")
 @admin_needed()
-def reset_txt(user):
+def password_reset_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",

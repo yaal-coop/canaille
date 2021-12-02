@@ -1,0 +1,52 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Email preview") }}
+            </div>
+        </h2>
+    </div>
+
+    <div class="ui attached segment">
+        <div class="ui middle aligned divided list">
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button" href="{{ url_for("admin_mails.password_init_txt") }}">TXT</a>
+                        <a class="ui button" href="{{ url_for("admin_mails.password_init_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Password initialization") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button" href="{{ url_for("admin_mails.password_reset_txt") }}">TXT</a>
+                        <a class="ui button" href="{{ url_for("admin_mails.password_reset_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Password reset") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button" href="{{ url_for("admin_mails.invitation_txt", uid=user.uid, email=user.mail[0]) }}">TXT</a>
+                        <a class="ui button" href="{{ url_for("admin_mails.invitation_html", uid=user.uid, email=user.mail[0]) }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Invitation") }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-01 13:13+0100\n"
+"POT-Creation-Date: 2021-12-02 12:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgid ""
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:137 canaille/account.py:324
+#: canaille/account.py:137 canaille/account.py:326
 msgid "Could not send the password initialization email"
 msgstr ""
 
@@ -69,58 +69,58 @@ msgstr ""
 msgid "You account has been created successfuly."
 msgstr ""
 
-#: canaille/account.py:296
+#: canaille/account.py:299
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:318
+#: canaille/account.py:320
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:332
+#: canaille/account.py:334
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:338
+#: canaille/account.py:340
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/account.py:372
+#: canaille/account.py:374
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:395
+#: canaille/account.py:397
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:414
+#: canaille/account.py:416
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:437
+#: canaille/account.py:439
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:444 canaille/account.py:455
+#: canaille/account.py:446 canaille/account.py:457
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:461
+#: canaille/account.py:463
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:475
+#: canaille/account.py:477
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:484
+#: canaille/account.py:486
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -250,11 +250,11 @@ msgstr ""
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr ""
 
-#: canaille/admin/mail.py:28 canaille/mails.py:21
+#: canaille/admin/mail.py:77 canaille/mails.py:21
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/mails.py:61
+#: canaille/admin/mail.py:35 canaille/mails.py:61
 msgid "Password initialization on {website_name}"
 msgstr ""
 
@@ -370,7 +370,7 @@ msgstr ""
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/admin/mail.py:71
+#: canaille/admin/mail.py:119
 msgid "Invitation on {website_name}"
 msgstr ""
 
@@ -750,7 +750,7 @@ msgstr ""
 msgid "Send mail"
 msgstr ""
 
-#: canaille/templates/profile.html:148
+#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:148
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
@@ -861,13 +861,22 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: canaille/templates/admin/token_view.html:7
-msgid "View a token"
+#: canaille/templates/admin/mails.html:7
+msgid "Email preview"
 msgstr ""
 
+#: canaille/templates/admin/mails.html:22
 #: canaille/templates/mail/firstlogin.html:19
 #: canaille/templates/mail/reset.txt:1
 msgid "Password initialization"
+msgstr ""
+
+#: canaille/templates/admin/mails.html:46
+msgid "Invitation"
+msgstr ""
+
+#: canaille/templates/admin/token_view.html:7
+msgid "View a token"
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.html:27
