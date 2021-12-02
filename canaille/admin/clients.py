@@ -6,14 +6,14 @@ from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as _
 from werkzeug.security import gen_salt
 from canaille.models import Client
-from canaille.flaskutils import admin_needed
+from canaille.flaskutils import permissions_needed
 
 
 bp = Blueprint("admin_clients", __name__)
 
 
 @bp.route("/")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def index(user):
     clients = Client.filter()
     return render_template("admin/client_list.html", clients=clients, menuitem="admin")
@@ -127,7 +127,7 @@ class ClientAdd(FlaskForm):
 
 
 @bp.route("/add", methods=["GET", "POST"])
-@admin_needed()
+@permissions_needed("manage_oidc")
 def add(user):
     form = ClientAdd(request.form or None)
 
@@ -177,7 +177,7 @@ def add(user):
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
-@admin_needed()
+@permissions_needed("manage_oidc")
 def edit(user, client_id):
     if request.method == "GET" or request.form.get("action") == "edit":
         return client_edit(client_id)

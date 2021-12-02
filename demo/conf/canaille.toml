@@ -40,10 +40,6 @@ OIDC_METADATA_FILE = "conf/openid-configuration.json"
 # wether the login exists or not.
 # HIDE_INVALID_LOGINS = false
 
-# SELF_DELETION controls the ability for a user to delete his own
-# account. The default value is true.
-# SELF_DELETION = true
-
 [LOGGING]
 # LEVEL can be one value among:
 # DEBUG, INFO, WARNING, ERROR, CRITICAL
@@ -73,36 +69,63 @@ USER_FILTER = "(|(uid={login})(cn={login}))"
 # A class to use for creating new users
 USER_CLASS = "inetOrgPerson"
 
-# Filter to match super admin users. Super admins can manage
-# OAuth clients, tokens and authorizations. If your LDAP server has
-# the 'memberof' overlay, you can filter against group membership.
-# ADMIN_FILTER = "uid=admin"
-ADMIN_FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
-
-# Filter to match super admin users. User admins can edit, create
-# and delete user accounts. If your LDAP server has the 'memberof'
-# overlay, you can filter against group membership.
-# USER_ADMIN_FILTER = "uid=moderator"
-USER_ADMIN_FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
-
-# The list of ldap fields you want to be editable by the
-# users.
-FIELDS = [
-  "uid",
-  "mail",
-  "givenName",
-  "sn",
-  "userPassword",
-  "telephoneNumber",
-  "employeeNumber",
-#  "jpegPhoto",
-  "groups",
-]
-
+# Where to search for groups?
 GROUP_BASE = "ou=groups"
+
+# The object class to use for creating new groups
 GROUP_CLASS = "groupOfNames"
+
+# The attribute to use to identify a group
 GROUP_NAME_ATTRIBUTE = "cn"
+
+# A filter to check if a user belongs to a group
 GROUP_USER_FILTER = "(member={user.dn})"
+
+# You can define access controls that define what users can do on canaille
+# An access control consists in a FILTER to match users, a list of PERMISSIONS
+# matched users will be able to perform, and fields users will be able
+# to READ and WRITE.
+#
+# A 'FILTER' parameter that is a LDAP filter used to determine if a user
+# belongs to an access control. If absent, all the users will match this
+# access control. If your LDAP server has the 'memberof' overlay, you can
+# filter against group membership.
+# Here are some examples
+#     FILTER = 'uid=admin'
+#     FILTER = 'memberof=cn=admins,ou=groups,dc=mydomain,dc=tld'
+#
+# The 'PERMISSIONS' parameter that is an list of items the users in the access
+# control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
+# - "manage_users" to allow other users management
+# - "manage_groups" to allow group edition and creation
+# - "manage_oidc" to allow OpenID Connect client managements
+# - "delete_account" allows a user to delete his own account. If used with
+#                 manage_users, the user can delete any account
+# - "impersonate_users" to allow a user to take the identity of another user
+#
+# The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
+# object that users will be able to read and/or write.
+[ACL.DEFAULT]
+READ = ["uid", "groups"]
+WRITE = ["givenName", "sn", "userPassword", "telephoneNumber"]
+
+[ACL.ADMIN]
+FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
+PERMISSIONS = [
+    "manage_users",
+    "manage_groups",
+    "manage_oidc",
+    "delete_account",
+    "impersonate_users",
+]
+READ = ["uid"]
+WRITE = ["groups", "givenName", "sn", "userPassword"]
+
+[ACL.HALF_ADMIN]
+FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
+PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
+READ = ["uid"]
+WRITE = ["groups", "givenName", "sn", "userPassword"]
 
 # The jwt configuration. You can generate a RSA keypair with:
 # openssl genrsa -out private.pem 4096

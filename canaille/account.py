@@ -23,7 +23,7 @@ from .forms import (
     ForgottenPasswordForm,
     profile_form,
 )
-from .flaskutils import current_user, user_needed, moderator_needed, admin_needed
+from .flaskutils import current_user, user_needed, permissions_needed
 from .mails import (
     send_password_initialization_mail,
     send_invitation_mail,
@@ -140,14 +140,14 @@ def firstlogin(uid):
 
 
 @bp.route("/users")
-@moderator_needed()
+@permissions_needed("manage_users")
 def users(user):
     users = User.filter(objectClass=current_app.config["LDAP"]["USER_CLASS"])
     return render_template("users.html", users=users, menuitem="users")
 
 
 @bp.route("/invite", methods=["GET", "POST"])
-@moderator_needed()
+@permissions_needed("manage_users")
 def user_invitation(user):
     form = InvitationForm(request.form or None)
 
@@ -175,15 +175,10 @@ def user_invitation(user):
 
 
 @bp.route("/profile", methods=("GET", "POST"))
-@moderator_needed()
+@permissions_needed("manage_users")
 def profile_creation(user):
-    form = profile_form(current_app.config["LDAP"]["FIELDS"])
+    form = profile_form(user.write, user.read)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
-    try:
-        if "uid" in form:
-            del form["uid"].render_kw["readonly"]
-    except KeyError:
-        pass
 
     if request.form:
         if not form.validate():
@@ -240,13 +235,11 @@ def registration(data, hash):
         "groups": data[2],
     }
 
-    form = profile_form(current_app.config["LDAP"]["FIELDS"])
+    readable_fields = set(current_app.config["ACL"]["DEFAULT"]["READ"])
+    writable_fields = set(current_app.config["ACL"]["DEFAULT"]["WRITE"])
+
+    form = profile_form(writable_fields, readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
-    try:
-        if "uid" in form:
-            del form["uid"].render_kw["readonly"]
-    except KeyError:
-        pass
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
@@ -305,7 +298,7 @@ def profile_create(current_app, form):
 @bp.route("/profile/<username>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, username):
-    user.moderator or username == user.uid[0] or abort(403)
+    user.can_manage_users or username == user.uid[0] or abort(403)
 
     if request.method == "GET" or request.form.get("action") == "edit":
         return profile_edit(user, username)
@@ -346,7 +339,7 @@ def profile_edition(user, username):
 
 def profile_edit(editor, username):
     menuitem = "profile" if username == editor.uid[0] else "users"
-    fields = current_app.config["LDAP"]["FIELDS"]
+    fields = editor.read | editor.write
     if username != editor.uid[0]:
         user = User.get(username) or abort(404)
     else:
@@ -363,11 +356,8 @@ def profile_edit(editor, username):
     if "groups" in fields:
         data["groups"] = [g.dn for g in user.groups]
 
-    form = profile_form(fields)
+    form = profile_form(editor.write, editor.read)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
-    form["uid"].render_kw["readonly"] = "true"
-    if "groups" in form and not editor.admin and not editor.moderator:
-        form["groups"].render_kw["disabled"] = "true"
 
     if request.form:
         if not form.validate():
@@ -377,7 +367,7 @@ def profile_edit(editor, username):
             for attribute in form:
                 if (
                     attribute.name in user.may + user.must
-                    and not attribute.name == "uid"
+                    and attribute.name in editor.write
                 ):
                     if isinstance(attribute.data, FileStorage):
                         data = attribute.data.stream.read()
@@ -388,13 +378,16 @@ def profile_edit(editor, username):
                         user[attribute.name] = data
                     else:
                         user[attribute.name] = [data]
-                elif attribute.name == "groups" and (editor.admin or editor.moderator):
+                elif attribute.name == "groups" and "groups" in editor.write:
                     user.set_groups(attribute.data)
 
             if (
-                not form["password1"].data or user.set_password(form["password1"].data)
+                "password1" not in request.form
+                or not form["password1"].data
+                or user.set_password(form["password1"].data)
             ) and request.form["action"] == "edit":
                 flash(_("Profile updated successfuly."), "success")
+
             user.save()
 
     return render_template(
@@ -402,7 +395,7 @@ def profile_edit(editor, username):
         form=form,
         menuitem=menuitem,
         edited_user=user,
-        self_deletion=current_app.config.get("SELF_DELETION", True),
+        self_deletion=user.can_delete_account,
     )
 
 
@@ -422,7 +415,7 @@ def profile_delete(user, username):
 
 
 @bp.route("/impersonate/<username>")
-@admin_needed()
+@permissions_needed("impersonate_users")
 def impersonate(user, username):
     u = User.get(username) or abort(404)
     u.login()

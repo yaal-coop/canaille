@@ -13,9 +13,13 @@ from .ldaputils import LDAPObject
 
 class User(LDAPObject):
     id = "cn"
-    admin = False
-    moderator = False
     _groups = []
+
+    def __init__(self, *args, **kwargs):
+        self.read = set()
+        self.write = set()
+        self.permissions = set()
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def get(cls, login=None, dn=None, filter=None, conn=None):
@@ -25,29 +29,8 @@ class User(LDAPObject):
             filter = current_app.config["LDAP"].get("USER_FILTER").format(login=login)
 
         user = super().get(dn, filter, conn)
-
-        admin_filter = current_app.config["LDAP"].get("ADMIN_FILTER")
-        moderator_filter = current_app.config["LDAP"].get("USER_ADMIN_FILTER")
-        if (
-            admin_filter
-            and user
-            and user.dn
-            and conn.search_s(user.dn, ldap.SCOPE_SUBTREE, admin_filter)
-        ):
-
-            user.admin = True
-            user.moderator = True
-
-        elif (
-            moderator_filter
-            and user
-            and user.dn
-            and conn.search_s(user.dn, ldap.SCOPE_SUBTREE, moderator_filter)
-        ):
-
-            user.moderator = True
-
         if user:
+            user.load_permissions(conn)
             user.load_groups(conn=conn)
 
         return user
@@ -147,6 +130,38 @@ class User(LDAPObject):
         for group in to_del:
             group.remove_member(self, conn=conn)
         self._groups = after
+
+    def load_permissions(self, conn=None):
+        conn = conn or self.ldap()
+
+        for access_group_name, details in current_app.config["ACL"].items():
+            if not details.get("FILTER") or (
+                self.dn
+                and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, details["FILTER"])
+            ):
+                self.permissions |= set(details.get("PERMISSIONS", []))
+                self.read |= set(details.get("READ", []))
+                self.write |= set(details.get("WRITE", []))
+
+    @property
+    def can_manage_users(self):
+        return "manage_users" in self.permissions
+
+    @property
+    def can_manage_groups(self):
+        return "manage_groups" in self.permissions
+
+    @property
+    def can_manage_oidc(self):
+        return "manage_oidc" in self.permissions
+
+    @property
+    def can_delete_account(self):
+        return "delete_account" in self.permissions
+
+    @property
+    def can_impersonate_users(self):
+        return "impersonate_users" in self.permissions
 
 
 class Group(LDAPObject):

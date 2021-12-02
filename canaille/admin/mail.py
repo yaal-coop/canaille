@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, url_for
 from flask_themer import render_template
 from flask_babel import gettext as _
-from canaille.flaskutils import admin_needed
+from canaille.flaskutils import permissions_needed
 from canaille.mails import profile_hash
 from canaille.apputils import obj_to_b64
 
@@ -10,13 +10,13 @@ bp = Blueprint("admin_mails", __name__)
 
 
 @bp.route("/")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def mail_index(user):
     return render_template("admin/mails.html")
 
 
 @bp.route("/password-init.html")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def password_init_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
@@ -39,7 +39,7 @@ def password_init_html(user):
 
 
 @bp.route("/password-init.txt")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def password_init_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
@@ -58,7 +58,7 @@ def password_init_txt(user):
 
 
 @bp.route("/reset.html")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def password_reset_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
@@ -81,7 +81,7 @@ def password_reset_html(user):
 
 
 @bp.route("/reset.txt")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def password_reset_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
@@ -100,7 +100,7 @@ def password_reset_txt(user):
 
 
 @bp.route("/<uid>/<email>/invitation.html")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def invitation_html(user, uid, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
@@ -123,7 +123,7 @@ def invitation_html(user, uid, email):
 
 
 @bp.route("/<uid>/<email>/invitation.txt")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def invitation_txt(user, uid, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(

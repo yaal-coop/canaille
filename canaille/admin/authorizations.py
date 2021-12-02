@@ -1,14 +1,14 @@
 from flask import Blueprint
 from flask_themer import render_template
 from canaille.models import AuthorizationCode
-from canaille.flaskutils import admin_needed
+from canaille.flaskutils import permissions_needed
 
 
 bp = Blueprint("admin_authorizations", __name__)
 
 
 @bp.route("/")
-@admin_needed()
+@permissions_needed("manage_oidc")
 def index(user):
     authorizations = AuthorizationCode.filter()
     return render_template(
@@ -17,7 +17,7 @@ def index(user):
 
 
 @bp.route("/<authorization_id>", methods=["GET", "POST"])
-@admin_needed()
+@permissions_needed("manage_oidc")
 def view(user, authorization_id):
     authorization = AuthorizationCode.get(authorization_id)
     return render_template(
