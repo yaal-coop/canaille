@@ -3,6 +3,7 @@ from flask_themer import render_template
 from flask_babel import gettext as _
 from canaille.flaskutils import admin_needed
 from canaille.mails import profile_hash
+from canaille.apputils import obj_to_b64
 
 
 bp = Blueprint("admin_mails", __name__)
@@ -56,8 +57,7 @@ def invitation_html(user, uid, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
         "account.registration",
-        uid=uid,
-        email=email,
+        data=obj_to_b64([uid, email]),
         hash=profile_hash(uid, email),
         _external=True,
     )
@@ -80,8 +80,7 @@ def invitation_txt(user, uid, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
         "account.registration",
-        uid=uid,
-        email=email,
+        data=obj_to_b64([uid, email]),
         hash=profile_hash(uid, email),
         _external=True,
     )
