@@ -43,19 +43,21 @@
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
-            {% if user.moderator %}
+            {% if user.can_manage_users %}
             <a class="item {% if menuitem == "users" %}active{% endif %}"
                 href="{{ url_for('account.users') }}">
                 <i class="users icon"></i>
                 {% trans %}Users{% endtrans %}
             </a>
+            {% endif %}
+            {% if user.can_manage_groups %}
             <a class="item {% if menuitem == "groups" %}active{% endif %}"
                 href="{{ url_for('groups.groups') }}">
                 <i class="users cog icon"></i>
                 {% trans %}Groups{% endtrans %}
             </a>
             {% endif %}
-            {% if user.admin %}
+            {% if user.can_manage_oidc %}
             <div class="ui dropdown item {% if menuitem == "admin" %}active{% endif %}">
                 <i class="settings icon"></i>
                 Admin

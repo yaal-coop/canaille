@@ -162,10 +162,6 @@ def test_admin_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    testclient.app.config["SELF_DELETION"] = True
-
-    testclient.app.config["SELF_DELETION"] = False
-
     with testclient.app.app_context():
         assert User.get("temp", conn=slapd_connection) is None
 
@@ -187,11 +183,11 @@ def test_user_self_deletion(testclient, slapd_connection):
     with testclient.session_transaction() as sess:
         sess["user_dn"] = [user.dn]
 
-    testclient.app.config["SELF_DELETION"] = False
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     res = testclient.get("/profile/temp")
     assert "Delete my account" not in res
 
-    testclient.app.config["SELF_DELETION"] = True
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["delete_account"]
     res = testclient.get("/profile/temp")
     assert "Delete my account" in res
     res = (
@@ -206,4 +202,4 @@ def test_user_self_deletion(testclient, slapd_connection):
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
 
-    testclient.app.config["SELF_DELETION"] = False
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []

@@ -10,7 +10,7 @@ from flask import (
 from flask_babel import gettext as _
 from flask_themer import render_template
 
-from .flaskutils import moderator_needed
+from .flaskutils import permissions_needed
 from .forms import GroupForm
 from .models import Group
 
@@ -18,14 +18,14 @@ bp = Blueprint("groups", __name__)
 
 
 @bp.route("/")
-@moderator_needed()
+@permissions_needed("manage_groups")
 def groups(user):
     groups = Group.filter(objectClass=current_app.config["LDAP"]["GROUP_CLASS"])
     return render_template("groups.html", groups=groups, menuitem="groups")
 
 
 @bp.route("/add", methods=("GET", "POST"))
-@moderator_needed()
+@permissions_needed("manage_groups")
 def create_group(user):
     form = GroupForm(request.form or None)
     try:
@@ -52,7 +52,7 @@ def create_group(user):
 
 
 @bp.route("/<groupname>", methods=("GET", "POST"))
-@moderator_needed()
+@permissions_needed("manage_groups")
 def group(user, groupname):
     group = Group.get(groupname) or abort(404)
 

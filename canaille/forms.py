@@ -144,21 +144,35 @@ PROFILE_FORM_FIELDS = dict(
 )
 
 
-def profile_form(field_names):
-    if "userPassword" in field_names:
-        field_names += ["password1", "password2"]
+def profile_form(write_field_names, readonly_field_names):
+    if "userPassword" in write_field_names:
+        write_field_names |= {"password1", "password2"}
+
     fields = {
         name: PROFILE_FORM_FIELDS.get(name)
-        for name in field_names
+        for name in write_field_names | readonly_field_names
         if PROFILE_FORM_FIELDS.get(name)
     }
-    if "groups" in field_names and Group.available_groups():
+
+    if (
+        "groups" in write_field_names | readonly_field_names
+        and Group.available_groups()
+    ):
         fields["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[(group[1], group[0]) for group in Group.available_groups()],
             render_kw={},
         )
-    return wtforms.form.BaseForm(fields)
+
+    form = wtforms.form.BaseForm(fields)
+    for field in form:
+        if field.name in readonly_field_names - write_field_names:
+            if field.name == "groups":
+                field.render_kw["disabled"] = "true"
+            else:
+                field.render_kw["readonly"] = "true"
+
+    return form
 
 
 class GroupForm(FlaskForm):

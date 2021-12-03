@@ -189,7 +189,6 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
     def get_audiences(self, request):
         client = request.client
-        print(client)
         return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
 
 

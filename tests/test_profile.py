@@ -1,7 +1,7 @@
 from canaille.models import User
 
 
-def test_profile(
+def test_edition(
     testclient, slapd_server, slapd_connection, logged_user, admin, foo_group, bar_group
 ):
     res = testclient.get("/profile/user", status=200)
@@ -47,6 +47,81 @@ def test_profile(
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
+
+
+def test_field_permissions_none(
+    testclient, slapd_server, slapd_connection, logged_user
+):
+    testclient.get("/profile/user", status=200)
+    with testclient.app.app_context():
+        logged_user.telephoneNumber = ["555-666-777"]
+        logged_user.save(conn=slapd_connection)
+
+    testclient.app.config["ACL"]["DEFAULT"] = {"READ": ["uid"], "WRITE": []}
+
+    res = testclient.get("/profile/user", status=200)
+    assert "telephoneNumber" not in res.form.fields
+
+    testclient.post(
+        "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
+    )
+    with testclient.app.app_context():
+        user = User.get(dn=logged_user.dn, conn=slapd_connection)
+        assert user.telephoneNumber == ["555-666-777"]
+
+
+def test_field_permissions_read(
+    testclient, slapd_server, slapd_connection, logged_user
+):
+    testclient.get("/profile/user", status=200)
+    with testclient.app.app_context():
+        logged_user.telephoneNumber = ["555-666-777"]
+        logged_user.save(conn=slapd_connection)
+
+    testclient.app.config["ACL"]["DEFAULT"] = {
+        "READ": ["uid", "telephoneNumber"],
+        "WRITE": [],
+    }
+    res = testclient.get("/profile/user", status=200)
+    assert "telephoneNumber" in res.form.fields
+
+    testclient.post(
+        "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
+    )
+    with testclient.app.app_context():
+        user = User.get(dn=logged_user.dn, conn=slapd_connection)
+        assert user.telephoneNumber == ["555-666-777"]
+
+
+def test_field_permissions_write(
+    testclient, slapd_server, slapd_connection, logged_user
+):
+    testclient.get("/profile/user", status=200)
+    with testclient.app.app_context():
+        logged_user.telephoneNumber = ["555-666-777"]
+        logged_user.save(conn=slapd_connection)
+
+    testclient.app.config["ACL"]["DEFAULT"] = {
+        "READ": ["uid"],
+        "WRITE": ["telephoneNumber"],
+    }
+    res = testclient.get("/profile/user", status=200)
+    assert "telephoneNumber" in res.form.fields
+
+    testclient.post(
+        "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
+    )
+    with testclient.app.app_context():
+        user = User.get(dn=logged_user.dn, conn=slapd_connection)
+        assert user.telephoneNumber == ["000-000-000"]
+
+
+def test_simple_user_cannot_edit_other(testclient, logged_user):
+    testclient.get("/profile/user", status=200)
+    testclient.get("/profile/admin", status=403)
+    testclient.post("/profile/admin", {"action": "edit"}, status=403)
+    testclient.post("/profile/admin", {"action": "delete"}, status=403)
+    testclient.get("/users", status=403)
 
 
 def test_bad_email(testclient, slapd_connection, logged_user):
@@ -112,14 +187,6 @@ def test_password_change_fail(testclient, slapd_connection, logged_user):
 
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
-
-
-def test_simple_user_cannot_edit_other(testclient, logged_user):
-    testclient.get("/profile/user", status=200)
-    testclient.get("/profile/admin", status=403)
-    testclient.post("/profile/admin", {"action": "edit"}, status=403)
-    testclient.post("/profile/admin", {"action": "delete"}, status=403)
-    testclient.get("/users", status=403)
 
 
 def test_admin_bad_request(testclient, logged_moderator):

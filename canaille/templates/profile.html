@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-{% if self_deletion or (user.moderator and edited_user) %}
+{% if self_deletion or (user.can_manage_users and edited_user) %}
 <div class="ui basic modal">
     <div class="ui icon header">
         <i class="user minus icon"></i>
@@ -56,7 +56,7 @@
       action="{{ request.url }}"
       role="form"
       enctype="multipart/form-data"
-      class="ui form info{% if user.moderator and edited_user and not edited_user.has_password() %} warning{% endif %}"
+      class="ui form info{% if user.can_manage_users and edited_user and not edited_user.has_password() %} warning{% endif %}"
       >
 
         {#{ sui.render_field(form.csrf_token) }#}
@@ -95,7 +95,7 @@
             {% endif %}
         </div>
 
-        {% if user.moderator %}
+        {% if user.can_manage_users %}
 
             {% if not edited_user %}
 
@@ -156,7 +156,7 @@
 
         <div class="ui right aligned container">
             <div class="ui stackable buttons">
-                {% if user.moderator and edited_user or self_deletion %}
+                {% if user.can_manage_users and edited_user or self_deletion %}
                 <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
                     {% if user.uid != edited_user.uid %}
                         {{ _("Delete the user") }}
@@ -166,13 +166,13 @@
                 </button>
                 {% endif %}
 
-                {% if user.admin and edited_user and user.uid != edited_user.uid %}
+                {% if user.can_impersonate_users and edited_user and user.uid != edited_user.uid %}
                 <a href="{{ url_for('account.impersonate', username=edited_user.uid[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate">
                     {{ _("Impersonate") }}
                 </a>
                 {% endif %}
 
-                {% if user.admin and not edited_user %}
+                {% if user.can_manage_users and not edited_user %}
                 <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="impersonate" id="impersonate">
                     {{ _("Invite a user") }}
                 </a>
