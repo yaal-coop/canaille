@@ -24,20 +24,6 @@
 </div>
 {% endif %}
 
-{% if edited_group %}
-<div class="ui segment">
-    <h2 class="ui header">{% trans %}Members{% endtrans %}</h2>
-    <ul>
-        {% for member in members %}
-        <div class="ui left icon">
-            <i class="user icon"></i>
-            <a href="{{ url_for('account.profile_edition', username=member.uid[0]) }}">{{ member.name }}</a></li>
-        </div>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-
 <div class="ui clearing segment">
     <h2 class="ui center aligned header">
         <div class="content">
@@ -47,7 +33,7 @@
                 {% trans %}Group edition{% endtrans %}
             {% endif %}
         </div>
-        
+
         <div class="sub header">
             {% if not edited_group %}
                 {% trans %}Create a new group{% endtrans %}
@@ -68,20 +54,50 @@
         {% if not edited_group %}
         <p>
             {% trans %}Because group cannot be empty, you will be added to the group. You can remove you later by editing your profile when you will have added other members to the group.{% endtrans %}
-        </p>    
+        </p>
         {% endif %}
-        <button type="submit" class="ui right floated primary button" name="action" value="edit">
-            {% if not edited_group %}
-                {% trans %}Create group{% endtrans %}
-            {% else %}
-                {% trans %}Submit{% endtrans %}
-            {% endif %}
-        </button>
-        {% if edited_group %}
-        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
-            {% trans %}Delete group{% endtrans %}
-        </button>
-        {% endif %}
+
+        <div class="ui right aligned container">
+            <div class="ui stackable buttons">
+                {% if edited_group %}
+                <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
+                    {% trans %}Delete group{% endtrans %}
+                </button>
+                {% endif %}
+                <button type="submit" class="ui right floated primary button" name="action" value="edit">
+                    {% if not edited_group %}
+                        {% trans %}Create group{% endtrans %}
+                    {% else %}
+                        {% trans %}Submit{% endtrans %}
+                    {% endif %}
+                </button>
+            </div>
+        </div>
     </form>
 </div>
+
+{% if edited_group %}
+<table class="ui table">
+    <thead>
+        <th>{% trans %}Login{% endtrans %}</th>
+        <th>{% trans %}Name{% endtrans %}</th>
+        <th>{% trans %}Email{% endtrans %}</th>
+        <th>{% trans %}Groups{% endtrans %}</th>
+    </thead>
+    {% for user_account in members %}
+    <tr>
+        <td><a href="{{ url_for('account.profile_edition', username=user_account.uid[0]) }}">{{ user_account.uid[0] }}</a></td>
+        <td>{{ user_account.name }}</td>
+        <td><a href="mailto:{{ user_account.mail[0] }}">{{ user_account.mail[0] }}</a></td>
+        <td>
+            {% for group in user_account.groups %}
+                <a class="ui label" href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+
 {% endblock %}
