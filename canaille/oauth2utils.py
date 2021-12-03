@@ -66,17 +66,24 @@ def generate_user_info(user, scope):
 
     data = {}
     for field in fields:
-        ldap_field_match = current_app.config["JWT"]["MAPPING"].get(field.upper())
-        if ldap_field_match and ldap_field_match in user.attrs:
-            data[field] = user.__getattr__(ldap_field_match)
-            if isinstance(data[field], list):
-                data[field] = data[field][0]
+        format_field = current_app.config["JWT"]["MAPPING"].get(field.upper())
+        if format_field:
+            value = generate_field(format_field, user)
+            if value:
+                # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
+                # it's better to not insert a null or empty string value
+                data[field] = value
         if field == "groups":
             group_name_attr = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
             data[field] = [getattr(g, group_name_attr)[0] for g in user.groups]
 
     return UserInfo(**data)
 
+def generate_field(format_field, user):
+    formatted_field = user.__getattr__(format_field)
+    if formatted_field and isinstance(formatted_field, list):
+        formatted_field = formatted_field[0]
+    return formatted_field
 
 def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
