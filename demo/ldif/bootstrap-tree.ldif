@@ -10,6 +10,10 @@ dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: tokens
 
+dn: ou=authorizations,ou=oauth,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: authorizations
+
 dn: ou=consents,ou=oauth,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: consents
