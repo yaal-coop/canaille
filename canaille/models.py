@@ -13,12 +13,12 @@ from .ldaputils import LDAPObject
 
 class User(LDAPObject):
     id = "cn"
-    _groups = []
 
     def __init__(self, *args, **kwargs):
         self.read = set()
         self.write = set()
         self.permissions = set()
+        self._groups = None
         super().__init__(*args, **kwargs)
 
     @classmethod
@@ -116,6 +116,8 @@ class User(LDAPObject):
 
     @property
     def groups(self):
+        if self._groups is None:
+            self.load_groups()
         return self._groups
 
     def set_groups(self, values, conn=None):
