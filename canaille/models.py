@@ -13,6 +13,10 @@ from .ldaputils import LDAPObject
 
 
 class User(LDAPObject):
+    DEFAULT_OBJECT_CLASS = "inetOrgPerson"
+    DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
+    DEFAULT_ID_ATTRIBUTE = "cn"
+
     def __init__(self, *args, **kwargs):
         self.read = set()
         self.write = set()
@@ -27,7 +31,7 @@ class User(LDAPObject):
         if login:
             filter = (
                 current_app.config["LDAP"]
-                .get("USER_FILTER")
+                .get("USER_FILTER", User.DEFAULT_FILTER)
                 .format(login=ldap.filter.escape_filter_chars(login))
             )
 
@@ -39,8 +43,10 @@ class User(LDAPObject):
 
     def load_groups(self, conn=None):
         try:
-            group_filter = current_app.config["LDAP"]["GROUP_USER_FILTER"].format(
-                user=self
+            group_filter = (
+                current_app.config["LDAP"]
+                .get("GROUP_USER_FILTER", Group.DEFAULT_USER_FILTER)
+                .format(user=self)
             )
             escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
             self._groups = Group.filter(filter=escaped_group_filter, conn=conn)
@@ -180,12 +186,21 @@ class User(LDAPObject):
 
 
 class Group(LDAPObject):
+    DEFAULT_OBJECT_CLASS = "groupOfNames"
+    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_NAME_ATTRIBUTE = "cn"
+    DEFAULT_USER_FILTER = "member={user.dn}"
+
     @classmethod
     def available_groups(cls, conn=None):
         conn = conn or cls.ldap()
         try:
-            attribute = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
-            object_class = current_app.config["LDAP"]["GROUP_CLASS"]
+            attribute = current_app.config["LDAP"].get(
+                "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
+            )
+            object_class = current_app.config["LDAP"].get(
+                "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
+            )
         except KeyError:
             return []
 
@@ -195,7 +210,9 @@ class Group(LDAPObject):
 
     @property
     def name(self):
-        attribute = current_app.config["LDAP"].get("GROUP_NAME_ATTRIBUTE")
+        attribute = current_app.config["LDAP"].get(
+            "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
+        )
         return self[attribute][0]
 
     def get_members(self, conn=None):

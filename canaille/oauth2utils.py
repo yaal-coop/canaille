@@ -19,7 +19,11 @@ from authlib.oidc.core.grants import (
 from authlib.oidc.core import UserInfo
 from collections import defaultdict
 from flask import current_app
-from .models import Client, AuthorizationCode, Token, User
+from .models import Client, AuthorizationCode, Group, Token, User
+
+DEFAULT_JWT_KTY = "RSA"
+DEFAULT_JWT_ALG = "RS256"
+DEFAULT_JWT_EXP = 3600
 
 
 def exists_nonce(nonce, req):
@@ -28,12 +32,13 @@ def exists_nonce(nonce, req):
 
 
 def get_jwt_config(grant):
+
     with open(current_app.config["JWT"]["PRIVATE_KEY"]) as pk:
         return {
             "key": pk.read(),
-            "alg": current_app.config["JWT"]["ALG"],
+            "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
             "iss": authorization.metadata["issuer"],
-            "exp": current_app.config["JWT"]["EXP"],
+            "exp": current_app.config["JWT"].get("EXP", DEFAULT_JWT_EXP),
         }
 
 
@@ -88,7 +93,9 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
                 # it's better to not insert a null or empty string value
                 data[claim] = formatted_claim
         if claim == "groups":
-            group_name_attr = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
+            group_name_attr = current_app.config["LDAP"].get(
+                "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
+            )
             data[claim] = [getattr(g, group_name_attr)[0] for g in user.groups]
     return data
 

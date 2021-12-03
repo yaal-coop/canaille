@@ -20,7 +20,11 @@ bp = Blueprint("groups", __name__)
 @bp.route("/")
 @permissions_needed("manage_groups")
 def groups(user):
-    groups = Group.filter(objectClass=current_app.config["LDAP"]["GROUP_CLASS"])
+    groups = Group.filter(
+        objectClass=current_app.config["LDAP"].get(
+            "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
+        )
+    )
     return render_template("groups.html", groups=groups, menuitem="groups")
 
 
@@ -40,7 +44,11 @@ def create_group(user):
         if not form.validate():
             flash(_("Group creation failed."), "error")
         else:
-            group = Group(objectClass=current_app.config["LDAP"]["GROUP_CLASS"])
+            group = Group(
+                objectClass=current_app.config["LDAP"].get(
+                    "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
+                )
+            )
             group.member = [user.dn]
             group.cn = [form.name.data]
             group.description = [form.description.data]

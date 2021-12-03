@@ -6,9 +6,14 @@ import logging
 import mimetypes
 import smtplib
 import urllib.request
+from canaille.models import User
 from email.utils import make_msgid
 from flask import current_app, request
 from flask_babel import gettext as _
+
+DEFAULT_SMTP_HOST = "localhost"
+DEFAULT_SMTP_PORT = 25
+DEFAULT_SMTP_TLS = False
 
 
 def obj_to_b64(obj):
@@ -27,7 +32,7 @@ def profile_hash(*args):
 
 
 def login_placeholder():
-    user_filter = current_app.config["LDAP"]["USER_FILTER"]
+    user_filter = current_app.config["LDAP"].get("USER_FILTER", User.DEFAULT_FILTER)
     placeholders = []
 
     if "cn={login}" in user_filter:
@@ -91,9 +96,10 @@ def send_email(subject, recipient, text, html, sender=None, attachements=None):
 
     if sender:
         msg["From"] = sender
-    elif current_app.config.get("NAME"):
+    elif current_app.config.get("NAME", "Canaille"):
         msg["From"] = '"{}" <{}>'.format(
-            current_app.config.get("NAME"), current_app.config["SMTP"]["FROM_ADDR"]
+            current_app.config.get("NAME", "Canaille"),
+            current_app.config["SMTP"]["FROM_ADDR"],
         )
     else:
         msg["From"] = current_app.config["SMTP"]["FROM_ADDR"]
@@ -106,14 +112,14 @@ def send_email(subject, recipient, text, html, sender=None, attachements=None):
         )
     try:
         with smtplib.SMTP(
-            host=current_app.config["SMTP"]["HOST"],
-            port=current_app.config["SMTP"]["PORT"],
+            host=current_app.config["SMTP"].get("HOST", DEFAULT_SMTP_HOST),
+            port=current_app.config["SMTP"].get("PORT", DEFAULT_SMTP_PORT),
         ) as smtp:
-            if current_app.config["SMTP"].get("TLS"):
+            if current_app.config["SMTP"].get("TLS", DEFAULT_SMTP_TLS):
                 smtp.starttls()
             if current_app.config["SMTP"].get("LOGIN"):
                 smtp.login(
-                    user=current_app.config["SMTP"]["LOGIN"],
+                    user=current_app.config["SMTP"].get("LOGIN"),
                     password=current_app.config["SMTP"].get("PASSWORD"),
                 )
             smtp.send_message(msg)

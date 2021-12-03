@@ -154,7 +154,11 @@ def firstlogin(uid):
 @bp.route("/users")
 @permissions_needed("manage_users")
 def users(user):
-    users = User.filter(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+    users = User.filter(
+        objectClass=current_app.config["LDAP"].get(
+            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
+        )
+    )
     return render_template("users.html", users=users, menuitem="users")
 
 
@@ -290,7 +294,11 @@ def registration(data, hash):
 
 
 def profile_create(current_app, form):
-    user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+    user = User(
+        objectClass=current_app.config["LDAP"].get(
+            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
+        )
+    )
     for attribute in form:
         if attribute.name in user.may + user.must:
             if isinstance(attribute.data, FileStorage):

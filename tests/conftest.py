@@ -137,11 +137,7 @@ def configuration(slapd_server, smtpd, keypair_path):
             "BIND_PW": slapd_server.root_pw,
             "USER_BASE": "ou=users",
             "USER_FILTER": "(|(uid={login})(cn={login}))",
-            "USER_CLASS": "inetOrgPerson",
             "GROUP_BASE": "ou=groups",
-            "GROUP_CLASS": "groupOfNames",
-            "GROUP_NAME_ATTRIBUTE": "cn",
-            "GROUP_USER_FILTER": "member={user.dn}",
             "TIMEOUT": 0.1,
         },
         "ACL": {
@@ -182,9 +178,6 @@ def configuration(slapd_server, smtpd, keypair_path):
         "JWT": {
             "PUBLIC_KEY": public_key_path,
             "PRIVATE_KEY": private_key_path,
-            "ALG": "RS256",
-            "KTY": "RSA",
-            "EXP": 3600,
             "MAPPING": {
                 "SUB": "{uid}",
                 "NAME": "{cn}",

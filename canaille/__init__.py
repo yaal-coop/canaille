@@ -101,13 +101,13 @@ def setup_ldap_models(app):
     if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
         user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     User.base = user_base
-    User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", "cn")
+    User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
 
     group_base = app.config["LDAP"].get("GROUP_BASE")
     if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
         group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     Group.base = group_base
-    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBTUE", "cn")
+    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBTUE", Group.DEFAULT_ID_ATTRIBUTE)
 
 
 def setup_ldap_connection(app):
@@ -260,7 +260,7 @@ def create_app(config=None, validate=True):
                 "has_smtp": "SMTP" in app.config,
                 "logo_url": app.config.get("LOGO"),
                 "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
-                "website_name": app.config.get("NAME"),
+                "website_name": app.config.get("NAME", "Canaille"),
                 "user": current_user(),
                 "menu": True,
             }

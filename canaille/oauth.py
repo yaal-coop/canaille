@@ -21,6 +21,8 @@ from .oauth2utils import (
     RevocationEndpoint,
     generate_user_info,
     require_oauth,
+    DEFAULT_JWT_ALG,
+    DEFAULT_JWT_KTY,
 )
 from .forms import FullLoginForm
 from .flaskutils import current_user
@@ -184,14 +186,14 @@ def jwks():
     with open(current_app.config["JWT"]["PUBLIC_KEY"]) as fd:
         pubkey = fd.read()
 
-    obj = jwk.dumps(pubkey, current_app.config["JWT"]["KTY"])
+    obj = jwk.dumps(pubkey, current_app.config["JWT"].get("KTY", DEFAULT_JWT_KTY))
     return jsonify(
         {
             "keys": [
                 {
                     "kid": None,
                     "use": "sig",
-                    "alg": current_app.config["JWT"]["ALG"],
+                    "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
                     **obj,
                 }
             ]
