@@ -21,15 +21,15 @@
 
 <table class="ui table">
     <thead>
+        <th>{% trans %}Login{% endtrans %}</th>
         <th>{% trans %}Name{% endtrans %}</th>
         <th>{% trans %}Email{% endtrans %}</th>
-        <th>{% trans %}Phone number{% endtrans %}</th>
     </thead>
     {% for user in users %}
     <tr>
-        <td><a href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">{{ user.name }}</a></td>
+        <td><a href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">{{ user.uid[0] }}</a></td>
+        <td>{{ user.name }}</td>
         <td><a href="mailto:{{ user.mail[0] }}">{{ user.mail[0] }}</a></td>
-        <td>{{ user.telephoneNumber[0] }}</td>
     </tr>
     {% endfor %}
 </table>
