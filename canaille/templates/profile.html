@@ -5,6 +5,18 @@
     <script src="/static/js/confirm.js"></script>
 {% endblock %}
 
+{% macro render_field(field, noindicator=false) %}
+    {% if edited_user.uid == user.uid or noindicator %}
+        {{ sui.render_field(field) }}
+    {% elif field.name in edited_user.write %}
+        {{ sui.render_field(field, noindicator=true) }}
+    {% elif field.name in edited_user.read %}
+        {{ sui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field")) }}
+    {% else %}
+        {{ sui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field")) }}
+    {% endif %}
+{% endmacro %}
+
 {% block content %}
 {% if self_deletion or (user.can_manage_users and edited_user) %}
 <div class="ui basic modal">
@@ -59,39 +71,39 @@
       class="ui form info{% if user.can_manage_users and edited_user and not edited_user.has_password() %} warning{% endif %}"
       >
 
-        {#{ sui.render_field(form.csrf_token) }#}
+        {#{ render_field(form.csrf_token) }#}
 
         <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
         <div class="two fields">
             {% if "givenName" in form %}
-                {{ sui.render_field(form.givenName) }}
+                {{ render_field(form.givenName) }}
             {% endif %}
             {% if "sn" in form %}
-                {{ sui.render_field(form.sn) }}
+                {{ render_field(form.sn) }}
             {% endif %}
         </div>
         {% if "mail" in form %}
-            {{ sui.render_field(form.mail) }}
+            {{ render_field(form.mail) }}
         {% endif %}
         {% if "telephoneNumber" in form %}
-            {{ sui.render_field(form.telephoneNumber) }}
+            {{ render_field(form.telephoneNumber) }}
         {% endif %}
         {% if "employeeNumber" in form %}
-            {{ sui.render_field(form.employeeNumber) }}
+            {{ render_field(form.employeeNumber) }}
         {% endif %}
         {% if "groups" in form %}
-            {{ sui.render_field(form.groups) }}
+            {{ render_field(form.groups) }}
         {% endif %}
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
         {% if "uid" in form %}
-            {{ sui.render_field(form.uid) }}
+            {{ render_field(form.uid) }}
         {% endif %}
 
         <div class="two fields">
             {% if "password1" in form %}
-                {{ sui.render_field(form.password1) }}
-                {{ sui.render_field(form.password2) }}
+                {{ render_field(form.password1, noindicator=true) }}
+                {{ render_field(form.password2, noindicator=true) }}
             {% endif %}
         </div>
 
