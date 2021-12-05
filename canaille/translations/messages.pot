@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-05 18:47+0100\n"
+"POT-Creation-Date: 2021-12-05 19:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -493,11 +493,11 @@ msgstr ""
 msgid "Send the initialization email"
 msgstr ""
 
-#: canaille/templates/fomanticui.html:33
+#: canaille/templates/fomanticui.html:38 canaille/templates/fomanticui.html:42
 msgid "This field is not editable"
 msgstr ""
 
-#: canaille/templates/fomanticui.html:37
+#: canaille/templates/fomanticui.html:46
 msgid "This field is required"
 msgstr ""
 
@@ -518,7 +518,7 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:38
-#: canaille/templates/profile.html:119 canaille/templates/profile.html:142
+#: canaille/templates/profile.html:133 canaille/templates/profile.html:156
 msgid "Send again"
 msgstr ""
 
@@ -537,12 +537,12 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/admin/client_edit.html:18
-#: canaille/templates/group.html:29 canaille/templates/profile.html:25
+#: canaille/templates/group.html:29 canaille/templates/profile.html:37
 msgid "Cancel"
 msgstr ""
 
 #: canaille/templates/admin/client_edit.html:19
-#: canaille/templates/group.html:30 canaille/templates/profile.html:26
+#: canaille/templates/group.html:30 canaille/templates/profile.html:38
 msgid "Delete"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "Create group"
 msgstr ""
 
-#: canaille/templates/group.html:79 canaille/templates/profile.html:182
+#: canaille/templates/group.html:79 canaille/templates/profile.html:196
 msgid "Submit"
 msgstr ""
 
@@ -664,127 +664,139 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
-#: canaille/templates/profile.html:13
+#: canaille/templates/profile.html:12
+msgid "This user can edit this field"
+msgstr ""
+
+#: canaille/templates/profile.html:14
+msgid "This user cannot edit this field"
+msgstr ""
+
+#: canaille/templates/profile.html:16
+msgid "This user cannot see this field"
+msgstr ""
+
+#: canaille/templates/profile.html:25
 msgid "Account deletion"
 msgstr ""
 
-#: canaille/templates/profile.html:18
+#: canaille/templates/profile.html:30
 msgid ""
 "Are you sure you want to delete this user? This action is unrevokable and"
 " all the data about this user will be removed."
 msgstr ""
 
-#: canaille/templates/profile.html:20
+#: canaille/templates/profile.html:32
 msgid ""
 "Are you sure you want to delete your account? This action is unrevokable "
 "and all your data will be removed forever."
 msgstr ""
 
-#: canaille/templates/profile.html:35
+#: canaille/templates/profile.html:47
 msgid "User creation"
 msgstr ""
 
-#: canaille/templates/profile.html:37 canaille/themes/default/base.html:39
+#: canaille/templates/profile.html:49 canaille/themes/default/base.html:39
 msgid "My profile"
 msgstr ""
 
-#: canaille/templates/profile.html:39
+#: canaille/templates/profile.html:51
 msgid "User profile edition"
 msgstr ""
 
-#: canaille/templates/profile.html:45
+#: canaille/templates/profile.html:57
 msgid "Create a new user account"
 msgstr ""
 
-#: canaille/templates/profile.html:47
+#: canaille/templates/profile.html:59
 msgid "Edit your personal informations"
 msgstr ""
 
-#: canaille/templates/profile.html:49
+#: canaille/templates/profile.html:61
 msgid "Edit informations about an user"
 msgstr ""
 
-#: canaille/templates/profile.html:64
+#: canaille/templates/profile.html:78
 msgid "Personal information"
 msgstr ""
 
-#: canaille/templates/profile.html:86
+#: canaille/templates/profile.html:100
 msgid "Account information"
 msgstr ""
 
-#: canaille/templates/profile.html:104
+#: canaille/templates/profile.html:118
 msgid "User password is not mandatory"
 msgstr ""
 
-#: canaille/templates/profile.html:106
+#: canaille/templates/profile.html:120
 msgid "The user password can be set:"
 msgstr ""
 
-#: canaille/templates/profile.html:108
+#: canaille/templates/profile.html:122
 msgid "by filling this form;"
 msgstr ""
 
-#: canaille/templates/profile.html:109
+#: canaille/templates/profile.html:123
 msgid ""
 "by sending the user a password initialization mail, after the account "
 "creation;"
 msgstr ""
 
-#: canaille/templates/profile.html:110 canaille/templates/profile.html:133
+#: canaille/templates/profile.html:124 canaille/templates/profile.html:147
 msgid ""
 "or simply waiting for the user to sign-in a first time, and then receive "
 "a password initialization mail."
 msgstr ""
 
-#: canaille/templates/profile.html:123
+#: canaille/templates/profile.html:137
 msgid "Send email"
 msgstr ""
 
-#: canaille/templates/profile.html:127
+#: canaille/templates/profile.html:141
 msgid "This user does not have a password yet"
 msgstr ""
 
-#: canaille/templates/profile.html:129
+#: canaille/templates/profile.html:143
 msgid "You can solve this by:"
 msgstr ""
 
-#: canaille/templates/profile.html:131
+#: canaille/templates/profile.html:145
 msgid "setting a password using this form;"
 msgstr ""
 
-#: canaille/templates/profile.html:132
+#: canaille/templates/profile.html:146
 msgid "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 
-#: canaille/templates/profile.html:144
+#: canaille/templates/profile.html:158
 msgid "Send mail"
 msgstr ""
 
-#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:148
+#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:162
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
 msgstr ""
 
-#: canaille/templates/profile.html:150
+#: canaille/templates/profile.html:164
 msgid ""
 "If the user has forgotten his password, you can send him a password reset"
 " email by clicking this button."
 msgstr ""
 
-#: canaille/templates/profile.html:162
+#: canaille/templates/profile.html:176
 msgid "Delete the user"
 msgstr ""
 
-#: canaille/templates/profile.html:164
+#: canaille/templates/profile.html:178
 msgid "Delete my account"
 msgstr ""
 
-#: canaille/templates/profile.html:171
+#: canaille/templates/profile.html:185
 msgid "Impersonate"
 msgstr ""
 
-#: canaille/templates/profile.html:177 canaille/templates/users.html:18
+#: canaille/templates/profile.html:191 canaille/templates/users.html:18
 msgid "Invite a user"
 msgstr ""
 
