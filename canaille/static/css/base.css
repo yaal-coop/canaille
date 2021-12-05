@@ -39,6 +39,6 @@ footer a {
     -webkit-appearance: none;
 }
 
-.ui.form .field > label {
-    display: inline-block;
+.ui.corner.labeled.input .ui.dropdown .dropdown.icon {
+    margin-right: 1.5em;
 }

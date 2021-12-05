@@ -2,7 +2,9 @@
     field,
     label_visible=true,
     icon=none,
-    container=true) -%}
+    container=true,
+    noindicator=false
+    ) -%}
 
 {% if container %}
     <div class="field {{ kwargs.pop('class_', '') }}
@@ -12,23 +14,35 @@
 
 {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
     {{ field.label() }}
-    {% if "required" in field.flags %}<span class="required-star">*</span>{% endif %}
 {% endif %}
 
-    {% if icon %}
-        <div class="ui left icon input">
-        <i class="{{ icon }} icon"></i>
-    {% endif %}
+{% set lock_label = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
+{% set required_label = "required" in field.flags %}
+<div class="ui
+        {% if not noindicator and (lock_label or required_label) %}corner labeled{% endif %}
+        {% if icon %}left icon {% endif %}
+        {% if field.type not in ("BooleanField", "RadioField") %}input{% endif %}
+        ">
+        {% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
 
-    {% if field.type in ("SelectField", "SelectMultipleField") %}
-        {{ field(class_="ui dropdown multiple", **kwargs) }}
-    {% else %}
-        {{ field(**kwargs) }}
-    {% endif %}
+        {% if field.type in ("SelectField", "SelectMultipleField") %}
+            {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
+        {% else %}
+            {{ field(**kwargs) }}
+        {% endif %}
 
-    {% if icon %}
-        </div>
-    {% endif %}
+        {% if not noindicator %}
+            {% if lock_label %}
+                <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                    <i class="lock icon"></i>
+                </div>
+            {% elif required_label %}
+                <div class="ui corner label" title="{{ _("This field is required") }}">
+                    <i class="asterisk icon"></i>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
 
     {% if field.errors %}
     {% for error in field.errors %}
