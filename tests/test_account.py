@@ -138,7 +138,7 @@ def test_wrong_login(testclient, slapd_connection, user):
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
     res = res.form.submit(status=200)
-    assert "The login 'invalid' does not exist" in res.text
+    assert "The login &#39;invalid&#39; does not exist" in res.text, res.text
 
 
 def test_admin_self_deletion(testclient, slapd_connection):
