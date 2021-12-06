@@ -89,7 +89,7 @@ def test_cannot_create_already_existing_group(
     res = testclient.post("/groups/add", {"name": "foo"}, status=200)
 
     assert "Group creation failed." in res
-    assert "The group 'foo' already exists" in res
+    assert "The group &#39;foo&#39; already exists" in res
 
 
 def test_simple_user_cannot_view_or_edit_groups(

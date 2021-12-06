@@ -26,7 +26,7 @@ def test_password_forgotten_invalid(smtpd, testclient, slapd_connection, user):
     res.form["login"] = "i-dont-really-exist"
     res = res.form.submit(status=200)
     assert "A password reset link has been sent at your email address." in res.text
-    assert "The login 'i-dont-really-exist' does not exist" not in res.text
+    assert "The login &#39;i-dont-really-exist&#39; does not exist" not in res.text
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = True
     res = testclient.get("/reset", status=200)
@@ -34,6 +34,6 @@ def test_password_forgotten_invalid(smtpd, testclient, slapd_connection, user):
     res.form["login"] = "i-dont-really-exist"
     res = res.form.submit(status=200)
     assert "A password reset link has been sent at your email address." not in res.text
-    assert "The login 'i-dont-really-exist' does not exist" in res.text
+    assert "The login &#39;i-dont-really-exist&#39; does not exist" in res.text
 
     assert len(smtpd.messages) == 0

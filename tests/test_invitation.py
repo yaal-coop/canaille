@@ -50,8 +50,8 @@ def test_invitation_login_already_taken(testclient, slapd_connection, logged_adm
     res.form["mail"] = logged_admin.mail[0]
     res = res.form.submit(status=200)
 
-    assert "The login 'admin' already exists" in res.text
-    assert "The email 'jane@doe.com' already exists" in res.text
+    assert "The login &#39;admin&#39; already exists" in res.text
+    assert "The email &#39;jane@doe.com&#39; already exists" in res.text
 
 
 def test_registration_invalid_data(testclient, slapd_connection, foo_group):
