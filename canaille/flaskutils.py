@@ -1,3 +1,4 @@
+import ldap
 from functools import wraps
 from flask import session, abort
 from canaille.models import User
@@ -12,7 +13,10 @@ def current_user():
         return None
 
     dn = session["user_dn"][-1]
-    user = User.get(dn=dn)
+    try:
+        user = User.get(dn=dn)
+    except ldap.LDAPError:
+        return None
 
     if not user:
         try:

@@ -299,7 +299,7 @@ authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
 
 
-def config_oauth(app):
+def setup_oauth(app):
     authorization.init_app(app, query_client=query_client, save_token=save_token)
 
     authorization.register_grant(PasswordGrant)

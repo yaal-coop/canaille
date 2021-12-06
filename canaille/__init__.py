@@ -1,5 +1,6 @@
 import datetime
 import ldap
+import logging
 import os
 import toml
 
@@ -17,13 +18,13 @@ import canaille.groups
 import canaille.well_known
 
 from flask import Flask, g, request, session
-from flask_babel import Babel
+from flask_babel import Babel, gettext as _
 from flask_themer import Themer, render_template, FileSystemThemeLoader
 from logging.config import dictConfig
 
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
-from .oauth2utils import config_oauth
+from .oauth2utils import setup_oauth
 from .models import User, Group
 
 try:  # pragma: no cover
@@ -35,10 +36,8 @@ except Exception:
     SENTRY = False
 
 
-def create_app(config=None, validate=True):
-    app = Flask(__name__)
+def setup_config(app, config=None, validate=True):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-
     app.config.from_mapping(
         {
             "SESSION_COOKIE_NAME": "canaille",
@@ -64,22 +63,6 @@ def create_app(config=None, validate=True):
 
     if validate:
         canaille.configuration.validate(app.config)
-
-    setup_app(app)
-
-    return app
-
-
-def setup_ldap_connection(app):
-    g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
-    if app.config["LDAP"].get("TIMEOUT"):
-        g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
-    g.ldap.simple_bind_s(app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"])
-
-
-def teardown_ldap_connection(app):
-    if "ldap" in g:
-        g.ldap.unbind_s()
 
 
 def setup_logging(app):
@@ -111,24 +94,80 @@ def setup_logging(app):
     )
 
 
-def setup_app(app):
+def setup_ldap_models(app):
+    LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
+    user_base = app.config["LDAP"]["USER_BASE"]
+    if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
+        user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
+    User.base = user_base
+    group_base = app.config["LDAP"].get("GROUP_BASE")
+    Group.base = group_base
+
+
+def setup_ldap_connection(app):
+    if request.endpoint == "static":  # pragma: no-cover
+        return
+
+    try:
+        g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
+        if app.config["LDAP"].get("TIMEOUT"):
+            g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
+        g.ldap.simple_bind_s(
+            app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
+        )
+
+    except ldap.SERVER_DOWN:
+        message = _("Could not connect to the LDAP server '{uri}'").format(
+            uri=app.config["LDAP"]["URI"]
+        )
+        logging.error(message)
+        return (
+            render_template(
+                "error.html",
+                error=500,
+                icon="database",
+                debug=app.config.get("DEBUG", False),
+                description=message,
+            ),
+            500,
+        )
+
+    except ldap.INVALID_CREDENTIALS:
+        message = _("LDAP authentication failed with user '{user}'").format(
+            user=app.config["LDAP"]["BIND_DN"]
+        )
+        logging.error(message)
+        return (
+            render_template(
+                "error.html",
+                error=500,
+                icon="key",
+                debug=app.config.get("DEBUG", False),
+                description=message,
+            ),
+            500,
+        )
+
+
+def teardown_ldap_connection(app):
+    if "ldap" in g:
+        g.ldap.unbind_s()
+
+
+def create_app(config=None, validate=True):
+    app = Flask(__name__)
+    setup_config(app, config, validate)
+
     if SENTRY and app.config.get("SENTRY_DSN"):
         sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
     try:
         setup_logging(app)
-
-        LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
-        user_base = app.config["LDAP"]["USER_BASE"]
-        if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
-            user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
-        User.base = user_base
-        group_base = app.config["LDAP"].get("GROUP_BASE")
-        Group.base = group_base
+        setup_ldap_models(app)
+        setup_oauth(app)
 
         app.url_map.strict_slashes = False
 
-        config_oauth(app)
         app.register_blueprint(canaille.account.bp)
         app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
         app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
@@ -179,7 +218,7 @@ def setup_app(app):
 
         @app.before_request
         def before_request():
-            setup_ldap_connection(app)
+            return setup_ldap_connection(app)
 
         @app.after_request
         def after_request(response):
@@ -221,3 +260,5 @@ def setup_app(app):
         if SENTRY and app.config.get("SENTRY_DSN"):
             sentry_sdk.capture_exception(exc)
         raise
+
+    return app
