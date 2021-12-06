@@ -41,7 +41,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     )
     assert "application/json" == res.content_type
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
         "groups": [],
@@ -100,7 +100,7 @@ def test_oidc_implicit(
     )
     assert "application/json" == res.content_type
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
         "groups": [],
@@ -160,7 +160,7 @@ def test_oidc_implicit_with_group(
     )
     assert "application/json" == res.content_type
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
         "groups": ["foo"],

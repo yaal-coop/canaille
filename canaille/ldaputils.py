@@ -1,4 +1,5 @@
 import ldap
+import ldap.filter
 from flask import g
 
 
@@ -221,15 +222,24 @@ class LDAPObject:
             else ""
         )
         arg_filter = ""
-        for k, v in kwargs.items():
-            if not isinstance(v, list):
-                arg_filter += f"({k}={v})"
-            elif len(v) == 1:
-                arg_filter += f"({k}={v[0]})"
-            else:
-                arg_filter += "(|" + "".join([f"({k}={_v})" for _v in v]) + ")"
+        for key, value in kwargs.items():
+            if not isinstance(value, list):
+                escaped_value = ldap.filter.escape_filter_chars(value)
+                arg_filter += f"({key}={escaped_value})"
 
-        filter = filter or ""
+            elif len(value) == 1:
+                escaped_value = ldap.filter.escape_filter_chars(value[0])
+                arg_filter += f"({key}={escaped_value})"
+
+            else:
+                values = [ldap.filter.escape_filter_chars(v) for v in value]
+                arg_filter += "(|" + "".join([f"({key}={v})" for v in values]) + ")"
+
+        if not filter:
+            filter = ""
+        elif not filter.startswith("(") and not filter.endswith(")"):
+            filter = f"({filter})"
+
         ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
