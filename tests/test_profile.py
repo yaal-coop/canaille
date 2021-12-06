@@ -32,6 +32,8 @@ def test_edition(
 
     with testclient.app.app_context():
         logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+        logged_user.load_groups(conn=slapd_connection)
+
     assert ["user"] == logged_user.uid
     assert ["given_name"] == logged_user.givenName
     assert ["family_name"] == logged_user.sn
@@ -217,6 +219,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
     with testclient.app.app_context():
         george = User.get("george", conn=slapd_connection)
+        george.load_groups(conn=slapd_connection)
         assert "George" == george.givenName[0]
         assert george.groups == []
         assert george.check_password("totoyolo")
@@ -234,6 +237,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="edit", status=200)
     with testclient.app.app_context():
         george = User.get("george", conn=slapd_connection)
+        george.load_groups(conn=slapd_connection)
         assert "Georgio" == george.givenName[0]
         assert george.check_password("totoyolo")
 

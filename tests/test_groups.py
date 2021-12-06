@@ -12,6 +12,7 @@ def test_set_groups(app, slapd_connection, user, foo_group, bar_group):
         User.attr_type_by_name(conn=slapd_connection)
 
         user = User.get(dn=user.dn, conn=slapd_connection)
+        user.load_groups(conn=slapd_connection)
         assert set(Group.available_groups(conn=slapd_connection)) == {
             ("foo", foo_group.dn),
             ("bar", bar_group.dn),
