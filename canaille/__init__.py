@@ -105,8 +105,11 @@ def setup_ldap_models(app):
 
 
 def setup_ldap_connection(app):
-    if request.endpoint == "static":  # pragma: no-cover
-        return
+    try:  # pragma: no-cover
+        if request.endpoint == "static":
+            return
+    except RuntimeError:
+        pass
 
     try:
         g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
