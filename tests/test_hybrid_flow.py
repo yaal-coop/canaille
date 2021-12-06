@@ -43,7 +43,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],
@@ -89,7 +89,7 @@ def test_oidc_hybrid(
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],

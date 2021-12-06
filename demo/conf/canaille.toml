@@ -79,7 +79,7 @@ GROUP_CLASS = "groupOfNames"
 GROUP_NAME_ATTRIBUTE = "cn"
 
 # A filter to check if a user belongs to a group
-GROUP_USER_FILTER = "(member={user.dn})"
+GROUP_USER_FILTER = "member={user.dn}"
 
 # You can define access controls that define what users can do on canaille
 # An access control consists in a FILTER to match users, a list of PERMISSIONS

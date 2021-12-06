@@ -57,7 +57,7 @@ def test_authorization_code_flow(
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],
@@ -116,7 +116,7 @@ def test_authorization_code_flow_preconsented(
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],
@@ -179,7 +179,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],
@@ -243,7 +243,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],
@@ -302,7 +302,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
         "groups": [],

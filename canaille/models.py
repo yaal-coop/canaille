@@ -1,5 +1,6 @@
 import datetime
 import ldap
+import ldap.filter
 import uuid
 from authlib.oauth2.rfc6749 import (
     ClientMixin,
@@ -26,7 +27,11 @@ class User(LDAPObject):
         conn = conn or cls.ldap()
 
         if login:
-            filter = current_app.config["LDAP"].get("USER_FILTER").format(login=login)
+            filter = (
+                current_app.config["LDAP"]
+                .get("USER_FILTER")
+                .format(login=ldap.filter.escape_filter_chars(login))
+            )
 
         user = super().get(dn, filter, conn)
         if user:
@@ -39,7 +44,8 @@ class User(LDAPObject):
             group_filter = current_app.config["LDAP"]["GROUP_USER_FILTER"].format(
                 user=self
             )
-            self._groups = Group.filter(filter=group_filter, conn=conn)
+            escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
+            self._groups = Group.filter(filter=escaped_group_filter, conn=conn)
         except KeyError:
             pass
 

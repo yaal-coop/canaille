@@ -7,12 +7,12 @@ def test_signin_and_out(testclient, slapd_connection, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John Doe"
+    res.form["login"] = "John (johnny) Doe"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert "John Doe" == session.get("attempt_login")
+        assert "John (johnny) Doe" == session.get("attempt_login")
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
@@ -37,7 +37,7 @@ def test_signin_wrong_password(testclient, slapd_connection, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John Doe"
+    res.form["login"] = "John (johnny) Doe"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
     res.form["password"] = "incorrect horse"

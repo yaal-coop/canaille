@@ -7,7 +7,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
         "/oauth/token",
         params=dict(
             grant_type="password",
-            username="John Doe",
+            username="John (johnny) Doe",
             password="correct horse battery staple",
             scope="profile",
         ),
@@ -28,7 +28,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
         "groups": [],
@@ -43,7 +43,7 @@ def test_password_flow_post(testclient, slapd_connection, user, client):
         "/oauth/token",
         params=dict(
             grant_type="password",
-            username="John Doe",
+            username="John (johnny) Doe",
             password="correct horse battery staple",
             scope="profile",
             client_id=client.oauthClientID,
@@ -65,7 +65,7 @@ def test_password_flow_post(testclient, slapd_connection, user, client):
         status=200,
     )
     assert {
-        "name": "John Doe",
+        "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
         "groups": [],
