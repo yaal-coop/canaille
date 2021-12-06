@@ -438,6 +438,30 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert "groups" in consents[0].oauthScope
 
 
+def test_authorization_code_flow_but_user_cannot_use_oidc(
+    testclient, slapd_connection, user, client, keypair, other_client
+):
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.oauthClientID,
+            scope="profile",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res.form["login"] = "John (johnny) Doe"
+    res = res.form.submit(status=200)
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+    res = res.follow(status=400)
+
+
 def test_prompt_none(testclient, slapd_connection, logged_user, client):
     Consent(
         oauthClient=client.dn,

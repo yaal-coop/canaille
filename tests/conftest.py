@@ -147,7 +147,7 @@ def configuration(slapd_server, smtpd, keypair_path):
         "ACL": {
             "DEFAULT": {
                 "READ": ["uid", "groups"],
-                "PERMISSIONS": [],
+                "PERMISSIONS": ["use_oidc"],
                 "WRITE": [
                     "mail",
                     "givenName",
@@ -166,28 +166,14 @@ def configuration(slapd_server, smtpd, keypair_path):
                     "impersonate_users",
                     "manage_groups",
                 ],
-                "READ": ["uid"],
                 "WRITE": [
-                    "mail",
-                    "givenName",
-                    "sn",
-                    "userPassword",
-                    "telephoneNumber",
-                    "employeeNumber",
                     "groups",
                 ],
             },
             "MODERATOR": {
                 "FILTER": "(|(uid=moderator)(sn=moderator))",
                 "PERMISSIONS": ["manage_users", "manage_groups", "delete_account"],
-                "READ": ["uid"],
                 "WRITE": [
-                    "mail",
-                    "givenName",
-                    "sn",
-                    "userPassword",
-                    "telephoneNumber",
-                    "employeeNumber",
                     "groups",
                 ],
             },
