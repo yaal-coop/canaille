@@ -30,15 +30,30 @@
             <form id="readonly">
                 <div class="field">
                     <label>{% trans %}ID{% endtrans %}</label>
-                    <input type="text" value="{{ client.oauthClientID }}" readonly name="oauthClientID">
+                    <div class="ui cornor labeled input">
+                        <input type="text" value="{{ client.oauthClientID }}" readonly name="oauthClientID">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
                 </div>
                 <div class="field">
                     <label>{% trans %}Secret{% endtrans %}</label>
-                    <input type="text" value="{{ client.oauthClientSecret }}" readonly name="oauthClientSecret">
+                    <div class="ui cornor labeled input">
+                        <input type="text" value="{{ client.oauthClientSecret }}" readonly name="oauthClientSecret">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
                 </div>
                 <div class="field">
                     <label>{% trans %}Issued at{% endtrans %}</label>
-                    <input type="text" value="{{ client.issue_date }}" readonly name="oauthIssueDate">
+                    <div class="ui cornor labeled input">
+                        <input type="text" value="{{ client.issue_date }}" readonly name="oauthIssueDate">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
