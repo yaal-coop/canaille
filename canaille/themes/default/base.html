@@ -46,14 +46,14 @@
             {% if user.can_manage_users %}
             <a class="item {% if menuitem == "users" %}active{% endif %}"
                 href="{{ url_for('account.users') }}">
-                <i class="users icon"></i>
+                <i class="user friends icon"></i>
                 {% trans %}Users{% endtrans %}
             </a>
             {% endif %}
             {% if user.can_manage_groups %}
             <a class="item {% if menuitem == "groups" %}active{% endif %}"
                 href="{{ url_for('groups.groups') }}">
-                <i class="users cog icon"></i>
+                <i class="users icon"></i>
                 {% trans %}Groups{% endtrans %}
             </a>
             {% endif %}
