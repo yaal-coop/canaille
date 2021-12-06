@@ -76,6 +76,9 @@ def authorize():
 
         return redirect(request.url)
 
+    if not user.can_use_oidc:
+        abort(400)
+
     # CONSENT
 
     consents = Consent.filter(

@@ -151,6 +151,10 @@ class User(LDAPObject):
                 self.write |= set(details.get("WRITE", []))
 
     @property
+    def can_use_oidc(self):
+        return "use_oidc" in self.permissions
+
+    @property
     def can_manage_users(self):
         return "manage_users" in self.permissions
 

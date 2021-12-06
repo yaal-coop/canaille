@@ -38,11 +38,13 @@
                 <i class="id card icon"></i>
                 {% trans %}My profile{% endtrans %}
             </a>
+            {% if user.can_use_oidc %}
             <a class="item {% if menuitem == "consents" %}active{% endif %}"
                 href="{{ url_for('consents.consents') }}">
                 <i class="handshake icon"></i>
                 {% trans %}My consents{% endtrans %}
             </a>
+            {% endif %}
             {% if user.can_manage_users %}
             <a class="item {% if menuitem == "users" %}active{% endif %}"
                 href="{{ url_for('account.users') }}">
