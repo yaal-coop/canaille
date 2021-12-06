@@ -23,6 +23,8 @@ def test_signin_and_out(testclient, slapd_connection, user):
         assert [user.dn] == session.get("user_dn")
         assert "attempt_login" not in session
 
+    res = testclient.get("/login", status=302)
+
     res = testclient.get("/logout")
     res = res.follow(status=302)
     res = res.follow(status=200)

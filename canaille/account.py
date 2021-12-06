@@ -53,6 +53,9 @@ def about():
 
 @bp.route("/login", methods=("GET", "POST"))
 def login():
+    if current_user():
+        return redirect(url_for("account.profile_edition", username=current_user().uid[0]))
+
     form = LoginForm(request.form or None)
 
     if request.form:
