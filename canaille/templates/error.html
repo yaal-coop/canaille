@@ -27,7 +27,7 @@
         </div>
         {% if description and (debug or (user and user.can_manage_oidc)) %}
             <p>{{ description }}</p>
-        {% elif error == 403 %}
+        {% elif error == 400 %}
             <p>{% trans %}The request you made is invalid{% endtrans %}</p>
         {% elif error == 403 %}
             <p>{% trans %}You do not have the authorizations to access this page{% endtrans %}</p>
