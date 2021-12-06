@@ -141,7 +141,7 @@ def configuration(slapd_server, smtpd, keypair_path):
             "GROUP_BASE": "ou=groups",
             "GROUP_CLASS": "groupOfNames",
             "GROUP_NAME_ATTRIBUTE": "cn",
-            "GROUP_USER_FILTER": "(member={user.dn})",
+            "GROUP_USER_FILTER": "member={user.dn}",
             "TIMEOUT": 0.1,
         },
         "ACL": {
@@ -329,7 +329,7 @@ def user(app, slapd_connection):
     User.ocs_by_name(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
-        cn="John Doe",
+        cn="John (johnny) Doe",
         sn="Doe",
         uid="user",
         mail="john@doe.com",
