@@ -31,7 +31,6 @@ class User(LDAPObject):
         user = super().get(dn, filter, conn)
         if user:
             user.load_permissions(conn)
-            user.load_groups(conn=conn)
 
         return user
 
