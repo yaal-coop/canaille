@@ -155,9 +155,11 @@ def users(user):
 def user_invitation(user):
     form = InvitationForm(request.form or None)
 
-    success = False
+    mail_sent = None
     registration_url = None
+    form_validated = False
     if request.form and form.validate():
+        form_validated = True
         registration_url = url_for(
             "account.registration",
             data=obj_to_b64([form.uid.data, form.mail.data, form.groups.data]),
@@ -165,15 +167,14 @@ def user_invitation(user):
             _external=True,
         )
 
-        success = send_invitation_mail(form.mail.data, registration_url)
-        if not success:
-            flash(_("An error happened whilen sending the invitation link."), "error")
+        mail_sent = send_invitation_mail(form.mail.data, registration_url)
 
     return render_template(
         "invite.html",
         form=form,
         menuitems="users",
-        success=success,
+        form_validated=form_validated,
+        mail_sent=mail_sent,
         registration_url=registration_url,
     )
 
