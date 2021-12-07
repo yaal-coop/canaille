@@ -7,21 +7,36 @@
 
 {% block content %}
 <div class="invitationform">
-    {% if success %}
+    {% if form_validated %}
 
     <div class="ui attached segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {{ _("Invitation sent") }}
+                {% if mail_sent %}
+                    {{ _("Invitation sent") }}
+                {% else %}
+                    {{ _("Invitation not sent") }}
+                {% endif %}
             </div>
         </h2>
     </div>
 
+    {% if mail_sent %}
     <div class="ui attached success message">
         {% set email = form.mail.data %}
-        {% trans %}This invitation link has been to {{ email }}{% endtrans %}
+        {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
         {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
     </div>
+
+    {% else %}
+
+    <div class="ui attached error message">
+        {% set email = form.mail.data %}
+        {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
+        {% trans %}However you can copy the there to provide it by other ways than email:{% endtrans %}
+    </div>
+    {% endif %}
+
 
     <div class="ui attached segment">
         <div class="ui center aligned container">
@@ -39,9 +54,11 @@
                 <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
                     {{ _("Create a user") }}
                 </a>
+                {% if mail_sent %}
                 <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="invite" id="invite">
                     {{ _("Invite another user") }}
                 </a>
+                {% endif %}
             </div>
         </div>
     </div>
