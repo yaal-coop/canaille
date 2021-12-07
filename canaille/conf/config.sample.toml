@@ -60,9 +60,8 @@ TIMEOUT =
 USER_BASE = "ou=users,dc=mydomain,dc=tld"
 
 # Filter to match users on sign in. Supports a variable
-# {login}. For sigin against either uid or mail use:
-# USER_FILTER = "(|(uid={login})(mail={login}))"
-USER_FILTER = "(|(uid={login})(cn={login}))"
+# {login} that can be used to compare against several fields:
+USER_FILTER = "(|(uid={login})(mail={login}))"
 
 # The object class to use for creating new users
 USER_CLASS = "inetOrgPerson"
