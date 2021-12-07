@@ -14,7 +14,7 @@ from flask import (
 from flask_babel import gettext as _
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
-from .apputils import b64_to_obj, profile_hash, obj_to_b64
+from .apputils import b64_to_obj, login_placeholder, profile_hash, obj_to_b64
 from .forms import (
     InvitationForm,
     LoginForm,
@@ -57,6 +57,7 @@ def login():
         return redirect(url_for("account.profile_edition", username=current_user().uid[0]))
 
     form = LoginForm(request.form or None)
+    form["login"].render_kw["placeholder"] = login_placeholder()
 
     if request.form:
         user = User.get(form.login.data)
