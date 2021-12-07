@@ -28,10 +28,13 @@
         ">
         {% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
 
-        {% if field.type in ("SelectField", "SelectMultipleField") %}
-            {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
-        {% else %}
+        {% if field.type not in ("SelectField", "SelectMultipleField") %}
             {{ field(**kwargs) }}
+        {% elif field.render_kw and "readonly" in field.render_kw %}
+            {# This will be un-needed when https://github.com/fomantic/Fomantic-UI/issues/2173 is solved #}
+            {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
+        {% else %}
+            {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
         {% endif %}
 
         {% if not noindicator %}
