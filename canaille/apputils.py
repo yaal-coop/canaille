@@ -93,8 +93,8 @@ def send_email(subject, recipient, text, html, sender=None, attachements=None):
     except smtplib.SMTPRecipientsRefused:
         pass
 
-    except OSError:
-        logging.exception("Could not send password reset email")
+    except OSError as exc:
+        logging.exception(f"Could not send email: {exc}")
         return False
 
     return True
