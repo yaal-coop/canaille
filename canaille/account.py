@@ -167,7 +167,8 @@ def user_invitation(user):
             _external=True,
         )
 
-        mail_sent = send_invitation_mail(form.mail.data, registration_url)
+        if request.form["action"] == "send":
+            mail_sent = send_invitation_mail(form.mail.data, registration_url)
 
     return render_template(
         "invite.html",

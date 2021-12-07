@@ -12,7 +12,9 @@
     <div class="ui attached segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {% if mail_sent %}
+                {% if request.form["action"] == "generate" %}
+                    {{ _("Invitation link") }}
+                {% elif mail_sent %}
                     {{ _("Invitation sent") }}
                 {% else %}
                     {{ _("Invitation not sent") }}
@@ -21,7 +23,12 @@
         </h2>
     </div>
 
-    {% if mail_sent %}
+    {% if request.form["action"] == "generate" %}
+    <div class="ui attached success message">
+        {% trans %}Here is the invitation link you can provide to the user you want to invite:{% endtrans %}
+    </div>
+
+    {% elif mail_sent %}
     <div class="ui attached success message">
         {% set email = form.mail.data %}
         {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
@@ -33,7 +40,7 @@
     <div class="ui attached error message">
         {% set email = form.mail.data %}
         {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
-        {% trans %}However you can copy the there to provide it by other ways than email:{% endtrans %}
+        {% trans %}However you can copy the link there to provide it by other ways than email:{% endtrans %}
     </div>
     {% endif %}
 
@@ -54,7 +61,7 @@
                 <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
                     {{ _("Create a user") }}
                 </a>
-                {% if mail_sent %}
+                {% if request.form["action"] == "generate" or mail_sent %}
                 <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="invite" id="invite">
                     {{ _("Invite another user") }}
                 </a>
@@ -97,7 +104,10 @@
                     <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
                         {{ _("Create a user") }}
                     </a>
-                    <button type="submit" class="ui right floated primary button">
+                    <button type="submit" name="action", value="generate" class="ui right floated primary button">
+                        {{ _("Generate a link") }}
+                    </button>
+                    <button type="submit" name="action" value="send" class="ui right floated primary button">
                         {{ _("Send the invitation") }}
                     </button>
                 </div>
