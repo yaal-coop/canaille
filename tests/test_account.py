@@ -1,4 +1,5 @@
 from canaille.models import User
+from canaille.apputils import login_placeholder
 
 
 def test_signin_and_out(testclient, slapd_connection, user):
@@ -205,3 +206,21 @@ def test_user_self_deletion(testclient, slapd_connection):
         assert not sess.get("user_dn")
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+
+
+def test_login_placeholder(testclient):
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(uid={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe"
+
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(cn={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "John Doe"
+
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(mail={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "john@doe.com"
+
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(|(uid={login})(email={login}))"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe or john@doe.com"

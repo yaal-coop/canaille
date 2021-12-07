@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-07 18:49+0100\n"
+"POT-Creation-Date: 2021-12-07 19:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,107 +25,123 @@ msgstr ""
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 
-#: canaille/account.py:68 canaille/account.py:93 canaille/oauth.py:74
+#: canaille/account.py:69 canaille/account.py:94 canaille/oauth.py:74
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/account.py:99
+#: canaille/account.py:100
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
-#: canaille/account.py:112
+#: canaille/account.py:113
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr ""
 
-#: canaille/account.py:129
+#: canaille/account.py:130
 msgid "Could not send the password initialization link."
 msgstr ""
 
-#: canaille/account.py:134
+#: canaille/account.py:135
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:140 canaille/account.py:325
+#: canaille/account.py:141 canaille/account.py:326
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:191 canaille/account.py:263
+#: canaille/account.py:192 canaille/account.py:264
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/account.py:212 canaille/account.py:233
+#: canaille/account.py:213 canaille/account.py:234
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:219
+#: canaille/account.py:220
 msgid "Your account has already been created."
 msgstr ""
 
-#: canaille/account.py:226
+#: canaille/account.py:227
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/account.py:268
+#: canaille/account.py:269
 msgid "You account has been created successfuly."
 msgstr ""
 
-#: canaille/account.py:298
+#: canaille/account.py:299
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:319
+#: canaille/account.py:320
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:333
+#: canaille/account.py:334
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:339
+#: canaille/account.py:340
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/account.py:370
+#: canaille/account.py:371
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:395
+#: canaille/account.py:396
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:415
+#: canaille/account.py:416
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:439
+#: canaille/account.py:440
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:446 canaille/account.py:457
+#: canaille/account.py:447 canaille/account.py:458
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:463
+#: canaille/account.py:464
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:477
+#: canaille/account.py:478
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:486
+#: canaille/account.py:487
 msgid "Your password has been updated successfuly"
+msgstr ""
+
+#: canaille/apputils.py:34
+msgid "John Doe"
+msgstr ""
+
+#: canaille/apputils.py:37 canaille/forms.py:93 canaille/forms.py:188
+msgid "jdoe"
+msgstr ""
+
+#: canaille/apputils.py:40
+msgid "john@doe.com"
+msgstr ""
+
+#: canaille/apputils.py:42
+msgid " or "
 msgstr ""
 
 #: canaille/consents.py:29
@@ -148,21 +164,25 @@ msgstr ""
 msgid "The email '{email}' already exists"
 msgstr ""
 
-#: canaille/forms.py:26 canaille/forms.py:58 canaille/templates/group.html:90
+#: canaille/forms.py:27
+msgid "The group '{group}' already exists"
+msgstr ""
+
+#: canaille/forms.py:36
+msgid "The login '{login}' does not exist"
+msgstr ""
+
+#: canaille/forms.py:42 canaille/forms.py:66 canaille/templates/group.html:90
 #: canaille/templates/users.html:26
 msgid "Login"
 msgstr ""
 
-#: canaille/forms.py:29 canaille/forms.py:61 canaille/forms.py:117
-#: canaille/forms.py:205
+#: canaille/forms.py:45 canaille/forms.py:69 canaille/forms.py:117
+#: canaille/forms.py:199
 msgid "jane@doe.com"
 msgstr ""
 
-#: canaille/forms.py:41 canaille/forms.py:72
-msgid "The login '{login}' does not exist"
-msgstr ""
-
-#: canaille/forms.py:47 canaille/forms.py:78 canaille/forms.py:127
+#: canaille/forms.py:55 canaille/forms.py:78 canaille/forms.py:127
 msgid "Password"
 msgstr ""
 
@@ -174,12 +194,8 @@ msgstr ""
 msgid "Password and confirmation do not match."
 msgstr ""
 
-#: canaille/forms.py:92 canaille/forms.py:193
+#: canaille/forms.py:92 canaille/forms.py:187
 msgid "Username"
-msgstr ""
-
-#: canaille/forms.py:93 canaille/forms.py:194
-msgid "jdoe"
 msgstr ""
 
 #: canaille/admin/clients.py:28 canaille/forms.py:96 canaille/forms.py:177
@@ -204,7 +220,7 @@ msgstr ""
 msgid "Doe"
 msgstr ""
 
-#: canaille/forms.py:114 canaille/forms.py:198
+#: canaille/forms.py:114 canaille/forms.py:192
 msgid "Email address"
 msgstr ""
 
@@ -228,7 +244,7 @@ msgstr ""
 msgid "1234"
 msgstr ""
 
-#: canaille/forms.py:162 canaille/forms.py:211 canaille/templates/group.html:93
+#: canaille/forms.py:162 canaille/forms.py:205 canaille/templates/group.html:93
 #: canaille/templates/groups.html:9 canaille/templates/users.html:29
 #: canaille/themes/default/base.html:59
 msgid "Groups"
@@ -236,10 +252,6 @@ msgstr ""
 
 #: canaille/forms.py:180
 msgid "group"
-msgstr ""
-
-#: canaille/forms.py:187
-msgid "The group '{group}' already exists"
 msgstr ""
 
 #: canaille/groups.py:39
