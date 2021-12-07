@@ -21,10 +21,26 @@ def unique_email(form, field):
         )
 
 
+def unique_group(form, field):
+    if Group.get(field.data):
+        raise wtforms.ValidationError(
+            _("The group '{group}' already exists").format(group=field.data)
+        )
+
+
+def existing_login(form, field):
+    if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
+        field.data
+    ):
+        raise wtforms.ValidationError(
+            _("The login '{login}' does not exist").format(login=field.data)
+        )
+
+
 class LoginForm(FlaskForm):
     login = wtforms.StringField(
         _("Login"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",
@@ -32,14 +48,6 @@ class LoginForm(FlaskForm):
             "inputmode": "email",
         },
     )
-
-    def validate_login(self, field):
-        if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
-            field.data
-        ):
-            raise wtforms.ValidationError(
-                _("The login '{login}' does not exist").format(login=field.data)
-            )
 
 
 class PasswordForm(FlaskForm):
@@ -56,21 +64,13 @@ class FullLoginForm(LoginForm, PasswordForm):
 class ForgottenPasswordForm(FlaskForm):
     login = wtforms.StringField(
         _("Login"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
     )
-
-    def validate_login(self, field):
-        if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
-            field.data
-        ):
-            raise wtforms.ValidationError(
-                _("The login '{login}' does not exist").format(login=field.data)
-            )
 
 
 class PasswordResetForm(FlaskForm):
@@ -175,17 +175,11 @@ def profile_form(write_field_names, readonly_field_names):
 class GroupForm(FlaskForm):
     name = wtforms.StringField(
         _("Name"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[wtforms.validators.DataRequired(), unique_group],
         render_kw={
             "placeholder": _("group"),
         },
     )
-
-    def validate_name(self, field):
-        if Group.get(field.data):
-            raise wtforms.ValidationError(
-                _("The group '{group}' already exists").format(group=field.data)
-            )
 
 
 class InvitationForm(FlaskForm):
