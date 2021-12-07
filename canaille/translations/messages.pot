@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-07 00:13+0100\n"
+"POT-Creation-Date: 2021-12-07 09:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.6.0\n"
 
 #: canaille/__init__.py:123
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -230,7 +230,7 @@ msgstr ""
 
 #: canaille/forms.py:162 canaille/forms.py:214 canaille/templates/group.html:93
 #: canaille/templates/groups.html:9 canaille/templates/users.html:27
-#: canaille/themes/default/base.html:57
+#: canaille/themes/default/base.html:59
 msgid "Groups"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr ""
 msgid "Groups you are belonging to"
 msgstr ""
 
-#: canaille/oauth.py:119
+#: canaille/oauth.py:122
 msgid "You have been successfully logged out."
 msgstr ""
 
@@ -384,7 +384,7 @@ msgstr ""
 msgid "Invitation on {website_name}"
 msgstr ""
 
-#: canaille/templates/about.html:12 canaille/themes/default/base.html:96
+#: canaille/templates/about.html:12 canaille/themes/default/base.html:98
 msgid "About canaille"
 msgstr ""
 
@@ -427,7 +427,7 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: canaille/templates/consent_list.html:18 canaille/themes/default/base.html:44
+#: canaille/templates/consent_list.html:18 canaille/themes/default/base.html:45
 msgid "My consents"
 msgstr ""
 
@@ -504,7 +504,8 @@ msgid ""
 "account. We will send\n"
 "        you an email containing a link that will allow you to set a "
 "password. Please click\n"
-"        on the blue button below to send the email.\n"
+"        on the «Send the initialization email» button below to send the "
+"email.\n"
 "        "
 msgstr ""
 
@@ -925,8 +926,8 @@ msgstr ""
 msgid ""
 "\n"
 "                In order to finalize your account configuration at "
-"%(site_name)s, we need to setup your password. Please click on the blue "
-"button below and follow the instructions.\n"
+"%(site_name)s, we need to setup your password. Please click on the "
+"«Initialize password» button below and follow the instructions.\n"
 "                "
 msgstr ""
 
@@ -964,8 +965,8 @@ msgstr ""
 msgid ""
 "\n"
 "                You have been invited to create an account at "
-"%(site_name)s. To proceed you can click on the blue button below and "
-"follow the instructions.\n"
+"%(site_name)s. To proceed you can click on the «Create my account» button"
+" below and follow the instructions.\n"
 "                "
 msgstr ""
 
@@ -985,9 +986,9 @@ msgstr ""
 msgid ""
 "\n"
 "                Someone, probably you, asked for a password "
-"reinitialization link at %(site_name)s. If you did not asked for this "
-"email, please ignore it. I you need to reset your password, please click "
-"on the blue button below and follow the instructions.\n"
+"reinitialization link at %(site_name)s. If you did not ask for this "
+"email, please ignore it. If you need to reset your password, please click"
+" on the «Reset password» button below and follow the instructions.\n"
 "                "
 msgstr ""
 
@@ -1003,23 +1004,23 @@ msgstr ""
 msgid "authorization interface"
 msgstr ""
 
-#: canaille/themes/default/base.html:50
+#: canaille/themes/default/base.html:52
 msgid "Users"
 msgstr ""
 
-#: canaille/themes/default/base.html:67
+#: canaille/themes/default/base.html:69
 msgid "Clients"
 msgstr ""
 
-#: canaille/themes/default/base.html:71
+#: canaille/themes/default/base.html:73
 msgid "Tokens"
 msgstr ""
 
-#: canaille/themes/default/base.html:75
+#: canaille/themes/default/base.html:77
 msgid "Codes"
 msgstr ""
 
-#: canaille/themes/default/base.html:82
+#: canaille/themes/default/base.html:84
 msgid "Log out"
 msgstr ""
 
