@@ -23,7 +23,7 @@ from .forms import (
     ForgottenPasswordForm,
     profile_form,
 )
-from .flaskutils import current_user, user_needed, permissions_needed
+from .flaskutils import current_user, user_needed, permissions_needed, smtp_needed
 from .mails import (
     send_password_initialization_mail,
     send_invitation_mail,
@@ -150,6 +150,7 @@ def users(user):
 
 
 @bp.route("/invite", methods=["GET", "POST"])
+@smtp_needed()
 @permissions_needed("manage_users")
 def user_invitation(user):
     form = InvitationForm(request.form or None)
@@ -426,6 +427,7 @@ def impersonate(user, username):
 
 
 @bp.route("/reset", methods=["GET", "POST"])
+@smtp_needed()
 def forgotten():
     form = ForgottenPasswordForm(request.form)
     if not request.form:

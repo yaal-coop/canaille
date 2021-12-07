@@ -236,6 +236,7 @@ def create_app(config=None, validate=True):
         @app.context_processor
         def global_processor():
             return {
+                "has_smtp": "SMTP" in app.config,
                 "logo_url": app.config.get("LOGO"),
                 "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
                 "website_name": app.config.get("NAME"),

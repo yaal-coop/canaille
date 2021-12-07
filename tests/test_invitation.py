@@ -111,3 +111,19 @@ def test_no_registration_if_logged_in(
         url = f"/register/{b64}/{hash}"
 
     testclient.get(url, status=302)
+
+
+def test_unavailable_if_no_smtp(testclient, logged_admin):
+    res = testclient.get("/users")
+    assert "Invite a user" in res.text
+    res = testclient.get("/profile")
+    assert "Invite a user" in res.text
+    testclient.get("/invite")
+
+    del testclient.app.config["SMTP"]
+
+    res = testclient.get("/users")
+    assert "Invite a user" not in res.text
+    res = testclient.get("/profile")
+    assert "Invite a user" not in res.text
+    testclient.get("/invite", status=500, expect_errors=True)
