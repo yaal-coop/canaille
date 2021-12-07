@@ -151,6 +151,8 @@ LOCALE = "preferredLanguage"
 PICTURE = "photo"
 ADDRESS = "postalAddress"
 
+# The SMTP server options. If not set, mail related features such as
+# user invitations, and password reset emails, will be disabled.
 [SMTP]
 HOST = "localhost"
 PORT = 25
