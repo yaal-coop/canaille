@@ -167,10 +167,7 @@ def profile_form(write_field_names, readonly_field_names):
     form = wtforms.form.BaseForm(fields)
     for field in form:
         if field.name in readonly_field_names - write_field_names:
-            if field.name == "groups":
-                field.render_kw["disabled"] = "true"
-            else:
-                field.render_kw["readonly"] = "true"
+            field.render_kw["readonly"] = "true"
 
     return form
 

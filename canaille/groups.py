@@ -30,7 +30,7 @@ def create_group(user):
     form = GroupForm(request.form or None)
     try:
         if "name" in form:
-            del form["name"].render_kw["disabled"]
+            del form["name"].render_kw["readonly"]
     except KeyError:
         pass
 
@@ -67,7 +67,7 @@ def group(user, groupname):
 
 def edit_group(group):
     form = GroupForm(request.form or None, data={"name": group.name})
-    form["name"].render_kw["disabled"] = "true"
+    form["name"].render_kw["readonly"] = "true"
 
     if request.form:
         if form.validate():

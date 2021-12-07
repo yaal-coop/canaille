@@ -14,7 +14,7 @@ def test_edition(
     assert logged_user.groups == [foo_group]
     assert foo_group.member == [logged_user.dn]
     assert bar_group.member == [admin.dn]
-    assert res.form["groups"].attrs["disabled"]
+    assert res.form["groups"].attrs["readonly"]
     assert res.form["uid"].attrs["readonly"]
 
     res.form["uid"] = "toto"
@@ -225,7 +225,7 @@ def test_user_creation_edition_and_deletion(
         assert george.check_password("totoyolo")
 
     assert "george" in testclient.get("/users", status=200).text
-    assert "disabled" not in res.form["groups"].attrs
+    assert "readonly" not in res.form["groups"].attrs
 
     res.form["givenName"] = "Georgio"
     res.form["groups"] = [
