@@ -116,38 +116,48 @@
                 <div class="header">
                     {% trans %}User password is not mandatory{% endtrans %}
                 </div>
+                {% if has_password %}
                 <p>{% trans %}The user password can be set:{% endtrans %}</p>
                 <ul class="ui list">
                     <li>{% trans %}by filling this form;{% endtrans %}</li>
                     <li>{% trans %}by sending the user a password initialization mail, after the account creation;{% endtrans %}</li>
                     <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
                 </ul>
+                {% else %}
+                <p>{% trans %}The user will not be able to authenticate unless the password is set{% endtrans %}</p>
+                {% endif %}
             </div>
 
             {% elif not edited_user.has_password() %}
 
             <div class="ui message warning">
-                {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
-                    <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
-                        {% trans %}Send again{% endtrans %}
-                    </button>
-                {% else %}
-                    <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
-                        {% trans %}Send email{% endtrans %}
-                    </button>
+                {% if has_smtp %}
+                    {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
+                        <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
+                            {% trans %}Send again{% endtrans %}
+                        </button>
+                    {% else %}
+                        <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
+                            {% trans %}Send email{% endtrans %}
+                        </button>
+                    {% endif %}
                 {% endif %}
                 <div class="header">
                     {% trans %}This user does not have a password yet{% endtrans %}
                 </div>
+                {% if has_smtp %}
                 <p>{% trans %}You can solve this by:{% endtrans %}</p>
                 <ul class="ui list">
                     <li>{% trans %}setting a password using this form;{% endtrans %}</li>
                     <li>{% trans %}sending the user a password initialization mail, by clicking this button;{% endtrans %}</li>
                     <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
                 </ul>
+                {% else %}
+                <p>{% trans %}The user will not be able to authenticate unless the password is set{% endtrans %}</p>
+                {% endif %}
             </div>
 
-            {% elif edited_user.uid != user.uid and edited_user.has_password() %}
+            {% elif has_smtp and edited_user.uid != user.uid and edited_user.has_password() %}
 
             <div class="ui message info">
                 <button type="submit" name="action" value="password-reset-mail" class="ui right floated button">
@@ -185,7 +195,7 @@
                 </a>
                 {% endif %}
 
-                {% if user.can_manage_users and not edited_user %}
+                {% if user.can_manage_users and not edited_user and has_smtp %}
                 <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="impersonate" id="impersonate">
                     {{ _("Invite a user") }}
                 </a>

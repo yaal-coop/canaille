@@ -50,3 +50,27 @@ def test_password_reset_bad_password(testclient, slapd_connection, user):
 
     with testclient.app.app_context():
         assert user.check_password("correct horse battery staple")
+
+
+def test_unavailable_if_no_smtp(testclient, user):
+    res = testclient.get("/login")
+    assert "Forgotten password" in res.text
+
+    res.form["login"] = "John (johnny) Doe"
+    res = res.form.submit()
+    res = res.follow()
+    assert "Forgotten password" in res.text
+
+    testclient.get("/reset", status=200)
+
+    del testclient.app.config["SMTP"]
+
+    res = testclient.get("/login")
+    assert "Forgotten password" not in res.text
+
+    res.form["login"] = "John (johnny) Doe"
+    res = res.form.submit()
+    res = res.follow()
+    assert "Forgotten password" not in res.text
+
+    testclient.get("/reset", status=500, expect_errors=True)

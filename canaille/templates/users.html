@@ -15,7 +15,9 @@
 <div class="ui segment">
     <div class="ui stackable buttons">
         <a class="ui primary button" href="{{ url_for('account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
-        <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
+        {% if has_smtp %}
+            <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
+        {% endif %}
     </div>
 </div>
 
