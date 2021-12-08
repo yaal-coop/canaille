@@ -14,7 +14,7 @@ from flask import (
 from flask_babel import gettext as _
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
-from .apputils import b64_to_obj, login_placeholder, profile_hash, obj_to_b64
+from .apputils import default_fields, b64_to_obj, login_placeholder, profile_hash, obj_to_b64
 from .forms import (
     InvitationForm,
     LoginForm,
@@ -242,8 +242,7 @@ def registration(data, hash):
         "groups": data[2],
     }
 
-    readable_fields = set(current_app.config["ACL"]["DEFAULT"]["READ"])
-    writable_fields = set(current_app.config["ACL"]["DEFAULT"]["WRITE"])
+    readable_fields, writable_fields = default_fields()
 
     form = profile_form(writable_fields, readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
