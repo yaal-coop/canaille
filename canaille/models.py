@@ -13,8 +13,6 @@ from .ldaputils import LDAPObject
 
 
 class User(LDAPObject):
-    id = "cn"
-
     def __init__(self, *args, **kwargs):
         self.read = set()
         self.write = set()
@@ -176,8 +174,6 @@ class User(LDAPObject):
 
 
 class Group(LDAPObject):
-    id = "cn"
-
     @classmethod
     def available_groups(cls, conn=None):
         conn = conn or cls.ldap()
