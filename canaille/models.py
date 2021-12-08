@@ -148,6 +148,12 @@ class User(LDAPObject):
                 self.read |= set(details.get("READ", []))
                 self.write |= set(details.get("WRITE", []))
 
+    def can_read(self, field):
+        return field in self.read | self.write
+
+    def can_writec(self, field):
+        return field in self.write
+
     @property
     def can_use_oidc(self):
         return "use_oidc" in self.permissions

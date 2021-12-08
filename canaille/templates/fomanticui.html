@@ -5,13 +5,16 @@
     container=true,
     noindicator=false,
     indicator_icon=none,
-    indicator_text=none
+    indicator_text=none,
+    display=true
     ) -%}
 
 {% if container %}
     <div class="field {{ kwargs.pop('class_', '') }}
         {%- if field.errors %} error{% endif -%}
-        {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}">
+        {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}"
+        {% if not display %}style="display: none"{% endif %}
+    >
 {% endif %}
 
 {% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
@@ -31,7 +34,6 @@
         {% if field.type not in ("SelectField", "SelectMultipleField") %}
             {{ field(**kwargs) }}
         {% elif field.render_kw and "readonly" in field.render_kw %}
-            {# This will be un-needed when https://github.com/fomantic/Fomantic-UI/issues/2173 is solved #}
             {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
         {% else %}
             {{ field(class_="ui fluid dropdown multiple", **kwargs) }}

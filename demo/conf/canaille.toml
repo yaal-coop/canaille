@@ -113,9 +113,9 @@ GROUP_USER_FILTER = "member={user.dn}"
 # The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
 # object that users will be able to read and/or write.
 [ACL.DEFAULT]
-READ = ["uid", "groups"]
 PERMISSIONS = ["use_oidc"]
-WRITE = ["givenName", "sn", "userPassword", "telephoneNumber"]
+READ = ["uid", "groups"]
+WRITE = ["jpegPhoto", "givenName", "sn", "userPassword", "telephoneNumber", "mail"]
 
 [ACL.ADMIN]
 FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
@@ -154,7 +154,7 @@ GIVEN_NAME = "givenName"
 FAMILY_NAME = "sn"
 PREFERRED_USERNAME = "displayName"
 LOCALE = "preferredLanguage"
-PICTURE = "photo"
+PICTURE = "jpegPhoto"
 ADDRESS = "postalAddress"
 
 # The SMTP server options. If not set, mail related features such as

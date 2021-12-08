@@ -42,3 +42,11 @@ footer a {
 .ui.corner.labeled.input .ui.dropdown .dropdown.icon {
     margin-right: 1.5em;
 }
+
+.profile-form label img{
+    cursor: pointer;
+}
+
+.profile-form label i{
+    cursor: pointer;
+}

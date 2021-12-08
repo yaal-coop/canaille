@@ -3,20 +3,21 @@
 
 {% block script %}
     <script src="/static/js/confirm.js"></script>
+    <script src="/static/js/profile.js"></script>
 {% endblock %}
 
 {% macro render_field(field, noindicator=false) %}
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
     {% if not edited_user %}
-        {{ sui.render_field(field) }}
+        {{ sui.render_field(field, **kwargs) }}
     {% elif edited_user.uid == user.uid or lock_indicator or noindicator %}
-        {{ sui.render_field(field) }}
+        {{ sui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.write %}
-        {{ sui.render_field(field, noindicator=true) }}
+        {{ sui.render_field(field, noindicator=true, **kwargs) }}
     {% elif field.name in edited_user.read %}
-        {{ sui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field")) }}
+        {{ sui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
     {% else %}
-        {{ sui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field")) }}
+        {{ sui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
     {% endif %}
 {% endmacro %}
 
@@ -71,12 +72,42 @@
       action="{{ request.url }}"
       role="form"
       enctype="multipart/form-data"
-      class="ui form info{% if user.can_manage_users and edited_user and not edited_user.has_password() %} warning{% endif %}"
+      class="ui form info{% if user.can_manage_users and edited_user and not edited_user.has_password() %} warning{% endif %} profile-form"
       >
 
         {#{ render_field(form.csrf_token) }#}
 
         <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
+
+        {% if "jpegPhoto" in form %}
+        <div class="ui grid">
+            <div class="three wide column">
+            {{ render_field(form.jpegPhoto, display=false, class="photo-field") }}
+            {{ render_field(form.jpegPhoto_delete, display=false, class="photo-delete-button") }}
+            {% set photo = edited_user.jpegPhoto and edited_user.jpegPhoto[0] %}
+            <label
+                class="ui small bordered image photo-content"
+                for="{{ form.jpegPhoto.id }}"
+                title="{{ _("Click to upload a photo") }}"
+                {% if not photo %}style="display: none;"{% endif %}>
+
+                <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
+                    <i class="times icon"></i>
+                </a>
+                <img src="{% if photo %}{{ edited_user.jpegPhoto[0]|base64picture }}{% endif %}" alt="User photo">
+            </label>
+            <label
+                class="ui centered photo-placeholder"
+                for="{{ form.jpegPhoto.id }}"
+                title="{{ _("Click to upload a photo") }}"
+                {% if photo %}style="display: none;"{% endif %}>
+                <i class="massive centered portrait icon"></i>
+            </label>
+            </div>
+
+            <div class="thirteen wide column">
+        {% endif %}
+
         <div class="two fields">
             {% if "givenName" in form %}
                 {{ render_field(form.givenName) }}
@@ -85,9 +116,13 @@
                 {{ render_field(form.sn) }}
             {% endif %}
         </div>
+
         {% if "mail" in form %}
             {{ render_field(form.mail) }}
         {% endif %}
+
+        {% if "jpegPhoto" in form %}</div></div>{% endif %}
+
         {% if "telephoneNumber" in form %}
             {{ render_field(form.telephoneNumber) }}
         {% endif %}
