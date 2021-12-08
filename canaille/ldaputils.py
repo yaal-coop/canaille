@@ -150,13 +150,28 @@ class LDAPObject:
 
         return cls._attribute_type_by_name
 
+    @staticmethod
+    def ldap_attrs_to_python(attrs):
+        return {
+            name: [value.decode("utf-8") for value in values]
+            for name, values in attrs.items()
+        }
+
+    @staticmethod
+    def python_attrs_to_ldap(attrs):
+        return {
+            name: [
+                value.encode("utf-8") if isinstance(value, str) else value
+                for value in values
+            ]
+            for name, values in attrs.items()
+        }
+
     def reload(self, conn=None):
         conn = conn or self.ldap()
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE)
         self.changes = {}
-        self.attrs = {
-            k: [elt.decode("utf-8") for elt in v] for k, v in result[0][1].items()
-        }
+        self.attrs = self.ldap_attrs_to_python(result[0][1])
 
     def save(self, conn=None):
         conn = conn or self.ldap()
@@ -165,39 +180,31 @@ class LDAPObject:
         except ldap.NO_SUCH_OBJECT:
             match = False
 
+        # Object already exists in the LDAP database
         if match:
-            mods = {
-                k: v
-                for k, v in self.changes.items()
-                if v and v[0] and self.attrs.get(k) != v
+            changes = {
+                name: value
+                for name, value in self.changes.items()
+                if value and value[0] and self.attrs.get(name) != value
             }
-            attributes = [
-                (
-                    ldap.MOD_REPLACE,
-                    k,
-                    [elt.encode("utf-8") if isinstance(elt, str) else elt for elt in v],
-                )
-                for k, v in mods.items()
+            changes = self.python_attrs_to_ldap(changes)
+            modlist = [
+                (ldap.MOD_REPLACE, name, values) for name, values in changes.items()
             ]
-            conn.modify_s(self.dn, attributes)
+            conn.modify_s(self.dn, modlist)
 
+        # Object does not exist yet in the LDAP database
         else:
-            mods = {}
-            for k, v in self.attrs.items():
-                if v and v[0]:
-                    mods[k] = v
-            for k, v in self.changes.items():
-                if v and v[0]:
-                    mods[k] = v
-
-            attributes = [
-                (k, [elt.encode("utf-8") if isinstance(elt, str) else elt for elt in v])
-                for k, v in mods.items()
-            ]
+            changes = {
+                name: value
+                for name, value in {**self.attrs, **self.changes}.items()
+                if value and value[0]
+            }
+            changes = self.python_attrs_to_ldap(changes)
+            attributes = [(name, values) for name, values in changes.items()]
             conn.add_s(self.dn, attributes)
 
-        for k, v in self.changes.items():
-            self.attrs[k] = v
+        self.attrs = {**self.attrs, **self.changes}
         self.changes = {}
 
     @classmethod
@@ -233,7 +240,9 @@ class LDAPObject:
 
             else:
                 values = [ldap.filter.escape_filter_chars(v) for v in value]
-                arg_filter += "(|" + "".join([f"({key}={v})" for v in values]) + ")"
+                arg_filter += (
+                    "(|" + "".join([f"({key}={value})" for value in values]) + ")"
+                )
 
         if not filter:
             filter = ""
@@ -244,12 +253,7 @@ class LDAPObject:
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
 
-        return [
-            cls(
-                **{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},
-            )
-            for _, args in result
-        ]
+        return [cls(**cls.ldap_attrs_to_python(args)) for _, args in result]
 
     def __getattr__(self, name):
         if (not self.may or name not in self.may) and (
