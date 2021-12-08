@@ -136,7 +136,7 @@ def authorize():
                     oauthClient=client.dn,
                     oauthSubject=user.dn,
                     oauthScope=scopes,
-                    oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+                    oauthIssueDate=datetime.datetime.now(),
                 )
             consent.save()
 

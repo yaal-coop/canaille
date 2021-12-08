@@ -1,5 +1,7 @@
+import datetime
 import ldap
 import ldap.filter
+import warnings
 from flask import g
 
 
@@ -154,19 +156,47 @@ class LDAPObject:
         return cls._attribute_type_by_name
 
     @staticmethod
+    def ldap_to_python(name, value):
+        syntax = LDAPObject.ldap_object_attributes()[name].syntax
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
+            value = value.decode("utf-8")
+            return datetime.datetime.strptime(value, "%Y%m%d%H%M%SZ") if value else None
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
+            return int(value.decode("utf-8"))
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
+            return value.decode("utf-8").upper() == "TRUE"
+
+        return value.decode("utf-8")
+
+    @staticmethod
+    def python_to_ldap(name, value):
+        syntax = LDAPObject.ldap_object_attributes()[name].syntax
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
+            return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
+            return str(value).encode("utf-8")
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
+            return ("TRUE" if value else "FALSE").encode("utf-8")
+
+        return value.encode("utf-8")
+
+    @staticmethod
     def ldap_attrs_to_python(attrs):
         return {
-            name: [value.decode("utf-8") for value in values]
+            name: [LDAPObject.ldap_to_python(name, value) for value in values]
             for name, values in attrs.items()
         }
 
     @staticmethod
     def python_attrs_to_ldap(attrs):
         return {
-            name: [
-                value.encode("utf-8") if isinstance(value, str) else value
-                for value in values
-            ]
+            name: [LDAPObject.python_to_ldap(name, value) for value in values]
             for name, values in attrs.items()
         }
 
@@ -190,9 +220,10 @@ class LDAPObject:
                 for name, value in self.changes.items()
                 if value and value[0] and self.attrs.get(name) != value
             }
-            changes = self.python_attrs_to_ldap(changes)
+            formatted_changes = self.python_attrs_to_ldap(changes)
             modlist = [
-                (ldap.MOD_REPLACE, name, values) for name, values in changes.items()
+                (ldap.MOD_REPLACE, name, values)
+                for name, values in formatted_changes.items()
             ]
             conn.modify_s(self.dn, modlist)
 
@@ -203,8 +234,8 @@ class LDAPObject:
                 for name, value in {**self.attrs, **self.changes}.items()
                 if value and value[0]
             }
-            changes = self.python_attrs_to_ldap(changes)
-            attributes = [(name, values) for name, values in changes.items()]
+            formatted_changes = self.python_attrs_to_ldap(changes)
+            attributes = [(name, values) for name, values in formatted_changes.items()]
             conn.add_s(self.dn, attributes)
 
         self.attrs = {**self.attrs, **self.changes}
