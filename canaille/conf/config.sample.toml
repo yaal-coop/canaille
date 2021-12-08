@@ -131,17 +131,19 @@ EXP = 3600
 
 [JWT.MAPPING]
 # Mapping between JWT fields and LDAP attributes from your
-# User objectClass. Default values fits inetOrgPerson.
-SUB = "uid"
-NAME = "cn"
-PHONE_NUMBER = "telephoneNumber"
-EMAIL = "mail"
-GIVEN_NAME = "givenName"
-FAMILY_NAME = "sn"
-PREFERRED_USERNAME = "displayName"
-LOCALE = "preferredLanguage"
-PICTURE = "jpegPhoto"
-ADDRESS = "postalAddress"
+# User objectClass.
+# {attribute} will be replaced by the user ldap attribute value.
+# Default values fits inetOrgPerson.
+SUB = "{uid}"
+NAME = "{cn}"
+PHONE_NUMBER = "{telephoneNumber}"
+EMAIL = "{mail}"
+GIVEN_NAME = "{givenName}"
+FAMILY_NAME = "{sn}"
+PREFERRED_USERNAME = "{displayName}"
+LOCALE = "{preferredLanguage}"
+PICTURE = "{jpegPhoto}"
+ADDRESS = "{postalAddress}"
 
 [SMTP]
 HOST = "localhost"

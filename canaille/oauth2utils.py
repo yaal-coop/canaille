@@ -17,6 +17,7 @@ from authlib.oidc.core.grants import (
     OpenIDHybridGrant as _OpenIDHybridGrant,
 )
 from authlib.oidc.core import UserInfo
+from collections import defaultdict
 from flask import current_app
 from .models import Client, AuthorizationCode, Token, User
 
@@ -64,11 +65,17 @@ def generate_user_info(user, scope):
     if "groups" in scope:
         fields += ["groups"]
 
+    user_ldap_attributes = defaultdict(str)
+    for attr in user.attrs:
+        user_ldap_attributes[attr] = user.__getattr__(attr)
+        if isinstance(user_ldap_attributes[attr], list):
+            user_ldap_attributes[attr] = user_ldap_attributes[attr][0]
+
     data = {}
     for field in fields:
         format_field = current_app.config["JWT"]["MAPPING"].get(field.upper())
         if format_field:
-            value = generate_field(format_field, user)
+            value = format_field.format_map(user_ldap_attributes)
             if value:
                 # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
                 # it's better to not insert a null or empty string value
@@ -76,14 +83,9 @@ def generate_user_info(user, scope):
         if field == "groups":
             group_name_attr = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
             data[field] = [getattr(g, group_name_attr)[0] for g in user.groups]
-
+    
     return UserInfo(**data)
 
-def generate_field(format_field, user):
-    formatted_field = user.__getattr__(format_field)
-    if formatted_field and isinstance(formatted_field, list):
-        formatted_field = formatted_field[0]
-    return formatted_field
 
 def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
