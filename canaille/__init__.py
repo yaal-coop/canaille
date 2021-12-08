@@ -96,12 +96,18 @@ def setup_logging(app):
 
 def setup_ldap_models(app):
     LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
+
     user_base = app.config["LDAP"]["USER_BASE"]
     if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
         user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     User.base = user_base
+    User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", "cn")
+
     group_base = app.config["LDAP"].get("GROUP_BASE")
+    if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
+        group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     Group.base = group_base
+    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBTUE", "cn")
 
 
 def setup_ldap_connection(app):
