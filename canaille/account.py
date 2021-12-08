@@ -290,7 +290,7 @@ def profile_create(current_app, form):
             else:
                 data = attribute.data
 
-            if user.attr_type_by_name()[attribute.name].single_value:
+            if user.ldap_object_attributes()[attribute.name].single_value:
                 user[attribute.name] = data
             else:
                 user[attribute.name] = [data]
@@ -384,7 +384,7 @@ def profile_edit(editor, username):
                     else:
                         data = attribute.data
 
-                    if user.attr_type_by_name()[attribute.name].single_value:
+                    if user.ldap_object_attributes()[attribute.name].single_value:
                         user[attribute.name] = data
                     else:
                         user[attribute.name] = [data]

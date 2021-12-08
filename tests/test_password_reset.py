@@ -2,7 +2,7 @@ from canaille.account import profile_hash
 
 
 def test_password_reset(testclient, slapd_connection, user):
-    user.attr_type_by_name(conn=slapd_connection)
+    user.ldap_object_attributes(conn=slapd_connection)
     user.reload(conn=slapd_connection)
     with testclient.app.app_context():
         hash = profile_hash("user", user.mail[0], user.userPassword[0])
@@ -27,7 +27,7 @@ def test_password_reset(testclient, slapd_connection, user):
 
 
 def test_password_reset_bad_link(testclient, slapd_connection, user):
-    user.attr_type_by_name(conn=slapd_connection)
+    user.ldap_object_attributes(conn=slapd_connection)
     user.reload(conn=slapd_connection)
 
     res = testclient.get("/reset/user/foobarbaz")
@@ -37,7 +37,7 @@ def test_password_reset_bad_link(testclient, slapd_connection, user):
 
 
 def test_password_reset_bad_password(testclient, slapd_connection, user):
-    user.attr_type_by_name(conn=slapd_connection)
+    user.ldap_object_attributes(conn=slapd_connection)
     user.reload(conn=slapd_connection)
     with testclient.app.app_context():
         hash = profile_hash("user", user.mail[0], user.userPassword[0])

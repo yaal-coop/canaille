@@ -122,11 +122,11 @@ def test_install_schemas(configuration, slapd_server_without_schemas):
         slapd_server_without_schemas.root_dn, slapd_server_without_schemas.root_pw
     )
 
-    assert "oauthClient" not in LDAPObject.ocs_by_name(conn=conn, force=True)
+    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     setup_schemas(configuration)
 
-    assert "oauthClient" in LDAPObject.ocs_by_name(conn=conn, force=True)
+    assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     conn.unbind_s()
     slapd_server_without_schemas.stop()
@@ -144,13 +144,13 @@ def test_install_schemas_command(configuration, slapd_server_without_schemas):
         slapd_server_without_schemas.root_dn, slapd_server_without_schemas.root_pw
     )
 
-    assert "oauthClient" not in LDAPObject.ocs_by_name(conn=conn, force=True)
+    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
     runner.invoke(cli, ["install"])
 
-    assert "oauthClient" in LDAPObject.ocs_by_name(conn=conn, force=True)
+    assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     conn.unbind_s()
     slapd_server_without_schemas.stop()

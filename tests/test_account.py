@@ -65,7 +65,7 @@ def test_signin_with_alternate_attribute(testclient, slapd_connection, user):
 
 
 def test_user_without_password_first_login(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Temp User",
@@ -84,7 +84,7 @@ def test_user_without_password_first_login(testclient, slapd_connection):
 
 
 def test_user_deleted_in_session(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jake Doe",
@@ -145,7 +145,7 @@ def test_wrong_login(testclient, slapd_connection, user):
 
 
 def test_admin_self_deletion(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     admin = User(
         objectClass=["inetOrgPerson"],
         cn="Temp admin",
@@ -173,7 +173,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
 
 
 def test_user_self_deletion(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     user = User(
         objectClass=["inetOrgPerson"],
         cn="Temp user",
