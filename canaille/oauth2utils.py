@@ -88,7 +88,7 @@ def save_authorization_code(code, request):
         oauthRedirectURI=request.redirect_uri or request.client.oauthRedirectURIs[0],
         oauthScope=request.scope,
         oauthNonce=nonce,
-        oauthAuthorizationDate=now.strftime("%Y%m%d%H%M%SZ"),
+        oauthAuthorizationDate=now,
         oauthAuthorizationLifetime=str(84000),
         oauthCodeChallenge=request.data.get("code_challenge"),
         oauthCodeChallengeMethod=request.data.get("code_challenge_method"),
@@ -153,9 +153,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return user.dn
 
     def revoke_old_credential(self, credential):
-        credential.oauthRevokationDate = datetime.datetime.now().strftime(
-            "%Y%m%d%H%M%SZ"
-        )
+        credential.oauthRevokationDate = datetime.datetime.now()
         credential.save()
 
 
@@ -201,7 +199,7 @@ def save_token(token, request):
     t = Token(
         oauthTokenType=token["token_type"],
         oauthAccessToken=token["access_token"],
-        oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
+        oauthIssueDate=now,
         oauthTokenLifetime=str(token["expires_in"]),
         oauthScope=token["scope"],
         oauthClient=request.client.dn,
@@ -241,7 +239,7 @@ class RevocationEndpoint(_RevocationEndpoint):
         return None
 
     def revoke_token(self, token):
-        token.oauthRevokationDate = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
+        token.oauthRevokationDate = datetime.datetime.now()
         token.save()
 
 

@@ -234,7 +234,7 @@ def client(app, slapd_connection, other_client):
             "https://mydomain.tld/redirect2",
         ],
         oauthLogoURI="https://mydomain.tld/logo.png",
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%S%MZ"),
+        oauthIssueDate=datetime.datetime.now(),
         oauthClientSecret=gen_salt(48),
         oauthGrantType=[
             "password",
@@ -268,7 +268,7 @@ def other_client(app, slapd_connection):
             "https://myotherdomain.tld/redirect2",
         ],
         oauthLogoURI="https://myotherdomain.tld/logo.png",
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%S%MZ"),
+        oauthIssueDate=datetime.datetime.now(),
         oauthClientSecret=gen_salt(48),
         oauthGrantType=[
             "password",
@@ -300,7 +300,7 @@ def authorization(app, slapd_connection, user, client):
         oauthResponseType="code",
         oauthScope="openid profile",
         oauthNonce="nonce",
-        oauthAuthorizationDate="20200101000000Z",
+        oauthAuthorizationDate=datetime.datetime(2020, 1, 1),
         oauthAuthorizationLifetime="3600",
         oauthCodeChallenge="challenge",
         oauthCodeChallengeMethod="method",
@@ -313,6 +313,7 @@ def authorization(app, slapd_connection, user, client):
 @pytest.fixture
 def user(app, slapd_connection):
     User.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="John (johnny) Doe",
@@ -365,7 +366,7 @@ def token(slapd_connection, client, user):
         oauthTokenType=None,
         oauthRefreshToken=gen_salt(48),
         oauthScope="openid profile",
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+        oauthIssueDate=datetime.datetime.now(),
         oauthTokenLifetime=str(3600),
     )
     t.save(slapd_connection)
@@ -378,7 +379,7 @@ def consent(slapd_connection, client, user):
         oauthClient=client.dn,
         oauthSubject=user.dn,
         oauthScope=["openid", "profile"],
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+        oauthIssueDate=datetime.datetime.now(),
     )
     t.save(slapd_connection)
     return t

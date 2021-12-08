@@ -67,7 +67,7 @@ def test_authorization_code_flow(
 def test_authorization_code_flow_preconsented(
     testclient, slapd_connection, logged_user, client, keypair, other_client
 ):
-    client.oauthPreconsent = "TRUE"
+    client.oauthPreconsent = True
     client.save(conn=slapd_connection)
 
     res = testclient.get(

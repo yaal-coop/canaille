@@ -215,15 +215,11 @@ class Client(LDAPObject, ClientMixin):
 
     @property
     def issue_date(self):
-        return (
-            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-            if self.oauthIssueDate
-            else None
-        )
+        return self.oauthIssueDate
 
     @property
     def preconsent(self):
-        return self.oauthPreconsent and self.oauthPreconsent.lower() == "true"
+        return self.oauthPreconsent
 
     def get_client_id(self):
         return self.oauthClientID
@@ -269,11 +265,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 
     @property
     def issue_date(self):
-        return (
-            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-            if self.oauthIssueDate
-            else None
-        )
+        return self.oauthIssueDate
 
     def get_redirect_uri(self):
         return self.oauthRedirectURI
@@ -286,16 +278,17 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 
     def is_expired(self):
         return (
-            datetime.datetime.strptime(self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ")
+            self.oauthAuthorizationDate
             + datetime.timedelta(seconds=int(self.oauthAuthorizationLifetime))
             < datetime.datetime.now()
         )
 
     def get_auth_time(self):
-        auth_time = datetime.datetime.strptime(
-            self.oauthAuthorizationDate, "%Y%m%d%H%M%SZ"
+        return int(
+            (
+                self.oauthAuthorizationDate - datetime.datetime(1970, 1, 1)
+            ).total_seconds()
         )
-        return int((auth_time - datetime.datetime(1970, 1, 1)).total_seconds())
 
 
 class Token(LDAPObject, TokenMixin):
@@ -305,17 +298,13 @@ class Token(LDAPObject, TokenMixin):
 
     @property
     def issue_date(self):
-        return (
-            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-            if self.oauthIssueDate
-            else None
-        )
+        return self.oauthIssueDate
 
     @property
     def expire_date(self):
-        return datetime.datetime.strptime(
-            self.oauthIssueDate, "%Y%m%d%H%M%SZ"
-        ) + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
+        return self.oauthIssueDate + datetime.timedelta(
+            seconds=int(self.oauthTokenLifetime)
+        )
 
     @property
     def revoked(self):
@@ -331,12 +320,14 @@ class Token(LDAPObject, TokenMixin):
         return int(self.oauthTokenLifetime)
 
     def get_issued_at(self):
-        issue_date = datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-        return int((issue_date - datetime.datetime(1970, 1, 1)).total_seconds())
+        return int(
+            (self.oauthIssueDate - datetime.datetime(1970, 1, 1)).total_seconds()
+        )
 
     def get_expires_at(self):
-        issue_date = datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-        issue_timestamp = (issue_date - datetime.datetime(1970, 1, 1)).total_seconds()
+        issue_timestamp = (
+            self.oauthIssueDate - datetime.datetime(1970, 1, 1)
+        ).total_seconds()
         return int(issue_timestamp) + int(self.oauthTokenLifetime)
 
     def is_refresh_token_active(self):
@@ -347,7 +338,7 @@ class Token(LDAPObject, TokenMixin):
 
     def is_expired(self):
         return (
-            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
+            self.oauthIssueDate
             + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
             < datetime.datetime.now()
         )
@@ -366,18 +357,14 @@ class Consent(LDAPObject):
 
     @property
     def issue_date(self):
-        return (
-            datetime.datetime.strptime(self.oauthIssueDate, "%Y%m%d%H%M%SZ")
-            if self.oauthIssueDate
-            else None
-        )
+        return self.oauthIssueDate
 
     @property
     def revokation_date(self):
-        return datetime.datetime.strptime(self.oauthRevokationDate, "%Y%m%d%H%M%SZ")
+        return self.oauthRevokationDate
 
     def revoke(self):
-        self.oauthRevokationDate = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
+        self.oauthRevokationDate = datetime.datetime.now()
         self.save()
 
         tokens = Token.filter(
