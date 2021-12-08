@@ -187,6 +187,10 @@ def profile_creation(user):
     form = profile_form(user.write, user.read)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
 
+    for field in form:
+        if field.render_kw and "readonly" in field.render_kw:
+            del field.render_kw["readonly"]
+
     if request.form:
         if not form.validate():
             flash(_("User account creation failed."), "error")
