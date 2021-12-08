@@ -312,7 +312,7 @@ def authorization(app, slapd_connection, user, client):
 
 @pytest.fixture
 def user(app, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="John (johnny) Doe",
@@ -327,7 +327,7 @@ def user(app, slapd_connection):
 
 @pytest.fixture
 def admin(app, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jane Doe",
@@ -342,7 +342,7 @@ def admin(app, slapd_connection):
 
 @pytest.fixture
 def moderator(app, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jack Doe",
@@ -417,7 +417,7 @@ def cleanups(slapd_connection):
 
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
-    Group.ocs_by_name(slapd_connection)
+    Group.ldap_object_classes(slapd_connection)
     g = Group(
         objectClass=["groupOfNames"],
         member=[user.dn],
@@ -433,7 +433,7 @@ def foo_group(app, user, slapd_connection):
 
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
-    Group.ocs_by_name(slapd_connection)
+    Group.ldap_object_classes(slapd_connection)
     g = Group(
         objectClass=["groupOfNames"],
         member=[admin.dn],

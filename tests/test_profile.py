@@ -257,7 +257,7 @@ def test_user_creation_edition_and_deletion(
 
 
 def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_admin):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Temp User",
@@ -290,7 +290,7 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
 
 
 def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Temp User",

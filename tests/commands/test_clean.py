@@ -5,7 +5,7 @@ from werkzeug.security import gen_salt
 
 
 def test_clean_command(testclient, slapd_connection, client, user):
-    AuthorizationCode.ocs_by_name(slapd_connection)
+    AuthorizationCode.ldap_object_classes(slapd_connection)
     code = AuthorizationCode(
         oauthCode="my-code",
         oauthClient=client.dn,
@@ -24,7 +24,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
     )
     code.save(slapd_connection)
 
-    Token.ocs_by_name(slapd_connection)
+    Token.ldap_object_classes(slapd_connection)
     token = Token(
         oauthAccessToken="my-token",
         oauthClient=client.dn,

@@ -184,7 +184,7 @@ class Group(LDAPObject):
             return []
 
         groups = cls.filter(objectClass=object_class, conn=conn)
-        Group.attr_type_by_name(conn=conn)
+        Group.ldap_object_attributes(conn=conn)
         return [(group[attribute][0], group.dn) for group in groups]
 
     @property

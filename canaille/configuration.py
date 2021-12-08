@@ -54,7 +54,7 @@ def validate_ldap_configuration(config):
         ) from exc
 
     try:
-        User.ocs_by_name(conn)
+        User.ldap_object_classes(conn)
         user = User(
             objectClass=["inetOrgPerson"],
             cn=f"canaille_{uuid.uuid4()}",
@@ -73,7 +73,7 @@ def validate_ldap_configuration(config):
         ) from exc
 
     try:
-        Group.ocs_by_name(conn)
+        Group.ldap_object_classes(conn)
 
         user = User(
             objectClass=["inetOrgPerson"],
