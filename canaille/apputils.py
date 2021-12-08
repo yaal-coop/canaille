@@ -42,6 +42,17 @@ def login_placeholder():
     return _(" or ").join(placeholders)
 
 
+def default_fields():
+    read = set()
+    write = set()
+    for acl in current_app.config["ACL"].values():
+        if "filter" not in acl:
+            read |= set(acl.get("READ", []))
+            write |= set(acl.get("WRITE", []))
+
+    return read, write
+
+
 def logo():
     logo_url = current_app.config.get("LOGO")
     if not logo_url:
