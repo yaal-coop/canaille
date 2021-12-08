@@ -166,6 +166,9 @@ class LDAPObject:
         if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
             return int(value.decode("utf-8"))
 
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.28":  # JPEG
+            return value
+
         if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
             return value.decode("utf-8").upper() == "TRUE"
 
@@ -180,6 +183,9 @@ class LDAPObject:
 
         if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
             return str(value).encode("utf-8")
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.28":  # JPEG
+            return value
 
         if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
             return ("TRUE" if value else "FALSE").encode("utf-8")
@@ -215,13 +221,18 @@ class LDAPObject:
 
         # Object already exists in the LDAP database
         if match:
+            deletions = [
+                name
+                for name, value in self.changes.items()
+                if value is None and name in self.attrs
+            ]
             changes = {
                 name: value
                 for name, value in self.changes.items()
                 if value and value[0] and self.attrs.get(name) != value
             }
             formatted_changes = self.python_attrs_to_ldap(changes)
-            modlist = [
+            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
             ]
