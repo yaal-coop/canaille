@@ -14,7 +14,13 @@ from flask import (
 from flask_babel import gettext as _
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict, FileStorage
-from .apputils import default_fields, b64_to_obj, login_placeholder, profile_hash, obj_to_b64
+from .apputils import (
+    default_fields,
+    b64_to_obj,
+    login_placeholder,
+    profile_hash,
+    obj_to_b64,
+)
 from .forms import (
     InvitationForm,
     LoginForm,
@@ -54,7 +60,9 @@ def about():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     if current_user():
-        return redirect(url_for("account.profile_edition", username=current_user().uid[0]))
+        return redirect(
+            url_for("account.profile_edition", username=current_user().uid[0])
+        )
 
     form = LoginForm(request.form or None)
     form["login"].render_kw["placeholder"] = login_placeholder()
@@ -290,10 +298,13 @@ def profile_create(current_app, form):
             else:
                 data = attribute.data
 
-            if user.attr_type_by_name()[attribute.name].single_value:
+            if user.ldap_object_attributes()[attribute.name].single_value:
                 user[attribute.name] = data
             else:
                 user[attribute.name] = [data]
+
+        if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
+            user["jpegPhoto"] = None
 
     user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
     user.save()
@@ -384,12 +395,15 @@ def profile_edit(editor, username):
                     else:
                         data = attribute.data
 
-                    if user.attr_type_by_name()[attribute.name].single_value:
+                    if user.ldap_object_attributes()[attribute.name].single_value:
                         user[attribute.name] = data
                     else:
                         user[attribute.name] = [data]
                 elif attribute.name == "groups" and "groups" in editor.write:
                     user.set_groups(attribute.data)
+
+            if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
+                user["jpegPhoto"] = None
 
             if (
                 "password1" not in request.form

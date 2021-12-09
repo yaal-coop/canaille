@@ -1,5 +1,7 @@
+import datetime
 import ldap
 import ldap.filter
+import warnings
 from flask import g
 
 
@@ -28,16 +30,18 @@ class LDAPObject:
             self.update_ldap_attributes()
 
     def update_ldap_attributes(self):
-        by_name = self.ocs_by_name()
-        ocs = {by_name[name] for name in self.attrs["objectClass"]}
+        all_object_classes = self.ldap_object_classes()
+        this_object_classes = {
+            all_object_classes[name] for name in self.attrs["objectClass"]
+        }
         done = set()
 
-        while len(ocs) > 0:
-            oc = ocs.pop()
+        while len(this_object_classes) > 0:
+            oc = this_object_classes.pop()
             done.add(oc)
             for ocsup in oc.sup:
                 if ocsup not in done:
-                    ocs.add(by_name[ocsup])
+                    this_object_classes.add(all_object_classes[ocsup])
 
             self.may.extend(oc.may)
             self.must.extend(oc.must)
@@ -82,13 +86,14 @@ class LDAPObject:
             id = self.attrs[self.id][0]
         else:
             return None
+
         return f"{self.id}={id},{self.base},{self.root_dn}"
 
     @classmethod
     def initialize(cls, conn=None):
         conn = conn or cls.ldap()
-        cls.ocs_by_name(conn)
-        cls.attr_type_by_name(conn)
+        cls.ldap_object_classes(conn)
+        cls.ldap_object_attributes(conn)
 
         acc = ""
         for organizationalUnit in cls.base.split(",")[::-1]:
@@ -107,7 +112,7 @@ class LDAPObject:
                 pass
 
     @classmethod
-    def ocs_by_name(cls, conn=None, force=False):
+    def ldap_object_classes(cls, conn=None, force=False):
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
@@ -122,14 +127,14 @@ class LDAPObject:
         object_class_oids = subschema.listall(ldap.schema.models.ObjectClass)
         cls._object_class_by_name = {}
         for oid in object_class_oids:
-            oc = subschema.get_obj(ldap.schema.models.ObjectClass, oid)
-            for name in oc.names:
-                cls._object_class_by_name[name] = oc
+            object_class = subschema.get_obj(ldap.schema.models.ObjectClass, oid)
+            for name in object_class.names:
+                cls._object_class_by_name[name] = object_class
 
         return cls._object_class_by_name
 
     @classmethod
-    def attr_type_by_name(cls, conn=None, force=False):
+    def ldap_object_attributes(cls, conn=None, force=False):
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
@@ -144,19 +149,68 @@ class LDAPObject:
         attribute_type_oids = subschema.listall(ldap.schema.models.AttributeType)
         cls._attribute_type_by_name = {}
         for oid in attribute_type_oids:
-            oc = subschema.get_obj(ldap.schema.models.AttributeType, oid)
-            for name in oc.names:
-                cls._attribute_type_by_name[name] = oc
+            object_class = subschema.get_obj(ldap.schema.models.AttributeType, oid)
+            for name in object_class.names:
+                cls._attribute_type_by_name[name] = object_class
 
         return cls._attribute_type_by_name
+
+    @staticmethod
+    def ldap_to_python(name, value):
+        syntax = LDAPObject.ldap_object_attributes()[name].syntax
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
+            value = value.decode("utf-8")
+            return datetime.datetime.strptime(value, "%Y%m%d%H%M%SZ") if value else None
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
+            return int(value.decode("utf-8"))
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.28":  # JPEG
+            return value
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
+            return value.decode("utf-8").upper() == "TRUE"
+
+        return value.decode("utf-8")
+
+    @staticmethod
+    def python_to_ldap(name, value):
+        syntax = LDAPObject.ldap_object_attributes()[name].syntax
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
+            return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
+            return str(value).encode("utf-8")
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.28":  # JPEG
+            return value
+
+        if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
+            return ("TRUE" if value else "FALSE").encode("utf-8")
+
+        return value.encode("utf-8")
+
+    @staticmethod
+    def ldap_attrs_to_python(attrs):
+        return {
+            name: [LDAPObject.ldap_to_python(name, value) for value in values]
+            for name, values in attrs.items()
+        }
+
+    @staticmethod
+    def python_attrs_to_ldap(attrs):
+        return {
+            name: [LDAPObject.python_to_ldap(name, value) for value in values]
+            for name, values in attrs.items()
+        }
 
     def reload(self, conn=None):
         conn = conn or self.ldap()
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE)
         self.changes = {}
-        self.attrs = {
-            k: [elt.decode("utf-8") for elt in v] for k, v in result[0][1].items()
-        }
+        self.attrs = self.ldap_attrs_to_python(result[0][1])
 
     def save(self, conn=None):
         conn = conn or self.ldap()
@@ -165,39 +219,37 @@ class LDAPObject:
         except ldap.NO_SUCH_OBJECT:
             match = False
 
+        # Object already exists in the LDAP database
         if match:
-            mods = {
-                k: v
-                for k, v in self.changes.items()
-                if v and v[0] and self.attrs.get(k) != v
+            deletions = [
+                name
+                for name, value in self.changes.items()
+                if value is None and name in self.attrs
+            ]
+            changes = {
+                name: value
+                for name, value in self.changes.items()
+                if value and value[0] and self.attrs.get(name) != value
             }
-            attributes = [
-                (
-                    ldap.MOD_REPLACE,
-                    k,
-                    [elt.encode("utf-8") if isinstance(elt, str) else elt for elt in v],
-                )
-                for k, v in mods.items()
+            formatted_changes = self.python_attrs_to_ldap(changes)
+            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
+                (ldap.MOD_REPLACE, name, values)
+                for name, values in formatted_changes.items()
             ]
-            conn.modify_s(self.dn, attributes)
+            conn.modify_s(self.dn, modlist)
 
+        # Object does not exist yet in the LDAP database
         else:
-            mods = {}
-            for k, v in self.attrs.items():
-                if v and v[0]:
-                    mods[k] = v
-            for k, v in self.changes.items():
-                if v and v[0]:
-                    mods[k] = v
-
-            attributes = [
-                (k, [elt.encode("utf-8") if isinstance(elt, str) else elt for elt in v])
-                for k, v in mods.items()
-            ]
+            changes = {
+                name: value
+                for name, value in {**self.attrs, **self.changes}.items()
+                if value and value[0]
+            }
+            formatted_changes = self.python_attrs_to_ldap(changes)
+            attributes = [(name, values) for name, values in formatted_changes.items()]
             conn.add_s(self.dn, attributes)
 
-        for k, v in self.changes.items():
-            self.attrs[k] = v
+        self.attrs = {**self.attrs, **self.changes}
         self.changes = {}
 
     @classmethod
@@ -233,7 +285,9 @@ class LDAPObject:
 
             else:
                 values = [ldap.filter.escape_filter_chars(v) for v in value]
-                arg_filter += "(|" + "".join([f"({key}={v})" for v in values]) + ")"
+                arg_filter += (
+                    "(|" + "".join([f"({key}={value})" for value in values]) + ")"
+                )
 
         if not filter:
             filter = ""
@@ -244,12 +298,7 @@ class LDAPObject:
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
 
-        return [
-            cls(
-                **{k: [elt.decode("utf-8") for elt in v] for k, v in args.items()},
-            )
-            for _, args in result
-        ]
+        return [cls(**cls.ldap_attrs_to_python(args)) for _, args in result]
 
     def __getattr__(self, name):
         if (not self.may or name not in self.may) and (
@@ -258,8 +307,8 @@ class LDAPObject:
             return super().__getattribute__(name)
 
         if (
-            not self.attr_type_by_name()
-            or not self.attr_type_by_name()[name].single_value
+            not self.ldap_object_attributes()
+            or not self.ldap_object_attributes()[name].single_value
         ):
             return self.changes.get(name, self.attrs.get(name, []))
 
@@ -269,7 +318,7 @@ class LDAPObject:
         super().__setattr__(name, value)
 
         if (self.may and name in self.may) or (self.must and name in self.must):
-            if self.attr_type_by_name()[name].single_value:
+            if self.ldap_object_attributes()[name].single_value:
                 self.changes[name] = [value]
             else:
                 self.changes[name] = value

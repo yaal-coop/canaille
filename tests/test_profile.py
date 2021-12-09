@@ -1,8 +1,16 @@
 from canaille.models import User
+from webtest import Upload
 
 
 def test_edition(
-    testclient, slapd_server, slapd_connection, logged_user, admin, foo_group, bar_group
+    testclient,
+    slapd_server,
+    slapd_connection,
+    logged_user,
+    admin,
+    foo_group,
+    bar_group,
+    jpeg_photo,
 ):
     res = testclient.get("/profile/user", status=200)
     assert set(res.form["groups"].options) == set(
@@ -27,6 +35,7 @@ def test_edition(
         "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
         "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
     ]
+    res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
@@ -40,6 +49,7 @@ def test_edition(
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
     assert "666" == logged_user.employeeNumber
+    assert [jpeg_photo] == logged_user.jpegPhoto
 
     foo_group.reload(slapd_connection)
     bar_group.reload(slapd_connection)
@@ -257,7 +267,7 @@ def test_user_creation_edition_and_deletion(
 
 
 def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_admin):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Temp User",
@@ -290,7 +300,7 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
 
 
 def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Temp User",
@@ -312,3 +322,58 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     )
     assert "Send again" in res
     assert len(smtpd.messages) == 1
+
+
+def test_photo_edition(
+    testclient,
+    slapd_server,
+    slapd_connection,
+    logged_user,
+    jpeg_photo,
+):
+
+    # Add a photo
+    res = testclient.get("/profile/user", status=200)
+    res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
+    res.form["jpegPhoto_delete"] = False
+    res = res.form.submit(name="action", value="edit", status=200)
+    assert "Profile updated successfuly." in res, str(res)
+
+    with testclient.app.app_context():
+        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+
+    assert [jpeg_photo] == logged_user.jpegPhoto
+
+    # No change
+    res = testclient.get("/profile/user", status=200)
+    res.form["jpegPhoto_delete"] = False
+    res = res.form.submit(name="action", value="edit", status=200)
+    assert "Profile updated successfuly." in res, str(res)
+
+    with testclient.app.app_context():
+        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+
+    assert [jpeg_photo] == logged_user.jpegPhoto
+
+    # Photo deletion
+    res = testclient.get("/profile/user", status=200)
+    res.form["jpegPhoto_delete"] = True
+    res = res.form.submit(name="action", value="edit", status=200)
+    assert "Profile updated successfuly." in res, str(res)
+
+    with testclient.app.app_context():
+        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+
+    assert [] == logged_user.jpegPhoto
+
+    # Photo deletion AND upload, this should never happen
+    res = testclient.get("/profile/user", status=200)
+    res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
+    res.form["jpegPhoto_delete"] = True
+    res = res.form.submit(name="action", value="edit", status=200)
+    assert "Profile updated successfuly." in res, str(res)
+
+    with testclient.app.app_context():
+        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+
+    assert [] == logged_user.jpegPhoto

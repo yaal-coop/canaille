@@ -8,8 +8,8 @@ def test_no_group(app, slapd_connection):
 
 def test_set_groups(app, slapd_connection, user, foo_group, bar_group):
     with app.app_context():
-        Group.attr_type_by_name(conn=slapd_connection)
-        User.attr_type_by_name(conn=slapd_connection)
+        Group.ldap_object_attributes(conn=slapd_connection)
+        User.ldap_object_attributes(conn=slapd_connection)
 
         user = User.get(dn=user.dn, conn=slapd_connection)
         user.load_groups(conn=slapd_connection)

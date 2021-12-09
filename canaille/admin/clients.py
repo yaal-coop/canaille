@@ -142,7 +142,7 @@ def add(user):
         return render_template("admin/client_add.html", form=form, menuitem="admin")
 
     client_id = gen_salt(24)
-    client_id_issued_at = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
+    client_id_issued_at = datetime.datetime.now()
     client = Client(
         oauthClientID=client_id,
         oauthIssueDate=client_id_issued_at,
@@ -161,7 +161,7 @@ def add(user):
         oauthSoftwareVersion=form["oauthSoftwareVersion"].data,
         oauthJWK=form["oauthJWK"].data,
         oauthJWKURI=form["oauthJWKURI"].data,
-        oauthPreconsent="TRUE" if form["oauthPreconsent"].data else "FALSE",
+        oauthPreconsent=form["oauthPreconsent"].data,
         oauthClientSecret=""
         if form["oauthTokenEndpointAuthMethod"].data == "none"
         else gen_salt(48),
@@ -225,7 +225,7 @@ def client_edit(client_id):
             oauthJWK=form["oauthJWK"].data,
             oauthJWKURI=form["oauthJWKURI"].data,
             oauthAudience=form["oauthAudience"].data,
-            oauthPreconsent="TRUE" if form["oauthPreconsent"].data else "FALSE",
+            oauthPreconsent=form["oauthPreconsent"].data,
         )
         client.save()
         flash(

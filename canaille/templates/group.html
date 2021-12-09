@@ -1,5 +1,6 @@
 {% extends theme('base.html') %}
 {% import 'fomanticui.html' as sui %}
+{% import 'userlist.html' as user_list %}
 
 {% block style %}
     <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
@@ -85,27 +86,7 @@
 </div>
 
 {% if edited_group %}
-<table class="ui table">
-    <thead>
-        <th>{% trans %}Login{% endtrans %}</th>
-        <th>{% trans %}Name{% endtrans %}</th>
-        <th>{% trans %}Email{% endtrans %}</th>
-        <th>{% trans %}Groups{% endtrans %}</th>
-    </thead>
-    {% for user_account in members %}
-    <tr>
-        <td><a href="{{ url_for('account.profile_edition', username=user_account.uid[0]) }}">{{ user_account.uid[0] }}</a></td>
-        <td>{{ user_account.name }}</td>
-        <td><a href="mailto:{{ user_account.mail[0] }}">{{ user_account.mail[0] }}</a></td>
-        <td>
-            {% for group in user_account.groups %}
-                <a class="ui label" href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a>
-            {% endfor %}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-
+    {{ user_list.user_list(user, members) }}
 {% endif %}
 
 {% endblock %}

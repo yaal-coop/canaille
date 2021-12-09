@@ -3,7 +3,7 @@ import wtforms.form
 from flask import current_app
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
+from flask_wtf.file import FileField, FileAllowed
 from .models import User, Group
 
 
@@ -122,7 +122,12 @@ PROFILE_FORM_FIELDS = dict(
     telephoneNumber=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     ),
-    jpegPhoto=FileField(_("Photo"), validators=[FileRequired()]),
+    jpegPhoto=FileField(
+        _("Photo"),
+        validators=[FileAllowed(["jpg", "jpeg"])],
+        render_kw={"accept": "image/jpg, image/jpeg"},
+    ),
+    jpegPhoto_delete=wtforms.BooleanField(_("Delete the photo")),
     password1=wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
@@ -147,6 +152,9 @@ PROFILE_FORM_FIELDS = dict(
 def profile_form(write_field_names, readonly_field_names):
     if "userPassword" in write_field_names:
         write_field_names |= {"password1", "password2"}
+
+    if "jpegPhoto" in write_field_names:
+        write_field_names |= {"jpegPhoto_delete"}
 
     fields = {
         name: PROFILE_FORM_FIELDS.get(name)

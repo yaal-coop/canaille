@@ -111,9 +111,9 @@ GROUP_USER_FILTER = "member={user.dn}"
 # The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
 # object that users will be able to read and/or write.
 [ACL.DEFAULT]
-READ = ["uid", "groups"]
 PERMISSIONS = ["use_oidc"]
-WRITE = ["givenName", "sn", "userPassword", "telephoneNumber"]
+READ = ["uid", "groups"]
+WRITE = ["givenName", "sn", "userPassword", "telephoneNumber", "jpegPhoto", "mail"]
 
 [ACL.ADMIN]
 FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
