@@ -39,9 +39,9 @@ def get_jwt_config(grant):
 
 def generate_user_info(user, scope):
     user = User.get(dn=user)
-    fields = ["sub"]
+    claims = ["sub"]
     if "profile" in scope:
-        fields += [
+        claims += [
             "name",
             "family_name",
             "given_name",
@@ -57,13 +57,20 @@ def generate_user_info(user, scope):
             "updated_at",
         ]
     if "email" in scope:
-        fields += ["email", "email_verified"]
+        claims += ["email", "email_verified"]
     if "address" in scope:
-        fields += ["address"]
+        claims += ["address"]
     if "phone" in scope:
-        fields += ["phone_number", "phone_number_verified"]
+        claims += ["phone_number", "phone_number_verified"]
     if "groups" in scope:
-        fields += ["groups"]
+        claims += ["groups"]
+
+    data = generate_user_claims(user, claims)
+    return UserInfo(**data)
+
+
+def generate_user_claims(user, claims, jwt_mapping_config=None):
+    jwt_mapping_config = jwt_mapping_config or current_app.config["JWT"]["MAPPING"]
 
     user_ldap_attributes = defaultdict(str)
     for attr in user.attrs:
@@ -72,19 +79,18 @@ def generate_user_info(user, scope):
             user_ldap_attributes[attr] = user_ldap_attributes[attr][0]
 
     data = {}
-    for field in fields:
-        format_field = current_app.config["JWT"]["MAPPING"].get(field.upper())
-        if format_field:
-            value = format_field.format_map(user_ldap_attributes)
-            if value:
+    for claim in claims:
+        format_claim = jwt_mapping_config.get(claim.upper())
+        if format_claim:
+            formatted_claim = format_claim.format_map(user_ldap_attributes)
+            if formatted_claim:
                 # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
                 # it's better to not insert a null or empty string value
-                data[field] = value
-        if field == "groups":
+                data[claim] = formatted_claim
+        if claim == "groups":
             group_name_attr = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
-            data[field] = [getattr(g, group_name_attr)[0] for g in user.groups]
-    
-    return UserInfo(**data)
+            data[claim] = [getattr(g, group_name_attr)[0] for g in user.groups]
+    return data
 
 
 def save_authorization_code(code, request):
