@@ -14,7 +14,9 @@ def test_clean_command(testclient, slapd_connection, client, user):
         oauthResponseType="code",
         oauthScope="openid profile",
         oauthNonce="nonce",
-        oauthAuthorizationDate=(datetime.datetime.now() - datetime.timedelta(days=1)),
+        oauthAuthorizationDate=(
+            datetime.datetime.now() - datetime.timedelta(days=1)
+        ),
         oauthAuthorizationLifetime="3600",
         oauthCodeChallenge="challenge",
         oauthCodeChallengeMethod="method",
