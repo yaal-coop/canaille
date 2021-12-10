@@ -32,7 +32,6 @@ DEFAULT_JWT_MAPPING_CONFIG = {
     "FAMILY_NAME": "{sn}",
     "PREFERRED_USERNAME": "{displayName}",
     "LOCALE": "{preferredLanguage}",
-    "PICTURE": "{jpegPhoto}",
 }
 
 

@@ -194,7 +194,6 @@ def configuration(slapd_server, smtpd, keypair_path):
                 "FAMILY_NAME": "{sn}",
                 "PREFERRED_USERNAME": "{displayName}",
                 "LOCALE": "{preferredLanguage}",
-                "PICTURE": "{jpegPhoto}",
             },
         },
         "SMTP": {

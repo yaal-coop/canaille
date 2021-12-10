@@ -149,7 +149,6 @@ GIVEN_NAME = "{givenName}"
 FAMILY_NAME = "{sn}"
 PREFERRED_USERNAME = "{displayName}"
 LOCALE = "{preferredLanguage}"
-PICTURE = "{jpegPhoto}"
 ADDRESS = "{postalAddress}"
 
 # The SMTP server options. If not set, mail related features such as
