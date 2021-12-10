@@ -165,6 +165,7 @@ def teardown_ldap_connection(app):
 
 def setup_jinja(app):
     app.jinja_env.filters["base64picture"] = base64picture
+    app.jinja_env.filters["len"] = len
 
 
 def setup_babel(app):

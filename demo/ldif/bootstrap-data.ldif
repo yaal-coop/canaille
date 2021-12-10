@@ -55,17 +55,20 @@ telephoneNumber: 555-000-003
 dn: cn=users,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: users
+description: The regulars users.
 member: uid=admin,ou=users,dc=mydomain,dc=tld
 member: uid=user,ou=users,dc=mydomain,dc=tld
 
 dn: cn=admins,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: admins
+description: The administrators.
 member: uid=admin,ou=users,dc=mydomain,dc=tld
 
 dn: cn=moderators,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: moderators
+description: People who can manage users.
 member: uid=moderator,ou=users,dc=mydomain,dc=tld
 
 dn: oauthClientID=1JGkkzCbeHpGtlqgI5EENByf,ou=clients,ou=oauth,dc=mydomain,dc=tld

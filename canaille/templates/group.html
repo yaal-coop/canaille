@@ -60,10 +60,12 @@
     >
         {{ form.hidden_tag() if form.hidden_tag }}
         {{ sui.render_field(form.name) }}
+        {{ sui.render_field(form.description) }}
+
         {% if not edited_group %}
-        <p>
+        <div class="ui info visible message">
             {% trans %}Because group cannot be empty, you will be added to the group. You can remove you later by editing your profile when you will have added other members to the group.{% endtrans %}
-        </p>
+        </div>
         {% endif %}
 
         <div class="ui right aligned container">
@@ -86,7 +88,15 @@
 </div>
 
 {% if edited_group %}
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Group members{% endtrans %}
+            </div>
+        </h2>
+
     {{ user_list.user_list(user, members) }}
+    </div>
 {% endif %}
 
 {% endblock %}

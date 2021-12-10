@@ -11,7 +11,7 @@ from flask_babel import gettext as _
 from flask_themer import render_template
 
 from .flaskutils import permissions_needed
-from .forms import GroupForm
+from .forms import GroupForm, unique_group
 from .models import Group
 
 bp = Blueprint("groups", __name__)
@@ -28,9 +28,11 @@ def groups(user):
 @permissions_needed("manage_groups")
 def create_group(user):
     form = GroupForm(request.form or None)
+
     try:
         if "name" in form:
             del form["name"].render_kw["readonly"]
+            form["name"].validators.append(unique_group)
     except KeyError:
         pass
 
@@ -41,6 +43,7 @@ def create_group(user):
             group = Group(objectClass=current_app.config["LDAP"]["GROUP_CLASS"])
             group.member = [user.dn]
             group.cn = [form.name.data]
+            group.description = [form.description.data]
             group.save()
             flash(
                 _("The group %(group)s has been sucessfully created", group=group.name),
@@ -66,11 +69,18 @@ def group(user, groupname):
 
 
 def edit_group(group):
-    form = GroupForm(request.form or None, data={"name": group.name})
+    form = GroupForm(
+        request.form or None,
+        data={
+            "name": group.name,
+            "description": group.description[0] if group.description else "",
+        },
+    )
     form["name"].render_kw["readonly"] = "true"
 
     if request.form:
         if form.validate():
+            group.description = [form.description.data]
             group.save()
         else:
             flash(_("Group edition failed."), "error")

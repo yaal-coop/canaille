@@ -42,7 +42,9 @@
         {% if watcher.can_manage_groups %}
             <td>
                 {% for group in user.groups %}
-                    <a class="ui label" href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a>
+                    <a class="ui label" href="{{ url_for('groups.group', groupname=group.name) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
+                        {{ group.name }}
+                    </a>
                 {% endfor %}
             </td>
         {% endif %}

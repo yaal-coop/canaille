@@ -183,10 +183,14 @@ def profile_form(write_field_names, readonly_field_names):
 class GroupForm(FlaskForm):
     name = wtforms.StringField(
         _("Name"),
-        validators=[wtforms.validators.DataRequired(), unique_group],
+        validators=[wtforms.validators.DataRequired()],
         render_kw={
             "placeholder": _("group"),
         },
+    )
+    description = wtforms.StringField(
+        _("Description"),
+        validators=[wtforms.validators.Optional()],
     )
 
 

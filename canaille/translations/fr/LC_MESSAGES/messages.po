@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 # Camille <camille@yaal.coop>, 2021.
-# Éloi Rivard <eloi.rivard@aquilenet.fr>, 2020-2021.
+# Éloi Rivard <eloi@yaal.fr>, 2020-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2021-12-08 18:56+0100\n"
-"PO-Revision-Date: 2021-12-08 18:56+0100\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@aquilenet.fr>\n"
-"Language: fr\n"
-"Language-Team: French <traduc@traduc.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"POT-Creation-Date: 2021-12-10 17:16+0100\n"
+"PO-Revision-Date: 2021-12-10 17:16+0100\n"
+"Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
+"Language: fr_FR\n"
+"Language-Team: French - France <equipe@yaal.fr>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 "X-Generator: Gtranslator 40.0\n"
@@ -145,7 +145,7 @@ msgstr "Votre mot de passe a correctement été mis à jour."
 msgid "John Doe"
 msgstr "Camille Dupont"
 
-#: canaille/apputils.py:37 canaille/forms.py:93 canaille/forms.py:196
+#: canaille/apputils.py:37 canaille/forms.py:93 canaille/forms.py:200
 msgid "jdoe"
 msgstr "cdupont"
 
@@ -185,13 +185,12 @@ msgstr "Le group '{group}' existe déjà"
 msgid "The login '{login}' does not exist"
 msgstr "L'identifiant '{login}' n'existe pas"
 
-#: canaille/forms.py:42 canaille/forms.py:66 canaille/templates/group.html:90
-#: canaille/templates/users.html:26
+#: canaille/forms.py:42 canaille/forms.py:66 canaille/templates/userlist.html:8
 msgid "Login"
 msgstr "Identifiant"
 
 #: canaille/forms.py:45 canaille/forms.py:69 canaille/forms.py:117
-#: canaille/forms.py:207
+#: canaille/forms.py:211
 msgid "jane@doe.com"
 msgstr "camille@dupont.fr"
 
@@ -207,13 +206,13 @@ msgstr "Confirmation du mot de passe"
 msgid "Password and confirmation do not match."
 msgstr "Le mot de passe et sa confirmation ne correspondent pas."
 
-#: canaille/forms.py:92 canaille/forms.py:195
+#: canaille/forms.py:92 canaille/forms.py:199
 msgid "Username"
 msgstr "Identifiant"
 
 #: canaille/admin/clients.py:28 canaille/forms.py:96 canaille/forms.py:185
 #: canaille/templates/admin/client_list.html:22
-#: canaille/templates/group.html:91 canaille/templates/users.html:27
+#: canaille/templates/groups.html:16 canaille/templates/userlist.html:11
 msgid "Name"
 msgstr "Nom"
 
@@ -233,7 +232,7 @@ msgstr "Nom de famille"
 msgid "Doe"
 msgstr "Dupont"
 
-#: canaille/forms.py:114 canaille/forms.py:200
+#: canaille/forms.py:114 canaille/forms.py:204
 msgid "Email address"
 msgstr "Courriel"
 
@@ -249,7 +248,7 @@ msgstr "06 01 02 03 04"
 msgid "Photo"
 msgstr "Photo"
 
-#: canaille/forms.py:130 canaille/templates/profile.html:91
+#: canaille/forms.py:130 canaille/templates/profile.html:94
 msgid "Delete the photo"
 msgstr "Supprimer la photo"
 
@@ -261,8 +260,8 @@ msgstr "Numéro"
 msgid "1234"
 msgstr "1234"
 
-#: canaille/forms.py:170 canaille/forms.py:213 canaille/templates/group.html:93
-#: canaille/templates/groups.html:9 canaille/templates/users.html:29
+#: canaille/forms.py:170 canaille/forms.py:217
+#: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
 #: canaille/themes/default/base.html:59
 msgid "Groups"
 msgstr "Groupes"
@@ -271,20 +270,24 @@ msgstr "Groupes"
 msgid "group"
 msgstr "groupe"
 
-#: canaille/groups.py:39
+#: canaille/forms.py:192 canaille/templates/groups.html:17
+msgid "Description"
+msgstr "Description"
+
+#: canaille/groups.py:41
 msgid "Group creation failed."
 msgstr "La création du groupe a échoué."
 
-#: canaille/groups.py:46
+#: canaille/groups.py:49
 #, python-format
 msgid "The group %(group)s has been sucessfully created"
 msgstr "Le groupe %(group)s a bien été créé"
 
-#: canaille/groups.py:76
+#: canaille/groups.py:86
 msgid "Group edition failed."
 msgstr "L'édition du groupe a échoué."
 
-#: canaille/groups.py:85
+#: canaille/groups.py:95
 #, python-format
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
@@ -588,7 +591,7 @@ msgstr ""
 "        "
 
 #: canaille/templates/forgotten-password.html:38
-#: canaille/templates/profile.html:164 canaille/templates/profile.html:192
+#: canaille/templates/profile.html:174 canaille/templates/profile.html:202
 msgid "Send again"
 msgstr "Envoyer à nouveau"
 
@@ -596,11 +599,11 @@ msgstr "Envoyer à nouveau"
 msgid "Send"
 msgstr "Envoyer"
 
-#: canaille/templates/group.html:21
+#: canaille/templates/group.html:22
 msgid "Group deletion"
 msgstr "Suppression d'un groupe"
 
-#: canaille/templates/group.html:25
+#: canaille/templates/group.html:26
 msgid ""
 "Are you sure you want to delete this group? This action is unrevokable and "
 "all the data about this group will be removed."
@@ -609,32 +612,32 @@ msgstr ""
 "irrévocable, et toutes les données de cet utilisateur seront supprimées."
 
 #: canaille/templates/admin/client_edit.html:18
-#: canaille/templates/group.html:29 canaille/templates/profile.html:41
+#: canaille/templates/group.html:30 canaille/templates/profile.html:41
 msgid "Cancel"
 msgstr "Annuler"
 
 #: canaille/templates/admin/client_edit.html:19
-#: canaille/templates/group.html:30 canaille/templates/profile.html:42
+#: canaille/templates/group.html:31 canaille/templates/profile.html:42
 msgid "Delete"
 msgstr "Supprimer"
 
-#: canaille/templates/group.html:39
+#: canaille/templates/group.html:40
 msgid "Group creation"
 msgstr "Nouveau groupe"
 
-#: canaille/templates/group.html:41
+#: canaille/templates/group.html:42
 msgid "Group edition"
 msgstr "Édition d'un groupe"
 
-#: canaille/templates/group.html:47
+#: canaille/templates/group.html:48
 msgid "Create a new group"
 msgstr "Création d'un nouveau groupe"
 
-#: canaille/templates/group.html:49
+#: canaille/templates/group.html:50
 msgid "Edit informations about a group"
 msgstr "Éditez les informations d'un groupe"
 
-#: canaille/templates/group.html:64
+#: canaille/templates/group.html:67
 msgid ""
 "Because group cannot be empty, you will be added to the group. You can "
 "remove you later by editing your profile when you will have added other "
@@ -644,25 +647,29 @@ msgstr ""
 "pourrez vous retirer du groupe depuis l'édition de votre profil dès que vous "
 "aurez ajouter d'autres membres dans le groupe."
 
-#: canaille/templates/group.html:72
+#: canaille/templates/group.html:75
 msgid "Delete group"
 msgstr "Supprimer le groupe"
 
-#: canaille/templates/group.html:77
+#: canaille/templates/group.html:80
 msgid "Create group"
 msgstr "Créer le groupe"
 
-#: canaille/templates/group.html:79 canaille/templates/profile.html:232
+#: canaille/templates/group.html:82 canaille/templates/profile.html:242
 msgid "Submit"
 msgstr "Valider"
 
-#: canaille/templates/group.html:92 canaille/templates/users.html:28
-msgid "Email"
-msgstr "Courriel"
+#: canaille/templates/group.html:94
+msgid "Group members"
+msgstr "Membres du groupe"
 
 #: canaille/templates/groups.html:5
 msgid "Add a group"
 msgstr "Ajouter un groupe"
+
+#: canaille/templates/groups.html:18
+msgid "Number of members"
+msgstr "Nombre de membres"
 
 #: canaille/templates/invite.html:16
 msgid "Invitation link"
@@ -835,27 +842,27 @@ msgstr "Éditez les informations d'un utilisateur"
 msgid "Personal information"
 msgstr "Informations personnelles"
 
-#: canaille/templates/profile.html:88 canaille/templates/profile.html:99
+#: canaille/templates/profile.html:91 canaille/templates/profile.html:102
 msgid "Click to upload a photo"
 msgstr "Cliquez pour mettre en ligne une photo"
 
-#: canaille/templates/profile.html:126
+#: canaille/templates/profile.html:136
 msgid "Account information"
 msgstr "Informations sur le compte"
 
-#: canaille/templates/profile.html:144
+#: canaille/templates/profile.html:154
 msgid "User password is not mandatory"
 msgstr "Le mot de passe utilisateur n'est pas requis à la création"
 
-#: canaille/templates/profile.html:147
+#: canaille/templates/profile.html:157
 msgid "The user password can be set:"
 msgstr "Il pourra être renseigné :"
 
-#: canaille/templates/profile.html:149
+#: canaille/templates/profile.html:159
 msgid "by filling this form;"
 msgstr "en remplissant ce formulaire ;"
 
-#: canaille/templates/profile.html:150
+#: canaille/templates/profile.html:160
 msgid ""
 "by sending the user a password initialization mail, after the account "
 "creation;"
@@ -863,7 +870,7 @@ msgstr ""
 "en envoyant un lien d'initialisation de mot de passe, par mail à "
 "l'utilisateur, après la création de son compte;"
 
-#: canaille/templates/profile.html:151 canaille/templates/profile.html:180
+#: canaille/templates/profile.html:161 canaille/templates/profile.html:190
 msgid ""
 "or simply waiting for the user to sign-in a first time, and then receive a "
 "password initialization mail."
@@ -871,46 +878,46 @@ msgstr ""
 "ou simplement en attendant la première connexion de l'utilisateur, afin "
 "qu'il reçoive un lien d'initialisation de mot de passe par email."
 
-#: canaille/templates/profile.html:154 canaille/templates/profile.html:183
+#: canaille/templates/profile.html:164 canaille/templates/profile.html:193
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 "L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
 "défini"
 
-#: canaille/templates/profile.html:168
+#: canaille/templates/profile.html:178
 msgid "Send email"
 msgstr "Envoyer l'email"
 
-#: canaille/templates/profile.html:173
+#: canaille/templates/profile.html:183
 msgid "This user does not have a password yet"
 msgstr "L'utilisateur n'a pas encore de mot de passe"
 
-#: canaille/templates/profile.html:176
+#: canaille/templates/profile.html:186
 msgid "You can solve this by:"
 msgstr "Vous pouvez régler ceci en :"
 
-#: canaille/templates/profile.html:178
+#: canaille/templates/profile.html:188
 msgid "setting a password using this form;"
 msgstr "renseignant un mot de passe via ce formulaire ;"
 
-#: canaille/templates/profile.html:179
+#: canaille/templates/profile.html:189
 msgid ""
 "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 "envoyant un lien d'initialisation de mot de passe, par mail à l'utilisateur, "
 "en cliquant sur ce bouton;"
 
-#: canaille/templates/profile.html:194
+#: canaille/templates/profile.html:204
 msgid "Send mail"
 msgstr "Envoyer l'email"
 
-#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:198
+#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:208
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
-#: canaille/templates/profile.html:200
+#: canaille/templates/profile.html:210
 msgid ""
 "If the user has forgotten his password, you can send him a password reset "
 "email by clicking this button."
@@ -918,23 +925,27 @@ msgstr ""
 "Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un email "
 "contenant un lien de réinitilisation en cliquant sur ce bouton."
 
-#: canaille/templates/profile.html:212
+#: canaille/templates/profile.html:222
 msgid "Delete the user"
 msgstr "Supprimer l'utilisateur"
 
-#: canaille/templates/profile.html:214
+#: canaille/templates/profile.html:224
 msgid "Delete my account"
 msgstr "Supprimer mon compte"
 
-#: canaille/templates/profile.html:221
+#: canaille/templates/profile.html:231
 msgid "Impersonate"
 msgstr "Prendre l'identité"
 
-#: canaille/templates/profile.html:227 canaille/templates/users.html:19
+#: canaille/templates/profile.html:237 canaille/templates/users.html:20
 msgid "Invite a user"
 msgstr "Inviter un utilisateur"
 
-#: canaille/templates/users.html:17
+#: canaille/templates/userlist.html:14
+msgid "Email"
+msgstr "Courriel"
+
+#: canaille/templates/users.html:18
 msgid "Add a user"
 msgstr "Nouvel utilisateur"
 
