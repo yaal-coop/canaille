@@ -22,7 +22,7 @@ from flask_babel import Babel, gettext as _
 from flask_themer import Themer, render_template, FileSystemThemeLoader
 from logging.config import dictConfig
 
-from .flaskutils import current_user, base64picture
+from .flaskutils import current_user
 from .ldaputils import LDAPObject
 from .oauth2utils import setup_oauth
 from .models import User, Group
@@ -164,7 +164,6 @@ def teardown_ldap_connection(app):
 
 
 def setup_jinja(app):
-    app.jinja_env.filters["base64picture"] = base64picture
     app.jinja_env.filters["len"] = len
 
 

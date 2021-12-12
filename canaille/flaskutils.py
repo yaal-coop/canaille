@@ -1,4 +1,3 @@
-import base64
 import ldap
 import logging
 from functools import wraps
@@ -83,8 +82,3 @@ def smtp_needed():
         return decorator
 
     return wrapper
-
-
-def base64picture(data):
-    data = base64.b64encode(data).decode("utf-8")
-    return f"data:image/jpeg;base64,{data}"

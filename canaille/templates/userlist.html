@@ -23,7 +23,7 @@
             <td>
                 <a href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
                 {% if user.jpegPhoto and user.jpegPhoto[0] %}
-                    <img class="ui avatar image" src="{{ user.jpegPhoto[0]|base64picture }}" alt="User photo">
+                    <img class="ui avatar image" src="{{ url_for("account.photo", uid=user.uid, field="jpegPhoto") }}" alt="User photo">
                 {% else %}
                     <i class="user circle big black icon"></i>
                 {% endif %}

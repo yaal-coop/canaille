@@ -1,3 +1,4 @@
+import io
 import pkg_resources
 import wtforms
 
@@ -9,6 +10,7 @@ from flask import (
     current_app,
     abort,
     redirect,
+    send_file,
     session,
 )
 from flask_babel import gettext as _
@@ -513,3 +515,14 @@ def reset(uid, hash):
         return redirect(url_for("account.profile_edition", username=uid))
 
     return render_template("reset-password.html", form=form, uid=uid, hash=hash)
+
+
+@bp.route("/profile/<uid>/<field>")
+def photo(uid, field):
+    if field != "jpegPhoto":
+        abort(404)
+
+    user = User.get(uid)
+    photo = getattr(user, field)[0]
+    stream = io.BytesIO(photo)
+    return send_file(stream, mimetype='image/jpeg')
