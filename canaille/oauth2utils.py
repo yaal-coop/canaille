@@ -17,7 +17,6 @@ from authlib.oidc.core.grants import (
     OpenIDHybridGrant as _OpenIDHybridGrant,
 )
 from authlib.oidc.core import UserInfo
-from collections import defaultdict
 from flask import current_app
 from .models import Client, AuthorizationCode, Group, Token, User
 
@@ -77,17 +76,13 @@ def generate_user_info(user, scope):
 def generate_user_claims(user, claims, jwt_mapping_config=None):
     jwt_mapping_config = jwt_mapping_config or current_app.config["JWT"]["MAPPING"]
 
-    user_ldap_attributes = defaultdict(str)
-    for attr in user.attrs:
-        user_ldap_attributes[attr] = user.__getattr__(attr)
-        if isinstance(user_ldap_attributes[attr], list):
-            user_ldap_attributes[attr] = user_ldap_attributes[attr][0]
-
     data = {}
     for claim in claims:
-        format_claim = jwt_mapping_config.get(claim.upper())
-        if format_claim:
-            formatted_claim = format_claim.format_map(user_ldap_attributes)
+        raw_claim = jwt_mapping_config.get(claim.upper())
+        if raw_claim:
+            formatted_claim = current_app.jinja_env.from_string(raw_claim).render(
+                user=user
+            )
             if formatted_claim:
                 # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
                 # it's better to not insert a null or empty string value

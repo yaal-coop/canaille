@@ -183,33 +183,34 @@ JWT.MAPPINGS
 ------------
 
 A mapping where keys are JWT claims, and values are LDAP user object attributes.
+Attributes are rendered using jinja2, and can use a ``user`` variable.
 
 :SUB:
-    *Optional.* Defaults to ``{uid}``
+    *Optional.* Defaults to ``{{ user.uid[0] }}``
 
 :NAME:
-    *Optional.* Defaults to ``{cn}``
+    *Optional.* Defaults to ``{{ user.cn[0] }}``
 
 :PHONE_NUMBER:
-    *Optional.* Defaults to ``{telephoneNumber}``
+    *Optional.* Defaults to ``{{ user.telephoneNumber[0] }}``
 
 :EMAIL:
-    *Optional.* Defaults to ``{mail}``
+    *Optional.* Defaults to ``{{ user.mail[0] }}``
 
 :GIVEN_NAME:
-    *Optional.* Defaults to ``{givenName}``
+    *Optional.* Defaults to ``{{ user.givenName[0] }}``
 
 :FAMILY_NAME:
-    *Optional.* Defaults to ``{sn}``
+    *Optional.* Defaults to ``{{ user.sn[0] }}``
 
 :PREFERRED_USERNAME:
-    *Optional.* Defaults to ``{displayName}``
+    *Optional.* Defaults to ``{{ user.displayName[0] }}``
 
 :LOCALE:
-    *Optional.* Defaults to ``{preferredLanguage}``
+    *Optional.* Defaults to ``{{ user.preferredLanguage[0] }}``
 
 :ADDRESS:
-    *Optional.* Defaults to ``{postalAddress}``
+    *Optional.* Defaults to ``{{ user.postalAddress[0] }}``
 
 SMTP
 ----
