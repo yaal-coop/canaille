@@ -215,6 +215,9 @@ Attributes are rendered using jinja2, and can use a ``user`` variable.
 :PICTURE:
     *Optional.* Defaults to ``{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}``
 
+:WEBSITE:
+    *Optional.* Defaults to ``{{ user.labeledURI[0] }}``
+
 
 SMTP
 ----

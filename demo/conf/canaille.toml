@@ -115,7 +115,7 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 [ACL.DEFAULT]
 PERMISSIONS = ["use_oidc"]
 READ = ["uid", "groups"]
-WRITE = ["jpegPhoto", "givenName", "sn", "userPassword", "telephoneNumber", "mail"]
+WRITE = ["jpegPhoto", "givenName", "sn", "userPassword", "telephoneNumber", "mail", "labeledURI"]
 
 [ACL.ADMIN]
 FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
@@ -163,6 +163,7 @@ PREFERRED_USERNAME = "{{ user.displayName[0] }}"
 LOCALE = "{{ user.preferredLanguage[0] }}"
 ADDRESS = "{{ user.postalAddress[0] }}"
 PICTURE = "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}"
+WEBSITE = "{{ user.labeledURI[0] }}"
 
 # The SMTP server options. If not set, mail related features such as
 # user invitations, and password reset emails, will be disabled.

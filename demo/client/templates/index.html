@@ -71,6 +71,12 @@
                             </div>
                         {% endif %}
                     </div>
+                    {% if user.website %}
+                    <a class="ui bottom attached button" href="{{ user.website }}">
+                        <i class="world icon"></i>
+                        Website
+                    </a>
+                    {% endif %}
                 </div>
                 {% else %}
                     <a class="ui primary button" href="{{ url_for('login') }}">Sign in</a>.

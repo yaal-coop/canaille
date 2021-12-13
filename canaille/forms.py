@@ -146,6 +146,12 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("1234"),
         },
     ),
+    labeledURI=wtforms.URLField(
+        _("Website"),
+        render_kw={
+            "placeholder": _("https://mywebsite.tld"),
+        },
+    ),
 )
 
 

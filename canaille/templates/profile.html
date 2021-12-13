@@ -126,16 +126,22 @@
         {% if "telephoneNumber" in form %}
             {{ render_field(form.telephoneNumber) }}
         {% endif %}
+
         {% if "employeeNumber" in form %}
             {{ render_field(form.employeeNumber) }}
         {% endif %}
-        {% if "groups" in form %}
-            {{ render_field(form.groups) }}
+
+        {% if "labeledURI" in form %}
+            {{ render_field(form.labeledURI) }}
         {% endif %}
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
         {% if "uid" in form %}
             {{ render_field(form.uid) }}
+        {% endif %}
+
+        {% if "groups" in form %}
+            {{ render_field(form.groups) }}
         {% endif %}
 
         <div class="two fields">
