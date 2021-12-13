@@ -1,4 +1,5 @@
 $(function(){
-    $('.ui.dropdown').dropdown();
-    $('.ui.dropdown.active').dropdown();
+    $('.ui.dropdown').each(function(){
+        $(this).dropdown({"placeholder": $(this).attr("placeholder")});
+    });
 });

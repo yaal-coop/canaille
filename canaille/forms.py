@@ -175,7 +175,7 @@ def profile_form(write_field_names, readonly_field_names):
         fields["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[(group[1], group[0]) for group in Group.available_groups()],
-            render_kw={},
+            render_kw={"placeholder": _("users, admins ...")},
         )
 
     form = wtforms.form.BaseForm(fields)
