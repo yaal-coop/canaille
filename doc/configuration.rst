@@ -212,6 +212,10 @@ Attributes are rendered using jinja2, and can use a ``user`` variable.
 :ADDRESS:
     *Optional.* Defaults to ``{{ user.postalAddress[0] }}``
 
+:PICTURE:
+    *Optional.* Defaults to ``{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}``
+
+
 SMTP
 ----
 Canaille needs you to configure a SMTP server to send some mails, including the *I forgot my password* and the *invitation* mails.

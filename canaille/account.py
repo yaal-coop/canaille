@@ -519,7 +519,7 @@ def reset(uid, hash):
 
 @bp.route("/profile/<uid>/<field>")
 def photo(uid, field):
-    if field != "jpegPhoto":
+    if field.lower() != "jpegphoto":
         abort(404)
 
     user = User.get(uid)

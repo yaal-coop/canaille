@@ -187,6 +187,7 @@ def configuration(slapd_server, smtpd, keypair_path):
                 "FAMILY_NAME": "{{ user.sn[0] }}",
                 "PREFERRED_USERNAME": "{{ user.displayName[0] }}",
                 "LOCALE": "{{ user.preferredLanguage[0] }}",
+                "PICTURE": "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}",
             },
         },
         "SMTP": {
