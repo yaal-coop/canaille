@@ -137,7 +137,7 @@
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
         {% if "uid" in form %}
-            {{ render_field(form.uid) }}
+            {{ render_field(form.uid, suffix_text="@mydomain.tld") }}
         {% endif %}
 
         {% if "groups" in form %}

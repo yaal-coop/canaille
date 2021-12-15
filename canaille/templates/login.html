@@ -26,7 +26,7 @@
       >
 
         {{ form.hidden_tag() if form.hidden_tag }}
-        {{ sui.render_field(form.login, icon="user", noindicator=true) }}
+        {{ sui.render_field(form.login, icon="user", noindicator=true, suffix_text="@mydomain.tld") }}
         {% if "password" in form %}
             {{ sui.render_field(form.password, icon="key", noindicator=true) }}
         {% endif %}
