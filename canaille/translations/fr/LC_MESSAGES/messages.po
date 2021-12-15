@@ -42,7 +42,7 @@ msgstr "Connexion réussie. Bienvenue %(user)s"
 #: canaille/account.py:123
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
-msgstr "Vous avez été déconnectés. À bientôt %(user)s"
+msgstr "Vous avez été déconnecté·e. À bientôt %(user)s"
 
 #: canaille/account.py:140
 msgid "Could not send the password initialization link."
@@ -338,7 +338,7 @@ msgstr "Les groupes auxquels vous appartenez"
 
 #: canaille/oauth.py:124
 msgid "You have been successfully logged out."
-msgstr "Vous avez été déconnectés."
+msgstr "Vous avez été déconnecté·e."
 
 #: canaille/admin/clients.py:33
 msgid "Contact"
