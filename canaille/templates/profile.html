@@ -94,7 +94,7 @@
                 <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
                     <i class="times icon"></i>
                 </a>
-                <img src="{% if photo %}{{ url_for("account.photo", uid=edited_user.uid, field="jpegPhoto") }}{% endif %}" alt="User photo">
+                <img src="{% if photo %}{{ url_for("account.photo", uid=edited_user.uid[0], field="jpegPhoto") }}{% endif %}" alt="User photo">
             </label>
             <label
                 class="ui centered photo-placeholder"
