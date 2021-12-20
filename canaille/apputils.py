@@ -6,9 +6,11 @@ import logging
 import mimetypes
 import smtplib
 import urllib.request
-from canaille.models import User
 from email.utils import make_msgid
-from flask import current_app, request
+
+from canaille.models import User
+from flask import current_app
+from flask import request
 from flask_babel import gettext as _
 
 DEFAULT_SMTP_HOST = "localhost"
@@ -72,7 +74,7 @@ def logo():
                 logo_url,
             )
         else:
-            logo_url = "{}{}".format(request.url_root, logo_url)
+            logo_url = f"{request.url_root}{logo_url}"
 
     try:
         with urllib.request.urlopen(logo_url) as f:

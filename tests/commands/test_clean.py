@@ -1,6 +1,8 @@
 import datetime
+
 from canaille.commands import cli
-from canaille.models import AuthorizationCode, Token
+from canaille.models import AuthorizationCode
+from canaille.models import Token
 from werkzeug.security import gen_salt
 
 
@@ -14,9 +16,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
         oauthResponseType="code",
         oauthScope="openid profile",
         oauthNonce="nonce",
-        oauthAuthorizationDate=(
-            datetime.datetime.now() - datetime.timedelta(days=1)
-        ),
+        oauthAuthorizationDate=(datetime.datetime.now() - datetime.timedelta(days=1)),
         oauthAuthorizationLifetime="3600",
         oauthCodeChallenge="challenge",
         oauthCodeChallengeMethod="method",

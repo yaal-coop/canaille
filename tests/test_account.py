@@ -1,5 +1,5 @@
-from canaille.models import User
 from canaille.apputils import login_placeholder
+from canaille.models import User
 
 
 def test_signin_and_out(testclient, slapd_connection, user):

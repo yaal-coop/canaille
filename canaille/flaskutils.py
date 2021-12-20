@@ -1,9 +1,13 @@
-import ldap
 import logging
 from functools import wraps
-from flask import abort, current_app, render_template, session
-from flask_babel import gettext as _
+
+import ldap
 from canaille.models import User
+from flask import abort
+from flask import current_app
+from flask import render_template
+from flask import session
+from flask_babel import gettext as _
 
 
 def current_user():

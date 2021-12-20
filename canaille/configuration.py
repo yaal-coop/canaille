@@ -1,8 +1,9 @@
-import ldap
 import os
 import smtplib
 import socket
 import uuid
+
+import ldap
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 

@@ -1,24 +1,31 @@
 import datetime
-from authlib.integrations.flask_oauth2 import AuthorizationServer, ResourceProtector
+
+from authlib.integrations.flask_oauth2 import AuthorizationServer
+from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
+)
+from authlib.oauth2.rfc6749.grants import ClientCredentialsGrant
+from authlib.oauth2.rfc6749.grants import ImplicitGrant
+from authlib.oauth2.rfc6749.grants import RefreshTokenGrant as _RefreshTokenGrant
+from authlib.oauth2.rfc6749.grants import (
     ResourceOwnerPasswordCredentialsGrant as _ResourceOwnerPasswordCredentialsGrant,
-    RefreshTokenGrant as _RefreshTokenGrant,
-    ImplicitGrant,
-    ClientCredentialsGrant,
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
 from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
-from authlib.oidc.core.grants import (
-    OpenIDCode as _OpenIDCode,
-    OpenIDImplicitGrant as _OpenIDImplicitGrant,
-    OpenIDHybridGrant as _OpenIDHybridGrant,
-)
 from authlib.oidc.core import UserInfo
+from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
+from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
+from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from flask import current_app
-from .models import Client, AuthorizationCode, Group, Token, User
+
+from .models import AuthorizationCode
+from .models import Client
+from .models import Group
+from .models import Token
+from .models import User
 
 DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"

@@ -1,31 +1,36 @@
 import datetime
-import ldap
 import logging
 import os
-import toml
+from logging.config import dictConfig
 
 import canaille.account
-import canaille.admin
 import canaille.admin.authorizations
 import canaille.admin.clients
 import canaille.admin.mail
 import canaille.admin.tokens
-import canaille.consents
 import canaille.configuration
+import canaille.consents
+import canaille.groups
 import canaille.installation
 import canaille.oauth
-import canaille.groups
 import canaille.well_known
-
-from flask import Flask, g, request, session
-from flask_babel import Babel, gettext as _
-from flask_themer import Themer, render_template, FileSystemThemeLoader
-from logging.config import dictConfig
+import ldap
+import toml
+from flask import Flask
+from flask import g
+from flask import request
+from flask import session
+from flask_babel import Babel
+from flask_babel import gettext as _
+from flask_themer import FileSystemThemeLoader
+from flask_themer import render_template
+from flask_themer import Themer
 
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
+from .models import Group
+from .models import User
 from .oauth2utils import setup_oauth
-from .models import User, Group
 
 try:  # pragma: no cover
     import sentry_sdk

@@ -1,5 +1,7 @@
+from urllib.parse import parse_qs
+from urllib.parse import urlsplit
+
 from authlib.jose import jwt
-from urllib.parse import urlsplit, parse_qs
 from canaille.models import Token
 
 

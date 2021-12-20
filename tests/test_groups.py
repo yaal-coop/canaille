@@ -1,4 +1,5 @@
-from canaille.models import Group, User
+from canaille.models import Group
+from canaille.models import User
 
 
 def test_no_group(app, slapd_connection):

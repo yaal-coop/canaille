@@ -1,7 +1,7 @@
 import datetime
-import ldap
-import ldap.filter
 import warnings
+
+import ldap.filter
 from flask import g
 
 
@@ -55,7 +55,7 @@ class LDAPObject:
         except AttributeError:
             id = "?"
 
-        return "<{} {}={}>".format(self.__class__.__name__, self.id, id)
+        return f"<{self.__class__.__name__} {self.id}={id}>"
 
     @classmethod
     def ldap(cls):

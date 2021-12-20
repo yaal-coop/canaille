@@ -13,12 +13,10 @@ def test_edition(
     jpeg_photo,
 ):
     res = testclient.get("/profile/user", status=200)
-    assert set(res.form["groups"].options) == set(
-        [
-            ("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", True, "foo"),
-            ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar"),
-        ]
-    )
+    assert set(res.form["groups"].options) == {
+        ("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", True, "foo"),
+        ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar"),
+    }
     assert logged_user.groups == [foo_group]
     assert foo_group.member == [logged_user.dn]
     assert bar_group.member == [admin.dn]

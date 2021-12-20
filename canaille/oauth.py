@@ -1,31 +1,32 @@
 import datetime
+
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwk
 from authlib.oauth2 import OAuth2Error
-from flask import (
-    current_app,
-    Blueprint,
-    request,
-    session,
-    redirect,
-    abort,
-    jsonify,
-    flash,
-)
-from flask_babel import gettext, lazy_gettext as _
+from flask import abort
+from flask import Blueprint
+from flask import current_app
+from flask import flash
+from flask import jsonify
+from flask import redirect
+from flask import request
+from flask import session
+from flask_babel import gettext
+from flask_babel import lazy_gettext as _
 from flask_themer import render_template
-from .models import User, Client, Consent
-from .oauth2utils import (
-    authorization,
-    IntrospectionEndpoint,
-    RevocationEndpoint,
-    generate_user_info,
-    require_oauth,
-    DEFAULT_JWT_ALG,
-    DEFAULT_JWT_KTY,
-)
-from .forms import FullLoginForm
+
 from .flaskutils import current_user
+from .forms import FullLoginForm
+from .models import Client
+from .models import Consent
+from .models import User
+from .oauth2utils import authorization
+from .oauth2utils import DEFAULT_JWT_ALG
+from .oauth2utils import DEFAULT_JWT_KTY
+from .oauth2utils import generate_user_info
+from .oauth2utils import IntrospectionEndpoint
+from .oauth2utils import require_oauth
+from .oauth2utils import RevocationEndpoint
 
 
 bp = Blueprint("oauth", __name__)

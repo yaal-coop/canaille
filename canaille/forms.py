@@ -1,10 +1,12 @@
-import wtforms
 import wtforms.form
 from flask import current_app
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from .models import User, Group
+from flask_wtf.file import FileAllowed
+from flask_wtf.file import FileField
+
+from .models import Group
+from .models import User
 
 
 def unique_login(form, field):
@@ -113,7 +115,9 @@ PROFILE_FORM_FIELDS = dict(
     mail=wtforms.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
-        description=_("This email will be used as a recovery address to reset the password if needed"),
+        description=_(
+            "This email will be used as a recovery address to reset the password if needed"
+        ),
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",

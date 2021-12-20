@@ -13,21 +13,21 @@
 
 {% block content %}
 
-<table class="ui table">
-    <thead>
-        <th>{% trans %}Token{% endtrans %}</th>
-        <th>{% trans %}Client{% endtrans %}</th>
-        <th>{% trans %}Subject{% endtrans %}</th>
-        <th>{% trans %}Created{% endtrans %}</th>
-    </thead>
-    {% for authorization in authorizations %}
-    <tr>
-        <td><a href="{{ url_for('admin_authorizations.view', authorization_id=authorization.oauthCode) }}">{{ authorization.oauthCode }}</a></td>
-        <td><a href="{{ url_for('admin_clients.edit', client_id=authorization.oauthClientID) }}">{{ authorization.oauthClientID }}</a></td>
-        <td>{{ authorization.oauthSubject }}</td>
-        <td>{{ authorization.issue_date }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <table class="ui table">
+        <thead>
+            <th>{% trans %}Token{% endtrans %}</th>
+            <th>{% trans %}Client{% endtrans %}</th>
+            <th>{% trans %}Subject{% endtrans %}</th>
+            <th>{% trans %}Created{% endtrans %}</th>
+        </thead>
+        {% for authorization in authorizations %}
+            <tr>
+                <td><a href="{{ url_for('admin_authorizations.view', authorization_id=authorization.oauthCode) }}">{{ authorization.oauthCode }}</a></td>
+                <td><a href="{{ url_for('admin_clients.edit', client_id=authorization.oauthClientID) }}">{{ authorization.oauthClientID }}</a></td>
+                <td>{{ authorization.oauthSubject }}</td>
+                <td>{{ authorization.issue_date }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
 {% endblock %}

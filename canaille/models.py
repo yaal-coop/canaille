@@ -1,14 +1,14 @@
 import datetime
-import ldap
-import ldap.filter
 import uuid
-from authlib.oauth2.rfc6749 import (
-    ClientMixin,
-    TokenMixin,
-    AuthorizationCodeMixin,
-    util,
-)
-from flask import current_app, session
+
+import ldap.filter
+from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
+from authlib.oauth2.rfc6749 import ClientMixin
+from authlib.oauth2.rfc6749 import TokenMixin
+from authlib.oauth2.rfc6749 import util
+from flask import current_app
+from flask import session
+
 from .ldaputils import LDAPObject
 
 

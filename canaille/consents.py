@@ -1,8 +1,12 @@
-from flask import Blueprint, flash, redirect, url_for
-from flask_themer import render_template
-from flask_babel import gettext
-from canaille.models import Consent, Client
 from canaille.flaskutils import user_needed
+from canaille.models import Client
+from canaille.models import Consent
+from flask import Blueprint
+from flask import flash
+from flask import redirect
+from flask import url_for
+from flask_babel import gettext
+from flask_themer import render_template
 
 
 bp = Blueprint("consents", __name__)
@@ -13,7 +17,7 @@ bp = Blueprint("consents", __name__)
 def consents(user):
     consents = Consent.filter(oauthSubject=user.dn)
     consents = [c for c in consents if not c.oauthRevokationDate]
-    client_dns = list(set(t.oauthClient for t in consents))
+    client_dns = list({t.oauthClient for t in consents})
     clients = {dn: Client.get(dn) for dn in client_dns}
     return render_template(
         "consent_list.html", consents=consents, clients=clients, menuitem="consents"

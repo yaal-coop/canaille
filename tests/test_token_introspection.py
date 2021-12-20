@@ -1,5 +1,10 @@
-from canaille.models import AuthorizationCode, Token, Client
-from urllib.parse import urlsplit, parse_qs
+from urllib.parse import parse_qs
+from urllib.parse import urlsplit
+
+from canaille.models import AuthorizationCode
+from canaille.models import Client
+from canaille.models import Token
+
 from . import client_credentials
 
 

@@ -1,7 +1,7 @@
+from canaille.flaskutils import permissions_needed
+from canaille.models import AuthorizationCode
 from flask import Blueprint
 from flask_themer import render_template
-from canaille.models import AuthorizationCode
-from canaille.flaskutils import permissions_needed
 
 
 bp = Blueprint("admin_authorizations", __name__)

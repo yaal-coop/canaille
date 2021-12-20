@@ -1,5 +1,6 @@
+from canaille.apputils import obj_to_b64
+from canaille.apputils import profile_hash
 from canaille.models import User
-from canaille.apputils import profile_hash, obj_to_b64
 
 
 def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd):

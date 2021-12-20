@@ -1,35 +1,35 @@
 {% extends theme('base.html') %}
 
 {% block content %}
-<div class="ui segment">
-    <a class="ui primary button" href="{{ url_for('groups.create_group') }}">{% trans %}Add a group{% endtrans %}</a>
-</div>
+    <div class="ui segment">
+        <a class="ui primary button" href="{{ url_for('groups.create_group') }}">{% trans %}Add a group{% endtrans %}</a>
+    </div>
 
-<div class="ui segment">
-    <h2 class="ui center aligned header">
-        <div class="content">
-            {% trans %}Groups{% endtrans %}
-        </div>
-    </h2>
-    <table class="ui table">
-        <thead>
-            <th></th>
-            <th>{% trans %}Name{% endtrans %}</th>
-            <th>{% trans %}Description{% endtrans %}</th>
-            <th>{% trans %}Number of members{% endtrans %}</th>
-        </thead>
-        {% for group in groups %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('groups.group', groupname=group.name) }}">
-                        <i class="users circular black inverted icon"></i>
-                    </a>
-                </td>
-                <td><a href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a></td>
-                <td>{% if group.description %}{{ group.description[0] }}{% endif %}</td>
-                <td>{{ group.member|len }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-</div>
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Groups{% endtrans %}
+            </div>
+        </h2>
+        <table class="ui table">
+            <thead>
+                <th></th>
+                <th>{% trans %}Name{% endtrans %}</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}Number of members{% endtrans %}</th>
+            </thead>
+            {% for group in groups %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('groups.group', groupname=group.name) }}">
+                            <i class="users circular black inverted icon"></i>
+                        </a>
+                    </td>
+                    <td><a href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a></td>
+                    <td>{% if group.description %}{{ group.description[0] }}{% endif %}</td>
+                    <td>{{ group.member|len }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

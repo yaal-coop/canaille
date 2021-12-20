@@ -1,12 +1,18 @@
 import datetime
+
 import wtforms
-from flask import Blueprint, request, flash, redirect, url_for, abort
+from canaille.flaskutils import permissions_needed
+from canaille.models import Client
+from flask import abort
+from flask import Blueprint
+from flask import flash
+from flask import redirect
+from flask import request
+from flask import url_for
+from flask_babel import lazy_gettext as _
 from flask_themer import render_template
 from flask_wtf import FlaskForm
-from flask_babel import lazy_gettext as _
 from werkzeug.security import gen_salt
-from canaille.models import Client
-from canaille.flaskutils import permissions_needed
 
 
 bp = Blueprint("admin_clients", __name__)

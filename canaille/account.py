@@ -1,42 +1,39 @@
 import io
+
 import pkg_resources
 import wtforms
-
-from flask import (
-    Blueprint,
-    request,
-    flash,
-    url_for,
-    current_app,
-    abort,
-    redirect,
-    send_file,
-    session,
-)
+from flask import abort
+from flask import Blueprint
+from flask import current_app
+from flask import flash
+from flask import redirect
+from flask import request
+from flask import send_file
+from flask import session
+from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
-from werkzeug.datastructures import CombinedMultiDict, FileStorage
-from .apputils import (
-    default_fields,
-    b64_to_obj,
-    login_placeholder,
-    profile_hash,
-    obj_to_b64,
-)
-from .forms import (
-    InvitationForm,
-    LoginForm,
-    PasswordForm,
-    PasswordResetForm,
-    ForgottenPasswordForm,
-    profile_form,
-)
-from .flaskutils import current_user, user_needed, permissions_needed, smtp_needed
-from .mails import (
-    send_password_initialization_mail,
-    send_invitation_mail,
-    send_password_reset_mail,
-)
+from werkzeug.datastructures import CombinedMultiDict
+from werkzeug.datastructures import FileStorage
+
+from .apputils import b64_to_obj
+from .apputils import default_fields
+from .apputils import login_placeholder
+from .apputils import obj_to_b64
+from .apputils import profile_hash
+from .flaskutils import current_user
+from .flaskutils import permissions_needed
+from .flaskutils import smtp_needed
+from .flaskutils import user_needed
+from .forms import ForgottenPasswordForm
+from .forms import InvitationForm
+from .forms import LoginForm
+from .forms import PasswordForm
+from .forms import PasswordResetForm
+from .forms import profile_form
+from .mails import send_invitation_mail
+from .mails import send_password_initialization_mail
+from .mails import send_password_reset_mail
 from .models import User
 
 
@@ -525,4 +522,4 @@ def photo(uid, field):
     user = User.get(uid)
     photo = getattr(user, field)[0]
     stream = io.BytesIO(photo)
-    return send_file(stream, mimetype='image/jpeg')
+    return send_file(stream, mimetype="image/jpeg")

@@ -1,7 +1,7 @@
+from canaille.flaskutils import permissions_needed
+from canaille.models import Token
 from flask import Blueprint
 from flask_themer import render_template
-from canaille.models import Token
-from canaille.flaskutils import permissions_needed
 
 
 bp = Blueprint("admin_tokens", __name__)

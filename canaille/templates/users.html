@@ -13,14 +13,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="ui segment">
-    <div class="ui stackable buttons">
-        <a class="ui primary button" href="{{ url_for('account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
-        {% if has_smtp %}
-            <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
-        {% endif %}
+    <div class="ui segment">
+        <div class="ui stackable buttons">
+            <a class="ui primary button" href="{{ url_for('account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
+            {% if has_smtp %}
+                <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
+            {% endif %}
+        </div>
     </div>
-</div>
 
-{{ user_list.user_list(user, users) }}
+    {{ user_list.user_list(user, users) }}
 {% endblock %}

@@ -1,7 +1,11 @@
-from flask import url_for, current_app
+from flask import current_app
+from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
-from .apputils import logo, send_email, profile_hash
+
+from .apputils import logo
+from .apputils import profile_hash
+from .apputils import send_email
 
 
 def send_password_reset_mail(user):
@@ -32,7 +36,7 @@ def send_password_reset_mail(user):
         site_name=current_app.config.get("NAME", reset_url),
         site_url=base_url,
         reset_url=reset_url,
-        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
     )
 
     return send_email(
@@ -72,7 +76,7 @@ def send_password_initialization_mail(user):
         site_name=current_app.config.get("NAME", reset_url),
         site_url=base_url,
         reset_url=reset_url,
-        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
     )
 
     return send_email(
@@ -102,7 +106,7 @@ def send_invitation_mail(email, registration_url):
         site_name=current_app.config.get("NAME", registration_url),
         site_url=base_url,
         registration_url=registration_url,
-        logo="cid:{}".format(logo_cid[1:-1]) if logo_cid else None,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
     )
 
     return send_email(

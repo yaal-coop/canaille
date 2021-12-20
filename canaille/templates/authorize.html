@@ -1,51 +1,51 @@
 {% extends theme('base.html') %}
 
 {% block content %}
-<div class="ui segment">
-    {% if client.oauthLogoURI %}
-        <img class="ui centered tiny image" src="{{ client.oauthLogoURI }}" alt="{{ client.oauthClientName }}">
-    {% endif %}
-
-    <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</h3>
-
-    <div class="ui divided items">
-    {% for claim in grant.request.scope.split(" ") %}
-        {% if claim not in ignored_claims %}
-        <div class="item">
-            {% if claim in claims %}
-            <div>
-                <i class="{{ claims[claim][0] }} large icon"></i>
-                {{ claims[claim][1] }}
-            </div>
-            {% else %}
-            <div class="ui tiny image">
-                <i class="huge user icon"></i>
-                {{ claim }}
-            </div>
-            {% endif %}
-        </div>
+    <div class="ui segment">
+        {% if client.oauthLogoURI %}
+            <img class="ui centered tiny image" src="{{ client.oauthLogoURI }}" alt="{{ client.oauthClientName }}">
         {% endif %}
-    {% endfor %}
-    </div>
 
-    <div class="ui center aligned container">
-        {{ gettext('You are logged id as: %(name)s', name=user.name) }}
-    </div>
+        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</h3>
 
-    <div class="ui center aligned container">
-        <form action="{{ request.url }}" method="post">
-            <div class="ui stackable buttons">
-                <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
-                    {% trans %}Deny{% endtrans %}
-                </button>
-                <button name="answer" type="submit" class="ui button" value="logout" id="logout">
-                    {% trans %}Switch user{% endtrans %}
-                </button>
-                <button name="answer" type="submit" class="ui primary button" value="accept" id="accept">
-                    {% trans %}Accept{% endtrans %}
-                </button>
-            </div>
-        </form>
+        <div class="ui divided items">
+            {% for claim in grant.request.scope.split(" ") %}
+                {% if claim not in ignored_claims %}
+                    <div class="item">
+                        {% if claim in claims %}
+                            <div>
+                                <i class="{{ claims[claim][0] }} large icon"></i>
+                                {{ claims[claim][1] }}
+                            </div>
+                        {% else %}
+                            <div class="ui tiny image">
+                                <i class="huge user icon"></i>
+                                {{ claim }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="ui center aligned container">
+            {{ gettext('You are logged id as: %(name)s', name=user.name) }}
+        </div>
+
+        <div class="ui center aligned container">
+            <form action="{{ request.url }}" method="post">
+                <div class="ui stackable buttons">
+                    <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
+                        {% trans %}Deny{% endtrans %}
+                    </button>
+                    <button name="answer" type="submit" class="ui button" value="logout" id="logout">
+                        {% trans %}Switch user{% endtrans %}
+                    </button>
+                    <button name="answer" type="submit" class="ui primary button" value="accept" id="accept">
+                        {% trans %}Accept{% endtrans %}
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

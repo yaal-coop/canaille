@@ -1,17 +1,16 @@
-from flask import (
-    Blueprint,
-    redirect,
-    url_for,
-    request,
-    flash,
-    current_app,
-    abort,
-)
+from flask import abort
+from flask import Blueprint
+from flask import current_app
+from flask import flash
+from flask import redirect
+from flask import request
+from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
 
 from .flaskutils import permissions_needed
-from .forms import GroupForm, unique_group
+from .forms import GroupForm
+from .forms import unique_group
 from .models import Group
 
 bp = Blueprint("groups", __name__)
