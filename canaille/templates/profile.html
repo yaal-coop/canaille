@@ -111,67 +111,52 @@
         {% endif %}
 
         <div class="two fields">
-            {% block given_name_field scoped %}
-                {% if "givenName" in form %}
-                    {{ render_field(form.givenName) }}
-                {% endif %}
-            {% endblock %}
+            {% if "givenName" in form %}
+                {% block given_name_field scoped %}{{ render_field(form.givenName) }}{% endblock %}
+            {% endif %}
             
-            {% block sn_field scoped %}
-                {% if "sn" in form %}
-                    {{ render_field(form.sn) }}
-                {% endif %}
-            {% endblock %}
+            {% if "sn" in form %}
+                {% block sn_field scoped %}{{ render_field(form.sn) }}{% endblock %}
+            {% endif %}
+            
         </div>
 
-        {% block mail_field scoped %}
-            {% if "mail" in form %}
-                {{ render_field(form.mail) }}
-            {% endif %}
-        {% endblock %}
+        {% if "mail" in form %}
+            {% block mail_field scoped %}{{ render_field(form.mail) }}{% endblock %}
+        {% endif %}
 
         {% if "jpegPhoto" in form %}</div></div>{% endif %}
 
-        {% block telephone_number_field scoped %}
-            {% if "telephoneNumber" in form %}
-                {{ render_field(form.telephoneNumber) }}
-            {% endif %}
-        {% endblock %}
+        {% if "telephoneNumber" in form %}
+            {% block telephone_number_field scoped %}{{ render_field(form.telephoneNumber) }}{% endblock %}
+        {% endif %}
 
-        {% block employee_number_field scoped %}
-            {% if "employeeNumber" in form %}
-                {{ render_field(form.employeeNumber) }}
-            {% endif %}
-        {% endblock %}
+        {% if "employeeNumber" in form %}
+            {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
+        {% endif %}
 
-        {% block labeled_uri_field scoped %}
-            {% if "labeledURI" in form %}
-                {{ render_field(form.labeledURI) }}
-            {% endif %}
-        {% endblock %}
+        {% if "labeledURI" in form %}
+            {% block labeled_uri_field scoped %}{{ render_field(form.labeledURI) }}{% endblock %}
+        {% endif %}
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
 
-        {% block uid_field scoped %}
-            {% if "uid" in form %}
-                {{ render_field(form.uid) }}
-            {% endif %}
-        {% endblock %}
+        {% if "uid" in form %}
+            {% block uid_field scoped %}{{ render_field(form.uid) }}{% endblock %}
+        {% endif %}
 
-        {% block groups_field scoped %}
-            {% if "groups" in form %}
-                {{ render_field(form.groups) }}
-            {% endif %}
-        {% endblock %}
+        {% if "groups" in form %}
+            {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
+        {% endif %}
 
-        {% block password_field scoped %}
-            <div class="two fields">
-                {% if "password1" in form %}
+        {% if "password1" in form %}
+            {% block password_field scoped %}
+                <div class="two fields">
                     {{ render_field(form.password1, noindicator=true) }}
                     {{ render_field(form.password2, noindicator=true) }}
-                {% endif %}
-            </div>
-        {% endblock %}
+                </div>
+            {% endblock %}
+        {% endif %}
 
         {% if user.can_manage_users %}
 

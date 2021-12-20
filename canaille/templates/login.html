@@ -26,15 +26,11 @@
       >
 
         {{ form.hidden_tag() if form.hidden_tag }}
-        {% block login_field scoped %}
-            {{ sui.render_field(form.login, icon="user", noindicator=true) }}
-        {% endblock %}
+        {% block login_field scoped %}{{ sui.render_field(form.login, icon="user", noindicator=true) }}{% endblock %}
 
-        {% block password_field scoped %}
-            {% if "password" in form %}
-                {{ sui.render_field(form.password, icon="key", noindicator=true) }}
-            {% endif %}
-        {% endblock %}
+        {% if "password" in form %}
+            {% block password_field scoped %}{{ sui.render_field(form.password, icon="key", noindicator=true) }}{% endblock %}
+        {% endif %}
 
         <div class="ui right aligned container">
             <div class="ui stackable buttons">
