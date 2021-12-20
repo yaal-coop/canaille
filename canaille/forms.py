@@ -113,6 +113,7 @@ PROFILE_FORM_FIELDS = dict(
     mail=wtforms.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
+        description=_("This email will be used as a recovery address to reset the password if needed"),
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",

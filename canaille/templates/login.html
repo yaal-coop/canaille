@@ -26,9 +26,10 @@
       >
 
         {{ form.hidden_tag() if form.hidden_tag }}
-        {{ sui.render_field(form.login, icon="user", noindicator=true) }}
+        {% block login_field scoped %}{{ sui.render_field(form.login, icon="user", noindicator=true) }}{% endblock %}
+
         {% if "password" in form %}
-            {{ sui.render_field(form.password, icon="key", noindicator=true) }}
+            {% block password_field scoped %}{{ sui.render_field(form.password, icon="key", noindicator=true) }}{% endblock %}
         {% endif %}
 
         <div class="ui right aligned container">
