@@ -82,74 +82,96 @@
         {% if "jpegPhoto" in form %}
         <div class="ui grid">
             <div class="three wide column">
-            {{ render_field(form.jpegPhoto, display=false, class="photo-field") }}
-            {{ render_field(form.jpegPhoto_delete, display=false, class="photo-delete-button") }}
-            {% set photo = edited_user.jpegPhoto and edited_user.jpegPhoto[0] %}
-            <label
-                class="ui small bordered image photo-content"
-                for="{{ form.jpegPhoto.id }}"
-                title="{{ _("Click to upload a photo") }}"
-                {% if not photo %}style="display: none;"{% endif %}>
+            {% block photo_field scoped %}
+                {{ render_field(form.jpegPhoto, display=false, class="photo-field") }}
+                {{ render_field(form.jpegPhoto_delete, display=false, class="photo-delete-button") }}
+                {% set photo = edited_user.jpegPhoto and edited_user.jpegPhoto[0] %}
+                <label
+                    class="ui small bordered image photo-content"
+                    for="{{ form.jpegPhoto.id }}"
+                    title="{{ _("Click to upload a photo") }}"
+                    {% if not photo %}style="display: none;"{% endif %}>
 
-                <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
-                    <i class="times icon"></i>
-                </a>
-                <img src="{% if photo %}{{ url_for("account.photo", uid=edited_user.uid, field="jpegPhoto") }}{% endif %}" alt="User photo">
-            </label>
-            <label
-                class="ui centered photo-placeholder"
-                for="{{ form.jpegPhoto.id }}"
-                title="{{ _("Click to upload a photo") }}"
-                {% if photo %}style="display: none;"{% endif %}>
-                <i class="massive centered portrait icon"></i>
-            </label>
-            </div>
+                    <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
+                        <i class="times icon"></i>
+                    </a>
+                    <img src="{% if photo %}{{ url_for("account.photo", uid=edited_user.uid, field="jpegPhoto") }}{% endif %}" alt="User photo">
+                </label>
+                <label
+                    class="ui centered photo-placeholder"
+                    for="{{ form.jpegPhoto.id }}"
+                    title="{{ _("Click to upload a photo") }}"
+                    {% if photo %}style="display: none;"{% endif %}>
+                    <i class="massive centered portrait icon"></i>
+                </label>
+                </div>
+            {% endblock %}
 
             <div class="thirteen wide column">
         {% endif %}
 
         <div class="two fields">
-            {% if "givenName" in form %}
-                {{ render_field(form.givenName) }}
-            {% endif %}
-            {% if "sn" in form %}
-                {{ render_field(form.sn) }}
-            {% endif %}
+            {% block given_name_field scoped %}
+                {% if "givenName" in form %}
+                    {{ render_field(form.givenName) }}
+                {% endif %}
+            {% endblock %}
+            
+            {% block sn_field scoped %}
+                {% if "sn" in form %}
+                    {{ render_field(form.sn) }}
+                {% endif %}
+            {% endblock %}
         </div>
 
-        {% if "mail" in form %}
-            {{ render_field(form.mail) }}
-        {% endif %}
+        {% block mail_field scoped %}
+            {% if "mail" in form %}
+                {{ render_field(form.mail) }}
+            {% endif %}
+        {% endblock %}
 
         {% if "jpegPhoto" in form %}</div></div>{% endif %}
 
-        {% if "telephoneNumber" in form %}
-            {{ render_field(form.telephoneNumber) }}
-        {% endif %}
+        {% block telephone_number_field scoped %}
+            {% if "telephoneNumber" in form %}
+                {{ render_field(form.telephoneNumber) }}
+            {% endif %}
+        {% endblock %}
 
-        {% if "employeeNumber" in form %}
-            {{ render_field(form.employeeNumber) }}
-        {% endif %}
+        {% block employee_number_field scoped %}
+            {% if "employeeNumber" in form %}
+                {{ render_field(form.employeeNumber) }}
+            {% endif %}
+        {% endblock %}
 
-        {% if "labeledURI" in form %}
-            {{ render_field(form.labeledURI) }}
-        {% endif %}
+        {% block labeled_uri_field scoped %}
+            {% if "labeledURI" in form %}
+                {{ render_field(form.labeledURI) }}
+            {% endif %}
+        {% endblock %}
 
         <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
-        {% if "uid" in form %}
-            {{ render_field(form.uid, suffix_text="@mydomain.tld") }}
-        {% endif %}
 
-        {% if "groups" in form %}
-            {{ render_field(form.groups) }}
-        {% endif %}
-
-        <div class="two fields">
-            {% if "password1" in form %}
-                {{ render_field(form.password1, noindicator=true) }}
-                {{ render_field(form.password2, noindicator=true) }}
+        {% block uid_field scoped %}
+            {% if "uid" in form %}
+                {{ render_field(form.uid) }}
             {% endif %}
-        </div>
+        {% endblock %}
+
+        {% block groups_field scoped %}
+            {% if "groups" in form %}
+                {{ render_field(form.groups) }}
+            {% endif %}
+        {% endblock %}
+
+        {% block password_field scoped %}
+            <div class="two fields">
+                {% if "password1" in form %}
+                    {{ render_field(form.password1, noindicator=true) }}
+                    {{ render_field(form.password2, noindicator=true) }}
+                {% endif %}
+            </div>
+        {% endblock %}
 
         {% if user.can_manage_users %}
 
