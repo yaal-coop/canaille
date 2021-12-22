@@ -42,3 +42,8 @@ footer a {
 .ui.corner.labeled.input .ui.dropdown .dropdown.icon {
     margin-right: 1.5em;
 }
+
+i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icons {
+    font-size: 6em;
+    margin-bottom: 15px;
+}
