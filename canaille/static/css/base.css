@@ -14,6 +14,16 @@
     }
 }
 
+@media only screen and (max-width:768px) {
+    .ui .grid .three.wide.column {
+        width: 100% !important;
+        text-align: center;
+    }
+    .ui .grid .thirteen.wide.column {
+        width: 100% !important;
+    }
+}
+
 
 body {
     background: #F8F8F8;
