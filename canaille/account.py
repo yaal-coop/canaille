@@ -34,6 +34,7 @@ from .forms import profile_form
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
+from .models import Group
 from .models import User
 
 
@@ -315,6 +316,11 @@ def profile_create(current_app, form):
 
     user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
     user.save()
+
+    if "groups" in form:
+        groups = [Group.get(group_dn) for group_dn in form["groups"].data]
+        for group in groups:
+            group.add_member(user)
 
     if not form["password1"].data or user.set_password(form["password1"].data):
         flash(_("User account creation succeed."), "success")

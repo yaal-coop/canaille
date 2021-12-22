@@ -220,6 +220,7 @@ def test_user_creation_edition_and_deletion(
     res.form["sn"] = "Abitbol"
     res.form["mail"] = "george@abitbol.com"
     res.form["telephoneNumber"] = "555-666-888"
+    res.form["groups"] = ["cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org"]
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
 
@@ -228,8 +229,9 @@ def test_user_creation_edition_and_deletion(
     with testclient.app.app_context():
         george = User.get("george", conn=slapd_connection)
         george.load_groups(conn=slapd_connection)
+        foo_group.reload(slapd_connection)
         assert "George" == george.givenName[0]
-        assert george.groups == []
+        assert george.groups == [foo_group]
         assert george.check_password("totoyolo")
 
     assert "george" in testclient.get("/users", status=200).text
