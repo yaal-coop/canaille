@@ -121,11 +121,11 @@
 
             </div>
 
+            {% if "jpegPhoto" in form %}</div></div>{% endif %}
+
             {% if "mail" in form %}
                 {% block mail_field scoped %}{{ render_field(form.mail) }}{% endblock %}
             {% endif %}
-
-            {% if "jpegPhoto" in form %}</div></div>{% endif %}
 
             {% if "telephoneNumber" in form %}
                 {% block telephone_number_field scoped %}{{ render_field(form.telephoneNumber) }}{% endblock %}
