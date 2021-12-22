@@ -1,4 +1,9 @@
 import io
+from dataclasses import astuple
+from dataclasses import dataclass
+from datetime import datetime
+from datetime import timedelta
+from typing import List
 
 import pkg_resources
 import wtforms
@@ -162,6 +167,27 @@ def users(user):
     return render_template("users.html", users=users, menuitem="users")
 
 
+@dataclass
+class Invitation:
+    creation_date_isoformat: str
+    uid: str
+    mail: str
+    groups: List[str]
+
+    @property
+    def creation_date(self):
+        return datetime.fromisoformat(self.creation_date_isoformat)
+
+    def has_expired(self):
+        return datetime.now() - self.creation_date > timedelta(hours=48)
+
+    def b64(self):
+        return obj_to_b64(astuple(self))
+
+    def profile_hash(self):
+        return profile_hash(*astuple(self))
+
+
 @bp.route("/invite", methods=["GET", "POST"])
 @smtp_needed()
 @permissions_needed("manage_users")
@@ -173,10 +199,16 @@ def user_invitation(user):
     form_validated = False
     if request.form and form.validate():
         form_validated = True
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            form.uid.data,
+            form.mail.data,
+            form.groups.data,
+        )
         registration_url = url_for(
             "account.registration",
-            data=obj_to_b64([form.uid.data, form.mail.data, form.groups.data]),
-            hash=profile_hash(form.uid.data, form.mail.data, form.groups.data),
+            data=invitation.b64(),
+            hash=invitation.profile_hash(),
             _external=True,
         )
 
@@ -223,7 +255,7 @@ def profile_creation(user):
 @bp.route("/register/<data>/<hash>", methods=["GET", "POST"])
 def registration(data, hash):
     try:
-        data = b64_to_obj(data)
+        invitation = Invitation(*b64_to_obj(data))
     except:
         flash(
             _("The invitation link that brought you here was invalid."),
@@ -231,7 +263,14 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    if User.get(data[0]):
+    if invitation.has_expired():
+        flash(
+            _("The invitation link that brought you here has expired."),
+            "error",
+        )
+        return redirect(url_for("account.index"))
+
+    if User.get(invitation.uid):
         flash(
             _("Your account has already been created."),
             "error",
@@ -245,18 +284,14 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    if hash != profile_hash(*data):
+    if hash != invitation.profile_hash():
         flash(
             _("The invitation link that brought you here was invalid."),
             "error",
         )
         return redirect(url_for("account.index"))
 
-    data = {
-        "uid": data[0],
-        "mail": data[1],
-        "groups": data[2],
-    }
+    data = {"uid": invitation.uid, "mail": invitation.mail, "groups": invitation.groups}
 
     readable_fields, writable_fields = default_fields()
 
