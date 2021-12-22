@@ -1,11 +1,13 @@
 import datetime
+
 from canaille.commands import cli
-from canaille.models import AuthorizationCode, Token
+from canaille.models import AuthorizationCode
+from canaille.models import Token
 from werkzeug.security import gen_salt
 
 
 def test_clean_command(testclient, slapd_connection, client, user):
-    AuthorizationCode.ocs_by_name(slapd_connection)
+    AuthorizationCode.ldap_object_classes(slapd_connection)
     code = AuthorizationCode(
         oauthCode="my-code",
         oauthClient=client.dn,
@@ -14,9 +16,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
         oauthResponseType="code",
         oauthScope="openid profile",
         oauthNonce="nonce",
-        oauthAuthorizationDate=(
-            datetime.datetime.now() - datetime.timedelta(days=1)
-        ).strftime("%Y%m%d%H%M%SZ"),
+        oauthAuthorizationDate=(datetime.datetime.now() - datetime.timedelta(days=1)),
         oauthAuthorizationLifetime="3600",
         oauthCodeChallenge="challenge",
         oauthCodeChallengeMethod="method",
@@ -24,7 +24,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
     )
     code.save(slapd_connection)
 
-    Token.ocs_by_name(slapd_connection)
+    Token.ldap_object_classes(slapd_connection)
     token = Token(
         oauthAccessToken="my-token",
         oauthClient=client.dn,
@@ -32,9 +32,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
         oauthTokenType=None,
         oauthRefreshToken=gen_salt(48),
         oauthScope="openid profile",
-        oauthIssueDate=(datetime.datetime.now() - datetime.timedelta(days=1)).strftime(
-            "%Y%m%d%H%M%SZ"
-        ),
+        oauthIssueDate=(datetime.datetime.now() - datetime.timedelta(days=1)),
         oauthTokenLifetime=str(3600),
     )
     token.save(slapd_connection)

@@ -6,7 +6,7 @@ dn: ou=groups,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: groups
 
-dn: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
+dn: uid=admin,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: Jane Doe
@@ -18,7 +18,7 @@ telephoneNumber: 555-000-000
 employeeNumber: 1000
 userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 
-dn: cn=Jack Doe,ou=users,dc=mydomain,dc=tld
+dn: uid=moderator,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: Jack Doe
@@ -30,7 +30,7 @@ telephoneNumber: 555-000-002
 employeeNumber: 1002
 userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
 
-dn: cn=John Doe,ou=users,dc=mydomain,dc=tld
+dn: uid=user,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: John Doe
@@ -42,7 +42,7 @@ telephoneNumber: 555-000-001
 employeeNumber: 1001
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 
-dn: cn=James Doe,ou=users,dc=mydomain,dc=tld
+dn: uid=james,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: James Doe
@@ -55,18 +55,21 @@ telephoneNumber: 555-000-003
 dn: cn=users,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: users
-member: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
-member: cn=John Doe,ou=users,dc=mydomain,dc=tld
+description: The regulars users.
+member: uid=admin,ou=users,dc=mydomain,dc=tld
+member: uid=user,ou=users,dc=mydomain,dc=tld
 
 dn: cn=admins,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: admins
-member: cn=Jane Doe,ou=users,dc=mydomain,dc=tld
+description: The administrators.
+member: uid=admin,ou=users,dc=mydomain,dc=tld
 
 dn: cn=moderators,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
 cn: moderators
-member: cn=Jack Doe,ou=users,dc=mydomain,dc=tld
+description: People who can manage users.
+member: uid=moderator,ou=users,dc=mydomain,dc=tld
 
 dn: oauthClientID=1JGkkzCbeHpGtlqgI5EENByf,ou=clients,ou=oauth,dc=mydomain,dc=tld
 objectclass: oauthClient

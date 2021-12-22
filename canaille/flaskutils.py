@@ -1,7 +1,13 @@
-import ldap
+import logging
 from functools import wraps
-from flask import session, abort
+
+import ldap
 from canaille.models import User
+from flask import abort
+from flask import current_app
+from flask import render_template
+from flask import session
+from flask_babel import gettext as _
 
 
 def current_user():
@@ -51,6 +57,31 @@ def permissions_needed(*args):
             if not user or not permissions.issubset(user.permissions):
                 abort(403)
             return view_function(*args, user=user, **kwargs)
+
+        return decorator
+
+    return wrapper
+
+
+def smtp_needed():
+    def wrapper(view_function):
+        @wraps(view_function)
+        def decorator(*args, **kwargs):
+            if "SMTP" in current_app.config:
+                return view_function(*args, **kwargs)
+
+            message = _("No SMTP server has been configured")
+            logging.warning(message)
+            return (
+                render_template(
+                    "error.html",
+                    error=500,
+                    icon="tools",
+                    debug=current_app.config.get("DEBUG", False),
+                    description=message,
+                ),
+                500,
+            )
 
         return decorator
 

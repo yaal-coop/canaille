@@ -1,10 +1,14 @@
+from urllib.parse import parse_qs
+from urllib.parse import urlsplit
+
 from authlib.jose import jwt
-from urllib.parse import urlsplit, parse_qs
-from canaille.models import AuthorizationCode, Token, User
+from canaille.models import AuthorizationCode
+from canaille.models import Token
+from canaille.models import User
 
 
 def test_oauth_hybrid(testclient, slapd_connection, user, client):
-    User.attr_type_by_name(slapd_connection)
+    User.ldap_object_attributes(slapd_connection)
     res = testclient.get(
         "/oauth/authorize",
         params=dict(

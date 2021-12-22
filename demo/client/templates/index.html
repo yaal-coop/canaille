@@ -1,71 +1,92 @@
 <!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Canaille test client</title>
+        <title>Canaille test client</title>
 
-    <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
-    <link href="/static/css/base.css" rel="stylesheet">
-    {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
-    {% block style %}{% endblock %}
+        <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
+        <link href="/static/css/base.css" rel="stylesheet">
+        {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
+        {% block style %}{% endblock %}
 
-    <!--[if lt IE 9]>
-        <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
-        <script src="/static/js/respond.min.js"></script>
-    <![endif]-->
+        <!--[if lt IE 9]>
+            <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
+            <script src="/static/js/respond.min.js"></script>
+        <![endif]-->
 
-</head>
+    </head>
 
-<body>
-    <nav class="ui stackable labeled icon menu container">
-        <div class="header item">
-            <a href="/" class="logo">
-                <img class="ui image" src="/static/img/canaille-head.png" alt="Canaille client" />
-            </a>
-        </div>
-        {% if user %}
-        <a class="item" href="{{ url_for('logout') }}">
-            <i class="sign out alternate icon"></i>
-            Log out
-        </a>
-        {% else %}
-            <a class="item" href="{{ url_for('login') }}">
-            <i class="sign in alternate icon"></i>
-            Log in
-        </a>
-        {% endif %}
-    </nav>
-
-    <div class="ui container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% for category, message in messages %}
-            <div class="ui attached message {{ category }}">
-                {{ message }}
+    <body>
+        <nav class="ui stackable labeled icon menu container">
+            <div class="header item">
+                <a href="/" class="logo">
+                    <img class="ui image" src="/static/img/canaille-head.png" alt="Canaille client" />
+                </a>
             </div>
-            {% endfor %}
-        {% endwith %}
-
-        <div class="ui segment">
-            <h2 class="ui header">{{ name }}</h2>
-            <div>
             {% if user %}
-                <p>Welcome {{ user.name }}</p>
-                {% if user.groups %}
-                <p>You're a member of the following groups: {{ user.groups }}</p>
-                {% endif %}
+                <a class="item" href="{{ url_for('logout') }}">
+                    <i class="sign out alternate icon"></i>
+                    Sign out
+                </a>
             {% else %}
-                Welcome, please <a href="{{ url_for('login') }}">log-in</a>.
+                <a class="item" href="{{ url_for('login') }}">
+                    <i class="sign in alternate icon"></i>
+                    Sign in
+                </a>
             {% endif %}
+        </nav>
+
+        <div class="ui container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="ui attached message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+            <div class="ui segment">
+                <h2 class="ui header">{{ name }}</h2>
+                {% if user %}
+                    <div class="ui centered card">
+                        {% if user.picture %}
+                            <div class="image">
+                                <img src="{{ user.picture }}" alt="Avatar">
+                            </div>
+                        {% endif %}
+                        <div class="content">
+                            <span class="header">{{ user.name }}</span>
+                            <div class="meta">
+                                {{ user.sub }}
+                            </div>
+                            {% if user.groups %}
+                                <div class="extra content">
+                                    <i class="user users icon"></i>
+                                    {% for group in user.groups %}
+                                        <span class="label">{{ group }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% if user.website %}
+                            <a class="ui bottom attached button" href="{{ user.website }}">
+                                <i class="world icon"></i>
+                                Website
+                            </a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <a class="ui primary button" href="{{ url_for('login') }}">Sign in</a>.
+                {% endif %}
             </div>
         </div>
-    </div>
 
-    <script src="/static/jquery/jquery.min.js"></script>
-    <script src="/static/fomanticui/semantic.min.js"></script>
-    <script src="/static/js/base.js"></script>
-    {% block script %}{% endblock %}
-</body>
+        <script src="/static/jquery/jquery.min.js"></script>
+        <script src="/static/fomanticui/semantic.min.js"></script>
+        <script src="/static/js/base.js"></script>
+        {% block script %}{% endblock %}
+    </body>
 </html>

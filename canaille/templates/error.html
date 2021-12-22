@@ -1,41 +1,41 @@
 {% extends theme('base.html') %}
 
 {% block content %}
-<div class="ui error icon message">
-    {% if icon and (debug or (user and user.can_manage_oidc)) %}
-        <i class="{{ icon }} icon"></i>
-    {% elif error == 400 %}
-        <i class="question icon"></i>
-    {% elif error == 403 %}
-        <i class="hand paper icon"></i>
-    {% elif error == 404 %}
-        <i class="compass icon"></i>
-    {% elif error == 500 %}
-        <i class="bug icon"></i>
-    {% endif %}
-    <div class="content">
-        <div class="header">
-            {% if error == 400 %}
-                {% trans %}Bad request{% endtrans %}
+    <div class="ui error icon message">
+        {% if icon and (debug or (user and user.can_manage_oidc)) %}
+            <i class="{{ icon }} icon"></i>
+        {% elif error == 400 %}
+            <i class="question icon"></i>
+        {% elif error == 403 %}
+            <i class="hand paper icon"></i>
+        {% elif error == 404 %}
+            <i class="compass icon"></i>
+        {% elif error == 500 %}
+            <i class="bug icon"></i>
+        {% endif %}
+        <div class="content">
+            <div class="header">
+                {% if error == 400 %}
+                    {% trans %}Bad request{% endtrans %}
+                {% elif error == 403 %}
+                    {% trans %}Unauthorized{% endtrans %}
+                {% elif error == 404 %}
+                    {% trans %}Page not found{% endtrans %}
+                {% elif error == 500 %}
+                    {% trans %}Technical problem{% endtrans %}
+                {% endif %}
+            </div>
+            {% if description and (debug or (user and user.can_manage_oidc)) %}
+                <p>{{ description }}</p>
+            {% elif error == 400 %}
+                <p>{% trans %}The request you made is invalid{% endtrans %}</p>
             {% elif error == 403 %}
-                {% trans %}Unauthorized{% endtrans %}
+                <p>{% trans %}You do not have the authorizations to access this page{% endtrans %}</p>
             {% elif error == 404 %}
-                {% trans %}Page not found{% endtrans %}
+                <p>{% trans %}The page you are looking for does not exist{% endtrans %}</p>
             {% elif error == 500 %}
-                {% trans %}Technical problem{% endtrans %}
+                <p>{% trans %}Please contact your administrator{% endtrans %}</p>
             {% endif %}
         </div>
-        {% if description and (debug or (user and user.can_manage_oidc)) %}
-            <p>{{ description }}</p>
-        {% elif error == 400 %}
-            <p>{% trans %}The request you made is invalid{% endtrans %}</p>
-        {% elif error == 403 %}
-            <p>{% trans %}You do not have the authorizations to access this page{% endtrans %}</p>
-        {% elif error == 404 %}
-            <p>{% trans %}The page you are looking for does not exist{% endtrans %}</p>
-        {% elif error == 500 %}
-            <p>{% trans %}Please contact your administrator{% endtrans %}</p>
-        {% endif %}
     </div>
-</div>
 {% endblock %}

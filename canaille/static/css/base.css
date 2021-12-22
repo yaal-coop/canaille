@@ -44,6 +44,13 @@ footer a {
 }
 
 i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icons {
-    font-size: 6em;
+    font-size: 8em;
     margin-bottom: 15px;
+}
+.profile-form label img{
+    cursor: pointer;
+}
+
+.profile-form label i{
+    cursor: pointer;
 }

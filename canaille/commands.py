@@ -1,10 +1,12 @@
-import click
 import sys
 
+import click
 from canaille import create_app
-from canaille.models import AuthorizationCode, Token
+from canaille.models import AuthorizationCode
+from canaille.models import Token
 from flask import current_app
-from flask.cli import with_appcontext, FlaskGroup
+from flask.cli import FlaskGroup
+from flask.cli import with_appcontext
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)

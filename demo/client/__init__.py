@@ -1,6 +1,11 @@
 from authlib.integrations.flask_client import OAuth
 from authlib.oidc.discovery import get_well_known_url
-from flask import Flask, render_template, redirect, url_for, flash, session
+from flask import flash
+from flask import Flask
+from flask import redirect
+from flask import render_template
+from flask import session
+from flask import url_for
 
 
 def create_app():

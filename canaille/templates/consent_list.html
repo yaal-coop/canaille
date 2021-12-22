@@ -13,58 +13,58 @@
 
 {% block content %}
     <div class="ui segment">
-    <h2 class="ui center aligned header">
-        <div class="content">
-            {{ _("My consents") }}
-        </div>
-        <div class="sub header">
-            {% trans %}Consult and revoke the authorization you gave to websites.{% endtrans %}
-        </div>
-    </h2>
-
-    {% if consents %}
-    <div class="ui centered cards">
-        {% for consent in consents %}
-        {% set client = clients[consent.oauthClient] %}
-        <div class="ui card">
+        <h2 class="ui center aligned header">
             <div class="content">
-                {% if client.oauthLogoURI %}
-                    <img class="right floated mini ui image" src="{{ client.oauthLogoURI }}">
-                {% endif %}
-                {% if client.oauthClientURI %}
-                    <a href="{{ client.oauthClientURI }}" class="header">{{ client.oauthClientName }}</a>
-                {% else %}
-                    <div class="header">{{ client.oauthClientName }}</div>
-                {% endif %}
-                <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
-                {% if consent.oauthRevokationDate %}
-                <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
-                {% endif %}
-                <div class="description">
-                    <p>{% trans %}Has access to:{% endtrans %}</p>
-                    <ul>
-                        {% for s in consent.oauthScope %}
-                            <li>{{ s }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {{ _("My consents") }}
             </div>
-            <a class="ui bottom attached button" href="{{ url_for('consents.delete', consent_id=consent.cn[0] ) }}">
-                <i class="remove icon"></i>
-                {% trans %}Remove access{% endtrans %}
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="ui center aligned">
-        <i class="massive smile outline icon image ui"></i>
+            <div class="sub header">
+                {% trans %}Consult and revoke the authorization you gave to websites.{% endtrans %}
+            </div>
+        </h2>
 
-    <h2 class="ui center aligned header">
-        <div class="content">{% trans %}Nothing here{% endtrans %}</div>
-        <div class="sub header">{% trans %}You did not authorize applications yet.{% endtrans %}</div>
-    </h2>
-    </div>
-    {% endif %}
+        {% if consents %}
+            <div class="ui centered cards">
+                {% for consent in consents %}
+                    {% set client = clients[consent.oauthClient] %}
+                    <div class="ui card">
+                        <div class="content">
+                            {% if client.oauthLogoURI %}
+                                <img class="right floated mini ui image" src="{{ client.oauthLogoURI }}">
+                            {% endif %}
+                            {% if client.oauthClientURI %}
+                                <a href="{{ client.oauthClientURI }}" class="header">{{ client.oauthClientName }}</a>
+                            {% else %}
+                                <div class="header">{{ client.oauthClientName }}</div>
+                            {% endif %}
+                            <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                            {% if consent.oauthRevokationDate %}
+                                <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                            {% endif %}
+                            <div class="description">
+                                <p>{% trans %}Has access to:{% endtrans %}</p>
+                                <ul>
+                                    {% for s in consent.oauthScope %}
+                                        <li>{{ s }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <a class="ui bottom attached button" href="{{ url_for('consents.delete', consent_id=consent.cn[0] ) }}">
+                            <i class="remove icon"></i>
+                            {% trans %}Remove access{% endtrans %}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="ui center aligned">
+                <i class="massive smile outline icon image ui"></i>
+
+                <h2 class="ui center aligned header">
+                    <div class="content">{% trans %}Nothing here{% endtrans %}</div>
+                    <div class="sub header">{% trans %}You did not authorize applications yet.{% endtrans %}</div>
+                </h2>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -2,41 +2,44 @@
 {% import 'fomanticui.html' as sui %}
 
 {% block content %}
-<div class="ui clearing segment">
-    {% if logo_url %}
-        <a href="{{ url_for('account.index') }}">
-            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
-        </a>
-    {% else %}
-        <i class="massive sign in icon image ui"></i>
-    {% endif %}
-
-    <h2 class="ui center aligned header">
-        <div class="content">
-            {{ _("Sign in at %(website)s", website=website_name) }}
-        </div>
-        <div class="sub header">{% trans %}Log-in and manage your authorizations.{% endtrans %}</div>
-    </h2>
-
-    <form method="POST"
-      id="{{ form.id or form.__class__.__name__|lower }}"
-      action="{{ request.url }}"
-      role="form"
-      class="ui form"
-      >
-
-        {{ form.hidden_tag() if form.hidden_tag }}
-        {{ sui.render_field(form.login, icon="user", noindicator=true) }}
-        {% if "password" in form %}
-            {{ sui.render_field(form.password, icon="key", noindicator=true) }}
+    <div class="ui clearing segment">
+        {% if logo_url %}
+            <a href="{{ url_for('account.index') }}">
+                <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+            </a>
+        {% else %}
+            <i class="massive sign in icon image ui"></i>
         {% endif %}
 
-        <div class="ui right aligned container">
-            <div class="ui stackable buttons">
-                <a type="button" class="ui right floated button" href="{{ url_for('account.forgotten') }}">{{ _("Forgotten password") }}</a>
-                <button type="submit" class="ui right floated primary button">{{ _("Continue") }}</button>
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Sign in at %(website)s", website=website_name) }}
             </div>
-        </div>
-    </form>
-</div>
+            <div class="sub header">{% trans %}Log-in and manage your authorizations.{% endtrans %}</div>
+        </h2>
+
+        <form method="POST"
+            id="{{ form.id or form.__class__.__name__|lower }}"
+            action="{{ request.url }}"
+            role="form"
+            class="ui form"
+        >
+
+            {{ form.hidden_tag() if form.hidden_tag }}
+            {% block login_field scoped %}{{ sui.render_field(form.login, icon="user", noindicator=true) }}{% endblock %}
+
+            {% if "password" in form %}
+                {% block password_field scoped %}{{ sui.render_field(form.password, icon="key", noindicator=true) }}{% endblock %}
+            {% endif %}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    {% if has_smtp %}
+                        <a type="button" class="ui right floated button" href="{{ url_for('account.forgotten') }}">{{ _("Forgotten password") }}</a>
+                    {% endif %}
+                    <button type="submit" class="ui right floated primary button">{{ _("Continue") }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
 {% endblock %}

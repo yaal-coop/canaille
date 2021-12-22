@@ -1,17 +1,23 @@
 import datetime
-import ldap.ldapobject
 import os
+
+import ldap.ldapobject
 import pytest
 import slapd
-from cryptography.hazmat.primitives import serialization as crypto_serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.backends import default_backend as crypto_default_backend
-from flask_webtest import TestApp
-from werkzeug.security import gen_salt
 from canaille import create_app
-from canaille.models import User, Client, Token, AuthorizationCode, Consent, Group
 from canaille.installation import setup_ldap_tree
 from canaille.ldaputils import LDAPObject
+from canaille.models import AuthorizationCode
+from canaille.models import Client
+from canaille.models import Consent
+from canaille.models import Group
+from canaille.models import Token
+from canaille.models import User
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
+from cryptography.hazmat.primitives import serialization as crypto_serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from flask_webtest import TestApp
+from werkzeug.security import gen_salt
 
 
 class CustomSlapdObject(slapd.Slapd):
@@ -137,11 +143,7 @@ def configuration(slapd_server, smtpd, keypair_path):
             "BIND_PW": slapd_server.root_pw,
             "USER_BASE": "ou=users",
             "USER_FILTER": "(|(uid={login})(cn={login}))",
-            "USER_CLASS": "inetOrgPerson",
             "GROUP_BASE": "ou=groups",
-            "GROUP_CLASS": "groupOfNames",
-            "GROUP_NAME_ATTRIBUTE": "cn",
-            "GROUP_USER_FILTER": "member={user.dn}",
             "TIMEOUT": 0.1,
         },
         "ACL": {
@@ -151,6 +153,7 @@ def configuration(slapd_server, smtpd, keypair_path):
                 "WRITE": [
                     "mail",
                     "givenName",
+                    "jpegPhoto",
                     "sn",
                     "userPassword",
                     "telephoneNumber",
@@ -181,19 +184,16 @@ def configuration(slapd_server, smtpd, keypair_path):
         "JWT": {
             "PUBLIC_KEY": public_key_path,
             "PRIVATE_KEY": private_key_path,
-            "ALG": "RS256",
-            "KTY": "RSA",
-            "EXP": 3600,
             "MAPPING": {
-                "SUB": "uid",
-                "NAME": "cn",
-                "PHONE_NUMBER": "telephoneNumber",
-                "EMAIL": "mail",
-                "GIVEN_NAME": "givenName",
-                "FAMILY_NAME": "sn",
-                "PREFERRED_USERNAME": "displayName",
-                "LOCALE": "preferredLanguage",
-                "PICTURE": "jpegPhoto",
+                "SUB": "{{ user.uid[0] }}",
+                "NAME": "{{ user.cn[0] }}",
+                "PHONE_NUMBER": "{{ user.telephoneNumber[0] }}",
+                "EMAIL": "{{ user.mail[0] }}",
+                "GIVEN_NAME": "{{ user.givenName[0] }}",
+                "FAMILY_NAME": "{{ user.sn[0] }}",
+                "PREFERRED_USERNAME": "{{ user.displayName[0] }}",
+                "LOCALE": "{{ user.preferredLanguage[0] }}",
+                "PICTURE": "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}",
             },
         },
         "SMTP": {
@@ -234,7 +234,7 @@ def client(app, slapd_connection, other_client):
             "https://mydomain.tld/redirect2",
         ],
         oauthLogoURI="https://mydomain.tld/logo.png",
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%S%MZ"),
+        oauthIssueDate=datetime.datetime.now(),
         oauthClientSecret=gen_salt(48),
         oauthGrantType=[
             "password",
@@ -268,7 +268,7 @@ def other_client(app, slapd_connection):
             "https://myotherdomain.tld/redirect2",
         ],
         oauthLogoURI="https://myotherdomain.tld/logo.png",
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%S%MZ"),
+        oauthIssueDate=datetime.datetime.now(),
         oauthClientSecret=gen_salt(48),
         oauthGrantType=[
             "password",
@@ -300,7 +300,7 @@ def authorization(app, slapd_connection, user, client):
         oauthResponseType="code",
         oauthScope="openid profile",
         oauthNonce="nonce",
-        oauthAuthorizationDate="20200101000000Z",
+        oauthAuthorizationDate=datetime.datetime(2020, 1, 1),
         oauthAuthorizationLifetime="3600",
         oauthCodeChallenge="challenge",
         oauthCodeChallengeMethod="method",
@@ -312,7 +312,8 @@ def authorization(app, slapd_connection, user, client):
 
 @pytest.fixture
 def user(app, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="John (johnny) Doe",
@@ -327,7 +328,7 @@ def user(app, slapd_connection):
 
 @pytest.fixture
 def admin(app, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jane Doe",
@@ -342,7 +343,8 @@ def admin(app, slapd_connection):
 
 @pytest.fixture
 def moderator(app, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jack Doe",
@@ -365,7 +367,7 @@ def token(slapd_connection, client, user):
         oauthTokenType=None,
         oauthRefreshToken=gen_salt(48),
         oauthScope="openid profile",
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+        oauthIssueDate=datetime.datetime.now(),
         oauthTokenLifetime=str(3600),
     )
     t.save(slapd_connection)
@@ -378,7 +380,7 @@ def consent(slapd_connection, client, user):
         oauthClient=client.dn,
         oauthSubject=user.dn,
         oauthScope=["openid", "profile"],
-        oauthIssueDate=datetime.datetime.now().strftime("%Y%m%d%H%M%SZ"),
+        oauthIssueDate=datetime.datetime.now(),
     )
     t.save(slapd_connection)
     return t
@@ -417,7 +419,7 @@ def cleanups(slapd_connection):
 
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
-    Group.ocs_by_name(slapd_connection)
+    Group.ldap_object_classes(slapd_connection)
     g = Group(
         objectClass=["groupOfNames"],
         member=[user.dn],
@@ -433,7 +435,7 @@ def foo_group(app, user, slapd_connection):
 
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
-    Group.ocs_by_name(slapd_connection)
+    Group.ldap_object_classes(slapd_connection)
     g = Group(
         objectClass=["groupOfNames"],
         member=[admin.dn],
@@ -445,3 +447,8 @@ def bar_group(app, admin, slapd_connection):
     yield g
     admin._groups = []
     g.delete(conn=slapd_connection)
+
+
+@pytest.fixture
+def jpeg_photo():
+    return b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x01,\x01,\x00\x00\xff\xfe\x00\x13Created with GIMP\xff\xe2\x02\xb0ICC_PROFILE\x00\x01\x01\x00\x00\x02\xa0lcms\x040\x00\x00mntrRGB XYZ \x07\xe5\x00\x0c\x00\x08\x00\x0f\x00\x16\x00(acspAPPL\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xf6\xd6\x00\x01\x00\x00\x00\x00\xd3-lcms\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\rdesc\x00\x00\x01 \x00\x00\x00@cprt\x00\x00\x01`\x00\x00\x006wtpt\x00\x00\x01\x98\x00\x00\x00\x14chad\x00\x00\x01\xac\x00\x00\x00,rXYZ\x00\x00\x01\xd8\x00\x00\x00\x14bXYZ\x00\x00\x01\xec\x00\x00\x00\x14gXYZ\x00\x00\x02\x00\x00\x00\x00\x14rTRC\x00\x00\x02\x14\x00\x00\x00 gTRC\x00\x00\x02\x14\x00\x00\x00 bTRC\x00\x00\x02\x14\x00\x00\x00 chrm\x00\x00\x024\x00\x00\x00$dmnd\x00\x00\x02X\x00\x00\x00$dmdd\x00\x00\x02|\x00\x00\x00$mluc\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x0cenUS\x00\x00\x00$\x00\x00\x00\x1c\x00G\x00I\x00M\x00P\x00 \x00b\x00u\x00i\x00l\x00t\x00-\x00i\x00n\x00 \x00s\x00R\x00G\x00Bmluc\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x0cenUS\x00\x00\x00\x1a\x00\x00\x00\x1c\x00P\x00u\x00b\x00l\x00i\x00c\x00 \x00D\x00o\x00m\x00a\x00i\x00n\x00\x00XYZ \x00\x00\x00\x00\x00\x00\xf6\xd6\x00\x01\x00\x00\x00\x00\xd3-sf32\x00\x00\x00\x00\x00\x01\x0cB\x00\x00\x05\xde\xff\xff\xf3%\x00\x00\x07\x93\x00\x00\xfd\x90\xff\xff\xfb\xa1\xff\xff\xfd\xa2\x00\x00\x03\xdc\x00\x00\xc0nXYZ \x00\x00\x00\x00\x00\x00o\xa0\x00\x008\xf5\x00\x00\x03\x90XYZ \x00\x00\x00\x00\x00\x00$\x9f\x00\x00\x0f\x84\x00\x00\xb6\xc4XYZ \x00\x00\x00\x00\x00\x00b\x97\x00\x00\xb7\x87\x00\x00\x18\xd9para\x00\x00\x00\x00\x00\x03\x00\x00\x00\x02ff\x00\x00\xf2\xa7\x00\x00\rY\x00\x00\x13\xd0\x00\x00\n[chrm\x00\x00\x00\x00\x00\x03\x00\x00\x00\x00\xa3\xd7\x00\x00T|\x00\x00L\xcd\x00\x00\x99\x9a\x00\x00&g\x00\x00\x0f\\mluc\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x0cenUS\x00\x00\x00\x08\x00\x00\x00\x1c\x00G\x00I\x00M\x00Pmluc\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x0cenUS\x00\x00\x00\x08\x00\x00\x00\x1c\x00s\x00R\x00G\x00B\xff\xdb\x00C\x00\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\xff\xdb\x00C\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\xff\xc2\x00\x11\x08\x00\x01\x00\x01\x03\x01\x11\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x14\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\t\xff\xc4\x00\x14\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x0c\x03\x01\x00\x02\x10\x03\x10\x00\x00\x01\x7f\x0f\xff\xc4\x00\x14\x10\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x01\x00\x01\x05\x02\x7f\xff\xc4\x00\x14\x11\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x03\x01\x01?\x01\x7f\xff\xc4\x00\x14\x11\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x02\x01\x01?\x01\x7f\xff\xc4\x00\x14\x10\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x01\x00\x06?\x02\x7f\xff\xc4\x00\x14\x10\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x01\x00\x01?!\x7f\xff\xda\x00\x0c\x03\x01\x00\x02\x00\x03\x00\x00\x00\x10\x1f\xff\xc4\x00\x14\x11\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x03\x01\x01?\x10\x7f\xff\xc4\x00\x14\x11\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x02\x01\x01?\x10\x7f\xff\xc4\x00\x14\x10\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x08\x01\x01\x00\x01?\x10\x7f\xff\xd9"

@@ -2,20 +2,20 @@
 {% import 'fomanticui.html' as sui %}
 
 {% block content %}
-<div class="loginform">
-    <h3 class="ui top attached header">
-        {% trans %}View a authorization{% endtrans %}
-    </h3>
+    <div class="loginform">
+        <h3 class="ui top attached header">
+            {% trans %}View a authorization{% endtrans %}
+        </h3>
 
-    <div class="ui attached clearing segment">
-        <ul>
-        {% for attr in authorization.may %}
-            <li>{{ attr }}: {{ authorization[attr] }}</li>
-        {% endfor %}
-        {% for attr in authorization.must %}
-            <li>{{ attr }}: {{ authorization[attr] }}</li>
-        {% endfor %}
-        </ul>
+        <div class="ui attached clearing segment">
+            <ul>
+                {% for attr in authorization.may %}
+                    <li>{{ attr }}: {{ authorization[attr] }}</li>
+                {% endfor %}
+                {% for attr in authorization.must %}
+                    <li>{{ attr }}: {{ authorization[attr] }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-</div>
 {% endblock %}

@@ -1,0 +1,54 @@
+{% macro user_list(watcher, users) %}
+    <table class="ui table">
+        <thead>
+            {% if watcher.can_read("jpegPhoto") %}
+                <th></th>
+            {% endif %}
+            {% if watcher.can_read("uid") %}
+                <th>{% trans %}Login{% endtrans %}</th>
+            {% endif %}
+            {% if watcher.can_read("sn") or watcher.can_read("givenName") %}
+                <th>{% trans %}Name{% endtrans %}</th>
+            {% endif %}
+            {% if watcher.can_read("mail") %}
+                <th>{% trans %}Email{% endtrans %}</th>
+            {% endif %}
+            {% if watcher.can_manage_groups %}
+                <th>{% trans %}Groups{% endtrans %}</th>
+            {% endif %}
+        </thead>
+        {% for user in users %}
+            <tr>
+                {% if watcher.can_read("jpegPhoto") %}
+                    <td>
+                        <a href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
+                            {% if user.jpegPhoto and user.jpegPhoto[0] %}
+                                <img class="ui avatar image" src="{{ url_for("account.photo", uid=user.uid[0], field="jpegPhoto") }}" alt="User photo">
+                            {% else %}
+                                <i class="user circle big black icon"></i>
+                            {% endif %}
+                        </a>
+                    </td>
+                {% endif %}
+                {% if watcher.can_read("uid") %}
+                    <td><a href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">{{ user.uid[0] }}</a></td>
+                {% endif %}
+                {% if watcher.can_read("sn") or watcher.can_read("givenName") %}
+                    <td>{{ user.name }}</td>
+                {% endif %}
+                {% if watcher.can_read("mail") %}
+                    <td><a href="mailto:{{ user.mail[0] }}">{{ user.mail[0] }}</a></td>
+                {% endif %}
+                {% if watcher.can_manage_groups %}
+                    <td>
+                        {% for group in user.groups %}
+                            <a class="ui label" href="{{ url_for('groups.group', groupname=group.name) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
+                                {{ group.name }}
+                            </a>
+                        {% endfor %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}

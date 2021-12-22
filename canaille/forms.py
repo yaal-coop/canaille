@@ -1,10 +1,12 @@
-import wtforms
 import wtforms.form
 from flask import current_app
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
-from .models import User, Group
+from flask_wtf.file import FileAllowed
+from flask_wtf.file import FileField
+
+from .models import Group
+from .models import User
 
 
 def unique_login(form, field):
@@ -21,10 +23,26 @@ def unique_email(form, field):
         )
 
 
+def unique_group(form, field):
+    if Group.get(field.data):
+        raise wtforms.ValidationError(
+            _("The group '{group}' already exists").format(group=field.data)
+        )
+
+
+def existing_login(form, field):
+    if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
+        field.data
+    ):
+        raise wtforms.ValidationError(
+            _("The login '{login}' does not exist").format(login=field.data)
+        )
+
+
 class LoginForm(FlaskForm):
     login = wtforms.StringField(
         _("Login"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",
@@ -32,14 +50,6 @@ class LoginForm(FlaskForm):
             "inputmode": "email",
         },
     )
-
-    def validate_login(self, field):
-        if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
-            field.data
-        ):
-            raise wtforms.ValidationError(
-                _("The login '{login}' does not exist").format(login=field.data)
-            )
 
 
 class PasswordForm(FlaskForm):
@@ -56,21 +66,13 @@ class FullLoginForm(LoginForm, PasswordForm):
 class ForgottenPasswordForm(FlaskForm):
     login = wtforms.StringField(
         _("Login"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
     )
-
-    def validate_login(self, field):
-        if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
-            field.data
-        ):
-            raise wtforms.ValidationError(
-                _("The login '{login}' does not exist").format(login=field.data)
-            )
 
 
 class PasswordResetForm(FlaskForm):
@@ -113,6 +115,9 @@ PROFILE_FORM_FIELDS = dict(
     mail=wtforms.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
+        description=_(
+            "This email will be used as a recovery address to reset the password if needed"
+        ),
         render_kw={
             "placeholder": _("jane@doe.com"),
             "spellcheck": "false",
@@ -122,7 +127,12 @@ PROFILE_FORM_FIELDS = dict(
     telephoneNumber=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     ),
-    jpegPhoto=FileField(_("Photo"), validators=[FileRequired()]),
+    jpegPhoto=FileField(
+        _("Photo"),
+        validators=[FileAllowed(["jpg", "jpeg"])],
+        render_kw={"accept": "image/jpg, image/jpeg"},
+    ),
+    jpegPhoto_delete=wtforms.BooleanField(_("Delete the photo")),
     password1=wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
@@ -141,12 +151,21 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("1234"),
         },
     ),
+    labeledURI=wtforms.URLField(
+        _("Website"),
+        render_kw={
+            "placeholder": _("https://mywebsite.tld"),
+        },
+    ),
 )
 
 
 def profile_form(write_field_names, readonly_field_names):
     if "userPassword" in write_field_names:
         write_field_names |= {"password1", "password2"}
+
+    if "jpegPhoto" in write_field_names:
+        write_field_names |= {"jpegPhoto_delete"}
 
     fields = {
         name: PROFILE_FORM_FIELDS.get(name)
@@ -161,16 +180,13 @@ def profile_form(write_field_names, readonly_field_names):
         fields["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[(group[1], group[0]) for group in Group.available_groups()],
-            render_kw={},
+            render_kw={"placeholder": _("users, admins ...")},
         )
 
     form = wtforms.form.BaseForm(fields)
     for field in form:
         if field.name in readonly_field_names - write_field_names:
-            if field.name == "groups":
-                field.render_kw["disabled"] = "true"
-            else:
-                field.render_kw["readonly"] = "true"
+            field.render_kw["readonly"] = "true"
 
     return form
 
@@ -183,12 +199,10 @@ class GroupForm(FlaskForm):
             "placeholder": _("group"),
         },
     )
-
-    def validate_name(self, field):
-        if Group.get(field.data):
-            raise wtforms.ValidationError(
-                _("The group '{group}' already exists").format(group=field.data)
-            )
+    description = wtforms.StringField(
+        _("Description"),
+        validators=[wtforms.validators.Optional()],
+    )
 
 
 class InvitationForm(FlaskForm):

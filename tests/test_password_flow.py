@@ -1,5 +1,6 @@
-from . import client_credentials
 from canaille.models import Token
+
+from . import client_credentials
 
 
 def test_password_flow_basic(testclient, slapd_connection, user, client):

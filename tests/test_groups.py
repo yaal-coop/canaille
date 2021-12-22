@@ -1,4 +1,5 @@
-from canaille.models import Group, User
+from canaille.models import Group
+from canaille.models import User
 
 
 def test_no_group(app, slapd_connection):
@@ -8,8 +9,8 @@ def test_no_group(app, slapd_connection):
 
 def test_set_groups(app, slapd_connection, user, foo_group, bar_group):
     with app.app_context():
-        Group.attr_type_by_name(conn=slapd_connection)
-        User.attr_type_by_name(conn=slapd_connection)
+        Group.ldap_object_attributes(conn=slapd_connection)
+        User.ldap_object_attributes(conn=slapd_connection)
 
         user = User.get(dn=user.dn, conn=slapd_connection)
         user.load_groups(conn=slapd_connection)
@@ -49,6 +50,7 @@ def test_moderator_can_create_edit_and_delete_group(
     # Fill the form for a new group
     res = testclient.get("/groups/add", status=200)
     res.form["name"] = "bar"
+    res.form["description"] = "yolo"
 
     # Group has been created
     res = res.form.submit(status=302).follow(status=200)
@@ -56,6 +58,7 @@ def test_moderator_can_create_edit_and_delete_group(
     with testclient.app.app_context():
         bar_group = Group.get("bar", conn=slapd_connection)
         assert bar_group.name == "bar"
+        assert bar_group.description == ["yolo"]
         assert [
             member.dn for member in bar_group.get_members(conn=slapd_connection)
         ] == [
@@ -66,12 +69,14 @@ def test_moderator_can_create_edit_and_delete_group(
     # Group name can not be edited
     res = testclient.get("/groups/bar", status=200)
     res.form["name"] = "bar2"
+    res.form["description"] = ["yolo2"]
 
     res = res.form.submit(name="action", value="edit", status=200)
 
     with testclient.app.app_context():
         bar_group = Group.get("bar", conn=slapd_connection)
         assert bar_group.name == "bar"
+        assert bar_group.description == ["yolo2"]
         assert Group.get("bar2", conn=slapd_connection) is None
         members = bar_group.get_members(conn=slapd_connection)
         for member in members:

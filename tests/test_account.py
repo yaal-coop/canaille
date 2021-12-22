@@ -1,3 +1,4 @@
+from canaille.apputils import login_placeholder
 from canaille.models import User
 
 
@@ -64,7 +65,7 @@ def test_signin_with_alternate_attribute(testclient, slapd_connection, user):
 
 
 def test_user_without_password_first_login(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Temp User",
@@ -83,7 +84,7 @@ def test_user_without_password_first_login(testclient, slapd_connection):
 
 
 def test_user_deleted_in_session(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jake Doe",
@@ -144,7 +145,7 @@ def test_wrong_login(testclient, slapd_connection, user):
 
 
 def test_admin_self_deletion(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     admin = User(
         objectClass=["inetOrgPerson"],
         cn="Temp admin",
@@ -172,7 +173,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
 
 
 def test_user_self_deletion(testclient, slapd_connection):
-    User.ocs_by_name(slapd_connection)
+    User.ldap_object_classes(slapd_connection)
     user = User(
         objectClass=["inetOrgPerson"],
         cn="Temp user",
@@ -205,3 +206,21 @@ def test_user_self_deletion(testclient, slapd_connection):
         assert not sess.get("user_dn")
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+
+
+def test_login_placeholder(testclient):
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(uid={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe"
+
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(cn={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "John Doe"
+
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(mail={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "john@doe.com"
+
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(|(uid={login})(email={login}))"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe or john@doe.com"

@@ -1,34 +1,39 @@
+import io
+
 import pkg_resources
 import wtforms
-
-from flask import (
-    Blueprint,
-    request,
-    flash,
-    url_for,
-    current_app,
-    abort,
-    redirect,
-    session,
-)
+from flask import abort
+from flask import Blueprint
+from flask import current_app
+from flask import flash
+from flask import redirect
+from flask import request
+from flask import send_file
+from flask import session
+from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
-from werkzeug.datastructures import CombinedMultiDict, FileStorage
-from .apputils import b64_to_obj, profile_hash, obj_to_b64
-from .forms import (
-    InvitationForm,
-    LoginForm,
-    PasswordForm,
-    PasswordResetForm,
-    ForgottenPasswordForm,
-    profile_form,
-)
-from .flaskutils import current_user, user_needed, permissions_needed
-from .mails import (
-    send_password_initialization_mail,
-    send_invitation_mail,
-    send_password_reset_mail,
-)
+from werkzeug.datastructures import CombinedMultiDict
+from werkzeug.datastructures import FileStorage
+
+from .apputils import b64_to_obj
+from .apputils import default_fields
+from .apputils import login_placeholder
+from .apputils import obj_to_b64
+from .apputils import profile_hash
+from .flaskutils import current_user
+from .flaskutils import permissions_needed
+from .flaskutils import smtp_needed
+from .flaskutils import user_needed
+from .forms import ForgottenPasswordForm
+from .forms import InvitationForm
+from .forms import LoginForm
+from .forms import PasswordForm
+from .forms import PasswordResetForm
+from .forms import profile_form
+from .mails import send_invitation_mail
+from .mails import send_password_initialization_mail
+from .mails import send_password_reset_mail
 from .models import User
 
 
@@ -54,9 +59,12 @@ def about():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     if current_user():
-        return redirect(url_for("account.profile_edition", username=current_user().uid[0]))
+        return redirect(
+            url_for("account.profile_edition", username=current_user().uid[0])
+        )
 
     form = LoginForm(request.form or None)
+    form["login"].render_kw["placeholder"] = login_placeholder()
 
     if request.form:
         user = User.get(form.login.data)
@@ -145,18 +153,25 @@ def firstlogin(uid):
 @bp.route("/users")
 @permissions_needed("manage_users")
 def users(user):
-    users = User.filter(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+    users = User.filter(
+        objectClass=current_app.config["LDAP"].get(
+            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
+        )
+    )
     return render_template("users.html", users=users, menuitem="users")
 
 
 @bp.route("/invite", methods=["GET", "POST"])
+@smtp_needed()
 @permissions_needed("manage_users")
 def user_invitation(user):
     form = InvitationForm(request.form or None)
 
-    success = False
+    mail_sent = None
     registration_url = None
+    form_validated = False
     if request.form and form.validate():
+        form_validated = True
         registration_url = url_for(
             "account.registration",
             data=obj_to_b64([form.uid.data, form.mail.data, form.groups.data]),
@@ -164,15 +179,15 @@ def user_invitation(user):
             _external=True,
         )
 
-        success = send_invitation_mail(form.mail.data, registration_url)
-        if not success:
-            flash(_("An error happened whilen sending the invitation link."), "error")
+        if request.form["action"] == "send":
+            mail_sent = send_invitation_mail(form.mail.data, registration_url)
 
     return render_template(
         "invite.html",
         form=form,
         menuitems="users",
-        success=success,
+        form_validated=form_validated,
+        mail_sent=mail_sent,
         registration_url=registration_url,
     )
 
@@ -182,6 +197,10 @@ def user_invitation(user):
 def profile_creation(user):
     form = profile_form(user.write, user.read)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
+
+    for field in form:
+        if field.render_kw and "readonly" in field.render_kw:
+            del field.render_kw["readonly"]
 
     if request.form:
         if not form.validate():
@@ -238,8 +257,7 @@ def registration(data, hash):
         "groups": data[2],
     }
 
-    readable_fields = set(current_app.config["ACL"]["DEFAULT"]["READ"])
-    writable_fields = set(current_app.config["ACL"]["DEFAULT"]["WRITE"])
+    readable_fields, writable_fields = default_fields()
 
     form = profile_form(writable_fields, readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
@@ -275,7 +293,11 @@ def registration(data, hash):
 
 
 def profile_create(current_app, form):
-    user = User(objectClass=current_app.config["LDAP"]["USER_CLASS"])
+    user = User(
+        objectClass=current_app.config["LDAP"].get(
+            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
+        )
+    )
     for attribute in form:
         if attribute.name in user.may + user.must:
             if isinstance(attribute.data, FileStorage):
@@ -283,10 +305,13 @@ def profile_create(current_app, form):
             else:
                 data = attribute.data
 
-            if user.attr_type_by_name()[attribute.name].single_value:
+            if user.ldap_object_attributes()[attribute.name].single_value:
                 user[attribute.name] = data
             else:
                 user[attribute.name] = [data]
+
+        if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
+            user["jpegPhoto"] = None
 
     user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
     user.save()
@@ -377,12 +402,15 @@ def profile_edit(editor, username):
                     else:
                         data = attribute.data
 
-                    if user.attr_type_by_name()[attribute.name].single_value:
+                    if user.ldap_object_attributes()[attribute.name].single_value:
                         user[attribute.name] = data
                     else:
                         user[attribute.name] = [data]
                 elif attribute.name == "groups" and "groups" in editor.write:
                     user.set_groups(attribute.data)
+
+            if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
+                user["jpegPhoto"] = None
 
             if (
                 "password1" not in request.form
@@ -426,6 +454,7 @@ def impersonate(user, username):
 
 
 @bp.route("/reset", methods=["GET", "POST"])
+@smtp_needed()
 def forgotten():
     form = ForgottenPasswordForm(request.form)
     if not request.form:
@@ -483,3 +512,14 @@ def reset(uid, hash):
         return redirect(url_for("account.profile_edition", username=uid))
 
     return render_template("reset-password.html", form=form, uid=uid, hash=hash)
+
+
+@bp.route("/profile/<uid>/<field>")
+def photo(uid, field):
+    if field.lower() != "jpegphoto":
+        abort(404)
+
+    user = User.get(uid)
+    photo = getattr(user, field)[0]
+    stream = io.BytesIO(photo)
+    return send_file(stream, mimetype="image/jpeg")

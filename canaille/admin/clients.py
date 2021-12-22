@@ -1,12 +1,18 @@
 import datetime
+
 import wtforms
-from flask import Blueprint, request, flash, redirect, url_for, abort
+from canaille.flaskutils import permissions_needed
+from canaille.models import Client
+from flask import abort
+from flask import Blueprint
+from flask import flash
+from flask import redirect
+from flask import request
+from flask import url_for
+from flask_babel import lazy_gettext as _
 from flask_themer import render_template
 from flask_wtf import FlaskForm
-from flask_babel import lazy_gettext as _
 from werkzeug.security import gen_salt
-from canaille.models import Client
-from canaille.flaskutils import permissions_needed
 
 
 bp = Blueprint("admin_clients", __name__)
@@ -142,7 +148,7 @@ def add(user):
         return render_template("admin/client_add.html", form=form, menuitem="admin")
 
     client_id = gen_salt(24)
-    client_id_issued_at = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
+    client_id_issued_at = datetime.datetime.now()
     client = Client(
         oauthClientID=client_id,
         oauthIssueDate=client_id_issued_at,
@@ -161,7 +167,7 @@ def add(user):
         oauthSoftwareVersion=form["oauthSoftwareVersion"].data,
         oauthJWK=form["oauthJWK"].data,
         oauthJWKURI=form["oauthJWKURI"].data,
-        oauthPreconsent="TRUE" if form["oauthPreconsent"].data else "FALSE",
+        oauthPreconsent=form["oauthPreconsent"].data,
         oauthClientSecret=""
         if form["oauthTokenEndpointAuthMethod"].data == "none"
         else gen_salt(48),
@@ -225,7 +231,7 @@ def client_edit(client_id):
             oauthJWK=form["oauthJWK"].data,
             oauthJWKURI=form["oauthJWKURI"].data,
             oauthAudience=form["oauthAudience"].data,
-            oauthPreconsent="TRUE" if form["oauthPreconsent"].data else "FALSE",
+            oauthPreconsent=form["oauthPreconsent"].data,
         )
         client.save()
         flash(

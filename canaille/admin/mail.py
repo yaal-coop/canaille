@@ -1,9 +1,11 @@
-from flask import Blueprint, current_app, url_for
-from flask_themer import render_template
-from flask_babel import gettext as _
+from canaille.apputils import obj_to_b64
 from canaille.flaskutils import permissions_needed
 from canaille.mails import profile_hash
-from canaille.apputils import obj_to_b64
+from flask import Blueprint
+from flask import current_app
+from flask import url_for
+from flask_babel import gettext as _
+from flask_themer import render_template
 
 
 bp = Blueprint("admin_mails", __name__)

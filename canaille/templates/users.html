@@ -1,4 +1,5 @@
 {% extends theme('base.html') %}
+{% import 'userlist.html' as user_list %}
 
 {% block style %}
     <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
@@ -12,34 +13,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="ui segment">
-    <div class="ui stackable buttons">
-        <a class="ui primary button" href="{{ url_for('account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
-        <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
+    <div class="ui segment">
+        <div class="ui stackable buttons">
+            <a class="ui primary button" href="{{ url_for('account.profile_creation') }}">{% trans %}Add a user{% endtrans %}</a>
+            {% if has_smtp %}
+                <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
+            {% endif %}
+        </div>
     </div>
-</div>
 
-<table class="ui table">
-    <thead>
-        <th>{% trans %}Login{% endtrans %}</th>
-        <th>{% trans %}Name{% endtrans %}</th>
-        <th>{% trans %}Email{% endtrans %}</th>
-        {% if user.can_manage_groups %}<th>{% trans %}Groups{% endtrans %}</th>{% endif %}
-    </thead>
-    {% for user_account in users %}
-    <tr>
-        <td><a href="{{ url_for('account.profile_edition', username=user_account.uid[0]) }}">{{ user_account.uid[0] }}</a></td>
-        <td>{{ user_account.name }}</td>
-        <td><a href="mailto:{{ user_account.mail[0] }}">{{ user_account.mail[0] }}</a></td>
-        {% if user.can_manage_groups %}
-            <td>
-                {% for group in user_account.groups %}
-                    <a class="ui label" href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a>
-                {% endfor %}
-            </td>
-        {% endif %}
-    </tr>
-    {% endfor %}
-</table>
-
+    {{ user_list.user_list(user, users) }}
 {% endblock %}

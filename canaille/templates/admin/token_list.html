@@ -13,21 +13,21 @@
 
 {% block content %}
 
-<table class="ui table">
-    <thead>
-        <th>{% trans %}Token{% endtrans %}</th>
-        <th>{% trans %}Client{% endtrans %}</th>
-        <th>{% trans %}Subject{% endtrans %}</th>
-        <th>{% trans %}Created{% endtrans %}</th>
-    </thead>
-    {% for token in tokens %}
-    <tr>
-        <td><a href="{{ url_for('admin_tokens.view', token_id=token.oauthAccessToken) }}">{{ token.oauthAccessToken }}</a></td>
-        <td><a href="{{ url_for('admin_clients.edit', client_id=token.oauthClientID) }}">{{ token.oauthClientID }}</a></td>
-        <td>{{ token.oauthSubject }}</td>
-        <td>{{ token.issue_date }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <table class="ui table">
+        <thead>
+            <th>{% trans %}Token{% endtrans %}</th>
+            <th>{% trans %}Client{% endtrans %}</th>
+            <th>{% trans %}Subject{% endtrans %}</th>
+            <th>{% trans %}Created{% endtrans %}</th>
+        </thead>
+        {% for token in tokens %}
+            <tr>
+                <td><a href="{{ url_for('admin_tokens.view', token_id=token.oauthAccessToken) }}">{{ token.oauthAccessToken }}</a></td>
+                <td><a href="{{ url_for('admin_clients.edit', client_id=token.oauthClientID) }}">{{ token.oauthClientID }}</a></td>
+                <td>{{ token.oauthSubject }}</td>
+                <td>{{ token.issue_date }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
 {% endblock %}

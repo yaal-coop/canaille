@@ -1,9 +1,14 @@
-from . import client_credentials
+from urllib.parse import parse_qs
+from urllib.parse import urlsplit
+
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
-from urllib.parse import urlsplit, parse_qs
-from canaille.models import AuthorizationCode, Token, Consent
+from canaille.models import AuthorizationCode
+from canaille.models import Consent
+from canaille.models import Token
 from werkzeug.security import gen_salt
+
+from . import client_credentials
 
 
 def test_authorization_code_flow(
@@ -67,7 +72,7 @@ def test_authorization_code_flow(
 def test_authorization_code_flow_preconsented(
     testclient, slapd_connection, logged_user, client, keypair, other_client
 ):
-    client.oauthPreconsent = "TRUE"
+    client.oauthPreconsent = True
     client.save(conn=slapd_connection)
 
     res = testclient.get(

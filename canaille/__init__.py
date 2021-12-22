@@ -1,31 +1,36 @@
 import datetime
-import ldap
 import logging
 import os
-import toml
+from logging.config import dictConfig
 
 import canaille.account
-import canaille.admin
 import canaille.admin.authorizations
 import canaille.admin.clients
 import canaille.admin.mail
 import canaille.admin.tokens
-import canaille.consents
 import canaille.configuration
+import canaille.consents
+import canaille.groups
 import canaille.installation
 import canaille.oauth
-import canaille.groups
 import canaille.well_known
-
-from flask import Flask, g, request, session
-from flask_babel import Babel, gettext as _
-from flask_themer import Themer, render_template, FileSystemThemeLoader
-from logging.config import dictConfig
+import ldap
+import toml
+from flask import Flask
+from flask import g
+from flask import request
+from flask import session
+from flask_babel import Babel
+from flask_babel import gettext as _
+from flask_themer import FileSystemThemeLoader
+from flask_themer import render_template
+from flask_themer import Themer
 
 from .flaskutils import current_user
 from .ldaputils import LDAPObject
+from .models import Group
+from .models import User
 from .oauth2utils import setup_oauth
-from .models import User, Group
 
 try:  # pragma: no cover
     import sentry_sdk
@@ -96,12 +101,18 @@ def setup_logging(app):
 
 def setup_ldap_models(app):
     LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
+
     user_base = app.config["LDAP"]["USER_BASE"]
     if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
         user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     User.base = user_base
+    User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
+
     group_base = app.config["LDAP"].get("GROUP_BASE")
+    if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
+        group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     Group.base = group_base
+    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBTUE", Group.DEFAULT_ID_ATTRIBUTE)
 
 
 def setup_ldap_connection(app):
@@ -157,6 +168,66 @@ def teardown_ldap_connection(app):
         g.ldap.unbind_s()
 
 
+def setup_jinja(app):
+    app.jinja_env.filters["len"] = len
+
+
+def setup_babel(app):
+    babel = Babel(app)
+
+    @babel.localeselector
+    def get_locale():
+        user = getattr(g, "user", None)
+        if user is not None:
+            return user.locale
+
+        if app.config.get("LANGUAGE"):
+            return app.config.get("LANGUAGE")
+
+        return request.accept_languages.best_match(["fr_FR", "en_US"])
+
+    @babel.timezoneselector
+    def get_timezone():
+        user = getattr(g, "user", None)
+        if user is not None:
+            return user.timezone
+
+
+def setup_themer(app):
+    additional_themes_dir = (
+        os.path.dirname(app.config["THEME"])
+        if app.config.get("THEME") and os.path.exists(app.config["THEME"])
+        else None
+    )
+    themer = Themer(
+        app,
+        loaders=[FileSystemThemeLoader(additional_themes_dir)]
+        if additional_themes_dir
+        else None,
+    )
+
+    @themer.current_theme_loader
+    def get_current_theme():
+        # if config['THEME'] may be a theme name or an absolute path
+        return app.config.get("THEME", "default").split("/")[-1]
+
+
+def setup_blueprints(app):
+    app.url_map.strict_slashes = False
+
+    app.register_blueprint(canaille.account.bp)
+    app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
+    app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
+    app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
+    app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
+    app.register_blueprint(canaille.admin.tokens.bp, url_prefix="/admin/token")
+    app.register_blueprint(
+        canaille.admin.authorizations.bp, url_prefix="/admin/authorization"
+    )
+    app.register_blueprint(canaille.admin.clients.bp, url_prefix="/admin/client")
+    app.register_blueprint(canaille.admin.mail.bp, url_prefix="/admin/mail")
+
+
 def create_app(config=None, validate=True):
     app = Flask(__name__)
     setup_config(app, config, validate)
@@ -168,56 +239,10 @@ def create_app(config=None, validate=True):
         setup_logging(app)
         setup_ldap_models(app)
         setup_oauth(app)
-
-        app.url_map.strict_slashes = False
-
-        app.register_blueprint(canaille.account.bp)
-        app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
-        app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
-        app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
-        app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
-        app.register_blueprint(canaille.admin.tokens.bp, url_prefix="/admin/token")
-        app.register_blueprint(
-            canaille.admin.authorizations.bp, url_prefix="/admin/authorization"
-        )
-        app.register_blueprint(canaille.admin.clients.bp, url_prefix="/admin/client")
-        app.register_blueprint(canaille.admin.mail.bp, url_prefix="/admin/mail")
-
-        babel = Babel(app)
-
-        additional_themes_dir = (
-            os.path.dirname(app.config["THEME"])
-            if app.config.get("THEME") and os.path.exists(app.config["THEME"])
-            else None
-        )
-        themer = Themer(
-            app,
-            loaders=[FileSystemThemeLoader(additional_themes_dir)]
-            if additional_themes_dir
-            else None,
-        )
-
-        @babel.localeselector
-        def get_locale():
-            user = getattr(g, "user", None)
-            if user is not None:
-                return user.locale
-
-            if app.config.get("LANGUAGE"):
-                return app.config.get("LANGUAGE")
-
-            return request.accept_languages.best_match(["fr_FR", "en_US"])
-
-        @babel.timezoneselector
-        def get_timezone():
-            user = getattr(g, "user", None)
-            if user is not None:
-                return user.timezone
-
-        @themer.current_theme_loader
-        def get_current_theme():
-            # if config['THEME'] may be a theme name or an absolute path
-            return app.config.get("THEME", "default").split("/")[-1]
+        setup_blueprints(app)
+        setup_jinja(app)
+        setup_babel(app)
+        setup_themer(app)
 
         @app.before_request
         def before_request():
@@ -236,9 +261,10 @@ def create_app(config=None, validate=True):
         @app.context_processor
         def global_processor():
             return {
+                "has_smtp": "SMTP" in app.config,
                 "logo_url": app.config.get("LOGO"),
                 "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
-                "website_name": app.config.get("NAME"),
+                "website_name": app.config.get("NAME", "Canaille"),
                 "user": current_user(),
                 "menu": True,
             }

@@ -1,12 +1,16 @@
-import ldap
+import os
+from contextlib import contextmanager
+
 import ldap.modlist
 import ldif
-import os
-from .models import Token, AuthorizationCode, Client, Consent
-from contextlib import contextmanager
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.backends import default_backend as crypto_default_backend
+
+from .models import AuthorizationCode
+from .models import Client
+from .models import Consent
+from .models import Token
 
 
 class InstallationException(Exception):

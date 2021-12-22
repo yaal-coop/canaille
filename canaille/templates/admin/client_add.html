@@ -2,13 +2,13 @@
 {% import 'fomanticui.html' as sui %}
 
 {% block content %}
-<div class="loginform">
-    <h3 class="ui top attached header">
-        {% trans %}Add a client{% endtrans %}
-    </h3>
+    <div class="loginform">
+        <h3 class="ui top attached header">
+            {% trans %}Add a client{% endtrans %}
+        </h3>
 
-    <div class="ui attached clearing segment">
-        {{ sui.render_form(form, _("Confirm")) }}
+        <div class="ui attached clearing segment">
+            {{ sui.render_form(form, _("Confirm")) }}
+        </div>
     </div>
-</div>
 {% endblock %}

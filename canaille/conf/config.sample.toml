@@ -5,7 +5,7 @@
 SECRET_KEY = "change me before you go in production"
 
 # Your organization name.
-NAME = "Canaille"
+# NAME = "Canaille"
 
 # The interface on which canaille will be served
 # SERVER_NAME = "auth.mydomain.tld"
@@ -33,16 +33,17 @@ OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 
-# If this option is set to true, when a user tries to sign in with
-# an invalid login, a message is shown indicating that the login does not
-# exist. If this option is set to false (the default) a message is
-# shown indicating that the password is wrong, but does not give a clue
+# If HIDE_INVALID_LOGINS is set to true, when a user tries to sign in with
+# an invalid login, a message is shown saying that the login does not
+# exist. If HIDE_INVALID_LOGINS is set to false (the default) a message is
+# shown saying that the password is wrong, but does not give a clue
 # wether the login exists or not.
 # HIDE_INVALID_LOGINS = false
 
 [LOGGING]
 # LEVEL can be one value among:
 # DEBUG, INFO, WARNING, ERROR, CRITICAL
+# Defaults to WARNING
 # LEVEL = "WARNING"
 
 # The path of the log file. If not set (the default) logs are
@@ -54,30 +55,36 @@ URI = "ldap://ldap"
 ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"
 BIND_PW = "admin"
-TIMEOUT =
+# TIMEOUT =
 
 # Where to search for users?
 USER_BASE = "ou=users,dc=mydomain,dc=tld"
 
-# Filter to match users on sign in. Supports a variable
-# {login}. For sigin against either uid or mail use:
-# USER_FILTER = "(|(uid={login})(mail={login}))"
-USER_FILTER = "(|(uid={login})(cn={login}))"
-
 # The object class to use for creating new users
-USER_CLASS = "inetOrgPerson"
+# USER_CLASS = "inetOrgPerson"
+
+# The attribute to identify an object in the User dn.
+# USER_ID_ATTRIBUTE = "cn"
+
+# Filter to match users on sign in. Supports a variable
+# {login} that can be used to compare against several fields:
+# USER_FILTER = "(|(uid={login})(mail={login}))"
 
 # Where to search for groups?
-GROUP_BASE = "ou=groups"
+GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 
 # The object class to use for creating new groups
-GROUP_CLASS = "groupOfNames"
+# GROUP_CLASS = "groupOfNames"
+
+# The attribute to identify an object in the User dn.
+# GROUP_ID_ATTRIBUTE = "cn"
 
 # The attribute to use to identify a group
-GROUP_NAME_ATTRIBUTE = "cn"
+# GROUP_NAME_ATTRIBUTE = "cn"
 
 # A filter to check if a user belongs to a group
-GROUP_USER_FILTER = "member={user.dn}"
+# A 'user' variable is available.
+# GROUP_USER_FILTER = "member={user.dn}"
 
 # You can define access controls that define what users can do on canaille
 # An access control consists in a FILTER to match users, a list of PERMISSIONS
@@ -105,9 +112,9 @@ GROUP_USER_FILTER = "member={user.dn}"
 # The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
 # object that users will be able to read and/or write.
 [ACL.DEFAULT]
-READ = ["uid", "groups"]
 PERMISSIONS = ["use_oidc"]
-WRITE = ["givenName", "sn", "userPassword", "telephoneNumber"]
+READ = ["uid", "groups"]
+WRITE = ["givenName", "sn", "userPassword", "telephoneNumber", "jpegPhoto", "mail", "labeledURI"]
 
 [ACL.ADMIN]
 FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
@@ -124,30 +131,40 @@ WRITE = ["groups"]
 # openssl genrsa -out private.pem 4096
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem
 [JWT]
+# The path to the private key.
 PRIVATE_KEY = "canaille/conf/private.pem"
+# The path to the public key.
 PUBLIC_KEY = "canaille/conf/public.pem"
-KTY = "RSA"
-ALG = "RS256"
-EXP = 3600
+# The key type parameter
+# KTY = "RSA"
+# The key algorithm
+# ALG = "RS256"
+# The time the JWT will be valid, in seconds
+# EXP = 3600
 
 [JWT.MAPPING]
 # Mapping between JWT fields and LDAP attributes from your
-# User objectClass. Default values fits inetOrgPerson.
-SUB = "uid"
-NAME = "cn"
-PHONE_NUMBER = "telephoneNumber"
-EMAIL = "mail"
-GIVEN_NAME = "givenName"
-FAMILY_NAME = "sn"
-PREFERRED_USERNAME = "displayName"
-LOCALE = "preferredLanguage"
-PICTURE = "jpegPhoto"
-ADDRESS = "postalAddress"
+# User objectClass.
+# {attribute} will be replaced by the user ldap attribute value.
+# Default values fits inetOrgPerson.
+SUB = "{{ user.uid[0] }}"
+NAME = "{{ user.cn[0] }}"
+PHONE_NUMBER = "{{ user.telephoneNumber[0] }}"
+EMAIL = "{{ user.mail[0] }}"
+GIVEN_NAME = "{{ user.givenName[0] }}"
+FAMILY_NAME = "{{ user.sn[0] }}"
+PREFERRED_USERNAME = "{{ user.displayName[0] }}"
+LOCALE = "{{ user.preferredLanguage[0] }}"
+ADDRESS = "{{ user.postalAddress[0] }}"
+PICTURE = "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}"
+WEBSITE = "{{ user.labeledURI[0] }}"
 
+# The SMTP server options. If not set, mail related features such as
+# user invitations, and password reset emails, will be disabled.
 [SMTP]
-HOST = "localhost"
-PORT = 25
-TLS = false
-LOGIN = ""
-PASSWORD = ""
+# HOST = "localhost"
+# PORT = 25
+# TLS = false
+# LOGIN = ""
+# PASSWORD = ""
 FROM_ADDR = "admin@mydomain.tld"

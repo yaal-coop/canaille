@@ -1,24 +1,35 @@
 import datetime
-from authlib.integrations.flask_oauth2 import AuthorizationServer, ResourceProtector
+
+from authlib.integrations.flask_oauth2 import AuthorizationServer
+from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
+)
+from authlib.oauth2.rfc6749.grants import ClientCredentialsGrant
+from authlib.oauth2.rfc6749.grants import ImplicitGrant
+from authlib.oauth2.rfc6749.grants import RefreshTokenGrant as _RefreshTokenGrant
+from authlib.oauth2.rfc6749.grants import (
     ResourceOwnerPasswordCredentialsGrant as _ResourceOwnerPasswordCredentialsGrant,
-    RefreshTokenGrant as _RefreshTokenGrant,
-    ImplicitGrant,
-    ClientCredentialsGrant,
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
 from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
-from authlib.oidc.core.grants import (
-    OpenIDCode as _OpenIDCode,
-    OpenIDImplicitGrant as _OpenIDImplicitGrant,
-    OpenIDHybridGrant as _OpenIDHybridGrant,
-)
 from authlib.oidc.core import UserInfo
+from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
+from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
+from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from flask import current_app
-from .models import Client, AuthorizationCode, Token, User
+
+from .models import AuthorizationCode
+from .models import Client
+from .models import Group
+from .models import Token
+from .models import User
+
+DEFAULT_JWT_KTY = "RSA"
+DEFAULT_JWT_ALG = "RS256"
+DEFAULT_JWT_EXP = 3600
 
 
 def exists_nonce(nonce, req):
@@ -27,20 +38,21 @@ def exists_nonce(nonce, req):
 
 
 def get_jwt_config(grant):
+
     with open(current_app.config["JWT"]["PRIVATE_KEY"]) as pk:
         return {
             "key": pk.read(),
-            "alg": current_app.config["JWT"]["ALG"],
+            "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
             "iss": authorization.metadata["issuer"],
-            "exp": current_app.config["JWT"]["EXP"],
+            "exp": current_app.config["JWT"].get("EXP", DEFAULT_JWT_EXP),
         }
 
 
 def generate_user_info(user, scope):
     user = User.get(dn=user)
-    fields = ["sub"]
+    claims = ["sub"]
     if "profile" in scope:
-        fields += [
+        claims += [
             "name",
             "family_name",
             "given_name",
@@ -56,26 +68,38 @@ def generate_user_info(user, scope):
             "updated_at",
         ]
     if "email" in scope:
-        fields += ["email", "email_verified"]
+        claims += ["email", "email_verified"]
     if "address" in scope:
-        fields += ["address"]
+        claims += ["address"]
     if "phone" in scope:
-        fields += ["phone_number", "phone_number_verified"]
+        claims += ["phone_number", "phone_number_verified"]
     if "groups" in scope:
-        fields += ["groups"]
+        claims += ["groups"]
+
+    data = generate_user_claims(user, claims)
+    return UserInfo(**data)
+
+
+def generate_user_claims(user, claims, jwt_mapping_config=None):
+    jwt_mapping_config = jwt_mapping_config or current_app.config["JWT"]["MAPPING"]
 
     data = {}
-    for field in fields:
-        ldap_field_match = current_app.config["JWT"]["MAPPING"].get(field.upper())
-        if ldap_field_match and ldap_field_match in user.attrs:
-            data[field] = user.__getattr__(ldap_field_match)
-            if isinstance(data[field], list):
-                data[field] = data[field][0]
-        if field == "groups":
-            group_name_attr = current_app.config["LDAP"]["GROUP_NAME_ATTRIBUTE"]
-            data[field] = [getattr(g, group_name_attr)[0] for g in user.groups]
-
-    return UserInfo(**data)
+    for claim in claims:
+        raw_claim = jwt_mapping_config.get(claim.upper())
+        if raw_claim:
+            formatted_claim = current_app.jinja_env.from_string(raw_claim).render(
+                user=user
+            )
+            if formatted_claim:
+                # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
+                # it's better to not insert a null or empty string value
+                data[claim] = formatted_claim
+        if claim == "groups":
+            group_name_attr = current_app.config["LDAP"].get(
+                "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
+            )
+            data[claim] = [getattr(g, group_name_attr)[0] for g in user.groups]
+    return data
 
 
 def save_authorization_code(code, request):
@@ -88,7 +112,7 @@ def save_authorization_code(code, request):
         oauthRedirectURI=request.redirect_uri or request.client.oauthRedirectURIs[0],
         oauthScope=request.scope,
         oauthNonce=nonce,
-        oauthAuthorizationDate=now.strftime("%Y%m%d%H%M%SZ"),
+        oauthAuthorizationDate=now,
         oauthAuthorizationLifetime=str(84000),
         oauthCodeChallenge=request.data.get("code_challenge"),
         oauthCodeChallengeMethod=request.data.get("code_challenge_method"),
@@ -153,9 +177,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return user.dn
 
     def revoke_old_credential(self, credential):
-        credential.oauthRevokationDate = datetime.datetime.now().strftime(
-            "%Y%m%d%H%M%SZ"
-        )
+        credential.oauthRevokationDate = datetime.datetime.now()
         credential.save()
 
 
@@ -201,7 +223,7 @@ def save_token(token, request):
     t = Token(
         oauthTokenType=token["token_type"],
         oauthAccessToken=token["access_token"],
-        oauthIssueDate=now.strftime("%Y%m%d%H%M%SZ"),
+        oauthIssueDate=now,
         oauthTokenLifetime=str(token["expires_in"]),
         oauthScope=token["scope"],
         oauthClient=request.client.dn,
@@ -241,7 +263,7 @@ class RevocationEndpoint(_RevocationEndpoint):
         return None
 
     def revoke_token(self, token):
-        token.oauthRevokationDate = datetime.datetime.now().strftime("%Y%m%d%H%M%SZ")
+        token.oauthRevokationDate = datetime.datetime.now()
         token.save()
 
 
