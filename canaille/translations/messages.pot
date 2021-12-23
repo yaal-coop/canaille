@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-20 16:16+0100\n"
+"POT-Creation-Date: 2021-12-23 18:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,407 +17,407 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: canaille/__init__.py:129
+#: canaille/__init__.py:134
 msgid "Could not connect to the LDAP server '{uri}'"
 msgstr ""
 
-#: canaille/__init__.py:145
+#: canaille/__init__.py:150
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 
-#: canaille/account.py:79 canaille/account.py:104 canaille/oauth.py:76
+#: canaille/account.py:77 canaille/account.py:102 canaille/oauth.py:77
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/account.py:110
+#: canaille/account.py:108
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
-#: canaille/account.py:123
+#: canaille/account.py:121
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr ""
 
-#: canaille/account.py:140
+#: canaille/account.py:138
 msgid "Could not send the password initialization link."
 msgstr ""
 
-#: canaille/account.py:145
+#: canaille/account.py:143
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:151 canaille/account.py:350
+#: canaille/account.py:149 canaille/account.py:353
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:210 canaille/account.py:281
+#: canaille/account.py:208 canaille/account.py:279
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/account.py:231 canaille/account.py:252
+#: canaille/account.py:229 canaille/account.py:250
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:238
+#: canaille/account.py:236
 msgid "Your account has already been created."
 msgstr ""
 
-#: canaille/account.py:245
+#: canaille/account.py:243
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/account.py:286
+#: canaille/account.py:284
 msgid "You account has been created successfuly."
 msgstr ""
 
-#: canaille/account.py:323
+#: canaille/account.py:326
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:344
+#: canaille/account.py:347
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:358
+#: canaille/account.py:361
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:364
+#: canaille/account.py:367
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/account.py:395
+#: canaille/account.py:398
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:423
+#: canaille/account.py:426
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:443
+#: canaille/account.py:446
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:467
+#: canaille/account.py:470
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:474 canaille/account.py:485
+#: canaille/account.py:477 canaille/account.py:488
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:491
+#: canaille/account.py:494
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:505
+#: canaille/account.py:508
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:514
+#: canaille/account.py:517
 msgid "Your password has been updated successfuly"
 msgstr ""
 
-#: canaille/apputils.py:39
+#: canaille/apputils.py:41
 msgid "John Doe"
 msgstr ""
 
-#: canaille/apputils.py:42 canaille/forms.py:93 canaille/forms.py:207
+#: canaille/apputils.py:44 canaille/forms.py:95 canaille/forms.py:211
 msgid "jdoe"
 msgstr ""
 
-#: canaille/apputils.py:45
+#: canaille/apputils.py:47
 msgid "john@doe.com"
 msgstr ""
 
-#: canaille/apputils.py:47
+#: canaille/apputils.py:49
 msgid " or "
 msgstr ""
 
-#: canaille/consents.py:29
+#: canaille/consents.py:33
 msgid "Could not delete this access"
 msgstr ""
 
-#: canaille/consents.py:33
+#: canaille/consents.py:37
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/flaskutils.py:69
+#: canaille/flaskutils.py:73
 msgid "No SMTP server has been configured"
 msgstr ""
 
-#: canaille/forms.py:13
+#: canaille/forms.py:15
 msgid "The login '{login}' already exists"
 msgstr ""
 
-#: canaille/forms.py:20
+#: canaille/forms.py:22
 msgid "The email '{email}' already exists"
 msgstr ""
 
-#: canaille/forms.py:27
+#: canaille/forms.py:29
 msgid "The group '{group}' already exists"
 msgstr ""
 
-#: canaille/forms.py:36
+#: canaille/forms.py:38
 msgid "The login '{login}' does not exist"
 msgstr ""
 
-#: canaille/forms.py:42 canaille/forms.py:66 canaille/templates/userlist.html:8
+#: canaille/forms.py:44 canaille/forms.py:68 canaille/templates/userlist.html:8
 msgid "Login"
 msgstr ""
 
-#: canaille/forms.py:45 canaille/forms.py:69 canaille/forms.py:118
-#: canaille/forms.py:218
+#: canaille/forms.py:47 canaille/forms.py:71 canaille/forms.py:122
+#: canaille/forms.py:222
 msgid "jane@doe.com"
 msgstr ""
 
-#: canaille/forms.py:55 canaille/forms.py:78 canaille/forms.py:133
+#: canaille/forms.py:57 canaille/forms.py:80 canaille/forms.py:137
 msgid "Password"
 msgstr ""
 
-#: canaille/forms.py:81 canaille/forms.py:137
+#: canaille/forms.py:83 canaille/forms.py:141
 msgid "Password confirmation"
 msgstr ""
 
-#: canaille/forms.py:84 canaille/forms.py:140
+#: canaille/forms.py:86 canaille/forms.py:144
 msgid "Password and confirmation do not match."
 msgstr ""
 
-#: canaille/forms.py:92 canaille/forms.py:206
+#: canaille/forms.py:94 canaille/forms.py:210
 msgid "Username"
 msgstr ""
 
-#: canaille/admin/clients.py:28 canaille/forms.py:96 canaille/forms.py:192
+#: canaille/admin/clients.py:34 canaille/forms.py:98 canaille/forms.py:196
 #: canaille/templates/admin/client_list.html:23
 #: canaille/templates/groups.html:17 canaille/templates/userlist.html:11
 msgid "Name"
 msgstr ""
 
-#: canaille/forms.py:98
+#: canaille/forms.py:100
 msgid "Given name"
 msgstr ""
 
-#: canaille/forms.py:100
+#: canaille/forms.py:102
 msgid "John"
 msgstr ""
 
-#: canaille/forms.py:106
+#: canaille/forms.py:108
 msgid "Family Name"
 msgstr ""
 
-#: canaille/forms.py:108
+#: canaille/forms.py:110
 msgid "Doe"
 msgstr ""
 
-#: canaille/forms.py:114 canaille/forms.py:211
+#: canaille/forms.py:116 canaille/forms.py:215
 msgid "Email address"
 msgstr ""
 
-#: canaille/forms.py:116
+#: canaille/forms.py:118
 msgid ""
 "This email will be used as a recovery address to reset the password if "
 "needed"
 msgstr ""
 
-#: canaille/forms.py:124
+#: canaille/forms.py:128
 msgid "Phone number"
 msgstr ""
 
-#: canaille/forms.py:124
+#: canaille/forms.py:128
 msgid "555-000-555"
 msgstr ""
 
-#: canaille/forms.py:127
+#: canaille/forms.py:131
 msgid "Photo"
 msgstr ""
 
-#: canaille/forms.py:131 canaille/templates/profile.html:95
+#: canaille/forms.py:135 canaille/templates/profile.html:95
 msgid "Delete the photo"
 msgstr ""
 
-#: canaille/forms.py:145
+#: canaille/forms.py:149
 msgid "Number"
 msgstr ""
 
-#: canaille/forms.py:147
+#: canaille/forms.py:151
 msgid "1234"
 msgstr ""
 
-#: canaille/forms.py:151
+#: canaille/forms.py:155
 msgid "Website"
 msgstr ""
 
-#: canaille/forms.py:153
+#: canaille/forms.py:157
 msgid "https://mywebsite.tld"
 msgstr ""
 
-#: canaille/forms.py:177 canaille/forms.py:224
+#: canaille/forms.py:181 canaille/forms.py:228
 #: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
 #: canaille/themes/default/base.html:59
 msgid "Groups"
 msgstr ""
 
-#: canaille/forms.py:179
+#: canaille/forms.py:183
 msgid "users, admins ..."
 msgstr ""
 
-#: canaille/forms.py:195
+#: canaille/forms.py:199
 msgid "group"
 msgstr ""
 
-#: canaille/forms.py:199 canaille/templates/groups.html:18
+#: canaille/forms.py:203 canaille/templates/groups.html:18
 msgid "Description"
 msgstr ""
 
-#: canaille/groups.py:45
+#: canaille/groups.py:44
 msgid "Group creation failed."
 msgstr ""
 
-#: canaille/groups.py:57
+#: canaille/groups.py:56
 #, python-format
 msgid "The group %(group)s has been sucessfully created"
 msgstr ""
 
-#: canaille/groups.py:94
+#: canaille/groups.py:93
 msgid "Group edition failed."
 msgstr ""
 
-#: canaille/groups.py:103
+#: canaille/groups.py:102
 #, python-format
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr ""
 
-#: canaille/admin/mail.py:77 canaille/mails.py:21
+#: canaille/admin/mail.py:79 canaille/mails.py:25
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/admin/mail.py:35 canaille/mails.py:61
+#: canaille/admin/mail.py:37 canaille/mails.py:65
 msgid "Password initialization on {website_name}"
 msgstr ""
 
-#: canaille/mails.py:91
+#: canaille/mails.py:95
 msgid "You have been invited to create an account on {website_name}"
 msgstr ""
 
-#: canaille/oauth.py:36
+#: canaille/oauth.py:37
 msgid "Personnal information about yourself, such as your name or your gender."
 msgstr ""
 
-#: canaille/oauth.py:38
+#: canaille/oauth.py:39
 msgid "Your email address."
 msgstr ""
 
-#: canaille/oauth.py:39
+#: canaille/oauth.py:40
 msgid "Your postal address."
 msgstr ""
 
-#: canaille/oauth.py:40
+#: canaille/oauth.py:41
 msgid "Your phone number."
 msgstr ""
 
-#: canaille/oauth.py:41
+#: canaille/oauth.py:42
 msgid "Groups you are belonging to"
 msgstr ""
 
-#: canaille/oauth.py:124
+#: canaille/oauth.py:125
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/admin/clients.py:33
+#: canaille/admin/clients.py:39
 msgid "Contact"
 msgstr ""
 
-#: canaille/admin/clients.py:38
+#: canaille/admin/clients.py:44
 msgid "URI"
 msgstr ""
 
-#: canaille/admin/clients.py:43
+#: canaille/admin/clients.py:49
 msgid "Redirect URIs"
 msgstr ""
 
-#: canaille/admin/clients.py:48
+#: canaille/admin/clients.py:54
 msgid "Grant types"
 msgstr ""
 
-#: canaille/admin/clients.py:60
+#: canaille/admin/clients.py:66
 msgid "Scope"
 msgstr ""
 
-#: canaille/admin/clients.py:66
+#: canaille/admin/clients.py:72
 msgid "Response types"
 msgstr ""
 
-#: canaille/admin/clients.py:72
+#: canaille/admin/clients.py:78
 msgid "Token Endpoint Auth Method"
 msgstr ""
 
-#: canaille/admin/clients.py:82
+#: canaille/admin/clients.py:88
 msgid "Token audiences"
 msgstr ""
 
-#: canaille/admin/clients.py:88
+#: canaille/admin/clients.py:94
 msgid "Logo URI"
 msgstr ""
 
-#: canaille/admin/clients.py:93
+#: canaille/admin/clients.py:99
 msgid "Terms of service URI"
 msgstr ""
 
-#: canaille/admin/clients.py:98
+#: canaille/admin/clients.py:104
 msgid "Policy URI"
 msgstr ""
 
-#: canaille/admin/clients.py:103
+#: canaille/admin/clients.py:109
 msgid "Software ID"
 msgstr ""
 
-#: canaille/admin/clients.py:108
+#: canaille/admin/clients.py:114
 msgid "Software Version"
 msgstr ""
 
-#: canaille/admin/clients.py:113
+#: canaille/admin/clients.py:119
 msgid "JWK"
 msgstr ""
 
-#: canaille/admin/clients.py:118
+#: canaille/admin/clients.py:124
 msgid "JKW URI"
 msgstr ""
 
-#: canaille/admin/clients.py:123
+#: canaille/admin/clients.py:129
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/admin/clients.py:139
+#: canaille/admin/clients.py:145
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/admin/clients.py:172
+#: canaille/admin/clients.py:178
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/admin/clients.py:206
+#: canaille/admin/clients.py:212
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/admin/clients.py:232
+#: canaille/admin/clients.py:238
 msgid "The client has been edited."
 msgstr ""
 
-#: canaille/admin/clients.py:244
+#: canaille/admin/clients.py:250
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/admin/mail.py:119
+#: canaille/admin/mail.py:121
 msgid "Invitation on {website_name}"
 msgstr ""
 
@@ -535,15 +535,15 @@ msgstr ""
 #: canaille/templates/firstlogin.html:16
 msgid ""
 "\n"
-"        It seems this is the first time you are logging here. In order to"
-" finalize your\n"
-"        account configuration, you need to set a password to your "
-"account. We will send\n"
-"        you an email containing a link that will allow you to set a "
-"password. Please click\n"
-"        on the «Send the initialization email» button below to send the "
-"email.\n"
-"        "
+"                It seems this is the first time you are logging here. In "
+"order to finalize your\n"
+"                account configuration, you need to set a password to your"
+" account. We will send\n"
+"                you an email containing a link that will allow you to set"
+" a password. Please click\n"
+"                on the «Send the initialization email» button below to "
+"send the email.\n"
+"            "
 msgstr ""
 
 #: canaille/templates/firstlogin.html:35
@@ -567,23 +567,23 @@ msgid "This field is required"
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:11
-#: canaille/templates/login.html:42 canaille/templates/password.html:35
+#: canaille/templates/login.html:38 canaille/templates/password.html:35
 msgid "Forgotten password"
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:16
 msgid ""
 "\n"
-"        After this form is sent, if the email address or the login you "
-"provided\n"
-"        exists, you will receive an email containing a link that will "
-"allow you\n"
-"        to reset your password.\n"
-"        "
+"                After this form is sent, if the email address or the "
+"login you provided\n"
+"                exists, you will receive an email containing a link that "
+"will allow you\n"
+"                to reset your password.\n"
+"            "
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:38
-#: canaille/templates/profile.html:202 canaille/templates/profile.html:230
+#: canaille/templates/profile.html:187 canaille/templates/profile.html:215
 msgid "Send again"
 msgstr ""
 
@@ -642,7 +642,7 @@ msgstr ""
 msgid "Create group"
 msgstr ""
 
-#: canaille/templates/group.html:82 canaille/templates/profile.html:270
+#: canaille/templates/group.html:82 canaille/templates/profile.html:255
 msgid "Submit"
 msgstr ""
 
@@ -719,10 +719,10 @@ msgstr ""
 #: canaille/templates/invite.html:84
 msgid ""
 "\n"
-"        After this form is sent, the recipient your indicated will "
-"receive an email\n"
-"        containing an account creation link.\n"
-"        "
+"                    After this form is sent, the recipient your indicated"
+" will receive an email\n"
+"                    containing an account creation link.\n"
+"                "
 msgstr ""
 
 #: canaille/templates/invite.html:116
@@ -742,7 +742,7 @@ msgstr ""
 msgid "Log-in and manage your authorizations."
 msgstr ""
 
-#: canaille/templates/login.html:44
+#: canaille/templates/login.html:40
 msgid "Continue"
 msgstr ""
 
@@ -820,87 +820,87 @@ msgstr ""
 msgid "Click to upload a photo"
 msgstr ""
 
-#: canaille/templates/profile.html:153
+#: canaille/templates/profile.html:142
 msgid "Account information"
 msgstr ""
 
-#: canaille/templates/profile.html:182
+#: canaille/templates/profile.html:167
 msgid "User password is not mandatory"
 msgstr ""
 
-#: canaille/templates/profile.html:185
+#: canaille/templates/profile.html:170
 msgid "The user password can be set:"
 msgstr ""
 
-#: canaille/templates/profile.html:187
+#: canaille/templates/profile.html:172
 msgid "by filling this form;"
 msgstr ""
 
-#: canaille/templates/profile.html:188
+#: canaille/templates/profile.html:173
 msgid ""
 "by sending the user a password initialization mail, after the account "
 "creation;"
 msgstr ""
 
-#: canaille/templates/profile.html:189 canaille/templates/profile.html:218
+#: canaille/templates/profile.html:174 canaille/templates/profile.html:203
 msgid ""
 "or simply waiting for the user to sign-in a first time, and then receive "
 "a password initialization mail."
 msgstr ""
 
-#: canaille/templates/profile.html:192 canaille/templates/profile.html:221
+#: canaille/templates/profile.html:177 canaille/templates/profile.html:206
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
-#: canaille/templates/profile.html:206
+#: canaille/templates/profile.html:191
 msgid "Send email"
 msgstr ""
 
-#: canaille/templates/profile.html:211
+#: canaille/templates/profile.html:196
 msgid "This user does not have a password yet"
 msgstr ""
 
-#: canaille/templates/profile.html:214
+#: canaille/templates/profile.html:199
 msgid "You can solve this by:"
 msgstr ""
 
-#: canaille/templates/profile.html:216
+#: canaille/templates/profile.html:201
 msgid "setting a password using this form;"
 msgstr ""
 
-#: canaille/templates/profile.html:217
+#: canaille/templates/profile.html:202
 msgid "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 
-#: canaille/templates/profile.html:232
+#: canaille/templates/profile.html:217
 msgid "Send mail"
 msgstr ""
 
-#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:236
+#: canaille/templates/admin/mails.html:34 canaille/templates/profile.html:221
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
 msgstr ""
 
-#: canaille/templates/profile.html:238
+#: canaille/templates/profile.html:223
 msgid ""
 "If the user has forgotten his password, you can send him a password reset"
 " email by clicking this button."
 msgstr ""
 
-#: canaille/templates/profile.html:250
+#: canaille/templates/profile.html:235
 msgid "Delete the user"
 msgstr ""
 
-#: canaille/templates/profile.html:252
+#: canaille/templates/profile.html:237
 msgid "Delete my account"
 msgstr ""
 
-#: canaille/templates/profile.html:259
+#: canaille/templates/profile.html:244
 msgid "Impersonate"
 msgstr ""
 
-#: canaille/templates/profile.html:265 canaille/templates/users.html:20
+#: canaille/templates/profile.html:250 canaille/templates/users.html:20
 msgid "Invite a user"
 msgstr ""
 
@@ -1009,10 +1009,10 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                In order to finalize your account configuration at "
-"%(site_name)s, we need to setup your password. Please click on the "
+"                        In order to finalize your account configuration "
+"at %(site_name)s, we need to setup your password. Please click on the "
 "«Initialize password» button below and follow the instructions.\n"
-"                "
+"                    "
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.html:38
@@ -1048,10 +1048,10 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                You have been invited to create an account at "
+"                        You have been invited to create an account at "
 "%(site_name)s. To proceed you can click on the «Create my account» button"
 " below and follow the instructions.\n"
-"                "
+"                    "
 msgstr ""
 
 #: canaille/templates/mail/invitation.html:38
@@ -1069,11 +1069,11 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                Someone, probably you, asked for a password "
+"                        Someone, probably you, asked for a password "
 "reinitialization link at %(site_name)s. If you did not ask for this "
 "email, please ignore it. If you need to reset your password, please click"
 " on the «Reset password» button below and follow the instructions.\n"
-"                "
+"                    "
 msgstr ""
 
 #: canaille/templates/mail/reset.txt:3
@@ -1107,3 +1107,4 @@ msgstr ""
 #: canaille/themes/default/base.html:84
 msgid "Log out"
 msgstr ""
+
