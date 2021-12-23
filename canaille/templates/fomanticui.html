@@ -9,8 +9,8 @@ indicator_text=none,
 suffix_text=none,
 display=true
 ) -%}
-
-{% if container %}
+{% set field_visible = field.type != 'HiddenField' and field.type !='CSRFTokenField' %}
+{% if container and field_visible %}
     <div class="field {{ kwargs.pop('class_', '') }}
         {%- if field.errors %} error{% endif -%}
         {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}"
@@ -18,7 +18,7 @@ display=true
     >
 {% endif %}
 
-{% if (field.type != 'HiddenField' and field.type !='CSRFTokenField') and label_visible %}
+{% if field_visible and label_visible %}
     {{ field.label() }}
     {% if field.description %}
         <div>{{ field.description }}</div>
@@ -30,45 +30,49 @@ display=true
 {% set required_indicator = "required" in field.flags %}
 {% set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required_indicator) %}
 {% set labeled = suffix_text or corner_indicator %}
-<div class="ui
-    {% if suffix_text %}right{% endif %}
-    {% if corner_indicator %}corner{% endif %}
-    {% if labeled %}labeled{% endif %}
-    {% if icon %}left icon {% endif %}
-    {% if field.type not in ("BooleanField", "RadioField") %}input{% endif %}
-    ">
-    {% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
+{% if field_visible %}
+    <div class="ui
+        {% if suffix_text %}right{% endif %}
+        {% if corner_indicator %}corner{% endif %}
+        {% if labeled %}labeled{% endif %}
+        {% if icon %}left icon {% endif %}
+        {% if field.type not in ("BooleanField", "RadioField") %}input{% endif %}
+        ">
+{% endif %}
+{% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
 
-    {% if field.type not in ("SelectField", "SelectMultipleField") %}
-        {{ field(**kwargs) }}
-    {% elif field.render_kw and "readonly" in field.render_kw %}
-        {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
-    {% else %}
-        {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
-    {% endif %}
+{% if field.type not in ("SelectField", "SelectMultipleField") %}
+    {{ field(**kwargs) }}
+{% elif field.render_kw and "readonly" in field.render_kw %}
+    {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
+{% else %}
+    {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
+{% endif %}
 
-    {% if suffix_text %}
-        <div class="ui basic label">
-            {{ suffix_text }}{% if corner_indicator %}&emsp;{% endif %}
+{% if suffix_text %}
+    <div class="ui basic label">
+        {{ suffix_text }}{% if corner_indicator %}&emsp;{% endif %}
+    </div>
+{% endif %}
+
+{% if not noindicator %}
+    {% if indicator_icon %}
+        <div class="ui corner label"{% if indicator_text %} title="{{ indicator_text }}"{% endif %}>
+            <i class="{{ indicator_icon }} icon"></i>
+        </div>
+    {% elif lock_indicator %}
+        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+            <i class="lock icon"></i>
+        </div>
+    {% elif required_indicator %}
+        <div class="ui corner label" title="{{ _("This field is required") }}">
+            <i class="asterisk icon"></i>
         </div>
     {% endif %}
-
-    {% if not noindicator %}
-        {% if indicator_icon %}
-            <div class="ui corner label"{% if indicator_text %} title="{{ indicator_text }}"{% endif %}>
-                <i class="{{ indicator_icon }} icon"></i>
-            </div>
-        {% elif lock_indicator %}
-            <div class="ui corner label" title="{{ _("This field is not editable") }}">
-                <i class="lock icon"></i>
-            </div>
-        {% elif required_indicator %}
-            <div class="ui corner label" title="{{ _("This field is required") }}">
-                <i class="asterisk icon"></i>
-            </div>
-        {% endif %}
-    {% endif %}
-</div>
+{% endif %}
+{% if field_visible %}
+    </div>
+{% endif %}
 
 {% if field.errors %}
     {% for error in field.errors %}
@@ -77,7 +81,8 @@ display=true
         </div>
     {% endfor %}
 {% endif %}
-{% if container %}
+
+{% if container and field_visible %}
     </div>
 {% endif %}
 
@@ -96,7 +101,7 @@ display=true
 
 {% macro render_form(
 form,
-action_text='submit',
+action_text=none,
 class_='',
 btn_class='ui right floated primary button',
 action=none,
@@ -108,7 +113,11 @@ id=none) -%}
     enctype="multipart/form-data"
     class="ui form {{ class_ }}"
 >
-    {{ render_fields(form) }}
+    {% if caller %}
+        {{ caller() }}
+    {% else %}
+        {{ render_fields(form) }}
+    {% endif %}
     {% if action_text %}
         <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
     {% endif %}

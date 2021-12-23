@@ -329,6 +329,7 @@ def user(app, slapd_connection):
 @pytest.fixture
 def admin(app, slapd_connection):
     User.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
         cn="Jane Doe",

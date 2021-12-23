@@ -1,15 +1,37 @@
 {% extends theme('base.html') %}
+{% import 'fomanticui.html' as sui %}
 
 {% block content %}
-    <div class="ui attached segment">
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Test d'envoi") }}
+            </div>
+        </h2>
+
+        <div class="ui info message">
+            {% trans -%}
+                This form will a fake invitation email to the address you want.
+                This should be used for testing mail configuration.
+            {%- endtrans %}
+        </div>
+
+        {% call sui.render_form(form) %}
+            {{ sui.render_fields(form) }}
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <input type="submit" class="ui primary button" value="{{ _("Send") }}">
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+
+    <div class="ui segment">
         <h2 class="ui center aligned header">
             <div class="content">
                 {{ _("Email preview") }}
             </div>
         </h2>
-    </div>
-
-    <div class="ui attached segment">
         <div class="ui middle aligned divided list">
             <div class="item">
                 <div class="right floated content">

@@ -1,6 +1,14 @@
-def test_reset_html(testclient, logged_admin):
-    testclient.get("/admin/mail/reset.html")
+def test_send_test_email(testclient, logged_admin, smtpd):
+    assert len(smtpd.messages) == 0
+
+    res = testclient.get("/admin/mail")
+    res.form["mail"] = "test@test.com"
+    res = res.form.submit()
+
+    assert len(smtpd.messages) == 1
 
 
-def test_reset_txt(testclient, logged_admin):
-    testclient.get("/admin/mail/reset.txt")
+def test_mails(testclient, logged_admin):
+    for base in ["password-init", "reset", "admin/admin@admin.com/invitation"]:
+        testclient.get(f"/admin/mail/{base}.html")
+        testclient.get(f"/admin/mail/{base}.txt")

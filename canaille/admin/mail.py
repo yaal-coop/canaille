@@ -1,20 +1,49 @@
 from canaille.apputils import obj_to_b64
 from canaille.flaskutils import permissions_needed
 from canaille.mails import profile_hash
+from canaille.mails import send_invitation_mail
 from flask import Blueprint
 from flask import current_app
+from flask import flash
+from flask import request
 from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import DataRequired
+from wtforms.validators import Email
 
 
 bp = Blueprint("admin_mails", __name__)
 
 
-@bp.route("/")
+class MailTestForm(FlaskForm):
+    mail = StringField(
+        _("Email"),
+        validators=[
+            DataRequired(),
+            Email(),
+        ],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
+@bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def mail_index(user):
-    return render_template("admin/mails.html")
+    form = MailTestForm(request.form or None)
+    if request.form and form.validate():
+        if send_invitation_mail(form.mail.data, ""):
+            flash(_("The test invitation mail has been sent correctly"), "success")
+        else:
+            flash(_("The test invitation mail has been sent correctly"), "error")
+
+    return render_template("admin/mails.html", form=form)
 
 
 @bp.route("/password-init.html")
