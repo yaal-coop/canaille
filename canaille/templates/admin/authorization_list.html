@@ -22,8 +22,8 @@
         </thead>
         {% for authorization in authorizations %}
             <tr>
-                <td><a href="{{ url_for('admin_authorizations.view', authorization_id=authorization.oauthCode) }}">{{ authorization.oauthCode }}</a></td>
-                <td><a href="{{ url_for('admin_clients.edit', client_id=authorization.oauthClientID) }}">{{ authorization.oauthClientID }}</a></td>
+                <td><a href="{{ url_for('admin.authorizations.view', authorization_id=authorization.oauthCode) }}">{{ authorization.oauthCode }}</a></td>
+                <td><a href="{{ url_for('admin.clients.edit', client_id=authorization.oauthClientID) }}">{{ authorization.oauthClientID }}</a></td>
                 <td>{{ authorization.oauthSubject }}</td>
                 <td>{{ authorization.issue_date }}</td>
             </tr>

@@ -15,7 +15,7 @@ from flask_wtf import FlaskForm
 from werkzeug.security import gen_salt
 
 
-bp = Blueprint("admin_clients", __name__)
+bp = Blueprint("clients", __name__)
 
 
 @bp.route("/")
@@ -179,7 +179,7 @@ def add(user):
         "success",
     )
 
-    return redirect(url_for("admin_clients.edit", client_id=client_id))
+    return redirect(url_for("admin.clients.edit", client_id=client_id))
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
@@ -251,4 +251,4 @@ def client_delete(client_id):
         "success",
     )
     client.delete()
-    return redirect(url_for("admin_clients.index"))
+    return redirect(url_for("admin.clients.index"))

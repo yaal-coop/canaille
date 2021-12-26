@@ -4,10 +4,7 @@ import os
 from logging.config import dictConfig
 
 import canaille.account
-import canaille.admin.authorizations
-import canaille.admin.clients
-import canaille.admin.mail
-import canaille.admin.tokens
+import canaille.admin
 import canaille.configuration
 import canaille.consents
 import canaille.groups
@@ -216,16 +213,11 @@ def setup_blueprints(app):
     app.url_map.strict_slashes = False
 
     app.register_blueprint(canaille.account.bp)
+    app.register_blueprint(canaille.admin.bp, url_prefix="/admin")
     app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
     app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
     app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
     app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
-    app.register_blueprint(canaille.admin.tokens.bp, url_prefix="/admin/token")
-    app.register_blueprint(
-        canaille.admin.authorizations.bp, url_prefix="/admin/authorization"
-    )
-    app.register_blueprint(canaille.admin.clients.bp, url_prefix="/admin/client")
-    app.register_blueprint(canaille.admin.mail.bp, url_prefix="/admin/mail")
 
 
 def create_app(config=None, validate=True):

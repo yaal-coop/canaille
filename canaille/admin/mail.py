@@ -15,7 +15,7 @@ from wtforms.validators import DataRequired
 from wtforms.validators import Email
 
 
-bp = Blueprint("admin_mails", __name__)
+bp = Blueprint("mails", __name__)
 
 
 class MailTestForm(FlaskForm):

@@ -14,7 +14,7 @@
 {% block content %}
 
     <div class="ui segment">
-        <a class="ui primary button" href="{{ url_for('admin_clients.add') }}">{% trans %}Add client{% endtrans %}</a>
+        <a class="ui primary button" href="{{ url_for('admin.clients.add') }}">{% trans %}Add client{% endtrans %}</a>
     </div>
 
     <table class="ui table">
@@ -27,7 +27,7 @@
         {% for client in clients %}
             <tr>
                 <td>
-                    <a href="{{ url_for('admin_clients.edit', client_id=client.oauthClientID) }}">
+                    <a href="{{ url_for('admin.clients.edit', client_id=client.oauthClientID) }}">
                         {% if client.oauthLogoURI %}
                             <img class="ui avatar image" src="{{ client.oauthLogoURI }}" alt="Client logo">
                         {% else %}
@@ -35,7 +35,7 @@
                         {% endif %}
                     </a>
                 </td>
-                <td><a href="{{ url_for('admin_clients.edit', client_id=client.oauthClientID) }}">{{ client.oauthClientName }}</a></td>
+                <td><a href="{{ url_for('admin.clients.edit', client_id=client.oauthClientID) }}">{{ client.oauthClientName }}</a></td>
                 <td><a href="{{ client.oauthClientURI }}">{{ client.oauthClientURI }}</a></td>
                 <td>{% if client.issue_date %}{{ client.issue_date }}{% endif %}</td>
             </tr>

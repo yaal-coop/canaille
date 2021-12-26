@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask_themer import render_template
 
 
-bp = Blueprint("admin_tokens", __name__)
+bp = Blueprint("tokens", __name__)
 
 
 @bp.route("/")
