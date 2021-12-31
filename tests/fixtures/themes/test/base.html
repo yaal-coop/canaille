@@ -62,15 +62,15 @@
                             <i class="settings icon"></i>
                             Admin
                             <div class="menu">
-                                <a class="item" href="{{ url_for('admin_clients.index') }}">
+                                <a class="item" href="{{ url_for('admin.clients.index') }}">
                                     <i class="plug icon"></i>
                                     {% trans %}Clients{% endtrans %}
                                 </a>
-                                <a class="item" href="{{ url_for('admin_tokens.index') }}">
+                                <a class="item" href="{{ url_for('admin.tokens.index') }}">
                                     <i class="key icon"></i>
                                     {% trans %}Tokens{% endtrans %}
                                 </a>
-                                <a class="item" href="{{ url_for('admin_authorizations.index') }}">
+                                <a class="item" href="{{ url_for('admin.authorizations.index') }}">
                                     <i class="user secret icon"></i>
                                     {% trans %}Codes{% endtrans %}
                                 </a>
