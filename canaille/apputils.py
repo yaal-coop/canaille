@@ -94,7 +94,7 @@ def send_email(subject, recipient, text, html, sender=None, attachements=None):
     msg.add_alternative(html, subtype="html")
 
     msg["Subject"] = subject
-    msg["To"] = recipient
+    msg["To"] = f"<{recipient}>"
 
     if sender:
         msg["From"] = sender
