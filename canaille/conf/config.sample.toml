@@ -40,6 +40,10 @@ OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
 # wether the login exists or not.
 # HIDE_INVALID_LOGINS = false
 
+# The validity duration of registration invitations, in seconds.
+# Defaults to 2 days
+# INVITATION_EXPIRATION = 172800
+
 [LOGGING]
 # LEVEL can be one value among:
 # DEBUG, INFO, WARNING, ERROR, CRITICAL
