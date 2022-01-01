@@ -1,3 +1,8 @@
+from datetime import datetime
+from datetime import timedelta
+
+from canaille.account import Invitation
+from canaille.apputils import b64_to_obj
 from canaille.apputils import obj_to_b64
 from canaille.apputils import profile_hash
 from canaille.models import User
@@ -37,7 +42,10 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
 
     with testclient.app.app_context():
         user = User.get("someone", conn=slapd_connection)
+        user.load_groups(conn=slapd_connection)
+        foo_group.reload(slapd_connection)
         assert user.check_password("whatever")
+        assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
         assert "user_dn" in sess
@@ -80,7 +88,10 @@ def test_generate_link(testclient, slapd_connection, logged_admin, foo_group, sm
 
     with testclient.app.app_context():
         user = User.get("sometwo", conn=slapd_connection)
+        user.load_groups(conn=slapd_connection)
+        foo_group.reload(slapd_connection)
         assert user.check_password("whatever")
+        assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
         assert "user_dn" in sess
@@ -100,37 +111,86 @@ def test_invitation_login_already_taken(testclient, slapd_connection, logged_adm
     assert "The email &#39;jane@doe.com&#39; already exists" in res.text
 
 
-def test_registration_invalid_data(testclient, slapd_connection, foo_group):
+def test_registration(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
-        data = ["someoneelse", "someone@mydomain.tld", foo_group.dn]
-        b64 = obj_to_b64(data)
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            "someoneelse",
+            "someone@mydomain.tld",
+            foo_group.dn,
+        )
+        b64 = invitation.b64()
+        hash = invitation.profile_hash()
 
-    testclient.get(f"/register/{b64}/invalid", status=302)
+    testclient.get(f"/register/{b64}/{hash}", status=200)
 
 
 def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
-        data = ["someoneelse", "someone@mydomain.tld", foo_group.dn]
-        hash = profile_hash(*data)
-        data = ["anything", "someone@mydomain.tld", foo_group.dn]
-        b64 = obj_to_b64(data)
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            "someoneelse",
+            "someone@mydomain.tld",
+            foo_group.dn,
+        )
+        b64 = invitation.b64()
 
-    testclient.get(f"/register/{b64}/{hash}", status=302)
+    testclient.get(f"/register/{b64}/invalid", status=302)
 
 
 def test_registration_bad_hash(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
-        data = ["someoneelse", "someone@mydomain.tld", foo_group.dn]
-        hash = profile_hash(*data)
+        now = datetime.now().isoformat()
+        invitation1 = Invitation(
+            now, "someoneelse", "someone@mydomain.tld", foo_group.dn
+        )
+        hash = invitation1.profile_hash()
+        invitation2 = Invitation(now, "anything", "someone@mydomain.tld", foo_group.dn)
+        b64 = invitation2.b64()
 
-    testclient.get(f"/register/invalid/{hash}", status=302)
+    testclient.get(f"/register/{b64}/{hash}", status=302)
+
+
+def test_registration_invalid_data(testclient, slapd_connection, foo_group):
+    with testclient.app.app_context():
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            "someoneelse",
+            "someone@mydomain.tld",
+            foo_group.dn,
+        )
+        hash = invitation.profile_hash()
+
+    res = testclient.get(f"/register/invalid/{hash}", status=302)
+
+
+def test_registration_more_than_48_hours_after_invitation(
+    testclient, slapd_connection, foo_group
+):
+    with testclient.app.app_context():
+        two_days_ago = datetime.now() - timedelta(hours=48)
+        invitation = Invitation(
+            two_days_ago.isoformat(),
+            "someoneelse",
+            "someone@mydomain.tld",
+            foo_group.dn,
+        )
+        hash = invitation.profile_hash()
+        b64 = invitation.b64()
+
+    testclient.get(f"/register/{b64}/{hash}", status=302)
 
 
 def test_registration_no_password(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
-        data = ["someoneelse", "someone@mydomain.tld", foo_group.dn]
-        hash = profile_hash(*data)
-        b64 = obj_to_b64(data)
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            "someoneelse",
+            "someone@mydomain.tld",
+            foo_group.dn,
+        )
+        hash = invitation.profile_hash()
+        b64 = invitation.b64()
         url = f"/register/{b64}/{hash}"
 
     res = testclient.get(url, status=200)
@@ -151,9 +211,14 @@ def test_no_registration_if_logged_in(
     testclient, slapd_connection, logged_user, foo_group
 ):
     with testclient.app.app_context():
-        data = ["anyone", "someone@mydomain.tld", foo_group.dn]
-        hash = profile_hash(*data)
-        b64 = obj_to_b64(data)
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            "someoneelse",
+            "someone@mydomain.tld",
+            foo_group.dn,
+        )
+        hash = invitation.profile_hash()
+        b64 = invitation.b64()
         url = f"/register/{b64}/{hash}"
 
     testclient.get(url, status=302)

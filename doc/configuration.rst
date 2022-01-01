@@ -51,6 +51,10 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
     *Optional.* Wether to tell the users if a username exists during failing login attempts.
     Defaults to ``True``. This may be a security issue to disable this, as this give a way to malicious people to guess who has an account on this canaille instance.
 
+:INVITATION_EXPIRATION:
+    *Optional* The validity duration of registration invitations, in seconds.
+    Defaults to 2 days.
+
 LOGGING
 -------
 
