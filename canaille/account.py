@@ -179,7 +179,12 @@ class Invitation:
         return datetime.fromisoformat(self.creation_date_isoformat)
 
     def has_expired(self):
-        return datetime.now() - self.creation_date > timedelta(hours=48)
+        DEFAULT_INVITATION_DURATION = 2 * 24 * 60 * 60
+        return datetime.now() - self.creation_date > timedelta(
+            seconds=current_app.config.get(
+                "INVITATION_EXPIRATION", DEFAULT_INVITATION_DURATION
+            )
+        )
 
     def b64(self):
         return obj_to_b64(astuple(self))
