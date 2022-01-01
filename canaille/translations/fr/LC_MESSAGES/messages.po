@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2022-01-01 11:24+0100\n"
-"PO-Revision-Date: 2022-01-01 11:26+0100\n"
+"POT-Creation-Date: 2022-01-01 18:40+0100\n"
+"PO-Revision-Date: 2022-01-01 18:40+0100\n"
 "Last-Translator: Camille <camille@yaal.coop>\n"
 "Language: fr\n"
 "Language-Team: French <contact@yaal.coop>\n"
@@ -56,39 +56,39 @@ msgstr ""
 "Un lien d'initialisation de votre mot de passe vous a été envoyé par mail. "
 "Vous devriez le recevoir d'ici une dizaine de minutes."
 
-#: canaille/account.py:154 canaille/account.py:388
+#: canaille/account.py:154 canaille/account.py:398
 msgid "Could not send the password initialization email"
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
 
-#: canaille/account.py:240 canaille/account.py:314
+#: canaille/account.py:247 canaille/account.py:324
 msgid "User account creation failed."
 msgstr "La création du compte utilisateur a échoué."
 
-#: canaille/account.py:261 canaille/account.py:289
+#: canaille/account.py:268 canaille/account.py:296
 msgid "The invitation link that brought you here was invalid."
 msgstr "Le lien d'invitation qui vous a amené ici est invalide."
 
-#: canaille/account.py:268
+#: canaille/account.py:275
 msgid "The invitation link that brought you here has expired."
 msgstr "Le lien d'invitation qui vous a amené ici a expiré."
 
-#: canaille/account.py:275
+#: canaille/account.py:282
 msgid "Your account has already been created."
 msgstr "Votre compte a déjà été créé."
 
-#: canaille/account.py:282
+#: canaille/account.py:289
 msgid "You are already logged in, you cannot create an account."
 msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
 
-#: canaille/account.py:319
+#: canaille/account.py:329
 msgid "You account has been created successfuly."
 msgstr "Votre compte utilisateur a été créé avec succès."
 
-#: canaille/account.py:361
+#: canaille/account.py:371
 msgid "User account creation succeed."
 msgstr "La création du compte utilisateur a réussi."
 
-#: canaille/account.py:382
+#: canaille/account.py:392
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within 10 minutes."
@@ -96,7 +96,7 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "mail. Il devrait arriver d'ici une dizaine de minutes."
 
-#: canaille/account.py:396
+#: canaille/account.py:406
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within 10 minutes."
@@ -104,28 +104,28 @@ msgstr ""
 "Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
 "mail. Il devrait arriver d'ici une dizaine de minutes."
 
-#: canaille/account.py:402
+#: canaille/account.py:412
 msgid "Could not send the password reset email"
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:433
+#: canaille/account.py:443
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: canaille/account.py:461
+#: canaille/account.py:471
 msgid "Profile updated successfuly."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: canaille/account.py:481
+#: canaille/account.py:491
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/account.py:505
+#: canaille/account.py:515
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:512 canaille/account.py:523
+#: canaille/account.py:522 canaille/account.py:533
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
@@ -133,15 +133,15 @@ msgstr ""
 "Un lien de ré-initialisation de votre mot de passe vous a été envoyé par "
 "mail. Vous devriez le recevoir d'ici une dizaine de minutes."
 
-#: canaille/account.py:529
+#: canaille/account.py:539
 msgid "Could not reset your password"
 msgstr "Impossible de réinitialiser votre mot de passe"
 
-#: canaille/account.py:543
+#: canaille/account.py:553
 msgid "The password reset link that brought you here was invalid."
 msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
-#: canaille/account.py:552
+#: canaille/account.py:562
 msgid "Your password has been updated successfuly"
 msgstr "Votre mot de passe a correctement été mis à jour."
 
@@ -194,7 +194,7 @@ msgid "Login"
 msgstr "Identifiant"
 
 #: canaille/admin/mail.py:29 canaille/forms.py:47 canaille/forms.py:71
-#: canaille/forms.py:122 canaille/forms.py:222
+#: canaille/forms.py:122 canaille/forms.py:223
 msgid "jane@doe.com"
 msgstr "camille@dupont.fr"
 
@@ -236,7 +236,7 @@ msgstr "Nom de famille"
 msgid "Doe"
 msgstr "Dupont"
 
-#: canaille/forms.py:116 canaille/forms.py:215
+#: canaille/forms.py:116 canaille/forms.py:216
 msgid "Email address"
 msgstr "Courriel"
 
@@ -279,7 +279,7 @@ msgstr "Site internet"
 msgid "https://mywebsite.tld"
 msgstr "https://mon-site-internet.fr"
 
-#: canaille/forms.py:181 canaille/forms.py:228
+#: canaille/forms.py:181 canaille/forms.py:229
 #: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
 #: canaille/themes/default/base.html:59
 msgid "Groups"
@@ -296,6 +296,10 @@ msgstr "groupe"
 #: canaille/forms.py:203 canaille/templates/groups.html:18
 msgid "Description"
 msgstr "Description"
+
+#: canaille/forms.py:214
+msgid "Username editable by the invitee"
+msgstr "L'identifiant sera éditable par la personne invitée"
 
 #: canaille/groups.py:44
 msgid "Group creation failed."
@@ -719,19 +723,19 @@ msgstr "Invitation envoyée"
 msgid "Invitation not sent"
 msgstr "Invitation non envoyée"
 
-#: canaille/templates/invite.html:28
+#: canaille/templates/invite.html:29
 msgid ""
 "Here is the invitation link you can provide to the user you want to invite:"
 msgstr ""
 "Voici le lien que vous pouvez transmettre à l'utilisateur que vous souhaitez "
 "inviter :"
 
-#: canaille/templates/invite.html:34
+#: canaille/templates/invite.html:36
 #, python-format
 msgid "This invitation link has been sent to %(email)s"
 msgstr "Ce lien d'invitation a été envoyé à %(email)s"
 
-#: canaille/templates/invite.html:35
+#: canaille/templates/invite.html:37
 msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "there:"
@@ -739,7 +743,7 @@ msgstr ""
 "Si vous avez besoin de communiquer ce lien par d'autres moyen que l'email, "
 "vous pouvez le copier ici :"
 
-#: canaille/templates/invite.html:42
+#: canaille/templates/invite.html:44
 #, python-format
 msgid ""
 "This invitation link could not be sent to %(email)s due to technical issues."
@@ -747,30 +751,30 @@ msgstr ""
 "Ce lien d'invitation n'a pas pu être envoyé à %(email)s à cause de problèmes "
 "techniques."
 
-#: canaille/templates/invite.html:43
+#: canaille/templates/invite.html:45
 msgid ""
 "However you can copy the link there to provide it by other ways than email:"
 msgstr ""
 "Cependant, vous pouvez copier ce lien pour le transmettre par d'autres "
 "moyens que l'email :"
 
-#: canaille/templates/invite.html:55
+#: canaille/templates/invite.html:58
 msgid "Copy"
 msgstr "Copier"
 
-#: canaille/templates/invite.html:62 canaille/templates/invite.html:113
+#: canaille/templates/invite.html:65 canaille/templates/invite.html:120
 msgid "Create a user"
 msgstr "Créer un utilisateur"
 
-#: canaille/templates/invite.html:66
+#: canaille/templates/invite.html:69
 msgid "Invite another user"
 msgstr "Inviter quelqu'un d'autre"
 
-#: canaille/templates/invite.html:78
+#: canaille/templates/invite.html:81
 msgid "Invitate an user"
 msgstr "Inviter un utilisateur"
 
-#: canaille/templates/invite.html:84
+#: canaille/templates/invite.html:87
 msgid ""
 "\n"
 "                    After this form is sent, the recipient your indicated "
@@ -783,11 +787,11 @@ msgstr ""
 "recevra un email contenant un lien lui permettant de créer un compte "
 "utilisateur."
 
-#: canaille/templates/invite.html:116
+#: canaille/templates/invite.html:123
 msgid "Generate a link"
 msgstr "Générer un lien"
 
-#: canaille/templates/invite.html:119
+#: canaille/templates/invite.html:126
 msgid "Send the invitation"
 msgstr "Envoyer l'invitation"
 

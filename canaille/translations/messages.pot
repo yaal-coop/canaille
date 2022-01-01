@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-01 11:24+0100\n"
+"POT-Creation-Date: 2022-01-01 18:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,86 +49,86 @@ msgid ""
 "should receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:154 canaille/account.py:388
+#: canaille/account.py:154 canaille/account.py:398
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/account.py:240 canaille/account.py:314
+#: canaille/account.py:247 canaille/account.py:324
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/account.py:261 canaille/account.py:289
+#: canaille/account.py:268 canaille/account.py:296
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:268
+#: canaille/account.py:275
 msgid "The invitation link that brought you here has expired."
 msgstr ""
 
-#: canaille/account.py:275
+#: canaille/account.py:282
 msgid "Your account has already been created."
 msgstr ""
 
-#: canaille/account.py:282
+#: canaille/account.py:289
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/account.py:319
+#: canaille/account.py:329
 msgid "You account has been created successfuly."
 msgstr ""
 
-#: canaille/account.py:361
+#: canaille/account.py:371
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:382
+#: canaille/account.py:392
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:396
+#: canaille/account.py:406
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:402
+#: canaille/account.py:412
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/account.py:433
+#: canaille/account.py:443
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:461
+#: canaille/account.py:471
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:481
+#: canaille/account.py:491
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:505
+#: canaille/account.py:515
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:512 canaille/account.py:523
+#: canaille/account.py:522 canaille/account.py:533
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
 msgstr ""
 
-#: canaille/account.py:529
+#: canaille/account.py:539
 msgid "Could not reset your password"
 msgstr ""
 
-#: canaille/account.py:543
+#: canaille/account.py:553
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:552
+#: canaille/account.py:562
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgid "Login"
 msgstr ""
 
 #: canaille/admin/mail.py:29 canaille/forms.py:47 canaille/forms.py:71
-#: canaille/forms.py:122 canaille/forms.py:222
+#: canaille/forms.py:122 canaille/forms.py:223
 msgid "jane@doe.com"
 msgstr ""
 
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Doe"
 msgstr ""
 
-#: canaille/forms.py:116 canaille/forms.py:215
+#: canaille/forms.py:116 canaille/forms.py:216
 msgid "Email address"
 msgstr ""
 
@@ -265,7 +265,7 @@ msgstr ""
 msgid "https://mywebsite.tld"
 msgstr ""
 
-#: canaille/forms.py:181 canaille/forms.py:228
+#: canaille/forms.py:181 canaille/forms.py:229
 #: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
 #: canaille/themes/default/base.html:59
 msgid "Groups"
@@ -281,6 +281,10 @@ msgstr ""
 
 #: canaille/forms.py:203 canaille/templates/groups.html:18
 msgid "Description"
+msgstr ""
+
+#: canaille/forms.py:214
+msgid "Username editable by the invitee"
 msgstr ""
 
 #: canaille/groups.py:44
@@ -683,53 +687,53 @@ msgstr ""
 msgid "Invitation not sent"
 msgstr ""
 
-#: canaille/templates/invite.html:28
+#: canaille/templates/invite.html:29
 msgid ""
 "Here is the invitation link you can provide to the user you want to "
 "invite:"
 msgstr ""
 
-#: canaille/templates/invite.html:34
+#: canaille/templates/invite.html:36
 #, python-format
 msgid "This invitation link has been sent to %(email)s"
 msgstr ""
 
-#: canaille/templates/invite.html:35
+#: canaille/templates/invite.html:37
 msgid ""
 "If you need to provide this link by other ways than email, you can copy "
 "it there:"
 msgstr ""
 
-#: canaille/templates/invite.html:42
+#: canaille/templates/invite.html:44
 #, python-format
 msgid ""
 "This invitation link could not be sent to %(email)s due to technical "
 "issues."
 msgstr ""
 
-#: canaille/templates/invite.html:43
+#: canaille/templates/invite.html:45
 msgid ""
 "However you can copy the link there to provide it by other ways than "
 "email:"
 msgstr ""
 
-#: canaille/templates/invite.html:55
+#: canaille/templates/invite.html:58
 msgid "Copy"
 msgstr ""
 
-#: canaille/templates/invite.html:62 canaille/templates/invite.html:113
+#: canaille/templates/invite.html:65 canaille/templates/invite.html:120
 msgid "Create a user"
 msgstr ""
 
-#: canaille/templates/invite.html:66
+#: canaille/templates/invite.html:69
 msgid "Invite another user"
 msgstr ""
 
-#: canaille/templates/invite.html:78
+#: canaille/templates/invite.html:81
 msgid "Invitate an user"
 msgstr ""
 
-#: canaille/templates/invite.html:84
+#: canaille/templates/invite.html:87
 msgid ""
 "\n"
 "                    After this form is sent, the recipient your indicated"
@@ -738,11 +742,11 @@ msgid ""
 "                "
 msgstr ""
 
-#: canaille/templates/invite.html:116
+#: canaille/templates/invite.html:123
 msgid "Generate a link"
 msgstr ""
 
-#: canaille/templates/invite.html:119
+#: canaille/templates/invite.html:126
 msgid "Send the invitation"
 msgstr ""
 

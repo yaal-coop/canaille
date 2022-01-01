@@ -211,6 +211,7 @@ class InvitationForm(FlaskForm):
         render_kw={"placeholder": _("jdoe")},
         validators=[wtforms.validators.DataRequired(), unique_login],
     )
+    uid_editable = wtforms.BooleanField(_("Username editable by the invitee"))
     mail = wtforms.EmailField(
         _("Email address"),
         validators=[

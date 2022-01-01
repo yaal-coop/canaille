@@ -24,11 +24,13 @@
             </div>
 
             {% if request.form["action"] == "generate" %}
+
                 <div class="ui attached success message">
                     {% trans %}Here is the invitation link you can provide to the user you want to invite:{% endtrans %}
                 </div>
 
             {% elif mail_sent %}
+
                 <div class="ui attached success message">
                     {% set email = form.mail.data %}
                     {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
@@ -42,6 +44,7 @@
                     {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
                     {% trans %}However you can copy the link there to provide it by other ways than email:{% endtrans %}
                 </div>
+
             {% endif %}
 
 
@@ -97,6 +100,10 @@
                     {{ form.hidden_tag() if form.hidden_tag }}
                     {% block uid_field scoped %}
                         {{ fui.render_field(form.uid, icon="user") }}
+                    {% endblock %}
+
+                    {% block uid_editable_field scoped %}
+                        {{ fui.render_checkbox(form.uid_editable) }}
                     {% endblock %}
 
                     {% block mail_field scoped %}
