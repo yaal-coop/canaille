@@ -99,6 +99,15 @@ display=true
     {% endif %}
 {% endmacro %}
 
+{% macro render_checkbox(field) -%}
+    <div class="field">
+        <div class="ui toggle checkbox">
+            {{ field(**kwargs) }}
+            {{ field.label() }}
+        </div>
+    </div>
+{%- endmacro %}
+
 {% macro render_form(
 form,
 action_text=none,

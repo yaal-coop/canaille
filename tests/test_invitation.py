@@ -2,9 +2,6 @@ from datetime import datetime
 from datetime import timedelta
 
 from canaille.account import Invitation
-from canaille.apputils import b64_to_obj
-from canaille.apputils import obj_to_b64
-from canaille.apputils import profile_hash
 from canaille.models import User
 
 
@@ -15,6 +12,7 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
     res = testclient.get("/invite", status=200)
 
     res.form["uid"] = "someone"
+    res.form["uid_editable"] = False
     res.form["mail"] = "someone@domain.tld"
     res.form["groups"] = [foo_group.dn]
     res = res.form.submit(name="action", value="send", status=200)
@@ -29,6 +27,7 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
     res = testclient.get(url, status=200)
 
     assert res.form["uid"].value == "someone"
+    assert res.form["uid"].attrs["readonly"]
     assert res.form["mail"].value == "someone@domain.tld"
     assert res.form["groups"].value == [foo_group.dn]
 
@@ -39,6 +38,8 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
 
     res = res.form.submit(status=302)
     res = res.follow(status=200)
+
+    assert "You account has been created successfuly." in res
 
     with testclient.app.app_context():
         user = User.get("someone", conn=slapd_connection)
@@ -52,6 +53,58 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
         del sess["user_dn"]
 
     res = testclient.get(url, status=302)
+
+
+def test_invitation_editable_uid(
+    testclient, slapd_connection, logged_admin, foo_group, smtpd
+):
+    with testclient.app.app_context():
+        assert User.get("jackyjack", conn=slapd_connection) is None
+        assert User.get("djorje", conn=slapd_connection) is None
+
+    res = testclient.get("/invite", status=200)
+
+    res.form["uid"] = "jackyjack"
+    res.form["uid_editable"] = True
+    res.form["mail"] = "jackyjack@domain.tld"
+    res.form["groups"] = [foo_group.dn]
+    res = res.form.submit(name="action", value="send", status=200)
+    assert len(smtpd.messages) == 1
+
+    url = res.pyquery("#copy-text")[0].value
+
+    # logout
+    with testclient.session_transaction() as sess:
+        del sess["user_dn"]
+
+    res = testclient.get(url, status=200)
+
+    assert res.form["uid"].value == "jackyjack"
+    assert "readonly" not in res.form["uid"].attrs
+    assert res.form["mail"].value == "jackyjack@domain.tld"
+    assert res.form["groups"].value == [foo_group.dn]
+
+    res.form["uid"] = "djorje"
+    res.form["password1"] = "whatever"
+    res.form["password2"] = "whatever"
+    res.form["givenName"] = "George"
+    res.form["sn"] = "Abitbol"
+
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    assert "You account has been created successfuly." in res
+
+    with testclient.app.app_context():
+        user = User.get("djorje", conn=slapd_connection)
+        user.load_groups(conn=slapd_connection)
+        foo_group.reload(slapd_connection)
+        assert user.check_password("whatever")
+        assert user.groups == [foo_group]
+
+    with testclient.session_transaction() as sess:
+        assert "user_dn" in sess
+        del sess["user_dn"]
 
 
 def test_generate_link(testclient, slapd_connection, logged_admin, foo_group, smtpd):
@@ -116,6 +169,7 @@ def test_registration(testclient, slapd_connection, foo_group):
         invitation = Invitation(
             datetime.now().isoformat(),
             "someoneelse",
+            False,
             "someone@mydomain.tld",
             foo_group.dn,
         )
@@ -130,25 +184,28 @@ def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
         invitation = Invitation(
             datetime.now().isoformat(),
             "someoneelse",
+            False,
             "someone@mydomain.tld",
             foo_group.dn,
         )
         b64 = invitation.b64()
 
-    testclient.get(f"/register/{b64}/invalid", status=302)
+    testclient.get(f"/register/{b64}/{hash}", status=200)
 
 
-def test_registration_bad_hash(testclient, slapd_connection, foo_group):
+def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
         now = datetime.now().isoformat()
         invitation1 = Invitation(
-            now, "someoneelse", "someone@mydomain.tld", foo_group.dn
+            now, "someoneelse", False, "someone@mydomain.tld", foo_group.dn
         )
         hash = invitation1.profile_hash()
-        invitation2 = Invitation(now, "anything", "someone@mydomain.tld", foo_group.dn)
+        invitation2 = Invitation(
+            now, "anything", False, "someone@mydomain.tld", foo_group.dn
+        )
         b64 = invitation2.b64()
 
-    testclient.get(f"/register/{b64}/{hash}", status=302)
+    testclient.get(f"/register/{b64}/invalid", status=302)
 
 
 def test_registration_invalid_data(testclient, slapd_connection, foo_group):
@@ -156,12 +213,13 @@ def test_registration_invalid_data(testclient, slapd_connection, foo_group):
         invitation = Invitation(
             datetime.now().isoformat(),
             "someoneelse",
+            False,
             "someone@mydomain.tld",
             foo_group.dn,
         )
         hash = invitation.profile_hash()
 
-    res = testclient.get(f"/register/invalid/{hash}", status=302)
+    testclient.get(f"/register/invalid/{hash}", status=302)
 
 
 def test_registration_more_than_48_hours_after_invitation(
@@ -172,6 +230,7 @@ def test_registration_more_than_48_hours_after_invitation(
         invitation = Invitation(
             two_days_ago.isoformat(),
             "someoneelse",
+            False,
             "someone@mydomain.tld",
             foo_group.dn,
         )
@@ -186,6 +245,7 @@ def test_registration_no_password(testclient, slapd_connection, foo_group):
         invitation = Invitation(
             datetime.now().isoformat(),
             "someoneelse",
+            False,
             "someone@mydomain.tld",
             foo_group.dn,
         )
@@ -214,6 +274,7 @@ def test_no_registration_if_logged_in(
         invitation = Invitation(
             datetime.now().isoformat(),
             "someoneelse",
+            False,
             "someone@mydomain.tld",
             foo_group.dn,
         )

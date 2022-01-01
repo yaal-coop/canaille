@@ -171,6 +171,7 @@ def users(user):
 class Invitation:
     creation_date_isoformat: str
     uid: str
+    uid_editable: bool
     mail: str
     groups: List[str]
 
@@ -207,6 +208,7 @@ def user_invitation(user):
         invitation = Invitation(
             datetime.now().isoformat(),
             form.uid.data,
+            form.uid_editable.data,
             form.mail.data,
             form.groups.data,
         )
@@ -302,6 +304,9 @@ def registration(data, hash):
 
     form = profile_form(writable_fields, readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
+
+    if "readonly" in form["uid"].render_kw and invitation.uid_editable:
+        del form["uid"].render_kw["readonly"]
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
