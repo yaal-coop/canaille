@@ -3,14 +3,6 @@ import logging
 import os
 from logging.config import dictConfig
 
-import canaille.account
-import canaille.admin
-import canaille.configuration
-import canaille.consents
-import canaille.groups
-import canaille.installation
-import canaille.oauth
-import canaille.well_known
 import ldap
 import toml
 from flask import Flask
@@ -23,10 +15,6 @@ from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
 
-from .flaskutils import current_user
-from .ldaputils import LDAPObject
-from .models import Group
-from .models import User
 from .oauth2utils import setup_oauth
 
 try:  # pragma: no cover
@@ -39,6 +27,9 @@ except Exception:
 
 
 def setup_config(app, config=None, validate=True):
+    import canaille.configuration
+    import canaille.installation
+
     dir_path = os.path.dirname(os.path.realpath(__file__))
     app.config.from_mapping(
         {
@@ -97,6 +88,10 @@ def setup_logging(app):
 
 
 def setup_ldap_models(app):
+    from .ldaputils import LDAPObject
+    from .models import Group
+    from .models import User
+
     LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
 
     user_base = app.config["LDAP"]["USER_BASE"]
@@ -210,6 +205,13 @@ def setup_themer(app):
 
 
 def setup_blueprints(app):
+    import canaille.account
+    import canaille.admin
+    import canaille.consents
+    import canaille.groups
+    import canaille.oauth
+    import canaille.well_known
+
     app.url_map.strict_slashes = False
 
     app.register_blueprint(canaille.account.bp)
@@ -252,6 +254,8 @@ def create_app(config=None, validate=True):
 
         @app.context_processor
         def global_processor():
+            from .flaskutils import current_user
+
             return {
                 "has_smtp": "SMTP" in app.config,
                 "logo_url": app.config.get("LOGO"),
