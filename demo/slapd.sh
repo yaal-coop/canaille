@@ -8,5 +8,5 @@ elif [ "$SLAPD_BINARY" == "DOCKER" ] || ([ "$SLAPD_BINARY" == "" ] && type docke
 
 else
     echo "Cannot start the LDAP server. Please install openldap or docker on your system."
-    return 1
+    exit 1
 fi
