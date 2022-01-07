@@ -13,7 +13,7 @@
     {% elif edited_user.uid == user.uid or lock_indicator or noindicator %}
         {{ sui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.write %}
-        {{ sui.render_field(field, noindicator=true, **kwargs) }}
+        {{ sui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.read %}
         {{ sui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
     {% else %}

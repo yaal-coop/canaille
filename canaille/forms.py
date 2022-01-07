@@ -106,6 +106,7 @@ PROFILE_FORM_FIELDS = dict(
     ),
     sn=wtforms.StringField(
         _("Family Name"),
+        validators=[wtforms.validators.DataRequired()],
         render_kw={
             "placeholder": _("Doe"),
             "spellcheck": "false",
