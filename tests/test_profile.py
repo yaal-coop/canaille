@@ -154,6 +154,19 @@ def test_bad_email(testclient, slapd_connection, logged_user):
     assert ["john@doe.com"] == logged_user.mail
 
 
+def test_surname_is_mandatory(testclient, slapd_connection, logged_user):
+    res = testclient.get("/profile/user", status=200)
+    logged_user.sn = ["Doe"]
+
+    res.form["sn"] = ""
+
+    res = res.form.submit(name="action", value="edit", status=200)
+
+    logged_user.reload(slapd_connection)
+
+    assert ["Doe"] == logged_user.sn
+
+
 def test_password_change(testclient, slapd_connection, logged_user):
     res = testclient.get("/profile/user", status=200)
 
