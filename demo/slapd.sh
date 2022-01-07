@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$SLAPD_BINARY" == "NATIVE" ] || ([ "$SLAPD_BINARY" == "" ] && type slapd > /dev/null 2>&1); then
-    env/bin/python ldap-server.py
+    env BIN=$BIN:/usr/bin:/usr/sbin env/bin/python ldap-server.py
 
 elif [ "$SLAPD_BINARY" == "DOCKER" ] || ([ "$SLAPD_BINARY" == "" ] && type docker-compose > /dev/null 2>&1); then
     docker-compose up
