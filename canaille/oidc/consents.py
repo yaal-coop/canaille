@@ -15,9 +15,9 @@ bp = Blueprint("consents", __name__, url_prefix="/consent")
 @bp.route("/")
 @user_needed()
 def consents(user):
-    consents = Consent.filter(oauthSubject=user.dn)
-    consents = [c for c in consents if not c.oauthRevokationDate]
-    client_dns = list({t.oauthClient for t in consents})
+    consents = Consent.filter(subject=user.dn)
+    consents = [c for c in consents if not c.revokation_date]
+    client_dns = list({t.client for t in consents})
     clients = {dn: Client.get(dn) for dn in client_dns}
     return render_template(
         "oidc/user/consent_list.html",
@@ -32,7 +32,7 @@ def consents(user):
 def delete(user, consent_id):
     consent = Consent.get(consent_id)
 
-    if not consent or consent.oauthSubject != user.dn:
+    if not consent or consent.subject != user.dn:
         flash(gettext("Could not delete this access"), "error")
 
     else:

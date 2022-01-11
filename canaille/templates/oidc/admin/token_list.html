@@ -22,9 +22,9 @@
         </thead>
         {% for token in tokens %}
             <tr>
-                <td><a href="{{ url_for('oidc.tokens.view', token_id=token.oauthAccessToken) }}">{{ token.oauthAccessToken }}</a></td>
-                <td><a href="{{ url_for('oidc.clients.edit', client_id=token.oauthClientID) }}">{{ token.oauthClientID }}</a></td>
-                <td>{{ token.oauthSubject }}</td>
+                <td><a href="{{ url_for('oidc.tokens.view', token_id=token.access_token) }}">{{ token.access_token }}</a></td>
+                <td><a href="{{ url_for('oidc.clients.edit', client_id=token.client_id) }}">{{ token.client_id }}</a></td>
+                <td>{{ token.subject }}</td>
                 <td>{{ token.issue_date }}</td>
             </tr>
         {% endfor %}

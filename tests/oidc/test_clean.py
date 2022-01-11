@@ -9,31 +9,31 @@ from werkzeug.security import gen_salt
 def test_clean_command(testclient, slapd_connection, client, user):
     AuthorizationCode.ldap_object_classes(slapd_connection)
     code = AuthorizationCode(
-        oauthCode="my-code",
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthRedirectURI="https://foo.bar/callback",
-        oauthResponseType="code",
-        oauthScope="openid profile",
-        oauthNonce="nonce",
-        oauthAuthorizationDate=(datetime.datetime.now() - datetime.timedelta(days=1)),
-        oauthAuthorizationLifetime="3600",
-        oauthCodeChallenge="challenge",
-        oauthCodeChallengeMethod="method",
-        oauthRevokation="",
+        code="my-code",
+        client=client.dn,
+        subject=user.dn,
+        redirect_uri="https://foo.bar/callback",
+        response_type="code",
+        scope="openid profile",
+        nonce="nonce",
+        issue_date=(datetime.datetime.now() - datetime.timedelta(days=1)),
+        lifetime="3600",
+        challenge="challenge",
+        challenge_method="method",
+        revokation="",
     )
     code.save(slapd_connection)
 
     Token.ldap_object_classes(slapd_connection)
     token = Token(
-        oauthAccessToken="my-token",
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthTokenType=None,
-        oauthRefreshToken=gen_salt(48),
-        oauthScope="openid profile",
-        oauthIssueDate=(datetime.datetime.now() - datetime.timedelta(days=1)),
-        oauthTokenLifetime=str(3600),
+        access_token="my-token",
+        client=client.dn,
+        subject=user.dn,
+        type=None,
+        refresh_token=gen_salt(48),
+        scope="openid profile",
+        issue_date=(datetime.datetime.now() - datetime.timedelta(days=1)),
+        lifetime=str(3600),
     )
     token.save(slapd_connection)
 

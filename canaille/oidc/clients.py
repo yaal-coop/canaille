@@ -28,31 +28,31 @@ def index(user):
 
 
 def client_audiences():
-    return [(client.dn, client.oauthClientName) for client in Client.filter()]
+    return [(client.dn, client.name) for client in Client.filter()]
 
 
 class ClientAdd(FlaskForm):
-    oauthClientName = wtforms.StringField(
+    name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "Client Name"},
     )
-    oauthClientContact = wtforms.EmailField(
+    contact = wtforms.EmailField(
         _("Contact"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "admin@mydomain.tld"},
     )
-    oauthClientURI = wtforms.URLField(
+    uri = wtforms.URLField(
         _("URI"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld"},
     )
-    oauthRedirectURIs = wtforms.URLField(
+    redirect_uris = wtforms.URLField(
         _("Redirect URIs"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld/callback"},
     )
-    oauthGrantType = wtforms.SelectMultipleField(
+    grant_type = wtforms.SelectMultipleField(
         _("Grant types"),
         validators=[wtforms.validators.DataRequired()],
         choices=[
@@ -64,19 +64,19 @@ class ClientAdd(FlaskForm):
         ],
         default=["authorization_code", "refresh_token"],
     )
-    oauthScope = wtforms.StringField(
+    scope = wtforms.StringField(
         _("Scope"),
         validators=[wtforms.validators.Optional()],
         default="openid profile email",
         render_kw={"placeholder": "openid profile"},
     )
-    oauthResponseType = wtforms.SelectMultipleField(
+    response_type = wtforms.SelectMultipleField(
         _("Response types"),
         validators=[wtforms.validators.DataRequired()],
         choices=[("code", "code"), ("token", "token"), ("id_token", "id_token")],
         default=["code"],
     )
-    oauthTokenEndpointAuthMethod = wtforms.SelectField(
+    token_endpoint_auth_method = wtforms.SelectField(
         _("Token Endpoint Auth Method"),
         validators=[wtforms.validators.DataRequired()],
         choices=[
@@ -86,48 +86,48 @@ class ClientAdd(FlaskForm):
         ],
         default="client_secret_basic",
     )
-    oauthAudience = wtforms.SelectMultipleField(
+    audience = wtforms.SelectMultipleField(
         _("Token audiences"),
         validators=[wtforms.validators.Optional()],
         choices=client_audiences,
         validate_choice=False,
     )
-    oauthLogoURI = wtforms.URLField(
+    logo_uri = wtforms.URLField(
         _("Logo URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/logo.png"},
     )
-    oauthTermsOfServiceURI = wtforms.URLField(
+    tos_uri = wtforms.URLField(
         _("Terms of service URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/tos.html"},
     )
-    oauthPolicyURI = wtforms.URLField(
+    policy_uri = wtforms.URLField(
         _("Policy URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/policy.html"},
     )
-    oauthSoftwareID = wtforms.StringField(
+    software_id = wtforms.StringField(
         _("Software ID"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "xyz"},
     )
-    oauthSoftwareVersion = wtforms.StringField(
+    software_version = wtforms.StringField(
         _("Software Version"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "1.0"},
     )
-    oauthJWK = wtforms.StringField(
+    jwk = wtforms.StringField(
         _("JWK"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
-    oauthJWKURI = wtforms.URLField(
+    jwk_uri = wtforms.URLField(
         _("JKW URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
-    oauthPreconsent = wtforms.BooleanField(
+    preconsent = wtforms.BooleanField(
         _("Pre-consent"),
         validators=[wtforms.validators.Optional()],
         default=False,
@@ -156,29 +156,29 @@ def add(user):
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now()
     client = Client(
-        oauthClientID=client_id,
-        oauthIssueDate=client_id_issued_at,
-        oauthClientName=form["oauthClientName"].data,
-        oauthClientContact=form["oauthClientContact"].data,
-        oauthClientURI=form["oauthClientURI"].data,
-        oauthGrantType=form["oauthGrantType"].data,
-        oauthRedirectURIs=[form["oauthRedirectURIs"].data],
-        oauthResponseType=form["oauthResponseType"].data,
-        oauthScope=form["oauthScope"].data.split(" "),
-        oauthTokenEndpointAuthMethod=form["oauthTokenEndpointAuthMethod"].data,
-        oauthLogoURI=form["oauthLogoURI"].data,
-        oauthTermsOfServiceURI=form["oauthTermsOfServiceURI"].data,
-        oauthPolicyURI=form["oauthPolicyURI"].data,
-        oauthSoftwareID=form["oauthSoftwareID"].data,
-        oauthSoftwareVersion=form["oauthSoftwareVersion"].data,
-        oauthJWK=form["oauthJWK"].data,
-        oauthJWKURI=form["oauthJWKURI"].data,
-        oauthPreconsent=form["oauthPreconsent"].data,
-        oauthClientSecret=""
-        if form["oauthTokenEndpointAuthMethod"].data == "none"
+        client_id=client_id,
+        issue_date=client_id_issued_at,
+        name=form["name"].data,
+        contact=form["contact"].data,
+        uri=form["uri"].data,
+        grant_type=form["grant_type"].data,
+        redirect_uris=[form["redirect_uris"].data],
+        response_type=form["response_type"].data,
+        scope=form["scope"].data.split(" "),
+        token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
+        logo_uri=form["logo_uri"].data,
+        tos_uri=form["tos_uri"].data,
+        policy_uri=form["policy_uri"].data,
+        software_id=form["software_id"].data,
+        software_version=form["software_version"].data,
+        jwk=form["jwk"].data,
+        jwk_uri=form["jwk_uri"].data,
+        preconsent=form["preconsent"].data,
+        secret=""
+        if form["token_endpoint_auth_method"].data == "none"
         else gen_salt(48),
     )
-    client.oauthAudience = [client.dn]
+    client.audience = [client.dn]
     client.save()
     flash(
         _("The client has been created."),
@@ -203,9 +203,9 @@ def edit(user, client_id):
 def client_edit(client_id):
     client = Client.get(client_id) or abort(404)
     data = dict(client)
-    data["oauthScope"] = " ".join(data["oauthScope"])
-    data["oauthRedirectURIs"] = data["oauthRedirectURIs"][0]
-    data["oauthPreconsent"] = client.preconsent
+    data["scope"] = " ".join(data["scope"])
+    data["redirect_uris"] = data["redirect_uris"][0]
+    data["preconsent"] = client.preconsent
     form = ClientAdd(request.form or None, data=data, client=client)
 
     if not request.form:
@@ -221,23 +221,23 @@ def client_edit(client_id):
 
     else:
         client.update(
-            oauthClientName=form["oauthClientName"].data,
-            oauthClientContact=form["oauthClientContact"].data,
-            oauthClientURI=form["oauthClientURI"].data,
-            oauthGrantType=form["oauthGrantType"].data,
-            oauthRedirectURIs=[form["oauthRedirectURIs"].data],
-            oauthResponseType=form["oauthResponseType"].data,
-            oauthScope=form["oauthScope"].data.split(" "),
-            oauthTokenEndpointAuthMethod=form["oauthTokenEndpointAuthMethod"].data,
-            oauthLogoURI=form["oauthLogoURI"].data,
-            oauthTermsOfServiceURI=form["oauthTermsOfServiceURI"].data,
-            oauthPolicyURI=form["oauthPolicyURI"].data,
-            oauthSoftwareID=form["oauthSoftwareID"].data,
-            oauthSoftwareVersion=form["oauthSoftwareVersion"].data,
-            oauthJWK=form["oauthJWK"].data,
-            oauthJWKURI=form["oauthJWKURI"].data,
-            oauthAudience=form["oauthAudience"].data,
-            oauthPreconsent=form["oauthPreconsent"].data,
+            name=form["name"].data,
+            contact=form["contact"].data,
+            uri=form["uri"].data,
+            grant_type=form["grant_type"].data,
+            redirect_uris=[form["redirect_uris"].data],
+            response_type=form["response_type"].data,
+            scope=form["scope"].data.split(" "),
+            token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
+            logo_uri=form["logo_uri"].data,
+            tos_uri=form["tos_uri"].data,
+            policy_uri=form["policy_uri"].data,
+            software_id=form["software_id"].data,
+            software_version=form["software_version"].data,
+            jwk=form["jwk"].data,
+            jwk_uri=form["jwk_uri"].data,
+            audience=form["audience"].data,
+            preconsent=form["preconsent"].data,
         )
         client.save()
         flash(

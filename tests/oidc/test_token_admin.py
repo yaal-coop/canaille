@@ -8,10 +8,10 @@ def test_no_admin_no_access(testclient, logged_user):
 
 def test_token_list(testclient, token, logged_admin):
     res = testclient.get("/admin/token")
-    assert token.oauthAccessToken in res.text
+    assert token.access_token in res.text
 
 
 def test_token_view(testclient, token, logged_admin):
-    res = testclient.get("/admin/token/" + token.oauthAccessToken)
+    res = testclient.get("/admin/token/" + token.access_token)
     for attr in token.may + token.must:
         assert attr in res.text

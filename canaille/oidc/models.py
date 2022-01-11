@@ -5,49 +5,64 @@ from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
-
-from ..ldaputils import LDAPObject
+from canaille.ldap_backend.ldapobject import LDAPObject
 
 
 class Client(LDAPObject, ClientMixin):
     object_class = ["oauthClient"]
     base = "ou=clients,ou=oauth"
     id = "oauthClientID"
-
-    @property
-    def issue_date(self):
-        return self.oauthIssueDate
-
-    @property
-    def preconsent(self):
-        return self.oauthPreconsent
+    attribute_table = {
+        "description": "description",
+        "client_id": "oauthClientID",
+        "name": "oauthClientName",
+        "contact": "oauthClientContact",
+        "uri": "oauthClientURI",
+        "redirect_uris": "oauthRedirectURIs",
+        "logo_uri": "oauthLogoURI",
+        "issue_date": "oauthIssueDate",
+        "secret": "oauthClientSecret",
+        "secret_expires_date": "oauthClientSecretExpDate",
+        "grant_type": "oauthGrantType",
+        "response_type": "oauthResponseType",
+        "scope": "oauthScope",
+        "tos_uri": "oauthTermsOfServiceURI",
+        "policy_uri": "oauthPolicyURI",
+        "jwk_uri": "oauthJWKURI",
+        "jwk": "oauthJWK",
+        "token_endpoint_auth_method": "oauthTokenEndpointAuthMethod",
+        "software_id": "oauthSoftwareID",
+        "software_version": "oauthSoftwareVersion",
+        "audience": "oauthAudience",
+        "preconsent": "oauthPreconsent",
+    }
 
     def get_client_id(self):
-        return self.oauthClientID
+        return self.id
 
     def get_default_redirect_uri(self):
-        return self.oauthRedirectURIs[0]
+        return self.redirect_uris[0]
 
     def get_allowed_scope(self, scope):
-        return util.list_to_scope(self.oauthScope)
+        return util.list_to_scope(self.scope)
 
     def check_redirect_uri(self, redirect_uri):
-        return redirect_uri in self.oauthRedirectURIs
+        return redirect_uri in self.redirect_uris
 
     def has_client_secret(self):
-        return bool(self.oauthClientSecret)
+        return bool(self.secret)
 
     def check_client_secret(self, client_secret):
-        return client_secret == self.oauthClientSecret
+        return client_secret == self.secret
 
     def check_token_endpoint_auth_method(self, method):
-        return method == self.oauthTokenEndpointAuthMethod
+        return method == self.token_endpoint_auth_method
 
     def check_response_type(self, response_type):
-        return all(r in self.oauthResponseType for r in response_type.split(" "))
+        return all(r in self.response_type for r in response_type.split(" "))
 
     def check_grant_type(self, grant_type):
-        return grant_type in self.oauthGrantType
+        return grant_type in self.grant_type
 
     @property
     def client_info(self):
@@ -55,7 +70,7 @@ class Client(LDAPObject, ClientMixin):
             client_id=self.client_id,
             client_secret=self.client_secret,
             client_id_issued_at=self.client_id_issued_at,
-            client_secret_expires_at=self.client_secret_expires_at,
+            client_secret_expires_at=self.client_secret_expires_date,
         )
 
 
@@ -63,84 +78,94 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     id = "oauthCode"
-
-    @property
-    def issue_date(self):
-        return self.oauthIssueDate
+    attribute_table = {
+        "description": "description",
+        "code": "oauthCode",
+        "client": "oauthClient",
+        "subject": "oauthSubject",
+        "redirect_uri": "oauthRedirectURI",
+        "response_type": "oauthResponseType",
+        "scope": "oauthScope",
+        "nonce": "oauthNonce",
+        "issue_date": "oauthAuthorizationDate",
+        "lifetime": "oauthAuthorizationLifetime",
+        "challenge": "oauthCodeChallenge",
+        "challenge_method": "oauthCodeChallengeMethod",
+        "revokation_date": "oauthRevokationDate",
+    }
 
     def get_redirect_uri(self):
-        return self.oauthRedirectURI
+        return self.redirect_uri
 
     def get_scope(self):
-        return self.oauthScope
+        return self.scope
 
     def get_nonce(self):
-        return self.oauthNonce
+        return self.nonce
 
     def is_expired(self):
         return (
-            self.oauthAuthorizationDate
-            + datetime.timedelta(seconds=int(self.oauthAuthorizationLifetime))
+            self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
             < datetime.datetime.now()
         )
 
     def get_auth_time(self):
-        return int(
-            (
-                self.oauthAuthorizationDate - datetime.datetime(1970, 1, 1)
-            ).total_seconds()
-        )
+        return int((self.issue_date - datetime.datetime(1970, 1, 1)).total_seconds())
 
 
 class Token(LDAPObject, TokenMixin):
     object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     id = "oauthAccessToken"
-
-    @property
-    def issue_date(self):
-        return self.oauthIssueDate
+    attribute_table = {
+        "access_token": "oauthAccessToken",
+        "description": "description",
+        "client": "oauthClient",
+        "subject": "oauthSubject",
+        "type": "oauthTokenType",
+        "refresh_token": "oauthRefreshToken",
+        "scope": "oauthScope",
+        "issue_date": "oauthIssueDate",
+        "lifetime": "oauthTokenLifetime",
+        "revokation_date": "oauthRevokationDate",
+        "audience": "oauthAudience",
+    }
 
     @property
     def expire_date(self):
-        return self.oauthIssueDate + datetime.timedelta(
-            seconds=int(self.oauthTokenLifetime)
-        )
+        return self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
 
     @property
     def revoked(self):
-        return bool(self.oauthRevokationDate)
+        return bool(self.revokation_date)
 
     def get_client_id(self):
-        return Client.get(self.oauthClient).oauthClientID
+        return Client.get(self.client).id
 
     def get_scope(self):
-        return " ".join(self.oauthScope)
+        return " ".join(self.scope)
 
     def get_expires_in(self):
-        return int(self.oauthTokenLifetime)
+        return int(self.lifetime)
 
     def get_issued_at(self):
-        return int(
-            (self.oauthIssueDate - datetime.datetime(1970, 1, 1)).total_seconds()
-        )
+        return int((self.issue_date - datetime.datetime(1970, 1, 1)).total_seconds())
 
     def get_expires_at(self):
         issue_timestamp = (
-            self.oauthIssueDate - datetime.datetime(1970, 1, 1)
+            self.issue_date - datetime.datetime(1970, 1, 1)
         ).total_seconds()
-        return int(issue_timestamp) + int(self.oauthTokenLifetime)
+        return int(issue_timestamp) + int(self.lifetime)
 
     def is_refresh_token_active(self):
-        if self.oauthRevokationDate:
+        if self.revokation_date:
             return False
 
         return self.expire_date >= datetime.datetime.now()
 
     def is_expired(self):
         return (
-            self.oauthIssueDate
-            + datetime.timedelta(seconds=int(self.oauthTokenLifetime))
+            self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
             < datetime.datetime.now()
         )
 
@@ -149,6 +174,14 @@ class Consent(LDAPObject):
     object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     id = "cn"
+    attribute_table = {
+        "cn": "cn",
+        "subject": "oauthSubject",
+        "client": "oauthClient",
+        "scope": "oauthScope",
+        "issue_date": "oauthIssueDate",
+        "revokation_date": "oauthRevokationDate",
+    }
 
     def __init__(self, *args, **kwargs):
         if "cn" not in kwargs:
@@ -156,27 +189,17 @@ class Consent(LDAPObject):
 
         super().__init__(*args, **kwargs)
 
-    @property
-    def issue_date(self):
-        return self.oauthIssueDate
-
-    @property
-    def revokation_date(self):
-        return self.oauthRevokationDate
-
     def revoke(self):
-        self.oauthRevokationDate = datetime.datetime.now()
+        self.revokation_date = datetime.datetime.now()
         self.save()
 
         tokens = Token.filter(
-            oauthClient=self.oauthClient,
-            oauthSubject=self.oauthSubject,
+            oauthClient=self.client,
+            oauthSubject=self.subject,
         )
         for t in tokens:
-            if t.revoked or any(
-                scope not in t.oauthScope[0] for scope in self.oauthScope
-            ):
+            if t.revoked or any(scope not in t.scope[0] for scope in self.scope):
                 continue
 
-            t.oauthRevokationDate = self.oauthRevokationDate
+            t.revokation_date = self.revokation_date
             t.save()

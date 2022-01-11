@@ -37,7 +37,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
 
 
 def test_password_flow_post(testclient, slapd_connection, user, client):
-    client.oauthTokenEndpointAuthMethod = "client_secret_post"
+    client.token_endpoint_auth_method = "client_secret_post"
     client.save(conn=slapd_connection)
 
     res = testclient.post(
@@ -47,8 +47,8 @@ def test_password_flow_post(testclient, slapd_connection, user, client):
             username="John (johnny) Doe",
             password="correct horse battery staple",
             scope="profile",
-            client_id=client.oauthClientID,
-            client_secret=client.oauthClientSecret,
+            client_id=client.client_id,
+            client_secret=client.secret,
         ),
         status=200,
     )

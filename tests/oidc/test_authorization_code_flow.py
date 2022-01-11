@@ -18,7 +18,7 @@ def test_authorization_code_flow(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -27,7 +27,7 @@ def test_authorization_code_flow(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
@@ -39,7 +39,7 @@ def test_authorization_code_flow(
             grant_type="authorization_code",
             code=code,
             scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
+            redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -47,14 +47,14 @@ def test_authorization_code_flow(
 
     access_token = res.json["access_token"]
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClient == client.dn
-    assert token.oauthSubject == logged_user.dn
+    assert token.client == client.dn
+    assert token.subject == logged_user.dn
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
     assert logged_user.uid[0] == claims["sub"]
     assert logged_user.cn[0] == claims["name"]
-    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
+    assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -75,21 +75,21 @@ def test_authorization_code_flow(
 def test_authorization_code_flow_preconsented(
     testclient, slapd_connection, logged_user, client, keypair, other_client
 ):
-    client.oauthPreconsent = True
+    client.preconsent = True
     client.save(conn=slapd_connection)
 
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
         status=302,
     )
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
@@ -101,7 +101,7 @@ def test_authorization_code_flow_preconsented(
             grant_type="authorization_code",
             code=code,
             scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
+            redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -109,14 +109,14 @@ def test_authorization_code_flow_preconsented(
 
     access_token = res.json["access_token"]
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClient == client.dn
-    assert token.oauthSubject == logged_user.dn
+    assert token.client == client.dn
+    assert token.subject == logged_user.dn
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
     assert logged_user.uid[0] == claims["sub"]
     assert logged_user.cn[0] == claims["name"]
-    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
+    assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -139,7 +139,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -161,7 +161,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
@@ -173,7 +173,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
             grant_type="authorization_code",
             code=code,
             scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
+            redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -181,8 +181,8 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
 
     access_token = res.json["access_token"]
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClient == client.dn
-    assert token.oauthSubject == logged_user.dn
+    assert token.client == client.dn
+    assert token.subject == logged_user.dn
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -205,7 +205,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -214,7 +214,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
@@ -226,7 +226,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
             grant_type="authorization_code",
             code=code,
             scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
+            redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -234,7 +234,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
     old_token = Token.get(access_token, conn=slapd_connection)
     assert old_token is not None
-    assert not old_token.oauthRevokationDate
+    assert not old_token.revokation_date
 
     res = testclient.post(
         "/oauth/token",
@@ -249,7 +249,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     new_token = Token.get(access_token, conn=slapd_connection)
     assert new_token is not None
     old_token.reload(slapd_connection)
-    assert old_token.oauthRevokationDate
+    assert old_token.revokation_date
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -265,7 +265,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
 
 
 def test_code_challenge(testclient, slapd_connection, logged_user, client):
-    client.oauthTokenEndpointAuthMethod = "none"
+    client.token_endpoint_auth_method = "none"
     client.save(slapd_connection)
 
     code_verifier = gen_salt(48)
@@ -277,7 +277,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
             code_challenge=code_challenge,
             code_challenge_method="S256",
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -286,7 +286,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
@@ -299,16 +299,16 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
             code=code,
             scope="profile",
             code_verifier=code_verifier,
-            redirect_uri=client.oauthRedirectURIs[0],
-            client_id=client.oauthClientID,
+            redirect_uri=client.redirect_uris[0],
+            client_id=client.client_id,
         ),
         status=200,
     )
     access_token = res.json["access_token"]
 
     token = Token.get(access_token, conn=slapd_connection)
-    assert token.oauthClient == client.dn
-    assert token.oauthSubject == logged_user.dn
+    assert token.client == client.dn
+    assert token.subject == logged_user.dn
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -322,7 +322,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
         "groups": [],
     } == res.json
 
-    client.oauthTokenEndpointAuthMethod = "client_secret_basic"
+    client.token_endpoint_auth_method = "client_secret_basic"
     client.save(slapd_connection)
 
     for consent in Consent.filter(conn=slapd_connection):
@@ -338,7 +338,7 @@ def test_authorization_code_flow_when_consent_already_given(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -347,16 +347,16 @@ def test_authorization_code_flow_when_consent_already_given(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
     assert authcode is not None
 
     consents = Consent.filter(
-        oauthClient=client.dn, oauthSubject=logged_user.dn, conn=slapd_connection
+        client=client.dn, subject=logged_user.dn, conn=slapd_connection
     )
-    assert "profile" in consents[0].oauthScope
+    assert "profile" in consents[0].scope
 
     res = testclient.post(
         "/oauth/token",
@@ -364,7 +364,7 @@ def test_authorization_code_flow_when_consent_already_given(
             grant_type="authorization_code",
             code=code,
             scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
+            redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -375,13 +375,13 @@ def test_authorization_code_flow_when_consent_already_given(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
         status=302,
     )
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
 
@@ -398,7 +398,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -407,17 +407,17 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
     assert authcode is not None
 
     consents = Consent.filter(
-        oauthClient=client.dn, oauthSubject=logged_user.dn, conn=slapd_connection
+        client=client.dn, subject=logged_user.dn, conn=slapd_connection
     )
-    assert "profile" in consents[0].oauthScope
-    assert "groups" not in consents[0].oauthScope
+    assert "profile" in consents[0].scope
+    assert "groups" not in consents[0].scope
 
     res = testclient.post(
         "/oauth/token",
@@ -425,7 +425,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
             grant_type="authorization_code",
             code=code,
             scope="profile",
-            redirect_uri=client.oauthRedirectURIs[0],
+            redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
@@ -436,7 +436,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile groups",
             nonce="somenonce",
         ),
@@ -445,17 +445,17 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = AuthorizationCode.get(code, conn=slapd_connection)
     assert authcode is not None
 
     consents = Consent.filter(
-        oauthClient=client.dn, oauthSubject=logged_user.dn, conn=slapd_connection
+        client=client.dn, subject=logged_user.dn, conn=slapd_connection
     )
-    assert "profile" in consents[0].oauthScope
-    assert "groups" in consents[0].oauthScope
+    assert "profile" in consents[0].scope
+    assert "groups" in consents[0].scope
 
     for consent in Consent.filter(conn=slapd_connection):
         consent.delete(conn=slapd_connection)
@@ -470,7 +470,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -490,9 +490,9 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
 
 def test_prompt_none(testclient, slapd_connection, logged_user, client):
     consent = Consent(
-        oauthClient=client.dn,
-        oauthSubject=logged_user.dn,
-        oauthScope=["openid", "profile"],
+        client=client.dn,
+        subject=logged_user.dn,
+        scope=["openid", "profile"],
     )
     consent.save(conn=slapd_connection)
 
@@ -500,14 +500,14 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
             prompt="none",
         ),
         status=302,
     )
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
     consent.delete(conn=slapd_connection)
@@ -515,9 +515,9 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
 
 def test_prompt_not_logged(testclient, slapd_connection, user, client):
     consent = Consent(
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthScope=["openid", "profile"],
+        client=client.dn,
+        subject=user.dn,
+        scope=["openid", "profile"],
     )
     consent.save(conn=slapd_connection)
 
@@ -525,7 +525,7 @@ def test_prompt_not_logged(testclient, slapd_connection, user, client):
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
             prompt="none",
@@ -541,7 +541,7 @@ def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
             prompt="none",

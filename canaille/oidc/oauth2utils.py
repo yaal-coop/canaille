@@ -33,7 +33,7 @@ DEFAULT_JWT_EXP = 3600
 
 
 def exists_nonce(nonce, req):
-    exists = AuthorizationCode.filter(oauthClientID=req.client_id, oauthNonce=nonce)
+    exists = AuthorizationCode.filter(client=req.client_id, nonce=nonce)
     return bool(exists)
 
 
@@ -106,19 +106,19 @@ def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
     now = datetime.datetime.now()
     code = AuthorizationCode(
-        oauthCode=code,
-        oauthSubject=request.user,
-        oauthClient=request.client.dn,
-        oauthRedirectURI=request.redirect_uri or request.client.oauthRedirectURIs[0],
-        oauthScope=request.scope,
-        oauthNonce=nonce,
-        oauthAuthorizationDate=now,
-        oauthAuthorizationLifetime=str(84000),
-        oauthCodeChallenge=request.data.get("code_challenge"),
-        oauthCodeChallengeMethod=request.data.get("code_challenge_method"),
+        code=code,
+        subject=request.user,
+        client=request.client.dn,
+        redirect_uri=request.redirect_uri or request.client.redirect_uris[0],
+        scope=request.scope,
+        nonce=nonce,
+        issue_date=now,
+        lifetime=str(84000),
+        challenge=request.data.get("code_challenge"),
+        challenge_method=request.data.get("code_challenge_method"),
     )
     code.save()
-    return code.oauthCode
+    return code.code
 
 
 class AuthorizationCodeGrant(_AuthorizationCodeGrant):
@@ -128,7 +128,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = AuthorizationCode.filter(oauthCode=code, oauthClient=client.dn)
+        item = AuthorizationCode.filter(code=code, client=client.dn)
         if item and not item[0].is_expired():
             return item[0]
 
@@ -136,7 +136,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        user = User.get(dn=authorization_code.oauthSubject)
+        user = User.get(dn=authorization_code.subject)
         if user:
             return user.dn
 
@@ -153,7 +153,7 @@ class OpenIDCode(_OpenIDCode):
 
     def get_audiences(self, request):
         client = request.client
-        return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
+        return [Client.get(aud).client_id for aud in client.audience]
 
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
@@ -167,17 +167,17 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
 class RefreshTokenGrant(_RefreshTokenGrant):
     def authenticate_refresh_token(self, refresh_token):
-        token = Token.filter(oauthRefreshToken=refresh_token)
+        token = Token.filter(refresh_token=refresh_token)
         if token and token[0].is_refresh_token_active():
             return token[0]
 
     def authenticate_user(self, credential):
-        user = User.get(dn=credential.oauthSubject)
+        user = User.get(dn=credential.subject)
         if user:
             return user.dn
 
     def revoke_old_credential(self, credential):
-        credential.oauthRevokationDate = datetime.datetime.now()
+        credential.revokation_date = datetime.datetime.now()
         credential.save()
 
 
@@ -193,7 +193,7 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
 
     def get_audiences(self, request):
         client = request.client
-        return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
+        return [Client.get(aud).client_id for aud in client.audience]
 
 
 class OpenIDHybridGrant(_OpenIDHybridGrant):
@@ -211,7 +211,7 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
     def get_audiences(self, request):
         client = request.client
-        return [Client.get(aud).oauthClientID for aud in client.oauthAudience]
+        return [Client.get(aud).client_id for aud in client.audience]
 
 
 def query_client(client_id):
@@ -221,15 +221,15 @@ def query_client(client_id):
 def save_token(token, request):
     now = datetime.datetime.now()
     t = Token(
-        oauthTokenType=token["token_type"],
-        oauthAccessToken=token["access_token"],
-        oauthIssueDate=now,
-        oauthTokenLifetime=str(token["expires_in"]),
-        oauthScope=token["scope"],
-        oauthClient=request.client.dn,
-        oauthRefreshToken=token.get("refresh_token"),
-        oauthSubject=request.user,
-        oauthAudience=request.client.oauthAudience,
+        type=token["token_type"],
+        access_token=token["access_token"],
+        issue_date=now,
+        lifetime=str(token["expires_in"]),
+        scope=token["scope"],
+        client=request.client.dn,
+        refresh_token=token.get("refresh_token"),
+        subject=request.user,
+        audience=request.client.audience,
     )
     t.save()
 
@@ -242,54 +242,54 @@ class BearerTokenValidator(_BearerTokenValidator):
         return False
 
     def token_revoked(self, token):
-        return bool(token.oauthRevokationDate)
+        return bool(token.revokation_date)
 
 
 class RevocationEndpoint(_RevocationEndpoint):
     def query_token(self, token, token_type_hint, client):
         if token_type_hint == "access_token":
-            return Token.filter(oauthClient=client.dn, oauthAccessToken=token)
+            return Token.filter(client=client.dn, access_token=token)
         elif token_type_hint == "refresh_token":
-            return Token.filter(oauthClient=client.dn, oauthRefreshToken=token)
+            return Token.filter(client=client.dn, refresh_token=token)
 
-        item = Token.filter(oauthClient=client.dn, oauthAccessToken=token)
+        item = Token.filter(client=client.dn, access_token=token)
         if item:
             return item[0]
 
-        item = Token.filter(oauthClient=client.dn, oauthRefreshToken=token)
+        item = Token.filter(client=client.dn, refresh_token=token)
         if item:
             return item[0]
 
         return None
 
     def revoke_token(self, token):
-        token.oauthRevokationDate = datetime.datetime.now()
+        token.revokation_date = datetime.datetime.now()
         token.save()
 
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):
     def query_token(self, token, token_type_hint, client):
         if token_type_hint == "access_token":
-            tok = Token.filter(oauthAccessToken=token)
+            tok = Token.filter(access_token=token)
         elif token_type_hint == "refresh_token":
-            tok = Token.filter(oauthRefreshToken=token)
+            tok = Token.filter(refresh_token=token)
         else:
-            tok = Token.filter(oauthAccessToken=token)
+            tok = Token.filter(access_token=token)
             if not tok:
-                tok = Token.filter(oauthRefreshToken=token)
+                tok = Token.filter(refresh_token=token)
         if tok:
             tok = tok[0]
-            if client.dn in tok.oauthAudience:
+            if client.dn in tok.audience:
                 return tok
 
     def introspect_token(self, token):
-        client_id = Client.get(token.oauthClient).oauthClientID
-        user = User.get(dn=token.oauthSubject)
-        audience = [Client.get(aud).oauthClientID for aud in token.oauthAudience]
+        client_id = Client.get(token.client).client_id
+        user = User.get(dn=token.subject)
+        audience = [Client.get(aud).client_id for aud in token.audience]
         return {
             "active": True,
             "client_id": client_id,
-            "token_type": token.oauthTokenType,
+            "token_type": token.type,
             "username": user.name,
             "scope": token.get_scope(),
             "sub": user.uid[0],
@@ -302,10 +302,10 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
 class CodeChallenge(_CodeChallenge):
     def get_authorization_code_challenge(self, authorization_code):
-        return authorization_code.oauthCodeChallenge
+        return authorization_code.challenge
 
     def get_authorization_code_challenge_method(self, authorization_code):
-        return authorization_code.oauthCodeChallengeMethod
+        return authorization_code.challenge_method
 
 
 authorization = AuthorizationServer()

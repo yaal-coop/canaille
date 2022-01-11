@@ -1,5 +1,4 @@
 import datetime
-import warnings
 
 import ldap.filter
 from flask import g
@@ -13,6 +12,7 @@ class LDAPObject:
     base = None
     root_dn = None
     id = None
+    attribute_table = None
 
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
@@ -21,8 +21,15 @@ class LDAPObject:
         if hasattr(self, "object_class") and not "objectClass" in kwargs:
             kwargs["objectClass"] = self.object_class
 
-        for k, v in kwargs.items():
-            self.attrs[k] = [v] if not isinstance(v, list) else v
+        for name, value in kwargs.items():
+            attribute_name = (
+                self.attribute_table[name]
+                if self.attribute_table and name in self.attribute_table
+                else name
+            )
+            self.attrs[attribute_name] = (
+                [value] if not isinstance(value, list) else value
+            )
 
         self.may = []
         self.must = []
@@ -62,7 +69,13 @@ class LDAPObject:
         return g.ldap
 
     def keys(self):
-        return self.must + self.may
+        ldap_keys = self.must + self.may
+
+        if not self.attribute_table:
+            return ldap_keys
+
+        inverted_table = {value: key for key, value in self.attribute_table.items()}
+        return [inverted_table.get(key, key) for key in ldap_keys]
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -275,6 +288,9 @@ class LDAPObject:
         )
         arg_filter = ""
         for key, value in kwargs.items():
+            if cls.attribute_table:
+                key = cls.attribute_table.get(key, key)
+
             if not isinstance(value, list):
                 escaped_value = ldap.filter.escape_filter_chars(value)
                 arg_filter += f"({key}={escaped_value})"
@@ -301,27 +317,43 @@ class LDAPObject:
         return [cls(**cls.ldap_attrs_to_python(args)) for _, args in result]
 
     def __getattr__(self, name):
-        if (not self.may or name not in self.may) and (
-            not self.must or name not in self.must
+        attribute_name = (
+            self.attribute_table[name]
+            if self.attribute_table and name in self.attribute_table
+            else name
+        )
+
+        if (not self.may or attribute_name not in self.may) and (
+            not self.must or attribute_name not in self.must
         ):
-            return super().__getattribute__(name)
+            return super().__getattribute__(attribute_name)
 
         if (
             not self.ldap_object_attributes()
-            or not self.ldap_object_attributes()[name].single_value
+            or not self.ldap_object_attributes()[attribute_name].single_value
         ):
-            return self.changes.get(name, self.attrs.get(name, []))
+            return self.changes.get(name, self.attrs.get(attribute_name, []))
 
-        return self.changes.get(name, self.attrs.get(name, [None]))[0]
+        return self.changes.get(attribute_name, self.attrs.get(attribute_name, [None]))[
+            0
+        ]
 
     def __setattr__(self, name, value):
-        super().__setattr__(name, value)
+        attribute_name = (
+            self.attribute_table[name]
+            if self.attribute_table and name in self.attribute_table
+            else name
+        )
 
-        if (self.may and name in self.may) or (self.must and name in self.must):
-            if self.ldap_object_attributes()[name].single_value:
-                self.changes[name] = [value]
+        super().__setattr__(attribute_name, value)
+
+        if (self.may and attribute_name in self.may) or (
+            self.must and attribute_name in self.must
+        ):
+            if self.ldap_object_attributes()[attribute_name].single_value:
+                self.changes[attribute_name] = [value]
             else:
-                self.changes[name] = value
+                self.changes[attribute_name] = value
 
     def __eq__(self, other):
         return (
