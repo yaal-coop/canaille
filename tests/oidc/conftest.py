@@ -1,10 +1,10 @@
 import datetime
 
 import pytest
-from canaille.models import AuthorizationCode
-from canaille.models import Client
-from canaille.models import Consent
-from canaille.models import Token
+from canaille.oidc.models import AuthorizationCode
+from canaille.oidc.models import Client
+from canaille.oidc.models import Consent
+from canaille.oidc.models import Token
 from werkzeug.security import gen_salt
 
 

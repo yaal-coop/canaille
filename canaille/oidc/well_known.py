@@ -5,7 +5,7 @@ from flask import current_app
 from flask import jsonify
 
 
-bp = Blueprint("home", __name__)
+bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
 
 @bp.route("/oauth-authorization-server")

@@ -2,7 +2,7 @@ import datetime
 
 import wtforms
 from canaille.flaskutils import permissions_needed
-from canaille.models import Client
+from canaille.oidc.models import Client
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -15,14 +15,16 @@ from flask_wtf import FlaskForm
 from werkzeug.security import gen_salt
 
 
-bp = Blueprint("clients", __name__)
+bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 
 
 @bp.route("/")
 @permissions_needed("manage_oidc")
 def index(user):
     clients = Client.filter()
-    return render_template("admin/client_list.html", clients=clients, menuitem="admin")
+    return render_template(
+        "oidc/admin/client_list.html", clients=clients, menuitem="admin"
+    )
 
 
 def client_audiences():
@@ -138,14 +140,18 @@ def add(user):
     form = ClientAdd(request.form or None)
 
     if not request.form:
-        return render_template("admin/client_add.html", form=form, menuitem="admin")
+        return render_template(
+            "oidc/admin/client_add.html", form=form, menuitem="admin"
+        )
 
     if not form.validate():
         flash(
             _("The client has not been added. Please check your information."),
             "error",
         )
-        return render_template("admin/client_add.html", form=form, menuitem="admin")
+        return render_template(
+            "oidc/admin/client_add.html", form=form, menuitem="admin"
+        )
 
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now()
@@ -179,7 +185,7 @@ def add(user):
         "success",
     )
 
-    return redirect(url_for("admin.clients.edit", client_id=client_id))
+    return redirect(url_for("oidc.clients.edit", client_id=client_id))
 
 
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
@@ -204,7 +210,7 @@ def client_edit(client_id):
 
     if not request.form:
         return render_template(
-            "admin/client_edit.html", form=form, client=client, menuitem="admin"
+            "oidc/admin/client_edit.html", form=form, client=client, menuitem="admin"
         )
 
     if not form.validate():
@@ -240,7 +246,7 @@ def client_edit(client_id):
         )
 
     return render_template(
-        "admin/client_edit.html", form=form, client=client, menuitem="admin"
+        "oidc/admin/client_edit.html", form=form, client=client, menuitem="admin"
     )
 
 
@@ -251,4 +257,4 @@ def client_delete(client_id):
         "success",
     )
     client.delete()
-    return redirect(url_for("admin.clients.index"))
+    return redirect(url_for("oidc.clients.index"))

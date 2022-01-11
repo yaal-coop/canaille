@@ -1,6 +1,6 @@
 from canaille.flaskutils import user_needed
-from canaille.models import Client
-from canaille.models import Consent
+from canaille.oidc.models import Client
+from canaille.oidc.models import Consent
 from flask import Blueprint
 from flask import flash
 from flask import redirect
@@ -9,7 +9,7 @@ from flask_babel import gettext
 from flask_themer import render_template
 
 
-bp = Blueprint("consents", __name__)
+bp = Blueprint("consents", __name__, url_prefix="/consent")
 
 
 @bp.route("/")
@@ -20,7 +20,10 @@ def consents(user):
     client_dns = list({t.oauthClient for t in consents})
     clients = {dn: Client.get(dn) for dn in client_dns}
     return render_template(
-        "consent_list.html", consents=consents, clients=clients, menuitem="consents"
+        "oidc/user/consent_list.html",
+        consents=consents,
+        clients=clients,
+        menuitem="consents",
     )
 
 
@@ -36,4 +39,4 @@ def delete(user, consent_id):
         consent.revoke()
         flash(gettext("The access has been revoked"), "success")
 
-    return redirect(url_for("consents.consents"))
+    return redirect(url_for("oidc.consents.consents"))

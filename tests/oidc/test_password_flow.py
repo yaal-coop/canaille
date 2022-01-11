@@ -1,4 +1,4 @@
-from canaille.models import Token
+from canaille.oidc.models import Token
 
 from . import client_credentials
 

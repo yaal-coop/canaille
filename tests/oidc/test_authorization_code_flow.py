@@ -3,9 +3,9 @@ from urllib.parse import urlsplit
 
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
-from canaille.models import AuthorizationCode
-from canaille.models import Consent
-from canaille.models import Token
+from canaille.oidc.models import AuthorizationCode
+from canaille.oidc.models import Consent
+from canaille.oidc.models import Token
 from werkzeug.security import gen_salt
 
 from . import client_credentials

@@ -15,7 +15,7 @@ from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
 
-from .oauth2utils import setup_oauth
+from .oidc.oauth2utils import setup_oauth
 
 
 def setup_config(app, config=None, validate=True):
@@ -214,19 +214,15 @@ def setup_themer(app):
 def setup_blueprints(app):
     import canaille.account
     import canaille.admin
-    import canaille.consents
     import canaille.groups
-    import canaille.oauth
-    import canaille.well_known
+    import canaille.oidc
 
     app.url_map.strict_slashes = False
 
     app.register_blueprint(canaille.account.bp)
-    app.register_blueprint(canaille.admin.bp, url_prefix="/admin")
-    app.register_blueprint(canaille.groups.bp, url_prefix="/groups")
-    app.register_blueprint(canaille.oauth.bp, url_prefix="/oauth")
-    app.register_blueprint(canaille.consents.bp, url_prefix="/consent")
-    app.register_blueprint(canaille.well_known.bp, url_prefix="/.well-known")
+    app.register_blueprint(canaille.admin.bp)
+    app.register_blueprint(canaille.groups.bp)
+    app.register_blueprint(canaille.oidc.bp)
 
 
 def create_app(config=None, validate=True):

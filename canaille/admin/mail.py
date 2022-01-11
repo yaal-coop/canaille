@@ -15,7 +15,7 @@ from wtforms.validators import DataRequired
 from wtforms.validators import Email
 
 
-bp = Blueprint("mails", __name__)
+bp = Blueprint("mails", __name__, url_prefix="/mail")
 
 
 class MailTestForm(FlaskForm):
@@ -43,7 +43,7 @@ def mail_index(user):
         else:
             flash(_("The test invitation mail has been sent correctly"), "error")
 
-    return render_template("admin/mails.html", form=form)
+    return render_template("mail/admin.html", form=form)
 
 
 @bp.route("/password-init.html")

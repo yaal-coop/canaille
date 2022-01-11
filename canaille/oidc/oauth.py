@@ -15,11 +15,11 @@ from flask_babel import gettext
 from flask_babel import lazy_gettext as _
 from flask_themer import render_template
 
-from .flaskutils import current_user
-from .forms import FullLoginForm
+from ..flaskutils import current_user
+from ..forms import FullLoginForm
+from ..models import User
 from .models import Client
 from .models import Consent
-from .models import User
 from .oauth2utils import authorization
 from .oauth2utils import DEFAULT_JWT_ALG
 from .oauth2utils import DEFAULT_JWT_KTY
@@ -29,7 +29,7 @@ from .oauth2utils import require_oauth
 from .oauth2utils import RevocationEndpoint
 
 
-bp = Blueprint("oauth", __name__)
+bp = Blueprint("oauth", __name__, url_prefix="/oauth")
 
 CLAIMS = {
     "profile": (
@@ -110,7 +110,7 @@ def authorize():
             return jsonify(response)
 
         return render_template(
-            "authorize.html",
+            "oidc/user/authorize.html",
             user=user,
             grant=grant,
             client=client,

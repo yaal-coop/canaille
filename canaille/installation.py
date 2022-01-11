@@ -7,10 +7,10 @@ from cryptography.hazmat.backends import default_backend as crypto_default_backe
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
-from .models import AuthorizationCode
-from .models import Client
-from .models import Consent
-from .models import Token
+from .oidc.models import AuthorizationCode
+from .oidc.models import Client
+from .oidc.models import Consent
+from .oidc.models import Token
 
 
 class InstallationException(Exception):

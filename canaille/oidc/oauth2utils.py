@@ -21,11 +21,11 @@ from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from flask import current_app
 
+from ..models import Group
+from ..models import User
 from .models import AuthorizationCode
 from .models import Client
-from .models import Group
 from .models import Token
-from .models import User
 
 DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"

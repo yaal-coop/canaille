@@ -2,7 +2,7 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 from authlib.jose import jwt
-from canaille.models import Token
+from canaille.oidc.models import Token
 
 
 def test_oauth_implicit(testclient, slapd_connection, user, client):

@@ -13,7 +13,7 @@ from .forms import GroupForm
 from .forms import unique_group
 from .models import Group
 
-bp = Blueprint("groups", __name__)
+bp = Blueprint("groups", __name__, url_prefix="/groups")
 
 
 @bp.route("/")

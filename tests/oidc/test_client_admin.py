@@ -1,4 +1,4 @@
-from canaille.models import Client
+from canaille.oidc.models import Client
 
 
 def test_no_logged_no_access(testclient):

@@ -1,8 +1,8 @@
 import datetime
 
 from canaille.commands import cli
-from canaille.models import AuthorizationCode
-from canaille.models import Token
+from canaille.oidc.models import AuthorizationCode
+from canaille.oidc.models import Token
 from werkzeug.security import gen_salt
 
 

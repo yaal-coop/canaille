@@ -1,9 +1,8 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-from canaille.models import AuthorizationCode
-from canaille.models import Client
-from canaille.models import Token
+from canaille.oidc.models import AuthorizationCode
+from canaille.oidc.models import Token
 
 from . import client_credentials
 
