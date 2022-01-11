@@ -15,7 +15,7 @@ from wtforms.validators import DataRequired
 from wtforms.validators import Email
 
 
-bp = Blueprint("mails", __name__, url_prefix="/mail")
+bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
 class MailTestForm(FlaskForm):
@@ -33,7 +33,7 @@ class MailTestForm(FlaskForm):
     )
 
 
-@bp.route("/", methods=["GET", "POST"])
+@bp.route("/mail", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def mail_index(user):
     form = MailTestForm(request.form or None)
@@ -46,7 +46,7 @@ def mail_index(user):
     return render_template("mail/admin.html", form=form)
 
 
-@bp.route("/password-init.html")
+@bp.route("/mail/password-init.html")
 @permissions_needed("manage_oidc")
 def password_init_html(user):
     base_url = url_for("account.index", _external=True)
@@ -69,7 +69,7 @@ def password_init_html(user):
     )
 
 
-@bp.route("/password-init.txt")
+@bp.route("/mail/password-init.txt")
 @permissions_needed("manage_oidc")
 def password_init_txt(user):
     base_url = url_for("account.index", _external=True)
@@ -88,7 +88,7 @@ def password_init_txt(user):
     )
 
 
-@bp.route("/reset.html")
+@bp.route("/mail/reset.html")
 @permissions_needed("manage_oidc")
 def password_reset_html(user):
     base_url = url_for("account.index", _external=True)
@@ -111,7 +111,7 @@ def password_reset_html(user):
     )
 
 
-@bp.route("/reset.txt")
+@bp.route("/mail/reset.txt")
 @permissions_needed("manage_oidc")
 def password_reset_txt(user):
     base_url = url_for("account.index", _external=True)
@@ -130,7 +130,7 @@ def password_reset_txt(user):
     )
 
 
-@bp.route("/<uid>/<email>/invitation.html")
+@bp.route("/mail/<uid>/<email>/invitation.html")
 @permissions_needed("manage_oidc")
 def invitation_html(user, uid, email):
     base_url = url_for("account.index", _external=True)
@@ -153,7 +153,7 @@ def invitation_html(user, uid, email):
     )
 
 
-@bp.route("/<uid>/<email>/invitation.txt")
+@bp.route("/mail/<uid>/<email>/invitation.txt")
 @permissions_needed("manage_oidc")
 def invitation_txt(user, uid, email):
     base_url = url_for("account.index", _external=True)
