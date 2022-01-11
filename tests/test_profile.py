@@ -58,6 +58,14 @@ def test_edition(
     with testclient.app.app_context():
         assert logged_user.check_password("correct horse battery staple")
 
+    logged_user.uid = ["user"]
+    logged_user.cn = ["John (johnny) Doe"]
+    logged_user.sn = ["Doe"]
+    logged_user.mail = ["john@doe.com"]
+    logged_user.givenName = None
+    logged_user.jpegPhoto = None
+    logged_user.save(conn=slapd_connection)
+
 
 def test_field_permissions_none(
     testclient, slapd_server, slapd_connection, logged_user
