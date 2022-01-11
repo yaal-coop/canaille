@@ -17,14 +17,6 @@ from flask_themer import Themer
 
 from .oauth2utils import setup_oauth
 
-try:  # pragma: no cover
-    import sentry_sdk
-    from sentry_sdk.integrations.flask import FlaskIntegration
-
-    SENTRY = True
-except Exception:
-    SENTRY = False
-
 
 def setup_config(app, config=None, validate=True):
     import canaille.configuration
@@ -56,6 +48,21 @@ def setup_config(app, config=None, validate=True):
 
     if validate:
         canaille.configuration.validate(app.config)
+
+
+def setup_sentry(app):
+    if not app.config.get("SENTRY_DSN"):
+        return None
+
+    try:  # pragma: no cover
+        import sentry_sdk
+        from sentry_sdk.integrations.flask import FlaskIntegration
+
+    except Exception:
+        return None
+
+    sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
+    return sentry_sdk
 
 
 def setup_logging(app):
@@ -226,9 +233,7 @@ def create_app(config=None, validate=True):
     app = Flask(__name__)
     setup_config(app, config, validate)
 
-    if SENTRY and app.config.get("SENTRY_DSN"):
-        sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
-
+    sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
         setup_ldap_models(app)
@@ -282,7 +287,7 @@ def create_app(config=None, validate=True):
             return render_template("error.html", error=500), 500
 
     except Exception as exc:
-        if SENTRY and app.config.get("SENTRY_DSN"):
+        if sentry_sdk:
             sentry_sdk.capture_exception(exc)
         raise
 
