@@ -68,6 +68,9 @@ def test_authorization_code_flow(
         "groups": [],
     } == res.json
 
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
+
 
 def test_authorization_code_flow_preconsented(
     testclient, slapd_connection, logged_user, client, keypair, other_client
@@ -126,6 +129,9 @@ def test_authorization_code_flow_preconsented(
         "sub": "user",
         "groups": [],
     } == res.json
+
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
 
 
 def test_logout_login(testclient, slapd_connection, logged_user, client):
@@ -189,6 +195,9 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         "sub": "user",
         "groups": [],
     } == res.json
+
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
 
 
 def test_refresh_token(testclient, slapd_connection, logged_user, client):
@@ -316,6 +325,9 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     client.oauthTokenEndpointAuthMethod = "client_secret_basic"
     client.save(slapd_connection)
 
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
+
 
 def test_authorization_code_flow_when_consent_already_given(
     testclient, slapd_connection, logged_user, client
@@ -372,6 +384,9 @@ def test_authorization_code_flow_when_consent_already_given(
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
+
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
 
 
 def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
@@ -442,6 +457,9 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert "profile" in consents[0].oauthScope
     assert "groups" in consents[0].oauthScope
 
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
+
 
 def test_authorization_code_flow_but_user_cannot_use_oidc(
     testclient, slapd_connection, user, client, keypair, other_client
@@ -466,13 +484,17 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
     res = res.form.submit(status=302)
     res = res.follow(status=400)
 
+    for consent in Consent.filter(conn=slapd_connection):
+        consent.delete(conn=slapd_connection)
+
 
 def test_prompt_none(testclient, slapd_connection, logged_user, client):
-    Consent(
+    consent = Consent(
         oauthClient=client.dn,
         oauthSubject=logged_user.dn,
         oauthScope=["openid", "profile"],
-    ).save(conn=slapd_connection)
+    )
+    consent.save(conn=slapd_connection)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -488,14 +510,16 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
     assert res.location.startswith(client.oauthRedirectURIs[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
+    consent.delete(conn=slapd_connection)
 
 
 def test_prompt_not_logged(testclient, slapd_connection, user, client):
-    Consent(
+    consent = Consent(
         oauthClient=client.dn,
         oauthSubject=user.dn,
         oauthScope=["openid", "profile"],
-    ).save(conn=slapd_connection)
+    )
+    consent.save(conn=slapd_connection)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -509,6 +533,7 @@ def test_prompt_not_logged(testclient, slapd_connection, user, client):
         status=200,
     )
     assert "login_required" == res.json.get("error")
+    consent.delete(conn=slapd_connection)
 
 
 def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):

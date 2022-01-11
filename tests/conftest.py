@@ -408,16 +408,6 @@ def logged_moderator(moderator, testclient):
     return moderator
 
 
-@pytest.fixture(autouse=True)
-def cleanups(slapd_connection):
-    yield
-    try:
-        for consent in Consent.filter(conn=slapd_connection):
-            consent.delete(conn=slapd_connection)
-    except Exception:
-        pass
-
-
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
