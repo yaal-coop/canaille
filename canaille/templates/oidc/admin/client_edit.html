@@ -31,7 +31,7 @@
                     <div class="field">
                         <label>{% trans %}ID{% endtrans %}</label>
                         <div class="ui cornor labeled input">
-                            <input type="text" value="{{ client.oauthClientID }}" readonly name="oauthClientID">
+                            <input type="text" value="{{ client.client_id }}" readonly name="client_id">
                             <div class="ui corner label" title="{{ _("This field is not editable") }}">
                                 <i class="lock icon"></i>
                             </div>
@@ -40,7 +40,7 @@
                     <div class="field">
                         <label>{% trans %}Secret{% endtrans %}</label>
                         <div class="ui cornor labeled input">
-                            <input type="text" value="{{ client.oauthClientSecret }}" readonly name="oauthClientSecret">
+                            <input type="text" value="{{ client.secret }}" readonly name="secret">
                             <div class="ui corner label" title="{{ _("This field is not editable") }}">
                                 <i class="lock icon"></i>
                             </div>
@@ -49,7 +49,7 @@
                     <div class="field">
                         <label>{% trans %}Issued at{% endtrans %}</label>
                         <div class="ui cornor labeled input">
-                            <input type="text" value="{{ client.issue_date }}" readonly name="oauthIssueDate">
+                            <input type="text" value="{{ client.issue_date }}" readonly name="issue_date">
                             <div class="ui corner label" title="{{ _("This field is not editable") }}">
                                 <i class="lock icon"></i>
                             </div>

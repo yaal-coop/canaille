@@ -11,32 +11,32 @@ from werkzeug.security import gen_salt
 @pytest.fixture
 def client(app, slapd_connection, other_client):
     c = Client(
-        oauthClientID=gen_salt(24),
-        oauthClientName="Some client",
-        oauthClientContact="contact@mydomain.tld",
-        oauthClientURI="https://mydomain.tld",
-        oauthRedirectURIs=[
+        client_id=gen_salt(24),
+        name="Some client",
+        contact="contact@mydomain.tld",
+        uri="https://mydomain.tld",
+        redirect_uris=[
             "https://mydomain.tld/redirect1",
             "https://mydomain.tld/redirect2",
         ],
-        oauthLogoURI="https://mydomain.tld/logo.png",
-        oauthIssueDate=datetime.datetime.now(),
-        oauthClientSecret=gen_salt(48),
-        oauthGrantType=[
+        logo_uri="https://mydomain.tld/logo.png",
+        issue_date=datetime.datetime.now(),
+        secret=gen_salt(48),
+        grant_type=[
             "password",
             "authorization_code",
             "implicit",
             "hybrid",
             "refresh_token",
         ],
-        oauthResponseType=["code", "token", "id_token"],
-        oauthScope=["openid", "profile", "groups"],
-        oauthTermsOfServiceURI="https://mydomain.tld/tos",
-        oauthPolicyURI="https://mydomain.tld/policy",
-        oauthJWKURI="https://mydomain.tld/jwk",
-        oauthTokenEndpointAuthMethod="client_secret_basic",
+        response_type=["code", "token", "id_token"],
+        scope=["openid", "profile", "groups"],
+        tos_uri="https://mydomain.tld/tos",
+        policy_uri="https://mydomain.tld/policy",
+        jwk_uri="https://mydomain.tld/jwk",
+        token_endpoint_auth_method="client_secret_basic",
     )
-    c.oauthAudience = [c.dn, other_client.dn]
+    c.audience = [c.dn, other_client.dn]
     c.save(slapd_connection)
 
     return c
@@ -45,32 +45,32 @@ def client(app, slapd_connection, other_client):
 @pytest.fixture
 def other_client(app, slapd_connection):
     c = Client(
-        oauthClientID=gen_salt(24),
-        oauthClientName="Some other client",
-        oauthClientContact="contact@myotherdomain.tld",
-        oauthClientURI="https://myotherdomain.tld",
-        oauthRedirectURIs=[
+        client_id=gen_salt(24),
+        name="Some other client",
+        contact="contact@myotherdomain.tld",
+        uri="https://myotherdomain.tld",
+        redirect_uris=[
             "https://myotherdomain.tld/redirect1",
             "https://myotherdomain.tld/redirect2",
         ],
-        oauthLogoURI="https://myotherdomain.tld/logo.png",
-        oauthIssueDate=datetime.datetime.now(),
-        oauthClientSecret=gen_salt(48),
-        oauthGrantType=[
+        logo_uri="https://myotherdomain.tld/logo.png",
+        issue_date=datetime.datetime.now(),
+        secret=gen_salt(48),
+        grant_type=[
             "password",
             "authorization_code",
             "implicit",
             "hybrid",
             "refresh_token",
         ],
-        oauthResponseType=["code", "token", "id_token"],
-        oauthScope=["openid", "profile", "groups"],
-        oauthTermsOfServiceURI="https://myotherdomain.tld/tos",
-        oauthPolicyURI="https://myotherdomain.tld/policy",
-        oauthJWKURI="https://myotherdomain.tld/jwk",
-        oauthTokenEndpointAuthMethod="client_secret_basic",
+        response_type=["code", "token", "id_token"],
+        scope=["openid", "profile", "groups"],
+        tos_uri="https://myotherdomain.tld/tos",
+        policy_uri="https://myotherdomain.tld/policy",
+        jwk_uri="https://myotherdomain.tld/jwk",
+        token_endpoint_auth_method="client_secret_basic",
     )
-    c.oauthAudience = [c.dn]
+    c.audience = [c.dn]
     c.save(slapd_connection)
 
     return c
@@ -79,18 +79,18 @@ def other_client(app, slapd_connection):
 @pytest.fixture
 def authorization(app, slapd_connection, user, client):
     a = AuthorizationCode(
-        oauthCode="my-code",
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthRedirectURI="https://foo.bar/callback",
-        oauthResponseType="code",
-        oauthScope="openid profile",
-        oauthNonce="nonce",
-        oauthAuthorizationDate=datetime.datetime(2020, 1, 1),
-        oauthAuthorizationLifetime="3600",
-        oauthCodeChallenge="challenge",
-        oauthCodeChallengeMethod="method",
-        oauthRevokation="",
+        code="my-code",
+        client=client.dn,
+        subject=user.dn,
+        redirect_uri="https://foo.bar/callback",
+        response_type="code",
+        scope="openid profile",
+        nonce="nonce",
+        issue_date=datetime.datetime(2020, 1, 1),
+        lifetime="3600",
+        challenge="challenge",
+        challenge_method="method",
+        revokation="",
     )
     a.save(slapd_connection)
     return a
@@ -99,15 +99,15 @@ def authorization(app, slapd_connection, user, client):
 @pytest.fixture
 def token(slapd_connection, client, user):
     t = Token(
-        oauthAccessToken=gen_salt(48),
-        oauthAudience=[client.dn],
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthTokenType=None,
-        oauthRefreshToken=gen_salt(48),
-        oauthScope="openid profile",
-        oauthIssueDate=datetime.datetime.now(),
-        oauthTokenLifetime=str(3600),
+        access_token=gen_salt(48),
+        audience=[client.dn],
+        client=client.dn,
+        subject=user.dn,
+        token_type=None,
+        refresh_token=gen_salt(48),
+        scope="openid profile",
+        issue_date=datetime.datetime.now(),
+        lifetime=str(3600),
     )
     t.save(slapd_connection)
     return t
@@ -116,10 +116,10 @@ def token(slapd_connection, client, user):
 @pytest.fixture
 def consent(slapd_connection, client, user):
     t = Consent(
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
-        oauthScope=["openid", "profile"],
-        oauthIssueDate=datetime.datetime.now(),
+        client=client.dn,
+        subject=user.dn,
+        scope=["openid", "profile"],
+        issue_date=datetime.datetime.now(),
     )
     t.save(slapd_connection)
     return t

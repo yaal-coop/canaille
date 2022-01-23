@@ -15,29 +15,29 @@ def test_invalid_client_edition(testclient, logged_admin):
 
 def test_client_list(testclient, client, logged_admin):
     res = testclient.get("/admin/client")
-    assert client.oauthClientName in res.text
+    assert client.name in res.text
 
 
 def test_client_add(testclient, logged_admin, slapd_connection):
     res = testclient.get("/admin/client/add")
     data = {
-        "oauthClientName": "foobar",
-        "oauthClientContact": "foo@bar.com",
-        "oauthClientURI": "https://foo.bar",
-        "oauthRedirectURIs": ["https:/foo.bar/callback"],
-        "oauthGrantType": ["password", "authorization_code"],
-        "oauthScope": "openid profile",
-        "oauthResponseType": ["code", "token"],
-        "oauthTokenEndpointAuthMethod": "none",
-        "oauthLogoURI": "https://foo.bar/logo.png",
-        "oauthTermsOfServiceURI": "https://foo.bar/tos",
-        "oauthPolicyURI": "https://foo.bar/policy",
-        "oauthSoftwareID": "software",
-        "oauthSoftwareVersion": "1",
-        "oauthJWK": "jwk",
-        "oauthJWKURI": "https://foo.bar/jwks.json",
-        "oauthAudience": [],
-        "oauthPreconsent": False,
+        "name": "foobar",
+        "contact": "foo@bar.com",
+        "uri": "https://foo.bar",
+        "redirect_uris": ["https:/foo.bar/callback"],
+        "grant_type": ["password", "authorization_code"],
+        "scope": "openid profile",
+        "response_type": ["code", "token"],
+        "token_endpoint_auth_method": "none",
+        "logo_uri": "https://foo.bar/logo.png",
+        "tos_uri": "https://foo.bar/tos",
+        "policy_uri": "https://foo.bar/policy",
+        "software_id": "software",
+        "software_version": "1",
+        "jwk": "jwk",
+        "jwk_uri": "https://foo.bar/jwks.json",
+        "audience": [],
+        "preconsent": False,
     }
     for k, v in data.items():
         res.form[k].force_value(v)
@@ -45,39 +45,39 @@ def test_client_add(testclient, logged_admin, slapd_connection):
     res = res.form.submit(status=302, name="action", value="edit")
     res = res.follow(status=200)
 
-    client_id = res.forms["readonly"]["oauthClientID"].value
+    client_id = res.forms["readonly"]["client_id"].value
     client = Client.get(client_id, conn=slapd_connection)
-    data["oauthAudience"] = [client.dn]
+    data["audience"] = [client.dn]
     for k, v in data.items():
         client_value = getattr(client, k)
-        if k == "oauthScope":
+        if k == "scope":
             assert v == " ".join(client_value)
-        elif k == "oauthPreconsent":
+        elif k == "preconsent":
             assert v is False
         else:
             assert v == client_value
 
 
 def test_client_edit(testclient, client, logged_admin, slapd_connection, other_client):
-    res = testclient.get("/admin/client/edit/" + client.oauthClientID)
+    res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
-        "oauthClientName": "foobar",
-        "oauthClientContact": "foo@bar.com",
-        "oauthClientURI": "https://foo.bar",
-        "oauthRedirectURIs": ["https:/foo.bar/callback"],
-        "oauthGrantType": ["password", "authorization_code"],
-        "oauthScope": "openid profile",
-        "oauthResponseType": ["code", "token"],
-        "oauthTokenEndpointAuthMethod": "none",
-        "oauthLogoURI": "https://foo.bar/logo.png",
-        "oauthTermsOfServiceURI": "https://foo.bar/tos",
-        "oauthPolicyURI": "https://foo.bar/policy",
-        "oauthSoftwareID": "software",
-        "oauthSoftwareVersion": "1",
-        "oauthJWK": "jwk",
-        "oauthJWKURI": "https://foo.bar/jwks.json",
-        "oauthAudience": [client.dn, other_client.dn],
-        "oauthPreconsent": True,
+        "name": "foobar",
+        "contact": "foo@bar.com",
+        "uri": "https://foo.bar",
+        "redirect_uris": ["https:/foo.bar/callback"],
+        "grant_type": ["password", "authorization_code"],
+        "scope": "openid profile",
+        "response_type": ["code", "token"],
+        "token_endpoint_auth_method": "none",
+        "logo_uri": "https://foo.bar/logo.png",
+        "tos_uri": "https://foo.bar/tos",
+        "policy_uri": "https://foo.bar/policy",
+        "software_id": "software",
+        "software_version": "1",
+        "jwk": "jwk",
+        "jwk_uri": "https://foo.bar/jwks.json",
+        "audience": [client.dn, other_client.dn],
+        "preconsent": True,
     }
     for k, v in data.items():
         res.forms["clientadd"][k].force_value(v)
@@ -90,9 +90,9 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection, other_c
     client = Client.get(client.dn, conn=slapd_connection)
     for k, v in data.items():
         client_value = getattr(client, k)
-        if k == "oauthScope":
+        if k == "scope":
             assert v == " ".join(client_value)
-        elif k == "oauthPreconsent":
+        elif k == "preconsent":
             assert v is True
         else:
             assert v == client_value
@@ -100,4 +100,4 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection, other_c
     res.forms["clientadd"].submit(status=302, name="action", value="delete").follow(
         status=200
     )
-    assert Client.get(client.oauthClientID, conn=slapd_connection) is None
+    assert Client.get(client.client_id, conn=slapd_connection) is None

@@ -5,7 +5,7 @@ import pytest
 from canaille import create_app
 from canaille.commands import cli
 from canaille.installation import setup_schemas
-from canaille.ldaputils import LDAPObject
+from canaille.ldap_backend.ldapobject import LDAPObject
 from flask_webtest import TestApp
 from slapd import Slapd
 from tests.conftest import CustomSlapdObject

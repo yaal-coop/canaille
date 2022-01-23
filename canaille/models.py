@@ -2,7 +2,7 @@ import ldap.filter
 from flask import current_app
 from flask import session
 
-from .ldaputils import LDAPObject
+from .ldap_backend.ldapobject import LDAPObject
 
 
 class User(LDAPObject):

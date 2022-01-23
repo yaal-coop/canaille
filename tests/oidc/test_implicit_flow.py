@@ -6,8 +6,8 @@ from canaille.oidc.models import Token
 
 
 def test_oauth_implicit(testclient, slapd_connection, user, client):
-    client.oauthGrantType = ["token"]
-    client.oauthTokenEndpointAuthMethod = "none"
+    client.grant_type = ["token"]
+    client.token_endpoint_auth_method = "none"
 
     client.save(slapd_connection)
 
@@ -15,7 +15,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
         "/oauth/authorize",
         params=dict(
             response_type="token",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
         ),
@@ -31,7 +31,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)
 
     access_token = params["access_token"][0]
@@ -49,16 +49,16 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
         "groups": [],
     } == res.json
 
-    client.oauthGrantType = ["code"]
-    client.oauthTokenEndpointAuthMethod = "client_secret_basic"
+    client.grant_type = ["code"]
+    client.token_endpoint_auth_method = "client_secret_basic"
     client.save(slapd_connection)
 
 
 def test_oidc_implicit(
     testclient, keypair, slapd_connection, user, client, other_client
 ):
-    client.oauthGrantType = ["token id_token"]
-    client.oauthTokenEndpointAuthMethod = "none"
+    client.grant_type = ["token id_token"]
+    client.token_endpoint_auth_method = "none"
 
     client.save(slapd_connection)
 
@@ -66,7 +66,7 @@ def test_oidc_implicit(
         "/oauth/authorize",
         params=dict(
             response_type="id_token token",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
         ),
@@ -82,7 +82,7 @@ def test_oidc_implicit(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)
 
     access_token = params["access_token"][0]
@@ -93,7 +93,7 @@ def test_oidc_implicit(
     claims = jwt.decode(id_token, keypair[1])
     assert user.uid[0] == claims["sub"]
     assert user.cn[0] == claims["name"]
-    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
+    assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -108,16 +108,16 @@ def test_oidc_implicit(
         "groups": [],
     } == res.json
 
-    client.oauthGrantType = ["code"]
-    client.oauthTokenEndpointAuthMethod = "client_secret_basic"
+    client.grant_type = ["code"]
+    client.token_endpoint_auth_method = "client_secret_basic"
     client.save(slapd_connection)
 
 
 def test_oidc_implicit_with_group(
     testclient, keypair, slapd_connection, user, client, foo_group, other_client
 ):
-    client.oauthGrantType = ["token id_token"]
-    client.oauthTokenEndpointAuthMethod = "none"
+    client.grant_type = ["token id_token"]
+    client.token_endpoint_auth_method = "none"
 
     client.save(slapd_connection)
 
@@ -125,7 +125,7 @@ def test_oidc_implicit_with_group(
         "/oauth/authorize",
         params=dict(
             response_type="id_token token",
-            client_id=client.oauthClientID,
+            client_id=client.client_id,
             scope="openid profile groups",
             nonce="somenonce",
         ),
@@ -141,7 +141,7 @@ def test_oidc_implicit_with_group(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.oauthRedirectURIs[0])
+    assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)
 
     access_token = params["access_token"][0]
@@ -152,7 +152,7 @@ def test_oidc_implicit_with_group(
     claims = jwt.decode(id_token, keypair[1])
     assert user.uid[0] == claims["sub"]
     assert user.cn[0] == claims["name"]
-    assert [client.oauthClientID, other_client.oauthClientID] == claims["aud"]
+    assert [client.client_id, other_client.client_id] == claims["aud"]
     assert ["foo"] == claims["groups"]
 
     res = testclient.get(
@@ -168,6 +168,6 @@ def test_oidc_implicit_with_group(
         "groups": ["foo"],
     } == res.json
 
-    client.oauthGrantType = ["code"]
-    client.oauthTokenEndpointAuthMethod = "client_secret_basic"
+    client.grant_type = ["code"]
+    client.token_endpoint_auth_method = "client_secret_basic"
     client.save(slapd_connection)

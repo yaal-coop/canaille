@@ -25,25 +25,25 @@
         {% if consents %}
             <div class="ui centered cards">
                 {% for consent in consents %}
-                    {% set client = clients[consent.oauthClient] %}
+                    {% set client = clients[consent.client] %}
                     <div class="ui card">
                         <div class="content">
-                            {% if client.oauthLogoURI %}
-                                <img class="right floated mini ui image" src="{{ client.oauthLogoURI }}">
+                            {% if client.logo_uri %}
+                                <img class="right floated mini ui image" src="{{ client.logo_uri }}">
                             {% endif %}
-                            {% if client.oauthClientURI %}
-                                <a href="{{ client.oauthClientURI }}" class="header">{{ client.oauthClientName }}</a>
+                            {% if client.uri %}
+                                <a href="{{ client.uri }}" class="header">{{ client.name }}</a>
                             {% else %}
-                                <div class="header">{{ client.oauthClientName }}</div>
+                                <div class="header">{{ client.name }}</div>
                             {% endif %}
                             <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
-                            {% if consent.oauthRevokationDate %}
+                            {% if consent.revokation_date %}
                                 <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
                             {% endif %}
                             <div class="description">
                                 <p>{% trans %}Has access to:{% endtrans %}</p>
                                 <ul>
-                                    {% for s in consent.oauthScope %}
+                                    {% for s in consent.scope %}
                                         <li>{{ s }}</li>
                                     {% endfor %}
                                 </ul>

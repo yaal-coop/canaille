@@ -5,7 +5,7 @@ import pytest
 import slapd
 from canaille import create_app
 from canaille.installation import setup_ldap_tree
-from canaille.ldaputils import LDAPObject
+from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import Group
 from canaille.models import User
 from cryptography.hazmat.backends import default_backend as crypto_default_backend

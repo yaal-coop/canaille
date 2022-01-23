@@ -85,15 +85,15 @@ def authorize():
     # CONSENT
 
     consents = Consent.filter(
-        oauthClient=client.dn,
-        oauthSubject=user.dn,
+        client=client.dn,
+        subject=user.dn,
     )
-    consents = [c for c in consents if not c.oauthRevokationDate]
+    consents = [c for c in consents if not c.revokation_date]
     consent = consents[0] if consents else None
 
     if request.method == "GET":
         if client.preconsent or (
-            consent and all(scope in set(consent.oauthScope) for scope in scopes)
+            consent and all(scope in set(consent.scope) for scope in scopes)
         ):
             return authorization.create_authorization_response(grant_user=user.dn)
 
@@ -132,14 +132,14 @@ def authorize():
             grant_user = user.dn
 
             if consent:
-                consent.oauthScope = list(set(scopes + consents[0].oauthScope))
+                consent.scope = list(set(scopes + consents[0].scope))
             else:
 
                 consent = Consent(
-                    oauthClient=client.dn,
-                    oauthSubject=user.dn,
-                    oauthScope=scopes,
-                    oauthIssueDate=datetime.datetime.now(),
+                    client=client.dn,
+                    subject=user.dn,
+                    scope=scopes,
+                    issue_date=datetime.datetime.now(),
                 )
             consent.save()
 
@@ -206,8 +206,6 @@ def jwks():
 @require_oauth("profile")
 def userinfo():
     current_app.logger.debug("userinfo endpoint request: %s", request.args)
-    response = generate_user_info(
-        current_token.oauthSubject, current_token.oauthScope[0]
-    )
+    response = generate_user_info(current_token.subject, current_token.scope[0])
     current_app.logger.debug("userinfo endpoint response: %s", response)
     return jsonify(response)

@@ -1,20 +1,18 @@
 import datetime
-import logging
 import os
 from logging.config import dictConfig
 
-import ldap
 import toml
 from flask import Flask
 from flask import g
 from flask import request
 from flask import session
 from flask_babel import Babel
-from flask_babel import gettext as _
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
 
+from .ldap_backend.backend import init_backend
 from .oidc.oauth2utils import setup_oauth
 
 
@@ -94,79 +92,6 @@ def setup_logging(app):
     )
 
 
-def setup_ldap_models(app):
-    from .ldaputils import LDAPObject
-    from .models import Group
-    from .models import User
-
-    LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
-
-    user_base = app.config["LDAP"]["USER_BASE"]
-    if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
-        user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
-    User.base = user_base
-    User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
-
-    group_base = app.config["LDAP"].get("GROUP_BASE")
-    if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
-        group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
-    Group.base = group_base
-    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBTUE", Group.DEFAULT_ID_ATTRIBUTE)
-
-
-def setup_ldap_connection(app):
-    try:  # pragma: no-cover
-        if request.endpoint == "static":
-            return
-    except RuntimeError:
-        pass
-
-    try:
-        g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
-        if app.config["LDAP"].get("TIMEOUT"):
-            g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
-        g.ldap.simple_bind_s(
-            app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
-        )
-
-    except ldap.SERVER_DOWN:
-        message = _("Could not connect to the LDAP server '{uri}'").format(
-            uri=app.config["LDAP"]["URI"]
-        )
-        logging.error(message)
-        return (
-            render_template(
-                "error.html",
-                error=500,
-                icon="database",
-                debug=app.config.get("DEBUG", False),
-                description=message,
-            ),
-            500,
-        )
-
-    except ldap.INVALID_CREDENTIALS:
-        message = _("LDAP authentication failed with user '{user}'").format(
-            user=app.config["LDAP"]["BIND_DN"]
-        )
-        logging.error(message)
-        return (
-            render_template(
-                "error.html",
-                error=500,
-                icon="key",
-                debug=app.config.get("DEBUG", False),
-                description=message,
-            ),
-            500,
-        )
-
-
-def teardown_ldap_connection(app):
-    if "ldap" in g:
-        g.ldap.unbind_s()
-
-
 def setup_jinja(app):
     app.jinja_env.filters["len"] = len
 
@@ -232,21 +157,12 @@ def create_app(config=None, validate=True):
     sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
-        setup_ldap_models(app)
+        init_backend(app)
         setup_oauth(app)
         setup_blueprints(app)
         setup_jinja(app)
         setup_babel(app)
         setup_themer(app)
-
-        @app.before_request
-        def before_request():
-            return setup_ldap_connection(app)
-
-        @app.after_request
-        def after_request(response):
-            teardown_ldap_connection(app)
-            return response
 
         @app.before_request
         def make_session_permanent():

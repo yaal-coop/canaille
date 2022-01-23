@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="ui segment">
-        {% if client.oauthLogoURI %}
-            <img class="ui centered tiny image" src="{{ client.oauthLogoURI }}" alt="{{ client.oauthClientName }}">
+        {% if client.logo_uri %}
+            <img class="ui centered tiny image" src="{{ client.logo_uri }}" alt="{{ client.name }}">
         {% endif %}
 
-        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.oauthClientName) }}</h3>
+        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.name) }}</h3>
 
         <div class="ui divided items">
             {% for claim in grant.request.scope.split(" ") %}

@@ -6,13 +6,13 @@ def test_consent_list(
     testclient, slapd_connection, client, consent, logged_user, token
 ):
     res = testclient.get("/consent", status=200)
-    assert client.oauthClientName in res.text
+    assert client.name in res.text
     assert not token.revoked
 
     res = testclient.get(f"/consent/delete/{consent.cn[0]}", status=302)
 
     res = res.follow(status=200)
-    assert client.oauthClientName not in res.text
+    assert client.name not in res.text
 
     token.reload(conn=slapd_connection)
     assert token.revoked
