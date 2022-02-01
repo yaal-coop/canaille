@@ -529,7 +529,7 @@ msgstr ""
 
 #: canaille/templates/error.html:19
 msgid "Bad request"
-msgstr "Mauvaise reqûete"
+msgstr "Mauvaise requête"
 
 #: canaille/templates/error.html:21
 msgid "Unauthorized"
