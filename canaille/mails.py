@@ -41,7 +41,7 @@ def send_password_reset_mail(user):
 
     return send_email(
         subject=subject,
-        recipient=user.mail,
+        recipient=user.mail[0],
         text=text_body,
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
@@ -81,7 +81,7 @@ def send_password_initialization_mail(user):
 
     return send_email(
         subject=subject,
-        recipient=user.mail,
+        recipient=user.mail[0],
         text=text_body,
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
