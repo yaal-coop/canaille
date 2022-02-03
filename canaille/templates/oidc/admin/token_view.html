@@ -16,7 +16,7 @@
                 <tr>
                     <td>{{ _("Client") }}</td>
                     <td>
-                        <a href="{{ url_for("oidc.clients.edit", client_id=token_client.dn) }}">
+                        <a href="{{ url_for("oidc.clients.edit", client_id=token_client.client_id) }}">
                             {{ token_client.name }}
                         </a>
                     </td>
@@ -24,7 +24,7 @@
                 <tr>
                     <td>{{ _("Subject") }}</td>
                     <td>
-                        <a href="{{ url_for("account.profile_edition", username=token_user.uid) }}">
+                        <a href="{{ url_for("account.profile_edition", username=token_user.uid[0]) }}">
                             {{ token_user.name }} - {{ token_user.uid[0] }}
                         </a>
                     </td>

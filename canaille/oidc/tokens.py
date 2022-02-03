@@ -13,9 +13,11 @@ bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 @permissions_needed("manage_oidc")
 def index(user):
     tokens = Token.filter()
-    return render_template(
-        "oidc/admin/token_list.html", tokens=tokens, menuitem="admin"
+    items = (
+        (token, Client.get(token.client), User.get(dn=token.subject))
+        for token in tokens
     )
+    return render_template("oidc/admin/token_list.html", items=items, menuitem="admin")
 
 
 @bp.route("/<token_id>", methods=["GET", "POST"])

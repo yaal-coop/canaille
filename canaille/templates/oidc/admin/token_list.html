@@ -20,11 +20,23 @@
             <th>{% trans %}Subject{% endtrans %}</th>
             <th>{% trans %}Created{% endtrans %}</th>
         </thead>
-        {% for token in tokens %}
+        {% for token, client, user in items %}
             <tr>
-                <td><a href="{{ url_for('oidc.tokens.view', token_id=token.access_token) }}">{{ token.access_token }}</a></td>
-                <td><a href="{{ url_for('oidc.clients.edit', client_id=token.client_id) }}">{{ token.client_id }}</a></td>
-                <td>{{ token.subject }}</td>
+                <td>
+                    <a href="{{ url_for('oidc.tokens.view', token_id=token.access_token) }}">
+                        {{ token.access_token }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ url_for('oidc.clients.edit', client_id=client.client_id) }}">
+                        {{ client.name }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ url_for("account.profile_edition", username=user.uid[0]) }}">
+                        {{ user.uid[0] }}
+                    </a>
+                </td>
                 <td>{{ token.issue_date }}</td>
             </tr>
         {% endfor %}
