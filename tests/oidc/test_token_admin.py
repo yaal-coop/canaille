@@ -13,5 +13,4 @@ def test_token_list(testclient, token, logged_admin):
 
 def test_token_view(testclient, token, logged_admin):
     res = testclient.get("/admin/token/" + token.access_token)
-    for attr in token.may + token.must:
-        assert attr in res.text
+    assert token.access_token in res.text
