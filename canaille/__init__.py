@@ -25,6 +25,7 @@ def setup_config(app, config=None, validate=True):
         {
             "SESSION_COOKIE_NAME": "canaille",
             "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
+            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth2utils.generate_access_token",
         }
     )
     if config:
