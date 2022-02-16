@@ -12,5 +12,5 @@ def test_token_list(testclient, token, logged_admin):
 
 
 def test_token_view(testclient, token, logged_admin):
-    res = testclient.get("/admin/token/" + token.access_token)
+    res = testclient.get("/admin/token/" + token.token_id)
     assert token.access_token in res.text

@@ -30,7 +30,7 @@ def test_authorization_code_flow(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     res = testclient.post(
@@ -46,7 +46,7 @@ def test_authorization_code_flow(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
 
@@ -92,7 +92,7 @@ def test_authorization_code_flow_preconsented(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     res = testclient.post(
@@ -108,7 +108,7 @@ def test_authorization_code_flow_preconsented(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
 
@@ -164,7 +164,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     res = testclient.post(
@@ -180,7 +180,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
 
@@ -217,7 +217,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     res = testclient.post(
@@ -232,7 +232,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         status=200,
     )
     access_token = res.json["access_token"]
-    old_token = Token.get(access_token, conn=slapd_connection)
+    old_token = Token.get(access_token=access_token, conn=slapd_connection)
     assert old_token is not None
     assert not old_token.revokation_date
 
@@ -246,7 +246,7 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
         status=200,
     )
     access_token = res.json["access_token"]
-    new_token = Token.get(access_token, conn=slapd_connection)
+    new_token = Token.get(access_token=access_token, conn=slapd_connection)
     assert new_token is not None
     old_token.reload(slapd_connection)
     assert old_token.revokation_date
@@ -289,7 +289,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     res = testclient.post(
@@ -306,7 +306,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
     )
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
 
@@ -350,7 +350,7 @@ def test_authorization_code_flow_when_consent_already_given(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     consents = Consent.filter(
@@ -410,7 +410,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     consents = Consent.filter(
@@ -448,7 +448,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     consents = Consent.filter(

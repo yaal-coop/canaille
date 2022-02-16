@@ -22,7 +22,7 @@
         </thead>
         {% for authorization in authorizations %}
             <tr>
-                <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.code) }}">{{ authorization.code }}</a></td>
+                <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.code }}</a></td>
                 <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client_id) }}">{{ authorization.client_id }}</a></td>
                 <td>{{ authorization.subject }}</td>
                 <td>{{ authorization.issue_date }}</td>

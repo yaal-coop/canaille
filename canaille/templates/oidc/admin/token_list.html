@@ -23,7 +23,7 @@
         {% for token, client, user in items %}
             <tr>
                 <td>
-                    <a href="{{ url_for('oidc.tokens.view', token_id=token.access_token) }}">
+                    <a href="{{ url_for('oidc.tokens.view', token_id=token.token_id) }}">
                         {{ token.access_token }}
                     </a>
                 </td>

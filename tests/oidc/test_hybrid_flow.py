@@ -34,11 +34,11 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token is not None
 
     res = testclient.get(
@@ -74,11 +74,11 @@ def test_oidc_hybrid(
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token is not None
 
     id_token = params["id_token"][0]
