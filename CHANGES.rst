@@ -3,6 +3,44 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+[0.0.4] - 2022-02-16
+====================
+
+Added
+*****
+
+- Client preauthorization :pr:`11`
+- LDAP permissions check with the check command :pr:`12`
+- Update consents when a scope required is larger than the scope of an already
+  given consent :pr:`13`
+- Theme customization :pr:`15`
+- Logging configuration :pr:`16`
+- Installation command :pr:`17`
+- Invitation links :pr:`18`
+- Advanced permissions :pr:`20`
+- An option to not use OIDC :pr:`23`
+- Disable some features when no SMTP server is configured :pr:`24`
+- Login placeholder dynamically generated according to the configuration :pr:`25`
+- Added an option to tune object IDs :pr:`26`
+- Avatar support :pr:`27`
+- Dynamical and configurable JWT claims :pr:`28`
+- UI improvemnts :pr:`29`
+- Invitation links expiration :pr:`30`
+- Invitees can choose their IDs :pr:`31`
+- LDAP backend refactoring :pr:`35`
+
+Fixed
+*****
+
+- Fixed ghost members in a group :pr:`14`
+- Fixed email sender names :pr:`19`
+- Fixed filter being not escaped :pr:`21`
+- Demo script good practices :pr:`32`
+- Binary path for Debian :pr:`33`
+- Last name was not mandatory in the forms while this was mandatory
+  in the LDAP server :pr:`34`
+- Spelling typos :pr:`36`
+
 [0.0.3] - 2021-10-13
 ====================
 
