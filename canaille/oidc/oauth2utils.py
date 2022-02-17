@@ -19,6 +19,7 @@ from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
+from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
 from werkzeug.security import gen_salt
 
@@ -312,7 +313,10 @@ class CodeChallenge(_CodeChallenge):
 
 
 def generate_access_token(client, grant_type, user, scope):
-    return gen_salt(48)
+    audience = [Client.get(dn).client_id for dn in client.audience]
+    return generate_id_token(
+        {}, generate_user_info(user, scope), aud=audience, **get_jwt_config(grant_type)
+    )
 
 
 authorization = AuthorizationServer()
