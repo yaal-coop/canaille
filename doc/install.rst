@@ -13,46 +13,50 @@ The installation of canaille consist in several steps, some of which you can do 
 Get the code
 ============
 
-
 As the moment there is no distributon package for canaille so it can be installed with the ``pip`` package manager.
-Choose a path to store your configuration, for instance ``/etc/canaille`` and then copy the sample configuration there.
+Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
 
 .. code-block:: console
 
-    sudo mkdir /etc/canaille
-    sudo virtualenv /etc/canaille
-    sudo /etc/canaille/bin/pip install canaille
+    export CANAILLE_INSTALL_DIR=/opt/canaille
+    sudo mkdir --parents "$CANAILLE_INSTALL_DIR"
+    sudo virtualenv "$CANAILLE_INSTALL_DIR/env"
+    sudo "$CANAILLE_INSTALL_DIR/env/bin/pip" install canaille
 
 Configuration
 =============
 
-Choose a path where to store your configuration file.
-By default canaille will look for ``/etc/canaille/config.toml`` by you can pass any configuration path with the ``CONFIG`` environment variable.
+Choose a path where to store your configuration file. You can pass any configuration path with the ``CONFIG`` environment variable.
 
 .. code-block:: console
 
-    sudo cp canaille/conf/config.sample.toml /etc/canaille/config.toml
-    sudo cp canaille/conf/openid-configuration.sample.json /etc/canaille/openid-configuration.json
+    export CANAILLE_CONF_DIR=/etc/canaille
+    git clone https://gitlab.com/yaal/canaille.git ~/canaille
+    sudo mkdir --parents "$CANAILLE_CONF_DIR"
+    sudo cp ~/canaille/conf/config.sample.toml "$CANAILLE_CONF_DIR/config.toml"
+    sudo cp ~/canaille/conf/openid-configuration.sample.json "$CANAILLE_CONF_DIR/openid-configuration.json"
 
 You should then edit your configuration file to adapt the values to your needs.
 
+Installation
+============
 
 Automatic installation
-======================
+----------------------
 
 A few steps of the installation process can be automatized.
 If you want to install the LDAP schemas or generate the keypair yourself, then you can jump to the manual installation section.
 
 .. code-block:: console
 
-    env CONFIG=$CANAILLE_CONF_DIR/config.toml /opt/canaille/bin/canaille install
+    env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" install
 
 
 Manual installation
-===================
+-------------------
 
 LDAP schemas
-------------
+^^^^^^^^^^^^
 
 As of OpenLDAP 2.4, two configuration methods are available:
 
@@ -62,27 +66,26 @@ As of OpenLDAP 2.4, two configuration methods are available:
 Depending on the configuration method you use with your OpenLDAP installation, you need to chose how to add the canaille schemas:
 
 Old fashion: Copy the schemas in your filesystem
-````````````````````````````````````````````````
+""""""""""""""""""""""""""""""""""""""""""""""""
 
 .. code-block:: console
-
-    test -d /etc/openldap/schema && sudo cp schemas/* /etc/openldap/schema
-    test -d /etc/ldap/schema && sudo cp schemas/* /etc/ldap/schema
+    test -d /etc/openldap/schema && sudo cp ~/canaille/schemas/* /etc/openldap/schema
+    test -d /etc/ldap/schema && sudo cp ~/canaille/schemas/* /etc/ldap/schema
     sudo service slapd restart
 
 New fashion: Use slapadd to add the schemas
-```````````````````````````````````````````
+"""""""""""""""""""""""""""""""""""""""""""
 
 Be careful to stop your ldap server before running ``slapadd``
 
 .. code-block:: console
 
     sudo service slapd stop
-    sudo -u openldap slapadd -n0 -l schemas/*.ldif
+    sudo -u openldap slapadd -n0 -l ~/canaille/schemas/*.ldif
     sudo service slapd start
 
 Generate the key pair
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 You must generate a keypair that canaille will use to sign tokens.
 You can customize those commands, as long as they match the ``JWT`` section of your configuration file.
@@ -93,19 +96,19 @@ You can customize those commands, as long as they match the ``JWT`` section of y
     sudo openssl rsa -in "$CANAILLE_CONF_DIR/private.pem" -pubout -outform PEM -out "$CANAILLE_CONF_DIR/public.pem"
 
 Configuration check
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 After a manual installation, you can check your configuration file with the following command:
 
 .. code-block:: console
 
-    env CONFIG=$CANAILLE_CONF_DIR/config.toml /opt/canaille/bin/canaille check
+    env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" check
 
 Application service
 ===================
 
 Finally you have to run canaille in a WSGI application server.
-Here are some WSGI server configuration examples you can pick:
+Here are some WSGI server configuration examples you can pick. Do not forget to update the paths.
 
 uwsgi
 -----
@@ -113,7 +116,6 @@ uwsgi
 .. code-block:: console
 
    [uwsgi]
-    hook-post-fork=chdir:/opt/canaille/src
     virtualenv=/opt/canaille/env
     socket=/opt/canaille/conf/uwsgi.sock
     plugin=python3
@@ -130,7 +132,7 @@ uwsgi
     worker-reload-mercy=600
     buffer-size=65535
     disable-write-exception = true
-    env = CONFIG=/opt/canaille/conf/config.toml
+    env = CONFIG=/etc/canaille/config.toml
 
 Webserver
 =========
@@ -212,4 +214,4 @@ expired tokens and authorization codes with:
 
 .. code-block:: console
 
-    env CONFIG=/etc/canaille/config.toml FASK_APP=canaille /opt/canaille/bin/canaille clean
+    env CONFIG="$CANAILLE_CONF_DIR/config.toml" FASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
