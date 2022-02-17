@@ -20,7 +20,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token is not None
 
     res = testclient.get(
@@ -57,7 +57,7 @@ def test_password_flow_post(testclient, slapd_connection, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token, conn=slapd_connection)
     assert token is not None
 
     res = testclient.get(

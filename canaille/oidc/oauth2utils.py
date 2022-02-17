@@ -107,6 +107,7 @@ def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
     now = datetime.datetime.now()
     code = AuthorizationCode(
+        authorization_code_id=gen_salt(48),
         code=code,
         subject=request.user,
         client=request.client.dn,
@@ -222,6 +223,7 @@ def query_client(client_id):
 def save_token(token, request):
     now = datetime.datetime.now()
     t = Token(
+        token_id=gen_salt(48),
         type=token["token_type"],
         access_token=token["access_token"],
         issue_date=now,
@@ -237,7 +239,7 @@ def save_token(token, request):
 
 class BearerTokenValidator(_BearerTokenValidator):
     def authenticate_token(self, token_string):
-        return Token.get(token_string)
+        return Token.get(access_token=token_string)
 
     def request_invalid(self, request):
         return False

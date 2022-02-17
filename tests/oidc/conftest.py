@@ -79,6 +79,7 @@ def other_client(app, slapd_connection):
 @pytest.fixture
 def authorization(app, slapd_connection, user, client):
     a = AuthorizationCode(
+        authorization_code_id=gen_salt(48),
         code="my-code",
         client=client.dn,
         subject=user.dn,
@@ -99,6 +100,7 @@ def authorization(app, slapd_connection, user, client):
 @pytest.fixture
 def token(slapd_connection, client, user):
     t = Token(
+        token_id=gen_salt(48),
         access_token=gen_salt(48),
         audience=[client.dn],
         client=client.dn,

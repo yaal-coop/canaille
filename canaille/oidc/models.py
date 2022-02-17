@@ -77,8 +77,9 @@ class Client(LDAPObject, ClientMixin):
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
-    id = "oauthCode"
+    id = "oauthAuthorizationCodeID"
     attribute_table = {
+        "authorization_code_id": "oauthAuthorizationCodeID",
         "description": "description",
         "code": "oauthCode",
         "client": "oauthClient",
@@ -116,8 +117,9 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 class Token(LDAPObject, TokenMixin):
     object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
-    id = "oauthAccessToken"
+    id = "oauthTokenID"
     attribute_table = {
+        "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
         "description": "description",
         "client": "oauthClient",

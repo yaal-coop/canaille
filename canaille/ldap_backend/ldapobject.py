@@ -266,9 +266,9 @@ class LDAPObject:
         self.changes = {}
 
     @classmethod
-    def get(cls, dn=None, filter=None, conn=None):
+    def get(cls, dn=None, filter=None, conn=None, **kwargs):
         try:
-            return cls.filter(dn, filter, conn)[0]
+            return cls.filter(dn, filter, conn, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 

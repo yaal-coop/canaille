@@ -309,6 +309,24 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.36 NAME 'oauthPreconsent'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.37 NAME 'oauthTokenID'
+        DESC 'OAuth 2.0 token identifier'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.38 NAME 'oauthAuthorizationCodeID'
+        DESC 'OAuth 2.0 authorization code identifier'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -341,8 +359,9 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
         STRUCTURAL
-        MUST  oauthCode
+        MUST  oauthAuthorizationCodeID
         MAY ( description $
+              oauthCode $
               oauthClient $
               oauthSubject $
               oauthRedirectURI $
@@ -359,11 +378,12 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         DESC 'OAuth 2.0 Token'
         SUP top
         STRUCTURAL
-        MUST  oauthAccessToken
+        MUST  oauthTokenID
         MAY ( description $
               oauthClient $
               oauthSubject $
               oauthTokenType $
+              oauthAccessToken $
               oauthRefreshToken $
               oauthScope $
               oauthIssueDate $
