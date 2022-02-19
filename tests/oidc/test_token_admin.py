@@ -8,7 +8,7 @@ def test_no_admin_no_access(testclient, logged_user):
 
 def test_token_list(testclient, token, logged_admin):
     res = testclient.get("/admin/token")
-    assert token.access_token in res.text
+    assert token.token_id in res.text
 
 
 def test_token_view(testclient, token, logged_admin):

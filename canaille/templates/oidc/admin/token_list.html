@@ -13,9 +13,9 @@
 
 {% block content %}
 
-    <table class="ui table">
+    <table class="ui table" data-order="[[ 3, &quot;desc&quot; ]]">
         <thead>
-            <th>{% trans %}Token{% endtrans %}</th>
+            <th data-orderable="false">{% trans %}Token{% endtrans %}</th>
             <th>{% trans %}Client{% endtrans %}</th>
             <th>{% trans %}Subject{% endtrans %}</th>
             <th>{% trans %}Created{% endtrans %}</th>
@@ -24,7 +24,7 @@
             <tr>
                 <td>
                     <a href="{{ url_for('oidc.tokens.view', token_id=token.token_id) }}">
-                        {{ token.access_token }}
+                        {{ token.token_id }}
                     </a>
                 </td>
                 <td>
@@ -37,7 +37,7 @@
                         {{ user.uid[0] }}
                     </a>
                 </td>
-                <td>{{ token.issue_date }}</td>
+                <td data-order="{{ token.issue_date|timestamp }}">{{ token.issue_date }}</td>
             </tr>
         {% endfor %}
     </table>

@@ -13,19 +13,19 @@
 
 {% block content %}
 
-    <table class="ui table">
+    <table class="ui table" data-order="[[ 3, &quot;desc&quot; ]]">
         <thead>
-            <th>{% trans %}Token{% endtrans %}</th>
+            <th data-orderable="false">{% trans %}Code{% endtrans %}</th>
             <th>{% trans %}Client{% endtrans %}</th>
             <th>{% trans %}Subject{% endtrans %}</th>
             <th>{% trans %}Created{% endtrans %}</th>
         </thead>
         {% for authorization in authorizations %}
             <tr>
-                <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.code }}</a></td>
+                <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.authorization_code_id }}</a></td>
                 <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client_id) }}">{{ authorization.client_id }}</a></td>
                 <td>{{ authorization.subject }}</td>
-                <td>{{ authorization.issue_date }}</td>
+                <td data-order="{{ authorization.issue_date|timestamp }}>{{ authorization.issue_date }}</td>
             </tr>
         {% endfor %}
     </table>

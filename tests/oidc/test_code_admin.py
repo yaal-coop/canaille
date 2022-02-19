@@ -8,7 +8,7 @@ def test_no_admin_no_access(testclient, logged_user):
 
 def test_authorizaton_list(testclient, authorization, logged_admin):
     res = testclient.get("/admin/authorization")
-    assert authorization.code in res.text
+    assert authorization.authorization_code_id in res.text
 
 
 def test_authorizaton_view(testclient, authorization, logged_admin):

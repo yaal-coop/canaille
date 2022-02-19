@@ -94,7 +94,10 @@ def setup_logging(app):
 
 
 def setup_jinja(app):
+    from .flaskutils import timestamp
+
     app.jinja_env.filters["len"] = len
+    app.jinja_env.filters["timestamp"] = timestamp
 
 
 def setup_babel(app):

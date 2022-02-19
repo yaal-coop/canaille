@@ -1,3 +1,4 @@
+import datetime
 import logging
 from functools import wraps
 
@@ -86,3 +87,7 @@ def smtp_needed():
         return decorator
 
     return wrapper
+
+
+def timestamp(dt):
+    return datetime.datetime.timestamp(dt)
