@@ -181,20 +181,6 @@ def test_registration(testclient, slapd_connection, foo_group):
 
 def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
-        invitation = Invitation(
-            datetime.now().isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            foo_group.dn,
-        )
-        b64 = invitation.b64()
-
-    testclient.get(f"/register/{b64}/{hash}", status=200)
-
-
-def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
-    with testclient.app.app_context():
         now = datetime.now().isoformat()
         invitation1 = Invitation(
             now, "someoneelse", False, "someone@mydomain.tld", foo_group.dn
