@@ -12,7 +12,9 @@ bp = Blueprint("authorizations", __name__, url_prefix="/admin/authorization")
 def index(user):
     authorizations = AuthorizationCode.filter()
     return render_template(
-        "oidc/admin/authorization_list.html", authorizations=authorizations
+        "oidc/admin/authorization_list.html",
+        authorizations=authorizations,
+        menuitem="admin",
     )
 
 
