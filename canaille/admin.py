@@ -43,7 +43,7 @@ def mail_index(user):
         else:
             flash(_("The test invitation mail has been sent correctly"), "error")
 
-    return render_template("mail/admin.html", form=form)
+    return render_template("mail/admin.html", form=form, menuitem="admin")
 
 
 @bp.route("/mail/password-init.html")
