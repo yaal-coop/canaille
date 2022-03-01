@@ -26,7 +26,7 @@ def setup_ldap_models(app):
     if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
         group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     Group.base = group_base
-    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBTUE", Group.DEFAULT_ID_ATTRIBUTE)
+    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE)
 
 
 def setup_backend(app):
