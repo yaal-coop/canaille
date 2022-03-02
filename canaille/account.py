@@ -365,7 +365,7 @@ def profile_create(current_app, form):
         if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
             user["jpegPhoto"] = None
 
-    user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
+    user.cn = [f"{user.givenName[0]} {user.sn[0]}".strip()]
     user.save()
 
     if "groups" in form:

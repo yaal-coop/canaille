@@ -287,6 +287,35 @@ def test_user_creation_edition_and_deletion(
     assert "george" not in res.text
 
 
+def test_cn_setting_with_given_name_and_surname(
+    testclient, slapd_connection, logged_moderator
+):
+    res = testclient.get("/profile", status=200)
+    res.form["uid"] = "george"
+    res.form["givenName"] = "George"
+    res.form["sn"] = "Abitbol"
+    res.form["mail"] = "george@abitbol.com"
+
+    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+
+    with testclient.app.app_context():
+        george = User.get("george", conn=slapd_connection)
+        assert george.cn[0] == "George Abitbol"
+
+
+def test_cn_setting_with_surname_only(testclient, slapd_connection, logged_moderator):
+    res = testclient.get("/profile", status=200)
+    res.form["uid"] = "george"
+    res.form["sn"] = "Abitbol"
+    res.form["mail"] = "george@abitbol.com"
+
+    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+
+    with testclient.app.app_context():
+        george = User.get("george", conn=slapd_connection)
+        assert george.cn[0] == "Abitbol"
+
+
 def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_admin):
     User.ldap_object_classes(slapd_connection)
     u = User(
