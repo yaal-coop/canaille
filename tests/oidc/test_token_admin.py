@@ -14,3 +14,7 @@ def test_token_list(testclient, token, logged_admin):
 def test_token_view(testclient, token, logged_admin):
     res = testclient.get("/admin/token/" + token.token_id)
     assert token.access_token in res.text
+
+
+def test_token_not_found(testclient, logged_admin):
+    res = testclient.get("/admin/token/" + "yolo", status=404)

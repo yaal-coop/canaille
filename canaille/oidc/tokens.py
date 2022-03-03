@@ -2,6 +2,7 @@ from canaille.flaskutils import permissions_needed
 from canaille.models import User
 from canaille.oidc.models import Client
 from canaille.oidc.models import Token
+from flask import abort
 from flask import Blueprint
 from flask_themer import render_template
 
@@ -23,7 +24,7 @@ def index(user):
 @bp.route("/<token_id>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def view(user, token_id):
-    token = Token.get(token_id=token_id)
+    token = Token.get(token_id=token_id) or abort(404)
     token_client = Client.get(token.client)
     token_user = User.get(dn=token.subject)
     token_audience = [Client.get(aud) for aud in token.audience]
