@@ -248,6 +248,8 @@ def test_refresh_token(testclient, slapd_connection, logged_user, client):
     access_token = res.json["access_token"]
     new_token = Token.get(access_token=access_token, conn=slapd_connection)
     assert new_token is not None
+    assert old_token != new_token
+
     old_token.reload(slapd_connection)
     assert old_token.revokation_date
 
