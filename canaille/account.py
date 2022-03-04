@@ -303,6 +303,12 @@ def registration(data, hash):
     readable_fields, writable_fields = default_fields()
 
     form = profile_form(writable_fields, readable_fields)
+    if "groups" not in form and invitation.groups:
+        form["groups"] = wtforms.SelectMultipleField(
+            _("Groups"),
+            choices=[(group[1], group[0]) for group in Group.available_groups()],
+            render_kw={"readonly": "true"},
+        )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     if "readonly" in form["uid"].render_kw and invitation.uid_editable:

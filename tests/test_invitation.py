@@ -171,7 +171,7 @@ def test_registration(testclient, slapd_connection, foo_group):
             "someoneelse",
             False,
             "someone@mydomain.tld",
-            foo_group.dn,
+            [foo_group.dn],
         )
         b64 = invitation.b64()
         hash = invitation.profile_hash()
@@ -183,11 +183,11 @@ def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
     with testclient.app.app_context():
         now = datetime.now().isoformat()
         invitation1 = Invitation(
-            now, "someoneelse", False, "someone@mydomain.tld", foo_group.dn
+            now, "someoneelse", False, "someone@mydomain.tld", [foo_group.dn]
         )
         hash = invitation1.profile_hash()
         invitation2 = Invitation(
-            now, "anything", False, "someone@mydomain.tld", foo_group.dn
+            now, "anything", False, "someone@mydomain.tld", [foo_group.dn]
         )
         b64 = invitation2.b64()
 
@@ -201,7 +201,7 @@ def test_registration_invalid_data(testclient, slapd_connection, foo_group):
             "someoneelse",
             False,
             "someone@mydomain.tld",
-            foo_group.dn,
+            [foo_group.dn],
         )
         hash = invitation.profile_hash()
 
@@ -218,7 +218,7 @@ def test_registration_more_than_48_hours_after_invitation(
             "someoneelse",
             False,
             "someone@mydomain.tld",
-            foo_group.dn,
+            [foo_group.dn],
         )
         hash = invitation.profile_hash()
         b64 = invitation.b64()
@@ -233,7 +233,7 @@ def test_registration_no_password(testclient, slapd_connection, foo_group):
             "someoneelse",
             False,
             "someone@mydomain.tld",
-            foo_group.dn,
+            [foo_group.dn],
         )
         hash = invitation.profile_hash()
         b64 = invitation.b64()
@@ -262,7 +262,7 @@ def test_no_registration_if_logged_in(
             "someoneelse",
             False,
             "someone@mydomain.tld",
-            foo_group.dn,
+            [foo_group.dn],
         )
         hash = invitation.profile_hash()
         b64 = invitation.b64()
@@ -285,3 +285,41 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
     res = testclient.get("/profile")
     assert "Invite a user" not in res.text
     testclient.get("/invite", status=500, expect_errors=True)
+
+
+def test_groups_are_saved_even_when_user_does_not_have_read_permission(
+    testclient, slapd_connection, foo_group
+):
+    testclient.app.config["ACL"]["DEFAULT"]["READ"] = [
+        "uid"
+    ]  # remove groups from default read permissions
+
+    with testclient.app.app_context():
+        invitation = Invitation(
+            datetime.now().isoformat(),
+            "someoneelse",
+            False,
+            "someone@mydomain.tld",
+            [foo_group.dn],
+        )
+        b64 = invitation.b64()
+        hash = invitation.profile_hash()
+
+    res = testclient.get(f"/register/{b64}/{hash}", status=200)
+
+    assert res.form["groups"].value == [foo_group.dn]
+    assert res.form["groups"].attrs["readonly"]
+
+    res.form["password1"] = "whatever"
+    res.form["password2"] = "whatever"
+    res.form["givenName"] = "George"
+    res.form["sn"] = "Abitbol"
+
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    with testclient.app.app_context():
+        user = User.get("someoneelse", conn=slapd_connection)
+        user.load_groups(conn=slapd_connection)
+        foo_group.reload(slapd_connection)
+        assert user.groups == [foo_group]
