@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import freezegun
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from canaille.oidc.models import AuthorizationCode
@@ -200,70 +201,78 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         consent.delete(conn=slapd_connection)
 
 
-def test_refresh_token(testclient, slapd_connection, logged_user, client):
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id=client.client_id,
-            scope="profile",
-            nonce="somenonce",
-        ),
-        status=200,
-    )
+def test_refresh_token(testclient, slapd_connection, user, client):
+    with freezegun.freeze_time("2020-01-01 01:00:00"):
+        res = testclient.get(
+            "/oauth/authorize",
+            params=dict(
+                response_type="code",
+                client_id=client.client_id,
+                scope="profile",
+                nonce="somenonce",
+            ),
+            status=200,
+        )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+        res.form["login"] = "John (johnny) Doe"
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.follow()
+        res = res.form.submit(name="answer", value="accept", status=302)
 
-    assert res.location.startswith(client.redirect_uris[0])
-    params = parse_qs(urlsplit(res.location).query)
-    code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
-    assert authcode is not None
+        assert res.location.startswith(client.redirect_uris[0])
+        params = parse_qs(urlsplit(res.location).query)
+        code = params["code"][0]
+        authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
+        assert authcode is not None
 
-    res = testclient.post(
-        "/oauth/token",
-        params=dict(
-            grant_type="authorization_code",
-            code=code,
-            scope="profile",
-            redirect_uri=client.redirect_uris[0],
-        ),
-        headers={"Authorization": f"Basic {client_credentials(client)}"},
-        status=200,
-    )
-    access_token = res.json["access_token"]
-    old_token = Token.get(access_token=access_token, conn=slapd_connection)
-    assert old_token is not None
-    assert not old_token.revokation_date
+    with freezegun.freeze_time("2020-01-01 00:01:00"):
+        res = testclient.post(
+            "/oauth/token",
+            params=dict(
+                grant_type="authorization_code",
+                code=code,
+                scope="profile",
+                redirect_uri=client.redirect_uris[0],
+            ),
+            headers={"Authorization": f"Basic {client_credentials(client)}"},
+            status=200,
+        )
+        access_token = res.json["access_token"]
+        old_token = Token.get(access_token=access_token, conn=slapd_connection)
+        assert old_token is not None
+        assert not old_token.revokation_date
 
-    res = testclient.post(
-        "/oauth/token",
-        params=dict(
-            grant_type="refresh_token",
-            refresh_token=res.json["refresh_token"],
-        ),
-        headers={"Authorization": f"Basic {client_credentials(client)}"},
-        status=200,
-    )
-    access_token = res.json["access_token"]
-    new_token = Token.get(access_token=access_token, conn=slapd_connection)
-    assert new_token is not None
-    assert old_token != new_token
+    with freezegun.freeze_time("2020-01-01 00:02:00"):
+        res = testclient.post(
+            "/oauth/token",
+            params=dict(
+                grant_type="refresh_token",
+                refresh_token=res.json["refresh_token"],
+            ),
+            headers={"Authorization": f"Basic {client_credentials(client)}"},
+            status=200,
+        )
+        access_token = res.json["access_token"]
+        new_token = Token.get(access_token=access_token, conn=slapd_connection)
+        assert new_token is not None
+        assert old_token.access_token != new_token.access_token
 
-    old_token.reload(slapd_connection)
-    assert old_token.revokation_date
+        old_token.reload(slapd_connection)
+        assert old_token.revokation_date
 
-    res = testclient.get(
-        "/oauth/userinfo",
-        headers={"Authorization": f"Bearer {access_token}"},
-        status=200,
-    )
-    assert {
-        "name": "John (johnny) Doe",
-        "family_name": "Doe",
-        "sub": "user",
-        "groups": [],
-    } == res.json
+    with freezegun.freeze_time("2020-01-01 00:03:00"):
+        res = testclient.get(
+            "/oauth/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"},
+            status=200,
+        )
+        assert {
+            "name": "John (johnny) Doe",
+            "family_name": "Doe",
+            "sub": "user",
+            "groups": [],
+        } == res.json
 
 
 def test_code_challenge(testclient, slapd_connection, logged_user, client):

@@ -1,4 +1,3 @@
-from canaille.apputils import login_placeholder
 from canaille.models import User
 
 
