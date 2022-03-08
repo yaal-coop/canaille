@@ -3,6 +3,20 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+[0.0.6] - 2022-03-08
+====================
+
+Changed
+*******
+
+- Access token are JWT. :pr:`38`
+
+Fixed
+*****
+
+- Default groups on invitations :pr:`41`
+- Schemas are shipped within the canaille package :pr:`42`
+
 [0.0.5] - 2022-02-17
 ====================
 
@@ -10,6 +24,12 @@ Changed
 *******
 
 - LDAP model objects have new identifiers :pr:`37`
+
+Fixed
+*****
+
+- Admin menu dropdown display :pr:`39`
+- `GROUP_ID_ATTRIBUTE` configuration typo :pr:`40`
 
 [0.0.4] - 2022-02-16
 ====================
