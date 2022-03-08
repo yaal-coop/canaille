@@ -33,8 +33,8 @@ Choose a path where to store your configuration file. You can pass any configura
     export CANAILLE_CONF_DIR=/etc/canaille
     git clone https://gitlab.com/yaal/canaille.git ~/canaille
     sudo mkdir --parents "$CANAILLE_CONF_DIR"
-    sudo cp ~/canaille/conf/config.sample.toml "$CANAILLE_CONF_DIR/config.toml"
-    sudo cp ~/canaille/conf/openid-configuration.sample.json "$CANAILLE_CONF_DIR/openid-configuration.json"
+    sudo cp /opt/canaille/env/lib/python*/site-packages/canaille/conf/config.sample.toml "$CANAILLE_CONF_DIR/config.toml"
+    sudo cp /opt/canaille/env/lib/python*/site-packages/canaille/conf/openid-configuration.sample.json "$CANAILLE_CONF_DIR/openid-configuration.json"
 
 You should then edit your configuration file to adapt the values to your needs.
 
@@ -69,8 +69,8 @@ Old fashion: Copy the schemas in your filesystem
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 .. code-block:: console
-    test -d /etc/openldap/schema && sudo cp ~/canaille/schemas/* /etc/openldap/schema
-    test -d /etc/ldap/schema && sudo cp ~/canaille/schemas/* /etc/ldap/schema
+    test -d /etc/openldap/schema && sudo cp /opt/canaille/env/lib/python*/site-packages/canaille/schemas/* /etc/openldap/schema
+    test -d /etc/ldap/schema && sudo cp /opt/canaille/env/lib/python*/site-packages/canaille/schemas/* /etc/ldap/schema
     sudo service slapd restart
 
 New fashion: Use slapadd to add the schemas
@@ -81,7 +81,7 @@ Be careful to stop your ldap server before running ``slapadd``
 .. code-block:: console
 
     sudo service slapd stop
-    sudo -u openldap slapadd -n0 -l ~/canaille/schemas/*.ldif
+    sudo -u openldap slapadd -n0 -l /opt/canaille/env/lib/python*/site-packages/canaille/schemas/*.ldif
     sudo service slapd start
 
 Generate the key pair
@@ -117,7 +117,7 @@ uwsgi
 
    [uwsgi]
     virtualenv=/opt/canaille/env
-    socket=/opt/canaille/conf/uwsgi.sock
+    socket=/etc/canaille/uwsgi.sock
     plugin=python3
     module=canaille:create_app()
     lazy-apps=true
@@ -126,7 +126,7 @@ uwsgi
     threads=10
     need-app=true
     thunder-lock=true
-    touch-chain-reload=/opt/canaille/conf/uwsgi-reload.fifo
+    touch-chain-reload=/etc/canaille/uwsgi-reload.fifo
     enable-threads=true
     reload-on-rss=1024
     worker-reload-mercy=600
@@ -202,7 +202,7 @@ Nginx
 
         location / {
             include uwsgi_params;
-            uwsgi_pass unix:/opt/canaille/config/uwsgi.sock;
+            uwsgi_pass unix:/etc/canaille/uwsgi.sock;
         }
     }
 

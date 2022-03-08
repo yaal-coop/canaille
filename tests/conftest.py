@@ -23,13 +23,16 @@ class CustomSlapdObject(slapd.Slapd):
                 "cosine.ldif",
                 "nis.ldif",
                 "inetorgperson.ldif",
-                "schemas/oauth2-openldap.ldif",
+                "canaille/ldap_backend/schemas/oauth2-openldap.ldif",
             )
         )
 
     def _ln_schema_files(self, *args, **kwargs):
         dir_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "schemas"
+            os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+            "canaille",
+            "ldap_backend",
+            "schemas",
         )
         super()._ln_schema_files(*args, **kwargs)
         super()._ln_schema_files(self.custom_schema_files, dir_path)

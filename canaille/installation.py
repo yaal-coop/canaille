@@ -71,7 +71,7 @@ def setup_keypair(config):
 
 
 def setup_schemas(config):
-    with open("schemas/oauth2-openldap.ldif") as fd:
+    with open("canaille/ldap_backend/schemas/oauth2-openldap.ldif") as fd:
         parser = ldif.LDIFRecordList(fd)
         parser.parse()
 
