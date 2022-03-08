@@ -14,7 +14,7 @@ slapd = slapd.Slapd(
         "cosine.ldif",
         "nis.ldif",
         "inetorgperson.ldif",
-        "../schemas/oauth2-openldap.ldif",
+        "../canaille/ldap_backend/schemas/oauth2-openldap.ldif",
         "ldif/memberof.ldif",
     ),
 )
