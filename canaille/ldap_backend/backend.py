@@ -21,12 +21,18 @@ def setup_ldap_models(app):
         user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     User.base = user_base
     User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
+    User.object_class = [
+        app.config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)
+    ]
 
     group_base = app.config["LDAP"].get("GROUP_BASE")
     if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
         group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
     Group.base = group_base
     Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE)
+    Group.object_class = [
+        app.config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS)
+    ]
 
 
 def setup_backend(app):

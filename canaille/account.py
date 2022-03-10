@@ -159,11 +159,7 @@ def firstlogin(uid):
 @bp.route("/users")
 @permissions_needed("manage_users")
 def users(user):
-    users = User.filter(
-        objectClass=current_app.config["LDAP"].get(
-            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
-        )
-    )
+    users = User.filter()
     return render_template("users.html", users=users, menuitem="users")
 
 
