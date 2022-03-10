@@ -159,7 +159,7 @@ def firstlogin(uid):
 @bp.route("/users")
 @permissions_needed("manage_users")
 def users(user):
-    users = User.filter()
+    users = User.all()
     return render_template("users.html", users=users, menuitem="users")
 
 

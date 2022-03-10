@@ -194,7 +194,7 @@ class Group(LDAPObject):
         except KeyError:
             return []
 
-        groups = cls.filter(conn=conn)
+        groups = cls.all(conn=conn)
         Group.ldap_object_attributes(conn=conn)
         return [(group[name_attribute][0], group.dn) for group in groups]
 

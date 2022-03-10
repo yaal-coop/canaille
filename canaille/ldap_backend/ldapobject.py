@@ -277,6 +277,10 @@ class LDAPObject:
             return None
 
     @classmethod
+    def all(cls, conn=None):
+        return cls.filter(conn=conn)
+
+    @classmethod
     def filter(cls, base=None, filter=None, conn=None, **kwargs):
         conn = conn or cls.ldap()
 

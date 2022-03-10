@@ -333,7 +333,7 @@ def cleanup_users_and_groups(slapd_connection):
     yield
     User.ldap_object_classes(slapd_connection)
     Group.ldap_object_classes(slapd_connection)
-    for user in User.filter(conn=slapd_connection):
+    for user in User.all(conn=slapd_connection):
         user.delete(conn=slapd_connection)
-    for group in Group.filter(conn=slapd_connection):
+    for group in Group.all(conn=slapd_connection):
         group.delete(conn=slapd_connection)

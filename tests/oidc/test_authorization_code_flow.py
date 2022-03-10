@@ -331,7 +331,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
 def test_authorization_code_flow_when_consent_already_given(
     testclient, slapd_connection, logged_user, client
 ):
-    assert not Consent.filter(conn=slapd_connection)
+    assert not Consent.all(conn=slapd_connection)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -388,7 +388,7 @@ def test_authorization_code_flow_when_consent_already_given(
 def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
     testclient, slapd_connection, logged_user, client
 ):
-    assert not Consent.filter(conn=slapd_connection)
+    assert not Consent.all(conn=slapd_connection)
 
     res = testclient.get(
         "/oauth/authorize",

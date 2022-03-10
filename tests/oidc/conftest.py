@@ -130,5 +130,5 @@ def consent(slapd_connection, client, user):
 @pytest.fixture(autouse=True)
 def cleanup_consents(slapd_connection):
     yield
-    for consent in Consent.filter(conn=slapd_connection):
+    for consent in Consent.all(conn=slapd_connection):
         consent.delete(conn=slapd_connection)
