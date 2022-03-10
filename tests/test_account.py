@@ -79,7 +79,6 @@ def test_user_without_password_first_login(testclient, slapd_connection):
     res = res.form.submit(status=302).follow(status=200)
 
     assert "First login" in res
-    u.delete(conn=slapd_connection)
 
 
 def test_user_deleted_in_session(testclient, slapd_connection):
