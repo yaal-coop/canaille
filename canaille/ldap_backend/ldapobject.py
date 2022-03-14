@@ -100,10 +100,6 @@ class LDAPObject:
             id = self.attrs[self.id][0]
         else:
             return None
-
-        # return f"{self.id}={id},{self.base},{self.root_dn}"
-        # return ldap.dn.dn2str(ldap.dn.str2dn(f"{self.id}={id},{self.base},{self.root_dn}"))
-        # return f"{self.id}={ldap.dn.escape_dn_chars(id)},{self.base},{self.root_dn}"
         return f"{self.id}={ldap.dn.escape_dn_chars(id.strip())},{self.base},{self.root_dn}"
 
     @classmethod
