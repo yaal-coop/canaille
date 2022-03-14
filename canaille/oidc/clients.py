@@ -21,14 +21,14 @@ bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 @bp.route("/")
 @permissions_needed("manage_oidc")
 def index(user):
-    clients = Client.filter()
+    clients = Client.all()
     return render_template(
         "oidc/admin/client_list.html", clients=clients, menuitem="admin"
     )
 
 
 def client_audiences():
-    return [(client.dn, client.name) for client in Client.filter()]
+    return [(client.dn, client.name) for client in Client.all()]
 
 
 class ClientAdd(FlaskForm):

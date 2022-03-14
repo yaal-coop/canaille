@@ -159,11 +159,7 @@ def firstlogin(uid):
 @bp.route("/users")
 @permissions_needed("manage_users")
 def users(user):
-    users = User.filter(
-        objectClass=current_app.config["LDAP"].get(
-            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
-        )
-    )
+    users = User.all()
     return render_template("users.html", users=users, menuitem="users")
 
 
@@ -306,7 +302,7 @@ def registration(data, hash):
     if "groups" not in form and invitation.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group[1], group[0]) for group in Group.available_groups()],
+            choices=[(group.dn, group.name) for group in Group.all()],
             render_kw={"readonly": "true"},
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
@@ -365,7 +361,7 @@ def profile_create(current_app, form):
         if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
             user["jpegPhoto"] = None
 
-    user.cn = [f"{user.givenName[0]} {user.sn[0]}"]
+    user.cn = [f"{user.givenName[0]} {user.sn[0]}".strip()]
     user.save()
 
     if "groups" in form:

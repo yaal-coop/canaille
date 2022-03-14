@@ -19,11 +19,7 @@ bp = Blueprint("groups", __name__, url_prefix="/groups")
 @bp.route("/")
 @permissions_needed("manage_groups")
 def groups(user):
-    groups = Group.filter(
-        objectClass=current_app.config["LDAP"].get(
-            "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
-        )
-    )
+    groups = Group.all()
     return render_template("groups.html", groups=groups, menuitem="groups")
 
 

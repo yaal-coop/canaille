@@ -27,11 +27,11 @@ def clean():
 
     setup_backend(current_app)
 
-    for t in Token.filter():
+    for t in Token.all():
         if t.is_expired():
             t.delete()
 
-    for a in AuthorizationCode.filter():
+    for a in AuthorizationCode.all():
         if a.is_expired():
             a.delete()
 

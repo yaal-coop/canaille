@@ -10,7 +10,7 @@ bp = Blueprint("authorizations", __name__, url_prefix="/admin/authorization")
 @bp.route("/")
 @permissions_needed("manage_oidc")
 def index(user):
-    authorizations = AuthorizationCode.filter()
+    authorizations = AuthorizationCode.all()
     return render_template(
         "oidc/admin/authorization_list.html",
         authorizations=authorizations,

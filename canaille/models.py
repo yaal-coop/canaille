@@ -184,23 +184,6 @@ class Group(LDAPObject):
     DEFAULT_NAME_ATTRIBUTE = "cn"
     DEFAULT_USER_FILTER = "member={user.dn}"
 
-    @classmethod
-    def available_groups(cls, conn=None):
-        conn = conn or cls.ldap()
-        try:
-            attribute = current_app.config["LDAP"].get(
-                "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
-            )
-            object_class = current_app.config["LDAP"].get(
-                "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
-            )
-        except KeyError:
-            return []
-
-        groups = cls.filter(objectClass=object_class, conn=conn)
-        Group.ldap_object_attributes(conn=conn)
-        return [(group[attribute][0], group.dn) for group in groups]
-
     @property
     def name(self):
         attribute = current_app.config["LDAP"].get(

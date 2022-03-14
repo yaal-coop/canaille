@@ -1,5 +1,6 @@
 import datetime
 
+import ldap.dn
 import ldap.filter
 from flask import g
 
@@ -99,8 +100,7 @@ class LDAPObject:
             id = self.attrs[self.id][0]
         else:
             return None
-
-        return f"{self.id}={id},{self.base},{self.root_dn}"
+        return f"{self.id}={ldap.dn.escape_dn_chars(id.strip())},{self.base},{self.root_dn}"
 
     @classmethod
     def initialize(cls, conn=None):
@@ -271,6 +271,10 @@ class LDAPObject:
             return cls.filter(dn, filter, conn, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
+
+    @classmethod
+    def all(cls, conn=None):
+        return cls.filter(conn=conn)
 
     @classmethod
     def filter(cls, base=None, filter=None, conn=None, **kwargs):
