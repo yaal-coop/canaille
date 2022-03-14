@@ -302,7 +302,7 @@ def registration(data, hash):
     if "groups" not in form and invitation.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group[1], group[0]) for group in Group.available_groups()],
+            choices=[(group.dn, group.name) for group in Group.all()],
             render_kw={"readonly": "true"},
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
