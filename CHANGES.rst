@@ -9,8 +9,15 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Fixed
 *****
 
-- Fixed spaces and escaped special char in ldap cn/dn :pr:`43`
+- Fixed dependencies
 
+[0.0.7] - 2022-03-15
+====================
+
+Fixed
+*****
+
+- Fixed spaces and escaped special char in ldap cn/dn :pr:`43`
 
 [0.0.6] - 2022-03-08
 ====================
