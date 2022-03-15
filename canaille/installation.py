@@ -7,6 +7,7 @@ from cryptography.hazmat.backends import default_backend as crypto_default_backe
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
+from .ldap_backend.backend import validate_configuration
 from .oidc.models import AuthorizationCode
 from .oidc.models import Client
 from .oidc.models import Consent
@@ -18,6 +19,7 @@ class InstallationException(Exception):
 
 
 def install(config):
+    validate_configuration(config)
     setup_ldap_tree(config)
     setup_keypair(config)
     setup_schemas(config)

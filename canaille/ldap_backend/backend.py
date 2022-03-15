@@ -3,6 +3,7 @@ import uuid
 
 import ldap
 from canaille.configuration import ConfigurationException
+from canaille.ldap_backend.ldapobject import LDAPObject
 from flask import g
 from flask import render_template
 from flask import request
@@ -122,6 +123,7 @@ def validate_configuration(config):
 
     try:
         User.ldap_object_classes(conn)
+        LDAPObject.ldap_object_attributes(conn)
         user = User(
             objectClass=["inetOrgPerson"],
             cn=f"canaille_{uuid.uuid4()}",

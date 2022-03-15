@@ -13,7 +13,14 @@ from tests.conftest import CustomSlapdObject
 
 @pytest.fixture
 def slapd_server_without_schemas():
-    slapd = Slapd()
+    slapd = Slapd(
+        schemas=(
+            "core.ldif",
+            "cosine.ldif",
+            "nis.ldif",
+            "inetorgperson.ldif",
+        )
+    )
     try:
         slapd.start()
         suffix_dc = slapd.suffix.split(",")[0][3:]
@@ -134,3 +141,16 @@ def test_install_schemas_command(
     assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     conn.unbind_s()
+
+
+def test_install_command_fail(
+    configuration_without_schema, slapd_server_without_schemas
+):
+    configuration_without_schema["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+
+    testclient = TestApp(create_app(configuration_without_schema, validate=False))
+    runner = testclient.app.test_cli_runner()
+    result = runner.invoke(cli, ["check"])
+
+    assert result.exception
+    assert "Could not connect to the LDAP server" in result.stdout
