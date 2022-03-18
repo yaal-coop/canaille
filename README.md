@@ -25,7 +25,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 ```bash
 cd demo
-./run.sh
+./run.sh # or `docker-compose up` to run it with docker
 ```
 
 # Documentation

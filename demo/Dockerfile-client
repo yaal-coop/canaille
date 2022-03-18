@@ -1,0 +1,13 @@
+FROM python:slim
+
+RUN \
+    apt update && \
+    apt -y upgrade
+
+RUN pip install \
+    flask \
+    "authlib<1.0.0" \
+    requests
+
+WORKDIR /opt/client
+ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]
