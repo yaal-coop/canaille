@@ -1,0 +1,16 @@
+FROM python:slim
+
+RUN \
+    apt update && \
+    apt -y upgrade && \
+    apt install -y \
+    gcc \
+    libsasl2-dev \
+    libldap2-dev \
+    libssl-dev
+
+COPY setup.cfg setup.py /opt/canaille/
+RUN pip install --editable /opt/canaille
+
+WORKDIR /opt/canaille
+ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]

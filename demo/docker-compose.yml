@@ -7,9 +7,66 @@ services:
     environment:
       - LDAP_DOMAIN=mydomain.tld
     volumes:
-      - ./ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-boostrap.ldif:ro
+      - ./ldif/memberof.ldif:/container/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif:ro
+      # memberof overlay is already present in openldap docker image but only for groupOfUniqueNames. We need to overwrite it (until canaille can handle groupOfUniqueNames).
+      # https://github.com/osixia/docker-openldap/blob/master/image/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif
       - ../canaille/ldap_backend/schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
+      - ./ldif/bootstrap-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-boostrap-tree.ldif:ro
+      - ./ldif/bootstrap-data.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/60-boostrap-data.ldif:ro
     command: --copy-service --loglevel debug
     ports:
       - 5389:389
       - 5636:636
+
+  canaille:
+    depends_on:
+      - ldap
+    build:
+      context: ..
+      dockerfile: demo/Dockerfile-canaille
+    environment:
+      - AUTHLIB_INSECURE_TRANSPORT=1
+      - FLASK_ENV=development
+      - CONFIG=/opt/canaille/conf/canaille.toml
+      - FLASK_APP=canaille
+    volumes:
+      - ../canaille:/opt/canaille/canaille
+      - ./conf-docker:/opt/canaille/conf
+    ports:
+      - 5000:5000
+
+  client1:
+    depends_on:
+      - canaille
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    environment:
+      - FLASK_ENV=development
+      - CONFIG=/opt/client/conf/client1.cfg
+      - FLASK_APP=client
+    volumes:
+      - ./client:/opt/client/client
+      - ./conf-docker:/opt/client/conf
+      - ../canaille/static:/opt/canaille/static
+    command: --port=5001
+    ports:
+      - 5001:5001
+
+  client2:
+    depends_on:
+      - canaille
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    environment:
+      - FLASK_ENV=development
+      - CONFIG=/opt/client/conf/client2.cfg
+      - FLASK_APP=client
+    volumes:
+      - ./client:/opt/client/client
+      - ./conf-docker:/opt/client/conf
+      - ../canaille/static:/opt/canaille/static
+    command: --port=5002
+    ports:
+      - 5002:5002

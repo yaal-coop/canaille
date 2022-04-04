@@ -1,8 +1,10 @@
 # Demo and development
 
-To check out how canaille looks like, or to start contributions, just run it with `./run.sh`!
+To check out how canaille looks like, or to start contributions, just run the demo:
+- with `docker-compose up` to install and run it in preconfigured docker containers
+- or with `./run.sh` to install it natively in a virtual environment and run it locally!
 
-# Prerequisites
+# Prerequisites for native demo installation
 
 You need to have `OpenLDAP` somewhere in your system.
 
@@ -10,7 +12,7 @@ You can either:
 - install it with your distro packages *(for instance `sudo apt install slapd ldap-utils` with Ubuntu)*.
   it is not required to launch the system ldap service.
 - have `docker` plus `docker-compose` installed on your system, the `./run.sh` script will download and
-  run a OpenLDAP image.
+  run an OpenLDAP image.
 
 canaille depends on [python-ldap](https://github.com/python-ldap/python-ldap), and this package needs
 some headers to be installed on your system to be built. For instance on Ubuntu you can install this:
@@ -32,15 +34,15 @@ sudo aa-complain /usr/sbin/slapd
 
 Then you have access to:
 
-- A canaille server at http://127.0.0.1:5000
-- A dummy client at http://127.0.0.1:5001
-- Another dummy client at http://127.0.0.1:5002
+- A canaille server at http://localhost:5000
+- A dummy client at http://localhost:5001
+- Another dummy client at http://localhost:5002
 
 The canaille server has some default users:
 
 - A regular user which login and password are **user**;
 - A moderator user which login and password are **moderator**;
-- An admin user which admin and password are **admin**.
-- A new user which admin and password are **new**. This user has no password yet,
-  and his first attempt to log-in will result in sending a password initialization
-  email.
+- An admin user which login and password are **admin**.
+- A new user which login is **james**. This user has no password yet,
+  and his first attempt to log-in would result in sending a password initialization
+  email (if a smtp server is configurated).
