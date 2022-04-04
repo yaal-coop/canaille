@@ -26,7 +26,7 @@
                 <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client_id) }}">{{ authorization.client_id }}</a></td>
                 <td>{{ authorization.subject }}</td>
                 <td data-order="{{ authorization.issue_date|timestamp }}>{{ authorization.issue_date }}</td>
-            </tr>
+                </tr>
         {% endfor %}
     </table>
 
