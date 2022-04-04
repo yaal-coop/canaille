@@ -68,6 +68,7 @@ Old fashion: Copy the schemas in your filesystem
 """"""""""""""""""""""""""""""""""""""""""""""""
 
 .. code-block:: console
+
     test -d /etc/openldap/schema && sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/ldap_backend/schemas/*" /etc/openldap/schema
     test -d /etc/ldap/schema && sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/ldap_backend/schemas/*" /etc/ldap/schema
     sudo service slapd restart
