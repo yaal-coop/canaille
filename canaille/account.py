@@ -133,7 +133,8 @@ def logout():
 @bp.route("/firstlogin/<uid>", methods=("GET", "POST"))
 def firstlogin(uid):
     user = User.get(uid)
-    user and not user.has_password() or abort(404)
+    if not user or user.has_password():
+        abort(404)
 
     form = ForgottenPasswordForm(request.form or None, data={"login": uid})
     if not request.form:
@@ -379,7 +380,8 @@ def profile_create(current_app, form):
 @bp.route("/profile/<username>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, username):
-    user.can_manage_users or username == user.uid[0] or abort(403)
+    if not user.can_manage_users and username != user.uid[0]:
+        abort(403)
 
     if request.method == "GET" or request.form.get("action") == "edit":
         return profile_edit(user, username)
@@ -388,7 +390,10 @@ def profile_edition(user, username):
         return profile_delete(user, username)
 
     if request.form.get("action") == "password-initialization-mail":
-        user = User.get(username) or abort(404)
+        user = User.get(username)
+        if not user:
+            abort(404)
+
         if send_password_initialization_mail(user):
             flash(
                 _(
@@ -402,7 +407,10 @@ def profile_edition(user, username):
         return profile_edit(user, username)
 
     if request.form.get("action") == "password-reset-mail":
-        user = User.get(username) or abort(404)
+        user = User.get(username)
+        if not user:
+            abort(404)
+
         if send_password_reset_mail(user):
             flash(
                 _(
@@ -422,9 +430,12 @@ def profile_edit(editor, username):
     menuitem = "profile" if username == editor.uid[0] else "users"
     fields = editor.read | editor.write
     if username != editor.uid[0]:
-        user = User.get(username) or abort(404)
+        user = User.get(username)
     else:
         user = editor
+
+    if not user:
+        abort(404)
 
     data = {
         k: getattr(user, k)[0]
@@ -488,7 +499,10 @@ def profile_delete(user, username):
     if self_deletion:
         user.logout()
     else:
-        user = User.get(username) or abort(404)
+        user = User.get(username)
+
+    if not user:
+        abort(404)
 
     flash(_("The user %(user)s has been sucessfuly deleted", user=user.name), "success")
     user.delete()
@@ -501,8 +515,11 @@ def profile_delete(user, username):
 @bp.route("/impersonate/<username>")
 @permissions_needed("impersonate_users")
 def impersonate(user, username):
-    u = User.get(username) or abort(404)
-    u.login()
+    puppet = User.get(username)
+    if not puppet:
+        abort(404)
+
+    puppet.login()
     return redirect(url_for("account.index"))
 
 

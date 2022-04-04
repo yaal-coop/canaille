@@ -201,7 +201,11 @@ def edit(user, client_id):
 
 
 def client_edit(client_id):
-    client = Client.get(client_id) or abort(404)
+    client = Client.get(client_id)
+
+    if not client:
+        abort(404)
+
     data = dict(client)
     data["scope"] = " ".join(data["scope"])
     data["redirect_uris"] = data["redirect_uris"][0]
@@ -251,7 +255,11 @@ def client_edit(client_id):
 
 
 def client_delete(client_id):
-    client = Client.get(client_id) or abort(404)
+    client = Client.get(client_id)
+
+    if not client:
+        abort(404)
+
     flash(
         _("The client has been deleted."),
         "success",

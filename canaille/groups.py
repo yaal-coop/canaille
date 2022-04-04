@@ -60,7 +60,10 @@ def create_group(user):
 @bp.route("/<groupname>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
 def group(user, groupname):
-    group = Group.get(groupname) or abort(404)
+    group = Group.get(groupname)
+
+    if not group:
+        abort(404)
 
     if request.method == "GET" or request.form.get("action") == "edit":
         return edit_group(group)

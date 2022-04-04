@@ -24,7 +24,11 @@ def index(user):
 @bp.route("/<token_id>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def view(user, token_id):
-    token = Token.get(token_id=token_id) or abort(404)
+    token = Token.get(token_id=token_id)
+
+    if not token:
+        abort(404)
+
     token_client = Client.get(token.client)
     token_user = User.get(dn=token.subject)
     token_audience = [Client.get(aud) for aud in token.audience]
