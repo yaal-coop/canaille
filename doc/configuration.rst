@@ -49,7 +49,11 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 
 :HIDE_INVALID_LOGINS:
     *Optional.* Wether to tell the users if a username exists during failing login attempts.
-    Defaults to ``True``. This may be a security issue to disable this, as this give a way to malicious people to guess who has an account on this canaille instance.
+    Defaults to ``True``. This may be a security issue to disable this, as this give a way to malicious people to if an account exists on this canaille instance.
+
+:ENABLE_PASSWORD_RECOVERY:
+    *Optional* Wether the password recovery feature is enabled or not.
+    Defaults to ``True``.
 
 :INVITATION_EXPIRATION:
     *Optional* The validity duration of registration invitations, in seconds.

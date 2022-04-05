@@ -40,6 +40,10 @@ OIDC_METADATA_FILE = "conf/openid-configuration.json"
 # wether the login exists or not.
 # HIDE_INVALID_LOGINS = false
 
+# If ENABLE_PASSWORD_RECOVERY is false, then users cannot ask for a password
+# recovery link by email. This option is true by default.
+# ENABLE_PASSWORD_RECOVERY = true
+
 # The validity duration of registration invitations, in seconds.
 # Defaults to 2 days
 # INVITATION_EXPIRATION = 172800
