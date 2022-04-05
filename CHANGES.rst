@@ -3,7 +3,16 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
-[0.0.7] - 2022-03-15
+[0.0.9] - 2022-xx-xx
+====================
+
+Added
+*****
+
+- ``DISABLE_PASSWORD_RESET`` configuration option to disable password recovery. :pr:`46`
+
+
+[0.0.8] - 2022-03-15
 ====================
 
 Fixed

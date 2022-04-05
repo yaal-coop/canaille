@@ -34,7 +34,7 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    {% if has_smtp %}
+                    {% if has_smtp and has_password_recovery %}
                         <a type="button" class="ui right floated button" href="{{ url_for('account.forgotten') }}">{{ _("Forgotten password") }}</a>
                     {% endif %}
                     <button type="submit" class="ui right floated primary button">{{ _("Continue") }}</button>

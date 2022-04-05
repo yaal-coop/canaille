@@ -526,6 +526,9 @@ def impersonate(user, username):
 @bp.route("/reset", methods=["GET", "POST"])
 @smtp_needed()
 def forgotten():
+    if not current_app.config.get("ENABLE_PASSWORD_RECOVERY", True):
+        abort(404)
+
     form = ForgottenPasswordForm(request.form)
     if not request.form:
         return render_template("forgotten-password.html", form=form)
@@ -562,6 +565,9 @@ def forgotten():
 
 @bp.route("/reset/<uid>/<hash>", methods=["GET", "POST"])
 def reset(uid, hash):
+    if not current_app.config.get("ENABLE_PASSWORD_RECOVERY", True):
+        abort(404)
+
     form = PasswordResetForm(request.form)
     user = User.get(uid)
 
