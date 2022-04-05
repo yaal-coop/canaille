@@ -2,6 +2,24 @@ from canaille.models import User
 from webtest import Upload
 
 
+def test_edition_permission(
+    testclient,
+    slapd_server,
+    slapd_connection,
+    logged_user,
+    admin,
+    foo_group,
+    bar_group,
+    jpeg_photo,
+):
+
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.get("/profile/user", status=403)
+
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    testclient.get("/profile/user", status=200)
+
+
 def test_edition(
     testclient,
     slapd_server,
@@ -75,7 +93,11 @@ def test_field_permissions_none(
         logged_user.telephoneNumber = ["555-666-777"]
         logged_user.save(conn=slapd_connection)
 
-    testclient.app.config["ACL"]["DEFAULT"] = {"READ": ["uid"], "WRITE": []}
+    testclient.app.config["ACL"]["DEFAULT"] = {
+        "READ": ["uid"],
+        "WRITE": [],
+        "PERMISSIONS": ["edit_self"],
+    }
 
     res = testclient.get("/profile/user", status=200)
     assert "telephoneNumber" not in res.form.fields
@@ -99,6 +121,7 @@ def test_field_permissions_read(
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["uid", "telephoneNumber"],
         "WRITE": [],
+        "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
     assert "telephoneNumber" in res.form.fields
@@ -122,6 +145,7 @@ def test_field_permissions_write(
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["uid"],
         "WRITE": ["telephoneNumber"],
+        "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
     assert "telephoneNumber" in res.form.fields

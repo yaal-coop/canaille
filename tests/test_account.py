@@ -184,11 +184,14 @@ def test_user_self_deletion(testclient, slapd_connection):
     with testclient.session_transaction() as sess:
         sess["user_dn"] = [user.dn]
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     res = testclient.get("/profile/temp")
     assert "Delete my account" not in res
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["delete_account"]
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = [
+        "edit_self",
+        "delete_account",
+    ]
     res = testclient.get("/profile/temp")
     assert "Delete my account" in res
     res = (

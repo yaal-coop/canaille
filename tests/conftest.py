@@ -149,7 +149,7 @@ def configuration(slapd_server, smtpd, keypair_path):
         "ACL": {
             "DEFAULT": {
                 "READ": ["uid", "groups"],
-                "PERMISSIONS": ["use_oidc"],
+                "PERMISSIONS": ["edit_self", "use_oidc"],
                 "WRITE": [
                     "mail",
                     "givenName",
