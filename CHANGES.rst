@@ -11,6 +11,9 @@ Added
 
 - ``DISABLE_PASSWORD_RESET`` configuration option to disable password recovery. :pr:`46`
 
+Fixed
+*****
+- ``HIDE_INVALID_LOGIN`` behavior and default value.
 
 [0.0.8] - 2022-03-15
 ====================

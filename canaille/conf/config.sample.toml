@@ -33,12 +33,14 @@ OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 
-# If HIDE_INVALID_LOGINS is set to true, when a user tries to sign in with
-# an invalid login, a message is shown saying that the login does not
-# exist. If HIDE_INVALID_LOGINS is set to false (the default) a message is
-# shown saying that the password is wrong, but does not give a clue
-# wether the login exists or not.
-# HIDE_INVALID_LOGINS = false
+# If HIDE_INVALID_LOGINS is set to true (the default), when an user
+# tries to sign in with an invalid login, a message is shown indicating
+# that the password is wrong, but does not give a clue wether the login
+# exists or not.
+# If HIDE_INVALID_LOGINS is set to false, when an user tries to sign in with
+# an invalid login, a message is shown indicating that the login does not
+# exist.
+# HIDE_INVALID_LOGINS = true
 
 # If ENABLE_PASSWORD_RECOVERY is false, then users cannot ask for a password
 # recovery link by email. This option is true by default.

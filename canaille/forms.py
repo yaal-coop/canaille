@@ -31,7 +31,7 @@ def unique_group(form, field):
 
 
 def existing_login(form, field):
-    if current_app.config.get("HIDE_INVALID_LOGINS", False) and not User.get(
+    if not current_app.config.get("HIDE_INVALID_LOGINS", True) and not User.get(
         field.data
     ):
         raise wtforms.ValidationError(

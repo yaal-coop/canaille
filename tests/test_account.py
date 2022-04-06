@@ -123,7 +123,7 @@ def test_impersonate(testclient, slapd_connection, logged_admin, user):
 
 
 def test_wrong_login(testclient, slapd_connection, user):
-    testclient.app.config["HIDE_INVALID_LOGINS"] = False
+    testclient.app.config["HIDE_INVALID_LOGINS"] = True
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
@@ -134,12 +134,12 @@ def test_wrong_login(testclient, slapd_connection, user):
     res = res.form.submit(status=200)
     assert "The login 'invalid' does not exist" not in res.text
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    testclient.app.config["HIDE_INVALID_LOGINS"] = False
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
     res = res.form.submit(status=200)
-    assert "The login &#39;invalid&#39; does not exist" in res.text, res.text
+    assert "The login &#39;invalid&#39; does not exist" in res.text
 
 
 def test_admin_self_deletion(testclient, slapd_connection):
