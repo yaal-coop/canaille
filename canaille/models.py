@@ -154,6 +154,10 @@ class User(LDAPObject):
         return field in self.write
 
     @property
+    def can_edit_self(self):
+        return "edit_self" in self.permissions
+
+    @property
     def can_use_oidc(self):
         return "use_oidc" in self.permissions
 

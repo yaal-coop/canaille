@@ -112,6 +112,7 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 #
 # The 'PERMISSIONS' parameter that is an list of items the users in the access
 # control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
+# - "edit_self" to allow users to edit their own profile
 # - "use_oidc" to allow OpenID Connect authentication
 # - "manage_oidc" to allow OpenID Connect client managements
 # - "manage_users" to allow other users management

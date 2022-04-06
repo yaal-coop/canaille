@@ -48,9 +48,20 @@ bp = Blueprint("account", __name__)
 
 @bp.route("/")
 def index():
-    if not current_user():
+    user = current_user()
+
+    if not user:
         return redirect(url_for("account.login"))
-    return redirect(url_for("account.profile_edition", username=current_user().uid[0]))
+
+    if user.can_edit_self or user.can_manage_users:
+        return redirect(
+            url_for("account.profile_edition", username=current_user().uid[0])
+        )
+
+    if user.can_use_oidc:
+        return redirect(url_for("oidc.consents.consents"))
+
+    return redirect(url_for("account.about"))
 
 
 @bp.route("/about")
@@ -380,7 +391,9 @@ def profile_create(current_app, form):
 @bp.route("/profile/<username>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, username):
-    if not user.can_manage_users and username != user.uid[0]:
+    if not user.can_manage_users and not (
+        user.can_edit_self and username == user.uid[0]
+    ):
         abort(403)
 
     if request.method == "GET" or request.form.get("action") == "edit":
@@ -538,11 +551,21 @@ def forgotten():
         return render_template("forgotten-password.html", form=form)
 
     user = User.get(form.login.data)
+    success_message = _(
+        "A password reset link has been sent at your email address. You should receive it within 10 minutes."
+    )
+    if current_app.config.get("HIDE_INVALID_LOGINS", True) and (
+        not user or not user.can_edit_self
+    ):
+        flash(success_message, "success")
+        return render_template("forgotten-password.html", form=form)
 
-    if not user:
+    if not user.can_edit_self:
         flash(
             _(
-                "A password reset link has been sent at your email address. You should receive it within 10 minutes."
+                "The user '%(user)s' does not have permissions to update their password. "
+                "We cannot send a password reset email.",
+                user=user.name,
             ),
             "success",
         )
@@ -551,14 +574,12 @@ def forgotten():
     success = send_password_reset_mail(user)
 
     if success:
-        flash(
-            _(
-                "A password reset link has been sent at your email address. You should receive it within 10 minutes."
-            ),
-            "success",
-        )
+        flash(success_message, "success")
     else:
-        flash(_("Could not reset your password"), "error")
+        flash(
+            _("We encountered an issue while we sent the password recovery email."),
+            "error",
+        )
 
     return render_template("forgotten-password.html", form=form)
 

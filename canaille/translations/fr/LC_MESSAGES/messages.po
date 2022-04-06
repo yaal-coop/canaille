@@ -9,37 +9,37 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2022-02-23 10:58+0100\n"
-"PO-Revision-Date: 2022-02-23 10:59+0100\n"
+"POT-Creation-Date: 2022-04-06 17:43+0200\n"
+"PO-Revision-Date: 2022-04-06 17:44+0200\n"
 "Last-Translator: Éloi Rivard <eloi@yaal.fr>\n"
 "Language: fr_FR\n"
 "Language-Team: French - France <equipe@yaal.fr>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 "X-Generator: Gtranslator 40.0\n"
 
-#: canaille/account.py:82 canaille/account.py:107 canaille/oidc/oauth.py:77
+#: canaille/account.py:93 canaille/account.py:118 canaille/oidc/oauth.py:77
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
-#: canaille/account.py:113
+#: canaille/account.py:124
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
 
-#: canaille/account.py:126
+#: canaille/account.py:137
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Vous avez été déconnecté·e. À bientôt %(user)s"
 
-#: canaille/account.py:143
+#: canaille/account.py:155
 msgid "Could not send the password initialization link."
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
 
-#: canaille/account.py:148
+#: canaille/account.py:160
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within 10 minutes."
@@ -47,39 +47,45 @@ msgstr ""
 "Un lien d'initialisation de votre mot de passe vous a été envoyé par mail. "
 "Vous devriez le recevoir d'ici une dizaine de minutes."
 
-#: canaille/account.py:154 canaille/account.py:398
+#: canaille/account.py:166 canaille/account.py:418
 msgid "Could not send the password initialization email"
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
 
-#: canaille/account.py:247 canaille/account.py:324
+#: canaille/account.py:255 canaille/account.py:338
 msgid "User account creation failed."
 msgstr "La création du compte utilisateur a échoué."
 
-#: canaille/account.py:268 canaille/account.py:296
+#: canaille/account.py:276 canaille/account.py:304
 msgid "The invitation link that brought you here was invalid."
 msgstr "Le lien d'invitation qui vous a amené ici est invalide."
 
-#: canaille/account.py:275
+#: canaille/account.py:283
 msgid "The invitation link that brought you here has expired."
 msgstr "Le lien d'invitation qui vous a amené ici a expiré."
 
-#: canaille/account.py:282
+#: canaille/account.py:290
 msgid "Your account has already been created."
 msgstr "Votre compte a déjà été créé."
 
-#: canaille/account.py:289
+#: canaille/account.py:297
 msgid "You are already logged in, you cannot create an account."
 msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
 
-#: canaille/account.py:329
+#: canaille/account.py:316 canaille/forms.py:179 canaille/forms.py:227
+#: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
+#: canaille/themes/default/base.html:61
+msgid "Groups"
+msgstr "Groupes"
+
+#: canaille/account.py:343
 msgid "You account has been created successfuly."
 msgstr "Votre compte utilisateur a été créé avec succès."
 
-#: canaille/account.py:371
+#: canaille/account.py:385
 msgid "User account creation succeed."
 msgstr "La création du compte utilisateur a réussi."
 
-#: canaille/account.py:392
+#: canaille/account.py:412
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within 10 minutes."
@@ -87,7 +93,7 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "mail. Il devrait arriver d'ici une dizaine de minutes."
 
-#: canaille/account.py:406
+#: canaille/account.py:429
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within 10 minutes."
@@ -95,28 +101,28 @@ msgstr ""
 "Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
 "mail. Il devrait arriver d'ici une dizaine de minutes."
 
-#: canaille/account.py:412
+#: canaille/account.py:435
 msgid "Could not send the password reset email"
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:443
+#: canaille/account.py:469
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: canaille/account.py:471
+#: canaille/account.py:497
 msgid "Profile updated successfuly."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: canaille/account.py:491
+#: canaille/account.py:520
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/account.py:515
+#: canaille/account.py:550
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/account.py:522 canaille/account.py:533
+#: canaille/account.py:554
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within 10 minutes."
@@ -124,15 +130,26 @@ msgstr ""
 "Un lien de ré-initialisation de votre mot de passe vous a été envoyé par "
 "mail. Vous devriez le recevoir d'ici une dizaine de minutes."
 
-#: canaille/account.py:539
-msgid "Could not reset your password"
-msgstr "Impossible de réinitialiser votre mot de passe"
+#: canaille/account.py:565
+#, python-format
+msgid ""
+"The user '%(user)s' does not have permissions to update their password. We "
+"cannot send a password reset email."
+msgstr ""
+"L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
+"Nous ne pouvons pas lui envoyer un email de réinitialisation."
 
-#: canaille/account.py:553
+#: canaille/account.py:580
+msgid "We encountered an issue while we sent the password recovery email."
+msgstr ""
+"Nous avons rencontré un problème lors de l'envoi de l'email de "
+"réinitialisation de mot de passe."
+
+#: canaille/account.py:599
 msgid "The password reset link that brought you here was invalid."
 msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
-#: canaille/account.py:562
+#: canaille/account.py:608
 msgid "Your password has been updated successfuly"
 msgstr "Votre mot de passe a correctement été mis à jour."
 
@@ -141,7 +158,7 @@ msgid "Email"
 msgstr "Courriel"
 
 #: canaille/admin.py:29 canaille/forms.py:47 canaille/forms.py:71
-#: canaille/forms.py:123 canaille/forms.py:224
+#: canaille/forms.py:123 canaille/forms.py:221
 msgid "jane@doe.com"
 msgstr "camille@dupont.fr"
 
@@ -165,7 +182,7 @@ msgstr "Invitation sur {website_name}"
 msgid "John Doe"
 msgstr "Camille Dupont"
 
-#: canaille/apputils.py:44 canaille/forms.py:95 canaille/forms.py:212
+#: canaille/apputils.py:44 canaille/forms.py:95 canaille/forms.py:209
 msgid "jdoe"
 msgstr "cdupont"
 
@@ -213,11 +230,11 @@ msgstr "Confirmation du mot de passe"
 msgid "Password and confirmation do not match."
 msgstr "Le mot de passe et sa confirmation ne correspondent pas."
 
-#: canaille/forms.py:94 canaille/forms.py:211
+#: canaille/forms.py:94 canaille/forms.py:208
 msgid "Username"
 msgstr "Identifiant"
 
-#: canaille/forms.py:98 canaille/forms.py:197 canaille/oidc/clients.py:36
+#: canaille/forms.py:98 canaille/forms.py:194 canaille/oidc/clients.py:36
 #: canaille/templates/groups.html:17
 #: canaille/templates/oidc/admin/client_list.html:23
 #: canaille/templates/userlist.html:11
@@ -240,7 +257,7 @@ msgstr "Nom de famille"
 msgid "Doe"
 msgstr "Dupont"
 
-#: canaille/forms.py:117 canaille/forms.py:217
+#: canaille/forms.py:117 canaille/forms.py:214
 msgid "Email address"
 msgstr "Courriel"
 
@@ -283,42 +300,36 @@ msgstr "Site internet"
 msgid "https://mywebsite.tld"
 msgstr "https://mon-site-internet.fr"
 
-#: canaille/forms.py:182 canaille/forms.py:230
-#: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
-#: canaille/themes/default/base.html:59
-msgid "Groups"
-msgstr "Groupes"
-
-#: canaille/forms.py:184
+#: canaille/forms.py:181
 msgid "users, admins ..."
 msgstr "utilisateurs, administrateurs ..."
 
-#: canaille/forms.py:200
+#: canaille/forms.py:197
 msgid "group"
 msgstr "groupe"
 
-#: canaille/forms.py:204 canaille/templates/groups.html:18
+#: canaille/forms.py:201 canaille/templates/groups.html:18
 msgid "Description"
 msgstr "Description"
 
-#: canaille/forms.py:215
+#: canaille/forms.py:212
 msgid "Username editable by the invitee"
 msgstr "L'identifiant sera éditable par la personne invitée"
 
-#: canaille/groups.py:44
+#: canaille/groups.py:40
 msgid "Group creation failed."
 msgstr "La création du groupe a échoué."
 
-#: canaille/groups.py:56
+#: canaille/groups.py:52
 #, python-format
 msgid "The group %(group)s has been sucessfully created"
 msgstr "Le groupe %(group)s a bien été créé"
 
-#: canaille/groups.py:93
+#: canaille/groups.py:92
 msgid "Group edition failed."
 msgstr "L'édition du groupe a échoué."
 
-#: canaille/groups.py:102
+#: canaille/groups.py:101
 #, python-format
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
@@ -327,11 +338,11 @@ msgstr "Le groupe %(group)s a bien été supprimé"
 msgid "You have been invited to create an account on {website_name}"
 msgstr "Vous êtes invités à vous créer un compte sur {website_name}"
 
-#: canaille/ldap_backend/backend.py:48
+#: canaille/ldap_backend/backend.py:54
 msgid "Could not connect to the LDAP server '{uri}'"
 msgstr "Impossible de se connecter au serveur LDAP '{uri}'"
 
-#: canaille/ldap_backend/backend.py:64
+#: canaille/ldap_backend/backend.py:70
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 "L'authentification au serveur LDAP a échoué pour l'utilisateur '{user}'"
@@ -408,15 +419,15 @@ msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
 msgid "The client has been created."
 msgstr "Le client a été créé."
 
-#: canaille/oidc/clients.py:218
+#: canaille/oidc/clients.py:222
 msgid "The client has not been edited. Please check your information."
 msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 
-#: canaille/oidc/clients.py:244
+#: canaille/oidc/clients.py:248
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
-#: canaille/oidc/clients.py:256
+#: canaille/oidc/clients.py:264
 msgid "The client has been deleted."
 msgstr "Le client a été supprimé."
 
@@ -452,7 +463,7 @@ msgstr "Les groupes auxquels vous appartenez"
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnecté·e."
 
-#: canaille/templates/about.html:12 canaille/themes/default/base.html:102
+#: canaille/templates/about.html:12 canaille/themes/default/base.html:104
 msgid "About canaille"
 msgstr "À propos de canaille"
 
@@ -806,7 +817,7 @@ msgstr ""
 msgid "User creation"
 msgstr "Nouvel utilisateur"
 
-#: canaille/templates/profile.html:53 canaille/themes/default/base.html:39
+#: canaille/templates/profile.html:53 canaille/themes/default/base.html:40
 msgid "My profile"
 msgstr "Mon profil"
 
@@ -1198,7 +1209,7 @@ msgid "Accept"
 msgstr "Accepter"
 
 #: canaille/templates/oidc/user/consent_list.html:18
-#: canaille/themes/default/base.html:45
+#: canaille/themes/default/base.html:47
 msgid "My consents"
 msgstr "Mes autorisations"
 
@@ -1235,27 +1246,27 @@ msgstr ""
 msgid "authorization interface"
 msgstr " - Interface de gestion des autorisations"
 
-#: canaille/themes/default/base.html:52
+#: canaille/themes/default/base.html:54
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: canaille/themes/default/base.html:69
+#: canaille/themes/default/base.html:71
 msgid "Clients"
 msgstr "Clients"
 
-#: canaille/themes/default/base.html:73
+#: canaille/themes/default/base.html:75
 msgid "Tokens"
 msgstr "Jetons"
 
-#: canaille/themes/default/base.html:77
+#: canaille/themes/default/base.html:79
 msgid "Codes"
 msgstr "Codes"
 
-#: canaille/themes/default/base.html:81
+#: canaille/themes/default/base.html:83
 msgid "Emails"
 msgstr "Courriels"
 
-#: canaille/themes/default/base.html:88
+#: canaille/themes/default/base.html:90
 msgid "Log out"
 msgstr "Déconnexion"
 
@@ -1422,3 +1433,6 @@ msgstr "Déconnexion"
 #~ "Vous avez été invité à créer un compte sur %(site_name)s. Pour continuer, "
 #~ "vous pouvez cliquer sur le bouton «Créer mon compte» ci-dessous et suivre "
 #~ "les instructions."
+
+#~ msgid "Could not reset your password"
+#~ msgstr "Impossible de réinitialiser votre mot de passe"

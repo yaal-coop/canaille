@@ -145,6 +145,7 @@ object that users will be able to read and/or write.
 :PERMISSIONS:
     *Optional.* A list of items the users in the access control will be able to manage. Values can be:
 
+    - **edit_self** to allow users to edit their own profile
     - **use_oidc** to allow OpenID Connect authentication
     - **manage_oidc** to allow OpenID Connect client managements
     - **manage_users** to allow other users management
@@ -154,12 +155,14 @@ object that users will be able to read and/or write.
 
 :READ:
     *Optional.* A list of attributes of ``USER_CLASS`` the user will be able to see, but not edit.
-    If the user has the ``manage_users`` permission, he will be able to see this fields on other users profile.
+    If the users has the ``edit_self`` permission, they will be able to see those fields on their own account.
+    If the users has the ``manage_users`` permission, the user will be able to see this fields on other users profile.
     If the list containts the special ``groups`` field, the user will be able to see the groups he belongs to.
 
 :WRITE:
     *Optional.* A list of attributes of ``USER_CLASS`` the user will be able to edit.
-    If the user has the ``manage_users`` permission, he will be able to edit this fields on other users profile.
+    If the users has the ``edit_self`` permission, they will be able to edit those fields on their own account.
+    If the users has the ``manage_users`` permission, they will be able to edit those fields on other users profile.
     If the list containts the special ``groups`` field, the user will be able to edit the groups he belongs to.
 
 

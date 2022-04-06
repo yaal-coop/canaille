@@ -181,7 +181,7 @@
                 {% elif not edited_user.has_password() %}
 
                     <div class="ui message warning">
-                        {% if has_smtp %}
+                        {% if has_smtp and edited_user.can_edit_self %}
                             {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
                                 <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
                                     {% trans %}Send again{% endtrans %}
@@ -195,7 +195,7 @@
                         <div class="header">
                             {% trans %}This user does not have a password yet{% endtrans %}
                         </div>
-                        {% if has_smtp %}
+                        {% if has_smtp and edited_user.can_edit_self %}
                             <p>{% trans %}You can solve this by:{% endtrans %}</p>
                             <ul class="ui list">
                                 <li>{% trans %}setting a password using this form;{% endtrans %}</li>
@@ -207,7 +207,7 @@
                         {% endif %}
                     </div>
 
-                {% elif has_smtp and edited_user.uid != user.uid and edited_user.has_password() %}
+                {% elif has_smtp and edited_user.uid != user.uid and edited_user.has_password() and edited_user.can_edit_self %}
 
                     <div class="ui message info">
                         <button type="submit" name="action" value="password-reset-mail" class="ui right floated button">
