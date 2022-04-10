@@ -45,7 +45,7 @@ def get_jwt_config(grant):
         return {
             "key": pk.read(),
             "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
-            "iss": authorization.metadata["issuer"],
+            "iss": current_app.config["JWT"]["ISS"],
             "exp": current_app.config["JWT"].get("EXP", DEFAULT_JWT_EXP),
         }
 
@@ -250,29 +250,30 @@ class BearerTokenValidator(_BearerTokenValidator):
 
 
 class RevocationEndpoint(_RevocationEndpoint):
-    def query_token(self, token, token_type_hint, client):
+    def query_token(self, token, token_type_hint):
+        print("query_token")
         if token_type_hint == "access_token":
-            return Token.filter(client=client.dn, access_token=token)
+            return Token.filter(access_token=token)
         elif token_type_hint == "refresh_token":
-            return Token.filter(client=client.dn, refresh_token=token)
+            return Token.filter(refresh_token=token)
 
-        item = Token.filter(client=client.dn, access_token=token)
+        item = Token.filter(access_token=token)
         if item:
             return item[0]
 
-        item = Token.filter(client=client.dn, refresh_token=token)
+        item = Token.filter(refresh_token=token)
         if item:
             return item[0]
 
         return None
 
-    def revoke_token(self, token):
+    def revoke_token(self, token, request):
         token.revokation_date = datetime.datetime.now()
         token.save()
 
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):
-    def query_token(self, token, token_type_hint, client):
+    def query_token(self, token, token_type_hint):
         if token_type_hint == "access_token":
             tok = Token.filter(access_token=token)
         elif token_type_hint == "refresh_token":
@@ -281,10 +282,10 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             tok = Token.filter(access_token=token)
             if not tok:
                 tok = Token.filter(refresh_token=token)
-        if tok:
-            tok = tok[0]
-            if client.dn in tok.audience:
-                return tok
+        return tok[0] if tok else None
+
+    def check_permission(self, token, client, request):
+        return client.dn in token.audience
 
     def introspect_token(self, token):
         client_id = Client.get(token.client).client_id
@@ -298,7 +299,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "scope": token.get_scope(),
             "sub": user.uid[0],
             "aud": audience,
-            "iss": authorization.metadata["issuer"],
+            "iss": current_app.config["JWT"]["ISS"],
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
         }
