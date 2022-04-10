@@ -103,7 +103,7 @@ def authorize():
             return jsonify(response)
 
         try:
-            grant = authorization.validate_consent_request(end_user=user)
+            grant = authorization.get_consent_grant(end_user=user)
         except OAuth2Error as error:
             response = dict(error.get_body())
             current_app.logger.debug("authorization endpoint response: %s", response)

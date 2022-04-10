@@ -38,8 +38,7 @@ def create_app():
     @app.route("/authorize")
     def authorize():
         token = oauth.yaal.authorize_access_token()
-        userinfo = oauth.yaal.parse_id_token(token)
-        session["user"] = userinfo
+        session["user"] = token.get("userinfo")
         flash("You have been successfully logged in.", "success")
         return redirect(url_for("index"))
 

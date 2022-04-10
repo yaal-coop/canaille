@@ -37,9 +37,6 @@ class Client(LDAPObject, ClientMixin):
         "preconsent": "oauthPreconsent",
     }
 
-    def get_client_id(self):
-        return self.id
-
     def get_default_redirect_uri(self):
         return self.redirect_uris[0]
 
@@ -55,8 +52,10 @@ class Client(LDAPObject, ClientMixin):
     def check_client_secret(self, client_secret):
         return client_secret == self.secret
 
-    def check_token_endpoint_auth_method(self, method):
-        return method == self.token_endpoint_auth_method
+    def check_endpoint_auth_method(self, method, endpoint):
+        if endpoint == "token":
+            return method == self.token_endpoint_auth_method
+        return True
 
     def check_response_type(self, response_type):
         return all(r in self.response_type for r in response_type.split(" "))
@@ -141,9 +140,6 @@ class Token(LDAPObject, TokenMixin):
     def revoked(self):
         return bool(self.revokation_date)
 
-    def get_client_id(self):
-        return Client.get(self.client).id
-
     def get_scope(self):
         return " ".join(self.scope)
 
@@ -170,6 +166,12 @@ class Token(LDAPObject, TokenMixin):
             self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
             < datetime.datetime.now()
         )
+
+    def is_revoked(self):
+        return bool(self.revokation_date)
+
+    def check_client(self, client):
+        return client.client_id == Client.get(self.client).client_id
 
 
 class Consent(LDAPObject):
