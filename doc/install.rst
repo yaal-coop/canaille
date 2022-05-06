@@ -13,7 +13,7 @@ The installation of canaille consist in several steps, some of which you can do 
 Get the code
 ============
 
-As the moment there is no distributon package for canaille so it can be installed with the ``pip`` package manager.
+As the moment there is no distribution package for canaille. However, it can be installed with the ``pip`` package manager.
 Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
 
 .. code-block:: console
