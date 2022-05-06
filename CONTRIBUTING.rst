@@ -18,6 +18,7 @@ Development environment
 
 .. code-block:: console
 
+    python3 setup.py compile_catalog
     cd demo
     ./run.sh # or `docker-compose up` to run it with docker
 
@@ -32,3 +33,16 @@ The canaille server has some default users:
 - A regular user which login and password are **user**;
 - A moderator user which login and password are **moderator**;
 - An admin user which admin and password are **admin**.
+
+
+Documentation
+-------------
+
+
+The documentation is generated when the tests run:
+
+.. code-block:: console
+
+    tox
+
+The generated documentation is in `./build/sphinx/html/` directory.
