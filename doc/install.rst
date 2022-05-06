@@ -214,4 +214,4 @@ expired tokens and authorization codes with:
 
 .. code-block:: console
 
-    env CONFIG="$CANAILLE_CONF_DIR/config.toml" FASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
+    env CONFIG="$CANAILLE_CONF_DIR/config.toml" FLASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
