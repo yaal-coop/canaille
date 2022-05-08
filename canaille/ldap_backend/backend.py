@@ -80,8 +80,9 @@ def setup_backend(app):
 
 
 def teardown_backend(app):
-    if "ldap" in g:
+    if g.get("ldap"):
         g.ldap.unbind_s()
+        g.ldap = None
 
 
 def init_backend(app):
@@ -89,11 +90,13 @@ def init_backend(app):
 
     @app.before_request
     def before_request():
-        return setup_backend(app)
+        if not app.config["TESTING"]:
+            return setup_backend(app)
 
     @app.after_request
     def after_request(response):
-        teardown_backend(app)
+        if not app.config["TESTING"]:
+            teardown_backend(app)
         return response
 
 

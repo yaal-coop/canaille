@@ -1,4 +1,4 @@
-def test_password_forgotten_disabled(smtpd, testclient, slapd_connection, user):
+def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.app.config["ENABLE_PASSWORD_RECOVERY"] = False
 
     testclient.get("/reset", status=404)
@@ -8,7 +8,7 @@ def test_password_forgotten_disabled(smtpd, testclient, slapd_connection, user):
     assert "Forgotten password" not in res.text
 
 
-def test_password_forgotten(smtpd, testclient, slapd_connection, user):
+def test_password_forgotten(smtpd, testclient, user):
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"
@@ -19,7 +19,7 @@ def test_password_forgotten(smtpd, testclient, slapd_connection, user):
     assert len(smtpd.messages) == 1
 
 
-def test_password_forgotten_invalid_form(smtpd, testclient, slapd_connection, user):
+def test_password_forgotten_invalid_form(smtpd, testclient, user):
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = ""
@@ -29,7 +29,7 @@ def test_password_forgotten_invalid_form(smtpd, testclient, slapd_connection, us
     assert len(smtpd.messages) == 0
 
 
-def test_password_forgotten_invalid(smtpd, testclient, slapd_connection, user):
+def test_password_forgotten_invalid(smtpd, testclient, user):
     testclient.app.config["HIDE_INVALID_LOGINS"] = True
     res = testclient.get("/reset", status=200)
 
@@ -49,9 +49,7 @@ def test_password_forgotten_invalid(smtpd, testclient, slapd_connection, user):
     assert len(smtpd.messages) == 0
 
 
-def test_password_forgotten_invalid_when_user_cannot_self_edit(
-    smtpd, testclient, slapd_connection, user
-):
+def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient, user):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = False

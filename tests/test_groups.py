@@ -3,33 +3,31 @@ from canaille.models import User
 
 
 def test_no_group(app, slapd_connection):
-    with app.app_context():
-        assert Group.all(conn=slapd_connection) == []
+    assert Group.all() == []
 
 
 def test_set_groups(app, slapd_connection, user, foo_group, bar_group):
-    with app.app_context():
-        foo_dns = {m.dn for m in foo_group.get_members(conn=slapd_connection)}
-        assert user.dn in foo_dns
-        assert user.groups[0].dn == foo_group.dn
+    foo_dns = {m.dn for m in foo_group.get_members()}
+    assert user.dn in foo_dns
+    assert user.groups[0].dn == foo_group.dn
 
-        user.load_groups(conn=slapd_connection)
-        user.set_groups([foo_group, bar_group], conn=slapd_connection)
+    user.load_groups()
+    user.set_groups([foo_group, bar_group])
 
-        bar_group = Group.get(bar_group.dn, conn=slapd_connection)
-        bar_dns = {m.dn for m in bar_group.get_members(conn=slapd_connection)}
-        assert user.dn in bar_dns
-        assert user.groups[1].dn == bar_group.dn
+    bar_group = Group.get(bar_group.dn)
+    bar_dns = {m.dn for m in bar_group.get_members()}
+    assert user.dn in bar_dns
+    assert user.groups[1].dn == bar_group.dn
 
-        user.load_groups(conn=slapd_connection)
-        user.set_groups([foo_group], conn=slapd_connection)
+    user.load_groups()
+    user.set_groups([foo_group])
 
-        foo_group = Group.get(foo_group.dn, conn=slapd_connection)
-        bar_group = Group.get(bar_group.dn, conn=slapd_connection)
-        foo_dns = {m.dn for m in foo_group.get_members(conn=slapd_connection)}
-        bar_dns = {m.dn for m in bar_group.get_members(conn=slapd_connection)}
-        assert user.dn in foo_dns
-        assert user.dn not in bar_dns
+    foo_group = Group.get(foo_group.dn)
+    bar_group = Group.get(bar_group.dn)
+    foo_dns = {m.dn for m in foo_group.get_members()}
+    bar_dns = {m.dn for m in bar_group.get_members()}
+    assert user.dn in foo_dns
+    assert user.dn not in bar_dns
 
 
 def test_set_groups_with_leading_space_in_user_id_attribute(
@@ -42,23 +40,22 @@ def test_set_groups_with_leading_space_in_user_id_attribute(
         uid="user2",
         mail="john@doe.com",
     )
-    user.save(slapd_connection)
+    user.save()
 
-    with app.app_context():
-        user.load_groups(conn=slapd_connection)
-        user.set_groups([foo_group], conn=slapd_connection)
+    user.load_groups()
+    user.set_groups([foo_group])
 
-        foo_dns = {m.dn for m in foo_group.get_members(conn=slapd_connection)}
-        assert user.dn in foo_dns
+    foo_dns = {m.dn for m in foo_group.get_members()}
+    assert user.dn in foo_dns
 
-        user.load_groups(conn=slapd_connection)
-        user.set_groups([], conn=slapd_connection)
+    user.load_groups()
+    user.set_groups([])
 
-        foo_group = Group.get(foo_group.dn, conn=slapd_connection)
-        foo_dns = {m.dn for m in foo_group.get_members(conn=slapd_connection)}
-        assert user.dn not in foo_dns
+    foo_group = Group.get(foo_group.dn)
+    foo_dns = {m.dn for m in foo_group.get_members()}
+    assert user.dn not in foo_dns
 
-    user.delete(slapd_connection)
+    user.delete()
 
 
 def test_moderator_can_create_edit_and_delete_group(
@@ -66,9 +63,8 @@ def test_moderator_can_create_edit_and_delete_group(
 ):
     # The group does not exist
     res = testclient.get("/groups", status=200)
-    with testclient.app.app_context():
-        assert Group.get("bar", conn=slapd_connection) is None
-        assert Group.get("foo", conn=slapd_connection) == foo_group
+    assert Group.get("bar") is None
+    assert Group.get("foo") == foo_group
     assert "bar" not in res.text
     assert "foo" in res.text
 
@@ -80,15 +76,12 @@ def test_moderator_can_create_edit_and_delete_group(
     # Group has been created
     res = res.form.submit(status=302).follow(status=200)
 
-    with testclient.app.app_context():
-        bar_group = Group.get("bar", conn=slapd_connection)
-        assert bar_group.name == "bar"
-        assert bar_group.description == ["yolo"]
-        assert [
-            member.dn for member in bar_group.get_members(conn=slapd_connection)
-        ] == [
-            logged_moderator.dn
-        ]  # Group cannot be empty so creator is added in it
+    bar_group = Group.get("bar")
+    assert bar_group.name == "bar"
+    assert bar_group.description == ["yolo"]
+    assert [member.dn for member in bar_group.get_members()] == [
+        logged_moderator.dn
+    ]  # Group cannot be empty so creator is added in it
     assert "bar" in res.text
 
     # Group name can not be edited
@@ -98,19 +91,17 @@ def test_moderator_can_create_edit_and_delete_group(
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    with testclient.app.app_context():
-        bar_group = Group.get("bar", conn=slapd_connection)
-        assert bar_group.name == "bar"
-        assert bar_group.description == ["yolo2"]
-        assert Group.get("bar2", conn=slapd_connection) is None
-        members = bar_group.get_members(conn=slapd_connection)
-        for member in members:
-            assert member.name in res.text
+    bar_group = Group.get("bar")
+    assert bar_group.name == "bar"
+    assert bar_group.description == ["yolo2"]
+    assert Group.get("bar2") is None
+    members = bar_group.get_members()
+    for member in members:
+        assert member.name in res.text
 
     # Group is deleted
     res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
-    with testclient.app.app_context():
-        assert Group.get("bar", conn=slapd_connection) is None
+    assert Group.get("bar") is None
     assert "The group bar has been sucessfully deleted" in res.text
 
 
@@ -135,13 +126,11 @@ def test_get_members_filters_non_existent_user(
     testclient, slapd_connection, logged_moderator, foo_group, user
 ):
     # an LDAP group can be inconsistent by containing members which doesn't exist
-    with testclient.app.app_context():
-        non_existent_user_dn = user.dn.replace(user.name, "yolo")
-        foo_group.member = foo_group.member + [non_existent_user_dn]
-        foo_group.save(conn=slapd_connection)
+    non_existent_user_dn = user.dn.replace(user.name, "yolo")
+    foo_group.member = foo_group.member + [non_existent_user_dn]
+    foo_group.save()
 
-    with testclient.app.app_context():
-        foo_members = foo_group.get_members(conn=slapd_connection)
+    foo_members = foo_group.get_members()
 
     assert foo_group.member == [user.dn, non_existent_user_dn]
     assert len(foo_members) == 1

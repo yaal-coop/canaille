@@ -5,12 +5,14 @@ import pytest
 import slapd
 from canaille import create_app
 from canaille.installation import setup_ldap_tree
+from canaille.ldap_backend.backend import setup_ldap_models
 from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import Group
 from canaille.models import User
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+from flask import g
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 
@@ -119,12 +121,13 @@ def slapd_server():
 
 
 @pytest.fixture
-def slapd_connection(slapd_server):
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    conn.protocol_version = 3
-    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-    yield conn
-    conn.unbind_s()
+def slapd_connection(slapd_server, testclient):
+    g.ldap = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
+    g.ldap.protocol_version = 3
+    g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+    yield g.ldap
+    if g.ldap:
+        g.ldap.unbind_s()
 
 
 @pytest.fixture
@@ -212,6 +215,7 @@ def configuration(slapd_server, smtpd, keypair_path):
 @pytest.fixture
 def app(configuration):
     os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+    setup_ldap_models(configuration)
     setup_ldap_tree(configuration)
     app = create_app(configuration)
     return app
@@ -220,7 +224,8 @@ def app(configuration):
 @pytest.fixture
 def testclient(app):
     app.config["TESTING"] = True
-    return TestApp(app)
+    with app.app_context():
+        yield TestApp(app)
 
 
 @pytest.fixture
@@ -235,9 +240,9 @@ def user(app, slapd_connection):
         mail="john@doe.com",
         userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
-    u.save(slapd_connection)
+    u.save()
     yield u
-    u.delete(slapd_connection)
+    u.delete()
 
 
 @pytest.fixture
@@ -252,9 +257,9 @@ def admin(app, slapd_connection):
         mail="jane@doe.com",
         userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
-    u.save(slapd_connection)
+    u.save()
     yield u
-    u.delete(slapd_connection)
+    u.delete()
 
 
 @pytest.fixture
@@ -269,9 +274,9 @@ def moderator(app, slapd_connection):
         mail="jack@doe.com",
         userPassword="{SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag",
     )
-    u.save(slapd_connection)
+    u.save()
     yield u
-    u.delete(slapd_connection)
+    u.delete()
 
 
 @pytest.fixture
@@ -298,33 +303,31 @@ def logged_moderator(moderator, testclient):
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
-    g = Group(
+    group = Group(
         objectClass=["groupOfNames"],
         member=[user.dn],
         cn="foo",
     )
-    g.save(slapd_connection)
-    with app.app_context():
-        user.load_groups(conn=slapd_connection)
-    yield g
+    group.save()
+    user.load_groups()
+    yield group
     user._groups = []
-    g.delete(conn=slapd_connection)
+    group.delete()
 
 
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
-    g = Group(
+    group = Group(
         objectClass=["groupOfNames"],
         member=[admin.dn],
         cn="bar",
     )
-    g.save(slapd_connection)
-    with app.app_context():
-        admin.load_groups(conn=slapd_connection)
-    yield g
+    group.save()
+    admin.load_groups()
+    yield group
     admin._groups = []
-    g.delete(conn=slapd_connection)
+    group.delete()
 
 
 @pytest.fixture

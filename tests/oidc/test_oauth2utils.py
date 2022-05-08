@@ -40,8 +40,7 @@ def test_generate_user_standard_claims_with_default_config(
 ):
     User.ldap_object_classes(slapd_connection)
 
-    with testclient.app.app_context():
-        data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
+    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
 
     assert data == {
         "name": "John (johnny) Doe",
@@ -58,8 +57,7 @@ def test_custom_config_format_claim_is_well_formated(
     jwt_mapping_config = DEFAULT_JWT_MAPPING_CONFIG.copy()
     jwt_mapping_config["EMAIL"] = "{{ user.uid[0] }}@mydomain.tld"
 
-    with testclient.app.app_context():
-        data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
+    data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
 
     assert data["email"] == "user@mydomain.tld"
 
@@ -69,10 +67,9 @@ def test_claim_is_omitted_if_empty(testclient, slapd_connection, user):
     # it's better to not insert a null or empty string value
     User.ldap_object_classes(slapd_connection)
     user.mail = ""
-    user.save(slapd_connection)
+    user.save()
 
-    with testclient.app.app_context():
-        data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
+    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
 
     assert "email" not in data
 
@@ -86,7 +83,6 @@ def test_custom_format_claim_is_formatted_with_empty_value_and_not_omitted(
     jwt_mapping_config = DEFAULT_JWT_MAPPING_CONFIG.copy()
     jwt_mapping_config["EMAIL"] = "{{ user.givenName[0] }}@mydomain.tld"
 
-    with testclient.app.app_context():
-        data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
+    data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
 
     assert data["email"] == "@mydomain.tld"

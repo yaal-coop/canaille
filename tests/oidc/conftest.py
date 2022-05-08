@@ -37,7 +37,7 @@ def client(app, slapd_connection, other_client):
         token_endpoint_auth_method="client_secret_basic",
     )
     c.audience = [c.dn, other_client.dn]
-    c.save(slapd_connection)
+    c.save()
 
     return c
 
@@ -71,7 +71,7 @@ def other_client(app, slapd_connection):
         token_endpoint_auth_method="client_secret_basic",
     )
     c.audience = [c.dn]
-    c.save(slapd_connection)
+    c.save()
 
     return c
 
@@ -93,7 +93,7 @@ def authorization(app, slapd_connection, user, client):
         challenge_method="method",
         revokation="",
     )
-    a.save(slapd_connection)
+    a.save()
     return a
 
 
@@ -111,7 +111,7 @@ def token(slapd_connection, client, user):
         issue_date=datetime.datetime.now(),
         lifetime=str(3600),
     )
-    t.save(slapd_connection)
+    t.save()
     return t
 
 
@@ -123,12 +123,12 @@ def consent(slapd_connection, client, user):
         scope=["openid", "profile"],
         issue_date=datetime.datetime.now(),
     )
-    t.save(slapd_connection)
+    t.save()
     return t
 
 
 @pytest.fixture(autouse=True)
 def cleanup_consents(slapd_connection):
     yield
-    for consent in Consent.all(conn=slapd_connection):
-        consent.delete(conn=slapd_connection)
+    for consent in Consent.all():
+        consent.delete()

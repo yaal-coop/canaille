@@ -23,7 +23,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
         challenge_method="method",
         revokation="",
     )
-    code.save(slapd_connection)
+    code.save()
 
     Token.ldap_object_classes(slapd_connection)
     token = Token(
@@ -37,15 +37,15 @@ def test_clean_command(testclient, slapd_connection, client, user):
         issue_date=(datetime.datetime.now() - datetime.timedelta(days=1)),
         lifetime=str(3600),
     )
-    token.save(slapd_connection)
+    token.save()
 
-    assert AuthorizationCode.get(code="my-code", conn=slapd_connection)
-    assert Token.get(access_token="my-token", conn=slapd_connection)
+    assert AuthorizationCode.get(code="my-code")
+    assert Token.get(access_token="my-token")
     assert code.is_expired()
     assert token.is_expired()
 
     runner = testclient.app.test_cli_runner()
     runner.invoke(cli, ["clean"])
 
-    assert not AuthorizationCode.get(code="my-code", conn=slapd_connection)
-    assert not Token.get(access_token="my-token", conn=slapd_connection)
+    assert not AuthorizationCode.get(code="my-code")
+    assert not Token.get(access_token="my-token")

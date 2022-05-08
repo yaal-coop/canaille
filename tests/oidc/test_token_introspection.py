@@ -59,7 +59,7 @@ def test_full_flow(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code, conn=slapd_connection)
+    authcode = AuthorizationCode.get(code=code)
     assert authcode is not None
 
     res = testclient.post(
@@ -75,7 +75,7 @@ def test_full_flow(
     )
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
 

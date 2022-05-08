@@ -73,7 +73,7 @@ def test_user_without_password_first_login(testclient, slapd_connection):
         uid="temp",
         mail="john@doe.com",
     )
-    u.save(slapd_connection)
+    u.save()
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "Temp User"
@@ -81,7 +81,7 @@ def test_user_without_password_first_login(testclient, slapd_connection):
 
     assert "First login" in res
 
-    u.delete(slapd_connection)
+    u.delete()
 
 
 def test_user_deleted_in_session(testclient, slapd_connection):
@@ -94,14 +94,14 @@ def test_user_deleted_in_session(testclient, slapd_connection):
         mail="jake@doe.com",
         userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
-    u.save(slapd_connection)
+    u.save()
     testclient.get("/profile/jake", status=403)
 
     with testclient.session_transaction() as session:
         session["user_dn"] = [u.dn]
 
     testclient.get("/profile/jake", status=200)
-    u.delete(conn=slapd_connection)
+    u.delete()
 
     testclient.get("/profile/jake", status=403)
     with testclient.session_transaction() as session:
@@ -157,7 +157,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
         mail="temp@temp.com",
         userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
-    admin.save(slapd_connection)
+    admin.save()
     with testclient.session_transaction() as sess:
         sess["user_dn"] = [admin.dn]
 
@@ -168,8 +168,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    with testclient.app.app_context():
-        assert User.get("temp", conn=slapd_connection) is None
+    assert User.get("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
@@ -187,7 +186,7 @@ def test_user_self_deletion(testclient, slapd_connection):
         mail="temp@temp.com",
         userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
-    user.save(slapd_connection)
+    user.save()
     with testclient.session_transaction() as sess:
         sess["user_dn"] = [user.dn]
 
@@ -207,8 +206,7 @@ def test_user_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    with testclient.app.app_context():
-        assert User.get("temp", conn=slapd_connection) is None
+    assert User.get("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")

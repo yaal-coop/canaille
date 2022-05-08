@@ -122,17 +122,15 @@ class User(LDAPObject):
             self.load_groups()
         return self._groups
 
-    def set_groups(self, values, conn=None):
+    def set_groups(self, values):
         before = self._groups
-        after = [
-            v if isinstance(v, Group) else Group.get(dn=v, conn=conn) for v in values
-        ]
+        after = [v if isinstance(v, Group) else Group.get(dn=v) for v in values]
         to_add = set(after) - set(before)
         to_del = set(before) - set(after)
         for group in to_add:
-            group.add_member(self, conn=conn)
+            group.add_member(self)
         for group in to_del:
-            group.remove_member(self, conn=conn)
+            group.remove_member(self)
         self._groups = after
 
     def load_permissions(self, conn=None):
@@ -202,10 +200,10 @@ class Group(LDAPObject):
             if User.get(dn=user_dn, conn=conn)
         ]
 
-    def add_member(self, user, conn=None):
+    def add_member(self, user):
         self.member = self.member + [user.dn]
-        self.save(conn=conn)
+        self.save()
 
-    def remove_member(self, user, conn=None):
+    def remove_member(self, user):
         self.member = [m for m in self.member if m != user.dn]
-        self.save(conn=conn)
+        self.save()

@@ -14,5 +14,5 @@ def test_consent_list(
     res = res.follow(status=200)
     assert client.name not in res.text
 
-    token.reload(conn=slapd_connection)
+    token.reload()
     assert token.revoked

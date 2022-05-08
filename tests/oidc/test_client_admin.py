@@ -46,7 +46,7 @@ def test_client_add(testclient, logged_admin, slapd_connection):
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
-    client = Client.get(client_id, conn=slapd_connection)
+    client = Client.get(client_id)
     data["audience"] = [client.dn]
     for k, v in data.items():
         client_value = getattr(client, k)
@@ -87,7 +87,7 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection, other_c
         "The client has not been edited. Please check your information." not in res.text
     )
 
-    client = Client.get(client.dn, conn=slapd_connection)
+    client = Client.get(client.dn)
     for k, v in data.items():
         client_value = getattr(client, k)
         if k == "scope":
@@ -100,4 +100,4 @@ def test_client_edit(testclient, client, logged_admin, slapd_connection, other_c
     res.forms["clientadd"].submit(status=302, name="action", value="delete").follow(
         status=200
     )
-    assert Client.get(client.client_id, conn=slapd_connection) is None
+    assert Client.get(client.client_id) is None

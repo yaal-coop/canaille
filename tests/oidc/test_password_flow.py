@@ -20,7 +20,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token)
     assert token is not None
 
     res = testclient.get(
@@ -38,7 +38,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
 
 def test_password_flow_post(testclient, slapd_connection, user, client):
     client.token_endpoint_auth_method = "client_secret_post"
-    client.save(conn=slapd_connection)
+    client.save()
 
     res = testclient.post(
         "/oauth/token",
@@ -57,7 +57,7 @@ def test_password_flow_post(testclient, slapd_connection, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token, conn=slapd_connection)
+    token = Token.get(access_token=access_token)
     assert token is not None
 
     res = testclient.get(

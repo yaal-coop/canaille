@@ -55,9 +55,8 @@ def test_edition(
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    with testclient.app.app_context():
-        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
-        logged_user.load_groups(conn=slapd_connection)
+    logged_user = User.get(dn=logged_user.dn)
+    logged_user.load_groups()
 
     assert ["user"] == logged_user.uid
     assert ["given_name"] == logged_user.givenName
@@ -67,14 +66,13 @@ def test_edition(
     assert "666" == logged_user.employeeNumber
     assert [jpeg_photo] == logged_user.jpegPhoto
 
-    foo_group.reload(slapd_connection)
-    bar_group.reload(slapd_connection)
+    foo_group.reload()
+    bar_group.reload()
     assert logged_user.groups == [foo_group]
     assert foo_group.member == [logged_user.dn]
     assert bar_group.member == [admin.dn]
 
-    with testclient.app.app_context():
-        assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")
 
     logged_user.uid = ["user"]
     logged_user.cn = ["John (johnny) Doe"]
@@ -82,16 +80,15 @@ def test_edition(
     logged_user.mail = ["john@doe.com"]
     logged_user.givenName = None
     logged_user.jpegPhoto = None
-    logged_user.save(conn=slapd_connection)
+    logged_user.save()
 
 
 def test_field_permissions_none(
     testclient, slapd_server, slapd_connection, logged_user
 ):
     testclient.get("/profile/user", status=200)
-    with testclient.app.app_context():
-        logged_user.telephoneNumber = ["555-666-777"]
-        logged_user.save(conn=slapd_connection)
+    logged_user.telephoneNumber = ["555-666-777"]
+    logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["uid"],
@@ -105,18 +102,16 @@ def test_field_permissions_none(
     testclient.post(
         "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
     )
-    with testclient.app.app_context():
-        user = User.get(dn=logged_user.dn, conn=slapd_connection)
-        assert user.telephoneNumber == ["555-666-777"]
+    user = User.get(dn=logged_user.dn)
+    assert user.telephoneNumber == ["555-666-777"]
 
 
 def test_field_permissions_read(
     testclient, slapd_server, slapd_connection, logged_user
 ):
     testclient.get("/profile/user", status=200)
-    with testclient.app.app_context():
-        logged_user.telephoneNumber = ["555-666-777"]
-        logged_user.save(conn=slapd_connection)
+    logged_user.telephoneNumber = ["555-666-777"]
+    logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["uid", "telephoneNumber"],
@@ -129,18 +124,16 @@ def test_field_permissions_read(
     testclient.post(
         "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
     )
-    with testclient.app.app_context():
-        user = User.get(dn=logged_user.dn, conn=slapd_connection)
-        assert user.telephoneNumber == ["555-666-777"]
+    user = User.get(dn=logged_user.dn)
+    assert user.telephoneNumber == ["555-666-777"]
 
 
 def test_field_permissions_write(
     testclient, slapd_server, slapd_connection, logged_user
 ):
     testclient.get("/profile/user", status=200)
-    with testclient.app.app_context():
-        logged_user.telephoneNumber = ["555-666-777"]
-        logged_user.save(conn=slapd_connection)
+    logged_user.telephoneNumber = ["555-666-777"]
+    logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["uid"],
@@ -153,9 +146,8 @@ def test_field_permissions_write(
     testclient.post(
         "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
     )
-    with testclient.app.app_context():
-        user = User.get(dn=logged_user.dn, conn=slapd_connection)
-        assert user.telephoneNumber == ["000-000-000"]
+    user = User.get(dn=logged_user.dn)
+    assert user.telephoneNumber == ["000-000-000"]
 
 
 def test_simple_user_cannot_edit_other(testclient, logged_user):
@@ -181,7 +173,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    logged_user.reload(slapd_connection)
+    logged_user.reload()
 
     assert ["john@doe.com"] == logged_user.mail
 
@@ -194,7 +186,7 @@ def test_surname_is_mandatory(testclient, slapd_connection, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    logged_user.reload(slapd_connection)
+    logged_user.reload()
 
     assert ["Doe"] == logged_user.sn
 
@@ -207,8 +199,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    with testclient.app.app_context():
-        assert logged_user.check_password("new_password")
+    assert logged_user.check_password("new_password")
 
     res = testclient.get("/profile/user", status=200)
 
@@ -218,8 +209,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly" in res
 
-    with testclient.app.app_context():
-        assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")
 
 
 def test_password_change_fail(testclient, slapd_connection, logged_user):
@@ -230,8 +220,7 @@ def test_password_change_fail(testclient, slapd_connection, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    with testclient.app.app_context():
-        assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")
 
     res = testclient.get("/profile/user", status=200)
 
@@ -240,8 +229,7 @@ def test_password_change_fail(testclient, slapd_connection, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    with testclient.app.app_context():
-        assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")
 
 
 def test_admin_bad_request(testclient, logged_moderator):
@@ -254,8 +242,7 @@ def test_user_creation_edition_and_deletion(
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
-    with testclient.app.app_context():
-        assert User.get("george", conn=slapd_connection) is None
+    assert User.get("george") is None
     assert "george" not in res.text
 
     # Fill the profile for a new user.
@@ -271,13 +258,12 @@ def test_user_creation_edition_and_deletion(
 
     # User have been created
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
-    with testclient.app.app_context():
-        george = User.get("george", conn=slapd_connection)
-        george.load_groups(conn=slapd_connection)
-        foo_group.reload(slapd_connection)
-        assert "George" == george.givenName[0]
-        assert george.groups == [foo_group]
-        assert george.check_password("totoyolo")
+    george = User.get("george")
+    george.load_groups()
+    foo_group.reload()
+    assert "George" == george.givenName[0]
+    assert george.groups == [foo_group]
+    assert george.check_password("totoyolo")
 
     assert "george" in testclient.get("/users", status=200).text
     assert "readonly" not in res.form["groups"].attrs
@@ -290,14 +276,13 @@ def test_user_creation_edition_and_deletion(
 
     # User have been edited
     res = res.form.submit(name="action", value="edit", status=200)
-    with testclient.app.app_context():
-        george = User.get("george", conn=slapd_connection)
-        george.load_groups(conn=slapd_connection)
-        assert "Georgio" == george.givenName[0]
-        assert george.check_password("totoyolo")
+    george = User.get("george")
+    george.load_groups()
+    assert "Georgio" == george.givenName[0]
+    assert george.check_password("totoyolo")
 
-    foo_group.reload(slapd_connection)
-    bar_group.reload(slapd_connection)
+    foo_group.reload()
+    bar_group.reload()
     assert george.dn in set(foo_group.member)
     assert george.dn in set(bar_group.member)
     assert set(george.groups) == {foo_group, bar_group}
@@ -306,8 +291,7 @@ def test_user_creation_edition_and_deletion(
 
     # User have been deleted.
     res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
-    with testclient.app.app_context():
-        assert User.get("george", conn=slapd_connection) is None
+    assert User.get("george") is None
     assert "george" not in res.text
 
 
@@ -322,9 +306,8 @@ def test_cn_setting_with_given_name_and_surname(
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
-    with testclient.app.app_context():
-        george = User.get("george", conn=slapd_connection)
-        assert george.cn[0] == "George Abitbol"
+    george = User.get("george")
+    assert george.cn[0] == "George Abitbol"
 
 
 def test_cn_setting_with_surname_only(testclient, slapd_connection, logged_moderator):
@@ -335,9 +318,8 @@ def test_cn_setting_with_surname_only(testclient, slapd_connection, logged_moder
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
-    with testclient.app.app_context():
-        george = User.get("george", conn=slapd_connection)
-        assert george.cn[0] == "Abitbol"
+    george = User.get("george")
+    assert george.cn[0] == "Abitbol"
 
 
 def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_admin):
@@ -349,7 +331,7 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
         uid="temp",
         mail="john@doe.com",
     )
-    u.save(slapd_connection)
+    u.save()
 
     res = testclient.get("/profile/temp", status=200)
     assert "This user does not have a password yet" in res
@@ -365,14 +347,14 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
     assert "Send again" in res
     assert len(smtpd.messages) == 1
 
-    u.reload(slapd_connection)
+    u.reload()
     u.userPassword = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
-    u.save(slapd_connection)
+    u.save()
 
     res = testclient.get("/profile/temp", status=200)
     assert "This user does not have a password yet" not in res
 
-    u.delete(slapd_connection)
+    u.delete()
 
 
 def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
@@ -385,7 +367,7 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
         mail="john@doe.com",
         userPassword=["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"],
     )
-    u.save(slapd_connection)
+    u.save()
 
     res = testclient.get("/profile/temp", status=200)
     assert "If the user has forgotten his password" in res, res.text
@@ -399,7 +381,7 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     assert "Send again" in res
     assert len(smtpd.messages) == 1
 
-    u.delete(slapd_connection)
+    u.delete()
 
 
 def test_photo_edition(
@@ -417,8 +399,7 @@ def test_photo_edition(
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    with testclient.app.app_context():
-        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+    logged_user = User.get(dn=logged_user.dn)
 
     assert [jpeg_photo] == logged_user.jpegPhoto
 
@@ -428,8 +409,7 @@ def test_photo_edition(
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    with testclient.app.app_context():
-        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+    logged_user = User.get(dn=logged_user.dn)
 
     assert [jpeg_photo] == logged_user.jpegPhoto
 
@@ -439,8 +419,7 @@ def test_photo_edition(
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    with testclient.app.app_context():
-        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+    logged_user = User.get(dn=logged_user.dn)
 
     assert [] == logged_user.jpegPhoto
 
@@ -451,7 +430,6 @@ def test_photo_edition(
     res = res.form.submit(name="action", value="edit", status=200)
     assert "Profile updated successfuly." in res, str(res)
 
-    with testclient.app.app_context():
-        logged_user = User.get(dn=logged_user.dn, conn=slapd_connection)
+    logged_user = User.get(dn=logged_user.dn)
 
     assert [] == logged_user.jpegPhoto

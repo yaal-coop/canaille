@@ -14,7 +14,7 @@ def test_token_revocation(testclient, user, client, token, slapd_connection):
     )
     assert {} == res.json
 
-    token.reload(slapd_connection)
+    token.reload()
     assert token.revokation_date
 
 

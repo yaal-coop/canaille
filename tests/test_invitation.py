@@ -6,8 +6,7 @@ from canaille.models import User
 
 
 def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd):
-    with testclient.app.app_context():
-        assert User.get("someone", conn=slapd_connection) is None
+    assert User.get("someone") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -41,12 +40,11 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
 
     assert "You account has been created successfuly." in res
 
-    with testclient.app.app_context():
-        user = User.get("someone", conn=slapd_connection)
-        user.load_groups(conn=slapd_connection)
-        foo_group.reload(slapd_connection)
-        assert user.check_password("whatever")
-        assert user.groups == [foo_group]
+    user = User.get("someone")
+    user.load_groups()
+    foo_group.reload()
+    assert user.check_password("whatever")
+    assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
         assert "user_dn" in sess
@@ -58,9 +56,8 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
 def test_invitation_editable_uid(
     testclient, slapd_connection, logged_admin, foo_group, smtpd
 ):
-    with testclient.app.app_context():
-        assert User.get("jackyjack", conn=slapd_connection) is None
-        assert User.get("djorje", conn=slapd_connection) is None
+    assert User.get("jackyjack") is None
+    assert User.get("djorje") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -95,12 +92,11 @@ def test_invitation_editable_uid(
 
     assert "You account has been created successfuly." in res
 
-    with testclient.app.app_context():
-        user = User.get("djorje", conn=slapd_connection)
-        user.load_groups(conn=slapd_connection)
-        foo_group.reload(slapd_connection)
-        assert user.check_password("whatever")
-        assert user.groups == [foo_group]
+    user = User.get("djorje")
+    user.load_groups()
+    foo_group.reload()
+    assert user.check_password("whatever")
+    assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
         assert "user_dn" in sess
@@ -108,8 +104,7 @@ def test_invitation_editable_uid(
 
 
 def test_generate_link(testclient, slapd_connection, logged_admin, foo_group, smtpd):
-    with testclient.app.app_context():
-        assert User.get("sometwo", conn=slapd_connection) is None
+    assert User.get("sometwo") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -139,12 +134,11 @@ def test_generate_link(testclient, slapd_connection, logged_admin, foo_group, sm
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    with testclient.app.app_context():
-        user = User.get("sometwo", conn=slapd_connection)
-        user.load_groups(conn=slapd_connection)
-        foo_group.reload(slapd_connection)
-        assert user.check_password("whatever")
-        assert user.groups == [foo_group]
+    user = User.get("sometwo")
+    user.load_groups()
+    foo_group.reload()
+    assert user.check_password("whatever")
+    assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
         assert "user_dn" in sess
@@ -165,45 +159,38 @@ def test_invitation_login_already_taken(testclient, slapd_connection, logged_adm
 
 
 def test_registration(testclient, slapd_connection, foo_group):
-    with testclient.app.app_context():
-        invitation = Invitation(
-            datetime.now().isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            [foo_group.dn],
-        )
-        b64 = invitation.b64()
-        hash = invitation.profile_hash()
+    invitation = Invitation(
+        datetime.now().isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [foo_group.dn],
+    )
+    b64 = invitation.b64()
+    hash = invitation.profile_hash()
 
     testclient.get(f"/register/{b64}/{hash}", status=200)
 
 
 def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
-    with testclient.app.app_context():
-        now = datetime.now().isoformat()
-        invitation1 = Invitation(
-            now, "someoneelse", False, "someone@mydomain.tld", [foo_group.dn]
-        )
-        hash = invitation1.profile_hash()
-        invitation2 = Invitation(
-            now, "anything", False, "someone@mydomain.tld", [foo_group.dn]
-        )
-        b64 = invitation2.b64()
+    now = datetime.now().isoformat()
+    invitation = Invitation(
+        now, "anything", False, "someone@mydomain.tld", [foo_group.dn]
+    )
+    b64 = invitation.b64()
 
     testclient.get(f"/register/{b64}/invalid", status=302)
 
 
 def test_registration_invalid_data(testclient, slapd_connection, foo_group):
-    with testclient.app.app_context():
-        invitation = Invitation(
-            datetime.now().isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            [foo_group.dn],
-        )
-        hash = invitation.profile_hash()
+    invitation = Invitation(
+        datetime.now().isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [foo_group.dn],
+    )
+    hash = invitation.profile_hash()
 
     testclient.get(f"/register/invalid/{hash}", status=302)
 
@@ -211,33 +198,31 @@ def test_registration_invalid_data(testclient, slapd_connection, foo_group):
 def test_registration_more_than_48_hours_after_invitation(
     testclient, slapd_connection, foo_group
 ):
-    with testclient.app.app_context():
-        two_days_ago = datetime.now() - timedelta(hours=48)
-        invitation = Invitation(
-            two_days_ago.isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            [foo_group.dn],
-        )
-        hash = invitation.profile_hash()
-        b64 = invitation.b64()
+    two_days_ago = datetime.now() - timedelta(hours=48)
+    invitation = Invitation(
+        two_days_ago.isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [foo_group.dn],
+    )
+    hash = invitation.profile_hash()
+    b64 = invitation.b64()
 
     testclient.get(f"/register/{b64}/{hash}", status=302)
 
 
 def test_registration_no_password(testclient, slapd_connection, foo_group):
-    with testclient.app.app_context():
-        invitation = Invitation(
-            datetime.now().isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            [foo_group.dn],
-        )
-        hash = invitation.profile_hash()
-        b64 = invitation.b64()
-        url = f"/register/{b64}/{hash}"
+    invitation = Invitation(
+        datetime.now().isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [foo_group.dn],
+    )
+    hash = invitation.profile_hash()
+    b64 = invitation.b64()
+    url = f"/register/{b64}/{hash}"
 
     res = testclient.get(url, status=200)
     assert "required" in res.form["password1"].attrs
@@ -246,8 +231,7 @@ def test_registration_no_password(testclient, slapd_connection, foo_group):
     res = res.form.submit(status=200)
     assert "This field is required." in res.text, res.text
 
-    with testclient.app.app_context():
-        assert not User.get("someoneelse", conn=slapd_connection)
+    assert not User.get("someoneelse")
 
     with testclient.session_transaction() as sess:
         assert "user_dn" not in sess
@@ -256,17 +240,16 @@ def test_registration_no_password(testclient, slapd_connection, foo_group):
 def test_no_registration_if_logged_in(
     testclient, slapd_connection, logged_user, foo_group
 ):
-    with testclient.app.app_context():
-        invitation = Invitation(
-            datetime.now().isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            [foo_group.dn],
-        )
-        hash = invitation.profile_hash()
-        b64 = invitation.b64()
-        url = f"/register/{b64}/{hash}"
+    invitation = Invitation(
+        datetime.now().isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [foo_group.dn],
+    )
+    hash = invitation.profile_hash()
+    b64 = invitation.b64()
+    url = f"/register/{b64}/{hash}"
 
     testclient.get(url, status=302)
 
@@ -294,16 +277,15 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
         "uid"
     ]  # remove groups from default read permissions
 
-    with testclient.app.app_context():
-        invitation = Invitation(
-            datetime.now().isoformat(),
-            "someoneelse",
-            False,
-            "someone@mydomain.tld",
-            [foo_group.dn],
-        )
-        b64 = invitation.b64()
-        hash = invitation.profile_hash()
+    invitation = Invitation(
+        datetime.now().isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [foo_group.dn],
+    )
+    b64 = invitation.b64()
+    hash = invitation.profile_hash()
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
 
@@ -318,8 +300,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    with testclient.app.app_context():
-        user = User.get("someoneelse", conn=slapd_connection)
-        user.load_groups(conn=slapd_connection)
-        foo_group.reload(slapd_connection)
-        assert user.groups == [foo_group]
+    user = User.get("someoneelse")
+    user.load_groups()
+    foo_group.reload()
+    assert user.groups == [foo_group]
