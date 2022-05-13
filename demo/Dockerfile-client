@@ -5,8 +5,8 @@ RUN \
     apt -y upgrade
 
 RUN pip install \
-    flask \
-    "authlib<1.0.0" \
+    "flask<3" \
+    "authlib<2" \
     requests
 
 WORKDIR /opt/client

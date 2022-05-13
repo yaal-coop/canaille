@@ -17,22 +17,23 @@ function run {
         return 1
     fi
 
-    if ! test -d "$DIR/env"; then
-        {
-            virtualenv "$DIR/env" &&
-            "$DIR/env/bin/pip" install --editable "$DIR/.." &&
-            "$DIR/env/bin/pip" install honcho requests slapd
-        } || rm --recursive --force "$DIR/env"
+    if ! type poetry > /dev/null 2>&1; then
+        echo "Cannot start the LDAP server. Please install python on your system."
+        echo "https://python-poetry.org/docs/#installation"
+        return 1
     fi
 
+    poetry install
+    poetry run pip install honcho requests slapd
+
     if [ "$1" == "--ldap-native" ]; then
-        env "SLAPD_BINARY=NATIVE" "PWD=$DIR" "$DIR/env/bin/honcho" start
+        env "SLAPD_BINARY=NATIVE" "PWD=$DIR" poetry run honcho start
 
     elif [ "$1" == "--ldap-docker" ]; then
-        env "SLAPD_BINARY=DOCKER" "PWD=$DIR" "$DIR/env/bin/honcho" start
+        env "SLAPD_BINARY=DOCKER" "PWD=$DIR" poetry run honcho start
 
     else
-        env "PWD=$DIR" "$DIR/env/bin/honcho" start
+        env "PWD=$DIR" poetry run honcho start
     fi
 }
 

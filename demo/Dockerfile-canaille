@@ -9,8 +9,9 @@ RUN \
     libldap2-dev \
     libssl-dev
 
-COPY setup.cfg setup.py /opt/canaille/
-RUN pip install --editable /opt/canaille
-
+COPY poetry.lock pyproject.toml /opt/canaille/
+RUN pip install poetry
 WORKDIR /opt/canaille
-ENTRYPOINT ["flask", "run", "--host=0.0.0.0"]
+RUN poetry install
+
+ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
