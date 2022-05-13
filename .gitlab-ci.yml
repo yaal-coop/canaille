@@ -11,7 +11,7 @@ before_script:
   - env DEBIAN_FRONTEND=noninteractive apt install --yes slapd python3-dev libldap2-dev libsasl2-dev libssl-dev ldap-utils
   - curl -O https://bootstrap.pypa.io/get-pip.py
   - python get-pip.py
-  - pip install tox poetry coveralls pyyaml
+  - pip install tox poetry coveralls pyyaml toml
 
 style:
   image: python:3.10
