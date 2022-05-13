@@ -1,0 +1,123 @@
+[build-system]
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.masonry.api"
+
+[tool]
+[tool.poetry]
+name = "Canaille"
+version = "0.0.8"
+description = "Minimalistic identity provider"
+license = "MIT"
+keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Operating System :: OS Independent",
+    "Topic :: System :: Systems Administration :: Authentication/Directory",
+    "Topic :: System :: Systems Administration :: Authentication/Directory :: LDAP",
+
+]
+authors = ["Yaal team <contact@yaal.coop>"]
+maintainers = [
+    "Éloi Rivard <eloi@yaal.coop>",
+]
+homepage = "https://canaille.readthedocs.io/en/latest/"
+documentation = "https://canaille.readthedocs.io/en/latest/"
+repository = "https://gitlab.com/yaal/canaille"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.7, <4"
+authlib = ">1,<2"
+click = "<9"
+email_validator = "<2"
+flask = "<3"
+flask-babel = "<3"
+flask-themer = "<2"
+flask-wtf = "<2"
+python-ldap = "<4"
+toml = "<1"
+wtforms = "<4"
+
+"sentry-sdk" = {version = "<2", optional=true, extras=["flask"]}
+
+[tool.poetry.extras]
+sentry = ["sentry-sdk"]
+
+[tool.poetry.dev-dependencies]
+"coverage" = "*"
+"flask-webtest" = "*"
+"freezegun" = "*"
+"mock" = "*"
+"pdbpp" = "*"
+"pre-commit" = "*"
+"pyquery" = "*"
+"pytest" = "*"
+"pytest-coverage" = "*"
+"slapd" = "*"
+"smtpdfix" = "*"
+"sphinx" = "*"
+"sphinx-rtd-theme" = "*"
+"sphinx-issues" = "*"
+
+[options.entry_points.console_scripts]
+console_scripts = { sheraf = "canaille.commands:cli" }
+
+[options.packages.find]
+exclude = [
+    "tests",
+    "tests.*",
+    "doc",
+    "doc.*",
+]
+
+[tool.coverage.run]
+source = [
+    "canaille",
+    "tests",
+]
+omit = [".tox/*"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+skipsdist = true
+envlist =
+    style
+    py37
+    py38
+    py39
+    py310
+    doc
+    coverage
+
+[testenv]
+whitelist_externals = poetry
+commands =
+    poetry install
+    poetry run pytest --showlocals --full-trace {posargs}
+
+[testenv:style]
+commands =
+    poetry install
+    poetry run pre-commit run --all-files
+
+[testenv:doc]
+commands =
+    poetry install
+    poetry run sphinx-build doc build/sphinx/html
+
+[testenv:coverage]
+commands =
+    poetry install
+    poetry run pytest --cov {posargs}
+    poetry run coverage html
+"""
