@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import configparser
+import datetime
 import os
 import sys
 from unittest import mock
@@ -7,6 +7,10 @@ from unittest import mock
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("../canaille"))
 
+if sys.version_info[:2] >= (3, 8):
+    from importlib import metadata
+else:
+    import importlib_metadata as metadata
 
 # Readthedocs does not support C modules, so
 # we have to mock them.
@@ -20,9 +24,6 @@ class Mock(mock.MagicMock):
 
 MOCK_MODULES = ["ldap"]
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-
-config = configparser.ConfigParser()
-config.read("../setup.cfg")
 
 # -- General configuration ------------------------------------------------
 
@@ -41,10 +42,11 @@ templates_path = ["_templates"]
 source_suffix = [".rst"]
 master_doc = "index"
 project = "canaille"
-copyright = "2020, Yaal"
-author = "Yaal"
+year = datetime.datetime.now().strftime("%Y")
+copyright = f"{year}, Yaal Coop"
+author = "Yaal Coop"
 
-release = config["metadata"]["version"]
+release = metadata.version("canaille")
 version = "%s.%s" % tuple(map(int, release.split(".")[:2]))
 language = None
 exclude_patterns = []
