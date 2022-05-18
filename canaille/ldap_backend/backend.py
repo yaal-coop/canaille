@@ -9,30 +9,26 @@ from flask import request
 from flask_babel import gettext as _
 
 
-def setup_ldap_models(app):
+def setup_ldap_models(config):
     from .ldapobject import LDAPObject
     from ..models import Group
     from ..models import User
 
-    LDAPObject.root_dn = app.config["LDAP"]["ROOT_DN"]
+    LDAPObject.root_dn = config["LDAP"]["ROOT_DN"]
 
-    user_base = app.config["LDAP"]["USER_BASE"]
-    if user_base.endswith(app.config["LDAP"]["ROOT_DN"]):
-        user_base = user_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
+    user_base = config["LDAP"]["USER_BASE"]
+    if user_base.endswith(config["LDAP"]["ROOT_DN"]):
+        user_base = user_base[: -len(config["LDAP"]["ROOT_DN"]) - 1]
     User.base = user_base
-    User.id = app.config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
-    User.object_class = [
-        app.config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)
-    ]
+    User.id = config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
+    User.object_class = [config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)]
 
-    group_base = app.config["LDAP"].get("GROUP_BASE")
-    if group_base.endswith(app.config["LDAP"]["ROOT_DN"]):
-        group_base = group_base[: -len(app.config["LDAP"]["ROOT_DN"]) - 1]
+    group_base = config["LDAP"].get("GROUP_BASE")
+    if group_base.endswith(config["LDAP"]["ROOT_DN"]):
+        group_base = group_base[: -len(config["LDAP"]["ROOT_DN"]) - 1]
     Group.base = group_base
-    Group.id = app.config["LDAP"].get("GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE)
-    Group.object_class = [
-        app.config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS)
-    ]
+    Group.id = config["LDAP"].get("GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE)
+    Group.object_class = [config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS)]
 
 
 def setup_backend(app):
@@ -89,7 +85,7 @@ def teardown_backend(app):
 
 
 def init_backend(app):
-    setup_ldap_models(app)
+    setup_ldap_models(app.config)
 
     @app.before_request
     def before_request():
