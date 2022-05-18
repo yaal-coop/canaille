@@ -52,7 +52,7 @@ wtforms = "<4"
 sentry = ["sentry-sdk"]
 
 [tool.poetry.dev-dependencies]
-"coverage" = "*"
+"coverage" = {version = "*", extras=["toml"]}
 "flask-webtest" = "*"
 "freezegun" = "*"
 "mock" = "*"
