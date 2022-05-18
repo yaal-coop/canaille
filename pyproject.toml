@@ -78,6 +78,10 @@ exclude = [
     "doc.*",
 ]
 
+[tool.poetry.build]
+generate-setup-file = false
+script = "build.py"
+
 [tool.coverage.run]
 source = [
     "canaille",
