@@ -1,3 +1,4 @@
+from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import User
 
 
@@ -80,6 +81,8 @@ def test_user_without_password_first_login(testclient, slapd_connection):
 
     assert "First login" in res
 
+    u.delete(slapd_connection)
+
 
 def test_user_deleted_in_session(testclient, slapd_connection):
     User.ldap_object_classes(slapd_connection)
@@ -143,7 +146,9 @@ def test_wrong_login(testclient, slapd_connection, user):
 
 
 def test_admin_self_deletion(testclient, slapd_connection):
-    User.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_attributes(slapd_connection)
+
     admin = User(
         objectClass=["inetOrgPerson"],
         cn="Temp admin",
@@ -171,7 +176,9 @@ def test_admin_self_deletion(testclient, slapd_connection):
 
 
 def test_user_self_deletion(testclient, slapd_connection):
-    User.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_classes(slapd_connection)
+    LDAPObject.ldap_object_attributes(slapd_connection)
+
     user = User(
         objectClass=["inetOrgPerson"],
         cn="Temp user",

@@ -58,6 +58,8 @@ def test_set_groups_with_leading_space_in_user_id_attribute(
         foo_dns = {m.dn for m in foo_group.get_members(conn=slapd_connection)}
         assert user.dn not in foo_dns
 
+    user.delete(slapd_connection)
+
 
 def test_moderator_can_create_edit_and_delete_group(
     testclient, slapd_connection, logged_moderator, foo_group

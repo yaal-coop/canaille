@@ -372,6 +372,8 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
     res = testclient.get("/profile/temp", status=200)
     assert "This user does not have a password yet" not in res
 
+    u.delete(slapd_connection)
+
 
 def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     User.ldap_object_classes(slapd_connection)
@@ -396,6 +398,8 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     )
     assert "Send again" in res
     assert len(smtpd.messages) == 1
+
+    u.delete(slapd_connection)
 
 
 def test_photo_edition(
