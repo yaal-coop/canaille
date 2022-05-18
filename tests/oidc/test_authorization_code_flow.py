@@ -20,7 +20,7 @@ def test_authorization_code_flow(
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=200,
@@ -39,7 +39,7 @@ def test_authorization_code_flow(
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="profile",
+            scope="openid profile",
             redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -81,7 +81,7 @@ def test_authorization_code_flow_preconsented(
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=302,
@@ -98,7 +98,7 @@ def test_authorization_code_flow_preconsented(
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="profile",
+            scope="openid profile",
             redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -135,7 +135,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=200,
@@ -167,7 +167,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="profile",
+            scope="openid profile",
             redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -199,7 +199,7 @@ def test_refresh_token(testclient, slapd_connection, user, client):
             params=dict(
                 response_type="code",
                 client_id=client.client_id,
-                scope="profile",
+                scope="openid profile",
                 nonce="somenonce",
             ),
             status=200,
@@ -223,7 +223,7 @@ def test_refresh_token(testclient, slapd_connection, user, client):
             params=dict(
                 grant_type="authorization_code",
                 code=code,
-                scope="profile",
+                scope="openid profile",
                 redirect_uri=client.redirect_uris[0],
             ),
             headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -280,7 +280,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
             code_challenge_method="S256",
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=200,
@@ -299,7 +299,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="profile",
+            scope="openid profile",
             code_verifier=code_verifier,
             redirect_uri=client.redirect_uris[0],
             client_id=client.client_id,
@@ -338,7 +338,7 @@ def test_authorization_code_flow_when_consent_already_given(
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=200,
@@ -362,7 +362,7 @@ def test_authorization_code_flow_when_consent_already_given(
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="profile",
+            scope="openid profile",
             redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -375,7 +375,7 @@ def test_authorization_code_flow_when_consent_already_given(
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=302,
@@ -395,7 +395,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=200,
@@ -420,7 +420,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="profile",
+            scope="openid profile",
             redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -433,7 +433,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile groups",
+            scope="openid profile groups",
             nonce="somenonce",
         ),
         status=200,
@@ -464,7 +464,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
         ),
         status=200,
@@ -491,7 +491,7 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
             prompt="none",
         ),
@@ -515,7 +515,7 @@ def test_prompt_not_logged(testclient, slapd_connection, user, client):
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
             prompt="none",
         ),
@@ -530,10 +530,46 @@ def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
             prompt="none",
         ),
         status=200,
     )
     assert "consent_required" == res.json.get("error")
+
+
+def test_nonce_required_in_oidc_requests(
+    testclient, slapd_connection, logged_user, client
+):
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+        ),
+        status=200,
+    )
+
+    assert res.json.get("error") == "invalid_request"
+
+
+def test_nonce_not_required_in_oauth_requests(
+    testclient, slapd_connection, logged_user, client
+):
+    testclient.app.config["REQUIRE_NONCE"] = False
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="profile",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.redirect_uris[0])
