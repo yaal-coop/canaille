@@ -1,7 +1,7 @@
 from . import client_credentials
 
 
-def test_token_revocation(testclient, user, client, token, slapd_connection):
+def test_token_revocation(testclient, user, client, token):
     assert not token.revokation_date
 
     res = testclient.post(

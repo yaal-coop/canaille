@@ -9,7 +9,7 @@ from werkzeug.security import gen_salt
 
 
 @pytest.fixture
-def client(app, slapd_connection, other_client):
+def client(app, other_client):
     c = Client(
         client_id=gen_salt(24),
         name="Some client",
@@ -43,7 +43,7 @@ def client(app, slapd_connection, other_client):
 
 
 @pytest.fixture
-def other_client(app, slapd_connection):
+def other_client(app):
     c = Client(
         client_id=gen_salt(24),
         name="Some other client",
@@ -77,7 +77,7 @@ def other_client(app, slapd_connection):
 
 
 @pytest.fixture
-def authorization(app, slapd_connection, user, client):
+def authorization(app, user, client):
     a = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
@@ -98,7 +98,7 @@ def authorization(app, slapd_connection, user, client):
 
 
 @pytest.fixture
-def token(slapd_connection, client, user):
+def token(client, user):
     t = Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -116,7 +116,7 @@ def token(slapd_connection, client, user):
 
 
 @pytest.fixture
-def consent(slapd_connection, client, user):
+def consent(client, user):
     t = Consent(
         client=client.dn,
         subject=user.dn,
@@ -128,7 +128,7 @@ def consent(slapd_connection, client, user):
 
 
 @pytest.fixture(autouse=True)
-def cleanup_consents(slapd_connection):
+def cleanup_consents():
     yield
     for consent in Consent.all():
         consent.delete()

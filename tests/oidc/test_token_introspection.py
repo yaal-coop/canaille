@@ -40,9 +40,7 @@ def test_token_invalid(testclient, client):
     assert {"active": False} == res.json
 
 
-def test_full_flow(
-    testclient, slapd_connection, logged_user, client, user, other_client
-):
+def test_full_flow(testclient, logged_user, client, user, other_client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(

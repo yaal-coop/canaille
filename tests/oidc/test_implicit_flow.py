@@ -5,7 +5,7 @@ from authlib.jose import jwt
 from canaille.oidc.models import Token
 
 
-def test_oauth_implicit(testclient, slapd_connection, user, client):
+def test_oauth_implicit(testclient, user, client):
     client.grant_type = ["token"]
     client.token_endpoint_auth_method = "none"
 
@@ -54,9 +54,7 @@ def test_oauth_implicit(testclient, slapd_connection, user, client):
     client.save()
 
 
-def test_oidc_implicit(
-    testclient, keypair, slapd_connection, user, client, other_client
-):
+def test_oidc_implicit(testclient, keypair, user, client, other_client):
     client.grant_type = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
@@ -114,7 +112,7 @@ def test_oidc_implicit(
 
 
 def test_oidc_implicit_with_group(
-    testclient, keypair, slapd_connection, user, client, foo_group, other_client
+    testclient, keypair, user, client, foo_group, other_client
 ):
     client.grant_type = ["token id_token"]
     client.token_endpoint_auth_method = "none"

@@ -1,4 +1,4 @@
-def test_incomplete_requests(testclient, slapd_connection, logged_user, client):
+def test_incomplete_requests(testclient, logged_user, client):
     testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -8,7 +8,7 @@ def test_incomplete_requests(testclient, slapd_connection, logged_user, client):
     )
 
 
-def test_bad_client(testclient, slapd_connection, logged_user, client):
+def test_bad_client(testclient, logged_user, client):
     testclient.get(
         "/oauth/authorize",
         params=dict(

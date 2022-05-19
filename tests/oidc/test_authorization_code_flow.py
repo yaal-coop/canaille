@@ -13,7 +13,7 @@ from . import client_credentials
 
 
 def test_authorization_code_flow(
-    testclient, slapd_connection, logged_user, client, keypair, other_client
+    testclient, logged_user, client, keypair, other_client
 ):
     res = testclient.get(
         "/oauth/authorize",
@@ -71,7 +71,7 @@ def test_authorization_code_flow(
 
 
 def test_authorization_code_flow_preconsented(
-    testclient, slapd_connection, logged_user, client, keypair, other_client
+    testclient, logged_user, client, keypair, other_client
 ):
     client.preconsent = True
     client.save()
@@ -129,7 +129,7 @@ def test_authorization_code_flow_preconsented(
     } == res.json
 
 
-def test_logout_login(testclient, slapd_connection, logged_user, client):
+def test_logout_login(testclient, logged_user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -192,7 +192,7 @@ def test_logout_login(testclient, slapd_connection, logged_user, client):
     } == res.json
 
 
-def test_refresh_token(testclient, slapd_connection, user, client):
+def test_refresh_token(testclient, user, client):
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get(
             "/oauth/authorize",
@@ -266,7 +266,7 @@ def test_refresh_token(testclient, slapd_connection, user, client):
         } == res.json
 
 
-def test_code_challenge(testclient, slapd_connection, logged_user, client):
+def test_code_challenge(testclient, logged_user, client):
     client.token_endpoint_auth_method = "none"
     client.save()
 
@@ -329,7 +329,7 @@ def test_code_challenge(testclient, slapd_connection, logged_user, client):
 
 
 def test_authorization_code_flow_when_consent_already_given(
-    testclient, slapd_connection, logged_user, client
+    testclient, logged_user, client
 ):
     assert not Consent.all()
 
@@ -384,7 +384,7 @@ def test_authorization_code_flow_when_consent_already_given(
 
 
 def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
-    testclient, slapd_connection, logged_user, client
+    testclient, logged_user, client
 ):
     assert not Consent.all()
 
@@ -449,7 +449,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
 
 
 def test_authorization_code_flow_but_user_cannot_use_oidc(
-    testclient, slapd_connection, user, client, keypair, other_client
+    testclient, user, client, keypair, other_client
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
 
@@ -472,7 +472,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
     res = res.follow(status=400)
 
 
-def test_prompt_none(testclient, slapd_connection, logged_user, client):
+def test_prompt_none(testclient, logged_user, client):
     consent = Consent(
         client=client.dn,
         subject=logged_user.dn,
@@ -496,7 +496,7 @@ def test_prompt_none(testclient, slapd_connection, logged_user, client):
     assert "code" in params
 
 
-def test_prompt_not_logged(testclient, slapd_connection, user, client):
+def test_prompt_not_logged(testclient, user, client):
     consent = Consent(
         client=client.dn,
         subject=user.dn,
@@ -518,7 +518,7 @@ def test_prompt_not_logged(testclient, slapd_connection, user, client):
     assert "login_required" == res.json.get("error")
 
 
-def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):
+def test_prompt_no_consent(testclient, logged_user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -533,9 +533,7 @@ def test_prompt_no_consent(testclient, slapd_connection, logged_user, client):
     assert "consent_required" == res.json.get("error")
 
 
-def test_nonce_required_in_oidc_requests(
-    testclient, slapd_connection, logged_user, client
-):
+def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -549,9 +547,7 @@ def test_nonce_required_in_oidc_requests(
     assert res.json.get("error") == "invalid_request"
 
 
-def test_nonce_not_required_in_oauth_requests(
-    testclient, slapd_connection, logged_user, client
-):
+def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
     testclient.app.config["REQUIRE_NONCE"] = False
 
     res = testclient.get(

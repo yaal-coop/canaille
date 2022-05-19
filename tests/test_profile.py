@@ -5,7 +5,6 @@ from webtest import Upload
 def test_edition_permission(
     testclient,
     slapd_server,
-    slapd_connection,
     logged_user,
     admin,
     foo_group,
@@ -23,7 +22,6 @@ def test_edition_permission(
 def test_edition(
     testclient,
     slapd_server,
-    slapd_connection,
     logged_user,
     admin,
     foo_group,
@@ -83,9 +81,7 @@ def test_edition(
     logged_user.save()
 
 
-def test_field_permissions_none(
-    testclient, slapd_server, slapd_connection, logged_user
-):
+def test_field_permissions_none(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.telephoneNumber = ["555-666-777"]
     logged_user.save()
@@ -106,9 +102,7 @@ def test_field_permissions_none(
     assert user.telephoneNumber == ["555-666-777"]
 
 
-def test_field_permissions_read(
-    testclient, slapd_server, slapd_connection, logged_user
-):
+def test_field_permissions_read(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.telephoneNumber = ["555-666-777"]
     logged_user.save()
@@ -128,9 +122,7 @@ def test_field_permissions_read(
     assert user.telephoneNumber == ["555-666-777"]
 
 
-def test_field_permissions_write(
-    testclient, slapd_server, slapd_connection, logged_user
-):
+def test_field_permissions_write(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.telephoneNumber = ["555-666-777"]
     logged_user.save()
@@ -158,7 +150,7 @@ def test_simple_user_cannot_edit_other(testclient, logged_user):
     testclient.get("/users", status=403)
 
 
-def test_bad_email(testclient, slapd_connection, logged_user):
+def test_bad_email(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
 
     res.form["mail"] = "john@doe.com"
@@ -178,7 +170,7 @@ def test_bad_email(testclient, slapd_connection, logged_user):
     assert ["john@doe.com"] == logged_user.mail
 
 
-def test_surname_is_mandatory(testclient, slapd_connection, logged_user):
+def test_surname_is_mandatory(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
     logged_user.sn = ["Doe"]
 
@@ -191,7 +183,7 @@ def test_surname_is_mandatory(testclient, slapd_connection, logged_user):
     assert ["Doe"] == logged_user.sn
 
 
-def test_password_change(testclient, slapd_connection, logged_user):
+def test_password_change(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
 
     res.form["password1"] = "new_password"
@@ -212,7 +204,7 @@ def test_password_change(testclient, slapd_connection, logged_user):
     assert logged_user.check_password("correct horse battery staple")
 
 
-def test_password_change_fail(testclient, slapd_connection, logged_user):
+def test_password_change_fail(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
 
     res.form["password1"] = "new_password"
@@ -238,7 +230,7 @@ def test_admin_bad_request(testclient, logged_moderator):
 
 
 def test_user_creation_edition_and_deletion(
-    testclient, slapd_connection, logged_moderator, foo_group, bar_group
+    testclient, logged_moderator, foo_group, bar_group
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
@@ -295,9 +287,7 @@ def test_user_creation_edition_and_deletion(
     assert "george" not in res.text
 
 
-def test_cn_setting_with_given_name_and_surname(
-    testclient, slapd_connection, logged_moderator
-):
+def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["uid"] = "george"
     res.form["givenName"] = "George"
@@ -310,7 +300,7 @@ def test_cn_setting_with_given_name_and_surname(
     assert george.cn[0] == "George Abitbol"
 
 
-def test_cn_setting_with_surname_only(testclient, slapd_connection, logged_moderator):
+def test_cn_setting_with_surname_only(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["uid"] = "george"
     res.form["sn"] = "Abitbol"
@@ -387,7 +377,6 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
 def test_photo_edition(
     testclient,
     slapd_server,
-    slapd_connection,
     logged_user,
     jpeg_photo,
 ):

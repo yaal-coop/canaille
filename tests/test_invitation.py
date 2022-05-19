@@ -5,7 +5,7 @@ from canaille.account import Invitation
 from canaille.models import User
 
 
-def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd):
+def test_invitation(testclient, logged_admin, foo_group, smtpd):
     assert User.get("someone") is None
 
     res = testclient.get("/invite", status=200)
@@ -53,9 +53,7 @@ def test_invitation(testclient, slapd_connection, logged_admin, foo_group, smtpd
     res = testclient.get(url, status=302)
 
 
-def test_invitation_editable_uid(
-    testclient, slapd_connection, logged_admin, foo_group, smtpd
-):
+def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     assert User.get("jackyjack") is None
     assert User.get("djorje") is None
 
@@ -103,7 +101,7 @@ def test_invitation_editable_uid(
         del sess["user_dn"]
 
 
-def test_generate_link(testclient, slapd_connection, logged_admin, foo_group, smtpd):
+def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     assert User.get("sometwo") is None
 
     res = testclient.get("/invite", status=200)
@@ -147,7 +145,7 @@ def test_generate_link(testclient, slapd_connection, logged_admin, foo_group, sm
     res = testclient.get(url, status=302)
 
 
-def test_invitation_login_already_taken(testclient, slapd_connection, logged_admin):
+def test_invitation_login_already_taken(testclient, logged_admin):
     res = testclient.get("/invite", status=200)
 
     res.form["uid"] = logged_admin.uid
@@ -158,7 +156,7 @@ def test_invitation_login_already_taken(testclient, slapd_connection, logged_adm
     assert "The email &#39;jane@doe.com&#39; already exists" in res.text
 
 
-def test_registration(testclient, slapd_connection, foo_group):
+def test_registration(testclient, foo_group):
     invitation = Invitation(
         datetime.now().isoformat(),
         "someoneelse",
@@ -172,7 +170,7 @@ def test_registration(testclient, slapd_connection, foo_group):
     testclient.get(f"/register/{b64}/{hash}", status=200)
 
 
-def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
+def test_registration_invalid_hash(testclient, foo_group):
     now = datetime.now().isoformat()
     invitation = Invitation(
         now, "anything", False, "someone@mydomain.tld", [foo_group.dn]
@@ -182,7 +180,7 @@ def test_registration_invalid_hash(testclient, slapd_connection, foo_group):
     testclient.get(f"/register/{b64}/invalid", status=302)
 
 
-def test_registration_invalid_data(testclient, slapd_connection, foo_group):
+def test_registration_invalid_data(testclient, foo_group):
     invitation = Invitation(
         datetime.now().isoformat(),
         "someoneelse",
@@ -195,9 +193,7 @@ def test_registration_invalid_data(testclient, slapd_connection, foo_group):
     testclient.get(f"/register/invalid/{hash}", status=302)
 
 
-def test_registration_more_than_48_hours_after_invitation(
-    testclient, slapd_connection, foo_group
-):
+def test_registration_more_than_48_hours_after_invitation(testclient, foo_group):
     two_days_ago = datetime.now() - timedelta(hours=48)
     invitation = Invitation(
         two_days_ago.isoformat(),
@@ -212,7 +208,7 @@ def test_registration_more_than_48_hours_after_invitation(
     testclient.get(f"/register/{b64}/{hash}", status=302)
 
 
-def test_registration_no_password(testclient, slapd_connection, foo_group):
+def test_registration_no_password(testclient, foo_group):
     invitation = Invitation(
         datetime.now().isoformat(),
         "someoneelse",
@@ -237,9 +233,7 @@ def test_registration_no_password(testclient, slapd_connection, foo_group):
         assert "user_dn" not in sess
 
 
-def test_no_registration_if_logged_in(
-    testclient, slapd_connection, logged_user, foo_group
-):
+def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
     invitation = Invitation(
         datetime.now().isoformat(),
         "someoneelse",
@@ -271,7 +265,7 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
 
 
 def test_groups_are_saved_even_when_user_does_not_have_read_permission(
-    testclient, slapd_connection, foo_group
+    testclient, foo_group
 ):
     testclient.app.config["ACL"]["DEFAULT"]["READ"] = [
         "uid"

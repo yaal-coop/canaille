@@ -2,7 +2,7 @@ from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import User
 
 
-def test_signin_and_out(testclient, slapd_connection, user):
+def test_signin_and_out(testclient, user):
     with testclient.session_transaction() as session:
         assert not session.get("user_dn")
 
@@ -34,7 +34,7 @@ def test_signin_and_out(testclient, slapd_connection, user):
         assert not session.get("user_dn")
 
 
-def test_signin_wrong_password(testclient, slapd_connection, user):
+def test_signin_wrong_password(testclient, user):
     with testclient.session_transaction() as session:
         assert not session.get("user_dn")
 
@@ -48,7 +48,7 @@ def test_signin_wrong_password(testclient, slapd_connection, user):
     assert "Login failed, please check your information" in res.text
 
 
-def test_signin_with_alternate_attribute(testclient, slapd_connection, user):
+def test_signin_with_alternate_attribute(testclient, user):
     res = testclient.get("/login", status=200)
 
     res.form["login"] = "user"
@@ -108,7 +108,7 @@ def test_user_deleted_in_session(testclient, slapd_connection):
         assert not session.get("user_dn")
 
 
-def test_impersonate(testclient, slapd_connection, logged_admin, user):
+def test_impersonate(testclient, logged_admin, user):
     res = testclient.get("/", status=302).follow(status=200)
     assert "admin" == res.form["uid"].value
 
@@ -125,7 +125,7 @@ def test_impersonate(testclient, slapd_connection, logged_admin, user):
     assert "admin" == res.form["uid"].value
 
 
-def test_wrong_login(testclient, slapd_connection, user):
+def test_wrong_login(testclient, user):
     testclient.app.config["HIDE_INVALID_LOGINS"] = True
 
     res = testclient.get("/login", status=200)

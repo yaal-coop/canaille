@@ -18,7 +18,7 @@ def test_client_list(testclient, client, logged_admin):
     assert client.name in res.text
 
 
-def test_client_add(testclient, logged_admin, slapd_connection):
+def test_client_add(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     data = {
         "name": "foobar",
@@ -58,7 +58,7 @@ def test_client_add(testclient, logged_admin, slapd_connection):
             assert v == client_value
 
 
-def test_client_edit(testclient, client, logged_admin, slapd_connection, other_client):
+def test_client_edit(testclient, client, logged_admin, other_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
         "name": "foobar",

@@ -3,7 +3,7 @@ from canaille.oidc.models import Token
 from . import client_credentials
 
 
-def test_password_flow_basic(testclient, slapd_connection, user, client):
+def test_password_flow_basic(testclient, user, client):
     res = testclient.post(
         "/oauth/token",
         params=dict(
@@ -36,7 +36,7 @@ def test_password_flow_basic(testclient, slapd_connection, user, client):
     } == res.json
 
 
-def test_password_flow_post(testclient, slapd_connection, user, client):
+def test_password_flow_post(testclient, user, client):
     client.token_endpoint_auth_method = "client_secret_post"
     client.save()
 

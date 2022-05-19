@@ -2,9 +2,7 @@ def test_no_logged_no_access(testclient):
     testclient.get("/consent", status=403)
 
 
-def test_consent_list(
-    testclient, slapd_connection, client, consent, logged_user, token
-):
+def test_consent_list(testclient, client, consent, logged_user, token):
     res = testclient.get("/consent", status=200)
     assert client.name in res.text
     assert not token.revoked
