@@ -6,7 +6,7 @@
             <img class="ui centered tiny image" src="{{ client.logo_uri }}" alt="{{ client.name }}">
         {% endif %}
 
-        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.name) }}</h3>
+        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.name) }}</h2>
 
         <div class="ui divided items">
             {% for claim in grant.request.scope.split(" ") %}
