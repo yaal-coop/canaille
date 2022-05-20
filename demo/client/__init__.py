@@ -1,5 +1,9 @@
+from urllib.parse import urlsplit
+from urllib.parse import urlunsplit
+
 from authlib.integrations.flask_client import OAuth
 from authlib.oidc.discovery import get_well_known_url
+from flask import current_app
 from flask import flash
 from flask import Flask
 from flask import redirect
@@ -39,6 +43,7 @@ def create_app():
     def authorize():
         token = oauth.canaille.authorize_access_token()
         session["user"] = token.get("userinfo")
+        session["id_token"] = token["id_token"]
         flash("You have been successfully logged in.", "success")
         return redirect(url_for("index"))
 
@@ -49,7 +54,31 @@ def create_app():
         except KeyError:
             pass
 
-        flash("You have been successfully logged out.", "success")
-        return redirect(url_for("index"))
+        flash("You have been successfully logged out", "success")
+
+        oauth.canaille.load_server_metadata()
+        end_session_endpoint = oauth.canaille.server_metadata.get(
+            "end_session_endpoint"
+        )
+        end_session_url = set_parameter_in_url_query(
+            end_session_endpoint,
+            client_id=current_app.config["OAUTH_CLIENT_ID"],
+            id_token_hint=session["id_token"],
+            post_logout_redirect_uri=url_for("index", _external=True),
+        )
+        return redirect(end_session_url)
 
     return app
+
+
+def set_parameter_in_url_query(url, **kwargs):
+    split = list(urlsplit(url))
+
+    parameters = "&".join(f"{key}={value}" for key, value in kwargs.items())
+
+    if split[3]:
+        split[3] = f"{split[3]}&{parameters}"
+    else:
+        split[3] = parameters
+
+    return urlunsplit(split)

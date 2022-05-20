@@ -38,6 +38,7 @@ def test_client_add(testclient, logged_admin):
         "jwk_uri": "https://foo.bar/jwks.json",
         "audience": [],
         "preconsent": False,
+        "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
     }
     for k, v in data.items():
         res.form[k].force_value(v)
@@ -78,6 +79,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "jwk_uri": "https://foo.bar/jwks.json",
         "audience": [client.dn, other_client.dn],
         "preconsent": True,
+        "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
     }
     for k, v in data.items():
         res.forms["clientadd"][k].force_value(v)

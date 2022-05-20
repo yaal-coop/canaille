@@ -1,0 +1,42 @@
+{% extends theme('base.html') %}
+{% import 'fomanticui.html' as sui %}
+
+{% block content %}
+    <div class="ui segment">
+        <div class="ui center aligned">
+            <h2 class="ui center aligned icon header">
+                <i class="sign out icon"></i>
+                <div class="content">{% trans %}Log out{% endtrans %}</div>
+                <div class="sub header">{% trans %}Do you want to log out?{% endtrans %}</div>
+            </h2>
+            <div class="ui message">
+                <p>
+                    {{ _("You are currently logged in as %(username)s.", username=user.name) }}
+                    {% if client %}
+                        {{ _("The application %(client_name)s want to disconnect your account.", client_name=client.name) }}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="ui center aligned container">
+            <form method="POST"
+                id="{{ form.id or form.__class__.__name__|lower }}"
+                action="{{ form.action }}"
+                role="form"
+                class="ui form"
+            >
+                {{ form.hidden_tag() if form.hidden_tag }}
+                <div class="ui stackable buttons">
+                    <button name="answer" type="submit" class="ui button" value="stay" id="stay">
+                        {% trans %}Stay logged{% endtrans %}
+                    </button>
+                    <button name="answer" type="submit" class="ui primary button" value="logout" id="logout">
+                        {% trans %}Logout{% endtrans %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

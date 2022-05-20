@@ -19,6 +19,7 @@ class Client(LDAPObject, ClientMixin):
         "contact": "oauthClientContact",
         "uri": "oauthClientURI",
         "redirect_uris": "oauthRedirectURIs",
+        "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
         "logo_uri": "oauthLogoURI",
         "issue_date": "oauthIssueDate",
         "secret": "oauthClientSecret",
