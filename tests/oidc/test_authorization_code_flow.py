@@ -15,6 +15,8 @@ from . import client_credentials
 def test_authorization_code_flow(
     testclient, logged_user, client, keypair, other_client
 ):
+    assert not Consent.all()
+
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -33,6 +35,9 @@ def test_authorization_code_flow(
     code = params["code"][0]
     authcode = AuthorizationCode.get(code=code)
     assert authcode is not None
+
+    consents = Consent.filter(client=client.dn, subject=logged_user.dn)
+    assert "profile" in consents[0].scope
 
     res = testclient.post(
         "/oauth/token",
@@ -69,10 +74,15 @@ def test_authorization_code_flow(
         "groups": [],
     } == res.json
 
+    for consent in consents:
+        consent.delete()
+
 
 def test_authorization_code_flow_preconsented(
     testclient, logged_user, client, keypair, other_client
 ):
+    assert not Consent.all()
+
     client.preconsent = True
     client.save()
 
@@ -92,6 +102,9 @@ def test_authorization_code_flow_preconsented(
     code = params["code"][0]
     authcode = AuthorizationCode.get(code=code)
     assert authcode is not None
+
+    consents = Consent.filter(client=client.dn, subject=logged_user.dn)
+    assert not consents
 
     res = testclient.post(
         "/oauth/token",
@@ -130,6 +143,8 @@ def test_authorization_code_flow_preconsented(
 
 
 def test_logout_login(testclient, logged_user, client):
+    assert not Consent.all()
+
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -162,6 +177,9 @@ def test_logout_login(testclient, logged_user, client):
     authcode = AuthorizationCode.get(code=code)
     assert authcode is not None
 
+    consents = Consent.filter(client=client.dn, subject=logged_user.dn)
+    assert "profile" in consents[0].scope
+
     res = testclient.post(
         "/oauth/token",
         params=dict(
@@ -191,8 +209,13 @@ def test_logout_login(testclient, logged_user, client):
         "groups": [],
     } == res.json
 
+    for consent in consents:
+        consent.delete()
+
 
 def test_refresh_token(testclient, user, client):
+    assert not Consent.all()
+
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get(
             "/oauth/authorize",
@@ -216,6 +239,9 @@ def test_refresh_token(testclient, user, client):
         code = params["code"][0]
         authcode = AuthorizationCode.get(code=code)
         assert authcode is not None
+
+        consents = Consent.filter(client=client.dn, subject=user.dn)
+        assert "profile" in consents[0].scope
 
     with freezegun.freeze_time("2020-01-01 00:01:00"):
         res = testclient.post(
@@ -265,8 +291,13 @@ def test_refresh_token(testclient, user, client):
             "groups": [],
         } == res.json
 
+    for consent in consents:
+        consent.delete()
+
 
 def test_code_challenge(testclient, logged_user, client):
+    assert not Consent.all()
+
     client.token_endpoint_auth_method = "none"
     client.save()
 
@@ -293,6 +324,9 @@ def test_code_challenge(testclient, logged_user, client):
     code = params["code"][0]
     authcode = AuthorizationCode.get(code=code)
     assert authcode is not None
+
+    consents = Consent.filter(client=client.dn, subject=logged_user.dn)
+    assert "profile" in consents[0].scope
 
     res = testclient.post(
         "/oauth/token",
@@ -326,6 +360,9 @@ def test_code_challenge(testclient, logged_user, client):
 
     client.token_endpoint_auth_method = "client_secret_basic"
     client.save()
+
+    for consent in consents:
+        consent.delete()
 
 
 def test_authorization_code_flow_when_consent_already_given(
@@ -381,6 +418,9 @@ def test_authorization_code_flow_when_consent_already_given(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
+
+    for consent in consents:
+        consent.delete()
 
 
 def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
@@ -447,6 +487,9 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert "profile" in consents[0].scope
     assert "groups" in consents[0].scope
 
+    for consent in consents:
+        consent.delete()
+
 
 def test_authorization_code_flow_but_user_cannot_use_oidc(
     testclient, user, client, keypair, other_client
@@ -495,6 +538,8 @@ def test_prompt_none(testclient, logged_user, client):
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
 
+    consent.delete()
+
 
 def test_prompt_not_logged(testclient, user, client):
     consent = Consent(
@@ -516,6 +561,8 @@ def test_prompt_not_logged(testclient, user, client):
         status=200,
     )
     assert "login_required" == res.json.get("error")
+
+    consent.delete()
 
 
 def test_prompt_no_consent(testclient, logged_user, client):

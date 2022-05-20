@@ -9,7 +9,7 @@ from werkzeug.security import gen_salt
 
 
 @pytest.fixture
-def client(app, other_client):
+def client(testclient, other_client, slapd_connection):
     c = Client(
         client_id=gen_salt(24),
         name="Some client",
@@ -39,11 +39,15 @@ def client(app, other_client):
     c.audience = [c.dn, other_client.dn]
     c.save()
 
-    return c
+    yield c
+    try:
+        c.delete()
+    except:
+        pass
 
 
 @pytest.fixture
-def other_client(app):
+def other_client(testclient, slapd_connection):
     c = Client(
         client_id=gen_salt(24),
         name="Some other client",
@@ -73,11 +77,15 @@ def other_client(app):
     c.audience = [c.dn]
     c.save()
 
-    return c
+    yield c
+    try:
+        c.delete()
+    except:
+        pass
 
 
 @pytest.fixture
-def authorization(app, user, client):
+def authorization(testclient, user, client, slapd_connection):
     a = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
@@ -94,11 +102,15 @@ def authorization(app, user, client):
         revokation="",
     )
     a.save()
-    return a
+    yield a
+    try:
+        a.delete()
+    except:
+        pass
 
 
 @pytest.fixture
-def token(client, user):
+def token(testclient, client, user, slapd_connection):
     t = Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -112,11 +124,15 @@ def token(client, user):
         lifetime=str(3600),
     )
     t.save()
-    return t
+    yield t
+    try:
+        t.delete()
+    except:
+        pass
 
 
 @pytest.fixture
-def consent(client, user):
+def consent(testclient, client, user, slapd_connection):
     t = Consent(
         client=client.dn,
         subject=user.dn,
@@ -124,11 +140,8 @@ def consent(client, user):
         issue_date=datetime.datetime.now(),
     )
     t.save()
-    return t
-
-
-@pytest.fixture(autouse=True)
-def cleanup_consents():
-    yield
-    for consent in Consent.all():
-        consent.delete()
+    yield t
+    try:
+        t.delete()
+    except:
+        pass
