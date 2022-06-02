@@ -16,7 +16,7 @@ def create_app():
     oauth = OAuth()
     oauth.init_app(app)
     oauth.register(
-        name="yaal",
+        name="canaille",
         client_id=app.config["OAUTH_CLIENT_ID"],
         client_secret=app.config["OAUTH_CLIENT_SECRET"],
         server_metadata_url=get_well_known_url(
@@ -33,11 +33,11 @@ def create_app():
 
     @app.route("/login")
     def login():
-        return oauth.yaal.authorize_redirect(url_for("authorize", _external=True))
+        return oauth.canaille.authorize_redirect(url_for("authorize", _external=True))
 
     @app.route("/authorize")
     def authorize():
-        token = oauth.yaal.authorize_access_token()
+        token = oauth.canaille.authorize_access_token()
         session["user"] = token.get("userinfo")
         flash("You have been successfully logged in.", "success")
         return redirect(url_for("index"))
