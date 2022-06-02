@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-02 15:41+0200\n"
+"POT-Creation-Date: 2022-06-02 15:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.1\n"
 
-#: canaille/account.py:93 canaille/account.py:118 canaille/oidc/oauth.py:77
+#: canaille/account.py:93 canaille/account.py:118 canaille/oidc/oauth.py:88
 msgid "Login failed, please check your information"
 msgstr ""
 
@@ -342,74 +342,78 @@ msgid "Redirect URIs"
 msgstr ""
 
 #: canaille/oidc/clients.py:56
+msgid "Post logout redirect URIs"
+msgstr ""
+
+#: canaille/oidc/clients.py:61
 msgid "Grant types"
 msgstr ""
 
-#: canaille/oidc/clients.py:68 canaille/templates/oidc/admin/token_view.html:33
+#: canaille/oidc/clients.py:73 canaille/templates/oidc/admin/token_view.html:33
 msgid "Scope"
 msgstr ""
 
-#: canaille/oidc/clients.py:74
+#: canaille/oidc/clients.py:79
 msgid "Response types"
 msgstr ""
 
-#: canaille/oidc/clients.py:80
+#: canaille/oidc/clients.py:85
 msgid "Token Endpoint Auth Method"
 msgstr ""
 
-#: canaille/oidc/clients.py:90
+#: canaille/oidc/clients.py:95
 msgid "Token audiences"
 msgstr ""
 
-#: canaille/oidc/clients.py:96
+#: canaille/oidc/clients.py:101
 msgid "Logo URI"
 msgstr ""
 
-#: canaille/oidc/clients.py:101
+#: canaille/oidc/clients.py:106
 msgid "Terms of service URI"
 msgstr ""
 
-#: canaille/oidc/clients.py:106
+#: canaille/oidc/clients.py:111
 msgid "Policy URI"
 msgstr ""
 
-#: canaille/oidc/clients.py:111
+#: canaille/oidc/clients.py:116
 msgid "Software ID"
 msgstr ""
 
-#: canaille/oidc/clients.py:116
+#: canaille/oidc/clients.py:121
 msgid "Software Version"
 msgstr ""
 
-#: canaille/oidc/clients.py:121
+#: canaille/oidc/clients.py:126
 msgid "JWK"
 msgstr ""
 
-#: canaille/oidc/clients.py:126
+#: canaille/oidc/clients.py:131
 msgid "JKW URI"
 msgstr ""
 
-#: canaille/oidc/clients.py:131
+#: canaille/oidc/clients.py:136
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/oidc/clients.py:149
+#: canaille/oidc/clients.py:154
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/oidc/clients.py:184
+#: canaille/oidc/clients.py:190
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/oidc/clients.py:222
+#: canaille/oidc/clients.py:233
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/oidc/clients.py:248
+#: canaille/oidc/clients.py:260
 msgid "The client has been edited."
 msgstr ""
 
-#: canaille/oidc/clients.py:264
+#: canaille/oidc/clients.py:276
 msgid "The client has been deleted."
 msgstr ""
 
@@ -421,28 +425,40 @@ msgstr ""
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/oidc/oauth.py:37
+#: canaille/oidc/oauth.py:43
 msgid "Personnal information about yourself, such as your name or your gender."
 msgstr ""
 
-#: canaille/oidc/oauth.py:39
+#: canaille/oidc/oauth.py:45
 msgid "Your email address."
 msgstr ""
 
-#: canaille/oidc/oauth.py:40
+#: canaille/oidc/oauth.py:46
 msgid "Your postal address."
 msgstr ""
 
-#: canaille/oidc/oauth.py:41
+#: canaille/oidc/oauth.py:47
 msgid "Your phone number."
 msgstr ""
 
-#: canaille/oidc/oauth.py:42
+#: canaille/oidc/oauth.py:48
 msgid "Groups you are belonging to"
 msgstr ""
 
-#: canaille/oidc/oauth.py:125
+#: canaille/oidc/oauth.py:136
 msgid "You have been successfully logged out."
+msgstr ""
+
+#: canaille/oidc/oauth.py:317
+msgid "You have been disconnected"
+msgstr ""
+
+#: canaille/oidc/oauth.py:325
+msgid "An error happened during the logout"
+msgstr ""
+
+#: canaille/oidc/oauth.py:337
+msgid "You have not been disconnected"
 msgstr ""
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:104
@@ -1151,6 +1167,33 @@ msgstr ""
 msgid "You did not authorize applications yet."
 msgstr ""
 
+#: canaille/templates/oidc/user/logout.html:9
+#: canaille/themes/default/base.html:90
+msgid "Log out"
+msgstr ""
+
+#: canaille/templates/oidc/user/logout.html:10
+msgid "Do you want to log out?"
+msgstr ""
+
+#: canaille/templates/oidc/user/logout.html:14
+#, python-format
+msgid "You are currently logged in as %(username)s."
+msgstr ""
+
+#: canaille/templates/oidc/user/logout.html:16
+#, python-format
+msgid "The application %(client_name)s want to disconnect your account."
+msgstr ""
+
+#: canaille/templates/oidc/user/logout.html:33
+msgid "Stay logged"
+msgstr ""
+
+#: canaille/templates/oidc/user/logout.html:36
+msgid "Logout"
+msgstr ""
+
 #: canaille/themes/default/base.html:10
 msgid "authorization interface"
 msgstr ""
@@ -1173,8 +1216,4 @@ msgstr ""
 
 #: canaille/themes/default/base.html:83
 msgid "Emails"
-msgstr ""
-
-#: canaille/themes/default/base.html:90
-msgid "Log out"
 msgstr ""

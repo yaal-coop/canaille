@@ -327,6 +327,14 @@ olcAttributeTypes: (  1.3.6.1.4.1.56207.1.1.38 NAME 'oauthAuthorizationCodeID'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.39 NAME 'oauthPostLogoutRedirectURI'
+        DESC 'OAuth 2.0 Post logout redirection URI'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -352,7 +360,8 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthSoftwareID $
               oauthSoftwareVersion $
               oauthAudience $
-              oauthPreconsent )
+              oauthPreconsent $
+              oauthPostLogoutRedirectURI )
         )
         X-ORIGIN 'OAuth 2.0' )
 olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'

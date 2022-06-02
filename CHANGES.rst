@@ -11,6 +11,7 @@ Added
 
 - ``DISABLE_PASSWORD_RESET`` configuration option to disable password recovery. :pr:`46`
 - ``edit_self`` ACL permission to control user self edition. :pr:`47`
+- Implemented RP-initiated logout :pr:`54`
 
 Changed
 *******

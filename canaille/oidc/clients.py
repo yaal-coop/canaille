@@ -52,6 +52,11 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld/callback"},
     )
+    post_logout_redirect_uris = wtforms.URLField(
+        _("Post logout redirect URIs"),
+        validators=[wtforms.validators.Optional()],
+        render_kw={"placeholder": "https://mydomain.tld/you-have-been-disconnected"},
+    )
     grant_type = wtforms.SelectMultipleField(
         _("Grant types"),
         validators=[wtforms.validators.DataRequired()],
@@ -163,6 +168,7 @@ def add(user):
         uri=form["uri"].data,
         grant_type=form["grant_type"].data,
         redirect_uris=[form["redirect_uris"].data],
+        post_logout_redirect_uris=[form["post_logout_redirect_uris"].data],
         response_type=form["response_type"].data,
         scope=form["scope"].data.split(" "),
         token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
@@ -209,6 +215,11 @@ def client_edit(client_id):
     data = dict(client)
     data["scope"] = " ".join(data["scope"])
     data["redirect_uris"] = data["redirect_uris"][0]
+    data["post_logout_redirect_uris"] = (
+        data["post_logout_redirect_uris"][0]
+        if data["post_logout_redirect_uris"]
+        else ""
+    )
     data["preconsent"] = client.preconsent
     form = ClientAdd(request.form or None, data=data, client=client)
 
@@ -230,6 +241,7 @@ def client_edit(client_id):
             uri=form["uri"].data,
             grant_type=form["grant_type"].data,
             redirect_uris=[form["redirect_uris"].data],
+            post_logout_redirect_uris=[form["post_logout_redirect_uris"].data],
             response_type=form["response_type"].data,
             scope=form["scope"].data.split(" "),
             token_endpoint_auth_method=form["token_endpoint_auth_method"].data,

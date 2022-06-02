@@ -1,10 +1,13 @@
 import datetime
 
 import pytest
+from authlib.oidc.core.grants.util import generate_id_token
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Client
 from canaille.oidc.models import Consent
 from canaille.oidc.models import Token
+from canaille.oidc.oauth2utils import generate_user_info
+from canaille.oidc.oauth2utils import get_jwt_config
 from werkzeug.security import gen_salt
 
 
@@ -35,6 +38,7 @@ def client(testclient, other_client, slapd_connection):
         policy_uri="https://mydomain.tld/policy",
         jwk_uri="https://mydomain.tld/jwk",
         token_endpoint_auth_method="client_secret_basic",
+        post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
     )
     c.audience = [c.dn, other_client.dn]
     c.save()
@@ -73,6 +77,7 @@ def other_client(testclient, slapd_connection):
         policy_uri="https://myotherdomain.tld/policy",
         jwk_uri="https://myotherdomain.tld/jwk",
         token_endpoint_auth_method="client_secret_basic",
+        post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
     )
     c.audience = [c.dn]
     c.save()
@@ -129,6 +134,16 @@ def token(testclient, client, user, slapd_connection):
         t.delete()
     except:
         pass
+
+
+@pytest.fixture
+def id_token(testclient, client, user, slapd_connection):
+    return generate_id_token(
+        {},
+        generate_user_info(user.dn, client.scope),
+        aud=client.client_id,
+        **get_jwt_config(None)
+    )
 
 
 @pytest.fixture
