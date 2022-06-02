@@ -1178,4 +1178,3 @@ msgstr ""
 #: canaille/themes/default/base.html:90
 msgid "Log out"
 msgstr ""
-
