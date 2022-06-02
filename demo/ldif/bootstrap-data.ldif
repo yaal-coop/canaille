@@ -88,6 +88,7 @@ oauthScope: groups
 oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic
+oauthAudience: oauthClientID=1JGkkzCbeHpGtlqgI5EENByf,ou=clients,ou=oauth,dc=mydomain,dc=tld
 
 dn: oauthClientID=gn4yFN7GDykL7QP8v8gS9YfV,ou=clients,ou=oauth,dc=mydomain,dc=tld
 objectclass: oauthClient
@@ -106,3 +107,4 @@ oauthScope: groups
 oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic
+oauthAudience: oauthClientID=gn4yFN7GDykL7QP8v8gS9YfV,ou=clients,ou=oauth,dc=mydomain,dc=tld
