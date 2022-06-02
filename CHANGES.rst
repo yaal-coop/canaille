@@ -11,11 +11,19 @@ Added
 
 - ``DISABLE_PASSWORD_RESET`` configuration option to disable password recovery. :pr:`46`
 - ``edit_self`` ACL permission to control user self edition. :pr:`47`
+
+Changed
+*******
+
 - Bumped to authlib 1 :pr:`48`
+- documentation improvements :pr:`50`
+- use poetry instead of setuptools :pr:`51`
+- additional nonce tests :pr:`52`
 
 Fixed
 *****
 - ``HIDE_INVALID_LOGIN`` behavior and default value.
+- mo files are not versionned anymore :pr:`49` :pr:`53`
 
 [0.0.8] - 2022-03-15
 ====================
