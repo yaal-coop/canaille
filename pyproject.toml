@@ -28,7 +28,7 @@ authors = ["Yaal team <contact@yaal.coop>"]
 maintainers = [
     "Éloi Rivard <eloi@yaal.coop>",
 ]
-homepage = "https://canaille.readthedocs.io/en/latest/"
+homepage = "https://canaille.yaal.coop"
 documentation = "https://canaille.readthedocs.io/en/latest/"
 repository = "https://gitlab.com/yaal/canaille"
 readme = "README.md"

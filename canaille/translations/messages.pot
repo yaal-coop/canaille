@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-02 15:50+0200\n"
+"POT-Creation-Date: 2022-06-21 14:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -475,11 +475,15 @@ msgid "Version %(version)s"
 msgstr ""
 
 #: canaille/templates/about.html:18
-msgid "Source code"
+msgid "Homepage"
 msgstr ""
 
 #: canaille/templates/about.html:19
 msgid "Documentation"
+msgstr ""
+
+#: canaille/templates/about.html:20
+msgid "Source code"
 msgstr ""
 
 #: canaille/templates/error.html:19
@@ -1217,3 +1221,4 @@ msgstr ""
 #: canaille/themes/default/base.html:83
 msgid "Emails"
 msgstr ""
+
