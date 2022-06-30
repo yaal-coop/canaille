@@ -1528,4 +1528,3 @@ msgstr "Courriels"
 
 #~ msgid "Could not reset your password"
 #~ msgstr "Impossible de réinitialiser votre mot de passe"
-
