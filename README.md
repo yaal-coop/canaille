@@ -28,6 +28,20 @@ cd demo
 ./run.sh # or `docker-compose up` to run it with docker
 ```
 
+or try our [online demo](https://demo.canaille.yaal.coop)!
+
+You have access to:
+- a canaille server at [https://demo.canaille.yaal.coop](https://demo.canaille.yaal.coop)
+- a dummy client at [https://demo.client1.yaal.coop](https://demo.client1.yaal.coop)
+- another dummy client at [https://demo.client2.yaal.coop](https://demo.client2.yaal.coop)
+
+The canaille server has some default users:
+- A regular user which login and password are **user**
+- A moderator user which login and password are **moderator**
+- An admin user which login and password are **admin**
+
+Online demo data are reset every night at 02:00 CEST.
+
 # Documentation
 
 ⚠ Canaille is under heavy development and may not fit a production environment yet. However, [contributions](CONTRIBUTING.rst) are welcome! ⚠
