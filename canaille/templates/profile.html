@@ -131,6 +131,10 @@
                 {% block telephone_number_field scoped %}{{ render_field(form.telephoneNumber) }}{% endblock %}
             {% endif %}
 
+            {% if "postalAddress" in form %}
+                {% block postal_address_field scoped %}{{ render_field(form.postalAddress) }}{% endblock %}
+            {% endif %}
+
             {% if "employeeNumber" in form %}
                 {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
             {% endif %}

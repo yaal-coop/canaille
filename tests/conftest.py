@@ -160,6 +160,7 @@ def configuration(slapd_server, smtpd, keypair_path):
                     "sn",
                     "userPassword",
                     "telephoneNumber",
+                    "postalAddress",
                     "employeeNumber",
                 ],
             },

@@ -128,6 +128,12 @@ PROFILE_FORM_FIELDS = dict(
     telephoneNumber=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     ),
+    postalAddress=wtforms.StringField(
+        _("Address"),
+        render_kw={
+            "placeholder": _("132, Foobar Street, Gotham City 12401"),
+        },
+    ),
     jpegPhoto=FileField(
         _("Photo"),
         validators=[FileAllowed(["jpg", "jpeg"])],

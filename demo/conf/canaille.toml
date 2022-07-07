@@ -126,7 +126,7 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 [ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
 READ = ["uid", "groups"]
-WRITE = ["jpegPhoto", "givenName", "sn", "userPassword", "telephoneNumber", "mail", "labeledURI"]
+WRITE = ["jpegPhoto", "givenName", "sn", "userPassword", "telephoneNumber", "mail", "labeledURI", "postalAddress"]
 
 [ACL.ADMIN]
 FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"

@@ -44,6 +44,7 @@ def test_edition(
     res.form["sn"] = "family_name"
     res.form["mail"] = "email@mydomain.tld"
     res.form["telephoneNumber"] = "555-666-777"
+    res.form["postalAddress"] = "postal_address"
     res.form["employeeNumber"] = 666
     res.form["groups"] = [
         "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
@@ -61,6 +62,7 @@ def test_edition(
     assert ["family_name"] == logged_user.sn
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
+    assert ["postal_address"] == logged_user.postalAddress
     assert "666" == logged_user.employeeNumber
     assert [jpeg_photo] == logged_user.jpegPhoto
 
