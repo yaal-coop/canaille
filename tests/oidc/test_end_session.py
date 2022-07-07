@@ -329,3 +329,22 @@ def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
     assert res.location.startswith(post_logout_redirect_url)
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
+
+
+def test_end_session_already_disconnected(
+    testclient, slapd_connection, user, client, id_token
+):
+    post_logout_redirect_url = "https://mydomain.tld/disconnected"
+    res = testclient.get(
+        "/oauth/end_session",
+        params={
+            "id_token_hint": id_token,
+            "logout_hint": user.uid[0],
+            "client_id": client.client_id,
+            "post_logout_redirect_uri": post_logout_redirect_url,
+            "state": "foobar",
+        },
+        status=302,
+    )
+
+    assert res.location == "/"

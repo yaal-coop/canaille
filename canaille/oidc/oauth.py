@@ -242,6 +242,9 @@ def end_session():
     data = CombinedMultiDict((request.args, request.form))
     user = current_user()
 
+    if not user:
+        return redirect(url_for("account.index"))
+
     form = LogoutForm(request.form)
     form.action = url_for("oidc.oauth.end_session_submit")
 

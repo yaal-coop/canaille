@@ -10,6 +10,7 @@ Fixed
 *****
 
 - The consent page was displaying scopes not supported by clients. :pr:`56`
+- Fixed end session when user are already disconnected.
 
 [0.0.9] - 2022-06-05
 ====================
