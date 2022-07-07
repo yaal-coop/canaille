@@ -42,7 +42,9 @@ class Client(LDAPObject, ClientMixin):
         return self.redirect_uris[0]
 
     def get_allowed_scope(self, scope):
-        return util.list_to_scope(self.scope)
+        return util.list_to_scope(
+            [scope_piece for scope_piece in self.scope if scope_piece in scope]
+        )
 
     def check_redirect_uri(self, redirect_uri):
         return redirect_uri in self.redirect_uris
@@ -99,7 +101,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
         return self.redirect_uri
 
     def get_scope(self):
-        return self.scope
+        return self.scope[0].split(" ")
 
     def get_nonce(self):
         return self.nonce

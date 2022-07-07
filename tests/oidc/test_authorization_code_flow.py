@@ -22,7 +22,7 @@ def test_authorization_code_flow(
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="openid profile",
+            scope="openid profile email groups address phone",
             nonce="somenonce",
         ),
         status=200,
@@ -35,16 +35,31 @@ def test_authorization_code_flow(
     code = params["code"][0]
     authcode = AuthorizationCode.get(code=code)
     assert authcode is not None
+    assert set(authcode.scope[0].split(" ")) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
 
     consents = Consent.filter(client=client.dn, subject=logged_user.dn)
-    assert "profile" in consents[0].scope
+    assert set(consents[0].scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
 
     res = testclient.post(
         "/oauth/token",
         params=dict(
             grant_type="authorization_code",
             code=code,
-            scope="openid profile",
+            scope="openid profile email groups address phone",
             redirect_uri=client.redirect_uris[0],
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
@@ -55,6 +70,14 @@ def test_authorization_code_flow(
     token = Token.get(access_token=access_token)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
+    assert set(token.scope[0].split(" ")) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
@@ -70,6 +93,7 @@ def test_authorization_code_flow(
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "email": "john@doe.com",
         "sub": "user",
         "groups": [],
     } == res.json
@@ -138,8 +162,10 @@ def test_authorization_code_flow_preconsented(
         "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
-        "groups": [],
     } == res.json
+
+    for consent in consents:
+        consent.delete()
 
 
 def test_logout_login(testclient, logged_user, client):
@@ -206,7 +232,6 @@ def test_logout_login(testclient, logged_user, client):
         "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
-        "groups": [],
     } == res.json
 
     for consent in consents:
@@ -288,7 +313,6 @@ def test_refresh_token(testclient, user, client):
             "name": "John (johnny) Doe",
             "family_name": "Doe",
             "sub": "user",
-            "groups": [],
         } == res.json
 
     for consent in consents:
@@ -355,7 +379,6 @@ def test_code_challenge(testclient, logged_user, client):
         "name": "John (johnny) Doe",
         "family_name": "Doe",
         "sub": "user",
-        "groups": [],
     } == res.json
 
     client.token_endpoint_auth_method = "client_secret_basic"
@@ -595,6 +618,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
 
 
 def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
+    assert not Consent.all()
     testclient.app.config["REQUIRE_NONCE"] = False
 
     res = testclient.get(
@@ -610,3 +634,79 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
     res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.redirect_uris[0])
+    for consent in Consent.all():
+        consent.delete()
+
+
+def test_authorization_code_request_scope_too_large(
+    testclient, logged_user, keypair, other_client
+):
+    assert not Consent.all()
+    assert "email" not in other_client.scope
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=other_client.client_id,
+            scope="openid profile email",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = AuthorizationCode.get(code=code)
+    assert set(authcode.scope[0].split(" ")) == {
+        "openid",
+        "profile",
+    }
+
+    consents = Consent.filter(client=other_client.dn, subject=logged_user.dn)
+    assert set(consents[0].scope) == {
+        "openid",
+        "profile",
+    }
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile email groups address phone",
+            redirect_uri=other_client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(other_client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = Token.get(access_token=access_token)
+    assert token.client == other_client.dn
+    assert token.subject == logged_user.dn
+    assert set(token.scope[0].split(" ")) == {
+        "openid",
+        "profile",
+    }
+
+    id_token = res.json["id_token"]
+    claims = jwt.decode(id_token, keypair[1])
+    assert logged_user.uid[0] == claims["sub"]
+    assert logged_user.cn[0] == claims["name"]
+
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )
+    assert {
+        "name": "John (johnny) Doe",
+        "family_name": "Doe",
+        "sub": "user",
+    } == res.json
+
+    for consent in consents:
+        consent.delete()

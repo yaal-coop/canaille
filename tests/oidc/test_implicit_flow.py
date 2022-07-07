@@ -46,7 +46,6 @@ def test_oauth_implicit(testclient, user, client):
         "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
-        "groups": [],
     } == res.json
 
     client.grant_type = ["code"]
@@ -103,7 +102,6 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
         "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
-        "groups": [],
     } == res.json
 
     client.grant_type = ["code"]
