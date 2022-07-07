@@ -107,13 +107,14 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
 def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
     now = datetime.datetime.now()
+    scope = request.client.get_allowed_scope(request.scope)
     code = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code=code,
         subject=request.user,
         client=request.client.dn,
         redirect_uri=request.redirect_uri or request.client.redirect_uris[0],
-        scope=request.scope,
+        scope=scope,
         nonce=nonce,
         issue_date=now,
         lifetime=str(84000),

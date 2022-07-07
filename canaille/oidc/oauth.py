@@ -70,7 +70,9 @@ def authorize():
         abort(400)
 
     user = current_user()
-    scopes = request.args.get("scope", "").split(" ")
+    scopes = client.get_allowed_scope(request.args.get("scope", "").split(" ")).split(
+        " "
+    )
 
     # LOGIN
 
@@ -143,9 +145,10 @@ def authorize():
             grant_user = user.dn
 
             if consent:
-                consent.scope = list(set(scopes + consents[0].scope))
+                consent.scope = client.get_allowed_scope(
+                    list(set(scopes + consents[0].scope))
+                ).split(" ")
             else:
-
                 consent = Consent(
                     client=client.dn,
                     subject=user.dn,

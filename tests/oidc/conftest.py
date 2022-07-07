@@ -33,7 +33,7 @@ def client(testclient, other_client, slapd_connection):
             "refresh_token",
         ],
         response_type=["code", "token", "id_token"],
-        scope=["openid", "profile", "groups"],
+        scope=["openid", "email", "profile", "groups", "address", "phone"],
         tos_uri="https://mydomain.tld/tos",
         policy_uri="https://mydomain.tld/policy",
         jwk_uri="https://mydomain.tld/jwk",
