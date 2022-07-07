@@ -16,6 +16,8 @@ uid: admin
 mail: admin@mydomain.tld
 telephoneNumber: 555-000-000
 employeeNumber: 1000
+labeledURI: https://admin.example
+postalAddress: 123, Admin Lane - Gotham City 12345
 userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 
 dn: uid=moderator,ou=users,dc=mydomain,dc=tld
@@ -28,6 +30,7 @@ uid: moderator
 mail: moderator@mydomain.tld
 telephoneNumber: 555-000-002
 employeeNumber: 1002
+labeledURI: https://moderator.example
 userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
 
 dn: uid=user,ou=users,dc=mydomain,dc=tld
@@ -40,6 +43,7 @@ uid: user
 mail: user@mydomain.tld
 telephoneNumber: 555-000-001
 employeeNumber: 1001
+labeledURI: https://user.example
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 
 dn: uid=james,ou=users,dc=mydomain,dc=tld
@@ -86,6 +90,8 @@ oauthScope: openid
 oauthScope: profile
 oauthScope: email
 oauthScope: groups
+oauthScope: address
+oauthScope: phone
 oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic
@@ -106,6 +112,8 @@ oauthScope: openid
 oauthScope: profile
 oauthScope: email
 oauthScope: groups
+oauthScope: address
+oauthScope: phone
 oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic

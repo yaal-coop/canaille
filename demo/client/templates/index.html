@@ -29,7 +29,7 @@
             {% if user %}
                 <a class="item" href="{{ url_for('logout') }}">
                     <i class="sign out alternate icon"></i>
-                    Sign out
+                    Log out
                 </a>
             {% else %}
                 <a class="item" href="{{ url_for('login') }}">
@@ -37,6 +37,13 @@
                     Sign in
                 </a>
             {% endif %}
+
+            <div class="labeled icon right menu">
+                <a class="item" href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank">
+                    <i class="id card icon big"></i>
+                    Identity server
+                </a>
+            </div>
         </nav>
 
         <div class="ui container">
@@ -59,14 +66,29 @@
                         {% endif %}
                         <div class="content">
                             <span class="header">{{ user.name }}</span>
-                            <div class="meta">
+                            <div class="meta" title="id">
                                 {{ user.sub }}
                             </div>
+
+                            {% if user.email %}
+                                <div class="extra content">
+                                    <i class="envelope icon" title="mail"></i>
+                                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                </div>
+                            {% endif %}
+
+                            {% if user.phone_number %}
+                                <div class="extra content">
+                                    <i class="phone icon" title="phone"></i>
+                                    <a href="tel:{{ user.phone_number }}">{{ user.phone_number }}</a>
+                                </div>
+                            {% endif %}
+
                             {% if user.groups %}
                                 <div class="extra content">
-                                    <i class="user users icon"></i>
+                                    <i class="user users icon" title="Groups"></i>
                                     {% for group in user.groups %}
-                                        <span class="label">{{ group }}</span>
+                                        <span class="label" title="Groups">{{ group }}</span>
                                     {% endfor %}
                                 </div>
                             {% endif %}
@@ -79,7 +101,7 @@
                         {% endif %}
                     </div>
                 {% else %}
-                    <a class="ui primary button" href="{{ url_for('login') }}">Sign in</a>.
+                    <a class="ui primary button" href="{{ url_for('login') }}">Sign in</a>
                 {% endif %}
             </div>
         </div>

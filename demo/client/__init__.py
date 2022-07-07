@@ -26,7 +26,7 @@ def create_app():
         server_metadata_url=get_well_known_url(
             app.config["OAUTH_AUTH_SERVER"], external=True
         ),
-        client_kwargs={"scope": "openid profile email groups"},
+        client_kwargs={"scope": "openid profile email phone address groups"},
     )
 
     @app.route("/")
