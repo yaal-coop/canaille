@@ -20,44 +20,40 @@
     </head>
 
     <body>
-        <nav class="ui stackable labeled icon menu container">
-            <div class="header item">
-                <a href="/" class="logo">
-                    <img class="ui image" src="/static/img/canaille-head.png" alt="Canaille client" />
-                </a>
-            </div>
-            {% if user %}
-                <a class="item" href="{{ url_for('logout') }}">
-                    <i class="sign out alternate icon"></i>
-                    Log out
-                </a>
-            {% else %}
-                <a class="item" href="{{ url_for('login') }}">
-                    <i class="sign in alternate icon"></i>
-                    Sign in
-                </a>
-            {% endif %}
-
-            <div class="labeled icon right menu">
-                <a class="item" href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank">
-                    <i class="id card icon big"></i>
-                    Identity server
-                </a>
-            </div>
-        </nav>
-
         <div class="ui container">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% for category, message in messages %}
-                    <div class="ui attached message {{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endwith %}
+            <div class="ui masthead center aligned segment">
+                <div class="ui text container">
+                    <h2 class="ui header">
+                        <img class="ui image" src="/static/img/canaille-head.png" alt="Canaille client" />
+                        <div class="content">
+                            {{ name }}
+                        </div>
+                    </h2>
+                </div>
 
-            <div class="ui segment">
-                <h2 class="ui header">{{ name }}</h2>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for category, message in messages %}
+                            <div class="ui attached message {{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endwith %}
+
+                <div class="ui text container">
+                    <p>
+                        This is a dummy OpenID Connect client.
+                        It illustrates how to plug another service on canaille so users can log in from canaille,
+                        consents to share data, and then are redirect to the service.
+                    </p>
+                </div>
                 {% if user %}
+                    <div class="ui text container">
+                        <br>
+                        <p>
+                            Here are the information this service has access to:
+                        </p>
+                    </div>
+
                     <div class="ui centered card">
                         {% if user.picture %}
                             <div class="image">
@@ -69,6 +65,13 @@
                             <div class="meta" title="id">
                                 {{ user.sub }}
                             </div>
+
+                            {% if user.address %}
+                                <div class="extra content">
+                                    <i class="map marker alternate icon" title="address"></i>
+                                    {{ user.address }}
+                                </div>
+                            {% endif %}
 
                             {% if user.email %}
                                 <div class="extra content">
@@ -100,8 +103,26 @@
                             </a>
                         {% endif %}
                     </div>
+
+                    <div class="ui buttons">
+                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui huge button">
+                            Identity server
+                        </a>
+                        <a class="ui huge negative button" href="{{ url_for('logout') }}">
+                            Log out
+                            <i class="right arrow icon"></i>
+                        </a>
+                    </div>
                 {% else %}
-                    <a class="ui primary button" href="{{ url_for('login') }}">Sign in</a>
+                    <div class="ui buttons">
+                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui huge button">
+                            Identity server
+                        </a>
+                        <a class="ui huge primary button" href="{{ url_for('login') }}">
+                            Sign in
+                            <i class="right arrow icon"></i>
+                        </a>
+                    </div>
                 {% endif %}
             </div>
         </div>
