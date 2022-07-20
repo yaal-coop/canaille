@@ -48,8 +48,17 @@ wtforms = "<4"
 
 "sentry-sdk" = {version = "<2", optional=true, extras=["flask"]}
 
+"sphinx" = {version = "*", optional=true}
+"sphinx-rtd-theme" = {version = "*", optional=true}
+"sphinx-issues" = {version = "*", optional=true}
+
 [tool.poetry.extras]
 sentry = ["sentry-sdk"]
+doc = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-issues",
+]
 
 [tool.poetry.dev-dependencies]
 "coverage" = {version = "*", extras=["toml"]}
@@ -63,9 +72,6 @@ sentry = ["sentry-sdk"]
 "pytest-coverage" = "*"
 "slapd" = "*"
 "smtpdfix" = "*"
-"sphinx" = "*"
-"sphinx-rtd-theme" = "*"
-"sphinx-issues" = "*"
 
 [options.entry_points.console_scripts]
 console_scripts = { sheraf = "canaille.commands:cli" }
@@ -116,7 +122,7 @@ commands =
 
 [testenv:doc]
 commands =
-    poetry install
+    poetry install --extras doc
     poetry run sphinx-build doc build/sphinx/html
 
 [testenv:coverage]

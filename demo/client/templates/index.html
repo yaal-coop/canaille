@@ -31,13 +31,13 @@
                     </h2>
                 </div>
 
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% for category, message in messages %}
-                            <div class="ui attached message {{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endwith %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="ui attached message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endwith %}
 
                 <div class="ui text container">
                     <p>
