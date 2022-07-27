@@ -252,7 +252,6 @@ class BearerTokenValidator(_BearerTokenValidator):
 
 class RevocationEndpoint(_RevocationEndpoint):
     def query_token(self, token, token_type_hint):
-        print("query_token")
         if token_type_hint == "access_token":
             return Token.filter(access_token=token)
         elif token_type_hint == "refresh_token":
