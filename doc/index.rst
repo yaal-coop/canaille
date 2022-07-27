@@ -36,6 +36,7 @@ Table of contents
    install
    configuration
    contributing
+   comparison
    changelog
 
 Indices and tables
