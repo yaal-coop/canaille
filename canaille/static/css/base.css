@@ -113,7 +113,7 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     }
     .ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.menu a.item.active:hover {
         color: rgba(255,255,255,.95);
-    } 
+    }
     .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
         color: rgba(255,255,255,.7) !important;
     }
