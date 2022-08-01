@@ -169,4 +169,12 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     .ui.negative.message, .ui.error.message {
         background-color: rgba(255, 0, 0, 0.05);
     }
+    .ui.form .field .dropdown .menu > .item {
+        background-color: #222;
+        border-top: 1px solid #181818;
+        color: rgba(255,255,255,0.87);
+    }
+    .ui.form .field .dropdown .menu > .item:hover {
+        background-color: #282828;
+    }
 }
