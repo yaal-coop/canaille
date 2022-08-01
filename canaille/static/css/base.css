@@ -1,3 +1,5 @@
+
+
 @media only screen and (min-width: 1200px) {
     .ui.ui.ui.container:not(.fluid) {
         width: 770px;
@@ -44,6 +46,15 @@ footer a {
     color: #B0B0B0;
 }
 
+.ui.masthead .ui.header {
+    margin-bottom: 1em;
+}
+.ui.masthead .ui.text p {
+    margin-bottom: 1em;
+    margin-top:1em;
+}
+
+
 /* Fix button appearance for semantic-ui on webkit */
 [type=button] {
     -webkit-appearance: none;
@@ -67,4 +78,103 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
 
 .dropdown-active {
     background: rgba(0,0,0,.05) !important;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    body, .ui.card .bottom, .ui.toggle.checkbox label:hover::before {
+        background-color: #222222;
+    }
+    .ui.segment, .ui.menu, .ui.table {
+        background-color: #353535 !important;
+    }
+    body, .ui.info.message .header, .ui.input, .ui.toggle.checkbox label, .ui.header, .ui.form .field > label, .ui.list .list > .item > .content, .ui.list > .item > .content, .ui.card, .ui.cards > .card, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
+        color: rgba(255,255,255,.87);
+    }
+    .ui.card .bottom, .ui.link.menu .item, .ui.menu .dropdown.item, .ui.menu .link.item, .ui.menu a.item, .ui.icon.menu .item, .ui.header .sub.header, .ui.label, table.dataTable tbody tr td, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
+        color: rgba(255,255,255,.7);
+    }
+    .ui.selection.dropdown, .ui.form input:not([type]), .ui.form input[type="date"], .ui.form input[type="datetime-local"], .ui.form input[type="email"], .ui.form input[type="file"], .ui.form input[type="number"], .ui.form input[type="password"], .ui.form input[type="search"], .ui.form input[type="tel"], .ui.form input[type="text"], .ui.form input[type="time"], .ui.form input[type="url"] {
+        background: #222222 !important;
+        color: rgba(255,255,255,.87) !important;
+    }
+    table.dataTable tbody tr td .ui.label:hover {
+        color: #353535 !important;
+    }
+    .ui.corner.label {
+        border-color: rgba(0,0,0,.2);
+    }
+    .ui.label, table.dataTable tbody tr td, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
+        background-color: #353535;
+    }
+    .ui.basic.negative.button, .ui.basic.negative.buttons .button {
+        box-shadow: 0 0 0 1px #ffb7b7 inset;
+        color: #ffb7b7;
+    }
+    .ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.menu a.item.active:hover {
+        color: rgba(255,255,255,.95);
+    } 
+    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+        color: rgba(255,255,255,.7) !important;
+    }
+    .ui.attached.header, .ui.toggle.checkbox label::before, .ui.table > thead > tr > th, table.dataTable tbody tr td .ui.label, .ui.card, .ui.cards > .card, .ui.message, .ui.info.message, .ui.success.message {
+        background-color: #282828;
+        color: rgba(255,255,255,.87) !important;
+    }
+    table.dataTable tbody tr td {
+        color: rgba(255,255,255,.87) !important;
+    }
+    table.dataTable tbody tr td .ui.label:hover {
+        background-color: rgba(255,255,255,.87);
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        border:none !important;
+        background-color: #222222 !important;
+    }
+    .dataTables_wrapper .dataTables_paginate a.paginate_button.item {
+        color: rgba(255,255,255,.7) !important;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+        color: rgba(255,255,255,.4) !important;
+    }
+    table.dataTable.no-footer, .ui.table {
+        border: 2px solid #282828;
+    }
+    .ui.table, .ui.card .header, .ui.card .description, .ui.message, .ui.info.message, .ui.success.message, .ui.toggle.checkbox {
+        color: rgba(255,255,255,.87) !important;
+    }
+    .dataTables_wrapper .ui.input input {
+        background-color: #353535 !important;
+    }
+    .ui.card, .ui.cards > .card {
+        border: 2px solid #222222;
+        outline: none;
+        box-shadow: none;
+    }
+    .ui.card .meta {
+        color: rgba(255,255,255,.7) !important;
+    }
+    .ui.attached.header, .ui.attached.segment {
+        border: 1px solid #222222;
+    }
+    .ui.info.message {
+        background-color: rgba(0, 60, 255, 0.05);
+    }
+    .ui.success.message, .ui.positive.message  {
+        background-color: rgba(22, 255, 72, 0.05);
+    }
+    .ui.warning.message {
+        background-color: rgba(255, 217, 0, 0.05);
+    }
+    .ui.negative.message, .ui.error.message {
+        background-color: rgba(255, 0, 0, 0.05);
+    }
+    .ui.form .field .dropdown .menu > .item {
+        background-color: #222;
+        border-top: 1px solid #181818;
+        color: rgba(255,255,255,0.87);
+    }
+    .ui.form .field .dropdown .menu > .item:hover {
+        background-color: #282828;
+    }
 }
