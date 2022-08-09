@@ -73,8 +73,8 @@ doc = [
 "slapd" = "*"
 "smtpdfix" = "*"
 
-[options.entry_points.console_scripts]
-console_scripts = { sheraf = "canaille.commands:cli" }
+[tool.poetry.scripts]
+canaille = "canaille.commands:cli"
 
 [options.packages.find]
 exclude = [
