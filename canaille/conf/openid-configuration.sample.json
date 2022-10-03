@@ -1,27 +1,27 @@
 {
   "issuer":
-    "https://mydomain.tld",
+    "https://auth.mydomain.tld",
   "authorization_endpoint":
-    "https://mydomain.tld/oauth/authorize",
+    "https://auth.mydomain.tld/oauth/authorize",
   "token_endpoint":
-    "https://mydomain.tld/oauth/token",
+    "https://auth.mydomain.tld/oauth/token",
   "token_endpoint_auth_methods_supported":
     ["client_secret_basic", "private_key_jwt",
     "client_secret_post", "none"],
   "token_endpoint_auth_signing_alg_values_supported":
     ["RS256"],
   "userinfo_endpoint":
-    "https://mydomain.tld/oauth/userinfo",
+    "https://auth.mydomain.tld/oauth/userinfo",
   "check_session_iframe":
-    "https://mydomain.tld/oauth/check_session",
+    "https://auth.mydomain.tld/oauth/check_session",
   "end_session_endpoint":
-    "https://mydomain.tld/oauth/end_session",
+    "https://auth.mydomain.tld/oauth/end_session",
   "jwks_uri":
-    "https://mydomain.tld/oauth/jwks.json",
+    "https://auth.mydomain.tld/oauth/jwks.json",
   "registration_endpoint":
-    "https://mydomain.tld/oauth/register",
+    "https://auth.mydomain.tld/oauth/register",
   "introspection_endpoint":
-    "https://mydomain.tld/oauth/introspect",
+    "https://auth.mydomain.tld/oauth/introspect",
   "scopes_supported":
     ["openid", "profile", "email", "address",
     "phone", "groups"],
@@ -60,7 +60,7 @@
   "claims_parameter_supported":
     true,
   "service_documentation":
-    "https://mydomain.tld/oauth/service_documentation.html",
+    "https://auth.mydomain.tld/oauth/service_documentation.html",
   "ui_locales_supported":
     ["en-US", "en-GB", "en-CA", "fr-FR", "fr-CA"]
 }
