@@ -26,12 +26,12 @@ def cached_openid_configuration():
 
 @bp.route("/oauth-authorization-server")
 def oauth_authorization_server():
-    return cached_oauth_authorization_server()
+    return jsonify(cached_oauth_authorization_server())
 
 
 @bp.route("/openid-configuration")
 def openid_configuration():
-    return cached_openid_configuration()
+    return jsonify(cached_openid_configuration())
 
 
 @bp.route("/webfinger")
