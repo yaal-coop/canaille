@@ -25,7 +25,8 @@ def clean():
         teardown_backend,
     )
 
-    setup_backend(current_app)
+    if not current_app.config["TESTING"]:
+        setup_backend(current_app)
 
     for t in Token.all():
         if t.is_expired():
@@ -35,7 +36,8 @@ def clean():
         if a.is_expired():
             a.delete()
 
-    teardown_backend(current_app)
+    if not current_app.config["TESTING"]:
+        teardown_backend(current_app)
 
 
 @cli.command()
