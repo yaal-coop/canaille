@@ -215,3 +215,35 @@ expired tokens and authorization codes with:
 .. code-block:: console
 
     env CONFIG="$CANAILLE_CONF_DIR/config.toml" FLASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
+
+
+Webfinger
+=========
+
+You may want to configure a `WebFinger`_ endpoint on your main website to allow the automatic discovery of your Canaille installation based on the account name of one of your users. For instance, suppose your domain is ``mydomain.tld`` and your Canaille domain is ``auth.mydomain.tld`` and there is an user ``john.doe``. A third-party application could require to authenticate the user and ask them for an user account. The user would give their account ``john.doe@mydomain.tld``, then the application would perform a WebFinger request at ``https://mydomain.tld/.well-known/webfinger`` and the response would contain the address of the authentication server ``https://auth.mydomain.tld``. With this information the third party application can redirect the user to the Canaille authentication page.
+
+The difficulty here is that the WebFinger endpoint must be hosted at the top-level domain (i.e. ``mydomain.tld``) while the authentication server might be hosted on a sublevel (i.e. ``auth.mydomain.tld``). Canaille provides a WebFinger endpoint, but if it is not hosted at the top-level domain, a web redirection is required on the ``/.well-known/webfinger`` path.
+
+Nginx
+-----
+
+.. code-block:: console
+
+    server {
+        listen 443;
+        server_name mydomain.tld;
+        rewrite  ^/.well-known/webfinger https://auth.mydomain.tld/.well-known/webfinger permanent;
+    }
+
+Apache
+------
+
+.. code-block:: console
+
+    <VirtualHost *:443>
+        ServerName mydomain.tld
+        RewriteEngine on
+        RewriteRule "^/.well-know/webfinger" "https://auth.mydomain.tld/.well-known/webfinger" [R,L]
+    </VirtualHost>
+
+.. _WebFinger: https://www.rfc-editor.org/rfc/rfc7033.html
