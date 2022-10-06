@@ -1,345 +1,345 @@
 import datetime
-from urllib.parse import urlsplit
-from urllib.parse import urlunsplit
 
-from authlib.integrations.flask_oauth2 import current_token
-from authlib.jose import jwk
-from authlib.jose import jwt
-from authlib.oauth2 import OAuth2Error
-from flask import abort
-from flask import Blueprint
+from authlib.integrations.flask_oauth2 import AuthorizationServer
+from authlib.integrations.flask_oauth2 import ResourceProtector
+from authlib.oauth2.rfc6749.grants import (
+    AuthorizationCodeGrant as _AuthorizationCodeGrant,
+)
+from authlib.oauth2.rfc6749.grants import ClientCredentialsGrant
+from authlib.oauth2.rfc6749.grants import ImplicitGrant
+from authlib.oauth2.rfc6749.grants import RefreshTokenGrant as _RefreshTokenGrant
+from authlib.oauth2.rfc6749.grants import (
+    ResourceOwnerPasswordCredentialsGrant as _ResourceOwnerPasswordCredentialsGrant,
+)
+from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
+from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
+from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
+from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
+from authlib.oidc.core import UserInfo
+from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
+from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
+from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
+from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
-from flask import flash
-from flask import jsonify
-from flask import redirect
-from flask import request
-from flask import session
-from flask import url_for
-from flask_babel import gettext
-from flask_babel import lazy_gettext as _
-from flask_themer import render_template
-from werkzeug.datastructures import CombinedMultiDict
+from werkzeug.security import gen_salt
 
-from ..flaskutils import current_user
-from ..forms import FullLoginForm
+from ..models import Group
 from ..models import User
-from .forms import LogoutForm
+from .models import AuthorizationCode
 from .models import Client
-from .models import Consent
-from .oauth2utils import authorization
-from .oauth2utils import DEFAULT_JWT_ALG
-from .oauth2utils import DEFAULT_JWT_KTY
-from .oauth2utils import generate_user_info
-from .oauth2utils import IntrospectionEndpoint
-from .oauth2utils import require_oauth
-from .oauth2utils import RevocationEndpoint
+from .models import Token
+
+DEFAULT_JWT_KTY = "RSA"
+DEFAULT_JWT_ALG = "RS256"
+DEFAULT_JWT_EXP = 3600
 
 
-bp = Blueprint("oauth", __name__, url_prefix="/oauth")
-
-CLAIMS = {
-    "profile": (
-        "id card outline",
-        _("Personnal information about yourself, such as your name or your gender."),
-    ),
-    "email": ("at", _("Your email address.")),
-    "address": ("envelope open outline", _("Your postal address.")),
-    "phone": ("phone", _("Your phone number.")),
-    "groups": ("users", _("Groups you are belonging to")),
-}
+def exists_nonce(nonce, req):
+    exists = AuthorizationCode.filter(client=req.client_id, nonce=nonce)
+    return bool(exists)
 
 
-def get_public_key():
-    with open(current_app.config["JWT"]["PUBLIC_KEY"]) as fd:
-        return fd.read()
+def get_jwt_config(grant):
 
-
-@bp.route("/authorize", methods=["GET", "POST"])
-def authorize():
-    current_app.logger.debug(
-        "authorization endpoint request:\nGET: %s\nPOST: %s",
-        request.args.to_dict(flat=False),
-        request.form.to_dict(flat=False),
-    )
-
-    if "client_id" not in request.args:
-        abort(400)
-
-    client = Client.get(request.args["client_id"])
-    if not client:
-        abort(400)
-
-    user = current_user()
-    scopes = client.get_allowed_scope(request.args.get("scope", "").split(" ")).split(
-        " "
-    )
-
-    # LOGIN
-
-    if not user:
-        if request.args.get("prompt") == "none":
-            return jsonify({"error": "login_required"})
-
-        form = FullLoginForm(request.form or None)
-        if request.method == "GET":
-            return render_template("login.html", form=form, menu=False)
-
-        if not form.validate() or not User.authenticate(
-            form.login.data, form.password.data, True
-        ):
-            flash(gettext("Login failed, please check your information"), "error")
-            return render_template("login.html", form=form, menu=False)
-
-        return redirect(request.url)
-
-    if not user.can_use_oidc:
-        abort(400)
-
-    # CONSENT
-
-    consents = Consent.filter(
-        client=client.dn,
-        subject=user.dn,
-    )
-    consents = [c for c in consents if not c.revokation_date]
-    consent = consents[0] if consents else None
-
-    if request.method == "GET":
-        if client.preconsent or (
-            consent and all(scope in set(consent.scope) for scope in scopes)
-        ):
-            return authorization.create_authorization_response(grant_user=user.dn)
-
-        elif request.args.get("prompt") == "none":
-            response = {"error": "consent_required"}
-            current_app.logger.debug("authorization endpoint response: %s", response)
-            return jsonify(response)
-
-        try:
-            grant = authorization.get_consent_grant(end_user=user)
-        except OAuth2Error as error:
-            response = dict(error.get_body())
-            current_app.logger.debug("authorization endpoint response: %s", response)
-            return jsonify(response)
-
-        return render_template(
-            "oidc/user/authorize.html",
-            user=user,
-            grant=grant,
-            client=client,
-            claims=CLAIMS,
-            menu=False,
-            ignored_claims=["openid"],
-        )
-
-    if request.method == "POST":
-        if request.form["answer"] == "logout":
-            del session["user_dn"]
-            flash(gettext("You have been successfully logged out."), "success")
-            return redirect(request.url)
-
-        if request.form["answer"] == "deny":
-            grant_user = None
-
-        if request.form["answer"] == "accept":
-            grant_user = user.dn
-
-            if consent:
-                consent.scope = client.get_allowed_scope(
-                    list(set(scopes + consents[0].scope))
-                ).split(" ")
-            else:
-                consent = Consent(
-                    client=client.dn,
-                    subject=user.dn,
-                    scope=scopes,
-                    issue_date=datetime.datetime.now(),
-                )
-            consent.save()
-
-        response = authorization.create_authorization_response(grant_user=grant_user)
-        current_app.logger.debug(
-            "authorization endpoint response: %s", response.location
-        )
-        return response
-
-
-@bp.route("/token", methods=["POST"])
-def issue_token():
-    current_app.logger.debug(
-        "token endpoint request: POST: %s", request.form.to_dict(flat=False)
-    )
-    response = authorization.create_token_response()
-    current_app.logger.debug("token endpoint response: %s", response.json)
-    return response
-
-
-@bp.route("/introspect", methods=["POST"])
-def introspect_token():
-    current_app.logger.debug(
-        "introspection endpoint request: POST: %s", request.form.to_dict(flat=False)
-    )
-    response = authorization.create_endpoint_response(
-        IntrospectionEndpoint.ENDPOINT_NAME
-    )
-    current_app.logger.debug("introspection endpoint response: %s", response.json)
-    return response
-
-
-@bp.route("/revoke", methods=["POST"])
-def revoke_token():
-    current_app.logger.debug(
-        "revokation endpoint request: POST: %s", request.form.to_dict(flat=False)
-    )
-    response = authorization.create_endpoint_response(RevocationEndpoint.ENDPOINT_NAME)
-    current_app.logger.debug("revokation endpoint response: %s", response.json)
-    return response
-
-
-@bp.route("/jwks.json")
-def jwks():
-    obj = jwk.dumps(
-        get_public_key(), current_app.config["JWT"].get("KTY", DEFAULT_JWT_KTY)
-    )
-    return jsonify(
-        {
-            "keys": [
-                {
-                    "kid": None,
-                    "use": "sig",
-                    "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
-                    **obj,
-                }
-            ]
+    with open(current_app.config["JWT"]["PRIVATE_KEY"]) as pk:
+        return {
+            "key": pk.read(),
+            "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
+            "iss": current_app.config["JWT"]["ISS"],
+            "exp": current_app.config["JWT"].get("EXP", DEFAULT_JWT_EXP),
         }
+
+
+def generate_user_info(user, scope):
+    user = User.get(dn=user)
+    claims = ["sub"]
+    if "profile" in scope:
+        claims += [
+            "name",
+            "family_name",
+            "given_name",
+            "nickname",
+            "preferred_username",
+            "profile",
+            "picture",
+            "website",
+            "gender",
+            "birthdate",
+            "zoneinfo",
+            "locale",
+            "updated_at",
+        ]
+    if "email" in scope:
+        claims += ["email", "email_verified"]
+    if "address" in scope:
+        claims += ["address"]
+    if "phone" in scope:
+        claims += ["phone_number", "phone_number_verified"]
+    if "groups" in scope:
+        claims += ["groups"]
+
+    data = generate_user_claims(user, claims)
+    return UserInfo(**data)
+
+
+def generate_user_claims(user, claims, jwt_mapping_config=None):
+    jwt_mapping_config = jwt_mapping_config or current_app.config["JWT"]["MAPPING"]
+
+    data = {}
+    for claim in claims:
+        raw_claim = jwt_mapping_config.get(claim.upper())
+        if raw_claim:
+            formatted_claim = current_app.jinja_env.from_string(raw_claim).render(
+                user=user
+            )
+            if formatted_claim:
+                # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
+                # it's better to not insert a null or empty string value
+                data[claim] = formatted_claim
+        if claim == "groups":
+            group_name_attr = current_app.config["LDAP"].get(
+                "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
+            )
+            data[claim] = [getattr(g, group_name_attr)[0] for g in user.groups]
+    return data
+
+
+def save_authorization_code(code, request):
+    nonce = request.data.get("nonce")
+    now = datetime.datetime.now()
+    scope = request.client.get_allowed_scope(request.scope)
+    code = AuthorizationCode(
+        authorization_code_id=gen_salt(48),
+        code=code,
+        subject=request.user,
+        client=request.client.dn,
+        redirect_uri=request.redirect_uri or request.client.redirect_uris[0],
+        scope=scope,
+        nonce=nonce,
+        issue_date=now,
+        lifetime=str(84000),
+        challenge=request.data.get("code_challenge"),
+        challenge_method=request.data.get("code_challenge_method"),
+    )
+    code.save()
+    return code.code
+
+
+class AuthorizationCodeGrant(_AuthorizationCodeGrant):
+    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+
+    def save_authorization_code(self, code, request):
+        return save_authorization_code(code, request)
+
+    def query_authorization_code(self, code, client):
+        item = AuthorizationCode.filter(code=code, client=client.dn)
+        if item and not item[0].is_expired():
+            return item[0]
+
+    def delete_authorization_code(self, authorization_code):
+        authorization_code.delete()
+
+    def authenticate_user(self, authorization_code):
+        user = User.get(dn=authorization_code.subject)
+        if user:
+            return user.dn
+
+
+class OpenIDCode(_OpenIDCode):
+    def exists_nonce(self, nonce, request):
+        return exists_nonce(nonce, request)
+
+    def get_jwt_config(self, grant):
+        return get_jwt_config(grant)
+
+    def generate_user_info(self, user, scope):
+        return generate_user_info(user, scope)
+
+    def get_audiences(self, request):
+        client = request.client
+        return [Client.get(aud).client_id for aud in client.audience]
+
+
+class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
+    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+
+    def authenticate_user(self, username, password):
+        user = User.authenticate(username, password)
+        if user:
+            return user.dn
+
+
+class RefreshTokenGrant(_RefreshTokenGrant):
+    def authenticate_refresh_token(self, refresh_token):
+        token = Token.filter(refresh_token=refresh_token)
+        if token and token[0].is_refresh_token_active():
+            return token[0]
+
+    def authenticate_user(self, credential):
+        user = User.get(dn=credential.subject)
+        if user:
+            return user.dn
+
+    def revoke_old_credential(self, credential):
+        credential.revokation_date = datetime.datetime.now()
+        credential.save()
+
+
+class OpenIDImplicitGrant(_OpenIDImplicitGrant):
+    def exists_nonce(self, nonce, request):
+        return exists_nonce(nonce, request)
+
+    def get_jwt_config(self, grant=None):
+        return get_jwt_config(grant)
+
+    def generate_user_info(self, user, scope):
+        return generate_user_info(user, scope)
+
+    def get_audiences(self, request):
+        client = request.client
+        return [Client.get(aud).client_id for aud in client.audience]
+
+
+class OpenIDHybridGrant(_OpenIDHybridGrant):
+    def save_authorization_code(self, code, request):
+        return save_authorization_code(code, request)
+
+    def exists_nonce(self, nonce, request):
+        return exists_nonce(nonce, request)
+
+    def get_jwt_config(self, grant=None):
+        return get_jwt_config(grant)
+
+    def generate_user_info(self, user, scope):
+        return generate_user_info(user, scope)
+
+    def get_audiences(self, request):
+        client = request.client
+        return [Client.get(aud).client_id for aud in client.audience]
+
+
+def query_client(client_id):
+    return Client.get(client_id)
+
+
+def save_token(token, request):
+    now = datetime.datetime.now()
+    t = Token(
+        token_id=gen_salt(48),
+        type=token["token_type"],
+        access_token=token["access_token"],
+        issue_date=now,
+        lifetime=str(token["expires_in"]),
+        scope=token["scope"],
+        client=request.client.dn,
+        refresh_token=token.get("refresh_token"),
+        subject=request.user,
+        audience=request.client.audience,
+    )
+    t.save()
+
+
+class BearerTokenValidator(_BearerTokenValidator):
+    def authenticate_token(self, token_string):
+        return Token.get(access_token=token_string)
+
+    def request_invalid(self, request):
+        return False
+
+    def token_revoked(self, token):
+        return bool(token.revokation_date)
+
+
+class RevocationEndpoint(_RevocationEndpoint):
+    def query_token(self, token, token_type_hint):
+        if token_type_hint == "access_token":
+            return Token.filter(access_token=token)
+        elif token_type_hint == "refresh_token":
+            return Token.filter(refresh_token=token)
+
+        item = Token.filter(access_token=token)
+        if item:
+            return item[0]
+
+        item = Token.filter(refresh_token=token)
+        if item:
+            return item[0]
+
+        return None
+
+    def revoke_token(self, token, request):
+        token.revokation_date = datetime.datetime.now()
+        token.save()
+
+
+class IntrospectionEndpoint(_IntrospectionEndpoint):
+    def query_token(self, token, token_type_hint):
+        if token_type_hint == "access_token":
+            tok = Token.filter(access_token=token)
+        elif token_type_hint == "refresh_token":
+            tok = Token.filter(refresh_token=token)
+        else:
+            tok = Token.filter(access_token=token)
+            if not tok:
+                tok = Token.filter(refresh_token=token)
+        return tok[0] if tok else None
+
+    def check_permission(self, token, client, request):
+        return client.dn in token.audience
+
+    def introspect_token(self, token):
+        client_id = Client.get(token.client).client_id
+        user = User.get(dn=token.subject)
+        audience = [Client.get(aud).client_id for aud in token.audience]
+        return {
+            "active": True,
+            "client_id": client_id,
+            "token_type": token.type,
+            "username": user.name,
+            "scope": token.get_scope(),
+            "sub": user.uid[0],
+            "aud": audience,
+            "iss": current_app.config["JWT"]["ISS"],
+            "exp": token.get_expires_at(),
+            "iat": token.get_issued_at(),
+        }
+
+
+class CodeChallenge(_CodeChallenge):
+    def get_authorization_code_challenge(self, authorization_code):
+        return authorization_code.challenge
+
+    def get_authorization_code_challenge_method(self, authorization_code):
+        return authorization_code.challenge_method
+
+
+def generate_access_token(client, grant_type, user, scope):
+    audience = [Client.get(dn).client_id for dn in client.audience]
+    return generate_id_token(
+        {}, generate_user_info(user, scope), aud=audience, **get_jwt_config(grant_type)
     )
 
 
-@bp.route("/userinfo")
-@require_oauth("profile")
-def userinfo():
-    current_app.logger.debug("userinfo endpoint request: %s", request.args)
-    response = generate_user_info(current_token.subject, current_token.scope[0])
-    current_app.logger.debug("userinfo endpoint response: %s", response)
-    return jsonify(response)
+authorization = AuthorizationServer()
+require_oauth = ResourceProtector()
 
 
-def set_parameter_in_url_query(url, **kwargs):
-    split = list(urlsplit(url))
+def setup_oauth(app):
+    authorization.init_app(app, query_client=query_client, save_token=save_token)
 
-    parameters = "&".join(f"{key}={value}" for key, value in kwargs.items())
+    authorization.register_grant(PasswordGrant)
+    authorization.register_grant(ImplicitGrant)
+    authorization.register_grant(RefreshTokenGrant)
+    authorization.register_grant(ClientCredentialsGrant)
 
-    if split[3]:
-        split[3] = f"{split[3]}&{parameters}"
-    else:
-        split[3] = parameters
+    authorization.register_grant(
+        AuthorizationCodeGrant,
+        [OpenIDCode(require_nonce=True), CodeChallenge(required=True)],
+    )
+    authorization.register_grant(OpenIDImplicitGrant)
+    authorization.register_grant(OpenIDHybridGrant)
 
-    return urlunsplit(split)
+    require_oauth.register_token_validator(BearerTokenValidator())
 
-
-@bp.route("/end_session", methods=["GET", "POST"])
-def end_session():
-    data = CombinedMultiDict((request.args, request.form))
-    user = current_user()
-
-    if not user:
-        return redirect(url_for("account.index"))
-
-    form = LogoutForm(request.form)
-    form.action = url_for("oidc.oauth.end_session_submit")
-
-    client = None
-    valid_uris = []
-
-    if "client_id" in data:
-        client = Client.get(data["client_id"])
-        if client:
-            valid_uris = client.post_logout_redirect_uris
-
-    if (
-        not data.get("id_token_hint")
-        or (data.get("logout_hint") and data["logout_hint"] != user.uid[0])
-    ) and not session.get("end_session_confirmation"):
-        session["end_session_data"] = data
-        return render_template(
-            "oidc/user/logout.html", form=form, client=client, menu=False
-        )
-
-    if data.get("id_token_hint"):
-        id_token = jwt.decode(data["id_token_hint"], get_public_key())
-        if not id_token["iss"] == current_app.config["JWT"]["ISS"]:
-            return jsonify(
-                {
-                    "status": "error",
-                    "message": "id_token_hint has not been issued here",
-                }
-            )
-
-        if "client_id" in data:
-            if (
-                data["client_id"] != id_token["aud"]
-                and data["client_id"] not in id_token["aud"]
-            ):
-                return jsonify(
-                    {
-                        "status": "error",
-                        "message": "id_token_hint and client_id don't match",
-                    }
-                )
-
-        else:
-            client_ids = (
-                id_token["aud"]
-                if isinstance(id_token["aud"], list)
-                else [id_token["aud"]]
-            )
-            for client_id in client_ids:
-                client = Client.get(client_id)
-                if client:
-                    valid_uris.extend(client.post_logout_redirect_uris)
-
-        if user.uid[0] != id_token["sub"] and not session.get(
-            "end_session_confirmation"
-        ):
-            session["end_session_data"] = data
-            return render_template(
-                "oidc/user/logout.html", form=form, client=client, menu=False
-            )
-
-    user.logout()
-
-    if "end_session_confirmation" in session:
-        del session["end_session_confirmation"]
-
-    if (
-        "post_logout_redirect_uri" in data
-        and data["post_logout_redirect_uri"] in valid_uris
-    ):
-        url = data["post_logout_redirect_uri"]
-        if "state" in data:
-            url = set_parameter_in_url_query(url, state=data["state"])
-        return redirect(data["post_logout_redirect_uri"])
-
-    flash(_("You have been disconnected"), "success")
-    return redirect(url_for("account.index"))
-
-
-@bp.route("/end_session_confirm", methods=["POST"])
-def end_session_submit():
-    form = LogoutForm(request.form)
-    if not form.validate():
-        flash(_("An error happened during the logout"), "error")
-        client = Client.get(session.get("end_session_data", {}).get("client_id"))
-        return render_template("oidc/user/logout.html", form=form, client=client)
-
-    data = session["end_session_data"]
-    del session["end_session_data"]
-
-    if request.form["answer"] == "logout":
-        session["end_session_confirmation"] = True
-        url = set_parameter_in_url_query(url_for("oidc.oauth.end_session"), **data)
-        return redirect(url)
-
-    flash(_("You have not been disconnected"), "info")
-
-    return redirect(url_for("account.index"))
+    authorization.register_endpoint(IntrospectionEndpoint)
+    authorization.register_endpoint(RevocationEndpoint)

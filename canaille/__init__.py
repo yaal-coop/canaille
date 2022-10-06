@@ -13,7 +13,7 @@ from flask_themer import render_template
 from flask_themer import Themer
 
 from .ldap_backend.backend import init_backend
-from .oidc.oauth2utils import setup_oauth
+from .oidc.oauth import setup_oauth
 
 
 def setup_config(app, config=None, validate=True):
@@ -25,7 +25,7 @@ def setup_config(app, config=None, validate=True):
         {
             "SESSION_COOKIE_NAME": "canaille",
             "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
-            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth2utils.generate_access_token",
+            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
         }
     )
     if config:

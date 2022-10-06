@@ -1,5 +1,5 @@
 from canaille.models import User
-from canaille.oidc.oauth2utils import generate_user_claims
+from canaille.oidc.oauth import generate_user_claims
 
 STANDARD_CLAIMS = [
     "sub",
