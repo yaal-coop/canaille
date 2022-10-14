@@ -18715,9 +18715,9 @@ $.fn.slider = function(parameters) {
           },
           gapRatio: function() {
             var gapRatio = 1;
-            
+
             if( settings.autoAdjustLabels ) {
-              var 
+              var
                 numLabels = module.get.numLabels(),
                 trackLength = module.get.trackLength(),
                 gapCounter = 1
