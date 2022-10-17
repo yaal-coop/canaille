@@ -6,7 +6,7 @@ from canaille.oidc.models import Token
 
 
 def test_oauth_implicit(testclient, user, client):
-    client.grant_type = ["token"]
+    client.grant_types = ["token"]
     client.token_endpoint_auth_method = "none"
 
     client.save()
@@ -48,13 +48,13 @@ def test_oauth_implicit(testclient, user, client):
         "family_name": "Doe",
     } == res.json
 
-    client.grant_type = ["code"]
+    client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
     client.save()
 
 
 def test_oidc_implicit(testclient, keypair, user, client, other_client):
-    client.grant_type = ["token id_token"]
+    client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
     client.save()
@@ -104,7 +104,7 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
         "family_name": "Doe",
     } == res.json
 
-    client.grant_type = ["code"]
+    client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
     client.save()
 
@@ -112,7 +112,7 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
 def test_oidc_implicit_with_group(
     testclient, keypair, user, client, foo_group, other_client
 ):
-    client.grant_type = ["token id_token"]
+    client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
     client.save()
@@ -164,6 +164,6 @@ def test_oidc_implicit_with_group(
         "groups": ["foo"],
     } == res.json
 
-    client.grant_type = ["code"]
+    client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
     client.save()

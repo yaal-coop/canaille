@@ -15,28 +15,28 @@ from werkzeug.security import gen_salt
 def client(testclient, other_client, slapd_connection):
     c = Client(
         client_id=gen_salt(24),
-        name="Some client",
-        contact="contact@mydomain.tld",
-        uri="https://mydomain.tld",
+        client_name="Some client",
+        contacts="contact@mydomain.tld",
+        client_uri="https://mydomain.tld",
         redirect_uris=[
             "https://mydomain.tld/redirect1",
             "https://mydomain.tld/redirect2",
         ],
         logo_uri="https://mydomain.tld/logo.png",
-        issue_date=datetime.datetime.now(),
-        secret=gen_salt(48),
-        grant_type=[
+        client_id_issued_at=datetime.datetime.now(),
+        client_secret=gen_salt(48),
+        grant_types=[
             "password",
             "authorization_code",
             "implicit",
             "hybrid",
             "refresh_token",
         ],
-        response_type=["code", "token", "id_token"],
+        response_types=["code", "token", "id_token"],
         scope=["openid", "email", "profile", "groups", "address", "phone"],
         tos_uri="https://mydomain.tld/tos",
         policy_uri="https://mydomain.tld/policy",
-        jwk_uri="https://mydomain.tld/jwk",
+        jwks_uri="https://mydomain.tld/jwk",
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
     )
@@ -54,28 +54,28 @@ def client(testclient, other_client, slapd_connection):
 def other_client(testclient, slapd_connection):
     c = Client(
         client_id=gen_salt(24),
-        name="Some other client",
-        contact="contact@myotherdomain.tld",
-        uri="https://myotherdomain.tld",
+        client_name="Some other client",
+        contacts="contact@myotherdomain.tld",
+        client_uri="https://myotherdomain.tld",
         redirect_uris=[
             "https://myotherdomain.tld/redirect1",
             "https://myotherdomain.tld/redirect2",
         ],
         logo_uri="https://myotherdomain.tld/logo.png",
-        issue_date=datetime.datetime.now(),
-        secret=gen_salt(48),
-        grant_type=[
+        client_id_issued_at=datetime.datetime.now(),
+        client_secret=gen_salt(48),
+        grant_types=[
             "password",
             "authorization_code",
             "implicit",
             "hybrid",
             "refresh_token",
         ],
-        response_type=["code", "token", "id_token"],
+        response_types=["code", "token", "id_token"],
         scope=["openid", "profile", "groups"],
         tos_uri="https://myotherdomain.tld/tos",
         policy_uri="https://myotherdomain.tld/policy",
-        jwk_uri="https://myotherdomain.tld/jwk",
+        jwks_uri="https://myotherdomain.tld/jwk",
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
     )

@@ -15,19 +15,19 @@ def test_invalid_client_edition(testclient, logged_admin):
 
 def test_client_list(testclient, client, logged_admin):
     res = testclient.get("/admin/client")
-    assert client.name in res.text
+    assert client.client_name in res.text
 
 
 def test_client_add(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     data = {
-        "name": "foobar",
-        "contact": "foo@bar.com",
-        "uri": "https://foo.bar",
+        "client_name": "foobar",
+        "contacts": "foo@bar.com",
+        "client_uri": "https://foo.bar",
         "redirect_uris": ["https:/foo.bar/callback"],
-        "grant_type": ["password", "authorization_code"],
+        "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
-        "response_type": ["code", "token"],
+        "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
         "logo_uri": "https://foo.bar/logo.png",
         "tos_uri": "https://foo.bar/tos",
@@ -35,7 +35,7 @@ def test_client_add(testclient, logged_admin):
         "software_id": "software",
         "software_version": "1",
         "jwk": "jwk",
-        "jwk_uri": "https://foo.bar/jwks.json",
+        "jwks_uri": "https://foo.bar/jwks.json",
         "audience": [],
         "preconsent": False,
         "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
@@ -55,6 +55,8 @@ def test_client_add(testclient, logged_admin):
             assert v == " ".join(client_value)
         elif k == "preconsent":
             assert v is False
+        elif k == "contacts":
+            assert [v] == client_value
         else:
             assert v == client_value
 
@@ -62,13 +64,13 @@ def test_client_add(testclient, logged_admin):
 def test_client_edit(testclient, client, logged_admin, other_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
-        "name": "foobar",
-        "contact": "foo@bar.com",
-        "uri": "https://foo.bar",
+        "client_name": "foobar",
+        "contacts": "foo@bar.com",
+        "client_uri": "https://foo.bar",
         "redirect_uris": ["https:/foo.bar/callback"],
-        "grant_type": ["password", "authorization_code"],
+        "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
-        "response_type": ["code", "token"],
+        "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
         "logo_uri": "https://foo.bar/logo.png",
         "tos_uri": "https://foo.bar/tos",
@@ -76,7 +78,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "software_id": "software",
         "software_version": "1",
         "jwk": "jwk",
-        "jwk_uri": "https://foo.bar/jwks.json",
+        "jwks_uri": "https://foo.bar/jwks.json",
         "audience": [client.dn, other_client.dn],
         "preconsent": True,
         "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
@@ -96,6 +98,8 @@ def test_client_edit(testclient, client, logged_admin, other_client):
             assert v == " ".join(client_value)
         elif k == "preconsent":
             assert v is True
+        elif k == "contacts":
+            assert [v] == client_value
         else:
             assert v == client_value
 

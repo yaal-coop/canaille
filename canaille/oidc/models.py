@@ -15,21 +15,21 @@ class Client(LDAPObject, ClientMixin):
     attribute_table = {
         "description": "description",
         "client_id": "oauthClientID",
-        "name": "oauthClientName",
-        "contact": "oauthClientContact",
-        "uri": "oauthClientURI",
+        "client_name": "oauthClientName",
+        "contacts": "oauthClientContact",
+        "client_uri": "oauthClientURI",
         "redirect_uris": "oauthRedirectURIs",
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
         "logo_uri": "oauthLogoURI",
-        "issue_date": "oauthIssueDate",
-        "secret": "oauthClientSecret",
-        "secret_expires_date": "oauthClientSecretExpDate",
-        "grant_type": "oauthGrantType",
-        "response_type": "oauthResponseType",
+        "client_id_issued_at": "oauthIssueDate",
+        "client_secret": "oauthClientSecret",
+        "client_secret_expires_date": "oauthClientSecretExpDate",
+        "grant_types": "oauthGrantType",
+        "response_types": "oauthResponseType",
         "scope": "oauthScope",
         "tos_uri": "oauthTermsOfServiceURI",
         "policy_uri": "oauthPolicyURI",
-        "jwk_uri": "oauthJWKURI",
+        "jwks_uri": "oauthJWKURI",
         "jwk": "oauthJWK",
         "token_endpoint_auth_method": "oauthTokenEndpointAuthMethod",
         "software_id": "oauthSoftwareID",
@@ -50,10 +50,10 @@ class Client(LDAPObject, ClientMixin):
         return redirect_uri in self.redirect_uris
 
     def has_client_secret(self):
-        return bool(self.secret)
+        return bool(self.client_secret)
 
     def check_client_secret(self, client_secret):
-        return client_secret == self.secret
+        return client_secret == self.client_secret
 
     def check_endpoint_auth_method(self, method, endpoint):
         if endpoint == "token":
@@ -61,10 +61,10 @@ class Client(LDAPObject, ClientMixin):
         return True
 
     def check_response_type(self, response_type):
-        return all(r in self.response_type for r in response_type.split(" "))
+        return all(r in self.response_types for r in response_type.split(" "))
 
     def check_grant_type(self, grant_type):
-        return grant_type in self.grant_type
+        return grant_type in self.grant_types
 
     @property
     def client_info(self):

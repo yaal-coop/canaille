@@ -13,7 +13,7 @@
                 <p>
                     {{ _("You are currently logged in as %(username)s.", username=user.name) }}
                     {% if client %}
-                        {{ _("The application %(client_name)s want to disconnect your account.", client_name=client.name) }}
+                        {{ _("The application %(client_name)s want to disconnect your account.", client_name=client.client_name) }}
                     {% endif %}
                 </p>
             </div>

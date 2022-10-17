@@ -35,9 +35,9 @@
                         {% endif %}
                     </a>
                 </td>
-                <td><a href="{{ url_for('oidc.clients.edit', client_id=client.client_id) }}">{{ client.name }}</a></td>
+                <td><a href="{{ url_for('oidc.clients.edit', client_id=client.client_id) }}">{{ client.client_name }}</a></td>
                 <td><a href="{{ client.uri }}">{{ client.uri }}</a></td>
-                <td>{% if client.issue_date %}{{ client.issue_date }}{% endif %}</td>
+                <td>{% if client.client_id_issued_at %}{{ client.client_id_issued_at }}{% endif %}</td>
             </tr>
         {% endfor %}
     </table>
