@@ -30,6 +30,17 @@ FAVICON = "/static/img/canaille-c.png"
 OAUTH2_METADATA_FILE = "canaille/conf/oauth-authorization-server.json"
 OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
 
+# Wether a token is needed for the RFC7591 dynamical client registration.
+# If true, no token is needed to register a client.
+# If false, dynamical client registration needs a token defined
+# in OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS
+# OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN = false
+
+# A list of tokens that can be used for dynamic client registration
+# OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
+#     "xxxxxxx-yyyyyyy-zzzzzz",
+# ]
+
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 

@@ -13,6 +13,9 @@ from authlib.oauth2.rfc6749.grants import (
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
+from authlib.oauth2.rfc7591 import (
+    ClientRegistrationEndpoint as _ClientRegistrationEndpoint,
+)
 from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
 from authlib.oidc.core import UserInfo
@@ -305,6 +308,38 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
         }
 
 
+class ClientRegistrationEndpoint(_ClientRegistrationEndpoint):
+    def authenticate_token(self, request):
+        if current_app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN", False):
+            return True
+
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.lower().startswith("bearer "):
+            return None
+
+        bearer_token = auth_header.split()[1]
+        if bearer_token not in current_app.config.get(
+            "OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS", []
+        ):
+            return None
+
+        return True
+
+    def save_client(self, client_info, client_metadata, request):
+        client_info["client_id_issued_at"] = datetime.datetime.fromtimestamp(
+            client_info["client_id_issued_at"]
+        )
+        client = Client(**client_info, **client_metadata)
+        client.save()
+        return client
+
+    def get_server_metadata(self):
+        from .well_known import cached_openid_configuration
+
+        result = cached_openid_configuration()
+        return result
+
+
 class CodeChallenge(_CodeChallenge):
     def get_authorization_code_challenge(self, authorization_code):
         return authorization_code.challenge
@@ -343,3 +378,4 @@ def setup_oauth(app):
 
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
+    authorization.register_endpoint(ClientRegistrationEndpoint)

@@ -172,6 +172,10 @@ class User(LDAPObject):
         return "manage_oidc" in self.permissions
 
     @property
+    def can_register_oidc_clients(self):
+        return "register_oidc_clients" in self.permissions
+
+    @property
     def can_delete_account(self):
         return "delete_account" in self.permissions
 
