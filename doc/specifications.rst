@@ -7,38 +7,33 @@ State of the specs in Canaille
 OAUTH2
 ------
 
-- ✅ `RFC6749: OAuth 2.0 Framework <OAUTH2_Framework>`_
-- ✅ `RFC6750: OAuth 2.0 Bearer Tokens <OAUTH2_Bearer_Tokens>`_
-- ✅ `RFC7662: OAuth 2.0 Token Revocation <OAUTH2_Token_Revocation>`_
-- ❌ `OAUTH2 Multiple Response Types <OAUTH2_Multiple_Response_Types>`_
-- ❌ `OAUTH2 Form Post Response Mode <OAUTH2_Form_Post_Response_Mode>`_
+- ✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_
+- ✅ `RFC6750: OAuth 2.0 Bearer Tokens <https://tools.ietf.org/html/rfc6750>`_
+- ✅ `RFC7009: OAuth 2.0 Token Revocation <https://tools.ietf.org/html/rfc7009>`_
+- ✅ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and Authorization Grants <https://tools.ietf.org/html/rfc7523>`_
+- ❌ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol <https://tools.ietf.org/html/rfc7591>`_
+- ❌ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol <https://tools.ietf.org/html/rfc7592>`_
+- ✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients <https://tools.ietf.org/html/rfc7636>`_
+- ✅ `RFC7638: OAuth 2.0 Token Introspection <https://tools.ietf.org/html/rfc7638>`_
+- ✅ `RFC8414: OAuth 2.0 Authorization Server Metadata <https://tools.ietf.org/html/rfc8414>`_
+- ❌ `RFC8428: OAuth 2.0 Device Authorization Grant <https://tools.ietf.org/html/rfc8428>`_
+- ❌ `RFC8693: OAuth 2.0 Token Exchange <https://tools.ietf.org/html/rfc8693>`_
+- ❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_
+- ❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests <https://tools.ietf.org/html/rfc9126>`_
+- ❌ `OAUTH2 Multiple Response Types <https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html>`_
+- ❌ `OAUTH2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html>`_
 
 OpenID Connect
 --------------
 
-- ✅ `OpenID Connect Core <OIDC_Core>`_
-- ✅ `OpenID Connect Discovery <OIDC_Discovery>`_
-- ❌ `OpenID Connect Dynamic Client Registration <OIDC_Dynamic_Client_Registration>`_
-- ✅ `OpenID Connect RP Initiated Logout <OIDC_RP_Initiated_Logout>`_
-- ❌ `OpenID Connect Session Management <OIDC_Session_Management>`_
-- ❌ `OpenID Connect Front Channel Logout <OIDC_Front_Channel_Logout>`_
-- ❌ `OpenID Connect Back Channel Logout <OIDC_Back_Channel_Logout>`_
-- ❌ `OpenID Connect Back Channel Authentication Flow <OIDC_Back_Channel_Authentication_Flow>`_
-
-.. _OAUTH2_Framework: https://tools.ietf.org/html/rfc6749
-.. _OAUTH2_Bearer_Tokens: https://tools.ietf.org/html/rfc6750
-.. _OAUTH2_Token_Revocation: https://tools.ietf.org/html/rfc7662
-.. _OAUTH2_Multiple_Response_Types: https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html
-.. _OAUTH2_Form_Post_Response_Mode: https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html
-
-.. _OIDC_Core: https://openid.net/specs/openid-connect-core-1_0.html
-.. _OIDC_Discovery: https://openid.net/specs/openid-connect-discovery-1_0.html
-.. _OIDC_Dynamic_Client_Registration: https://openid.net/specs/openid-connect-registration-1_0.html
-.. _OIDC_RP_Initiated_Logout: https://openid.net/specs/openid-connect-rpinitiated-1_0.html
-.. _OIDC_Session_Management: https://openid.net/specs/openid-connect-session-1_0.html
-.. _OIDC_Front_Channel_Logout: https://openid.net/specs/openid-connect-frontchannel-1_0.html
-.. _OIDC_Back_Channel_Logout: https://openid.net/specs/openid-connect-backchannel-1_0.html
-.. _OIDC_Back_Channel_Authentication_Flow: https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html
+- ✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-core-1_0.html>`_
+- ✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-discovery-1_0.html>`_
+- ❌ `OpenID Connect Dynamic Client Registration <https://openid.net/specs/openid-connect-registration-1_0.html>`_
+- ✅ `OpenID Connect RP Initiated Logout <https://openid.net/specs/openid-connect-rpinitiated-1_0.html>`_
+- ❌ `OpenID Connect Session Management <https://openid.net/specs/openid-connect-session-1_0.html>`_
+- ❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-connect-frontchannel-1_0.html>`_
+- ❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-connect-backchannel-1_0.html>`_
+- ❌ `OpenID Connect Back Channel Authentication Flow <https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_
 
 Comparison with other providers
 ===============================
