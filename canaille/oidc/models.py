@@ -12,18 +12,20 @@ class Client(LDAPObject, ClientMixin):
     object_class = ["oauthClient"]
     base = "ou=clients,ou=oauth"
     id = "oauthClientID"
-    attribute_table = {
-        "description": "description",
+
+    client_info_attributes = {
         "client_id": "oauthClientID",
+        "client_secret": "oauthClientSecret",
+        "client_id_issued_at": "oauthIssueDate",
+        "client_secret_expires_at": "oauthClientSecretExpDate",
+    }
+
+    client_metadata_attributes = {
         "client_name": "oauthClientName",
         "contacts": "oauthClientContact",
         "client_uri": "oauthClientURI",
         "redirect_uris": "oauthRedirectURIs",
-        "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
         "logo_uri": "oauthLogoURI",
-        "client_id_issued_at": "oauthIssueDate",
-        "client_secret": "oauthClientSecret",
-        "client_secret_expires_date": "oauthClientSecretExpDate",
         "grant_types": "oauthGrantType",
         "response_types": "oauthResponseType",
         "scope": "oauthScope",
@@ -34,9 +36,20 @@ class Client(LDAPObject, ClientMixin):
         "token_endpoint_auth_method": "oauthTokenEndpointAuthMethod",
         "software_id": "oauthSoftwareID",
         "software_version": "oauthSoftwareVersion",
-        "audience": "oauthAudience",
-        "preconsent": "oauthPreconsent",
     }
+
+    attribute_table = {
+        "description": "description",
+        "preconsent": "oauthPreconsent",
+        # post_logout_redirect_uris is not yet supported by authlib
+        "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
+        "audience": "oauthAudience",
+        **client_info_attributes,
+        **client_metadata_attributes,
+    }
+
+    def get_client_id(self):
+        return self.client_id
 
     def get_default_redirect_uri(self):
         return self.redirect_uris[0]
@@ -68,12 +81,21 @@ class Client(LDAPObject, ClientMixin):
 
     @property
     def client_info(self):
-        return dict(
-            client_id=self.client_id,
-            client_secret=self.client_secret,
-            client_id_issued_at=self.client_id_issued_at,
-            client_secret_expires_at=self.client_secret_expires_date,
+        result = {
+            attribute_name: getattr(self, attribute_name)
+            for attribute_name in self.client_info_attributes
+        }
+        result["client_id_issued_at"] = int(
+            datetime.datetime.timestamp(result["client_id_issued_at"])
         )
+        return result
+
+    @property
+    def client_metadata(self):
+        return {
+            attribute_name: getattr(self, attribute_name)
+            for attribute_name in self.client_metadata_attributes
+        }
 
 
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
