@@ -19,9 +19,11 @@ OAUTH2
 - ❌ `RFC8428: OAuth 2.0 Device Authorization Grant <https://tools.ietf.org/html/rfc8428>`_
 - ❌ `RFC8693: OAuth 2.0 Token Exchange <https://tools.ietf.org/html/rfc8693>`_
 - ❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_
+- ❌ `RFC9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens <https://tools.ietf.org/html/rfc9068>`_
+- ❌ `RFC9101: OAuth 2.0 JWT-Secured Authorization Request (JAR) <https://tools.ietf.org/html/rfc9101>`_
 - ❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests <https://tools.ietf.org/html/rfc9126>`_
-- ❌ `OAUTH2 Multiple Response Types <https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html>`_
-- ❌ `OAUTH2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html>`_
+- ❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html>`_
+- ❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html>`_
 
 OpenID Connect
 --------------
