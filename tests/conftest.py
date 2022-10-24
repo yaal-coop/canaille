@@ -172,7 +172,6 @@ def configuration(slapd_server, smtpd, keypair_path):
                     "delete_account",
                     "impersonate_users",
                     "manage_groups",
-                    "register_oidc_clients",
                 ],
                 "WRITE": [
                     "groups",

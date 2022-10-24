@@ -48,7 +48,6 @@ def test_client_registration_with_authentication_static_token(
     assert client.logo_uri == "https://client.example.org/logo.png"
     assert client.jwks_uri == "https://client.example.org/my_public_keys.jwks"
     client.delete()
-    assert not user.can_register_oidc_clients
 
 
 def test_client_registration_with_authentication_no_token(
