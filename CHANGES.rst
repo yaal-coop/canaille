@@ -11,6 +11,7 @@ Added
 
 - Basic WebFinger endpoint. :pr:`59`
 - Bumped to FomanticUI 2.9.0 00ffffee
+- Implemented Dynamic Client Registration :pr:`60`
 
 
 [0.0.11] - 2022-08-11

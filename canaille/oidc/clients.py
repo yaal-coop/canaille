@@ -28,21 +28,21 @@ def index(user):
 
 
 def client_audiences():
-    return [(client.dn, client.name) for client in Client.all()]
+    return [(client.dn, client.client_name) for client in Client.all()]
 
 
 class ClientAdd(FlaskForm):
-    name = wtforms.StringField(
+    client_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "Client Name"},
     )
-    contact = wtforms.EmailField(
+    contacts = wtforms.EmailField(
         _("Contact"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "admin@mydomain.tld"},
     )
-    uri = wtforms.URLField(
+    client_uri = wtforms.URLField(
         _("URI"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "https://mydomain.tld"},
@@ -57,7 +57,7 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "https://mydomain.tld/you-have-been-disconnected"},
     )
-    grant_type = wtforms.SelectMultipleField(
+    grant_types = wtforms.SelectMultipleField(
         _("Grant types"),
         validators=[wtforms.validators.DataRequired()],
         choices=[
@@ -75,7 +75,7 @@ class ClientAdd(FlaskForm):
         default="openid profile email",
         render_kw={"placeholder": "openid profile"},
     )
-    response_type = wtforms.SelectMultipleField(
+    response_types = wtforms.SelectMultipleField(
         _("Response types"),
         validators=[wtforms.validators.DataRequired()],
         choices=[("code", "code"), ("token", "token"), ("id_token", "id_token")],
@@ -127,7 +127,7 @@ class ClientAdd(FlaskForm):
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
     )
-    jwk_uri = wtforms.URLField(
+    jwks_uri = wtforms.URLField(
         _("JKW URI"),
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": ""},
@@ -162,14 +162,14 @@ def add(user):
     client_id_issued_at = datetime.datetime.now()
     client = Client(
         client_id=client_id,
-        issue_date=client_id_issued_at,
-        name=form["name"].data,
-        contact=form["contact"].data,
-        uri=form["uri"].data,
-        grant_type=form["grant_type"].data,
+        client_id_issued_at=client_id_issued_at,
+        client_name=form["client_name"].data,
+        contacts=[form["contacts"].data],
+        client_uri=form["client_uri"].data,
+        grant_types=form["grant_types"].data,
         redirect_uris=[form["redirect_uris"].data],
         post_logout_redirect_uris=[form["post_logout_redirect_uris"].data],
-        response_type=form["response_type"].data,
+        response_types=form["response_types"].data,
         scope=form["scope"].data.split(" "),
         token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
         logo_uri=form["logo_uri"].data,
@@ -178,9 +178,9 @@ def add(user):
         software_id=form["software_id"].data,
         software_version=form["software_version"].data,
         jwk=form["jwk"].data,
-        jwk_uri=form["jwk_uri"].data,
+        jwks_uri=form["jwks_uri"].data,
         preconsent=form["preconsent"].data,
-        secret=""
+        client_secret=""
         if form["token_endpoint_auth_method"].data == "none"
         else gen_salt(48),
     )
@@ -236,13 +236,13 @@ def client_edit(client_id):
 
     else:
         client.update(
-            name=form["name"].data,
-            contact=form["contact"].data,
-            uri=form["uri"].data,
-            grant_type=form["grant_type"].data,
+            client_name=form["client_name"].data,
+            contacts=[form["contacts"].data],
+            client_uri=form["client_uri"].data,
+            grant_types=form["grant_types"].data,
             redirect_uris=[form["redirect_uris"].data],
             post_logout_redirect_uris=[form["post_logout_redirect_uris"].data],
-            response_type=form["response_type"].data,
+            response_types=form["response_types"].data,
             scope=form["scope"].data.split(" "),
             token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
             logo_uri=form["logo_uri"].data,
@@ -251,7 +251,7 @@ def client_edit(client_id):
             software_id=form["software_id"].data,
             software_version=form["software_version"].data,
             jwk=form["jwk"].data,
-            jwk_uri=form["jwk_uri"].data,
+            jwks_uri=form["jwks_uri"].data,
             audience=form["audience"].data,
             preconsent=form["preconsent"].data,
         )

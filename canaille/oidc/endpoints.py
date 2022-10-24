@@ -27,6 +27,7 @@ from .forms import LogoutForm
 from .models import Client
 from .models import Consent
 from .oauth import authorization
+from .oauth import ClientRegistrationEndpoint
 from .oauth import DEFAULT_JWT_ALG
 from .oauth import DEFAULT_JWT_KTY
 from .oauth import generate_user_info
@@ -193,6 +194,19 @@ def revoke_token():
     )
     response = authorization.create_endpoint_response(RevocationEndpoint.ENDPOINT_NAME)
     current_app.logger.debug("revokation endpoint response: %s", response.json)
+    return response
+
+
+@bp.route("/register", methods=["POST"])
+def client_registration():
+    current_app.logger.debug(
+        "client registration endpoint request: POST: %s",
+        request.form.to_dict(flat=False),
+    )
+    response = authorization.create_endpoint_response(
+        ClientRegistrationEndpoint.ENDPOINT_NAME
+    )
+    current_app.logger.debug("client registration endpoint response: %s", response.json)
     return response
 
 

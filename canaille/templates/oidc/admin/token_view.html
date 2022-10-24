@@ -17,7 +17,7 @@
                     <td>{{ _("Client") }}</td>
                     <td>
                         <a href="{{ url_for("oidc.clients.edit", client_id=token_client.client_id) }}">
-                            {{ token_client.name }}
+                            {{ token_client.client_name }}
                         </a>
                     </td>
                 </tr>
@@ -46,7 +46,7 @@
                             {% for client in token_audience %}
                                 <li class="item">
                                     <a href="{{ url_for("oidc.clients.edit", client_id=client.dn) }}">
-                                        {{ client.name }}
+                                        {{ client.client_name }}
                                     </a>
                                 </li>
                             {% endfor %}

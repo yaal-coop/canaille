@@ -32,9 +32,9 @@
                                 <img class="right floated mini ui image" src="{{ client.logo_uri }}">
                             {% endif %}
                             {% if client.uri %}
-                                <a href="{{ client.uri }}" class="header">{{ client.name }}</a>
+                                <a href="{{ client.uri }}" class="header">{{ client.client_name }}</a>
                             {% else %}
-                                <div class="header">{{ client.name }}</div>
+                                <div class="header">{{ client.client_name }}</div>
                             {% endif %}
                             <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
                             {% if consent.revokation_date %}
