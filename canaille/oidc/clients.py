@@ -215,6 +215,7 @@ def client_edit(client_id):
     data = dict(client)
     data["scope"] = " ".join(data["scope"])
     data["redirect_uris"] = data["redirect_uris"][0]
+    data["contacts"] = data["contacts"][0]
     data["post_logout_redirect_uris"] = (
         data["post_logout_redirect_uris"][0]
         if data["post_logout_redirect_uris"]

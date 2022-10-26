@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+[0.0.13] - 2022-xx-xx
+=====================
+
+Fixed
+*****
+
+- Fixed a bug on the contacts field in the admin client form following
+  the LDAP schema update of 0.0.12
+
 [0.0.12] - 2022-10-24
 =====================
 
@@ -12,7 +21,6 @@ Added
 - Basic WebFinger endpoint. :pr:`59`
 - Bumped to FomanticUI 2.9.0 00ffffee
 - Implemented Dynamic Client Registration :pr:`60`
-
 
 [0.0.11] - 2022-08-11
 =====================
