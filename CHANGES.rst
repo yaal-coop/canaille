@@ -11,6 +11,8 @@ Fixed
 
 - Fixed a bug on the contacts field in the admin client form following
   the LDAP schema update of 0.0.12
+- Fixed a bug happening during RP initiated logout on clients without
+  `post_logout_redirect_uri` defined.
 
 [0.0.12] - 2022-10-24
 =====================

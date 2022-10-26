@@ -310,7 +310,7 @@ def end_session():
             for client_id in client_ids:
                 client = Client.get(client_id)
                 if client:
-                    valid_uris.extend(client.post_logout_redirect_uris)
+                    valid_uris.extend(client.post_logout_redirect_uris or [])
 
         if user.uid[0] != id_token["sub"] and not session.get(
             "end_session_confirmation"
