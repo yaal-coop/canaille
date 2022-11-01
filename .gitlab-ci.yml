@@ -14,7 +14,7 @@ before_script:
   - pip install tox poetry coveralls pyyaml tomli
 
 style:
-  image: python:3.10
+  image: python:3.11
   stage: test
   script: tox -e style
 
@@ -38,13 +38,18 @@ python310:
   stage: test
   script: tox -e py310
 
+python311:
+  image: python:3.11
+  stage: test
+  script: tox -e py311
+
 doc:
-  image: python:3.10
+  image: python:3.11
   stage: test
   script: tox -e doc
 
 coverage:
-  image: python:3.10
+  image: python:3.11
   stage: test
   allow_failure: true
   script:
