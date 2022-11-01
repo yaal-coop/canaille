@@ -19,6 +19,12 @@ Added
 
 - Python 3.11 support. :pr:`61`
 
+Changed
+*******
+
+- Replaced the use of the deprecated `FLASK_ENV` environment variable by
+  `FLASK_DEBUG`.
+
 [0.0.12] - 2022-10-24
 =====================
 

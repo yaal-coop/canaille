@@ -26,7 +26,7 @@ services:
       dockerfile: demo/Dockerfile-canaille
     environment:
       - AUTHLIB_INSECURE_TRANSPORT=1
-      - FLASK_ENV=development
+      - FLASK_DEBUG=1
       - CONFIG=/opt/canaille/conf/canaille.toml
       - FLASK_APP=canaille
     volumes:
@@ -42,7 +42,7 @@ services:
       context: .
       dockerfile: Dockerfile-client
     environment:
-      - FLASK_ENV=development
+      - FLASK_DEBUG=1
       - CONFIG=/opt/client/conf/client1.cfg
       - FLASK_APP=client
     volumes:
@@ -60,7 +60,7 @@ services:
       context: .
       dockerfile: Dockerfile-client
     environment:
-      - FLASK_ENV=development
+      - FLASK_DEBUG=1
       - CONFIG=/opt/client/conf/client2.cfg
       - FLASK_APP=client
     volumes:

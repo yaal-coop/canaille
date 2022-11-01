@@ -42,7 +42,7 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if os.environ.get("FLASK_ENV") == "development":
+    if app.debug:
         canaille.installation.setup_keypair(app.config)
 
     if validate:
