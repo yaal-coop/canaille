@@ -45,14 +45,14 @@ class LDAPObject:
         done = set()
 
         while len(this_object_classes) > 0:
-            oc = this_object_classes.pop()
-            done.add(oc)
-            for ocsup in oc.sup:
+            object_class = this_object_classes.pop()
+            done.add(object_class)
+            for ocsup in object_class.sup:
                 if ocsup not in done:
                     this_object_classes.add(all_object_classes[ocsup])
 
-            self.may.extend(oc.may)
-            self.must.extend(oc.must)
+            self.may.extend(object_class.may)
+            self.must.extend(object_class.must)
 
         self.may = list(set(self.may))
         self.must = list(set(self.must))
@@ -221,7 +221,7 @@ class LDAPObject:
 
     def reload(self, conn=None):
         conn = conn or self.ldap()
-        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE)
+        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.attrs = self.ldap_attrs_to_python(result[0][1])
 
@@ -316,7 +316,7 @@ class LDAPObject:
 
         ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{cls.base},{cls.root_dn}"
-        result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None)
+        result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"])
 
         return [cls(**cls.ldap_attrs_to_python(args)) for _, args in result]
 
