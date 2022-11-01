@@ -14,6 +14,11 @@ Fixed
 - Fixed a bug happening during RP initiated logout on clients without
   `post_logout_redirect_uri` defined.
 
+Added
+*****
+
+- Python 3.11 support. :pr:`61`
+
 [0.0.12] - 2022-10-24
 =====================
 
