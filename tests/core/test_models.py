@@ -44,10 +44,10 @@ def test_user_has_password(testclient, backend):
 
 
 def test_user_set_and_check_password(testclient, user, backend):
-    assert not user.check_password("something else")
-    assert user.check_password("correct horse battery staple")
+    assert not user.check_password("something else")[0]
+    assert user.check_password("correct horse battery staple")[0]
 
     user.set_password("something else")
 
-    assert user.check_password("something else")
-    assert not user.check_password("correct horse battery staple")
+    assert user.check_password("something else")[0]
+    assert not user.check_password("correct horse battery staple")[0]

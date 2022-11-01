@@ -2,6 +2,9 @@ import canaille.core.models
 import canaille.oidc.models
 import ldap.filter
 from flask import current_app
+from ldap.controls import DecodeControlTuples
+from ldap.controls.ppolicy import PasswordPolicyControl
+from ldap.controls.ppolicy import PasswordPolicyError
 
 from .backend import LDAPBackend
 from .ldapobject import LDAPObject
@@ -36,6 +39,7 @@ class User(canaille.core.models.User, LDAPObject):
         "organization": "o",
         "last_modified": "modifyTimestamp",
         "groups": "memberOf",
+        "lock_date": "pwdEndTime",
     }
 
     @classmethod
@@ -92,13 +96,36 @@ class User(canaille.core.models.User, LDAPObject):
             current_app.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
         )
 
+        message = None
         try:
-            conn.simple_bind_s(self.id, password)
-            return True
-        except ldap.INVALID_CREDENTIALS:
-            return False
+            res = conn.simple_bind_s(
+                self.id, password, serverctrls=[PasswordPolicyControl()]
+            )
+            controls = res[3]
+            result = True
+        except ldap.INVALID_CREDENTIALS as exc:
+            controls = DecodeControlTuples(exc.args[0]["ctrls"])
+            result = False
         finally:
             conn.unbind_s()
+
+        for control in controls:
+
+            def gettext(x):
+                return x
+
+            if (
+                control.controlType == PasswordPolicyControl.controlType
+                and control.error == PasswordPolicyError.namedValues["accountLocked"]
+            ):
+                message = gettext("Your account has been locked.")
+            elif (
+                control.controlType == PasswordPolicyControl.controlType
+                and control.error == PasswordPolicyError.namedValues["changeAfterReset"]
+            ):
+                message = gettext("You should change your password.")
+
+        return result, message
 
     def set_password(self, password):
         conn = LDAPBackend.get().connection

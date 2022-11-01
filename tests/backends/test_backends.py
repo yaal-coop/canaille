@@ -15,3 +15,6 @@ def test_required_methods(testclient):
 
     with pytest.raises(NotImplementedError):
         backend.teardown()
+
+    with pytest.raises(NotImplementedError):
+        backend.has_account_lockability()

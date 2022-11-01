@@ -2,7 +2,7 @@ from canaille.core.account import profile_hash
 
 
 def test_password_reset(testclient, user):
-    assert not user.check_password("foobarbaz")
+    assert not user.check_password("foobarbaz")[0]
     hash = profile_hash("user", user.email[0], user.password[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
@@ -13,7 +13,7 @@ def test_password_reset(testclient, user):
     assert ("success", "Your password has been updated successfuly") in res.flashes
 
     user.reload()
-    assert user.check_password("foobarbaz")
+    assert user.check_password("foobarbaz")[0]
 
     res = testclient.get("/reset/user/" + hash)
     assert (
@@ -39,7 +39,7 @@ def test_password_reset_bad_password(testclient, user):
     res.form["confirmation"] = "typo"
     res = res.form.submit(status=200)
 
-    assert user.check_password("correct horse battery staple")
+    assert user.check_password("correct horse battery staple")[0]
 
 
 def test_unavailable_if_no_smtp(testclient, user):

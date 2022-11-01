@@ -77,12 +77,16 @@ def authorize():
             return render_template("login.html", form=form, menu=False)
 
         user = models.User.get_from_login(form.login.data)
-        if (
-            not form.validate()
-            or not user
-            or not user.check_password(form.password.data)
-        ):
+        if not form.validate() or not user:
             flash(_("Login failed, please check your information"), "error")
+            return render_template("login.html", form=form, menu=False)
+
+        success, message = user.check_password(form.password.data)
+        if not success:
+            flash(
+                _(message or "Login failed, please check your information"),
+                "error",
+            )
             return render_template("login.html", form=form, menu=False)
 
         user.login()

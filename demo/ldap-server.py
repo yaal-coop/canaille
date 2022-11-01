@@ -10,11 +10,13 @@ schemas = [
         "cosine.ldif",
         "nis.ldif",
         "inetorgperson.ldif",
+        "ppolicy.ldif",
     ]
     if os.path.exists(os.path.join(slapd.Slapd.SCHEMADIR, schema))
 ] + [
     "ldif/memberof-config.ldif",
     "ldif/refint-config.ldif",
+    "ldif/ppolicy-config.ldif",
 ]
 
 slapd = slapd.Slapd(
@@ -47,6 +49,7 @@ try:
     )
 
     for ldif in (
+        "ldif/ppolicy.ldif",
         "ldif/bootstrap-users-tree.ldif",
         "ldif/bootstrap-oidc-tree.ldif",
     ):

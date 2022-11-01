@@ -41,7 +41,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     user = models.User.get_from_login("someone")
     foo_group.reload()
-    assert user.check_password("whatever")
+    assert user.check_password("whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -91,7 +91,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
     user = models.User.get_from_login("djorje")
     foo_group.reload()
-    assert user.check_password("whatever")
+    assert user.check_password("whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -133,7 +133,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     user = models.User.get_from_login("sometwo")
     foo_group.reload()
-    assert user.check_password("whatever")
+    assert user.check_password("whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:

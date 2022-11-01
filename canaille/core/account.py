@@ -115,13 +115,17 @@ def password():
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
-        if (
-            not form.validate()
-            or not user
-            or not user.check_password(form.password.data)
-        ):
+        if not form.validate() or not user:
             models.User.logout()
             flash(_("Login failed, please check your information"), "error")
+            return render_template(
+                "password.html", form=form, username=session["attempt_login"]
+            )
+
+        success, message = user.check_password(form.password.data)
+        if not success:
+            models.User.logout()
+            flash(message or _("Login failed, please check your information"), "error")
             return render_template(
                 "password.html", form=form, username=session["attempt_login"]
             )
@@ -547,6 +551,28 @@ def profile_settings(user, username):
 
         return profile_settings_edit(user, edited_user)
 
+    if (
+        request.form.get("action") == "lock"
+        and Backend.get().has_account_lockability()
+        and not edited_user.locked
+    ):
+        flash(_("The account has been locked"), "success")
+        edited_user.lock()
+        edited_user.save()
+
+        return profile_settings_edit(user, edited_user)
+
+    if (
+        request.form.get("action") == "unlock"
+        and Backend.get().has_account_lockability()
+        and edited_user.locked
+    ):
+        flash(_("The account has been unlocked"), "success")
+        edited_user.unlock()
+        edited_user.save()
+
+        return profile_settings_edit(user, edited_user)
+
     abort(400)
 
 
@@ -554,7 +580,7 @@ def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.read | editor.write
 
-    available_fields = {"password", "groups", "user_name"}
+    available_fields = {"password", "groups", "user_name", "lock_date"}
     data = {
         k: getattr(edited_user, k)[0]
         if getattr(edited_user, k) and isinstance(getattr(edited_user, k), list)
@@ -579,6 +605,13 @@ def profile_settings_edit(editor, edited_user):
             for attribute in form:
                 if attribute.name == "groups" and "groups" in editor.write:
                     edited_user.groups = attribute.data
+
+                elif (
+                    attribute.name == "lock_date"
+                    and Backend.get().has_account_lockability()
+                    and form[attribute.name].data
+                ):
+                    edited_user.lock(form[attribute.name].data)
 
             if (
                 "password1" in request.form

@@ -28,7 +28,7 @@ def test_user_creation_edition_and_deletion(
     foo_group.reload()
     assert "George" == george.given_name[0]
     assert george.groups == [foo_group]
-    assert george.check_password("totoyolo")
+    assert george.check_password("totoyolo")[0]
 
     res = testclient.get("/users", status=200)
     res.mustcontain("george")
@@ -47,7 +47,7 @@ def test_user_creation_edition_and_deletion(
 
     george = models.User.get_from_login("george")
     assert "Georgio" == george.given_name[0]
-    assert george.check_password("totoyolo")
+    assert george.check_password("totoyolo")[0]
 
     foo_group.reload()
     bar_group.reload()

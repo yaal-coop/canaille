@@ -1,3 +1,4 @@
+import datetime
 from unittest import mock
 
 from canaille.app import models
@@ -36,7 +37,7 @@ def test_edition(
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
 
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
     logged_user.user_name = ["user"]
     logged_user.save()
@@ -73,7 +74,7 @@ def test_edition_without_groups(
     logged_user.reload()
 
     assert logged_user.user_name == ["user"]
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
     logged_user.user_name = ["user"]
     logged_user.save()
@@ -88,7 +89,7 @@ def test_password_change(testclient, logged_user):
     res = res.form.submit(name="action", value="edit").follow()
 
     logged_user.reload()
-    assert logged_user.check_password("new_password")
+    assert logged_user.check_password("new_password")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
@@ -100,7 +101,7 @@ def test_password_change(testclient, logged_user):
     res = res.follow()
 
     logged_user.reload()
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
 
 def test_password_change_fail(testclient, logged_user):
@@ -112,7 +113,7 @@ def test_password_change_fail(testclient, logged_user):
     res = res.form.submit(name="action", value="edit", status=200)
 
     logged_user.reload()
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
@@ -122,7 +123,7 @@ def test_password_change_fail(testclient, logged_user):
     res = res.form.submit(name="action", value="edit", status=200)
 
     logged_user.reload()
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
 
 def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
@@ -302,3 +303,87 @@ def test_edition_permission(
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     testclient.get("/profile/user/settings", status=200)
+
+
+def test_account_locking(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings")
+    assert not user.lock_date
+    assert not user.locked
+    res.mustcontain("Lock the account")
+    res.mustcontain(no="Unlock")
+
+    res = res.form.submit(name="action", value="lock")
+    user = models.User.get(id=user.id)
+    assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
+    assert user.locked
+    res.mustcontain("The account has been locked")
+    res.mustcontain(no="Lock the account")
+    res.mustcontain("Unlock")
+
+    res = res.form.submit(name="action", value="unlock")
+    user = models.User.get(id=user.id)
+    assert not user.lock_date
+    assert not user.locked
+    assert "The account has been unlocked"
+    res.mustcontain("Lock the account")
+    res.mustcontain(no="Unlock")
+
+
+def test_lock_date(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings", status=200)
+    assert not user.lock_date
+    assert not user.locked
+
+    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+        second=0, microsecond=0
+    ) + datetime.timedelta(days=30)
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
+    res = res.form.submit(name="action", value="edit").follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert not user.locked
+    assert res.form["lock_date"].value == expiration_datetime.strftime("%Y-%m-%d %H:%M")
+
+    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+        second=0, microsecond=0
+    ) - datetime.timedelta(days=30)
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
+    res = res.form.submit(name="action", value="edit").follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert user.locked
+
+    res = res.form.submit(name="action", value="unlock")
+    user = models.User.get(id=user.id)
+    assert not user.lock_date
+    assert not user.locked
+
+
+def test_account_limit_values(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings", status=200)
+    assert not user.lock_date
+    assert not user.locked
+
+    expiration_datetime = datetime.datetime.max.replace(
+        microsecond=0, tzinfo=datetime.timezone.utc
+    )
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    res = res.form.submit(name="action", value="edit").follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert not user.locked
