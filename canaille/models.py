@@ -148,7 +148,7 @@ class User(LDAPObject):
     def can_read(self, field):
         return field in self.read | self.write
 
-    def can_writec(self, field):
+    def can_write(self, field):
         return field in self.write
 
     @property
