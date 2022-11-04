@@ -48,7 +48,7 @@ author = "Yaal Coop"
 
 release = metadata.version("canaille")
 version = "%s.%s" % tuple(map(int, release.split(".")[:2]))
-language = None
+language = "en"
 exclude_patterns = []
 pygments_style = "sphinx"
 todo_include_todos = False
