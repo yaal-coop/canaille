@@ -32,8 +32,8 @@ Choose a path where to store your configuration file. You can pass any configura
 
     export CANAILLE_CONF_DIR=/etc/canaille
     sudo mkdir --parents "$CANAILLE_CONF_DIR"
-    sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/conf/config.sample.toml" "$CANAILLE_CONF_DIR/config.toml"
-    sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/conf/openid-configuration.sample.json" "$CANAILLE_CONF_DIR/openid-configuration.json"
+    sudo cp $CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/conf/config.sample.toml "$CANAILLE_CONF_DIR/config.toml"
+    sudo cp $CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/conf/openid-configuration.sample.json "$CANAILLE_CONF_DIR/openid-configuration.json"
 
 You should then edit your configuration file to adapt the values to your needs.
 
