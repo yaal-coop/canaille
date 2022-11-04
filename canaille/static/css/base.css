@@ -32,8 +32,13 @@ body {
     padding: 1em;
 }
 
+.logo {
+    margin: auto;
+    display: block;
+}
+
 .logo img{
-    max-width: 50px;
+    width: 50px;
     max-height: 50px;
 }
 
