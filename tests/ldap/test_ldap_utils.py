@@ -23,7 +23,7 @@ def test_dn_when_leading_space_in_id_attribute(slapd_connection):
 
     assert ldap.dn.is_dn(user.dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(user.dn)) == user.dn
-    assert user.dn == "cn=Doe,ou=users,dc=slapd-test,dc=python-ldap,dc=org"
+    assert user.dn == "cn=Doe,ou=users,dc=mydomain,dc=tld"
 
     user.delete()
 
@@ -41,6 +41,6 @@ def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
 
     assert ldap.dn.is_dn(user.dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(user.dn)) == user.dn
-    assert user.dn == "cn=\\#Doe,ou=users,dc=slapd-test,dc=python-ldap,dc=org"
+    assert user.dn == "cn=\\#Doe,ou=users,dc=mydomain,dc=tld"
 
     user.delete()

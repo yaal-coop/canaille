@@ -30,8 +30,8 @@ def test_edition(
 ):
     res = testclient.get("/profile/user", status=200)
     assert set(res.form["groups"].options) == {
-        ("cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", True, "foo"),
-        ("cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org", False, "bar"),
+        ("cn=foo,ou=groups,dc=mydomain,dc=tld", True, "foo"),
+        ("cn=bar,ou=groups,dc=mydomain,dc=tld", False, "bar"),
     }
     assert logged_user.groups == [foo_group]
     assert foo_group.member == [logged_user.dn]
@@ -47,8 +47,8 @@ def test_edition(
     res.form["postalAddress"] = "postal_address"
     res.form["employeeNumber"] = 666
     res.form["groups"] = [
-        "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
-        "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+        "cn=foo,ou=groups,dc=mydomain,dc=tld",
+        "cn=bar,ou=groups,dc=mydomain,dc=tld",
     ]
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res = res.form.submit(name="action", value="edit", status=200)
@@ -246,7 +246,7 @@ def test_user_creation_edition_and_deletion(
     res.form["sn"] = "Abitbol"
     res.form["mail"] = "george@abitbol.com"
     res.form["telephoneNumber"] = "555-666-888"
-    res.form["groups"] = ["cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org"]
+    res.form["groups"] = ["cn=foo,ou=groups,dc=mydomain,dc=tld"]
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
 
@@ -264,8 +264,8 @@ def test_user_creation_edition_and_deletion(
 
     res.form["givenName"] = "Georgio"
     res.form["groups"] = [
-        "cn=foo,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
-        "cn=bar,ou=groups,dc=slapd-test,dc=python-ldap,dc=org",
+        "cn=foo,ou=groups,dc=mydomain,dc=tld",
+        "cn=bar,ou=groups,dc=mydomain,dc=tld",
     ]
 
     # User have been edited

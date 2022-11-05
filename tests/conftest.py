@@ -20,13 +20,14 @@ from werkzeug.security import gen_salt
 class CustomSlapdObject(slapd.Slapd):
     def __init__(self):
         super().__init__(
+            suffix="dc=mydomain,dc=tld",
             schemas=(
                 "core.ldif",
                 "cosine.ldif",
                 "nis.ldif",
                 "inetorgperson.ldif",
                 "canaille/ldap_backend/schemas/oauth2-openldap.ldif",
-            )
+            ),
         )
 
     def _ln_schema_files(self, *args, **kwargs):

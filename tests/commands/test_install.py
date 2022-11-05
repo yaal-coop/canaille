@@ -85,13 +85,13 @@ def slapd_server_without_schemas():
 
 def test_setup_ldap_tree(slapd_server, configuration):
     output = slapd_server.slapcat().stdout.decode("utf-8")
-    assert "dn: ou=tokens,ou=oauth,dc=slapd-test,dc=python-ldap,dc=org" not in output
+    assert "dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld" not in output
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
     runner.invoke(cli, ["install"])
 
     output = slapd_server.slapcat().stdout.decode("utf-8")
-    assert "dn: ou=tokens,ou=oauth,dc=slapd-test,dc=python-ldap,dc=org" in output
+    assert "dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld" in output
 
 
 def test_install_keypair(configuration, tmpdir):
