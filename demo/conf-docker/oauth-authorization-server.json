@@ -27,5 +27,7 @@
   "service_documentation":
     "http://localhost:5000/documentation.html",
   "ui_locales_supported":
-    ["en-US", "en-GB", "en-CA", "fr-FR", "fr-CA"]
+    ["en-US", "en-GB", "en-CA", "fr-FR", "fr-CA"],
+  "code_challenge_methods_supported":
+    ["plain", "S256"]
 }
