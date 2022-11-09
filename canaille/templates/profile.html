@@ -184,7 +184,7 @@
 
                 {% elif not edited_user.has_password() %}
 
-                    <div class="ui message warning">
+                    <div class="ui message warning visible">
                         {% if has_smtp and edited_user.can_edit_self %}
                             {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
                                 <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
