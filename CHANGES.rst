@@ -20,6 +20,7 @@ Added
 *****
 
 - Python 3.11 support. :pr:`61`
+- apparmor slapd configuration instructions in CONTRIBUTING.rst :pr:`66`
 
 Changed
 *******
