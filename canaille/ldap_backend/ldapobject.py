@@ -170,7 +170,10 @@ class LDAPObject:
 
     @staticmethod
     def ldap_to_python(name, value):
-        syntax = LDAPObject.ldap_object_attributes()[name].syntax
+        try:
+            syntax = LDAPObject.ldap_object_attributes()[name].syntax
+        except KeyError:
+            return value
 
         if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
             value = value.decode("utf-8")
@@ -189,7 +192,10 @@ class LDAPObject:
 
     @staticmethod
     def python_to_ldap(name, value):
-        syntax = LDAPObject.ldap_object_attributes()[name].syntax
+        try:
+            syntax = LDAPObject.ldap_object_attributes()[name].syntax
+        except KeyError:
+            return value
 
         if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
             return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")

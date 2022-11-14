@@ -13,6 +13,7 @@ Fixed
   the LDAP schema update of 0.0.12
 - Fixed a bug happening during RP initiated logout on clients without
   `post_logout_redirect_uri` defined.
+- Gitlab CI fix. :pr:`64`
 
 Added
 *****
