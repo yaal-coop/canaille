@@ -60,6 +60,16 @@ def default_fields():
     return read, write
 
 
+def get_current_domain():
+    if current_app.config["SMTP"].get("FROM_ADDR"):
+        return current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
+
+    elif current_app.config.get("SERVER_NAME"):
+        return current_app.config.get("SERVER_NAME")
+
+    return request.host
+
+
 def logo():
     logo_url = current_app.config.get("LOGO")
     if not logo_url:
@@ -83,12 +93,11 @@ def logo():
         logo_filename = None
         logo_raw = None
 
-    domain = current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
-    logo_cid = make_msgid(domain=domain)
+    logo_cid = make_msgid(domain=get_current_domain())
     return logo_cid, logo_filename, logo_raw
 
 
-def send_email(subject, recipient, text, html, sender=None, attachements=None):
+def send_email(subject, recipient, text, html, attachements=None):
     msg = email.message.EmailMessage()
     msg.set_content(text)
     msg.add_alternative(html, subtype="html")
@@ -96,15 +105,14 @@ def send_email(subject, recipient, text, html, sender=None, attachements=None):
     msg["Subject"] = subject
     msg["To"] = f"<{recipient}>"
 
-    if sender:
-        msg["From"] = sender
-    elif current_app.config.get("NAME", "Canaille"):
-        msg["From"] = '"{}" <{}>'.format(
-            current_app.config.get("NAME", "Canaille"),
-            current_app.config["SMTP"]["FROM_ADDR"],
-        )
-    else:
-        msg["From"] = current_app.config["SMTP"]["FROM_ADDR"]
+    name = current_app.config.get("NAME", "Canaille")
+    address = current_app.config["SMTP"].get("FROM_ADDR")
+
+    if not address:
+        domain = get_current_domain()
+        address = f"admin@{domain}"
+
+    msg["From"] = f'"{name}" <{address}>'
 
     attachements = attachements or []
     for cid, filename, value in attachements:

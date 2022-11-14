@@ -147,6 +147,7 @@ def configuration(slapd_server, smtpd, keypair_path):
     conf = {
         "SECRET_KEY": gen_salt(24),
         "LOGGING": {},
+        "LOGO": "/static/img/canaille-head.png",
         "LDAP": {
             "ROOT_DN": slapd_server.suffix,
             "URI": slapd_server.ldap_uri,
