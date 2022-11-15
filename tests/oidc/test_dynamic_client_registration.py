@@ -18,6 +18,8 @@ def test_client_registration_with_authentication_static_token(
         "token_endpoint_auth_method": "client_secret_basic",
         "logo_uri": "https://client.example.org/logo.png",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
     }
     headers = {"Authorization": "Bearer static-token"}
 
@@ -37,6 +39,8 @@ def test_client_registration_with_authentication_static_token(
             "https://client.example.org/callback2",
         ],
         "token_endpoint_auth_method": "client_secret_basic",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
     }
 
     assert client.client_name == "My Example Client"
@@ -64,6 +68,8 @@ def test_client_registration_with_authentication_no_token(
         "token_endpoint_auth_method": "client_secret_basic",
         "logo_uri": "https://client.example.org/logo.png",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
     }
 
     res = testclient.post_json("/oauth/register", payload, status=400)
@@ -94,6 +100,8 @@ def test_client_registration_with_authentication_invalid_token(
         "token_endpoint_auth_method": "client_secret_basic",
         "logo_uri": "https://client.example.org/logo.png",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
     }
     headers = {"Authorization": f"Bearer invalid-token"}
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
