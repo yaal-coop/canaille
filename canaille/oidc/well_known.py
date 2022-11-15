@@ -5,22 +5,88 @@ from flask import current_app
 from flask import g
 from flask import jsonify
 from flask import request
+from flask import url_for
 
 
 bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
 
 def cached_oauth_authorization_server():
-    if "oauth_authorization_server" not in g:
-        with open(current_app.config["OAUTH2_METADATA_FILE"]) as fd:
-            g.oauth_authorization_server = json.load(fd)
+    if "oauth_authorization_server" in g:
+        return g.oauth_authorization_server
+
+    issuer = current_app.config["JWT"]["ISS"]
+    g.oauth_authorization_server = {
+        "issuer": issuer,
+        "authorization_endpoint": url_for("oidc.endpoints.authorize", _external=True),
+        "token_endpoint": url_for("oidc.endpoints.issue_token", _external=True),
+        "token_endpoint_auth_methods_supported": [
+            "client_secret_basic",
+            "private_key_jwt",
+            "client_secret_post",
+            "none",
+        ],
+        "token_endpoint_auth_signing_alg_values_supported": ["RS256", "ES256"],
+        "userinfo_endpoint": url_for("oidc.endpoints.userinfo", _external=True),
+        "introspection_endpoint": url_for(
+            "oidc.endpoints.introspect_token", _external=True
+        ),
+        "jwks_uri": url_for("oidc.endpoints.jwks", _external=True),
+        "registration_endpoint": url_for(
+            "oidc.endpoints.client_registration", _external=True
+        ),
+        "scopes_supported": [
+            "openid",
+            "profile",
+            "email",
+            "address",
+            "phone",
+            "groups",
+        ],
+        "response_types_supported": [
+            "code",
+            "token",
+            "id_token",
+            "code token",
+            "code id_token",
+            "token id_token",
+        ],
+        "ui_locales_supported": ["en-US", "fr-FR"],
+        "code_challenge_methods_supported": ["plain", "S256"],
+    }
+
     return g.oauth_authorization_server
 
 
 def cached_openid_configuration():
-    if "openid_configuration" not in g:
-        with open(current_app.config["OIDC_METADATA_FILE"]) as fd:
-            g.openid_configuration = json.load(fd)
+    if "openid_configuration" in g:
+        return g.openid_configuration
+
+    g.openid_configuration = {
+        **cached_oauth_authorization_server(),
+        "end_session_endpoint": url_for("oidc.endpoints.end_session", _external=True),
+        "claims_supported": [
+            "sub",
+            "iss",
+            "auth_time",
+            "acr",
+            "name",
+            "given_name",
+            "family_name",
+            "nickname",
+            "profile",
+            "picture",
+            "website",
+            "email",
+            "email_verified",
+            "locale",
+            "zoneinfo",
+            "groups",
+        ],
+        "subject_types_supported": ["pairwise", "public"],
+        "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
+    }
+
     return g.openid_configuration
 
 

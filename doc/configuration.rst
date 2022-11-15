@@ -34,14 +34,6 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 :LANGUAGE:
     *Optional.* The locale code of the language to use. If not set, the language of the browser will be used.
 
-:OAUTH2_METADATA_FILE:
-    *Optional.* The path to the OAUTH2 metadata file.
-    If not set the file will be looked for in the same directory as the configuration file.
-
-:OIDC_METADATA_FILE:
-    *Optional.* The path to the OpenID Connect metadata file.
-    If not set the file will be looked for in the same directory as the configuration file.
-
 :SENTRY_DSN:
     *Optional.* A DSN to a sentry instance.
     This needs the ``sentry_sdk`` python package to be installed.
