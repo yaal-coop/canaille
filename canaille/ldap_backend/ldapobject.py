@@ -1,8 +1,18 @@
 import datetime
+from enum import Enum
 
 import ldap.dn
 import ldap.filter
 from flask import g
+
+LDAP_NULL_DATE = "000001010000Z"
+
+
+class Syntax(str, Enum):
+    GENERALIZED_TIME = "1.3.6.1.4.1.1466.115.121.1.24"
+    INTEGER = "1.3.6.1.4.1.1466.115.121.1.27"
+    JPEG = "1.3.6.1.4.1.1466.115.121.1.28"
+    BOOLEAN = "1.3.6.1.4.1.1466.115.121.1.7"
 
 
 class LDAPObject:
@@ -175,17 +185,25 @@ class LDAPObject:
         except KeyError:
             return value
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
+        if syntax == Syntax.GENERALIZED_TIME:
             value = value.decode("utf-8")
-            return datetime.datetime.strptime(value, "%Y%m%d%H%M%SZ") if value else None
+            if value == LDAP_NULL_DATE:
+                # python cannot represent datetimes with year 0
+                return datetime.datetime.min
+            else:
+                return (
+                    datetime.datetime.strptime(value, "%Y%m%d%H%M%SZ")
+                    if value
+                    else None
+                )
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
+        if syntax == Syntax.INTEGER:
             return int(value.decode("utf-8"))
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.28":  # JPEG
+        if syntax == Syntax.JPEG:
             return value
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
+        if syntax == Syntax.BOOLEAN:
             return value.decode("utf-8").upper() == "TRUE"
 
         return value.decode("utf-8")
@@ -197,16 +215,19 @@ class LDAPObject:
         except KeyError:
             return value
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.24":  # Generalized Time
-            return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")
+        if syntax == Syntax.GENERALIZED_TIME and isinstance(value, datetime.datetime):
+            if value == datetime.datetime.min:
+                return LDAP_NULL_DATE.encode("utf-8")
+            else:
+                return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.27":  # Integer
+        if syntax == Syntax.INTEGER and isinstance(value, int):
             return str(value).encode("utf-8")
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.28":  # JPEG
+        if syntax == Syntax.JPEG:
             return value
 
-        if syntax == "1.3.6.1.4.1.1466.115.121.1.7":  # Boolean
+        if syntax == Syntax.BOOLEAN and isinstance(value, bool):
             return ("TRUE" if value else "FALSE").encode("utf-8")
 
         return value.encode("utf-8")
@@ -243,7 +264,7 @@ class LDAPObject:
             deletions = [
                 name
                 for name, value in self.changes.items()
-                if value is None and name in self.attrs
+                if (value is None or value == [None]) and name in self.attrs
             ]
             changes = {
                 name: value
@@ -333,20 +354,18 @@ class LDAPObject:
             else name
         )
 
-        if (not self.may or attribute_name not in self.may) and (
-            not self.must or attribute_name not in self.must
-        ):
-            return super().__getattribute__(attribute_name)
+        if attribute_name in self.ldap_object_attributes():
+            if (
+                not self.ldap_object_attributes()
+                or not self.ldap_object_attributes()[attribute_name].single_value
+            ):
+                return self.changes.get(name, self.attrs.get(attribute_name, []))
+            else:
+                return self.changes.get(
+                    attribute_name, self.attrs.get(attribute_name, [None])
+                )[0]
 
-        if (
-            not self.ldap_object_attributes()
-            or not self.ldap_object_attributes()[attribute_name].single_value
-        ):
-            return self.changes.get(name, self.attrs.get(attribute_name, []))
-
-        return self.changes.get(attribute_name, self.attrs.get(attribute_name, [None]))[
-            0
-        ]
+        return super().__getattribute__(attribute_name)
 
     def __setattr__(self, name, value):
         attribute_name = (
@@ -357,9 +376,7 @@ class LDAPObject:
 
         super().__setattr__(attribute_name, value)
 
-        if (self.may and attribute_name in self.may) or (
-            self.must and attribute_name in self.must
-        ):
+        if attribute_name in self.ldap_object_attributes():
             if self.ldap_object_attributes()[attribute_name].single_value:
                 self.changes[attribute_name] = [value]
             else:
