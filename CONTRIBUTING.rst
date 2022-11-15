@@ -3,19 +3,21 @@ Contribute
 
 Contributions are welcome!
 
-Unit tests
-----------
-
-To run the tests, you just need to run `tox`. Everything must be green before patches get merged.
-
 .. warning ::
 
-    On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor, and thus makes the test fail. This can be mitigated by removing apparmor restrictions on `slapd`.
+    On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor,
+    and thus makes the tests and the demo fail. This can be mitigated by removing apparmor restrictions
+    on `slapd`.
 
     .. code-block:: console
 
         sudo apt install --yes apparmor-utils
         sudo aa-complain /usr/sbin/slapd
+
+Unit tests
+----------
+
+To run the tests, you just need to run `tox`. Everything must be green before patches get merged.
 
 Style
 -----
@@ -52,6 +54,6 @@ The documentation is generated when the tests run:
 
 .. code-block:: console
 
-    tox
+    tox -e doc
 
 The generated documentation is in `./build/sphinx/html/` directory.
