@@ -15,6 +15,7 @@ Fixed
   `post_logout_redirect_uri` defined.
 - Gitlab CI fix. :pr:`64`
 - Fixed `client_secret` display on the client administration page. :pr:`65`
+- Fixed non-square logo CSS. :pr:`67`
 
 Added
 *****
