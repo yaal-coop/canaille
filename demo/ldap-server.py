@@ -15,7 +15,7 @@ slapd = slapd.Slapd(
         "nis.ldif",
         "inetorgperson.ldif",
         "../canaille/ldap_backend/schemas/oauth2-openldap.ldif",
-        "ldif/memberof.ldif",
+        "ldif/memberof-config.ldif",
     ),
 )
 slapd.start()
@@ -39,17 +39,15 @@ try:
         + "\n"
     )
 
-    with open("ldif/bootstrap-tree.ldif") as fd:
-        try:
-            slapd.ldapadd(fd.read())
-        except RuntimeError:
-            pass
-
-    with open("ldif/bootstrap-data.ldif") as fd:
-        try:
-            slapd.ldapadd(fd.read())
-        except RuntimeError:
-            pass
+    for ldif in (
+        "ldif/bootstrap-tree.ldif",
+        "ldif/bootstrap-data.ldif",
+    ):
+        with open(ldif) as fd:
+            try:
+                slapd.ldapadd(fd.read())
+            except RuntimeError:
+                pass
 
     slapd.wait()
 finally:

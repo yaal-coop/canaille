@@ -23,7 +23,7 @@
 
 {% block content %}
     {% if self_deletion or (user.can_manage_users and edited_user) %}
-        <div class="ui basic modal">
+        <div id="modal-delete" class="ui basic modal">
             <div class="ui icon header">
                 <i class="user minus icon"></i>
                 {% trans %}Account deletion{% endtrans %}
