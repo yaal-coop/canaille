@@ -1,5 +1,7 @@
 from unittest import mock
 
+from authlib.jose import JsonWebSignature
+from authlib.jose import jwt
 from canaille.oidc.models import Client
 
 
@@ -111,26 +113,35 @@ def test_client_registration_with_authentication_invalid_token(
     }
 
 
-def test_client_registration_with_software_statement(testclient, slapd_connection):
+def test_client_registration_with_software_statement(
+    testclient, slapd_connection, keypair_path
+):
+    private_key_path, _ = keypair_path
     testclient.app.config["OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    software_statement_payload = {
+        "software_id": "4NRB1-0XZABZI9E6-5SM3R",
+        "client_name": "Example Statement-based Client",
+        "client_uri": "https://client.example.net/",
+        "response_types": ["code"],
+        "grant_types": ["authorization_code"],
+    }
+    software_statement_header = {"alg": "RS256"}
+    with open(private_key_path) as fd:
+        private_key = fd.read()
+    software_statement = jwt.encode(
+        software_statement_header, software_statement_payload, private_key
+    ).decode()
 
     payload = {
         "redirect_uris": [
             "https://client.example.org/callback",
             "https://client.example.org/callback2",
         ],
-        "software_statement": "eyJhbGciOiJSUzI1NiJ9."
-        "eyJzb2Z0d2FyZV9pZCI6IjROUkIxLTBYWkFCWkk5RTYtNVNNM1IiLCJjbGll"
-        "bnRfbmFtZSI6IkV4YW1wbGUgU3RhdGVtZW50LWJhc2VkIENsaWVudCIsImNs"
-        "aWVudF91cmkiOiJodHRwczovL2NsaWVudC5leGFtcGxlLm5ldC8ifQ."
-        "GHfL4QNIrQwL18BSRdE595T9jbzqa06R9BT8w409x9oIcKaZo_mt15riEXHa"
-        "zdISUvDIZhtiyNrSHQ8K4TvqWxH6uJgcmoodZdPwmWRIEYbQDLqPNxREtYn0"
-        "5X3AR7ia4FRjQ2ojZjk5fJqJdQ-JcfxyhK-P8BAWBd6I2LLA77IG32xtbhxY"
-        "fHX7VhuU5ProJO8uvu3Ayv4XRhLZJY4yKfmyjiiKiPNe-Ia4SMy_d_QSWxsk"
-        "U5XIQl5Sa2YRPMbDRXttm2TfnZM1xx70DoYi8g6czz-CPGRi4SW_S2RKHIJf"
-        "IjoI3zTJ0Y2oe0_EJAiXbL6OyF9S5tKxDXV8JIndSA",
-        "scope": "read write",
+        "software_statement": software_statement,
+        "scope": ["openid", "profile"],
     }
+    print(payload["software_statement"])
     res = testclient.post_json("/oauth/register", payload, status=201)
 
     client = Client.get(res.json["client_id"])
@@ -143,8 +154,13 @@ def test_client_registration_with_software_statement(testclient, slapd_connectio
             "https://client.example.org/callback",
             "https://client.example.org/callback2",
         ],
-        "scope": "read write",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+        "scope": ["openid", "profile"],
         "token_endpoint_auth_method": "client_secret_basic",
+        "client_name": "Example Statement-based Client",
+        "client_uri": "https://client.example.net/",
+        "software_id": "4NRB1-0XZABZI9E6-5SM3R",
     }
     assert client.redirect_uris == [
         "https://client.example.org/callback",

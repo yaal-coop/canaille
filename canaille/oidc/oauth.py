@@ -309,6 +309,8 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
 
 class ClientRegistrationEndpoint(_ClientRegistrationEndpoint):
+    software_statement_alg_values_supported = ["RS256"]
+
     def authenticate_token(self, request):
         if current_app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN", False):
             return True
@@ -338,6 +340,12 @@ class ClientRegistrationEndpoint(_ClientRegistrationEndpoint):
 
         result = cached_openid_configuration()
         return result
+
+    def resolve_public_key(self, request):
+        # At the moment the only keypair accepted in software statement
+        # is the one used to isues JWTs. This might change somedays.
+        with open(current_app.config["JWT"]["PUBLIC_KEY"], "rb") as fd:
+            return fd.read()
 
 
 class CodeChallenge(_CodeChallenge):
