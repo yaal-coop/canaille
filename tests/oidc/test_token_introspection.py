@@ -24,7 +24,7 @@ def test_token_introspection(testclient, user, client, token):
         "scope": token.get_scope(),
         "sub": user.uid[0],
         "aud": [client.client_id],
-        "iss": "https://mydomain.tld",
+        "iss": "https://auth.mydomain.tld",
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
     } == res.json
@@ -93,7 +93,7 @@ def test_full_flow(testclient, logged_user, client, user, other_client):
         "username": user.name,
         "scope": token.get_scope(),
         "sub": user.uid[0],
-        "iss": "https://mydomain.tld",
+        "iss": "https://auth.mydomain.tld",
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
     } == res.json

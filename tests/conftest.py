@@ -198,7 +198,7 @@ def configuration(slapd_server, smtpd, keypair_path):
         "JWT": {
             "PUBLIC_KEY": public_key_path,
             "PRIVATE_KEY": private_key_path,
-            "ISS": "https://mydomain.tld",
+            "ISS": "https://auth.mydomain.tld",
             "MAPPING": {
                 "SUB": "{{ user.uid[0] }}",
                 "NAME": "{{ user.cn[0] }}",
