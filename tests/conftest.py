@@ -27,6 +27,7 @@ class CustomSlapdObject(slapd.Slapd):
                 "nis.ldif",
                 "inetorgperson.ldif",
                 "canaille/ldap_backend/schemas/oauth2-openldap.ldif",
+                "demo/ldif/memberof-config.ldif",
             ),
         )
 
@@ -80,7 +81,7 @@ def keypair_path(keypair, tmp_path):
 
 
 @pytest.fixture(scope="session")
-def slapd_server():
+def raw_slapd_server():
     slapd = CustomSlapdObject()
     try:
         slapd.start()
@@ -110,15 +111,23 @@ def slapd_server():
             + "\n"
         )
 
-        LDAPObject.root_dn = slapd.suffix
-        User.base = "ou=users"
-        User.object_class = ["inetOrgPerson"]
-        Group.base = "ou=groups"
-        Group.object_class = ["groupOfNames"]
-
         yield slapd
     finally:
         slapd.stop()
+
+
+@pytest.fixture(scope="session")
+def slapd_server(raw_slapd_server):
+    for ldif in ("demo/ldif/bootstrap-tree.ldif",):
+        with open(ldif) as fd:
+            raw_slapd_server.ldapadd(fd.read())
+
+    LDAPObject.root_dn = raw_slapd_server.suffix
+    User.base = "ou=users"
+    User.object_class = ["inetOrgPerson"]
+    Group.base = "ou=groups"
+    Group.object_class = ["groupOfNames"]
+    yield raw_slapd_server
 
 
 @pytest.fixture
