@@ -16,7 +16,7 @@ Get the code
 As the moment there is no distribution package for canaille. However, it can be installed with the ``pip`` package manager.
 Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
 
-.. code-block:: console
+.. code-block:: bash
 
     export CANAILLE_INSTALL_DIR=/opt/canaille
     sudo mkdir --parents "$CANAILLE_INSTALL_DIR"
@@ -28,7 +28,7 @@ Configuration
 
 Choose a path where to store your configuration file. You can pass any configuration path with the ``CONFIG`` environment variable.
 
-.. code-block:: console
+.. code-block:: bash
 
     export CANAILLE_CONF_DIR=/etc/canaille
     sudo mkdir --parents "$CANAILLE_CONF_DIR"
@@ -46,7 +46,7 @@ Automatic installation
 A few steps of the installation process can be automatized.
 If you want to install the LDAP schemas or generate the keypair yourself, then you can jump to the manual installation section.
 
-.. code-block:: console
+.. code-block:: bash
 
     env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" install
 
@@ -67,7 +67,7 @@ Depending on the configuration method you use with your OpenLDAP installation, y
 Old fashion: Copy the schemas in your filesystem
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. code-block:: console
+.. code-block:: bash
 
     test -d /etc/openldap/schema && sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/ldap_backend/schemas/*" /etc/openldap/schema
     test -d /etc/ldap/schema && sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/ldap_backend/schemas/*" /etc/ldap/schema
@@ -78,7 +78,7 @@ New fashion: Use slapadd to add the schemas
 
 Be careful to stop your ldap server before running ``slapadd``
 
-.. code-block:: console
+.. code-block:: bash
 
     sudo service slapd stop
     sudo -u openldap slapadd -n0 -l "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/ldap_backend/schemas/*.ldif"
@@ -90,7 +90,7 @@ Generate the key pair
 You must generate a keypair that canaille will use to sign tokens.
 You can customize those commands, as long as they match the ``JWT`` section of your configuration file.
 
-.. code-block:: console
+.. code-block:: bash
 
     sudo openssl genrsa -out "$CANAILLE_CONF_DIR/private.pem" 4096
     sudo openssl rsa -in "$CANAILLE_CONF_DIR/private.pem" -pubout -outform PEM -out "$CANAILLE_CONF_DIR/public.pem"
@@ -100,7 +100,7 @@ Configuration check
 
 After a manual installation, you can check your configuration file with the following command:
 
-.. code-block:: console
+.. code-block:: bash
 
     env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" check
 
@@ -110,29 +110,34 @@ Application service
 Finally you have to run canaille in a WSGI application server.
 Here are some WSGI server configuration examples you can pick. Do not forget to update the paths.
 
+gunicorn
+--------
+
+TBD
+
 uwsgi
 -----
 
-.. code-block:: console
+.. code-block:: ini
 
    [uwsgi]
-    virtualenv=/opt/canaille/env
-    socket=/etc/canaille/uwsgi.sock
-    plugin=python3
-    module=canaille:create_app()
-    lazy-apps=true
-    master=true
-    processes=1
-    threads=10
-    need-app=true
-    thunder-lock=true
-    touch-chain-reload=/etc/canaille/uwsgi-reload.fifo
-    enable-threads=true
-    reload-on-rss=1024
-    worker-reload-mercy=600
-    buffer-size=65535
-    disable-write-exception = true
-    env = CONFIG=/etc/canaille/config.toml
+   virtualenv=/opt/canaille/env
+   socket=/etc/canaille/uwsgi.sock
+   plugin=python3
+   module=canaille:create_app()
+   lazy-apps=true
+   master=true
+   processes=1
+   threads=10
+   need-app=true
+   thunder-lock=true
+   touch-chain-reload=/etc/canaille/uwsgi-reload.fifo
+   enable-threads=true
+   reload-on-rss=1024
+   worker-reload-mercy=600
+   buffer-size=65535
+   disable-write-exception = true
+   env = CONFIG=/etc/canaille/config.toml
 
 Webserver
 =========
@@ -143,7 +148,7 @@ Here are some webserver configuration examples you can pick:
 Nginx
 -----
 
-.. code-block:: console
+.. code-block:: nginx
 
     server {
         listen 80;
@@ -206,13 +211,18 @@ Nginx
         }
     }
 
+Apache
+------
+
+TBD
+
 Recurrent jobs
 ==============
 
 You might want to clean up your database to avoid it growing too much. You can regularly delete
 expired tokens and authorization codes with:
 
-.. code-block:: console
+.. code-block:: bash
 
     env CONFIG="$CANAILLE_CONF_DIR/config.toml" FLASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
 
@@ -227,7 +237,7 @@ The difficulty here is that the WebFinger endpoint must be hosted at the top-lev
 Nginx
 -----
 
-.. code-block:: console
+.. code-block:: nginx
 
     server {
         listen 443;
@@ -238,7 +248,7 @@ Nginx
 Apache
 ------
 
-.. code-block:: console
+.. code-block:: apache
 
     <VirtualHost *:443>
         ServerName mydomain.tld
