@@ -16,6 +16,7 @@ Fixed
 - Gitlab CI fix. :pr:`64`
 - Fixed `client_secret` display on the client administration page. :pr:`65`
 - Fixed non-square logo CSS. :pr:`67`
+- Fixed schema path on installation. :pr:`68`
 
 Added
 *****
