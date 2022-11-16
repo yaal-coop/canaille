@@ -18,6 +18,7 @@ Fixed
 - Fixed non-square logo CSS. :pr:`67`
 - Fixed schema path on installation. :pr:`68`
 - Fixed RFC7591 ``software_statement`` claim support. :pr:`70`
+- Fixed client preconsent disabling. :pr:`72`
 
 Added
 *****

@@ -9,10 +9,19 @@ LDAP_NULL_DATE = "000001010000Z"
 
 
 class Syntax(str, Enum):
+    # fmt: off
+    BOOLEAN =          "1.3.6.1.4.1.1466.115.121.1.7"
+    DIRECTORY_STRING = "1.3.6.1.4.1.1466.115.121.1.15"
     GENERALIZED_TIME = "1.3.6.1.4.1.1466.115.121.1.24"
-    INTEGER = "1.3.6.1.4.1.1466.115.121.1.27"
-    JPEG = "1.3.6.1.4.1.1466.115.121.1.28"
-    BOOLEAN = "1.3.6.1.4.1.1466.115.121.1.7"
+    IA5_STRING =       "1.3.6.1.4.1.1466.115.121.1.26"
+    INTEGER =          "1.3.6.1.4.1.1466.115.121.1.27"
+    JPEG =             "1.3.6.1.4.1.1466.115.121.1.28"
+    NUMERIC_STRING =   "1.3.6.1.4.1.1466.115.121.1.36"
+    OCTET_STRING =     "1.3.6.1.4.1.1466.115.121.1.40"
+    POSTAL_ADDRESS =   "1.3.6.1.4.1.1466.115.121.1.41"
+    PRINTABLE_STRING = "1.3.6.1.4.1.1466.115.121.1.44"
+    TELEPHONE_NUMBER = "1.3.6.1.4.1.1466.115.121.1.50"
+    # fmt: on
 
 
 class LDAPObject:
@@ -225,12 +234,12 @@ class LDAPObject:
             return str(value).encode("utf-8")
 
         if syntax == Syntax.JPEG:
-            return value
+            return value if value else None
 
         if syntax == Syntax.BOOLEAN and isinstance(value, bool):
             return ("TRUE" if value else "FALSE").encode("utf-8")
 
-        return value.encode("utf-8")
+        return value.encode("utf-8") if value else None
 
     @staticmethod
     def ldap_attrs_to_python(attrs):
@@ -269,9 +278,13 @@ class LDAPObject:
             changes = {
                 name: value
                 for name, value in self.changes.items()
-                if value and value[0] and self.attrs.get(name) != value
+                if name not in deletions and self.attrs.get(name) != value
             }
-            formatted_changes = self.python_attrs_to_ldap(changes)
+            formatted_changes = {
+                name: value
+                for name, value in self.python_attrs_to_ldap(changes).items()
+                if value is not None and value != [None]
+            }
             modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
@@ -285,7 +298,11 @@ class LDAPObject:
                 for name, value in {**self.attrs, **self.changes}.items()
                 if value and value[0]
             }
-            formatted_changes = self.python_attrs_to_ldap(changes)
+            formatted_changes = {
+                name: value
+                for name, value in self.python_attrs_to_ldap(changes).items()
+                if value is not None and value != None
+            }
             attributes = [(name, values) for name, values in formatted_changes.items()]
             conn.add_s(self.dn, attributes)
 
