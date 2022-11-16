@@ -25,11 +25,6 @@ FAVICON = "/static/img/canaille-c.png"
 # If unset, language is detected
 # LANGUAGE = "en"
 
-# Path to the RFC8414 metadata file. You should update those files
-# with your production URLs.
-OAUTH2_METADATA_FILE = "canaille/conf/oauth-authorization-server.json"
-OIDC_METADATA_FILE = "canaille/conf/openid-configuration.json"
-
 # Wether a token is needed for the RFC7591 dynamical client registration.
 # If true, no token is needed to register a client.
 # If false, dynamical client registration needs a token defined

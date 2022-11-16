@@ -146,8 +146,6 @@ def configuration(slapd_server, smtpd, keypair_path):
     private_key_path, public_key_path = keypair_path
     conf = {
         "SECRET_KEY": gen_salt(24),
-        "OAUTH2_METADATA_FILE": "tests/oauth-authorization-server.json",
-        "OIDC_METADATA_FILE": "tests/openid-configuration.json",
         "LOGGING": {},
         "LDAP": {
             "ROOT_DN": slapd_server.suffix,
