@@ -68,12 +68,16 @@
 
                 {{ sui.render_fields(form) }}
 
-                <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
-                    {{ _("Edit") }}
-                </button>
-                <button type="submit" class="ui right floated negative basic button confirm" name="action" value="delete" id="delete">
-                    {{ _("Delete the client") }}
-                </button>
+                <div class="ui right aligned container">
+                    <div class="ui stackable buttons">
+                        <button type="submit" class="ui right floated negative basic button confirm" name="action" value="delete" id="delete">
+                            {{ _("Delete the client") }}
+                        </button>
+                        <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
+                            {{ _("Edit") }}
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
