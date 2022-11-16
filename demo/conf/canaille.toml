@@ -192,4 +192,4 @@ WEBSITE = "{{ user.labeledURI[0] }}"
 # TLS = false
 # LOGIN = ""
 # PASSWORD = ""
-FROM_ADDR = "admin@mydomain.tld"
+# FROM_ADDR = "admin@mydomain.tld"

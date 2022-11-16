@@ -34,6 +34,7 @@ Changed
 - Dynamically generate the server metadata. Users won't have to copy and
   manually edit ``oauth-authorizationserver.json`` and
   ``openid-configuration.json``. :pr:`71`
+- The `FROM_ADDR` configuration option is not mandatory anymore. :pr:`73`
 
 [0.0.12] - 2022-10-24
 =====================

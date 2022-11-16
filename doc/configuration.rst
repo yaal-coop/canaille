@@ -252,4 +252,5 @@ Without this section Canaille will still be usable, but all the features related
     *Optional.*
 
 :FROM_ADDR:
-    *Required.* The mail address to use as the sender for Canaille emails.
+    *Optional.* The mail address to use as the sender for Canaille emails.
+    Defaults to `admin@<HOSTNAME>` where `HOSTNAME` is the current hostname.
