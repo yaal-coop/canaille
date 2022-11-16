@@ -186,15 +186,9 @@
 
                     <div class="ui message warning visible">
                         {% if has_smtp and edited_user.can_edit_self %}
-                            {% if request.method == "POST" and request.form.action == "password-initialization-mail" %}
-                                <button type="submit" name="action" value="password-initialization-mail" class="ui right floated button">
-                                    {% trans %}Send again{% endtrans %}
-                                </button>
-                            {% else %}
-                                <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
-                                    {% trans %}Send email{% endtrans %}
-                                </button>
-                            {% endif %}
+                            <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
+                                {% trans %}Send email{% endtrans %}
+                            </button>
                         {% endif %}
                         <div class="header">
                             {% trans %}This user does not have a password yet{% endtrans %}
@@ -215,11 +209,7 @@
 
                     <div class="ui message info">
                         <button type="submit" name="action" value="password-reset-mail" class="ui right floated button">
-                            {% if request.method == "POST" and request.form.action == "password-reset-mail" %}
-                                {% trans %}Send again{% endtrans %}
-                            {% else %}
-                                {% trans %}Send mail{% endtrans %}
-                            {% endif %}
+                            {% trans %}Send mail{% endtrans %}
                         </button>
                         <div class="header">
                             {% trans %}Password reset{% endtrans %}

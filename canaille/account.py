@@ -497,6 +497,7 @@ def profile_edit(editor, username):
                 flash(_("Profile updated successfuly."), "success")
 
             user.save()
+            return redirect(url_for("account.profile_edition", username=username))
 
     return render_template(
         "profile.html",

@@ -51,7 +51,7 @@ def test_edition(
         "cn=bar,ou=groups,dc=mydomain,dc=tld",
     ]
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
     logged_user = User.get(dn=logged_user.dn)
@@ -157,7 +157,7 @@ def test_bad_email(testclient, logged_user):
 
     res.form["mail"] = "john@doe.com"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
 
     assert ["john@doe.com"] == logged_user.mail
 
@@ -191,7 +191,7 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "new_password"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
 
     assert logged_user.check_password("new_password")
 
@@ -200,7 +200,7 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "correct horse battery staple"
     res.form["password2"] = "correct horse battery staple"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly" in res
 
     assert logged_user.check_password("correct horse battery staple")
@@ -269,7 +269,7 @@ def test_user_creation_edition_and_deletion(
     ]
 
     # User have been edited
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     george = User.get("george")
     george.load_groups()
     assert "Georgio" == george.givenName[0]
@@ -329,14 +329,11 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
     assert "This user does not have a password yet" in res
     assert "Send" in res
 
-    res = res.form.submit(
-        name="action", value="password-initialization-mail", status=200
-    )
+    res = res.form.submit(name="action", value="password-initialization-mail").follow()
     assert (
         "A password initialization link has been sent at the user email address. It should be received within 10 minutes."
         in res
     )
-    assert "Send again" in res
     assert len(smtpd.messages) == 1
 
     u.reload()
@@ -365,12 +362,11 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     assert "If the user has forgotten his password" in res, res.text
     assert "Send" in res
 
-    res = res.form.submit(name="action", value="password-reset-mail", status=200)
+    res = res.form.submit(name="action", value="password-reset-mail").follow()
     assert (
         "A password reset link has been sent at the user email address. It should be received within 10 minutes."
         in res
     )
-    assert "Send again" in res
     assert len(smtpd.messages) == 1
 
     u.delete()
@@ -387,7 +383,7 @@ def test_photo_edition(
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res.form["jpegPhoto_delete"] = False
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
     logged_user = User.get(dn=logged_user.dn)
@@ -397,7 +393,7 @@ def test_photo_edition(
     # No change
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto_delete"] = False
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
     logged_user = User.get(dn=logged_user.dn)
@@ -407,7 +403,7 @@ def test_photo_edition(
     # Photo deletion
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto_delete"] = True
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
     logged_user = User.get(dn=logged_user.dn)
@@ -418,7 +414,7 @@ def test_photo_edition(
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res.form["jpegPhoto_delete"] = True
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
     logged_user = User.get(dn=logged_user.dn)
