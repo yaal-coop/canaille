@@ -88,6 +88,7 @@ def edit_group(group):
         if form.validate():
             group.description = [form.description.data]
             group.save()
+            return redirect(url_for("groups.group", groupname=group.name))
         else:
             flash(_("Group edition failed."), "error")
 

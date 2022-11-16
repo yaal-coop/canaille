@@ -87,7 +87,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res.form["name"] = "bar2"
     res.form["description"] = ["yolo2"]
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit").follow()
 
     bar_group = Group.get("bar")
     assert bar_group.name == "bar"
