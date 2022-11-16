@@ -94,7 +94,11 @@ display=true
         {{ caller() }}
     {% else %}
         {% for field in form %}
-            {{ render_field(field) }}
+            {% if field.type == "BooleanField" %}
+                {{ render_checkbox(field) }}
+            {% else %}
+                {{ render_field(field) }}
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endmacro %}
