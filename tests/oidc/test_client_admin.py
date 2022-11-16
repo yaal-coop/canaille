@@ -90,6 +90,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     assert (
         "The client has not been edited. Please check your information." not in res.text
     )
+    assert "The client has been edited." in res.text
 
     client = Client.get(client.dn)
     for k, v in data.items():
@@ -107,3 +108,23 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         status=200
     )
     assert Client.get(client.client_id) is None
+
+
+def test_client_edit_preauth(testclient, client, logged_admin, other_client):
+    assert not client.preconsent
+
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clientadd"]["preconsent"] = True
+    res = res.forms["clientadd"].submit(status=200, name="action", value="edit")
+
+    assert "The client has been edited." in res.text
+    client = Client.get(client.dn)
+    assert client.preconsent
+
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clientadd"]["preconsent"] = False
+    res = res.forms["clientadd"].submit(status=200, name="action", value="edit")
+
+    assert "The client has been edited." in res.text
+    client = Client.get(client.dn)
+    assert not client.preconsent
