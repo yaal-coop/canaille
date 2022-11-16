@@ -30,6 +30,9 @@ Changed
 
 - Replaced the use of the deprecated `FLASK_ENV` environment variable by
   `FLASK_DEBUG`.
+- Dynamically generate the server metadata. Users won't have to copy and
+  manually edit ``oauth-authorizationserver.json`` and
+  ``openid-configuration.json``. :pr:`71`
 
 [0.0.12] - 2022-10-24
 =====================
