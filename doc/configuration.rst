@@ -171,7 +171,8 @@ Canaille needs a key pair to sign the JWT. The installation command will generat
     e.g. ``/path/to/canaille/conf/private.pem``
 
 :ISS:
-    **Required.** The URI of the identity provider.
+    *Optional.* The URI of the identity provider.
+    Defaults to ``SERVER_NAME`` if set, else the current domain will be used.
     e.g. ``https://auth.mydomain.tld``
 
 :KTY:

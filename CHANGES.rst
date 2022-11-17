@@ -35,6 +35,7 @@ Changed
   manually edit ``oauth-authorizationserver.json`` and
   ``openid-configuration.json``. :pr:`71`
 - The `FROM_ADDR` configuration option is not mandatory anymore. :pr:`73`
+- The `JWT.ISS` configuration option is not mandatory anymore. :pr:`74`
 
 [0.0.12] - 2022-10-24
 =====================

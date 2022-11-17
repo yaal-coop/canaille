@@ -24,6 +24,7 @@ from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
+from flask import request
 from werkzeug.security import gen_salt
 
 from ..models import Group
@@ -42,13 +43,23 @@ def exists_nonce(nonce, req):
     return bool(exists)
 
 
+def get_issuer():
+    if current_app.config["JWT"].get("ISS"):
+        return current_app.config["JWT"].get("ISS")
+
+    if current_app.config.get("SERVER_NAME"):
+        return current_app.config.get("SERVER_NAME")
+
+    return request.url_root
+
+
 def get_jwt_config(grant):
 
     with open(current_app.config["JWT"]["PRIVATE_KEY"]) as pk:
         return {
             "key": pk.read(),
             "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
-            "iss": current_app.config["JWT"]["ISS"],
+            "iss": get_issuer(),
             "exp": current_app.config["JWT"].get("EXP", DEFAULT_JWT_EXP),
         }
 
@@ -302,7 +313,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "scope": token.get_scope(),
             "sub": user.uid[0],
             "aud": audience,
-            "iss": current_app.config["JWT"]["ISS"],
+            "iss": get_issuer(),
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
         }

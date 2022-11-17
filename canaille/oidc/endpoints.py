@@ -31,6 +31,7 @@ from .oauth import ClientRegistrationEndpoint
 from .oauth import DEFAULT_JWT_ALG
 from .oauth import DEFAULT_JWT_KTY
 from .oauth import generate_user_info
+from .oauth import get_issuer
 from .oauth import IntrospectionEndpoint
 from .oauth import require_oauth
 from .oauth import RevocationEndpoint
@@ -281,7 +282,7 @@ def end_session():
 
     if data.get("id_token_hint"):
         id_token = jwt.decode(data["id_token_hint"], get_public_key())
-        if not id_token["iss"] == current_app.config["JWT"]["ISS"]:
+        if not id_token["iss"] == get_issuer():
             return jsonify(
                 {
                     "status": "error",

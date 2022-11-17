@@ -159,7 +159,7 @@ PRIVATE_KEY = "conf/private.pem"
 # The path to the public key.
 PUBLIC_KEY = "conf/public.pem"
 # The URI of the identity provider
-ISS = "http://localhost:5000"
+# ISS = "https://auth.mydomain.tld"
 # The key type parameter
 # KTY = "RSA"
 # The key algorithm

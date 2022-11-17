@@ -12,10 +12,10 @@ SECRET_KEY = "change me before you go in production"
 # PREFERRED_URL_SCHEME = "https"
 
 # You can display a logo to be recognized on login screens
-LOGO = "/static/img/canaille-head.png"
+# LOGO = "/static/img/canaille-head.png"
 
 # Your favicon. If unset the LOGO will be used.
-FAVICON = "/static/img/canaille-c.png"
+# FAVICON = "/static/img/canaille-c.png"
 
 # The name of a theme in the 'theme' directory, or an absolute path
 # to a theme. Defaults to 'default'. Theming is done with
@@ -153,7 +153,7 @@ PRIVATE_KEY = "canaille/conf/private.pem"
 # The path to the public key.
 PUBLIC_KEY = "canaille/conf/public.pem"
 # The URI of the identity provider
-ISS = "https://auth.mydomain.tld"
+# ISS = "https://auth.mydomain.tld"
 # The key type parameter
 # KTY = "RSA"
 # The key algorithm

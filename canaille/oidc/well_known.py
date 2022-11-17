@@ -7,6 +7,8 @@ from flask import jsonify
 from flask import request
 from flask import url_for
 
+from .oauth import get_issuer
+
 
 bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
@@ -15,9 +17,8 @@ def cached_oauth_authorization_server():
     if "oauth_authorization_server" in g:
         return g.oauth_authorization_server
 
-    issuer = current_app.config["JWT"]["ISS"]
     g.oauth_authorization_server = {
-        "issuer": issuer,
+        "issuer": get_issuer(),
         "authorization_endpoint": url_for("oidc.endpoints.authorize", _external=True),
         "token_endpoint": url_for("oidc.endpoints.issue_token", _external=True),
         "token_endpoint_auth_methods_supported": [
