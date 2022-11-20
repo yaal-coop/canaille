@@ -52,7 +52,7 @@ def cached_oauth_authorization_server():
             "code id_token",
             "token id_token",
         ],
-        "ui_locales_supported": ["en-US", "fr-FR"],
+        "ui_locales_supported": g.available_language_codes,
         "code_challenge_methods_supported": ["plain", "S256"],
     }
 

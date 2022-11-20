@@ -43,10 +43,14 @@ display=true
 
 {% if field.type not in ("SelectField", "SelectMultipleField") %}
     {{ field(**kwargs) }}
-{% elif field.render_kw and "readonly" in field.render_kw %}
+{% elif field.type == "SelectMultipleField" and field.render_kw and "readonly" in field.render_kw %}
     {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
-{% else %}
+{% elif field.type == "SelectMultipleField" %}
     {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
+{% elif field.type == "SelectField" and field.render_kw and "readonly" in field.render_kw %}
+    {{ field(class_="ui fluid dropdown read-only", **kwargs) }}
+{% elif field.type == "SelectField" %}
+    {{ field(class_="ui fluid dropdown", **kwargs) }}
 {% endif %}
 
 {% if suffix_text %}

@@ -171,6 +171,7 @@ def configuration(slapd_server, smtpd, keypair_path):
                     "telephoneNumber",
                     "postalAddress",
                     "employeeNumber",
+                    "preferredLanguage",
                 ],
             },
             "ADMIN": {

@@ -39,6 +39,7 @@ def test_generate_user_standard_claims_with_default_config(
     testclient, slapd_connection, user
 ):
     User.ldap_object_classes(slapd_connection)
+    user.preferredLanguage = ["fr"]
 
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
 
@@ -47,6 +48,7 @@ def test_generate_user_standard_claims_with_default_config(
         "family_name": "Doe",
         "email": "john@doe.com",
         "sub": "user",
+        "locale": "fr",
     }
 
 

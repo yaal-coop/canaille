@@ -1,10 +1,13 @@
 import wtforms.form
 from flask import current_app
+from flask import g
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 
+from .i18n import available_language_codes
+from .i18n import native_language_name_from_code
 from .models import Group
 from .models import User
 
@@ -89,6 +92,13 @@ class PasswordResetForm(FlaskForm):
     )
 
 
+def available_language_choices():
+    return [("auto", _("Automatic"))] + [
+        (lang_code, native_language_name_from_code(lang_code))
+        for lang_code in g.available_language_codes
+    ]
+
+
 PROFILE_FORM_FIELDS = dict(
     uid=wtforms.StringField(
         _("Username"),
@@ -163,6 +173,10 @@ PROFILE_FORM_FIELDS = dict(
         render_kw={
             "placeholder": _("https://mywebsite.tld"),
         },
+    ),
+    preferredLanguage=wtforms.SelectField(
+        _("Preferred language"),
+        choices=available_language_choices,
     ),
 )
 

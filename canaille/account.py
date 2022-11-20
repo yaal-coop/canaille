@@ -496,6 +496,12 @@ def profile_edit(editor, username):
             ) and request.form["action"] == "edit":
                 flash(_("Profile updated successfuly."), "success")
 
+            if (
+                "preferredLanguage" in request.form
+                and form["preferredLanguage"].data == "auto"
+            ):
+                user.preferredLanguage = None
+
             user.save()
             return redirect(url_for("account.profile_edition", username=username))
 

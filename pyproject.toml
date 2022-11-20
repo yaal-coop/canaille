@@ -52,6 +52,7 @@ wtforms = "<4"
 "sphinx" = {version = "*", optional=true}
 "sphinx-rtd-theme" = {version = "*", optional=true}
 "sphinx-issues" = {version = "*", optional=true}
+pycountry = "^22.3.5"
 
 [tool.poetry.extras]
 sentry = ["sentry-sdk"]

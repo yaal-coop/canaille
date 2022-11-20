@@ -12,6 +12,7 @@ from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
 
+from .i18n import available_language_codes
 from .ldap_backend.backend import init_backend
 from .oidc.oauth import setup_oauth
 
@@ -100,25 +101,34 @@ def setup_jinja(app):
     app.jinja_env.filters["timestamp"] = timestamp
 
 
-def setup_babel(app):
+def setup_i18n(app):
     babel = Babel(app)
+
+    @app.before_request
+    def before_request():
+        g.available_language_codes = available_language_codes(babel)
 
     @babel.localeselector
     def get_locale():
-        user = getattr(g, "user", None)
-        if user is not None:
-            return user.locale
+        from .flaskutils import current_user
+
+        user = current_user()
+        available_language_codes = getattr(g, "available_language_codes", [])
+        if user is not None and user.preferredLanguage in available_language_codes:
+            return user.preferredLanguage
 
         if app.config.get("LANGUAGE"):
             return app.config.get("LANGUAGE")
 
-        return request.accept_languages.best_match(["fr_FR", "en_US"])
+        return request.accept_languages.best_match(available_language_codes)
 
     @babel.timezoneselector
     def get_timezone():
-        user = getattr(g, "user", None)
+        from .flaskutils import current_user
+
+        user = current_user()
         if user is not None:
-            return user.timezone
+            return user.Timezone
 
 
 def setup_themer(app):
@@ -165,7 +175,7 @@ def create_app(config=None, validate=True):
         setup_oauth(app)
         setup_blueprints(app)
         setup_jinja(app)
-        setup_babel(app)
+        setup_i18n(app)
         setup_themer(app)
 
         @app.before_request
