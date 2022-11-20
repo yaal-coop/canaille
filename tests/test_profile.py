@@ -50,6 +50,7 @@ def test_edition(
         "cn=foo,ou=groups,dc=mydomain,dc=tld",
         "cn=bar,ou=groups,dc=mydomain,dc=tld",
     ]
+    res.form["preferredLanguage"] = "fr"
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
@@ -63,6 +64,7 @@ def test_edition(
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
     assert ["postal_address"] == logged_user.postalAddress
+    assert "fr" == logged_user.preferredLanguage
     assert "666" == logged_user.employeeNumber
     assert [jpeg_photo] == logged_user.jpegPhoto
 

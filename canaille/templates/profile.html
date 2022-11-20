@@ -143,6 +143,11 @@
                 {% block labeled_uri_field scoped %}{{ render_field(form.labeledURI) }}{% endblock %}
             {% endif %}
 
+            {% if "preferredLanguage" in form %}
+                {% block preferred_language_field scoped %}{{ render_field(form.preferredLanguage) }}{% endblock %}
+            {% endif %}
+
+
             <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
 
             {% if "uid" in form %}
