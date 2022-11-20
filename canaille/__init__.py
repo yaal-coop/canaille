@@ -42,18 +42,18 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if app.debug:
+    if app.debug:  # pragma: no cover
         canaille.installation.setup_keypair(app.config)
 
     if validate:
         canaille.configuration.validate(app.config)
 
 
-def setup_sentry(app):
+def setup_sentry(app):  # pragma: no cover
     if not app.config.get("SENTRY_DSN"):
         return None
 
-    try:  # pragma: no cover
+    try:
         import sentry_sdk
         from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -202,10 +202,10 @@ def create_app(config=None, validate=True):
             return render_template("error.html", error=404), 404
 
         @app.errorhandler(500)
-        def server_error(e):
+        def server_error(e):  # pragma: no cover
             return render_template("error.html", error=500), 500
 
-    except Exception as exc:
+    except Exception as exc:  # pragma: no cover
         if sentry_sdk:
             sentry_sdk.capture_exception(exc)
         raise
