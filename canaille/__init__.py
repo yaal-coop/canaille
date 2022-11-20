@@ -122,14 +122,6 @@ def setup_i18n(app):
 
         return request.accept_languages.best_match(available_language_codes)
 
-    @babel.timezoneselector
-    def get_timezone():
-        from .flaskutils import current_user
-
-        user = current_user()
-        if user is not None:
-            return user.Timezone
-
 
 def setup_themer(app):
     additional_themes_dir = (
