@@ -3,6 +3,8 @@ Contribute
 
 Contributions are welcome!
 
+The repository is hosted at https://gitlab.com/yaal/canaille
+
 .. warning ::
 
     On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor,
