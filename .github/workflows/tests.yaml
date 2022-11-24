@@ -3,12 +3,12 @@ name: tests
 on:
   push:
     branches:
-      - master
-      - '*.x'
+      - main
+      - '*.*.*'
   pull_request:
     branches:
-      - master
-      - '*.x'
+      - main
+      - '*.*.*'
 jobs:
   tests:
     name: ${{ matrix.python }}
