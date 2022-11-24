@@ -31,7 +31,7 @@ jobs:
         with:
           path: ~/.cache/pip
           key: pip|${{ hashFiles('setup.py') }}|${{ hashFiles('tox.ini') }}
-      - run: pip install tox
+      - run: pip install tox poetry
       - run: tox -e py
   style:
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
-      - run: pip install tox
+      - run: pip install tox poetry
       - run: tox -e style
   doc:
     runs-on: ubuntu-latest
@@ -61,5 +61,5 @@ jobs:
         with:
           path: ~/.cache/pip
           key: pip|${{ hashFiles('setup.py') }}|${{ hashFiles('tox.ini') }}
-      - run: pip install tox
+      - run: pip install tox poetry
       - run: tox -e doc
