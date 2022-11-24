@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install apt dependencies
-        run: sudo apt-get --yes install apparmor-utils libsasl2-dev python-dev libldap2-dev libssl-dev slapd ldap-utils
+        run: sudo apt-get --yes install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
       - name: App armor configuration for slapd
         run: sudo aa-complain /usr/sbin/slapd
       - uses: actions/cache@v1
