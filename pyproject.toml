@@ -33,6 +33,7 @@ homepage = "https://canaille.yaal.coop"
 documentation = "https://canaille.readthedocs.io/en/latest/"
 repository = "https://gitlab.com/yaal/canaille"
 readme = "README.md"
+include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 
 [tool.poetry.dependencies]
 python = ">=3.7, <4"
