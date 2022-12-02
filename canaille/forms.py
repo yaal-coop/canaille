@@ -123,6 +123,15 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
+    displayName=wtforms.StringField(
+        _("Display Name"),
+        validators=[wtforms.validators.Optional()],
+        render_kw={
+            "placeholder": _("Johnny"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    ),
     mail=wtforms.EmailField(
         _("Email address"),
         validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],

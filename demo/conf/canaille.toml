@@ -132,7 +132,18 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 [ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
 READ = ["uid", "groups"]
-WRITE = ["jpegPhoto", "givenName", "sn", "userPassword", "telephoneNumber", "mail", "labeledURI", "postalAddress", "preferredLanguage"]
+WRITE = [
+    "jpegPhoto",
+    "givenName",
+    "sn",
+    "displayName",
+    "userPassword",
+    "telephoneNumber",
+    "mail",
+    "labeledURI",
+    "postalAddress",
+    "preferredLanguage",
+]
 
 [ACL.ADMIN]
 FILTER = "memberof=cn=admins,ou=groups,dc=mydomain,dc=tld"
@@ -178,7 +189,7 @@ PHONE_NUMBER = "{{ user.telephoneNumber[0] }}"
 EMAIL = "{{ user.mail[0] }}"
 GIVEN_NAME = "{{ user.givenName[0] }}"
 FAMILY_NAME = "{{ user.sn[0] }}"
-PREFERRED_USERNAME = "{{ user.displayName[0] }}"
+PREFERRED_USERNAME = "{{ user.displayName }}"
 LOCALE = "{{ user.preferredLanguage[0] }}"
 ADDRESS = "{{ user.postalAddress[0] }}"
 PICTURE = "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}"

@@ -32,6 +32,7 @@ def test_password_flow_basic(testclient, user, client):
         "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "groups": [],
     } == res.json
 
@@ -69,5 +70,6 @@ def test_password_flow_post(testclient, user, client):
         "name": "John (johnny) Doe",
         "sub": "user",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "groups": [],
     } == res.json

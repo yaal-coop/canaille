@@ -30,7 +30,7 @@ DEFAULT_JWT_MAPPING_CONFIG = {
     "EMAIL": "{{ user.mail[0] }}",
     "GIVEN_NAME": "{{ user.givenName[0] }}",
     "FAMILY_NAME": "{{ user.sn[0] }}",
-    "PREFERRED_USERNAME": "{{ user.displayName[0] }}",
+    "PREFERRED_USERNAME": "{{ user.displayName }}",
     "LOCALE": "{{ user.preferredLanguage[0] }}",
 }
 
@@ -49,6 +49,7 @@ def test_generate_user_standard_claims_with_default_config(
         "email": "john@doe.com",
         "sub": "user",
         "locale": "fr",
+        "preferred_username": "Johnny",
     }
 
 
