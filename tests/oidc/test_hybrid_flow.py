@@ -49,6 +49,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "sub": "user",
     } == res.json
 
@@ -94,5 +95,6 @@ def test_oidc_hybrid(
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "sub": "user",
     } == res.json

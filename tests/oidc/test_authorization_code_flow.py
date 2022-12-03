@@ -93,6 +93,7 @@ def test_authorization_code_flow(
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "email": "john@doe.com",
         "sub": "user",
         "groups": [],
@@ -161,6 +162,7 @@ def test_authorization_code_flow_preconsented(
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "sub": "user",
     } == res.json
 
@@ -231,6 +233,7 @@ def test_logout_login(testclient, logged_user, client):
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "sub": "user",
     } == res.json
 
@@ -312,6 +315,7 @@ def test_refresh_token(testclient, user, client):
         assert {
             "name": "John (johnny) Doe",
             "family_name": "Doe",
+            "preferred_username": "Johnny",
             "sub": "user",
         } == res.json
 
@@ -378,6 +382,7 @@ def test_code_challenge(testclient, logged_user, client):
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "sub": "user",
     } == res.json
 
@@ -705,6 +710,7 @@ def test_authorization_code_request_scope_too_large(
     assert {
         "name": "John (johnny) Doe",
         "family_name": "Doe",
+        "preferred_username": "Johnny",
         "sub": "user",
     } == res.json
 

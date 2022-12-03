@@ -118,8 +118,11 @@
                 {% if "sn" in form %}
                     {% block sn_field scoped %}{{ render_field(form.sn) }}{% endblock %}
                 {% endif %}
-
             </div>
+
+            {% if "displayName" in form %}
+                {% block display_name_field scoped %}{{ render_field(form.displayName) }}{% endblock %}
+            {% endif %}
 
             {% if "jpegPhoto" in form %}</div></div>{% endif %}
 

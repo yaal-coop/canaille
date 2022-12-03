@@ -42,6 +42,7 @@ def test_edition(
     res.form["uid"] = "toto"
     res.form["givenName"] = "given_name"
     res.form["sn"] = "family_name"
+    res.form["displayName"] = "display_name"
     res.form["mail"] = "email@mydomain.tld"
     res.form["telephoneNumber"] = "555-666-777"
     res.form["postalAddress"] = "postal_address"
@@ -61,6 +62,7 @@ def test_edition(
     assert ["user"] == logged_user.uid
     assert ["given_name"] == logged_user.givenName
     assert ["family_name"] == logged_user.sn
+    assert "display_name" == logged_user.displayName
     assert ["email@mydomain.tld"] == logged_user.mail
     assert ["555-666-777"] == logged_user.telephoneNumber
     assert ["postal_address"] == logged_user.postalAddress
