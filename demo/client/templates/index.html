@@ -61,10 +61,17 @@
                             </div>
                         {% endif %}
                         <div class="left aligned content">
-                            <span class="header">{{ user.name }}</span>
+                            <span class="header">{{ user.preferred_username or user.name }}</span>
                             <div class="meta" title="id">
                                 {{ user.sub }}
                             </div>
+
+                            {% if user.name %}
+                                <div class="extra content">
+                                    <i class="id card alternate icon" title="name"></i>
+                                    {{ user.name }}
+                                </div>
+                            {% endif %}
 
                             {% if user.address %}
                                 <div class="extra content">
