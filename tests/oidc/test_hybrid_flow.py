@@ -51,6 +51,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "sub": "user",
+        "locale": "en",
     } == res.json
 
 
@@ -97,4 +98,5 @@ def test_oidc_hybrid(
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "sub": "user",
+        "locale": "en",
     } == res.json

@@ -97,6 +97,7 @@ def test_authorization_code_flow(
         "email": "john@doe.com",
         "sub": "user",
         "groups": [],
+        "locale": "en",
     } == res.json
 
     for consent in consents:
@@ -164,6 +165,7 @@ def test_authorization_code_flow_preconsented(
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "sub": "user",
+        "locale": "en",
     } == res.json
 
     for consent in consents:
@@ -235,6 +237,7 @@ def test_logout_login(testclient, logged_user, client):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "sub": "user",
+        "locale": "en",
     } == res.json
 
     for consent in consents:
@@ -317,6 +320,7 @@ def test_refresh_token(testclient, user, client):
             "family_name": "Doe",
             "preferred_username": "Johnny",
             "sub": "user",
+            "locale": "en",
         } == res.json
 
     for consent in consents:
@@ -384,6 +388,7 @@ def test_code_challenge(testclient, logged_user, client):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "sub": "user",
+        "locale": "en",
     } == res.json
 
     client.token_endpoint_auth_method = "client_secret_basic"
@@ -712,6 +717,7 @@ def test_authorization_code_request_scope_too_large(
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "sub": "user",
+        "locale": "en",
     } == res.json
 
     for consent in consents:

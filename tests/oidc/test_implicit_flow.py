@@ -47,6 +47,7 @@ def test_oauth_implicit(testclient, user, client):
         "sub": "user",
         "family_name": "Doe",
         "preferred_username": "Johnny",
+        "locale": "en",
     } == res.json
 
     client.grant_types = ["code"]
@@ -104,6 +105,7 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
         "sub": "user",
         "family_name": "Doe",
         "preferred_username": "Johnny",
+        "locale": "en",
     } == res.json
 
     client.grant_types = ["code"]
@@ -165,6 +167,7 @@ def test_oidc_implicit_with_group(
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "groups": ["foo"],
+        "locale": "en",
     } == res.json
 
     client.grant_types = ["code"]

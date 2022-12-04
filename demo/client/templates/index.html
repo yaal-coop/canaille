@@ -94,6 +94,13 @@
                                 </div>
                             {% endif %}
 
+                            {% if user.locale %}
+                                <div class="extra content">
+                                    <i class="flag icon" title="locale"></i>
+                                    {{ user.locale }}
+                                </div>
+                            {% endif %}
+
                             {% if user.groups %}
                                 <div class="extra content">
                                     <i class="user users icon" title="Groups"></i>

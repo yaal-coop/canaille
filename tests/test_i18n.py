@@ -2,7 +2,8 @@ from canaille.models import User
 
 
 def test_preferred_language(testclient, logged_user):
-    assert logged_user.preferredLanguage is None
+    logged_user.preferredLanguage = None
+    logged_user.save()
 
     res = testclient.get("/profile/user", status=200)
     assert res.form["preferredLanguage"].value == "auto"
@@ -35,6 +36,9 @@ def test_preferred_language(testclient, logged_user):
 
 
 def test_language_config(testclient, logged_user):
+    logged_user.preferredLanguage = None
+    logged_user.save()
+
     res = testclient.get("/profile/user", status=200)
     assert "My profile" in res.text
     assert "Mon profil" not in res.text

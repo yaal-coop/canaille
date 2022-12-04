@@ -208,7 +208,7 @@ def configuration(slapd_server, smtpd, keypair_path):
                 "GIVEN_NAME": "{{ user.givenName[0] }}",
                 "FAMILY_NAME": "{{ user.sn[0] }}",
                 "PREFERRED_USERNAME": "{{ user.displayName }}",
-                "LOCALE": "{{ user.preferredLanguage[0] }}",
+                "LOCALE": "{{ user.preferredLanguage }}",
                 "PICTURE": "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}",
             },
         },
@@ -252,6 +252,7 @@ def user(app, slapd_connection):
         mail="john@doe.com",
         userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
         displayName="Johnny",
+        preferredLanguage="en",
     )
     u.save()
     yield u
