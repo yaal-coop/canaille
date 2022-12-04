@@ -168,9 +168,6 @@ def test_authorization_code_flow_preconsented(
         "locale": "en",
     } == res.json
 
-    for consent in consents:
-        consent.delete()
-
 
 def test_logout_login(testclient, logged_user, client):
     assert not Consent.all()
