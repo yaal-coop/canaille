@@ -2,7 +2,6 @@ import base64
 import email.message
 import hashlib
 import json
-import logging
 import mimetypes
 import smtplib
 import urllib.request
@@ -120,6 +119,7 @@ def send_email(subject, recipient, text, html, attachements=None):
         msg.get_payload()[1].add_related(
             value, maintype=maintype, subtype=subtype, cid=cid
         )
+
     try:
         with smtplib.SMTP(
             host=current_app.config["SMTP"].get("HOST", DEFAULT_SMTP_HOST),
@@ -138,7 +138,7 @@ def send_email(subject, recipient, text, html, attachements=None):
         pass
 
     except OSError as exc:
-        logging.exception(f"Could not send email: {exc}")
+        current_app.logger.warning(f"Could not send email: {exc}")
         return False
 
     return True

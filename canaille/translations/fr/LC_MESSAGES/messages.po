@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2022-12-04 11:54+0100\n"
-"PO-Revision-Date: 2022-12-04 11:55+0100\n"
+"POT-Creation-Date: 2022-12-04 17:13+0100\n"
+"PO-Revision-Date: 2022-12-04 17:14+0100\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language: fr\n"
 "Language-Team: French <traduc@traduc.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.11.0\n"
 "X-Generator: Gtranslator 42.0\n"
@@ -162,9 +162,13 @@ msgstr "Courriel"
 msgid "jane@doe.com"
 msgstr "camille@dupont.fr"
 
-#: canaille/admin.py:42 canaille/admin.py:44
+#: canaille/admin.py:42
 msgid "The test invitation mail has been sent correctly"
 msgstr "L'invitation de test a été envoyée correctement"
+
+#: canaille/admin.py:44
+msgid "The test invitation mail has not been sent correctly"
+msgstr "L'invitation de test n’a pas été envoyée correctement"
 
 #: canaille/admin.py:66 canaille/mails.py:65
 msgid "Password initialization on {website_name}"
@@ -178,19 +182,19 @@ msgstr "Réinitialisation du mot de passe sur {website_name}"
 msgid "Invitation on {website_name}"
 msgstr "Invitation sur {website_name}"
 
-#: canaille/apputils.py:41
+#: canaille/apputils.py:40
 msgid "John Doe"
 msgstr "Camille Dupont"
 
-#: canaille/apputils.py:44 canaille/forms.py:105 canaille/forms.py:238
+#: canaille/apputils.py:43 canaille/forms.py:105 canaille/forms.py:238
 msgid "jdoe"
 msgstr "cdupont"
 
-#: canaille/apputils.py:47
+#: canaille/apputils.py:46
 msgid "john@doe.com"
 msgstr "camille@dupont.fr"
 
-#: canaille/apputils.py:49
+#: canaille/apputils.py:48
 msgid " or "
 msgstr " ou "
 

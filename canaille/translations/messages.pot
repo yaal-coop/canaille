@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-04 11:54+0100\n"
+"POT-Creation-Date: 2022-12-04 17:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,8 +146,12 @@ msgstr ""
 msgid "jane@doe.com"
 msgstr ""
 
-#: canaille/admin.py:42 canaille/admin.py:44
+#: canaille/admin.py:42
 msgid "The test invitation mail has been sent correctly"
+msgstr ""
+
+#: canaille/admin.py:44
+msgid "The test invitation mail has not been sent correctly"
 msgstr ""
 
 #: canaille/admin.py:66 canaille/mails.py:65
@@ -162,19 +166,19 @@ msgstr ""
 msgid "Invitation on {website_name}"
 msgstr ""
 
-#: canaille/apputils.py:41
+#: canaille/apputils.py:40
 msgid "John Doe"
 msgstr ""
 
-#: canaille/apputils.py:44 canaille/forms.py:105 canaille/forms.py:238
+#: canaille/apputils.py:43 canaille/forms.py:105 canaille/forms.py:238
 msgid "jdoe"
 msgstr ""
 
-#: canaille/apputils.py:47
+#: canaille/apputils.py:46
 msgid "john@doe.com"
 msgstr ""
 
-#: canaille/apputils.py:49
+#: canaille/apputils.py:48
 msgid " or "
 msgstr ""
 
