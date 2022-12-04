@@ -2,6 +2,24 @@ from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import User
 
 
+def test_index(testclient, user):
+    res = testclient.get("/", status=302)
+    assert res.location == "/login"
+
+    with testclient.session_transaction() as sess:
+        sess["user_dn"] = [user.dn]
+    res = testclient.get("/", status=302)
+    assert res.location == "/profile/user"
+
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["use_oidc"]
+    res = testclient.get("/", status=302)
+    assert res.location == "/consent/"
+
+    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    res = testclient.get("/", status=302)
+    assert res.location == "/about"
+
+
 def test_signin_and_out(testclient, user):
     with testclient.session_transaction() as session:
         assert not session.get("user_dn")

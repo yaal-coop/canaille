@@ -68,7 +68,7 @@ def index():
 def about():
     try:
         version = pkg_resources.get_distribution("canaille").version
-    except pkg_resources.DistributionNotFound:
+    except pkg_resources.DistributionNotFound:  # pragma: no cover
         version = "git"
     return render_template("about.html", version=version)
 

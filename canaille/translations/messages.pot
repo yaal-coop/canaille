@@ -1244,4 +1244,3 @@ msgstr ""
 #: canaille/themes/default/base.html:83
 msgid "Emails"
 msgstr ""
-
