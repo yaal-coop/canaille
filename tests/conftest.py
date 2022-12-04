@@ -31,23 +31,6 @@ class CustomSlapdObject(slapd.Slapd):
             ),
         )
 
-    def _ln_schema_files(self, *args, **kwargs):
-        dir_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-            "canaille",
-            "ldap_backend",
-            "schemas",
-        )
-        super()._ln_schema_files(*args, **kwargs)
-        super()._ln_schema_files(self.custom_schema_files, dir_path)
-
-    def gen_config(self):
-        previous = self.openldap_schema_files
-        self.openldap_schema_files += self.custom_schema_files
-        config = super().gen_config()
-        self.openldap_schema_files = previous
-        return config
-
 
 @pytest.fixture(scope="session")
 def keypair():
