@@ -44,10 +44,7 @@ def client(testclient, other_client, slapd_connection):
     c.save()
 
     yield c
-    try:
-        c.delete()
-    except:
-        pass
+    c.delete()
 
 
 @pytest.fixture
@@ -83,10 +80,7 @@ def other_client(testclient, slapd_connection):
     c.save()
 
     yield c
-    try:
-        c.delete()
-    except:
-        pass
+    c.delete()
 
 
 @pytest.fixture
@@ -108,10 +102,7 @@ def authorization(testclient, user, client, slapd_connection):
     )
     a.save()
     yield a
-    try:
-        a.delete()
-    except:
-        pass
+    a.delete()
 
 
 @pytest.fixture
@@ -130,10 +121,7 @@ def token(testclient, client, user, slapd_connection):
     )
     t.save()
     yield t
-    try:
-        t.delete()
-    except:
-        pass
+    t.delete()
 
 
 @pytest.fixture
@@ -156,7 +144,4 @@ def consent(testclient, client, user, slapd_connection):
     )
     t.save()
     yield t
-    try:
-        t.delete()
-    except:
-        pass
+    t.delete()

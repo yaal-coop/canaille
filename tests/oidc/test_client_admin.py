@@ -59,6 +59,7 @@ def test_client_add(testclient, logged_admin):
             assert [v] == client_value
         else:
             assert v == client_value
+    client.delete()
 
 
 def test_client_edit(testclient, client, logged_admin, other_client):
@@ -105,11 +106,6 @@ def test_client_edit(testclient, client, logged_admin, other_client):
             assert [v] == client_value
         else:
             assert v == client_value
-
-    res.forms["clientadd"].submit(status=302, name="action", value="delete").follow(
-        status=200
-    )
-    assert Client.get(client.client_id) is None
 
 
 def test_client_edit_preauth(testclient, client, logged_admin, other_client):
