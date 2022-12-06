@@ -7,6 +7,7 @@ Added
 *****
 
 - User can chose their favourite display name. :pr:`77`
+- Bumped to authlib 1.2. :pr:`78`
 
 [0.0.14] - 2022-11-29
 =====================
