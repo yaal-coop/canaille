@@ -110,6 +110,10 @@ def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_
     assert "The group &#39;foo&#39; already exists" in res
 
 
+def test_invalid_group(testclient, logged_moderator):
+    testclient.get("/groups/invalid", status=404)
+
+
 def test_simple_user_cannot_view_or_edit_groups(testclient, logged_user, foo_group):
     testclient.get("/groups", status=403)
     testclient.get("/groups/add", status=403)
@@ -131,3 +135,16 @@ def test_get_members_filters_non_existent_user(
     assert foo_members[0].dn == user.dn
 
     testclient.get("/groups/foo", status=200)
+
+
+def test_invalid_form_request(testclient, logged_moderator, foo_group):
+    res = testclient.get("/groups/foo")
+    res = res.form.submit(name="action", value="invalid-action", status=400)
+
+
+def test_edition_failed(testclient, logged_moderator, foo_group):
+    res = testclient.get("/groups/foo")
+    res = res.form.submit(name="action", value="edit")
+    assert "Group edition failed." in res
+    foo_group = Group.get(foo_group.dn)
+    assert foo_group.name == "foo"
