@@ -80,6 +80,27 @@ def test_install_schemas(configuration, slapd_server):
     slapd_server.stop()
 
 
+def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
+    configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=mydomain,dc=tld"
+    configuration["LDAP"]["BIND_PW"] = "admin"
+
+    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
+    conn.protocol_version = 3
+    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+
+    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
+
+    with pytest.raises(InstallationException):
+        setup_schemas(configuration)
+
+    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
+
+    conn.unbind_s()
+    slapd_server.stop()
+
+
 def test_install_schemas_command(configuration, slapd_server):
     configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["LDAP"]["URI"] = slapd_server.ldap_uri
