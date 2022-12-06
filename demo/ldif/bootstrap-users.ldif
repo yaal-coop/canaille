@@ -1,0 +1,71 @@
+dn: uid=admin,ou=users,dc=mydomain,dc=tld
+objectclass: top
+objectclass: inetOrgPerson
+cn: Jane Doe
+gn: Jane
+sn: Doe
+uid: admin
+mail: admin@mydomain.tld
+telephoneNumber: 555-000-000
+employeeNumber: 1000
+labeledURI: https://admin.example
+postalAddress: 123, Admin Lane - Gotham City 12345
+userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
+displayName: Jane.D
+
+dn: uid=moderator,ou=users,dc=mydomain,dc=tld
+objectclass: top
+objectclass: inetOrgPerson
+cn: Jack Doe
+gn: Jack
+sn: Doe
+uid: moderator
+mail: moderator@mydomain.tld
+telephoneNumber: 555-000-002
+employeeNumber: 1002
+labeledURI: https://moderator.example
+userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
+displayName: 👮 Jack 👮
+
+dn: uid=user,ou=users,dc=mydomain,dc=tld
+objectclass: top
+objectclass: inetOrgPerson
+cn: John Doe
+gn: John
+sn: Doe
+uid: user
+mail: user@mydomain.tld
+telephoneNumber: 555-000-001
+employeeNumber: 1001
+labeledURI: https://user.example
+userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
+displayName: Johnny
+
+dn: uid=james,ou=users,dc=mydomain,dc=tld
+objectclass: top
+objectclass: inetOrgPerson
+cn: James Doe
+gn: James
+sn: Doe
+uid: james
+mail: james@mydomain.tld
+telephoneNumber: 555-000-003
+
+dn: cn=users,ou=groups,dc=mydomain,dc=tld
+objectclass: groupOfNames
+cn: users
+description: The regulars users.
+member: uid=admin,ou=users,dc=mydomain,dc=tld
+member: uid=user,ou=users,dc=mydomain,dc=tld
+
+dn: cn=admins,ou=groups,dc=mydomain,dc=tld
+objectclass: groupOfNames
+cn: admins
+description: The administrators.
+member: uid=admin,ou=users,dc=mydomain,dc=tld
+
+dn: cn=moderators,ou=groups,dc=mydomain,dc=tld
+objectclass: groupOfNames
+cn: moderators
+description: People who can manage users.
+member: uid=moderator,ou=users,dc=mydomain,dc=tld

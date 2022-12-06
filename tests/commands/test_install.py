@@ -4,79 +4,28 @@ import ldap
 import pytest
 from canaille import create_app
 from canaille.commands import cli
+from canaille.installation import InstallationException
 from canaille.installation import setup_schemas
 from canaille.ldap_backend.ldapobject import LDAPObject
+from canaille.models import Group
+from canaille.models import User
 from flask_webtest import TestApp
-from slapd import Slapd
 from tests.conftest import CustomSlapdObject
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def slapd_server():
     slapd = CustomSlapdObject()
     try:
         slapd.start()
-        suffix_dc = slapd.suffix.split(",")[0][3:]
-        slapd.ldapadd(
-            "\n".join(
-                [
-                    "dn: " + slapd.suffix,
-                    "objectClass: dcObject",
-                    "objectClass: organization",
-                    "dc: " + suffix_dc,
-                    "o: " + suffix_dc,
-                    "",
-                    "dn: " + slapd.root_dn,
-                    "objectClass: applicationProcess",
-                    "cn: " + slapd.root_cn,
-                    "",
-                    "dn: ou=users," + slapd.suffix,
-                    "objectClass: organizationalUnit",
-                    "ou: users",
-                    "",
-                    "dn: ou=groups," + slapd.suffix,
-                    "objectClass: organizationalUnit",
-                    "ou: groups",
-                ]
-            )
-            + "\n"
-        )
-
-        yield slapd
-    finally:
-        slapd.stop()
-
-
-@pytest.fixture
-def slapd_server_without_schemas():
-    slapd = Slapd()
-    try:
-        slapd.start()
-        suffix_dc = slapd.suffix.split(",")[0][3:]
-        slapd.ldapadd(
-            "\n".join(
-                [
-                    "dn: " + slapd.suffix,
-                    "objectClass: dcObject",
-                    "objectClass: organization",
-                    "dc: " + suffix_dc,
-                    "o: " + suffix_dc,
-                    "",
-                    "dn: " + slapd.root_dn,
-                    "objectClass: applicationProcess",
-                    "cn: " + slapd.root_cn,
-                    "",
-                    "dn: ou=users," + slapd.suffix,
-                    "objectClass: organizationalUnit",
-                    "ou: users",
-                    "",
-                    "dn: ou=groups," + slapd.suffix,
-                    "objectClass: organizationalUnit",
-                    "ou: groups",
-                ]
-            )
-            + "\n"
-        )
+        slapd.init_tree()
+        for ldif in (
+            "demo/ldif/memberof-config.ldif",
+            "demo/ldif/bootstrap-users-tree.ldif",
+            "demo/ldif/bootstrap-users.ldif",
+        ):
+            with open(ldif) as fd:
+                slapd.ldapadd(fd.read())
 
         yield slapd
     finally:
@@ -111,17 +60,15 @@ def test_install_keypair(configuration, tmpdir):
     assert os.path.exists(configuration["JWT"]["PUBLIC_KEY"])
 
 
-def test_install_schemas(configuration, slapd_server_without_schemas):
-    configuration["LDAP"]["ROOT_DN"] = slapd_server_without_schemas.suffix
-    configuration["LDAP"]["URI"] = slapd_server_without_schemas.ldap_uri
-    configuration["LDAP"]["BIND_DN"] = slapd_server_without_schemas.root_dn
-    configuration["LDAP"]["BIND_PW"] = slapd_server_without_schemas.root_pw
+def test_install_schemas(configuration, slapd_server):
+    configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server_without_schemas.ldap_uri)
+    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
     conn.protocol_version = 3
-    conn.simple_bind_s(
-        slapd_server_without_schemas.root_dn, slapd_server_without_schemas.root_pw
-    )
+    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
 
     assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
@@ -130,20 +77,18 @@ def test_install_schemas(configuration, slapd_server_without_schemas):
     assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     conn.unbind_s()
-    slapd_server_without_schemas.stop()
+    slapd_server.stop()
 
 
-def test_install_schemas_command(configuration, slapd_server_without_schemas):
-    configuration["LDAP"]["ROOT_DN"] = slapd_server_without_schemas.suffix
-    configuration["LDAP"]["URI"] = slapd_server_without_schemas.ldap_uri
-    configuration["LDAP"]["BIND_DN"] = slapd_server_without_schemas.root_dn
-    configuration["LDAP"]["BIND_PW"] = slapd_server_without_schemas.root_pw
+def test_install_schemas_command(configuration, slapd_server):
+    configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server_without_schemas.ldap_uri)
+    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
     conn.protocol_version = 3
-    conn.simple_bind_s(
-        slapd_server_without_schemas.root_dn, slapd_server_without_schemas.root_pw
-    )
+    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
 
     assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
@@ -154,4 +99,4 @@ def test_install_schemas_command(configuration, slapd_server_without_schemas):
     assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     conn.unbind_s()
-    slapd_server_without_schemas.stop()
+    slapd_server.stop()

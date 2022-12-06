@@ -11,8 +11,10 @@ services:
       # memberof overlay is already present in openldap docker image but only for groupOfUniqueNames. We need to overwrite it (until canaille can handle groupOfUniqueNames).
       # https://github.com/osixia/docker-openldap/blob/master/image/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif
       - ../canaille/ldap_backend/schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
-      - ./ldif/bootstrap-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-boostrap-tree.ldif:ro
-      - ./ldif/bootstrap-data.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/60-boostrap-data.ldif:ro
+      - ./ldif/bootstrap-users-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-users-tree.ldif:ro
+      - ./ldif/bootstrap-oidc-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-oidc-tree.ldif:ro
+      - ./ldif/bootstrap-users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/60-bootstrap-users.ldif:ro
+      - ./ldif/bootstrap-oidc.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/70-bootstrap-oidc.ldif:ro
     command: --copy-service --loglevel debug
     ports:
       - 5389:389

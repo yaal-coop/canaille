@@ -26,10 +26,57 @@ class CustomSlapdObject(slapd.Slapd):
                 "cosine.ldif",
                 "nis.ldif",
                 "inetorgperson.ldif",
-                "canaille/ldap_backend/schemas/oauth2-openldap.ldif",
-                "demo/ldif/memberof-config.ldif",
             ),
         )
+
+    def init_tree(self):
+        suffix_dc = self.suffix.split(",")[0][3:]
+        self.ldapadd(
+            "\n".join(
+                [
+                    "dn: " + self.suffix,
+                    "objectClass: dcObject",
+                    "objectClass: organization",
+                    "dc: " + suffix_dc,
+                    "o: " + suffix_dc,
+                    "",
+                    "dn: " + self.root_dn,
+                    "objectClass: applicationProcess",
+                    "cn: " + self.root_cn,
+                ]
+            )
+            + "\n"
+        )
+
+
+@pytest.fixture(scope="session")
+def slapd_server():
+    slapd = CustomSlapdObject()
+
+    try:
+        slapd.start()
+        slapd.init_tree()
+        for ldif in (
+            "demo/ldif/memberof-config.ldif",
+            "canaille/ldap_backend/schemas/oauth2-openldap.ldif",
+            "demo/ldif/bootstrap-users-tree.ldif",
+            "demo/ldif/bootstrap-oidc-tree.ldif",
+        ):
+            with open(ldif) as fd:
+                slapd.ldapadd(fd.read())
+        yield slapd
+    finally:
+        slapd.stop()
+
+
+@pytest.fixture
+def slapd_connection(slapd_server, testclient):
+    g.ldap = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
+    g.ldap.protocol_version = 3
+    g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+    yield g.ldap
+    if g.ldap:
+        g.ldap.unbind_s()
 
 
 @pytest.fixture(scope="session")
@@ -61,66 +108,6 @@ def keypair_path(keypair, tmp_path):
         fd.write(public_key)
 
     return private_key_path, public_key_path
-
-
-@pytest.fixture(scope="session")
-def raw_slapd_server():
-    slapd = CustomSlapdObject()
-    try:
-        slapd.start()
-        suffix_dc = slapd.suffix.split(",")[0][3:]
-        slapd.ldapadd(
-            "\n".join(
-                [
-                    "dn: " + slapd.suffix,
-                    "objectClass: dcObject",
-                    "objectClass: organization",
-                    "dc: " + suffix_dc,
-                    "o: " + suffix_dc,
-                    "",
-                    "dn: " + slapd.root_dn,
-                    "objectClass: applicationProcess",
-                    "cn: " + slapd.root_cn,
-                    "",
-                    "dn: ou=users," + slapd.suffix,
-                    "objectClass: organizationalUnit",
-                    "ou: users",
-                    "",
-                    "dn: ou=groups," + slapd.suffix,
-                    "objectClass: organizationalUnit",
-                    "ou: groups",
-                ]
-            )
-            + "\n"
-        )
-
-        yield slapd
-    finally:
-        slapd.stop()
-
-
-@pytest.fixture(scope="session")
-def slapd_server(raw_slapd_server):
-    for ldif in ("demo/ldif/bootstrap-tree.ldif",):
-        with open(ldif) as fd:
-            raw_slapd_server.ldapadd(fd.read())
-
-    LDAPObject.root_dn = raw_slapd_server.suffix
-    User.base = "ou=users"
-    User.object_class = ["inetOrgPerson"]
-    Group.base = "ou=groups"
-    Group.object_class = ["groupOfNames"]
-    yield raw_slapd_server
-
-
-@pytest.fixture
-def slapd_connection(slapd_server, testclient):
-    g.ldap = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    g.ldap.protocol_version = 3
-    g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-    yield g.ldap
-    if g.ldap:
-        g.ldap.unbind_s()
 
 
 @pytest.fixture
