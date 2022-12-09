@@ -27,6 +27,7 @@ from .forms import LogoutForm
 from .models import Client
 from .models import Consent
 from .oauth import authorization
+from .oauth import ClientConfigurationEndpoint
 from .oauth import ClientRegistrationEndpoint
 from .oauth import DEFAULT_JWT_ALG
 from .oauth import DEFAULT_JWT_KTY
@@ -208,6 +209,21 @@ def client_registration():
         ClientRegistrationEndpoint.ENDPOINT_NAME
     )
     current_app.logger.debug("client registration endpoint response: %s", response.json)
+    return response
+
+
+@bp.route("/register/<client_id>", methods=["GET", "PUT", "DELETE"])
+def client_registration_management(client_id):
+    current_app.logger.debug(
+        "client registration management endpoint request: POST: %s",
+        request.form.to_dict(flat=False),
+    )
+    response = authorization.create_endpoint_response(
+        ClientConfigurationEndpoint.ENDPOINT_NAME
+    )
+    current_app.logger.debug(
+        "client registration management endpoint response: %s", response.json
+    )
     return response
 
 

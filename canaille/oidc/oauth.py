@@ -16,6 +16,9 @@ from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
 from authlib.oauth2.rfc7591 import (
     ClientRegistrationEndpoint as _ClientRegistrationEndpoint,
 )
+from authlib.oauth2.rfc7592 import (
+    ClientConfigurationEndpoint as _ClientConfigurationEndpoint,
+)
 from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
 from authlib.oidc.core import UserInfo
@@ -319,9 +322,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
         }
 
 
-class ClientRegistrationEndpoint(_ClientRegistrationEndpoint):
-    software_statement_alg_values_supported = ["RS256"]
-
+class ClientManagementMixin:
     def authenticate_token(self, request):
         if current_app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN", False):
             return True
@@ -338,14 +339,6 @@ class ClientRegistrationEndpoint(_ClientRegistrationEndpoint):
 
         return True
 
-    def save_client(self, client_info, client_metadata, request):
-        client_info["client_id_issued_at"] = datetime.datetime.fromtimestamp(
-            client_info["client_id_issued_at"]
-        )
-        client = Client(**client_info, **client_metadata)
-        client.save()
-        return client
-
     def get_server_metadata(self):
         from .well_known import cached_openid_configuration
 
@@ -357,6 +350,46 @@ class ClientRegistrationEndpoint(_ClientRegistrationEndpoint):
         # is the one used to isues JWTs. This might change somedays.
         with open(current_app.config["JWT"]["PUBLIC_KEY"], "rb") as fd:
             return fd.read()
+
+
+class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):
+    software_statement_alg_values_supported = ["RS256"]
+
+    def save_client(self, client_info, client_metadata, request):
+        client_info["client_id_issued_at"] = datetime.datetime.fromtimestamp(
+            client_info["client_id_issued_at"]
+        )
+        client = Client(**client_info, **client_metadata)
+        client.save()
+        return client
+
+
+class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEndpoint):
+    def authenticate_client(self, request):
+        client_id = request.uri.split("/")[-1]
+        return Client.get(client_id)
+
+    def revoke_access_token(self, request, token):
+        pass
+
+    def check_permission(self, client, request):
+        return True
+
+    def delete_client(self, client, request):
+        client.delete()
+
+    def update_client(self, client, client_metadata, request):
+        for key, value in client_metadata.items():
+            setattr(client, key, value)
+        client.save()
+        return client
+
+    def generate_client_registration_info(self, client, request):
+        access_token = request.headers["Authorization"].split(" ")[1]
+        return {
+            "registration_client_uri": request.uri,
+            "registration_access_token": access_token,
+        }
 
 
 class CodeChallenge(_CodeChallenge):
@@ -398,3 +431,4 @@ def setup_oauth(app):
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(ClientRegistrationEndpoint)
+    authorization.register_endpoint(ClientConfigurationEndpoint)
