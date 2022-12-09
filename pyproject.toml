@@ -114,7 +114,7 @@ envlist =
     coverage
 
 [testenv]
-whitelist_externals = poetry
+allowlist_externals = poetry
 commands =
     poetry install
     poetry run pytest --showlocals --full-trace {posargs}
