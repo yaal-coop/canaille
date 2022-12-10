@@ -25,7 +25,7 @@ def clean():
         teardown_backend,
     )
 
-    if not current_app.config["TESTING"]:
+    if not current_app.config["TESTING"]:  # pragma: no cover
         setup_backend(current_app)
 
     for t in Token.all():
@@ -36,7 +36,7 @@ def clean():
         if a.is_expired():
             a.delete()
 
-    if not current_app.config["TESTING"]:
+    if not current_app.config["TESTING"]:  # pragma: no cover
         teardown_backend(current_app)
 
 
@@ -67,6 +67,6 @@ def install():
     try:
         install(current_app.config)
 
-    except ConfigurationException as exc:
+    except ConfigurationException as exc:  # pragma: no cover
         print(exc)
         sys.exit(1)

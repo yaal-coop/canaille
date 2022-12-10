@@ -32,7 +32,7 @@ def setup_ldap_models(config):
 
 
 def setup_backend(app):
-    try:  # pragma: no-cover
+    try:  # pragma: no cover
         if request.endpoint == "static":
             return
     except RuntimeError:

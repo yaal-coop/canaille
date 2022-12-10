@@ -148,9 +148,6 @@ class User(LDAPObject):
     def can_read(self, field):
         return field in self.read | self.write
 
-    def can_write(self, field):
-        return field in self.write
-
     @property
     def can_edit_self(self):
         return "edit_self" in self.permissions
