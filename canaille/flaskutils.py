@@ -12,26 +12,14 @@ from flask_babel import gettext as _
 
 
 def current_user():
-    if not session.get("user_dn"):
-        return None
-
-    if not isinstance(session.get("user_dn"), list):
-        del session["user_dn"]
-        return None
-
-    dn = session["user_dn"][-1]
-    try:
+    for dn in session.get("user_dn", [])[::-1]:
         user = User.get(dn=dn)
-    except ldap.LDAPError:
-        return None
+        if user:
+            return user
 
-    if not user:
-        try:
-            session["user_dn"] = session["user_dn"][:-1]
-        except IndexError:
-            del session["user_dn"]
+        session["user_dn"].remove(dn)
 
-    return user
+    return None
 
 
 def user_needed():

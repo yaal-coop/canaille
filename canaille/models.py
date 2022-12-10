@@ -71,11 +71,10 @@ class User(LDAPObject):
     @classmethod
     def logout(self):
         try:
-            if isinstance(session["user_dn"], list):
-                session["user_dn"].pop()
-            else:
+            session["user_dn"].pop()
+            if not session["user_dn"]:
                 del session["user_dn"]
-        except (IndexError, KeyError):
+        except KeyError:
             pass
 
     def has_password(self):
