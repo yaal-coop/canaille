@@ -7,12 +7,31 @@ from canaille.oidc.models import Token
 from . import client_credentials
 
 
-def test_token_introspection(testclient, user, client, token):
+def test_access_token_introspection(testclient, user, client, token):
     res = testclient.post(
         "/oauth/introspect",
-        params=dict(
-            token=token.access_token,
-        ),
+        params={"token": token.access_token},
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    assert {
+        "active": True,
+        "client_id": client.client_id,
+        "token_type": token.type,
+        "username": user.name,
+        "scope": token.get_scope(),
+        "sub": user.uid[0],
+        "aud": [client.client_id],
+        "iss": "https://auth.mydomain.tld",
+        "exp": token.get_expires_at(),
+        "iat": token.get_issued_at(),
+    } == res.json
+
+
+def test_refresh_token_introspection(testclient, user, client, token):
+    res = testclient.post(
+        "/oauth/introspect",
+        params={"token": token.refresh_token},
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )

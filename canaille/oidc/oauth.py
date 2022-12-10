@@ -267,22 +267,26 @@ class BearerTokenValidator(_BearerTokenValidator):
         return bool(token.revokation_date)
 
 
+def query_token(token, token_type_hint):
+    if token_type_hint == "access_token":
+        return Token.get(access_token=token)
+    elif token_type_hint == "refresh_token":
+        return Token.get(refresh_token=token)
+
+    item = Token.get(access_token=token)
+    if item:
+        return item
+
+    item = Token.get(refresh_token=token)
+    if item:
+        return item
+
+    return None
+
+
 class RevocationEndpoint(_RevocationEndpoint):
     def query_token(self, token, token_type_hint):
-        if token_type_hint == "access_token":
-            return Token.get(access_token=token)
-        elif token_type_hint == "refresh_token":
-            return Token.get(refresh_token=token)
-
-        item = Token.get(access_token=token)
-        if item:
-            return item
-
-        item = Token.get(refresh_token=token)
-        if item:
-            return item
-
-        return None
+        return query_token(token, token_type_hint)
 
     def revoke_token(self, token, request):
         token.revokation_date = datetime.datetime.now()
@@ -291,15 +295,7 @@ class RevocationEndpoint(_RevocationEndpoint):
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):
     def query_token(self, token, token_type_hint):
-        if token_type_hint == "access_token":
-            tok = Token.filter(access_token=token)
-        elif token_type_hint == "refresh_token":
-            tok = Token.filter(refresh_token=token)
-        else:
-            tok = Token.filter(access_token=token)
-            if not tok:
-                tok = Token.filter(refresh_token=token)
-        return tok[0] if tok else None
+        return query_token(token, token_type_hint)
 
     def check_permission(self, token, client, request):
         return client.dn in token.audience
