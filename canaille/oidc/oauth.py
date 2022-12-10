@@ -260,12 +260,6 @@ class BearerTokenValidator(_BearerTokenValidator):
     def authenticate_token(self, token_string):
         return Token.get(access_token=token_string)
 
-    def request_invalid(self, request):
-        return False
-
-    def token_revoked(self, token):
-        return bool(token.revokation_date)
-
 
 def query_token(token, token_type_hint):
     if token_type_hint == "access_token":
