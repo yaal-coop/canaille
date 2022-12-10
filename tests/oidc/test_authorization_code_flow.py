@@ -104,6 +104,53 @@ def test_authorization_code_flow(
         consent.delete()
 
 
+def test_authorization_code_flow_with_redirect_uri(
+    testclient, logged_user, client, keypair, other_client
+):
+    assert not Consent.all()
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[1],
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.redirect_uris[1])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = AuthorizationCode.get(code=code)
+    assert authcode is not None
+    consents = Consent.filter(client=client.dn, subject=logged_user.dn)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile email groups address phone",
+            redirect_uri=client.redirect_uris[1],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = Token.get(access_token=access_token)
+    assert token.client == client.dn
+    assert token.subject == logged_user.dn
+
+    for consent in consents:
+        consent.delete()
+
+
 def test_authorization_code_flow_preconsented(
     testclient, logged_user, client, keypair, other_client
 ):
