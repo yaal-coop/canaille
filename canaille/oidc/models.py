@@ -224,7 +224,8 @@ class Consent(LDAPObject):
             oauthSubject=self.subject,
         )
         for t in tokens:
-            if t.revoked or any(scope not in t.scope[0] for scope in self.scope):
+            different_scope = any(scope not in t.scope[0] for scope in self.scope)
+            if t.revoked or different_scope:
                 continue
 
             t.revokation_date = self.revokation_date
