@@ -1,6 +1,4 @@
 import datetime
-from urllib.parse import urlsplit
-from urllib.parse import urlunsplit
 
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import JsonWebKey
@@ -21,6 +19,7 @@ from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 
 from ..flaskutils import current_user
+from ..flaskutils import set_parameter_in_url_query
 from ..forms import FullLoginForm
 from ..models import User
 from .forms import LogoutForm
@@ -253,19 +252,6 @@ def userinfo():
     response = generate_user_info(current_token.subject, current_token.scope[0])
     current_app.logger.debug("userinfo endpoint response: %s", response)
     return jsonify(response)
-
-
-def set_parameter_in_url_query(url, **kwargs):
-    split = list(urlsplit(url))
-
-    parameters = "&".join(f"{key}={value}" for key, value in kwargs.items())
-
-    if split[3]:
-        split[3] = f"{split[3]}&{parameters}"
-    else:
-        split[3] = parameters
-
-    return urlunsplit(split)
 
 
 @bp.route("/end_session", methods=["GET", "POST"])
