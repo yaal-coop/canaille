@@ -1,9 +1,9 @@
-from authlib.jose import jwk
+from authlib.jose import JsonWebKey
 
 
 def test_jwks(testclient, keypair):
     _, pubkey = keypair
-    obj = jwk.dumps(pubkey, "RSA")
+    jwk = JsonWebKey.import_key(pubkey, {"kty": "RSA"})
 
     res = testclient.get("/oauth/jwks.json")
     assert res.json == {
@@ -12,7 +12,7 @@ def test_jwks(testclient, keypair):
                 "kid": None,
                 "use": "sig",
                 "alg": "RS256",
-                **obj,
+                **jwk,
             }
         ]
     }

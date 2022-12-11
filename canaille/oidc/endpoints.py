@@ -3,7 +3,7 @@ from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
 from authlib.integrations.flask_oauth2 import current_token
-from authlib.jose import jwk
+from authlib.jose import JsonWebKey
 from authlib.jose import jwt
 from authlib.oauth2 import OAuth2Error
 from flask import abort
@@ -229,17 +229,17 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    obj = jwk.dumps(
-        get_public_key(), current_app.config["JWT"].get("KTY", DEFAULT_JWT_KTY)
-    )
+    kty = current_app.config["JWT"].get("KTY", DEFAULT_JWT_KTY)
+    alg = current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG)
+    jwk = JsonWebKey.import_key(get_public_key(), {"kty": kty})
     return jsonify(
         {
             "keys": [
                 {
                     "kid": None,
                     "use": "sig",
-                    "alg": current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG),
-                    **obj,
+                    "alg": alg,
+                    **jwk,
                 }
             ]
         }
