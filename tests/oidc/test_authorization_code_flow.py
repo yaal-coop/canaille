@@ -104,6 +104,19 @@ def test_authorization_code_flow(
         consent.delete()
 
 
+def test_invalid_client(testclient, logged_user, keypair):
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id="invalid",
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+        ),
+        status=400,
+    )
+
+
 def test_authorization_code_flow_with_redirect_uri(
     testclient, logged_user, client, keypair, other_client
 ):
