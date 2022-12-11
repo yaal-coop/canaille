@@ -2,6 +2,7 @@ from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
 from authlib.integrations.flask_client import OAuth
+from authlib.integrations.flask_client import OAuthError
 from authlib.oidc.discovery import get_well_known_url
 from flask import current_app
 from flask import flash
@@ -41,10 +42,14 @@ def create_app():
 
     @app.route("/authorize")
     def authorize():
-        token = oauth.canaille.authorize_access_token()
-        session["user"] = token.get("userinfo")
-        session["id_token"] = token["id_token"]
-        flash("You have been successfully logged in.", "success")
+        try:
+            token = oauth.canaille.authorize_access_token()
+            session["user"] = token.get("userinfo")
+            session["id_token"] = token["id_token"]
+            flash("You have been successfully logged in.", "success")
+        except OAuthError as exc:
+            flash(f"You have not been logged in: {exc.description}", "error")
+
         return redirect(url_for("index"))
 
     @app.route("/logout")

@@ -301,6 +301,29 @@ def test_logout_login(testclient, logged_user, client):
         consent.delete()
 
 
+def test_deny(testclient, logged_user, client):
+    assert not Consent.all()
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="deny", status=302)
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    error = params["error"][0]
+    assert error == "access_denied"
+
+    assert not Consent.all()
+
+
 def test_refresh_token(testclient, user, client):
     assert not Consent.all()
 
