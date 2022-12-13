@@ -118,6 +118,11 @@ def test_client_delete(testclient, logged_admin):
     assert not Client.get(client.client_id)
 
 
+def test_invalid_request(testclient, logged_admin, client):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res = res.forms["clientadd"].submit(name="action", value="invalid", status=400)
+
+
 def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     assert not client.preconsent
 
