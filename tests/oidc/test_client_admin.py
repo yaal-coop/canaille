@@ -108,6 +108,16 @@ def test_client_edit(testclient, client, logged_admin, other_client):
             assert v == client_value
 
 
+def test_client_delete(testclient, logged_admin):
+    client = Client(client_id="client_id")
+    client.save()
+
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res = res.forms["clientadd"].submit(name="action", value="delete").follow()
+
+    assert not Client.get(client.client_id)
+
+
 def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     assert not client.preconsent
 
