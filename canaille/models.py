@@ -35,16 +35,13 @@ class User(LDAPObject):
         return user
 
     def load_groups(self, conn=None):
-        try:
-            group_filter = (
-                current_app.config["LDAP"]
-                .get("GROUP_USER_FILTER", Group.DEFAULT_USER_FILTER)
-                .format(user=self)
-            )
-            escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
-            self._groups = Group.filter(filter=escaped_group_filter, conn=conn)
-        except KeyError:
-            pass
+        group_filter = (
+            current_app.config["LDAP"]
+            .get("GROUP_USER_FILTER", Group.DEFAULT_USER_FILTER)
+            .format(user=self)
+        )
+        escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
+        self._groups = Group.filter(filter=escaped_group_filter, conn=conn)
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
@@ -98,17 +95,11 @@ class User(LDAPObject):
 
     def set_password(self, password, conn=None):
         conn = conn or self.ldap()
-
-        try:
-            conn.passwd_s(
-                self.dn,
-                None,
-                password.encode("utf-8"),
-            )
-
-        except ldap.LDAPError:
-            return False
-
+        conn.passwd_s(
+            self.dn,
+            None,
+            password.encode("utf-8"),
+        )
         return True
 
     @property
