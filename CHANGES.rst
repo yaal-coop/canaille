@@ -11,6 +11,11 @@ Added
 - Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management
   Protocol :pr:`79`
 
+Fixed
+*****
+
+- Fixed group deletion button. :pr:`80`
+
 [0.0.14] - 2022-11-29
 =====================
 
