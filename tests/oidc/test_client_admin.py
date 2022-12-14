@@ -130,7 +130,9 @@ def test_client_delete(testclient, logged_admin):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientadd"].submit(name="action", value="delete").follow()
 
-    assert not Client.get(client.client_id)
+
+def test_client_delete_invalid_client(testclient, logged_admin):
+    testclient.post("/admin/client/edit/invalid", {"action": "delete"}, status=404)
 
 
 def test_invalid_request(testclient, logged_admin, client):
