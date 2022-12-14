@@ -169,9 +169,7 @@ class LDAPObject:
     def ldap_attrs_to_python(attrs):
         return {
             name: [
-                ldap_to_python(
-                    name, value, LDAPObject.ldap_object_attributes()[name].syntax
-                )
+                ldap_to_python(value, LDAPObject.ldap_object_attributes()[name].syntax)
                 for value in values
             ]
             for name, values in attrs.items()
@@ -181,9 +179,7 @@ class LDAPObject:
     def python_attrs_to_ldap(attrs):
         return {
             name: [
-                python_to_ldap(
-                    name, value, LDAPObject.ldap_object_attributes()[name].syntax
-                )
+                python_to_ldap(value, LDAPObject.ldap_object_attributes()[name].syntax)
                 for value in values
             ]
             for name, values in attrs.items()

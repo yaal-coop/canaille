@@ -1,4 +1,9 @@
+import datetime
+
 import ldap.dn
+from canaille.ldap_backend.utils import ldap_to_python
+from canaille.ldap_backend.utils import python_to_ldap
+from canaille.ldap_backend.utils import Syntax
 from canaille.models import Group
 from canaille.models import User
 
@@ -49,3 +54,42 @@ def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
     assert user.dn == "cn=\\#Doe,ou=users,dc=mydomain,dc=tld"
 
     user.delete()
+
+
+def test_ldap_to_python():
+    assert (
+        python_to_ldap(datetime.datetime.min, Syntax.GENERALIZED_TIME)
+        == b"000001010000Z"
+    )
+    assert (
+        python_to_ldap(datetime.datetime(2000, 1, 2, 3, 4, 5), Syntax.GENERALIZED_TIME)
+        == b"20000102030405Z"
+    )
+
+    assert python_to_ldap(1337, Syntax.INTEGER) == b"1337"
+
+    assert python_to_ldap(True, Syntax.BOOLEAN) == b"TRUE"
+    assert python_to_ldap(False, Syntax.BOOLEAN) == b"FALSE"
+
+    assert python_to_ldap("foobar", Syntax.DIRECTORY_STRING) == b"foobar"
+
+    assert python_to_ldap(b"foobar", Syntax.JPEG) == b"foobar"
+
+
+def test_python_to_ldap():
+    assert ldap_to_python(
+        b"20000102030405Z", Syntax.GENERALIZED_TIME
+    ) == datetime.datetime(2000, 1, 2, 3, 4, 5)
+    assert (
+        ldap_to_python(b"000001010000Z", Syntax.GENERALIZED_TIME)
+        == datetime.datetime.min
+    )
+
+    assert ldap_to_python(b"1337", Syntax.INTEGER) == 1337
+
+    assert ldap_to_python(b"TRUE", Syntax.BOOLEAN) is True
+    assert ldap_to_python(b"FALSE", Syntax.BOOLEAN) is False
+
+    assert ldap_to_python(b"foobar", Syntax.DIRECTORY_STRING) == "foobar"
+
+    assert ldap_to_python(b"foobar", Syntax.JPEG) == b"foobar"

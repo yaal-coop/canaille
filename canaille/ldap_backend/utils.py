@@ -20,7 +20,7 @@ class Syntax(str, Enum):
     # fmt: on
 
 
-def ldap_to_python(name, value, syntax):
+def ldap_to_python(value, syntax):
     if syntax == Syntax.GENERALIZED_TIME:
         value = value.decode("utf-8")
         if value == LDAP_NULL_DATE:
@@ -41,7 +41,7 @@ def ldap_to_python(name, value, syntax):
     return value.decode("utf-8")
 
 
-def python_to_ldap(name, value, syntax):
+def python_to_ldap(value, syntax):
     if syntax == Syntax.GENERALIZED_TIME and isinstance(value, datetime.datetime):
         if value == datetime.datetime.min:
             return LDAP_NULL_DATE.encode("utf-8")
