@@ -331,7 +331,8 @@ class LDAPObject:
 
     def __eq__(self, other):
         return (
-            self.may == other.may
+            isinstance(other, self.__class__)
+            and self.may == other.may
             and self.must == other.must
             and all(
                 getattr(self, attr) == getattr(other, attr)

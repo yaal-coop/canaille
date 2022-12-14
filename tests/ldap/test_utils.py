@@ -56,6 +56,16 @@ def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
     user.delete()
 
 
+def test_filter(slapd_connection, foo_group, bar_group):
+    assert Group.filter(cn="foo") == [foo_group]
+    assert Group.filter(cn="bar") == [bar_group]
+
+    assert Group.filter(cn=["foo"]) == [foo_group]
+    assert Group.filter(cn=["bar"]) == [bar_group]
+
+    assert set(Group.filter(cn=["foo", "bar"])) == {foo_group, bar_group}
+
+
 def test_ldap_to_python():
     assert (
         python_to_ldap(datetime.datetime.min, Syntax.GENERALIZED_TIME)
