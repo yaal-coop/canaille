@@ -3,6 +3,11 @@ from canaille.models import Group
 from canaille.models import User
 
 
+def test_repr(slapd_connection, foo_group, user):
+    assert repr(foo_group) == "<Group cn=['foo']>"
+    assert repr(user) == "<User cn=['John (johnny) Doe']>"
+
+
 def test_equality(slapd_connection, foo_group, bar_group):
     Group.ldap_object_attributes()
     assert foo_group != bar_group

@@ -77,11 +77,7 @@ class LDAPObject:
         self.must = list(set(self.must))
 
     def __repr__(self):
-        try:
-            id = getattr(self, self.id)
-        except AttributeError:
-            id = "?"
-
+        id = getattr(self, self.id, "?")
         return f"<{self.__class__.__name__} {self.id}={id}>"
 
     @classmethod
