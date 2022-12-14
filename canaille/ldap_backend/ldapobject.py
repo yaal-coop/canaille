@@ -1,27 +1,9 @@
-import datetime
-from enum import Enum
-
 import ldap.dn
 import ldap.filter
 from flask import g
 
-LDAP_NULL_DATE = "000001010000Z"
-
-
-class Syntax(str, Enum):
-    # fmt: off
-    BOOLEAN =          "1.3.6.1.4.1.1466.115.121.1.7"
-    DIRECTORY_STRING = "1.3.6.1.4.1.1466.115.121.1.15"
-    GENERALIZED_TIME = "1.3.6.1.4.1.1466.115.121.1.24"
-    IA5_STRING =       "1.3.6.1.4.1.1466.115.121.1.26"
-    INTEGER =          "1.3.6.1.4.1.1466.115.121.1.27"
-    JPEG =             "1.3.6.1.4.1.1466.115.121.1.28"
-    NUMERIC_STRING =   "1.3.6.1.4.1.1466.115.121.1.36"
-    OCTET_STRING =     "1.3.6.1.4.1.1466.115.121.1.40"
-    POSTAL_ADDRESS =   "1.3.6.1.4.1.1466.115.121.1.41"
-    PRINTABLE_STRING = "1.3.6.1.4.1.1466.115.121.1.44"
-    TELEPHONE_NUMBER = "1.3.6.1.4.1.1466.115.121.1.50"
-    # fmt: on
+from .utils import ldap_to_python
+from .utils import python_to_ldap
 
 
 class LDAPObject:
@@ -184,70 +166,26 @@ class LDAPObject:
         return cls._attribute_type_by_name
 
     @staticmethod
-    def ldap_to_python(name, value):
-        try:
-            syntax = LDAPObject.ldap_object_attributes()[name].syntax
-        except KeyError:
-            return value
-
-        if syntax == Syntax.GENERALIZED_TIME:
-            value = value.decode("utf-8")
-            if value == LDAP_NULL_DATE:
-                # python cannot represent datetimes with year 0
-                return datetime.datetime.min
-            else:
-                return (
-                    datetime.datetime.strptime(value, "%Y%m%d%H%M%SZ")
-                    if value
-                    else None
-                )
-
-        if syntax == Syntax.INTEGER:
-            return int(value.decode("utf-8"))
-
-        if syntax == Syntax.JPEG:
-            return value
-
-        if syntax == Syntax.BOOLEAN:
-            return value.decode("utf-8").upper() == "TRUE"
-
-        return value.decode("utf-8")
-
-    @staticmethod
-    def python_to_ldap(name, value):
-        try:
-            syntax = LDAPObject.ldap_object_attributes()[name].syntax
-        except KeyError:
-            return value
-
-        if syntax == Syntax.GENERALIZED_TIME and isinstance(value, datetime.datetime):
-            if value == datetime.datetime.min:
-                return LDAP_NULL_DATE.encode("utf-8")
-            else:
-                return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")
-
-        if syntax == Syntax.INTEGER and isinstance(value, int):
-            return str(value).encode("utf-8")
-
-        if syntax == Syntax.JPEG:
-            return value if value else None
-
-        if syntax == Syntax.BOOLEAN and isinstance(value, bool):
-            return ("TRUE" if value else "FALSE").encode("utf-8")
-
-        return value.encode("utf-8") if value else None
-
-    @staticmethod
     def ldap_attrs_to_python(attrs):
         return {
-            name: [LDAPObject.ldap_to_python(name, value) for value in values]
+            name: [
+                ldap_to_python(
+                    name, value, LDAPObject.ldap_object_attributes()[name].syntax
+                )
+                for value in values
+            ]
             for name, values in attrs.items()
         }
 
     @staticmethod
     def python_attrs_to_ldap(attrs):
         return {
-            name: [LDAPObject.python_to_ldap(name, value) for value in values]
+            name: [
+                python_to_ldap(
+                    name, value, LDAPObject.ldap_object_attributes()[name].syntax
+                )
+                for value in values
+            ]
             for name, values in attrs.items()
         }
 
