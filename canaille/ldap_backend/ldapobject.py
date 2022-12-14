@@ -68,10 +68,6 @@ class LDAPObject:
 
     def keys(self):
         ldap_keys = self.must + self.may
-
-        if not self.attribute_table:
-            return ldap_keys
-
         inverted_table = {value: key for key, value in self.attribute_table.items()}
         return [inverted_table.get(key, key) for key in ldap_keys]
 
@@ -93,10 +89,8 @@ class LDAPObject:
     def dn(self):
         if self.id in self.changes:
             id = self.changes[self.id][0]
-        elif self.id in self.attrs:
-            id = self.attrs[self.id][0]
         else:
-            return None
+            id = self.attrs[self.id][0]
         return f"{self.id}={ldap.dn.escape_dn_chars(id.strip())},{self.base},{self.root_dn}"
 
     @classmethod
