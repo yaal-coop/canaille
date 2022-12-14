@@ -62,6 +62,12 @@ def test_client_add(testclient, logged_admin):
     client.delete()
 
 
+def test_add_missing_fields(testclient, logged_admin):
+    res = testclient.get("/admin/client/add")
+    res = res.form.submit(status=200, name="action", value="edit")
+    assert "The client has not been added. Please check your information." in res
+
+
 def test_client_edit(testclient, client, logged_admin, other_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
@@ -106,6 +112,15 @@ def test_client_edit(testclient, client, logged_admin, other_client):
             assert [v] == client_value
         else:
             assert v == client_value
+
+
+def test_client_edit_missing_fields(testclient, client, logged_admin, other_client):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clientadd"]["client_name"] = ""
+    res = res.forms["clientadd"].submit(name="action", value="edit")
+    assert "The client has not been edited. Please check your information." in res
+    client.reload()
+    assert client.client_name
 
 
 def test_client_delete(testclient, logged_admin):
