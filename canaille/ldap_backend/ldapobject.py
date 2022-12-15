@@ -161,9 +161,12 @@ class LDAPObject:
 
     @staticmethod
     def ldap_attrs_to_python(attrs):
+        ldap_attrs = LDAPObject.ldap_object_attributes()
         return {
             name: [
-                ldap_to_python(value, LDAPObject.ldap_object_attributes()[name].syntax)
+                ldap_to_python(
+                    value, ldap_attrs[name].syntax if name in ldap_attrs else None
+                )
                 for value in values
             ]
             for name, values in attrs.items()
@@ -171,9 +174,12 @@ class LDAPObject:
 
     @staticmethod
     def python_attrs_to_ldap(attrs):
+        ldap_attrs = LDAPObject.ldap_object_attributes()
         return {
             name: [
-                python_to_ldap(value, LDAPObject.ldap_object_attributes()[name].syntax)
+                python_to_ldap(
+                    value, ldap_attrs[name].syntax if name in ldap_attrs else None
+                )
                 for value in values
             ]
             for name, values in attrs.items()
