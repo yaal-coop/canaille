@@ -23,6 +23,11 @@ Added
   Protocol :pr:`79`
 - Added ``nonce`` to the ``claims_supported`` server metadata list.
 
+Fixed
+*****
+
+- Fixed group deletion button. :pr:`80`
+
 [0.0.14] - 2022-11-29
 =====================
 
