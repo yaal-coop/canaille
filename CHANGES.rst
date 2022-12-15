@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+Fixed
+*****
+
+- Fixed group deletion button. :pr:`80`
+
 [0.0.16] - 2022-12-15
 =====================
 
@@ -22,11 +27,6 @@ Added
 - Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management
   Protocol :pr:`79`
 - Added ``nonce`` to the ``claims_supported`` server metadata list.
-
-Fixed
-*****
-
-- Fixed group deletion button. :pr:`80`
 
 [0.0.14] - 2022-11-29
 =====================
