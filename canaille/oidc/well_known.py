@@ -83,6 +83,7 @@ def cached_openid_configuration():
             "locale",
             "zoneinfo",
             "groups",
+            "nonce",
         ],
         "subject_types_supported": ["pairwise", "public"],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],

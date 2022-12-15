@@ -10,6 +10,7 @@ Added
 - Bumped to authlib 1.2. :pr:`78`
 - Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management
   Protocol :pr:`79`
+- Added ``nonce`` to the ``claims_supported`` server metadata list.
 
 [0.0.14] - 2022-11-29
 =====================
