@@ -16,13 +16,13 @@ def setup_ldap_models(config):
 
     LDAPObject.root_dn = config["LDAP"]["ROOT_DN"]
 
-    user_base = config["LDAP"]["USER_BASE"].replace(config["LDAP"]["ROOT_DN"], "")
+    user_base = config["LDAP"]["USER_BASE"].replace(f',{config["LDAP"]["ROOT_DN"]}', "")
     User.base = user_base
     User.id = config["LDAP"].get("USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE)
     User.object_class = [config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)]
 
     group_base = (
-        config["LDAP"].get("GROUP_BASE", "").replace(config["LDAP"]["ROOT_DN"], "")
+        config["LDAP"].get("GROUP_BASE", "").replace(f',{config["LDAP"]["ROOT_DN"]}', "")
     )
     Group.base = group_base or None
     Group.id = config["LDAP"].get("GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE)
