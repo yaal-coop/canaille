@@ -330,9 +330,9 @@ class ClientManagementMixin:
         return True
 
     def get_server_metadata(self):
-        from .well_known import cached_openid_configuration
+        from .well_known import openid_configuration
 
-        result = cached_openid_configuration()
+        result = openid_configuration()
         return result
 
     def resolve_public_key(self, request):

@@ -13,11 +13,8 @@ from .oauth import get_issuer
 bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
 
-def cached_oauth_authorization_server():
-    if "oauth_authorization_server" in g:
-        return g.oauth_authorization_server
-
-    g.oauth_authorization_server = {
+def oauth_authorization_server():
+    return {
         "issuer": get_issuer(),
         "authorization_endpoint": url_for("oidc.endpoints.authorize", _external=True),
         "token_endpoint": url_for("oidc.endpoints.issue_token", _external=True),
@@ -56,15 +53,10 @@ def cached_oauth_authorization_server():
         "code_challenge_methods_supported": ["plain", "S256"],
     }
 
-    return g.oauth_authorization_server
 
-
-def cached_openid_configuration():
-    if "openid_configuration" in g:
-        return g.openid_configuration
-
-    g.openid_configuration = {
-        **cached_oauth_authorization_server(),
+def openid_configuration():
+    return {
+        **oauth_authorization_server(),
         "end_session_endpoint": url_for("oidc.endpoints.end_session", _external=True),
         "claims_supported": [
             "sub",
@@ -89,17 +81,15 @@ def cached_openid_configuration():
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
     }
 
-    return g.openid_configuration
-
 
 @bp.route("/oauth-authorization-server")
-def oauth_authorization_server():
-    return jsonify(cached_oauth_authorization_server())
+def oauth_authorization_server_endpoint():
+    return jsonify(oauth_authorization_server())
 
 
 @bp.route("/openid-configuration")
-def openid_configuration():
-    return jsonify(cached_openid_configuration())
+def openid_configuration_endpoint():
+    return jsonify(openid_configuration())
 
 
 @bp.route("/webfinger")
@@ -108,7 +98,7 @@ def webfinger():
         {
             "links": [
                 {
-                    "href": cached_openid_configuration()["issuer"],
+                    "href": openid_configuration()["issuer"],
                     "rel": "http://openid.net/specs/connect/1.0/issuer",
                 }
             ],
