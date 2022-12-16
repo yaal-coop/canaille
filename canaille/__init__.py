@@ -21,7 +21,6 @@ def setup_config(app, config=None, validate=True):
     import canaille.configuration
     import canaille.installation
 
-    dir_path = os.path.dirname(os.path.realpath(__file__))
     app.config.from_mapping(
         {
             "SESSION_COOKIE_NAME": "canaille",
@@ -33,10 +32,6 @@ def setup_config(app, config=None, validate=True):
         app.config.from_mapping(config)
     elif "CONFIG" in os.environ:
         app.config.from_mapping(toml.load(os.environ.get("CONFIG")))
-    elif os.path.exists(os.path.join(dir_path, "conf", "config.toml")):
-        app.config.from_mapping(
-            toml.load(os.path.join(dir_path, "conf", "config.toml"))
-        )
     else:
         raise Exception(
             "No configuration file found. "

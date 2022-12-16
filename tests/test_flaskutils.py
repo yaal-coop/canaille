@@ -1,6 +1,8 @@
 import os
 
 import ldap
+import pytest
+import toml
 from canaille import create_app
 from canaille.flaskutils import set_parameter_in_url_query
 from canaille.installation import setup_ldap_tree
@@ -24,6 +26,26 @@ def test_set_parameter_in_url_query():
         set_parameter_in_url_query("https://auth.mydomain.tld?foo=baz", hello="world")
         == "https://auth.mydomain.tld?foo=baz&hello=world"
     )
+
+
+def test_environment_configuration(slapd_server, configuration, tmp_path):
+    config_path = os.path.join(tmp_path, "config.toml")
+    with open(config_path, "w") as fd:
+        toml.dump(configuration, fd)
+
+    os.environ["CONFIG"] = config_path
+    app = create_app()
+    assert app.config["LDAP"]["ROOT_DN"] == slapd_server.suffix
+
+    del os.environ["CONFIG"]
+    os.remove(config_path)
+
+
+def test_no_configuration():
+    with pytest.raises(Exception) as exc:
+        app = create_app()
+
+    assert "No configuration file found." in str(exc)
 
 
 def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
