@@ -13,8 +13,8 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
-from flask_babel import gettext
-from flask_babel import lazy_gettext as _
+from flask_babel import gettext as _
+from flask_babel import lazy_gettext
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 
@@ -42,12 +42,14 @@ bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 CLAIMS = {
     "profile": (
         "id card outline",
-        _("Personnal information about yourself, such as your name or your gender."),
+        lazy_gettext(
+            "Personnal information about yourself, such as your name or your gender."
+        ),
     ),
-    "email": ("at", _("Your email address.")),
-    "address": ("envelope open outline", _("Your postal address.")),
-    "phone": ("phone", _("Your phone number.")),
-    "groups": ("users", _("Groups you are belonging to")),
+    "email": ("at", lazy_gettext("Your email address.")),
+    "address": ("envelope open outline", lazy_gettext("Your postal address.")),
+    "phone": ("phone", lazy_gettext("Your phone number.")),
+    "groups": ("users", lazy_gettext("Groups you are belonging to")),
 }
 
 
@@ -89,7 +91,7 @@ def authorize():
         if not form.validate() or not User.authenticate(
             form.login.data, form.password.data, True
         ):
-            flash(gettext("Login failed, please check your information"), "error")
+            flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form, menu=False)
 
         return redirect(request.url)
@@ -137,7 +139,7 @@ def authorize():
     if request.method == "POST":
         if request.form["answer"] == "logout":
             del session["user_dn"]
-            flash(gettext("You have been successfully logged out."), "success")
+            flash(_("You have been successfully logged out."), "success")
             return redirect(request.url)
 
         if request.form["answer"] == "deny":
