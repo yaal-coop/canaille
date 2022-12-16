@@ -97,6 +97,7 @@ def logo():
 
 
 def send_email(subject, recipient, text, html, attachements=None):
+    current_app.logger.debug(f"Sending a mail to {recipient}: {subject}")
     msg = email.message.EmailMessage()
     msg.set_content(text)
     msg.add_alternative(html, subtype="html")
