@@ -107,6 +107,32 @@ def test_user_without_password_first_login(testclient, slapd_connection):
     u.delete()
 
 
+def test_user_password_deleted_during_login(testclient, slapd_connection):
+    User.ldap_object_classes(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+        userPassword="{SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X",
+    )
+    u.save()
+
+    res = testclient.get("/login")
+    res.form["login"] = "Temp User"
+    res = res.form.submit().follow()
+    res.form["password"] = "correct horse battery staple"
+
+    u.userPassword = None
+    u.save()
+
+    res = res.form.submit(status=302)
+    assert res.location == "/firstlogin/temp"
+
+    u.delete()
+
+
 def test_user_deleted_in_session(testclient, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     u = User(
