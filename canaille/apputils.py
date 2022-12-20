@@ -60,13 +60,17 @@ def default_fields():
 
 
 def get_current_domain():
-    if current_app.config["SMTP"].get("FROM_ADDR"):
-        return current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
-
-    elif current_app.config.get("SERVER_NAME"):
+    if current_app.config.get("SERVER_NAME"):
         return current_app.config.get("SERVER_NAME")
 
     return request.host
+
+
+def get_current_mail_domain():
+    if current_app.config["SMTP"].get("FROM_ADDR"):
+        return current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
+
+    return get_current_domain()
 
 
 def logo():
@@ -79,7 +83,7 @@ def logo():
         if current_app.config.get("SERVER_NAME"):
             logo_url = "{}://{}/{}".format(
                 current_app.config.get("PREFERRED_URL_SCHEME"),
-                current_app.config.get("SERVER_NAME"),
+                get_current_domain(),
                 logo_url,
             )
         else:
@@ -92,7 +96,7 @@ def logo():
         logo_filename = None
         logo_raw = None
 
-    logo_cid = make_msgid(domain=get_current_domain())
+    logo_cid = make_msgid(domain=get_current_mail_domain())
     return logo_cid, logo_filename, logo_raw
 
 
@@ -109,7 +113,7 @@ def send_email(subject, recipient, text, html, attachements=None):
     address = current_app.config["SMTP"].get("FROM_ADDR")
 
     if not address:
-        domain = get_current_domain()
+        domain = get_current_mail_domain()
         address = f"admin@{domain}"
 
     msg["From"] = f'"{name}" <{address}>'
