@@ -92,6 +92,10 @@ class PasswordResetForm(FlaskForm):
     )
 
 
+class FirstLoginForm(FlaskForm):
+    pass
+
+
 def available_language_choices():
     return [("auto", _("Automatic"))] + [
         (lang_code, native_language_name_from_code(lang_code))

@@ -30,6 +30,7 @@ from .flaskutils import current_user
 from .flaskutils import permissions_needed
 from .flaskutils import smtp_needed
 from .flaskutils import user_needed
+from .forms import FirstLoginForm
 from .forms import ForgottenPasswordForm
 from .forms import InvitationForm
 from .forms import LoginForm
@@ -147,7 +148,7 @@ def firstlogin(uid):
     if not user or user.has_password():
         abort(404)
 
-    form = ForgottenPasswordForm(request.form or None, data={"login": uid})
+    form = FirstLoginForm(request.form or None)
     if not request.form:
         return render_template("firstlogin.html", form=form, uid=uid)
 

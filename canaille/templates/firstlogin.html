@@ -33,7 +33,7 @@
                     <div class="ui stackable buttons">
 
                         <a type="button" class="ui right floated button" href="{{ url_for('account.login') }}">{{ _("Login page") }}</a>
-                        <button type="submit" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
+                        <button type="submit" name="action" value="sendmail" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
                     </div>
                 </div>
             </form>
