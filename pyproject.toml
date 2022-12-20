@@ -73,6 +73,7 @@ doc = [
 "pyquery" = "*"
 "pytest" = "*"
 "pytest-coverage" = "*"
+pytest-httpserver = "*"
 "slapd" = "*"
 "smtpdfix" = "*"
 
