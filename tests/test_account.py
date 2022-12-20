@@ -82,6 +82,11 @@ def test_signin_with_alternate_attribute(testclient, user):
         assert [user.dn] == session.get("user_dn")
 
 
+def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
+    res = testclient.get("/password", status=302)
+    assert res.location == "/login"
+
+
 def test_user_without_password_first_login(testclient, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     u = User(
