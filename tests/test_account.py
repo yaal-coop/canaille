@@ -107,6 +107,12 @@ def test_user_without_password_first_login(testclient, slapd_connection):
     u.delete()
 
 
+def test_first_login_page_unavailable_for_users_with_password(
+    testclient, slapd_connection, user
+):
+    testclient.get("/firstlogin/user", status=404)
+
+
 def test_user_password_deleted_during_login(testclient, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     u = User(
