@@ -389,7 +389,7 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     u.delete()
 
 
-def test_photo_edition(
+def test_photo_on_profile_edition(
     testclient,
     slapd_server,
     logged_user,
@@ -437,3 +437,40 @@ def test_photo_edition(
     logged_user = User.get(dn=logged_user.dn)
 
     assert [] == logged_user.jpegPhoto
+
+
+def test_photo_on_profile_creation(testclient, slapd_server, jpeg_photo, logged_admin):
+    res = testclient.get("/users", status=200)
+    assert User.get("foobar") is None
+    assert "foobar" not in res.text
+
+    res = testclient.get("/profile", status=200)
+    res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
+    res.form["uid"] = "foobar"
+    res.form["sn"] = "Abitbol"
+    res.form["mail"] = "george@abitbol.com"
+    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+
+    user = User.get("foobar")
+    assert user.jpegPhoto == [jpeg_photo]
+    user.delete()
+
+
+def test_photo_deleted_on_profile_creation(
+    testclient, slapd_server, jpeg_photo, logged_admin
+):
+    res = testclient.get("/users", status=200)
+    assert User.get("foobar") is None
+    assert "foobar" not in res.text
+
+    res = testclient.get("/profile", status=200)
+    res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
+    res.form["jpegPhoto_delete"] = True
+    res.form["uid"] = "foobar"
+    res.form["sn"] = "Abitbol"
+    res.form["mail"] = "george@abitbol.com"
+    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+
+    user = User.get("foobar")
+    assert user.jpegPhoto == []
+    user.delete()
