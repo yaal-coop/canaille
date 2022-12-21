@@ -1,3 +1,5 @@
+from unittest import mock
+
 from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import User
 
@@ -87,7 +89,8 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
     assert res.location == "/login"
 
 
-def test_user_without_password_first_login(testclient, slapd_connection):
+def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
+    assert len(smtpd.messages) == 0
     User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
@@ -100,10 +103,47 @@ def test_user_without_password_first_login(testclient, slapd_connection):
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "Temp User"
-    res = res.form.submit(status=302).follow(status=200)
+    res = res.form.submit(status=302)
 
+    assert res.location == "/firstlogin/temp"
+    res = res.follow(status=200)
     assert "First login" in res
 
+    res = res.form.submit(name="action", value="sendmail")
+    assert (
+        "A password initialization link has been sent at your email address. "
+        "You should receive it within 10 minutes."
+    ) in res
+    assert len(smtpd.messages) == 1
+    assert "Password initialization" in smtpd.messages[0].get("Subject")
+    u.delete()
+
+
+@mock.patch("smtplib.SMTP")
+def test_first_login_account_initialization_mail_sending_failed(
+    SMTP, testclient, slapd_connection, smtpd
+):
+    SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
+    assert len(smtpd.messages) == 0
+
+    User.ldap_object_classes(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+    )
+    u.save()
+
+    res = testclient.get("/firstlogin/temp")
+    res = res.form.submit(name="action", value="sendmail", expect_errors=True)
+    assert (
+        "A password initialization link has been sent at your email address. "
+        "You should receive it within 10 minutes."
+    ) not in res
+    assert "Could not send the password initialization email" in res
+    assert len(smtpd.messages) == 0
     u.delete()
 
 

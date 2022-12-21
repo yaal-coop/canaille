@@ -85,6 +85,7 @@ def setup_logging(app):
             },
             "handlers": {"wsgi": handler},
             "root": {"level": log_level, "handlers": ["wsgi"]},
+            "disable_existing_loggers": False,
         }
     )
 

@@ -49,6 +49,7 @@ def test_no_configuration():
 
 
 def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
+    assert len(smtpd.messages) == 0
     log_path = os.path.join(tmp_path, "canaille.log")
     logging_configuration = {
         **configuration,
@@ -73,6 +74,11 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
         res = res.form.submit()
 
         g.ldap.unbind_s()
+
+    assert len(smtpd.messages) == 1
+    assert "You have been invited to create an account on" in smtpd.messages[0].get(
+        "Subject"
+    )
 
     with open(log_path) as fd:
         log_content = fd.read()
