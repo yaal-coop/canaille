@@ -293,6 +293,19 @@ def test_user_creation_edition_and_deletion(
     assert "george" not in res.text
 
 
+def test_user_creation_form_validation_failed(
+    testclient, logged_moderator, foo_group, bar_group
+):
+    res = testclient.get("/users", status=200)
+    assert User.get("george") is None
+    assert "george" not in res.text
+
+    res = testclient.get("/profile", status=200)
+    res = res.form.submit(name="action", value="edit")
+    assert "User account creation failed" in res
+    assert User.get("george") is None
+
+
 def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["uid"] = "george"
