@@ -147,6 +147,26 @@ def test_first_login_account_initialization_mail_sending_failed(
     u.delete()
 
 
+def test_first_login_form_error(testclient, slapd_connection, smtpd):
+    assert len(smtpd.messages) == 0
+    User.ldap_object_classes(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+    )
+    u.save()
+
+    res = testclient.get("/firstlogin/temp", status=200)
+    res.form["csrf_token"] = "invalid"
+    res = res.form.submit(name="action", value="sendmail")
+    assert ("Could not send the password initialization link.") in res
+    assert len(smtpd.messages) == 0
+    u.delete()
+
+
 def test_first_login_page_unavailable_for_users_with_password(
     testclient, slapd_connection, user
 ):
