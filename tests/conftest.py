@@ -75,8 +75,7 @@ def slapd_connection(slapd_server, testclient):
     g.ldap.protocol_version = 3
     g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
     yield g.ldap
-    if g.ldap:
-        g.ldap.unbind_s()
+    g.ldap.unbind_s()
 
 
 @pytest.fixture(scope="session")
