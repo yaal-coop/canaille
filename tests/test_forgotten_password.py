@@ -1,3 +1,6 @@
+from unittest import mock
+
+
 def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.app.config["ENABLE_PASSWORD_RECOVERY"] = False
 
@@ -73,5 +76,19 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
         not in res.text
     )
     assert "A password reset link has been sent at your email address." in res.text
+
+    assert len(smtpd.messages) == 0
+
+
+@mock.patch("smtplib.SMTP")
+def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
+    SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
+    res = testclient.get("/reset", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=200, expect_errors=True)
+    assert "A password reset link has been sent at your email address." not in res.text
+    assert "We encountered an issue while we sent the password recovery email." in res
+    assert "Send again" in res.text
 
     assert len(smtpd.messages) == 0
