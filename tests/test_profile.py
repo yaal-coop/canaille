@@ -415,7 +415,7 @@ def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged
     assert len(smtpd.messages) == 0
 
 
-def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
+def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):
     User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
@@ -433,10 +433,43 @@ def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
 
     res = res.form.submit(name="action", value="password-reset-mail").follow()
     assert (
-        "A password reset link has been sent at the user email address. It should be received within 10 minutes."
-        in res
+        "A password reset link has been sent at the user email address. "
+        "It should be received within 10 minutes." in res
     )
     assert len(smtpd.messages) == 1
+
+    u.delete()
+
+
+@mock.patch("smtplib.SMTP")
+def test_password_reset_email_failed(
+    SMTP, smtpd, testclient, slapd_connection, logged_admin
+):
+    SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
+    User.ldap_object_classes(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+        userPassword=["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"],
+    )
+    u.save()
+
+    res = testclient.get("/profile/temp", status=200)
+    assert "If the user has forgotten his password" in res, res.text
+    assert "Send" in res
+
+    res = res.form.submit(
+        name="action", value="password-reset-mail", expect_errors=True
+    ).follow()
+    assert (
+        "A password reset link has been sent at the user email address. "
+        "It should be received within 10 minutes." not in res
+    )
+    assert "Could not send the password reset email" in res
+    assert len(smtpd.messages) == 0
 
     u.delete()
 
