@@ -1,3 +1,5 @@
+from unittest import mock
+
 from canaille.models import User
 from webtest import Upload
 
@@ -350,8 +352,8 @@ def test_password_initialization_mail(
 
     res = res.form.submit(name="action", value="password-initialization-mail").follow()
     assert (
-        "A password initialization link has been sent at the user email address. It should be received within 10 minutes."
-        in res
+        "A password initialization link has been sent at the user email address. "
+        "It should be received within 10 minutes." in res
     )
     assert len(smtpd.messages) == 1
 
@@ -361,6 +363,38 @@ def test_password_initialization_mail(
 
     res = testclient.get("/profile/temp", status=200)
     assert "This user does not have a password yet" not in res
+
+    u.delete()
+
+
+@mock.patch("smtplib.SMTP")
+def test_password_initialization_mail_send_fail(
+    SMTP, smtpd, testclient, slapd_connection, logged_admin
+):
+    SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
+    User.ldap_object_classes(slapd_connection)
+    u = User(
+        objectClass=["inetOrgPerson"],
+        cn="Temp User",
+        sn="Temp",
+        uid="temp",
+        mail="john@doe.com",
+    )
+    u.save()
+
+    res = testclient.get("/profile/temp", status=200)
+    assert "This user does not have a password yet" in res
+    assert "Send" in res
+
+    res = res.form.submit(
+        name="action", value="password-initialization-mail", expect_errors=True
+    ).follow()
+    assert (
+        "A password initialization link has been sent at the user email address. "
+        "It should be received within 10 minutes." not in res
+    )
+    assert "Could not send the password initialization email" in res
+    assert len(smtpd.messages) == 0
 
     u.delete()
 
