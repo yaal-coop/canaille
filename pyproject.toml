@@ -98,6 +98,7 @@ source = [
     "tests",
 ]
 omit = [".tox/*"]
+branch = true
 
 [tool.tox]
 legacy_tox_ini = """
