@@ -625,6 +625,12 @@ def photo(uid, field):
         abort(404)
 
     user = User.get(uid)
-    photo = getattr(user, field)[0]
-    stream = io.BytesIO(photo)
+    if not user:
+        abort(404)
+
+    photos = getattr(user, field)
+    if not photos:
+        abort(404)
+
+    stream = io.BytesIO(photos[0])
     return send_file(stream, mimetype="image/jpeg")

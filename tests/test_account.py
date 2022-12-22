@@ -345,3 +345,23 @@ def test_login_placeholder(testclient):
     testclient.app.config["LDAP"]["USER_FILTER"] = "(|(uid={login})(email={login}))"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe or john@doe.com"
+
+
+def test_photo(testclient, user, jpeg_photo):
+    user.jpegPhoto = [jpeg_photo]
+    user.save()
+    res = testclient.get("/profile/user/jpegPhoto")
+    assert res.body == jpeg_photo
+
+
+def test_photo_invalid_user(testclient, user):
+    res = testclient.get("/profile/invalid/jpegPhoto", status=404)
+
+
+def test_photo_absent(testclient, user):
+    assert not user.jpegPhoto
+    res = testclient.get("/profile/user/jpegPhoto", status=404)
+
+
+def test_photo_invalid_path(testclient, user):
+    testclient.get("/profile/user/invalid", status=404)
