@@ -331,7 +331,9 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
     assert george.cn[0] == "Abitbol"
 
 
-def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_admin):
+def test_password_initialization_mail(
+    smtpd, testclient, slapd_connection, logged_admin
+):
     User.ldap_object_classes(slapd_connection)
     u = User(
         objectClass=["inetOrgPerson"],
@@ -361,6 +363,16 @@ def test_first_login_mail_button(smtpd, testclient, slapd_connection, logged_adm
     assert "This user does not have a password yet" not in res
 
     u.delete()
+
+
+def test_password_initialization_invalid_user(
+    smtpd, testclient, slapd_connection, logged_admin
+):
+    assert len(smtpd.messages) == 0
+    testclient.post(
+        "/profile/invalid", {"action": "password-initialization-mail"}, status=404
+    )
+    assert len(smtpd.messages) == 0
 
 
 def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
