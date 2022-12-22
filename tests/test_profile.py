@@ -415,6 +415,10 @@ def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged
     assert len(smtpd.messages) == 0
 
 
+def test_delete_invalid_user(testclient, slapd_connection, logged_admin):
+    testclient.post("/profile/invalid", {"action": "delete"}, status=404)
+
+
 def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):
     User.ldap_object_classes(slapd_connection)
     u = User(
