@@ -409,6 +409,12 @@ def test_password_initialization_invalid_user(
     assert len(smtpd.messages) == 0
 
 
+def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged_admin):
+    assert len(smtpd.messages) == 0
+    testclient.post("/profile/invalid", {"action": "password-reset-mail"}, status=404)
+    assert len(smtpd.messages) == 0
+
+
 def test_email_reset_button(smtpd, testclient, slapd_connection, logged_admin):
     User.ldap_object_classes(slapd_connection)
     u = User(
