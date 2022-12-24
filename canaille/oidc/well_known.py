@@ -1,5 +1,3 @@
-import json
-
 from flask import Blueprint
 from flask import current_app
 from flask import g
