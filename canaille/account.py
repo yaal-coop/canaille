@@ -382,9 +382,11 @@ def profile_create(current_app, form):
         for group in groups:
             group.add_member(user)
 
-    if not form["password1"].data or user.set_password(form["password1"].data):
-        flash(_("User account creation succeed."), "success")
-        user.save()
+    if form["password1"].data:
+        user.set_password(form["password1"].data)
+
+    flash(_("User account creation succeed."), "success")
+    user.save()
 
     return user
 
@@ -491,11 +493,11 @@ def profile_edit(editor, username):
                 user["jpegPhoto"] = None
 
             if (
-                "password1" not in request.form
-                or not form["password1"].data
-                or user.set_password(form["password1"].data)
-            ) and request.form["action"] == "edit":
-                flash(_("Profile updated successfuly."), "success")
+                "password1" in request.form
+                and form["password1"].data
+                and request.form["action"] == "edit"
+            ):
+                user.set_password(form["password1"].data)
 
             if (
                 "preferredLanguage" in request.form
@@ -503,6 +505,7 @@ def profile_edit(editor, username):
             ):
                 user.preferredLanguage = None
 
+            flash(_("Profile updated successfuly."), "success")
             user.save()
             return redirect(url_for("account.profile_edition", username=username))
 

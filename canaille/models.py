@@ -100,7 +100,6 @@ class User(LDAPObject):
             None,
             password.encode("utf-8"),
         )
-        return True
 
     @property
     def name(self):

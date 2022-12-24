@@ -258,6 +258,7 @@ def test_user_creation_edition_and_deletion(
 
     # User have been created
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+    assert "User account creation succeed." in res
     george = User.get("george")
     george.load_groups()
     foo_group.reload()
@@ -293,6 +294,21 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
     assert User.get("george") is None
     assert "george" not in res.text
+
+
+def test_user_creation_without_password(testclient, logged_moderator):
+    res = testclient.get("/profile", status=200)
+    res.form["uid"] = "george"
+    res.form["sn"] = "Abitbol"
+    res.form["mail"] = "george@abitbol.com"
+
+    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+    assert "User account creation succeed." in res
+    george = User.get("george")
+    assert george.uid[0] == "george"
+    assert not george.userPassword
+
+    george.delete()
 
 
 def test_user_creation_form_validation_failed(
