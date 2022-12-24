@@ -13,24 +13,6 @@ def test_ldap_connection_no_remote(configuration):
     validate(configuration)
 
 
-def test_no_private_key(configuration):
-    configuration["JWT"]["PRIVATE_KEY"] = "invalid-path"
-    with pytest.raises(
-        ConfigurationException,
-        match=r"Private key does not exist",
-    ):
-        validate(configuration)
-
-
-def test_no_public_key(configuration):
-    configuration["JWT"]["PUBLIC_KEY"] = "invalid-path"
-    with pytest.raises(
-        ConfigurationException,
-        match=r"Public key does not exist",
-    ):
-        validate(configuration)
-
-
 def test_ldap_connection_remote(configuration):
     validate(configuration, validate_remote=True)
 

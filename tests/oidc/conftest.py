@@ -1,4 +1,5 @@
 import datetime
+import os
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
@@ -8,7 +9,68 @@ from canaille.oidc.models import Consent
 from canaille.oidc.models import Token
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
+from cryptography.hazmat.primitives import serialization as crypto_serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
 from werkzeug.security import gen_salt
+
+
+@pytest.fixture(scope="session")
+def keypair():
+    key = rsa.generate_private_key(
+        backend=crypto_default_backend(), public_exponent=65537, key_size=2048
+    )
+    private_key = key.private_bytes(
+        crypto_serialization.Encoding.PEM,
+        crypto_serialization.PrivateFormat.PKCS8,
+        crypto_serialization.NoEncryption(),
+    )
+    public_key = key.public_key().public_bytes(
+        crypto_serialization.Encoding.OpenSSH, crypto_serialization.PublicFormat.OpenSSH
+    )
+    return private_key, public_key
+
+
+@pytest.fixture
+def keypair_path(keypair, tmp_path):
+    private_key, public_key = keypair
+
+    private_key_path = os.path.join(tmp_path, "private.pem")
+    with open(private_key_path, "wb") as fd:
+        fd.write(private_key)
+
+    public_key_path = os.path.join(tmp_path, "public.pem")
+    with open(public_key_path, "wb") as fd:
+        fd.write(public_key)
+
+    return private_key_path, public_key_path
+
+
+@pytest.fixture
+def configuration(configuration, keypair_path):
+    private_key_path, public_key_path = keypair_path
+    conf = {
+        **configuration,
+        "JWT": {
+            "PUBLIC_KEY": public_key_path,
+            "PRIVATE_KEY": private_key_path,
+            "ISS": "https://auth.mydomain.tld",
+            "MAPPING": {
+                "SUB": "{{ user.uid[0] }}",
+                "NAME": "{{ user.cn[0] }}",
+                "PHONE_NUMBER": "{{ user.telephoneNumber[0] }}",
+                "EMAIL": "{{ user.mail[0] }}",
+                "GIVEN_NAME": "{{ user.givenName[0] }}",
+                "FAMILY_NAME": "{{ user.sn[0] }}",
+                "PREFERRED_USERNAME": "{{ user.displayName }}",
+                "LOCALE": "{{ user.preferredLanguage }}",
+                "PICTURE": "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}",
+                "ADDRESS": "{{ user.postalAddress[0] }}",
+                "WEBSITE": "{{ user.labeledURI[0] }}",
+            },
+        },
+    }
+    return conf
 
 
 @pytest.fixture

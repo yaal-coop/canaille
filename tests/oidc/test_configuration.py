@@ -1,5 +1,8 @@
+import pytest
 import warnings
 
+from canaille.configuration import ConfigurationException
+from canaille.configuration import validate
 from canaille.oidc.oauth import get_issuer
 
 
@@ -17,3 +20,21 @@ def test_issuer(testclient):
         testclient.app.config["SERVER_NAME"] = None
         with testclient.app.test_request_context("/"):
             assert get_issuer() == "http://localhost/"
+
+
+def test_no_private_key(configuration):
+    configuration["JWT"]["PRIVATE_KEY"] = "invalid-path"
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Private key does not exist",
+    ):
+        validate(configuration)
+
+
+def test_no_public_key(configuration):
+    configuration["JWT"]["PUBLIC_KEY"] = "invalid-path"
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Public key does not exist",
+    ):
+        validate(configuration)
