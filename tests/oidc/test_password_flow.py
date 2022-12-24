@@ -28,14 +28,7 @@ def test_password_flow_basic(testclient, user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "sub": "user",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "groups": [],
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
 
 def test_password_flow_post(testclient, user, client):
@@ -67,11 +60,4 @@ def test_password_flow_post(testclient, user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "sub": "user",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "groups": [],
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"

@@ -67,11 +67,10 @@ def get_jwt_config(grant):
         }
 
 
-def generate_user_info(user, scope):
-    user = User.get(dn=user)
-    claims = ["sub"]
+def claims_from_scope(scope):
+    claims = {"sub"}
     if "profile" in scope:
-        claims += [
+        claims |= {
             "name",
             "family_name",
             "given_name",
@@ -85,16 +84,21 @@ def generate_user_info(user, scope):
             "zoneinfo",
             "locale",
             "updated_at",
-        ]
+        }
     if "email" in scope:
-        claims += ["email", "email_verified"]
+        claims |= {"email", "email_verified"}
     if "address" in scope:
-        claims += ["address"]
+        claims |= {"address"}
     if "phone" in scope:
-        claims += ["phone_number", "phone_number_verified"]
+        claims |= {"phone_number", "phone_number_verified"}
     if "groups" in scope:
-        claims += ["groups"]
+        claims |= {"groups"}
+    return claims
 
+
+def generate_user_info(user, scope):
+    user = User.get(dn=user)
+    claims = claims_from_scope(scope)
     data = generate_user_claims(user, claims)
     return UserInfo(**data)
 

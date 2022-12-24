@@ -178,6 +178,8 @@ def configuration(slapd_server, smtpd, keypair_path):
                 "PREFERRED_USERNAME": "{{ user.displayName }}",
                 "LOCALE": "{{ user.preferredLanguage }}",
                 "PICTURE": "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}",
+                "ADDRESS": "{{ user.postalAddress[0] }}",
+                "WEBSITE": "{{ user.labeledURI[0] }}",
             },
         },
         "SMTP": {
@@ -215,12 +217,16 @@ def user(app, slapd_connection):
     u = User(
         objectClass=["inetOrgPerson"],
         cn="John (johnny) Doe",
+        gn="John",
         sn="Doe",
         uid="user",
         mail="john@doe.com",
         userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
         displayName="Johnny",
         preferredLanguage="en",
+        telephoneNumber="555-000-000",
+        labeledURI="https://john.example",
+        postalAddress="1235, somewhere",
     )
     u.save()
     yield u

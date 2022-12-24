@@ -42,13 +42,7 @@ def test_oauth_implicit(testclient, user, client):
         "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
     )
     assert "application/json" == res.content_type
-    assert {
-        "name": "John (johnny) Doe",
-        "sub": "user",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
@@ -100,13 +94,7 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
         status=200,
     )
     assert "application/json" == res.content_type
-    assert {
-        "name": "John (johnny) Doe",
-        "sub": "user",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
@@ -161,14 +149,7 @@ def test_oidc_implicit_with_group(
         status=200,
     )
     assert "application/json" == res.content_type
-    assert {
-        "name": "John (johnny) Doe",
-        "sub": "user",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "groups": ["foo"],
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"

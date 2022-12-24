@@ -90,15 +90,7 @@ def test_authorization_code_flow(
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "email": "john@doe.com",
-        "sub": "user",
-        "groups": [],
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
         consent.delete()
@@ -220,13 +212,7 @@ def test_authorization_code_flow_preconsented(
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "sub": "user",
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
 
 def test_logout_login(testclient, logged_user, client):
@@ -289,13 +275,7 @@ def test_logout_login(testclient, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "sub": "user",
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
         consent.delete()
@@ -395,13 +375,7 @@ def test_refresh_token(testclient, user, client):
             headers={"Authorization": f"Bearer {access_token}"},
             status=200,
         )
-        assert {
-            "name": "John (johnny) Doe",
-            "family_name": "Doe",
-            "preferred_username": "Johnny",
-            "sub": "user",
-            "locale": "en",
-        } == res.json
+        assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
         consent.delete()
@@ -463,13 +437,7 @@ def test_code_challenge(testclient, logged_user, client):
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "sub": "user",
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     client.token_endpoint_auth_method = "client_secret_basic"
     client.save()
@@ -792,13 +760,7 @@ def test_authorization_code_request_scope_too_large(
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
-    assert {
-        "name": "John (johnny) Doe",
-        "family_name": "Doe",
-        "preferred_username": "Johnny",
-        "sub": "user",
-        "locale": "en",
-    } == res.json
+    assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
         consent.delete()
