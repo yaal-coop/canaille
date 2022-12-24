@@ -49,6 +49,17 @@ def test_signin_and_out(testclient, user):
     res = testclient.get("/logout")
     res = res.follow(status=302)
     res = res.follow(status=200)
+    assert "You have been disconnected. See you next time John (johnny) Doe" in res
+
+
+def test_visitor_logout(testclient, user):
+    with testclient.session_transaction() as session:
+        assert not session.get("user_dn")
+
+    res = testclient.get("/logout")
+    res = res.follow(status=302)
+    res = res.follow(status=200)
+    assert "You have been disconnected. See you next time user" not in res
 
     with testclient.session_transaction() as session:
         assert not session.get("user_dn")
