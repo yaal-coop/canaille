@@ -136,36 +136,34 @@ def authorize():
             ignored_claims=["openid"],
         )
 
-    if request.method == "POST":
-        if request.form["answer"] == "logout":
-            del session["user_dn"]
-            flash(_("You have been successfully logged out."), "success")
-            return redirect(request.url)
+    # request.method == "POST"
+    if request.form["answer"] == "logout":
+        del session["user_dn"]
+        flash(_("You have been successfully logged out."), "success")
+        return redirect(request.url)
 
-        if request.form["answer"] == "deny":
-            grant_user = None
+    if request.form["answer"] == "deny":
+        grant_user = None
 
-        if request.form["answer"] == "accept":
-            grant_user = user.dn
+    if request.form["answer"] == "accept":
+        grant_user = user.dn
 
-            if consent:
-                consent.scope = client.get_allowed_scope(
-                    list(set(scopes + consents[0].scope))
-                ).split(" ")
-            else:
-                consent = Consent(
-                    client=client.dn,
-                    subject=user.dn,
-                    scope=scopes,
-                    issue_date=datetime.datetime.now(),
-                )
-            consent.save()
+        if consent:
+            consent.scope = client.get_allowed_scope(
+                list(set(scopes + consents[0].scope))
+            ).split(" ")
+        else:
+            consent = Consent(
+                client=client.dn,
+                subject=user.dn,
+                scope=scopes,
+                issue_date=datetime.datetime.now(),
+            )
+        consent.save()
 
-        response = authorization.create_authorization_response(grant_user=grant_user)
-        current_app.logger.debug(
-            "authorization endpoint response: %s", response.location
-        )
-        return response
+    response = authorization.create_authorization_response(grant_user=grant_user)
+    current_app.logger.debug("authorization endpoint response: %s", response.location)
+    return response
 
 
 @bp.route("/token", methods=["POST"])
