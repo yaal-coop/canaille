@@ -35,8 +35,7 @@ class LDAPObject:
 
         self.may = []
         self.must = []
-        if "objectClass" in kwargs:
-            self.update_ldap_attributes()
+        self.update_ldap_attributes()
 
     def update_ldap_attributes(self):
         all_object_classes = self.ldap_object_classes()
@@ -48,10 +47,11 @@ class LDAPObject:
         while len(this_object_classes) > 0:
             object_class = this_object_classes.pop()
             done.add(object_class)
-            for ocsup in object_class.sup:
-                if ocsup not in done:
-                    this_object_classes.add(all_object_classes[ocsup])
-
+            this_object_classes |= {
+                all_object_classes[ocsup]
+                for ocsup in object_class.sup
+                if ocsup not in done
+            }
             self.may.extend(object_class.may)
             self.must.extend(object_class.must)
 
