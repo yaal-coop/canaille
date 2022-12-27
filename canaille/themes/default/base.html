@@ -93,12 +93,14 @@
             {% endif %}
         {% endblock %}
 
-        <div class="ui container">
-            <div class="content">
-                {{ flask.messages() }}
-                {% block content %}{% endblock %}
+        {% block container %}
+            <div class="ui container">
+                <div class="content">
+                    {{ flask.messages() }}
+                    {% block content %}{% endblock %}
+                </div>
             </div>
-        </div>
+        {% endblock %}
 
         <footer>
             <a href="{{ url_for('account.about') }}">{{ _("About canaille") }}</a>
