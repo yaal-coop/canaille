@@ -79,7 +79,7 @@ def setup_backend(app):
 
 
 def teardown_backend(app):
-    if g.get("ldap"):
+    if g.get("ldap"):  # pragma: no branch
         g.ldap.unbind_s()
         g.ldap = None
 
