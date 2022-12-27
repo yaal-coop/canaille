@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+Fixed
+*****
+
+- OIDC end_session was not returning the ``state`` parameter in the
+  ``post_logout_redirect_uri`` :pr:`82`
+
 [0.0.17] - 2022-12-26
 =====================
 
