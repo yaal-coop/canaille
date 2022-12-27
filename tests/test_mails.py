@@ -47,9 +47,8 @@ def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd
     assert len(smtpd.messages) == 0
 
 
-@mock.patch("smtplib.SMTP")
-def test_send_test_email_failed(SMTP, testclient, logged_admin):
-    SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
+def test_send_test_email_failed(testclient, logged_admin):
+    testclient.app.config["SMTP"]["TLS"] = False
     res = testclient.get("/admin/mail")
     res.form["mail"] = "test@test.com"
     with warnings.catch_warnings(record=True):
