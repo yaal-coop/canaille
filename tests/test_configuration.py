@@ -81,6 +81,12 @@ def test_smtp_connection_remote_smtp_wrong_credentials(testclient, configuration
         validate(configuration, validate_remote=True)
 
 
+def test_smtp_connection_remote_smtp_no_credentials(testclient, configuration):
+    del configuration["SMTP"]["LOGIN"]
+    del configuration["SMTP"]["PASSWORD"]
+    validate(configuration, validate_remote=True)
+
+
 def test_smtp_bad_tls(testclient, slapd_connection, smtpd, configuration):
     configuration["SMTP"]["TLS"] = False
     with pytest.raises(
