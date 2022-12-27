@@ -58,6 +58,9 @@ def validate_smtp_configuration(config):
             f'SMTP authentication failed with user \'{config["SMTP"]["LOGIN"]}\''
         ) from exc
 
+    except smtplib.SMTPNotSupportedError as exc:
+        raise ConfigurationException(exc) from exc
+
 
 def validate_theme(config):
     if not config.get("THEME"):

@@ -9,15 +9,15 @@ from canaille.configuration import validate
 from flask_webtest import TestApp
 
 
-def test_ldap_connection_no_remote(configuration):
+def test_ldap_connection_no_remote(testclient, configuration):
     validate(configuration)
 
 
-def test_ldap_connection_remote(configuration):
+def test_ldap_connection_remote(testclient, configuration, slapd_connection):
     validate(configuration, validate_remote=True)
 
 
-def test_ldap_connection_remote_ldap_unreachable(configuration):
+def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
     configuration["LDAP"]["URI"] = "ldap://invalid-ldap.com"
     with pytest.raises(
         ConfigurationException,
@@ -26,7 +26,7 @@ def test_ldap_connection_remote_ldap_unreachable(configuration):
         validate(configuration, validate_remote=True)
 
 
-def test_ldap_connection_remote_ldap_wrong_credentials(configuration):
+def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
     configuration["LDAP"]["BIND_PW"] = "invalid-password"
     with pytest.raises(
         ConfigurationException,
@@ -35,7 +35,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(configuration):
         validate(configuration, validate_remote=True)
 
 
-def test_ldap_cannot_create_users(configuration):
+def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
     from canaille.models import User
 
     def fake_init(*args, **kwarg):
@@ -49,7 +49,7 @@ def test_ldap_cannot_create_users(configuration):
             validate(configuration, validate_remote=True)
 
 
-def test_ldap_cannot_create_groups(configuration):
+def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
     from canaille.models import Group
 
     def fake_init(*args, **kwarg):
@@ -63,7 +63,7 @@ def test_ldap_cannot_create_groups(configuration):
             validate(configuration, validate_remote=True)
 
 
-def test_smtp_connection_remote_smtp_unreachable(configuration):
+def test_smtp_connection_remote_smtp_unreachable(testclient, configuration):
     configuration["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     with pytest.raises(
         ConfigurationException,
@@ -72,11 +72,20 @@ def test_smtp_connection_remote_smtp_unreachable(configuration):
         validate(configuration, validate_remote=True)
 
 
-def test_smtp_connection_remote_smtp_wrong_credentials(configuration):
+def test_smtp_connection_remote_smtp_wrong_credentials(testclient, configuration):
     configuration["SMTP"]["PASSWORD"] = "invalid-password"
     with pytest.raises(
         ConfigurationException,
         match=r"SMTP authentication failed with user",
+    ):
+        validate(configuration, validate_remote=True)
+
+
+def test_smtp_bad_tls(testclient, slapd_connection, smtpd, configuration):
+    configuration["SMTP"]["TLS"] = False
+    with pytest.raises(
+        ConfigurationException,
+        match=r"SMTP AUTH extension not supported by server",
     ):
         validate(configuration, validate_remote=True)
 
