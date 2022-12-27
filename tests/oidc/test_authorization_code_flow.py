@@ -804,13 +804,13 @@ def test_authorization_code_expired(testclient, user, client):
         }
 
 
-def test_invalid_user(testclient, admin, client):
+def test_code_with_invalid_user(testclient, admin, client):
     user = User(
         objectClass=["inetOrgPerson"],
         cn="John Doe",
         sn="Doe",
         uid="temp",
-        mail="john@doe.com",
+        mail="temp@temp.com",
         userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
     user.save()
@@ -831,6 +831,7 @@ def test_invalid_user(testclient, admin, client):
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
+    authcode = AuthorizationCode.get(code=code)
 
     user.delete()
 
@@ -849,3 +850,67 @@ def test_invalid_user(testclient, admin, client):
         "error": "invalid_grant",
         "error_description": 'There is no "user" for this code.',
     }
+    authcode.delete()
+
+
+def test_refresh_token_with_invalid_user(testclient, client):
+    user = User(
+        objectClass=["inetOrgPerson"],
+        cn="John Doe",
+        sn="Doe",
+        uid="temp",
+        mail="temp@temp.com",
+        userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+    )
+    user.save()
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res.form["login"] = "Temp"
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(name="answer", value="accept", status=302).follow()
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = AuthorizationCode.get(code=code)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    refresh_token = res.json["refresh_token"]
+    access_token = res.json["access_token"]
+    user.delete()
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="refresh_token",
+            refresh_token=refresh_token,
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=400,
+    )
+    assert res.json == {
+        "error": "invalid_request",
+        "error_description": 'There is no "user" for this token.',
+    }
+    Token.get(access_token=access_token).delete()
