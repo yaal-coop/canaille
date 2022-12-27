@@ -222,12 +222,26 @@ def profile_form(write_field_names, readonly_field_names):
     return form
 
 
-class GroupForm(FlaskForm):
+class CreateGroupForm(FlaskForm):
+    name = wtforms.StringField(
+        _("Name"),
+        validators=[wtforms.validators.DataRequired(), unique_group],
+        render_kw={
+            "placeholder": _("group"),
+        },
+    )
+    description = wtforms.StringField(
+        _("Description"),
+        validators=[wtforms.validators.Optional()],
+    )
+
+
+class EditGroupForm(FlaskForm):
     name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={
-            "placeholder": _("group"),
+            "readonly": "true",
         },
     )
     description = wtforms.StringField(

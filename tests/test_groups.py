@@ -144,6 +144,7 @@ def test_invalid_form_request(testclient, logged_moderator, foo_group):
 
 def test_edition_failed(testclient, logged_moderator, foo_group):
     res = testclient.get("/groups/foo")
+    res.form["csrf_token"] = "invalid"
     res = res.form.submit(name="action", value="edit")
     assert "Group edition failed." in res
     foo_group = Group.get(foo_group.dn)

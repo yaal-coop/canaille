@@ -9,8 +9,8 @@ from flask_babel import gettext as _
 from flask_themer import render_template
 
 from .flaskutils import permissions_needed
-from .forms import GroupForm
-from .forms import unique_group
+from .forms import CreateGroupForm
+from .forms import EditGroupForm
 from .models import Group
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
@@ -26,14 +26,7 @@ def groups(user):
 @bp.route("/add", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
 def create_group(user):
-    form = GroupForm(request.form or None)
-
-    try:
-        if "name" in form:
-            del form["name"].render_kw["readonly"]
-            form["name"].validators.append(unique_group)
-    except KeyError:
-        pass
+    form = CreateGroupForm(request.form or None)
 
     if request.form:
         if not form.validate():
@@ -75,19 +68,22 @@ def group(user, groupname):
 
 
 def edit_group(group):
-    form = GroupForm(
+    form = EditGroupForm(
         request.form or None,
         data={
             "name": group.name,
             "description": group.description[0] if group.description else "",
         },
     )
-    form["name"].render_kw["readonly"] = "true"
 
     if request.form:
         if form.validate():
             group.description = [form.description.data]
             group.save()
+            flash(
+                _("The group %(group)s has been sucessfully edited.", group=group.name),
+                "success",
+            )
             return redirect(url_for("groups.group", groupname=group.name))
         else:
             flash(_("Group edition failed."), "error")
