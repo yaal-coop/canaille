@@ -40,8 +40,7 @@ def setup_backend(app):
 
     try:
         g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
-        if app.config["LDAP"].get("TIMEOUT"):
-            g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"]["TIMEOUT"])
+        g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"].get("TIMEOUT"))
         g.ldap.simple_bind_s(
             app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
         )
@@ -105,8 +104,7 @@ def validate_configuration(config):
 
     try:
         conn = ldap.initialize(config["LDAP"]["URI"])
-        if config["LDAP"].get("TIMEOUT"):
-            conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"]["TIMEOUT"])
+        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"].get("TIMEOUT"))
         conn.simple_bind_s(config["LDAP"]["BIND_DN"], config["LDAP"]["BIND_PW"])
 
     except ldap.SERVER_DOWN as exc:

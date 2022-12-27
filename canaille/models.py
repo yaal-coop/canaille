@@ -80,10 +80,9 @@ class User(LDAPObject):
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])
 
-        if current_app.config["LDAP"].get("TIMEOUT"):
-            conn.set_option(
-                ldap.OPT_NETWORK_TIMEOUT, current_app.config["LDAP"]["TIMEOUT"]
-            )
+        conn.set_option(
+            ldap.OPT_NETWORK_TIMEOUT, current_app.config["LDAP"].get("TIMEOUT")
+        )
 
         try:
             conn.simple_bind_s(self.dn, password)

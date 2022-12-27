@@ -26,9 +26,7 @@ def install(config):
 @contextmanager
 def ldap_connection(config):
     conn = ldap.initialize(config["LDAP"]["URI"])
-    if config["LDAP"].get("TIMEOUT"):
-        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"]["TIMEOUT"])
-
+    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"].get("TIMEOUT"))
     conn.simple_bind_s(config["LDAP"]["BIND_DN"], config["LDAP"]["BIND_PW"])
 
     try:
