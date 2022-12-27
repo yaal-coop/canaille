@@ -335,7 +335,7 @@ def end_session():
         url = data["post_logout_redirect_uri"]
         if "state" in data:
             url = set_parameter_in_url_query(url, state=data["state"])
-        return redirect(data["post_logout_redirect_uri"])
+        return redirect(url)
 
     flash(_("You have been disconnected"), "success")
     return redirect(url_for("account.index"))

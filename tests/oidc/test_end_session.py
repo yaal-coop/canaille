@@ -19,7 +19,7 @@ def test_end_session(testclient, slapd_connection, logged_user, client, id_token
         status=302,
     )
 
-    assert res.location.startswith(post_logout_redirect_url)
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
@@ -44,7 +44,7 @@ def test_end_session_no_client_id(
         status=302,
     )
 
-    assert res.location.startswith(post_logout_redirect_url)
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
@@ -207,7 +207,7 @@ def test_no_jwt_logout(testclient, slapd_connection, logged_user, client):
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
 
-    assert res.location.startswith(post_logout_redirect_url)
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -323,7 +323,7 @@ def test_bad_user_id_token_mismatch(
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
 
-    assert res.location.startswith(post_logout_redirect_url)
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -352,7 +352,7 @@ def test_bad_user_hint(
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
 
-    assert res.location.startswith(post_logout_redirect_url)
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -384,7 +384,7 @@ def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
     with testclient.session_transaction() as sess:
         assert not sess.get("user_dn")
 
-    assert res.location.startswith(post_logout_redirect_url)
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -406,3 +406,28 @@ def test_end_session_already_disconnected(
     )
 
     assert res.location == "/"
+
+
+def test_end_session_no_state(
+    testclient, slapd_connection, logged_user, client, id_token
+):
+    testclient.get(f"/profile/{logged_user.uid[0]}", status=200)
+
+    post_logout_redirect_url = "https://mydomain.tld/disconnected"
+    res = testclient.get(
+        "/oauth/end_session",
+        params={
+            "id_token_hint": id_token,
+            "logout_hint": logged_user.uid[0],
+            "client_id": client.client_id,
+            "post_logout_redirect_uri": post_logout_redirect_url,
+        },
+        status=302,
+    )
+
+    assert res.location == post_logout_redirect_url
+
+    with testclient.session_transaction() as sess:
+        assert not sess.get("user_dn")
+
+    testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
