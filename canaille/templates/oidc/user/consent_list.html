@@ -42,11 +42,20 @@
                             {% endif %}
                             <div class="description">
                                 <p>{% trans %}Has access to:{% endtrans %}</p>
-                                <ul>
-                                    {% for s in consent.scope %}
-                                        <li>{{ s }}</li>
+                                <div class="ui list">
+                                    {% for scope in consent.scope %}
+                                        {% if scope not in ignored_scopes %}
+                                            {% if scope not in scope_details %}
+                                                <div class="item" title="{{ scope }}">{{ scope }}</div>
+                                            {% else %}
+                                                <div class="item" title="{{ scope }}">
+                                                    <i class="{{ scope_details[scope][0] }} icon"></i>
+                                                    <div class="content">{{ scope_details[scope][1] }}</div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
                                     {% endfor %}
-                                </ul>
+                                </div>
                             </div>
                         </div>
                         <a class="ui bottom attached button" href="{{ url_for('oidc.consents.delete', consent_id=consent.cn[0] ) }}">
@@ -58,12 +67,11 @@
             </div>
         {% else %}
             <div class="ui center aligned">
-                <i class="massive smile outline icon image ui"></i>
-
-                <h2 class="ui center aligned header">
-                    <div class="content">{% trans %}Nothing here{% endtrans %}</div>
-                    <div class="sub header">{% trans %}You did not authorize applications yet.{% endtrans %}</div>
-                </h2>
+                <div class="ui center aligned message">
+                    <div class="content">
+                        <p>{% trans %}You did not authorize applications yet.{% endtrans %}</p>
+                    </div>
+                </div>
             </div>
         {% endif %}
     </div>

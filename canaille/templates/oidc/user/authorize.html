@@ -9,18 +9,18 @@
         <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.client_name) }}</h2>
 
         <div class="ui divided items">
-            {% for claim in grant.request.scope.split(" ") %}
-                {% if claim not in ignored_claims %}
+            {% for scope in grant.request.scope.split(" ") %}
+                {% if scope not in ignored_scopes %}
                     <div class="item">
-                        {% if claim in claims %}
+                        {% if scope in scope_details %}
                             <div>
-                                <i class="{{ claims[claim][0] }} large icon"></i>
-                                {{ claims[claim][1] }}
+                                <i class="{{ scope_details[scope][0] }} large icon"></i>
+                                {{ scope_details[scope][1] }}
                             </div>
                         {% else %}
                             <div class="ui tiny image">
                                 <i class="huge user icon"></i>
-                                {{ claim }}
+                                {{ scope }}
                             </div>
                         {% endif %}
                     </div>

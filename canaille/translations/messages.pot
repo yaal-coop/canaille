@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-28 00:56+0100\n"
+"POT-Creation-Date: 2022-12-28 01:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.11.0\n"
 
-#: canaille/account.py:94 canaille/account.py:119 canaille/oidc/endpoints.py:94
+#: canaille/account.py:94 canaille/account.py:119 canaille/oidc/endpoints.py:81
 msgid "Login failed, please check your information"
 msgstr ""
 
@@ -383,27 +383,27 @@ msgstr ""
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/oidc/consents.py:36
+#: canaille/oidc/consents.py:39
 msgid "Could not delete this access"
 msgstr ""
 
-#: canaille/oidc/consents.py:40
+#: canaille/oidc/consents.py:43
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:142
+#: canaille/oidc/endpoints.py:129
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/oidc/endpoints.py:340
+#: canaille/oidc/endpoints.py:327
 msgid "You have been disconnected"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:348
+#: canaille/oidc/endpoints.py:335
 msgid "An error happened during the logout"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:360
+#: canaille/oidc/endpoints.py:347
 msgid "You have not been disconnected"
 msgstr ""
 
@@ -473,6 +473,26 @@ msgstr ""
 
 #: canaille/oidc/forms.py:117
 msgid "Pre-consent"
+msgstr ""
+
+#: canaille/oidc/utils.py:6
+msgid "Personnal information about yourself, such as your name or your gender."
+msgstr ""
+
+#: canaille/oidc/utils.py:8
+msgid "Your email address."
+msgstr ""
+
+#: canaille/oidc/utils.py:9
+msgid "Your postal address."
+msgstr ""
+
+#: canaille/oidc/utils.py:10
+msgid "Your phone number."
+msgstr ""
+
+#: canaille/oidc/utils.py:11
+msgid "Groups you are belonging to"
 msgstr ""
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
@@ -1172,15 +1192,11 @@ msgstr ""
 msgid "Has access to:"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:54
+#: canaille/templates/oidc/user/consent_list.html:63
 msgid "Remove access"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:64
-msgid "Nothing here"
-msgstr ""
-
-#: canaille/templates/oidc/user/consent_list.html:65
+#: canaille/templates/oidc/user/consent_list.html:72
 msgid "You did not authorize applications yet."
 msgstr ""
 

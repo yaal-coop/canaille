@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2022-12-28 00:56+0100\n"
-"PO-Revision-Date: 2022-12-28 00:59+0100\n"
+"POT-Creation-Date: 2022-12-28 01:35+0100\n"
+"PO-Revision-Date: 2022-12-28 01:38+0100\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language: fr\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Generated-By: Babel 2.11.0\n"
 "X-Generator: Gtranslator 42.0\n"
 
-#: canaille/account.py:94 canaille/account.py:119 canaille/oidc/endpoints.py:94
+#: canaille/account.py:94 canaille/account.py:119 canaille/oidc/endpoints.py:81
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations."
 
@@ -401,27 +401,27 @@ msgstr "Le client a été édité."
 msgid "The client has been deleted."
 msgstr "Le client a été supprimé."
 
-#: canaille/oidc/consents.py:36
+#: canaille/oidc/consents.py:39
 msgid "Could not delete this access"
 msgstr "Impossible de supprimer cet accès."
 
-#: canaille/oidc/consents.py:40
+#: canaille/oidc/consents.py:43
 msgid "The access has been revoked"
 msgstr "L'accès a été révoqué."
 
-#: canaille/oidc/endpoints.py:142
+#: canaille/oidc/endpoints.py:129
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnecté·e."
 
-#: canaille/oidc/endpoints.py:340
+#: canaille/oidc/endpoints.py:327
 msgid "You have been disconnected"
 msgstr "Vous avez été déconnecté·e."
 
-#: canaille/oidc/endpoints.py:348
+#: canaille/oidc/endpoints.py:335
 msgid "An error happened during the logout"
 msgstr "Une erreur est survenue lors de la déconnexion"
 
-#: canaille/oidc/endpoints.py:360
+#: canaille/oidc/endpoints.py:347
 msgid "You have not been disconnected"
 msgstr "Vous n'avez pas été déconnecté"
 
@@ -492,6 +492,28 @@ msgstr "URI du JWK"
 #: canaille/oidc/forms.py:117
 msgid "Pre-consent"
 msgstr "Pré-autorisé"
+
+#: canaille/oidc/utils.py:6
+msgid "Personnal information about yourself, such as your name or your gender."
+msgstr ""
+"Des informations personnelles vous concernant, comme votre nom ou votre "
+"genre."
+
+#: canaille/oidc/utils.py:8
+msgid "Your email address."
+msgstr "Votre adresse email."
+
+#: canaille/oidc/utils.py:9
+msgid "Your postal address."
+msgstr "Votre adresse postale."
+
+#: canaille/oidc/utils.py:10
+msgid "Your phone number."
+msgstr "Votre numéro de téléphone."
+
+#: canaille/oidc/utils.py:11
+msgid "Groups you are belonging to"
+msgstr "Les groupes auxquels vous appertenez"
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
 msgid "About canaille"
@@ -1262,15 +1284,11 @@ msgstr "Révoqué le :"
 msgid "Has access to:"
 msgstr "A accès à :"
 
-#: canaille/templates/oidc/user/consent_list.html:54
+#: canaille/templates/oidc/user/consent_list.html:63
 msgid "Remove access"
 msgstr "Supprimer l'accès"
 
-#: canaille/templates/oidc/user/consent_list.html:64
-msgid "Nothing here"
-msgstr "Rien ici"
-
-#: canaille/templates/oidc/user/consent_list.html:65
+#: canaille/templates/oidc/user/consent_list.html:72
 msgid "You did not authorize applications yet."
 msgstr ""
 "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
@@ -1493,18 +1511,5 @@ msgstr "Courriels"
 #~ msgid "Could not reset your password"
 #~ msgstr "Impossible de réinitialiser votre mot de passe"
 
-#~ msgid ""
-#~ "Personnal information about yourself, such as your name or your gender."
-#~ msgstr "Vos informations personnelles, comme votre nom ou votre genre."
-
-#~ msgid "Your email address."
-#~ msgstr "Votre adresse email."
-
-#~ msgid "Your postal address."
-#~ msgstr "Votre adresse postale."
-
-#~ msgid "Your phone number."
-#~ msgstr "Votre numéro de téléphone."
-
-#~ msgid "Groups you are belonging to"
-#~ msgstr "Les groupes auxquels vous appartenez"
+#~ msgid "Nothing here"
+#~ msgstr "Rien ici"

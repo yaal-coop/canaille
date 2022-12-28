@@ -14,7 +14,6 @@ from flask import request
 from flask import session
 from flask import url_for
 from flask_babel import gettext as _
-from flask_babel import lazy_gettext
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 
@@ -35,22 +34,10 @@ from .oauth import get_issuer
 from .oauth import IntrospectionEndpoint
 from .oauth import require_oauth
 from .oauth import RevocationEndpoint
+from .utils import SCOPE_DETAILS
 
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
-
-CLAIMS = {
-    "profile": (
-        "id card outline",
-        lazy_gettext(
-            "Personnal information about yourself, such as your name or your gender."
-        ),
-    ),
-    "email": ("at", lazy_gettext("Your email address.")),
-    "address": ("envelope open outline", lazy_gettext("Your postal address.")),
-    "phone": ("phone", lazy_gettext("Your phone number.")),
-    "groups": ("users", lazy_gettext("Groups you are belonging to")),
-}
 
 
 def get_public_key():
@@ -131,9 +118,9 @@ def authorize():
             user=user,
             grant=grant,
             client=client,
-            claims=CLAIMS,
             menu=False,
-            ignored_claims=["openid"],
+            scope_details=SCOPE_DETAILS,
+            ignored_scopes=["openid"],
         )
 
     # request.method == "POST"

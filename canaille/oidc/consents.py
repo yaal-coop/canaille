@@ -8,6 +8,8 @@ from flask import url_for
 from flask_babel import gettext
 from flask_themer import render_template
 
+from .utils import SCOPE_DETAILS
+
 
 bp = Blueprint("consents", __name__, url_prefix="/consent")
 
@@ -24,6 +26,8 @@ def consents(user):
         consents=consents,
         clients=clients,
         menuitem="consents",
+        scope_details=SCOPE_DETAILS,
+        ignored_scopes=["openid"],
     )
 
 
