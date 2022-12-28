@@ -6,7 +6,6 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 
-from .i18n import available_language_codes
 from .i18n import native_language_name_from_code
 from .models import Group
 from .models import User

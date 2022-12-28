@@ -43,7 +43,7 @@ def test_environment_configuration(slapd_server, configuration, tmp_path):
 
 def test_no_configuration():
     with pytest.raises(Exception) as exc:
-        app = create_app()
+        create_app()
 
     assert "No configuration file found." in str(exc)
 

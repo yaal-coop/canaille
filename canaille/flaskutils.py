@@ -4,7 +4,6 @@ from functools import wraps
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
-import ldap
 from canaille.models import User
 from flask import abort
 from flask import current_app
