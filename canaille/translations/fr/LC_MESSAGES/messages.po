@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
-"POT-Creation-Date: 2022-12-27 21:30+0100\n"
-"PO-Revision-Date: 2022-12-27 21:30+0100\n"
+"POT-Creation-Date: 2022-12-28 00:56+0100\n"
+"PO-Revision-Date: 2022-12-28 00:59+0100\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language: fr\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -413,15 +413,15 @@ msgstr "L'accès a été révoqué."
 msgid "You have been successfully logged out."
 msgstr "Vous avez été déconnecté·e."
 
-#: canaille/oidc/endpoints.py:342
+#: canaille/oidc/endpoints.py:340
 msgid "You have been disconnected"
 msgstr "Vous avez été déconnecté·e."
 
-#: canaille/oidc/endpoints.py:350
+#: canaille/oidc/endpoints.py:348
 msgid "An error happened during the logout"
 msgstr "Une erreur est survenue lors de la déconnexion"
 
-#: canaille/oidc/endpoints.py:362
+#: canaille/oidc/endpoints.py:360
 msgid "You have not been disconnected"
 msgstr "Vous n'avez pas été déconnecté"
 
@@ -493,7 +493,7 @@ msgstr "URI du JWK"
 msgid "Pre-consent"
 msgstr "Pré-autorisé"
 
-#: canaille/templates/about.html:12 canaille/themes/default/base.html:104
+#: canaille/templates/about.html:12 canaille/themes/default/base.html:106
 msgid "About canaille"
 msgstr "À propos de canaille"
 
@@ -599,7 +599,7 @@ msgid "This field is required"
 msgstr "Ce champ est requis"
 
 #: canaille/templates/forgotten-password.html:11
-#: canaille/templates/login.html:38 canaille/templates/password.html:35
+#: canaille/templates/login.html:43 canaille/templates/password.html:40
 msgid "Forgotten password"
 msgstr "Mot de passe oublié"
 
@@ -787,34 +787,34 @@ msgstr "Générer un lien"
 msgid "Send the invitation"
 msgstr "Envoyer l'invitation"
 
-#: canaille/templates/login.html:16
+#: canaille/templates/login.html:19
 #, python-format
 msgid "Sign in at %(website)s"
 msgstr "Connexion à %(website)s"
 
-#: canaille/templates/login.html:18
-msgid "Log-in and manage your authorizations."
-msgstr "Connectez-vous et gérez vos autorisations."
+#: canaille/templates/login.html:21
+msgid "Manage your information and your authorizations"
+msgstr "Gérez vos informations et vos autorisations"
 
-#: canaille/templates/login.html:40
+#: canaille/templates/login.html:45
 msgid "Continue"
 msgstr "Continuer"
 
-#: canaille/templates/password.html:16
+#: canaille/templates/password.html:19
 #, python-format
 msgid "Sign in as %(username)s"
 msgstr "Connexion en tant que %(username)s"
 
-#: canaille/templates/password.html:18
+#: canaille/templates/password.html:21
 msgid "Please enter your password for this account."
-msgstr "Veuillez entre votre mot de passe pour ce compte."
+msgstr "Veuillez saisir votre mot de passe pour ce compte."
 
-#: canaille/templates/password.html:33
+#: canaille/templates/password.html:38
 #, python-format
 msgid "I am not %(username)s"
 msgstr "Je ne suis pas %(username)s"
 
-#: canaille/templates/password.html:37
+#: canaille/templates/password.html:42
 msgid "Sign in"
 msgstr "Se connecter"
 
