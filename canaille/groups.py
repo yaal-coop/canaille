@@ -32,11 +32,7 @@ def create_group(user):
         if not form.validate():
             flash(_("Group creation failed."), "error")
         else:
-            group = Group(
-                objectClass=current_app.config["LDAP"].get(
-                    "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
-                )
-            )
+            group = Group()
             group.member = [user.dn]
             group.cn = [form.name.data]
             group.description = [form.description.data]
