@@ -354,11 +354,7 @@ def registration(data, hash):
 
 
 def profile_create(current_app, form):
-    user = User(
-        objectClass=current_app.config["LDAP"].get(
-            "USER_CLASS", User.DEFAULT_OBJECT_CLASS
-        )
-    )
+    user = User()
     for attribute in form:
         if attribute.name in user.may + user.must:
             if isinstance(attribute.data, FileStorage):

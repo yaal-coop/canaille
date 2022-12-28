@@ -32,7 +32,6 @@ def test_set_groups(app, user, foo_group, bar_group):
 
 def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user = User(
-        objectClass=["inetOrgPerson"],
         cn=" Doe",  # leading space in id attribute
         sn="Doe",
         uid="user2",

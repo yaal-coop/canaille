@@ -806,7 +806,6 @@ def test_authorization_code_expired(testclient, user, client):
 
 def test_code_with_invalid_user(testclient, admin, client):
     user = User(
-        objectClass=["inetOrgPerson"],
         cn="John Doe",
         sn="Doe",
         uid="temp",
@@ -855,7 +854,6 @@ def test_code_with_invalid_user(testclient, admin, client):
 
 def test_refresh_token_with_invalid_user(testclient, client):
     user = User(
-        objectClass=["inetOrgPerson"],
         cn="John Doe",
         sn="Doe",
         uid="temp",

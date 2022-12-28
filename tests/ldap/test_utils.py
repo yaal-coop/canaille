@@ -24,7 +24,6 @@ def test_equality(slapd_connection, foo_group, bar_group):
 def test_dn_when_leading_space_in_id_attribute(slapd_connection):
     User.initialize(slapd_connection)
     user = User(
-        objectClass=["inetOrgPerson"],
         cn=" Doe",  # leading space
         sn="Doe",
         uid="user",
@@ -42,7 +41,6 @@ def test_dn_when_leading_space_in_id_attribute(slapd_connection):
 def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
     User.initialize(slapd_connection)
     user = User(
-        objectClass=["inetOrgPerson"],
         cn="#Doe",  # special char
         sn="Doe",
         uid="user",

@@ -162,7 +162,6 @@ def user(app, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="John (johnny) Doe",
         gn="John",
         sn="Doe",
@@ -185,7 +184,6 @@ def admin(app, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Jane Doe",
         sn="Doe",
         uid="admin",
@@ -202,7 +200,6 @@ def moderator(app, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Jack Doe",
         sn="Doe",
         uid="moderator",
@@ -239,7 +236,6 @@ def logged_moderator(moderator, testclient):
 def foo_group(app, user, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
     group = Group(
-        objectClass=["groupOfNames"],
         member=[user.dn],
         cn="foo",
     )
@@ -254,7 +250,6 @@ def foo_group(app, user, slapd_connection):
 def bar_group(app, admin, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
     group = Group(
-        objectClass=["groupOfNames"],
         member=[admin.dn],
         cn="bar",
     )

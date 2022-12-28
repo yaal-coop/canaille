@@ -120,7 +120,6 @@ def validate_configuration(config):
     try:
         User.ldap_object_classes(conn)
         user = User(
-            objectClass=["inetOrgPerson"],
             cn=f"canaille_{uuid.uuid4()}",
             sn=f"canaille_{uuid.uuid4()}",
             uid=f"canaille_{uuid.uuid4()}",
@@ -140,7 +139,6 @@ def validate_configuration(config):
         Group.ldap_object_classes(conn)
 
         user = User(
-            objectClass=["inetOrgPerson"],
             cn=f"canaille_{uuid.uuid4()}",
             sn=f"canaille_{uuid.uuid4()}",
             uid=f"canaille_{uuid.uuid4()}",
@@ -150,7 +148,6 @@ def validate_configuration(config):
         user.save(conn)
 
         group = Group(
-            objectClass=["groupOfNames"],
             cn=f"canaille_{uuid.uuid4()}",
             member=[user.dn],
         )

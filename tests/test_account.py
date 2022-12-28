@@ -104,7 +104,6 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
     assert len(smtpd.messages) == 0
     User.ldap_object_classes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Temp User",
         sn="Temp",
         uid="temp",
@@ -139,7 +138,6 @@ def test_first_login_account_initialization_mail_sending_failed(
 
     User.ldap_object_classes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Temp User",
         sn="Temp",
         uid="temp",
@@ -162,7 +160,6 @@ def test_first_login_form_error(testclient, slapd_connection, smtpd):
     assert len(smtpd.messages) == 0
     User.ldap_object_classes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Temp User",
         sn="Temp",
         uid="temp",
@@ -187,7 +184,6 @@ def test_first_login_page_unavailable_for_users_with_password(
 def test_user_password_deleted_during_login(testclient, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Temp User",
         sn="Temp",
         uid="temp",
@@ -213,7 +209,6 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
 def test_user_deleted_in_session(testclient, slapd_connection):
     User.ldap_object_classes(slapd_connection)
     u = User(
-        objectClass=["inetOrgPerson"],
         cn="Jake Doe",
         sn="Jake",
         uid="jake",
@@ -276,7 +271,6 @@ def test_admin_self_deletion(testclient, slapd_connection):
     LDAPObject.ldap_object_attributes(slapd_connection)
 
     admin = User(
-        objectClass=["inetOrgPerson"],
         cn="Temp admin",
         sn="admin",
         uid="temp",
@@ -305,7 +299,6 @@ def test_user_self_deletion(testclient, slapd_connection):
     LDAPObject.ldap_object_attributes(slapd_connection)
 
     user = User(
-        objectClass=["inetOrgPerson"],
         cn="Temp user",
         sn="user",
         uid="temp",
