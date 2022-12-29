@@ -104,7 +104,6 @@ def themed_testclient(app, configuration):
     test_theme_path = os.path.join(root, "fixtures", "themes", "test")
     configuration["THEME"] = test_theme_path
 
-    configuration["AUTHLIB_INSECURE_TRANSPORT"] = "true"
     app = create_app(configuration)
 
     return TestApp(app)

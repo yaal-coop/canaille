@@ -15,6 +15,12 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from werkzeug.security import gen_salt
 
 
+@pytest.fixture
+def app(app):
+    os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
+    yield app
+
+
 @pytest.fixture(scope="session")
 def keypair():
     key = rsa.generate_private_key(

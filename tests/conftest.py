@@ -1,5 +1,3 @@
-import os
-
 import ldap.ldapobject
 import pytest
 import slapd
@@ -143,7 +141,6 @@ def configuration(slapd_server, smtpd):
 
 @pytest.fixture
 def app(configuration):
-    os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
     setup_ldap_models(configuration)
     setup_ldap_tree(configuration)
     app = create_app(configuration)
