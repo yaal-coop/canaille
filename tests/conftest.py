@@ -2,11 +2,11 @@ import ldap.ldapobject
 import pytest
 import slapd
 from canaille import create_app
-from canaille.installation import setup_ldap_tree
 from canaille.ldap_backend.backend import setup_ldap_models
 from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import Group
 from canaille.models import User
+from canaille.oidc.installation import setup_ldap_tree
 from flask import g
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
