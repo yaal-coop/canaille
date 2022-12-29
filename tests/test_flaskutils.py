@@ -5,8 +5,6 @@ import pytest
 import toml
 from canaille import create_app
 from canaille.flaskutils import set_parameter_in_url_query
-from canaille.installation import setup_ldap_tree
-from canaille.ldap_backend.backend import setup_ldap_models
 from flask import g
 from flask_webtest import TestApp
 
@@ -55,8 +53,6 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
         **configuration,
         "LOGGING": {"LEVEL": "DEBUG", "PATH": log_path},
     }
-    setup_ldap_models(logging_configuration)
-    setup_ldap_tree(logging_configuration)
     app = create_app(logging_configuration)
     app.config["TESTING"] = True
 
