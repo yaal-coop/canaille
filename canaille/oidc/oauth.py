@@ -118,10 +118,7 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
                 # it's better to not insert a null or empty string value
                 data[claim] = formatted_claim
         if claim == "groups":
-            group_name_attr = current_app.config["LDAP"].get(
-                "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
-            )
-            data[claim] = [getattr(g, group_name_attr)[0] for g in user.groups]
+            data[claim] = [group.name for group in user.groups]
     return data
 
 
