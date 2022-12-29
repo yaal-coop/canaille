@@ -123,13 +123,13 @@ def test_get_members_filters_non_existent_user(
     testclient, logged_moderator, foo_group, user
 ):
     # an LDAP group can be inconsistent by containing members which doesn't exist
-    non_existent_user_dn = user.dn.replace(user.name, "yolo")
-    foo_group.member = foo_group.member + [non_existent_user_dn]
+    non_existent_user_id = user.dn.replace(user.name, "yolo")
+    foo_group.member = foo_group.member + [non_existent_user_id]
     foo_group.save()
 
     foo_members = foo_group.get_members()
 
-    assert foo_group.member == [user.dn, non_existent_user_dn]
+    assert foo_group.member == [user.dn, non_existent_user_id]
     assert len(foo_members) == 1
     assert foo_members[0].dn == user.dn
 

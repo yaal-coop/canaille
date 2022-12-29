@@ -21,7 +21,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     # logout
     with testclient.session_transaction() as sess:
-        del sess["user_dn"]
+        del sess["user_id"]
 
     res = testclient.get(url, status=200)
 
@@ -47,8 +47,8 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
-        assert "user_dn" in sess
-        del sess["user_dn"]
+        assert "user_id" in sess
+        del sess["user_id"]
 
     res = testclient.get(url, status=302)
 
@@ -70,7 +70,7 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
 
     # logout
     with testclient.session_transaction() as sess:
-        del sess["user_dn"]
+        del sess["user_id"]
 
     res = testclient.get(url, status=200)
 
@@ -97,8 +97,8 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
-        assert "user_dn" in sess
-        del sess["user_dn"]
+        assert "user_id" in sess
+        del sess["user_id"]
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd):
@@ -116,7 +116,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     # logout
     with testclient.session_transaction() as sess:
-        del sess["user_dn"]
+        del sess["user_id"]
 
     res = testclient.get(url, status=200)
 
@@ -139,8 +139,8 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
-        assert "user_dn" in sess
-        del sess["user_dn"]
+        assert "user_id" in sess
+        del sess["user_id"]
 
     res = testclient.get(url, status=302)
 
@@ -230,7 +230,7 @@ def test_registration_no_password(testclient, foo_group):
     assert not User.get("someoneelse")
 
     with testclient.session_transaction() as sess:
-        assert "user_dn" not in sess
+        assert "user_id" not in sess
 
 
 def test_no_registration_if_logged_in(testclient, logged_user, foo_group):

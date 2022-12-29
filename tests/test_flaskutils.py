@@ -67,7 +67,7 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
 
         testclient = TestApp(app)
         with testclient.session_transaction() as sess:
-            sess["user_dn"] = [admin.dn]
+            sess["user_id"] = [admin.dn]
 
         res = testclient.get("/admin/mail")
         res.form["mail"] = "test@test.com"

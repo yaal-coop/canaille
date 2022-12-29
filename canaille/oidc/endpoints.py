@@ -125,7 +125,7 @@ def authorize():
 
     # request.method == "POST"
     if request.form["answer"] == "logout":
-        del session["user_dn"]
+        del session["user_id"]
         flash(_("You have been successfully logged out."), "success")
         return redirect(request.url)
 

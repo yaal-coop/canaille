@@ -61,20 +61,20 @@ class User(LDAPObject):
     def login(self):
         try:
             previous = (
-                session["user_dn"]
-                if isinstance(session["user_dn"], list)
-                else [session["user_dn"]]
+                session["user_id"]
+                if isinstance(session["user_id"], list)
+                else [session["user_id"]]
             )
-            session["user_dn"] = previous + [self.dn]
+            session["user_id"] = previous + [self.dn]
         except KeyError:
-            session["user_dn"] = [self.dn]
+            session["user_id"] = [self.dn]
 
     @classmethod
     def logout(self):
         try:
-            session["user_dn"].pop()
-            if not session["user_dn"]:
-                del session["user_dn"]
+            session["user_id"].pop()
+            if not session["user_id"]:
+                del session["user_id"]
         except KeyError:
             pass
 
@@ -191,9 +191,9 @@ class Group(LDAPObject):
 
     def get_members(self, conn=None):
         return [
-            User.get(dn=user_dn, conn=conn)
-            for user_dn in self.member
-            if User.get(dn=user_dn, conn=conn)
+            User.get(dn=user_id, conn=conn)
+            for user_id in self.member
+            if User.get(dn=user_id, conn=conn)
         ]
 
     def add_member(self, user):

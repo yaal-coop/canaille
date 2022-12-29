@@ -9,7 +9,7 @@ def test_index(testclient, user):
     assert res.location == "/login"
 
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = [user.dn]
+        sess["user_id"] = [user.dn]
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 
@@ -24,7 +24,7 @@ def test_index(testclient, user):
 
 def test_signin_and_out(testclient, user):
     with testclient.session_transaction() as session:
-        assert not session.get("user_dn")
+        assert not session.get("user_id")
 
     res = testclient.get("/login", status=200)
 
@@ -41,7 +41,7 @@ def test_signin_and_out(testclient, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user.dn] == session.get("user_dn")
+        assert [user.dn] == session.get("user_id")
         assert "attempt_login" not in session
 
     res = testclient.get("/login", status=302)
@@ -54,7 +54,7 @@ def test_signin_and_out(testclient, user):
 
 def test_visitor_logout(testclient, user):
     with testclient.session_transaction() as session:
-        assert not session.get("user_dn")
+        assert not session.get("user_id")
 
     res = testclient.get("/logout")
     res = res.follow(status=302)
@@ -62,12 +62,12 @@ def test_visitor_logout(testclient, user):
     assert "You have been disconnected. See you next time user" not in res
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_dn")
+        assert not session.get("user_id")
 
 
 def test_signin_wrong_password(testclient, user):
     with testclient.session_transaction() as session:
-        assert not session.get("user_dn")
+        assert not session.get("user_id")
 
     res = testclient.get("/login", status=200)
 
@@ -92,7 +92,7 @@ def test_signin_with_alternate_attribute(testclient, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user.dn] == session.get("user_dn")
+        assert [user.dn] == session.get("user_id")
 
 
 def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
@@ -219,14 +219,14 @@ def test_user_deleted_in_session(testclient, slapd_connection):
     testclient.get("/profile/jake", status=403)
 
     with testclient.session_transaction() as session:
-        session["user_dn"] = [u.dn]
+        session["user_id"] = [u.dn]
 
     testclient.get("/profile/jake", status=200)
     u.delete()
 
     testclient.get("/profile/jake", status=403)
     with testclient.session_transaction() as session:
-        assert not session.get("user_dn")
+        assert not session.get("user_id")
 
 
 def test_impersonate(testclient, logged_admin, user):
@@ -279,7 +279,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
     )
     admin.save()
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = [admin.dn]
+        sess["user_id"] = [admin.dn]
 
     res = testclient.get("/profile/temp")
     res = (
@@ -291,7 +291,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
     assert User.get("temp") is None
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
 
 def test_user_self_deletion(testclient, slapd_connection):
@@ -307,7 +307,7 @@ def test_user_self_deletion(testclient, slapd_connection):
     )
     user.save()
     with testclient.session_transaction() as sess:
-        sess["user_dn"] = [user.dn]
+        sess["user_id"] = [user.dn]
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     res = testclient.get("/profile/temp")
@@ -328,7 +328,7 @@ def test_user_self_deletion(testclient, slapd_connection):
     assert User.get("temp") is None
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
 

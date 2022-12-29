@@ -22,7 +22,7 @@ def test_end_session(testclient, slapd_connection, logged_user, client, id_token
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -47,7 +47,7 @@ def test_end_session_no_client_id(
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -71,7 +71,7 @@ def test_no_redirect_uri_no_redirect(
     assert res.location == "/"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -97,7 +97,7 @@ def test_bad_redirect_uri_no_redirect(
     assert res.location == "/"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -123,7 +123,7 @@ def test_no_client_hint_no_redirect(
     assert res.location == "/"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -151,7 +151,7 @@ def test_end_session_invalid_client_id(
     assert res.location == "/"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -181,7 +181,7 @@ def test_client_hint_invalid(testclient, slapd_connection, logged_user, client):
     assert res.location == "/"
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
 
@@ -205,7 +205,7 @@ def test_no_jwt_logout(testclient, slapd_connection, logged_user, client):
     res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
@@ -230,7 +230,7 @@ def test_no_jwt_no_logout(testclient, slapd_connection, logged_user, client):
     res = res.form.submit(name="answer", value="stay", status=302)
 
     with testclient.session_transaction() as sess:
-        assert sess.get("user_dn")
+        assert sess.get("user_id")
 
     assert res.location == "/"
 
@@ -321,7 +321,7 @@ def test_bad_user_id_token_mismatch(
     res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
@@ -350,7 +350,7 @@ def test_bad_user_hint(
     res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
@@ -382,7 +382,7 @@ def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
     res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
@@ -428,6 +428,6 @@ def test_end_session_no_state(
     assert res.location == post_logout_redirect_url
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_dn")
+        assert not sess.get("user_id")
 
     testclient.get(f"/profile/{logged_user.uid[0]}", status=403)

@@ -13,12 +13,12 @@ from flask_babel import gettext as _
 
 
 def current_user():
-    for dn in session.get("user_dn", [])[::-1]:
+    for dn in session.get("user_id", [])[::-1]:
         user = User.get(dn=dn)
         if user:
             return user
 
-        session["user_dn"].remove(dn)
+        session["user_id"].remove(dn)
 
     return None
 
