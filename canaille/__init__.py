@@ -19,7 +19,6 @@ from .oidc.oauth import setup_oauth
 
 def setup_config(app, config=None, validate=True):
     import canaille.configuration
-    import canaille.installation
 
     app.config.from_mapping(
         {
@@ -38,8 +37,10 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if app.debug:  # pragma: no cover
-        canaille.installation.setup_keypair(app.config)
+    if app.debug and "JWT" in app.config:  # pragma: no cover
+        import canaille.oidc.installation
+
+        canaille.oidc.installation.setup_keypair(app.config)
 
     if validate:
         canaille.configuration.validate(app.config)
