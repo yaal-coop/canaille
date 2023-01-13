@@ -39,6 +39,7 @@ from .models import Token
 DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"
 DEFAULT_JWT_EXP = 3600
+AUTHORIZATION_CODE_LIFETIME = 84400
 
 
 def exists_nonce(nonce, req):
@@ -135,7 +136,7 @@ def save_authorization_code(code, request):
         scope=scope,
         nonce=nonce,
         issue_date=now,
-        lifetime=str(84000),
+        lifetime=str(AUTHORIZATION_CODE_LIFETIME),
         challenge=request.data.get("code_challenge"),
         challenge_method=request.data.get("code_challenge_method"),
     )
@@ -247,7 +248,7 @@ def save_token(token, request):
         type=token["token_type"],
         access_token=token["access_token"],
         issue_date=now,
-        lifetime=str(token["expires_in"]),
+        lifetime=token["expires_in"],
         scope=token["scope"],
         client=request.client.dn,
         refresh_token=token.get("refresh_token"),
@@ -391,15 +392,21 @@ class CodeChallenge(_CodeChallenge):
         return authorization_code.challenge_method
 
 
-def generate_access_token(client, grant_type, user, scope):
-    audience = [Client.get(dn).client_id for dn in client.audience]
-    return generate_id_token(
-        {}, generate_user_info(user, scope), aud=audience, **get_jwt_config(grant_type)
-    )
-
-
 authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
+
+
+def generate_access_token(client, grant_type, user, scope):
+    audience = [Client.get(dn).client_id for dn in client.audience]
+    bearer_token_generator = authorization._token_generators["default"]
+    kwargs = {
+        "token": {},
+        "user_info": generate_user_info(user, scope),
+        "aud": audience,
+        **get_jwt_config(grant_type),
+    }
+    kwargs["exp"] = bearer_token_generator._get_expires_in(client, grant_type)
+    return generate_id_token(**kwargs)
 
 
 def setup_oauth(app):
