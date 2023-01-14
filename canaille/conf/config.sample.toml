@@ -39,11 +39,11 @@ SECRET_KEY = "change me before you go in production"
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 
-# If HIDE_INVALID_LOGINS is set to true (the default), when an user
+# If HIDE_INVALID_LOGINS is set to true (the default), when a user
 # tries to sign in with an invalid login, a message is shown indicating
 # that the password is wrong, but does not give a clue wether the login
 # exists or not.
-# If HIDE_INVALID_LOGINS is set to false, when an user tries to sign in with
+# If HIDE_INVALID_LOGINS is set to false, when a user tries to sign in with
 # an invalid login, a message is shown indicating that the login does not
 # exist.
 # HIDE_INVALID_LOGINS = true
