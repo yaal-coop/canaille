@@ -368,7 +368,7 @@ def test_password_initialization_mail(
     res = res.form.submit(name="action", value="password-initialization-mail").follow()
     assert (
         "A password initialization link has been sent at the user email address. "
-        "It should be received within 10 minutes." in res
+        "It should be received within a few minutes." in res
     )
     assert len(smtpd.messages) == 1
 
@@ -405,7 +405,7 @@ def test_password_initialization_mail_send_fail(
     ).follow()
     assert (
         "A password initialization link has been sent at the user email address. "
-        "It should be received within 10 minutes." not in res
+        "It should be received within a few minutes." not in res
     )
     assert "Could not send the password initialization email" in res
     assert len(smtpd.messages) == 0
@@ -455,7 +455,7 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
     res = res.form.submit(name="action", value="password-reset-mail").follow()
     assert (
         "A password reset link has been sent at the user email address. "
-        "It should be received within 10 minutes." in res
+        "It should be received within a few minutes." in res
     )
     assert len(smtpd.messages) == 1
 
@@ -486,7 +486,7 @@ def test_password_reset_email_failed(
     ).follow()
     assert (
         "A password reset link has been sent at the user email address. "
-        "It should be received within 10 minutes." not in res
+        "It should be received within a few minutes." not in res
     )
     assert "Could not send the password reset email" in res
     assert len(smtpd.messages) == 0
