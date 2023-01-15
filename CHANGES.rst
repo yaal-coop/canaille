@@ -8,6 +8,11 @@ Added
 
 - Spanish translation. :pr:`85`
 
+Fixed
+*****
+
+-  Fix typos and grammar errors. :pr:`84`
+
 [0.0.19] - 2023-01-14
 =====================
 
