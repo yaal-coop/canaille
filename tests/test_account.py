@@ -122,7 +122,7 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
     res = res.form.submit(name="action", value="sendmail")
     assert (
         "A password initialization link has been sent at your email address. "
-        "You should receive it within 10 minutes."
+        "You should receive it within a few minutes."
     ) in res
     assert len(smtpd.messages) == 1
     assert "Password initialization" in smtpd.messages[0].get("Subject")
@@ -149,7 +149,7 @@ def test_first_login_account_initialization_mail_sending_failed(
     res = res.form.submit(name="action", value="sendmail", expect_errors=True)
     assert (
         "A password initialization link has been sent at your email address. "
-        "You should receive it within 10 minutes."
+        "You should receive it within a few minutes."
     ) not in res
     assert "Could not send the password initialization email" in res
     assert len(smtpd.messages) == 0

@@ -12,6 +12,7 @@ Fixed
 *****
 
 -  Fix typos and grammar errors. :pr:`84`
+-  Fix wording and punctuations. :pr:`86`
 
 [0.0.19] - 2023-01-14
 =====================
