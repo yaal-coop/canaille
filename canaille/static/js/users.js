@@ -1,7 +1,7 @@
 $( function () {
     $('table').DataTable({
         "language": {
-            "url": "/static/datatables/French.json"
+            "url": "/static/datatables/i18n/" + document.documentElement.lang + ".json"
         }
     });
 
