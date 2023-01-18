@@ -1,0 +1,32 @@
+
+
+{
+	"sEmptyTable":     "No data available in the table",
+	"sInfo":           "Showing element _START_ to _END_ from _TOTAL_ elements",
+	"sInfoEmpty":      "Showing element 0 to 0 from 0 elements",
+	"sInfoFiltered":   "(filtered from _MAX_ elements in total)",
+	"sInfoPostFix":    "",
+	"sInfoThousands":  ",",
+	"sLengthMenu":     "Show  _MENU_ elements",
+	"sLoadingRecords": "Loading...",
+	"sProcessing":     "Processing...",
+	"sSearch":         "Search :",
+	"sZeroRecords":    "No matching items found",
+	"oPaginate": {
+		"sFirst":    "First",
+		"sLast":     "Last",
+		"sNext":     "Next",
+		"sPrevious": "Previous"
+	},
+	"oAria": {
+		"sSortAscending":  ": activate to sort the column in ascending order",
+		"sSortDescending": ": activate to sort the column in descending order"
+	},
+	"select": {
+        	"rows": {
+         		"_": "%d lines selected",
+         		"0": "No lines selected",
+        		"1": "1 line selected"
+        	}
+	}
+}
