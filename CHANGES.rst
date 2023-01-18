@@ -6,7 +6,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Added
 *****
 
-- Spanish translation. :pr:`85`
+- Spanish translation. :pr:`85` :pr:`88`
 
 Fixed
 *****
