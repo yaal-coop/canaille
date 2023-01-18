@@ -8,6 +8,7 @@ from flask import g
 from flask import request
 from flask import session
 from flask_babel import Babel
+from flask_babel import get_locale
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
@@ -183,6 +184,7 @@ def create_app(config=None, validate=True):
                 "website_name": app.config.get("NAME", "Canaille"),
                 "user": current_user(),
                 "menu": True,
+                "locale": get_locale(),
             }
 
         @app.errorhandler(400)
