@@ -13,6 +13,7 @@ Fixed
 
 -  Fix typos and grammar errors. :pr:`84`
 -  Fix wording and punctuations. :pr:`86`
+-  Fix HTML lang tag :issue:`122` :pr:`87`
 
 [0.0.19] - 2023-01-14
 =====================
