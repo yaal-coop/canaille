@@ -75,6 +75,11 @@ class LDAPObject:
         return getattr(self, item)
 
     def __setitem__(self, item, value):
+        if not self.ldap_object_attributes()[item].single_value and not isinstance(
+            value, list
+        ):
+            value = [value]
+
         return setattr(self, item, value)
 
     def update(self, **kwargs):

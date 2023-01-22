@@ -371,10 +371,7 @@ def profile_create(current_app, form):
             else:
                 data = attribute.data
 
-            if user.ldap_object_attributes()[attribute.name].single_value:
-                user[attribute.name] = data
-            else:
-                user[attribute.name] = [data]
+            user[attribute.name] = data
 
         if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
             user["jpegPhoto"] = None
@@ -487,10 +484,8 @@ def profile_edit(editor, username):
                     else:
                         data = attribute.data
 
-                    if user.ldap_object_attributes()[attribute.name].single_value:
-                        user[attribute.name] = data
-                    else:
-                        user[attribute.name] = [data]
+                    user[attribute.name] = data
+
                 elif attribute.name == "groups" and "groups" in editor.write:
                     user.set_groups(attribute.data)
 
