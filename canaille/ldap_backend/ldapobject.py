@@ -37,39 +37,58 @@ class LDAPObject:
         self.must = []
         self.update_ldap_attributes()
 
-    def update_ldap_attributes(self):
-        all_object_classes = self.ldap_object_classes()
-        this_object_classes = {
-            all_object_classes[name] for name in self.attrs["objectClass"]
-        }
-        done = set()
-
-        while len(this_object_classes) > 0:
-            object_class = this_object_classes.pop()
-            done.add(object_class)
-            this_object_classes |= {
-                all_object_classes[ocsup]
-                for ocsup in object_class.sup
-                if ocsup not in done
-            }
-            self.may.extend(object_class.may)
-            self.must.extend(object_class.must)
-
-        self.may = list(set(self.may))
-        self.must = list(set(self.must))
-
     def __repr__(self):
         id = getattr(self, self.id, "?")
         return f"<{self.__class__.__name__} {self.id}={id}>"
 
-    @classmethod
-    def ldap(cls):
-        return g.ldap
+    def __eq__(self, other):
+        return (
+            isinstance(other, self.__class__)
+            and self.may == other.may
+            and self.must == other.must
+            and all(
+                getattr(self, attr) == getattr(other, attr)
+                for attr in self.may + self.must
+            )
+        )
 
-    def keys(self):
-        ldap_keys = self.must + self.may
-        inverted_table = {value: key for key, value in self.attribute_table.items()}
-        return [inverted_table.get(key, key) for key in ldap_keys]
+    def __hash__(self):
+        return hash(self.dn)
+
+    def __getattr__(self, name):
+        attribute_name = (
+            self.attribute_table[name]
+            if self.attribute_table and name in self.attribute_table
+            else name
+        )
+
+        if attribute_name in self.ldap_object_attributes():
+            if (
+                not self.ldap_object_attributes()
+                or not self.ldap_object_attributes()[attribute_name].single_value
+            ):
+                return self.changes.get(name, self.attrs.get(attribute_name, []))
+            else:
+                return self.changes.get(
+                    attribute_name, self.attrs.get(attribute_name, [None])
+                )[0]
+
+        return super().__getattribute__(attribute_name)
+
+    def __setattr__(self, name, value):
+        attribute_name = (
+            self.attribute_table[name]
+            if self.attribute_table and name in self.attribute_table
+            else name
+        )
+
+        super().__setattr__(attribute_name, value)
+
+        if attribute_name in self.ldap_object_attributes():
+            if self.ldap_object_attributes()[attribute_name].single_value:
+                self.changes[attribute_name] = [value]
+            else:
+                self.changes[attribute_name] = value
 
     def __getitem__(self, item):
         return getattr(self, item)
@@ -82,14 +101,6 @@ class LDAPObject:
 
         return setattr(self, item, value)
 
-    def update(self, **kwargs):
-        for k, v in kwargs.items():
-            self.__setattr__(k, v)
-
-    def delete(self, conn=None):
-        conn = conn or self.ldap()
-        conn.delete_s(self.dn)
-
     @property
     def dn(self):
         if self.id in self.changes:
@@ -97,6 +108,10 @@ class LDAPObject:
         else:
             id = self.attrs[self.id][0]
         return f"{self.id}={ldap.dn.escape_dn_chars(id.strip())},{self.base},{self.root_dn}"
+
+    @classmethod
+    def ldap(cls):
+        return g.ldap
 
     @classmethod
     def initialize(cls, conn=None):
@@ -190,60 +205,6 @@ class LDAPObject:
             for name, values in attrs.items()
         }
 
-    def reload(self, conn=None):
-        conn = conn or self.ldap()
-        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
-        self.changes = {}
-        self.attrs = self.ldap_attrs_to_python(result[0][1])
-
-    def save(self, conn=None):
-        conn = conn or self.ldap()
-        try:
-            match = bool(conn.search_s(self.dn, ldap.SCOPE_SUBTREE))
-        except ldap.NO_SUCH_OBJECT:
-            match = False
-
-        # Object already exists in the LDAP database
-        if match:
-            deletions = [
-                name
-                for name, value in self.changes.items()
-                if (value is None or value == [None]) and name in self.attrs
-            ]
-            changes = {
-                name: value
-                for name, value in self.changes.items()
-                if name not in deletions and self.attrs.get(name) != value
-            }
-            formatted_changes = {
-                name: value
-                for name, value in self.python_attrs_to_ldap(changes).items()
-                if value is not None and value != [None]
-            }
-            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
-                (ldap.MOD_REPLACE, name, values)
-                for name, values in formatted_changes.items()
-            ]
-            conn.modify_s(self.dn, modlist)
-
-        # Object does not exist yet in the LDAP database
-        else:
-            changes = {
-                name: value
-                for name, value in {**self.attrs, **self.changes}.items()
-                if value and value[0]
-            }
-            formatted_changes = {
-                name: value
-                for name, value in self.python_attrs_to_ldap(changes).items()
-                if value is not None and value != None
-            }
-            attributes = [(name, values) for name, values in formatted_changes.items()]
-            conn.add_s(self.dn, attributes)
-
-        self.attrs = {**self.attrs, **self.changes}
-        self.changes = {}
-
     @classmethod
     def get(cls, dn=None, filter=None, conn=None, **kwargs):
         try:
@@ -299,51 +260,90 @@ class LDAPObject:
 
         return [cls(**cls.ldap_attrs_to_python(args)) for _, args in result]
 
-    def __getattr__(self, name):
-        attribute_name = (
-            self.attribute_table[name]
-            if self.attribute_table and name in self.attribute_table
-            else name
-        )
+    def update_ldap_attributes(self):
+        all_object_classes = self.ldap_object_classes()
+        this_object_classes = {
+            all_object_classes[name] for name in self.attrs["objectClass"]
+        }
+        done = set()
 
-        if attribute_name in self.ldap_object_attributes():
-            if (
-                not self.ldap_object_attributes()
-                or not self.ldap_object_attributes()[attribute_name].single_value
-            ):
-                return self.changes.get(name, self.attrs.get(attribute_name, []))
-            else:
-                return self.changes.get(
-                    attribute_name, self.attrs.get(attribute_name, [None])
-                )[0]
+        while len(this_object_classes) > 0:
+            object_class = this_object_classes.pop()
+            done.add(object_class)
+            this_object_classes |= {
+                all_object_classes[ocsup]
+                for ocsup in object_class.sup
+                if ocsup not in done
+            }
+            self.may.extend(object_class.may)
+            self.must.extend(object_class.must)
 
-        return super().__getattribute__(attribute_name)
+        self.may = list(set(self.may))
+        self.must = list(set(self.must))
 
-    def __setattr__(self, name, value):
-        attribute_name = (
-            self.attribute_table[name]
-            if self.attribute_table and name in self.attribute_table
-            else name
-        )
+    def reload(self, conn=None):
+        conn = conn or self.ldap()
+        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
+        self.changes = {}
+        self.attrs = self.ldap_attrs_to_python(result[0][1])
 
-        super().__setattr__(attribute_name, value)
+    def save(self, conn=None):
+        conn = conn or self.ldap()
+        try:
+            match = bool(conn.search_s(self.dn, ldap.SCOPE_SUBTREE))
+        except ldap.NO_SUCH_OBJECT:
+            match = False
 
-        if attribute_name in self.ldap_object_attributes():
-            if self.ldap_object_attributes()[attribute_name].single_value:
-                self.changes[attribute_name] = [value]
-            else:
-                self.changes[attribute_name] = value
+        # Object already exists in the LDAP database
+        if match:
+            deletions = [
+                name
+                for name, value in self.changes.items()
+                if (value is None or value == [None]) and name in self.attrs
+            ]
+            changes = {
+                name: value
+                for name, value in self.changes.items()
+                if name not in deletions and self.attrs.get(name) != value
+            }
+            formatted_changes = {
+                name: value
+                for name, value in self.python_attrs_to_ldap(changes).items()
+                if value is not None and value != [None]
+            }
+            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
+                (ldap.MOD_REPLACE, name, values)
+                for name, values in formatted_changes.items()
+            ]
+            conn.modify_s(self.dn, modlist)
 
-    def __eq__(self, other):
-        return (
-            isinstance(other, self.__class__)
-            and self.may == other.may
-            and self.must == other.must
-            and all(
-                getattr(self, attr) == getattr(other, attr)
-                for attr in self.may + self.must
-            )
-        )
+        # Object does not exist yet in the LDAP database
+        else:
+            changes = {
+                name: value
+                for name, value in {**self.attrs, **self.changes}.items()
+                if value and value[0]
+            }
+            formatted_changes = {
+                name: value
+                for name, value in self.python_attrs_to_ldap(changes).items()
+                if value is not None and value != None
+            }
+            attributes = [(name, values) for name, values in formatted_changes.items()]
+            conn.add_s(self.dn, attributes)
 
-    def __hash__(self):
-        return hash(self.dn)
+        self.attrs = {**self.attrs, **self.changes}
+        self.changes = {}
+
+    def update(self, **kwargs):
+        for k, v in kwargs.items():
+            self.__setattr__(k, v)
+
+    def delete(self, conn=None):
+        conn = conn or self.ldap()
+        conn.delete_s(self.dn)
+
+    def keys(self):
+        ldap_keys = self.must + self.may
+        inverted_table = {value: key for key, value in self.attribute_table.items()}
+        return [inverted_table.get(key, key) for key in ldap_keys]
