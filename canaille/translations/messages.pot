@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-22 12:45+0100\n"
+"POT-Creation-Date: 2023-01-22 13:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -563,16 +563,11 @@ msgstr ""
 
 #: canaille/templates/firstlogin.html:16
 msgid ""
-"\n"
-"                It seems this is the first time you are logging here. In "
-"order to finalize your\n"
-"                account configuration, you need to set a password to your"
-" account. We will send\n"
-"                you an email containing a link that will allow you to set"
-" a password. Please click\n"
-"                on the \"Send the initialization email\" button below to "
-"send the email.\n"
-"            "
+"It seems this is the first time you are logging here. In order to "
+"finalize your account configuration, you need to set a password to your "
+"account. We will send you an email containing a link that will allow you "
+"to set a password. Please click on the \"Send the initialization email\" "
+"button below to send the email."
 msgstr ""
 
 #: canaille/templates/firstlogin.html:35
@@ -602,13 +597,9 @@ msgstr ""
 
 #: canaille/templates/forgotten-password.html:16
 msgid ""
-"\n"
-"                After this form is sent, if the email address or the "
-"login you provided\n"
-"                exists, you will receive an email containing a link that "
-"will allow you\n"
-"                to reset your password.\n"
-"            "
+"After this form is sent, if the email address or the login you provided "
+"exists, you will receive an email containing a link that will allow you "
+"to reset your password."
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:38
@@ -750,11 +741,8 @@ msgstr ""
 
 #: canaille/templates/invite.html:87
 msgid ""
-"\n"
-"                    After this form is sent, the recipient your indicated"
-" will receive an email\n"
-"                    containing an account creation link.\n"
-"                "
+"After this form is sent, the recipient your indicated will receive an "
+"email containing an account creation link."
 msgstr ""
 
 #: canaille/templates/invite.html:123
@@ -942,8 +930,8 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:13
 msgid ""
-"This form will send a fake invitation email to the address you want.\n"
-"                This should be used for testing mail configuration."
+"This form will send a fake invitation email to the address you want. This"
+" should be used for testing mail configuration."
 msgstr ""
 
 #: canaille/templates/mail/admin.html:32
@@ -968,11 +956,9 @@ msgstr ""
 #: canaille/templates/mail/firstlogin.html:27
 #, python-format
 msgid ""
-"\n"
-"                        In order to finalize your account configuration "
-"at %(site_name)s, we need to setup your password. Please click on the "
-"\"Initialize password\" button below and follow the instructions.\n"
-"                    "
+"In order to finalize your account configuration at %(site_name)s, we need"
+" to setup your password. Please click on the \"Initialize password\" "
+"button below and follow the instructions."
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.html:38
@@ -1007,11 +993,9 @@ msgstr ""
 #: canaille/templates/mail/invitation.html:27
 #, python-format
 msgid ""
-"\n"
-"                        You have been invited to create an account at "
-"%(site_name)s. To proceed you can click on the \"Create my account\" "
-"button below and follow the instructions.\n"
-"                    "
+"You have been invited to create an account at %(site_name)s. To proceed "
+"you can click on the \"Create my account\" button below and follow the "
+"instructions."
 msgstr ""
 
 #: canaille/templates/mail/invitation.html:38
@@ -1028,12 +1012,10 @@ msgstr ""
 #: canaille/templates/mail/reset.html:27
 #, python-format
 msgid ""
-"\n"
-"                        Someone, probably you, asked for a password "
-"reinitialization link at %(site_name)s. If you did not ask for this "
-"email, please ignore it. If you need to reset your password, please click"
-" on the \"Reset password\" button below and follow the instructions.\n"
-"                    "
+"Someone, probably you, asked for a password reinitialization link at "
+"%(site_name)s. If you did not ask for this email, please ignore it. If "
+"you need to reset your password, please click on the \"Reset password\" "
+"button below and follow the instructions."
 msgstr ""
 
 #: canaille/templates/mail/reset.txt:3
