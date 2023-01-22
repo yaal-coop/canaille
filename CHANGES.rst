@@ -8,6 +8,7 @@ Added
 
 - Spanish translation. :pr:`85` :pr:`88`
 - Dedicated connectivity test email :pr:`89`
+- Update to fomantic-ui 2.9.1 :pr:`90`
 
 Fixed
 *****
