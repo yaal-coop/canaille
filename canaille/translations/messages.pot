@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-15 09:19+0100\n"
+"POT-Creation-Date: 2023-01-22 12:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -155,15 +155,15 @@ msgstr ""
 msgid "The test invitation mail has not been sent correctly"
 msgstr ""
 
-#: canaille/admin.py:66 canaille/mails.py:152
+#: canaille/admin.py:89 canaille/mails.py:180
 msgid "Password initialization on {website_name}"
 msgstr ""
 
-#: canaille/admin.py:108 canaille/mails.py:112
+#: canaille/admin.py:131 canaille/mails.py:140
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/admin.py:150
+#: canaille/admin.py:173
 msgid "Invitation on {website_name}"
 msgstr ""
 
@@ -352,7 +352,11 @@ msgstr ""
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr ""
 
-#: canaille/mails.py:182
+#: canaille/mails.py:102
+msgid "Test email from {website_name}"
+msgstr ""
+
+#: canaille/mails.py:210
 msgid "You have been invited to create an account on {website_name}"
 msgstr ""
 
@@ -904,7 +908,7 @@ msgstr ""
 msgid "Send mail"
 msgstr ""
 
-#: canaille/templates/mail/admin.html:56 canaille/templates/profile.html:223
+#: canaille/templates/mail/admin.html:68 canaille/templates/profile.html:223
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
@@ -946,13 +950,18 @@ msgstr ""
 msgid "Email preview"
 msgstr ""
 
-#: canaille/templates/mail/admin.html:44
+#: canaille/templates/mail/admin.html:44 canaille/templates/mail/test.html:19
+#: canaille/templates/mail/test.txt:1
+msgid "Connectivity test"
+msgstr ""
+
+#: canaille/templates/mail/admin.html:56
 #: canaille/templates/mail/firstlogin.html:19
 #: canaille/templates/mail/reset.txt:1
 msgid "Password initialization"
 msgstr ""
 
-#: canaille/templates/mail/admin.html:68
+#: canaille/templates/mail/admin.html:80
 msgid "Invitation"
 msgstr ""
 
@@ -1033,6 +1042,13 @@ msgid ""
 "In order to finalize your account configuration at %(site_name)s, we need"
 " to setup your password. Please click on the link below and follow the "
 "instructions."
+msgstr ""
+
+#: canaille/templates/mail/test.html:27 canaille/templates/mail/test.txt:3
+#, python-format
+msgid ""
+"This email is a test to check that you receive communications from "
+"%(site_name)s."
 msgstr ""
 
 #: canaille/templates/oidc/admin/authorization_list.html:18

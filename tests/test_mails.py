@@ -120,7 +120,7 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
 
 
 def test_mail_debug_pages(testclient, logged_admin):
-    for base in ["password-init", "reset", "admin/admin@admin.com/invitation"]:
+    for base in ["test", "password-init", "reset", "admin/admin@admin.com/invitation"]:
         testclient.get(f"/admin/mail/{base}.html")
         testclient.get(f"/admin/mail/{base}.txt")
 

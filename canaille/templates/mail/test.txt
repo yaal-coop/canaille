@@ -1,0 +1,5 @@
+# {% trans %}Connectivity test{% endtrans %}
+
+{% trans %}This email is a test to check that you receive communications from {{ site_name }}.{% endtrans %}
+
+{{ site_name }}: {{ site_url }}

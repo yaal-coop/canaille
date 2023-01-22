@@ -7,6 +7,7 @@ Added
 *****
 
 - Spanish translation. :pr:`85` :pr:`88`
+- Dedicated connectivity test email :pr:`89`
 
 Fixed
 *****

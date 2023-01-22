@@ -36,6 +36,18 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
+                        <a class="ui button" href="{{ url_for("admin.test_txt") }}">TXT</a>
+                        <a class="ui button" href="{{ url_for("admin.test_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Connectivity test") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
                         <a class="ui button" href="{{ url_for("admin.password_init_txt") }}">TXT</a>
                         <a class="ui button" href="{{ url_for("admin.password_init_html") }}">HTML</a>
                     </div>

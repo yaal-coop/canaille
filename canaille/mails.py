@@ -95,6 +95,34 @@ def send_email(subject, recipient, text, html, attachements=None):
     return True
 
 
+def send_test_mail(email):
+    base_url = url_for("account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("Test email from {website_name}").format(
+        website_name=current_app.config.get("NAME", "Canaille")
+    )
+    text_body = render_template(
+        "mail/test.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+    )
+    html_body = render_template(
+        "mail/test.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=email,
+        text=text_body,
+        html=html_body,
+        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )
+
+
 def send_password_reset_mail(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
