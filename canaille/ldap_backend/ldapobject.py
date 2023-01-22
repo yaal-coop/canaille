@@ -67,7 +67,9 @@ class LDAPObject:
                 not self.ldap_object_attributes()
                 or not self.ldap_object_attributes()[attribute_name].single_value
             ):
-                return self.changes.get(name, self.attrs.get(attribute_name, []))
+                return self.changes.get(
+                    attribute_name, self.attrs.get(attribute_name, [])
+                )
             else:
                 return self.changes.get(
                     attribute_name, self.attrs.get(attribute_name, [None])
