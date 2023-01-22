@@ -72,14 +72,9 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
         g.ldap.unbind_s()
 
     assert len(smtpd.messages) == 1
-    assert "You have been invited to create an account on" in smtpd.messages[0].get(
-        "Subject"
-    )
+    assert "Test email from" in smtpd.messages[0].get("Subject")
 
     with open(log_path) as fd:
         log_content = fd.read()
 
-    assert (
-        "Sending a mail to test@test.com: You have been invited to create an account on"
-        in log_content
-    )
+    assert "Sending a mail to test@test.com: Test email from" in log_content

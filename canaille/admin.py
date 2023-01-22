@@ -1,7 +1,7 @@
 from canaille.apputils import obj_to_b64
 from canaille.flaskutils import permissions_needed
 from canaille.mails import profile_hash
-from canaille.mails import send_invitation_mail
+from canaille.mails import send_test_mail
 from flask import Blueprint
 from flask import current_app
 from flask import flash
@@ -38,12 +38,35 @@ class MailTestForm(FlaskForm):
 def mail_index(user):
     form = MailTestForm(request.form or None)
     if request.form and form.validate():
-        if send_invitation_mail(form.mail.data, ""):
+        if send_test_mail(form.mail.data):
             flash(_("The test invitation mail has been sent correctly"), "success")
         else:
             flash(_("The test invitation mail has not been sent correctly"), "error")
 
     return render_template("mail/admin.html", form=form, menuitem="admin")
+
+
+@bp.route("/mail/test.html")
+@permissions_needed("manage_oidc")
+def test_html(user):
+    base_url = url_for("account.index", _external=True)
+    return render_template(
+        "mail/test.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        logo=current_app.config.get("LOGO"),
+    )
+
+
+@bp.route("/mail/test.txt")
+@permissions_needed("manage_oidc")
+def test_txt(user):
+    base_url = url_for("account.index", _external=True)
+    return render_template(
+        "mail/test.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=current_app.config.get("SERVER_NAME", base_url),
+    )
 
 
 @bp.route("/mail/password-init.html")
