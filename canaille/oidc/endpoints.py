@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import JsonWebKey
@@ -141,6 +142,7 @@ def authorize():
             ).split(" ")
         else:
             consent = Consent(
+                cn=str(uuid.uuid4()),
                 client=client.dn,
                 subject=user.dn,
                 scope=scopes,

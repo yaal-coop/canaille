@@ -1,5 +1,6 @@
 import datetime
 import os
+import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
@@ -205,6 +206,7 @@ def id_token(testclient, client, user, slapd_connection):
 @pytest.fixture
 def consent(testclient, client, user, slapd_connection):
     t = Consent(
+        cn=str(uuid.uuid4()),
         client=client.dn,
         subject=user.dn,
         scope=["openid", "profile"],

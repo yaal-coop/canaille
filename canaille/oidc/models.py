@@ -1,5 +1,4 @@
 import datetime
-import uuid
 
 from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
@@ -208,12 +207,6 @@ class Consent(LDAPObject):
         "issue_date": "oauthIssueDate",
         "revokation_date": "oauthRevokationDate",
     }
-
-    def __init__(self, *args, **kwargs):
-        if "cn" not in kwargs:
-            kwargs["cn"] = str(uuid.uuid4())
-
-        super().__init__(*args, **kwargs)
 
     def revoke(self):
         self.revokation_date = datetime.datetime.now()

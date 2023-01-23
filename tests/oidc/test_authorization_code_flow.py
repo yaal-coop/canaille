@@ -1,3 +1,4 @@
+import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
@@ -604,6 +605,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
 
 def test_prompt_none(testclient, logged_user, client):
     consent = Consent(
+        cn=str(uuid.uuid4()),
         client=client.dn,
         subject=logged_user.dn,
         scope=["openid", "profile"],
@@ -630,6 +632,7 @@ def test_prompt_none(testclient, logged_user, client):
 
 def test_prompt_not_logged(testclient, user, client):
     consent = Consent(
+        cn=str(uuid.uuid4()),
         client=client.dn,
         subject=user.dn,
         scope=["openid", "profile"],
