@@ -29,9 +29,8 @@ class LDAPObject:
                 if self.attribute_table and name in self.attribute_table
                 else name
             )
-            self.attrs[attribute_name] = (
-                [value] if not isinstance(value, list) else value
-            )
+            value = [value] if not isinstance(value, list) else value
+            self.changes[attribute_name] = value
 
         self.update_ldap_attributes()
 
@@ -258,12 +257,17 @@ class LDAPObject:
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"])
 
-        return [cls(**cls.ldap_attrs_to_python(args)) for _, args in result]
+        objects = []
+        for _, args in result:
+            obj = cls()
+            obj.attrs = cls.ldap_attrs_to_python(args)
+            objects.append(obj)
+        return objects
 
     def update_ldap_attributes(self):
         all_object_classes = self.ldap_object_classes()
         this_object_classes = {
-            all_object_classes[name] for name in self.attrs["objectClass"]
+            all_object_classes[name] for name in getattr(self, "objectClass")
         }
         done = set()
 
