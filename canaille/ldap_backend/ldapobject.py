@@ -33,8 +33,6 @@ class LDAPObject:
                 [value] if not isinstance(value, list) else value
             )
 
-        self.may = []
-        self.must = []
         self.update_ldap_attributes()
 
     def __repr__(self):
@@ -269,6 +267,8 @@ class LDAPObject:
         }
         done = set()
 
+        self.may = []
+        self.must = []
         while len(this_object_classes) > 0:
             object_class = this_object_classes.pop()
             done.add(object_class)
