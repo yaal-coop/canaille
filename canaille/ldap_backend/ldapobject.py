@@ -84,13 +84,13 @@ class LDAPObject:
             else name
         )
 
-        super().__setattr__(attribute_name, value)
-
         if attribute_name in self.ldap_object_attributes():
-            if self.ldap_object_attributes()[attribute_name].single_value:
-                self.changes[attribute_name] = [value]
-            else:
-                self.changes[attribute_name] = value
+            if not isinstance(value, list):
+                value = [value]
+
+            self.changes[attribute_name] = value
+
+        super().__setattr__(attribute_name, value)
 
     def __getitem__(self, item):
         return getattr(self, item)
