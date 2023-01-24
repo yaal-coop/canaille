@@ -266,7 +266,7 @@ DEFAULT_JWT_MAPPING_CONFIG = {
     "GIVEN_NAME": "{{ user.givenName[0] }}",
     "FAMILY_NAME": "{{ user.sn[0] }}",
     "PREFERRED_USERNAME": "{{ user.displayName }}",
-    "LOCALE": "{{ user.preferredLanguage[0] }}",
+    "LOCALE": "{{ user.preferredLanguage }}",
 }
 
 

@@ -215,7 +215,7 @@ Attributes are rendered using jinja2, and can use a ``user`` variable.
     *Optional.* Defaults to ``{{ user.displayName[0] }}``
 
 :LOCALE:
-    *Optional.* Defaults to ``{{ user.preferredLanguage[0] }}``
+    *Optional.* Defaults to ``{{ user.preferredLanguage }}``
 
 :ADDRESS:
     *Optional.* Defaults to ``{{ user.postalAddress[0] }}``
