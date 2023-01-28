@@ -10,21 +10,22 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.fr\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-22 13:43+0100\n"
+"PO-Revision-Date: 2023-01-28 19:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
+"fr/>\n"
 "Language: fr\n"
-"Language-Team: French <traduc@traduc.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16-dev\n"
 "Generated-By: Babel 2.11.0\n"
-"X-Generator: Gtranslator 42.0\n"
 
 #: canaille/account.py:103 canaille/account.py:128
 #: canaille/oidc/endpoints.py:81
 msgid "Login failed, please check your information"
-msgstr "La connexion a échoué, veuillez vérifier vos informations."
+msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
 #: canaille/account.py:134
 #, python-format
@@ -50,7 +51,7 @@ msgstr ""
 
 #: canaille/account.py:176 canaille/account.py:426
 msgid "Could not send the password initialization email"
-msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
+msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe"
 
 #: canaille/account.py:265 canaille/account.py:348
 msgid "User account creation failed."
@@ -104,7 +105,7 @@ msgstr ""
 
 #: canaille/account.py:443
 msgid "Could not send the password reset email"
-msgstr "Impossible d'envoyer le lien de réinitialisation."
+msgstr "Impossible d'envoyer le lien de réinitialisation"
 
 #: canaille/account.py:477
 msgid "Profile edition failed."
@@ -152,7 +153,7 @@ msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
 #: canaille/account.py:624
 msgid "Your password has been updated successfuly"
-msgstr "Votre mot de passe a correctement été mis à jour."
+msgstr "Votre mot de passe a correctement été mis à jour"
 
 #: canaille/admin.py:23 canaille/templates/userlist.html:14
 msgid "Email"
@@ -408,11 +409,11 @@ msgstr "Le client a été supprimé."
 
 #: canaille/oidc/consents.py:40
 msgid "Could not delete this access"
-msgstr "Impossible de supprimer cet accès."
+msgstr "Impossible de supprimer cet accès"
 
 #: canaille/oidc/consents.py:44
 msgid "The access has been revoked"
-msgstr "L'accès a été révoqué."
+msgstr "L'accès a été révoqué"
 
 #: canaille/oidc/endpoints.py:129
 msgid "You have been successfully logged out."
@@ -420,7 +421,7 @@ msgstr "Vous avez été déconnecté·e."
 
 #: canaille/oidc/endpoints.py:327
 msgid "You have been disconnected"
-msgstr "Vous avez été déconnecté·e."
+msgstr "Vous avez été déconnecté·e"
 
 #: canaille/oidc/endpoints.py:335
 msgid "An error happened during the logout"
@@ -526,7 +527,7 @@ msgstr "À propos de canaille"
 
 #: canaille/templates/about.html:14
 msgid "Free and open-source identity provider."
-msgstr "Fournisseur d'identité numérique libre"
+msgstr "Fournisseur d'identité numérique libre."
 
 #: canaille/templates/about.html:17
 #, python-format
@@ -907,7 +908,7 @@ msgid ""
 "creation;"
 msgstr ""
 "en envoyant un lien d'initialisation de mot de passe, par mail à "
-"l'utilisateur, après la création de son compte;"
+"l'utilisateur, après la création de son compte ;"
 
 #: canaille/templates/profile.html:186 canaille/templates/profile.html:209
 msgid ""
@@ -944,7 +945,7 @@ msgid ""
 "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 "envoyant un lien d'initialisation de mot de passe, par mail à l'utilisateur, "
-"en cliquant sur ce bouton;"
+"en cliquant sur ce bouton ;"
 
 #: canaille/templates/profile.html:220
 msgid "Send mail"
@@ -1291,7 +1292,7 @@ msgstr "Voulez vous vous déconnecter ?"
 #: canaille/templates/oidc/user/logout.html:14
 #, python-format
 msgid "You are currently logged in as %(username)s."
-msgstr "Vous êtes identifiés en tant que %(username)s"
+msgstr "Vous êtes identifiés en tant que %(username)s."
 
 #: canaille/templates/oidc/user/logout.html:16
 #, python-format
@@ -1308,7 +1309,7 @@ msgstr "Déconnexion"
 
 #: canaille/themes/default/base.html:10
 msgid "authorization interface"
-msgstr " - Interface de gestion des autorisations"
+msgstr "Interface de gestion des autorisations"
 
 #: canaille/themes/default/base.html:54
 msgid "Users"
