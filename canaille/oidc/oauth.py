@@ -351,6 +351,10 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
         client_info["client_id_issued_at"] = datetime.datetime.fromtimestamp(
             client_info["client_id_issued_at"]
         )
+        if "scope" in client_metadata and not isinstance(
+            client_metadata["scope"], list
+        ):
+            client_metadata["scope"] = client_metadata["scope"].split(" ")
         client = Client(**client_info, **client_metadata)
         client.save()
         return client
@@ -371,6 +375,10 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         client.delete()
 
     def update_client(self, client, client_metadata, request):
+        if "scope" in client_metadata and not isinstance(
+            client_metadata["scope"], list
+        ):
+            client_metadata["scope"] = client_metadata["scope"].split(" ")
         for key, value in client_metadata.items():
             setattr(client, key, value)
         client.save()

@@ -139,7 +139,7 @@ def test_client_registration_with_software_statement(
             "https://client.example.org/callback2",
         ],
         "software_statement": software_statement,
-        "scope": ["openid", "profile"],
+        "scope": "openid profile",
     }
     print(payload["software_statement"])
     res = testclient.post_json("/oauth/register", payload, status=201)
@@ -156,7 +156,7 @@ def test_client_registration_with_software_statement(
         ],
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
-        "scope": ["openid", "profile"],
+        "scope": "openid profile",
         "token_endpoint_auth_method": "client_secret_basic",
         "client_name": "Example Statement-based Client",
         "client_uri": "https://client.example.net/",
@@ -185,7 +185,7 @@ def test_client_registration_without_authentication_ok(testclient, slapd_connect
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
-        "scope": ["openid", "profile"],
+        "scope": "openid profile",
         "contacts": ["contact@example.com"],
         "tos_uri": "https://example.com/uri",
         "policy_uri": "https://example.com/policy",
@@ -212,7 +212,7 @@ def test_client_registration_without_authentication_ok(testclient, slapd_connect
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
-        "scope": ["openid", "profile"],
+        "scope": "openid profile",
         "contacts": ["contact@example.com"],
         "tos_uri": "https://example.com/uri",
         "policy_uri": "https://example.com/policy",
