@@ -59,3 +59,8 @@ The documentation is generated when the tests run:
     tox -e doc
 
 The generated documentation is in `./build/sphinx/html/` directory.
+
+Translation
+-----------
+
+Translations are done with `Weblate <https://hosted.weblate.org/engage/canaille/>`_
