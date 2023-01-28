@@ -6,15 +6,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-01-29 02:06+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
+"canaille/canaille/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16-dev\n"
 "Generated-By: Babel 2.11.0\n"
 
 #: canaille/account.py:103 canaille/account.py:128
@@ -278,7 +281,7 @@ msgstr ""
 
 #: canaille/forms.py:154
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: canaille/forms.py:156
 msgid "132, Foobar Street, Gotham City 12401"
@@ -286,23 +289,23 @@ msgstr ""
 
 #: canaille/forms.py:160
 msgid "Photo"
-msgstr ""
+msgstr "Bilde"
 
 #: canaille/forms.py:164 canaille/templates/profile.html:95
 msgid "Delete the photo"
-msgstr ""
+msgstr "Slett bildet"
 
 #: canaille/forms.py:178
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 #: canaille/forms.py:180
 msgid "1234"
-msgstr ""
+msgstr "1234"
 
 #: canaille/forms.py:184
 msgid "Website"
-msgstr ""
+msgstr "Nettside"
 
 #: canaille/forms.py:186
 msgid "https://mywebsite.tld"
@@ -310,7 +313,7 @@ msgstr ""
 
 #: canaille/forms.py:190
 msgid "Preferred language"
-msgstr ""
+msgstr "Foretrukket språk"
 
 #: canaille/forms.py:213
 msgid "users, admins ..."
@@ -318,12 +321,12 @@ msgstr ""
 
 #: canaille/forms.py:229
 msgid "group"
-msgstr ""
+msgstr "gruppe"
 
 #: canaille/forms.py:233 canaille/forms.py:247
 #: canaille/templates/groups.html:18
 msgid "Description"
-msgstr ""
+msgstr "Beskrivelse"
 
 #: canaille/forms.py:258
 msgid "Username editable by the invitee"
@@ -362,7 +365,7 @@ msgstr ""
 
 #: canaille/ldap_backend/backend.py:49
 msgid "Could not connect to the LDAP server '{uri}'"
-msgstr ""
+msgstr "Kunne ikke koble til LDAP-tjeneren «{uri}»"
 
 #: canaille/ldap_backend/backend.py:65
 msgid "LDAP authentication failed with user '{user}'"
