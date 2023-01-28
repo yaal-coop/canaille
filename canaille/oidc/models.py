@@ -92,8 +92,7 @@ class Client(LDAPObject, ClientMixin):
             attribute_name: getattr(self, attribute_name)
             for attribute_name in self.client_metadata_attributes
         }
-        if "scope" in metadata:
-            metadata["scope"] = " ".join(metadata["scope"])
+        metadata["scope"] = " ".join(metadata["scope"])
         return metadata
 
 

@@ -375,10 +375,7 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         client.delete()
 
     def update_client(self, client, client_metadata, request):
-        if "scope" in client_metadata and not isinstance(
-            client_metadata["scope"], list
-        ):
-            client_metadata["scope"] = client_metadata["scope"].split(" ")
+        client_metadata["scope"] = client_metadata["scope"].split(" ")
         for key, value in client_metadata.items():
             setattr(client, key, value)
         client.save()
