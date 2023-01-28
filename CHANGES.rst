@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+[0.0.20] - 2023-01-28
+=====================
+
 Added
 *****
 
@@ -29,7 +32,6 @@ Fixed
 
 - Ensures the token `expires_in` claim and the `access_token` `exp` claim
   have the same value. :pr:`83`
-
 
 [0.0.18] - 2022-12-28
 =====================
@@ -301,7 +303,6 @@ Removed
 *******
 
 - 'My tokens' page. :issue:`22`
-
 
 [0.0.1] - 2020-10-21
 ====================
