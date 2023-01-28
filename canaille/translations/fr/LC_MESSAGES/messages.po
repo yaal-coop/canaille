@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-28 21:27+0000\n"
+"PO-Revision-Date: 2023-01-29 02:06+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -320,7 +320,7 @@ msgstr "1234"
 
 #: canaille/forms.py:184
 msgid "Website"
-msgstr "Site internet"
+msgstr "Site web"
 
 #: canaille/forms.py:186
 msgid "https://mywebsite.tld"
@@ -328,7 +328,7 @@ msgstr "https://mon-site-internet.fr"
 
 #: canaille/forms.py:190
 msgid "Preferred language"
-msgstr "Langage favori"
+msgstr "Langue préférée"
 
 #: canaille/forms.py:213
 msgid "users, admins ..."
