@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.fr\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-28 19:00+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2023-01-28 21:27+0000\n"
+"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -46,8 +46,8 @@ msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
 msgstr ""
-"Un lien d'initialisation de votre mot de passe vous a été envoyé par mail. "
-"Vous devriez le recevoir d'ici une quelques minutes."
+"Un lien d'initialisation de votre mot de passe vous a été envoyé par "
+"courriel. Vous devriez le recevoir d'ici une quelques minutes."
 
 #: canaille/account.py:176 canaille/account.py:426
 msgid "Could not send the password initialization email"
@@ -93,7 +93,7 @@ msgid ""
 "should be received within a few minutes."
 msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
-"mail. Il devrait arriver d'ici une quelques minutes."
+"courriel. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/account.py:437
 msgid ""
@@ -101,7 +101,7 @@ msgid ""
 "received within a few minutes."
 msgstr ""
 "Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
-"mail. Il devrait arriver d'ici quelques de minutes."
+"courriel. Il devrait arriver d'ici quelques de minutes."
 
 #: canaille/account.py:443
 msgid "Could not send the password reset email"
@@ -130,7 +130,7 @@ msgid ""
 "receive it within a few minutes."
 msgstr ""
 "Un lien de ré-initialisation de votre mot de passe vous a été envoyé par "
-"mail. Vous devriez le recevoir d'ici quelques minutes."
+"courriel. Vous devriez le recevoir d'ici quelques minutes."
 
 #: canaille/account.py:581
 #, python-format
@@ -139,12 +139,12 @@ msgid ""
 "cannot send a password reset email."
 msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
-"Nous ne pouvons pas lui envoyer un email de réinitialisation."
+"Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
 
 #: canaille/account.py:596
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
-"Nous avons rencontré un problème lors de l'envoi de l'email de "
+"Nous avons rencontré un problème lors de l'envoi du courriel de "
 "réinitialisation de mot de passe."
 
 #: canaille/account.py:615
@@ -210,7 +210,7 @@ msgstr "L'identifiant '{login}' existe déjà"
 
 #: canaille/forms.py:24
 msgid "The email '{email}' already exists"
-msgstr "L'email '{email}' existe déjà"
+msgstr "Le courriel '{email}' existe déjà"
 
 #: canaille/forms.py:31
 msgid "The group '{group}' already exists"
@@ -283,8 +283,8 @@ msgstr "Courriel"
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
-"Cette adresse servira d'adresse e-mail de récupération pour recevoir un e-"
-"mail de réinitialisation de mot de passe en cas de besoin"
+"Cette adresse servira d'adresse électronique de récupération pour recevoir "
+"un courriel de réinitialisation de mot de passe en cas de besoin"
 
 #: canaille/forms.py:151
 msgid "Phone number"
@@ -372,7 +372,7 @@ msgstr "Le groupe %(group)s a bien été supprimé"
 
 #: canaille/mails.py:102
 msgid "Test email from {website_name}"
-msgstr "Email de test de {website_name}"
+msgstr "Courriel de test de {website_name}"
 
 #: canaille/mails.py:210
 msgid "You have been invited to create an account on {website_name}"
@@ -507,7 +507,7 @@ msgstr ""
 
 #: canaille/oidc/utils.py:8
 msgid "Your email address."
-msgstr "Votre adresse email."
+msgstr "Votre adresse courriel."
 
 #: canaille/oidc/utils.py:9
 msgid "Your postal address."
@@ -592,9 +592,10 @@ msgid ""
 msgstr ""
 "Il semblerait que vous vous connectez ici pour la première fois. Afin de "
 "finaliser la configuration de votre compte, vous devez mettre en place un "
-"mot de passe. Nous allons vous envoyer un email contenant un lien qui vous "
-"permettra de choisir un mot de passe. Pour continuer et envoyer l'email, "
-"cliquez sur le bouton « Envoyer le courriel d'initialisation » ci-dessous."
+"mot de passe. Nous allons vous envoyer un courriel contenant un lien qui "
+"vous permettra de choisir un mot de passe. Pour continuer et envoyer le "
+"courriel, cliquez sur le bouton « Envoyer le courriel d'initialisation » ci-"
+"dessous."
 
 #: canaille/templates/firstlogin.html:35
 #: canaille/templates/forgotten-password.html:35
@@ -627,9 +628,9 @@ msgid ""
 "exists, you will receive an email containing a link that will allow you to "
 "reset your password."
 msgstr ""
-"Après envoi de ce formulaire, si l'identifiant ou l'adresse email que vous "
-"indiquez existe, vous recevrez un email contenant un lien qui vous permettra "
-"de ré-initialiser votre mot de passe."
+"Après envoi de ce formulaire, si l'identifiant ou l'adresse courriel que "
+"vous indiquez existe, vous recevrez un courriel contenant un lien qui vous "
+"permettra de ré-initialiser votre mot de passe."
 
 #: canaille/templates/forgotten-password.html:38
 msgid "Send again"
@@ -743,8 +744,8 @@ msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "there:"
 msgstr ""
-"Si vous avez besoin de communiquer ce lien par d'autres moyen que l'email, "
-"vous pouvez le copier ici :"
+"Si vous avez besoin de communiquer ce lien par d'autres moyen que le "
+"courriel, vous pouvez le copier ici :"
 
 #: canaille/templates/invite.html:44
 #, python-format
@@ -759,7 +760,7 @@ msgid ""
 "However you can copy the link there to provide it by other ways than email:"
 msgstr ""
 "Cependant, vous pouvez copier ce lien pour le transmettre par d'autres "
-"moyens que l'email :"
+"moyens que le courriel :"
 
 #: canaille/templates/invite.html:58
 msgid "Copy"
@@ -784,7 +785,7 @@ msgid ""
 "containing an account creation link."
 msgstr ""
 "Après que ce formulaire sera envoyé, le destinataire que vous avez indiqué "
-"recevra un email contenant un lien lui permettant de créer un compte "
+"recevra un courriel contenant un lien lui permettant de créer un compte "
 "utilisateur."
 
 #: canaille/templates/invite.html:123
@@ -907,7 +908,7 @@ msgid ""
 "by sending the user a password initialization mail, after the account "
 "creation;"
 msgstr ""
-"en envoyant un lien d'initialisation de mot de passe, par mail à "
+"en envoyant un lien d'initialisation de mot de passe, par courriel à "
 "l'utilisateur, après la création de son compte ;"
 
 #: canaille/templates/profile.html:186 canaille/templates/profile.html:209
@@ -916,7 +917,7 @@ msgid ""
 "password initialization mail."
 msgstr ""
 "ou simplement en attendant la première connexion de l'utilisateur, afin "
-"qu'il reçoive un lien d'initialisation de mot de passe par email."
+"qu'il reçoive un lien d'initialisation de mot de passe par courriel."
 
 #: canaille/templates/profile.html:189 canaille/templates/profile.html:212
 msgid "The user will not be able to authenticate unless the password is set"
@@ -926,7 +927,7 @@ msgstr ""
 
 #: canaille/templates/profile.html:198
 msgid "Send email"
-msgstr "Envoyer l'email"
+msgstr "Envoyer le courriel"
 
 #: canaille/templates/profile.html:202
 msgid "This user does not have a password yet"
@@ -944,12 +945,12 @@ msgstr "renseignant un mot de passe via ce formulaire ;"
 msgid ""
 "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
-"envoyant un lien d'initialisation de mot de passe, par mail à l'utilisateur, "
-"en cliquant sur ce bouton ;"
+"envoyant un lien d'initialisation de mot de passe, par courriel à "
+"l'utilisateur, en cliquant sur ce bouton ;"
 
 #: canaille/templates/profile.html:220
 msgid "Send mail"
-msgstr "Envoyer l'email"
+msgstr "Envoyer le courriel"
 
 #: canaille/templates/mail/admin.html:68 canaille/templates/profile.html:223
 #: canaille/templates/reset-password.html:11
@@ -962,8 +963,8 @@ msgid ""
 "If the user has forgotten his password, you can send him a password reset "
 "email by clicking this button."
 msgstr ""
-"Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un email "
-"contenant un lien de réinitilisation en cliquant sur ce bouton."
+"Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un "
+"courriel contenant un lien de réinitialisation en cliquant sur ce bouton."
 
 #: canaille/templates/profile.html:237
 msgid "Delete the user"
@@ -983,19 +984,19 @@ msgstr "Nouvel utilisateur"
 
 #: canaille/templates/mail/admin.html:8
 msgid "Mail sending test"
-msgstr "Test d'envoi d'email"
+msgstr "Test d'envoi de courriel"
 
 #: canaille/templates/mail/admin.html:13
 msgid ""
 "This form will send a fake invitation email to the address you want. This "
 "should be used for testing mail configuration."
 msgstr ""
-"Ce formulaire enverra un faux mail d'invitation à l'adresse que vous "
-"indiquerez. À utiliser pour tester les configurations de mail."
+"Ce formulaire enverra un faux courriel d'invitation à l'adresse que vous "
+"indiquerez. À utiliser pour tester les configurations de courriel."
 
 #: canaille/templates/mail/admin.html:32
 msgid "Email preview"
-msgstr "Prévisualisation des emails"
+msgstr "Prévisualisation des courriels"
 
 #: canaille/templates/mail/admin.html:44 canaille/templates/mail/test.html:19
 #: canaille/templates/mail/test.txt:1
@@ -1111,7 +1112,7 @@ msgid ""
 "This email is a test to check that you receive communications from "
 "%(site_name)s."
 msgstr ""
-"Cet email est une vérification que vous recevez les communications du site "
+"Ce courriel est une vérification que vous recevez les communications du site "
 "%(site_name)s."
 
 #: canaille/templates/oidc/admin/authorization_list.html:18
