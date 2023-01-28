@@ -19,6 +19,7 @@ Fixed
 - Fix wording and punctuations. :pr:`86`
 - Fix HTML lang tag :issue:`122` :pr:`87`
 - Automatically trims the HTML translated strings. :pr:`91`
+- Fixed dynamic registration scope management. :issue:`123` :pr:`93`
 
 [0.0.19] - 2023-01-14
 =====================
