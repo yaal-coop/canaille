@@ -10,18 +10,17 @@ def test_password_reset(testclient, user):
 
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
-    res = res.form.submit(status=302)
-
-    res = res.follow(status=200)
+    res = res.form.submit()
+    assert ("success", "Your password has been updated successfuly") in res.flashes
 
     assert user.check_password("foobarbaz")
-    assert "Your password has been updated successfuly" in res.text
     user.set_password("correct horse battery staple")
 
     res = testclient.get("/reset/user/" + hash)
-    res = res.follow()
-    res = res.follow()
-    assert "The password reset link that brought you here was invalid." in res.text
+    assert (
+        "error",
+        "The password reset link that brought you here was invalid.",
+    ) in res.flashes
 
 
 def test_password_reset_bad_link(testclient, user):
@@ -29,9 +28,10 @@ def test_password_reset_bad_link(testclient, user):
     user.reload()
 
     res = testclient.get("/reset/user/foobarbaz")
-    res = res.follow()
-    res = res.follow()
-    assert "The password reset link that brought you here was invalid." in res.text
+    assert (
+        "error",
+        "The password reset link that brought you here was invalid.",
+    ) in res.flashes
 
 
 def test_password_reset_bad_password(testclient, user):

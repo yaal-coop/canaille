@@ -97,9 +97,9 @@ def test_moderator_can_create_edit_and_delete_group(
         assert member.name in res.text
 
     # Group is deleted
-    res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
+    res = res.form.submit(name="action", value="delete", status=302)
     assert Group.get("bar") is None
-    assert "The group bar has been sucessfully deleted" in res.text
+    assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
 
 def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_group):

@@ -242,7 +242,7 @@ def test_logout_login(testclient, logged_user, client):
     res.form["login"] = logged_user.name
     res.form["password"] = "wrong password"
     res = res.form.submit(status=200)
-    assert "Login failed, please check your information" in res.text
+    assert ("error", "Login failed, please check your information") in res.flashes
 
     res.form["login"] = logged_user.name
     res.form["password"] = "correct horse battery staple"

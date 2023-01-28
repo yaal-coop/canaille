@@ -225,7 +225,7 @@ def test_registration_no_password(testclient, foo_group):
     assert "required" in res.form["password2"].attrs
 
     res = res.form.submit(status=200)
-    assert "This field is required." in res.text, res.text
+    assert "This field is required." in res.text
 
     assert not User.get("someoneelse")
 

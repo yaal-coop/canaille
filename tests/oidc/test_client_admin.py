@@ -92,14 +92,13 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     }
     for k, v in data.items():
         res.forms["clientadd"][k].force_value(v)
-    res = (
-        res.forms["clientadd"].submit(status=302, name="action", value="edit").follow()
-    )
+    res = res.forms["clientadd"].submit(status=302, name="action", value="edit")
 
     assert (
-        "The client has not been edited. Please check your information." not in res.text
-    )
-    assert "The client has been edited." in res.text
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) not in res.flashes
+    assert ("success", "The client has been edited.") in res.flashes
 
     client = Client.get(client.dn)
     for k, v in data.items():
@@ -145,16 +144,16 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clientadd"]["preconsent"] = True
-    res = res.forms["clientadd"].submit(name="action", value="edit").follow()
+    res = res.forms["clientadd"].submit(name="action", value="edit")
 
-    assert "The client has been edited." in res.text
+    assert ("success", "The client has been edited.") in res.flashes
     client = Client.get(client.dn)
     assert client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clientadd"]["preconsent"] = False
-    res = res.forms["clientadd"].submit(name="action", value="edit").follow()
+    res = res.forms["clientadd"].submit(name="action", value="edit")
 
-    assert "The client has been edited." in res.text
+    assert ("success", "The client has been edited.") in res.flashes
     client = Client.get(client.dn)
     assert not client.preconsent
