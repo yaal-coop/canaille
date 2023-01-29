@@ -31,8 +31,8 @@
                             {% if client.logo_uri %}
                                 <img class="right floated mini ui image" src="{{ client.logo_uri }}">
                             {% endif %}
-                            {% if client.uri %}
-                                <a href="{{ client.uri }}" class="header">{{ client.client_name }}</a>
+                            {% if client.client_uri %}
+                                <a href="{{ client.client_uri }}" class="header">{{ client.client_name }}</a>
                             {% else %}
                                 <div class="header">{{ client.client_name }}</div>
                             {% endif %}
