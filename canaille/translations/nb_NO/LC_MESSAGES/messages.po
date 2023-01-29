@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-29 02:06+0000\n"
+"PO-Revision-Date: 2023-01-29 22:06+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "canaille/canaille/nb_NO/>\n"
@@ -66,14 +66,15 @@ msgid "Your account has already been created."
 msgstr ""
 
 #: canaille/account.py:307
+#, fuzzy
 msgid "You are already logged in, you cannot create an account."
-msgstr ""
+msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 
 #: canaille/account.py:326 canaille/forms.py:211 canaille/forms.py:273
 #: canaille/templates/groups.html:11 canaille/templates/userlist.html:17
 #: canaille/themes/default/base.html:61
 msgid "Groups"
-msgstr ""
+msgstr "Grupper"
 
 #: canaille/account.py:353
 msgid "You account has been created successfuly."
