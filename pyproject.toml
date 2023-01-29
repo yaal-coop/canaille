@@ -123,7 +123,7 @@ commands =
 
 [testenv:style]
 commands =
-    poetry install
+    poetry install --only=pre-commit
     poetry run pre-commit run --all-files
 
 [testenv:doc]
