@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-29 22:06+0000\n"
+"PO-Revision-Date: 2023-01-30 16:46+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "canaille/canaille/nb_NO/>\n"
@@ -115,7 +115,7 @@ msgstr ""
 
 #: canaille/account.py:566
 msgid "Could not send the password reset link."
-msgstr ""
+msgstr "Kunne ikke sende lenke for passordgjenoppretting."
 
 #: canaille/account.py:570
 msgid ""
@@ -185,7 +185,7 @@ msgstr ""
 
 #: canaille/apputils.py:39
 msgid " or "
-msgstr ""
+msgstr " eller "
 
 #: canaille/flaskutils.py:63
 msgid "No SMTP server has been configured"
@@ -213,7 +213,7 @@ msgstr ""
 
 #: canaille/forms.py:59 canaille/forms.py:82 canaille/forms.py:166
 msgid "Password"
-msgstr ""
+msgstr "Passord"
 
 #: canaille/forms.py:85 canaille/forms.py:170
 msgid "Password confirmation"
@@ -225,22 +225,22 @@ msgstr ""
 
 #: canaille/forms.py:99
 msgid "Automatic"
-msgstr ""
+msgstr "Automatisk"
 
 #: canaille/forms.py:107 canaille/forms.py:254
 msgid "Username"
-msgstr ""
+msgstr "Brukernavn"
 
 #: canaille/forms.py:111 canaille/forms.py:226 canaille/forms.py:240
 #: canaille/oidc/forms.py:17 canaille/templates/groups.html:17
 #: canaille/templates/oidc/admin/client_list.html:23
 #: canaille/templates/userlist.html:11
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: canaille/forms.py:113
 msgid "Given name"
-msgstr ""
+msgstr "Fornavn"
 
 #: canaille/forms.py:115
 msgid "John"
@@ -248,7 +248,7 @@ msgstr ""
 
 #: canaille/forms.py:121
 msgid "Family Name"
-msgstr ""
+msgstr "Etternavn"
 
 #: canaille/forms.py:124
 msgid "Doe"
@@ -256,7 +256,7 @@ msgstr ""
 
 #: canaille/forms.py:130
 msgid "Display Name"
-msgstr ""
+msgstr "Visningsnavn"
 
 #: canaille/forms.py:133
 msgid "Johnny"
@@ -264,7 +264,7 @@ msgstr ""
 
 #: canaille/forms.py:139 canaille/forms.py:260
 msgid "Email address"
-msgstr ""
+msgstr "E-postadresse"
 
 #: canaille/forms.py:141
 msgid ""
@@ -274,7 +274,7 @@ msgstr ""
 
 #: canaille/forms.py:151
 msgid "Phone number"
-msgstr ""
+msgstr "Telefonnummer"
 
 #: canaille/forms.py:151
 msgid "555-000-555"
@@ -394,11 +394,11 @@ msgstr ""
 
 #: canaille/oidc/consents.py:40
 msgid "Could not delete this access"
-msgstr ""
+msgstr "Kunne ikke slette denne tilgangen"
 
 #: canaille/oidc/consents.py:44
 msgid "The access has been revoked"
-msgstr ""
+msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/oidc/endpoints.py:129
 msgid "You have been successfully logged out."
@@ -406,7 +406,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints.py:327
 msgid "You have been disconnected"
-msgstr ""
+msgstr "Du har blitt frakoblet"
 
 #: canaille/oidc/endpoints.py:335
 msgid "An error happened during the logout"
@@ -418,7 +418,7 @@ msgstr ""
 
 #: canaille/oidc/forms.py:22
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #: canaille/oidc/forms.py:27
 msgid "URI"
@@ -466,11 +466,11 @@ msgstr ""
 
 #: canaille/oidc/forms.py:97
 msgid "Software ID"
-msgstr ""
+msgstr "Programvare-ID"
 
 #: canaille/oidc/forms.py:102
 msgid "Software Version"
-msgstr ""
+msgstr "Programvareversjon"
 
 #: canaille/oidc/forms.py:107
 msgid "JWK"
@@ -490,19 +490,19 @@ msgstr ""
 
 #: canaille/oidc/utils.py:8
 msgid "Your email address."
-msgstr ""
+msgstr "Din e-postadresse."
 
 #: canaille/oidc/utils.py:9
 msgid "Your postal address."
-msgstr ""
+msgstr "Din postadresse."
 
 #: canaille/oidc/utils.py:10
 msgid "Your phone number."
-msgstr ""
+msgstr "Ditt telefonnummer."
 
 #: canaille/oidc/utils.py:11
 msgid "Groups you are belonging to"
-msgstr ""
+msgstr "Grupper du tilhører"
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
 msgid "About canaille"
@@ -515,23 +515,23 @@ msgstr ""
 #: canaille/templates/about.html:17
 #, python-format
 msgid "Version %(version)s"
-msgstr ""
+msgstr "Versjon %(version)s"
 
 #: canaille/templates/about.html:18
 msgid "Homepage"
-msgstr ""
+msgstr "Hjemmeside"
 
 #: canaille/templates/about.html:19
 msgid "Documentation"
-msgstr ""
+msgstr "Dokumentasjon"
 
 #: canaille/templates/about.html:20
 msgid "Source code"
-msgstr ""
+msgstr "Kildekode"
 
 #: canaille/templates/error.html:19
 msgid "Bad request"
-msgstr ""
+msgstr "Feilaktig forespørsel"
 
 #: canaille/templates/error.html:21
 msgid "Unauthorized"
@@ -539,11 +539,11 @@ msgstr ""
 
 #: canaille/templates/error.html:23
 msgid "Page not found"
-msgstr ""
+msgstr "Fant ikke siden"
 
 #: canaille/templates/error.html:25
 msgid "Technical problem"
-msgstr ""
+msgstr "Teknisk problem"
 
 #: canaille/templates/error.html:31
 msgid "The request you made is invalid"
@@ -563,7 +563,7 @@ msgstr ""
 
 #: canaille/templates/firstlogin.html:11
 msgid "First login"
-msgstr ""
+msgstr "Første innlogging"
 
 #: canaille/templates/firstlogin.html:16
 msgid ""
@@ -577,7 +577,7 @@ msgstr ""
 #: canaille/templates/firstlogin.html:35
 #: canaille/templates/forgotten-password.html:35
 msgid "Login page"
-msgstr ""
+msgstr "Innloggingsside"
 
 #: canaille/templates/firstlogin.html:36
 msgid "Send the initialization email"
@@ -588,16 +588,16 @@ msgstr ""
 #: canaille/templates/oidc/admin/client_edit.html:44
 #: canaille/templates/oidc/admin/client_edit.html:53
 msgid "This field is not editable"
-msgstr ""
+msgstr "Dette feltet kan ikke endres"
 
 #: canaille/templates/fomanticui.html:72
 msgid "This field is required"
-msgstr ""
+msgstr "Dette feltet er påkrevd"
 
 #: canaille/templates/forgotten-password.html:11
 #: canaille/templates/login.html:43 canaille/templates/password.html:40
 msgid "Forgotten password"
-msgstr ""
+msgstr "Glemt passord"
 
 #: canaille/templates/forgotten-password.html:16
 msgid ""
@@ -608,16 +608,16 @@ msgstr ""
 
 #: canaille/templates/forgotten-password.html:38
 msgid "Send again"
-msgstr ""
+msgstr "Send igjen"
 
 #: canaille/templates/forgotten-password.html:40
 #: canaille/templates/mail/admin.html:23
 msgid "Send"
-msgstr ""
+msgstr "Send"
 
 #: canaille/templates/group.html:22
 msgid "Group deletion"
-msgstr ""
+msgstr "Gruppesletting"
 
 #: canaille/templates/group.html:26
 msgid ""
@@ -629,29 +629,29 @@ msgstr ""
 #: canaille/templates/oidc/admin/client_edit.html:18
 #: canaille/templates/profile.html:41
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: canaille/templates/group.html:31
 #: canaille/templates/oidc/admin/client_edit.html:19
 #: canaille/templates/profile.html:42
 msgid "Delete"
-msgstr ""
+msgstr "Slett"
 
 #: canaille/templates/group.html:40
 msgid "Group creation"
-msgstr ""
+msgstr "Gruppeopprettelse"
 
 #: canaille/templates/group.html:42
 msgid "Group edition"
-msgstr ""
+msgstr "Grupperedigering"
 
 #: canaille/templates/group.html:48
 msgid "Create a new group"
-msgstr ""
+msgstr "Opprett ny gruppe"
 
 #: canaille/templates/group.html:50
 msgid "Edit information about a group"
-msgstr ""
+msgstr "Rediger info om en gruppe"
 
 #: canaille/templates/group.html:67
 msgid ""
@@ -662,39 +662,39 @@ msgstr ""
 
 #: canaille/templates/group.html:75
 msgid "Delete group"
-msgstr ""
+msgstr "Slett gruppe"
 
 #: canaille/templates/group.html:80
 msgid "Create group"
-msgstr ""
+msgstr "Opprett gruppe"
 
 #: canaille/templates/group.html:82 canaille/templates/profile.html:257
 msgid "Submit"
-msgstr ""
+msgstr "Send inn"
 
 #: canaille/templates/group.html:94
 msgid "Group members"
-msgstr ""
+msgstr "Gruppemedlemmer"
 
 #: canaille/templates/groups.html:5
 msgid "Add a group"
-msgstr ""
+msgstr "Legg til en gruppe"
 
 #: canaille/templates/groups.html:19
 msgid "Number of members"
-msgstr ""
+msgstr "Antall medlemmer"
 
 #: canaille/templates/invite.html:16
 msgid "Invitation link"
-msgstr ""
+msgstr "Invitasjonslenke"
 
 #: canaille/templates/invite.html:18
 msgid "Invitation sent"
-msgstr ""
+msgstr "Invitasjon sendt"
 
 #: canaille/templates/invite.html:20
 msgid "Invitation not sent"
-msgstr ""
+msgstr "Invitasjon ikke sendt"
 
 #: canaille/templates/invite.html:29
 msgid ""
@@ -705,7 +705,7 @@ msgstr ""
 #: canaille/templates/invite.html:36
 #, python-format
 msgid "This invitation link has been sent to %(email)s"
-msgstr ""
+msgstr "Denne invitasjonslenken har blitt sendt til %(email)s"
 
 #: canaille/templates/invite.html:37
 msgid ""
@@ -728,20 +728,20 @@ msgstr ""
 
 #: canaille/templates/invite.html:58
 msgid "Copy"
-msgstr ""
+msgstr "Kopier"
 
 #: canaille/templates/invite.html:65 canaille/templates/invite.html:120
 msgid "Create a user"
-msgstr ""
+msgstr "Opprett en bruker"
 
 #: canaille/templates/invite.html:69
 msgid "Invite another user"
-msgstr ""
+msgstr "Inviter en annen bruker"
 
 #: canaille/templates/invite.html:81 canaille/templates/profile.html:252
 #: canaille/templates/users.html:20
 msgid "Invite a user"
-msgstr ""
+msgstr "Inviter en bruker"
 
 #: canaille/templates/invite.html:87
 msgid ""
@@ -751,16 +751,16 @@ msgstr ""
 
 #: canaille/templates/invite.html:123
 msgid "Generate a link"
-msgstr ""
+msgstr "Generer en lenke"
 
 #: canaille/templates/invite.html:126
 msgid "Send the invitation"
-msgstr ""
+msgstr "Send invitasjonen"
 
 #: canaille/templates/login.html:19
 #, python-format
 msgid "Sign in at %(website)s"
-msgstr ""
+msgstr "Logg inn på %(website)s"
 
 #: canaille/templates/login.html:21
 msgid "Manage your information and your authorizations"
@@ -768,12 +768,12 @@ msgstr ""
 
 #: canaille/templates/login.html:45
 msgid "Continue"
-msgstr ""
+msgstr "Fortsett"
 
 #: canaille/templates/password.html:19
 #, python-format
 msgid "Sign in as %(username)s"
-msgstr ""
+msgstr "Logg inn som %(username)s"
 
 #: canaille/templates/password.html:21
 msgid "Please enter your password for this account."
@@ -782,15 +782,15 @@ msgstr ""
 #: canaille/templates/password.html:38
 #, python-format
 msgid "I am not %(username)s"
-msgstr ""
+msgstr "Jeg er ikke %(username)s"
 
 #: canaille/templates/password.html:42
 msgid "Sign in"
-msgstr ""
+msgstr "Logg inn"
 
 #: canaille/templates/profile.html:18
 msgid "This user cannot edit this field"
-msgstr ""
+msgstr "Denne brukeren kan ikke redigere dette feltet"
 
 #: canaille/templates/profile.html:20
 msgid "This user cannot see this field"
@@ -798,7 +798,7 @@ msgstr ""
 
 #: canaille/templates/profile.html:29
 msgid "Account deletion"
-msgstr ""
+msgstr "Kontosletting"
 
 #: canaille/templates/profile.html:34
 msgid ""
@@ -814,11 +814,11 @@ msgstr ""
 
 #: canaille/templates/profile.html:51
 msgid "User creation"
-msgstr ""
+msgstr "Brukeropprettelse"
 
 #: canaille/templates/profile.html:53 canaille/themes/default/base.html:40
 msgid "My profile"
-msgstr ""
+msgstr "Min profil"
 
 #: canaille/templates/profile.html:55
 msgid "User profile edition"
@@ -826,27 +826,29 @@ msgstr ""
 
 #: canaille/templates/profile.html:61
 msgid "Create a new user account"
-msgstr ""
+msgstr "Opprett den nye brukerkontoen"
 
 #: canaille/templates/profile.html:63
+#, fuzzy
 msgid "Edit your personal information"
-msgstr ""
+msgstr "Rediger din personsinfo"
 
 #: canaille/templates/profile.html:65
 msgid "Edit information about a user"
-msgstr ""
+msgstr "Rediger info om en bruker"
 
 #: canaille/templates/profile.html:80
+#, fuzzy
 msgid "Personal information"
-msgstr ""
+msgstr "Personsinfo"
 
 #: canaille/templates/profile.html:92 canaille/templates/profile.html:103
 msgid "Click to upload a photo"
-msgstr ""
+msgstr "Klikk for å laste opp et bilde"
 
 #: canaille/templates/profile.html:154
 msgid "Account information"
-msgstr ""
+msgstr "Kontoinfo"
 
 #: canaille/templates/profile.html:179
 msgid "User password is not mandatory"
@@ -877,8 +879,9 @@ msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
 #: canaille/templates/profile.html:198
+#, fuzzy
 msgid "Send email"
-msgstr ""
+msgstr "Send e-post"
 
 #: canaille/templates/profile.html:202
 msgid "This user does not have a password yet"
@@ -886,7 +889,7 @@ msgstr ""
 
 #: canaille/templates/profile.html:205
 msgid "You can solve this by:"
-msgstr ""
+msgstr "Du kan løse dette ved å:"
 
 #: canaille/templates/profile.html:207
 msgid "setting a password using this form;"
@@ -898,13 +901,13 @@ msgstr ""
 
 #: canaille/templates/profile.html:220
 msgid "Send mail"
-msgstr ""
+msgstr "Send e-post"
 
 #: canaille/templates/mail/admin.html:68 canaille/templates/profile.html:223
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
-msgstr ""
+msgstr "Passord tilbakestilt"
 
 #: canaille/templates/profile.html:225
 msgid ""
@@ -914,11 +917,11 @@ msgstr ""
 
 #: canaille/templates/profile.html:237
 msgid "Delete the user"
-msgstr ""
+msgstr "Slett brukeren"
 
 #: canaille/templates/profile.html:239
 msgid "Delete my account"
-msgstr ""
+msgstr "Slett kontoen min"
 
 #: canaille/templates/profile.html:246
 msgid "Impersonate"
@@ -926,7 +929,7 @@ msgstr ""
 
 #: canaille/templates/users.html:18
 msgid "Add a user"
-msgstr ""
+msgstr "Legg til en bruker"
 
 #: canaille/templates/mail/admin.html:8
 msgid "Mail sending test"
@@ -1039,25 +1042,25 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/authorization_list.html:18
 msgid "Code"
-msgstr ""
+msgstr "Kode"
 
 #: canaille/templates/oidc/admin/authorization_list.html:19
 #: canaille/templates/oidc/admin/token_list.html:19
 #: canaille/templates/oidc/admin/token_view.html:17
 msgid "Client"
-msgstr ""
+msgstr "Klient"
 
 #: canaille/templates/oidc/admin/authorization_list.html:20
 #: canaille/templates/oidc/admin/token_list.html:20
 #: canaille/templates/oidc/admin/token_view.html:25
 msgid "Subject"
-msgstr ""
+msgstr "Emne"
 
 #: canaille/templates/oidc/admin/authorization_list.html:21
 #: canaille/templates/oidc/admin/client_list.html:25
 #: canaille/templates/oidc/admin/token_list.html:21
 msgid "Created"
-msgstr ""
+msgstr "Opprettet"
 
 #: canaille/templates/oidc/admin/authorization_view.html:7
 msgid "View an authorization"
@@ -1065,15 +1068,15 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/client_add.html:7
 msgid "Add a client"
-msgstr ""
+msgstr "Legg til en klient"
 
 #: canaille/templates/oidc/admin/client_add.html:11
 msgid "Confirm"
-msgstr ""
+msgstr "Bekreft"
 
 #: canaille/templates/oidc/admin/client_edit.html:12
 msgid "Client deletion"
-msgstr ""
+msgstr "Klientsletting"
 
 #: canaille/templates/oidc/admin/client_edit.html:15
 msgid ""
@@ -1083,47 +1086,47 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/client_edit.html:25
 msgid "Edit a client"
-msgstr ""
+msgstr "Rediger en klient"
 
 #: canaille/templates/oidc/admin/client_edit.html:32
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: canaille/templates/oidc/admin/client_edit.html:41
 msgid "Secret"
-msgstr ""
+msgstr "Hemmelighet"
 
 #: canaille/templates/oidc/admin/client_edit.html:50
 msgid "Issued at"
-msgstr ""
+msgstr "Utstedt"
 
 #: canaille/templates/oidc/admin/client_edit.html:74
 msgid "Delete the client"
-msgstr ""
+msgstr "Slett klienten"
 
 #: canaille/templates/oidc/admin/client_edit.html:77
 msgid "Edit"
-msgstr ""
+msgstr "Rediger"
 
 #: canaille/templates/oidc/admin/client_list.html:17
 msgid "Add client"
-msgstr ""
+msgstr "Legg til klient"
 
 #: canaille/templates/oidc/admin/client_list.html:24
 msgid "URL"
-msgstr ""
+msgstr "Nettadresse"
 
 #: canaille/templates/oidc/admin/token_list.html:18
 msgid "Token"
-msgstr ""
+msgstr "Symbol"
 
 #: canaille/templates/oidc/admin/token_view.html:7
 msgid "View a token"
-msgstr ""
+msgstr "Vis et symbol"
 
 #: canaille/templates/oidc/admin/token_view.html:13
 msgid "Issue date"
-msgstr ""
+msgstr "Utstedelsesdato"
 
 #: canaille/templates/oidc/admin/token_view.html:43
 msgid "Audience"
@@ -1139,11 +1142,11 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/token_view.html:65
 msgid "Token type"
-msgstr ""
+msgstr "Symboltype"
 
 #: canaille/templates/oidc/admin/token_view.html:69
 msgid "Access token"
-msgstr ""
+msgstr "Tilgangssymbol"
 
 #: canaille/templates/oidc/admin/token_view.html:74
 msgid "Refresh token"
