@@ -1,4 +1,9 @@
+import datetime
+
+from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Client
+from canaille.oidc.models import Consent
+from canaille.oidc.models import Token
 
 
 def test_no_logged_no_access(testclient):
@@ -125,9 +130,25 @@ def test_client_edit_missing_fields(testclient, client, logged_admin, other_clie
 def test_client_delete(testclient, logged_admin):
     client = Client(client_id="client_id")
     client.save()
+    token = Token(
+        token_id="id", client=client.dn, issue_datetime=datetime.datetime.utcnow()
+    )
+    token.save()
+    consent = Consent(
+        cn="cn", subject=logged_admin.dn, client=client.dn, scope="openid"
+    )
+    consent.save()
+    code = AuthorizationCode(
+        authorization_code_id="id", client=client.dn, subject=client.dn
+    )
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientadd"].submit(name="action", value="delete").follow()
+
+    assert not Client.get()
+    assert not Token.get()
+    assert not AuthorizationCode.get()
+    assert not Consent.get()
 
 
 def test_client_delete_invalid_client(testclient, logged_admin):
