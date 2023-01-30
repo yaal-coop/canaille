@@ -32,9 +32,6 @@ class LDAPObject:
         return f"<{self.__class__.__name__} {self.rdn}={rdn}>"
 
     def __eq__(self, other):
-        for attr in self.may + self.must:
-            if getattr(self, attr) != getattr(other, attr):
-                print(getattr(self, attr), getattr(other, attr))
         return (
             isinstance(other, self.__class__)
             and self.may == other.may

@@ -141,7 +141,6 @@ def test_client_registration_with_software_statement(
         "software_statement": software_statement,
         "scope": "openid profile",
     }
-    print(payload["software_statement"])
     res = testclient.post_json("/oauth/register", payload, status=201)
 
     client = Client.get(res.json["client_id"])
