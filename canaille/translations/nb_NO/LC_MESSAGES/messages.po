@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-30 16:46+0000\n"
+"PO-Revision-Date: 2023-01-30 18:57+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "canaille/canaille/nb_NO/>\n"
@@ -22,18 +22,19 @@ msgstr ""
 
 #: canaille/account.py:103 canaille/account.py:128
 #: canaille/oidc/endpoints.py:81
+#, fuzzy
 msgid "Login failed, please check your information"
-msgstr ""
+msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
 #: canaille/account.py:134
-#, python-format
+#, fuzzy, python-format
 msgid "Connection successful. Welcome %(user)s"
-msgstr ""
+msgstr "Velkommen %(user)s"
 
 #: canaille/account.py:147
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
-msgstr ""
+msgstr "Du har blitt frakoblet. På gjensyn %(user)s"
 
 #: canaille/account.py:165
 msgid "Could not send the password initialization link."
@@ -63,7 +64,7 @@ msgstr ""
 
 #: canaille/account.py:300
 msgid "Your account has already been created."
-msgstr ""
+msgstr "Kontoen din har allerede blitt opprettet."
 
 #: canaille/account.py:307
 #, fuzzy
@@ -77,8 +78,9 @@ msgid "Groups"
 msgstr "Grupper"
 
 #: canaille/account.py:353
+#, fuzzy
 msgid "You account has been created successfuly."
-msgstr ""
+msgstr "Kontoen din ble opprettet."
 
 #: canaille/account.py:393
 msgid "User account creation succeed."
@@ -101,17 +103,18 @@ msgid "Could not send the password reset email"
 msgstr ""
 
 #: canaille/account.py:477
+#, fuzzy
 msgid "Profile edition failed."
-msgstr ""
+msgstr "Kunne ikke redigere profil."
 
 #: canaille/account.py:513
 msgid "Profile updated successfuly."
-msgstr ""
+msgstr "Profil redigert."
 
 #: canaille/account.py:536
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
-msgstr ""
+msgstr "Brukeren %(user)s ble slettet"
 
 #: canaille/account.py:566
 msgid "Could not send the password reset link."
@@ -143,13 +146,14 @@ msgid "Your password has been updated successfuly"
 msgstr ""
 
 #: canaille/admin.py:23 canaille/templates/userlist.html:14
+#, fuzzy
 msgid "Email"
-msgstr ""
+msgstr "E-postadresse"
 
 #: canaille/admin.py:29 canaille/forms.py:49 canaille/forms.py:73
 #: canaille/forms.py:145 canaille/forms.py:267
 msgid "jane@doe.com"
-msgstr ""
+msgstr "ola@nordmann.no"
 
 #: canaille/admin.py:42
 msgid "The test invitation mail has been sent correctly"
@@ -165,23 +169,23 @@ msgstr ""
 
 #: canaille/admin.py:131 canaille/mails.py:140
 msgid "Password reset on {website_name}"
-msgstr ""
+msgstr "Passord tilbakestilt på {website_name}"
 
 #: canaille/admin.py:173
 msgid "Invitation on {website_name}"
-msgstr ""
+msgstr "Invitasjon på {website_name}"
 
 #: canaille/apputils.py:31
 msgid "John Doe"
-msgstr ""
+msgstr "Ola Nordmann"
 
 #: canaille/apputils.py:34 canaille/forms.py:108 canaille/forms.py:255
 msgid "jdoe"
-msgstr ""
+msgstr "onord"
 
 #: canaille/apputils.py:37
 msgid "john@doe.com"
-msgstr ""
+msgstr "ola@nordmann.no"
 
 #: canaille/apputils.py:39
 msgid " or "
@@ -189,19 +193,19 @@ msgstr " eller "
 
 #: canaille/flaskutils.py:63
 msgid "No SMTP server has been configured"
-msgstr ""
+msgstr "Ingen SMTP-tjener er satt opp"
 
 #: canaille/forms.py:17
 msgid "The login '{login}' already exists"
-msgstr ""
+msgstr "Innloggingen «{login}» finnes allerede"
 
 #: canaille/forms.py:24
 msgid "The email '{email}' already exists"
-msgstr ""
+msgstr "E-postadressen «{email}» finnes allerede"
 
 #: canaille/forms.py:31
 msgid "The group '{group}' already exists"
-msgstr ""
+msgstr "Gruppen «{group}» finnes allerede"
 
 #: canaille/forms.py:40
 msgid "The login '{login}' does not exist"
@@ -217,7 +221,7 @@ msgstr "Passord"
 
 #: canaille/forms.py:85 canaille/forms.py:170
 msgid "Password confirmation"
-msgstr ""
+msgstr "Passordbekreftelse"
 
 #: canaille/forms.py:88 canaille/forms.py:173
 msgid "Password and confirmation do not match."
@@ -244,7 +248,7 @@ msgstr "Fornavn"
 
 #: canaille/forms.py:115
 msgid "John"
-msgstr ""
+msgstr "Ola"
 
 #: canaille/forms.py:121
 msgid "Family Name"
@@ -252,7 +256,7 @@ msgstr "Etternavn"
 
 #: canaille/forms.py:124
 msgid "Doe"
-msgstr ""
+msgstr "Nordmann"
 
 #: canaille/forms.py:130
 msgid "Display Name"
@@ -260,7 +264,7 @@ msgstr "Visningsnavn"
 
 #: canaille/forms.py:133
 msgid "Johnny"
-msgstr ""
+msgstr "Ola"
 
 #: canaille/forms.py:139 canaille/forms.py:260
 msgid "Email address"
@@ -318,7 +322,7 @@ msgstr "Foretrukket språk"
 
 #: canaille/forms.py:213
 msgid "users, admins ..."
-msgstr ""
+msgstr "brukere, administratorer …"
 
 #: canaille/forms.py:229
 msgid "group"
@@ -334,8 +338,9 @@ msgid "Username editable by the invitee"
 msgstr ""
 
 #: canaille/groups.py:32
+#, fuzzy
 msgid "Group creation failed."
-msgstr ""
+msgstr "Kunne ikke opprette gruppe."
 
 #: canaille/groups.py:40
 #, python-format
@@ -348,8 +353,9 @@ msgid "The group %(group)s has been sucessfully edited."
 msgstr ""
 
 #: canaille/groups.py:84
+#, fuzzy
 msgid "Group edition failed."
-msgstr ""
+msgstr "Kunne ikke redigere gruppe."
 
 #: canaille/groups.py:93
 #, python-format
@@ -378,7 +384,7 @@ msgstr ""
 
 #: canaille/oidc/clients.py:77
 msgid "The client has been created."
-msgstr ""
+msgstr "Klienten har blitt opprettet."
 
 #: canaille/oidc/clients.py:121
 msgid "The client has not been edited. Please check your information."
@@ -386,11 +392,11 @@ msgstr ""
 
 #: canaille/oidc/clients.py:150
 msgid "The client has been edited."
-msgstr ""
+msgstr "Klienten har blitt redigert."
 
 #: canaille/oidc/clients.py:163
 msgid "The client has been deleted."
-msgstr ""
+msgstr "Klienten har blitt slettet."
 
 #: canaille/oidc/consents.py:40
 msgid "Could not delete this access"
@@ -402,7 +408,7 @@ msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/oidc/endpoints.py:129
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "Du har blitt utlogget."
 
 #: canaille/oidc/endpoints.py:327
 msgid "You have been disconnected"
@@ -414,7 +420,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints.py:347
 msgid "You have not been disconnected"
-msgstr ""
+msgstr "Du har ikke blitt koblet fra"
 
 #: canaille/oidc/forms.py:22
 msgid "Contact"
@@ -438,11 +444,12 @@ msgstr ""
 
 #: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:33
 msgid "Scope"
-msgstr ""
+msgstr "Omfang"
 
 #: canaille/oidc/forms.py:60
+#, fuzzy
 msgid "Response types"
-msgstr ""
+msgstr "Svartyper"
 
 #: canaille/oidc/forms.py:66
 msgid "Token Endpoint Auth Method"
@@ -482,7 +489,7 @@ msgstr ""
 
 #: canaille/oidc/forms.py:117
 msgid "Pre-consent"
-msgstr ""
+msgstr "Forhåndssamtykke"
 
 #: canaille/oidc/utils.py:6
 msgid "Personnal information about yourself, such as your name or your gender."
@@ -506,7 +513,7 @@ msgstr "Grupper du tilhører"
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
 msgid "About canaille"
-msgstr ""
+msgstr "Om canaille"
 
 #: canaille/templates/about.html:14
 msgid "Free and open-source identity provider."
@@ -547,7 +554,7 @@ msgstr "Teknisk problem"
 
 #: canaille/templates/error.html:31
 msgid "The request you made is invalid"
-msgstr ""
+msgstr "Forespørselen du gjorde er ugyldig"
 
 #: canaille/templates/error.html:33
 msgid "You do not have the authorizations to access this page"
@@ -555,11 +562,11 @@ msgstr ""
 
 #: canaille/templates/error.html:35
 msgid "The page you are looking for does not exist"
-msgstr ""
+msgstr "Siden du leter etter finnes ikke"
 
 #: canaille/templates/error.html:37
 msgid "Please contact your administrator"
-msgstr ""
+msgstr "Kontakt din administrator"
 
 #: canaille/templates/firstlogin.html:11
 msgid "First login"
@@ -948,7 +955,7 @@ msgstr ""
 #: canaille/templates/mail/admin.html:44 canaille/templates/mail/test.html:19
 #: canaille/templates/mail/test.txt:1
 msgid "Connectivity test"
-msgstr ""
+msgstr "Tilkoblingstest"
 
 #: canaille/templates/mail/admin.html:56
 #: canaille/templates/mail/firstlogin.html:19
@@ -958,7 +965,7 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:80
 msgid "Invitation"
-msgstr ""
+msgstr "Invitasjon"
 
 #: canaille/templates/mail/firstlogin.html:27
 #, python-format
@@ -990,12 +997,12 @@ msgstr ""
 #: canaille/templates/mail/firstlogin.txt:5
 #: canaille/templates/mail/reset.html:38
 msgid "Reset password"
-msgstr ""
+msgstr "Tilbakestill passord"
 
 #: canaille/templates/mail/invitation.html:19
 #: canaille/templates/mail/invitation.txt:1
 msgid "Account creation"
-msgstr ""
+msgstr "Kontoopprettelse"
 
 #: canaille/templates/mail/invitation.html:27
 #, python-format
@@ -1007,7 +1014,7 @@ msgstr ""
 
 #: canaille/templates/mail/invitation.html:38
 msgid "Create my account"
-msgstr ""
+msgstr "Opprett min konto"
 
 #: canaille/templates/mail/invitation.txt:3
 #, python-format
@@ -1155,29 +1162,29 @@ msgstr ""
 #: canaille/templates/oidc/user/authorize.html:9
 #, python-format
 msgid "The application %(name)s is requesting access to:"
-msgstr ""
+msgstr "Programmet %(name)s forespør tilgang til:"
 
 #: canaille/templates/oidc/user/authorize.html:32
 #, python-format
 msgid "You are logged id as: %(name)s"
-msgstr ""
+msgstr "Du er innlogget som %(name)s"
 
 #: canaille/templates/oidc/user/authorize.html:39
 msgid "Deny"
-msgstr ""
+msgstr "Nekt"
 
 #: canaille/templates/oidc/user/authorize.html:42
 msgid "Switch user"
-msgstr ""
+msgstr "Bytt bruker"
 
 #: canaille/templates/oidc/user/authorize.html:45
 msgid "Accept"
-msgstr ""
+msgstr "Godta"
 
 #: canaille/templates/oidc/user/consent_list.html:18
 #: canaille/themes/default/base.html:47
 msgid "My consents"
-msgstr ""
+msgstr "Mine samtykker"
 
 #: canaille/templates/oidc/user/consent_list.html:21
 msgid "Consult and revoke the authorization you gave to websites."
@@ -1185,7 +1192,7 @@ msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:39
 msgid "From:"
-msgstr ""
+msgstr "Fra:"
 
 #: canaille/templates/oidc/user/consent_list.html:41
 msgid "Revoked:"
@@ -1193,11 +1200,11 @@ msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:44
 msgid "Has access to:"
-msgstr ""
+msgstr "Har tilgang til:"
 
 #: canaille/templates/oidc/user/consent_list.html:63
 msgid "Remove access"
-msgstr ""
+msgstr "Fjern tilgang"
 
 #: canaille/templates/oidc/user/consent_list.html:72
 msgid "You did not authorize applications yet."
@@ -1206,29 +1213,30 @@ msgstr ""
 #: canaille/templates/oidc/user/logout.html:9
 #: canaille/themes/default/base.html:90
 msgid "Log out"
-msgstr ""
+msgstr "Logg ut"
 
 #: canaille/templates/oidc/user/logout.html:10
 msgid "Do you want to log out?"
-msgstr ""
+msgstr "Vil du logge ut?"
 
 #: canaille/templates/oidc/user/logout.html:14
 #, python-format
 msgid "You are currently logged in as %(username)s."
-msgstr ""
+msgstr "Du er innlogget som %(username)s."
 
 #: canaille/templates/oidc/user/logout.html:16
 #, python-format
 msgid "The application %(client_name)s wants to disconnect your account."
-msgstr ""
+msgstr "Programmet %(client_name)s ønsker å koble fra kontoen din."
 
 #: canaille/templates/oidc/user/logout.html:33
 msgid "Stay logged"
-msgstr ""
+msgstr "Forbli innlogget"
 
 #: canaille/templates/oidc/user/logout.html:36
+#, fuzzy
 msgid "Logout"
-msgstr ""
+msgstr "Logg ut"
 
 #: canaille/themes/default/base.html:10
 msgid "authorization interface"
@@ -1236,20 +1244,21 @@ msgstr ""
 
 #: canaille/themes/default/base.html:54
 msgid "Users"
-msgstr ""
+msgstr "Brukere"
 
 #: canaille/themes/default/base.html:71
 msgid "Clients"
-msgstr ""
+msgstr "Klienter"
 
 #: canaille/themes/default/base.html:75
 msgid "Tokens"
-msgstr ""
+msgstr "Symbol"
 
 #: canaille/themes/default/base.html:79
 msgid "Codes"
-msgstr ""
+msgstr "Koder"
 
 #: canaille/themes/default/base.html:83
+#, fuzzy
 msgid "Emails"
-msgstr ""
+msgstr "E-poster"
