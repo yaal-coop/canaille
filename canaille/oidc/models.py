@@ -95,6 +95,18 @@ class Client(LDAPObject, ClientMixin):
         metadata["scope"] = " ".join(metadata["scope"])
         return metadata
 
+    def delete(self):
+        for consent in Consent.filter(client=self.dn):
+            consent.delete()
+
+        for code in AuthorizationCode.filter(client=self.dn):
+            code.delete()
+
+        for token in Token.filter(client=self.dn):
+            token.delete()
+
+        super().delete()
+
 
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     object_class = ["oauthAuthorizationCode"]
