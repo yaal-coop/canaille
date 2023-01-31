@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-30 18:57+0000\n"
+"PO-Revision-Date: 2023-01-31 08:25+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "canaille/canaille/nb_NO/>\n"
@@ -37,30 +37,33 @@ msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Du har blitt frakoblet. På gjensyn %(user)s"
 
 #: canaille/account.py:165
+#, fuzzy
 msgid "Could not send the password initialization link."
-msgstr ""
+msgstr "Kunne ikke sende lenke for oppsett av passord."
 
 #: canaille/account.py:170
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
-msgstr ""
+msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
 #: canaille/account.py:176 canaille/account.py:426
+#, fuzzy
 msgid "Could not send the password initialization email"
-msgstr ""
+msgstr "Kunne ikke sende e-post for oppsett av passord"
 
 #: canaille/account.py:265 canaille/account.py:348
+#, fuzzy
 msgid "User account creation failed."
-msgstr ""
+msgstr "Kunne ikke opprette brukerkonto."
 
 #: canaille/account.py:286 canaille/account.py:314
 msgid "The invitation link that brought you here was invalid."
-msgstr ""
+msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
 #: canaille/account.py:293
 msgid "The invitation link that brought you here has expired."
-msgstr ""
+msgstr "Invitasjonslenken som tok deg hit har utløpt."
 
 #: canaille/account.py:300
 msgid "Your account has already been created."
@@ -83,24 +86,29 @@ msgid "You account has been created successfuly."
 msgstr "Kontoen din ble opprettet."
 
 #: canaille/account.py:393
+#, fuzzy
 msgid "User account creation succeed."
-msgstr ""
+msgstr "Brukerkonto opprettet."
 
 #: canaille/account.py:420
+#, fuzzy
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
-msgstr ""
+msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
 #: canaille/account.py:437
+#, fuzzy
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within a few minutes."
 msgstr ""
+"Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
+"bør være mottatt i løpet av et par minutter."
 
 #: canaille/account.py:443
 msgid "Could not send the password reset email"
-msgstr ""
+msgstr "Kunne ikke sende e-post for tilbakestilling av passord"
 
 #: canaille/account.py:477
 #, fuzzy
@@ -121,29 +129,34 @@ msgid "Could not send the password reset link."
 msgstr "Kunne ikke sende lenke for passordgjenoppretting."
 
 #: canaille/account.py:570
+#, fuzzy
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
-msgstr ""
+msgstr "Lenke for tilbakestilling av passord sendt til din e-postadresse."
 
 #: canaille/account.py:581
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 "We cannot send a password reset email."
 msgstr ""
+"Brukeren «%(user)s» har ikke tilgang til å oppdatere passordet sitt. Kan "
+"ikke sende e-post om tilbakestilling av passord."
 
 #: canaille/account.py:596
+#, fuzzy
 msgid "We encountered an issue while we sent the password recovery email."
-msgstr ""
+msgstr "Kunne ikke sende e-post for gjenoppretting av passord."
 
 #: canaille/account.py:615
 msgid "The password reset link that brought you here was invalid."
-msgstr ""
+msgstr "Passordtilbakestillingslenken som tok deg hit er ikke gyldig."
 
 #: canaille/account.py:624
+#, fuzzy
 msgid "Your password has been updated successfuly"
-msgstr ""
+msgstr "Passordet ditt er oppdatert."
 
 #: canaille/admin.py:23 canaille/templates/userlist.html:14
 #, fuzzy
@@ -156,16 +169,19 @@ msgid "jane@doe.com"
 msgstr "ola@nordmann.no"
 
 #: canaille/admin.py:42
+#, fuzzy
 msgid "The test invitation mail has been sent correctly"
-msgstr ""
+msgstr "Test-invitasjon sendt per e-post"
 
 #: canaille/admin.py:44
+#, fuzzy
 msgid "The test invitation mail has not been sent correctly"
-msgstr ""
+msgstr "Test-invitasjonen per e-post ble ikke sendt"
 
 #: canaille/admin.py:89 canaille/mails.py:180
+#, fuzzy
 msgid "Password initialization on {website_name}"
-msgstr ""
+msgstr "Oppsett av passord på {website_name}"
 
 #: canaille/admin.py:131 canaille/mails.py:140
 msgid "Password reset on {website_name}"
@@ -209,11 +225,12 @@ msgstr "Gruppen «{group}» finnes allerede"
 
 #: canaille/forms.py:40
 msgid "The login '{login}' does not exist"
-msgstr ""
+msgstr "Innloggingen «{login}» finnes ikke"
 
 #: canaille/forms.py:46 canaille/forms.py:70 canaille/templates/userlist.html:8
+#, fuzzy
 msgid "Login"
-msgstr ""
+msgstr "Logg inn"
 
 #: canaille/forms.py:59 canaille/forms.py:82 canaille/forms.py:166
 msgid "Password"
@@ -225,7 +242,7 @@ msgstr "Passordbekreftelse"
 
 #: canaille/forms.py:88 canaille/forms.py:173
 msgid "Password and confirmation do not match."
-msgstr ""
+msgstr "Passordet og bekreftelsen samsvarer ikke."
 
 #: canaille/forms.py:99
 msgid "Automatic"
@@ -343,14 +360,14 @@ msgid "Group creation failed."
 msgstr "Kunne ikke opprette gruppe."
 
 #: canaille/groups.py:40
-#, python-format
+#, fuzzy, python-format
 msgid "The group %(group)s has been sucessfully created"
-msgstr ""
+msgstr "Gruppen «%(group)s» ble opprettet"
 
 #: canaille/groups.py:79
-#, python-format
+#, fuzzy, python-format
 msgid "The group %(group)s has been sucessfully edited."
-msgstr ""
+msgstr "Gruppen «%(group)s» ble redigert."
 
 #: canaille/groups.py:84
 #, fuzzy
@@ -358,17 +375,17 @@ msgid "Group edition failed."
 msgstr "Kunne ikke redigere gruppe."
 
 #: canaille/groups.py:93
-#, python-format
+#, fuzzy, python-format
 msgid "The group %(group)s has been sucessfully deleted"
-msgstr ""
+msgstr "Gruppen «%(group)s» har blitt slettet"
 
 #: canaille/mails.py:102
 msgid "Test email from {website_name}"
-msgstr ""
+msgstr "Test per e-post fra {website_name}"
 
 #: canaille/mails.py:210
 msgid "You have been invited to create an account on {website_name}"
-msgstr ""
+msgstr "Du har blitt invitert til å opprette en konto på {website_name}"
 
 #: canaille/ldap_backend/backend.py:49
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -415,8 +432,9 @@ msgid "You have been disconnected"
 msgstr "Du har blitt frakoblet"
 
 #: canaille/oidc/endpoints.py:335
+#, fuzzy
 msgid "An error happened during the logout"
-msgstr ""
+msgstr "Feil under utlogging"
 
 #: canaille/oidc/endpoints.py:347
 msgid "You have not been disconnected"
@@ -428,19 +446,20 @@ msgstr "Kontakt"
 
 #: canaille/oidc/forms.py:27
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: canaille/oidc/forms.py:32
 msgid "Redirect URIs"
-msgstr ""
+msgstr "Videresendelses-URI-er"
 
 #: canaille/oidc/forms.py:37
 msgid "Post logout redirect URIs"
-msgstr ""
+msgstr "Videresendelses-URI-er til bruk etter-utlogging"
 
 #: canaille/oidc/forms.py:42
+#, fuzzy
 msgid "Grant types"
-msgstr ""
+msgstr "Innvilgelsestyper"
 
 #: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:33
 msgid "Scope"
@@ -452,8 +471,9 @@ msgid "Response types"
 msgstr "Svartyper"
 
 #: canaille/oidc/forms.py:66
+#, fuzzy
 msgid "Token Endpoint Auth Method"
-msgstr ""
+msgstr "Identitetbekreftelsesmetode for symbol-endepunkt"
 
 #: canaille/oidc/forms.py:76
 msgid "Token audiences"
@@ -461,15 +481,15 @@ msgstr ""
 
 #: canaille/oidc/forms.py:82
 msgid "Logo URI"
-msgstr ""
+msgstr "Logo-URI"
 
 #: canaille/oidc/forms.py:87
 msgid "Terms of service URI"
-msgstr ""
+msgstr "Tjenestevilkår-URI"
 
 #: canaille/oidc/forms.py:92
 msgid "Policy URI"
-msgstr ""
+msgstr "Praksis-URI"
 
 #: canaille/oidc/forms.py:97
 msgid "Software ID"
