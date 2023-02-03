@@ -17,7 +17,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
 
-    url = res.pyquery("#copy-text")[0].value
+    url = res.pyquery(".copy-text")[0].value
 
     # logout
     with testclient.session_transaction() as sess:
@@ -66,7 +66,7 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
 
-    url = res.pyquery("#copy-text")[0].value
+    url = res.pyquery(".copy-text")[0].value
 
     # logout
     with testclient.session_transaction() as sess:
@@ -112,7 +112,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     res = res.form.submit(name="action", value="generate", status=200)
     assert len(smtpd.messages) == 0
 
-    url = res.pyquery("#copy-text")[0].value
+    url = res.pyquery(".copy-text")[0].value
 
     # logout
     with testclient.session_transaction() as sess:

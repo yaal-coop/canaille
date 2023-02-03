@@ -1,6 +1,10 @@
 {% extends theme('base.html') %}
 {% import 'fomanticui.html' as sui %}
 
+{% block script %}
+    <script src="/static/js/copy.js"></script>
+{% endblock %}
+
 {% block content %}
     <div class="loginform">
         <h3 class="ui top attached header">
@@ -67,14 +71,24 @@
                 </tr>
                 <tr>
                     <td>{{ _("Access token") }}</td>
-                    <td><pre>{{ token.access_token }}</pre></td>
-                </tr>
+                    <td class="ui fluid action input">
+                        <input type="text" value="{{ token.access_token }}" readonly class="copy-text" id="access-token" data-copy="access-token">
+                        <button class="ui primary right labeled icon button copy-button" data-copy="access-token">
+                            <i class="copy icon"></i>
+                            {% trans %}Copy{% endtrans %}
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td>{{ _("Refresh token") }}</td>
-                    <td><pre>{{ token.refresh_token }}</pre></td>
-                </tr>
-            </table>
-        </div>
-    </div>
+                    <tr>
+                        <td>{{ _("Refresh token") }}</td>
+                        <td class="ui fluid action input">
+                            <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
+                                <i class="copy icon"></i>
+                                {% trans %}Copy{% endtrans %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 {% endblock %}

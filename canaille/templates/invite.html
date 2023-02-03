@@ -2,7 +2,7 @@
 {% import 'fomanticui.html' as fui %}
 
 {% block script %}
-    <script src="/static/js/invite.js"></script>
+    <script src="/static/js/copy.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -52,8 +52,8 @@
                 <div class="ui center aligned container">
                     <div class="ui fields">
                         <div class="ui action input">
-                            <input type="text" value="{{ registration_url }}" readonly id="copy-text">
-                            <button class="ui primary right labeled icon button" id="copy-button">
+                            <input type="text" value="{{ registration_url }}" readonly class="copy-text" id="registration-url" data-copy="registration-url">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="registration-url">
                                 <i class="copy icon"></i>
                                 {% trans %}Copy{% endtrans %}
                             </button>
