@@ -8,5 +8,5 @@ SCOPE_DETAILS = {
     "email": ("at", _("Your e-mail address.")),
     "address": ("envelope open outline", _("Your postal address.")),
     "phone": ("phone", _("Your phone number.")),
-    "groups": ("users", _("Groups you belong to")),
+    "groups": ("users", _("Groups you belong to.")),
 }
