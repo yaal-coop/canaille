@@ -99,6 +99,7 @@ def test_generate_user_claims(user, foo_group):
     assert generate_user_claims(user, claims_from_scope("openid profile")) == {
         "sub": "user",
         "name": "John (johnny) Doe",
+        "given_name": "John",
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
@@ -107,6 +108,7 @@ def test_generate_user_claims(user, foo_group):
     assert generate_user_claims(user, claims_from_scope("openid profile email")) == {
         "sub": "user",
         "name": "John (johnny) Doe",
+        "given_name": "John",
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
@@ -116,6 +118,7 @@ def test_generate_user_claims(user, foo_group):
     assert generate_user_claims(user, claims_from_scope("openid profile address")) == {
         "sub": "user",
         "name": "John (johnny) Doe",
+        "given_name": "John",
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
@@ -125,6 +128,7 @@ def test_generate_user_claims(user, foo_group):
     assert generate_user_claims(user, claims_from_scope("openid profile phone")) == {
         "sub": "user",
         "name": "John (johnny) Doe",
+        "given_name": "John",
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
@@ -134,6 +138,7 @@ def test_generate_user_claims(user, foo_group):
     assert generate_user_claims(user, claims_from_scope("openid profile groups")) == {
         "sub": "user",
         "name": "John (johnny) Doe",
+        "given_name": "John",
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
@@ -311,17 +316,3 @@ def test_claim_is_omitted_if_empty(testclient, slapd_connection, user):
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
 
     assert "email" not in data
-
-
-def test_custom_format_claim_is_formatted_with_empty_value_and_not_omitted(
-    testclient, slapd_connection, user
-):
-    # If the jwt mapping config is customized, it's not canaille's responsability to verify value consistency when one user attribute is not set or null.
-    # Attribute field is left empty in the formatted string.
-    User.ldap_object_classes(slapd_connection)
-    jwt_mapping_config = DEFAULT_JWT_MAPPING_CONFIG.copy()
-    jwt_mapping_config["EMAIL"] = "{{ user.givenName[0] }}@mydomain.tld"
-
-    data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
-
-    assert data["email"] == "@mydomain.tld"

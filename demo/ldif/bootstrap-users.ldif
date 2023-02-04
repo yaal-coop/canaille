@@ -2,7 +2,7 @@ dn: uid=admin,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: Jane Doe
-gn: Jane
+givenName: Jane
 sn: Doe
 uid: admin
 mail: admin@mydomain.tld
@@ -17,7 +17,7 @@ dn: uid=moderator,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: Jack Doe
-gn: Jack
+givenName: Jack
 sn: Doe
 uid: moderator
 mail: moderator@mydomain.tld
@@ -31,7 +31,7 @@ dn: uid=user,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: John Doe
-gn: John
+givenName: John
 sn: Doe
 uid: user
 mail: user@mydomain.tld
@@ -45,7 +45,7 @@ dn: uid=james,ou=users,dc=mydomain,dc=tld
 objectclass: top
 objectclass: inetOrgPerson
 cn: James Doe
-gn: James
+givenName: James
 sn: Doe
 uid: james
 mail: james@mydomain.tld

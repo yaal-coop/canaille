@@ -160,7 +160,7 @@ def user(app, slapd_connection):
     LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         cn="John (johnny) Doe",
-        gn="John",
+        givenName="John",
         sn="Doe",
         uid="user",
         mail="john@doe.com",
