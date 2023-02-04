@@ -1,9 +1,15 @@
+import datetime
+
 from canaille.flaskutils import permissions_needed
 from canaille.models import User
 from canaille.oidc.models import Client
 from canaille.oidc.models import Token
 from flask import abort
 from flask import Blueprint
+from flask import flash
+from flask import redirect
+from flask import url_for
+from flask_babel import gettext as _
 from flask_themer import render_template
 
 
@@ -40,3 +46,18 @@ def view(user, token_id):
         token_audience=token_audience,
         menuitem="admin",
     )
+
+
+@bp.route("/<token_id>/revoke", methods=["GET", "POST"])
+@permissions_needed("manage_oidc")
+def revoke(user, token_id):
+    token = Token.get(token_id=token_id)
+
+    if not token:
+        abort(404)
+
+    token.revokation_date = datetime.datetime.now()
+    token.save()
+    flash(_("The token has successfully been revoked."), "success")
+
+    return redirect(url_for("oidc.tokens.view", token_id=token_id))
