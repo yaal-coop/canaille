@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-01-22 13:42+0100\n"
-"PO-Revision-Date: 2023-01-29 02:06+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2023-02-04 17:53+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -453,7 +453,7 @@ msgstr "Grant types"
 
 #: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:33
 msgid "Scope"
-msgstr "Scope"
+msgstr "Portée"
 
 #: canaille/oidc/forms.py:60
 msgid "Response types"
@@ -1203,7 +1203,7 @@ msgstr "Voir un jeton"
 
 #: canaille/templates/oidc/admin/token_view.html:13
 msgid "Issue date"
-msgstr "Créé le"
+msgstr "Date d’émission"
 
 #: canaille/templates/oidc/admin/token_view.html:43
 msgid "Audience"
