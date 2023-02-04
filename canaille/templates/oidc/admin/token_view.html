@@ -31,10 +31,6 @@
         <div class="ui attached clearing segment">
             <table class="ui celled striped table">
                 <tr>
-                    <td>{{ _("Issue date") }}</td>
-                    <td>{{ token.issue_date }}</td>
-                </tr>
-                <tr>
                     <td>{{ _("Client") }}</td>
                     <td>
                         <a href="{{ url_for("oidc.clients.edit", client_id=token_client.client_id) }}">
@@ -75,6 +71,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>{{ _("Issue date") }}</td>
+                    <td>{{ token.issue_date }}</td>
+                </tr>
+                <tr>
+                    <td>{{ _("Expiration date") }}</td>
+                    <td>{{ token.expire_date }}</td>
+                </tr>
+                <tr>
                     <td>{{ _("Revokation date") }}</td>
                     <td>
                         {% if token.revokation_date %}
@@ -88,10 +92,6 @@
                             </p>
                         {% endif %}
                     </td>
-                </tr>
-                <tr>
-                    <td>{{ _("Lifetime") }}</td>
-                    <td>{{ token.lifetime }}</td>
                 </tr>
                 <tr>
                     <td>{{ _("Token type") }}</td>
