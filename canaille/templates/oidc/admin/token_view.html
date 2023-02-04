@@ -2,13 +2,30 @@
 {% import 'fomanticui.html' as sui %}
 
 {% block script %}
+    <script src="/static/js/confirm.js"></script>
     <script src="/static/js/copy.js"></script>
 {% endblock %}
 
 {% block content %}
+    <div id="modal-delete" class="ui basic modal">
+        <div class="ui icon header">
+            <i class="trash icon"></i>
+            {% trans %}Token deletion{% endtrans %}
+        </div>
+        <div class="content">
+            <p>
+                {{ _("Are you sure you want to revoke this token? This action is unrevokable.") }}
+            </p>
+        </div>
+        <div class="actions">
+            <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+            <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
+        </div>
+    </div>
+
     <div class="loginform">
         <h3 class="ui top attached header">
-            {% trans %}View a token{% endtrans %}
+            {% trans %}Token details{% endtrans %}
         </h3>
 
         <div class="ui attached clearing segment">
@@ -59,7 +76,18 @@
                 </tr>
                 <tr>
                     <td>{{ _("Revokation date") }}</td>
-                    <td>{% if token.revokation_date %}{{ token.revokation_date }}{% endif %}</td>
+                    <td>
+                        {% if token.revokation_date %}
+                            {{ token.revokation_date }}
+                        {% else %}
+                            <a href="{{ url_for("oidc.tokens.revoke", token_id=token.token_id) }}" class="ui negative right floated button confirm" name="action" value="delete" id="delete">
+                                {% trans %}Revoke token{% endtrans %}
+                            </a>
+                            <p>
+                                {% trans %}This token has not been revoked{% endtrans %}
+                            </p>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td>{{ _("Lifetime") }}</td>
