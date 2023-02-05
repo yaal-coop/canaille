@@ -14,10 +14,10 @@ from canaille.models import User
 def test_object_creation(slapd_connection):
     User.initialize(slapd_connection)
     user = User(
-        cn="Doe",  # leading space
-        sn="Doe",
-        uid="user",
-        mail="john@doe.com",
+        formatted_name="Doe",  # leading space
+        family_name="Doe",
+        user_name="user",
+        email="john@doe.com",
     )
     assert not user.exists
     user.save()
@@ -31,7 +31,7 @@ def test_object_creation(slapd_connection):
 
 def test_repr(slapd_connection, foo_group, user):
     assert repr(foo_group) == "<Group display_name=foo>"
-    assert repr(user) == "<User cn=John (johnny) Doe>"
+    assert repr(user) == "<User formatted_name=John (johnny) Doe>"
 
 
 def test_equality(slapd_connection, foo_group, bar_group):
@@ -43,10 +43,10 @@ def test_equality(slapd_connection, foo_group, bar_group):
 def test_dn_when_leading_space_in_id_attribute(slapd_connection):
     User.initialize(slapd_connection)
     user = User(
-        cn=" Doe",  # leading space
-        sn="Doe",
-        uid="user",
-        mail="john@doe.com",
+        formatted_name=" Doe",  # leading space
+        family_name="Doe",
+        user_name="user",
+        email="john@doe.com",
     )
     user.save()
 
@@ -60,10 +60,10 @@ def test_dn_when_leading_space_in_id_attribute(slapd_connection):
 def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
     User.initialize(slapd_connection)
     user = User(
-        cn="#Doe",  # special char
-        sn="Doe",
-        uid="user",
-        mail="john@doe.com",
+        formatted_name="#Doe",  # special char
+        family_name="Doe",
+        user_name="user",
+        email="john@doe.com",
     )
     user.save()
 

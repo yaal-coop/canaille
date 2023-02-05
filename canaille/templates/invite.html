@@ -35,7 +35,7 @@
                     <div class="content">
                         {% if request.form["action"] == "generate" %}
                             {{ _("Invitation link") }}
-                        {% elif mail_sent %}
+                        {% elif email_sent %}
                             {{ _("Invitation sent") }}
                         {% else %}
                             {{ _("Invitation not sent") }}
@@ -49,18 +49,18 @@
                         {% trans %}Here is the invitation link you can provide to the user you want to invite:{% endtrans %}
                     </div>
 
-                {% elif mail_sent %}
+                {% elif email_sent %}
 
-                    <div class="ui success message">
-                        {% set email = form.mail.data %}
+                    <div class="ui attached success message">
+                        {% set email = form.email.data %}
                         {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
                         {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
                     </div>
 
                 {% else %}
 
-                    <div class="ui error message">
-                        {% set email = form.mail.data %}
+                    <div class="ui attached error message">
+                        {% set email = form.email.data %}
                         {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
                         {% trans %}However you can copy the link there to provide it by other ways than email:{% endtrans %}
                     </div>
@@ -82,7 +82,7 @@
                         <a class="ui right floated button" href="{{ url_for("account.profile_creation") }}">
                             {{ _("Create a user") }}
                         </a>
-                        {% if request.form["action"] == "generate" or mail_sent %}
+                        {% if request.form["action"] == "generate" or email_sent %}
                             <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="invite" id="invite">
                                 {{ _("Invite another user") }}
                             </a>
@@ -108,16 +108,16 @@
                 </div>
 
                 {% call fui.render_form(form) %}
-                    {% block uid_field scoped %}
-                        {{ fui.render_field(form.uid, icon="user") }}
+                    {% block user_name_field scoped %}
+                        {{ fui.render_field(form.user_name, icon="user") }}
                     {% endblock %}
 
-                    {% block uid_editable_field scoped %}
-                        {{ fui.render_checkbox(form.uid_editable) }}
+                    {% block user_name_editable_field scoped %}
+                        {{ fui.render_checkbox(form.user_name_editable) }}
                     {% endblock %}
 
-                    {% block mail_field scoped %}
-                        {{ fui.render_field(form.mail, icon="mail") }}
+                    {% block email_field scoped %}
+                        {{ fui.render_field(form.email, icon="email") }}
                     {% endblock %}
 
                     {% block groups_field scoped %}

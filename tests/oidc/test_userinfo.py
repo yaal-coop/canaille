@@ -264,21 +264,21 @@ STANDARD_CLAIMS = [
     "updated_at",
 ]
 DEFAULT_JWT_MAPPING_CONFIG = {
-    "SUB": "{{ user.uid[0] }}",
-    "NAME": "{{ user.cn[0] }}",
-    "PHONE_NUMBER": "{{ user.telephoneNumber[0] }}",
-    "EMAIL": "{{ user.mail[0] }}",
-    "GIVEN_NAME": "{{ user.givenName[0] }}",
-    "FAMILY_NAME": "{{ user.sn[0] }}",
-    "PREFERRED_USERNAME": "{{ user.displayName }}",
-    "LOCALE": "{{ user.preferredLanguage }}",
+    "SUB": "{{ user.user_name[0] }}",
+    "NAME": "{{ user.formatted_name[0] }}",
+    "PHONE_NUMBER": "{{ user.phone_number[0] }}",
+    "EMAIL": "{{ user.email[0] }}",
+    "GIVEN_NAME": "{{ user.given_name[0] }}",
+    "FAMILY_NAME": "{{ user.family_name[0] }}",
+    "PREFERRED_USERNAME": "{{ user.display_name }}",
+    "LOCALE": "{{ user.preferred_language }}",
 }
 
 
 def test_generate_user_standard_claims_with_default_config(
     testclient, slapd_connection, user
 ):
-    user.preferredLanguage = ["fr"]
+    user.preferred_language = ["fr"]
 
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
 
@@ -297,7 +297,7 @@ def test_custom_config_format_claim_is_well_formated(
     testclient, slapd_connection, user
 ):
     jwt_mapping_config = DEFAULT_JWT_MAPPING_CONFIG.copy()
-    jwt_mapping_config["EMAIL"] = "{{ user.uid[0] }}@mydomain.tld"
+    jwt_mapping_config["EMAIL"] = "{{ user.user_name[0] }}@mydomain.tld"
 
     data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
 
@@ -307,7 +307,7 @@ def test_custom_config_format_claim_is_well_formated(
 def test_claim_is_omitted_if_empty(testclient, slapd_connection, user):
     # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
     # it's better to not insert a null or empty string value
-    user.mail = ""
+    user.email = ""
     user.save()
 
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)

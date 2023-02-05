@@ -196,37 +196,37 @@ A mapping where keys are JWT claims, and values are LDAP user object attributes.
 Attributes are rendered using jinja2, and can use a ``user`` variable.
 
 :SUB:
-    *Optional.* Defaults to ``{{ user.uid[0] }}``
+    *Optional.* Defaults to ``{{ user.user_name[0] }}``
 
 :NAME:
     *Optional.* Defaults to ``{{ user.cn[0] }}``
 
 :PHONE_NUMBER:
-    *Optional.* Defaults to ``{{ user.telephoneNumber[0] }}``
+    *Optional.* Defaults to ``{{ user.phone_number[0] }}``
 
 :EMAIL:
     *Optional.* Defaults to ``{{ user.mail[0] }}``
 
 :GIVEN_NAME:
-    *Optional.* Defaults to ``{{ user.givenName[0] }}``
+    *Optional.* Defaults to ``{{ user.given_name[0] }}``
 
 :FAMILY_NAME:
-    *Optional.* Defaults to ``{{ user.sn[0] }}``
+    *Optional.* Defaults to ``{{ user.family_name[0] }}``
 
 :PREFERRED_USERNAME:
-    *Optional.* Defaults to ``{{ user.displayName[0] }}``
+    *Optional.* Defaults to ``{{ user.display_name[0] }}``
 
 :LOCALE:
-    *Optional.* Defaults to ``{{ user.preferredLanguage }}``
+    *Optional.* Defaults to ``{{ user.locale }}``
 
 :ADDRESS:
-    *Optional.* Defaults to ``{{ user.postalAddress[0] }}``
+    *Optional.* Defaults to ``{{ user.address[0] }}``
 
 :PICTURE:
-    *Optional.* Defaults to ``{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}``
+    *Optional.* Defaults to ``{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}``
 
 :WEBSITE:
-    *Optional.* Defaults to ``{{ user.labeledURI[0] }}``
+    *Optional.* Defaults to ``{{ user.profile_url[0] }}``
 
 
 SMTP

@@ -134,11 +134,11 @@ def send_password_reset_mail(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        uid=user.uid[0],
+        user_name=user.user_name[0],
         hash=profile_hash(
-            user.uid[0],
-            user.mail[0],
-            user.userPassword[0] if user.has_password() else "",
+            user.user_name[0],
+            user.email[0],
+            user.password[0] if user.has_password() else "",
         ),
         _external=True,
     )
@@ -163,7 +163,7 @@ def send_password_reset_mail(user):
 
     return send_email(
         subject=subject,
-        recipient=user.mail[0],
+        recipient=user.email[0],
         text=text_body,
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
@@ -174,11 +174,11 @@ def send_password_initialization_mail(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        uid=user.uid[0],
+        user_name=user.user_name[0],
         hash=profile_hash(
-            user.uid[0],
-            user.mail[0],
-            user.userPassword[0] if user.has_password() else "",
+            user.user_name[0],
+            user.email[0],
+            user.password[0] if user.has_password() else "",
         ),
         _external=True,
     )
@@ -203,7 +203,7 @@ def send_password_initialization_mail(user):
 
     return send_email(
         subject=subject,
-        recipient=user.mail[0],
+        recipient=user.email[0],
         text=text_body,
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,

@@ -66,7 +66,7 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
             sess["user_id"] = [admin.id]
 
         res = testclient.get("/admin/mail")
-        res.form["mail"] = "test@test.com"
+        res.form["email"] = "test@test.com"
         res = res.form.submit()
 
         g.ldap_connection.unbind_s()

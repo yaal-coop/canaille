@@ -19,7 +19,7 @@ bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
 class MailTestForm(HTMXForm):
-    mail = StringField(
+    email = StringField(
         _("Email"),
         validators=[
             DataRequired(),
@@ -38,7 +38,7 @@ class MailTestForm(HTMXForm):
 def mail_index(user):
     form = MailTestForm(request.form or None)
     if request.form and form.validate():
-        if send_test_mail(form.mail.data):
+        if send_test_mail(form.email.data):
             flash(_("The test invitation mail has been sent correctly"), "success")
         else:
             flash(_("The test invitation mail has not been sent correctly"), "error")
@@ -75,8 +75,8 @@ def password_init_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
+        user_name=user.user_name[0],
+        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
         _external=True,
     )
 
@@ -98,8 +98,8 @@ def password_init_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
+        user_name=user.user_name[0],
+        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
         _external=True,
     )
 
@@ -117,8 +117,8 @@ def password_reset_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
+        user_name=user.user_name[0],
+        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
         _external=True,
     )
 
@@ -140,8 +140,8 @@ def password_reset_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        uid=user.uid[0],
-        hash=profile_hash(user.uid[0], user.mail[0], user.userPassword[0]),
+        user_name=user.user_name[0],
+        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
         _external=True,
     )
 
@@ -153,14 +153,14 @@ def password_reset_txt(user):
     )
 
 
-@bp.route("/mail/<uid>/<email>/invitation.html")
+@bp.route("/mail/<user_name>/<email>/invitation.html")
 @permissions_needed("manage_oidc")
-def invitation_html(user, uid, email):
+def invitation_html(user, user_name, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
         "account.registration",
-        data=obj_to_b64([uid, email]),
-        hash=profile_hash(uid, email),
+        data=obj_to_b64([user_name, email]),
+        hash=profile_hash(user_name, email),
         _external=True,
     )
 
@@ -176,14 +176,14 @@ def invitation_html(user, uid, email):
     )
 
 
-@bp.route("/mail/<uid>/<email>/invitation.txt")
+@bp.route("/mail/<user_name>/<email>/invitation.txt")
 @permissions_needed("manage_oidc")
-def invitation_txt(user, uid, email):
+def invitation_txt(user, user_name, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
         "account.registration",
-        data=obj_to_b64([uid, email]),
-        hash=profile_hash(uid, email),
+        data=obj_to_b64([user_name, email]),
+        hash=profile_hash(user_name, email),
         _external=True,
     )
 

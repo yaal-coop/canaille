@@ -68,7 +68,7 @@ def index():
 
     if user.can_edit_self or user.can_manage_users:
         return redirect(
-            url_for("account.profile_edition", username=current_user().uid[0])
+            url_for("account.profile_edition", username=current_user().user_name[0])
         )
 
     if user.can_use_oidc:
@@ -90,7 +90,7 @@ def about():
 def login():
     if current_user():
         return redirect(
-            url_for("account.profile_edition", username=current_user().uid[0])
+            url_for("account.profile_edition", username=current_user().user_name[0])
         )
 
     form = LoginForm(request.form or None)
@@ -99,7 +99,7 @@ def login():
     if request.form:
         user = User.get(form.login.data)
         if user and not user.has_password():
-            return redirect(url_for("account.firstlogin", uid=user.uid[0]))
+            return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
         if not form.validate():
             User.logout()
@@ -122,7 +122,7 @@ def password():
     if request.form:
         user = User.get(session["attempt_login"])
         if user and not user.has_password():
-            return redirect(url_for("account.firstlogin", uid=user.uid[0]))
+            return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
         if not form.validate() or not User.authenticate(
             session["attempt_login"], form.password.data, True
@@ -154,17 +154,18 @@ def logout():
     return redirect("/")
 
 
-@bp.route("/firstlogin/<uid>", methods=("GET", "POST"))
-def firstlogin(uid):
-    user = User.get(uid)
+@bp.route("/firstlogin/<user_name>", methods=("GET", "POST"))
+def firstlogin(user_name):
+    user = User.get(user_name)
     if not user or user.has_password():
         abort(404)
 
     form = FirstLoginForm(request.form or None)
     if not request.form:
-        return render_template("firstlogin.html", form=form, uid=uid)
+        return render_template("firstlogin.html", form=form, user_name=user_name)
 
     form.validate()
+
     if send_password_initialization_mail(user):
         flash(
             _(
@@ -175,7 +176,7 @@ def firstlogin(uid):
     else:
         flash(_("Could not send the password initialization email"), "error")
 
-    return render_template("firstlogin.html", form=form, uid=uid)
+    return render_template("firstlogin.html", form=form, user_name=user_name)
 
 
 @bp.route("/users", methods=["GET", "POST"])
@@ -195,9 +196,9 @@ def users(user):
 @dataclass
 class Invitation:
     creation_date_isoformat: str
-    uid: str
-    uid_editable: bool
-    mail: str
+    user_name: str
+    user_name_editable: bool
+    email: str
     groups: List[str]
 
     @property
@@ -227,16 +228,16 @@ class Invitation:
 def user_invitation(user):
     form = InvitationForm(request.form or None)
 
-    mail_sent = None
+    email_sent = None
     registration_url = None
     form_validated = False
     if request.form and form.validate():
         form_validated = True
         invitation = Invitation(
             datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            form.uid.data,
-            form.uid_editable.data,
-            form.mail.data,
+            form.user_name.data,
+            form.user_name_editable.data,
+            form.email.data,
             form.groups.data,
         )
         registration_url = url_for(
@@ -247,14 +248,14 @@ def user_invitation(user):
         )
 
         if request.form["action"] == "send":
-            mail_sent = send_invitation_mail(form.mail.data, registration_url)
+            email_sent = send_invitation_mail(form.email.data, registration_url)
 
     return render_template(
         "invite.html",
         form=form,
         menuitems="users",
         form_validated=form_validated,
-        mail_sent=mail_sent,
+        email_sent=email_sent,
         registration_url=registration_url,
     )
 
@@ -277,7 +278,7 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    if User.get(invitation.uid):
+    if User.get(invitation.user_name):
         flash(
             _("Your account has already been created."),
             "error",
@@ -298,7 +299,11 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    data = {"uid": invitation.uid, "mail": invitation.mail, "groups": invitation.groups}
+    data = {
+        "user_name": invitation.user_name,
+        "email": invitation.email,
+        "groups": invitation.groups,
+    }
 
     readable_fields, writable_fields = default_fields()
 
@@ -311,8 +316,8 @@ def registration(data, hash):
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if "readonly" in form["uid"].render_kw and invitation.uid_editable:
-        del form["uid"].render_kw["readonly"]
+    if "readonly" in form["user_name"].render_kw and invitation.user_name_editable:
+        del form["user_name"].render_kw["readonly"]
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
@@ -333,7 +338,9 @@ def registration(data, hash):
             user = profile_create(current_app, form)
             user.login()
             flash(_("Your account has been created successfuly."), "success")
-            return redirect(url_for("account.profile_edition", username=user.uid[0]))
+            return redirect(
+                url_for("account.profile_edition", username=user.user_name[0])
+            )
 
     return render_template(
         "profile_add.html",
@@ -360,7 +367,9 @@ def profile_creation(user):
 
         else:
             user = profile_create(current_app, form)
-            return redirect(url_for("account.profile_edition", username=user.uid[0]))
+            return redirect(
+                url_for("account.profile_edition", username=user.user_name[0])
+            )
 
     return render_template(
         "profile_add.html",
@@ -374,7 +383,7 @@ def profile_creation(user):
 def profile_create(current_app, form):
     user = User()
     for attribute in form:
-        if attribute.name in user.may() + user.must():
+        if attribute.name in user.attribute_table:
             if isinstance(attribute.data, FileStorage):
                 data = attribute.data.stream.read()
             else:
@@ -382,10 +391,10 @@ def profile_create(current_app, form):
 
             user[attribute.name] = data
 
-        if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
-            user["jpegPhoto"] = None
+        if "photo" in form and form["photo_delete"].data:
+            user["photo"] = None
 
-    user.cn = [f"{user.givenName[0]} {user.sn[0]}".strip()]
+    user.formatted_name = [f"{user.given_name[0]} {user.family_name[0]}".strip()]
     user.save()
 
     if "groups" in form:
@@ -408,13 +417,13 @@ def profile_create(current_app, form):
 def profile_edition(user, username):
     editor = user
     if not user.can_manage_users and not (
-        user.can_edit_self and username == user.uid[0]
+        user.can_edit_self and username == user.user_name[0]
     ):
         abort(403)
 
-    menuitem = "profile" if username == editor.uid[0] else "users"
+    menuitem = "profile" if username == editor.user_name[0] else "users"
     fields = editor.read | editor.write
-    if username != editor.uid[0]:
+    if username != editor.user_name[0]:
         user = User.get(username)
     else:
         user = editor
@@ -423,25 +432,25 @@ def profile_edition(user, username):
         abort(404)
 
     available_fields = {
-        "cn",
+        "formatted_name",
         "title",
-        "givenName",
-        "sn",
-        "displayName",
-        "mail",
-        "telephoneNumber",
-        "postalAddress",
+        "given_name",
+        "family_name",
+        "display_name",
+        "email",
+        "phone_number",
+        "formatted_address",
         "street",
-        "postalCode",
-        "l",
-        "st",
-        "jpegPhoto",
-        "jpegPhoto_delete",
-        "employeeNumber",
-        "departmentNumber",
-        "labeledURI",
-        "preferredLanguage",
-        "o",
+        "postal_code",
+        "locality",
+        "region",
+        "photo",
+        "photo_delete",
+        "employee_number",
+        "department",
+        "profile_url",
+        "preferred_language",
+        "organization",
     }
     data = {
         k: getattr(user, k)[0]
@@ -463,7 +472,7 @@ def profile_edition(user, username):
         else:
             for attribute in form:
                 if (
-                    attribute.name in user.may() + user.must()
+                    attribute.name in user.attribute_table
                     and attribute.name in editor.write
                 ):
                     if isinstance(attribute.data, FileStorage):
@@ -473,15 +482,15 @@ def profile_edition(user, username):
 
                     user[attribute.name] = data
 
-            if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
-                user["jpegPhoto"] = None
+            if "photo" in form and form["photo_delete"].data:
+                user["photo"] = None
 
-            if "preferredLanguage" in request.form:
+            if "preferred_language" in request.form:
                 # Refresh the babel cache in case the lang is updated
                 refresh()
 
-                if form["preferredLanguage"].data == "auto":
-                    user.preferredLanguage = None
+                if form["preferred_language"].data == "auto":
+                    user.preferred_language = None
 
             user.save()
             flash(_("Profile updated successfuly."), "success")
@@ -499,7 +508,7 @@ def profile_edition(user, username):
 @user_needed()
 def profile_settings(user, username):
     if not user.can_manage_users and not (
-        user.can_edit_self and username == user.uid[0]
+        user.can_edit_self and username == user.user_name[0]
     ):
         abort(403)
 
@@ -550,7 +559,7 @@ def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.read | editor.write
 
-    available_fields = {"userPassword", "groups", "uid"}
+    available_fields = {"password", "groups", "user_name"}
     data = {
         k: getattr(edited_user, k)[0]
         if getattr(edited_user, k) and isinstance(getattr(edited_user, k), list)
@@ -586,7 +595,7 @@ def profile_settings_edit(editor, edited_user):
             edited_user.save()
             flash(_("Profile updated successfuly."), "success")
             return redirect(
-                url_for("account.profile_edition", username=edited_user.uid[0])
+                url_for("account.profile_edition", username=edited_user.user_name[0])
             )
 
     return render_template(
@@ -675,16 +684,18 @@ def forgotten():
     return render_template("forgotten-password.html", form=form)
 
 
-@bp.route("/reset/<uid>/<hash>", methods=["GET", "POST"])
-def reset(uid, hash):
+@bp.route("/reset/<user_name>/<hash>", methods=["GET", "POST"])
+def reset(user_name, hash):
     if not current_app.config.get("ENABLE_PASSWORD_RECOVERY", True):
         abort(404)
 
     form = PasswordResetForm(request.form)
-    user = User.get(uid)
+    user = User.get(user_name)
 
     if not user or hash != profile_hash(
-        user.uid[0], user.mail[0], user.userPassword[0] if user.has_password() else ""
+        user.user_name[0],
+        user.email[0],
+        user.password[0] if user.has_password() else "",
     ):
         flash(
             _("The password reset link that brought you here was invalid."),
@@ -697,25 +708,27 @@ def reset(uid, hash):
         user.login()
 
         flash(_("Your password has been updated successfuly"), "success")
-        return redirect(url_for("account.profile_edition", username=uid))
+        return redirect(url_for("account.profile_edition", username=user_name))
 
-    return render_template("reset-password.html", form=form, uid=uid, hash=hash)
+    return render_template(
+        "reset-password.html", form=form, user_name=user_name, hash=hash
+    )
 
 
-@bp.route("/profile/<uid>/<field>")
-def photo(uid, field):
-    if field.lower() != "jpegphoto":
+@bp.route("/profile/<user_name>/<field>")
+def photo(user_name, field):
+    if field.lower() != "photo":
         abort(404)
 
-    user = User.get(uid)
+    user = User.get(user_name)
     if not user:
         abort(404)
 
     etag = None
-    if request.if_modified_since and request.if_modified_since >= user.modifyTimestamp:
+    if request.if_modified_since and request.if_modified_since >= user.last_modified:
         return "", 304
 
-    etag = profile_hash(uid, user.modifyTimestamp.isoformat())
+    etag = profile_hash(user_name, user.last_modified.isoformat())
     if request.if_none_match and etag in request.if_none_match:
         return "", 304
 
@@ -725,5 +738,5 @@ def photo(uid, field):
 
     stream = io.BytesIO(photos[0])
     return send_file(
-        stream, mimetype="image/jpeg", last_modified=user.modifyTimestamp, etag=etag
+        stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
     )

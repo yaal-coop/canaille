@@ -12,6 +12,27 @@ class User(LDAPObject):
 
     attribute_table = {
         "id": "dn",
+        "user_name": "uid",
+        "password": "userPassword",
+        "preferred_language": "preferredLanguage",
+        "family_name": "sn",
+        "given_name": "givenName",
+        "formatted_name": "cn",
+        "display_name": "displayName",
+        "email": "mail",
+        "phone_number": "telephoneNumber",
+        "formatted_address": "postalAddress",
+        "street": "street",
+        "postal_code": "postalCode",
+        "locality": "l",
+        "region": "st",
+        "photo": "jpegPhoto",
+        "profile_url": "labeledURI",
+        "employee_number": "employeeNumber",
+        "department": "departmentNumber",
+        "title": "title",
+        "organization": "o",
+        "last_modified": "modifyTimestamp",
     }
 
     def __init__(self, *args, **kwargs):
@@ -79,7 +100,7 @@ class User(LDAPObject):
             pass
 
     def has_password(self):
-        return bool(self.userPassword)
+        return bool(self.password)
 
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["LDAP"]["URI"])
@@ -106,7 +127,7 @@ class User(LDAPObject):
 
     @property
     def name(self):
-        return self.cn[0]
+        return self.formatted_name[0]
 
     @property
     def groups(self):

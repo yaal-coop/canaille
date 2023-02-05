@@ -109,10 +109,10 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
 def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
     assert len(smtpd.messages) == 0
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
     )
     u.save()
 
@@ -143,10 +143,10 @@ def test_first_login_account_initialization_mail_sending_failed(
     assert len(smtpd.messages) == 0
 
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
     )
     u.save()
 
@@ -165,10 +165,10 @@ def test_first_login_account_initialization_mail_sending_failed(
 def test_first_login_form_error(testclient, slapd_connection, smtpd):
     assert len(smtpd.messages) == 0
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
     )
     u.save()
 
@@ -187,11 +187,11 @@ def test_first_login_page_unavailable_for_users_with_password(
 
 def test_user_password_deleted_during_login(testclient, slapd_connection):
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
-        userPassword="{SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X",
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
+        password="{SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X",
     )
     u.save()
 
@@ -200,7 +200,7 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
     res = res.form.submit().follow()
     res.form["password"] = "correct horse battery staple"
 
-    u.userPassword = None
+    u.password = None
     u.save()
 
     res = res.form.submit(status=302)
@@ -211,11 +211,11 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
 
 def test_user_deleted_in_session(testclient, slapd_connection):
     u = User(
-        cn="Jake Doe",
-        sn="Jake",
-        uid="jake",
-        mail="jake@doe.com",
-        userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        formatted_name="Jake Doe",
+        family_name="Jake",
+        user_name="jake",
+        email="jake@doe.com",
+        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
     u.save()
     testclient.get("/profile/jake", status=403)
@@ -235,7 +235,7 @@ def test_impersonate(testclient, logged_admin, user):
     res = (
         testclient.get("/", status=302).follow(status=200).click("Account information")
     )
-    assert "admin" == res.form["uid"].value
+    assert "admin" == res.form["user_name"].value
 
     res = (
         testclient.get("/impersonate/user", status=302)
@@ -243,14 +243,14 @@ def test_impersonate(testclient, logged_admin, user):
         .follow(status=200)
         .click("Account information")
     )
-    assert "user" == res.form["uid"].value
+    assert "user" == res.form["user_name"].value
 
     testclient.get("/logout", status=302).follow(status=302).follow(status=200)
 
     res = (
         testclient.get("/", status=302).follow(status=200).click("Account information")
     )
-    assert "admin" == res.form["uid"].value
+    assert "admin" == res.form["user_name"].value
 
 
 def test_wrong_login(testclient, user):
@@ -275,11 +275,11 @@ def test_wrong_login(testclient, user):
 
 def test_admin_self_deletion(testclient, slapd_connection):
     admin = User(
-        cn="Temp admin",
-        sn="admin",
-        uid="temp",
-        mail="temp@temp.com",
-        userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        formatted_name="Temp admin",
+        family_name="admin",
+        user_name="temp",
+        email="temp@temp.com",
+        password="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
     admin.save()
     with testclient.session_transaction() as sess:
@@ -300,11 +300,11 @@ def test_admin_self_deletion(testclient, slapd_connection):
 
 def test_user_self_deletion(testclient, slapd_connection):
     user = User(
-        cn="Temp user",
-        sn="user",
-        uid="temp",
-        mail="temp@temp.com",
-        userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        formatted_name="Temp user",
+        family_name="user",
+        user_name="temp",
+        email="temp@temp.com",
+        password="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
     user.save()
     with testclient.session_transaction() as sess:
@@ -347,6 +347,6 @@ def test_login_placeholder(testclient):
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "john@doe.com"
 
-    testclient.app.config["LDAP"]["USER_FILTER"] = "(|(uid={login})(email={login}))"
+    testclient.app.config["LDAP"]["USER_FILTER"] = "(|(uid={login})(mail={login}))"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe or john@doe.com"

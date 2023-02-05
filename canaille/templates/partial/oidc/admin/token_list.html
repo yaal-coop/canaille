@@ -22,8 +22,8 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ url_for("account.profile_edition", username=token.subject.uid[0]) }}">
-                        {{ token.subject.uid[0] }}
+                    <a href="{{ url_for("account.profile_edition", username=token.subject.user_name[0]) }}">
+                        {{ token.subject.user_name[0] }}
                     </a>
                 </td>
                 <td>{{ token.issue_date }}</td>

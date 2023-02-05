@@ -72,7 +72,7 @@ def test_user_list_search_only_allowed_fields(
     res.mustcontain(user.name)
     res.mustcontain(no=moderator.name)
 
-    testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("uid")
+    testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("user_name")
 
     form = res.forms["search"]
     form["query"] = "user"
@@ -104,22 +104,22 @@ def test_edition(
     jpeg_photo,
 ):
     res = testclient.get("/profile/user", status=200)
-    res.form["givenName"] = "given_name"
-    res.form["sn"] = "family_name"
-    res.form["displayName"] = "display_name"
-    res.form["mail"] = "email@mydomain.tld"
-    res.form["telephoneNumber"] = "555-666-777"
-    res.form["postalAddress"] = "postal_address"
+    res.form["given_name"] = "given_name"
+    res.form["family_name"] = "family_name"
+    res.form["display_name"] = "display_name"
+    res.form["email"] = "email@mydomain.tld"
+    res.form["phone_number"] = "555-666-777"
+    res.form["formatted_address"] = "formatted_address"
     res.form["street"] = "street"
-    res.form["postalCode"] = "postal_code"
-    res.form["l"] = "locality"
-    res.form["st"] = "region"
-    res.form["employeeNumber"] = 666
-    res.form["departmentNumber"] = 1337
+    res.form["postal_code"] = "postal_code"
+    res.form["locality"] = "locality"
+    res.form["region"] = "region"
+    res.form["employee_number"] = 666
+    res.form["department"] = 1337
     res.form["title"] = "title"
-    res.form["o"] = "organization"
-    res.form["preferredLanguage"] = "fr"
-    res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
+    res.form["organization"] = "organization"
+    res.form["preferred_language"] = "fr"
+    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
 
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [
@@ -129,28 +129,28 @@ def test_edition(
 
     logged_user = User.get(id=logged_user.id)
 
-    assert logged_user.givenName == ["given_name"]
-    assert logged_user.sn == ["family_name"]
-    assert logged_user.displayName == "display_name"
+    assert logged_user.given_name == ["given_name"]
+    assert logged_user.family_name == ["family_name"]
+    assert logged_user.display_name == "display_name"
     assert logged_user.mail == ["email@mydomain.tld"]
-    assert logged_user.telephoneNumber == ["555-666-777"]
-    assert logged_user.postalAddress == ["postal_address"]
+    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.formatted_address == ["formatted_address"]
     assert logged_user.street == ["street"]
-    assert logged_user.postalCode == ["postal_code"]
-    assert logged_user.l == ["locality"]
-    assert logged_user.st == ["region"]
-    assert logged_user.preferredLanguage == "fr"
-    assert logged_user.employeeNumber == "666"
-    assert logged_user.departmentNumber == ["1337"]
+    assert logged_user.postal_code == ["postal_code"]
+    assert logged_user.locality == ["locality"]
+    assert logged_user.region == ["region"]
+    assert logged_user.preferred_language == "fr"
+    assert logged_user.employee_number == "666"
+    assert logged_user.department == ["1337"]
     assert logged_user.title == ["title"]
-    assert logged_user.o == ["organization"]
+    assert logged_user.organization == ["organization"]
     assert logged_user.jpegPhoto == [jpeg_photo]
 
     logged_user.cn = ["John (johnny) Doe"]
-    logged_user.sn = ["Doe"]
+    logged_user.family_name = ["Doe"]
     logged_user.mail = ["john@doe.com"]
-    logged_user.givenName = None
-    logged_user.jpegPhoto = None
+    logged_user.given_name = None
+    logged_user.photo = None
     logged_user.save()
 
 
@@ -160,11 +160,11 @@ def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
         f"/profile/admin",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "mail": "john@doe.com",
+            "email": "john@doe.com",
         },
         headers={
             "HX-Request": "true",
-            "HX-Trigger-Name": "mail",
+            "HX-Trigger-Name": "email",
         },
     )
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -172,78 +172,78 @@ def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
 
 def test_field_permissions_none(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.telephoneNumber = ["555-666-777"]
+    logged_user.phone_number = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
-        "READ": ["uid"],
+        "READ": ["user_name"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
     }
 
     res = testclient.get("/profile/user", status=200)
-    assert "telephoneNumber" not in res.form.fields
+    assert "phone_number" not in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "telephoneNumber": "000-000-000",
+            "phone_number": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
     user = User.get(id=logged_user.id)
-    assert user.telephoneNumber == ["555-666-777"]
+    assert user.phone_number == ["555-666-777"]
 
 
 def test_field_permissions_read(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.telephoneNumber = ["555-666-777"]
+    logged_user.phone_number = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
-        "READ": ["uid", "telephoneNumber"],
+        "READ": ["user_name", "phone_number"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "telephoneNumber" in res.form.fields
+    assert "phone_number" in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "telephoneNumber": "000-000-000",
+            "phone_number": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
     user = User.get(id=logged_user.id)
-    assert user.telephoneNumber == ["555-666-777"]
+    assert user.phone_number == ["555-666-777"]
 
 
 def test_field_permissions_write(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.telephoneNumber = ["555-666-777"]
+    logged_user.phone_number = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
-        "READ": ["uid"],
-        "WRITE": ["telephoneNumber"],
+        "READ": ["user_name"],
+        "WRITE": ["phone_number"],
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "telephoneNumber" in res.form.fields
+    assert "phone_number" in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "telephoneNumber": "000-000-000",
+            "phone_number": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
     user = User.get(id=logged_user.id)
-    assert user.telephoneNumber == ["000-000-000"]
+    assert user.phone_number == ["000-000-000"]
 
 
 def test_simple_user_cannot_edit_other(testclient, logged_user):
@@ -269,7 +269,7 @@ def test_admin_bad_request(testclient, logged_moderator):
 def test_bad_email(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
 
-    res.form["mail"] = "john@doe.com"
+    res.form["email"] = "john@doe.com"
 
     res = res.form.submit(name="action", value="edit").follow()
 
@@ -277,7 +277,7 @@ def test_bad_email(testclient, logged_user):
 
     res = testclient.get("/profile/user", status=200)
 
-    res.form["mail"] = "yolo"
+    res.form["email"] = "yolo"
 
     res = res.form.submit(name="action", value="edit", status=200)
 
@@ -288,12 +288,12 @@ def test_bad_email(testclient, logged_user):
 
 def test_surname_is_mandatory(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
-    logged_user.sn = ["Doe"]
+    logged_user.family_name = ["Doe"]
 
-    res.form["sn"] = ""
+    res.form["family_name"] = ""
 
     res = res.form.submit(name="action", value="edit", status=200)
 
     logged_user.reload()
 
-    assert ["Doe"] == logged_user.sn
+    assert ["Doe"] == logged_user.family_name

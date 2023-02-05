@@ -20,9 +20,9 @@ def test_edition(
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
     assert res.form["groups"].attrs["readonly"]
-    assert res.form["uid"].attrs["readonly"]
+    assert res.form["user_name"].attrs["readonly"]
 
-    res.form["uid"] = "toto"
+    res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [("success", "Profile updated successfuly.")]
     res = res.follow()
@@ -30,7 +30,7 @@ def test_edition(
     logged_user = User.get(id=logged_user.id)
     logged_user.load_groups()
 
-    assert logged_user.uid == ["user"]
+    assert logged_user.user_name == ["user"]
 
     foo_group.reload()
     bar_group.reload()
@@ -40,7 +40,7 @@ def test_edition(
 
     assert logged_user.check_password("correct horse battery staple")
 
-    logged_user.uid = ["user"]
+    logged_user.user_name = ["user"]
     logged_user.save()
 
 
@@ -75,10 +75,10 @@ def test_edition_without_groups(
 
     logged_user = User.get(id=logged_user.id)
 
-    assert logged_user.uid == ["user"]
+    assert logged_user.user_name == ["user"]
     assert logged_user.check_password("correct horse battery staple")
 
-    logged_user.uid = ["user"]
+    logged_user.user_name = ["user"]
     logged_user.save()
 
 
@@ -128,10 +128,10 @@ def test_password_initialization_mail(
     smtpd, testclient, slapd_connection, logged_admin
 ):
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
     )
     u.save()
 
@@ -148,7 +148,7 @@ def test_password_initialization_mail(
     assert len(smtpd.messages) == 1
 
     u.reload()
-    u.userPassword = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
+    u.password = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
     u.save()
 
     res = testclient.get("/profile/temp/settings", status=200)
@@ -163,10 +163,10 @@ def test_password_initialization_mail_send_fail(
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
     )
     u.save()
 
@@ -235,11 +235,11 @@ def test_invalid_form_request(testclient, logged_admin):
 
 def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
-        userPassword=["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"],
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
+        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
     )
     u.save()
 
@@ -264,11 +264,11 @@ def test_password_reset_email_failed(
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     u = User(
-        cn="Temp User",
-        sn="Temp",
-        uid="temp",
-        mail="john@doe.com",
-        userPassword=["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"],
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        email="john@doe.com",
+        password=["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"],
     )
     u.save()
 

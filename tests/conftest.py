@@ -91,26 +91,26 @@ def configuration(slapd_server, smtpd):
         },
         "ACL": {
             "DEFAULT": {
-                "READ": ["uid", "groups"],
+                "READ": ["user_name", "groups"],
                 "PERMISSIONS": ["edit_self", "use_oidc"],
                 "WRITE": [
-                    "mail",
-                    "givenName",
-                    "jpegPhoto",
-                    "sn",
-                    "displayName",
-                    "userPassword",
-                    "telephoneNumber",
-                    "postalAddress",
+                    "email",
+                    "given_name",
+                    "photo",
+                    "family_name",
+                    "display_name",
+                    "password",
+                    "phone_number",
+                    "formatted_address",
                     "street",
-                    "postalCode",
-                    "l",
-                    "st",
-                    "employeeNumber",
-                    "preferredLanguage",
-                    "departmentNumber",
+                    "postal_code",
+                    "locality",
+                    "region",
+                    "employee_number",
+                    "department",
+                    "preferred_language",
                     "title",
-                    "o",
+                    "organization",
                 ],
             },
             "ADMIN": {
@@ -164,17 +164,17 @@ def testclient(app):
 @pytest.fixture
 def user(app, slapd_connection):
     u = User(
-        cn="John (johnny) Doe",
-        givenName="John",
-        sn="Doe",
-        uid="user",
-        mail="john@doe.com",
-        userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
-        displayName="Johnny",
-        preferredLanguage="en",
-        telephoneNumber="555-000-000",
-        labeledURI="https://john.example",
-        postalAddress="1235, somewhere",
+        formatted_name="John (johnny) Doe",
+        given_name="John",
+        family_name="Doe",
+        user_name="user",
+        email="john@doe.com",
+        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        display_name="Johnny",
+        preferred_language="en",
+        phone_number="555-000-000",
+        profile_url="https://john.example",
+        formatted_address="1235, somewhere",
     )
     u.save()
     yield u
@@ -184,11 +184,11 @@ def user(app, slapd_connection):
 @pytest.fixture
 def admin(app, slapd_connection):
     u = User(
-        cn="Jane Doe",
-        sn="Doe",
-        uid="admin",
-        mail="jane@doe.com",
-        userPassword="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        formatted_name="Jane Doe",
+        family_name="Doe",
+        user_name="admin",
+        email="jane@doe.com",
+        password="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
     )
     u.save()
     yield u
@@ -198,11 +198,11 @@ def admin(app, slapd_connection):
 @pytest.fixture
 def moderator(app, slapd_connection):
     u = User(
-        cn="Jack Doe",
-        sn="Doe",
-        uid="moderator",
-        mail="jack@doe.com",
-        userPassword="{SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag",
+        formatted_name="Jack Doe",
+        family_name="Doe",
+        user_name="moderator",
+        email="jack@doe.com",
+        password="{SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag",
     )
     u.save()
     yield u
