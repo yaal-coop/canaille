@@ -113,7 +113,7 @@ def test_edition(
     assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")]
     res = res.follow()
 
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
     logged_user.load_groups()
 
     assert ["user"] == logged_user.uid
@@ -161,7 +161,7 @@ def test_field_permissions_none(testclient, slapd_server, logged_user):
     testclient.post(
         "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
     )
-    user = User.get(dn=logged_user.dn)
+    user = User.get(id=logged_user.id)
     assert user.telephoneNumber == ["555-666-777"]
 
 
@@ -181,7 +181,7 @@ def test_field_permissions_read(testclient, slapd_server, logged_user):
     testclient.post(
         "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
     )
-    user = User.get(dn=logged_user.dn)
+    user = User.get(id=logged_user.id)
     assert user.telephoneNumber == ["555-666-777"]
 
 
@@ -201,7 +201,7 @@ def test_field_permissions_write(testclient, slapd_server, logged_user):
     testclient.post(
         "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
     )
-    user = User.get(dn=logged_user.dn)
+    user = User.get(id=logged_user.id)
     assert user.telephoneNumber == ["000-000-000"]
 
 
@@ -565,7 +565,7 @@ def test_photo_on_profile_edition(
     res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
 
     assert [jpeg_photo] == logged_user.jpegPhoto
 
@@ -575,7 +575,7 @@ def test_photo_on_profile_edition(
     res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
 
     assert [jpeg_photo] == logged_user.jpegPhoto
 
@@ -585,7 +585,7 @@ def test_photo_on_profile_edition(
     res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
 
     assert [] == logged_user.jpegPhoto
 
@@ -596,7 +596,7 @@ def test_photo_on_profile_edition(
     res = res.form.submit(name="action", value="edit").follow()
     assert "Profile updated successfuly." in res, str(res)
 
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
 
     assert [] == logged_user.jpegPhoto
 

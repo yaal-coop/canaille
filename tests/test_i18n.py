@@ -16,7 +16,7 @@ def test_preferred_language(slapd_server, testclient, logged_user):
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")]
     res = res.follow()
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
     assert logged_user.preferredLanguage == "fr"
     assert res.form["preferredLanguage"].value == "fr"
     assert res.pyquery("html")[0].attrib["lang"] == "fr"
@@ -27,7 +27,7 @@ def test_preferred_language(slapd_server, testclient, logged_user):
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [("success", "Profile updated successfuly.")]
     res = res.follow()
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
     assert logged_user.preferredLanguage == "en"
     assert res.form["preferredLanguage"].value == "en"
     assert res.pyquery("html")[0].attrib["lang"] == "en"
@@ -38,7 +38,7 @@ def test_preferred_language(slapd_server, testclient, logged_user):
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [("success", "Profile updated successfuly.")]
     res = res.follow()
-    logged_user = User.get(dn=logged_user.dn)
+    logged_user = User.get(id=logged_user.id)
     assert logged_user.preferredLanguage is None
     assert res.form["preferredLanguage"].value == "auto"
     assert res.pyquery("html")[0].attrib["lang"] == "en"

@@ -334,7 +334,7 @@ def registration(data, hash):
     if "groups" not in form and invitation.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group.dn, group.name) for group in Group.query()],
+            choices=[(group.id, group.name) for group in Group.query()],
             render_kw={"readonly": "true"},
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
@@ -390,7 +390,7 @@ def profile_create(current_app, form):
     user.save()
 
     if "groups" in form:
-        groups = [Group.get(group_dn) for group_dn in form["groups"].data]
+        groups = [Group.get(group_id) for group_id in form["groups"].data]
         for group in groups:
             group.add_member(user)
             group.save()
@@ -475,7 +475,7 @@ def profile_edit(editor, username):
     }
 
     if "groups" in fields:
-        data["groups"] = [g.dn for g in user.groups]
+        data["groups"] = [g.id for g in user.groups]
 
     form = profile_form(editor.write, editor.read)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)

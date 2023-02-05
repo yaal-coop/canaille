@@ -150,7 +150,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "software_version": "1",
         "jwk": "jwk",
         "jwks_uri": "https://foo.bar/jwks.json",
-        "audience": [client.dn, other_client.dn],
+        "audience": [client.id, other_client.id],
         "preconsent": True,
         "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
     }
@@ -164,7 +164,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     ) not in res.flashes
     assert ("success", "The client has been edited.") in res.flashes
 
-    client = Client.get(client.dn)
+    client = Client.get(client.id)
     data["audience"] = [client, other_client]
     for k, v in data.items():
         client_value = getattr(client, k)
@@ -226,7 +226,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     res = res.forms["clientadd"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
-    client = Client.get(client.dn)
+    client = Client.get(client.id)
     assert client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
@@ -234,5 +234,5 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     res = res.forms["clientadd"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
-    client = Client.get(client.dn)
+    client = Client.get(client.id)
     assert not client.preconsent

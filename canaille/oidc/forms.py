@@ -9,7 +9,7 @@ class LogoutForm(FlaskForm):
 
 
 def client_audiences():
-    return [(client.dn, client.client_name) for client in Client.query()]
+    return [(client.id, client.client_name) for client in Client.query()]
 
 
 class ClientAdd(FlaskForm):

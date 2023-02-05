@@ -146,11 +146,10 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         return self_attributes == other_attributes
 
     def __hash__(self):
-        return hash(self.dn)
+        return hash(self.id)
 
     def __getattr__(self, name):
-        if self.attribute_table:
-            name = self.attribute_table.get(name, name)
+        name = self.attribute_table.get(name, name)
 
         if name not in self.ldap_object_attributes():
             return super().__getattribute__(name)
@@ -281,9 +280,9 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         return cls._attribute_type_by_name
 
     @classmethod
-    def get(cls, dn=None, filter=None, conn=None, **kwargs):
+    def get(cls, id=None, filter=None, conn=None, **kwargs):
         try:
-            return cls.query(dn, filter, conn, **kwargs)[0]
+            return cls.query(id, filter, conn, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 
@@ -363,7 +362,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     def reload(self, conn=None):
         conn = conn or self.ldap_connection()
-        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
+        result = conn.search_s(self.id, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.attrs = result[0][1]
 
@@ -390,7 +389,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
             ]
-            conn.modify_s(self.dn, modlist)
+            conn.modify_s(self.id, modlist)
 
         # Object does not exist yet in the LDAP database
         else:
@@ -405,7 +404,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
                 if value is not None and value != None
             }
             attributes = [(name, values) for name, values in formatted_changes.items()]
-            conn.add_s(self.dn, attributes)
+            conn.add_s(self.id, attributes)
 
         self.exists = True
         self.attrs = {**self.attrs, **self.changes}
@@ -417,7 +416,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     def delete(self, conn=None):
         conn = conn or self.ldap_connection()
-        conn.delete_s(self.dn)
+        conn.delete_s(self.id)
 
     def keys(self):
         ldap_keys = self.may() + self.must()

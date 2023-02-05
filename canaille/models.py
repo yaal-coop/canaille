@@ -10,6 +10,10 @@ class User(LDAPObject):
     DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
     DEFAULT_ID_ATTRIBUTE = "cn"
 
+    attribute_table = {
+        "id": "dn",
+    }
+
     def __init__(self, *args, **kwargs):
         self.read = set()
         self.write = set()
@@ -22,7 +26,7 @@ class User(LDAPObject):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def get(cls, login=None, dn=None, filter=None, conn=None):
+    def get(cls, login=None, id=None, filter=None, conn=None):
         conn = conn or cls.ldap_connection()
 
         if login:
@@ -32,7 +36,7 @@ class User(LDAPObject):
                 .format(login=ldap.filter.escape_filter_chars(login))
             )
 
-        user = super().get(dn, filter, conn)
+        user = super().get(id, filter, conn)
         if user:
             user.load_permissions(conn)
 
@@ -65,9 +69,9 @@ class User(LDAPObject):
                 if isinstance(session["user_id"], list)
                 else [session["user_id"]]
             )
-            session["user_id"] = previous + [self.dn]
+            session["user_id"] = previous + [self.id]
         except KeyError:
-            session["user_id"] = [self.dn]
+            session["user_id"] = [self.id]
 
     @classmethod
     def logout(self):
@@ -89,7 +93,7 @@ class User(LDAPObject):
         )
 
         try:
-            conn.simple_bind_s(self.dn, password)
+            conn.simple_bind_s(self.id, password)
             return True
         except ldap.INVALID_CREDENTIALS:
             return False
@@ -99,7 +103,7 @@ class User(LDAPObject):
     def set_password(self, password, conn=None):
         conn = conn or self.ldap_connection()
         conn.passwd_s(
-            self.dn,
+            self.id,
             None,
             password.encode("utf-8"),
         )
@@ -116,7 +120,7 @@ class User(LDAPObject):
 
     def set_groups(self, values):
         before = self._groups
-        after = [v if isinstance(v, Group) else Group.get(dn=v) for v in values]
+        after = [v if isinstance(v, Group) else Group.get(id=v) for v in values]
         to_add = set(after) - set(before)
         to_del = set(before) - set(after)
         for group in to_add:
@@ -132,8 +136,8 @@ class User(LDAPObject):
 
         for access_group_name, details in current_app.config["ACL"].items():
             if not details.get("FILTER") or (
-                self.dn
-                and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, details["FILTER"])
+                self.id
+                and conn.search_s(self.id, ldap.SCOPE_SUBTREE, details["FILTER"])
             ):
                 self.permissions |= set(details.get("PERMISSIONS", []))
                 self.read |= set(details.get("READ", []))
@@ -175,7 +179,11 @@ class Group(LDAPObject):
     DEFAULT_OBJECT_CLASS = "groupOfNames"
     DEFAULT_ID_ATTRIBUTE = "cn"
     DEFAULT_NAME_ATTRIBUTE = "cn"
-    DEFAULT_USER_FILTER = "member={user.dn}"
+    DEFAULT_USER_FILTER = "member={user.id}"
+
+    attribute_table = {
+        "id": "dn",
+    }
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault(

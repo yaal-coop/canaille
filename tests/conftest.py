@@ -211,21 +211,21 @@ def moderator(app, slapd_connection):
 @pytest.fixture
 def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [user.dn]
+        sess["user_id"] = [user.id]
     return user
 
 
 @pytest.fixture
 def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [admin.dn]
+        sess["user_id"] = [admin.id]
     return admin
 
 
 @pytest.fixture
 def logged_moderator(moderator, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [moderator.dn]
+        sess["user_id"] = [moderator.id]
     return moderator
 
 

@@ -13,7 +13,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     res.form["uid"] = "someone"
     res.form["uid_editable"] = False
     res.form["mail"] = "someone@domain.tld"
-    res.form["groups"] = [foo_group.dn]
+    res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
 
@@ -28,7 +28,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     assert res.form["uid"].value == "someone"
     assert res.form["uid"].attrs["readonly"]
     assert res.form["mail"].value == "someone@domain.tld"
-    assert res.form["groups"].value == [foo_group.dn]
+    assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
     res.form["password2"] = "whatever"
@@ -63,7 +63,7 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     res.form["uid"] = "jackyjack"
     res.form["uid_editable"] = True
     res.form["mail"] = "jackyjack@domain.tld"
-    res.form["groups"] = [foo_group.dn]
+    res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
 
@@ -78,7 +78,7 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     assert res.form["uid"].value == "jackyjack"
     assert "readonly" not in res.form["uid"].attrs
     assert res.form["mail"].value == "jackyjack@domain.tld"
-    assert res.form["groups"].value == [foo_group.dn]
+    assert res.form["groups"].value == [foo_group.id]
 
     res.form["uid"] = "djorje"
     res.form["password1"] = "whatever"
@@ -110,7 +110,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     res.form["uid"] = "sometwo"
     res.form["mail"] = "sometwo@domain.tld"
-    res.form["groups"] = [foo_group.dn]
+    res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="generate", status=200)
     assert len(smtpd.messages) == 0
 
@@ -124,7 +124,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     assert res.form["uid"].value == "sometwo"
     assert res.form["mail"].value == "sometwo@domain.tld"
-    assert res.form["groups"].value == [foo_group.dn]
+    assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
     res.form["password2"] = "whatever"
@@ -165,7 +165,7 @@ def test_registration(testclient, foo_group):
         "someoneelse",
         False,
         "someone@mydomain.tld",
-        [foo_group.dn],
+        [foo_group.id],
     )
     b64 = invitation.b64()
     hash = invitation.profile_hash()
@@ -176,7 +176,7 @@ def test_registration(testclient, foo_group):
 def test_registration_invalid_hash(testclient, foo_group):
     now = datetime.now().isoformat()
     invitation = Invitation(
-        now, "anything", False, "someone@mydomain.tld", [foo_group.dn]
+        now, "anything", False, "someone@mydomain.tld", [foo_group.id]
     )
     b64 = invitation.b64()
 
@@ -189,7 +189,7 @@ def test_registration_invalid_data(testclient, foo_group):
         "someoneelse",
         False,
         "someone@mydomain.tld",
-        [foo_group.dn],
+        [foo_group.id],
     )
     hash = invitation.profile_hash()
 
@@ -203,7 +203,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
         "someoneelse",
         False,
         "someone@mydomain.tld",
-        [foo_group.dn],
+        [foo_group.id],
     )
     hash = invitation.profile_hash()
     b64 = invitation.b64()
@@ -217,7 +217,7 @@ def test_registration_no_password(testclient, foo_group):
         "someoneelse",
         False,
         "someone@mydomain.tld",
-        [foo_group.dn],
+        [foo_group.id],
     )
     hash = invitation.profile_hash()
     b64 = invitation.b64()
@@ -242,7 +242,7 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
         "someoneelse",
         False,
         "someone@mydomain.tld",
-        [foo_group.dn],
+        [foo_group.id],
     )
     hash = invitation.profile_hash()
     b64 = invitation.b64()
@@ -279,14 +279,14 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
         "someoneelse",
         False,
         "someone@mydomain.tld",
-        [foo_group.dn],
+        [foo_group.id],
     )
     b64 = invitation.b64()
     hash = invitation.profile_hash()
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
 
-    assert res.form["groups"].value == [foo_group.dn]
+    assert res.form["groups"].value == [foo_group.id]
     assert res.form["groups"].attrs["readonly"]
 
     res.form["password1"] = "whatever"

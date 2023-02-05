@@ -43,7 +43,7 @@ AUTHORIZATION_CODE_LIFETIME = 84400
 
 
 def exists_nonce(nonce, req):
-    client = Client.get(dn=req.client_id)
+    client = Client.get(id=req.client_id)
     exists = AuthorizationCode.query(client=client, nonce=nonce)
     return bool(exists)
 

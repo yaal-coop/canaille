@@ -22,7 +22,7 @@ def test_object_creation(slapd_connection):
     user.save()
     assert user.exists
 
-    user = User.get(dn=user.dn)
+    user = User.get(id=user.id)
     assert user.exists
 
     user.delete()
@@ -36,7 +36,7 @@ def test_repr(slapd_connection, foo_group, user):
 def test_equality(slapd_connection, foo_group, bar_group):
     Group.ldap_object_attributes()
     assert foo_group != bar_group
-    foo_group2 = Group.get(dn=foo_group.dn)
+    foo_group2 = Group.get(id=foo_group.id)
     assert foo_group == foo_group2
 
 
@@ -152,10 +152,10 @@ def test_operational_attribute_conversion(slapd_connection):
 def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
     foo_group.member = [foo_group]
     foo_group.save()
-    g = LDAPObject.get(dn=foo_group.dn)
+    g = LDAPObject.get(id=foo_group.dn)
     assert isinstance(g, Group)
     assert g == foo_group
     assert g.cn == foo_group.cn
 
-    ou = LDAPObject.get(dn=f"{Group.base},{Group.root_dn}")
+    ou = LDAPObject.get(id=f"{Group.base},{Group.root_dn}")
     assert isinstance(g, LDAPObject)

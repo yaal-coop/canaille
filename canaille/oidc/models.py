@@ -38,6 +38,7 @@ class Client(LDAPObject, ClientMixin):
     }
 
     attribute_table = {
+        "id": "dn",
         "description": "description",
         "preconsent": "oauthPreconsent",
         # post_logout_redirect_uris is not yet supported by authlib
@@ -113,6 +114,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     base = "ou=authorizations,ou=oauth"
     rdn_attribute = "oauthAuthorizationCodeID"
     attribute_table = {
+        "id": "dn",
         "authorization_code_id": "oauthAuthorizationCodeID",
         "description": "description",
         "code": "oauthCode",
@@ -153,6 +155,7 @@ class Token(LDAPObject, TokenMixin):
     base = "ou=tokens,ou=oauth"
     rdn_attribute = "oauthTokenID"
     attribute_table = {
+        "id": "dn",
         "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
         "description": "description",
@@ -214,6 +217,7 @@ class Consent(LDAPObject):
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
     attribute_table = {
+        "id": "dn",
         "consent_id": "cn",
         "subject": "oauthSubject",
         "client": "oauthClient",

@@ -64,27 +64,27 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
 
 
 def test_set_groups(app, user, foo_group, bar_group):
-    foo_dns = {m.dn for m in foo_group.get_members()}
-    assert user.dn in foo_dns
-    assert user.groups[0].dn == foo_group.dn
+    foo_ids = {m.id for m in foo_group.get_members()}
+    assert user.id in foo_ids
+    assert user.groups[0].id == foo_group.id
 
     user.load_groups()
     user.set_groups([foo_group, bar_group])
 
-    bar_group = Group.get(bar_group.dn)
-    bar_dns = {m.dn for m in bar_group.get_members()}
-    assert user.dn in bar_dns
-    assert user.groups[1].dn == bar_group.dn
+    bar_group = Group.get(bar_group.id)
+    bar_ids = {m.id for m in bar_group.get_members()}
+    assert user.id in bar_ids
+    assert user.groups[1].id == bar_group.id
 
     user.load_groups()
     user.set_groups([foo_group])
 
-    foo_group = Group.get(foo_group.dn)
-    bar_group = Group.get(bar_group.dn)
-    foo_dns = {m.dn for m in foo_group.get_members()}
-    bar_dns = {m.dn for m in bar_group.get_members()}
-    assert user.dn in foo_dns
-    assert user.dn not in bar_dns
+    foo_group = Group.get(foo_group.id)
+    bar_group = Group.get(bar_group.id)
+    foo_ids = {m.id for m in foo_group.get_members()}
+    bar_ids = {m.id for m in bar_group.get_members()}
+    assert user.id in foo_ids
+    assert user.id not in bar_ids
 
 
 def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
@@ -99,15 +99,15 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user.load_groups()
     user.set_groups([foo_group])
 
-    foo_dns = {m.dn for m in foo_group.get_members()}
-    assert user.dn in foo_dns
+    foo_ids = {m.id for m in foo_group.get_members()}
+    assert user.id in foo_ids
 
     user.load_groups()
     user.set_groups([])
 
-    foo_group = Group.get(foo_group.dn)
-    foo_dns = {m.dn for m in foo_group.get_members()}
-    assert user.dn not in foo_dns
+    foo_group = Group.get(foo_group.id)
+    foo_ids = {m.id for m in foo_group.get_members()}
+    assert user.id not in foo_ids
 
     user.delete()
 
@@ -134,8 +134,8 @@ def test_moderator_can_create_edit_and_delete_group(
     bar_group = Group.get("bar")
     assert bar_group.name == "bar"
     assert bar_group.description == ["yolo"]
-    assert [member.dn for member in bar_group.get_members()] == [
-        logged_moderator.dn
+    assert [member.id for member in bar_group.get_members()] == [
+        logged_moderator.id
     ]  # Group cannot be empty so creator is added in it
     assert "bar" in res.text
 
@@ -205,7 +205,7 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
     form["csrf_token"] = "invalid"
     res = form.submit(name="action", value="edit")
     assert "Group edition failed." in res
-    foo_group = Group.get(foo_group.dn)
+    foo_group = Group.get(foo_group.id)
     assert foo_group.name == "foo"
 
 

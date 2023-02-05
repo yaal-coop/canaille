@@ -44,7 +44,7 @@ def ldap_to_python(value, syntax):
         return value.decode("utf-8").upper() == "TRUE"
 
     if syntax == Syntax.DISTINGUISHED_NAME:
-        return LDAPObject.get(dn=value.decode("utf-8"))
+        return LDAPObject.get(id=value.decode("utf-8"))
 
     return value.decode("utf-8")
 
@@ -67,7 +67,7 @@ def python_to_ldap(value, syntax, encode=True):
         value = "TRUE" if value else "FALSE"
 
     if syntax == Syntax.DISTINGUISHED_NAME:
-        value = value.dn
+        value = value.id
 
     if not value:
         return None
