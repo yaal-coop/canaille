@@ -235,7 +235,7 @@ def profile_form(write_field_names, readonly_field_names):
     if "groups" in write_field_names | readonly_field_names and Group.query():
         fields["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group.id, group.name) for group in Group.query()],
+            choices=[(group.id, group.display_name) for group in Group.query()],
             render_kw={"placeholder": _("users, admins …")},
         )
 
@@ -248,7 +248,7 @@ def profile_form(write_field_names, readonly_field_names):
 
 
 class CreateGroupForm(FlaskForm):
-    name = wtforms.StringField(
+    display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired(), unique_group],
         render_kw={
@@ -262,7 +262,7 @@ class CreateGroupForm(FlaskForm):
 
 
 class EditGroupForm(FlaskForm):
-    name = wtforms.StringField(
+    display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={
@@ -297,6 +297,6 @@ class InvitationForm(FlaskForm):
     )
     groups = wtforms.SelectMultipleField(
         _("Groups"),
-        choices=lambda: [(group.id, group.name) for group in Group.query()],
+        choices=lambda: [(group.id, group.display_name) for group in Group.query()],
         render_kw={},
     )

@@ -38,15 +38,18 @@ def create_group(user):
             flash(_("Group creation failed."), "error")
         else:
             group = Group()
-            group.member = [user]
-            group.cn = [form.name.data]
+            group.members = [user]
+            group.display_name = [form.display_name.data]
             group.description = [form.description.data]
             group.save()
             flash(
-                _("The group %(group)s has been sucessfully created", group=group.name),
+                _(
+                    "The group %(group)s has been sucessfully created",
+                    group=group.display_name,
+                ),
                 "success",
             )
-            return redirect(url_for("groups.group", groupname=group.name))
+            return redirect(url_for("groups.group", groupname=group.display_name))
 
     return render_template("group.html", form=form, edited_group=None, members=None)
 
@@ -80,7 +83,7 @@ def edit_group(group):
     form = EditGroupForm(
         request.form or None,
         data={
-            "name": group.name,
+            "display_name": group.display_name,
             "description": group.description[0] if group.description else "",
         },
     )
@@ -90,10 +93,13 @@ def edit_group(group):
             group.description = [form.description.data]
             group.save()
             flash(
-                _("The group %(group)s has been sucessfully edited.", group=group.name),
+                _(
+                    "The group %(group)s has been sucessfully edited.",
+                    group=group.display_name,
+                ),
                 "success",
             )
-            return redirect(url_for("groups.group", groupname=group.name))
+            return redirect(url_for("groups.group", groupname=group.display_name))
         else:
             flash(_("Group edition failed."), "error")
 
@@ -108,7 +114,7 @@ def edit_group(group):
 
 def delete_group(group):
     flash(
-        _("The group %(group)s has been sucessfully deleted", group=group.name),
+        _("The group %(group)s has been sucessfully deleted", group=group.display_name),
         "success",
     )
     group.delete()

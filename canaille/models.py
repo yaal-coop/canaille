@@ -183,6 +183,9 @@ class Group(LDAPObject):
 
     attribute_table = {
         "id": "dn",
+        "display_name": "cn",
+        "members": "member",
+        "description": "description",
     }
 
     def __init__(self, *args, **kwargs):
@@ -193,17 +196,17 @@ class Group(LDAPObject):
         super().__init__(*args, **kwargs)
 
     @property
-    def name(self):
+    def display_name(self):
         attribute = current_app.config["LDAP"].get(
             "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
         )
         return self[attribute][0]
 
     def get_members(self, conn=None):
-        return [member for member in self.member if member]
+        return [member for member in self.members if member]
 
     def add_member(self, user):
-        self.member = self.member + [user]
+        self.members = self.members + [user]
 
     def remove_member(self, user):
-        self.member = [m for m in self.member if m != user]
+        self.members = [m for m in self.members if m != user]

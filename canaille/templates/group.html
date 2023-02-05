@@ -60,7 +60,7 @@
             class="ui form"
         >
             {{ form.hidden_tag() if form.hidden_tag }}
-            {{ sui.render_field(form.name) }}
+            {{ sui.render_field(form.display_name) }}
             {{ sui.render_field(form.description) }}
 
             {% if not edited_group %}

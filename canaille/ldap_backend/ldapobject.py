@@ -111,8 +111,10 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             setattr(self, name, value)
 
     def __repr__(self):
+        reverse_attributes = {v: k for k, v in (self.attribute_table or {}).items()}
+        attribute_name = reverse_attributes.get(self.rdn_attribute, self.rdn_attribute)
         return (
-            f"<{self.__class__.__name__} {self.rdn_attribute}={self.rdn_value}>"
+            f"<{self.__class__.__name__} {attribute_name}={self.rdn_value}>"
             if self.rdn_attribute
             else "<LDAPOBject>"
         )

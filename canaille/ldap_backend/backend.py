@@ -154,8 +154,8 @@ def validate_configuration(config):
         user.save(conn)
 
         group = Group(
-            cn=f"canaille_{uuid.uuid4()}",
-            member=[user],
+            display_name=f"canaille_{uuid.uuid4()}",
+            members=[user],
         )
         group.save(conn)
         group.delete(conn)

@@ -29,7 +29,7 @@ def test_object_creation(slapd_connection):
 
 
 def test_repr(slapd_connection, foo_group, user):
-    assert repr(foo_group) == "<Group cn=foo>"
+    assert repr(foo_group) == "<Group display_name=foo>"
     assert repr(user) == "<User cn=John (johnny) Doe>"
 
 

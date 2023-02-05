@@ -51,16 +51,16 @@ def test_group_list_bad_pages(testclient, logged_admin):
 def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     res = testclient.get("/groups")
     assert "2 items" in res
-    assert foo_group.name in res
-    assert bar_group.name in res
+    assert foo_group.display_name in res
+    assert bar_group.display_name in res
 
     form = res.forms["search"]
     form["query"] = "oo"
     res = form.submit()
 
     assert "1 items" in res, res.text
-    assert foo_group.name in res
-    assert bar_group.name not in res
+    assert foo_group.display_name in res
+    assert bar_group.display_name not in res
 
 
 def test_set_groups(app, user, foo_group, bar_group):
@@ -125,14 +125,14 @@ def test_moderator_can_create_edit_and_delete_group(
     # Fill the form for a new group
     res = testclient.get("/groups/add", status=200)
     form = res.forms["creategroupform"]
-    form["name"] = "bar"
+    form["display_name"] = "bar"
     form["description"] = "yolo"
 
     # Group has been created
     res = form.submit(status=302).follow(status=200)
 
     bar_group = Group.get("bar")
-    assert bar_group.name == "bar"
+    assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo"]
     assert [member.id for member in bar_group.get_members()] == [
         logged_moderator.id
@@ -142,13 +142,13 @@ def test_moderator_can_create_edit_and_delete_group(
     # Group name can not be edited
     res = testclient.get("/groups/bar", status=200)
     form = res.forms["editgroupform"]
-    form["name"] = "bar2"
+    form["display_name"] = "bar2"
     form["description"] = ["yolo2"]
 
     res = form.submit(name="action", value="edit").follow()
 
     bar_group = Group.get("bar")
-    assert bar_group.name == "bar"
+    assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo2"]
     assert Group.get("bar2") is None
     members = bar_group.get_members()
@@ -162,7 +162,7 @@ def test_moderator_can_create_edit_and_delete_group(
 
 
 def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_group):
-    res = testclient.post("/groups/add", {"name": "foo"}, status=200)
+    res = testclient.post("/groups/add", {"display_name": "foo"}, status=200)
 
     assert "Group creation failed." in res
     assert "The group &#39;foo&#39; already exists" in res
@@ -206,7 +206,7 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
     res = form.submit(name="action", value="edit")
     assert "Group edition failed." in res
     foo_group = Group.get(foo_group.id)
-    assert foo_group.name == "foo"
+    assert foo_group.display_name == "foo"
 
 
 def test_user_list_pagination(testclient, logged_admin, foo_group):
