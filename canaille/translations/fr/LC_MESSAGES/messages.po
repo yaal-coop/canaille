@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-02-10 09:52+0100\n"
-"PO-Revision-Date: 2023-02-04 17:53+0000\n"
+"PO-Revision-Date: 2023-02-11 14:35+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
-"Language: fr\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16-dev\n"
 "Generated-By: Babel 2.11.0\n"
 
 #: canaille/account.py:103 canaille/account.py:128
@@ -330,9 +331,8 @@ msgid "Preferred language"
 msgstr "Langue préférée"
 
 #: canaille/forms.py:213
-#, fuzzy
 msgid "users, admins …"
-msgstr "utilisateurs, administrateurs ..."
+msgstr "utilisateurs, administrateurs …"
 
 #: canaille/forms.py:229
 msgid "group"
@@ -501,19 +501,14 @@ msgid "Pre-consent"
 msgstr "Pré-autorisé"
 
 #: canaille/oidc/tokens.py:61
-#, fuzzy
 msgid "The token has successfully been revoked."
-msgstr "L'accès a été révoqué"
+msgstr "Le jeton a été révoqué avec succès."
 
 #: canaille/oidc/utils.py:6
-#, fuzzy
 msgid "Info about yourself, such as your name."
-msgstr ""
-"Des informations personnelles vous concernant, comme votre nom ou votre "
-"genre."
+msgstr "Des informations personnelles vous concernant, comme votre nom."
 
 #: canaille/oidc/utils.py:8
-#, fuzzy
 msgid "Your e-mail address."
 msgstr "Votre adresse courriel."
 
@@ -526,12 +521,10 @@ msgid "Your phone number."
 msgstr "Votre numéro de téléphone."
 
 #: canaille/oidc/utils.py:11
-#, fuzzy
 msgid "Groups you belong to."
-msgstr "Les groupes auxquels vous appertenez"
+msgstr "Les groupes auxquels vous appartenez."
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
-#, fuzzy
 msgid "About Canaille"
 msgstr "À propos de canaille"
 
@@ -1214,21 +1207,17 @@ msgid "Token"
 msgstr "Jeton"
 
 #: canaille/templates/oidc/admin/token_view.html:13
-#, fuzzy
 msgid "Token deletion"
-msgstr "Suppression d'un client"
+msgstr "Suppression d'un jeton"
 
 #: canaille/templates/oidc/admin/token_view.html:17
-#, fuzzy
 msgid "Are you sure you want to revoke this token? This action is unrevokable."
 msgstr ""
-"Êtes-vous sûrs de vouloir supprimer cet utilisateur ? Cette action est "
-"irrévocable, et toutes les données de cet utilisateur seront supprimées."
+"Êtes-vous sûrs de vouloir révoquer ce jeton ? Cette action est irrévocable."
 
 #: canaille/templates/oidc/admin/token_view.html:28
-#, fuzzy
 msgid "Token details"
-msgstr "Envoyer le courriel"
+msgstr "Détails du jeton"
 
 #: canaille/templates/oidc/admin/token_view.html:60
 #: canaille/templates/oidc/admin/token_view.html:43
@@ -1241,9 +1230,8 @@ msgid "Issue date"
 msgstr "Date d’émission"
 
 #: canaille/templates/oidc/admin/token_view.html:78
-#, fuzzy
 msgid "Expiration date"
-msgstr "Date de révocation"
+msgstr "Date d'expiration"
 
 #: canaille/templates/oidc/admin/token_view.html:82
 #: canaille/templates/oidc/admin/token_view.html:57
@@ -1251,14 +1239,12 @@ msgid "Revokation date"
 msgstr "Date de révocation"
 
 #: canaille/templates/oidc/admin/token_view.html:88
-#, fuzzy
 msgid "Revoke token"
-msgstr "Jeton de rafraîchissement"
+msgstr "Révoquer le jeton"
 
 #: canaille/templates/oidc/admin/token_view.html:91
-#, fuzzy
 msgid "This token has not been revoked"
-msgstr "L'accès a été révoqué"
+msgstr "Le jeton n'a pas été révoqué"
 
 #: canaille/templates/oidc/admin/token_view.html:97
 #: canaille/templates/oidc/admin/token_view.html:65
@@ -1281,9 +1267,9 @@ msgid "The application %(name)s is requesting access to:"
 msgstr "L'application %(name)s demande un accès à :"
 
 #: canaille/templates/oidc/user/authorize.html:32
-#, fuzzy, python-format
+#, python-format
 msgid "You are logged in as %(name)s"
-msgstr "Vous êtes identifiés en tant que : %(name)s"
+msgstr "Vous êtes identifiés en tant que %(name)s"
 
 #: canaille/templates/oidc/user/authorize.html:39
 msgid "Deny"
