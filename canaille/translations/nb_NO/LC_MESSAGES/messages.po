@@ -1,4 +1,4 @@
-# Translations template for PROJECT.
+# Norwegian Bokmål (Norway) translations for PROJECT.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
@@ -7,21 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-01-22 13:42+0100\n"
+"POT-Creation-Date: 2023-02-10 09:52+0100\n"
 "PO-Revision-Date: 2023-01-31 08:25+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
-"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
-"canaille/canaille/nb_NO/>\n"
 "Language: nb_NO\n"
+"Language-Team: Norwegian Bokmål "
+"<https://hosted.weblate.org/projects/canaille/canaille/nb_NO/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16-dev\n"
 "Generated-By: Babel 2.11.0\n"
 
 #: canaille/account.py:103 canaille/account.py:128
-#: canaille/oidc/endpoints.py:81
+#: canaille/oidc/endpoints.py:82
 #, fuzzy
 msgid "Login failed, please check your information"
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
@@ -47,7 +46,7 @@ msgid ""
 "should receive it within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/account.py:176 canaille/account.py:426
+#: canaille/account.py:176 canaille/account.py:423
 #, fuzzy
 msgid "Could not send the password initialization email"
 msgstr "Kunne ikke sende e-post for oppsett av passord"
@@ -85,57 +84,57 @@ msgstr "Grupper"
 msgid "You account has been created successfuly."
 msgstr "Kontoen din ble opprettet."
 
-#: canaille/account.py:393
+#: canaille/account.py:390
 #, fuzzy
 msgid "User account creation succeed."
 msgstr "Brukerkonto opprettet."
 
-#: canaille/account.py:420
+#: canaille/account.py:417
 #, fuzzy
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/account.py:437
+#: canaille/account.py:434
 #, fuzzy
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within a few minutes."
 msgstr ""
-"Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
-"bør være mottatt i løpet av et par minutter."
+"Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. "
+"Den bør være mottatt i løpet av et par minutter."
 
-#: canaille/account.py:443
+#: canaille/account.py:440
 msgid "Could not send the password reset email"
 msgstr "Kunne ikke sende e-post for tilbakestilling av passord"
 
-#: canaille/account.py:477
+#: canaille/account.py:474
 #, fuzzy
 msgid "Profile edition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/account.py:513
+#: canaille/account.py:508
 msgid "Profile updated successfuly."
 msgstr "Profil redigert."
 
-#: canaille/account.py:536
+#: canaille/account.py:531
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/account.py:566
+#: canaille/account.py:561
 msgid "Could not send the password reset link."
 msgstr "Kunne ikke sende lenke for passordgjenoppretting."
 
-#: canaille/account.py:570
+#: canaille/account.py:565
 #, fuzzy
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
 msgstr "Lenke for tilbakestilling av passord sendt til din e-postadresse."
 
-#: canaille/account.py:581
+#: canaille/account.py:576
 #, fuzzy, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
@@ -144,16 +143,16 @@ msgstr ""
 "Brukeren «%(user)s» har ikke tilgang til å oppdatere passordet sitt. Kan "
 "ikke sende e-post om tilbakestilling av passord."
 
-#: canaille/account.py:596
+#: canaille/account.py:591
 #, fuzzy
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "Kunne ikke sende e-post for gjenoppretting av passord."
 
-#: canaille/account.py:615
+#: canaille/account.py:610
 msgid "The password reset link that brought you here was invalid."
 msgstr "Passordtilbakestillingslenken som tok deg hit er ikke gyldig."
 
-#: canaille/account.py:624
+#: canaille/account.py:619
 #, fuzzy
 msgid "Your password has been updated successfuly"
 msgstr "Passordet ditt er oppdatert."
@@ -338,7 +337,8 @@ msgid "Preferred language"
 msgstr "Foretrukket språk"
 
 #: canaille/forms.py:213
-msgid "users, admins ..."
+#, fuzzy
+msgid "users, admins …"
 msgstr "brukere, administratorer …"
 
 #: canaille/forms.py:229
@@ -423,20 +423,20 @@ msgstr "Kunne ikke slette denne tilgangen"
 msgid "The access has been revoked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/oidc/endpoints.py:129
+#: canaille/oidc/endpoints.py:130
 msgid "You have been successfully logged out."
 msgstr "Du har blitt utlogget."
 
-#: canaille/oidc/endpoints.py:327
+#: canaille/oidc/endpoints.py:329
 msgid "You have been disconnected"
 msgstr "Du har blitt frakoblet"
 
-#: canaille/oidc/endpoints.py:335
+#: canaille/oidc/endpoints.py:337
 #, fuzzy
 msgid "An error happened during the logout"
 msgstr "Feil under utlogging"
 
-#: canaille/oidc/endpoints.py:347
+#: canaille/oidc/endpoints.py:349
 msgid "You have not been disconnected"
 msgstr "Du har ikke blitt koblet fra"
 
@@ -461,7 +461,7 @@ msgstr "Videresendelses-URI-er til bruk etter-utlogging"
 msgid "Grant types"
 msgstr "Innvilgelsestyper"
 
-#: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:33
+#: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:50
 msgid "Scope"
 msgstr "Omfang"
 
@@ -511,12 +511,18 @@ msgstr ""
 msgid "Pre-consent"
 msgstr "Forhåndssamtykke"
 
+#: canaille/oidc/tokens.py:61
+#, fuzzy
+msgid "The token has successfully been revoked."
+msgstr "Tilgangen har blitt tilbakekalt"
+
 #: canaille/oidc/utils.py:6
-msgid "Personnal information about yourself, such as your name or your gender."
+msgid "Info about yourself, such as your name."
 msgstr ""
 
 #: canaille/oidc/utils.py:8
-msgid "Your email address."
+#, fuzzy
+msgid "Your e-mail address."
 msgstr "Din e-postadresse."
 
 #: canaille/oidc/utils.py:9
@@ -528,11 +534,13 @@ msgid "Your phone number."
 msgstr "Ditt telefonnummer."
 
 #: canaille/oidc/utils.py:11
-msgid "Groups you are belonging to"
+#, fuzzy
+msgid "Groups you belong to."
 msgstr "Grupper du tilhører"
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
-msgid "About canaille"
+#, fuzzy
+msgid "About Canaille"
 msgstr "Om canaille"
 
 #: canaille/templates/about.html:14
@@ -654,12 +662,14 @@ msgstr ""
 
 #: canaille/templates/group.html:30
 #: canaille/templates/oidc/admin/client_edit.html:18
+#: canaille/templates/oidc/admin/token_view.html:21
 #: canaille/templates/profile.html:41
 msgid "Cancel"
 msgstr "Avbryt"
 
 #: canaille/templates/group.html:31
 #: canaille/templates/oidc/admin/client_edit.html:19
+#: canaille/templates/oidc/admin/token_view.html:22
 #: canaille/templates/profile.html:42
 msgid "Delete"
 msgstr "Slett"
@@ -754,6 +764,8 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/invite.html:58
+#: canaille/templates/oidc/admin/token_view.html:106
+#: canaille/templates/oidc/admin/token_view.html:116
 msgid "Copy"
 msgstr "Kopier"
 
@@ -1073,13 +1085,13 @@ msgstr "Kode"
 
 #: canaille/templates/oidc/admin/authorization_list.html:19
 #: canaille/templates/oidc/admin/token_list.html:19
-#: canaille/templates/oidc/admin/token_view.html:17
+#: canaille/templates/oidc/admin/token_view.html:34
 msgid "Client"
 msgstr "Klient"
 
 #: canaille/templates/oidc/admin/authorization_list.html:20
 #: canaille/templates/oidc/admin/token_list.html:20
-#: canaille/templates/oidc/admin/token_view.html:25
+#: canaille/templates/oidc/admin/token_view.html:42
 msgid "Subject"
 msgstr "Emne"
 
@@ -1147,35 +1159,54 @@ msgstr "Nettadresse"
 msgid "Token"
 msgstr "Symbol"
 
-#: canaille/templates/oidc/admin/token_view.html:7
-msgid "View a token"
-msgstr "Vis et symbol"
-
 #: canaille/templates/oidc/admin/token_view.html:13
-msgid "Issue date"
-msgstr "Utstedelsesdato"
+#, fuzzy
+msgid "Token deletion"
+msgstr "Klientsletting"
 
-#: canaille/templates/oidc/admin/token_view.html:43
+#: canaille/templates/oidc/admin/token_view.html:17
+msgid "Are you sure you want to revoke this token? This action is unrevokable."
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:28
+#, fuzzy
+msgid "Token details"
+msgstr "Send e-post"
+
+#: canaille/templates/oidc/admin/token_view.html:60
 msgid "Audience"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:57
+#: canaille/templates/oidc/admin/token_view.html:74
+msgid "Issue date"
+msgstr "Utstedelsesdato"
+
+#: canaille/templates/oidc/admin/token_view.html:78
+msgid "Expiration date"
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:82
 msgid "Revokation date"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:61
-msgid "Lifetime"
+#: canaille/templates/oidc/admin/token_view.html:88
+msgid "Revoke token"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:65
+#: canaille/templates/oidc/admin/token_view.html:91
+#, fuzzy
+msgid "This token has not been revoked"
+msgstr "Tilgangen har blitt tilbakekalt"
+
+#: canaille/templates/oidc/admin/token_view.html:97
 msgid "Token type"
 msgstr "Symboltype"
 
-#: canaille/templates/oidc/admin/token_view.html:69
+#: canaille/templates/oidc/admin/token_view.html:101
 msgid "Access token"
 msgstr "Tilgangssymbol"
 
-#: canaille/templates/oidc/admin/token_view.html:74
+#: canaille/templates/oidc/admin/token_view.html:111
 msgid "Refresh token"
 msgstr ""
 
@@ -1185,8 +1216,8 @@ msgid "The application %(name)s is requesting access to:"
 msgstr "Programmet %(name)s forespør tilgang til:"
 
 #: canaille/templates/oidc/user/authorize.html:32
-#, python-format
-msgid "You are logged id as: %(name)s"
+#, fuzzy, python-format
+msgid "You are logged in as %(name)s"
 msgstr "Du er innlogget som %(name)s"
 
 #: canaille/templates/oidc/user/authorize.html:39
@@ -1282,3 +1313,12 @@ msgstr "Koder"
 #, fuzzy
 msgid "Emails"
 msgstr "E-poster"
+
+#~ msgid "Personnal information about yourself, such as your name or your gender."
+#~ msgstr ""
+
+#~ msgid "View a token"
+#~ msgstr "Vis et symbol"
+
+#~ msgid "Lifetime"
+#~ msgstr ""

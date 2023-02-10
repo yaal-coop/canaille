@@ -1,4 +1,4 @@
-# Translations template for PROJECT.
+# German translations for PROJECT.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
@@ -7,21 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-01-22 13:42+0100\n"
+"POT-Creation-Date: 2023-02-10 09:52+0100\n"
 "PO-Revision-Date: 2023-01-29 02:06+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
-"de/>\n"
 "Language: de\n"
+"Language-Team: German "
+"<https://hosted.weblate.org/projects/canaille/canaille/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16-dev\n"
 "Generated-By: Babel 2.11.0\n"
 
 #: canaille/account.py:103 canaille/account.py:128
-#: canaille/oidc/endpoints.py:81
+#: canaille/oidc/endpoints.py:82
 msgid "Login failed, please check your information"
 msgstr "Anmeldung fehlgeschlagen, bitte überprüfen Sie Ihre Angaben"
 
@@ -47,7 +46,7 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:176 canaille/account.py:426
+#: canaille/account.py:176 canaille/account.py:423
 msgid "Could not send the password initialization email"
 msgstr "Die E-Mail zur Kennwortinitialisierung konnte nicht gesendet werden"
 
@@ -81,19 +80,20 @@ msgstr ""
 msgid "You account has been created successfuly."
 msgstr ""
 
-#: canaille/account.py:393
+#: canaille/account.py:390
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:420
+#: canaille/account.py:417
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
 msgstr ""
-"Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse des "
-"Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
+"Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse "
+"des Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten "
+"erhalten."
 
-#: canaille/account.py:437
+#: canaille/account.py:434
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within a few minutes."
@@ -101,28 +101,28 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:443
+#: canaille/account.py:440
 msgid "Could not send the password reset email"
 msgstr "Die E-Mail zum Zurücksetzen des Passworts konnte nicht gesendet werden"
 
-#: canaille/account.py:477
+#: canaille/account.py:474
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:513
+#: canaille/account.py:508
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:536
+#: canaille/account.py:531
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:566
+#: canaille/account.py:561
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:570
+#: canaille/account.py:565
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
@@ -130,26 +130,27 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:581
+#: canaille/account.py:576
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 "We cannot send a password reset email."
 msgstr ""
 "Der Benutzer „%(user)s“ hat nicht die Berechtigung, sein Passwort zu "
-"aktualisieren. Wir können keine E-Mail zum Zurücksetzen des Passworts senden."
+"aktualisieren. Wir können keine E-Mail zum Zurücksetzen des Passworts "
+"senden."
 
-#: canaille/account.py:596
+#: canaille/account.py:591
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
-"Beim Versand der E-Mail zur Wiederherstellung des Passworts ist ein Problem "
-"aufgetreten."
+"Beim Versand der E-Mail zur Wiederherstellung des Passworts ist ein "
+"Problem aufgetreten."
 
-#: canaille/account.py:615
+#: canaille/account.py:610
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:624
+#: canaille/account.py:619
 msgid "Your password has been updated successfuly"
 msgstr ""
 
@@ -282,8 +283,8 @@ msgid ""
 "This email will be used as a recovery address to reset the password if "
 "needed"
 msgstr ""
-"Diese E-Mail wird als Wiederherstellungsadresse verwendet, um das Passwort "
-"bei Bedarf zurückzusetzen"
+"Diese E-Mail wird als Wiederherstellungsadresse verwendet, um das "
+"Passwort bei Bedarf zurückzusetzen"
 
 #: canaille/forms.py:151
 msgid "Phone number"
@@ -330,7 +331,8 @@ msgid "Preferred language"
 msgstr "Bevorzugte Sprache"
 
 #: canaille/forms.py:213
-msgid "users, admins ..."
+#, fuzzy
+msgid "users, admins …"
 msgstr "Benutzer/innen, Administrator/innen …"
 
 #: canaille/forms.py:229
@@ -413,19 +415,19 @@ msgstr ""
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:129
+#: canaille/oidc/endpoints.py:130
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/oidc/endpoints.py:327
+#: canaille/oidc/endpoints.py:329
 msgid "You have been disconnected"
 msgstr "Ihre Verbindung wurde unterbrochen"
 
-#: canaille/oidc/endpoints.py:335
+#: canaille/oidc/endpoints.py:337
 msgid "An error happened during the logout"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:347
+#: canaille/oidc/endpoints.py:349
 msgid "You have not been disconnected"
 msgstr ""
 
@@ -449,7 +451,7 @@ msgstr ""
 msgid "Grant types"
 msgstr ""
 
-#: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:33
+#: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:50
 msgid "Scope"
 msgstr ""
 
@@ -497,13 +499,18 @@ msgstr ""
 msgid "Pre-consent"
 msgstr ""
 
+#: canaille/oidc/tokens.py:61
+msgid "The token has successfully been revoked."
+msgstr ""
+
 #: canaille/oidc/utils.py:6
-msgid "Personnal information about yourself, such as your name or your gender."
+msgid "Info about yourself, such as your name."
 msgstr ""
 
 #: canaille/oidc/utils.py:8
-msgid "Your email address."
-msgstr ""
+#, fuzzy
+msgid "Your e-mail address."
+msgstr "E-Mail-Adresse"
 
 #: canaille/oidc/utils.py:9
 msgid "Your postal address."
@@ -514,11 +521,11 @@ msgid "Your phone number."
 msgstr ""
 
 #: canaille/oidc/utils.py:11
-msgid "Groups you are belonging to"
+msgid "Groups you belong to."
 msgstr ""
 
 #: canaille/templates/about.html:12 canaille/themes/default/base.html:106
-msgid "About canaille"
+msgid "About Canaille"
 msgstr ""
 
 #: canaille/templates/about.html:14
@@ -640,12 +647,14 @@ msgstr ""
 
 #: canaille/templates/group.html:30
 #: canaille/templates/oidc/admin/client_edit.html:18
+#: canaille/templates/oidc/admin/token_view.html:21
 #: canaille/templates/profile.html:41
 msgid "Cancel"
 msgstr ""
 
 #: canaille/templates/group.html:31
 #: canaille/templates/oidc/admin/client_edit.html:19
+#: canaille/templates/oidc/admin/token_view.html:22
 #: canaille/templates/profile.html:42
 msgid "Delete"
 msgstr ""
@@ -740,6 +749,8 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/invite.html:58
+#: canaille/templates/oidc/admin/token_view.html:106
+#: canaille/templates/oidc/admin/token_view.html:116
 msgid "Copy"
 msgstr ""
 
@@ -1056,13 +1067,13 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/authorization_list.html:19
 #: canaille/templates/oidc/admin/token_list.html:19
-#: canaille/templates/oidc/admin/token_view.html:17
+#: canaille/templates/oidc/admin/token_view.html:34
 msgid "Client"
 msgstr ""
 
 #: canaille/templates/oidc/admin/authorization_list.html:20
 #: canaille/templates/oidc/admin/token_list.html:20
-#: canaille/templates/oidc/admin/token_view.html:25
+#: canaille/templates/oidc/admin/token_view.html:42
 msgid "Subject"
 msgstr ""
 
@@ -1130,35 +1141,51 @@ msgstr ""
 msgid "Token"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:7
-msgid "View a token"
-msgstr ""
-
 #: canaille/templates/oidc/admin/token_view.html:13
-msgid "Issue date"
+msgid "Token deletion"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:43
+#: canaille/templates/oidc/admin/token_view.html:17
+msgid "Are you sure you want to revoke this token? This action is unrevokable."
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:28
+msgid "Token details"
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:60
 msgid "Audience"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:57
+#: canaille/templates/oidc/admin/token_view.html:74
+msgid "Issue date"
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:78
+msgid "Expiration date"
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:82
 msgid "Revokation date"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:61
-msgid "Lifetime"
+#: canaille/templates/oidc/admin/token_view.html:88
+msgid "Revoke token"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:65
+#: canaille/templates/oidc/admin/token_view.html:91
+msgid "This token has not been revoked"
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:97
 msgid "Token type"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:69
+#: canaille/templates/oidc/admin/token_view.html:101
 msgid "Access token"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:74
+#: canaille/templates/oidc/admin/token_view.html:111
 msgid "Refresh token"
 msgstr ""
 
@@ -1169,7 +1196,7 @@ msgstr ""
 
 #: canaille/templates/oidc/user/authorize.html:32
 #, python-format
-msgid "You are logged id as: %(name)s"
+msgid "You are logged in as %(name)s"
 msgstr ""
 
 #: canaille/templates/oidc/user/authorize.html:39
@@ -1263,3 +1290,24 @@ msgstr ""
 #: canaille/themes/default/base.html:83
 msgid "Emails"
 msgstr ""
+
+#~ msgid "Personnal information about yourself, such as your name or your gender."
+#~ msgstr ""
+
+#~ msgid "Your email address."
+#~ msgstr ""
+
+#~ msgid "Groups you are belonging to"
+#~ msgstr ""
+
+#~ msgid "About canaille"
+#~ msgstr ""
+
+#~ msgid "View a token"
+#~ msgstr ""
+
+#~ msgid "Lifetime"
+#~ msgstr ""
+
+#~ msgid "You are logged id as: %(name)s"
+#~ msgstr ""

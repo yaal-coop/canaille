@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-04 18:36+0100\n"
+"POT-Creation-Date: 2023-02-10 09:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -313,7 +313,7 @@ msgid "Preferred language"
 msgstr ""
 
 #: canaille/forms.py:213
-msgid "users, admins ..."
+msgid "users, admins …"
 msgstr ""
 
 #: canaille/forms.py:229
@@ -432,7 +432,7 @@ msgstr ""
 msgid "Grant types"
 msgstr ""
 
-#: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:54
+#: canaille/oidc/forms.py:54 canaille/templates/oidc/admin/token_view.html:50
 msgid "Scope"
 msgstr ""
 
@@ -729,8 +729,8 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/invite.html:58
-#: canaille/templates/oidc/admin/token_view.html:104
-#: canaille/templates/oidc/admin/token_view.html:114
+#: canaille/templates/oidc/admin/token_view.html:106
+#: canaille/templates/oidc/admin/token_view.html:116
 msgid "Copy"
 msgstr ""
 
@@ -1047,13 +1047,13 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/authorization_list.html:19
 #: canaille/templates/oidc/admin/token_list.html:19
-#: canaille/templates/oidc/admin/token_view.html:38
+#: canaille/templates/oidc/admin/token_view.html:34
 msgid "Client"
 msgstr ""
 
 #: canaille/templates/oidc/admin/authorization_list.html:20
 #: canaille/templates/oidc/admin/token_list.html:20
-#: canaille/templates/oidc/admin/token_view.html:46
+#: canaille/templates/oidc/admin/token_view.html:42
 msgid "Subject"
 msgstr ""
 
@@ -1133,39 +1133,39 @@ msgstr ""
 msgid "Token details"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:34
-msgid "Issue date"
-msgstr ""
-
-#: canaille/templates/oidc/admin/token_view.html:64
+#: canaille/templates/oidc/admin/token_view.html:60
 msgid "Audience"
 msgstr ""
 
+#: canaille/templates/oidc/admin/token_view.html:74
+msgid "Issue date"
+msgstr ""
+
 #: canaille/templates/oidc/admin/token_view.html:78
+msgid "Expiration date"
+msgstr ""
+
+#: canaille/templates/oidc/admin/token_view.html:82
 msgid "Revokation date"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:84
+#: canaille/templates/oidc/admin/token_view.html:88
 msgid "Revoke token"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:86
+#: canaille/templates/oidc/admin/token_view.html:91
 msgid "This token has not been revoked"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:91
-msgid "Lifetime"
-msgstr ""
-
-#: canaille/templates/oidc/admin/token_view.html:95
+#: canaille/templates/oidc/admin/token_view.html:97
 msgid "Token type"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:99
+#: canaille/templates/oidc/admin/token_view.html:101
 msgid "Access token"
 msgstr ""
 
-#: canaille/templates/oidc/admin/token_view.html:109
+#: canaille/templates/oidc/admin/token_view.html:111
 msgid "Refresh token"
 msgstr ""
 
