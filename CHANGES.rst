@@ -8,6 +8,7 @@ Added
 
 - Display TOS and policy URI on the consent list page. :pr:`102`
 - Admin token deletion :pr:`100` :pr:`101`
+- Revoked consents can be restored. :pr:`103`
 
 Fixed
 *****

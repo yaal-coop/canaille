@@ -93,12 +93,13 @@ def authorize():
         client=client.dn,
         subject=user.dn,
     )
-    consents = [c for c in consents if not c.revokation_date]
     consent = consents[0] if consents else None
 
     if request.method == "GET":
-        if client.preconsent or (
-            consent and all(scope in set(consent.scope) for scope in scopes)
+        if (
+            (client.preconsent and (not consent or not consent.revoked))
+            or (consent and all(scope in set(consent.scope) for scope in scopes))
+            and not consent.revoked
         ):
             return authorization.create_authorization_response(grant_user=user.dn)
 
@@ -137,6 +138,8 @@ def authorize():
         grant_user = user.dn
 
         if consent:
+            if consent.revoked:
+                consent.restore()
             consent.scope = client.get_allowed_scope(
                 list(set(scopes + consents[0].scope))
             ).split(" ")

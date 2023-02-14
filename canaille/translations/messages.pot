@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-10 09:52+0100\n"
+"POT-Creation-Date: 2023-02-14 18:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -388,12 +388,28 @@ msgstr ""
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/oidc/consents.py:40
-msgid "Could not delete this access"
+#: canaille/oidc/consents.py:39
+msgid "Could not revoke this access"
 msgstr ""
 
-#: canaille/oidc/consents.py:44
+#: canaille/oidc/consents.py:42
+msgid "The access is already revoked"
+msgstr ""
+
+#: canaille/oidc/consents.py:46
 msgid "The access has been revoked"
+msgstr ""
+
+#: canaille/oidc/consents.py:57
+msgid "Could not restore this access"
+msgstr ""
+
+#: canaille/oidc/consents.py:60
+msgid "The access is not revoked"
+msgstr ""
+
+#: canaille/oidc/consents.py:64
+msgid "The access has been restored"
 msgstr ""
 
 #: canaille/oidc/endpoints.py:130
@@ -1208,15 +1224,31 @@ msgstr ""
 msgid "Revoked:"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:44
+#: canaille/templates/oidc/user/consent_list.html:46
+msgid "Had access to:"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:48
 msgid "Has access to:"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:63
-msgid "Remove access"
+#: canaille/templates/oidc/user/consent_list.html:72
+msgid "Policy"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:72
+#: canaille/templates/oidc/user/consent_list.html:78
+msgid "Terms of service"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:86
+msgid "Restore access"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:91
+msgid "Revoke access"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:101
 msgid "You did not authorize applications yet."
 msgstr ""
 
