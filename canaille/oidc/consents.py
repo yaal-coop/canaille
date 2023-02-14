@@ -86,19 +86,20 @@ def revoke_preconsent(user, client_id):
 
     if not client or not client.preconsent:
         flash(_("Could not revoke this access"), "error")
+        return redirect(url_for("oidc.consents.consents"))
 
-    elif consent := Consent.get(client=client.dn, subject=user.dn):
+    consent = Consent.get(client=client.dn, subject=user.dn)
+    if consent:
         return redirect(url_for("oidc.consents.revoke", consent_id=consent.cn[0]))
 
-    else:
-        consent = Consent(
-            cn=str(uuid.uuid4()),
-            client=client.dn,
-            subject=user.dn,
-            scope=client.scope,
-        )
-        consent.revoke()
-        consent.save()
-        flash(_("The access has been revoked"), "success")
+    consent = Consent(
+        cn=str(uuid.uuid4()),
+        client=client.dn,
+        subject=user.dn,
+        scope=client.scope,
+    )
+    consent.revoke()
+    consent.save()
+    flash(_("The access has been revoked"), "success")
 
     return redirect(url_for("oidc.consents.consents"))
