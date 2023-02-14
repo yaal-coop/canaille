@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-02-10 09:52+0100\n"
+"POT-Creation-Date: 2023-02-14 21:56+0100\n"
 "PO-Revision-Date: 2023-01-29 02:06+0000\n"
 "Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
 "Language: de\n"
@@ -407,27 +407,44 @@ msgstr "Der Kunde wurde bearbeitet."
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/oidc/consents.py:40
-msgid "Could not delete this access"
+#: canaille/oidc/consents.py:49 canaille/oidc/consents.py:88
+msgid "Could not revoke this access"
 msgstr ""
 
-#: canaille/oidc/consents.py:44
+#: canaille/oidc/consents.py:52
+msgid "The access is already revoked"
+msgstr ""
+
+#: canaille/oidc/consents.py:56 canaille/oidc/consents.py:102
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:130
+#: canaille/oidc/consents.py:67
+msgid "Could not restore this access"
+msgstr ""
+
+#: canaille/oidc/consents.py:70
+msgid "The access is not revoked"
+msgstr ""
+
+#: canaille/oidc/consents.py:77
+#, fuzzy
+msgid "The access has been restored"
+msgstr "Der Kunde wurde bearbeitet."
+
+#: canaille/oidc/endpoints.py:131
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/oidc/endpoints.py:329
+#: canaille/oidc/endpoints.py:332
 msgid "You have been disconnected"
 msgstr "Ihre Verbindung wurde unterbrochen"
 
-#: canaille/oidc/endpoints.py:337
+#: canaille/oidc/endpoints.py:340
 msgid "An error happened during the logout"
 msgstr ""
 
-#: canaille/oidc/endpoints.py:349
+#: canaille/oidc/endpoints.py:352
 msgid "You have not been disconnected"
 msgstr ""
 
@@ -1220,24 +1237,52 @@ msgstr ""
 msgid "Consult and revoke the authorization you gave to websites."
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:39
+#: canaille/templates/oidc/user/consent_list.html:40
 msgid "From:"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:41
+#: canaille/templates/oidc/user/consent_list.html:43
 msgid "Revoked:"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:44
+#: canaille/templates/oidc/user/consent_list.html:48
+msgid "Had access to:"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:50
+#: canaille/templates/oidc/user/consent_list.html:132
 msgid "Has access to:"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:63
-msgid "Remove access"
+#: canaille/templates/oidc/user/consent_list.html:74
+#: canaille/templates/oidc/user/consent_list.html:155
+msgid "Policy"
 msgstr ""
 
-#: canaille/templates/oidc/user/consent_list.html:72
+#: canaille/templates/oidc/user/consent_list.html:80
+#: canaille/templates/oidc/user/consent_list.html:161
+msgid "Terms of service"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:88
+msgid "Restore access"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:93
+#: canaille/templates/oidc/user/consent_list.html:168
+msgid "Revoke access"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:103
 msgid "You did not authorize applications yet."
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:112
+msgid "Pre-authorized applications"
+msgstr ""
+
+#: canaille/templates/oidc/user/consent_list.html:115
+msgid "Those applications automatically have authorizations to access you data."
 msgstr ""
 
 #: canaille/templates/oidc/user/logout.html:9
@@ -1310,4 +1355,10 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "You are logged id as: %(name)s"
+#~ msgstr ""
+
+#~ msgid "Could not delete this access"
+#~ msgstr ""
+
+#~ msgid "Remove access"
 #~ msgstr ""
