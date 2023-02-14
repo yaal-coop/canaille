@@ -6,7 +6,8 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Added
 *****
 
-- Display TOS and policy URI on the consent list page. :pr:`99`
+- Display TOS and policy URI on the consent list page. :pr:`102`
+- Admin token deletion :pr:`100` :pr:`101`
 
 Fixed
 *****
