@@ -7,6 +7,8 @@ oauthClientContact: admin@mydomain.tld
 oauthClientURI: http://localhost:5001
 oauthRedirectURIs: http://localhost:5001/authorize
 oauthPostLogoutRedirectURI: http://localhost:5001/
+oauthTermsOfServiceURI: http://localhost:5001/tos
+oauthPolicyURI: http://localhost:5001/policy
 oauthGrantType: authorization_code
 oauthGrantType: refresh_token
 oauthScope: openid
@@ -29,6 +31,8 @@ oauthClientContact: admin@mydomain.tld
 oauthClientURI: http://localhost:5002
 oauthRedirectURIs: http://localhost:5002/authorize
 oauthPostLogoutRedirectURI: http://localhost:5002/
+oauthTermsOfServiceURI: http://localhost:5002/tos
+oauthPolicyURI: http://localhost:5002/policy
 oauthGrantType: authorization_code
 oauthGrantType: refresh_token
 oauthScope: openid

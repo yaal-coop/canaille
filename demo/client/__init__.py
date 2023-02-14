@@ -31,6 +31,8 @@ def create_app():
     )
 
     @app.route("/")
+    @app.route("/tos")
+    @app.route("/policy")
     def index():
         return render_template(
             "index.html", user=session.get("user"), name=app.config["NAME"]
