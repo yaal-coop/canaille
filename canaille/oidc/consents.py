@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from canaille.flaskutils import user_needed
 from canaille.oidc.models import Client
 from canaille.oidc.models import Consent
@@ -5,7 +8,7 @@ from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import url_for
-from flask_babel import gettext
+from flask_babel import gettext as _
 from flask_themer import render_template
 
 from .utils import SCOPE_DETAILS
@@ -18,9 +21,14 @@ bp = Blueprint("consents", __name__, url_prefix="/consent")
 @user_needed()
 def consents(user):
     consents = Consent.filter(subject=user.dn)
-    consents = [c for c in consents if not c.revokation_date]
-    client_dns = list({t.client for t in consents})
+    client_dns = {t.client for t in consents}
     clients = {dn: Client.get(dn) for dn in client_dns}
+    preconsented = [
+        client
+        for client in Client.filter()
+        if client.preconsent and client.dn not in clients
+    ]
+
     return render_template(
         "oidc/user/consent_list.html",
         consents=consents,
@@ -28,19 +36,69 @@ def consents(user):
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
         ignored_scopes=["openid"],
+        preconsented=preconsented,
     )
 
 
-@bp.route("/delete/<consent_id>")
+@bp.route("/revoke/<consent_id>")
 @user_needed()
-def delete(user, consent_id):
+def revoke(user, consent_id):
     consent = Consent.get(consent_id)
 
     if not consent or consent.subject != user.dn:
-        flash(gettext("Could not delete this access"), "error")
+        flash(_("Could not revoke this access"), "error")
+
+    elif consent.revokation_date:
+        flash(_("The access is already revoked"), "error")
 
     else:
         consent.revoke()
-        flash(gettext("The access has been revoked"), "success")
+        flash(_("The access has been revoked"), "success")
+
+    return redirect(url_for("oidc.consents.consents"))
+
+
+@bp.route("/restore/<consent_id>")
+@user_needed()
+def restore(user, consent_id):
+    consent = Consent.get(consent_id)
+
+    if not consent or consent.subject != user.dn:
+        flash(_("Could not restore this access"), "error")
+
+    elif not consent.revokation_date:
+        flash(_("The access is not revoked"), "error")
+
+    else:
+        consent.restore()
+        if not consent.issue_date:
+            consent.issue_date = datetime.datetime.now()
+        consent.save()
+        flash(_("The access has been restored"), "success")
+
+    return redirect(url_for("oidc.consents.consents"))
+
+
+@bp.route("/revoke-preconsent/<client_id>")
+@user_needed()
+def revoke_preconsent(user, client_id):
+    client = Client.get(client_id)
+
+    if not client or not client.preconsent:
+        flash(_("Could not revoke this access"), "error")
+
+    elif consent := Consent.get(client=client.dn, subject=user.dn):
+        return redirect(url_for("oidc.consents.revoke", consent_id=consent.cn[0]))
+
+    else:
+        consent = Consent(
+            cn=str(uuid.uuid4()),
+            client=client.dn,
+            subject=user.dn,
+            scope=client.scope,
+        )
+        consent.revoke()
+        consent.save()
+        flash(_("The access has been revoked"), "success")
 
     return redirect(url_for("oidc.consents.consents"))

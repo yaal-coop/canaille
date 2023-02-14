@@ -36,7 +36,7 @@ Then you have access to:
 
 - A canaille server at http://localhost:5000
 - A dummy client at http://localhost:5001
-- Another dummy client at http://localhost:5002
+- Another dummy client at http://localhost:5002, for which consent is already granted for users
 
 The canaille server has some default users:
 

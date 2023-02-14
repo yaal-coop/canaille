@@ -222,6 +222,10 @@ class Consent(LDAPObject):
         "revokation_date": "oauthRevokationDate",
     }
 
+    @property
+    def revoked(self):
+        return bool(self.revokation_date)
+
     def revoke(self):
         self.revokation_date = datetime.datetime.now()
         self.save()
@@ -230,10 +234,11 @@ class Consent(LDAPObject):
             oauthClient=self.client,
             oauthSubject=self.subject,
         )
+        tokens = [token for token in tokens if not token.revoked]
         for t in tokens:
-            different_scope = any(scope not in t.scope[0] for scope in self.scope)
-            if t.revoked or different_scope:
-                continue
-
             t.revokation_date = self.revokation_date
             t.save()
+
+    def restore(self):
+        self.revokation_date = None
+        self.save()
