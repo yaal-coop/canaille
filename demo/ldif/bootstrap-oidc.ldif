@@ -45,3 +45,4 @@ oauthResponseType: code
 oauthResponseType: id_token
 oauthTokenEndpointAuthMethod: client_secret_basic
 oauthAudience: oauthClientID=gn4yFN7GDykL7QP8v8gS9YfV,ou=clients,ou=oauth,dc=mydomain,dc=tld
+oauthPreconsent: TRUE

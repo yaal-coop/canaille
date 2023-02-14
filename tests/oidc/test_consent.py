@@ -142,3 +142,76 @@ def test_oidc_authorization_after_revokation(
     token = Token.get(access_token=access_token)
     assert token.client == client.dn
     assert token.subject == logged_user.dn
+
+
+def test_preconsented_client_appears_in_consent_list(testclient, client, logged_user):
+    assert not client.preconsent
+    res = testclient.get("/consent")
+    assert client.client_name not in res.text
+
+    client.preconsent = True
+    client.save()
+
+    res = testclient.get("/consent")
+    assert client.client_name in res.text
+
+
+def test_revoke_preconsented_client(testclient, client, logged_user, token):
+    client.preconsent = True
+    client.save()
+    assert not Consent.get()
+    assert not token.revoked
+
+    res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
+    assert ("success", "The access has been revoked") in res.flashes
+
+    consent = Consent.get()
+    assert consent.client == client.dn
+    assert consent.subject == logged_user.dn
+    assert consent.scope == ["openid", "email", "profile", "groups", "address", "phone"]
+    assert not consent.issue_date
+    token.reload()
+    assert token.revoked
+
+    res = testclient.get(f"/consent/restore/{consent.cn[0]}", status=302)
+    assert ("success", "The access has been restored") in res.flashes
+
+    consent.reload()
+    assert not consent.revoked
+    assert consent.issue_date
+    token.reload()
+    assert token.revoked
+
+    res = testclient.get(f"/consent/revoke/{consent.cn[0]}", status=302)
+    assert ("success", "The access has been revoked") in res.flashes
+    consent.reload()
+    assert consent.revoked
+    assert consent.issue_date
+
+
+def test_revoke_invalid_preconsented_client(testclient, logged_user):
+    res = testclient.get("/consent/revoke-preconsent/invalid", status=302)
+    assert ("error", "Could not revoke this access") in res.flashes
+
+
+def test_revoke_preconsented_client_with_manual_consent(
+    testclient, logged_user, client, consent
+):
+    client.preconsent = True
+    client.save()
+    res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
+    res = res.follow()
+    assert ("success", "The access has been revoked") in res.flashes
+
+
+def test_revoke_preconsented_client_with_manual_revokation(
+    testclient, logged_user, client, consent
+):
+    client.preconsent = True
+    client.save()
+    consent.revoke()
+    consent.save()
+
+    res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
+    res = res.follow()
+    assert ("error", "The access is already revoked") in res.flashes
