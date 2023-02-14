@@ -18,7 +18,7 @@ function run {
     fi
 
     if ! type poetry > /dev/null 2>&1; then
-        echo "Cannot start the LDAP server. Please install python on your system."
+        echo "Cannot start the LDAP server. Please install poetry on your system."
         echo "https://python-poetry.org/docs/#installation"
         return 1
     fi
