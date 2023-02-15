@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-02-14 21:56+0100\n"
-"PO-Revision-Date: 2023-02-11 14:35+0000\n"
+"PO-Revision-Date: 2023-02-16 14:37+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
+"canaille/es/>\n"
 "Language: es\n"
-"Language-Team: Spanish "
-"<https://hosted.weblate.org/projects/canaille/canaille/es/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16-dev\n"
 "Generated-By: Babel 2.11.0\n"
 
 #: canaille/account.py:103 canaille/account.py:128
@@ -406,33 +407,28 @@ msgid "The client has been deleted."
 msgstr "El cliente ha sido eliminado."
 
 #: canaille/oidc/consents.py:49 canaille/oidc/consents.py:88
-#, fuzzy
 msgid "Could not revoke this access"
-msgstr "No fue posible eliminar este acceso"
+msgstr "No se pudo revocar este acceso"
 
 #: canaille/oidc/consents.py:52
-#, fuzzy
 msgid "The access is already revoked"
-msgstr "El acceso ha sido revocado"
+msgstr "El acceso ya está revocado"
 
 #: canaille/oidc/consents.py:56 canaille/oidc/consents.py:102
 msgid "The access has been revoked"
 msgstr "El acceso ha sido revocado"
 
 #: canaille/oidc/consents.py:67
-#, fuzzy
 msgid "Could not restore this access"
-msgstr "No fue posible eliminar este acceso"
+msgstr "No se ha podido restablecer este acceso"
 
 #: canaille/oidc/consents.py:70
-#, fuzzy
 msgid "The access is not revoked"
-msgstr "El acceso ha sido revocado"
+msgstr "El acceso no está revocado"
 
 #: canaille/oidc/consents.py:77
-#, fuzzy
 msgid "The access has been restored"
-msgstr "El acceso ha sido revocado"
+msgstr "Se ha restablecido el acceso"
 
 #: canaille/oidc/endpoints.py:131
 msgid "You have been successfully logged out."
@@ -1309,9 +1305,8 @@ msgid "Revoked:"
 msgstr "Revocado:"
 
 #: canaille/templates/oidc/user/consent_list.html:48
-#, fuzzy
 msgid "Had access to:"
-msgstr "Tiene acceso a:"
+msgstr "Tenía acceso a:"
 
 #: canaille/templates/oidc/user/consent_list.html:50
 #: canaille/templates/oidc/user/consent_list.html:132
@@ -1320,39 +1315,36 @@ msgstr "Tiene acceso a:"
 
 #: canaille/templates/oidc/user/consent_list.html:74
 #: canaille/templates/oidc/user/consent_list.html:155
-#, fuzzy
 msgid "Policy"
-msgstr "URI de la política"
+msgstr "Política"
 
 #: canaille/templates/oidc/user/consent_list.html:80
 #: canaille/templates/oidc/user/consent_list.html:161
-#, fuzzy
 msgid "Terms of service"
-msgstr "URI de los términos de servicio"
+msgstr "Condiciones del servicio"
 
 #: canaille/templates/oidc/user/consent_list.html:88
-#, fuzzy
 msgid "Restore access"
-msgstr "Eliminar acceso"
+msgstr "Restaurar el acceso"
 
 #: canaille/templates/oidc/user/consent_list.html:93
 #: canaille/templates/oidc/user/consent_list.html:168
-#, fuzzy
 msgid "Revoke access"
-msgstr "Eliminar acceso"
+msgstr "Revocar el acceso"
 
 #: canaille/templates/oidc/user/consent_list.html:103
 msgid "You did not authorize applications yet."
 msgstr "Todavía no has autorizado ninguna aplicación."
 
 #: canaille/templates/oidc/user/consent_list.html:112
-#, fuzzy
 msgid "Pre-authorized applications"
-msgstr "Todavía no has autorizado ninguna aplicación."
+msgstr "Solicitudes previamente autorizadas"
 
 #: canaille/templates/oidc/user/consent_list.html:115
 msgid "Those applications automatically have authorizations to access you data."
 msgstr ""
+"Esas aplicaciones tienen automáticamente autorizaciones para acceder a sus "
+"datos."
 
 #: canaille/templates/oidc/user/logout.html:9
 #: canaille/themes/default/base.html:90
