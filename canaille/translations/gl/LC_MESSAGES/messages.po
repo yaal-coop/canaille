@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-02-14 21:56+0100\n"
-"PO-Revision-Date: 2023-02-18 22:08+0000\n"
+"PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
 "canaille/gl/>\n"
@@ -406,15 +406,15 @@ msgstr "O cliente foi eliminado."
 
 #: canaille/oidc/consents.py:49 canaille/oidc/consents.py:88
 msgid "Could not revoke this access"
-msgstr "Non foi posible revocar este acceso"
+msgstr "Non foi posible revogar este acceso"
 
 #: canaille/oidc/consents.py:52
 msgid "The access is already revoked"
-msgstr "Acceso xa revocado"
+msgstr "Acceso xa revogado"
 
 #: canaille/oidc/consents.py:56 canaille/oidc/consents.py:102
 msgid "The access has been revoked"
-msgstr "O acceso foi revocado"
+msgstr "O acceso foi revogado"
 
 #: canaille/oidc/consents.py:67
 msgid "Could not restore this access"
@@ -422,7 +422,7 @@ msgstr "Non foi posible restaurar este acceso"
 
 #: canaille/oidc/consents.py:70
 msgid "The access is not revoked"
-msgstr "O acceso non está revocado"
+msgstr "O acceso non está revogado"
 
 #: canaille/oidc/consents.py:77
 msgid "The access has been restored"
@@ -514,7 +514,7 @@ msgstr "Preconsentemento"
 
 #: canaille/oidc/tokens.py:61
 msgid "The token has successfully been revoked."
-msgstr "O token foi revocado correctamente."
+msgstr "O token foi revogado correctamente."
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
