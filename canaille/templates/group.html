@@ -1,6 +1,5 @@
 {% extends theme('base.html') %}
 {% import 'macro/fomanticui.html' as sui %}
-{% import 'userlist.html' as user_list %}
 
 {% block script %}
     <script src="/static/js/confirm.js"></script>
@@ -88,7 +87,9 @@
                 </div>
             </h2>
 
-            {{ user_list.user_list(user, members) }}
+            {% with users=members %}
+                {% include "partial/users.html" %}
+            {% endwith %}
         </div>
     {% endif %}
 

@@ -1,5 +1,4 @@
 {% extends theme('base.html') %}
-{% import 'userlist.html' as user_list %}
 
 {% block script %}
     <script src="/static/js/users.js"></script>
@@ -14,6 +13,5 @@
             {% endif %}
         </div>
     </div>
-
-    {{ user_list.user_list(user, users) }}
+    {% include "partial/users.html" %}
 {% endblock %}
