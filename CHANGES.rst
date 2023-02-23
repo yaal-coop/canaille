@@ -21,6 +21,11 @@ Fixed
 - Client deletion also deletes related Consent, Token and
   AuthorizationCode objects. :issue:`126` :pr:`98`
 
+Changed
+*******
+
+- Removed datatables.
+
 [0.0.20] - 2023-01-28
 =====================
 

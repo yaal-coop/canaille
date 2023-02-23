@@ -1,4 +1,3 @@
-import datetime
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -76,10 +75,6 @@ def smtp_needed():
         return decorator
 
     return wrapper
-
-
-def timestamp(dt):
-    return datetime.datetime.timestamp(dt)
 
 
 def set_parameter_in_url_query(url, **kwargs):

@@ -1,10 +1,4 @@
 $( function () {
-    $('table').DataTable({
-        "language": {
-            "url": "/static/datatables/i18n/" + document.documentElement.lang + ".json"
-        }
-    });
-
     $('.delete-user').click(function(event){
         event.preventDefault();
         var that = this;
