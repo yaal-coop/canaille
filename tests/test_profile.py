@@ -1,7 +1,43 @@
 from unittest import mock
 
 from canaille.models import User
+from canaille.populate import fake_users
 from webtest import Upload
+
+
+def test_user_list_pagination(testclient, logged_admin):
+    res = testclient.get("/users")
+    assert "1 items" in res
+
+    users = fake_users(25)
+
+    res = testclient.get("/users")
+    assert "26 items" in res, res.text
+    user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
+    assert user_name
+
+    form = res.forms["pagination"]
+    res = form.submit(name="page", value="2")
+    assert user_name not in res.pyquery(".users tbody tr td:nth-of-type(2) a").text()
+    for user in users:
+        user.delete()
+
+    res = testclient.get("/users")
+    assert "1 items" in res
+
+
+def test_user_list_bad_pages(testclient, logged_admin):
+    res = testclient.get("/users")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/users", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+    )
+
+    res = testclient.get("/users")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/users", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+    )
 
 
 def test_edition_permission(

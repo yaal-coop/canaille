@@ -1,0 +1,56 @@
+{% macro pagination(form) %}
+    <form id="pagination" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" class="ui form">
+        {{ form.hidden_tag() if form.hidden_tag }}
+        <div class="ui right floated stackable buttons">
+            <span class="icon disabled ui button">
+                {% trans %}Page{% endtrans %}
+            </span>
+            {% if form.page.data > 1 %}
+                <button name="page" type="submit" class="icon ui button" value="{{ form.page.data - 1 }}">
+                    <i class="left chevron icon"></i>
+                </button>
+            {% else %}
+                <span class="icon disabled ui button">
+                    <i class="left chevron icon"></i>
+                </span>
+            {% endif %}
+            {% if form.page.data > 1 %}
+                <button name="page" type="submit" class="ui button" value="1">
+                    1
+                </button>
+            {% endif %}
+            {% if form.page.data > 2 %}
+                <span class="disabled ui button">
+                    …
+                </span>
+            {% endif %}
+            <span class="ui button active">
+                {{ form.page.data }}
+            </span>
+            {% if form.page.data < form.page_max - 1 %}
+                <span class="disabled ui button">
+                    …
+                </span>
+            {% endif %}
+            {% if form.page.data < form.page_max %}
+                <button name="page" type="submit" class="ui button" value="{{ form.page_max }}">
+                    {{ form.page_max }}
+                </button>
+            {% endif %}
+            {% if form.page.data < form.page_max %}
+                <button name="page" type="submit" class="icon ui button" value="{{ form.page.data + 1 }}">
+                    <i class="right chevron icon"></i>
+                </button>
+            {% else %}
+                <span class="icon disabled ui button">
+                    <i class="right chevron icon"></i>
+                </span>
+            {% endif %}
+        </div>
+        <div class="ui left floated">
+            <span class="disabled ui button">
+                {{ _("%(nb_items)s items", nb_items=form.nb_items) }}
+            </span>
+        </div>
+    </form>
+{% endmacro %}

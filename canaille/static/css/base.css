@@ -119,7 +119,7 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     .ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.menu a.item.active:hover {
         color: rgba(255,255,255,.95);
     }
-    .ui.attached.header, .ui.toggle.checkbox label::before, .ui.table > thead > tr > th, table tbody tr td .ui.label, .ui.card, .ui.cards > .card, .ui.message, .ui.info.message, .ui.success.message {
+    .ui.attached.header, .ui.toggle.checkbox label::before, .ui.table > thead > tr > th, .ui.table > tfoot > tr > th, table tbody tr td .ui.label, .ui.card, .ui.cards > .card, .ui.message, .ui.info.message, .ui.success.message {
         background-color: #282828;
         color: rgba(255,255,255,.87) !important;
     }

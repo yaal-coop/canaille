@@ -1,4 +1,5 @@
-<table class="ui table">
+{% import "macro/table.html" as table %}
+<table class="ui table users">
     <thead>
         <tr>
             {% if user.can_read("jpegPhoto") %}
@@ -19,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for watched_user in users %}
+        {% for watched_user in table_form.items_slice %}
             <tr>
                 {% if user.can_read("jpegPhoto") %}
                     <td>
@@ -73,4 +74,11 @@
             </tr>
         {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="5">
+                {{ table.pagination(table_form) }}
+            </th>
+        </tr>
+    </tfoot>
 </table>

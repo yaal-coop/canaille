@@ -10,16 +10,21 @@ from flask_themer import render_template
 from .flaskutils import permissions_needed
 from .forms import CreateGroupForm
 from .forms import EditGroupForm
+from .forms import TableForm
 from .models import Group
+from .models import User
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
 
 
-@bp.route("/")
+@bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_groups")
 def groups(user):
-    groups = Group.query()
-    return render_template("groups.html", groups=groups, menuitem="groups")
+    table_form = TableForm(Group, formdata=request.form)
+    if request.form and request.form.get("page") and not table_form.validate():
+        abort(404)
+
+    return render_template("groups.html", menuitem="groups", table_form=table_form)
 
 
 @bp.route("/add", methods=("GET", "POST"))
@@ -53,7 +58,11 @@ def group(user, groupname):
     if not group:
         abort(404)
 
-    if request.method == "GET" or request.form.get("action") == "edit":
+    if (
+        request.method == "GET"
+        or request.form.get("action") == "edit"
+        or request.form.get("page")
+    ):
         return edit_group(group)
 
     if request.form.get("action") == "delete":
@@ -63,6 +72,10 @@ def group(user, groupname):
 
 
 def edit_group(group):
+    table_form = TableForm(User, filter={"memberOf": group}, formdata=request.form)
+    if request.form and request.form.get("page") and not table_form.validate():
+        abort(404)
+
     form = EditGroupForm(
         request.form or None,
         data={
@@ -71,7 +84,7 @@ def edit_group(group):
         },
     )
 
-    if request.form:
+    if request.form and not request.form.get("page"):
         if form.validate():
             group.description = [form.description.data]
             group.save()
@@ -84,7 +97,10 @@ def edit_group(group):
             flash(_("Group edition failed."), "error")
 
     return render_template(
-        "group.html", form=form, edited_group=group, members=group.get_members()
+        "group.html",
+        form=form,
+        edited_group=group,
+        table_form=table_form,
     )
 
 

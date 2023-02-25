@@ -5,38 +5,5 @@
 {% endblock %}
 
 {% block content %}
-
-    <table class="ui table">
-        <thead>
-            <tr>
-                <th>{% trans %}Token{% endtrans %}</th>
-                <th>{% trans %}Client{% endtrans %}</th>
-                <th>{% trans %}Subject{% endtrans %}</th>
-                <th>{% trans %}Created{% endtrans %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for token in tokens %}
-                <tr>
-                    <td>
-                        <a href="{{ url_for('oidc.tokens.view', token_id=token.token_id) }}">
-                            {{ token.token_id }}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for('oidc.clients.edit', client_id=token.client.client_id) }}">
-                            {{ token.client.client_name }}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for("account.profile_edition", username=token.subject.uid[0]) }}">
-                            {{ token.subject.uid[0] }}
-                        </a>
-                    </td>
-                    <td>{{ token.issue_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+    {% include "partial/oidc/admin/token_list.html" %}
 {% endblock %}

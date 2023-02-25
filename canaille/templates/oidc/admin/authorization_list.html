@@ -5,26 +5,5 @@
 {% endblock %}
 
 {% block content %}
-
-    <table class="ui table">
-        <thead>
-            <tr>
-                <th>{% trans %}Code{% endtrans %}</th>
-                <th>{% trans %}Client{% endtrans %}</th>
-                <th>{% trans %}Subject{% endtrans %}</th>
-                <th>{% trans %}Created{% endtrans %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for authorization in authorizations %}
-                <tr>
-                    <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.authorization_code_id }}</a></td>
-                    <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client_id) }}">{{ authorization.client_id }}</a></td>
-                    <td>{{ authorization.subject }}</td>
-                    <td>{{ authorization.issue_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+    {% include "partial/oidc/admin/authorization_list.html" %}
 {% endblock %}
