@@ -46,3 +46,11 @@ The canaille server has some default users:
 - A new user which login is **james**. This user has no password yet,
   and his first attempt to log-in would result in sending a password initialization
   email (if a smtp server is configurated).
+
+# Populate the database
+
+You can populate the database with randomly generated users and groups with the ``populate`` command:
+
+```bash
+env CONFIG=conf/canaille.toml poetry run canaille populate
+```

@@ -11,6 +11,8 @@ Added
 - Revoked consents can be restored. :pr:`103`
 - Pre-consented clients are displayed in the user consent list,
   and their consents can be revoked. :issue:`69` :pr:`103`
+- A ``populate`` command can be used to fill the database with
+  random users generated with faker. :pr:`105`
 
 Fixed
 *****
