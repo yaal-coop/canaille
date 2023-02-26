@@ -1,14 +1,14 @@
 import functools
-import random
 import sys
 
 import click
 from canaille import create_app
-from canaille.i18n import available_language_codes
 from canaille.models import Group
 from canaille.models import User
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Token
+from canaille.populate import fake_groups
+from canaille.populate import fake_users
 from flask import current_app
 from flask.cli import FlaskGroup
 from flask.cli import with_appcontext
@@ -117,25 +117,8 @@ if HAS_FAKER:  # pragma: no branch
         """
         Populate the database with generated random users.
         """
-        from faker.config import AVAILABLE_LOCALES
 
-        locales = list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
-        fake = faker.Faker(locales)
-        for i in range(ctx.obj["number"]):
-            locale = random.choice(locales)
-            profile = fake[locale].profile()
-            User(
-                cn=profile["name"],
-                givenName=profile["name"].split(" ")[0],
-                sn=profile["name"].split(" ")[1],
-                uid=profile["username"],
-                mail=profile["mail"],
-                telephoneNumber=profile["ssn"],
-                labeledURI=profile["website"][0],
-                postalAddress=profile["residence"],
-                userPassword=fake.password(),
-                locale=locale,
-            ).save()
+        fake_users(ctx.obj["number"])
 
     @populate.command()
     @click.pass_context
@@ -151,13 +134,4 @@ if HAS_FAKER:  # pragma: no branch
         Populate the database with generated random groups.
         """
 
-        fake = faker.Faker()
-        users = User.all()
-        for i in range(ctx.obj["number"]):
-            group = Group(
-                cn=fake.unique.word(),
-                description=fake.sentence(),
-            )
-            nb_users = random.randrange(1, nb_users_max + 1)
-            group.member = list({random.choice(users).dn for _ in range(nb_users)})
-            group.save()
+        fake_groups(ctx.obj["number"], nb_users_max)
