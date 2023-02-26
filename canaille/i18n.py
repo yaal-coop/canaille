@@ -1,8 +1,44 @@
 import gettext
 
 import pycountry
+from flask import current_app
+from flask import g
+from flask import request
+from flask_babel import Babel
+from flask_babel import get_locale
 
 DEFAULT_LANGUAGE_CODE = "en"
+
+babel = Babel()
+
+
+def setup_i18n(app):
+    babel.init_app(app)
+
+    @app.before_request
+    def before_request():
+        g.available_language_codes = available_language_codes()
+
+    @app.context_processor
+    def global_processor():
+        return {
+            "locale": get_locale(),
+        }
+
+
+@babel.localeselector
+def localeselector():
+    from .flaskutils import current_user
+
+    user = current_user()
+    available_language_codes = getattr(g, "available_language_codes", [])
+    if user is not None and user.preferredLanguage in available_language_codes:
+        return user.preferredLanguage
+
+    if current_app.config.get("LANGUAGE"):
+        return current_app.config.get("LANGUAGE")
+
+    return request.accept_languages.best_match(available_language_codes)
 
 
 def native_language_name_from_code(code):
@@ -16,7 +52,7 @@ def native_language_name_from_code(code):
     return translation.gettext(language.name)
 
 
-def available_language_codes(babel):
+def available_language_codes():
     return [str(translation) for translation in babel.list_translations()] + [
         DEFAULT_LANGUAGE_CODE
     ]

@@ -335,6 +335,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
 
     george = User.get("george")
     assert george.cn[0] == "George Abitbol"
+    george.delete()
 
 
 def test_cn_setting_with_surname_only(testclient, logged_moderator):
@@ -347,6 +348,7 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
 
     george = User.get("george")
     assert george.cn[0] == "Abitbol"
+    george.delete()
 
 
 def test_password_initialization_mail(

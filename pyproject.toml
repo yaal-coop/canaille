@@ -65,6 +65,7 @@ doc = [
 
 [tool.poetry.dev-dependencies]
 coverage = {version = "*", extras=["toml"]}
+faker = "^17.3.0"
 flask-webtest = "*"
 freezegun = "*"
 mock = "*"

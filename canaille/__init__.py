@@ -7,13 +7,11 @@ from flask import Flask
 from flask import g
 from flask import request
 from flask import session
-from flask_babel import Babel
-from flask_babel import get_locale
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
 
-from .i18n import available_language_codes
+from .i18n import setup_i18n
 from .ldap_backend.backend import init_backend
 from .oidc.oauth import setup_oauth
 
@@ -99,28 +97,6 @@ def setup_jinja(app):
     app.jinja_env.filters["timestamp"] = timestamp
 
 
-def setup_i18n(app):
-    babel = Babel(app)
-
-    @app.before_request
-    def before_request():
-        g.available_language_codes = available_language_codes(babel)
-
-    @babel.localeselector
-    def get_locale():
-        from .flaskutils import current_user
-
-        user = current_user()
-        available_language_codes = getattr(g, "available_language_codes", [])
-        if user is not None and user.preferredLanguage in available_language_codes:
-            return user.preferredLanguage
-
-        if app.config.get("LANGUAGE"):
-            return app.config.get("LANGUAGE")
-
-        return request.accept_languages.best_match(available_language_codes)
-
-
 def setup_themer(app):
     additional_themes_dir = (
         os.path.dirname(app.config["THEME"])
@@ -184,7 +160,6 @@ def create_app(config=None, validate=True):
                 "website_name": app.config.get("NAME", "Canaille"),
                 "user": current_user(),
                 "menu": True,
-                "locale": get_locale(),
             }
 
         @app.errorhandler(400)

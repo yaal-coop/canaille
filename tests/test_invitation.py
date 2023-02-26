@@ -51,6 +51,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
         del sess["user_id"]
 
     res = testclient.get(url, status=302)
+    user.delete()
 
 
 def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
@@ -99,6 +100,7 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     with testclient.session_transaction() as sess:
         assert "user_id" in sess
         del sess["user_id"]
+    user.delete()
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd):
@@ -143,6 +145,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
         del sess["user_id"]
 
     res = testclient.get(url, status=302)
+    user.delete()
 
 
 def test_invitation_login_already_taken(testclient, logged_admin):
@@ -298,3 +301,4 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     user.load_groups()
     foo_group.reload()
     assert user.groups == [foo_group]
+    user.delete()
