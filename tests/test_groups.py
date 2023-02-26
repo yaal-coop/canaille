@@ -1,5 +1,6 @@
 from canaille.models import Group
 from canaille.models import User
+from canaille.populate import fake_users
 
 
 def test_no_group(app, slapd_connection):
@@ -67,11 +68,12 @@ def test_moderator_can_create_edit_and_delete_group(
 
     # Fill the form for a new group
     res = testclient.get("/groups/add", status=200)
-    res.form["name"] = "bar"
-    res.form["description"] = "yolo"
+    form = res.forms["creategroupform"]
+    form["name"] = "bar"
+    form["description"] = "yolo"
 
     # Group has been created
-    res = res.form.submit(status=302).follow(status=200)
+    res = form.submit(status=302).follow(status=200)
 
     bar_group = Group.get("bar")
     assert bar_group.name == "bar"
@@ -83,10 +85,11 @@ def test_moderator_can_create_edit_and_delete_group(
 
     # Group name can not be edited
     res = testclient.get("/groups/bar", status=200)
-    res.form["name"] = "bar2"
-    res.form["description"] = ["yolo2"]
+    form = res.forms["editgroupform"]
+    form["name"] = "bar2"
+    form["description"] = ["yolo2"]
 
-    res = res.form.submit(name="action", value="edit").follow()
+    res = form.submit(name="action", value="edit").follow()
 
     bar_group = Group.get("bar")
     assert bar_group.name == "bar"
@@ -97,7 +100,7 @@ def test_moderator_can_create_edit_and_delete_group(
         assert member.name in res.text
 
     # Group is deleted
-    res = res.form.submit(name="action", value="delete", status=302)
+    res = form.submit(name="action", value="delete", status=302)
     assert Group.get("bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
@@ -138,13 +141,15 @@ def test_get_members_filters_non_existent_user(
 
 def test_invalid_form_request(testclient, logged_moderator, foo_group):
     res = testclient.get("/groups/foo")
-    res = res.form.submit(name="action", value="invalid-action", status=400)
+    form = res.forms["editgroupform"]
+    res = form.submit(name="action", value="invalid-action", status=400)
 
 
 def test_edition_failed(testclient, logged_moderator, foo_group):
     res = testclient.get("/groups/foo")
-    res.form["csrf_token"] = "invalid"
-    res = res.form.submit(name="action", value="edit")
+    form = res.forms["editgroupform"]
+    form["csrf_token"] = "invalid"
+    res = form.submit(name="action", value="edit")
     assert "Group edition failed." in res
     foo_group = Group.get(foo_group.dn)
     assert foo_group.name == "foo"
