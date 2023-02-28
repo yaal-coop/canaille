@@ -201,6 +201,7 @@ WEBSITE = "{{ user.labeledURI[0] }}"
 # HOST = "localhost"
 # PORT = 25
 # TLS = false
+# SSL = false
 # LOGIN = ""
 # PASSWORD = ""
 # FROM_ADDR = "admin@mydomain.tld"

@@ -244,6 +244,10 @@ Without this section Canaille will still be usable, but all the features related
     Whether the SMTP connection use TLS.
     Default to ``False``
 
+:SSL:
+    Whether the SMTP connection use SSL.
+    Default to ``False``
+
 :LOGIN:
     The SMTP server authentication login.
     *Optional.*

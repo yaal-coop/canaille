@@ -13,6 +13,7 @@ Added
   and their consents can be revoked. :issue:`69` :pr:`103`
 - A ``populate`` command can be used to fill the database with
   random users generated with faker. :pr:`105`
+- SMTP SSL support. :pr:`108`
 
 Fixed
 *****
