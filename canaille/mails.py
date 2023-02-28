@@ -17,6 +17,7 @@ from .apputils import profile_hash
 DEFAULT_SMTP_HOST = "localhost"
 DEFAULT_SMTP_PORT = 25
 DEFAULT_SMTP_TLS = False
+DEFAULT_SMTP_SSL = False
 
 
 def logo():
@@ -71,19 +72,27 @@ def send_email(subject, recipient, text, html, attachements=None):
             value, maintype=maintype, subtype=subtype, cid=cid
         )
 
+    smtp = None
     try:
-        with smtplib.SMTP(
-            host=current_app.config["SMTP"].get("HOST", DEFAULT_SMTP_HOST),
-            port=current_app.config["SMTP"].get("PORT", DEFAULT_SMTP_PORT),
-        ) as smtp:
-            if current_app.config["SMTP"].get("TLS", DEFAULT_SMTP_TLS):
-                smtp.starttls()
-            if current_app.config["SMTP"].get("LOGIN"):
-                smtp.login(
-                    user=current_app.config["SMTP"].get("LOGIN"),
-                    password=current_app.config["SMTP"].get("PASSWORD"),
-                )
-            smtp.send_message(msg)
+        if current_app.config["SMTP"].get("SSL", DEFAULT_SMTP_SSL):
+            smtp = smtplib.SMTP_SSL(
+                host=current_app.config["SMTP"].get("HOST", DEFAULT_SMTP_HOST),
+                port=current_app.config["SMTP"].get("PORT", DEFAULT_SMTP_PORT),
+            )
+        else:
+            smtp = smtplib.SMTP(
+                host=current_app.config["SMTP"].get("HOST", DEFAULT_SMTP_HOST),
+                port=current_app.config["SMTP"].get("PORT", DEFAULT_SMTP_PORT),
+            )
+
+        if current_app.config["SMTP"].get("TLS", DEFAULT_SMTP_TLS):
+            smtp.starttls()
+        if current_app.config["SMTP"].get("LOGIN"):
+            smtp.login(
+                user=current_app.config["SMTP"].get("LOGIN"),
+                password=current_app.config["SMTP"].get("PASSWORD"),
+            )
+        smtp.send_message(msg)
 
     except smtplib.SMTPRecipientsRefused:
         pass
@@ -91,6 +100,10 @@ def send_email(subject, recipient, text, html, attachements=None):
     except OSError as exc:
         current_app.logger.warning(f"Could not send email: {exc}")
         return False
+
+    finally:
+        if smtp is not None:
+            smtp.close()
 
     return True
 
