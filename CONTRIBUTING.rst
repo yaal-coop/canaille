@@ -21,6 +21,8 @@ Unit tests
 
 To run the tests, you just need to run `tox`. Everything must be green before patches get merged.
 
+The test coverage is 100%, patches won't be accepted if not entirely covered.
+
 Style
 -----
 
