@@ -135,6 +135,6 @@ commands =
 [testenv:coverage]
 commands =
     poetry install
-    poetry run pytest --cov {posargs}
+    poetry run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered {posargs}
     poetry run coverage html
 """
