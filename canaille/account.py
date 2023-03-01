@@ -17,6 +17,7 @@ from flask import send_file
 from flask import session
 from flask import url_for
 from flask_babel import gettext as _
+from flask_babel import refresh
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
@@ -499,14 +500,15 @@ def profile_edit(editor, username):
             ):
                 user.set_password(form["password1"].data)
 
-            if (
-                "preferredLanguage" in request.form
-                and form["preferredLanguage"].data == "auto"
-            ):
-                user.preferredLanguage = None
+            if "preferredLanguage" in request.form:
+                # Refresh the babel cache in case the lang is updated
+                refresh()
 
-            flash(_("Profile updated successfuly."), "success")
+                if form["preferredLanguage"].data == "auto":
+                    user.preferredLanguage = None
+
             user.save()
+            flash(_("Profile updated successfuly."), "success")
             return redirect(url_for("account.profile_edition", username=username))
 
     return render_template(

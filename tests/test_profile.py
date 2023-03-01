@@ -55,8 +55,9 @@ def test_edition(
     ]
     res.form["preferredLanguage"] = "fr"
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
-    res = res.form.submit(name="action", value="edit").follow()
-    assert "Profile updated successfuly." in res, str(res)
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")]
+    res = res.follow()
 
     logged_user = User.get(dn=logged_user.dn)
     logged_user.load_groups()

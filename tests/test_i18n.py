@@ -1,7 +1,8 @@
 from canaille.models import User
+from flask_babel import refresh
 
 
-def test_preferred_language(testclient, logged_user):
+def test_preferred_language(slapd_server, testclient, logged_user):
     logged_user.preferredLanguage = None
     logged_user.save()
 
@@ -12,7 +13,9 @@ def test_preferred_language(testclient, logged_user):
     assert "Mon profil" not in res.text
 
     res.form["preferredLanguage"] = "fr"
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")]
+    res = res.follow()
     logged_user = User.get(dn=logged_user.dn)
     assert logged_user.preferredLanguage == "fr"
     assert res.form["preferredLanguage"].value == "fr"
@@ -21,7 +24,9 @@ def test_preferred_language(testclient, logged_user):
     assert "Mon profil" in res.text
 
     res.form["preferredLanguage"] = "en"
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+    res = res.follow()
     logged_user = User.get(dn=logged_user.dn)
     assert logged_user.preferredLanguage == "en"
     assert res.form["preferredLanguage"].value == "en"
@@ -30,7 +35,9 @@ def test_preferred_language(testclient, logged_user):
     assert "Mon profil" not in res.text
 
     res.form["preferredLanguage"] = "auto"
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+    res = res.follow()
     logged_user = User.get(dn=logged_user.dn)
     assert logged_user.preferredLanguage is None
     assert res.form["preferredLanguage"].value == "auto"
@@ -49,6 +56,7 @@ def test_language_config(testclient, logged_user):
     assert "Mon profil" not in res.text
 
     testclient.app.config["LANGUAGE"] = "fr"
+    refresh()
     res = testclient.get("/profile/user", status=200)
     assert res.pyquery("html")[0].attrib["lang"] == "fr"
     assert "My profile" not in res.text

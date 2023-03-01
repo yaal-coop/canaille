@@ -13,7 +13,7 @@ babel = Babel()
 
 
 def setup_i18n(app):
-    babel.init_app(app)
+    babel.init_app(app, locale_selector=locale_selector)
 
     @app.before_request
     def before_request():
@@ -26,8 +26,7 @@ def setup_i18n(app):
         }
 
 
-@babel.localeselector
-def localeselector():
+def locale_selector():
     from .flaskutils import current_user
 
     user = current_user()
@@ -53,6 +52,4 @@ def native_language_name_from_code(code):
 
 
 def available_language_codes():
-    return [str(translation) for translation in babel.list_translations()] + [
-        DEFAULT_LANGUAGE_CODE
-    ]
+    return [str(translation) for translation in babel.list_translations()]
