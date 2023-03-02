@@ -78,6 +78,8 @@ def test_filter(slapd_connection, foo_group, bar_group):
     assert Group.query(cn="foo") == [foo_group]
     assert Group.query(cn="bar") == [bar_group]
 
+    assert Group.query(cn="foo") != 3
+
     assert Group.query(cn=["foo"]) == [foo_group]
     assert Group.query(cn=["bar"]) == [bar_group]
 
