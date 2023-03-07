@@ -37,7 +37,7 @@ def fake_users(nb=1):
 
 def fake_groups(nb=1, nb_users_max=1):
     fake = faker_generator()
-    users = User.all()
+    users = User.query()
     groups = list()
     for _ in range(nb):
         group = Group(

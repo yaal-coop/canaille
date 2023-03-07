@@ -45,7 +45,7 @@ class User(LDAPObject):
             .format(user=self)
         )
         escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
-        self._groups = Group.filter(filter=escaped_group_filter, conn=conn)
+        self._groups = Group.query(filter=escaped_group_filter, conn=conn)
 
     @classmethod
     def authenticate(cls, login, password, signin=False):

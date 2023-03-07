@@ -4,7 +4,7 @@ from canaille.populate import fake_users
 
 
 def test_no_group(app, slapd_connection):
-    assert Group.all() == []
+    assert Group.query() == []
 
 
 def test_set_groups(app, user, foo_group, bar_group):

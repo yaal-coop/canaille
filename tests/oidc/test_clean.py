@@ -79,5 +79,5 @@ def test_clean_command(testclient, slapd_connection, client, user):
     runner = testclient.app.test_cli_runner()
     runner.invoke(cli, ["clean"])
 
-    assert AuthorizationCode.all() == [valid_code]
-    assert Token.all() == [valid_token]
+    assert AuthorizationCode.query() == [valid_code]
+    assert Token.query() == [valid_token]

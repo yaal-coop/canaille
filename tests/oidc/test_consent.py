@@ -118,8 +118,8 @@ def test_oidc_authorization_after_revokation(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    Consent.all()
-    consents = Consent.filter(client=client.dn, subject=logged_user.dn)
+    Consent.query()
+    consents = Consent.query(client=client.dn, subject=logged_user.dn)
     assert consents[0].dn == consent.dn
     consent.reload()
     assert not consent.revoked

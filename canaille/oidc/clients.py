@@ -20,7 +20,7 @@ bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 @bp.route("/")
 @permissions_needed("manage_oidc")
 def index(user):
-    clients = Client.all()
+    clients = Client.query()
     return render_template(
         "oidc/admin/client_list.html", clients=clients, menuitem="admin"
     )

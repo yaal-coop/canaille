@@ -19,7 +19,7 @@ bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 @bp.route("/")
 @permissions_needed("manage_oidc")
 def index(user):
-    tokens = Token.all()
+    tokens = Token.query()
     items = (
         (token, Client.get(token.client), User.get(dn=token.subject))
         for token in tokens

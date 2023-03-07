@@ -89,7 +89,7 @@ def authorize():
 
     # CONSENT
 
-    consents = Consent.filter(
+    consents = Consent.query(
         client=client.dn,
         subject=user.dn,
     )

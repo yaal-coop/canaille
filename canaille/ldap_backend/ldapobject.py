@@ -186,16 +186,12 @@ class LDAPObject:
     @classmethod
     def get(cls, dn=None, filter=None, conn=None, **kwargs):
         try:
-            return cls.filter(dn, filter, conn, **kwargs)[0]
+            return cls.query(dn, filter, conn, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 
     @classmethod
-    def all(cls, conn=None):
-        return cls.filter(conn=conn)
-
-    @classmethod
-    def filter(cls, base=None, filter=None, conn=None, **kwargs):
+    def query(cls, base=None, filter=None, conn=None, **kwargs):
         conn = conn or cls.ldap_connection()
 
         if base is None:

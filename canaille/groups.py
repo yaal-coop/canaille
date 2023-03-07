@@ -18,7 +18,7 @@ bp = Blueprint("groups", __name__, url_prefix="/groups")
 @bp.route("/")
 @permissions_needed("manage_groups")
 def groups(user):
-    groups = Group.all()
+    groups = Group.query()
     return render_template("groups.html", groups=groups, menuitem="groups")
 
 

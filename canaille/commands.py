@@ -54,11 +54,11 @@ def clean():
     """
     Remove expired tokens and authorization codes.
     """
-    for t in Token.all():
+    for t in Token.query():
         if t.is_expired():
             t.delete()
 
-    for a in AuthorizationCode.all():
+    for a in AuthorizationCode.query():
         if a.is_expired():
             a.delete()
 

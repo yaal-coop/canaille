@@ -182,7 +182,7 @@ def firstlogin(uid):
 @bp.route("/users")
 @permissions_needed("manage_users")
 def users(user):
-    users = User.all()
+    users = User.query()
     return render_template("users.html", users=users, menuitem="users")
 
 
@@ -325,7 +325,7 @@ def registration(data, hash):
     if "groups" not in form and invitation.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group.dn, group.name) for group in Group.all()],
+            choices=[(group.dn, group.name) for group in Group.query()],
             render_kw={"readonly": "true"},
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)

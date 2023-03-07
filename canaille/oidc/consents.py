@@ -20,12 +20,12 @@ bp = Blueprint("consents", __name__, url_prefix="/consent")
 @bp.route("/")
 @user_needed()
 def consents(user):
-    consents = Consent.filter(subject=user.dn)
+    consents = Consent.query(subject=user.dn)
     client_dns = {t.client for t in consents}
     clients = {dn: Client.get(dn) for dn in client_dns}
     preconsented = [
         client
-        for client in Client.filter()
+        for client in Client.query()
         if client.preconsent and client.dn not in clients
     ]
 

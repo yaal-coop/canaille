@@ -43,7 +43,7 @@ AUTHORIZATION_CODE_LIFETIME = 84400
 
 
 def exists_nonce(nonce, req):
-    exists = AuthorizationCode.filter(client=req.client_id, nonce=nonce)
+    exists = AuthorizationCode.query(client=req.client_id, nonce=nonce)
     return bool(exists)
 
 
@@ -151,7 +151,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = AuthorizationCode.filter(code=code, client=client.dn)
+        item = AuthorizationCode.query(code=code, client=client.dn)
         if item and not item[0].is_expired():
             return item[0]
 
@@ -190,7 +190,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
 class RefreshTokenGrant(_RefreshTokenGrant):
     def authenticate_refresh_token(self, refresh_token):
-        token = Token.filter(refresh_token=refresh_token)
+        token = Token.query(refresh_token=refresh_token)
         if token and token[0].is_refresh_token_active():
             return token[0]
 
