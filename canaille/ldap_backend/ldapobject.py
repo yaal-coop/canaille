@@ -39,6 +39,7 @@ class LDAPObject:
             and all(
                 getattr(self, attr) == getattr(other, attr)
                 for attr in self.may + self.must
+                if hasattr(self, attr) and hasattr(other, attr)
             )
         )
 
