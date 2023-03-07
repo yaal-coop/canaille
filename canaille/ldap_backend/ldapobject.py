@@ -9,8 +9,8 @@ from .utils import python_to_ldap
 class LDAPObject:
     _object_class_by_name = None
     _attribute_type_by_name = None
-    may = None
-    must = None
+    _may = None
+    _must = None
     base = None
     root_dn = None
     rdn = None
@@ -25,9 +25,6 @@ class LDAPObject:
         for name, value in kwargs.items():
             setattr(self, name, value)
 
-        if not self.may and not self.must:
-            self.update_ldap_attributes()
-
     def __repr__(self):
         rdn = getattr(self, self.rdn, "?")
         return f"<{self.__class__.__name__} {self.rdn}={rdn}>"
@@ -35,11 +32,11 @@ class LDAPObject:
     def __eq__(self, other):
         return (
             isinstance(other, self.__class__)
-            and self.may == other.may
-            and self.must == other.must
+            and self.may() == other.may()
+            and self.must() == other.must()
             and all(
                 getattr(self, attr) == getattr(other, attr)
-                for attr in self.may + self.must
+                for attr in self.may() + self.must()
                 if hasattr(self, attr) and hasattr(other, attr)
             )
         )
@@ -87,6 +84,16 @@ class LDAPObject:
         else:
             rdn = self.attrs[self.rdn][0]
         return f"{self.rdn}={ldap.dn.escape_dn_chars(rdn.strip())},{self.base},{self.root_dn}"
+
+    def may(self):
+        if not self._may:
+            self.update_ldap_attributes()
+        return self._may
+
+    def must(self):
+        if not self._must:
+            self.update_ldap_attributes()
+        return self._must
 
     @classmethod
     def ldap_connection(cls):
@@ -246,8 +253,8 @@ class LDAPObject:
         this_object_classes = {all_object_classes[name] for name in cls.object_class}
         done = set()
 
-        cls.may = []
-        cls.must = []
+        cls._may = []
+        cls._must = []
         while len(this_object_classes) > 0:
             object_class = this_object_classes.pop()
             done.add(object_class)
@@ -256,11 +263,11 @@ class LDAPObject:
                 for ocsup in object_class.sup
                 if ocsup not in done
             }
-            cls.may.extend(object_class.may)
-            cls.must.extend(object_class.must)
+            cls._may.extend(object_class.may)
+            cls._must.extend(object_class.must)
 
-        cls.may = list(set(cls.may))
-        cls.must = list(set(cls.must))
+        cls._may = list(set(cls._may))
+        cls._must = list(set(cls._must))
 
     def reload(self, conn=None):
         conn = conn or self.ldap_connection()
@@ -325,6 +332,6 @@ class LDAPObject:
         conn.delete_s(self.dn)
 
     def keys(self):
-        ldap_keys = self.must + self.may
+        ldap_keys = self.must() + self.may()
         inverted_table = {value: key for key, value in self.attribute_table.items()}
         return [inverted_table.get(key, key) for key in ldap_keys]

@@ -366,7 +366,7 @@ def registration(data, hash):
 def profile_create(current_app, form):
     user = User()
     for attribute in form:
-        if attribute.name in user.may + user.must:
+        if attribute.name in user.may() + user.must():
             if isinstance(attribute.data, FileStorage):
                 data = attribute.data.stream.read()
             else:
@@ -477,7 +477,7 @@ def profile_edit(editor, username):
         else:
             for attribute in form:
                 if (
-                    attribute.name in user.may + user.must
+                    attribute.name in user.may() + user.must()
                     and attribute.name in editor.write
                 ):
                     if isinstance(attribute.data, FileStorage):

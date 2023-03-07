@@ -9,10 +9,10 @@
 
         <div class="ui attached clearing segment">
             <ul>
-                {% for attr in authorization.may %}
+                {% for attr in authorization.may() %}
                     <li>{{ attr }}: {{ authorization[attr] }}</li>
                 {% endfor %}
-                {% for attr in authorization.must %}
+                {% for attr in authorization.must() %}
                     <li>{{ attr }}: {{ authorization[attr] }}</li>
                 {% endfor %}
             </ul>
