@@ -25,7 +25,8 @@ class LDAPObject:
         for name, value in kwargs.items():
             setattr(self, name, value)
 
-        self.update_ldap_attributes()
+        if not self.may and not self.must:
+            self.update_ldap_attributes()
 
     def __repr__(self):
         rdn = getattr(self, self.rdn, "?")
@@ -239,15 +240,14 @@ class LDAPObject:
             objects.append(obj)
         return objects
 
-    def update_ldap_attributes(self):
-        all_object_classes = self.ldap_object_classes()
-        this_object_classes = {
-            all_object_classes[name] for name in getattr(self, "objectClass")
-        }
+    @classmethod
+    def update_ldap_attributes(cls):
+        all_object_classes = cls.ldap_object_classes()
+        this_object_classes = {all_object_classes[name] for name in cls.object_class}
         done = set()
 
-        self.may = []
-        self.must = []
+        cls.may = []
+        cls.must = []
         while len(this_object_classes) > 0:
             object_class = this_object_classes.pop()
             done.add(object_class)
@@ -256,11 +256,11 @@ class LDAPObject:
                 for ocsup in object_class.sup
                 if ocsup not in done
             }
-            self.may.extend(object_class.may)
-            self.must.extend(object_class.must)
+            cls.may.extend(object_class.may)
+            cls.must.extend(object_class.must)
 
-        self.may = list(set(self.may))
-        self.must = list(set(self.must))
+        cls.may = list(set(cls.may))
+        cls.must = list(set(cls.must))
 
     def reload(self, conn=None):
         conn = conn or self.ldap_connection()
