@@ -39,9 +39,11 @@ def setup_backend(app):
         pass
 
     try:
-        g.ldap = ldap.initialize(app.config["LDAP"]["URI"])
-        g.ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"].get("TIMEOUT"))
-        g.ldap.simple_bind_s(
+        g.ldap_connection = ldap.initialize(app.config["LDAP"]["URI"])
+        g.ldap_connection.set_option(
+            ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"].get("TIMEOUT")
+        )
+        g.ldap_connection.simple_bind_s(
             app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
         )
 
@@ -80,8 +82,8 @@ def setup_backend(app):
 
 def teardown_backend(app):
     if g.get("ldap"):  # pragma: no branch
-        g.ldap.unbind_s()
-        g.ldap = None
+        g.ldap_connection.unbind_s()
+        g.ldap_connection = None
 
 
 def init_backend(app):

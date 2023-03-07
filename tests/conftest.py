@@ -66,11 +66,11 @@ def slapd_server():
 
 @pytest.fixture
 def slapd_connection(slapd_server, testclient):
-    g.ldap = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    g.ldap.protocol_version = 3
-    g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-    yield g.ldap
-    g.ldap.unbind_s()
+    g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
+    g.ldap_connection.protocol_version = 3
+    g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+    yield g.ldap_connection
+    g.ldap_connection.unbind_s()
 
 
 @pytest.fixture

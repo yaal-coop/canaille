@@ -57,9 +57,9 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
     app.config["TESTING"] = True
 
     with app.app_context():
-        g.ldap = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-        g.ldap.protocol_version = 3
-        g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+        g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
+        g.ldap_connection.protocol_version = 3
+        g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
 
         testclient = TestApp(app)
         with testclient.session_transaction() as sess:
@@ -69,7 +69,7 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
         res.form["mail"] = "test@test.com"
         res = res.form.submit()
 
-        g.ldap.unbind_s()
+        g.ldap_connection.unbind_s()
 
     assert len(smtpd.messages) == 1
     assert "Test email from" in smtpd.messages[0].get("Subject")

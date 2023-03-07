@@ -191,9 +191,9 @@ def test_default_from_flask_server_name(app, user, smtpd, slapd_server):
     app.config["SERVER_NAME"] = "foobar.tld"
 
     with app.app_context():
-        g.ldap = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-        g.ldap.protocol_version = 3
-        g.ldap.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+        g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
+        g.ldap_connection.protocol_version = 3
+        g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
 
         testclient = TestApp(app)
         res = testclient.get("/reset", status=200)
@@ -202,4 +202,4 @@ def test_default_from_flask_server_name(app, user, smtpd, slapd_server):
         assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
         assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'
 
-        g.ldap.unbind_s()
+        g.ldap_connection.unbind_s()

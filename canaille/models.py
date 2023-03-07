@@ -23,7 +23,7 @@ class User(LDAPObject):
 
     @classmethod
     def get(cls, login=None, dn=None, filter=None, conn=None):
-        conn = conn or cls.ldap()
+        conn = conn or cls.ldap_connection()
 
         if login:
             filter = (
@@ -97,7 +97,7 @@ class User(LDAPObject):
             conn.unbind_s()
 
     def set_password(self, password, conn=None):
-        conn = conn or self.ldap()
+        conn = conn or self.ldap_connection()
         conn.passwd_s(
             self.dn,
             None,
@@ -126,7 +126,7 @@ class User(LDAPObject):
         self._groups = after
 
     def load_permissions(self, conn=None):
-        conn = conn or self.ldap()
+        conn = conn or self.ldap_connection()
 
         for access_group_name, details in current_app.config["ACL"].items():
             if not details.get("FILTER") or (

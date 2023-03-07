@@ -88,12 +88,12 @@ class LDAPObject:
         return f"{self.rdn}={ldap.dn.escape_dn_chars(rdn.strip())},{self.base},{self.root_dn}"
 
     @classmethod
-    def ldap(cls):
-        return g.ldap
+    def ldap_connection(cls):
+        return g.ldap_connection
 
     @classmethod
     def initialize(cls, conn=None):
-        conn = conn or cls.ldap()
+        conn = conn or cls.ldap_connection()
         cls.ldap_object_classes(conn)
         cls.ldap_object_attributes(conn)
 
@@ -118,7 +118,7 @@ class LDAPObject:
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
-        conn = conn or cls.ldap()
+        conn = conn or cls.ldap_connection()
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -140,7 +140,7 @@ class LDAPObject:
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
-        conn = conn or cls.ldap()
+        conn = conn or cls.ldap_connection()
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -196,7 +196,7 @@ class LDAPObject:
 
     @classmethod
     def filter(cls, base=None, filter=None, conn=None, **kwargs):
-        conn = conn or cls.ldap()
+        conn = conn or cls.ldap_connection()
 
         if base is None:
             base = f"{cls.base},{cls.root_dn}"
@@ -267,13 +267,13 @@ class LDAPObject:
         self.must = list(set(self.must))
 
     def reload(self, conn=None):
-        conn = conn or self.ldap()
+        conn = conn or self.ldap_connection()
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.attrs = self.ldap_attrs_to_python(result[0][1])
 
     def save(self, conn=None):
-        conn = conn or self.ldap()
+        conn = conn or self.ldap_connection()
         try:
             match = bool(conn.search_s(self.dn, ldap.SCOPE_SUBTREE))
         except ldap.NO_SUCH_OBJECT:
@@ -325,7 +325,7 @@ class LDAPObject:
             self.__setattr__(k, v)
 
     def delete(self, conn=None):
-        conn = conn or self.ldap()
+        conn = conn or self.ldap_connection()
         conn.delete_s(self.dn)
 
     def keys(self):
