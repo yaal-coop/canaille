@@ -331,6 +331,15 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         return LDAPObjectQuery(cls, result)
 
     @classmethod
+    def fuzzy(cls, query, **kwargs):
+        query = ldap.filter.escape_filter_chars(query)
+        attributes = cls.may() + cls.must()
+        filter = (
+            "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
+        )
+        return cls.query(filter=filter, **kwargs)
+
+    @classmethod
     def update_ldap_attributes(cls):
         all_object_classes = cls.ldap_object_classes()
         this_object_classes = {all_object_classes[name] for name in cls.object_class}

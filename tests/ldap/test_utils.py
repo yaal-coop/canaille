@@ -86,6 +86,15 @@ def test_filter(slapd_connection, foo_group, bar_group):
     assert set(Group.query(cn=["foo", "bar"])) == {foo_group, bar_group}
 
 
+def test_fuzzy(slapd_connection, user, moderator, admin):
+    assert set(User.query()) == {user, moderator, admin}
+    assert set(User.fuzzy("Jack")) == {moderator}
+    assert set(User.fuzzy("moderator")) == {moderator}
+    assert set(User.fuzzy("oderat")) == {moderator}
+    assert set(User.fuzzy("oDeRat")) == {moderator}
+    assert set(User.fuzzy("ack")) == {moderator}
+
+
 def test_ldap_to_python():
     assert (
         python_to_ldap(datetime.datetime.min, Syntax.GENERALIZED_TIME)
