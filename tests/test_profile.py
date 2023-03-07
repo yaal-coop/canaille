@@ -40,6 +40,21 @@ def test_user_list_bad_pages(testclient, logged_admin):
     )
 
 
+def test_user_list_search(testclient, logged_admin, user, moderator):
+    res = testclient.get("/users")
+    assert "3 items" in res
+    assert moderator.name in res
+    assert user.name in res
+
+    form = res.forms["search"]
+    form["query"] = "Jack"
+    res = form.submit()
+
+    assert "1 items" in res, res.text
+    assert moderator.name in res
+    assert user.name not in res
+
+
 def test_edition_permission(
     testclient,
     slapd_server,

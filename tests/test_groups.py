@@ -45,6 +45,21 @@ def test_group_list_bad_pages(testclient, logged_admin):
     )
 
 
+def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
+    res = testclient.get("/groups")
+    assert "2 items" in res
+    assert foo_group.name in res
+    assert bar_group.name in res
+
+    form = res.forms["search"]
+    form["query"] = "oo"
+    res = form.submit()
+
+    assert "1 items" in res, res.text
+    assert foo_group.name in res
+    assert bar_group.name not in res
+
+
 def test_set_groups(app, user, foo_group, bar_group):
     foo_dns = {m.dn for m in foo_group.get_members()}
     assert user.dn in foo_dns
@@ -227,3 +242,23 @@ def test_user_list_bad_pages(testclient, logged_admin, foo_group):
     testclient.post(
         "/groups/foo", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
     )
+
+
+def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
+    foo_group.add_member(logged_admin)
+    foo_group.add_member(moderator)
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    assert "3 items" in res
+    assert user.name in res
+    assert moderator.name in res
+
+    form = res.forms["search"]
+    form["query"] = "ohn"
+    res = form.submit()
+
+    assert "1 items" in res
+    assert user.name in res
+    assert logged_admin.name not in res
+    assert moderator.name not in res

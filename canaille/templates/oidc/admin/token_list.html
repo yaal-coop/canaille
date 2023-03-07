@@ -1,9 +1,13 @@
 {% extends theme('base.html') %}
+{% import "macro/table.html" as table %}
 
 {% block script %}
     <script src="/static/js/users.js"></script>
 {% endblock %}
 
 {% block content %}
+    <div class="ui attached segment">
+        {{ table.search(table_form) }}
+    </div>
     {% include "partial/oidc/admin/token_list.html" %}
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends theme('base.html') %}
+{% import "macro/table.html" as table %}
 
 {% block script %}
     <script src="/static/js/users.js"></script>
@@ -12,6 +13,9 @@
                 <a class="ui button" href="{{ url_for('account.user_invitation') }}">{% trans %}Invite a user{% endtrans %}</a>
             {% endif %}
         </div>
+    </div>
+    <div class="ui attached segment">
+        {{ table.search(table_form) }}
     </div>
     {% include "partial/users.html" %}
 {% endblock %}

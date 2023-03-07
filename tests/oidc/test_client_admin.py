@@ -66,6 +66,21 @@ def test_client_list_bad_pages(testclient, logged_admin):
     )
 
 
+def test_client_list_search(testclient, logged_admin, client, other_client):
+    res = testclient.get("/admin/client")
+    assert "2 items" in res
+    assert client.client_name in res
+    assert other_client.client_name in res
+
+    form = res.forms["search"]
+    form["query"] = "other"
+    res = form.submit()
+
+    assert "1 items" in res
+    assert other_client.client_name in res
+    assert client.client_name not in res
+
+
 def test_client_add(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     data = {

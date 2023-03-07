@@ -1,6 +1,20 @@
+{% macro search(form) %}
+    <form id="search" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" class="ui form">
+        {{ form.hidden_tag() if form.hidden_tag }}
+        <input type="hidden" name="page" value="{{ form.page.data }}">
+        <div class="ui fluid action input">
+            <input type="search" placeholder="{{ _("Search…") }}" name="{{ form.query.name }}" value="{{ form.query.data }}">
+            <button type="submit" class="ui icon button" title="{{ _("Search") }}">
+                <i class="search icon"></i>
+            </button>
+        </div>
+    </form>
+{% endmacro %}
+
 {% macro pagination(form) %}
     <form id="pagination" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" class="ui form">
         {{ form.hidden_tag() if form.hidden_tag }}
+        <input type="hidden" name="query" value="{{ form.query.data }}">
         <div class="ui right floated stackable buttons">
             <span class="icon disabled ui button">
                 {% trans %}Page{% endtrans %}

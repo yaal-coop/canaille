@@ -68,6 +68,46 @@ def test_token_list_bad_pages(testclient, logged_admin):
     )
 
 
+def test_token_list_search(testclient, logged_admin, client):
+    token1 = Token(
+        token_id=gen_salt(48),
+        access_token="this-token-is-ok",
+        client=client,
+        subject=logged_admin,
+        type=None,
+        refresh_token=gen_salt(48),
+        scope="openid profile",
+        issue_date=(datetime.datetime.now().replace(microsecond=0)),
+        lifetime=3600,
+    )
+    token1.save()
+    token2 = Token(
+        token_id=gen_salt(48),
+        access_token="this-token-is-valid",
+        client=client,
+        subject=logged_admin,
+        type=None,
+        refresh_token=gen_salt(48),
+        scope="openid profile",
+        issue_date=(datetime.datetime.now().replace(microsecond=0)),
+        lifetime=3600,
+    )
+    token2.save()
+
+    res = testclient.get("/admin/token")
+    assert "2 items" in res
+    assert token1.token_id in res
+    assert token2.token_id in res
+
+    form = res.forms["search"]
+    form["query"] = "valid"
+    res = form.submit()
+
+    assert "1 items" in res
+    assert token2.token_id in res
+    assert token1.token_id not in res
+
+
 def test_token_view(testclient, token, logged_admin):
     res = testclient.get("/admin/token/" + token.token_id)
     assert token.access_token in res.text

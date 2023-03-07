@@ -64,6 +64,29 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
     )
 
 
+def test_authorization_list_search(testclient, logged_admin, client):
+    id1 = gen_salt(48)
+    auth1 = AuthorizationCode(authorization_code_id=id1, client=client, subject=client)
+    auth1.save()
+
+    id2 = gen_salt(48)
+    auth2 = AuthorizationCode(authorization_code_id=id2, client=client, subject=client)
+    auth2.save()
+
+    res = testclient.get("/admin/authorization")
+    assert "2 items" in res
+    assert id1 in res
+    assert id2 in res
+
+    form = res.forms["search"]
+    form["query"] = id1
+    res = form.submit()
+
+    assert "1 items" in res
+    assert id1 in res
+    assert id2 not in res
+
+
 def test_authorizaton_view(testclient, authorization, logged_admin):
     res = testclient.get("/admin/authorization/" + authorization.authorization_code_id)
     for attr in authorization.may() + authorization.must():
