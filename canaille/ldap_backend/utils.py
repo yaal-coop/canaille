@@ -42,20 +42,24 @@ def ldap_to_python(value, syntax):
     return value.decode("utf-8")
 
 
-def python_to_ldap(value, syntax):
+def python_to_ldap(value, syntax, encode=True):
+    encodable = True
     if syntax == Syntax.GENERALIZED_TIME and isinstance(value, datetime.datetime):
         if value == datetime.datetime.min:
-            return LDAP_NULL_DATE.encode("utf-8")
+            value = LDAP_NULL_DATE
         else:
-            return value.strftime("%Y%m%d%H%M%SZ").encode("utf-8")
+            value = value.strftime("%Y%m%d%H%M%SZ")
 
     if syntax == Syntax.INTEGER and isinstance(value, int):
-        return str(value).encode("utf-8")
+        value = str(value)
 
     if syntax == Syntax.JPEG:
-        return value if value else None
+        encodable = False
 
     if syntax == Syntax.BOOLEAN and isinstance(value, bool):
-        return ("TRUE" if value else "FALSE").encode("utf-8")
+        value = "TRUE" if value else "FALSE"
 
-    return value.encode("utf-8") if value else None
+    if not value:
+        return None
+
+    return value.encode() if encode and encodable else value

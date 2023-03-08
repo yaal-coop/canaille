@@ -165,8 +165,8 @@ class LDAPObject:
 
         return cls._attribute_type_by_name
 
-    @staticmethod
-    def ldap_attrs_to_python(attrs):
+    @classmethod
+    def ldap_attrs_to_python(cls, attrs):
         ldap_attrs = LDAPObject.ldap_object_attributes()
         return {
             name: [
@@ -178,15 +178,22 @@ class LDAPObject:
             for name, values in attrs.items()
         }
 
-    @staticmethod
-    def python_attrs_to_ldap(attrs):
+    @classmethod
+    def python_attrs_to_ldap(cls, attrs, encode=True):
         ldap_attrs = LDAPObject.ldap_object_attributes()
+        if cls.attribute_table:
+            attrs = {
+                cls.attribute_table.get(name, name): values
+                for name, values in attrs.items()
+            }
         return {
             name: [
                 python_to_ldap(
-                    value, ldap_attrs[name].syntax if name in ldap_attrs else None
+                    value,
+                    ldap_attrs[name].syntax if name in ldap_attrs else None,
+                    encode=encode,
                 )
-                for value in values
+                for value in (values if isinstance(values, list) else [values])
             ]
             for name, values in attrs.items()
         }
@@ -209,19 +216,13 @@ class LDAPObject:
 
         class_filter = (
             "".join([f"(objectClass={oc})" for oc in cls.object_class])
-            if hasattr(cls, "object_class")
+            if getattr(cls, "object_class")
             else ""
         )
         arg_filter = ""
-        for key, value in kwargs.items():
-            if cls.attribute_table:
-                key = cls.attribute_table.get(key, key)
-
-            if not isinstance(value, list):
-                escaped_value = ldap.filter.escape_filter_chars(value)
-                arg_filter += f"({key}={escaped_value})"
-
-            elif len(value) == 1:
+        escaped_args = cls.python_attrs_to_ldap(kwargs, encode=False)
+        for key, value in escaped_args.items():
+            if len(value) == 1:
                 escaped_value = ldap.filter.escape_filter_chars(value[0])
                 arg_filter += f"({key}={escaped_value})"
 
