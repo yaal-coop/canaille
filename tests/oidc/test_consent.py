@@ -118,10 +118,9 @@ def test_oidc_authorization_after_revokation(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    Consent.query()
-    consents = Consent.query(client=client.dn, subject=logged_user.dn)
-    assert consents[0].dn == consent.dn
+    consents = Consent.query(client=client, subject=logged_user)
     consent.reload()
+    assert consents[0] == consent
     assert not consent.revoked
 
     params = parse_qs(urlsplit(res.location).query)
@@ -140,8 +139,8 @@ def test_oidc_authorization_after_revokation(
 
     access_token = res.json["access_token"]
     token = Token.get(access_token=access_token)
-    assert token.client == client.dn
-    assert token.subject == logged_user.dn
+    assert token.client == client
+    assert token.subject == logged_user
 
 
 def test_preconsented_client_appears_in_consent_list(testclient, client, logged_user):
@@ -166,8 +165,8 @@ def test_revoke_preconsented_client(testclient, client, logged_user, token):
     assert ("success", "The access has been revoked") in res.flashes
 
     consent = Consent.get()
-    assert consent.client == client.dn
-    assert consent.subject == logged_user.dn
+    assert consent.client == client
+    assert consent.subject == logged_user
     assert consent.scope == ["openid", "email", "profile", "groups", "address", "phone"]
     assert not consent.issue_date
     token.reload()

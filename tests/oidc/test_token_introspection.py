@@ -93,8 +93,8 @@ def test_full_flow(testclient, logged_user, client, user, other_client):
     access_token = res.json["access_token"]
 
     token = Token.get(access_token=access_token)
-    assert token.client == client.dn
-    assert token.subject == logged_user.dn
+    assert token.client == client
+    assert token.subject == logged_user
 
     res = testclient.post(
         "/oauth/introspect",

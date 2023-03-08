@@ -10,8 +10,8 @@ from canaille.models import User
 
 
 def test_repr(slapd_connection, foo_group, user):
-    assert repr(foo_group) == "<Group cn=['foo']>"
-    assert repr(user) == "<User cn=['John (johnny) Doe']>"
+    assert repr(foo_group) == "<Group cn=foo>"
+    assert repr(user) == "<User cn=John (johnny) Doe>"
 
 
 def test_equality(slapd_connection, foo_group, bar_group):
@@ -108,16 +108,6 @@ def test_operational_attribute_conversion(slapd_connection):
     assert "oauthClientName" in LDAPObject.ldap_object_attributes(slapd_connection)
     assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(slapd_connection)
 
-    assert LDAPObject.ldap_attrs_to_python(
-        {
-            "oauthClientName": [b"foobar_name"],
-            "invalidAttribute": [b"foobar"],
-        }
-    ) == {
-        "oauthClientName": ["foobar_name"],
-        "invalidAttribute": ["foobar"],
-    }
-
     assert LDAPObject.python_attrs_to_ldap(
         {
             "oauthClientName": ["foobar_name"],
@@ -127,3 +117,15 @@ def test_operational_attribute_conversion(slapd_connection):
         "oauthClientName": [b"foobar_name"],
         "invalidAttribute": [b"foobar"],
     }
+
+
+def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
+    foo_group.member = [foo_group]
+    foo_group.save()
+    g = LDAPObject.get(dn=foo_group.dn)
+    assert isinstance(g, Group)
+    assert g == foo_group
+    assert g.cn == foo_group.cn
+
+    ou = LDAPObject.get(dn=f"{Group.base},{Group.root_dn}")
+    assert isinstance(g, LDAPObject)

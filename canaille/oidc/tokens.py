@@ -20,11 +20,9 @@ bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 @permissions_needed("manage_oidc")
 def index(user):
     tokens = Token.query()
-    items = (
-        (token, Client.get(token.client), User.get(dn=token.subject))
-        for token in tokens
+    return render_template(
+        "oidc/admin/token_list.html", tokens=tokens, menuitem="admin"
     )
-    return render_template("oidc/admin/token_list.html", items=items, menuitem="admin")
 
 
 @bp.route("/<token_id>", methods=["GET", "POST"])
@@ -35,15 +33,9 @@ def view(user, token_id):
     if not token:
         abort(404)
 
-    token_client = Client.get(token.client)
-    token_user = User.get(dn=token.subject)
-    token_audience = [Client.get(aud) for aud in token.audience]
     return render_template(
         "oidc/admin/token_view.html",
         token=token,
-        token_client=token_client,
-        token_user=token_user,
-        token_audience=token_audience,
         menuitem="admin",
     )
 

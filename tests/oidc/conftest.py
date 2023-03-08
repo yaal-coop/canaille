@@ -109,7 +109,7 @@ def client(testclient, other_client, slapd_connection):
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
     )
-    c.audience = [c.dn, other_client.dn]
+    c.audience = [c, other_client]
     c.save()
 
     yield c
@@ -145,7 +145,7 @@ def other_client(testclient, slapd_connection):
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
     )
-    c.audience = [c.dn]
+    c.audience = [c]
     c.save()
 
     yield c
@@ -157,8 +157,8 @@ def authorization(testclient, user, client, slapd_connection):
     a = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
         redirect_uri="https://foo.bar/callback",
         response_type="code",
         scope="openid profile",
@@ -179,9 +179,9 @@ def token(testclient, client, user, slapd_connection):
     t = Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
-        audience=[client.dn],
-        client=client.dn,
-        subject=user.dn,
+        audience=[client],
+        client=client,
+        subject=user,
         token_type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",
@@ -197,7 +197,7 @@ def token(testclient, client, user, slapd_connection):
 def id_token(testclient, client, user, slapd_connection):
     return generate_id_token(
         {},
-        generate_user_info(user.dn, client.scope),
+        generate_user_info(user, client.scope),
         aud=client.client_id,
         **get_jwt_config(None)
     )
@@ -207,8 +207,8 @@ def id_token(testclient, client, user, slapd_connection):
 def consent(testclient, client, user, slapd_connection):
     t = Consent(
         cn=str(uuid.uuid4()),
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
         scope=["openid", "profile"],
         issue_date=datetime.datetime.now(),
     )

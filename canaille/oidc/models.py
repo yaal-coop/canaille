@@ -10,7 +10,7 @@ from canaille.ldap_backend.ldapobject import LDAPObject
 class Client(LDAPObject, ClientMixin):
     object_class = ["oauthClient"]
     base = "ou=clients,ou=oauth"
-    rdn = "oauthClientID"
+    rdn_attribute = "oauthClientID"
 
     client_info_attributes = {
         "client_id": "oauthClientID",
@@ -96,13 +96,13 @@ class Client(LDAPObject, ClientMixin):
         return metadata
 
     def delete(self):
-        for consent in Consent.query(client=self.dn):
+        for consent in Consent.query(client=self):
             consent.delete()
 
-        for code in AuthorizationCode.query(client=self.dn):
+        for code in AuthorizationCode.query(client=self):
             code.delete()
 
-        for token in Token.query(client=self.dn):
+        for token in Token.query(client=self):
             token.delete()
 
         super().delete()
@@ -111,7 +111,7 @@ class Client(LDAPObject, ClientMixin):
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
-    rdn = "oauthAuthorizationCodeID"
+    rdn_attribute = "oauthAuthorizationCodeID"
     attribute_table = {
         "authorization_code_id": "oauthAuthorizationCodeID",
         "description": "description",
@@ -151,7 +151,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 class Token(LDAPObject, TokenMixin):
     object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
-    rdn = "oauthTokenID"
+    rdn_attribute = "oauthTokenID"
     attribute_table = {
         "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
@@ -206,13 +206,13 @@ class Token(LDAPObject, TokenMixin):
         return bool(self.revokation_date)
 
     def check_client(self, client):
-        return client.client_id == Client.get(self.client).client_id
+        return client.client_id == self.client.client_id
 
 
 class Consent(LDAPObject):
     object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
-    rdn = "cn"
+    rdn_attribute = "cn"
     attribute_table = {
         "cn": "cn",
         "subject": "oauthSubject",

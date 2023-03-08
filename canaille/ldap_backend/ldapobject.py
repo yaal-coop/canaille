@@ -6,14 +6,31 @@ from .utils import ldap_to_python
 from .utils import python_to_ldap
 
 
-class LDAPObject:
+class LDAPObjectMetaclass(type):
+    ldap_to_python_class = {}
+
+    def __new__(cls, name, bases, attrs):
+        klass = super().__new__(cls, name, bases, attrs)
+        if attrs.get("object_class"):
+            for oc in attrs["object_class"]:
+                cls.ldap_to_python_class[oc] = klass
+        return klass
+
+    def __setattr__(cls, name, value):
+        super().__setattr__(name, value)
+        if name == "object_class":
+            for oc in value:
+                cls.ldap_to_python_class[oc] = cls
+
+
+class LDAPObject(metaclass=LDAPObjectMetaclass):
     _object_class_by_name = None
     _attribute_type_by_name = None
-    may = None
-    must = None
+    _may = None
+    _must = None
     base = None
     root_dn = None
-    rdn = None
+    rdn_attribute = None
     attribute_table = None
     object_class = None
 
@@ -22,27 +39,44 @@ class LDAPObject:
         self.changes = {}
 
         kwargs.setdefault("objectClass", self.object_class)
+
         for name, value in kwargs.items():
             setattr(self, name, value)
 
-        if not self.may and not self.must:
-            self.update_ldap_attributes()
-
     def __repr__(self):
-        rdn = getattr(self, self.rdn, "?")
-        return f"<{self.__class__.__name__} {self.rdn}={rdn}>"
+        return (
+            f"<{self.__class__.__name__} {self.rdn_attribute}={self.rdn_value}>"
+            if self.rdn_attribute
+            else "<LDAPOBject>"
+        )
 
     def __eq__(self, other):
-        return (
+        if not (
             isinstance(other, self.__class__)
-            and self.may == other.may
-            and self.must == other.must
+            and self.may() == other.may()
+            and self.must() == other.must()
             and all(
-                getattr(self, attr) == getattr(other, attr)
-                for attr in self.may + self.must
-                if hasattr(self, attr) and hasattr(other, attr)
+                hasattr(self, attr) == hasattr(other, attr)
+                for attr in self.may() + self.must()
             )
+        ):
+            return False
+
+        self_attributes = self.python_attrs_to_ldap(
+            {
+                attr: getattr(self, attr)
+                for attr in self.may() + self.must()
+                if hasattr(self, attr)
+            }
         )
+        other_attributes = other.python_attrs_to_ldap(
+            {
+                attr: getattr(other, attr)
+                for attr in self.may() + self.must()
+                if hasattr(self, attr)
+            }
+        )
+        return self_attributes == other_attributes
 
     def __hash__(self):
         return hash(self.dn)
@@ -54,14 +88,24 @@ class LDAPObject:
         if name not in self.ldap_object_attributes():
             return super().__getattribute__(name)
 
-        if (
-            not self.ldap_object_attributes()
-            or not self.ldap_object_attributes()[name].single_value
-        ):
-            return self.changes.get(name, self.attrs.get(name, []))
+        single_value = self.ldap_object_attributes()[name].single_value
+        if name in self.changes:
+            return self.changes[name][0] if single_value else self.changes[name]
 
+        if not self.attrs.get(name):
+            return None if single_value else []
+
+        # Lazy conversion from ldap format to python format
+        if any(isinstance(value, bytes) for value in self.attrs[name]):
+            syntax = self.attribute_ldap_syntax(name)
+            self.attrs[name] = [
+                ldap_to_python(value, syntax) for value in self.attrs[name]
+            ]
+
+        if single_value:
+            return self.attrs.get(name)[0]
         else:
-            return self.changes.get(name, self.attrs.get(name, [None]))[0]
+            return self.attrs.get(name)
 
     def __setattr__(self, name, value):
         if self.attribute_table:
@@ -81,12 +125,21 @@ class LDAPObject:
         return setattr(self, item, value)
 
     @property
+    def rdn_value(self):
+        value = getattr(self, self.rdn_attribute)
+        return (value[0] if isinstance(value, list) else value).strip()
+
+    @property
     def dn(self):
-        if self.rdn in self.changes:
-            rdn = self.changes[self.rdn][0]
-        else:
-            rdn = self.attrs[self.rdn][0]
-        return f"{self.rdn}={ldap.dn.escape_dn_chars(rdn.strip())},{self.base},{self.root_dn}"
+        return f"{self.rdn_attribute}={ldap.dn.escape_dn_chars(self.rdn_value)},{self.base},{self.root_dn}"
+
+    def may(self):
+        if not self._may:
+            self.update_ldap_attributes()
+        return self._may
+
+    def must(self):
+        return self._must
 
     @classmethod
     def ldap_connection(cls):
@@ -158,31 +211,31 @@ class LDAPObject:
 
         return cls._attribute_type_by_name
 
-    @staticmethod
-    def ldap_attrs_to_python(attrs):
-        ldap_attrs = LDAPObject.ldap_object_attributes()
+    @classmethod
+    def python_attrs_to_ldap(cls, attrs, encode=True):
+        if cls.attribute_table:
+            attrs = {
+                cls.attribute_table.get(name, name): values
+                for name, values in attrs.items()
+            }
         return {
             name: [
-                ldap_to_python(
-                    value, ldap_attrs[name].syntax if name in ldap_attrs else None
-                )
-                for value in values
+                python_to_ldap(value, cls.attribute_ldap_syntax(name), encode=encode)
+                for value in (values if isinstance(values, list) else [values])
             ]
             for name, values in attrs.items()
         }
 
-    @staticmethod
-    def python_attrs_to_ldap(attrs):
+    @classmethod
+    def attribute_ldap_syntax(cls, attribute_name):
         ldap_attrs = LDAPObject.ldap_object_attributes()
-        return {
-            name: [
-                python_to_ldap(
-                    value, ldap_attrs[name].syntax if name in ldap_attrs else None
-                )
-                for value in values
-            ]
-            for name, values in attrs.items()
-        }
+        if attribute_name not in ldap_attrs:
+            return None
+
+        if ldap_attrs[attribute_name].syntax:
+            return ldap_attrs[attribute_name].syntax
+
+        return cls.attribute_ldap_syntax(ldap_attrs[attribute_name].sup[0])
 
     @classmethod
     def get(cls, dn=None, filter=None, conn=None, **kwargs):
@@ -198,23 +251,17 @@ class LDAPObject:
         if base is None:
             base = f"{cls.base},{cls.root_dn}"
         elif "=" not in base:
-            base = f"{cls.rdn}={base},{cls.base},{cls.root_dn}"
+            base = f"{cls.rdn_attribute}={base},{cls.base},{cls.root_dn}"
 
         class_filter = (
             "".join([f"(objectClass={oc})" for oc in cls.object_class])
-            if hasattr(cls, "object_class")
+            if getattr(cls, "object_class")
             else ""
         )
         arg_filter = ""
-        for key, value in kwargs.items():
-            if cls.attribute_table:
-                key = cls.attribute_table.get(key, key)
-
-            if not isinstance(value, list):
-                escaped_value = ldap.filter.escape_filter_chars(value)
-                arg_filter += f"({key}={escaped_value})"
-
-            elif len(value) == 1:
+        escaped_args = cls.python_attrs_to_ldap(kwargs, encode=False)
+        for key, value in escaped_args.items():
+            if len(value) == 1:
                 escaped_value = ldap.filter.escape_filter_chars(value[0])
                 arg_filter += f"({key}={escaped_value})"
 
@@ -235,10 +282,19 @@ class LDAPObject:
 
         objects = []
         for _, args in result:
+            cls = cls.guess_class(args["objectClass"])
             obj = cls()
-            obj.attrs = cls.ldap_attrs_to_python(args)
+            obj.attrs = args
             objects.append(obj)
         return objects
+
+    @classmethod
+    def guess_class(cls, object_classes):
+        if cls == LDAPObject:
+            for oc in object_classes:
+                if oc.decode() in LDAPObjectMetaclass.ldap_to_python_class:
+                    return LDAPObjectMetaclass.ldap_to_python_class[oc.decode()]
+        return cls
 
     @classmethod
     def update_ldap_attributes(cls):
@@ -246,8 +302,8 @@ class LDAPObject:
         this_object_classes = {all_object_classes[name] for name in cls.object_class}
         done = set()
 
-        cls.may = []
-        cls.must = []
+        cls._may = []
+        cls._must = []
         while len(this_object_classes) > 0:
             object_class = this_object_classes.pop()
             done.add(object_class)
@@ -256,17 +312,17 @@ class LDAPObject:
                 for ocsup in object_class.sup
                 if ocsup not in done
             }
-            cls.may.extend(object_class.may)
-            cls.must.extend(object_class.must)
+            cls._may.extend(object_class.may)
+            cls._must.extend(object_class.must)
 
-        cls.may = list(set(cls.may))
-        cls.must = list(set(cls.must))
+        cls._may = list(set(cls._may))
+        cls._must = list(set(cls._must))
 
     def reload(self, conn=None):
         conn = conn or self.ldap_connection()
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
-        self.attrs = self.ldap_attrs_to_python(result[0][1])
+        self.attrs = result[0][1]
 
     def save(self, conn=None):
         conn = conn or self.ldap_connection()
@@ -325,6 +381,6 @@ class LDAPObject:
         conn.delete_s(self.dn)
 
     def keys(self):
-        ldap_keys = self.must + self.may
+        ldap_keys = self.must() + self.may()
         inverted_table = {value: key for key, value in self.attribute_table.items()}
         return [inverted_table.get(key, key) for key in ldap_keys]

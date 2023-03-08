@@ -13,5 +13,5 @@ def test_authorizaton_list(testclient, authorization, logged_admin):
 
 def test_authorizaton_view(testclient, authorization, logged_admin):
     res = testclient.get("/admin/authorization/" + authorization.authorization_code_id)
-    for attr in authorization.may + authorization.must:
+    for attr in authorization.may() + authorization.must():
         assert attr in res.text

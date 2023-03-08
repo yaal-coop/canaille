@@ -25,16 +25,15 @@
         {% if consents %}
             <div class="ui centered cards">
                 {% for consent in consents %}
-                    {% set client = clients[consent.client] %}
                     <div class="ui card">
                         <div class="content">
-                            {% if client.logo_uri %}
-                                <img class="right floated mini ui image" src="{{ client.logo_uri }}">
+                            {% if consent.client.logo_uri %}
+                                <img class="right floated mini ui image" src="{{ consent.client.logo_uri }}">
                             {% endif %}
-                            {% if client.client_uri %}
-                                <a href="{{ client.client_uri }}" class="header">{{ client.client_name }}</a>
+                            {% if consent.client.client_uri %}
+                                <a href="{{ consent.client.client_uri }}" class="header">{{ consent.client.client_name }}</a>
                             {% else %}
-                                <div class="header">{{ client.client_name }}</div>
+                                <div class="header">{{ consent.client.client_name }}</div>
                             {% endif %}
                             {% if consent.issue_date %}
                                 <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
@@ -66,18 +65,18 @@
                                 </div>
                             </div>
                         </div>
-                        {% if client.tos_uri or client.policy_uri %}
+                        {% if consent.client.tos_uri or consent.client.policy_uri %}
                             <div class="extra content">
-                                {% if client.policy_uri %}
+                                {% if consent.client.policy_uri %}
                                     <span class="right floated">
                                         <i class="mask icon"></i>
-                                        <a href="{{ client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
+                                        <a href="{{ consent.client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
                                     </span>
                                 {% endif %}
-                                {% if client.tos_uri %}
+                                {% if consent.client.tos_uri %}
                                     <span>
                                         <i class="file signature icon"></i>
-                                        <a href="{{ client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
+                                        <a href="{{ consent.client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
                                     </span>
                                 {% endif %}
                             </div>

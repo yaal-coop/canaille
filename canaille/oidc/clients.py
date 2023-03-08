@@ -71,7 +71,7 @@ def add(user):
         if form["token_endpoint_auth_method"].data == "none"
         else gen_salt(48),
     )
-    client.audience = [client.dn]
+    client.audience = [client]
     client.save()
     flash(
         _("The client has been created."),
@@ -142,7 +142,7 @@ def client_edit(client_id):
         software_version=form["software_version"].data,
         jwk=form["jwk"].data,
         jwks_uri=form["jwks_uri"].data,
-        audience=form["audience"].data,
+        audience=[Client.get(dn=dn) for dn in form["audience"].data],
         preconsent=form["preconsent"].data,
     )
     client.save()
