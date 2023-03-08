@@ -50,14 +50,25 @@ class LDAPObject:
         if name not in self.ldap_object_attributes():
             return super().__getattribute__(name)
 
-        if (
-            not self.ldap_object_attributes()
-            or not self.ldap_object_attributes()[name].single_value
-        ):
-            return self.changes.get(name, self.attrs.get(name, []))
+        single_value = self.ldap_object_attributes()[name].single_value
+        if name in self.changes:
+            return self.changes[name][0] if single_value else self.changes[name]
 
+        if not self.attrs.get(name):
+            return None if single_value else []
+
+        # Lazy conversion from ldap format to python format
+        if any(isinstance(value, bytes) for value in self.attrs[name]):
+            ldap_attrs = LDAPObject.ldap_object_attributes()
+            syntax = ldap_attrs[name].syntax if name in ldap_attrs else None
+            self.attrs[name] = [
+                ldap_to_python(value, syntax) for value in self.attrs[name]
+            ]
+
+        if single_value:
+            return self.attrs.get(name)[0]
         else:
-            return self.changes.get(name, self.attrs.get(name, [None]))[0]
+            return self.attrs.get(name)
 
     def __setattr__(self, name, value):
         if self.attribute_table:
@@ -166,19 +177,6 @@ class LDAPObject:
         return cls._attribute_type_by_name
 
     @classmethod
-    def ldap_attrs_to_python(cls, attrs):
-        ldap_attrs = LDAPObject.ldap_object_attributes()
-        return {
-            name: [
-                ldap_to_python(
-                    value, ldap_attrs[name].syntax if name in ldap_attrs else None
-                )
-                for value in values
-            ]
-            for name, values in attrs.items()
-        }
-
-    @classmethod
     def python_attrs_to_ldap(cls, attrs, encode=True):
         ldap_attrs = LDAPObject.ldap_object_attributes()
         if cls.attribute_table:
@@ -244,7 +242,7 @@ class LDAPObject:
         objects = []
         for _, args in result:
             obj = cls()
-            obj.attrs = cls.ldap_attrs_to_python(args)
+            obj.attrs = args
             objects.append(obj)
         return objects
 
@@ -274,7 +272,7 @@ class LDAPObject:
         conn = conn or self.ldap_connection()
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
-        self.attrs = self.ldap_attrs_to_python(result[0][1])
+        self.attrs = result[0][1]
 
     def save(self, conn=None):
         conn = conn or self.ldap_connection()
