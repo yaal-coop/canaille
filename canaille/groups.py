@@ -32,7 +32,7 @@ def create_group(user):
             flash(_("Group creation failed."), "error")
         else:
             group = Group()
-            group.member = [user.dn]
+            group.member = [user]
             group.cn = [form.name.data]
             group.description = [form.description.data]
             group.save()

@@ -6,22 +6,26 @@ LDAP_NULL_DATE = "000001010000Z"
 
 class Syntax(str, Enum):
     # fmt: off
-    BOOLEAN =          "1.3.6.1.4.1.1466.115.121.1.7"
-    DIRECTORY_STRING = "1.3.6.1.4.1.1466.115.121.1.15"
-    FAX_IMAGE =        "1.3.6.1.4.1.1466.115.121.1.23"
-    GENERALIZED_TIME = "1.3.6.1.4.1.1466.115.121.1.24"
-    IA5_STRING =       "1.3.6.1.4.1.1466.115.121.1.26"
-    INTEGER =          "1.3.6.1.4.1.1466.115.121.1.27"
-    JPEG =             "1.3.6.1.4.1.1466.115.121.1.28"
-    NUMERIC_STRING =   "1.3.6.1.4.1.1466.115.121.1.36"
-    OCTET_STRING =     "1.3.6.1.4.1.1466.115.121.1.40"
-    POSTAL_ADDRESS =   "1.3.6.1.4.1.1466.115.121.1.41"
-    PRINTABLE_STRING = "1.3.6.1.4.1.1466.115.121.1.44"
-    TELEPHONE_NUMBER = "1.3.6.1.4.1.1466.115.121.1.50"
+    BINARY =             "1.3.6.1.4.1.1466.115.121.1.5"
+    BOOLEAN =            "1.3.6.1.4.1.1466.115.121.1.7"
+    DISTINGUISHED_NAME = "1.3.6.1.4.1.1466.115.121.1.12"
+    DIRECTORY_STRING =   "1.3.6.1.4.1.1466.115.121.1.15"
+    FAX_IMAGE =          "1.3.6.1.4.1.1466.115.121.1.23"
+    GENERALIZED_TIME =   "1.3.6.1.4.1.1466.115.121.1.24"
+    IA5_STRING =         "1.3.6.1.4.1.1466.115.121.1.26"
+    INTEGER =            "1.3.6.1.4.1.1466.115.121.1.27"
+    JPEG =               "1.3.6.1.4.1.1466.115.121.1.28"
+    NUMERIC_STRING =     "1.3.6.1.4.1.1466.115.121.1.36"
+    OCTET_STRING =       "1.3.6.1.4.1.1466.115.121.1.40"
+    POSTAL_ADDRESS =     "1.3.6.1.4.1.1466.115.121.1.41"
+    PRINTABLE_STRING =   "1.3.6.1.4.1.1466.115.121.1.44"
+    TELEPHONE_NUMBER =   "1.3.6.1.4.1.1466.115.121.1.50"
     # fmt: on
 
 
 def ldap_to_python(value, syntax):
+    from .ldapobject import LDAPObject
+
     if syntax == Syntax.GENERALIZED_TIME:
         value = value.decode("utf-8")
         if value == LDAP_NULL_DATE:
@@ -38,6 +42,9 @@ def ldap_to_python(value, syntax):
 
     if syntax == Syntax.BOOLEAN:
         return value.decode("utf-8").upper() == "TRUE"
+
+    if syntax == Syntax.DISTINGUISHED_NAME:
+        return LDAPObject.get(dn=value.decode("utf-8"))
 
     return value.decode("utf-8")
 
@@ -58,6 +65,9 @@ def python_to_ldap(value, syntax, encode=True):
 
     if syntax == Syntax.BOOLEAN and isinstance(value, bool):
         value = "TRUE" if value else "FALSE"
+
+    if syntax == Syntax.DISTINGUISHED_NAME:
+        value = value.dn
 
     if not value:
         return None

@@ -96,13 +96,13 @@ class Client(LDAPObject, ClientMixin):
         return metadata
 
     def delete(self):
-        for consent in Consent.query(client=self.dn):
+        for consent in Consent.query(client=self):
             consent.delete()
 
-        for code in AuthorizationCode.query(client=self.dn):
+        for code in AuthorizationCode.query(client=self):
             code.delete()
 
-        for token in Token.query(client=self.dn):
+        for token in Token.query(client=self):
             token.delete()
 
         super().delete()
@@ -206,7 +206,7 @@ class Token(LDAPObject, TokenMixin):
         return bool(self.revokation_date)
 
     def check_client(self, client):
-        return client.client_id == Client.get(self.client).client_id
+        return client.client_id == self.client.client_id
 
 
 class Consent(LDAPObject):

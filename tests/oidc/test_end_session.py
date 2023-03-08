@@ -159,7 +159,7 @@ def test_end_session_invalid_client_id(
 def test_client_hint_invalid(testclient, slapd_connection, logged_user, client):
     id_token = generate_id_token(
         {},
-        generate_user_info(logged_user.dn, client.scope),
+        generate_user_info(logged_user, client.scope),
         aud="invalid-client-id",
         **get_jwt_config(None),
     )
@@ -266,7 +266,7 @@ def test_jwt_not_issued_here(
 def test_client_hint_mismatch(testclient, slapd_connection, logged_user, client):
     id_token = generate_id_token(
         {},
-        generate_user_info(logged_user.dn, client.scope),
+        generate_user_info(logged_user, client.scope),
         aud="another_client_id",
         **get_jwt_config(None),
     )
@@ -299,7 +299,7 @@ def test_bad_user_id_token_mismatch(
 
     id_token = generate_id_token(
         {},
-        generate_user_info(admin.dn, client.scope),
+        generate_user_info(admin, client.scope),
         aud=client.client_id,
         **get_jwt_config(None),
     )

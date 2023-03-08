@@ -53,7 +53,7 @@ def test_client_add(testclient, logged_admin):
 
     client_id = res.forms["readonly"]["client_id"].value
     client = Client.get(client_id)
-    data["audience"] = [client.dn]
+    data["audience"] = [client]
     for k, v in data.items():
         client_value = getattr(client, k)
         if k == "scope":
@@ -106,6 +106,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     assert ("success", "The client has been edited.") in res.flashes
 
     client = Client.get(client.dn)
+    data["audience"] = [client, other_client]
     for k, v in data.items():
         client_value = getattr(client, k)
         if k == "scope":
@@ -131,16 +132,12 @@ def test_client_delete(testclient, logged_admin):
     client = Client(client_id="client_id")
     client.save()
     token = Token(
-        token_id="id", client=client.dn, issue_datetime=datetime.datetime.utcnow()
+        token_id="id", client=client, issue_datetime=datetime.datetime.utcnow()
     )
     token.save()
-    consent = Consent(
-        cn="cn", subject=logged_admin.dn, client=client.dn, scope="openid"
-    )
+    consent = Consent(cn="cn", subject=logged_admin, client=client, scope="openid")
     consent.save()
-    code = AuthorizationCode(
-        authorization_code_id="id", client=client.dn, subject=client.dn
-    )
+    code = AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientadd"].submit(name="action", value="delete").follow()

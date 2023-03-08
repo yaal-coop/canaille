@@ -233,7 +233,7 @@ def logged_moderator(moderator, testclient):
 def foo_group(app, user, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
     group = Group(
-        member=[user.dn],
+        member=[user],
         cn="foo",
     )
     group.save()
@@ -247,7 +247,7 @@ def foo_group(app, user, slapd_connection):
 def bar_group(app, admin, slapd_connection):
     Group.ldap_object_classes(slapd_connection)
     group = Group(
-        member=[admin.dn],
+        member=[admin],
         cn="bar",
     )
     group.save()

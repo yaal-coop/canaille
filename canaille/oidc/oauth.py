@@ -43,7 +43,8 @@ AUTHORIZATION_CODE_LIFETIME = 84400
 
 
 def exists_nonce(nonce, req):
-    exists = AuthorizationCode.query(client=req.client_id, nonce=nonce)
+    client = Client.get(dn=req.client_id)
+    exists = AuthorizationCode.query(client=client, nonce=nonce)
     return bool(exists)
 
 
@@ -98,7 +99,6 @@ def claims_from_scope(scope):
 
 
 def generate_user_info(user, scope):
-    user = User.get(dn=user)
     claims = claims_from_scope(scope)
     data = generate_user_claims(user, claims)
     return UserInfo(**data)
@@ -131,7 +131,7 @@ def save_authorization_code(code, request):
         authorization_code_id=gen_salt(48),
         code=code,
         subject=request.user,
-        client=request.client.dn,
+        client=request.client,
         redirect_uri=request.redirect_uri or request.client.redirect_uris[0],
         scope=scope,
         nonce=nonce,
@@ -151,7 +151,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = AuthorizationCode.query(code=code, client=client.dn)
+        item = AuthorizationCode.query(code=code, client=client)
         if item and not item[0].is_expired():
             return item[0]
 
@@ -159,9 +159,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        user = User.get(dn=authorization_code.subject)
-        if user:
-            return user.dn
+        return authorization_code.subject
 
 
 class OpenIDCode(_OpenIDCode):
@@ -176,16 +174,14 @@ class OpenIDCode(_OpenIDCode):
 
     def get_audiences(self, request):
         client = request.client
-        return [Client.get(aud).client_id for aud in client.audience]
+        return [aud.client_id for aud in client.audience]
 
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        user = User.authenticate(username, password)
-        if user:
-            return user.dn
+        return User.authenticate(username, password)
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):
@@ -195,9 +191,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return token[0]
 
     def authenticate_user(self, credential):
-        user = User.get(dn=credential.subject)
-        if user:
-            return user.dn
+        return credential.subject
 
     def revoke_old_credential(self, credential):
         credential.revokation_date = datetime.datetime.now()
@@ -216,7 +210,7 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
 
     def get_audiences(self, request):
         client = request.client
-        return [Client.get(aud).client_id for aud in client.audience]
+        return [aud.client_id for aud in client.audience]
 
 
 class OpenIDHybridGrant(_OpenIDHybridGrant):
@@ -234,7 +228,7 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
     def get_audiences(self, request):
         client = request.client
-        return [Client.get(aud).client_id for aud in client.audience]
+        return [aud.client_id for aud in client.audience]
 
 
 def query_client(client_id):
@@ -250,7 +244,7 @@ def save_token(token, request):
         issue_date=now,
         lifetime=token["expires_in"],
         scope=token["scope"],
-        client=request.client.dn,
+        client=request.client,
         refresh_token=token.get("refresh_token"),
         subject=request.user,
         audience=request.client.audience,
@@ -294,19 +288,17 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
         return query_token(token, token_type_hint)
 
     def check_permission(self, token, client, request):
-        return client.dn in token.audience
+        return client in token.audience
 
     def introspect_token(self, token):
-        client_id = Client.get(token.client).client_id
-        user = User.get(dn=token.subject)
-        audience = [Client.get(aud).client_id for aud in token.audience]
+        audience = [aud.client_id for aud in token.audience]
         return {
             "active": True,
-            "client_id": client_id,
+            "client_id": token.client.client_id,
             "token_type": token.type,
-            "username": user.name,
+            "username": token.subject.name,
             "scope": token.get_scope(),
-            "sub": user.uid[0],
+            "sub": token.subject.uid[0],
             "aud": audience,
             "iss": get_issuer(),
             "exp": token.get_expires_at(),
@@ -402,7 +394,7 @@ require_oauth = ResourceProtector()
 
 
 def generate_access_token(client, grant_type, user, scope):
-    audience = [Client.get(dn).client_id for dn in client.audience]
+    audience = [client.client_id for client in client.audience]
     bearer_token_generator = authorization._token_generators["default"]
     kwargs = {
         "token": {},

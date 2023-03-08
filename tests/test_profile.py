@@ -36,8 +36,8 @@ def test_edition(
         ("cn=bar,ou=groups,dc=mydomain,dc=tld", False, "bar"),
     }
     assert logged_user.groups == [foo_group]
-    assert foo_group.member == [logged_user.dn]
-    assert bar_group.member == [admin.dn]
+    assert foo_group.member == [logged_user]
+    assert bar_group.member == [admin]
     assert res.form["groups"].attrs["readonly"]
     assert res.form["uid"].attrs["readonly"]
 
@@ -76,8 +76,8 @@ def test_edition(
     foo_group.reload()
     bar_group.reload()
     assert logged_user.groups == [foo_group]
-    assert foo_group.member == [logged_user.dn]
-    assert bar_group.member == [admin.dn]
+    assert foo_group.member == [logged_user]
+    assert bar_group.member == [admin]
 
     assert logged_user.check_password("correct horse battery staple")
 
@@ -285,8 +285,8 @@ def test_user_creation_edition_and_deletion(
 
     foo_group.reload()
     bar_group.reload()
-    assert george.dn in set(foo_group.member)
-    assert george.dn in set(bar_group.member)
+    assert george in set(foo_group.member)
+    assert george in set(bar_group.member)
     assert set(george.groups) == {foo_group, bar_group}
     assert "george" in testclient.get("/users", status=200).text
     assert "george" in testclient.get("/users", status=200).text

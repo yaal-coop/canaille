@@ -11,8 +11,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
     valid_code = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
         redirect_uri="https://foo.bar/callback",
         response_type="code",
         scope="openid profile",
@@ -27,8 +27,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
     expired_code = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-expired-code",
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
         redirect_uri="https://foo.bar/callback",
         response_type="code",
         scope="openid profile",
@@ -47,8 +47,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
     valid_token = Token(
         token_id=gen_salt(48),
         access_token="my-valid-token",
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
         type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",
@@ -59,8 +59,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
     expired_token = Token(
         token_id=gen_salt(48),
         access_token="my-expired-token",
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
         type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",

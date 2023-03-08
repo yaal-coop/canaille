@@ -190,16 +190,12 @@ class Group(LDAPObject):
         return self[attribute][0]
 
     def get_members(self, conn=None):
-        return [
-            User.get(dn=user_id, conn=conn)
-            for user_id in self.member
-            if User.get(dn=user_id, conn=conn)
-        ]
+        return [member for member in self.member if member]
 
     def add_member(self, user):
-        self.member = self.member + [user.dn]
+        self.member = self.member + [user]
         self.save()
 
     def remove_member(self, user):
-        self.member = [m for m in self.member if m != user.dn]
+        self.member = [m for m in self.member if m != user]
         self.save()

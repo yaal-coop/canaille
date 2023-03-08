@@ -90,8 +90,8 @@ def authorize():
     # CONSENT
 
     consents = Consent.query(
-        client=client.dn,
-        subject=user.dn,
+        client=client,
+        subject=user,
     )
     consent = consents[0] if consents else None
 
@@ -101,7 +101,7 @@ def authorize():
             or (consent and all(scope in set(consent.scope) for scope in scopes))
             and not consent.revoked
         ):
-            return authorization.create_authorization_response(grant_user=user.dn)
+            return authorization.create_authorization_response(grant_user=user)
 
         elif request.args.get("prompt") == "none":
             response = {"error": "consent_required"}
@@ -135,7 +135,7 @@ def authorize():
         grant_user = None
 
     if request.form["answer"] == "accept":
-        grant_user = user.dn
+        grant_user = user
 
         if consent:
             if consent.revoked:
@@ -146,8 +146,8 @@ def authorize():
         else:
             consent = Consent(
                 cn=str(uuid.uuid4()),
-                client=client.dn,
-                subject=user.dn,
+                client=client,
+                subject=user,
                 scope=scopes,
                 issue_date=datetime.datetime.now(),
             )
