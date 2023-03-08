@@ -13,7 +13,7 @@ class LDAPObject:
     _must = None
     base = None
     root_dn = None
-    rdn = None
+    rdn_attribute = None
     attribute_table = None
     object_class = None
 
@@ -26,8 +26,7 @@ class LDAPObject:
             setattr(self, name, value)
 
     def __repr__(self):
-        rdn = getattr(self, self.rdn, "?")
-        return f"<{self.__class__.__name__} {self.rdn}={rdn}>"
+        return f"<{self.__class__.__name__} {self.rdn_attribute}={self.rdn_value}>"
 
     def __eq__(self, other):
         return (
@@ -78,12 +77,13 @@ class LDAPObject:
         return setattr(self, item, value)
 
     @property
+    def rdn_value(self):
+        value = getattr(self, self.rdn_attribute)
+        return (value[0] if isinstance(value, list) else value).strip()
+
+    @property
     def dn(self):
-        if self.rdn in self.changes:
-            rdn = self.changes[self.rdn][0]
-        else:
-            rdn = self.attrs[self.rdn][0]
-        return f"{self.rdn}={ldap.dn.escape_dn_chars(rdn.strip())},{self.base},{self.root_dn}"
+        return f"{self.rdn_attribute}={ldap.dn.escape_dn_chars(self.rdn_value)},{self.base},{self.root_dn}"
 
     def may(self):
         if not self._may:
@@ -205,7 +205,7 @@ class LDAPObject:
         if base is None:
             base = f"{cls.base},{cls.root_dn}"
         elif "=" not in base:
-            base = f"{cls.rdn}={base},{cls.base},{cls.root_dn}"
+            base = f"{cls.rdn_attribute}={base},{cls.base},{cls.root_dn}"
 
         class_filter = (
             "".join([f"(objectClass={oc})" for oc in cls.object_class])
