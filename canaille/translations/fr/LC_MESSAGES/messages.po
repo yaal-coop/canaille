@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-09 19:32+0100\n"
-"PO-Revision-Date: 2023-02-16 14:37+0000\n"
+"PO-Revision-Date: 2023-03-09 22:06+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
+"fr/>\n"
 "Language: fr\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/canaille/canaille/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -220,9 +221,8 @@ msgid "The login '{login}' does not exist"
 msgstr "L'identifiant '{login}' n'existe pas"
 
 #: canaille/forms.py:67
-#, fuzzy
 msgid "The page number is not valid"
-msgstr "L'accès n’est pas révoqué"
+msgstr "Le numéro de page est invalide"
 
 #: canaille/forms.py:72 canaille/forms.py:96
 #: canaille/templates/partial/users.html:9
@@ -1009,21 +1009,20 @@ msgstr "Ce champ est requis"
 
 #: canaille/templates/macro/table.html:8
 msgid "Search…"
-msgstr ""
+msgstr "Recherche…"
 
 #: canaille/templates/macro/table.html:17
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #: canaille/templates/macro/table.html:51
-#, fuzzy
 msgid "Page"
-msgstr "Site internet"
+msgstr "Page"
 
 #: canaille/templates/macro/table.html:97
 #, python-format
 msgid "%(nb_items)s items"
-msgstr ""
+msgstr "%(nb_items)s élément(s)"
 
 #: canaille/templates/mail/admin.html:8
 msgid "Mail sending test"
@@ -1391,7 +1390,7 @@ msgstr "Nombre de membres"
 #: canaille/templates/partial/oidc/admin/token_list.html:39
 #: canaille/templates/partial/users.html:63
 msgid "No item matches your request"
-msgstr ""
+msgstr "Aucun élément ne correspond à votre requête"
 
 #: canaille/templates/partial/groups.html:33
 #: canaille/templates/partial/oidc/admin/authorization_list.html:29
@@ -1399,16 +1398,15 @@ msgstr ""
 #: canaille/templates/partial/oidc/admin/token_list.html:41
 #: canaille/templates/partial/users.html:65
 msgid "Maybe try with different criterias?"
-msgstr ""
+msgstr "Essayez peut-être avec des critères différents ?"
 
 #: canaille/templates/partial/groups.html:36
 #: canaille/templates/partial/oidc/admin/authorization_list.html:32
 #: canaille/templates/partial/oidc/admin/client_list.html:40
 #: canaille/templates/partial/oidc/admin/token_list.html:44
 #: canaille/templates/partial/users.html:68
-#, fuzzy
 msgid "There is nothing here"
-msgstr "L'accès n’est pas révoqué"
+msgstr "Il n'y a rien ici"
 
 #: canaille/templates/partial/oidc/admin/authorization_list.html:5
 msgid "Code"
@@ -1437,9 +1435,8 @@ msgid "Users"
 msgstr "Utilisateurs"
 
 #: canaille/themes/default/base.html:67
-#, fuzzy
 msgid "Admin"
-msgstr "Audience"
+msgstr "Administration"
 
 #: canaille/themes/default/base.html:71
 msgid "Clients"
