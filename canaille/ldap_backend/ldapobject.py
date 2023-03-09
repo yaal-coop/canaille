@@ -1,3 +1,6 @@
+import itertools
+from collections.abc import Iterable
+
 import ldap.dn
 import ldap.filter
 from flask import g
@@ -42,6 +45,48 @@ class LDAPObjectMetaclass(type):
         if name == "object_class":
             for oc in value:
                 cls.ldap_to_python_class[oc] = cls
+
+
+class LDAPObjectQuery:
+    def __init__(self, klass, items):
+        self.klass = klass
+        self.items = items
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, item):
+        if isinstance(item, slice):
+            return (self.decorate(obj[1]) for obj in self.items[item])
+
+        return self.decorate(self.items[item][1])
+
+    def __iter__(self):
+        return (self.decorate(obj[1]) for obj in self.items)
+
+    def __eq__(self, other):
+        if isinstance(other, Iterable):
+            return all(
+                a == b
+                for a, b in itertools.zip_longest(
+                    iter(self), iter(other), fillvalue=object()
+                )
+            )
+        return super().__eq__(other)
+
+    def decorate(self, args):
+        klass = self.guess_class(self.klass, args["objectClass"])
+        obj = klass()
+        obj.attrs = args
+        obj.exists = True
+        return obj
+
+    def guess_class(self, klass, object_classes):
+        if klass == LDAPObject:
+            for oc in object_classes:
+                if oc.decode() in LDAPObjectMetaclass.ldap_to_python_class:
+                    return LDAPObjectMetaclass.ldap_to_python_class[oc.decode()]
+        return klass
 
 
 class LDAPObject(metaclass=LDAPObjectMetaclass):
@@ -283,23 +328,16 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{cls.base},{cls.root_dn}"
         result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"])
-
-        objects = []
-        for _, args in result:
-            cls = cls.guess_class(args["objectClass"])
-            obj = cls()
-            obj.exists = True
-            obj.attrs = args
-            objects.append(obj)
-        return objects
+        return LDAPObjectQuery(cls, result)
 
     @classmethod
-    def guess_class(cls, object_classes):
-        if cls == LDAPObject:
-            for oc in object_classes:
-                if oc.decode() in LDAPObjectMetaclass.ldap_to_python_class:
-                    return LDAPObjectMetaclass.ldap_to_python_class[oc.decode()]
-        return cls
+    def fuzzy(cls, query, **kwargs):
+        query = ldap.filter.escape_filter_chars(query)
+        attributes = cls.may() + cls.must()
+        filter = (
+            "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
+        )
+        return cls.query(filter=filter, **kwargs)
 
     @classmethod
     def update_ldap_attributes(cls):

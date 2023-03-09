@@ -1,6 +1,8 @@
 import datetime
 
 from canaille.flaskutils import permissions_needed
+from canaille.flaskutils import render_htmx_template
+from canaille.forms import TableForm
 from canaille.models import User
 from canaille.oidc.models import Client
 from canaille.oidc.models import Token
@@ -8,20 +10,23 @@ from flask import abort
 from flask import Blueprint
 from flask import flash
 from flask import redirect
+from flask import request
 from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
 
-
 bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 
 
-@bp.route("/")
+@bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def index(user):
-    tokens = Token.query()
-    return render_template(
-        "oidc/admin/token_list.html", tokens=tokens, menuitem="admin"
+    table_form = TableForm(Token, formdata=request.form)
+    if request.form and request.form.get("page") and not table_form.validate():
+        abort(404)
+
+    return render_htmx_template(
+        "oidc/admin/token_list.html", menuitem="admin", table_form=table_form
     )
 
 

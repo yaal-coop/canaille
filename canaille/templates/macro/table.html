@@ -1,0 +1,100 @@
+{% macro search(form, target) %}
+    <form id="search" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" class="ui form">
+        {{ form.hidden_tag() if form.hidden_tag }}
+        <input type="hidden" name="page" value="{{ form.page.data }}">
+        <div class="ui fluid action input icon">
+            <input
+                type="search"
+                placeholder="{{ _("Search…") }}"
+                name="{{ form.query.name }}"
+                value="{{ form.query.data }}"
+                hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
+                hx-trigger="keyup changed delay:500ms, search"
+                hx-target="{{ target }}"
+                hx-swap="outerHTML"
+                hx-indicator=".search-button"
+            />
+            <button type="submit" class="ui icon button search-button" title="{{ _("Search") }}">
+                <i class="search icon"></i>
+            </button>
+        </div>
+    </form>
+{% endmacro %}
+
+{# At the moment we need to build one form per button
+# https://github.com/bigskysoftware/htmx/issues/1120
+# when this is fixed we will be able to set the page
+# value directly in the submit button and get rid
+# of the radius reset
+#}
+{% macro buttonform(form, page) %}
+    <form id="pagination" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
+        {{ form.hidden_tag() if form.hidden_tag }}
+        <input type="hidden" name="page" value="{{ page }}">
+        <input type="hidden" name="query" value="{{ form.query.data }}">
+        <button
+            type="submit"
+            style="border-radius: 0"
+            class="icon ui button"
+            hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
+            hx-target="closest table"
+            hx-swap="outerHTML"
+        >
+            {{ caller() }}
+        </button>
+    </form>
+{% endmacro %}
+
+{% macro pagination(form) %}
+    <div class="ui right floated buttons">
+        <span class="icon disabled ui button" style="border-radius: 0">
+            {% trans %}Page{% endtrans %}
+        </span>
+        {% if form.page.data > 1 %}
+            {% call buttonform(form, form.page.data - 1) %}
+                <i class="left chevron icon"></i>
+            {% endcall %}
+        {% else %}
+            <span class="icon disabled ui button" style="border-radius: 0">
+                <i class="left chevron icon"></i>
+            </span>
+        {% endif %}
+        {% if form.page.data > 1 %}
+            {% call buttonform(form, 1) %}
+                1
+            {% endcall %}
+        {% endif %}
+        {% if form.page.data > 2 %}
+            <span class="disabled ui button" style="border-radius: 0">
+                …
+            </span>
+        {% endif %}
+        <span class="ui button active">
+            {{ form.page.data }}
+        </span>
+        {% if form.page.data < form.page_max - 1 %}
+            <span class="disabled ui button" style="border-radius: 0">
+                …
+            </span>
+        {% endif %}
+        {% if form.page.data < form.page_max %}
+            {% call buttonform(form, form.page_max) %}
+                {{ form.page_max }}
+            {% endcall %}
+        {% endif %}
+        {% if form.page.data < form.page_max %}
+            {% call buttonform(form, form.page.data + 1) %}
+                <i class="right chevron icon"></i>
+            {% endcall %}
+        {% else %}
+            <span class="icon disabled ui button" style="border-radius: 0">
+                <i class="right chevron icon"></i>
+            </span>
+        {% endif %}
+    </div>
+    <div class="ui left floated">
+        <span class="disabled ui button">
+            {{ _("%(nb_items)s items", nb_items=form.nb_items) }}
+        </span>
+    </div>
+{% endmacro %}

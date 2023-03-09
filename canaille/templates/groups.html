@@ -1,4 +1,5 @@
 {% extends theme('base.html') %}
+{% import "macro/table.html" as table %}
 
 {% block content %}
     <div class="ui segment">
@@ -11,29 +12,9 @@
                 {% trans %}Groups{% endtrans %}
             </div>
         </h2>
-        <table class="ui table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>{% trans %}Name{% endtrans %}</th>
-                    <th>{% trans %}Description{% endtrans %}</th>
-                    <th>{% trans %}Number of members{% endtrans %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for group in groups %}
-                    <tr>
-                        <td>
-                            <a href="{{ url_for('groups.group', groupname=group.name) }}">
-                                <i class="users circular black inverted icon"></i>
-                            </a>
-                        </td>
-                        <td><a href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a></td>
-                        <td>{% if group.description %}{{ group.description[0] }}{% endif %}</td>
-                        <td>{{ group.member|len }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="ui attached segment">
+            {{ table.search(table_form, "table.groups") }}
+        </div>
+        {% include "partial/groups.html" %}
     </div>
 {% endblock %}

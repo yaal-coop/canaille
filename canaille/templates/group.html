@@ -1,15 +1,8 @@
 {% extends theme('base.html') %}
 {% import 'macro/fomanticui.html' as sui %}
-{% import 'userlist.html' as user_list %}
-
-{% block style %}
-    <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="/static/datatables/dataTables.semanticui.min.css" rel="stylesheet">
-{% endblock %}
+{% import "macro/table.html" as table %}
 
 {% block script %}
-    <script src="/static/datatables/jquery.dataTables.min.js"></script>
-    <script src="/static/datatables/dataTables.semanticui.min.js"></script>
     <script src="/static/js/confirm.js"></script>
     <script src="/static/js/users.js"></script>
 {% endblock %}
@@ -95,7 +88,10 @@
                 </div>
             </h2>
 
-            {{ user_list.user_list(user, members) }}
+            <div class="ui attached segment">
+                {{ table.search(table_form, "table.users") }}
+            </div>
+            {% include "partial/users.html" %}
         </div>
     {% endif %}
 

@@ -1,3 +1,5 @@
+import math
+
 import wtforms.form
 from flask import current_app
 from flask import g
@@ -39,6 +41,30 @@ def existing_login(form, field):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )
+
+
+class TableForm(FlaskForm):
+    def __init__(self, cls=None, page_size=25, filter=None, **kwargs):
+        filter = filter or {}
+        super().__init__(**kwargs)
+        if self.query.data:
+            self.items = cls.fuzzy(self.query.data, **filter)
+        else:
+            self.items = cls.query(**filter)
+
+        self.page_size = page_size
+        self.nb_items = len(self.items)
+        self.page_max = max(1, math.ceil(self.nb_items / self.page_size))
+        first_item = (self.page.data - 1) * self.page_size
+        last_item = min((self.page.data) * self.page_size, self.nb_items)
+        self.items_slice = self.items[first_item:last_item]
+
+    page = wtforms.IntegerField(default=1)
+    query = wtforms.StringField(default="")
+
+    def validate_page(self, field):
+        if field.data < 1 or field.data > self.page_max:
+            raise wtforms.validators.ValidationError(_("The page number is not valid"))
 
 
 class LoginForm(FlaskForm):

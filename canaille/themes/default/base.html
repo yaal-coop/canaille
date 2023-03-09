@@ -107,7 +107,11 @@
         </footer>
         <script src="/static/jquery/jquery.min.js"></script>
         <script src="/static/fomanticui/semantic.min.js"></script>
+        <script src="/static/htmx/htmx.min.js"></script>
         <script src="/static/js/base.js"></script>
+        <script>
+            htmx.config.requestClass = "loading"
+        </script>
         {% block script %}{% endblock %}
     </body>
 </html>

@@ -1,4 +1,3 @@
-import datetime
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -8,6 +7,7 @@ from canaille.models import User
 from flask import abort
 from flask import current_app
 from flask import render_template
+from flask import request
 from flask import session
 from flask_babel import gettext as _
 
@@ -78,10 +78,6 @@ def smtp_needed():
     return wrapper
 
 
-def timestamp(dt):
-    return datetime.datetime.timestamp(dt)
-
-
 def set_parameter_in_url_query(url, **kwargs):
     split = list(urlsplit(url))
     pairs = split[3].split("&")
@@ -89,3 +85,12 @@ def set_parameter_in_url_query(url, **kwargs):
     parameters = {**parameters, **kwargs}
     split[3] = "&".join(f"{key}={value}" for key, value in parameters.items())
     return urlunsplit(split)
+
+
+def render_htmx_template(template, htmx_template=None, **kwargs):
+    template = (
+        (htmx_template or f"partial/{template}")
+        if request.headers.get("HX-Request")
+        else template
+    )
+    return render_template(template, **kwargs)

@@ -29,6 +29,7 @@ from .apputils import obj_to_b64
 from .apputils import profile_hash
 from .flaskutils import current_user
 from .flaskutils import permissions_needed
+from .flaskutils import render_htmx_template
 from .flaskutils import smtp_needed
 from .flaskutils import user_needed
 from .forms import FirstLoginForm
@@ -38,6 +39,7 @@ from .forms import LoginForm
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
+from .forms import TableForm
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
@@ -179,11 +181,18 @@ def firstlogin(uid):
     return render_template("firstlogin.html", form=form, uid=uid)
 
 
-@bp.route("/users")
+@bp.route("/users", methods=["GET", "POST"])
 @permissions_needed("manage_users")
 def users(user):
-    users = User.query()
-    return render_template("users.html", users=users, menuitem="users")
+    table_form = TableForm(User, formdata=request.form)
+    if request.form and not table_form.validate():
+        abort(404)
+
+    return render_htmx_template(
+        "users.html",
+        menuitem="users",
+        table_form=table_form,
+    )
 
 
 @dataclass

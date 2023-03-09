@@ -1,10 +1,63 @@
 from canaille.models import Group
 from canaille.models import User
+from canaille.populate import fake_groups
 from canaille.populate import fake_users
 
 
 def test_no_group(app, slapd_connection):
     assert Group.query() == []
+
+
+def test_group_list_pagination(testclient, logged_admin, foo_group):
+    res = testclient.get("/groups")
+    assert "1 items" in res
+
+    groups = fake_groups(25)
+
+    res = testclient.get("/groups")
+    assert "26 items" in res, res.text
+    group_name = res.pyquery(
+        ".groups tbody tr:nth-of-type(1) td:nth-of-type(2) a"
+    ).text()
+    assert group_name
+
+    form = res.forms["pagination"]
+    res = form.submit(name="page", value="2")
+    assert group_name not in res.pyquery(".groups tbody tr td:nth-of-type(2) a").text()
+    for group in groups:
+        group.delete()
+
+    res = testclient.get("/groups")
+    assert "1 items" in res
+
+
+def test_group_list_bad_pages(testclient, logged_admin):
+    res = testclient.get("/groups")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/groups", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+    )
+
+    res = testclient.get("/groups")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/groups", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+    )
+
+
+def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
+    res = testclient.get("/groups")
+    assert "2 items" in res
+    assert foo_group.name in res
+    assert bar_group.name in res
+
+    form = res.forms["search"]
+    form["query"] = "oo"
+    res = form.submit()
+
+    assert "1 items" in res, res.text
+    assert foo_group.name in res
+    assert bar_group.name not in res
 
 
 def test_set_groups(app, user, foo_group, bar_group):
@@ -151,3 +204,61 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
     assert "Group edition failed." in res
     foo_group = Group.get(foo_group.dn)
     assert foo_group.name == "foo"
+
+
+def test_user_list_pagination(testclient, logged_admin, foo_group):
+    res = testclient.get("/groups/foo")
+    assert "1 items" in res
+
+    users = fake_users(25)
+    for user in users:
+        foo_group.add_member(user)
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    assert "26 items" in res, res.text
+    user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
+    assert user_name
+
+    form = res.forms["pagination"]
+    res = form.submit(name="page", value="2")
+    assert user_name not in res.pyquery(".users tr td:nth-of-type(2) a").text()
+    for user in users:
+        user.delete()
+
+    res = testclient.get("/groups/foo")
+    assert "1 items" in res
+
+
+def test_user_list_bad_pages(testclient, logged_admin, foo_group):
+    res = testclient.get("/groups/foo")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/groups/foo", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+    )
+
+    res = testclient.get("/groups/foo")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/groups/foo", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+    )
+
+
+def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
+    foo_group.add_member(logged_admin)
+    foo_group.add_member(moderator)
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    assert "3 items" in res
+    assert user.name in res
+    assert moderator.name in res
+
+    form = res.forms["search"]
+    form["query"] = "ohn"
+    res = form.submit()
+
+    assert "1 items" in res
+    assert user.name in res
+    assert logged_admin.name not in res
+    assert moderator.name not in res

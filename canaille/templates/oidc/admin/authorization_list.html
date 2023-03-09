@@ -1,37 +1,13 @@
 {% extends theme('base.html') %}
-
-{% block style %}
-    <link href="/static/datatables/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="/static/datatables/dataTables.semanticui.min.css" rel="stylesheet">
-{% endblock %}
+{% import "macro/table.html" as table %}
 
 {% block script %}
-    <script src="/static/datatables/jquery.dataTables.min.js"></script>
-    <script src="/static/datatables/dataTables.semanticui.min.js"></script>
     <script src="/static/js/users.js"></script>
 {% endblock %}
 
 {% block content %}
-
-    <table class="ui table" data-order="[[ 3, &quot;desc&quot; ]]">
-        <thead>
-            <tr>
-                <th data-orderable="false">{% trans %}Code{% endtrans %}</th>
-                <th>{% trans %}Client{% endtrans %}</th>
-                <th>{% trans %}Subject{% endtrans %}</th>
-                <th>{% trans %}Created{% endtrans %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for authorization in authorizations %}
-                <tr>
-                    <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.authorization_code_id }}</a></td>
-                    <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client_id) }}">{{ authorization.client_id }}</a></td>
-                    <td>{{ authorization.subject }}</td>
-                    <td data-order="{{ authorization.issue_date|timestamp }}">{{ authorization.issue_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+    <div class="ui attached segment">
+        {{ table.search(table_form, "table.codes") }}
+    </div>
+    {% include "partial/oidc/admin/authorization_list.html" %}
 {% endblock %}

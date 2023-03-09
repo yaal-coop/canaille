@@ -4,6 +4,7 @@ from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Client
 from canaille.oidc.models import Consent
 from canaille.oidc.models import Token
+from werkzeug.security import gen_salt
 
 
 def test_no_logged_no_access(testclient):
@@ -21,6 +22,63 @@ def test_invalid_client_edition(testclient, logged_admin):
 def test_client_list(testclient, client, logged_admin):
     res = testclient.get("/admin/client")
     assert client.client_name in res.text
+
+
+def test_client_list_pagination(testclient, logged_admin, client, other_client):
+    res = testclient.get("/admin/client")
+    assert "2 items" in res
+    clients = []
+    for _ in range(25):
+        client = Client(client_id=gen_salt(48), client_name=gen_salt(48))
+        client.save()
+        clients.append(client)
+
+    res = testclient.get("/admin/client")
+    assert "27 items" in res, res.text
+    client_name = res.pyquery(
+        ".clients tbody tr:nth-of-type(1) td:nth-of-type(2) a"
+    ).text()
+    assert client_name
+
+    form = res.forms["pagination"]
+    res = form.submit(name="page", value="2")
+    assert (
+        client_name not in res.pyquery(".clients tbody tr td:nth-of-type(2) a").text()
+    )
+    for client in clients:
+        client.delete()
+
+    res = testclient.get("/admin/client")
+    assert "2 items" in res
+
+
+def test_client_list_bad_pages(testclient, logged_admin):
+    res = testclient.get("/admin/client")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/admin/client", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+    )
+
+    res = testclient.get("/admin/client")
+    form = res.forms["pagination"]
+    testclient.post(
+        "/admin/client", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+    )
+
+
+def test_client_list_search(testclient, logged_admin, client, other_client):
+    res = testclient.get("/admin/client")
+    assert "2 items" in res
+    assert client.client_name in res
+    assert other_client.client_name in res
+
+    form = res.forms["search"]
+    form["query"] = "other"
+    res = form.submit()
+
+    assert "1 items" in res
+    assert other_client.client_name in res
+    assert client.client_name not in res
 
 
 def test_client_add(testclient, logged_admin):

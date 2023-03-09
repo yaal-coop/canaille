@@ -1,0 +1,48 @@
+{% import "macro/table.html" as table %}
+<table class="ui attached table codes">
+    <thead>
+        <tr>
+            <th>{% trans %}Code{% endtrans %}</th>
+            <th>{% trans %}Client{% endtrans %}</th>
+            <th>{% trans %}Subject{% endtrans %}</th>
+            <th>{% trans %}Created{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for authorization in table_form.items_slice %}
+            <tr>
+                <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.authorization_code_id }}</a></td>
+                <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client_id) }}">{{ authorization.client_id }}</a></td>
+                <td>{{ authorization.subject }}</td>
+                <td>{{ authorization.issue_date }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">
+                    <div class="ui icon message">
+                        <i class="exclamation icon"></i>
+                        <div class="content">
+                            {% if request.headers.get("Hx-Request") %}
+                                <div class="header">
+                                    {% trans %}No item matches your request{% endtrans %}
+                                </div>
+                                <p>{% trans %}Maybe try with different criterias?{% endtrans %}</p>
+                            {% else %}
+                                <div class="header">
+                                    {% trans %}There is nothing here{% endtrans %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4">
+                {{ table.pagination(table_form) }}
+            </th>
+        </tr>
+    </tfoot>
+</table>

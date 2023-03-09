@@ -1,6 +1,8 @@
 import datetime
 
 from canaille.flaskutils import permissions_needed
+from canaille.flaskutils import render_htmx_template
+from canaille.forms import TableForm
 from canaille.oidc.forms import ClientAdd
 from canaille.oidc.models import Client
 from flask import abort
@@ -17,12 +19,15 @@ from werkzeug.security import gen_salt
 bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 
 
-@bp.route("/")
+@bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def index(user):
-    clients = Client.query()
-    return render_template(
-        "oidc/admin/client_list.html", clients=clients, menuitem="admin"
+    table_form = TableForm(Client, formdata=request.form)
+    if request.form and request.form.get("page") and not table_form.validate():
+        abort(404)
+
+    return render_htmx_template(
+        "oidc/admin/client_list.html", menuitem="admin", table_form=table_form
     )
 
 
