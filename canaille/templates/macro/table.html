@@ -14,7 +14,15 @@
                 hx-swap="outerHTML"
                 hx-indicator=".search-button"
             />
-            <button type="submit" class="ui icon button search-button" title="{{ _("Search") }}">
+            <button
+                type="submit"
+                class="ui icon button search-button"
+                title="{{ _("Search") }}"
+                hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
+                hx-target="{{ target }}"
+                hx-swap="outerHTML"
+                hx-indicator=".search-button"
+            >
                 <i class="search icon"></i>
             </button>
         </div>
