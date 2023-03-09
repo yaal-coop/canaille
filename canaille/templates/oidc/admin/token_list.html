@@ -7,6 +7,12 @@
 
 {% block content %}
     <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Tokens{% endtrans %}
+            </div>
+        </h2>
+
         {{ table.search(table_form, "table.tokens") }}
     </div>
     {% include "partial/oidc/admin/token_list.html" %}

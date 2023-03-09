@@ -7,6 +7,12 @@
 
 {% block content %}
     <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Codes{% endtrans %}
+            </div>
+        </h2>
+
         {{ table.search(table_form, "table.codes") }}
     </div>
     {% include "partial/oidc/admin/authorization_list.html" %}

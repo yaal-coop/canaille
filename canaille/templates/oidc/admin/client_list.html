@@ -12,6 +12,12 @@
     </div>
 
     <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Clients{% endtrans %}
+            </div>
+        </h2>
+
         {{ table.search(table_form, "table.clients") }}
     </div>
     {% include "partial/oidc/admin/client_list.html" %}

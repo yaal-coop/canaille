@@ -15,6 +15,12 @@
         </div>
     </div>
     <div class="ui attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Users{% endtrans %}
+            </div>
+        </h2>
+
         {{ table.search(table_form, "table.users") }}
     </div>
     {% include "partial/users.html" %}
