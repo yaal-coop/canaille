@@ -2,6 +2,7 @@ import datetime
 
 import ldap.dn
 from canaille.ldap_backend.ldapobject import LDAPObject
+from canaille.ldap_backend.ldapobject import python_attrs_to_ldap
 from canaille.ldap_backend.utils import ldap_to_python
 from canaille.ldap_backend.utils import python_to_ldap
 from canaille.ldap_backend.utils import Syntax
@@ -108,7 +109,7 @@ def test_operational_attribute_conversion(slapd_connection):
     assert "oauthClientName" in LDAPObject.ldap_object_attributes(slapd_connection)
     assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(slapd_connection)
 
-    assert LDAPObject.python_attrs_to_ldap(
+    assert python_attrs_to_ldap(
         {
             "oauthClientName": ["foobar_name"],
             "invalidAttribute": ["foobar"],

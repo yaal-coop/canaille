@@ -6,6 +6,27 @@ from .utils import ldap_to_python
 from .utils import python_to_ldap
 
 
+def python_attrs_to_ldap(attrs, encode=True):
+    return {
+        name: [
+            python_to_ldap(value, attribute_ldap_syntax(name), encode=encode)
+            for value in (values if isinstance(values, list) else [values])
+        ]
+        for name, values in attrs.items()
+    }
+
+
+def attribute_ldap_syntax(attribute_name):
+    ldap_attrs = LDAPObject.ldap_object_attributes()
+    if attribute_name not in ldap_attrs:
+        return None
+
+    if ldap_attrs[attribute_name].syntax:
+        return ldap_attrs[attribute_name].syntax
+
+    return attribute_ldap_syntax(ldap_attrs[attribute_name].sup[0])
+
+
 class LDAPObjectMetaclass(type):
     ldap_to_python_class = {}
 
@@ -62,14 +83,14 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         ):
             return False
 
-        self_attributes = self.python_attrs_to_ldap(
+        self_attributes = python_attrs_to_ldap(
             {
                 attr: getattr(self, attr)
                 for attr in self.may() + self.must()
                 if hasattr(self, attr)
             }
         )
-        other_attributes = other.python_attrs_to_ldap(
+        other_attributes = python_attrs_to_ldap(
             {
                 attr: getattr(other, attr)
                 for attr in self.may() + self.must()
@@ -97,7 +118,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
         # Lazy conversion from ldap format to python format
         if any(isinstance(value, bytes) for value in self.attrs[name]):
-            syntax = self.attribute_ldap_syntax(name)
+            syntax = attribute_ldap_syntax(name)
             self.attrs[name] = [
                 ldap_to_python(value, syntax) for value in self.attrs[name]
             ]
@@ -133,13 +154,15 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     def dn(self):
         return f"{self.rdn_attribute}={ldap.dn.escape_dn_chars(self.rdn_value)},{self.base},{self.root_dn}"
 
-    def may(self):
-        if not self._may:
-            self.update_ldap_attributes()
-        return self._may
+    @classmethod
+    def may(cls):
+        if not cls._may:
+            cls.update_ldap_attributes()
+        return cls._may
 
-    def must(self):
-        return self._must
+    @classmethod
+    def must(cls):
+        return cls._must
 
     @classmethod
     def ldap_connection(cls):
@@ -212,32 +235,6 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         return cls._attribute_type_by_name
 
     @classmethod
-    def python_attrs_to_ldap(cls, attrs, encode=True):
-        if cls.attribute_table:
-            attrs = {
-                cls.attribute_table.get(name, name): values
-                for name, values in attrs.items()
-            }
-        return {
-            name: [
-                python_to_ldap(value, cls.attribute_ldap_syntax(name), encode=encode)
-                for value in (values if isinstance(values, list) else [values])
-            ]
-            for name, values in attrs.items()
-        }
-
-    @classmethod
-    def attribute_ldap_syntax(cls, attribute_name):
-        ldap_attrs = LDAPObject.ldap_object_attributes()
-        if attribute_name not in ldap_attrs:
-            return None
-
-        if ldap_attrs[attribute_name].syntax:
-            return ldap_attrs[attribute_name].syntax
-
-        return cls.attribute_ldap_syntax(ldap_attrs[attribute_name].sup[0])
-
-    @classmethod
     def get(cls, dn=None, filter=None, conn=None, **kwargs):
         try:
             return cls.query(dn, filter, conn, **kwargs)[0]
@@ -259,8 +256,14 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             else ""
         )
         arg_filter = ""
-        escaped_args = cls.python_attrs_to_ldap(kwargs, encode=False)
-        for key, value in escaped_args.items():
+        kwargs = python_attrs_to_ldap(
+            {
+                (cls.attribute_table or {}).get(name, name): values
+                for name, values in kwargs.items()
+            },
+            encode=False,
+        )
+        for key, value in kwargs.items():
             if len(value) == 1:
                 escaped_value = ldap.filter.escape_filter_chars(value[0])
                 arg_filter += f"({key}={escaped_value})"
@@ -345,7 +348,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             }
             formatted_changes = {
                 name: value
-                for name, value in self.python_attrs_to_ldap(changes).items()
+                for name, value in python_attrs_to_ldap(changes).items()
                 if value is not None and value != [None]
             }
             modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
@@ -363,7 +366,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             }
             formatted_changes = {
                 name: value
-                for name, value in self.python_attrs_to_ldap(changes).items()
+                for name, value in python_attrs_to_ldap(changes).items()
                 if value is not None and value != None
             }
             attributes = [(name, values) for name, values in formatted_changes.items()]
