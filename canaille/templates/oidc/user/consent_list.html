@@ -75,12 +75,12 @@
                             </div>
                         {% endif %}
                         {% if consent.revokation_date %}
-                            <a class="ui bottom attached button" href="{{ url_for('oidc.consents.restore', consent_id=consent.cn[0] ) }}">
+                            <a class="ui bottom attached button" href="{{ url_for('oidc.consents.restore', consent_id=consent.consent_id[0] ) }}">
                                 <i class="reply icon"></i>
                                 {% trans %}Restore access{% endtrans %}
                             </a>
                         {% else %}
-                            <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke', consent_id=consent.cn[0] ) }}">
+                            <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke', consent_id=consent.consent_id[0] ) }}">
                                 <i class="remove icon"></i>
                                 {% trans %}Revoke access{% endtrans %}
                             </a>
