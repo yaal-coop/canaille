@@ -64,7 +64,7 @@
                     {% if user.can_manage_oidc %}
                         <div class="ui dropdown item {% if menuitem == "admin" %}dropdown-active{% endif %}">
                             <i class="settings icon"></i>
-                            Admin
+                            {% trans %}Admin{% endtrans %}
                             <div class="menu">
                                 <a class="item" href="{{ url_for('oidc.clients.index') }}">
                                     <i class="plug icon"></i>
