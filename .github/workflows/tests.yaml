@@ -72,7 +72,7 @@ jobs:
       - name: Update apt repositories
         run: sudo apt update
       - name: Install apt dependencies
-        run: sudo aptt --yes install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+        run: sudo apt --yes install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
       - name: App armor configuration for slapd
         run: sudo aa-complain /usr/sbin/slapd
       - uses: actions/cache@v1
