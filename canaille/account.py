@@ -384,6 +384,7 @@ def profile_create(current_app, form):
         groups = [Group.get(group_dn) for group_dn in form["groups"].data]
         for group in groups:
             group.add_member(user)
+            group.save()
 
     if form["password1"].data:
         user.set_password(form["password1"].data)
