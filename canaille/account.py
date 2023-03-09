@@ -581,7 +581,7 @@ def forgotten():
                 "We cannot send a password reset email.",
                 user=user.name,
             ),
-            "success",
+            "error",
         )
         return render_template("forgotten-password.html", form=form)
 

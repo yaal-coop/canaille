@@ -74,9 +74,9 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
         "A password reset link has been sent at your email address. You should receive it within a few minutes.",
     ) not in res.flashes
     assert (
-        "The user 'John (johnny) Doe' does not have permissions to update their password."
-        in res.text
-    )
+        "error",
+        "The user 'John (johnny) Doe' does not have permissions to update their password. We cannot send a password reset email.",
+    ) in res.flashes
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = True
     res = testclient.get("/reset", status=200)
@@ -84,9 +84,9 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
     res.form["login"] = "user"
     res = res.form.submit(status=200)
     assert (
-        "The user 'John (johnny) Doe' does not have permissions to update their password."
-        not in res.text
-    )
+        "error",
+        "The user 'John (johnny) Doe' does not have permissions to update their password. We cannot send a password reset email.",
+    ) not in res.flashes
     assert (
         "success",
         "A password reset link has been sent at your email address. You should receive it within a few minutes.",
