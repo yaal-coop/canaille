@@ -1,6 +1,7 @@
 *.sqlite
 *.pyc
 *.mo
+*.prof
 venv/*
 env
 .*@neomake*
