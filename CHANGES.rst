@@ -14,6 +14,7 @@ Added
 - A ``populate`` command can be used to fill the database with
   random users generated with faker. :pr:`105`
 - SMTP SSL support. :pr:`108`
+- Server side pagination. :issue:`114` :pr:`111`
 
 Fixed
 *****
