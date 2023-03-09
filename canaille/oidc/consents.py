@@ -88,7 +88,9 @@ def revoke_preconsent(user, client_id):
 
     consent = Consent.get(client=client, subject=user)
     if consent:
-        return redirect(url_for("oidc.consents.revoke", consent_id=consent.cn[0]))
+        return redirect(
+            url_for("oidc.consents.revoke", consent_id=consent.consent_id[0])
+        )
 
     consent = Consent(
         cn=str(uuid.uuid4()),

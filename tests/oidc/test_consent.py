@@ -19,7 +19,7 @@ def test_revokation(testclient, client, consent, logged_user, token):
     assert not consent.revoked
     assert not token.revoked
 
-    res = testclient.get(f"/consent/revoke/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/revoke/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
     res = res.follow(status=200)
     assert "Revoke access" not in res.text
@@ -37,7 +37,7 @@ def test_revokation_already_revoked(testclient, client, consent, logged_user):
     consent.reload()
     assert consent.revoked
 
-    res = testclient.get(f"/consent/revoke/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/revoke/{consent.consent_id[0]}", status=302)
     assert ("error", "The access is already revoked") in res.flashes
     res = res.follow(status=200)
 
@@ -53,7 +53,7 @@ def test_restoration(testclient, client, consent, logged_user, token):
     token.reload()
     assert token.revoked
 
-    res = testclient.get(f"/consent/restore/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/restore/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been restored") in res.flashes
     res = res.follow(status=200)
 
@@ -66,7 +66,7 @@ def test_restoration(testclient, client, consent, logged_user, token):
 def test_restoration_already_restored(testclient, client, consent, logged_user, token):
     assert not consent.revoked
 
-    res = testclient.get(f"/consent/restore/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/restore/{consent.consent_id[0]}", status=302)
     assert ("error", "The access is not revoked") in res.flashes
     res = res.follow(status=200)
 
@@ -78,7 +78,7 @@ def test_invalid_consent_revokation(testclient, client, logged_user):
 
 
 def test_someone_else_consent_revokation(testclient, client, consent, logged_moderator):
-    res = testclient.get(f"/consent/revoke/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/revoke/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been revoked") not in res.flashes
     assert ("error", "Could not revoke this access") in res.flashes
 
@@ -92,7 +92,7 @@ def test_invalid_consent_restoration(testclient, client, logged_user):
 def test_someone_else_consent_restoration(
     testclient, client, consent, logged_moderator
 ):
-    res = testclient.get(f"/consent/restore/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/restore/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been restore") not in res.flashes
     assert ("error", "Could not restore this access") in res.flashes
 
@@ -172,7 +172,7 @@ def test_revoke_preconsented_client(testclient, client, logged_user, token):
     token.reload()
     assert token.revoked
 
-    res = testclient.get(f"/consent/restore/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/restore/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been restored") in res.flashes
 
     consent.reload()
@@ -181,7 +181,7 @@ def test_revoke_preconsented_client(testclient, client, logged_user, token):
     token.reload()
     assert token.revoked
 
-    res = testclient.get(f"/consent/revoke/{consent.cn[0]}", status=302)
+    res = testclient.get(f"/consent/revoke/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
     consent.reload()
     assert consent.revoked

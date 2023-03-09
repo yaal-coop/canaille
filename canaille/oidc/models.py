@@ -214,7 +214,7 @@ class Consent(LDAPObject):
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
     attribute_table = {
-        "cn": "cn",
+        "consent_id": "cn",
         "subject": "oauthSubject",
         "client": "oauthClient",
         "scope": "oauthScope",

@@ -194,7 +194,9 @@ def test_client_delete(testclient, logged_admin):
         token_id="id", client=client, issue_datetime=datetime.datetime.utcnow()
     )
     token.save()
-    consent = Consent(cn="cn", subject=logged_admin, client=client, scope="openid")
+    consent = Consent(
+        consent_id="consent_id", subject=logged_admin, client=client, scope="openid"
+    )
     consent.save()
     code = AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
