@@ -65,20 +65,20 @@
                                 </div>
                             </div>
                         </div>
-                        {% if consent.client.tos_uri or consent.client.policy_uri %}
+                        {% if consent.client.policy_uri %}
                             <div class="extra content">
-                                {% if consent.client.policy_uri %}
-                                    <span class="right floated">
-                                        <i class="mask icon"></i>
-                                        <a href="{{ consent.client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
-                                    </span>
-                                {% endif %}
-                                {% if consent.client.tos_uri %}
-                                    <span>
-                                        <i class="file signature icon"></i>
-                                        <a href="{{ consent.client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
-                                    </span>
-                                {% endif %}
+                                <span>
+                                    <i class="mask icon"></i>
+                                    <a href="{{ consent.client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                        {% if consent.client.tos_uri %}
+                            <div class="extra content">
+                                <span>
+                                    <i class="file signature icon"></i>
+                                    <a href="{{ consent.client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
+                                </span>
                             </div>
                         {% endif %}
                         {% if consent.revokation_date %}
@@ -146,20 +146,20 @@
                                 </div>
                             </div>
                         </div>
-                        {% if client.tos_uri or client.policy_uri %}
+                        {% if client.policy_uri %}
                             <div class="extra content">
-                                {% if client.policy_uri %}
-                                    <span class="right floated">
-                                        <i class="mask icon"></i>
-                                        <a href="{{ client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
-                                    </span>
-                                {% endif %}
-                                {% if client.tos_uri %}
-                                    <span>
-                                        <i class="file signature icon"></i>
-                                        <a href="{{ client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
-                                    </span>
-                                {% endif %}
+                                <span>
+                                    <i class="mask icon"></i>
+                                    <a href="{{ client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                        {% if client.tos_uri %}
+                            <div class="extra content">
+                                <span>
+                                    <i class="file signature icon"></i>
+                                    <a href="{{ client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
+                                </span>
                             </div>
                         {% endif %}
                         <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke_preconsent', client_id=client.client_id ) }}">
