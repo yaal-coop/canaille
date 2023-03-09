@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="ui attached segment">
-        {{ table.search(table_form) }}
+        {{ table.search(table_form, "table.codes") }}
     </div>
     {% include "partial/oidc/admin/authorization_list.html" %}
 {% endblock %}

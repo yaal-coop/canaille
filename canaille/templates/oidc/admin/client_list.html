@@ -12,7 +12,7 @@
     </div>
 
     <div class="ui attached segment">
-        {{ table.search(table_form) }}
+        {{ table.search(table_form, "table.clients") }}
     </div>
     {% include "partial/oidc/admin/client_list.html" %}
 {% endblock %}

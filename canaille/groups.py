@@ -8,6 +8,7 @@ from flask_babel import gettext as _
 from flask_themer import render_template
 
 from .flaskutils import permissions_needed
+from .flaskutils import render_htmx_template
 from .forms import CreateGroupForm
 from .forms import EditGroupForm
 from .forms import TableForm
@@ -24,7 +25,7 @@ def groups(user):
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
-    return render_template("groups.html", menuitem="groups", table_form=table_form)
+    return render_htmx_template("groups.html", menuitem="groups", table_form=table_form)
 
 
 @bp.route("/add", methods=("GET", "POST"))
@@ -96,8 +97,9 @@ def edit_group(group):
         else:
             flash(_("Group edition failed."), "error")
 
-    return render_template(
+    return render_htmx_template(
         "group.html",
+        "partial/users.html",
         form=form,
         edited_group=group,
         table_form=table_form,

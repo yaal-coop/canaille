@@ -1,6 +1,7 @@
 import datetime
 
 from canaille.flaskutils import permissions_needed
+from canaille.flaskutils import render_htmx_template
 from canaille.forms import TableForm
 from canaille.oidc.forms import ClientAdd
 from canaille.oidc.models import Client
@@ -25,7 +26,7 @@ def index(user):
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
-    return render_template(
+    return render_htmx_template(
         "oidc/admin/client_list.html", menuitem="admin", table_form=table_form
     )
 

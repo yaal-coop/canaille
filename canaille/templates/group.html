@@ -1,5 +1,6 @@
 {% extends theme('base.html') %}
 {% import 'macro/fomanticui.html' as sui %}
+{% import "macro/table.html" as table %}
 
 {% block script %}
     <script src="/static/js/confirm.js"></script>
@@ -87,6 +88,9 @@
                 </div>
             </h2>
 
+            <div class="ui attached segment">
+                {{ table.search(table_form, "table.users") }}
+            </div>
             {% include "partial/users.html" %}
         </div>
     {% endif %}

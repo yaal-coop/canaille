@@ -29,6 +29,7 @@ from .apputils import obj_to_b64
 from .apputils import profile_hash
 from .flaskutils import current_user
 from .flaskutils import permissions_needed
+from .flaskutils import render_htmx_template
 from .flaskutils import smtp_needed
 from .flaskutils import user_needed
 from .forms import FirstLoginForm
@@ -187,7 +188,7 @@ def users(user):
     if request.form and not table_form.validate():
         abort(404)
 
-    return render_template(
+    return render_htmx_template(
         "users.html",
         menuitem="users",
         table_form=table_form,

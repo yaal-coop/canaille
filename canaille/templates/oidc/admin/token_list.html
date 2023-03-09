@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="ui attached segment">
-        {{ table.search(table_form) }}
+        {{ table.search(table_form, "table.tokens") }}
     </div>
     {% include "partial/oidc/admin/token_list.html" %}
 {% endblock %}
