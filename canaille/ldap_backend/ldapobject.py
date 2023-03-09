@@ -58,6 +58,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
         self.changes = {}
+        self.exists = False
 
         kwargs.setdefault("objectClass", self.object_class)
 
@@ -287,6 +288,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         for _, args in result:
             cls = cls.guess_class(args["objectClass"])
             obj = cls()
+            obj.exists = True
             obj.attrs = args
             objects.append(obj)
         return objects
@@ -329,13 +331,8 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     def save(self, conn=None):
         conn = conn or self.ldap_connection()
-        try:
-            match = bool(conn.search_s(self.dn, ldap.SCOPE_SUBTREE))
-        except ldap.NO_SUCH_OBJECT:
-            match = False
-
         # Object already exists in the LDAP database
-        if match:
+        if self.exists:
             deletions = [
                 name
                 for name, value in self.changes.items()
@@ -372,6 +369,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             attributes = [(name, values) for name, values in formatted_changes.items()]
             conn.add_s(self.dn, attributes)
 
+        self.exists = True
         self.attrs = {**self.attrs, **self.changes}
         self.changes = {}
 

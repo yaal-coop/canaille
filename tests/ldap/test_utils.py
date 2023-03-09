@@ -10,6 +10,24 @@ from canaille.models import Group
 from canaille.models import User
 
 
+def test_object_creation(slapd_connection):
+    User.initialize(slapd_connection)
+    user = User(
+        cn="Doe",  # leading space
+        sn="Doe",
+        uid="user",
+        mail="john@doe.com",
+    )
+    assert not user.exists
+    user.save()
+    assert user.exists
+
+    user = User.get(dn=user.dn)
+    assert user.exists
+
+    user.delete()
+
+
 def test_repr(slapd_connection, foo_group, user):
     assert repr(foo_group) == "<Group cn=foo>"
     assert repr(user) == "<User cn=John (johnny) Doe>"
