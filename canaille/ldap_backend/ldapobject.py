@@ -420,6 +420,6 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         conn.delete_s(self.dn)
 
     def keys(self):
-        ldap_keys = self.must() + self.may()
+        ldap_keys = self.may() + self.must()
         inverted_table = {value: key for key, value in self.attribute_table.items()}
         return [inverted_table.get(key, key) for key in ldap_keys]
