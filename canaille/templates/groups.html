@@ -13,23 +13,27 @@
         </h2>
         <table class="ui table">
             <thead>
-                <th></th>
-                <th>{% trans %}Name{% endtrans %}</th>
-                <th>{% trans %}Description{% endtrans %}</th>
-                <th>{% trans %}Number of members{% endtrans %}</th>
-            </thead>
-            {% for group in groups %}
                 <tr>
-                    <td>
-                        <a href="{{ url_for('groups.group', groupname=group.name) }}">
-                            <i class="users circular black inverted icon"></i>
-                        </a>
-                    </td>
-                    <td><a href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a></td>
-                    <td>{% if group.description %}{{ group.description[0] }}{% endif %}</td>
-                    <td>{{ group.member|len }}</td>
+                    <th></th>
+                    <th>{% trans %}Name{% endtrans %}</th>
+                    <th>{% trans %}Description{% endtrans %}</th>
+                    <th>{% trans %}Number of members{% endtrans %}</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for group in groups %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('groups.group', groupname=group.name) }}">
+                                <i class="users circular black inverted icon"></i>
+                            </a>
+                        </td>
+                        <td><a href="{{ url_for('groups.group', groupname=group.name) }}">{{ group.name }}</a></td>
+                        <td>{% if group.description %}{{ group.description[0] }}{% endif %}</td>
+                        <td>{{ group.member|len }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 {% endblock %}
