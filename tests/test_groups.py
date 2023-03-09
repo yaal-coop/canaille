@@ -21,9 +21,12 @@ def test_group_list_pagination(testclient, logged_admin, foo_group):
     ).text()
     assert group_name
 
-    form = res.forms["pagination"]
-    res = form.submit(name="page", value="2")
-    assert group_name not in res.pyquery(".groups tbody tr td:nth-of-type(2) a").text()
+    form = res.forms["next"]
+    form["page"] = 2
+    res = form.submit()
+    assert group_name not in res.pyquery(
+        ".groups tbody tr td:nth-of-type(2) a"
+    ).text().split(" ")
     for group in groups:
         group.delete()
 
@@ -33,13 +36,13 @@ def test_group_list_pagination(testclient, logged_admin, foo_group):
 
 def test_group_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/groups")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/groups", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
     )
 
     res = testclient.get("/groups")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/groups", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
     )
@@ -220,9 +223,12 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
     user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
     assert user_name
 
-    form = res.forms["pagination"]
-    res = form.submit(name="page", value="2")
-    assert user_name not in res.pyquery(".users tr td:nth-of-type(2) a").text()
+    form = res.forms["next"]
+    form["page"] = 2
+    res = form.submit()
+    assert user_name not in res.pyquery(".users tr td:nth-of-type(2) a").text().split(
+        " "
+    )
     for user in users:
         user.delete()
 
@@ -232,13 +238,13 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
 
 def test_user_list_bad_pages(testclient, logged_admin, foo_group):
     res = testclient.get("/groups/foo")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/groups/foo", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
     )
 
     res = testclient.get("/groups/foo")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/groups/foo", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
     )

@@ -16,9 +16,12 @@ def test_user_list_pagination(testclient, logged_admin):
     user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
     assert user_name
 
-    form = res.forms["pagination"]
-    res = form.submit(name="page", value="2")
-    assert user_name not in res.pyquery(".users tbody tr td:nth-of-type(2) a").text()
+    form = res.forms["next"]
+    form["page"] = 2
+    res = form.submit()
+    assert user_name not in res.pyquery(
+        ".users tbody tr td:nth-of-type(2) a"
+    ).text().split(" ")
     for user in users:
         user.delete()
 
@@ -28,13 +31,13 @@ def test_user_list_pagination(testclient, logged_admin):
 
 def test_user_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/users")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/users", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
     )
 
     res = testclient.get("/users")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/users", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
     )

@@ -40,11 +40,12 @@ def test_client_list_pagination(testclient, logged_admin, client, other_client):
     ).text()
     assert client_name
 
-    form = res.forms["pagination"]
-    res = form.submit(name="page", value="2")
-    assert (
-        client_name not in res.pyquery(".clients tbody tr td:nth-of-type(2) a").text()
-    )
+    form = res.forms["next"]
+    form["page"] = 2
+    res = form.submit()
+    assert client_name not in res.pyquery(
+        ".clients tbody tr td:nth-of-type(2) a"
+    ).text().split(" ")
     for client in clients:
         client.delete()
 
@@ -54,13 +55,13 @@ def test_client_list_pagination(testclient, logged_admin, client, other_client):
 
 def test_client_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/admin/client")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/admin/client", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
     )
 
     res = testclient.get("/admin/client")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/admin/client", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
     )

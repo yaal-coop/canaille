@@ -41,12 +41,12 @@ def test_token_list_pagination(testclient, logged_admin, client):
     token_id = res.pyquery(".tokens tbody tr td:nth-of-type(1) a").text()
     assert token_id
 
-    form = res.forms["pagination"]
-    res = form.submit(name="page", value="2")
-    assert (
-        token_id
-        not in res.pyquery(".tokens tbody tr:nth-of-type(1) td:nth-of-type(1) a").text()
-    )
+    form = res.forms["next"]
+    form["page"] = 2
+    res = form.submit()
+    assert token_id not in res.pyquery(
+        ".tokens tbody tr:nth-of-type(1) td:nth-of-type(1) a"
+    ).text().split(" ")
     for token in tokens:
         token.delete()
 
@@ -56,13 +56,13 @@ def test_token_list_pagination(testclient, logged_admin, client):
 
 def test_token_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/admin/token")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/admin/token", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
     )
 
     res = testclient.get("/admin/token")
-    form = res.forms["pagination"]
+    form = res.forms["next"]
     testclient.post(
         "/admin/token", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
     )
