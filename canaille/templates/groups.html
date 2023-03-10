@@ -1,6 +1,10 @@
 {% extends theme('base.html') %}
 {% import "macro/table.html" as table %}
 
+{% block title %}
+    {% trans %}Groups{% endtrans %}
+{% endblock %}
+
 {% block content %}
     <div class="ui segment">
         <a class="ui primary button" href="{{ url_for('groups.create_group') }}">{% trans %}Add a group{% endtrans %}</a>

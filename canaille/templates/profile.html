@@ -1,6 +1,16 @@
 {% extends theme('base.html') %}
 {% import 'macro/fomanticui.html' as sui %}
 
+{% block title %}
+    {% if not edited_user %}
+        {% trans %}User creation{% endtrans %}
+    {% elif user.uid == edited_user.uid %}
+        {% trans %}My profile{% endtrans %}
+    {% else %}
+        {% trans %}User profile edition{% endtrans %}
+    {% endif %}
+{% endblock %}
+
 {% block script %}
     <script src="/static/js/confirm.js"></script>
     <script src="/static/js/profile.js"></script>

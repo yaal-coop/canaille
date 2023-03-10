@@ -1,6 +1,10 @@
 {% extends theme('base.html') %}
 {% import 'macro/fomanticui.html' as sui %}
 
+{% block title %}
+    {% trans %}About Canaille{% endtrans %}
+{% endblock %}
+
 {% block content %}
     <div class="ui clearing segment">
         <a href="{{ url_for('account.index') }}">
