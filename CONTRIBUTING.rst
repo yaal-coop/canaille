@@ -3,7 +3,16 @@ Contribute
 
 Contributions are welcome!
 
-The repository is hosted at https://gitlab.com/yaal/canaille
+The repository is hosted at `gitlab.com/yaal/canaille <https://gitlab.com/yaal/canaille>`_.
+
+Development environment
+-----------------------
+
+.. code-block:: console
+
+    python3 setup.py compile_catalog
+    cd demo
+    ./run.sh # or `docker-compose up` to run it with docker
 
 .. warning ::
 
@@ -16,32 +25,11 @@ The repository is hosted at https://gitlab.com/yaal/canaille
         sudo apt install --yes apparmor-utils
         sudo aa-complain /usr/sbin/slapd
 
-Unit tests
-----------
-
-To run the tests, you just need to run `tox`. Everything must be green before patches get merged.
-
-The test coverage is 100%, patches won't be accepted if not entirely covered.
-
-Style
------
-
-We use `black` to format our code. Please apply `black` on your patches before submiting them.
-
-Development environment
------------------------
-
-.. code-block:: console
-
-    python3 setup.py compile_catalog
-    cd demo
-    ./run.sh # or `docker-compose up` to run it with docker
-
 Then you have access to:
 
-- A canaille server at http://localhost:5000
-- A dummy client at http://localhost:5001
-- Another dummy client at http://localhost:5002
+- A canaille server at `localhost:5000 <http://localhost:5000>`_
+- A dummy client at `localhost:5001 <http://localhost:5001>`_
+- Another dummy client at `localhost:5002 <http://localhost:5002>`_
 
 The canaille server has some default users:
 
@@ -49,6 +37,39 @@ The canaille server has some default users:
 - A moderator user which login and password are **moderator**;
 - An admin user which admin and password are **admin**.
 
+Unit tests
+----------
+
+To run the tests, you just need to run `tox`. Everything must be green before patches get merged.
+
+The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the
+test coverage with ``tox -e coverage``.
+
+Code style
+----------
+
+We use `black` along with other tools to format our code.
+Please run ``tox -e style`` on your patches before submiting them.
+In order to perform a style check and correction at each commit you can use our
+`pre-commit <https://pre-commit.com/>`_ configuration with ``pre-commit install``.
+
+Front
+-----
+
+The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_ CSS framework.
+The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
+
+- Using Javascript in the interface is tolerated, but the whole website MUST be accessible
+  for browsers without Javascript support.
+- Because of Fomantic UI we have a dependency to jQuery, however new contributions should
+  not depend on jQuery at all.
+  See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_.
+
+Translation
+-----------
+
+Translations are done with `Weblate <https://hosted.weblate.org/engage/canaille/>`_,
+so all translation contributions should be done there.
 
 Documentation
 -------------
@@ -61,8 +82,3 @@ The documentation is generated when the tests run:
     tox -e doc
 
 The generated documentation is in `./build/sphinx/html/` directory.
-
-Translation
------------
-
-Translations are done with `Weblate <https://hosted.weblate.org/engage/canaille/>`_
