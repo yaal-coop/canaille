@@ -64,27 +64,23 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
 
 
 def test_set_groups(app, user, foo_group, bar_group):
-    foo_ids = {m.id for m in foo_group.get_members()}
-    assert user.id in foo_ids
-    assert user.groups[0].id == foo_group.id
+    assert user in foo_group.get_members()
+    assert user.groups[0] == foo_group
 
     user.load_groups()
     user.set_groups([foo_group, bar_group])
 
     bar_group = Group.get(bar_group.id)
-    bar_ids = {m.id for m in bar_group.get_members()}
-    assert user.id in bar_ids
-    assert user.groups[1].id == bar_group.id
+    assert user in bar_group.get_members()
+    assert user.groups[1] == bar_group
 
     user.load_groups()
     user.set_groups([foo_group])
 
     foo_group = Group.get(foo_group.id)
     bar_group = Group.get(bar_group.id)
-    foo_ids = {m.id for m in foo_group.get_members()}
-    bar_ids = {m.id for m in bar_group.get_members()}
-    assert user.id in foo_ids
-    assert user.id not in bar_ids
+    assert user in foo_group.get_members()
+    assert user not in bar_group.get_members()
 
 
 def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
@@ -99,15 +95,13 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user.load_groups()
     user.set_groups([foo_group])
 
-    foo_ids = {m.id for m in foo_group.get_members()}
-    assert user.id in foo_ids
+    assert user in foo_group.get_members()
 
     user.load_groups()
     user.set_groups([])
 
     foo_group = Group.get(foo_group.id)
-    foo_ids = {m.id for m in foo_group.get_members()}
-    assert user.id not in foo_ids
+    assert user.id not in foo_group.get_members()
 
     user.delete()
 
@@ -134,8 +128,8 @@ def test_moderator_can_create_edit_and_delete_group(
     bar_group = Group.get("bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo"]
-    assert [member.id for member in bar_group.get_members()] == [
-        logged_moderator.id
+    assert bar_group.get_members() == [
+        logged_moderator
     ]  # Group cannot be empty so creator is added in it
     assert "bar" in res.text
 
