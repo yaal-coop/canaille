@@ -51,21 +51,17 @@ wtforms = "<4"
 
 "sentry-sdk" = {version = "<2", optional=true, extras=["flask"]}
 
-"sphinx" = {version = "*", optional=true}
-"sphinx-rtd-theme" = {version = "*", optional=true}
-"sphinx-issues" = {version = "*", optional=true}
+[tool.poetry.group.doc]
+optional = true
 
-[tool.poetry.extras]
-sentry = ["sentry-sdk"]
-doc = [
-    "sphinx",
-    "sphinx-rtd-theme",
-    "sphinx-issues",
-]
+[tool.poetry.group.doc.dependencies]
+"sphinx" = "*"
+"sphinx-rtd-theme" = "*"
+"sphinx-issues" = "*"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 coverage = {version = "*", extras=["toml"]}
-faker = "^17.3.0"
+faker = "*"
 flask-webtest = "*"
 freezegun = "*"
 mock = "*"
@@ -77,6 +73,23 @@ pytest-coverage = "*"
 pytest-httpserver = "*"
 slapd = "*"
 smtpdfix = "*"
+
+[tool.poetry.group.demo]
+optional = true
+
+[tool.poetry.group.demo.dependencies]
+faker = "*"
+honcho = "*"
+slapd = "*"
+requests = "*"
+
+[tool.poetry.extras]
+sentry = ["sentry-sdk"]
+doc = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-issues",
+]
 
 [tool.poetry.scripts]
 canaille = "canaille.commands:cli"
@@ -129,7 +142,7 @@ commands =
 
 [testenv:doc]
 commands =
-    poetry install --extras doc
+    poetry install --only doc
     poetry run sphinx-build doc build/sphinx/html
 
 [testenv:coverage]

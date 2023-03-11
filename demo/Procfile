@@ -1,4 +1,4 @@
-slapd: ./slapd.sh
+slapd: env BIN=$BIN:/usr/bin:/usr/sbin python ldap-server.py
 canaille: env FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 CONFIG=conf/canaille.toml FLASK_APP=../../canaille flask run --extra-files conf/canaille.toml
 client1: env FLASK_DEBUG=1 CONFIG=../conf/client1.cfg FLASK_APP=client flask run --port=5001
 client2: env FLASK_DEBUG=1 CONFIG=../conf/client2.cfg FLASK_APP=client flask run --port=5002

@@ -8,13 +8,10 @@ To check out how canaille looks like, or to start contributions, just run the de
 
 You need to have `OpenLDAP` somewhere in your system.
 
-You can either:
-- install it with your distro packages *(for instance `sudo apt install slapd ldap-utils` with Ubuntu)*.
-  it is not required to launch the system ldap service.
-- have `docker` plus `docker-compose` installed on your system, the `./run.sh` script will download and
-  run an OpenLDAP image.
+You need to install it with your distro packages *(for instance `sudo apt install slapd
+ldap-utils` with Ubuntu)*. It is not required to launch the system ldap service.
 
-canaille depends on [python-ldap](https://github.com/python-ldap/python-ldap), and this package needs
+Canaille depends on [python-ldap](https://github.com/python-ldap/python-ldap), and this package needs
 some headers to be installed on your system to be built. For instance on Ubuntu you can install this:
 `sudo apt install libsasl2-dev python-dev libldap2-dev libssl-dev`. More info
 [on this SO ticket](https://stackoverflow.com/questions/4768446/i-cant-install-python-ldap).
