@@ -132,14 +132,19 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 PERMISSIONS = ["edit_self", "use_oidc"]
 READ = ["uid", "groups"]
 WRITE = [
+    "jpegPhoto",
     "givenName",
     "sn",
     "displayName",
     "userPassword",
     "telephoneNumber",
-    "jpegPhoto",
     "mail",
     "labeledURI",
+    "postalAddress",
+    "street",
+    "postalCode",
+    "l",
+    "st",
     "preferredLanguage",
     "employeeNumber",
     "departmentNumber",

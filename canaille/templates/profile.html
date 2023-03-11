@@ -148,6 +148,24 @@
                 {% block postal_address_field scoped %}{{ render_field(form.postalAddress) }}{% endblock %}
             {% endif %}
 
+            {% if "street" in form %}
+                {% block street_field scoped %}{{ render_field(form.street) }}{% endblock %}
+            {% endif %}
+
+            <div class="fluid equal width fields">
+                {% if "postalCode" in form %}
+                    {% block postal_code_field scoped %}{{ render_field(form.postalCode) }}{% endblock %}
+                {% endif %}
+
+                {% if "l" in form %}
+                    {% block locality_field scoped %}{{ render_field(form.l) }}{% endblock %}
+                {% endif %}
+
+                {% if "st" in form %}
+                    {% block region_field scoped %}{{ render_field(form.st) }}{% endblock %}
+                {% endif %}
+            </div>
+
             {% if "departmentNumber" in form and "employeeNumber" in form %}
                 <div class="two fields">
             {% endif %}

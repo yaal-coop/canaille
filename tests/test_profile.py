@@ -102,6 +102,10 @@ def test_edition(
     res.form["mail"] = "email@mydomain.tld"
     res.form["telephoneNumber"] = "555-666-777"
     res.form["postalAddress"] = "postal_address"
+    res.form["street"] = "street"
+    res.form["postalCode"] = "postal_code"
+    res.form["l"] = "locality"
+    res.form["st"] = "region"
     res.form["employeeNumber"] = 666
     res.form["departmentNumber"] = 1337
     res.form["groups"] = [
@@ -117,17 +121,21 @@ def test_edition(
     logged_user = User.get(id=logged_user.id)
     logged_user.load_groups()
 
-    assert ["user"] == logged_user.uid
-    assert ["given_name"] == logged_user.givenName
-    assert ["family_name"] == logged_user.sn
-    assert "display_name" == logged_user.displayName
-    assert ["email@mydomain.tld"] == logged_user.mail
-    assert ["555-666-777"] == logged_user.telephoneNumber
-    assert ["postal_address"] == logged_user.postalAddress
-    assert "fr" == logged_user.preferredLanguage
-    assert "666" == logged_user.employeeNumber
-    assert ["1337"] == logged_user.departmentNumber
-    assert [jpeg_photo] == logged_user.jpegPhoto
+    assert logged_user.uid == ["user"]
+    assert logged_user.givenName == ["given_name"]
+    assert logged_user.sn == ["family_name"]
+    assert logged_user.displayName == "display_name"
+    assert logged_user.mail == ["email@mydomain.tld"]
+    assert logged_user.telephoneNumber == ["555-666-777"]
+    assert logged_user.postalAddress == ["postal_address"]
+    assert logged_user.street == ["street"]
+    assert logged_user.postalCode == ["postal_code"]
+    assert logged_user.l == ["locality"]
+    assert logged_user.st == ["region"]
+    assert logged_user.preferredLanguage == "fr"
+    assert logged_user.employeeNumber == "666"
+    assert logged_user.departmentNumber == ["1337"]
+    assert logged_user.jpegPhoto == [jpeg_photo]
 
     foo_group.reload()
     bar_group.reload()
