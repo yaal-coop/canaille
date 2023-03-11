@@ -8,11 +8,40 @@ The repository is hosted at `gitlab.com/yaal/canaille <https://gitlab.com/yaal/c
 Development environment
 -----------------------
 
+You can either run the demo locally or with docker.
+After having launched the demo you have access to several services:
+
+- A canaille server at `localhost:5000 <http://localhost:5000>`_
+- A dummy client at `localhost:5001 <http://localhost:5001>`_
+- Another dummy client at `localhost:5002 <http://localhost:5002>`_
+
+The canaille server has some default users:
+
+- A regular user which login and password are **user**;
+- A moderator user which login and password are **moderator**;
+- An admin user which admin and password are **admin**;
+- A new user which login is **james**. This user has no password yet,
+  and his first attempt to log-in would result in sending a password initialization
+  email (if a smtp server is configurated).
+
+
+Docker environment
+~~~~~~~~~~~~~~~~~~
+
+If you want to develop with docker, use:
+
 .. code-block:: console
 
-    python3 setup.py compile_catalog
-    cd demo
-    ./run.sh # or `docker-compose up` to run it with docker
+    cd demo && docker-compose up
+
+Local environment
+~~~~~~~~~~~~~~~~~
+
+If you want to develop locally, use:
+
+.. code-block:: console
+
+    ./demo/run.sh
 
 .. warning ::
 
@@ -25,17 +54,14 @@ Development environment
         sudo apt install --yes apparmor-utils
         sudo aa-complain /usr/sbin/slapd
 
-Then you have access to:
+Populate the database
+~~~~~~~~~~~~~~~~~~~~~
 
-- A canaille server at `localhost:5000 <http://localhost:5000>`_
-- A dummy client at `localhost:5001 <http://localhost:5001>`_
-- Another dummy client at `localhost:5002 <http://localhost:5002>`_
+You can populate the database with randomly generated users and groups with the ``populate`` command:
 
-The canaille server has some default users:
+.. code-block:: console
 
-- A regular user which login and password are **user**;
-- A moderator user which login and password are **moderator**;
-- An admin user which admin and password are **admin**.
+    env CONFIG=conf/canaille.toml poetry run canaille populate
 
 Unit tests
 ----------
@@ -81,4 +107,4 @@ The documentation is generated when the tests run:
 
     tox -e doc
 
-The generated documentation is in `./build/sphinx/html/` directory.
+The generated documentation is located at `./build/sphinx/html`.

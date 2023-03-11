@@ -21,4 +21,7 @@ if ! type poetry > /dev/null 2>&1; then
 fi
 
 poetry install --with demo --without dev
-env "PWD=$DIR" poetry run honcho start
+
+pushd "$DIR" > /dev/null 2>&1 || exit
+env poetry run honcho start
+popd || exit
