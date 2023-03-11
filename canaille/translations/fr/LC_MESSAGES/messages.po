@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-11 12:54+0100\n"
-"PO-Revision-Date: 2023-03-09 22:06+0000\n"
+"PO-Revision-Date: 2023-03-11 19:13+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
+"fr/>\n"
 "Language: fr\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/canaille/canaille/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -317,18 +318,16 @@ msgid "Delete the photo"
 msgstr "Supprimer la photo"
 
 #: canaille/forms.py:204
-#, fuzzy
 msgid "Employee number"
-msgstr "Numéro de téléphone"
+msgstr "Numéro de l'employé"
 
 #: canaille/forms.py:206 canaille/forms.py:212
 msgid "1234"
 msgstr "1234"
 
 #: canaille/forms.py:210
-#, fuzzy
 msgid "Department number"
-msgstr "Numéro de téléphone"
+msgstr "Numéro du service"
 
 #: canaille/forms.py:216
 msgid "Website"
@@ -1468,7 +1467,6 @@ msgid "Token"
 msgstr "Jeton"
 
 #: canaille/themes/default/base.html:10
-#, fuzzy
 msgid "Authorization interface"
 msgstr "Interface de gestion des autorisations"
 
