@@ -21,7 +21,10 @@ def setup_ldap_models(config):
     User.rdn_attribute = config["LDAP"].get(
         "USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE
     )
-    User.object_class = [config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)]
+    object_class = config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)
+    User.ldap_object_class = (
+        object_class if isinstance(object_class, list) else [object_class]
+    )
 
     group_base = (
         config["LDAP"]
@@ -32,7 +35,10 @@ def setup_ldap_models(config):
     Group.rdn_attribute = config["LDAP"].get(
         "GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE
     )
-    Group.object_class = [config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS)]
+    object_class = config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS)
+    Group.ldap_object_class = (
+        object_class if isinstance(object_class, list) else [object_class]
+    )
 
 
 def setup_backend(app):

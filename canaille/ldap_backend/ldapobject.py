@@ -35,14 +35,14 @@ class LDAPObjectMetaclass(type):
 
     def __new__(cls, name, bases, attrs):
         klass = super().__new__(cls, name, bases, attrs)
-        if attrs.get("object_class"):
-            for oc in attrs["object_class"]:
+        if attrs.get("ldap_object_class"):
+            for oc in attrs["ldap_object_class"]:
                 cls.ldap_to_python_class[oc] = klass
         return klass
 
     def __setattr__(cls, name, value):
         super().__setattr__(name, value)
-        if name == "object_class":
+        if name == "ldap_object_class":
             for oc in value:
                 cls.ldap_to_python_class[oc] = cls
 
@@ -98,14 +98,12 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     root_dn = None
     rdn_attribute = None
     attribute_table = None
-    object_class = None
+    ldap_object_class = None
 
     def __init__(self, dn=None, **kwargs):
         self.attrs = {}
         self.changes = {}
         self.exists = False
-
-        kwargs.setdefault("objectClass", self.object_class)
 
         for name, value in kwargs.items():
             setattr(self, name, value)
@@ -298,10 +296,12 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             base = f"{cls.rdn_attribute}={base},{cls.base},{cls.root_dn}"
 
         class_filter = (
-            "".join([f"(objectClass={oc})" for oc in cls.object_class])
-            if getattr(cls, "object_class")
+            "".join([f"(objectClass={oc})" for oc in cls.ldap_object_class])
+            if getattr(cls, "ldap_object_class")
             else ""
         )
+        if class_filter:
+            class_filter = f"(|{class_filter})"
         arg_filter = ""
         kwargs = python_attrs_to_ldap(
             {
@@ -343,7 +343,9 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     @classmethod
     def update_ldap_attributes(cls):
         all_object_classes = cls.ldap_object_classes()
-        this_object_classes = {all_object_classes[name] for name in cls.object_class}
+        this_object_classes = {
+            all_object_classes[name] for name in cls.ldap_object_class
+        }
         done = set()
 
         cls._may = []
@@ -370,6 +372,9 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     def save(self, conn=None):
         conn = conn or self.ldap_connection()
+
+        setattr(self, "objectClass", self.ldap_object_class)
+
         # Object already exists in the LDAP database
         if self.exists:
             deletions = [

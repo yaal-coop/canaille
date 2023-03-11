@@ -19,10 +19,6 @@ class User(LDAPObject):
         self.write = set()
         self.permissions = set()
         self._groups = None
-        kwargs.setdefault(
-            "objectClass",
-            current_app.config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS),
-        )
         super().__init__(*args, **kwargs)
 
     @classmethod
@@ -187,13 +183,6 @@ class Group(LDAPObject):
         "members": "member",
         "description": "description",
     }
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault(
-            "objectClass",
-            current_app.config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS),
-        )
-        super().__init__(*args, **kwargs)
 
     @property
     def display_name(self):

@@ -87,6 +87,7 @@ LDAP
 
 :USER_CLASS:
     *Optional.* The LDAP object class to filter existing users, and create new users.
+    Can be a list of classes.
     Defaults to ``inetOrgPerson``.
 
 :USER_ID_ATTRIBUTE:
@@ -105,6 +106,7 @@ LDAP
 
 :GROUP_CLASS:
     *Optional.* The LDAP object class to filter existing groups, and create new groups.
+    Can be a list of classes.
     Defaults to ``groupOfNames``
 
 :GROUP_ID_ATTRIBUTE:

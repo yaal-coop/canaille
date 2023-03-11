@@ -8,7 +8,7 @@ from canaille.ldap_backend.ldapobject import LDAPObject
 
 
 class Client(LDAPObject, ClientMixin):
-    object_class = ["oauthClient"]
+    ldap_object_class = ["oauthClient"]
     base = "ou=clients,ou=oauth"
     rdn_attribute = "oauthClientID"
 
@@ -110,7 +110,7 @@ class Client(LDAPObject, ClientMixin):
 
 
 class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
-    object_class = ["oauthAuthorizationCode"]
+    ldap_object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     rdn_attribute = "oauthAuthorizationCodeID"
     attribute_table = {
@@ -151,7 +151,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
 
 
 class Token(LDAPObject, TokenMixin):
-    object_class = ["oauthToken"]
+    ldap_object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     rdn_attribute = "oauthTokenID"
     attribute_table = {
@@ -213,7 +213,7 @@ class Token(LDAPObject, TokenMixin):
 
 
 class Consent(LDAPObject):
-    object_class = ["oauthConsent"]
+    ldap_object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
     attribute_table = {
