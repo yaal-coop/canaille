@@ -109,6 +109,7 @@ def configuration(slapd_server, smtpd):
                     "employeeNumber",
                     "preferredLanguage",
                     "departmentNumber",
+                    "title",
                 ],
             },
             "ADMIN": {

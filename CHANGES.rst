@@ -17,6 +17,7 @@ Added
 - Server side pagination. :issue:`114` :pr:`111`
 - Department number support. :issue:`129`
 - Address edition support (but not in the OIDC claims yet) :pr:`112`
+- Title edition support :pr:`113`
 
 Fixed
 *****
