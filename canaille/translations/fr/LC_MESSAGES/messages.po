@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-11 20:12+0100\n"
-"PO-Revision-Date: 2023-03-11 19:13+0000\n"
+"PO-Revision-Date: 2023-03-11 21:35+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
+"fr/>\n"
 "Language: fr\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/canaille/canaille/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -305,35 +306,32 @@ msgid "Address"
 msgstr "Adresse"
 
 #: canaille/forms.py:182
-#, fuzzy
 msgid "132, Foobar Street, Gotham City 12401, XX"
-msgstr "132, rue du Lorem Ipsum - 99000 Gotham City"
+msgstr "132, rue du Lorem Ipsum - 99000 Gotham City - XX"
 
 #: canaille/forms.py:186
-#, fuzzy
 msgid "Street"
-msgstr "Secret"
+msgstr "Rue"
 
 #: canaille/forms.py:188
-#, fuzzy
 msgid "132, Foobar Street"
-msgstr "132, rue du Lorem Ipsum - 99000 Gotham City"
+msgstr "132, rue du Lorem Ipsum"
 
 #: canaille/forms.py:192
 msgid "Postal Code"
-msgstr ""
+msgstr "Code postal"
 
 #: canaille/forms.py:198
 msgid "Locality"
-msgstr ""
+msgstr "Ville"
 
 #: canaille/forms.py:200 canaille/forms.py:206
 msgid "Gotham City"
-msgstr ""
+msgstr "Gotham City"
 
 #: canaille/forms.py:204
 msgid "Region"
-msgstr ""
+msgstr "Région"
 
 #: canaille/forms.py:210
 msgid "Photo"
