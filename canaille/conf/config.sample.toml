@@ -80,7 +80,7 @@ USER_BASE = "ou=users,dc=mydomain,dc=tld"
 # USER_CLASS = "inetOrgPerson"
 
 # The attribute to identify an object in the User dn.
-# USER_ID_ATTRIBUTE = "cn"
+# USER_ID_ATTRIBUTE = "uid"
 
 # Filter to match users on sign in. Supports a variable
 # {login} that can be used to compare against several fields:
