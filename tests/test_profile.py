@@ -103,6 +103,7 @@ def test_edition(
     res.form["telephoneNumber"] = "555-666-777"
     res.form["postalAddress"] = "postal_address"
     res.form["employeeNumber"] = 666
+    res.form["departmentNumber"] = 1337
     res.form["groups"] = [
         "cn=foo,ou=groups,dc=mydomain,dc=tld",
         "cn=bar,ou=groups,dc=mydomain,dc=tld",
@@ -125,6 +126,7 @@ def test_edition(
     assert ["postal_address"] == logged_user.postalAddress
     assert "fr" == logged_user.preferredLanguage
     assert "666" == logged_user.employeeNumber
+    assert ["1337"] == logged_user.departmentNumber
     assert [jpeg_photo] == logged_user.jpegPhoto
 
     foo_group.reload()

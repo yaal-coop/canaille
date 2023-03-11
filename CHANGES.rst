@@ -15,6 +15,7 @@ Added
   random users generated with faker. :pr:`105`
 - SMTP SSL support. :pr:`108`
 - Server side pagination. :issue:`114` :pr:`111`
+- Department number support. :issue:`129`
 
 Fixed
 *****

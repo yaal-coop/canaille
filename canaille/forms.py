@@ -201,7 +201,13 @@ PROFILE_FORM_FIELDS = dict(
         ],
     ),
     employeeNumber=wtforms.StringField(
-        _("Number"),
+        _("Employee number"),
+        render_kw={
+            "placeholder": _("1234"),
+        },
+    ),
+    departmentNumber=wtforms.StringField(
+        _("Department number"),
         render_kw={
             "placeholder": _("1234"),
         },

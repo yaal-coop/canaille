@@ -148,8 +148,20 @@
                 {% block postal_address_field scoped %}{{ render_field(form.postalAddress) }}{% endblock %}
             {% endif %}
 
+            {% if "departmentNumber" in form and "employeeNumber" in form %}
+                <div class="two fields">
+            {% endif %}
+
+            {% if "departmentNumber" in form %}
+                {% block department_number_field scoped %}{{ render_field(form.departmentNumber) }}{% endblock %}
+            {% endif %}
+
             {% if "employeeNumber" in form %}
                 {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
+            {% endif %}
+
+            {% if "departmentNumber" in form and "employeeNumber" in form %}
+                </div>
             {% endif %}
 
             {% if "labeledURI" in form %}

@@ -8,6 +8,7 @@ uid: admin
 mail: admin@mydomain.tld
 telephoneNumber: 555-000-000
 employeeNumber: 1000
+departmentNumber: east
 labeledURI: https://admin.example
 postalAddress: 123, Admin Lane - Gotham City 12345
 userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
@@ -23,6 +24,7 @@ uid: moderator
 mail: moderator@mydomain.tld
 telephoneNumber: 555-000-002
 employeeNumber: 1002
+departmentNumber: west
 labeledURI: https://moderator.example
 userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
 displayName: 👮 Jack 👮
@@ -37,6 +39,7 @@ uid: user
 mail: user@mydomain.tld
 telephoneNumber: 555-000-001
 employeeNumber: 1001
+departmentNumber: west
 labeledURI: https://user.example
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 displayName: Johnny

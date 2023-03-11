@@ -104,6 +104,7 @@ def configuration(slapd_server, smtpd):
                     "postalAddress",
                     "employeeNumber",
                     "preferredLanguage",
+                    "departmentNumber",
                 ],
             },
             "ADMIN": {

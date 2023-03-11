@@ -143,6 +143,8 @@ WRITE = [
     "labeledURI",
     "postalAddress",
     "preferredLanguage",
+    "employeeNumber",
+    "departmentNumber",
 ]
 
 [ACL.ADMIN]

@@ -142,6 +142,8 @@ WRITE = [
     "mail",
     "labeledURI",
     "preferredLanguage",
+    "employeeNumber",
+    "departmentNumber",
 ]
 
 [ACL.ADMIN]
