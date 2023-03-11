@@ -130,7 +130,7 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
 # object that users will be able to read and/or write.
 [ACL.DEFAULT]
-PERMISSIONS = ["use_oidc"]
+PERMISSIONS = ["edit_self", "use_oidc"]
 READ = ["uid", "groups"]
 WRITE = [
     "jpegPhoto",

@@ -5,7 +5,7 @@
 SECRET_KEY = "change me before you go in production"
 
 # Your organization name.
-NAME = "Canaille"
+# NAME = "Canaille"
 
 # The interface on which canaille will be served
 # SERVER_NAME = "auth.mydomain.tld"
