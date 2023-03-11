@@ -8,6 +8,8 @@ class Syntax(str, Enum):
     # fmt: off
     BINARY =             "1.3.6.1.4.1.1466.115.121.1.5"
     BOOLEAN =            "1.3.6.1.4.1.1466.115.121.1.7"
+    CERTIFICATE =        "1.3.6.1.4.1.1466.115.121.1.8"
+    COUNTRY_STRING =     "1.3.6.1.4.1.1466.115.121.1.11"
     DISTINGUISHED_NAME = "1.3.6.1.4.1.1466.115.121.1.12"
     DIRECTORY_STRING =   "1.3.6.1.4.1.1466.115.121.1.15"
     FAX_IMAGE =          "1.3.6.1.4.1.1466.115.121.1.23"
@@ -20,6 +22,7 @@ class Syntax(str, Enum):
     POSTAL_ADDRESS =     "1.3.6.1.4.1.1466.115.121.1.41"
     PRINTABLE_STRING =   "1.3.6.1.4.1.1466.115.121.1.44"
     TELEPHONE_NUMBER =   "1.3.6.1.4.1.1466.115.121.1.50"
+    UTC_TIME =           "1.3.6.1.4.1.1466.115.121.1.53"
     # fmt: on
 
 
