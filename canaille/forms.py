@@ -204,7 +204,7 @@ PROFILE_FORM_FIELDS = dict(
     st=wtforms.StringField(
         _("Region"),
         render_kw={
-            "placeholder": _("Gotham City"),
+            "placeholder": _("North Pole"),
         },
     ),
     jpegPhoto=FileField(

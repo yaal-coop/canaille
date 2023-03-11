@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-11 22:33+0100\n"
+"POT-Creation-Date: 2023-03-11 22:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -314,12 +314,16 @@ msgstr ""
 msgid "Locality"
 msgstr ""
 
-#: canaille/forms.py:201 canaille/forms.py:207
+#: canaille/forms.py:201
 msgid "Gotham City"
 msgstr ""
 
 #: canaille/forms.py:205
 msgid "Region"
+msgstr ""
+
+#: canaille/forms.py:207
+msgid "North Pole"
 msgstr ""
 
 #: canaille/forms.py:211
