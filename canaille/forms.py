@@ -135,6 +135,7 @@ PROFILE_FORM_FIELDS = dict(
         validators=[wtforms.validators.DataRequired()],
     ),
     cn=wtforms.StringField(_("Name")),
+    title=wtforms.TelField(_("Title"), render_kw={"placeholder": _("Vice president")}),
     givenName=wtforms.StringField(
         _("Given name"),
         render_kw={

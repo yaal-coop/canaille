@@ -108,6 +108,7 @@ def test_edition(
     res.form["st"] = "region"
     res.form["employeeNumber"] = 666
     res.form["departmentNumber"] = 1337
+    res.form["title"] = "title"
     res.form["groups"] = [
         "cn=foo,ou=groups,dc=mydomain,dc=tld",
         "cn=bar,ou=groups,dc=mydomain,dc=tld",
@@ -135,6 +136,7 @@ def test_edition(
     assert logged_user.preferredLanguage == "fr"
     assert logged_user.employeeNumber == "666"
     assert logged_user.departmentNumber == ["1337"]
+    assert logged_user.title == ["title"]
     assert logged_user.jpegPhoto == [jpeg_photo]
 
     foo_group.reload()

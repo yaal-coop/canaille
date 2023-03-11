@@ -149,6 +149,7 @@ WRITE = [
     "preferredLanguage",
     "employeeNumber",
     "departmentNumber",
+    "title",
 ]
 
 [ACL.ADMIN]

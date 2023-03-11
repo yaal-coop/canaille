@@ -120,21 +120,27 @@
                         <div class="thirteen wide column">
             {% endif %}
 
-            <div class="two fields">
-                {% if "givenName" in form %}
-                    {% block given_name_field scoped %}{{ render_field(form.givenName) }}{% endblock %}
-                {% endif %}
+            {% if "givenName" in form or "sn" in form or "title" in fields %}
+                <div class="equal width fields">
+                    {% if "givenName" in form %}
+                        {% block given_name_field scoped %}{{ render_field(form.givenName) }}{% endblock %}
+                    {% endif %}
 
-                {% if "sn" in form %}
-                    {% block sn_field scoped %}{{ render_field(form.sn) }}{% endblock %}
-                {% endif %}
-            </div>
+                    {% if "sn" in form %}
+                        {% block sn_field scoped %}{{ render_field(form.sn) }}{% endblock %}
+                    {% endif %}
+                </div>
+            {% endif %}
 
             {% if "displayName" in form %}
                 {% block display_name_field scoped %}{{ render_field(form.displayName) }}{% endblock %}
             {% endif %}
 
             {% if "jpegPhoto" in form %}</div></div>{% endif %}
+
+            {% if "title" in form %}
+                {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
+            {% endif %}
 
             {% if "mail" in form %}
                 {% block mail_field scoped %}{{ render_field(form.mail) }}{% endblock %}
@@ -152,7 +158,7 @@
                 {% block street_field scoped %}{{ render_field(form.street) }}{% endblock %}
             {% endif %}
 
-            <div class="fluid equal width fields">
+            <div class="equal width fields">
                 {% if "postalCode" in form %}
                     {% block postal_code_field scoped %}{{ render_field(form.postalCode) }}{% endblock %}
                 {% endif %}
