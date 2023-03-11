@@ -179,7 +179,31 @@ PROFILE_FORM_FIELDS = dict(
     postalAddress=wtforms.StringField(
         _("Address"),
         render_kw={
-            "placeholder": _("132, Foobar Street, Gotham City 12401"),
+            "placeholder": _("132, Foobar Street, Gotham City 12401, XX"),
+        },
+    ),
+    street=wtforms.StringField(
+        _("Street"),
+        render_kw={
+            "placeholder": _("132, Foobar Street"),
+        },
+    ),
+    postalCode=wtforms.StringField(
+        _("Postal Code"),
+        render_kw={
+            "placeholder": "12401",
+        },
+    ),
+    l=wtforms.StringField(
+        _("Locality"),
+        render_kw={
+            "placeholder": _("Gotham City"),
+        },
+    ),
+    st=wtforms.StringField(
+        _("Region"),
+        render_kw={
+            "placeholder": _("Gotham City"),
         },
     ),
     jpegPhoto=FileField(

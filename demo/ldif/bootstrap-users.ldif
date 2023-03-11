@@ -10,9 +10,13 @@ telephoneNumber: 555-000-000
 employeeNumber: 1000
 departmentNumber: east
 labeledURI: https://admin.example
-postalAddress: 123, Admin Lane - Gotham City 12345
 userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
 displayName: Jane.D
+postalAddress: 123, Admin Lane - Gotham City 12345
+street: Admin Lane
+postalCode: 12345
+l: Gotham City
+st: North Pole
 
 dn: uid=moderator,ou=users,dc=mydomain,dc=tld
 objectclass: top
