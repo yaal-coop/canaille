@@ -85,11 +85,6 @@ requests = "*"
 
 [tool.poetry.extras]
 sentry = ["sentry-sdk"]
-doc = [
-    "sphinx",
-    "sphinx-rtd-theme",
-    "sphinx-issues",
-]
 
 [tool.poetry.scripts]
 canaille = "canaille.commands:cli"
