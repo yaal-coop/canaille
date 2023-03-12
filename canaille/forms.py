@@ -122,10 +122,12 @@ class FirstLoginForm(FlaskForm):
 
 
 def available_language_choices():
-    return [("auto", _("Automatic"))] + [
+    languages = [
         (lang_code, native_language_name_from_code(lang_code))
         for lang_code in g.available_language_codes
     ]
+    languages.sort()
+    return [("auto", _("Automatic"))] + languages
 
 
 PROFILE_FORM_FIELDS = dict(
