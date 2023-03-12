@@ -58,6 +58,33 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
     assert user.name not in res
 
 
+def test_user_list_search_only_allowed_fields(
+    testclient, logged_admin, user, moderator
+):
+    res = testclient.get("/users")
+    assert "3 items" in res
+    assert moderator.name in res
+    assert user.name in res
+
+    form = res.forms["search"]
+    form["query"] = "user"
+    res = form.submit()
+
+    assert "1 items" in res, res.text
+    assert user.name in res
+    assert moderator.name not in res
+
+    testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("uid")
+
+    form = res.forms["search"]
+    form["query"] = "user"
+    res = form.submit()
+
+    assert "0 items" in res, res.text
+    assert user.name not in res
+    assert moderator.name not in res
+
+
 def test_edition_permission(
     testclient,
     slapd_server,

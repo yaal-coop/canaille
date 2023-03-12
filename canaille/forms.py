@@ -44,11 +44,11 @@ def existing_login(form, field):
 
 
 class TableForm(FlaskForm):
-    def __init__(self, cls=None, page_size=25, filter=None, **kwargs):
+    def __init__(self, cls=None, page_size=25, fields=None, filter=None, **kwargs):
         filter = filter or {}
         super().__init__(**kwargs)
         if self.query.data:
-            self.items = cls.fuzzy(self.query.data, **filter)
+            self.items = cls.fuzzy(self.query.data, fields, **filter)
         else:
             self.items = cls.query(**filter)
 

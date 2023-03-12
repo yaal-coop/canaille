@@ -90,6 +90,9 @@ def test_filter(slapd_connection, foo_group, bar_group):
 def test_fuzzy(slapd_connection, user, moderator, admin):
     assert set(User.query()) == {user, moderator, admin}
     assert set(User.fuzzy("Jack")) == {moderator}
+    assert set(User.fuzzy("Jack", ["cn"])) == {moderator}
+    assert set(User.fuzzy("Jack", ["uid"])) == set()
+    assert set(User.fuzzy("Jack", ["uid", "cn"])) == {moderator}
     assert set(User.fuzzy("moderator")) == {moderator}
     assert set(User.fuzzy("oderat")) == {moderator}
     assert set(User.fuzzy("oDeRat")) == {moderator}

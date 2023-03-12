@@ -184,7 +184,7 @@ def firstlogin(uid):
 @bp.route("/users", methods=["GET", "POST"])
 @permissions_needed("manage_users")
 def users(user):
-    table_form = TableForm(User, formdata=request.form)
+    table_form = TableForm(User, fields=user.read | user.write, formdata=request.form)
     if request.form and not table_form.validate():
         abort(404)
 
