@@ -7,28 +7,35 @@ from canaille.models import User
 from faker.config import AVAILABLE_LOCALES
 
 
-def faker_generator():
-    locales = list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
-    return faker.Faker(locales)
+def faker_generator(locales=None):
+    locales = locales or list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
+    return [faker.Faker(locale) for locale in locales]
 
 
 def fake_users(nb=1):
-    fake = faker_generator()
-    locale = random.choice(fake.locales)
+    fakes = faker_generator()
     users = list()
     for _ in range(nb):
-        profile = fake.profile()
+        fake = random.choice(fakes)
+        name = fake.unique.name()
         user = User(
-            cn=profile["name"],
-            givenName=profile["name"].split(" ")[0],
-            sn=profile["name"].split(" ")[1],
-            uid=profile["username"],
-            mail=profile["mail"],
-            telephoneNumber=profile["ssn"],
-            labeledURI=profile["website"][0],
-            postalAddress=profile["residence"],
+            cn=name,
+            givenName=name.split(" ")[0],
+            sn=name.split(" ")[1],
+            uid=fake.unique.user_name(),
+            mail=fake.unique.email(),
+            telephoneNumber=fake.unique.ssn(),
+            labeledURI=fake.unique.uri(),
+            postalAddress=fake.unique.address(),
+            street=fake.street_name(),
+            postalCode=fake.postcode(),
+            l=fake.city(),
+            st=fake.state(),
+            employeeNumber=str(fake.unique.random_number()),
+            departmentNumber=fake.word(),
+            title=fake.job(),
             userPassword=fake.password(),
-            preferredLanguage=locale,
+            preferredLanguage=fake._locales[0],
         )
         user.save()
         users.append(user)
@@ -36,7 +43,7 @@ def fake_users(nb=1):
 
 
 def fake_groups(nb=1, nb_users_max=1):
-    fake = faker_generator()
+    fake = faker_generator(["en_US"])[0]
     users = User.query()
     groups = list()
     for _ in range(nb):
