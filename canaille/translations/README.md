@@ -1,3 +1,7 @@
+Translations are done with [weblate](https://hosted.weblate.org/projects/canaille/canaille/).
+Those commands are there as documentation, only the message extraction is needed for contributors.
+All the other steps are automatically done with Weblate.
+
 Extract the messages with:
 
 ```
