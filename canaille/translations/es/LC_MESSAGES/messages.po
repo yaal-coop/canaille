@@ -7,17 +7,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-03-11 20:12+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-03-11 22:37+0100\n"
 "PO-Revision-Date: 2023-03-11 19:13+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
+"canaille/es/>\n"
 "Language: es\n"
-"Language-Team: Spanish "
-"<https://hosted.weblate.org/projects/canaille/canaille/es/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -71,7 +71,7 @@ msgstr "Tu cuenta ya existe."
 msgid "You are already logged in, you cannot create an account."
 msgstr "Ya has iniciado sesión, no puedes crear una cuenta."
 
-#: canaille/account.py:336 canaille/forms.py:267 canaille/forms.py:329
+#: canaille/account.py:336 canaille/forms.py:268 canaille/forms.py:330
 #: canaille/templates/groups.html:5 canaille/templates/groups.html:16
 #: canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
@@ -88,16 +88,16 @@ msgstr "Cuenta creada correctamente."
 
 #: canaille/account.py:428
 msgid ""
-"A password initialization link has been sent at the user email address. "
-"It should be received within a few minutes."
+"A password initialization link has been sent at the user email address. It "
+"should be received within a few minutes."
 msgstr ""
-"Un enlace de inicialización de la contraseña se ha enviado a la dirección"
-" de correo electrónico del usuario. Debería recibirlo en algunos minutos."
+"Un enlace de inicialización de la contraseña se ha enviado a la dirección de "
+"correo electrónico del usuario. Debería recibirlo en algunos minutos."
 
 #: canaille/account.py:445
 msgid ""
-"A password reset link has been sent at the user email address. It should "
-"be received within a few minutes."
+"A password reset link has been sent at the user email address. It should be "
+"received within a few minutes."
 msgstr ""
 "Un enlace para restablecer la contraseña se ha enviado a la dirección de "
 "correo electrónico del usuario. Debería recibirlo en algunos minutos."
@@ -134,11 +134,11 @@ msgstr ""
 #: canaille/account.py:588
 #, python-format
 msgid ""
-"The user '%(user)s' does not have permissions to update their password. "
-"We cannot send a password reset email."
+"The user '%(user)s' does not have permissions to update their password. We "
+"cannot send a password reset email."
 msgstr ""
-"El usuario '%(user)s' no tiene permiso para actualizar su contraseña. No "
-"es posible enviarle un email para que restablezca su contraseña."
+"El usuario '%(user)s' no tiene permiso para actualizar su contraseña. No es "
+"posible enviarle un email para que restablezca su contraseña."
 
 #: canaille/account.py:603
 msgid "We encountered an issue while we sent the password recovery email."
@@ -159,7 +159,7 @@ msgid "Email"
 msgstr "Correo electrónico"
 
 #: canaille/admin.py:29 canaille/forms.py:75 canaille/forms.py:99
-#: canaille/forms.py:171 canaille/forms.py:323
+#: canaille/forms.py:172 canaille/forms.py:324
 msgid "jane@doe.com"
 msgstr "jane@doe.com"
 
@@ -187,7 +187,7 @@ msgstr "Invitación a {website_name}"
 msgid "John Doe"
 msgstr "John Doe"
 
-#: canaille/apputils.py:34 canaille/forms.py:134 canaille/forms.py:311
+#: canaille/apputils.py:34 canaille/forms.py:134 canaille/forms.py:312
 msgid "jdoe"
 msgstr "jdoe"
 
@@ -228,15 +228,15 @@ msgstr "El número de página no es válido"
 msgid "Login"
 msgstr "Usuario"
 
-#: canaille/forms.py:85 canaille/forms.py:108 canaille/forms.py:216
+#: canaille/forms.py:85 canaille/forms.py:108 canaille/forms.py:217
 msgid "Password"
 msgstr "Contraseña"
 
-#: canaille/forms.py:111 canaille/forms.py:220
+#: canaille/forms.py:111 canaille/forms.py:221
 msgid "Password confirmation"
 msgstr "Repetir contraseña"
 
-#: canaille/forms.py:114 canaille/forms.py:223
+#: canaille/forms.py:114 canaille/forms.py:224
 msgid "Password and confirmation do not match."
 msgstr "Las dos contraseñas no coinciden."
 
@@ -244,142 +244,153 @@ msgstr "Las dos contraseñas no coinciden."
 msgid "Automatic"
 msgstr "Automático"
 
-#: canaille/forms.py:133 canaille/forms.py:310
+#: canaille/forms.py:133 canaille/forms.py:311
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: canaille/forms.py:137 canaille/forms.py:282 canaille/forms.py:296
+#: canaille/forms.py:137 canaille/forms.py:283 canaille/forms.py:297
 #: canaille/oidc/forms.py:17 canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
 msgid "Name"
 msgstr "Nombre"
 
-#: canaille/forms.py:139
+#: canaille/forms.py:138
+msgid "Title"
+msgstr ""
+
+#: canaille/forms.py:138
+msgid "Vice president"
+msgstr ""
+
+#: canaille/forms.py:140
 msgid "Given name"
 msgstr "Nombre de pila"
 
-#: canaille/forms.py:141
+#: canaille/forms.py:142
 msgid "John"
 msgstr "John"
 
-#: canaille/forms.py:147
+#: canaille/forms.py:148
 msgid "Family Name"
 msgstr "Apellidos"
 
-#: canaille/forms.py:150
+#: canaille/forms.py:151
 msgid "Doe"
 msgstr "Doe"
 
-#: canaille/forms.py:156
+#: canaille/forms.py:157
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
-#: canaille/forms.py:159
+#: canaille/forms.py:160
 msgid "Johnny"
 msgstr "Johnny"
 
-#: canaille/forms.py:165 canaille/forms.py:316
+#: canaille/forms.py:166 canaille/forms.py:317
 msgid "Email address"
 msgstr "Correo electrónico"
 
-#: canaille/forms.py:167
+#: canaille/forms.py:168
 msgid ""
-"This email will be used as a recovery address to reset the password if "
-"needed"
+"This email will be used as a recovery address to reset the password if needed"
 msgstr ""
-"El correo electrónico será usado como dirección para recuperar la "
-"contraseña si es necesario"
+"El correo electrónico será usado como dirección para recuperar la contraseña "
+"si es necesario"
 
-#: canaille/forms.py:177
+#: canaille/forms.py:178
 msgid "Phone number"
 msgstr "Número de teléfono"
 
-#: canaille/forms.py:177
+#: canaille/forms.py:178
 msgid "555-000-555"
 msgstr "+34 999 111 222"
 
-#: canaille/forms.py:180
+#: canaille/forms.py:181
 msgid "Address"
 msgstr "Dirección"
 
-#: canaille/forms.py:182
+#: canaille/forms.py:183
 #, fuzzy
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "Calle Mayor, 21, 12345 Nueva Mombasa"
 
-#: canaille/forms.py:186
+#: canaille/forms.py:187
 #, fuzzy
 msgid "Street"
 msgstr "Clave"
 
-#: canaille/forms.py:188
+#: canaille/forms.py:189
 #, fuzzy
 msgid "132, Foobar Street"
 msgstr "Calle Mayor, 21, 12345 Nueva Mombasa"
 
-#: canaille/forms.py:192
+#: canaille/forms.py:193
 msgid "Postal Code"
 msgstr ""
 
-#: canaille/forms.py:198
+#: canaille/forms.py:199
 msgid "Locality"
 msgstr ""
 
-#: canaille/forms.py:200 canaille/forms.py:206
+#: canaille/forms.py:201
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/forms.py:204
+#: canaille/forms.py:205
 msgid "Region"
 msgstr ""
 
-#: canaille/forms.py:210
+#: canaille/forms.py:207
+msgid "North Pole"
+msgstr ""
+
+#: canaille/forms.py:211
 msgid "Photo"
 msgstr "Foto"
 
-#: canaille/forms.py:214 canaille/templates/profile.html:105
+#: canaille/forms.py:215 canaille/templates/profile.html:105
 msgid "Delete the photo"
 msgstr "Eliminar foto"
 
-#: canaille/forms.py:228
+#: canaille/forms.py:229
 msgid "Employee number"
 msgstr "Número del trabajador"
 
-#: canaille/forms.py:230 canaille/forms.py:236
+#: canaille/forms.py:231 canaille/forms.py:237
 msgid "1234"
 msgstr "1234"
 
-#: canaille/forms.py:234
+#: canaille/forms.py:235
 msgid "Department number"
 msgstr "Número del departamento"
 
-#: canaille/forms.py:240
+#: canaille/forms.py:241
 msgid "Website"
 msgstr "Sitio web"
 
-#: canaille/forms.py:242
+#: canaille/forms.py:243
 msgid "https://mywebsite.tld"
 msgstr "http://example.com"
 
-#: canaille/forms.py:246
+#: canaille/forms.py:247
 msgid "Preferred language"
 msgstr "Idioma preferido"
 
-#: canaille/forms.py:269
+#: canaille/forms.py:270
 msgid "users, admins …"
 msgstr "usuarios, administradores…"
 
-#: canaille/forms.py:285
+#: canaille/forms.py:286
 msgid "group"
 msgstr "grupo"
 
-#: canaille/forms.py:289 canaille/forms.py:303
+#: canaille/forms.py:290 canaille/forms.py:304
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Descripción"
 
-#: canaille/forms.py:314
+#: canaille/forms.py:315
 msgid "Username editable by the invitee"
 msgstr "Nombre de usuario editable por el invitado"
 
@@ -638,18 +649,18 @@ msgstr "Primer acceso"
 
 #: canaille/templates/firstlogin.html:16
 msgid ""
-"It seems this is the first time you are logging here. In order to "
-"finalize your account configuration, you need to set a password to your "
-"account. We will send you an email containing a link that will allow you "
-"to set a password. Please click on the \"Send the initialization email\" "
-"button below to send the email."
+"It seems this is the first time you are logging here. In order to finalize "
+"your account configuration, you need to set a password to your account. We "
+"will send you an email containing a link that will allow you to set a "
+"password. Please click on the \"Send the initialization email\" button below "
+"to send the email."
 msgstr ""
-"Parece que es la primera vez que entra aquí. Para finalizar la "
-"configuración de su cuenta, necesita establecer una contraseña para su "
-"cuenta. Le enviaremos un correo electrónico con un enlace que le "
-"permitirá establecer una contraseña. Haga clic en el botón \"Enviar el "
-"correo electrónico de inicialización\" que aparece a continuación para "
-"enviar el correo electrónico."
+"Parece que es la primera vez que entra aquí. Para finalizar la configuración "
+"de su cuenta, necesita establecer una contraseña para su cuenta. Le "
+"enviaremos un correo electrónico con un enlace que le permitirá establecer "
+"una contraseña. Haga clic en el botón \"Enviar el correo electrónico de "
+"inicialización\" que aparece a continuación para enviar el correo "
+"electrónico."
 
 #: canaille/templates/firstlogin.html:35
 #: canaille/templates/forgotten-password.html:39
@@ -669,12 +680,12 @@ msgstr "Olvidé mi contraseña"
 #: canaille/templates/forgotten-password.html:20
 msgid ""
 "After this form is sent, if the email address or the login you provided "
-"exists, you will receive an email containing a link that will allow you "
-"to reset your password."
+"exists, you will receive an email containing a link that will allow you to "
+"reset your password."
 msgstr ""
-"Una vez que este formulario es enviado, si el correo electrónico o nombre"
-" de usuario proporcionado existe, recibirás un email con un enlace que te"
-" permitirá restablecer la contraseña."
+"Una vez que este formulario es enviado, si el correo electrónico o nombre de "
+"usuario proporcionado existe, recibirás un email con un enlace que te "
+"permitirá restablecer la contraseña."
 
 #: canaille/templates/forgotten-password.html:42
 msgid "Send again"
@@ -699,11 +710,11 @@ msgstr "Eliminar grupo"
 
 #: canaille/templates/group.html:27
 msgid ""
-"Are you sure you want to delete this group? This action is unrevokable "
-"and all the data about this group will be removed."
+"Are you sure you want to delete this group? This action is unrevokable and "
+"all the data about this group will be removed."
 msgstr ""
-"¿Seguro que quieres eliminar este grupo? Esta acción no se puede deshacer"
-" y toda la información sobre este grupo será eliminada."
+"¿Seguro que quieres eliminar este grupo? Esta acción no se puede deshacer y "
+"toda la información sobre este grupo será eliminada."
 
 #: canaille/templates/group.html:31
 #: canaille/templates/oidc/admin/client_edit.html:22
@@ -734,8 +745,8 @@ msgid ""
 "members to the group."
 msgstr ""
 "Ya que el grupo no puede estar vacío, vas a ser añadido al grupo. Puedes "
-"eliminarte del grupo después editando tu perfil una vez que hayas añadido"
-" más miembros al grupo."
+"eliminarte del grupo después editando tu perfil una vez que hayas añadido "
+"más miembros al grupo."
 
 #: canaille/templates/group.html:76
 msgid "Delete group"
@@ -745,7 +756,7 @@ msgstr "Eliminar grupo"
 msgid "Create group"
 msgstr "Crear grupo"
 
-#: canaille/templates/group.html:83 canaille/templates/profile.html:297
+#: canaille/templates/group.html:83 canaille/templates/profile.html:303
 msgid "Submit"
 msgstr "Enviar"
 
@@ -758,7 +769,7 @@ msgid "Add a group"
 msgstr "Añadir un grupo"
 
 #: canaille/templates/invite.html:5 canaille/templates/invite.html:85
-#: canaille/templates/profile.html:292 canaille/templates/users.html:17
+#: canaille/templates/profile.html:298 canaille/templates/users.html:17
 msgid "Invite a user"
 msgstr "Invitar a un usuario"
 
@@ -776,8 +787,7 @@ msgstr "Invitación no enviada"
 
 #: canaille/templates/invite.html:33
 msgid ""
-"Here is the invitation link you can provide to the user you want to "
-"invite:"
+"Here is the invitation link you can provide to the user you want to invite:"
 msgstr ""
 "Este es el enlace de invitación que puedes compartir con el usuario que "
 "quieres invitar:"
@@ -789,28 +799,26 @@ msgstr "El enlace de invitación ha sido enviado a %(email)s"
 
 #: canaille/templates/invite.html:41
 msgid ""
-"If you need to provide this link by other ways than email, you can copy "
-"it there:"
+"If you need to provide this link by other ways than email, you can copy it "
+"there:"
 msgstr ""
-"Si necesitas compartir este enlace por un medio distinto al email, puedes"
-" copiarlo aquí:"
+"Si necesitas compartir este enlace por un medio distinto al email, puedes "
+"copiarlo aquí:"
 
 #: canaille/templates/invite.html:48
 #, python-format
 msgid ""
-"This invitation link could not be sent to %(email)s due to technical "
-"issues."
+"This invitation link could not be sent to %(email)s due to technical issues."
 msgstr ""
-"Este enlace de invitación no se pudo enviar a %(email)s debido a un "
-"problema técnico."
+"Este enlace de invitación no se pudo enviar a %(email)s debido a un problema "
+"técnico."
 
 #: canaille/templates/invite.html:49
 msgid ""
-"However you can copy the link there to provide it by other ways than "
-"email:"
+"However you can copy the link there to provide it by other ways than email:"
 msgstr ""
-"Sin embargo, puedes copiar el enlace para compartirlo por un medio "
-"distinto a email:"
+"Sin embargo, puedes copiar el enlace para compartirlo por un medio distinto "
+"a email:"
 
 #: canaille/templates/invite.html:62
 #: canaille/templates/oidc/admin/token_view.html:110
@@ -828,11 +836,11 @@ msgstr "Invitar a otro usuario"
 
 #: canaille/templates/invite.html:91
 msgid ""
-"After this form is sent, the recipient your indicated will receive an "
-"email containing an account creation link."
+"After this form is sent, the recipient your indicated will receive an email "
+"containing an account creation link."
 msgstr ""
-"Una vez que hayas enviado este formulario, el destinatario indicado "
-"recibirá un email con un enlace para crear una cuenta."
+"Una vez que hayas enviado este formulario, el destinatario indicado recibirá "
+"un email con un enlace para crear una cuenta."
 
 #: canaille/templates/invite.html:127
 msgid "Generate a link"
@@ -900,19 +908,19 @@ msgstr "Eliminar cuenta"
 
 #: canaille/templates/profile.html:44
 msgid ""
-"Are you sure you want to delete this user? This action is unrevokable and"
-" all the data about this user will be removed."
+"Are you sure you want to delete this user? This action is unrevokable and "
+"all the data about this user will be removed."
 msgstr ""
-"¿Seguro que quieres eliminar este usuario? Esta acción no se puede "
-"deshacer y todos los datos de este usuario serán eliminados."
+"¿Seguro que quieres eliminar este usuario? Esta acción no se puede deshacer "
+"y todos los datos de este usuario serán eliminados."
 
 #: canaille/templates/profile.html:46
 msgid ""
-"Are you sure you want to delete your account? This action is unrevokable "
-"and all your data will be removed forever."
+"Are you sure you want to delete your account? This action is unrevokable and "
+"all your data will be removed forever."
 msgstr ""
-"¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer "
-"y todos tus datos se eliminarán para siempre."
+"¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer y "
+"todos tus datos se eliminarán para siempre."
 
 #: canaille/templates/profile.html:71
 msgid "Create a new user account"
@@ -934,91 +942,93 @@ msgstr "Información personal"
 msgid "Click to upload a photo"
 msgstr "Clic para subir foto"
 
-#: canaille/templates/profile.html:194
+#: canaille/templates/profile.html:200
 msgid "Account information"
 msgstr "Información de la cuenta"
 
-#: canaille/templates/profile.html:219
+#: canaille/templates/profile.html:225
 msgid "User password is not mandatory"
 msgstr "La contraseña no es obligatoria"
 
-#: canaille/templates/profile.html:222
+#: canaille/templates/profile.html:228
 msgid "The user password can be set:"
 msgstr "La contraseña se puede establecer:"
 
-#: canaille/templates/profile.html:224
+#: canaille/templates/profile.html:230
 msgid "by filling this form;"
 msgstr "rellenando este formulario;"
 
-#: canaille/templates/profile.html:225
+#: canaille/templates/profile.html:231
 msgid ""
 "by sending the user a password initialization mail, after the account "
 "creation;"
 msgstr ""
-"enviando un email de inicialización de contraseña al usuario, tras crear "
-"la cuenta;"
+"enviando un email de inicialización de contraseña al usuario, tras crear la "
+"cuenta;"
 
-#: canaille/templates/profile.html:226 canaille/templates/profile.html:249
+#: canaille/templates/profile.html:232 canaille/templates/profile.html:255
 msgid ""
-"or simply waiting for the user to sign-in a first time, and then receive "
-"a password initialization mail."
+"or simply waiting for the user to sign-in a first time, and then receive a "
+"password initialization mail."
 msgstr ""
 "o simplemente esperando a que el usuario inicie sesión por primera vez y "
 "entonces recibirá un email de inicialización de contraseña."
 
-#: canaille/templates/profile.html:229 canaille/templates/profile.html:252
+#: canaille/templates/profile.html:235 canaille/templates/profile.html:258
 msgid "The user will not be able to authenticate unless the password is set"
-msgstr "El usuario no podrá iniciar sesión a menos que se establezca una contraeña"
+msgstr ""
+"El usuario no podrá iniciar sesión a menos que se establezca una contraeña"
 
-#: canaille/templates/profile.html:238
+#: canaille/templates/profile.html:244
 msgid "Send email"
 msgstr "Enviar email"
 
-#: canaille/templates/profile.html:242
+#: canaille/templates/profile.html:248
 msgid "This user does not have a password yet"
 msgstr "El usuario todavía no tiene una contraseña"
 
-#: canaille/templates/profile.html:245
+#: canaille/templates/profile.html:251
 msgid "You can solve this by:"
 msgstr "Para solucionar esto:"
 
-#: canaille/templates/profile.html:247
+#: canaille/templates/profile.html:253
 msgid "setting a password using this form;"
 msgstr "establece una contraseña usando este formulario;"
 
-#: canaille/templates/profile.html:248
-msgid "sending the user a password initialization mail, by clicking this button;"
+#: canaille/templates/profile.html:254
+msgid ""
+"sending the user a password initialization mail, by clicking this button;"
 msgstr ""
-"envía un email de inicialización de contraseña al usuario pulsando en "
-"este botón;"
+"envía un email de inicialización de contraseña al usuario pulsando en este "
+"botón;"
 
-#: canaille/templates/profile.html:260
+#: canaille/templates/profile.html:266
 msgid "Send mail"
 msgstr "Enviar email"
 
-#: canaille/templates/mail/admin.html:72 canaille/templates/profile.html:263
+#: canaille/templates/mail/admin.html:72 canaille/templates/profile.html:269
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
 msgstr "Restablecer contraseña"
 
-#: canaille/templates/profile.html:265
+#: canaille/templates/profile.html:271
 msgid ""
-"If the user has forgotten his password, you can send him a password reset"
-" email by clicking this button."
+"If the user has forgotten his password, you can send him a password reset "
+"email by clicking this button."
 msgstr ""
 "Si el usuario olvidó su contraseña, puedes enviarle un email para "
 "restablecerla pulsando en este botón."
 
-#: canaille/templates/profile.html:277
+#: canaille/templates/profile.html:283
 msgid "Delete the user"
 msgstr "Eliminar usuario"
 
-#: canaille/templates/profile.html:279
+#: canaille/templates/profile.html:285
 msgid "Delete my account"
 msgstr "Eliminar mi cuenta"
 
-#: canaille/templates/profile.html:286
+#: canaille/templates/profile.html:292
 msgid "Impersonate"
 msgstr "Suplantar"
 
@@ -1069,8 +1079,8 @@ msgstr "Prueba de envío de emails"
 
 #: canaille/templates/mail/admin.html:17
 msgid ""
-"This form will send a fake invitation email to the address you want. This"
-" should be used for testing mail configuration."
+"This form will send a fake invitation email to the address you want. This "
+"should be used for testing mail configuration."
 msgstr ""
 "Este formulario enviará un email de invitación falso a la dirección que "
 "quieras. Esto puede ser usado para comprobar la configuración de correo."
@@ -1097,13 +1107,13 @@ msgstr "Invitación"
 #: canaille/templates/mail/firstlogin.html:27
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the \"Initialize password\" "
-"button below and follow the instructions."
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the \"Initialize password\" button "
+"below and follow the instructions."
 msgstr ""
 "Para finalizar la configuración de tu cuenta en %(site_name)s, necesitas "
-"establecer una contraseña. Pulsa en el botón de «Inicializar contraseña» "
-"a continuación y sigue las instrucciones."
+"establecer una contraseña. Pulsa en el botón de «Inicializar contraseña» a "
+"continuación y sigue las instrucciones."
 
 #: canaille/templates/mail/firstlogin.html:38
 #: canaille/templates/mail/invitation.txt:5 canaille/templates/mail/reset.txt:5
@@ -1119,14 +1129,14 @@ msgstr "Restablecer contraseña"
 #, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. If "
-"you need to reset your password, please click on the link below and "
-"follow the instructions."
+"%(site_name)s. If you did not asked for this email, please ignore it. If you "
+"need to reset your password, please click on the link below and follow the "
+"instructions."
 msgstr ""
-"Alguien, probablemente tú, solicitó un enlace para restablecer la "
-"contraseña en %(site_name)s. Si no has solicitado este email, por favor "
-"ignóralo. Si neceitas restablecer tu contraseña, pulsa en el enlace a "
-"continuación y sigue las instrucciones."
+"Alguien, probablemente tú, solicitó un enlace para restablecer la contraseña "
+"en %(site_name)s. Si no has solicitado este email, por favor ignóralo. Si "
+"neceitas restablecer tu contraseña, pulsa en el enlace a continuación y "
+"sigue las instrucciones."
 
 #: canaille/templates/mail/firstlogin.txt:5
 #: canaille/templates/mail/reset.html:38
@@ -1141,13 +1151,12 @@ msgstr "Crear cuenta"
 #: canaille/templates/mail/invitation.html:27
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the \"Create my account\" button below and follow the "
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the \"Create my account\" button below and follow the "
 "instructions."
 msgstr ""
-"Has sido invitado a crear una cuenta en %(site_name)s. Para proceder, haz"
-" clic en el botón «Crear mi cuenta» a continuación y sigue las "
-"instrucciones."
+"Has sido invitado a crear una cuenta en %(site_name)s. Para proceder, haz "
+"clic en el botón «Crear mi cuenta» a continuación y sigue las instrucciones."
 
 #: canaille/templates/mail/invitation.html:38
 msgid "Create my account"
@@ -1156,36 +1165,35 @@ msgstr "Crear mi cuenta"
 #: canaille/templates/mail/invitation.txt:3
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the link below and follow the instructions."
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the link below and follow the instructions."
 msgstr ""
-"Has sido invitado a crear una cuenta en %(site_name)s. Para proceder, haz"
-" clic en el botón «Crear mi cuenta» a continuación y sigue las "
-"instrucciones."
+"Has sido invitado a crear una cuenta en %(site_name)s. Para proceder, haz "
+"clic en el botón «Crear mi cuenta» a continuación y sigue las instrucciones."
 
 #: canaille/templates/mail/reset.html:27
 #, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not ask for this email, please ignore it. If "
-"you need to reset your password, please click on the \"Reset password\" "
-"button below and follow the instructions."
+"%(site_name)s. If you did not ask for this email, please ignore it. If you "
+"need to reset your password, please click on the \"Reset password\" button "
+"below and follow the instructions."
 msgstr ""
-"Alguien, probablemente tú, solicitó un enlace para restablecer la "
-"contraseña en %(site_name)s. Si no has solicitado este email, por favor "
-"ignóralo. Si neceitas restablecer tu contraseña, pulsa en el enlace a "
-"continuación y sigue las instrucciones."
+"Alguien, probablemente tú, solicitó un enlace para restablecer la contraseña "
+"en %(site_name)s. Si no has solicitado este email, por favor ignóralo. Si "
+"neceitas restablecer tu contraseña, pulsa en el enlace a continuación y "
+"sigue las instrucciones."
 
 #: canaille/templates/mail/reset.txt:3
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
 "Para finalizar la configuración de tu cuenta en %(site_name)s, necesitas "
-"establecer una contraseña. Pulsa en el botón de «Inicializar contraseña» "
-"a continuación y sigue las instrucciones."
+"establecer una contraseña. Pulsa en el botón de «Inicializar contraseña» a "
+"continuación y sigue las instrucciones."
 
 #: canaille/templates/mail/test.html:27 canaille/templates/mail/test.txt:3
 #, python-format
@@ -1227,11 +1235,11 @@ msgstr "Eliminar cliente"
 
 #: canaille/templates/oidc/admin/client_edit.html:19
 msgid ""
-"Are you sure you want to delete this client? This action is unrevokable "
-"and all the data about this client will be removed."
+"Are you sure you want to delete this client? This action is unrevokable and "
+"all the data about this client will be removed."
 msgstr ""
-"¿Seguro que quieres eliminar este cliente? Esta acción no puede ser "
-"deshecha y todos los datos sobre este cliente serán eliminados."
+"¿Seguro que quieres eliminar este cliente? Esta acción no puede ser deshecha "
+"y todos los datos sobre este cliente serán eliminados."
 
 #: canaille/templates/oidc/admin/client_edit.html:36
 msgid "ID"
@@ -1280,7 +1288,8 @@ msgstr "Eliminación de tokens"
 
 #: canaille/templates/oidc/admin/token_view.html:21
 msgid "Are you sure you want to revoke this token? This action is unrevokable."
-msgstr "¿Está seguro de que desea revocar este token? Esta acción es irrevocable."
+msgstr ""
+"¿Está seguro de que desea revocar este token? Esta acción es irrevocable."
 
 #: canaille/templates/oidc/admin/token_view.html:38
 #: canaille/templates/partial/oidc/admin/authorization_list.html:6
@@ -1407,10 +1416,11 @@ msgid "Pre-authorized applications"
 msgstr "Solicitudes previamente autorizadas"
 
 #: canaille/templates/oidc/user/consent_list.html:111
-msgid "Those applications automatically have authorizations to access you data."
+msgid ""
+"Those applications automatically have authorizations to access you data."
 msgstr ""
-"Esas aplicaciones tienen automáticamente autorizaciones para acceder a "
-"sus datos."
+"Esas aplicaciones tienen automáticamente autorizaciones para acceder a sus "
+"datos."
 
 #: canaille/templates/oidc/user/logout.html:9
 #: canaille/themes/default/base.html:90
@@ -1495,30 +1505,23 @@ msgstr "Administrador"
 
 #~ msgid ""
 #~ "\n"
-#~ "                It seems this is the "
-#~ "first time you are logging here. "
-#~ "In order to finalize your\n"
-#~ "                account configuration, you "
-#~ "need to set a password to your "
+#~ "                It seems this is the first time you are logging here. In "
+#~ "order to finalize your\n"
+#~ "                account configuration, you need to set a password to your "
 #~ "account. We will send\n"
-#~ "                you an email containing "
-#~ "a link that will allow you to "
-#~ "set a password. Please click\n"
-#~ "                on the «Send the "
-#~ "initialization email» button below to "
+#~ "                you an email containing a link that will allow you to set "
+#~ "a password. Please click\n"
+#~ "                on the «Send the initialization email» button below to "
 #~ "send the email.\n"
 #~ "            "
 #~ msgstr ""
 #~ "\n"
-#~ "                Parece que este es tu"
-#~ " primer acceso. Para finalizar la "
+#~ "                Parece que este es tu primer acceso. Para finalizar la "
 #~ "configuración de tu cuenta,\n"
-#~ "                es necesario que establezcas"
-#~ " una contraseña. Para recibir un "
-#~ "email con un enlace\n"
-#~ "                que te permitirá establecerla."
-#~ " Haz clic en el botón «Enviar "
-#~ "email de inicialización»\n"
+#~ "                es necesario que establezcas una contraseña. Para recibir "
+#~ "un email con un enlace\n"
+#~ "                que te permitirá establecerla. Haz clic en el botón "
+#~ "«Enviar email de inicialización»\n"
 #~ "            "
 
 #~ msgid "Invitate an user"
@@ -1526,125 +1529,90 @@ msgstr "Administrador"
 
 #~ msgid ""
 #~ "\n"
-#~ "                        In order to finalize"
-#~ " your account configuration at "
-#~ "%(site_name)s, we need to setup your "
-#~ "password. Please click on the "
-#~ "«Initialize password» button below and "
-#~ "follow the instructions.\n"
+#~ "                        In order to finalize your account configuration "
+#~ "at %(site_name)s, we need to setup your password. Please click on the "
+#~ "«Initialize password» button below and follow the instructions.\n"
 #~ "                    "
 #~ msgstr ""
 #~ "\n"
-#~ "                        Para finalizar la "
-#~ "configuración de tu cuenta en "
-#~ "%(site_name)s, necesitas establecer una "
-#~ "contraseña. Pulsa en el botón de "
-#~ "«Inicializar contraseña» a continuación y "
-#~ "sigue las instrucciones.\n"
+#~ "                        Para finalizar la configuración de tu cuenta en "
+#~ "%(site_name)s, necesitas establecer una contraseña. Pulsa en el botón de "
+#~ "«Inicializar contraseña» a continuación y sigue las instrucciones.\n"
 #~ "                    "
 
 #~ msgid ""
 #~ "\n"
-#~ "                        You have been invited"
-#~ " to create an account at "
-#~ "%(site_name)s. To proceed you can click"
-#~ " on the «Create my account» button"
-#~ " below and follow the instructions.\n"
+#~ "                        You have been invited to create an account at "
+#~ "%(site_name)s. To proceed you can click on the «Create my account» button "
+#~ "below and follow the instructions.\n"
 #~ "                    "
 #~ msgstr ""
 #~ "\n"
-#~ "                        Has sido invitado a"
-#~ " crear una cuenta en %(site_name)s. "
-#~ "Para proceder, haz clic en el "
-#~ "botón «Crear mi cuenta» a continuación"
-#~ " y sigue las instrucciones.\n"
-#~ "                    "
-
-#~ msgid ""
-#~ "\n"
-#~ "                        Someone, probably you, "
-#~ "asked for a password reinitialization "
-#~ "link at %(site_name)s. If you did "
-#~ "not ask for this email, please "
-#~ "ignore it. If you need to reset"
-#~ " your password, please click on the"
-#~ " «Reset password» button below and "
-#~ "follow the instructions.\n"
-#~ "                    "
-#~ msgstr ""
-#~ "\n"
-#~ "                        Alguien, probablemente tú,"
-#~ " solicitó un enlace para restablecer "
-#~ "la contraseña en %(site_name)s. Si no"
-#~ " has solicitado este email, por favor"
-#~ " ignóralo. Si neceitas restablecer tu "
-#~ "contraseña, pulsa en el enlace a "
+#~ "                        Has sido invitado a crear una cuenta en "
+#~ "%(site_name)s. Para proceder, haz clic en el botón «Crear mi cuenta» a "
 #~ "continuación y sigue las instrucciones.\n"
-#~ ""
 #~ "                    "
 
 #~ msgid ""
 #~ "\n"
-#~ "                It seems this is the "
-#~ "first time you are logging here. "
-#~ "In order to finalize your\n"
-#~ "                account configuration, you "
-#~ "need to set a password to your "
+#~ "                        Someone, probably you, asked for a password "
+#~ "reinitialization link at %(site_name)s. If you did not ask for this "
+#~ "email, please ignore it. If you need to reset your password, please click "
+#~ "on the «Reset password» button below and follow the instructions.\n"
+#~ "                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                        Alguien, probablemente tú, solicitó un enlace "
+#~ "para restablecer la contraseña en %(site_name)s. Si no has solicitado "
+#~ "este email, por favor ignóralo. Si neceitas restablecer tu contraseña, "
+#~ "pulsa en el enlace a continuación y sigue las instrucciones.\n"
+#~ "                    "
+
+#~ msgid ""
+#~ "\n"
+#~ "                It seems this is the first time you are logging here. In "
+#~ "order to finalize your\n"
+#~ "                account configuration, you need to set a password to your "
 #~ "account. We will send\n"
-#~ "                you an email containing "
-#~ "a link that will allow you to "
-#~ "set a password. Please click\n"
-#~ "                on the \"Send the "
-#~ "initialization email\" button below to "
+#~ "                you an email containing a link that will allow you to set "
+#~ "a password. Please click\n"
+#~ "                on the \"Send the initialization email\" button below to "
 #~ "send the email.\n"
 #~ "            "
 #~ msgstr ""
 #~ "\n"
-#~ "                Parece que este es tu"
-#~ " primer acceso. Para finalizar la "
+#~ "                Parece que este es tu primer acceso. Para finalizar la "
 #~ "configuración de tu cuenta,\n"
-#~ "                es necesario que establezcas"
-#~ " una contraseña. Para recibir un "
-#~ "email con un enlace\n"
-#~ "                que te permitirá establecerla."
-#~ " Haz clic en el botón «Enviar "
-#~ "email de inicialización»\n"
+#~ "                es necesario que establezcas una contraseña. Para recibir "
+#~ "un email con un enlace\n"
+#~ "                que te permitirá establecerla. Haz clic en el botón "
+#~ "«Enviar email de inicialización»\n"
 #~ "           "
 
 #~ msgid ""
 #~ "\n"
-#~ "                        In order to finalize"
-#~ " your account configuration at "
-#~ "%(site_name)s, we need to setup your "
-#~ "password. Please click on the "
-#~ "\"Initialize password\" button below and "
-#~ "follow the instructions.\n"
+#~ "                        In order to finalize your account configuration "
+#~ "at %(site_name)s, we need to setup your password. Please click on the "
+#~ "\"Initialize password\" button below and follow the instructions.\n"
 #~ "                    "
 #~ msgstr ""
 #~ "\n"
-#~ "                        Para finalizar la "
-#~ "configuración de tu cuenta en "
-#~ "%(site_name)s, necesitas establecer una "
-#~ "contraseña. Pulsa en el botón de "
-#~ "«Inicializar contraseña» a continuación y "
-#~ "sigue las instrucciones.\n"
+#~ "                        Para finalizar la configuración de tu cuenta en "
+#~ "%(site_name)s, necesitas establecer una contraseña. Pulsa en el botón de "
+#~ "«Inicializar contraseña» a continuación y sigue las instrucciones.\n"
 #~ "                    "
 
 #~ msgid ""
 #~ "\n"
-#~ "                        You have been invited"
-#~ " to create an account at "
-#~ "%(site_name)s. To proceed you can click"
-#~ " on the \"Create my account\" button"
-#~ " below and follow the instructions.\n"
+#~ "                        You have been invited to create an account at "
+#~ "%(site_name)s. To proceed you can click on the \"Create my account\" "
+#~ "button below and follow the instructions.\n"
 #~ "                    "
 #~ msgstr ""
 #~ "\n"
-#~ "                        Has sido invitado a"
-#~ " crear una cuenta en %(site_name)s. "
-#~ "Para proceder, haz clic en el "
-#~ "botón «Crear mi cuenta» a continuación"
-#~ " y sigue las instrucciones.\n"
+#~ "                        Has sido invitado a crear una cuenta en "
+#~ "%(site_name)s. Para proceder, haz clic en el botón «Crear mi cuenta» a "
+#~ "continuación y sigue las instrucciones.\n"
 #~ "                   "
 
 #~ msgid "View a token"

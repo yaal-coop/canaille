@@ -6,17 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-03-11 20:12+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-03-11 22:37+0100\n"
 "PO-Revision-Date: 2023-01-31 08:25+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
+"canaille/canaille/nb_NO/>\n"
 "Language: nb_NO\n"
-"Language-Team: Norwegian Bokmål "
-"<https://hosted.weblate.org/projects/canaille/canaille/nb_NO/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -73,7 +73,7 @@ msgstr "Kontoen din har allerede blitt opprettet."
 msgid "You are already logged in, you cannot create an account."
 msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 
-#: canaille/account.py:336 canaille/forms.py:267 canaille/forms.py:329
+#: canaille/account.py:336 canaille/forms.py:268 canaille/forms.py:330
 #: canaille/templates/groups.html:5 canaille/templates/groups.html:16
 #: canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
@@ -93,18 +93,18 @@ msgstr "Brukerkonto opprettet."
 #: canaille/account.py:428
 #, fuzzy
 msgid ""
-"A password initialization link has been sent at the user email address. "
-"It should be received within a few minutes."
+"A password initialization link has been sent at the user email address. It "
+"should be received within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
 #: canaille/account.py:445
 #, fuzzy
 msgid ""
-"A password reset link has been sent at the user email address. It should "
-"be received within a few minutes."
+"A password reset link has been sent at the user email address. It should be "
+"received within a few minutes."
 msgstr ""
-"Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. "
-"Den bør være mottatt i løpet av et par minutter."
+"Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
+"bør være mottatt i løpet av et par minutter."
 
 #: canaille/account.py:451
 msgid "Could not send the password reset email"
@@ -138,8 +138,8 @@ msgstr "Lenke for tilbakestilling av passord sendt til din e-postadresse."
 #: canaille/account.py:588
 #, fuzzy, python-format
 msgid ""
-"The user '%(user)s' does not have permissions to update their password. "
-"We cannot send a password reset email."
+"The user '%(user)s' does not have permissions to update their password. We "
+"cannot send a password reset email."
 msgstr ""
 "Brukeren «%(user)s» har ikke tilgang til å oppdatere passordet sitt. Kan "
 "ikke sende e-post om tilbakestilling av passord."
@@ -164,7 +164,7 @@ msgid "Email"
 msgstr "E-postadresse"
 
 #: canaille/admin.py:29 canaille/forms.py:75 canaille/forms.py:99
-#: canaille/forms.py:171 canaille/forms.py:323
+#: canaille/forms.py:172 canaille/forms.py:324
 msgid "jane@doe.com"
 msgstr "ola@nordmann.no"
 
@@ -195,7 +195,7 @@ msgstr "Invitasjon på {website_name}"
 msgid "John Doe"
 msgstr "Ola Nordmann"
 
-#: canaille/apputils.py:34 canaille/forms.py:134 canaille/forms.py:311
+#: canaille/apputils.py:34 canaille/forms.py:134 canaille/forms.py:312
 msgid "jdoe"
 msgstr "onord"
 
@@ -238,15 +238,15 @@ msgstr "Tilgangen har blitt tilbakekalt"
 msgid "Login"
 msgstr "Logg inn"
 
-#: canaille/forms.py:85 canaille/forms.py:108 canaille/forms.py:216
+#: canaille/forms.py:85 canaille/forms.py:108 canaille/forms.py:217
 msgid "Password"
 msgstr "Passord"
 
-#: canaille/forms.py:111 canaille/forms.py:220
+#: canaille/forms.py:111 canaille/forms.py:221
 msgid "Password confirmation"
 msgstr "Passordbekreftelse"
 
-#: canaille/forms.py:114 canaille/forms.py:223
+#: canaille/forms.py:114 canaille/forms.py:224
 msgid "Password and confirmation do not match."
 msgstr "Passordet og bekreftelsen samsvarer ikke."
 
@@ -254,141 +254,152 @@ msgstr "Passordet og bekreftelsen samsvarer ikke."
 msgid "Automatic"
 msgstr "Automatisk"
 
-#: canaille/forms.py:133 canaille/forms.py:310
+#: canaille/forms.py:133 canaille/forms.py:311
 msgid "Username"
 msgstr "Brukernavn"
 
-#: canaille/forms.py:137 canaille/forms.py:282 canaille/forms.py:296
+#: canaille/forms.py:137 canaille/forms.py:283 canaille/forms.py:297
 #: canaille/oidc/forms.py:17 canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
 msgid "Name"
 msgstr "Navn"
 
-#: canaille/forms.py:139
+#: canaille/forms.py:138
+msgid "Title"
+msgstr ""
+
+#: canaille/forms.py:138
+msgid "Vice president"
+msgstr ""
+
+#: canaille/forms.py:140
 msgid "Given name"
 msgstr "Fornavn"
 
-#: canaille/forms.py:141
+#: canaille/forms.py:142
 msgid "John"
 msgstr "Ola"
 
-#: canaille/forms.py:147
+#: canaille/forms.py:148
 msgid "Family Name"
 msgstr "Etternavn"
 
-#: canaille/forms.py:150
+#: canaille/forms.py:151
 msgid "Doe"
 msgstr "Nordmann"
 
-#: canaille/forms.py:156
+#: canaille/forms.py:157
 msgid "Display Name"
 msgstr "Visningsnavn"
 
-#: canaille/forms.py:159
+#: canaille/forms.py:160
 msgid "Johnny"
 msgstr "Ola"
 
-#: canaille/forms.py:165 canaille/forms.py:316
+#: canaille/forms.py:166 canaille/forms.py:317
 msgid "Email address"
 msgstr "E-postadresse"
 
-#: canaille/forms.py:167
+#: canaille/forms.py:168
 msgid ""
-"This email will be used as a recovery address to reset the password if "
-"needed"
+"This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 
-#: canaille/forms.py:177
+#: canaille/forms.py:178
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: canaille/forms.py:177
+#: canaille/forms.py:178
 msgid "555-000-555"
 msgstr ""
 
-#: canaille/forms.py:180
+#: canaille/forms.py:181
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/forms.py:182
+#: canaille/forms.py:183
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr ""
 
-#: canaille/forms.py:186
+#: canaille/forms.py:187
 #, fuzzy
 msgid "Street"
 msgstr "Hemmelighet"
 
-#: canaille/forms.py:188
+#: canaille/forms.py:189
 msgid "132, Foobar Street"
 msgstr ""
 
-#: canaille/forms.py:192
+#: canaille/forms.py:193
 msgid "Postal Code"
 msgstr ""
 
-#: canaille/forms.py:198
+#: canaille/forms.py:199
 msgid "Locality"
 msgstr ""
 
-#: canaille/forms.py:200 canaille/forms.py:206
+#: canaille/forms.py:201
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/forms.py:204
+#: canaille/forms.py:205
 msgid "Region"
 msgstr ""
 
-#: canaille/forms.py:210
+#: canaille/forms.py:207
+msgid "North Pole"
+msgstr ""
+
+#: canaille/forms.py:211
 msgid "Photo"
 msgstr "Bilde"
 
-#: canaille/forms.py:214 canaille/templates/profile.html:105
+#: canaille/forms.py:215 canaille/templates/profile.html:105
 msgid "Delete the photo"
 msgstr "Slett bildet"
 
-#: canaille/forms.py:228
+#: canaille/forms.py:229
 #, fuzzy
 msgid "Employee number"
 msgstr "Telefonnummer"
 
-#: canaille/forms.py:230 canaille/forms.py:236
+#: canaille/forms.py:231 canaille/forms.py:237
 msgid "1234"
 msgstr "1234"
 
-#: canaille/forms.py:234
+#: canaille/forms.py:235
 #, fuzzy
 msgid "Department number"
 msgstr "Telefonnummer"
 
-#: canaille/forms.py:240
+#: canaille/forms.py:241
 msgid "Website"
 msgstr "Nettside"
 
-#: canaille/forms.py:242
+#: canaille/forms.py:243
 msgid "https://mywebsite.tld"
 msgstr ""
 
-#: canaille/forms.py:246
+#: canaille/forms.py:247
 msgid "Preferred language"
 msgstr "Foretrukket språk"
 
-#: canaille/forms.py:269
+#: canaille/forms.py:270
 #, fuzzy
 msgid "users, admins …"
 msgstr "brukere, administratorer …"
 
-#: canaille/forms.py:285
+#: canaille/forms.py:286
 msgid "group"
 msgstr "gruppe"
 
-#: canaille/forms.py:289 canaille/forms.py:303
+#: canaille/forms.py:290 canaille/forms.py:304
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: canaille/forms.py:314
+#: canaille/forms.py:315
 msgid "Username editable by the invitee"
 msgstr ""
 
@@ -662,11 +673,11 @@ msgstr "Første innlogging"
 
 #: canaille/templates/firstlogin.html:16
 msgid ""
-"It seems this is the first time you are logging here. In order to "
-"finalize your account configuration, you need to set a password to your "
-"account. We will send you an email containing a link that will allow you "
-"to set a password. Please click on the \"Send the initialization email\" "
-"button below to send the email."
+"It seems this is the first time you are logging here. In order to finalize "
+"your account configuration, you need to set a password to your account. We "
+"will send you an email containing a link that will allow you to set a "
+"password. Please click on the \"Send the initialization email\" button below "
+"to send the email."
 msgstr ""
 
 #: canaille/templates/firstlogin.html:35
@@ -687,8 +698,8 @@ msgstr "Glemt passord"
 #: canaille/templates/forgotten-password.html:20
 msgid ""
 "After this form is sent, if the email address or the login you provided "
-"exists, you will receive an email containing a link that will allow you "
-"to reset your password."
+"exists, you will receive an email containing a link that will allow you to "
+"reset your password."
 msgstr ""
 
 #: canaille/templates/forgotten-password.html:42
@@ -714,8 +725,8 @@ msgstr "Gruppesletting"
 
 #: canaille/templates/group.html:27
 msgid ""
-"Are you sure you want to delete this group? This action is unrevokable "
-"and all the data about this group will be removed."
+"Are you sure you want to delete this group? This action is unrevokable and "
+"all the data about this group will be removed."
 msgstr ""
 
 #: canaille/templates/group.html:31
@@ -755,7 +766,7 @@ msgstr "Slett gruppe"
 msgid "Create group"
 msgstr "Opprett gruppe"
 
-#: canaille/templates/group.html:83 canaille/templates/profile.html:297
+#: canaille/templates/group.html:83 canaille/templates/profile.html:303
 msgid "Submit"
 msgstr "Send inn"
 
@@ -768,7 +779,7 @@ msgid "Add a group"
 msgstr "Legg til en gruppe"
 
 #: canaille/templates/invite.html:5 canaille/templates/invite.html:85
-#: canaille/templates/profile.html:292 canaille/templates/users.html:17
+#: canaille/templates/profile.html:298 canaille/templates/users.html:17
 msgid "Invite a user"
 msgstr "Inviter en bruker"
 
@@ -786,8 +797,7 @@ msgstr "Invitasjon ikke sendt"
 
 #: canaille/templates/invite.html:33
 msgid ""
-"Here is the invitation link you can provide to the user you want to "
-"invite:"
+"Here is the invitation link you can provide to the user you want to invite:"
 msgstr ""
 
 #: canaille/templates/invite.html:40
@@ -797,21 +807,19 @@ msgstr "Denne invitasjonslenken har blitt sendt til %(email)s"
 
 #: canaille/templates/invite.html:41
 msgid ""
-"If you need to provide this link by other ways than email, you can copy "
-"it there:"
+"If you need to provide this link by other ways than email, you can copy it "
+"there:"
 msgstr ""
 
 #: canaille/templates/invite.html:48
 #, python-format
 msgid ""
-"This invitation link could not be sent to %(email)s due to technical "
-"issues."
+"This invitation link could not be sent to %(email)s due to technical issues."
 msgstr ""
 
 #: canaille/templates/invite.html:49
 msgid ""
-"However you can copy the link there to provide it by other ways than "
-"email:"
+"However you can copy the link there to provide it by other ways than email:"
 msgstr ""
 
 #: canaille/templates/invite.html:62
@@ -830,8 +838,8 @@ msgstr "Inviter en annen bruker"
 
 #: canaille/templates/invite.html:91
 msgid ""
-"After this form is sent, the recipient your indicated will receive an "
-"email containing an account creation link."
+"After this form is sent, the recipient your indicated will receive an email "
+"containing an account creation link."
 msgstr ""
 
 #: canaille/templates/invite.html:127
@@ -900,14 +908,14 @@ msgstr "Kontosletting"
 
 #: canaille/templates/profile.html:44
 msgid ""
-"Are you sure you want to delete this user? This action is unrevokable and"
-" all the data about this user will be removed."
+"Are you sure you want to delete this user? This action is unrevokable and "
+"all the data about this user will be removed."
 msgstr ""
 
 #: canaille/templates/profile.html:46
 msgid ""
-"Are you sure you want to delete your account? This action is unrevokable "
-"and all your data will be removed forever."
+"Are you sure you want to delete your account? This action is unrevokable and "
+"all your data will be removed forever."
 msgstr ""
 
 #: canaille/templates/profile.html:71
@@ -932,84 +940,85 @@ msgstr "Personsinfo"
 msgid "Click to upload a photo"
 msgstr "Klikk for å laste opp et bilde"
 
-#: canaille/templates/profile.html:194
+#: canaille/templates/profile.html:200
 msgid "Account information"
 msgstr "Kontoinfo"
 
-#: canaille/templates/profile.html:219
+#: canaille/templates/profile.html:225
 msgid "User password is not mandatory"
 msgstr ""
 
-#: canaille/templates/profile.html:222
+#: canaille/templates/profile.html:228
 msgid "The user password can be set:"
 msgstr ""
 
-#: canaille/templates/profile.html:224
+#: canaille/templates/profile.html:230
 msgid "by filling this form;"
 msgstr ""
 
-#: canaille/templates/profile.html:225
+#: canaille/templates/profile.html:231
 msgid ""
 "by sending the user a password initialization mail, after the account "
 "creation;"
 msgstr ""
 
-#: canaille/templates/profile.html:226 canaille/templates/profile.html:249
+#: canaille/templates/profile.html:232 canaille/templates/profile.html:255
 msgid ""
-"or simply waiting for the user to sign-in a first time, and then receive "
-"a password initialization mail."
+"or simply waiting for the user to sign-in a first time, and then receive a "
+"password initialization mail."
 msgstr ""
 
-#: canaille/templates/profile.html:229 canaille/templates/profile.html:252
+#: canaille/templates/profile.html:235 canaille/templates/profile.html:258
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
-#: canaille/templates/profile.html:238
+#: canaille/templates/profile.html:244
 #, fuzzy
 msgid "Send email"
 msgstr "Send e-post"
 
-#: canaille/templates/profile.html:242
+#: canaille/templates/profile.html:248
 msgid "This user does not have a password yet"
 msgstr ""
 
-#: canaille/templates/profile.html:245
+#: canaille/templates/profile.html:251
 msgid "You can solve this by:"
 msgstr "Du kan løse dette ved å:"
 
-#: canaille/templates/profile.html:247
+#: canaille/templates/profile.html:253
 msgid "setting a password using this form;"
 msgstr ""
 
-#: canaille/templates/profile.html:248
-msgid "sending the user a password initialization mail, by clicking this button;"
+#: canaille/templates/profile.html:254
+msgid ""
+"sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 
-#: canaille/templates/profile.html:260
+#: canaille/templates/profile.html:266
 msgid "Send mail"
 msgstr "Send e-post"
 
-#: canaille/templates/mail/admin.html:72 canaille/templates/profile.html:263
+#: canaille/templates/mail/admin.html:72 canaille/templates/profile.html:269
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
 msgstr "Passord tilbakestilt"
 
-#: canaille/templates/profile.html:265
+#: canaille/templates/profile.html:271
 msgid ""
-"If the user has forgotten his password, you can send him a password reset"
-" email by clicking this button."
+"If the user has forgotten his password, you can send him a password reset "
+"email by clicking this button."
 msgstr ""
 
-#: canaille/templates/profile.html:277
+#: canaille/templates/profile.html:283
 msgid "Delete the user"
 msgstr "Slett brukeren"
 
-#: canaille/templates/profile.html:279
+#: canaille/templates/profile.html:285
 msgid "Delete my account"
 msgstr "Slett kontoen min"
 
-#: canaille/templates/profile.html:286
+#: canaille/templates/profile.html:292
 msgid "Impersonate"
 msgstr ""
 
@@ -1062,8 +1071,8 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:17
 msgid ""
-"This form will send a fake invitation email to the address you want. This"
-" should be used for testing mail configuration."
+"This form will send a fake invitation email to the address you want. This "
+"should be used for testing mail configuration."
 msgstr ""
 
 #: canaille/templates/mail/admin.html:36
@@ -1088,9 +1097,9 @@ msgstr "Invitasjon"
 #: canaille/templates/mail/firstlogin.html:27
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the \"Initialize password\" "
-"button below and follow the instructions."
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the \"Initialize password\" button "
+"below and follow the instructions."
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.html:38
@@ -1107,9 +1116,9 @@ msgstr ""
 #, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. If "
-"you need to reset your password, please click on the link below and "
-"follow the instructions."
+"%(site_name)s. If you did not asked for this email, please ignore it. If you "
+"need to reset your password, please click on the link below and follow the "
+"instructions."
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.txt:5
@@ -1125,8 +1134,8 @@ msgstr "Kontoopprettelse"
 #: canaille/templates/mail/invitation.html:27
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the \"Create my account\" button below and follow the "
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the \"Create my account\" button below and follow the "
 "instructions."
 msgstr ""
 
@@ -1137,24 +1146,24 @@ msgstr "Opprett min konto"
 #: canaille/templates/mail/invitation.txt:3
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the link below and follow the instructions."
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the link below and follow the instructions."
 msgstr ""
 
 #: canaille/templates/mail/reset.html:27
 #, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not ask for this email, please ignore it. If "
-"you need to reset your password, please click on the \"Reset password\" "
-"button below and follow the instructions."
+"%(site_name)s. If you did not ask for this email, please ignore it. If you "
+"need to reset your password, please click on the \"Reset password\" button "
+"below and follow the instructions."
 msgstr ""
 
 #: canaille/templates/mail/reset.txt:3
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
 
@@ -1196,8 +1205,8 @@ msgstr "Klientsletting"
 
 #: canaille/templates/oidc/admin/client_edit.html:19
 msgid ""
-"Are you sure you want to delete this client? This action is unrevokable "
-"and all the data about this client will be removed."
+"Are you sure you want to delete this client? This action is unrevokable and "
+"all the data about this client will be removed."
 msgstr ""
 
 #: canaille/templates/oidc/admin/client_edit.html:36
@@ -1382,7 +1391,8 @@ msgid "Pre-authorized applications"
 msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:111
-msgid "Those applications automatically have authorizations to access you data."
+msgid ""
+"Those applications automatically have authorizations to access you data."
 msgstr ""
 
 #: canaille/templates/oidc/user/logout.html:9
@@ -1468,20 +1478,8 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#~ msgid "Personnal information about yourself, such as your name or your gender."
-#~ msgstr ""
-
 #~ msgid "View a token"
 #~ msgstr "Vis et symbol"
 
-#~ msgid "Lifetime"
-#~ msgstr ""
-
 #~ msgid "Number"
 #~ msgstr "Nummer"
-
-#~ msgid "authorization interface"
-#~ msgstr ""
-
-#~ msgid "132, Foobar Street, Gotham City 12401"
-#~ msgstr ""
