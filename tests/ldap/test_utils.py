@@ -35,7 +35,6 @@ def test_repr(slapd_connection, foo_group, user):
 
 
 def test_equality(slapd_connection, foo_group, bar_group):
-    Group.ldap_object_attributes()
     assert foo_group != bar_group
     foo_group2 = Group.get(id=foo_group.id)
     assert foo_group == foo_group2

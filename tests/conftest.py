@@ -162,8 +162,6 @@ def testclient(app):
 
 @pytest.fixture
 def user(app, slapd_connection):
-    User.ldap_object_classes(slapd_connection)
-    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         cn="John (johnny) Doe",
         givenName="John",
@@ -184,8 +182,6 @@ def user(app, slapd_connection):
 
 @pytest.fixture
 def admin(app, slapd_connection):
-    User.ldap_object_classes(slapd_connection)
-    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         cn="Jane Doe",
         sn="Doe",
@@ -200,8 +196,6 @@ def admin(app, slapd_connection):
 
 @pytest.fixture
 def moderator(app, slapd_connection):
-    User.ldap_object_classes(slapd_connection)
-    LDAPObject.ldap_object_attributes(slapd_connection)
     u = User(
         cn="Jack Doe",
         sn="Doe",
@@ -237,7 +231,6 @@ def logged_moderator(moderator, testclient):
 
 @pytest.fixture
 def foo_group(app, user, slapd_connection):
-    Group.ldap_object_classes(slapd_connection)
     group = Group(
         members=[user],
         display_name="foo",
@@ -251,7 +244,6 @@ def foo_group(app, user, slapd_connection):
 
 @pytest.fixture
 def bar_group(app, admin, slapd_connection):
-    Group.ldap_object_classes(slapd_connection)
     group = Group(
         members=[admin],
         display_name="bar",

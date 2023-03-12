@@ -8,7 +8,6 @@ from canaille.oidc.models import Token
 
 
 def test_oauth_hybrid(testclient, slapd_connection, user, client):
-    User.ldap_object_attributes(slapd_connection)
     res = testclient.get(
         "/oauth/authorize",
         params=dict(

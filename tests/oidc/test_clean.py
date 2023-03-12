@@ -7,7 +7,6 @@ from werkzeug.security import gen_salt
 
 
 def test_clean_command(testclient, slapd_connection, client, user):
-    AuthorizationCode.ldap_object_classes(slapd_connection)
     valid_code = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",
@@ -43,7 +42,6 @@ def test_clean_command(testclient, slapd_connection, client, user):
     )
     expired_code.save()
 
-    Token.ldap_object_classes(slapd_connection)
     valid_token = Token(
         token_id=gen_salt(48),
         access_token="my-valid-token",

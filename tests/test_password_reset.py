@@ -2,8 +2,6 @@ from canaille.account import profile_hash
 
 
 def test_password_reset(testclient, user):
-    user.ldap_object_attributes()
-    user.reload()
     hash = profile_hash("user", user.mail[0], user.userPassword[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
@@ -24,9 +22,6 @@ def test_password_reset(testclient, user):
 
 
 def test_password_reset_bad_link(testclient, user):
-    user.ldap_object_attributes()
-    user.reload()
-
     res = testclient.get("/reset/user/foobarbaz")
     assert (
         "error",
@@ -35,8 +30,6 @@ def test_password_reset_bad_link(testclient, user):
 
 
 def test_password_reset_bad_password(testclient, user):
-    user.ldap_object_attributes()
-    user.reload()
     hash = profile_hash("user", user.mail[0], user.userPassword[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)

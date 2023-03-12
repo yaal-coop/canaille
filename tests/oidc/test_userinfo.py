@@ -278,7 +278,6 @@ DEFAULT_JWT_MAPPING_CONFIG = {
 def test_generate_user_standard_claims_with_default_config(
     testclient, slapd_connection, user
 ):
-    User.ldap_object_classes(slapd_connection)
     user.preferredLanguage = ["fr"]
 
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
@@ -297,7 +296,6 @@ def test_generate_user_standard_claims_with_default_config(
 def test_custom_config_format_claim_is_well_formated(
     testclient, slapd_connection, user
 ):
-    User.ldap_object_classes(slapd_connection)
     jwt_mapping_config = DEFAULT_JWT_MAPPING_CONFIG.copy()
     jwt_mapping_config["EMAIL"] = "{{ user.uid[0] }}@mydomain.tld"
 
@@ -309,7 +307,6 @@ def test_custom_config_format_claim_is_well_formated(
 def test_claim_is_omitted_if_empty(testclient, slapd_connection, user):
     # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
     # it's better to not insert a null or empty string value
-    User.ldap_object_classes(slapd_connection)
     user.mail = ""
     user.save()
 

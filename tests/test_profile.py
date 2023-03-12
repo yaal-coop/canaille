@@ -448,7 +448,6 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
 def test_password_initialization_mail(
     smtpd, testclient, slapd_connection, logged_admin
 ):
-    User.ldap_object_classes(slapd_connection)
     u = User(
         cn="Temp User",
         sn="Temp",
@@ -483,7 +482,6 @@ def test_password_initialization_mail_send_fail(
     SMTP, smtpd, testclient, slapd_connection, logged_admin
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    User.ldap_object_classes(slapd_connection)
     u = User(
         cn="Temp User",
         sn="Temp",
@@ -534,7 +532,6 @@ def test_impersonate_invalid_user(testclient, slapd_connection, logged_admin):
 
 
 def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):
-    User.ldap_object_classes(slapd_connection)
     u = User(
         cn="Temp User",
         sn="Temp",
@@ -563,7 +560,6 @@ def test_password_reset_email_failed(
     SMTP, smtpd, testclient, slapd_connection, logged_admin
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    User.ldap_object_classes(slapd_connection)
     u = User(
         cn="Temp User",
         sn="Temp",
