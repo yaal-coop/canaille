@@ -120,7 +120,7 @@
                         <div class="thirteen wide column">
             {% endif %}
 
-            {% if "givenName" in form or "sn" in form or "title" in fields %}
+            {% if "givenName" in form or "sn" in form %}
                 <div class="equal width fields">
                     {% if "givenName" in form %}
                         {% block given_name_field scoped %}{{ render_field(form.givenName) }}{% endblock %}
