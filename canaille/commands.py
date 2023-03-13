@@ -7,8 +7,6 @@ from canaille.models import Group
 from canaille.models import User
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Token
-from canaille.populate import fake_groups
-from canaille.populate import fake_users
 from flask import current_app
 from flask.cli import FlaskGroup
 from flask.cli import with_appcontext
@@ -118,6 +116,8 @@ if HAS_FAKER:  # pragma: no branch
         Populate the database with generated random users.
         """
 
+        from canaille.populate import fake_users
+
         fake_users(ctx.obj["number"])
 
     @populate.command()
@@ -133,5 +133,7 @@ if HAS_FAKER:  # pragma: no branch
         """
         Populate the database with generated random groups.
         """
+
+        from canaille.populate import fake_groups
 
         fake_groups(ctx.obj["number"], nb_users_max)
