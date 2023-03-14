@@ -94,7 +94,6 @@ def test_edition_permission(
     bar_group,
     jpeg_photo,
 ):
-
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     testclient.get("/profile/user", status=403)
 
@@ -592,7 +591,6 @@ def test_photo_on_profile_edition(
     logged_user,
     jpeg_photo,
 ):
-
     # Add a photo
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)

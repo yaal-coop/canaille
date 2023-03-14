@@ -96,10 +96,10 @@
 
             <div class="ui attached segment">
                 <form method="POST"
-                    id="{{ form.id or form.__class__.__name__|lower }}"
-                    action="{{ request.url }}"
-                    role="form"
-                    class="ui form"
+                      id="{{ form.id or form.__class__.__name__|lower }}"
+                      action="{{ request.url }}"
+                      role="form"
+                      class="ui form"
                 >
                     {{ form.hidden_tag() if form.hidden_tag }}
                     {% block uid_field scoped %}

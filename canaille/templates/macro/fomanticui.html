@@ -12,9 +12,9 @@ display=true
 {% set field_visible = field.type != 'HiddenField' and field.type !='CSRFTokenField' %}
 {% if container and field_visible %}
     <div class="field {{ kwargs.pop('class_', '') }}
-        {%- if field.errors %} error{% endif -%}
-        {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}"
-        {% if not display %}style="display: none"{% endif %}
+                {%- if field.errors %} error{% endif -%}
+                {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}"
+         {% if not display %}style="display: none"{% endif %}
     >
 {% endif %}
 
@@ -32,12 +32,12 @@ display=true
 {% set labeled = suffix_text or corner_indicator %}
 {% if field_visible %}
     <div class="ui
-        {% if suffix_text %}right{% endif %}
-        {% if corner_indicator %}corner{% endif %}
-        {% if labeled %}labeled{% endif %}
-        {% if icon %}left icon {% endif %}
-        {% if field.type not in ("BooleanField", "RadioField") %}input{% endif %}
-    ">
+                {% if suffix_text %}right{% endif %}
+                {% if corner_indicator %}corner{% endif %}
+                {% if labeled %}labeled{% endif %}
+                {% if icon %}left icon {% endif %}
+                {% if field.type not in ("BooleanField", "RadioField") %}input{% endif %}
+               ">
 {% endif %}
 {% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
 
@@ -124,11 +124,11 @@ btn_class='ui right floated primary button',
 action=none,
 id=none) -%}
 <form method="POST"
-    id="{{ id or form.__class__.__name__|lower }}"
-    action="{{ action or form.action }}"
-    role="form"
-    enctype="multipart/form-data"
-    class="ui form {{ class_ }}"
+      id="{{ id or form.__class__.__name__|lower }}"
+      action="{{ action or form.action }}"
+      role="form"
+      enctype="multipart/form-data"
+      class="ui form {{ class_ }}"
 >
     {% if caller %}
         {{ caller() }}

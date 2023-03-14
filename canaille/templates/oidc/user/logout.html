@@ -22,10 +22,10 @@
 
         <div class="ui center aligned container">
             <form method="POST"
-                id="{{ form.id or form.__class__.__name__|lower }}"
-                action="{{ form.action }}"
-                role="form"
-                class="ui form"
+                  id="{{ form.id or form.__class__.__name__|lower }}"
+                  action="{{ form.action }}"
+                  role="form"
+                  class="ui form"
             >
                 {{ form.hidden_tag() if form.hidden_tag }}
                 <div class="ui stackable buttons">

@@ -59,7 +59,6 @@ def get_issuer():
 
 
 def get_jwt_config(grant):
-
     with open(current_app.config["JWT"]["PRIVATE_KEY"]) as pk:
         return {
             "key": pk.read(),

@@ -22,9 +22,9 @@
         </div>
         <div class="ui attached clearing segment">
             <form method="POST"
-                id="{{ reset }}"
-                action="{{ url_for('account.firstlogin', uid=uid) }}"
-                role="form"
+                  id="{{ reset }}"
+                  action="{{ url_for('account.firstlogin', uid=uid) }}"
+                  role="form"
             >
 
                 {{ form.hidden_tag() if form.hidden_tag }}

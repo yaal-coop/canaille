@@ -35,28 +35,28 @@
                     {% endif %}
                     {% if user.can_edit_self %}
                         <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                            href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
+                           href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
                             <i class="id card icon"></i>
                             {% trans %}My profile{% endtrans %}
                         </a>
                     {% endif %}
                     {% if user.can_use_oidc %}
                         <a class="item {% if menuitem == "consents" %}active{% endif %}"
-                            href="{{ url_for('oidc.consents.consents') }}">
+                           href="{{ url_for('oidc.consents.consents') }}">
                             <i class="handshake icon"></i>
                             {% trans %}My consents{% endtrans %}
                         </a>
                     {% endif %}
                     {% if user.can_manage_users %}
                         <a class="item {% if menuitem == "users" %}active{% endif %}"
-                            href="{{ url_for('account.users') }}">
+                           href="{{ url_for('account.users') }}">
                             <i class="address book icon"></i>
                             {% trans %}Users{% endtrans %}
                         </a>
                     {% endif %}
                     {% if user.can_manage_groups %}
                         <a class="item {% if menuitem == "groups" %}active{% endif %}"
-                            href="{{ url_for('groups.groups') }}">
+                           href="{{ url_for('groups.groups') }}">
                             <i class="users icon"></i>
                             {% trans %}Groups{% endtrans %}
                         </a>

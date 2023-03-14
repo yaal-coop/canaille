@@ -54,10 +54,10 @@
         </h2>
 
         <form method="POST"
-            id="{{ form.__class__.__name__|lower }}"
-            action="{{ request.url }}"
-            role="form"
-            class="ui form"
+              id="{{ form.__class__.__name__|lower }}"
+              action="{{ request.url }}"
+              role="form"
+              class="ui form"
         >
             {{ form.hidden_tag() if form.hidden_tag }}
             {{ sui.render_field(form.display_name) }}
