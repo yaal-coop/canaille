@@ -16,6 +16,27 @@
     <script src="/static/js/profile.js"></script>
 {% endblock %}
 
+{% block submenu %}
+    {% if not edited_user or edited_user != user %}
+        <nav class="ui bottom attached {% if has_smtp %}three{% else %}two{% endif %} item borderless menu">
+            <a class="{% if edited_user %}active {% endif %}item" href="{{ url_for('account.users') }}">
+                <i class="th list icon"></i>
+                {% trans %}View{% endtrans %}
+            </a>
+            <a class="{% if not edited_user %}active {% endif %}item" href="{{ url_for('account.profile_creation') }}">
+                <i class="plus icon"></i>
+                {% trans %}Add{% endtrans %}
+            </a>
+            {% if has_smtp %}
+                <a class="item" href="{{ url_for('account.user_invitation') }}">
+                    <i class="paper plane icon"></i>
+                    {% trans %}Invite{% endtrans %}
+                </a>
+            {% endif %}
+        </nav>
+    {% endif %}
+{% endblock %}
+
 {% macro render_field(field, noindicator=false) %}
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
     {% if not edited_user %}
