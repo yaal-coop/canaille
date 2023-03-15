@@ -145,13 +145,13 @@ def test_oidc_authorization_after_revokation(
 
 def test_preconsented_client_appears_in_consent_list(testclient, client, logged_user):
     assert not client.preconsent
-    res = testclient.get("/consent")
+    res = testclient.get("/consent/pre-consents")
     res.mustcontain(no=client.client_name)
 
     client.preconsent = True
     client.save()
 
-    res = testclient.get("/consent")
+    res = testclient.get("/consent/pre-consents")
     res.mustcontain(client.client_name)
 
 
