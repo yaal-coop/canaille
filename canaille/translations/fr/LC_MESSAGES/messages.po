@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-16 19:17+0100\n"
-"PO-Revision-Date: 2023-03-16 18:17+0000\n"
+"PO-Revision-Date: 2023-03-16 18:42+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -709,15 +709,13 @@ msgstr "Édition d'un groupe"
 #: canaille/templates/invite.html:16 canaille/templates/profile_add.html:24
 #: canaille/templates/users.html:16
 msgid "View"
-msgstr ""
+msgstr "Consulter"
 
 #: canaille/templates/group.html:26 canaille/templates/groups.html:16
 #: canaille/templates/invite.html:20 canaille/templates/profile_add.html:28
 #: canaille/templates/users.html:20
-#, fuzzy
-#| msgid "Address"
 msgid "Add"
-msgstr "Adresse"
+msgstr "Ajouter"
 
 #: canaille/templates/group.html:36
 msgid "Group deletion"
@@ -791,10 +789,8 @@ msgstr "Inviter un utilisateur"
 
 #: canaille/templates/invite.html:24 canaille/templates/profile_add.html:33
 #: canaille/templates/users.html:25
-#, fuzzy
-#| msgid "Invite a user"
 msgid "Invite"
-msgstr "Inviter un utilisateur"
+msgstr "Inviter"
 
 #: canaille/templates/invite.html:37
 msgid "Invitation link"
@@ -1031,23 +1027,20 @@ msgstr ""
 "qu'il reçoive un lien d'initialisation de mot de passe par courriel."
 
 #: canaille/templates/profile_add.html:258
-#, fuzzy
-#| msgid "The user will not be able to authenticate unless the password is set"
 msgid ""
 "The user will not be able to authenticate unless the password is set, but "
 "they will be able to ask for a password initialization mail."
 msgstr ""
 "L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
-"défini"
+"défini, mais ils seront en mesure de demander l'envoi d'un email "
+"d'initialisation de mot de passe."
 
 #: canaille/templates/profile_add.html:260
 #: canaille/templates/profile_add.html:286
-#, fuzzy
-#| msgid "The user will not be able to authenticate unless the password is set"
 msgid "The user will not be able to authenticate unless the password is set."
 msgstr ""
 "L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
-"défini"
+"défini."
 
 #: canaille/templates/profile_add.html:271
 #: canaille/templates/profile_settings.html:129
@@ -1622,10 +1615,8 @@ msgid "Authorization interface"
 msgstr "Interface de gestion des autorisations"
 
 #: canaille/themes/default/base.html:40
-#, fuzzy
-#| msgid "My profile"
 msgid "Profile"
-msgstr "Mon profil"
+msgstr "Profil"
 
 #: canaille/themes/default/base.html:47
 msgid "Consents"
