@@ -32,11 +32,11 @@ display=true
 {% set labeled = suffix_text or corner_indicator %}
 {% if field_visible %}
     <div class="ui
-                {% if suffix_text %}right{% endif %}
-                {% if corner_indicator %}corner{% endif %}
-                {% if labeled %}labeled{% endif %}
-                {% if icon %}left icon {% endif %}
-                {% if field.type not in ("BooleanField", "RadioField") %}input{% endif %}
+                {%- if suffix_text %} right{% endif -%}
+                {%- if corner_indicator %} corner{% endif -%}
+                {%- if labeled %} labeled{% endif -%}
+                {%- if icon %} left icon{% endif -%}
+                {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
 {% endif %}
 {% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
