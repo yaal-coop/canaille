@@ -7,12 +7,12 @@ from webtest import Upload
 
 def test_user_list_pagination(testclient, logged_admin):
     res = testclient.get("/users")
-    assert "1 items" in res
+    res.mustcontain("1 items")
 
     users = fake_users(25)
 
     res = testclient.get("/users")
-    assert "26 items" in res, res.text
+    res.mustcontain("26 items")
     user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
     assert user_name
 
@@ -26,7 +26,7 @@ def test_user_list_pagination(testclient, logged_admin):
         user.delete()
 
     res = testclient.get("/users")
-    assert "1 items" in res
+    res.mustcontain("1 items")
 
 
 def test_user_list_bad_pages(testclient, logged_admin):
@@ -45,34 +45,34 @@ def test_user_list_bad_pages(testclient, logged_admin):
 
 def test_user_list_search(testclient, logged_admin, user, moderator):
     res = testclient.get("/users")
-    assert "3 items" in res
-    assert moderator.name in res
-    assert user.name in res
+    res.mustcontain("3 items")
+    res.mustcontain(moderator.name)
+    res.mustcontain(user.name)
 
     form = res.forms["search"]
     form["query"] = "Jack"
     res = form.submit()
 
-    assert "1 items" in res, res.text
-    assert moderator.name in res
-    assert user.name not in res
+    res.mustcontain("1 items")
+    res.mustcontain(moderator.name)
+    res.mustcontain(no=user.name)
 
 
 def test_user_list_search_only_allowed_fields(
     testclient, logged_admin, user, moderator
 ):
     res = testclient.get("/users")
-    assert "3 items" in res
-    assert moderator.name in res
-    assert user.name in res
+    res.mustcontain("3 items")
+    res.mustcontain(moderator.name)
+    res.mustcontain(user.name)
 
     form = res.forms["search"]
     form["query"] = "user"
     res = form.submit()
 
-    assert "1 items" in res, res.text
-    assert user.name in res
-    assert moderator.name not in res
+    res.mustcontain("1 items")
+    res.mustcontain(user.name)
+    res.mustcontain(no=moderator.name)
 
     testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("uid")
 
@@ -80,9 +80,9 @@ def test_user_list_search_only_allowed_fields(
     form["query"] = "user"
     res = form.submit()
 
-    assert "0 items" in res, res.text
-    assert user.name not in res
-    assert moderator.name not in res
+    res.mustcontain("0 items")
+    res.mustcontain(no=user.name)
+    res.mustcontain(no=moderator.name)
 
 
 def test_edition_permission(
@@ -299,8 +299,9 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "correct horse battery staple"
     res.form["password2"] = "correct horse battery staple"
 
-    res = res.form.submit(name="action", value="edit").follow()
-    assert "Profile updated successfuly" in res
+    res = res.form.submit(name="action", value="edit")
+    assert ("success", "Profile updated successfuly.") in res.flashes
+    res = res.follow()
 
     assert logged_user.check_password("correct horse battery staple")
 
@@ -336,7 +337,7 @@ def test_user_creation_edition_and_deletion(
     # The user does not exist.
     res = testclient.get("/users", status=200)
     assert User.get("george") is None
-    assert "george" not in res.text
+    res.mustcontain(no="george")
 
     # Fill the profile for a new user.
     res = testclient.get("/profile", status=200)
@@ -350,8 +351,9 @@ def test_user_creation_edition_and_deletion(
     res.form["password2"] = "totoyolo"
 
     # User have been created
-    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
-    assert "User account creation succeed." in res
+    res = res.form.submit(name="action", value="edit", status=302)
+    assert ("success", "User account creation succeed.") in res.flashes
+    res = res.follow(status=200)
     george = User.get("george")
     george.load_groups()
     foo_group.reload()
@@ -386,7 +388,7 @@ def test_user_creation_edition_and_deletion(
     # User have been deleted.
     res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
     assert User.get("george") is None
-    assert "george" not in res.text
+    res.mustcontain(no="george")
 
 
 def test_user_creation_without_password(testclient, logged_moderator):
@@ -395,8 +397,9 @@ def test_user_creation_without_password(testclient, logged_moderator):
     res.form["sn"] = "Abitbol"
     res.form["mail"] = "george@abitbol.com"
 
-    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
-    assert "User account creation succeed." in res
+    res = res.form.submit(name="action", value="edit", status=302)
+    assert ("success", "User account creation succeed.") in res.flashes
+    res = res.follow(status=200)
     george = User.get("george")
     assert george.uid[0] == "george"
     assert not george.userPassword
@@ -409,11 +412,11 @@ def test_user_creation_form_validation_failed(
 ):
     res = testclient.get("/users", status=200)
     assert User.get("george") is None
-    assert "george" not in res.text
+    res.mustcontain(no="george")
 
     res = testclient.get("/profile", status=200)
     res = res.form.submit(name="action", value="edit")
-    assert "User account creation failed" in res
+    assert ("error", "User account creation failed.") in res.flashes
     assert User.get("george") is None
 
 
@@ -456,22 +459,24 @@ def test_password_initialization_mail(
     u.save()
 
     res = testclient.get("/profile/temp", status=200)
-    assert "This user does not have a password yet" in res
-    assert "Send" in res
+    res.mustcontain("This user does not have a password yet")
+    res.mustcontain("Send")
 
-    res = res.form.submit(name="action", value="password-initialization-mail").follow()
+    res = res.form.submit(name="action", value="password-initialization-mail")
     assert (
+        "success",
         "A password initialization link has been sent at the user email address. "
-        "It should be received within a few minutes." in res
-    )
+        "It should be received within a few minutes.",
+    ) in res.flashes
     assert len(smtpd.messages) == 1
+    res = res.follow()
 
     u.reload()
     u.userPassword = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
     u.save()
 
     res = testclient.get("/profile/temp", status=200)
-    assert "This user does not have a password yet" not in res
+    res.mustcontain(no="This user does not have a password yet")
 
     u.delete()
 
@@ -490,19 +495,21 @@ def test_password_initialization_mail_send_fail(
     u.save()
 
     res = testclient.get("/profile/temp", status=200)
-    assert "This user does not have a password yet" in res
-    assert "Send" in res
+    res.mustcontain("This user does not have a password yet")
+    res.mustcontain("Send")
 
     res = res.form.submit(
         name="action", value="password-initialization-mail", expect_errors=True
-    ).follow()
-    assert (
-        "A password initialization link has been sent at the user email address. "
-        "It should be received within a few minutes." not in res
     )
-    assert "Could not send the password initialization email" in res
+    assert (
+        "success",
+        "A password initialization link has been sent at the user email address. "
+        "It should be received within a few minutes.",
+    ) not in res.flashes
+    assert ("error", "Could not send the password initialization email") in res.flashes
     assert len(smtpd.messages) == 0
 
+    res = res.follow()
     u.delete()
 
 
@@ -541,16 +548,18 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
     u.save()
 
     res = testclient.get("/profile/temp", status=200)
-    assert "If the user has forgotten his password" in res, res.text
-    assert "Send" in res
+    res.mustcontain("If the user has forgotten his password")
+    res.mustcontain("Send")
 
-    res = res.form.submit(name="action", value="password-reset-mail").follow()
+    res = res.form.submit(name="action", value="password-reset-mail")
     assert (
+        "success",
         "A password reset link has been sent at the user email address. "
-        "It should be received within a few minutes." in res
-    )
+        "It should be received within a few minutes.",
+    ) in res.flashes
     assert len(smtpd.messages) == 1
 
+    res = res.follow()
     u.delete()
 
 
@@ -569,19 +578,21 @@ def test_password_reset_email_failed(
     u.save()
 
     res = testclient.get("/profile/temp", status=200)
-    assert "If the user has forgotten his password" in res, res.text
-    assert "Send" in res
+    res.mustcontain("If the user has forgotten his password")
+    res.mustcontain("Send")
 
     res = res.form.submit(
         name="action", value="password-reset-mail", expect_errors=True
-    ).follow()
-    assert (
-        "A password reset link has been sent at the user email address. "
-        "It should be received within a few minutes." not in res
     )
-    assert "Could not send the password reset email" in res
+    assert (
+        "success",
+        "A password reset link has been sent at the user email address. "
+        "It should be received within a few minutes.",
+    ) not in res.flashes
+    assert ("error", "Could not send the password reset email") in res.flashes
     assert len(smtpd.messages) == 0
 
+    res = res.follow()
     u.delete()
 
 
@@ -595,8 +606,9 @@ def test_photo_on_profile_edition(
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res.form["jpegPhoto_delete"] = False
-    res = res.form.submit(name="action", value="edit").follow()
-    assert "Profile updated successfuly." in res, str(res)
+    res = res.form.submit(name="action", value="edit")
+    assert ("success", "Profile updated successfuly.") in res.flashes
+    res = res.follow()
 
     logged_user = User.get(id=logged_user.id)
 
@@ -605,8 +617,9 @@ def test_photo_on_profile_edition(
     # No change
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto_delete"] = False
-    res = res.form.submit(name="action", value="edit").follow()
-    assert "Profile updated successfuly." in res, str(res)
+    res = res.form.submit(name="action", value="edit")
+    assert ("success", "Profile updated successfuly.") in res.flashes
+    res = res.follow()
 
     logged_user = User.get(id=logged_user.id)
 
@@ -615,8 +628,9 @@ def test_photo_on_profile_edition(
     # Photo deletion
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto_delete"] = True
-    res = res.form.submit(name="action", value="edit").follow()
-    assert "Profile updated successfuly." in res, str(res)
+    res = res.form.submit(name="action", value="edit")
+    assert ("success", "Profile updated successfuly.") in res.flashes
+    res = res.follow()
 
     logged_user = User.get(id=logged_user.id)
 
@@ -626,8 +640,9 @@ def test_photo_on_profile_edition(
     res = testclient.get("/profile/user", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
     res.form["jpegPhoto_delete"] = True
-    res = res.form.submit(name="action", value="edit").follow()
-    assert "Profile updated successfuly." in res, str(res)
+    res = res.form.submit(name="action", value="edit")
+    assert ("success", "Profile updated successfuly.") in res.flashes
+    res = res.follow()
 
     logged_user = User.get(id=logged_user.id)
 
@@ -637,7 +652,7 @@ def test_photo_on_profile_edition(
 def test_photo_on_profile_creation(testclient, slapd_server, jpeg_photo, logged_admin):
     res = testclient.get("/users", status=200)
     assert User.get("foobar") is None
-    assert "foobar" not in res.text
+    res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
@@ -656,7 +671,7 @@ def test_photo_deleted_on_profile_creation(
 ):
     res = testclient.get("/users", status=200)
     assert User.get("foobar") is None
-    assert "foobar" not in res.text
+    res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)

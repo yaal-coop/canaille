@@ -10,12 +10,12 @@ def test_no_group(app, slapd_connection):
 
 def test_group_list_pagination(testclient, logged_admin, foo_group):
     res = testclient.get("/groups")
-    assert "1 items" in res
+    res.mustcontain("1 items")
 
     groups = fake_groups(25)
 
     res = testclient.get("/groups")
-    assert "26 items" in res, res.text
+    res.mustcontain("26 items")
     group_name = res.pyquery(
         ".groups tbody tr:nth-of-type(1) td:nth-of-type(2) a"
     ).text()
@@ -31,7 +31,7 @@ def test_group_list_pagination(testclient, logged_admin, foo_group):
         group.delete()
 
     res = testclient.get("/groups")
-    assert "1 items" in res
+    res.mustcontain("1 items")
 
 
 def test_group_list_bad_pages(testclient, logged_admin):
@@ -50,17 +50,17 @@ def test_group_list_bad_pages(testclient, logged_admin):
 
 def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     res = testclient.get("/groups")
-    assert "2 items" in res
-    assert foo_group.display_name in res
-    assert bar_group.display_name in res
+    res.mustcontain("2 items")
+    res.mustcontain(foo_group.display_name)
+    res.mustcontain(bar_group.display_name)
 
     form = res.forms["search"]
     form["query"] = "oo"
     res = form.submit()
 
-    assert "1 items" in res, res.text
-    assert foo_group.display_name in res
-    assert bar_group.display_name not in res
+    res.mustcontain("1 items")
+    res.mustcontain(foo_group.display_name)
+    res.mustcontain(no=bar_group.display_name)
 
 
 def test_set_groups(app, user, foo_group, bar_group):
@@ -113,8 +113,8 @@ def test_moderator_can_create_edit_and_delete_group(
     res = testclient.get("/groups", status=200)
     assert Group.get("bar") is None
     assert Group.get("foo") == foo_group
-    assert "bar" not in res.text
-    assert "foo" in res.text
+    res.mustcontain(no="bar")
+    res.mustcontain("foo")
 
     # Fill the form for a new group
     res = testclient.get("/groups/add", status=200)
@@ -131,7 +131,7 @@ def test_moderator_can_create_edit_and_delete_group(
     assert bar_group.get_members() == [
         logged_moderator
     ]  # Group cannot be empty so creator is added in it
-    assert "bar" in res.text
+    res.mustcontain("bar")
 
     # Group name can not be edited
     res = testclient.get("/groups/bar", status=200)
@@ -147,7 +147,7 @@ def test_moderator_can_create_edit_and_delete_group(
     assert Group.get("bar2") is None
     members = bar_group.get_members()
     for member in members:
-        assert member.name in res.text
+        res.mustcontain(member.name)
 
     # Group is deleted
     res = form.submit(name="action", value="delete", status=302)
@@ -158,8 +158,8 @@ def test_moderator_can_create_edit_and_delete_group(
 def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_group):
     res = testclient.post("/groups/add", {"display_name": "foo"}, status=200)
 
-    assert "Group creation failed." in res
-    assert "The group &#39;foo&#39; already exists" in res
+    res.mustcontain("Group creation failed.")
+    res.mustcontain("The group &#39;foo&#39; already exists")
 
 
 def test_invalid_group(testclient, logged_moderator):
@@ -198,14 +198,14 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
     form = res.forms["editgroupform"]
     form["csrf_token"] = "invalid"
     res = form.submit(name="action", value="edit")
-    assert "Group edition failed." in res
+    res.mustcontain("Group edition failed.")
     foo_group = Group.get(foo_group.id)
     assert foo_group.display_name == "foo"
 
 
 def test_user_list_pagination(testclient, logged_admin, foo_group):
     res = testclient.get("/groups/foo")
-    assert "1 items" in res
+    res.mustcontain("1 items")
 
     users = fake_users(25)
     for user in users:
@@ -213,7 +213,7 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
     foo_group.save()
 
     res = testclient.get("/groups/foo")
-    assert "26 items" in res, res.text
+    res.mustcontain("26 items")
     user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
     assert user_name
 
@@ -227,7 +227,7 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
         user.delete()
 
     res = testclient.get("/groups/foo")
-    assert "1 items" in res
+    res.mustcontain("1 items")
 
 
 def test_user_list_bad_pages(testclient, logged_admin, foo_group):
@@ -250,15 +250,15 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     foo_group.save()
 
     res = testclient.get("/groups/foo")
-    assert "3 items" in res
-    assert user.name in res
-    assert moderator.name in res
+    res.mustcontain("3 items")
+    res.mustcontain(user.name)
+    res.mustcontain(moderator.name)
 
     form = res.forms["search"]
     form["query"] = "ohn"
     res = form.submit()
 
-    assert "1 items" in res
-    assert user.name in res
-    assert logged_admin.name not in res
-    assert moderator.name not in res
+    res.mustcontain("1 items")
+    res.mustcontain(user.name)
+    res.mustcontain(no=logged_admin.name)
+    res.mustcontain(no=moderator.name)

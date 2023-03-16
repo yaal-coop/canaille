@@ -111,10 +111,10 @@ def themed_testclient(app, configuration):
 
 def test_theme(testclient, themed_testclient):
     res = testclient.get("/login")
-    assert "TEST_THEME" not in res
+    res.mustcontain(no="TEST_THEME")
 
     res = themed_testclient.get("/login")
-    assert "TEST_THEME" in res
+    res.mustcontain("TEST_THEME")
 
 
 def test_invalid_theme(configuration):

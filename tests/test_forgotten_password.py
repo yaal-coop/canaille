@@ -8,7 +8,7 @@ def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.get("/reset/uid/hash", status=404)
 
     res = testclient.get("/login")
-    assert "Forgotten password" not in res.text
+    res.mustcontain(no="Forgotten password")
 
 
 def test_password_forgotten(smtpd, testclient, user):
@@ -20,7 +20,7 @@ def test_password_forgotten(smtpd, testclient, user):
         "success",
         "A password reset link has been sent at your email address. You should receive it within a few minutes.",
     ) in res.flashes
-    assert "Send again" in res.text
+    res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 1
 
@@ -45,7 +45,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
         "success",
         "A password reset link has been sent at your email address. You should receive it within a few minutes.",
     ) in res.flashes
-    assert "The login &#39;i-dont-really-exist&#39; does not exist" not in res.text
+    res.mustcontain(no="The login &#39;i-dont-really-exist&#39; does not exist")
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
@@ -56,7 +56,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
         "success",
         "A password reset link has been sent at your email address. You should receive it within a few minutes.",
     ) not in res.flashes
-    assert "The login &#39;i-dont-really-exist&#39; does not exist" in res.text
+    res.mustcontain("The login &#39;i-dont-really-exist&#39; does not exist")
 
     assert len(smtpd.messages) == 0
 
@@ -110,6 +110,6 @@ def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
         "error",
         "We encountered an issue while we sent the password recovery email.",
     ) in res.flashes
-    assert "Send again" in res.text
+    res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 0

@@ -36,9 +36,9 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     res.form["sn"] = "Abitbol"
 
     res = res.form.submit(status=302)
-    res = res.follow(status=200)
 
-    assert "You account has been created successfuly." in res
+    assert ("success", "Your account has been created successfuly.") in res.flashes
+    res = res.follow(status=200)
 
     user = User.get("someone")
     user.load_groups()
@@ -87,9 +87,9 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
     res.form["sn"] = "Abitbol"
 
     res = res.form.submit(status=302)
-    res = res.follow(status=200)
 
-    assert "You account has been created successfuly." in res
+    assert ("success", "Your account has been created successfuly.") in res.flashes
+    res = res.follow(status=200)
 
     user = User.get("djorje")
     user.load_groups()
@@ -155,8 +155,8 @@ def test_invitation_login_already_taken(testclient, logged_admin):
     res.form["mail"] = logged_admin.mail[0]
     res = res.form.submit(name="action", value="send", status=200)
 
-    assert "The login &#39;admin&#39; already exists" in res.text
-    assert "The email &#39;jane@doe.com&#39; already exists" in res.text
+    res.mustcontain("The login &#39;admin&#39; already exists")
+    res.mustcontain("The email &#39;jane@doe.com&#39; already exists")
 
 
 def test_registration(testclient, foo_group):
@@ -228,7 +228,7 @@ def test_registration_no_password(testclient, foo_group):
     assert "required" in res.form["password2"].attrs
 
     res = res.form.submit(status=200)
-    assert "This field is required." in res.text
+    res.mustcontain("This field is required.")
 
     assert not User.get("someoneelse")
 
@@ -253,17 +253,17 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
 
 def test_unavailable_if_no_smtp(testclient, logged_admin):
     res = testclient.get("/users")
-    assert "Invite a user" in res.text
+    res.mustcontain("Invite a user")
     res = testclient.get("/profile")
-    assert "Invite a user" in res.text
+    res.mustcontain("Invite a user")
     testclient.get("/invite")
 
     del testclient.app.config["SMTP"]
 
     res = testclient.get("/users")
-    assert "Invite a user" not in res.text
+    res.mustcontain(no="Invite a user")
     res = testclient.get("/profile")
-    assert "Invite a user" not in res.text
+    res.mustcontain(no="Invite a user")
     testclient.get("/invite", status=500, expect_errors=True)
 
 

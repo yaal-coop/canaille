@@ -376,7 +376,7 @@ def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
     form["csrf_token"] = "foobar"
     res = form.submit(name="answer", value="logout", status=200)
 
-    assert "An error happened during the logout" in res
+    assert ("error", "An error happened during the logout") in res.flashes
 
     res = res.form.submit(name="answer", value="logout", status=302)
     res = res.follow(status=302)

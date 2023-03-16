@@ -43,23 +43,23 @@ def test_password_reset_bad_password(testclient, user):
 
 def test_unavailable_if_no_smtp(testclient, user):
     res = testclient.get("/login")
-    assert "Forgotten password" in res.text
+    res.mustcontain("Forgotten password")
 
     res.form["login"] = "John (johnny) Doe"
     res = res.form.submit()
     res = res.follow()
-    assert "Forgotten password" in res.text
+    res.mustcontain("Forgotten password")
 
     testclient.get("/reset", status=200)
 
     del testclient.app.config["SMTP"]
 
     res = testclient.get("/login")
-    assert "Forgotten password" not in res.text
+    res.mustcontain(no="Forgotten password")
 
     res.form["login"] = "John (johnny) Doe"
     res = res.form.submit()
     res = res.follow()
-    assert "Forgotten password" not in res.text
+    res.mustcontain(no="Forgotten password")
 
     testclient.get("/reset", status=500, expect_errors=True)

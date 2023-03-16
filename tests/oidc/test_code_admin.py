@@ -12,12 +12,12 @@ def test_no_admin_no_access(testclient, logged_user):
 
 def test_authorizaton_list(testclient, authorization, logged_admin):
     res = testclient.get("/admin/authorization")
-    assert authorization.authorization_code_id in res.text
+    res.mustcontain(authorization.authorization_code_id)
 
 
 def test_authorization_list_pagination(testclient, logged_admin, client):
     res = testclient.get("/admin/authorization")
-    assert "0 items" in res
+    res.mustcontain("0 items")
     authorizations = []
     for _ in range(26):
         code = AuthorizationCode(
@@ -27,7 +27,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
         authorizations.append(code)
 
     res = testclient.get("/admin/authorization")
-    assert "26 items" in res, res.text
+    res.mustcontain("26 items")
     authorization_code_id = res.pyquery(
         ".codes tbody tr:nth-of-type(1) td:nth-of-type(1) a"
     ).text()
@@ -43,7 +43,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
         authorization.delete()
 
     res = testclient.get("/admin/authorization")
-    assert "0 items" in res
+    res.mustcontain("0 items")
 
 
 def test_authorization_list_bad_pages(testclient, logged_admin):
@@ -74,20 +74,20 @@ def test_authorization_list_search(testclient, logged_admin, client):
     auth2.save()
 
     res = testclient.get("/admin/authorization")
-    assert "2 items" in res
-    assert id1 in res
-    assert id2 in res
+    res.mustcontain("2 items")
+    res.mustcontain(id1)
+    res.mustcontain(id2)
 
     form = res.forms["search"]
     form["query"] = id1
     res = form.submit()
 
-    assert "1 items" in res
-    assert id1 in res
-    assert id2 not in res
+    res.mustcontain("1 items")
+    res.mustcontain(id1)
+    res.mustcontain(no=id2)
 
 
 def test_authorizaton_view(testclient, authorization, logged_admin):
     res = testclient.get("/admin/authorization/" + authorization.authorization_code_id)
     for attr in authorization.may() + authorization.must():
-        assert attr in res.text
+        res.mustcontain(attr)

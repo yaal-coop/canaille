@@ -13,17 +13,17 @@ def test_no_logged_no_access(testclient):
 
 def test_revokation(testclient, client, consent, logged_user, token):
     res = testclient.get("/consent", status=200)
-    assert client.client_name in res.text
-    assert "Revoke access" in res.text
-    assert "Restore access" not in res.text
+    res.mustcontain(client.client_name)
+    res.mustcontain("Revoke access")
+    res.mustcontain(no="Restore access")
     assert not consent.revoked
     assert not token.revoked
 
     res = testclient.get(f"/consent/revoke/{consent.consent_id[0]}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
     res = res.follow(status=200)
-    assert "Revoke access" not in res.text
-    assert "Restore access" in res.text
+    res.mustcontain(no="Revoke access")
+    res.mustcontain("Restore access")
 
     consent.reload()
     assert consent.revoked
@@ -146,13 +146,13 @@ def test_oidc_authorization_after_revokation(
 def test_preconsented_client_appears_in_consent_list(testclient, client, logged_user):
     assert not client.preconsent
     res = testclient.get("/consent")
-    assert client.client_name not in res.text
+    res.mustcontain(no=client.client_name)
 
     client.preconsent = True
     client.save()
 
     res = testclient.get("/consent")
-    assert client.client_name in res.text
+    res.mustcontain(client.client_name)
 
 
 def test_revoke_preconsented_client(testclient, client, logged_user, token):

@@ -14,12 +14,12 @@ def test_no_admin_no_access(testclient, logged_user):
 
 def test_token_list(testclient, token, logged_admin):
     res = testclient.get("/admin/token")
-    assert token.token_id in res.text
+    res.mustcontain(token.token_id)
 
 
 def test_token_list_pagination(testclient, logged_admin, client):
     res = testclient.get("/admin/token")
-    assert "0 items" in res
+    res.mustcontain("0 items")
     tokens = []
     for _ in range(26):
         token = Token(
@@ -37,7 +37,7 @@ def test_token_list_pagination(testclient, logged_admin, client):
         tokens.append(token)
 
     res = testclient.get("/admin/token")
-    assert "26 items" in res, res.text
+    res.mustcontain("26 items")
     token_id = res.pyquery(".tokens tbody tr td:nth-of-type(1) a").text()
     assert token_id
 
@@ -51,7 +51,7 @@ def test_token_list_pagination(testclient, logged_admin, client):
         token.delete()
 
     res = testclient.get("/admin/token")
-    assert "0 items" in res
+    res.mustcontain("0 items")
 
 
 def test_token_list_bad_pages(testclient, logged_admin):
@@ -95,22 +95,22 @@ def test_token_list_search(testclient, logged_admin, client):
     token2.save()
 
     res = testclient.get("/admin/token")
-    assert "2 items" in res
-    assert token1.token_id in res
-    assert token2.token_id in res
+    res.mustcontain("2 items")
+    res.mustcontain(token1.token_id)
+    res.mustcontain(token2.token_id)
 
     form = res.forms["search"]
     form["query"] = "valid"
     res = form.submit()
 
-    assert "1 items" in res
-    assert token2.token_id in res
-    assert token1.token_id not in res
+    res.mustcontain("1 items")
+    res.mustcontain(token2.token_id)
+    res.mustcontain(no=token1.token_id)
 
 
 def test_token_view(testclient, token, logged_admin):
     res = testclient.get("/admin/token/" + token.token_id)
-    assert token.access_token in res.text
+    res.mustcontain(token.access_token)
 
 
 def test_token_not_found(testclient, logged_admin):

@@ -21,12 +21,12 @@ def test_invalid_client_edition(testclient, logged_admin):
 
 def test_client_list(testclient, client, logged_admin):
     res = testclient.get("/admin/client")
-    assert client.client_name in res.text
+    res.mustcontain(client.client_name)
 
 
 def test_client_list_pagination(testclient, logged_admin, client, other_client):
     res = testclient.get("/admin/client")
-    assert "2 items" in res
+    res.mustcontain("2 items")
     clients = []
     for _ in range(25):
         client = Client(client_id=gen_salt(48), client_name=gen_salt(48))
@@ -34,7 +34,7 @@ def test_client_list_pagination(testclient, logged_admin, client, other_client):
         clients.append(client)
 
     res = testclient.get("/admin/client")
-    assert "27 items" in res, res.text
+    res.mustcontain("27 items")
     client_name = res.pyquery(
         ".clients tbody tr:nth-of-type(1) td:nth-of-type(2) a"
     ).text()
@@ -50,7 +50,7 @@ def test_client_list_pagination(testclient, logged_admin, client, other_client):
         client.delete()
 
     res = testclient.get("/admin/client")
-    assert "2 items" in res
+    res.mustcontain("2 items")
 
 
 def test_client_list_bad_pages(testclient, logged_admin):
@@ -69,17 +69,17 @@ def test_client_list_bad_pages(testclient, logged_admin):
 
 def test_client_list_search(testclient, logged_admin, client, other_client):
     res = testclient.get("/admin/client")
-    assert "2 items" in res
-    assert client.client_name in res
-    assert other_client.client_name in res
+    res.mustcontain("2 items")
+    res.mustcontain(client.client_name)
+    res.mustcontain(other_client.client_name)
 
     form = res.forms["search"]
     form["query"] = "other"
     res = form.submit()
 
-    assert "1 items" in res
-    assert other_client.client_name in res
-    assert client.client_name not in res
+    res.mustcontain("1 items")
+    res.mustcontain(other_client.client_name)
+    res.mustcontain(no=client.client_name)
 
 
 def test_client_add(testclient, logged_admin):
@@ -129,7 +129,10 @@ def test_client_add(testclient, logged_admin):
 def test_add_missing_fields(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     res = res.form.submit(status=200, name="action", value="edit")
-    assert "The client has not been added. Please check your information." in res
+    assert (
+        "error",
+        "The client has not been added. Please check your information.",
+    ) in res.flashes
 
 
 def test_client_edit(testclient, client, logged_admin, other_client):
@@ -182,7 +185,10 @@ def test_client_edit_missing_fields(testclient, client, logged_admin, other_clie
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clientadd"]["client_name"] = ""
     res = res.forms["clientadd"].submit(name="action", value="edit")
-    assert "The client has not been edited. Please check your information." in res
+    assert (
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) in res.flashes
     client.reload()
     assert client.client_name
 

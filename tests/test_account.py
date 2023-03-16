@@ -47,9 +47,12 @@ def test_signin_and_out(testclient, user):
     res = testclient.get("/login", status=302)
 
     res = testclient.get("/logout")
+    assert (
+        "success",
+        "You have been disconnected. See you next time John (johnny) Doe",
+    ) in res.flashes
     res = res.follow(status=302)
     res = res.follow(status=200)
-    assert "You have been disconnected. See you next time John (johnny) Doe" in res
 
 
 def test_visitor_logout(testclient, user):
@@ -59,7 +62,10 @@ def test_visitor_logout(testclient, user):
     res = testclient.get("/logout")
     res = res.follow(status=302)
     res = res.follow(status=200)
-    assert "You have been disconnected. See you next time user" not in res
+    assert (
+        "success",
+        "You have been disconnected. See you next time user",
+    ) not in res.flashes
 
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
@@ -116,13 +122,14 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
 
     assert res.location == "/firstlogin/temp"
     res = res.follow(status=200)
-    assert "First login" in res
+    res.mustcontain("First login")
 
     res = res.form.submit(name="action", value="sendmail")
     assert (
+        "success",
         "A password initialization link has been sent at your email address. "
-        "You should receive it within a few minutes."
-    ) in res
+        "You should receive it within a few minutes.",
+    ) in res.flashes
     assert len(smtpd.messages) == 1
     assert "Password initialization" in smtpd.messages[0].get("Subject")
     u.delete()
@@ -146,10 +153,11 @@ def test_first_login_account_initialization_mail_sending_failed(
     res = testclient.get("/firstlogin/temp")
     res = res.form.submit(name="action", value="sendmail", expect_errors=True)
     assert (
+        "success",
         "A password initialization link has been sent at your email address. "
-        "You should receive it within a few minutes."
-    ) not in res
-    assert "Could not send the password initialization email" in res
+        "You should receive it within a few minutes.",
+    ) not in res.flashes
+    assert ("error", "Could not send the password initialization email") in res.flashes
     assert len(smtpd.messages) == 0
     u.delete()
 
@@ -167,7 +175,7 @@ def test_first_login_form_error(testclient, slapd_connection, smtpd):
     res = testclient.get("/firstlogin/temp", status=200)
     res.form["csrf_token"] = "invalid"
     res = res.form.submit(name="action", value="sendmail")
-    assert ("Could not send the password initialization link.") in res
+    assert ("error", "Could not send the password initialization link.") in res.flashes
     assert len(smtpd.messages) == 0
     u.delete()
 
@@ -251,14 +259,14 @@ def test_wrong_login(testclient, user):
 
     res.form["password"] = "incorrect horse"
     res = res.form.submit(status=200)
-    assert "The login 'invalid' does not exist" not in res.text
+    res.mustcontain(no="The login &#39;invalid&#39; does not exist")
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = False
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
     res = res.form.submit(status=200)
-    assert "The login &#39;invalid&#39; does not exist" in res.text
+    res.mustcontain("The login &#39;invalid&#39; does not exist")
 
 
 def test_admin_self_deletion(testclient, slapd_connection):
@@ -300,14 +308,14 @@ def test_user_self_deletion(testclient, slapd_connection):
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     res = testclient.get("/profile/temp")
-    assert "Delete my account" not in res
+    res.mustcontain(no="Delete my account")
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = [
         "edit_self",
         "delete_account",
     ]
     res = testclient.get("/profile/temp")
-    assert "Delete my account" in res
+    res.mustcontain("Delete my account")
     res = (
         res.form.submit(name="action", value="delete", status=302)
         .follow(status=302)
