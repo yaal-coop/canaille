@@ -74,6 +74,9 @@ class LDAPObjectQuery:
             )
         return super().__eq__(other)
 
+    def __bool__(self):
+        return bool(self.items)
+
     def decorate(self, args):
         klass = self.guess_class(self.klass, args["objectClass"])
         obj = klass()

@@ -51,7 +51,9 @@ def create_group(user):
             )
             return redirect(url_for("groups.group", groupname=group.display_name))
 
-    return render_template("group.html", form=form, edited_group=None, members=None)
+    return render_template(
+        "group.html", menuitem="groups", form=form, edited_group=None, members=None
+    )
 
 
 @bp.route("/<groupname>", methods=("GET", "POST"))
@@ -107,6 +109,7 @@ def edit_group(group):
         "group.html",
         "partial/users.html",
         form=form,
+        menuitem="groups",
         edited_group=group,
         table_form=table_form,
     )

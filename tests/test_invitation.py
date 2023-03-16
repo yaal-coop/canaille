@@ -253,17 +253,17 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
 
 def test_unavailable_if_no_smtp(testclient, logged_admin):
     res = testclient.get("/users")
-    res.mustcontain("Invite a user")
+    res.mustcontain("Invite")
     res = testclient.get("/profile")
-    res.mustcontain("Invite a user")
+    res.mustcontain("Invite")
     testclient.get("/invite")
 
     del testclient.app.config["SMTP"]
 
     res = testclient.get("/users")
-    res.mustcontain(no="Invite a user")
+    res.mustcontain(no="Invite")
     res = testclient.get("/profile")
-    res.mustcontain(no="Invite a user")
+    res.mustcontain(no="Invite")
     testclient.get("/invite", status=500, expect_errors=True)
 
 

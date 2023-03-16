@@ -233,19 +233,24 @@ def test_user_deleted_in_session(testclient, slapd_connection):
 
 
 def test_impersonate(testclient, logged_admin, user):
-    res = testclient.get("/", status=302).follow(status=200)
+    res = (
+        testclient.get("/", status=302).follow(status=200).click("Account information")
+    )
     assert "admin" == res.form["uid"].value
 
     res = (
         testclient.get("/impersonate/user", status=302)
         .follow(status=302)
         .follow(status=200)
+        .click("Account information")
     )
     assert "user" == res.form["uid"].value
 
     testclient.get("/logout", status=302).follow(status=302).follow(status=200)
 
-    res = testclient.get("/", status=302).follow(status=200)
+    res = (
+        testclient.get("/", status=302).follow(status=200).click("Account information")
+    )
     assert "admin" == res.form["uid"].value
 
 
@@ -281,7 +286,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
     with testclient.session_transaction() as sess:
         sess["user_id"] = [admin.id]
 
-    res = testclient.get("/profile/temp")
+    res = testclient.get("/profile/temp/settings")
     res = (
         res.form.submit(name="action", value="delete", status=302)
         .follow(status=302)
@@ -307,14 +312,14 @@ def test_user_self_deletion(testclient, slapd_connection):
         sess["user_id"] = [user.id]
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
-    res = testclient.get("/profile/temp")
+    res = testclient.get("/profile/temp/settings")
     res.mustcontain(no="Delete my account")
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = [
         "edit_self",
         "delete_account",
     ]
-    res = testclient.get("/profile/temp")
+    res = testclient.get("/profile/temp/settings")
     res.mustcontain("Delete my account")
     res = (
         res.form.submit(name="action", value="delete", status=302)
@@ -346,23 +351,3 @@ def test_login_placeholder(testclient):
     testclient.app.config["LDAP"]["USER_FILTER"] = "(|(uid={login})(email={login}))"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe or john@doe.com"
-
-
-def test_photo(testclient, user, jpeg_photo):
-    user.jpegPhoto = [jpeg_photo]
-    user.save()
-    res = testclient.get("/profile/user/jpegPhoto")
-    assert res.body == jpeg_photo
-
-
-def test_photo_invalid_user(testclient, user):
-    res = testclient.get("/profile/invalid/jpegPhoto", status=404)
-
-
-def test_photo_absent(testclient, user):
-    assert not user.jpegPhoto
-    res = testclient.get("/profile/user/jpegPhoto", status=404)
-
-
-def test_photo_invalid_path(testclient, user):
-    testclient.get("/profile/user/invalid", status=404)

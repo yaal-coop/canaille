@@ -260,33 +260,6 @@ def user_invitation(user):
     )
 
 
-@bp.route("/profile", methods=("GET", "POST"))
-@permissions_needed("manage_users")
-def profile_creation(user):
-    form = profile_form(user.write, user.read)
-    form.process(CombinedMultiDict((request.files, request.form)) or None)
-
-    for field in form:
-        if field.render_kw and "readonly" in field.render_kw:
-            del field.render_kw["readonly"]
-
-    if request.form:
-        if not form.validate():
-            flash(_("User account creation failed."), "error")
-
-        else:
-            user = profile_create(current_app, form)
-            return redirect(url_for("account.profile_edition", username=user.uid[0]))
-
-    return render_template(
-        "profile.html",
-        form=form,
-        menuitem="users",
-        edited_user=None,
-        self_deletion=False,
-    )
-
-
 @bp.route("/register/<data>/<hash>", methods=["GET", "POST"])
 def registration(data, hash):
     try:
@@ -364,7 +337,34 @@ def registration(data, hash):
             return redirect(url_for("account.profile_edition", username=user.uid[0]))
 
     return render_template(
-        "profile.html",
+        "profile_add.html",
+        form=form,
+        menuitem="users",
+        edited_user=None,
+        self_deletion=False,
+    )
+
+
+@bp.route("/profile", methods=("GET", "POST"))
+@permissions_needed("manage_users")
+def profile_creation(user):
+    form = profile_form(user.write, user.read)
+    form.process(CombinedMultiDict((request.files, request.form)) or None)
+
+    for field in form:
+        if field.render_kw and "readonly" in field.render_kw:
+            del field.render_kw["readonly"]
+
+    if request.form:
+        if not form.validate():
+            flash(_("User account creation failed."), "error")
+
+        else:
+            user = profile_create(current_app, form)
+            return redirect(url_for("account.profile_edition", username=user.uid[0]))
+
+    return render_template(
+        "profile_add.html",
         form=form,
         menuitem="users",
         edited_user=None,
@@ -407,55 +407,12 @@ def profile_create(current_app, form):
 @bp.route("/profile/<username>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, username):
+    editor = user
     if not user.can_manage_users and not (
         user.can_edit_self and username == user.uid[0]
     ):
         abort(403)
 
-    if request.method == "GET" or request.form.get("action") == "edit":
-        return profile_edit(user, username)
-
-    if request.form.get("action") == "delete":
-        return profile_delete(user, username)
-
-    if request.form.get("action") == "password-initialization-mail":
-        user = User.get(username)
-        if not user:
-            abort(404)
-
-        if send_password_initialization_mail(user):
-            flash(
-                _(
-                    "A password initialization link has been sent at the user email address. It should be received within a few minutes."
-                ),
-                "success",
-            )
-        else:
-            flash(_("Could not send the password initialization email"), "error")
-
-        return profile_edit(user, username)
-
-    if request.form.get("action") == "password-reset-mail":
-        user = User.get(username)
-        if not user:
-            abort(404)
-
-        if send_password_reset_mail(user):
-            flash(
-                _(
-                    "A password reset link has been sent at the user email address. It should be received within a few minutes."
-                ),
-                "success",
-            )
-        else:
-            flash(_("Could not send the password reset email"), "error")
-
-        return profile_edit(user, username)
-
-    abort(400)
-
-
-def profile_edit(editor, username):
     menuitem = "profile" if username == editor.uid[0] else "users"
     fields = editor.read | editor.write
     if username != editor.uid[0]:
@@ -466,18 +423,35 @@ def profile_edit(editor, username):
     if not user:
         abort(404)
 
+    available_fields = {
+        "cn",
+        "title",
+        "givenName",
+        "sn",
+        "displayName",
+        "mail",
+        "telephoneNumber",
+        "postalAddress",
+        "street",
+        "postalCode",
+        "l",
+        "st",
+        "jpegPhoto",
+        "jpegPhoto_delete",
+        "employeeNumber",
+        "departmentNumber",
+        "labeledURI",
+        "preferredLanguage",
+    }
     data = {
         k: getattr(user, k)[0]
         if getattr(user, k) and isinstance(getattr(user, k), list)
         else getattr(user, k) or ""
         for k in fields
-        if hasattr(user, k)
+        if hasattr(user, k) and k in available_fields
     }
 
-    if "groups" in fields:
-        data["groups"] = [g.id for g in user.groups]
-
-    form = profile_form(editor.write, editor.read)
+    form = profile_form(editor.write & available_fields, editor.read & available_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     if request.form:
@@ -497,18 +471,8 @@ def profile_edit(editor, username):
 
                     user[attribute.name] = data
 
-                elif attribute.name == "groups" and "groups" in editor.write:
-                    user.set_groups(attribute.data)
-
             if "jpegPhoto" in form and form["jpegPhoto_delete"].data:
                 user["jpegPhoto"] = None
-
-            if (
-                "password1" in request.form
-                and form["password1"].data
-                and request.form["action"] == "edit"
-            ):
-                user.set_password(form["password1"].data)
 
             if "preferredLanguage" in request.form:
                 # Refresh the babel cache in case the lang is updated
@@ -522,11 +486,116 @@ def profile_edit(editor, username):
             return redirect(url_for("account.profile_edition", username=username))
 
     return render_template(
-        "profile.html",
+        "profile_edit.html",
         form=form,
         menuitem=menuitem,
         edited_user=user,
-        self_deletion=user.can_delete_account,
+    )
+
+
+@bp.route("/profile/<username>/settings", methods=("GET", "POST"))
+@user_needed()
+def profile_settings(user, username):
+    if not user.can_manage_users and not (
+        user.can_edit_self and username == user.uid[0]
+    ):
+        abort(403)
+
+    if request.method == "GET" or request.form.get("action") == "edit":
+        return profile_settings_edit(user, username)
+
+    if request.form.get("action") == "delete":
+        return profile_delete(user, username)
+
+    if request.form.get("action") == "password-initialization-mail":
+        user = User.get(username)
+        if not user:
+            abort(404)
+
+        if send_password_initialization_mail(user):
+            flash(
+                _(
+                    "A password initialization link has been sent at the user email address. It should be received within a few minutes."
+                ),
+                "success",
+            )
+        else:
+            flash(_("Could not send the password initialization email"), "error")
+
+        return profile_settings_edit(user, username)
+
+    if request.form.get("action") == "password-reset-mail":
+        user = User.get(username)
+        if not user:
+            abort(404)
+
+        if send_password_reset_mail(user):
+            flash(
+                _(
+                    "A password reset link has been sent at the user email address. It should be received within a few minutes."
+                ),
+                "success",
+            )
+        else:
+            flash(_("Could not send the password reset email"), "error")
+
+        return profile_settings_edit(user, username)
+
+    abort(400)
+
+
+def profile_settings_edit(editor, username):
+    menuitem = "profile" if username == editor.uid[0] else "users"
+    fields = editor.read | editor.write
+    if username != editor.uid[0]:
+        edited_user = User.get(username)
+    else:
+        edited_user = editor
+
+    if not editor or not edited_user:
+        abort(404)
+
+    available_fields = {"userPassword", "groups", "uid"}
+    data = {
+        k: getattr(edited_user, k)[0]
+        if getattr(edited_user, k) and isinstance(getattr(edited_user, k), list)
+        else getattr(edited_user, k) or ""
+        for k in fields
+        if hasattr(edited_user, k) and k in available_fields
+    }
+
+    if "groups" in fields:
+        data["groups"] = [g.id for g in edited_user.groups]
+
+    form = profile_form(editor.write & available_fields, editor.read & available_fields)
+    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
+
+    if request.form:
+        if not form.validate():
+            flash(_("Profile edition failed."), "error")
+
+        else:
+            for attribute in form:
+                if attribute.name == "groups" and "groups" in editor.write:
+                    edited_user.set_groups(attribute.data)
+
+            if (
+                "password1" in request.form
+                and form["password1"].data
+                and request.form["action"] == "edit"
+            ):
+                edited_user.set_password(form["password1"].data)
+
+            edited_user.save()
+            flash(_("Profile updated successfuly."), "success")
+            return redirect(url_for("account.profile_edition", username=username))
+
+    return render_template(
+        "profile_settings.html",
+        form=form,
+        menuitem=menuitem,
+        edited_user=edited_user,
+        self_deletion=edited_user.can_delete_account,
     )
 
 

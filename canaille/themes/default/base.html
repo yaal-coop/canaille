@@ -25,77 +25,62 @@
     <body>
         {% block menu %}
             {% if user and menu %}
-                <nav class="ui stackable labeled icon menu container">
-                    {% if logo_url %}
-                        <div class="header item">
-                            <a href="/" class="logo">
+                <div class="ui container menu-container">
+                    <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}top attached{% endif %} menu">
+                        {% if logo_url %}
+                            <a href="/" class="item logo">
                                 <img class="ui img" src="{{ logo_url }}" alt="{{ website_name }}" />
                             </a>
-                        </div>
-                    {% endif %}
-                    {% if user.can_edit_self %}
-                        <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                           href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
-                            <i class="id card icon"></i>
-                            {% trans %}My profile{% endtrans %}
+                        {% endif %}
+
+                        {% if user.can_edit_self %}
+                            <a class="item {% if menuitem == "profile" %}active{% endif %}"
+                               href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
+                                <i class="id card icon"></i>
+                                {% trans %}Profile{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_use_oidc %}
+                            <a class="item {% if menuitem == "consents" %}active{% endif %}"
+                               href="{{ url_for('oidc.consents.consents') }}">
+                                <i class="handshake icon"></i>
+                                {% trans %}Consents{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_manage_users %}
+                            <a class="item {% if menuitem == "users" %}active{% endif %}"
+                               href="{{ url_for('account.users') }}">
+                                <i class="address book icon"></i>
+                                {% trans %}Users{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_manage_groups %}
+                            <a class="item {% if menuitem == "groups" %}active{% endif %}"
+                               href="{{ url_for('groups.groups') }}">
+                                <i class="users icon"></i>
+                                {% trans %}Groups{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_manage_oidc %}
+                            <a class="item {% if menuitem == "admin" %}active{% endif %}" href="{{ url_for('admin.mail_index') }}">
+                                <i class="settings icon"></i>
+                                {% trans %}Admin{% endtrans %}
+                            </a>
+                        {% endif %}
+                        <a class="item" href="{{ url_for('account.logout') }}">
+                            <i class="sign out alternate icon"></i>
+                            {% trans %}Log out{% endtrans %}
                         </a>
-                    {% endif %}
-                    {% if user.can_use_oidc %}
-                        <a class="item {% if menuitem == "consents" %}active{% endif %}"
-                           href="{{ url_for('oidc.consents.consents') }}">
-                            <i class="handshake icon"></i>
-                            {% trans %}My consents{% endtrans %}
-                        </a>
-                    {% endif %}
-                    {% if user.can_manage_users %}
-                        <a class="item {% if menuitem == "users" %}active{% endif %}"
-                           href="{{ url_for('account.users') }}">
-                            <i class="address book icon"></i>
-                            {% trans %}Users{% endtrans %}
-                        </a>
-                    {% endif %}
-                    {% if user.can_manage_groups %}
-                        <a class="item {% if menuitem == "groups" %}active{% endif %}"
-                           href="{{ url_for('groups.groups') }}">
-                            <i class="users icon"></i>
-                            {% trans %}Groups{% endtrans %}
-                        </a>
-                    {% endif %}
-                    {% if user.can_manage_oidc %}
-                        <div class="ui dropdown item {% if menuitem == "admin" %}dropdown-active{% endif %}">
-                            <i class="settings icon"></i>
-                            {% trans %}Admin{% endtrans %}
-                            <div class="menu">
-                                <a class="item" href="{{ url_for('oidc.clients.index') }}">
-                                    <i class="plug icon"></i>
-                                    {% trans %}Clients{% endtrans %}
-                                </a>
-                                <a class="item" href="{{ url_for('oidc.tokens.index') }}">
-                                    <i class="key icon"></i>
-                                    {% trans %}Tokens{% endtrans %}
-                                </a>
-                                <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
-                                    <i class="user secret icon"></i>
-                                    {% trans %}Codes{% endtrans %}
-                                </a>
-                                <a class="item" href="{{ url_for('admin.mail_index') }}">
-                                    <i class="user mail icon"></i>
-                                    {% trans %}Emails{% endtrans %}
-                                </a>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <a class="item" href="{{ url_for('account.logout') }}">
-                        <i class="sign out alternate icon"></i>
-                        {% trans %}Log out{% endtrans %}
-                    </a>
-                </nav>
+                    </nav>
+                    {% block submenu %}{% endblock %}
+                </div>
             {% endif %}
         {% endblock %}
 
+
         {% block container %}
             <div class="ui container">
-                <div class="content">
+                <div class="ui content">
                     {{ flask.messages() }}
                     {% block content %}{% endblock %}
                 </div>

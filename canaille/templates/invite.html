@@ -9,11 +9,28 @@
     <script src="/static/js/copy.js"></script>
 {% endblock %}
 
+{% block submenu %}
+    <nav class="ui bottom attached three item borderless menu">
+        <a class="item" href="{{ url_for('account.users') }}">
+            <i class="th list icon"></i>
+            {% trans %}View{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('account.profile_creation') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('account.user_invitation') }}">
+            <i class="paper plane icon"></i>
+            {% trans %}Invite{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
 {% block content %}
     <div class="invitationform">
         {% if form_validated %}
 
-            <div class="ui attached segment">
+            <div class="ui segment">
                 <h2 class="ui center aligned header">
                     <div class="content">
                         {% if request.form["action"] == "generate" %}
@@ -25,34 +42,31 @@
                         {% endif %}
                     </div>
                 </h2>
-            </div>
 
-            {% if request.form["action"] == "generate" %}
+                {% if request.form["action"] == "generate" %}
 
-                <div class="ui attached success message">
-                    {% trans %}Here is the invitation link you can provide to the user you want to invite:{% endtrans %}
-                </div>
+                    <div class="ui success message">
+                        {% trans %}Here is the invitation link you can provide to the user you want to invite:{% endtrans %}
+                    </div>
 
-            {% elif mail_sent %}
+                {% elif mail_sent %}
 
-                <div class="ui attached success message">
-                    {% set email = form.mail.data %}
-                    {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
-                    {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
-                </div>
+                    <div class="ui success message">
+                        {% set email = form.mail.data %}
+                        {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
+                        {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
+                    </div>
 
-            {% else %}
+                {% else %}
 
-                <div class="ui attached error message">
-                    {% set email = form.mail.data %}
-                    {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
-                    {% trans %}However you can copy the link there to provide it by other ways than email:{% endtrans %}
-                </div>
+                    <div class="ui error message">
+                        {% set email = form.mail.data %}
+                        {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
+                        {% trans %}However you can copy the link there to provide it by other ways than email:{% endtrans %}
+                    </div>
 
-            {% endif %}
+                {% endif %}
 
-
-            <div class="ui attached segment">
                 <div class="ui center aligned container">
                     <div class="ui fields">
                         <div class="ui action input">
@@ -79,22 +93,20 @@
 
         {% else %}
 
-            <div class="ui attached segment">
+            <div class="ui segment">
                 <h2 class="ui center aligned header">
                     <div class="content">
                         {{ _("Invite a user") }}
                     </div>
                 </h2>
-            </div>
 
-            <div class="ui attached message">
-                {% trans %}
-                    After this form is sent, the recipient your indicated will receive an email
-                    containing an account creation link.
-                {% endtrans %}
-            </div>
+                <div class="ui message">
+                    {% trans %}
+                        After this form is sent, the recipient your indicated will receive an email
+                        containing an account creation link.
+                    {% endtrans %}
+                </div>
 
-            <div class="ui attached segment">
                 <form method="POST"
                       id="{{ form.id or form.__class__.__name__|lower }}"
                       action="{{ request.url }}"

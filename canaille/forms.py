@@ -251,6 +251,11 @@ PROFILE_FORM_FIELDS = dict(
         _("Preferred language"),
         choices=available_language_choices,
     ),
+    groups=wtforms.SelectMultipleField(
+        _("Groups"),
+        choices=lambda: [(group.id, group.display_name) for group in Group.query()],
+        render_kw={"placeholder": _("users, admins …")},
+    ),
 )
 
 
@@ -267,12 +272,8 @@ def profile_form(write_field_names, readonly_field_names):
         if PROFILE_FORM_FIELDS.get(name)
     }
 
-    if "groups" in write_field_names | readonly_field_names and Group.query():
-        fields["groups"] = wtforms.SelectMultipleField(
-            _("Groups"),
-            choices=[(group.id, group.display_name) for group in Group.query()],
-            render_kw={"placeholder": _("users, admins …")},
-        )
+    if "groups" in fields and not Group.query():
+        del fields["groups"]
 
     form = wtforms.form.BaseForm(fields)
     for field in form:

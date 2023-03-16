@@ -15,6 +15,19 @@
     <script src="/static/js/users.js"></script>
 {% endblock %}
 
+{% block submenu %}
+    <nav class="ui bottom attached two item borderless menu">
+        <a class="{% if edited_group %}active {% endif %}item" href="{{ url_for('groups.groups') }}">
+            <i class="th list icon"></i>
+            {% trans %}View{% endtrans %}
+        </a>
+        <a class="{% if not edited_group %}active {% endif %}item"  href="{{ url_for('groups.create_group') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
 {% block content %}
     {% if edited_group %}
         <div class="ui basic modal" id="modal-delete">
@@ -89,18 +102,16 @@
     </div>
 
     {% if edited_group %}
-        <div class="ui segment">
+        <div class="ui top attached segment">
             <h2 class="ui center aligned header">
                 <div class="content">
                     {% trans %}Group members{% endtrans %}
                 </div>
             </h2>
 
-            <div class="ui attached segment">
-                {{ table.search(table_form, "table.users") }}
-            </div>
-            {% include "partial/users.html" %}
+            {{ table.search(table_form, "table.users") }}
         </div>
+        {% include "partial/users.html" %}
     {% endif %}
 
 {% endblock %}

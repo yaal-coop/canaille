@@ -20,9 +20,6 @@ display=true
 
 {% if field_visible and label_visible %}
     {{ field.label() }}
-    {% if field.description %}
-        <div>{{ field.description }}</div>
-    {% endif %}
 {% endif %}
 
 
@@ -36,10 +33,12 @@ display=true
                 {%- if corner_indicator %} corner{% endif -%}
                 {%- if labeled %} labeled{% endif -%}
                 {%- if icon %} left icon{% endif -%}
+                {%- if field.description %} left icon{% endif -%}
                 {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
 {% endif %}
 {% if icon %}<i class="{{ icon }} icon"></i>{% endif %}
+{% if field.description %}<i class="question circle link icon" title="{{ field.description }}"></i>{% endif %}
 
 {% if field.type not in ("SelectField", "SelectMultipleField") %}
     {{ field(**kwargs) }}

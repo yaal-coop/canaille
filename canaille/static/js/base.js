@@ -3,4 +3,5 @@ $(function(){
         $(this).dropdown({"placeholder": $(this).attr("placeholder")});
     });
     $('.autofocus').focus();
+    $('*[title]').popup();
 });

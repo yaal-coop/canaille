@@ -22,11 +22,11 @@ bp = Blueprint("consents", __name__, url_prefix="/consent")
 def consents(user):
     consents = Consent.query(subject=user)
     clients = {t.client for t in consents}
-    preconsented = [
-        client
-        for client in Client.query()
-        if client.preconsent and client not in clients
-    ]
+
+    nb_consents = len(consents)
+    nb_preconsents = sum(
+        1 for client in Client.query() if client.preconsent and client not in clients
+    )
 
     return render_template(
         "oidc/user/consent_list.html",
@@ -34,7 +34,33 @@ def consents(user):
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
         ignored_scopes=["openid"],
+        nb_consents=nb_consents,
+        nb_preconsents=nb_preconsents,
+    )
+
+
+@bp.route("/pre-consents")
+@user_needed()
+def pre_consents(user):
+    consents = Consent.query(subject=user)
+    clients = {t.client for t in consents}
+    preconsented = [
+        client
+        for client in Client.query()
+        if client.preconsent and client not in clients
+    ]
+
+    nb_consents = len(consents)
+    nb_preconsents = len(preconsented)
+
+    return render_template(
+        "oidc/user/preconsent_list.html",
+        menuitem="consents",
+        scope_details=SCOPE_DETAILS,
+        ignored_scopes=["openid"],
         preconsented=preconsented,
+        nb_consents=nb_consents,
+        nb_preconsents=nb_preconsents,
     )
 
 
