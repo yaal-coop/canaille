@@ -2,13 +2,13 @@
 {% import 'macro/fomanticui.html' as sui %}
 {% import "macro/table.html" as table %}
 
-{% block title %}
+{%- block title -%}
     {% if not edited_group %}
-        {% trans %}Group creation{% endtrans %}
+        {%- trans %}Group creation{% endtrans -%}
     {% else %}
-        {% trans %}Group edition{% endtrans %}
+        {%- trans %}Group edition{% endtrans -%}
     {% endif %}
-{% endblock %}
+{%- endblock -%}
 
 {% block script %}
     <script src="/static/js/confirm.js"></script>
