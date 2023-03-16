@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-11 22:37+0100\n"
+"POT-Creation-Date: 2023-03-16 16:20+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -70,7 +70,7 @@ msgstr "A túa conta xa existe."
 msgid "You are already logged in, you cannot create an account."
 msgstr "Xa iniciaches sesión, non podes crear unha conta."
 
-#: canaille/account.py:336 canaille/forms.py:268 canaille/forms.py:330
+#: canaille/account.py:336 canaille/forms.py:272 canaille/forms.py:334
 #: canaille/templates/groups.html:5 canaille/templates/groups.html:16
 #: canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
@@ -78,7 +78,9 @@ msgid "Groups"
 msgstr "Grupos"
 
 #: canaille/account.py:363
-msgid "You account has been created successfuly."
+#, fuzzy
+#| msgid "You account has been created successfuly."
+msgid "Your account has been created successfuly."
 msgstr "A túa conta creouse correctamente."
 
 #: canaille/account.py:401
@@ -157,7 +159,7 @@ msgid "Email"
 msgstr "Correo electrónico"
 
 #: canaille/admin.py:29 canaille/forms.py:75 canaille/forms.py:99
-#: canaille/forms.py:172 canaille/forms.py:324
+#: canaille/forms.py:176 canaille/forms.py:328
 msgid "jane@doe.com"
 msgstr "jane@doe.com"
 
@@ -185,7 +187,7 @@ msgstr "Invitación a {website_name}"
 msgid "John Doe"
 msgstr "John Doe"
 
-#: canaille/apputils.py:34 canaille/forms.py:134 canaille/forms.py:312
+#: canaille/apputils.py:34 canaille/forms.py:136 canaille/forms.py:316
 msgid "jdoe"
 msgstr "jdoe"
 
@@ -227,171 +229,171 @@ msgstr "O acceso non está revogado"
 msgid "Login"
 msgstr "Usuario"
 
-#: canaille/forms.py:85 canaille/forms.py:108 canaille/forms.py:217
+#: canaille/forms.py:85 canaille/forms.py:108 canaille/forms.py:221
 msgid "Password"
 msgstr "Contrasinal"
 
-#: canaille/forms.py:111 canaille/forms.py:221
+#: canaille/forms.py:111 canaille/forms.py:225
 msgid "Password confirmation"
 msgstr "Repetir contrasinal"
 
-#: canaille/forms.py:114 canaille/forms.py:224
+#: canaille/forms.py:114 canaille/forms.py:228
 msgid "Password and confirmation do not match."
 msgstr "Os dous contrasinais non coinciden."
 
-#: canaille/forms.py:125
+#: canaille/forms.py:130
 msgid "Automatic"
 msgstr "Automático"
 
-#: canaille/forms.py:133 canaille/forms.py:311
+#: canaille/forms.py:135 canaille/forms.py:315
 msgid "Username"
 msgstr "Nome de usuario"
 
-#: canaille/forms.py:137 canaille/forms.py:283 canaille/forms.py:297
+#: canaille/forms.py:139 canaille/forms.py:287 canaille/forms.py:301
 #: canaille/oidc/forms.py:17 canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
 msgid "Name"
 msgstr "Nome"
 
-#: canaille/forms.py:138
+#: canaille/forms.py:141
 msgid "Title"
 msgstr ""
 
-#: canaille/forms.py:138
+#: canaille/forms.py:141
 msgid "Vice president"
 msgstr ""
 
-#: canaille/forms.py:140
+#: canaille/forms.py:144
 msgid "Given name"
 msgstr "Nome de pila"
 
-#: canaille/forms.py:142
+#: canaille/forms.py:146
 msgid "John"
 msgstr "John"
 
-#: canaille/forms.py:148
+#: canaille/forms.py:152
 msgid "Family Name"
 msgstr "Apelidos"
 
-#: canaille/forms.py:151
+#: canaille/forms.py:155
 msgid "Doe"
 msgstr "Doe"
 
-#: canaille/forms.py:157
+#: canaille/forms.py:161
 msgid "Display Name"
 msgstr "Nome a amosar"
 
-#: canaille/forms.py:160
+#: canaille/forms.py:164
 msgid "Johnny"
 msgstr "Johnny"
 
-#: canaille/forms.py:166 canaille/forms.py:317
+#: canaille/forms.py:170 canaille/forms.py:321
 msgid "Email address"
 msgstr "Correo electrónico"
 
-#: canaille/forms.py:168
+#: canaille/forms.py:172
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 "O correo electrónico usarase como dirección para recuperar o contrasinal se "
 "é necesario"
 
-#: canaille/forms.py:178
+#: canaille/forms.py:182
 msgid "Phone number"
 msgstr "Número de teléfono"
 
-#: canaille/forms.py:178
+#: canaille/forms.py:182
 msgid "555-000-555"
 msgstr "+34 999 111 222"
 
-#: canaille/forms.py:181
+#: canaille/forms.py:185
 msgid "Address"
 msgstr "Dirección"
 
-#: canaille/forms.py:183
+#: canaille/forms.py:187
 #, fuzzy
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "Rúa Real, 21, 12345 Nova Mombasa"
 
-#: canaille/forms.py:187
+#: canaille/forms.py:191
 #, fuzzy
 msgid "Street"
 msgstr "Clave"
 
-#: canaille/forms.py:189
+#: canaille/forms.py:193
 #, fuzzy
 msgid "132, Foobar Street"
 msgstr "Rúa Real, 21, 12345 Nova Mombasa"
 
-#: canaille/forms.py:193
+#: canaille/forms.py:197
 msgid "Postal Code"
 msgstr ""
 
-#: canaille/forms.py:199
+#: canaille/forms.py:203
 msgid "Locality"
 msgstr ""
 
-#: canaille/forms.py:201
+#: canaille/forms.py:205
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/forms.py:205
+#: canaille/forms.py:209
 msgid "Region"
 msgstr ""
 
-#: canaille/forms.py:207
+#: canaille/forms.py:211
 msgid "North Pole"
 msgstr ""
 
-#: canaille/forms.py:211
+#: canaille/forms.py:215
 msgid "Photo"
 msgstr "Foto"
 
-#: canaille/forms.py:215 canaille/templates/profile.html:105
+#: canaille/forms.py:219 canaille/templates/profile.html:105
 msgid "Delete the photo"
 msgstr "Eliminar foto"
 
-#: canaille/forms.py:229
+#: canaille/forms.py:233
 #, fuzzy
 msgid "Employee number"
 msgstr "Número de teléfono"
 
-#: canaille/forms.py:231 canaille/forms.py:237
+#: canaille/forms.py:235 canaille/forms.py:241
 msgid "1234"
 msgstr "1234"
 
-#: canaille/forms.py:235
+#: canaille/forms.py:239
 #, fuzzy
 msgid "Department number"
 msgstr "Número de teléfono"
 
-#: canaille/forms.py:241
+#: canaille/forms.py:245
 msgid "Website"
 msgstr "Sitio web"
 
-#: canaille/forms.py:243
+#: canaille/forms.py:247
 msgid "https://mywebsite.tld"
 msgstr "https://example.com"
 
-#: canaille/forms.py:247
+#: canaille/forms.py:251
 msgid "Preferred language"
 msgstr "Idioma preferido"
 
-#: canaille/forms.py:270
+#: canaille/forms.py:274
 msgid "users, admins …"
 msgstr "usuarios, administradores…"
 
-#: canaille/forms.py:286
+#: canaille/forms.py:290
 msgid "group"
 msgstr "grupo"
 
-#: canaille/forms.py:290 canaille/forms.py:304
+#: canaille/forms.py:294 canaille/forms.py:308
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Descripción"
 
-#: canaille/forms.py:315
+#: canaille/forms.py:319
 msgid "Username editable by the invitee"
 msgstr "Nome de usuario editable polo invitado"
 
@@ -1456,7 +1458,7 @@ msgid "Number of members"
 msgstr "Número de membros"
 
 #: canaille/templates/partial/groups.html:31
-#: canaille/templates/partial/oidc/admin/authorization_list.html:27
+#: canaille/templates/partial/oidc/admin/authorization_list.html:31
 #: canaille/templates/partial/oidc/admin/client_list.html:35
 #: canaille/templates/partial/oidc/admin/token_list.html:39
 #: canaille/templates/partial/users.html:63
@@ -1464,7 +1466,7 @@ msgid "No item matches your request"
 msgstr ""
 
 #: canaille/templates/partial/groups.html:33
-#: canaille/templates/partial/oidc/admin/authorization_list.html:29
+#: canaille/templates/partial/oidc/admin/authorization_list.html:33
 #: canaille/templates/partial/oidc/admin/client_list.html:37
 #: canaille/templates/partial/oidc/admin/token_list.html:41
 #: canaille/templates/partial/users.html:65
@@ -1472,7 +1474,7 @@ msgid "Maybe try with different criterias?"
 msgstr ""
 
 #: canaille/templates/partial/groups.html:36
-#: canaille/templates/partial/oidc/admin/authorization_list.html:32
+#: canaille/templates/partial/oidc/admin/authorization_list.html:36
 #: canaille/templates/partial/oidc/admin/client_list.html:40
 #: canaille/templates/partial/oidc/admin/token_list.html:44
 #: canaille/templates/partial/users.html:68
