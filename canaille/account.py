@@ -1,3 +1,4 @@
+import importlib.metadata
 import io
 from dataclasses import astuple
 from dataclasses import dataclass
@@ -5,7 +6,6 @@ from datetime import datetime
 from datetime import timedelta
 from typing import List
 
-import pkg_resources
 import wtforms
 from flask import abort
 from flask import Blueprint
@@ -79,10 +79,7 @@ def index():
 
 @bp.route("/about")
 def about():
-    try:
-        version = pkg_resources.get_distribution("canaille").version
-    except pkg_resources.DistributionNotFound:  # pragma: no cover
-        version = "git"
+    version = importlib.metadata.version("canaille")
     return render_template("about.html", version=version)
 
 
