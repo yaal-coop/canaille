@@ -714,9 +714,19 @@ def photo(uid, field):
     if not user:
         abort(404)
 
+    etag = None
+    if request.if_modified_since and request.if_modified_since >= user.modifyTimestamp:
+        return "", 304
+
+    etag = profile_hash(uid, user.modifyTimestamp.isoformat())
+    if request.if_none_match and etag in request.if_none_match:
+        return "", 304
+
     photos = getattr(user, field)
     if not photos:
         abort(404)
 
     stream = io.BytesIO(photos[0])
-    return send_file(stream, mimetype="image/jpeg")
+    return send_file(
+        stream, mimetype="image/jpeg", last_modified=user.modifyTimestamp, etag=etag
+    )
