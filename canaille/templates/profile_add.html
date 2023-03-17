@@ -105,10 +105,6 @@
 
             {% if "jpegPhoto" in form %}</div></div>{% endif %}
 
-            {% if "title" in form %}
-                {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
-            {% endif %}
-
             {% if "mail" in form %}
                 {% block mail_field scoped %}{{ render_field(form.mail) }}{% endblock %}
             {% endif %}
@@ -139,21 +135,29 @@
                 {% endif %}
             </div>
 
-            {% if "departmentNumber" in form and "employeeNumber" in form %}
-                <div class="two fields">
-            {% endif %}
+            <div class="equal width fields">
 
-            {% if "departmentNumber" in form %}
-                {% block department_number_field scoped %}{{ render_field(form.departmentNumber) }}{% endblock %}
-            {% endif %}
+                {% if "departmentNumber" in form %}
+                    {% block department_number_field scoped %}{{ render_field(form.departmentNumber) }}{% endblock %}
+                {% endif %}
 
-            {% if "employeeNumber" in form %}
-                {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
-            {% endif %}
+                {% if "employeeNumber" in form %}
+                    {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
+                {% endif %}
 
-            {% if "departmentNumber" in form and "employeeNumber" in form %}
-                </div>
-            {% endif %}
+            </div>
+
+            <div class="equal width fields">
+
+                {% if "title" in form %}
+                    {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
+                {% endif %}
+
+                {% if "o" in form %}
+                    {% block organization_field scoped %}{{ render_field(form.o) }}{% endblock %}
+                {% endif %}
+
+            </div>
 
             {% if "labeledURI" in form %}
                 {% block labeled_uri_field scoped %}{{ render_field(form.labeledURI) }}{% endblock %}

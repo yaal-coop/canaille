@@ -117,6 +117,7 @@ def test_edition(
     res.form["employeeNumber"] = 666
     res.form["departmentNumber"] = 1337
     res.form["title"] = "title"
+    res.form["o"] = "organization"
     res.form["preferredLanguage"] = "fr"
     res.form["jpegPhoto"] = Upload("logo.jpg", jpeg_photo)
 
@@ -142,6 +143,7 @@ def test_edition(
     assert logged_user.employeeNumber == "666"
     assert logged_user.departmentNumber == ["1337"]
     assert logged_user.title == ["title"]
+    assert logged_user.o == ["organization"]
     assert logged_user.jpegPhoto == [jpeg_photo]
 
     logged_user.cn = ["John (johnny) Doe"]

@@ -162,9 +162,16 @@
                 {% if "employeeNumber" in form %}
                     {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
                 {% endif %}
+            </div>
+
+            <div class="equal width fields">
 
                 {% if "title" in form %}
                     {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
+                {% endif %}
+
+                {% if "o" in form %}
+                    {% block organization_field scoped %}{{ render_field(form.o) }}{% endblock %}
                 {% endif %}
 
             </div>

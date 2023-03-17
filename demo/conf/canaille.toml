@@ -150,6 +150,7 @@ WRITE = [
     "employeeNumber",
     "departmentNumber",
     "title",
+    "o",
 ]
 
 [ACL.ADMIN]
