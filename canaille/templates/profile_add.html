@@ -81,10 +81,10 @@
                                 {% if photo %}style="display: none;"{% endif %}>
                                 <i class="massive centered portrait icon"></i>
                             </label>
-                            </div>
                         {% endblock %}
+                    </div>
 
-                        <div class="thirteen wide column">
+                    <div class="thirteen wide column">
             {% endif %}
 
             {% if "givenName" in form or "sn" in form %}
@@ -166,7 +166,6 @@
             {% if "preferredLanguage" in form %}
                 {% block preferred_language_field scoped %}{{ render_field(form.preferredLanguage) }}{% endblock %}
             {% endif %}
-
 
             <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
 

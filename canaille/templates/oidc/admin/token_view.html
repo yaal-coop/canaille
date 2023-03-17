@@ -133,19 +133,21 @@
                         <button class="ui primary right labeled icon button copy-button" data-copy="access-token">
                             <i class="copy icon"></i>
                             {% trans %}Copy{% endtrans %}
-                        </td>
-                    </tr>
+                        </button>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td>{{ _("Refresh token") }}</td>
-                        <td class="ui fluid action input">
-                            <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
-                            <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
-                                <i class="copy icon"></i>
-                                {% trans %}Copy{% endtrans %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+                <tr>
+                    <td>{{ _("Refresh token") }}</td>
+                    <td class="ui fluid action input">
+                        <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
+                        <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
+                            <i class="copy icon"></i>
+                            {% trans %}Copy{% endtrans %}
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 {% endblock %}
