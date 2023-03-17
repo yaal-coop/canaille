@@ -241,6 +241,12 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("1234"),
         },
     ),
+    o=wtforms.StringField(
+        _("Organization"),
+        render_kw={
+            "placeholder": _("Cogip LTD."),
+        },
+    ),
     labeledURI=wtforms.URLField(
         _("Website"),
         render_kw={

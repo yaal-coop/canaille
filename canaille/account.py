@@ -442,6 +442,7 @@ def profile_edition(user, username):
         "departmentNumber",
         "labeledURI",
         "preferredLanguage",
+        "o",
     }
     data = {
         k: getattr(user, k)[0]
