@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-17 17:35+0100\n"
-"PO-Revision-Date: 2023-03-16 18:42+0000\n"
+"PO-Revision-Date: 2023-03-19 11:40+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -366,14 +366,12 @@ msgid "Department number"
 msgstr "Numéro du service"
 
 #: canaille/forms.py:245
-#, fuzzy
-#| msgid "Invitation"
 msgid "Organization"
-msgstr "Invitation"
+msgstr "Organisation"
 
 #: canaille/forms.py:247
 msgid "Cogip LTD."
-msgstr ""
+msgstr "Cogip SARL."
 
 #: canaille/forms.py:251
 msgid "Website"
@@ -1191,16 +1189,12 @@ msgid "Mail sending test"
 msgstr "Test d'envoi de courriel"
 
 #: canaille/templates/mail/admin.html:42
-#, fuzzy
-#| msgid ""
-#| "This form will send a fake invitation email to the address you want. This "
-#| "should be used for testing mail configuration."
 msgid ""
 "This form will send a dummy email to the address you want. This should be "
 "used for testing mail configuration."
 msgstr ""
-"Ce formulaire enverra un faux courriel d'invitation à l'adresse que vous "
-"indiquerez. À utiliser pour tester les configurations de courriel."
+"Ce formulaire enverra un courriel factice à l'adresse que vous indiquerez. À "
+"utiliser pour tester les configurations de courriel."
 
 #: canaille/templates/mail/admin.html:61
 msgid "Email preview"
