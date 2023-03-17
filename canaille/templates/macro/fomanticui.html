@@ -135,7 +135,11 @@ id=none) -%}
         {{ render_fields(form) }}
     {% endif %}
     {% if action_text %}
-        <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+        <div class="ui right aligned container">
+            <div class="ui stackable buttons">
+                <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+            </div>
+        </div>
     {% endif %}
 </form>
 {%- endmacro %}
