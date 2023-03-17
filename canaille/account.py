@@ -1,8 +1,7 @@
+import datetime
 import io
 from dataclasses import astuple
 from dataclasses import dataclass
-from datetime import datetime
-from datetime import timedelta
 from typing import List
 
 import pkg_resources
@@ -205,11 +204,13 @@ class Invitation:
 
     @property
     def creation_date(self):
-        return datetime.fromisoformat(self.creation_date_isoformat)
+        return datetime.datetime.fromisoformat(self.creation_date_isoformat)
 
     def has_expired(self):
         DEFAULT_INVITATION_DURATION = 2 * 24 * 60 * 60
-        return datetime.now() - self.creation_date > timedelta(
+        return datetime.datetime.now(
+            datetime.timezone.utc
+        ) - self.creation_date > datetime.timedelta(
             seconds=current_app.config.get(
                 "INVITATION_EXPIRATION", DEFAULT_INVITATION_DURATION
             )
@@ -234,7 +235,7 @@ def user_invitation(user):
     if request.form and form.validate():
         form_validated = True
         invitation = Invitation(
-            datetime.now().isoformat(),
+            datetime.datetime.now(datetime.timezone.utc).isoformat(),
             form.uid.data,
             form.uid_editable.data,
             form.mail.data,

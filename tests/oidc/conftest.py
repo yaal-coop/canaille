@@ -92,7 +92,7 @@ def client(testclient, other_client, slapd_connection):
             "https://mydomain.tld/redirect2",
         ],
         logo_uri="https://mydomain.tld/logo.png",
-        client_id_issued_at=datetime.datetime.now(),
+        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
             "password",
@@ -128,7 +128,7 @@ def other_client(testclient, slapd_connection):
             "https://myotherdomain.tld/redirect2",
         ],
         logo_uri="https://myotherdomain.tld/logo.png",
-        client_id_issued_at=datetime.datetime.now(),
+        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
             "password",
@@ -163,7 +163,7 @@ def authorization(testclient, user, client, slapd_connection):
         response_type="code",
         scope="openid profile",
         nonce="nonce",
-        issue_date=datetime.datetime(2020, 1, 1),
+        issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
         lifetime="3600",
         challenge="challenge",
         challenge_method="method",
@@ -185,7 +185,7 @@ def token(testclient, client, user, slapd_connection):
         token_type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",
-        issue_date=datetime.datetime.now(),
+        issue_date=datetime.datetime.now(datetime.timezone.utc),
         lifetime=str(3600),
     )
     t.save()
@@ -210,7 +210,7 @@ def consent(testclient, client, user, slapd_connection):
         client=client,
         subject=user,
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(),
+        issue_date=datetime.datetime.now(datetime.timezone.utc),
     )
     t.save()
     yield t

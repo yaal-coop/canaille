@@ -16,7 +16,7 @@ def test_clean_command(testclient, slapd_connection, client, user):
         response_type="code",
         scope="openid profile",
         nonce="nonce",
-        issue_date=datetime.datetime.now().replace(microsecond=0),
+        issue_date=datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0),
         lifetime=3600,
         challenge="challenge",
         challenge_method="method",
@@ -33,7 +33,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
         scope="openid profile",
         nonce="nonce",
         issue_date=(
-            datetime.datetime.now().replace(microsecond=0) - datetime.timedelta(days=1)
+            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+            - datetime.timedelta(days=1)
         ),
         lifetime=3600,
         challenge="challenge",
@@ -50,7 +51,9 @@ def test_clean_command(testclient, slapd_connection, client, user):
         type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",
-        issue_date=(datetime.datetime.now().replace(microsecond=0)),
+        issue_date=(
+            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+        ),
         lifetime=3600,
     )
     valid_token.save()
@@ -63,7 +66,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
         refresh_token=gen_salt(48),
         scope="openid profile",
         issue_date=(
-            datetime.datetime.now().replace(microsecond=0) - datetime.timedelta(days=1)
+            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+            - datetime.timedelta(days=1)
         ),
         lifetime=3600,
     )
