@@ -2,9 +2,7 @@
 {% import 'macro/fomanticui.html' as sui %}
 
 {%- block title -%}
-    {% if not edited_user %}
-        {%- trans %}User creation{% endtrans -%}
-    {% elif user.uid == edited_user.uid %}
+    {% if user.uid == edited_user.uid %}
         {%- trans %}My profile{% endtrans -%}
     {% else %}
         {%- trans %}User profile edition{% endtrans -%}
@@ -31,9 +29,7 @@
 
 {% macro render_field(field, noindicator=false) %}
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
-    {% if not edited_user %}
-        {{ sui.render_field(field, **kwargs) }}
-    {% elif edited_user.uid == user.uid or lock_indicator or noindicator %}
+    {% if edited_user.uid == user.uid or lock_indicator or noindicator %}
         {{ sui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.write %}
         {{ sui.render_field(field, **kwargs) }}
@@ -45,7 +41,7 @@
 {% endmacro %}
 
 {% block content %}
-    {% if self_deletion or (user.can_manage_users and edited_user) %}
+    {% if self_deletion or user.can_manage_users %}
         <div id="modal-delete" class="ui basic modal">
             <div class="ui icon header">
                 <i class="user minus icon"></i>
@@ -79,7 +75,7 @@
               action="{{ request.url }}"
               role="form"
               enctype="multipart/form-data"
-              class="ui form info{% if user.can_manage_users and edited_user and not edited_user.has_password() %} warning{% endif %} profile-form"
+              class="ui form info{% if user.can_manage_users and not edited_user.has_password() %} warning{% endif %} profile-form"
         >
 
             {#{ render_field(form.csrf_token) }#}
@@ -103,25 +99,7 @@
 
             {% if user.can_manage_users %}
 
-                {% if not edited_user %}
-
-                    <div class="ui message info">
-                        <div class="header">
-                            {% trans %}User password is not mandatory{% endtrans %}
-                        </div>
-                        {% if has_password %}
-                            <p>{% trans %}The user password can be set:{% endtrans %}</p>
-                            <ul class="ui list">
-                                <li>{% trans %}by filling this form;{% endtrans %}</li>
-                                <li>{% trans %}by sending the user a password initialization mail, after the account creation;{% endtrans %}</li>
-                                <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
-                            </ul>
-                        {% else %}
-                            <p>{% trans %}The user will not be able to authenticate unless the password is set{% endtrans %}</p>
-                        {% endif %}
-                    </div>
-
-                {% elif not edited_user.has_password() %}
+                {% if not edited_user.has_password() %}
 
                     <div class="ui message warning visible">
                         {% if has_smtp and edited_user.can_edit_self %}
@@ -162,7 +140,7 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    {% if user.can_manage_users and edited_user or self_deletion %}
+                    {% if user.can_manage_users or self_deletion %}
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
                             {% if user.uid != edited_user.uid %}
                                 {{ _("Delete the user") }}
@@ -172,15 +150,9 @@
                         </button>
                     {% endif %}
 
-                    {% if user.can_impersonate_users and edited_user and user.uid != edited_user.uid %}
+                    {% if user.can_impersonate_users and user.uid != edited_user.uid %}
                         <a href="{{ url_for('account.impersonate', username=edited_user.uid[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate">
                             {{ _("Impersonate") }}
-                        </a>
-                    {% endif %}
-
-                    {% if user.can_manage_users and not edited_user and has_smtp %}
-                        <a href="{{ url_for('account.user_invitation') }}" class="ui right floated button" name="action" value="impersonate" id="impersonate">
-                            {{ _("Invite a user") }}
                         </a>
                     {% endif %}
 
