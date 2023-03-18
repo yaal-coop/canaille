@@ -141,13 +141,17 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
         return self.nonce
 
     def is_expired(self):
-        return (
-            self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
-            < datetime.datetime.now()
-        )
+        return self.issue_date + datetime.timedelta(
+            seconds=int(self.lifetime)
+        ) < datetime.datetime.now(datetime.timezone.utc)
 
     def get_auth_time(self):
-        return int((self.issue_date - datetime.datetime(1970, 1, 1)).total_seconds())
+        return int(
+            (
+                self.issue_date
+                - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+            ).total_seconds()
+        )
 
 
 class Token(LDAPObject, TokenMixin):
@@ -185,11 +189,17 @@ class Token(LDAPObject, TokenMixin):
         return int(self.lifetime)
 
     def get_issued_at(self):
-        return int((self.issue_date - datetime.datetime(1970, 1, 1)).total_seconds())
+        return int(
+            (
+                self.issue_date
+                - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+            ).total_seconds()
+        )
 
     def get_expires_at(self):
         issue_timestamp = (
-            self.issue_date - datetime.datetime(1970, 1, 1)
+            self.issue_date
+            - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
         ).total_seconds()
         return int(issue_timestamp) + int(self.lifetime)
 
@@ -197,13 +207,12 @@ class Token(LDAPObject, TokenMixin):
         if self.revokation_date:
             return False
 
-        return self.expire_date >= datetime.datetime.now()
+        return self.expire_date >= datetime.datetime.now(datetime.timezone.utc)
 
     def is_expired(self):
-        return (
-            self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
-            < datetime.datetime.now()
-        )
+        return self.issue_date + datetime.timedelta(
+            seconds=int(self.lifetime)
+        ) < datetime.datetime.now(datetime.timezone.utc)
 
     def is_revoked(self):
         return bool(self.revokation_date)
@@ -231,7 +240,7 @@ class Consent(LDAPObject):
         return bool(self.revokation_date)
 
     def revoke(self):
-        self.revokation_date = datetime.datetime.now()
+        self.revokation_date = datetime.datetime.now(datetime.timezone.utc)
         self.save()
 
         tokens = Token.query(

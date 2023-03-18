@@ -197,7 +197,9 @@ def test_client_delete(testclient, logged_admin):
     client = Client(client_id="client_id")
     client.save()
     token = Token(
-        token_id="id", client=client, issue_datetime=datetime.datetime.utcnow()
+        token_id="id",
+        client=client,
+        issue_datetime=datetime.datetime.now(datetime.timezone.utc),
     )
     token.save()
     consent = Consent(

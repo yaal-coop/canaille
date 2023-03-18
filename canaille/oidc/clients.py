@@ -51,7 +51,7 @@ def add(user):
         )
 
     client_id = gen_salt(24)
-    client_id_issued_at = datetime.datetime.now()
+    client_id_issued_at = datetime.datetime.now(datetime.timezone.utc)
     client = Client(
         client_id=client_id,
         client_id_issued_at=client_id_issued_at,

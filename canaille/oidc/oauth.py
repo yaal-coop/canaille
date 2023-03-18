@@ -124,7 +124,7 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
 
 def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(datetime.timezone.utc)
     scope = request.client.get_allowed_scope(request.scope)
     code = AuthorizationCode(
         authorization_code_id=gen_salt(48),
@@ -193,7 +193,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
         return credential.subject
 
     def revoke_old_credential(self, credential):
-        credential.revokation_date = datetime.datetime.now()
+        credential.revokation_date = datetime.datetime.now(datetime.timezone.utc)
         credential.save()
 
 
@@ -235,7 +235,7 @@ def query_client(client_id):
 
 
 def save_token(token, request):
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(datetime.timezone.utc)
     t = Token(
         token_id=gen_salt(48),
         type=token["token_type"],
@@ -278,7 +278,7 @@ class RevocationEndpoint(_RevocationEndpoint):
         return query_token(token, token_type_hint)
 
     def revoke_token(self, token, request):
-        token.revokation_date = datetime.datetime.now()
+        token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
         token.save()
 
 
@@ -340,7 +340,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
 
     def save_client(self, client_info, client_metadata, request):
         client_info["client_id_issued_at"] = datetime.datetime.fromtimestamp(
-            client_info["client_id_issued_at"]
+            client_info["client_id_issued_at"], datetime.timezone.utc
         )
         if "scope" in client_metadata and not isinstance(
             client_metadata["scope"], list

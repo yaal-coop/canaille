@@ -149,7 +149,7 @@ def authorize():
                 client=client,
                 subject=user,
                 scope=scopes,
-                issue_date=datetime.datetime.now(),
+                issue_date=datetime.datetime.now(datetime.timezone.utc),
             )
         consent.save()
 

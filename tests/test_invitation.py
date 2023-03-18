@@ -1,5 +1,4 @@
-from datetime import datetime
-from datetime import timedelta
+import datetime
 
 from canaille.account import Invitation
 from canaille.models import User
@@ -161,7 +160,7 @@ def test_invitation_login_already_taken(testclient, logged_admin):
 
 def test_registration(testclient, foo_group):
     invitation = Invitation(
-        datetime.now().isoformat(),
+        datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
@@ -174,7 +173,7 @@ def test_registration(testclient, foo_group):
 
 
 def test_registration_invalid_hash(testclient, foo_group):
-    now = datetime.now().isoformat()
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
     invitation = Invitation(
         now, "anything", False, "someone@mydomain.tld", [foo_group.id]
     )
@@ -185,7 +184,7 @@ def test_registration_invalid_hash(testclient, foo_group):
 
 def test_registration_invalid_data(testclient, foo_group):
     invitation = Invitation(
-        datetime.now().isoformat(),
+        datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
@@ -197,7 +196,9 @@ def test_registration_invalid_data(testclient, foo_group):
 
 
 def test_registration_more_than_48_hours_after_invitation(testclient, foo_group):
-    two_days_ago = datetime.now() - timedelta(hours=48)
+    two_days_ago = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
+        hours=48
+    )
     invitation = Invitation(
         two_days_ago.isoformat(),
         "someoneelse",
@@ -213,7 +214,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
 
 def test_registration_no_password(testclient, foo_group):
     invitation = Invitation(
-        datetime.now().isoformat(),
+        datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
@@ -238,7 +239,7 @@ def test_registration_no_password(testclient, foo_group):
 
 def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
     invitation = Invitation(
-        datetime.now().isoformat(),
+        datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
@@ -275,7 +276,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     ]  # remove groups from default read permissions
 
     invitation = Invitation(
-        datetime.now().isoformat(),
+        datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",

@@ -1,3 +1,5 @@
+import datetime
+
 from canaille.models import User
 from webtest import Upload
 
@@ -5,8 +7,31 @@ from webtest import Upload
 def test_photo(testclient, user, jpeg_photo):
     user.jpegPhoto = [jpeg_photo]
     user.save()
+    user = User.get(id=user.id)
+
     res = testclient.get("/profile/user/jpegPhoto")
     assert res.body == jpeg_photo
+    assert res.last_modified == user.modifyTimestamp
+    etag = res.etag
+    assert etag
+
+    res = testclient.get(
+        "/profile/user/jpegPhoto",
+        headers={
+            "If-Modified-Since": (
+                res.last_modified + datetime.timedelta(days=1)
+            ).strftime("%a, %d %b %Y %H:%M:%S UTC")
+        },
+        status=304,
+    )
+    assert not res.body
+
+    res = testclient.get(
+        "/profile/user/jpegPhoto",
+        headers={"If-None-Match": etag},
+        status=304,
+    )
+    assert not res.body
 
 
 def test_photo_invalid_user(testclient, user):

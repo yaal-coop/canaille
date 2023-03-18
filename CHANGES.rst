@@ -7,11 +7,13 @@ Added
 *****
 
 - Organization field. :pr:`116`
+- ETag and Last-Modified headers on user photos. :pr:`116`
 
 Changed
 *******
 
 - UX rework. Submenu addition. :pr:`114`
+- Properly handle LDAP date timezones. :pr:`117`
 
 [0.0.22] - 2023-03-13
 =====================

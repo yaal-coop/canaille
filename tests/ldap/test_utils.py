@@ -100,12 +100,30 @@ def test_fuzzy(slapd_connection, user, moderator, admin):
 
 def test_ldap_to_python():
     assert (
-        python_to_ldap(datetime.datetime.min, Syntax.GENERALIZED_TIME)
-        == b"000001010000Z"
+        python_to_ldap(
+            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc),
+            Syntax.GENERALIZED_TIME,
+        )
+        == b"20000102030405Z"
     )
     assert (
-        python_to_ldap(datetime.datetime(2000, 1, 2, 3, 4, 5), Syntax.GENERALIZED_TIME)
-        == b"20000102030405Z"
+        python_to_ldap(
+            datetime.datetime(
+                2000,
+                1,
+                2,
+                3,
+                4,
+                5,
+                tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=79200)),
+            ),
+            Syntax.GENERALIZED_TIME,
+        )
+        == b"20000102030405-0200"
+    )
+    assert (
+        python_to_ldap(datetime.datetime.min, Syntax.GENERALIZED_TIME)
+        == b"000001010000Z"
     )
 
     assert python_to_ldap(1337, Syntax.INTEGER) == b"1337"
@@ -121,7 +139,18 @@ def test_ldap_to_python():
 def test_python_to_ldap():
     assert ldap_to_python(
         b"20000102030405Z", Syntax.GENERALIZED_TIME
-    ) == datetime.datetime(2000, 1, 2, 3, 4, 5)
+    ) == datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc)
+    assert ldap_to_python(
+        b"20000102030405-0200", Syntax.GENERALIZED_TIME
+    ) == datetime.datetime(
+        2000,
+        1,
+        2,
+        3,
+        4,
+        5,
+        tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=79200)),
+    )
     assert (
         ldap_to_python(b"000001010000Z", Syntax.GENERALIZED_TIME)
         == datetime.datetime.min

@@ -53,7 +53,7 @@ def revoke(user, token_id):
     if not token:
         abort(404)
 
-    token.revokation_date = datetime.datetime.now()
+    token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
     token.save()
     flash(_("The token has successfully been revoked."), "success")
 
