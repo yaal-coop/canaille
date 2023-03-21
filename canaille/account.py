@@ -572,7 +572,7 @@ def profile_settings_edit(editor, username):
     form = profile_form(editor.write & available_fields, editor.read & available_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if request.form:
+    if request.form and request.form.get("action") == "edit":
         if not form.validate():
             flash(_("Profile edition failed."), "error")
 
@@ -627,6 +627,8 @@ def impersonate(user, username):
         abort(404)
 
     puppet.login()
+
+    flash(_("Connection successful. Welcome %(user)s", user=puppet.name), "success")
     return redirect(url_for("account.index"))
 
 

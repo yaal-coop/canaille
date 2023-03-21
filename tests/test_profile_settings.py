@@ -130,7 +130,6 @@ def test_password_initialization_mail(
         "It should be received within a few minutes.",
     ) in res.flashes
     assert len(smtpd.messages) == 1
-    res = res.follow()
 
     u.reload()
     u.userPassword = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
@@ -170,7 +169,6 @@ def test_password_initialization_mail_send_fail(
     assert ("error", "Could not send the password initialization email") in res.flashes
     assert len(smtpd.messages) == 0
 
-    res = res.follow()
     u.delete()
 
 
@@ -224,7 +222,6 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
     ) in res.flashes
     assert len(smtpd.messages) == 1
 
-    res = res.follow()
     u.delete()
 
 
@@ -257,7 +254,6 @@ def test_password_reset_email_failed(
     assert ("error", "Could not send the password reset email") in res.flashes
     assert len(smtpd.messages) == 0
 
-    res = res.follow()
     u.delete()
 
 
