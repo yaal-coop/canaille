@@ -92,6 +92,7 @@ def setup_logging(app):
 
 def setup_jinja(app):
     app.jinja_env.filters["len"] = len
+    app.jinja_env.policies["ext.i18n.trimmed"] = True
 
 
 def setup_themer(app):
