@@ -503,17 +503,17 @@ def profile_settings(user, username):
     ):
         abort(403)
 
+    edited_user = User.get(username)
+    if not edited_user:
+        abort(404)
+
     if request.method == "GET" or request.form.get("action") == "edit":
-        return profile_settings_edit(user, username)
+        return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "delete":
-        return profile_delete(user, username)
+        return profile_delete(user, edited_user)
 
     if request.form.get("action") == "password-initialization-mail":
-        user = User.get(username)
-        if not user:
-            abort(404)
-
         if send_password_initialization_mail(user):
             flash(
                 _(
@@ -524,13 +524,9 @@ def profile_settings(user, username):
         else:
             flash(_("Could not send the password initialization email"), "error")
 
-        return profile_settings_edit(user, username)
+        return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "password-reset-mail":
-        user = User.get(username)
-        if not user:
-            abort(404)
-
         if send_password_reset_mail(user):
             flash(
                 _(
@@ -541,21 +537,14 @@ def profile_settings(user, username):
         else:
             flash(_("Could not send the password reset email"), "error")
 
-        return profile_settings_edit(user, username)
+        return profile_settings_edit(user, edited_user)
 
     abort(400)
 
 
-def profile_settings_edit(editor, username):
-    menuitem = "profile" if username == editor.uid[0] else "users"
+def profile_settings_edit(editor, edited_user):
+    menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.read | editor.write
-    if username != editor.uid[0]:
-        edited_user = User.get(username)
-    else:
-        edited_user = editor
-
-    if not editor or not edited_user:
-        abort(404)
 
     available_fields = {"userPassword", "groups", "uid"}
     data = {
@@ -590,7 +579,9 @@ def profile_settings_edit(editor, username):
 
             edited_user.save()
             flash(_("Profile updated successfuly."), "success")
-            return redirect(url_for("account.profile_edition", username=username))
+            return redirect(
+                url_for("account.profile_edition", username=edited_user.uid[0])
+            )
 
     return render_template(
         "profile_settings.html",
@@ -601,18 +592,16 @@ def profile_settings_edit(editor, username):
     )
 
 
-def profile_delete(user, username):
-    self_deletion = username == user.uid[0]
+def profile_delete(user, edited_user):
+    self_deletion = user.id == edited_user.id
     if self_deletion:
         user.logout()
-    else:
-        user = User.get(username)
 
-    if not user:
-        abort(404)
-
-    flash(_("The user %(user)s has been sucessfuly deleted", user=user.name), "success")
-    user.delete()
+    flash(
+        _("The user %(user)s has been sucessfuly deleted", user=edited_user.name),
+        "success",
+    )
+    edited_user.delete()
 
     if self_deletion:
         return redirect(url_for("account.index"))

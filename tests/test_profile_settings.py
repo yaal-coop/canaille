@@ -257,7 +257,7 @@ def test_password_reset_email_failed(
     u.delete()
 
 
-def test_admin_bad_request(testclient, logged_moderator):
+def test_admin_bad_request(testclient, logged_admin):
     testclient.post("/profile/admin/settings", {"action": "foobar"}, status=400)
     testclient.get("/profile/foobar/settings", status=404)
 
