@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-17 17:35+0100\n"
-"PO-Revision-Date: 2023-03-23 21:41+0000\n"
+"PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "canaille/canaille/nb_NO/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.16.2-dev\n"
+"X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -313,7 +313,7 @@ msgstr "Telefonnummer"
 
 #: canaille/forms.py:182
 msgid "555-000-555"
-msgstr ""
+msgstr "87 65 43 21"
 
 #: canaille/forms.py:185
 msgid "Address"
@@ -334,11 +334,11 @@ msgstr ""
 
 #: canaille/forms.py:197
 msgid "Postal Code"
-msgstr ""
+msgstr "Postnummer"
 
 #: canaille/forms.py:203
 msgid "Locality"
-msgstr ""
+msgstr "Kommune"
 
 #: canaille/forms.py:205
 msgid "Gotham City"
