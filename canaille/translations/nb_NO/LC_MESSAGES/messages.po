@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-17 17:35+0100\n"
-"PO-Revision-Date: 2023-01-31 08:25+0000\n"
-"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"PO-Revision-Date: 2023-03-23 21:41+0000\n"
+"Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
 "canaille/canaille/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:106 canaille/account.py:131
@@ -267,11 +268,11 @@ msgstr "Navn"
 
 #: canaille/forms.py:141
 msgid "Title"
-msgstr ""
+msgstr "Tittel"
 
 #: canaille/forms.py:141
 msgid "Vice president"
-msgstr ""
+msgstr "Visepresident"
 
 #: canaille/forms.py:144
 msgid "Given name"
