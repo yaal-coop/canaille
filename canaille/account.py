@@ -453,7 +453,9 @@ def profile_edition(user, username):
         if hasattr(user, k) and k in available_fields
     }
 
-    form = profile_form(editor.write & available_fields, editor.read & available_fields)
+    form = profile_form(
+        editor.write & available_fields, editor.read & available_fields, user
+    )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     if request.form:
@@ -558,7 +560,9 @@ def profile_settings_edit(editor, edited_user):
     if "groups" in fields:
         data["groups"] = [g.id for g in edited_user.groups]
 
-    form = profile_form(editor.write & available_fields, editor.read & available_fields)
+    form = profile_form(
+        editor.write & available_fields, editor.read & available_fields, edited_user
+    )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     if request.form and request.form.get("action") == "edit":

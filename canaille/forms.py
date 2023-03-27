@@ -14,14 +14,18 @@ from .models import User
 
 
 def unique_login(form, field):
-    if User.get(field.data):
+    if User.get(field.data) and (
+        not getattr(form, "user", None) or form.user.uid[0] != field.data
+    ):
         raise wtforms.ValidationError(
             _("The login '{login}' already exists").format(login=field.data)
         )
 
 
 def unique_email(form, field):
-    if User.get(filter=f"(mail={field.data})"):
+    if User.get(mail=field.data) and (
+        not getattr(form, "user", None) or form.user.mail[0] != field.data
+    ):
         raise wtforms.ValidationError(
             _("The email '{email}' already exists").format(email=field.data)
         )
@@ -134,7 +138,7 @@ PROFILE_FORM_FIELDS = dict(
     uid=wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
-        validators=[wtforms.validators.DataRequired()],
+        validators=[wtforms.validators.DataRequired(), unique_login],
     ),
     cn=wtforms.StringField(_("Name")),
     title=wtforms.StringField(
@@ -168,7 +172,11 @@ PROFILE_FORM_FIELDS = dict(
     ),
     mail=wtforms.EmailField(
         _("Email address"),
-        validators=[wtforms.validators.DataRequired(), wtforms.validators.Email()],
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Email(),
+            unique_email,
+        ],
         description=_(
             "This email will be used as a recovery address to reset the password if needed"
         ),
@@ -265,7 +273,7 @@ PROFILE_FORM_FIELDS = dict(
 )
 
 
-def profile_form(write_field_names, readonly_field_names):
+def profile_form(write_field_names, readonly_field_names, user=None):
     if "userPassword" in write_field_names:
         write_field_names |= {"password1", "password2"}
 
@@ -282,6 +290,7 @@ def profile_form(write_field_names, readonly_field_names):
         del fields["groups"]
 
     form = wtforms.form.BaseForm(fields)
+    form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
             field.render_kw["readonly"] = "true"

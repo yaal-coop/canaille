@@ -22,7 +22,7 @@ class User(LDAPObject):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def get(cls, login=None, id=None, filter=None, conn=None):
+    def get(cls, login=None, id=None, filter=None, conn=None, **kwargs):
         conn = conn or cls.ldap_connection()
 
         if login:
@@ -32,7 +32,7 @@ class User(LDAPObject):
                 .format(login=ldap.filter.escape_filter_chars(login))
             )
 
-        user = super().get(id, filter, conn)
+        user = super().get(id, filter, conn, **kwargs)
         if user:
             user.load_permissions(conn)
 

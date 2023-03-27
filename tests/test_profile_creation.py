@@ -95,6 +95,28 @@ def test_user_creation_form_validation_failed(
     assert User.get("george") is None
 
 
+def test_username_already_taken(
+    testclient, logged_moderator, user, foo_group, bar_group
+):
+    res = testclient.get("/profile", status=200)
+    res.form["uid"] = "user"
+    res.form["sn"] = "foo"
+    res.form["mail"] = "any@thing.com"
+    res = res.form.submit(name="action", value="edit")
+    assert ("error", "User account creation failed.") in res.flashes
+    res.mustcontain("The login &#39;user&#39; already exists")
+
+
+def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_group):
+    res = testclient.get("/profile", status=200)
+    res.form["uid"] = "user2"
+    res.form["sn"] = "foo"
+    res.form["mail"] = "john@doe.com"
+    res = res.form.submit(name="action", value="edit")
+    assert ("error", "User account creation failed.") in res.flashes
+    res.mustcontain("The email &#39;john@doe.com&#39; already exists")
+
+
 def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["uid"] = "george"
