@@ -92,17 +92,13 @@ display=true
 {%- endmacro %}
 
 {% macro render_fields(form) %}
-    {% if caller %}
-        {{ caller() }}
-    {% else %}
-        {% for field in form %}
-            {% if field.type == "BooleanField" %}
-                {{ render_checkbox(field) }}
-            {% else %}
-                {{ render_field(field) }}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% for field in form %}
+        {% if field.type == "BooleanField" %}
+            {{ render_checkbox(field) }}
+        {% else %}
+            {{ render_field(field) }}
+        {% endif %}
+    {% endfor %}
 {% endmacro %}
 
 {% macro render_checkbox(field) -%}
