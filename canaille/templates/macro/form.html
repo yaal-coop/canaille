@@ -93,7 +93,6 @@ display=true
 
 {% macro render_fields(form) %}
     {% if caller %}
-        {{ form.hidden_tag() if form.hidden_tag }}
         {{ caller() }}
     {% else %}
         {% for field in form %}
@@ -121,7 +120,8 @@ action_text=none,
 class_='',
 btn_class='ui right floated primary button',
 action=none,
-id=none) -%}
+id=none,
+csrf=true) -%}
 <form method="POST"
       id="{{ id or form.__class__.__name__|lower }}"
       action="{{ action or form.action }}"
@@ -130,6 +130,9 @@ id=none) -%}
       class="ui form {{ class_ }}"
 >
     {% if caller %}
+        {% if csrf %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
         {{ caller() }}
     {% else %}
         {{ render_fields(form) }}

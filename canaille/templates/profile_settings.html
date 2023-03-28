@@ -70,16 +70,7 @@
             </div>
         </h2>
 
-        <form method="POST"
-              id="{{ form.__class__.__name__|lower }}"
-              action="{{ request.url }}"
-              role="form"
-              enctype="multipart/form-data"
-              class="ui form info{% if user.can_manage_users and not edited_user.has_password() %} warning{% endif %} profile-form"
-        >
-
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
+        {% call fui.render_form(form, class_="profile-form info warning") %}
             {% if "uid" in form %}
                 {% block uid_field scoped %}{{ render_field(form.uid) }}{% endblock %}
             {% endif %}
@@ -162,6 +153,6 @@
 
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

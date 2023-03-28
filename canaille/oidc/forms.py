@@ -4,6 +4,10 @@ from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 
 
+class AuthorizeForm(FlaskForm):
+    pass
+
+
 class LogoutForm(FlaskForm):
     answer = wtforms.SubmitField()
 

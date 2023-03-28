@@ -86,14 +86,7 @@
             </form>
         </div>
 
-        <form method="POST"
-              id="{{ form.__class__.__name__|lower }}"
-              action="{{ form.action }}"
-              role="form"
-              enctype="multipart/form-data"
-              class="ui form"
-        >
-
+        {% call fui.render_form(form, csrf=false) %}
             {{ fui.render_fields(form) }}
 
             <div class="ui right aligned container">
@@ -106,6 +99,6 @@
                     </button>
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

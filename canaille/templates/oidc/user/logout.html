@@ -21,13 +21,7 @@
         <br>
 
         <div class="ui center aligned container">
-            <form method="POST"
-                  id="{{ form.id or form.__class__.__name__|lower }}"
-                  action="{{ form.action }}"
-                  role="form"
-                  class="ui form"
-            >
-                {{ form.hidden_tag() if form.hidden_tag }}
+            {% call fui.render_form(form) %}
                 <div class="ui stackable buttons">
                     <button name="answer" type="submit" class="ui button" value="stay" id="stay">
                         {% trans %}Stay logged{% endtrans %}
@@ -36,7 +30,7 @@
                         {% trans %}Logout{% endtrans %}
                     </button>
                 </div>
-            </form>
+            {% endcall %}
         </div>
     </div>
 {% endblock %}

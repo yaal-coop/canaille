@@ -21,14 +21,7 @@
             {% endtrans %}
         </div>
         <div class="ui attached clearing segment">
-            <form method="POST"
-                  id="{{ reset }}"
-                  action="{{ url_for('account.firstlogin', uid=uid) }}"
-                  role="form"
-            >
-
-                {{ form.hidden_tag() if form.hidden_tag }}
-
+            {% call fui.render_form(form) %}
                 <div class="ui right aligned container">
                     <div class="ui stackable buttons">
 
@@ -36,7 +29,7 @@
                         <button type="submit" name="action" value="sendmail" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
                     </div>
                 </div>
-            </form>
+            {% endcall %}
         </div>
     </div>
 {% endblock %}

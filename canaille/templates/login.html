@@ -23,14 +23,7 @@
 
                 {{ flask.messages() }}
 
-                <form method="POST"
-                      id="{{ form.id or form.__class__.__name__|lower }}"
-                      action="{{ request.url }}"
-                      role="form"
-                      class="ui form"
-                >
-
-                    {{ form.hidden_tag() if form.hidden_tag }}
+                {% call fui.render_form(form) %}
                     {% block login_field scoped %}{{ fui.render_field(form.login, icon="user", noindicator=true, class="autofocus") }}{% endblock %}
 
                     {% if "password" in form %}
@@ -45,7 +38,7 @@
                             <button type="submit" class="ui right floated primary button">{{ _("Continue") }}</button>
                         </div>
                     </div>
-                </form>
+                {% endcall %}
             </div>
         </div>
     </div>

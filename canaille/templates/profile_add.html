@@ -45,16 +45,7 @@
             </div>
         </h2>
 
-        <form method="POST"
-              id="{{ form.__class__.__name__|lower }}"
-              action="{{ request.url }}"
-              role="form"
-              enctype="multipart/form-data"
-              class="ui form info profile-form"
-        >
-
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
+        {% call fui.render_form(form, class_="profile-form info") %}
             <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
 
             {% if "jpegPhoto" in form %}
@@ -220,6 +211,6 @@
                     </button>
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

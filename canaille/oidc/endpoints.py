@@ -23,6 +23,7 @@ from ..flaskutils import current_user
 from ..flaskutils import set_parameter_in_url_query
 from ..forms import FullLoginForm
 from ..models import User
+from .forms import AuthorizeForm
 from .forms import LogoutForm
 from .models import Client
 from .models import Consent
@@ -116,6 +117,7 @@ def authorize():
             current_app.logger.debug("authorization endpoint response: %s", response)
             return jsonify(response)
 
+        form = AuthorizeForm(request.form or None)
         return render_template(
             "oidc/user/authorize.html",
             user=user,
@@ -124,6 +126,7 @@ def authorize():
             menu=False,
             scope_details=SCOPE_DETAILS,
             ignored_scopes=["openid"],
+            form=form,
         )
 
     # request.method == "POST"
