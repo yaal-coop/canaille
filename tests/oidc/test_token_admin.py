@@ -60,13 +60,17 @@ def test_token_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/admin/token")
     form = res.forms["next"]
     testclient.post(
-        "/admin/token", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+        "/admin/token",
+        {"csrf_token": form["csrf_token"].value, "page": "2"},
+        status=404,
     )
 
     res = testclient.get("/admin/token")
     form = res.forms["next"]
     testclient.post(
-        "/admin/token", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+        "/admin/token",
+        {"csrf_token": form["csrf_token"].value, "page": "-1"},
+        status=404,
     )
 
 

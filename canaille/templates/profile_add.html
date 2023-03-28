@@ -53,7 +53,7 @@
               class="ui form info profile-form"
         >
 
-            {#{ render_field(form.csrf_token) }#}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
             <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
 

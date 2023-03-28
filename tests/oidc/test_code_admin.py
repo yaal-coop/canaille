@@ -51,7 +51,7 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
     form = res.forms["next"]
     testclient.post(
         "/admin/authorization",
-        {"csrf_token": form["csrf_token"], "page": "2"},
+        {"csrf_token": form["csrf_token"].value, "page": "2"},
         status=404,
     )
 
@@ -59,7 +59,7 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
     form = res.forms["next"]
     testclient.post(
         "/admin/authorization",
-        {"csrf_token": form["csrf_token"], "page": "-1"},
+        {"csrf_token": form["csrf_token"].value, "page": "-1"},
         status=404,
     )
 

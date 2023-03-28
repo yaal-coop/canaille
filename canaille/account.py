@@ -163,10 +163,7 @@ def firstlogin(uid):
     if not request.form:
         return render_template("firstlogin.html", form=form, uid=uid)
 
-    if not form.validate():
-        flash(_("Could not send the password initialization link."), "error")
-        return render_template("firstlogin.html", form=form, uid=uid)
-
+    form.validate()
     if send_password_initialization_mail(user):
         flash(
             _(

@@ -10,10 +10,10 @@ from flask import session
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
 from flask_themer import Themer
+from flask_wtf.csrf import CSRFProtect
 
-from .i18n import setup_i18n
-from .ldap_backend.backend import init_backend
-from .oidc.oauth import setup_oauth
+
+csrf = CSRFProtect()
 
 
 def setup_config(app, config=None, validate=True):
@@ -128,12 +128,54 @@ def setup_blueprints(app):
     app.register_blueprint(canaille.oidc.bp)
 
 
+def setup_flask(app):
+    csrf.init_app(app)
+
+    @app.before_request
+    def make_session_permanent():
+        session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(days=365)
+
+    @app.context_processor
+    def global_processor():
+        from .flaskutils import current_user
+
+        return {
+            "has_smtp": "SMTP" in app.config,
+            "logo_url": app.config.get("LOGO"),
+            "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
+            "website_name": app.config.get("NAME", "Canaille"),
+            "user": current_user(),
+            "menu": True,
+        }
+
+    @app.errorhandler(400)
+    def bad_request(e):
+        return render_template("error.html", error=400), 400
+
+    @app.errorhandler(403)
+    def unauthorized(e):
+        return render_template("error.html", error=403), 403
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("error.html", error=404), 404
+
+    @app.errorhandler(500)
+    def server_error(e):  # pragma: no cover
+        return render_template("error.html", error=500), 500
+
+
 def create_app(config=None, validate=True):
     app = Flask(__name__)
     setup_config(app, config, validate)
 
     sentry_sdk = setup_sentry(app)
     try:
+        from .oidc.oauth import setup_oauth
+        from .ldap_backend.backend import init_backend
+        from .i18n import setup_i18n
+
         setup_logging(app)
         init_backend(app)
         setup_oauth(app)
@@ -141,40 +183,7 @@ def create_app(config=None, validate=True):
         setup_jinja(app)
         setup_i18n(app)
         setup_themer(app)
-
-        @app.before_request
-        def make_session_permanent():
-            session.permanent = True
-            app.permanent_session_lifetime = datetime.timedelta(days=365)
-
-        @app.context_processor
-        def global_processor():
-            from .flaskutils import current_user
-
-            return {
-                "has_smtp": "SMTP" in app.config,
-                "logo_url": app.config.get("LOGO"),
-                "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
-                "website_name": app.config.get("NAME", "Canaille"),
-                "user": current_user(),
-                "menu": True,
-            }
-
-        @app.errorhandler(400)
-        def bad_request(e):
-            return render_template("error.html", error=400), 400
-
-        @app.errorhandler(403)
-        def unauthorized(e):
-            return render_template("error.html", error=403), 403
-
-        @app.errorhandler(404)
-        def page_not_found(e):
-            return render_template("error.html", error=404), 404
-
-        @app.errorhandler(500)
-        def server_error(e):  # pragma: no cover
-            return render_template("error.html", error=500), 500
+        setup_flask(app)
 
     except Exception as exc:  # pragma: no cover
         if sentry_sdk:

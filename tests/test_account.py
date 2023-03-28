@@ -174,8 +174,7 @@ def test_first_login_form_error(testclient, slapd_connection, smtpd):
 
     res = testclient.get("/firstlogin/temp", status=200)
     res.form["csrf_token"] = "invalid"
-    res = res.form.submit(name="action", value="sendmail")
-    assert ("error", "Could not send the password initialization link.") in res.flashes
+    res = res.form.submit(name="action", value="sendmail", status=400)
     assert len(smtpd.messages) == 0
     u.delete()
 

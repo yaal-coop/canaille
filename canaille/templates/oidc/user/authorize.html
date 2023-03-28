@@ -34,6 +34,7 @@
 
         <div class="ui center aligned container">
             <form action="{{ request.url }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="ui stackable buttons">
                     <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
                         {% trans %}Deny{% endtrans %}
