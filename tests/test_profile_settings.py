@@ -176,9 +176,13 @@ def test_password_initialization_invalid_user(
     smtpd, testclient, slapd_connection, logged_admin
 ):
     assert len(smtpd.messages) == 0
+    res = testclient.get("/profile/admin/settings")
     testclient.post(
         "/profile/invalid/settings",
-        {"action": "password-initialization-mail"},
+        {
+            "action": "password-initialization-mail",
+            "csrf_token": res.form["csrf_token"].value,
+        },
         status=404,
     )
     assert len(smtpd.messages) == 0
@@ -186,18 +190,31 @@ def test_password_initialization_invalid_user(
 
 def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged_admin):
     assert len(smtpd.messages) == 0
+    res = testclient.get("/profile/admin/settings")
     testclient.post(
-        "/profile/invalid/settings", {"action": "password-reset-mail"}, status=404
+        "/profile/invalid/settings",
+        {"action": "password-reset-mail", "csrf_token": res.form["csrf_token"].value},
+        status=404,
     )
     assert len(smtpd.messages) == 0
 
 
 def test_delete_invalid_user(testclient, slapd_connection, logged_admin):
-    testclient.post("/profile/invalid/settings", {"action": "delete"}, status=404)
+    res = testclient.get("/profile/admin/settings")
+    testclient.post(
+        "/profile/invalid/settings",
+        {"action": "delete", "csrf_token": res.form["csrf_token"].value},
+        status=404,
+    )
 
 
 def test_impersonate_invalid_user(testclient, slapd_connection, logged_admin):
     testclient.get("/impersonate/invalid", status=404)
+
+
+def test_invalid_form_request(testclient, logged_admin):
+    res = testclient.get("/profile/admin/settings")
+    res = res.form.submit(name="action", value="invalid-action", status=400)
 
 
 def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):

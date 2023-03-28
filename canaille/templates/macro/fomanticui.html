@@ -92,8 +92,8 @@ display=true
 {%- endmacro %}
 
 {% macro render_fields(form) %}
-    {{ form.hidden_tag() if form.hidden_tag }}
     {% if caller %}
+        {{ form.hidden_tag() if form.hidden_tag }}
         {{ caller() }}
     {% else %}
         {% for field in form %}

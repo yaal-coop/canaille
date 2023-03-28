@@ -38,13 +38,13 @@ def test_group_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/groups")
     form = res.forms["next"]
     testclient.post(
-        "/groups", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+        "/groups", {"csrf_token": form["csrf_token"].value, "page": "2"}, status=404
     )
 
     res = testclient.get("/groups")
     form = res.forms["next"]
     testclient.post(
-        "/groups", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+        "/groups", {"csrf_token": form["csrf_token"].value, "page": "-1"}, status=404
     )
 
 
@@ -156,7 +156,12 @@ def test_moderator_can_create_edit_and_delete_group(
 
 
 def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_group):
-    res = testclient.post("/groups/add", {"display_name": "foo"}, status=200)
+    res = testclient.get("/groups/add")
+    res = testclient.post(
+        "/groups/add",
+        {"csrf_token": res.form["csrf_token"].value, "display_name": "foo"},
+        status=200,
+    )
 
     res.mustcontain("Group creation failed.")
     res.mustcontain("The group &#39;foo&#39; already exists")
@@ -196,7 +201,7 @@ def test_invalid_form_request(testclient, logged_moderator, foo_group):
 def test_edition_failed(testclient, logged_moderator, foo_group):
     res = testclient.get("/groups/foo")
     form = res.forms["editgroupform"]
-    form["csrf_token"] = "invalid"
+    form["display_name"] = ""
     res = form.submit(name="action", value="edit")
     res.mustcontain("Group edition failed.")
     foo_group = Group.get(foo_group.id)
@@ -234,13 +239,15 @@ def test_user_list_bad_pages(testclient, logged_admin, foo_group):
     res = testclient.get("/groups/foo")
     form = res.forms["next"]
     testclient.post(
-        "/groups/foo", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+        "/groups/foo", {"csrf_token": form["csrf_token"].value, "page": "2"}, status=404
     )
 
     res = testclient.get("/groups/foo")
     form = res.forms["next"]
     testclient.post(
-        "/groups/foo", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+        "/groups/foo",
+        {"csrf_token": form["csrf_token"].value, "page": "-1"},
+        status=404,
     )
 
 

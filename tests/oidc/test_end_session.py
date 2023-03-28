@@ -374,19 +374,7 @@ def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
 
     form = res.form
     form["csrf_token"] = "foobar"
-    res = form.submit(name="answer", value="logout", status=200)
-
-    assert ("error", "An error happened during the logout") in res.flashes
-
-    res = res.form.submit(name="answer", value="logout", status=302)
-    res = res.follow(status=302)
-
-    with testclient.session_transaction() as sess:
-        assert not sess.get("user_id")
-
-    assert res.location == f"{post_logout_redirect_url}?state=foobar"
-
-    testclient.get(f"/profile/{logged_user.uid[0]}", status=403)
+    res = form.submit(name="answer", value="logout", status=400)
 
 
 def test_end_session_already_disconnected(

@@ -57,13 +57,17 @@ def test_client_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/admin/client")
     form = res.forms["next"]
     testclient.post(
-        "/admin/client", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+        "/admin/client",
+        {"csrf_token": form["csrf_token"].value, "page": "2"},
+        status=404,
     )
 
     res = testclient.get("/admin/client")
     form = res.forms["next"]
     testclient.post(
-        "/admin/client", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+        "/admin/client",
+        {"csrf_token": form["csrf_token"].value, "page": "-1"},
+        status=404,
     )
 
 
@@ -217,8 +221,13 @@ def test_client_delete(testclient, logged_admin):
     assert not Consent.get()
 
 
-def test_client_delete_invalid_client(testclient, logged_admin):
-    testclient.post("/admin/client/edit/invalid", {"action": "delete"}, status=404)
+def test_client_delete_invalid_client(testclient, logged_admin, client):
+    res = testclient.get(f"/admin/client/edit/{client.client_id}")
+    testclient.post(
+        "/admin/client/edit/invalid",
+        {"action": "delete", "csrf_token": res.forms["clientadd"]["csrf_token"].value},
+        status=404,
+    )
 
 
 def test_invalid_request(testclient, logged_admin, client):

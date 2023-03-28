@@ -31,13 +31,13 @@ def test_user_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/users")
     form = res.forms["next"]
     testclient.post(
-        "/users", {"csrf_token": form["csrf_token"], "page": "2"}, status=404
+        "/users", {"csrf_token": form["csrf_token"].value, "page": "2"}, status=404
     )
 
     res = testclient.get("/users")
     form = res.forms["next"]
     testclient.post(
-        "/users", {"csrf_token": form["csrf_token"], "page": "-1"}, status=404
+        "/users", {"csrf_token": form["csrf_token"].value, "page": "-1"}, status=404
     )
 
 
@@ -169,7 +169,12 @@ def test_field_permissions_none(testclient, slapd_server, logged_user):
     assert "telephoneNumber" not in res.form.fields
 
     testclient.post(
-        "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
+        "/profile/user",
+        {
+            "action": "edit",
+            "telephoneNumber": "000-000-000",
+            "csrf_token": res.form["csrf_token"].value,
+        },
     )
     user = User.get(id=logged_user.id)
     assert user.telephoneNumber == ["555-666-777"]
@@ -189,7 +194,12 @@ def test_field_permissions_read(testclient, slapd_server, logged_user):
     assert "telephoneNumber" in res.form.fields
 
     testclient.post(
-        "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
+        "/profile/user",
+        {
+            "action": "edit",
+            "telephoneNumber": "000-000-000",
+            "csrf_token": res.form["csrf_token"].value,
+        },
     )
     user = User.get(id=logged_user.id)
     assert user.telephoneNumber == ["555-666-777"]
@@ -209,17 +219,30 @@ def test_field_permissions_write(testclient, slapd_server, logged_user):
     assert "telephoneNumber" in res.form.fields
 
     testclient.post(
-        "/profile/user", {"action": "edit", "telephoneNumber": "000-000-000"}
+        "/profile/user",
+        {
+            "action": "edit",
+            "telephoneNumber": "000-000-000",
+            "csrf_token": res.form["csrf_token"].value,
+        },
     )
     user = User.get(id=logged_user.id)
     assert user.telephoneNumber == ["000-000-000"]
 
 
 def test_simple_user_cannot_edit_other(testclient, logged_user):
-    testclient.get("/profile/user", status=200)
+    res = testclient.get("/profile/user", status=200)
     testclient.get("/profile/admin", status=403)
-    testclient.post("/profile/admin", {"action": "edit"}, status=403)
-    testclient.post("/profile/admin", {"action": "delete"}, status=403)
+    testclient.post(
+        "/profile/admin",
+        {"action": "edit", "csrf_token": res.form["csrf_token"].value},
+        status=403,
+    )
+    testclient.post(
+        "/profile/admin",
+        {"action": "delete", "csrf_token": res.form["csrf_token"].value},
+        status=403,
+    )
     testclient.get("/users", status=403)
 
 

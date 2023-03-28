@@ -5,6 +5,7 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import JsonWebKey
 from authlib.jose import jwt
 from authlib.oauth2 import OAuth2Error
+from canaille import csrf
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -159,6 +160,7 @@ def authorize():
 
 
 @bp.route("/token", methods=["POST"])
+@csrf.exempt
 def issue_token():
     current_app.logger.debug(
         "token endpoint request: POST: %s", request.form.to_dict(flat=False)
@@ -169,6 +171,7 @@ def issue_token():
 
 
 @bp.route("/introspect", methods=["POST"])
+@csrf.exempt
 def introspect_token():
     current_app.logger.debug(
         "introspection endpoint request: POST: %s", request.form.to_dict(flat=False)
@@ -181,6 +184,7 @@ def introspect_token():
 
 
 @bp.route("/revoke", methods=["POST"])
+@csrf.exempt
 def revoke_token():
     current_app.logger.debug(
         "revokation endpoint request: POST: %s", request.form.to_dict(flat=False)
@@ -191,6 +195,7 @@ def revoke_token():
 
 
 @bp.route("/register", methods=["POST"])
+@csrf.exempt
 def client_registration():
     current_app.logger.debug(
         "client registration endpoint request: POST: %s",
@@ -204,6 +209,7 @@ def client_registration():
 
 
 @bp.route("/register/<client_id>", methods=["GET", "PUT", "DELETE"])
+@csrf.exempt
 def client_registration_management(client_id):
     current_app.logger.debug(
         "client registration management endpoint request: POST: %s",
@@ -336,10 +342,7 @@ def end_session():
 @bp.route("/end_session_confirm", methods=["POST"])
 def end_session_submit():
     form = LogoutForm(request.form)
-    if not form.validate():
-        flash(_("An error happened during the logout"), "error")
-        client = Client.get(session.get("end_session_data", {}).get("client_id"))
-        return render_template("oidc/user/logout.html", form=form, client=client)
+    form.validate()
 
     data = session["end_session_data"]
     del session["end_session_data"]

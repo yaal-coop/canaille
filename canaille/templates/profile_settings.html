@@ -78,7 +78,7 @@
               class="ui form info{% if user.can_manage_users and not edited_user.has_password() %} warning{% endif %} profile-form"
         >
 
-            {#{ render_field(form.csrf_token) }#}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
             {% if "uid" in form %}
                 {% block uid_field scoped %}{{ render_field(form.uid) }}{% endblock %}
