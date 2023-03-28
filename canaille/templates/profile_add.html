@@ -1,5 +1,5 @@
 {% extends theme('base.html') %}
-{% import 'macro/fomanticui.html' as sui %}
+{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {%- trans %}User creation{% endtrans -%}
@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% macro render_field(field, noindicator=false) %}
-    {{ sui.render_field(field, **kwargs) }}
+    {{ fui.render_field(field, **kwargs) }}
 {% endmacro %}
 
 {% block content %}

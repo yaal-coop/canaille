@@ -1,5 +1,5 @@
 {% extends theme('base.html') %}
-{% import 'macro/fomanticui.html' as sui %}
+{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {% if not edited_user %}
@@ -32,15 +32,15 @@
 {% macro render_field(field, noindicator=false) %}
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
     {% if not edited_user %}
-        {{ sui.render_field(field, **kwargs) }}
+        {{ fui.render_field(field, **kwargs) }}
     {% elif edited_user.uid == user.uid or lock_indicator or noindicator %}
-        {{ sui.render_field(field, **kwargs) }}
+        {{ fui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.write %}
-        {{ sui.render_field(field, **kwargs) }}
+        {{ fui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.read %}
-        {{ sui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
+        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
     {% else %}
-        {{ sui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
+        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
     {% endif %}
 {% endmacro %}
 

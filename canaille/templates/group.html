@@ -1,5 +1,5 @@
 {% extends theme('base.html') %}
-{% import 'macro/fomanticui.html' as sui %}
+{% import 'macro/form.html' as fui %}
 {% import "macro/table.html" as table %}
 
 {%- block title -%}
@@ -73,8 +73,8 @@
               class="ui form"
         >
             {{ form.hidden_tag() if form.hidden_tag }}
-            {{ sui.render_field(form.display_name) }}
-            {{ sui.render_field(form.description) }}
+            {{ fui.render_field(form.display_name) }}
+            {{ fui.render_field(form.description) }}
 
             {% if not edited_group %}
                 <div class="ui info visible message">

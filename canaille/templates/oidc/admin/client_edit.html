@@ -1,5 +1,5 @@
 {% extends theme('base.html') %}
-{% import 'macro/fomanticui.html' as sui %}
+{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {%- trans %}Edit a client{% endtrans -%}
@@ -94,7 +94,7 @@
               class="ui form"
         >
 
-            {{ sui.render_fields(form) }}
+            {{ fui.render_fields(form) }}
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">

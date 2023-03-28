@@ -1,5 +1,5 @@
 {% extends theme('base.html') %}
-{% import 'macro/fomanticui.html' as sui %}
+{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {%- trans %}Emails{% endtrans -%}
@@ -45,8 +45,8 @@
             {% endtrans %}
         </div>
 
-        {% call sui.render_form(form) %}
-            {{ sui.render_fields(form) }}
+        {% call fui.render_form(form) %}
+            {{ fui.render_fields(form) }}
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     <input type="submit" class="ui primary button" value="{{ _("Send") }}">

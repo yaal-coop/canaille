@@ -1,5 +1,5 @@
 {% extends theme('base.html') %}
-{% import 'macro/fomanticui.html' as sui %}
+{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {%- trans %}Add a client{% endtrans -%}
@@ -36,6 +36,6 @@
             {% trans %}Add a client{% endtrans %}
         </h2>
 
-        {{ sui.render_form(form, _("Confirm")) }}
+        {{ fui.render_form(form, _("Confirm")) }}
     </div>
 {% endblock %}
