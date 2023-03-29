@@ -6,7 +6,6 @@ container=true,
 noindicator=false,
 indicator_icon=none,
 indicator_text=none,
-suffix_text=none,
 display=true
 ) -%}
 {% set field_visible = field.type != 'HiddenField' and field.type !='CSRFTokenField' %}
@@ -26,14 +25,10 @@ display=true
 {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
 {% set required_indicator = "required" in field.flags %}
 {% set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required_indicator) %}
-{% set labeled = suffix_text or corner_indicator %}
 {% if field_visible %}
     <div class="ui
-                {%- if suffix_text %} right{% endif -%}
-                {%- if corner_indicator %} corner{% endif -%}
-                {%- if labeled %} labeled{% endif -%}
-                {%- if icon %} left icon{% endif -%}
-                {%- if field.description %} left icon{% endif -%}
+                {%- if corner_indicator %} corner labeled{% endif -%}
+                {%- if icon or field.description %} left icon{% endif -%}
                 {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
 {% endif %}
@@ -50,12 +45,6 @@ display=true
     {{ field(class_="ui fluid dropdown read-only", **kwargs) }}
 {% elif field.type == "SelectField" %}
     {{ field(class_="ui fluid dropdown", **kwargs) }}
-{% endif %}
-
-{% if suffix_text %}
-    <div class="ui basic label">
-        {{ suffix_text }}{% if corner_indicator %}&emsp;{% endif %}
-    </div>
 {% endif %}
 
 {% if not noindicator %}
