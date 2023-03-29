@@ -109,7 +109,11 @@ class ForgottenPasswordForm(FlaskForm):
 
 class PasswordResetForm(FlaskForm):
     password = wtforms.PasswordField(
-        _("Password"), validators=[wtforms.validators.DataRequired()]
+        _("Password"),
+        validators=[wtforms.validators.DataRequired()],
+        render_kw={
+            "autocomplete": "new-password",
+        },
     )
     confirmation = wtforms.PasswordField(
         _("Password confirmation"),
@@ -118,6 +122,9 @@ class PasswordResetForm(FlaskForm):
                 "password", _("Password and confirmation do not match.")
             ),
         ],
+        render_kw={
+            "autocomplete": "new-password",
+        },
     )
 
 
@@ -228,6 +235,9 @@ PROFILE_FORM_FIELDS = dict(
     password1=wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
+        render_kw={
+            "autocomplete": "new-password",
+        },
     ),
     password2=wtforms.PasswordField(
         _("Password confirmation"),
@@ -236,6 +246,9 @@ PROFILE_FORM_FIELDS = dict(
                 "password1", message=_("Password and confirmation do not match.")
             )
         ],
+        render_kw={
+            "autocomplete": "new-password",
+        },
     ),
     employeeNumber=wtforms.StringField(
         _("Employee number"),
