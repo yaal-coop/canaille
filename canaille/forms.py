@@ -27,7 +27,7 @@ def unique_email(form, field):
         not getattr(form, "user", None) or form.user.mail[0] != field.data
     ):
         raise wtforms.ValidationError(
-            _("The email '{email}' already exists").format(email=field.data)
+            _("The email '{email}' is already used").format(email=field.data)
         )
 
 
