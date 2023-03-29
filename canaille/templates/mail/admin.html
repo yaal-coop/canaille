@@ -46,7 +46,7 @@
         </div>
 
         {% call fui.render_form(form) %}
-            {{ fui.render_fields(form) }}
+            {{ fui.render_field(form.mail) }}
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     <input type="submit" class="ui primary button" value="{{ _("Send") }}">
