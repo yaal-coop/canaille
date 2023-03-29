@@ -257,7 +257,7 @@ PROFILE_FORM_FIELDS = dict(
         },
     ),
     employeeNumber=wtforms.StringField(
-        _("Employee number"),
+        _("User number"),
         render_kw={
             "placeholder": _("1234"),
         },
