@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-03-29 19:33+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-03-29 23:00+0200\n"
 "PO-Revision-Date: 2023-03-29 21:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -65,7 +65,7 @@ msgstr "Votre compte a déjà été créé."
 msgid "You are already logged in, you cannot create an account."
 msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
 
-#: canaille/account.py:307 canaille/forms.py:282 canaille/forms.py:363
+#: canaille/account.py:307 canaille/forms.py:289 canaille/forms.py:370
 #: canaille/templates/groups.html:5 canaille/templates/groups.html:25
 #: canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
@@ -156,8 +156,8 @@ msgstr "Votre mot de passe a correctement été mis à jour"
 msgid "Email"
 msgstr "Courriel"
 
-#: canaille/admin.py:29 canaille/forms.py:79 canaille/forms.py:103
-#: canaille/forms.py:191 canaille/forms.py:357
+#: canaille/admin.py:29 canaille/forms.py:85 canaille/forms.py:109
+#: canaille/forms.py:197 canaille/forms.py:364
 msgid "jane@doe.com"
 msgstr "camille@dupont.fr"
 
@@ -181,19 +181,19 @@ msgstr "Réinitialisation du mot de passe sur {website_name}"
 msgid "Invitation on {website_name}"
 msgstr "Invitation sur {website_name}"
 
-#: canaille/apputils.py:31
+#: canaille/apputils.py:32
 msgid "John Doe"
 msgstr "Camille Dupont"
 
-#: canaille/apputils.py:34 canaille/forms.py:147 canaille/forms.py:345
+#: canaille/apputils.py:35 canaille/forms.py:153 canaille/forms.py:352
 msgid "jdoe"
 msgstr "cdupont"
 
-#: canaille/apputils.py:37
+#: canaille/apputils.py:38
 msgid "john@doe.com"
 msgstr "camille@dupont.fr"
 
-#: canaille/apputils.py:39
+#: canaille/apputils.py:40
 msgid " or "
 msgstr " ou "
 
@@ -201,200 +201,206 @@ msgstr " ou "
 msgid "No SMTP server has been configured"
 msgstr "Aucun serveur SMTP n'a été configuré"
 
-#: canaille/forms.py:21
+#: canaille/forms.py:19
+msgid "This is not a valid URL"
+msgstr ""
+
+#: canaille/forms.py:27
 msgid "The login '{login}' already exists"
 msgstr "L'identifiant '{login}' existe déjà"
 
-#: canaille/forms.py:30
+#: canaille/forms.py:36
 msgid "The email '{email}' is already used"
 msgstr "L’adresse '{email}' est déjà utilisée"
 
-#: canaille/forms.py:37
+#: canaille/forms.py:43
 msgid "The group '{group}' already exists"
 msgstr "Le group '{group}' existe déjà"
 
-#: canaille/forms.py:46
+#: canaille/forms.py:52
 msgid "The login '{login}' does not exist"
 msgstr "L'identifiant '{login}' n'existe pas"
 
-#: canaille/forms.py:71
+#: canaille/forms.py:77
 msgid "The page number is not valid"
 msgstr "Le numéro de page est invalide"
 
-#: canaille/forms.py:76 canaille/forms.py:100
+#: canaille/forms.py:82 canaille/forms.py:106
 #: canaille/templates/partial/users.html:9
 msgid "Login"
 msgstr "Identifiant"
 
-#: canaille/forms.py:89 canaille/forms.py:112 canaille/forms.py:236
+#: canaille/forms.py:95 canaille/forms.py:118 canaille/forms.py:242
 msgid "Password"
 msgstr "Mot de passe"
 
-#: canaille/forms.py:119 canaille/forms.py:243
+#: canaille/forms.py:125 canaille/forms.py:249
 msgid "Password confirmation"
 msgstr "Confirmation du mot de passe"
 
-#: canaille/forms.py:122 canaille/forms.py:246
+#: canaille/forms.py:128 canaille/forms.py:252
 msgid "Password and confirmation do not match."
 msgstr "Le mot de passe et sa confirmation ne correspondent pas."
 
-#: canaille/forms.py:141
+#: canaille/forms.py:147
 msgid "Automatic"
 msgstr "Automatique"
 
-#: canaille/forms.py:146 canaille/forms.py:344
+#: canaille/forms.py:152 canaille/forms.py:351
 msgid "Username"
 msgstr "Identifiant"
 
-#: canaille/forms.py:150 canaille/forms.py:316 canaille/forms.py:330
-#: canaille/oidc/forms.py:21 canaille/templates/partial/groups.html:6
+#: canaille/forms.py:156 canaille/forms.py:323 canaille/forms.py:337
+#: canaille/oidc/forms.py:22 canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
 msgid "Name"
 msgstr "Nom"
 
-#: canaille/forms.py:152
+#: canaille/forms.py:158
 msgid "Title"
 msgstr "Titre"
 
-#: canaille/forms.py:152
+#: canaille/forms.py:158
 msgid "Vice president"
 msgstr "Vice-président"
 
-#: canaille/forms.py:155
+#: canaille/forms.py:161
 msgid "Given name"
 msgstr "Prénom"
 
-#: canaille/forms.py:157
+#: canaille/forms.py:163
 msgid "John"
 msgstr "Martin"
 
-#: canaille/forms.py:163
+#: canaille/forms.py:169
 msgid "Family Name"
 msgstr "Nom de famille"
 
-#: canaille/forms.py:166
+#: canaille/forms.py:172
 msgid "Doe"
 msgstr "Dupont"
 
-#: canaille/forms.py:172
+#: canaille/forms.py:178
 msgid "Display Name"
 msgstr "Nom d'affichage"
 
-#: canaille/forms.py:175
+#: canaille/forms.py:181
 msgid "Johnny"
 msgstr "Martin.D"
 
-#: canaille/forms.py:181 canaille/forms.py:350
+#: canaille/forms.py:187 canaille/forms.py:357
 msgid "Email address"
 msgstr "Courriel"
 
-#: canaille/forms.py:187
+#: canaille/forms.py:193
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 "Cette adresse servira d'adresse électronique de récupération pour recevoir "
 "un courriel de réinitialisation de mot de passe en cas de besoin"
 
-#: canaille/forms.py:197
+#: canaille/forms.py:203
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: canaille/forms.py:197
+#: canaille/forms.py:203
 msgid "555-000-555"
 msgstr "06 01 02 03 04"
 
-#: canaille/forms.py:200
+#: canaille/forms.py:206
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/forms.py:202
+#: canaille/forms.py:208
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "132, rue du Lorem Ipsum - 99000 Gotham City - XX"
 
-#: canaille/forms.py:206
+#: canaille/forms.py:212
 msgid "Street"
 msgstr "Rue"
 
-#: canaille/forms.py:208
+#: canaille/forms.py:214
 msgid "132, Foobar Street"
 msgstr "132, rue du Lorem Ipsum"
 
-#: canaille/forms.py:212
+#: canaille/forms.py:218
 msgid "Postal Code"
 msgstr "Code postal"
 
-#: canaille/forms.py:218
+#: canaille/forms.py:224
 msgid "Locality"
 msgstr "Ville"
 
-#: canaille/forms.py:220
+#: canaille/forms.py:226
 msgid "Gotham City"
 msgstr "Gotham City"
 
-#: canaille/forms.py:224
+#: canaille/forms.py:230
 msgid "Region"
 msgstr "Région"
 
-#: canaille/forms.py:226
+#: canaille/forms.py:232
 msgid "North Pole"
 msgstr "Pôle nord"
 
-#: canaille/forms.py:230
+#: canaille/forms.py:236
 msgid "Photo"
 msgstr "Photo"
 
-#: canaille/forms.py:234 canaille/templates/profile_add.html:63
+#: canaille/forms.py:240 canaille/templates/profile_add.html:63
 #: canaille/templates/profile_edit.html:81
 msgid "Delete the photo"
 msgstr "Supprimer la photo"
 
-#: canaille/forms.py:254
-msgid "Employee number"
-msgstr "Numéro de l'employé"
+#: canaille/forms.py:260
+#, fuzzy
+#| msgid "Username"
+msgid "User number"
+msgstr "Identifiant"
 
-#: canaille/forms.py:256 canaille/forms.py:262
+#: canaille/forms.py:262 canaille/forms.py:268
 msgid "1234"
 msgstr "1234"
 
-#: canaille/forms.py:260
+#: canaille/forms.py:266
 msgid "Department number"
 msgstr "Numéro du service"
 
-#: canaille/forms.py:266
+#: canaille/forms.py:272
 msgid "Organization"
 msgstr "Organisation"
 
-#: canaille/forms.py:268
+#: canaille/forms.py:274
 msgid "Cogip LTD."
 msgstr "Cogip SARL."
 
-#: canaille/forms.py:272
+#: canaille/forms.py:278
 msgid "Website"
 msgstr "Site web"
 
-#: canaille/forms.py:274
+#: canaille/forms.py:280
 msgid "https://mywebsite.tld"
 msgstr "https://mon-site-internet.fr"
 
-#: canaille/forms.py:278
+#: canaille/forms.py:285
 msgid "Preferred language"
 msgstr "Langue préférée"
 
-#: canaille/forms.py:284
+#: canaille/forms.py:291
 msgid "users, admins …"
 msgstr "utilisateurs, administrateurs …"
 
-#: canaille/forms.py:319
+#: canaille/forms.py:326
 msgid "group"
 msgstr "groupe"
 
-#: canaille/forms.py:323 canaille/forms.py:337
+#: canaille/forms.py:330 canaille/forms.py:344
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Description"
 
-#: canaille/forms.py:348
+#: canaille/forms.py:355
 msgid "Username editable by the invitee"
 msgstr "L'identifiant sera éditable par la personne invitée"
 
@@ -494,71 +500,71 @@ msgstr "Vous avez été déconnecté·e"
 msgid "You have not been disconnected"
 msgstr "Vous n'avez pas été déconnecté"
 
-#: canaille/oidc/forms.py:26
+#: canaille/oidc/forms.py:27
 msgid "Contact"
 msgstr "Contact"
 
-#: canaille/oidc/forms.py:31
+#: canaille/oidc/forms.py:32
 msgid "URI"
 msgstr "URI"
 
-#: canaille/oidc/forms.py:36
+#: canaille/oidc/forms.py:40
 msgid "Redirect URIs"
 msgstr "URIs de redirection"
 
-#: canaille/oidc/forms.py:41
+#: canaille/oidc/forms.py:48
 msgid "Post logout redirect URIs"
 msgstr "URIs de redirection post-déconnexion"
 
-#: canaille/oidc/forms.py:46
+#: canaille/oidc/forms.py:56
 msgid "Grant types"
 msgstr "Types de consentements"
 
-#: canaille/oidc/forms.py:58 canaille/templates/oidc/admin/token_view.html:79
+#: canaille/oidc/forms.py:68 canaille/templates/oidc/admin/token_view.html:79
 msgid "Scope"
 msgstr "Portée"
 
-#: canaille/oidc/forms.py:64
+#: canaille/oidc/forms.py:74
 msgid "Response types"
 msgstr "Types de réponse"
 
-#: canaille/oidc/forms.py:70
+#: canaille/oidc/forms.py:80
 msgid "Token Endpoint Auth Method"
 msgstr "Méthode d'authentification du point d'accès des jetons"
 
-#: canaille/oidc/forms.py:80
+#: canaille/oidc/forms.py:90
 msgid "Token audiences"
 msgstr "Audiences des jetons"
 
-#: canaille/oidc/forms.py:86
+#: canaille/oidc/forms.py:96
 msgid "Logo URI"
 msgstr "URI du logo"
 
-#: canaille/oidc/forms.py:91
+#: canaille/oidc/forms.py:104
 msgid "Terms of service URI"
 msgstr "URI des conditions d'utilisation"
 
-#: canaille/oidc/forms.py:96
+#: canaille/oidc/forms.py:112
 msgid "Policy URI"
 msgstr "URI de la politique de confidentialité"
 
-#: canaille/oidc/forms.py:101
+#: canaille/oidc/forms.py:120
 msgid "Software ID"
 msgstr "ID du logiciel"
 
-#: canaille/oidc/forms.py:106
+#: canaille/oidc/forms.py:125
 msgid "Software Version"
 msgstr "Version du logiciel"
 
-#: canaille/oidc/forms.py:111
+#: canaille/oidc/forms.py:130
 msgid "JWK"
 msgstr "JWK"
 
-#: canaille/oidc/forms.py:116
+#: canaille/oidc/forms.py:135
 msgid "JKW URI"
 msgstr "URI du JWK"
 
-#: canaille/oidc/forms.py:121
+#: canaille/oidc/forms.py:143
 msgid "Pre-consent"
 msgstr "Pré-autorisé"
 
@@ -1591,6 +1597,9 @@ msgstr "Autorisations"
 #: canaille/themes/default/base.html:67
 msgid "Admin"
 msgstr "Administration"
+
+#~ msgid "Employee number"
+#~ msgstr "Numéro de l'employé"
 
 #~ msgid "Could not send the password initialization link."
 #~ msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe."
