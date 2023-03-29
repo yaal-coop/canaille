@@ -155,7 +155,7 @@ def test_invitation_login_already_taken(testclient, logged_admin):
     res = res.form.submit(name="action", value="send", status=200)
 
     res.mustcontain("The login &#39;admin&#39; already exists")
-    res.mustcontain("The email &#39;jane@doe.com&#39; already exists")
+    res.mustcontain("The email &#39;jane@doe.com&#39; is already used")
 
 
 def test_registration(testclient, foo_group):

@@ -114,7 +114,7 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
     res.form["mail"] = "john@doe.com"
     res = res.form.submit(name="action", value="edit")
     assert ("error", "User account creation failed.") in res.flashes
-    res.mustcontain("The email &#39;john@doe.com&#39; already exists")
+    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
 
 
 def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
