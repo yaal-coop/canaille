@@ -3,7 +3,7 @@ import datetime
 from canaille.flaskutils import permissions_needed
 from canaille.flaskutils import render_htmx_template
 from canaille.forms import TableForm
-from canaille.oidc.forms import ClientAdd
+from canaille.oidc.forms import ClientAddForm
 from canaille.oidc.models import Client
 from flask import abort
 from flask import Blueprint
@@ -34,7 +34,7 @@ def index(user):
 @bp.route("/add", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def add(user):
-    form = ClientAdd(request.form or None)
+    form = ClientAddForm(request.form or None)
 
     if not request.form:
         return render_template(
@@ -114,7 +114,7 @@ def client_edit(client_id):
         else ""
     )
     data["preconsent"] = client.preconsent
-    form = ClientAdd(request.form or None, data=data, client=client)
+    form = ClientAddForm(request.form or None, data=data, client=client)
 
     if not request.form:
         return render_template(

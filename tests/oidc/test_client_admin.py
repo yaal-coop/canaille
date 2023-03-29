@@ -162,8 +162,8 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
     }
     for k, v in data.items():
-        res.forms["clientadd"][k].force_value(v)
-    res = res.forms["clientadd"].submit(status=302, name="action", value="edit")
+        res.forms["clientaddform"][k].force_value(v)
+    res = res.forms["clientaddform"].submit(status=302, name="action", value="edit")
 
     assert (
         "error",
@@ -187,8 +187,8 @@ def test_client_edit(testclient, client, logged_admin, other_client):
 
 def test_client_edit_missing_fields(testclient, client, logged_admin, other_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientadd"]["client_name"] = ""
-    res = res.forms["clientadd"].submit(name="action", value="edit")
+    res.forms["clientaddform"]["client_name"] = ""
+    res = res.forms["clientaddform"].submit(name="action", value="edit")
     assert (
         "error",
         "The client has not been edited. Please check your information.",
@@ -213,7 +213,7 @@ def test_client_delete(testclient, logged_admin):
     code = AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientadd"].submit(name="action", value="delete").follow()
+    res = res.forms["clientaddform"].submit(name="action", value="delete").follow()
 
     assert not Client.get()
     assert not Token.get()
@@ -225,30 +225,33 @@ def test_client_delete_invalid_client(testclient, logged_admin, client):
     res = testclient.get(f"/admin/client/edit/{client.client_id}")
     testclient.post(
         "/admin/client/edit/invalid",
-        {"action": "delete", "csrf_token": res.forms["clientadd"]["csrf_token"].value},
+        {
+            "action": "delete",
+            "csrf_token": res.forms["clientaddform"]["csrf_token"].value,
+        },
         status=404,
     )
 
 
 def test_invalid_request(testclient, logged_admin, client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientadd"].submit(name="action", value="invalid", status=400)
+    res = res.forms["clientaddform"].submit(name="action", value="invalid", status=400)
 
 
 def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     assert not client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientadd"]["preconsent"] = True
-    res = res.forms["clientadd"].submit(name="action", value="edit")
+    res.forms["clientaddform"]["preconsent"] = True
+    res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
     client = Client.get(client.id)
     assert client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientadd"]["preconsent"] = False
-    res = res.forms["clientadd"].submit(name="action", value="edit")
+    res.forms["clientaddform"]["preconsent"] = False
+    res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
     client = Client.get(client.id)
@@ -257,8 +260,8 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
 
 def test_client_edit_invalid_uri(testclient, client, logged_admin, other_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientadd"]["client_uri"] = "invalid"
-    res = res.forms["clientadd"].submit(status=200, name="action", value="edit")
+    res.forms["clientaddform"]["client_uri"] = "invalid"
+    res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
     assert (
         "error",
         "The client has not been edited. Please check your information.",

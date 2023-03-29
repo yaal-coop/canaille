@@ -17,7 +17,7 @@ def client_audiences():
     return [(client.id, client.client_name) for client in Client.query()]
 
 
-class ClientAdd(FlaskForm):
+class ClientAddForm(FlaskForm):
     client_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
