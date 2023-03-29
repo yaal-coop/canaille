@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-29 23:00+0200\n"
-"PO-Revision-Date: 2023-03-29 21:01+0000\n"
+"PO-Revision-Date: 2023-03-31 13:40+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -203,7 +203,7 @@ msgstr "Aucun serveur SMTP n'a été configuré"
 
 #: canaille/forms.py:19
 msgid "This is not a valid URL"
-msgstr ""
+msgstr "Cette URL n’est pas valide"
 
 #: canaille/forms.py:27
 msgid "The login '{login}' already exists"
@@ -354,10 +354,8 @@ msgid "Delete the photo"
 msgstr "Supprimer la photo"
 
 #: canaille/forms.py:260
-#, fuzzy
-#| msgid "Username"
 msgid "User number"
-msgstr "Identifiant"
+msgstr "Numéro d’utilisateur"
 
 #: canaille/forms.py:262 canaille/forms.py:268
 msgid "1234"
