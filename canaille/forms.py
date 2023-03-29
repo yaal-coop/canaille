@@ -8,9 +8,15 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 
+from .apputils import validate_uri
 from .i18n import native_language_name_from_code
 from .models import Group
 from .models import User
+
+
+def is_uri(form, field):
+    if not validate_uri(field.data):
+        raise wtforms.ValidationError(_("This is not a valid URL"))
 
 
 def unique_login(form, field):
@@ -273,6 +279,7 @@ PROFILE_FORM_FIELDS = dict(
         render_kw={
             "placeholder": _("https://mywebsite.tld"),
         },
+        validators=[wtforms.validators.Optional(), is_uri],
     ),
     preferredLanguage=wtforms.SelectField(
         _("Preferred language"),

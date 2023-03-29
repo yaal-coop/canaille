@@ -92,7 +92,7 @@ def test_client_add(testclient, logged_admin):
         "client_name": "foobar",
         "contacts": "foo@bar.com",
         "client_uri": "https://foo.bar",
-        "redirect_uris": ["https:/foo.bar/callback"],
+        "redirect_uris": ["https://foo.bar/callback"],
         "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
         "response_types": ["code", "token"],
@@ -145,7 +145,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "client_name": "foobar",
         "contacts": "foo@bar.com",
         "client_uri": "https://foo.bar",
-        "redirect_uris": ["https:/foo.bar/callback"],
+        "redirect_uris": ["https://foo.bar/callback"],
         "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
         "response_types": ["code", "token"],
@@ -253,3 +253,14 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     assert ("success", "The client has been edited.") in res.flashes
     client = Client.get(client.id)
     assert not client.preconsent
+
+
+def test_client_edit_invalid_uri(testclient, client, logged_admin, other_client):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clientadd"]["client_uri"] = "invalid"
+    res = res.forms["clientadd"].submit(status=200, name="action", value="edit")
+    assert (
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) in res.flashes
+    res.mustcontain("This is not a valid URL")

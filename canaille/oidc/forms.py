@@ -1,4 +1,5 @@
 import wtforms
+from canaille.forms import is_uri
 from canaille.oidc.models import Client
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
@@ -29,17 +30,26 @@ class ClientAdd(FlaskForm):
     )
     client_uri = wtforms.URLField(
         _("URI"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[
+            wtforms.validators.DataRequired(),
+            is_uri,
+        ],
         render_kw={"placeholder": "https://mydomain.tld"},
     )
     redirect_uris = wtforms.URLField(
         _("Redirect URIs"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[
+            wtforms.validators.DataRequired(),
+            is_uri,
+        ],
         render_kw={"placeholder": "https://mydomain.tld/callback"},
     )
     post_logout_redirect_uris = wtforms.URLField(
         _("Post logout redirect URIs"),
-        validators=[wtforms.validators.Optional()],
+        validators=[
+            wtforms.validators.Optional(),
+            is_uri,
+        ],
         render_kw={"placeholder": "https://mydomain.tld/you-have-been-disconnected"},
     )
     grant_types = wtforms.SelectMultipleField(
@@ -84,17 +94,26 @@ class ClientAdd(FlaskForm):
     )
     logo_uri = wtforms.URLField(
         _("Logo URI"),
-        validators=[wtforms.validators.Optional()],
+        validators=[
+            wtforms.validators.Optional(),
+            is_uri,
+        ],
         render_kw={"placeholder": "https://mydomain.tld/logo.png"},
     )
     tos_uri = wtforms.URLField(
         _("Terms of service URI"),
-        validators=[wtforms.validators.Optional()],
+        validators=[
+            wtforms.validators.Optional(),
+            is_uri,
+        ],
         render_kw={"placeholder": "https://mydomain.tld/tos.html"},
     )
     policy_uri = wtforms.URLField(
         _("Policy URI"),
-        validators=[wtforms.validators.Optional()],
+        validators=[
+            wtforms.validators.Optional(),
+            is_uri,
+        ],
         render_kw={"placeholder": "https://mydomain.tld/policy.html"},
     )
     software_id = wtforms.StringField(
@@ -114,7 +133,10 @@ class ClientAdd(FlaskForm):
     )
     jwks_uri = wtforms.URLField(
         _("JKW URI"),
-        validators=[wtforms.validators.Optional()],
+        validators=[
+            wtforms.validators.Optional(),
+            is_uri,
+        ],
         render_kw={"placeholder": ""},
     )
     preconsent = wtforms.BooleanField(
