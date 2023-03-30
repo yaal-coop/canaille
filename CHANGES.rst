@@ -8,6 +8,7 @@ Added
 
 - Organization field. :pr:`116`
 - ETag and Last-Modified headers on user photos. :pr:`116`
+- Dynamic form validation :pr:`120`
 
 Changed
 *******

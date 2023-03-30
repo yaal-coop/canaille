@@ -44,6 +44,22 @@ def test_edition(
     logged_user.save()
 
 
+def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
+    res = testclient.get(f"/profile/admin/settings")
+    res = testclient.post(
+        f"/profile/admin/settings",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "password1": "short",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "password1",
+        },
+    )
+    res.mustcontain("Field must be at least 8 characters long.")
+
+
 def test_edition_without_groups(
     testclient,
     slapd_server,
