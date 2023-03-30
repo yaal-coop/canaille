@@ -66,6 +66,22 @@ def test_user_creation_edition_and_deletion(
     res.mustcontain(no="george")
 
 
+def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
+    res = testclient.get(f"/profile")
+    res = testclient.post(
+        f"/profile",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "mail": "john@doe.com",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "mail",
+        },
+    )
+    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
+
+
 def test_user_creation_without_password(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["uid"] = "george"

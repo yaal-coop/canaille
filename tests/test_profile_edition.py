@@ -154,6 +154,22 @@ def test_edition(
     logged_user.save()
 
 
+def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
+    res = testclient.get(f"/profile/admin")
+    res = testclient.post(
+        f"/profile/admin",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "mail": "john@doe.com",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "mail",
+        },
+    )
+    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
+
+
 def test_field_permissions_none(testclient, slapd_server, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.telephoneNumber = ["555-666-777"]

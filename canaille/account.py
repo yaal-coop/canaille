@@ -29,6 +29,7 @@ from .apputils import profile_hash
 from .flaskutils import current_user
 from .flaskutils import permissions_needed
 from .flaskutils import render_htmx_template
+from .flaskutils import request_is_htmx
 from .flaskutils import smtp_needed
 from .flaskutils import user_needed
 from .forms import FirstLoginForm
@@ -506,7 +507,11 @@ def profile_settings(user, username):
     if not edited_user:
         abort(404)
 
-    if request.method == "GET" or request.form.get("action") == "edit":
+    if (
+        request.method == "GET"
+        or request.form.get("action") == "edit"
+        or request_is_htmx()
+    ):
         return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "delete":
@@ -562,7 +567,7 @@ def profile_settings_edit(editor, edited_user):
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if request.form and request.form.get("action") == "edit":
+    if request.form and request.form.get("action") == "edit" or request_is_htmx():
         if not form.validate():
             flash(_("Profile edition failed."), "error")
 

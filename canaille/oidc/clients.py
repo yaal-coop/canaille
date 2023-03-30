@@ -2,6 +2,7 @@ import datetime
 
 from canaille.flaskutils import permissions_needed
 from canaille.flaskutils import render_htmx_template
+from canaille.flaskutils import request_is_htmx
 from canaille.forms import TableForm
 from canaille.oidc.forms import ClientAddForm
 from canaille.oidc.models import Client
@@ -89,7 +90,11 @@ def add(user):
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def edit(user, client_id):
-    if request.method == "GET" or request.form.get("action") == "edit":
+    if (
+        request.method == "GET"
+        or request.form.get("action") == "edit"
+        or request_is_htmx()
+    ):
         return client_edit(client_id)
 
     if request.form.get("action") == "delete":

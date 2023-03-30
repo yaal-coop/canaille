@@ -87,10 +87,12 @@ def set_parameter_in_url_query(url, **kwargs):
     return urlunsplit(split)
 
 
+def request_is_htmx():
+    return request.headers.get("HX-Request", False)
+
+
 def render_htmx_template(template, htmx_template=None, **kwargs):
     template = (
-        (htmx_template or f"partial/{template}")
-        if request.headers.get("HX-Request")
-        else template
+        (htmx_template or f"partial/{template}") if request_is_htmx() else template
     )
     return render_template(template, **kwargs)

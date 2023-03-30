@@ -1,8 +1,12 @@
 import math
 
 import wtforms.form
+from canaille.flaskutils import request_is_htmx
+from flask import abort
 from flask import current_app
 from flask import g
+from flask import make_response
+from flask import request
 from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
@@ -53,7 +57,34 @@ def existing_login(form, field):
         )
 
 
-class TableForm(FlaskForm):
+class HTMXFormMixin:
+    def validate(self, *args, **kwargs):
+        """
+        If the request is a HTMX request, this will only render the field
+        that triggered the request (after having validated the form). This
+        uses the Flask abort method to interrupt the flow with an exception.
+        """
+        if not request_is_htmx():
+            return super().validate(*args, **kwargs)
+
+        field = self[request.headers.get("HX-Trigger-Name")]
+        field.widget.hide_value = False
+        self.process(request.form)
+        super().validate(*args, **kwargs)
+        form_macro = current_app.jinja_env.get_template("macro/form.html")
+        response = make_response(form_macro.module.render_field(field))
+        abort(response)
+
+
+class HTMXForm(HTMXFormMixin, FlaskForm):
+    pass
+
+
+class HTMXBaseForm(HTMXFormMixin, wtforms.form.BaseForm):
+    pass
+
+
+class TableForm(HTMXForm):
     def __init__(self, cls=None, page_size=25, fields=None, filter=None, **kwargs):
         filter = filter or {}
         super().__init__(**kwargs)
@@ -77,7 +108,7 @@ class TableForm(FlaskForm):
             raise wtforms.validators.ValidationError(_("The page number is not valid"))
 
 
-class LoginForm(FlaskForm):
+class LoginForm(HTMXForm):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
@@ -90,7 +121,7 @@ class LoginForm(FlaskForm):
     )
 
 
-class PasswordForm(FlaskForm):
+class PasswordForm(HTMXForm):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
@@ -101,7 +132,7 @@ class FullLoginForm(LoginForm, PasswordForm):
     pass
 
 
-class ForgottenPasswordForm(FlaskForm):
+class ForgottenPasswordForm(HTMXForm):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
@@ -113,7 +144,7 @@ class ForgottenPasswordForm(FlaskForm):
     )
 
 
-class PasswordResetForm(FlaskForm):
+class PasswordResetForm(HTMXForm):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
@@ -134,7 +165,7 @@ class PasswordResetForm(FlaskForm):
     )
 
 
-class FirstLoginForm(FlaskForm):
+class FirstLoginForm(HTMXForm):
     pass
 
 
@@ -309,7 +340,7 @@ def profile_form(write_field_names, readonly_field_names, user=None):
     if "groups" in fields and not Group.query():
         del fields["groups"]
 
-    form = wtforms.form.BaseForm(fields)
+    form = HTMXBaseForm(fields)
     form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
@@ -318,7 +349,7 @@ def profile_form(write_field_names, readonly_field_names, user=None):
     return form
 
 
-class CreateGroupForm(FlaskForm):
+class CreateGroupForm(HTMXForm):
     display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired(), unique_group],
@@ -332,7 +363,7 @@ class CreateGroupForm(FlaskForm):
     )
 
 
-class EditGroupForm(FlaskForm):
+class EditGroupForm(HTMXForm):
     display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
@@ -346,7 +377,7 @@ class EditGroupForm(FlaskForm):
     )
 
 
-class InvitationForm(FlaskForm):
+class InvitationForm(HTMXForm):
     uid = wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
