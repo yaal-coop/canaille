@@ -21,17 +21,6 @@ from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
-from .apputils import b64_to_obj
-from .apputils import default_fields
-from .apputils import login_placeholder
-from .apputils import obj_to_b64
-from .apputils import profile_hash
-from .flaskutils import current_user
-from .flaskutils import permissions_needed
-from .flaskutils import render_htmx_template
-from .flaskutils import request_is_htmx
-from .flaskutils import smtp_needed
-from .flaskutils import user_needed
 from .forms import FirstLoginForm
 from .forms import ForgottenPasswordForm
 from .forms import InvitationForm
@@ -39,12 +28,23 @@ from .forms import LoginForm
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
-from .forms import TableForm
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
 from .models import Group
 from .models import User
+from .utils import b64_to_obj
+from .utils import default_fields
+from .utils import login_placeholder
+from .utils import obj_to_b64
+from .utils import profile_hash
+from .utils.flask import current_user
+from .utils.flask import permissions_needed
+from .utils.flask import render_htmx_template
+from .utils.flask import request_is_htmx
+from .utils.flask import smtp_needed
+from .utils.flask import user_needed
+from .utils.forms import TableForm
 
 
 bp = Blueprint("account", __name__)

@@ -1,11 +1,11 @@
 import datetime
 
-from canaille.flaskutils import permissions_needed
-from canaille.flaskutils import render_htmx_template
-from canaille.flaskutils import request_is_htmx
-from canaille.forms import TableForm
 from canaille.oidc.forms import ClientAddForm
 from canaille.oidc.models import Client
+from canaille.utils.flask import permissions_needed
+from canaille.utils.flask import render_htmx_template
+from canaille.utils.flask import request_is_htmx
+from canaille.utils.forms import TableForm
 from flask import abort
 from flask import Blueprint
 from flask import flash

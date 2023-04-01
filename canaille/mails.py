@@ -10,9 +10,9 @@ from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
 
-from .apputils import get_current_domain
-from .apputils import get_current_mail_domain
-from .apputils import profile_hash
+from .utils import get_current_domain
+from .utils import get_current_mail_domain
+from .utils import profile_hash
 
 DEFAULT_SMTP_HOST = "localhost"
 DEFAULT_SMTP_PORT = 25

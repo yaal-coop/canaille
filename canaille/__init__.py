@@ -138,7 +138,7 @@ def setup_flask(app):
 
     @app.context_processor
     def global_processor():
-        from .flaskutils import current_user
+        from .utils.flask import current_user
 
         return {
             "has_smtp": "SMTP" in app.config,

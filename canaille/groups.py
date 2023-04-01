@@ -7,13 +7,13 @@ from flask import url_for
 from flask_babel import gettext as _
 from flask_themer import render_template
 
-from .flaskutils import permissions_needed
-from .flaskutils import render_htmx_template
 from .forms import CreateGroupForm
 from .forms import EditGroupForm
-from .forms import TableForm
 from .models import Group
 from .models import User
+from .utils.flask import permissions_needed
+from .utils.flask import render_htmx_template
+from .utils.forms import TableForm
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
 

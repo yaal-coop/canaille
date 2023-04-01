@@ -19,10 +19,10 @@ from flask_babel import gettext as _
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 
-from ..flaskutils import current_user
-from ..flaskutils import set_parameter_in_url_query
 from ..forms import FullLoginForm
 from ..models import User
+from ..utils.flask import current_user
+from ..utils.flask import set_parameter_in_url_query
 from .forms import AuthorizeForm
 from .forms import LogoutForm
 from .models import Client
