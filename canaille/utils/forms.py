@@ -1,12 +1,15 @@
 import math
 
 import wtforms
+from canaille.i18n import DEFAULT_LANGUAGE_CODE
+from canaille.i18n import locale_selector
 from flask import abort
 from flask import current_app
 from flask import make_response
 from flask import request
 from flask_babel import gettext as _
 from flask_wtf import FlaskForm
+from wtforms.meta import DefaultMeta
 
 from . import validate_uri
 from .flask import request_is_htmx
@@ -15,6 +18,18 @@ from .flask import request_is_htmx
 def is_uri(form, field):
     if not validate_uri(field.data):
         raise wtforms.ValidationError(_("This is not a valid URL"))
+
+
+meta = DefaultMeta()
+
+
+class I18NFormMixin:
+    def __init__(self, *args, **kwargs):
+        preferred_locale = locale_selector()
+        meta.locales = (
+            [preferred_locale, DEFAULT_LANGUAGE_CODE] if preferred_locale else False
+        )
+        super().__init__(*args, meta=meta, **kwargs)
 
 
 class HTMXFormMixin:
@@ -36,11 +51,11 @@ class HTMXFormMixin:
         abort(response)
 
 
-class HTMXForm(HTMXFormMixin, FlaskForm):
+class HTMXForm(HTMXFormMixin, I18NFormMixin, FlaskForm):
     pass
 
 
-class HTMXBaseForm(HTMXFormMixin, wtforms.form.BaseForm):
+class HTMXBaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
     pass
 
 

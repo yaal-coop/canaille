@@ -46,6 +46,18 @@ def test_preferred_language(slapd_server, testclient, logged_user):
     res.mustcontain(no="Mon profil")
 
 
+def test_form_translations(slapd_server, testclient, logged_user):
+    logged_user.preferredLanguage = "fr"
+    logged_user.save()
+
+    res = testclient.get("/profile/user", status=200)
+    res.form["mail"] = "invalid"
+    res = res.form.submit(name="action", value="edit")
+
+    res.mustcontain(no="Invalid email address.")
+    res.mustcontain("Adresse électronique non valide.")
+
+
 def test_language_config(testclient, logged_user):
     logged_user.preferredLanguage = None
     logged_user.save()
