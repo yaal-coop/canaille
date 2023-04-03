@@ -66,6 +66,14 @@ footer a {
     margin-top:1em;
 }
 
+.pagination {
+    border-radius: .28571429rem;
+    overflow: hidden;
+}
+.disabled.ui.button {
+    color: rgba(0,0,0,1);
+}
+
 
 /* Fix button appearance for semantic-ui on webkit */
 [type=button] {
@@ -92,15 +100,33 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     background: rgba(0,0,0,.05) !important;
 }
 
+.ui .menu a, .ui a:hover, .ui a i {
+    text-decoration: none;
+}
+
+.ui a {
+    text-decoration: underline;
+    color: rgba(0,0,0,.70);
+}
 
 @media (prefers-color-scheme: dark) {
+    .logo img {
+        filter: invert(.8) !important;
+    }
     body, .ui.card .bottom, .ui.toggle.checkbox label:hover::before {
         background-color: #222222;
     }
     .ui.segment, .ui.menu, .ui.table {
         background-color: #353535 !important;
     }
-    body, .ui.info.message .header, .ui.input, .ui.toggle.checkbox label, .ui.header, .ui.form .field > label, .ui.list .list > .item > .content, .ui.list > .item > .content, .ui.card, .ui.cards > .card, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
+    .ui a:visited, .ui a:visited .icon {
+        color: rgba(255,255,255,.87) !important;
+    }
+    .ui a, .ui a .icon {
+        color: rgba(255,255,255,.87) !important;
+    }
+    
+    body, .ui.menu .active.item, .ui.form:not(.inverted) .field > label:not(.button), .ui.info.message .header, .ui.input, .ui.toggle.checkbox label, .ui.header, .ui.form .field > label, .ui.list .list > .item > .content, .ui.list > .item > .content, .ui.card, .ui.cards > .card, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
         color: rgba(255,255,255,.87);
     }
     .ui.card .bottom, .ui.link.menu .item, .ui.menu .dropdown.item, .ui.menu .link.item, .ui.menu a.item, .ui.icon.menu .item, .ui.header .sub.header, .ui.label, table tbody tr td, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
@@ -109,6 +135,12 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     .ui.selection.dropdown, .ui.form input:not([type]), .ui.form input[type="date"], .ui.form input[type="datetime-local"], .ui.form input[type="email"], .ui.form input[type="file"], .ui.form input[type="number"], .ui.form input[type="password"], .ui.form input[type="search"], .ui.form input[type="tel"], .ui.form input[type="text"], .ui.form input[type="time"], .ui.form input[type="url"] {
         background: #222222 !important;
         color: rgba(255,255,255,.87) !important;
+    }
+    .ui.menu .active.item {
+        background: rgba(0,0,0,.20);
+    }
+    .ui.menu .active.item:hover {
+        background: rgba(0,0,0,.30);
     }
     table tbody tr td .ui.label:hover {
         color: #353535 !important;
@@ -150,7 +182,7 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     .ui.card .meta {
         color: rgba(255,255,255,.7) !important;
     }
-    .ui.attached.header, .ui.attached.segment {
+    .ui.attached.header, .ui.attached.segment, .ui.attached.menu:not(.tabular):not(.text), .ui.attached.segment:not(.basic), .ui.attached.table {
         border: 1px solid #222222;
     }
     .ui.info.message {
