@@ -59,7 +59,7 @@ class HTMXBaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
     pass
 
 
-class TableForm(HTMXForm):
+class TableForm(I18NFormMixin, FlaskForm):
     def __init__(self, cls=None, page_size=25, fields=None, filter=None, **kwargs):
         filter = filter or {}
         super().__init__(**kwargs)
