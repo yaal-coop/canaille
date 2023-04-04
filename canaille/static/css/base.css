@@ -129,7 +129,7 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
         background-color: #c0c1c2;
         opacity: 1 !important;
     }
-    
+
     body, .ui.menu .active.item, .ui.form:not(.inverted) .field > label:not(.button), .ui.info.message .header, .ui.input, .ui.toggle.checkbox label, .ui.header, .ui.form .field > label, .ui.list .list > .item > .content, .ui.list > .item > .content, .ui.card, .ui.cards > .card, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
         color: rgba(255,255,255,.87);
     }
