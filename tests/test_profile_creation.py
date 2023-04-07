@@ -143,7 +143,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
     george = User.get_from_login("george")
-    assert george.cn[0] == "George Abitbol"
+    assert george.formatted_name[0] == "George Abitbol"
     george.delete()
 
 
@@ -156,5 +156,5 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
     george = User.get_from_login("george")
-    assert george.cn[0] == "Abitbol"
+    assert george.formatted_name[0] == "Abitbol"
     george.delete()

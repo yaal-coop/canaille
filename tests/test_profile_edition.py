@@ -146,7 +146,7 @@ def test_edition(
     assert logged_user.organization == ["organization"]
     assert logged_user.jpegPhoto == [jpeg_photo]
 
-    logged_user.cn = ["John (johnny) Doe"]
+    logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
     logged_user.mail = ["john@doe.com"]
     logged_user.given_name = None

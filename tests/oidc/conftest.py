@@ -64,7 +64,7 @@ def configuration(configuration, keypair_path):
             "ISS": "https://auth.mydomain.tld",
             "MAPPING": {
                 "SUB": "{{ user.user_name[0] }}",
-                "NAME": "{{ user.cn[0] }}",
+                "NAME": "{{ user.formatted_name[0] }}",
                 "PHONE_NUMBER": "{{ user.phone_number[0] }}",
                 "EMAIL": "{{ user.email[0] }}",
                 "GIVEN_NAME": "{{ user.given_name[0] }}",

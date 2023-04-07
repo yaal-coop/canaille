@@ -75,23 +75,23 @@ def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
 
 
 def test_filter(slapd_connection, foo_group, bar_group):
-    assert Group.query(cn="foo") == [foo_group]
-    assert Group.query(cn="bar") == [bar_group]
+    assert Group.query(display_name="foo") == [foo_group]
+    assert Group.query(display_name="bar") == [bar_group]
 
-    assert Group.query(cn="foo") != 3
+    assert Group.query(display_name="foo") != 3
 
-    assert Group.query(cn=["foo"]) == [foo_group]
-    assert Group.query(cn=["bar"]) == [bar_group]
+    assert Group.query(display_name=["foo"]) == [foo_group]
+    assert Group.query(display_name=["bar"]) == [bar_group]
 
-    assert set(Group.query(cn=["foo", "bar"])) == {foo_group, bar_group}
+    assert set(Group.query(display_name=["foo", "bar"])) == {foo_group, bar_group}
 
 
 def test_fuzzy(slapd_connection, user, moderator, admin):
     assert set(User.query()) == {user, moderator, admin}
     assert set(User.fuzzy("Jack")) == {moderator}
-    assert set(User.fuzzy("Jack", ["cn"])) == {moderator}
-    assert set(User.fuzzy("Jack", ["uid"])) == set()
-    assert set(User.fuzzy("Jack", ["uid", "cn"])) == {moderator}
+    assert set(User.fuzzy("Jack", ["formatted_name"])) == {moderator}
+    assert set(User.fuzzy("Jack", ["user_name"])) == set()
+    assert set(User.fuzzy("Jack", ["user_name", "formatted_name"])) == {moderator}
     assert set(User.fuzzy("moderator")) == {moderator}
     assert set(User.fuzzy("oderat")) == {moderator}
     assert set(User.fuzzy("oDeRat")) == {moderator}
