@@ -43,13 +43,16 @@ class User(LDAPObject):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def get(cls, login=None, id=None, filter=None, **kwargs):
-        if login:
-            filter = (
+    def get(cls, login=None, id=None, **kwargs):
+        filter = (
+            (
                 current_app.config["LDAP"]
                 .get("USER_FILTER", User.DEFAULT_FILTER)
                 .format(login=ldap.filter.escape_filter_chars(login))
             )
+            if login
+            else None
+        )
 
         user = super().get(id, filter, **kwargs)
         if user:
