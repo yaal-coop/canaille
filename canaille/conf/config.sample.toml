@@ -130,26 +130,26 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # object that users will be able to read and/or write.
 [ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
-READ = ["uid", "groups"]
+READ = ["user_name", "groups"]
 WRITE = [
-    "jpegPhoto",
-    "givenName",
-    "sn",
-    "displayName",
-    "userPassword",
-    "telephoneNumber",
-    "mail",
-    "labeledURI",
-    "postalAddress",
+    "photo",
+    "given_name",
+    "family_name",
+    "display_name",
+    "password",
+    "phone_number",
+    "email",
+    "profile_url",
+    "formatted_address",
     "street",
-    "postalCode",
-    "l",
-    "st",
-    "preferredLanguage",
-    "employeeNumber",
-    "departmentNumber",
+    "postal_code",
+    "locality",
+    "region",
+    "preferred_language",
+    "employee_number",
+    "department",
     "title",
-    "o",
+    "organization",
 ]
 
 [ACL.ADMIN]
@@ -185,17 +185,17 @@ PUBLIC_KEY = "canaille/conf/public.pem"
 # User objectClass.
 # {attribute} will be replaced by the user ldap attribute value.
 # Default values fits inetOrgPerson.
-SUB = "{{ user.uid[0] }}"
-NAME = "{{ user.cn[0] }}"
-PHONE_NUMBER = "{{ user.telephoneNumber[0] }}"
+SUB = "{{ user.user_name[0] }}"
+NAME = "{{ user.formatted_name[0] }}"
+PHONE_NUMBER = "{{ user.phone_number[0] }}"
 EMAIL = "{{ user.mail[0] }}"
-GIVEN_NAME = "{{ user.givenName[0] }}"
-FAMILY_NAME = "{{ user.sn[0] }}"
-PREFERRED_USERNAME = "{{ user.displayName }}"
-LOCALE = "{{ user.preferredLanguage }}"
-ADDRESS = "{{ user.postalAddress[0] }}"
-PICTURE = "{% if user.jpegPhoto %}{{ url_for('account.photo', uid=user.uid[0], field='jpegPhoto', _external=True) }}{% endif %}"
-WEBSITE = "{{ user.labeledURI[0] }}"
+GIVEN_NAME = "{{ user.given_name[0] }}"
+FAMILY_NAME = "{{ user.family_name[0] }}"
+PREFERRED_USERNAME = "{{ user.display_name }}"
+LOCALE = "{{ user.preferred_language }}"
+ADDRESS = "{{ user.formatted_address[0] }}"
+PICTURE = "{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}"
+WEBSITE = "{{ user.profile_url[0] }}"
 
 # The SMTP server options. If not set, mail related features such as
 # user invitations, and password reset emails, will be disabled.

@@ -77,8 +77,8 @@ def test_oidc_hybrid(
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.uid[0] == claims["sub"]
-    assert logged_user.cn[0] == claims["name"]
+    assert logged_user.user_name[0] == claims["sub"]
+    assert logged_user.formatted_name[0] == claims["name"]
     assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(

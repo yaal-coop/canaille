@@ -30,33 +30,79 @@
 {% endblock %}
 
 {% macro render_field(field, noindicator=false) %}
-    {{ fui.render_field(field, **kwargs) }}
+    {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
+    {% if not edited_user %}
+        {{ fui.render_field(field, **kwargs) }}
+    {% elif edited_user.user_name == user.user_name or lock_indicator or noindicator %}
+        {{ fui.render_field(field, **kwargs) }}
+    {% elif field.name in edited_user.write %}
+        {{ fui.render_field(field, **kwargs) }}
+    {% elif field.name in edited_user.read %}
+        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
+    {% else %}
+        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
+    {% endif %}
 {% endmacro %}
 
 {% block content %}
+    {% if self_deletion or (user.can_manage_users and edited_user) %}
+        <div id="modal-delete" class="ui basic modal">
+            <div class="ui icon header">
+                <i class="user minus icon"></i>
+                {% trans %}Account deletion{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% if user.user_name != edited_user.user_name %}
+                        {{ _("Are you sure you want to delete this user? This action is unrevokable and all the data about this user will be removed.") }}
+                    {% else %}
+                        {{ _("Are you sure you want to delete your account? This action is unrevokable and all your data will be removed forever.") }}
+                    {% endif %}
+                </p>
+            </div>
+            <div class="actions">
+                <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+                <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="ui clearing segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {% trans %}User creation{% endtrans %}
+                {% if not edited_user %}
+                    {% trans %}User creation{% endtrans %}
+                {% elif user.user_name == edited_user.user_name %}
+                    {% trans %}My profile{% endtrans %}
+                {% else %}
+                    {% trans %}User profile edition{% endtrans %}
+                {% endif %}
 
             </div>
             <div class="sub header">
-                {% trans %}Create a new user account{% endtrans %}
+                {% if not edited_user %}
+                    {% trans %}Create a new user account{% endtrans %}
+                {% elif user.user_name == edited_user.user_name %}
+                    {% trans %}Edit your personal information{% endtrans %}
+                {% else %}
+                    {% trans %}Edit information about a user{% endtrans %}
+                {% endif %}
             </div>
         </h2>
 
         {% call fui.render_form(form, class_="profile-form info") %}
             <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
 
-            {% if "jpegPhoto" in form %}
+            {% if "photo" in form %}
                 <div class="ui grid">
                     <div class="three wide column">
                         {% block photo_field scoped %}
-                            {{ render_field(form.jpegPhoto, display=false, class="photo-field") }}
-                            {{ render_field(form.jpegPhoto_delete, display=false, class="photo-delete-button") }}
+                            {{ render_field(form.photo, display=false, class="photo-field") }}
+                            {{ render_field(form.photo_delete, display=false, class="photo-delete-button") }}
+                            {% set photo = edited_user.photo and edited_user.photo[0] %}
                             <label
                                 class="ui small bordered image photo-content"
-                                for="{{ form.jpegPhoto.id }}"
+                                for="{{ form.photo.id }}"
                                 title="{{ _("Click to upload a photo") }}"
                                 style="display: none;">
 
@@ -67,7 +113,7 @@
                             </label>
                             <label
                                 class="ui centered photo-placeholder"
-                                for="{{ form.jpegPhoto.id }}"
+                                for="{{ form.photo.id }}"
                                 title="{{ _("Click to upload a photo") }}"
                                 {% if photo %}style="display: none;"{% endif %}>
                                 <i class="massive centered portrait icon"></i>
@@ -78,34 +124,34 @@
                     <div class="thirteen wide column">
             {% endif %}
 
-            {% if "givenName" in form or "sn" in form %}
+            {% if "given_name" in form or "family_name" in form %}
                 <div class="equal width fields">
-                    {% if "givenName" in form %}
-                        {% block given_name_field scoped %}{{ render_field(form.givenName) }}{% endblock %}
+                    {% if "given_name" in form %}
+                        {% block given_name_field scoped %}{{ render_field(form.given_name) }}{% endblock %}
                     {% endif %}
 
-                    {% if "sn" in form %}
-                        {% block sn_field scoped %}{{ render_field(form.sn) }}{% endblock %}
+                    {% if "family_name" in form %}
+                        {% block family_name_field scoped %}{{ render_field(form.family_name) }}{% endblock %}
                     {% endif %}
                 </div>
             {% endif %}
 
-            {% if "displayName" in form %}
-                {% block display_name_field scoped %}{{ render_field(form.displayName) }}{% endblock %}
+            {% if "display_name" in form %}
+                {% block display_name_field scoped %}{{ render_field(form.display_name) }}{% endblock %}
             {% endif %}
 
-            {% if "jpegPhoto" in form %}</div></div>{% endif %}
+            {% if "photo" in form %}</div></div>{% endif %}
 
-            {% if "mail" in form %}
-                {% block mail_field scoped %}{{ render_field(form.mail) }}{% endblock %}
+            {% if "email" in form %}
+                {% block email_field scoped %}{{ render_field(form.email) }}{% endblock %}
             {% endif %}
 
-            {% if "telephoneNumber" in form %}
-                {% block telephone_number_field scoped %}{{ render_field(form.telephoneNumber) }}{% endblock %}
+            {% if "phone_number" in form %}
+                {% block phone_number_field scoped %}{{ render_field(form.phone_number) }}{% endblock %}
             {% endif %}
 
-            {% if "postalAddress" in form %}
-                {% block postal_address_field scoped %}{{ render_field(form.postalAddress) }}{% endblock %}
+            {% if "formatted_address" in form %}
+                {% block formatted_address_field scoped %}{{ render_field(form.formatted_address) }}{% endblock %}
             {% endif %}
 
             {% if "street" in form %}
@@ -113,29 +159,28 @@
             {% endif %}
 
             <div class="equal width fields">
-                {% if "postalCode" in form %}
-                    {% block postal_code_field scoped %}{{ render_field(form.postalCode) }}{% endblock %}
+                {% if "postal_code" in form %}
+                    {% block postal_code_field scoped %}{{ render_field(form.postal_code) }}{% endblock %}
                 {% endif %}
 
-                {% if "l" in form %}
-                    {% block locality_field scoped %}{{ render_field(form.l) }}{% endblock %}
+                {% if "locality" in form %}
+                    {% block locality_field scoped %}{{ render_field(form.locality) }}{% endblock %}
                 {% endif %}
 
-                {% if "st" in form %}
-                    {% block region_field scoped %}{{ render_field(form.st) }}{% endblock %}
+                {% if "region" in form %}
+                    {% block region_field scoped %}{{ render_field(form.region) }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
-                {% if "departmentNumber" in form %}
-                    {% block department_number_field scoped %}{{ render_field(form.departmentNumber) }}{% endblock %}
+                {% if "department" in form %}
+                    {% block department_field scoped %}{{ render_field(form.department) }}{% endblock %}
                 {% endif %}
 
-                {% if "employeeNumber" in form %}
-                    {% block employee_number_field scoped %}{{ render_field(form.employeeNumber) }}{% endblock %}
+                {% if "employee_number" in form %}
+                    {% block employee_number_field scoped %}{{ render_field(form.employee_number) }}{% endblock %}
                 {% endif %}
-
             </div>
 
             <div class="equal width fields">
@@ -144,24 +189,24 @@
                     {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
                 {% endif %}
 
-                {% if "o" in form %}
-                    {% block organization_field scoped %}{{ render_field(form.o) }}{% endblock %}
+                {% if "organization" in form %}
+                    {% block organization_field scoped %}{{ render_field(form.organization) }}{% endblock %}
                 {% endif %}
 
             </div>
 
-            {% if "labeledURI" in form %}
-                {% block labeled_uri_field scoped %}{{ render_field(form.labeledURI) }}{% endblock %}
+            {% if "profile_url" in form %}
+                {% block profile_uri_field scoped %}{{ render_field(form.profile_url) }}{% endblock %}
             {% endif %}
 
-            {% if "preferredLanguage" in form %}
-                {% block preferred_language_field scoped %}{{ render_field(form.preferredLanguage) }}{% endblock %}
+            {% if "preferred_language" in form %}
+                {% block preferred_language_field scoped %}{{ render_field(form.preferred_language) }}{% endblock %}
             {% endif %}
 
             <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
 
-            {% if "uid" in form %}
-                {% block uid_field scoped %}{{ render_field(form.uid) }}{% endblock %}
+            {% if "user_name" in form %}
+                {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}

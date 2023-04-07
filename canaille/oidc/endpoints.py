@@ -276,7 +276,7 @@ def end_session():
 
     if (
         not data.get("id_token_hint")
-        or (data.get("logout_hint") and data["logout_hint"] != user.uid[0])
+        or (data.get("logout_hint") and data["logout_hint"] != user.user_name[0])
     ) and not session.get("end_session_confirmation"):
         session["end_session_data"] = data
         return render_template(
@@ -316,7 +316,7 @@ def end_session():
                 if client:
                     valid_uris.extend(client.post_logout_redirect_uris or [])
 
-        if user.uid[0] != id_token["sub"] and not session.get(
+        if user.user_name[0] != id_token["sub"] and not session.get(
             "end_session_confirmation"
         ):
             session["end_session_data"] = data

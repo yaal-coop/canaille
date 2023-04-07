@@ -132,11 +132,11 @@ def validate_configuration(config):
     try:
         User.ldap_object_classes(conn)
         user = User(
-            cn=f"canaille_{uuid.uuid4()}",
-            sn=f"canaille_{uuid.uuid4()}",
-            uid=f"canaille_{uuid.uuid4()}",
-            mail=f"canaille_{uuid.uuid4()}@mydomain.tld",
-            userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+            formatted_name=f"canaille_{uuid.uuid4()}",
+            family_name=f"canaille_{uuid.uuid4()}",
+            user_name=f"canaille_{uuid.uuid4()}",
+            email=f"canaille_{uuid.uuid4()}@mydomain.tld",
+            password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
         )
         user.save(conn)
         user.delete(conn)
@@ -152,10 +152,10 @@ def validate_configuration(config):
 
         user = User(
             cn=f"canaille_{uuid.uuid4()}",
-            sn=f"canaille_{uuid.uuid4()}",
-            uid=f"canaille_{uuid.uuid4()}",
-            mail=f"canaille_{uuid.uuid4()}@mydomain.tld",
-            userPassword="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+            family_name=f"canaille_{uuid.uuid4()}",
+            user_name=f"canaille_{uuid.uuid4()}",
+            email=f"canaille_{uuid.uuid4()}@mydomain.tld",
+            password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
         )
         user.save(conn)
 

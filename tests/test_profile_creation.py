@@ -11,11 +11,11 @@ def test_user_creation_edition_and_deletion(
 
     # Fill the profile for a new user.
     res = testclient.get("/profile", status=200)
-    res.form["uid"] = "george"
-    res.form["givenName"] = "George"
-    res.form["sn"] = "Abitbol"
-    res.form["mail"] = "george@abitbol.com"
-    res.form["telephoneNumber"] = "555-666-888"
+    res.form["user_name"] = "george"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
+    res.form["email"] = "george@abitbol.com"
+    res.form["phone_number"] = "555-666-888"
     res.form["groups"] = [foo_group.id]
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
@@ -27,7 +27,7 @@ def test_user_creation_edition_and_deletion(
     george = User.get("george")
     george.load_groups()
     foo_group.reload()
-    assert "George" == george.givenName[0]
+    assert "George" == george.given_name[0]
     assert george.groups == [foo_group]
     assert george.check_password("totoyolo")
 
@@ -39,7 +39,7 @@ def test_user_creation_edition_and_deletion(
 
     # User have been edited
     res = testclient.get("/profile/george", status=200)
-    res.form["givenName"] = "Georgio"
+    res.form["given_name"] = "Georgio"
     res = res.form.submit(name="action", value="edit").follow()
 
     res = testclient.get("/profile/george/settings", status=200)
@@ -48,7 +48,7 @@ def test_user_creation_edition_and_deletion(
 
     george = User.get("george")
     george.load_groups()
-    assert "Georgio" == george.givenName[0]
+    assert "Georgio" == george.given_name[0]
     assert george.check_password("totoyolo")
 
     foo_group.reload()
@@ -72,11 +72,11 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
         f"/profile",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "mail": "john@doe.com",
+            "email": "john@doe.com",
         },
         headers={
             "HX-Request": "true",
-            "HX-Trigger-Name": "mail",
+            "HX-Trigger-Name": "email",
         },
     )
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -84,15 +84,15 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
 
 def test_user_creation_without_password(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
-    res.form["uid"] = "george"
-    res.form["sn"] = "Abitbol"
-    res.form["mail"] = "george@abitbol.com"
+    res.form["user_name"] = "george"
+    res.form["family_name"] = "Abitbol"
+    res.form["email"] = "george@abitbol.com"
 
     res = res.form.submit(name="action", value="edit", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
     george = User.get("george")
-    assert george.uid[0] == "george"
+    assert george.user_name[0] == "george"
     assert not george.userPassword
 
     george.delete()
@@ -115,9 +115,9 @@ def test_username_already_taken(
     testclient, logged_moderator, user, foo_group, bar_group
 ):
     res = testclient.get("/profile", status=200)
-    res.form["uid"] = "user"
-    res.form["sn"] = "foo"
-    res.form["mail"] = "any@thing.com"
+    res.form["user_name"] = "user"
+    res.form["family_name"] = "foo"
+    res.form["email"] = "any@thing.com"
     res = res.form.submit(name="action", value="edit")
     assert ("error", "User account creation failed.") in res.flashes
     res.mustcontain("The login &#39;user&#39; already exists")
@@ -125,9 +125,9 @@ def test_username_already_taken(
 
 def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_group):
     res = testclient.get("/profile", status=200)
-    res.form["uid"] = "user2"
-    res.form["sn"] = "foo"
-    res.form["mail"] = "john@doe.com"
+    res.form["user_name"] = "user2"
+    res.form["family_name"] = "foo"
+    res.form["email"] = "john@doe.com"
     res = res.form.submit(name="action", value="edit")
     assert ("error", "User account creation failed.") in res.flashes
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -135,10 +135,10 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
 
 def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
-    res.form["uid"] = "george"
-    res.form["givenName"] = "George"
-    res.form["sn"] = "Abitbol"
-    res.form["mail"] = "george@abitbol.com"
+    res.form["user_name"] = "george"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
+    res.form["email"] = "george@abitbol.com"
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
@@ -149,9 +149,9 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
 
 def test_cn_setting_with_surname_only(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
-    res.form["uid"] = "george"
-    res.form["sn"] = "Abitbol"
-    res.form["mail"] = "george@abitbol.com"
+    res.form["user_name"] = "george"
+    res.form["family_name"] = "Abitbol"
+    res.form["email"] = "george@abitbol.com"
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 

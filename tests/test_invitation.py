@@ -9,9 +9,9 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     res = testclient.get("/invite", status=200)
 
-    res.form["uid"] = "someone"
-    res.form["uid_editable"] = False
-    res.form["mail"] = "someone@domain.tld"
+    res.form["user_name"] = "someone"
+    res.form["user_name_editable"] = False
+    res.form["email"] = "someone@domain.tld"
     res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
@@ -24,15 +24,15 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     res = testclient.get(url, status=200)
 
-    assert res.form["uid"].value == "someone"
-    assert res.form["uid"].attrs["readonly"]
-    assert res.form["mail"].value == "someone@domain.tld"
+    assert res.form["user_name"].value == "someone"
+    assert res.form["user_name"].attrs["readonly"]
+    assert res.form["email"].value == "someone@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
     res.form["password2"] = "whatever"
-    res.form["givenName"] = "George"
-    res.form["sn"] = "Abitbol"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
 
     res = res.form.submit(status=302)
 
@@ -53,15 +53,15 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     user.delete()
 
 
-def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
+def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtpd):
     assert User.get("jackyjack") is None
     assert User.get("djorje") is None
 
     res = testclient.get("/invite", status=200)
 
-    res.form["uid"] = "jackyjack"
-    res.form["uid_editable"] = True
-    res.form["mail"] = "jackyjack@domain.tld"
+    res.form["user_name"] = "jackyjack"
+    res.form["user_name_editable"] = True
+    res.form["email"] = "jackyjack@domain.tld"
     res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
@@ -74,16 +74,16 @@ def test_invitation_editable_uid(testclient, logged_admin, foo_group, smtpd):
 
     res = testclient.get(url, status=200)
 
-    assert res.form["uid"].value == "jackyjack"
-    assert "readonly" not in res.form["uid"].attrs
-    assert res.form["mail"].value == "jackyjack@domain.tld"
+    assert res.form["user_name"].value == "jackyjack"
+    assert "readonly" not in res.form["user_name"].attrs
+    assert res.form["email"].value == "jackyjack@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
-    res.form["uid"] = "djorje"
+    res.form["user_name"] = "djorje"
     res.form["password1"] = "whatever"
     res.form["password2"] = "whatever"
-    res.form["givenName"] = "George"
-    res.form["sn"] = "Abitbol"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
 
     res = res.form.submit(status=302)
 
@@ -107,8 +107,8 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     res = testclient.get("/invite", status=200)
 
-    res.form["uid"] = "sometwo"
-    res.form["mail"] = "sometwo@domain.tld"
+    res.form["user_name"] = "sometwo"
+    res.form["email"] = "sometwo@domain.tld"
     res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="generate", status=200)
     assert len(smtpd.messages) == 0
@@ -121,14 +121,14 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     res = testclient.get(url, status=200)
 
-    assert res.form["uid"].value == "sometwo"
-    assert res.form["mail"].value == "sometwo@domain.tld"
+    assert res.form["user_name"].value == "sometwo"
+    assert res.form["email"].value == "sometwo@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
     res.form["password2"] = "whatever"
-    res.form["givenName"] = "George"
-    res.form["sn"] = "Abitbol"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
 
     res = res.form.submit(status=302)
     res = res.follow(status=200)
@@ -150,8 +150,8 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 def test_invitation_login_already_taken(testclient, logged_admin):
     res = testclient.get("/invite", status=200)
 
-    res.form["uid"] = logged_admin.uid
-    res.form["mail"] = logged_admin.mail[0]
+    res.form["user_name"] = logged_admin.user_name
+    res.form["email"] = logged_admin.email[0]
     res = res.form.submit(name="action", value="send", status=200)
 
     res.mustcontain("The login &#39;admin&#39; already exists")
@@ -272,7 +272,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     testclient, foo_group
 ):
     testclient.app.config["ACL"]["DEFAULT"]["READ"] = [
-        "uid"
+        "user_name"
     ]  # remove groups from default read permissions
 
     invitation = Invitation(
@@ -292,8 +292,8 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
 
     res.form["password1"] = "whatever"
     res.form["password2"] = "whatever"
-    res.form["givenName"] = "George"
-    res.form["sn"] = "Abitbol"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
 
     res = res.form.submit(status=302)
     res = res.follow(status=200)

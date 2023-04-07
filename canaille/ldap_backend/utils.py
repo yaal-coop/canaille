@@ -43,7 +43,7 @@ def ldap_to_python(value, syntax):
     if syntax == Syntax.INTEGER:
         return int(value.decode("utf-8"))
 
-    if syntax == Syntax.JPEG:
+    if syntax in (Syntax.JPEG, Syntax.FAX_IMAGE):
         return value
 
     if syntax == Syntax.BOOLEAN:
@@ -68,7 +68,7 @@ def python_to_ldap(value, syntax, encode=True):
     if syntax == Syntax.INTEGER and isinstance(value, int):
         value = str(value)
 
-    if syntax == Syntax.JPEG:
+    if syntax in (Syntax.JPEG, Syntax.FAX_IMAGE):
         encodable = False
 
     if syntax == Syntax.BOOLEAN and isinstance(value, bool):

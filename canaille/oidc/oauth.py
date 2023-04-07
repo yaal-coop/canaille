@@ -297,7 +297,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "token_type": token.type,
             "username": token.subject.name,
             "scope": token.get_scope(),
-            "sub": token.subject.uid[0],
+            "sub": token.subject.user_name[0],
             "aud": audience,
             "iss": get_issuer(),
             "exp": token.get_expires_at(),

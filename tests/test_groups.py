@@ -85,10 +85,10 @@ def test_set_groups(app, user, foo_group, bar_group):
 
 def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user = User(
-        cn=" Doe",  # leading space in id attribute
-        sn="Doe",
-        uid="user2",
-        mail="john@doe.com",
+        formatted_name=" Doe",  # leading space in id attribute
+        family_name="Doe",
+        user_name="user2",
+        email="john@doe.com",
     )
     user.save()
 
@@ -181,7 +181,7 @@ def test_get_members_filters_non_existent_user(
     testclient, logged_moderator, foo_group, user
 ):
     # an LDAP group can be inconsistent by containing members which doesn't exist
-    non_existent_user = User(cn="foo", sn="bar")
+    non_existent_user = User(formatted_name="foo", family_name="bar")
     foo_group.member = foo_group.member + [non_existent_user]
     foo_group.save()
 

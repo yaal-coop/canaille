@@ -122,16 +122,16 @@ def available_language_choices():
 
 
 PROFILE_FORM_FIELDS = dict(
-    uid=wtforms.StringField(
+    user_name=wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
         validators=[wtforms.validators.DataRequired(), unique_login],
     ),
-    cn=wtforms.StringField(_("Name")),
+    formatted_name=wtforms.StringField(_("Name")),
     title=wtforms.StringField(
         _("Title"), render_kw={"placeholder": _("Vice president")}
     ),
-    givenName=wtforms.StringField(
+    given_name=wtforms.StringField(
         _("Given name"),
         render_kw={
             "placeholder": _("John"),
@@ -139,7 +139,7 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    sn=wtforms.StringField(
+    family_name=wtforms.StringField(
         _("Family Name"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={
@@ -148,7 +148,7 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    displayName=wtforms.StringField(
+    display_name=wtforms.StringField(
         _("Display Name"),
         validators=[wtforms.validators.Optional()],
         render_kw={
@@ -157,7 +157,7 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    mail=wtforms.EmailField(
+    email=wtforms.EmailField(
         _("Email address"),
         validators=[
             wtforms.validators.DataRequired(),
@@ -173,10 +173,10 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    telephoneNumber=wtforms.TelField(
+    phone_number=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     ),
-    postalAddress=wtforms.StringField(
+    formatted_address=wtforms.StringField(
         _("Address"),
         render_kw={
             "placeholder": _("132, Foobar Street, Gotham City 12401, XX"),
@@ -188,30 +188,30 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("132, Foobar Street"),
         },
     ),
-    postalCode=wtforms.StringField(
+    postal_code=wtforms.StringField(
         _("Postal Code"),
         render_kw={
             "placeholder": "12401",
         },
     ),
-    l=wtforms.StringField(
+    locality=wtforms.StringField(
         _("Locality"),
         render_kw={
             "placeholder": _("Gotham City"),
         },
     ),
-    st=wtforms.StringField(
+    region=wtforms.StringField(
         _("Region"),
         render_kw={
             "placeholder": _("North Pole"),
         },
     ),
-    jpegPhoto=FileField(
+    photo=FileField(
         _("Photo"),
         validators=[FileAllowed(["jpg", "jpeg"])],
         render_kw={"accept": "image/jpg, image/jpeg"},
     ),
-    jpegPhoto_delete=wtforms.BooleanField(_("Delete the photo")),
+    photo_delete=wtforms.BooleanField(_("Delete the photo")),
     password1=wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
@@ -230,32 +230,32 @@ PROFILE_FORM_FIELDS = dict(
             "autocomplete": "new-password",
         },
     ),
-    employeeNumber=wtforms.StringField(
+    employee_number=wtforms.StringField(
         _("User number"),
         render_kw={
             "placeholder": _("1234"),
         },
     ),
-    departmentNumber=wtforms.StringField(
-        _("Department number"),
+    department=wtforms.StringField(
+        _("Department"),
         render_kw={
             "placeholder": _("1234"),
         },
     ),
-    o=wtforms.StringField(
+    organization=wtforms.StringField(
         _("Organization"),
         render_kw={
             "placeholder": _("Cogip LTD."),
         },
     ),
-    labeledURI=wtforms.URLField(
+    profile_url=wtforms.URLField(
         _("Website"),
         render_kw={
             "placeholder": _("https://mywebsite.tld"),
         },
         validators=[wtforms.validators.Optional(), is_uri],
     ),
-    preferredLanguage=wtforms.SelectField(
+    preferred_language=wtforms.SelectField(
         _("Preferred language"),
         choices=available_language_choices,
     ),
@@ -268,11 +268,11 @@ PROFILE_FORM_FIELDS = dict(
 
 
 def profile_form(write_field_names, readonly_field_names, user=None):
-    if "userPassword" in write_field_names:
+    if "password" in write_field_names:
         write_field_names |= {"password1", "password2"}
 
-    if "jpegPhoto" in write_field_names:
-        write_field_names |= {"jpegPhoto_delete"}
+    if "photo" in write_field_names:
+        write_field_names |= {"photo_delete"}
 
     fields = {
         name: PROFILE_FORM_FIELDS.get(name)
@@ -321,13 +321,13 @@ class EditGroupForm(HTMXForm):
 
 
 class InvitationForm(HTMXForm):
-    uid = wtforms.StringField(
+    user_name = wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
         validators=[wtforms.validators.DataRequired(), unique_login],
     )
-    uid_editable = wtforms.BooleanField(_("Username editable by the invitee"))
-    mail = wtforms.EmailField(
+    user_name_editable = wtforms.BooleanField(_("Username editable by the invitee"))
+    email = wtforms.EmailField(
         _("Email address"),
         validators=[
             wtforms.validators.DataRequired(),
