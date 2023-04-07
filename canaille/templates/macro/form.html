@@ -14,7 +14,7 @@ display=true
                 {%- if field.errors %} error{% endif -%}
                 {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}"
          {% if not display %}style="display: none"{% endif %}
-         {% if field.validators %}hx-target="this" hx-swap="outerHTML"{% endif %}
+         {% if field.validators and field.type not in ("FileField", "MultipleFileField") %}hx-target="this" hx-swap="outerHTML"{% endif %}
     >
 {% endif %}
 
@@ -22,11 +22,10 @@ display=true
     {{ field.label() }}
 {% endif %}
 
-
 {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
 {% set required_indicator = "required" in field.flags %}
 {% set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required_indicator) %}
-{% if field.validators %}
+{% if field.validators and field.type not in ("FileField", "MultipleFileField") %}
     {% set ignore_me = kwargs.update({"hx-post": ""}) %}
     {% set ignore_me = kwargs.update({"hx-indicator": "closest .input"}) %}
 {% endif %}
