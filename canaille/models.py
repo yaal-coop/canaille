@@ -43,9 +43,7 @@ class User(LDAPObject):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def get(cls, login=None, id=None, filter=None, conn=None, **kwargs):
-        conn = conn or cls.ldap_connection()
-
+    def get(cls, login=None, id=None, filter=None, **kwargs):
         if login:
             filter = (
                 current_app.config["LDAP"]
@@ -53,20 +51,20 @@ class User(LDAPObject):
                 .format(login=ldap.filter.escape_filter_chars(login))
             )
 
-        user = super().get(id, filter, conn, **kwargs)
+        user = super().get(id, filter, **kwargs)
         if user:
-            user.load_permissions(conn)
+            user.load_permissions()
 
         return user
 
-    def load_groups(self, conn=None):
+    def load_groups(self):
         group_filter = (
             current_app.config["LDAP"]
             .get("GROUP_USER_FILTER", Group.DEFAULT_USER_FILTER)
             .format(user=self)
         )
         escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
-        self._groups = Group.query(filter=escaped_group_filter, conn=conn)
+        self._groups = Group.query(filter=escaped_group_filter)
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
@@ -117,8 +115,8 @@ class User(LDAPObject):
         finally:
             conn.unbind_s()
 
-    def set_password(self, password, conn=None):
-        conn = conn or self.ldap_connection()
+    def set_password(self, password):
+        conn = self.ldap_connection()
         conn.passwd_s(
             self.id,
             None,
@@ -148,8 +146,8 @@ class User(LDAPObject):
             group.save()
         self._groups = after
 
-    def load_permissions(self, conn=None):
-        conn = conn or self.ldap_connection()
+    def load_permissions(self):
+        conn = self.ldap_connection()
 
         for access_group_name, details in current_app.config["ACL"].items():
             if not details.get("FILTER") or (
@@ -212,7 +210,7 @@ class Group(LDAPObject):
         )
         return self[attribute][0]
 
-    def get_members(self, conn=None):
+    def get_members(self):
         return [member for member in self.members if member]
 
     def add_member(self, user):
