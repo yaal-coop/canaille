@@ -37,7 +37,7 @@
                     <td><a href="{{ url_for('account.profile_edition', username=watched_user.user_name[0]) }}">{{ watched_user.user_name[0] }}</a></td>
                 {% endif %}
                 {% if user.can_read("family_name") or user.can_read("given_name") %}
-                    <td>{{ watched_user.name }}</td>
+                    <td>{{ watched_user.formatted_name[0] }}</td>
                 {% endif %}
                 {% if user.can_read("email") %}
                     <td><a href="mailto:{{ watched_user.email[0] }}">{{ watched_user.email[0] }}</a></td>

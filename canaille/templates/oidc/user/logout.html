@@ -11,7 +11,7 @@
             </h2>
             <div class="ui message">
                 <p>
-                    {{ _("You are currently logged in as %(username)s.", username=user.name) }}
+                    {{ _("You are currently logged in as %(username)s.", username=user.formatted_name[0]) }}
                     {% if client %}
                         {{ _("The application %(client_name)s wants to disconnect your account.", client_name=client.client_name) }}
                     {% endif %}

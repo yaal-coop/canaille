@@ -295,7 +295,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "active": True,
             "client_id": token.client.client_id,
             "token_type": token.type,
-            "username": token.subject.name,
+            "username": token.subject.formatted_name[0],
             "scope": token.get_scope(),
             "sub": token.subject.user_name[0],
             "aud": audience,

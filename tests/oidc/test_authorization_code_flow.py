@@ -239,12 +239,12 @@ def test_logout_login(testclient, logged_user, client):
     res = res.form.submit(name="answer", value="logout", status=302)
     res = res.follow(status=200)
 
-    res.form["login"] = logged_user.name
+    res.form["login"] = logged_user.formatted_name[0]
     res.form["password"] = "wrong password"
     res = res.form.submit(status=200)
     assert ("error", "Login failed, please check your information") in res.flashes
 
-    res.form["login"] = logged_user.name
+    res.form["login"] = logged_user.formatted_name[0]
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
     res = res.follow(status=200)

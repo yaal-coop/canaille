@@ -170,7 +170,7 @@ def test_moderator_can_create_edit_and_delete_group(
     assert Group.get("bar2") is None
     members = bar_group.get_members()
     for member in members:
-        res.mustcontain(member.name)
+        res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
     res = form.submit(name="action", value="delete", status=302)
@@ -281,14 +281,14 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
 
     res = testclient.get("/groups/foo")
     res.mustcontain("3 items")
-    res.mustcontain(user.name)
-    res.mustcontain(moderator.name)
+    res.mustcontain(user.formatted_name[0])
+    res.mustcontain(moderator.formatted_name[0])
 
     form = res.forms["search"]
     form["query"] = "ohn"
     res = form.submit()
 
     res.mustcontain("1 items")
-    res.mustcontain(user.name)
+    res.mustcontain(user.formatted_name[0])
     res.mustcontain(no=logged_admin.name)
-    res.mustcontain(no=moderator.name)
+    res.mustcontain(no=moderator.formatted_name[0])

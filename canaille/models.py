@@ -130,10 +130,6 @@ class User(LDAPObject):
         )
 
     @property
-    def name(self):
-        return self.formatted_name[0]
-
-    @property
     def groups(self):
         if self._groups is None:
             self.load_groups()

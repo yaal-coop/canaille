@@ -30,7 +30,7 @@
         </div>
 
         <div class="ui center aligned container">
-            {{ gettext('You are logged in as %(name)s', name=user.name) }}
+            {{ gettext('You are logged in as %(name)s', name=user.formatted_name[0]) }}
         </div>
 
         <div class="ui center aligned container">

@@ -134,7 +134,10 @@ def password():
             )
 
         del session["attempt_login"]
-        flash(_("Connection successful. Welcome %(user)s", user=user.name), "success")
+        flash(
+            _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
+            "success",
+        )
         return redirect(url_for("account.index"))
 
     return render_template(
@@ -147,7 +150,10 @@ def logout():
     user = current_user()
     if user:
         flash(
-            _("You have been disconnected. See you next time %(user)s", user=user.name),
+            _(
+                "You have been disconnected. See you next time %(user)s",
+                user=user.formatted_name[0],
+            ),
             "success",
         )
         user.logout()
@@ -613,7 +619,10 @@ def profile_delete(user, edited_user):
         user.logout()
 
     flash(
-        _("The user %(user)s has been sucessfuly deleted", user=edited_user.name),
+        _(
+            "The user %(user)s has been sucessfuly deleted",
+            user=edited_user.formatted_name[0],
+        ),
         "success",
     )
     edited_user.delete()
@@ -665,7 +674,7 @@ def forgotten():
             _(
                 "The user '%(user)s' does not have permissions to update their password. "
                 "We cannot send a password reset email.",
-                user=user.name,
+                user=user.formatted_name[0],
             ),
             "error",
         )

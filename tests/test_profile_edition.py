@@ -44,16 +44,16 @@ def test_user_list_bad_pages(testclient, logged_admin):
 def test_user_list_search(testclient, logged_admin, user, moderator):
     res = testclient.get("/users")
     res.mustcontain("3 items")
-    res.mustcontain(moderator.name)
-    res.mustcontain(user.name)
+    res.mustcontain(moderator.formatted_name[0])
+    res.mustcontain(user.formatted_name[0])
 
     form = res.forms["search"]
     form["query"] = "Jack"
     res = form.submit()
 
     res.mustcontain("1 items")
-    res.mustcontain(moderator.name)
-    res.mustcontain(no=user.name)
+    res.mustcontain(moderator.formatted_name[0])
+    res.mustcontain(no=user.formatted_name[0])
 
 
 def test_user_list_search_only_allowed_fields(
@@ -61,16 +61,16 @@ def test_user_list_search_only_allowed_fields(
 ):
     res = testclient.get("/users")
     res.mustcontain("3 items")
-    res.mustcontain(moderator.name)
-    res.mustcontain(user.name)
+    res.mustcontain(moderator.formatted_name[0])
+    res.mustcontain(user.formatted_name[0])
 
     form = res.forms["search"]
     form["query"] = "user"
     res = form.submit()
 
     res.mustcontain("1 items")
-    res.mustcontain(user.name)
-    res.mustcontain(no=moderator.name)
+    res.mustcontain(user.formatted_name[0])
+    res.mustcontain(no=moderator.formatted_name[0])
 
     testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("user_name")
 
@@ -79,8 +79,8 @@ def test_user_list_search_only_allowed_fields(
     res = form.submit()
 
     res.mustcontain("0 items")
-    res.mustcontain(no=user.name)
-    res.mustcontain(no=moderator.name)
+    res.mustcontain(no=user.formatted_name[0])
+    res.mustcontain(no=moderator.formatted_name[0])
 
 
 def test_edition_permission(
