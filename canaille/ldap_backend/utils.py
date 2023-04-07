@@ -60,7 +60,7 @@ def python_to_ldap(value, syntax, encode=True):
     if syntax == Syntax.GENERALIZED_TIME and isinstance(value, datetime.datetime):
         if value == datetime.datetime.min:
             value = LDAP_NULL_DATE
-        elif value.tzinfo == datetime.timezone.utc:
+        elif not value.tzinfo or value.tzinfo == datetime.timezone.utc:
             value = value.strftime("%Y%m%d%H%M%SZ")
         else:
             value = value.strftime("%Y%m%d%H%M%S%z")
