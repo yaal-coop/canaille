@@ -48,6 +48,29 @@ def test_group_list_bad_pages(testclient, logged_admin):
     )
 
 
+def test_group_deletion(testclient, slapd_server, slapd_connection):
+    user = User(
+        formatted_name="foobar",
+        family_name="foobar",
+        user_name="foobar",
+        email="foo@bar.com",
+    )
+    user.save()
+
+    group = Group(
+        members=[user],
+        display_name="foobar",
+    )
+    group.save()
+    assert user.groups == [group]
+
+    group.delete()
+    user = User.get(id=user.id)
+    assert not user.groups
+
+    user.delete()
+
+
 def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     res = testclient.get("/groups")
     res.mustcontain("2 items")
