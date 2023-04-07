@@ -9,7 +9,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Fixed
 *****
 
-- Fixed avatar update. :pr:`121`
+- Fixed avatar update. :pr:`122`
 
 [0.0.23] - 2023-04-05
 =====================
