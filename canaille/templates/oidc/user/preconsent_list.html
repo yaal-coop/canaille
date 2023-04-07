@@ -25,15 +25,16 @@
 
 {% block content %}
     <div class="ui bottom attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Pre-authorized applications") }}
+            </div>
+            <div class="sub header">
+                {% trans %}Those applications automatically have authorizations to access you data.{% endtrans %}
+            </div>
+        </h2>
+
         {% if preconsented %}
-            <h2 class="ui center aligned header">
-                <div class="content">
-                    {{ _("Pre-authorized applications") }}
-                </div>
-                <div class="sub header">
-                    {% trans %}Those applications automatically have authorizations to access you data.{% endtrans %}
-                </div>
-            </h2>
             <div class="ui centered cards">
                 {% for client in preconsented %}
                     <div class="ui card">
@@ -88,6 +89,14 @@
                         </a>
                     </div>
                 {% endfor %}
+            </div>
+        {% else %}
+            <div class="ui center aligned">
+                <div class="ui center aligned message">
+                    <div class="content">
+                        <p>{% trans %}There is nothing here{% endtrans %}</p>
+                    </div>
+                </div>
             </div>
         {% endif %}
     </div>
