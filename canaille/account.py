@@ -97,7 +97,7 @@ def login():
     form["login"].render_kw["placeholder"] = login_placeholder()
 
     if request.form:
-        user = User.get(form.login.data)
+        user = User.get_from_login(form.login.data)
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
@@ -120,7 +120,7 @@ def password():
     form = PasswordForm(request.form or None)
 
     if request.form:
-        user = User.get(session["attempt_login"])
+        user = User.get_from_login(session["attempt_login"])
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
@@ -156,7 +156,7 @@ def logout():
 
 @bp.route("/firstlogin/<user_name>", methods=("GET", "POST"))
 def firstlogin(user_name):
-    user = User.get(user_name)
+    user = User.get_from_login(user_name)
     if not user or user.has_password():
         abort(404)
 
@@ -278,7 +278,7 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    if User.get(invitation.user_name):
+    if User.get_from_login(invitation.user_name):
         flash(
             _("Your account has already been created."),
             "error",
@@ -424,7 +424,7 @@ def profile_edition(user, username):
     menuitem = "profile" if username == editor.user_name[0] else "users"
     fields = editor.read | editor.write
     if username != editor.user_name[0]:
-        user = User.get(username)
+        user = User.get_from_login(username)
     else:
         user = editor
 
@@ -512,7 +512,7 @@ def profile_settings(user, username):
     ):
         abort(403)
 
-    edited_user = User.get(username)
+    edited_user = User.get_from_login(username)
     if not edited_user:
         abort(404)
 
@@ -626,7 +626,7 @@ def profile_delete(user, edited_user):
 @bp.route("/impersonate/<username>")
 @permissions_needed("impersonate_users")
 def impersonate(user, username):
-    puppet = User.get(username)
+    puppet = User.get_from_login(username)
     if not puppet:
         abort(404)
 
@@ -650,7 +650,7 @@ def forgotten():
         flash(_("Could not send the password reset link."), "error")
         return render_template("forgotten-password.html", form=form)
 
-    user = User.get(form.login.data)
+    user = User.get_from_login(form.login.data)
     success_message = _(
         "A password reset link has been sent at your email address. You should receive it within a few minutes."
     )
@@ -690,7 +690,7 @@ def reset(user_name, hash):
         abort(404)
 
     form = PasswordResetForm(request.form)
-    user = User.get(user_name)
+    user = User.get_from_login(user_name)
 
     if not user or hash != profile_hash(
         user.user_name[0],
@@ -720,7 +720,7 @@ def photo(user_name, field):
     if field.lower() != "photo":
         abort(404)
 
-    user = User.get(user_name)
+    user = User.get_from_login(user_name)
     if not user:
         abort(404)
 

@@ -6,7 +6,7 @@ def test_user_creation_edition_and_deletion(
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
-    assert User.get("george") is None
+    assert User.get_from_login("george") is None
     res.mustcontain(no="george")
 
     # Fill the profile for a new user.
@@ -24,7 +24,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="edit", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
-    george = User.get("george")
+    george = User.get_from_login("george")
     george.load_groups()
     foo_group.reload()
     assert "George" == george.given_name[0]
@@ -46,7 +46,7 @@ def test_user_creation_edition_and_deletion(
     res.form["groups"] = [foo_group.id, bar_group.id]
     res = res.form.submit(name="action", value="edit").follow()
 
-    george = User.get("george")
+    george = User.get_from_login("george")
     george.load_groups()
     assert "Georgio" == george.given_name[0]
     assert george.check_password("totoyolo")
@@ -62,7 +62,7 @@ def test_user_creation_edition_and_deletion(
     # User have been deleted.
     res = testclient.get("/profile/george/settings", status=200)
     res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
-    assert User.get("george") is None
+    assert User.get_from_login("george") is None
     res.mustcontain(no="george")
 
 
@@ -91,7 +91,7 @@ def test_user_creation_without_password(testclient, logged_moderator):
     res = res.form.submit(name="action", value="edit", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
-    george = User.get("george")
+    george = User.get_from_login("george")
     assert george.user_name[0] == "george"
     assert not george.userPassword
 
@@ -102,13 +102,13 @@ def test_user_creation_form_validation_failed(
     testclient, logged_moderator, foo_group, bar_group
 ):
     res = testclient.get("/users", status=200)
-    assert User.get("george") is None
+    assert User.get_from_login("george") is None
     res.mustcontain(no="george")
 
     res = testclient.get("/profile", status=200)
     res = res.form.submit(name="action", value="edit")
     assert ("error", "User account creation failed.") in res.flashes
-    assert User.get("george") is None
+    assert User.get_from_login("george") is None
 
 
 def test_username_already_taken(
@@ -142,7 +142,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
-    george = User.get("george")
+    george = User.get_from_login("george")
     assert george.cn[0] == "George Abitbol"
     george.delete()
 
@@ -155,6 +155,6 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
-    george = User.get("george")
+    george = User.get_from_login("george")
     assert george.cn[0] == "Abitbol"
     george.delete()

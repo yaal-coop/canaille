@@ -18,7 +18,7 @@ from .utils.forms import is_uri
 
 
 def unique_login(form, field):
-    if User.get(field.data) and (
+    if User.get_from_login(field.data) and (
         not getattr(form, "user", None) or form.user.uid[0] != field.data
     ):
         raise wtforms.ValidationError(
@@ -43,9 +43,9 @@ def unique_group(form, field):
 
 
 def existing_login(form, field):
-    if not current_app.config.get("HIDE_INVALID_LOGINS", True) and not User.get(
-        field.data
-    ):
+    if not current_app.config.get(
+        "HIDE_INVALID_LOGINS", True
+    ) and not User.get_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )

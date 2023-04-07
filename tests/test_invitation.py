@@ -5,7 +5,7 @@ from canaille.models import User
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd):
-    assert User.get("someone") is None
+    assert User.get_from_login("someone") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -39,7 +39,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     assert ("success", "Your account has been created successfuly.") in res.flashes
     res = res.follow(status=200)
 
-    user = User.get("someone")
+    user = User.get_from_login("someone")
     user.load_groups()
     foo_group.reload()
     assert user.check_password("whatever")
@@ -54,8 +54,8 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
 
 def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtpd):
-    assert User.get("jackyjack") is None
-    assert User.get("djorje") is None
+    assert User.get_from_login("jackyjack") is None
+    assert User.get_from_login("djorje") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -90,7 +90,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
     assert ("success", "Your account has been created successfuly.") in res.flashes
     res = res.follow(status=200)
 
-    user = User.get("djorje")
+    user = User.get_from_login("djorje")
     user.load_groups()
     foo_group.reload()
     assert user.check_password("whatever")
@@ -103,7 +103,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd):
-    assert User.get("sometwo") is None
+    assert User.get_from_login("sometwo") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -133,7 +133,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    user = User.get("sometwo")
+    user = User.get_from_login("sometwo")
     user.load_groups()
     foo_group.reload()
     assert user.check_password("whatever")
@@ -231,7 +231,7 @@ def test_registration_no_password(testclient, foo_group):
     res = res.form.submit(status=200)
     res.mustcontain("This field is required.")
 
-    assert not User.get("someoneelse")
+    assert not User.get_from_login("someoneelse")
 
     with testclient.session_transaction() as sess:
         assert "user_id" not in sess
@@ -298,7 +298,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    user = User.get("someoneelse")
+    user = User.get_from_login("someoneelse")
     user.load_groups()
     foo_group.reload()
     assert user.groups == [foo_group]

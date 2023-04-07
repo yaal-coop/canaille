@@ -292,7 +292,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    assert User.get("temp") is None
+    assert User.get_from_login("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
@@ -326,7 +326,7 @@ def test_user_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    assert User.get("temp") is None
+    assert User.get_from_login("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")

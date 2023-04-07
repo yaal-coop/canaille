@@ -43,7 +43,7 @@ class User(LDAPObject):
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def get(cls, login=None, id=None, **kwargs):
+    def get_from_login(cls, login=None, **kwargs):
         filter = (
             (
                 current_app.config["LDAP"]
@@ -53,8 +53,11 @@ class User(LDAPObject):
             if login
             else None
         )
+        return cls.get(filter=filter, **kwargs)
 
-        user = super().get(id, filter, **kwargs)
+    @classmethod
+    def get(cls, **kwargs):
+        user = super().get(**kwargs)
         if user:
             user.load_permissions()
 
@@ -71,7 +74,7 @@ class User(LDAPObject):
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
-        user = User.get(login)
+        user = User.get_from_login(login)
         if not user or not user.check_password(password):
             return None
 
