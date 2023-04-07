@@ -135,16 +135,17 @@ class User(LDAPObject):
             self.load_groups()
         return self._groups
 
-    def set_groups(self, values):
+    @groups.setter
+    def groups(self, values):
         before = self._groups
         after = [v if isinstance(v, Group) else Group.get(id=v) for v in values]
         to_add = set(after) - set(before)
         to_del = set(before) - set(after)
         for group in to_add:
-            group.add_member(self)
+            group.members = group.members + [self]
             group.save()
         for group in to_del:
-            group.remove_member(self)
+            group.members = [member for member in group.members if member != self]
             group.save()
         self._groups = after
 
@@ -211,12 +212,3 @@ class Group(LDAPObject):
             "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
         )
         return self[attribute][0]
-
-    def get_members(self):
-        return [member for member in self.members if member]
-
-    def add_member(self, user):
-        self.members = self.members + [user]
-
-    def remove_member(self, user):
-        self.members = [m for m in self.members if m != user]

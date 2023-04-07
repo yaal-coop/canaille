@@ -406,7 +406,7 @@ def profile_create(current_app, form):
     if "groups" in form:
         groups = [Group.get(group_id) for group_id in form["groups"].data]
         for group in groups:
-            group.add_member(user)
+            group.members = group.members + [user]
             group.save()
 
     if form["password1"].data:
@@ -589,7 +589,7 @@ def profile_settings_edit(editor, edited_user):
         else:
             for attribute in form:
                 if attribute.name == "groups" and "groups" in editor.write:
-                    edited_user.set_groups(attribute.data)
+                    edited_user.groups = attribute.data
 
             if (
                 "password1" in request.form
