@@ -14,15 +14,16 @@ def create_app():
 
     @app.before_first_request
     def populate():
-        from canaille.backends.ldap.backend import setup_backend
-        from canaille.backends.ldap.backend import teardown_backend
+        from canaille.backends.ldap.backend import LDAPBackend
         from canaille.core.models import Group
         from canaille.core.models import User
         from canaille.core.populate import fake_groups
         from canaille.core.populate import fake_users
         from canaille.oidc.models import Client
 
-        setup_backend(app)
+        backend = LDAPBackend(app)
+        backend.setup()
+
         jane = User(
             formatted_name="Jane Doe",
             given_name="Jane",
@@ -141,6 +142,6 @@ def create_app():
         fake_users(50)
         fake_groups(10, nb_users_max=10)
 
-        teardown_backend(app)
+        backend.teardown()
 
     return app

@@ -174,11 +174,11 @@ def create_app(config=None, validate=True):
     sentry_sdk = setup_sentry(app)
     try:
         from .oidc.oauth import setup_oauth
-        from .backends.ldap.backend import init_backend
+        from .backends.ldap.backend import LDAPBackend
         from .app.i18n import setup_i18n
 
         setup_logging(app)
-        init_backend(app)
+        LDAPBackend(app)
         setup_oauth(app)
         setup_blueprints(app)
         setup_jinja(app)

@@ -9,18 +9,16 @@ from flask.cli import with_appcontext
 def with_backendcontext(func):
     @functools.wraps(func)
     def _func(*args, **kwargs):
-        from canaille.backends.ldap.backend import (
-            setup_backend,
-            teardown_backend,
-        )
+        from canaille.backends.ldap.backend import LDAPBackend
 
         if not current_app.config["TESTING"]:  # pragma: no cover
-            setup_backend(current_app)
+            backend = LDAPBackend(current_app)
+            backend.setup(current_app)
+            result = func(*args, **kwargs)
+            backend.teardown(current_app)
 
-        result = func(*args, **kwargs)
-
-        if not current_app.config["TESTING"]:  # pragma: no cover
-            teardown_backend(current_app)
+        else:
+            result = func(*args, **kwargs)
 
         return result
 
