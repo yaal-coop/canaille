@@ -171,7 +171,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     ) not in res.flashes
     assert ("success", "The client has been edited.") in res.flashes
 
-    client = Client.get(client.id)
+    client.reload()
     data["audience"] = [client, other_client]
     for k, v in data.items():
         client_value = getattr(client, k)
@@ -246,7 +246,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
-    client = Client.get(client.id)
+    client.reload()
     assert client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
@@ -254,7 +254,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
-    client = Client.get(client.id)
+    client.reload()
     assert not client.preconsent
 
 

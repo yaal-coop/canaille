@@ -27,7 +27,7 @@ def test_edition(
     assert res.flashes == [("success", "Profile updated successfuly.")]
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
     logged_user.load_groups()
 
     assert logged_user.user_name == ["user"]
@@ -73,7 +73,7 @@ def test_edition_without_groups(
     assert res.flashes == [("success", "Profile updated successfuly.")]
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
 
     assert logged_user.user_name == ["user"]
     assert logged_user.check_password("correct horse battery staple")

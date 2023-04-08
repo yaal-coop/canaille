@@ -7,7 +7,7 @@ from webtest import Upload
 def test_photo(testclient, user, jpeg_photo):
     user.photo = [jpeg_photo]
     user.save()
-    user = User.get(id=user.id)
+    user.reload()
 
     res = testclient.get("/profile/user/photo")
     assert res.body == jpeg_photo
@@ -61,7 +61,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfuly.") in res.flashes
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
 
     assert [jpeg_photo] == logged_user.photo
 
@@ -72,7 +72,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfuly.") in res.flashes
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
 
     assert [jpeg_photo] == logged_user.photo
 
@@ -83,9 +83,9 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfuly.") in res.flashes
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
 
-    assert [] == logged_user.photo
+    assert logged_user.photo == []
 
     # Photo deletion AND upload, this should never happen
     res = testclient.get("/profile/user", status=200)
@@ -95,7 +95,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfuly.") in res.flashes
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
 
     assert [] == logged_user.photo
 

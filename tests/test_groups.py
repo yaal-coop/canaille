@@ -65,7 +65,7 @@ def test_group_deletion(testclient, slapd_server, slapd_connection):
     assert user.groups == [group]
 
     group.delete()
-    user = User.get(id=user.id)
+    user.reload()
     assert not user.groups
 
     user.delete()
@@ -93,15 +93,15 @@ def test_set_groups(app, user, foo_group, bar_group):
     user.load_groups()
     user.groups = [foo_group, bar_group]
 
-    bar_group = Group.get(bar_group.id)
+    bar_group.reload()
     assert user in bar_group.members
     assert user.groups[1] == bar_group
 
     user.load_groups()
     user.groups = [foo_group]
 
-    foo_group = Group.get(foo_group.id)
-    bar_group = Group.get(bar_group.id)
+    foo_group.reload()
+    bar_group.reload()
     assert user in foo_group.members
     assert user not in bar_group.members
 
@@ -123,7 +123,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user.load_groups()
     user.groups = []
 
-    foo_group = Group.get(foo_group.id)
+    foo_group.reload()
     assert user.id not in foo_group.members
 
     user.delete()
@@ -227,7 +227,7 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
     form["display_name"] = ""
     res = form.submit(name="action", value="edit")
     res.mustcontain("Group edition failed.")
-    foo_group = Group.get(foo_group.id)
+    foo_group.reload()
     assert foo_group.display_name == "foo"
 
 

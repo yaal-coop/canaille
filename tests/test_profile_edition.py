@@ -127,7 +127,7 @@ def test_edition(
     ], res.text
     res = res.follow()
 
-    logged_user = User.get(id=logged_user.id)
+    logged_user.reload()
 
     assert logged_user.given_name == ["given_name"]
     assert logged_user.family_name == ["family_name"]
@@ -192,8 +192,8 @@ def test_field_permissions_none(testclient, slapd_server, logged_user):
             "csrf_token": res.form["csrf_token"].value,
         },
     )
-    user = User.get(id=logged_user.id)
-    assert user.phone_number == ["555-666-777"]
+    logged_user.reload()
+    assert logged_user.phone_number == ["555-666-777"]
 
 
 def test_field_permissions_read(testclient, slapd_server, logged_user):
@@ -217,8 +217,8 @@ def test_field_permissions_read(testclient, slapd_server, logged_user):
             "csrf_token": res.form["csrf_token"].value,
         },
     )
-    user = User.get(id=logged_user.id)
-    assert user.phone_number == ["555-666-777"]
+    logged_user.reload()
+    assert logged_user.phone_number == ["555-666-777"]
 
 
 def test_field_permissions_write(testclient, slapd_server, logged_user):
@@ -242,8 +242,8 @@ def test_field_permissions_write(testclient, slapd_server, logged_user):
             "csrf_token": res.form["csrf_token"].value,
         },
     )
-    user = User.get(id=logged_user.id)
-    assert user.phone_number == ["000-000-000"]
+    logged_user.reload()
+    assert logged_user.phone_number == ["000-000-000"]
 
 
 def test_simple_user_cannot_edit_other(testclient, logged_user):

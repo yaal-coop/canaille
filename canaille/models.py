@@ -129,6 +129,10 @@ class User(LDAPObject):
             password.encode("utf-8"),
         )
 
+    def reload(self):
+        super().reload()
+        self._groups = None
+
     @property
     def groups(self):
         if self._groups is None:
