@@ -28,7 +28,6 @@ def test_edition(
     res = res.follow()
 
     logged_user.reload()
-    logged_user.load_groups()
 
     assert logged_user.user_name == ["user"]
 

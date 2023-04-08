@@ -90,14 +90,12 @@ def test_set_groups(app, user, foo_group, bar_group):
     assert user in foo_group.members
     assert user.groups[0] == foo_group
 
-    user.load_groups()
     user.groups = [foo_group, bar_group]
 
     bar_group.reload()
     assert user in bar_group.members
     assert user.groups[1] == bar_group
 
-    user.load_groups()
     user.groups = [foo_group]
 
     foo_group.reload()
@@ -115,12 +113,10 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     )
     user.save()
 
-    user.load_groups()
     user.groups = [foo_group]
 
     assert user in foo_group.members
 
-    user.load_groups()
     user.groups = []
 
     foo_group.reload()

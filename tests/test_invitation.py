@@ -40,7 +40,6 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     res = res.follow(status=200)
 
     user = User.get_from_login("someone")
-    user.load_groups()
     foo_group.reload()
     assert user.check_password("whatever")
     assert user.groups == [foo_group]
@@ -91,7 +90,6 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
     res = res.follow(status=200)
 
     user = User.get_from_login("djorje")
-    user.load_groups()
     foo_group.reload()
     assert user.check_password("whatever")
     assert user.groups == [foo_group]
@@ -134,7 +132,6 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     res = res.follow(status=200)
 
     user = User.get_from_login("sometwo")
-    user.load_groups()
     foo_group.reload()
     assert user.check_password("whatever")
     assert user.groups == [foo_group]
@@ -299,7 +296,6 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     res = res.follow(status=200)
 
     user = User.get_from_login("someoneelse")
-    user.load_groups()
     foo_group.reload()
     assert user.groups == [foo_group]
     user.delete()

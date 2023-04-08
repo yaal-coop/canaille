@@ -25,7 +25,6 @@ def test_user_creation_edition_and_deletion(
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
     george = User.get_from_login("george")
-    george.load_groups()
     foo_group.reload()
     assert "George" == george.given_name[0]
     assert george.groups == [foo_group]
@@ -47,7 +46,6 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="edit").follow()
 
     george = User.get_from_login("george")
-    george.load_groups()
     assert "Georgio" == george.given_name[0]
     assert george.check_password("totoyolo")
 

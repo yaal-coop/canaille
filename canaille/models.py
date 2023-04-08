@@ -60,6 +60,7 @@ class User(LDAPObject):
         user = super().get(**kwargs)
         if user:
             user.load_permissions()
+            user.load_groups()
 
         return user
 
@@ -131,7 +132,8 @@ class User(LDAPObject):
 
     def reload(self):
         super().reload()
-        self._groups = None
+        self.load_permissions()
+        self.load_groups()
 
     @property
     def groups(self):
@@ -141,7 +143,7 @@ class User(LDAPObject):
 
     @groups.setter
     def groups(self, values):
-        before = self._groups
+        before = self._groups or []
         after = [v if isinstance(v, Group) else Group.get(id=v) for v in values]
         to_add = set(after) - set(before)
         to_del = set(before) - set(after)
