@@ -218,3 +218,6 @@ def test_object_class_update(slapd_connection, testclient):
     user1.save()
     assert user1.objectClass == ["inetOrgPerson", "extensibleObject"]
     assert User.get(id=user1.id).objectClass == ["inetOrgPerson", "extensibleObject"]
+
+    user1.delete()
+    user2.delete()
