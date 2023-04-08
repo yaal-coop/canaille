@@ -2,9 +2,9 @@ import ldap.ldapobject
 import pytest
 import slapd
 from canaille import create_app
+from canaille.backends.ldap.backend import setup_ldap_models
 from canaille.core.models import Group
 from canaille.core.models import User
-from canaille.ldap_backend.backend import setup_ldap_models
 from canaille.oidc.installation import setup_ldap_tree
 from flask import g
 from flask_webtest import TestApp
@@ -52,7 +52,7 @@ def slapd_server():
         slapd.init_tree()
         for ldif in (
             "demo/ldif/memberof-config.ldif",
-            "canaille/ldap_backend/schemas/oauth2-openldap.ldif",
+            "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
             "demo/ldif/bootstrap-users-tree.ldif",
             "demo/ldif/bootstrap-oidc-tree.ldif",
         ):

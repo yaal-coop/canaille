@@ -4,8 +4,8 @@ import ldap
 import pytest
 from canaille import create_app
 from canaille.app.installation import InstallationException
+from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.commands import cli
-from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.oidc.installation import setup_schemas
 from flask_webtest import TestApp
 from tests.conftest import CustomSlapdObject

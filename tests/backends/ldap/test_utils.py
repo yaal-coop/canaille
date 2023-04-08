@@ -1,14 +1,18 @@
 import datetime
+from unittest import mock
 
 import ldap.dn
+import pytest
+from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import validate
+from canaille.backends.ldap.backend import setup_ldap_models
+from canaille.backends.ldap.ldapobject import LDAPObject
+from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
+from canaille.backends.ldap.utils import ldap_to_python
+from canaille.backends.ldap.utils import python_to_ldap
+from canaille.backends.ldap.utils import Syntax
 from canaille.core.models import Group
 from canaille.core.models import User
-from canaille.ldap_backend.backend import setup_ldap_models
-from canaille.ldap_backend.ldapobject import LDAPObject
-from canaille.ldap_backend.ldapobject import python_attrs_to_ldap
-from canaille.ldap_backend.utils import ldap_to_python
-from canaille.ldap_backend.utils import python_to_ldap
-from canaille.ldap_backend.utils import Syntax
 
 
 def test_object_creation(slapd_connection):
@@ -224,3 +228,57 @@ def test_object_class_update(slapd_connection, testclient):
 
     user1.delete()
     user2.delete()
+
+
+def test_ldap_connection_no_remote(testclient, configuration):
+    validate(configuration)
+
+
+def test_ldap_connection_remote(testclient, configuration, slapd_connection):
+    validate(configuration, validate_remote=True)
+
+
+def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
+    configuration["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Could not connect to the LDAP server",
+    ):
+        validate(configuration, validate_remote=True)
+
+
+def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
+    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
+    with pytest.raises(
+        ConfigurationException,
+        match=r"LDAP authentication failed with user",
+    ):
+        validate(configuration, validate_remote=True)
+
+
+def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
+    from canaille.core.models import User
+
+    def fake_init(*args, **kwarg):
+        raise ldap.INSUFFICIENT_ACCESS
+
+    with mock.patch.object(User, "__init__", fake_init):
+        with pytest.raises(
+            ConfigurationException,
+            match=r"cannot create users at",
+        ):
+            validate(configuration, validate_remote=True)
+
+
+def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
+    from canaille.core.models import Group
+
+    def fake_init(*args, **kwarg):
+        raise ldap.INSUFFICIENT_ACCESS
+
+    with mock.patch.object(Group, "__init__", fake_init):
+        with pytest.raises(
+            ConfigurationException,
+            match=r"cannot create groups at",
+        ):
+            validate(configuration, validate_remote=True)

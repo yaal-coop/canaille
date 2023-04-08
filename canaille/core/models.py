@@ -1,5 +1,5 @@
 import ldap.filter
-from canaille.ldap_backend.ldapobject import LDAPObject
+from canaille.backends.ldap.ldapobject import LDAPObject
 from flask import current_app
 from flask import session
 

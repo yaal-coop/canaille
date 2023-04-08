@@ -4,7 +4,7 @@ from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
-from canaille.ldap_backend.ldapobject import LDAPObject
+from canaille.backends.ldap.ldapobject import LDAPObject
 
 
 class Client(LDAPObject, ClientMixin):

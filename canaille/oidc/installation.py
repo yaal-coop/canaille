@@ -1,7 +1,7 @@
 import os
 
-from canaille.ldap_backend.installation import install_schema
-from canaille.ldap_backend.installation import ldap_connection
+from canaille.backends.ldap.installation import install_schema
+from canaille.backends.ldap.installation import ldap_connection
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Client
 from canaille.oidc.models import Consent
@@ -54,5 +54,5 @@ def setup_schemas(config):
     install_schema(
         config,
         os.path.dirname(os.path.dirname(__file__))
-        + "/ldap_backend/schemas/oauth2-openldap.ldif",
+        + "/backends/ldap/schemas/oauth2-openldap.ldif",
     )

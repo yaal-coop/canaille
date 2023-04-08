@@ -1,7 +1,5 @@
 import os
-from unittest import mock
 
-import ldap
 import pytest
 from canaille import create_app
 from canaille.app.configuration import ConfigurationException
@@ -9,61 +7,9 @@ from canaille.app.configuration import validate
 from flask_webtest import TestApp
 
 
-def test_ldap_connection_no_remote(testclient, configuration):
-    validate(configuration)
-
-
-def test_ldap_connection_remote(testclient, configuration, slapd_connection):
-    validate(configuration, validate_remote=True)
-
-
-def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
-    configuration["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
-    with pytest.raises(
-        ConfigurationException,
-        match=r"Could not connect to the LDAP server",
-    ):
-        validate(configuration, validate_remote=True)
-
-
-def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
-    with pytest.raises(
-        ConfigurationException,
-        match=r"LDAP authentication failed with user",
-    ):
-        validate(configuration, validate_remote=True)
-
-
-def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
-    from canaille.core.models import User
-
-    def fake_init(*args, **kwarg):
-        raise ldap.INSUFFICIENT_ACCESS
-
-    with mock.patch.object(User, "__init__", fake_init):
-        with pytest.raises(
-            ConfigurationException,
-            match=r"cannot create users at",
-        ):
-            validate(configuration, validate_remote=True)
-
-
-def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
-    from canaille.core.models import Group
-
-    def fake_init(*args, **kwarg):
-        raise ldap.INSUFFICIENT_ACCESS
-
-    with mock.patch.object(Group, "__init__", fake_init):
-        with pytest.raises(
-            ConfigurationException,
-            match=r"cannot create groups at",
-        ):
-            validate(configuration, validate_remote=True)
-
-
-def test_smtp_connection_remote_smtp_unreachable(testclient, configuration):
+def test_smtp_connection_remote_smtp_unreachable(
+    testclient, slapd_connection, configuration
+):
     configuration["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     with pytest.raises(
         ConfigurationException,
@@ -72,7 +18,9 @@ def test_smtp_connection_remote_smtp_unreachable(testclient, configuration):
         validate(configuration, validate_remote=True)
 
 
-def test_smtp_connection_remote_smtp_wrong_credentials(testclient, configuration):
+def test_smtp_connection_remote_smtp_wrong_credentials(
+    testclient, slapd_connection, configuration
+):
     configuration["SMTP"]["PASSWORD"] = "invalid-password"
     with pytest.raises(
         ConfigurationException,
@@ -81,7 +29,9 @@ def test_smtp_connection_remote_smtp_wrong_credentials(testclient, configuration
         validate(configuration, validate_remote=True)
 
 
-def test_smtp_connection_remote_smtp_no_credentials(testclient, configuration):
+def test_smtp_connection_remote_smtp_no_credentials(
+    testclient, slapd_connection, configuration
+):
     del configuration["SMTP"]["LOGIN"]
     del configuration["SMTP"]["PASSWORD"]
     validate(configuration, validate_remote=True)
@@ -97,7 +47,11 @@ def test_smtp_bad_tls(testclient, slapd_connection, smtpd, configuration):
 
 
 @pytest.fixture
-def themed_testclient(app, configuration):
+def themed_testclient(
+    app,
+    configuration,
+    slapd_connection,
+):
     configuration["TESTING"] = True
 
     root = os.path.dirname(os.path.abspath(__file__))
@@ -109,7 +63,7 @@ def themed_testclient(app, configuration):
     return TestApp(app)
 
 
-def test_theme(testclient, themed_testclient):
+def test_theme(testclient, themed_testclient, slapd_connection):
     res = testclient.get("/login")
     res.mustcontain(no="TEST_THEME")
 
@@ -117,7 +71,7 @@ def test_theme(testclient, themed_testclient):
     res.mustcontain("TEST_THEME")
 
 
-def test_invalid_theme(configuration):
+def test_invalid_theme(configuration, slapd_connection):
     validate(configuration, validate_remote=False)
 
     with pytest.raises(

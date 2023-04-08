@@ -1,5 +1,5 @@
 include canaille/conf/*.sample.*
-graft canaille/ldap_backend/schemas
+graft canaille/backends/ldap/schemas
 graft canaille/templates
 graft canaille/themes
 graft canaille/translations

@@ -9,7 +9,7 @@ from flask.cli import with_appcontext
 def with_backendcontext(func):
     @functools.wraps(func)
     def _func(*args, **kwargs):
-        from canaille.ldap_backend.backend import (
+        from canaille.backends.ldap.backend import (
             setup_backend,
             teardown_backend,
         )
