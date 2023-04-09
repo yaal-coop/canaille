@@ -1,6 +1,9 @@
+import os
+
 import pytest
 from canaille import create_app
 from canaille.app import models
+from canaille.backends import available_backends
 from flask_webtest import TestApp
 from jinja2 import StrictUndefined
 from pytest_lazyfixture import lazy_fixture
@@ -8,8 +11,39 @@ from werkzeug.security import gen_salt
 
 
 pytest_plugins = [
-    "tests.backends.ldap.fixtures",
+    f"tests.backends.{backend}.fixtures"
+    for backend in available_backends()
+    if os.path.exists(os.path.join("tests", "backends", backend, "fixtures.py"))
 ]
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--backend", action="append", default=[], help="the backends to test"
+    )
+
+
+def pytest_generate_tests(metafunc):
+    backends = available_backends()
+    if metafunc.config.getoption("backend"):  # pragma: no cover
+        backends &= set(metafunc.config.getoption("backend"))
+
+    # tests in tests.backends.BACKENDNAME should only run one backend
+    if metafunc.module.__name__.startswith("tests.backends"):
+        module_name_parts = metafunc.module.__name__.split(".")
+        in_backend_module = len(module_name_parts) > 3
+        if in_backend_module:
+            backend = module_name_parts[2]
+            if backend not in backends:  # pragma: no cover
+                pytest.skip()
+            elif "backend" in metafunc.fixturenames:
+                metafunc.parametrize("backend", [lazy_fixture(f"{backend}_backend")])
+                return
+
+    if "backend" in metafunc.fixturenames:
+        metafunc.parametrize(
+            "backend", [lazy_fixture(f"{backend}_backend") for backend in backends]
+        )
 
 
 @pytest.fixture
@@ -75,11 +109,6 @@ def configuration(smtpd):
         },
     }
     return conf
-
-
-@pytest.fixture(params=[lazy_fixture("ldap_backend")])
-def backend(request):
-    yield request.param
 
 
 @pytest.fixture

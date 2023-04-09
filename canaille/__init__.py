@@ -3,7 +3,6 @@ import os
 from logging.config import dictConfig
 
 from flask import Flask
-from flask import g
 from flask import request
 from flask import session
 from flask_themer import FileSystemThemeLoader
@@ -13,21 +12,6 @@ from flask_wtf.csrf import CSRFProtect
 
 
 csrf = CSRFProtect()
-
-
-def setup_backend(app, backend):
-    from .backends.ldap.backend import Backend
-
-    if not backend:
-        backend = Backend(app.config)
-        backend.init_app(app)
-
-    with app.app_context():
-        g.backend = backend
-        app.backend = backend
-
-    if app.debug:  # pragma: no cover
-        backend.install(app.config)
 
 
 def setup_sentry(app):  # pragma: no cover
@@ -159,20 +143,15 @@ def setup_flask_converters(app):
     from canaille.app.flask import model_converter
     from canaille.app import models
 
-    app.url_map.converters["user"] = model_converter(models.User)
-    app.url_map.converters["group"] = model_converter(models.Group)
-    app.url_map.converters["client"] = model_converter(models.Client)
-    app.url_map.converters["token"] = model_converter(models.Token)
-    app.url_map.converters["authorizationcode"] = model_converter(
-        models.AuthorizationCode
-    )
-    app.url_map.converters["consent"] = model_converter(models.Consent)
+    for model_name, model_class in models.MODELS.items():
+        app.url_map.converters[model_name.lower()] = model_converter(model_class)
 
 
 def create_app(config=None, validate=True, backend=None):
     from .oidc.oauth import setup_oauth
     from .app.i18n import setup_i18n
     from .app.configuration import setup_config
+    from .backends import setup_backend
 
     app = Flask(__name__)
     with app.app_context():
