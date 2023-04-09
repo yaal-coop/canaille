@@ -1,11 +1,10 @@
-from canaille.core.models import Group
-from canaille.core.models import User
+from canaille.app import models
 from canaille.core.populate import fake_groups
 from canaille.core.populate import fake_users
 
 
 def test_no_group(app, backend):
-    assert Group.query() == []
+    assert models.Group.query() == []
 
 
 def test_group_list_pagination(testclient, logged_admin, foo_group):
@@ -49,7 +48,7 @@ def test_group_list_bad_pages(testclient, logged_admin):
 
 
 def test_group_deletion(testclient, backend):
-    user = User(
+    user = models.User(
         formatted_name="foobar",
         family_name="foobar",
         user_name="foobar",
@@ -57,7 +56,7 @@ def test_group_deletion(testclient, backend):
     )
     user.save()
 
-    group = Group(
+    group = models.Group(
         members=[user],
         display_name="foobar",
     )
@@ -109,7 +108,7 @@ def test_set_groups(app, user, foo_group, bar_group):
 
 
 def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
-    user = User(
+    user = models.User(
         formatted_name=" Doe",  # leading space in id attribute
         family_name="Doe",
         user_name="user2",
@@ -137,8 +136,8 @@ def test_moderator_can_create_edit_and_delete_group(
 ):
     # The group does not exist
     res = testclient.get("/groups", status=200)
-    assert Group.get(display_name="bar") is None
-    assert Group.get(display_name="foo") == foo_group
+    assert models.Group.get(display_name="bar") is None
+    assert models.Group.get(display_name="foo") == foo_group
     res.mustcontain(no="bar")
     res.mustcontain("foo")
 
@@ -152,7 +151,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = form.submit(status=302).follow(status=200)
 
     logged_moderator.reload()
-    bar_group = Group.get(display_name="bar")
+    bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo"]
     assert bar_group.members == [
@@ -168,17 +167,17 @@ def test_moderator_can_create_edit_and_delete_group(
 
     res = form.submit(name="action", value="edit").follow()
 
-    bar_group = Group.get(display_name="bar")
+    bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo2"]
-    assert Group.get(display_name="bar2") is None
+    assert models.Group.get(display_name="bar2") is None
     members = bar_group.members
     for member in members:
         res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
     res = form.submit(name="action", value="delete", status=302)
-    assert Group.get(display_name="bar") is None
+    assert models.Group.get(display_name="bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
 

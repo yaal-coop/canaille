@@ -3,6 +3,7 @@ from unittest import mock
 
 import ldap.dn
 import pytest
+from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.configuration import validate
 from canaille.backends.ldap.backend import setup_ldap_models
@@ -11,12 +12,10 @@ from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
 from canaille.backends.ldap.utils import ldap_to_python
 from canaille.backends.ldap.utils import python_to_ldap
 from canaille.backends.ldap.utils import Syntax
-from canaille.core.models import Group
-from canaille.core.models import User
 
 
 def test_object_creation(app, backend):
-    user = User(
+    user = models.User(
         formatted_name="Doe",  # leading space
         family_name="Doe",
         user_name="user",
@@ -26,7 +25,7 @@ def test_object_creation(app, backend):
     user.save()
     assert user.exists
 
-    user = User.get(id=user.id)
+    user = models.User.get(id=user.id)
     assert user.exists
 
     user.delete()
@@ -38,7 +37,7 @@ def test_repr(backend, foo_group, user):
 
 
 def test_dn_when_leading_space_in_id_attribute(backend):
-    user = User(
+    user = models.User(
         formatted_name=" Doe",  # leading space
         family_name="Doe",
         user_name="user",
@@ -54,7 +53,7 @@ def test_dn_when_leading_space_in_id_attribute(backend):
 
 
 def test_dn_when_ldap_special_char_in_id_attribute(backend):
-    user = User(
+    user = models.User(
         formatted_name="#Doe",  # special char
         family_name="Doe",
         user_name="user",
@@ -70,27 +69,32 @@ def test_dn_when_ldap_special_char_in_id_attribute(backend):
 
 
 def test_filter(backend, foo_group, bar_group):
-    assert Group.query(display_name="foo") == [foo_group]
-    assert Group.query(display_name="bar") == [bar_group]
+    assert models.Group.query(display_name="foo") == [foo_group]
+    assert models.Group.query(display_name="bar") == [bar_group]
 
-    assert Group.query(display_name="foo") != 3
+    assert models.Group.query(display_name="foo") != 3
 
-    assert Group.query(display_name=["foo"]) == [foo_group]
-    assert Group.query(display_name=["bar"]) == [bar_group]
+    assert models.Group.query(display_name=["foo"]) == [foo_group]
+    assert models.Group.query(display_name=["bar"]) == [bar_group]
 
-    assert set(Group.query(display_name=["foo", "bar"])) == {foo_group, bar_group}
+    assert set(models.Group.query(display_name=["foo", "bar"])) == {
+        foo_group,
+        bar_group,
+    }
 
 
 def test_fuzzy(backend, user, moderator, admin):
-    assert set(User.query()) == {user, moderator, admin}
-    assert set(User.fuzzy("Jack")) == {moderator}
-    assert set(User.fuzzy("Jack", ["formatted_name"])) == {moderator}
-    assert set(User.fuzzy("Jack", ["user_name"])) == set()
-    assert set(User.fuzzy("Jack", ["user_name", "formatted_name"])) == {moderator}
-    assert set(User.fuzzy("moderator")) == {moderator}
-    assert set(User.fuzzy("oderat")) == {moderator}
-    assert set(User.fuzzy("oDeRat")) == {moderator}
-    assert set(User.fuzzy("ack")) == {moderator}
+    assert set(models.User.query()) == {user, moderator, admin}
+    assert set(models.User.fuzzy("Jack")) == {moderator}
+    assert set(models.User.fuzzy("Jack", ["formatted_name"])) == {moderator}
+    assert set(models.User.fuzzy("Jack", ["user_name"])) == set()
+    assert set(models.User.fuzzy("Jack", ["user_name", "formatted_name"])) == {
+        moderator
+    }
+    assert set(models.User.fuzzy("moderator")) == {moderator}
+    assert set(models.User.fuzzy("oderat")) == {moderator}
+    assert set(models.User.fuzzy("oDeRat")) == {moderator}
+    assert set(models.User.fuzzy("ack")) == {moderator}
 
 
 def test_ldap_to_python():
@@ -180,11 +184,11 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
     foo_group.save()
     g = LDAPObject.get(id=foo_group.dn)
-    assert isinstance(g, Group)
+    assert isinstance(g, models.Group)
     assert g == foo_group
     assert g.cn == foo_group.cn
 
-    ou = LDAPObject.get(id=f"{Group.base},{Group.root_dn}")
+    ou = LDAPObject.get(id=f"{models.Group.base},{models.Group.root_dn}")
     assert isinstance(ou, LDAPObject)
 
 
@@ -192,11 +196,11 @@ def test_object_class_update(backend, testclient):
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
-    user1 = User(cn="foo1", sn="bar1")
+    user1 = models.User(cn="foo1", sn="bar1")
     user1.save()
 
     assert user1.objectClass == ["inetOrgPerson"]
-    assert User.get(id=user1.id).objectClass == ["inetOrgPerson"]
+    assert models.User.get(id=user1.id).objectClass == ["inetOrgPerson"]
 
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
@@ -204,18 +208,24 @@ def test_object_class_update(backend, testclient):
     ]
     setup_ldap_models(testclient.app.config)
 
-    user2 = User(cn="foo2", sn="bar2")
+    user2 = models.User(cn="foo2", sn="bar2")
     user2.save()
 
     assert user2.objectClass == ["inetOrgPerson", "extensibleObject"]
-    assert User.get(id=user2.id).objectClass == ["inetOrgPerson", "extensibleObject"]
+    assert models.User.get(id=user2.id).objectClass == [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
 
-    user1 = User.get(id=user1.id)
+    user1 = models.User.get(id=user1.id)
     assert user1.objectClass == ["inetOrgPerson"]
 
     user1.save()
     assert user1.objectClass == ["inetOrgPerson", "extensibleObject"]
-    assert User.get(id=user1.id).objectClass == ["inetOrgPerson", "extensibleObject"]
+    assert models.User.get(id=user1.id).objectClass == [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
 
     user1.delete()
     user2.delete()

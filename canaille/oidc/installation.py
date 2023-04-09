@@ -1,11 +1,8 @@
 import os
 
+from canaille.app import models
 from canaille.backends.ldap.installation import install_schema
 from canaille.backends.ldap.installation import ldap_connection
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Client
-from canaille.oidc.models import Consent
-from canaille.oidc.models import Token
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -19,10 +16,10 @@ def install(config):
 
 def setup_ldap_tree(config):
     with ldap_connection(config) as conn:
-        Token.install(conn)
-        AuthorizationCode.install(conn)
-        Client.install(conn)
-        Consent.install(conn)
+        models.Token.install(conn)
+        models.AuthorizationCode.install(conn)
+        models.Client.install(conn)
+        models.Consent.install(conn)
 
 
 def setup_keypair(config):

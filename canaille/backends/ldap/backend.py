@@ -76,8 +76,7 @@ class LDAPBackend(Backend):
     @classmethod
     def validate(cls, config):
         from canaille.app.configuration import ConfigurationException
-        from canaille.core.models import Group
-        from canaille.core.models import User
+        from canaille.app import models
 
         try:
             conn = ldap.initialize(config["BACKENDS"]["LDAP"]["URI"])
@@ -100,8 +99,8 @@ class LDAPBackend(Backend):
             ) from exc
 
         try:
-            User.ldap_object_classes(conn)
-            user = User(
+            models.User.ldap_object_classes(conn)
+            user = models.User(
                 formatted_name=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
                 user_name=f"canaille_{uuid.uuid4()}",
@@ -118,9 +117,9 @@ class LDAPBackend(Backend):
             ) from exc
 
         try:
-            Group.ldap_object_classes(conn)
+            models.Group.ldap_object_classes(conn)
 
-            user = User(
+            user = models.User(
                 cn=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
                 user_name=f"canaille_{uuid.uuid4()}",
@@ -129,7 +128,7 @@ class LDAPBackend(Backend):
             )
             user.save(conn)
 
-            group = Group(
+            group = models.Group(
                 display_name=f"canaille_{uuid.uuid4()}",
                 members=[user],
             )
@@ -150,22 +149,21 @@ class LDAPBackend(Backend):
 
 def setup_ldap_models(config):
     from .ldapobject import LDAPObject
-    from canaille.core.models import Group
-    from canaille.core.models import User
+    from canaille.app import models
 
     LDAPObject.root_dn = config["BACKENDS"]["LDAP"]["ROOT_DN"]
 
     user_base = config["BACKENDS"]["LDAP"]["USER_BASE"].replace(
         f',{config["BACKENDS"]["LDAP"]["ROOT_DN"]}', ""
     )
-    User.base = user_base
-    User.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE
+    models.User.base = user_base
+    models.User.rdn_attribute = config["BACKENDS"]["LDAP"].get(
+        "USER_ID_ATTRIBUTE", models.User.DEFAULT_ID_ATTRIBUTE
     )
     object_class = config["BACKENDS"]["LDAP"].get(
-        "USER_CLASS", User.DEFAULT_OBJECT_CLASS
+        "USER_CLASS", models.User.DEFAULT_OBJECT_CLASS
     )
-    User.ldap_object_class = (
+    models.User.ldap_object_class = (
         object_class if isinstance(object_class, list) else [object_class]
     )
 
@@ -174,13 +172,13 @@ def setup_ldap_models(config):
         .get("GROUP_BASE", "")
         .replace(f',{config["BACKENDS"]["LDAP"]["ROOT_DN"]}', "")
     )
-    Group.base = group_base or None
-    Group.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE
+    models.Group.base = group_base or None
+    models.Group.rdn_attribute = config["BACKENDS"]["LDAP"].get(
+        "GROUP_ID_ATTRIBUTE", models.Group.DEFAULT_ID_ATTRIBUTE
     )
     object_class = config["BACKENDS"]["LDAP"].get(
-        "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
+        "GROUP_CLASS", models.Group.DEFAULT_OBJECT_CLASS
     )
-    Group.ldap_object_class = (
+    models.Group.ldap_object_class = (
         object_class if isinstance(object_class, list) else [object_class]
     )

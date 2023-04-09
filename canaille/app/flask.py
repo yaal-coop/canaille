@@ -3,7 +3,7 @@ from functools import wraps
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
-from canaille.core.models import User
+from canaille.app import models
 from flask import abort
 from flask import current_app
 from flask import render_template
@@ -14,7 +14,7 @@ from flask_babel import gettext as _
 
 def current_user():
     for user_id in session.get("user_id", [])[::-1]:
-        user = User.get(id=user_id)
+        user = models.User.get(id=user_id)
         if user:
             return user
 

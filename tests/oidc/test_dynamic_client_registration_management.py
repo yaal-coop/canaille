@@ -1,7 +1,7 @@
 import warnings
 from datetime import datetime
 
-from canaille.oidc.models import Client
+from canaille.app import models
 
 
 def test_get(testclient, backend, client, user):
@@ -95,7 +95,7 @@ def test_update(testclient, backend, client, user):
     res = testclient.put_json(
         f"/oauth/register/{client.client_id}", payload, headers=headers, status=200
     )
-    client = Client.get(client_id=res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
 
     assert res.json == {
         "client_id": client.client_id,
@@ -145,7 +145,7 @@ def test_delete(testclient, backend, user):
         "static-token"
     ]
 
-    client = Client(client_id="foobar", client_name="Some client")
+    client = models.Client(client_id="foobar", client_name="Some client")
     client.save()
 
     headers = {"Authorization": "Bearer static-token"}
@@ -153,7 +153,7 @@ def test_delete(testclient, backend, user):
         res = testclient.delete(
             f"/oauth/register/{client.client_id}", headers=headers, status=204
         )
-    assert not Client.get(client_id=client.client_id)
+    assert not models.Client.get(client_id=client.client_id)
 
 
 def test_invalid_client(testclient, backend, user):

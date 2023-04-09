@@ -26,14 +26,10 @@ from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from authlib.oidc.core.grants.util import generate_id_token
-from canaille.core.models import User
+from canaille.app import models
 from flask import current_app
 from flask import request
 from werkzeug.security import gen_salt
-
-from .models import AuthorizationCode
-from .models import Client
-from .models import Token
 
 DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"
@@ -55,8 +51,8 @@ DEFAULT_JWT_MAPPING = {
 
 
 def exists_nonce(nonce, req):
-    client = Client.get(id=req.client_id)
-    exists = AuthorizationCode.query(client=client, nonce=nonce)
+    client = models.Client.get(id=req.client_id)
+    exists = models.AuthorizationCode.query(client=client, nonce=nonce)
     return bool(exists)
 
 
@@ -142,7 +138,7 @@ def save_authorization_code(code, request):
     nonce = request.data.get("nonce")
     now = datetime.datetime.now(datetime.timezone.utc)
     scope = request.client.get_allowed_scope(request.scope)
-    code = AuthorizationCode(
+    code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code=code,
         subject=request.user,
@@ -166,7 +162,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = AuthorizationCode.query(code=code, client=client)
+        item = models.AuthorizationCode.query(code=code, client=client)
         if item and not item[0].is_expired():
             return item[0]
 
@@ -196,7 +192,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        user = User.get_from_login(username)
+        user = models.User.get_from_login(username)
 
         if not user or not user.check_password(password):
             return None
@@ -206,7 +202,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
 class RefreshTokenGrant(_RefreshTokenGrant):
     def authenticate_refresh_token(self, refresh_token):
-        token = Token.query(refresh_token=refresh_token)
+        token = models.Token.query(refresh_token=refresh_token)
         if token and token[0].is_refresh_token_active():
             return token[0]
 
@@ -252,12 +248,12 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
 
 def query_client(client_id):
-    return Client.get(client_id=client_id)
+    return models.Client.get(client_id=client_id)
 
 
 def save_token(token, request):
     now = datetime.datetime.now(datetime.timezone.utc)
-    t = Token(
+    t = models.Token(
         token_id=gen_salt(48),
         type=token["token_type"],
         access_token=token["access_token"],
@@ -274,20 +270,20 @@ def save_token(token, request):
 
 class BearerTokenValidator(_BearerTokenValidator):
     def authenticate_token(self, token_string):
-        return Token.get(access_token=token_string)
+        return models.Token.get(access_token=token_string)
 
 
 def query_token(token, token_type_hint):
     if token_type_hint == "access_token":
-        return Token.get(access_token=token)
+        return models.Token.get(access_token=token)
     elif token_type_hint == "refresh_token":
-        return Token.get(refresh_token=token)
+        return models.Token.get(refresh_token=token)
 
-    item = Token.get(access_token=token)
+    item = models.Token.get(access_token=token)
     if item:
         return item
 
-    item = Token.get(refresh_token=token)
+    item = models.Token.get(refresh_token=token)
     if item:
         return item
 
@@ -369,7 +365,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
             client_metadata["scope"], list
         ):
             client_metadata["scope"] = client_metadata["scope"].split(" ")
-        client = Client(**client_info, **client_metadata)
+        client = models.Client(**client_info, **client_metadata)
         client.save()
         return client
 
@@ -377,7 +373,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
 class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEndpoint):
     def authenticate_client(self, request):
         client_id = request.uri.split("/")[-1]
-        return Client.get(client_id=client_id)
+        return models.Client.get(client_id=client_id)
 
     def revoke_access_token(self, request, token):
         pass

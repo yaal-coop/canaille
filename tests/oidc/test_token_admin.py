@@ -1,6 +1,6 @@
 import datetime
 
-from canaille.oidc.models import Token
+from canaille.app import models
 from werkzeug.security import gen_salt
 
 
@@ -22,7 +22,7 @@ def test_token_list_pagination(testclient, logged_admin, client):
     res.mustcontain("0 items")
     tokens = []
     for _ in range(26):
-        token = Token(
+        token = models.Token(
             token_id=gen_salt(48),
             access_token="my-valid-token",
             client=client,
@@ -75,7 +75,7 @@ def test_token_list_bad_pages(testclient, logged_admin):
 
 
 def test_token_list_search(testclient, logged_admin, client):
-    token1 = Token(
+    token1 = models.Token(
         token_id=gen_salt(48),
         access_token="this-token-is-ok",
         client=client,
@@ -89,7 +89,7 @@ def test_token_list_search(testclient, logged_admin, client):
         lifetime=3600,
     )
     token1.save()
-    token2 = Token(
+    token2 = models.Token(
         token_id=gen_salt(48),
         access_token="this-token-is-valid",
         client=client,

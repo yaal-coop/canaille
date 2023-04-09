@@ -1,9 +1,9 @@
 import datetime
 
+from canaille.app import models
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
-from canaille.oidc.models import Token
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -19,7 +19,7 @@ bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 @bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def index(user):
-    table_form = TableForm(Token, formdata=request.form)
+    table_form = TableForm(models.Token, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
@@ -31,7 +31,7 @@ def index(user):
 @bp.route("/<token_id>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def view(user, token_id):
-    token = Token.get(token_id=token_id)
+    token = models.Token.get(token_id=token_id)
 
     if not token:
         abort(404)
@@ -46,7 +46,7 @@ def view(user, token_id):
 @bp.route("/<token_id>/revoke", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def revoke(user, token_id):
-    token = Token.get(token_id=token_id)
+    token = models.Token.get(token_id=token_id)
 
     if not token:
         abort(404)

@@ -4,10 +4,7 @@ import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Client
-from canaille.oidc.models import Consent
-from canaille.oidc.models import Token
+from canaille.app import models
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
@@ -71,7 +68,7 @@ def configuration(configuration, keypair_path):
 
 @pytest.fixture
 def client(testclient, other_client, backend):
-    c = Client(
+    c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
         contacts="contact@mydomain.tld",
@@ -107,7 +104,7 @@ def client(testclient, other_client, backend):
 
 @pytest.fixture
 def other_client(testclient, backend):
-    c = Client(
+    c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
         contacts="contact@myotherdomain.tld",
@@ -143,7 +140,7 @@ def other_client(testclient, backend):
 
 @pytest.fixture
 def authorization(testclient, user, client, backend):
-    a = AuthorizationCode(
+    a = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
         client=client,
@@ -165,7 +162,7 @@ def authorization(testclient, user, client, backend):
 
 @pytest.fixture
 def token(testclient, client, user, backend):
-    t = Token(
+    t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
         audience=[client],
@@ -194,7 +191,7 @@ def id_token(testclient, client, user, backend):
 
 @pytest.fixture
 def consent(testclient, client, user, backend):
-    t = Consent(
+    t = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client,
         subject=user,

@@ -1,6 +1,6 @@
 from unittest import mock
 
-from canaille.core.models import User
+from canaille.app import models
 
 
 def test_edition(
@@ -126,7 +126,7 @@ def test_password_change_fail(testclient, logged_user):
 
 
 def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -162,7 +162,7 @@ def test_password_initialization_mail_send_fail(
     SMTP, smtpd, testclient, backend, logged_admin
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -232,7 +232,7 @@ def test_invalid_form_request(testclient, logged_admin):
 
 
 def test_password_reset_email(smtpd, testclient, backend, logged_admin):
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -260,7 +260,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
 @mock.patch("smtplib.SMTP")
 def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_admin):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",

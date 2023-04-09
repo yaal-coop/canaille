@@ -1,9 +1,8 @@
 import pytest
 import slapd
 from canaille import create_app
+from canaille.app import models
 from canaille.backends.ldap.backend import LDAPBackend
-from canaille.core.models import Group
-from canaille.core.models import User
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 
@@ -156,7 +155,7 @@ def testclient(app):
 
 @pytest.fixture
 def user(app, backend):
-    u = User(
+    u = models.User(
         formatted_name="John (johnny) Doe",
         given_name="John",
         family_name="Doe",
@@ -176,7 +175,7 @@ def user(app, backend):
 
 @pytest.fixture
 def admin(app, backend):
-    u = User(
+    u = models.User(
         formatted_name="Jane Doe",
         family_name="Doe",
         user_name="admin",
@@ -190,7 +189,7 @@ def admin(app, backend):
 
 @pytest.fixture
 def moderator(app, backend):
-    u = User(
+    u = models.User(
         formatted_name="Jack Doe",
         family_name="Doe",
         user_name="moderator",
@@ -225,7 +224,7 @@ def logged_moderator(moderator, testclient):
 
 @pytest.fixture
 def foo_group(app, user, backend):
-    group = Group(
+    group = models.Group(
         members=[user],
         display_name="foo",
     )
@@ -237,7 +236,7 @@ def foo_group(app, user, backend):
 
 @pytest.fixture
 def bar_group(app, admin, backend):
-    group = Group(
+    group = models.Group(
         members=[admin],
         display_name="bar",
     )

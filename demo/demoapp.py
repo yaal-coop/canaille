@@ -10,15 +10,13 @@ from canaille import create_app as canaille_app
 
 
 def populate(app):
-    from canaille.core.models import Group
-    from canaille.core.models import User
+    from canaille.app import models
     from canaille.core.populate import fake_groups
     from canaille.core.populate import fake_users
-    from canaille.oidc.models import Client
 
     with app.app_context():
         with app.backend.session():
-            jane = User(
+            jane = models.User(
                 formatted_name="Jane Doe",
                 given_name="Jane",
                 family_name="Doe",
@@ -38,7 +36,7 @@ def populate(app):
             )
             jane.save()
 
-            jack = User(
+            jack = models.User(
                 formatted_name="Jack Doe",
                 given_name="Jack",
                 family_name="Doe",
@@ -53,7 +51,7 @@ def populate(app):
             )
             jack.save()
 
-            john = User(
+            john = models.User(
                 formatted_name="John Doe",
                 given_name="John",
                 family_name="Doe",
@@ -68,7 +66,7 @@ def populate(app):
             )
             john.save()
 
-            james = User(
+            james = models.User(
                 formatted_name="James Doe",
                 given_name="James",
                 family_name="Doe",
@@ -77,28 +75,28 @@ def populate(app):
             )
             james.save()
 
-            users = Group(
+            users = models.Group(
                 display_name="users",
                 members=[jane, jack, john, james],
                 description="The regular users.",
             )
             users.save()
 
-            users = Group(
+            users = models.Group(
                 display_name="admins",
                 members=[jane],
                 description="The administrators.",
             )
             users.save()
 
-            users = Group(
+            users = models.Group(
                 display_name="moderators",
                 members=[james],
                 description="People who can manage users.",
             )
             users.save()
 
-            client1 = Client(
+            client1 = models.Client(
                 client_id="1JGkkzCbeHpGtlqgI5EENByf",
                 client_secret="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x",
                 client_name="Client1",
@@ -115,7 +113,7 @@ def populate(app):
             )
             client1.save()
 
-            client2 = Client(
+            client2 = models.Client(
                 client_id="gn4yFN7GDykL7QP8v8gS9YfV",
                 client_secret="ouFJE5WpICt6hxTyf8icXPeeklMektMY4gV0Rmf3aY60VElA",
                 client_name="Client2",

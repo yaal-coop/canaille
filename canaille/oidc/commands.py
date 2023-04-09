@@ -1,7 +1,6 @@
 import click
+from canaille.app import models
 from canaille.app.commands import with_backendcontext
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Token
 from flask.cli import with_appcontext
 
 
@@ -12,11 +11,11 @@ def clean():
     """
     Remove expired tokens and authorization codes.
     """
-    for t in Token.query():
+    for t in models.Token.query():
         if t.is_expired():
             t.delete()
 
-    for a in AuthorizationCode.query():
+    for a in models.AuthorizationCode.query():
         if a.is_expired():
             a.delete()
 

@@ -3,7 +3,7 @@ import hashlib
 import json
 import re
 
-from canaille.core.models import User
+from canaille.app import models
 from flask import current_app
 from flask import request
 from flask_babel import gettext as _
@@ -26,7 +26,7 @@ def profile_hash(*args):
 
 def login_placeholder():
     user_filter = current_app.config["BACKENDS"]["LDAP"].get(
-        "USER_FILTER", User.DEFAULT_FILTER
+        "USER_FILTER", models.User.DEFAULT_FILTER
     )
     placeholders = []
 

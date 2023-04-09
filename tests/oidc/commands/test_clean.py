@@ -1,13 +1,12 @@
 import datetime
 
+from canaille.app import models
 from canaille.commands import cli
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Token
 from werkzeug.security import gen_salt
 
 
 def test_clean_command(testclient, backend, client, user):
-    valid_code = AuthorizationCode(
+    valid_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",
         client=client,
@@ -23,7 +22,7 @@ def test_clean_command(testclient, backend, client, user):
         revokation="",
     )
     valid_code.save()
-    expired_code = AuthorizationCode(
+    expired_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-expired-code",
         client=client,
@@ -43,7 +42,7 @@ def test_clean_command(testclient, backend, client, user):
     )
     expired_code.save()
 
-    valid_token = Token(
+    valid_token = models.Token(
         token_id=gen_salt(48),
         access_token="my-valid-token",
         client=client,
@@ -57,7 +56,7 @@ def test_clean_command(testclient, backend, client, user):
         lifetime=3600,
     )
     valid_token.save()
-    expired_token = Token(
+    expired_token = models.Token(
         token_id=gen_salt(48),
         access_token="my-expired-token",
         client=client,
@@ -73,8 +72,8 @@ def test_clean_command(testclient, backend, client, user):
     )
     expired_token.save()
 
-    assert AuthorizationCode.get(code="my-expired-code")
-    assert Token.get(access_token="my-expired-token")
+    assert models.AuthorizationCode.get(code="my-expired-code")
+    assert models.Token.get(access_token="my-expired-token")
     assert expired_code.is_expired()
     assert expired_token.is_expired()
 
@@ -82,5 +81,5 @@ def test_clean_command(testclient, backend, client, user):
     res = runner.invoke(cli, ["clean"])
     assert res.exit_code == 0, res.stdout
 
-    assert AuthorizationCode.query() == [valid_code]
-    assert Token.query() == [valid_token]
+    assert models.AuthorizationCode.query() == [valid_code]
+    assert models.Token.query() == [valid_token]

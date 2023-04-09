@@ -1,6 +1,6 @@
 from unittest import mock
 
-from canaille.core.models import User
+from canaille.app import models
 
 
 def test_index(testclient, user):
@@ -112,7 +112,7 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
 
 def test_user_without_password_first_login(testclient, backend, smtpd):
     assert len(smtpd.messages) == 0
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -146,7 +146,7 @@ def test_first_login_account_initialization_mail_sending_failed(
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     assert len(smtpd.messages) == 0
 
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -168,7 +168,7 @@ def test_first_login_account_initialization_mail_sending_failed(
 
 def test_first_login_form_error(testclient, backend, smtpd):
     assert len(smtpd.messages) == 0
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -190,7 +190,7 @@ def test_first_login_page_unavailable_for_users_with_password(
 
 
 def test_user_password_deleted_during_login(testclient, backend):
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -214,7 +214,7 @@ def test_user_password_deleted_during_login(testclient, backend):
 
 
 def test_user_deleted_in_session(testclient, backend):
-    u = User(
+    u = models.User(
         formatted_name="Jake Doe",
         family_name="Jake",
         user_name="jake",
@@ -278,7 +278,7 @@ def test_wrong_login(testclient, user):
 
 
 def test_admin_self_deletion(testclient, backend):
-    admin = User(
+    admin = models.User(
         formatted_name="Temp admin",
         family_name="admin",
         user_name="temp",
@@ -296,14 +296,14 @@ def test_admin_self_deletion(testclient, backend):
         .follow(status=200)
     )
 
-    assert User.get_from_login("temp") is None
+    assert models.User.get_from_login("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
 
 
 def test_user_self_deletion(testclient, backend):
-    user = User(
+    user = models.User(
         formatted_name="Temp user",
         family_name="user",
         user_name="temp",
@@ -330,7 +330,7 @@ def test_user_self_deletion(testclient, backend):
         .follow(status=200)
     )
 
-    assert User.get_from_login("temp") is None
+    assert models.User.get_from_login("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")

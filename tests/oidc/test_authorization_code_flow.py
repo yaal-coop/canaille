@@ -5,10 +5,7 @@ from urllib.parse import urlsplit
 import freezegun
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
-from canaille.core.models import User
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Consent
-from canaille.oidc.models import Token
+from canaille.app import models
 from canaille.oidc.oauth import setup_oauth
 from werkzeug.security import gen_salt
 
@@ -18,7 +15,7 @@ from . import client_credentials
 def test_authorization_code_flow(
     testclient, logged_user, client, keypair, other_client
 ):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     res = testclient.get(
         "/oauth/authorize",
@@ -36,7 +33,7 @@ def test_authorization_code_flow(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
     assert set(authcode.scope[0].split(" ")) == {
         "openid",
@@ -47,7 +44,7 @@ def test_authorization_code_flow(
         "phone",
     }
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert set(consents[0].scope) == {
         "openid",
         "profile",
@@ -70,7 +67,7 @@ def test_authorization_code_flow(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
     assert set(token.scope[0].split(" ")) == {
@@ -119,7 +116,7 @@ def test_invalid_client(testclient, logged_user, keypair):
 def test_authorization_code_flow_with_redirect_uri(
     testclient, logged_user, client, keypair, other_client
 ):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     res = testclient.get(
         "/oauth/authorize",
@@ -138,9 +135,9 @@ def test_authorization_code_flow_with_redirect_uri(
     assert res.location.startswith(client.redirect_uris[1])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
 
     res = testclient.post(
         "/oauth/token",
@@ -155,7 +152,7 @@ def test_authorization_code_flow_with_redirect_uri(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -166,7 +163,7 @@ def test_authorization_code_flow_with_redirect_uri(
 def test_authorization_code_flow_preconsented(
     testclient, logged_user, client, keypair, other_client
 ):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     client.preconsent = True
     client.save()
@@ -185,10 +182,10 @@ def test_authorization_code_flow_preconsented(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert not consents
 
     res = testclient.post(
@@ -204,7 +201,7 @@ def test_authorization_code_flow_preconsented(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -223,7 +220,7 @@ def test_authorization_code_flow_preconsented(
 
 
 def test_logout_login(testclient, logged_user, client):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     res = testclient.get(
         "/oauth/authorize",
@@ -254,10 +251,10 @@ def test_logout_login(testclient, logged_user, client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(
@@ -273,7 +270,7 @@ def test_logout_login(testclient, logged_user, client):
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -289,7 +286,7 @@ def test_logout_login(testclient, logged_user, client):
 
 
 def test_deny(testclient, logged_user, client):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     res = testclient.get(
         "/oauth/authorize",
@@ -308,11 +305,11 @@ def test_deny(testclient, logged_user, client):
     error = params["error"][0]
     assert error == "access_denied"
 
-    assert not Consent.query()
+    assert not models.Consent.query()
 
 
 def test_refresh_token(testclient, user, client):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get(
@@ -335,10 +332,10 @@ def test_refresh_token(testclient, user, client):
         assert res.location.startswith(client.redirect_uris[0])
         params = parse_qs(urlsplit(res.location).query)
         code = params["code"][0]
-        authcode = AuthorizationCode.get(code=code)
+        authcode = models.AuthorizationCode.get(code=code)
         assert authcode is not None
 
-        consents = Consent.query(client=client, subject=user)
+        consents = models.Consent.query(client=client, subject=user)
         assert "profile" in consents[0].scope
 
     with freezegun.freeze_time("2020-01-01 00:01:00"):
@@ -354,7 +351,7 @@ def test_refresh_token(testclient, user, client):
             status=200,
         )
         access_token = res.json["access_token"]
-        old_token = Token.get(access_token=access_token)
+        old_token = models.Token.get(access_token=access_token)
         assert old_token is not None
         assert not old_token.revokation_date
 
@@ -369,7 +366,7 @@ def test_refresh_token(testclient, user, client):
             status=200,
         )
         access_token = res.json["access_token"]
-        new_token = Token.get(access_token=access_token)
+        new_token = models.Token.get(access_token=access_token)
         assert new_token is not None
         assert old_token.access_token != new_token.access_token
 
@@ -389,7 +386,7 @@ def test_refresh_token(testclient, user, client):
 
 
 def test_code_challenge(testclient, logged_user, client):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     client.token_endpoint_auth_method = "none"
     client.save()
@@ -415,10 +412,10 @@ def test_code_challenge(testclient, logged_user, client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(
@@ -435,7 +432,7 @@ def test_code_challenge(testclient, logged_user, client):
     )
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -456,7 +453,7 @@ def test_code_challenge(testclient, logged_user, client):
 def test_authorization_code_flow_when_consent_already_given(
     testclient, logged_user, client
 ):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     res = testclient.get(
         "/oauth/authorize",
@@ -474,10 +471,10 @@ def test_authorization_code_flow_when_consent_already_given(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(
@@ -514,7 +511,7 @@ def test_authorization_code_flow_when_consent_already_given(
 def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
     testclient, logged_user, client
 ):
-    assert not Consent.query()
+    assert not models.Consent.query()
 
     res = testclient.get(
         "/oauth/authorize",
@@ -532,10 +529,10 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert "profile" in consents[0].scope
     assert "groups" not in consents[0].scope
 
@@ -568,10 +565,10 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert "profile" in consents[0].scope
     assert "groups" in consents[0].scope
 
@@ -604,7 +601,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
 
 
 def test_prompt_none(testclient, logged_user, client):
-    consent = Consent(
+    consent = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client,
         subject=logged_user,
@@ -631,7 +628,7 @@ def test_prompt_none(testclient, logged_user, client):
 
 
 def test_prompt_not_logged(testclient, user, client):
-    consent = Consent(
+    consent = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client,
         subject=user,
@@ -685,7 +682,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
 
 
 def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
-    assert not Consent.query()
+    assert not models.Consent.query()
     testclient.app.config["REQUIRE_NONCE"] = False
 
     res = testclient.get(
@@ -701,14 +698,14 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
     res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.redirect_uris[0])
-    for consent in Consent.query():
+    for consent in models.Consent.query():
         consent.delete()
 
 
 def test_authorization_code_request_scope_too_large(
     testclient, logged_user, keypair, other_client
 ):
-    assert not Consent.query()
+    assert not models.Consent.query()
     assert "email" not in other_client.scope
 
     res = testclient.get(
@@ -726,13 +723,13 @@ def test_authorization_code_request_scope_too_large(
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert set(authcode.scope[0].split(" ")) == {
         "openid",
         "profile",
     }
 
-    consents = Consent.query(client=other_client, subject=logged_user)
+    consents = models.Consent.query(client=other_client, subject=logged_user)
     assert set(consents[0].scope) == {
         "openid",
         "profile",
@@ -751,7 +748,7 @@ def test_authorization_code_request_scope_too_large(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == other_client
     assert token.subject == logged_user
     assert set(token.scope[0].split(" ")) == {
@@ -813,7 +810,7 @@ def test_authorization_code_expired(testclient, user, client):
 
 
 def test_code_with_invalid_user(testclient, admin, client):
-    user = User(
+    user = models.User(
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
@@ -838,7 +835,7 @@ def test_code_with_invalid_user(testclient, admin, client):
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
 
     user.delete()
 
@@ -861,7 +858,7 @@ def test_code_with_invalid_user(testclient, admin, client):
 
 
 def test_refresh_token_with_invalid_user(testclient, client):
-    user = User(
+    user = models.User(
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
@@ -888,7 +885,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
 
     res = testclient.post(
         "/oauth/token",
@@ -919,7 +916,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
         "error": "invalid_request",
         "error_description": 'There is no "user" for this token.',
     }
-    Token.get(access_token=access_token).delete()
+    models.Token.get(access_token=access_token).delete()
 
 
 def test_token_default_expiration_date(testclient, logged_user, client, keypair):
@@ -937,7 +934,7 @@ def test_token_default_expiration_date(testclient, logged_user, client, keypair)
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode.lifetime == 84400
 
     res = testclient.post(
@@ -955,7 +952,7 @@ def test_token_default_expiration_date(testclient, logged_user, client, keypair)
     assert res.json["expires_in"] == 864000
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.lifetime == 864000
 
     claims = jwt.decode(access_token, keypair[1])
@@ -965,7 +962,7 @@ def test_token_default_expiration_date(testclient, logged_user, client, keypair)
     claims = jwt.decode(id_token, keypair[1])
     assert claims["exp"] - claims["iat"] == 3600
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     for consent in consents:
         consent.delete()
 
@@ -995,7 +992,7 @@ def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode.lifetime == 84400
 
     res = testclient.post(
@@ -1013,7 +1010,7 @@ def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
     assert res.json["expires_in"] == 1000
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.lifetime == 1000
 
     claims = jwt.decode(access_token, keypair[1])
@@ -1023,6 +1020,6 @@ def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
     claims = jwt.decode(id_token, keypair[1])
     assert claims["exp"] - claims["iat"] == 6000
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     for consent in consents:
         consent.delete()

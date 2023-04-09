@@ -2,8 +2,7 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 from authlib.jose import jwt
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Token
+from canaille.app import models
 
 
 def test_oauth_hybrid(testclient, backend, user, client):
@@ -32,11 +31,11 @@ def test_oauth_hybrid(testclient, backend, user, client):
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token is not None
 
     res = testclient.get(
@@ -65,11 +64,11 @@ def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, other_cl
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token is not None
 
     id_token = params["id_token"][0]

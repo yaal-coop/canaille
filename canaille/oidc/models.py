@@ -4,6 +4,7 @@ from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
+from canaille.app import models
 from canaille.backends.ldap.ldapobject import LDAPObject
 
 
@@ -97,13 +98,13 @@ class Client(LDAPObject, ClientMixin):
         return metadata
 
     def delete(self):
-        for consent in Consent.query(client=self):
+        for consent in models.Consent.query(client=self):
             consent.delete()
 
-        for code in AuthorizationCode.query(client=self):
+        for code in models.AuthorizationCode.query(client=self):
             code.delete()
 
-        for token in Token.query(client=self):
+        for token in models.Token.query(client=self):
             token.delete()
 
         super().delete()
@@ -243,7 +244,7 @@ class Consent(LDAPObject):
         self.revokation_date = datetime.datetime.now(datetime.timezone.utc)
         self.save()
 
-        tokens = Token.query(
+        tokens = models.Token.query(
             client=self.client,
             subject=self.subject,
         )

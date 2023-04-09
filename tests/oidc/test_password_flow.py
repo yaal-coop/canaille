@@ -1,4 +1,4 @@
-from canaille.oidc.models import Token
+from canaille.app import models
 
 from . import client_credentials
 
@@ -20,7 +20,7 @@ def test_password_flow_basic(testclient, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token is not None
 
     res = testclient.get(
@@ -52,7 +52,7 @@ def test_password_flow_post(testclient, user, client):
     assert res.json["token_type"] == "Bearer"
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token is not None
 
     res = testclient.get(

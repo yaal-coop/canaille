@@ -1,7 +1,7 @@
 from unittest import mock
 
 from authlib.jose import jwt
-from canaille.oidc.models import Client
+from canaille.app import models
 
 
 def test_client_registration_with_authentication_static_token(
@@ -29,7 +29,7 @@ def test_client_registration_with_authentication_static_token(
     headers = {"Authorization": "Bearer static-token"}
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=201)
-    client = Client.get(client_id=res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
 
     assert res.json == {
         "client_id": client.client_id,
@@ -148,7 +148,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
     }
     res = testclient.post_json("/oauth/register", payload, status=201)
 
-    client = Client.get(client_id=res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
     assert res.json == {
         "client_id": client.client_id,
         "client_secret": client.client_secret,
@@ -199,7 +199,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
 
     res = testclient.post_json("/oauth/register", payload, status=201)
 
-    client = Client.get(client_id=res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
     assert res.json == {
         "client_id": mock.ANY,
         "client_secret": mock.ANY,

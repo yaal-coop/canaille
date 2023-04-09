@@ -1,13 +1,13 @@
-from canaille.core.models import User
+from canaille.app import models
 
 
 def test_user_get_from_login(testclient, user, backend):
-    assert User.get_from_login(login="invalid") is None
-    assert User.get_from_login(login="user") == user
+    assert models.User.get_from_login(login="invalid") is None
+    assert models.User.get_from_login(login="user") == user
 
 
 def test_user_has_password(testclient, backend):
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",

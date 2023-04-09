@@ -9,6 +9,7 @@ import wtforms
 from canaille.app import b64_to_obj
 from canaille.app import default_fields
 from canaille.app import login_placeholder
+from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app import profile_hash
 from canaille.app.flask import current_user
@@ -43,8 +44,6 @@ from .forms import profile_form
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
-from .models import Group
-from .models import User
 
 
 bp = Blueprint("account", __name__)
@@ -88,12 +87,12 @@ def login():
     form["login"].render_kw["placeholder"] = login_placeholder()
 
     if request.form:
-        user = User.get_from_login(form.login.data)
+        user = models.User.get_from_login(form.login.data)
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
         if not form.validate():
-            User.logout()
+            models.User.logout()
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
@@ -111,7 +110,7 @@ def password():
     form = PasswordForm(request.form or None)
 
     if request.form:
-        user = User.get_from_login(session["attempt_login"])
+        user = models.User.get_from_login(session["attempt_login"])
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
@@ -120,7 +119,7 @@ def password():
             or not user
             or not user.check_password(form.password.data)
         ):
-            User.logout()
+            models.User.logout()
             flash(_("Login failed, please check your information"), "error")
             return render_template(
                 "password.html", form=form, username=session["attempt_login"]
@@ -156,7 +155,7 @@ def logout():
 
 @bp.route("/firstlogin/<user_name>", methods=("GET", "POST"))
 def firstlogin(user_name):
-    user = User.get_from_login(user_name)
+    user = models.User.get_from_login(user_name)
     if not user or user.has_password():
         abort(404)
 
@@ -182,7 +181,9 @@ def firstlogin(user_name):
 @bp.route("/users", methods=["GET", "POST"])
 @permissions_needed("manage_users")
 def users(user):
-    table_form = TableForm(User, fields=user.read | user.write, formdata=request.form)
+    table_form = TableForm(
+        models.User, fields=user.read | user.write, formdata=request.form
+    )
     if request.form and not table_form.validate():
         abort(404)
 
@@ -278,7 +279,7 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    if User.get_from_login(invitation.user_name):
+    if models.User.get_from_login(invitation.user_name):
         flash(
             _("Your account has already been created."),
             "error",
@@ -311,7 +312,7 @@ def registration(data, hash):
     if "groups" not in form and invitation.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group.id, group.display_name) for group in Group.query()],
+            choices=[(group.id, group.display_name) for group in models.Group.query()],
             render_kw={"readonly": "true"},
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
@@ -381,7 +382,7 @@ def profile_creation(user):
 
 
 def profile_create(current_app, form):
-    user = User()
+    user = models.User()
     for attribute in form:
         if attribute.name in user.attributes:
             if isinstance(attribute.data, FileStorage):
@@ -420,7 +421,7 @@ def profile_edition(user, username):
     menuitem = "profile" if username == editor.user_name[0] else "users"
     fields = editor.read | editor.write
     if username != editor.user_name[0]:
-        user = User.get_from_login(username)
+        user = models.User.get_from_login(username)
     else:
         user = editor
 
@@ -505,7 +506,7 @@ def profile_settings(user, username):
     ):
         abort(403)
 
-    edited_user = User.get_from_login(username)
+    edited_user = models.User.get_from_login(username)
     if not edited_user:
         abort(404)
 
@@ -622,7 +623,7 @@ def profile_delete(user, edited_user):
 @bp.route("/impersonate/<username>")
 @permissions_needed("impersonate_users")
 def impersonate(user, username):
-    puppet = User.get_from_login(username)
+    puppet = models.User.get_from_login(username)
     if not puppet:
         abort(404)
 
@@ -649,7 +650,7 @@ def forgotten():
         flash(_("Could not send the password reset link."), "error")
         return render_template("forgotten-password.html", form=form)
 
-    user = User.get_from_login(form.login.data)
+    user = models.User.get_from_login(form.login.data)
     success_message = _(
         "A password reset link has been sent at your email address. You should receive it within a few minutes."
     )
@@ -689,7 +690,7 @@ def reset(user_name, hash):
         abort(404)
 
     form = PasswordResetForm(request.form)
-    user = User.get_from_login(user_name)
+    user = models.User.get_from_login(user_name)
 
     if not user or hash != profile_hash(
         user.user_name[0],
@@ -719,7 +720,7 @@ def photo(user_name, field):
     if field.lower() != "photo":
         abort(404)
 
-    user = User.get_from_login(user_name)
+    user = models.User.get_from_login(user_name)
     if not user:
         abort(404)
 

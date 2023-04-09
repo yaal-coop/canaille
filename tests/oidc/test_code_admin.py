@@ -1,4 +1,4 @@
-from canaille.oidc.models import AuthorizationCode
+from canaille.app import models
 from werkzeug.security import gen_salt
 
 
@@ -20,7 +20,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
     res.mustcontain("0 items")
     authorizations = []
     for _ in range(26):
-        code = AuthorizationCode(
+        code = models.AuthorizationCode(
             authorization_code_id=gen_salt(48), client=client, subject=logged_admin
         )
         code.save()
@@ -66,13 +66,13 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
 
 def test_authorization_list_search(testclient, logged_admin, client):
     id1 = gen_salt(48)
-    auth1 = AuthorizationCode(
+    auth1 = models.AuthorizationCode(
         authorization_code_id=id1, client=client, subject=logged_admin
     )
     auth1.save()
 
     id2 = gen_salt(48)
-    auth2 = AuthorizationCode(
+    auth2 = models.AuthorizationCode(
         authorization_code_id=id2, client=client, subject=logged_admin
     )
     auth2.save()
