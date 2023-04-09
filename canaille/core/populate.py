@@ -1,7 +1,6 @@
 import random
 
 import faker
-import ldap
 from canaille.app.i18n import available_language_codes
 from canaille.core.models import Group
 from canaille.core.models import User
@@ -41,7 +40,7 @@ def fake_users(nb=1):
             )
             user.save()
             users.append(user)
-        except ldap.ALREADY_EXISTS:  # pragma: no cover
+        except Exception:  # pragma: no cover
             pass
     return users
 
@@ -60,6 +59,6 @@ def fake_groups(nb=1, nb_users_max=1):
             group.member = list({random.choice(users) for _ in range(nb_users)})
             group.save()
             groups.append(group)
-        except ldap.ALREADY_EXISTS:  # pragma: no cover
+        except Exception:  # pragma: no cover
             pass
     return groups
