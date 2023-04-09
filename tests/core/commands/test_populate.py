@@ -1,4 +1,4 @@
-from canaille.app.commands import cli
+from canaille.commands import cli
 from canaille.core.models import Group
 from canaille.core.models import User
 from canaille.core.populate import fake_users
