@@ -1,8 +1,8 @@
 import math
 
 import wtforms
-from canaille.i18n import DEFAULT_LANGUAGE_CODE
-from canaille.i18n import locale_selector
+from canaille.utils.i18n import DEFAULT_LANGUAGE_CODE
+from canaille.utils.i18n import locale_selector
 from flask import abort
 from flask import current_app
 from flask import make_response

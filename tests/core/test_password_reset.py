@@ -1,4 +1,4 @@
-from canaille.account import profile_hash
+from canaille.core.account import profile_hash
 
 
 def test_password_reset(testclient, user):

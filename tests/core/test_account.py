@@ -1,6 +1,6 @@
 from unittest import mock
 
-from canaille.models import User
+from canaille.core.models import User
 
 
 def test_index(testclient, user):

@@ -1,4 +1,4 @@
-from canaille.models import User
+from canaille.core.models import User
 
 
 def test_user_creation_edition_and_deletion(

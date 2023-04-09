@@ -1,4 +1,4 @@
-from canaille.populate import fake_users
+from canaille.core.populate import fake_users
 from webtest import Upload
 
 

@@ -1,5 +1,5 @@
-from canaille.mails import profile_hash
-from canaille.mails import send_test_mail
+from canaille.core.mails import profile_hash
+from canaille.core.mails import send_test_mail
 from canaille.utils import obj_to_b64
 from canaille.utils.flask import permissions_needed
 from canaille.utils.forms import HTMXForm

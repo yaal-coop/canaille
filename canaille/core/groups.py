@@ -1,3 +1,6 @@
+from canaille.utils.flask import permissions_needed
+from canaille.utils.flask import render_htmx_template
+from canaille.utils.forms import TableForm
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -11,9 +14,6 @@ from .forms import CreateGroupForm
 from .forms import EditGroupForm
 from .models import Group
 from .models import User
-from .utils.flask import permissions_needed
-from .utils.flask import render_htmx_template
-from .utils.forms import TableForm
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
 

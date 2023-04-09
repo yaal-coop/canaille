@@ -5,7 +5,7 @@ from urllib.parse import urlsplit
 import freezegun
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
-from canaille.models import User
+from canaille.core.models import User
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Consent
 from canaille.oidc.models import Token

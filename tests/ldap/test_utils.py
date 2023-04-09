@@ -1,14 +1,14 @@
 import datetime
 
 import ldap.dn
+from canaille.core.models import Group
+from canaille.core.models import User
 from canaille.ldap_backend.backend import setup_ldap_models
 from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.ldap_backend.ldapobject import python_attrs_to_ldap
 from canaille.ldap_backend.utils import ldap_to_python
 from canaille.ldap_backend.utils import python_to_ldap
 from canaille.ldap_backend.utils import Syntax
-from canaille.models import Group
-from canaille.models import User
 
 
 def test_object_creation(slapd_connection):

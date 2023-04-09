@@ -1,7 +1,7 @@
 import datetime
 
-from canaille.account import Invitation
-from canaille.models import User
+from canaille.core.account import Invitation
+from canaille.core.models import User
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd):

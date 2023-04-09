@@ -1,6 +1,6 @@
 import datetime
 
-from canaille.models import User
+from canaille.core.models import User
 from webtest import Upload
 
 

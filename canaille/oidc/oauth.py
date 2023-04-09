@@ -26,11 +26,11 @@ from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from authlib.oidc.core.grants.util import generate_id_token
+from canaille.core.models import User
 from flask import current_app
 from flask import request
 from werkzeug.security import gen_salt
 
-from ..models import User
 from .models import AuthorizationCode
 from .models import Client
 from .models import Token

@@ -115,16 +115,16 @@ def setup_themer(app):
 
 
 def setup_blueprints(app):
-    import canaille.account
-    import canaille.admin
-    import canaille.groups
+    import canaille.core.account
+    import canaille.core.admin
+    import canaille.core.groups
     import canaille.oidc.blueprints
 
     app.url_map.strict_slashes = False
 
-    app.register_blueprint(canaille.account.bp)
-    app.register_blueprint(canaille.admin.bp)
-    app.register_blueprint(canaille.groups.bp)
+    app.register_blueprint(canaille.core.account.bp)
+    app.register_blueprint(canaille.core.admin.bp)
+    app.register_blueprint(canaille.core.groups.bp)
     app.register_blueprint(canaille.oidc.blueprints.bp)
 
 
@@ -174,7 +174,7 @@ def create_app(config=None, validate=True):
     try:
         from .oidc.oauth import setup_oauth
         from .ldap_backend.backend import init_backend
-        from .i18n import setup_i18n
+        from .utils.i18n import setup_i18n
 
         setup_logging(app)
         init_backend(app)

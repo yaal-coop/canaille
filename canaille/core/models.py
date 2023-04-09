@@ -1,8 +1,7 @@
 import ldap.filter
+from canaille.ldap_backend.ldapobject import LDAPObject
 from flask import current_app
 from flask import session
-
-from .ldap_backend.ldapobject import LDAPObject
 
 
 class User(LDAPObject):

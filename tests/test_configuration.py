@@ -36,7 +36,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration
 
 
 def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
-    from canaille.models import User
+    from canaille.core.models import User
 
     def fake_init(*args, **kwarg):
         raise ldap.INSUFFICIENT_ACCESS
@@ -50,7 +50,7 @@ def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
 
 
 def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
-    from canaille.models import Group
+    from canaille.core.models import Group
 
     def fake_init(*args, **kwarg):
         raise ldap.INSUFFICIENT_ACCESS

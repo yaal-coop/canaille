@@ -1,7 +1,7 @@
-from canaille.models import Group
-from canaille.models import User
-from canaille.populate import fake_groups
-from canaille.populate import fake_users
+from canaille.core.models import Group
+from canaille.core.models import User
+from canaille.core.populate import fake_groups
+from canaille.core.populate import fake_users
 
 
 def test_no_group(app, slapd_connection):

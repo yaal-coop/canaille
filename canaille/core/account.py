@@ -6,6 +6,18 @@ from typing import List
 
 import pkg_resources
 import wtforms
+from canaille.utils import b64_to_obj
+from canaille.utils import default_fields
+from canaille.utils import login_placeholder
+from canaille.utils import obj_to_b64
+from canaille.utils import profile_hash
+from canaille.utils.flask import current_user
+from canaille.utils.flask import permissions_needed
+from canaille.utils.flask import render_htmx_template
+from canaille.utils.flask import request_is_htmx
+from canaille.utils.flask import smtp_needed
+from canaille.utils.flask import user_needed
+from canaille.utils.forms import TableForm
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -33,18 +45,6 @@ from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
 from .models import Group
 from .models import User
-from .utils import b64_to_obj
-from .utils import default_fields
-from .utils import login_placeholder
-from .utils import obj_to_b64
-from .utils import profile_hash
-from .utils.flask import current_user
-from .utils.flask import permissions_needed
-from .utils.flask import render_htmx_template
-from .utils.flask import request_is_htmx
-from .utils.flask import smtp_needed
-from .utils.flask import user_needed
-from .utils.forms import TableForm
 
 
 bp = Blueprint("account", __name__)

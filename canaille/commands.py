@@ -112,7 +112,7 @@ if HAS_FAKER:  # pragma: no branch
         Populate the database with generated random users.
         """
 
-        from canaille.populate import fake_users
+        from canaille.core.populate import fake_users
 
         fake_users(ctx.obj["number"])
 
@@ -130,6 +130,6 @@ if HAS_FAKER:  # pragma: no branch
         Populate the database with generated random groups.
         """
 
-        from canaille.populate import fake_groups
+        from canaille.core.populate import fake_groups
 
         fake_groups(ctx.obj["number"], nb_users_max)

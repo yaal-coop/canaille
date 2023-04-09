@@ -3,7 +3,7 @@ import hashlib
 import json
 import re
 
-from canaille.models import User
+from canaille.core.models import User
 from flask import current_app
 from flask import request
 from flask_babel import gettext as _

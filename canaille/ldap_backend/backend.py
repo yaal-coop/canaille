@@ -11,8 +11,8 @@ from flask_babel import gettext as _
 
 def setup_ldap_models(config):
     from .ldapobject import LDAPObject
-    from ..models import Group
-    from ..models import User
+    from canaille.core.models import Group
+    from canaille.core.models import User
 
     LDAPObject.root_dn = config["LDAP"]["ROOT_DN"]
 
@@ -112,7 +112,8 @@ def init_backend(app):
 
 
 def validate_configuration(config):
-    from canaille.models import User, Group
+    from canaille.core.models import Group
+    from canaille.core.models import User
 
     try:
         conn = ldap.initialize(config["LDAP"]["URI"])

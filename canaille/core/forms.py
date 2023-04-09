@@ -1,16 +1,16 @@
 import wtforms.form
+from canaille.utils.forms import HTMXBaseForm
+from canaille.utils.forms import HTMXForm
+from canaille.utils.forms import is_uri
+from canaille.utils.i18n import native_language_name_from_code
 from flask import current_app
 from flask import g
 from flask_babel import lazy_gettext as _
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 
-from .i18n import native_language_name_from_code
 from .models import Group
 from .models import User
-from .utils.forms import HTMXBaseForm
-from .utils.forms import HTMXForm
-from .utils.forms import is_uri
 
 
 def unique_login(form, field):
