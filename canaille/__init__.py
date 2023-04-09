@@ -118,14 +118,14 @@ def setup_blueprints(app):
     import canaille.account
     import canaille.admin
     import canaille.groups
-    import canaille.oidc
+    import canaille.oidc.blueprints
 
     app.url_map.strict_slashes = False
 
     app.register_blueprint(canaille.account.bp)
     app.register_blueprint(canaille.admin.bp)
     app.register_blueprint(canaille.groups.bp)
-    app.register_blueprint(canaille.oidc.bp)
+    app.register_blueprint(canaille.oidc.blueprints.bp)
 
 
 def setup_flask(app):
