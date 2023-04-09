@@ -217,7 +217,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         return g.ldap_connection
 
     @classmethod
-    def initialize(cls, conn=None):
+    def install(cls, conn=None):
         conn = conn or cls.ldap_connection()
         cls.ldap_object_classes(conn)
         cls.ldap_object_attributes(conn)

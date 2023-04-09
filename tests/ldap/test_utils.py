@@ -12,7 +12,7 @@ from canaille.ldap_backend.utils import Syntax
 
 
 def test_object_creation(slapd_connection):
-    User.initialize(slapd_connection)
+    User.install(slapd_connection)
     user = User(
         formatted_name="Doe",  # leading space
         family_name="Doe",
@@ -41,7 +41,7 @@ def test_equality(slapd_connection, foo_group, bar_group):
 
 
 def test_dn_when_leading_space_in_id_attribute(slapd_connection):
-    User.initialize(slapd_connection)
+    User.install(slapd_connection)
     user = User(
         formatted_name=" Doe",  # leading space
         family_name="Doe",
@@ -58,7 +58,7 @@ def test_dn_when_leading_space_in_id_attribute(slapd_connection):
 
 
 def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
-    User.initialize(slapd_connection)
+    User.install(slapd_connection)
     user = User(
         formatted_name="#Doe",  # special char
         family_name="Doe",

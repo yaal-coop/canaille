@@ -19,10 +19,10 @@ def install(config):
 
 def setup_ldap_tree(config):
     with ldap_connection(config) as conn:
-        Token.initialize(conn)
-        AuthorizationCode.initialize(conn)
-        Client.initialize(conn)
-        Consent.initialize(conn)
+        Token.install(conn)
+        AuthorizationCode.install(conn)
+        Client.install(conn)
+        Consent.install(conn)
 
 
 def setup_keypair(config):
