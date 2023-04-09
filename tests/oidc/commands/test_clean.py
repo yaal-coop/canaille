@@ -79,7 +79,8 @@ def test_clean_command(testclient, slapd_connection, client, user):
     assert expired_token.is_expired()
 
     runner = testclient.app.test_cli_runner()
-    runner.invoke(cli, ["clean"])
+    res = runner.invoke(cli, ["clean"])
+    assert res.exit_code == 0, res.stdout
 
     assert AuthorizationCode.query() == [valid_code]
     assert Token.query() == [valid_token]
