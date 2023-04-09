@@ -1,6 +1,6 @@
 import datetime
 
-from canaille.commands import cli
+from canaille.app.commands import cli
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Token
 from werkzeug.security import gen_salt

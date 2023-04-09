@@ -1,9 +1,9 @@
 import datetime
 
+from canaille.app.flask import permissions_needed
+from canaille.app.flask import render_htmx_template
+from canaille.app.forms import TableForm
 from canaille.oidc.models import Token
-from canaille.utils.flask import permissions_needed
-from canaille.utils.flask import render_htmx_template
-from canaille.utils.forms import TableForm
 from flask import abort
 from flask import Blueprint
 from flask import flash

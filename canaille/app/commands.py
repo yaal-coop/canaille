@@ -63,7 +63,7 @@ def check():
     """
     Check the configuration file.
     """
-    from canaille.configuration import validate, ConfigurationException
+    from canaille.app.configuration import validate, ConfigurationException
 
     try:
         validate(current_app.config, validate_remote=True)
@@ -78,8 +78,8 @@ def install():
     """
     Installs canaille elements from the configuration.
     """
-    from canaille.installation import install
-    from canaille.configuration import ConfigurationException
+    from canaille.app.installation import install
+    from canaille.app.configuration import ConfigurationException
 
     try:
         install(current_app.config)

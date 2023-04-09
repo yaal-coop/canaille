@@ -6,6 +6,8 @@ from authlib.jose import JsonWebKey
 from authlib.jose import jwt
 from authlib.oauth2 import OAuth2Error
 from canaille import csrf
+from canaille.app.flask import current_user
+from canaille.app.flask import set_parameter_in_url_query
 from canaille.core.forms import FullLoginForm
 from canaille.core.models import User
 from flask import abort
@@ -21,8 +23,6 @@ from flask_babel import gettext as _
 from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 
-from ..utils.flask import current_user
-from ..utils.flask import set_parameter_in_url_query
 from .forms import AuthorizeForm
 from .forms import LogoutForm
 from .models import Client

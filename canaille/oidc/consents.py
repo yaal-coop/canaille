@@ -1,9 +1,9 @@
 import datetime
 import uuid
 
+from canaille.app.flask import user_needed
 from canaille.oidc.models import Client
 from canaille.oidc.models import Consent
-from canaille.utils.flask import user_needed
 from flask import Blueprint
 from flask import flash
 from flask import redirect

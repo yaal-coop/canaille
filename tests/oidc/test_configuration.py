@@ -1,8 +1,8 @@
 import warnings
 
 import pytest
-from canaille.configuration import ConfigurationException
-from canaille.configuration import validate
+from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import validate
 from canaille.oidc.oauth import get_issuer
 
 

@@ -6,18 +6,18 @@ from typing import List
 
 import pkg_resources
 import wtforms
-from canaille.utils import b64_to_obj
-from canaille.utils import default_fields
-from canaille.utils import login_placeholder
-from canaille.utils import obj_to_b64
-from canaille.utils import profile_hash
-from canaille.utils.flask import current_user
-from canaille.utils.flask import permissions_needed
-from canaille.utils.flask import render_htmx_template
-from canaille.utils.flask import request_is_htmx
-from canaille.utils.flask import smtp_needed
-from canaille.utils.flask import user_needed
-from canaille.utils.forms import TableForm
+from canaille.app import b64_to_obj
+from canaille.app import default_fields
+from canaille.app import login_placeholder
+from canaille.app import obj_to_b64
+from canaille.app import profile_hash
+from canaille.app.flask import current_user
+from canaille.app.flask import permissions_needed
+from canaille.app.flask import render_htmx_template
+from canaille.app.flask import request_is_htmx
+from canaille.app.flask import smtp_needed
+from canaille.app.flask import user_needed
+from canaille.app.forms import TableForm
 from flask import abort
 from flask import Blueprint
 from flask import current_app

@@ -1,7 +1,7 @@
 import wtforms
+from canaille.app.forms import HTMXForm
+from canaille.app.forms import is_uri
 from canaille.oidc.models import Client
-from canaille.utils.forms import HTMXForm
-from canaille.utils.forms import is_uri
 from flask_babel import lazy_gettext as _
 
 

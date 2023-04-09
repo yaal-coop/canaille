@@ -4,8 +4,8 @@ import smtplib
 import urllib.request
 from email.utils import make_msgid
 
-from canaille.utils import get_current_domain
-from canaille.utils import get_current_mail_domain
+from canaille.app import get_current_domain
+from canaille.app import get_current_mail_domain
 from flask import current_app
 from flask import request
 

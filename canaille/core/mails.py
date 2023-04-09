@@ -1,6 +1,6 @@
-from canaille.utils import profile_hash
-from canaille.utils.mails import logo
-from canaille.utils.mails import send_email
+from canaille.app import profile_hash
+from canaille.app.mails import logo
+from canaille.app.mails import send_email
 from flask import current_app
 from flask import url_for
 from flask_babel import gettext as _

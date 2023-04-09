@@ -1,4 +1,4 @@
-from canaille.utils import validate_uri
+from canaille.app import validate_uri
 
 
 def test_validate_uri():

@@ -2,9 +2,9 @@ import random
 
 import faker
 import ldap
+from canaille.app.i18n import available_language_codes
 from canaille.core.models import Group
 from canaille.core.models import User
-from canaille.utils.i18n import available_language_codes
 from faker.config import AVAILABLE_LOCALES
 
 

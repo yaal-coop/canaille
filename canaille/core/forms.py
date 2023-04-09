@@ -1,8 +1,8 @@
 import wtforms.form
-from canaille.utils.forms import HTMXBaseForm
-from canaille.utils.forms import HTMXForm
-from canaille.utils.forms import is_uri
-from canaille.utils.i18n import native_language_name_from_code
+from canaille.app.forms import HTMXBaseForm
+from canaille.app.forms import HTMXForm
+from canaille.app.forms import is_uri
+from canaille.app.i18n import native_language_name_from_code
 from flask import current_app
 from flask import g
 from flask_babel import lazy_gettext as _

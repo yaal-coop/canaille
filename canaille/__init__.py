@@ -17,7 +17,7 @@ csrf = CSRFProtect()
 
 
 def setup_config(app, config=None, validate=True):
-    import canaille.configuration
+    import canaille.app.configuration
 
     app.config.from_mapping(
         {
@@ -42,7 +42,7 @@ def setup_config(app, config=None, validate=True):
         canaille.oidc.installation.setup_keypair(app.config)
 
     if validate:
-        canaille.configuration.validate(app.config)
+        canaille.app.configuration.validate(app.config)
 
 
 def setup_sentry(app):  # pragma: no cover
@@ -138,7 +138,7 @@ def setup_flask(app):
 
     @app.context_processor
     def global_processor():
-        from .utils.flask import current_user
+        from canaille.app.flask import current_user
 
         return {
             "has_smtp": "SMTP" in app.config,
@@ -174,7 +174,7 @@ def create_app(config=None, validate=True):
     try:
         from .oidc.oauth import setup_oauth
         from .ldap_backend.backend import init_backend
-        from .utils.i18n import setup_i18n
+        from .app.i18n import setup_i18n
 
         setup_logging(app)
         init_backend(app)

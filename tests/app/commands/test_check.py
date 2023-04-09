@@ -1,4 +1,4 @@
-from canaille.commands import cli
+from canaille.app.commands import cli
 
 
 def test_check_command(testclient):

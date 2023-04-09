@@ -4,8 +4,8 @@ from unittest import mock
 import ldap
 import pytest
 from canaille import create_app
-from canaille.configuration import ConfigurationException
-from canaille.configuration import validate
+from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import validate
 from flask_webtest import TestApp
 
 

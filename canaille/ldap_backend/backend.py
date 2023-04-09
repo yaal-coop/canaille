@@ -2,7 +2,7 @@ import logging
 import uuid
 
 import ldap
-from canaille.configuration import ConfigurationException
+from canaille.app.configuration import ConfigurationException
 from flask import g
 from flask import render_template
 from flask import request

@@ -4,7 +4,7 @@ import ldap
 import pytest
 import toml
 from canaille import create_app
-from canaille.utils.flask import set_parameter_in_url_query
+from canaille.app.flask import set_parameter_in_url_query
 from flask import g
 from flask_webtest import TestApp
 

@@ -17,7 +17,7 @@ def ldap_connection(config):
 
 
 def install_schema(config, schema_path):
-    from canaille.installation import InstallationException
+    from canaille.app.installation import InstallationException
 
     with open(schema_path) as fd:
         parser = ldif.LDIFRecordList(fd)
