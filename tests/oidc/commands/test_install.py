@@ -35,7 +35,8 @@ def test_setup_ldap_tree(slapd_server, configuration):
     assert "dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld" not in output
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
-    runner.invoke(cli, ["install"])
+    res = runner.invoke(cli, ["install"])
+    assert res.exit_code == 0, res.stdout
 
     output = slapd_server.slapcat().stdout.decode("utf-8")
     assert "dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld" in output
@@ -52,7 +53,8 @@ def test_install_keypair(configuration, tmpdir):
 
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
-    runner.invoke(cli, ["install"])
+    res = runner.invoke(cli, ["install"])
+    assert res.exit_code == 0, res.stdout
 
     assert os.path.exists(configuration["JWT"]["PRIVATE_KEY"])
     assert os.path.exists(configuration["JWT"]["PUBLIC_KEY"])
@@ -113,7 +115,8 @@ def test_install_schemas_command(configuration, slapd_server):
 
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
-    runner.invoke(cli, ["install"])
+    res = runner.invoke(cli, ["install"])
+    assert res.exit_code == 0, res.stdout
 
     assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
