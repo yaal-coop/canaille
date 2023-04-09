@@ -3,7 +3,6 @@ import pytest
 import slapd
 from canaille import create_app
 from canaille.ldap_backend.backend import setup_ldap_models
-from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import Group
 from canaille.models import User
 from canaille.oidc.installation import setup_ldap_tree

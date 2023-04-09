@@ -1,7 +1,5 @@
 import os
 
-import ldap.modlist
-import ldif
 from canaille.ldap_backend.installation import install_schema
 from canaille.ldap_backend.installation import ldap_connection
 from canaille.oidc.models import AuthorizationCode

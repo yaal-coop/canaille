@@ -1,6 +1,5 @@
 from unittest import mock
 
-from canaille.ldap_backend.ldapobject import LDAPObject
 from canaille.models import User
 
 

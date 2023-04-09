@@ -1,4 +1,3 @@
-from canaille.models import User
 from flask_babel import refresh
 
 

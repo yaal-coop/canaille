@@ -1,10 +1,6 @@
 import wtforms.form
-from canaille.utils.flask import request_is_htmx
-from flask import abort
 from flask import current_app
 from flask import g
-from flask import make_response
-from flask import request
 from flask_babel import lazy_gettext as _
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField

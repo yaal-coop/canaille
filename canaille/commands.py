@@ -3,8 +3,6 @@ import sys
 
 import click
 from canaille import create_app
-from canaille.models import Group
-from canaille.models import User
 from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Token
 from flask import current_app
@@ -12,8 +10,6 @@ from flask.cli import FlaskGroup
 from flask.cli import with_appcontext
 
 try:
-    import faker
-
     HAS_FAKER = True
 except ImportError:  # pragma: no cover
     HAS_FAKER = False

@@ -1,4 +1,3 @@
-from canaille.models import User
 from canaille.populate import fake_users
 from webtest import Upload
 

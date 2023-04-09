@@ -1,6 +1,5 @@
 from unittest import mock
 
-from authlib.jose import JsonWebSignature
 from authlib.jose import jwt
 from canaille.oidc.models import Client
 

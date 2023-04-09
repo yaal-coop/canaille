@@ -30,7 +30,6 @@ from flask import current_app
 from flask import request
 from werkzeug.security import gen_salt
 
-from ..models import Group
 from ..models import User
 from .models import AuthorizationCode
 from .models import Client

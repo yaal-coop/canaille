@@ -6,8 +6,6 @@ from canaille import create_app
 from canaille.commands import cli
 from canaille.installation import InstallationException
 from canaille.ldap_backend.ldapobject import LDAPObject
-from canaille.models import Group
-from canaille.models import User
 from canaille.oidc.installation import setup_schemas
 from flask_webtest import TestApp
 from tests.conftest import CustomSlapdObject

@@ -1,7 +1,5 @@
 import datetime
 
-from canaille.models import User
-from canaille.oidc.models import Client
 from canaille.oidc.models import Token
 from canaille.utils.flask import permissions_needed
 from canaille.utils.flask import render_htmx_template

@@ -1,5 +1,3 @@
-from authlib.oidc.core import UserInfo
-from canaille.models import User
 from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import generate_user_claims
 
