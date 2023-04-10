@@ -39,6 +39,19 @@ DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"
 DEFAULT_JWT_EXP = 3600
 AUTHORIZATION_CODE_LIFETIME = 84400
+DEFAULT_JWT_MAPPING = {
+    "SUB": "{{ user.user_name[0] }}",
+    "NAME": "{{ user.formatted_name[0] }}",
+    "PHONE_NUMBER": "{{ user.phone_number[0] }}",
+    "EMAIL": "{{ user.email[0] }}",
+    "GIVEN_NAME": "{{ user.given_name[0] }}",
+    "FAMILY_NAME": "{{ user.family_name[0] }}",
+    "PREFERRED_USERNAME": "{{ user.display_name }}",
+    "LOCALE": "{{ user.preferred_language }}",
+    "ADDRESS": "{{ user.formatted_address[0] }}",
+    "PICTURE": "{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}",
+    "WEBSITE": "{{ user.profile_url[0] }}",
+}
 
 
 def exists_nonce(nonce, req):
@@ -103,9 +116,11 @@ def generate_user_info(user, scope):
 
 
 def generate_user_claims(user, claims, jwt_mapping_config=None):
-    jwt_mapping_config = (
-        jwt_mapping_config or current_app.config["OIDC"]["JWT"]["MAPPING"]
-    )
+    jwt_mapping_config = {
+        **DEFAULT_JWT_MAPPING,
+        **current_app.config["OIDC"]["JWT"].get("MAPPING", {}),
+        **(jwt_mapping_config or {}),
+    }
 
     data = {}
     for claim in claims:

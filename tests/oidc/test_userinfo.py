@@ -1,4 +1,5 @@
 from canaille.oidc.oauth import claims_from_scope
+from canaille.oidc.oauth import DEFAULT_JWT_MAPPING
 from canaille.oidc.oauth import generate_user_claims
 
 
@@ -261,16 +262,6 @@ STANDARD_CLAIMS = [
     "address",
     "updated_at",
 ]
-DEFAULT_JWT_MAPPING_CONFIG = {
-    "SUB": "{{ user.user_name[0] }}",
-    "NAME": "{{ user.formatted_name[0] }}",
-    "PHONE_NUMBER": "{{ user.phone_number[0] }}",
-    "EMAIL": "{{ user.email[0] }}",
-    "GIVEN_NAME": "{{ user.given_name[0] }}",
-    "FAMILY_NAME": "{{ user.family_name[0] }}",
-    "PREFERRED_USERNAME": "{{ user.display_name }}",
-    "LOCALE": "{{ user.preferred_language }}",
-}
 
 
 def test_generate_user_standard_claims_with_default_config(
@@ -278,9 +269,10 @@ def test_generate_user_standard_claims_with_default_config(
 ):
     user.preferred_language = ["fr"]
 
-    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
+    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING)
 
     assert data == {
+        "address": "1235, somewhere",
         "sub": "user",
         "name": "John (johnny) Doe",
         "family_name": "Doe",
@@ -288,13 +280,14 @@ def test_generate_user_standard_claims_with_default_config(
         "email": "john@doe.com",
         "locale": "fr",
         "phone_number": "555-000-000",
+        "website": "https://john.example",
     }
 
 
 def test_custom_config_format_claim_is_well_formated(
     testclient, slapd_connection, user
 ):
-    jwt_mapping_config = DEFAULT_JWT_MAPPING_CONFIG.copy()
+    jwt_mapping_config = DEFAULT_JWT_MAPPING.copy()
     jwt_mapping_config["EMAIL"] = "{{ user.user_name[0] }}@mydomain.tld"
 
     data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
@@ -308,6 +301,6 @@ def test_claim_is_omitted_if_empty(testclient, slapd_connection, user):
     user.email = ""
     user.save()
 
-    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING_CONFIG)
+    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING)
 
     assert "email" not in data

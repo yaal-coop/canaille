@@ -63,19 +63,6 @@ def configuration(configuration, keypair_path):
                 "PUBLIC_KEY": public_key_path,
                 "PRIVATE_KEY": private_key_path,
                 "ISS": "https://auth.mydomain.tld",
-                "MAPPING": {
-                    "SUB": "{{ user.user_name[0] }}",
-                    "NAME": "{{ user.formatted_name[0] }}",
-                    "PHONE_NUMBER": "{{ user.phone_number[0] }}",
-                    "EMAIL": "{{ user.email[0] }}",
-                    "GIVEN_NAME": "{{ user.given_name[0] }}",
-                    "FAMILY_NAME": "{{ user.family_name[0] }}",
-                    "PREFERRED_USERNAME": "{{ user.display_name }}",
-                    "LOCALE": "{{ user.preferred_language }}",
-                    "PICTURE": "{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}",
-                    "ADDRESS": "{{ user.formatted_address[0] }}",
-                    "WEBSITE": "{{ user.profile_url[0] }}",
-                },
             }
         },
     }
