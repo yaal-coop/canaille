@@ -148,7 +148,7 @@ def validate_configuration(config):
             family_name=f"canaille_{uuid.uuid4()}",
             user_name=f"canaille_{uuid.uuid4()}",
             email=f"canaille_{uuid.uuid4()}@mydomain.tld",
-            password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+            password="correct horse battery staple",
         )
         user.save(conn)
         user.delete(conn)
@@ -167,7 +167,7 @@ def validate_configuration(config):
             family_name=f"canaille_{uuid.uuid4()}",
             user_name=f"canaille_{uuid.uuid4()}",
             email=f"canaille_{uuid.uuid4()}@mydomain.tld",
-            password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+            password="correct horse battery staple",
         )
         user.save(conn)
 

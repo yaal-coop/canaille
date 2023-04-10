@@ -170,7 +170,7 @@ def user(app, slapd_connection):
         family_name="Doe",
         user_name="user",
         email="john@doe.com",
-        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        password="correct horse battery staple",
         display_name="Johnny",
         preferred_language="en",
         phone_number="555-000-000",
@@ -189,7 +189,7 @@ def admin(app, slapd_connection):
         family_name="Doe",
         user_name="admin",
         email="jane@doe.com",
-        password="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        password="admin",
     )
     u.save()
     yield u
@@ -203,7 +203,7 @@ def moderator(app, slapd_connection):
         family_name="Doe",
         user_name="moderator",
         email="jack@doe.com",
-        password="{SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag",
+        password="moderator",
     )
     u.save()
     yield u

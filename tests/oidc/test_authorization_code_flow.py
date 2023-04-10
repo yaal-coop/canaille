@@ -818,7 +818,7 @@ def test_code_with_invalid_user(testclient, admin, client):
         family_name="Doe",
         user_name="temp",
         email="temp@temp.com",
-        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        password="correct horse battery staple",
     )
     user.save()
 
@@ -866,7 +866,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
         family_name="Doe",
         user_name="temp",
         email="temp@temp.com",
-        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        password="correct horse battery staple",
     )
     user.save()
 

@@ -190,7 +190,7 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
         family_name="Temp",
         user_name="temp",
         email="john@doe.com",
-        password="{SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X",
+        password="correct horse battery staple",
     )
     u.save()
 
@@ -214,7 +214,7 @@ def test_user_deleted_in_session(testclient, slapd_connection):
         family_name="Jake",
         user_name="jake",
         email="jake@doe.com",
-        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        password="correct horse battery staple",
     )
     u.save()
     testclient.get("/profile/jake", status=403)
@@ -278,7 +278,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
         family_name="admin",
         user_name="temp",
         email="temp@temp.com",
-        password="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        password="admin",
     )
     admin.save()
     with testclient.session_transaction() as sess:
@@ -303,7 +303,7 @@ def test_user_self_deletion(testclient, slapd_connection):
         family_name="user",
         user_name="temp",
         email="temp@temp.com",
-        password="{SSHA}Vmgh2jkD0idX3eZHf8RzGos31oerjGiU",
+        password="correct horse battery staple",
     )
     user.save()
     with testclient.session_transaction() as sess:

@@ -147,7 +147,7 @@ def test_password_initialization_mail(
     assert len(smtpd.messages) == 1
 
     u.reload()
-    u.password = ["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"]
+    u.password = ["correct horse battery staple"]
     u.save()
 
     res = testclient.get("/profile/temp/settings", status=200)
@@ -238,7 +238,7 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
         family_name="Temp",
         user_name="temp",
         email="john@doe.com",
-        password="{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz",
+        password="correct horse battery staple",
     )
     u.save()
 
@@ -267,7 +267,7 @@ def test_password_reset_email_failed(
         family_name="Temp",
         user_name="temp",
         email="john@doe.com",
-        password=["{SSHA}fw9DYeF/gHTHuVMepsQzVYAkffGcU8Fz"],
+        password=["correct horse battery staple"],
     )
     u.save()
 
