@@ -308,7 +308,9 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
 class ClientManagementMixin:
     def authenticate_token(self, request):
-        if current_app.config.get("DYNAMIC_CLIENT_REGISTRATION_OPEN", False):
+        if current_app.config.get("OIDC", {}).get(
+            "DYNAMIC_CLIENT_REGISTRATION_OPEN", False
+        ):
             return True
 
         auth_header = request.headers.get("Authorization")
@@ -316,7 +318,7 @@ class ClientManagementMixin:
             return None
 
         bearer_token = auth_header.split()[1]
-        if bearer_token not in current_app.config.get(
+        if bearer_token not in current_app.config.get("OIDC", {}).get(
             "DYNAMIC_CLIENT_REGISTRATION_TOKENS", []
         ):
             return None
