@@ -26,14 +26,14 @@ def test_set_parameter_in_url_query():
     )
 
 
-def test_environment_configuration(slapd_server, configuration, tmp_path):
+def test_environment_configuration(configuration, tmp_path):
     config_path = os.path.join(tmp_path, "config.toml")
     with open(config_path, "w") as fd:
         toml.dump(configuration, fd)
 
     os.environ["CONFIG"] = config_path
     app = create_app()
-    assert app.config["BACKENDS"]["LDAP"]["ROOT_DN"] == slapd_server.suffix
+    assert app.config["SMTP"]["FROM_ADDR"] == "admin@mydomain.tld"
 
     del os.environ["CONFIG"]
     os.remove(config_path)
