@@ -194,7 +194,7 @@ def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
 
 
 def test_object_class_update(slapd_connection, testclient):
-    testclient.app.config["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
+    testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
     user1 = User(cn="foo1", sn="bar1")
@@ -203,7 +203,10 @@ def test_object_class_update(slapd_connection, testclient):
     assert user1.objectClass == ["inetOrgPerson"]
     assert User.get(id=user1.id).objectClass == ["inetOrgPerson"]
 
-    testclient.app.config["LDAP"]["USER_CLASS"] = ["inetOrgPerson", "extensibleObject"]
+    testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
     setup_ldap_models(testclient.app.config)
 
     user2 = User(cn="foo2", sn="bar2")

@@ -33,7 +33,7 @@ def test_environment_configuration(slapd_server, configuration, tmp_path):
 
     os.environ["CONFIG"] = config_path
     app = create_app()
-    assert app.config["LDAP"]["ROOT_DN"] == slapd_server.suffix
+    assert app.config["BACKENDS"]["LDAP"]["ROOT_DN"] == slapd_server.suffix
 
     del os.environ["CONFIG"]
     os.remove(config_path)

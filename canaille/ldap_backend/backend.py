@@ -14,28 +14,34 @@ def setup_ldap_models(config):
     from canaille.core.models import Group
     from canaille.core.models import User
 
-    LDAPObject.root_dn = config["LDAP"]["ROOT_DN"]
+    LDAPObject.root_dn = config["BACKENDS"]["LDAP"]["ROOT_DN"]
 
-    user_base = config["LDAP"]["USER_BASE"].replace(f',{config["LDAP"]["ROOT_DN"]}', "")
+    user_base = config["BACKENDS"]["LDAP"]["USER_BASE"].replace(
+        f',{config["BACKENDS"]["LDAP"]["ROOT_DN"]}', ""
+    )
     User.base = user_base
-    User.rdn_attribute = config["LDAP"].get(
+    User.rdn_attribute = config["BACKENDS"]["LDAP"].get(
         "USER_ID_ATTRIBUTE", User.DEFAULT_ID_ATTRIBUTE
     )
-    object_class = config["LDAP"].get("USER_CLASS", User.DEFAULT_OBJECT_CLASS)
+    object_class = config["BACKENDS"]["LDAP"].get(
+        "USER_CLASS", User.DEFAULT_OBJECT_CLASS
+    )
     User.ldap_object_class = (
         object_class if isinstance(object_class, list) else [object_class]
     )
 
     group_base = (
-        config["LDAP"]
+        config["BACKENDS"]["LDAP"]
         .get("GROUP_BASE", "")
-        .replace(f',{config["LDAP"]["ROOT_DN"]}', "")
+        .replace(f',{config["BACKENDS"]["LDAP"]["ROOT_DN"]}', "")
     )
     Group.base = group_base or None
-    Group.rdn_attribute = config["LDAP"].get(
+    Group.rdn_attribute = config["BACKENDS"]["LDAP"].get(
         "GROUP_ID_ATTRIBUTE", Group.DEFAULT_ID_ATTRIBUTE
     )
-    object_class = config["LDAP"].get("GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS)
+    object_class = config["BACKENDS"]["LDAP"].get(
+        "GROUP_CLASS", Group.DEFAULT_OBJECT_CLASS
+    )
     Group.ldap_object_class = (
         object_class if isinstance(object_class, list) else [object_class]
     )
@@ -49,17 +55,18 @@ def setup_backend(app):
         pass
 
     try:
-        g.ldap_connection = ldap.initialize(app.config["LDAP"]["URI"])
+        g.ldap_connection = ldap.initialize(app.config["BACKENDS"]["LDAP"]["URI"])
         g.ldap_connection.set_option(
-            ldap.OPT_NETWORK_TIMEOUT, app.config["LDAP"].get("TIMEOUT")
+            ldap.OPT_NETWORK_TIMEOUT, app.config["BACKENDS"]["LDAP"].get("TIMEOUT")
         )
         g.ldap_connection.simple_bind_s(
-            app.config["LDAP"]["BIND_DN"], app.config["LDAP"]["BIND_PW"]
+            app.config["BACKENDS"]["LDAP"]["BIND_DN"],
+            app.config["BACKENDS"]["LDAP"]["BIND_PW"],
         )
 
     except ldap.SERVER_DOWN:
         message = _("Could not connect to the LDAP server '{uri}'").format(
-            uri=app.config["LDAP"]["URI"]
+            uri=app.config["BACKENDS"]["LDAP"]["URI"]
         )
         logging.error(message)
         return (
@@ -75,7 +82,7 @@ def setup_backend(app):
 
     except ldap.INVALID_CREDENTIALS:
         message = _("LDAP authentication failed with user '{user}'").format(
-            user=app.config["LDAP"]["BIND_DN"]
+            user=app.config["BACKENDS"]["LDAP"]["BIND_DN"]
         )
         logging.error(message)
         return (
@@ -116,18 +123,22 @@ def validate_configuration(config):
     from canaille.core.models import User
 
     try:
-        conn = ldap.initialize(config["LDAP"]["URI"])
-        conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"].get("TIMEOUT"))
-        conn.simple_bind_s(config["LDAP"]["BIND_DN"], config["LDAP"]["BIND_PW"])
+        conn = ldap.initialize(config["BACKENDS"]["LDAP"]["URI"])
+        conn.set_option(
+            ldap.OPT_NETWORK_TIMEOUT, config["BACKENDS"]["LDAP"].get("TIMEOUT")
+        )
+        conn.simple_bind_s(
+            config["BACKENDS"]["LDAP"]["BIND_DN"], config["BACKENDS"]["LDAP"]["BIND_PW"]
+        )
 
     except ldap.SERVER_DOWN as exc:
         raise ConfigurationException(
-            f'Could not connect to the LDAP server \'{config["LDAP"]["URI"]}\''
+            f'Could not connect to the LDAP server \'{config["BACKENDS"]["LDAP"]["URI"]}\''
         ) from exc
 
     except ldap.INVALID_CREDENTIALS as exc:
         raise ConfigurationException(
-            f'LDAP authentication failed with user \'{config["LDAP"]["BIND_DN"]}\''
+            f'LDAP authentication failed with user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\''
         ) from exc
 
     try:
@@ -144,8 +155,8 @@ def validate_configuration(config):
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise ConfigurationException(
-            f'LDAP user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
-            f'users at \'{config["LDAP"]["USER_BASE"]}\''
+            f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
+            f'users at \'{config["BACKENDS"]["LDAP"]["USER_BASE"]}\''
         ) from exc
 
     try:
@@ -169,8 +180,8 @@ def validate_configuration(config):
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise ConfigurationException(
-            f'LDAP user \'{config["LDAP"]["BIND_DN"]}\' cannot create '
-            f'groups at \'{config["LDAP"]["GROUP_BASE"]}\''
+            f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
+            f'groups at \'{config["BACKENDS"]["LDAP"]["GROUP_BASE"]}\''
         ) from exc
 
     finally:

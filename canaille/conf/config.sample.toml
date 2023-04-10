@@ -55,7 +55,7 @@ SECRET_KEY = "change me before you go in production"
 # written in the standard error output.
 # PATH = ""
 
-[LDAP]
+[BACKENDS.LDAP]
 URI = "ldap://ldap"
 ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"

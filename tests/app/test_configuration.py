@@ -18,7 +18,7 @@ def test_ldap_connection_remote(testclient, configuration, slapd_connection):
 
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
-    configuration["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    configuration["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
     with pytest.raises(
         ConfigurationException,
         match=r"Could not connect to the LDAP server",
@@ -27,7 +27,7 @@ def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
-    configuration["LDAP"]["BIND_PW"] = "invalid-password"
+    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
     with pytest.raises(
         ConfigurationException,
         match=r"LDAP authentication failed with user",

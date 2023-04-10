@@ -56,7 +56,7 @@ LEVEL = "DEBUG"
 # written in the standard error output.
 # PATH = ""
 
-[LDAP]
+[BACKENDS.LDAP]
 URI = "ldap://127.0.0.1:5389"
 ROOT_DN = "dc=mydomain,dc=tld"
 BIND_DN = "cn=admin,dc=mydomain,dc=tld"

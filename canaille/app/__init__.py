@@ -25,7 +25,9 @@ def profile_hash(*args):
 
 
 def login_placeholder():
-    user_filter = current_app.config["LDAP"].get("USER_FILTER", User.DEFAULT_FILTER)
+    user_filter = current_app.config["BACKENDS"]["LDAP"].get(
+        "USER_FILTER", User.DEFAULT_FILTER
+    )
     placeholders = []
 
     if "cn={login}" in user_filter:

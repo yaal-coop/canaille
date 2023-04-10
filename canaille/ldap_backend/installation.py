@@ -6,9 +6,11 @@ import ldif
 
 @contextmanager
 def ldap_connection(config):
-    conn = ldap.initialize(config["LDAP"]["URI"])
-    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["LDAP"].get("TIMEOUT"))
-    conn.simple_bind_s(config["LDAP"]["BIND_DN"], config["LDAP"]["BIND_PW"])
+    conn = ldap.initialize(config["BACKENDS"]["LDAP"]["URI"])
+    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["BACKENDS"]["LDAP"].get("TIMEOUT"))
+    conn.simple_bind_s(
+        config["BACKENDS"]["LDAP"]["BIND_DN"], config["BACKENDS"]["LDAP"]["BIND_PW"]
+    )
 
     try:
         yield conn
@@ -31,5 +33,5 @@ def install_schema(config, schema_path):
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise InstallationException(
-            f"The user '{config['LDAP']['BIND_DN']}' has insufficient permissions to install LDAP schemas."
+            f"The user '{config['BACKENDS']['LDAP']['BIND_DN']}' has insufficient permissions to install LDAP schemas."
         ) from exc

@@ -11,11 +11,12 @@ Changed
 
 - Renamed user model attributes to match SCIM naming convention. :pr:`123`
 - Moved OIDC related configuration entries in ``OIDC``
+- Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``
 
 Fixed
 *****
 
-- ``OIDC.JWT.MAPPING`` is really optional now.
+- ``OIDC.JWT.MAPPING`` configuration entry is really optional now.
 
 [0.0.24] - 2023-04-07
 =====================

@@ -60,8 +60,8 @@ LOGGING
 :PATH:
     *Optional.* The log file path. If not set, logs are written in the standard error output.
 
-LDAP
-----
+BACKENDS.LDAP
+-------------
 
 :URI:
     **Required.** The URI to the LDAP server.

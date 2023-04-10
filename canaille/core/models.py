@@ -45,7 +45,7 @@ class User(LDAPObject):
     def get_from_login(cls, login=None, **kwargs):
         filter = (
             (
-                current_app.config["LDAP"]
+                current_app.config["BACKENDS"]["LDAP"]
                 .get("USER_FILTER", User.DEFAULT_FILTER)
                 .format(login=ldap.filter.escape_filter_chars(login))
             )
@@ -65,7 +65,7 @@ class User(LDAPObject):
 
     def load_groups(self):
         group_filter = (
-            current_app.config["LDAP"]
+            current_app.config["BACKENDS"]["LDAP"]
             .get("GROUP_USER_FILTER", Group.DEFAULT_USER_FILTER)
             .format(user=self)
         )
@@ -107,10 +107,11 @@ class User(LDAPObject):
         return bool(self.password)
 
     def check_password(self, password):
-        conn = ldap.initialize(current_app.config["LDAP"]["URI"])
+        conn = ldap.initialize(current_app.config["BACKENDS"]["LDAP"]["URI"])
 
         conn.set_option(
-            ldap.OPT_NETWORK_TIMEOUT, current_app.config["LDAP"].get("TIMEOUT")
+            ldap.OPT_NETWORK_TIMEOUT,
+            current_app.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
         )
 
         try:
@@ -213,7 +214,7 @@ class Group(LDAPObject):
 
     @property
     def display_name(self):
-        attribute = current_app.config["LDAP"].get(
+        attribute = current_app.config["BACKENDS"]["LDAP"].get(
             "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
         )
         return self[attribute][0]

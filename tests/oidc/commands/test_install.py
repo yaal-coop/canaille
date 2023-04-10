@@ -61,10 +61,10 @@ def test_install_keypair(configuration, tmpdir):
 
 
 def test_install_schemas(configuration, slapd_server):
-    configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
     conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
     conn.protocol_version = 3
@@ -81,10 +81,12 @@ def test_install_schemas(configuration, slapd_server):
 
 
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
-    configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=mydomain,dc=tld"
-    configuration["LDAP"]["BIND_PW"] = "admin"
+    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["BACKENDS"]["LDAP"][
+        "BIND_DN"
+    ] = "uid=admin,ou=users,dc=mydomain,dc=tld"
+    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "admin"
 
     conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
     conn.protocol_version = 3
@@ -102,10 +104,10 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
 
 
 def test_install_schemas_command(configuration, slapd_server):
-    configuration["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
     conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
     conn.protocol_version = 3

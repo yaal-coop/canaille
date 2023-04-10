@@ -78,15 +78,17 @@ def configuration(slapd_server, smtpd):
     conf = {
         "SECRET_KEY": gen_salt(24),
         "LOGO": "/static/img/canaille-head.png",
-        "LDAP": {
-            "ROOT_DN": slapd_server.suffix,
-            "URI": slapd_server.ldap_uri,
-            "BIND_DN": slapd_server.root_dn,
-            "BIND_PW": slapd_server.root_pw,
-            "USER_BASE": "ou=users",
-            "USER_FILTER": "(|(uid={login})(cn={login}))",
-            "GROUP_BASE": "ou=groups",
-            "TIMEOUT": 0.1,
+        "BACKENDS": {
+            "LDAP": {
+                "ROOT_DN": slapd_server.suffix,
+                "URI": slapd_server.ldap_uri,
+                "BIND_DN": slapd_server.root_dn,
+                "BIND_PW": slapd_server.root_pw,
+                "USER_BASE": "ou=users",
+                "USER_FILTER": "(|(uid={login})(cn={login}))",
+                "GROUP_BASE": "ou=groups",
+                "TIMEOUT": 0.1,
+            },
         },
         "ACL": {
             "DEFAULT": {
