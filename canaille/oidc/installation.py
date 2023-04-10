@@ -26,8 +26,8 @@ def setup_ldap_tree(config):
 
 
 def setup_keypair(config):
-    if os.path.exists(config["JWT"]["PUBLIC_KEY"]) or os.path.exists(
-        config["JWT"]["PRIVATE_KEY"]
+    if os.path.exists(config["OIDC"]["JWT"]["PUBLIC_KEY"]) or os.path.exists(
+        config["OIDC"]["JWT"]["PRIVATE_KEY"]
     ):
         return
 
@@ -43,10 +43,10 @@ def setup_keypair(config):
         crypto_serialization.Encoding.OpenSSH, crypto_serialization.PublicFormat.OpenSSH
     )
 
-    with open(config["JWT"]["PUBLIC_KEY"], "wb") as fd:
+    with open(config["OIDC"]["JWT"]["PUBLIC_KEY"], "wb") as fd:
         fd.write(public_key)
 
-    with open(config["JWT"]["PRIVATE_KEY"], "wb") as fd:
+    with open(config["OIDC"]["JWT"]["PRIVATE_KEY"], "wb") as fd:
         fd.write(private_key)
 
 

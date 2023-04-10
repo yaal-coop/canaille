@@ -25,17 +25,6 @@ FAVICON = "/static/img/canaille-c.png"
 # If unset, language is detected
 # LANGUAGE = "en"
 
-# Wether a token is needed for the RFC7591 dynamical client registration.
-# If true, no token is needed to register a client.
-# If false, dynamical client registration needs a token defined
-# in OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS
-OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN = true
-
-# A list of tokens that can be used for dynamic client registration
-OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
-    "xxxxxxx-yyyyyyy-zzzzzz",
-]
-
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 
@@ -169,10 +158,22 @@ FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
 PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
 WRITE = ["groups"]
 
+[OIDC]
+# Wether a token is needed for the RFC7591 dynamical client registration.
+# If true, no token is needed to register a client.
+# If false, dynamical client registration needs a token defined
+# in DYNAMIC_CLIENT_REGISTRATION_TOKENS
+DYNAMIC_CLIENT_REGISTRATION_OPEN = true
+
+# A list of tokens that can be used for dynamic client registration
+DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
+    "xxxxxxx-yyyyyyy-zzzzzz",
+]
+
 # The jwt configuration. You can generate a RSA keypair with:
 # openssl genrsa -out private.pem 4096
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem
-[JWT]
+[OIDC.JWT]
 # The path to the private key.
 PRIVATE_KEY = "conf/private.pem"
 # The path to the public key.
@@ -186,7 +187,7 @@ PUBLIC_KEY = "conf/public.pem"
 # The time the JWT will be valid, in seconds
 # EXP = 3600
 
-[JWT.MAPPING]
+[OIDC.JWT.MAPPING]
 # Mapping between JWT fields and LDAP attributes from your
 # User objectClass.
 # {attribute} will be replaced by the user ldap attribute value.

@@ -23,14 +23,22 @@ def validate(config, validate_remote=False):
 
 
 def validate_keypair(config):
-    if "JWT" in config and not os.path.exists(config["JWT"]["PUBLIC_KEY"]):
+    if (
+        "OIDC" in config
+        and "JWT" in config["OIDC"]
+        and not os.path.exists(config["OIDC"]["JWT"]["PUBLIC_KEY"])
+    ):
         raise ConfigurationException(
-            f'Public key does not exist {config["JWT"]["PUBLIC_KEY"]}'
+            f'Public key does not exist {config["OIDC"]["JWT"]["PUBLIC_KEY"]}'
         )
 
-    if "JWT" in config and not os.path.exists(config["JWT"]["PRIVATE_KEY"]):
+    if (
+        "OIDC" in config
+        and "JWT" in config["OIDC"]
+        and not os.path.exists(config["OIDC"]["JWT"]["PRIVATE_KEY"])
+    ):
         raise ConfigurationException(
-            f'Private key does not exist {config["JWT"]["PRIVATE_KEY"]}'
+            f'Private key does not exist {config["OIDC"]["JWT"]["PRIVATE_KEY"]}'
         )
 
 

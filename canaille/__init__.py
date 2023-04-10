@@ -36,7 +36,7 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if app.debug and "JWT" in app.config:  # pragma: no cover
+    if app.debug and "OIDC" in app.config:  # pragma: no cover
         import canaille.oidc.installation
 
         canaille.oidc.installation.setup_keypair(app.config)

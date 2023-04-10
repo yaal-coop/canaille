@@ -44,7 +44,7 @@ bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 
 
 def get_public_key():
-    with open(current_app.config["JWT"]["PUBLIC_KEY"]) as fd:
+    with open(current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]) as fd:
         return fd.read()
 
 
@@ -229,8 +229,8 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    kty = current_app.config["JWT"].get("KTY", DEFAULT_JWT_KTY)
-    alg = current_app.config["JWT"].get("ALG", DEFAULT_JWT_ALG)
+    kty = current_app.config["OIDC"]["JWT"].get("KTY", DEFAULT_JWT_KTY)
+    alg = current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG)
     jwk = JsonWebKey.import_key(get_public_key(), {"kty": kty})
     return jsonify(
         {

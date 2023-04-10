@@ -240,7 +240,7 @@ def test_no_jwt_no_logout(testclient, slapd_connection, logged_user, client):
 def test_jwt_not_issued_here(
     testclient, slapd_connection, logged_user, client, id_token
 ):
-    testclient.app.config["JWT"]["ISS"] = "https://foo.bar"
+    testclient.app.config["OIDC"]["JWT"]["ISS"] = "https://foo.bar"
 
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 

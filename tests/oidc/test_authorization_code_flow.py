@@ -978,7 +978,7 @@ def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
         "client_credentials": 4000,
         "urn:ietf:params:oauth:grant-type:jwt-bearer": 5000,
     }
-    testclient.app.config["JWT"]["EXP"] = 6000
+    testclient.app.config["OIDC"]["JWT"]["EXP"] = 6000
     setup_oauth(testclient.app)
 
     res = testclient.get(

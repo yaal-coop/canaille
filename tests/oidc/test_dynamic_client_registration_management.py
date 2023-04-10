@@ -5,8 +5,8 @@ from canaille.oidc.models import Client
 
 
 def test_get(testclient, slapd_connection, client, user):
-    assert not testclient.app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN")
-    testclient.app.config["OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
+    assert not testclient.app.config.get("DYNAMIC_CLIENT_REGISTRATION_OPEN")
+    testclient.app.config["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
 
     headers = {"Authorization": "Bearer static-token"}
     res = testclient.get(
@@ -47,8 +47,8 @@ def test_get(testclient, slapd_connection, client, user):
 
 
 def test_update(testclient, slapd_connection, client, user):
-    assert not testclient.app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN")
-    testclient.app.config["OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
+    assert not testclient.app.config.get("DYNAMIC_CLIENT_REGISTRATION_OPEN")
+    testclient.app.config["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
 
     assert client.redirect_uris != ["https://newname.example.org/callback"]
     assert client.token_endpoint_auth_method != "none"
@@ -130,8 +130,8 @@ def test_update(testclient, slapd_connection, client, user):
 
 
 def test_delete(testclient, slapd_connection, user):
-    assert not testclient.app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN")
-    testclient.app.config["OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
+    assert not testclient.app.config.get("DYNAMIC_CLIENT_REGISTRATION_OPEN")
+    testclient.app.config["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
 
     client = Client(client_id="foobar", client_name="Some client")
     client.save()
@@ -145,8 +145,8 @@ def test_delete(testclient, slapd_connection, user):
 
 
 def test_invalid_client(testclient, slapd_connection, user):
-    assert not testclient.app.config.get("OIDC_DYNAMIC_CLIENT_REGISTRATION_OPEN")
-    testclient.app.config["OIDC_DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
+    assert not testclient.app.config.get("DYNAMIC_CLIENT_REGISTRATION_OPEN")
+    testclient.app.config["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = ["static-token"]
 
     payload = {
         "client_id": "invalid-client-id",

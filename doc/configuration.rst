@@ -159,9 +159,21 @@ object that users will be able to read and/or write.
     If the users has the ``manage_users`` permission, they will be able to edit those fields on other users profile.
     If the list containts the special ``groups`` field, the user will be able to edit the groups he belongs to.
 
+OIDC
+----
 
-JWT
----
+:DYNAMIC_CLIENT_REGISTRATION_OPEN:
+    *Optional.* Wether a token is needed for the RFC7591 dynamical client registration.
+    If true, no token is needed to register a client.
+    If false, dynamical client registration needs a token defined
+    in `DYNAMIC_CLIENT_REGISTRATION_TOKENS``
+    Defaults to ``False``
+
+:DYNAMIC_CLIENT_REGISTRATION_TOKENS:
+    *Optional.* A list of tokens that can be used for dynamic client registration
+
+OIDC.JWT
+--------
 Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually.
 
 :PRIVATE_KEY:
@@ -189,8 +201,8 @@ Canaille needs a key pair to sign the JWT. The installation command will generat
     *Optional.* The time the JWT will be valid, in seconds.
     Defaults to ``3600``
 
-JWT.MAPPINGS
-------------
+OIDC.JWT.MAPPINGS
+-----------------
 
 A mapping where keys are JWT claims, and values are LDAP user object attributes.
 Attributes are rendered using jinja2, and can use a ``user`` variable.
