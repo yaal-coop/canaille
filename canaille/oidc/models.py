@@ -5,49 +5,33 @@ from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
 from canaille.app import models
-from canaille.backends.ldap.ldapobject import LDAPObject
 
 
-class Client(LDAPObject, ClientMixin):
-    ldap_object_class = ["oauthClient"]
-    base = "ou=clients,ou=oauth"
-    rdn_attribute = "oauthClientID"
+class Client(ClientMixin):
+    client_info_attributes = [
+        "client_id",
+        "client_secret",
+        "client_id_issued_at",
+        "client_secret_expires_at",
+    ]
 
-    client_info_attributes = {
-        "client_id": "oauthClientID",
-        "client_secret": "oauthClientSecret",
-        "client_id_issued_at": "oauthIssueDate",
-        "client_secret_expires_at": "oauthClientSecretExpDate",
-    }
-
-    client_metadata_attributes = {
-        "client_name": "oauthClientName",
-        "contacts": "oauthClientContact",
-        "client_uri": "oauthClientURI",
-        "redirect_uris": "oauthRedirectURIs",
-        "logo_uri": "oauthLogoURI",
-        "grant_types": "oauthGrantType",
-        "response_types": "oauthResponseType",
-        "scope": "oauthScope",
-        "tos_uri": "oauthTermsOfServiceURI",
-        "policy_uri": "oauthPolicyURI",
-        "jwks_uri": "oauthJWKURI",
-        "jwk": "oauthJWK",
-        "token_endpoint_auth_method": "oauthTokenEndpointAuthMethod",
-        "software_id": "oauthSoftwareID",
-        "software_version": "oauthSoftwareVersion",
-    }
-
-    attributes = {
-        "id": "dn",
-        "description": "description",
-        "preconsent": "oauthPreconsent",
-        # post_logout_redirect_uris is not yet supported by authlib
-        "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
-        "audience": "oauthAudience",
-        **client_info_attributes,
-        **client_metadata_attributes,
-    }
+    client_metadata_attributes = [
+        "client_name",
+        "contacts",
+        "client_uri",
+        "redirect_uris",
+        "logo_uri",
+        "grant_types",
+        "response_types",
+        "scope",
+        "tos_uri",
+        "policy_uri",
+        "jwks_uri",
+        "jwk",
+        "token_endpoint_auth_method",
+        "software_id",
+        "software_version",
+    ]
 
     def get_client_id(self):
         return self.client_id
@@ -110,28 +94,7 @@ class Client(LDAPObject, ClientMixin):
         super().delete()
 
 
-class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
-    ldap_object_class = ["oauthAuthorizationCode"]
-    base = "ou=authorizations,ou=oauth"
-    rdn_attribute = "oauthAuthorizationCodeID"
-    attributes = {
-        "id": "dn",
-        "authorization_code_id": "oauthAuthorizationCodeID",
-        "description": "description",
-        "code": "oauthCode",
-        "client": "oauthClient",
-        "subject": "oauthSubject",
-        "redirect_uri": "oauthRedirectURI",
-        "response_type": "oauthResponseType",
-        "scope": "oauthScope",
-        "nonce": "oauthNonce",
-        "issue_date": "oauthAuthorizationDate",
-        "lifetime": "oauthAuthorizationLifetime",
-        "challenge": "oauthCodeChallenge",
-        "challenge_method": "oauthCodeChallengeMethod",
-        "revokation_date": "oauthRevokationDate",
-    }
-
+class AuthorizationCode(AuthorizationCodeMixin):
     def get_redirect_uri(self):
         return self.redirect_uri
 
@@ -155,26 +118,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
         )
 
 
-class Token(LDAPObject, TokenMixin):
-    ldap_object_class = ["oauthToken"]
-    base = "ou=tokens,ou=oauth"
-    rdn_attribute = "oauthTokenID"
-    attributes = {
-        "id": "dn",
-        "token_id": "oauthTokenID",
-        "access_token": "oauthAccessToken",
-        "description": "description",
-        "client": "oauthClient",
-        "subject": "oauthSubject",
-        "type": "oauthTokenType",
-        "refresh_token": "oauthRefreshToken",
-        "scope": "oauthScope",
-        "issue_date": "oauthIssueDate",
-        "lifetime": "oauthTokenLifetime",
-        "revokation_date": "oauthRevokationDate",
-        "audience": "oauthAudience",
-    }
-
+class Token(TokenMixin):
     @property
     def expire_date(self):
         return self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
@@ -222,20 +166,7 @@ class Token(LDAPObject, TokenMixin):
         return client.client_id == self.client.client_id
 
 
-class Consent(LDAPObject):
-    ldap_object_class = ["oauthConsent"]
-    base = "ou=consents,ou=oauth"
-    rdn_attribute = "cn"
-    attributes = {
-        "id": "dn",
-        "consent_id": "cn",
-        "subject": "oauthSubject",
-        "client": "oauthClient",
-        "scope": "oauthScope",
-        "issue_date": "oauthIssueDate",
-        "revokation_date": "oauthRevokationDate",
-    }
-
+class Consent:
     @property
     def revoked(self):
         return bool(self.revokation_date)

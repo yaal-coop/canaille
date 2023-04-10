@@ -1,4 +1,22 @@
+import pytest
 from canaille.app import models
+from canaille.core.models import User
+
+
+def test_required_methods(testclient):
+    with pytest.raises(NotImplementedError):
+        User.get_from_login()
+
+    user = User()
+
+    with pytest.raises(NotImplementedError):
+        user.has_password()
+
+    with pytest.raises(NotImplementedError):
+        user.check_password("password")
+
+    with pytest.raises(NotImplementedError):
+        user.set_password("password")
 
 
 def test_user_get_from_login(testclient, user, backend):
