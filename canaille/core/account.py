@@ -8,7 +8,6 @@ import pkg_resources
 import wtforms
 from canaille.app import b64_to_obj
 from canaille.app import default_fields
-from canaille.app import login_placeholder
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app import profile_hash
@@ -19,6 +18,7 @@ from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
+from canaille.backends import Backend
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -84,7 +84,7 @@ def login():
         )
 
     form = LoginForm(request.form or None)
-    form["login"].render_kw["placeholder"] = login_placeholder()
+    form["login"].render_kw["placeholder"] = Backend.get().login_placeholder()
 
     if request.form:
         user = models.User.get_from_login(form.login.data)

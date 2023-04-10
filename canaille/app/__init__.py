@@ -24,24 +24,6 @@ def profile_hash(*args):
     ).hexdigest()
 
 
-def login_placeholder():
-    user_filter = current_app.config["BACKENDS"]["LDAP"].get(
-        "USER_FILTER", models.User.DEFAULT_FILTER
-    )
-    placeholders = []
-
-    if "cn={login}" in user_filter:
-        placeholders.append(_("John Doe"))
-
-    if "uid={login}" in user_filter:
-        placeholders.append(_("jdoe"))
-
-    if "mail={login}" in user_filter or not placeholders:
-        placeholders.append(_("john@doe.com"))
-
-    return _(" or ").join(placeholders)
-
-
 def default_fields():
     read = set()
     write = set()

@@ -8,6 +8,7 @@ import ldif
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.backends import Backend
+from flask import current_app
 from flask import render_template
 from flask import request
 from flask_babel import gettext as _
@@ -199,6 +200,24 @@ class LDAPBackend(Backend):
             user.delete(conn)
 
         conn.unbind_s()
+
+    @classmethod
+    def login_placeholder(cls):
+        user_filter = current_app.config["BACKENDS"]["LDAP"].get(
+            "USER_FILTER", models.User.DEFAULT_FILTER
+        )
+        placeholders = []
+
+        if "cn={login}" in user_filter:
+            placeholders.append(_("John Doe"))
+
+        if "uid={login}" in user_filter:
+            placeholders.append(_("jdoe"))
+
+        if "mail={login}" in user_filter or not placeholders:
+            placeholders.append(_("john@doe.com"))
+
+        return _(" or ").join(placeholders)
 
 
 def setup_ldap_models(config):

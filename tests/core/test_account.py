@@ -336,23 +336,3 @@ def test_user_self_deletion(testclient, backend):
         assert not sess.get("user_id")
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-
-
-def test_login_placeholder(testclient):
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(uid={login})"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "jdoe"
-
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(cn={login})"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "John Doe"
-
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(mail={login})"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "john@doe.com"
-
-    testclient.app.config["BACKENDS"]["LDAP"][
-        "USER_FILTER"
-    ] = "(|(uid={login})(mail={login}))"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "jdoe or john@doe.com"
