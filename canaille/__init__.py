@@ -36,11 +36,6 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if app.debug and "OIDC" in app.config:  # pragma: no cover
-        import canaille.oidc.installation
-
-        canaille.oidc.installation.setup_keypair(app.config)
-
     if validate:
         canaille.app.configuration.validate(app.config)
 
@@ -187,6 +182,7 @@ def create_app(config=None, validate=True, backend=None):
     try:
         from .oidc.oauth import setup_oauth
         from .app.i18n import setup_i18n
+        from .app.installation import install
 
         setup_logging(app)
         setup_backend(app, backend)
@@ -196,6 +192,9 @@ def create_app(config=None, validate=True, backend=None):
         setup_i18n(app)
         setup_themer(app)
         setup_flask(app)
+
+        if app.debug:  # pragma: no cover
+            install(app.config)
 
     except Exception as exc:  # pragma: no cover
         if sentry_sdk:

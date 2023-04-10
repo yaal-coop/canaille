@@ -26,6 +26,13 @@ class Backend:
         yield self.setup()
         self.teardown()
 
+    @classmethod
+    def install(self):
+        """
+        This methods prepares the database to host canaille data.
+        """
+        raise NotImplementedError()
+
     def setup(self):
         """
         This method will be called before each http request,

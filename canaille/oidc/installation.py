@@ -1,30 +1,15 @@
 import os
 
-from canaille.app import models
-from canaille.backends.ldap.installation import install_schema
-from canaille.backends.ldap.installation import ldap_connection
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 
 def install(config):
-    setup_ldap_tree(config)
-    setup_keypair(config)
-    setup_schemas(config)
-
-
-def setup_ldap_tree(config):
-    with ldap_connection(config) as conn:
-        models.Token.install(conn)
-        models.AuthorizationCode.install(conn)
-        models.Client.install(conn)
-        models.Consent.install(conn)
-
-
-def setup_keypair(config):
-    if os.path.exists(config["OIDC"]["JWT"]["PUBLIC_KEY"]) or os.path.exists(
-        config["OIDC"]["JWT"]["PRIVATE_KEY"]
+    if (
+        not config.get("OIDC", {}).get("JWT")
+        or os.path.exists(config["OIDC"]["JWT"]["PUBLIC_KEY"])
+        or os.path.exists(config["OIDC"]["JWT"]["PRIVATE_KEY"])
     ):
         return
 
@@ -45,11 +30,3 @@ def setup_keypair(config):
 
     with open(config["OIDC"]["JWT"]["PRIVATE_KEY"], "wb") as fd:
         fd.write(private_key)
-
-
-def setup_schemas(config):
-    install_schema(
-        config,
-        os.path.dirname(os.path.dirname(__file__))
-        + "/backends/ldap/schemas/oauth2-openldap.ldif",
-    )

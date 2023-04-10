@@ -4,6 +4,9 @@ from canaille.backends import Backend
 
 def test_required_methods(testclient):
     with pytest.raises(NotImplementedError):
+        Backend.install()
+
+    with pytest.raises(NotImplementedError):
         Backend.validate({})
 
     backend = Backend(testclient.app.config)
