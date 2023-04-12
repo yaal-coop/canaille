@@ -12,6 +12,6 @@ RUN \
 COPY poetry.lock pyproject.toml /opt/canaille/
 RUN pip install poetry
 WORKDIR /opt/canaille
-RUN poetry install --with demo
+RUN poetry install --with demo --without dev
 
 ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0"]
