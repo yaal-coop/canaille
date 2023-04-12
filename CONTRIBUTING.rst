@@ -28,11 +28,19 @@ The canaille server has some default users:
 Docker environment
 ~~~~~~~~~~~~~~~~~~
 
-If you want to develop with docker, use:
+If you want to develop with docker, your browser needs to be able to reach the `canaille` container. The docker-compose file exposes the right ports, but front requests are from outside the docker network: the `canaille` url that makes sense for docker, points nowhere from your browser. As exposed ports are on `localhost`, you need to tell your computer that `canaille` url means `localhost`.
+
+To do that, you can add the following line to your `/etc/hosts`:
 
 .. code-block:: console
 
-    cd demo && docker-compose up
+    127.0.0.1   canaille
+
+To launch containers, use:
+
+.. code-block:: console
+
+    cd demo && docker compose up  # or docker-compose
 
 Local environment
 ~~~~~~~~~~~~~~~~~
