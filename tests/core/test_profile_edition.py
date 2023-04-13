@@ -153,6 +153,33 @@ def test_edition(
     logged_user.save()
 
 
+def test_edition_remove_fields(
+    testclient,
+    slapd_server,
+    logged_user,
+    admin,
+):
+    res = testclient.get("/profile/user", status=200)
+    res.form["display_name"] = ""
+    res.form["phone_number"] = ""
+
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")], res.text
+    res = res.follow()
+
+    logged_user.reload()
+
+    assert not logged_user.display_name
+    assert not logged_user.phone_number
+
+    logged_user.formatted_name = ["John (johnny) Doe"]
+    logged_user.family_name = ["Doe"]
+    logged_user.mail = ["john@doe.com"]
+    logged_user.given_name = None
+    logged_user.photo = None
+    logged_user.save()
+
+
 def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
     res = testclient.get(f"/profile/admin")
     res = testclient.post(

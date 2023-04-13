@@ -384,7 +384,11 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             deletions = [
                 name
                 for name, value in self.changes.items()
-                if (value is None or value == [None]) and name in self.attrs
+                if (
+                    value is None
+                    or (isinstance(value, list) and len(value) == 1 and not value[0])
+                )
+                and name in self.attrs
             ]
             changes = {
                 name: value
@@ -394,7 +398,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             formatted_changes = {
                 name: value
                 for name, value in python_attrs_to_ldap(changes).items()
-                if value is not None and value != [None]
+                if value is not None and len(value) > 0 and value[0]
             }
             modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
                 (ldap.MOD_REPLACE, name, values)
