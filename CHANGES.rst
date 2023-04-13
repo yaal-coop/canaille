@@ -12,6 +12,7 @@ Changed
 - Renamed user model attributes to match SCIM naming convention. :pr:`123`
 - Moved OIDC related configuration entries in ``OIDC``
 - Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``
+- Bumped to htmx 1.9.0 :pr:`124`
 
 Fixed
 *****
