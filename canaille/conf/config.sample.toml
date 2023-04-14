@@ -91,18 +91,25 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # A 'user' variable is available.
 # GROUP_USER_FILTER = "member={user.dn}"
 
+[ACL]
 # You can define access controls that define what users can do on canaille
 # An access control consists in a FILTER to match users, a list of PERMISSIONS
 # matched users will be able to perform, and fields users will be able
 # to READ and WRITE. Users matching several filters will cumulate permissions.
 #
-# A 'FILTER' parameter that is a LDAP filter used to determine if a user
-# belongs to an access control. If absent, all the users will match this
-# access control. If your LDAP server has the 'memberof' overlay, you can
-# filter against group membership.
+# 'FILTER' parameter can be:
+# - absent, in which case all the users will match this access control
+# - a mapping where keys are user attributes name and the values those user
+#   attribute values. All the values must be matched for the user to be part
+#   of the access control.
+# - a list of those mappings. If a user values match at least one mapping,
+#   then the user will be part of the access control
+#
 # Here are some examples
-#     FILTER = 'uid=admin'
-#     FILTER = 'memberof=cn=admins,ou=groups,dc=mydomain,dc=tld'
+#     FILTER = {'user_name': 'admin'}
+#     FILTER =
+#       - {'groups': 'admin'}
+#       - {'groups': 'moderators'}
 #
 # The 'PERMISSIONS' parameter that is an list of items the users in the access
 # control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
@@ -142,7 +149,7 @@ WRITE = [
 ]
 
 [ACL.ADMIN]
-FILTER = "memberof=cn=moderators,ou=groups,dc=mydomain,dc=tld"
+FILTER = {"groups": "admins"}
 PERMISSIONS = [
     "manage_users",
     "manage_groups",

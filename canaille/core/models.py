@@ -63,6 +63,27 @@ class User(LDAPObject):
 
         return user
 
+    @classmethod
+    def acl_filter_to_ldap_filter(cls, filter_):
+        if isinstance(filter_, dict):
+            return (
+                "(&"
+                + "".join(
+                    f"({cls.attribute_table.get(key, key)}={value})"
+                    for key, value in filter_.items()
+                )
+                + ")"
+            )
+
+        if isinstance(filter_, list):
+            return (
+                "(|"
+                + "".join(cls.acl_filter_to_ldap_filter(mapping) for mapping in filter_)
+                + ")"
+            )
+
+        return filter_
+
     def load_groups(self):
         group_filter = (
             current_app.config["BACKENDS"]["LDAP"]
@@ -159,9 +180,9 @@ class User(LDAPObject):
         conn = self.ldap_connection()
 
         for access_group_name, details in current_app.config["ACL"].items():
-            if not details.get("FILTER") or (
-                self.id
-                and conn.search_s(self.id, ldap.SCOPE_SUBTREE, details["FILTER"])
+            filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))
+            if not filter_ or (
+                self.id and conn.search_s(self.id, ldap.SCOPE_SUBTREE, filter_)
             ):
                 self.permissions |= set(details.get("PERMISSIONS", []))
                 self.read |= set(details.get("READ", []))
