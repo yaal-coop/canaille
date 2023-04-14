@@ -115,7 +115,7 @@ def configuration(slapd_server, smtpd):
                 ],
             },
             "ADMIN": {
-                "FILTER": "(|(uid=admin)(sn=admin))",
+                "FILTER": [{"user_name": "admin"}, {"family_name": "admin"}],
                 "PERMISSIONS": [
                     "manage_users",
                     "manage_oidc",
@@ -128,7 +128,7 @@ def configuration(slapd_server, smtpd):
                 ],
             },
             "MODERATOR": {
-                "FILTER": "(|(uid=moderator)(sn=moderator))",
+                "FILTER": [{"user_name": "moderator"}, {"family_name": "moderator"}],
                 "PERMISSIONS": ["manage_users", "manage_groups", "delete_account"],
                 "WRITE": [
                     "groups",

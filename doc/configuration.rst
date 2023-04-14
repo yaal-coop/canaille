@@ -132,9 +132,19 @@ The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
 object that users will be able to read and/or write.
 
 :FILTER:
-    *Optional.* A filter to test on the users to test if they belong to this ACL.
-    If absent, all the users will have the permissions in this ACL.
-    e.g. ``uid=admin`` or ``memberof=cn=admin,ou=groups,dc=mydomain,dc=tld``
+    *Optional.* It can be:
+
+    - absent, in which case all the users will have the permissions in this ACL.
+    - a mapping where keys are user attributes name and the values those user
+      attribute values. All the values must be matched for the user to be part
+      of the access control.
+    - a list of those mappings. If a user values match at least one mapping,
+      then the user will be part of the access control
+
+    Here are some examples:
+
+    - ``FILTER = {'user_name': 'admin'}``
+    - ``FILTER = [{'groups': 'admin'}, {'groups': 'moderators'}]``
 
 :PERMISSIONS:
     *Optional.* A list of items the users in the access control will be able to manage. Values can be:
