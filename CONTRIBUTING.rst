@@ -31,11 +31,21 @@ The canaille server has some default users:
   and his first attempt to log-in would result in sending a password initialization
   email (if a smtp server is configurated).
 
+Backends
+~~~~~~~~
+
+Canaille comes with two backends:
+
+- a lightweight test purpose `memory` backend
+- a production-ready `LDAP` backend
 
 Docker environment
 ~~~~~~~~~~~~~~~~~~
 
-If you want to develop with docker, your browser needs to be able to reach the `canaille` container. The docker-compose file exposes the right ports, but front requests are from outside the docker network: the `canaille` url that makes sense for docker, points nowhere from your browser. As exposed ports are on `localhost`, you need to tell your computer that `canaille` url means `localhost`.
+If you want to develop with docker, your browser needs to be able to reach the `canaille` container.
+The docker-compose file exposes the right ports, but front requests are from outside the docker network:
+the `canaille` url that makes sense for docker, points nowhere from your browser.
+As exposed ports are on `localhost`, you need to tell your computer that `canaille` url means `localhost`.
 
 To do that, you can add the following line to your `/etc/hosts`:
 
@@ -47,16 +57,28 @@ To launch containers, use:
 
 .. code-block:: console
 
-    cd demo && docker compose up  # or docker-compose
+    cd demo
+    # To run the demo with the memory backend:
+    docker compose up
+
+    # To run the demo with the LDAP backend:
+    docker compose --file docker-compose-ldap.yml up
 
 Local environment
 ~~~~~~~~~~~~~~~~~
 
-To run canaille locally, you need to have OpenLDAP installed on your system. Then:
+.. code-block:: console
+
+    # To run the demo with the memory backend:
+    ./demo/run.sh
+
+If you want to run the demo locally with the LDAP backend, you need to have
+OpenLDAP installed on your system.
 
 .. code-block:: console
 
-    ./demo/run.sh
+    # To run the demo with the LDAP backend:
+    ./demo/run.sh --backend ldap
 
 .. warning ::
 
@@ -78,15 +100,20 @@ users and groups with the ``populate`` command:
 .. code-block:: console
 
     # If using docker:
-    docker compose exec canaille env CONFIG=conf-docker/canaille.toml poetry run canaille populate --nb 100 users  # or docker-compose
+    docker compose exec canaille env CONFIG=conf-docker/canaille-ldap.toml poetry run canaille populate --nb 100 users  # or docker-compose
 
     # If running in local environment
-    env CONFIG=conf/canaille.toml poetry run canaille populate  --nb 100 users
+    env CONFIG=conf/canaille-ldap.toml poetry run canaille populate  --nb 100 users
+
+Note that this will not work with the memory backend.
 
 Unit tests
 ----------
 
-To run the tests, you just need to run `tox`. Everything must be green before patches get merged.
+To run the tests, you just can run `poetry run pytest` and/or `tox` to test all the supported python environments.
+Everything must be green before patches get merged.
+
+To test a specific backend you can pass `--backend memory` or `--backend ldap` to pytest and tox.
 
 The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the
 test coverage with ``tox -e coverage``.
@@ -106,7 +133,7 @@ The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_ CSS fr
 The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
 
 - Using Javascript in the interface is tolerated, but the whole website MUST be accessible
-  for browsers without Javascript support, and without feature loss.
+  for browsers without Javascript support, and without any feature loss.
 - Because of Fomantic UI we have a dependency to jQuery, however new contributions should
   not depend on jQuery at all.
   See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_.

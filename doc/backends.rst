@@ -4,6 +4,12 @@ Backends
 .. contents::
    :local:
 
+Memory
+======
+
+Canaille comes with a lightweight inmemory backend by default.
+This backend is only for test purpose and should not be used in production environments.
+
 LDAP
 ====
 

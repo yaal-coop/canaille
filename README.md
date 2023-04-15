@@ -6,10 +6,10 @@
 as in *Can I access your data?* Canaille is a simple account manager and an OpenID Connect provider based upon a LDAP database.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
-- Authentication and user profile edition against a LDAP directory;
-- Registration, email confirmation, "I forgot my password" emails;
-- Only OpenID Connect: no outdated or exotic protocol support;
-- No additional database required: everything is stored in your LDAP server;
+- User profile and groups management;
+- Authentication, registration, email confirmation, "I forgot my password" emails;
+- OpenID Connect identity provider;
+- LDAP first-class citizenship;
 - Customizable, themable;
 - The code is easy to read and easy to edit!
 
@@ -25,7 +25,10 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 ```bash
 cd demo
-./run.sh # or `docker-compose up` to run it with docker
+# Either run the demo locally
+./run.sh
+# or run the demo in docker
+docker compose up
 ```
 
 or try our [online demo](https://demo.canaille.yaal.coop)!

@@ -1,0 +1,75 @@
+---
+version: "3"
+
+services:
+  ldap:
+    image: osixia/openldap
+    environment:
+      - LDAP_DOMAIN=mydomain.tld
+    volumes:
+      # memberof overlay is already present in openldap docker image but only for groupOfUniqueNames. We need to overwrite it (until canaille can handle groupOfUniqueNames).
+      # https://github.com/osixia/docker-openldap/blob/master/image/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif
+      - ./ldif/memberof-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif:ro
+      - ./ldif/refint-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/04-refint.ldif:ro
+      - ../canaille/backends/ldap/schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
+      - ./ldif/ppolicy-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-ppolicy.ldif:ro
+      - ./ldif/ppolicy.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-ppolicy.ldif:ro
+      - ./ldif/bootstrap-users-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-users-tree.ldif:ro
+      - ./ldif/bootstrap-oidc-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-oidc-tree.ldif:ro
+    command: --copy-service --loglevel debug
+    ports:
+      - 5389:389
+      - 5636:636
+
+  canaille:
+    depends_on:
+      - ldap
+    build:
+      context: ..
+      dockerfile: demo/Dockerfile-canaille
+    environment:
+      - AUTHLIB_INSECURE_TRANSPORT=1
+      - FLASK_DEBUG=1
+      - CONFIG=/opt/canaille/conf/canaille-ldap.toml
+      - FLASK_APP=demoapp
+    volumes:
+      - ../canaille:/opt/canaille/canaille
+      - ./conf-docker:/opt/canaille/conf
+    ports:
+      - 5000:5000
+
+  client1:
+    depends_on:
+      - canaille
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    environment:
+      - FLASK_DEBUG=1
+      - CONFIG=/opt/client/conf/client1.cfg
+      - FLASK_APP=client
+    volumes:
+      - ./client:/opt/client/client
+      - ./conf-docker:/opt/client/conf
+      - ../canaille/static:/opt/canaille/static
+    command: --port=5001
+    ports:
+      - 5001:5001
+
+  client2:
+    depends_on:
+      - canaille
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    environment:
+      - FLASK_DEBUG=1
+      - CONFIG=/opt/client/conf/client2.cfg
+      - FLASK_APP=client
+    volumes:
+      - ./client:/opt/client/client
+      - ./conf-docker:/opt/client/conf
+      - ../canaille/static:/opt/canaille/static
+    command: --port=5002
+    ports:
+      - 5002:5002
