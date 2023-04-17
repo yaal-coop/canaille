@@ -403,17 +403,11 @@ def profile_create(current_app, form):
     user.formatted_name = [f"{user.given_name[0]} {user.family_name[0]}".strip()]
     user.save()
 
-    if "groups" in form:
-        groups = [Group.get(group_id) for group_id in form["groups"].data]
-        for group in groups:
-            group.members = group.members + [user]
-            group.save()
-
     if form["password1"].data:
         user.set_password(form["password1"].data)
+        user.save()
 
     flash(_("User account creation succeed."), "success")
-    user.save()
 
     return user
 

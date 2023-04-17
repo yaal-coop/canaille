@@ -118,10 +118,6 @@ BACKENDS.LDAP
     *Optional.* The attribute to identify a group in the web interface.
     Defaults to ``cn``
 
-:GROUP_USER_FILTER:
-    *Optional.* A filter to check if a user belongs to a group. A 'user' variable is available.
-    Defaults to ``member={user.dn}``
-
 ACL
 ---
 You can define access controls that define what users can do on canaille

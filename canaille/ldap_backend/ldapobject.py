@@ -326,8 +326,6 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
         if not filter:
             filter = ""
-        elif not filter.startswith("(") and not filter.endswith(")"):
-            filter = f"({filter})"
 
         ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{cls.base},{cls.root_dn}"

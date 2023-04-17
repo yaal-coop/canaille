@@ -32,13 +32,13 @@ class User(LDAPObject):
         "title": "title",
         "organization": "o",
         "last_modified": "modifyTimestamp",
+        "groups": "memberOf",
     }
 
     def __init__(self, *args, **kwargs):
         self.read = set()
         self.write = set()
         self.permissions = set()
-        self._groups = None
         super().__init__(*args, **kwargs)
 
     @classmethod
@@ -59,21 +59,17 @@ class User(LDAPObject):
         user = super().get(**kwargs)
         if user:
             user.load_permissions()
-            user.load_groups()
 
         return user
 
     @classmethod
     def acl_filter_to_ldap_filter(cls, filter_):
         if isinstance(filter_, dict):
-            return (
-                "(&"
-                + "".join(
-                    f"({cls.attribute_table.get(key, key)}={value})"
-                    for key, value in filter_.items()
-                )
-                + ")"
+            base = "".join(
+                f"({cls.attribute_table.get(key, key)}={value})"
+                for key, value in filter_.items()
             )
+            return f"(&{base})" if len(filter_) > 1 else base
 
         if isinstance(filter_, list):
             return (
@@ -83,15 +79,6 @@ class User(LDAPObject):
             )
 
         return filter_
-
-    def load_groups(self):
-        group_filter = (
-            current_app.config["BACKENDS"]["LDAP"]
-            .get("GROUP_USER_FILTER", Group.DEFAULT_USER_FILTER)
-            .format(user=self)
-        )
-        escaped_group_filter = ldap.filter.escape_filter_chars(group_filter)
-        self._groups = Group.query(filter=escaped_group_filter)
 
     @classmethod
     def authenticate(cls, login, password, signin=False):
@@ -154,27 +141,32 @@ class User(LDAPObject):
     def reload(self):
         super().reload()
         self.load_permissions()
-        self.load_groups()
 
-    @property
-    def groups(self):
-        if self._groups is None:
-            self.load_groups()
-        return self._groups
+    def save(self, *args, **kwargs):
+        group_attr = self.attribute_table.get("groups", "groups")
+        new_groups = self.changes.get(group_attr)
+        if not new_groups:
+            return super().save(*args, **kwargs)
 
-    @groups.setter
-    def groups(self, values):
-        before = self._groups or []
-        after = [v if isinstance(v, Group) else Group.get(id=v) for v in values]
-        to_add = set(after) - set(before)
-        to_del = set(before) - set(after)
+        old_groups = self.attrs.get(group_attr) or []
+        new_groups = [
+            v if isinstance(v, Group) else Group.get(id=v) for v in new_groups
+        ]
+        to_add = set(new_groups) - set(old_groups)
+        to_del = set(old_groups) - set(new_groups)
+
+        del self.changes[group_attr]
+        super().save(*args, **kwargs)
+
         for group in to_add:
             group.members = group.members + [self]
             group.save()
+
         for group in to_del:
             group.members = [member for member in group.members if member != self]
             group.save()
-        self._groups = after
+
+        self.attrs[group_attr] = new_groups
 
     def load_permissions(self):
         conn = self.ldap_connection()
@@ -224,7 +216,6 @@ class Group(LDAPObject):
     DEFAULT_OBJECT_CLASS = "groupOfNames"
     DEFAULT_ID_ATTRIBUTE = "cn"
     DEFAULT_NAME_ATTRIBUTE = "cn"
-    DEFAULT_USER_FILTER = "member={user.id}"
 
     attribute_table = {
         "id": "dn",

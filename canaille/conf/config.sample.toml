@@ -87,10 +87,6 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # The attribute to use to identify a group
 # GROUP_NAME_ATTRIBUTE = "cn"
 
-# A filter to check if a user belongs to a group
-# A 'user' variable is available.
-# GROUP_USER_FILTER = "member={user.dn}"
-
 [ACL]
 # You can define access controls that define what users can do on canaille
 # An access control consists in a FILTER to match users, a list of PERMISSIONS
@@ -108,8 +104,8 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # Here are some examples
 #     FILTER = {user_name = 'admin'}
 #     FILTER =
-#       - {groups = 'admin'}
-#       - {groups = 'moderators'}
+#       - {groups = 'cn=admins,ou=groups,dc=mydomain,dc=tld'}
+#       - {groups = 'cn=moderators,ou=groups,dc=mydomain,dc=tld'}
 #
 # The 'PERMISSIONS' parameter that is an list of items the users in the access
 # control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
@@ -149,7 +145,7 @@ WRITE = [
 ]
 
 [ACL.ADMIN]
-FILTER = {groups = "admins"}
+FILTER = {groups = "cn=admins,ou=groups,dc=mydomain,dc=tld"}
 PERMISSIONS = [
     "manage_users",
     "manage_groups",

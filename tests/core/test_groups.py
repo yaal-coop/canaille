@@ -62,6 +62,8 @@ def test_group_deletion(testclient, slapd_server, slapd_connection):
         display_name="foobar",
     )
     group.save()
+
+    user.reload()
     assert user.groups == [group]
 
     group.delete()
@@ -88,15 +90,17 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
 
 def test_set_groups(app, user, foo_group, bar_group):
     assert user in foo_group.members
-    assert user.groups[0] == foo_group
+    assert user.groups == [foo_group]
 
     user.groups = [foo_group, bar_group]
+    user.save()
 
     bar_group.reload()
     assert user in bar_group.members
     assert user.groups[1] == bar_group
 
     user.groups = [foo_group]
+    user.save()
 
     foo_group.reload()
     bar_group.reload()
@@ -114,10 +118,12 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user.save()
 
     user.groups = [foo_group]
+    user.save()
 
     assert user in foo_group.members
 
     user.groups = []
+    user.save()
 
     foo_group.reload()
     assert user.id not in foo_group.members

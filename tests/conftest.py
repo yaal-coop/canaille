@@ -238,6 +238,7 @@ def foo_group(app, user, slapd_connection):
         display_name="foo",
     )
     group.save()
+    user.reload()
     yield group
     group.delete()
 
@@ -249,6 +250,7 @@ def bar_group(app, admin, slapd_connection):
         display_name="bar",
     )
     group.save()
+    admin.reload()
     yield group
     group.delete()
 
