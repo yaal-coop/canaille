@@ -108,7 +108,7 @@ class User(LDAPObject):
             session["user_id"].pop()
             if not session["user_id"]:
                 del session["user_id"]
-        except KeyError:
+        except (IndexError, KeyError):
             pass
 
     def has_password(self):
