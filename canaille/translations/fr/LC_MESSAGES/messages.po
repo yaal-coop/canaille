@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-29 23:00+0200\n"
-"PO-Revision-Date: 2023-03-31 13:40+0000\n"
+"PO-Revision-Date: 2023-04-28 17:52+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 4.18-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:105 canaille/account.py:130
@@ -1357,7 +1357,7 @@ msgstr "Supprimer le client"
 
 #: canaille/templates/oidc/admin/client_edit.html:98
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #: canaille/templates/oidc/admin/token_view.html:5
 #: canaille/templates/oidc/admin/token_view.html:57
