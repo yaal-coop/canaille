@@ -39,7 +39,7 @@ include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 python = ">=3.7, <4"
 authlib = ">1,<2"
 click = "<9"
-email_validator = "<2"
+email_validator = "<3"
 flask = "<3"
 flask-babel = "^3.0.0"
 flask-themer = "<2"
