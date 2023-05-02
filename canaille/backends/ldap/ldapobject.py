@@ -200,7 +200,11 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     @property
     def dn(self):
-        return f"{self.rdn_attribute}={ldap.dn.escape_dn_chars(self.rdn_value)},{self.base},{self.root_dn}"
+        return self.dn_for(self.rdn_value)
+
+    @classmethod
+    def dn_for(cls, rdn):
+        return f"{cls.rdn_attribute}={ldap.dn.escape_dn_chars(rdn)},{cls.base},{cls.root_dn}"
 
     @classmethod
     def may(cls):

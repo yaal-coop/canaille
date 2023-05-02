@@ -105,8 +105,8 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # Here are some examples
 #     FILTER = {user_name = 'admin'}
 #     FILTER =
-#       - {groups = 'cn=admins,ou=groups,dc=mydomain,dc=tld'}
-#       - {groups = 'cn=moderators,ou=groups,dc=mydomain,dc=tld'}
+#       - {groups = 'admins'}
+#       - {groups = 'moderators'}
 #
 # The 'PERMISSIONS' parameter that is an list of items the users in the access
 # control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
@@ -146,7 +146,7 @@ WRITE = [
 ]
 
 [ACL.ADMIN]
-FILTER = {groups = "cn=admins,ou=groups,dc=mydomain,dc=tld"}
+FILTER = {groups = "admins"}
 PERMISSIONS = [
     "manage_users",
     "manage_groups",

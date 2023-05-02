@@ -65,6 +65,10 @@ class User(LDAPObject):
     @classmethod
     def acl_filter_to_ldap_filter(cls, filter_):
         if isinstance(filter_, dict):
+            # not super generic, but how can we improve this? ¯\_(ツ)_/¯
+            if "groups" in filter_ and "=" not in filter_.get("groups"):
+                filter_["groups"] = Group.dn_for(filter_["groups"])
+
             base = "".join(
                 f"({cls.attribute_table.get(key, key)}={value})"
                 for key, value in filter_.items()
