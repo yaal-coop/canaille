@@ -78,7 +78,7 @@ def group(user, groupname):
 
 
 def edit_group(group):
-    table_form = TableForm(User, filter={"memberOf": group}, formdata=request.form)
+    table_form = TableForm(User, filter={"groups": group}, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
