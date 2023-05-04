@@ -16,6 +16,7 @@ slapd = slapd.Slapd(
         "inetorgperson.ldif",
         "../canaille/backends/ldap/schemas/oauth2-openldap.ldif",
         "ldif/memberof-config.ldif",
+        "ldif/refint-config.ldif",
     ),
 )
 slapd.start()

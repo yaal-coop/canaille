@@ -8,6 +8,7 @@ services:
       - LDAP_DOMAIN=mydomain.tld
     volumes:
       - ./ldif/memberof-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif:ro
+      - ./ldif/refint-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/04-refint.ldif:ro
       # memberof overlay is already present in openldap docker image but only for groupOfUniqueNames. We need to overwrite it (until canaille can handle groupOfUniqueNames).
       # https://github.com/osixia/docker-openldap/blob/master/image/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif
       - ../canaille/backends/ldap/schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
