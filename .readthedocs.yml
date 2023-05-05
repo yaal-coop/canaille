@@ -15,4 +15,5 @@ build:
       - pip install poetry
       - poetry export --with doc --output requirements.txt
     post_install:
+      - pip install .
       - pip install --requirement requirements.txt
