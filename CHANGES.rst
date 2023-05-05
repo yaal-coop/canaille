@@ -7,6 +7,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 =====================
 
 🚨Configuration files must be updated.🚨
+Check the new format with ``git diff 0.0.25 0.0.24 canaille/conf/config.sample.toml``
 
 Changed
 *******
