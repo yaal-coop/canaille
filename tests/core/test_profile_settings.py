@@ -145,6 +145,7 @@ def test_password_initialization_mail(
         "It should be received within a few minutes.",
     ) in res.flashes
     assert len(smtpd.messages) == 1
+    assert smtpd.messages[0]["X-RcptTo"] == "john@doe.com"
 
     u.reload()
     u.password = ["correct horse battery staple"]
@@ -253,6 +254,7 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
         "It should be received within a few minutes.",
     ) in res.flashes
     assert len(smtpd.messages) == 1
+    assert smtpd.messages[0]["X-RcptTo"] == "john@doe.com"
 
     u.delete()
 

@@ -21,6 +21,7 @@ Fixed
 
 - ``OIDC.JWT.MAPPING`` configuration entry is really optional now.
 - Fixed empty model attributes registration :pr:`125`
+- Password initialization mails were not correctly sent. :pr:`128`
 
 [0.0.24] - 2023-04-07
 =====================
