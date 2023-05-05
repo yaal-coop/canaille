@@ -14,6 +14,7 @@ Changed
 - Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``
 - Bumped to htmx 1.9.0 :pr:`124`
 - ACL filters are no more LDAP filters but user attribute mappings. :pr:`125`
+- Bumped to htmx 1.9.2 :pr:`127`
 
 Fixed
 *****
