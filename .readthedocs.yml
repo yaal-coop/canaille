@@ -13,6 +13,6 @@ build:
   jobs:
     post_create_environment:
       - pip install poetry
-      - poetry config virtualenvs.create false
+      - poetry export --with doc --output requirements.txt
     post_install:
-      - poetry install --with doc
+      - pip install --requirement requirements.txt
