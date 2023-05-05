@@ -41,16 +41,16 @@ DEFAULT_JWT_EXP = 3600
 AUTHORIZATION_CODE_LIFETIME = 84400
 DEFAULT_JWT_MAPPING = {
     "SUB": "{{ user.user_name[0] }}",
-    "NAME": "{{ user.formatted_name[0] }}",
-    "PHONE_NUMBER": "{{ user.phone_number[0] }}",
-    "EMAIL": "{{ user.email[0] }}",
-    "GIVEN_NAME": "{{ user.given_name[0] }}",
-    "FAMILY_NAME": "{{ user.family_name[0] }}",
-    "PREFERRED_USERNAME": "{{ user.display_name }}",
-    "LOCALE": "{{ user.preferred_language }}",
-    "ADDRESS": "{{ user.formatted_address[0] }}",
+    "NAME": "{% if user.formatted_name %}{{ user.formatted_name[0] }}{% endif %}",
+    "PHONE_NUMBER": "{% if user.phone_number %}{{ user.phone_number[0] }}{% endif %}",
+    "EMAIL": "{% if user.email %}{{ user.email[0] }}{% endif %}",
+    "GIVEN_NAME": "{% if user.given_name %}{{ user.given_name[0] }}{% endif %}",
+    "FAMILY_NAME": "{% if user.family_name %}{{ user.family_name[0] }}{% endif %}",
+    "PREFERRED_USERNAME": "{% if user.display_name %}{{ user.display_name }}{% endif %}",
+    "LOCALE": "{% if user.preferred_language %}{{ user.preferred_language }}{% endif %}",
+    "ADDRESS": "{% if user.formatted_address %}{{ user.formatted_address[0] }}{% endif %}",
     "PICTURE": "{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}",
-    "WEBSITE": "{{ user.profile_url[0] }}",
+    "WEBSITE": "{% if user.profile_url %}{{ user.profile_url[0] }}{% endif %}",
 }
 
 
