@@ -90,7 +90,6 @@ def onboarding():
     form = OnboardingForm(request.form or None)
 
     if request.form:
-        print(request.form["answer"])
         if request.form["answer"] == "sign-up":
             return redirect(
                 url_for("account.join")
