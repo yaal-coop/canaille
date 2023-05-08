@@ -24,7 +24,7 @@ def unique_login(form, field):
 
 def unique_email(form, field):
     if User.get(mail=field.data) and (
-        not getattr(form, "user", None) or form.user.mail[0] != field.data
+            not getattr(form, "user", None) or form.user.mail[0] != field.data
     ):
         raise wtforms.ValidationError(
             _("The email '{email}' is already used").format(email=field.data)
@@ -313,6 +313,30 @@ class EditGroupForm(HTMXForm):
     description = wtforms.StringField(
         _("Description"),
         validators=[wtforms.validators.Optional()],
+    )
+
+
+class OnboardingForm(HTMXForm):
+    pass
+
+class JoinForm(HTMXForm):
+    user_name = wtforms.StringField(
+        _("Username"),
+        render_kw={"placeholder": _("jdoe")},
+        validators=[wtforms.validators.DataRequired(), unique_login],
+    )
+    email = wtforms.EmailField(
+        _("Email address"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Email(),
+            unique_email,
+        ],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
     )
 
 
