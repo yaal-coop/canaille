@@ -34,6 +34,8 @@ from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
 from .forms import FirstLoginForm
+from .forms import OnboardingForm
+from .forms import JoinForm
 from .forms import ForgottenPasswordForm
 from .forms import InvitationForm
 from .forms import LoginForm
@@ -64,7 +66,7 @@ def index():
     user = current_user()
 
     if not user:
-        return redirect(url_for("account.login"))
+        return redirect(url_for("account.onboarding"))
 
     if user.can_edit_self or user.can_manage_users:
         return redirect(
@@ -75,6 +77,81 @@ def index():
         return redirect(url_for("oidc.consents.consents"))
 
     return redirect(url_for("account.about"))
+
+
+# TODO: ignore onboarding if SMTP not enabled, redirect to account.login
+@bp.route("/onboarding", methods=("GET", "POST"))
+def onboarding():
+    if current_user():
+        return redirect(
+            url_for("account.profile_edition", username=current_user().user_name[0])
+        )
+
+    form = OnboardingForm(request.form or None)
+
+    if request.form:
+        print(request.form["answer"])
+        if request.form["answer"] == "sign-up":
+            return redirect(
+                url_for("account.join")
+            )
+        elif request.form["answer"] == "sign-in":
+            return redirect(
+                url_for("account.login")
+            )
+
+    return render_template(
+        "onboarding.html",
+        form=form
+    )
+
+
+# TODO: add Captcha support
+@bp.route("/join", methods=("GET", "POST"))
+@smtp_needed()
+def join():
+    if current_user():
+        return redirect(
+            url_for("account.profile_edition", username=current_user().user_name[0])
+        )
+    form = JoinForm(request.form or None)
+
+    email_sent = None
+    registration_url = None
+    form_validated = False
+    if request.form and form.validate():
+        form_validated = True
+        invitation = Invitation(
+            datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            form.user_name.data,
+            False,  # TODO: allow admin to set this in settings
+            form.email.data,
+            [],  # TODO: allow admin to set this in settings
+        )
+        registration_url = url_for(
+            "account.registration",
+            data=invitation.b64(),
+            hash=invitation.profile_hash(),
+            _external=True,
+        )
+
+        email_sent = send_invitation_mail(form.email.data, registration_url)
+        if email_sent:
+            flash(_("You've received an email to continue the registration process."), "success")
+            return redirect(
+                url_for("account.login")
+            )
+        # TODO: flash in case of server error
+
+    return render_template(
+        "profile_add.html",
+        form=form,
+        form_validated=form_validated,
+        email_sent=email_sent,
+        edited_user=None,
+        self_deletion=False,
+        menuitem="users"
+    )
 
 
 @bp.route("/about")
