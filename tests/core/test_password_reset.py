@@ -45,7 +45,7 @@ def test_unavailable_if_no_smtp(testclient, user):
     res = testclient.get("/login")
     res.mustcontain("Forgotten password")
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit()
     res = res.follow()
     res.mustcontain("Forgotten password")
@@ -57,7 +57,7 @@ def test_unavailable_if_no_smtp(testclient, user):
     res = testclient.get("/login")
     res.mustcontain(no="Forgotten password")
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit()
     res = res.follow()
     res.mustcontain(no="Forgotten password")

@@ -8,7 +8,7 @@ def test_password_flow_basic(testclient, user, client):
         "/oauth/token",
         params=dict(
             grant_type="password",
-            username="John (johnny) Doe",
+            username="user",
             password="correct horse battery staple",
             scope="openid profile groups",
         ),
@@ -39,7 +39,7 @@ def test_password_flow_post(testclient, user, client):
         "/oauth/token",
         params=dict(
             grant_type="password",
-            username="John (johnny) Doe",
+            username="user",
             password="correct horse battery staple",
             scope="openid profile groups",
             client_id=client.client_id,

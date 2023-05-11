@@ -239,12 +239,12 @@ def test_logout_login(testclient, logged_user, client):
     res = res.form.submit(name="answer", value="logout", status=302)
     res = res.follow(status=200)
 
-    res.form["login"] = logged_user.formatted_name[0]
+    res.form["login"] = logged_user.user_name[0]
     res.form["password"] = "wrong password"
     res = res.form.submit(status=200)
     assert ("error", "Login failed, please check your information") in res.flashes
 
-    res.form["login"] = logged_user.formatted_name[0]
+    res.form["login"] = logged_user.user_name[0]
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
@@ -326,7 +326,7 @@ def test_refresh_token(testclient, user, client):
             status=200,
         )
 
-        res.form["login"] = "John (johnny) Doe"
+        res.form["login"] = "user"
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit(name="answer", value="accept", status=302)
         res = res.follow()
@@ -595,7 +595,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
         status=200,
     )
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit(status=200)
 
     res.form["password"] = "correct horse battery staple"
@@ -787,7 +787,7 @@ def test_authorization_code_expired(testclient, user, client):
             ),
             status=200,
         )
-        res.form["login"] = "John (johnny) Doe"
+        res.form["login"] = "user"
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit(name="answer", value="accept").follow()
         res = res.form.submit(name="answer", value="accept", status=302)
@@ -832,7 +832,7 @@ def test_code_with_invalid_user(testclient, admin, client):
         ),
         status=200,
     )
-    res.form["login"] = "Temp"
+    res.form["login"] = "temp"
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(name="answer", value="accept", status=302).follow()
     res = res.form.submit(name="answer", value="accept", status=302)
@@ -881,7 +881,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
         status=200,
     )
 
-    res.form["login"] = "Temp"
+    res.form["login"] = "temp"
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(name="answer", value="accept", status=302).follow()
     res = res.form.submit(name="answer", value="accept", status=302)

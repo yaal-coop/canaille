@@ -27,12 +27,12 @@ def test_signin_and_out(testclient, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert "John (johnny) Doe" == session.get("attempt_login")
+        assert "user" == session.get("attempt_login")
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
@@ -76,7 +76,7 @@ def test_signin_wrong_password(testclient, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
     res.form["password"] = "incorrect horse"
@@ -116,7 +116,7 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
     u.save()
 
     res = testclient.get("/login", status=200)
-    res.form["login"] = "Temp User"
+    res.form["login"] = "temp"
     res = res.form.submit(status=302)
 
     assert res.location == "/firstlogin/temp"
@@ -195,7 +195,7 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
     u.save()
 
     res = testclient.get("/login")
-    res.form["login"] = "Temp User"
+    res.form["login"] = "temp"
     res = res.form.submit().follow()
     res.form["password"] = "correct horse battery staple"
 

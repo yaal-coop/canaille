@@ -85,7 +85,7 @@ def configuration(slapd_server, smtpd):
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
                 "USER_BASE": "ou=users",
-                "USER_FILTER": "(|(uid={login})(cn={login}))",
+                "USER_FILTER": "(uid={login})",
                 "GROUP_BASE": "ou=groups",
                 "TIMEOUT": 0.1,
             },

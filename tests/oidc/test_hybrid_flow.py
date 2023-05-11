@@ -19,7 +19,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     )
     assert "text/html" == res.content_type, res.json
 
-    res.form["login"] = user.formatted_name[0]
+    res.form["login"] = user.user_name[0]
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
 
