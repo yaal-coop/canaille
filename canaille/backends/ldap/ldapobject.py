@@ -428,8 +428,3 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     def delete(self, conn=None):
         conn = conn or self.ldap_connection()
         conn.delete_s(self.id)
-
-    def keys(self):
-        ldap_keys = self.may() + self.must()
-        inverted_table = {value: key for key, value in self.attributes.items()}
-        return [inverted_table.get(key, key) for key in ldap_keys]
