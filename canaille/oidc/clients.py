@@ -109,7 +109,7 @@ def client_edit(client_id):
     if not client:
         abort(404)
 
-    data = dict(client)
+    data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     data["scope"] = " ".join(data["scope"])
     data["redirect_uris"] = data["redirect_uris"][0] if data["redirect_uris"] else ""
     data["contacts"] = data["contacts"][0] if data["contacts"] else ""

@@ -187,12 +187,6 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         else:
             super().__setattr__(name, value)
 
-    def __getitem__(self, item):
-        return getattr(self, item)
-
-    def __setitem__(self, item, value):
-        return setattr(self, item, value)
-
     @property
     def rdn_value(self):
         value = getattr(self, self.rdn_attribute)

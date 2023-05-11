@@ -233,4 +233,4 @@ class Group(LDAPObject):
         attribute = current_app.config["BACKENDS"]["LDAP"].get(
             "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
         )
-        return self[attribute][0]
+        return getattr(self, attribute)[0]
