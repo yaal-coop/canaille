@@ -2,6 +2,7 @@ from canaille.core.account import profile_hash
 
 
 def test_password_reset(testclient, user):
+    assert not user.check_password("foobarbaz")
     hash = profile_hash("user", user.email[0], user.password[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
@@ -11,8 +12,8 @@ def test_password_reset(testclient, user):
     res = res.form.submit()
     assert ("success", "Your password has been updated successfuly") in res.flashes
 
+    user.reload()
     assert user.check_password("foobarbaz")
-    user.set_password("correct horse battery staple")
 
     res = testclient.get("/reset/user/" + hash)
     assert (
