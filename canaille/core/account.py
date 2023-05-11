@@ -635,7 +635,10 @@ def impersonate(user, username):
 
     puppet.login()
 
-    flash(_("Connection successful. Welcome %(user)s", user=puppet.name), "success")
+    flash(
+        _("Connection successful. Welcome %(user)s", user=puppet.formatted_name),
+        "success",
+    )
     return redirect(url_for("account.index"))
 
 
