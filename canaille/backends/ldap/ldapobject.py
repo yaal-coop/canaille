@@ -187,6 +187,10 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         else:
             super().__setattr__(name, value)
 
+    def __delattr__(self, name):
+        name = self.attributes.get(name, name)
+        self.changes[name] = [None]
+
     @property
     def rdn_value(self):
         value = getattr(self, self.rdn_attribute)

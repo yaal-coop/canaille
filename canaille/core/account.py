@@ -398,7 +398,7 @@ def profile_create(current_app, form):
             setattr(user, attribute.name, data)
 
         if "photo" in form and form["photo_delete"].data:
-            setattr(user, "photo", None)
+            del user.photo
 
     user.formatted_name = [f"{user.given_name[0]} {user.family_name[0]}".strip()]
     user.save()
@@ -480,7 +480,7 @@ def profile_edition(user, username):
                     setattr(user, attribute.name, data)
 
             if "photo" in form and form["photo_delete"].data:
-                setattr(user, "photo", None)
+                del user.photo
 
             if "preferred_language" in request.form:
                 # Refresh the babel cache in case the lang is updated
