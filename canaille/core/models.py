@@ -9,7 +9,7 @@ class User(LDAPObject):
     DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
     DEFAULT_ID_ATTRIBUTE = "cn"
 
-    attribute_table = {
+    attributes = {
         "id": "dn",
         "user_name": "uid",
         "password": "userPassword",
@@ -70,7 +70,7 @@ class User(LDAPObject):
                 filter_["groups"] = Group.dn_for(filter_["groups"])
 
             base = "".join(
-                f"({cls.attribute_table.get(key, key)}={value})"
+                f"({cls.attributes.get(key, key)}={value})"
                 for key, value in filter_.items()
             )
             return f"(&{base})" if len(filter_) > 1 else base
@@ -147,7 +147,7 @@ class User(LDAPObject):
         self.load_permissions()
 
     def save(self, *args, **kwargs):
-        group_attr = self.attribute_table.get("groups", "groups")
+        group_attr = self.attributes.get("groups", "groups")
         new_groups = self.changes.get(group_attr)
         if not new_groups:
             return super().save(*args, **kwargs)
@@ -221,7 +221,7 @@ class Group(LDAPObject):
     DEFAULT_ID_ATTRIBUTE = "cn"
     DEFAULT_NAME_ATTRIBUTE = "cn"
 
-    attribute_table = {
+    attributes = {
         "id": "dn",
         "display_name": "cn",
         "members": "member",

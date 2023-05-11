@@ -37,7 +37,7 @@ class Client(LDAPObject, ClientMixin):
         "software_version": "oauthSoftwareVersion",
     }
 
-    attribute_table = {
+    attributes = {
         "id": "dn",
         "description": "description",
         "preconsent": "oauthPreconsent",
@@ -113,7 +113,7 @@ class AuthorizationCode(LDAPObject, AuthorizationCodeMixin):
     ldap_object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     rdn_attribute = "oauthAuthorizationCodeID"
-    attribute_table = {
+    attributes = {
         "id": "dn",
         "authorization_code_id": "oauthAuthorizationCodeID",
         "description": "description",
@@ -158,7 +158,7 @@ class Token(LDAPObject, TokenMixin):
     ldap_object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     rdn_attribute = "oauthTokenID"
-    attribute_table = {
+    attributes = {
         "id": "dn",
         "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
@@ -225,7 +225,7 @@ class Consent(LDAPObject):
     ldap_object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
-    attribute_table = {
+    attributes = {
         "id": "dn",
         "consent_id": "cn",
         "subject": "oauthSubject",

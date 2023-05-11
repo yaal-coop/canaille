@@ -100,7 +100,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     base = None
     root_dn = None
     rdn_attribute = None
-    attribute_table = None
+    attributes = None
     ldap_object_class = None
 
     def __init__(self, dn=None, **kwargs):
@@ -112,7 +112,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             setattr(self, name, value)
 
     def __repr__(self):
-        reverse_attributes = {v: k for k, v in (self.attribute_table or {}).items()}
+        reverse_attributes = {v: k for k, v in (self.attributes or {}).items()}
         attribute_name = reverse_attributes.get(self.rdn_attribute, self.rdn_attribute)
         return (
             f"<{self.__class__.__name__} {attribute_name}={self.rdn_value}>"
@@ -152,7 +152,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         return hash(self.id)
 
     def __getattr__(self, name):
-        name = self.attribute_table.get(name, name)
+        name = self.attributes.get(name, name)
 
         if name not in self.ldap_object_attributes():
             return super().__getattribute__(name)
@@ -177,8 +177,8 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             return self.attrs.get(name)
 
     def __setattr__(self, name, value):
-        if self.attribute_table:
-            name = self.attribute_table.get(name, name)
+        if self.attributes:
+            name = self.attributes.get(name, name)
 
         if name in self.ldap_object_attributes():
             value = [value] if not isinstance(value, list) else value
@@ -312,7 +312,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         arg_filter = ""
         kwargs = python_attrs_to_ldap(
             {
-                (cls.attribute_table or {}).get(name, name): values
+                (cls.attributes or {}).get(name, name): values
                 for name, values in kwargs.items()
             },
             encode=False,
@@ -340,7 +340,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     def fuzzy(cls, query, attributes=None, **kwargs):
         query = ldap.filter.escape_filter_chars(query)
         attributes = attributes or cls.may() + cls.must()
-        attributes = [cls.attribute_table.get(name, name) for name in attributes]
+        attributes = [cls.attributes.get(name, name) for name in attributes]
         filter = (
             "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
         )
@@ -437,5 +437,5 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     def keys(self):
         ldap_keys = self.may() + self.must()
-        inverted_table = {value: key for key, value in self.attribute_table.items()}
+        inverted_table = {value: key for key, value in self.attributes.items()}
         return [inverted_table.get(key, key) for key in ldap_keys]

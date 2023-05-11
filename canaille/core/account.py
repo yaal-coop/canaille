@@ -389,7 +389,7 @@ def profile_creation(user):
 def profile_create(current_app, form):
     user = User()
     for attribute in form:
-        if attribute.name in user.attribute_table:
+        if attribute.name in user.attributes:
             if isinstance(attribute.data, FileStorage):
                 data = attribute.data.stream.read()
             else:
@@ -471,10 +471,7 @@ def profile_edition(user, username):
 
         else:
             for attribute in form:
-                if (
-                    attribute.name in user.attribute_table
-                    and attribute.name in editor.write
-                ):
+                if attribute.name in user.attributes and attribute.name in editor.write:
                     if isinstance(attribute.data, FileStorage):
                         data = attribute.data.stream.read()
                     else:
