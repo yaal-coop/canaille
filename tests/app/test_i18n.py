@@ -46,7 +46,7 @@ def test_preferred_language(slapd_server, testclient, logged_user):
 
 
 def test_form_translations(slapd_server, testclient, logged_user):
-    logged_user.preferredLanguage = "fr"
+    logged_user.preferred_language = "fr"
     logged_user.save()
 
     res = testclient.get("/profile/user", status=200)

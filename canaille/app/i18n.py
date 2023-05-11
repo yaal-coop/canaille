@@ -31,8 +31,8 @@ def locale_selector():
 
     user = current_user()
     available_language_codes = getattr(g, "available_language_codes", [])
-    if user is not None and user.preferredLanguage in available_language_codes:
-        return user.preferredLanguage
+    if user is not None and user.preferred_language in available_language_codes:
+        return user.preferred_language
 
     if current_app.config.get("LANGUAGE"):
         return current_app.config.get("LANGUAGE")

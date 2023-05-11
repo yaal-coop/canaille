@@ -21,7 +21,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
     authorizations = []
     for _ in range(26):
         code = AuthorizationCode(
-            authorization_code_id=gen_salt(48), client=client, subject=client
+            authorization_code_id=gen_salt(48), client=client, subject=logged_admin
         )
         code.save()
         authorizations.append(code)
@@ -66,11 +66,15 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
 
 def test_authorization_list_search(testclient, logged_admin, client):
     id1 = gen_salt(48)
-    auth1 = AuthorizationCode(authorization_code_id=id1, client=client, subject=client)
+    auth1 = AuthorizationCode(
+        authorization_code_id=id1, client=client, subject=logged_admin
+    )
     auth1.save()
 
     id2 = gen_salt(48)
-    auth2 = AuthorizationCode(authorization_code_id=id2, client=client, subject=client)
+    auth2 = AuthorizationCode(
+        authorization_code_id=id2, client=client, subject=logged_admin
+    )
     auth2.save()
 
     res = testclient.get("/admin/authorization")
