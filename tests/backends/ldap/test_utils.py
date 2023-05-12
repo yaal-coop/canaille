@@ -186,7 +186,7 @@ def test_operational_attribute_conversion(slapd_connection):
 
 
 def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
-    foo_group.member = [foo_group]
+    foo_group.members = [foo_group]
     foo_group.save()
     g = LDAPObject.get(id=foo_group.dn)
     assert isinstance(g, Group)
@@ -194,7 +194,7 @@ def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
     assert g.cn == foo_group.cn
 
     ou = LDAPObject.get(id=f"{Group.base},{Group.root_dn}")
-    assert isinstance(g, LDAPObject)
+    assert isinstance(ou, LDAPObject)
 
 
 def test_object_class_update(slapd_connection, testclient):

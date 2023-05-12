@@ -56,7 +56,7 @@ def fake_groups(nb=1, nb_users_max=1):
                 description=fake.sentence(),
             )
             nb_users = random.randrange(1, nb_users_max + 1)
-            group.member = list({random.choice(users) for _ in range(nb_users)})
+            group.members = list({random.choice(users) for _ in range(nb_users)})
             group.save()
             groups.append(group)
         except Exception:  # pragma: no cover
