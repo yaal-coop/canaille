@@ -91,7 +91,7 @@ def test_user_creation_without_password(testclient, logged_moderator):
     res = res.follow(status=200)
     george = User.get_from_login("george")
     assert george.user_name[0] == "george"
-    assert not george.userPassword
+    assert not george.has_password()
 
     george.delete()
 
