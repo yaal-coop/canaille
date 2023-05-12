@@ -15,7 +15,7 @@ from .models import User
 
 def unique_login(form, field):
     if User.get_from_login(field.data) and (
-        not getattr(form, "user", None) or form.user.uid[0] != field.data
+        not getattr(form, "user", None) or form.user.user_name[0] != field.data
     ):
         raise wtforms.ValidationError(
             _("The login '{login}' already exists").format(login=field.data)
