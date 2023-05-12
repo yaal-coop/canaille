@@ -23,7 +23,7 @@ def unique_login(form, field):
 
 
 def unique_email(form, field):
-    if User.get(mail=field.data) and (
+    if User.get(email=field.data) and (
         not getattr(form, "user", None) or form.user.mail[0] != field.data
     ):
         raise wtforms.ValidationError(
