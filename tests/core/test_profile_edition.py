@@ -143,7 +143,7 @@ def test_edition(
     assert logged_user.department == ["1337"]
     assert logged_user.title == ["title"]
     assert logged_user.organization == ["organization"]
-    assert logged_user.jpegPhoto == [jpeg_photo]
+    assert logged_user.photo == [jpeg_photo]
 
     logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
