@@ -52,7 +52,7 @@ def fake_groups(nb=1, nb_users_max=1):
     for _ in range(nb):
         try:
             group = Group(
-                cn=fake.unique.word(),
+                display_name=fake.unique.word(),
                 description=fake.sentence(),
             )
             nb_users = random.randrange(1, nb_users_max + 1)
