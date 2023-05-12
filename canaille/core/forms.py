@@ -24,7 +24,7 @@ def unique_login(form, field):
 
 def unique_email(form, field):
     if User.get(email=field.data) and (
-        not getattr(form, "user", None) or form.user.mail[0] != field.data
+        not getattr(form, "user", None) or form.user.email[0] != field.data
     ):
         raise wtforms.ValidationError(
             _("The email '{email}' is already used").format(email=field.data)
