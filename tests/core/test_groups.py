@@ -136,8 +136,8 @@ def test_moderator_can_create_edit_and_delete_group(
 ):
     # The group does not exist
     res = testclient.get("/groups", status=200)
-    assert Group.get("bar") is None
-    assert Group.get("foo") == foo_group
+    assert Group.get(display_name="bar") is None
+    assert Group.get(display_name="foo") == foo_group
     res.mustcontain(no="bar")
     res.mustcontain("foo")
 
@@ -150,7 +150,8 @@ def test_moderator_can_create_edit_and_delete_group(
     # Group has been created
     res = form.submit(status=302).follow(status=200)
 
-    bar_group = Group.get("bar")
+    logged_moderator.reload()
+    bar_group = Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo"]
     assert bar_group.members == [
@@ -166,17 +167,17 @@ def test_moderator_can_create_edit_and_delete_group(
 
     res = form.submit(name="action", value="edit").follow()
 
-    bar_group = Group.get("bar")
+    bar_group = Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo2"]
-    assert Group.get("bar2") is None
+    assert Group.get(display_name="bar2") is None
     members = bar_group.members
     for member in members:
         res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
     res = form.submit(name="action", value="delete", status=302)
-    assert Group.get("bar") is None
+    assert Group.get(display_name="bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
 

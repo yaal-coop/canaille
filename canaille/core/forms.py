@@ -32,7 +32,7 @@ def unique_email(form, field):
 
 
 def unique_group(form, field):
-    if Group.get(field.data):
+    if Group.get(display_name=field.data):
         raise wtforms.ValidationError(
             _("The group '{group}' already exists").format(group=field.data)
         )

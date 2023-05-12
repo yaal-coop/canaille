@@ -59,7 +59,7 @@ def create_group(user):
 @bp.route("/<groupname>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
 def group(user, groupname):
-    group = Group.get(groupname)
+    group = Group.get(display_name=groupname)
 
     if not group:
         abort(404)
