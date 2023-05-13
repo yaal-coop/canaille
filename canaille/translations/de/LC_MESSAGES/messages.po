@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-03-29 23:00+0200\n"
-"PO-Revision-Date: 2023-01-29 02:06+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"PO-Revision-Date: 2023-05-14 23:49+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
 "de/>\n"
 "Language: de\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/account.py:105 canaille/account.py:130
@@ -56,7 +57,7 @@ msgstr ""
 
 #: canaille/account.py:281
 msgid "Your account has already been created."
-msgstr ""
+msgstr "Ihr Konto wurde bereits erstellt."
 
 #: canaille/account.py:288
 msgid "You are already logged in, you cannot create an account."
