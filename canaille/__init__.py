@@ -142,6 +142,7 @@ def setup_flask(app):
 
         return {
             "has_smtp": "SMTP" in app.config,
+            "has_password_recovery": app.config.get("ENABLE_PASSWORD_RECOVERY", True),
             "logo_url": app.config.get("LOGO"),
             "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
             "website_name": app.config.get("NAME", "Canaille"),

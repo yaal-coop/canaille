@@ -7,6 +7,7 @@ Fixed
 *****
 
 - Avoid setting ``None`` in JWT claims when they have no value.
+- Display password recovery button on OIDC login page. :pr:`129`
 
 [0.0.25] - 2023-05-05
 =====================

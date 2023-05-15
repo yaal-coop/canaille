@@ -50,15 +50,6 @@ from .models import User
 bp = Blueprint("account", __name__)
 
 
-@bp.context_processor
-def global_processor():
-    return {
-        "has_password_recovery": current_app.config.get(
-            "ENABLE_PASSWORD_RECOVERY", True
-        ),
-    }
-
-
 @bp.route("/")
 def index():
     user = current_user()
