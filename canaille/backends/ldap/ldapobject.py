@@ -80,7 +80,7 @@ class LDAPObjectQuery:
     def decorate(self, args):
         klass = self.guess_class(self.klass, args["objectClass"])
         obj = klass()
-        obj.attrs = args
+        obj.state = args
         obj.exists = True
         return obj
 
@@ -104,7 +104,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
     ldap_object_class = None
 
     def __init__(self, dn=None, **kwargs):
-        self.attrs = {}
+        self.state = {}
         self.changes = {}
         self.exists = False
 
@@ -161,20 +161,20 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         if name in self.changes:
             return self.changes[name][0] if single_value else self.changes[name]
 
-        if not self.attrs.get(name):
+        if not self.state.get(name):
             return None if single_value else []
 
         # Lazy conversion from ldap format to python format
-        if any(isinstance(value, bytes) for value in self.attrs[name]):
+        if any(isinstance(value, bytes) for value in self.state[name]):
             syntax = attribute_ldap_syntax(name)
-            self.attrs[name] = [
-                ldap_to_python(value, syntax) for value in self.attrs[name]
+            self.state[name] = [
+                ldap_to_python(value, syntax) for value in self.state[name]
             ]
 
         if single_value:
-            return self.attrs.get(name)[0]
+            return self.state.get(name)[0]
         else:
-            return self.attrs.get(name)
+            return self.state.get(name)
 
     def __setattr__(self, name, value):
         if self.attributes:
@@ -372,7 +372,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         conn = conn or self.ldap_connection()
         result = conn.search_s(self.id, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
-        self.attrs = result[0][1]
+        self.state = result[0][1]
 
     def save(self, conn=None):
         conn = conn or self.ldap_connection()
@@ -388,12 +388,12 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
                     value is None
                     or (isinstance(value, list) and len(value) == 1 and not value[0])
                 )
-                and name in self.attrs
+                and name in self.state
             ]
             changes = {
                 name: value
                 for name, value in self.changes.items()
-                if name not in deletions and self.attrs.get(name) != value
+                if name not in deletions and self.state.get(name) != value
             }
             formatted_changes = {
                 name: value
@@ -410,7 +410,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         else:
             changes = {
                 name: value
-                for name, value in {**self.attrs, **self.changes}.items()
+                for name, value in {**self.state, **self.changes}.items()
                 if value and value[0]
             }
             formatted_changes = {
@@ -422,7 +422,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             conn.add_s(self.id, attributes)
 
         self.exists = True
-        self.attrs = {**self.attrs, **self.changes}
+        self.state = {**self.state, **self.changes}
         self.changes = {}
 
     def update(self, **kwargs):

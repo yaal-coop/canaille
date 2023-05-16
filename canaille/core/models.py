@@ -152,7 +152,7 @@ class User(LDAPObject):
         if not new_groups:
             return super().save(*args, **kwargs)
 
-        old_groups = self.attrs.get(group_attr) or []
+        old_groups = self.state.get(group_attr) or []
         new_groups = [
             v if isinstance(v, Group) else Group.get(id=v) for v in new_groups
         ]
@@ -170,7 +170,7 @@ class User(LDAPObject):
             group.members = [member for member in group.members if member != self]
             group.save()
 
-        self.attrs[group_attr] = new_groups
+        self.state[group_attr] = new_groups
 
     def load_permissions(self):
         conn = self.ldap_connection()
