@@ -247,7 +247,7 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
 
 def query_client(client_id):
-    return Client.get(client_id)
+    return Client.get(client_id=client_id)
 
 
 def save_token(token, request):
@@ -372,7 +372,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
 class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEndpoint):
     def authenticate_client(self, request):
         client_id = request.uri.split("/")[-1]
-        return Client.get(client_id)
+        return Client.get(client_id=client_id)
 
     def revoke_access_token(self, request, token):
         pass

@@ -104,7 +104,7 @@ def edit(user, client_id):
 
 
 def client_edit(client_id):
-    client = Client.get(client_id)
+    client = Client.get(client_id=client_id)
 
     if not client:
         abort(404)
@@ -164,7 +164,7 @@ def client_edit(client_id):
 
 
 def client_delete(client_id):
-    client = Client.get(client_id)
+    client = Client.get(client_id=client_id)
 
     if not client:
         abort(404)

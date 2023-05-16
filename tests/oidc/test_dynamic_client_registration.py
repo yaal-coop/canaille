@@ -29,7 +29,7 @@ def test_client_registration_with_authentication_static_token(
     headers = {"Authorization": "Bearer static-token"}
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=201)
-    client = Client.get(res.json["client_id"])
+    client = Client.get(client_id=res.json["client_id"])
 
     assert res.json == {
         "client_id": client.client_id,
@@ -150,7 +150,7 @@ def test_client_registration_with_software_statement(
     }
     res = testclient.post_json("/oauth/register", payload, status=201)
 
-    client = Client.get(res.json["client_id"])
+    client = Client.get(client_id=res.json["client_id"])
     assert res.json == {
         "client_id": client.client_id,
         "client_secret": client.client_secret,
@@ -201,7 +201,7 @@ def test_client_registration_without_authentication_ok(testclient, slapd_connect
 
     res = testclient.post_json("/oauth/register", payload, status=201)
 
-    client = Client.get(res.json["client_id"])
+    client = Client.get(client_id=res.json["client_id"])
     assert res.json == {
         "client_id": mock.ANY,
         "client_secret": mock.ANY,

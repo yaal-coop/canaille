@@ -115,7 +115,7 @@ def test_client_add(testclient, logged_admin):
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
-    client = Client.get(client_id)
+    client = Client.get(client_id=client_id)
     data["audience"] = [client]
     for k, v in data.items():
         client_value = getattr(client, k)
