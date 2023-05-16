@@ -204,16 +204,18 @@ def test_simple_user_cannot_view_or_edit_groups(testclient, logged_user, foo_gro
 
 
 def test_get_members_filters_non_existent_user(
-    testclient, logged_moderator, foo_group, user
+    testclient, logged_moderator, foo_group, user, slapd_server
 ):
     # an LDAP group can be inconsistent by containing members which doesn't exist
     non_existent_user = User(formatted_name="foo", family_name="bar")
     foo_group.members = foo_group.members + [non_existent_user]
-    foo_group.save()
-
-    foo_group.members
-
     assert foo_group.members == [user, non_existent_user]
+
+    foo_group.save()
+    assert foo_group.members == [user, non_existent_user]
+
+    foo_group.reload()
+    assert foo_group.members == [user]
 
     testclient.get("/groups/foo", status=200)
 

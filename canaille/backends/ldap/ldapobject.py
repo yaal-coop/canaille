@@ -174,7 +174,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         if single_value:
             return self.state.get(name)[0]
         else:
-            return self.state.get(name)
+            return [value for value in self.state.get(name) if value is not None]
 
     def __setattr__(self, name, value):
         if self.attributes:
