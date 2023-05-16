@@ -286,6 +286,7 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     res = testclient.get("/groups/foo")
     res.mustcontain("3 items")
     res.mustcontain(user.formatted_name[0])
+    res.mustcontain(logged_admin.formatted_name[0])
     res.mustcontain(moderator.formatted_name[0])
 
     form = res.forms["search"]
@@ -294,5 +295,5 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
 
     res.mustcontain("1 items")
     res.mustcontain(user.formatted_name[0])
-    res.mustcontain(no=logged_admin.name)
+    res.mustcontain(no=logged_admin.formatted_name[0])
     res.mustcontain(no=moderator.formatted_name[0])
