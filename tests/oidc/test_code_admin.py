@@ -93,5 +93,5 @@ def test_authorization_list_search(testclient, logged_admin, client):
 
 def test_authorizaton_view(testclient, authorization, logged_admin):
     res = testclient.get("/admin/authorization/" + authorization.authorization_code_id)
-    for attr in authorization.may() + authorization.must():
+    for attr in authorization.attributes:
         res.mustcontain(attr)
