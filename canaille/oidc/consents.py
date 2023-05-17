@@ -119,7 +119,7 @@ def revoke_preconsent(user, client_id):
         )
 
     consent = Consent(
-        cn=str(uuid.uuid4()),
+        consent_id=str(uuid.uuid4()),
         client=client,
         subject=user,
         scope=client.scope,

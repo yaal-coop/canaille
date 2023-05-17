@@ -149,7 +149,7 @@ def authorize():
             ).split(" ")
         else:
             consent = Consent(
-                cn=str(uuid.uuid4()),
+                consent_id=str(uuid.uuid4()),
                 client=client,
                 subject=user,
                 scope=scopes,
