@@ -292,9 +292,10 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             return None
 
     @classmethod
-    def query(cls, base=None, filter=None, conn=None, **kwargs):
+    def query(cls, id=None, filter=None, conn=None, **kwargs):
         conn = conn or cls.ldap_connection()
 
+        base = id or kwargs.get("id")
         if base is None:
             base = f"{cls.base},{cls.root_dn}"
         elif "=" not in base:
@@ -331,7 +332,12 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
         ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{cls.base},{cls.root_dn}"
-        result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"])
+        try:
+            result = conn.search_s(
+                base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"]
+            )
+        except ldap.NO_SUCH_OBJECT:
+            result = []
         return LDAPObjectQuery(cls, result)
 
     @classmethod
