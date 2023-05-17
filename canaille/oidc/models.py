@@ -244,8 +244,8 @@ class Consent(LDAPObject):
         self.save()
 
         tokens = Token.query(
-            oauthClient=self.client,
-            oauthSubject=self.subject,
+            client=self.client,
+            subject=self.subject,
         )
         tokens = [token for token in tokens if not token.revoked]
         for t in tokens:
