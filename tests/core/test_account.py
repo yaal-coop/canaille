@@ -36,6 +36,11 @@ def test_signin_and_out(testclient, user):
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
+
+    assert (
+        "success",
+        "Connection successful. Welcome John (johnny) Doe",
+    ) in res.flashes
     res = res.follow(status=302)
     res = res.follow(status=200)
 
@@ -199,7 +204,7 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
     res = res.form.submit().follow()
     res.form["password"] = "correct horse battery staple"
 
-    u.password = None
+    del u.password
     u.save()
 
     res = res.form.submit(status=302)
