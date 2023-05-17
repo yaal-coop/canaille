@@ -67,7 +67,7 @@ def pre_consents(user):
 @bp.route("/revoke/<consent_id>")
 @user_needed()
 def revoke(user, consent_id):
-    consent = Consent.get(id=consent_id)
+    consent = Consent.get(consent_id=consent_id)
 
     if not consent or consent.subject != user:
         flash(_("Could not revoke this access"), "error")
@@ -85,7 +85,7 @@ def revoke(user, consent_id):
 @bp.route("/restore/<consent_id>")
 @user_needed()
 def restore(user, consent_id):
-    consent = Consent.get(id=consent_id)
+    consent = Consent.get(consent_id=consent_id)
 
     if not consent or consent.subject != user:
         flash(_("Could not restore this access"), "error")
