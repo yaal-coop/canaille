@@ -78,11 +78,16 @@ def authorize():
         if request.method == "GET":
             return render_template("login.html", form=form, menu=False)
 
-        if not form.validate() or not User.authenticate(
-            form.login.data, form.password.data, True
+        user = User.get_from_login(form.login.data)
+        if (
+            not form.validate()
+            or not user
+            or not user.check_password(form.password.data)
         ):
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form, menu=False)
+
+        user.login()
 
         return redirect(request.url)
 

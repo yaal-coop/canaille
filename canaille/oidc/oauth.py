@@ -196,7 +196,12 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        return User.authenticate(username, password)
+        user = User.get_from_login(username)
+
+        if not user or not user.check_password(password):
+            return None
+
+        return user
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):

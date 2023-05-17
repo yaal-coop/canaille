@@ -115,8 +115,10 @@ def password():
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
-        if not form.validate() or not User.authenticate(
-            session["attempt_login"], form.password.data, True
+        if (
+            not form.validate()
+            or not user
+            or not user.check_password(form.password.data)
         ):
             User.logout()
             flash(_("Login failed, please check your information"), "error")
@@ -125,6 +127,7 @@ def password():
             )
 
         del session["attempt_login"]
+        user.login()
         flash(
             _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
             "success",

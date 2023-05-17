@@ -84,17 +84,6 @@ class User(LDAPObject):
 
         return filter_
 
-    @classmethod
-    def authenticate(cls, login, password, signin=False):
-        user = User.get_from_login(login)
-        if not user or not user.check_password(password):
-            return None
-
-        if signin:
-            user.login()
-
-        return user
-
     def login(self):
         try:
             previous = (
