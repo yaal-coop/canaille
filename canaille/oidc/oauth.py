@@ -151,7 +151,7 @@ def save_authorization_code(code, request):
         scope=scope,
         nonce=nonce,
         issue_date=now,
-        lifetime=str(AUTHORIZATION_CODE_LIFETIME),
+        lifetime=AUTHORIZATION_CODE_LIFETIME,
         challenge=request.data.get("code_challenge"),
         challenge_method=request.data.get("code_challenge_method"),
     )

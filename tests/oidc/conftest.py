@@ -153,7 +153,7 @@ def authorization(testclient, user, client, slapd_connection):
         scope="openid profile",
         nonce="nonce",
         issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
-        lifetime="3600",
+        lifetime=3600,
         challenge="challenge",
         challenge_method="method",
         revokation="",
@@ -175,7 +175,7 @@ def token(testclient, client, user, slapd_connection):
         refresh_token=gen_salt(48),
         scope="openid profile",
         issue_date=datetime.datetime.now(datetime.timezone.utc),
-        lifetime=str(3600),
+        lifetime=3600,
     )
     t.save()
     yield t
