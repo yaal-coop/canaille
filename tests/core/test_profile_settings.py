@@ -89,6 +89,7 @@ def test_password_change(testclient, logged_user):
 
     res = res.form.submit(name="action", value="edit").follow()
 
+    logged_user.reload()
     assert logged_user.check_password("new_password")
 
     res = testclient.get("/profile/user/settings", status=200)
@@ -100,6 +101,7 @@ def test_password_change(testclient, logged_user):
     assert ("success", "Profile updated successfuly.") in res.flashes
     res = res.follow()
 
+    logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")
 
 
@@ -111,6 +113,7 @@ def test_password_change_fail(testclient, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
+    logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")
 
     res = testclient.get("/profile/user/settings", status=200)
@@ -120,6 +123,7 @@ def test_password_change_fail(testclient, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
+    logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")
 
 

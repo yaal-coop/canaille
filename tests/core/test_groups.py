@@ -120,6 +120,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user.groups = [foo_group]
     user.save()
 
+    foo_group.reload()
     assert user in foo_group.members
 
     user.groups = []
