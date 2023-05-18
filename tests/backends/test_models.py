@@ -8,19 +8,20 @@ def test_model_comparison(testclient, slapd_connection):
         family_name="foo",
         formatted_name="foo",
     )
-    foo2 = User(
-        user_name="foo",
-        family_name="foo",
-        formatted_name="foo",
-    )
+    foo1.save()
     bar = User(
         user_name="bar",
         family_name="bar",
-        formatted_name="foo",
+        formatted_name="bar",
     )
+    bar.save()
+    foo2 = User.get(id=foo1.id)
 
     assert foo1 == foo2
     assert foo1 != bar
+
+    foo1.delete()
+    bar.delete()
 
 
 def test_model_lifecycle(testclient, slapd_connection, slapd_server):
