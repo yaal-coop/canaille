@@ -18,6 +18,8 @@ def create_app():
         from canaille.backends.ldap.backend import teardown_backend
         from canaille.core.models import Group
         from canaille.core.models import User
+        from canaille.core.populate import fake_groups
+        from canaille.core.populate import fake_users
         from canaille.oidc.models import Client
 
         setup_backend(app)
@@ -135,6 +137,9 @@ def create_app():
             preconsent=True,
         )
         client2.save()
+
+        fake_users(50)
+        fake_groups(10, nb_users_max=10)
 
         teardown_backend(app)
 
