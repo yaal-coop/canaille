@@ -1,11 +1,9 @@
 import os
 
-import ldap
 import pytest
 import toml
 from canaille import create_app
 from canaille.app.flask import set_parameter_in_url_query
-from flask import g
 from flask_webtest import TestApp
 
 
@@ -54,13 +52,8 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
         "LOGGING": {"LEVEL": "DEBUG", "PATH": log_path},
     }
     app = create_app(logging_configuration)
-    app.config["TESTING"] = True
 
     with app.app_context():
-        g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-        g.ldap_connection.protocol_version = 3
-        g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-
         testclient = TestApp(app)
         with testclient.session_transaction() as sess:
             sess["user_id"] = [admin.id]
@@ -68,8 +61,6 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
         res = testclient.get("/admin/mail")
         res.form["email"] = "test@test.com"
         res = res.form.submit()
-
-        g.ldap_connection.unbind_s()
 
     assert len(smtpd.messages) == 1
     assert "Test email from" in smtpd.messages[0].get("Subject")
