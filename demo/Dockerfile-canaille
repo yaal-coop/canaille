@@ -9,7 +9,7 @@ RUN \
     libldap2-dev \
     libssl-dev
 
-COPY poetry.lock pyproject.toml /opt/canaille/
+COPY poetry.lock pyproject.toml demo/demoapp.py /opt/canaille/
 RUN pip install poetry
 WORKDIR /opt/canaille
 RUN poetry install --with demo --without dev

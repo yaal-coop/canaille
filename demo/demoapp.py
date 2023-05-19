@@ -1,7 +1,9 @@
+import os
 import sys
 
 
-sys.path.append("../canaille")
+if os.path.exists("../canaille"):
+    sys.path.append("../canaille")
 
 
 from canaille import create_app as canaille_app
@@ -11,7 +13,7 @@ def create_app():
     app = canaille_app()
 
     @app.before_first_request
-    def yolo():
+    def populate():
         from canaille.backends.ldap.backend import setup_backend
         from canaille.backends.ldap.backend import teardown_backend
         from canaille.core.models import Group

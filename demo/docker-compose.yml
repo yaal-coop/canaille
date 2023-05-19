@@ -14,8 +14,6 @@ services:
       - ../canaille/backends/ldap/schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
       - ./ldif/bootstrap-users-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-users-tree.ldif:ro
       - ./ldif/bootstrap-oidc-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-oidc-tree.ldif:ro
-      - ./ldif/bootstrap-users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/60-bootstrap-users.ldif:ro
-      - ./ldif/bootstrap-oidc.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/70-bootstrap-oidc.ldif:ro
     command: --copy-service --loglevel debug
     ports:
       - 5389:389
@@ -31,7 +29,7 @@ services:
       - AUTHLIB_INSECURE_TRANSPORT=1
       - FLASK_DEBUG=1
       - CONFIG=/opt/canaille/conf/canaille.toml
-      - FLASK_APP=canaille
+      - FLASK_APP=demoapp
     volumes:
       - ../canaille:/opt/canaille/canaille
       - ./conf-docker:/opt/canaille/conf
