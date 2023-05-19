@@ -43,8 +43,6 @@ try:
     for ldif in (
         "ldif/bootstrap-users-tree.ldif",
         "ldif/bootstrap-oidc-tree.ldif",
-        "ldif/bootstrap-users.ldif",
-        "ldif/bootstrap-oidc.ldif",
     ):
         with open(ldif) as fd:
             try:
