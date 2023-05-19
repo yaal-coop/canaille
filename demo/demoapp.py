@@ -17,9 +17,6 @@ def create_app():
         from canaille.core.models import Group
         from canaille.core.models import User
         from canaille.oidc.models import Client
-        import time
-
-        time.sleep(5)
 
         setup_backend(app)
         jane = User(
