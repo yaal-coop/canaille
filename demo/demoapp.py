@@ -9,17 +9,14 @@ if os.path.exists("../canaille"):
 from canaille import create_app as canaille_app
 
 
-def create_app():
-    app = canaille_app()
+def populate(app):
+    from canaille.core.models import Group
+    from canaille.core.models import User
+    from canaille.core.populate import fake_groups
+    from canaille.core.populate import fake_users
+    from canaille.oidc.models import Client
 
-    @app.before_first_request
-    def populate():
-        from canaille.core.models import Group
-        from canaille.core.models import User
-        from canaille.core.populate import fake_groups
-        from canaille.core.populate import fake_users
-        from canaille.oidc.models import Client
-
+    with app.app_context():
         with app.backend.session():
             jane = User(
                 formatted_name="Jane Doe",
@@ -138,5 +135,13 @@ def create_app():
 
             fake_users(50)
             fake_groups(10, nb_users_max=10)
+
+
+def create_app():
+    app = canaille_app()
+    try:
+        populate(app)
+    except:
+        pass
 
     return app
