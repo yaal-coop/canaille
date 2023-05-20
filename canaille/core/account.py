@@ -38,6 +38,7 @@ from .forms import FirstLoginForm
 from .forms import ForgottenPasswordForm
 from .forms import InvitationForm
 from .forms import LoginForm
+from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
@@ -322,11 +323,11 @@ def registration(data, hash):
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=8),
+        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=8),
+        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True

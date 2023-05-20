@@ -11,6 +11,9 @@ from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 
 
+MINIMUM_PASSWORD_LENGTH = 8
+
+
 def unique_login(form, field):
     if models.User.get_from_login(field.data) and (
         not getattr(form, "user", None) or form.user.user_name[0] != field.data
@@ -208,7 +211,10 @@ PROFILE_FORM_FIELDS = dict(
     photo_delete=wtforms.BooleanField(_("Delete the photo")),
     password1=wtforms.PasswordField(
         _("Password"),
-        validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
+        validators=[
+            wtforms.validators.Optional(),
+            wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
+        ],
         render_kw={
             "autocomplete": "new-password",
         },
