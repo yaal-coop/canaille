@@ -1,7 +1,7 @@
 from flask_babel import refresh
 
 
-def test_preferred_language(slapd_server, testclient, logged_user):
+def test_preferred_language(testclient, logged_user):
     logged_user.preferred_language = None
     logged_user.save()
 
@@ -45,7 +45,7 @@ def test_preferred_language(slapd_server, testclient, logged_user):
     res.mustcontain(no="Mon profil")
 
 
-def test_form_translations(slapd_server, testclient, logged_user):
+def test_form_translations(testclient, logged_user):
     logged_user.preferred_language = "fr"
     logged_user.save()
 

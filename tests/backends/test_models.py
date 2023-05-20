@@ -24,7 +24,7 @@ def test_model_comparison(testclient, backend):
     bar.delete()
 
 
-def test_model_lifecycle(testclient, backend, slapd_server):
+def test_model_lifecycle(testclient, backend):
     user = User(
         user_name="user_name",
         family_name="family_name",

@@ -84,7 +84,6 @@ def test_user_list_search_only_allowed_fields(
 
 def test_edition_permission(
     testclient,
-    slapd_server,
     logged_user,
     admin,
 ):
@@ -97,7 +96,6 @@ def test_edition_permission(
 
 def test_edition(
     testclient,
-    slapd_server,
     logged_user,
     admin,
     jpeg_photo,
@@ -155,7 +153,6 @@ def test_edition(
 
 def test_edition_remove_fields(
     testclient,
-    slapd_server,
     logged_user,
     admin,
 ):
@@ -196,7 +193,7 @@ def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
 
 
-def test_field_permissions_none(testclient, slapd_server, logged_user):
+def test_field_permissions_none(testclient, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.phone_number = ["555-666-777"]
     logged_user.save()
@@ -222,7 +219,7 @@ def test_field_permissions_none(testclient, slapd_server, logged_user):
     assert logged_user.phone_number == ["555-666-777"]
 
 
-def test_field_permissions_read(testclient, slapd_server, logged_user):
+def test_field_permissions_read(testclient, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.phone_number = ["555-666-777"]
     logged_user.save()
@@ -247,7 +244,7 @@ def test_field_permissions_read(testclient, slapd_server, logged_user):
     assert logged_user.phone_number == ["555-666-777"]
 
 
-def test_field_permissions_write(testclient, slapd_server, logged_user):
+def test_field_permissions_write(testclient, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.phone_number = ["555-666-777"]
     logged_user.save()

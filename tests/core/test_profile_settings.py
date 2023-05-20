@@ -5,7 +5,6 @@ from canaille.core.models import User
 
 def test_edition(
     testclient,
-    slapd_server,
     logged_user,
     admin,
     foo_group,
@@ -61,7 +60,6 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
 
 def test_edition_without_groups(
     testclient,
-    slapd_server,
     logged_user,
     admin,
 ):
@@ -296,7 +294,6 @@ def test_admin_bad_request(testclient, logged_admin):
 
 def test_edition_permission(
     testclient,
-    slapd_server,
     logged_user,
     admin,
 ):

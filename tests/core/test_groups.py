@@ -48,7 +48,7 @@ def test_group_list_bad_pages(testclient, logged_admin):
     )
 
 
-def test_group_deletion(testclient, slapd_server, backend):
+def test_group_deletion(testclient, backend):
     user = User(
         formatted_name="foobar",
         family_name="foobar",
