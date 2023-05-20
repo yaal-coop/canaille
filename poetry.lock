@@ -1361,6 +1361,26 @@ files = [
 pytest-cover = "*"
 
 [[package]]
+name = "pytest-flask"
+version = "1.2.0"
+description = "A set of py.test fixtures to test Flask applications."
+category = "dev"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "pytest-flask-1.2.0.tar.gz", hash = "sha256:46fde652f77777bf02dc91205aec4ce20cdf2acbbbd66a918ab91f5c14693d3d"},
+    {file = "pytest_flask-1.2.0-py3-none-any.whl", hash = "sha256:fe25b39ad0db09c3d1fe728edecf97ced85e774c775db259a6d25f0270a4e7c9"},
+]
+
+[package.dependencies]
+Flask = "*"
+pytest = ">=5.2"
+Werkzeug = ">=0.7"
+
+[package.extras]
+docs = ["Sphinx", "sphinx-rtd-theme"]
+
+[[package]]
 name = "pytest-httpserver"
 version = "1.0.6"
 description = "pytest-httpserver is a httpserver for pytest"
@@ -2007,4 +2027,4 @@ sentry = ["sentry-sdk"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7, <4"
-content-hash = "b5ebad858aefb7ad105fd1e5f00fd63bb6162f2e6e2e7cc18e5f3bfaeb7c3785"
+content-hash = "ba916dfc7340b0327fba0582d2153de589525f77820e411afc10b2fd19060c22"

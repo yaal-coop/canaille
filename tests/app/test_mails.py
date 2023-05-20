@@ -190,10 +190,9 @@ def test_default_from_flask_server_name(configuration, user, smtpd, slapd_server
     del app.config["SMTP"]["FROM_ADDR"]
     app.config["SERVER_NAME"] = "foobar.tld"
 
-    with app.app_context():
-        testclient = TestApp(app)
-        res = testclient.get("/reset", status=200)
-        res.form["login"] = "user"
-        res = res.form.submit(status=200)
-        assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
-        assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'
+    testclient = TestApp(app)
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=200)
+    assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
+    assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'

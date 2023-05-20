@@ -73,6 +73,7 @@ pytest-coverage = "*"
 pytest-httpserver = "*"
 slapd = "*"
 smtpdfix = "*"
+pytest-flask = "^1.2.0"
 
 [tool.poetry.group.demo]
 optional = true

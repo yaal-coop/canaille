@@ -53,14 +53,13 @@ def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
     }
     app = create_app(logging_configuration)
 
-    with app.app_context():
-        testclient = TestApp(app)
-        with testclient.session_transaction() as sess:
-            sess["user_id"] = [admin.id]
+    testclient = TestApp(app)
+    with testclient.session_transaction() as sess:
+        sess["user_id"] = [admin.id]
 
-        res = testclient.get("/admin/mail")
-        res.form["email"] = "test@test.com"
-        res = res.form.submit()
+    res = testclient.get("/admin/mail")
+    res.form["email"] = "test@test.com"
+    res = res.form.submit()
 
     assert len(smtpd.messages) == 1
     assert "Test email from" in smtpd.messages[0].get("Subject")
