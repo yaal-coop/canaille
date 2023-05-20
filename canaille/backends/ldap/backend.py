@@ -2,18 +2,28 @@ import logging
 import uuid
 
 import ldap
-from canaille.app.configuration import ConfigurationException
 from canaille.backends import Backend
-from flask import g
 from flask import render_template
 from flask import request
 from flask_babel import gettext as _
 
 
 class LDAPBackend(Backend):
-    def __init__(self, app):
-        setup_ldap_models(app.config)
-        super().__init__(app)
+    instance = None
+
+    def __init__(self, config):
+        from canaille.oidc.installation import setup_ldap_tree
+
+        LDAPBackend.instance = self
+        self.config = config
+        self.connection = None
+        setup_ldap_models(config)
+        setup_ldap_tree(config)
+        super().__init__(config)
+
+    @classmethod
+    def get(cls):
+        return cls.instance
 
     def setup(self):
         try:  # pragma: no cover
@@ -23,21 +33,19 @@ class LDAPBackend(Backend):
             pass
 
         try:
-            g.ldap_connection = ldap.initialize(
-                self.app.config["BACKENDS"]["LDAP"]["URI"]
-            )
-            g.ldap_connection.set_option(
+            self.connection = ldap.initialize(self.config["BACKENDS"]["LDAP"]["URI"])
+            self.connection.set_option(
                 ldap.OPT_NETWORK_TIMEOUT,
-                self.app.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
+                self.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
             )
-            g.ldap_connection.simple_bind_s(
-                self.app.config["BACKENDS"]["LDAP"]["BIND_DN"],
-                self.app.config["BACKENDS"]["LDAP"]["BIND_PW"],
+            self.connection.simple_bind_s(
+                self.config["BACKENDS"]["LDAP"]["BIND_DN"],
+                self.config["BACKENDS"]["LDAP"]["BIND_PW"],
             )
 
         except ldap.SERVER_DOWN:
             message = _("Could not connect to the LDAP server '{uri}'").format(
-                uri=self.app.config["BACKENDS"]["LDAP"]["URI"]
+                uri=self.config["BACKENDS"]["LDAP"]["URI"]
             )
             logging.error(message)
             return (
@@ -45,7 +53,7 @@ class LDAPBackend(Backend):
                     "error.html",
                     error=500,
                     icon="database",
-                    debug=self.app.config.get("DEBUG", False),
+                    debug=self.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
@@ -53,7 +61,7 @@ class LDAPBackend(Backend):
 
         except ldap.INVALID_CREDENTIALS:
             message = _("LDAP authentication failed with user '{user}'").format(
-                user=self.app.config["BACKENDS"]["LDAP"]["BIND_DN"]
+                user=self.config["BACKENDS"]["LDAP"]["BIND_DN"]
             )
             logging.error(message)
             return (
@@ -61,19 +69,20 @@ class LDAPBackend(Backend):
                     "error.html",
                     error=500,
                     icon="key",
-                    debug=self.app.config.get("DEBUG", False),
+                    debug=self.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
             )
 
     def teardown(self):
-        if g.get("ldap_connection"):  # pragma: no branch
-            g.ldap_connection.unbind_s()
-            g.ldap_connection = None
+        if self.connection:  # pragma: no branch
+            self.connection.unbind_s()
+            self.connection = None
 
     @classmethod
     def validate(cls, config):
+        from canaille.app.configuration import ConfigurationException
         from canaille.core.models import Group
         from canaille.core.models import User
 

@@ -127,9 +127,7 @@ def test_password_change_fail(testclient, logged_user):
     assert logged_user.check_password("correct horse battery staple")
 
 
-def test_password_initialization_mail(
-    smtpd, testclient, slapd_connection, logged_admin
-):
+def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
     u = User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -163,7 +161,7 @@ def test_password_initialization_mail(
 
 @mock.patch("smtplib.SMTP")
 def test_password_initialization_mail_send_fail(
-    SMTP, smtpd, testclient, slapd_connection, logged_admin
+    SMTP, smtpd, testclient, backend, logged_admin
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     u = User(
@@ -192,9 +190,7 @@ def test_password_initialization_mail_send_fail(
     u.delete()
 
 
-def test_password_initialization_invalid_user(
-    smtpd, testclient, slapd_connection, logged_admin
-):
+def test_password_initialization_invalid_user(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 0
     res = testclient.get("/profile/admin/settings")
     testclient.post(
@@ -208,7 +204,7 @@ def test_password_initialization_invalid_user(
     assert len(smtpd.messages) == 0
 
 
-def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged_admin):
+def test_password_reset_invalid_user(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 0
     res = testclient.get("/profile/admin/settings")
     testclient.post(
@@ -219,7 +215,7 @@ def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged
     assert len(smtpd.messages) == 0
 
 
-def test_delete_invalid_user(testclient, slapd_connection, logged_admin):
+def test_delete_invalid_user(testclient, backend, logged_admin):
     res = testclient.get("/profile/admin/settings")
     testclient.post(
         "/profile/invalid/settings",
@@ -228,7 +224,7 @@ def test_delete_invalid_user(testclient, slapd_connection, logged_admin):
     )
 
 
-def test_impersonate_invalid_user(testclient, slapd_connection, logged_admin):
+def test_impersonate_invalid_user(testclient, backend, logged_admin):
     testclient.get("/impersonate/invalid", status=404)
 
 
@@ -237,7 +233,7 @@ def test_invalid_form_request(testclient, logged_admin):
     res = res.form.submit(name="action", value="invalid-action", status=400)
 
 
-def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):
+def test_password_reset_email(smtpd, testclient, backend, logged_admin):
     u = User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -264,9 +260,7 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
 
 
 @mock.patch("smtplib.SMTP")
-def test_password_reset_email_failed(
-    SMTP, smtpd, testclient, slapd_connection, logged_admin
-):
+def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_admin):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     u = User(
         formatted_name="Temp User",

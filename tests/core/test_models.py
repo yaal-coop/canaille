@@ -1,12 +1,12 @@
 from canaille.core.models import User
 
 
-def test_user_get_from_login(testclient, user, slapd_connection):
+def test_user_get_from_login(testclient, user, backend):
     assert User.get_from_login(login="invalid") is None
     assert User.get_from_login(login="user") == user
 
 
-def test_user_has_password(testclient, slapd_connection):
+def test_user_has_password(testclient, backend):
     u = User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -25,7 +25,7 @@ def test_user_has_password(testclient, slapd_connection):
     u.delete()
 
 
-def test_user_set_and_check_password(testclient, user, slapd_connection):
+def test_user_set_and_check_password(testclient, user, backend):
     assert not user.check_password("something else")
     assert user.check_password("correct horse battery staple")
 

@@ -4,7 +4,7 @@ from canaille.core.models import User
 from canaille.core.populate import fake_users
 
 
-def test_populate_users(testclient, slapd_connection):
+def test_populate_users(testclient, backend):
     runner = testclient.app.test_cli_runner()
 
     assert len(User.query()) == 0
@@ -15,7 +15,7 @@ def test_populate_users(testclient, slapd_connection):
         user.delete()
 
 
-def test_populate_groups(testclient, slapd_connection):
+def test_populate_groups(testclient, backend):
     fake_users(10)
     runner = testclient.app.test_cli_runner()
 

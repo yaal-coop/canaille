@@ -6,7 +6,7 @@ def test_required_methods(testclient):
     with pytest.raises(NotImplementedError):
         Backend.validate({})
 
-    backend = Backend(testclient.app)
+    backend = Backend(testclient.app.config)
     with pytest.raises(NotImplementedError):
         backend.setup()
 

@@ -1,26 +1,32 @@
-def test_ldap_connection_remote_ldap_unreachable(testclient):
-    testclient.app.config["TESTING"] = False
+from canaille import create_app
+from flask_webtest import TestApp
 
-    testclient.app.config["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
 
-    testclient.app.config["DEBUG"] = True
+def test_ldap_connection_remote_ldap_unreachable(configuration):
+    app = create_app(configuration)
+    testclient = TestApp(app)
+
+    app.config["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+
+    app.config["DEBUG"] = True
     res = testclient.get("/", status=500, expect_errors=True)
     res.mustcontain("Could not connect to the LDAP server")
 
-    testclient.app.config["DEBUG"] = False
+    app.config["DEBUG"] = False
     res = testclient.get("/", status=500, expect_errors=True)
     res.mustcontain(no="Could not connect to the LDAP server")
 
 
-def test_ldap_connection_remote_ldap_wrong_credentials(testclient):
-    testclient.app.config["TESTING"] = False
+def test_ldap_connection_remote_ldap_wrong_credentials(configuration):
+    app = create_app(configuration)
+    testclient = TestApp(app)
 
-    testclient.app.config["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
+    app.config["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
 
-    testclient.app.config["DEBUG"] = True
+    app.config["DEBUG"] = True
     res = testclient.get("/", status=500, expect_errors=True)
     res.mustcontain("LDAP authentication failed with user")
 
-    testclient.app.config["DEBUG"] = False
+    app.config["DEBUG"] = False
     res = testclient.get("/", status=500, expect_errors=True)
     res.mustcontain(no="LDAP authentication failed with user")

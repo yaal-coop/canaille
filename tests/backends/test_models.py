@@ -2,7 +2,7 @@ from canaille.core.models import Group
 from canaille.core.models import User
 
 
-def test_model_comparison(testclient, slapd_connection):
+def test_model_comparison(testclient, backend):
     foo1 = User(
         user_name="foo",
         family_name="foo",
@@ -24,7 +24,7 @@ def test_model_comparison(testclient, slapd_connection):
     bar.delete()
 
 
-def test_model_lifecycle(testclient, slapd_connection, slapd_server):
+def test_model_lifecycle(testclient, backend, slapd_server):
     user = User(
         user_name="user_name",
         family_name="family_name",
@@ -57,7 +57,7 @@ def test_model_lifecycle(testclient, slapd_connection, slapd_server):
     assert not User.get(id=user.id)
 
 
-def test_model_attribute_edition(testclient, slapd_connection):
+def test_model_attribute_edition(testclient, backend):
     user = User(
         user_name="user_name",
         family_name="family_name",
@@ -95,7 +95,7 @@ def test_model_attribute_edition(testclient, slapd_connection):
     user.delete()
 
 
-def test_model_indexation(testclient, slapd_connection):
+def test_model_indexation(testclient, backend):
     user = User(
         user_name="user_name",
         family_name="family_name",
@@ -136,7 +136,7 @@ def test_model_indexation(testclient, slapd_connection):
     assert not User.get(email="email3@user.com")
 
 
-def test_fuzzy(user, moderator, admin, slapd_connection):
+def test_fuzzy(user, moderator, admin, backend):
     assert set(User.query()) == {user, moderator, admin}
     assert set(User.fuzzy("Jack")) == {moderator}
     assert set(User.fuzzy("Jack", ["formatted_name"])) == {moderator}
@@ -149,9 +149,7 @@ def test_fuzzy(user, moderator, admin, slapd_connection):
 
 
 # def test_model_references(user, admin, foo_group, bar_group):
-def test_model_references(
-    testclient, user, foo_group, admin, bar_group, slapd_connection
-):
+def test_model_references(testclient, user, foo_group, admin, bar_group, backend):
     assert foo_group.members == [user]
     assert user.groups == [foo_group]
     assert foo_group in Group.query(members=user)
@@ -175,7 +173,7 @@ def test_model_references(
 
 
 def test_model_references_set_unsaved_object(
-    testclient, logged_moderator, user, slapd_connection
+    testclient, logged_moderator, user, backend
 ):
     group = Group(members=[user], display_name="foo")
     group.save()

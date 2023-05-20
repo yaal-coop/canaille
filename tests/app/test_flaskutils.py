@@ -44,14 +44,14 @@ def test_no_configuration():
     assert "No configuration file found." in str(exc)
 
 
-def test_logging_to_file(configuration, tmp_path, smtpd, admin, slapd_server):
+def test_logging_to_file(configuration, backend, tmp_path, smtpd, admin, slapd_server):
     assert len(smtpd.messages) == 0
     log_path = os.path.join(tmp_path, "canaille.log")
     logging_configuration = {
         **configuration,
         "LOGGING": {"LEVEL": "DEBUG", "PATH": log_path},
     }
-    app = create_app(logging_configuration)
+    app = create_app(logging_configuration, backend=backend)
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:

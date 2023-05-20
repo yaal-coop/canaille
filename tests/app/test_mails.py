@@ -185,8 +185,8 @@ def test_default_from_addr(testclient, user, smtpd):
     assert smtpd.messages[0]["From"] == '"Canaille" <admin@localhost>'
 
 
-def test_default_from_flask_server_name(configuration, user, smtpd, slapd_server):
-    app = create_app(configuration)
+def test_default_from_flask_server_name(configuration, user, smtpd, backend):
+    app = create_app(configuration, backend=backend)
     del app.config["SMTP"]["FROM_ADDR"]
     app.config["SERVER_NAME"] = "foobar.tld"
 

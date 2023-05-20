@@ -6,7 +6,7 @@ from canaille.oidc.models import AuthorizationCode
 from canaille.oidc.models import Token
 
 
-def test_oauth_hybrid(testclient, slapd_connection, user, client):
+def test_oauth_hybrid(testclient, backend, user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -47,9 +47,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     assert res.json["name"] == "John (johnny) Doe"
 
 
-def test_oidc_hybrid(
-    testclient, slapd_connection, logged_user, client, keypair, other_client
-):
+def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, other_client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(

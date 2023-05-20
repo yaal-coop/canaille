@@ -4,7 +4,7 @@ from canaille.core.populate import fake_groups
 from canaille.core.populate import fake_users
 
 
-def test_no_group(app, slapd_connection):
+def test_no_group(app, backend):
     assert Group.query() == []
 
 
@@ -48,7 +48,7 @@ def test_group_list_bad_pages(testclient, logged_admin):
     )
 
 
-def test_group_deletion(testclient, slapd_server, slapd_connection):
+def test_group_deletion(testclient, slapd_server, backend):
     user = User(
         formatted_name="foobar",
         family_name="foobar",

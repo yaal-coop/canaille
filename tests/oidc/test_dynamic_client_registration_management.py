@@ -4,7 +4,7 @@ from datetime import datetime
 from canaille.oidc.models import Client
 
 
-def test_get(testclient, slapd_connection, client, user):
+def test_get(testclient, backend, client, user):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -50,7 +50,7 @@ def test_get(testclient, slapd_connection, client, user):
     }
 
 
-def test_update(testclient, slapd_connection, client, user):
+def test_update(testclient, backend, client, user):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -137,7 +137,7 @@ def test_update(testclient, slapd_connection, client, user):
     assert client.software_version == "3.14"
 
 
-def test_delete(testclient, slapd_connection, user):
+def test_delete(testclient, backend, user):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -156,7 +156,7 @@ def test_delete(testclient, slapd_connection, user):
     assert not Client.get(client_id=client.client_id)
 
 
-def test_invalid_client(testclient, slapd_connection, user):
+def test_invalid_client(testclient, backend, user):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )

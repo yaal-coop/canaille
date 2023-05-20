@@ -5,7 +5,7 @@ from canaille.oidc.models import Client
 
 
 def test_client_registration_with_authentication_static_token(
-    testclient, slapd_connection, client, user
+    testclient, backend, client, user
 ):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -60,7 +60,7 @@ def test_client_registration_with_authentication_static_token(
 
 
 def test_client_registration_with_authentication_no_token(
-    testclient, slapd_connection, client, user
+    testclient, backend, client, user
 ):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -94,7 +94,7 @@ def test_client_registration_with_authentication_no_token(
 
 
 def test_client_registration_with_authentication_invalid_token(
-    testclient, slapd_connection, client, user
+    testclient, backend, client, user
 ):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -120,9 +120,7 @@ def test_client_registration_with_authentication_invalid_token(
     }
 
 
-def test_client_registration_with_software_statement(
-    testclient, slapd_connection, keypair_path
-):
+def test_client_registration_with_software_statement(testclient, backend, keypair_path):
     private_key_path, _ = keypair_path
     testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
@@ -176,7 +174,7 @@ def test_client_registration_with_software_statement(
     client.delete()
 
 
-def test_client_registration_without_authentication_ok(testclient, slapd_connection):
+def test_client_registration_without_authentication_ok(testclient, backend):
     testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     payload = {

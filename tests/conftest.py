@@ -1,12 +1,9 @@
-import ldap.ldapobject
 import pytest
 import slapd
 from canaille import create_app
-from canaille.backends.ldap.backend import setup_ldap_models
+from canaille.backends.ldap.backend import LDAPBackend
 from canaille.core.models import Group
 from canaille.core.models import User
-from canaille.oidc.installation import setup_ldap_tree
-from flask import g
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 
@@ -61,15 +58,6 @@ def slapd_server():
         yield slapd
     finally:
         slapd.stop()
-
-
-@pytest.fixture
-def slapd_connection(slapd_server, testclient):
-    g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    g.ldap_connection.protocol_version = 3
-    g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-    yield g.ldap_connection
-    g.ldap_connection.unbind_s()
 
 
 @pytest.fixture
@@ -148,11 +136,15 @@ def configuration(slapd_server, smtpd):
 
 
 @pytest.fixture
-def app(configuration):
-    setup_ldap_models(configuration)
-    setup_ldap_tree(configuration)
-    app = create_app(configuration)
-    return app
+def backend(slapd_server, configuration):
+    backend = LDAPBackend(configuration)
+    with backend.session():
+        yield backend
+
+
+@pytest.fixture
+def app(configuration, backend):
+    return create_app(configuration, backend=backend)
 
 
 @pytest.fixture
@@ -163,7 +155,7 @@ def testclient(app):
 
 
 @pytest.fixture
-def user(app, slapd_connection):
+def user(app, backend):
     u = User(
         formatted_name="John (johnny) Doe",
         given_name="John",
@@ -183,7 +175,7 @@ def user(app, slapd_connection):
 
 
 @pytest.fixture
-def admin(app, slapd_connection):
+def admin(app, backend):
     u = User(
         formatted_name="Jane Doe",
         family_name="Doe",
@@ -197,7 +189,7 @@ def admin(app, slapd_connection):
 
 
 @pytest.fixture
-def moderator(app, slapd_connection):
+def moderator(app, backend):
     u = User(
         formatted_name="Jack Doe",
         family_name="Doe",
@@ -232,7 +224,7 @@ def logged_moderator(moderator, testclient):
 
 
 @pytest.fixture
-def foo_group(app, user, slapd_connection):
+def foo_group(app, user, backend):
     group = Group(
         members=[user],
         display_name="foo",
@@ -244,7 +236,7 @@ def foo_group(app, user, slapd_connection):
 
 
 @pytest.fixture
-def bar_group(app, admin, slapd_connection):
+def bar_group(app, admin, backend):
     group = Group(
         members=[admin],
         display_name="bar",

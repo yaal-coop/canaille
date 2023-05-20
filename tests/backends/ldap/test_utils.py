@@ -15,8 +15,7 @@ from canaille.core.models import Group
 from canaille.core.models import User
 
 
-def test_object_creation(slapd_connection):
-    User.install(slapd_connection)
+def test_object_creation(app, backend):
     user = User(
         formatted_name="Doe",  # leading space
         family_name="Doe",
@@ -33,19 +32,12 @@ def test_object_creation(slapd_connection):
     user.delete()
 
 
-def test_repr(slapd_connection, foo_group, user):
+def test_repr(backend, foo_group, user):
     assert repr(foo_group) == "<Group display_name=foo>"
     assert repr(user) == "<User formatted_name=John (johnny) Doe>"
 
 
-def test_equality(slapd_connection, foo_group, bar_group):
-    assert foo_group != bar_group
-    foo_group2 = Group.get(id=foo_group.id)
-    assert foo_group == foo_group2
-
-
-def test_dn_when_leading_space_in_id_attribute(slapd_connection):
-    User.install(slapd_connection)
+def test_dn_when_leading_space_in_id_attribute(backend):
     user = User(
         formatted_name=" Doe",  # leading space
         family_name="Doe",
@@ -61,8 +53,7 @@ def test_dn_when_leading_space_in_id_attribute(slapd_connection):
     user.delete()
 
 
-def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
-    User.install(slapd_connection)
+def test_dn_when_ldap_special_char_in_id_attribute(backend):
     user = User(
         formatted_name="#Doe",  # special char
         family_name="Doe",
@@ -78,7 +69,7 @@ def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
     user.delete()
 
 
-def test_filter(slapd_connection, foo_group, bar_group):
+def test_filter(backend, foo_group, bar_group):
     assert Group.query(display_name="foo") == [foo_group]
     assert Group.query(display_name="bar") == [bar_group]
 
@@ -90,7 +81,7 @@ def test_filter(slapd_connection, foo_group, bar_group):
     assert set(Group.query(display_name=["foo", "bar"])) == {foo_group, bar_group}
 
 
-def test_fuzzy(slapd_connection, user, moderator, admin):
+def test_fuzzy(backend, user, moderator, admin):
     assert set(User.query()) == {user, moderator, admin}
     assert set(User.fuzzy("Jack")) == {moderator}
     assert set(User.fuzzy("Jack", ["formatted_name"])) == {moderator}
@@ -170,9 +161,9 @@ def test_python_to_ldap():
     assert ldap_to_python(b"foobar", Syntax.JPEG) == b"foobar"
 
 
-def test_operational_attribute_conversion(slapd_connection):
-    assert "oauthClientName" in LDAPObject.ldap_object_attributes(slapd_connection)
-    assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(slapd_connection)
+def test_operational_attribute_conversion(backend):
+    assert "oauthClientName" in LDAPObject.ldap_object_attributes(backend)
+    assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(backend)
 
     assert python_attrs_to_ldap(
         {
@@ -185,7 +176,7 @@ def test_operational_attribute_conversion(slapd_connection):
     }
 
 
-def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
+def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
     foo_group.save()
     g = LDAPObject.get(id=foo_group.dn)
@@ -197,7 +188,7 @@ def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
     assert isinstance(ou, LDAPObject)
 
 
-def test_object_class_update(slapd_connection, testclient):
+def test_object_class_update(backend, testclient):
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
@@ -234,7 +225,7 @@ def test_ldap_connection_no_remote(testclient, configuration):
     validate(configuration)
 
 
-def test_ldap_connection_remote(testclient, configuration, slapd_connection):
+def test_ldap_connection_remote(testclient, configuration, backend):
     validate(configuration, validate_remote=True)
 
 
@@ -256,7 +247,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration
         validate(configuration, validate_remote=True)
 
 
-def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
+def test_ldap_cannot_create_users(testclient, configuration, backend):
     from canaille.core.models import User
 
     def fake_init(*args, **kwarg):
@@ -270,7 +261,7 @@ def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
             validate(configuration, validate_remote=True)
 
 
-def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
+def test_ldap_cannot_create_groups(testclient, configuration, backend):
     from canaille.core.models import Group
 
     def fake_init(*args, **kwarg):

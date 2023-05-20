@@ -110,7 +110,7 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
     assert res.location == "/login"
 
 
-def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
+def test_user_without_password_first_login(testclient, backend, smtpd):
     assert len(smtpd.messages) == 0
     u = User(
         formatted_name="Temp User",
@@ -141,7 +141,7 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
 
 @mock.patch("smtplib.SMTP")
 def test_first_login_account_initialization_mail_sending_failed(
-    SMTP, testclient, slapd_connection, smtpd
+    SMTP, testclient, backend, smtpd
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     assert len(smtpd.messages) == 0
@@ -166,7 +166,7 @@ def test_first_login_account_initialization_mail_sending_failed(
     u.delete()
 
 
-def test_first_login_form_error(testclient, slapd_connection, smtpd):
+def test_first_login_form_error(testclient, backend, smtpd):
     assert len(smtpd.messages) == 0
     u = User(
         formatted_name="Temp User",
@@ -184,12 +184,12 @@ def test_first_login_form_error(testclient, slapd_connection, smtpd):
 
 
 def test_first_login_page_unavailable_for_users_with_password(
-    testclient, slapd_connection, user
+    testclient, backend, user
 ):
     testclient.get("/firstlogin/user", status=404)
 
 
-def test_user_password_deleted_during_login(testclient, slapd_connection):
+def test_user_password_deleted_during_login(testclient, backend):
     u = User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -213,7 +213,7 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
     u.delete()
 
 
-def test_user_deleted_in_session(testclient, slapd_connection):
+def test_user_deleted_in_session(testclient, backend):
     u = User(
         formatted_name="Jake Doe",
         family_name="Jake",
@@ -277,7 +277,7 @@ def test_wrong_login(testclient, user):
     res.mustcontain("The login &#39;invalid&#39; does not exist")
 
 
-def test_admin_self_deletion(testclient, slapd_connection):
+def test_admin_self_deletion(testclient, backend):
     admin = User(
         formatted_name="Temp admin",
         family_name="admin",
@@ -302,7 +302,7 @@ def test_admin_self_deletion(testclient, slapd_connection):
         assert not sess.get("user_id")
 
 
-def test_user_self_deletion(testclient, slapd_connection):
+def test_user_self_deletion(testclient, backend):
     user = User(
         formatted_name="Temp user",
         family_name="user",

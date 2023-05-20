@@ -6,7 +6,7 @@ from canaille.oidc.models import Token
 from werkzeug.security import gen_salt
 
 
-def test_clean_command(testclient, slapd_connection, client, user):
+def test_clean_command(testclient, backend, client, user):
     valid_code = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",

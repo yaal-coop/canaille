@@ -45,6 +45,18 @@ def setup_config(app, config=None, validate=True):
         canaille.app.configuration.validate(app.config)
 
 
+def setup_backend(app, backend):
+    from .backends.ldap.backend import LDAPBackend
+
+    if not backend:
+        backend = LDAPBackend(app.config)
+        backend.init_app(app)
+
+    with app.app_context():
+        g.backend = backend
+        app.backend = backend
+
+
 def setup_sentry(app):  # pragma: no cover
     if not app.config.get("SENTRY_DSN"):
         return None
@@ -167,18 +179,17 @@ def setup_flask(app):
         return render_template("error.html", error=500), 500
 
 
-def create_app(config=None, validate=True):
+def create_app(config=None, validate=True, backend=None):
     app = Flask(__name__)
     setup_config(app, config, validate)
 
     sentry_sdk = setup_sentry(app)
     try:
         from .oidc.oauth import setup_oauth
-        from .backends.ldap.backend import LDAPBackend
         from .app.i18n import setup_i18n
 
         setup_logging(app)
-        LDAPBackend(app)
+        setup_backend(app, backend)
         setup_oauth(app)
         setup_blueprints(app)
         setup_jinja(app)

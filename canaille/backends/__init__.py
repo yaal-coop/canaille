@@ -1,17 +1,24 @@
+from contextlib import contextmanager
+
+
 class Backend:
-    def __init__(self, app):
-        self.app = app
+    def __init__(self, config):
+        pass
 
-        @self.app.before_request
+    def init_app(self, app):
+        @app.before_request
         def before_request():
-            if not app.config["TESTING"]:
-                return self.setup()
+            return self.setup()
 
-        @self.app.after_request
+        @app.after_request
         def after_request(response):
-            if not app.config["TESTING"]:
-                self.teardown()
+            self.teardown()
             return response
+
+    @contextmanager
+    def session(self):
+        yield self.setup()
+        self.teardown()
 
     def setup(self):
         """

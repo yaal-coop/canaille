@@ -1,4 +1,5 @@
 import ldap.filter
+from canaille.backends.ldap.backend import LDAPBackend
 from canaille.backends.ldap.ldapobject import LDAPObject
 from flask import current_app
 from flask import session
@@ -124,7 +125,7 @@ class User(LDAPObject):
             conn.unbind_s()
 
     def set_password(self, password):
-        conn = self.ldap_connection()
+        conn = LDAPBackend.get().connection
         conn.passwd_s(
             self.id,
             None,
@@ -162,7 +163,7 @@ class User(LDAPObject):
         self.state[group_attr] = new_groups
 
     def load_permissions(self):
-        conn = self.ldap_connection()
+        conn = LDAPBackend.get().connection
 
         for access_group_name, details in current_app.config["ACL"].items():
             filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))

@@ -70,7 +70,7 @@ def configuration(configuration, keypair_path):
 
 
 @pytest.fixture
-def client(testclient, other_client, slapd_connection):
+def client(testclient, other_client, backend):
     c = Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -106,7 +106,7 @@ def client(testclient, other_client, slapd_connection):
 
 
 @pytest.fixture
-def other_client(testclient, slapd_connection):
+def other_client(testclient, backend):
     c = Client(
         client_id=gen_salt(24),
         client_name="Some other client",
@@ -142,7 +142,7 @@ def other_client(testclient, slapd_connection):
 
 
 @pytest.fixture
-def authorization(testclient, user, client, slapd_connection):
+def authorization(testclient, user, client, backend):
     a = AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
@@ -164,7 +164,7 @@ def authorization(testclient, user, client, slapd_connection):
 
 
 @pytest.fixture
-def token(testclient, client, user, slapd_connection):
+def token(testclient, client, user, backend):
     t = Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -183,7 +183,7 @@ def token(testclient, client, user, slapd_connection):
 
 
 @pytest.fixture
-def id_token(testclient, client, user, slapd_connection):
+def id_token(testclient, client, user, backend):
     return generate_id_token(
         {},
         generate_user_info(user, client.scope),
@@ -193,7 +193,7 @@ def id_token(testclient, client, user, slapd_connection):
 
 
 @pytest.fixture
-def consent(testclient, client, user, slapd_connection):
+def consent(testclient, client, user, backend):
     t = Consent(
         consent_id=str(uuid.uuid4()),
         client=client,
