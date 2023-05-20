@@ -9,21 +9,14 @@ from flask_babel import gettext as _
 
 
 class LDAPBackend(Backend):
-    instance = None
-
     def __init__(self, config):
         from canaille.oidc.installation import setup_ldap_tree
 
-        LDAPBackend.instance = self
+        super().__init__(config)
         self.config = config
         self.connection = None
         setup_ldap_models(config)
         setup_ldap_tree(config)
-        super().__init__(config)
-
-    @classmethod
-    def get(cls):
-        return cls.instance
 
     def setup(self):
         try:  # pragma: no cover

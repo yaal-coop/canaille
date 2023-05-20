@@ -2,8 +2,14 @@ from contextlib import contextmanager
 
 
 class Backend:
+    instance = None
+
     def __init__(self, config):
-        pass
+        Backend.instance = self
+
+    @classmethod
+    def get(cls):
+        return cls.instance
 
     def init_app(self, app):
         @app.before_request
