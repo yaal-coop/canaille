@@ -590,7 +590,7 @@ def profile_settings_edit(editor, edited_user):
             edited_user.save()
             flash(_("Profile updated successfuly."), "success")
             return redirect(
-                url_for("account.profile_edition", username=edited_user.user_name[0])
+                url_for("account.profile_settings", username=edited_user.user_name[0])
             )
 
     return render_template(
