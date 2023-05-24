@@ -1,7 +1,21 @@
 import logging
+import os
 
 import slapd
 
+schemas = [
+    schema
+    for schema in [
+        "core.ldif",
+        "cosine.ldif",
+        "nis.ldif",
+        "inetorgperson.ldif",
+    ]
+    if os.path.exists(os.path.join(slapd.Slapd.SCHEMADIR, schema))
+] + [
+    "ldif/memberof-config.ldif",
+    "ldif/refint-config.ldif",
+]
 
 slapd = slapd.Slapd(
     suffix="dc=mydomain,dc=tld",
@@ -9,14 +23,7 @@ slapd = slapd.Slapd(
     root_pw="admin",
     port=5389,
     log_level=logging.INFO,
-    schemas=(
-        "core.ldif",
-        "cosine.ldif",
-        "nis.ldif",
-        "inetorgperson.ldif",
-        "ldif/memberof-config.ldif",
-        "ldif/refint-config.ldif",
-    ),
+    schemas=schemas,
 )
 slapd.start()
 
