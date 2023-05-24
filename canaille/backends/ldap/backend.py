@@ -39,10 +39,7 @@ def install_schema(config, schema_path):
         with ldap_connection(config) as conn:
             for dn, entry in parser.all_records:
                 add_modlist = ldap.modlist.addModlist(entry)
-                try:
-                    conn.add_s(dn, add_modlist)
-                except ldap.OTHER:
-                    pass
+                conn.add_s(dn, add_modlist)
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise InstallationException(
@@ -68,10 +65,16 @@ class LDAPBackend(Backend):
 
     @classmethod
     def setup_schemas(cls, config):
-        install_schema(
-            config,
-            os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
-        )
+        from .ldapobject import LDAPObject
+
+        with ldap_connection(config) as conn:
+            if "oauthClient" not in LDAPObject.ldap_object_classes(
+                conn=conn, force=True
+            ):
+                install_schema(
+                    config,
+                    os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
+                )
 
     def setup(self):
         try:  # pragma: no cover
