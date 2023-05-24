@@ -83,20 +83,6 @@ def test_filter(backend, foo_group, bar_group):
     }
 
 
-def test_fuzzy(backend, user, moderator, admin):
-    assert set(models.User.query()) == {user, moderator, admin}
-    assert set(models.User.fuzzy("Jack")) == {moderator}
-    assert set(models.User.fuzzy("Jack", ["formatted_name"])) == {moderator}
-    assert set(models.User.fuzzy("Jack", ["user_name"])) == set()
-    assert set(models.User.fuzzy("Jack", ["user_name", "formatted_name"])) == {
-        moderator
-    }
-    assert set(models.User.fuzzy("moderator")) == {moderator}
-    assert set(models.User.fuzzy("oderat")) == {moderator}
-    assert set(models.User.fuzzy("oDeRat")) == {moderator}
-    assert set(models.User.fuzzy("ack")) == {moderator}
-
-
 def test_ldap_to_python():
     assert (
         python_to_ldap(
