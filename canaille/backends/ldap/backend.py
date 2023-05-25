@@ -133,7 +133,6 @@ class LDAPBackend(Backend):
 
     @classmethod
     def validate(cls, config):
-        from canaille.app.configuration import ConfigurationException
         from canaille.app import models
 
         try:

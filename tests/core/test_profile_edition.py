@@ -178,9 +178,9 @@ def test_edition_remove_fields(
 
 
 def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
-    res = testclient.get(f"/profile/admin")
+    res = testclient.get("/profile/admin")
     res = testclient.post(
-        f"/profile/admin",
+        "/profile/admin",
         {
             "csrf_token": res.form["csrf_token"].value,
             "email": "john@doe.com",

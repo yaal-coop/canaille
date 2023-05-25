@@ -418,7 +418,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             formatted_changes = {
                 name: value
                 for name, value in python_attrs_to_ldap(changes).items()
-                if value is not None and value != None
+                if value is not None
             }
             attributes = [(name, values) for name, values in formatted_changes.items()]
             conn.add_s(self.id, attributes)

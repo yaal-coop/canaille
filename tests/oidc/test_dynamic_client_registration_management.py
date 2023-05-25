@@ -150,7 +150,7 @@ def test_delete(testclient, backend, user):
 
     headers = {"Authorization": "Bearer static-token"}
     with warnings.catch_warnings(record=True):
-        res = testclient.delete(
+        testclient.delete(
             f"/oauth/register/{client.client_id}", headers=headers, status=204
         )
     assert not models.Client.get(client_id=client.client_id)

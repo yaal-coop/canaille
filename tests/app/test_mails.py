@@ -93,7 +93,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
     testclient.app.config["LOGO"] = None
     assert len(smtpd.messages) == 0
 
-    res = testclient.get(f"/admin/mail")
+    res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.com"
     res = res.form.submit()
     assert (

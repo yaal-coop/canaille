@@ -112,7 +112,7 @@ def test_client_registration_with_authentication_invalid_token(
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
     }
-    headers = {"Authorization": f"Bearer invalid-token"}
+    headers = {"Authorization": "Bearer invalid-token"}
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
     assert res.json == {
         "error": "access_denied",

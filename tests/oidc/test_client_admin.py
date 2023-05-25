@@ -207,9 +207,7 @@ def test_client_delete(testclient, logged_admin):
         consent_id="consent_id", subject=logged_admin, client=client, scope="openid"
     )
     consent.save()
-    code = models.AuthorizationCode(
-        authorization_code_id="id", client=client, subject=client
-    )
+    models.AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientaddform"].submit(name="action", value="delete").follow()

@@ -10,8 +10,6 @@ from flask.cli import with_appcontext
 def with_backendcontext(func):
     @functools.wraps(func)
     def _func(*args, **kwargs):
-        from canaille.backends import Backend
-
         if not current_app.config["TESTING"]:  # pragma: no cover
             with Backend.get().session():
                 result = func(*args, **kwargs)

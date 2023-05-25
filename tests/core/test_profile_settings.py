@@ -43,9 +43,9 @@ def test_edition(
 
 
 def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
-    res = testclient.get(f"/profile/admin/settings")
+    res = testclient.get("/profile/admin/settings")
     res = testclient.post(
-        f"/profile/admin/settings",
+        "/profile/admin/settings",
         {
             "csrf_token": res.form["csrf_token"].value,
             "password1": "short",

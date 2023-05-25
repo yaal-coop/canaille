@@ -3,10 +3,8 @@ import hashlib
 import json
 import re
 
-from canaille.app import models
 from flask import current_app
 from flask import request
-from flask_babel import gettext as _
 
 
 def obj_to_b64(obj):

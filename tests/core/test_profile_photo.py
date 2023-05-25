@@ -35,12 +35,12 @@ def test_photo(testclient, user, jpeg_photo):
 
 
 def test_photo_invalid_user(testclient, user):
-    res = testclient.get("/profile/invalid/photo", status=404)
+    testclient.get("/profile/invalid/photo", status=404)
 
 
 def test_photo_absent(testclient, user):
     assert not user.photo
-    res = testclient.get("/profile/user/photo", status=404)
+    testclient.get("/profile/user/photo", status=404)
 
 
 def test_photo_invalid_path(testclient, user):

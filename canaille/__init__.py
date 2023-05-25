@@ -5,7 +5,6 @@ from logging.config import dictConfig
 import toml
 from flask import Flask
 from flask import g
-from flask import request
 from flask import session
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template

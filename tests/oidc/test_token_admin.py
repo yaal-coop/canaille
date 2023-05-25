@@ -124,7 +124,7 @@ def test_token_view(testclient, token, logged_admin):
 
 
 def test_token_not_found(testclient, logged_admin):
-    res = testclient.get("/admin/token/" + "yolo", status=404)
+    testclient.get("/admin/token/" + "yolo", status=404)
 
 
 def test_revoke_token(testclient, token, logged_admin):
@@ -138,4 +138,4 @@ def test_revoke_token(testclient, token, logged_admin):
 
 
 def test_revoke_invalid_token(testclient, logged_admin):
-    testclient.get(f"/admin/token/invalid/revoke", status=404)
+    testclient.get("/admin/token/invalid/revoke", status=404)

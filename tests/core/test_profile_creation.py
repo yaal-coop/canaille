@@ -65,9 +65,9 @@ def test_user_creation_edition_and_deletion(
 
 
 def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
-    res = testclient.get(f"/profile")
+    res = testclient.get("/profile")
     res = testclient.post(
-        f"/profile",
+        "/profile",
         {
             "csrf_token": res.form["csrf_token"].value,
             "email": "john@doe.com",

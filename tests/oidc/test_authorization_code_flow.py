@@ -101,7 +101,7 @@ def test_authorization_code_flow(
 
 
 def test_invalid_client(testclient, logged_user, keypair):
-    res = testclient.get(
+    testclient.get(
         "/oauth/authorize",
         params=dict(
             response_type="code",
@@ -885,7 +885,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    models.AuthorizationCode.get(code=code)
 
     res = testclient.post(
         "/oauth/token",

@@ -110,6 +110,9 @@ source = [
 omit = [".tox/*"]
 branch = true
 
+[tool.ruff]
+ignore = ["E501", "E722"]
+
 [tool.tox]
 legacy_tox_ini = """
 [tox]
