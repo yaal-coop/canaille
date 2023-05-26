@@ -285,16 +285,17 @@ def profile_form(write_field_names, readonly_field_names, user=None):
     if "groups" in fields and not models.Group.query():
         del fields["groups"]
 
-    fields["lock_date"] = wtforms.DateTimeLocalField(
-        _("Account expiration"),
-        validators=[wtforms.validators.Optional()],
-        format=[
-            "%Y-%m-%d %H:%M",
-            "%Y-%m-%dT%H:%M",
-            "%Y-%m-%d %H:%M:%S",
-            "%Y-%m-%dT%H:%M:%S",
-        ],
-    )
+    if current_app.backend.get().has_account_lockability():  # pragma: no branch
+        fields["lock_date"] = wtforms.DateTimeLocalField(
+            _("Account expiration"),
+            validators=[wtforms.validators.Optional()],
+            format=[
+                "%Y-%m-%d %H:%M",
+                "%Y-%m-%dT%H:%M",
+                "%Y-%m-%d %H:%M:%S",
+                "%Y-%m-%dT%H:%M:%S",
+            ],
+        )
 
     form = HTMXBaseForm(fields)
     form.user = user

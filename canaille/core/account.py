@@ -557,7 +557,7 @@ def profile_settings(user, username):
         and not edited_user.locked
     ):
         flash(_("The account has been locked"), "success")
-        edited_user.lock()
+        edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
         edited_user.save()
 
         return profile_settings_edit(user, edited_user)
@@ -568,7 +568,7 @@ def profile_settings(user, username):
         and edited_user.locked
     ):
         flash(_("The account has been unlocked"), "success")
-        edited_user.unlock()
+        del edited_user.lock_date
         edited_user.save()
 
         return profile_settings_edit(user, edited_user)
@@ -603,15 +603,8 @@ def profile_settings_edit(editor, edited_user):
 
         else:
             for attribute in form:
-                if attribute.name == "groups" and "groups" in editor.write:
-                    edited_user.groups = attribute.data
-
-                elif (
-                    attribute.name == "lock_date"
-                    and Backend.get().has_account_lockability()
-                    and form[attribute.name].data
-                ):
-                    edited_user.lock(form[attribute.name].data)
+                if attribute.name in available_fields & editor.write:
+                    setattr(edited_user, attribute.name, attribute.data)
 
             if (
                 "password1" in request.form

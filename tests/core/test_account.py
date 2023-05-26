@@ -359,25 +359,19 @@ def test_account_locking(user, backend):
     assert not user.lock_date
     assert user.check_password("correct horse battery staple") == (True, None)
 
-    user.lock()
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     user.save()
     assert user.locked
-    assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
     assert models.User.get(id=user.id).locked
-    assert models.User.get(id=user.id).lock_date <= datetime.datetime.now(
-        datetime.timezone.utc
-    )
     assert user.check_password("correct horse battery staple") == (
         False,
         "Your account has been locked.",
     )
 
-    user.unlock()
+    del user.lock_date
     user.save()
     assert not user.locked
-    assert not user.lock_date
     assert not models.User.get(id=user.id).locked
-    assert not models.User.get(id=user.id).lock_date
     assert user.check_password("correct horse battery staple") == (True, None)
 
 
@@ -386,15 +380,12 @@ def test_account_locking_past_date(user, backend):
     assert not user.lock_date
     assert user.check_password("correct horse battery staple") == (True, None)
 
-    lock_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
         microsecond=0
     ) - datetime.timedelta(days=30)
-    user.lock(lock_datetime)
     user.save()
     assert user.locked
-    assert user.lock_date == lock_datetime
     assert models.User.get(id=user.id).locked
-    assert models.User.get(id=user.id).lock_date == lock_datetime
     assert user.check_password("correct horse battery staple") == (
         False,
         "Your account has been locked.",
@@ -406,15 +397,12 @@ def test_account_locking_future_date(user, backend):
     assert not user.lock_date
     assert user.check_password("correct horse battery staple") == (True, None)
 
-    lock_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
         microsecond=0
     ) + datetime.timedelta(days=365 * 4)
-    user.lock(lock_datetime)
     user.save()
     assert not user.locked
-    assert user.lock_date == lock_datetime
     assert not models.User.get(id=user.id).locked
-    assert models.User.get(id=user.id).lock_date == lock_datetime
     assert user.check_password("correct horse battery staple") == (True, None)
 
 
@@ -422,7 +410,7 @@ def test_signin_locked_account(testclient, user):
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 
-    user.lock()
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     user.save()
 
     res = testclient.get("/login", status=200)
@@ -434,12 +422,12 @@ def test_signin_locked_account(testclient, user):
     res = res.form.submit()
     res.mustcontain("Your account has been locked.")
 
-    user.unlock()
+    del user.lock_date
     user.save()
 
 
 def test_account_locked_during_session(testclient, logged_user):
     testclient.get("/profile/user/settings", status=200)
-    logged_user.lock()
+    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     logged_user.save()
     testclient.get("/profile/user/settings", status=403)

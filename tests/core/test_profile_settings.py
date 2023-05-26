@@ -334,7 +334,30 @@ def test_account_locking(
     res.mustcontain(no="Unlock")
 
 
-def test_lock_date(
+def test_past_lock_date(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings", status=200)
+    assert not user.lock_date
+    assert not user.locked
+
+    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+        second=0, microsecond=0
+    ) - datetime.timedelta(days=30)
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert user.locked
+
+
+def test_future_lock_date(
     testclient,
     backend,
     logged_admin,
@@ -348,25 +371,36 @@ def test_lock_date(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
     user = models.User.get(id=user.id)
     assert user.lock_date == expiration_datetime
     assert not user.locked
     assert res.form["lock_date"].value == expiration_datetime.strftime("%Y-%m-%d %H:%M")
 
+
+def test_empty_lock_date(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
     expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
         second=0, microsecond=0
-    ) - datetime.timedelta(days=30)
-    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
-    res = res.form.submit(name="action", value="edit").follow()
-    user = models.User.get(id=user.id)
-    assert user.lock_date == expiration_datetime
-    assert user.locked
+    ) + datetime.timedelta(days=30)
+    user.lock_date = expiration_datetime
+    user.save()
 
-    res = res.form.submit(name="action", value="unlock")
-    user = models.User.get(id=user.id)
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["lock_date"] = ""
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
+    user.reload()
     assert not user.lock_date
-    assert not user.locked
 
 
 def test_account_limit_values(
@@ -383,7 +417,10 @@ def test_account_limit_values(
         microsecond=0, tzinfo=datetime.timezone.utc
     )
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
     user = models.User.get(id=user.id)
     assert user.lock_date == expiration_datetime
     assert not user.locked
