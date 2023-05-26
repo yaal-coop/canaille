@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-05-26 15:31+0200\n"
-"PO-Revision-Date: 2023-04-28 17:52+0000\n"
+"PO-Revision-Date: 2023-05-27 14:50+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -61,16 +61,12 @@ msgid " or "
 msgstr " ou "
 
 #: canaille/backends/ldap/models.py:121
-#, fuzzy
-#| msgid "Your account has already been created."
 msgid "Your account has been locked."
-msgstr "Votre compte a déjà été créé."
+msgstr "Votre compte a été verrouillé."
 
 #: canaille/backends/ldap/models.py:126
-#, fuzzy
-#| msgid "Could not reset your password"
 msgid "You should change your password."
-msgstr "Impossible de réinitialiser votre mot de passe"
+msgstr "Vous devriez changer votre mot de passe."
 
 #: canaille/core/account.py:97 canaille/core/account.py:120
 #: canaille/core/account.py:128 canaille/oidc/endpoints.py:81
@@ -164,16 +160,12 @@ msgid "Could not send the password reset email"
 msgstr "Impossible d'envoyer le lien de réinitialisation"
 
 #: canaille/core/account.py:559
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The account has been locked"
-msgstr "L'accès a été révoqué"
+msgstr "Le compte a été verrouillé"
 
 #: canaille/core/account.py:570
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The account has been unlocked"
-msgstr "L'accès a été révoqué"
+msgstr "Le compte a été déverrouillé"
 
 #: canaille/core/account.py:644
 #, python-format
@@ -400,10 +392,8 @@ msgid "1234"
 msgstr "1234"
 
 #: canaille/core/forms.py:240
-#, fuzzy
-#| msgid "Department number"
 msgid "Department"
-msgstr "Numéro du service"
+msgstr "Service"
 
 #: canaille/core/forms.py:246
 msgid "Organization"
@@ -430,10 +420,8 @@ msgid "users, admins …"
 msgstr "utilisateurs, administrateurs …"
 
 #: canaille/core/forms.py:289
-#, fuzzy
-#| msgid "Account creation"
 msgid "Account expiration"
-msgstr "Création de compte"
+msgstr "Expiration du compte"
 
 #: canaille/core/forms.py:314
 msgid "group"
@@ -1079,36 +1067,28 @@ msgid "Submit"
 msgstr "Valider"
 
 #: canaille/templates/profile_settings.html:70
-#, fuzzy
-#| msgid "Account deletion"
 msgid "Account locking"
-msgstr "Suppression d'un compte"
+msgstr "Verrouillage du compte"
 
 #: canaille/templates/profile_settings.html:75
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to revoke this token? This action is unrevokable."
 msgid ""
 "Are you sure you want to lock this account? The user won't be able to login "
 "until their account is unlocked."
 msgstr ""
-"Êtes-vous sûrs de vouloir révoquer ce jeton ? Cette action est irrévocable."
+"Êtes-vous sûrs de vouloir verrouiller ce compte ? L’utilisateur ne pourra "
+"pas s’authentifier jusqu’à ce que son compte soit déverrouillé."
 
 #: canaille/templates/profile_settings.html:77
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete your account? This action is unrevokable "
-#| "and all your data will be removed forever."
 msgid ""
 "Are you sure you want to lock your account? You won't be abel to login until "
 "your account is unlocked."
 msgstr ""
-"Êtes-vous sûrs de vouloir supprimer votre compte ? Cette action est "
-"irrévocable et toutes vos données seront supprimées pour toujours."
+"Êtes-vous sûrs de vouloir verrouiller votre compte ? Vous ne pourrez plus "
+"vous authentifier jusqu’à ce que votre compte soit déverrouillé."
 
 #: canaille/templates/profile_settings.html:83
 msgid "Lock"
-msgstr ""
+msgstr "Verrouiller"
 
 #: canaille/templates/profile_settings.html:124
 msgid "Send email"
@@ -1160,28 +1140,21 @@ msgstr ""
 
 #: canaille/templates/profile_settings.html:160
 msgid "Unlock"
-msgstr ""
+msgstr "Déverrouiller"
 
 #: canaille/templates/profile_settings.html:163
-#, fuzzy
-#| msgid "This user can edit this field"
 msgid "This user account is locked"
-msgstr "Cet utilisateur peut éditer ce champ"
+msgstr "Ce compte utilisateur est verrouillé"
 
 #: canaille/templates/profile_settings.html:166
-#, fuzzy
-#| msgid ""
-#| "The user will not be able to authenticate unless the password is set."
 msgid "The user won't be able to connect until their account is unlocked."
 msgstr ""
-"L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
-"défini."
+"L'utilisateur ne pourra pas se connecter tant que son compte n’est pas "
+"déverrouillé."
 
 #: canaille/templates/profile_settings.html:178
-#, fuzzy
-#| msgid "Delete my account"
 msgid "Lock the account"
-msgstr "Supprimer mon compte"
+msgstr "Verrouiller le compte"
 
 #: canaille/templates/profile_settings.html:185
 msgid "Delete the user"
@@ -1430,10 +1403,8 @@ msgid "View an authorization"
 msgstr "Voir une autorisation"
 
 #: canaille/templates/oidc/admin/client_add.html:39
-#, fuzzy
-#| msgid "Created"
 msgid "Create"
-msgstr "Créé"
+msgstr "Créer"
 
 #: canaille/templates/oidc/admin/client_edit.html:5
 #: canaille/templates/oidc/admin/client_edit.html:54
@@ -1674,7 +1645,7 @@ msgstr "Essayez peut-être avec des critères différents ?"
 
 #: canaille/templates/partial/users.html:29
 msgid "This account is locked"
-msgstr ""
+msgstr "Ce compte est verrouillé"
 
 #: canaille/templates/partial/oidc/admin/authorization_list.html:5
 msgid "Code"
