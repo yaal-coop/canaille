@@ -1,3 +1,5 @@
+import os
+
 import pytest
 import slapd
 from canaille import create_app
@@ -9,14 +11,21 @@ from werkzeug.security import gen_salt
 
 class CustomSlapdObject(slapd.Slapd):
     def __init__(self):
-        super().__init__(
-            suffix="dc=mydomain,dc=tld",
-            schemas=(
+        schemas = [
+            schema
+            for schema in [
                 "core.ldif",
                 "cosine.ldif",
                 "nis.ldif",
                 "inetorgperson.ldif",
-            ),
+                "ppolicy.ldif",
+            ]
+            if os.path.exists(os.path.join(self.SCHEMADIR, schema))
+        ]
+
+        super().__init__(
+            suffix="dc=mydomain,dc=tld",
+            schemas=schemas,
         )
 
     def init_tree(self):
@@ -48,6 +57,8 @@ def slapd_server():
         slapd.init_tree()
         for ldif in (
             "demo/ldif/memberof-config.ldif",
+            "demo/ldif/ppolicy-config.ldif",
+            "demo/ldif/ppolicy.ldif",
             "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
             "demo/ldif/bootstrap-users-tree.ldif",
             "demo/ldif/bootstrap-oidc-tree.ldif",
@@ -80,7 +91,7 @@ def configuration(slapd_server, smtpd):
         "ACL": {
             "DEFAULT": {
                 "READ": ["user_name", "groups"],
-                "PERMISSIONS": ["edit_self", "use_oidc"],
+                "PERMISSIONS": ["edit_self", "use_oidc", "lock_date"],
                 "WRITE": [
                     "email",
                     "given_name",
@@ -112,6 +123,7 @@ def configuration(slapd_server, smtpd):
                 ],
                 "WRITE": [
                     "groups",
+                    "lock_date",
                 ],
             },
             "MODERATOR": {

@@ -193,8 +193,11 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
     def authenticate_user(self, username, password):
         user = models.User.get_from_login(username)
+        if not user:
+            return None
 
-        if not user or not user.check_password(password):
+        success, _ = user.check_password(password)
+        if not success:
             return None
 
         return user

@@ -1,3 +1,5 @@
+import datetime
+
 from flask import session
 
 
@@ -71,6 +73,18 @@ class User:
     @property
     def can_impersonate_users(self):
         return "impersonate_users" in self.permissions
+
+    def lock(self, lock_datetime=None):
+        self.lock_date = lock_datetime or datetime.datetime.now(datetime.timezone.utc)
+
+    def unlock(self):
+        del self.lock_date
+
+    @property
+    def locked(self):
+        return bool(self.lock_date) and self.lock_date < datetime.datetime.now(
+            datetime.timezone.utc
+        )
 
 
 class Group:

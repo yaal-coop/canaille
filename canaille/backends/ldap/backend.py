@@ -221,6 +221,11 @@ class LDAPBackend(Backend):
 
         return _(" or ").join(placeholders)
 
+    def has_account_lockability(self):
+        from .ldapobject import LDAPObject
+
+        return "pwdEndTime" in LDAPObject.ldap_object_attributes()
+
 
 def setup_ldap_models(config):
     from .ldapobject import LDAPObject

@@ -1,0 +1,11 @@
+dn: cn=module,cn=config
+cn: module
+objectClass: olcModuleList
+olcModuleLoad: ppolicy
+
+dn: olcOverlay=ppolicy,olcDatabase={1}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcPPolicyConfig
+olcOverlay: ppolicy
+olcPPolicyDefault: cn=passwordDefault,dc=mydomain,dc=tld
+olcPPolicyUseLockout: TRUE

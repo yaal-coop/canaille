@@ -55,3 +55,9 @@ class Backend:
         errors are met.
         """
         raise NotImplementedError()
+
+    def has_account_lockability(self):
+        """
+        Indicates wether the backend supports locking user accounts.
+        """
+        raise NotImplementedError()

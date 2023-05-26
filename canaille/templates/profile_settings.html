@@ -63,6 +63,28 @@
         </div>
     {% endif %}
 
+    {% if has_account_lockability and user.can_manage_users and not edited_user.locked %}
+        <div id="modal-lock" class="ui basic modal">
+            <div class="ui icon header">
+                <i class="lock icon"></i>
+                {% trans %}Account locking{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% if user.user_name != edited_user.user_name %}
+                        {{ _("Are you sure you want to lock this account? The user won't be able to login until their account is unlocked.") }}
+                    {% else %}
+                        {{ _("Are you sure you want to lock your account? You won't be abel to login until your account is unlocked.") }}
+                    {% endif %}
+                </p>
+            </div>
+            <div class="actions">
+                <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
+                <div class="ui inverted red approve button">{% trans %}Lock{% endtrans %}</div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="ui clearing segment">
         <h2 class="ui center aligned header">
             <div class="content">
@@ -86,6 +108,10 @@
                         {{ render_field(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
+            {% endif %}
+
+            {% if has_account_lockability and "lock_date" in form and not edited_user.locked %}
+                {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
             {% endif %}
 
             {% if user.can_manage_users %}
@@ -127,10 +153,32 @@
 
                 {% endif %}
 
+                {% if has_account_lockability and edited_user.locked %}
+
+                    <div class="ui message warning visible">
+                        <button type="submit" name="action" value="unlock" class="ui right floated button">
+                            {% trans %}Unlock{% endtrans %}
+                        </button>
+                        <div class="header">
+                            {% trans %}This user account is locked{% endtrans %}
+                        </div>
+                        <p>
+                            {% trans %}The user won't be able to connect until their account is unlocked.{% endtrans %}
+                        </p>
+                    </div>
+
+                {% endif %}
+
             {% endif %}
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
+                    {% if has_account_lockability and "lock_date" in user.write and not edited_user.locked %}
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock" id="lock">
+                            {% trans %}Lock the account{% endtrans %}
+                        </button>
+                    {% endif %}
+
                     {% if user.can_manage_users or self_deletion %}
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
                             {% if user.user_name != edited_user.user_name %}

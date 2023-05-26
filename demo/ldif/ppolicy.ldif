@@ -1,0 +1,11 @@
+dn: cn=passwordDefault,dc=mydomain,dc=tld
+objectClass: person
+objectClass: top
+objectClass: pwdPolicy
+sn: passwordDefault
+cn: passwordDefault
+pwdAttribute: userPassword
+pwdMustChange: TRUE
+pwdLockout: TRUE
+pwdAllowUserChange: TRUE
+pwdGraceAuthNLimit: 1

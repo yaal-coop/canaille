@@ -15,7 +15,9 @@ from flask_babel import gettext as _
 def current_user():
     for user_id in session.get("user_id", [])[::-1]:
         user = models.User.get(id=user_id)
-        if user:
+        if user and (
+            not current_app.backend.has_account_lockability() or not user.locked
+        ):
             return user
 
         session["user_id"].remove(user_id)
