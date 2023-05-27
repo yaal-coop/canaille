@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-05-26 15:31+0200\n"
-"PO-Revision-Date: 2023-05-14 23:49+0000\n"
+"PO-Revision-Date: 2023-05-29 15:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
 "de/>\n"
@@ -22,15 +22,15 @@ msgstr ""
 
 #: canaille/app/flask.py:65
 msgid "No SMTP server has been configured"
-msgstr ""
+msgstr "Es wurde kein SMTP-Server konfiguriert"
 
 #: canaille/app/forms.py:20
 msgid "This is not a valid URL"
-msgstr ""
+msgstr "Dies ist keine gültige URL"
 
 #: canaille/app/forms.py:83
 msgid "The page number is not valid"
-msgstr ""
+msgstr "Die Seitenzahl ist nicht gültig"
 
 #: canaille/backends/ldap/backend.py:98
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -42,30 +42,28 @@ msgstr ""
 
 #: canaille/backends/ldap/backend.py:214
 msgid "John Doe"
-msgstr ""
+msgstr "Max Mustermann"
 
 #: canaille/backends/ldap/backend.py:217 canaille/core/forms.py:124
 #: canaille/core/forms.py:340
 msgid "jdoe"
-msgstr ""
+msgstr "mmustermann"
 
 #: canaille/backends/ldap/backend.py:220
 msgid "john@doe.com"
-msgstr ""
+msgstr "max@mustermann.de"
 
 #: canaille/backends/ldap/backend.py:222
 msgid " or "
-msgstr ""
+msgstr " oder "
 
 #: canaille/backends/ldap/models.py:121
-#, fuzzy
-#| msgid "Your account has already been created."
 msgid "Your account has been locked."
-msgstr "Ihr Konto wurde bereits erstellt."
+msgstr "Ihr Konto wurde gesperrt."
 
 #: canaille/backends/ldap/models.py:126
 msgid "You should change your password."
-msgstr ""
+msgstr "Sie sollten Ihr Passwort ändern."
 
 #: canaille/core/account.py:97 canaille/core/account.py:120
 #: canaille/core/account.py:128 canaille/oidc/endpoints.py:81
@@ -116,15 +114,15 @@ msgstr ""
 #: canaille/templates/groups.html:25 canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
 msgid "Groups"
-msgstr ""
+msgstr "Gruppen"
 
 #: canaille/core/account.py:341 canaille/core/account.py:372
 msgid "User account creation failed."
-msgstr ""
+msgstr "Erstellung des Benutzerkontos fehlgeschlagen."
 
 #: canaille/core/account.py:346
 msgid "Your account has been created successfuly."
-msgstr ""
+msgstr "Ihr Konto wurde erfolgreich erstellt."
 
 #: canaille/core/account.py:412
 msgid "User account creation succeed."
@@ -159,19 +157,17 @@ msgid "Could not send the password reset email"
 msgstr "Die E-Mail zum Zurücksetzen des Passworts konnte nicht gesendet werden"
 
 #: canaille/core/account.py:559
-#, fuzzy
 msgid "The account has been locked"
-msgstr "Der Kunde wurde bearbeitet."
+msgstr "Das Konto wurde gesperrt"
 
 #: canaille/core/account.py:570
-#, fuzzy
 msgid "The account has been unlocked"
-msgstr "Der Kunde wurde bearbeitet."
+msgstr "Das Konto wurde entsperrt"
 
 #: canaille/core/account.py:644
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
-msgstr ""
+msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
 
 #: canaille/core/account.py:684
 msgid "Could not send the password reset link."
@@ -206,7 +202,7 @@ msgstr ""
 
 #: canaille/core/account.py:744
 msgid "Your password has been updated successfuly"
-msgstr ""
+msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 
 #: canaille/core/admin.py:23 canaille/templates/partial/users.html:15
 msgid "Email"
@@ -228,7 +224,7 @@ msgstr "Die Testeinladungs-E-Mail wurde nicht korrekt gesendet"
 
 #: canaille/core/admin.py:89 canaille/core/mails.py:92
 msgid "Password initialization on {website_name}"
-msgstr ""
+msgstr "Passwortinitialisierung auf {website_name}"
 
 #: canaille/core/admin.py:131 canaille/core/mails.py:52
 msgid "Password reset on {website_name}"
@@ -259,16 +255,16 @@ msgstr ""
 #: canaille/core/forms.py:53 canaille/core/forms.py:77
 #: canaille/templates/partial/users.html:9
 msgid "Login"
-msgstr ""
+msgstr "Anmeldung"
 
 #: canaille/core/forms.py:66 canaille/core/forms.py:89
 #: canaille/core/forms.py:213
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: canaille/core/forms.py:96 canaille/core/forms.py:223
 msgid "Password confirmation"
-msgstr ""
+msgstr "Passwortbestätigung"
 
 #: canaille/core/forms.py:99 canaille/core/forms.py:226
 msgid "Password and confirmation do not match."
@@ -292,11 +288,11 @@ msgstr "Name"
 
 #: canaille/core/forms.py:129
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: canaille/core/forms.py:129
 msgid "Vice president"
-msgstr ""
+msgstr "Vizepräsident"
 
 #: canaille/core/forms.py:132
 msgid "Given name"
@@ -352,16 +348,15 @@ msgstr "Beispielstraße 132, 11111 Musterstadt"
 
 #: canaille/core/forms.py:183
 msgid "Street"
-msgstr ""
+msgstr "Straße"
 
 #: canaille/core/forms.py:185
-#, fuzzy
 msgid "132, Foobar Street"
-msgstr "Beispielstraße 132, 11111 Musterstadt"
+msgstr "Beispielstraße 132"
 
 #: canaille/core/forms.py:189
 msgid "Postal Code"
-msgstr ""
+msgstr "Postleitzahl"
 
 #: canaille/core/forms.py:195
 msgid "Locality"
@@ -373,11 +368,11 @@ msgstr ""
 
 #: canaille/core/forms.py:201
 msgid "Region"
-msgstr ""
+msgstr "Region"
 
 #: canaille/core/forms.py:203
 msgid "North Pole"
-msgstr ""
+msgstr "Nordpol"
 
 #: canaille/core/forms.py:207
 msgid "Photo"
@@ -389,23 +384,20 @@ msgid "Delete the photo"
 msgstr "Foto löschen"
 
 #: canaille/core/forms.py:234
-#, fuzzy
-#| msgid "Username"
 msgid "User number"
-msgstr "Anmeldename"
+msgstr "Benutzernummer"
 
 #: canaille/core/forms.py:236 canaille/core/forms.py:242
 msgid "1234"
 msgstr "1234"
 
 #: canaille/core/forms.py:240
-#, fuzzy
 msgid "Department"
-msgstr "Telefonnummer"
+msgstr "Abteilung"
 
 #: canaille/core/forms.py:246
 msgid "Organization"
-msgstr ""
+msgstr "Organisation"
 
 #: canaille/core/forms.py:248
 msgid "Cogip LTD."
@@ -452,7 +444,7 @@ msgstr "Gruppenerstellung fehlgeschlagen."
 #: canaille/core/groups.py:45
 #, python-format
 msgid "The group %(group)s has been sucessfully created"
-msgstr ""
+msgstr "Die Gruppe %(group)s wurde erfolgreich erstellt"
 
 #: canaille/core/groups.py:97
 #, python-format
