@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-05-26 15:31+0200\n"
-"PO-Revision-Date: 2023-03-31 13:40+0000\n"
+"PO-Revision-Date: 2023-05-29 15:50+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 4.18-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:65
@@ -59,14 +59,12 @@ msgid " or "
 msgstr " o "
 
 #: canaille/backends/ldap/models.py:121
-#, fuzzy
-#| msgid "Your account has already been created."
 msgid "Your account has been locked."
-msgstr "Tu cuenta ya existe."
+msgstr "Tu cuenta ha sido bloqueada."
 
 #: canaille/backends/ldap/models.py:126
 msgid "You should change your password."
-msgstr ""
+msgstr "Deberías cambiar tu contraseña."
 
 #: canaille/core/account.py:97 canaille/core/account.py:120
 #: canaille/core/account.py:128 canaille/oidc/endpoints.py:81
@@ -160,16 +158,12 @@ msgid "Could not send the password reset email"
 msgstr "No fue posible enviar el email para restablecer de contraseña"
 
 #: canaille/core/account.py:559
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The account has been locked"
-msgstr "El acceso ha sido revocado"
+msgstr "La cuenta ha sido bloqueada"
 
 #: canaille/core/account.py:570
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The account has been unlocked"
-msgstr "El acceso ha sido revocado"
+msgstr "La cuenta ha sido desbloqueada"
 
 #: canaille/core/account.py:644
 #, python-format
@@ -396,10 +390,8 @@ msgid "1234"
 msgstr "1234"
 
 #: canaille/core/forms.py:240
-#, fuzzy
-#| msgid "Department number"
 msgid "Department"
-msgstr "Número del departamento"
+msgstr "Departamento"
 
 #: canaille/core/forms.py:246
 msgid "Organization"
@@ -426,10 +418,8 @@ msgid "users, admins …"
 msgstr "usuarios, administradores…"
 
 #: canaille/core/forms.py:289
-#, fuzzy
-#| msgid "Account creation"
 msgid "Account expiration"
-msgstr "Crear cuenta"
+msgstr "Caducidad de la cuenta"
 
 #: canaille/core/forms.py:314
 msgid "group"
@@ -1073,36 +1063,28 @@ msgid "Submit"
 msgstr "Enviar"
 
 #: canaille/templates/profile_settings.html:70
-#, fuzzy
-#| msgid "Account deletion"
 msgid "Account locking"
-msgstr "Eliminar cuenta"
+msgstr "Bloqueo de la cuenta"
 
 #: canaille/templates/profile_settings.html:75
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to revoke this token? This action is unrevokable."
 msgid ""
 "Are you sure you want to lock this account? The user won't be able to login "
 "until their account is unlocked."
 msgstr ""
-"¿Está seguro de que desea revocar este token? Esta acción es irrevocable."
+"¿Está seguro de que deseas bloquear esta cuenta? El usuario no podrá iniciar "
+"sesión hasta que la cuenta esté desbloqueada."
 
 #: canaille/templates/profile_settings.html:77
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete your account? This action is unrevokable "
-#| "and all your data will be removed forever."
 msgid ""
 "Are you sure you want to lock your account? You won't be abel to login until "
 "your account is unlocked."
 msgstr ""
-"¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer y "
-"todos tus datos se eliminarán para siempre."
+"¿Estás seguro de que desea bloquear tu cuenta? No podrás iniciar sesión "
+"hasta que tu cuenta esté desbloqueada."
 
 #: canaille/templates/profile_settings.html:83
 msgid "Lock"
-msgstr ""
+msgstr "Bloquear"
 
 #: canaille/templates/profile_settings.html:124
 msgid "Send email"
@@ -1153,27 +1135,19 @@ msgstr ""
 
 #: canaille/templates/profile_settings.html:160
 msgid "Unlock"
-msgstr ""
+msgstr "Desbloquear"
 
 #: canaille/templates/profile_settings.html:163
-#, fuzzy
-#| msgid "This user cannot see this field"
 msgid "This user account is locked"
-msgstr "Este usuario no puede ver este campo"
+msgstr "Esta cuenta de usuario está bloqueada"
 
 #: canaille/templates/profile_settings.html:166
-#, fuzzy
-#| msgid ""
-#| "The user will not be able to authenticate unless the password is set."
 msgid "The user won't be able to connect until their account is unlocked."
-msgstr ""
-"El usuario no podrá iniciar sesión a menos que se establezca una contraeña."
+msgstr "El usuario no podrá conectarse hasta que la cuenta esté desbloqueada."
 
 #: canaille/templates/profile_settings.html:178
-#, fuzzy
-#| msgid "Delete my account"
 msgid "Lock the account"
-msgstr "Eliminar mi cuenta"
+msgstr "Bloquear la cuenta"
 
 #: canaille/templates/profile_settings.html:185
 msgid "Delete the user"
@@ -1420,10 +1394,8 @@ msgid "View an authorization"
 msgstr "Ver una autorización"
 
 #: canaille/templates/oidc/admin/client_add.html:39
-#, fuzzy
-#| msgid "Created"
 msgid "Create"
-msgstr "Creado"
+msgstr "Crear"
 
 #: canaille/templates/oidc/admin/client_edit.html:5
 #: canaille/templates/oidc/admin/client_edit.html:54
@@ -1665,7 +1637,7 @@ msgstr "¿Quizás probando con otros criterios?"
 
 #: canaille/templates/partial/users.html:29
 msgid "This account is locked"
-msgstr ""
+msgstr "Esta cuenta está bloqueada"
 
 #: canaille/templates/partial/oidc/admin/authorization_list.html:5
 msgid "Code"
