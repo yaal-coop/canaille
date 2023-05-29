@@ -1,9 +1,8 @@
 import random
 
 import faker
+from canaille.app import models
 from canaille.app.i18n import available_language_codes
-from canaille.core.models import Group
-from canaille.core.models import User
 from faker.config import AVAILABLE_LOCALES
 
 
@@ -19,7 +18,7 @@ def fake_users(nb=1):
         try:
             fake = random.choice(fakes)
             name = fake.unique.name()
-            user = User(
+            user = models.User(
                 formatted_name=name,
                 given_name=name.split(" ")[0],
                 family_name=name.split(" ")[1],
@@ -47,16 +46,16 @@ def fake_users(nb=1):
 
 def fake_groups(nb=1, nb_users_max=1):
     fake = faker_generator(["en_US"])[0]
-    users = User.query()
+    users = models.User.query()
     groups = list()
     for _ in range(nb):
         try:
-            group = Group(
-                cn=fake.unique.word(),
+            group = models.Group(
+                display_name=fake.unique.word(),
                 description=fake.sentence(),
             )
             nb_users = random.randrange(1, nb_users_max + 1)
-            group.member = list({random.choice(users) for _ in range(nb_users)})
+            group.members = list({random.choice(users) for _ in range(nb_users)})
             group.save()
             groups.append(group)
         except Exception:  # pragma: no cover

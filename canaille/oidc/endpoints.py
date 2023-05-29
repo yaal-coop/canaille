@@ -6,10 +6,10 @@ from authlib.jose import JsonWebKey
 from authlib.jose import jwt
 from authlib.oauth2 import OAuth2Error
 from canaille import csrf
+from canaille.app import models
 from canaille.app.flask import current_user
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.core.forms import FullLoginForm
-from canaille.core.models import User
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -25,8 +25,6 @@ from werkzeug.datastructures import CombinedMultiDict
 
 from .forms import AuthorizeForm
 from .forms import LogoutForm
-from .models import Client
-from .models import Consent
 from .oauth import authorization
 from .oauth import ClientConfigurationEndpoint
 from .oauth import ClientRegistrationEndpoint
@@ -59,7 +57,7 @@ def authorize():
     if "client_id" not in request.args:
         abort(400)
 
-    client = Client.get(request.args["client_id"])
+    client = models.Client.get(client_id=request.args["client_id"])
     if not client:
         abort(400)
 
@@ -78,11 +76,20 @@ def authorize():
         if request.method == "GET":
             return render_template("login.html", form=form, menu=False)
 
-        if not form.validate() or not User.authenticate(
-            form.login.data, form.password.data, True
-        ):
+        user = models.User.get_from_login(form.login.data)
+        if not form.validate() or not user:
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form, menu=False)
+
+        success, message = user.check_password(form.password.data)
+        if not success:
+            flash(
+                _(message or "Login failed, please check your information"),
+                "error",
+            )
+            return render_template("login.html", form=form, menu=False)
+
+        user.login()
 
         return redirect(request.url)
 
@@ -91,7 +98,7 @@ def authorize():
 
     # CONSENT
 
-    consents = Consent.query(
+    consents = models.Consent.query(
         client=client,
         subject=user,
     )
@@ -148,8 +155,8 @@ def authorize():
                 list(set(scopes + consents[0].scope))
             ).split(" ")
         else:
-            consent = Consent(
-                cn=str(uuid.uuid4()),
+            consent = models.Consent(
+                consent_id=str(uuid.uuid4()),
                 client=client,
                 subject=user,
                 scope=scopes,
@@ -270,7 +277,7 @@ def end_session():
     valid_uris = []
 
     if "client_id" in data:
-        client = Client.get(data["client_id"])
+        client = models.Client.get(client_id=data["client_id"])
         if client:
             valid_uris = client.post_logout_redirect_uris
 
@@ -312,7 +319,7 @@ def end_session():
                 else [id_token["aud"]]
             )
             for client_id in client_ids:
-                client = Client.get(client_id)
+                client = models.Client.get(client_id=client_id)
                 if client:
                     valid_uris.extend(client.post_logout_redirect_uris or [])
 

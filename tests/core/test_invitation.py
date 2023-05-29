@@ -1,11 +1,11 @@
 import datetime
 
+from canaille.app import models
 from canaille.core.account import Invitation
-from canaille.core.models import User
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd):
-    assert User.get_from_login("someone") is None
+    assert models.User.get_from_login("someone") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -39,9 +39,9 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     assert ("success", "Your account has been created successfuly.") in res.flashes
     res = res.follow(status=200)
 
-    user = User.get_from_login("someone")
+    user = models.User.get_from_login("someone")
     foo_group.reload()
-    assert user.check_password("whatever")
+    assert user.check_password("whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -53,8 +53,8 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
 
 def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtpd):
-    assert User.get_from_login("jackyjack") is None
-    assert User.get_from_login("djorje") is None
+    assert models.User.get_from_login("jackyjack") is None
+    assert models.User.get_from_login("djorje") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -89,9 +89,9 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
     assert ("success", "Your account has been created successfuly.") in res.flashes
     res = res.follow(status=200)
 
-    user = User.get_from_login("djorje")
+    user = models.User.get_from_login("djorje")
     foo_group.reload()
-    assert user.check_password("whatever")
+    assert user.check_password("whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -101,7 +101,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd):
-    assert User.get_from_login("sometwo") is None
+    assert models.User.get_from_login("sometwo") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -131,9 +131,9 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    user = User.get_from_login("sometwo")
+    user = models.User.get_from_login("sometwo")
     foo_group.reload()
-    assert user.check_password("whatever")
+    assert user.check_password("whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -228,7 +228,7 @@ def test_registration_no_password(testclient, foo_group):
     res = res.form.submit(status=200)
     res.mustcontain("This field is required.")
 
-    assert not User.get_from_login("someoneelse")
+    assert not models.User.get_from_login("someoneelse")
 
     with testclient.session_transaction() as sess:
         assert "user_id" not in sess
@@ -295,7 +295,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    user = User.get_from_login("someoneelse")
+    user = models.User.get_from_login("someoneelse")
     foo_group.reload()
     assert user.groups == [foo_group]
     user.delete()

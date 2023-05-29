@@ -2,6 +2,7 @@ import functools
 import sys
 
 import click
+from canaille.backends import Backend
 from flask import current_app
 from flask.cli import with_appcontext
 
@@ -9,18 +10,12 @@ from flask.cli import with_appcontext
 def with_backendcontext(func):
     @functools.wraps(func)
     def _func(*args, **kwargs):
-        from canaille.backends.ldap.backend import (
-            setup_backend,
-            teardown_backend,
-        )
-
         if not current_app.config["TESTING"]:  # pragma: no cover
-            setup_backend(current_app)
+            with Backend.get().session():
+                result = func(*args, **kwargs)
 
-        result = func(*args, **kwargs)
-
-        if not current_app.config["TESTING"]:  # pragma: no cover
-            teardown_backend(current_app)
+        else:
+            result = func(*args, **kwargs)
 
         return result
 

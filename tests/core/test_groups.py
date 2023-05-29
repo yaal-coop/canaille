@@ -1,11 +1,10 @@
-from canaille.core.models import Group
-from canaille.core.models import User
+from canaille.app import models
 from canaille.core.populate import fake_groups
 from canaille.core.populate import fake_users
 
 
-def test_no_group(app, slapd_connection):
-    assert Group.query() == []
+def test_no_group(app, backend):
+    assert models.Group.query() == []
 
 
 def test_group_list_pagination(testclient, logged_admin, foo_group):
@@ -48,8 +47,8 @@ def test_group_list_bad_pages(testclient, logged_admin):
     )
 
 
-def test_group_deletion(testclient, slapd_server, slapd_connection):
-    user = User(
+def test_group_deletion(testclient, backend):
+    user = models.User(
         formatted_name="foobar",
         family_name="foobar",
         user_name="foobar",
@@ -57,7 +56,7 @@ def test_group_deletion(testclient, slapd_server, slapd_connection):
     )
     user.save()
 
-    group = Group(
+    group = models.Group(
         members=[user],
         display_name="foobar",
     )
@@ -109,7 +108,7 @@ def test_set_groups(app, user, foo_group, bar_group):
 
 
 def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
-    user = User(
+    user = models.User(
         formatted_name=" Doe",  # leading space in id attribute
         family_name="Doe",
         user_name="user2",
@@ -120,6 +119,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
     user.groups = [foo_group]
     user.save()
 
+    foo_group.reload()
     assert user in foo_group.members
 
     user.groups = []
@@ -136,8 +136,8 @@ def test_moderator_can_create_edit_and_delete_group(
 ):
     # The group does not exist
     res = testclient.get("/groups", status=200)
-    assert Group.get("bar") is None
-    assert Group.get("foo") == foo_group
+    assert models.Group.get(display_name="bar") is None
+    assert models.Group.get(display_name="foo") == foo_group
     res.mustcontain(no="bar")
     res.mustcontain("foo")
 
@@ -150,7 +150,8 @@ def test_moderator_can_create_edit_and_delete_group(
     # Group has been created
     res = form.submit(status=302).follow(status=200)
 
-    bar_group = Group.get("bar")
+    logged_moderator.reload()
+    bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo"]
     assert bar_group.members == [
@@ -166,17 +167,17 @@ def test_moderator_can_create_edit_and_delete_group(
 
     res = form.submit(name="action", value="edit").follow()
 
-    bar_group = Group.get("bar")
+    bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo2"]
-    assert Group.get("bar2") is None
+    assert models.Group.get(display_name="bar2") is None
     members = bar_group.members
     for member in members:
         res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
     res = form.submit(name="action", value="delete", status=302)
-    assert Group.get("bar") is None
+    assert models.Group.get(display_name="bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
 
@@ -200,21 +201,6 @@ def test_simple_user_cannot_view_or_edit_groups(testclient, logged_user, foo_gro
     testclient.get("/groups", status=403)
     testclient.get("/groups/add", status=403)
     testclient.get("/groups/foo", status=403)
-
-
-def test_get_members_filters_non_existent_user(
-    testclient, logged_moderator, foo_group, user
-):
-    # an LDAP group can be inconsistent by containing members which doesn't exist
-    non_existent_user = User(formatted_name="foo", family_name="bar")
-    foo_group.member = foo_group.member + [non_existent_user]
-    foo_group.save()
-
-    foo_group.members
-
-    assert foo_group.member == [user, non_existent_user]
-
-    testclient.get("/groups/foo", status=200)
 
 
 def test_invalid_form_request(testclient, logged_moderator, foo_group):
@@ -283,6 +269,7 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     res = testclient.get("/groups/foo")
     res.mustcontain("3 items")
     res.mustcontain(user.formatted_name[0])
+    res.mustcontain(logged_admin.formatted_name[0])
     res.mustcontain(moderator.formatted_name[0])
 
     form = res.forms["search"]
@@ -291,5 +278,5 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
 
     res.mustcontain("1 items")
     res.mustcontain(user.formatted_name[0])
-    res.mustcontain(no=logged_admin.name)
+    res.mustcontain(no=logged_admin.formatted_name[0])
     res.mustcontain(no=moderator.formatted_name[0])

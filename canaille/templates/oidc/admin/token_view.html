@@ -91,7 +91,7 @@
                         <ul class="ui list">
                             {% for client in token.audience %}
                                 <li class="item">
-                                    <a href="{{ url_for("oidc.clients.edit", client_id=client.dn) }}">
+                                    <a href="{{ url_for("oidc.clients.edit", client_id=client.client_id) }}">
                                         {{ client.client_name }}
                                     </a>
                                 </li>

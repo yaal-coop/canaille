@@ -73,6 +73,7 @@ pytest-coverage = "*"
 pytest-httpserver = "*"
 slapd = "*"
 smtpdfix = "*"
+pytest-flask = "^1.2.0"
 
 [tool.poetry.group.demo]
 optional = true
@@ -108,6 +109,9 @@ source = [
 ]
 omit = [".tox/*"]
 branch = true
+
+[tool.ruff]
+ignore = ["E501", "E722"]
 
 [tool.tox]
 legacy_tox_ini = """

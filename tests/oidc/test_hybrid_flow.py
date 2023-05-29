@@ -2,11 +2,10 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 from authlib.jose import jwt
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Token
+from canaille.app import models
 
 
-def test_oauth_hybrid(testclient, slapd_connection, user, client):
+def test_oauth_hybrid(testclient, backend, user, client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -19,7 +18,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     )
     assert "text/html" == res.content_type, res.json
 
-    res.form["login"] = user.formatted_name[0]
+    res.form["login"] = user.user_name[0]
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
 
@@ -32,11 +31,11 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token is not None
 
     res = testclient.get(
@@ -47,9 +46,7 @@ def test_oauth_hybrid(testclient, slapd_connection, user, client):
     assert res.json["name"] == "John (johnny) Doe"
 
 
-def test_oidc_hybrid(
-    testclient, slapd_connection, logged_user, client, keypair, other_client
-):
+def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, other_client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -67,11 +64,11 @@ def test_oidc_hybrid(
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token is not None
 
     id_token = params["id_token"][0]

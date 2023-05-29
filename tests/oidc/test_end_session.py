@@ -3,7 +3,7 @@ from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
 
 
-def test_end_session(testclient, slapd_connection, logged_user, client, id_token):
+def test_end_session(testclient, backend, logged_user, client, id_token):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -27,9 +27,7 @@ def test_end_session(testclient, slapd_connection, logged_user, client, id_token
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_end_session_no_client_id(
-    testclient, slapd_connection, logged_user, client, id_token
-):
+def test_end_session_no_client_id(testclient, backend, logged_user, client, id_token):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -53,7 +51,7 @@ def test_end_session_no_client_id(
 
 
 def test_no_redirect_uri_no_redirect(
-    testclient, slapd_connection, logged_user, client, id_token
+    testclient, backend, logged_user, client, id_token
 ):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
@@ -77,7 +75,7 @@ def test_no_redirect_uri_no_redirect(
 
 
 def test_bad_redirect_uri_no_redirect(
-    testclient, slapd_connection, logged_user, client, id_token
+    testclient, backend, logged_user, client, id_token
 ):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
@@ -102,9 +100,7 @@ def test_bad_redirect_uri_no_redirect(
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_no_client_hint_no_redirect(
-    testclient, slapd_connection, logged_user, client, id_token
-):
+def test_no_client_hint_no_redirect(testclient, backend, logged_user, client, id_token):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -128,9 +124,7 @@ def test_no_client_hint_no_redirect(
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_end_session_invalid_client_id(
-    testclient, slapd_connection, logged_user, client
-):
+def test_end_session_invalid_client_id(testclient, backend, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -156,7 +150,7 @@ def test_end_session_invalid_client_id(
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_client_hint_invalid(testclient, slapd_connection, logged_user, client):
+def test_client_hint_invalid(testclient, backend, logged_user, client):
     id_token = generate_id_token(
         {},
         generate_user_info(logged_user, client.scope),
@@ -186,7 +180,7 @@ def test_client_hint_invalid(testclient, slapd_connection, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_no_jwt_logout(testclient, slapd_connection, logged_user, client):
+def test_no_jwt_logout(testclient, backend, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -212,7 +206,7 @@ def test_no_jwt_logout(testclient, slapd_connection, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_no_jwt_no_logout(testclient, slapd_connection, logged_user, client):
+def test_no_jwt_no_logout(testclient, backend, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -237,9 +231,7 @@ def test_no_jwt_no_logout(testclient, slapd_connection, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
 
-def test_jwt_not_issued_here(
-    testclient, slapd_connection, logged_user, client, id_token
-):
+def test_jwt_not_issued_here(testclient, backend, logged_user, client, id_token):
     testclient.app.config["OIDC"]["JWT"]["ISS"] = "https://foo.bar"
 
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
@@ -263,7 +255,7 @@ def test_jwt_not_issued_here(
     }
 
 
-def test_client_hint_mismatch(testclient, slapd_connection, logged_user, client):
+def test_client_hint_mismatch(testclient, backend, logged_user, client):
     id_token = generate_id_token(
         {},
         generate_user_info(logged_user, client.scope),
@@ -292,9 +284,7 @@ def test_client_hint_mismatch(testclient, slapd_connection, logged_user, client)
     }
 
 
-def test_bad_user_id_token_mismatch(
-    testclient, slapd_connection, logged_user, client, admin
-):
+def test_bad_user_id_token_mismatch(testclient, backend, logged_user, client, admin):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     id_token = generate_id_token(
@@ -328,9 +318,7 @@ def test_bad_user_id_token_mismatch(
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_bad_user_hint(
-    testclient, slapd_connection, logged_user, client, id_token, admin
-):
+def test_bad_user_hint(testclient, backend, logged_user, client, id_token, admin):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -357,7 +345,7 @@ def test_bad_user_hint(
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=403)
 
 
-def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
+def test_no_jwt_bad_csrf(testclient, backend, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
@@ -377,9 +365,7 @@ def test_no_jwt_bad_csrf(testclient, slapd_connection, logged_user, client):
     res = form.submit(name="answer", value="logout", status=400)
 
 
-def test_end_session_already_disconnected(
-    testclient, slapd_connection, user, client, id_token
-):
+def test_end_session_already_disconnected(testclient, backend, user, client, id_token):
     post_logout_redirect_url = "https://mydomain.tld/disconnected"
     res = testclient.get(
         "/oauth/end_session",
@@ -396,9 +382,7 @@ def test_end_session_already_disconnected(
     assert res.location == "/"
 
 
-def test_end_session_no_state(
-    testclient, slapd_connection, logged_user, client, id_token
-):
+def test_end_session_no_state(testclient, backend, logged_user, client, id_token):
     testclient.get(f"/profile/{logged_user.user_name[0]}", status=200)
 
     post_logout_redirect_url = "https://mydomain.tld/disconnected"

@@ -1,8 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Token
+from canaille.app import models
 
 from . import client_credentials
 
@@ -76,7 +75,7 @@ def test_full_flow(testclient, logged_user, client, user, other_client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = AuthorizationCode.get(code=code)
+    authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
     res = testclient.post(
@@ -92,7 +91,7 @@ def test_full_flow(testclient, logged_user, client, user, other_client):
     )
     access_token = res.json["access_token"]
 
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 

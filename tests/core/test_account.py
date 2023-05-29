@@ -1,6 +1,7 @@
+import datetime
 from unittest import mock
 
-from canaille.core.models import User
+from canaille.app import models
 
 
 def test_index(testclient, user):
@@ -27,15 +28,20 @@ def test_signin_and_out(testclient, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert "John (johnny) Doe" == session.get("attempt_login")
+        assert "user" == session.get("attempt_login")
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit()
+
+    assert (
+        "success",
+        "Connection successful. Welcome John (johnny) Doe",
+    ) in res.flashes
     res = res.follow(status=302)
     res = res.follow(status=200)
 
@@ -76,10 +82,25 @@ def test_signin_wrong_password(testclient, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
     res.form["password"] = "incorrect horse"
+    res = res.form.submit(status=200)
+    assert ("error", "Login failed, please check your information") in res.flashes
+
+
+def test_signin_bad_csrf(testclient, user):
+    with testclient.session_transaction() as session:
+        assert not session.get("user_id")
+
+    res = testclient.get("/login", status=200)
+
+    res.form["login"] = "John (johnny) Doe"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    res.form["password"] = ""
     res = res.form.submit(status=200)
     assert ("error", "Login failed, please check your information") in res.flashes
 
@@ -105,9 +126,9 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
     assert res.location == "/login"
 
 
-def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
+def test_user_without_password_first_login(testclient, backend, smtpd):
     assert len(smtpd.messages) == 0
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -116,7 +137,7 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
     u.save()
 
     res = testclient.get("/login", status=200)
-    res.form["login"] = "Temp User"
+    res.form["login"] = "temp"
     res = res.form.submit(status=302)
 
     assert res.location == "/firstlogin/temp"
@@ -136,12 +157,12 @@ def test_user_without_password_first_login(testclient, slapd_connection, smtpd):
 
 @mock.patch("smtplib.SMTP")
 def test_first_login_account_initialization_mail_sending_failed(
-    SMTP, testclient, slapd_connection, smtpd
+    SMTP, testclient, backend, smtpd
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     assert len(smtpd.messages) == 0
 
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -161,9 +182,9 @@ def test_first_login_account_initialization_mail_sending_failed(
     u.delete()
 
 
-def test_first_login_form_error(testclient, slapd_connection, smtpd):
+def test_first_login_form_error(testclient, backend, smtpd):
     assert len(smtpd.messages) == 0
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -179,13 +200,13 @@ def test_first_login_form_error(testclient, slapd_connection, smtpd):
 
 
 def test_first_login_page_unavailable_for_users_with_password(
-    testclient, slapd_connection, user
+    testclient, backend, user
 ):
     testclient.get("/firstlogin/user", status=404)
 
 
-def test_user_password_deleted_during_login(testclient, slapd_connection):
-    u = User(
+def test_user_password_deleted_during_login(testclient, backend):
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -195,11 +216,11 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
     u.save()
 
     res = testclient.get("/login")
-    res.form["login"] = "Temp User"
+    res.form["login"] = "temp"
     res = res.form.submit().follow()
     res.form["password"] = "correct horse battery staple"
 
-    u.password = None
+    del u.password
     u.save()
 
     res = res.form.submit(status=302)
@@ -208,8 +229,8 @@ def test_user_password_deleted_during_login(testclient, slapd_connection):
     u.delete()
 
 
-def test_user_deleted_in_session(testclient, slapd_connection):
-    u = User(
+def test_user_deleted_in_session(testclient, backend):
+    u = models.User(
         formatted_name="Jake Doe",
         family_name="Jake",
         user_name="jake",
@@ -272,8 +293,8 @@ def test_wrong_login(testclient, user):
     res.mustcontain("The login &#39;invalid&#39; does not exist")
 
 
-def test_admin_self_deletion(testclient, slapd_connection):
-    admin = User(
+def test_admin_self_deletion(testclient, backend):
+    admin = models.User(
         formatted_name="Temp admin",
         family_name="admin",
         user_name="temp",
@@ -291,14 +312,14 @@ def test_admin_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    assert User.get_from_login("temp") is None
+    assert models.User.get_from_login("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
 
 
-def test_user_self_deletion(testclient, slapd_connection):
-    user = User(
+def test_user_self_deletion(testclient, backend):
+    user = models.User(
         formatted_name="Temp user",
         family_name="user",
         user_name="temp",
@@ -325,7 +346,7 @@ def test_user_self_deletion(testclient, slapd_connection):
         .follow(status=200)
     )
 
-    assert User.get_from_login("temp") is None
+    assert models.User.get_from_login("temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
@@ -333,21 +354,80 @@ def test_user_self_deletion(testclient, slapd_connection):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
 
 
-def test_login_placeholder(testclient):
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(uid={login})"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "jdoe"
+def test_account_locking(user, backend):
+    assert not user.locked
+    assert not user.lock_date
+    assert user.check_password("correct horse battery staple") == (True, None)
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(cn={login})"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "John Doe"
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    user.save()
+    assert user.locked
+    assert models.User.get(id=user.id).locked
+    assert user.check_password("correct horse battery staple") == (
+        False,
+        "Your account has been locked.",
+    )
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(mail={login})"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "john@doe.com"
+    del user.lock_date
+    user.save()
+    assert not user.locked
+    assert not models.User.get(id=user.id).locked
+    assert user.check_password("correct horse battery staple") == (True, None)
 
-    testclient.app.config["BACKENDS"]["LDAP"][
-        "USER_FILTER"
-    ] = "(|(uid={login})(mail={login}))"
-    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "jdoe or john@doe.com"
+
+def test_account_locking_past_date(user, backend):
+    assert not user.locked
+    assert not user.lock_date
+    assert user.check_password("correct horse battery staple") == (True, None)
+
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
+        microsecond=0
+    ) - datetime.timedelta(days=30)
+    user.save()
+    assert user.locked
+    assert models.User.get(id=user.id).locked
+    assert user.check_password("correct horse battery staple") == (
+        False,
+        "Your account has been locked.",
+    )
+
+
+def test_account_locking_future_date(user, backend):
+    assert not user.locked
+    assert not user.lock_date
+    assert user.check_password("correct horse battery staple") == (True, None)
+
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
+        microsecond=0
+    ) + datetime.timedelta(days=365 * 4)
+    user.save()
+    assert not user.locked
+    assert not models.User.get(id=user.id).locked
+    assert user.check_password("correct horse battery staple") == (True, None)
+
+
+def test_signin_locked_account(testclient, user):
+    with testclient.session_transaction() as session:
+        assert not session.get("user_id")
+
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    user.save()
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+
+    res = res.form.submit(status=302).follow(status=200)
+    res.form["password"] = "correct horse battery staple"
+
+    res = res.form.submit()
+    res.mustcontain("Your account has been locked.")
+
+    del user.lock_date
+    user.save()
+
+
+def test_account_locked_during_session(testclient, logged_user):
+    testclient.get("/profile/user/settings", status=200)
+    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    logged_user.save()
+    testclient.get("/profile/user/settings", status=403)

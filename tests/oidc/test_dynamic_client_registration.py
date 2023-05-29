@@ -1,11 +1,11 @@
 from unittest import mock
 
 from authlib.jose import jwt
-from canaille.oidc.models import Client
+from canaille.app import models
 
 
 def test_client_registration_with_authentication_static_token(
-    testclient, slapd_connection, client, user
+    testclient, backend, client, user
 ):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -29,7 +29,7 @@ def test_client_registration_with_authentication_static_token(
     headers = {"Authorization": "Bearer static-token"}
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=201)
-    client = Client.get(res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
 
     assert res.json == {
         "client_id": client.client_id,
@@ -60,7 +60,7 @@ def test_client_registration_with_authentication_static_token(
 
 
 def test_client_registration_with_authentication_no_token(
-    testclient, slapd_connection, client, user
+    testclient, backend, client, user
 ):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -94,7 +94,7 @@ def test_client_registration_with_authentication_no_token(
 
 
 def test_client_registration_with_authentication_invalid_token(
-    testclient, slapd_connection, client, user
+    testclient, backend, client, user
 ):
     assert not testclient.app.config.get("OIDC", {}).get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -112,7 +112,7 @@ def test_client_registration_with_authentication_invalid_token(
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
     }
-    headers = {"Authorization": f"Bearer invalid-token"}
+    headers = {"Authorization": "Bearer invalid-token"}
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
     assert res.json == {
         "error": "access_denied",
@@ -120,9 +120,7 @@ def test_client_registration_with_authentication_invalid_token(
     }
 
 
-def test_client_registration_with_software_statement(
-    testclient, slapd_connection, keypair_path
-):
+def test_client_registration_with_software_statement(testclient, backend, keypair_path):
     private_key_path, _ = keypair_path
     testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
@@ -150,7 +148,7 @@ def test_client_registration_with_software_statement(
     }
     res = testclient.post_json("/oauth/register", payload, status=201)
 
-    client = Client.get(res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
     assert res.json == {
         "client_id": client.client_id,
         "client_secret": client.client_secret,
@@ -176,7 +174,7 @@ def test_client_registration_with_software_statement(
     client.delete()
 
 
-def test_client_registration_without_authentication_ok(testclient, slapd_connection):
+def test_client_registration_without_authentication_ok(testclient, backend):
     testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     payload = {
@@ -201,7 +199,7 @@ def test_client_registration_without_authentication_ok(testclient, slapd_connect
 
     res = testclient.post_json("/oauth/register", payload, status=201)
 
-    client = Client.get(res.json["client_id"])
+    client = models.Client.get(client_id=res.json["client_id"])
     assert res.json == {
         "client_id": mock.ANY,
         "client_secret": mock.ANY,

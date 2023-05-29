@@ -123,7 +123,11 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # object that users will be able to read and/or write.
 [ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
-READ = ["user_name", "groups"]
+READ = [
+    "user_name",
+    "groups",
+    "lock_date",
+]
 WRITE = [
     "photo",
     "given_name",
@@ -154,7 +158,10 @@ PERMISSIONS = [
     "delete_account",
     "impersonate_users",
 ]
-WRITE = ["groups"]
+WRITE = [
+    "groups",
+    "lock_date",
+]
 
 [ACL.HALF_ADMIN]
 FILTER = {groups = "moderators"}

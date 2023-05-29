@@ -1,7 +1,7 @@
 import wtforms
+from canaille.app import models
 from canaille.app.forms import HTMXForm
 from canaille.app.forms import is_uri
-from canaille.oidc.models import Client
 from flask_babel import lazy_gettext as _
 
 
@@ -14,7 +14,7 @@ class LogoutForm(HTMXForm):
 
 
 def client_audiences():
-    return [(client.id, client.client_name) for client in Client.query()]
+    return [(client.id, client.client_name) for client in models.Client.query()]
 
 
 class ClientAddForm(HTMXForm):

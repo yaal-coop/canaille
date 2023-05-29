@@ -1,6 +1,6 @@
 import datetime
 
-from canaille.core.models import User
+from canaille.app import models
 from webtest import Upload
 
 
@@ -35,12 +35,12 @@ def test_photo(testclient, user, jpeg_photo):
 
 
 def test_photo_invalid_user(testclient, user):
-    res = testclient.get("/profile/invalid/photo", status=404)
+    testclient.get("/profile/invalid/photo", status=404)
 
 
 def test_photo_absent(testclient, user):
     assert not user.photo
-    res = testclient.get("/profile/user/photo", status=404)
+    testclient.get("/profile/user/photo", status=404)
 
 
 def test_photo_invalid_path(testclient, user):
@@ -49,7 +49,6 @@ def test_photo_invalid_path(testclient, user):
 
 def test_photo_on_profile_edition(
     testclient,
-    slapd_server,
     logged_user,
     jpeg_photo,
 ):
@@ -100,9 +99,9 @@ def test_photo_on_profile_edition(
     assert [] == logged_user.photo
 
 
-def test_photo_on_profile_creation(testclient, slapd_server, jpeg_photo, logged_admin):
+def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
     res = testclient.get("/users", status=200)
-    assert User.get_from_login("foobar") is None
+    assert models.User.get_from_login("foobar") is None
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
@@ -112,16 +111,14 @@ def test_photo_on_profile_creation(testclient, slapd_server, jpeg_photo, logged_
     res.form["email"] = "george@abitbol.com"
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
-    user = User.get_from_login("foobar")
+    user = models.User.get_from_login("foobar")
     assert user.photo == [jpeg_photo]
     user.delete()
 
 
-def test_photo_deleted_on_profile_creation(
-    testclient, slapd_server, jpeg_photo, logged_admin
-):
+def test_photo_deleted_on_profile_creation(testclient, jpeg_photo, logged_admin):
     res = testclient.get("/users", status=200)
-    assert User.get_from_login("foobar") is None
+    assert models.User.get_from_login("foobar") is None
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
@@ -132,6 +129,6 @@ def test_photo_deleted_on_profile_creation(
     res.form["email"] = "george@abitbol.com"
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
-    user = User.get_from_login("foobar")
+    user = models.User.get_from_login("foobar")
     assert user.photo == []
     user.delete()

@@ -16,9 +16,9 @@ def validate(config, validate_remote=False):
     if not validate_remote:
         return
 
-    from canaille.backends.ldap.backend import validate_configuration
+    from canaille.backends import Backend
 
-    validate_configuration(config)
+    Backend.get().validate(config)
     validate_smtp_configuration(config)
 
 

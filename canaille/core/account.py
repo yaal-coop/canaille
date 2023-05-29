@@ -8,7 +8,7 @@ import pkg_resources
 import wtforms
 from canaille.app import b64_to_obj
 from canaille.app import default_fields
-from canaille.app import login_placeholder
+from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app import profile_hash
 from canaille.app.flask import current_user
@@ -18,6 +18,7 @@ from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
+from canaille.backends import Backend
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -39,26 +40,16 @@ from .forms import JoinForm
 from .forms import ForgottenPasswordForm
 from .forms import InvitationForm
 from .forms import LoginForm
+from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
-from .models import Group
-from .models import User
 
 
 bp = Blueprint("account", __name__)
-
-
-@bp.context_processor
-def global_processor():
-    return {
-        "has_password_recovery": current_app.config.get(
-            "ENABLE_PASSWORD_RECOVERY", True
-        ),
-    }
 
 
 @bp.route("/")
@@ -170,15 +161,15 @@ def login():
         )
 
     form = LoginForm(request.form or None)
-    form["login"].render_kw["placeholder"] = login_placeholder()
+    form["login"].render_kw["placeholder"] = Backend.get().login_placeholder()
 
     if request.form:
-        user = User.get_from_login(form.login.data)
+        user = models.User.get_from_login(form.login.data)
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
         if not form.validate():
-            User.logout()
+            models.User.logout()
             flash(_("Login failed, please check your information"), "error")
             return render_template("login.html", form=form)
 
@@ -196,20 +187,27 @@ def password():
     form = PasswordForm(request.form or None)
 
     if request.form:
-        user = User.get_from_login(session["attempt_login"])
+        user = models.User.get_from_login(session["attempt_login"])
         if user and not user.has_password():
             return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
-        if not form.validate() or not User.authenticate(
-            session["attempt_login"], form.password.data, True
-        ):
-            User.logout()
+        if not form.validate() or not user:
+            models.User.logout()
             flash(_("Login failed, please check your information"), "error")
             return render_template(
                 "password.html", form=form, username=session["attempt_login"]
             )
 
+        success, message = user.check_password(form.password.data)
+        if not success:
+            models.User.logout()
+            flash(message or _("Login failed, please check your information"), "error")
+            return render_template(
+                "password.html", form=form, username=session["attempt_login"]
+            )
+
         del session["attempt_login"]
+        user.login()
         flash(
             _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
             "success",
@@ -238,7 +236,7 @@ def logout():
 
 @bp.route("/firstlogin/<user_name>", methods=("GET", "POST"))
 def firstlogin(user_name):
-    user = User.get_from_login(user_name)
+    user = models.User.get_from_login(user_name)
     if not user or user.has_password():
         abort(404)
 
@@ -264,7 +262,9 @@ def firstlogin(user_name):
 @bp.route("/users", methods=["GET", "POST"])
 @permissions_needed("manage_users")
 def users(user):
-    table_form = TableForm(User, fields=user.read | user.write, formdata=request.form)
+    table_form = TableForm(
+        models.User, fields=user.read | user.write, formdata=request.form
+    )
     if request.form and not table_form.validate():
         abort(404)
 
@@ -360,7 +360,7 @@ def registration(data, hash):
         )
         return redirect(url_for("account.index"))
 
-    if User.get_from_login(invitation.user_name):
+    if models.User.get_from_login(invitation.user_name):
         flash(
             _("Your account has already been created."),
             "error",
@@ -393,7 +393,7 @@ def registration(data, hash):
     if "groups" not in form and invitation.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group.id, group.display_name) for group in Group.query()],
+            choices=[(group.id, group.display_name) for group in models.Group.query()],
             render_kw={"readonly": "true"},
         )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
@@ -403,11 +403,11 @@ def registration(data, hash):
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=8),
+        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=8),
+        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True
@@ -463,20 +463,22 @@ def profile_creation(user):
 
 
 def profile_create(current_app, form):
-    user = User()
+    user = models.User()
     for attribute in form:
-        if attribute.name in user.attribute_table:
+        if attribute.name in user.attributes:
             if isinstance(attribute.data, FileStorage):
                 data = attribute.data.stream.read()
             else:
                 data = attribute.data
 
-            user[attribute.name] = data
+            setattr(user, attribute.name, data)
 
         if "photo" in form and form["photo_delete"].data:
-            user["photo"] = None
+            del user.photo
 
-    user.formatted_name = [f"{user.given_name[0]} {user.family_name[0]}".strip()]
+    given_name = user.given_name[0] if user.given_name else ""
+    family_name = user.family_name[0] if user.family_name else ""
+    user.formatted_name = [f"{given_name} {family_name}".strip()]
     user.save()
 
     if form["password1"].data:
@@ -500,7 +502,7 @@ def profile_edition(user, username):
     menuitem = "profile" if username == editor.user_name[0] else "users"
     fields = editor.read | editor.write
     if username != editor.user_name[0]:
-        user = User.get_from_login(username)
+        user = models.User.get_from_login(username)
     else:
         user = editor
 
@@ -547,19 +549,16 @@ def profile_edition(user, username):
 
         else:
             for attribute in form:
-                if (
-                    attribute.name in user.attribute_table
-                    and attribute.name in editor.write
-                ):
+                if attribute.name in user.attributes and attribute.name in editor.write:
                     if isinstance(attribute.data, FileStorage):
                         data = attribute.data.stream.read()
                     else:
                         data = attribute.data
 
-                    user[attribute.name] = data
+                    setattr(user, attribute.name, data)
 
             if "photo" in form and form["photo_delete"].data:
-                user["photo"] = None
+                del user.photo
 
             if "preferred_language" in request.form:
                 # Refresh the babel cache in case the lang is updated
@@ -588,7 +587,7 @@ def profile_settings(user, username):
     ):
         abort(403)
 
-    edited_user = User.get_from_login(username)
+    edited_user = models.User.get_from_login(username)
     if not edited_user:
         abort(404)
 
@@ -628,6 +627,28 @@ def profile_settings(user, username):
 
         return profile_settings_edit(user, edited_user)
 
+    if (
+        request.form.get("action") == "lock"
+        and Backend.get().has_account_lockability()
+        and not edited_user.locked
+    ):
+        flash(_("The account has been locked"), "success")
+        edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+        edited_user.save()
+
+        return profile_settings_edit(user, edited_user)
+
+    if (
+        request.form.get("action") == "unlock"
+        and Backend.get().has_account_lockability()
+        and edited_user.locked
+    ):
+        flash(_("The account has been unlocked"), "success")
+        del edited_user.lock_date
+        edited_user.save()
+
+        return profile_settings_edit(user, edited_user)
+
     abort(400)
 
 
@@ -635,7 +656,7 @@ def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.read | editor.write
 
-    available_fields = {"password", "groups", "user_name"}
+    available_fields = {"password", "groups", "user_name", "lock_date"}
     data = {
         k: getattr(edited_user, k)[0]
         if getattr(edited_user, k) and isinstance(getattr(edited_user, k), list)
@@ -658,8 +679,8 @@ def profile_settings_edit(editor, edited_user):
 
         else:
             for attribute in form:
-                if attribute.name == "groups" and "groups" in editor.write:
-                    edited_user.groups = attribute.data
+                if attribute.name in available_fields & editor.write:
+                    setattr(edited_user, attribute.name, attribute.data)
 
             if (
                 "password1" in request.form
@@ -671,7 +692,7 @@ def profile_settings_edit(editor, edited_user):
             edited_user.save()
             flash(_("Profile updated successfuly."), "success")
             return redirect(
-                url_for("account.profile_edition", username=edited_user.user_name[0])
+                url_for("account.profile_settings", username=edited_user.user_name[0])
             )
 
     return render_template(
@@ -705,13 +726,16 @@ def profile_delete(user, edited_user):
 @bp.route("/impersonate/<username>")
 @permissions_needed("impersonate_users")
 def impersonate(user, username):
-    puppet = User.get_from_login(username)
+    puppet = models.User.get_from_login(username)
     if not puppet:
         abort(404)
 
     puppet.login()
 
-    flash(_("Connection successful. Welcome %(user)s", user=puppet.name), "success")
+    flash(
+        _("Connection successful. Welcome %(user)s", user=puppet.formatted_name),
+        "success",
+    )
     return redirect(url_for("account.index"))
 
 
@@ -729,7 +753,7 @@ def forgotten():
         flash(_("Could not send the password reset link."), "error")
         return render_template("forgotten-password.html", form=form)
 
-    user = User.get_from_login(form.login.data)
+    user = models.User.get_from_login(form.login.data)
     success_message = _(
         "A password reset link has been sent at your email address. You should receive it within a few minutes."
     )
@@ -769,7 +793,7 @@ def reset(user_name, hash):
         abort(404)
 
     form = PasswordResetForm(request.form)
-    user = User.get_from_login(user_name)
+    user = models.User.get_from_login(user_name)
 
     if not user or hash != profile_hash(
         user.user_name[0],
@@ -799,7 +823,7 @@ def photo(user_name, field):
     if field.lower() != "photo":
         abort(404)
 
-    user = User.get_from_login(user_name)
+    user = models.User.get_from_login(user_name)
     if not user:
         abort(404)
 

@@ -1,5 +1,4 @@
 {% extends theme('base.html') %}
-{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {%- trans %}View an authorization{% endtrans -%}
@@ -38,11 +37,8 @@
 
         <div class="ui attached clearing segment">
             <ul>
-                {% for attr in authorization.may() %}
-                    <li>{{ attr }}: {{ authorization[attr] }}</li>
-                {% endfor %}
-                {% for attr in authorization.must() %}
-                    <li>{{ attr }}: {{ authorization[attr] }}</li>
+                {% for attr in authorization.attributes %}
+                    <li>{{ attr }}: {{ authorization[attr]|string }}</li>
                 {% endfor %}
             </ul>
         </div>

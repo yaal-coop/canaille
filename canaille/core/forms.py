@@ -1,4 +1,5 @@
 import wtforms.form
+from canaille.app import models
 from canaille.app.forms import HTMXBaseForm
 from canaille.app.forms import HTMXForm
 from canaille.app.forms import is_uri
@@ -9,13 +10,13 @@ from flask_babel import lazy_gettext as _
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 
-from .models import Group
-from .models import User
+
+MINIMUM_PASSWORD_LENGTH = 8
 
 
 def unique_login(form, field):
-    if User.get_from_login(field.data) and (
-        not getattr(form, "user", None) or form.user.uid[0] != field.data
+    if models.User.get_from_login(field.data) and (
+        not getattr(form, "user", None) or form.user.user_name[0] != field.data
     ):
         raise wtforms.ValidationError(
             _("The login '{login}' already exists").format(login=field.data)
@@ -23,8 +24,8 @@ def unique_login(form, field):
 
 
 def unique_email(form, field):
-    if User.get(mail=field.data) and (
-            not getattr(form, "user", None) or form.user.mail[0] != field.data
+    if models.User.get(email=field.data) and (
+        not getattr(form, "user", None) or form.user.email[0] != field.data
     ):
         raise wtforms.ValidationError(
             _("The email '{email}' is already used").format(email=field.data)
@@ -32,7 +33,7 @@ def unique_email(form, field):
 
 
 def unique_group(form, field):
-    if Group.get(field.data):
+    if models.Group.get(display_name=field.data):
         raise wtforms.ValidationError(
             _("The group '{group}' already exists").format(group=field.data)
         )
@@ -41,7 +42,7 @@ def unique_group(form, field):
 def existing_login(form, field):
     if not current_app.config.get(
         "HIDE_INVALID_LOGINS", True
-    ) and not User.get_from_login(field.data):
+    ) and not models.User.get_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )
@@ -210,7 +211,10 @@ PROFILE_FORM_FIELDS = dict(
     photo_delete=wtforms.BooleanField(_("Delete the photo")),
     password1=wtforms.PasswordField(
         _("Password"),
-        validators=[wtforms.validators.Optional(), wtforms.validators.Length(min=8)],
+        validators=[
+            wtforms.validators.Optional(),
+            wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
+        ],
         render_kw={
             "autocomplete": "new-password",
         },
@@ -257,7 +261,9 @@ PROFILE_FORM_FIELDS = dict(
     ),
     groups=wtforms.SelectMultipleField(
         _("Groups"),
-        choices=lambda: [(group.id, group.display_name) for group in Group.query()],
+        choices=lambda: [
+            (group.id, group.display_name) for group in models.Group.query()
+        ],
         render_kw={"placeholder": _("users, admins …")},
     ),
 )
@@ -276,13 +282,26 @@ def profile_form(write_field_names, readonly_field_names, user=None):
         if PROFILE_FORM_FIELDS.get(name)
     }
 
-    if "groups" in fields and not Group.query():
+    if "groups" in fields and not models.Group.query():
         del fields["groups"]
+
+    if current_app.backend.get().has_account_lockability():  # pragma: no branch
+        fields["lock_date"] = wtforms.DateTimeLocalField(
+            _("Account expiration"),
+            validators=[wtforms.validators.Optional()],
+            format=[
+                "%Y-%m-%d %H:%M",
+                "%Y-%m-%dT%H:%M",
+                "%Y-%m-%d %H:%M:%S",
+                "%Y-%m-%dT%H:%M:%S",
+            ],
+        )
 
     form = HTMXBaseForm(fields)
     form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
+            field.render_kw = field.render_kw or {}
             field.render_kw["readonly"] = "true"
 
     return form
@@ -362,6 +381,8 @@ class InvitationForm(HTMXForm):
     )
     groups = wtforms.SelectMultipleField(
         _("Groups"),
-        choices=lambda: [(group.id, group.display_name) for group in Group.query()],
+        choices=lambda: [
+            (group.id, group.display_name) for group in models.Group.query()
+        ],
         render_kw={},
     )

@@ -1,11 +1,11 @@
+import datetime
 from unittest import mock
 
-from canaille.core.models import User
+from canaille.app import models
 
 
 def test_edition(
     testclient,
-    slapd_server,
     logged_user,
     admin,
     foo_group,
@@ -37,16 +37,16 @@ def test_edition(
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
 
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
     logged_user.user_name = ["user"]
     logged_user.save()
 
 
 def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
-    res = testclient.get(f"/profile/admin/settings")
+    res = testclient.get("/profile/admin/settings")
     res = testclient.post(
-        f"/profile/admin/settings",
+        "/profile/admin/settings",
         {
             "csrf_token": res.form["csrf_token"].value,
             "password1": "short",
@@ -61,7 +61,6 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
 
 def test_edition_without_groups(
     testclient,
-    slapd_server,
     logged_user,
     admin,
 ):
@@ -75,7 +74,7 @@ def test_edition_without_groups(
     logged_user.reload()
 
     assert logged_user.user_name == ["user"]
-    assert logged_user.check_password("correct horse battery staple")
+    assert logged_user.check_password("correct horse battery staple")[0]
 
     logged_user.user_name = ["user"]
     logged_user.save()
@@ -89,7 +88,8 @@ def test_password_change(testclient, logged_user):
 
     res = res.form.submit(name="action", value="edit").follow()
 
-    assert logged_user.check_password("new_password")
+    logged_user.reload()
+    assert logged_user.check_password("new_password")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
@@ -100,7 +100,8 @@ def test_password_change(testclient, logged_user):
     assert ("success", "Profile updated successfuly.") in res.flashes
     res = res.follow()
 
-    assert logged_user.check_password("correct horse battery staple")
+    logged_user.reload()
+    assert logged_user.check_password("correct horse battery staple")[0]
 
 
 def test_password_change_fail(testclient, logged_user):
@@ -111,7 +112,8 @@ def test_password_change_fail(testclient, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    assert logged_user.check_password("correct horse battery staple")
+    logged_user.reload()
+    assert logged_user.check_password("correct horse battery staple")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
@@ -120,13 +122,12 @@ def test_password_change_fail(testclient, logged_user):
 
     res = res.form.submit(name="action", value="edit", status=200)
 
-    assert logged_user.check_password("correct horse battery staple")
+    logged_user.reload()
+    assert logged_user.check_password("correct horse battery staple")[0]
 
 
-def test_password_initialization_mail(
-    smtpd, testclient, slapd_connection, logged_admin
-):
-    u = User(
+def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -159,10 +160,10 @@ def test_password_initialization_mail(
 
 @mock.patch("smtplib.SMTP")
 def test_password_initialization_mail_send_fail(
-    SMTP, smtpd, testclient, slapd_connection, logged_admin
+    SMTP, smtpd, testclient, backend, logged_admin
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -188,9 +189,7 @@ def test_password_initialization_mail_send_fail(
     u.delete()
 
 
-def test_password_initialization_invalid_user(
-    smtpd, testclient, slapd_connection, logged_admin
-):
+def test_password_initialization_invalid_user(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 0
     res = testclient.get("/profile/admin/settings")
     testclient.post(
@@ -204,7 +203,7 @@ def test_password_initialization_invalid_user(
     assert len(smtpd.messages) == 0
 
 
-def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged_admin):
+def test_password_reset_invalid_user(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 0
     res = testclient.get("/profile/admin/settings")
     testclient.post(
@@ -215,7 +214,7 @@ def test_password_reset_invalid_user(smtpd, testclient, slapd_connection, logged
     assert len(smtpd.messages) == 0
 
 
-def test_delete_invalid_user(testclient, slapd_connection, logged_admin):
+def test_delete_invalid_user(testclient, backend, logged_admin):
     res = testclient.get("/profile/admin/settings")
     testclient.post(
         "/profile/invalid/settings",
@@ -224,7 +223,7 @@ def test_delete_invalid_user(testclient, slapd_connection, logged_admin):
     )
 
 
-def test_impersonate_invalid_user(testclient, slapd_connection, logged_admin):
+def test_impersonate_invalid_user(testclient, backend, logged_admin):
     testclient.get("/impersonate/invalid", status=404)
 
 
@@ -233,8 +232,8 @@ def test_invalid_form_request(testclient, logged_admin):
     res = res.form.submit(name="action", value="invalid-action", status=400)
 
 
-def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin):
-    u = User(
+def test_password_reset_email(smtpd, testclient, backend, logged_admin):
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -260,11 +259,9 @@ def test_password_reset_email(smtpd, testclient, slapd_connection, logged_admin)
 
 
 @mock.patch("smtplib.SMTP")
-def test_password_reset_email_failed(
-    SMTP, smtpd, testclient, slapd_connection, logged_admin
-):
+def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_admin):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    u = User(
+    u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
@@ -298,7 +295,6 @@ def test_admin_bad_request(testclient, logged_admin):
 
 def test_edition_permission(
     testclient,
-    slapd_server,
     logged_user,
     admin,
 ):
@@ -307,3 +303,124 @@ def test_edition_permission(
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     testclient.get("/profile/user/settings", status=200)
+
+
+def test_account_locking(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings")
+    assert not user.lock_date
+    assert not user.locked
+    res.mustcontain("Lock the account")
+    res.mustcontain(no="Unlock")
+
+    res = res.form.submit(name="action", value="lock")
+    user = models.User.get(id=user.id)
+    assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
+    assert user.locked
+    res.mustcontain("The account has been locked")
+    res.mustcontain(no="Lock the account")
+    res.mustcontain("Unlock")
+
+    res = res.form.submit(name="action", value="unlock")
+    user = models.User.get(id=user.id)
+    assert not user.lock_date
+    assert not user.locked
+    assert "The account has been unlocked"
+    res.mustcontain("Lock the account")
+    res.mustcontain(no="Unlock")
+
+
+def test_past_lock_date(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings", status=200)
+    assert not user.lock_date
+    assert not user.locked
+
+    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+        second=0, microsecond=0
+    ) - datetime.timedelta(days=30)
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert user.locked
+
+
+def test_future_lock_date(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings", status=200)
+    assert not user.lock_date
+    assert not user.locked
+
+    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+        second=0, microsecond=0
+    ) + datetime.timedelta(days=30)
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert not user.locked
+    assert res.form["lock_date"].value == expiration_datetime.strftime("%Y-%m-%d %H:%M")
+
+
+def test_empty_lock_date(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+        second=0, microsecond=0
+    ) + datetime.timedelta(days=30)
+    user.lock_date = expiration_datetime
+    user.save()
+
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["lock_date"] = ""
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
+    user.reload()
+    assert not user.lock_date
+
+
+def test_account_limit_values(
+    testclient,
+    backend,
+    logged_admin,
+    user,
+):
+    res = testclient.get("/profile/user/settings", status=200)
+    assert not user.lock_date
+    assert not user.locked
+
+    expiration_datetime = datetime.datetime.max.replace(
+        microsecond=0, tzinfo=datetime.timezone.utc
+    )
+    res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    res = res.form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "Profile updated successfuly.")]
+
+    res = res.follow()
+    user = models.User.get(id=user.id)
+    assert user.lock_date == expiration_datetime
+    assert not user.locked

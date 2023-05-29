@@ -2,8 +2,7 @@ import smtplib
 import warnings
 from unittest import mock
 
-import ldap
-from flask import g
+from canaille import create_app
 from flask_webtest import TestApp
 
 
@@ -94,7 +93,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
     testclient.app.config["LOGO"] = None
     assert len(smtpd.messages) == 0
 
-    res = testclient.get(f"/admin/mail")
+    res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.com"
     res = res.form.submit()
     assert (
@@ -186,20 +185,14 @@ def test_default_from_addr(testclient, user, smtpd):
     assert smtpd.messages[0]["From"] == '"Canaille" <admin@localhost>'
 
 
-def test_default_from_flask_server_name(app, user, smtpd, slapd_server):
+def test_default_from_flask_server_name(configuration, user, smtpd, backend):
+    app = create_app(configuration, backend=backend)
     del app.config["SMTP"]["FROM_ADDR"]
     app.config["SERVER_NAME"] = "foobar.tld"
 
-    with app.app_context():
-        g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-        g.ldap_connection.protocol_version = 3
-        g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-
-        testclient = TestApp(app)
-        res = testclient.get("/reset", status=200)
-        res.form["login"] = "user"
-        res = res.form.submit(status=200)
-        assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
-        assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'
-
-        g.ldap_connection.unbind_s()
+    testclient = TestApp(app)
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=200)
+    assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
+    assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'

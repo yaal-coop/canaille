@@ -4,10 +4,7 @@ import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Client
-from canaille.oidc.models import Consent
-from canaille.oidc.models import Token
+from canaille.app import models
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
@@ -70,8 +67,8 @@ def configuration(configuration, keypair_path):
 
 
 @pytest.fixture
-def client(testclient, other_client, slapd_connection):
-    c = Client(
+def client(testclient, other_client, backend):
+    c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
         contacts="contact@mydomain.tld",
@@ -106,8 +103,8 @@ def client(testclient, other_client, slapd_connection):
 
 
 @pytest.fixture
-def other_client(testclient, slapd_connection):
-    c = Client(
+def other_client(testclient, backend):
+    c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
         contacts="contact@myotherdomain.tld",
@@ -142,8 +139,8 @@ def other_client(testclient, slapd_connection):
 
 
 @pytest.fixture
-def authorization(testclient, user, client, slapd_connection):
-    a = AuthorizationCode(
+def authorization(testclient, user, client, backend):
+    a = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
         client=client,
@@ -153,7 +150,7 @@ def authorization(testclient, user, client, slapd_connection):
         scope="openid profile",
         nonce="nonce",
         issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
-        lifetime="3600",
+        lifetime=3600,
         challenge="challenge",
         challenge_method="method",
         revokation="",
@@ -164,8 +161,8 @@ def authorization(testclient, user, client, slapd_connection):
 
 
 @pytest.fixture
-def token(testclient, client, user, slapd_connection):
-    t = Token(
+def token(testclient, client, user, backend):
+    t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
         audience=[client],
@@ -175,7 +172,7 @@ def token(testclient, client, user, slapd_connection):
         refresh_token=gen_salt(48),
         scope="openid profile",
         issue_date=datetime.datetime.now(datetime.timezone.utc),
-        lifetime=str(3600),
+        lifetime=3600,
     )
     t.save()
     yield t
@@ -183,7 +180,7 @@ def token(testclient, client, user, slapd_connection):
 
 
 @pytest.fixture
-def id_token(testclient, client, user, slapd_connection):
+def id_token(testclient, client, user, backend):
     return generate_id_token(
         {},
         generate_user_info(user, client.scope),
@@ -193,9 +190,9 @@ def id_token(testclient, client, user, slapd_connection):
 
 
 @pytest.fixture
-def consent(testclient, client, user, slapd_connection):
-    t = Consent(
-        cn=str(uuid.uuid4()),
+def consent(testclient, client, user, backend):
+    t = models.Consent(
+        consent_id=str(uuid.uuid4()),
         client=client,
         subject=user,
         scope=["openid", "profile"],

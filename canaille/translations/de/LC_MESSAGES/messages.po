@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-29 23:00+0200\n"
-"PO-Revision-Date: 2023-01-29 02:06+0000\n"
-"Last-Translator: J. Lavoie <j.lavoie@net-c.ca>\n"
+"POT-Creation-Date: 2023-05-26 15:31+0200\n"
+"PO-Revision-Date: 2023-05-14 23:49+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
 "de/>\n"
 "Language: de\n"
@@ -17,24 +17,73 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: canaille/account.py:105 canaille/account.py:130
-#: canaille/oidc/endpoints.py:84
+#: canaille/app/flask.py:65
+msgid "No SMTP server has been configured"
+msgstr ""
+
+#: canaille/app/forms.py:20
+msgid "This is not a valid URL"
+msgstr ""
+
+#: canaille/app/forms.py:83
+msgid "The page number is not valid"
+msgstr ""
+
+#: canaille/backends/ldap/backend.py:98
+msgid "Could not connect to the LDAP server '{uri}'"
+msgstr ""
+
+#: canaille/backends/ldap/backend.py:114
+msgid "LDAP authentication failed with user '{user}'"
+msgstr ""
+
+#: canaille/backends/ldap/backend.py:214
+msgid "John Doe"
+msgstr ""
+
+#: canaille/backends/ldap/backend.py:217 canaille/core/forms.py:124
+#: canaille/core/forms.py:340
+msgid "jdoe"
+msgstr ""
+
+#: canaille/backends/ldap/backend.py:220
+msgid "john@doe.com"
+msgstr ""
+
+#: canaille/backends/ldap/backend.py:222
+msgid " or "
+msgstr ""
+
+#: canaille/backends/ldap/models.py:121
+#, fuzzy
+#| msgid "Your account has already been created."
+msgid "Your account has been locked."
+msgstr "Ihr Konto wurde bereits erstellt."
+
+#: canaille/backends/ldap/models.py:126
+msgid "You should change your password."
+msgstr ""
+
+#: canaille/core/account.py:97 canaille/core/account.py:120
+#: canaille/core/account.py:128 canaille/oidc/endpoints.py:81
+#: canaille/oidc/endpoints.py:87
 msgid "Login failed, please check your information"
 msgstr "Anmeldung fehlgeschlagen, bitte überprüfen Sie Ihre Angaben"
 
-#: canaille/account.py:136 canaille/account.py:621
+#: canaille/core/account.py:136 canaille/core/account.py:667
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Verbindung erfolgreich. Willkommen %(user)s"
 
-#: canaille/account.py:149
+#: canaille/core/account.py:151
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Ihre Verbindung wurde unterbrochen. Bis zum nächsten Mal %(user)s"
 
-#: canaille/account.py:169
+#: canaille/core/account.py:175
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -42,54 +91,54 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:175 canaille/account.py:524
+#: canaille/core/account.py:181 canaille/core/account.py:537
 msgid "Could not send the password initialization email"
 msgstr "Die E-Mail zur Kennwortinitialisierung konnte nicht gesendet werden"
 
-#: canaille/account.py:267 canaille/account.py:295
+#: canaille/core/account.py:275 canaille/core/account.py:303
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:274
+#: canaille/core/account.py:282
 msgid "The invitation link that brought you here has expired."
 msgstr ""
 
-#: canaille/account.py:281
+#: canaille/core/account.py:289
 msgid "Your account has already been created."
-msgstr ""
+msgstr "Ihr Konto wurde bereits erstellt."
 
-#: canaille/account.py:288
+#: canaille/core/account.py:296
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/account.py:307 canaille/forms.py:289 canaille/forms.py:370
-#: canaille/templates/groups.html:5 canaille/templates/groups.html:25
-#: canaille/templates/partial/users.html:18
+#: canaille/core/account.py:319 canaille/core/forms.py:263
+#: canaille/core/forms.py:358 canaille/templates/groups.html:5
+#: canaille/templates/groups.html:25 canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
 msgid "Groups"
 msgstr ""
 
-#: canaille/account.py:329 canaille/account.py:358
+#: canaille/core/account.py:341 canaille/core/account.py:372
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/account.py:334
+#: canaille/core/account.py:346
 msgid "Your account has been created successfuly."
 msgstr ""
 
-#: canaille/account.py:399
+#: canaille/core/account.py:412
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/account.py:460 canaille/account.py:567
+#: canaille/core/account.py:472 canaille/core/account.py:602
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/account.py:486 canaille/account.py:582
+#: canaille/core/account.py:495 canaille/core/account.py:624
 msgid "Profile updated successfuly."
 msgstr ""
 
-#: canaille/account.py:518
+#: canaille/core/account.py:531
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
@@ -97,7 +146,7 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:531
+#: canaille/core/account.py:544
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within a few minutes."
@@ -105,20 +154,30 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:537
+#: canaille/core/account.py:550
 msgid "Could not send the password reset email"
 msgstr "Die E-Mail zum Zurücksetzen des Passworts konnte nicht gesendet werden"
 
-#: canaille/account.py:602
+#: canaille/core/account.py:559
+#, fuzzy
+msgid "The account has been locked"
+msgstr "Der Kunde wurde bearbeitet."
+
+#: canaille/core/account.py:570
+#, fuzzy
+msgid "The account has been unlocked"
+msgstr "Der Kunde wurde bearbeitet."
+
+#: canaille/core/account.py:644
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/account.py:636
+#: canaille/core/account.py:684
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/account.py:640
+#: canaille/core/account.py:688
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
@@ -126,7 +185,7 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/account.py:651
+#: canaille/core/account.py:699
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -135,371 +194,342 @@ msgstr ""
 "Der Benutzer „%(user)s“ hat nicht die Berechtigung, sein Passwort zu "
 "aktualisieren. Wir können keine E-Mail zum Zurücksetzen des Passworts senden."
 
-#: canaille/account.py:666
+#: canaille/core/account.py:714
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 "Beim Versand der E-Mail zur Wiederherstellung des Passworts ist ein Problem "
 "aufgetreten."
 
-#: canaille/account.py:685
+#: canaille/core/account.py:735
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/account.py:694
+#: canaille/core/account.py:744
 msgid "Your password has been updated successfuly"
 msgstr ""
 
-#: canaille/admin.py:23 canaille/templates/partial/users.html:15
+#: canaille/core/admin.py:23 canaille/templates/partial/users.html:15
 msgid "Email"
 msgstr "E-Mail"
 
-#: canaille/admin.py:29 canaille/forms.py:85 canaille/forms.py:109
-#: canaille/forms.py:197 canaille/forms.py:364
+#: canaille/core/admin.py:29 canaille/core/forms.py:56
+#: canaille/core/forms.py:80 canaille/core/forms.py:168
+#: canaille/core/forms.py:352
 msgid "jane@doe.com"
 msgstr ""
 
-#: canaille/admin.py:42
+#: canaille/core/admin.py:42
 msgid "The test invitation mail has been sent correctly"
 msgstr "Die Testeinladungs-E-Mail wurde korrekt versendet"
 
-#: canaille/admin.py:44
+#: canaille/core/admin.py:44
 msgid "The test invitation mail has not been sent correctly"
 msgstr "Die Testeinladungs-E-Mail wurde nicht korrekt gesendet"
 
-#: canaille/admin.py:89 canaille/mails.py:187
+#: canaille/core/admin.py:89 canaille/core/mails.py:92
 msgid "Password initialization on {website_name}"
 msgstr ""
 
-#: canaille/admin.py:131 canaille/mails.py:147
+#: canaille/core/admin.py:131 canaille/core/mails.py:52
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/admin.py:173
+#: canaille/core/admin.py:173
 msgid "Invitation on {website_name}"
 msgstr ""
 
-#: canaille/apputils.py:32
-msgid "John Doe"
-msgstr ""
-
-#: canaille/apputils.py:35 canaille/forms.py:153 canaille/forms.py:352
-msgid "jdoe"
-msgstr ""
-
-#: canaille/apputils.py:38
-msgid "john@doe.com"
-msgstr ""
-
-#: canaille/apputils.py:40
-msgid " or "
-msgstr ""
-
-#: canaille/flaskutils.py:63
-msgid "No SMTP server has been configured"
-msgstr ""
-
-#: canaille/forms.py:19
-msgid "This is not a valid URL"
-msgstr ""
-
-#: canaille/forms.py:27
+#: canaille/core/forms.py:22
 msgid "The login '{login}' already exists"
 msgstr ""
 
-#: canaille/forms.py:36
+#: canaille/core/forms.py:31
 #, fuzzy
 #| msgid "The email '{email}' already exists"
 msgid "The email '{email}' is already used"
 msgstr "Die E-Mail '{email}' existiert bereits"
 
-#: canaille/forms.py:43
+#: canaille/core/forms.py:38
 msgid "The group '{group}' already exists"
 msgstr ""
 
-#: canaille/forms.py:52
+#: canaille/core/forms.py:47
 msgid "The login '{login}' does not exist"
 msgstr ""
 
-#: canaille/forms.py:77
-msgid "The page number is not valid"
-msgstr ""
-
-#: canaille/forms.py:82 canaille/forms.py:106
+#: canaille/core/forms.py:53 canaille/core/forms.py:77
 #: canaille/templates/partial/users.html:9
 msgid "Login"
 msgstr ""
 
-#: canaille/forms.py:95 canaille/forms.py:118 canaille/forms.py:242
+#: canaille/core/forms.py:66 canaille/core/forms.py:89
+#: canaille/core/forms.py:213
 msgid "Password"
 msgstr ""
 
-#: canaille/forms.py:125 canaille/forms.py:249
+#: canaille/core/forms.py:96 canaille/core/forms.py:223
 msgid "Password confirmation"
 msgstr ""
 
-#: canaille/forms.py:128 canaille/forms.py:252
+#: canaille/core/forms.py:99 canaille/core/forms.py:226
 msgid "Password and confirmation do not match."
 msgstr "Passwort und Bestätigung stimmen nicht überein."
 
-#: canaille/forms.py:147
+#: canaille/core/forms.py:118
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: canaille/forms.py:152 canaille/forms.py:351
+#: canaille/core/forms.py:123 canaille/core/forms.py:339
 msgid "Username"
 msgstr "Anmeldename"
 
-#: canaille/forms.py:156 canaille/forms.py:323 canaille/forms.py:337
-#: canaille/oidc/forms.py:22 canaille/templates/partial/groups.html:6
+#: canaille/core/forms.py:127 canaille/core/forms.py:311
+#: canaille/core/forms.py:325 canaille/oidc/forms.py:22
+#: canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
 msgid "Name"
 msgstr "Name"
 
-#: canaille/forms.py:158
+#: canaille/core/forms.py:129
 msgid "Title"
 msgstr ""
 
-#: canaille/forms.py:158
+#: canaille/core/forms.py:129
 msgid "Vice president"
 msgstr ""
 
-#: canaille/forms.py:161
+#: canaille/core/forms.py:132
 msgid "Given name"
 msgstr "Vorname"
 
-#: canaille/forms.py:163
+#: canaille/core/forms.py:134
 msgid "John"
 msgstr "Maria"
 
-#: canaille/forms.py:169
+#: canaille/core/forms.py:140
 msgid "Family Name"
 msgstr "Familienname"
 
-#: canaille/forms.py:172
+#: canaille/core/forms.py:143
 msgid "Doe"
 msgstr "Mustermann"
 
-#: canaille/forms.py:178
+#: canaille/core/forms.py:149
 msgid "Display Name"
 msgstr "Anzeigename"
 
-#: canaille/forms.py:181
+#: canaille/core/forms.py:152
 msgid "Johnny"
 msgstr "Maria"
 
-#: canaille/forms.py:187 canaille/forms.py:357
+#: canaille/core/forms.py:158 canaille/core/forms.py:345
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: canaille/forms.py:193
+#: canaille/core/forms.py:164
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 "Diese E-Mail wird als Wiederherstellungsadresse verwendet, um das Passwort "
 "bei Bedarf zurückzusetzen"
 
-#: canaille/forms.py:203
+#: canaille/core/forms.py:174
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: canaille/forms.py:203
+#: canaille/core/forms.py:174
 msgid "555-000-555"
 msgstr "00 00 00 00 00"
 
-#: canaille/forms.py:206
+#: canaille/core/forms.py:177
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/forms.py:208
+#: canaille/core/forms.py:179
 #, fuzzy
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "Beispielstraße 132, 11111 Musterstadt"
 
-#: canaille/forms.py:212
+#: canaille/core/forms.py:183
 msgid "Street"
 msgstr ""
 
-#: canaille/forms.py:214
+#: canaille/core/forms.py:185
 #, fuzzy
 msgid "132, Foobar Street"
 msgstr "Beispielstraße 132, 11111 Musterstadt"
 
-#: canaille/forms.py:218
+#: canaille/core/forms.py:189
 msgid "Postal Code"
 msgstr ""
 
-#: canaille/forms.py:224
+#: canaille/core/forms.py:195
 msgid "Locality"
 msgstr ""
 
-#: canaille/forms.py:226
+#: canaille/core/forms.py:197
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/forms.py:230
+#: canaille/core/forms.py:201
 msgid "Region"
 msgstr ""
 
-#: canaille/forms.py:232
+#: canaille/core/forms.py:203
 msgid "North Pole"
 msgstr ""
 
-#: canaille/forms.py:236
+#: canaille/core/forms.py:207
 msgid "Photo"
 msgstr "Foto"
 
-#: canaille/forms.py:240 canaille/templates/profile_add.html:63
+#: canaille/core/forms.py:211 canaille/templates/profile_add.html:109
 #: canaille/templates/profile_edit.html:81
 msgid "Delete the photo"
 msgstr "Foto löschen"
 
-#: canaille/forms.py:260
+#: canaille/core/forms.py:234
 #, fuzzy
 #| msgid "Username"
 msgid "User number"
 msgstr "Anmeldename"
 
-#: canaille/forms.py:262 canaille/forms.py:268
+#: canaille/core/forms.py:236 canaille/core/forms.py:242
 msgid "1234"
 msgstr "1234"
 
-#: canaille/forms.py:266
+#: canaille/core/forms.py:240
 #, fuzzy
-msgid "Department number"
+msgid "Department"
 msgstr "Telefonnummer"
 
-#: canaille/forms.py:272
+#: canaille/core/forms.py:246
 msgid "Organization"
 msgstr ""
 
-#: canaille/forms.py:274
+#: canaille/core/forms.py:248
 msgid "Cogip LTD."
 msgstr ""
 
-#: canaille/forms.py:278
+#: canaille/core/forms.py:252
 msgid "Website"
 msgstr "Website"
 
-#: canaille/forms.py:280
+#: canaille/core/forms.py:254
 msgid "https://mywebsite.tld"
 msgstr "https://meinewebsite.de"
 
-#: canaille/forms.py:285
+#: canaille/core/forms.py:259
 msgid "Preferred language"
 msgstr "Bevorzugte Sprache"
 
-#: canaille/forms.py:291
+#: canaille/core/forms.py:267
 #, fuzzy
 msgid "users, admins …"
 msgstr "Benutzer/innen, Administrator/innen …"
 
-#: canaille/forms.py:326
+#: canaille/core/forms.py:289
+msgid "Account expiration"
+msgstr ""
+
+#: canaille/core/forms.py:314
 msgid "group"
 msgstr "Gruppe"
 
-#: canaille/forms.py:330 canaille/forms.py:344
+#: canaille/core/forms.py:318 canaille/core/forms.py:332
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Beschreibung"
 
-#: canaille/forms.py:355
+#: canaille/core/forms.py:343
 msgid "Username editable by the invitee"
 msgstr "Vom Eingeladenen bearbeitbarer Benutzername"
 
-#: canaille/groups.py:38
+#: canaille/core/groups.py:37
 msgid "Group creation failed."
 msgstr "Gruppenerstellung fehlgeschlagen."
 
-#: canaille/groups.py:46
+#: canaille/core/groups.py:45
 #, python-format
 msgid "The group %(group)s has been sucessfully created"
 msgstr ""
 
-#: canaille/groups.py:98
+#: canaille/core/groups.py:97
 #, python-format
 msgid "The group %(group)s has been sucessfully edited."
 msgstr ""
 
-#: canaille/groups.py:106
+#: canaille/core/groups.py:105
 msgid "Group edition failed."
 msgstr ""
 
-#: canaille/groups.py:120
+#: canaille/core/groups.py:119
 #, python-format
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr ""
 
-#: canaille/mails.py:109
+#: canaille/core/mails.py:14
 msgid "Test email from {website_name}"
 msgstr "Test-E-Mail von {website_name}"
 
-#: canaille/mails.py:217
+#: canaille/core/mails.py:122
 msgid "You have been invited to create an account on {website_name}"
 msgstr "Sie wurden eingeladen, ein Konto auf {website_name} zu erstellen"
 
-#: canaille/ldap_backend/backend.py:61
-msgid "Could not connect to the LDAP server '{uri}'"
-msgstr ""
-
-#: canaille/ldap_backend/backend.py:77
-msgid "LDAP authentication failed with user '{user}'"
-msgstr ""
-
-#: canaille/oidc/clients.py:46
+#: canaille/oidc/clients.py:47
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/oidc/clients.py:82
+#: canaille/oidc/clients.py:83
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/oidc/clients.py:126
+#: canaille/oidc/clients.py:131
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/oidc/clients.py:155
+#: canaille/oidc/clients.py:160
 msgid "The client has been edited."
 msgstr "Der Kunde wurde bearbeitet."
 
-#: canaille/oidc/clients.py:168
+#: canaille/oidc/clients.py:173
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/oidc/consents.py:73 canaille/oidc/consents.py:112
+#: canaille/oidc/consents.py:74 canaille/oidc/consents.py:113
 msgid "Could not revoke this access"
 msgstr ""
 
-#: canaille/oidc/consents.py:76
+#: canaille/oidc/consents.py:77
 msgid "The access is already revoked"
 msgstr ""
 
-#: canaille/oidc/consents.py:80 canaille/oidc/consents.py:129
+#: canaille/oidc/consents.py:81 canaille/oidc/consents.py:130
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/oidc/consents.py:91
+#: canaille/oidc/consents.py:92
 msgid "Could not restore this access"
 msgstr ""
 
-#: canaille/oidc/consents.py:94
+#: canaille/oidc/consents.py:95
 msgid "The access is not revoked"
 msgstr ""
 
-#: canaille/oidc/consents.py:101
+#: canaille/oidc/consents.py:102
 #, fuzzy
 msgid "The access has been restored"
 msgstr "Der Kunde wurde bearbeitet."
 
-#: canaille/oidc/endpoints.py:135
+#: canaille/oidc/endpoints.py:142
 msgid "You have been successfully logged out."
 msgstr ""
 
-#: canaille/oidc/endpoints.py:341
+#: canaille/oidc/endpoints.py:348
 msgid "You have been disconnected"
 msgstr "Ihre Verbindung wurde unterbrochen"
 
-#: canaille/oidc/endpoints.py:358
+#: canaille/oidc/endpoints.py:365
 msgid "You have not been disconnected"
 msgstr ""
 
@@ -571,7 +601,7 @@ msgstr ""
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/oidc/tokens.py:58
+#: canaille/oidc/tokens.py:56
 msgid "The token has successfully been revoked."
 msgstr ""
 
@@ -733,13 +763,16 @@ msgstr ""
 #: canaille/templates/group.html:44
 #: canaille/templates/oidc/admin/client_edit.html:47
 #: canaille/templates/oidc/admin/token_view.html:50
+#: canaille/templates/profile_add.html:64
 #: canaille/templates/profile_settings.html:60
+#: canaille/templates/profile_settings.html:82
 msgid "Cancel"
 msgstr ""
 
 #: canaille/templates/group.html:45
 #: canaille/templates/oidc/admin/client_edit.html:48
 #: canaille/templates/oidc/admin/token_view.html:51
+#: canaille/templates/profile_add.html:65
 #: canaille/templates/profile_settings.html:61
 msgid "Delete"
 msgstr ""
@@ -767,10 +800,10 @@ msgstr ""
 msgid "Create group"
 msgstr ""
 
-#: canaille/templates/group.html:90 canaille/templates/profile_add.html:210
+#: canaille/templates/group.html:90
+#: canaille/templates/oidc/admin/client_edit.html:98
 #: canaille/templates/profile_edit.html:181
-#: canaille/templates/profile_settings.html:151
-msgid "Submit"
+msgid "Edit"
 msgstr ""
 
 #: canaille/templates/group.html:102
@@ -884,167 +917,217 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
-#: canaille/templates/profile_add.html:5 canaille/templates/profile_add.html:40
+#: canaille/templates/profile_add.html:5 canaille/templates/profile_add.html:74
 #: canaille/templates/profile_edit.html:6
 msgid "User creation"
 msgstr ""
 
-#: canaille/templates/profile_add.html:44
-msgid "Create a new user account"
-msgstr ""
-
-#: canaille/templates/profile_add.html:49
-#: canaille/templates/profile_edit.html:23
-#: canaille/templates/profile_settings.html:21
-msgid "Personal information"
-msgstr ""
-
-#: canaille/templates/profile_add.html:60
-#: canaille/templates/profile_add.html:71
-#: canaille/templates/profile_edit.html:78
-#: canaille/templates/profile_edit.html:89
-msgid "Click to upload a photo"
-msgstr ""
-
-#: canaille/templates/profile_add.html:161
-#: canaille/templates/profile_edit.html:27
-#: canaille/templates/profile_settings.html:25
-#: canaille/templates/profile_settings.html:69
-msgid "Account information"
-msgstr ""
-
-#: canaille/templates/profile_add.html:185
-msgid "User password is not mandatory"
-msgstr ""
-
-#: canaille/templates/profile_add.html:188
-msgid "The user password can be set:"
-msgstr ""
-
-#: canaille/templates/profile_add.html:190
-msgid "by filling this form;"
-msgstr ""
-
-#: canaille/templates/profile_add.html:191
-msgid ""
-"by sending the user a password initialization mail, after the account "
-"creation;"
-msgstr ""
-
-#: canaille/templates/profile_add.html:192
-#: canaille/templates/profile_settings.html:109
-msgid ""
-"or simply waiting for the user to sign-in a first time, and then receive a "
-"password initialization mail."
-msgstr ""
-
-#: canaille/templates/profile_add.html:197
-msgid ""
-"The user will not be able to authenticate unless the password is set, but "
-"they will be able to ask for a password initialization mail."
-msgstr ""
-
-#: canaille/templates/profile_add.html:199
-msgid "The user will not be able to authenticate unless the password is set."
-msgstr ""
-
-#: canaille/templates/profile_edit.html:8
-#: canaille/templates/profile_edit.html:52
-#: canaille/templates/profile_settings.html:6
-msgid "My profile"
-msgstr ""
-
-#: canaille/templates/profile_edit.html:10
-#: canaille/templates/profile_edit.html:54
-#: canaille/templates/profile_settings.html:8
-msgid "User profile edition"
-msgstr ""
-
+#: canaille/templates/profile_add.html:41
 #: canaille/templates/profile_edit.html:41
 #: canaille/templates/profile_settings.html:37
 msgid "This user cannot edit this field"
 msgstr ""
 
+#: canaille/templates/profile_add.html:43
 #: canaille/templates/profile_edit.html:43
 #: canaille/templates/profile_settings.html:39
 msgid "This user cannot see this field"
 msgstr ""
 
-#: canaille/templates/profile_edit.html:60
-msgid "Edit your personal information"
-msgstr ""
-
-#: canaille/templates/profile_edit.html:62
-msgid "Edit information about a user"
-msgstr ""
-
+#: canaille/templates/profile_add.html:52
 #: canaille/templates/profile_settings.html:48
 msgid "Account deletion"
 msgstr ""
 
+#: canaille/templates/profile_add.html:57
 #: canaille/templates/profile_settings.html:53
 msgid ""
 "Are you sure you want to delete this user? This action is unrevokable and "
 "all the data about this user will be removed."
 msgstr ""
 
+#: canaille/templates/profile_add.html:59
 #: canaille/templates/profile_settings.html:55
 msgid ""
 "Are you sure you want to delete your account? This action is unrevokable and "
 "all your data will be removed forever."
 msgstr ""
 
-#: canaille/templates/profile_settings.html:98
+#: canaille/templates/profile_add.html:76
+#: canaille/templates/profile_edit.html:8
+#: canaille/templates/profile_edit.html:52
+#: canaille/templates/profile_settings.html:6
+msgid "My profile"
+msgstr ""
+
+#: canaille/templates/profile_add.html:78
+#: canaille/templates/profile_edit.html:10
+#: canaille/templates/profile_edit.html:54
+#: canaille/templates/profile_settings.html:8
+msgid "User profile edition"
+msgstr ""
+
+#: canaille/templates/profile_add.html:84
+msgid "Create a new user account"
+msgstr ""
+
+#: canaille/templates/profile_add.html:86
+#: canaille/templates/profile_edit.html:60
+msgid "Edit your personal information"
+msgstr ""
+
+#: canaille/templates/profile_add.html:88
+#: canaille/templates/profile_edit.html:62
+msgid "Edit information about a user"
+msgstr ""
+
+#: canaille/templates/profile_add.html:94
+#: canaille/templates/profile_edit.html:23
+#: canaille/templates/profile_settings.html:21
+msgid "Personal information"
+msgstr ""
+
+#: canaille/templates/profile_add.html:106
+#: canaille/templates/profile_add.html:117
+#: canaille/templates/profile_edit.html:78
+#: canaille/templates/profile_edit.html:89
+msgid "Click to upload a photo"
+msgstr ""
+
+#: canaille/templates/profile_add.html:206
+#: canaille/templates/profile_edit.html:27
+#: canaille/templates/profile_settings.html:25
+#: canaille/templates/profile_settings.html:91
+msgid "Account information"
+msgstr ""
+
+#: canaille/templates/profile_add.html:230
+msgid "User password is not mandatory"
+msgstr ""
+
+#: canaille/templates/profile_add.html:233
+msgid "The user password can be set:"
+msgstr ""
+
+#: canaille/templates/profile_add.html:235
+msgid "by filling this form;"
+msgstr ""
+
+#: canaille/templates/profile_add.html:236
+msgid ""
+"by sending the user a password initialization mail, after the account "
+"creation;"
+msgstr ""
+
+#: canaille/templates/profile_add.html:237
+#: canaille/templates/profile_settings.html:135
+msgid ""
+"or simply waiting for the user to sign-in a first time, and then receive a "
+"password initialization mail."
+msgstr ""
+
+#: canaille/templates/profile_add.html:242
+msgid ""
+"The user will not be able to authenticate unless the password is set, but "
+"they will be able to ask for a password initialization mail."
+msgstr ""
+
+#: canaille/templates/profile_add.html:244
+msgid "The user will not be able to authenticate unless the password is set."
+msgstr ""
+
+#: canaille/templates/profile_add.html:255
+#: canaille/templates/profile_settings.html:199
+msgid "Submit"
+msgstr ""
+
+#: canaille/templates/profile_settings.html:70
+msgid "Account locking"
+msgstr ""
+
+#: canaille/templates/profile_settings.html:75
+msgid ""
+"Are you sure you want to lock this account? The user won't be able to login "
+"until their account is unlocked."
+msgstr ""
+
+#: canaille/templates/profile_settings.html:77
+msgid ""
+"Are you sure you want to lock your account? You won't be abel to login until "
+"your account is unlocked."
+msgstr ""
+
+#: canaille/templates/profile_settings.html:83
+msgid "Lock"
+msgstr ""
+
+#: canaille/templates/profile_settings.html:124
 msgid "Send email"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:102
+#: canaille/templates/profile_settings.html:128
 msgid "This user does not have a password yet"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:105
+#: canaille/templates/profile_settings.html:131
 msgid "You can solve this by:"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:107
+#: canaille/templates/profile_settings.html:133
 msgid "setting a password using this form;"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:108
+#: canaille/templates/profile_settings.html:134
 msgid ""
 "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:112
+#: canaille/templates/profile_settings.html:138
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:120
+#: canaille/templates/profile_settings.html:146
 msgid "Send mail"
 msgstr ""
 
 #: canaille/templates/mail/admin.html:97
-#: canaille/templates/profile_settings.html:123
+#: canaille/templates/profile_settings.html:149
 #: canaille/templates/reset-password.html:11
 #: canaille/templates/reset-password.html:16
 msgid "Password reset"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:125
+#: canaille/templates/profile_settings.html:151
 msgid ""
 "If the user has forgotten his password, you can send him a password reset "
 "email by clicking this button."
 msgstr ""
 
-#: canaille/templates/profile_settings.html:137
+#: canaille/templates/profile_settings.html:160
+msgid "Unlock"
+msgstr ""
+
+#: canaille/templates/profile_settings.html:163
+msgid "This user account is locked"
+msgstr ""
+
+#: canaille/templates/profile_settings.html:166
+msgid "The user won't be able to connect until their account is unlocked."
+msgstr ""
+
+#: canaille/templates/profile_settings.html:178
+msgid "Lock the account"
+msgstr ""
+
+#: canaille/templates/profile_settings.html:185
 msgid "Delete the user"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:139
+#: canaille/templates/profile_settings.html:187
 msgid "Delete my account"
 msgstr ""
 
-#: canaille/templates/profile_settings.html:146
+#: canaille/templates/profile_settings.html:194
 msgid "Impersonate"
 msgstr ""
 
@@ -1053,14 +1136,14 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: canaille/templates/macro/form.html:67
+#: canaille/templates/macro/form.html:60
 #: canaille/templates/oidc/admin/client_edit.html:63
 #: canaille/templates/oidc/admin/client_edit.html:72
 #: canaille/templates/oidc/admin/client_edit.html:81
 msgid "This field is not editable"
 msgstr ""
 
-#: canaille/templates/macro/form.html:71
+#: canaille/templates/macro/form.html:64
 msgid "This field is required"
 msgstr ""
 
@@ -1083,7 +1166,7 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:5 canaille/templates/mail/admin.html:12
 #: canaille/templates/oidc/admin/authorization_list.html:16
-#: canaille/templates/oidc/admin/authorization_view.html:12
+#: canaille/templates/oidc/admin/authorization_view.html:11
 #: canaille/templates/oidc/admin/client_add.html:12
 #: canaille/templates/oidc/admin/client_edit.html:16
 #: canaille/templates/oidc/admin/client_list.html:16
@@ -1094,7 +1177,7 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:16
 #: canaille/templates/oidc/admin/authorization_list.html:20
-#: canaille/templates/oidc/admin/authorization_view.html:16
+#: canaille/templates/oidc/admin/authorization_view.html:15
 #: canaille/templates/oidc/admin/client_add.html:16
 #: canaille/templates/oidc/admin/client_edit.html:20
 #: canaille/templates/oidc/admin/client_list.html:5
@@ -1107,7 +1190,7 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:20
 #: canaille/templates/oidc/admin/authorization_list.html:24
-#: canaille/templates/oidc/admin/authorization_view.html:20
+#: canaille/templates/oidc/admin/authorization_view.html:19
 #: canaille/templates/oidc/admin/client_add.html:5
 #: canaille/templates/oidc/admin/client_add.html:20
 #: canaille/templates/oidc/admin/client_add.html:36
@@ -1120,7 +1203,7 @@ msgstr ""
 
 #: canaille/templates/mail/admin.html:24
 #: canaille/templates/oidc/admin/authorization_list.html:28
-#: canaille/templates/oidc/admin/authorization_view.html:24
+#: canaille/templates/oidc/admin/authorization_view.html:23
 #: canaille/templates/oidc/admin/client_add.html:24
 #: canaille/templates/oidc/admin/client_edit.html:28
 #: canaille/templates/oidc/admin/client_list.html:28
@@ -1135,7 +1218,7 @@ msgstr ""
 #: canaille/templates/oidc/admin/authorization_list.html:5
 #: canaille/templates/oidc/admin/authorization_list.html:32
 #: canaille/templates/oidc/admin/authorization_list.html:41
-#: canaille/templates/oidc/admin/authorization_view.html:28
+#: canaille/templates/oidc/admin/authorization_view.html:27
 #: canaille/templates/oidc/admin/client_add.html:28
 #: canaille/templates/oidc/admin/client_edit.html:32
 #: canaille/templates/oidc/admin/client_list.html:32
@@ -1253,13 +1336,13 @@ msgid ""
 "%(site_name)s."
 msgstr ""
 
-#: canaille/templates/oidc/admin/authorization_view.html:5
-#: canaille/templates/oidc/admin/authorization_view.html:36
+#: canaille/templates/oidc/admin/authorization_view.html:4
+#: canaille/templates/oidc/admin/authorization_view.html:35
 msgid "View an authorization"
 msgstr ""
 
 #: canaille/templates/oidc/admin/client_add.html:39
-msgid "Confirm"
+msgid "Create"
 msgstr ""
 
 #: canaille/templates/oidc/admin/client_edit.html:5
@@ -1291,10 +1374,6 @@ msgstr ""
 
 #: canaille/templates/oidc/admin/client_edit.html:95
 msgid "Delete the client"
-msgstr ""
-
-#: canaille/templates/oidc/admin/client_edit.html:98
-msgid "Edit"
 msgstr ""
 
 #: canaille/templates/oidc/admin/token_view.html:5
@@ -1390,7 +1469,7 @@ msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:20
 #: canaille/templates/oidc/user/preconsent_list.html:20
-#: canaille/templates/oidc/user/preconsent_list.html:31
+#: canaille/templates/oidc/user/preconsent_list.html:30
 msgid "Pre-authorized applications"
 msgstr ""
 
@@ -1411,17 +1490,17 @@ msgid "Had access to:"
 msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:61
-#: canaille/templates/oidc/user/preconsent_list.html:51
+#: canaille/templates/oidc/user/preconsent_list.html:52
 msgid "Has access to:"
 msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:84
-#: canaille/templates/oidc/user/preconsent_list.html:73
+#: canaille/templates/oidc/user/preconsent_list.html:74
 msgid "Policy"
 msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:92
-#: canaille/templates/oidc/user/preconsent_list.html:81
+#: canaille/templates/oidc/user/preconsent_list.html:82
 msgid "Terms of service"
 msgstr ""
 
@@ -1430,7 +1509,7 @@ msgid "Restore access"
 msgstr ""
 
 #: canaille/templates/oidc/user/consent_list.html:104
-#: canaille/templates/oidc/user/preconsent_list.html:87
+#: canaille/templates/oidc/user/preconsent_list.html:88
 msgid "Revoke access"
 msgstr ""
 
@@ -1465,9 +1544,18 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: canaille/templates/oidc/user/preconsent_list.html:34
+#: canaille/templates/oidc/user/preconsent_list.html:33
 msgid ""
 "Those applications automatically have authorizations to access you data."
+msgstr ""
+
+#: canaille/templates/oidc/user/preconsent_list.html:97
+#: canaille/templates/partial/groups.html:36
+#: canaille/templates/partial/oidc/admin/authorization_list.html:36
+#: canaille/templates/partial/oidc/admin/client_list.html:40
+#: canaille/templates/partial/oidc/admin/token_list.html:44
+#: canaille/templates/partial/users.html:70
+msgid "There is nothing here"
 msgstr ""
 
 #: canaille/templates/partial/groups.html:8
@@ -1478,7 +1566,7 @@ msgstr ""
 #: canaille/templates/partial/oidc/admin/authorization_list.html:31
 #: canaille/templates/partial/oidc/admin/client_list.html:35
 #: canaille/templates/partial/oidc/admin/token_list.html:39
-#: canaille/templates/partial/users.html:63
+#: canaille/templates/partial/users.html:65
 msgid "No item matches your request"
 msgstr ""
 
@@ -1486,16 +1574,12 @@ msgstr ""
 #: canaille/templates/partial/oidc/admin/authorization_list.html:33
 #: canaille/templates/partial/oidc/admin/client_list.html:37
 #: canaille/templates/partial/oidc/admin/token_list.html:41
-#: canaille/templates/partial/users.html:65
+#: canaille/templates/partial/users.html:67
 msgid "Maybe try with different criterias?"
 msgstr ""
 
-#: canaille/templates/partial/groups.html:36
-#: canaille/templates/partial/oidc/admin/authorization_list.html:36
-#: canaille/templates/partial/oidc/admin/client_list.html:40
-#: canaille/templates/partial/oidc/admin/token_list.html:44
-#: canaille/templates/partial/users.html:68
-msgid "There is nothing here"
+#: canaille/templates/partial/users.html:29
+msgid "This account is locked"
 msgstr ""
 
 #: canaille/templates/partial/oidc/admin/authorization_list.html:5

@@ -264,9 +264,7 @@ STANDARD_CLAIMS = [
 ]
 
 
-def test_generate_user_standard_claims_with_default_config(
-    testclient, slapd_connection, user
-):
+def test_generate_user_standard_claims_with_default_config(testclient, backend, user):
     user.preferred_language = ["fr"]
 
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING)
@@ -284,9 +282,7 @@ def test_generate_user_standard_claims_with_default_config(
     }
 
 
-def test_custom_config_format_claim_is_well_formated(
-    testclient, slapd_connection, user
-):
+def test_custom_config_format_claim_is_well_formated(testclient, backend, user):
     jwt_mapping_config = DEFAULT_JWT_MAPPING.copy()
     jwt_mapping_config["EMAIL"] = "{{ user.user_name[0] }}@mydomain.tld"
 
@@ -295,7 +291,7 @@ def test_custom_config_format_claim_is_well_formated(
     assert data["email"] == "user@mydomain.tld"
 
 
-def test_claim_is_omitted_if_empty(testclient, slapd_connection, user):
+def test_claim_is_omitted_if_empty(testclient, backend, user):
     # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
     # it's better to not insert a null or empty string value
     user.email = ""

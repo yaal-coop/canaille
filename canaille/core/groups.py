@@ -1,3 +1,4 @@
+from canaille.app import models
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
@@ -12,8 +13,6 @@ from flask_themer import render_template
 
 from .forms import CreateGroupForm
 from .forms import EditGroupForm
-from .models import Group
-from .models import User
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
 
@@ -21,7 +20,7 @@ bp = Blueprint("groups", __name__, url_prefix="/groups")
 @bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_groups")
 def groups(user):
-    table_form = TableForm(Group, formdata=request.form)
+    table_form = TableForm(models.Group, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
@@ -37,7 +36,7 @@ def create_group(user):
         if not form.validate():
             flash(_("Group creation failed."), "error")
         else:
-            group = Group()
+            group = models.Group()
             group.members = [user]
             group.display_name = [form.display_name.data]
             group.description = [form.description.data]
@@ -59,7 +58,7 @@ def create_group(user):
 @bp.route("/<groupname>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
 def group(user, groupname):
-    group = Group.get(groupname)
+    group = models.Group.get(display_name=groupname)
 
     if not group:
         abort(404)
@@ -78,7 +77,7 @@ def group(user, groupname):
 
 
 def edit_group(group):
-    table_form = TableForm(User, filter={"groups": group}, formdata=request.form)
+    table_form = TableForm(models.User, filter={"groups": group}, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 

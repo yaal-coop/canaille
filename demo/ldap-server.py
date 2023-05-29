@@ -1,7 +1,23 @@
 import logging
+import os
 
 import slapd
 
+schemas = [
+    schema
+    for schema in [
+        "core.ldif",
+        "cosine.ldif",
+        "nis.ldif",
+        "inetorgperson.ldif",
+        "ppolicy.ldif",
+    ]
+    if os.path.exists(os.path.join(slapd.Slapd.SCHEMADIR, schema))
+] + [
+    "ldif/memberof-config.ldif",
+    "ldif/refint-config.ldif",
+    "ldif/ppolicy-config.ldif",
+]
 
 slapd = slapd.Slapd(
     suffix="dc=mydomain,dc=tld",
@@ -9,15 +25,7 @@ slapd = slapd.Slapd(
     root_pw="admin",
     port=5389,
     log_level=logging.INFO,
-    schemas=(
-        "core.ldif",
-        "cosine.ldif",
-        "nis.ldif",
-        "inetorgperson.ldif",
-        "../canaille/backends/ldap/schemas/oauth2-openldap.ldif",
-        "ldif/memberof-config.ldif",
-        "ldif/refint-config.ldif",
-    ),
+    schemas=schemas,
 )
 slapd.start()
 
@@ -41,10 +49,9 @@ try:
     )
 
     for ldif in (
+        "ldif/ppolicy.ldif",
         "ldif/bootstrap-users-tree.ldif",
         "ldif/bootstrap-oidc-tree.ldif",
-        "ldif/bootstrap-users.ldif",
-        "ldif/bootstrap-oidc.ldif",
     ):
         with open(ldif) as fd:
             try:

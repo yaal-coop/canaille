@@ -1,26 +1,31 @@
-import ldap.ldapobject
+import os
+
 import pytest
 import slapd
 from canaille import create_app
-from canaille.backends.ldap.backend import setup_ldap_models
-from canaille.core.models import Group
-from canaille.core.models import User
-from canaille.oidc.installation import setup_ldap_tree
-from flask import g
+from canaille.app import models
+from canaille.backends.ldap.backend import LDAPBackend
 from flask_webtest import TestApp
 from werkzeug.security import gen_salt
 
 
 class CustomSlapdObject(slapd.Slapd):
     def __init__(self):
-        super().__init__(
-            suffix="dc=mydomain,dc=tld",
-            schemas=(
+        schemas = [
+            schema
+            for schema in [
                 "core.ldif",
                 "cosine.ldif",
                 "nis.ldif",
                 "inetorgperson.ldif",
-            ),
+                "ppolicy.ldif",
+            ]
+            if os.path.exists(os.path.join(self.SCHEMADIR, schema))
+        ]
+
+        super().__init__(
+            suffix="dc=mydomain,dc=tld",
+            schemas=schemas,
         )
 
     def init_tree(self):
@@ -52,6 +57,8 @@ def slapd_server():
         slapd.init_tree()
         for ldif in (
             "demo/ldif/memberof-config.ldif",
+            "demo/ldif/ppolicy-config.ldif",
+            "demo/ldif/ppolicy.ldif",
             "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
             "demo/ldif/bootstrap-users-tree.ldif",
             "demo/ldif/bootstrap-oidc-tree.ldif",
@@ -61,15 +68,6 @@ def slapd_server():
         yield slapd
     finally:
         slapd.stop()
-
-
-@pytest.fixture
-def slapd_connection(slapd_server, testclient):
-    g.ldap_connection = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    g.ldap_connection.protocol_version = 3
-    g.ldap_connection.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-    yield g.ldap_connection
-    g.ldap_connection.unbind_s()
 
 
 @pytest.fixture
@@ -85,7 +83,7 @@ def configuration(slapd_server, smtpd):
                 "BIND_DN": slapd_server.root_dn,
                 "BIND_PW": slapd_server.root_pw,
                 "USER_BASE": "ou=users",
-                "USER_FILTER": "(|(uid={login})(cn={login}))",
+                "USER_FILTER": "(uid={login})",
                 "GROUP_BASE": "ou=groups",
                 "TIMEOUT": 0.1,
             },
@@ -93,7 +91,7 @@ def configuration(slapd_server, smtpd):
         "ACL": {
             "DEFAULT": {
                 "READ": ["user_name", "groups"],
-                "PERMISSIONS": ["edit_self", "use_oidc"],
+                "PERMISSIONS": ["edit_self", "use_oidc", "lock_date"],
                 "WRITE": [
                     "email",
                     "given_name",
@@ -125,6 +123,7 @@ def configuration(slapd_server, smtpd):
                 ],
                 "WRITE": [
                     "groups",
+                    "lock_date",
                 ],
             },
             "MODERATOR": {
@@ -148,11 +147,15 @@ def configuration(slapd_server, smtpd):
 
 
 @pytest.fixture
-def app(configuration):
-    setup_ldap_models(configuration)
-    setup_ldap_tree(configuration)
-    app = create_app(configuration)
-    return app
+def backend(slapd_server, configuration):
+    backend = LDAPBackend(configuration)
+    with backend.session():
+        yield backend
+
+
+@pytest.fixture
+def app(configuration, backend):
+    return create_app(configuration, backend=backend)
 
 
 @pytest.fixture
@@ -163,8 +166,8 @@ def testclient(app):
 
 
 @pytest.fixture
-def user(app, slapd_connection):
-    u = User(
+def user(app, backend):
+    u = models.User(
         formatted_name="John (johnny) Doe",
         given_name="John",
         family_name="Doe",
@@ -183,8 +186,8 @@ def user(app, slapd_connection):
 
 
 @pytest.fixture
-def admin(app, slapd_connection):
-    u = User(
+def admin(app, backend):
+    u = models.User(
         formatted_name="Jane Doe",
         family_name="Doe",
         user_name="admin",
@@ -197,8 +200,8 @@ def admin(app, slapd_connection):
 
 
 @pytest.fixture
-def moderator(app, slapd_connection):
-    u = User(
+def moderator(app, backend):
+    u = models.User(
         formatted_name="Jack Doe",
         family_name="Doe",
         user_name="moderator",
@@ -232,8 +235,8 @@ def logged_moderator(moderator, testclient):
 
 
 @pytest.fixture
-def foo_group(app, user, slapd_connection):
-    group = Group(
+def foo_group(app, user, backend):
+    group = models.Group(
         members=[user],
         display_name="foo",
     )
@@ -244,8 +247,8 @@ def foo_group(app, user, slapd_connection):
 
 
 @pytest.fixture
-def bar_group(app, admin, slapd_connection):
-    group = Group(
+def bar_group(app, admin, backend):
+    group = models.Group(
         members=[admin],
         display_name="bar",
     )

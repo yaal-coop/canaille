@@ -3,10 +3,17 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+Added
+*****
+
+- Implemented account expiration based on OpenLDAP ppolicy overlay. Needs OpenLDAP 2.5+
+  :issue:`13` :pr:`118`
+
 Fixed
 *****
 
 - Avoid setting ``None`` in JWT claims when they have no value.
+- Display password recovery button on OIDC login page. :pr:`129`
 
 [0.0.25] - 2023-05-05
 =====================

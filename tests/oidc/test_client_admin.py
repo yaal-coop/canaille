@@ -1,9 +1,6 @@
 import datetime
 
-from canaille.oidc.models import AuthorizationCode
-from canaille.oidc.models import Client
-from canaille.oidc.models import Consent
-from canaille.oidc.models import Token
+from canaille.app import models
 from werkzeug.security import gen_salt
 
 
@@ -29,7 +26,7 @@ def test_client_list_pagination(testclient, logged_admin, client, other_client):
     res.mustcontain("2 items")
     clients = []
     for _ in range(25):
-        client = Client(client_id=gen_salt(48), client_name=gen_salt(48))
+        client = models.Client(client_id=gen_salt(48), client_name=gen_salt(48))
         client.save()
         clients.append(client)
 
@@ -115,7 +112,7 @@ def test_client_add(testclient, logged_admin):
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
-    client = Client.get(client_id)
+    client = models.Client.get(client_id=client_id)
     data["audience"] = [client]
     for k, v in data.items():
         client_value = getattr(client, k)
@@ -198,27 +195,27 @@ def test_client_edit_missing_fields(testclient, client, logged_admin, other_clie
 
 
 def test_client_delete(testclient, logged_admin):
-    client = Client(client_id="client_id")
+    client = models.Client(client_id="client_id")
     client.save()
-    token = Token(
+    token = models.Token(
         token_id="id",
         client=client,
         issue_datetime=datetime.datetime.now(datetime.timezone.utc),
     )
     token.save()
-    consent = Consent(
+    consent = models.Consent(
         consent_id="consent_id", subject=logged_admin, client=client, scope="openid"
     )
     consent.save()
-    code = AuthorizationCode(authorization_code_id="id", client=client, subject=client)
+    models.AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientaddform"].submit(name="action", value="delete").follow()
 
-    assert not Client.get()
-    assert not Token.get()
-    assert not AuthorizationCode.get()
-    assert not Consent.get()
+    assert not models.Client.get()
+    assert not models.Token.get()
+    assert not models.AuthorizationCode.get()
+    assert not models.Consent.get()
 
 
 def test_client_delete_invalid_client(testclient, logged_admin, client):

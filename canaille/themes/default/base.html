@@ -35,7 +35,7 @@
 
                         {% if user.can_edit_self %}
                             <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                               href="{{ url_for('account.profile_edition', username=user.uid[0]) }}">
+                               href="{{ url_for('account.profile_edition', username=user.user_name[0]) }}">
                                 <i class="id card icon"></i>
                                 {% trans %}Profile{% endtrans %}
                             </a>

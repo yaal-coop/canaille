@@ -5,7 +5,6 @@ from logging.config import dictConfig
 import toml
 from flask import Flask
 from flask import g
-from flask import request
 from flask import session
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
@@ -36,13 +35,20 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if app.debug and "OIDC" in app.config:  # pragma: no cover
-        import canaille.oidc.installation
-
-        canaille.oidc.installation.setup_keypair(app.config)
-
     if validate:
         canaille.app.configuration.validate(app.config)
+
+
+def setup_backend(app, backend):
+    from .backends.ldap.backend import LDAPBackend
+
+    if not backend:
+        backend = LDAPBackend(app.config)
+        backend.init_app(app)
+
+    with app.app_context():
+        g.backend = backend
+        app.backend = backend
 
 
 def setup_sentry(app):  # pragma: no cover
@@ -142,6 +148,8 @@ def setup_flask(app):
 
         return {
             "has_smtp": "SMTP" in app.config,
+            "has_password_recovery": app.config.get("ENABLE_PASSWORD_RECOVERY", True),
+            "has_account_lockability": app.backend.get().has_account_lockability(),
             "logo_url": app.config.get("LOGO"),
             "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
             "website_name": app.config.get("NAME", "Canaille"),
@@ -166,24 +174,27 @@ def setup_flask(app):
         return render_template("error.html", error=500), 500
 
 
-def create_app(config=None, validate=True):
+def create_app(config=None, validate=True, backend=None):
     app = Flask(__name__)
     setup_config(app, config, validate)
 
     sentry_sdk = setup_sentry(app)
     try:
         from .oidc.oauth import setup_oauth
-        from .backends.ldap.backend import init_backend
         from .app.i18n import setup_i18n
+        from .app.installation import install
 
         setup_logging(app)
-        init_backend(app)
+        setup_backend(app, backend)
         setup_oauth(app)
         setup_blueprints(app)
         setup_jinja(app)
         setup_i18n(app)
         setup_themer(app)
         setup_flask(app)
+
+        if app.debug:  # pragma: no cover
+            install(app.config)
 
     except Exception as exc:  # pragma: no cover
         if sentry_sdk:

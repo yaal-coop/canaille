@@ -3,6 +3,7 @@ from unittest import mock
 
 import ldap.dn
 import pytest
+from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.configuration import validate
 from canaille.backends.ldap.backend import setup_ldap_models
@@ -11,13 +12,10 @@ from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
 from canaille.backends.ldap.utils import ldap_to_python
 from canaille.backends.ldap.utils import python_to_ldap
 from canaille.backends.ldap.utils import Syntax
-from canaille.core.models import Group
-from canaille.core.models import User
 
 
-def test_object_creation(slapd_connection):
-    User.install(slapd_connection)
-    user = User(
+def test_object_creation(app, backend):
+    user = models.User(
         formatted_name="Doe",  # leading space
         family_name="Doe",
         user_name="user",
@@ -27,26 +25,19 @@ def test_object_creation(slapd_connection):
     user.save()
     assert user.exists
 
-    user = User.get(id=user.id)
+    user = models.User.get(id=user.id)
     assert user.exists
 
     user.delete()
 
 
-def test_repr(slapd_connection, foo_group, user):
+def test_repr(backend, foo_group, user):
     assert repr(foo_group) == "<Group display_name=foo>"
     assert repr(user) == "<User formatted_name=John (johnny) Doe>"
 
 
-def test_equality(slapd_connection, foo_group, bar_group):
-    assert foo_group != bar_group
-    foo_group2 = Group.get(id=foo_group.id)
-    assert foo_group == foo_group2
-
-
-def test_dn_when_leading_space_in_id_attribute(slapd_connection):
-    User.install(slapd_connection)
-    user = User(
+def test_dn_when_leading_space_in_id_attribute(backend):
+    user = models.User(
         formatted_name=" Doe",  # leading space
         family_name="Doe",
         user_name="user",
@@ -61,9 +52,8 @@ def test_dn_when_leading_space_in_id_attribute(slapd_connection):
     user.delete()
 
 
-def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
-    User.install(slapd_connection)
-    user = User(
+def test_dn_when_ldap_special_char_in_id_attribute(backend):
+    user = models.User(
         formatted_name="#Doe",  # special char
         family_name="Doe",
         user_name="user",
@@ -78,28 +68,19 @@ def test_dn_when_ldap_special_char_in_id_attribute(slapd_connection):
     user.delete()
 
 
-def test_filter(slapd_connection, foo_group, bar_group):
-    assert Group.query(display_name="foo") == [foo_group]
-    assert Group.query(display_name="bar") == [bar_group]
+def test_filter(backend, foo_group, bar_group):
+    assert models.Group.query(display_name="foo") == [foo_group]
+    assert models.Group.query(display_name="bar") == [bar_group]
 
-    assert Group.query(display_name="foo") != 3
+    assert models.Group.query(display_name="foo") != 3
 
-    assert Group.query(display_name=["foo"]) == [foo_group]
-    assert Group.query(display_name=["bar"]) == [bar_group]
+    assert models.Group.query(display_name=["foo"]) == [foo_group]
+    assert models.Group.query(display_name=["bar"]) == [bar_group]
 
-    assert set(Group.query(display_name=["foo", "bar"])) == {foo_group, bar_group}
-
-
-def test_fuzzy(slapd_connection, user, moderator, admin):
-    assert set(User.query()) == {user, moderator, admin}
-    assert set(User.fuzzy("Jack")) == {moderator}
-    assert set(User.fuzzy("Jack", ["formatted_name"])) == {moderator}
-    assert set(User.fuzzy("Jack", ["user_name"])) == set()
-    assert set(User.fuzzy("Jack", ["user_name", "formatted_name"])) == {moderator}
-    assert set(User.fuzzy("moderator")) == {moderator}
-    assert set(User.fuzzy("oderat")) == {moderator}
-    assert set(User.fuzzy("oDeRat")) == {moderator}
-    assert set(User.fuzzy("ack")) == {moderator}
+    assert set(models.Group.query(display_name=["foo", "bar"])) == {
+        foo_group,
+        bar_group,
+    }
 
 
 def test_ldap_to_python():
@@ -170,9 +151,9 @@ def test_python_to_ldap():
     assert ldap_to_python(b"foobar", Syntax.JPEG) == b"foobar"
 
 
-def test_operational_attribute_conversion(slapd_connection):
-    assert "oauthClientName" in LDAPObject.ldap_object_attributes(slapd_connection)
-    assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(slapd_connection)
+def test_operational_attribute_conversion(backend):
+    assert "oauthClientName" in LDAPObject.ldap_object_attributes(backend)
+    assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(backend)
 
     assert python_attrs_to_ldap(
         {
@@ -185,27 +166,27 @@ def test_operational_attribute_conversion(slapd_connection):
     }
 
 
-def test_guess_object_from_dn(slapd_connection, testclient, foo_group):
-    foo_group.member = [foo_group]
+def test_guess_object_from_dn(backend, testclient, foo_group):
+    foo_group.members = [foo_group]
     foo_group.save()
     g = LDAPObject.get(id=foo_group.dn)
-    assert isinstance(g, Group)
+    assert isinstance(g, models.Group)
     assert g == foo_group
     assert g.cn == foo_group.cn
 
-    ou = LDAPObject.get(id=f"{Group.base},{Group.root_dn}")
-    assert isinstance(g, LDAPObject)
+    ou = LDAPObject.get(id=f"{models.Group.base},{models.Group.root_dn}")
+    assert isinstance(ou, LDAPObject)
 
 
-def test_object_class_update(slapd_connection, testclient):
+def test_object_class_update(backend, testclient):
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
-    user1 = User(cn="foo1", sn="bar1")
+    user1 = models.User(cn="foo1", sn="bar1")
     user1.save()
 
     assert user1.objectClass == ["inetOrgPerson"]
-    assert User.get(id=user1.id).objectClass == ["inetOrgPerson"]
+    assert models.User.get(id=user1.id).objectClass == ["inetOrgPerson"]
 
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
@@ -213,18 +194,24 @@ def test_object_class_update(slapd_connection, testclient):
     ]
     setup_ldap_models(testclient.app.config)
 
-    user2 = User(cn="foo2", sn="bar2")
+    user2 = models.User(cn="foo2", sn="bar2")
     user2.save()
 
     assert user2.objectClass == ["inetOrgPerson", "extensibleObject"]
-    assert User.get(id=user2.id).objectClass == ["inetOrgPerson", "extensibleObject"]
+    assert models.User.get(id=user2.id).objectClass == [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
 
-    user1 = User.get(id=user1.id)
+    user1 = models.User.get(id=user1.id)
     assert user1.objectClass == ["inetOrgPerson"]
 
     user1.save()
     assert user1.objectClass == ["inetOrgPerson", "extensibleObject"]
-    assert User.get(id=user1.id).objectClass == ["inetOrgPerson", "extensibleObject"]
+    assert models.User.get(id=user1.id).objectClass == [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
 
     user1.delete()
     user2.delete()
@@ -234,7 +221,7 @@ def test_ldap_connection_no_remote(testclient, configuration):
     validate(configuration)
 
 
-def test_ldap_connection_remote(testclient, configuration, slapd_connection):
+def test_ldap_connection_remote(testclient, configuration, backend):
     validate(configuration, validate_remote=True)
 
 
@@ -256,7 +243,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration
         validate(configuration, validate_remote=True)
 
 
-def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
+def test_ldap_cannot_create_users(testclient, configuration, backend):
     from canaille.core.models import User
 
     def fake_init(*args, **kwarg):
@@ -270,7 +257,7 @@ def test_ldap_cannot_create_users(testclient, configuration, slapd_connection):
             validate(configuration, validate_remote=True)
 
 
-def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
+def test_ldap_cannot_create_groups(testclient, configuration, backend):
     from canaille.core.models import Group
 
     def fake_init(*args, **kwarg):
@@ -282,3 +269,23 @@ def test_ldap_cannot_create_groups(testclient, configuration, slapd_connection):
             match=r"cannot create groups at",
         ):
             validate(configuration, validate_remote=True)
+
+
+def test_login_placeholder(testclient):
+    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(uid={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe"
+
+    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(cn={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "John Doe"
+
+    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(mail={login})"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "john@doe.com"
+
+    testclient.app.config["BACKENDS"]["LDAP"][
+        "USER_FILTER"
+    ] = "(|(uid={login})(mail={login}))"
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe or john@doe.com"

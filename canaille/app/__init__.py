@@ -3,10 +3,8 @@ import hashlib
 import json
 import re
 
-from canaille.core.models import User
 from flask import current_app
 from flask import request
-from flask_babel import gettext as _
 
 
 def obj_to_b64(obj):
@@ -22,24 +20,6 @@ def profile_hash(*args):
         current_app.config["SECRET_KEY"].encode("utf-8")
         + obj_to_b64(args).encode("utf-8")
     ).hexdigest()
-
-
-def login_placeholder():
-    user_filter = current_app.config["BACKENDS"]["LDAP"].get(
-        "USER_FILTER", User.DEFAULT_FILTER
-    )
-    placeholders = []
-
-    if "cn={login}" in user_filter:
-        placeholders.append(_("John Doe"))
-
-    if "uid={login}" in user_filter:
-        placeholders.append(_("jdoe"))
-
-    if "mail={login}" in user_filter or not placeholders:
-        placeholders.append(_("john@doe.com"))
-
-    return _(" or ").join(placeholders)
 
 
 def default_fields():

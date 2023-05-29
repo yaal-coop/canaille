@@ -1,11 +1,11 @@
 import datetime
 
+from canaille.app import models
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.forms import TableForm
 from canaille.oidc.forms import ClientAddForm
-from canaille.oidc.models import Client
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -23,7 +23,7 @@ bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 @bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def index(user):
-    table_form = TableForm(Client, formdata=request.form)
+    table_form = TableForm(models.Client, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
@@ -53,7 +53,7 @@ def add(user):
 
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now(datetime.timezone.utc)
-    client = Client(
+    client = models.Client(
         client_id=client_id,
         client_id_issued_at=client_id_issued_at,
         client_name=form["client_name"].data,
@@ -104,12 +104,12 @@ def edit(user, client_id):
 
 
 def client_edit(client_id):
-    client = Client.get(client_id)
+    client = models.Client.get(client_id=client_id)
 
     if not client:
         abort(404)
 
-    data = dict(client)
+    data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     data["scope"] = " ".join(data["scope"])
     data["redirect_uris"] = data["redirect_uris"][0] if data["redirect_uris"] else ""
     data["contacts"] = data["contacts"][0] if data["contacts"] else ""
@@ -152,7 +152,7 @@ def client_edit(client_id):
         software_version=form["software_version"].data,
         jwk=form["jwk"].data,
         jwks_uri=form["jwks_uri"].data,
-        audience=[Client.get(id=id) for id in form["audience"].data],
+        audience=[models.Client.get(id=id) for id in form["audience"].data],
         preconsent=form["preconsent"].data,
     )
     client.save()
@@ -164,7 +164,7 @@ def client_edit(client_id):
 
 
 def client_delete(client_id):
-    client = Client.get(client_id)
+    client = models.Client.get(client_id=client_id)
 
     if not client:
         abort(404)

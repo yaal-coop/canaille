@@ -1,8 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-from canaille.oidc.models import Consent
-from canaille.oidc.models import Token
+from canaille.app import models
 
 from . import client_credentials
 
@@ -72,7 +71,7 @@ def test_restoration_already_restored(testclient, client, consent, logged_user, 
 
 
 def test_invalid_consent_revokation(testclient, client, logged_user):
-    res = testclient.get(f"/consent/revoke/invalid", status=302)
+    res = testclient.get("/consent/revoke/invalid", status=302)
     assert ("success", "The access has been revoked") not in res.flashes
     assert ("error", "Could not revoke this access") in res.flashes
 
@@ -84,7 +83,7 @@ def test_someone_else_consent_revokation(testclient, client, consent, logged_mod
 
 
 def test_invalid_consent_restoration(testclient, client, logged_user):
-    res = testclient.get(f"/consent/restore/invalid", status=302)
+    res = testclient.get("/consent/restore/invalid", status=302)
     assert ("success", "The access has been restored") not in res.flashes
     assert ("error", "Could not restore this access") in res.flashes
 
@@ -118,7 +117,7 @@ def test_oidc_authorization_after_revokation(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    consents = Consent.query(client=client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     consent.reload()
     assert consents[0] == consent
     assert not consent.revoked
@@ -138,7 +137,7 @@ def test_oidc_authorization_after_revokation(
     )
 
     access_token = res.json["access_token"]
-    token = Token.get(access_token=access_token)
+    token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -158,13 +157,13 @@ def test_preconsented_client_appears_in_consent_list(testclient, client, logged_
 def test_revoke_preconsented_client(testclient, client, logged_user, token):
     client.preconsent = True
     client.save()
-    assert not Consent.get()
+    assert not models.Consent.get()
     assert not token.revoked
 
     res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
 
-    consent = Consent.get()
+    consent = models.Consent.get()
     assert consent.client == client
     assert consent.subject == logged_user
     assert consent.scope == ["openid", "email", "profile", "groups", "address", "phone"]

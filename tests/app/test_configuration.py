@@ -7,9 +7,7 @@ from canaille.app.configuration import validate
 from flask_webtest import TestApp
 
 
-def test_smtp_connection_remote_smtp_unreachable(
-    testclient, slapd_connection, configuration
-):
+def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configuration):
     configuration["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     with pytest.raises(
         ConfigurationException,
@@ -19,7 +17,7 @@ def test_smtp_connection_remote_smtp_unreachable(
 
 
 def test_smtp_connection_remote_smtp_wrong_credentials(
-    testclient, slapd_connection, configuration
+    testclient, backend, configuration
 ):
     configuration["SMTP"]["PASSWORD"] = "invalid-password"
     with pytest.raises(
@@ -29,15 +27,13 @@ def test_smtp_connection_remote_smtp_wrong_credentials(
         validate(configuration, validate_remote=True)
 
 
-def test_smtp_connection_remote_smtp_no_credentials(
-    testclient, slapd_connection, configuration
-):
+def test_smtp_connection_remote_smtp_no_credentials(testclient, backend, configuration):
     del configuration["SMTP"]["LOGIN"]
     del configuration["SMTP"]["PASSWORD"]
     validate(configuration, validate_remote=True)
 
 
-def test_smtp_bad_tls(testclient, slapd_connection, smtpd, configuration):
+def test_smtp_bad_tls(testclient, backend, smtpd, configuration):
     configuration["SMTP"]["TLS"] = False
     with pytest.raises(
         ConfigurationException,
@@ -50,7 +46,7 @@ def test_smtp_bad_tls(testclient, slapd_connection, smtpd, configuration):
 def themed_testclient(
     app,
     configuration,
-    slapd_connection,
+    backend,
 ):
     configuration["TESTING"] = True
 
@@ -63,7 +59,7 @@ def themed_testclient(
     return TestApp(app)
 
 
-def test_theme(testclient, themed_testclient, slapd_connection):
+def test_theme(testclient, themed_testclient, backend):
     res = testclient.get("/login")
     res.mustcontain(no="TEST_THEME")
 
@@ -71,7 +67,7 @@ def test_theme(testclient, themed_testclient, slapd_connection):
     res.mustcontain("TEST_THEME")
 
 
-def test_invalid_theme(configuration, slapd_connection):
+def test_invalid_theme(configuration, backend):
     validate(configuration, validate_remote=False)
 
     with pytest.raises(
