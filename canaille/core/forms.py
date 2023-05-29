@@ -1,5 +1,6 @@
 import wtforms.form
 from canaille.app import models
+from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import HTMXBaseForm
 from canaille.app.forms import HTMXForm
 from canaille.app.forms import is_uri
@@ -286,7 +287,7 @@ def profile_form(write_field_names, readonly_field_names, user=None):
         del fields["groups"]
 
     if current_app.backend.get().has_account_lockability():  # pragma: no branch
-        fields["lock_date"] = wtforms.DateTimeLocalField(
+        fields["lock_date"] = DateTimeUTCField(
             _("Account expiration"),
             validators=[wtforms.validators.Optional()],
             format=[

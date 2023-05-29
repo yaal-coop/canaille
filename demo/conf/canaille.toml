@@ -25,6 +25,10 @@ FAVICON = "/static/img/canaille-c.png"
 # If unset, language is detected
 # LANGUAGE = "en"
 
+# The timezone in which datetimes will be displayed to the users.
+# If unset, the server timezone will be used.
+# TIMEZONE = UTC
+
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 

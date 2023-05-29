@@ -8,6 +8,7 @@ Added
 
 - Implemented account expiration based on OpenLDAP ppolicy overlay. Needs OpenLDAP 2.5+
   :issue:`13` :pr:`118`
+- Timezone configuration entry. :issue:`137` :pr:`130`
 
 Fixed
 *****

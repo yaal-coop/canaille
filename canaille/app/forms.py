@@ -1,8 +1,11 @@
+import datetime
 import math
 
+import pytz
 import wtforms
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import locale_selector
+from canaille.app.i18n import timezone_selector
 from flask import abort
 from flask import current_app
 from flask import make_response
@@ -81,3 +84,31 @@ class TableForm(I18NFormMixin, FlaskForm):
     def validate_page(self, field):
         if field.data < 1 or field.data > self.page_max:
             raise wtforms.validators.ValidationError(_("The page number is not valid"))
+
+
+class DateTimeUTCField(wtforms.DateTimeLocalField):
+    def _value(self):
+        if not self.data:
+            return ""
+
+        user_timezone = timezone_selector()
+        locale_dt = self.data.astimezone(user_timezone)
+        return locale_dt.strftime(self.format[0])
+
+    def process_formdata(self, valuelist):
+        if not valuelist:
+            return
+
+        date_str = " ".join(valuelist)
+        user_timezone = timezone_selector()
+        for format in self.strptime_format:
+            try:
+                unaware_dt = datetime.datetime.strptime(date_str, format)
+                locale_dt = user_timezone.localize(unaware_dt)
+                utc_dt = locale_dt.astimezone(pytz.utc)
+                self.data = utc_dt
+                return
+            except ValueError:
+                self.data = None
+
+        raise ValueError(self.gettext("Not a valid datetime value."))

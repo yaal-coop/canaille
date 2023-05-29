@@ -46,6 +46,7 @@ flask-themer = "<2"
 flask-wtf = "<2"
 pycountry = "^22.3.5"
 python-ldap = "<4"
+pytz = "^2023.3"
 toml = "<1"
 wtforms = "<4"
 

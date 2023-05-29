@@ -76,6 +76,7 @@ def configuration(slapd_server, smtpd):
     conf = {
         "SECRET_KEY": gen_salt(24),
         "LOGO": "/static/img/canaille-head.png",
+        "TIMEZONE": "UTC",
         "BACKENDS": {
             "LDAP": {
                 "ROOT_DN": slapd_server.suffix,
