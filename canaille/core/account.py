@@ -11,7 +11,7 @@ from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app import profile_hash
-from canaille.app.flask import current_user
+from canaille.app.flask import current_user, registration_needed
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
@@ -44,7 +44,7 @@ from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
-from .mails import send_invitation_mail
+from .mails import send_invitation_mail, send_registration_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
 
@@ -55,6 +55,12 @@ bp = Blueprint("account", __name__)
 @bp.route("/")
 def index():
     user = current_user()
+
+    if "SMTP" not in current_app.config:
+        return redirect(url_for("account.login"))
+
+    if "REGISTRATION" not in current_app.config:
+        return redirect(url_for("account.login"))
 
     if not user:
         return redirect(url_for("account.onboarding"))
@@ -70,9 +76,11 @@ def index():
     return redirect(url_for("account.about"))
 
 
-# TODO: ignore onboarding if SMTP not enabled, redirect to account.login
 @bp.route("/onboarding", methods=("GET", "POST"))
+@smtp_needed()
+@registration_needed()
 def onboarding():
+
     if current_user():
         return redirect(
             url_for("account.profile_edition", username=current_user().user_name[0])
@@ -96,9 +104,9 @@ def onboarding():
     )
 
 
-# TODO: add Captcha support
 @bp.route("/join", methods=("GET", "POST"))
 @smtp_needed()
+@registration_needed()
 def join():
     if current_user():
         return redirect(
@@ -107,16 +115,15 @@ def join():
     form = JoinForm(request.form or None)
 
     email_sent = None
-    registration_url = None
     form_validated = False
     if request.form and form.validate():
         form_validated = True
         invitation = Invitation(
             datetime.datetime.now(datetime.timezone.utc).isoformat(),
             form.user_name.data,
-            False,  # TODO: allow admin to set this in settings
+            current_app.config["REGISTRATION"].get("CAN_EDIT_USERNAME", False),
             form.email.data,
-            [],  # TODO: allow admin to set this in settings
+            current_app.config["REGISTRATION"].get("GROUPS", []),
         )
         registration_url = url_for(
             "account.registration",
@@ -125,13 +132,12 @@ def join():
             _external=True,
         )
 
-        email_sent = send_invitation_mail(form.email.data, registration_url)
+        email_sent = send_registration_mail(form.email.data, registration_url)
         if email_sent:
             flash(_("You've received an email to continue the registration process."), "success")
             return redirect(
                 url_for("account.login")
             )
-        # TODO: flash in case of server error
 
     return render_template(
         "profile_add.html",

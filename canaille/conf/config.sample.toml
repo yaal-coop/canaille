@@ -219,3 +219,9 @@ PUBLIC_KEY = "canaille/conf/public.pem"
 # LOGIN = ""
 # PASSWORD = ""
 # FROM_ADDR = "admin@mydomain.tld"
+
+# The registration options. If not set, registration will be disabled. Requires SMTP to work.
+# Groups should be formatted like this: ["<GROUP_NAME_ATTRIBUTE>=group_name,<GROUP_BASE>", ...]
+# [REGISTRATION]
+# GROUPS=[]
+# CAN_EDIT_USERNAME = false

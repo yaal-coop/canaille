@@ -80,6 +80,31 @@ def smtp_needed():
     return wrapper
 
 
+def registration_needed():
+    def wrapper(view_function):
+        @wraps(view_function)
+        def decorator(*args, **kwargs):
+            if "REGISTRATION" in current_app.config:
+                return view_function(*args, **kwargs)
+
+            message = _("Registration has not been enabled")
+            logging.warning(message)
+            return (
+                render_template(
+                    "error.html",
+                    error=500,
+                    icon="tools",
+                    debug=current_app.config.get("DEBUG", False),
+                    description=message,
+                ),
+                500,
+            )
+
+        return decorator
+
+    return wrapper
+
+
 def set_parameter_in_url_query(url, **kwargs):
     split = list(urlsplit(url))
     pairs = split[3].split("&")
