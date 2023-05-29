@@ -143,3 +143,33 @@ def send_invitation_mail(email, registration_url):
         html=html_body,
         attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
+
+
+def send_registration_mail(email, registration_url):
+    base_url = url_for("account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("Continue your registration on {website_name}").format(
+        website_name=current_app.config.get("NAME", registration_url)
+    )
+    text_body = render_template(
+        "mail/registration.txt",
+        site_name=current_app.config.get("NAME", registration_url),
+        site_url=base_url,
+        registration_url=registration_url,
+    )
+    html_body = render_template(
+        "mail/registration.html",
+        site_name=current_app.config.get("NAME", registration_url),
+        site_url=base_url,
+        registration_url=registration_url,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=email,
+        text=text_body,
+        html=html_body,
+        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )

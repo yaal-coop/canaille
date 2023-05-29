@@ -1,0 +1,6 @@
+# {% trans %}Registration{% endtrans %}
+
+{% trans %}You've started the registration process at {{ site_name }}. To proceed you can click on the link below and follow the instructions.{% endtrans %}
+
+{% trans %}Continue{% endtrans %}: {{ registration_url }}
+{{ site_name }}: {{ site_url }}
