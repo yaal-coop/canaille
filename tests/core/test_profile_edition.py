@@ -161,7 +161,7 @@ def test_edition_remove_fields(
     res.form["phone_number"] = ""
 
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")], res.text
+    assert res.flashes == [("success", "Profile updated successfully.")], res.text
     res = res.follow()
 
     logged_user.reload()

@@ -24,7 +24,7 @@ def test_preferred_language(testclient, logged_user):
 
     res.form["preferred_language"] = "en"
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
     logged_user.reload()
     assert logged_user.preferred_language == "en"
@@ -35,7 +35,7 @@ def test_preferred_language(testclient, logged_user):
 
     res.form["preferred_language"] = "auto"
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
     logged_user.reload()
     assert logged_user.preferred_language is None

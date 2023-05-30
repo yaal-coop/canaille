@@ -24,7 +24,7 @@ def test_edition(
 
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
     logged_user.reload()
@@ -68,7 +68,7 @@ def test_edition_without_groups(
     testclient.app.config["ACL"]["DEFAULT"]["READ"] = []
 
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
     logged_user.reload()
@@ -97,7 +97,7 @@ def test_password_change(testclient, logged_user):
     res.form["password2"] = "correct horse battery staple"
 
     res = res.form.submit(name="action", value="edit")
-    assert ("success", "Profile updated successfuly.") in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
     logged_user.reload()
@@ -349,7 +349,7 @@ def test_past_lock_date(
     ) - datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
     user = models.User.get(id=user.id)
@@ -372,7 +372,7 @@ def test_future_lock_date(
     ) + datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
     user = models.User.get(id=user.id)
@@ -396,7 +396,7 @@ def test_empty_lock_date(
     res = testclient.get("/profile/user/settings", status=200)
     res.form["lock_date"] = ""
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
     user.reload()
@@ -418,7 +418,7 @@ def test_account_limit_values(
     )
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfuly.")]
+    assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
     user = models.User.get(id=user.id)

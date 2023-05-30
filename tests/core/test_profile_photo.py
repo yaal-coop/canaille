@@ -57,7 +57,7 @@ def test_photo_on_profile_edition(
     res.form["photo"] = Upload("logo.jpg", jpeg_photo)
     res.form["photo_delete"] = False
     res = res.form.submit(name="action", value="edit")
-    assert ("success", "Profile updated successfuly.") in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
     logged_user.reload()
@@ -68,7 +68,7 @@ def test_photo_on_profile_edition(
     res = testclient.get("/profile/user", status=200)
     res.form["photo_delete"] = False
     res = res.form.submit(name="action", value="edit")
-    assert ("success", "Profile updated successfuly.") in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
     logged_user.reload()
@@ -79,7 +79,7 @@ def test_photo_on_profile_edition(
     res = testclient.get("/profile/user", status=200)
     res.form["photo_delete"] = True
     res = res.form.submit(name="action", value="edit")
-    assert ("success", "Profile updated successfuly.") in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
     logged_user.reload()
@@ -91,7 +91,7 @@ def test_photo_on_profile_edition(
     res.form["photo"] = Upload("logo.jpg", jpeg_photo)
     res.form["photo_delete"] = True
     res = res.form.submit(name="action", value="edit")
-    assert ("success", "Profile updated successfuly.") in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
     logged_user.reload()
