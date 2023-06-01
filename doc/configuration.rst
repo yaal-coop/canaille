@@ -34,6 +34,9 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 :LANGUAGE:
     *Optional.* The locale code of the language to use. If not set, the language of the browser will be used.
 
+:TIMEZONE:
+    *Optional.* The timezone in which datetimes will be displayed to the users. If unset, the server timezone will be used.
+
 :SENTRY_DSN:
     *Optional.* A DSN to a sentry instance.
     This needs the ``sentry_sdk`` python package to be installed.
