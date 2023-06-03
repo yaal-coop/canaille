@@ -76,6 +76,7 @@ pytest-httpserver = "*"
 slapd = "*"
 smtpdfix = "*"
 pytest-flask = "^1.2.0"
+pytest-lazy-fixture = "^0.6.3"
 
 [tool.poetry.group.demo]
 optional = true
