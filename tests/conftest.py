@@ -3,30 +3,12 @@ from canaille import create_app
 from canaille.app import models
 from canaille.backends.ldap.backend import LDAPBackend
 from flask_webtest import TestApp
-from tests.backends.ldap import CustomSlapdObject
 from werkzeug.security import gen_salt
 
 
-@pytest.fixture(scope="session")
-def slapd_server():
-    slapd = CustomSlapdObject()
-
-    try:
-        slapd.start()
-        slapd.init_tree()
-        for ldif in (
-            "demo/ldif/memberof-config.ldif",
-            "demo/ldif/ppolicy-config.ldif",
-            "demo/ldif/ppolicy.ldif",
-            "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
-            "demo/ldif/bootstrap-users-tree.ldif",
-            "demo/ldif/bootstrap-oidc-tree.ldif",
-        ):
-            with open(ldif) as fd:
-                slapd.ldapadd(fd.read())
-        yield slapd
-    finally:
-        slapd.stop()
+pytest_plugins = [
+    "tests.backends.ldap.fixtures",
+]
 
 
 @pytest.fixture
