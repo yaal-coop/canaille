@@ -36,7 +36,7 @@ readme = "README.md"
 include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 
 [tool.poetry.dependencies]
-python = ">=3.7, <4"
+python = ">=3.8, <4"
 authlib = ">1,<2"
 click = "<9"
 email_validator = "<3"
@@ -122,7 +122,6 @@ isolated_build = true
 skipsdist = true
 envlist =
     style
-    py37
     py38
     py39
     py310
