@@ -59,6 +59,7 @@ optional = true
 "sphinx" = "*"
 "sphinx-rtd-theme" = "*"
 "sphinx-issues" = "*"
+pygments-ldif = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 coverage = {version = "*", extras=["toml"]}

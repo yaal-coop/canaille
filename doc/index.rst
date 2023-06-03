@@ -34,6 +34,7 @@ Table of contents
    :maxdepth: 2
 
    install
+   backends
    configuration
    contributing
    specifications

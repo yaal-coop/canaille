@@ -1200,6 +1200,19 @@ files = [
 plugins = ["importlib-metadata"]
 
 [[package]]
+name = "pygments-ldif"
+version = "1.0.1"
+description = "LDAP Data Interchange Format (LDIF) lexer for Pygments"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pygments-ldif-1.0.1.tar.gz", hash = "sha256:df303ce8f3b74ab659afeb6adb12d89e9352b18228c0742fbc080b4e49b5e0c7"},
+]
+
+[package.dependencies]
+Pygments = "*"
+
+[[package]]
 name = "pyquery"
 version = "2.0.0"
 description = "A jquery-like library for python"
@@ -1939,4 +1952,4 @@ sentry = ["sentry-sdk"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7, <4"
-content-hash = "ea6edd79777591d8c6232b5cd2d712a4de68e72475aca7b7c6417328eac5ea61"
+content-hash = "32d6537f3fe1c010fba20f1bff7f04e05df486aac5d7088074c447dec8ec090e"
