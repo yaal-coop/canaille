@@ -11,6 +11,11 @@ from . import CustomSlapdObject
 
 
 @pytest.fixture
+def configuration(ldap_configuration):
+    yield ldap_configuration
+
+
+@pytest.fixture
 def slapd_server():
     slapd = CustomSlapdObject()
     try:

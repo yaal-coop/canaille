@@ -14,7 +14,9 @@ from werkzeug.security import gen_salt
 
 
 @pytest.fixture
-def app(app):
+# For some reason all the params from the overriden fixture must be present here
+# https://github.com/pytest-dev/pytest/issues/11075
+def app(app, configuration, backend):
     os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
     yield app
 

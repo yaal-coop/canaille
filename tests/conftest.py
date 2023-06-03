@@ -1,53 +1,23 @@
 import pytest
 from canaille import create_app
 from canaille.app import models
-from canaille.backends.ldap.backend import LDAPBackend
 from flask_webtest import TestApp
-from tests.backends.ldap import CustomSlapdObject
+from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
 
 
-@pytest.fixture(scope="session")
-def slapd_server():
-    slapd = CustomSlapdObject()
-
-    try:
-        slapd.start()
-        slapd.init_tree()
-        for ldif in (
-            "demo/ldif/memberof-config.ldif",
-            "demo/ldif/ppolicy-config.ldif",
-            "demo/ldif/ppolicy.ldif",
-            "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
-            "demo/ldif/bootstrap-users-tree.ldif",
-            "demo/ldif/bootstrap-oidc-tree.ldif",
-        ):
-            with open(ldif) as fd:
-                slapd.ldapadd(fd.read())
-        yield slapd
-    finally:
-        slapd.stop()
+pytest_plugins = [
+    "tests.backends.ldap.fixtures",
+]
 
 
 @pytest.fixture
-def configuration(slapd_server, smtpd):
+def configuration(smtpd):
     smtpd.config.use_starttls = True
     conf = {
         "SECRET_KEY": gen_salt(24),
         "LOGO": "/static/img/canaille-head.png",
         "TIMEZONE": "UTC",
-        "BACKENDS": {
-            "LDAP": {
-                "ROOT_DN": slapd_server.suffix,
-                "URI": slapd_server.ldap_uri,
-                "BIND_DN": slapd_server.root_dn,
-                "BIND_PW": slapd_server.root_pw,
-                "USER_BASE": "ou=users",
-                "USER_FILTER": "(uid={login})",
-                "GROUP_BASE": "ou=groups",
-                "TIMEOUT": 0.1,
-            },
-        },
         "ACL": {
             "DEFAULT": {
                 "READ": ["user_name", "groups"],
@@ -106,11 +76,9 @@ def configuration(slapd_server, smtpd):
     return conf
 
 
-@pytest.fixture
-def backend(slapd_server, configuration):
-    backend = LDAPBackend(configuration)
-    with backend.session():
-        yield backend
+@pytest.fixture(params=[lazy_fixture("ldap_backend")])
+def backend(request):
+    yield request.param
 
 
 @pytest.fixture
