@@ -6,7 +6,8 @@ from canaille.backends.ldap.backend import LDAPBackend
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.commands import cli
 from flask_webtest import TestApp
-from tests.conftest import CustomSlapdObject
+
+from . import CustomSlapdObject
 
 
 @pytest.fixture
