@@ -127,6 +127,12 @@ class LDAPBackend(Backend):
             )
 
     def teardown(self):
+        try:  # pragma: no cover
+            if request.endpoint == "static":
+                return
+        except RuntimeError:  # pragma: no cover
+            pass
+
         if self.connection:  # pragma: no branch
             self.connection.unbind_s()
             self.connection = None
