@@ -11,8 +11,9 @@ from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app import profile_hash
-from canaille.app.flask import current_user, registration_needed
+from canaille.app.flask import current_user
 from canaille.app.flask import permissions_needed
+from canaille.app.flask import registration_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
@@ -35,18 +36,19 @@ from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
 from .forms import FirstLoginForm
-from .forms import OnboardingForm
-from .forms import JoinForm
 from .forms import ForgottenPasswordForm
 from .forms import InvitationForm
+from .forms import JoinForm
 from .forms import LoginForm
 from .forms import MINIMUM_PASSWORD_LENGTH
+from .forms import OnboardingForm
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
-from .mails import send_invitation_mail, send_registration_mail
+from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
+from .mails import send_registration_mail
 
 
 bp = Blueprint("account", __name__)
@@ -56,13 +58,9 @@ bp = Blueprint("account", __name__)
 def index():
     user = current_user()
 
-    if "SMTP" not in current_app.config:
-        return redirect(url_for("account.login"))
-
-    if "REGISTRATION" not in current_app.config:
-        return redirect(url_for("account.login"))
-
     if not user:
+        if "SMTP" not in current_app.config or "REGISTRATION" not in current_app.config:
+            return redirect(url_for("account.login"))
         return redirect(url_for("account.onboarding"))
 
     if user.can_edit_self or user.can_manage_users:
@@ -80,7 +78,6 @@ def index():
 @smtp_needed()
 @registration_needed()
 def onboarding():
-
     if current_user():
         return redirect(
             url_for("account.profile_edition", username=current_user().user_name[0])
@@ -90,18 +87,11 @@ def onboarding():
 
     if request.form:
         if request.form["answer"] == "sign-up":
-            return redirect(
-                url_for("account.join")
-            )
+            return redirect(url_for("account.join"))
         elif request.form["answer"] == "sign-in":
-            return redirect(
-                url_for("account.login")
-            )
+            return redirect(url_for("account.login"))
 
-    return render_template(
-        "onboarding.html",
-        form=form
-    )
+    return render_template("onboarding.html", form=form)
 
 
 @bp.route("/join", methods=("GET", "POST"))
@@ -134,10 +124,11 @@ def join():
 
         email_sent = send_registration_mail(form.email.data, registration_url)
         if email_sent:
-            flash(_("You've received an email to continue the registration process."), "success")
-            return redirect(
-                url_for("account.login")
+            flash(
+                _("You've received an email to continue the registration process."),
+                "success",
             )
+            return redirect(url_for("account.login"))
 
     return render_template(
         "profile_add.html",
@@ -146,7 +137,7 @@ def join():
         email_sent=email_sent,
         edited_user=None,
         self_deletion=False,
-        menuitem="users"
+        menuitem="users",
     )
 
 
