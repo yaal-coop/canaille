@@ -1,4 +1,4 @@
-from canaille.backends import Backend
+from canaille.backends import BaseBackend
 from canaille.oidc.installation import install as install_oidc
 
 
@@ -8,4 +8,4 @@ class InstallationException(Exception):
 
 def install(config):
     install_oidc(config)
-    Backend.get().install(config)
+    BaseBackend.get().install(config)

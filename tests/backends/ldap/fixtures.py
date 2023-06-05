@@ -1,5 +1,5 @@
 import pytest
-from canaille.backends.ldap.backend import LDAPBackend
+from canaille.backends.ldap.backend import Backend
 from tests.backends.ldap import CustomSlapdObject
 
 
@@ -45,6 +45,6 @@ def ldap_configuration(configuration, slapd_server):
 
 @pytest.fixture
 def ldap_backend(slapd_server, ldap_configuration):
-    backend = LDAPBackend(ldap_configuration)
+    backend = Backend(ldap_configuration)
     with backend.session():
         yield backend

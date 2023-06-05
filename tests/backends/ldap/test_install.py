@@ -2,7 +2,7 @@ import ldap
 import pytest
 from canaille import create_app
 from canaille.app.installation import InstallationException
-from canaille.backends.ldap.backend import LDAPBackend
+from canaille.backends.ldap.backend import Backend
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.commands import cli
 from flask_webtest import TestApp
@@ -58,7 +58,7 @@ def test_install_schemas(configuration, slapd_server):
 
     assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
-    LDAPBackend.setup_schemas(configuration)
+    Backend.setup_schemas(configuration)
 
     assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
@@ -78,11 +78,11 @@ def test_install_schemas_twice(configuration, slapd_server):
 
     assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
-    LDAPBackend.setup_schemas(configuration)
+    Backend.setup_schemas(configuration)
 
     assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
-    LDAPBackend.setup_schemas(configuration)
+    Backend.setup_schemas(configuration)
 
     conn.unbind_s()
     slapd_server.stop()
@@ -103,7 +103,7 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
     assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 
     with pytest.raises(InstallationException):
-        LDAPBackend.setup_schemas(configuration)
+        Backend.setup_schemas(configuration)
 
     assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
 

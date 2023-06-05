@@ -7,7 +7,7 @@ import ldap.modlist
 import ldif
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
-from canaille.backends import Backend
+from canaille.backends import BaseBackend
 from flask import current_app
 from flask import render_template
 from flask import request
@@ -47,7 +47,7 @@ def install_schema(config, schema_path):
         ) from exc
 
 
-class LDAPBackend(Backend):
+class Backend(BaseBackend):
     def __init__(self, config):
         super().__init__(config)
         self.config = config

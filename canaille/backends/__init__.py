@@ -1,11 +1,11 @@
 from contextlib import contextmanager
 
 
-class Backend:
+class BaseBackend:
     instance = None
 
     def __init__(self, config):
-        Backend.instance = self
+        BaseBackend.instance = self
 
     @classmethod
     def get(cls):
