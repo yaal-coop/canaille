@@ -339,6 +339,7 @@ class EditGroupForm(HTMXForm):
 class OnboardingForm(HTMXForm):
     pass
 
+
 class JoinForm(HTMXForm):
     user_name = wtforms.StringField(
         _("Username"),
