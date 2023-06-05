@@ -2,15 +2,12 @@
 import datetime
 import os
 import sys
+from importlib import metadata
 from unittest import mock
 
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("../canaille"))
 
-if sys.version_info[:2] >= (3, 8):
-    from importlib import metadata
-else:
-    import importlib_metadata as metadata
 
 # Readthedocs does not support C modules, so
 # we have to mock them.

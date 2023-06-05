@@ -1,5 +1,11 @@
+import pytest
 from canaille import create_app
 from flask_webtest import TestApp
+
+
+@pytest.fixture
+def configuration(slapd_server, ldap_configuration):
+    yield ldap_configuration
 
 
 def test_ldap_connection_remote_ldap_unreachable(configuration):

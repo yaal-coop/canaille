@@ -17,6 +17,7 @@ csrf = CSRFProtect()
 
 def setup_config(app, config=None, validate=True):
     import canaille.app.configuration
+    from canaille.oidc.installation import install
 
     app.config.from_mapping(
         {
@@ -35,6 +36,9 @@ def setup_config(app, config=None, validate=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
+    if app.debug:  # pragma: no cover
+        install(app.config)
+
     if validate:
         canaille.app.configuration.validate(app.config)
 
@@ -49,6 +53,9 @@ def setup_backend(app, backend):
     with app.app_context():
         g.backend = backend
         app.backend = backend
+
+    if app.debug:  # pragma: no cover
+        backend.install(app.config)
 
 
 def setup_sentry(app):  # pragma: no cover
@@ -182,7 +189,6 @@ def create_app(config=None, validate=True, backend=None):
     try:
         from .oidc.oauth import setup_oauth
         from .app.i18n import setup_i18n
-        from .app.installation import install
 
         setup_logging(app)
         setup_backend(app, backend)
@@ -192,9 +198,6 @@ def create_app(config=None, validate=True, backend=None):
         setup_i18n(app)
         setup_themer(app)
         setup_flask(app)
-
-        if app.debug:  # pragma: no cover
-            install(app.config)
 
     except Exception as exc:  # pragma: no cover
         if sentry_sdk:

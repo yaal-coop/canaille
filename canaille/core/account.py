@@ -425,7 +425,7 @@ def registration(data, hash):
         else:
             user = profile_create(current_app, form)
             user.login()
-            flash(_("Your account has been created successfuly."), "success")
+            flash(_("Your account has been created successfully."), "success")
             return redirect(
                 url_for("account.profile_edition", username=user.user_name[0])
             )
@@ -574,7 +574,7 @@ def profile_edition(user, username):
                     user.preferred_language = None
 
             user.save()
-            flash(_("Profile updated successfuly."), "success")
+            flash(_("Profile updated successfully."), "success")
             return redirect(url_for("account.profile_edition", username=username))
 
     return render_template(
@@ -696,7 +696,7 @@ def profile_settings_edit(editor, edited_user):
                 edited_user.set_password(form["password1"].data)
 
             edited_user.save()
-            flash(_("Profile updated successfuly."), "success")
+            flash(_("Profile updated successfully."), "success")
             return redirect(
                 url_for("account.profile_settings", username=edited_user.user_name[0])
             )
@@ -816,7 +816,7 @@ def reset(user_name, hash):
         user.set_password(form.password.data)
         user.login()
 
-        flash(_("Your password has been updated successfuly"), "success")
+        flash(_("Your password has been updated successfully"), "success")
         return redirect(url_for("account.profile_edition", username=user_name))
 
     return render_template(

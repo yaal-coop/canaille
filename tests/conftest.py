@@ -1,93 +1,23 @@
-import os
-
 import pytest
-import slapd
 from canaille import create_app
 from canaille.app import models
-from canaille.backends.ldap.backend import LDAPBackend
 from flask_webtest import TestApp
+from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
 
 
-class CustomSlapdObject(slapd.Slapd):
-    def __init__(self):
-        schemas = [
-            schema
-            for schema in [
-                "core.ldif",
-                "cosine.ldif",
-                "nis.ldif",
-                "inetorgperson.ldif",
-                "ppolicy.ldif",
-            ]
-            if os.path.exists(os.path.join(self.SCHEMADIR, schema))
-        ]
-
-        super().__init__(
-            suffix="dc=mydomain,dc=tld",
-            schemas=schemas,
-        )
-
-    def init_tree(self):
-        suffix_dc = self.suffix.split(",")[0][3:]
-        self.ldapadd(
-            "\n".join(
-                [
-                    "dn: " + self.suffix,
-                    "objectClass: dcObject",
-                    "objectClass: organization",
-                    "dc: " + suffix_dc,
-                    "o: " + suffix_dc,
-                    "",
-                    "dn: " + self.root_dn,
-                    "objectClass: applicationProcess",
-                    "cn: " + self.root_cn,
-                ]
-            )
-            + "\n"
-        )
-
-
-@pytest.fixture(scope="session")
-def slapd_server():
-    slapd = CustomSlapdObject()
-
-    try:
-        slapd.start()
-        slapd.init_tree()
-        for ldif in (
-            "demo/ldif/memberof-config.ldif",
-            "demo/ldif/ppolicy-config.ldif",
-            "demo/ldif/ppolicy.ldif",
-            "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
-            "demo/ldif/bootstrap-users-tree.ldif",
-            "demo/ldif/bootstrap-oidc-tree.ldif",
-        ):
-            with open(ldif) as fd:
-                slapd.ldapadd(fd.read())
-        yield slapd
-    finally:
-        slapd.stop()
+pytest_plugins = [
+    "tests.backends.ldap.fixtures",
+]
 
 
 @pytest.fixture
-def configuration(slapd_server, smtpd):
+def configuration(smtpd):
     smtpd.config.use_starttls = True
     conf = {
         "SECRET_KEY": gen_salt(24),
         "LOGO": "/static/img/canaille-head.png",
-        "BACKENDS": {
-            "LDAP": {
-                "ROOT_DN": slapd_server.suffix,
-                "URI": slapd_server.ldap_uri,
-                "BIND_DN": slapd_server.root_dn,
-                "BIND_PW": slapd_server.root_pw,
-                "USER_BASE": "ou=users",
-                "USER_FILTER": "(uid={login})",
-                "GROUP_BASE": "ou=groups",
-                "TIMEOUT": 0.1,
-            },
-        },
+        "TIMEZONE": "UTC",
         "ACL": {
             "DEFAULT": {
                 "READ": ["user_name", "groups"],
@@ -146,11 +76,9 @@ def configuration(slapd_server, smtpd):
     return conf
 
 
-@pytest.fixture
-def backend(slapd_server, configuration):
-    backend = LDAPBackend(configuration)
-    with backend.session():
-        yield backend
+@pytest.fixture(params=[lazy_fixture("ldap_backend")])
+def backend(request):
+    yield request.param
 
 
 @pytest.fixture

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-05-26 15:31+0200\n"
+"POT-Creation-Date: 2023-05-30 09:43+0200\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -45,7 +45,7 @@ msgid "John Doe"
 msgstr "John Doe"
 
 #: canaille/backends/ldap/backend.py:217 canaille/core/forms.py:124
-#: canaille/core/forms.py:340
+#: canaille/core/forms.py:341
 msgid "jdoe"
 msgstr "jdoe"
 
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Login failed, please check your information"
 msgstr "Fallou o inicio de sesión, comproba as túas credenciais"
 
-#: canaille/core/account.py:136 canaille/core/account.py:667
+#: canaille/core/account.py:136 canaille/core/account.py:660
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Acceso correcto. Benvido/a %(user)s"
@@ -112,7 +112,7 @@ msgid "You are already logged in, you cannot create an account."
 msgstr "Xa iniciaches sesión, non podes crear unha conta."
 
 #: canaille/core/account.py:319 canaille/core/forms.py:263
-#: canaille/core/forms.py:358 canaille/templates/groups.html:5
+#: canaille/core/forms.py:359 canaille/templates/groups.html:5
 #: canaille/templates/groups.html:25 canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:61
 msgid "Groups"
@@ -125,7 +125,7 @@ msgstr "Fallou a creación da conta de usuario."
 #: canaille/core/account.py:346
 #, fuzzy
 #| msgid "You account has been created successfuly."
-msgid "Your account has been created successfuly."
+msgid "Your account has been created successfully."
 msgstr "A túa conta creouse correctamente."
 
 #: canaille/core/account.py:412
@@ -136,8 +136,10 @@ msgstr "Conta creada correctamente."
 msgid "Profile edition failed."
 msgstr "Fallou a actualización do perfil."
 
-#: canaille/core/account.py:495 canaille/core/account.py:624
-msgid "Profile updated successfuly."
+#: canaille/core/account.py:495 canaille/core/account.py:617
+#, fuzzy
+#| msgid "Profile updated successfuly."
+msgid "Profile updated successfully."
 msgstr "Perfil actualizado correctamente."
 
 #: canaille/core/account.py:531
@@ -172,16 +174,16 @@ msgstr "O acceso foi revogado"
 msgid "The account has been unlocked"
 msgstr "O acceso foi revogado"
 
-#: canaille/core/account.py:644
+#: canaille/core/account.py:637
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "O usuario %(user)s eliminouse correctamente"
 
-#: canaille/core/account.py:684
+#: canaille/core/account.py:677
 msgid "Could not send the password reset link."
 msgstr "Non foi posible enviar o email para restablecer o contrasinal."
 
-#: canaille/core/account.py:688
+#: canaille/core/account.py:681
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
@@ -189,7 +191,7 @@ msgstr ""
 "Enviouse unha ligazón para restablecer o contrasinal ó teu correo "
 "electrónico. Deberías recibilo nun prazo de 10 minutos."
 
-#: canaille/core/account.py:699
+#: canaille/core/account.py:692
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -198,17 +200,19 @@ msgstr ""
 "O usuario '%(user)s' non ten permiso para actualizar o seu contrasinal. Non "
 "é posible enviarlle un email para que restableza o seu contrasinal."
 
-#: canaille/core/account.py:714
+#: canaille/core/account.py:707
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "Produciuse un problema enviando o email para recuperar o contrasinal."
 
-#: canaille/core/account.py:735
+#: canaille/core/account.py:728
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 "A ligazón para restablecer o contrasinal co que accediches non é válido."
 
-#: canaille/core/account.py:744
-msgid "Your password has been updated successfuly"
+#: canaille/core/account.py:737
+#, fuzzy
+#| msgid "Your password has been updated successfuly"
+msgid "Your password has been updated successfully"
 msgstr "O teu contrasinal actualizouse correctamente"
 
 #: canaille/core/admin.py:23 canaille/templates/partial/users.html:15
@@ -217,7 +221,7 @@ msgstr "Correo electrónico"
 
 #: canaille/core/admin.py:29 canaille/core/forms.py:56
 #: canaille/core/forms.py:80 canaille/core/forms.py:168
-#: canaille/core/forms.py:352
+#: canaille/core/forms.py:353
 msgid "jane@doe.com"
 msgstr "jane@doe.com"
 
@@ -281,12 +285,12 @@ msgstr "Os dous contrasinais non coinciden."
 msgid "Automatic"
 msgstr "Automático"
 
-#: canaille/core/forms.py:123 canaille/core/forms.py:339
+#: canaille/core/forms.py:123 canaille/core/forms.py:340
 msgid "Username"
 msgstr "Nome de usuario"
 
-#: canaille/core/forms.py:127 canaille/core/forms.py:311
-#: canaille/core/forms.py:325 canaille/oidc/forms.py:22
+#: canaille/core/forms.py:127 canaille/core/forms.py:312
+#: canaille/core/forms.py:326 canaille/oidc/forms.py:22
 #: canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
@@ -325,7 +329,7 @@ msgstr "Nome a amosar"
 msgid "Johnny"
 msgstr "Johnny"
 
-#: canaille/core/forms.py:158 canaille/core/forms.py:345
+#: canaille/core/forms.py:158 canaille/core/forms.py:346
 msgid "Email address"
 msgstr "Correo electrónico"
 
@@ -433,22 +437,22 @@ msgstr "Idioma preferido"
 msgid "users, admins …"
 msgstr "usuarios, administradores…"
 
-#: canaille/core/forms.py:289
+#: canaille/core/forms.py:290
 #, fuzzy
 #| msgid "Account creation"
 msgid "Account expiration"
 msgstr "Creación de conta"
 
-#: canaille/core/forms.py:314
+#: canaille/core/forms.py:315
 msgid "group"
 msgstr "grupo"
 
-#: canaille/core/forms.py:318 canaille/core/forms.py:332
+#: canaille/core/forms.py:319 canaille/core/forms.py:333
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Descripción"
 
-#: canaille/core/forms.py:343
+#: canaille/core/forms.py:344
 msgid "Username editable by the invitee"
 msgstr "Nome de usuario editable polo invitado"
 

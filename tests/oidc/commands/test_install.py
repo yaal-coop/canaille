@@ -1,8 +1,14 @@
 import os
 
+import pytest
 from canaille import create_app
 from canaille.commands import cli
 from flask_webtest import TestApp
+
+
+@pytest.fixture
+def configuration(ldap_configuration):
+    yield ldap_configuration
 
 
 def test_install_keypair(configuration, tmpdir):

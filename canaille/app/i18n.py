@@ -1,6 +1,8 @@
 import gettext
 
 import pycountry
+import pytz
+from babel.dates import LOCALTZ
 from flask import current_app
 from flask import g
 from flask import request
@@ -13,7 +15,9 @@ babel = Babel()
 
 
 def setup_i18n(app):
-    babel.init_app(app, locale_selector=locale_selector)
+    babel.init_app(
+        app, locale_selector=locale_selector, timezone_selector=timezone_selector
+    )
 
     @app.before_request
     def before_request():
@@ -38,6 +42,13 @@ def locale_selector():
         return current_app.config.get("LANGUAGE")
 
     return request.accept_languages.best_match(available_language_codes)
+
+
+def timezone_selector():
+    try:
+        return pytz.timezone(current_app.config.get("TIMEZONE"))
+    except pytz.exceptions.UnknownTimeZoneError:
+        return LOCALTZ
 
 
 def native_language_name_from_code(code):

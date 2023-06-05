@@ -36,7 +36,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     res = res.form.submit(status=302)
 
-    assert ("success", "Your account has been created successfuly.") in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
     res = res.follow(status=200)
 
     user = models.User.get_from_login("someone")
@@ -86,7 +86,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
     res = res.form.submit(status=302)
 
-    assert ("success", "Your account has been created successfuly.") in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
     res = res.follow(status=200)
 
     user = models.User.get_from_login("djorje")
