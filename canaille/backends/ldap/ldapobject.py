@@ -4,7 +4,7 @@ from collections.abc import Iterable
 import ldap.dn
 import ldap.filter
 
-from .backend import LDAPBackend
+from .backend import Backend
 from .utils import ldap_to_python
 from .utils import python_to_ldap
 
@@ -216,7 +216,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     @classmethod
     def install(cls, conn=None):
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
         cls.ldap_object_classes(conn)
         cls.ldap_object_attributes(conn)
 
@@ -241,7 +241,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -263,7 +263,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -289,7 +289,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
 
     @classmethod
     def query(cls, id=None, filter=None, conn=None, **kwargs):
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
 
         base = id or kwargs.get("id")
         if base is None:
@@ -371,13 +371,13 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         cls._must = list(set(cls._must))
 
     def reload(self, conn=None):
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
         result = conn.search_s(self.id, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.state = result[0][1]
 
     def save(self, conn=None):
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
 
         setattr(self, "objectClass", self.ldap_object_class)
 
@@ -432,5 +432,5 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             self.__setattr__(k, v)
 
     def delete(self, conn=None):
-        conn = conn or LDAPBackend.get().connection
+        conn = conn or Backend.get().connection
         conn.delete_s(self.id)

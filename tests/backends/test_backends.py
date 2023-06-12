@@ -1,15 +1,15 @@
 import pytest
-from canaille.backends import Backend
+from canaille.backends import BaseBackend
 
 
 def test_required_methods(testclient):
     with pytest.raises(NotImplementedError):
-        Backend.install()
+        BaseBackend.install()
 
     with pytest.raises(NotImplementedError):
-        Backend.validate({})
+        BaseBackend.validate({})
 
-    backend = Backend(testclient.app.config)
+    backend = BaseBackend(testclient.app.config)
     with pytest.raises(NotImplementedError):
         backend.setup()
 

@@ -44,10 +44,10 @@ def setup_config(app, config=None, validate=True):
 
 
 def setup_backend(app, backend):
-    from .backends.ldap.backend import LDAPBackend
+    from .backends.ldap.backend import Backend
 
     if not backend:
-        backend = LDAPBackend(app.config)
+        backend = Backend(app.config)
         backend.init_app(app)
 
     with app.app_context():

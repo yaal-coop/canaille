@@ -6,7 +6,7 @@ from ldap.controls import DecodeControlTuples
 from ldap.controls.ppolicy import PasswordPolicyControl
 from ldap.controls.ppolicy import PasswordPolicyError
 
-from .backend import LDAPBackend
+from .backend import Backend
 from .ldapobject import LDAPObject
 
 
@@ -128,7 +128,7 @@ class User(canaille.core.models.User, LDAPObject):
         return result, message
 
     def set_password(self, password):
-        conn = LDAPBackend.get().connection
+        conn = Backend.get().connection
         conn.passwd_s(
             self.id,
             None,
@@ -166,7 +166,7 @@ class User(canaille.core.models.User, LDAPObject):
         self.state[group_attr] = new_groups
 
     def load_permissions(self):
-        conn = LDAPBackend.get().connection
+        conn = Backend.get().connection
 
         for access_group_name, details in current_app.config["ACL"].items():
             filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))

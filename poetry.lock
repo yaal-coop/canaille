@@ -647,13 +647,13 @@ pytz = ">=2022.7"
 
 [[package]]
 name = "flask-themer"
-version = "1.4.3"
+version = "2.0.0"
 description = "Simple theme mechanism for Flask"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "flask-themer-1.4.3.tar.gz", hash = "sha256:193fb3f9bb5093165fc8c26653085e9ab3b67dc66979bf124f102d7714cbcf0e"},
-    {file = "flask_themer-1.4.3-py3-none-any.whl", hash = "sha256:f7588c1e8edff22845eeacde3dfde80caadf6a7fdfb9073217648415778dd716"},
+    {file = "flask-themer-2.0.0.tar.gz", hash = "sha256:c8dbea370ad88d9d13e5d0c360f9678bb219bfbab7a7d0cb4f00ff89ac09a275"},
+    {file = "flask_themer-2.0.0-py3-none-any.whl", hash = "sha256:e34cc5bccf4fafb7d04f5de6e2219cc001f6485f7b0640dc5b728f8de88c2b57"},
 ]
 
 [package.dependencies]
@@ -1939,4 +1939,4 @@ sentry = ["sentry-sdk"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8, <4"
-content-hash = "228495329d8d66307450ea2518ec52432ac9d74973c5aa10cc3ef1647be087e2"
+content-hash = "69a5b4e9d6f7e3be9a982f88ded4fbae40d17404ffb7a14f46baa04865cdbfd8"

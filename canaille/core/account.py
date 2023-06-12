@@ -19,7 +19,7 @@ from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
-from canaille.backends import Backend
+from canaille.backends import BaseBackend
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -158,7 +158,7 @@ def login():
         )
 
     form = LoginForm(request.form or None)
-    form["login"].render_kw["placeholder"] = Backend.get().login_placeholder()
+    form["login"].render_kw["placeholder"] = BaseBackend.get().login_placeholder()
 
     if request.form:
         user = models.User.get_from_login(form.login.data)
@@ -626,7 +626,7 @@ def profile_settings(user, username):
 
     if (
         request.form.get("action") == "lock"
-        and Backend.get().has_account_lockability()
+        and BaseBackend.get().has_account_lockability()
         and not edited_user.locked
     ):
         flash(_("The account has been locked"), "success")
@@ -637,7 +637,7 @@ def profile_settings(user, username):
 
     if (
         request.form.get("action") == "unlock"
-        and Backend.get().has_account_lockability()
+        and BaseBackend.get().has_account_lockability()
         and edited_user.locked
     ):
         flash(_("The account has been unlocked"), "success")
