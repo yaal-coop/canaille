@@ -1,12 +1,67 @@
 import os
 import smtplib
 import socket
+from collections.abc import Mapping
+
+import toml
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 class ConfigurationException(Exception):
     pass
+
+
+def parse_file_keys(config):
+    """
+    Replaces configuration entries with the '_FILE' suffix with
+    the matching file content.
+    """
+
+    SUFFIX = "_FILE"
+    new_config = {}
+    for key, value in config.items():
+        if isinstance(value, Mapping):
+            new_config[key] = parse_file_keys(value)
+
+        elif isinstance(key, str) and key.endswith(SUFFIX) and isinstance(value, str):
+            with open(value) as f:
+                value = f.read().rstrip("\n")
+
+            root_key = key[: -len(SUFFIX)]
+            new_config[root_key] = value
+
+        else:
+            new_config[key] = value
+
+    return new_config
+
+
+def setup_config(app, config=None, validate_config=True):
+    from canaille.oidc.installation import install
+
+    app.config.from_mapping(
+        {
+            "SESSION_COOKIE_NAME": "canaille",
+            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
+            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
+        }
+    )
+    if config:
+        app.config.from_mapping(parse_file_keys(config))
+    elif "CONFIG" in os.environ:
+        app.config.from_mapping(parse_file_keys(toml.load(os.environ.get("CONFIG"))))
+    else:
+        raise Exception(
+            "No configuration file found. "
+            "Either create conf/config.toml or set the 'CONFIG' variable environment."
+        )
+
+    if app.debug:  # pragma: no cover
+        install(app.config)
+
+    if validate_config:
+        validate(app.config)
 
 
 def validate(config, validate_remote=False):

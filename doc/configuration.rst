@@ -6,14 +6,18 @@ Here are the different options you can have in your configuration file.
 .. contents::
    :local:
 
+.. note ::
+
+    Any configuration entry can be suffixed by *_FILE* and point to the path of
+    a file that contains the actual value. For instance you could have
+    ``SECRET_KEY_FILE = "/path/to/secret.txt"`` instead of ``SECRET_KEY = "very-secret"``
+
 Sections
 ========
 
 Miscellaneous
 -------------
-Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/1.1.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
-
-
+Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/2.3.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
 
 :SECRET_KEY:
     **Required.** The Flask secret key. You should set a random string here.

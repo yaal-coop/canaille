@@ -2,7 +2,6 @@ import datetime
 import os
 from logging.config import dictConfig
 
-import toml
 from flask import Flask
 from flask import g
 from flask import session
@@ -13,34 +12,6 @@ from flask_wtf.csrf import CSRFProtect
 
 
 csrf = CSRFProtect()
-
-
-def setup_config(app, config=None, validate=True):
-    import canaille.app.configuration
-    from canaille.oidc.installation import install
-
-    app.config.from_mapping(
-        {
-            "SESSION_COOKIE_NAME": "canaille",
-            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
-            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
-        }
-    )
-    if config:
-        app.config.from_mapping(config)
-    elif "CONFIG" in os.environ:
-        app.config.from_mapping(toml.load(os.environ.get("CONFIG")))
-    else:
-        raise Exception(
-            "No configuration file found. "
-            "Either create conf/config.toml or set the 'CONFIG' variable environment."
-        )
-
-    if app.debug:  # pragma: no cover
-        install(app.config)
-
-    if validate:
-        canaille.app.configuration.validate(app.config)
 
 
 def setup_backend(app, backend):
@@ -182,14 +153,15 @@ def setup_flask(app):
 
 
 def create_app(config=None, validate=True, backend=None):
+    from .oidc.oauth import setup_oauth
+    from .app.i18n import setup_i18n
+    from .app.configuration import setup_config
+
     app = Flask(__name__)
     setup_config(app, config, validate)
 
     sentry_sdk = setup_sentry(app)
     try:
-        from .oidc.oauth import setup_oauth
-        from .app.i18n import setup_i18n
-
         setup_logging(app)
         setup_backend(app, backend)
         setup_oauth(app)
