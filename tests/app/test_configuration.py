@@ -7,6 +7,19 @@ from canaille.app.configuration import validate
 from flask_webtest import TestApp
 
 
+def test_configuration_file_suffix(tmp_path, backend, configuration):
+    file_path = os.path.join(tmp_path, "secret.txt")
+    with open(file_path, "w") as fd:
+        fd.write("very-secret")
+
+    del configuration["SECRET_KEY"]
+    configuration["SECRET_KEY_FILE"] = file_path
+
+    app = create_app(configuration)
+    assert "SECRET_KEY_FILE" not in app.config
+    assert app.config["SECRET_KEY"] == "very-secret"
+
+
 def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configuration):
     configuration["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     with pytest.raises(
