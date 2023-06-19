@@ -1,4 +1,4 @@
-{% macro render_field(
+{% macro render_input(
 field,
 label_visible=true,
 icon=none,
@@ -86,13 +86,17 @@ display=true
 
 {% macro render_fields(form) %}
     {% for field in form %}
-        {% if field.type == "BooleanField" %}
-            {{ render_checkbox(field) }}
-        {% else %}
-            {{ render_field(field) }}
-        {% endif %}
+        {{ render_field(field) }}
     {% endfor %}
 {% endmacro %}
+
+{% macro render_field(field) -%}
+    {% if field.type == "BooleanField" %}
+        {{ render_checkbox(field) }}
+    {% else %}
+        {{ render_input(field) }}
+    {% endif %}
+{%- endmacro %}
 
 {% macro render_checkbox(field) -%}
     <div class="field">

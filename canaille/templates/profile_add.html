@@ -29,18 +29,18 @@
     </nav>
 {% endblock %}
 
-{% macro render_field(field, noindicator=false) %}
+{% macro render_input(field, noindicator=false) %}
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
     {% if not edited_user %}
-        {{ fui.render_field(field, **kwargs) }}
+        {{ fui.render_input(field, **kwargs) }}
     {% elif edited_user.user_name == user.user_name or lock_indicator or noindicator %}
-        {{ fui.render_field(field, **kwargs) }}
+        {{ fui.render_input(field, **kwargs) }}
     {% elif field.name in edited_user.write %}
-        {{ fui.render_field(field, **kwargs) }}
+        {{ fui.render_input(field, **kwargs) }}
     {% elif field.name in edited_user.read %}
-        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
+        {{ fui.render_input(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
     {% else %}
-        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
+        {{ fui.render_input(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
     {% endif %}
 {% endmacro %}
 
@@ -97,8 +97,8 @@
                 <div class="ui grid">
                     <div class="three wide column">
                         {% block photo_field scoped %}
-                            {{ render_field(form.photo, display=false, class="photo-field") }}
-                            {{ render_field(form.photo_delete, display=false, class="photo-delete-button") }}
+                            {{ render_input(form.photo, display=false, class="photo-field") }}
+                            {{ render_input(form.photo_delete, display=false, class="photo-delete-button") }}
                             {% set photo = edited_user.photo and edited_user.photo[0] %}
                             <label
                                 class="ui small bordered image photo-content"
@@ -127,97 +127,97 @@
             {% if "given_name" in form or "family_name" in form %}
                 <div class="equal width fields">
                     {% if "given_name" in form %}
-                        {% block given_name_field scoped %}{{ render_field(form.given_name) }}{% endblock %}
+                        {% block given_name_field scoped %}{{ render_input(form.given_name) }}{% endblock %}
                     {% endif %}
 
                     {% if "family_name" in form %}
-                        {% block family_name_field scoped %}{{ render_field(form.family_name) }}{% endblock %}
+                        {% block family_name_field scoped %}{{ render_input(form.family_name) }}{% endblock %}
                     {% endif %}
                 </div>
             {% endif %}
 
             {% if "display_name" in form %}
-                {% block display_name_field scoped %}{{ render_field(form.display_name) }}{% endblock %}
+                {% block display_name_field scoped %}{{ render_input(form.display_name) }}{% endblock %}
             {% endif %}
 
             {% if "photo" in form %}</div></div>{% endif %}
 
             {% if "email" in form %}
-                {% block email_field scoped %}{{ render_field(form.email) }}{% endblock %}
+                {% block email_field scoped %}{{ render_input(form.email) }}{% endblock %}
             {% endif %}
 
             {% if "phone_number" in form %}
-                {% block phone_number_field scoped %}{{ render_field(form.phone_number) }}{% endblock %}
+                {% block phone_number_field scoped %}{{ render_input(form.phone_number) }}{% endblock %}
             {% endif %}
 
             {% if "formatted_address" in form %}
-                {% block formatted_address_field scoped %}{{ render_field(form.formatted_address) }}{% endblock %}
+                {% block formatted_address_field scoped %}{{ render_input(form.formatted_address) }}{% endblock %}
             {% endif %}
 
             {% if "street" in form %}
-                {% block street_field scoped %}{{ render_field(form.street) }}{% endblock %}
+                {% block street_field scoped %}{{ render_input(form.street) }}{% endblock %}
             {% endif %}
 
             <div class="equal width fields">
                 {% if "postal_code" in form %}
-                    {% block postal_code_field scoped %}{{ render_field(form.postal_code) }}{% endblock %}
+                    {% block postal_code_field scoped %}{{ render_input(form.postal_code) }}{% endblock %}
                 {% endif %}
 
                 {% if "locality" in form %}
-                    {% block locality_field scoped %}{{ render_field(form.locality) }}{% endblock %}
+                    {% block locality_field scoped %}{{ render_input(form.locality) }}{% endblock %}
                 {% endif %}
 
                 {% if "region" in form %}
-                    {% block region_field scoped %}{{ render_field(form.region) }}{% endblock %}
+                    {% block region_field scoped %}{{ render_input(form.region) }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "department" in form %}
-                    {% block department_field scoped %}{{ render_field(form.department) }}{% endblock %}
+                    {% block department_field scoped %}{{ render_input(form.department) }}{% endblock %}
                 {% endif %}
 
                 {% if "employee_number" in form %}
-                    {% block employee_number_field scoped %}{{ render_field(form.employee_number) }}{% endblock %}
+                    {% block employee_number_field scoped %}{{ render_input(form.employee_number) }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "title" in form %}
-                    {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
+                    {% block title_field scoped %}{{ render_input(form.title) }}{% endblock %}
                 {% endif %}
 
                 {% if "organization" in form %}
-                    {% block organization_field scoped %}{{ render_field(form.organization) }}{% endblock %}
+                    {% block organization_field scoped %}{{ render_input(form.organization) }}{% endblock %}
                 {% endif %}
 
             </div>
 
             {% if "profile_url" in form %}
-                {% block profile_uri_field scoped %}{{ render_field(form.profile_url) }}{% endblock %}
+                {% block profile_uri_field scoped %}{{ render_input(form.profile_url) }}{% endblock %}
             {% endif %}
 
             {% if "preferred_language" in form %}
-                {% block preferred_language_field scoped %}{{ render_field(form.preferred_language) }}{% endblock %}
+                {% block preferred_language_field scoped %}{{ render_input(form.preferred_language) }}{% endblock %}
             {% endif %}
 
             <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
 
             {% if "user_name" in form %}
-                {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
+                {% block user_name_field scoped %}{{ render_input(form.user_name) }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}
-                {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
+                {% block groups_field scoped %}{{ render_input(form.groups) }}{% endblock %}
             {% endif %}
 
             {% if "password1" in form %}
                 {% block password_field scoped %}
                     <div class="two fields">
-                        {{ render_field(form.password1, noindicator=true) }}
-                        {{ render_field(form.password2, noindicator=true) }}
+                        {{ render_input(form.password1, noindicator=true) }}
+                        {{ render_input(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
             {% endif %}

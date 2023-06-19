@@ -109,7 +109,7 @@
 
                 {% call fui.render_form(form) %}
                     {% block user_name_field scoped %}
-                        {{ fui.render_field(form.user_name, icon="user") }}
+                        {{ fui.render_input(form.user_name, icon="user") }}
                     {% endblock %}
 
                     {% block user_name_editable_field scoped %}
@@ -117,11 +117,11 @@
                     {% endblock %}
 
                     {% block email_field scoped %}
-                        {{ fui.render_field(form.email, icon="email") }}
+                        {{ fui.render_input(form.email, icon="email") }}
                     {% endblock %}
 
                     {% block groups_field scoped %}
-                        {{ fui.render_field(form.groups, icon="users") }}
+                        {{ fui.render_input(form.groups, icon="users") }}
                     {% endblock %}
 
                     <div class="ui right aligned container">

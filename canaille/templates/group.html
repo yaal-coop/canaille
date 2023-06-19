@@ -67,8 +67,8 @@
         </h2>
 
         {% call fui.render_form(form) %}
-            {{ fui.render_field(form.display_name) }}
-            {{ fui.render_field(form.description) }}
+            {{ fui.render_input(form.display_name) }}
+            {{ fui.render_input(form.description) }}
 
             {% if not edited_group %}
                 <div class="ui info visible message">

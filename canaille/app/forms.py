@@ -50,7 +50,7 @@ class HTMXFormMixin:
         self.process(request.form)
         super().validate(*args, **kwargs)
         form_macro = current_app.jinja_env.get_template("macro/form.html")
-        response = make_response(form_macro.module.render_field(field))
+        response = make_response(form_macro.module.render_input(field))
         abort(response)
 
 
