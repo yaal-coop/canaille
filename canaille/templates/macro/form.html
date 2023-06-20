@@ -92,9 +92,9 @@ display=true
 
 {% macro render_field(field) -%}
     {% if field.type == "BooleanField" %}
-        {{ render_checkbox(field) }}
+        {{ render_checkbox(field, **kwargs) }}
     {% else %}
-        {{ render_input(field) }}
+        {{ render_input(field, **kwargs) }}
     {% endif %}
 {%- endmacro %}
 
