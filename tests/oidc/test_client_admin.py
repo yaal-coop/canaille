@@ -113,17 +113,26 @@ def test_client_add(testclient, logged_admin):
 
     client_id = res.forms["readonly"]["client_id"].value
     client = models.Client.get(client_id=client_id)
-    data["audience"] = [client]
-    for k, v in data.items():
-        client_value = getattr(client, k)
-        if k == "scope":
-            assert v == " ".join(client_value)
-        elif k == "preconsent":
-            assert v is False
-        elif k == "contacts":
-            assert [v] == client_value
-        else:
-            assert v == client_value
+
+    assert client.client_name == "foobar"
+    assert client.contacts == ["foo@bar.com"]
+    assert client.client_uri == "https://foo.bar"
+    assert client.redirect_uris == ["https://foo.bar/callback"]
+    assert client.grant_types == ["password", "authorization_code"]
+    assert client.scope == ["openid", "profile"]
+    assert client.response_types == ["code", "token"]
+    assert client.token_endpoint_auth_method == "none"
+    assert client.logo_uri == "https://foo.bar/logo.png"
+    assert client.tos_uri == "https://foo.bar/tos"
+    assert client.policy_uri == "https://foo.bar/policy"
+    assert client.software_id == "software"
+    assert client.software_version == "1"
+    assert client.jwk == "jwk"
+    assert client.jwks_uri == "https://foo.bar/jwks.json"
+    assert client.audience == [client]
+    assert not client.preconsent
+    assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
+
     client.delete()
 
 
@@ -169,17 +178,25 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     assert ("success", "The client has been edited.") in res.flashes
 
     client.reload()
-    data["audience"] = [client, other_client]
-    for k, v in data.items():
-        client_value = getattr(client, k)
-        if k == "scope":
-            assert v == " ".join(client_value)
-        elif k == "preconsent":
-            assert v is True
-        elif k == "contacts":
-            assert [v] == client_value
-        else:
-            assert v == client_value
+
+    assert client.client_name == "foobar"
+    assert client.contacts == ["foo@bar.com"]
+    assert client.client_uri == "https://foo.bar"
+    assert client.redirect_uris == ["https://foo.bar/callback"]
+    assert client.grant_types == ["password", "authorization_code"]
+    assert client.scope == ["openid", "profile"]
+    assert client.response_types == ["code", "token"]
+    assert client.token_endpoint_auth_method == "none"
+    assert client.logo_uri == "https://foo.bar/logo.png"
+    assert client.tos_uri == "https://foo.bar/tos"
+    assert client.policy_uri == "https://foo.bar/policy"
+    assert client.software_id == "software"
+    assert client.software_version == "1"
+    assert client.jwk == "jwk"
+    assert client.jwks_uri == "https://foo.bar/jwks.json"
+    assert client.audience == [client, other_client]
+    assert not client.preconsent
+    assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
 
 
 def test_client_edit_missing_fields(testclient, client, logged_admin, other_client):
