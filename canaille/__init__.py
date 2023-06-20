@@ -136,20 +136,20 @@ def setup_flask(app):
         }
 
     @app.errorhandler(400)
-    def bad_request(e):
-        return render_template("error.html", error=400), 400
+    def bad_request(error):
+        return render_template("error.html", description=error, error_code=400), 400
 
     @app.errorhandler(403)
-    def unauthorized(e):
-        return render_template("error.html", error=403), 403
+    def unauthorized(error):
+        return render_template("error.html", description=error, error_code=403), 403
 
     @app.errorhandler(404)
-    def page_not_found(e):
-        return render_template("error.html", error=404), 404
+    def page_not_found(error):
+        return render_template("error.html", description=error, error_code=404), 404
 
     @app.errorhandler(500)
-    def server_error(e):  # pragma: no cover
-        return render_template("error.html", error=500), 500
+    def server_error(error):  # pragma: no cover
+        return render_template("error.html", description=error, error_code=500), 500
 
 
 def create_app(config=None, validate=True, backend=None):
