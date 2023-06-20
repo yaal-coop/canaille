@@ -67,9 +67,8 @@ def smtp_needed():
             return (
                 render_template(
                     "error.html",
-                    error=500,
+                    error_code=500,
                     icon="tools",
-                    debug=current_app.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,

@@ -102,9 +102,8 @@ class Backend(BaseBackend):
             return (
                 render_template(
                     "error.html",
-                    error=500,
+                    error_code=500,
                     icon="database",
-                    debug=self.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
@@ -118,9 +117,8 @@ class Backend(BaseBackend):
             return (
                 render_template(
                     "error.html",
-                    error=500,
+                    error_code=500,
                     icon="key",
-                    debug=self.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
