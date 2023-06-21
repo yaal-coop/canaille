@@ -45,12 +45,20 @@ class HTMXFormMixin:
         if not request_is_htmx():
             return super().validate(*args, **kwargs)
 
-        field = self[request.headers.get("HX-Trigger-Name")]
-        field.widget.hide_value = False
+        field_name = request.headers.get("HX-Trigger-Name")
+        if field_name in self:
+            self.validate_field(field_name, *args, **kwargs)
+            self.render_field(field_name)
+        abort(400)
+
+    def validate_field(self, field_name, *args, **kwargs):
+        self[field_name].widget.hide_value = False
         self.process(request.form)
         super().validate(*args, **kwargs)
+
+    def render_field(self, field_name, *args, **kwargs):
         form_macro = current_app.jinja_env.get_template("macro/form.html")
-        response = make_response(form_macro.module.render_input(field))
+        response = make_response(form_macro.module.render_field(self[field_name]))
         abort(response)
 
 
