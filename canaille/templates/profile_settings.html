@@ -27,16 +27,16 @@
     </nav>
 {% endblock %}
 
-{% macro render_input(field, noindicator=false) %}
+{% macro render_field(field, noindicator=false) %}
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
     {% if edited_user.user_name == user.user_name or lock_indicator or noindicator %}
-        {{ fui.render_input(field, **kwargs) }}
+        {{ fui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.write %}
-        {{ fui.render_input(field, **kwargs) }}
+        {{ fui.render_field(field, **kwargs) }}
     {% elif field.name in edited_user.read %}
-        {{ fui.render_input(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
+        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
     {% else %}
-        {{ fui.render_input(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
+        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
     {% endif %}
 {% endmacro %}
 
@@ -94,24 +94,24 @@
 
         {% call fui.render_form(form, class_="profile-form info warning") %}
             {% if "user_name" in form %}
-                {% block user_name_field scoped %}{{ render_input(form.user_name) }}{% endblock %}
+                {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}
-                {% block groups_field scoped %}{{ render_input(form.groups) }}{% endblock %}
+                {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
             {% endif %}
 
             {% if "password1" in form %}
                 {% block password_field scoped %}
                     <div class="two fields">
-                        {{ render_input(form.password1, noindicator=true) }}
-                        {{ render_input(form.password2, noindicator=true) }}
+                        {{ render_field(form.password1, noindicator=true) }}
+                        {{ render_field(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
             {% endif %}
 
             {% if has_account_lockability and "lock_date" in form and not edited_user.locked %}
-                {% block lock_date_field scoped %}{{ render_input(form.lock_date) }}{% endblock %}
+                {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
             {% endif %}
 
             {% if user.can_manage_users %}
