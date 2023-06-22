@@ -13,6 +13,8 @@ from flask import render_template
 from flask import request
 from flask_babel import gettext as _
 
+from .utils import listify
+
 
 @contextmanager
 def ldap_connection(config):
@@ -247,9 +249,7 @@ def setup_ldap_models(config):
     object_class = config["BACKENDS"]["LDAP"].get(
         "USER_CLASS", models.User.DEFAULT_OBJECT_CLASS
     )
-    models.User.ldap_object_class = (
-        object_class if isinstance(object_class, list) else [object_class]
-    )
+    models.User.ldap_object_class = listify(object_class)
 
     group_base = (
         config["BACKENDS"]["LDAP"]
@@ -263,6 +263,4 @@ def setup_ldap_models(config):
     object_class = config["BACKENDS"]["LDAP"].get(
         "GROUP_CLASS", models.Group.DEFAULT_OBJECT_CLASS
     )
-    models.Group.ldap_object_class = (
-        object_class if isinstance(object_class, list) else [object_class]
-    )
+    models.Group.ldap_object_class = listify(object_class)

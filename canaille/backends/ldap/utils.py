@@ -81,3 +81,7 @@ def python_to_ldap(value, syntax, encode=True):
         return None
 
     return value.encode() if encode and encodable else value
+
+
+def listify(value):
+    return value if isinstance(value, list) else [value]

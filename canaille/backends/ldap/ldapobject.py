@@ -6,6 +6,7 @@ import ldap.filter
 
 from .backend import Backend
 from .utils import ldap_to_python
+from .utils import listify
 from .utils import python_to_ldap
 
 
@@ -13,7 +14,7 @@ def python_attrs_to_ldap(attrs, encode=True):
     return {
         name: [
             python_to_ldap(value, attribute_ldap_syntax(name), encode=encode)
-            for value in (values if isinstance(values, list) else [values])
+            for value in listify(values)
         ]
         for name, values in attrs.items()
     }
@@ -181,7 +182,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
             name = self.attributes.get(name, name)
 
         if name in self.ldap_object_attributes():
-            value = [value] if not isinstance(value, list) else value
+            value = listify(value)
             self.changes[name] = value
 
         else:
