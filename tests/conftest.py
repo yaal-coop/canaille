@@ -29,7 +29,7 @@ def configuration(smtpd):
                     "family_name",
                     "display_name",
                     "password",
-                    "phone_number",
+                    "phone_numbers",
                     "formatted_address",
                     "street",
                     "postal_code",
@@ -104,7 +104,7 @@ def user(app, backend):
         password="correct horse battery staple",
         display_name="Johnny",
         preferred_language="en",
-        phone_number="555-000-000",
+        phone_numbers="555-000-000",
         profile_url="https://john.example",
         formatted_address="1235, somewhere",
     )

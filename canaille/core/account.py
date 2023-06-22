@@ -440,7 +440,7 @@ def profile_edition(user, username):
         "family_name",
         "display_name",
         "emails",
-        "phone_number",
+        "phone_numbers",
         "formatted_address",
         "street",
         "postal_code",

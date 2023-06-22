@@ -172,7 +172,7 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    phone_number=wtforms.TelField(
+    phone_numbers=wtforms.TelField(
         _("Phone number"), render_kw={"placeholder": _("555-000-555")}
     ),
     formatted_address=wtforms.StringField(

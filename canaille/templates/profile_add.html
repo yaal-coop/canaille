@@ -146,8 +146,8 @@
                 {% block emails_field scoped %}{{ render_input(form.emails) }}{% endblock %}
             {% endif %}
 
-            {% if "phone_number" in form %}
-                {% block phone_number_field scoped %}{{ render_input(form.phone_number) }}{% endblock %}
+            {% if "phone_numbers" in form %}
+                {% block phone_numbers_field scoped %}{{ render_input(form.phone_numbers) }}{% endblock %}
             {% endif %}
 
             {% if "formatted_address" in form %}

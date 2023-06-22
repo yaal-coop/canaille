@@ -25,7 +25,7 @@ class User(canaille.core.models.User, LDAPObject):
         "formatted_name": "cn",
         "display_name": "displayName",
         "emails": "mail",
-        "phone_number": "telephoneNumber",
+        "phone_numbers": "telephoneNumber",
         "formatted_address": "postalAddress",
         "street": "street",
         "postal_code": "postalCode",

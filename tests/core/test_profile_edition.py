@@ -105,7 +105,7 @@ def test_edition(
     res.form["family_name"] = "family_name"
     res.form["display_name"] = "display_name"
     res.form["emails"] = "email@mydomain.tld"
-    res.form["phone_number"] = "555-666-777"
+    res.form["phone_numbers"] = "555-666-777"
     res.form["formatted_address"] = "formatted_address"
     res.form["street"] = "street"
     res.form["postal_code"] = "postal_code"
@@ -130,7 +130,7 @@ def test_edition(
     assert logged_user.family_name == ["family_name"]
     assert logged_user.display_name == "display_name"
     assert logged_user.emails == ["email@mydomain.tld"]
-    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.phone_numbers == ["555-666-777"]
     assert logged_user.formatted_address == ["formatted_address"]
     assert logged_user.street == ["street"]
     assert logged_user.postal_code == ["postal_code"]
@@ -158,7 +158,7 @@ def test_edition_remove_fields(
 ):
     res = testclient.get("/profile/user", status=200)
     res.form["display_name"] = ""
-    res.form["phone_number"] = ""
+    res.form["phone_numbers"] = ""
 
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [("success", "Profile updated successfully.")], res.text
@@ -167,7 +167,7 @@ def test_edition_remove_fields(
     logged_user.reload()
 
     assert not logged_user.display_name
-    assert not logged_user.phone_number
+    assert not logged_user.phone_numbers
 
     logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
@@ -195,7 +195,7 @@ def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
 
 def test_field_permissions_none(testclient, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.phone_number = ["555-666-777"]
+    logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
@@ -205,68 +205,68 @@ def test_field_permissions_none(testclient, logged_user):
     }
 
     res = testclient.get("/profile/user", status=200)
-    assert "phone_number" not in res.form.fields
+    assert "phone_numbers" not in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "phone_number": "000-000-000",
+            "phone_numbers": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
     logged_user.reload()
-    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.phone_numbers == ["555-666-777"]
 
 
 def test_field_permissions_read(testclient, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.phone_number = ["555-666-777"]
+    logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
-        "READ": ["user_name", "phone_number"],
+        "READ": ["user_name", "phone_numbers"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "phone_number" in res.form.fields
+    assert "phone_numbers" in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "phone_number": "000-000-000",
+            "phone_numbers": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
     logged_user.reload()
-    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.phone_numbers == ["555-666-777"]
 
 
 def test_field_permissions_write(testclient, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.phone_number = ["555-666-777"]
+    logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["user_name"],
-        "WRITE": ["phone_number"],
+        "WRITE": ["phone_numbers"],
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "phone_number" in res.form.fields
+    assert "phone_numbers" in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "phone_number": "000-000-000",
+            "phone_numbers": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
     logged_user.reload()
-    assert logged_user.phone_number == ["000-000-000"]
+    assert logged_user.phone_numbers == ["000-000-000"]
 
 
 def test_simple_user_cannot_edit_other(testclient, logged_user):

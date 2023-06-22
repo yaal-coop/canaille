@@ -15,7 +15,7 @@ def test_user_creation_edition_and_deletion(
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
     res.form["emails"] = "george@abitbol.com"
-    res.form["phone_number"] = "555-666-888"
+    res.form["phone_numbers"] = "555-666-888"
     res.form["groups"] = [foo_group.id]
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
