@@ -721,7 +721,7 @@ def reset(user_name, hash):
 
     if not user or hash != profile_hash(
         user.user_name[0],
-        user.emails[0],
+        user.preferred_email,
         user.password[0] if user.has_password() else "",
     ):
         flash(

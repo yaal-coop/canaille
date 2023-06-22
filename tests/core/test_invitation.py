@@ -148,7 +148,7 @@ def test_invitation_login_already_taken(testclient, logged_admin):
     res = testclient.get("/invite", status=200)
 
     res.form["user_name"] = logged_admin.user_name
-    res.form["email"] = logged_admin.emails[0]
+    res.form["email"] = logged_admin.preferred_email
     res = res.form.submit(name="action", value="send", status=200)
 
     res.mustcontain("The login &#39;admin&#39; already exists")

@@ -42,7 +42,7 @@
                     <td>{{ watched_user.formatted_name[0] }}</td>
                 {% endif %}
                 {% if user.can_read("emails") %}
-                    <td><a href="mailto:{{ watched_user.emails[0] }}">{{ watched_user.emails[0] }}</a></td>
+                    <td><a href="mailto:{{ watched_user.preferred_email }}">{{ watched_user.preferred_email }}</a></td>
                 {% endif %}
                 {% if user.can_manage_groups %}
                     <td>

@@ -47,6 +47,10 @@ class User:
         return field in self.read | self.write
 
     @property
+    def preferred_email(self):
+        return self.emails[0] if self.emails else None
+
+    @property
     def can_edit_self(self):
         return "edit_self" in self.permissions
 

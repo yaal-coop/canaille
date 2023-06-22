@@ -39,7 +39,7 @@ DEFAULT_JWT_MAPPING = {
     "SUB": "{{ user.user_name[0] }}",
     "NAME": "{% if user.formatted_name %}{{ user.formatted_name[0] }}{% endif %}",
     "PHONE_NUMBER": "{% if user.phone_number %}{{ user.phone_number[0] }}{% endif %}",
-    "EMAIL": "{% if user.emails %}{{ user.emails[0] }}{% endif %}",
+    "EMAIL": "{% if user.preferred_email %}{{ user.preferred_email }}{% endif %}",
     "GIVEN_NAME": "{% if user.given_name %}{{ user.given_name[0] }}{% endif %}",
     "FAMILY_NAME": "{% if user.family_name %}{{ user.family_name[0] }}{% endif %}",
     "PREFERRED_USERNAME": "{% if user.display_name %}{{ user.display_name }}{% endif %}",
