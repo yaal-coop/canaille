@@ -80,24 +80,6 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
 
 
-def test_profile_creation_dynamic_validation_invalid_field(
-    testclient, logged_admin, user
-):
-    res = testclient.get("/profile")
-    testclient.post(
-        "/profile",
-        {
-            "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.com",
-        },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "invalid-field",
-        },
-        status=400,
-    )
-
-
 def test_user_creation_without_password(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"

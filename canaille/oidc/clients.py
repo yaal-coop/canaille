@@ -3,7 +3,6 @@ import datetime
 from canaille.app import models
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
-from canaille.app.flask import request_is_htmx
 from canaille.app.forms import TableForm
 from canaille.oidc.forms import ClientAddForm
 from flask import abort
@@ -37,7 +36,7 @@ def index(user):
 def add(user):
     form = ClientAddForm(request.form or None)
 
-    if not request.form:
+    if not request.form or form.form_control():
         return render_template(
             "oidc/admin/client_add.html", form=form, menuitem="admin"
         )
@@ -57,11 +56,11 @@ def add(user):
         client_id=client_id,
         client_id_issued_at=client_id_issued_at,
         client_name=form["client_name"].data,
-        contacts=[form["contacts"].data],
+        contacts=form["contacts"].data,
         client_uri=form["client_uri"].data,
         grant_types=form["grant_types"].data,
-        redirect_uris=[form["redirect_uris"].data],
-        post_logout_redirect_uris=[form["post_logout_redirect_uris"].data],
+        redirect_uris=form["redirect_uris"].data,
+        post_logout_redirect_uris=form["post_logout_redirect_uris"].data,
         response_types=form["response_types"].data,
         scope=form["scope"].data.split(" "),
         token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
@@ -90,17 +89,9 @@ def add(user):
 @bp.route("/edit/<client_id>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def edit(user, client_id):
-    if (
-        request.method == "GET"
-        or request.form.get("action") == "edit"
-        or request_is_htmx()
-    ):
-        return client_edit(client_id)
-
-    if request.form.get("action") == "delete":
+    if request.form and request.form.get("action") == "delete":
         return client_delete(client_id)
-
-    abort(400)
+    return client_edit(client_id)
 
 
 def client_edit(client_id):
@@ -111,17 +102,10 @@ def client_edit(client_id):
 
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     data["scope"] = " ".join(data["scope"])
-    data["redirect_uris"] = data["redirect_uris"][0] if data["redirect_uris"] else ""
-    data["contacts"] = data["contacts"][0] if data["contacts"] else ""
-    data["post_logout_redirect_uris"] = (
-        data["post_logout_redirect_uris"][0]
-        if data["post_logout_redirect_uris"]
-        else ""
-    )
     data["preconsent"] = client.preconsent
     form = ClientAddForm(request.form or None, data=data, client=client)
 
-    if not request.form:
+    if not request.form or form.form_control():
         return render_template(
             "oidc/admin/client_edit.html", form=form, client=client, menuitem="admin"
         )
@@ -137,11 +121,11 @@ def client_edit(client_id):
 
     client.update(
         client_name=form["client_name"].data,
-        contacts=[form["contacts"].data],
+        contacts=form["contacts"].data,
         client_uri=form["client_uri"].data,
         grant_types=form["grant_types"].data,
-        redirect_uris=[form["redirect_uris"].data],
-        post_logout_redirect_uris=[form["post_logout_redirect_uris"].data],
+        redirect_uris=form["redirect_uris"].data,
+        post_logout_redirect_uris=form["post_logout_redirect_uris"].data,
         response_types=form["response_types"].data,
         scope=form["scope"].data.split(" "),
         token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
