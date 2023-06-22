@@ -4,6 +4,7 @@ from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import HTMXBaseForm
 from canaille.app.forms import HTMXForm
 from canaille.app.forms import is_uri
+from canaille.app.forms import unique_values
 from canaille.app.i18n import native_language_name_from_code
 from flask import current_app
 from flask import g
@@ -155,24 +156,32 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    emails=wtforms.EmailField(
-        _("Email address"),
-        validators=[
-            wtforms.validators.DataRequired(),
-            wtforms.validators.Email(),
-            unique_email,
-        ],
-        description=_(
-            "This email will be used as a recovery address to reset the password if needed"
+    emails=wtforms.FieldList(
+        wtforms.EmailField(
+            _("Email address"),
+            validators=[
+                wtforms.validators.DataRequired(),
+                wtforms.validators.Email(),
+                unique_email,
+            ],
+            description=_(
+                "This email will be used as a recovery address to reset the password if needed"
+            ),
+            render_kw={
+                "placeholder": _("jane@doe.com"),
+                "spellcheck": "false",
+                "autocorrect": "off",
+            },
         ),
-        render_kw={
-            "placeholder": _("jane@doe.com"),
-            "spellcheck": "false",
-            "autocorrect": "off",
-        },
+        min_entries=1,
+        validators=[unique_values],
     ),
-    phone_numbers=wtforms.TelField(
-        _("Phone number"), render_kw={"placeholder": _("555-000-555")}
+    phone_numbers=wtforms.FieldList(
+        wtforms.TelField(
+            _("Phone number"), render_kw={"placeholder": _("555-000-555")}
+        ),
+        min_entries=1,
+        validators=[unique_values],
     ),
     formatted_address=wtforms.StringField(
         _("Address"),

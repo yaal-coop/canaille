@@ -11,6 +11,7 @@ Added
 
 - Configuration entries can be loaded from files if the entry key has a *_FILE* suffix
   and the entry value is the path to the file. :issue:`134` :pr:`134`
+- Field list support. :issue:`115` :pr:`136`
 
 Removed
 *******

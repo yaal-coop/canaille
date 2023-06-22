@@ -104,8 +104,8 @@ def test_edition(
     res.form["given_name"] = "given_name"
     res.form["family_name"] = "family_name"
     res.form["display_name"] = "display_name"
-    res.form["emails"] = "email@mydomain.tld"
-    res.form["phone_numbers"] = "555-666-777"
+    res.form["emails-0"] = "email@mydomain.tld"
+    res.form["phone_numbers-0"] = "555-666-777"
     res.form["formatted_address"] = "formatted_address"
     res.form["street"] = "street"
     res.form["postal_code"] = "postal_code"
@@ -158,7 +158,7 @@ def test_edition_remove_fields(
 ):
     res = testclient.get("/profile/user", status=200)
     res.form["display_name"] = ""
-    res.form["phone_numbers"] = ""
+    res.form["phone_numbers-0"] = ""
 
     res = res.form.submit(name="action", value="edit")
     assert res.flashes == [("success", "Profile updated successfully.")], res.text
@@ -183,11 +183,11 @@ def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
         "/profile/admin",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "emails": "john@doe.com",
+            "emails-0": "john@doe.com",
         },
         headers={
             "HX-Request": "true",
-            "HX-Trigger-Name": "emails",
+            "HX-Trigger-Name": "emails-0",
         },
     )
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -205,13 +205,13 @@ def test_field_permissions_none(testclient, logged_user):
     }
 
     res = testclient.get("/profile/user", status=200)
-    assert "phone_numbers" not in res.form.fields
+    assert "phone_numbers-0" not in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "phone_numbers": "000-000-000",
+            "phone_numbers-0": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
@@ -230,13 +230,13 @@ def test_field_permissions_read(testclient, logged_user):
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "phone_numbers" in res.form.fields
+    assert "phone_numbers-0" in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "phone_numbers": "000-000-000",
+            "phone_numbers-0": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
@@ -255,13 +255,13 @@ def test_field_permissions_write(testclient, logged_user):
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "phone_numbers" in res.form.fields
+    assert "phone_numbers-0" in res.form.fields
 
     testclient.post(
         "/profile/user",
         {
             "action": "edit",
-            "phone_numbers": "000-000-000",
+            "phone_numbers-0": "000-000-000",
             "csrf_token": res.form["csrf_token"].value,
         },
     )
@@ -292,7 +292,7 @@ def test_admin_bad_request(testclient, logged_moderator):
 def test_bad_email(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
 
-    res.form["emails"] = "john@doe.com"
+    res.form["emails-0"] = "john@doe.com"
 
     res = res.form.submit(name="action", value="edit").follow()
 
@@ -300,7 +300,7 @@ def test_bad_email(testclient, logged_user):
 
     res = testclient.get("/profile/user", status=200)
 
-    res.form["emails"] = "yolo"
+    res.form["emails-0"] = "yolo"
 
     res = res.form.submit(name="action", value="edit", status=200)
 
@@ -320,3 +320,31 @@ def test_surname_is_mandatory(testclient, logged_user):
     logged_user.reload()
 
     assert ["Doe"] == logged_user.family_name
+
+
+def test_formcontrol(testclient, logged_user):
+    res = testclient.get("/profile/user")
+    assert "emails-1" not in res.form.fields
+
+    res = res.form.submit(status=200, name="fieldlist_add", value="emails-0")
+    assert "emails-1" in res.form.fields
+
+
+def test_formcontrol_htmx(testclient, logged_user):
+    res = testclient.get("/profile/user")
+    data = {
+        field: res.form[field].value
+        for field in res.form.fields
+        if len(res.form.fields.get(field)) == 1
+    }
+    data["fieldlist_add"] = "emails-0"
+    response = testclient.post(
+        "/profile/user",
+        data,
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "listfield_add",
+        },
+    )
+    assert "emails-0" in response.text
+    assert "emails-1" in response.text
