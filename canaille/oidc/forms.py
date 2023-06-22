@@ -2,6 +2,7 @@ import wtforms
 from canaille.app import models
 from canaille.app.forms import HTMXForm
 from canaille.app.forms import is_uri
+from canaille.app.forms import unique_values
 from flask_babel import lazy_gettext as _
 
 
@@ -23,10 +24,14 @@ class ClientAddForm(HTMXForm):
         validators=[wtforms.validators.DataRequired()],
         render_kw={"placeholder": "Client Name"},
     )
-    contacts = wtforms.EmailField(
-        _("Contact"),
-        validators=[wtforms.validators.Optional(), wtforms.validators.Email()],
-        render_kw={"placeholder": "admin@mydomain.tld"},
+    contacts = wtforms.FieldList(
+        wtforms.EmailField(
+            _("Contact"),
+            validators=[wtforms.validators.Optional(), wtforms.validators.Email()],
+            render_kw={"placeholder": "admin@mydomain.tld"},
+        ),
+        min_entries=1,
+        validators=[unique_values],
     )
     client_uri = wtforms.URLField(
         _("URI"),
@@ -36,21 +41,31 @@ class ClientAddForm(HTMXForm):
         ],
         render_kw={"placeholder": "https://mydomain.tld"},
     )
-    redirect_uris = wtforms.URLField(
-        _("Redirect URIs"),
-        validators=[
-            wtforms.validators.DataRequired(),
-            is_uri,
-        ],
-        render_kw={"placeholder": "https://mydomain.tld/callback"},
+    redirect_uris = wtforms.FieldList(
+        wtforms.URLField(
+            _("Redirect URIs"),
+            validators=[
+                wtforms.validators.DataRequired(),
+                is_uri,
+            ],
+            render_kw={"placeholder": "https://mydomain.tld/callback"},
+        ),
+        min_entries=1,
+        validators=[unique_values],
     )
-    post_logout_redirect_uris = wtforms.URLField(
-        _("Post logout redirect URIs"),
-        validators=[
-            wtforms.validators.Optional(),
-            is_uri,
-        ],
-        render_kw={"placeholder": "https://mydomain.tld/you-have-been-disconnected"},
+    post_logout_redirect_uris = wtforms.FieldList(
+        wtforms.URLField(
+            _("Post logout redirect URIs"),
+            validators=[
+                wtforms.validators.Optional(),
+                is_uri,
+            ],
+            render_kw={
+                "placeholder": "https://mydomain.tld/you-have-been-disconnected"
+            },
+        ),
+        min_entries=1,
+        validators=[unique_values],
     )
     grant_types = wtforms.SelectMultipleField(
         _("Grant types"),

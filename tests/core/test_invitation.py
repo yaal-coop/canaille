@@ -26,7 +26,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     assert res.form["user_name"].value == "someone"
     assert res.form["user_name"].attrs["readonly"]
-    assert res.form["emails"].value == "someone@domain.tld"
+    assert res.form["emails-0"].value == "someone@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
@@ -75,7 +75,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
     assert res.form["user_name"].value == "jackyjack"
     assert "readonly" not in res.form["user_name"].attrs
-    assert res.form["emails"].value == "jackyjack@domain.tld"
+    assert res.form["emails-0"].value == "jackyjack@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["user_name"] = "djorje"
@@ -120,7 +120,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     res = testclient.get(url, status=200)
 
     assert res.form["user_name"].value == "sometwo"
-    assert res.form["emails"].value == "sometwo@domain.tld"
+    assert res.form["emails-0"].value == "sometwo@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
@@ -167,6 +167,24 @@ def test_registration(testclient, foo_group):
     hash = invitation.profile_hash()
 
     testclient.get(f"/register/{b64}/{hash}", status=200)
+
+
+def test_registration_formcontrol(testclient):
+    invitation = Invitation(
+        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "someoneelse",
+        False,
+        "someone@mydomain.tld",
+        [],
+    )
+    b64 = invitation.b64()
+    hash = invitation.profile_hash()
+
+    res = testclient.get(f"/register/{b64}/{hash}", status=200)
+    assert "emails-1" not in res.form.fields
+
+    res = res.form.submit(status=200, name="fieldlist_add", value="emails-0")
+    assert "emails-1" in res.form.fields
 
 
 def test_registration_invalid_hash(testclient, foo_group):

@@ -42,6 +42,7 @@ from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 from .forms import profile_form
+from .forms import PROFILE_FORM_FIELDS
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
@@ -307,7 +308,7 @@ def registration(data, hash):
 
     data = {
         "user_name": invitation.user_name,
-        "emails": invitation.email,
+        "emails": [invitation.email],
         "groups": invitation.groups,
     }
 
@@ -336,25 +337,29 @@ def registration(data, hash):
     form["password1"].flags.required = True
     form["password2"].flags.required = True
 
-    if request.form:
-        if not form.validate():
-            flash(_("User account creation failed."), "error")
+    if not request.form or form.form_control():
+        return render_template(
+            "profile_add.html",
+            form=form,
+            menuitem="users",
+            edited_user=None,
+            self_deletion=False,
+        )
 
-        else:
-            user = profile_create(current_app, form)
-            user.login()
-            flash(_("Your account has been created successfully."), "success")
-            return redirect(
-                url_for("account.profile_edition", username=user.user_name[0])
-            )
+    if not form.validate():
+        flash(_("User account creation failed."), "error")
+        return render_template(
+            "profile_add.html",
+            form=form,
+            menuitem="users",
+            edited_user=None,
+            self_deletion=False,
+        )
 
-    return render_template(
-        "profile_add.html",
-        form=form,
-        menuitem="users",
-        edited_user=None,
-        self_deletion=False,
-    )
+    user = profile_create(current_app, form)
+    user.login()
+    flash(_("Your account has been created successfully."), "success")
+    return redirect(url_for("account.profile_edition", username=user.user_name[0]))
 
 
 @bp.route("/profile", methods=("GET", "POST"))
@@ -367,23 +372,27 @@ def profile_creation(user):
         if field.render_kw and "readonly" in field.render_kw:
             del field.render_kw["readonly"]
 
-    if request.form:
-        if not form.validate():
-            flash(_("User account creation failed."), "error")
+    if not request.form or form.form_control():
+        return render_template(
+            "profile_add.html",
+            form=form,
+            menuitem="users",
+            edited_user=None,
+            self_deletion=False,
+        )
 
-        else:
-            user = profile_create(current_app, form)
-            return redirect(
-                url_for("account.profile_edition", username=user.user_name[0])
-            )
+    if not form.validate():
+        flash(_("User account creation failed."), "error")
+        return render_template(
+            "profile_add.html",
+            form=form,
+            menuitem="users",
+            edited_user=None,
+            self_deletion=False,
+        )
 
-    return render_template(
-        "profile_add.html",
-        form=form,
-        menuitem="users",
-        edited_user=None,
-        self_deletion=False,
-    )
+    user = profile_create(current_app, form)
+    return redirect(url_for("account.profile_edition", username=user.user_name[0]))
 
 
 def profile_create(current_app, form):
@@ -455,11 +464,13 @@ def profile_edition(user, username):
         "organization",
     }
     data = {
-        k: getattr(user, k)[0]
-        if getattr(user, k) and isinstance(getattr(user, k), list)
-        else getattr(user, k) or ""
-        for k in fields
-        if hasattr(user, k) and k in available_fields
+        field: getattr(user, field)[0]
+        if getattr(user, field)
+        and isinstance(getattr(user, field), list)
+        and not PROFILE_FORM_FIELDS[field].field_class == wtforms.FieldList
+        else getattr(user, field) or ""
+        for field in fields
+        if hasattr(user, field) and field in available_fields
     }
 
     form = profile_form(
@@ -467,40 +478,45 @@ def profile_edition(user, username):
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if request.form:
-        if not form.validate():
-            flash(_("Profile edition failed."), "error")
+    if not request.form or form.form_control():
+        return render_template(
+            "profile_edit.html",
+            form=form,
+            menuitem=menuitem,
+            edited_user=user,
+        )
 
-        else:
-            for attribute in form:
-                if attribute.name in user.attributes and attribute.name in editor.write:
-                    if isinstance(attribute.data, FileStorage):
-                        data = attribute.data.stream.read()
-                    else:
-                        data = attribute.data
+    if not form.validate():
+        flash(_("Profile edition failed."), "error")
+        return render_template(
+            "profile_edit.html",
+            form=form,
+            menuitem=menuitem,
+            edited_user=user,
+        )
 
-                    setattr(user, attribute.name, data)
+    for attribute in form:
+        if attribute.name in user.attributes and attribute.name in editor.write:
+            if isinstance(attribute.data, FileStorage):
+                data = attribute.data.stream.read()
+            else:
+                data = attribute.data
 
-            if "photo" in form and form["photo_delete"].data:
-                del user.photo
+            setattr(user, attribute.name, data)
 
-            if "preferred_language" in request.form:
-                # Refresh the babel cache in case the lang is updated
-                refresh()
+    if "photo" in form and form["photo_delete"].data:
+        del user.photo
 
-                if form["preferred_language"].data == "auto":
-                    user.preferred_language = None
+    if "preferred_language" in request.form:
+        # Refresh the babel cache in case the lang is updated
+        refresh()
 
-            user.save()
-            flash(_("Profile updated successfully."), "success")
-            return redirect(url_for("account.profile_edition", username=username))
+        if form["preferred_language"].data == "auto":
+            user.preferred_language = None
 
-    return render_template(
-        "profile_edit.html",
-        form=form,
-        menuitem=menuitem,
-        edited_user=user,
-    )
+    user.save()
+    flash(_("Profile updated successfully."), "success")
+    return redirect(url_for("account.profile_edition", username=username))
 
 
 @bp.route("/profile/<username>/settings", methods=("GET", "POST"))

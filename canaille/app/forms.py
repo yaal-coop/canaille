@@ -1,5 +1,6 @@
 import datetime
 import math
+import re
 
 import pytz
 import wtforms
@@ -23,6 +24,17 @@ def is_uri(form, field):
         raise wtforms.ValidationError(_("This is not a valid URL"))
 
 
+def unique_values(form, field):
+    values = set()
+    for subfield in field:
+        if subfield.data in values:
+            subfield.errors.append(_("This value is a duplicate"))
+            raise wtforms.ValidationError(_("This value is a duplicate"))
+
+        if subfield.data:
+            values.add(subfield.data)
+
+
 meta = DefaultMeta()
 
 
@@ -36,6 +48,26 @@ class I18NFormMixin:
 
 
 class HTMXFormMixin:
+    SEPARATOR = "-"
+
+    def field_from_name(self, field_name):
+        """
+        Returns a tuple containing a field and its rendering context
+        """
+        if self.SEPARATOR not in field_name:
+            field = self[field_name] if field_name in self else None
+            return field, {}
+
+        parts = field_name.split(self.SEPARATOR)
+        fieldlist_name = self.SEPARATOR.join(parts[:-1])
+        try:
+            indice = int(parts[-1])
+        except ValueError:
+            return None, {}
+        fieldlist, _ = self.field_from_name(fieldlist_name)
+        context = {"parent_list": fieldlist, "parent_indice": indice}
+        return fieldlist[indice], context
+
     def validate(self, *args, **kwargs):
         """
         If the request is a HTMX request, this will only render the field
@@ -46,20 +78,67 @@ class HTMXFormMixin:
             return super().validate(*args, **kwargs)
 
         field_name = request.headers.get("HX-Trigger-Name")
-        if field_name in self:
-            self.validate_field(field_name, *args, **kwargs)
-            self.render_field(field_name)
-        abort(400)
+        field, context = self.field_from_name(field_name)
+        if field:
+            self.validate_field(field, *args, **kwargs)
+            self.render_field(field, **context)
 
-    def validate_field(self, field_name, *args, **kwargs):
-        self[field_name].widget.hide_value = False
+        abort(400, f"{field_name} is not a valid field for inline validation")
+
+    def validate_field(self, field, *args, **kwargs):
+        field.widget.hide_value = False
         self.process(request.form)
-        super().validate(*args, **kwargs)
+        return field.validate(self, *args, **kwargs)
 
-    def render_field(self, field_name, *args, **kwargs):
+    def render_field(self, field, *args, **kwargs):
         form_macro = current_app.jinja_env.get_template("macro/form.html")
-        response = make_response(form_macro.module.render_field(self[field_name]))
+        response = make_response(form_macro.module.render_field(field, *args, **kwargs))
         abort(response)
+
+    def form_control(self):
+        """
+        Checks wether the current request is the result of the users
+        adding or removing a field from a FieldList.
+        """
+        FIELDLIST_ADD_BUTTON = "fieldlist_add"
+        FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"
+
+        fieldlist_suffix = rf"{self.SEPARATOR}(\d+)$"
+        if field_name := request.form.get(FIELDLIST_ADD_BUTTON):
+            fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
+            fieldlist, context = self.field_from_name(fieldlist_name)
+
+            if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
+                abort(400)
+
+            if request_is_htmx():
+                self.validate_field(fieldlist)
+
+            fieldlist.append_entry()
+
+            if request_is_htmx():
+                self.render_field(fieldlist, **context)
+
+            return True
+
+        if field_name := request.form.get(FIELDLIST_REMOVE_BUTTON):
+            fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
+            fieldlist, context = self.field_from_name(fieldlist_name)
+
+            if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
+                abort(400)
+
+            if request_is_htmx():
+                self.validate_field(fieldlist)
+
+            fieldlist.pop_entry()
+
+            if request_is_htmx():
+                self.render_field(fieldlist, **context)
+
+            return True
+
+        return False
 
 
 class HTMXForm(HTMXFormMixin, I18NFormMixin, FlaskForm):
