@@ -138,7 +138,7 @@ WRITE = [
     "family_name",
     "display_name",
     "password",
-    "phone_number",
+    "phone_numbers",
     "emails",
     "profile_url",
     "formatted_address",
@@ -209,7 +209,7 @@ PUBLIC_KEY = "conf/public.pem"
 # Default values fits inetOrgPerson.
 # SUB = "{{ user.user_name[0] }}"
 # NAME = "{{ user.formatted_name[0] }}"
-# PHONE_NUMBER = "{{ user.phone_number[0] }}"
+# PHONE_NUMBER = "{{ user.phone_numbers[0] }}"
 # EMAIL = "{{ user.preferred_email }}"
 # GIVEN_NAME = "{{ user.given_name[0] }}"
 # FAMILY_NAME = "{{ user.family_name[0] }}"
