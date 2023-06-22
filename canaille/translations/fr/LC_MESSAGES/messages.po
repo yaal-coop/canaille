@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-06-22 18:10+0200\n"
-"PO-Revision-Date: 2023-06-22 16:13+0000\n"
+"PO-Revision-Date: 2023-06-22 19:19+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -148,10 +148,6 @@ msgid "Profile updated successfully."
 msgstr "Le profil a été mis à jour avec succès."
 
 #: canaille/core/account.py:547
-#, fuzzy
-#| msgid ""
-#| "A password initialization link has been sent at the user email address. "
-#| "It should be received within a few minutes."
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
@@ -160,10 +156,6 @@ msgstr ""
 "courriel. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/account.py:560
-#, fuzzy
-#| msgid ""
-#| "A password reset link has been sent at the user email address. It should "
-#| "be received within a few minutes."
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within a few minutes."
@@ -1201,14 +1193,12 @@ msgid "This field is required"
 msgstr "Ce champ est requis"
 
 #: canaille/templates/macro/form.html:77
-#, fuzzy
-#| msgid "Remove token"
 msgid "Remove this field"
-msgstr "Supprimer le jeton"
+msgstr "Supprimer ce champ"
 
 #: canaille/templates/macro/form.html:92
 msgid "Add another field"
-msgstr ""
+msgstr "Ajouter un autre champ"
 
 #: canaille/templates/macro/table.html:8
 msgid "Search…"
