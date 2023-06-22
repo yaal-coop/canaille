@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-22 18:02+0200\n"
+"POT-Creation-Date: 2023-06-22 18:10+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -157,14 +157,14 @@ msgstr "Profil redigert."
 #: canaille/core/account.py:547
 #, fuzzy
 msgid ""
-"A password initialization link has been sent at the user.emails address. It "
+"A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
 #: canaille/core/account.py:560
 #, fuzzy
 msgid ""
-"A password reset link has been sent at the user.emails address. It should be "
+"A password reset link has been sent at the user email address. It should be "
 "received within a few minutes."
 msgstr ""
 "Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
