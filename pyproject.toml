@@ -40,7 +40,7 @@ python = ">=3.8, <4"
 authlib = ">1,<2"
 click = "<9"
 email_validator = "<3"
-flask = "<3"
+flask = "<2.3"
 flask-babel = "^3.0.0"
 flask-themer = "^2.0.0"
 flask-wtf = "<2"
@@ -49,6 +49,7 @@ python-ldap = "<4"
 pytz = "^2023.3"
 toml = "<1"
 wtforms = "<4"
+werkzeug = "<2.3"
 
 "sentry-sdk" = {version = "<2", optional=true, extras=["flask"]}
 
@@ -72,11 +73,11 @@ pre-commit = "*"
 pyquery = "*"
 pytest = "*"
 pytest-coverage = "*"
+pytest-flask = "^1.2.0"
 pytest-httpserver = "*"
+pytest-lazy-fixture = "^0.6.3"
 slapd = "*"
 smtpdfix = "*"
-pytest-flask = "^1.2.0"
-pytest-lazy-fixture = "^0.6.3"
 
 [tool.poetry.group.demo]
 optional = true
