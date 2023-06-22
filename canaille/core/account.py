@@ -545,7 +545,7 @@ def profile_settings(user, username):
         if send_password_initialization_mail(edited_user):
             flash(
                 _(
-                    "A password initialization link has been sent at the user.emails address. It should be received within a few minutes."
+                    "A password initialization link has been sent at the user email address. It should be received within a few minutes."
                 ),
                 "success",
             )
@@ -558,7 +558,7 @@ def profile_settings(user, username):
         if send_password_reset_mail(edited_user):
             flash(
                 _(
-                    "A password reset link has been sent at the user.emails address. It should be received within a few minutes."
+                    "A password reset link has been sent at the user email address. It should be received within a few minutes."
                 ),
                 "success",
             )

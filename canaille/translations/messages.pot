@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-06-22 18:02+0200\n"
+"POT-Creation-Date: 2023-06-22 18:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,14 +141,14 @@ msgstr ""
 
 #: canaille/core/account.py:547
 msgid ""
-"A password initialization link has been sent at the user.emails address. "
+"A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
 msgstr ""
 
 #: canaille/core/account.py:560
 msgid ""
-"A password reset link has been sent at the user.emails address. It should"
-" be received within a few minutes."
+"A password reset link has been sent at the user email address. It should "
+"be received within a few minutes."
 msgstr ""
 
 #: canaille/core/account.py:566
