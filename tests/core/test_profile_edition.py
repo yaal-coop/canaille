@@ -104,7 +104,7 @@ def test_edition(
     res.form["given_name"] = "given_name"
     res.form["family_name"] = "family_name"
     res.form["display_name"] = "display_name"
-    res.form["email"] = "email@mydomain.tld"
+    res.form["emails"] = "email@mydomain.tld"
     res.form["phone_number"] = "555-666-777"
     res.form["formatted_address"] = "formatted_address"
     res.form["street"] = "street"
@@ -129,7 +129,7 @@ def test_edition(
     assert logged_user.given_name == ["given_name"]
     assert logged_user.family_name == ["family_name"]
     assert logged_user.display_name == "display_name"
-    assert logged_user.email == ["email@mydomain.tld"]
+    assert logged_user.emails == ["email@mydomain.tld"]
     assert logged_user.phone_number == ["555-666-777"]
     assert logged_user.formatted_address == ["formatted_address"]
     assert logged_user.street == ["street"]
@@ -145,7 +145,7 @@ def test_edition(
 
     logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
-    logged_user.email = ["john@doe.com"]
+    logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
     logged_user.save()
@@ -171,7 +171,7 @@ def test_edition_remove_fields(
 
     logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
-    logged_user.email = ["john@doe.com"]
+    logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
     logged_user.save()
@@ -183,11 +183,11 @@ def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
         "/profile/admin",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.com",
+            "emails": "john@doe.com",
         },
         headers={
             "HX-Request": "true",
-            "HX-Trigger-Name": "email",
+            "HX-Trigger-Name": "emails",
         },
     )
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -292,21 +292,21 @@ def test_admin_bad_request(testclient, logged_moderator):
 def test_bad_email(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
 
-    res.form["email"] = "john@doe.com"
+    res.form["emails"] = "john@doe.com"
 
     res = res.form.submit(name="action", value="edit").follow()
 
-    assert ["john@doe.com"] == logged_user.email
+    assert ["john@doe.com"] == logged_user.emails
 
     res = testclient.get("/profile/user", status=200)
 
-    res.form["email"] = "yolo"
+    res.form["emails"] = "yolo"
 
     res = res.form.submit(name="action", value="edit", status=200)
 
     logged_user.reload()
 
-    assert ["john@doe.com"] == logged_user.email
+    assert ["john@doe.com"] == logged_user.emails
 
 
 def test_surname_is_mandatory(testclient, logged_user):

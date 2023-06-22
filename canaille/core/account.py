@@ -307,7 +307,7 @@ def registration(data, hash):
 
     data = {
         "user_name": invitation.user_name,
-        "email": invitation.email,
+        "emails": invitation.email,
         "groups": invitation.groups,
     }
 
@@ -439,7 +439,7 @@ def profile_edition(user, username):
         "given_name",
         "family_name",
         "display_name",
-        "email",
+        "emails",
         "phone_number",
         "formatted_address",
         "street",
@@ -529,7 +529,7 @@ def profile_settings(user, username):
         if send_password_initialization_mail(edited_user):
             flash(
                 _(
-                    "A password initialization link has been sent at the user email address. It should be received within a few minutes."
+                    "A password initialization link has been sent at the user.emails address. It should be received within a few minutes."
                 ),
                 "success",
             )
@@ -542,7 +542,7 @@ def profile_settings(user, username):
         if send_password_reset_mail(edited_user):
             flash(
                 _(
-                    "A password reset link has been sent at the user email address. It should be received within a few minutes."
+                    "A password reset link has been sent at the user.emails address. It should be received within a few minutes."
                 ),
                 "success",
             )
@@ -721,7 +721,7 @@ def reset(user_name, hash):
 
     if not user or hash != profile_hash(
         user.user_name[0],
-        user.email[0],
+        user.emails[0],
         user.password[0] if user.has_password() else "",
     ):
         flash(

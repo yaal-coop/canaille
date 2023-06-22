@@ -26,7 +26,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     assert res.form["user_name"].value == "someone"
     assert res.form["user_name"].attrs["readonly"]
-    assert res.form["email"].value == "someone@domain.tld"
+    assert res.form["emails"].value == "someone@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
@@ -75,7 +75,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
     assert res.form["user_name"].value == "jackyjack"
     assert "readonly" not in res.form["user_name"].attrs
-    assert res.form["email"].value == "jackyjack@domain.tld"
+    assert res.form["emails"].value == "jackyjack@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["user_name"] = "djorje"
@@ -120,7 +120,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     res = testclient.get(url, status=200)
 
     assert res.form["user_name"].value == "sometwo"
-    assert res.form["email"].value == "sometwo@domain.tld"
+    assert res.form["emails"].value == "sometwo@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "whatever"
@@ -148,7 +148,7 @@ def test_invitation_login_already_taken(testclient, logged_admin):
     res = testclient.get("/invite", status=200)
 
     res.form["user_name"] = logged_admin.user_name
-    res.form["email"] = logged_admin.email[0]
+    res.form["email"] = logged_admin.emails[0]
     res = res.form.submit(name="action", value="send", status=200)
 
     res.mustcontain("The login &#39;admin&#39; already exists")

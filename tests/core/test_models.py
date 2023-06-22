@@ -29,7 +29,7 @@ def test_user_has_password(testclient, backend):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 

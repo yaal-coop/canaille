@@ -167,7 +167,7 @@ class Backend(BaseBackend):
                 formatted_name=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
                 user_name=f"canaille_{uuid.uuid4()}",
-                email=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                 password="correct horse battery staple",
             )
             user.save(conn)
@@ -186,7 +186,7 @@ class Backend(BaseBackend):
                 cn=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
                 user_name=f"canaille_{uuid.uuid4()}",
-                email=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                 password="correct horse battery staple",
             )
             user.save(conn)

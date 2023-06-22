@@ -131,7 +131,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 
@@ -142,7 +142,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
     res = res.form.submit(name="action", value="password-initialization-mail")
     assert (
         "success",
-        "A password initialization link has been sent at the user email address. "
+        "A password initialization link has been sent at the user.emails address. "
         "It should be received within a few minutes.",
     ) in res.flashes
     assert len(smtpd.messages) == 1
@@ -167,7 +167,7 @@ def test_password_initialization_mail_send_fail(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 
@@ -180,7 +180,7 @@ def test_password_initialization_mail_send_fail(
     )
     assert (
         "success",
-        "A password initialization link has been sent at the user email address. "
+        "A password initialization link has been sent at the user.emails address. "
         "It should be received within a few minutes.",
     ) not in res.flashes
     assert ("error", "Could not send the password initialization email") in res.flashes
@@ -237,7 +237,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
         password="correct horse battery staple",
     )
     u.save()
@@ -249,7 +249,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
     res = res.form.submit(name="action", value="password-reset-mail")
     assert (
         "success",
-        "A password reset link has been sent at the user email address. "
+        "A password reset link has been sent at the user.emails address. "
         "It should be received within a few minutes.",
     ) in res.flashes
     assert len(smtpd.messages) == 1
@@ -265,7 +265,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
         password=["correct horse battery staple"],
     )
     u.save()
@@ -279,7 +279,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
     )
     assert (
         "success",
-        "A password reset link has been sent at the user email address. "
+        "A password reset link has been sent at the user.emails address. "
         "It should be received within a few minutes.",
     ) not in res.flashes
     assert ("error", "Could not send the password reset email") in res.flashes

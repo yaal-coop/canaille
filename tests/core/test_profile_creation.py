@@ -14,7 +14,7 @@ def test_user_creation_edition_and_deletion(
     res.form["user_name"] = "george"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails"] = "george@abitbol.com"
     res.form["phone_number"] = "555-666-888"
     res.form["groups"] = [foo_group.id]
     res.form["password1"] = "totoyolo"
@@ -70,11 +70,11 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
         "/profile",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.com",
+            "emails": "john@doe.com",
         },
         headers={
             "HX-Request": "true",
-            "HX-Trigger-Name": "email",
+            "HX-Trigger-Name": "emails",
         },
     )
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -102,7 +102,7 @@ def test_user_creation_without_password(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails"] = "george@abitbol.com"
 
     res = res.form.submit(name="action", value="edit", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
@@ -133,7 +133,7 @@ def test_username_already_taken(
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "user"
     res.form["family_name"] = "foo"
-    res.form["email"] = "any@thing.com"
+    res.form["emails"] = "any@thing.com"
     res = res.form.submit(name="action", value="edit")
     assert ("error", "User account creation failed.") in res.flashes
     res.mustcontain("The login &#39;user&#39; already exists")
@@ -143,7 +143,7 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "user2"
     res.form["family_name"] = "foo"
-    res.form["email"] = "john@doe.com"
+    res.form["emails"] = "john@doe.com"
     res = res.form.submit(name="action", value="edit")
     assert ("error", "User account creation failed.") in res.flashes
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -154,7 +154,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res.form["user_name"] = "george"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails"] = "george@abitbol.com"
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
@@ -167,7 +167,7 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails"] = "george@abitbol.com"
 
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 

@@ -114,8 +114,8 @@
 
             {% if "photo" in form %}</div></div>{% endif %}
 
-            {% if "email" in form %}
-                {% block email_field scoped %}{{ render_input(form.email) }}{% endblock %}
+            {% if "emails" in form %}
+                {% block emails_field scoped %}{{ render_input(form.emails) }}{% endblock %}
             {% endif %}
 
             {% if "phone_number" in form %}

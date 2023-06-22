@@ -19,7 +19,7 @@ def test_object_creation(app, backend):
         formatted_name="Doe",  # leading space
         family_name="Doe",
         user_name="user",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     assert not user.exists
     user.save()
@@ -41,7 +41,7 @@ def test_dn_when_leading_space_in_id_attribute(backend):
         formatted_name=" Doe",  # leading space
         family_name="Doe",
         user_name="user",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     user.save()
 
@@ -57,7 +57,7 @@ def test_dn_when_ldap_special_char_in_id_attribute(backend):
         formatted_name="#Doe",  # special char
         family_name="Doe",
         user_name="user",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     user.save()
 

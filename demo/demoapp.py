@@ -22,7 +22,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="admin",
                 display_name="Jane.D",
-                email="admin@mydomain.tld",
+                emails="admin@mydomain.tld",
                 password="admin",
                 phone_number="555-000-000",
                 profile_url="https://admin.example",
@@ -42,7 +42,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="moderator",
                 display_name="👮 Jack 👮",
-                email="moderator@mydomain.tld",
+                emails="moderator@mydomain.tld",
                 password="moderator",
                 phone_number="555-000-002",
                 profile_url="https://moderator.example",
@@ -57,7 +57,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="user",
                 display_name="Johnny",
-                email="user@mydomain.tld",
+                emails="user@mydomain.tld",
                 password="user",
                 phone_number="555-000-001",
                 profile_url="https://user.example",
@@ -71,7 +71,7 @@ def populate(app):
                 given_name="James",
                 family_name="Doe",
                 user_name="james",
-                email="james@mydomain.tld",
+                emails="james@mydomain.tld",
             )
             james.save()
 

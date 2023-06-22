@@ -23,7 +23,7 @@ def configuration(smtpd):
                 "READ": ["user_name", "groups"],
                 "PERMISSIONS": ["edit_self", "use_oidc", "lock_date"],
                 "WRITE": [
-                    "email",
+                    "emails",
                     "given_name",
                     "photo",
                     "family_name",
@@ -100,7 +100,7 @@ def user(app, backend):
         given_name="John",
         family_name="Doe",
         user_name="user",
-        email="john@doe.com",
+        emails="john@doe.com",
         password="correct horse battery staple",
         display_name="Johnny",
         preferred_language="en",
@@ -119,7 +119,7 @@ def admin(app, backend):
         formatted_name="Jane Doe",
         family_name="Doe",
         user_name="admin",
-        email="jane@doe.com",
+        emails="jane@doe.com",
         password="admin",
     )
     u.save()
@@ -133,7 +133,7 @@ def moderator(app, backend):
         formatted_name="Jack Doe",
         family_name="Doe",
         user_name="moderator",
-        email="jack@doe.com",
+        emails="jack@doe.com",
         password="moderator",
     )
     u.save()

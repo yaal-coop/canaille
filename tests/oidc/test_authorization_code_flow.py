@@ -814,7 +814,7 @@ def test_code_with_invalid_user(testclient, admin, client):
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
-        email="temp@temp.com",
+        emails="temp@temp.com",
         password="correct horse battery staple",
     )
     user.save()
@@ -862,7 +862,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
-        email="temp@temp.com",
+        emails="temp@temp.com",
         password="correct horse battery staple",
     )
     user.save()

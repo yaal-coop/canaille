@@ -108,7 +108,7 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
     res.form["photo"] = Upload("logo.jpg", jpeg_photo)
     res.form["user_name"] = "foobar"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails"] = "george@abitbol.com"
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
     user = models.User.get_from_login("foobar")
@@ -126,7 +126,7 @@ def test_photo_deleted_on_profile_creation(testclient, jpeg_photo, logged_admin)
     res.form["photo_delete"] = True
     res.form["user_name"] = "foobar"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails"] = "george@abitbol.com"
     res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
 
     user = models.User.get_from_login("foobar")

@@ -11,7 +11,7 @@
             {% if user.can_read("family_name") or user.can_read("given_name") %}
                 <th>{% trans %}Name{% endtrans %}</th>
             {% endif %}
-            {% if user.can_read("email") %}
+            {% if user.can_read("emails") %}
                 <th>{% trans %}Email{% endtrans %}</th>
             {% endif %}
             {% if user.can_manage_groups %}
@@ -41,8 +41,8 @@
                 {% if user.can_read("family_name") or user.can_read("given_name") %}
                     <td>{{ watched_user.formatted_name[0] }}</td>
                 {% endif %}
-                {% if user.can_read("email") %}
-                    <td><a href="mailto:{{ watched_user.email[0] }}">{{ watched_user.email[0] }}</a></td>
+                {% if user.can_read("emails") %}
+                    <td><a href="mailto:{{ watched_user.emails[0] }}">{{ watched_user.emails[0] }}</a></td>
                 {% endif %}
                 {% if user.can_manage_groups %}
                     <td>
