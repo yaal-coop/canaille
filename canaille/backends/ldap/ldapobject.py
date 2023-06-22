@@ -10,14 +10,21 @@ from .utils import listify
 from .utils import python_to_ldap
 
 
-def python_attrs_to_ldap(attrs, encode=True):
-    return {
+def python_attrs_to_ldap(attrs, encode=True, null_allowed=True):
+    formatted_attrs = {
         name: [
             python_to_ldap(value, attribute_ldap_syntax(name), encode=encode)
             for value in listify(values)
         ]
         for name, values in attrs.items()
     }
+    if not null_allowed:
+        formatted_attrs = {
+            key: [value for value in values if value]
+            for key, values in formatted_attrs.items()
+            if values
+        }
+    return formatted_attrs
 
 
 def attribute_ldap_syntax(attribute_name):
@@ -398,11 +405,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
                 for name, value in self.changes.items()
                 if name not in deletions and self.state.get(name) != value
             }
-            formatted_changes = {
-                name: value
-                for name, value in python_attrs_to_ldap(changes).items()
-                if value is not None and len(value) > 0 and value[0]
-            }
+            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
@@ -416,11 +419,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
                 for name, value in {**self.state, **self.changes}.items()
                 if value and value[0]
             }
-            formatted_changes = {
-                name: value
-                for name, value in python_attrs_to_ldap(changes).items()
-                if value is not None
-            }
+            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             attributes = [(name, values) for name, values in formatted_changes.items()]
             conn.add_s(self.id, attributes)
 
