@@ -89,7 +89,9 @@ def set_parameter_in_url_query(url, **kwargs):
 
 
 def request_is_htmx():
-    return request.headers.get("HX-Request", False)
+    return request.headers.get("HX-Request", False) and not request.headers.get(
+        "HX-Boosted", False
+    )
 
 
 def render_htmx_template(template, htmx_template=None, **kwargs):

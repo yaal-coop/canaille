@@ -4,6 +4,7 @@ from logging.config import dictConfig
 
 from flask import Flask
 from flask import g
+from flask import request
 from flask import session
 from flask_themer import FileSystemThemeLoader
 from flask_themer import render_template
@@ -134,6 +135,7 @@ def setup_flask(app):
             "website_name": app.config.get("NAME", "Canaille"),
             "user": current_user(),
             "menu": True,
+            "is_boosted": request.headers.get("HX-Boosted", False),
         }
 
     @app.errorhandler(400)

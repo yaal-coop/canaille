@@ -32,6 +32,9 @@ FAVICON = "/static/img/canaille-c.png"
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 
+# Accelerates webpages with async requests
+# HTMX = true
+
 # If HIDE_INVALID_LOGINS is set to true (the default), when a user
 # tries to sign in with an invalid login, a message is shown indicating
 # that the password is wrong, but does not give a clue wether the login

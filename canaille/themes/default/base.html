@@ -3,26 +3,27 @@
 <!doctype html>
 <html lang="{{ locale }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
         <title>{% block title -%}{% trans %}Authorization interface{% endtrans %}{%- endblock %} - {{ website_name|default("Canaille") }}</title>
 
-        <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
-        <link href="/static/fonts/lato.css" rel="stylesheet">
-        <link href="/static/css/base.css" rel="stylesheet">
-        {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
-        {% block style %}{% endblock %}
+        {% if not is_boosted %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+            <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
+            <link href="/static/fonts/lato.css" rel="stylesheet">
+            <link href="/static/css/base.css" rel="stylesheet">
+            {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
+            {% block style %}{% endblock %}
 
         <!--[if lt IE 9]>
-        <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
-        <script src="/static/js/respond.min.js"></script>
-    <![endif]-->
-
+            <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
+            <script src="/static/js/respond.min.js"></script>
+        <![endif]-->
+        {% endif %}
     </head>
 
-    <body>
+    <body hx-boost="true">
         {% block menu %}
             {% if user and menu %}
                 <div class="ui container menu-container">
@@ -90,13 +91,17 @@
         <footer>
             <a href="{{ url_for('account.about') }}">{{ _("About Canaille") }}</a>
         </footer>
-        <script src="/static/jquery/jquery.min.js"></script>
-        <script src="/static/fomanticui/semantic.min.js"></script>
-        <script src="/static/htmx/htmx.min.js"></script>
-        <script src="/static/js/base.js"></script>
-        <script>
-            htmx.config.requestClass = "loading"
-        </script>
+        {% if not is_boosted %}
+            <script src="/static/jquery/jquery.min.js"></script>
+            <script src="/static/fomanticui/semantic.min.js"></script>
+            {% if config.get("HTMX", true) %}
+                <script src="/static/htmx/htmx.min.js"></script>
+                <script>
+                    htmx.config.requestClass = "loading"
+                </script>
+            {% endif %}
+            <script src="/static/js/base.js"></script>
+        {% endif %}
         {% block script %}{% endblock %}
     </body>
 </html>
