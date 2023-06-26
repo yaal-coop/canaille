@@ -1,0 +1,12 @@
+import pytest
+
+
+@pytest.fixture
+def configuration(ldap_configuration):
+    ldap_configuration["BACKENDS"]["LDAP"]["USER_ID_ATTRIBUTE"] = "mail"
+    yield ldap_configuration
+
+
+def test_user_different_rdn(testclient, slapd_server, user):
+    output = slapd_server.slapcat().stdout.decode()
+    assert "dn: mail=john@doe.com,ou=users,dc=mydomain,dc=tld" in output
