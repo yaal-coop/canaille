@@ -5,10 +5,6 @@
     {%- trans %}Users{% endtrans -%}
 {%- endblock -%}
 
-{% block script %}
-    <script src="/static/js/users.js"></script>
-{% endblock %}
-
 {% block submenu %}
     <nav class="ui bottom attached {% if has_smtp %}three{% else %}two{% endif %} item borderless menu">
         <a class="active item" href="{{ url_for('account.users') }}">

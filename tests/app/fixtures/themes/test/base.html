@@ -93,9 +93,9 @@
         <footer>
             <a href="{{ url_for('account.about') }}">{{ _("About canaille") }}</a>
         </footer>
-        <script src="/static/jquery/jquery.min.js"></script>
-        <script src="/static/fomanticui/semantic.min.js"></script>
-        <script src="/static/js/base.js"></script>
+        <script src="/static/jquery/jquery.min.js" defer></script>
+        <script src="/static/fomanticui/semantic.min.js" defer></script>
+        <script src="/static/js/base.js" defer></script>
         {% block script %}{% endblock %}
 
         TEST_THEME

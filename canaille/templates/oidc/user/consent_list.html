@@ -4,10 +4,6 @@
     {%- trans %}My consents{% endtrans -%}
 {%- endblock -%}
 
-{% block script %}
-    <script src="/static/js/users.js"></script>
-{% endblock %}
-
 {% block submenu %}
     <nav class="ui bottom attached two item borderless menu">
         <a class="active item" href="{{ url_for('oidc.consents.consents') }}">
