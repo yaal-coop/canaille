@@ -85,6 +85,10 @@ class User(canaille.core.models.User, LDAPObject):
 
         return user
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
     def has_password(self):
         return bool(self.password)
 

@@ -60,7 +60,7 @@ def index():
 
     if user.can_edit_self or user.can_manage_users:
         return redirect(
-            url_for("account.profile_edition", username=current_user().user_name[0])
+            url_for("account.profile_edition", identifier=current_user().identifier)
         )
 
     if user.can_use_oidc:
@@ -82,7 +82,7 @@ def about():
 def login():
     if current_user():
         return redirect(
-            url_for("account.profile_edition", username=current_user().user_name[0])
+            url_for("account.profile_edition", identifier=current_user().identifier)
         )
 
     form = LoginForm(request.form or None)
@@ -93,7 +93,7 @@ def login():
 
     user = models.User.get_from_login(form.login.data)
     if user and not user.has_password():
-        return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
+        return redirect(url_for("account.firstlogin", identifier=user.identifier))
 
     if not form.validate():
         models.User.logout()
@@ -119,7 +119,7 @@ def password():
 
     user = models.User.get_from_login(session["attempt_login"])
     if user and not user.has_password():
-        return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
+        return redirect(url_for("account.firstlogin", identifier=user.identifier))
 
     if not form.validate() or not user:
         models.User.logout()
@@ -160,15 +160,15 @@ def logout():
     return redirect("/")
 
 
-@bp.route("/firstlogin/<user_name>", methods=("GET", "POST"))
-def firstlogin(user_name):
-    user = models.User.get_from_login(user_name)
+@bp.route("/firstlogin/<identifier>", methods=("GET", "POST"))
+def firstlogin(identifier):
+    user = models.User.get_from_login(identifier)
     if not user or user.has_password():
         abort(404)
 
     form = FirstLoginForm(request.form or None)
     if not request.form:
-        return render_template("firstlogin.html", form=form, user_name=user_name)
+        return render_template("firstlogin.html", form=form, identifier=identifier)
 
     form.validate()
 
@@ -182,7 +182,7 @@ def firstlogin(user_name):
     else:
         flash(_("Could not send the password initialization email"), "error")
 
-    return render_template("firstlogin.html", form=form, user_name=user_name)
+    return render_template("firstlogin.html", form=form, identifier=identifier)
 
 
 @bp.route("/users", methods=["GET", "POST"])
@@ -360,7 +360,7 @@ def registration(data, hash):
     user = profile_create(current_app, form)
     user.login()
     flash(_("Your account has been created successfully."), "success")
-    return redirect(url_for("account.profile_edition", username=user.user_name[0]))
+    return redirect(url_for("account.profile_edition", identifier=user.identifier))
 
 
 @bp.route("/profile", methods=("GET", "POST"))
@@ -393,7 +393,7 @@ def profile_creation(user):
         )
 
     user = profile_create(current_app, form)
-    return redirect(url_for("account.profile_edition", username=user.user_name[0]))
+    return redirect(url_for("account.profile_edition", identifier=user.identifier))
 
 
 def profile_create(current_app, form):
@@ -424,19 +424,19 @@ def profile_create(current_app, form):
     return user
 
 
-@bp.route("/profile/<username>", methods=("GET", "POST"))
+@bp.route("/profile/<identifier>", methods=("GET", "POST"))
 @user_needed()
-def profile_edition(user, username):
+def profile_edition(user, identifier):
     editor = user
     if not user.can_manage_users and not (
-        user.can_edit_self and username == user.user_name[0]
+        user.can_edit_self and identifier == user.identifier
     ):
         abort(403)
 
-    menuitem = "profile" if username == editor.user_name[0] else "users"
+    menuitem = "profile" if identifier == editor.identifier else "users"
     fields = editor.read | editor.write
-    if username != editor.user_name[0]:
-        user = models.User.get_from_login(username)
+    if identifier != editor.identifier:
+        user = models.User.get_from_login(identifier)
     else:
         user = editor
 
@@ -524,18 +524,18 @@ def profile_edition(user, username):
 
     user.save()
     flash(_("Profile updated successfully."), "success")
-    return redirect(url_for("account.profile_edition", username=username))
+    return redirect(url_for("account.profile_edition", identifier=identifier))
 
 
-@bp.route("/profile/<username>/settings", methods=("GET", "POST"))
+@bp.route("/profile/<identifier>/settings", methods=("GET", "POST"))
 @user_needed()
-def profile_settings(user, username):
+def profile_settings(user, identifier):
     if not user.can_manage_users and not (
-        user.can_edit_self and username == user.user_name[0]
+        user.can_edit_self and identifier == user.identifier
     ):
         abort(403)
 
-    edited_user = models.User.get_from_login(username)
+    edited_user = models.User.get_from_login(identifier)
     if not edited_user:
         abort(404)
 
@@ -640,7 +640,7 @@ def profile_settings_edit(editor, edited_user):
             edited_user.save()
             flash(_("Profile updated successfully."), "success")
             return redirect(
-                url_for("account.profile_settings", username=edited_user.user_name[0])
+                url_for("account.profile_settings", identifier=edited_user.identifier)
             )
 
     return render_template(
@@ -671,10 +671,10 @@ def profile_delete(user, edited_user):
     return redirect(url_for("account.users"))
 
 
-@bp.route("/impersonate/<username>")
+@bp.route("/impersonate/<identifier>")
 @permissions_needed("impersonate_users")
-def impersonate(user, username):
-    puppet = models.User.get_from_login(username)
+def impersonate(user, identifier):
+    puppet = models.User.get_from_login(identifier)
     if not puppet:
         abort(404)
 
@@ -735,16 +735,16 @@ def forgotten():
     return render_template("forgotten-password.html", form=form)
 
 
-@bp.route("/reset/<user_name>/<hash>", methods=["GET", "POST"])
-def reset(user_name, hash):
+@bp.route("/reset/<identifier>/<hash>", methods=["GET", "POST"])
+def reset(identifier, hash):
     if not current_app.config.get("ENABLE_PASSWORD_RECOVERY", True):
         abort(404)
 
     form = PasswordResetForm(request.form)
-    user = models.User.get_from_login(user_name)
+    user = models.User.get_from_login(identifier)
 
     if not user or hash != profile_hash(
-        user.user_name[0],
+        user.identifier,
         user.preferred_email,
         user.password[0] if user.has_password() else "",
     ):
@@ -759,19 +759,19 @@ def reset(user_name, hash):
         user.login()
 
         flash(_("Your password has been updated successfully"), "success")
-        return redirect(url_for("account.profile_edition", username=user_name))
+        return redirect(url_for("account.profile_edition", identifier=identifier))
 
     return render_template(
-        "reset-password.html", form=form, user_name=user_name, hash=hash
+        "reset-password.html", form=form, identifier=identifier, hash=hash
     )
 
 
-@bp.route("/profile/<user_name>/<field>")
-def photo(user_name, field):
+@bp.route("/profile/<identifier>/<field>")
+def photo(identifier, field):
     if field.lower() != "photo":
         abort(404)
 
-    user = models.User.get_from_login(user_name)
+    user = models.User.get_from_login(identifier)
     if not user:
         abort(404)
 
@@ -779,7 +779,7 @@ def photo(user_name, field):
     if request.if_modified_since and request.if_modified_since >= user.last_modified:
         return "", 304
 
-    etag = profile_hash(user_name, user.last_modified.isoformat())
+    etag = profile_hash(identifier, user.last_modified.isoformat())
     if request.if_none_match and etag in request.if_none_match:
         return "", 304
 

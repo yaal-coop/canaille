@@ -34,6 +34,14 @@ class User:
         except (IndexError, KeyError):
             pass
 
+    @property
+    def identifier(self):
+        """
+        Returns a unique value that will be used to identify the user.
+        This value will be used in URLs in canaille, so it should be unique and short.
+        """
+        raise NotImplementedError()
+
     def has_password(self):
         raise NotImplementedError()
 

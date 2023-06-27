@@ -24,7 +24,7 @@
             <tr>
                 {% if user.can_read("photo") %}
                     <td>
-                        <a href="{{ url_for('account.profile_edition', username=watched_user.user_name[0]) }}">
+                        <a href="{{ url_for('account.profile_edition', identifier=watched_user.identifier) }}">
                             {% if user.can_manage_users and watched_user.locked %}
                                 <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>
                             {% elif watched_user.photo and watched_user.photo[0] %}
@@ -36,7 +36,7 @@
                     </td>
                 {% endif %}
                 {% if user.can_read("user_name") %}
-                    <td><a href="{{ url_for('account.profile_edition', username=watched_user.user_name[0]) }}">{{ watched_user.user_name[0] }}</a></td>
+                    <td><a href="{{ url_for('account.profile_edition', identifier=watched_user.identifier) }}">{{ watched_user.user_name[0] }}</a></td>
                 {% endif %}
                 {% if user.can_read("family_name") or user.can_read("given_name") %}
                     <td>{{ watched_user.formatted_name[0] }}</td>

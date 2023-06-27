@@ -39,9 +39,9 @@ def send_password_reset_mail(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        user_name=user.user_name[0],
+        identifier=user.identifier,
         hash=profile_hash(
-            user.user_name[0],
+            user.identifier,
             user.preferred_email,
             user.password[0] if user.has_password() else "",
         ),
@@ -79,9 +79,9 @@ def send_password_initialization_mail(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        user_name=user.user_name[0],
+        identifier=user.identifier,
         hash=profile_hash(
-            user.user_name[0],
+            user.identifier,
             user.preferred_email,
             user.password[0] if user.has_password() else "",
         ),
