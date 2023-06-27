@@ -100,7 +100,7 @@ BACKENDS.LDAP
     Can be a list of classes.
     Defaults to ``inetOrgPerson``.
 
-:USER_ID_ATTRIBUTE:
+:USER_RDN:
     *Optional.* The attribute to identify an object in the User DN.
     For example, if it has the value ``uid``, users DN will be in the form ``uid=foobar,ou=users,dc=mydomain,dc=tld``.
     Defaults to ``cn``.
@@ -119,7 +119,7 @@ BACKENDS.LDAP
     Can be a list of classes.
     Defaults to ``groupOfNames``
 
-:GROUP_ID_ATTRIBUTE:
+:GROUP_RDN:
     *Optional.* The attribute to identify an object in a group DN.
     For example, if it has the value ``cn``, groups DN will be in the form ``cn=foobar,ou=users,dc=mydomain,dc=tld``.
     Defaults to ``cn``

@@ -13,7 +13,7 @@ from .ldapobject import LDAPObject
 class User(canaille.core.models.User, LDAPObject):
     DEFAULT_OBJECT_CLASS = "inetOrgPerson"
     DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
-    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_RDN = "cn"
 
     attributes = {
         "id": "dn",
@@ -184,7 +184,7 @@ class User(canaille.core.models.User, LDAPObject):
 
 class Group(canaille.core.models.Group, LDAPObject):
     DEFAULT_OBJECT_CLASS = "groupOfNames"
-    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_RDN = "cn"
     DEFAULT_NAME_ATTRIBUTE = "cn"
     DEFAULT_USER_FILTER = "member={user.id}"
 

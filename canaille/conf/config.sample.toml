@@ -76,7 +76,7 @@ USER_BASE = "ou=users,dc=mydomain,dc=tld"
 # USER_CLASS = "inetOrgPerson"
 
 # The attribute to identify an object in the User dn.
-# USER_ID_ATTRIBUTE = "uid"
+# USER_RDN = "uid"
 
 # Filter to match users on sign in. Supports a variable
 # {login} that can be used to compare against several fields:
@@ -89,7 +89,7 @@ GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 # GROUP_CLASS = "groupOfNames"
 
 # The attribute to identify an object in the User dn.
-# GROUP_ID_ATTRIBUTE = "cn"
+# GROUP_RDN = "cn"
 
 # The attribute to use to identify a group
 # GROUP_NAME_ATTRIBUTE = "cn"
