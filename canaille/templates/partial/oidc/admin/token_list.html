@@ -22,7 +22,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ url_for("account.profile_edition", identifier=token.subject.identifier) }}">
+                    <a href="{{ url_for("account.profile_edition", edited_user=token.subject) }}">
                         {{ token.subject.user_name[0] }}
                     </a>
                 </td>

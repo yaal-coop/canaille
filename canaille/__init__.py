@@ -155,6 +155,13 @@ def setup_flask(app):
         return render_template("error.html", description=error, error_code=500), 500
 
 
+def setup_flask_converters(app):
+    from canaille.app.flask import model_converter
+    from canaille.app import models
+
+    app.url_map.converters["user"] = model_converter(models.User)
+
+
 def create_app(config=None, validate=True, backend=None):
     from .oidc.oauth import setup_oauth
     from .app.i18n import setup_i18n
@@ -168,6 +175,7 @@ def create_app(config=None, validate=True, backend=None):
         setup_logging(app)
         setup_backend(app, backend)
         setup_oauth(app)
+        setup_flask_converters(app)
         setup_blueprints(app)
         setup_jinja(app)
         setup_i18n(app)

@@ -5,7 +5,7 @@ def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.app.config["ENABLE_PASSWORD_RECOVERY"] = False
 
     testclient.get("/reset", status=404)
-    testclient.get("/reset/user_name/hash", status=404)
+    testclient.get("/reset/user/hash", status=404)
 
     res = testclient.get("/login")
     res.mustcontain(no="Forgotten password")

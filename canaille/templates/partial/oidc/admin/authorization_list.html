@@ -14,7 +14,7 @@
                 <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.authorization_code_id }}</a></td>
                 <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client.client_id) }}">{{ authorization.client.client_id }}</a></td>
                 <td>
-                    <a href="{{ url_for("account.profile_edition", identifier=authorization.subject.identifier) }}">
+                    <a href="{{ url_for("account.profile_edition", edited_user=authorization.subject) }}">
                         {{ authorization.subject.user_name[0] }}
                     </a>
                 </td>

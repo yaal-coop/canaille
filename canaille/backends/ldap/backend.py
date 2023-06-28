@@ -79,6 +79,9 @@ class Backend(BaseBackend):
                 )
 
     def setup(self):
+        if self.connection:
+            return
+
         try:  # pragma: no cover
             if request.endpoint == "static":
                 return

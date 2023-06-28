@@ -78,8 +78,8 @@ class User(canaille.core.models.User, LDAPObject):
         return filter_
 
     @classmethod
-    def get(cls, **kwargs):
-        user = super().get(**kwargs)
+    def get(cls, *args, **kwargs):
+        user = super().get(*args, **kwargs)
         if user:
             user.load_permissions()
 

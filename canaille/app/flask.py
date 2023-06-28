@@ -10,6 +10,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask_babel import gettext as _
+from werkzeug.routing import BaseConverter
 
 
 def current_user():
@@ -99,3 +100,19 @@ def render_htmx_template(template, htmx_template=None, **kwargs):
         (htmx_template or f"partial/{template}") if request_is_htmx() else template
     )
     return render_template(template, **kwargs)
+
+
+def model_converter(model):
+    class ModelConverter(BaseConverter):
+        def to_url(self, instance):
+            return instance.identifier
+
+        def to_python(self, identifier):
+            current_app.backend.setup()
+            instance = model.get(identifier)
+            if not instance:
+                abort(404)
+
+            return instance
+
+    return ModelConverter

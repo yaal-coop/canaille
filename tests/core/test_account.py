@@ -246,7 +246,7 @@ def test_user_deleted_in_session(testclient, backend):
     testclient.get("/profile/jake", status=200)
     u.delete()
 
-    testclient.get("/profile/jake", status=403)
+    testclient.get("/profile/jake", status=404)
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 

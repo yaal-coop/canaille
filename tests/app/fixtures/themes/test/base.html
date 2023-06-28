@@ -28,7 +28,7 @@
                         </div>
                     {% endif %}
                     <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                       href="{{ url_for('account.profile_edition', identifier=user.identifier) }}">
+                       href="{{ url_for('account.profile_edition', edited_user=user) }}">
                         <i class="id card icon"></i>
                         {% trans %}My profile{% endtrans %}
                     </a>

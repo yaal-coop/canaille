@@ -75,7 +75,7 @@ def password_init_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        identifier=user.identifier,
+        user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
@@ -98,7 +98,7 @@ def password_init_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        identifier=user.identifier,
+        user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
@@ -117,7 +117,7 @@ def password_reset_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        identifier=user.identifier,
+        user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
@@ -140,7 +140,7 @@ def password_reset_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        identifier=user.identifier,
+        user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
