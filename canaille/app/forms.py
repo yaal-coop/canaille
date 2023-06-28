@@ -49,6 +49,8 @@ class I18NFormMixin:
 
 class HTMXFormMixin:
     SEPARATOR = "-"
+    render_field_macro_file = "macro/form.html"
+    render_field_extra_context = {}
 
     def field_from_name(self, field_name):
         """
@@ -91,8 +93,12 @@ class HTMXFormMixin:
         return field.validate(self, *args, **kwargs)
 
     def render_field(self, field, *args, **kwargs):
-        form_macro = current_app.jinja_env.get_template("macro/form.html")
-        response = make_response(form_macro.module.render_field(field, *args, **kwargs))
+        form_macro = current_app.jinja_env.get_template(self.render_field_macro_file)
+        response = make_response(
+            form_macro.module.render_field(
+                field, *args, **kwargs, **self.render_field_extra_context
+            )
+        )
         abort(response)
 
     def form_control(self):

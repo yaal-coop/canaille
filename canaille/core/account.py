@@ -478,6 +478,13 @@ def profile_edition(user, username):
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
+    if request_is_htmx():
+        form.render_field_macro_file = "macro/profile.html"
+        form.render_field_extra_context = {
+            "user": editor,
+            "edited_user": user,
+        }
+
     if not request.form or form.form_control():
         return render_template(
             "profile_edit.html",

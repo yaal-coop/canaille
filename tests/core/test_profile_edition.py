@@ -177,22 +177,6 @@ def test_edition_remove_fields(
     logged_user.save()
 
 
-def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
-    res = testclient.get("/profile/admin")
-    res = testclient.post(
-        "/profile/admin",
-        {
-            "csrf_token": res.form["csrf_token"].value,
-            "emails-0": "john@doe.com",
-        },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "emails-0",
-        },
-    )
-    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
-
-
 def test_field_permissions_none(testclient, logged_user):
     testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
@@ -348,3 +332,41 @@ def test_formcontrol_htmx(testclient, logged_user):
     )
     assert "emails-0" in response.text
     assert "emails-1" in response.text
+
+
+def test_inline_validation(testclient, logged_admin, user):
+    res = testclient.get("/profile/admin")
+    res = testclient.post(
+        "/profile/admin",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "emails-0": "john@doe.com",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "emails-0",
+        },
+    )
+    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
+
+
+def test_inline_validation_keep_indicators(
+    configuration, testclient, logged_admin, user
+):
+    configuration["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
+    configuration["ACL"]["DEFAULT"]["READ"].append("display_name")
+    configuration["ACL"]["ADMIN"]["WRITE"].append("display_name")
+
+    res = testclient.get("/profile/admin")
+    res = testclient.post(
+        "/profile/user",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "display_name": "George Abitbol",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "display_name",
+        },
+    )
+    res.mustcontain("This user cannot edit this field")
