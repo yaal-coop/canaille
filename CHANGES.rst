@@ -14,6 +14,11 @@ Added
 - Field list support. :issue:`115` :pr:`136`
 - Pages are boosted with HTMX :issue:`144` :issue:`145` :pr:`137`
 
+Changed
+*******
+
+- Bump to jquery 3.7.0 :pr:`138`
+
 Removed
 *******
 
