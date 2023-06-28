@@ -303,6 +303,7 @@ class LDAPObject(metaclass=LDAPObjectMetaclass):
         if base is None:
             base = f"{cls.base},{cls.root_dn}"
         elif "=" not in base:
+            base = ldap.dn.escape_dn_chars(base)
             base = f"{cls.rdn_attribute}={base},{cls.base},{cls.root_dn}"
 
         class_filter = (
