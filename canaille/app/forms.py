@@ -111,6 +111,11 @@ class HTMXFormMixin:
             if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
                 abort(400)
 
+            if fieldlist.render_kw and (
+                "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
+            ):
+                abort(403)
+
             if request_is_htmx():
                 self.validate_field(fieldlist)
 
@@ -127,6 +132,11 @@ class HTMXFormMixin:
 
             if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
                 abort(400)
+
+            if fieldlist.render_kw and (
+                "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
+            ):
+                abort(403)
 
             if request_is_htmx():
                 self.validate_field(fieldlist)
