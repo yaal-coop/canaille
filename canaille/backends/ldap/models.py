@@ -196,6 +196,10 @@ class Group(canaille.core.models.Group, LDAPObject):
     }
 
     @property
+    def identifier(self):
+        return self.rdn_value
+
+    @property
     def display_name(self):
         attribute = current_app.config["BACKENDS"]["LDAP"].get(
             "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE

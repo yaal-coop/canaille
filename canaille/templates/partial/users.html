@@ -47,7 +47,7 @@
                 {% if user.can_manage_groups %}
                     <td>
                         {% for group in watched_user.groups %}
-                            <a class="ui label" href="{{ url_for('groups.group', groupname=group.display_name) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
+                            <a class="ui label" href="{{ url_for('groups.group', group=group) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
                                 {{ group.display_name }}
                             </a>
                         {% endfor %}
