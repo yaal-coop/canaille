@@ -189,7 +189,7 @@
                     {% endif %}
 
                     {% if user.can_impersonate_users and user.user_name != edited_user.user_name %}
-                        <a href="{{ url_for('account.impersonate', username=edited_user.user_name[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate">
+                        <a href="{{ url_for('account.impersonate', username=edited_user.user_name[0]) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate" hx-boost="false">
                             {{ _("Impersonate") }}
                         </a>
                     {% endif %}
