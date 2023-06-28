@@ -88,20 +88,21 @@ def login():
     form = LoginForm(request.form or None)
     form["login"].render_kw["placeholder"] = BaseBackend.get().login_placeholder()
 
-    if request.form:
-        user = models.User.get_from_login(form.login.data)
-        if user and not user.has_password():
-            return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
+    if not request.form or form.form_control():
+        return render_template("login.html", form=form)
 
-        if not form.validate():
-            models.User.logout()
-            flash(_("Login failed, please check your information"), "error")
-            return render_template("login.html", form=form)
+    user = models.User.get_from_login(form.login.data)
+    if user and not user.has_password():
+        return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
 
-        session["attempt_login"] = form.login.data
-        return redirect(url_for("account.password"))
+    if not form.validate():
+        models.User.logout()
+        flash(_("Login failed, please check your information"), "error")
+        return render_template("login.html", form=form)
 
-    return render_template("login.html", form=form)
+    session["attempt_login"] = form.login.data
+    return redirect(url_for("account.password"))
+
 
 
 @bp.route("/password", methods=("GET", "POST"))
@@ -111,37 +112,37 @@ def password():
 
     form = PasswordForm(request.form or None)
 
-    if request.form:
-        user = models.User.get_from_login(session["attempt_login"])
-        if user and not user.has_password():
-            return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
-
-        if not form.validate() or not user:
-            models.User.logout()
-            flash(_("Login failed, please check your information"), "error")
-            return render_template(
-                "password.html", form=form, username=session["attempt_login"]
-            )
-
-        success, message = user.check_password(form.password.data)
-        if not success:
-            models.User.logout()
-            flash(message or _("Login failed, please check your information"), "error")
-            return render_template(
-                "password.html", form=form, username=session["attempt_login"]
-            )
-
-        del session["attempt_login"]
-        user.login()
-        flash(
-            _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
-            "success",
+    if not request.form or form.form_control():
+        return render_template(
+            "password.html", form=form, username=session["attempt_login"]
         )
-        return redirect(url_for("account.index"))
 
-    return render_template(
-        "password.html", form=form, username=session["attempt_login"]
+    user = models.User.get_from_login(session["attempt_login"])
+    if user and not user.has_password():
+        return redirect(url_for("account.firstlogin", user_name=user.user_name[0]))
+
+    if not form.validate() or not user:
+        models.User.logout()
+        flash(_("Login failed, please check your information"), "error")
+        return render_template(
+            "password.html", form=form, username=session["attempt_login"]
+        )
+
+    success, message = user.check_password(form.password.data)
+    if not success:
+        models.User.logout()
+        flash(message or _("Login failed, please check your information"), "error")
+        return render_template(
+            "password.html", form=form, username=session["attempt_login"]
+        )
+
+    del session["attempt_login"]
+    user.login()
+    flash(
+        _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
+        "success",
     )
+    return redirect(url_for("account.index"))
 
 
 @bp.route("/logout")
