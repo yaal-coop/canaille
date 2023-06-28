@@ -24,10 +24,10 @@
                 {{ flask.messages() }}
 
                 {% call fui.render_form(form) %}
-                    {% block login_field scoped %}{{ fui.render_field(form.login, icon="user", noindicator=true, class="autofocus") }}{% endblock %}
+                    {% block login_field scoped %}{{ fui.render_field(form.login, class="autofocus") }}{% endblock %}
 
                     {% if "password" in form %}
-                        {% block password_field scoped %}{{ fui.render_field(form.password, icon="key", noindicator=true) }}{% endblock %}
+                        {% block password_field scoped %}{{ fui.render_field(form.password) }}{% endblock %}
                     {% endif %}
 
                     <div class="ui right aligned container">
