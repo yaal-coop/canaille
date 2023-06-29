@@ -132,7 +132,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com", "johhny@doe.com"],
     )
     u.save()
 
@@ -150,7 +150,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         "A password initialization link has been sent at your email address. "
         "You should receive it within a few minutes.",
     ) in res.flashes
-    assert len(smtpd.messages) == 1
+    assert len(smtpd.messages) == 2
     assert "Password initialization" in smtpd.messages[0].get("Subject")
     u.delete()
 

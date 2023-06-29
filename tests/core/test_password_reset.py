@@ -22,6 +22,30 @@ def test_password_reset(testclient, user):
     ) in res.flashes
 
 
+def test_password_reset_multiple_emails(testclient, user):
+    user.emails = ["foo@bar.com", "foo@baz.com"]
+    user.save()
+
+    assert not user.check_password("foobarbaz")[0]
+    hash = profile_hash("user", "foo@baz.com", user.password[0])
+
+    res = testclient.get("/reset/user/" + hash, status=200)
+
+    res.form["password"] = "foobarbaz"
+    res.form["confirmation"] = "foobarbaz"
+    res = res.form.submit()
+    assert ("success", "Your password has been updated successfully") in res.flashes
+
+    user.reload()
+    assert user.check_password("foobarbaz")[0]
+
+    res = testclient.get("/reset/user/" + hash)
+    assert (
+        "error",
+        "The password reset link that brought you here was invalid.",
+    ) in res.flashes
+
+
 def test_password_reset_bad_link(testclient, user):
     res = testclient.get("/reset/user/foobarbaz")
     assert (

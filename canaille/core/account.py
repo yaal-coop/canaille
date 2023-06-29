@@ -167,7 +167,10 @@ def firstlogin(user):
 
     form.validate()
 
-    if send_password_initialization_mail(user):
+    success = all(
+        send_password_initialization_mail(user, email) for email in user.emails
+    )
+    if success:
         flash(
             _(
                 "A password initialization link has been sent at your email address. "
@@ -530,7 +533,11 @@ def profile_settings(user, edited_user):
         return profile_delete(user, edited_user)
 
     if request.form.get("action") == "password-initialization-mail":
-        if send_password_initialization_mail(edited_user):
+        success = all(
+            send_password_initialization_mail(edited_user, email)
+            for email in edited_user.emails
+        )
+        if success:
             flash(
                 _(
                     "A password initialization link has been sent at the user email address. It should be received within a few minutes."
@@ -543,7 +550,10 @@ def profile_settings(user, edited_user):
         return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "password-reset-mail":
-        if send_password_reset_mail(edited_user):
+        success = all(
+            send_password_reset_mail(edited_user, email) for email in edited_user.emails
+        )
+        if success:
             flash(
                 _(
                     "A password reset link has been sent at the user email address. It should be received within a few minutes."
@@ -697,7 +707,7 @@ def forgotten():
         )
         return render_template("forgotten-password.html", form=form)
 
-    success = send_password_reset_mail(user)
+    success = all(send_password_reset_mail(user, email) for email in user.emails)
 
     if success:
         flash(success_message, "success")
@@ -716,12 +726,15 @@ def reset(user, hash):
         abort(404)
 
     form = PasswordResetForm(request.form)
-
-    if not user or hash != profile_hash(
-        user.identifier,
-        user.preferred_email,
-        user.password[0] if user.has_password() else "",
-    ):
+    hashes = {
+        profile_hash(
+            user.identifier,
+            email,
+            user.password[0] if user.has_password() else "",
+        )
+        for email in user.emails
+    }
+    if not user or hash not in hashes:
         flash(
             _("The password reset link that brought you here was invalid."),
             "error",

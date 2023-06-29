@@ -35,14 +35,14 @@ def send_test_mail(email):
     )
 
 
-def send_password_reset_mail(user):
+def send_password_reset_mail(user, mail):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
         user=user,
         hash=profile_hash(
             user.identifier,
-            user.preferred_email,
+            mail,
             user.password[0] if user.has_password() else "",
         ),
         _external=True,
@@ -75,14 +75,14 @@ def send_password_reset_mail(user):
     )
 
 
-def send_password_initialization_mail(user):
+def send_password_initialization_mail(user, email):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
         user=user,
         hash=profile_hash(
             user.identifier,
-            user.preferred_email,
+            email,
             user.password[0] if user.has_password() else "",
         ),
         _external=True,
