@@ -79,6 +79,9 @@ class Backend(BaseBackend):
                 )
 
     def setup(self):
+        if self.connection:
+            return
+
         try:  # pragma: no cover
             if request.endpoint == "static":
                 return
@@ -244,7 +247,7 @@ def setup_ldap_models(config):
     )
     models.User.base = user_base
     models.User.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "USER_ID_ATTRIBUTE", models.User.DEFAULT_ID_ATTRIBUTE
+        "USER_RDN", models.User.DEFAULT_RDN
     )
     object_class = config["BACKENDS"]["LDAP"].get(
         "USER_CLASS", models.User.DEFAULT_OBJECT_CLASS
@@ -258,7 +261,7 @@ def setup_ldap_models(config):
     )
     models.Group.base = group_base or None
     models.Group.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "GROUP_ID_ATTRIBUTE", models.Group.DEFAULT_ID_ATTRIBUTE
+        "GROUP_RDN", models.Group.DEFAULT_RDN
     )
     object_class = config["BACKENDS"]["LDAP"].get(
         "GROUP_CLASS", models.Group.DEFAULT_OBJECT_CLASS

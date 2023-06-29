@@ -75,8 +75,8 @@ def password_init_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.preferred_email, user.password[0]),
+        user=user,
+        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
@@ -98,8 +98,8 @@ def password_init_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.preferred_email, user.password[0]),
+        user=user,
+        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
@@ -117,8 +117,8 @@ def password_reset_html(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.preferred_email, user.password[0]),
+        user=user,
+        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
@@ -140,8 +140,8 @@ def password_reset_txt(user):
     base_url = url_for("account.index", _external=True)
     reset_url = url_for(
         "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.preferred_email, user.password[0]),
+        user=user,
+        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
@@ -153,14 +153,14 @@ def password_reset_txt(user):
     )
 
 
-@bp.route("/mail/<user_name>/<email>/invitation.html")
+@bp.route("/mail/<identifier>/<email>/invitation.html")
 @permissions_needed("manage_oidc")
-def invitation_html(user, user_name, email):
+def invitation_html(user, identifier, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
         "account.registration",
-        data=obj_to_b64([user_name, email]),
-        hash=profile_hash(user_name, email),
+        data=obj_to_b64([identifier, email]),
+        hash=profile_hash(identifier, email),
         _external=True,
     )
 
@@ -176,14 +176,14 @@ def invitation_html(user, user_name, email):
     )
 
 
-@bp.route("/mail/<user_name>/<email>/invitation.txt")
+@bp.route("/mail/<identifier>/<email>/invitation.txt")
 @permissions_needed("manage_oidc")
-def invitation_txt(user, user_name, email):
+def invitation_txt(user, identifier, email):
     base_url = url_for("account.index", _external=True)
     registration_url = url_for(
         "account.registration",
-        data=obj_to_b64([user_name, email]),
-        hash=profile_hash(user_name, email),
+        data=obj_to_b64([identifier, email]),
+        hash=profile_hash(identifier, email),
         _external=True,
     )
 

@@ -180,7 +180,9 @@ def test_model_references_set_unsaved_object(
     group.save()
     user.reload()  # an LDAP group can be inconsistent by containing members which doesn't exist
 
-    non_existent_user = models.User(formatted_name="foo", family_name="bar")
+    non_existent_user = models.User(
+        formatted_name="foo", family_name="bar", user_name="baz"
+    )
     group.members = group.members + [non_existent_user]
     assert group.members == [user, non_existent_user]
 

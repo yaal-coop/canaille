@@ -19,6 +19,11 @@ Changed
 
 - Bump to jquery 3.7.0 :pr:`138`
 
+Fixed
+*****
+
+- Profile edition when the user RDN was not ``uid`` :issue:`148` :pr:`139`
+
 Removed
 *******
 

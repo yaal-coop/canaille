@@ -88,7 +88,7 @@ def test_edition_permission(
     admin,
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    testclient.get("/profile/user", status=403)
+    testclient.get("/profile/user", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     testclient.get("/profile/user", status=200)
@@ -253,18 +253,18 @@ def test_field_permissions_write(testclient, logged_user):
     assert logged_user.phone_numbers == ["000-000-000"]
 
 
-def test_simple_user_cannot_edit_other(testclient, logged_user):
+def test_simple_user_cannot_edit_other(testclient, admin, logged_user):
     res = testclient.get("/profile/user", status=200)
-    testclient.get("/profile/admin", status=403)
+    testclient.get("/profile/admin", status=404)
     testclient.post(
         "/profile/admin",
         {"action": "edit", "csrf_token": res.form["csrf_token"].value},
-        status=403,
+        status=404,
     )
     testclient.post(
         "/profile/admin",
         {"action": "delete", "csrf_token": res.form["csrf_token"].value},
-        status=403,
+        status=404,
     )
     testclient.get("/users", status=403)
 

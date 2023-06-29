@@ -1,5 +1,6 @@
 import pytest
 from canaille.app import models
+from canaille.core.models import Group
 from canaille.core.models import User
 
 
@@ -17,6 +18,14 @@ def test_required_methods(testclient):
 
     with pytest.raises(NotImplementedError):
         user.set_password("password")
+
+    with pytest.raises(NotImplementedError):
+        user.identifier
+
+    group = Group()
+
+    with pytest.raises(NotImplementedError):
+        group.identifier
 
 
 def test_user_get_from_login(testclient, user, backend):

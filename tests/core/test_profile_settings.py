@@ -299,7 +299,7 @@ def test_edition_permission(
     admin,
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    testclient.get("/profile/user/settings", status=403)
+    testclient.get("/profile/user/settings", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     testclient.get("/profile/user/settings", status=200)

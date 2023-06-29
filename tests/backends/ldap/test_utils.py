@@ -33,37 +33,45 @@ def test_object_creation(app, backend):
 
 def test_repr(backend, foo_group, user):
     assert repr(foo_group) == "<Group display_name=foo>"
-    assert repr(user) == "<User formatted_name=John (johnny) Doe>"
+    assert repr(user) == "<User user_name=user>"
 
 
-def test_dn_when_leading_space_in_id_attribute(backend):
+def test_dn_when_leading_space_in_id_attribute(testclient, backend):
     user = models.User(
         formatted_name=" Doe",  # leading space
-        family_name="Doe",
-        user_name="user",
+        family_name=" Doe",
+        user_name=" user",
         emails="john@doe.com",
     )
     user.save()
 
     assert ldap.dn.is_dn(user.dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(user.dn)) == user.dn
-    assert user.dn == "cn=Doe,ou=users,dc=mydomain,dc=tld"
+    assert user.dn == "uid=user,ou=users,dc=mydomain,dc=tld"
+
+    assert user == models.User.get(user.identifier)
+    assert user == models.User.get(user_name=user.identifier)
+    assert user == models.User.get(id=user.dn)
 
     user.delete()
 
 
-def test_dn_when_ldap_special_char_in_id_attribute(backend):
+def test_special_chars_in_rdn(testclient, backend):
     user = models.User(
-        formatted_name="#Doe",  # special char
-        family_name="Doe",
-        user_name="user",
-        emails="john@doe.com",
+        formatted_name="#Doe",
+        family_name="#Doe",
+        user_name="#user",  # special char
+        emails=["john@doe.com"],
     )
     user.save()
 
     assert ldap.dn.is_dn(user.dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(user.dn)) == user.dn
-    assert user.dn == "cn=\\#Doe,ou=users,dc=mydomain,dc=tld"
+    assert user.dn == "uid=\\#user,ou=users,dc=mydomain,dc=tld"
+
+    assert user == models.User.get(user.identifier)
+    assert user == models.User.get(user_name=user.identifier)
+    assert user == models.User.get(id=user.dn)
 
     user.delete()
 
@@ -182,7 +190,7 @@ def test_object_class_update(backend, testclient):
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
-    user1 = models.User(cn="foo1", sn="bar1")
+    user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
     user1.save()
 
     assert user1.objectClass == ["inetOrgPerson"]
@@ -194,7 +202,7 @@ def test_object_class_update(backend, testclient):
     ]
     setup_ldap_models(testclient.app.config)
 
-    user2 = models.User(cn="foo2", sn="bar2")
+    user2 = models.User(cn="foo2", sn="bar2", user_name="baz2")
     user2.save()
 
     assert user2.objectClass == ["inetOrgPerson", "extensibleObject"]

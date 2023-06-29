@@ -48,21 +48,16 @@ def create_group(user):
                 ),
                 "success",
             )
-            return redirect(url_for("groups.group", groupname=group.display_name))
+            return redirect(url_for("groups.group", group=group))
 
     return render_template(
         "group.html", menuitem="groups", form=form, edited_group=None, members=None
     )
 
 
-@bp.route("/<groupname>", methods=("GET", "POST"))
+@bp.route("/<group:group>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
-def group(user, groupname):
-    group = models.Group.get(display_name=groupname)
-
-    if not group:
-        abort(404)
-
+def group(user, group):
     if (
         request.method == "GET"
         or request.form.get("action") == "edit"
@@ -100,7 +95,7 @@ def edit_group(group):
                 ),
                 "success",
             )
-            return redirect(url_for("groups.group", groupname=group.display_name))
+            return redirect(url_for("groups.group", group=group))
         else:
             flash(_("Group edition failed."), "error")
 

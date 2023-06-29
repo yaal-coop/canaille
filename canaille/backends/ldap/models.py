@@ -13,7 +13,7 @@ from .ldapobject import LDAPObject
 class User(canaille.core.models.User, LDAPObject):
     DEFAULT_OBJECT_CLASS = "inetOrgPerson"
     DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
-    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_RDN = "cn"
 
     attributes = {
         "id": "dn",
@@ -78,12 +78,16 @@ class User(canaille.core.models.User, LDAPObject):
         return filter_
 
     @classmethod
-    def get(cls, **kwargs):
-        user = super().get(**kwargs)
+    def get(cls, *args, **kwargs):
+        user = super().get(*args, **kwargs)
         if user:
             user.load_permissions()
 
         return user
+
+    @property
+    def identifier(self):
+        return self.rdn_value
 
     def has_password(self):
         return bool(self.password)
@@ -180,7 +184,7 @@ class User(canaille.core.models.User, LDAPObject):
 
 class Group(canaille.core.models.Group, LDAPObject):
     DEFAULT_OBJECT_CLASS = "groupOfNames"
-    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_RDN = "cn"
     DEFAULT_NAME_ATTRIBUTE = "cn"
     DEFAULT_USER_FILTER = "member={user.id}"
 
@@ -190,6 +194,10 @@ class Group(canaille.core.models.Group, LDAPObject):
         "members": "member",
         "description": "description",
     }
+
+    @property
+    def identifier(self):
+        return self.rdn_value
 
     @property
     def display_name(self):
@@ -240,6 +248,10 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         **client_metadata_attributes,
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     ldap_object_class = ["oauthAuthorizationCode"]
@@ -263,6 +275,10 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
         "revokation_date": "oauthRevokationDate",
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class Token(canaille.oidc.models.Token, LDAPObject):
     ldap_object_class = ["oauthToken"]
@@ -284,6 +300,10 @@ class Token(canaille.oidc.models.Token, LDAPObject):
         "audience": "oauthAudience",
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
@@ -298,3 +318,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
         "issue_date": "oauthIssueDate",
         "revokation_date": "oauthRevokationDate",
     }
+
+    @property
+    def identifier(self):
+        return self.rdn_value
