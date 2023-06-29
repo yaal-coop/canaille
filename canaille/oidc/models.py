@@ -130,9 +130,6 @@ class Token(TokenMixin):
     def get_scope(self):
         return " ".join(self.scope)
 
-    def get_expires_in(self):
-        return int(self.lifetime)
-
     def get_issued_at(self):
         return int(
             (
