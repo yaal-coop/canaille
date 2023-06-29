@@ -28,14 +28,9 @@ def index(user):
     )
 
 
-@bp.route("/<token_id>", methods=["GET", "POST"])
+@bp.route("/<token:token>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
-def view(user, token_id):
-    token = models.Token.get(token_id=token_id)
-
-    if not token:
-        abort(404)
-
+def view(user, token):
     return render_template(
         "oidc/admin/token_view.html",
         token=token,
@@ -43,16 +38,11 @@ def view(user, token_id):
     )
 
 
-@bp.route("/<token_id>/revoke", methods=["GET", "POST"])
+@bp.route("/<token:token>/revoke", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
-def revoke(user, token_id):
-    token = models.Token.get(token_id=token_id)
-
-    if not token:
-        abort(404)
-
+def revoke(user, token):
     token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
     token.save()
     flash(_("The token has successfully been revoked."), "success")
 
-    return redirect(url_for("oidc.tokens.view", token_id=token_id))
+    return redirect(url_for("oidc.tokens.view", token=token))

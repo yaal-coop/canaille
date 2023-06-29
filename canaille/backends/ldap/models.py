@@ -248,6 +248,10 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         **client_metadata_attributes,
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     ldap_object_class = ["oauthAuthorizationCode"]
@@ -271,6 +275,10 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
         "revokation_date": "oauthRevokationDate",
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class Token(canaille.oidc.models.Token, LDAPObject):
     ldap_object_class = ["oauthToken"]
@@ -292,6 +300,10 @@ class Token(canaille.oidc.models.Token, LDAPObject):
         "audience": "oauthAudience",
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
@@ -306,3 +318,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
         "issue_date": "oauthIssueDate",
         "revokation_date": "oauthRevokationDate",
     }
+
+    @property
+    def identifier(self):
+        return self.rdn_value

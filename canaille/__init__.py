@@ -161,6 +161,12 @@ def setup_flask_converters(app):
 
     app.url_map.converters["user"] = model_converter(models.User)
     app.url_map.converters["group"] = model_converter(models.Group)
+    app.url_map.converters["client"] = model_converter(models.Client)
+    app.url_map.converters["token"] = model_converter(models.Token)
+    app.url_map.converters["authorizationcode"] = model_converter(
+        models.AuthorizationCode
+    )
+    app.url_map.converters["consent"] = model_converter(models.Consent)
 
 
 def create_app(config=None, validate=True, backend=None):

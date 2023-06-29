@@ -12,12 +12,12 @@
         {% for token in table_form.items_slice %}
             <tr>
                 <td>
-                    <a href="{{ url_for('oidc.tokens.view', token_id=token.token_id) }}">
+                    <a href="{{ url_for('oidc.tokens.view', token=token) }}">
                         {{ token.token_id }}
                     </a>
                 </td>
                 <td>
-                    <a href="{{ url_for('oidc.clients.edit', client_id=token.client.client_id) }}">
+                    <a href="{{ url_for('oidc.clients.edit', client=token.client) }}">
                         {{ token.client.client_name }}
                     </a>
                 </td>

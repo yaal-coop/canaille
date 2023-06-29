@@ -79,7 +79,7 @@
                                 </span>
                             </div>
                         {% endif %}
-                        <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke_preconsent', client_id=client.client_id ) }}">
+                        <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke_preconsent', client=client ) }}">
                             <i class="remove icon"></i>
                             {% trans %}Revoke access{% endtrans %}
                         </a>

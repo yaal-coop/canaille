@@ -83,23 +83,18 @@ def add(user):
         "success",
     )
 
-    return redirect(url_for("oidc.clients.edit", client_id=client_id))
+    return redirect(url_for("oidc.clients.edit", client=client))
 
 
-@bp.route("/edit/<client_id>", methods=["GET", "POST"])
+@bp.route("/edit/<client:client>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
-def edit(user, client_id):
+def edit(user, client):
     if request.form and request.form.get("action") == "delete":
-        return client_delete(client_id)
-    return client_edit(client_id)
+        return client_delete(client)
+    return client_edit(client)
 
 
-def client_edit(client_id):
-    client = models.Client.get(client_id=client_id)
-
-    if not client:
-        abort(404)
-
+def client_edit(client):
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     data["scope"] = " ".join(data["scope"])
     data["preconsent"] = client.preconsent
@@ -144,15 +139,10 @@ def client_edit(client_id):
         _("The client has been edited."),
         "success",
     )
-    return redirect(url_for("oidc.clients.edit", client_id=client_id))
+    return redirect(url_for("oidc.clients.edit", client=client))
 
 
-def client_delete(client_id):
-    client = models.Client.get(client_id=client_id)
-
-    if not client:
-        abort(404)
-
+def client_delete(client):
     flash(
         _("The client has been deleted."),
         "success",

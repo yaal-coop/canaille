@@ -25,10 +25,9 @@ def index(user):
     )
 
 
-@bp.route("/<authorization_id>", methods=["GET", "POST"])
+@bp.route("/<authorizationcode:authorization>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
-def view(user, authorization_id):
-    authorization = models.AuthorizationCode.get(authorization_code_id=authorization_id)
+def view(user, authorization):
     return render_template(
         "oidc/admin/authorization_view.html",
         authorization=authorization,

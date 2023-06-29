@@ -11,8 +11,8 @@
     <tbody>
         {% for authorization in table_form.items_slice %}
             <tr>
-                <td><a href="{{ url_for('oidc.authorizations.view', authorization_id=authorization.authorization_code_id) }}">{{ authorization.authorization_code_id }}</a></td>
-                <td><a href="{{ url_for('oidc.clients.edit', client_id=authorization.client.client_id) }}">{{ authorization.client.client_id }}</a></td>
+                <td><a href="{{ url_for('oidc.authorizations.view', authorization=authorization) }}">{{ authorization.authorization_code_id }}</a></td>
+                <td><a href="{{ url_for('oidc.clients.edit', client=authorization.client) }}">{{ authorization.client.client_id }}</a></td>
                 <td>
                     <a href="{{ url_for("account.profile_edition", edited_user=authorization.subject) }}">
                         {{ authorization.subject.user_name[0] }}

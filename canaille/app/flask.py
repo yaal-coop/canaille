@@ -104,13 +104,17 @@ def render_htmx_template(template, htmx_template=None, **kwargs):
 
 def model_converter(model):
     class ModelConverter(BaseConverter):
+        def __init__(self, *args, required=True, **kwargs):
+            self.required = required
+            super().__init__(self, *args, **kwargs)
+
         def to_url(self, instance):
             return instance.identifier
 
         def to_python(self, identifier):
             current_app.backend.setup()
             instance = model.get(identifier)
-            if not instance:
+            if self.required and not instance:
                 abort(404)
 
             return instance
