@@ -202,7 +202,7 @@
                 {% block preferred_language_field scoped %}{{ render_field(form.preferred_language) }}{% endblock %}
             {% endif %}
 
-            <h4 class="ui dividing header">{% trans %}Account information{% endtrans %}</h4>
+            <h4 class="ui dividing header">{% trans %}Account settings{% endtrans %}</h4>
 
             {% if "user_name" in form %}
                 {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}

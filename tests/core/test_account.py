@@ -252,24 +252,20 @@ def test_user_deleted_in_session(testclient, backend):
 
 
 def test_impersonate(testclient, logged_admin, user):
-    res = (
-        testclient.get("/", status=302).follow(status=200).click("Account information")
-    )
+    res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value
 
     res = (
         testclient.get("/impersonate/user", status=302)
         .follow(status=302)
         .follow(status=200)
-        .click("Account information")
+        .click("Account settings")
     )
     assert "user" == res.form["user_name"].value
 
     testclient.get("/logout", status=302).follow(status=302).follow(status=200)
 
-    res = (
-        testclient.get("/", status=302).follow(status=200).click("Account information")
-    )
+    res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value
 
 
