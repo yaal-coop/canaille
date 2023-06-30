@@ -92,7 +92,9 @@
             {% if config.get("HTMX", true) %}
                 <script src="/static/htmx/htmx.min.js" defer></script>
                 <script>
-                    htmx.config.requestClass = "loading"
+                    document.addEventListener('DOMContentLoaded', function() {
+                        htmx.config.requestClass = "loading"
+                    })
                 </script>
             {% endif %}
             <script src="/static/js/base.js" defer></script>
