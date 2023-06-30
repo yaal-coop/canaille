@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-06-30 18:40+0200\n"
-"PO-Revision-Date: 2023-06-22 19:19+0000\n"
+"PO-Revision-Date: 2023-07-02 08:52+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 5.0-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:66
@@ -328,10 +328,8 @@ msgid "Johnny"
 msgstr "Martin.D"
 
 #: canaille/core/forms.py:161
-#, fuzzy
-#| msgid "Email address"
 msgid "Email addresses"
-msgstr "Courriel"
+msgstr "Courriels"
 
 #: canaille/core/forms.py:167
 msgid ""
@@ -341,10 +339,8 @@ msgstr ""
 "un courriel de réinitialisation de mot de passe en cas de besoin"
 
 #: canaille/core/forms.py:181
-#, fuzzy
-#| msgid "Phone number"
 msgid "Phone numbers"
-msgstr "Numéro de téléphone"
+msgstr "Numéros de téléphone"
 
 #: canaille/core/forms.py:181
 msgid "555-000-555"
@@ -540,10 +536,8 @@ msgid "You have not been disconnected"
 msgstr "Vous n'avez pas été déconnecté"
 
 #: canaille/oidc/forms.py:29
-#, fuzzy
-#| msgid "Contact"
 msgid "Contacts"
-msgstr "Contact"
+msgstr "Contacts"
 
 #: canaille/oidc/forms.py:37
 msgid "URI"
@@ -1032,10 +1026,8 @@ msgstr "Cliquez pour mettre en ligne une photo"
 #: canaille/templates/profile_edit.html:27
 #: canaille/templates/profile_settings.html:24
 #: canaille/templates/profile_settings.html:90
-#, fuzzy
-#| msgid "Account deletion"
 msgid "Account settings"
-msgstr "Suppression d'un compte"
+msgstr "Paramètres du compte"
 
 #: canaille/templates/profile_add.html:229
 msgid "User password is not mandatory"
@@ -1225,12 +1217,11 @@ msgid "Page"
 msgstr "Page"
 
 #: canaille/templates/macro/table.html:111
-#, fuzzy, python-format
-#| msgid "%(nb_items)s items"
+#, python-format
 msgid "%(nb_items)s item"
 msgid_plural "%(nb_items)s items"
-msgstr[0] "%(nb_items)s élément(s)"
-msgstr[1] "%(nb_items)s élément(s)"
+msgstr[0] "%(nb_items)s élément"
+msgstr[1] "%(nb_items)s éléments"
 
 #: canaille/templates/mail/admin.html:5 canaille/templates/mail/admin.html:12
 #: canaille/templates/oidc/admin/authorization_list.html:12
