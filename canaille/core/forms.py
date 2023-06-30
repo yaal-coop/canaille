@@ -158,7 +158,7 @@ PROFILE_FORM_FIELDS = dict(
     ),
     emails=wtforms.FieldList(
         wtforms.EmailField(
-            _("Email address"),
+            _("Email addresses"),
             validators=[
                 wtforms.validators.DataRequired(),
                 wtforms.validators.Email(),
@@ -178,7 +178,7 @@ PROFILE_FORM_FIELDS = dict(
     ),
     phone_numbers=wtforms.FieldList(
         wtforms.TelField(
-            _("Phone number"), render_kw={"placeholder": _("555-000-555")}
+            _("Phone numbers"), render_kw={"placeholder": _("555-000-555")}
         ),
         min_entries=1,
         validators=[unique_values],

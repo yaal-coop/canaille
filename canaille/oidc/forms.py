@@ -26,7 +26,7 @@ class ClientAddForm(HTMXForm):
     )
     contacts = wtforms.FieldList(
         wtforms.EmailField(
-            _("Contact"),
+            _("Contacts"),
             validators=[wtforms.validators.Optional(), wtforms.validators.Email()],
             render_kw={"placeholder": "admin@mydomain.tld"},
         ),
