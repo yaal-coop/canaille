@@ -78,7 +78,7 @@ def test_client_list_search(testclient, logged_admin, client, other_client):
     form["query"] = "other"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(other_client.client_name)
     res.mustcontain(no=client.client_name)
 

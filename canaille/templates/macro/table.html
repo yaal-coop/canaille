@@ -108,7 +108,11 @@
     </div>
     <div class="ui left floated">
         <span class="disabled ui button">
-            {{ _("%(nb_items)s items", nb_items=form.nb_items) }}
+            {% trans nb_items=form.nb_items %}
+                {{ nb_items }} item
+                {% pluralize %}
+                {{ nb_items }} items
+            {% endtrans %}
         </span>
     </div>
 {% endmacro %}

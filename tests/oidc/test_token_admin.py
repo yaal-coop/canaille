@@ -113,7 +113,7 @@ def test_token_list_search(testclient, logged_admin, client):
     form["query"] = "valid"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(token2.token_id)
     res.mustcontain(no=token1.token_id)
 

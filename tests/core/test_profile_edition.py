@@ -4,7 +4,7 @@ from webtest import Upload
 
 def test_user_list_pagination(testclient, logged_admin):
     res = testclient.get("/users")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
     users = fake_users(25)
 
@@ -23,7 +23,7 @@ def test_user_list_pagination(testclient, logged_admin):
         user.delete()
 
     res = testclient.get("/users")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
 
 def test_user_list_bad_pages(testclient, logged_admin):
@@ -50,7 +50,7 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
     form["query"] = "Jack"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(moderator.formatted_name[0])
     res.mustcontain(no=user.formatted_name[0])
 
@@ -67,7 +67,7 @@ def test_user_list_search_only_allowed_fields(
     form["query"] = "user"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(user.formatted_name[0])
     res.mustcontain(no=moderator.formatted_name[0])
 

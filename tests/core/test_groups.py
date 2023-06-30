@@ -9,7 +9,7 @@ def test_no_group(app, backend):
 
 def test_group_list_pagination(testclient, logged_admin, foo_group):
     res = testclient.get("/groups")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
     groups = fake_groups(25)
 
@@ -30,7 +30,7 @@ def test_group_list_pagination(testclient, logged_admin, foo_group):
         group.delete()
 
     res = testclient.get("/groups")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
 
 def test_group_list_bad_pages(testclient, logged_admin):
@@ -82,7 +82,7 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     form["query"] = "oo"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(foo_group.display_name)
     res.mustcontain(no=bar_group.display_name)
 
@@ -221,7 +221,7 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
 
 def test_user_list_pagination(testclient, logged_admin, foo_group):
     res = testclient.get("/groups/foo")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
     users = fake_users(25)
     for user in users:
@@ -243,7 +243,7 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
         user.delete()
 
     res = testclient.get("/groups/foo")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
 
 def test_user_list_bad_pages(testclient, logged_admin, foo_group):
@@ -276,7 +276,7 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     form["query"] = "ohn"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(user.formatted_name[0])
     res.mustcontain(no=logged_admin.formatted_name[0])
     res.mustcontain(no=moderator.formatted_name[0])
