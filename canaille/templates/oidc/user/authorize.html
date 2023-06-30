@@ -2,7 +2,7 @@
 {% import 'macro/form.html' as fui %}
 
 {% block content %}
-    <div class="ui segment">
+    <div class="ui segment" hx-boost="false">
         {% if client.logo_uri %}
             <img class="ui centered tiny image" src="{{ client.logo_uri }}" alt="{{ client.client_name }}">
         {% endif %}

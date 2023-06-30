@@ -4,7 +4,7 @@
 {% import 'partial/login_field.html' as login_field %}
 
 {% block container %}
-    <div class="ui container">
+    <div class="ui container" hx-boost="false">
         <div class="content">
             <div class="ui clearing segment">
                 {% if logo_url %}
@@ -36,7 +36,7 @@
                             {% if has_smtp and has_password_recovery %}
                                 <a type="button" class="ui right floated button" href="{{ url_for('account.forgotten') }}">{{ _("Forgotten password") }}</a>
                             {% endif %}
-                            <button type="submit" class="ui right floated primary button">{{ _("Continue") }}</button>
+                            <button type="submit" name="answer" class="ui right floated primary button" hx-boost="false">{{ _("Continue") }}</button>
                         </div>
                     </div>
                 {% endcall %}
