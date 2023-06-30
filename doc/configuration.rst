@@ -194,11 +194,11 @@ Canaille needs a key pair to sign the JWT. The installation command will generat
 
 :PRIVATE_KEY:
     **Required.** The path to the private key.
-    e.g. ``/path/to/canaille/conf/private.pem``
+    e.g. ``/path/to/private.pem``
 
 :PUBLIC_KEY:
     **Required.** The path to the public key.
-    e.g. ``/path/to/canaille/conf/private.pem``
+    e.g. ``/path/to/public.pem``
 
 :ISS:
     *Optional.* The URI of the identity provider.

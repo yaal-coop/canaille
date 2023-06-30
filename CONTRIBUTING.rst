@@ -70,7 +70,7 @@ You can populate the database with randomly generated users and groups with the 
 .. code-block:: console
 
     # If using docker:
-    docker compose exec canaille env CONFIG=conf/canaille.toml poetry run canaille populate --nb 100 users  # or docker-compose
+    docker compose exec canaille env CONFIG=conf-docker/canaille.toml poetry run canaille populate --nb 100 users  # or docker-compose
 
     # If running in local environment
     env CONFIG=conf/canaille.toml poetry run canaille populate  --nb 100 users

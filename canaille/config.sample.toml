@@ -187,9 +187,9 @@ WRITE = [
 
 [OIDC.JWT]
 # The path to the private key.
-PRIVATE_KEY = "canaille/conf/private.pem"
+PRIVATE_KEY = "canaille/private.pem"
 # The path to the public key.
-PUBLIC_KEY = "canaille/conf/public.pem"
+PUBLIC_KEY = "canaille/public.pem"
 # The URI of the identity provider
 # ISS = "https://auth.mydomain.tld"
 # The key type parameter
