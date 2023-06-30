@@ -1,0 +1,9 @@
+{% import 'macro/form.html' as fui %}
+{% macro render_field(field) %}
+    {% if field.name == "login" %}
+        {{ fui.render_field(field, icon="user", noindicator=true, class="autofocus", **kwargs) }}
+    {% endif %}
+    {% if field.name == "password" %}
+        {{ fui.render_field(field, icon="key", noindicator=true, **kwargs) }}
+    {% endif %}
+{% endmacro %}

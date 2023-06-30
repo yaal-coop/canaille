@@ -39,7 +39,7 @@ del_button=false
     <div class="ui
                 {%- if corner_indicator %} corner labeled{% endif -%}
                 {%- if icon or field.description %} left icon{% endif -%}
-                {%- if field_visible and not readonly and not disabled and (add_button or del_button) %} action{% endif -%}
+                {%- if field_visible and (add_button or del_button) %} action{% endif -%}
                 {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
 {% endif %}
@@ -75,7 +75,7 @@ del_button=false
 {% endif %}
 
 {% if field_visible %}
-    {% if not readonly and not disabled and del_button %}
+    {% if del_button %}
         <button
             class="ui teal icon button"
             title="{{ _("Remove this field") }}"
@@ -90,7 +90,7 @@ del_button=false
             <i class="minus icon"></i>
         </button>
     {% endif %}
-    {% if not readonly and not disabled and add_button %}
+    {% if add_button %}
         <button
             class="ui teal icon button"
             title="{{ _("Add another field") }}"
@@ -146,13 +146,13 @@ del_button=false
     {% endif %}
 {%- endmacro %}
 
-{% macro render_list(field) -%}
+{% macro render_list(field, render_func=none) -%}
     <div class="field fieldlist" id="{{ field.name }}">
         {# Strangely enough, translations are not rendered when using field.label() #}
         {{ field[0].label() }}
         {% for subfield in field %}
             {% set ignore_me = kwargs.update(**field.render_kw or {}) %}
-            {{ render_field(
+            {{ (render_func or render_field)(
             subfield,
             parent_list=field,
             parent_indice=loop.index0,

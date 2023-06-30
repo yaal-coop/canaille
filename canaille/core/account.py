@@ -82,6 +82,7 @@ def login():
         return redirect(url_for("account.profile_edition", edited_user=current_user()))
 
     form = LoginForm(request.form or None)
+    form.render_field_macro_file = "partial/login_field.html"
     form["login"].render_kw["placeholder"] = BaseBackend.get().login_placeholder()
 
     if not request.form or form.form_control():
@@ -106,6 +107,7 @@ def password():
         return redirect(url_for("account.login"))
 
     form = PasswordForm(request.form or None)
+    form.render_field_macro_file = "partial/login_field.html"
 
     if not request.form or form.form_control():
         return render_template(
@@ -467,13 +469,11 @@ def profile_edition(user, edited_user):
         user.write & available_fields, user.read & available_fields, edited_user
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
-
-    if request_is_htmx():
-        form.render_field_macro_file = "macro/profile.html"
-        form.render_field_extra_context = {
-            "user": user,
-            "edited_user": edited_user,
-        }
+    form.render_field_macro_file = "partial/profile_field.html"
+    form.render_field_extra_context = {
+        "user": user,
+        "edited_user": edited_user,
+    }
 
     if not request.form or form.form_control():
         return render_template(
