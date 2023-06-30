@@ -173,13 +173,13 @@
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if has_account_lockability and "lock_date" in user.write and not edited_user.locked %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock" id="lock">
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock" id="lock" formnovalidate>
                             {% trans %}Lock the account{% endtrans %}
                         </button>
                     {% endif %}
 
                     {% if user.can_manage_users or self_deletion %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete" formnovalidate>
                             {% if user.user_name != edited_user.user_name %}
                                 {{ _("Delete the user") }}
                             {% else %}
