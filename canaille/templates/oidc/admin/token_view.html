@@ -71,7 +71,7 @@
                     <td>{{ _("Subject") }}</td>
                     <td>
                         <a href="{{ url_for("account.profile_edition", edited_user=token.subject) }}">
-                            {{ token.subject.name }} - {{ token.subject.user_name[0] }}
+                            {{ token.subject.identifier }}
                         </a>
                     </td>
                 </tr>
