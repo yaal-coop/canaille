@@ -88,7 +88,7 @@ def password_init_html(user):
 
     return render_template(
         "mail/firstlogin.html",
-        site_name=current_app.config.get("NAME", reset_url),
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
         logo=current_app.config.get("LOGO"),
@@ -126,19 +126,19 @@ def password_reset_html(user):
         user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password reset on {website_name}").format(
-            website_name=current_app.config.get("NAME", "")
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
         _external=True,
     )
 
     return render_template(
         "mail/reset.html",
-        site_name=current_app.config.get("NAME", reset_url),
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
         logo=current_app.config.get("LOGO"),
         title=_("Password reset on {website_name}").format(
-            website_name=current_app.config.get("NAME", base_url)
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
     )
 
@@ -156,7 +156,7 @@ def password_reset_txt(user):
 
     return render_template(
         "mail/reset.txt",
-        site_name=current_app.config.get("NAME", reset_url),
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
@@ -175,12 +175,12 @@ def invitation_html(user, identifier, email):
 
     return render_template(
         "mail/invitation.html",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
         logo=current_app.config.get("LOGO"),
         title=_("Invitation on {website_name}").format(
-            website_name=current_app.config.get("NAME", base_url)
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
     )
 
@@ -198,7 +198,7 @@ def invitation_txt(user, identifier, email):
 
     return render_template(
         "mail/invitation.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
     )
