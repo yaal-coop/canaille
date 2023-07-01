@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-06-30 18:40+0200\n"
-"PO-Revision-Date: 2023-05-29 15:50+0000\n"
+"PO-Revision-Date: 2023-07-02 08:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
 "de/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18-dev\n"
+"X-Generator: Weblate 5.0-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:66
@@ -30,7 +30,7 @@ msgstr "Dies ist keine gültige URL"
 
 #: canaille/app/forms.py:31 canaille/app/forms.py:32
 msgid "This value is a duplicate"
-msgstr ""
+msgstr "Dieser Wert ist ein Duplikat"
 
 #: canaille/app/forms.py:189
 msgid "The page number is not valid"
@@ -38,7 +38,7 @@ msgstr "Die Seitenzahl ist nicht gültig"
 
 #: canaille/app/forms.py:217
 msgid "Not a valid datetime value."
-msgstr ""
+msgstr "Kein gültiger Datum-Zeit-Wert."
 
 #: canaille/backends/ldap/backend.py:103
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -103,11 +103,11 @@ msgstr "Die E-Mail zur Kennwortinitialisierung konnte nicht gesendet werden"
 
 #: canaille/core/account.py:278 canaille/core/account.py:306
 msgid "The invitation link that brought you here was invalid."
-msgstr ""
+msgstr "Der Einladungslink, der Sie hierhergeführt hat, war ungültig."
 
 #: canaille/core/account.py:285
 msgid "The invitation link that brought you here has expired."
-msgstr ""
+msgstr "Der Einladungslink, der Sie hierhergeführt hat, ist abgelaufen."
 
 #: canaille/core/account.py:292
 msgid "Your account has already been created."
@@ -115,7 +115,7 @@ msgstr "Ihr Konto wurde bereits erstellt."
 
 #: canaille/core/account.py:299
 msgid "You are already logged in, you cannot create an account."
-msgstr ""
+msgstr "Sie sind bereits angemeldet, Sie können kein Konto erstellen."
 
 #: canaille/core/account.py:322 canaille/core/forms.py:273
 #: canaille/core/forms.py:369 canaille/templates/groups.html:5
@@ -129,24 +129,20 @@ msgid "User account creation failed."
 msgstr "Erstellung des Benutzerkontos fehlgeschlagen."
 
 #: canaille/core/account.py:363
-#, fuzzy
-#| msgid "Your account has been created successfuly."
 msgid "Your account has been created successfully."
 msgstr "Ihr Konto wurde erfolgreich erstellt."
 
 #: canaille/core/account.py:423
 msgid "User account creation succeed."
-msgstr ""
+msgstr "Benutzerkonto erfolgreich erstellt."
 
 #: canaille/core/account.py:487 canaille/core/account.py:616
 msgid "Profile edition failed."
 msgstr ""
 
 #: canaille/core/account.py:515 canaille/core/account.py:631
-#, fuzzy
-#| msgid "Your password has been updated successfuly"
 msgid "Profile updated successfully."
-msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
+msgstr "Profil erfolgreich aktualisiert."
 
 #: canaille/core/account.py:542
 #, fuzzy
@@ -221,8 +217,6 @@ msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
 #: canaille/core/account.py:748
-#, fuzzy
-#| msgid "Your password has been updated successfuly"
 msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 
@@ -234,7 +228,7 @@ msgstr "E-Mail"
 #: canaille/core/forms.py:82 canaille/core/forms.py:171
 #: canaille/core/forms.py:363
 msgid "jane@doe.com"
-msgstr ""
+msgstr "erika@mustermann.de"
 
 #: canaille/core/admin.py:42
 msgid "The test invitation mail has been sent correctly"
