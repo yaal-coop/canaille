@@ -22,6 +22,11 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 :SECRET_KEY:
     **Required.** The Flask secret key. You should set a random string here.
 
+    .. note ::
+
+        Remember that you can also use SECRET_KEY_FILE to store the secret key
+        outside the configuration file.
+
 :NAME:
     *Optional.* The name of your organization. If not set `Canaille` will be used.
 
@@ -190,15 +195,18 @@ OIDC
 
 OIDC.JWT
 --------
-Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually.
+Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually. In debug mode, a in-memory keypair will be used.
 
 :PRIVATE_KEY:
-    **Required.** The path to the private key.
-    e.g. ``/path/to/private.pem``
+    **Required.** The content of the private key..
 
 :PUBLIC_KEY:
-    **Required.** The path to the public key.
-    e.g. ``/path/to/public.pem``
+    **Required.** The content of the public key.
+
+    .. note ::
+
+        Remember that you can also use PRIVATE_KEY_FILE and PUBLIC_KEY_FILE
+        to store the keys outside the configuration file.
 
 :ISS:
     *Optional.* The URI of the identity provider.

@@ -57,7 +57,7 @@ class Backend(BaseBackend):
         setup_ldap_models(config)
 
     @classmethod
-    def install(cls, config):
+    def install(cls, config, debug=False):
         cls.setup_schemas(config)
         with ldap_connection(config) as conn:
             models.Token.install(conn)

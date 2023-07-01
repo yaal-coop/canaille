@@ -181,15 +181,15 @@ WRITE = [
 #     "xxxxxxx-yyyyyyy-zzzzzz",
 # ]
 
-# The jwt configuration. You can generate a RSA keypair with:
+[OIDC.JWT]
+# PRIVATE_KEY_FILE and PUBLIC_KEY_FILE are the paths to the private and
+# the public key. You can generate a RSA keypair with:
 # openssl genrsa -out private.pem 4096
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem
-
-[OIDC.JWT]
-# The path to the private key.
-PRIVATE_KEY = "canaille/private.pem"
-# The path to the public key.
-PUBLIC_KEY = "canaille/public.pem"
+# If the variables are unset, and debug mode is enabled,
+# a in-memory keypair will be used.
+# PRIVATE_KEY_FILE = "/path/to/private.pem"
+# PUBLIC_KEY_FILE = "/path/to/public.pem"
 # The URI of the identity provider
 # ISS = "https://auth.mydomain.tld"
 # The key type parameter

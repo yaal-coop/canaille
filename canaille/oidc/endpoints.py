@@ -41,11 +41,6 @@ from .utils import SCOPE_DETAILS
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 
 
-def get_public_key():
-    with open(current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]) as fd:
-        return fd.read()
-
-
 @bp.route("/authorize", methods=["GET", "POST"])
 def authorize():
     current_app.logger.debug(
@@ -238,7 +233,9 @@ def client_registration_management(client_id):
 def jwks():
     kty = current_app.config["OIDC"]["JWT"].get("KTY", DEFAULT_JWT_KTY)
     alg = current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG)
-    jwk = JsonWebKey.import_key(get_public_key(), {"kty": kty})
+    jwk = JsonWebKey.import_key(
+        current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
+    )
     return jsonify(
         {
             "keys": [
@@ -291,7 +288,9 @@ def end_session():
         )
 
     if data.get("id_token_hint"):
-        id_token = jwt.decode(data["id_token_hint"], get_public_key())
+        id_token = jwt.decode(
+            data["id_token_hint"], current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
+        )
         if not id_token["iss"] == get_issuer():
             return jsonify(
                 {

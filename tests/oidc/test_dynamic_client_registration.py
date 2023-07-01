@@ -120,8 +120,8 @@ def test_client_registration_with_authentication_invalid_token(
     }
 
 
-def test_client_registration_with_software_statement(testclient, backend, keypair_path):
-    private_key_path, _ = keypair_path
+def test_client_registration_with_software_statement(testclient, backend, keypair):
+    private_key, _ = keypair
     testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     software_statement_payload = {
@@ -132,8 +132,6 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
         "grant_types": ["authorization_code"],
     }
     software_statement_header = {"alg": "RS256"}
-    with open(private_key_path) as fd:
-        private_key = fd.read()
     software_statement = jwt.encode(
         software_statement_header, software_statement_payload, private_key
     ).decode()

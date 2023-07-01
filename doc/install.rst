@@ -39,19 +39,18 @@ You should then edit your configuration file to adapt the values to your needs.
 Installation
 ============
 
-Automatic installation
-----------------------
+Automatic schemas installation
+------------------------------
 
-A few steps of the installation process can be automatized.
-If you want to install the LDAP schemas or generate the keypair yourself, then you can jump to the manual installation section.
+If you want to install the LDAP schemas yourself, then you can jump to the manual installation section.
 
 .. code-block:: bash
 
     env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" install
 
 
-Manual installation
--------------------
+Manual schemas installation
+---------------------------
 
 LDAP schemas
 ^^^^^^^^^^^^
@@ -84,7 +83,7 @@ Be careful to stop your ldap server before running ``slapadd``
     sudo service slapd start
 
 Generate the key pair
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 You must generate a keypair that canaille will use to sign tokens.
 You can customize those commands, as long as they match the ``JWT`` section of your configuration file.

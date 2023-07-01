@@ -67,13 +67,12 @@ def get_issuer():
 
 
 def get_jwt_config(grant):
-    with open(current_app.config["OIDC"]["JWT"]["PRIVATE_KEY"]) as pk:
-        return {
-            "key": pk.read(),
-            "alg": current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG),
-            "iss": get_issuer(),
-            "exp": current_app.config["OIDC"]["JWT"].get("EXP", DEFAULT_JWT_EXP),
-        }
+    return {
+        "key": current_app.config["OIDC"]["JWT"]["PRIVATE_KEY"],
+        "alg": current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG),
+        "iss": get_issuer(),
+        "exp": current_app.config["OIDC"]["JWT"].get("EXP", DEFAULT_JWT_EXP),
+    }
 
 
 def claims_from_scope(scope):
@@ -353,8 +352,7 @@ class ClientManagementMixin:
     def resolve_public_key(self, request):
         # At the moment the only keypair accepted in software statement
         # is the one used to isues JWTs. This might change somedays.
-        with open(current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], "rb") as fd:
-            return fd.read()
+        return current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
 
 
 class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):

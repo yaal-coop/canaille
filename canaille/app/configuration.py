@@ -4,6 +4,7 @@ import socket
 from collections.abc import Mapping
 
 import toml
+from flask import current_app
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -58,7 +59,7 @@ def setup_config(app, config=None, validate_config=True):
         )
 
     if app.debug:  # pragma: no cover
-        install(app.config)
+        install(app.config, debug=True)
 
     if validate_config:
         validate(app.config)
@@ -81,20 +82,18 @@ def validate_keypair(config):
     if (
         "OIDC" in config
         and "JWT" in config["OIDC"]
-        and not os.path.exists(config["OIDC"]["JWT"]["PUBLIC_KEY"])
+        and not config["OIDC"]["JWT"].get("PUBLIC_KEY")
+        and not current_app.debug
     ):
-        raise ConfigurationException(
-            f'Public key does not exist {config["OIDC"]["JWT"]["PUBLIC_KEY"]}'
-        )
+        raise ConfigurationException("No public key has been set")
 
     if (
         "OIDC" in config
         and "JWT" in config["OIDC"]
-        and not os.path.exists(config["OIDC"]["JWT"]["PRIVATE_KEY"])
+        and not config["OIDC"]["JWT"].get("PRIVATE_KEY")
+        and not current_app.debug
     ):
-        raise ConfigurationException(
-            f'Private key does not exist {config["OIDC"]["JWT"]["PRIVATE_KEY"]}'
-        )
+        raise ConfigurationException("No private key has been set")
 
 
 def validate_smtp_configuration(config):

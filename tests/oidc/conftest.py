@@ -5,11 +5,9 @@ import uuid
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
 from canaille.app import models
+from canaille.oidc.installation import generate_keypair
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
-from cryptography.hazmat.backends import default_backend as crypto_default_backend
-from cryptography.hazmat.primitives import serialization as crypto_serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
 from werkzeug.security import gen_salt
 
 
@@ -23,44 +21,18 @@ def app(app, configuration, backend):
 
 @pytest.fixture(scope="session")
 def keypair():
-    key = rsa.generate_private_key(
-        backend=crypto_default_backend(), public_exponent=65537, key_size=2048
-    )
-    private_key = key.private_bytes(
-        crypto_serialization.Encoding.PEM,
-        crypto_serialization.PrivateFormat.PKCS8,
-        crypto_serialization.NoEncryption(),
-    )
-    public_key = key.public_key().public_bytes(
-        crypto_serialization.Encoding.OpenSSH, crypto_serialization.PublicFormat.OpenSSH
-    )
-    return private_key, public_key
+    return generate_keypair()
 
 
 @pytest.fixture
-def keypair_path(keypair, tmp_path):
+def configuration(configuration, keypair):
     private_key, public_key = keypair
-
-    private_key_path = os.path.join(tmp_path, "private.pem")
-    with open(private_key_path, "wb") as fd:
-        fd.write(private_key)
-
-    public_key_path = os.path.join(tmp_path, "public.pem")
-    with open(public_key_path, "wb") as fd:
-        fd.write(public_key)
-
-    return private_key_path, public_key_path
-
-
-@pytest.fixture
-def configuration(configuration, keypair_path):
-    private_key_path, public_key_path = keypair_path
     conf = {
         **configuration,
         "OIDC": {
             "JWT": {
-                "PUBLIC_KEY": public_key_path,
-                "PRIVATE_KEY": private_key_path,
+                "PUBLIC_KEY": public_key,
+                "PRIVATE_KEY": private_key,
                 "ISS": "https://auth.mydomain.tld",
             }
         },
