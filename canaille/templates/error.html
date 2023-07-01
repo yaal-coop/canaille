@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="ui error icon message">
-        {% if icon and (debug or (user and user.can_manage_oidc)) %}
+        {% if icon is defined and (debug or (user and user.can_manage_oidc)) %}
             <i class="{{ icon }} icon"></i>
         {% elif error_code == 400 %}
             <i class="question icon"></i>

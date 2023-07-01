@@ -2,6 +2,7 @@ import pytest
 from canaille import create_app
 from canaille.app import models
 from flask_webtest import TestApp
+from jinja2 import StrictUndefined
 from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
 
@@ -89,6 +90,7 @@ def app(configuration, backend):
 @pytest.fixture
 def testclient(app):
     app.config["TESTING"] = True
+    app.jinja_env.undefined = StrictUndefined
     with app.app_context():
         yield TestApp(app)
 

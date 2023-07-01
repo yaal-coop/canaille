@@ -183,12 +183,12 @@ id=none,
 csrf=true) -%}
 <form method="POST"
       id="{{ id or form.__class__.__name__|lower }}"
-      action="{{ action or form.action }}"
+      action="{% if action %}{{ action }}{% elif form.action is defined %}{{ form.action }}{% endif %}"
       role="form"
       enctype="multipart/form-data"
       class="ui form {{ class_ }}"
 >
-    {% if caller %}
+    {% if caller is defined %}
         {% if csrf %}
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         {% endif %}

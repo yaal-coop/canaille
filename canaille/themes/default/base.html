@@ -30,35 +30,35 @@
                         {% endif %}
 
                         {% if user.can_edit_self %}
-                            <a class="item {% if menuitem == "profile" %}active{% endif %}"
+                            <a class="item {% if menuitem is defined and menuitem == "profile" %}active{% endif %}"
                                href="{{ url_for('account.profile_edition', edited_user=user) }}">
                                 <i class="id card icon"></i>
                                 {% trans %}Profile{% endtrans %}
                             </a>
                         {% endif %}
                         {% if user.can_use_oidc %}
-                            <a class="item {% if menuitem == "consents" %}active{% endif %}"
+                            <a class="item {% if menuitem is defined and menuitem == "consents" %}active{% endif %}"
                                href="{{ url_for('oidc.consents.consents') }}">
                                 <i class="handshake icon"></i>
                                 {% trans %}Consents{% endtrans %}
                             </a>
                         {% endif %}
                         {% if user.can_manage_users %}
-                            <a class="item {% if menuitem == "users" %}active{% endif %}"
+                            <a class="item {% if menuitem is defined and menuitem == "users" %}active{% endif %}"
                                href="{{ url_for('account.users') }}">
                                 <i class="address book icon"></i>
                                 {% trans %}Users{% endtrans %}
                             </a>
                         {% endif %}
                         {% if user.can_manage_groups %}
-                            <a class="item {% if menuitem == "groups" %}active{% endif %}"
+                            <a class="item {% if menuitem is defined and menuitem == "groups" %}active{% endif %}"
                                href="{{ url_for('groups.groups') }}">
                                 <i class="users icon"></i>
                                 {% trans %}Groups{% endtrans %}
                             </a>
                         {% endif %}
                         {% if user.can_manage_oidc %}
-                            <a class="item {% if menuitem == "admin" %}active{% endif %}" href="{{ url_for('admin.mail_index') }}">
+                            <a class="item {% if menuitem is defined and menuitem == "admin" %}active{% endif %}" href="{{ url_for('admin.mail_index') }}">
                                 <i class="settings icon"></i>
                                 {% trans %}Admin{% endtrans %}
                             </a>

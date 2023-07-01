@@ -55,6 +55,9 @@ def test_html(user):
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         logo=current_app.config.get("LOGO"),
+        title=_("Test email from {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille"),
+        ),
     )
 
 
@@ -77,6 +80,9 @@ def password_init_html(user):
         "account.reset",
         user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
+        title=_("Password initialization on {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille")
+        ),
         _external=True,
     )
 
@@ -87,7 +93,7 @@ def password_init_html(user):
         reset_url=reset_url,
         logo=current_app.config.get("LOGO"),
         title=_("Password initialization on {website_name}").format(
-            website_name=current_app.config.get("NAME", reset_url)
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
     )
 
@@ -105,7 +111,7 @@ def password_init_txt(user):
 
     return render_template(
         "mail/firstlogin.txt",
-        site_name=current_app.config.get("NAME", reset_url),
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
@@ -119,6 +125,9 @@ def password_reset_html(user):
         "account.reset",
         user=user,
         hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
+        title=_("Password reset on {website_name}").format(
+            website_name=current_app.config.get("NAME", "")
+        ),
         _external=True,
     )
 
@@ -129,7 +138,7 @@ def password_reset_html(user):
         reset_url=reset_url,
         logo=current_app.config.get("LOGO"),
         title=_("Password reset on {website_name}").format(
-            website_name=current_app.config.get("NAME", reset_url)
+            website_name=current_app.config.get("NAME", base_url)
         ),
     )
 

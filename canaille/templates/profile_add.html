@@ -1,5 +1,6 @@
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
+{% import 'partial/profile_field.html' as profile %}
 
 {%- block title -%}
     {%- trans %}User creation{% endtrans -%}
@@ -28,64 +29,14 @@
     </nav>
 {% endblock %}
 
-{% macro render_field(field, noindicator=false) %}
-    {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
-    {% if not edited_user %}
-        {{ fui.render_field(field, **kwargs) }}
-    {% elif edited_user.user_name == user.user_name or lock_indicator or noindicator %}
-        {{ fui.render_field(field, **kwargs) }}
-    {% elif field.name in edited_user.write %}
-        {{ fui.render_field(field, **kwargs) }}
-    {% elif field.name in edited_user.read %}
-        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
-    {% else %}
-        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
-    {% endif %}
-{% endmacro %}
-
 {% block content %}
-    {% if self_deletion or (user.can_manage_users and edited_user) %}
-        <div id="modal-delete" class="ui basic modal">
-            <div class="ui icon header">
-                <i class="user minus icon"></i>
-                {% trans %}Account deletion{% endtrans %}
-            </div>
-            <div class="content">
-                <p>
-                    {% if user.user_name != edited_user.user_name %}
-                        {{ _("Are you sure you want to delete this user? This action is unrevokable and all the data about this user will be removed.") }}
-                    {% else %}
-                        {{ _("Are you sure you want to delete your account? This action is unrevokable and all your data will be removed forever.") }}
-                    {% endif %}
-                </p>
-            </div>
-            <div class="actions">
-                <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
-                <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="ui clearing segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {% if not edited_user %}
-                    {% trans %}User creation{% endtrans %}
-                {% elif user.user_name == edited_user.user_name %}
-                    {% trans %}My profile{% endtrans %}
-                {% else %}
-                    {% trans %}User profile edition{% endtrans %}
-                {% endif %}
-
+                {% trans %}User creation{% endtrans %}
             </div>
             <div class="sub header">
-                {% if not edited_user %}
-                    {% trans %}Create a new user account{% endtrans %}
-                {% elif user.user_name == edited_user.user_name %}
-                    {% trans %}Edit your personal information{% endtrans %}
-                {% else %}
-                    {% trans %}Edit information about a user{% endtrans %}
-                {% endif %}
+                {% trans %}Create a new user account{% endtrans %}
             </div>
         </h2>
 
@@ -96,9 +47,8 @@
                 <div class="ui grid">
                     <div class="three wide column">
                         {% block photo_field scoped %}
-                            {{ render_field(form.photo, display=false, class="photo-field") }}
-                            {{ render_field(form.photo_delete, display=false, class="photo-delete-button") }}
-                            {% set photo = edited_user.photo and edited_user.photo[0] %}
+                            {{ profile.render_field(form.photo, display=false, class="photo-field") }}
+                            {{ profile.render_field(form.photo_delete, display=false, class="photo-delete-button") }}
                             <label
                                 class="ui small bordered image photo-content"
                                 for="{{ form.photo.id }}"
@@ -113,8 +63,7 @@
                             <label
                                 class="ui centered photo-placeholder"
                                 for="{{ form.photo.id }}"
-                                title="{{ _("Click to upload a photo") }}"
-                                {% if photo %}style="display: none;"{% endif %}>
+                                title="{{ _("Click to upload a photo") }}">
                                 <i class="massive centered portrait icon"></i>
                             </label>
                         {% endblock %}
@@ -126,124 +75,114 @@
             {% if "given_name" in form or "family_name" in form %}
                 <div class="equal width fields">
                     {% if "given_name" in form %}
-                        {% block given_name_field scoped %}{{ render_field(form.given_name) }}{% endblock %}
+                        {% block given_name_field scoped %}{{ profile.render_field(form.given_name) }}{% endblock %}
                     {% endif %}
 
                     {% if "family_name" in form %}
-                        {% block family_name_field scoped %}{{ render_field(form.family_name) }}{% endblock %}
+                        {% block family_name_field scoped %}{{ profile.render_field(form.family_name) }}{% endblock %}
                     {% endif %}
                 </div>
             {% endif %}
 
             {% if "display_name" in form %}
-                {% block display_name_field scoped %}{{ render_field(form.display_name) }}{% endblock %}
+                {% block display_name_field scoped %}{{ profile.render_field(form.display_name) }}{% endblock %}
             {% endif %}
 
             {% if "photo" in form %}</div></div>{% endif %}
 
             {% if "emails" in form %}
-                {% block emails_field scoped %}{{ render_field(form.emails) }}{% endblock %}
+                {% block emails_field scoped %}{{ profile.render_field(form.emails) }}{% endblock %}
             {% endif %}
 
             {% if "phone_numbers" in form %}
-                {% block phone_numbers_field scoped %}{{ render_field(form.phone_numbers) }}{% endblock %}
+                {% block phone_numbers_field scoped %}{{ profile.render_field(form.phone_numbers) }}{% endblock %}
             {% endif %}
 
             {% if "formatted_address" in form %}
-                {% block formatted_address_field scoped %}{{ render_field(form.formatted_address) }}{% endblock %}
+                {% block formatted_address_field scoped %}{{ profile.render_field(form.formatted_address) }}{% endblock %}
             {% endif %}
 
             {% if "street" in form %}
-                {% block street_field scoped %}{{ render_field(form.street) }}{% endblock %}
+                {% block street_field scoped %}{{ profile.render_field(form.street) }}{% endblock %}
             {% endif %}
 
             <div class="equal width fields">
                 {% if "postal_code" in form %}
-                    {% block postal_code_field scoped %}{{ render_field(form.postal_code) }}{% endblock %}
+                    {% block postal_code_field scoped %}{{ profile.render_field(form.postal_code) }}{% endblock %}
                 {% endif %}
 
                 {% if "locality" in form %}
-                    {% block locality_field scoped %}{{ render_field(form.locality) }}{% endblock %}
+                    {% block locality_field scoped %}{{ profile.render_field(form.locality) }}{% endblock %}
                 {% endif %}
 
                 {% if "region" in form %}
-                    {% block region_field scoped %}{{ render_field(form.region) }}{% endblock %}
+                    {% block region_field scoped %}{{ profile.render_field(form.region) }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "department" in form %}
-                    {% block department_field scoped %}{{ render_field(form.department) }}{% endblock %}
+                    {% block department_field scoped %}{{ profile.render_field(form.department) }}{% endblock %}
                 {% endif %}
 
                 {% if "employee_number" in form %}
-                    {% block employee_number_field scoped %}{{ render_field(form.employee_number) }}{% endblock %}
+                    {% block employee_number_field scoped %}{{ profile.render_field(form.employee_number) }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "title" in form %}
-                    {% block title_field scoped %}{{ render_field(form.title) }}{% endblock %}
+                    {% block title_field scoped %}{{ profile.render_field(form.title) }}{% endblock %}
                 {% endif %}
 
                 {% if "organization" in form %}
-                    {% block organization_field scoped %}{{ render_field(form.organization) }}{% endblock %}
+                    {% block organization_field scoped %}{{ profile.render_field(form.organization) }}{% endblock %}
                 {% endif %}
 
             </div>
 
             {% if "profile_url" in form %}
-                {% block profile_uri_field scoped %}{{ render_field(form.profile_url) }}{% endblock %}
+                {% block profile_uri_field scoped %}{{ profile.render_field(form.profile_url) }}{% endblock %}
             {% endif %}
 
             {% if "preferred_language" in form %}
-                {% block preferred_language_field scoped %}{{ render_field(form.preferred_language) }}{% endblock %}
+                {% block preferred_language_field scoped %}{{ profile.render_field(form.preferred_language) }}{% endblock %}
             {% endif %}
 
             <h4 class="ui dividing header">{% trans %}Account settings{% endtrans %}</h4>
 
             {% if "user_name" in form %}
-                {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
+                {% block user_name_field scoped %}{{ profile.render_field(form.user_name) }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}
-                {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
+                {% block groups_field scoped %}{{ profile.render_field(form.groups) }}{% endblock %}
             {% endif %}
 
             {% if "password1" in form %}
                 {% block password_field scoped %}
                     <div class="two fields">
-                        {{ render_field(form.password1, noindicator=true) }}
-                        {{ render_field(form.password2, noindicator=true) }}
+                        {{ profile.render_field(form.password1, noindicator=true) }}
+                        {{ profile.render_field(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
             {% endif %}
 
-            {% if user.can_manage_users %}
-
+            {% if user and user.can_manage_users %}
 
                 <div class="ui message info">
                     <div class="header">
                         {% trans %}User password is not mandatory{% endtrans %}
                     </div>
-                    {% if has_password %}
-                        <p>{% trans %}The user password can be set:{% endtrans %}</p>
-                        <ul class="ui list">
-                            <li>{% trans %}by filling this form;{% endtrans %}</li>
-                            <li>{% trans %}by sending the user a password initialization mail, after the account creation;{% endtrans %}</li>
-                            <li>{% trans %}or simply waiting for the user to sign-in a first time, and then receive a password initialization mail.{% endtrans %}</li>
-                        </ul>
-                    {% else %}
-                        <p>
-                            {% if has_smtp %}
-                                {% trans %}The user will not be able to authenticate unless the password is set, but they will be able to ask for a password initialization mail.{% endtrans %}
-                            {% else %}
-                                {% trans %}The user will not be able to authenticate unless the password is set.{% endtrans %}
-                            {% endif %}
-                        </p>
-                    {% endif %}
+                    <p>
+                        {% if has_smtp %}
+                            {% trans %}The user will not be able to authenticate unless the password is set, but they will be able to ask for a password initialization mail.{% endtrans %}
+                        {% else %}
+                            {% trans %}The user will not be able to authenticate unless the password is set.{% endtrans %}
+                        {% endif %}
+                    </p>
                 </div>
 
             {% endif %}
@@ -255,6 +194,7 @@
                     </button>
                 </div>
             </div>
+
         {% endcall %}
     </div>
 {% endblock %}
