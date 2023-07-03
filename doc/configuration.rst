@@ -46,6 +46,9 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 :TIMEZONE:
     *Optional.* The timezone in which datetimes will be displayed to the users. If unset, the server timezone will be used.
 
+:JAVASCRIPT:
+    *Optional.* Wether javascript is used to smooth the user experience.
+
 :HTMX:
     *Optional.* Wether `HTMX <https://htmx.org>`_ will be used to accelerate webpages. Defaults to true.
 
