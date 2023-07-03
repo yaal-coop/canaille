@@ -86,19 +86,21 @@
         <footer>
             <a href="{{ url_for('account.about') }}">{{ _("About Canaille") }}</a>
         </footer>
-        {% if not is_boosted %}
-            <script src="/static/jquery/jquery.min.js" defer></script>
-            <script src="/static/fomanticui/semantic.min.js" defer></script>
-            {% if config.get("HTMX", true) %}
-                <script src="/static/htmx/htmx.min.js" defer></script>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        htmx.config.requestClass = "loading"
-                    })
-                </script>
+        {% if config.get("JAVASCRIPT", true) %}
+            {% if not is_boosted %}
+                <script src="/static/jquery/jquery.min.js" defer></script>
+                <script src="/static/fomanticui/semantic.min.js" defer></script>
+                {% if config.get("HTMX", true) %}
+                    <script src="/static/htmx/htmx.min.js" defer></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            htmx.config.requestClass = "loading"
+                        })
+                    </script>
+                {% endif %}
+                <script src="/static/js/base.js" defer></script>
             {% endif %}
-            <script src="/static/js/base.js" defer></script>
+            {% block script %}{% endblock %}
         {% endif %}
-        {% block script %}{% endblock %}
     </body>
 </html>

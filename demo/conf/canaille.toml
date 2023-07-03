@@ -32,6 +32,9 @@ FAVICON = "/static/img/canaille-c.png"
 # If you have a sentry instance, you can set its dsn here:
 # SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
 
+# Enables javascript to smooth the user experience
+# JAVASCRIPT = true
+
 # Accelerates webpages with async requests
 # HTMX = true
 
