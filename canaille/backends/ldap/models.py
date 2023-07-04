@@ -44,11 +44,14 @@ class User(canaille.core.models.User, LDAPObject):
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):
+        raw_filter = current_app.config["BACKENDS"]["LDAP"].get(
+            "USER_FILTER", User.DEFAULT_FILTER
+        )
         filter = (
             (
-                current_app.config["BACKENDS"]["LDAP"]
-                .get("USER_FILTER", User.DEFAULT_FILTER)
-                .format(login=ldap.filter.escape_filter_chars(login))
+                current_app.jinja_env.from_string(raw_filter).render(
+                    login=ldap.filter.escape_filter_chars(login)
+                )
             )
             if login
             else None
