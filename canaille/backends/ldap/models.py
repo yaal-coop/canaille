@@ -12,7 +12,7 @@ from .ldapobject import LDAPObject
 
 class User(canaille.core.models.User, LDAPObject):
     DEFAULT_OBJECT_CLASS = "inetOrgPerson"
-    DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
+    DEFAULT_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
     DEFAULT_RDN = "cn"
 
     attributes = {
