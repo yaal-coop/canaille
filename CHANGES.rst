@@ -3,10 +3,18 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+🚨Configuration files must be updated.🚨
+Check the new format with ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``
+
 Added
 *****
 
 - Configuration option to disable javascript :pr:`141`
+
+Changed
+*******
+
+- ``USER_FILTER`` is parsed with jinja.
 
 [0.0.29] - 2023-06-30
 =====================
@@ -28,7 +36,7 @@ Fixed
 =====================
 
 🚨Configuration files must be updated.🚨
-Check the new format with ``git diff 0.0.27 0.0.26 canaille/conf/config.sample.toml``
+Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``
 
 Added
 *****

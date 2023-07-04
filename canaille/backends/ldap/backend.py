@@ -219,13 +219,13 @@ class Backend(BaseBackend):
         )
         placeholders = []
 
-        if "cn={login}" in user_filter:
+        if "cn={{login" in user_filter.replace(" ", ""):
             placeholders.append(_("John Doe"))
 
-        if "uid={login}" in user_filter:
+        if "uid={{login" in user_filter.replace(" ", ""):
             placeholders.append(_("jdoe"))
 
-        if "mail={login}" in user_filter or not placeholders:
+        if "mail={{login" in user_filter.replace(" ", "") or not placeholders:
             placeholders.append(_("john@doe.com"))
 
         return _(" or ").join(placeholders)

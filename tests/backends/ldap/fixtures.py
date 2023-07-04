@@ -35,7 +35,7 @@ def ldap_configuration(configuration, slapd_server):
             "BIND_PW": slapd_server.root_pw,
             "USER_BASE": "ou=users",
             "USER_RDN": "uid",
-            "USER_FILTER": "(uid={login})",
+            "USER_FILTER": "(uid={{ login }})",
             "GROUP_BASE": "ou=groups",
             "TIMEOUT": 0.1,
         },

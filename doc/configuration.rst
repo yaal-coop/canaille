@@ -115,8 +115,9 @@ BACKENDS.LDAP
 
 :USER_FILTER:
     *Optional.* The filter to match users on sign in.
-    Supports a variable {login} that can be used to compare against several LDAP attributes.
-    Defaults to ``(|(uid={login})(mail={login}))``
+    Jinja syntax is supported and a `login` variable is available containing
+    the value passed in the login field.
+    Defaults to ``(|(uid={{ login }})(mail={{ login }}))``
 
 :GROUP_BASE:
     **Required.** The DN where of the node in which LDAP groups will be created and searched for.
