@@ -197,6 +197,11 @@ OIDC
 :DYNAMIC_CLIENT_REGISTRATION_TOKENS:
     *Optional.* A list of tokens that can be used for dynamic client registration
 
+:REQUIRE_NONE:
+    *Optional.* Forces the nonce exchange during the authentication flows.
+    This adds security but may not be supported by all clients.
+    Defaults to ``True``
+
 OIDC.JWT
 --------
 Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually. In debug mode, a in-memory keypair will be used.

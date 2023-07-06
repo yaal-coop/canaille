@@ -435,7 +435,12 @@ def setup_oauth(app):
 
     authorization.register_grant(
         AuthorizationCodeGrant,
-        [OpenIDCode(require_nonce=True), CodeChallenge(required=True)],
+        [
+            OpenIDCode(
+                require_nonce=app.config.get("OIDC", {}).get("REQUIRE_NONCE", True)
+            ),
+            CodeChallenge(required=True),
+        ],
     )
     authorization.register_grant(OpenIDImplicitGrant)
     authorization.register_grant(OpenIDHybridGrant)

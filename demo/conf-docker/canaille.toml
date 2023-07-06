@@ -191,9 +191,10 @@ DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
     "xxxxxxx-yyyyyyy-zzzzzz",
 ]
 
-# The jwt configuration. You can generate a RSA keypair with:
-# openssl genrsa -out private.pem 4096
-# openssl rsa -in private.pem -pubout -outform PEM -out public.pem
+# REQUIRE_NONCE force the nonce exchange during the authentication flows.
+# This adds security but may not be supported by all clients.
+# REQUIRE_NONCE = true
+
 [OIDC.JWT]
 # PRIVATE_KEY_FILE and PUBLIC_KEY_FILE are the paths to the private and
 # the public key. You can generate a RSA keypair with:
