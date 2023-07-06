@@ -17,7 +17,8 @@ Added
 Changed
 *******
 
-- ``USER_FILTER`` is parsed with jinja.
+- Configuration ``USER_FILTER`` is parsed with jinja.
+- Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and ``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``
 
 [0.0.29] - 2023-06-30
 =====================
