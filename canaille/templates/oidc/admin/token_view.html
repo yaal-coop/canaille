@@ -6,7 +6,6 @@
 {%- endblock -%}
 
 {% block script %}
-    <script src="/static/js/confirm.js" defer></script>
     <script src="/static/js/copy.js" defer></script>
 {% endblock %}
 
@@ -36,118 +35,104 @@
 {% endblock %}
 
 {% block content %}
-    <div id="modal-delete" class="ui basic modal">
-        <div class="ui icon header">
-            <i class="trash icon"></i>
-            {% trans %}Token deletion{% endtrans %}
-        </div>
-        <div class="content">
-            <p>
-                {{ _("Are you sure you want to revoke this token? This action is unrevokable.") }}
-            </p>
-        </div>
-        <div class="actions">
-            <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
-            <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
-        </div>
-    </div>
-
     <div class="loginform">
         <h3 class="ui top attached header">
             {% trans %}Token details{% endtrans %}
         </h3>
 
         <div class="ui attached clearing segment">
-            <table class="ui celled striped table">
-                <tr>
-                    <td>{{ _("Client") }}</td>
-                    <td>
-                        <a href="{{ url_for("oidc.clients.edit", client=token.client) }}">
-                            {{ token.client.client_name }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ _("Subject") }}</td>
-                    <td>
-                        <a href="{{ url_for("account.profile_edition", edited_user=token.subject) }}">
-                            {{ token.subject.identifier }}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ _("Scope") }}</td>
-                    <td>
-                        <ul class="ui list">
-                            {% for scope in token.scope %}
-                                <li class="item">{{ scope }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ _("Audience") }}</td>
-                    <td>
-                        <ul class="ui list">
-                            {% for client in token.audience %}
-                                <li class="item">
-                                    <a href="{{ url_for("oidc.clients.edit", client=client) }}">
-                                        {{ client.client_name }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ _("Issue date") }}</td>
-                    <td>{{ token.issue_date }}</td>
-                </tr>
-                <tr>
-                    <td>{{ _("Expiration date") }}</td>
-                    <td>{{ token.expire_date }}</td>
-                </tr>
-                <tr>
-                    <td>{{ _("Revokation date") }}</td>
-                    <td>
-                        {% if token.revokation_date %}
-                            {{ token.revokation_date }}
-                        {% else %}
-                            <a href="{{ url_for("oidc.tokens.revoke", token=token) }}" class="ui negative right floated button confirm" name="action" value="delete" id="delete">
-                                {% trans %}Revoke token{% endtrans %}
+            {% call fui.render_form(form, class_="token-form info") %}
+                <table class="ui celled striped table">
+                    <tr>
+                        <td>{{ _("Client") }}</td>
+                        <td>
+                            <a href="{{ url_for("oidc.clients.edit", client=token.client) }}">
+                                {{ token.client.client_name }}
                             </a>
-                            <p>
-                                {% trans %}This token has not been revoked{% endtrans %}
-                            </p>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ _("Token type") }}</td>
-                    <td>{{ token.type }}</td>
-                </tr>
-                <tr>
-                    <td>{{ _("Access token") }}</td>
-                    <td class="ui fluid action input">
-                        <input type="text" value="{{ token.access_token }}" readonly class="copy-text" id="access-token" data-copy="access-token">
-                        <button class="ui primary right labeled icon button copy-button" data-copy="access-token">
-                            <i class="copy icon"></i>
-                            {% trans %}Copy{% endtrans %}
-                        </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Subject") }}</td>
+                        <td>
+                            <a href="{{ url_for("account.profile_edition", edited_user=token.subject) }}">
+                                {{ token.subject.identifier }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Scope") }}</td>
+                        <td>
+                            <ul class="ui list">
+                                {% for scope in token.scope %}
+                                    <li class="item">{{ scope }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Audience") }}</td>
+                        <td>
+                            <ul class="ui list">
+                                {% for client in token.audience %}
+                                    <li class="item">
+                                        <a href="{{ url_for("oidc.clients.edit", client=client) }}">
+                                            {{ client.client_name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Issue date") }}</td>
+                        <td>{{ token.issue_date }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Expiration date") }}</td>
+                        <td>{{ token.expire_date }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Revokation date") }}</td>
+                        <td>
+                            {% if token.revokation_date %}
+                                {{ token.revokation_date }}
+                            {% else %}
+                                <button type="submit" class="ui negative right floated button confirm" name="action" value="confirm-revoke" id="confirm-revoke">
+                                    {% trans %}Revoke token{% endtrans %}
+                                </button>
+                                <p>
+                                    {% trans %}This token has not been revoked{% endtrans %}
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Token type") }}</td>
+                        <td>{{ token.type }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Access token") }}</td>
+                        <td class="ui fluid action input">
+                            <input type="text" value="{{ token.access_token }}" readonly class="copy-text" id="access-token" data-copy="access-token">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="access-token">
+                                <i class="copy icon"></i>
+                                {% trans %}Copy{% endtrans %}
+                            </button>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td>{{ _("Refresh token") }}</td>
-                    <td class="ui fluid action input">
-                        <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
-                        <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
-                            <i class="copy icon"></i>
-                            {% trans %}Copy{% endtrans %}
-                        </button>
-                    </td>
-                </tr>
-            </table>
+                    <tr>
+                        <td>{{ _("Refresh token") }}</td>
+                        <td class="ui fluid action input">
+                            <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
+                                <i class="copy icon"></i>
+                                {% trans %}Copy{% endtrans %}
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            {% endcall %}
         </div>
     </div>
 {% endblock %}

@@ -1,0 +1,26 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div class="ui warning message">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="trash icon"></i>
+                {% trans %}Client deletion{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans client_name=client.client_name %}
+                        Are you sure you want to delete the client {{ client_name }}? This action is unrevokable and all the data about this client will be removed.
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ request.url }}" class="ui cancel button">{% trans %}Cancel{% endtrans %}</a>
+                    <button name="action" value="delete" class="ui red approve button">{% trans %}Delete{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

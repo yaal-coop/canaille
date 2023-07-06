@@ -59,7 +59,9 @@ def test_user_creation_edition_and_deletion(
 
     # User have been deleted.
     res = testclient.get("/profile/george/settings", status=200)
-    res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
+    res = res.form.submit(name="action", value="confirm-delete", status=200)
+    res = res.form.submit(name="action", value="delete", status=302)
+    res = res.follow(status=200)
     assert models.User.get_from_login("george") is None
     res.mustcontain(no="george")
 

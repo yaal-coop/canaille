@@ -5,10 +5,6 @@
     {%- trans %}Edit a client{% endtrans -%}
 {%- endblock -%}
 
-{% block script %}
-    <script src="/static/js/admin/client_edit.js" defer></script>
-{% endblock %}
-
 {% block submenu %}
     <nav class="ui bottom attached five item borderless menu">
         <a class="item" href="{{ url_for('admin.mail_index') }}">
@@ -35,20 +31,6 @@
 {% endblock %}
 
 {% block content %}
-    <div class="ui basic modal">
-        <div class="ui icon header">
-            <i class="trash icon"></i>
-            {% trans %}Client deletion{% endtrans %}
-        </div>
-        <div class="content">
-            <p>{{ _("Are you sure you want to delete this client? This action is unrevokable and all the data about this client will be removed.") }}</p>
-        </div>
-        <div class="actions">
-            <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
-            <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
-        </div>
-    </div>
-
     <div class="ui top attached segment">
         <h2 class="ui center aligned header">
             {% trans %}Edit a client{% endtrans %}
@@ -91,7 +73,7 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    <button type="submit" class="ui right floated negative basic button confirm" name="action" value="delete" id="delete" formnovalidate>
+                    <button type="submit" class="ui right floated negative basic button confirm" name="action" value="confirm-delete" id="confirm-delete" formnovalidate>
                         {{ _("Delete the client") }}
                     </button>
                     <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">

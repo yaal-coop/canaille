@@ -317,6 +317,7 @@ def test_account_locking(
     res.mustcontain("Lock the account")
     res.mustcontain(no="Unlock")
 
+    res = res.form.submit(name="action", value="confirm-lock")
     res = res.form.submit(name="action", value="lock")
     user = models.User.get(id=user.id)
     assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
@@ -329,7 +330,7 @@ def test_account_locking(
     user = models.User.get(id=user.id)
     assert not user.lock_date
     assert not user.locked
-    assert "The account has been unlocked"
+    res.mustcontain("The account has been unlocked")
     res.mustcontain("Lock the account")
     res.mustcontain(no="Unlock")
 

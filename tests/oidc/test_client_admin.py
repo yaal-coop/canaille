@@ -230,7 +230,9 @@ def test_client_delete(testclient, logged_admin):
     models.AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientaddform"].submit(name="action", value="delete").follow()
+    res = res.forms["clientaddform"].submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete")
+    res = res.follow()
 
     assert not models.Client.get()
     assert not models.Token.get()

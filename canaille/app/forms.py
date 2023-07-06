@@ -115,7 +115,7 @@ class HTMXFormMixin:
             fieldlist, context = self.field_from_name(fieldlist_name)
 
             if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
-                abort(400)
+                abort(400, f"{field_name} is not a valid field list")
 
             if fieldlist.render_kw and (
                 "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
@@ -137,7 +137,7 @@ class HTMXFormMixin:
             fieldlist, context = self.field_from_name(fieldlist_name)
 
             if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
-                abort(400)
+                abort(400, f"{field_name} is not a valid field list")
 
             if fieldlist.render_kw and (
                 "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw

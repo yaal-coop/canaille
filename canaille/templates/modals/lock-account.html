@@ -1,0 +1,32 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div id="modal-lock" class="ui warning message">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="lock icon"></i>
+                {% trans %}Account locking{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% if user != edited_user %}
+                        {% trans user_name=(edited_user.formatted_name[0] or edited_user.identifier) %}
+                            Are you sure you want to lock the account of {{ user_name }} ? The user won't be able to login until their account is unlocked.
+                        {% endtrans %}
+                    {% else %}
+                        {% trans %}
+                            Are you sure you want to lock your account? You won't be able to login until your account is unlocked.
+                        {% endtrans %}
+                    {% endif %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
+                    <button type="submit" name="action" value="lock" class="ui red approve button">{% trans %}Lock{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

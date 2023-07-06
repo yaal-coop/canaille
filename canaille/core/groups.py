@@ -65,10 +65,13 @@ def group(user, group):
     ):
         return edit_group(group)
 
+    if request.form.get("action") == "confirm-delete":
+        return render_template("modals/delete-group.html", group=group)
+
     if request.form.get("action") == "delete":
         return delete_group(group)
 
-    abort(400)
+    abort(400, f"bad form action: {request.form.get('action')}")
 
 
 def edit_group(group):
