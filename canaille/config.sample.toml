@@ -185,6 +185,10 @@ WRITE = [
 #     "xxxxxxx-yyyyyyy-zzzzzz",
 # ]
 
+# REQUIRE_NONCE force the nonce exchange during the authentication flows.
+# This adds security but may not be supported by all clients.
+# REQUIRE_NONCE = true
+
 [OIDC.JWT]
 # PRIVATE_KEY_FILE and PUBLIC_KEY_FILE are the paths to the private and
 # the public key. You can generate a RSA keypair with:
