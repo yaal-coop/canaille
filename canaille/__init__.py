@@ -126,7 +126,7 @@ def setup_flask(app):
         from canaille.app.flask import current_user
 
         return {
-            "debug": app.config.get("DEBUG", False) or app.config.get("TESTING", False),
+            "debug": app.debug or app.config.get("TESTING", False),
             "has_smtp": "SMTP" in app.config,
             "has_password_recovery": app.config.get("ENABLE_PASSWORD_RECOVERY", True),
             "has_account_lockability": app.backend.get().has_account_lockability(),
