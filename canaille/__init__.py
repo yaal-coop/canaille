@@ -175,7 +175,8 @@ def create_app(config=None, validate=True, backend=None):
     from .app.configuration import setup_config
 
     app = Flask(__name__)
-    setup_config(app, config, validate)
+    with app.app_context():
+        setup_config(app, config, validate)
 
     sentry_sdk = setup_sentry(app)
     try:
