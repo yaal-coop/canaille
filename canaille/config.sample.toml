@@ -1,5 +1,5 @@
 # All the Flask configuration values can be used:
-# https://flask.palletsprojects.com/en/1.1.x/config/#builtin-configuration-values
+# https://flask.palletsprojects.com/en/2.3.x/config/#builtin-configuration-values
 
 # The flask secret key for cookies. You MUST change this.
 SECRET_KEY = "change me before you go in production"
