@@ -4,6 +4,8 @@ import socket
 from collections.abc import Mapping
 
 import toml
+from canaille.app.mails import DEFAULT_SMTP_HOST
+from canaille.app.mails import DEFAULT_SMTP_PORT
 from flask import current_app
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -97,11 +99,10 @@ def validate_keypair(config):
 
 
 def validate_smtp_configuration(config):
+    host = config["SMTP"].get("HOST", DEFAULT_SMTP_HOST)
+    port = config["SMTP"].get("PORT", DEFAULT_SMTP_PORT)
     try:
-        with smtplib.SMTP(
-            host=config["SMTP"]["HOST"],
-            port=config["SMTP"]["PORT"],
-        ) as smtp:
+        with smtplib.SMTP(host=host, port=port) as smtp:
             if config["SMTP"].get("TLS"):
                 smtp.starttls()
 
@@ -112,7 +113,7 @@ def validate_smtp_configuration(config):
                 )
     except (socket.gaierror, ConnectionRefusedError) as exc:
         raise ConfigurationException(
-            f'Could not connect to the SMTP server \'{config["SMTP"]["HOST"]}\''
+            f"Could not connect to the SMTP server '{host}' on port '{port}'"
         ) from exc
 
     except smtplib.SMTPAuthenticationError as exc:

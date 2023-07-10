@@ -8,6 +8,11 @@ Added
 
 - Configuration option to disable the forced usage of OIDC nonce :pr:`143`
 
+Fixed
+*****
+
+- The `check` command uses the default configuration values.
+
 [0.0.30] - 2023-07-06
 =====================
 
