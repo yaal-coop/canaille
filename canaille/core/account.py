@@ -540,7 +540,8 @@ def profile_settings(user, edited_user):
         if success:
             flash(
                 _(
-                    "A password initialization link has been sent at the user email address. It should be received within a few minutes."
+                    "A password initialization link has been sent at the user email address. "
+                    "It should be received within a few minutes."
                 ),
                 "success",
             )
@@ -556,7 +557,8 @@ def profile_settings(user, edited_user):
         if success:
             flash(
                 _(
-                    "A password reset link has been sent at the user email address. It should be received within a few minutes."
+                    "A password reset link has been sent at the user email address. "
+                    "It should be received within a few minutes."
                 ),
                 "success",
             )
@@ -688,7 +690,8 @@ def forgotten():
 
     user = models.User.get_from_login(form.login.data)
     success_message = _(
-        "A password reset link has been sent at your email address. You should receive it within a few minutes."
+        "A password reset link has been sent at your email address. "
+        "You should receive it within a few minutes."
     )
     if current_app.config.get("HIDE_INVALID_LOGINS", True) and (
         not user or not user.can_edit_self
