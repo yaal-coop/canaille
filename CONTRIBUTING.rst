@@ -5,6 +5,13 @@ Contributions are welcome!
 
 The repository is hosted at `gitlab.com/yaal/canaille <https://gitlab.com/yaal/canaille>`_.
 
+Discuss
+-------
+
+If you want to implement a feature or a bugfix, please start by discussing it with us on
+the `bugtracker <https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix room
+<https://matrix.to/#/#canaille-discuss:yaal.coop>`_.
+
 Development environment
 -----------------------
 
@@ -45,7 +52,7 @@ To launch containers, use:
 Local environment
 ~~~~~~~~~~~~~~~~~
 
-If you want to develop locally, use:
+To run canaille locally, you need to have OpenLDAP installed on your system. Then:
 
 .. code-block:: console
 
@@ -65,7 +72,8 @@ If you want to develop locally, use:
 Populate the database
 ~~~~~~~~~~~~~~~~~~~~~
 
-You can populate the database with randomly generated users and groups with the ``populate`` command:
+The demo database comes populated with some random users and groups. If you need more, you can generate
+users and groups with the ``populate`` command:
 
 .. code-block:: console
 
@@ -98,7 +106,7 @@ The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_ CSS fr
 The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
 
 - Using Javascript in the interface is tolerated, but the whole website MUST be accessible
-  for browsers without Javascript support.
+  for browsers without Javascript support, and without feature loss.
 - Because of Fomantic UI we have a dependency to jQuery, however new contributions should
   not depend on jQuery at all.
   See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_.
@@ -111,7 +119,6 @@ so all translation contributions should be done there.
 
 Documentation
 -------------
-
 
 The documentation is generated when the tests run:
 
