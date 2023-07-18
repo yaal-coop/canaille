@@ -10,10 +10,6 @@
     {% endif %}
 {%- endblock -%}
 
-{% block script %}
-    <script src="/static/js/confirm.js" defer></script>
-{% endblock %}
-
 {% block submenu %}
     <nav class="ui bottom attached two item borderless menu">
         <a class="{% if edited_group %}active {% endif %}item" href="{{ url_for('groups.groups') }}">
@@ -28,24 +24,6 @@
 {% endblock %}
 
 {% block content %}
-    {% if edited_group %}
-        <div class="ui basic modal" id="modal-delete">
-            <div class="ui icon header">
-                <i class="trash alternate icon"></i>
-                {% trans %}Group deletion{% endtrans %}
-            </div>
-            <div class="content">
-                <p>
-                    {% trans %}Are you sure you want to delete this group? This action is unrevokable and all the data about this group will be removed.{% endtrans %}
-                </p>
-            </div>
-            <div class="actions">
-                <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
-                <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="ui clearing segment">
         <h2 class="ui center aligned header">
             <div class="content">
@@ -78,7 +56,7 @@
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if edited_group %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete">
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-delete" id="confirm-delete">
                             {% trans %}Delete group{% endtrans %}
                         </button>
                     {% endif %}

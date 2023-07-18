@@ -159,3 +159,7 @@ class ClientAddForm(HTMXForm):
         validators=[wtforms.validators.Optional()],
         default=False,
     )
+
+
+class TokenRevokationForm(HTMXForm):
+    pass

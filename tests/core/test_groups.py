@@ -176,7 +176,8 @@ def test_moderator_can_create_edit_and_delete_group(
         res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
-    res = form.submit(name="action", value="delete", status=302)
+    res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete", status=302)
     assert models.Group.get(display_name="bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 

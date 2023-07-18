@@ -127,10 +127,19 @@ def test_token_not_found(testclient, logged_admin):
     testclient.get("/admin/token/" + "yolo", status=404)
 
 
+def test_revoke_bad_request(testclient, token, logged_admin):
+    assert not token.revoked
+
+    res = testclient.get(f"/admin/token/{token.token_id}")
+    res = res.form.submit(name="action", value="invalid", status=400)
+
+
 def test_revoke_token(testclient, token, logged_admin):
     assert not token.revoked
 
-    res = testclient.get(f"/admin/token/{token.token_id}/revoke")
+    res = testclient.get(f"/admin/token/{token.token_id}")
+    res = res.form.submit(name="action", value="confirm-revoke")
+    res = res.form.submit(name="action", value="revoke")
     assert ("success", "The token has successfully been revoked.") in res.flashes
 
     token.reload()

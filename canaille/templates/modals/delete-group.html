@@ -1,0 +1,31 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div class="ui warning message" id="modal-delete">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="trash alternate icon"></i>
+                {% trans %}Group deletion{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans group_name=group.display_name %}
+                        Are you sure you want to delete the group "{{ group_name }}"?
+                        This action is unrevokable and all the data about this group will be removed.
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ request.url }}" class="ui cancel button">
+                        {% trans %}Cancel{% endtrans %}
+                    </a>
+                    <button name="action" value="delete" id="delete" class="ui red approve button">
+                        {% trans %}Delete{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

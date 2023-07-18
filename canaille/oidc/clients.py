@@ -89,8 +89,12 @@ def add(user):
 @bp.route("/edit/<client:client>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
 def edit(user, client):
+    if request.form.get("action") == "confirm-delete":
+        return render_template("modals/delete-client.html", client=client)
+
     if request.form and request.form.get("action") == "delete":
         return client_delete(client)
+
     return client_edit(client)
 
 

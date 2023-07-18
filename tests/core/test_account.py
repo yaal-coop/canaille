@@ -302,6 +302,7 @@ def test_admin_self_deletion(testclient, backend):
         sess["user_id"] = [admin.id]
 
     res = testclient.get("/profile/temp/settings")
+    res = res.form.submit(name="action", value="confirm-delete")
     res = (
         res.form.submit(name="action", value="delete", status=302)
         .follow(status=302)
@@ -336,6 +337,7 @@ def test_user_self_deletion(testclient, backend):
     ]
     res = testclient.get("/profile/temp/settings")
     res.mustcontain("Delete my account")
+    res = res.form.submit(name="action", value="confirm-delete")
     res = (
         res.form.submit(name="action", value="delete", status=302)
         .follow(status=302)

@@ -1,0 +1,32 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div id="modal-delete" class="ui warning message">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="user minus icon"></i>
+                {% trans %}Account deletion{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% if user != edited_user %}
+                        {% trans user_name=(edited_user.formatted_name[0] or edited_user.identifier) %}
+                            Are you sure you want to delete the account of {{ user_name }}? This action is unrevokable and all the data about this user will be removed.
+                        {% endtrans %}
+                    {% else %}
+                        {% trans %}
+                            Are you sure you want to delete your account? This action is unrevokable and all your data will be removed forever.
+                        {% endtrans %}
+                    {% endif %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
+                    <button name="action" value="delete" class="ui red approve button">{% trans %}Delete{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

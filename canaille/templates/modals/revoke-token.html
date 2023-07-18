@@ -1,0 +1,26 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div class="ui warning message">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="trash icon"></i>
+                {% trans %}Token revokation{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans %}
+                        Are you sure you want to revoke this token? This action is unrevokable.
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ request.url }}" class="ui cancel button">{% trans %}Cancel{% endtrans %}</a>
+                    <button name="action" value="revoke" class="ui red approve button">{% trans %}Revoke{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

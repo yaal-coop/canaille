@@ -529,6 +529,13 @@ def profile_settings(user, edited_user):
     ):
         return profile_settings_edit(user, edited_user)
 
+    if (
+        request.form.get("action") == "confirm-delete"
+        and BaseBackend.get().has_account_lockability()
+        and not edited_user.locked
+    ):
+        return render_template("modals/delete-account.html", edited_user=edited_user)
+
     if request.form.get("action") == "delete":
         return profile_delete(user, edited_user)
 
@@ -568,6 +575,13 @@ def profile_settings(user, edited_user):
         return profile_settings_edit(user, edited_user)
 
     if (
+        request.form.get("action") == "confirm-lock"
+        and BaseBackend.get().has_account_lockability()
+        and not edited_user.locked
+    ):
+        return render_template("modals/lock-account.html", edited_user=edited_user)
+
+    if (
         request.form.get("action") == "lock"
         and BaseBackend.get().has_account_lockability()
         and not edited_user.locked
@@ -589,7 +603,7 @@ def profile_settings(user, edited_user):
 
         return profile_settings_edit(user, edited_user)
 
-    abort(400)
+    abort(400, f"bad form action: {request.form.get('action')}")
 
 
 def profile_settings_edit(editor, edited_user):

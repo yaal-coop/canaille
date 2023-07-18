@@ -9,10 +9,6 @@
     {% endif %}
 {%- endblock -%}
 
-{% block script %}
-    <script src="/static/js/confirm.js" defer></script>
-{% endblock %}
-
 {% block submenu %}
     <nav class="ui bottom attached two item borderless menu">
         <a class="item" href="{{ url_for('account.profile_edition', edited_user=edited_user) }}">
@@ -40,50 +36,6 @@
 {% endmacro %}
 
 {% block content %}
-    {% if self_deletion or user.can_manage_users %}
-        <div id="modal-delete" class="ui basic modal">
-            <div class="ui icon header">
-                <i class="user minus icon"></i>
-                {% trans %}Account deletion{% endtrans %}
-            </div>
-            <div class="content">
-                <p>
-                    {% if user.user_name != edited_user.user_name %}
-                        {{ _("Are you sure you want to delete this user? This action is unrevokable and all the data about this user will be removed.") }}
-                    {% else %}
-                        {{ _("Are you sure you want to delete your account? This action is unrevokable and all your data will be removed forever.") }}
-                    {% endif %}
-                </p>
-            </div>
-            <div class="actions">
-                <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
-                <div class="ui inverted red approve button">{% trans %}Delete{% endtrans %}</div>
-            </div>
-        </div>
-    {% endif %}
-
-    {% if has_account_lockability and user.can_manage_users and not edited_user.locked %}
-        <div id="modal-lock" class="ui basic modal">
-            <div class="ui icon header">
-                <i class="lock icon"></i>
-                {% trans %}Account locking{% endtrans %}
-            </div>
-            <div class="content">
-                <p>
-                    {% if user.user_name != edited_user.user_name %}
-                        {{ _("Are you sure you want to lock this account? The user won't be able to login until their account is unlocked.") }}
-                    {% else %}
-                        {{ _("Are you sure you want to lock your account? You won't be abel to login until your account is unlocked.") }}
-                    {% endif %}
-                </p>
-            </div>
-            <div class="actions">
-                <div class="ui inverted cancel button">{% trans %}Cancel{% endtrans %}</div>
-                <div class="ui inverted red approve button">{% trans %}Lock{% endtrans %}</div>
-            </div>
-        </div>
-    {% endif %}
-
     <div class="ui clearing segment">
         <h2 class="ui center aligned header">
             <div class="content">
@@ -173,13 +125,13 @@
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if has_account_lockability and "lock_date" in user.write and not edited_user.locked %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock" id="lock" formnovalidate>
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-lock" id="lock" formnovalidate>
                             {% trans %}Lock the account{% endtrans %}
                         </button>
                     {% endif %}
 
                     {% if user.can_manage_users or self_deletion %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete" id="delete" formnovalidate>
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-delete" id="delete" formnovalidate>
                             {% if user.user_name != edited_user.user_name %}
                                 {{ _("Delete the user") }}
                             {% else %}

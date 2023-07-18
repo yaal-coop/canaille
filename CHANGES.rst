@@ -13,6 +13,11 @@ Fixed
 
 - The `check` command uses the default configuration values.
 
+Changed
+*******
+
+- Modals do not need use javascript at the moment. :issue:`158` :pr:`144`
+
 [0.0.30] - 2023-07-06
 =====================
 
