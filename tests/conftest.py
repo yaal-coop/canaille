@@ -120,8 +120,7 @@ def app(configuration, backend):
 def testclient(app):
     app.config["TESTING"] = True
     app.jinja_env.undefined = StrictUndefined
-    with app.app_context():
-        yield TestApp(app)
+    yield TestApp(app)
 
 
 @pytest.fixture
