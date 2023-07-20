@@ -412,13 +412,14 @@ def test_fieldlist_add_readonly(testclient, logged_user, configuration):
     configuration["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
 
     res = testclient.get("/profile/user")
-    assert "readonly" in res.form["phone_numbers-0"].attrs
-    assert "phone_numbers-1" not in res.form.fields
+    form = res.forms["baseform"]
+    assert "readonly" in form["phone_numbers-0"].attrs
+    assert "phone_numbers-1" not in form.fields
 
     data = {
-        "csrf_token": res.form["csrf_token"].value,
-        "family_name": res.form["family_name"].value,
-        "phone_numbers-0": res.form["phone_numbers-0"].value,
+        "csrf_token": form["csrf_token"].value,
+        "family_name": form["family_name"].value,
+        "phone_numbers-0": form["phone_numbers-0"].value,
         "fieldlist_add": "phone_numbers-0",
     }
     testclient.post("/profile/user", data, status=403)
@@ -431,13 +432,14 @@ def test_fieldlist_remove_readonly(testclient, logged_user, configuration):
     logged_user.save()
 
     res = testclient.get("/profile/user")
-    assert "readonly" in res.form["phone_numbers-0"].attrs
-    assert "readonly" in res.form["phone_numbers-1"].attrs
+    form = res.forms["baseform"]
+    assert "readonly" in form["phone_numbers-0"].attrs
+    assert "readonly" in form["phone_numbers-1"].attrs
 
     data = {
-        "csrf_token": res.form["csrf_token"].value,
-        "family_name": res.form["family_name"].value,
-        "phone_numbers-0": res.form["phone_numbers-0"].value,
+        "csrf_token": form["csrf_token"].value,
+        "family_name": form["family_name"].value,
+        "phone_numbers-0": form["phone_numbers-0"].value,
         "fieldlist_remove": "phone_numbers-1",
     }
     testclient.post("/profile/user", data, status=403)

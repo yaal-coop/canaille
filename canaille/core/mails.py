@@ -1,4 +1,4 @@
-from canaille.app import profile_hash
+from canaille.app import build_hash
 from canaille.app.mails import logo
 from canaille.app.mails import send_email
 from flask import current_app
@@ -41,7 +41,7 @@ def send_password_reset_mail(user, mail):
     reset_url = url_for(
         "account.reset",
         user=user,
-        hash=profile_hash(
+        hash=build_hash(
             user.identifier,
             mail,
             user.password[0] if user.has_password() else "",
@@ -82,7 +82,7 @@ def send_password_initialization_mail(user, email):
     reset_url = url_for(
         "account.reset",
         user=user,
-        hash=profile_hash(
+        hash=build_hash(
             user.identifier,
             email,
             user.password[0] if user.has_password() else "",
@@ -136,6 +136,37 @@ def send_invitation_mail(email, registration_url):
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         registration_url=registration_url,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+        title=subject,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=email,
+        text=text_body,
+        html=html_body,
+        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )
+
+
+def send_confirmation_email(email, confirmation_url):
+    base_url = url_for("account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("Confirm your address email on {website_name}").format(
+        website_name=current_app.config.get("NAME", base_url)
+    )
+    text_body = render_template(
+        "mail/email-confirmation.txt",
+        site_name=current_app.config.get("NAME", base_url),
+        site_url=base_url,
+        confirmation_url=confirmation_url,
+    )
+    html_body = render_template(
+        "mail/email-confirmation.html",
+        site_name=current_app.config.get("NAME", base_url),
+        site_url=base_url,
+        confirmation_url=confirmation_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
     )

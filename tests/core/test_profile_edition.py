@@ -1,5 +1,19 @@
+import pytest
 from canaille.core.populate import fake_users
 from webtest import Upload
+
+
+@pytest.fixture
+def configuration(configuration):
+    configuration["EMAIL_CONFIRMATION"] = False
+    return configuration
+
+
+def test_invalid_form_request(testclient, logged_user):
+    res = testclient.get("/profile/user")
+    res = res.forms["baseform"].submit(
+        name="action", value="invalid-action", status=400
+    )
 
 
 def test_user_list_pagination(testclient, logged_admin):
@@ -101,24 +115,25 @@ def test_edition(
     jpeg_photo,
 ):
     res = testclient.get("/profile/user", status=200)
-    res.form["given_name"] = "given_name"
-    res.form["family_name"] = "family_name"
-    res.form["display_name"] = "display_name"
-    res.form["emails-0"] = "email@mydomain.tld"
-    res.form["phone_numbers-0"] = "555-666-777"
-    res.form["formatted_address"] = "formatted_address"
-    res.form["street"] = "street"
-    res.form["postal_code"] = "postal_code"
-    res.form["locality"] = "locality"
-    res.form["region"] = "region"
-    res.form["employee_number"] = 666
-    res.form["department"] = 1337
-    res.form["title"] = "title"
-    res.form["organization"] = "organization"
-    res.form["preferred_language"] = "fr"
-    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
+    form = res.forms["baseform"]
+    form["given_name"] = "given_name"
+    form["family_name"] = "family_name"
+    form["display_name"] = "display_name"
+    form["emails-0"] = "email@mydomain.tld"
+    form["phone_numbers-0"] = "555-666-777"
+    form["formatted_address"] = "formatted_address"
+    form["street"] = "street"
+    form["postal_code"] = "postal_code"
+    form["locality"] = "locality"
+    form["region"] = "region"
+    form["employee_number"] = 666
+    form["department"] = 1337
+    form["title"] = "title"
+    form["organization"] = "organization"
+    form["preferred_language"] = "fr"
+    form["photo"] = Upload("logo.jpg", jpeg_photo)
 
-    res = res.form.submit(name="action", value="edit")
+    res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [
         ("success", "Le profil a été mis à jour avec succès.")
     ], res.text
@@ -157,10 +172,11 @@ def test_edition_remove_fields(
     admin,
 ):
     res = testclient.get("/profile/user", status=200)
-    res.form["display_name"] = ""
-    res.form["phone_numbers-0"] = ""
+    form = res.forms["baseform"]
+    form["display_name"] = ""
+    form["phone_numbers-0"] = ""
 
-    res = res.form.submit(name="action", value="edit")
+    res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")], res.text
     res = res.follow()
 
@@ -189,14 +205,15 @@ def test_field_permissions_none(testclient, logged_user):
     }
 
     res = testclient.get("/profile/user", status=200)
-    assert "phone_numbers-0" not in res.form.fields
+    form = res.forms["baseform"]
+    assert "phone_numbers-0" not in form.fields
 
     testclient.post(
         "/profile/user",
         {
-            "action": "edit",
+            "action": "edit-profile",
             "phone_numbers-0": "000-000-000",
-            "csrf_token": res.form["csrf_token"].value,
+            "csrf_token": form["csrf_token"].value,
         },
     )
     logged_user.reload()
@@ -214,14 +231,15 @@ def test_field_permissions_read(testclient, logged_user):
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "phone_numbers-0" in res.form.fields
+    form = res.forms["baseform"]
+    assert "phone_numbers-0" in form.fields
 
     testclient.post(
         "/profile/user",
         {
-            "action": "edit",
+            "action": "edit-profile",
             "phone_numbers-0": "000-000-000",
-            "csrf_token": res.form["csrf_token"].value,
+            "csrf_token": form["csrf_token"].value,
         },
     )
     logged_user.reload()
@@ -239,14 +257,15 @@ def test_field_permissions_write(testclient, logged_user):
         "PERMISSIONS": ["edit_self"],
     }
     res = testclient.get("/profile/user", status=200)
-    assert "phone_numbers-0" in res.form.fields
+    form = res.forms["baseform"]
+    assert "phone_numbers-0" in form.fields
 
     testclient.post(
         "/profile/user",
         {
-            "action": "edit",
+            "action": "edit-profile",
             "phone_numbers-0": "000-000-000",
-            "csrf_token": res.form["csrf_token"].value,
+            "csrf_token": form["csrf_token"].value,
         },
     )
     logged_user.reload()
@@ -255,15 +274,16 @@ def test_field_permissions_write(testclient, logged_user):
 
 def test_simple_user_cannot_edit_other(testclient, admin, logged_user):
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
     testclient.get("/profile/admin", status=404)
     testclient.post(
         "/profile/admin",
-        {"action": "edit", "csrf_token": res.form["csrf_token"].value},
+        {"action": "edit-profile", "csrf_token": form["csrf_token"].value},
         status=404,
     )
     testclient.post(
         "/profile/admin",
-        {"action": "delete", "csrf_token": res.form["csrf_token"].value},
+        {"action": "delete", "csrf_token": form["csrf_token"].value},
         status=404,
     )
     testclient.get("/users", status=403)
@@ -275,18 +295,20 @@ def test_admin_bad_request(testclient, logged_moderator):
 
 def test_bad_email(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
 
-    res.form["emails-0"] = "john@doe.com"
+    form["emails-0"] = "john@doe.com"
 
-    res = res.form.submit(name="action", value="edit").follow()
+    res = form.submit(name="action", value="edit-profile").follow()
 
     assert ["john@doe.com"] == logged_user.emails
 
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
 
-    res.form["emails-0"] = "yolo"
+    form["emails-0"] = "yolo"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = form.submit(name="action", value="edit-profile", status=200)
 
     logged_user.reload()
 
@@ -295,11 +317,12 @@ def test_bad_email(testclient, logged_user):
 
 def test_surname_is_mandatory(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
     logged_user.family_name = ["Doe"]
 
-    res.form["family_name"] = ""
+    form["family_name"] = ""
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = form.submit(name="action", value="edit-profile", status=200)
 
     logged_user.reload()
 
@@ -308,18 +331,21 @@ def test_surname_is_mandatory(testclient, logged_user):
 
 def test_formcontrol(testclient, logged_user):
     res = testclient.get("/profile/user")
-    assert "emails-1" not in res.form.fields
+    form = res.forms["baseform"]
+    assert "emails-1" not in form.fields
 
-    res = res.form.submit(status=200, name="fieldlist_add", value="emails-0")
-    assert "emails-1" in res.form.fields
+    res = form.submit(status=200, name="fieldlist_add", value="emails-0")
+    form = res.forms["baseform"]
+    assert "emails-1" in form.fields
 
 
 def test_formcontrol_htmx(testclient, logged_user):
     res = testclient.get("/profile/user")
+    form = res.forms["baseform"]
     data = {
-        field: res.form[field].value
-        for field in res.form.fields
-        if len(res.form.fields.get(field)) == 1
+        field: form[field].value
+        for field in form.fields
+        if len(form.fields.get(field)) == 1
     }
     data["fieldlist_add"] = "emails-0"
     response = testclient.post(
@@ -336,11 +362,13 @@ def test_formcontrol_htmx(testclient, logged_user):
 
 def test_inline_validation(testclient, logged_admin, user):
     res = testclient.get("/profile/admin")
+    form = res.forms["baseform"]
     res = testclient.post(
         "/profile/admin",
         {
-            "csrf_token": res.form["csrf_token"].value,
+            "csrf_token": form["csrf_token"].value,
             "emails-0": "john@doe.com",
+            "action": "edit-profile",
         },
         headers={
             "HX-Request": "true",
@@ -358,11 +386,13 @@ def test_inline_validation_keep_indicators(
     configuration["ACL"]["ADMIN"]["WRITE"].append("display_name")
 
     res = testclient.get("/profile/admin")
+    form = res.forms["baseform"]
     res = testclient.post(
         "/profile/user",
         {
-            "csrf_token": res.form["csrf_token"].value,
+            "csrf_token": form["csrf_token"].value,
             "display_name": "George Abitbol",
+            "action": "edit-profile",
         },
         headers={
             "HX-Request": "true",

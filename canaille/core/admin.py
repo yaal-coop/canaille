@@ -1,7 +1,7 @@
 from canaille.app import obj_to_b64
 from canaille.app.flask import permissions_needed
 from canaille.app.forms import Form
-from canaille.core.mails import profile_hash
+from canaille.core.mails import build_hash
 from canaille.core.mails import send_test_mail
 from flask import Blueprint
 from flask import current_app
@@ -79,7 +79,7 @@ def password_init_html(user):
     reset_url = url_for(
         "account.reset",
         user=user,
-        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password initialization on {website_name}").format(
             website_name=current_app.config.get("NAME", "Canaille")
         ),
@@ -105,7 +105,7 @@ def password_init_txt(user):
     reset_url = url_for(
         "account.reset",
         user=user,
-        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
@@ -124,7 +124,7 @@ def password_reset_html(user):
     reset_url = url_for(
         "account.reset",
         user=user,
-        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password reset on {website_name}").format(
             website_name=current_app.config.get("NAME", "Canaille")
         ),
@@ -150,7 +150,7 @@ def password_reset_txt(user):
     reset_url = url_for(
         "account.reset",
         user=user,
-        hash=profile_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
@@ -169,7 +169,7 @@ def invitation_html(user, identifier, email):
     registration_url = url_for(
         "account.registration",
         data=obj_to_b64([identifier, email]),
-        hash=profile_hash(identifier, email),
+        hash=build_hash(identifier, email),
         _external=True,
     )
 
@@ -192,7 +192,7 @@ def invitation_txt(user, identifier, email):
     registration_url = url_for(
         "account.registration",
         data=obj_to_b64([identifier, email]),
-        hash=profile_hash(identifier, email),
+        hash=build_hash(identifier, email),
         _external=True,
     )
 
@@ -201,4 +201,46 @@ def invitation_txt(user, identifier, email):
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
+    )
+
+
+@bp.route("/mail/<identifier>/<email>/email-confirmation.html")
+@permissions_needed("manage_oidc")
+def email_confirmation_html(user, identifier, email):
+    base_url = url_for("account.index", _external=True)
+    email_confirmation_url = url_for(
+        "account.email_confirmation",
+        data=obj_to_b64([identifier, email]),
+        hash=build_hash(identifier, email),
+        _external=True,
+    )
+
+    return render_template(
+        "mail/email-confirmation.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        confirmation_url=email_confirmation_url,
+        logo=current_app.config.get("LOGO"),
+        title=_("Email confirmation on {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille")
+        ),
+    )
+
+
+@bp.route("/mail/<identifier>/<email>/email-confirmation.txt")
+@permissions_needed("manage_oidc")
+def email_confirmation_txt(user, identifier, email):
+    base_url = url_for("account.index", _external=True)
+    email_confirmation_url = url_for(
+        "account.email_confirmation",
+        data=obj_to_b64([identifier, email]),
+        hash=build_hash(identifier, email),
+        _external=True,
+    )
+
+    return render_template(
+        "mail/email-confirmation.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        confirmation_url=email_confirmation_url,
     )

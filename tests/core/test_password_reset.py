@@ -1,9 +1,9 @@
-from canaille.core.account import profile_hash
+from canaille.core.account import build_hash
 
 
 def test_password_reset(testclient, user):
     assert not user.check_password("foobarbaz")[0]
-    hash = profile_hash("user", user.preferred_email, user.password[0])
+    hash = build_hash("user", user.preferred_email, user.password[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
 
@@ -27,7 +27,7 @@ def test_password_reset_multiple_emails(testclient, user):
     user.save()
 
     assert not user.check_password("foobarbaz")[0]
-    hash = profile_hash("user", "foo@baz.com", user.password[0])
+    hash = build_hash("user", "foo@baz.com", user.password[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
 
@@ -55,7 +55,7 @@ def test_password_reset_bad_link(testclient, user):
 
 
 def test_password_reset_bad_password(testclient, user):
-    hash = profile_hash("user", user.preferred_email, user.password[0])
+    hash = build_hash("user", user.preferred_email, user.password[0])
 
     res = testclient.get("/reset/user/" + hash, status=200)
 

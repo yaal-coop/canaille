@@ -101,6 +101,19 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("admin.email_confirmation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("admin.email_confirmation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Email verification") }}
+                </div>
+            </div>
+
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
                         <a class="ui button primary" href="{{ url_for("admin.invitation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
                         <a class="ui button primary" href="{{ url_for("admin.invitation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
                     </div>

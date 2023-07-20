@@ -284,7 +284,7 @@ PROFILE_FORM_FIELDS = dict(
 )
 
 
-def profile_form(write_field_names, readonly_field_names, user=None):
+def build_profile_form(write_field_names, readonly_field_names, user=None):
     if "password" in write_field_names:
         write_field_names |= {"password1", "password2"}
 
@@ -378,4 +378,35 @@ class InvitationForm(Form):
             (group.id, group.display_name) for group in models.Group.query()
         ],
         render_kw={},
+    )
+
+
+class EmailConfirmationForm(Form):
+    old_emails = wtforms.FieldList(
+        wtforms.EmailField(
+            _("Email addresses"),
+            validators=[ReadOnly()],
+            description=_(
+                "This email will be used as a recovery address to reset the password if needed"
+            ),
+            render_kw={
+                "placeholder": _("jane@doe.com"),
+                "spellcheck": "false",
+                "autocorrect": "off",
+                "readonly": "true",
+            },
+        ),
+    )
+    new_email = wtforms.EmailField(
+        _("New email address"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Email(),
+            unique_email,
+        ],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
     )

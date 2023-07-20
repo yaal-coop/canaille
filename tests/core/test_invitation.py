@@ -164,7 +164,7 @@ def test_registration(testclient, foo_group):
         [foo_group.id],
     )
     b64 = invitation.b64()
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
 
     testclient.get(f"/register/{b64}/{hash}", status=200)
 
@@ -178,13 +178,13 @@ def test_registration_formcontrol(testclient):
         [],
     )
     b64 = invitation.b64()
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
     assert "emails-1" not in res.form.fields
 
-    res = res.form.submit(status=200, name="fieldlist_add", value="emails-0")
-    assert "emails-1" in res.form.fields
+    res = res.form.submit(status=200, name="fieldlist_add", value="phone_numbers-0")
+    assert "phone_numbers-1" in res.form.fields
 
 
 def test_registration_invalid_hash(testclient, foo_group):
@@ -205,7 +205,7 @@ def test_registration_invalid_data(testclient, foo_group):
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
 
     testclient.get(f"/register/invalid/{hash}", status=302)
 
@@ -221,7 +221,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
     b64 = invitation.b64()
 
     testclient.get(f"/register/{b64}/{hash}", status=302)
@@ -235,7 +235,7 @@ def test_registration_no_password(testclient, foo_group):
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
     b64 = invitation.b64()
     url = f"/register/{b64}/{hash}"
 
@@ -260,7 +260,7 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
     b64 = invitation.b64()
     url = f"/register/{b64}/{hash}"
 
@@ -298,7 +298,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
         [foo_group.id],
     )
     b64 = invitation.b64()
-    hash = invitation.profile_hash()
+    hash = invitation.build_hash()
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
 
