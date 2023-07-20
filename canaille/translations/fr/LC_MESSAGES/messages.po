@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-07-20 16:54+0200\n"
-"PO-Revision-Date: 2023-07-02 08:52+0000\n"
+"PO-Revision-Date: 2023-07-22 14:06+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1327,16 +1327,14 @@ msgid "Account deletion"
 msgstr "Suppression d'un compte"
 
 #: canaille/templates/modals/delete-account.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to delete this user? This action is unrevokable and "
-#| "all the data about this user will be removed."
+#, python-format
 msgid ""
 "Are you sure you want to delete the account of %(user_name)s? This action is "
 "unrevokable and all the data about this user will be removed."
 msgstr ""
-"Êtes-vous sûrs de vouloir supprimer cet utilisateur ? Cette action est "
-"irrévocable, et toutes les données de cet utilisateur seront supprimées."
+"Êtes-vous sûrs de vouloir supprimer le compte de %(user_name)s ? Cette "
+"action est irrévocable, et toutes les données de cet utilisateur seront "
+"supprimées."
 
 #: canaille/templates/modals/delete-account.html:18
 msgid ""
@@ -1365,54 +1363,44 @@ msgid "Client deletion"
 msgstr "Suppression d'un client"
 
 #: canaille/templates/modals/delete-client.html:13
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to delete this client? This action is unrevokable "
-#| "and all the data about this client will be removed."
+#, python-format
 msgid ""
 "Are you sure you want to delete the client %(client_name)s? This action is "
 "unrevokable and all the data about this client will be removed."
 msgstr ""
-"Êtes-vous sûrs de vouloir supprimer ce client ? Cette action est irrévocable "
-"et toutes les données à propos de ce client seront supprimées."
+"Êtes-vous sûrs de vouloir supprimer l'application %(client_name)s ? Cette "
+"action est irrévocable et toutes les données à propos de cette application "
+"seront supprimées."
 
 #: canaille/templates/modals/delete-group.html:9
 msgid "Group deletion"
 msgstr "Suppression d'un groupe"
 
 #: canaille/templates/modals/delete-group.html:13
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to delete this group? This action is unrevokable "
-#| "and all the data about this group will be removed."
+#, python-format
 msgid ""
 "Are you sure you want to delete the group \"%(group_name)s\"? This action is "
 "unrevokable and all the data about this group will be removed."
 msgstr ""
-"Êtes-vous sûrs de vouloir supprimer ce groupe ? Cette action est "
-"irrévocable, et toutes les données de cet utilisateur seront supprimées."
+"Êtes-vous sûrs de vouloir supprimer le groupe « %(group_name)s » ? Cette "
+"action est irrévocable, et toutes les données de cet utilisateur seront "
+"supprimées."
 
 #: canaille/templates/modals/lock-account.html:9
 msgid "Account locking"
 msgstr "Verrouillage du compte"
 
 #: canaille/templates/modals/lock-account.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to lock this account? The user won't be able to "
-#| "login until their account is unlocked."
+#, python-format
 msgid ""
 "Are you sure you want to lock the account of %(user_name)s ? The user won't "
 "be able to login until their account is unlocked."
 msgstr ""
-"Êtes-vous sûrs de vouloir verrouiller ce compte ? L’utilisateur ne pourra "
-"pas s’authentifier jusqu’à ce que son compte soit déverrouillé."
+"Êtes-vous sûrs de vouloir verrouiller le compte de %(user_name)s ? L’"
+"utilisateur ne pourra pas s’authentifier jusqu’à ce que son compte soit "
+"déverrouillé."
 
 #: canaille/templates/modals/lock-account.html:18
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to lock your account? You won't be abel to login "
-#| "until your account is unlocked."
 msgid ""
 "Are you sure you want to lock your account? You won't be able to login until "
 "your account is unlocked."
@@ -1425,10 +1413,8 @@ msgid "Lock"
 msgstr "Verrouiller"
 
 #: canaille/templates/modals/revoke-token.html:9
-#, fuzzy
-#| msgid "Token deletion"
 msgid "Token revokation"
-msgstr "Suppression d'un jeton"
+msgstr "Révocation d'un jeton"
 
 #: canaille/templates/modals/revoke-token.html:13
 msgid "Are you sure you want to revoke this token? This action is unrevokable."
@@ -1436,10 +1422,8 @@ msgstr ""
 "Êtes-vous sûrs de vouloir révoquer ce jeton ? Cette action est irrévocable."
 
 #: canaille/templates/modals/revoke-token.html:21
-#, fuzzy
-#| msgid "Revoked:"
 msgid "Revoke"
-msgstr "Révoqué le :"
+msgstr "Révoquer"
 
 #: canaille/templates/oidc/admin/authorization_view.html:4
 #: canaille/templates/oidc/admin/authorization_view.html:35
