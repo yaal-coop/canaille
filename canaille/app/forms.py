@@ -157,11 +157,11 @@ class HTMXFormMixin:
         return False
 
 
-class HTMXForm(HTMXFormMixin, I18NFormMixin, FlaskForm):
+class Form(HTMXFormMixin, I18NFormMixin, FlaskForm):
     pass
 
 
-class HTMXBaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
+class BaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
     pass
 
 

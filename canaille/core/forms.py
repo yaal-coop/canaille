@@ -1,8 +1,8 @@
 import wtforms.form
 from canaille.app import models
+from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
-from canaille.app.forms import HTMXBaseForm
-from canaille.app.forms import HTMXForm
+from canaille.app.forms import Form
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import native_language_name_from_code
@@ -50,7 +50,7 @@ def existing_login(form, field):
         )
 
 
-class LoginForm(HTMXForm):
+class LoginForm(Form):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
@@ -63,7 +63,7 @@ class LoginForm(HTMXForm):
     )
 
 
-class PasswordForm(HTMXForm):
+class PasswordForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
@@ -74,7 +74,7 @@ class FullLoginForm(LoginForm, PasswordForm):
     pass
 
 
-class ForgottenPasswordForm(HTMXForm):
+class ForgottenPasswordForm(Form):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
@@ -86,7 +86,7 @@ class ForgottenPasswordForm(HTMXForm):
     )
 
 
-class PasswordResetForm(HTMXForm):
+class PasswordResetForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
@@ -107,7 +107,7 @@ class PasswordResetForm(HTMXForm):
     )
 
 
-class FirstLoginForm(HTMXForm):
+class FirstLoginForm(Form):
     pass
 
 
@@ -307,7 +307,7 @@ def profile_form(write_field_names, readonly_field_names, user=None):
             ],
         )
 
-    form = HTMXBaseForm(fields)
+    form = BaseForm(fields)
     form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
@@ -317,7 +317,7 @@ def profile_form(write_field_names, readonly_field_names, user=None):
     return form
 
 
-class CreateGroupForm(HTMXForm):
+class CreateGroupForm(Form):
     display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired(), unique_group],
@@ -331,7 +331,7 @@ class CreateGroupForm(HTMXForm):
     )
 
 
-class EditGroupForm(HTMXForm):
+class EditGroupForm(Form):
     display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
@@ -345,7 +345,7 @@ class EditGroupForm(HTMXForm):
     )
 
 
-class InvitationForm(HTMXForm):
+class InvitationForm(Form):
     user_name = wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},

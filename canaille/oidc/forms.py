@@ -1,16 +1,16 @@
 import wtforms
 from canaille.app import models
-from canaille.app.forms import HTMXForm
+from canaille.app.forms import Form
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from flask_babel import lazy_gettext as _
 
 
-class AuthorizeForm(HTMXForm):
+class AuthorizeForm(Form):
     pass
 
 
-class LogoutForm(HTMXForm):
+class LogoutForm(Form):
     answer = wtforms.SubmitField()
 
 
@@ -18,7 +18,7 @@ def client_audiences():
     return [(client.id, client.client_name) for client in models.Client.query()]
 
 
-class ClientAddForm(HTMXForm):
+class ClientAddForm(Form):
     client_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired()],
@@ -161,5 +161,5 @@ class ClientAddForm(HTMXForm):
     )
 
 
-class TokenRevokationForm(HTMXForm):
+class TokenRevokationForm(Form):
     pass

@@ -1,6 +1,6 @@
 from canaille.app import obj_to_b64
 from canaille.app.flask import permissions_needed
-from canaille.app.forms import HTMXForm
+from canaille.app.forms import Form
 from canaille.core.mails import profile_hash
 from canaille.core.mails import send_test_mail
 from flask import Blueprint
@@ -18,7 +18,7 @@ from wtforms.validators import Email
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-class MailTestForm(HTMXForm):
+class MailTestForm(Form):
     email = StringField(
         _("Email"),
         validators=[
