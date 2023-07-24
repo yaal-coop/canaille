@@ -4,6 +4,8 @@ from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import is_uri
+from canaille.app.forms import ReadOnly
+from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
 from canaille.app.i18n import native_language_name_from_code
 from flask import current_app
@@ -311,8 +313,7 @@ def profile_form(write_field_names, readonly_field_names, user=None):
     form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
-            field.render_kw = field.render_kw or {}
-            field.render_kw["readonly"] = "true"
+            set_readonly(field)
 
     return form
 
@@ -334,7 +335,10 @@ class CreateGroupForm(Form):
 class EditGroupForm(Form):
     display_name = wtforms.StringField(
         _("Name"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[
+            wtforms.validators.DataRequired(),
+            ReadOnly(),
+        ],
         render_kw={
             "readonly": "true",
         },

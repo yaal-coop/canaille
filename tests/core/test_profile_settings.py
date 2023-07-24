@@ -19,14 +19,12 @@ def test_edition(
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
-    assert res.form["groups"].attrs["readonly"]
-    assert res.form["user_name"].attrs["readonly"]
+    assert "readonly" in res.form["groups"].attrs
+    assert "readonly" in res.form["user_name"].attrs
 
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfully.")]
-    res = res.follow()
-
+    assert res.flashes == [("error", "Profile edition failed.")]
     logged_user.reload()
 
     assert logged_user.user_name == ["user"]

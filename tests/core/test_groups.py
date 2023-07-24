@@ -165,15 +165,27 @@ def test_moderator_can_create_edit_and_delete_group(
     form["display_name"] = "bar2"
     form["description"] = ["yolo2"]
 
-    res = form.submit(name="action", value="edit").follow()
+    res = form.submit(name="action", value="edit")
+    assert res.flashes == [("error", "Group edition failed.")]
+    res.mustcontain("This field cannot be edited")
+
+    bar_group = models.Group.get(display_name="bar")
+    assert bar_group.display_name == "bar"
+    assert bar_group.description == ["yolo"]
+    assert models.Group.get(display_name="bar2") is None
+
+    # Group description can be edited
+    res = testclient.get("/groups/bar", status=200)
+    form = res.forms["editgroupform"]
+    form["description"] = ["yolo2"]
+
+    res = form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "The group bar has been sucessfully edited.")]
+    res = res.follow()
 
     bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo2"]
-    assert models.Group.get(display_name="bar2") is None
-    members = bar_group.members
-    for member in members:
-        res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
     res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")

@@ -410,7 +410,7 @@ def test_fieldlist_add_readonly(testclient, logged_user, configuration):
     configuration["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
 
     res = testclient.get("/profile/user")
-    assert res.form["phone_numbers-0"].attrs["readonly"]
+    assert "readonly" in res.form["phone_numbers-0"].attrs
     assert "phone_numbers-1" not in res.form.fields
 
     data = {
@@ -429,8 +429,8 @@ def test_fieldlist_remove_readonly(testclient, logged_user, configuration):
     logged_user.save()
 
     res = testclient.get("/profile/user")
-    assert res.form["phone_numbers-0"].attrs["readonly"]
-    assert res.form["phone_numbers-1"].attrs["readonly"]
+    assert "readonly" in res.form["phone_numbers-0"].attrs
+    assert "readonly" in res.form["phone_numbers-1"].attrs
 
     data = {
         "csrf_token": res.form["csrf_token"].value,

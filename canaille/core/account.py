@@ -17,6 +17,9 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
+from canaille.app.forms import is_readonly
+from canaille.app.forms import set_readonly
+from canaille.app.forms import set_writable
 from canaille.app.forms import TableForm
 from canaille.backends import BaseBackend
 from flask import abort
@@ -321,12 +324,12 @@ def registration(data, hash):
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[(group.id, group.display_name) for group in models.Group.query()],
-            render_kw={"readonly": "true"},
         )
+        set_readonly(form["groups"])
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if "readonly" in form["user_name"].render_kw and invitation.user_name_editable:
-        del form["user_name"].render_kw["readonly"]
+    if is_readonly(form["user_name"]) and invitation.user_name_editable:
+        set_writable(form["user_name"])
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
@@ -371,8 +374,8 @@ def profile_creation(user):
     form.process(CombinedMultiDict((request.files, request.form)) or None)
 
     for field in form:
-        if field.render_kw and "readonly" in field.render_kw:
-            del field.render_kw["readonly"]
+        if is_readonly(field):
+            set_writable(field)
 
     if not request.form or form.form_control():
         return render_template(
