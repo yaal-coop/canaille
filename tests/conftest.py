@@ -1,6 +1,7 @@
 import os
 
 import pytest
+from babel.messages.frontend import compile_catalog
 from canaille import create_app
 from canaille.app import models
 from canaille.backends import available_backends
@@ -8,6 +9,16 @@ from flask_webtest import TestApp
 from jinja2 import StrictUndefined
 from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
+
+
+@pytest.fixture(autouse=True, scope="session")
+def babel_catalogs():
+    cmd = compile_catalog()
+    cmd.directory = os.path.dirname(__file__) + "/../canaille/translations"
+    cmd.quiet = True
+    cmd.statistics = True
+    cmd.finalize_options()
+    cmd.run()
 
 
 pytest_plugins = [
