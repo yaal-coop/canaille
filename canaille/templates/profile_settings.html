@@ -44,13 +44,32 @@
         </h2>
 
         {% call fui.render_form(form, class_="profile-form info warning") %}
+
             {% if "user_name" in form %}
                 {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
+            {% endif %}
+
+            {% if has_account_lockability and "lock_date" in form and not edited_user.locked %}
+                {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}
                 {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
             {% endif %}
+
+            <h2 class="ui center aligned header">
+                <div class="content">
+                    {% trans %}Password{% endtrans %}
+                </div>
+            </h2>
+            <div class="ui info message">
+                {% trans %}
+                    You can change your password here by typing it once it each fields below.
+                    The more a password is long, the more it is strong. A good password is a
+                    long password that you will remember, not a complicated password that your
+                    use for all your accounts.
+                {% endtrans %}
+            </div>
 
             {% if "password1" in form %}
                 {% block password_field scoped %}
@@ -59,10 +78,6 @@
                         {{ render_field(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
-            {% endif %}
-
-            {% if has_account_lockability and "lock_date" in form and not edited_user.locked %}
-                {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
             {% endif %}
 
             {% if user.can_manage_users %}

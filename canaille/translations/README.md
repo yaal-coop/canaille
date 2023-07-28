@@ -5,7 +5,7 @@ All the other steps are automatically done with Weblate.
 Extract the messages with:
 
 ```
-pybabel extract --copyright-holder="Yaal Coop" --output-file canaille/translations/messages.pot canaille
+pybabel extract --mapping-file canaille/translations/babel.cfg --copyright-holder="Yaal Coop" --output-file canaille/translations/messages.pot canaille
 ```
 
 Add a new language with:
