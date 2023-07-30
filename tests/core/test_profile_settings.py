@@ -23,7 +23,7 @@ def test_edition(
     assert "readonly" in res.form["user_name"].attrs
 
     res.form["user_name"] = "toto"
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("error", "Profile edition failed.")]
     logged_user.reload()
 
@@ -65,7 +65,7 @@ def test_edition_without_groups(
     res = testclient.get("/profile/user/settings", status=200)
     testclient.app.config["ACL"]["DEFAULT"]["READ"] = []
 
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
@@ -84,7 +84,7 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "new_password"
 
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit-settings").follow()
 
     logged_user.reload()
     assert logged_user.check_password("new_password")[0]
@@ -94,7 +94,7 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "correct horse battery staple"
     res.form["password2"] = "correct horse battery staple"
 
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
@@ -108,7 +108,7 @@ def test_password_change_fail(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "other_password"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit-settings", status=200)
 
     logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")[0]
@@ -118,7 +118,7 @@ def test_password_change_fail(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = ""
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit-settings", status=200)
 
     logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")[0]
@@ -347,7 +347,7 @@ def test_past_lock_date(
         second=0, microsecond=0
     ) - datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
@@ -370,7 +370,7 @@ def test_future_lock_date(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
@@ -394,7 +394,7 @@ def test_empty_lock_date(
 
     res = testclient.get("/profile/user/settings", status=200)
     res.form["lock_date"] = ""
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
@@ -416,7 +416,7 @@ def test_account_limit_values(
         microsecond=0, tzinfo=datetime.timezone.utc
     )
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()

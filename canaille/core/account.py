@@ -527,7 +527,7 @@ def profile_settings(user, edited_user):
 
     if (
         request.method == "GET"
-        or request.form.get("action") == "edit"
+        or request.form.get("action") == "edit-settings"
         or request_is_htmx()
     ):
         return profile_settings_edit(user, edited_user)
@@ -630,7 +630,11 @@ def profile_settings_edit(editor, edited_user):
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if request.form and request.form.get("action") == "edit" or request_is_htmx():
+    if (
+        request.form
+        and request.form.get("action") == "edit-settings"
+        or request_is_htmx()
+    ):
         if not form.validate():
             flash(_("Profile edition failed."), "error")
 
@@ -642,7 +646,7 @@ def profile_settings_edit(editor, edited_user):
             if (
                 "password1" in request.form
                 and form["password1"].data
-                and request.form["action"] == "edit"
+                and request.form["action"] == "edit-settings"
             ):
                 edited_user.set_password(form["password1"].data)
 
