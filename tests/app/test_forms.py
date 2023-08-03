@@ -1,9 +1,11 @@
 import datetime
 
+import pytest
 import wtforms
 from babel.dates import LOCALTZ
 from canaille.app import models
 from canaille.app.forms import DateTimeUTCField
+from canaille.app.forms import phone_number
 from flask import current_app
 from werkzeug.datastructures import ImmutableMultiDict
 
@@ -480,3 +482,20 @@ def test_inline_validation_invalid_field(testclient, logged_admin, user):
         },
         status=400,
     )
+
+
+def test_phone_number_validator():
+    class Field:
+        def __init__(self, data):
+            self.data = data
+
+    phone_number(None, Field("0601060106"))
+    phone_number(None, Field("06 01 06 01 06"))
+    phone_number(None, Field(" 06 01 06 01 06 "))
+    phone_number(None, Field("06-01-06-01-06"))
+    phone_number(None, Field("06.01.06.01.06"))
+    phone_number(None, Field("+336 01 06 01 06 "))
+    phone_number(None, Field("555-000-555"))
+
+    with pytest.raises(wtforms.ValidationError):
+        phone_number(None, Field("invalid"))

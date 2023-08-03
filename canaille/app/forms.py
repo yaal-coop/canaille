@@ -35,6 +35,15 @@ def unique_values(form, field):
             values.add(subfield.data)
 
 
+def phone_number(form, field):
+    number = field.data.replace(" ", "").replace("-", "").replace(".", "")
+    if not re.match(
+        r"(?P<country_code>\+\d{1,3})?\s?\(?(?P<area_code>\d{1,4})\)?[\s.-]?(?P<local_number>\d{3}[\s.-]?\d{4})",
+        number,
+    ):
+        raise wtforms.ValidationError(_("Not a valid phone number"))
+
+
 meta = DefaultMeta()
 
 
