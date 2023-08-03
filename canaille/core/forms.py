@@ -4,6 +4,7 @@ from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import is_uri
+from canaille.app.forms import phone_number
 from canaille.app.forms import ReadOnly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
@@ -180,7 +181,9 @@ PROFILE_FORM_FIELDS = dict(
     ),
     phone_numbers=wtforms.FieldList(
         wtforms.TelField(
-            _("Phone numbers"), render_kw={"placeholder": _("555-000-555")}
+            _("Phone numbers"),
+            render_kw={"placeholder": _("555-000-555")},
+            validators=[wtforms.validators.Optional(), phone_number],
         ),
         min_entries=1,
         validators=[unique_values],
