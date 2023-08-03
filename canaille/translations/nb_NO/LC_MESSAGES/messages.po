@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-28 19:16+0200\n"
+"POT-Creation-Date: 2023-08-03 19:22+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -32,16 +32,22 @@ msgstr ""
 msgid "This value is a duplicate"
 msgstr ""
 
-#: canaille/app/forms.py:189
+#: canaille/app/forms.py:44
+#, fuzzy
+#| msgid "Your phone number."
+msgid "Not a valid phone number"
+msgstr "Ditt telefonnummer."
+
+#: canaille/app/forms.py:198
 #, fuzzy
 msgid "The page number is not valid"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/app/forms.py:217
+#: canaille/app/forms.py:226
 msgid "Not a valid datetime value."
 msgstr ""
 
-#: canaille/app/forms.py:232
+#: canaille/app/forms.py:241
 #, fuzzy
 #| msgid "This field is not editable"
 msgid "This field cannot be edited"
@@ -59,8 +65,8 @@ msgstr ""
 msgid "John Doe"
 msgstr "Ola Nordmann"
 
-#: canaille/backends/ldap/backend.py:226 canaille/core/forms.py:128
-#: canaille/core/forms.py:355
+#: canaille/backends/ldap/backend.py:226 canaille/core/forms.py:129
+#: canaille/core/forms.py:358
 msgid "jdoe"
 msgstr "onord"
 
@@ -89,7 +95,7 @@ msgstr ""
 msgid "Login failed, please check your information"
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
-#: canaille/core/account.py:142 canaille/core/account.py:688
+#: canaille/core/account.py:142 canaille/core/account.py:692
 #, fuzzy, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Velkommen %(user)s"
@@ -127,8 +133,8 @@ msgstr "Kontoen din har allerede blitt opprettet."
 msgid "You are already logged in, you cannot create an account."
 msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 
-#: canaille/core/account.py:325 canaille/core/forms.py:275
-#: canaille/core/forms.py:373 canaille/templates/groups.html:5
+#: canaille/core/account.py:325 canaille/core/forms.py:278
+#: canaille/core/forms.py:376 canaille/templates/groups.html:5
 #: canaille/templates/groups.html:25 canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:57
 msgid "Groups"
@@ -149,12 +155,12 @@ msgstr "Kontoen din ble opprettet."
 msgid "User account creation succeed."
 msgstr "Brukerkonto opprettet."
 
-#: canaille/core/account.py:490 canaille/core/account.py:635
+#: canaille/core/account.py:490 canaille/core/account.py:639
 #, fuzzy
 msgid "Profile edition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/account.py:518 canaille/core/account.py:650
+#: canaille/core/account.py:518 canaille/core/account.py:654
 #, fuzzy
 #| msgid "Profile updated successfuly."
 msgid "Profile updated successfully."
@@ -192,23 +198,23 @@ msgstr "Tilgangen har blitt tilbakekalt"
 msgid "The account has been unlocked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/account.py:670
+#: canaille/core/account.py:674
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/core/account.py:705
+#: canaille/core/account.py:709
 msgid "Could not send the password reset link."
 msgstr "Kunne ikke sende lenke for passordgjenoppretting."
 
-#: canaille/core/account.py:709
+#: canaille/core/account.py:713
 #, fuzzy
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
 msgstr "Lenke for tilbakestilling av passord sendt til din e-postadresse."
 
-#: canaille/core/account.py:721
+#: canaille/core/account.py:725
 #, fuzzy, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -217,16 +223,16 @@ msgstr ""
 "Brukeren «%(user)s» har ikke tilgang til å oppdatere passordet sitt. Kan "
 "ikke sende e-post om tilbakestilling av passord."
 
-#: canaille/core/account.py:736
+#: canaille/core/account.py:740
 #, fuzzy
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "Kunne ikke sende e-post for gjenoppretting av passord."
 
-#: canaille/core/account.py:759
+#: canaille/core/account.py:763
 msgid "The password reset link that brought you here was invalid."
 msgstr "Passordtilbakestillingslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/account.py:768
+#: canaille/core/account.py:772
 #, fuzzy
 msgid "Your password has been updated successfully"
 msgstr "Passordet ditt er oppdatert."
@@ -236,9 +242,9 @@ msgstr "Passordet ditt er oppdatert."
 msgid "Email"
 msgstr "E-postadresse"
 
-#: canaille/core/admin.py:29 canaille/core/forms.py:60
-#: canaille/core/forms.py:84 canaille/core/forms.py:173
-#: canaille/core/forms.py:367
+#: canaille/core/admin.py:29 canaille/core/forms.py:61
+#: canaille/core/forms.py:85 canaille/core/forms.py:174
+#: canaille/core/forms.py:370
 msgid "jane@doe.com"
 msgstr "ola@nordmann.no"
 
@@ -271,220 +277,220 @@ msgstr "Passord tilbakestilt på {website_name}"
 msgid "Invitation on {website_name}"
 msgstr "Invitasjon på {website_name}"
 
-#: canaille/core/forms.py:26
+#: canaille/core/forms.py:27
 msgid "The login '{login}' already exists"
 msgstr "Innloggingen «{login}» finnes allerede"
 
-#: canaille/core/forms.py:35
+#: canaille/core/forms.py:36
 #, fuzzy
 #| msgid "The email '{email}' already exists"
 msgid "The email '{email}' is already used"
 msgstr "E-postadressen «{email}» finnes allerede"
 
-#: canaille/core/forms.py:42
+#: canaille/core/forms.py:43
 msgid "The group '{group}' already exists"
 msgstr "Gruppen «{group}» finnes allerede"
 
-#: canaille/core/forms.py:51
+#: canaille/core/forms.py:52
 msgid "The login '{login}' does not exist"
 msgstr "Innloggingen «{login}» finnes ikke"
 
-#: canaille/core/forms.py:57 canaille/core/forms.py:81
+#: canaille/core/forms.py:58 canaille/core/forms.py:82
 #: canaille/templates/partial/users.html:9
 #, fuzzy
 msgid "Login"
 msgstr "Logg inn"
 
-#: canaille/core/forms.py:70 canaille/core/forms.py:93
-#: canaille/core/forms.py:225 canaille/templates/profile_settings.html:62
+#: canaille/core/forms.py:71 canaille/core/forms.py:94
+#: canaille/core/forms.py:228 canaille/templates/profile_settings.html:62
 msgid "Password"
 msgstr "Passord"
 
-#: canaille/core/forms.py:100 canaille/core/forms.py:235
+#: canaille/core/forms.py:101 canaille/core/forms.py:238
 msgid "Password confirmation"
 msgstr "Passordbekreftelse"
 
-#: canaille/core/forms.py:103 canaille/core/forms.py:238
+#: canaille/core/forms.py:104 canaille/core/forms.py:241
 msgid "Password and confirmation do not match."
 msgstr "Passordet og bekreftelsen samsvarer ikke."
 
-#: canaille/core/forms.py:122
+#: canaille/core/forms.py:123
 msgid "Automatic"
 msgstr "Automatisk"
 
-#: canaille/core/forms.py:127 canaille/core/forms.py:354
+#: canaille/core/forms.py:128 canaille/core/forms.py:357
 msgid "Username"
 msgstr "Brukernavn"
 
-#: canaille/core/forms.py:131 canaille/core/forms.py:323
-#: canaille/core/forms.py:337 canaille/oidc/forms.py:23
+#: canaille/core/forms.py:132 canaille/core/forms.py:326
+#: canaille/core/forms.py:340 canaille/oidc/forms.py:23
 #: canaille/templates/partial/groups.html:6
 #: canaille/templates/partial/oidc/admin/client_list.html:6
 #: canaille/templates/partial/users.html:12
 msgid "Name"
 msgstr "Navn"
 
-#: canaille/core/forms.py:133
+#: canaille/core/forms.py:134
 msgid "Title"
 msgstr "Tittel"
 
-#: canaille/core/forms.py:133
+#: canaille/core/forms.py:134
 msgid "Vice president"
 msgstr "Visepresident"
 
-#: canaille/core/forms.py:136
+#: canaille/core/forms.py:137
 msgid "Given name"
 msgstr "Fornavn"
 
-#: canaille/core/forms.py:138
+#: canaille/core/forms.py:139
 msgid "John"
 msgstr "Ola"
 
-#: canaille/core/forms.py:144
+#: canaille/core/forms.py:145
 msgid "Family Name"
 msgstr "Etternavn"
 
-#: canaille/core/forms.py:147
+#: canaille/core/forms.py:148
 msgid "Doe"
 msgstr "Nordmann"
 
-#: canaille/core/forms.py:153
+#: canaille/core/forms.py:154
 msgid "Display Name"
 msgstr "Visningsnavn"
 
-#: canaille/core/forms.py:156
+#: canaille/core/forms.py:157
 msgid "Johnny"
 msgstr "Ola"
 
-#: canaille/core/forms.py:163
+#: canaille/core/forms.py:164
 #, fuzzy
 #| msgid "Email address"
 msgid "Email addresses"
 msgstr "E-postadresse"
 
-#: canaille/core/forms.py:169
+#: canaille/core/forms.py:170
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 
-#: canaille/core/forms.py:183
+#: canaille/core/forms.py:184
 #, fuzzy
 #| msgid "Phone number"
 msgid "Phone numbers"
 msgstr "Telefonnummer"
 
-#: canaille/core/forms.py:183
+#: canaille/core/forms.py:185
 msgid "555-000-555"
 msgstr "87 65 43 21"
 
-#: canaille/core/forms.py:189
+#: canaille/core/forms.py:192
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/core/forms.py:191
+#: canaille/core/forms.py:194
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr ""
 
-#: canaille/core/forms.py:195
+#: canaille/core/forms.py:198
 #, fuzzy
 msgid "Street"
 msgstr "Hemmelighet"
 
-#: canaille/core/forms.py:197
+#: canaille/core/forms.py:200
 msgid "132, Foobar Street"
 msgstr ""
 
-#: canaille/core/forms.py:201
+#: canaille/core/forms.py:204
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: canaille/core/forms.py:207
+#: canaille/core/forms.py:210
 msgid "Locality"
 msgstr "Kommune"
 
-#: canaille/core/forms.py:209
+#: canaille/core/forms.py:212
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/core/forms.py:213
+#: canaille/core/forms.py:216
 msgid "Region"
 msgstr ""
 
-#: canaille/core/forms.py:215
+#: canaille/core/forms.py:218
 msgid "North Pole"
 msgstr ""
 
-#: canaille/core/forms.py:219
+#: canaille/core/forms.py:222
 msgid "Photo"
 msgstr "Bilde"
 
-#: canaille/core/forms.py:223 canaille/templates/profile_add.html:58
+#: canaille/core/forms.py:226 canaille/templates/profile_add.html:58
 #: canaille/templates/profile_edit.html:66
 msgid "Delete the photo"
 msgstr "Slett bildet"
 
-#: canaille/core/forms.py:246
+#: canaille/core/forms.py:249
 #, fuzzy
 #| msgid "Username"
 msgid "User number"
 msgstr "Brukernavn"
 
-#: canaille/core/forms.py:248 canaille/core/forms.py:254
+#: canaille/core/forms.py:251 canaille/core/forms.py:257
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/forms.py:252
+#: canaille/core/forms.py:255
 #, fuzzy
 msgid "Department"
 msgstr "Telefonnummer"
 
-#: canaille/core/forms.py:258
+#: canaille/core/forms.py:261
 #, fuzzy
 #| msgid "Invitation"
 msgid "Organization"
 msgstr "Invitasjon"
 
-#: canaille/core/forms.py:260
+#: canaille/core/forms.py:263
 msgid "Cogip LTD."
 msgstr ""
 
-#: canaille/core/forms.py:264
+#: canaille/core/forms.py:267
 msgid "Website"
 msgstr "Nettside"
 
-#: canaille/core/forms.py:266
+#: canaille/core/forms.py:269
 msgid "https://mywebsite.tld"
 msgstr ""
 
-#: canaille/core/forms.py:271
+#: canaille/core/forms.py:274
 msgid "Preferred language"
 msgstr "Foretrukket språk"
 
-#: canaille/core/forms.py:279
+#: canaille/core/forms.py:282
 #, fuzzy
 msgid "users, admins …"
 msgstr "brukere, administratorer …"
 
-#: canaille/core/forms.py:302
+#: canaille/core/forms.py:305
 #, fuzzy
 #| msgid "Account creation"
 msgid "Account expiration"
 msgstr "Kontoopprettelse"
 
-#: canaille/core/forms.py:326
+#: canaille/core/forms.py:329
 msgid "group"
 msgstr "gruppe"
 
-#: canaille/core/forms.py:330 canaille/core/forms.py:347
+#: canaille/core/forms.py:333 canaille/core/forms.py:350
 #: canaille/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: canaille/core/forms.py:358
+#: canaille/core/forms.py:361
 msgid "Username editable by the invitee"
 msgstr ""
 
-#: canaille/core/forms.py:360
+#: canaille/core/forms.py:363
 msgid "Email address"
 msgstr "E-postadresse"
 
