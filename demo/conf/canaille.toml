@@ -38,6 +38,13 @@ FAVICON = "/static/img/canaille-c.png"
 # Accelerates webpages with async requests
 # HTMX = true
 
+# If EMAIL_CONFIRMATION is set to true, users will need to click on a
+# confirmation link sent by email when they want to add a new email.
+# By default, this is true if SMTP is configured, else this is false.
+# If explicitely set to true and SMTP is disabled, the email field
+# will be read-only.
+# EMAIL_CONFIRMATION =
+
 # If HIDE_INVALID_LOGINS is set to true (the default), when a user
 # tries to sign in with an invalid login, a message is shown indicating
 # that the password is wrong, but does not give a clue wether the login

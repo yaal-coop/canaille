@@ -120,6 +120,8 @@ def setup_flask(app):
             "user": current_user(),
             "menu": True,
             "is_boosted": request.headers.get("HX-Boosted", False),
+            "has_email_confirmation": app.config.get("EMAIL_CONFIRMATION") is True
+            or (app.config.get("EMAIL_CONFIRMATION") is None and "SMTP" in app.config),
         }
 
     @app.errorhandler(400)
