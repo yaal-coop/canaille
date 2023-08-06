@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-08-06 12:14+0200\n"
-"PO-Revision-Date: 2023-08-03 17:24+0000\n"
+"PO-Revision-Date: 2023-08-06 15:55+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -145,30 +145,24 @@ msgid "Your account has been created successfully."
 msgstr "Votre compte utilisateur a été créé avec succès."
 
 #: canaille/core/account.py:394 canaille/core/account.py:416
-#, fuzzy
-#| msgid "The invitation link that brought you here was invalid."
 msgid "The email confirmation link that brought you here is invalid."
-msgstr "Le lien d'invitation qui vous a amené ici est invalide."
+msgstr "Le lien de confirmation qui vous a amené ici est invalide."
 
 #: canaille/core/account.py:401
-#, fuzzy
-#| msgid "The invitation link that brought you here has expired."
 msgid "The email confirmation link that brought you here has expired."
-msgstr "Le lien d'invitation qui vous a amené ici a expiré."
+msgstr "Le lien de confirmation qui vous a amené ici a expiré."
 
 #: canaille/core/account.py:423
 msgid "This address email have already been confirmed."
-msgstr ""
+msgstr "Cette adresse email a déjà été confirmée."
 
 #: canaille/core/account.py:430
 msgid "This address email is already associated with another account."
-msgstr ""
+msgstr "Cette adresse email est déjà associée à un autre compte."
 
 #: canaille/core/account.py:437
-#, fuzzy
-#| msgid "Your email address."
 msgid "Your email address have been confirmed."
-msgstr "Votre adresse courriel."
+msgstr "Votre adresse email a été confirmée."
 
 #: canaille/core/account.py:497
 msgid "User account creation succeed."
@@ -183,34 +177,28 @@ msgid "Profile updated successfully."
 msgstr "Le profil a été mis à jour avec succès."
 
 #: canaille/core/account.py:652
-#, fuzzy
-#| msgid "Profile edition failed."
 msgid "Email addition failed."
-msgstr "L'édition du profil a échoué."
+msgstr "L’ajout de l’adresse email a échoué."
 
 #: canaille/core/account.py:657
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
+"Un courriel a été envoyé à l’adresse email. Veuillez consulter votre boîte "
+"de réception et cliquer sur le lien de confirmation qu’il contient"
 
 #: canaille/core/account.py:664
-#, fuzzy
-#| msgid "Could not send the password initialization email"
 msgid "Could not send the verification email"
-msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe"
+msgstr "Impossible d’envoyer le courriel de confirmation"
 
 #: canaille/core/account.py:672
-#, fuzzy
-#| msgid "Profile edition failed."
 msgid "Email deletion failed."
-msgstr "L'édition du profil a échoué."
+msgstr "La suppression de l’adresse email a échoué."
 
 #: canaille/core/account.py:675
-#, fuzzy
-#| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The email have been successfully deleted."
-msgstr "L'utilisateur %(user)s a bien été supprimé"
+msgstr "L’adresse email a correctement été supprimée."
 
 #: canaille/core/account.py:711
 msgid ""
@@ -318,10 +306,8 @@ msgid "Invitation on {website_name}"
 msgstr "Invitation sur {website_name}"
 
 #: canaille/core/admin.py:224
-#, fuzzy
-#| msgid "Invitation on {website_name}"
 msgid "Email confirmation on {website_name}"
-msgstr "Invitation sur {website_name}"
+msgstr "Confirmation de votre adresse email sur {website_name}"
 
 #: canaille/core/forms.py:27
 msgid "The login '{login}' already exists"
@@ -528,10 +514,8 @@ msgid "Email address"
 msgstr "Courriel"
 
 #: canaille/core/forms.py:401
-#, fuzzy
-#| msgid "Email address"
 msgid "New email address"
-msgstr "Courriel"
+msgstr "Nouvelle adresse email"
 
 #: canaille/core/groups.py:37
 msgid "Group creation failed."
@@ -561,10 +545,8 @@ msgid "You have been invited to create an account on {website_name}"
 msgstr "Vous êtes invités à vous créer un compte sur {website_name}"
 
 #: canaille/core/mails.py:156
-#, fuzzy
-#| msgid "Test email from {website_name}"
 msgid "Confirm your address email on {website_name}"
-msgstr "Courriel de test de {website_name}"
+msgstr "Confirmez votre adresse email sur {website_name}"
 
 #: canaille/oidc/clients.py:46
 msgid "The client has not been added. Please check your information."
@@ -1073,24 +1055,20 @@ msgid "Edit information about a user"
 msgstr "Éditez les informations d'un utilisateur"
 
 #: canaille/templates/profile_edit.html:176
-#, fuzzy
-#| msgid "Email addresses"
 msgid "My email addresses"
-msgstr "Courriels"
+msgstr "Mes adresses email"
 
 #: canaille/templates/profile_edit.html:197
-#, fuzzy
-#| msgid "Remove this field"
 msgid "Remove this email address"
-msgstr "Supprimer ce champ"
+msgstr "Supprimer cette adresse email"
 
 #: canaille/templates/profile_edit.html:220
 msgid "Send a verification email to validate this address."
-msgstr ""
+msgstr "Envoyer un email de confirmation à cette adresse."
 
 #: canaille/templates/profile_edit.html:227
 msgid "Verify"
-msgstr ""
+msgstr "Confirmer"
 
 #: canaille/templates/partial/profile_field.html:31
 #: canaille/templates/profile_settings.html:32
@@ -1336,17 +1314,15 @@ msgstr "Initialisation du mot de passe"
 #: canaille/templates/mail/admin.html:109
 #: canaille/templates/mail/email-confirmation.txt:1
 msgid "Email verification"
-msgstr ""
+msgstr "Vérification de nouvelle adresse email"
 
 #: canaille/templates/mail/admin.html:122
 msgid "Invitation"
 msgstr "Invitation"
 
 #: canaille/templates/mail/email-confirmation.html:19
-#, fuzzy
-#| msgid "Password confirmation"
 msgid "Email address confirmation"
-msgstr "Confirmation du mot de passe"
+msgstr "Confirmation d’adresse email"
 
 #: canaille/templates/mail/email-confirmation.html:27
 #, python-format
@@ -1354,30 +1330,26 @@ msgid ""
 "You added an email address to your account on %(site_name)s. Please click on "
 "the \"Validate email address\" button below to confirm your email address."
 msgstr ""
+"Vous avez ajouté une adresse email à votre compte sur %(site_name)s. "
+"Veuillez cliquer sur le bouton « Valider mon adresse email » ci-dessous pour "
+"la confirmer."
 
 #: canaille/templates/mail/email-confirmation.html:39
-#, fuzzy
-#| msgid "Email address"
 msgid "Validate email address"
-msgstr "Courriel"
+msgstr "Valider mon adresse email"
 
 #: canaille/templates/mail/email-confirmation.txt:3
-#, fuzzy, python-format
-#| msgid ""
-#| "You have been invited to create an account at %(site_name)s. To proceed "
-#| "you can click on the link below and follow the instructions."
+#, python-format
 msgid ""
 "You added an email address to your account on %(site_name)s. Please click on "
 "the link below to confirm your email address."
 msgstr ""
-"Vous avez été invités à créer un compte sur %(site_name)s. Pour continuer, "
-"vous pouvez cliquer sur le lien ci-dessous et suivre les instructions."
+"Vous avez ajouté une adresse email à votre compte sur %(site_name)s. "
+"Veuillez cliquer sur le lien ci-dessous pour la confirmer."
 
 #: canaille/templates/mail/email-confirmation.txt:8
-#, fuzzy
-#| msgid "Invitation link"
 msgid "Verification link"
-msgstr "Lien d'invitation"
+msgstr "Lien de vérification"
 
 #: canaille/templates/mail/firstlogin.html:27
 #, python-format
