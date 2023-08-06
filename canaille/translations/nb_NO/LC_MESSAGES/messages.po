@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-03 19:22+0200\n"
+"POT-Creation-Date: 2023-08-06 12:14+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -88,92 +88,145 @@ msgstr "Kontoen din har allerede blitt opprettet."
 msgid "You should change your password."
 msgstr ""
 
-#: canaille/core/account.py:100 canaille/core/account.py:126
-#: canaille/core/account.py:134 canaille/oidc/endpoints.py:76
+#: canaille/core/account.py:102 canaille/core/account.py:128
+#: canaille/core/account.py:136 canaille/oidc/endpoints.py:76
 #: canaille/oidc/endpoints.py:82
 #, fuzzy
 msgid "Login failed, please check your information"
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
-#: canaille/core/account.py:142 canaille/core/account.py:692
+#: canaille/core/account.py:144 canaille/core/account.py:851
 #, fuzzy, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Velkommen %(user)s"
 
-#: canaille/core/account.py:154
+#: canaille/core/account.py:156
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Du har blitt frakoblet. På gjensyn %(user)s"
 
-#: canaille/core/account.py:180
+#: canaille/core/account.py:182
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/core/account.py:187 canaille/core/account.py:559
+#: canaille/core/account.py:189 canaille/core/account.py:718
 #, fuzzy
 msgid "Could not send the password initialization email"
 msgstr "Kunne ikke sende e-post for oppsett av passord"
 
-#: canaille/core/account.py:281 canaille/core/account.py:309
+#: canaille/core/account.py:293 canaille/core/account.py:321
+#: canaille/core/account.py:408
 msgid "The invitation link that brought you here was invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/account.py:288
+#: canaille/core/account.py:300
 msgid "The invitation link that brought you here has expired."
 msgstr "Invitasjonslenken som tok deg hit har utløpt."
 
-#: canaille/core/account.py:295
+#: canaille/core/account.py:307
 msgid "Your account has already been created."
 msgstr "Kontoen din har allerede blitt opprettet."
 
-#: canaille/core/account.py:302
+#: canaille/core/account.py:314
 #, fuzzy
 msgid "You are already logged in, you cannot create an account."
 msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 
-#: canaille/core/account.py:325 canaille/core/forms.py:278
+#: canaille/core/account.py:340 canaille/core/forms.py:278
 #: canaille/core/forms.py:376 canaille/templates/groups.html:5
 #: canaille/templates/groups.html:25 canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:57
 msgid "Groups"
 msgstr "Grupper"
 
-#: canaille/core/account.py:355 canaille/core/account.py:390
+#: canaille/core/account.py:373 canaille/core/account.py:461
 #, fuzzy
 msgid "User account creation failed."
 msgstr "Kunne ikke opprette brukerkonto."
 
-#: canaille/core/account.py:366
+#: canaille/core/account.py:384
 #, fuzzy
 msgid "Your account has been created successfully."
 msgstr "Kontoen din ble opprettet."
 
-#: canaille/core/account.py:426
+#: canaille/core/account.py:394 canaille/core/account.py:416
+#, fuzzy
+#| msgid "The invitation link that brought you here was invalid."
+msgid "The email confirmation link that brought you here is invalid."
+msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
+
+#: canaille/core/account.py:401
+#, fuzzy
+#| msgid "The invitation link that brought you here has expired."
+msgid "The email confirmation link that brought you here has expired."
+msgstr "Invitasjonslenken som tok deg hit har utløpt."
+
+#: canaille/core/account.py:423
+msgid "This address email have already been confirmed."
+msgstr ""
+
+#: canaille/core/account.py:430
+msgid "This address email is already associated with another account."
+msgstr ""
+
+#: canaille/core/account.py:437
+#, fuzzy
+msgid "Your email address have been confirmed."
+msgstr "Din e-postadresse."
+
+#: canaille/core/account.py:497
 #, fuzzy
 msgid "User account creation succeed."
 msgstr "Brukerkonto opprettet."
 
-#: canaille/core/account.py:490 canaille/core/account.py:639
+#: canaille/core/account.py:643 canaille/core/account.py:798
 #, fuzzy
 msgid "Profile edition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/account.py:518 canaille/core/account.py:654
+#: canaille/core/account.py:647 canaille/core/account.py:813
 #, fuzzy
 #| msgid "Profile updated successfuly."
 msgid "Profile updated successfully."
 msgstr "Profil redigert."
 
-#: canaille/core/account.py:552
+#: canaille/core/account.py:652
+#, fuzzy
+msgid "Email addition failed."
+msgstr "Kunne ikke redigere profil."
+
+#: canaille/core/account.py:657
+msgid ""
+"An email has been sent to the email address. Please check your inbox and "
+"click on the verification link it contains"
+msgstr ""
+
+#: canaille/core/account.py:664
+#, fuzzy
+msgid "Could not send the verification email"
+msgstr "Kunne ikke sende e-post for oppsett av passord"
+
+#: canaille/core/account.py:672
+#, fuzzy
+msgid "Email deletion failed."
+msgstr "Kunne ikke redigere profil."
+
+#: canaille/core/account.py:675
+#, fuzzy
+#| msgid "The user %(user)s has been sucessfuly deleted"
+msgid "The email have been successfully deleted."
+msgstr "Brukeren %(user)s ble slettet"
+
+#: canaille/core/account.py:711
 #, fuzzy
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/core/account.py:569
+#: canaille/core/account.py:728
 #, fuzzy
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
@@ -182,39 +235,39 @@ msgstr ""
 "Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
 "bør være mottatt i løpet av et par minutter."
 
-#: canaille/core/account.py:576
+#: canaille/core/account.py:735
 msgid "Could not send the password reset email"
 msgstr "Kunne ikke sende e-post for tilbakestilling av passord"
 
-#: canaille/core/account.py:592
+#: canaille/core/account.py:751
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been locked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/account.py:603
+#: canaille/core/account.py:762
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been unlocked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/account.py:674
+#: canaille/core/account.py:833
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/core/account.py:709
+#: canaille/core/account.py:868
 msgid "Could not send the password reset link."
 msgstr "Kunne ikke sende lenke for passordgjenoppretting."
 
-#: canaille/core/account.py:713
+#: canaille/core/account.py:872
 #, fuzzy
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
 msgstr "Lenke for tilbakestilling av passord sendt til din e-postadresse."
 
-#: canaille/core/account.py:725
+#: canaille/core/account.py:884
 #, fuzzy, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -223,16 +276,16 @@ msgstr ""
 "Brukeren «%(user)s» har ikke tilgang til å oppdatere passordet sitt. Kan "
 "ikke sende e-post om tilbakestilling av passord."
 
-#: canaille/core/account.py:740
+#: canaille/core/account.py:899
 #, fuzzy
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "Kunne ikke sende e-post for gjenoppretting av passord."
 
-#: canaille/core/account.py:763
+#: canaille/core/account.py:922
 msgid "The password reset link that brought you here was invalid."
 msgstr "Passordtilbakestillingslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/account.py:772
+#: canaille/core/account.py:931
 #, fuzzy
 msgid "Your password has been updated successfully"
 msgstr "Passordet ditt er oppdatert."
@@ -244,7 +297,8 @@ msgstr "E-postadresse"
 
 #: canaille/core/admin.py:29 canaille/core/forms.py:61
 #: canaille/core/forms.py:85 canaille/core/forms.py:174
-#: canaille/core/forms.py:370
+#: canaille/core/forms.py:370 canaille/core/forms.py:393
+#: canaille/core/forms.py:408
 msgid "jane@doe.com"
 msgstr "ola@nordmann.no"
 
@@ -275,6 +329,12 @@ msgstr "Passord tilbakestilt på {website_name}"
 
 #: canaille/core/admin.py:182
 msgid "Invitation on {website_name}"
+msgstr "Invitasjon på {website_name}"
+
+#: canaille/core/admin.py:224
+#, fuzzy
+#| msgid "Invitation on {website_name}"
+msgid "Email confirmation on {website_name}"
 msgstr "Invitasjon på {website_name}"
 
 #: canaille/core/forms.py:27
@@ -362,13 +422,14 @@ msgstr "Visningsnavn"
 msgid "Johnny"
 msgstr "Ola"
 
-#: canaille/core/forms.py:164
+#: canaille/core/forms.py:164 canaille/core/forms.py:387
+#: canaille/templates/profile_edit.html:178
 #, fuzzy
 #| msgid "Email address"
 msgid "Email addresses"
 msgstr "E-postadresse"
 
-#: canaille/core/forms.py:170
+#: canaille/core/forms.py:170 canaille/core/forms.py:389
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
@@ -494,6 +555,12 @@ msgstr ""
 msgid "Email address"
 msgstr "E-postadresse"
 
+#: canaille/core/forms.py:401
+#, fuzzy
+#| msgid "Email address"
+msgid "New email address"
+msgstr "E-postadresse"
+
 #: canaille/core/groups.py:37
 #, fuzzy
 msgid "Group creation failed."
@@ -522,6 +589,12 @@ msgstr "Gruppen «%(group)s» har blitt slettet"
 #: canaille/core/mails.py:125
 msgid "You have been invited to create an account on {website_name}"
 msgstr "Du har blitt invitert til å opprette en konto på {website_name}"
+
+#: canaille/core/mails.py:156
+#, fuzzy
+#| msgid "Test email from {website_name}"
+msgid "Confirm your address email on {website_name}"
+msgstr "Test per e-post fra {website_name}"
 
 #: canaille/oidc/clients.py:46
 msgid "The client has not been added. Please check your information."
@@ -1023,6 +1096,25 @@ msgstr "Rediger din personsinfo"
 msgid "Edit information about a user"
 msgstr "Rediger info om en bruker"
 
+#: canaille/templates/profile_edit.html:176
+#, fuzzy
+#| msgid "Email address"
+msgid "My email addresses"
+msgstr "E-postadresse"
+
+#: canaille/templates/profile_edit.html:197
+#, fuzzy
+msgid "Remove this email address"
+msgstr "Din e-postadresse."
+
+#: canaille/templates/profile_edit.html:220
+msgid "Send a verification email to validate this address."
+msgstr ""
+
+#: canaille/templates/profile_edit.html:227
+msgid "Verify"
+msgstr ""
+
 #: canaille/templates/partial/profile_field.html:31
 #: canaille/templates/profile_settings.html:32
 msgid "This user cannot edit this field"
@@ -1138,11 +1230,11 @@ msgstr "Dette feltet kan ikke endres"
 msgid "This field is required"
 msgstr "Dette feltet er påkrevd"
 
-#: canaille/templates/macro/form.html:81
+#: canaille/templates/macro/form.html:84
 msgid "Remove this field"
 msgstr ""
 
-#: canaille/templates/macro/form.html:96
+#: canaille/templates/macro/form.html:98
 msgid "Add another field"
 msgstr ""
 
@@ -1256,8 +1348,45 @@ msgid "Password initialization"
 msgstr ""
 
 #: canaille/templates/mail/admin.html:109
+#: canaille/templates/mail/email-confirmation.txt:1
+msgid "Email verification"
+msgstr ""
+
+#: canaille/templates/mail/admin.html:122
 msgid "Invitation"
 msgstr "Invitasjon"
+
+#: canaille/templates/mail/email-confirmation.html:19
+#, fuzzy
+#| msgid "Password confirmation"
+msgid "Email address confirmation"
+msgstr "Passordbekreftelse"
+
+#: canaille/templates/mail/email-confirmation.html:27
+#, python-format
+msgid ""
+"You added an email address to your account on %(site_name)s. Please click on "
+"the \"Validate email address\" button below to confirm your email address."
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.html:39
+#, fuzzy
+#| msgid "Email address"
+msgid "Validate email address"
+msgstr "E-postadresse"
+
+#: canaille/templates/mail/email-confirmation.txt:3
+#, python-format
+msgid ""
+"You added an email address to your account on %(site_name)s. Please click on "
+"the link below to confirm your email address."
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.txt:8
+#, fuzzy
+#| msgid "Invitation link"
+msgid "Verification link"
+msgstr "Invitasjonslenke"
 
 #: canaille/templates/mail/firstlogin.html:27
 #, python-format
