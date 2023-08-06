@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-03 19:22+0200\n"
+"POT-Creation-Date: 2023-08-06 12:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,130 +78,173 @@ msgstr ""
 msgid "You should change your password."
 msgstr ""
 
-#: canaille/core/account.py:100 canaille/core/account.py:126
-#: canaille/core/account.py:134 canaille/oidc/endpoints.py:76
+#: canaille/core/account.py:102 canaille/core/account.py:128
+#: canaille/core/account.py:136 canaille/oidc/endpoints.py:76
 #: canaille/oidc/endpoints.py:82
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/core/account.py:142 canaille/core/account.py:692
+#: canaille/core/account.py:144 canaille/core/account.py:851
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
-#: canaille/core/account.py:154
+#: canaille/core/account.py:156
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr ""
 
-#: canaille/core/account.py:180
+#: canaille/core/account.py:182
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
 msgstr ""
 
-#: canaille/core/account.py:187 canaille/core/account.py:559
+#: canaille/core/account.py:189 canaille/core/account.py:718
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/core/account.py:281 canaille/core/account.py:309
+#: canaille/core/account.py:293 canaille/core/account.py:321
+#: canaille/core/account.py:408
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/account.py:288
+#: canaille/core/account.py:300
 msgid "The invitation link that brought you here has expired."
 msgstr ""
 
-#: canaille/core/account.py:295
+#: canaille/core/account.py:307
 msgid "Your account has already been created."
 msgstr ""
 
-#: canaille/core/account.py:302
+#: canaille/core/account.py:314
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/core/account.py:325 canaille/core/forms.py:278
+#: canaille/core/account.py:340 canaille/core/forms.py:278
 #: canaille/core/forms.py:376 canaille/templates/groups.html:5
 #: canaille/templates/groups.html:25 canaille/templates/partial/users.html:18
 #: canaille/themes/default/base.html:57
 msgid "Groups"
 msgstr ""
 
-#: canaille/core/account.py:355 canaille/core/account.py:390
+#: canaille/core/account.py:373 canaille/core/account.py:461
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/core/account.py:366
+#: canaille/core/account.py:384
 msgid "Your account has been created successfully."
 msgstr ""
 
-#: canaille/core/account.py:426
+#: canaille/core/account.py:394 canaille/core/account.py:416
+msgid "The email confirmation link that brought you here is invalid."
+msgstr ""
+
+#: canaille/core/account.py:401
+msgid "The email confirmation link that brought you here has expired."
+msgstr ""
+
+#: canaille/core/account.py:423
+msgid "This address email have already been confirmed."
+msgstr ""
+
+#: canaille/core/account.py:430
+msgid "This address email is already associated with another account."
+msgstr ""
+
+#: canaille/core/account.py:437
+msgid "Your email address have been confirmed."
+msgstr ""
+
+#: canaille/core/account.py:497
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/core/account.py:490 canaille/core/account.py:639
+#: canaille/core/account.py:643 canaille/core/account.py:798
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/core/account.py:518 canaille/core/account.py:654
+#: canaille/core/account.py:647 canaille/core/account.py:813
 msgid "Profile updated successfully."
 msgstr ""
 
-#: canaille/core/account.py:552
+#: canaille/core/account.py:652
+msgid "Email addition failed."
+msgstr ""
+
+#: canaille/core/account.py:657
+msgid ""
+"An email has been sent to the email address. Please check your inbox and "
+"click on the verification link it contains"
+msgstr ""
+
+#: canaille/core/account.py:664
+msgid "Could not send the verification email"
+msgstr ""
+
+#: canaille/core/account.py:672
+msgid "Email deletion failed."
+msgstr ""
+
+#: canaille/core/account.py:675
+msgid "The email have been successfully deleted."
+msgstr ""
+
+#: canaille/core/account.py:711
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
 msgstr ""
 
-#: canaille/core/account.py:569
+#: canaille/core/account.py:728
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within a few minutes."
 msgstr ""
 
-#: canaille/core/account.py:576
+#: canaille/core/account.py:735
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/core/account.py:592
+#: canaille/core/account.py:751
 msgid "The account has been locked"
 msgstr ""
 
-#: canaille/core/account.py:603
+#: canaille/core/account.py:762
 msgid "The account has been unlocked"
 msgstr ""
 
-#: canaille/core/account.py:674
+#: canaille/core/account.py:833
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr ""
 
-#: canaille/core/account.py:709
+#: canaille/core/account.py:868
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/core/account.py:713
+#: canaille/core/account.py:872
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
 msgstr ""
 
-#: canaille/core/account.py:725
+#: canaille/core/account.py:884
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 "We cannot send a password reset email."
 msgstr ""
 
-#: canaille/core/account.py:740
+#: canaille/core/account.py:899
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 
-#: canaille/core/account.py:763
+#: canaille/core/account.py:922
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/account.py:772
+#: canaille/core/account.py:931
 msgid "Your password has been updated successfully"
 msgstr ""
 
@@ -211,7 +254,8 @@ msgstr ""
 
 #: canaille/core/admin.py:29 canaille/core/forms.py:61
 #: canaille/core/forms.py:85 canaille/core/forms.py:174
-#: canaille/core/forms.py:370
+#: canaille/core/forms.py:370 canaille/core/forms.py:393
+#: canaille/core/forms.py:408
 msgid "jane@doe.com"
 msgstr ""
 
@@ -239,6 +283,10 @@ msgstr ""
 
 #: canaille/core/admin.py:182
 msgid "Invitation on {website_name}"
+msgstr ""
+
+#: canaille/core/admin.py:224
+msgid "Email confirmation on {website_name}"
 msgstr ""
 
 #: canaille/core/forms.py:27
@@ -323,11 +371,12 @@ msgstr ""
 msgid "Johnny"
 msgstr ""
 
-#: canaille/core/forms.py:164
+#: canaille/core/forms.py:164 canaille/core/forms.py:387
+#: canaille/templates/profile_edit.html:178
 msgid "Email addresses"
 msgstr ""
 
-#: canaille/core/forms.py:170
+#: canaille/core/forms.py:170 canaille/core/forms.py:389
 msgid ""
 "This email will be used as a recovery address to reset the password if "
 "needed"
@@ -443,6 +492,10 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
+#: canaille/core/forms.py:401
+msgid "New email address"
+msgstr ""
+
 #: canaille/core/groups.py:37
 msgid "Group creation failed."
 msgstr ""
@@ -468,6 +521,10 @@ msgstr ""
 
 #: canaille/core/mails.py:125
 msgid "You have been invited to create an account on {website_name}"
+msgstr ""
+
+#: canaille/core/mails.py:156
+msgid "Confirm your address email on {website_name}"
 msgstr ""
 
 #: canaille/oidc/clients.py:46
@@ -951,6 +1008,22 @@ msgstr ""
 msgid "Edit information about a user"
 msgstr ""
 
+#: canaille/templates/profile_edit.html:176
+msgid "My email addresses"
+msgstr ""
+
+#: canaille/templates/profile_edit.html:197
+msgid "Remove this email address"
+msgstr ""
+
+#: canaille/templates/profile_edit.html:220
+msgid "Send a verification email to validate this address."
+msgstr ""
+
+#: canaille/templates/profile_edit.html:227
+msgid "Verify"
+msgstr ""
+
 #: canaille/templates/partial/profile_field.html:31
 #: canaille/templates/profile_settings.html:32
 msgid "This user cannot edit this field"
@@ -1060,11 +1133,11 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: canaille/templates/macro/form.html:81
+#: canaille/templates/macro/form.html:84
 msgid "Remove this field"
 msgstr ""
 
-#: canaille/templates/macro/form.html:96
+#: canaille/templates/macro/form.html:98
 msgid "Add another field"
 msgstr ""
 
@@ -1176,7 +1249,39 @@ msgid "Password initialization"
 msgstr ""
 
 #: canaille/templates/mail/admin.html:109
+#: canaille/templates/mail/email-confirmation.txt:1
+msgid "Email verification"
+msgstr ""
+
+#: canaille/templates/mail/admin.html:122
 msgid "Invitation"
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.html:19
+msgid "Email address confirmation"
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.html:27
+#, python-format
+msgid ""
+"You added an email address to your account on %(site_name)s. Please click"
+" on the \"Validate email address\" button below to confirm your email "
+"address."
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.html:39
+msgid "Validate email address"
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.txt:3
+#, python-format
+msgid ""
+"You added an email address to your account on %(site_name)s. Please click"
+" on the link below to confirm your email address."
+msgstr ""
+
+#: canaille/templates/mail/email-confirmation.txt:8
+msgid "Verification link"
 msgstr ""
 
 #: canaille/templates/mail/firstlogin.html:27
