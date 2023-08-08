@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-08-06 12:14+0200\n"
-"PO-Revision-Date: 2023-08-06 15:55+0000\n"
+"PO-Revision-Date: 2023-08-09 14:52+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -394,7 +394,7 @@ msgstr "Martin.D"
 #: canaille/core/forms.py:164 canaille/core/forms.py:387
 #: canaille/templates/profile_edit.html:178
 msgid "Email addresses"
-msgstr "Courriels"
+msgstr "Adresse email"
 
 #: canaille/core/forms.py:170 canaille/core/forms.py:389
 msgid ""
@@ -1021,7 +1021,7 @@ msgid ""
 "they will be able to ask for a password initialization mail."
 msgstr ""
 "Le nouvel utilisateur ne pourra pas se connecter tant que son mot de passe "
-"n'est pas défini, mais sera en mesure de demander l'envoi d'un email "
+"n'est pas défini, mais sera en mesure de demander l'envoi d'un courriel "
 "d'initialisation de mot de passe."
 
 #: canaille/templates/profile_add.html:183
@@ -1064,7 +1064,7 @@ msgstr "Supprimer cette adresse email"
 
 #: canaille/templates/profile_edit.html:220
 msgid "Send a verification email to validate this address."
-msgstr "Envoyer un email de confirmation à cette adresse."
+msgstr "Envoyer un courriel de confirmation à cette adresse."
 
 #: canaille/templates/profile_edit.html:227
 msgid "Verify"
