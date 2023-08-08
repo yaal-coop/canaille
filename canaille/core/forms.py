@@ -384,7 +384,6 @@ class InvitationForm(Form):
 class EmailConfirmationForm(Form):
     old_emails = wtforms.FieldList(
         wtforms.EmailField(
-            _("Email addresses"),
             validators=[ReadOnly()],
             description=_(
                 "This email will be used as a recovery address to reset the password if needed"
@@ -396,6 +395,7 @@ class EmailConfirmationForm(Form):
                 "readonly": "true",
             },
         ),
+        label=_("Email addresses"),
     )
     new_email = wtforms.EmailField(
         _("New email address"),
