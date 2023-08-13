@@ -37,7 +37,7 @@ include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 [tool.poetry.dependencies]
 python = "^3.8"
 authlib = "^1.2.1"
-click = ">=7.0.0"
+click = ">=7.1.2"
 email_validator = "^2.0.0"
 flask = ">=2.0 <2.3"
 flask-babel = "^3.0.0"
