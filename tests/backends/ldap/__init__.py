@@ -21,22 +21,3 @@ class CustomSlapdObject(slapd.Slapd):
             suffix="dc=mydomain,dc=tld",
             schemas=schemas,
         )
-
-    def init_tree(self):
-        suffix_dc = self.suffix.split(",")[0][3:]
-        self.ldapadd(
-            "\n".join(
-                [
-                    "dn: " + self.suffix,
-                    "objectClass: dcObject",
-                    "objectClass: organization",
-                    "dc: " + suffix_dc,
-                    "o: " + suffix_dc,
-                    "",
-                    "dn: " + self.root_dn,
-                    "objectClass: applicationProcess",
-                    "cn: " + self.root_cn,
-                ]
-            )
-            + "\n"
-        )

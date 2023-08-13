@@ -1518,13 +1518,13 @@ files = [
 
 [[package]]
 name = "slapd"
-version = "0.1.3"
+version = "0.1.4"
 description = "Controls a slapd process in a pythonic way"
 optional = false
-python-versions = ">=3.7,<4"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "slapd-0.1.3-py3-none-any.whl", hash = "sha256:cf862c695a347507aa74ef248aae083a5e37fdf5b69bf4cf52cdccb49242305c"},
-    {file = "slapd-0.1.3.tar.gz", hash = "sha256:93c7b9d2b8a74a635f534b0056b7e879e8a3ea426ddf1cf024af7b1221c93a64"},
+    {file = "slapd-0.1.4-py3-none-any.whl", hash = "sha256:fcb8aa7d89619ff149afdc473ba94cd9258846c817c7d6bad507f5aa4437e5c5"},
+    {file = "slapd-0.1.4.tar.gz", hash = "sha256:d349ae29ced4131df8724c9a5ec4ae38cf2a8af2104c92ad2148daa8247ebf62"},
 ]
 
 [[package]]
@@ -1931,4 +1931,4 @@ sentry = ["sentry-sdk"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "8c68f1c7afa3e08ea104a793fa3e1f67219401bdf87ce5139f6b33b1294ba386"
+content-hash = "992ada3ebda103757cfda97ccc5775e21b11d8275d0ceeeeb1f29ecb1c5f9a45"
