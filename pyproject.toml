@@ -37,9 +37,9 @@ include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 [tool.poetry.dependencies]
 python = "^3.8"
 authlib = "^1.2.1"
-click = ">=7.1.2"
+click = ">=8.0.0"
 email_validator = "^2.0.0"
-flask = ">=2.0 <2.3"
+flask = ">=2.2.2 <2.3"
 flask-babel = "^3.0.0"
 flask-themer = "^2.0.0"
 flask-wtf = "^1.1.1"
@@ -48,7 +48,7 @@ python-ldap = "^3.4.0"
 pytz = ">=2022.7"
 toml = "^0.10.0"
 wtforms = "^3.0.1"
-werkzeug = ">=2.0 <2.3"
+werkzeug = ">=2.2.2 <2.3"
 
 "sentry-sdk" = {version = "<2", optional=true, extras=["flask"]}
 
