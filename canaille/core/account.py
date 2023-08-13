@@ -789,8 +789,7 @@ def profile_settings_edit(editor, edited_user):
         if hasattr(edited_user, k) and k in available_fields
     }
 
-    if "groups" in fields:
-        data["groups"] = [g.id for g in edited_user.groups]
+    data["groups"] = [g.id for g in edited_user.groups]
 
     form = build_profile_form(
         editor.write & available_fields, editor.read & available_fields, edited_user
