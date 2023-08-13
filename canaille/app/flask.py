@@ -6,6 +6,7 @@ from urllib.parse import urlunsplit
 from canaille.app import models
 from flask import abort
 from flask import current_app
+from flask import g
 from flask import render_template
 from flask import request
 from flask import session
@@ -14,12 +15,16 @@ from werkzeug.routing import BaseConverter
 
 
 def current_user():
+    if "user" in g:
+        return g.user
+
     for user_id in session.get("user_id", [])[::-1]:
         user = models.User.get(id=user_id)
         if user and (
             not current_app.backend.has_account_lockability() or not user.locked
         ):
-            return user
+            g.user = user
+            return g.user
 
         session["user_id"].remove(user_id)
 

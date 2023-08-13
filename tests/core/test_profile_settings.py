@@ -2,6 +2,7 @@ import datetime
 from unittest import mock
 
 from canaille.app import models
+from flask import g
 
 
 def test_edition(
@@ -300,6 +301,7 @@ def test_edition_permission(
     testclient.get("/profile/user/settings", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    g.user.reload()
     testclient.get("/profile/user/settings", status=200)
 
 

@@ -26,6 +26,7 @@ from flask import abort
 from flask import Blueprint
 from flask import current_app
 from flask import flash
+from flask import g
 from flask import redirect
 from flask import request
 from flask import send_file
@@ -494,6 +495,8 @@ def profile_create(current_app, form):
         user.set_password(form["password1"].data)
         user.save()
 
+    user.load_permissions()
+
     flash(_("User account creation succeed."), "success")
 
     return user
@@ -568,6 +571,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
             edited_user.preferred_language = None
 
     edited_user.save()
+    g.user.reload()
 
 
 def profile_edition_emails_form(user, edited_user, has_smtp):
@@ -611,10 +615,12 @@ def profile_edition_remove_email(user, edited_user, email):
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, edited_user):
-    if not user.can_manage_users and not (user.can_edit_self and edited_user == user):
+    if not user.can_manage_users and not (
+        user.can_edit_self and edited_user.id == user.id
+    ):
         abort(404)
 
-    menuitem = "profile" if edited_user == user else "users"
+    menuitem = "profile" if edited_user.id == user.id else "users"
     has_smtp = "SMTP" in current_app.config
     has_email_confirmation = current_app.config.get("EMAIL_CONFIRMATION") is True or (
         current_app.config.get("EMAIL_CONFIRMATION") is None and has_smtp
@@ -681,7 +687,9 @@ def profile_edition(user, edited_user):
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
 @user_needed()
 def profile_settings(user, edited_user):
-    if not user.can_manage_users and not (user.can_edit_self and edited_user == user):
+    if not user.can_manage_users and not (
+        user.can_edit_self and edited_user.id == user.id
+    ):
         abort(404)
 
     if (

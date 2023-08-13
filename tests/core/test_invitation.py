@@ -2,6 +2,7 @@ import datetime
 
 from canaille.app import models
 from canaille.core.account import Invitation
+from flask import g
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd):
@@ -19,9 +20,11 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     url = res.pyquery(".copy-text")[0].value
 
     # logout
+    g.user = None
     with testclient.session_transaction() as sess:
         del sess["user_id"]
 
+    testclient.get("/logout")
     res = testclient.get(url, status=200)
 
     assert res.form["user_name"].value == "someone"
@@ -68,6 +71,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
     url = res.pyquery(".copy-text")[0].value
 
     # logout
+    g.user = None
     with testclient.session_transaction() as sess:
         del sess["user_id"]
 
@@ -114,6 +118,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
     url = res.pyquery(".copy-text")[0].value
 
     # logout
+    g.user = None
     with testclient.session_transaction() as sess:
         del sess["user_id"]
 

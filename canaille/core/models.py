@@ -1,5 +1,6 @@
 import datetime
 
+from flask import g
 from flask import session
 
 
@@ -15,6 +16,7 @@ class User:
         raise NotImplementedError()
 
     def login(self):
+        g.user = self
         try:
             previous = (
                 session["user_id"]
@@ -29,6 +31,7 @@ class User:
     def logout(self):
         try:
             session["user_id"].pop()
+            del g.user
             if not session["user_id"]:
                 del session["user_id"]
         except (IndexError, KeyError):

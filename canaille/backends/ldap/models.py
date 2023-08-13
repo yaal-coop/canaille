@@ -174,6 +174,9 @@ class User(canaille.core.models.User, LDAPObject):
 
     def load_permissions(self):
         conn = Backend.get().connection
+        self.permissions = set()
+        self.read = set()
+        self.write = set()
 
         for access_group_name, details in current_app.config["ACL"].items():
             filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))

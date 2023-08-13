@@ -1,5 +1,6 @@
 import pytest
 from canaille.core.populate import fake_users
+from flask import g
 from webtest import Upload
 
 
@@ -86,6 +87,7 @@ def test_user_list_search_only_allowed_fields(
     res.mustcontain(no=moderator.formatted_name[0])
 
     testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("user_name")
+    g.user.reload()
 
     form = res.forms["search"]
     form["query"] = "user"
@@ -105,6 +107,7 @@ def test_edition_permission(
     testclient.get("/profile/user", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    g.user.reload()
     testclient.get("/profile/user", status=200)
 
 
@@ -204,6 +207,7 @@ def test_field_permissions_none(testclient, logged_user):
         "PERMISSIONS": ["edit_self"],
     }
 
+    g.user.reload()
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" not in form.fields
@@ -230,6 +234,7 @@ def test_field_permissions_read(testclient, logged_user):
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
     }
+    g.user.reload()
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields
@@ -256,6 +261,7 @@ def test_field_permissions_write(testclient, logged_user):
         "WRITE": ["phone_numbers"],
         "PERMISSIONS": ["edit_self"],
     }
+    g.user.reload()
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields

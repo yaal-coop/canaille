@@ -2,22 +2,24 @@ import datetime
 from unittest import mock
 
 from canaille.app import models
+from flask import g
 
 
 def test_index(testclient, user):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
-    with testclient.session_transaction() as sess:
-        sess["user_id"] = [user.id]
+    g.user = user
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["use_oidc"]
+    g.user.reload()
     res = testclient.get("/", status=302)
     assert res.location == "/consent/"
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    g.user.reload()
     res = testclient.get("/", status=302)
     assert res.location == "/about"
 
@@ -243,7 +245,6 @@ def test_user_deleted_in_session(testclient, backend):
     with testclient.session_transaction() as session:
         session["user_id"] = [u.id]
 
-    testclient.get("/profile/jake", status=200)
     u.delete()
 
     testclient.get("/profile/jake", status=404)
@@ -425,7 +426,6 @@ def test_signin_locked_account(testclient, user):
 
 
 def test_account_locked_during_session(testclient, logged_user):
-    testclient.get("/profile/user/settings", status=200)
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     logged_user.save()
     testclient.get("/profile/user/settings", status=403)
