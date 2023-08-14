@@ -27,7 +27,7 @@ def index(user):
         abort(404)
 
     return render_htmx_template(
-        "oidc/admin/client_list.html", menuitem="admin", table_form=table_form
+        "client_list.html", menuitem="admin", table_form=table_form
     )
 
 
@@ -37,18 +37,14 @@ def add(user):
     form = ClientAddForm(request.form or None)
 
     if not request.form or form.form_control():
-        return render_template(
-            "oidc/admin/client_add.html", form=form, menuitem="admin"
-        )
+        return render_template("client_add.html", form=form, menuitem="admin")
 
     if not form.validate():
         flash(
             _("The client has not been added. Please check your information."),
             "error",
         )
-        return render_template(
-            "oidc/admin/client_add.html", form=form, menuitem="admin"
-        )
+        return render_template("client_add.html", form=form, menuitem="admin")
 
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now(datetime.timezone.utc)
@@ -106,7 +102,7 @@ def client_edit(client):
 
     if not request.form or form.form_control():
         return render_template(
-            "oidc/admin/client_edit.html", form=form, client=client, menuitem="admin"
+            "client_edit.html", form=form, client=client, menuitem="admin"
         )
 
     if not form.validate():
@@ -115,7 +111,7 @@ def client_edit(client):
             "error",
         )
         return render_template(
-            "oidc/admin/client_edit.html", form=form, client=client, menuitem="admin"
+            "client_edit.html", form=form, client=client, menuitem="admin"
         )
 
     client.update(

@@ -30,7 +30,7 @@ def consents(user):
     )
 
     return render_template(
-        "oidc/user/consent_list.html",
+        "consent_list.html",
         consents=consents,
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
@@ -55,7 +55,7 @@ def pre_consents(user):
     nb_preconsents = len(preconsented)
 
     return render_template(
-        "oidc/user/preconsent_list.html",
+        "preconsent_list.html",
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
         ignored_scopes=["openid"],

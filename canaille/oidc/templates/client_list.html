@@ -2,7 +2,7 @@
 {% import "macro/table.html" as table %}
 
 {%- block title -%}
-    {%- trans %}Tokens{% endtrans -%}
+    {%- trans %}Clients{% endtrans -%}
 {%- endblock -%}
 
 {% block submenu %}
@@ -11,7 +11,7 @@
             <i class="user mail icon"></i>
             {% trans %}Emails{% endtrans %}
         </a>
-        <a class="item" href="{{ url_for('oidc.clients.index') }}">
+        <a class="active item" href="{{ url_for('oidc.clients.index') }}">
             <i class="th list icon"></i>
             {% trans %}Clients{% endtrans %}
         </a>
@@ -19,7 +19,7 @@
             <i class="plus icon"></i>
             {% trans %}Add a client{% endtrans %}
         </a>
-        <a class="active item" href="{{ url_for('oidc.tokens.index') }}">
+        <a class="item" href="{{ url_for('oidc.tokens.index') }}">
             <i class="key icon"></i>
             {% trans %}Tokens{% endtrans %}
         </a>
@@ -34,11 +34,11 @@
     <div class="ui top attached segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {% trans %}Tokens{% endtrans %}
+                {% trans %}Clients{% endtrans %}
             </div>
         </h2>
 
-        {{ table.search(table_form, "table.tokens") }}
+        {{ table.search(table_form, "table.clients") }}
     </div>
-    {% include "partial/oidc/admin/token_list.html" %}
+    {% include "partial/client_list.html" %}
 {% endblock %}

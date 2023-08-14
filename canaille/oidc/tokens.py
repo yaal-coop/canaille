@@ -23,7 +23,7 @@ def index(user):
         abort(404)
 
     return render_htmx_template(
-        "oidc/admin/token_list.html", menuitem="admin", table_form=table_form
+        "token_list.html", menuitem="admin", table_form=table_form
     )
 
 
@@ -45,7 +45,7 @@ def view(user, token):
             abort(400, f"bad form action: {request.form.get('action')}")
 
     return render_template(
-        "oidc/admin/token_view.html",
+        "token_view.html",
         token=token,
         menuitem="admin",
         form=form,

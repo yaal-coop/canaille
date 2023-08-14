@@ -121,7 +121,7 @@ def authorize():
 
         form = AuthorizeForm(request.form or None)
         return render_template(
-            "oidc/user/authorize.html",
+            "authorize.html",
             user=user,
             grant=grant,
             client=client,
@@ -283,9 +283,7 @@ def end_session():
         or (data.get("logout_hint") and data["logout_hint"] != user.user_name[0])
     ) and not session.get("end_session_confirmation"):
         session["end_session_data"] = data
-        return render_template(
-            "oidc/user/logout.html", form=form, client=client, menu=False
-        )
+        return render_template("logout.html", form=form, client=client, menu=False)
 
     if data.get("id_token_hint"):
         id_token = jwt.decode(
@@ -326,9 +324,7 @@ def end_session():
             "end_session_confirmation"
         ):
             session["end_session_data"] = data
-            return render_template(
-                "oidc/user/logout.html", form=form, client=client, menu=False
-            )
+            return render_template("logout.html", form=form, client=client, menu=False)
 
     user.logout()
 

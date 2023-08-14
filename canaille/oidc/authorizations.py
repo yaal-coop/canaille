@@ -19,7 +19,7 @@ def index(user):
         abort(404)
 
     return render_htmx_template(
-        "oidc/admin/authorization_list.html",
+        "authorization_list.html",
         menuitem="admin",
         table_form=table_form,
     )
@@ -29,7 +29,7 @@ def index(user):
 @permissions_needed("manage_oidc")
 def view(user, authorization):
     return render_template(
-        "oidc/admin/authorization_view.html",
+        "authorization_view.html",
         authorization=authorization,
         menuitem="admin",
     )

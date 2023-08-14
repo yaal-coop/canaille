@@ -43,7 +43,7 @@ def mail_index(user):
         else:
             flash(_("The test invitation mail has not been sent correctly"), "error")
 
-    return render_template("mail/admin.html", form=form, menuitem="admin")
+    return render_template("mails/admin.html", form=form, menuitem="admin")
 
 
 @bp.route("/mail/test.html")
@@ -51,7 +51,7 @@ def mail_index(user):
 def test_html(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
-        "mail/test.html",
+        "mails/test.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         logo=current_app.config.get("LOGO"),
@@ -66,7 +66,7 @@ def test_html(user):
 def test_txt(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
-        "mail/test.txt",
+        "mails/test.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
     )
@@ -87,7 +87,7 @@ def password_init_html(user):
     )
 
     return render_template(
-        "mail/firstlogin.html",
+        "mails/firstlogin.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
@@ -110,7 +110,7 @@ def password_init_txt(user):
     )
 
     return render_template(
-        "mail/firstlogin.txt",
+        "mails/firstlogin.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
@@ -132,7 +132,7 @@ def password_reset_html(user):
     )
 
     return render_template(
-        "mail/reset.html",
+        "mails/reset.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
@@ -155,7 +155,7 @@ def password_reset_txt(user):
     )
 
     return render_template(
-        "mail/reset.txt",
+        "mails/reset.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
@@ -174,7 +174,7 @@ def invitation_html(user, identifier, email):
     )
 
     return render_template(
-        "mail/invitation.html",
+        "mails/invitation.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
@@ -197,7 +197,7 @@ def invitation_txt(user, identifier, email):
     )
 
     return render_template(
-        "mail/invitation.txt",
+        "mails/invitation.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
@@ -216,7 +216,7 @@ def email_confirmation_html(user, identifier, email):
     )
 
     return render_template(
-        "mail/email-confirmation.html",
+        "mails/email-confirmation.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         confirmation_url=email_confirmation_url,
@@ -239,7 +239,7 @@ def email_confirmation_txt(user, identifier, email):
     )
 
     return render_template(
-        "mail/email-confirmation.txt",
+        "mails/email-confirmation.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         confirmation_url=email_confirmation_url,

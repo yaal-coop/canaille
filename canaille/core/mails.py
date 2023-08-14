@@ -15,12 +15,12 @@ def send_test_mail(email):
         website_name=current_app.config.get("NAME", "Canaille")
     )
     text_body = render_template(
-        "mail/test.txt",
+        "mails/test.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
     )
     html_body = render_template(
-        "mail/test.html",
+        "mails/test.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
@@ -54,13 +54,13 @@ def send_password_reset_mail(user, mail):
         website_name=current_app.config.get("NAME", base_url)
     )
     text_body = render_template(
-        "mail/reset.txt",
+        "mails/reset.txt",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
-        "mail/reset.html",
+        "mails/reset.html",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         reset_url=reset_url,
@@ -95,13 +95,13 @@ def send_password_initialization_mail(user, email):
         website_name=current_app.config.get("NAME", base_url)
     )
     text_body = render_template(
-        "mail/firstlogin.txt",
+        "mails/firstlogin.txt",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
-        "mail/firstlogin.html",
+        "mails/firstlogin.html",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         reset_url=reset_url,
@@ -126,13 +126,13 @@ def send_invitation_mail(email, registration_url):
         website_name=current_app.config.get("NAME", base_url)
     )
     text_body = render_template(
-        "mail/invitation.txt",
+        "mails/invitation.txt",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
-        "mail/invitation.html",
+        "mails/invitation.html",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         registration_url=registration_url,
@@ -157,13 +157,13 @@ def send_confirmation_email(email, confirmation_url):
         website_name=current_app.config.get("NAME", base_url)
     )
     text_body = render_template(
-        "mail/email-confirmation.txt",
+        "mails/email-confirmation.txt",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         confirmation_url=confirmation_url,
     )
     html_body = render_template(
-        "mail/email-confirmation.html",
+        "mails/email-confirmation.html",
         site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         confirmation_url=confirmation_url,
