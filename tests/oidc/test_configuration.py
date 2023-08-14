@@ -22,19 +22,19 @@ def test_issuer(testclient):
             assert get_issuer() == "http://localhost/"
 
 
-def test_no_private_key(configuration):
-    configuration["OIDC"]["JWT"]["PRIVATE_KEY"] = "invalid-path"
+def test_no_private_key(testclient, configuration):
+    del configuration["OIDC"]["JWT"]["PRIVATE_KEY"]
     with pytest.raises(
         ConfigurationException,
-        match=r"Private key does not exist",
+        match=r"No private key has been set",
     ):
         validate(configuration)
 
 
-def test_no_public_key(configuration):
-    configuration["OIDC"]["JWT"]["PUBLIC_KEY"] = "invalid-path"
+def test_no_public_key(testclient, configuration):
+    del configuration["OIDC"]["JWT"]["PUBLIC_KEY"]
     with pytest.raises(
         ConfigurationException,
-        match=r"Public key does not exist",
+        match=r"No public key has been set",
     ):
         validate(configuration)

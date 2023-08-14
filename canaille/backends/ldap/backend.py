@@ -9,9 +9,11 @@ from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.backends import BaseBackend
 from flask import current_app
-from flask import render_template
 from flask import request
 from flask_babel import gettext as _
+from flask_themer import render_template
+
+from .utils import listify
 
 
 @contextmanager
@@ -55,7 +57,7 @@ class Backend(BaseBackend):
         setup_ldap_models(config)
 
     @classmethod
-    def install(cls, config):
+    def install(cls, config, debug=False):
         cls.setup_schemas(config)
         with ldap_connection(config) as conn:
             models.Token.install(conn)
@@ -77,6 +79,9 @@ class Backend(BaseBackend):
                 )
 
     def setup(self):
+        if self.connection:
+            return
+
         try:  # pragma: no cover
             if request.endpoint == "static":
                 return
@@ -102,9 +107,8 @@ class Backend(BaseBackend):
             return (
                 render_template(
                     "error.html",
-                    error=500,
+                    error_code=500,
                     icon="database",
-                    debug=self.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
@@ -118,9 +122,8 @@ class Backend(BaseBackend):
             return (
                 render_template(
                     "error.html",
-                    error=500,
+                    error_code=500,
                     icon="key",
-                    debug=self.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
@@ -167,7 +170,7 @@ class Backend(BaseBackend):
                 formatted_name=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
                 user_name=f"canaille_{uuid.uuid4()}",
-                email=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                 password="correct horse battery staple",
             )
             user.save(conn)
@@ -186,7 +189,7 @@ class Backend(BaseBackend):
                 cn=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
                 user_name=f"canaille_{uuid.uuid4()}",
-                email=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                 password="correct horse battery staple",
             )
             user.save(conn)
@@ -216,13 +219,13 @@ class Backend(BaseBackend):
         )
         placeholders = []
 
-        if "cn={login}" in user_filter:
+        if "cn={{login" in user_filter.replace(" ", ""):
             placeholders.append(_("John Doe"))
 
-        if "uid={login}" in user_filter:
+        if "uid={{login" in user_filter.replace(" ", ""):
             placeholders.append(_("jdoe"))
 
-        if "mail={login}" in user_filter or not placeholders:
+        if "mail={{login" in user_filter.replace(" ", "") or not placeholders:
             placeholders.append(_("john@doe.com"))
 
         return _(" or ").join(placeholders)
@@ -244,14 +247,12 @@ def setup_ldap_models(config):
     )
     models.User.base = user_base
     models.User.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "USER_ID_ATTRIBUTE", models.User.DEFAULT_ID_ATTRIBUTE
+        "USER_RDN", models.User.DEFAULT_RDN
     )
     object_class = config["BACKENDS"]["LDAP"].get(
         "USER_CLASS", models.User.DEFAULT_OBJECT_CLASS
     )
-    models.User.ldap_object_class = (
-        object_class if isinstance(object_class, list) else [object_class]
-    )
+    models.User.ldap_object_class = listify(object_class)
 
     group_base = (
         config["BACKENDS"]["LDAP"]
@@ -260,11 +261,9 @@ def setup_ldap_models(config):
     )
     models.Group.base = group_base or None
     models.Group.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "GROUP_ID_ATTRIBUTE", models.Group.DEFAULT_ID_ATTRIBUTE
+        "GROUP_RDN", models.Group.DEFAULT_RDN
     )
     object_class = config["BACKENDS"]["LDAP"].get(
         "GROUP_CLASS", models.Group.DEFAULT_OBJECT_CLASS
     )
-    models.Group.ldap_object_class = (
-        object_class if isinstance(object_class, list) else [object_class]
-    )
+    models.Group.ldap_object_class = listify(object_class)

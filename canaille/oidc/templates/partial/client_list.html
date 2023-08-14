@@ -1,0 +1,56 @@
+{% import "macro/table.html" as table %}
+<table class="ui bottom attached table clients">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}URL{% endtrans %}</th>
+            <th>{% trans %}Created{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in table_form.items_slice %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('oidc.clients.edit', client=client) }}">
+                        {% if client.logo_uri %}
+                            <img class="ui avatar image" src="{{ client.logo_uri }}" alt="Client logo">
+                        {% else %}
+                            <i class="plug circular inverted black icon"></i>
+                        {% endif %}
+                    </a>
+                </td>
+                <td><a href="{{ url_for('oidc.clients.edit', client=client) }}">{{ client.client_name }}</a></td>
+                <td><a href="{{ client.client_uri }}">{{ client.client_uri }}</a></td>
+                <td>{% if client.client_id_issued_at %}{{ client.client_id_issued_at }}{% endif %}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">
+                    <div class="ui icon message">
+                        <i class="exclamation icon"></i>
+                        <div class="content">
+                            {% if request.headers.get("Hx-Request") %}
+                                <div class="header">
+                                    {% trans %}No item matches your request{% endtrans %}
+                                </div>
+                                <p>{% trans %}Maybe try with different criterias?{% endtrans %}</p>
+                            {% else %}
+                                <div class="header">
+                                    {% trans %}There is nothing here{% endtrans %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4">
+                {{ table.pagination(table_form) }}
+            </th>
+        </tr>
+    </tfoot>
+</table>

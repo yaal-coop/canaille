@@ -1,12 +1,70 @@
 import os
 import smtplib
 import socket
+from collections.abc import Mapping
+
+import toml
+from canaille.app.mails import DEFAULT_SMTP_HOST
+from canaille.app.mails import DEFAULT_SMTP_PORT
+from flask import current_app
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 class ConfigurationException(Exception):
     pass
+
+
+def parse_file_keys(config):
+    """
+    Replaces configuration entries with the '_FILE' suffix with
+    the matching file content.
+    """
+
+    SUFFIX = "_FILE"
+    new_config = {}
+    for key, value in config.items():
+        if isinstance(value, Mapping):
+            new_config[key] = parse_file_keys(value)
+
+        elif isinstance(key, str) and key.endswith(SUFFIX) and isinstance(value, str):
+            with open(value) as f:
+                value = f.read().rstrip("\n")
+
+            root_key = key[: -len(SUFFIX)]
+            new_config[root_key] = value
+
+        else:
+            new_config[key] = value
+
+    return new_config
+
+
+def setup_config(app, config=None, validate_config=True):
+    from canaille.oidc.installation import install
+
+    app.config.from_mapping(
+        {
+            "SESSION_COOKIE_NAME": "canaille",
+            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
+            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
+        }
+    )
+    if config:
+        app.config.from_mapping(parse_file_keys(config))
+    elif "CONFIG" in os.environ:
+        app.config.from_mapping(parse_file_keys(toml.load(os.environ.get("CONFIG"))))
+    else:
+        raise Exception(
+            "No configuration file found. "
+            "Either create conf/config.toml or set the 'CONFIG' variable environment."
+        )
+
+    if app.debug:  # pragma: no cover
+        install(app.config, debug=True)
+
+    if validate_config:
+        validate(app.config)
 
 
 def validate(config, validate_remote=False):
@@ -26,28 +84,25 @@ def validate_keypair(config):
     if (
         "OIDC" in config
         and "JWT" in config["OIDC"]
-        and not os.path.exists(config["OIDC"]["JWT"]["PUBLIC_KEY"])
+        and not config["OIDC"]["JWT"].get("PUBLIC_KEY")
+        and not current_app.debug
     ):
-        raise ConfigurationException(
-            f'Public key does not exist {config["OIDC"]["JWT"]["PUBLIC_KEY"]}'
-        )
+        raise ConfigurationException("No public key has been set")
 
     if (
         "OIDC" in config
         and "JWT" in config["OIDC"]
-        and not os.path.exists(config["OIDC"]["JWT"]["PRIVATE_KEY"])
+        and not config["OIDC"]["JWT"].get("PRIVATE_KEY")
+        and not current_app.debug
     ):
-        raise ConfigurationException(
-            f'Private key does not exist {config["OIDC"]["JWT"]["PRIVATE_KEY"]}'
-        )
+        raise ConfigurationException("No private key has been set")
 
 
 def validate_smtp_configuration(config):
+    host = config["SMTP"].get("HOST", DEFAULT_SMTP_HOST)
+    port = config["SMTP"].get("PORT", DEFAULT_SMTP_PORT)
     try:
-        with smtplib.SMTP(
-            host=config["SMTP"]["HOST"],
-            port=config["SMTP"]["PORT"],
-        ) as smtp:
+        with smtplib.SMTP(host=host, port=port) as smtp:
             if config["SMTP"].get("TLS"):
                 smtp.starttls()
 
@@ -58,7 +113,7 @@ def validate_smtp_configuration(config):
                 )
     except (socket.gaierror, ConnectionRefusedError) as exc:
         raise ConfigurationException(
-            f'Could not connect to the SMTP server \'{config["SMTP"]["HOST"]}\''
+            f"Could not connect to the SMTP server '{host}' on port '{port}'"
         ) from exc
 
     except smtplib.SMTPAuthenticationError as exc:

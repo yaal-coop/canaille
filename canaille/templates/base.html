@@ -1,0 +1,106 @@
+{%- import 'macro/flask.html' as flask -%}
+
+<!doctype html>
+<html lang="{{ locale }}">
+    <head>
+        <title>{% block title -%}{% trans %}Authorization interface{% endtrans %}{%- endblock %} - {{ website_name|default("Canaille") }}</title>
+
+        {% if not is_boosted %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+            <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
+            <link href="/static/fonts/lato.css" rel="stylesheet">
+            <link href="/static/css/base.css" rel="stylesheet">
+            {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
+        {% endif %}
+        {% block style %}{% endblock %}
+    </head>
+
+    <body hx-boost="true">
+        {% block menu %}
+            {% if user and menu %}
+                <div class="ui container menu-container">
+                    <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}top attached{% endif %} menu">
+                        {% if logo_url %}
+                            <a href="/" class="item logo">
+                                <img class="ui img" src="{{ logo_url }}" alt="{{ website_name }}" />
+                            </a>
+                        {% endif %}
+
+                        {% if user.can_edit_self %}
+                            <a class="item {% if menuitem is defined and menuitem == "profile" %}active{% endif %}"
+                               href="{{ url_for('core.account.profile_edition', edited_user=user) }}">
+                                <i class="id card icon"></i>
+                                {% trans %}Profile{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_use_oidc %}
+                            <a class="item {% if menuitem is defined and menuitem == "consents" %}active{% endif %}"
+                               href="{{ url_for('oidc.consents.consents') }}">
+                                <i class="handshake icon"></i>
+                                {% trans %}Consents{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_manage_users %}
+                            <a class="item {% if menuitem is defined and menuitem == "users" %}active{% endif %}"
+                               href="{{ url_for('core.account.users') }}">
+                                <i class="address book icon"></i>
+                                {% trans %}Users{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_manage_groups %}
+                            <a class="item {% if menuitem is defined and menuitem == "groups" %}active{% endif %}"
+                               href="{{ url_for('core.groups.groups') }}">
+                                <i class="users icon"></i>
+                                {% trans %}Groups{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {% if user.can_manage_oidc %}
+                            <a class="item {% if menuitem is defined and menuitem == "admin" %}active{% endif %}" href="{{ url_for('core.admin.mail_index') }}">
+                                <i class="settings icon"></i>
+                                {% trans %}Admin{% endtrans %}
+                            </a>
+                        {% endif %}
+                        <a class="item" href="{{ url_for('core.auth.logout') }}">
+                            <i class="sign out alternate icon"></i>
+                            {% trans %}Log out{% endtrans %}
+                        </a>
+                    </nav>
+                    {% block submenu %}{% endblock %}
+                </div>
+            {% endif %}
+        {% endblock %}
+
+
+        {% block container %}
+            <div class="ui container">
+                <div class="ui content">
+                    {{ flask.messages() }}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        {% endblock %}
+
+        <footer>
+            <a href="{{ url_for('core.account.about') }}">{{ _("About Canaille") }}</a>
+        </footer>
+        {% if config.get("JAVASCRIPT", true) %}
+            {% if not is_boosted %}
+                <script src="/static/jquery/jquery.min.js" defer></script>
+                <script src="/static/fomanticui/semantic.min.js" defer></script>
+                {% if config.get("HTMX", true) %}
+                    <script src="/static/htmx/htmx.min.js" defer></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            htmx.config.requestClass = "loading"
+                        })
+                    </script>
+                {% endif %}
+                <script src="/static/js/base.js" defer></script>
+            {% endif %}
+            {% block script %}{% endblock %}
+        {% endif %}
+    </body>
+</html>

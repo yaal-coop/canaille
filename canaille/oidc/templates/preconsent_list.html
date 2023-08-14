@@ -1,0 +1,99 @@
+{% extends theme('base.html') %}
+
+{%- block title -%}
+    {%- trans %}My consents{% endtrans -%}
+{%- endblock -%}
+
+{% block submenu %}
+    <nav class="ui bottom attached two item borderless menu">
+        <a class="item" href="{{ url_for('oidc.consents.consents') }}">
+            <i class="handshake icon"></i>
+            {% trans %}My consents{% endtrans %}
+            {% if nb_consents %}<div class="ui mini label">{{ nb_consents }}</div>{% endif %}
+        </a>
+        <a class="active item" href="{{ url_for('oidc.consents.pre_consents') }}">
+            <i class="stamp icon"></i>
+            {% trans %}Pre-authorized applications{% endtrans %}
+            {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents }}</div>{% endif %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui bottom attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Pre-authorized applications") }}
+            </div>
+            <div class="sub header">
+                {% trans %}Those applications automatically have authorizations to access you data.{% endtrans %}
+            </div>
+        </h2>
+
+        {% if preconsented %}
+            <div class="ui centered cards">
+                {% for client in preconsented %}
+                    <div class="ui card">
+                        <div class="content">
+                            {% if client.logo_uri %}
+                                <img class="right floated mini ui image" src="{{ client.logo_uri }}">
+                            {% endif %}
+                            {% if client.client_uri %}
+                                <a href="{{ client.client_uri }}" class="header">{{ client.client_name }}</a>
+                            {% else %}
+                                <div class="header">{{ client.client_name }}</div>
+                            {% endif %}
+                            <div class="description">
+                                <p>
+                                    {% trans %}Has access to:{% endtrans %}
+                                </p>
+                                <div class="ui list">
+                                    {% for scope in client.scope %}
+                                        {% if scope not in ignored_scopes %}
+                                            {% if scope not in scope_details %}
+                                                <div class="item" title="{{ scope }}">{{ scope }}</div>
+                                            {% else %}
+                                                <div class="item" title="{{ scope }}">
+                                                    <i class="{{ scope_details[scope][0] }} icon"></i>
+                                                    <div class="content">{{ scope_details[scope][1] }}</div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if client.policy_uri %}
+                            <div class="extra content">
+                                <span>
+                                    <i class="mask icon"></i>
+                                    <a href="{{ client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                        {% if client.tos_uri %}
+                            <div class="extra content">
+                                <span>
+                                    <i class="file signature icon"></i>
+                                    <a href="{{ client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                        <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke_preconsent', client=client ) }}">
+                            <i class="remove icon"></i>
+                            {% trans %}Revoke access{% endtrans %}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="ui center aligned">
+                <div class="ui center aligned message">
+                    <div class="content">
+                        <p>{% trans %}There is nothing here{% endtrans %}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

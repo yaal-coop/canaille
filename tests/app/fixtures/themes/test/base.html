@@ -14,12 +14,6 @@
         <link href="/static/css/base.css" rel="stylesheet">
         {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
         {% block style %}{% endblock %}
-
-        <!--[if lt IE 9]>
-        <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
-        <script src="/static/js/respond.min.js"></script>
-    <![endif]-->
-
     </head>
 
     <body>
@@ -34,7 +28,7 @@
                         </div>
                     {% endif %}
                     <a class="item {% if menuitem == "profile" %}active{% endif %}"
-                       href="{{ url_for('account.profile_edition', username=user.user_name[0]) }}">
+                       href="{{ url_for('core.account.profile_edition', edited_user=user) }}">
                         <i class="id card icon"></i>
                         {% trans %}My profile{% endtrans %}
                     </a>
@@ -45,14 +39,14 @@
                     </a>
                     {% if user.can_manage_users %}
                         <a class="item {% if menuitem == "users" %}active{% endif %}"
-                           href="{{ url_for('account.users') }}">
+                           href="{{ url_for('core.account.users') }}">
                             <i class="users icon"></i>
                             {% trans %}Users{% endtrans %}
                         </a>
                     {% endif %}
                     {% if user.can_manage_groups %}
                         <a class="item {% if menuitem == "groups" %}active{% endif %}"
-                           href="{{ url_for('groups.groups') }}">
+                           href="{{ url_for('core.groups.groups') }}">
                             <i class="users cog icon"></i>
                             {% trans %}Groups{% endtrans %}
                         </a>
@@ -81,7 +75,7 @@
                             </div>
                         </div>
                     {% endif %}
-                    <a class="item" href="{{ url_for('account.logout') }}">
+                    <a class="item" href="{{ url_for('core.auth.logout') }}">
                         <i class="sign out alternate icon"></i>
                         {% trans %}Log out{% endtrans %}
                     </a>
@@ -97,11 +91,11 @@
         </div>
 
         <footer>
-            <a href="{{ url_for('account.about') }}">{{ _("About canaille") }}</a>
+            <a href="{{ url_for('core.account.about') }}">{{ _("About canaille") }}</a>
         </footer>
-        <script src="/static/jquery/jquery.min.js"></script>
-        <script src="/static/fomanticui/semantic.min.js"></script>
-        <script src="/static/js/base.js"></script>
+        <script src="/static/jquery/jquery.min.js" defer></script>
+        <script src="/static/fomanticui/semantic.min.js" defer></script>
+        <script src="/static/js/base.js" defer></script>
         {% block script %}{% endblock %}
 
         TEST_THEME

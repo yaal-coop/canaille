@@ -5,7 +5,7 @@ def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.app.config["ENABLE_PASSWORD_RECOVERY"] = False
 
     testclient.get("/reset", status=404)
-    testclient.get("/reset/user_name/hash", status=404)
+    testclient.get("/reset/user/hash", status=404)
 
     res = testclient.get("/login")
     res.mustcontain(no="Forgotten password")
@@ -23,6 +23,23 @@ def test_password_forgotten(smtpd, testclient, user):
     res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 1
+
+
+def test_password_forgotten_multiple_mails(smtpd, testclient, user):
+    user.emails = ["foo@bar.com", "foo@baz.com", "foo@foo.com"]
+    user.save()
+
+    res = testclient.get("/reset", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=200)
+    assert (
+        "success",
+        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+    ) in res.flashes
+    res.mustcontain("Send again")
+
+    assert len(smtpd.messages) == 3
 
 
 def test_password_forgotten_invalid_form(smtpd, testclient, user):

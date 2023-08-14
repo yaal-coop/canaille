@@ -1,10 +1,25 @@
+import pytest
 from canaille.core.populate import fake_users
+from flask import g
 from webtest import Upload
+
+
+@pytest.fixture
+def configuration(configuration):
+    configuration["EMAIL_CONFIRMATION"] = False
+    return configuration
+
+
+def test_invalid_form_request(testclient, logged_user):
+    res = testclient.get("/profile/user")
+    res = res.forms["baseform"].submit(
+        name="action", value="invalid-action", status=400
+    )
 
 
 def test_user_list_pagination(testclient, logged_admin):
     res = testclient.get("/users")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
     users = fake_users(25)
 
@@ -23,7 +38,7 @@ def test_user_list_pagination(testclient, logged_admin):
         user.delete()
 
     res = testclient.get("/users")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
 
 def test_user_list_bad_pages(testclient, logged_admin):
@@ -50,7 +65,7 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
     form["query"] = "Jack"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(moderator.formatted_name[0])
     res.mustcontain(no=user.formatted_name[0])
 
@@ -67,11 +82,12 @@ def test_user_list_search_only_allowed_fields(
     form["query"] = "user"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(user.formatted_name[0])
     res.mustcontain(no=moderator.formatted_name[0])
 
     testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("user_name")
+    g.user.reload()
 
     form = res.forms["search"]
     form["query"] = "user"
@@ -88,9 +104,10 @@ def test_edition_permission(
     admin,
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    testclient.get("/profile/user", status=403)
+    testclient.get("/profile/user", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    g.user.reload()
     testclient.get("/profile/user", status=200)
 
 
@@ -101,24 +118,25 @@ def test_edition(
     jpeg_photo,
 ):
     res = testclient.get("/profile/user", status=200)
-    res.form["given_name"] = "given_name"
-    res.form["family_name"] = "family_name"
-    res.form["display_name"] = "display_name"
-    res.form["email"] = "email@mydomain.tld"
-    res.form["phone_number"] = "555-666-777"
-    res.form["formatted_address"] = "formatted_address"
-    res.form["street"] = "street"
-    res.form["postal_code"] = "postal_code"
-    res.form["locality"] = "locality"
-    res.form["region"] = "region"
-    res.form["employee_number"] = 666
-    res.form["department"] = 1337
-    res.form["title"] = "title"
-    res.form["organization"] = "organization"
-    res.form["preferred_language"] = "fr"
-    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
+    form = res.forms["baseform"]
+    form["given_name"] = "given_name"
+    form["family_name"] = "family_name"
+    form["display_name"] = "display_name"
+    form["emails-0"] = "email@mydomain.tld"
+    form["phone_numbers-0"] = "555-666-777"
+    form["formatted_address"] = "formatted_address"
+    form["street"] = "street"
+    form["postal_code"] = "postal_code"
+    form["locality"] = "locality"
+    form["region"] = "region"
+    form["employee_number"] = 666
+    form["department"] = 1337
+    form["title"] = "title"
+    form["organization"] = "organization"
+    form["preferred_language"] = "fr"
+    form["photo"] = Upload("logo.jpg", jpeg_photo)
 
-    res = res.form.submit(name="action", value="edit")
+    res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [
         ("success", "Le profil a été mis à jour avec succès.")
     ], res.text
@@ -129,8 +147,8 @@ def test_edition(
     assert logged_user.given_name == ["given_name"]
     assert logged_user.family_name == ["family_name"]
     assert logged_user.display_name == "display_name"
-    assert logged_user.email == ["email@mydomain.tld"]
-    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.emails == ["email@mydomain.tld"]
+    assert logged_user.phone_numbers == ["555-666-777"]
     assert logged_user.formatted_address == ["formatted_address"]
     assert logged_user.street == ["street"]
     assert logged_user.postal_code == ["postal_code"]
@@ -145,7 +163,7 @@ def test_edition(
 
     logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
-    logged_user.email = ["john@doe.com"]
+    logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
     logged_user.save()
@@ -157,45 +175,30 @@ def test_edition_remove_fields(
     admin,
 ):
     res = testclient.get("/profile/user", status=200)
-    res.form["display_name"] = ""
-    res.form["phone_number"] = ""
+    form = res.forms["baseform"]
+    form["display_name"] = ""
+    form["phone_numbers-0"] = ""
 
-    res = res.form.submit(name="action", value="edit")
+    res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")], res.text
     res = res.follow()
 
     logged_user.reload()
 
     assert not logged_user.display_name
-    assert not logged_user.phone_number
+    assert not logged_user.phone_numbers
 
     logged_user.formatted_name = ["John (johnny) Doe"]
     logged_user.family_name = ["Doe"]
-    logged_user.email = ["john@doe.com"]
+    logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
     logged_user.save()
 
 
-def test_profile_edition_dynamic_validation(testclient, logged_admin, user):
-    res = testclient.get("/profile/admin")
-    res = testclient.post(
-        "/profile/admin",
-        {
-            "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.com",
-        },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "email",
-        },
-    )
-    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
-
-
 def test_field_permissions_none(testclient, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.phone_number = ["555-666-777"]
+    logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
@@ -204,83 +207,90 @@ def test_field_permissions_none(testclient, logged_user):
         "PERMISSIONS": ["edit_self"],
     }
 
+    g.user.reload()
     res = testclient.get("/profile/user", status=200)
-    assert "phone_number" not in res.form.fields
+    form = res.forms["baseform"]
+    assert "phone_numbers-0" not in form.fields
 
     testclient.post(
         "/profile/user",
         {
-            "action": "edit",
-            "phone_number": "000-000-000",
-            "csrf_token": res.form["csrf_token"].value,
+            "action": "edit-profile",
+            "phone_numbers-0": "000-000-000",
+            "csrf_token": form["csrf_token"].value,
         },
     )
     logged_user.reload()
-    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.phone_numbers == ["555-666-777"]
 
 
 def test_field_permissions_read(testclient, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.phone_number = ["555-666-777"]
+    logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
-        "READ": ["user_name", "phone_number"],
+        "READ": ["user_name", "phone_numbers"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
     }
+    g.user.reload()
     res = testclient.get("/profile/user", status=200)
-    assert "phone_number" in res.form.fields
+    form = res.forms["baseform"]
+    assert "phone_numbers-0" in form.fields
 
     testclient.post(
         "/profile/user",
         {
-            "action": "edit",
-            "phone_number": "000-000-000",
-            "csrf_token": res.form["csrf_token"].value,
+            "action": "edit-profile",
+            "phone_numbers-0": "000-000-000",
+            "csrf_token": form["csrf_token"].value,
         },
     )
     logged_user.reload()
-    assert logged_user.phone_number == ["555-666-777"]
+    assert logged_user.phone_numbers == ["555-666-777"]
 
 
 def test_field_permissions_write(testclient, logged_user):
     testclient.get("/profile/user", status=200)
-    logged_user.phone_number = ["555-666-777"]
+    logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
     testclient.app.config["ACL"]["DEFAULT"] = {
         "READ": ["user_name"],
-        "WRITE": ["phone_number"],
+        "WRITE": ["phone_numbers"],
         "PERMISSIONS": ["edit_self"],
     }
+    g.user.reload()
     res = testclient.get("/profile/user", status=200)
-    assert "phone_number" in res.form.fields
+    form = res.forms["baseform"]
+    assert "phone_numbers-0" in form.fields
 
     testclient.post(
         "/profile/user",
         {
-            "action": "edit",
-            "phone_number": "000-000-000",
-            "csrf_token": res.form["csrf_token"].value,
+            "action": "edit-profile",
+            "phone_numbers-0": "000-000-000",
+            "csrf_token": form["csrf_token"].value,
         },
     )
     logged_user.reload()
-    assert logged_user.phone_number == ["000-000-000"]
+    assert logged_user.phone_numbers == ["000-000-000"]
 
 
-def test_simple_user_cannot_edit_other(testclient, logged_user):
+def test_simple_user_cannot_edit_other(testclient, admin, logged_user):
     res = testclient.get("/profile/user", status=200)
-    testclient.get("/profile/admin", status=403)
+    form = res.forms["baseform"]
+    testclient.get("/profile/admin", status=404)
     testclient.post(
         "/profile/admin",
-        {"action": "edit", "csrf_token": res.form["csrf_token"].value},
-        status=403,
+        {"action": "edit-profile", "csrf_token": form["csrf_token"].value},
+        status=404,
     )
     testclient.post(
         "/profile/admin",
-        {"action": "delete", "csrf_token": res.form["csrf_token"].value},
-        status=403,
+        {"action": "delete", "csrf_token": form["csrf_token"].value},
+        status=404,
     )
     testclient.get("/users", status=403)
 
@@ -291,32 +301,108 @@ def test_admin_bad_request(testclient, logged_moderator):
 
 def test_bad_email(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
 
-    res.form["email"] = "john@doe.com"
+    form["emails-0"] = "john@doe.com"
 
-    res = res.form.submit(name="action", value="edit").follow()
+    res = form.submit(name="action", value="edit-profile").follow()
 
-    assert ["john@doe.com"] == logged_user.email
+    assert ["john@doe.com"] == logged_user.emails
 
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
 
-    res.form["email"] = "yolo"
+    form["emails-0"] = "yolo"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = form.submit(name="action", value="edit-profile", status=200)
 
     logged_user.reload()
 
-    assert ["john@doe.com"] == logged_user.email
+    assert ["john@doe.com"] == logged_user.emails
 
 
 def test_surname_is_mandatory(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
     logged_user.family_name = ["Doe"]
 
-    res.form["family_name"] = ""
+    form["family_name"] = ""
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = form.submit(name="action", value="edit-profile", status=200)
 
     logged_user.reload()
 
     assert ["Doe"] == logged_user.family_name
+
+
+def test_formcontrol(testclient, logged_user):
+    res = testclient.get("/profile/user")
+    form = res.forms["baseform"]
+    assert "emails-1" not in form.fields
+
+    res = form.submit(status=200, name="fieldlist_add", value="emails-0")
+    form = res.forms["baseform"]
+    assert "emails-1" in form.fields
+
+
+def test_formcontrol_htmx(testclient, logged_user):
+    res = testclient.get("/profile/user")
+    form = res.forms["baseform"]
+    data = {
+        field: form[field].value
+        for field in form.fields
+        if len(form.fields.get(field)) == 1
+    }
+    data["fieldlist_add"] = "emails-0"
+    response = testclient.post(
+        "/profile/user",
+        data,
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "listfield_add",
+        },
+    )
+    assert "emails-0" in response.text
+    assert "emails-1" in response.text
+
+
+def test_inline_validation(testclient, logged_admin, user):
+    res = testclient.get("/profile/admin")
+    form = res.forms["baseform"]
+    res = testclient.post(
+        "/profile/admin",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "emails-0": "john@doe.com",
+            "action": "edit-profile",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "emails-0",
+        },
+    )
+    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
+
+
+def test_inline_validation_keep_indicators(
+    configuration, testclient, logged_admin, user
+):
+    configuration["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
+    configuration["ACL"]["DEFAULT"]["READ"].append("display_name")
+    configuration["ACL"]["ADMIN"]["WRITE"].append("display_name")
+
+    res = testclient.get("/profile/admin")
+    form = res.forms["baseform"]
+    res = testclient.post(
+        "/profile/user",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "display_name": "George Abitbol",
+            "action": "edit-profile",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "display_name",
+        },
+    )
+    res.mustcontain("This user cannot edit this field")

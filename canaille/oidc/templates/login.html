@@ -1,0 +1,46 @@
+{% extends theme('base.html') %}
+{% import 'macro/flask.html' as flask %}
+{% import 'macro/form.html' as fui %}
+{% import 'partial/login_field.html' as login_field %}
+
+{% block container %}
+    <div class="ui container" hx-boost="false">
+        <div class="content">
+            <div class="ui clearing segment">
+                {% if logo_url %}
+                    <a href="{{ url_for('core.account.index') }}">
+                        <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+                    </a>
+                {% else %}
+                    <i class="massive sign in icon image ui"></i>
+                {% endif %}
+
+                <h2 class="ui center aligned header">
+                    <div class="content">
+                        {{ _("Sign in at %(website)s", website=website_name) }}
+                    </div>
+                    <div class="sub header">{% trans %}Manage your information and your authorizations{% endtrans %}</div>
+                </h2>
+
+                {{ flask.messages() }}
+
+                {% call fui.render_form(form) %}
+                    {% block login_field scoped %}{{ login_field.render_field(form.login, class="autofocus") }}{% endblock %}
+
+                    {% if "password" in form %}
+                        {% block password_field scoped %}{{ login_field.render_field(form.password) }}{% endblock %}
+                    {% endif %}
+
+                    <div class="ui right aligned container">
+                        <div class="ui stackable buttons">
+                            {% if has_smtp and has_password_recovery %}
+                                <a type="button" class="ui right floated button" href="{{ url_for('core.auth.forgotten') }}">{{ _("Forgotten password") }}</a>
+                            {% endif %}
+                            <button type="submit" name="answer" class="ui right floated primary button" hx-boost="false">{{ _("Continue") }}</button>
+                        </div>
+                    </div>
+                {% endcall %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

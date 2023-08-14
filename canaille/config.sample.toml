@@ -1,0 +1,249 @@
+# All the Flask configuration values can be used:
+# https://flask.palletsprojects.com/en/2.3.x/config/#builtin-configuration-values
+
+# The flask secret key for cookies. You MUST change this.
+SECRET_KEY = "change me before you go in production"
+
+# Your organization name.
+# NAME = "Canaille"
+
+# The interface on which canaille will be served
+# SERVER_NAME = "auth.mydomain.tld"
+# PREFERRED_URL_SCHEME = "https"
+
+# You can display a logo to be recognized on login screens
+# LOGO = "/static/img/canaille-head.png"
+
+# Your favicon. If unset the LOGO will be used.
+# FAVICON = "/static/img/canaille-c.png"
+
+# The name of a theme in the 'theme' directory, or an absolute path
+# to a theme. Defaults to 'default'. Theming is done with
+# https://github.com/tktech/flask-themer
+# THEME = "default"
+
+# If unset, language is detected
+# LANGUAGE = "en"
+
+# The timezone in which datetimes will be displayed to the users.
+# If unset, the server timezone will be used.
+# TIMEZONE = UTC
+
+# If you have a sentry instance, you can set its dsn here:
+# SENTRY_DSN = "https://examplePublicKey@o0.ingest.sentry.io/0"
+
+# Enables javascript to smooth the user experience
+# JAVASCRIPT = true
+
+# Accelerates webpages with async requests
+# HTMX = true
+
+# If EMAIL_CONFIRMATION is set to true, users will need to click on a
+# confirmation link sent by email when they want to add a new email.
+# By default, this is true if SMTP is configured, else this is false.
+# If explicitely set to true and SMTP is disabled, the email field
+# will be read-only.
+# EMAIL_CONFIRMATION =
+
+# If HIDE_INVALID_LOGINS is set to true (the default), when a user
+# tries to sign in with an invalid login, a message is shown indicating
+# that the password is wrong, but does not give a clue wether the login
+# exists or not.
+# If HIDE_INVALID_LOGINS is set to false, when a user tries to sign in with
+# an invalid login, a message is shown indicating that the login does not
+# exist.
+# HIDE_INVALID_LOGINS = true
+
+# If ENABLE_PASSWORD_RECOVERY is false, then users cannot ask for a password
+# recovery link by email. This option is true by default.
+# ENABLE_PASSWORD_RECOVERY = true
+
+# The validity duration of registration invitations, in seconds.
+# Defaults to 2 days
+# INVITATION_EXPIRATION = 172800
+
+[LOGGING]
+# LEVEL can be one value among:
+# DEBUG, INFO, WARNING, ERROR, CRITICAL
+# Defaults to WARNING
+# LEVEL = "WARNING"
+
+# The path of the log file. If not set (the default) logs are
+# written in the standard error output.
+# PATH = ""
+
+[BACKENDS.LDAP]
+URI = "ldap://ldap"
+ROOT_DN = "dc=mydomain,dc=tld"
+BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+BIND_PW = "admin"
+# TIMEOUT =
+
+# Where to search for users?
+USER_BASE = "ou=users,dc=mydomain,dc=tld"
+
+# The object class to use for creating new users
+# USER_CLASS = "inetOrgPerson"
+
+# The attribute to identify an object in the User dn.
+# USER_RDN = "uid"
+
+# Filter to match users on sign in. Jinja syntax is supported
+# and a `login` variable is available containing the value
+# passed in the login field.
+# USER_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
+
+# Where to search for groups?
+GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+
+# The object class to use for creating new groups
+# GROUP_CLASS = "groupOfNames"
+
+# The attribute to identify an object in the User dn.
+# GROUP_RDN = "cn"
+
+# The attribute to use to identify a group
+# GROUP_NAME_ATTRIBUTE = "cn"
+
+[ACL]
+# You can define access controls that define what users can do on canaille
+# An access control consists in a FILTER to match users, a list of PERMISSIONS
+# matched users will be able to perform, and fields users will be able
+# to READ and WRITE. Users matching several filters will cumulate permissions.
+#
+# 'FILTER' parameter can be:
+# - absent, in which case all the users will match this access control
+# - a mapping where keys are user attributes name and the values those user
+#   attribute values. All the values must be matched for the user to be part
+#   of the access control.
+# - a list of those mappings. If a user values match at least one mapping,
+#   then the user will be part of the access control
+#
+# Here are some examples
+#     FILTER = {user_name = 'admin'}
+#     FILTER =
+#       - {groups = 'admins}
+#       - {groups = 'moderators'}
+#
+# The 'PERMISSIONS' parameter that is an list of items the users in the access
+# control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
+# - "edit_self" to allow users to edit their own profile
+# - "use_oidc" to allow OpenID Connect authentication
+# - "manage_oidc" to allow OpenID Connect client managements
+# - "manage_users" to allow other users management
+# - "manage_groups" to allow group edition and creation
+# - "delete_account" allows a user to delete his own account. If used with
+#                    manage_users, the user can delete any account
+# - "impersonate_users" to allow a user to take the identity of another user
+#
+# The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
+# object that users will be able to read and/or write.
+[ACL.DEFAULT]
+PERMISSIONS = ["edit_self", "use_oidc"]
+READ = [
+    "user_name",
+    "groups",
+    "lock_date",
+]
+WRITE = [
+    "photo",
+    "given_name",
+    "family_name",
+    "display_name",
+    "password",
+    "phone_numbers",
+    "emails",
+    "profile_url",
+    "formatted_address",
+    "street",
+    "postal_code",
+    "locality",
+    "region",
+    "preferred_language",
+    "employee_number",
+    "department",
+    "title",
+    "organization",
+]
+
+[ACL.ADMIN]
+FILTER = {groups = "admins"}
+PERMISSIONS = [
+    "manage_users",
+    "manage_groups",
+    "manage_oidc",
+    "delete_account",
+    "impersonate_users",
+]
+WRITE = [
+    "groups",
+    "lock_date",
+]
+
+[OIDC]
+# Wether a token is needed for the RFC7591 dynamical client registration.
+# If true, no token is needed to register a client.
+# If false, dynamical client registration needs a token defined
+# in DYNAMIC_CLIENT_REGISTRATION_TOKENS
+# DYNAMIC_CLIENT_REGISTRATION_OPEN = false
+
+# A list of tokens that can be used for dynamic client registration
+# DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
+#     "xxxxxxx-yyyyyyy-zzzzzz",
+# ]
+
+# REQUIRE_NONCE force the nonce exchange during the authentication flows.
+# This adds security but may not be supported by all clients.
+# REQUIRE_NONCE = true
+
+[OIDC.JWT]
+# PRIVATE_KEY_FILE and PUBLIC_KEY_FILE are the paths to the private and
+# the public key. You can generate a RSA keypair with:
+# openssl genrsa -out private.pem 4096
+# openssl rsa -in private.pem -pubout -outform PEM -out public.pem
+# If the variables are unset, and debug mode is enabled,
+# a in-memory keypair will be used.
+# PRIVATE_KEY_FILE = "/path/to/private.pem"
+# PUBLIC_KEY_FILE = "/path/to/public.pem"
+# The URI of the identity provider
+# ISS = "https://auth.mydomain.tld"
+# The key type parameter
+# KTY = "RSA"
+# The key algorithm
+# ALG = "RS256"
+# The time the JWT will be valid, in seconds
+# EXP = 3600
+
+[OIDC.JWT.MAPPING]
+# Mapping between JWT fields and LDAP attributes from your
+# User objectClass.
+# {attribute} will be replaced by the user ldap attribute value.
+# Default values fits inetOrgPerson.
+# SUB = "{{ user.user_name[0] }}"
+# NAME = "{{ user.formatted_name[0] }}"
+# PHONE_NUMBER = "{{ user.phone_numbers[0] }}"
+# EMAIL = "{{ user.preferred_email }}"
+# GIVEN_NAME = "{{ user.given_name[0] }}"
+# FAMILY_NAME = "{{ user.family_name[0] }}"
+# PREFERRED_USERNAME = "{{ user.display_name }}"
+# LOCALE = "{{ user.preferred_language }}"
+# ADDRESS = "{{ user.formatted_address[0] }}"
+# PICTURE = "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}"
+# WEBSITE = "{{ user.profile_url[0] }}"
+
+# The SMTP server options. If not set, mail related features such as
+# user invitations, and password reset emails, will be disabled.
+[SMTP]
+# HOST = "localhost"
+# PORT = 25
+# TLS = false
+# SSL = false
+# LOGIN = ""
+# PASSWORD = ""
+# FROM_ADDR = "admin@mydomain.tld"
+
+# The registration options. If not set, registration will be disabled. Requires SMTP to work.
+# Groups should be formatted like this: ["<GROUP_NAME_ATTRIBUTE>=group_name,<GROUP_BASE>", ...]
+# [REGISTRATION]
+# GROUPS=[]
+# CAN_EDIT_USERNAME = false

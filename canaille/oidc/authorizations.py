@@ -19,18 +19,17 @@ def index(user):
         abort(404)
 
     return render_htmx_template(
-        "oidc/admin/authorization_list.html",
+        "authorization_list.html",
         menuitem="admin",
         table_form=table_form,
     )
 
 
-@bp.route("/<authorization_id>", methods=["GET", "POST"])
+@bp.route("/<authorizationcode:authorization>", methods=["GET", "POST"])
 @permissions_needed("manage_oidc")
-def view(user, authorization_id):
-    authorization = models.AuthorizationCode.get(authorization_code_id=authorization_id)
+def view(user, authorization):
     return render_template(
-        "oidc/admin/authorization_view.html",
+        "authorization_view.html",
         authorization=authorization,
         menuitem="admin",
     )

@@ -1,0 +1,41 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans %}Add a client{% endtrans -%}
+{%- endblock -%}
+
+{% block submenu %}
+    <nav class="ui bottom attached five item borderless menu">
+        <a class="item" href="{{ url_for('core.admin.mail_index') }}">
+            <i class="user mail icon"></i>
+            {% trans %}Emails{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.index') }}">
+            <i class="th list icon"></i>
+            {% trans %}Clients{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('oidc.clients.add') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add a client{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.tokens.index') }}">
+            <i class="key icon"></i>
+            {% trans %}Tokens{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
+            <i class="user secret icon"></i>
+            {% trans %}Codes{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui top attached segment">
+        <h2 class="ui center aligned header">
+            {% trans %}Add a client{% endtrans %}
+        </h2>
+
+        {{ fui.render_form(form, _("Create"), csrf=false) }}
+    </div>
+{% endblock %}

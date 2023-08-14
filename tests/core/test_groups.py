@@ -9,7 +9,7 @@ def test_no_group(app, backend):
 
 def test_group_list_pagination(testclient, logged_admin, foo_group):
     res = testclient.get("/groups")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
     groups = fake_groups(25)
 
@@ -30,7 +30,7 @@ def test_group_list_pagination(testclient, logged_admin, foo_group):
         group.delete()
 
     res = testclient.get("/groups")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
 
 def test_group_list_bad_pages(testclient, logged_admin):
@@ -52,7 +52,7 @@ def test_group_deletion(testclient, backend):
         formatted_name="foobar",
         family_name="foobar",
         user_name="foobar",
-        email="foo@bar.com",
+        emails="foo@bar.com",
     )
     user.save()
 
@@ -82,7 +82,7 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     form["query"] = "oo"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(foo_group.display_name)
     res.mustcontain(no=bar_group.display_name)
 
@@ -112,7 +112,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
         formatted_name=" Doe",  # leading space in id attribute
         family_name="Doe",
         user_name="user2",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     user.save()
 
@@ -165,18 +165,31 @@ def test_moderator_can_create_edit_and_delete_group(
     form["display_name"] = "bar2"
     form["description"] = ["yolo2"]
 
-    res = form.submit(name="action", value="edit").follow()
+    res = form.submit(name="action", value="edit")
+    assert res.flashes == [("error", "Group edition failed.")]
+    res.mustcontain("This field cannot be edited")
+
+    bar_group = models.Group.get(display_name="bar")
+    assert bar_group.display_name == "bar"
+    assert bar_group.description == ["yolo"]
+    assert models.Group.get(display_name="bar2") is None
+
+    # Group description can be edited
+    res = testclient.get("/groups/bar", status=200)
+    form = res.forms["editgroupform"]
+    form["description"] = ["yolo2"]
+
+    res = form.submit(name="action", value="edit")
+    assert res.flashes == [("success", "The group bar has been sucessfully edited.")]
+    res = res.follow()
 
     bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == ["yolo2"]
-    assert models.Group.get(display_name="bar2") is None
-    members = bar_group.members
-    for member in members:
-        res.mustcontain(member.formatted_name[0])
 
     # Group is deleted
-    res = form.submit(name="action", value="delete", status=302)
+    res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete", status=302)
     assert models.Group.get(display_name="bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
@@ -221,7 +234,7 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
 
 def test_user_list_pagination(testclient, logged_admin, foo_group):
     res = testclient.get("/groups/foo")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
     users = fake_users(25)
     for user in users:
@@ -243,7 +256,7 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
         user.delete()
 
     res = testclient.get("/groups/foo")
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
 
 
 def test_user_list_bad_pages(testclient, logged_admin, foo_group):
@@ -276,7 +289,7 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     form["query"] = "ohn"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(user.formatted_name[0])
     res.mustcontain(no=logged_admin.formatted_name[0])
     res.mustcontain(no=moderator.formatted_name[0])

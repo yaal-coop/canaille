@@ -41,11 +41,6 @@ from .utils import SCOPE_DETAILS
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 
 
-def get_public_key():
-    with open(current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]) as fd:
-        return fd.read()
-
-
 @bp.route("/authorize", methods=["GET", "POST"])
 def authorize():
     current_app.logger.debug(
@@ -126,7 +121,7 @@ def authorize():
 
         form = AuthorizeForm(request.form or None)
         return render_template(
-            "oidc/user/authorize.html",
+            "authorize.html",
             user=user,
             grant=grant,
             client=client,
@@ -238,7 +233,9 @@ def client_registration_management(client_id):
 def jwks():
     kty = current_app.config["OIDC"]["JWT"].get("KTY", DEFAULT_JWT_KTY)
     alg = current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG)
-    jwk = JsonWebKey.import_key(get_public_key(), {"kty": kty})
+    jwk = JsonWebKey.import_key(
+        current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
+    )
     return jsonify(
         {
             "keys": [
@@ -268,7 +265,7 @@ def end_session():
     user = current_user()
 
     if not user:
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     form = LogoutForm(request.form)
     form.action = url_for("oidc.endpoints.end_session_submit")
@@ -286,12 +283,12 @@ def end_session():
         or (data.get("logout_hint") and data["logout_hint"] != user.user_name[0])
     ) and not session.get("end_session_confirmation"):
         session["end_session_data"] = data
-        return render_template(
-            "oidc/user/logout.html", form=form, client=client, menu=False
-        )
+        return render_template("logout.html", form=form, client=client, menu=False)
 
     if data.get("id_token_hint"):
-        id_token = jwt.decode(data["id_token_hint"], get_public_key())
+        id_token = jwt.decode(
+            data["id_token_hint"], current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
+        )
         if not id_token["iss"] == get_issuer():
             return jsonify(
                 {
@@ -327,9 +324,7 @@ def end_session():
             "end_session_confirmation"
         ):
             session["end_session_data"] = data
-            return render_template(
-                "oidc/user/logout.html", form=form, client=client, menu=False
-            )
+            return render_template("logout.html", form=form, client=client, menu=False)
 
     user.logout()
 
@@ -346,7 +341,7 @@ def end_session():
         return redirect(url)
 
     flash(_("You have been disconnected"), "success")
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))
 
 
 @bp.route("/end_session_confirm", methods=["POST"])
@@ -364,4 +359,4 @@ def end_session_submit():
 
     flash(_("You have not been disconnected"), "info")
 
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))

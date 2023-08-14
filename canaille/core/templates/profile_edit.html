@@ -1,0 +1,236 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+{% import 'partial/profile_field.html' as profile %}
+
+{%- block title -%}
+    {% if not edited_user %}
+        {%- trans %}User creation{% endtrans -%}
+    {% elif user.user_name == edited_user.user_name %}
+        {%- trans %}My profile{% endtrans -%}
+    {% else %}
+        {%- trans %}User profile edition{% endtrans -%}
+    {% endif %}
+{%- endblock -%}
+
+{% block script %}
+    <script src="/static/js/profile.js" defer></script>
+{% endblock %}
+
+{% block submenu %}
+    <nav class="ui bottom attached two item borderless menu">
+        <a class="active item" href="{{ url_for('core.account.profile_edition', edited_user=edited_user) }}">
+            <i class="id card icon"></i>
+            {% trans %}Personal information{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('core.account.profile_settings', edited_user=edited_user) }}">
+            <i class="tools icon"></i>
+            {% trans %}Account settings{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui clearing segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% if user.user_name == edited_user.user_name %}
+                    {% trans %}My profile{% endtrans %}
+                {% else %}
+                    {% trans %}User profile edition{% endtrans %}
+                {% endif %}
+
+            </div>
+            <div class="sub header">
+                {% if user.user_name == edited_user.user_name %}
+                    {% trans %}Edit your personal information{% endtrans %}
+                {% else %}
+                    {% trans %}Edit information about a user{% endtrans %}
+                {% endif %}
+            </div>
+        </h2>
+
+        {% call fui.render_form(profile_form) %}
+            {% if "photo" in profile_form %}
+                <div class="ui grid">
+                    <div class="three wide column">
+                        {% block photo_field scoped %}
+                            {{ profile.render_field(profile_form.photo, display=false, class="photo-field") }}
+                            {{ profile.render_field(profile_form.photo_delete, display=false, class="photo-delete-button") }}
+                            {% set photo = edited_user.photo and edited_user.photo[0] %}
+                            <label
+                                class="ui small bordered image photo-content"
+                                for="{{ profile_form.photo.id }}"
+                                title="{{ _("Click to upload a photo") }}"
+                                {% if not photo %}style="display: none;"{% endif %}>
+
+                                <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
+                                    <i class="times icon"></i>
+                                </a>
+                                <img src="{% if photo %}{{ url_for("core.account.photo", user=edited_user, field="photo") }}{% endif %}" alt="User photo">
+                            </label>
+                            <label
+                                class="ui centered photo-placeholder"
+                                for="{{ profile_form.photo.id }}"
+                                title="{{ _("Click to upload a photo") }}"
+                                {% if photo %}style="display: none;"{% endif %}>
+                                <i class="massive centered portrait icon"></i>
+                            </label>
+                            </div>
+                        {% endblock %}
+
+                        <div class="thirteen wide column">
+            {% endif %}
+
+            {% if "given_name" in profile_form or "family_name" in profile_form %}
+                <div class="equal width fields">
+                    {% if "given_name" in profile_form %}
+                        {% block given_name_field scoped %}{{ profile.render_field(profile_form.given_name, user, edited_user) }}{% endblock %}
+                    {% endif %}
+
+                    {% if "family_name" in profile_form %}
+                        {% block sn_field scoped %}{{ profile.render_field(profile_form.family_name, user, edited_user) }}{% endblock %}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if "display_name" in profile_form %}
+                {% block display_name_field scoped %}{{ profile.render_field(profile_form.display_name, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            {% if "photo" in profile_form %}</div></div>{% endif %}
+
+            {% if "emails" in profile_form and not emails_form %}
+                {% block emails_field scoped %}{{ profile.render_field(profile_form.emails, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            {% if "phone_numbers" in profile_form %}
+                {% block phone_numbers_field scoped %}{{ profile.render_field(profile_form.phone_numbers, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            {% if "formatted_address" in profile_form %}
+                {% block formatted_address_field scoped %}{{ profile.render_field(profile_form.formatted_address, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            {% if "street" in profile_form %}
+                {% block street_field scoped %}{{ profile.render_field(profile_form.street, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            <div class="equal width fields">
+                {% if "postal_code" in profile_form %}
+                    {% block postal_code_field scoped %}{{ profile.render_field(profile_form.postal_code, user, edited_user) }}{% endblock %}
+                {% endif %}
+
+                {% if "locality" in profile_form %}
+                    {% block locality_field scoped %}{{ profile.render_field(profile_form.locality, user, edited_user) }}{% endblock %}
+                {% endif %}
+
+                {% if "region" in profile_form %}
+                    {% block region_field scoped %}{{ profile.render_field(profile_form.region, user, edited_user) }}{% endblock %}
+                {% endif %}
+            </div>
+
+            <div class="equal width fields">
+
+                {% if "department" in profile_form %}
+                    {% block department_number_field scoped %}{{ profile.render_field(profile_form.department, user, edited_user) }}{% endblock %}
+                {% endif %}
+
+                {% if "employee_number" in profile_form %}
+                    {% block employee_number_field scoped %}{{ profile.render_field(profile_form.employee_number, user, edited_user) }}{% endblock %}
+                {% endif %}
+            </div>
+
+            <div class="equal width fields">
+
+                {% if "title" in profile_form %}
+                    {% block title_field scoped %}{{ profile.render_field(profile_form.title, user, edited_user) }}{% endblock %}
+                {% endif %}
+
+                {% if "organization" in profile_form %}
+                    {% block organization_field scoped %}{{ profile.render_field(profile_form.organization, user, edited_user) }}{% endblock %}
+                {% endif %}
+
+            </div>
+
+            {% if "profile_url" in profile_form %}
+                {% block profile_url_field scoped %}{{ profile.render_field(profile_form.profile_url, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            {% if "preferred_language" in profile_form %}
+                {% block preferred_language_field scoped %}{{ profile.render_field(profile_form.preferred_language, user, edited_user) }}{% endblock %}
+            {% endif %}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <button type="submit" class="ui right floated primary button" name="action" value="edit-profile" id="edit-profile">
+                        {{ _("Edit") }}
+                    </button>
+                </div>
+            </div>
+        {% endcall %}
+
+        {% if emails_form %}
+            <h2 class="ui center aligned header">
+                <div class="content">
+                    {% if user.user_name == edited_user.user_name %}
+                        {% trans %}My email addresses{% endtrans %}
+                    {% else %}
+                        {% trans %}Email addresses{% endtrans %}
+                    {% endif %}
+                </div>
+            </h2>
+
+            {% call fui.render_form(emails_form) %}
+                <div class="field fieldlist">
+                    {{ emails_form.old_emails.label() }}
+                    {% for field in emails_form.old_emails %}
+                        <div class="field">
+                            <div class="ui corner labeled left icon{% if emails_form.old_emails|len>1 %} action{% endif %} input">
+                                {{ field(readonly=True) }}
+                                {% if field.description %}
+                                    <i class="question circle link icon" title="{{ field.description }}"></i>
+                                {% endif %}
+
+                                {% if emails_form.old_emails|len > 1 %}
+                                    <button
+                                        class="ui teal icon button"
+                                        title="{{ _("Remove this email address") }}"
+                                        type="submit"
+                                        name="email_remove"
+                                        value="{{ field.data }}"
+                                        {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
+                                        hx-vals='{"email_remove": "{{ field.data }}"}'
+                                        hx-target="closest .fieldlist"
+                                        formnovalidate>
+                                        <i class="minus icon"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if emails_form.add_email_button %}
+                    {% call fui.render_field(emails_form.new_email) %}
+                        <button
+                            class="ui primary right labeled icon button"
+                            type="submit"
+                            name="action"
+                            value="add_email"
+                            title="{% trans %}Send a verification email to validate this address.{% endtrans %}"
+                            {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
+                            hx-vals='{"action": "add_email"}'
+                            hx-target="closest .fieldlist"
+                            formnovalidate
+                        >
+                            <i class="send icon"></i>
+                            {% trans %}
+                                Verify
+                            {% endtrans %}
+                        </button>
+                    {% endcall %}
+                {% endif %}
+            {% endcall %}
+        {% endif %}
+    </div>
+{% endblock %}

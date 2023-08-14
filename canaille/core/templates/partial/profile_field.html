@@ -1,0 +1,45 @@
+{% import 'macro/form.html' as fui %}
+{% macro render_field(field, user=none, edited_user=none, noindicator=false) %}
+    {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
+
+    {% if not edited_user or not user %}
+        {{ fui.render_field(
+        field,
+        user=user,
+        render_func=render_field,
+        **kwargs
+        ) }}
+    {% elif edited_user.user_name == user.user_name or lock_indicator or noindicator %}
+        {{ fui.render_field(
+        field,
+        user=user,
+        render_func=render_field,
+        **kwargs
+        ) }}
+    {% elif field.name in edited_user.write %}
+        {{ fui.render_field(
+        field,
+        user=user,
+        render_func=render_field,
+        **kwargs
+        ) }}
+    {% elif field.name in edited_user.read %}
+        {{ fui.render_field(
+        field,
+        user=user,
+        indicator_icon="eye",
+        indicator_text=_("This user cannot edit this field"),
+        render_func=render_field,
+        **kwargs
+        ) }}
+    {% else %}
+        {{ fui.render_field(
+        field,
+        user=user,
+        indicator_icon="eye slash",
+        indicator_text=_("This user cannot see this field"),
+        render_func=render_field,
+        **kwargs
+        ) }}
+    {% endif %}
+{% endmacro %}

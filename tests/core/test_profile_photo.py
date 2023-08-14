@@ -54,9 +54,10 @@ def test_photo_on_profile_edition(
 ):
     # Add a photo
     res = testclient.get("/profile/user", status=200)
-    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
-    res.form["photo_delete"] = False
-    res = res.form.submit(name="action", value="edit")
+    form = res.forms["baseform"]
+    form["photo"] = Upload("logo.jpg", jpeg_photo)
+    form["photo_delete"] = False
+    res = form.submit(name="action", value="edit-profile")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
@@ -66,8 +67,9 @@ def test_photo_on_profile_edition(
 
     # No change
     res = testclient.get("/profile/user", status=200)
-    res.form["photo_delete"] = False
-    res = res.form.submit(name="action", value="edit")
+    form = res.forms["baseform"]
+    form["photo_delete"] = False
+    res = form.submit(name="action", value="edit-profile")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
@@ -77,8 +79,9 @@ def test_photo_on_profile_edition(
 
     # Photo deletion
     res = testclient.get("/profile/user", status=200)
-    res.form["photo_delete"] = True
-    res = res.form.submit(name="action", value="edit")
+    form = res.forms["baseform"]
+    form["photo_delete"] = True
+    res = form.submit(name="action", value="edit-profile")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
@@ -88,9 +91,10 @@ def test_photo_on_profile_edition(
 
     # Photo deletion AND upload, this should never happen
     res = testclient.get("/profile/user", status=200)
-    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
-    res.form["photo_delete"] = True
-    res = res.form.submit(name="action", value="edit")
+    form = res.forms["baseform"]
+    form["photo"] = Upload("logo.jpg", jpeg_photo)
+    form["photo_delete"] = True
+    res = form.submit(name="action", value="edit-profile")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
@@ -105,11 +109,14 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
-    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
-    res.form["user_name"] = "foobar"
-    res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
-    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+    form = res.forms["baseform"]
+    form["photo"] = Upload("logo.jpg", jpeg_photo)
+    form["user_name"] = "foobar"
+    form["family_name"] = "Abitbol"
+    form["emails-0"] = "george@abitbol.com"
+    res = form.submit(name="action", value="edit-profile", status=302).follow(
+        status=200
+    )
 
     user = models.User.get_from_login("foobar")
     assert user.photo == [jpeg_photo]
@@ -122,12 +129,15 @@ def test_photo_deleted_on_profile_creation(testclient, jpeg_photo, logged_admin)
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
-    res.form["photo"] = Upload("logo.jpg", jpeg_photo)
-    res.form["photo_delete"] = True
-    res.form["user_name"] = "foobar"
-    res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
-    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+    form = res.forms["baseform"]
+    form["photo"] = Upload("logo.jpg", jpeg_photo)
+    form["photo_delete"] = True
+    form["user_name"] = "foobar"
+    form["family_name"] = "Abitbol"
+    form["emails-0"] = "george@abitbol.com"
+    res = form.submit(name="action", value="edit-profile", status=302).follow(
+        status=200
+    )
 
     user = models.User.get_from_login("foobar")
     assert user.photo == []

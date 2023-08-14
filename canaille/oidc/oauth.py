@@ -38,14 +38,14 @@ AUTHORIZATION_CODE_LIFETIME = 84400
 DEFAULT_JWT_MAPPING = {
     "SUB": "{{ user.user_name[0] }}",
     "NAME": "{% if user.formatted_name %}{{ user.formatted_name[0] }}{% endif %}",
-    "PHONE_NUMBER": "{% if user.phone_number %}{{ user.phone_number[0] }}{% endif %}",
-    "EMAIL": "{% if user.email %}{{ user.email[0] }}{% endif %}",
+    "PHONE_NUMBER": "{% if user.phone_numbers %}{{ user.phone_numbers[0] }}{% endif %}",
+    "EMAIL": "{% if user.preferred_email %}{{ user.preferred_email }}{% endif %}",
     "GIVEN_NAME": "{% if user.given_name %}{{ user.given_name[0] }}{% endif %}",
     "FAMILY_NAME": "{% if user.family_name %}{{ user.family_name[0] }}{% endif %}",
     "PREFERRED_USERNAME": "{% if user.display_name %}{{ user.display_name }}{% endif %}",
     "LOCALE": "{% if user.preferred_language %}{{ user.preferred_language }}{% endif %}",
     "ADDRESS": "{% if user.formatted_address %}{{ user.formatted_address[0] }}{% endif %}",
-    "PICTURE": "{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}",
+    "PICTURE": "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}",
     "WEBSITE": "{% if user.profile_url %}{{ user.profile_url[0] }}{% endif %}",
 }
 
@@ -67,13 +67,12 @@ def get_issuer():
 
 
 def get_jwt_config(grant):
-    with open(current_app.config["OIDC"]["JWT"]["PRIVATE_KEY"]) as pk:
-        return {
-            "key": pk.read(),
-            "alg": current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG),
-            "iss": get_issuer(),
-            "exp": current_app.config["OIDC"]["JWT"].get("EXP", DEFAULT_JWT_EXP),
-        }
+    return {
+        "key": current_app.config["OIDC"]["JWT"]["PRIVATE_KEY"],
+        "alg": current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG),
+        "iss": get_issuer(),
+        "exp": current_app.config["OIDC"]["JWT"].get("EXP", DEFAULT_JWT_EXP),
+    }
 
 
 def claims_from_scope(scope):
@@ -353,8 +352,7 @@ class ClientManagementMixin:
     def resolve_public_key(self, request):
         # At the moment the only keypair accepted in software statement
         # is the one used to isues JWTs. This might change somedays.
-        with open(current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], "rb") as fd:
-            return fd.read()
+        return current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
 
 
 class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):
@@ -437,7 +435,12 @@ def setup_oauth(app):
 
     authorization.register_grant(
         AuthorizationCodeGrant,
-        [OpenIDCode(require_nonce=True), CodeChallenge(required=True)],
+        [
+            OpenIDCode(
+                require_nonce=app.config.get("OIDC", {}).get("REQUIRE_NONCE", True)
+            ),
+            CodeChallenge(required=True),
+        ],
     )
     authorization.register_grant(OpenIDImplicitGrant)
     authorization.register_grant(OpenIDHybridGrant)

@@ -3,6 +3,80 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+Added
+*****
+
+- Configuration option to disable the forced usage of OIDC nonce :pr:`143`
+- Validate phone numbers with a regex :pr:`146`
+- Email verification :issue:`41` :pr:`147`
+
+Fixed
+*****
+
+- The `check` command uses the default configuration values.
+
+Changed
+*******
+
+- Modals do not need use javascript at the moment. :issue:`158` :pr:`144`
+
+[0.0.30] - 2023-07-06
+=====================
+
+🚨Configuration files must be updated.🚨
+Check the new format with ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``
+
+Added
+*****
+
+- Configuration option to disable javascript :pr:`141`
+
+Changed
+*******
+
+- Configuration ``USER_FILTER`` is parsed with jinja.
+- Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and ``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``
+
+[0.0.29] - 2023-06-30
+=====================
+
+Fixed
+*****
+
+- Disabled HTMX boosting on OIDC forms to avoid errors.
+
+[0.0.28] - 2023-06-30
+=====================
+
+Fixed
+*****
+
+- A template variable was misnamed.
+
+[0.0.27] - 2023-06-29
+=====================
+
+🚨Configuration files must be updated.🚨
+Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``
+
+Added
+*****
+
+- Configuration entries can be loaded from files if the entry key has a *_FILE* suffix
+  and the entry value is the path to the file. :issue:`134` :pr:`134`
+- Field list support. :issue:`115` :pr:`136`
+- Pages are boosted with HTMX :issue:`144` :issue:`145` :pr:`137`
+
+Changed
+*******
+
+- Bump to jquery 3.7.0 :pr:`138`
+
+Fixed
+*****
+
+- Profile edition when the user RDN was not ``uid`` :issue:`148` :pr:`139`
+
 Removed
 *******
 

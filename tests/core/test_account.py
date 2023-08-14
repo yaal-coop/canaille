@@ -2,22 +2,24 @@ import datetime
 from unittest import mock
 
 from canaille.app import models
+from flask import g
 
 
 def test_index(testclient, user):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
-    with testclient.session_transaction() as sess:
-        sess["user_id"] = [user.id]
+    g.user = user
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["use_oidc"]
+    g.user.reload()
     res = testclient.get("/", status=302)
     assert res.location == "/consent/"
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    g.user.reload()
     res = testclient.get("/", status=302)
     assert res.location == "/about"
 
@@ -132,7 +134,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails=["john@doe.com", "johhny@doe.com"],
     )
     u.save()
 
@@ -150,7 +152,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         "A password initialization link has been sent at your email address. "
         "You should receive it within a few minutes.",
     ) in res.flashes
-    assert len(smtpd.messages) == 1
+    assert len(smtpd.messages) == 2
     assert "Password initialization" in smtpd.messages[0].get("Subject")
     u.delete()
 
@@ -166,7 +168,7 @@ def test_first_login_account_initialization_mail_sending_failed(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 
@@ -188,7 +190,7 @@ def test_first_login_form_error(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 
@@ -210,7 +212,7 @@ def test_user_password_deleted_during_login(testclient, backend):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
         password="correct horse battery staple",
     )
     u.save()
@@ -234,7 +236,7 @@ def test_user_deleted_in_session(testclient, backend):
         formatted_name="Jake Doe",
         family_name="Jake",
         user_name="jake",
-        email="jake@doe.com",
+        emails="jake@doe.com",
         password="correct horse battery staple",
     )
     u.save()
@@ -243,33 +245,28 @@ def test_user_deleted_in_session(testclient, backend):
     with testclient.session_transaction() as session:
         session["user_id"] = [u.id]
 
-    testclient.get("/profile/jake", status=200)
     u.delete()
 
-    testclient.get("/profile/jake", status=403)
+    testclient.get("/profile/jake", status=404)
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 
 
 def test_impersonate(testclient, logged_admin, user):
-    res = (
-        testclient.get("/", status=302).follow(status=200).click("Account information")
-    )
+    res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value
 
     res = (
         testclient.get("/impersonate/user", status=302)
         .follow(status=302)
         .follow(status=200)
-        .click("Account information")
+        .click("Account settings")
     )
     assert "user" == res.form["user_name"].value
 
     testclient.get("/logout", status=302).follow(status=302).follow(status=200)
 
-    res = (
-        testclient.get("/", status=302).follow(status=200).click("Account information")
-    )
+    res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value
 
 
@@ -298,7 +295,7 @@ def test_admin_self_deletion(testclient, backend):
         formatted_name="Temp admin",
         family_name="admin",
         user_name="temp",
-        email="temp@temp.com",
+        emails="temp@temp.com",
         password="admin",
     )
     admin.save()
@@ -306,6 +303,7 @@ def test_admin_self_deletion(testclient, backend):
         sess["user_id"] = [admin.id]
 
     res = testclient.get("/profile/temp/settings")
+    res = res.form.submit(name="action", value="confirm-delete")
     res = (
         res.form.submit(name="action", value="delete", status=302)
         .follow(status=302)
@@ -323,7 +321,7 @@ def test_user_self_deletion(testclient, backend):
         formatted_name="Temp user",
         family_name="user",
         user_name="temp",
-        email="temp@temp.com",
+        emails="temp@temp.com",
         password="correct horse battery staple",
     )
     user.save()
@@ -340,6 +338,7 @@ def test_user_self_deletion(testclient, backend):
     ]
     res = testclient.get("/profile/temp/settings")
     res.mustcontain("Delete my account")
+    res = res.form.submit(name="action", value="confirm-delete")
     res = (
         res.form.submit(name="action", value="delete", status=302)
         .follow(status=302)
@@ -427,7 +426,6 @@ def test_signin_locked_account(testclient, user):
 
 
 def test_account_locked_during_session(testclient, logged_user):
-    testclient.get("/profile/user/settings", status=200)
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     logged_user.save()
     testclient.get("/profile/user/settings", status=403)

@@ -1,0 +1,138 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans %}Token details{% endtrans -%}
+{%- endblock -%}
+
+{% block script %}
+    <script src="/static/js/copy.js" defer></script>
+{% endblock %}
+
+{% block submenu %}
+    <nav class="ui bottom attached five item borderless menu">
+        <a class="item" href="{{ url_for('core.admin.mail_index') }}">
+            <i class="user mail icon"></i>
+            {% trans %}Emails{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.index') }}">
+            <i class="th list icon"></i>
+            {% trans %}Clients{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.add') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add a client{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('oidc.tokens.index') }}">
+            <i class="key icon"></i>
+            {% trans %}Tokens{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
+            <i class="user secret icon"></i>
+            {% trans %}Codes{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="loginform">
+        <h3 class="ui top attached header">
+            {% trans %}Token details{% endtrans %}
+        </h3>
+
+        <div class="ui attached clearing segment">
+            {% call fui.render_form(form, class_="token-form info") %}
+                <table class="ui celled striped table">
+                    <tr>
+                        <td>{{ _("Client") }}</td>
+                        <td>
+                            <a href="{{ url_for("oidc.clients.edit", client=token.client) }}">
+                                {{ token.client.client_name }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Subject") }}</td>
+                        <td>
+                            <a href="{{ url_for("core.account.profile_edition", edited_user=token.subject) }}">
+                                {{ token.subject.identifier }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Scope") }}</td>
+                        <td>
+                            <ul class="ui list">
+                                {% for scope in token.scope %}
+                                    <li class="item">{{ scope }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Audience") }}</td>
+                        <td>
+                            <ul class="ui list">
+                                {% for client in token.audience %}
+                                    <li class="item">
+                                        <a href="{{ url_for("oidc.clients.edit", client=client) }}">
+                                            {{ client.client_name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Issue date") }}</td>
+                        <td>{{ token.issue_date }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Expiration date") }}</td>
+                        <td>{{ token.expire_date }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Revokation date") }}</td>
+                        <td>
+                            {% if token.revokation_date %}
+                                {{ token.revokation_date }}
+                            {% else %}
+                                <button type="submit" class="ui negative right floated button confirm" name="action" value="confirm-revoke" id="confirm-revoke">
+                                    {% trans %}Revoke token{% endtrans %}
+                                </button>
+                                <p>
+                                    {% trans %}This token has not been revoked{% endtrans %}
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Token type") }}</td>
+                        <td>{{ token.type }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ _("Access token") }}</td>
+                        <td class="ui fluid action input">
+                            <input type="text" value="{{ token.access_token }}" readonly class="copy-text" id="access-token" data-copy="access-token">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="access-token">
+                                <i class="copy icon"></i>
+                                {% trans %}Copy{% endtrans %}
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>{{ _("Refresh token") }}</td>
+                        <td class="ui fluid action input">
+                            <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
+                                <i class="copy icon"></i>
+                                {% trans %}Copy{% endtrans %}
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            {% endcall %}
+        </div>
+    </div>
+{% endblock %}

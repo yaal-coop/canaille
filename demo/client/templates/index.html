@@ -11,12 +11,6 @@
         <link href="/static/css/base.css" rel="stylesheet">
         {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
         {% block style %}{% endblock %}
-
-        <!--[if lt IE 9]>
-            <script>window.html5 || document.write('<script src="/static/html5shiv/html5shiv.min.js"><\/script>')</script>
-            <script src="/static/js/respond.min.js"></script>
-        <![endif]-->
-
     </head>
 
     <body>
@@ -141,9 +135,9 @@
             </div>
         </div>
 
-        <script src="/static/jquery/jquery.min.js"></script>
-        <script src="/static/fomanticui/semantic.min.js"></script>
-        <script src="/static/js/base.js"></script>
+        <script src="/static/jquery/jquery.min.js" defer></script>
+        <script src="/static/fomanticui/semantic.min.js" defer></script>
+        <script src="/static/js/base.js" defer></script>
         {% block script %}{% endblock %}
     </body>
 </html>

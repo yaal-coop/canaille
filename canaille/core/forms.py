@@ -1,9 +1,13 @@
 import wtforms.form
 from canaille.app import models
+from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
-from canaille.app.forms import HTMXBaseForm
-from canaille.app.forms import HTMXForm
+from canaille.app.forms import Form
 from canaille.app.forms import is_uri
+from canaille.app.forms import phone_number
+from canaille.app.forms import ReadOnly
+from canaille.app.forms import set_readonly
+from canaille.app.forms import unique_values
 from canaille.app.i18n import native_language_name_from_code
 from flask import current_app
 from flask import g
@@ -25,8 +29,8 @@ def unique_login(form, field):
 
 
 def unique_email(form, field):
-    if models.User.get(email=field.data) and (
-        not getattr(form, "user", None) or form.user.email[0] != field.data
+    if models.User.get(emails=field.data) and (
+        not getattr(form, "user", None) or field.data not in form.user.emails
     ):
         raise wtforms.ValidationError(
             _("The email '{email}' is already used").format(email=field.data)
@@ -49,7 +53,7 @@ def existing_login(form, field):
         )
 
 
-class LoginForm(HTMXForm):
+class LoginForm(Form):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
@@ -62,7 +66,7 @@ class LoginForm(HTMXForm):
     )
 
 
-class PasswordForm(HTMXForm):
+class PasswordForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
@@ -73,7 +77,7 @@ class FullLoginForm(LoginForm, PasswordForm):
     pass
 
 
-class ForgottenPasswordForm(HTMXForm):
+class ForgottenPasswordForm(Form):
     login = wtforms.StringField(
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
@@ -85,7 +89,7 @@ class ForgottenPasswordForm(HTMXForm):
     )
 
 
-class PasswordResetForm(HTMXForm):
+class PasswordResetForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
@@ -106,7 +110,7 @@ class PasswordResetForm(HTMXForm):
     )
 
 
-class FirstLoginForm(HTMXForm):
+class FirstLoginForm(Form):
     pass
 
 
@@ -155,24 +159,34 @@ PROFILE_FORM_FIELDS = dict(
             "autocorrect": "off",
         },
     ),
-    email=wtforms.EmailField(
-        _("Email address"),
-        validators=[
-            wtforms.validators.DataRequired(),
-            wtforms.validators.Email(),
-            unique_email,
-        ],
-        description=_(
-            "This email will be used as a recovery address to reset the password if needed"
+    emails=wtforms.FieldList(
+        wtforms.EmailField(
+            _("Email addresses"),
+            validators=[
+                wtforms.validators.DataRequired(),
+                wtforms.validators.Email(),
+                unique_email,
+            ],
+            description=_(
+                "This email will be used as a recovery address to reset the password if needed"
+            ),
+            render_kw={
+                "placeholder": _("jane@doe.com"),
+                "spellcheck": "false",
+                "autocorrect": "off",
+            },
         ),
-        render_kw={
-            "placeholder": _("jane@doe.com"),
-            "spellcheck": "false",
-            "autocorrect": "off",
-        },
+        min_entries=1,
+        validators=[unique_values],
     ),
-    phone_number=wtforms.TelField(
-        _("Phone number"), render_kw={"placeholder": _("555-000-555")}
+    phone_numbers=wtforms.FieldList(
+        wtforms.TelField(
+            _("Phone numbers"),
+            render_kw={"placeholder": _("555-000-555")},
+            validators=[wtforms.validators.Optional(), phone_number],
+        ),
+        min_entries=1,
+        validators=[unique_values],
     ),
     formatted_address=wtforms.StringField(
         _("Address"),
@@ -270,7 +284,7 @@ PROFILE_FORM_FIELDS = dict(
 )
 
 
-def profile_form(write_field_names, readonly_field_names, user=None):
+def build_profile_form(write_field_names, readonly_field_names, user=None):
     if "password" in write_field_names:
         write_field_names |= {"password1", "password2"}
 
@@ -298,17 +312,16 @@ def profile_form(write_field_names, readonly_field_names, user=None):
             ],
         )
 
-    form = HTMXBaseForm(fields)
+    form = BaseForm(fields)
     form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
-            field.render_kw = field.render_kw or {}
-            field.render_kw["readonly"] = "true"
+            set_readonly(field)
 
     return form
 
 
-class CreateGroupForm(HTMXForm):
+class CreateGroupForm(Form):
     display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired(), unique_group],
@@ -322,10 +335,13 @@ class CreateGroupForm(HTMXForm):
     )
 
 
-class EditGroupForm(HTMXForm):
+class EditGroupForm(Form):
     display_name = wtforms.StringField(
         _("Name"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[
+            wtforms.validators.DataRequired(),
+            ReadOnly(),
+        ],
         render_kw={
             "readonly": "true",
         },
@@ -336,11 +352,11 @@ class EditGroupForm(HTMXForm):
     )
 
 
-class OnboardingForm(HTMXForm):
+class OnboardingForm(Form):
     pass
 
 
-class JoinForm(HTMXForm):
+class JoinForm(Form):
     user_name = wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
@@ -361,7 +377,7 @@ class JoinForm(HTMXForm):
     )
 
 
-class InvitationForm(HTMXForm):
+class InvitationForm(Form):
     user_name = wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
@@ -387,4 +403,35 @@ class InvitationForm(HTMXForm):
             (group.id, group.display_name) for group in models.Group.query()
         ],
         render_kw={},
+    )
+
+
+class EmailConfirmationForm(Form):
+    old_emails = wtforms.FieldList(
+        wtforms.EmailField(
+            validators=[ReadOnly()],
+            description=_(
+                "This email will be used as a recovery address to reset the password if needed"
+            ),
+            render_kw={
+                "placeholder": _("jane@doe.com"),
+                "spellcheck": "false",
+                "autocorrect": "off",
+                "readonly": "true",
+            },
+        ),
+        label=_("Email addresses"),
+    )
+    new_email = wtforms.EmailField(
+        _("New email address"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Email(),
+            unique_email,
+        ],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
     )

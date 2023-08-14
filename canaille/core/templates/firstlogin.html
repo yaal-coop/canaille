@@ -1,0 +1,35 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{% block content %}
+    <div class="loginform">
+        <h3 class="ui top attached header">
+            {% if logo_url %}
+                <img class="ui image" src="{{ logo_url }}">
+            {% endif %}
+            <div class="content">
+                {% trans %}First login{% endtrans %}
+            </div>
+        </h3>
+
+        <div class="ui attached message">
+            {% trans %}
+                It seems this is the first time you are logging here. In order to finalize your
+                account configuration, you need to set a password to your account. We will send
+                you an email containing a link that will allow you to set a password. Please click
+                on the "Send the initialization email" button below to send the email.
+            {% endtrans %}
+        </div>
+        <div class="ui attached clearing segment">
+            {% call fui.render_form(form) %}
+                <div class="ui right aligned container">
+                    <div class="ui stackable buttons">
+
+                        <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
+                        <button type="submit" name="action" value="sendmail" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
+                    </div>
+                </div>
+            {% endcall %}
+        </div>
+    </div>
+{% endblock %}

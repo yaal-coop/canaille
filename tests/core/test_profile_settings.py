@@ -2,6 +2,7 @@ import datetime
 from unittest import mock
 
 from canaille.app import models
+from flask import g
 
 
 def test_edition(
@@ -19,14 +20,12 @@ def test_edition(
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
-    assert res.form["groups"].attrs["readonly"]
-    assert res.form["user_name"].attrs["readonly"]
+    assert "readonly" in res.form["groups"].attrs
+    assert "readonly" in res.form["user_name"].attrs
 
     res.form["user_name"] = "toto"
-    res = res.form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "Profile updated successfully.")]
-    res = res.follow()
-
+    res = res.form.submit(name="action", value="edit-settings")
+    assert res.flashes == [("error", "Profile edition failed.")]
     logged_user.reload()
 
     assert logged_user.user_name == ["user"]
@@ -67,7 +66,7 @@ def test_edition_without_groups(
     res = testclient.get("/profile/user/settings", status=200)
     testclient.app.config["ACL"]["DEFAULT"]["READ"] = []
 
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
@@ -86,7 +85,7 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "new_password"
 
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit-settings").follow()
 
     logged_user.reload()
     assert logged_user.check_password("new_password")[0]
@@ -96,7 +95,7 @@ def test_password_change(testclient, logged_user):
     res.form["password1"] = "correct horse battery staple"
     res.form["password2"] = "correct horse battery staple"
 
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
@@ -110,7 +109,7 @@ def test_password_change_fail(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = "other_password"
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit-settings", status=200)
 
     logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")[0]
@@ -120,7 +119,7 @@ def test_password_change_fail(testclient, logged_user):
     res.form["password1"] = "new_password"
     res.form["password2"] = ""
 
-    res = res.form.submit(name="action", value="edit", status=200)
+    res = res.form.submit(name="action", value="edit-settings", status=200)
 
     logged_user.reload()
     assert logged_user.check_password("correct horse battery staple")[0]
@@ -131,7 +130,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 
@@ -167,7 +166,7 @@ def test_password_initialization_mail_send_fail(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
     )
     u.save()
 
@@ -237,7 +236,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
         password="correct horse battery staple",
     )
     u.save()
@@ -265,7 +264,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        email="john@doe.com",
+        emails="john@doe.com",
         password=["correct horse battery staple"],
     )
     u.save()
@@ -299,9 +298,10 @@ def test_edition_permission(
     admin,
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    testclient.get("/profile/user/settings", status=403)
+    testclient.get("/profile/user/settings", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    g.user.reload()
     testclient.get("/profile/user/settings", status=200)
 
 
@@ -317,6 +317,7 @@ def test_account_locking(
     res.mustcontain("Lock the account")
     res.mustcontain(no="Unlock")
 
+    res = res.form.submit(name="action", value="confirm-lock")
     res = res.form.submit(name="action", value="lock")
     user = models.User.get(id=user.id)
     assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
@@ -329,7 +330,7 @@ def test_account_locking(
     user = models.User.get(id=user.id)
     assert not user.lock_date
     assert not user.locked
-    assert "The account has been unlocked"
+    res.mustcontain("The account has been unlocked")
     res.mustcontain("Lock the account")
     res.mustcontain(no="Unlock")
 
@@ -348,7 +349,7 @@ def test_past_lock_date(
         second=0, microsecond=0
     ) - datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
@@ -371,7 +372,7 @@ def test_future_lock_date(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
@@ -395,7 +396,7 @@ def test_empty_lock_date(
 
     res = testclient.get("/profile/user/settings", status=200)
     res.form["lock_date"] = ""
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
@@ -417,7 +418,7 @@ def test_account_limit_values(
         microsecond=0, tzinfo=datetime.timezone.utc
     )
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()

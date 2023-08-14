@@ -1,0 +1,116 @@
+{% extends theme('base.html') %}
+
+{%- block title -%}
+    {%- trans %}My consents{% endtrans -%}
+{%- endblock -%}
+
+{% block submenu %}
+    <nav class="ui bottom attached two item borderless menu">
+        <a class="active item" href="{{ url_for('oidc.consents.consents') }}">
+            <i class="handshake icon"></i>
+            {% trans %}My consents{% endtrans %}
+            {% if nb_consents %}<div class="ui mini label">{{ nb_consents }}</div>{% endif %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.consents.pre_consents') }}">
+            <i class="stamp icon"></i>
+            {% trans %}Pre-authorized applications{% endtrans %}
+            {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents }}</div>{% endif %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui bottom attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("My consents") }}
+            </div>
+            <div class="sub header">
+                {% trans %}Consult and revoke the authorization you gave to websites.{% endtrans %}
+            </div>
+        </h2>
+
+        {% if consents %}
+            <div class="ui centered cards">
+                {% for consent in consents %}
+                    <div class="ui card">
+                        <div class="content">
+                            {% if consent.client.logo_uri %}
+                                <img class="right floated mini ui image" src="{{ consent.client.logo_uri }}">
+                            {% endif %}
+                            {% if consent.client.client_uri %}
+                                <a href="{{ consent.client.client_uri }}" class="header">{{ consent.client.client_name }}</a>
+                            {% else %}
+                                <div class="header">{{ consent.client.client_name }}</div>
+                            {% endif %}
+                            {% if consent.issue_date %}
+                                <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                            {% endif %}
+                            {% if consent.revokation_date %}
+                                <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                            {% endif %}
+                            <div class="description">
+                                <p>
+                                    {% if consent.revokation_date %}
+                                        {% trans %}Had access to:{% endtrans %}
+                                    {% else %}
+                                        {% trans %}Has access to:{% endtrans %}
+                                    {% endif %}
+                                </p>
+                                <div class="ui list">
+                                    {% for scope in consent.scope %}
+                                        {% if scope not in ignored_scopes %}
+                                            {% if scope not in scope_details %}
+                                                <div class="item" title="{{ scope }}">{{ scope }}</div>
+                                            {% else %}
+                                                <div class="item" title="{{ scope }}">
+                                                    <i class="{{ scope_details[scope][0] }} icon"></i>
+                                                    <div class="content">{{ scope_details[scope][1] }}</div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if consent.client.policy_uri %}
+                            <div class="extra content">
+                                <span>
+                                    <i class="mask icon"></i>
+                                    <a href="{{ consent.client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                        {% if consent.client.tos_uri %}
+                            <div class="extra content">
+                                <span>
+                                    <i class="file signature icon"></i>
+                                    <a href="{{ consent.client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
+                                </span>
+                            </div>
+                        {% endif %}
+                        {% if consent.revokation_date %}
+                            <a class="ui bottom attached button" href="{{ url_for('oidc.consents.restore', consent=consent ) }}">
+                                <i class="reply icon"></i>
+                                {% trans %}Restore access{% endtrans %}
+                            </a>
+                        {% else %}
+                            <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke', consent=consent ) }}">
+                                <i class="remove icon"></i>
+                                {% trans %}Revoke access{% endtrans %}
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="ui center aligned">
+                <div class="ui center aligned message">
+                    <div class="content">
+                        <p>{% trans %}You did not authorize applications yet.{% endtrans %}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

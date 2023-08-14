@@ -14,14 +14,14 @@ def test_user_creation_edition_and_deletion(
     res.form["user_name"] = "george"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
-    res.form["phone_number"] = "555-666-888"
+    res.form["emails-0"] = "george@abitbol.com"
+    res.form["phone_numbers-0"] = "555-666-888"
     res.form["groups"] = [foo_group.id]
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
 
     # User have been created
-    res = res.form.submit(name="action", value="edit", status=302)
+    res = res.form.submit(name="action", value="create-profile", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
     george = models.User.get_from_login("george")
@@ -39,11 +39,11 @@ def test_user_creation_edition_and_deletion(
     # User have been edited
     res = testclient.get("/profile/george", status=200)
     res.form["given_name"] = "Georgio"
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit-profile").follow()
 
     res = testclient.get("/profile/george/settings", status=200)
     res.form["groups"] = [foo_group.id, bar_group.id]
-    res = res.form.submit(name="action", value="edit").follow()
+    res = res.form.submit(name="action", value="edit-settings").follow()
 
     george = models.User.get_from_login("george")
     assert "Georgio" == george.given_name[0]
@@ -59,7 +59,9 @@ def test_user_creation_edition_and_deletion(
 
     # User have been deleted.
     res = testclient.get("/profile/george/settings", status=200)
-    res = res.form.submit(name="action", value="delete", status=302).follow(status=200)
+    res = res.form.submit(name="action", value="confirm-delete", status=200)
+    res = res.form.submit(name="action", value="delete", status=302)
+    res = res.follow(status=200)
     assert models.User.get_from_login("george") is None
     res.mustcontain(no="george")
 
@@ -70,11 +72,11 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
         "/profile",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.com",
+            "emails-0": "john@doe.com",
         },
         headers={
             "HX-Request": "true",
-            "HX-Trigger-Name": "email",
+            "HX-Trigger-Name": "emails-0",
         },
     )
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
@@ -84,9 +86,9 @@ def test_user_creation_without_password(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails-0"] = "george@abitbol.com"
 
-    res = res.form.submit(name="action", value="edit", status=302)
+    res = res.form.submit(name="action", value="create-profile", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
     george = models.User.get_from_login("george")
@@ -104,7 +106,7 @@ def test_user_creation_form_validation_failed(
     res.mustcontain(no="george")
 
     res = testclient.get("/profile", status=200)
-    res = res.form.submit(name="action", value="edit")
+    res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
     assert models.User.get_from_login("george") is None
 
@@ -115,8 +117,8 @@ def test_username_already_taken(
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "user"
     res.form["family_name"] = "foo"
-    res.form["email"] = "any@thing.com"
-    res = res.form.submit(name="action", value="edit")
+    res.form["emails-0"] = "any@thing.com"
+    res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
     res.mustcontain("The login &#39;user&#39; already exists")
 
@@ -125,8 +127,8 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "user2"
     res.form["family_name"] = "foo"
-    res.form["email"] = "john@doe.com"
-    res = res.form.submit(name="action", value="edit")
+    res.form["emails-0"] = "john@doe.com"
+    res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
 
@@ -136,9 +138,11 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     res.form["user_name"] = "george"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails-0"] = "george@abitbol.com"
 
-    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+    res = res.form.submit(name="action", value="create-profile", status=302).follow(
+        status=200
+    )
 
     george = models.User.get_from_login("george")
     assert george.formatted_name[0] == "George Abitbol"
@@ -149,10 +153,40 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["family_name"] = "Abitbol"
-    res.form["email"] = "george@abitbol.com"
+    res.form["emails-0"] = "george@abitbol.com"
 
-    res = res.form.submit(name="action", value="edit", status=302).follow(status=200)
+    res = res.form.submit(name="action", value="create-profile", status=302).follow(
+        status=200
+    )
 
     george = models.User.get_from_login("george")
     assert george.formatted_name[0] == "Abitbol"
     george.delete()
+
+
+def test_formcontrol(testclient, logged_admin):
+    res = testclient.get("/profile")
+    assert "emails-1" not in res.form.fields
+
+    res = res.form.submit(status=200, name="fieldlist_add", value="emails-0")
+    assert "emails-1" in res.form.fields
+
+
+def test_formcontrol_htmx(testclient, logged_admin):
+    res = testclient.get("/profile")
+    data = {
+        field: res.form[field].value
+        for field in res.form.fields
+        if len(res.form.fields.get(field)) == 1
+    }
+    data["fieldlist_add"] = "emails-0"
+    response = testclient.post(
+        "/profile",
+        data,
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "listfield_add",
+        },
+    )
+    assert "emails-0" in response.text
+    assert "emails-1" in response.text

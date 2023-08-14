@@ -1,17 +1,15 @@
 import os
-import subprocess
 
 
 def create_mo_files(setup_kwargs):
-    print("Compile translations:")
-    subprocess.run(
-        [
-            "pybabel",
-            "compile",
-            "--directory",
-            os.path.dirname(__file__) + "/canaille/translations",
-        ]
-    )
+    from babel.messages.frontend import compile_catalog
+
+    cmd = compile_catalog()
+    cmd.directory = os.path.dirname(__file__) + "/canaille/translations"
+    cmd.quiet = True
+    cmd.statistics = True
+    cmd.finalize_options()
+    cmd.run()
     return setup_kwargs
 
 

@@ -30,7 +30,7 @@ def consents(user):
     )
 
     return render_template(
-        "oidc/user/consent_list.html",
+        "consent_list.html",
         consents=consents,
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
@@ -55,7 +55,7 @@ def pre_consents(user):
     nb_preconsents = len(preconsented)
 
     return render_template(
-        "oidc/user/preconsent_list.html",
+        "preconsent_list.html",
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
         ignored_scopes=["openid"],
@@ -65,11 +65,9 @@ def pre_consents(user):
     )
 
 
-@bp.route("/revoke/<consent_id>")
+@bp.route("/revoke/<consent(required=False):consent>")
 @user_needed()
-def revoke(user, consent_id):
-    consent = models.Consent.get(consent_id=consent_id)
-
+def revoke(user, consent):
     if not consent or consent.subject != user:
         flash(_("Could not revoke this access"), "error")
 
@@ -83,11 +81,9 @@ def revoke(user, consent_id):
     return redirect(url_for("oidc.consents.consents"))
 
 
-@bp.route("/restore/<consent_id>")
+@bp.route("/restore/<consent(required=False):consent>")
 @user_needed()
-def restore(user, consent_id):
-    consent = models.Consent.get(consent_id=consent_id)
-
+def restore(user, consent):
     if not consent or consent.subject != user:
         flash(_("Could not restore this access"), "error")
 
@@ -104,20 +100,16 @@ def restore(user, consent_id):
     return redirect(url_for("oidc.consents.consents"))
 
 
-@bp.route("/revoke-preconsent/<client_id>")
+@bp.route("/revoke-preconsent/<client(required=False):client>")
 @user_needed()
-def revoke_preconsent(user, client_id):
-    client = models.Client.get(client_id=client_id)
-
+def revoke_preconsent(user, client):
     if not client or not client.preconsent:
         flash(_("Could not revoke this access"), "error")
         return redirect(url_for("oidc.consents.consents"))
 
     consent = models.Consent.get(client=client, subject=user)
     if consent:
-        return redirect(
-            url_for("oidc.consents.revoke", consent_id=consent.consent_id[0])
-        )
+        return redirect(url_for("oidc.consents.revoke", consent=consent))
 
     consent = models.Consent(
         consent_id=str(uuid.uuid4()),

@@ -24,6 +24,7 @@ def with_backendcontext(func):
 
 @click.command()
 @with_appcontext
+@with_backendcontext
 def check():
     """
     Check the configuration file.

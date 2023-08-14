@@ -100,6 +100,38 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     background: rgba(0,0,0,.05) !important;
 }
 
+/**
+ * Workaround for
+ * https://github.com/fomantic/Fomantic-UI/issues/2829
+ */
+.ui.corner.labeled.action.input .ui.corner.label {
+    right:40px;
+    z-index: 5;
+}
+
+.ui.corner.labeled.action.input .ui.button {
+    z-index: 99;
+}
+
+/* NO JS */
+
+select.ui.multiple.dropdown {
+    height: auto;
+    max-height: 300px;
+}
+
+select.ui.multiple.dropdown option[selected] {
+    background-color: #F4F4F4;
+    font-weight: 700;
+    border: 0 solid transparent;
+    border-radius: .28571429rem;
+    padding: .35714286em .78571429em;
+    margin: .14285714rem .28571429rem .14285714rem 0;
+    box-shadow: 0 0 0 1px rgba(34,36,38,.15) inset;
+}
+
+/* MEDIA QUERIES */
+
 @media (prefers-color-scheme: dark) {
     .logo img {
         filter: invert(.8) !important;

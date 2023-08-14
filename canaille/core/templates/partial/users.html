@@ -1,0 +1,94 @@
+{% import "macro/table.html" as table %}
+<table class="ui bottom attached table users">
+    <thead>
+        <tr>
+            {% if user.can_read("photo") %}
+                <th></th>
+            {% endif %}
+            {% if user.can_read("user_name") %}
+                <th>{% trans %}Login{% endtrans %}</th>
+            {% endif %}
+            {% if user.can_read("family_name") or user.can_read("given_name") %}
+                <th>{% trans %}Name{% endtrans %}</th>
+            {% endif %}
+            {% if user.can_read("emails") %}
+                <th>{% trans %}Email{% endtrans %}</th>
+            {% endif %}
+            {% if user.can_manage_groups %}
+                <th>{% trans %}Groups{% endtrans %}</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for watched_user in table_form.items_slice %}
+            <tr>
+                {% if user.can_read("photo") %}
+                    <td>
+                        <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
+                            {% if user.can_manage_users and watched_user.locked %}
+                                <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>
+                            {% elif watched_user.photo and watched_user.photo[0] %}
+                                <img class="ui avatar image" src="{{ url_for("core.account.photo", user=watched_user, field="photo") }}" alt="User photo">
+                            {% else %}
+                                <i class="user circle big black icon"></i>
+                            {% endif %}
+                        </a>
+                    </td>
+                {% endif %}
+                {% if user.can_read("user_name") %}
+                    <td>
+                        <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
+                            {% if watched_user.user_name %}
+                                {{ watched_user.user_name[0] }}
+                            {% else %}
+                                {{ watched_user.identifier }}
+                            {% endif %}
+                        </a>
+                    </td>
+                {% endif %}
+                {% if user.can_read("family_name") or user.can_read("given_name") %}
+                    <td>{{ watched_user.formatted_name[0] }}</td>
+                {% endif %}
+                {% if user.can_read("emails") %}
+                    <td><a href="mailto:{{ watched_user.preferred_email }}">{{ watched_user.preferred_email }}</a></td>
+                {% endif %}
+                {% if user.can_manage_groups %}
+                    <td>
+                        {% for group in watched_user.groups %}
+                            <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
+                                {{ group.display_name }}
+                            </a>
+                        {% endfor %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">
+                    <div class="ui icon message">
+                        <i class="exclamation icon"></i>
+                        <div class="content">
+                            {% if request.headers.get("Hx-Request") %}
+                                <div class="header">
+                                    {% trans %}No item matches your request{% endtrans %}
+                                </div>
+                                <p>{% trans %}Maybe try with different criterias?{% endtrans %}</p>
+                            {% else %}
+                                <div class="header">
+                                    {% trans %}There is nothing here{% endtrans %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="5">
+                {{ table.pagination(table_form) }}
+            </th>
+        </tr>
+    </tfoot>
+</table>

@@ -48,21 +48,16 @@ def create_group(user):
                 ),
                 "success",
             )
-            return redirect(url_for("groups.group", groupname=group.display_name))
+            return redirect(url_for("core.groups.group", group=group))
 
     return render_template(
         "group.html", menuitem="groups", form=form, edited_group=None, members=None
     )
 
 
-@bp.route("/<groupname>", methods=("GET", "POST"))
+@bp.route("/<group:group>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
-def group(user, groupname):
-    group = models.Group.get(display_name=groupname)
-
-    if not group:
-        abort(404)
-
+def group(user, group):
     if (
         request.method == "GET"
         or request.form.get("action") == "edit"
@@ -70,10 +65,13 @@ def group(user, groupname):
     ):
         return edit_group(group)
 
+    if request.form.get("action") == "confirm-delete":
+        return render_template("modals/delete-group.html", group=group)
+
     if request.form.get("action") == "delete":
         return delete_group(group)
 
-    abort(400)
+    abort(400, f"bad form action: {request.form.get('action')}")
 
 
 def edit_group(group):
@@ -100,7 +98,7 @@ def edit_group(group):
                 ),
                 "success",
             )
-            return redirect(url_for("groups.group", groupname=group.display_name))
+            return redirect(url_for("core.groups.group", group=group))
         else:
             flash(_("Group edition failed."), "error")
 
@@ -120,4 +118,4 @@ def delete_group(group):
         "success",
     )
     group.delete()
-    return redirect(url_for("groups.groups"))
+    return redirect(url_for("core.groups.groups"))

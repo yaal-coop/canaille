@@ -1,29 +1,14 @@
-import os
-
-import pytest
-from canaille import create_app
-from canaille.commands import cli
-from flask_webtest import TestApp
+from canaille.oidc.installation import install
 
 
-@pytest.fixture
-def configuration(ldap_configuration):
-    yield ldap_configuration
+def test_install_keypair(configuration):
+    del configuration["OIDC"]["JWT"]["PRIVATE_KEY"]
+    del configuration["OIDC"]["JWT"]["PUBLIC_KEY"]
 
+    install(configuration, debug=False)
+    assert "PRIVATE_KEY" not in configuration["OIDC"]["JWT"]
+    assert "PUBLIC_KEY" not in configuration["OIDC"]["JWT"]
 
-def test_install_keypair(configuration, tmpdir):
-    keys_dir = os.path.join(tmpdir, "keys")
-    os.makedirs(keys_dir)
-    configuration["OIDC"]["JWT"]["PRIVATE_KEY"] = os.path.join(keys_dir, "private.pem")
-    configuration["OIDC"]["JWT"]["PUBLIC_KEY"] = os.path.join(keys_dir, "public.pem")
-
-    assert not os.path.exists(configuration["OIDC"]["JWT"]["PRIVATE_KEY"])
-    assert not os.path.exists(configuration["OIDC"]["JWT"]["PUBLIC_KEY"])
-
-    testclient = TestApp(create_app(configuration, validate=False))
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["install"])
-    assert res.exit_code == 0, res.stdout
-
-    assert os.path.exists(configuration["OIDC"]["JWT"]["PRIVATE_KEY"])
-    assert os.path.exists(configuration["OIDC"]["JWT"]["PUBLIC_KEY"])
+    install(configuration, debug=True)
+    assert configuration["OIDC"]["JWT"]["PRIVATE_KEY"]
+    assert configuration["OIDC"]["JWT"]["PUBLIC_KEY"]

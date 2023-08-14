@@ -1,0 +1,52 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{% block content %}
+    <div class="ui segment" hx-boost="false">
+        {% if client.logo_uri %}
+            <img class="ui centered tiny image" src="{{ client.logo_uri }}" alt="{{ client.client_name }}">
+        {% endif %}
+
+        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.client_name) }}</h2>
+
+        <div class="ui divided items">
+            {% for scope in grant.request.scope.split(" ") %}
+                {% if scope not in ignored_scopes %}
+                    <div class="item">
+                        {% if scope in scope_details %}
+                            <div>
+                                <i class="{{ scope_details[scope][0] }} large icon"></i>
+                                {{ scope_details[scope][1] }}
+                            </div>
+                        {% else %}
+                            <div class="ui tiny image">
+                                <i class="huge user icon"></i>
+                                {{ scope }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="ui center aligned container">
+            {{ gettext('You are logged in as %(name)s', name=user.formatted_name[0]) }}
+        </div>
+
+        <div class="ui center aligned container">
+            {% call fui.render_form(form) %}
+                <div class="ui stackable buttons">
+                    <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
+                        {% trans %}Deny{% endtrans %}
+                    </button>
+                    <button name="answer" type="submit" class="ui button" value="logout" id="logout">
+                        {% trans %}Switch user{% endtrans %}
+                    </button>
+                    <button name="answer" type="submit" class="ui primary button" value="accept" id="accept">
+                        {% trans %}Accept{% endtrans %}
+                    </button>
+                </div>
+            {% endcall %}
+        </div>
+    </div>
+{% endblock %}

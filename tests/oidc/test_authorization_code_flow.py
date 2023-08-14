@@ -7,6 +7,7 @@ from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from canaille.app import models
 from canaille.oidc.oauth import setup_oauth
+from flask import g
 from werkzeug.security import gen_salt
 
 from . import client_credentials
@@ -234,6 +235,7 @@ def test_logout_login(testclient, logged_user, client):
     )
 
     res = res.form.submit(name="answer", value="logout", status=302)
+    g.user = None
     res = res.follow(status=200)
 
     res.form["login"] = logged_user.user_name[0]
@@ -814,7 +816,7 @@ def test_code_with_invalid_user(testclient, admin, client):
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
-        email="temp@temp.com",
+        emails="temp@temp.com",
         password="correct horse battery staple",
     )
     user.save()
@@ -862,7 +864,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
-        email="temp@temp.com",
+        emails="temp@temp.com",
         password="correct horse battery staple",
     )
     user.save()

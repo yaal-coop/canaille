@@ -1,0 +1,88 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+{% import "macro/table.html" as table %}
+
+{%- block title -%}
+    {% if not edited_group %}
+        {%- trans %}Group creation{% endtrans -%}
+    {% else %}
+        {%- trans %}Group edition{% endtrans -%}
+    {% endif %}
+{%- endblock -%}
+
+{% block submenu %}
+    <nav class="ui bottom attached two item borderless menu">
+        <a class="{% if edited_group %}active {% endif %}item" href="{{ url_for('core.groups.groups') }}">
+            <i class="th list icon"></i>
+            {% trans %}View{% endtrans %}
+        </a>
+        <a class="{% if not edited_group %}active {% endif %}item"  href="{{ url_for('core.groups.create_group') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui clearing segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% if not edited_group %}
+                    {% trans %}Group creation{% endtrans %}
+                {% else %}
+                    {% trans %}Group edition{% endtrans %}
+                {% endif %}
+            </div>
+
+            <div class="sub header">
+                {% if not edited_group %}
+                    {% trans %}Create a new group{% endtrans %}
+                {% else %}
+                    {% trans %}Edit information about a group{% endtrans %}
+                {% endif %}
+            </div>
+        </h2>
+
+        {% call fui.render_form(form) %}
+            {{ fui.render_field(form.display_name) }}
+            {{ fui.render_field(form.description) }}
+
+            {% if not edited_group %}
+                <div class="ui info visible message">
+                    {% trans %}Because group cannot be empty, you will be added to the group. You can remove you later by editing your profile when you will have added other members to the group.{% endtrans %}
+                </div>
+            {% endif %}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    {% if edited_group %}
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-delete" id="confirm-delete">
+                            {% trans %}Delete group{% endtrans %}
+                        </button>
+                    {% endif %}
+                    <button type="submit" class="ui right floated primary button" name="action" value="edit">
+                        {% if not edited_group %}
+                            {% trans %}Create group{% endtrans %}
+                        {% else %}
+                            {% trans %}Edit{% endtrans %}
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+
+    {% if edited_group %}
+        <div class="ui top attached segment">
+            <h2 class="ui center aligned header">
+                <div class="content">
+                    {% trans %}Group members{% endtrans %}
+                </div>
+            </h2>
+
+            {{ table.search(table_form, "table.users") }}
+        </div>
+        {% include "partial/users.html" %}
+    {% endif %}
+
+{% endblock %}

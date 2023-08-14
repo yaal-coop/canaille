@@ -1,4 +1,4 @@
-{% macro render_field(
+{% macro render_input(
 field,
 label_visible=true,
 icon=none,
@@ -6,15 +6,28 @@ container=true,
 noindicator=false,
 indicator_icon=none,
 indicator_text=none,
-display=true
+display=true,
+add_button=false,
+del_button=false
 ) -%}
 {% set field_visible = field.type != 'HiddenField' and field.type !='CSRFTokenField' %}
+{% set disabled = kwargs.get("disabled") or (field.render_kw and "disabled" in field.render_kw) %}
+{% set readonly = kwargs.get("readonly") or (field.render_kw and "readonly" in field.render_kw) %}
+{% set required = "required" in field.flags %}
+{% set lock_indicator = readonly or disabled %}
+{% set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required) %}
+{% set inline_validation = field.validators and field.type not in ("FileField", "MultipleFileField") %}
+{% if inline_validation %}
+    {% set ignore_me = kwargs.update({"hx-post": ""}) %}
+    {% set ignore_me = kwargs.update({"hx-indicator": "closest .input"}) %}
+{% endif %}
+
 {% if container and field_visible %}
     <div class="field {{ kwargs.pop('class_', '') }}
                 {%- if field.errors %} error{% endif -%}
-                {%- if field.render_kw and "disabled" in field.render_kw %} disabled{% endif -%}"
+                {%- if disabled %} disabled{% endif -%}"
          {% if not display %}style="display: none"{% endif %}
-         {% if field.validators and field.type not in ("FileField", "MultipleFileField") %}hx-target="this" hx-swap="outerHTML"{% endif %}
+         {% if inline_validation %}hx-target="this" hx-swap="outerHTML"{% endif %}
     >
 {% endif %}
 
@@ -22,17 +35,11 @@ display=true
     {{ field.label() }}
 {% endif %}
 
-{% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
-{% set required_indicator = "required" in field.flags %}
-{% set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required_indicator) %}
-{% if field.validators and field.type not in ("FileField", "MultipleFileField") %}
-    {% set ignore_me = kwargs.update({"hx-post": ""}) %}
-    {% set ignore_me = kwargs.update({"hx-indicator": "closest .input"}) %}
-{% endif %}
 {% if field_visible %}
     <div class="ui
                 {%- if corner_indicator %} corner labeled{% endif -%}
                 {%- if icon or field.description %} left icon{% endif -%}
+                {%- if field_visible and ((add_button or del_button) and not readonly and not disabled) or caller is defined %} action{% endif -%}
                 {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
 {% endif %}
@@ -41,11 +48,11 @@ display=true
 
 {% if field.type not in ("SelectField", "SelectMultipleField") %}
     {{ field(**kwargs) }}
-{% elif field.type == "SelectMultipleField" and field.render_kw and "readonly" in field.render_kw %}
+{% elif field.type == "SelectMultipleField" and readonly %}
     {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
 {% elif field.type == "SelectMultipleField" %}
     {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
-{% elif field.type == "SelectField" and field.render_kw and "readonly" in field.render_kw %}
+{% elif field.type == "SelectField" and readonly %}
     {{ field(class_="ui fluid dropdown read-only", **kwargs) }}
 {% elif field.type == "SelectField" %}
     {{ field(class_="ui fluid dropdown", **kwargs) }}
@@ -60,13 +67,46 @@ display=true
         <div class="ui corner label" title="{{ _("This field is not editable") }}">
             <i class="lock icon"></i>
         </div>
-    {% elif required_indicator %}
+    {% elif required %}
         <div class="ui corner label" title="{{ _("This field is required") }}">
             <i class="asterisk icon"></i>
         </div>
     {% endif %}
 {% endif %}
+
 {% if field_visible %}
+    {% if caller is defined %}
+        {{ caller() }}
+    {% else %}
+        {% if del_button %}
+            <button
+                class="ui teal icon button"
+                title="{{ _("Remove this field") }}"
+                type="submit"
+                name="fieldlist_remove"
+                value="{{ field.name }}"
+            {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
+                hx-vals='{"fieldlist_remove": "{{ field.name }}"}'
+                hx-target="closest .fieldlist"
+                formnovalidate>
+                <i class="minus icon"></i>
+            </button>
+        {% endif %}
+        {% if add_button and not readonly and not disabled %}
+            <button
+                class="ui teal icon button"
+                title="{{ _("Add another field") }}"
+                type="submit"
+                name="fieldlist_add"
+                value="{{ field.name }}"
+                {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
+                hx-vals='{"fieldlist_add": "{{ field.name }}"}'
+                hx-target="closest .fieldlist"
+                formnovalidate>
+                <i class="plus icon"></i>
+            </button>
+        {% endif %}
+    {% endif %}
     </div>
 {% endif %}
 
@@ -86,16 +126,48 @@ display=true
 
 {% macro render_fields(form) %}
     {% for field in form %}
-        {% if field.type == "BooleanField" %}
-            {{ render_checkbox(field) }}
-        {% else %}
-            {{ render_field(field) }}
-        {% endif %}
+        {{ render_field(field) }}
     {% endfor %}
 {% endmacro %}
 
-{% macro render_checkbox(field) -%}
-    <div class="field">
+{% macro render_field(field, parent_list=none, parent_indice=none) -%}
+    {% if parent_list %}
+        {% set last = parent_indice >= parent_list.entries|len -1 %}
+        {% set ignore_me = kwargs.update({
+        "label_visible": false,
+        "add_button": (last and (not parent_list.max_entries or parent_indice < parent_list.max_entries)),
+        "del_button": (last and parent_list.min_entries and parent_indice >= parent_list.min_entries),
+        }) %}
+    {% endif %}
+    {% if field.type == "FieldList" %}
+        {{ render_list(field, **kwargs) }}
+    {% elif field.type == "BooleanField" %}
+        {{ render_checkbox(field, **kwargs) }}
+    {% else %}
+        {{ render_input(field, **kwargs) }}
+    {% endif %}
+{%- endmacro %}
+
+{% macro render_list(field, render_func=none) -%}
+    <div class="field fieldlist" id="{{ field.name }}">
+        {# Strangely enough, translations are not rendered when using field.label() #}
+        {{ field[0].label() }}
+        {% for subfield in field %}
+            {% set ignore_me = kwargs.update(**field.render_kw or {}) %}
+            {{ (render_func or render_field)(
+            subfield,
+            parent_list=field,
+            parent_indice=loop.index0,
+            **kwargs
+            ) }}
+        {% endfor %}
+    </div>
+{%- endmacro %}
+
+{% macro render_checkbox(field, display=true) -%}
+    <div class="field"
+         {% if not display %}style="display: none"{% endif %}
+    >
         <div class="ui toggle checkbox">
             {{ field(**kwargs) }}
             {{ field.label() }}
@@ -113,12 +185,12 @@ id=none,
 csrf=true) -%}
 <form method="POST"
       id="{{ id or form.__class__.__name__|lower }}"
-      action="{{ action or form.action }}"
+      action="{% if action %}{{ action }}{% elif form.action is defined %}{{ form.action }}{% endif %}"
       role="form"
       enctype="multipart/form-data"
       class="ui form {{ class_ }}"
 >
-    {% if caller %}
+    {% if caller is defined %}
         {% if csrf %}
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         {% endif %}

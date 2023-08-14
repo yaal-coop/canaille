@@ -36,6 +36,7 @@ Table of contents
    install
    backends
    configuration
+   troubleshooting
    contributing
    specifications
    changelog

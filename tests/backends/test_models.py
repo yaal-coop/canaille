@@ -62,29 +62,29 @@ def test_model_attribute_edition(testclient, backend):
         family_name="family_name",
         formatted_name="formatted_name",
         display_name="display_name",
-        email=["email1@user.com", "email2@user.com"],
+        emails=["email1@user.com", "email2@user.com"],
     )
     user.save()
 
     assert user.user_name == ["user_name"]
     assert user.family_name == ["family_name"]
-    assert user.email == ["email1@user.com", "email2@user.com"]
+    assert user.emails == ["email1@user.com", "email2@user.com"]
 
     user = models.User.get(id=user.id)
     assert user.user_name == ["user_name"]
     assert user.family_name == ["family_name"]
-    assert user.email == ["email1@user.com", "email2@user.com"]
+    assert user.emails == ["email1@user.com", "email2@user.com"]
 
     user.family_name = ["new_family_name"]
-    user.email = ["email1@user.com"]
+    user.emails = ["email1@user.com"]
     user.save()
 
     assert user.family_name == ["new_family_name"]
-    assert user.email == ["email1@user.com"]
+    assert user.emails == ["email1@user.com"]
 
     user = models.User.get(id=user.id)
     assert user.family_name == ["new_family_name"]
-    assert user.email == ["email1@user.com"]
+    assert user.emails == ["email1@user.com"]
 
     user.display_name = [""]
     user.save()
@@ -99,40 +99,40 @@ def test_model_indexation(testclient, backend):
         user_name="user_name",
         family_name="family_name",
         formatted_name="formatted_name",
-        email=["email1@user.com", "email2@user.com"],
+        emails=["email1@user.com", "email2@user.com"],
     )
     user.save()
 
     assert models.User.get(family_name="family_name") == user
     assert not models.User.get(family_name="new_family_name")
-    assert models.User.get(email="email1@user.com") == user
-    assert models.User.get(email="email2@user.com") == user
-    assert not models.User.get(email="email3@user.com")
+    assert models.User.get(emails="email1@user.com") == user
+    assert models.User.get(emails="email2@user.com") == user
+    assert not models.User.get(emails="email3@user.com")
 
     user.family_name = "new_family_name"
-    user.email = ["email2@user.com"]
+    user.emails = ["email2@user.com"]
 
     assert models.User.get(family_name="family_name") != user
     assert not models.User.get(family_name="new_family_name")
-    assert models.User.get(email="email1@user.com") != user
-    assert models.User.get(email="email2@user.com") != user
-    assert not models.User.get(email="email3@user.com")
+    assert models.User.get(emails="email1@user.com") != user
+    assert models.User.get(emails="email2@user.com") != user
+    assert not models.User.get(emails="email3@user.com")
 
     user.save()
 
     assert not models.User.get(family_name="family_name")
     assert models.User.get(family_name="new_family_name") == user
-    assert not models.User.get(email="email1@user.com")
-    assert models.User.get(email="email2@user.com") == user
-    assert not models.User.get(email="email3@user.com")
+    assert not models.User.get(emails="email1@user.com")
+    assert models.User.get(emails="email2@user.com") == user
+    assert not models.User.get(emails="email3@user.com")
 
     user.delete()
 
     assert not models.User.get(family_name="family_name")
     assert not models.User.get(family_name="new_family_name")
-    assert not models.User.get(email="email1@user.com")
-    assert not models.User.get(email="email2@user.com")
-    assert not models.User.get(email="email3@user.com")
+    assert not models.User.get(emails="email1@user.com")
+    assert not models.User.get(emails="email2@user.com")
+    assert not models.User.get(emails="email3@user.com")
 
 
 def test_fuzzy(user, moderator, admin, backend):
@@ -180,7 +180,9 @@ def test_model_references_set_unsaved_object(
     group.save()
     user.reload()  # an LDAP group can be inconsistent by containing members which doesn't exist
 
-    non_existent_user = models.User(formatted_name="foo", family_name="bar")
+    non_existent_user = models.User(
+        formatted_name="foo", family_name="bar", user_name="baz"
+    )
     group.members = group.members + [non_existent_user]
     assert group.members == [user, non_existent_user]
 

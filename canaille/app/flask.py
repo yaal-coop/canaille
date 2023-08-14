@@ -6,19 +6,25 @@ from urllib.parse import urlunsplit
 from canaille.app import models
 from flask import abort
 from flask import current_app
-from flask import render_template
+from flask import g
 from flask import request
 from flask import session
 from flask_babel import gettext as _
+from flask_themer import render_template
+from werkzeug.routing import BaseConverter
 
 
 def current_user():
+    if "user" in g:
+        return g.user
+
     for user_id in session.get("user_id", [])[::-1]:
         user = models.User.get(id=user_id)
         if user and (
             not current_app.backend.has_account_lockability() or not user.locked
         ):
-            return user
+            g.user = user
+            return g.user
 
         session["user_id"].remove(user_id)
 
@@ -67,9 +73,8 @@ def smtp_needed():
             return (
                 render_template(
                     "error.html",
-                    error=500,
+                    error_code=500,
                     icon="tools",
-                    debug=current_app.config.get("DEBUG", False),
                     description=message,
                 ),
                 500,
@@ -115,7 +120,9 @@ def set_parameter_in_url_query(url, **kwargs):
 
 
 def request_is_htmx():
-    return request.headers.get("HX-Request", False)
+    return request.headers.get("HX-Request", False) and not request.headers.get(
+        "HX-Boosted", False
+    )
 
 
 def render_htmx_template(template, htmx_template=None, **kwargs):
@@ -123,3 +130,23 @@ def render_htmx_template(template, htmx_template=None, **kwargs):
         (htmx_template or f"partial/{template}") if request_is_htmx() else template
     )
     return render_template(template, **kwargs)
+
+
+def model_converter(model):
+    class ModelConverter(BaseConverter):
+        def __init__(self, *args, required=True, **kwargs):
+            self.required = required
+            super().__init__(self, *args, **kwargs)
+
+        def to_url(self, instance):
+            return instance.identifier
+
+        def to_python(self, identifier):
+            current_app.backend.setup()
+            instance = model.get(identifier)
+            if self.required and not instance:
+                abort(404)
+
+            return instance
+
+    return ModelConverter

@@ -12,8 +12,8 @@ from .ldapobject import LDAPObject
 
 class User(canaille.core.models.User, LDAPObject):
     DEFAULT_OBJECT_CLASS = "inetOrgPerson"
-    DEFAULT_FILTER = "(|(uid={login})(mail={login}))"
-    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
+    DEFAULT_RDN = "cn"
 
     attributes = {
         "id": "dn",
@@ -24,8 +24,8 @@ class User(canaille.core.models.User, LDAPObject):
         "given_name": "givenName",
         "formatted_name": "cn",
         "display_name": "displayName",
-        "email": "mail",
-        "phone_number": "telephoneNumber",
+        "emails": "mail",
+        "phone_numbers": "telephoneNumber",
         "formatted_address": "postalAddress",
         "street": "street",
         "postal_code": "postalCode",
@@ -44,11 +44,14 @@ class User(canaille.core.models.User, LDAPObject):
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):
+        raw_filter = current_app.config["BACKENDS"]["LDAP"].get(
+            "USER_FILTER", User.DEFAULT_FILTER
+        )
         filter = (
             (
-                current_app.config["BACKENDS"]["LDAP"]
-                .get("USER_FILTER", User.DEFAULT_FILTER)
-                .format(login=ldap.filter.escape_filter_chars(login))
+                current_app.jinja_env.from_string(raw_filter).render(
+                    login=ldap.filter.escape_filter_chars(login)
+                )
             )
             if login
             else None
@@ -78,12 +81,16 @@ class User(canaille.core.models.User, LDAPObject):
         return filter_
 
     @classmethod
-    def get(cls, **kwargs):
-        user = super().get(**kwargs)
+    def get(cls, *args, **kwargs):
+        user = super().get(*args, **kwargs)
         if user:
             user.load_permissions()
 
         return user
+
+    @property
+    def identifier(self):
+        return self.rdn_value
 
     def has_password(self):
         return bool(self.password)
@@ -167,6 +174,9 @@ class User(canaille.core.models.User, LDAPObject):
 
     def load_permissions(self):
         conn = Backend.get().connection
+        self.permissions = set()
+        self.read = set()
+        self.write = set()
 
         for access_group_name, details in current_app.config["ACL"].items():
             filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))
@@ -180,7 +190,7 @@ class User(canaille.core.models.User, LDAPObject):
 
 class Group(canaille.core.models.Group, LDAPObject):
     DEFAULT_OBJECT_CLASS = "groupOfNames"
-    DEFAULT_ID_ATTRIBUTE = "cn"
+    DEFAULT_RDN = "cn"
     DEFAULT_NAME_ATTRIBUTE = "cn"
     DEFAULT_USER_FILTER = "member={user.id}"
 
@@ -190,6 +200,10 @@ class Group(canaille.core.models.Group, LDAPObject):
         "members": "member",
         "description": "description",
     }
+
+    @property
+    def identifier(self):
+        return self.rdn_value
 
     @property
     def display_name(self):
@@ -240,6 +254,10 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         **client_metadata_attributes,
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     ldap_object_class = ["oauthAuthorizationCode"]
@@ -263,6 +281,10 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
         "revokation_date": "oauthRevokationDate",
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class Token(canaille.oidc.models.Token, LDAPObject):
     ldap_object_class = ["oauthToken"]
@@ -284,6 +306,10 @@ class Token(canaille.oidc.models.Token, LDAPObject):
         "audience": "oauthAudience",
     }
 
+    @property
+    def identifier(self):
+        return self.rdn_value
+
 
 class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
@@ -298,3 +324,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
         "issue_date": "oauthIssueDate",
         "revokation_date": "oauthRevokationDate",
     }
+
+    @property
+    def identifier(self):
+        return self.rdn_value

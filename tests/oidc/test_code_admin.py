@@ -86,7 +86,7 @@ def test_authorization_list_search(testclient, logged_admin, client):
     form["query"] = id1
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(id1)
     res.mustcontain(no=id2)
 

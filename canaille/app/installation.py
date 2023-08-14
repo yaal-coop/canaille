@@ -6,6 +6,6 @@ class InstallationException(Exception):
     pass
 
 
-def install(config):
-    install_oidc(config)
-    BaseBackend.get().install(config)
+def install(config, debug=False):
+    install_oidc(config, debug=debug)
+    BaseBackend.get().install(config, debug=debug)

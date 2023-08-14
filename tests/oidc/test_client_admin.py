@@ -78,7 +78,7 @@ def test_client_list_search(testclient, logged_admin, client, other_client):
     form["query"] = "other"
     res = form.submit()
 
-    res.mustcontain("1 items")
+    res.mustcontain("1 item")
     res.mustcontain(other_client.client_name)
     res.mustcontain(no=client.client_name)
 
@@ -87,9 +87,9 @@ def test_client_add(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
-        "contacts": "foo@bar.com",
+        "contacts-0": "foo@bar.com",
         "client_uri": "https://foo.bar",
-        "redirect_uris": ["https://foo.bar/callback"],
+        "redirect_uris-0": "https://foo.bar/callback",
         "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
         "response_types": ["code", "token"],
@@ -103,27 +103,36 @@ def test_client_add(testclient, logged_admin):
         "jwks_uri": "https://foo.bar/jwks.json",
         "audience": [],
         "preconsent": False,
-        "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
+        "post_logout_redirect_uris-0": "https://foo.bar/disconnected",
     }
     for k, v in data.items():
         res.form[k].force_value(v)
 
-    res = res.form.submit(status=302, name="action", value="edit")
+    res = res.form.submit(status=302, name="action", value="add")
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
     client = models.Client.get(client_id=client_id)
-    data["audience"] = [client]
-    for k, v in data.items():
-        client_value = getattr(client, k)
-        if k == "scope":
-            assert v == " ".join(client_value)
-        elif k == "preconsent":
-            assert v is False
-        elif k == "contacts":
-            assert [v] == client_value
-        else:
-            assert v == client_value
+
+    assert client.client_name == "foobar"
+    assert client.contacts == ["foo@bar.com"]
+    assert client.client_uri == "https://foo.bar"
+    assert client.redirect_uris == ["https://foo.bar/callback"]
+    assert client.grant_types == ["password", "authorization_code"]
+    assert client.scope == ["openid", "profile"]
+    assert client.response_types == ["code", "token"]
+    assert client.token_endpoint_auth_method == "none"
+    assert client.logo_uri == "https://foo.bar/logo.png"
+    assert client.tos_uri == "https://foo.bar/tos"
+    assert client.policy_uri == "https://foo.bar/policy"
+    assert client.software_id == "software"
+    assert client.software_version == "1"
+    assert client.jwk == "jwk"
+    assert client.jwks_uri == "https://foo.bar/jwks.json"
+    assert client.audience == [client]
+    assert not client.preconsent
+    assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
+
     client.delete()
 
 
@@ -140,9 +149,9 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
         "client_name": "foobar",
-        "contacts": "foo@bar.com",
+        "contacts-0": "foo@bar.com",
         "client_uri": "https://foo.bar",
-        "redirect_uris": ["https://foo.bar/callback"],
+        "redirect_uris-0": "https://foo.bar/callback",
         "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
         "response_types": ["code", "token"],
@@ -156,7 +165,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "jwks_uri": "https://foo.bar/jwks.json",
         "audience": [client.id, other_client.id],
         "preconsent": True,
-        "post_logout_redirect_uris": ["https://foo.bar/disconnected"],
+        "post_logout_redirect_uris-0": "https://foo.bar/disconnected",
     }
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
@@ -169,17 +178,28 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     assert ("success", "The client has been edited.") in res.flashes
 
     client.reload()
-    data["audience"] = [client, other_client]
-    for k, v in data.items():
-        client_value = getattr(client, k)
-        if k == "scope":
-            assert v == " ".join(client_value)
-        elif k == "preconsent":
-            assert v is True
-        elif k == "contacts":
-            assert [v] == client_value
-        else:
-            assert v == client_value
+
+    assert client.client_name == "foobar"
+    assert client.contacts == ["foo@bar.com"]
+    assert client.client_uri == "https://foo.bar"
+    assert client.redirect_uris == [
+        "https://foo.bar/callback",
+        "https://mydomain.tld/redirect2",
+    ]
+    assert client.grant_types == ["password", "authorization_code"]
+    assert client.scope == ["openid", "profile"]
+    assert client.response_types == ["code", "token"]
+    assert client.token_endpoint_auth_method == "none"
+    assert client.logo_uri == "https://foo.bar/logo.png"
+    assert client.tos_uri == "https://foo.bar/tos"
+    assert client.policy_uri == "https://foo.bar/policy"
+    assert client.software_id == "software"
+    assert client.software_version == "1"
+    assert client.jwk == "jwk"
+    assert client.jwks_uri == "https://foo.bar/jwks.json"
+    assert client.audience == [client, other_client]
+    assert not client.preconsent
+    assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
 
 
 def test_client_edit_missing_fields(testclient, client, logged_admin, other_client):
@@ -210,7 +230,9 @@ def test_client_delete(testclient, logged_admin):
     models.AuthorizationCode(authorization_code_id="id", client=client, subject=client)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientaddform"].submit(name="action", value="delete").follow()
+    res = res.forms["clientaddform"].submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete")
+    res = res.follow()
 
     assert not models.Client.get()
     assert not models.Token.get()
@@ -228,11 +250,6 @@ def test_client_delete_invalid_client(testclient, logged_admin, client):
         },
         status=404,
     )
-
-
-def test_invalid_request(testclient, logged_admin, client):
-    res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientaddform"].submit(name="action", value="invalid", status=400)
 
 
 def test_client_edit_preauth(testclient, client, logged_admin, other_client):

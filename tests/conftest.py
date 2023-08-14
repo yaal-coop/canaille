@@ -1,14 +1,60 @@
+import os
+
 import pytest
+from babel.messages.frontend import compile_catalog
 from canaille import create_app
 from canaille.app import models
+from canaille.backends import available_backends
 from flask_webtest import TestApp
+from jinja2 import StrictUndefined
 from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
 
 
+@pytest.fixture(autouse=True, scope="session")
+def babel_catalogs():
+    cmd = compile_catalog()
+    cmd.directory = os.path.dirname(__file__) + "/../canaille/translations"
+    cmd.quiet = True
+    cmd.statistics = True
+    cmd.finalize_options()
+    cmd.run()
+
+
 pytest_plugins = [
-    "tests.backends.ldap.fixtures",
+    f"tests.backends.{backend}.fixtures"
+    for backend in available_backends()
+    if os.path.exists(os.path.join("tests", "backends", backend, "fixtures.py"))
 ]
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--backend", action="append", default=[], help="the backends to test"
+    )
+
+
+def pytest_generate_tests(metafunc):
+    backends = available_backends()
+    if metafunc.config.getoption("backend"):  # pragma: no cover
+        backends &= set(metafunc.config.getoption("backend"))
+
+    # tests in tests.backends.BACKENDNAME should only run one backend
+    if metafunc.module.__name__.startswith("tests.backends"):
+        module_name_parts = metafunc.module.__name__.split(".")
+        in_backend_module = len(module_name_parts) > 3
+        if in_backend_module:
+            backend = module_name_parts[2]
+            if backend not in backends:  # pragma: no cover
+                pytest.skip()
+            elif "backend" in metafunc.fixturenames:
+                metafunc.parametrize("backend", [lazy_fixture(f"{backend}_backend")])
+                return
+
+    if "backend" in metafunc.fixturenames:
+        metafunc.parametrize(
+            "backend", [lazy_fixture(f"{backend}_backend") for backend in backends]
+        )
 
 
 @pytest.fixture
@@ -23,13 +69,13 @@ def configuration(smtpd):
                 "READ": ["user_name", "groups"],
                 "PERMISSIONS": ["edit_self", "use_oidc", "lock_date"],
                 "WRITE": [
-                    "email",
+                    "emails",
                     "given_name",
                     "photo",
                     "family_name",
                     "display_name",
                     "password",
-                    "phone_number",
+                    "phone_numbers",
                     "formatted_address",
                     "street",
                     "postal_code",
@@ -76,11 +122,6 @@ def configuration(smtpd):
     return conf
 
 
-@pytest.fixture(params=[lazy_fixture("ldap_backend")])
-def backend(request):
-    yield request.param
-
-
 @pytest.fixture
 def app(configuration, backend):
     return create_app(configuration, backend=backend)
@@ -89,8 +130,8 @@ def app(configuration, backend):
 @pytest.fixture
 def testclient(app):
     app.config["TESTING"] = True
-    with app.app_context():
-        yield TestApp(app)
+    app.jinja_env.undefined = StrictUndefined
+    yield TestApp(app)
 
 
 @pytest.fixture
@@ -100,15 +141,16 @@ def user(app, backend):
         given_name="John",
         family_name="Doe",
         user_name="user",
-        email="john@doe.com",
+        emails="john@doe.com",
         password="correct horse battery staple",
         display_name="Johnny",
         preferred_language="en",
-        phone_number="555-000-000",
+        phone_numbers="555-000-000",
         profile_url="https://john.example",
         formatted_address="1235, somewhere",
     )
     u.save()
+    u.load_permissions()
     yield u
     u.delete()
 
@@ -119,10 +161,11 @@ def admin(app, backend):
         formatted_name="Jane Doe",
         family_name="Doe",
         user_name="admin",
-        email="jane@doe.com",
+        emails="jane@doe.com",
         password="admin",
     )
     u.save()
+    u.load_permissions()
     yield u
     u.delete()
 
@@ -133,10 +176,11 @@ def moderator(app, backend):
         formatted_name="Jack Doe",
         family_name="Doe",
         user_name="moderator",
-        email="jack@doe.com",
+        emails="jack@doe.com",
         password="moderator",
     )
     u.save()
+    u.load_permissions()
     yield u
     u.delete()
 

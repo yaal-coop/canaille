@@ -1,0 +1,144 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans %}Invite a user{% endtrans -%}
+{%- endblock -%}
+
+{% block script %}
+    <script src="/static/js/copy.js" defer></script>
+{% endblock %}
+
+{% block submenu %}
+    <nav class="ui bottom attached three item borderless menu">
+        <a class="item" href="{{ url_for('core.account.users') }}">
+            <i class="th list icon"></i>
+            {% trans %}View{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('core.account.profile_creation') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('core.account.user_invitation') }}">
+            <i class="paper plane icon"></i>
+            {% trans %}Invite{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="invitationform">
+        {% if form_validated %}
+
+            <div class="ui segment">
+                <h2 class="ui center aligned header">
+                    <div class="content">
+                        {% if request.form["action"] == "generate" %}
+                            {{ _("Invitation link") }}
+                        {% elif email_sent %}
+                            {{ _("Invitation sent") }}
+                        {% else %}
+                            {{ _("Invitation not sent") }}
+                        {% endif %}
+                    </div>
+                </h2>
+
+                {% if request.form["action"] == "generate" %}
+
+                    <div class="ui success message">
+                        {% trans %}Here is the invitation link you can provide to the user you want to invite:{% endtrans %}
+                    </div>
+
+                {% elif email_sent %}
+
+                    <div class="ui attached success message">
+                        {% set email = form.email.data %}
+                        {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
+                        {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
+                    </div>
+
+                {% else %}
+
+                    <div class="ui attached error message">
+                        {% set email = form.email.data %}
+                        {% trans %}This invitation link could not be sent to {{ email }} due to technical issues.{% endtrans %}
+                        {% trans %}However you can copy the link there to provide it by other ways than email:{% endtrans %}
+                    </div>
+
+                {% endif %}
+
+                <div class="ui center aligned container">
+                    <div class="ui fields">
+                        <div class="ui action input">
+                            <input type="text" value="{{ registration_url }}" readonly class="copy-text" id="registration-url" data-copy="registration-url">
+                            <button class="ui primary right labeled icon button copy-button" data-copy="registration-url">
+                                <i class="copy icon"></i>
+                                {% trans %}Copy{% endtrans %}
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="ui stackable buttons">
+                        <a class="ui right floated button" href="{{ url_for("core.account.profile_creation") }}">
+                            {{ _("Create a user") }}
+                        </a>
+                        {% if request.form["action"] == "generate" or email_sent %}
+                            <a href="{{ url_for('core.account.user_invitation') }}" class="ui right floated button" name="action" value="invite" id="invite">
+                                {{ _("Invite another user") }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="ui segment">
+                <h2 class="ui center aligned header">
+                    <div class="content">
+                        {{ _("Invite a user") }}
+                    </div>
+                </h2>
+
+                <div class="ui message">
+                    {% trans %}
+                        After this form is sent, the recipient your indicated will receive an email
+                        containing an account creation link.
+                    {% endtrans %}
+                </div>
+
+                {% call fui.render_form(form) %}
+                    {% block user_name_field scoped %}
+                        {{ fui.render_field(form.user_name, icon="user") }}
+                    {% endblock %}
+
+                    {% block user_name_editable_field scoped %}
+                        {{ fui.render_field(form.user_name_editable) }}
+                    {% endblock %}
+
+                    {% block email_field scoped %}
+                        {{ fui.render_field(form.email, icon="email") }}
+                    {% endblock %}
+
+                    {% block groups_field scoped %}
+                        {{ fui.render_field(form.groups, icon="users") }}
+                    {% endblock %}
+
+                    <div class="ui right aligned container">
+                        <div class="ui stackable buttons">
+                            <a class="ui right floated button" href="{{ url_for("core.account.profile_creation") }}">
+                                {{ _("Create a user") }}
+                            </a>
+                            <button type="submit" name="action" value="generate" class="ui right floated primary button">
+                                {{ _("Generate a link") }}
+                            </button>
+                            <button type="submit" name="action" value="send" class="ui right floated primary button">
+                                {{ _("Send the invitation") }}
+                            </button>
+                        </div>
+                    </div>
+                {% endcall %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from canaille.app import obj_to_b64
 from canaille.app.flask import permissions_needed
-from canaille.app.forms import HTMXForm
-from canaille.core.mails import profile_hash
+from canaille.app.forms import Form
+from canaille.core.mails import build_hash
 from canaille.core.mails import send_test_mail
 from flask import Blueprint
 from flask import current_app
@@ -18,7 +18,7 @@ from wtforms.validators import Email
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-class MailTestForm(HTMXForm):
+class MailTestForm(Form):
     email = StringField(
         _("Email"),
         validators=[
@@ -43,27 +43,30 @@ def mail_index(user):
         else:
             flash(_("The test invitation mail has not been sent correctly"), "error")
 
-    return render_template("mail/admin.html", form=form, menuitem="admin")
+    return render_template("mails/admin.html", form=form, menuitem="admin")
 
 
 @bp.route("/mail/test.html")
 @permissions_needed("manage_oidc")
 def test_html(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     return render_template(
-        "mail/test.html",
+        "mails/test.html",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         logo=current_app.config.get("LOGO"),
+        title=_("Test email from {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille"),
+        ),
     )
 
 
 @bp.route("/mail/test.txt")
 @permissions_needed("manage_oidc")
 def test_txt(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     return render_template(
-        "mail/test.txt",
+        "mails/test.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
     )
@@ -72,22 +75,25 @@ def test_txt(user):
 @bp.route("/mail/password-init.html")
 @permissions_needed("manage_oidc")
 def password_init_html(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
+        "core.auth.reset",
+        user=user,
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
+        title=_("Password initialization on {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille")
+        ),
         _external=True,
     )
 
     return render_template(
-        "mail/firstlogin.html",
-        site_name=current_app.config.get("NAME", reset_url),
+        "mails/firstlogin.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
         logo=current_app.config.get("LOGO"),
         title=_("Password initialization on {website_name}").format(
-            website_name=current_app.config.get("NAME", reset_url)
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
     )
 
@@ -95,17 +101,17 @@ def password_init_html(user):
 @bp.route("/mail/password-init.txt")
 @permissions_needed("manage_oidc")
 def password_init_txt(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
+        "core.auth.reset",
+        user=user,
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
     return render_template(
-        "mail/firstlogin.txt",
-        site_name=current_app.config.get("NAME", reset_url),
+        "mails/firstlogin.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
@@ -114,22 +120,25 @@ def password_init_txt(user):
 @bp.route("/mail/reset.html")
 @permissions_needed("manage_oidc")
 def password_reset_html(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
+        "core.auth.reset",
+        user=user,
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
+        title=_("Password reset on {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille")
+        ),
         _external=True,
     )
 
     return render_template(
-        "mail/reset.html",
-        site_name=current_app.config.get("NAME", reset_url),
+        "mails/reset.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
         logo=current_app.config.get("LOGO"),
         title=_("Password reset on {website_name}").format(
-            website_name=current_app.config.get("NAME", reset_url)
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
     )
 
@@ -137,59 +146,101 @@ def password_reset_html(user):
 @bp.route("/mail/reset.txt")
 @permissions_needed("manage_oidc")
 def password_reset_txt(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
-        user_name=user.user_name[0],
-        hash=profile_hash(user.user_name[0], user.email[0], user.password[0]),
+        "core.auth.reset",
+        user=user,
+        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
     )
 
     return render_template(
-        "mail/reset.txt",
-        site_name=current_app.config.get("NAME", reset_url),
+        "mails/reset.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
 
 
-@bp.route("/mail/<user_name>/<email>/invitation.html")
+@bp.route("/mail/<identifier>/<email>/invitation.html")
 @permissions_needed("manage_oidc")
-def invitation_html(user, user_name, email):
-    base_url = url_for("account.index", _external=True)
+def invitation_html(user, identifier, email):
+    base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
-        "account.registration",
-        data=obj_to_b64([user_name, email]),
-        hash=profile_hash(user_name, email),
+        "core.account.registration",
+        data=obj_to_b64([identifier, email]),
+        hash=build_hash(identifier, email),
         _external=True,
     )
 
     return render_template(
-        "mail/invitation.html",
-        site_name=current_app.config.get("NAME", base_url),
+        "mails/invitation.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
         logo=current_app.config.get("LOGO"),
         title=_("Invitation on {website_name}").format(
-            website_name=current_app.config.get("NAME", base_url)
+            website_name=current_app.config.get("NAME", "Canaille")
         ),
     )
 
 
-@bp.route("/mail/<user_name>/<email>/invitation.txt")
+@bp.route("/mail/<identifier>/<email>/invitation.txt")
 @permissions_needed("manage_oidc")
-def invitation_txt(user, user_name, email):
-    base_url = url_for("account.index", _external=True)
+def invitation_txt(user, identifier, email):
+    base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
-        "account.registration",
-        data=obj_to_b64([user_name, email]),
-        hash=profile_hash(user_name, email),
+        "core.account.registration",
+        data=obj_to_b64([identifier, email]),
+        hash=build_hash(identifier, email),
         _external=True,
     )
 
     return render_template(
-        "mail/invitation.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        "mails/invitation.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
+    )
+
+
+@bp.route("/mail/<identifier>/<email>/email-confirmation.html")
+@permissions_needed("manage_oidc")
+def email_confirmation_html(user, identifier, email):
+    base_url = url_for("core.account.index", _external=True)
+    email_confirmation_url = url_for(
+        "core.account.email_confirmation",
+        data=obj_to_b64([identifier, email]),
+        hash=build_hash(identifier, email),
+        _external=True,
+    )
+
+    return render_template(
+        "mails/email-confirmation.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        confirmation_url=email_confirmation_url,
+        logo=current_app.config.get("LOGO"),
+        title=_("Email confirmation on {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille")
+        ),
+    )
+
+
+@bp.route("/mail/<identifier>/<email>/email-confirmation.txt")
+@permissions_needed("manage_oidc")
+def email_confirmation_txt(user, identifier, email):
+    base_url = url_for("core.account.index", _external=True)
+    email_confirmation_url = url_for(
+        "core.account.email_confirmation",
+        data=obj_to_b64([identifier, email]),
+        hash=build_hash(identifier, email),
+        _external=True,
+    )
+
+    return render_template(
+        "mails/email-confirmation.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        confirmation_url=email_confirmation_url,
     )

@@ -1,0 +1,128 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans %}Emails{% endtrans -%}
+{%- endblock -%}
+
+{% block submenu %}
+    <nav class="ui bottom attached five item borderless menu">
+        <a class="active item" href="{{ url_for('core.admin.mail_index') }}">
+            <i class="user mail icon"></i>
+            {% trans %}Emails{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.index') }}">
+            <i class="th list icon"></i>
+            {% trans %}Clients{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.add') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add a client{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.tokens.index') }}">
+            <i class="key icon"></i>
+            {% trans %}Tokens{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
+            <i class="user secret icon"></i>
+            {% trans %}Codes{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Mail sending test") }}
+            </div>
+        </h2>
+
+        <div class="ui info message">
+            {% trans %}
+                This form will send a dummy email to the address you want.
+                This should be used for testing mail configuration.
+            {% endtrans %}
+        </div>
+
+        {% call fui.render_form(form) %}
+            {{ fui.render_field(form.email) }}
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <input type="submit" class="ui primary button" value="{{ _("Send") }}">
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {{ _("Email preview") }}
+            </div>
+        </h2>
+        <div class="ui middle aligned divided list">
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.test_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.test_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Connectivity test") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_init_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_init_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Password initialization") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_reset_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_reset_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Password reset") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Email verification") }}
+                </div>
+            </div>
+
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Invitation") }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

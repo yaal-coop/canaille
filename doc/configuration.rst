@@ -6,17 +6,26 @@ Here are the different options you can have in your configuration file.
 .. contents::
    :local:
 
+.. note ::
+
+    Any configuration entry can be suffixed by *_FILE* and point to the path of
+    a file that contains the actual value. For instance you could have
+    ``SECRET_KEY_FILE = "/path/to/secret.txt"`` instead of ``SECRET_KEY = "very-secret"``
+
 Sections
 ========
 
 Miscellaneous
 -------------
-Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/1.1.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
-
-
+Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/2.3.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
 
 :SECRET_KEY:
     **Required.** The Flask secret key. You should set a random string here.
+
+    .. note ::
+
+        Remember that you can also use SECRET_KEY_FILE to store the secret key
+        outside the configuration file.
 
 :NAME:
     *Optional.* The name of your organization. If not set `Canaille` will be used.
@@ -37,10 +46,22 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 :TIMEZONE:
     *Optional.* The timezone in which datetimes will be displayed to the users. If unset, the server timezone will be used.
 
+:JAVASCRIPT:
+    *Optional.* Wether javascript is used to smooth the user experience.
+
+:HTMX:
+    *Optional.* Wether `HTMX <https://htmx.org>`_ will be used to accelerate webpages. Defaults to true.
+
 :SENTRY_DSN:
     *Optional.* A DSN to a sentry instance.
     This needs the ``sentry_sdk`` python package to be installed.
     This is useful if you want to collect the canaille exceptions in a production environment.
+
+:EMAIL_CONFIRMATION:
+    *Optional.*  If  set to true, users will need to click on
+    a confirmation link sent by email when they want to add a new email. By default,
+    this is true if SMTP is configured, else this is false. If explicitely set to
+    true and SMTP is disabled, the email field will be read-only.
 
 :HIDE_INVALID_LOGINS:
     *Optional.* Wether to tell the users if a username exists during failing login attempts.
@@ -93,15 +114,16 @@ BACKENDS.LDAP
     Can be a list of classes.
     Defaults to ``inetOrgPerson``.
 
-:USER_ID_ATTRIBUTE:
+:USER_RDN:
     *Optional.* The attribute to identify an object in the User DN.
     For example, if it has the value ``uid``, users DN will be in the form ``uid=foobar,ou=users,dc=mydomain,dc=tld``.
     Defaults to ``cn``.
 
 :USER_FILTER:
     *Optional.* The filter to match users on sign in.
-    Supports a variable {login} that can be used to compare against several LDAP attributes.
-    Defaults to ``(|(uid={login})(mail={login}))``
+    Jinja syntax is supported and a `login` variable is available containing
+    the value passed in the login field.
+    Defaults to ``(|(uid={{ login }})(mail={{ login }}))``
 
 :GROUP_BASE:
     **Required.** The DN where of the node in which LDAP groups will be created and searched for.
@@ -112,7 +134,7 @@ BACKENDS.LDAP
     Can be a list of classes.
     Defaults to ``groupOfNames``
 
-:GROUP_ID_ATTRIBUTE:
+:GROUP_RDN:
     *Optional.* The attribute to identify an object in a group DN.
     For example, if it has the value ``cn``, groups DN will be in the form ``cn=foobar,ou=users,dc=mydomain,dc=tld``.
     Defaults to ``cn``
@@ -181,17 +203,25 @@ OIDC
 :DYNAMIC_CLIENT_REGISTRATION_TOKENS:
     *Optional.* A list of tokens that can be used for dynamic client registration
 
+:REQUIRE_NONE:
+    *Optional.* Forces the nonce exchange during the authentication flows.
+    This adds security but may not be supported by all clients.
+    Defaults to ``True``
+
 OIDC.JWT
 --------
-Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually.
+Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually. In debug mode, a in-memory keypair will be used.
 
 :PRIVATE_KEY:
-    **Required.** The path to the private key.
-    e.g. ``/path/to/canaille/conf/private.pem``
+    **Required.** The content of the private key..
 
 :PUBLIC_KEY:
-    **Required.** The path to the public key.
-    e.g. ``/path/to/canaille/conf/private.pem``
+    **Required.** The content of the public key.
+
+    .. note ::
+
+        Remember that you can also use PRIVATE_KEY_FILE and PUBLIC_KEY_FILE
+        to store the keys outside the configuration file.
 
 :ISS:
     *Optional.* The URI of the identity provider.
@@ -244,7 +274,7 @@ Attributes are rendered using jinja2, and can use a ``user`` variable.
     *Optional.* Defaults to ``{{ user.address[0] }}``
 
 :PICTURE:
-    *Optional.* Defaults to ``{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}``
+    *Optional.* Defaults to ``{% if user.photo %}{{ url_for('core.account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}``
 
 :WEBSITE:
     *Optional.* Defaults to ``{{ user.profile_url[0] }}``

@@ -1,0 +1,9 @@
+# {% trans %}Email verification{% endtrans %}
+
+{% trans %}
+You added an email address to your account on {{ site_name }}.
+Please click on the link below to confirm your email address.
+{% endtrans %}
+
+{% trans %}Verification link{% endtrans %}: {{ confirmation_url }}
+{{ site_name }}: {{ site_url }}

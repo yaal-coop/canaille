@@ -1,4 +1,8 @@
+import importlib
+import os
 from contextlib import contextmanager
+
+from flask import g
 
 
 class BaseBackend:
@@ -6,6 +10,7 @@ class BaseBackend:
 
     def __init__(self, config):
         BaseBackend.instance = self
+        self.register_models()
 
     @classmethod
     def get(cls):
@@ -61,3 +66,47 @@ class BaseBackend:
         Indicates wether the backend supports locking user accounts.
         """
         raise NotImplementedError()
+
+    def register_models(self):
+        from canaille.app import models
+
+        module = ".".join(self.__class__.__module__.split(".")[:-1] + ["models"])
+        try:
+            backend_models = importlib.import_module(module)
+        except ModuleNotFoundError:
+            return
+
+        model_names = [
+            "AuthorizationCode",
+            "Client",
+            "Consent",
+            "Group",
+            "Token",
+            "User",
+        ]
+        for model_name in model_names:
+            models.register(getattr(backend_models, model_name))
+
+
+def setup_backend(app, backend):
+    if not backend:
+        backend_name = list(app.config.get("BACKENDS").keys())[0].lower()
+        module = importlib.import_module(f"canaille.backends.{backend_name}.backend")
+        backend_class = getattr(module, "Backend")
+        backend = backend_class(app.config)
+        backend.init_app(app)
+
+    with app.app_context():
+        g.backend = backend
+        app.backend = backend
+
+    if app.debug:  # pragma: no cover
+        backend.install(app.config, True)
+
+
+def available_backends():
+    return {
+        elt.name
+        for elt in os.scandir(os.path.dirname(__file__))
+        if elt.is_dir() and os.path.exists(os.path.join(elt, "backend.py"))
+    }

@@ -1,17 +1,16 @@
 [build-system]
-requires = ["poetry>=1.0.0"]
+requires = ["poetry>=1.0.0", "babel"]
 build-backend = "poetry.masonry.api"
 
 [tool]
 [tool.poetry]
 name = "Canaille"
-version = "0.0.26"
+version = "0.0.30"
 description = "Minimalistic identity provider"
 license = "MIT"
 keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
 classifiers = [
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -36,19 +35,20 @@ readme = "README.md"
 include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 
 [tool.poetry.dependencies]
-python = ">=3.8, <4"
-authlib = ">1,<2"
-click = "<9"
-email_validator = "<3"
-flask = "<3"
+python = "^3.8"
+authlib = "^1.2.1"
+click = ">=8.0.0"
+email_validator = "^2.0.0"
+flask = ">=2.2.2 <2.3"
 flask-babel = "^3.0.0"
 flask-themer = "^2.0.0"
-flask-wtf = "<2"
-pycountry = "^22.3.5"
-python-ldap = "<4"
-pytz = "^2023.3"
-toml = "<1"
-wtforms = "<4"
+flask-wtf = "^1.1.1"
+pycountry = ">=22.1.10"
+python-ldap = "^3.4.0"
+pytz = ">=2022.7"
+toml = "^0.10.0"
+wtforms = "^3.0.1"
+werkzeug = ">=2.2.2 <2.3"
 
 "sentry-sdk" = {version = "<2", optional=true, extras=["flask"]}
 
@@ -59,24 +59,24 @@ optional = true
 "sphinx" = "*"
 "sphinx-rtd-theme" = "*"
 "sphinx-issues" = "*"
-pygments-ldif = "^1.0.1"
+pygments-ldif = "==1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 coverage = {version = "*", extras=["toml"]}
 faker = "*"
 flask-webtest = "*"
 freezegun = "*"
-mock = "*"
 pdbpp = "*"
 pre-commit = "*"
 pyquery = "*"
 pytest = "*"
 pytest-coverage = "*"
+pytest-flask = "==1.2.0"
 pytest-httpserver = "*"
+pytest-lazy-fixture = "==0.6.3"
+pytest-xdist = "==3.3.1"
 slapd = "*"
 smtpdfix = "*"
-pytest-flask = "^1.2.0"
-pytest-lazy-fixture = "^0.6.3"
 
 [tool.poetry.group.demo]
 optional = true
@@ -134,7 +134,7 @@ envlist =
 allowlist_externals = poetry
 commands =
     poetry install
-    poetry run pytest --showlocals --full-trace {posargs}
+    poetry run pytest --showlocals --full-trace {posargs:-n auto}
 
 [testenv:style]
 commands =
@@ -149,6 +149,6 @@ commands =
 [testenv:coverage]
 commands =
     poetry install
-    poetry run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered {posargs}
+    poetry run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered {posargs:-n auto}
     poetry run coverage html
 """

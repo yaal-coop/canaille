@@ -1,0 +1,86 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans %}Edit a client{% endtrans -%}
+{%- endblock -%}
+
+{% block submenu %}
+    <nav class="ui bottom attached five item borderless menu">
+        <a class="item" href="{{ url_for('core.admin.mail_index') }}">
+            <i class="user mail icon"></i>
+            {% trans %}Emails{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('oidc.clients.index') }}">
+            <i class="th list icon"></i>
+            {% trans %}Clients{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.add') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add a client{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.tokens.index') }}">
+            <i class="key icon"></i>
+            {% trans %}Tokens{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
+            <i class="user secret icon"></i>
+            {% trans %}Codes{% endtrans %}
+        </a>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="ui top attached segment">
+        <h2 class="ui center aligned header">
+            {% trans %}Edit a client{% endtrans %}
+        </h2>
+
+        <div class="ui form">
+            <form id="readonly">
+                <div class="field">
+                    <label>{% trans %}ID{% endtrans %}</label>
+                    <div class="ui cornor labeled input">
+                        <input type="text" value="{{ client.client_id }}" readonly name="client_id">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>{% trans %}Secret{% endtrans %}</label>
+                    <div class="ui cornor labeled input">
+                        <input type="text" value="{{ client.client_secret }}" readonly name="client_secret">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>{% trans %}Issued at{% endtrans %}</label>
+                    <div class="ui cornor labeled input">
+                        <input type="text" value="{{ client.client_id_issued_at }}" readonly name="client_id_issued_at">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% call fui.render_form(form, csrf=false) %}
+            {{ fui.render_fields(form) }}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <button type="submit" class="ui right floated negative basic button confirm" name="action" value="confirm-delete" id="confirm-delete" formnovalidate>
+                        {{ _("Delete the client") }}
+                    </button>
+                    <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
+                        {{ _("Edit") }}
+                    </button>
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+{% endblock %}

@@ -294,7 +294,7 @@ def test_custom_config_format_claim_is_well_formated(testclient, backend, user):
 def test_claim_is_omitted_if_empty(testclient, backend, user):
     # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
     # it's better to not insert a null or empty string value
-    user.email = ""
+    user.emails = ""
     user.save()
 
     data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING)
