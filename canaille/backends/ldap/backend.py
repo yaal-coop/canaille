@@ -9,9 +9,9 @@ from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.backends import BaseBackend
 from flask import current_app
-from flask import render_template
 from flask import request
 from flask_babel import gettext as _
+from flask_themer import render_template
 
 from .utils import listify
 

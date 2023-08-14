@@ -7,10 +7,10 @@ from canaille.app import models
 from flask import abort
 from flask import current_app
 from flask import g
-from flask import render_template
 from flask import request
 from flask import session
 from flask_babel import gettext as _
+from flask_themer import render_template
 from werkzeug.routing import BaseConverter
 
 
