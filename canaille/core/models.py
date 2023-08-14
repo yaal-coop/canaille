@@ -61,33 +61,12 @@ class User:
     def preferred_email(self):
         return self.emails[0] if self.emails else None
 
-    @property
-    def can_edit_self(self):
-        return "edit_self" in self.permissions
+    def __getattr__(self, name):
+        if name.startswith("can_") and name != "can_read":
+            permission = name[4:]
+            return permission in self.permissions
 
-    @property
-    def can_use_oidc(self):
-        return "use_oidc" in self.permissions
-
-    @property
-    def can_manage_users(self):
-        return "manage_users" in self.permissions
-
-    @property
-    def can_manage_groups(self):
-        return "manage_groups" in self.permissions
-
-    @property
-    def can_manage_oidc(self):
-        return "manage_oidc" in self.permissions
-
-    @property
-    def can_delete_account(self):
-        return "delete_account" in self.permissions
-
-    @property
-    def can_impersonate_users(self):
-        return "impersonate_users" in self.permissions
+        return super().__getattr__(name)
 
     @property
     def locked(self):
