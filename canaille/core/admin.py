@@ -77,7 +77,7 @@ def test_txt(user):
 def password_init_html(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.account.reset",
+        "core.auth.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password initialization on {website_name}").format(
@@ -103,7 +103,7 @@ def password_init_html(user):
 def password_init_txt(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.account.reset",
+        "core.auth.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
@@ -122,7 +122,7 @@ def password_init_txt(user):
 def password_reset_html(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.account.reset",
+        "core.auth.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password reset on {website_name}").format(
@@ -148,7 +148,7 @@ def password_reset_html(user):
 def password_reset_txt(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.account.reset",
+        "core.auth.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,

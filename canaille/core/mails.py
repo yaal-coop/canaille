@@ -39,7 +39,7 @@ def send_test_mail(email):
 def send_password_reset_mail(user, mail):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.account.reset",
+        "core.auth.reset",
         user=user,
         hash=build_hash(
             user.identifier,
@@ -80,7 +80,7 @@ def send_password_reset_mail(user, mail):
 def send_password_initialization_mail(user, email):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.account.reset",
+        "core.auth.reset",
         user=user,
         hash=build_hash(
             user.identifier,
