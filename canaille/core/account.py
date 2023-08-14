@@ -62,15 +62,15 @@ def index():
     user = current_user()
 
     if not user:
-        return redirect(url_for("account.login"))
+        return redirect(url_for("core.account.login"))
 
     if user.can_edit_self or user.can_manage_users:
-        return redirect(url_for("account.profile_edition", edited_user=user))
+        return redirect(url_for("core.account.profile_edition", edited_user=user))
 
     if user.can_use_oidc:
         return redirect(url_for("oidc.consents.consents"))
 
-    return redirect(url_for("account.about"))
+    return redirect(url_for("core.account.about"))
 
 
 @bp.route("/about")
@@ -85,7 +85,9 @@ def about():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     if current_user():
-        return redirect(url_for("account.profile_edition", edited_user=current_user()))
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
 
     form = LoginForm(request.form or None)
     form.render_field_macro_file = "partial/login_field.html"
@@ -96,7 +98,7 @@ def login():
 
     user = models.User.get_from_login(form.login.data)
     if user and not user.has_password():
-        return redirect(url_for("account.firstlogin", user=user))
+        return redirect(url_for("core.account.firstlogin", user=user))
 
     if not form.validate():
         models.User.logout()
@@ -104,13 +106,13 @@ def login():
         return render_template("login.html", form=form)
 
     session["attempt_login"] = form.login.data
-    return redirect(url_for("account.password"))
+    return redirect(url_for("core.account.password"))
 
 
 @bp.route("/password", methods=("GET", "POST"))
 def password():
     if "attempt_login" not in session:
-        return redirect(url_for("account.login"))
+        return redirect(url_for("core.account.login"))
 
     form = PasswordForm(request.form or None)
     form.render_field_macro_file = "partial/login_field.html"
@@ -122,7 +124,7 @@ def password():
 
     user = models.User.get_from_login(session["attempt_login"])
     if user and not user.has_password():
-        return redirect(url_for("account.firstlogin", user=user))
+        return redirect(url_for("core.account.firstlogin", user=user))
 
     if not form.validate() or not user:
         models.User.logout()
@@ -145,7 +147,7 @@ def password():
         _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
         "success",
     )
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))
 
 
 @bp.route("/logout")
@@ -266,7 +268,7 @@ def user_invitation(user):
             form.groups.data,
         )
         registration_url = url_for(
-            "account.registration",
+            "core.account.registration",
             data=invitation.b64(),
             hash=invitation.build_hash(),
             _external=True,
@@ -294,35 +296,35 @@ def registration(data, hash):
             _("The invitation link that brought you here was invalid."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if invitation.has_expired():
         flash(
             _("The invitation link that brought you here has expired."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if models.User.get_from_login(invitation.user_name):
         flash(
             _("Your account has already been created."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if current_user():
         flash(
             _("You are already logged in, you cannot create an account."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if hash != invitation.build_hash():
         flash(
             _("The invitation link that brought you here was invalid."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     data = {
         "user_name": invitation.user_name,
@@ -383,7 +385,7 @@ def registration(data, hash):
     user = profile_create(current_app, form)
     user.login()
     flash(_("Your account has been created successfully."), "success")
-    return redirect(url_for("account.profile_edition", edited_user=user))
+    return redirect(url_for("core.account.profile_edition", edited_user=user))
 
 
 @bp.route("/email-confirmation/<data>/<hash>")
@@ -395,21 +397,21 @@ def email_confirmation(data, hash):
             _("The email confirmation link that brought you here is invalid."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if confirmation_obj.has_expired():
         flash(
             _("The email confirmation link that brought you here has expired."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if hash != confirmation_obj.build_hash():
         flash(
             _("The invitation link that brought you here was invalid."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     user = models.User.get(confirmation_obj.identifier)
     if not user:
@@ -417,26 +419,26 @@ def email_confirmation(data, hash):
             _("The email confirmation link that brought you here is invalid."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if confirmation_obj.email in user.emails:
         flash(
             _("This address email have already been confirmed."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if models.User.query(emails=confirmation_obj.email):
         flash(
             _("This address email is already associated with another account."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     user.emails = user.emails + [confirmation_obj.email]
     user.save()
     flash(_("Your email address have been confirmed."), "success")
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))
 
 
 @bp.route("/profile", methods=("GET", "POST"))
@@ -469,7 +471,7 @@ def profile_creation(user):
         )
 
     user = profile_create(current_app, form)
-    return redirect(url_for("account.profile_edition", edited_user=user))
+    return redirect(url_for("core.account.profile_edition", edited_user=user))
 
 
 def profile_create(current_app, form):
@@ -589,7 +591,7 @@ def profile_edition_add_email(user, edited_user, emails_form):
         emails_form.new_email.data,
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash=email_confirmation.build_hash(),
         _external=True,
@@ -651,7 +653,9 @@ def profile_edition(user, edited_user):
 
         profile_edition_main_form_validation(user, edited_user, profile_form)
         flash(_("Profile updated successfully."), "success")
-        return redirect(url_for("account.profile_edition", edited_user=edited_user))
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=edited_user)
+        )
 
     if request.form.get("action") == "add_email":
         if not emails_form.validate():
@@ -669,7 +673,9 @@ def profile_edition(user, edited_user):
         else:
             flash(_("Could not send the verification email"), "error")
 
-        return redirect(url_for("account.profile_edition", edited_user=edited_user))
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=edited_user)
+        )
 
     if request.form.get("email_remove"):
         if not profile_edition_remove_email(
@@ -679,7 +685,9 @@ def profile_edition(user, edited_user):
             return render_template("profile_edit.html", **render_context)
 
         flash(_("The email have been successfully deleted."), "success")
-        return redirect(url_for("account.profile_edition", edited_user=edited_user))
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=edited_user)
+        )
 
     abort(400, f"bad form action: {request.form.get('action')}")
 
@@ -819,7 +827,7 @@ def profile_settings_edit(editor, edited_user):
             edited_user.save()
             flash(_("Profile updated successfully."), "success")
             return redirect(
-                url_for("account.profile_settings", edited_user=edited_user)
+                url_for("core.account.profile_settings", edited_user=edited_user)
             )
 
     return render_template(
@@ -846,8 +854,8 @@ def profile_delete(user, edited_user):
     edited_user.delete()
 
     if self_deletion:
-        return redirect(url_for("account.index"))
-    return redirect(url_for("account.users"))
+        return redirect(url_for("core.account.index"))
+    return redirect(url_for("core.account.users"))
 
 
 @bp.route("/impersonate/<user:puppet>")
@@ -858,7 +866,7 @@ def impersonate(user, puppet):
         _("Connection successful. Welcome %(user)s", user=puppet.formatted_name),
         "success",
     )
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))
 
 
 @bp.route("/reset", methods=["GET", "POST"])
@@ -929,14 +937,14 @@ def reset(user, hash):
             _("The password reset link that brought you here was invalid."),
             "error",
         )
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     if request.form and form.validate():
         user.set_password(form.password.data)
         user.login()
 
         flash(_("Your password has been updated successfully"), "success")
-        return redirect(url_for("account.profile_edition", edited_user=user))
+        return redirect(url_for("core.account.profile_edition", edited_user=user))
 
     return render_template("reset-password.html", form=form, user=user, hash=hash)
 

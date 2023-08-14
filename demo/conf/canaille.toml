@@ -238,7 +238,7 @@ DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
 # PREFERRED_USERNAME = "{{ user.display_name }}"
 # LOCALE = "{{ user.preferred_language }}"
 # ADDRESS = "{{ user.formatted_address[0] }}"
-# PICTURE = "{% if user.photo %}{{ url_for('account.photo', user=user, field='photo', _external=True) }}{% endif %}"
+# PICTURE = "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}"
 # WEBSITE = "{{ user.profile_url[0] }}"
 
 # The SMTP server options. If not set, mail related features such as

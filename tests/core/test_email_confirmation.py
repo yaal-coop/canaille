@@ -168,7 +168,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
         "new_email@mydomain.tld",
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash=email_confirmation.build_hash(),
         _external=True,
@@ -264,7 +264,7 @@ def test_confirmation_expired_link(testclient, backend, user):
         "new_email@mydomain.tld",
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash=email_confirmation.build_hash(),
         _external=True,
@@ -291,7 +291,7 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
         "new_email@mydomain.tld",
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash="invalid",
         _external=True,
@@ -320,7 +320,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
         "new_email@mydomain.tld",
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash=email_confirmation.build_hash(),
         _external=True,
@@ -347,7 +347,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
         "john@doe.com",
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash=email_confirmation.build_hash(),
         _external=True,
@@ -376,7 +376,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
         "jane@doe.com",
     )
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=email_confirmation.b64(),
         hash=email_confirmation.build_hash(),
         _external=True,

@@ -45,7 +45,7 @@ DEFAULT_JWT_MAPPING = {
     "PREFERRED_USERNAME": "{% if user.display_name %}{{ user.display_name }}{% endif %}",
     "LOCALE": "{% if user.preferred_language %}{{ user.preferred_language }}{% endif %}",
     "ADDRESS": "{% if user.formatted_address %}{{ user.formatted_address[0] }}{% endif %}",
-    "PICTURE": "{% if user.photo %}{{ url_for('account.photo', user=user, field='photo', _external=True) }}{% endif %}",
+    "PICTURE": "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}",
     "WEBSITE": "{% if user.profile_url %}{{ user.profile_url[0] }}{% endif %}",
 }
 

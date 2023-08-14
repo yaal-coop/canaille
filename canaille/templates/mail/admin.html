@@ -7,7 +7,7 @@
 
 {% block submenu %}
     <nav class="ui bottom attached five item borderless menu">
-        <a class="active item" href="{{ url_for('admin.mail_index') }}">
+        <a class="active item" href="{{ url_for('core.admin.mail_index') }}">
             <i class="user mail icon"></i>
             {% trans %}Emails{% endtrans %}
         </a>
@@ -65,8 +65,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("admin.test_txt") }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("admin.test_html") }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.test_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.test_html") }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
@@ -77,8 +77,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("admin.password_init_txt") }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("admin.password_init_html") }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_init_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_init_html") }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
@@ -89,8 +89,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("admin.password_reset_txt") }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("admin.password_reset_html") }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_reset_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.password_reset_html") }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
@@ -101,8 +101,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("admin.email_confirmation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("admin.email_confirmation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
@@ -114,8 +114,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("admin.invitation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("admin.invitation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">

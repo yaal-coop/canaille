@@ -18,11 +18,11 @@
 
 {% block submenu %}
     <nav class="ui bottom attached two item borderless menu">
-        <a class="active item" href="{{ url_for('account.profile_edition', edited_user=edited_user) }}">
+        <a class="active item" href="{{ url_for('core.account.profile_edition', edited_user=edited_user) }}">
             <i class="id card icon"></i>
             {% trans %}Personal information{% endtrans %}
         </a>
-        <a class="item" href="{{ url_for('account.profile_settings', edited_user=edited_user) }}">
+        <a class="item" href="{{ url_for('core.account.profile_settings', edited_user=edited_user) }}">
             <i class="tools icon"></i>
             {% trans %}Account settings{% endtrans %}
         </a>
@@ -66,7 +66,7 @@
                                 <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
                                     <i class="times icon"></i>
                                 </a>
-                                <img src="{% if photo %}{{ url_for("account.photo", user=edited_user, field="photo") }}{% endif %}" alt="User photo">
+                                <img src="{% if photo %}{{ url_for("core.account.photo", user=edited_user, field="photo") }}{% endif %}" alt="User photo">
                             </label>
                             <label
                                 class="ui centered photo-placeholder"

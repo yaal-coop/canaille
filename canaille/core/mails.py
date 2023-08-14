@@ -8,7 +8,7 @@ from flask_themer import render_template
 
 
 def send_test_mail(email):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Test email from {website_name}").format(
@@ -37,9 +37,9 @@ def send_test_mail(email):
 
 
 def send_password_reset_mail(user, mail):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
+        "core.account.reset",
         user=user,
         hash=build_hash(
             user.identifier,
@@ -78,9 +78,9 @@ def send_password_reset_mail(user, mail):
 
 
 def send_password_initialization_mail(user, email):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
+        "core.account.reset",
         user=user,
         hash=build_hash(
             user.identifier,
@@ -119,7 +119,7 @@ def send_password_initialization_mail(user, email):
 
 
 def send_invitation_mail(email, registration_url):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("You have been invited to create an account on {website_name}").format(
@@ -150,7 +150,7 @@ def send_invitation_mail(email, registration_url):
 
 
 def send_confirmation_email(email, confirmation_url):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Confirm your address email on {website_name}").format(

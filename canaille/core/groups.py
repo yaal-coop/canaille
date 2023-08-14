@@ -48,7 +48,7 @@ def create_group(user):
                 ),
                 "success",
             )
-            return redirect(url_for("groups.group", group=group))
+            return redirect(url_for("core.groups.group", group=group))
 
     return render_template(
         "group.html", menuitem="groups", form=form, edited_group=None, members=None
@@ -98,7 +98,7 @@ def edit_group(group):
                 ),
                 "success",
             )
-            return redirect(url_for("groups.group", group=group))
+            return redirect(url_for("core.groups.group", group=group))
         else:
             flash(_("Group edition failed."), "error")
 
@@ -118,4 +118,4 @@ def delete_group(group):
         "success",
     )
     group.delete()
-    return redirect(url_for("groups.groups"))
+    return redirect(url_for("core.groups.groups"))

@@ -7,16 +7,16 @@
 
 {% block submenu %}
     <nav class="ui bottom attached {% if has_smtp %}three{% else %}two{% endif %} item borderless menu">
-        <a class="active item" href="{{ url_for('account.users') }}">
+        <a class="active item" href="{{ url_for('core.account.users') }}">
             <i class="th list icon"></i>
             {% trans %}View{% endtrans %}
         </a>
-        <a class="item" href="{{ url_for('account.profile_creation') }}">
+        <a class="item" href="{{ url_for('core.account.profile_creation') }}">
             <i class="plus icon"></i>
             {% trans %}Add{% endtrans %}
         </a>
         {% if has_smtp %}
-            <a class="item" href="{{ url_for('account.user_invitation') }}">
+            <a class="item" href="{{ url_for('core.account.user_invitation') }}">
                 <i class="paper plane icon"></i>
                 {% trans %}Invite{% endtrans %}
             </a>

@@ -31,7 +31,7 @@
 
                         {% if user.can_edit_self %}
                             <a class="item {% if menuitem is defined and menuitem == "profile" %}active{% endif %}"
-                               href="{{ url_for('account.profile_edition', edited_user=user) }}">
+                               href="{{ url_for('core.account.profile_edition', edited_user=user) }}">
                                 <i class="id card icon"></i>
                                 {% trans %}Profile{% endtrans %}
                             </a>
@@ -45,25 +45,25 @@
                         {% endif %}
                         {% if user.can_manage_users %}
                             <a class="item {% if menuitem is defined and menuitem == "users" %}active{% endif %}"
-                               href="{{ url_for('account.users') }}">
+                               href="{{ url_for('core.account.users') }}">
                                 <i class="address book icon"></i>
                                 {% trans %}Users{% endtrans %}
                             </a>
                         {% endif %}
                         {% if user.can_manage_groups %}
                             <a class="item {% if menuitem is defined and menuitem == "groups" %}active{% endif %}"
-                               href="{{ url_for('groups.groups') }}">
+                               href="{{ url_for('core.groups.groups') }}">
                                 <i class="users icon"></i>
                                 {% trans %}Groups{% endtrans %}
                             </a>
                         {% endif %}
                         {% if user.can_manage_oidc %}
-                            <a class="item {% if menuitem is defined and menuitem == "admin" %}active{% endif %}" href="{{ url_for('admin.mail_index') }}">
+                            <a class="item {% if menuitem is defined and menuitem == "admin" %}active{% endif %}" href="{{ url_for('core.admin.mail_index') }}">
                                 <i class="settings icon"></i>
                                 {% trans %}Admin{% endtrans %}
                             </a>
                         {% endif %}
-                        <a class="item" href="{{ url_for('account.logout') }}">
+                        <a class="item" href="{{ url_for('core.account.logout') }}">
                             <i class="sign out alternate icon"></i>
                             {% trans %}Log out{% endtrans %}
                         </a>
@@ -84,7 +84,7 @@
         {% endblock %}
 
         <footer>
-            <a href="{{ url_for('account.about') }}">{{ _("About Canaille") }}</a>
+            <a href="{{ url_for('core.account.about') }}">{{ _("About Canaille") }}</a>
         </footer>
         {% if config.get("JAVASCRIPT", true) %}
             {% if not is_boosted %}

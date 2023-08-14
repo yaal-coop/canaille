@@ -49,7 +49,7 @@ def mail_index(user):
 @bp.route("/mail/test.html")
 @permissions_needed("manage_oidc")
 def test_html(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     return render_template(
         "mail/test.html",
         site_name=current_app.config.get("NAME", "Canaille"),
@@ -64,7 +64,7 @@ def test_html(user):
 @bp.route("/mail/test.txt")
 @permissions_needed("manage_oidc")
 def test_txt(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     return render_template(
         "mail/test.txt",
         site_name=current_app.config.get("NAME", "Canaille"),
@@ -75,9 +75,9 @@ def test_txt(user):
 @bp.route("/mail/password-init.html")
 @permissions_needed("manage_oidc")
 def password_init_html(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
+        "core.account.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password initialization on {website_name}").format(
@@ -101,9 +101,9 @@ def password_init_html(user):
 @bp.route("/mail/password-init.txt")
 @permissions_needed("manage_oidc")
 def password_init_txt(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
+        "core.account.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
@@ -120,9 +120,9 @@ def password_init_txt(user):
 @bp.route("/mail/reset.html")
 @permissions_needed("manage_oidc")
 def password_reset_html(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
+        "core.account.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         title=_("Password reset on {website_name}").format(
@@ -146,9 +146,9 @@ def password_reset_html(user):
 @bp.route("/mail/reset.txt")
 @permissions_needed("manage_oidc")
 def password_reset_txt(user):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "account.reset",
+        "core.account.reset",
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
         _external=True,
@@ -165,9 +165,9 @@ def password_reset_txt(user):
 @bp.route("/mail/<identifier>/<email>/invitation.html")
 @permissions_needed("manage_oidc")
 def invitation_html(user, identifier, email):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
-        "account.registration",
+        "core.account.registration",
         data=obj_to_b64([identifier, email]),
         hash=build_hash(identifier, email),
         _external=True,
@@ -188,9 +188,9 @@ def invitation_html(user, identifier, email):
 @bp.route("/mail/<identifier>/<email>/invitation.txt")
 @permissions_needed("manage_oidc")
 def invitation_txt(user, identifier, email):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
-        "account.registration",
+        "core.account.registration",
         data=obj_to_b64([identifier, email]),
         hash=build_hash(identifier, email),
         _external=True,
@@ -207,9 +207,9 @@ def invitation_txt(user, identifier, email):
 @bp.route("/mail/<identifier>/<email>/email-confirmation.html")
 @permissions_needed("manage_oidc")
 def email_confirmation_html(user, identifier, email):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=obj_to_b64([identifier, email]),
         hash=build_hash(identifier, email),
         _external=True,
@@ -230,9 +230,9 @@ def email_confirmation_html(user, identifier, email):
 @bp.route("/mail/<identifier>/<email>/email-confirmation.txt")
 @permissions_needed("manage_oidc")
 def email_confirmation_txt(user, identifier, email):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     email_confirmation_url = url_for(
-        "account.email_confirmation",
+        "core.account.email_confirmation",
         data=obj_to_b64([identifier, email]),
         hash=build_hash(identifier, email),
         _external=True,

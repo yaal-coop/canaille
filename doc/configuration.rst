@@ -274,7 +274,7 @@ Attributes are rendered using jinja2, and can use a ``user`` variable.
     *Optional.* Defaults to ``{{ user.address[0] }}``
 
 :PICTURE:
-    *Optional.* Defaults to ``{% if user.photo %}{{ url_for('account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}``
+    *Optional.* Defaults to ``{% if user.photo %}{{ url_for('core.account.photo', user_name=user.user_name[0], field='photo', _external=True) }}{% endif %}``
 
 :WEBSITE:
     *Optional.* Defaults to ``{{ user.profile_url[0] }}``

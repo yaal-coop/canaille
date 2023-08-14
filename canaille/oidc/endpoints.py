@@ -265,7 +265,7 @@ def end_session():
     user = current_user()
 
     if not user:
-        return redirect(url_for("account.index"))
+        return redirect(url_for("core.account.index"))
 
     form = LogoutForm(request.form)
     form.action = url_for("oidc.endpoints.end_session_submit")
@@ -345,7 +345,7 @@ def end_session():
         return redirect(url)
 
     flash(_("You have been disconnected"), "success")
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))
 
 
 @bp.route("/end_session_confirm", methods=["POST"])
@@ -363,4 +363,4 @@ def end_session_submit():
 
     flash(_("You have not been disconnected"), "info")
 
-    return redirect(url_for("account.index"))
+    return redirect(url_for("core.account.index"))

@@ -24,11 +24,11 @@
             <tr>
                 {% if user.can_read("photo") %}
                     <td>
-                        <a href="{{ url_for('account.profile_edition', edited_user=watched_user) }}">
+                        <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
                             {% if user.can_manage_users and watched_user.locked %}
                                 <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>
                             {% elif watched_user.photo and watched_user.photo[0] %}
-                                <img class="ui avatar image" src="{{ url_for("account.photo", user=watched_user, field="photo") }}" alt="User photo">
+                                <img class="ui avatar image" src="{{ url_for("core.account.photo", user=watched_user, field="photo") }}" alt="User photo">
                             {% else %}
                                 <i class="user circle big black icon"></i>
                             {% endif %}
@@ -37,7 +37,7 @@
                 {% endif %}
                 {% if user.can_read("user_name") %}
                     <td>
-                        <a href="{{ url_for('account.profile_edition', edited_user=watched_user) }}">
+                        <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
                             {% if watched_user.user_name %}
                                 {{ watched_user.user_name[0] }}
                             {% else %}
@@ -55,7 +55,7 @@
                 {% if user.can_manage_groups %}
                     <td>
                         {% for group in watched_user.groups %}
-                            <a class="ui label" href="{{ url_for('groups.group', group=group) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
+                            <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
                                 {{ group.display_name }}
                             </a>
                         {% endfor %}

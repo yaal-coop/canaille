@@ -11,11 +11,11 @@
 
 {% block submenu %}
     <nav class="ui bottom attached two item borderless menu">
-        <a class="item" href="{{ url_for('account.profile_edition', edited_user=edited_user) }}">
+        <a class="item" href="{{ url_for('core.account.profile_edition', edited_user=edited_user) }}">
             <i class="id card icon"></i>
             {% trans %}Personal information{% endtrans %}
         </a>
-        <a class="active item" href="{{ url_for('account.profile_settings', edited_user=edited_user) }}">
+        <a class="active item" href="{{ url_for('core.account.profile_settings', edited_user=edited_user) }}">
             <i class="tools icon"></i>
             {% trans %}Account settings{% endtrans %}
         </a>
@@ -156,7 +156,7 @@
                     {% endif %}
 
                     {% if user.can_impersonate_users and user.identifier != edited_user.identifier %}
-                        <a href="{{ url_for('account.impersonate', puppet=edited_user) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate" hx-boost="false">
+                        <a href="{{ url_for('core.account.impersonate', puppet=edited_user) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate" hx-boost="false">
                             {{ _("Impersonate") }}
                         </a>
                     {% endif %}

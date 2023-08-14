@@ -84,16 +84,12 @@ def setup_themer(app):
 
 
 def setup_blueprints(app):
-    import canaille.core.account
-    import canaille.core.admin
-    import canaille.core.groups
+    import canaille.core.blueprints
     import canaille.oidc.blueprints
 
     app.url_map.strict_slashes = False
 
-    app.register_blueprint(canaille.core.account.bp)
-    app.register_blueprint(canaille.core.admin.bp)
-    app.register_blueprint(canaille.core.groups.bp)
+    app.register_blueprint(canaille.core.blueprints.bp)
     app.register_blueprint(canaille.oidc.blueprints.bp)
 
 
