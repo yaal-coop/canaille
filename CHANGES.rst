@@ -8,6 +8,7 @@ Added
 
 - Configuration option to disable the forced usage of OIDC nonce :pr:`143`
 - Validate phone numbers with a regex :pr:`146`
+- Email verification :issue:`41` :pr:`147`
 
 Fixed
 *****
