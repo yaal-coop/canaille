@@ -821,7 +821,7 @@ def profile_delete(user, edited_user):
 def impersonate(user, puppet):
     puppet.login()
     flash(
-        _("Connection successful. Welcome %(user)s", user=puppet.formatted_name),
+        _("Connection successful. Welcome %(user)s", user=puppet.formatted_name[0]),
         "success",
     )
     return redirect(url_for("core.account.index"))
