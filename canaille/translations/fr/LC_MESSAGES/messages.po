@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-08-15 17:00+0200\n"
-"PO-Revision-Date: 2023-08-15 15:04+0000\n"
+"PO-Revision-Date: 2023-08-16 15:54+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1261,24 +1261,18 @@ msgstr ""
 "vous pouvez cliquer sur le lien ci-dessous et suivre les instructions."
 
 #: canaille/core/templates/mails/registration.html:27
-#, fuzzy, python-format
-#| msgid ""
-#| "You've started the registration process at %(site_name)s. To proceed you "
-#| "can click on the \"Continue creating my account\" button below and follow "
-#| "the instructions."
+#, python-format
 msgid ""
 "You've started the registration process at %(site_name)s. To proceed you can "
 "click on the \"Continue account creation\" button below and follow the "
 "instructions."
 msgstr ""
 "Vous avez commencé votre inscription sur %(site_name)s. Pour continuer, vous "
-"pouvez cliquer sur le lien ci-dessous et suivre les instructions."
+"pouvez cliquer sur le bouton ci-dessous et suivre les instructions."
 
 #: canaille/core/templates/mails/registration.html:38
-#, fuzzy
-#| msgid "Account creation"
 msgid "Continue account creation"
-msgstr "Création de compte"
+msgstr "Poursuivre l’inscription"
 
 #: canaille/core/templates/mails/registration.txt:3
 #, python-format
