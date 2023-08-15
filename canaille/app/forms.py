@@ -237,8 +237,8 @@ class ReadOnly:
         self.field_flags = {"readonly": True}
 
     def __call__(self, form, field):
-        if field.data != field.object_data:
-            raise wtforms.ValidationError(field.gettext("This field cannot be edited"))
+        if field.data and field.object_data and field.data != field.object_data:
+            raise wtforms.ValidationError(_("This field cannot be edited"))
 
 
 def is_readonly(field):

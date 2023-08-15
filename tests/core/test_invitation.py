@@ -1,7 +1,7 @@
 import datetime
 
 from canaille.app import models
-from canaille.core.account import Invitation
+from canaille.core.account import RegistrationPayload
 from flask import g
 
 
@@ -161,29 +161,29 @@ def test_invitation_login_already_taken(testclient, logged_admin):
 
 
 def test_registration(testclient, foo_group):
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    b64 = invitation.b64()
-    hash = invitation.build_hash()
+    b64 = payload.b64()
+    hash = payload.build_hash()
 
     testclient.get(f"/register/{b64}/{hash}", status=200)
 
 
 def test_registration_formcontrol(testclient):
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [],
     )
-    b64 = invitation.b64()
-    hash = invitation.build_hash()
+    b64 = payload.b64()
+    hash = payload.build_hash()
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
     assert "emails-1" not in res.form.fields
@@ -194,23 +194,23 @@ def test_registration_formcontrol(testclient):
 
 def test_registration_invalid_hash(testclient, foo_group):
     now = datetime.datetime.now(datetime.timezone.utc).isoformat()
-    invitation = Invitation(
+    payload = RegistrationPayload(
         now, "anything", False, "someone@mydomain.tld", [foo_group.id]
     )
-    b64 = invitation.b64()
+    b64 = payload.b64()
 
     testclient.get(f"/register/{b64}/invalid", status=302)
 
 
 def test_registration_invalid_data(testclient, foo_group):
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.build_hash()
+    hash = payload.build_hash()
 
     testclient.get(f"/register/invalid/{hash}", status=302)
 
@@ -219,29 +219,29 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
     two_days_ago = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         hours=48
     )
-    invitation = Invitation(
+    payload = RegistrationPayload(
         two_days_ago.isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.build_hash()
-    b64 = invitation.b64()
+    hash = payload.build_hash()
+    b64 = payload.b64()
 
     testclient.get(f"/register/{b64}/{hash}", status=302)
 
 
 def test_registration_no_password(testclient, foo_group):
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.build_hash()
-    b64 = invitation.b64()
+    hash = payload.build_hash()
+    b64 = payload.b64()
     url = f"/register/{b64}/{hash}"
 
     res = testclient.get(url, status=200)
@@ -258,15 +258,15 @@ def test_registration_no_password(testclient, foo_group):
 
 
 def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    hash = invitation.build_hash()
-    b64 = invitation.b64()
+    hash = payload.build_hash()
+    b64 = payload.b64()
     url = f"/register/{b64}/{hash}"
 
     testclient.get(url, status=302)
@@ -295,15 +295,15 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
         "user_name"
     ]  # remove groups from default read permissions
 
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [foo_group.id],
     )
-    b64 = invitation.b64()
-    hash = invitation.build_hash()
+    b64 = payload.b64()
+    hash = payload.build_hash()
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
 

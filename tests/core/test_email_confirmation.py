@@ -2,8 +2,8 @@ import datetime
 from unittest import mock
 
 import freezegun
-from canaille.core.account import EmailConfirmationObject
-from canaille.core.account import Invitation
+from canaille.core.account import EmailConfirmationPayload
+from canaille.core.account import RegistrationPayload
 from flask import url_for
 
 
@@ -162,7 +162,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
         )
     ]
 
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         "2020-01-01T02:00:00+00:00",
         "user",
         "new_email@mydomain.tld",
@@ -258,7 +258,7 @@ def test_confirmation_expired_link(testclient, backend, user):
     """
     Expired valid confirmation links should fail.
     """
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
         "new_email@mydomain.tld",
@@ -285,7 +285,7 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
     """
     Confirmation link with invalid hashes should fail.
     """
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
         "new_email@mydomain.tld",
@@ -314,7 +314,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
     For instance, when the user account has been deleted between
     the mail is sent and the link is clicked.
     """
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "invalid-user",
         "new_email@mydomain.tld",
@@ -341,7 +341,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
     """
     Clicking twice on a confirmation link should fail.
     """
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
         "john@doe.com",
@@ -370,7 +370,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
     to another account. For instance, if an administrator already put
     this email to someone else's profile.
     """
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
         "jane@doe.com",
@@ -489,15 +489,15 @@ def test_invitation_form_mail_field_readonly(testclient):
     """
     testclient.app.config["EMAIL_CONFIRMATION"] = True
 
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [],
     )
-    hash = invitation.build_hash()
-    b64 = invitation.b64()
+    hash = payload.build_hash()
+    b64 = payload.b64()
 
     res = testclient.get(f"/register/{b64}/{hash}")
     assert "readonly" in res.form["emails-0"].attrs
@@ -510,15 +510,15 @@ def test_invitation_form_mail_field_writable(testclient):
     """
     testclient.app.config["EMAIL_CONFIRMATION"] = False
 
-    invitation = Invitation(
+    payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.tld",
         [],
     )
-    hash = invitation.build_hash()
-    b64 = invitation.b64()
+    hash = payload.build_hash()
+    b64 = payload.b64()
 
     res = testclient.get(f"/register/{b64}/{hash}")
     assert "readonly" not in res.form["emails-0"].attrs

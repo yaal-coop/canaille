@@ -352,6 +352,21 @@ class EditGroupForm(Form):
     )
 
 
+class JoinForm(Form):
+    email = wtforms.EmailField(
+        _("Email address"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Email(),
+        ],
+        render_kw={
+            "placeholder": _("jane@doe.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
 class InvitationForm(Form):
     user_name = wtforms.StringField(
         _("Username"),

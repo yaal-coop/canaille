@@ -1,3 +1,4 @@
+import binascii
 import datetime
 import io
 from dataclasses import astuple
@@ -40,12 +41,15 @@ from werkzeug.datastructures import FileStorage
 from .forms import build_profile_form
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
+from .forms import JoinForm
 from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import PROFILE_FORM_FIELDS
+from .forms import unique_email
 from .mails import send_confirmation_email
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
 from .mails import send_password_reset_mail
+from .mails import send_registration_mail
 
 
 bp = Blueprint("account", __name__)
@@ -65,6 +69,68 @@ def index():
         return redirect(url_for("oidc.consents.consents"))
 
     return redirect(url_for("core.account.about"))
+
+
+@bp.route("/join", methods=("GET", "POST"))
+def join():
+    if not current_app.config.get("ENABLE_REGISTRATION", False):
+        abort(404)
+
+    if not current_app.config.get("EMAIL_CONFIRMATION", True):
+        return redirect(url_for(".registration"))
+
+    if current_user():
+        abort(403)
+
+    form = JoinForm(request.form or None)
+    if not current_app.config.get("HIDE_INVALID_LOGINS", True):
+        form.email.validators.append(unique_email)
+
+    if request.form and form.validate():
+        if models.User.query(emails=form.email.data):
+            flash(
+                _(
+                    "You will receive soon an email to continue the registration process."
+                ),
+                "success",
+            )
+            return render_template("join.html", form=form)
+
+        payload = RegistrationPayload(
+            creation_date_isoformat=datetime.datetime.now(
+                datetime.timezone.utc
+            ).isoformat(),
+            user_name="",
+            user_name_editable=True,
+            email=form.email.data,
+            groups=[],
+        )
+
+        registration_url = url_for(
+            "core.account.registration",
+            data=payload.b64(),
+            hash=payload.build_hash(),
+            _external=True,
+        )
+
+        if send_registration_mail(form.email.data, registration_url):
+            flash(
+                _(
+                    "You will receive soon an email to continue the registration process."
+                ),
+                "success",
+            )
+        else:
+            flash(
+                _(
+                    "An error happened while sending your registration mail. "
+                    "Please try again in a few minutes. "
+                    "If this still happens, please contact the administrators."
+                ),
+                "error",
+            )
+
+    return render_template("join.html", form=form)
 
 
 @bp.route("/about")
@@ -93,7 +159,7 @@ def users(user):
 
 
 @dataclass
-class Verification:
+class VerificationPayload:
     creation_date_isoformat: str
 
     @property
@@ -118,13 +184,13 @@ class Verification:
 
 
 @dataclass
-class EmailConfirmationObject(Verification):
+class EmailConfirmationPayload(VerificationPayload):
     identifier: str
     email: str
 
 
 @dataclass
-class Invitation(Verification):
+class RegistrationPayload(VerificationPayload):
     user_name: str
     user_name_editable: bool
     email: str
@@ -142,7 +208,7 @@ def user_invitation(user):
     form_validated = False
     if request.form and form.validate():
         form_validated = True
-        invitation = Invitation(
+        payload = RegistrationPayload(
             datetime.datetime.now(datetime.timezone.utc).isoformat(),
             form.user_name.data,
             form.user_name_editable.data,
@@ -151,8 +217,8 @@ def user_invitation(user):
         )
         registration_url = url_for(
             "core.account.registration",
-            data=invitation.b64(),
-            hash=invitation.build_hash(),
+            data=payload.b64(),
+            hash=payload.build_hash(),
             _external=True,
         )
 
@@ -169,30 +235,46 @@ def user_invitation(user):
     )
 
 
+@bp.route("/register", methods=["GET", "POST"])
 @bp.route("/register/<data>/<hash>", methods=["GET", "POST"])
-def registration(data, hash):
-    try:
-        invitation = Invitation(*b64_to_obj(data))
-    except:
-        flash(
-            _("The invitation link that brought you here was invalid."),
-            "error",
-        )
-        return redirect(url_for("core.account.index"))
+def registration(data=None, hash=None):
+    if not data:
+        payload = None
+        if not current_app.config.get(
+            "ENABLE_REGISTRATION", False
+        ) or current_app.config.get("EMAIL_CONFIRMATION", True):
+            abort(403)
 
-    if invitation.has_expired():
-        flash(
-            _("The invitation link that brought you here has expired."),
-            "error",
-        )
-        return redirect(url_for("core.account.index"))
+    else:
+        try:
+            payload = RegistrationPayload(*b64_to_obj(data))
+        except binascii.Error:
+            flash(
+                _("The registration link that brought you here was invalid."),
+                "error",
+            )
+            return redirect(url_for("core.account.index"))
 
-    if models.User.get_from_login(invitation.user_name):
-        flash(
-            _("Your account has already been created."),
-            "error",
-        )
-        return redirect(url_for("core.account.index"))
+        if payload.has_expired():
+            flash(
+                _("The registration link that brought you here has expired."),
+                "error",
+            )
+            return redirect(url_for("core.account.index"))
+
+        if payload.user_name and models.User.get_from_login(payload.user_name):
+            flash(
+                _("Your account has already been created."),
+                "error",
+            )
+            return redirect(url_for("core.account.index"))
+
+        if hash != payload.build_hash():
+            flash(
+                _("The registration link that brought you here was invalid."),
+                "error",
+            )
+            return redirect(url_for("core.account.index"))
 
     if current_user():
         flash(
@@ -201,18 +283,13 @@ def registration(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    if hash != invitation.build_hash():
-        flash(
-            _("The invitation link that brought you here was invalid."),
-            "error",
-        )
-        return redirect(url_for("core.account.index"))
+    if payload:
+        data = {
+            "user_name": payload.user_name,
+            "emails": [payload.email],
+            "groups": payload.groups,
+        }
 
-    data = {
-        "user_name": invitation.user_name,
-        "emails": [invitation.email],
-        "groups": invitation.groups,
-    }
     has_smtp = "SMTP" in current_app.config
     emails_readonly = current_app.config.get("EMAIL_CONFIRMATION") is True or (
         current_app.config.get("EMAIL_CONFIRMATION") is None and has_smtp
@@ -220,7 +297,7 @@ def registration(data, hash):
     readable_fields, writable_fields = default_fields()
 
     form = build_profile_form(writable_fields, readable_fields)
-    if "groups" not in form and invitation.groups:
+    if "groups" not in form and payload and payload.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[(group.id, group.display_name) for group in models.Group.query()],
@@ -228,7 +305,7 @@ def registration(data, hash):
         set_readonly(form["groups"])
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    if is_readonly(form["user_name"]) and invitation.user_name_editable:
+    if is_readonly(form["user_name"]) and (not payload or payload.user_name_editable):
         set_writable(form["user_name"])
 
     if not is_readonly(form["emails"]) and emails_readonly:
@@ -273,7 +350,7 @@ def registration(data, hash):
 @bp.route("/email-confirmation/<data>/<hash>")
 def email_confirmation(data, hash):
     try:
-        confirmation_obj = EmailConfirmationObject(*b64_to_obj(data))
+        confirmation_obj = EmailConfirmationPayload(*b64_to_obj(data))
     except:
         flash(
             _("The email confirmation link that brought you here is invalid."),
@@ -353,6 +430,7 @@ def profile_creation(user):
         )
 
     user = profile_create(current_app, form)
+    flash(_("User account creation succeed."), "success")
     return redirect(url_for("core.account.profile_edition", edited_user=user))
 
 
@@ -380,8 +458,6 @@ def profile_create(current_app, form):
         user.save()
 
     user.load_permissions()
-
-    flash(_("User account creation succeed."), "success")
 
     return user
 
@@ -467,7 +543,7 @@ def profile_edition_emails_form(user, edited_user, has_smtp):
 
 
 def profile_edition_add_email(user, edited_user, emails_form):
-    email_confirmation = EmailConfirmationObject(
+    email_confirmation = EmailConfirmationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         edited_user.identifier,
         emails_form.new_email.data,
