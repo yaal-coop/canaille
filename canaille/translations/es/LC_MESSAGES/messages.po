@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2023-08-15 16:36+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-08-15 17:00+0200\n"
 "PO-Revision-Date: 2023-08-15 15:04+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -270,7 +270,7 @@ msgstr "Restablecer contraseña en {website_name}"
 msgid "Invitation on {website_name}"
 msgstr "Invitación a {website_name}"
 
-#: canaille/core/admin.py:224
+#: canaille/core/admin.py:224 canaille/core/admin.py:266
 msgid "Email confirmation on {website_name}"
 msgstr "Confirmación por correo electrónico en {website_name}"
 
@@ -1151,9 +1151,17 @@ msgstr "Inicialización de contraseña"
 msgid "Email verification"
 msgstr "Verificación del correo electrónico"
 
-#: canaille/core/templates/mails/admin.html:122
+#: canaille/core/templates/mails/admin.html:121
 msgid "Invitation"
 msgstr "Invitación"
+
+#: canaille/core/templates/mails/admin.html:133
+#: canaille/core/templates/mails/registration.html:19
+#: canaille/core/templates/mails/registration.txt:1
+#, fuzzy
+#| msgid "Region"
+msgid "Registration"
+msgstr "Región"
 
 #: canaille/core/templates/mails/email-confirmation.html:19
 msgid "Email address confirmation"
@@ -1255,13 +1263,6 @@ msgstr ""
 "Has sido invitado a crear una cuenta en %(site_name)s. Para proceder, haz "
 "clic en el botón «Crear mi cuenta» a continuación y sigue las instrucciones."
 
-#: canaille/core/templates/mails/registration.html:19
-#: canaille/core/templates/mails/registration.txt:1
-#, fuzzy
-#| msgid "Region"
-msgid "Registration"
-msgstr "Región"
-
 #: canaille/core/templates/mails/registration.html:27
 #, fuzzy, python-format
 #| msgid ""
@@ -1270,7 +1271,7 @@ msgstr "Región"
 #| "instructions."
 msgid ""
 "You've started the registration process at %(site_name)s. To proceed you can "
-"click on the \"Continue creating my account\" button below and follow the "
+"click on the \"Continue account creation\" button below and follow the "
 "instructions."
 msgstr ""
 "Has sido invitado a crear una cuenta en %(site_name)s. Para proceder, haz "
@@ -1278,9 +1279,9 @@ msgstr ""
 
 #: canaille/core/templates/mails/registration.html:38
 #, fuzzy
-#| msgid "Create my account"
-msgid "Continue creating my account"
-msgstr "Crear mi cuenta"
+#| msgid "Account creation"
+msgid "Continue account creation"
+msgstr "Crear cuenta"
 
 #: canaille/core/templates/mails/registration.txt:3
 #, fuzzy, python-format
@@ -1907,6 +1908,11 @@ msgid "%(nb_items)s item"
 msgid_plural "%(nb_items)s items"
 msgstr[0] "%(nb_items)s artículo"
 msgstr[1] "%(nb_items)s artículos"
+
+#, fuzzy
+#~| msgid "Create my account"
+#~ msgid "Continue creating my account"
+#~ msgstr "Crear mi cuenta"
 
 #~ msgid "The user password can be set:"
 #~ msgstr "La contraseña se puede establecer:"

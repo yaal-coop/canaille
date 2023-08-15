@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-08-15 16:36+0200\n"
+"POT-Creation-Date: 2023-08-15 17:00+0200\n"
 "PO-Revision-Date: 2023-07-02 08:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -289,7 +289,7 @@ msgstr ""
 msgid "Invitation on {website_name}"
 msgstr ""
 
-#: canaille/core/admin.py:224
+#: canaille/core/admin.py:224 canaille/core/admin.py:266
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
 msgid "Email confirmation on {website_name}"
@@ -1143,9 +1143,17 @@ msgstr ""
 msgid "Email verification"
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:122
+#: canaille/core/templates/mails/admin.html:121
 msgid "Invitation"
 msgstr ""
+
+#: canaille/core/templates/mails/admin.html:133
+#: canaille/core/templates/mails/registration.html:19
+#: canaille/core/templates/mails/registration.txt:1
+#, fuzzy
+#| msgid "Region"
+msgid "Registration"
+msgstr "Region"
 
 #: canaille/core/templates/mails/email-confirmation.html:19
 #, fuzzy
@@ -1234,24 +1242,19 @@ msgid ""
 "can click on the link below and follow the instructions."
 msgstr ""
 
-#: canaille/core/templates/mails/registration.html:19
-#: canaille/core/templates/mails/registration.txt:1
-#, fuzzy
-#| msgid "Region"
-msgid "Registration"
-msgstr "Region"
-
 #: canaille/core/templates/mails/registration.html:27
 #, python-format
 msgid ""
 "You've started the registration process at %(site_name)s. To proceed you can "
-"click on the \"Continue creating my account\" button below and follow the "
+"click on the \"Continue account creation\" button below and follow the "
 "instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/registration.html:38
-msgid "Continue creating my account"
-msgstr ""
+#, fuzzy
+#| msgid "User account creation failed."
+msgid "Continue account creation"
+msgstr "Erstellung des Benutzerkontos fehlgeschlagen."
 
 #: canaille/core/templates/mails/registration.txt:3
 #, python-format
