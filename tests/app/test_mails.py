@@ -168,6 +168,7 @@ def test_mail_debug_pages(testclient, logged_admin):
         "reset",
         "admin/admin@admin.com/invitation",
         "admin/admin@admin.com/email-confirmation",
+        "admin@admin.com/registration",
     ]:
         testclient.get(f"/admin/mail/{base}.html")
         testclient.get(f"/admin/mail/{base}.txt")

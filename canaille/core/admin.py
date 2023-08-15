@@ -244,3 +244,45 @@ def email_confirmation_txt(user, identifier, email):
         site_url=base_url,
         confirmation_url=email_confirmation_url,
     )
+
+
+@bp.route("/mail/<email>/registration.html")
+@permissions_needed("manage_oidc")
+def registration_html(user, email):
+    base_url = url_for("core.account.index", _external=True)
+    registration_url = url_for(
+        "core.account.registration",
+        data=obj_to_b64([email]),
+        hash=build_hash(email),
+        _external=True,
+    )
+
+    return render_template(
+        "mails/registration.html",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        registration_url=registration_url,
+        logo=current_app.config.get("LOGO"),
+        title=_("Email confirmation on {website_name}").format(
+            website_name=current_app.config.get("NAME", "Canaille")
+        ),
+    )
+
+
+@bp.route("/mail/<email>/registration.txt")
+@permissions_needed("manage_oidc")
+def registration_txt(user, email):
+    base_url = url_for("core.account.index", _external=True)
+    registration_url = url_for(
+        "core.account.registration",
+        data=obj_to_b64([email]),
+        hash=build_hash(email),
+        _external=True,
+    )
+
+    return render_template(
+        "mails/registration.txt",
+        site_name=current_app.config.get("NAME", "Canaille"),
+        site_url=base_url,
+        registration_url=registration_url,
+    )

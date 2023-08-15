@@ -110,7 +110,6 @@
                 </div>
             </div>
 
-
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
@@ -120,6 +119,18 @@
                 </div>
                 <div class="middle aligned content">
                     {{ _("Invitation") }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.registration_txt", email=user.preferred_email) }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.registration_html", email=user.preferred_email) }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Registration") }}
                 </div>
             </div>
 
