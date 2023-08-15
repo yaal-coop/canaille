@@ -43,7 +43,6 @@ from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
 from .forms import MINIMUM_PASSWORD_LENGTH
-from .forms import OnboardingForm
 from .forms import PROFILE_FORM_FIELDS
 from .mails import send_confirmation_email
 from .mails import send_invitation_mail
@@ -60,10 +59,7 @@ def index():
     user = current_user()
 
     if not user:
-        if "SMTP" not in current_app.config or "REGISTRATION" not in current_app.config:
-            return redirect(url_for("core.auth.login"))
-
-        return redirect(url_for("core.account.onboarding"))
+        return redirect(url_for("core.auth.login"))
 
     if user.can_edit_self or user.can_manage_users:
         return redirect(url_for("core.account.profile_edition", edited_user=user))
@@ -72,26 +68,6 @@ def index():
         return redirect(url_for("oidc.consents.consents"))
 
     return redirect(url_for("core.account.about"))
-
-
-@bp.route("/onboarding", methods=("GET", "POST"))
-@smtp_needed()
-@registration_needed()
-def onboarding():
-    if current_user():
-        return redirect(
-            url_for("account.profile_edition", username=current_user().user_name[0])
-        )
-
-    form = OnboardingForm(request.form or None)
-
-    if request.form:
-        if request.form["answer"] == "sign-up":
-            return redirect(url_for("account.join"))
-        elif request.form["answer"] == "sign-in":
-            return redirect(url_for("account.login"))
-
-    return render_template("onboarding.html", form=form)
 
 
 @bp.route("/join", methods=("GET", "POST"))

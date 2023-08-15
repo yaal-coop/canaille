@@ -352,10 +352,6 @@ class EditGroupForm(Form):
     )
 
 
-class OnboardingForm(Form):
-    pass
-
-
 class JoinForm(Form):
     user_name = wtforms.StringField(
         _("Username"),
