@@ -189,6 +189,9 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
+                    {% if not user %}
+                        <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
+                    {% endif %}
                     <button type="submit" class="ui right floated primary button" name="action" value="create-profile" id="create-profile">
                         {{ _("Submit") }}
                     </button>

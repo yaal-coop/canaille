@@ -353,17 +353,11 @@ class EditGroupForm(Form):
 
 
 class JoinForm(Form):
-    user_name = wtforms.StringField(
-        _("Username"),
-        render_kw={"placeholder": _("jdoe")},
-        validators=[wtforms.validators.DataRequired(), unique_login],
-    )
     email = wtforms.EmailField(
         _("Email address"),
         validators=[
             wtforms.validators.DataRequired(),
             wtforms.validators.Email(),
-            unique_email,
         ],
         render_kw={
             "placeholder": _("jane@doe.com"),

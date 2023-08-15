@@ -109,6 +109,7 @@ def setup_flask(app):
             "debug": app.debug or app.config.get("TESTING", False),
             "has_smtp": "SMTP" in app.config,
             "has_password_recovery": app.config.get("ENABLE_PASSWORD_RECOVERY", True),
+            "has_registration": app.config.get("ENABLE_REGISTRATION", False),
             "has_account_lockability": app.backend.get().has_account_lockability(),
             "logo_url": app.config.get("LOGO"),
             "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),

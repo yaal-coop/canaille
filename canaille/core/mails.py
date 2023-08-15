@@ -181,24 +181,25 @@ def send_confirmation_email(email, confirmation_url):
 
 
 def send_registration_mail(email, registration_url):
-    base_url = url_for("account.index", _external=True)
+    base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Continue your registration on {website_name}").format(
         website_name=current_app.config.get("NAME", registration_url)
     )
     text_body = render_template(
-        "mail/registration.txt",
-        site_name=current_app.config.get("NAME", registration_url),
+        "mails/registration.txt",
+        site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
-        "mail/registration.html",
-        site_name=current_app.config.get("NAME", registration_url),
+        "mails/registration.html",
+        site_name=current_app.config.get("NAME", base_url),
         site_url=base_url,
         registration_url=registration_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+        title=subject,
     )
 
     return send_email(

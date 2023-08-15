@@ -57,6 +57,12 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
     This needs the ``sentry_sdk`` python package to be installed.
     This is useful if you want to collect the canaille exceptions in a production environment.
 
+:ENABLE_REGISTRATION:
+    *Optional.* If true, then users can freely create an account
+    at this instance. If ``EMAIL_CONFIRMATION`` is true, users must confirm
+    their email before the account is created.
+    Defaults to false.
+
 :EMAIL_CONFIRMATION:
     *Optional.*  If  set to true, users will need to click on
     a confirmation link sent by email when they want to add a new email. By default,

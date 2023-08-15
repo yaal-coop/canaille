@@ -45,6 +45,11 @@ FAVICON = "/static/img/canaille-c.png"
 # will be read-only.
 # EMAIL_CONFIRMATION =
 
+# If ENABLE_REGISTRATION is true, then users can freely create an account
+# at this instance. If email verification is available, users must confirm
+# their email before the account is created.
+ENABLE_REGISTRATION = true
+
 # If HIDE_INVALID_LOGINS is set to true (the default), when a user
 # tries to sign in with an invalid login, a message is shown indicating
 # that the password is wrong, but does not give a clue wether the login
@@ -251,10 +256,3 @@ DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
 # LOGIN = ""
 # PASSWORD = ""
 # FROM_ADDR = "admin@mydomain.tld"
-
-
-# The registration options. If not set, registration will be disabled. Requires SMTP to work.
-# Groups should be formatted like this: ["<GROUP_NAME_ATTRIBUTE>=group_name,<GROUP_BASE>", ...]
-# [REGISTRATION]
-# GROUPS=[]
-# CAN_EDIT_USERNAME = false

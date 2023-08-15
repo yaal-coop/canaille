@@ -1,0 +1,51 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+{% import 'partial/profile_field.html' as profile %}
+
+{%- block title -%}
+    {%- trans %}User creation{% endtrans -%}
+{%- endblock -%}
+
+{% block content %}
+    <div class="joinform">
+        <h2 class="ui top attached header">
+            {% if logo_url %}
+                <img class="ui image" src="{{ logo_url }}">
+            {% endif %}
+
+            <div class="content">
+                {% trans %}User creation{% endtrans %}
+                <div class="sub header">
+                    {% trans %}Create a new user account{% endtrans %}
+                </div>
+            </div>
+        </h2>
+        <div class="ui attached message">
+            {% trans %}
+                Before you can create an account, please enter a valid email address.
+                Then you will receive an email containing a link that will allow you to
+                finish your registration.
+            {% endtrans %}
+        </div>
+        <div class="ui attached clearing segment">
+
+            {% call fui.render_form(form, class_="profile-form info") %}
+                {% if "email" in form %}
+                    {{ profile.render_field(form.email) }}
+                {% endif %}
+
+                <div class="ui right aligned container">
+                    <div class="ui stackable buttons">
+                        <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
+                        {% if has_smtp and has_password_recovery %}
+                            <a type="button" class="ui right floated button" href="{{ url_for('core.auth.forgotten') }}">{{ _("Forgotten password") }}</a>
+                        {% endif %}
+                        <button type="submit" class="ui right floated primary button" name="action" value="create-profile" id="create-profile">
+                            {{ _("Submit") }}
+                        </button>
+                    </div>
+                </div>
+
+            {% endcall %}
+        </div>
+{% endblock %}
