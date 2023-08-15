@@ -6,11 +6,12 @@ as in *Can I access your data?* Canaille is a simple OpenID Connect provider bas
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 
-- Authentication against a LDAP directory;
-- OAuth/OpenID Connect support;
-- No outdated or exotic protocol support;
-- No additional database required. Everything is stored in your LDAP server;
-- The code is easy to read and easy to edit.
+- Authentication and user profile edition against a LDAP directory;
+- Registration, email confirmation, "I forgot my password" emails;
+- Only OpenID Connect: no outdated or exotic protocol support;
+- No additional database required: everything is stored in your LDAP server;
+- Customizable, themable;
+- The code is easy to read and easy to edit!
 
 Screenshots
 ===========
