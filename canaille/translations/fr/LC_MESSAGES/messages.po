@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2023-08-15 16:36+0200\n"
-"PO-Revision-Date: 2023-08-09 14:52+0000\n"
+"PO-Revision-Date: 2023-08-15 15:04+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -87,24 +87,25 @@ msgstr "Vous devriez changer votre mot de passe."
 #: canaille/core/account.py:92 canaille/core/account.py:118
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
+"Vous recevrez sous peu un courriel qui vous permettra de poursuivre votre "
+"inscription."
 
 #: canaille/core/account.py:125
 msgid ""
 "An error happened while sending your registration mail. Please try again in "
 "a few minutes. If this still happens, please contact the administrators."
 msgstr ""
+"Une erreur est survenue lors de l’envoi de votre courriel d'inscription. "
+"Veuillez retenter dans quelques minutes. Si le problème subsite, veuillez "
+"contacter les administrateurs."
 
 #: canaille/core/account.py:253 canaille/core/account.py:274
-#, fuzzy
-#| msgid "The invitation link that brought you here was invalid."
 msgid "The registration link that brought you here was invalid."
-msgstr "Le lien d'invitation qui vous a amené ici est invalide."
+msgstr "Le lien qui vous a amené ici est invalide."
 
 #: canaille/core/account.py:260
-#, fuzzy
-#| msgid "The invitation link that brought you here has expired."
 msgid "The registration link that brought you here has expired."
-msgstr "Le lien d'invitation qui vous a amené ici a expiré."
+msgstr "Le lien qui vous a amené ici a expiré."
 
 #: canaille/core/account.py:267
 msgid "Your account has already been created."
@@ -565,10 +566,8 @@ msgid "Confirm your address email on {website_name}"
 msgstr "Confirmez votre adresse email sur {website_name}"
 
 #: canaille/core/mails.py:187
-#, fuzzy
-#| msgid "Confirm your address email on {website_name}"
 msgid "Continue your registration on {website_name}"
-msgstr "Confirmez votre adresse email sur {website_name}"
+msgstr "Poursuivez votre inscription sur {website_name}"
 
 #: canaille/core/templates/about.html:5 canaille/core/templates/about.html:16
 #: canaille/templates/base.html:87
@@ -646,10 +645,8 @@ msgstr ""
 
 #: canaille/core/templates/forgotten-password.html:33
 #: canaille/core/templates/login.html:37
-#, fuzzy
-#| msgid "Create my account"
 msgid "Create an account"
-msgstr "Création de mon compte"
+msgstr "S’inscrire"
 
 #: canaille/core/templates/forgotten-password.html:38
 msgid "Send again"
@@ -821,19 +818,14 @@ msgid "Create a new user account"
 msgstr "Création d'un nouveau compte utilisateur"
 
 #: canaille/core/templates/join.html:24
-#, fuzzy
-#| msgid ""
-#| "After this form is sent, if the email address or the login you provided "
-#| "exists, you will receive an email containing a link that will allow you "
-#| "to reset your password."
 msgid ""
 "Before you can create an account, please enter a valid email address. Then "
 "you will receive an email containing a link that will allow you to finish "
 "your registration."
 msgstr ""
-"Après envoi de ce formulaire, si l'identifiant ou l'adresse courriel que "
-"vous indiquez existe, vous recevrez un courriel contenant un lien qui vous "
-"permettra de ré-initialiser votre mot de passe."
+"Avant de pouvoir créer un compte, veuillez entrer une adresse email valide. "
+"Vous recevrez ensuite un courriel contenant un lien qui vous permettra de "
+"poursuivre votre inscription."
 
 #: canaille/core/templates/join.html:44
 #: canaille/core/templates/profile_add.html:196
@@ -1264,42 +1256,31 @@ msgstr ""
 
 #: canaille/core/templates/mails/registration.html:19
 #: canaille/core/templates/mails/registration.txt:1
-#, fuzzy
-#| msgid "Region"
 msgid "Registration"
-msgstr "Région"
+msgstr "Inscription"
 
 #: canaille/core/templates/mails/registration.html:27
-#, fuzzy, python-format
-#| msgid ""
-#| "You have been invited to create an account at %(site_name)s. To proceed "
-#| "you can click on the \"Create my account\" button below and follow the "
-#| "instructions."
+#, python-format
 msgid ""
 "You've started the registration process at %(site_name)s. To proceed you can "
 "click on the \"Continue creating my account\" button below and follow the "
 "instructions."
 msgstr ""
-"Vous avez été invités à créer un compte sur %(site_name)s. Pour continuer, "
-"vous pouvez cliquer sur le lien ci-dessous et suivre les instructions."
+"Vous avez commencé votre inscription sur %(site_name)s. Pour continuer, vous "
+"pouvez cliquer sur le lien ci-dessous et suivre les instructions."
 
 #: canaille/core/templates/mails/registration.html:38
-#, fuzzy
-#| msgid "Create my account"
 msgid "Continue creating my account"
-msgstr "Création de mon compte"
+msgstr "Poursuivre mon inscription"
 
 #: canaille/core/templates/mails/registration.txt:3
-#, fuzzy, python-format
-#| msgid ""
-#| "You have been invited to create an account at %(site_name)s. To proceed "
-#| "you can click on the link below and follow the instructions."
+#, python-format
 msgid ""
 "You've started the registration process at %(site_name)s. To proceed you can "
 "click on the link below and follow the instructions."
 msgstr ""
-"Vous avez été invités à créer un compte sur %(site_name)s. Pour continuer, "
-"vous pouvez cliquer sur le lien ci-dessous et suivre les instructions."
+"Vous avez commencé à vous inscrire sur %(site_name)s. Pour continuer, vous "
+"pouvez cliquer sur le lien ci-dessous et suivre les instructions."
 
 #: canaille/core/templates/mails/reset.html:27
 #, python-format
