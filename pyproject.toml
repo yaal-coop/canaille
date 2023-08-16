@@ -11,6 +11,7 @@ license = "MIT"
 keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
 classifiers = [
     "Intended Audience :: Developers",
+    "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
