@@ -2,6 +2,7 @@ from canaille.app import build_hash
 from canaille.app import models
 from canaille.app.flask import current_user
 from canaille.app.flask import smtp_needed
+from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
 from flask import abort
 from flask import Blueprint
@@ -12,7 +13,6 @@ from flask import request
 from flask import session
 from flask import url_for
 from flask_babel import gettext as _
-from flask_themer import render_template
 
 from .forms import FirstLoginForm
 from .forms import ForgottenPasswordForm

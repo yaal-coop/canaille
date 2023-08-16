@@ -1,5 +1,6 @@
 import wtforms
 from canaille.app import models
+from canaille.app.forms import email_validator
 from canaille.app.forms import Form
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
@@ -27,7 +28,7 @@ class ClientAddForm(Form):
     contacts = wtforms.FieldList(
         wtforms.EmailField(
             _("Contacts"),
-            validators=[wtforms.validators.Optional(), wtforms.validators.Email()],
+            validators=[wtforms.validators.Optional(), email_validator],
             render_kw={"placeholder": "admin@mydomain.tld"},
         ),
         min_entries=1,

@@ -3,7 +3,7 @@ import math
 import re
 
 import pytz
-import wtforms
+import wtforms.validators
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
@@ -42,6 +42,15 @@ def phone_number(form, field):
         number,
     ):
         raise wtforms.ValidationError(_("Not a valid phone number"))
+
+
+def email_validator(form, field):
+    try:
+        import email_validator  # noqa: F401
+    except ImportError:  # pragma: no cover
+        pass
+
+    wtforms.validators.Email()(form, field)
 
 
 meta = DefaultMeta()

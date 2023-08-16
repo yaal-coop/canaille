@@ -2,6 +2,7 @@ import wtforms.form
 from canaille.app import models
 from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
+from canaille.app.forms import email_validator
 from canaille.app.forms import Form
 from canaille.app.forms import is_uri
 from canaille.app.forms import phone_number
@@ -164,7 +165,7 @@ PROFILE_FORM_FIELDS = dict(
             _("Email addresses"),
             validators=[
                 wtforms.validators.DataRequired(),
-                wtforms.validators.Email(),
+                email_validator,
                 unique_email,
             ],
             description=_(
@@ -357,7 +358,7 @@ class JoinForm(Form):
         _("Email address"),
         validators=[
             wtforms.validators.DataRequired(),
-            wtforms.validators.Email(),
+            email_validator,
         ],
         render_kw={
             "placeholder": _("jane@doe.com"),
@@ -382,7 +383,7 @@ class InvitationForm(Form):
         _("Email address"),
         validators=[
             wtforms.validators.DataRequired(),
-            wtforms.validators.Email(),
+            email_validator,
             unique_email,
         ],
         render_kw={
@@ -420,7 +421,7 @@ class EmailConfirmationForm(Form):
         _("New email address"),
         validators=[
             wtforms.validators.DataRequired(),
-            wtforms.validators.Email(),
+            email_validator,
             unique_email,
         ],
         render_kw={

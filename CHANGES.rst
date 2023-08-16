@@ -7,6 +7,7 @@ Added
 *****
 
 - Additional inmemory backend :issue:`30` :pr:`149`
+- Installation extras :issue:`167` :pr:`150`
 
 [0.0.31] - 2023-08-15
 =====================
