@@ -62,7 +62,7 @@ def configuration(smtpd):
     smtpd.config.use_starttls = True
     conf = {
         "SECRET_KEY": gen_salt(24),
-        "JAVASCRIP": False,
+        "JAVASCRIPT": False,
         "LOGO": "/static/img/canaille-head.png",
         "TIMEZONE": "UTC",
         "ACL": {
