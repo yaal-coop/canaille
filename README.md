@@ -52,4 +52,6 @@ Online demo data are reset every night at 02:00 CEST.
 
 ## Translation status
 
-[![Translation status for each language](https://hosted.weblate.org/widgets/canaille/-/canaille/multi-blue.svg)](https://hosted.weblate.org/engage/canaille/?utm_source=widget)
+<div align="center">
+    [![Translation status for each language](https://hosted.weblate.org/widgets/canaille/-/canaille/multi-blue.svg)](https://hosted.weblate.org/engage/canaille/?utm_source=widget)
+</div>
