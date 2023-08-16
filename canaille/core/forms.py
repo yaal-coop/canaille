@@ -366,6 +366,10 @@ class JoinForm(Form):
         },
     )
 
+    def validate_email(form, field):
+        if not current_app.config.get("HIDE_INVALID_LOGINS", True):
+            unique_email(form, field)
+
 
 class InvitationForm(Form):
     user_name = wtforms.StringField(

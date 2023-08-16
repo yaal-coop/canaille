@@ -44,7 +44,6 @@ from .forms import InvitationForm
 from .forms import JoinForm
 from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import PROFILE_FORM_FIELDS
-from .forms import unique_email
 from .mails import send_confirmation_email
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
@@ -83,9 +82,6 @@ def join():
         abort(403)
 
     form = JoinForm(request.form or None)
-    if not current_app.config.get("HIDE_INVALID_LOGINS", True):
-        form.email.validators.append(unique_email)
-
     if request.form and form.validate():
         if models.User.query(emails=form.email.data):
             flash(
