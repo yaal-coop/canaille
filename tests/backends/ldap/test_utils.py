@@ -160,8 +160,10 @@ def test_python_to_ldap():
 
 
 def test_operational_attribute_conversion(backend):
-    assert "oauthClientName" in LDAPObject.ldap_object_attributes(backend)
-    assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(backend)
+    assert "oauthClientName" in LDAPObject.ldap_object_attributes(backend.connection)
+    assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(
+        backend.connection
+    )
 
     assert python_attrs_to_ldap(
         {
