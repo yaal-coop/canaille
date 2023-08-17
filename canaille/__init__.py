@@ -1,13 +1,9 @@
 import datetime
-import os
 from logging.config import dictConfig
 
 from flask import Flask
 from flask import request
 from flask import session
-from flask_themer import FileSystemThemeLoader
-from flask_themer import render_template
-from flask_themer import Themer
 from flask_wtf.csrf import CSRFProtect
 
 
@@ -64,25 +60,6 @@ def setup_jinja(app):
     app.jinja_env.policies["ext.i18n.trimmed"] = True
 
 
-def setup_themer(app):
-    additional_themes_dir = (
-        os.path.dirname(app.config["THEME"])
-        if app.config.get("THEME") and os.path.exists(app.config["THEME"])
-        else None
-    )
-    themer = Themer(
-        app,
-        loaders=[FileSystemThemeLoader(additional_themes_dir)]
-        if additional_themes_dir
-        else None,
-    )
-
-    @themer.current_theme_loader
-    def get_current_theme():
-        # if config['THEME'] may be a theme name or an absolute path
-        return app.config.get("THEME", "default").split("/")[-1]
-
-
 def setup_blueprints(app):
     import canaille.core.blueprints
     import canaille.oidc.blueprints
@@ -123,18 +100,26 @@ def setup_flask(app):
 
     @app.errorhandler(400)
     def bad_request(error):
+        from canaille.app.themes import render_template
+
         return render_template("error.html", description=error, error_code=400), 400
 
     @app.errorhandler(403)
     def unauthorized(error):
+        from canaille.app.themes import render_template
+
         return render_template("error.html", description=error, error_code=403), 403
 
     @app.errorhandler(404)
     def page_not_found(error):
+        from canaille.app.themes import render_template
+
         return render_template("error.html", description=error, error_code=404), 404
 
     @app.errorhandler(500)
     def server_error(error):  # pragma: no cover
+        from canaille.app.themes import render_template
+
         return render_template("error.html", description=error, error_code=500), 500
 
 
@@ -150,6 +135,7 @@ def create_app(config=None, validate=True, backend=None):
     from .oidc.oauth import setup_oauth
     from .app.i18n import setup_i18n
     from .app.configuration import setup_config
+    from .app.themes import setup_themer
     from .backends import setup_backend
 
     app = Flask(__name__)

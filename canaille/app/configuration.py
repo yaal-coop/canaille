@@ -3,7 +3,6 @@ import smtplib
 import socket
 from collections.abc import Mapping
 
-import toml
 from canaille.app.mails import DEFAULT_SMTP_HOST
 from canaille.app.mails import DEFAULT_SMTP_PORT
 from flask import current_app
@@ -43,6 +42,11 @@ def parse_file_keys(config):
 def setup_config(app, config=None, validate_config=True):
     from canaille.oidc.installation import install
 
+    try:
+        import toml
+    except ImportError:  # pragma: no cover
+        toml = None
+
     app.config.from_mapping(
         {
             "SESSION_COOKIE_NAME": "canaille",
@@ -52,7 +56,7 @@ def setup_config(app, config=None, validate_config=True):
     )
     if config:
         app.config.from_mapping(parse_file_keys(config))
-    elif "CONFIG" in os.environ:
+    elif toml and "CONFIG" in os.environ:
         app.config.from_mapping(parse_file_keys(toml.load(os.environ.get("CONFIG"))))
     else:
         raise Exception(

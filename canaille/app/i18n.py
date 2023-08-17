@@ -1,6 +1,5 @@
 import gettext
 
-import pycountry
 import pytz
 from babel.dates import LOCALTZ
 from flask import current_app
@@ -52,6 +51,11 @@ def timezone_selector():
 
 
 def native_language_name_from_code(code):
+    try:
+        import pycountry
+    except ImportError:  # pragma: no cover
+        return code
+
     language = pycountry.languages.get(alpha_2=code[:2])
     if code == DEFAULT_LANGUAGE_CODE:
         return language.name

@@ -20,12 +20,11 @@ if ! type poetry > /dev/null 2>&1; then
     exit 1
 fi
 
-poetry install --with demo --without dev
-
 pushd "$DIR" > /dev/null 2>&1 || exit
 
 if [ "$BACKEND" = "memory" ]; then
 
+    poetry install --with demo --without dev --extras front --extras oidc
     env poetry run honcho --procfile Procfile-memory start
 
 elif [ "$BACKEND" = "ldap" ]; then
@@ -36,6 +35,7 @@ elif [ "$BACKEND" = "ldap" ]; then
         exit 1
     fi
 
+    poetry install --with demo --without dev --extras front --extras oidc --extras ldap
     env poetry run honcho --procfile Procfile-ldap start
 
 else

@@ -22,6 +22,7 @@ from canaille.app.forms import is_readonly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.forms import TableForm
+from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
 from flask import abort
 from flask import Blueprint
@@ -34,7 +35,6 @@ from flask import send_file
 from flask import url_for
 from flask_babel import gettext as _
 from flask_babel import refresh
-from flask_themer import render_template
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 

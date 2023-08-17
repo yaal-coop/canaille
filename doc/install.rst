@@ -21,7 +21,18 @@ Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
     export CANAILLE_INSTALL_DIR=/opt/canaille
     sudo mkdir --parents "$CANAILLE_INSTALL_DIR"
     sudo virtualenv --python=python3 "$CANAILLE_INSTALL_DIR/env"
-    sudo "$CANAILLE_INSTALL_DIR/env/bin/pip" install canaille
+    sudo "$CANAILLE_INSTALL_DIR/env/bin/pip" install "canaille[all]"
+
+Extras
+------
+
+Canaille provides different package options:
+
+- `front` provides all the things needed to produce the user interface;
+- `oidc` provides the dependencies to perform OAuth2/OIDC authentication;
+- `ldap` provides the dependencies to enable the LDAP backend;
+- `sentry` provides sentry integration to watch Canaille exceptions;
+- `all` provides all the extras above.
 
 Configuration
 =============

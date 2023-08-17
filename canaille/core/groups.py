@@ -2,6 +2,7 @@ from canaille.app import models
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
+from canaille.app.themes import render_template
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -9,7 +10,6 @@ from flask import redirect
 from flask import request
 from flask import url_for
 from flask_babel import gettext as _
-from flask_themer import render_template
 
 from .forms import CreateGroupForm
 from .forms import EditGroupForm

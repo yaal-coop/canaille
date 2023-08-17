@@ -36,7 +36,7 @@ jobs:
       - name: App armor configuration for slapd
         run: sudo aa-complain /usr/sbin/slapd
       - run: poetry --version
-      - run: poetry install
+      - run: poetry install --extras all
       - run: poetry run pytest
   minversions:
     name: minimum dependency versions
@@ -59,7 +59,7 @@ jobs:
       - run: sed -i -E 's/python = "==/python = "^/' pyproject.toml
       - run: poetry --version
       - run: poetry lock
-      - run: poetry install
+      - run: poetry install --extras all
       - run: poetry run pytest
   style:
     runs-on: ubuntu-latest
