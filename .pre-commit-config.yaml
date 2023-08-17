@@ -5,7 +5,9 @@ repos:
     hooks:
       - id: fix-byte-order-marker
       - id: trailing-whitespace
+        exclude: "\\.svg$|\\.map$|\\.min\\.css$|\\.min\\.js$|\\.po$"
       - id: end-of-file-fixer
+        exclude: "\\.svg$|\\.map$|\\.min\\.css$|\\.min\\.js$|\\.po$"
       - id: check-toml
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: 'v0.0.282'
