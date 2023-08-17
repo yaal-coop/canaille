@@ -7,11 +7,6 @@ from canaille.app.flask import set_parameter_in_url_query
 from flask_webtest import TestApp
 
 
-@pytest.fixture
-def configuration(ldap_configuration):
-    yield ldap_configuration
-
-
 def test_set_parameter_in_url_query():
     assert (
         set_parameter_in_url_query("https://auth.mydomain.tld", foo="bar")

@@ -14,4 +14,4 @@ RUN pip install poetry
 WORKDIR /opt/canaille
 RUN poetry install --with demo --without dev
 
-ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille.toml"]
+ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille-memory.toml", "/opt/canaille/conf/canaille-ldap.toml"]
