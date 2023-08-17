@@ -19,13 +19,7 @@ def test_required_methods(testclient):
     with pytest.raises(NotImplementedError):
         user.set_password("password")
 
-    with pytest.raises(NotImplementedError):
-        user.identifier
-
-    group = Group()
-
-    with pytest.raises(NotImplementedError):
-        group.identifier
+    Group()
 
 
 def test_user_get_from_login(testclient, user, backend):

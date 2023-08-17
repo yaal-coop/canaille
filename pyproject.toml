@@ -63,10 +63,10 @@ sentry-sdk = {version = "<2", optional=true, extras=["flask"]}
 optional = true
 
 [tool.poetry.group.doc.dependencies]
-sphinx = "*"
-sphinx-rtd-theme = "*"
-sphinx-issues = "*"
-pygments-ldif = "==1.0.1"
+sphinx = "^7.0.0"
+sphinx-rtd-theme = "^1.2.0"
+sphinx-issues = "^3.0.0"
+pygments-ldif = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 coverage = {version = "*", extras=["toml"]}
@@ -174,7 +174,7 @@ commands =
 
 [testenv:doc]
 commands =
-    poetry install --only doc
+    poetry install --with doc --without dev --extras oidc
     poetry run sphinx-build doc build/sphinx/html
 
 [testenv:coverage]

@@ -8,6 +8,10 @@ from canaille.app import models
 
 
 class Client(ClientMixin):
+    """
+    OpenID Connect client definition.
+    """
+
     client_info_attributes = [
         "client_id",
         "client_secret",
@@ -95,6 +99,10 @@ class Client(ClientMixin):
 
 
 class AuthorizationCode(AuthorizationCodeMixin):
+    """
+    OpenID Connect temporary authorization code definition.
+    """
+
     def get_redirect_uri(self):
         return self.redirect_uri
 
@@ -119,6 +127,10 @@ class AuthorizationCode(AuthorizationCodeMixin):
 
 
 class Token(TokenMixin):
+    """
+    OpenID Connect token definition.
+    """
+
     @property
     def expire_date(self):
         return self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
@@ -164,6 +176,10 @@ class Token(TokenMixin):
 
 
 class Consent:
+    """
+    Long-term user consent to an application.
+    """
+
     @property
     def revoked(self):
         return bool(self.revokation_date)

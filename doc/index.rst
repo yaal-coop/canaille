@@ -39,6 +39,7 @@ Table of contents
    configuration
    troubleshooting
    contributing
+   reference
    specifications
    changelog
 

@@ -1,10 +1,15 @@
 import datetime
+from typing import Optional
 
 from flask import g
 from flask import session
 
 
 class User:
+    """
+    User model, based on the `SCIM User schema <https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_
+    """
+
     def __init__(self, *args, **kwargs):
         self.read = set()
         self.write = set()
@@ -12,10 +17,13 @@ class User:
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def get_from_login(cls, login=None, **kwargs):
+    def get_from_login(cls, login=None, **kwargs) -> Optional["User"]:
         raise NotImplementedError()
 
     def login(self):
+        """
+        Opens a session for the user.
+        """
         g.user = self
         try:
             previous = (
@@ -29,6 +37,9 @@ class User:
 
     @classmethod
     def logout(self):
+        """
+        Closes the user session.
+        """
         try:
             session["user_id"].pop()
             del g.user
@@ -37,24 +48,25 @@ class User:
         except (IndexError, KeyError):
             pass
 
-    @property
-    def identifier(self):
+    def has_password(self) -> bool:
         """
-        Returns a unique value that will be used to identify the user.
-        This value will be used in URLs in canaille, so it should be unique and short.
+        Checks wether a password has been set for the user.
         """
         raise NotImplementedError()
 
-    def has_password(self):
+    def check_password(self, password: str) -> bool:
+        """
+        Checks if the password matches the user password in the database.
+        """
         raise NotImplementedError()
 
-    def check_password(self, password):
+    def set_password(self, password: str):
+        """
+        Sets a password for the user.
+        """
         raise NotImplementedError()
 
-    def set_password(self, password):
-        raise NotImplementedError()
-
-    def can_read(self, field):
+    def can_read(self, field: str):
         return field in self.read | self.write
 
     @property
@@ -69,17 +81,16 @@ class User:
         return super().__getattr__(name)
 
     @property
-    def locked(self):
+    def locked(self) -> bool:
+        """
+        Wether the user account has been locked or has expired.
+        """
         return bool(self.lock_date) and self.lock_date < datetime.datetime.now(
             datetime.timezone.utc
         )
 
 
 class Group:
-    @property
-    def identifier(self):
-        """
-        Returns a unique value that will be used to identify the user.
-        This value will be used in URLs in canaille, so it should be unique and short.
-        """
-        raise NotImplementedError()
+    """
+    User model, based on the `SCIM Group schema <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_
+    """

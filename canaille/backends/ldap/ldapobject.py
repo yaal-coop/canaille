@@ -3,6 +3,7 @@ from collections.abc import Iterable
 
 import ldap.dn
 import ldap.filter
+from canaille.backends.models import Model
 
 from .backend import Backend
 from .utils import ldap_to_python
@@ -100,7 +101,7 @@ class LDAPObjectQuery:
         return klass
 
 
-class LDAPObject(metaclass=LDAPObjectMetaclass):
+class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
     _object_class_by_name = None
     _attribute_type_by_name = None
     _may = None

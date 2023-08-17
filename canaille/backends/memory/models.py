@@ -5,6 +5,7 @@ import uuid
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
+from canaille.backends.models import Model
 from flask import current_app
 
 
@@ -13,10 +14,10 @@ def listify(value):
 
 
 def serialize(value):
-    return value.id if isinstance(value, Model) else value
+    return value.id if isinstance(value, MemoryModel) else value
 
 
-class Model:
+class MemoryModel(Model):
     indexes = {}
     attribute_indexes = {}
 
@@ -51,11 +52,11 @@ class Model:
         if not class_name:
             class_name = cls.__name__
 
-        return Model.indexes.setdefault(class_name, {}).setdefault("id", {})
+        return MemoryModel.indexes.setdefault(class_name, {}).setdefault("id", {})
 
     @classmethod
     def attribute_index(cls, attribute="id", class_name=None):
-        return Model.attribute_indexes.setdefault(
+        return MemoryModel.attribute_indexes.setdefault(
             class_name or cls.__name__, {}
         ).setdefault(attribute, {})
 
@@ -172,7 +173,7 @@ class Model:
         if other is None:
             return False
 
-        if not isinstance(other, Model):
+        if not isinstance(other, MemoryModel):
             return self == self.__class__.get(id=other)
 
         return self.state == other.state
@@ -187,7 +188,7 @@ class Model:
             if name in self.model_attributes:
                 klass = getattr(models, self.model_attributes[name][0])
                 values = [
-                    value if isinstance(value, Model) else klass.get(id=value)
+                    value if isinstance(value, MemoryModel) else klass.get(id=value)
                     for value in values
                 ]
                 values = [value for value in values if value]
@@ -222,7 +223,7 @@ class Model:
             pass
 
 
-class User(canaille.core.models.User, Model):
+class User(canaille.core.models.User, MemoryModel):
     attributes = [
         "id",
         "user_name",
@@ -333,7 +334,7 @@ class User(canaille.core.models.User, Model):
         super().save()
 
 
-class Group(canaille.core.models.Group, Model):
+class Group(canaille.core.models.Group, MemoryModel):
     attributes = [
         "id",
         "display_name",
@@ -351,7 +352,7 @@ class Group(canaille.core.models.Group, Model):
         return getattr(self, self.identifier_attribute)
 
 
-class Client(canaille.oidc.models.Client, Model):
+class Client(canaille.oidc.models.Client, MemoryModel):
     attributes = [
         "id",
         "description",
@@ -406,7 +407,7 @@ class Client(canaille.oidc.models.Client, Model):
         return getattr(self, self.identifier_attribute)
 
 
-class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Model):
+class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
     attributes = [
         "id",
         "authorization_code_id",
@@ -449,7 +450,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Model):
         return getattr(self, self.identifier_attribute)
 
 
-class Token(canaille.oidc.models.Token, Model):
+class Token(canaille.oidc.models.Token, MemoryModel):
     attributes = [
         "id",
         "token_id",
@@ -488,7 +489,7 @@ class Token(canaille.oidc.models.Token, Model):
         return getattr(self, self.identifier_attribute)
 
 
-class Consent(canaille.oidc.models.Consent, Model):
+class Consent(canaille.oidc.models.Consent, MemoryModel):
     attributes = [
         "id",
         "consent_id",
