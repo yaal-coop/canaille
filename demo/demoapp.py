@@ -119,7 +119,7 @@ def populate(app):
                 client_name="Client2",
                 contacts=["admin@mydomain.tld"],
                 client_uri="http://localhost:5002",
-                redirects_uris=["http://localhost:5002/authorize"],
+                redirect_uris=["http://localhost:5002/authorize"],
                 post_logout_redirect_uris=["http://localhost:5002/"],
                 tos_uri="http://localhost:5002/tos",
                 policy_uri="http://localhost:5002/policy",
