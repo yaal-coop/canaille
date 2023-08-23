@@ -26,7 +26,7 @@ class Model:
     @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
         """
-        Works like :meth:`~canaille.app.models.Model.query` but attribute values
+        Works like :meth:`~canaille.backends.models.query` but attribute values
         loosely be matched.
         """
         raise NotImplementedError()
@@ -34,7 +34,7 @@ class Model:
     @classmethod
     def get(cls, identifier=None, **kwargs):
         """
-        Works like :meth:`~canaille.app.models.Model.query` but return only one
+        Works like :meth:`~canaille.backends.models.query` but return only one
         element or :const:`None` if no item is matching.
         """
         raise NotImplementedError()

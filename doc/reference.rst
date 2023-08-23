@@ -11,6 +11,7 @@ Reference
     :show-inheritance:
     :undoc-members:
 
-.. automodule:: canaille.oidc.models
+.. automodule:: canaille.oidc.basemodels
     :members:
+    :show-inheritance:
     :undoc-members:

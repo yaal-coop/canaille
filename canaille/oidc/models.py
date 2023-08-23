@@ -1,45 +1,18 @@
 import datetime
-from typing import List
-from typing import Optional
 
 from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
 from canaille.app import models
-from canaille.core.models import User
+
+from .basemodels import AuthorizationCode as BaseAuthorizationCode
+from .basemodels import Client as BaseClient
+from .basemodels import Consent as BaseConsent
+from .basemodels import Token as BaseToken
 
 
-class Client(ClientMixin):
-    """
-    OpenID Connect client definition.
-    """
-
-    id: str
-    description: Optional[str]
-    preconsent: Optional[bool]
-    post_logout_redirect_uris: List[str]
-    audience: List["Client"]
-    client_id: Optional[str]
-    client_secret: Optional[str]
-    client_id_issued_at: Optional[datetime.datetime]
-    client_secret_expires_at: Optional[datetime.datetime]
-    client_name: Optional[str]
-    contacts: List[str]
-    client_uri: Optional[str]
-    redirect_uris: List[str]
-    logo_uri: Optional[str]
-    grant_types: List[str]
-    response_types: List[str]
-    scope: Optional[str]
-    tos_uri: Optional[str]
-    policy_uri: Optional[str]
-    jwks_uri: Optional[str]
-    jwk: Optional[str]
-    token_endpoint_auth_method: Optional[str]
-    software_id: Optional[str]
-    software_version: Optional[str]
-
+class Client(BaseClient, ClientMixin):
     client_info_attributes = [
         "client_id",
         "client_secret",
@@ -126,26 +99,7 @@ class Client(ClientMixin):
         super().delete()
 
 
-class AuthorizationCode(AuthorizationCodeMixin):
-    """
-    OpenID Connect temporary authorization code definition.
-    """
-
-    id: str
-    authorization_code_id: str
-    code: str
-    client: "Client"
-    subject: User
-    redirect_uri: Optional[str]
-    response_type: Optional[str]
-    scope: Optional[str]
-    nonce: Optional[str]
-    issue_date: datetime.datetime
-    lifetime: int
-    challenge: Optional[str]
-    challenge_method: Optional[str]
-    revokation_date: datetime.datetime
-
+class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
     def get_redirect_uri(self):
         return self.redirect_uri
 
@@ -169,24 +123,7 @@ class AuthorizationCode(AuthorizationCodeMixin):
         )
 
 
-class Token(TokenMixin):
-    """
-    OpenID Connect token definition.
-    """
-
-    id: str
-    token_id: str
-    access_token: str
-    client: "Client"
-    subject: User
-    type: str
-    refresh_token: str
-    scope: str
-    issue_date: datetime.datetime
-    lifetime: int
-    revokation_date: datetime.datetime
-    audience: List["Client"]
-
+class Token(BaseToken, TokenMixin):
     @property
     def expire_date(self):
         return self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
@@ -231,19 +168,7 @@ class Token(TokenMixin):
         return client.client_id == self.client.client_id
 
 
-class Consent:
-    """
-    Long-term user consent to an application.
-    """
-
-    id: str
-    consent_id: str
-    subject: User
-    client: "Client"
-    scope: str
-    issue_date: datetime.datetime
-    revokation_date: datetime.datetime
-
+class Consent(BaseConsent):
     @property
     def revoked(self):
         return bool(self.revokation_date)
