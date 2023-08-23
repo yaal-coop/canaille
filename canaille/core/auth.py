@@ -1,6 +1,8 @@
 from canaille.app import build_hash
 from canaille.app import models
 from canaille.app.flask import current_user
+from canaille.app.flask import login_user
+from canaille.app.flask import logout_user
 from canaille.app.flask import smtp_needed
 from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
@@ -44,7 +46,7 @@ def login():
         return redirect(url_for("core.auth.firstlogin", user=user))
 
     if not form.validate():
-        models.User.logout()
+        logout_user()
         flash(_("Login failed, please check your information"), "error")
         return render_template("login.html", form=form)
 
@@ -70,7 +72,7 @@ def password():
         return redirect(url_for("core.auth.firstlogin", user=user))
 
     if not form.validate() or not user:
-        models.User.logout()
+        logout_user()
         flash(_("Login failed, please check your information"), "error")
         return render_template(
             "password.html", form=form, username=session["attempt_login"]
@@ -78,14 +80,14 @@ def password():
 
     success, message = user.check_password(form.password.data)
     if not success:
-        models.User.logout()
+        logout_user()
         flash(message or _("Login failed, please check your information"), "error")
         return render_template(
             "password.html", form=form, username=session["attempt_login"]
         )
 
     del session["attempt_login"]
-    user.login()
+    login_user(user)
     flash(
         _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
         "success",
@@ -105,7 +107,7 @@ def logout():
             ),
             "success",
         )
-        user.logout()
+        logout_user()
     return redirect("/")
 
 
@@ -209,7 +211,7 @@ def reset(user, hash):
 
     if request.form and form.validate():
         user.set_password(form.password.data)
-        user.login()
+        login_user(user)
 
         flash(_("Your password has been updated successfully"), "success")
         return redirect(url_for("core.account.profile_edition", edited_user=user))

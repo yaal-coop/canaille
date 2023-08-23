@@ -13,6 +13,8 @@ from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app.flask import current_user
+from canaille.app.flask import login_user
+from canaille.app.flask import logout_user
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
@@ -338,7 +340,7 @@ def registration(data=None, hash=None):
         )
 
     user = profile_create(current_app, form)
-    user.login()
+    login_user(user)
     flash(_("Your account has been created successfully."), "success")
     return redirect(url_for("core.account.profile_edition", edited_user=user))
 
@@ -796,7 +798,7 @@ def profile_settings_edit(editor, edited_user):
 def profile_delete(user, edited_user):
     self_deletion = user.id == edited_user.id
     if self_deletion:
-        user.logout()
+        logout_user()
 
     flash(
         _(
@@ -815,7 +817,7 @@ def profile_delete(user, edited_user):
 @bp.route("/impersonate/<user:puppet>")
 @permissions_needed("impersonate_users")
 def impersonate(user, puppet):
-    puppet.login()
+    login_user(puppet)
     flash(
         _("Connection successful. Welcome %(user)s", user=puppet.formatted_name[0]),
         "success",

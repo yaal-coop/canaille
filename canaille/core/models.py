@@ -1,9 +1,6 @@
 import datetime
 from typing import Optional
 
-from flask import g
-from flask import session
-
 
 class User:
     """
@@ -19,34 +16,6 @@ class User:
     @classmethod
     def get_from_login(cls, login=None, **kwargs) -> Optional["User"]:
         raise NotImplementedError()
-
-    def login(self):
-        """
-        Opens a session for the user.
-        """
-        g.user = self
-        try:
-            previous = (
-                session["user_id"]
-                if isinstance(session["user_id"], list)
-                else [session["user_id"]]
-            )
-            session["user_id"] = previous + [self.id]
-        except KeyError:
-            session["user_id"] = [self.id]
-
-    @classmethod
-    def logout(self):
-        """
-        Closes the user session.
-        """
-        try:
-            session["user_id"].pop()
-            del g.user
-            if not session["user_id"]:
-                del session["user_id"]
-        except (IndexError, KeyError):
-            pass
 
     def has_password(self) -> bool:
         """

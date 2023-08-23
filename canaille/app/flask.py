@@ -31,6 +31,35 @@ def current_user():
     return None
 
 
+def login_user(user):
+    """
+    Opens a session for the user.
+    """
+    g.user = user
+    try:
+        previous = (
+            session["user_id"]
+            if isinstance(session["user_id"], list)
+            else [session["user_id"]]
+        )
+        session["user_id"] = previous + [user.id]
+    except KeyError:
+        session["user_id"] = [user.id]
+
+
+def logout_user():
+    """
+    Closes the user session.
+    """
+    try:
+        session["user_id"].pop()
+        del g.user
+        if not session["user_id"]:
+            del session["user_id"]
+    except (IndexError, KeyError):
+        pass
+
+
 def user_needed():
     def wrapper(view_function):
         @wraps(view_function)

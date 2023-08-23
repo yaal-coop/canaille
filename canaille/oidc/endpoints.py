@@ -8,6 +8,8 @@ from authlib.oauth2 import OAuth2Error
 from canaille import csrf
 from canaille.app import models
 from canaille.app.flask import current_user
+from canaille.app.flask import login_user
+from canaille.app.flask import logout_user
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.themes import render_template
 from canaille.core.forms import FullLoginForm
@@ -84,7 +86,7 @@ def authorize():
             )
             return render_template("login.html", form=form, menu=False)
 
-        user.login()
+        login_user(user)
 
         return redirect(request.url)
 
@@ -326,7 +328,7 @@ def end_session():
             session["end_session_data"] = data
             return render_template("logout.html", form=form, client=client, menu=False)
 
-    user.logout()
+    logout_user()
 
     if "end_session_confirmation" in session:
         del session["end_session_confirmation"]
