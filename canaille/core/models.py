@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 from typing import Optional
 
 
@@ -6,6 +7,31 @@ class User:
     """
     User model, based on the `SCIM User schema <https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_
     """
+
+    id: str
+    user_name: Optional[str]
+    password: Optional[str]
+    preferred_language: Optional[str]
+    family_name: Optional[str]
+    given_name: Optional[str]
+    formatted_name: Optional[str]
+    display_name: Optional[str]
+    emails: List[str]
+    phone_numbers: List[str]
+    formatted_address: Optional[str]
+    street: Optional[str]
+    postal_code: Optional[str]
+    locality: Optional[str]
+    region: Optional[str]
+    photo: Optional[str]
+    profile_url: Optional[str]
+    employee_number: Optional[str]
+    department: Optional[str]
+    title: Optional[str]
+    organization: Optional[str]
+    last_modified: Optional[datetime.datetime]
+    groups: List["Group"]
+    lock_date: Optional[datetime.datetime]
 
     def __init__(self, *args, **kwargs):
         self.read = set()
@@ -63,3 +89,8 @@ class Group:
     """
     User model, based on the `SCIM Group schema <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_
     """
+
+    id: str
+    display_name: str
+    members: List["User"]
+    description: Optional[str]

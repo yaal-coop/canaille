@@ -1,16 +1,44 @@
 import datetime
+from typing import List
+from typing import Optional
 
 from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
 from canaille.app import models
+from canaille.core.models import User
 
 
 class Client(ClientMixin):
     """
     OpenID Connect client definition.
     """
+
+    id: str
+    description: Optional[str]
+    preconsent: Optional[bool]
+    post_logout_redirect_uris: List[str]
+    audience: List["Client"]
+    client_id: Optional[str]
+    client_secret: Optional[str]
+    client_id_issued_at: Optional[datetime.datetime]
+    client_secret_expires_at: Optional[datetime.datetime]
+    client_name: Optional[str]
+    contacts: List[str]
+    client_uri: Optional[str]
+    redirect_uris: List[str]
+    logo_uri: Optional[str]
+    grant_types: List[str]
+    response_types: List[str]
+    scope: Optional[str]
+    tos_uri: Optional[str]
+    policy_uri: Optional[str]
+    jwks_uri: Optional[str]
+    jwk: Optional[str]
+    token_endpoint_auth_method: Optional[str]
+    software_id: Optional[str]
+    software_version: Optional[str]
 
     client_info_attributes = [
         "client_id",
@@ -103,6 +131,21 @@ class AuthorizationCode(AuthorizationCodeMixin):
     OpenID Connect temporary authorization code definition.
     """
 
+    id: str
+    authorization_code_id: str
+    code: str
+    client: "Client"
+    subject: User
+    redirect_uri: Optional[str]
+    response_type: Optional[str]
+    scope: Optional[str]
+    nonce: Optional[str]
+    issue_date: datetime.datetime
+    lifetime: int
+    challenge: Optional[str]
+    challenge_method: Optional[str]
+    revokation_date: datetime.datetime
+
     def get_redirect_uri(self):
         return self.redirect_uri
 
@@ -130,6 +173,19 @@ class Token(TokenMixin):
     """
     OpenID Connect token definition.
     """
+
+    id: str
+    token_id: str
+    access_token: str
+    client: "Client"
+    subject: User
+    type: str
+    refresh_token: str
+    scope: str
+    issue_date: datetime.datetime
+    lifetime: int
+    revokation_date: datetime.datetime
+    audience: List["Client"]
 
     @property
     def expire_date(self):
@@ -179,6 +235,14 @@ class Consent:
     """
     Long-term user consent to an application.
     """
+
+    id: str
+    consent_id: str
+    subject: User
+    client: "Client"
+    scope: str
+    issue_date: datetime.datetime
+    revokation_date: datetime.datetime
 
     @property
     def revoked(self):
