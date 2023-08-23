@@ -91,7 +91,7 @@ class Consent(Model):
     revokation_date: datetime.datetime
 
     def revoke(self):
-        raise NotImplementedError()  # pragram: no cover
+        raise NotImplementedError()  # pragma: no cover
 
     def restore(self):
-        raise NotImplementedError()  # pragram: no cover
+        raise NotImplementedError()  # pragma: no cover
