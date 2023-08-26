@@ -242,7 +242,6 @@ def jwks():
         {
             "keys": [
                 {
-                    "kid": None,
                     "use": "sig",
                     "alg": alg,
                     **jwk,

@@ -9,7 +9,6 @@ def test_jwks(testclient, keypair):
     assert res.json == {
         "keys": [
             {
-                "kid": None,
                 "use": "sig",
                 "alg": "RS256",
                 **jwk,
