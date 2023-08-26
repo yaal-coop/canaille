@@ -3,9 +3,9 @@ import datetime
 import io
 from dataclasses import astuple
 from dataclasses import dataclass
+from importlib import metadata
 from typing import List
 
-import pkg_resources
 import wtforms
 from canaille.app import b64_to_obj
 from canaille.app import build_hash
@@ -133,10 +133,7 @@ def join():
 
 @bp.route("/about")
 def about():
-    try:
-        version = pkg_resources.get_distribution("canaille").version
-    except pkg_resources.DistributionNotFound:  # pragma: no cover
-        version = "git"
+    version = metadata.version("canaille")
     return render_template("about.html", version=version)
 
 
