@@ -198,8 +198,6 @@
                                         type="submit"
                                         name="email_remove"
                                         value="{{ field.data }}"
-                                        {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
-                                        hx-vals='{"email_remove": "{{ field.data }}"}'
                                         hx-target="closest .fieldlist"
                                         formnovalidate>
                                         <i class="minus icon"></i>
@@ -218,8 +216,6 @@
                             name="action"
                             value="add_email"
                             title="{% trans %}Send a verification email to validate this address.{% endtrans %}"
-                            {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
-                            hx-vals='{"action": "add_email"}'
                             hx-target="closest .fieldlist"
                             formnovalidate
                         >

@@ -85,8 +85,6 @@ del_button=false
                 type="submit"
                 name="fieldlist_remove"
                 value="{{ field.name }}"
-            {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
-                hx-vals='{"fieldlist_remove": "{{ field.name }}"}'
                 hx-target="closest .fieldlist"
                 formnovalidate>
                 <i class="minus icon"></i>
@@ -99,8 +97,6 @@ del_button=false
                 type="submit"
                 name="fieldlist_add"
                 value="{{ field.name }}"
-                {# Workaround for https://github.com/bigskysoftware/htmx/issues/1506 #}
-                hx-vals='{"fieldlist_add": "{{ field.name }}"}'
                 hx-target="closest .fieldlist"
                 formnovalidate>
                 <i class="plus icon"></i>
