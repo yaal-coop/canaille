@@ -29,82 +29,77 @@
     </form>
 {% endmacro %}
 
-{# At the moment we need to build one form per button
-# https://github.com/bigskysoftware/htmx/issues/1120
-# when this is fixed we will be able to set the page
-# value directly in the submit button and get rid
-# of the radius reset
-#}
-{% macro buttonform(form, id, page) %}
-    <form id="{{ id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
-        {{ form.hidden_tag() if form.hidden_tag }}
-        <input type="hidden" name="page" value="{{ page }}">
-        <input type="hidden" name="query" value="{{ form.query.data }}">
-        {% if page is none %}
-            <span class="icon disabled ui button" style="border-radius: 0">
-                {{ caller() }}
-            </span>
-        {% else %}
-            <button
-                type="submit"
-                style="border-radius: 0"
-                class="icon ui button"
-                hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
-                hx-target="closest table"
-                hx-swap="outerHTML"
-            >
-                {{ caller() }}
-            </button>
-        {% endif %}
-    </form>
+{% macro button(form, id, page) %}
+    {% if page is none %}
+        <span class="icon disabled ui button" style="border-radius: 0">
+            {{ caller() }}
+        </span>
+    {% else %}
+        <button
+            type="submit"
+            class="icon ui button"
+            hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
+            hx-target="closest table"
+            hx-swap="outerHTML"
+            name="page"
+            value="{{ page }}"
+        >
+            {{ caller() }}
+        </button>
+    {% endif %}
 {% endmacro %}
 
 {% macro pagination(form) %}
     <div class="ui right floated buttons pagination">
-        <span class="icon disabled ui button" style="border-radius: 0">
-            {% trans %}Page{% endtrans %}
-        </span>
-        {% if form.page.data > 1 %}
-            {% call buttonform(form, "previous", form.page.data - 1) %}
-                <i class="left chevron icon"></i>
-            {% endcall %}
-        {% else %}
-            {% call buttonform(form, "previous", none) %}
-                <i class="left chevron icon"></i>
-            {% endcall %}
-        {% endif %}
-        {% if form.page.data > 1 %}
-            {% call buttonform(form, "first", 1) %}
-                1
-            {% endcall %}
-        {% endif %}
-        {% if form.page.data > 2 %}
-            {% call buttonform(form, "ellipsis-previous", none) %}
-                …
-            {% endcall %}
-        {% endif %}
-        <span class="ui button active">
-            {{ form.page.data }}
-        </span>
-        {% if form.page.data < form.page_max - 1 %}
-            {% call buttonform(form, "ellipsis-next", none) %}
-                …
-            {% endcall %}
-        {% endif %}
-        {% if form.page.data < form.page_max %}
-            {% call buttonform(form, "last", form.page_max) %}
-                {{ form.page_max }}
-            {% endcall %}
-        {% endif %}
-        {% if form.page.data < form.page_max %}
-            {% call buttonform(form, "next", form.page.data + 1) %}
-                <i class="right chevron icon"></i>
-            {% endcall %}
-        {% else %}
-            {% call buttonform(form, "next", none) %}
-                <i class="right chevron icon"></i>
-            {% endcall %}
-        {% endif %}
+        <form id="{{ id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
+            {{ form.hidden_tag() if form.hidden_tag }}
+            <input type="hidden" name="query" value="{{ form.query.data }}">
+
+            <span class="icon disabled ui button" style="border-radius: 0">
+                {% trans %}Page{% endtrans %}
+            </span>
+            {% if form.page.data > 1 %}
+                {% call button(form, "previous", form.page.data - 1) %}
+                    <i class="left chevron icon"></i>
+                {% endcall %}
+            {% else %}
+                {% call button(form, "previous", none) %}
+                    <i class="left chevron icon"></i>
+                {% endcall %}
+            {% endif %}
+            {% if form.page.data > 1 %}
+                {% call button(form, "first", 1) %}
+                    1
+                {% endcall %}
+            {% endif %}
+            {% if form.page.data > 2 %}
+                {% call button(form, "ellipsis-previous", none) %}
+                    …
+                {% endcall %}
+            {% endif %}
+            <span class="ui button active">
+                {{ form.page.data }}
+            </span>
+            {% if form.page.data < form.page_max - 1 %}
+                {% call button(form, "ellipsis-next", none) %}
+                    …
+                {% endcall %}
+            {% endif %}
+            {% if form.page.data < form.page_max %}
+                {% call button(form, "last", form.page_max) %}
+                    {{ form.page_max }}
+                {% endcall %}
+            {% endif %}
+            {% if form.page.data < form.page_max %}
+                {% call button(form, "next", form.page.data + 1) %}
+                    <i class="right chevron icon"></i>
+                {% endcall %}
+            {% else %}
+                {% call button(form, "next", none) %}
+                    <i class="right chevron icon"></i>
+                {% endcall %}
+            {% endif %}
+        </form>
     </div>
     <div class="ui left floated">
         <span class="disabled ui button">
