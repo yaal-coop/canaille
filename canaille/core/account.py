@@ -34,6 +34,7 @@ from flask import g
 from flask import redirect
 from flask import request
 from flask import send_file
+from flask import session
 from flask import url_for
 from flask_babel import gettext as _
 from flask_babel import refresh
@@ -339,7 +340,12 @@ def registration(data=None, hash=None):
     user = profile_create(current_app, form)
     login_user(user)
     flash(_("Your account has been created successfully."), "success")
-    return redirect(url_for("core.account.profile_edition", edited_user=user))
+    return redirect(
+        session.pop(
+            "redirect-after-login",
+            url_for("core.account.profile_edition", edited_user=user),
+        )
+    )
 
 
 @bp.route("/email-confirmation/<data>/<hash>")

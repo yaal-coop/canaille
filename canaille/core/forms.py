@@ -74,10 +74,6 @@ class PasswordForm(Form):
     )
 
 
-class FullLoginForm(LoginForm, PasswordForm):
-    pass
-
-
 class ForgottenPasswordForm(Form):
     login = wtforms.StringField(
         _("Login"),

@@ -27,10 +27,6 @@
                 {% call fui.render_form(form) %}
                     {% block login_field scoped %}{{ login_field.render_field(form.login, class="autofocus") }}{% endblock %}
 
-                    {% if "password" in form %}
-                        {% block password_field scoped %}{{ login_field.render_field(form.password) }}{% endblock %}
-                    {% endif %}
-
                     <div class="ui right aligned container">
                         <div class="ui stackable buttons">
                             {% if has_registration %}

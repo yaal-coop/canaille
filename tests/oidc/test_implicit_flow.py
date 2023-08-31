@@ -19,14 +19,15 @@ def test_oauth_implicit(testclient, user, client):
             scope="profile",
             nonce="somenonce",
         ),
-    )
+    ).follow()
     assert "text/html" == res.content_type
 
     res.form["login"] = "user"
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit(status=302)
+    res = res.form.submit(status=302).follow()
 
-    res = res.follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow()
+
     assert "text/html" == res.content_type, res.json
 
     res = res.form.submit(name="answer", value="accept", status=302)
@@ -63,14 +64,15 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
             scope="openid profile",
             nonce="somenonce",
         ),
-    )
+    ).follow()
     assert "text/html" == res.content_type
 
     res.form["login"] = "user"
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit(status=302)
+    res = res.form.submit(status=302).follow()
 
-    res = res.follow(status=200)
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow()
+
     assert "text/html" == res.content_type, res.json
 
     res = res.form.submit(name="answer", value="accept", status=302)
@@ -117,14 +119,15 @@ def test_oidc_implicit_with_group(
             scope="openid profile groups",
             nonce="somenonce",
         ),
-    )
+    ).follow()
     assert "text/html" == res.content_type
 
     res.form["login"] = "user"
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit(status=302)
+    res = res.form.submit(status=302).follow()
 
-    res = res.follow(status=200)
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow()
+
     assert "text/html" == res.content_type, res.json
 
     res = res.form.submit(name="answer", value="accept", status=302)

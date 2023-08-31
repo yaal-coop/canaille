@@ -92,7 +92,7 @@ def password():
         _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
         "success",
     )
-    return redirect(url_for("core.account.index"))
+    return redirect(session.pop("redirect-after-login", url_for("core.account.index")))
 
 
 @bp.route("/logout")
@@ -214,6 +214,9 @@ def reset(user, hash):
         login_user(user)
 
         flash(_("Your password has been updated successfully"), "success")
-        return redirect(url_for("core.account.profile_edition", edited_user=user))
+        return session.pop(
+            "redirect-after-login",
+            url_for("core.account.profile_edition", edited_user=user),
+        )
 
     return render_template("reset-password.html", form=form, user=user, hash=hash)
