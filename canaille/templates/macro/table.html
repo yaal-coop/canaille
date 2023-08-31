@@ -51,7 +51,7 @@
 
 {% macro pagination(form) %}
     <div class="ui right floated buttons pagination">
-        <form id="{{ id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
+        <form id="{{ form.__class__.__name__|lower }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
             {{ form.hidden_tag() if form.hidden_tag }}
             <input type="hidden" name="query" value="{{ form.query.data }}">
 

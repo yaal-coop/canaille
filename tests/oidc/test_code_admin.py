@@ -33,9 +33,8 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
     ).text()
     assert authorization_code_id
 
-    form = res.forms["next"]
-    form["page"] = 2
-    res = form.submit()
+    form = res.forms["tableform"]
+    res = form.submit(name="page", value="2")
     assert authorization_code_id not in res.pyquery(
         ".codes tbody tr td:nth-of-type(1) a"
     ).text().split(" ")
@@ -48,7 +47,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
 
 def test_authorization_list_bad_pages(testclient, logged_admin):
     res = testclient.get("/admin/authorization")
-    form = res.forms["next"]
+    form = res.forms["tableform"]
     testclient.post(
         "/admin/authorization",
         {"csrf_token": form["csrf_token"].value, "page": "2"},
@@ -56,7 +55,7 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
     )
 
     res = testclient.get("/admin/authorization")
-    form = res.forms["next"]
+    form = res.forms["tableform"]
     testclient.post(
         "/admin/authorization",
         {"csrf_token": form["csrf_token"].value, "page": "-1"},
