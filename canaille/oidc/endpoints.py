@@ -8,11 +8,9 @@ from authlib.oauth2 import OAuth2Error
 from canaille import csrf
 from canaille.app import models
 from canaille.app.flask import current_user
-from canaille.app.flask import login_user
 from canaille.app.flask import logout_user
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.themes import render_template
-from canaille.core.forms import FullLoginForm
 from flask import abort
 from flask import Blueprint
 from flask import current_app
@@ -69,26 +67,8 @@ def authorize():
         if request.args.get("prompt") == "none":
             return jsonify({"error": "login_required"})
 
-        form = FullLoginForm(request.form or None)
-        if request.method == "GET":
-            return render_template("login.html", form=form, menu=False)
-
-        user = models.User.get_from_login(form.login.data)
-        if not form.validate() or not user:
-            flash(_("Login failed, please check your information"), "error")
-            return render_template("login.html", form=form, menu=False)
-
-        success, message = user.check_password(form.password.data)
-        if not success:
-            flash(
-                _(message or "Login failed, please check your information"),
-                "error",
-            )
-            return render_template("login.html", form=form, menu=False)
-
-        login_user(user)
-
-        return redirect(request.url)
+        session["redirect-after-login"] = request.url
+        return redirect(url_for("core.auth.login"))
 
     if not user.can_use_oidc:
         abort(400)
@@ -133,11 +113,9 @@ def authorize():
             form=form,
         )
 
-    # request.method == "POST"
     if request.form["answer"] == "logout":
-        del session["user_id"]
-        flash(_("You have been successfully logged out."), "success")
-        return redirect(request.url)
+        session["redirect-after-login"] = request.url
+        return redirect(url_for("core.auth.logout"))
 
     if request.form["answer"] == "deny":
         grant_user = None

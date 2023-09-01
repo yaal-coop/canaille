@@ -234,16 +234,20 @@ def test_logout_login(testclient, logged_user, client):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="logout", status=302)
+    res = res.form.submit(name="answer", value="logout")
+    res = res.follow()
     g.user = None
-    res = res.follow(status=200)
+    res = res.follow()
+    res = res.follow()
 
     res.form["login"] = logged_user.user_name[0]
+    res = res.form.submit()
+    res = res.follow()
+
     res.form["password"] = "wrong password"
     res = res.form.submit(status=200)
     assert ("error", "Login failed, please check your information") in res.flashes
 
-    res.form["login"] = logged_user.user_name[0]
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
@@ -322,14 +326,16 @@ def test_refresh_token(testclient, user, client):
                 scope="openid profile",
                 nonce="somenonce",
             ),
-            status=200,
         )
+        res = res.follow()
 
         res.form["login"] = "user"
-        res.form["password"] = "correct horse battery staple"
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept")
         res = res.follow()
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(name="answer", value="accept")
+        res = res.follow()
+        res = res.form.submit(name="answer", value="accept")
 
         assert res.location.startswith(client.redirect_uris[0])
         params = parse_qs(urlsplit(res.location).query)
@@ -591,11 +597,12 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
             scope="openid profile",
             nonce="somenonce",
         ),
-        status=200,
     )
+    res = res.follow()
 
     res.form["login"] = "user"
-    res = res.form.submit(status=200)
+    res = res.form.submit()
+    res = res.follow()
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
@@ -784,9 +791,12 @@ def test_authorization_code_expired(testclient, user, client):
                 scope="openid profile email groups address phone",
                 nonce="somenonce",
             ),
-            status=200,
         )
+        res = res.follow()
+
         res.form["login"] = "user"
+        res = res.form.submit(name="answer", value="accept").follow()
+
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit(name="answer", value="accept").follow()
         res = res.form.submit(name="answer", value="accept", status=302)
@@ -829,9 +839,11 @@ def test_code_with_invalid_user(testclient, admin, client):
             scope="openid profile email groups address phone",
             nonce="somenonce",
         ),
-        status=200,
-    )
+    ).follow()
+
     res.form["login"] = "temp"
+    res = res.form.submit(name="answer", value="accept", status=302).follow()
+
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(name="answer", value="accept", status=302).follow()
     res = res.form.submit(name="answer", value="accept", status=302)
@@ -877,10 +889,11 @@ def test_refresh_token_with_invalid_user(testclient, client):
             scope="openid profile",
             nonce="somenonce",
         ),
-        status=200,
-    )
+    ).follow()
 
     res.form["login"] = "temp"
+    res = res.form.submit(name="answer", value="accept", status=302).follow()
+
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(name="answer", value="accept", status=302).follow()
     res = res.form.submit(name="answer", value="accept", status=302)

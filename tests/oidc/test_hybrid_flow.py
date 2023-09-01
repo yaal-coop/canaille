@@ -14,15 +14,15 @@ def test_oauth_hybrid(testclient, backend, user, client):
             scope="openid profile",
             nonce="somenonce",
         ),
-        status=200,
-    )
+    ).follow()
     assert "text/html" == res.content_type, res.json
 
     res.form["login"] = user.user_name[0]
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit(status=302)
+    res = res.form.submit(status=302).follow()
 
-    res = res.follow(status=200)
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow()
+
     assert "text/html" == res.content_type, res.json
 
     res = res.form.submit(name="answer", value="accept", status=302)
