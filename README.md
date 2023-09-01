@@ -23,6 +23,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 # Try it!
 
+## Locally
+
 ```bash
 cd demo
 # Either run the demo locally
@@ -31,7 +33,7 @@ cd demo
 docker compose up
 ```
 
-or try our [online demo](https://demo.canaille.yaal.coop)!
+## [Online](https://demo.canaille.yaal.coop)!
 
 You have access to:
 - a canaille server at [https://demo.canaille.yaal.coop](https://demo.canaille.yaal.coop)
