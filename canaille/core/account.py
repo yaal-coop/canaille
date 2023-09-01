@@ -24,6 +24,8 @@ from canaille.app.forms import is_readonly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.forms import TableForm
+from canaille.app.i18n import gettext as _
+from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
 from flask import abort
@@ -36,8 +38,6 @@ from flask import request
 from flask import send_file
 from flask import session
 from flask import url_for
-from flask_babel import gettext as _
-from flask_babel import refresh
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
@@ -526,7 +526,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
 
     if "preferred_language" in request.form:
         # Refresh the babel cache in case the lang is updated
-        refresh()
+        reload_translations()
 
         if profile_form["preferred_language"].data == "auto":
             edited_user.preferred_language = None

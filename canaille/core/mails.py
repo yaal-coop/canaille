@@ -1,10 +1,10 @@
 from canaille.app import build_hash
+from canaille.app.i18n import gettext as _
 from canaille.app.mails import logo
 from canaille.app.mails import send_email
 from canaille.app.themes import render_template
 from flask import current_app
 from flask import url_for
-from flask_babel import gettext as _
 
 
 def send_test_mail(email):

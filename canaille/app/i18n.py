@@ -1,23 +1,32 @@
-import gettext
+import datetime
 
-import pytz
-from babel.dates import LOCALTZ
 from flask import current_app
 from flask import g
 from flask import request
-from flask_babel import Babel
-from flask_babel import get_locale
 
 DEFAULT_LANGUAGE_CODE = "en"
 
-babel = Babel()
+try:
+    from flask_babel import Babel
+    from flask_babel import get_locale
+    from flask_babel import gettext
+    from flask_babel import lazy_gettext
+
+    babel = Babel()
+except ImportError:
+
+    def identity(string, *args, **kwargs):
+        return string
+
+    def get_locale():
+        return "en_US"
+
+    gettext = identity
+    lazy_gettext = identity
+    babel = None
 
 
 def setup_i18n(app):
-    babel.init_app(
-        app, locale_selector=locale_selector, timezone_selector=timezone_selector
-    )
-
     @app.before_request
     def before_request():
         g.available_language_codes = available_language_codes()
@@ -27,6 +36,13 @@ def setup_i18n(app):
         return {
             "locale": get_locale(),
         }
+
+    if not babel:  # pragma: no cover
+        return
+
+    babel.init_app(
+        app, locale_selector=locale_selector, timezone_selector=timezone_selector
+    )
 
 
 def locale_selector():
@@ -44,6 +60,12 @@ def locale_selector():
 
 
 def timezone_selector():
+    if not babel:  # pragma: no cover
+        return datetime.timezone.utc
+
+    import pytz
+    from babel.dates import LOCALTZ
+
     try:
         return pytz.timezone(current_app.config.get("TIMEZONE"))
     except pytz.exceptions.UnknownTimeZoneError:
@@ -53,18 +75,30 @@ def timezone_selector():
 def native_language_name_from_code(code):
     try:
         import pycountry
-    except ImportError:  # pragma: no cover
+        from gettext import translation
+    except ImportError:
         return code
 
     language = pycountry.languages.get(alpha_2=code[:2])
     if code == DEFAULT_LANGUAGE_CODE:
         return language.name
 
-    translation = gettext.translation(
-        "iso639-3", pycountry.LOCALES_DIR, languages=[code]
-    )
+    translation = translation("iso639-3", pycountry.LOCALES_DIR, languages=[code])
     return translation.gettext(language.name)
 
 
 def available_language_codes():
-    return [str(translation) for translation in babel.list_translations()]
+    return (
+        [str(translation) for translation in babel.list_translations()]
+        if babel
+        else [DEFAULT_LANGUAGE_CODE]
+    )
+
+
+def reload_translations():
+    if not babel:  # pragma: no cover
+        return
+
+    from flask_babel import refresh
+
+    return refresh()

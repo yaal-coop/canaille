@@ -4,6 +4,7 @@ from canaille.app.flask import current_user
 from canaille.app.flask import login_user
 from canaille.app.flask import logout_user
 from canaille.app.flask import smtp_needed
+from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
 from flask import abort
@@ -14,7 +15,6 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
-from flask_babel import gettext as _
 
 from .forms import FirstLoginForm
 from .forms import ForgottenPasswordForm

@@ -3,12 +3,12 @@ import uuid
 
 from canaille.app import models
 from canaille.app.flask import user_needed
+from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
 from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import url_for
-from flask_babel import gettext as _
 
 from .utils import SCOPE_DETAILS
 

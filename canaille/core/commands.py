@@ -4,7 +4,7 @@ from flask.cli import with_appcontext
 
 try:
     HAS_FAKER = True
-except ImportError:  # pragma: no cover
+except ImportError:
     HAS_FAKER = False
 
 

@@ -2,6 +2,7 @@ from canaille.app import obj_to_b64
 from canaille.app.flask import permissions_needed
 from canaille.app.forms import email_validator
 from canaille.app.forms import Form
+from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
 from canaille.core.mails import build_hash
 from canaille.core.mails import send_test_mail
@@ -10,7 +11,6 @@ from flask import current_app
 from flask import flash
 from flask import request
 from flask import url_for
-from flask_babel import gettext as _
 from wtforms import StringField
 from wtforms.validators import DataRequired
 

@@ -10,6 +10,7 @@ from canaille.app import models
 from canaille.app.flask import current_user
 from canaille.app.flask import logout_user
 from canaille.app.flask import set_parameter_in_url_query
+from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
 from flask import abort
 from flask import Blueprint
@@ -20,7 +21,6 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
-from flask_babel import gettext as _
 from werkzeug.datastructures import CombinedMultiDict
 
 from .forms import AuthorizeForm

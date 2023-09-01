@@ -7,11 +7,11 @@ import ldap.modlist
 import ldif
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
+from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
 from flask import current_app
 from flask import request
-from flask_babel import gettext as _
 
 from .utils import listify
 

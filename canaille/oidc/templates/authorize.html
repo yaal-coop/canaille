@@ -7,7 +7,9 @@
             <img class="ui centered tiny image" src="{{ client.logo_uri }}" alt="{{ client.client_name }}">
         {% endif %}
 
-        <h2 class="ui header">{{ gettext('The application %(name)s is requesting access to:', name=client.client_name) }}</h2>
+        <h2 class="ui header">
+            {% trans name=client.client_name %}The application {{ name }} is requesting access to:{% endtrans %}
+        </h2>
 
         <div class="ui divided items">
             {% for scope in grant.request.scope.split(" ") %}

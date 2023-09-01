@@ -2,16 +2,15 @@ import datetime
 import math
 import re
 
-import pytz
 import wtforms.validators
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
+from canaille.app.i18n import gettext as _
 from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
 from flask import abort
 from flask import current_app
 from flask import make_response
 from flask import request
-from flask_babel import gettext as _
 from flask_wtf import FlaskForm
 from wtforms.meta import DefaultMeta
 
@@ -47,7 +46,7 @@ def phone_number(form, field):
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401
-    except ImportError:  # pragma: no cover
+    except ImportError:
         pass
 
     wtforms.validators.Email()(form, field)
@@ -226,7 +225,7 @@ class DateTimeUTCField(wtforms.DateTimeLocalField):
             try:
                 unaware_dt = datetime.datetime.strptime(date_str, format)
                 locale_dt = user_timezone.localize(unaware_dt)
-                utc_dt = locale_dt.astimezone(pytz.utc)
+                utc_dt = locale_dt.astimezone(datetime.timezone.utc)
                 self.data = utc_dt
                 return
             except ValueError:

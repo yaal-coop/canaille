@@ -4,7 +4,7 @@ from canaille.app.forms import email_validator
 from canaille.app.forms import Form
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
-from flask_babel import lazy_gettext as _
+from canaille.app.i18n import lazy_gettext as _
 
 
 class AuthorizeForm(Form):

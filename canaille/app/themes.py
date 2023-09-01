@@ -4,7 +4,7 @@ import flask
 
 try:
     import flask_themer
-except ImportError:  # pragma: no cover
+except ImportError:
     flask_themer = None
 
 

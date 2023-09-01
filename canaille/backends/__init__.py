@@ -102,7 +102,7 @@ def setup_backend(app, backend):
         g.backend = backend
         app.backend = backend
 
-    if app.debug:  # pragma: no cover
+    if app.debug:
         backend.install(app.config, True)
 
 

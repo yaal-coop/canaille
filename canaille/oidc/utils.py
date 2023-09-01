@@ -1,4 +1,4 @@
-from flask_babel import lazy_gettext as _
+from canaille.app.i18n import lazy_gettext as _
 
 SCOPE_DETAILS = {
     "profile": (

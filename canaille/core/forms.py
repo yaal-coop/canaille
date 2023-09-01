@@ -9,10 +9,10 @@ from canaille.app.forms import phone_number
 from canaille.app.forms import ReadOnly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
+from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from flask import current_app
 from flask import g
-from flask_babel import lazy_gettext as _
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 

@@ -9,6 +9,7 @@ Added
 - If users register or authenticate during a OAuth Authorization
   phase, they get redirected back to that page afterwards.
   :issue:`168` :pr:`151`
+- flask-babel and pytz are now part of the `front` extras
 
 [0.0.33] - 2023-08-26
 =====================

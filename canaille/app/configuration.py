@@ -44,7 +44,7 @@ def setup_config(app, config=None, validate_config=True):
 
     try:
         import toml
-    except ImportError:  # pragma: no cover
+    except ImportError:
         toml = None
 
     app.config.from_mapping(
@@ -64,7 +64,7 @@ def setup_config(app, config=None, validate_config=True):
             "Either create conf/config.toml or set the 'CONFIG' variable environment."
         )
 
-    if app.debug:  # pragma: no cover
+    if app.debug:
         install(app.config, debug=True)
 
     if validate_config:
