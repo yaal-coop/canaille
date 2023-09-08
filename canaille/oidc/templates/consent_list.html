@@ -5,18 +5,16 @@
 {%- endblock -%}
 
 {% block submenu %}
-    <nav class="ui bottom attached two item borderless menu">
-        <a class="active item" href="{{ url_for('oidc.consents.consents') }}">
-            <i class="handshake icon"></i>
-            {% trans %}My consents{% endtrans %}
-            {% if nb_consents %}<div class="ui mini label">{{ nb_consents }}</div>{% endif %}
-        </a>
-        <a class="item" href="{{ url_for('oidc.consents.pre_consents') }}">
-            <i class="stamp icon"></i>
-            {% trans %}Pre-authorized applications{% endtrans %}
-            {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents }}</div>{% endif %}
-        </a>
-    </nav>
+    <a class="active item" href="{{ url_for('oidc.consents.consents') }}">
+        <i class="handshake icon"></i>
+        {% trans %}My consents{% endtrans %}
+        {% if nb_consents %}<div class="ui mini label">{{ nb_consents }}</div>{% endif %}
+    </a>
+    <a class="item" href="{{ url_for('oidc.consents.pre_consents') }}">
+        <i class="stamp icon"></i>
+        {% trans %}Pre-authorized applications{% endtrans %}
+        {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents }}</div>{% endif %}
+    </a>
 {% endblock %}
 
 {% block content %}
