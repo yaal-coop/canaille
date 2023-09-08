@@ -68,7 +68,11 @@
                             {% trans %}Log out{% endtrans %}
                         </a>
                     </nav>
-                    {% block submenu %}{% endblock %}
+                    {% if self.submenu() | trim %}
+                        <nav class="ui bottom attached equal width borderless menu">
+                            {% block submenu %}{% endblock %}
+                        </nav>
+                    {% endif %}
                 </div>
             {% endif %}
         {% endblock %}
