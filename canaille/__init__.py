@@ -50,6 +50,9 @@ def setup_logging(app):
             },
             "handlers": {"wsgi": handler},
             "root": {"level": log_level, "handlers": ["wsgi"]},
+            "loggers": {
+                "faker": {"level": "WARNING"},
+            },
             "disable_existing_loggers": False,
         }
     )
