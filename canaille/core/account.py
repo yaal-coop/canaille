@@ -605,7 +605,7 @@ def profile_edition(user, edited_user):
     if not request.form or profile_form.form_control():
         return render_template("profile_edit.html", **render_context)
 
-    if request.form.get("action") == "edit-profile":
+    if request_is_htmx() or request.form.get("action") == "edit-profile":
         if not profile_form.validate():
             flash(_("Profile edition failed."), "error")
             return render_template("profile_edit.html", **render_context)
