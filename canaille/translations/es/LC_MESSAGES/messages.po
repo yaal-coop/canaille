@@ -1895,7 +1895,6 @@ msgstr[0] "%(nb_items)s artículo"
 msgstr[1] "%(nb_items)s artículos"
 
 #, fuzzy
-#~| msgid "Create my account"
 #~ msgid "Continue creating my account"
 #~ msgstr "Crear mi cuenta"
 

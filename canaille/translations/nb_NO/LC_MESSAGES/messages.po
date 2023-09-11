@@ -1918,7 +1918,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, fuzzy
-#~| msgid "Create my account"
 #~ msgid "Continue creating my account"
 #~ msgstr "Opprett min konto"
 
