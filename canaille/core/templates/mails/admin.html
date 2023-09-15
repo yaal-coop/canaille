@@ -10,22 +10,24 @@
         <i class="user mail icon"></i>
         {% trans %}Emails{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.clients.index') }}">
-        <i class="th list icon"></i>
-        {% trans %}Clients{% endtrans %}
-    </a>
-    <a class="item" href="{{ url_for('oidc.clients.add') }}">
-        <i class="plus icon"></i>
-        {% trans %}Add a client{% endtrans %}
-    </a>
-    <a class="item" href="{{ url_for('oidc.tokens.index') }}">
-        <i class="key icon"></i>
-        {% trans %}Tokens{% endtrans %}
-    </a>
-    <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
-        <i class="user secret icon"></i>
-        {% trans %}Codes{% endtrans %}
-    </a>
+    {% if has_oidc %}
+        <a class="item" href="{{ url_for('oidc.clients.index') }}">
+            <i class="th list icon"></i>
+            {% trans %}Clients{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.clients.add') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add a client{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.tokens.index') }}">
+            <i class="key icon"></i>
+            {% trans %}Tokens{% endtrans %}
+        </a>
+        <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
+            <i class="user secret icon"></i>
+            {% trans %}Codes{% endtrans %}
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}

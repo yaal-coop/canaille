@@ -67,7 +67,7 @@ def index():
     if user.can_edit_self or user.can_manage_users:
         return redirect(url_for("core.account.profile_edition", edited_user=user))
 
-    if user.can_use_oidc:
+    if "OIDC" in current_app.config and user.can_use_oidc:
         return redirect(url_for("oidc.consents.consents"))
 
     return redirect(url_for("core.account.about"))

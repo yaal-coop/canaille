@@ -36,7 +36,7 @@
                                 {% trans %}Profile{% endtrans %}
                             </a>
                         {% endif %}
-                        {% if user.can_use_oidc %}
+                        {% if has_oidc and user.can_use_oidc %}
                             <a class="item {% if menuitem is defined and menuitem == "consents" %}active{% endif %}"
                                href="{{ url_for('oidc.consents.consents') }}">
                                 <i class="handshake icon"></i>

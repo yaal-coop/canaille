@@ -65,12 +65,15 @@ def setup_jinja(app):
 
 def setup_blueprints(app):
     import canaille.core.blueprints
-    import canaille.oidc.blueprints
 
     app.url_map.strict_slashes = False
 
     app.register_blueprint(canaille.core.blueprints.bp)
-    app.register_blueprint(canaille.oidc.blueprints.bp)
+
+    if "OIDC" in app.config:
+        import canaille.oidc.blueprints
+
+        app.register_blueprint(canaille.oidc.blueprints.bp)
 
 
 def setup_flask(app):
@@ -88,6 +91,7 @@ def setup_flask(app):
         return {
             "debug": app.debug or app.config.get("TESTING", False),
             "has_smtp": "SMTP" in app.config,
+            "has_oidc": "OIDC" in app.config,
             "has_password_recovery": app.config.get("ENABLE_PASSWORD_RECOVERY", True),
             "has_registration": app.config.get("ENABLE_REGISTRATION", False),
             "has_account_lockability": app.backend.get().has_account_lockability(),
@@ -135,7 +139,6 @@ def setup_flask_converters(app):
 
 
 def create_app(config=None, validate=True, backend=None):
-    from .oidc.oauth import setup_oauth
     from .app.i18n import setup_i18n
     from .app.configuration import setup_config
     from .app.themes import setup_themer
@@ -149,13 +152,17 @@ def create_app(config=None, validate=True, backend=None):
     try:
         setup_logging(app)
         setup_backend(app, backend)
-        setup_oauth(app)
         setup_flask_converters(app)
         setup_blueprints(app)
         setup_jinja(app)
         setup_i18n(app)
         setup_themer(app)
         setup_flask(app)
+
+        if "OIDC" in app.config:
+            from .oidc.oauth import setup_oauth
+
+            setup_oauth(app)
 
     except Exception as exc:  # pragma: no cover
         if sentry_sdk:
