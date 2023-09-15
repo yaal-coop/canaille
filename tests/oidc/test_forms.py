@@ -128,7 +128,7 @@ def test_fieldlist_duplicate_value(testclient, logged_admin, client):
     res.mustcontain("This value is a duplicate")
 
 
-def test_fieldlist_empty_value(testclient, logged_admin, client):
+def test_fieldlist_empty_value(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
