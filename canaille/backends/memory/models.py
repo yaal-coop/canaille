@@ -477,6 +477,7 @@ class Token(canaille.oidc.models.Token, MemoryModel):
         "refresh_token",
         "revokation_date",
         "client",
+        "type",
     ]
     model_attributes = {
         "client": ("Client", None),
