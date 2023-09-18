@@ -2,7 +2,6 @@ import datetime
 import uuid
 
 from authlib.integrations.flask_oauth2 import current_token
-from authlib.jose import JsonWebKey
 from authlib.jose import jwt
 from authlib.oauth2 import OAuth2Error
 from canaille import csrf
@@ -28,10 +27,9 @@ from .forms import LogoutForm
 from .oauth import authorization
 from .oauth import ClientConfigurationEndpoint
 from .oauth import ClientRegistrationEndpoint
-from .oauth import DEFAULT_JWT_ALG
-from .oauth import DEFAULT_JWT_KTY
 from .oauth import generate_user_info
 from .oauth import get_issuer
+from .oauth import get_jwks
 from .oauth import IntrospectionEndpoint
 from .oauth import require_oauth
 from .oauth import RevocationEndpoint
@@ -211,22 +209,7 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    kty = current_app.config["OIDC"]["JWT"].get("KTY", DEFAULT_JWT_KTY)
-    alg = current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG)
-    jwk = JsonWebKey.import_key(
-        current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
-    )
-    return jsonify(
-        {
-            "keys": [
-                {
-                    "use": "sig",
-                    "alg": alg,
-                    **jwk,
-                }
-            ]
-        }
-    )
+    return jsonify(get_jwks())
 
 
 @bp.route("/userinfo")

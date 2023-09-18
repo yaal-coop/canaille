@@ -2,6 +2,7 @@ import datetime
 
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
+from authlib.jose import JsonWebKey
 from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
 )
@@ -66,12 +67,29 @@ def get_issuer():
     return request.url_root
 
 
-def get_jwt_config(grant):
+def get_jwt_config(grant=None):
     return {
         "key": current_app.config["OIDC"]["JWT"]["PRIVATE_KEY"],
         "alg": current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG),
         "iss": get_issuer(),
         "exp": current_app.config["OIDC"]["JWT"].get("EXP", DEFAULT_JWT_EXP),
+    }
+
+
+def get_jwks():
+    kty = current_app.config["OIDC"]["JWT"].get("KTY", DEFAULT_JWT_KTY)
+    alg = current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG)
+    jwk = JsonWebKey.import_key(
+        current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
+    )
+    return {
+        "keys": [
+            {
+                "use": "sig",
+                "alg": alg,
+                **jwk,
+            }
+        ]
     }
 
 
