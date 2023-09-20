@@ -44,7 +44,7 @@ def get_current_mail_domain():
     if current_app.config["SMTP"].get("FROM_ADDR"):
         return current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
 
-    return get_current_domain()
+    return get_current_domain().split(":")[0]
 
 
 def validate_uri(value):

@@ -5,12 +5,12 @@ def test_oauth_authorization_server(testclient):
     res = testclient.get("/.well-known/oauth-authorization-server", status=200).json
     assert "https://auth.mydomain.tld" == res["issuer"]
     assert res == {
-        "authorization_endpoint": "http://localhost/oauth/authorize",
+        "authorization_endpoint": "http://localhost.local/oauth/authorize",
         "code_challenge_methods_supported": ["plain", "S256"],
-        "introspection_endpoint": "http://localhost/oauth/introspect",
+        "introspection_endpoint": "http://localhost.local/oauth/introspect",
         "issuer": "https://auth.mydomain.tld",
-        "jwks_uri": "http://localhost/oauth/jwks.json",
-        "registration_endpoint": "http://localhost/oauth/register",
+        "jwks_uri": "http://localhost.local/oauth/jwks.json",
+        "registration_endpoint": "http://localhost.local/oauth/register",
         "response_types_supported": [
             "code",
             "token",
@@ -27,7 +27,7 @@ def test_oauth_authorization_server(testclient):
             "phone",
             "groups",
         ],
-        "token_endpoint": "http://localhost/oauth/token",
+        "token_endpoint": "http://localhost.local/oauth/token",
         "token_endpoint_auth_methods_supported": [
             "client_secret_basic",
             "private_key_jwt",
@@ -36,7 +36,7 @@ def test_oauth_authorization_server(testclient):
         ],
         "token_endpoint_auth_signing_alg_values_supported": ["RS256", "ES256"],
         "ui_locales_supported": g.available_language_codes,
-        "userinfo_endpoint": "http://localhost/oauth/userinfo",
+        "userinfo_endpoint": "http://localhost.local/oauth/userinfo",
     }
 
 
@@ -44,7 +44,7 @@ def test_openid_configuration(testclient):
     res = testclient.get("/.well-known/openid-configuration", status=200).json
     assert "https://auth.mydomain.tld" == res["issuer"]
     assert res == {
-        "authorization_endpoint": "http://localhost/oauth/authorize",
+        "authorization_endpoint": "http://localhost.local/oauth/authorize",
         "claims_supported": [
             "sub",
             "iss",
@@ -65,12 +65,12 @@ def test_openid_configuration(testclient):
             "nonce",
         ],
         "code_challenge_methods_supported": ["plain", "S256"],
-        "end_session_endpoint": "http://localhost/oauth/end_session",
+        "end_session_endpoint": "http://localhost.local/oauth/end_session",
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
-        "introspection_endpoint": "http://localhost/oauth/introspect",
+        "introspection_endpoint": "http://localhost.local/oauth/introspect",
         "issuer": "https://auth.mydomain.tld",
-        "jwks_uri": "http://localhost/oauth/jwks.json",
-        "registration_endpoint": "http://localhost/oauth/register",
+        "jwks_uri": "http://localhost.local/oauth/jwks.json",
+        "registration_endpoint": "http://localhost.local/oauth/register",
         "response_types_supported": [
             "code",
             "token",
@@ -88,7 +88,7 @@ def test_openid_configuration(testclient):
             "groups",
         ],
         "subject_types_supported": ["pairwise", "public"],
-        "token_endpoint": "http://localhost/oauth/token",
+        "token_endpoint": "http://localhost.local/oauth/token",
         "token_endpoint_auth_methods_supported": [
             "client_secret_basic",
             "private_key_jwt",
@@ -97,5 +97,5 @@ def test_openid_configuration(testclient):
         ],
         "token_endpoint_auth_signing_alg_values_supported": ["RS256", "ES256"],
         "ui_locales_supported": g.available_language_codes,
-        "userinfo_endpoint": "http://localhost/oauth/userinfo",
+        "userinfo_endpoint": "http://localhost.local/oauth/userinfo",
     }

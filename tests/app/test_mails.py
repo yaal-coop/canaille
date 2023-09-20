@@ -2,8 +2,15 @@ import smtplib
 import warnings
 from unittest import mock
 
+import pytest
 from canaille import create_app
 from flask_webtest import TestApp
+
+
+@pytest.fixture
+def configuration(configuration, httpserver):
+    configuration["SERVER_NAME"] = f"{httpserver.host}:{httpserver.port}"
+    return configuration
 
 
 def test_send_test_email(testclient, logged_admin, smtpd):
@@ -113,7 +120,6 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
         raw_logo = fd.read()
 
     httpserver.expect_request(logo_path).respond_with_data(raw_logo)
-    testclient.app.config["SERVER_NAME"] = f"{httpserver.host}:{httpserver.port}"
     assert len(smtpd.messages) == 0
 
     res = testclient.get(f"http://{httpserver.host}:{httpserver.port}/admin/mail")
