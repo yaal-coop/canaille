@@ -666,11 +666,7 @@ def profile_settings(user, edited_user):
     ):
         return profile_settings_edit(user, edited_user)
 
-    if (
-        request.form.get("action") == "confirm-delete"
-        and BaseBackend.get().has_account_lockability()
-        and not edited_user.locked
-    ):
+    if request.form.get("action") == "confirm-delete":
         return render_template("modals/delete-account.html", edited_user=edited_user)
 
     if request.form.get("action") == "delete":
