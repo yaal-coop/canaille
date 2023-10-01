@@ -26,7 +26,7 @@ def test_get(testclient, backend, client, user):
             "https://mydomain.tld/redirect2",
         ],
         "registration_access_token": "static-token",
-        "registration_client_uri": f"http://localhost.local/oauth/register/{client.client_id}",
+        "registration_client_uri": f"http://localhost/oauth/register/{client.client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": [
             "password",
@@ -104,7 +104,7 @@ def test_update(testclient, backend, client, user):
         "client_secret_expires_at": None,
         "redirect_uris": ["https://newname.example.org/callback"],
         "registration_access_token": "static-token",
-        "registration_client_uri": f"http://localhost.local/oauth/register/{client.client_id}",
+        "registration_client_uri": f"http://localhost/oauth/register/{client.client_id}",
         "token_endpoint_auth_method": "none",
         "grant_types": ["refresh_token"],
         "response_types": ["code", "token"],
