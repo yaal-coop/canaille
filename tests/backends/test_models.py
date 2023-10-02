@@ -135,34 +135,34 @@ def test_model_indexation(testclient, backend):
 
     assert models.User.get(family_name="family_name") == user
     assert not models.User.get(family_name="new_family_name")
-    assert models.User.get(emails="email1@user.com") == user
-    assert models.User.get(emails="email2@user.com") == user
-    assert not models.User.get(emails="email3@user.com")
+    assert models.User.get(emails=["email1@user.com"]) == user
+    assert models.User.get(emails=["email2@user.com"]) == user
+    assert not models.User.get(emails=["email3@user.com"])
 
     user.family_name = "new_family_name"
     user.emails = ["email2@user.com"]
 
     assert models.User.get(family_name="family_name") != user
     assert not models.User.get(family_name="new_family_name")
-    assert models.User.get(emails="email1@user.com") != user
-    assert models.User.get(emails="email2@user.com") != user
-    assert not models.User.get(emails="email3@user.com")
+    assert models.User.get(emails=["email1@user.com"]) != user
+    assert models.User.get(emails=["email2@user.com"]) != user
+    assert not models.User.get(emails=["email3@user.com"])
 
     user.save()
 
     assert not models.User.get(family_name="family_name")
     assert models.User.get(family_name="new_family_name") == user
-    assert not models.User.get(emails="email1@user.com")
-    assert models.User.get(emails="email2@user.com") == user
-    assert not models.User.get(emails="email3@user.com")
+    assert not models.User.get(emails=["email1@user.com"])
+    assert models.User.get(emails=["email2@user.com"]) == user
+    assert not models.User.get(emails=["email3@user.com"])
 
     user.delete()
 
     assert not models.User.get(family_name="family_name")
     assert not models.User.get(family_name="new_family_name")
-    assert not models.User.get(emails="email1@user.com")
-    assert not models.User.get(emails="email2@user.com")
-    assert not models.User.get(emails="email3@user.com")
+    assert not models.User.get(emails=["email1@user.com"])
+    assert not models.User.get(emails=["email2@user.com"])
+    assert not models.User.get(emails=["email3@user.com"])
 
 
 def test_fuzzy(user, moderator, admin, backend):

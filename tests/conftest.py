@@ -142,11 +142,11 @@ def user(app, backend):
         given_name="John",
         family_name="Doe",
         user_name="user",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
         password="correct horse battery staple",
         display_name="Johnny",
         preferred_language="en",
-        phone_numbers="555-000-000",
+        phone_numbers=["555-000-000"],
         profile_url="https://john.example",
         formatted_address="1235, somewhere",
     )
@@ -162,7 +162,7 @@ def admin(app, backend):
         formatted_name="Jane Doe",
         family_name="Doe",
         user_name="admin",
-        emails="jane@doe.com",
+        emails=["jane@doe.com"],
         password="admin",
     )
     u.save()
@@ -177,7 +177,7 @@ def moderator(app, backend):
         formatted_name="Jack Doe",
         family_name="Doe",
         user_name="moderator",
-        emails="jack@doe.com",
+        emails=["jack@doe.com"],
         password="moderator",
     )
     u.save()

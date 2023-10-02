@@ -130,7 +130,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
     )
     u.save()
 
@@ -166,7 +166,7 @@ def test_password_initialization_mail_send_fail(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
     )
     u.save()
 
@@ -236,7 +236,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
         password="correct horse battery staple",
     )
     u.save()
@@ -264,7 +264,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
         password=["correct horse battery staple"],
     )
     u.save()

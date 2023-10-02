@@ -51,7 +51,7 @@ def test_group_deletion(testclient, backend):
         formatted_name="foobar",
         family_name="foobar",
         user_name="foobar",
-        emails="foo@bar.com",
+        emails=["foo@bar.com"],
     )
     user.save()
 
@@ -111,7 +111,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
         formatted_name=" Doe",  # leading space in id attribute
         family_name="Doe",
         user_name="user2",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
     )
     user.save()
 

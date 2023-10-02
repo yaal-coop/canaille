@@ -163,7 +163,7 @@ def test_first_login_account_initialization_mail_sending_failed(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
     )
     u.save()
 
@@ -185,7 +185,7 @@ def test_first_login_form_error(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
     )
     u.save()
 
@@ -207,7 +207,7 @@ def test_user_password_deleted_during_login(testclient, backend):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails="john@doe.com",
+        emails=["john@doe.com"],
         password="correct horse battery staple",
     )
     u.save()
@@ -231,7 +231,7 @@ def test_user_deleted_in_session(testclient, backend):
         formatted_name="Jake Doe",
         family_name="Jake",
         user_name="jake",
-        emails="jake@doe.com",
+        emails=["jake@doe.com"],
         password="correct horse battery staple",
     )
     u.save()
@@ -290,7 +290,7 @@ def test_admin_self_deletion(testclient, backend):
         formatted_name="Temp admin",
         family_name="admin",
         user_name="temp",
-        emails="temp@temp.com",
+        emails=["temp@temp.com"],
         password="admin",
     )
     admin.save()
@@ -316,7 +316,7 @@ def test_user_self_deletion(testclient, backend):
         formatted_name="Temp user",
         family_name="user",
         user_name="temp",
-        emails="temp@temp.com",
+        emails=["temp@temp.com"],
         password="correct horse battery staple",
     )
     user.save()
