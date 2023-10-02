@@ -233,7 +233,10 @@ class Backend(BaseBackend):
     def has_account_lockability(self):
         from .ldapobject import LDAPObject
 
-        return "pwdEndTime" in LDAPObject.ldap_object_attributes()
+        try:
+            return "pwdEndTime" in LDAPObject.ldap_object_attributes()
+        except ldap.SERVER_DOWN:
+            return False
 
 
 def setup_ldap_models(config):
