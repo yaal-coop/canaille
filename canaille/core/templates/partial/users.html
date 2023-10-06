@@ -23,7 +23,7 @@
         {% for watched_user in table_form.items_slice %}
             <tr>
                 {% if user.can_read("photo") %}
-                    <td>
+                    <td class="collapsing">
                         <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
                             {% if user.can_manage_users and watched_user.locked %}
                                 <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>

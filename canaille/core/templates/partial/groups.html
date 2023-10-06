@@ -11,7 +11,7 @@
     <tbody>
         {% for group in table_form.items_slice %}
             <tr>
-                <td>
+                <td class="collapsing">
                     <a href="{{ url_for('core.groups.group', group=group) }}">
                         <i class="users circular black inverted icon"></i>
                     </a>
