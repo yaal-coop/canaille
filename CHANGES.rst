@@ -21,6 +21,7 @@ Added
 - flask-babel and pytz are now part of the `front` extras
 - Bump to fomantic-ui 2.9.3 :pr:`152`
 - Bump to htmx 1.9.6 :pr:`154`
+- Add support for python 3.12 :pr:`155`
 
 [0.0.33] - 2023-08-26
 =====================

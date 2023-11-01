@@ -16,7 +16,7 @@ cache:
     - .venv
 
 style:
-  image: python:3.11
+  image: python:3.12
   stage: test
   script:
     - pip install pre-commit
@@ -50,6 +50,13 @@ python311:
     - poetry install --extras all
     - poetry run pytest
 
+python312:
+  image: python:3.12
+  stage: test
+  script:
+    - poetry install --extras all
+    - poetry run pytest
+
 minversions:
   image: python:3.8
   stage: test
@@ -61,14 +68,14 @@ minversions:
     - poetry run pytest
 
 doc:
-  image: python:3.11
+  image: python:3.12
   stage: test
   script:
     - poetry install --only doc
     - poetry run sphinx-build doc build/sphinx/html
 
 coverage:
-  image: python:3.11
+  image: python:3.12
   stage: test
   allow_failure: true
   script:
