@@ -267,7 +267,7 @@ def end_session():
                 return jsonify(
                     {
                         "status": "error",
-                        "message": "id_token_hint and client_id don't match",
+                        "message": "id_token audience and client_id don't match",
                     }
                 )
 
