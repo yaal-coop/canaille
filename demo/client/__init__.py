@@ -1,8 +1,8 @@
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
+from authlib.common.errors import AuthlibBaseError
 from authlib.integrations.flask_client import OAuth
-from authlib.integrations.flask_client import OAuthError
 from authlib.oidc.discovery import get_well_known_url
 from flask import current_app
 from flask import flash
@@ -49,7 +49,7 @@ def create_app():
             session["user"] = token.get("userinfo")
             session["id_token"] = token["id_token"]
             flash("You have been successfully logged in.", "success")
-        except OAuthError as exc:
+        except AuthlibBaseError as exc:
             flash(f"You have not been logged in: {exc.description}", "error")
 
         return redirect(url_for("index"))
