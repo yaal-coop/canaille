@@ -284,7 +284,7 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
 
 def test_custom_config_format_claim_is_well_formated(testclient, backend, user):
     jwt_mapping_config = DEFAULT_JWT_MAPPING.copy()
-    jwt_mapping_config["EMAIL"] = "{{ user.user_name[0] }}@mydomain.tld"
+    jwt_mapping_config["EMAIL"] = "{{ user.user_name }}@mydomain.tld"
 
     data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
 

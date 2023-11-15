@@ -63,7 +63,7 @@ def test_photo_on_profile_edition(
 
     logged_user.reload()
 
-    assert [jpeg_photo] == logged_user.photo
+    assert logged_user.photo == jpeg_photo
 
     # No change
     res = testclient.get("/profile/user", status=200)
@@ -75,7 +75,7 @@ def test_photo_on_profile_edition(
 
     logged_user.reload()
 
-    assert [jpeg_photo] == logged_user.photo
+    assert logged_user.photo == jpeg_photo
 
     # Photo deletion
     res = testclient.get("/profile/user", status=200)
@@ -87,7 +87,7 @@ def test_photo_on_profile_edition(
 
     logged_user.reload()
 
-    assert logged_user.photo == []
+    assert logged_user.photo is None
 
     # Photo deletion AND upload, this should never happen
     res = testclient.get("/profile/user", status=200)
@@ -100,7 +100,7 @@ def test_photo_on_profile_edition(
 
     logged_user.reload()
 
-    assert [] == logged_user.photo
+    assert logged_user.photo is None
 
 
 def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
@@ -119,7 +119,7 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
     )
 
     user = models.User.get_from_login("foobar")
-    assert user.photo == [jpeg_photo]
+    assert user.photo == jpeg_photo
     user.delete()
 
 
@@ -140,5 +140,5 @@ def test_photo_deleted_on_profile_creation(testclient, jpeg_photo, logged_admin)
     )
 
     user = models.User.get_from_login("foobar")
-    assert user.photo == []
+    assert user.photo is None
     user.delete()

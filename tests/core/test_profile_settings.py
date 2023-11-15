@@ -28,7 +28,7 @@ def test_edition(
     assert res.flashes == [("error", "Profile edition failed.")]
     logged_user.reload()
 
-    assert logged_user.user_name == ["user"]
+    assert logged_user.user_name == "user"
 
     foo_group.reload()
     bar_group.reload()
@@ -38,7 +38,7 @@ def test_edition(
 
     assert logged_user.check_password("correct horse battery staple")[0]
 
-    logged_user.user_name = ["user"]
+    logged_user.user_name = "user"
     logged_user.save()
 
 
@@ -72,10 +72,10 @@ def test_edition_without_groups(
 
     logged_user.reload()
 
-    assert logged_user.user_name == ["user"]
+    assert logged_user.user_name == "user"
     assert logged_user.check_password("correct horse battery staple")[0]
 
-    logged_user.user_name = ["user"]
+    logged_user.user_name = "user"
     logged_user.save()
 
 

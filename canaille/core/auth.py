@@ -89,7 +89,7 @@ def password():
     del session["attempt_login"]
     login_user(user)
     flash(
-        _("Connection successful. Welcome %(user)s", user=user.formatted_name[0]),
+        _("Connection successful. Welcome %(user)s", user=user.formatted_name),
         "success",
     )
     return redirect(session.pop("redirect-after-login", url_for("core.account.index")))
@@ -103,7 +103,7 @@ def logout():
         flash(
             _(
                 "You have been disconnected. See you next time %(user)s",
-                user=user.formatted_name[0],
+                user=user.formatted_name,
             ),
             "success",
         )
@@ -169,7 +169,7 @@ def forgotten():
             _(
                 "The user '%(user)s' does not have permissions to update their password. "
                 "We cannot send a password reset email.",
-                user=user.formatted_name[0],
+                user=user.formatted_name,
             ),
             "error",
         )

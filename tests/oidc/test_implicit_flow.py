@@ -86,8 +86,8 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, keypair[1])
-    assert user.user_name[0] == claims["sub"]
-    assert user.formatted_name[0] == claims["name"]
+    assert user.user_name == claims["sub"]
+    assert user.formatted_name == claims["name"]
     assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(
@@ -141,8 +141,8 @@ def test_oidc_implicit_with_group(
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, keypair[1])
-    assert user.user_name[0] == claims["sub"]
-    assert user.formatted_name[0] == claims["name"]
+    assert user.user_name == claims["sub"]
+    assert user.formatted_name == claims["name"]
     assert [client.client_id, other_client.client_id] == claims["aud"]
     assert ["foo"] == claims["groups"]
 

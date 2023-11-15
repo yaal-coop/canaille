@@ -17,7 +17,7 @@ def test_oauth_hybrid(testclient, backend, user, client):
     ).follow()
     assert "text/html" == res.content_type, res.json
 
-    res.form["login"] = user.user_name[0]
+    res.form["login"] = user.user_name
     res = res.form.submit(status=302).follow()
 
     res.form["password"] = "correct horse battery staple"
@@ -73,8 +73,8 @@ def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, other_cl
 
     id_token = params["id_token"][0]
     claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name[0] == claims["sub"]
-    assert logged_user.formatted_name[0] == claims["name"]
+    assert logged_user.user_name == claims["sub"]
+    assert logged_user.formatted_name == claims["name"]
     assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(

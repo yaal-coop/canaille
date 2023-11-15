@@ -438,7 +438,7 @@ def profile_creation(user):
 def profile_create(current_app, form):
     user = models.User()
     for attribute in form:
-        if attribute.name in user.attributes:
+        if attribute.name in models.User.attributes:
             if isinstance(attribute.data, FileStorage):
                 data = attribute.data.stream.read()
             else:
@@ -449,8 +449,8 @@ def profile_create(current_app, form):
         if "photo" in form and form["photo_delete"].data:
             del user.photo
 
-    given_name = user.given_name[0] if user.given_name else ""
-    family_name = user.family_name[0] if user.family_name else ""
+    given_name = user.given_name if user.given_name else ""
+    family_name = user.family_name if user.family_name else ""
     user.formatted_name = [f"{given_name} {family_name}".strip()]
     user.save()
 
@@ -802,7 +802,7 @@ def profile_delete(user, edited_user):
     flash(
         _(
             "The user %(user)s has been sucessfuly deleted",
-            user=edited_user.formatted_name[0],
+            user=edited_user.formatted_name,
         ),
         "success",
     )
@@ -818,7 +818,7 @@ def profile_delete(user, edited_user):
 def impersonate(user, puppet):
     login_user(puppet)
     flash(
-        _("Connection successful. Welcome %(user)s", user=puppet.formatted_name[0]),
+        _("Connection successful. Welcome %(user)s", user=puppet.formatted_name),
         "success",
     )
     return redirect(url_for("core.account.index"))
@@ -837,11 +837,11 @@ def photo(user, field):
     if request.if_none_match and etag in request.if_none_match:
         return "", 304
 
-    photos = getattr(user, field)
-    if not photos:
+    photo = getattr(user, field)
+    if not photo:
         abort(404)
 
-    stream = io.BytesIO(photos[0])
+    stream = io.BytesIO(photo)
     return send_file(
         stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
     )

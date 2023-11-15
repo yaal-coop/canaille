@@ -26,7 +26,7 @@ def test_user_creation_edition_and_deletion(
     res = res.follow(status=200)
     george = models.User.get_from_login("george")
     foo_group.reload()
-    assert "George" == george.given_name[0]
+    assert "George" == george.given_name
     assert george.groups == [foo_group]
     assert george.check_password("totoyolo")[0]
 
@@ -46,7 +46,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="edit-settings").follow()
 
     george = models.User.get_from_login("george")
-    assert "Georgio" == george.given_name[0]
+    assert "Georgio" == george.given_name
     assert george.check_password("totoyolo")[0]
 
     foo_group.reload()
@@ -92,7 +92,7 @@ def test_user_creation_without_password(testclient, logged_moderator):
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
     george = models.User.get_from_login("george")
-    assert george.user_name[0] == "george"
+    assert george.user_name == "george"
     assert not george.has_password()
 
     george.delete()
@@ -145,7 +145,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
     )
 
     george = models.User.get_from_login("george")
-    assert george.formatted_name[0] == "George Abitbol"
+    assert george.formatted_name == "George Abitbol"
     george.delete()
 
 
@@ -160,7 +160,7 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
     )
 
     george = models.User.get_from_login("george")
-    assert george.formatted_name[0] == "Abitbol"
+    assert george.formatted_name == "Abitbol"
     george.delete()
 
 

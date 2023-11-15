@@ -57,16 +57,16 @@ def test_user_list_bad_pages(testclient, logged_admin):
 def test_user_list_search(testclient, logged_admin, user, moderator):
     res = testclient.get("/users")
     res.mustcontain("3 items")
-    res.mustcontain(moderator.formatted_name[0])
-    res.mustcontain(user.formatted_name[0])
+    res.mustcontain(moderator.formatted_name)
+    res.mustcontain(user.formatted_name)
 
     form = res.forms["search"]
     form["query"] = "Jack"
     res = form.submit()
 
     res.mustcontain("1 item")
-    res.mustcontain(moderator.formatted_name[0])
-    res.mustcontain(no=user.formatted_name[0])
+    res.mustcontain(moderator.formatted_name)
+    res.mustcontain(no=user.formatted_name)
 
 
 def test_user_list_search_only_allowed_fields(
@@ -74,16 +74,16 @@ def test_user_list_search_only_allowed_fields(
 ):
     res = testclient.get("/users")
     res.mustcontain("3 items")
-    res.mustcontain(moderator.formatted_name[0])
-    res.mustcontain(user.formatted_name[0])
+    res.mustcontain(moderator.formatted_name)
+    res.mustcontain(user.formatted_name)
 
     form = res.forms["search"]
     form["query"] = "user"
     res = form.submit()
 
     res.mustcontain("1 item")
-    res.mustcontain(user.formatted_name[0])
-    res.mustcontain(no=moderator.formatted_name[0])
+    res.mustcontain(user.formatted_name)
+    res.mustcontain(no=moderator.formatted_name)
 
     testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("user_name")
     g.user.reload()
@@ -93,8 +93,8 @@ def test_user_list_search_only_allowed_fields(
     res = form.submit()
 
     res.mustcontain("0 items")
-    res.mustcontain(no=user.formatted_name[0])
-    res.mustcontain(no=moderator.formatted_name[0])
+    res.mustcontain(no=user.formatted_name)
+    res.mustcontain(no=moderator.formatted_name)
 
 
 def test_edition_permission(
@@ -143,25 +143,25 @@ def test_edition(
 
     logged_user.reload()
 
-    assert logged_user.given_name == ["given_name"]
-    assert logged_user.family_name == ["family_name"]
+    assert logged_user.given_name == "given_name"
+    assert logged_user.family_name == "family_name"
     assert logged_user.display_name == "display_name"
     assert logged_user.emails == ["email@mydomain.tld"]
     assert logged_user.phone_numbers == ["555-666-777"]
-    assert logged_user.formatted_address == ["formatted_address"]
-    assert logged_user.street == ["street"]
-    assert logged_user.postal_code == ["postal_code"]
-    assert logged_user.locality == ["locality"]
-    assert logged_user.region == ["region"]
+    assert logged_user.formatted_address == "formatted_address"
+    assert logged_user.street == "street"
+    assert logged_user.postal_code == "postal_code"
+    assert logged_user.locality == "locality"
+    assert logged_user.region == "region"
     assert logged_user.preferred_language == "fr"
     assert logged_user.employee_number == "666"
-    assert logged_user.department == ["1337"]
-    assert logged_user.title == ["title"]
-    assert logged_user.organization == ["organization"]
-    assert logged_user.photo == [jpeg_photo]
+    assert logged_user.department == "1337"
+    assert logged_user.title == "title"
+    assert logged_user.organization == "organization"
+    assert logged_user.photo == jpeg_photo
 
-    logged_user.formatted_name = ["John (johnny) Doe"]
-    logged_user.family_name = ["Doe"]
+    logged_user.formatted_name = "John (johnny) Doe"
+    logged_user.family_name = "Doe"
     logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
@@ -331,7 +331,7 @@ def test_surname_is_mandatory(testclient, logged_user):
 
     logged_user.reload()
 
-    assert ["Doe"] == logged_user.family_name
+    assert "Doe" == logged_user.family_name
 
 
 def test_formcontrol(testclient, logged_user):

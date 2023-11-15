@@ -90,6 +90,7 @@ class MemoryModel(Model):
         self.index()[self.id] = copy.deepcopy(self.state)
 
         # update the index for each attribute
+        print(self.attributes)
         for attribute in self.attributes:
             attribute_values = listify(getattr(self, attribute))
             for value in attribute_values:
@@ -161,10 +162,6 @@ class MemoryModel(Model):
         # update the id index
         del self.index()[self.id]
 
-    def update(self, **kwargs):
-        for attribute, value in kwargs.items():
-            setattr(self, attribute, value)
-
     def reload(self):
         self.state = self.__class__.get(id=self.id).state
         self.cache = {}
@@ -193,11 +190,11 @@ class MemoryModel(Model):
                 ]
                 values = [value for value in values if value]
 
-            if name in self.unique_attributes:
+            unique_attribute = "List" not in str(self.__annotations__[name])
+            if unique_attribute:
                 return values[0] if values else None
             else:
                 return values or []
-                raise AttributeError()
 
         raise AttributeError()
 
@@ -222,43 +219,13 @@ class MemoryModel(Model):
         except KeyError:
             pass
 
+    @property
+    def identifier(self):
+        return getattr(self, self.identifier_attribute)
+
 
 class User(canaille.core.models.User, MemoryModel):
-    attributes = [
-        "id",
-        "user_name",
-        "password",
-        "preferred_language",
-        "family_name",
-        "given_name",
-        "formatted_name",
-        "display_name",
-        "emails",
-        "phone_numbers",
-        "formatted_address",
-        "street",
-        "postal_code",
-        "locality",
-        "region",
-        "photo",
-        "profile_url",
-        "employee_number",
-        "department",
-        "title",
-        "organization",
-        "last_modified",
-        "groups",
-        "lock_date",
-    ]
     identifier_attribute = "user_name"
-    unique_attributes = [
-        "id",
-        "display_name",
-        "employee_number",
-        "preferred_language",
-        "last_modified",
-        "lock_date",
-    ]
     model_attributes = {
         "groups": ("Group", "members"),
     }
@@ -297,7 +264,7 @@ class User(canaille.core.models.User, MemoryModel):
                     ).id
 
             return all(
-                value in getattr(self, attribute, None)
+                getattr(self, attribute) and value in getattr(self, attribute)
                 for attribute, value in filter.items()
             )
 
@@ -306,10 +273,6 @@ class User(canaille.core.models.User, MemoryModel):
     @classmethod
     def get_from_login(cls, login=None, **kwargs):
         return User.get(user_name=login)
-
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)[0]
 
     def has_password(self):
         return bool(self.password)
@@ -335,178 +298,39 @@ class User(canaille.core.models.User, MemoryModel):
 
 
 class Group(canaille.core.models.Group, MemoryModel):
-    attributes = [
-        "id",
-        "display_name",
-        "members",
-        "description",
-    ]
-    unique_attributes = ["id", "display_name"]
     model_attributes = {
         "members": ("User", "groups"),
     }
     identifier_attribute = "display_name"
 
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)
-
 
 class Client(canaille.oidc.models.Client, MemoryModel):
-    attributes = [
-        "id",
-        "description",
-        "preconsent",
-        "post_logout_redirect_uris",
-        "audience",
-        "client_id",
-        "client_secret",
-        "client_id_issued_at",
-        "client_secret_expires_at",
-        "client_name",
-        "contacts",
-        "client_uri",
-        "redirect_uris",
-        "logo_uri",
-        "grant_types",
-        "response_types",
-        "scope",
-        "tos_uri",
-        "policy_uri",
-        "jwks_uri",
-        "jwk",
-        "token_endpoint_auth_method",
-        "software_id",
-        "software_version",
-    ]
     identifier_attribute = "client_id"
-    unique_attributes = [
-        "id",
-        "preconsent",
-        "client_id",
-        "client_secret",
-        "client_id_issued_at",
-        "client_secret_expires_at",
-        "client_name",
-        "client_uri",
-        "logo_uri",
-        "tos_uri",
-        "policy_uri",
-        "jwks_uri",
-        "jwk",
-        "token_endpoint_auth_method",
-        "software_id",
-        "software_version",
-    ]
     model_attributes = {
         "audience": ("Client", None),
     }
-
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
-    attributes = [
-        "id",
-        "authorization_code_id",
-        "description",
-        "code",
-        "client",
-        "subject",
-        "redirect_uri",
-        "response_type",
-        "scope",
-        "nonce",
-        "issue_date",
-        "lifetime",
-        "challenge",
-        "challenge_method",
-        "revokation_date",
-    ]
     identifier_attribute = "authorization_code_id"
-    unique_attributes = [
-        "id",
-        "authorization_code_id",
-        "code",
-        "client",
-        "subject",
-        "redirect_uri",
-        "issue_date",
-        "lifetime",
-        "challenge",
-        "challenge_method",
-        "revokation_date",
-        "nonce",
-    ]
     model_attributes = {
         "client": ("Client", None),
         "subject": ("User", None),
     }
 
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)
-
 
 class Token(canaille.oidc.models.Token, MemoryModel):
-    attributes = [
-        "id",
-        "token_id",
-        "access_token",
-        "description",
-        "client",
-        "subject",
-        "type",
-        "refresh_token",
-        "scope",
-        "issue_date",
-        "lifetime",
-        "revokation_date",
-        "audience",
-    ]
     identifier_attribute = "token_id"
-    unique_attributes = [
-        "id",
-        "token_id",
-        "subject",
-        "issue_date",
-        "lifetime",
-        "access_token",
-        "refresh_token",
-        "revokation_date",
-        "client",
-        "type",
-    ]
     model_attributes = {
         "client": ("Client", None),
         "subject": ("User", None),
         "audience": ("Client", None),
     }
 
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)
-
 
 class Consent(canaille.oidc.models.Consent, MemoryModel):
-    attributes = [
-        "id",
-        "consent_id",
-        "subject",
-        "client",
-        "scope",
-        "issue_date",
-        "revokation_date",
-    ]
     identifier_attribute = "consent_id"
-    unique_attributes = ["id", "subject", "client", "issue_date", "revokation_date"]
     model_attributes = {
         "client": ("Client", None),
         "subject": ("User", None),
     }
-
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)[0]

@@ -22,7 +22,7 @@ MINIMUM_PASSWORD_LENGTH = 8
 
 def unique_login(form, field):
     if models.User.get_from_login(field.data) and (
-        not getattr(form, "user", None) or form.user.user_name[0] != field.data
+        not getattr(form, "user", None) or form.user.user_name != field.data
     ):
         raise wtforms.ValidationError(
             _("The login '{login}' already exists").format(login=field.data)

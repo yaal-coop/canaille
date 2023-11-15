@@ -14,6 +14,7 @@ from canaille.backends.ldap.utils import python_to_ldap
 from canaille.backends.ldap.utils import Syntax
 
 
+# TODO: tester le changement de cardinalité des attributs
 def test_object_creation(app, backend):
     user = models.User(
         formatted_name="Doe",  # leading space
@@ -45,13 +46,14 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
     )
     user.save()
 
-    assert ldap.dn.is_dn(user.dn)
-    assert ldap.dn.dn2str(ldap.dn.str2dn(user.dn)) == user.dn
-    assert user.dn == "uid=user,ou=users,dc=mydomain,dc=tld"
+    dn = user.id
+    assert dn == "uid=user,ou=users,dc=mydomain,dc=tld"
+    assert ldap.dn.is_dn(dn)
+    assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
 
     assert user == models.User.get(user.identifier)
     assert user == models.User.get(user_name=user.identifier)
-    assert user == models.User.get(id=user.dn)
+    assert user == models.User.get(id=dn)
 
     user.delete()
 
@@ -65,13 +67,14 @@ def test_special_chars_in_rdn(testclient, backend):
     )
     user.save()
 
-    assert ldap.dn.is_dn(user.dn)
-    assert ldap.dn.dn2str(ldap.dn.str2dn(user.dn)) == user.dn
-    assert user.dn == "uid=\\#user,ou=users,dc=mydomain,dc=tld"
+    dn = user.id
+    assert ldap.dn.is_dn(dn)
+    assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
+    assert dn == "uid=\\#user,ou=users,dc=mydomain,dc=tld"
 
     assert user == models.User.get(user.identifier)
     assert user == models.User.get(user_name=user.identifier)
-    assert user == models.User.get(id=user.dn)
+    assert user == models.User.get(id=dn)
 
     user.delete()
 
@@ -179,10 +182,11 @@ def test_operational_attribute_conversion(backend):
 def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
     foo_group.save()
-    g = LDAPObject.get(id=foo_group.dn)
+    dn = foo_group.id
+    g = LDAPObject.get(id=dn)
     assert isinstance(g, models.Group)
     assert g == foo_group
-    assert g.cn == foo_group.cn
+    assert g.display_name == foo_group.display_name
 
     ou = LDAPObject.get(id=f"{models.Group.base},{models.Group.root_dn}")
     assert isinstance(ou, LDAPObject)
@@ -195,8 +199,10 @@ def test_object_class_update(backend, testclient):
     user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
     user1.save()
 
-    assert user1.objectClass == ["inetOrgPerson"]
-    assert models.User.get(id=user1.id).objectClass == ["inetOrgPerson"]
+    assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
+    assert models.User.get(id=user1.id).get_ldap_attribute("objectClass") == [
+        "inetOrgPerson"
+    ]
 
     testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
@@ -207,18 +213,24 @@ def test_object_class_update(backend, testclient):
     user2 = models.User(cn="foo2", sn="bar2", user_name="baz2")
     user2.save()
 
-    assert user2.objectClass == ["inetOrgPerson", "extensibleObject"]
-    assert models.User.get(id=user2.id).objectClass == [
+    assert user2.get_ldap_attribute("objectClass") == [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
+    assert models.User.get(id=user2.id).get_ldap_attribute("objectClass") == [
         "inetOrgPerson",
         "extensibleObject",
     ]
 
     user1 = models.User.get(id=user1.id)
-    assert user1.objectClass == ["inetOrgPerson"]
+    assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
 
     user1.save()
-    assert user1.objectClass == ["inetOrgPerson", "extensibleObject"]
-    assert models.User.get(id=user1.id).objectClass == [
+    assert user1.get_ldap_attribute("objectClass") == [
+        "inetOrgPerson",
+        "extensibleObject",
+    ]
+    assert models.User.get(id=user1.id).get_ldap_attribute("objectClass") == [
         "inetOrgPerson",
         "extensibleObject",
     ]

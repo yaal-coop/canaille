@@ -58,3 +58,11 @@ def validate_uri(value):
         re.IGNORECASE,
     )
     return re.match(regex, value) is not None
+
+
+class classproperty:
+    def __init__(self, f):
+        self.f = f
+
+    def __get__(self, obj, owner):
+        return self.f(owner)
