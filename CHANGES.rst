@@ -7,6 +7,7 @@ Added
 *****
 
 - Refresh token grant supports other client authentication methods. :pr:`157`
+- Implement a SQLAlchemy backend. :pr:`158`
 
 Changed
 *******

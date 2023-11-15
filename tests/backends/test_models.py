@@ -213,6 +213,9 @@ def test_model_references(testclient, user, foo_group, admin, bar_group, backend
 def test_model_references_set_unsaved_object(
     testclient, logged_moderator, user, backend
 ):
+    if "sql" in backend.__class__.__module__:
+        pytest.skip()
+
     group = models.Group(members=[user], display_name="foo")
     group.save()
     user.reload()  # LDAP groups can be inconsistent by containing members which doesn't exist

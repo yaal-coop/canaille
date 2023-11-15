@@ -4,6 +4,8 @@ Backends
 .. contents::
    :local:
 
+Canaille can read and save data in different databases:
+
 Memory
 ======
 
@@ -12,8 +14,24 @@ This backend is only for test purpose and should not be used in production envir
 
 It is used when the ``BACKENDS`` configuration parameter is unset or empty.
 
+SQL
+===
+
+Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as
+sqlite, postgresql or mariadb.
+
+It is used when the ``BACKENDS.SQL`` configuration parameter is defined.
+
 LDAP
 ====
+
+Canaille can use OpenLDAP as its main database.
+It is used when the ``BACKENDS.SQL`` configuration parameter is defined.
+
+.. note ::
+   Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have been tested.
+   If you want to use different schemas or LDAP servers, adaptations may be needed.
+   Patches are welcome.
 
 Canaille can integrate with several OpenLDAP overlays:
 

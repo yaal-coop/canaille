@@ -78,6 +78,11 @@ LEVEL = "DEBUG"
 # written in the standard error output.
 # PATH = ""
 
+# [BACKENDS.SQL]
+# The SQL database connection string
+# Details on https://docs.sqlalchemy.org/en/20/core/engines.html
+# SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
+
 [BACKENDS.LDAP]
 URI = "ldap://127.0.0.1:5389"
 ROOT_DN = "dc=mydomain,dc=tld"

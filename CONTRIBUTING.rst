@@ -34,9 +34,10 @@ The canaille server has some default users:
 Backends
 ~~~~~~~~
 
-Canaille comes with two backends:
+Canaille comes with several backends:
 
 - a lightweight test purpose `memory` backend
+- a `sql` backend, based on sqlalchemy
 - a production-ready `LDAP` backend
 
 Docker environment
@@ -58,8 +59,11 @@ To launch containers, use:
 .. code-block:: console
 
     cd demo
-    # To run the demo with the memory backend:
+    # To run the demo with the sql backend:
     docker compose up
+
+    # To run the demo with the memory backend:
+    docker compose --file docker-compose-memory.yml up
 
     # To run the demo with the LDAP backend:
     docker compose --file docker-compose-ldap.yml up
@@ -69,19 +73,20 @@ Local environment
 
 .. code-block:: console
 
-    # To run the demo with the memory backend:
+    # To run the demo with the sql backend:
     ./demo/run.sh
 
-If you want to run the demo locally with the LDAP backend, you need to have
-OpenLDAP installed on your system.
-
-.. code-block:: console
+    # To run the demo with the memory backend:
+    ./demo/run.sh --backend memory
 
     # To run the demo with the LDAP backend:
     ./demo/run.sh --backend ldap
 
-.. warning ::
+.. note ::
+    If you want to run the demo locally with the LDAP backend, you need to have
+    OpenLDAP installed on your system.
 
+.. warning ::
     On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor,
     and thus makes the tests and the demo fail. This can be mitigated by removing apparmor restrictions
     on `slapd`.
@@ -105,7 +110,7 @@ users and groups with the ``populate`` command:
     # If running in local environment
     env CONFIG=conf/canaille-ldap.toml poetry run canaille populate  --nb 100 users
 
-Note that this will not work with the memory backend.
+Adapt to use either the `ldap` or the `sql` configuration file. Note that this will not work with the memory backend.
 
 Unit tests
 ----------
@@ -113,7 +118,7 @@ Unit tests
 To run the tests, you just can run `poetry run pytest` and/or `tox` to test all the supported python environments.
 Everything must be green before patches get merged.
 
-To test a specific backend you can pass ``--backend memory`` or ``--backend ldap`` to pytest and tox.
+To test a specific backend you can pass ``--backend memory``, ``--backend sql`` or ``--backend ldap`` to pytest and tox.
 
 The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the
 test coverage with ``poetry run pytest --cov --cov-report=html`` or ``tox -e coverage -- --cov-report=html``.

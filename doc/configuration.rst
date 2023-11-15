@@ -90,6 +90,13 @@ LOGGING
 :PATH:
     *Optional.* The log file path. If not set, logs are written in the standard error output.
 
+BACKENDS.SQL
+------------
+
+:SQL_DATABASE_URI:
+    **Required.** The SQL database connection string, as defined in
+    `SQLAlchemy documentation <https://docs.sqlalchemy.org/en/20/core/engines.html>`_.
+
 BACKENDS.LDAP
 -------------
 
