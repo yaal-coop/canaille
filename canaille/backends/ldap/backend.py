@@ -235,7 +235,7 @@ class Backend(BaseBackend):
 
         try:
             return "pwdEndTime" in LDAPObject.ldap_object_attributes()
-        except ldap.SERVER_DOWN:
+        except ldap.SERVER_DOWN:  # pragma: no cover
             return False
 
 
