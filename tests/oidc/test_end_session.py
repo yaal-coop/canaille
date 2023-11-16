@@ -279,7 +279,7 @@ def test_client_hint_mismatch(testclient, backend, logged_user, client):
     )
 
     assert res.json == {
-        "message": "id_token_hint and client_id don't match",
+        "message": "id_token audience and client_id don't match",
         "status": "error",
     }
 
