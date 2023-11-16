@@ -12,8 +12,6 @@ from werkzeug.datastructures import ImmutableMultiDict
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
     del current_app.config["TIMEZONE"]
 
-    offset = LOCALTZ.utcoffset(datetime.datetime.utcnow())
-
     class TestForm(wtforms.Form):
         dt = DateTimeUTCField()
 
@@ -22,6 +20,7 @@ def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
     assert form.dt.data is None
 
     utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    offset = LOCALTZ.utcoffset(utc_date.replace(tzinfo=None))
     locale_date = datetime.datetime(2023, 6, 1, 12) + offset
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
     rendered_locale_date_form = locale_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -145,8 +144,6 @@ def test_datetime_utc_field_japan_timezone(testclient):
 def test_datetime_utc_field_invalid_timezone(testclient):
     current_app.config["TIMEZONE"] = "invalid"
 
-    offset = LOCALTZ.utcoffset(datetime.datetime.utcnow())
-
     class TestForm(wtforms.Form):
         dt = DateTimeUTCField()
 
@@ -155,6 +152,7 @@ def test_datetime_utc_field_invalid_timezone(testclient):
     assert form.dt.data is None
 
     utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    offset = LOCALTZ.utcoffset(utc_date.replace(tzinfo=None))
     locale_date = datetime.datetime(2023, 6, 1, 12) + offset
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
     rendered_locale_date_form = locale_date.strftime("%Y-%m-%d %H:%M:%S")
