@@ -25,9 +25,6 @@ def test_required_methods(testclient):
         obj.delete()
 
     with pytest.raises(NotImplementedError):
-        obj.update()
-
-    with pytest.raises(NotImplementedError):
         obj.reload()
 
 
@@ -74,11 +71,11 @@ def test_model_lifecycle(testclient, backend):
 
     user.family_name = "new_family_name"
 
-    assert user.family_name == ["new_family_name"]
+    assert user.family_name == "new_family_name"
 
     user.reload()
 
-    assert user.family_name == ["family_name"]
+    assert user.family_name == "family_name"
 
     user.delete()
 
@@ -96,29 +93,30 @@ def test_model_attribute_edition(testclient, backend):
     )
     user.save()
 
-    assert user.user_name == ["user_name"]
-    assert user.family_name == ["family_name"]
+    assert user.user_name == "user_name"
+    assert user.family_name == "family_name"
     assert user.emails == ["email1@user.com", "email2@user.com"]
 
     user = models.User.get(id=user.id)
-    assert user.user_name == ["user_name"]
-    assert user.family_name == ["family_name"]
+    assert user.user_name == "user_name"
+    assert user.family_name == "family_name"
     assert user.emails == ["email1@user.com", "email2@user.com"]
 
-    user.family_name = ["new_family_name"]
+    user.family_name = "new_family_name"
     user.emails = ["email1@user.com"]
     user.save()
 
-    assert user.family_name == ["new_family_name"]
+    assert user.family_name == "new_family_name"
     assert user.emails == ["email1@user.com"]
 
     user = models.User.get(id=user.id)
-    assert user.family_name == ["new_family_name"]
+    assert user.family_name == "new_family_name"
     assert user.emails == ["email1@user.com"]
 
-    user.display_name = [""]
-    user.save()
+    user.display_name = ""
+    assert not user.display_name
 
+    user.save()
     assert not user.display_name
 
     user.delete()

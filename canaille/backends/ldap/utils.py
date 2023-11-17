@@ -85,3 +85,13 @@ def python_to_ldap(value, syntax, encode=True):
 
 def listify(value):
     return value if isinstance(value, list) else [value]
+
+
+def cardinalize_attribute(python_unique, value):
+    if not value:
+        return None if python_unique else []
+
+    if python_unique:
+        return value[0]
+
+    return [v for v in value if v is not None]

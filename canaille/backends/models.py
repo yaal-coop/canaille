@@ -1,7 +1,18 @@
+from collections import ChainMap
+
+from canaille.app import classproperty
+
+
 class Model:
     """
     Model abstract class.
     """
+
+    @classproperty
+    def attributes(cls):
+        return ChainMap(
+            *(c.__annotations__ for c in cls.__mro__ if "__annotations__" in c.__dict__)
+        )
 
     @classmethod
     def query(cls, **kwargs):
@@ -74,7 +85,8 @@ class Model:
         >>> user.first_name
         Jane
         """
-        raise NotImplementedError()
+        for attribute, value in kwargs.items():
+            setattr(self, attribute, value)
 
     def reload(self):
         """

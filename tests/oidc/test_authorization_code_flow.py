@@ -80,14 +80,14 @@ def test_authorization_code_flow(
         "phone",
     }
     claims = jwt.decode(access_token, keypair[1])
-    assert claims["sub"] == logged_user.user_name[0]
-    assert claims["name"] == logged_user.formatted_name[0]
+    assert claims["sub"] == logged_user.user_name
+    assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, other_client.client_id]
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
-    assert claims["sub"] == logged_user.user_name[0]
-    assert claims["name"] == logged_user.formatted_name[0]
+    assert claims["sub"] == logged_user.user_name
+    assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, other_client.client_id]
 
     res = testclient.get(
@@ -208,8 +208,8 @@ def test_authorization_code_flow_preconsented(
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name[0] == claims["sub"]
-    assert logged_user.formatted_name[0] == claims["name"]
+    assert logged_user.user_name == claims["sub"]
+    assert logged_user.formatted_name == claims["name"]
     assert [client.client_id, other_client.client_id] == claims["aud"]
 
     res = testclient.get(
@@ -240,7 +240,7 @@ def test_logout_login(testclient, logged_user, client):
     res = res.follow()
     res = res.follow()
 
-    res.form["login"] = logged_user.user_name[0]
+    res.form["login"] = logged_user.user_name
     res = res.form.submit()
     res = res.follow()
 
@@ -767,8 +767,8 @@ def test_authorization_code_request_scope_too_large(
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name[0] == claims["sub"]
-    assert logged_user.formatted_name[0] == claims["name"]
+    assert logged_user.user_name == claims["sub"]
+    assert logged_user.formatted_name == claims["name"]
 
     res = testclient.get(
         "/oauth/userinfo",

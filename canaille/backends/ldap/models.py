@@ -15,7 +15,7 @@ class User(canaille.core.models.User, LDAPObject):
     DEFAULT_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
     DEFAULT_RDN = "cn"
 
-    attributes = {
+    attribute_map = {
         "id": "dn",
         "user_name": "uid",
         "password": "userPassword",
@@ -66,7 +66,7 @@ class User(canaille.core.models.User, LDAPObject):
                 filter_["groups"] = Group.dn_for(filter_["groups"])
 
             base = "".join(
-                f"({cls.attributes.get(key, key)}={value})"
+                f"({cls.python_attribute_to_ldap(key)}={value})"
                 for key, value in filter_.items()
             )
             return f"(&{base})" if len(filter_) > 1 else base
@@ -147,7 +147,7 @@ class User(canaille.core.models.User, LDAPObject):
         self.load_permissions()
 
     def save(self, *args, **kwargs):
-        group_attr = self.attributes.get("groups", "groups")
+        group_attr = self.python_attribute_to_ldap("groups")
         new_groups = self.changes.get(group_attr)
         if not new_groups:
             return super().save(*args, **kwargs)
@@ -194,7 +194,7 @@ class Group(canaille.core.models.Group, LDAPObject):
     DEFAULT_NAME_ATTRIBUTE = "cn"
     DEFAULT_USER_FILTER = "member={user.id}"
 
-    attributes = {
+    attribute_map = {
         "id": "dn",
         "display_name": "cn",
         "members": "member",
@@ -243,9 +243,8 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "software_version": "oauthSoftwareVersion",
     }
 
-    attributes = {
+    attribute_map = {
         "id": "dn",
-        "description": "description",
         "preconsent": "oauthPreconsent",
         # post_logout_redirect_uris is not yet supported by authlib
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
@@ -263,10 +262,9 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     ldap_object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     rdn_attribute = "oauthAuthorizationCodeID"
-    attributes = {
+    attribute_map = {
         "id": "dn",
         "authorization_code_id": "oauthAuthorizationCodeID",
-        "description": "description",
         "code": "oauthCode",
         "client": "oauthClient",
         "subject": "oauthSubject",
@@ -290,11 +288,10 @@ class Token(canaille.oidc.models.Token, LDAPObject):
     ldap_object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     rdn_attribute = "oauthTokenID"
-    attributes = {
+    attribute_map = {
         "id": "dn",
         "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
-        "description": "description",
         "client": "oauthClient",
         "subject": "oauthSubject",
         "type": "oauthTokenType",
@@ -315,7 +312,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
-    attributes = {
+    attribute_map = {
         "id": "dn",
         "consent_id": "cn",
         "subject": "oauthSubject",

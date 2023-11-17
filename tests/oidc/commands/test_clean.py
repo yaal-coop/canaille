@@ -47,7 +47,6 @@ def test_clean_command(testclient, backend, client, user):
         access_token="my-valid-token",
         client=client,
         subject=user,
-        type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",
         issue_date=(
@@ -61,7 +60,6 @@ def test_clean_command(testclient, backend, client, user):
         access_token="my-expired-token",
         client=client,
         subject=user,
-        type=None,
         refresh_token=gen_salt(48),
         scope="openid profile",
         issue_date=(
@@ -81,5 +79,5 @@ def test_clean_command(testclient, backend, client, user):
     res = runner.invoke(cli, ["clean"])
     assert res.exit_code == 0, res.stdout
 
-    assert models.AuthorizationCode.query() == [valid_code]
-    assert models.Token.query() == [valid_token]
+    assert models.AuthorizationCode.get() == valid_code
+    assert models.Token.get() == valid_token

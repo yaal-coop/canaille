@@ -37,17 +37,17 @@ DEFAULT_JWT_ALG = "RS256"
 DEFAULT_JWT_EXP = 3600
 AUTHORIZATION_CODE_LIFETIME = 84400
 DEFAULT_JWT_MAPPING = {
-    "SUB": "{{ user.user_name[0] }}",
-    "NAME": "{% if user.formatted_name %}{{ user.formatted_name[0] }}{% endif %}",
+    "SUB": "{{ user.user_name }}",
+    "NAME": "{% if user.formatted_name %}{{ user.formatted_name }}{% endif %}",
     "PHONE_NUMBER": "{% if user.phone_numbers %}{{ user.phone_numbers[0] }}{% endif %}",
     "EMAIL": "{% if user.preferred_email %}{{ user.preferred_email }}{% endif %}",
-    "GIVEN_NAME": "{% if user.given_name %}{{ user.given_name[0] }}{% endif %}",
-    "FAMILY_NAME": "{% if user.family_name %}{{ user.family_name[0] }}{% endif %}",
+    "GIVEN_NAME": "{% if user.given_name %}{{ user.given_name }}{% endif %}",
+    "FAMILY_NAME": "{% if user.family_name %}{{ user.family_name }}{% endif %}",
     "PREFERRED_USERNAME": "{% if user.display_name %}{{ user.display_name }}{% endif %}",
     "LOCALE": "{% if user.preferred_language %}{{ user.preferred_language }}{% endif %}",
-    "ADDRESS": "{% if user.formatted_address %}{{ user.formatted_address[0] }}{% endif %}",
+    "ADDRESS": "{% if user.formatted_address %}{{ user.formatted_address }}{% endif %}",
     "PICTURE": "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}",
-    "WEBSITE": "{% if user.profile_url %}{{ user.profile_url[0] }}{% endif %}",
+    "WEBSITE": "{% if user.profile_url %}{{ user.profile_url }}{% endif %}",
 }
 
 
@@ -332,9 +332,9 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
             "active": True,
             "client_id": token.client.client_id,
             "token_type": token.type,
-            "username": token.subject.formatted_name[0],
+            "username": token.subject.formatted_name,
             "scope": token.get_scope(),
-            "sub": token.subject.user_name[0],
+            "sub": token.subject.user_name,
             "aud": audience,
             "iss": get_issuer(),
             "exp": token.get_expires_at(),

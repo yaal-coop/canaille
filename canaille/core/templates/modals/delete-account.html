@@ -11,7 +11,7 @@
             <div class="content">
                 <p>
                     {% if user != edited_user %}
-                        {% trans user_name=(edited_user.formatted_name[0] or edited_user.identifier) %}
+                        {% trans user_name=(edited_user.formatted_name or edited_user.identifier) %}
                             Are you sure you want to delete the account of {{ user_name }}? This action is unrevokable and all the data about this user will be removed.
                         {% endtrans %}
                     {% else %}

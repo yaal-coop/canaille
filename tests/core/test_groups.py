@@ -152,7 +152,7 @@ def test_moderator_can_create_edit_and_delete_group(
     logged_moderator.reload()
     bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
-    assert bar_group.description == ["yolo"]
+    assert bar_group.description == "yolo"
     assert bar_group.members == [
         logged_moderator
     ]  # Group cannot be empty so creator is added in it
@@ -162,7 +162,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = testclient.get("/groups/bar", status=200)
     form = res.forms["editgroupform"]
     form["display_name"] = "bar2"
-    form["description"] = ["yolo2"]
+    form["description"] = "yolo2"
 
     res = form.submit(name="action", value="edit")
     assert res.flashes == [("error", "Group edition failed.")]
@@ -170,13 +170,13 @@ def test_moderator_can_create_edit_and_delete_group(
 
     bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
-    assert bar_group.description == ["yolo"]
+    assert bar_group.description == "yolo"
     assert models.Group.get(display_name="bar2") is None
 
     # Group description can be edited
     res = testclient.get("/groups/bar", status=200)
     form = res.forms["editgroupform"]
-    form["description"] = ["yolo2"]
+    form["description"] = "yolo2"
 
     res = form.submit(name="action", value="edit")
     assert res.flashes == [("success", "The group bar has been sucessfully edited.")]
@@ -184,7 +184,7 @@ def test_moderator_can_create_edit_and_delete_group(
 
     bar_group = models.Group.get(display_name="bar")
     assert bar_group.display_name == "bar"
-    assert bar_group.description == ["yolo2"]
+    assert bar_group.description == "yolo2"
 
     # Group is deleted
     res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
@@ -279,15 +279,15 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
 
     res = testclient.get("/groups/foo")
     res.mustcontain("3 items")
-    res.mustcontain(user.formatted_name[0])
-    res.mustcontain(logged_admin.formatted_name[0])
-    res.mustcontain(moderator.formatted_name[0])
+    res.mustcontain(user.formatted_name)
+    res.mustcontain(logged_admin.formatted_name)
+    res.mustcontain(moderator.formatted_name)
 
     form = res.forms["search"]
     form["query"] = "ohn"
     res = form.submit()
 
     res.mustcontain("1 item")
-    res.mustcontain(user.formatted_name[0])
-    res.mustcontain(no=logged_admin.formatted_name[0])
-    res.mustcontain(no=moderator.formatted_name[0])
+    res.mustcontain(user.formatted_name)
+    res.mustcontain(no=logged_admin.formatted_name)
+    res.mustcontain(no=moderator.formatted_name)

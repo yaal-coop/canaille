@@ -27,7 +27,7 @@ class Client(Model):
     logo_uri: Optional[str]
     grant_types: List[str]
     response_types: List[str]
-    scope: Optional[str]
+    scope: List[str]
     tos_uri: Optional[str]
     policy_uri: Optional[str]
     jwks_uri: Optional[str]
@@ -49,7 +49,7 @@ class AuthorizationCode(Model):
     subject: User
     redirect_uri: Optional[str]
     response_type: Optional[str]
-    scope: Optional[str]
+    scope: List[str]
     nonce: Optional[str]
     issue_date: datetime.datetime
     lifetime: int
@@ -70,7 +70,7 @@ class Token(Model):
     subject: User
     type: str
     refresh_token: str
-    scope: str
+    scope: List[str]
     issue_date: datetime.datetime
     lifetime: int
     revokation_date: datetime.datetime
@@ -86,7 +86,7 @@ class Consent(Model):
     consent_id: str
     subject: User
     client: "Client"
-    scope: str
+    scope: List[str]
     issue_date: datetime.datetime
     revokation_date: datetime.datetime
 

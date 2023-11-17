@@ -11,7 +11,7 @@
             <div class="content">
                 <p>
                     {% if user != edited_user %}
-                        {% trans user_name=(edited_user.formatted_name[0] or edited_user.identifier) %}
+                        {% trans user_name=(edited_user.formatted_name or edited_user.identifier) %}
                             Are you sure you want to lock the account of {{ user_name }} ? The user won't be able to login until their account is unlocked.
                         {% endtrans %}
                     {% else %}
