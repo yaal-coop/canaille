@@ -221,6 +221,8 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):
+    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+
     def authenticate_refresh_token(self, refresh_token):
         token = models.Token.query(refresh_token=refresh_token)
         if token and token[0].is_refresh_token_active():
