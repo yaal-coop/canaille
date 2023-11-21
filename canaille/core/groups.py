@@ -38,8 +38,8 @@ def create_group(user):
         else:
             group = models.Group()
             group.members = [user]
-            group.display_name = [form.display_name.data]
-            group.description = [form.description.data]
+            group.display_name = form.display_name.data
+            group.description = form.description.data
             group.save()
             flash(
                 _(
@@ -83,13 +83,13 @@ def edit_group(group):
         request.form or None,
         data={
             "display_name": group.display_name,
-            "description": group.description[0] if group.description else "",
+            "description": group.description or "",
         },
     )
 
     if request.form and not request.form.get("page"):
         if form.validate():
-            group.description = [form.description.data]
+            group.description = form.description.data
             group.save()
             flash(
                 _(
