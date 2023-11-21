@@ -163,7 +163,7 @@ def test_model_indexation(testclient, backend):
     assert not models.User.get(emails=["email3@user.com"])
 
 
-def test_fuzzy(user, moderator, admin, backend):
+def test_fuzzy_unique_attribute(user, moderator, admin, backend):
     assert set(models.User.query()) == {user, moderator, admin}
     assert set(models.User.fuzzy("Jack")) == {moderator}
     assert set(models.User.fuzzy("Jack", ["formatted_name"])) == {moderator}
@@ -177,7 +177,18 @@ def test_fuzzy(user, moderator, admin, backend):
     assert set(models.User.fuzzy("ack")) == {moderator}
 
 
-# def test_model_references(user, admin, foo_group, bar_group):
+def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
+    assert set(models.User.query()) == {user, moderator, admin}
+    assert set(models.User.fuzzy("jack@doe.com")) == {moderator}
+    assert set(models.User.fuzzy("jack@doe.com", ["emails"])) == {moderator}
+    assert set(models.User.fuzzy("jack@doe.com", ["formatted_name"])) == set()
+    assert set(models.User.fuzzy("jack@doe.com", ["emails", "formatted_name"])) == {
+        moderator
+    }
+    assert set(models.User.fuzzy("ack@doe.co")) == {moderator}
+    assert set(models.User.fuzzy("doe.com")) == {user, moderator, admin}
+
+
 def test_model_references(testclient, user, foo_group, admin, bar_group, backend):
     # assert foo_group.members == [user]
     # assert user.groups == [foo_group]
