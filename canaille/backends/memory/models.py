@@ -90,7 +90,6 @@ class MemoryModel(Model):
         self.index()[self.id] = copy.deepcopy(self.state)
 
         # update the index for each attribute
-        print(self.attributes)
         for attribute in self.attributes:
             attribute_values = listify(getattr(self, attribute))
             for value in attribute_values:
