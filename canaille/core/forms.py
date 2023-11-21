@@ -1,4 +1,5 @@
 import wtforms.form
+import wtforms.validators
 from canaille.app import models
 from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
@@ -6,7 +7,6 @@ from canaille.app.forms import email_validator
 from canaille.app.forms import Form
 from canaille.app.forms import is_uri
 from canaille.app.forms import phone_number
-from canaille.app.forms import ReadOnly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
@@ -337,7 +337,7 @@ class EditGroupForm(Form):
         _("Name"),
         validators=[
             wtforms.validators.DataRequired(),
-            ReadOnly(),
+            wtforms.validators.ReadOnly(),
         ],
         render_kw={
             "readonly": "true",
@@ -400,7 +400,7 @@ class InvitationForm(Form):
 class EmailConfirmationForm(Form):
     old_emails = wtforms.FieldList(
         wtforms.EmailField(
-            validators=[ReadOnly()],
+            validators=[wtforms.validators.ReadOnly()],
             description=_(
                 "This email will be used as a recovery address to reset the password if needed"
             ),

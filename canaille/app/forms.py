@@ -234,21 +234,6 @@ class DateTimeUTCField(wtforms.DateTimeLocalField):
         raise ValueError(self.gettext("Not a valid datetime value."))
 
 
-class ReadOnly:
-    """
-    Set a field readonly.
-    Validation fails if the form data is different than the
-    field object data, or if unset, from the field default data.
-    """
-
-    def __init__(self):
-        self.field_flags = {"readonly": True}
-
-    def __call__(self, form, field):
-        if field.data and field.object_data and field.data != field.object_data:
-            raise wtforms.ValidationError(_("This field cannot be edited"))
-
-
 def is_readonly(field):
     return field.render_kw and "readonly" in field.render_kw
 
@@ -256,9 +241,11 @@ def is_readonly(field):
 def set_readonly(field):
     field.render_kw = field.render_kw or {}
     field.render_kw["readonly"] = True
-    field.validators = list(field.validators) + [ReadOnly()]
+    field.validators = list(field.validators) + [wtforms.validators.ReadOnly()]
 
 
 def set_writable(field):
     del field.render_kw["readonly"]
-    field.validators = [v for v in field.validators if not isinstance(v, ReadOnly)]
+    field.validators = [
+        v for v in field.validators if not isinstance(v, wtforms.validators.ReadOnly)
+    ]
