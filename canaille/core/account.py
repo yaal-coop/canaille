@@ -46,7 +46,6 @@ from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
 from .forms import MINIMUM_PASSWORD_LENGTH
-from .forms import PROFILE_FORM_FIELDS
 from .mails import send_confirmation_email
 from .mails import send_invitation_mail
 from .mails import send_password_initialization_mail
@@ -491,13 +490,9 @@ def profile_edition_main_form(user, edited_user, emails_readonly):
     readable_fields = user.read & available_fields
     writable_fields = user.write & available_fields
     data = {
-        field: getattr(edited_user, field)[0]
-        if getattr(edited_user, field)
-        and isinstance(getattr(edited_user, field), list)
-        and not PROFILE_FORM_FIELDS[field].field_class == wtforms.FieldList
-        else getattr(edited_user, field) or ""
+        field: getattr(edited_user, field)
         for field in writable_fields | readable_fields
-        if hasattr(edited_user, field)
+        if hasattr(edited_user, field) and getattr(edited_user, field)
     }
     request_data = CombinedMultiDict((request.files, request.form))
     profile_form = build_profile_form(writable_fields, readable_fields)
