@@ -181,10 +181,6 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         ldap_name = self.python_attribute_to_ldap(name)
         self.set_ldap_attribute(ldap_name, value)
 
-    def __delattr__(self, name):
-        ldap_name = self.python_attribute_to_ldap(name)
-        self.delete_ldap_attribute(ldap_name)
-
     def has_ldap_attribute(self, name):
         return name in self.ldap_object_attributes() and (
             name in self.changes or name in self.state
@@ -212,9 +208,6 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
 
         value = listify(value)
         self.changes[name] = value
-
-    def delete_ldap_attribute(self, name):
-        self.changes[name] = [None]
 
     @property
     def rdn_value(self):

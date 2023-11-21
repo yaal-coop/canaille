@@ -447,7 +447,7 @@ def profile_create(current_app, form):
             setattr(user, attribute.name, data)
 
         if "photo" in form and form["photo_delete"].data:
-            del user.photo
+            user.photo = None
 
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
@@ -522,7 +522,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
             setattr(edited_user, attribute.name, data)
 
     if "photo" in profile_form and profile_form["photo_delete"].data:
-        del edited_user.photo
+        edited_user.photo = None
 
     if "preferred_language" in request.form:
         # Refresh the babel cache in case the lang is updated
@@ -731,7 +731,7 @@ def profile_settings(user, edited_user):
         and edited_user.locked
     ):
         flash(_("The account has been unlocked"), "success")
-        del edited_user.lock_date
+        edited_user.lock_date = None
         edited_user.save()
 
         return profile_settings_edit(user, edited_user)

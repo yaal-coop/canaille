@@ -217,7 +217,7 @@ def test_user_password_deleted_during_login(testclient, backend):
     res = res.form.submit().follow()
     res.form["password"] = "correct horse battery staple"
 
-    del u.password
+    u.password = None
     u.save()
 
     res = res.form.submit(status=302)
@@ -362,7 +362,7 @@ def test_account_locking(user, backend):
         "Your account has been locked.",
     )
 
-    del user.lock_date
+    user.lock_date = None
     user.save()
     assert not user.locked
     assert not models.User.get(id=user.id).locked
@@ -416,7 +416,7 @@ def test_signin_locked_account(testclient, user):
     res = res.form.submit()
     res.mustcontain("Your account has been locked.")
 
-    del user.lock_date
+    user.lock_date = None
     user.save()
 
 

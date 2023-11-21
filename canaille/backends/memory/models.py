@@ -208,17 +208,6 @@ class MemoryModel(Model):
         else:
             super().__setattr__(name, value)
 
-    def __delattr__(self, name):
-        try:
-            del self.state[name]
-        except KeyError:
-            pass
-
-        try:
-            del self.cache[name]
-        except KeyError:
-            pass
-
     @property
     def identifier(self):
         return getattr(self, self.identifier_attribute)
