@@ -27,8 +27,11 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     testclient.get("/logout")
     res = testclient.get(url, status=200)
 
-    assert res.form["user_name"].value == "someone"
     assert "readonly" in res.form["user_name"].attrs
+    assert "readonly" in res.form["emails-0"].attrs
+    assert "readonly" in res.form["groups"].attrs
+
+    assert res.form["user_name"].value == "someone"
     assert res.form["emails-0"].value == "someone@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
@@ -77,8 +80,11 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
     res = testclient.get(url, status=200)
 
-    assert res.form["user_name"].value == "jackyjack"
     assert "readonly" not in res.form["user_name"].attrs
+    assert "readonly" in res.form["emails-0"].attrs
+    assert "readonly" in res.form["groups"].attrs
+
+    assert res.form["user_name"].value == "jackyjack"
     assert res.form["emails-0"].value == "jackyjack@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
@@ -123,6 +129,10 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
         del sess["user_id"]
 
     res = testclient.get(url, status=200)
+
+    assert "readonly" in res.form["user_name"].attrs
+    assert "readonly" in res.form["emails-0"].attrs
+    assert "readonly" in res.form["groups"].attrs
 
     assert res.form["user_name"].value == "sometwo"
     assert res.form["emails-0"].value == "sometwo@domain.tld"
