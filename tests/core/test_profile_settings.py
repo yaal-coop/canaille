@@ -265,7 +265,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
         family_name="Temp",
         user_name="temp",
         emails=["john@doe.com"],
-        password=["correct horse battery staple"],
+        password="correct horse battery staple",
     )
     u.save()
 
