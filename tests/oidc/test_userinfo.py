@@ -155,7 +155,7 @@ def test_userinfo(testclient, token, user, foo_group):
         status=403,
     )
 
-    token.scope = ["openid profile"]
+    token.scope = ["openid", "profile"]
     token.save()
     res = testclient.get(
         "/oauth/userinfo",
@@ -171,7 +171,7 @@ def test_userinfo(testclient, token, user, foo_group):
         "website": "https://john.example",
     }
 
-    token.scope = ["openid profile email"]
+    token.scope = ["openid", "profile", "email"]
     token.save()
     res = testclient.get(
         "/oauth/userinfo",
@@ -188,7 +188,7 @@ def test_userinfo(testclient, token, user, foo_group):
         "email": "john@doe.com",
     }
 
-    token.scope = ["openid profile address"]
+    token.scope = ["openid", "profile", "address"]
     token.save()
     res = testclient.get(
         "/oauth/userinfo",
@@ -205,7 +205,7 @@ def test_userinfo(testclient, token, user, foo_group):
         "address": "1235, somewhere",
     }
 
-    token.scope = ["openid profile phone"]
+    token.scope = ["openid", "profile", "phone"]
     token.save()
     res = testclient.get(
         "/oauth/userinfo",
@@ -222,7 +222,7 @@ def test_userinfo(testclient, token, user, foo_group):
         "phone_number": "555-000-000",
     }
 
-    token.scope = ["openid profile groups"]
+    token.scope = ["openid", "profile", "groups"]
     token.save()
     res = testclient.get(
         "/oauth/userinfo",

@@ -281,7 +281,7 @@ def save_token(token, request):
         access_token=token["access_token"],
         issue_date=now,
         lifetime=token["expires_in"],
-        scope=token["scope"],
+        scope=token["scope"].split(" "),
         client=request.client,
         refresh_token=token.get("refresh_token"),
         subject=request.user,

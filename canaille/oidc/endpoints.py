@@ -216,7 +216,7 @@ def jwks():
 @require_oauth("profile")
 def userinfo():
     current_app.logger.debug("userinfo endpoint request: %s", request.args)
-    response = generate_user_info(current_token.subject, current_token.scope[0])
+    response = generate_user_info(current_token.subject, current_token.scope)
     current_app.logger.debug("userinfo endpoint response: %s", response)
     return jsonify(response)
 

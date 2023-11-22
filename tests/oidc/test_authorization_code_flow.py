@@ -71,7 +71,7 @@ def test_authorization_code_flow(
     token = models.Token.get(access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
-    assert set(token.scope[0].split(" ")) == {
+    assert set(token.scope) == {
         "openid",
         "profile",
         "email",
@@ -760,7 +760,7 @@ def test_authorization_code_request_scope_too_large(
     token = models.Token.get(access_token=access_token)
     assert token.client == other_client
     assert token.subject == logged_user
-    assert set(token.scope[0].split(" ")) == {
+    assert set(token.scope) == {
         "openid",
         "profile",
     }
