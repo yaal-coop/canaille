@@ -161,7 +161,7 @@ def save_authorization_code(code, request):
         subject=request.user,
         client=request.client,
         redirect_uri=request.redirect_uri or request.client.redirect_uris[0],
-        scope=scope,
+        scope=scope.split(" "),
         nonce=nonce,
         issue_date=now,
         lifetime=AUTHORIZATION_CODE_LIFETIME,

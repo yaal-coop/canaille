@@ -104,7 +104,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
         return self.redirect_uri
 
     def get_scope(self):
-        return self.scope[0].split(" ")
+        return self.scope
 
     def get_nonce(self):
         return self.nonce

@@ -36,7 +36,7 @@ def test_authorization_code_flow(
     code = params["code"][0]
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
-    assert set(authcode.scope[0].split(" ")) == {
+    assert set(authcode.scope) == {
         "openid",
         "profile",
         "email",
@@ -733,7 +733,7 @@ def test_authorization_code_request_scope_too_large(
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = models.AuthorizationCode.get(code=code)
-    assert set(authcode.scope[0].split(" ")) == {
+    assert set(authcode.scope) == {
         "openid",
         "profile",
     }
