@@ -248,11 +248,9 @@ class User(canaille.core.models.User, MemoryModel):
             # type checking and/or pydantic for the models
             if "groups" in filter:
                 if models.Group.get(id=filter["groups"]):
-                    filter["groups"] = models.Group.get(id=filter["groups"]).id
-                if models.Group.get(display_name=filter["groups"]):
-                    filter["groups"] = models.Group.get(
-                        display_name=filter["groups"]
-                    ).id
+                    filter["groups"] = models.Group.get(id=filter["groups"])
+                elif models.Group.get(display_name=filter["groups"]):
+                    filter["groups"] = models.Group.get(display_name=filter["groups"])
 
             return all(
                 getattr(self, attribute) and value in getattr(self, attribute)
