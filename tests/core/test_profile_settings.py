@@ -148,7 +148,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.com"
 
     u.reload()
-    u.password = ["correct horse battery staple"]
+    u.password = "correct horse battery staple"
     u.save()
 
     res = testclient.get("/profile/temp/settings", status=200)

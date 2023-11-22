@@ -187,8 +187,8 @@ def test_edition_remove_fields(
     assert not logged_user.display_name
     assert not logged_user.phone_numbers
 
-    logged_user.formatted_name = ["John (johnny) Doe"]
-    logged_user.family_name = ["Doe"]
+    logged_user.formatted_name = "John (johnny) Doe"
+    logged_user.family_name = "Doe"
     logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
@@ -323,7 +323,7 @@ def test_bad_email(testclient, logged_user):
 def test_surname_is_mandatory(testclient, logged_user):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
-    logged_user.family_name = ["Doe"]
+    logged_user.family_name = "Doe"
 
     form["family_name"] = ""
 

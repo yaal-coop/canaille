@@ -5,7 +5,7 @@ from webtest import Upload
 
 
 def test_photo(testclient, user, jpeg_photo):
-    user.photo = [jpeg_photo]
+    user.photo = jpeg_photo
     user.save()
     user.reload()
 
