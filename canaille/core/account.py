@@ -451,7 +451,7 @@ def profile_create(current_app, form):
 
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
-    user.formatted_name = [f"{given_name} {family_name}".strip()]
+    user.formatted_name = f"{given_name} {family_name}".strip()
     user.save()
 
     if form["password1"].data:
