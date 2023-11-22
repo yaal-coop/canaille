@@ -425,3 +425,11 @@ def test_account_limit_values(
     user = models.User.get(id=user.id)
     assert user.lock_date == expiration_datetime
     assert not user.locked
+
+
+def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["groups"].force_value("invalid")
+    res = res.form.submit(name="action", value="edit-settings")
+    assert res.flashes == [("error", "Profile edition failed.")]
+    res.mustcontain("Invalid choice(s): one or more data inputs could not be coerced.")

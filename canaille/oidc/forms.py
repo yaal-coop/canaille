@@ -2,6 +2,7 @@ import wtforms
 from canaille.app import models
 from canaille.app.forms import email_validator
 from canaille.app.forms import Form
+from canaille.app.forms import IDToModel
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
@@ -16,7 +17,7 @@ class LogoutForm(Form):
 
 
 def client_audiences():
-    return [(client.id, client.client_name) for client in models.Client.query()]
+    return [(client, client.client_name) for client in models.Client.query()]
 
 
 class ClientAddForm(Form):
@@ -107,6 +108,7 @@ class ClientAddForm(Form):
         validators=[wtforms.validators.Optional()],
         choices=client_audiences,
         validate_choice=False,
+        coerce=IDToModel("Client"),
     )
     logo_uri = wtforms.URLField(
         _("Logo URI"),

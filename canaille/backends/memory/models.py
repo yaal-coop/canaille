@@ -207,6 +207,9 @@ class MemoryModel(Model):
         else:
             super().__setattr__(name, value)
 
+    def __html__(self):
+        return self.id
+
     @property
     def identifier(self):
         return getattr(self, self.identifier_attribute)

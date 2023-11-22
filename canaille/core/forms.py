@@ -5,6 +5,7 @@ from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import email_validator
 from canaille.app.forms import Form
+from canaille.app.forms import IDToModel
 from canaille.app.forms import is_uri
 from canaille.app.forms import phone_number
 from canaille.app.forms import set_readonly
@@ -273,10 +274,9 @@ PROFILE_FORM_FIELDS = dict(
     ),
     groups=wtforms.SelectMultipleField(
         _("Groups"),
-        choices=lambda: [
-            (group.id, group.display_name) for group in models.Group.query()
-        ],
+        choices=lambda: [(group, group.display_name) for group in models.Group.query()],
         render_kw={"placeholder": _("users, admins …")},
+        coerce=IDToModel("Group"),
     ),
 )
 
@@ -390,10 +390,9 @@ class InvitationForm(Form):
     )
     groups = wtforms.SelectMultipleField(
         _("Groups"),
-        choices=lambda: [
-            (group.id, group.display_name) for group in models.Group.query()
-        ],
+        choices=lambda: [(group, group.display_name) for group in models.Group.query()],
         render_kw={},
+        coerce=IDToModel("Group"),
     )
 
 

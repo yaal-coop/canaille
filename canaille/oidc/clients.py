@@ -131,7 +131,7 @@ def client_edit(client):
         software_version=form["software_version"].data,
         jwk=form["jwk"].data,
         jwks_uri=form["jwks_uri"].data,
-        audience=[models.Client.get(id=id) for id in form["audience"].data],
+        audience=form["audience"].data,
         preconsent=form["preconsent"].data,
     )
     client.save()

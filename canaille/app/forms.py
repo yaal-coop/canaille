@@ -3,6 +3,7 @@ import math
 import re
 
 import wtforms.validators
+from canaille.app import models
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import locale_selector
@@ -249,3 +250,17 @@ def set_writable(field):
     field.validators = [
         v for v in field.validators if not isinstance(v, wtforms.validators.ReadOnly)
     ]
+
+
+class IDToModel:
+    model = None
+
+    def __init__(self, model_name):
+        self.model_name = model_name
+
+    def __call__(self, data):
+        model = getattr(models, self.model_name)
+        instance = data if isinstance(data, model) else model.get(id=data)
+        if not instance:
+            raise wtforms.ValidationError()
+        return instance

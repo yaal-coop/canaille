@@ -20,6 +20,7 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
+from canaille.app.forms import IDToModel
 from canaille.app.forms import is_readonly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
@@ -197,7 +198,6 @@ class RegistrationPayload(VerificationPayload):
 @permissions_needed("manage_users")
 def user_invitation(user):
     form = InvitationForm(request.form or None)
-
     email_sent = None
     registration_url = None
     form_validated = False
@@ -208,7 +208,7 @@ def user_invitation(user):
             form.user_name.data,
             form.user_name_editable.data,
             form.email.data,
-            form.groups.data,
+            [group.id for group in form.groups.data],
         )
         registration_url = url_for(
             "core.account.registration",
@@ -282,7 +282,7 @@ def registration(data=None, hash=None):
         data = {
             "user_name": payload.user_name,
             "emails": [payload.email],
-            "groups": payload.groups,
+            "groups": [models.Group.get(id=group_id) for group_id in payload.groups],
         }
 
     has_smtp = "SMTP" in current_app.config
@@ -295,7 +295,8 @@ def registration(data=None, hash=None):
     if "groups" not in form and payload and payload.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group.id, group.display_name) for group in models.Group.query()],
+            choices=[(group, group.display_name) for group in models.Group.query()],
+            coerce=IDToModel("Group"),
         )
         set_readonly(form["groups"])
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
