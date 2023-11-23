@@ -20,7 +20,7 @@ def test_get(testclient, backend, client, user):
         "client_id": client.client_id,
         "client_secret": client.client_secret,
         "client_id_issued_at": int(datetime.timestamp(client.client_id_issued_at)),
-        "client_secret_expires_at": None,
+        "client_secret_expires_at": 0,
         "redirect_uris": [
             "https://mydomain.tld/redirect1",
             "https://mydomain.tld/redirect2",
@@ -101,7 +101,7 @@ def test_update(testclient, backend, client, user):
         "client_id": client.client_id,
         "client_secret": client.client_secret,
         "client_id_issued_at": int(datetime.timestamp(client.client_id_issued_at)),
-        "client_secret_expires_at": None,
+        "client_secret_expires_at": 0,
         "redirect_uris": ["https://newname.example.org/callback"],
         "registration_access_token": "static-token",
         "registration_client_uri": f"http://localhost/oauth/register/{client.client_id}",

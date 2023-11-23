@@ -75,6 +75,11 @@ class Client(BaseClient, ClientMixin):
         result["client_id_issued_at"] = int(
             datetime.datetime.timestamp(result["client_id_issued_at"])
         )
+        result["client_secret_expires_at"] = (
+            int(datetime.datetime.timestamp(result["client_secret_expires_at"]))
+            if result["client_secret_expires_at"]
+            else 0
+        )
         return result
 
     @property
