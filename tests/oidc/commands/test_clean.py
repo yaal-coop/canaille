@@ -13,13 +13,12 @@ def test_clean_command(testclient, backend, client, user):
         subject=user,
         redirect_uri="https://foo.bar/callback",
         response_type="code",
-        scope="openid profile",
+        scope=["openid", "profile"],
         nonce="nonce",
         issue_date=datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0),
         lifetime=3600,
         challenge="challenge",
         challenge_method="method",
-        revokation="",
     )
     valid_code.save()
     expired_code = models.AuthorizationCode(
@@ -29,7 +28,7 @@ def test_clean_command(testclient, backend, client, user):
         subject=user,
         redirect_uri="https://foo.bar/callback",
         response_type="code",
-        scope="openid profile",
+        scope=["openid", "profile"],
         nonce="nonce",
         issue_date=(
             datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
@@ -38,7 +37,6 @@ def test_clean_command(testclient, backend, client, user):
         lifetime=3600,
         challenge="challenge",
         challenge_method="method",
-        revokation="",
     )
     expired_code.save()
 
@@ -48,7 +46,7 @@ def test_clean_command(testclient, backend, client, user):
         client=client,
         subject=user,
         refresh_token=gen_salt(48),
-        scope="openid profile",
+        scope=["openid", "profile"],
         issue_date=(
             datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
         ),
@@ -61,7 +59,7 @@ def test_clean_command(testclient, backend, client, user):
         client=client,
         subject=user,
         refresh_token=gen_salt(48),
-        scope="openid profile",
+        scope=["openid", "profile"],
         issue_date=(
             datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
             - datetime.timedelta(days=1)

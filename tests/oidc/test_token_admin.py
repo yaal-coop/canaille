@@ -29,7 +29,7 @@ def test_token_list_pagination(testclient, logged_admin, client):
             subject=logged_admin,
             type=None,
             refresh_token=gen_salt(48),
-            scope="openid profile",
+            scope=["openid", "profile"],
             issue_date=(
                 datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
             ),
@@ -81,7 +81,7 @@ def test_token_list_search(testclient, logged_admin, client):
         subject=logged_admin,
         type=None,
         refresh_token=gen_salt(48),
-        scope="openid profile",
+        scope=["openid", "profile"],
         issue_date=(
             datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
         ),
@@ -95,7 +95,7 @@ def test_token_list_search(testclient, logged_admin, client):
         subject=logged_admin,
         type=None,
         refresh_token=gen_salt(48),
-        scope="openid profile",
+        scope=["openid", "profile"],
         issue_date=(
             datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
         ),

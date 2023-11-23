@@ -121,13 +121,12 @@ def authorization(testclient, user, client, backend):
         subject=user,
         redirect_uri="https://foo.bar/callback",
         response_type="code",
-        scope="openid profile",
+        scope=["openid", "profile"],
         nonce="nonce",
         issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
         lifetime=3600,
         challenge="challenge",
         challenge_method="method",
-        revokation="",
     )
     a.save()
     yield a
@@ -144,7 +143,7 @@ def token(testclient, client, user, backend):
         subject=user,
         token_type=None,
         refresh_token=gen_salt(48),
-        scope="openid profile",
+        scope=["openid", "profile"],
         issue_date=datetime.datetime.now(datetime.timezone.utc),
         lifetime=3600,
     )
