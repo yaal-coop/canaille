@@ -28,8 +28,8 @@ class BaseBackend:
             return response
 
     @contextmanager
-    def session(self):
-        yield self.setup()
+    def session(self, *args, **kwargs):
+        yield self.setup(*args, **kwargs)
         self.teardown()
 
     @classmethod
