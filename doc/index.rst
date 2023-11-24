@@ -2,14 +2,14 @@ Canaille
 ========
 
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
-as in *Can I access your data?* Canaille is a simple OpenID Connect provider based upon a LDAP database.
+as in *Can I access your data?* Canaille is a simplistic identity and authorization management software.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 
 - User profile and groups management;
 - Authentication, registration, email confirmation, "I forgot my password" emails;
 - OpenID Connect identity provider;
-- LDAP first-class citizenship;
+- postgresql, mariadb and OpenLDAP first-class citizenship;
 - Customizable, themable;
 - The code is easy to read and easy to edit!
 
