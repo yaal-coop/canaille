@@ -40,18 +40,16 @@ def pytest_generate_tests(metafunc):
         backends &= set(metafunc.config.getoption("backend"))
 
     # tests in tests.backends.BACKENDNAME should only run one backend
-    if metafunc.module.__name__.startswith("tests.backends"):
-        module_name_parts = metafunc.module.__name__.split(".")
-        in_backend_module = len(module_name_parts) > 3
-        if in_backend_module:
-            backend = module_name_parts[2]
-            if backend not in backends:  # pragma: no cover
-                pytest.skip()
-            elif "backend" in metafunc.fixturenames:
-                metafunc.parametrize("backend", [lazy_fixture(f"{backend}_backend")])
-                return
+    module_name_parts = metafunc.module.__name__.split(".")
+    if module_name_parts[0:2] == ["tests", "backends"] and len(module_name_parts) > 3:
+        backend = module_name_parts[2]
+        if backend not in backends:  # pragma: no cover
+            pytest.skip()
+        elif "backend" in metafunc.fixturenames:
+            metafunc.parametrize("backend", [lazy_fixture(f"{backend}_backend")])
+            return
 
-    if "backend" in metafunc.fixturenames:
+    elif "backend" in metafunc.fixturenames:
         metafunc.parametrize(
             "backend", [lazy_fixture(f"{backend}_backend") for backend in backends]
         )
