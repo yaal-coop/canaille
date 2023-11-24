@@ -2,7 +2,7 @@ Canaille
 ========
 
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
-as in *Can I access your data?* Canaille is a simplistic identity and authorization management software.
+as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
 
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 
