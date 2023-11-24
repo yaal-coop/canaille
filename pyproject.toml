@@ -178,7 +178,7 @@ envlist =
 allowlist_externals = poetry
 commands =
     poetry install --extras all
-    poetry run pytest --showlocals --full-trace {posargs:-n auto}
+    poetry run pytest --showlocals --full-trace {posargs}
 
 [testenv:style]
 commands =
