@@ -77,15 +77,20 @@ SECRET_KEY = "change me before you go in production"
 # written in the standard error output.
 # PATH = ""
 
-[BACKENDS.LDAP]
-URI = "ldap://ldap"
-ROOT_DN = "dc=mydomain,dc=tld"
-BIND_DN = "cn=admin,dc=mydomain,dc=tld"
-BIND_PW = "admin"
+# [BACKENDS.SQL]
+# The SQL database connection string
+# Details on https://docs.sqlalchemy.org/en/20/core/engines.html
+# SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
+
+# [BACKENDS.LDAP]
+# URI = "ldap://ldap"
+# ROOT_DN = "dc=mydomain,dc=tld"
+# BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+# BIND_PW = "admin"
 # TIMEOUT =
 
 # Where to search for users?
-USER_BASE = "ou=users,dc=mydomain,dc=tld"
+# USER_BASE = "ou=users,dc=mydomain,dc=tld"
 
 # The object class to use for creating new users
 # USER_CLASS = "inetOrgPerson"
@@ -99,7 +104,7 @@ USER_BASE = "ou=users,dc=mydomain,dc=tld"
 # USER_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
 
 # Where to search for groups?
-GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+# GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 
 # The object class to use for creating new groups
 # GROUP_CLASS = "groupOfNames"

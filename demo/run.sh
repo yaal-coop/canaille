@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 if [ "$1" = "--backend" -a -n "$2" ]; then
     BACKEND="$2"
 else
-    BACKEND="memory"
+    BACKEND="sql"
 fi
 
 if ! type python > /dev/null 2>&1 && ! type python3 > /dev/null 2>&1; then
@@ -27,6 +27,11 @@ if [ "$BACKEND" = "memory" ]; then
     poetry install --with demo --without dev --extras front --extras oidc
     env poetry run honcho --procfile Procfile-memory start
 
+elif [ "$BACKEND" = "sql" ]; then
+
+    poetry install --with demo --without dev --extras front --extras oidc --extras sql
+    env poetry run honcho --procfile Procfile-sql start
+
 elif [ "$BACKEND" = "ldap" ]; then
 
     if ! type slapd > /dev/null 2>&1; then
@@ -40,7 +45,7 @@ elif [ "$BACKEND" = "ldap" ]; then
 
 else
 
-    echo "Usage: run.sh --backend [memory|ldap]"
+    echo "Usage: run.sh --backend [sql|memory|ldap]"
 
 fi
 
