@@ -52,7 +52,6 @@ def install_schema(config, schema_path):
 class Backend(BaseBackend):
     def __init__(self, config):
         super().__init__(config)
-        self.config = config
         self.connection = None
         setup_ldap_models(config)
 

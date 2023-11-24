@@ -9,6 +9,7 @@ class BaseBackend:
     instance = None
 
     def __init__(self, config):
+        self.config = config
         BaseBackend.instance = self
         self.register_models()
 
@@ -32,7 +33,7 @@ class BaseBackend:
         self.teardown()
 
     @classmethod
-    def install(self):
+    def install(self, config, debug=False):
         """
         This methods prepares the database to host canaille data.
         """

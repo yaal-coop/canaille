@@ -4,7 +4,7 @@ from canaille.backends import BaseBackend
 
 def test_required_methods(testclient):
     with pytest.raises(NotImplementedError):
-        BaseBackend.install()
+        BaseBackend.install(config=None)
 
     with pytest.raises(NotImplementedError):
         BaseBackend.validate({})
