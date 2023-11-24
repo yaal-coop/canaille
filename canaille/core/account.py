@@ -508,14 +508,17 @@ def profile_edition_main_form(user, edited_user, emails_readonly):
 
 
 def profile_edition_main_form_validation(user, edited_user, profile_form):
-    for attribute in profile_form:
-        if attribute.name in edited_user.attributes and attribute.name in user.write:
-            if isinstance(attribute.data, FileStorage):
-                data = attribute.data.stream.read()
+    for field in profile_form:
+        if field.name in edited_user.attributes and field.name in user.write:
+            if isinstance(field, wtforms.FieldList):
+                # too bad wtforms cannot sanitize the list itself
+                data = [value for value in field.data if value] or None
+            elif isinstance(field.data, FileStorage):
+                data = field.data.stream.read()
             else:
-                data = attribute.data
+                data = field.data
 
-            setattr(edited_user, attribute.name, data)
+            setattr(edited_user, field.name, data)
 
     if "photo" in profile_form and profile_form["photo_delete"].data:
         edited_user.photo = None
