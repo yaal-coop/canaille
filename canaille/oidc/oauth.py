@@ -375,29 +375,30 @@ class ClientManagementMixin:
         # is the one used to isues JWTs. This might change somedays.
         return current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
 
+    def client_convert_data(self, **kwargs):
+        if "client_id_issued_at" in kwargs:
+            kwargs["client_id_issued_at"] = datetime.datetime.fromtimestamp(
+                kwargs["client_id_issued_at"], datetime.timezone.utc
+            )
 
-def client_convert_data(**kwargs):
-    if "client_id_issued_at" in kwargs:
-        kwargs["client_id_issued_at"] = datetime.datetime.fromtimestamp(
-            kwargs["client_id_issued_at"], datetime.timezone.utc
-        )
+        if "client_secret_expires_at" in kwargs:
+            kwargs["client_secret_expires_at"] = datetime.datetime.fromtimestamp(
+                kwargs["client_secret_expires_at"], datetime.timezone.utc
+            )
 
-    if "client_secret_expires_at" in kwargs:
-        kwargs["client_secret_expires_at"] = datetime.datetime.fromtimestamp(
-            kwargs["client_secret_expires_at"], datetime.timezone.utc
-        )
+        if "scope" in kwargs and not isinstance(kwargs["scope"], list):
+            kwargs["scope"] = kwargs["scope"].split(" ")
 
-    if "scope" in kwargs and not isinstance(kwargs["scope"], list):
-        kwargs["scope"] = kwargs["scope"].split(" ")
-
-    return kwargs
+        return kwargs
 
 
 class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):
     software_statement_alg_values_supported = ["RS256"]
 
     def save_client(self, client_info, client_metadata, request):
-        client = models.Client(**client_convert_data(**client_info, **client_metadata))
+        client = models.Client(
+            **self.client_convert_data(**client_info, **client_metadata)
+        )
         client.save()
         return client
 
@@ -417,7 +418,7 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         client.delete()
 
     def update_client(self, client, client_metadata, request):
-        client.update(**client_convert_data(**client_metadata))
+        client.update(**self.client_convert_data(**client_metadata))
         client.save()
         return client
 
