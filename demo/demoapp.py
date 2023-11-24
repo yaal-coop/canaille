@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 
@@ -100,6 +101,7 @@ def populate(app):
             users.save()
 
             client1 = models.Client(
+                client_id_issued_at=datetime.datetime.utcnow(),
                 client_id="1JGkkzCbeHpGtlqgI5EENByf",
                 client_secret="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x",
                 client_name="Client1",
@@ -118,6 +120,7 @@ def populate(app):
             client1.save()
 
             client2 = models.Client(
+                client_id_issued_at=datetime.datetime.utcnow(),
                 client_id="gn4yFN7GDykL7QP8v8gS9YfV",
                 client_secret="ouFJE5WpICt6hxTyf8icXPeeklMektMY4gV0Rmf3aY60VElA",
                 client_name="Client2",
