@@ -6,7 +6,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Added
 *****
 
-- Refresh token grant supports other client authentication methods. :pr:`156`
+- Refresh token grant supports other client authentication methods. :pr:`157`
 
 Changed
 *******
