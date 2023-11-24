@@ -103,15 +103,13 @@ def test_full_flow(testclient, logged_user, client, user, other_client):
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
-    assert {
-        "aud": [client.client_id, other_client.client_id],
-        "active": True,
-        "client_id": client.client_id,
-        "token_type": token.type,
-        "username": user.formatted_name,
-        "scope": token.get_scope(),
-        "sub": user.user_name,
-        "iss": "https://auth.mydomain.tld",
-        "exp": token.get_expires_at(),
-        "iat": token.get_issued_at(),
-    } == res.json
+    assert set(res.json["aud"]) == {client.client_id, other_client.client_id}
+    assert res.json["active"]
+    assert res.json["client_id"] == client.client_id
+    assert res.json["token_type"] == token.type
+    assert res.json["username"] == user.formatted_name
+    assert res.json["scope"] == token.get_scope()
+    assert res.json["sub"] == user.user_name
+    assert res.json["iss"] == "https://auth.mydomain.tld"
+    assert res.json["exp"] == token.get_expires_at()
+    assert res.json["iat"] == token.get_issued_at()

@@ -189,6 +189,7 @@ def test_datetime_utc_field_invalid_timezone(testclient):
 def test_fieldlist_add_readonly(testclient, logged_user, configuration):
     configuration["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     configuration["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
+    logged_user.reload()
 
     res = testclient.get("/profile/user")
     form = res.forms["baseform"]
@@ -207,6 +208,8 @@ def test_fieldlist_add_readonly(testclient, logged_user, configuration):
 def test_fieldlist_remove_readonly(testclient, logged_user, configuration):
     configuration["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     configuration["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
+    logged_user.reload()
+
     logged_user.phone_numbers = ["555-555-000", "555-555-111"]
     logged_user.save()
 

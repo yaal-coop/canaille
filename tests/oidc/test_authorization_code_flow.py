@@ -588,6 +588,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
     testclient, user, client, keypair, other_client
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    user.reload()
 
     res = testclient.get(
         "/oauth/authorize",

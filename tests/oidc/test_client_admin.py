@@ -219,14 +219,18 @@ def test_client_delete(testclient, logged_admin):
     token = models.Token(
         token_id="id",
         client=client,
-        issue_datetime=datetime.datetime.now(datetime.timezone.utc),
+        subject=logged_admin,
+        issue_date=datetime.datetime.now(datetime.timezone.utc),
     )
     token.save()
     consent = models.Consent(
-        consent_id="consent_id", subject=logged_admin, client=client, scope="openid"
+        consent_id="consent_id", subject=logged_admin, client=client, scope=["openid"]
     )
     consent.save()
-    models.AuthorizationCode(authorization_code_id="id", client=client, subject=client)
+    authorization_code = models.AuthorizationCode(
+        authorization_code_id="id", client=client, subject=logged_admin
+    )
+    authorization_code.save()
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientaddform"].submit(name="action", value="confirm-delete")

@@ -331,6 +331,9 @@ def test_user_self_deletion(testclient, backend):
         "edit_self",
         "delete_account",
     ]
+    # Simulate an app restart
+    user.reload()
+
     res = testclient.get("/profile/temp/settings")
     res.mustcontain("Delete my account")
     res = res.form.submit(name="action", value="confirm-delete")
@@ -354,6 +357,7 @@ def test_account_locking(user, backend):
     assert user.check_password("correct horse battery staple") == (True, None)
 
     user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    assert user.locked
     user.save()
     assert user.locked
     assert models.User.get(id=user.id).locked

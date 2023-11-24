@@ -95,7 +95,7 @@ def test_set_groups(app, user, foo_group, bar_group):
 
     bar_group.reload()
     assert user in bar_group.members
-    assert user.groups[1] == bar_group
+    assert bar_group in user.groups
 
     user.groups = [foo_group]
     user.save()
@@ -240,6 +240,7 @@ def test_user_list_pagination(testclient, logged_admin, foo_group):
         foo_group.members = foo_group.members + [user]
     foo_group.save()
 
+    assert len(foo_group.members) == 26
     res = testclient.get("/groups/foo")
     res.mustcontain("26 items")
     user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()

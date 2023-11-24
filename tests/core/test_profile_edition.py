@@ -103,6 +103,7 @@ def test_edition_permission(
     admin,
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    logged_user.reload()
     testclient.get("/profile/user", status=404)
 
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
@@ -389,6 +390,8 @@ def test_inline_validation_keep_indicators(
     configuration["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
     configuration["ACL"]["DEFAULT"]["READ"].append("display_name")
     configuration["ACL"]["ADMIN"]["WRITE"].append("display_name")
+    logged_admin.reload()
+    user.reload()
 
     res = testclient.get("/profile/admin")
     form = res.forms["baseform"]

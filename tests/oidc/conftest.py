@@ -45,7 +45,7 @@ def client(testclient, other_client, backend):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
-        contacts="contact@mydomain.tld",
+        contacts=["contact@mydomain.tld"],
         client_uri="https://mydomain.tld",
         redirect_uris=[
             "https://mydomain.tld/redirect1",
@@ -81,7 +81,7 @@ def other_client(testclient, backend):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
-        contacts="contact@myotherdomain.tld",
+        contacts=["contact@myotherdomain.tld"],
         client_uri="https://myotherdomain.tld",
         redirect_uris=[
             "https://myotherdomain.tld/redirect1",
@@ -141,7 +141,6 @@ def token(testclient, client, user, backend):
         audience=[client],
         client=client,
         subject=user,
-        token_type=None,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
         issue_date=datetime.datetime.now(datetime.timezone.utc),

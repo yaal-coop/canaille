@@ -80,6 +80,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
 
 def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient, user):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    user.reload()
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
@@ -96,6 +97,7 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
     ) in res.flashes
 
     testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    user.reload()
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"
