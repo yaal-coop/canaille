@@ -96,7 +96,8 @@ def edit(user, client):
 
 def client_edit(client):
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
-    data["scope"] = " ".join(data["scope"])
+    if data["scope"]:
+        data["scope"] = " ".join(data["scope"])
     data["preconsent"] = client.preconsent
     form = ClientAddForm(request.form or None, data=data, client=client)
 
