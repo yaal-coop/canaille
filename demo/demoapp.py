@@ -16,6 +16,9 @@ def populate(app):
 
     with app.app_context():
         with app.backend.session():
+            if models.User.query():
+                return
+
             jane = models.User(
                 formatted_name="Jane Doe",
                 given_name="Jane",
@@ -29,10 +32,10 @@ def populate(app):
                 formatted_address="123, Admin Lane - Gotham City 12345",
                 street="Admin Lane",
                 postal_code="12345",
-                city="Gotham City",
+                locality="Gotham City",
                 region="North Pole",
                 employee_number="1000",
-                department_number="east",
+                department="east",
             )
             jane.save()
 
@@ -47,7 +50,7 @@ def populate(app):
                 phone_numbers=["555-000-002"],
                 profile_url="https://moderator.example",
                 employee_number="1002",
-                department_number="west",
+                department="west",
             )
             jack.save()
 
@@ -62,7 +65,7 @@ def populate(app):
                 phone_numbers=["555-000-001"],
                 profile_url="https://user.example",
                 employee_number="1001",
-                department_number="west",
+                department="west",
             )
             john.save()
 
