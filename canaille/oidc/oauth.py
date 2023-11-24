@@ -32,6 +32,7 @@ from flask import current_app
 from flask import request
 from werkzeug.security import gen_salt
 
+
 DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"
 DEFAULT_JWT_EXP = 3600
@@ -375,18 +376,28 @@ class ClientManagementMixin:
         return current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
 
 
+def client_convert_data(**kwargs):
+    if "client_id_issued_at" in kwargs:
+        kwargs["client_id_issued_at"] = datetime.datetime.fromtimestamp(
+            kwargs["client_id_issued_at"], datetime.timezone.utc
+        )
+
+    if "client_secret_expires_at" in kwargs:
+        kwargs["client_secret_expires_at"] = datetime.datetime.fromtimestamp(
+            kwargs["client_secret_expires_at"], datetime.timezone.utc
+        )
+
+    if "scope" in kwargs and not isinstance(kwargs["scope"], list):
+        kwargs["scope"] = kwargs["scope"].split(" ")
+
+    return kwargs
+
+
 class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):
     software_statement_alg_values_supported = ["RS256"]
 
     def save_client(self, client_info, client_metadata, request):
-        client_info["client_id_issued_at"] = datetime.datetime.fromtimestamp(
-            client_info["client_id_issued_at"], datetime.timezone.utc
-        )
-        if "scope" in client_metadata and not isinstance(
-            client_metadata["scope"], list
-        ):
-            client_metadata["scope"] = client_metadata["scope"].split(" ")
-        client = models.Client(**client_info, **client_metadata)
+        client = models.Client(**client_convert_data(**client_info, **client_metadata))
         client.save()
         return client
 
@@ -406,9 +417,7 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         client.delete()
 
     def update_client(self, client, client_metadata, request):
-        client_metadata["scope"] = client_metadata["scope"].split(" ")
-        for key, value in client_metadata.items():
-            setattr(client, key, value)
+        client.update(**client_convert_data(**client_metadata))
         client.save()
         return client
 
