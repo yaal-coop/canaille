@@ -114,6 +114,7 @@ def populate(app):
                 response_types=["code", "id_token"],
                 token_endpoint_auth_method="client_secret_basic",
             )
+            client1.audience = [client1]
             client1.save()
 
             client2 = models.Client(
@@ -132,6 +133,7 @@ def populate(app):
                 token_endpoint_auth_method="client_secret_basic",
                 preconsent=True,
             )
+            client2.audience = [client2]
             client2.save()
 
             fake_users(50)
