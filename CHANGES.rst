@@ -13,6 +13,7 @@ Changed
 *******
 
 - Model attributes cardinality is closer to SCIM model. :pr:`155`
+- Bump to htmx 1.9.9 :pr:`159`
 
 [0.0.34] - 2023-10-02
 =====================
