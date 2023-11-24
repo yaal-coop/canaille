@@ -185,6 +185,7 @@ csrf=true) -%}
       role="form"
       enctype="multipart/form-data"
       class="ui form {{ class_ }}"
+      {% for key, value in kwargs.items() %}{{ key.replace("_", "-") }}="{{ value }}" {% endfor %}
 >
     {% if caller is defined %}
         {% if csrf %}
