@@ -44,7 +44,7 @@ def send_password_reset_mail(user, mail):
         hash=build_hash(
             user.identifier,
             mail,
-            user.password[0] if user.has_password() else "",
+            user.password if user.has_password() else "",
         ),
         _external=True,
     )
@@ -85,7 +85,7 @@ def send_password_initialization_mail(user, email):
         hash=build_hash(
             user.identifier,
             email,
-            user.password[0] if user.has_password() else "",
+            user.password if user.has_password() else "",
         ),
         _external=True,
     )

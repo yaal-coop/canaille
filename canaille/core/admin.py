@@ -79,7 +79,7 @@ def password_init_html(user):
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password),
         title=_("Password initialization on {website_name}").format(
             website_name=current_app.config.get("NAME", "Canaille")
         ),
@@ -105,7 +105,7 @@ def password_init_txt(user):
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password),
         _external=True,
     )
 
@@ -124,7 +124,7 @@ def password_reset_html(user):
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password),
         title=_("Password reset on {website_name}").format(
             website_name=current_app.config.get("NAME", "Canaille")
         ),
@@ -150,7 +150,7 @@ def password_reset_txt(user):
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password[0]),
+        hash=build_hash(user.identifier, user.preferred_email, user.password),
         _external=True,
     )
 

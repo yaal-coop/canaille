@@ -198,7 +198,7 @@ def reset(user, hash):
         build_hash(
             user.identifier,
             email,
-            user.password[0] if user.has_password() else "",
+            user.password if user.has_password() else "",
         )
         for email in user.emails
     }
