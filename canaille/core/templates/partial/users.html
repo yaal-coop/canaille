@@ -27,7 +27,7 @@
                         <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
                             {% if user.can_manage_users and watched_user.locked %}
                                 <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>
-                            {% elif watched_user.photo and watched_user.photo[0] %}
+                            {% elif watched_user.photo and watched_user.photo %}
                                 <img class="ui avatar image" src="{{ url_for("core.account.photo", user=watched_user, field="photo") }}" alt="User photo">
                             {% else %}
                                 <i class="user circle big black icon"></i>
@@ -55,7 +55,7 @@
                 {% if user.can_manage_groups %}
                     <td>
                         {% for group in watched_user.groups %}
-                            <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} title="{{ group.description[0] }}"{% endif %}>
+                            <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} title="{{ group.description }}"{% endif %}>
                                 {{ group.display_name }}
                             </a>
                         {% endfor %}

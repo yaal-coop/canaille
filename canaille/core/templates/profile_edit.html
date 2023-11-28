@@ -54,7 +54,7 @@
                         {% block photo_field scoped %}
                             {{ profile.render_field(profile_form.photo, display=false, class="photo-field") }}
                             {{ profile.render_field(profile_form.photo_delete, display=false, class="photo-delete-button") }}
-                            {% set photo = edited_user.photo and edited_user.photo[0] %}
+                            {% set photo = edited_user.photo and edited_user.photo %}
                             <label
                                 class="ui small bordered image photo-content"
                                 for="{{ profile_form.photo.id }}"
