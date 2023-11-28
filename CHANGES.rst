@@ -7,6 +7,8 @@ Fixed
 *****
 
 - Avoid crashing when LDAP groups references unexisting users.
+- Password reset and initialization mails were only sent to the
+  preferred user email address.
 - Password reset and initialization mails were not sent at all the user
   addresses if one email address could not be reached.
 

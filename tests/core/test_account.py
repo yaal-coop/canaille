@@ -148,6 +148,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         "You should receive it within a few minutes.",
     ) in res.flashes
     assert len(smtpd.messages) == 2
+    assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")
     u.delete()
 

@@ -122,9 +122,8 @@ def firstlogin(user):
 
     form.validate()
 
-    success = all(
-        send_password_initialization_mail(user, email) for email in user.emails
-    )
+    statuses = [send_password_initialization_mail(user, email) for email in user.emails]
+    success = all(statuses)
     if success:
         flash(
             _(
@@ -175,7 +174,8 @@ def forgotten():
         )
         return render_template("forgotten-password.html", form=form)
 
-    success = all(send_password_reset_mail(user, email) for email in user.emails)
+    statuses = [send_password_reset_mail(user, email) for email in user.emails]
+    success = all(statuses)
 
     if success:
         flash(success_message, "success")

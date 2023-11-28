@@ -40,6 +40,7 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user):
     res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 3
+    assert [message["X-RcptTo"] for message in smtpd.messages] == user.emails
 
 
 def test_password_forgotten_invalid_form(smtpd, testclient, user):
