@@ -87,6 +87,20 @@ def test_signin_wrong_password(testclient, user):
     assert ("error", "Login failed, please check your information") in res.flashes
 
 
+def test_signin_password_substring(testclient, user):
+    with testclient.session_transaction() as session:
+        assert not session.get("user_id")
+
+    res = testclient.get("/login", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    res.form["password"] = "c"
+    res = res.form.submit(status=200)
+    assert ("error", "Login failed, please check your information") in res.flashes
+
+
 def test_signin_bad_csrf(testclient, user):
     with testclient.session_transaction() as session:
         assert not session.get("user_id")

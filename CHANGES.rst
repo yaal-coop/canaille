@@ -11,6 +11,7 @@ Fixed
   preferred user email address.
 - Password reset and initialization mails were not sent at all the user
   addresses if one email address could not be reached.
+- Password comparision was too permissive on login.
 
 [0.0.35] - 2023-11-25
 =====================

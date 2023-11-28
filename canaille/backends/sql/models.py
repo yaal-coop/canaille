@@ -202,7 +202,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         return bool(self.password)
 
     def check_password(self, password):
-        if password not in self.password:
+        if password != self.password:
             return (False, None)
 
         if self.locked:
