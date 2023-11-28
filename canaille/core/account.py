@@ -672,10 +672,11 @@ def profile_settings(user, edited_user):
         return profile_delete(user, edited_user)
 
     if request.form.get("action") == "password-initialization-mail":
-        success = all(
+        statuses = [
             send_password_initialization_mail(edited_user, email)
             for email in edited_user.emails
-        )
+        ]
+        success = all(statuses)
         if success:
             flash(
                 _(
@@ -690,9 +691,10 @@ def profile_settings(user, edited_user):
         return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "password-reset-mail":
-        success = all(
+        statuses = [
             send_password_reset_mail(edited_user, email) for email in edited_user.emails
-        )
+        ]
+        success = all(statuses)
         if success:
             flash(
                 _(
