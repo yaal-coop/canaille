@@ -18,7 +18,7 @@ def b64_to_obj(string):
 def build_hash(*args):
     return hashlib.sha256(
         current_app.config["SECRET_KEY"].encode("utf-8")
-        + obj_to_b64(args).encode("utf-8")
+        + obj_to_b64(str(args)).encode("utf-8")
     ).hexdigest()
 
 
