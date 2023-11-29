@@ -28,22 +28,24 @@ def test_user_get_from_login(testclient, user, backend):
 
 
 def test_user_has_password(testclient, backend):
-    u = models.User(
+    user = models.User(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
         emails=["john@doe.com"],
     )
-    u.save()
+    user.save()
 
-    assert not u.has_password()
+    assert user.password is None
+    assert not user.has_password()
 
-    u.password = "foobar"
-    u.save()
+    user.password = "foobar"
+    user.save()
 
-    assert u.has_password()
+    assert user.password is not None
+    assert user.has_password()
 
-    u.delete()
+    user.delete()
 
 
 def test_user_set_and_check_password(testclient, user, backend):

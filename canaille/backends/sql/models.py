@@ -21,10 +21,14 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import reconstructor
 from sqlalchemy.orm import relationship
 from sqlalchemy_json import MutableJson
+from sqlalchemy_utils import force_auto_coercion
+from sqlalchemy_utils import PasswordType
 
 from .backend import Backend
 from .backend import Base
 from .utils import TZDateTime
+
+force_auto_coercion()
 
 
 class SqlAlchemyModel(Model):
@@ -120,7 +124,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String, nullable=True)
+    password: Mapped[str] = mapped_column(
+        PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
+    )
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
     given_name: Mapped[str] = mapped_column(String, nullable=True)
@@ -199,7 +205,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         return User.get(user_name=login)
 
     def has_password(self):
-        return bool(self.password)
+        return self.password is not None
 
     def check_password(self, password):
         if password != self.password:

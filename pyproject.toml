@@ -61,8 +61,10 @@ python-ldap = {version = "^3.4.0", optional=true}
 sentry-sdk = {version = "<2", optional=true, extras=["flask"]}
 
 # extra : sql
-sqlalchemy-json = {version = "^0.7.0", optional=true}
+passlib = {version = "^1.7.4", optional=true}
 sqlalchemy = {version = "^2.0.23", optional=true}
+sqlalchemy-json = {version = "^0.7.0", optional=true}
+sqlalchemy-utils = {version = "^0.41.1", optional=true}
 
 [tool.poetry.group.doc]
 optional = true
@@ -117,14 +119,17 @@ sentry = [
     "sentry-sdk",
 ]
 sql = [
+    "passlib",
     "sqlalchemy",
     "sqlalchemy-json",
+    "sqlalchemy-utils",
 ]
 all = [
     "click",
     "email_validator",
     "flask-babel",
     "flask-themer",
+    "passlib",
     "pycountry",
     "pytz",
     "toml",
@@ -133,6 +138,7 @@ all = [
     "sentry-sdk",
     "sqlalchemy",
     "sqlalchemy-json",
+    "sqlalchemy-utils",
 ]
 
 [tool.poetry.scripts]

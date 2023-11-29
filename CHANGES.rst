@@ -12,6 +12,7 @@ Fixed
 - Password reset and initialization mails were not sent at all the user
   addresses if one email address could not be reached.
 - Password comparision was too permissive on login.
+- Encrypt passwords in the SQL backend.
 
 [0.0.35] - 2023-11-25
 =====================
