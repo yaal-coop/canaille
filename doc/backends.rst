@@ -51,7 +51,7 @@ Here is a configuration example compatible with canaille:
 ppolicy
 -------
 
-If *ppolicy* is configured and the ``pwdEndTime`` attribute is available (since OpenLDAP 2.6), then account locking support will be enabled in canaille. To allow users to manage account expiration, they need to have a *write* permission on the ``lock_date`` attribute.
+If `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-policy-11.html>`_ is configured and the ``pwdEndTime`` attribute is available (since OpenLDAP 2.6), then account locking support will be enabled in canaille. To allow users to manage account expiration, they need to have a *write* permission on the ``lock_date`` attribute.
 
 Here is a configuration example compatible with canaille:
 
