@@ -61,7 +61,7 @@ def configuration(smtpd):
     conf = {
         "SECRET_KEY": gen_salt(24),
         "JAVASCRIPT": False,
-        "LOGO": "/static/img/canaille-head.png",
+        "LOGO": "/static/img/canaille-head.webp",
         "TIMEZONE": "UTC",
         "ACL": {
             "DEFAULT": {

@@ -21,7 +21,7 @@ def test_client_registration_with_authentication_static_token(
         ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.org/logo.png",
+        "logo_uri": "https://client.example.org/logo.webp",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
@@ -38,7 +38,7 @@ def test_client_registration_with_authentication_static_token(
         "client_name": "My Example Client",
         "client_secret_expires_at": 0,
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
-        "logo_uri": "https://client.example.org/logo.png",
+        "logo_uri": "https://client.example.org/logo.webp",
         "redirect_uris": [
             "https://client.example.org/callback",
             "https://client.example.org/callback2",
@@ -54,7 +54,7 @@ def test_client_registration_with_authentication_static_token(
         "https://client.example.org/callback2",
     ]
     assert client.token_endpoint_auth_method == "client_secret_basic"
-    assert client.logo_uri == "https://client.example.org/logo.png"
+    assert client.logo_uri == "https://client.example.org/logo.webp"
     assert client.jwks_uri == "https://client.example.org/my_public_keys.jwks"
     client.delete()
 
@@ -73,7 +73,7 @@ def test_client_registration_with_authentication_no_token(
         ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.org/logo.png",
+        "logo_uri": "https://client.example.org/logo.webp",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
@@ -107,7 +107,7 @@ def test_client_registration_with_authentication_invalid_token(
         ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.org/logo.png",
+        "logo_uri": "https://client.example.org/logo.webp",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
@@ -183,7 +183,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
         "client_name": "My Example Client",
         "client_uri": "https://example.com",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.org/logo.png",
+        "logo_uri": "https://client.example.org/logo.webp",
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
@@ -206,7 +206,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
         "client_uri": "https://example.com",
         "client_secret_expires_at": 0,
         "jwks_uri": "https://client.example.org/my_public_keys.jwks",
-        "logo_uri": "https://client.example.org/logo.png",
+        "logo_uri": "https://client.example.org/logo.webp",
         "redirect_uris": [
             "https://client.example.org/callback",
             "https://client.example.org/callback2",
@@ -228,7 +228,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
         "https://client.example.org/callback2",
     ]
     assert client.token_endpoint_auth_method == "client_secret_basic"
-    assert client.logo_uri == "https://client.example.org/logo.png"
+    assert client.logo_uri == "https://client.example.org/logo.webp"
     assert client.jwks_uri == "https://client.example.org/my_public_keys.jwks"
     assert client.grant_types == ["authorization_code", "implicit"]
     assert client.response_types == ["code", "token"]

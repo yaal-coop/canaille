@@ -16,15 +16,15 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 Screenshots
 ===========
 
-.. image:: _static/login.png
+.. image:: _static/login.webp
   :width: 225
   :alt: Login
 
-.. image:: _static/profile.png
+.. image:: _static/profile.webp
   :width: 225
   :alt: Profile
 
-.. image:: _static/consent.png
+.. image:: _static/consent.webp
   :width: 225
   :alt: Consent
 

@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="canaille/static/img/canaille-full.png" height="200" alt="Canaille" />
+    <img src="canaille/static/img/canaille-full.webp" height="200" alt="Canaille" />
 </div>
 
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
@@ -16,9 +16,9 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 # Screenshots
 
 <div align="center">
-    <img src="doc/_static/login.png" width="225" alt="Canaille login page" />
-    <img src="doc/_static/profile.png" width="225" alt="Canaille profile page" />
-    <img src="doc/_static/consent.png" width="225" alt="Canaille consent page" />
+    <img src="doc/_static/login.webp" width="225" alt="Canaille login page" />
+    <img src="doc/_static/profile.webp" width="225" alt="Canaille profile page" />
+    <img src="doc/_static/consent.webp" width="225" alt="Canaille consent page" />
 </div>
 
 # Try it!
