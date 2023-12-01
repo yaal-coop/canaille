@@ -67,7 +67,7 @@ html_static_path = []
 # -- Options for HTMLHelp output ------------------------------------------
 
 htmlhelp_basename = "canailledoc"
-html_logo = "_static/logo.png"
+html_logo = "_static/logo.webp"
 
 
 # -- Options for LaTeX output ---------------------------------------------

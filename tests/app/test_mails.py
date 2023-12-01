@@ -108,7 +108,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
 
 
 def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
-    logo_path = "/static/img/canaille-head.png"
+    logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
         raw_logo = fd.read()
 
@@ -134,7 +134,7 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
 
 
 def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
-    logo_path = "/static/img/canaille-head.png"
+    logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
         raw_logo = fd.read()
 

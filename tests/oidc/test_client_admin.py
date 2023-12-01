@@ -93,7 +93,7 @@ def test_client_add(testclient, logged_admin):
         "scope": "openid profile",
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
-        "logo_uri": "https://foo.bar/logo.png",
+        "logo_uri": "https://foo.bar/logo.webp",
         "tos_uri": "https://foo.bar/tos",
         "policy_uri": "https://foo.bar/policy",
         "software_id": "software",
@@ -121,7 +121,7 @@ def test_client_add(testclient, logged_admin):
     assert client.scope == ["openid", "profile"]
     assert client.response_types == ["code", "token"]
     assert client.token_endpoint_auth_method == "none"
-    assert client.logo_uri == "https://foo.bar/logo.png"
+    assert client.logo_uri == "https://foo.bar/logo.webp"
     assert client.tos_uri == "https://foo.bar/tos"
     assert client.policy_uri == "https://foo.bar/policy"
     assert client.software_id == "software"
@@ -155,7 +155,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "scope": "openid profile",
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
-        "logo_uri": "https://foo.bar/logo.png",
+        "logo_uri": "https://foo.bar/logo.webp",
         "tos_uri": "https://foo.bar/tos",
         "policy_uri": "https://foo.bar/policy",
         "software_id": "software",
@@ -189,7 +189,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     assert client.scope == ["openid", "profile"]
     assert client.response_types == ["code", "token"]
     assert client.token_endpoint_auth_method == "none"
-    assert client.logo_uri == "https://foo.bar/logo.png"
+    assert client.logo_uri == "https://foo.bar/logo.webp"
     assert client.tos_uri == "https://foo.bar/tos"
     assert client.policy_uri == "https://foo.bar/policy"
     assert client.software_id == "software"

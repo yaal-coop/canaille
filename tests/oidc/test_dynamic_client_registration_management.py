@@ -38,7 +38,7 @@ def test_get(testclient, backend, client, user):
         "response_types": ["code", "token", "id_token"],
         "client_name": "Some client",
         "client_uri": "https://mydomain.tld",
-        "logo_uri": "https://mydomain.tld/logo.png",
+        "logo_uri": "https://mydomain.tld/logo.webp",
         "scope": "openid email profile groups address phone",
         "contacts": ["contact@mydomain.tld"],
         "tos_uri": "https://mydomain.tld/tos",
@@ -64,7 +64,7 @@ def test_update(testclient, backend, client, user):
     assert client.response_types != ["code", "token"]
     assert client.client_name != "new name"
     assert client.client_uri != "https://newname.example.org"
-    assert client.logo_uri != "https://newname.example.org/logo.png"
+    assert client.logo_uri != "https://newname.example.org/logo.webp"
     assert client.scope != ["openid", "profile", "email"]
     assert client.contacts != ["newcontact@example.org"]
     assert client.tos_uri != "https://newname.example.org/tos"
@@ -81,7 +81,7 @@ def test_update(testclient, backend, client, user):
         "response_types": ["code", "token"],
         "client_name": "new name",
         "client_uri": "https://newname.example.org",
-        "logo_uri": "https://newname.example.org/logo.png",
+        "logo_uri": "https://newname.example.org/logo.webp",
         "scope": "openid profile email",
         "contacts": ["newcontact@example.org"],
         "tos_uri": "https://newname.example.org/tos",
@@ -110,7 +110,7 @@ def test_update(testclient, backend, client, user):
         "response_types": ["code", "token"],
         "client_name": "new name",
         "client_uri": "https://newname.example.org",
-        "logo_uri": "https://newname.example.org/logo.png",
+        "logo_uri": "https://newname.example.org/logo.webp",
         "scope": "openid profile email",
         "contacts": ["newcontact@example.org"],
         "tos_uri": "https://newname.example.org/tos",
@@ -127,7 +127,7 @@ def test_update(testclient, backend, client, user):
     assert client.response_types == ["code", "token"]
     assert client.client_name == "new name"
     assert client.client_uri == "https://newname.example.org"
-    assert client.logo_uri == "https://newname.example.org/logo.png"
+    assert client.logo_uri == "https://newname.example.org/logo.webp"
     assert client.scope == ["openid", "profile", "email"]
     assert client.contacts == ["newcontact@example.org"]
     assert client.tos_uri == "https://newname.example.org/tos"

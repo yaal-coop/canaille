@@ -51,7 +51,7 @@ def client(testclient, other_client, backend):
             "https://mydomain.tld/redirect1",
             "https://mydomain.tld/redirect2",
         ],
-        logo_uri="https://mydomain.tld/logo.png",
+        logo_uri="https://mydomain.tld/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
@@ -87,7 +87,7 @@ def other_client(testclient, backend):
             "https://myotherdomain.tld/redirect1",
             "https://myotherdomain.tld/redirect2",
         ],
-        logo_uri="https://myotherdomain.tld/logo.png",
+        logo_uri="https://myotherdomain.tld/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
