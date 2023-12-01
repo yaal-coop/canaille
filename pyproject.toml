@@ -5,7 +5,7 @@ build-backend = "poetry.masonry.api"
 [tool]
 [tool.poetry]
 name = "Canaille"
-version = "0.0.36"
+version = "0.0.37"
 description = "Minimalistic identity provider"
 license = "MIT"
 keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
