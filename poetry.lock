@@ -1337,6 +1337,24 @@ files = [
 pytest = ">=3.2.5"
 
 [[package]]
+name = "pytest-smtpd"
+version = "0.1.0"
+description = "An SMTP server for testing built on aiosmtpd"
+optional = false
+python-versions = "<4,>=3.7"
+files = [
+    {file = "pytest_smtpd-0.1.0-py3-none-any.whl", hash = "sha256:1249e4d0ab77120eb53bce5123200b94ab6667b52a6cb5c741a3956a254c2dd8"},
+    {file = "pytest_smtpd-0.1.0.tar.gz", hash = "sha256:e80cd7818f45192ebd8ec517a38d20098378e397e664ec0649da5b98a6e3ff09"},
+]
+
+[package.dependencies]
+pytest = "*"
+smtpdfix = "*"
+
+[package.extras]
+dev = ["flake8", "isort", "mypy", "tox"]
+
+[[package]]
 name = "pytest-xdist"
 version = "3.5.0"
 description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
@@ -2091,4 +2109,4 @@ sql = ["passlib", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "96297d25c9545e9469b6f3f7d1cab42bc273615710d4c7b1320fd9e2f3549248"
+content-hash = "c5677e8b176239387b62796d963b0e4c6d107f35b4a80c536790b019883687e7"
