@@ -10,6 +10,7 @@ from flask_webtest import TestApp
 @pytest.fixture
 def configuration(configuration, httpserver):
     configuration["SERVER_NAME"] = f"{httpserver.host}:{httpserver.port}"
+    configuration["WTF_CSRF_ENABLED"] = False
     return configuration
 
 

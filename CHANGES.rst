@@ -6,7 +6,8 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Changed
 *******
 
-- Convert all the png in webp. :pr:`182`
+- Convert all the png in webp. :pr:`162`
+- Update to flask 3 :issue:`161` :pr:`163`
 
 [0.0.37] - 2023-12-01
 =====================
@@ -14,7 +15,7 @@ Changed
 Fixed
 *****
 
-- Handle 4xx and 5xx error codes with htmx. :issue:`171` :pr:`181`
+- Handle 4xx and 5xx error codes with htmx. :issue:`171` :pr:`161`
 
 [0.0.36] - 2023-12-01
 =====================

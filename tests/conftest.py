@@ -60,6 +60,7 @@ def configuration(smtpd):
     smtpd.config.use_starttls = True
     conf = {
         "SECRET_KEY": gen_salt(24),
+        "SERVER_NAME": "canaille.test",
         "JAVASCRIPT": False,
         "LOGO": "/static/img/canaille-head.webp",
         "TIMEZONE": "UTC",
