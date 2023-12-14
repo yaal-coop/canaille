@@ -38,10 +38,10 @@ include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-flask = ">=2.2.2 <2.3"
+flask = ">=2.2.2 <3.0.0"
 flask-wtf = "^1.1.1"
 wtforms = "^3.1.1"
-werkzeug = ">=2.2.2 <2.3"
+werkzeug = ">=2.2.2 <3.0.0"
 
 # extra : front
 email_validator = {version = "^2.0.0", optional=true}

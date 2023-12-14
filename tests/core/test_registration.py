@@ -59,7 +59,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd):
         hash=payload.build_hash(),
         _external=True,
     )
-    text_mail = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    text_mail = smtpd.messages[0].get_payload()[0].get_payload(decode=True).decode()
     assert registration_url in text_mail
 
     assert not models.User.query()
