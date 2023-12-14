@@ -112,7 +112,8 @@ def configuration(smtpd):
         "SMTP": {
             "HOST": smtpd.hostname,
             "PORT": smtpd.port,
-            "TLS": True,
+            "TLS": smtpd.config.use_starttls,
+            "SSL": smtpd.config.use_ssl,
             "LOGIN": smtpd.config.login_username,
             "PASSWORD": smtpd.config.login_password,
             "FROM_ADDR": "admin@mydomain.tld",
