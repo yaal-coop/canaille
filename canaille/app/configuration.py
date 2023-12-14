@@ -56,7 +56,9 @@ def setup_config(app, config=None, validate_config=True):
     )
     if config:
         app.config.from_mapping(parse_file_keys(config))
-    elif toml and "CONFIG" in os.environ:
+    elif "CONFIG" in os.environ:
+        if not toml:  # pragma: no cover
+            raise Exception("toml library not installed. Cannot load configuration.")
         app.config.from_mapping(parse_file_keys(toml.load(os.environ.get("CONFIG"))))
     else:
         raise Exception(
