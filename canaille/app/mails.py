@@ -63,7 +63,9 @@ def send_email(subject, recipient, text, html, attachements=None):
     attachements = attachements or []
     for cid, filename, value in attachements:
         filetype = mimetypes.guess_type(filename)
-        maintype, subtype = filetype[0].split("/") if filetype else (None, None)
+        maintype, subtype = (
+            filetype[0].split("/") if filetype and filetype[0] else (None, None)
+        )
         msg.get_payload()[1].add_related(
             value, maintype=maintype, subtype=subtype, cid=cid
         )
