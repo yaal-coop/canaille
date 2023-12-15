@@ -25,7 +25,7 @@ def build_hash(*args):
 def default_fields():
     read = set()
     write = set()
-    for acl in current_app.config["ACL"].values():
+    for acl in current_app.config.get("ACL", {}).values():
         if "FILTER" not in acl:
             read |= set(acl.get("READ", []))
             write |= set(acl.get("WRITE", []))

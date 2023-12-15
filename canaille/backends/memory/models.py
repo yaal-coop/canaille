@@ -233,7 +233,7 @@ class User(canaille.core.models.User, MemoryModel):
         self.permissions = set()
         self.read = set()
         self.write = set()
-        for access_group_name, details in current_app.config["ACL"].items():
+        for access_group_name, details in current_app.config.get("ACL", {}).items():
             if self.match_filter(details.get("FILTER")):
                 self.permissions |= set(details.get("PERMISSIONS", []))
                 self.read |= set(details.get("READ", []))
