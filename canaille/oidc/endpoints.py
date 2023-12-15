@@ -212,7 +212,7 @@ def jwks():
     return jsonify(get_jwks())
 
 
-@bp.route("/userinfo")
+@bp.route("/userinfo", methods=["GET", "POST"])
 @require_oauth("profile")
 def userinfo():
     current_app.logger.debug("userinfo endpoint request: %s", request.args)
