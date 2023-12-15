@@ -22,14 +22,14 @@ fi
 
 pushd "$DIR" > /dev/null 2>&1 || exit
 
+poetry install --with demo --all-extras
+
 if [ "$BACKEND" = "memory" ]; then
 
-    poetry install --with demo --without dev --extras front --extras oidc
     env poetry run honcho --procfile Procfile-memory start
 
 elif [ "$BACKEND" = "sql" ]; then
 
-    poetry install --with demo --without dev --extras front --extras oidc --extras sql
     env poetry run honcho --procfile Procfile-sql start
 
 elif [ "$BACKEND" = "ldap" ]; then
@@ -40,7 +40,6 @@ elif [ "$BACKEND" = "ldap" ]; then
         exit 1
     fi
 
-    poetry install --with demo --without dev --extras front --extras oidc --extras ldap
     env poetry run honcho --procfile Procfile-ldap start
 
 else
