@@ -105,30 +105,6 @@ def setup_flask(app):
             or (app.config.get("EMAIL_CONFIRMATION") is None and "SMTP" in app.config),
         }
 
-    @app.errorhandler(400)
-    def bad_request(error):
-        from canaille.app.themes import render_template
-
-        return render_template("error.html", description=error, error_code=400), 400
-
-    @app.errorhandler(403)
-    def unauthorized(error):
-        from canaille.app.themes import render_template
-
-        return render_template("error.html", description=error, error_code=403), 403
-
-    @app.errorhandler(404)
-    def page_not_found(error):
-        from canaille.app.themes import render_template
-
-        return render_template("error.html", description=error, error_code=404), 404
-
-    @app.errorhandler(500)
-    def server_error(error):  # pragma: no cover
-        from canaille.app.themes import render_template
-
-        return render_template("error.html", description=error, error_code=500), 500
-
 
 def setup_flask_converters(app):
     from canaille.app.flask import model_converter
