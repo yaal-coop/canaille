@@ -11,6 +11,7 @@ def test_password_reset(testclient, user):
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
     assert ("success", "Your password has been updated successfully") in res.flashes
+    assert res.location == "/profile/user"
 
     user.reload()
     assert user.check_password("foobarbaz")[0]

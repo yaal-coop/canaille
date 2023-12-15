@@ -8,6 +8,7 @@ Fixed
 
 - Crash when no ACL were defined
 - OIDC Userinfo endpoint is also available in POST
+- Fix redirection after password reset :issue:`159`
 
 [0.0.38] - 2023-12-15
 =====================

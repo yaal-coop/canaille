@@ -214,9 +214,11 @@ def reset(user, hash):
         login_user(user)
 
         flash(_("Your password has been updated successfully"), "success")
-        return session.pop(
-            "redirect-after-login",
-            url_for("core.account.profile_edition", edited_user=user),
+        return redirect(
+            session.pop(
+                "redirect-after-login",
+                url_for("core.account.profile_edition", edited_user=user),
+            )
         )
 
     return render_template("reset-password.html", form=form, user=user, hash=hash)
