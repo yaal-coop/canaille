@@ -194,7 +194,7 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
 
 
 def test_object_class_update(backend, testclient):
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
+    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
     user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
@@ -205,7 +205,7 @@ def test_object_class_update(backend, testclient):
         "inetOrgPerson"
     ]
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = [
+    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
         "extensibleObject",
     ]
@@ -249,7 +249,7 @@ def test_ldap_connection_remote(testclient, configuration, backend):
 
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
-    configuration["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    configuration["CANAILLE_LDAP"]["URI"] = "ldap://invalid-ldap.com"
     with pytest.raises(
         ConfigurationException,
         match=r"Could not connect to the LDAP server",
@@ -258,7 +258,7 @@ def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = "invalid-password"
     with pytest.raises(
         ConfigurationException,
         match=r"LDAP authentication failed with user",
@@ -295,19 +295,19 @@ def test_ldap_cannot_create_groups(testclient, configuration, backend):
 
 
 def test_login_placeholder(testclient):
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(uid={{ login }})"
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(uid={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe"
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(cn={{ login }})"
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(cn={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "John Doe"
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(mail={{ login }})"
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(mail={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "john@doe.com"
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = (
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = (
         "(|(uid={{ login }})(mail={{ login }}))"
     )
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]

@@ -52,11 +52,11 @@ def test_html(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
         "mails/test.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
-        logo=current_app.config.get("LOGO"),
+        logo=current_app.config["CANAILLE"].get("LOGO"),
         title=_("Test email from {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille"),
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         ),
     )
 
@@ -67,7 +67,7 @@ def test_txt(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
         "mails/test.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
     )
 
@@ -81,19 +81,19 @@ def password_init_html(user):
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password),
         title=_("Password initialization on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
         _external=True,
     )
 
     return render_template(
         "mails/firstlogin.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
-        logo=current_app.config.get("LOGO"),
+        logo=current_app.config["CANAILLE"].get("LOGO"),
         title=_("Password initialization on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
     )
 
@@ -111,7 +111,7 @@ def password_init_txt(user):
 
     return render_template(
         "mails/firstlogin.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
@@ -126,19 +126,19 @@ def password_reset_html(user):
         user=user,
         hash=build_hash(user.identifier, user.preferred_email, user.password),
         title=_("Password reset on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
         _external=True,
     )
 
     return render_template(
         "mails/reset.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         reset_url=reset_url,
-        logo=current_app.config.get("LOGO"),
+        logo=current_app.config["CANAILLE"].get("LOGO"),
         title=_("Password reset on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
     )
 
@@ -156,7 +156,7 @@ def password_reset_txt(user):
 
     return render_template(
         "mails/reset.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
     )
@@ -175,12 +175,12 @@ def invitation_html(user, identifier, email):
 
     return render_template(
         "mails/invitation.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
-        logo=current_app.config.get("LOGO"),
+        logo=current_app.config["CANAILLE"].get("LOGO"),
         title=_("Invitation on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
     )
 
@@ -198,7 +198,7 @@ def invitation_txt(user, identifier, email):
 
     return render_template(
         "mails/invitation.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
     )
@@ -217,12 +217,12 @@ def email_confirmation_html(user, identifier, email):
 
     return render_template(
         "mails/email-confirmation.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         confirmation_url=email_confirmation_url,
-        logo=current_app.config.get("LOGO"),
+        logo=current_app.config["CANAILLE"].get("LOGO"),
         title=_("Email confirmation on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
     )
 
@@ -240,7 +240,7 @@ def email_confirmation_txt(user, identifier, email):
 
     return render_template(
         "mails/email-confirmation.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         confirmation_url=email_confirmation_url,
     )
@@ -259,12 +259,12 @@ def registration_html(user, email):
 
     return render_template(
         "mails/registration.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
-        logo=current_app.config.get("LOGO"),
+        logo=current_app.config["CANAILLE"].get("LOGO"),
         title=_("Email confirmation on {website_name}").format(
-            website_name=current_app.config.get("NAME", "Canaille")
+            website_name=current_app.config["CANAILLE"].get("NAME", "Canaille")
         ),
     )
 
@@ -282,7 +282,7 @@ def registration_txt(user, email):
 
     return render_template(
         "mails/registration.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"].get("NAME", "Canaille"),
         site_url=base_url,
         registration_url=registration_url,
     )

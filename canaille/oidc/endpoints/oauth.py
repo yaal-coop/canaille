@@ -276,7 +276,8 @@ def end_session():
     if data.get("id_token_hint"):
         try:
             id_token = jwt.decode(
-                data["id_token_hint"], current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
+                data["id_token_hint"],
+                current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"],
             )
         except JoseError as exc:
             return jsonify(

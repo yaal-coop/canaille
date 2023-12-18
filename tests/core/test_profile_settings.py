@@ -65,7 +65,7 @@ def test_edition_without_groups(
     admin,
 ):
     res = testclient.get("/profile/user/settings", status=200)
-    testclient.app.config["ACL"]["DEFAULT"]["READ"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"] = []
 
     res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
@@ -303,11 +303,11 @@ def test_edition_permission(
     logged_user,
     admin,
 ):
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     logged_user.reload()
     testclient.get("/profile/user/settings", status=404)
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     g.user.reload()
     testclient.get("/profile/user/settings", status=200)
 

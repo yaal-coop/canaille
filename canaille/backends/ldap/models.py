@@ -46,7 +46,7 @@ class User(canaille.core.models.User, LDAPObject):
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):
-        raw_filter = current_app.config["BACKENDS"]["LDAP"].get(
+        raw_filter = current_app.config["CANAILLE_LDAP"].get(
             "USER_FILTER", User.DEFAULT_FILTER
         )
         filter = (
@@ -98,11 +98,11 @@ class User(canaille.core.models.User, LDAPObject):
         return bool(self.password)
 
     def check_password(self, password):
-        conn = ldap.initialize(current_app.config["BACKENDS"]["LDAP"]["URI"])
+        conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
 
         conn.set_option(
             ldap.OPT_NETWORK_TIMEOUT,
-            current_app.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
+            current_app.config["CANAILLE_LDAP"].get("TIMEOUT"),
         )
 
         message = None
@@ -180,7 +180,9 @@ class User(canaille.core.models.User, LDAPObject):
         self.read = set()
         self.write = set()
 
-        for access_group_name, details in current_app.config.get("ACL", {}).items():
+        for access_group_name, details in (
+            current_app.config["CANAILLE"].get("ACL", {}).items()
+        ):
             filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))
             if not filter_ or (
                 self.id and conn.search_s(self.id, ldap.SCOPE_SUBTREE, filter_)
@@ -211,7 +213,7 @@ class Group(canaille.core.models.Group, LDAPObject):
 
     @property
     def display_name(self):
-        attribute = current_app.config["BACKENDS"]["LDAP"].get(
+        attribute = current_app.config["CANAILLE_LDAP"].get(
             "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
         )
         return getattr(self, attribute)[0]

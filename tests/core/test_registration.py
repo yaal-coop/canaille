@@ -9,8 +9,8 @@ from canaille.core.endpoints.account import RegistrationPayload
 
 def test_registration_without_email_validation(testclient, backend, foo_group):
     """Tests a nominal registration without email validation."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
-    testclient.app.config["EMAIL_CONFIRMATION"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
     assert not models.User.query(user_name="newuser")
     res = testclient.get(url_for("core.account.registration"), status=200)
@@ -29,7 +29,7 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
 
 def test_registration_with_email_validation(testclient, backend, smtpd, foo_group):
     """Tests a nominal registration with email validation."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
 
     with freezegun.freeze_time("2020-01-01 02:00:00"):
         res = testclient.get(url_for("core.account.join"))
@@ -82,9 +82,9 @@ def test_registration_with_email_already_taken(
     testclient, backend, smtpd, user, foo_group
 ):
     """Be sure to not leak email existence if HIDE_INVALID_LOGINS is true."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
     res = testclient.get(url_for("core.account.join"))
     res.form["email"] = "john@doe.com"
     res = res.form.submit()
@@ -95,7 +95,7 @@ def test_registration_with_email_already_taken(
         )
     ]
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = False
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
     res = testclient.get(url_for("core.account.join"))
     res.form["email"] = "john@doe.com"
     res = res.form.submit()
@@ -107,35 +107,35 @@ def test_registration_with_email_validation_needs_a_valid_link(
     testclient, backend, smtpd, foo_group
 ):
     """Tests a nominal registration without email validation."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.get(url_for("core.account.registration"), status=403)
 
 
 def test_join_page_registration_disabled(testclient, backend, smtpd, foo_group):
     """The join page should not be available if registration is disabled."""
-    testclient.app.config["ENABLE_REGISTRATION"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = False
     testclient.get(url_for("core.account.join"), status=404)
 
 
 def test_join_page_email_confirmation_disabled(testclient, backend, smtpd, foo_group):
     """The join page should directly redirect to the registration page if email
     confirmation is disabled."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
-    testclient.app.config["EMAIL_CONFIRMATION"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
     res = testclient.get(url_for("core.account.join"), status=302)
     assert res.location == url_for("core.account.registration")
 
 
 def test_join_page_already_logged_in(testclient, backend, logged_user, foo_group):
     """The join page should not be accessible for logged users."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.get(url_for("core.account.join"), status=403)
 
 
 @mock.patch("smtplib.SMTP")
 def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
     """Display an error message if the registration mail could not be sent."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     res = testclient.get(url_for("core.account.join"))
     res.form["email"] = "foo@bar.com"

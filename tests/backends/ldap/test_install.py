@@ -46,10 +46,10 @@ def test_setup_ldap_tree(slapd_server, configuration):
 
 
 def test_install_schemas(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
 
     with Backend(configuration).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
@@ -61,10 +61,10 @@ def test_install_schemas(configuration, slapd_server):
 
 
 def test_install_schemas_twice(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
 
     with Backend(configuration).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
@@ -78,12 +78,10 @@ def test_install_schemas_twice(configuration, slapd_server):
 
 
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = (
-        "uid=admin,ou=users,dc=mydomain,dc=tld"
-    )
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "admin"
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=mydomain,dc=tld"
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = "admin"
 
     with Backend(configuration).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
@@ -95,10 +93,10 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
 
 
 def test_install_schemas_command(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
 
     with Backend(configuration).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)

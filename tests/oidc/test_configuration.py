@@ -9,12 +9,14 @@ from canaille.oidc.oauth import get_issuer
 
 def test_issuer(testclient):
     with warnings.catch_warnings(record=True):
-        testclient.app.config["OIDC"]["JWT"]["ISS"] = "https://anyauth.mydomain.tld"
+        testclient.app.config["CANAILLE_OIDC"]["JWT"]["ISS"] = (
+            "https://anyauth.mydomain.tld"
+        )
         testclient.app.config["SERVER_NAME"] = "https://otherauth.mydomain.tld"
         with testclient.app.test_request_context("/"):
             assert get_issuer() == "https://anyauth.mydomain.tld"
 
-        del testclient.app.config["OIDC"]["JWT"]["ISS"]
+        del testclient.app.config["CANAILLE_OIDC"]["JWT"]["ISS"]
         with testclient.app.test_request_context("/"):
             assert get_issuer() == "https://otherauth.mydomain.tld"
 
@@ -24,7 +26,7 @@ def test_issuer(testclient):
 
 
 def test_no_private_key(testclient, configuration):
-    del configuration["OIDC"]["JWT"]["PRIVATE_KEY"]
+    del configuration["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"]
     with pytest.raises(
         ConfigurationException,
         match=r"No private key has been set",
@@ -33,7 +35,7 @@ def test_no_private_key(testclient, configuration):
 
 
 def test_no_public_key(testclient, configuration):
-    del configuration["OIDC"]["JWT"]["PUBLIC_KEY"]
+    del configuration["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"]
     with pytest.raises(
         ConfigurationException,
         match=r"No public key has been set",

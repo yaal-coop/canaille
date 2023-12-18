@@ -47,7 +47,7 @@ def unique_group(form, field):
 
 
 def existing_login(form, field):
-    if not current_app.config.get(
+    if not current_app.config["CANAILLE"].get(
         "HIDE_INVALID_LOGINS", True
     ) and not models.User.get_from_login(field.data):
         raise wtforms.ValidationError(
@@ -365,7 +365,7 @@ class JoinForm(Form):
     )
 
     def validate_email(form, field):
-        if not current_app.config.get("HIDE_INVALID_LOGINS", True):
+        if not current_app.config["CANAILLE"].get("HIDE_INVALID_LOGINS", True):
             unique_email(form, field)
 
 

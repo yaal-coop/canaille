@@ -11,7 +11,7 @@ csrf = CSRFProtect()
 
 
 def setup_sentry(app):  # pragma: no cover
-    if not app.config.get("SENTRY_DSN"):
+    if not app.config["CANAILLE"].get("SENTRY_DSN"):
         return None
 
     try:
@@ -21,12 +21,14 @@ def setup_sentry(app):  # pragma: no cover
     except Exception:
         return None
 
-    sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
+    sentry_sdk.init(
+        dsn=app.config["CANAILLE"]["SENTRY_DSN"], integrations=[FlaskIntegration()]
+    )
     return sentry_sdk
 
 
 def setup_logging(app):
-    conf = app.config.get("LOGGING")
+    conf = app.config["CANAILLE"].get("LOGGING")
     if conf is None:
         log_level = "DEBUG" if app.debug else "INFO"
         dictConfig(
@@ -72,7 +74,7 @@ def setup_blueprints(app):
 
     app.register_blueprint(canaille.core.endpoints.bp)
 
-    if "OIDC" in app.config:
+    if "CANAILLE_OIDC" in app.config:
         import canaille.oidc.endpoints
 
         app.register_blueprint(canaille.oidc.endpoints.bp)
@@ -92,19 +94,29 @@ def setup_flask(app):
 
         return {
             "debug": app.debug or app.config.get("TESTING", False),
-            "has_smtp": "SMTP" in app.config,
-            "has_oidc": "OIDC" in app.config,
-            "has_password_recovery": app.config.get("ENABLE_PASSWORD_RECOVERY", True),
-            "has_registration": app.config.get("ENABLE_REGISTRATION", False),
+            "has_smtp": "SMTP" in app.config["CANAILLE"],
+            "has_oidc": "CANAILLE_OIDC" in app.config["CANAILLE"],
+            "has_password_recovery": app.config["CANAILLE"].get(
+                "ENABLE_PASSWORD_RECOVERY", True
+            ),
+            "has_registration": app.config["CANAILLE"].get(
+                "ENABLE_REGISTRATION", False
+            ),
             "has_account_lockability": app.backend.get().has_account_lockability(),
-            "logo_url": app.config.get("LOGO"),
-            "favicon_url": app.config.get("FAVICON", app.config.get("LOGO")),
-            "website_name": app.config.get("NAME", "Canaille"),
+            "logo_url": app.config["CANAILLE"].get("LOGO"),
+            "favicon_url": app.config["CANAILLE"].get(
+                "FAVICON", app.config["CANAILLE"].get("LOGO")
+            ),
+            "website_name": app.config["CANAILLE"].get("NAME", "Canaille"),
             "user": current_user(),
             "menu": True,
             "is_boosted": request.headers.get("HX-Boosted", False),
-            "has_email_confirmation": app.config.get("EMAIL_CONFIRMATION") is True
-            or (app.config.get("EMAIL_CONFIRMATION") is None and "SMTP" in app.config),
+            "has_email_confirmation": app.config["CANAILLE"].get("EMAIL_CONFIRMATION")
+            is True
+            or (
+                app.config["CANAILLE"].get("EMAIL_CONFIRMATION") is None
+                and "SMTP" in app.config["CANAILLE"]
+            ),
         }
 
 
@@ -137,7 +149,7 @@ def create_app(config=None, validate=True, backend=None):
         setup_themer(app)
         setup_flask(app)
 
-        if "OIDC" in app.config:
+        if "CANAILLE_OIDC" in app.config:
             from .oidc.oauth import setup_oauth
 
             setup_oauth(app)

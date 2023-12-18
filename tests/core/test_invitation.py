@@ -290,7 +290,7 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
     res.mustcontain("Invite")
     testclient.get("/invite")
 
-    del testclient.app.config["SMTP"]
+    del testclient.app.config["CANAILLE"]["SMTP"]
 
     res = testclient.get("/users")
     res.mustcontain(no="Invite")
@@ -302,7 +302,7 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
 def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     testclient, foo_group
 ):
-    testclient.app.config["ACL"]["DEFAULT"]["READ"] = [
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"] = [
         "user_name"
     ]  # remove groups from default read permissions
 

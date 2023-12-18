@@ -13,7 +13,7 @@ Memory
 Canaille comes with a lightweight inmemory backend by default.
 This backend is only for test purpose and should not be used in production environments.
 
-It is used when the ``BACKENDS`` configuration parameter is unset or empty.
+It is used by default when no other backend is configured.
 
 SQL
 ===
@@ -21,13 +21,13 @@ SQL
 Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as
 sqlite, postgresql or mariadb.
 
-It is used when the ``BACKENDS.SQL`` configuration parameter is defined.
+It is used when the ``CANAILLE_SQL`` configuration parameter is defined.
 
 LDAP
 ====
 
 Canaille can use OpenLDAP as its main database.
-It is used when the ``BACKENDS.SQL`` configuration parameter is defined.
+It is used when the ``CANAILLE_LDAP`` configuration parameter is defined.
 
 .. note ::
    Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have been tested.

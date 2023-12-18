@@ -35,9 +35,6 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 
-DEFAULT_JWT_KTY = "RSA"
-DEFAULT_JWT_ALG = "RS256"
-DEFAULT_JWT_EXP = 3600
 AUTHORIZATION_CODE_LIFETIME = 84400
 DEFAULT_JWT_MAPPING = {
     "SUB": "{{ user.user_name }}",
@@ -121,7 +118,11 @@ def openid_configuration():
         "subject_types_supported": ["pairwise", "public"],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
         "prompt_values_supported": ["none"]
-        + (["create"] if current_app.config.get("ENABLE_REGISTRATION") else []),
+        + (
+            ["create"]
+            if current_app.config["CANAILLE"].get("ENABLE_REGISTRATION")
+            else []
+        ),
     }
 
 
@@ -132,8 +133,8 @@ def exists_nonce(nonce, req):
 
 
 def get_issuer():
-    if current_app.config["OIDC"]["JWT"].get("ISS"):
-        return current_app.config["OIDC"]["JWT"].get("ISS")
+    if current_app.config["CANAILLE_OIDC"]["JWT"].get("ISS"):
+        return current_app.config["CANAILLE_OIDC"]["JWT"].get("ISS")
 
     if current_app.config.get("SERVER_NAME"):
         return current_app.config.get("SERVER_NAME")
@@ -143,18 +144,18 @@ def get_issuer():
 
 def get_jwt_config(grant=None):
     return {
-        "key": current_app.config["OIDC"]["JWT"]["PRIVATE_KEY"],
-        "alg": current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG),
+        "key": current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
+        "alg": current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"],
         "iss": get_issuer(),
-        "exp": current_app.config["OIDC"]["JWT"].get("EXP", DEFAULT_JWT_EXP),
+        "exp": current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
     }
 
 
 def get_jwks():
-    kty = current_app.config["OIDC"]["JWT"].get("KTY", DEFAULT_JWT_KTY)
-    alg = current_app.config["OIDC"]["JWT"].get("ALG", DEFAULT_JWT_ALG)
+    kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
+    alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
     jwk = JsonWebKey.import_key(
-        current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
+        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
     )
     return {
         "keys": [
@@ -205,7 +206,7 @@ def generate_user_info(user, scope):
 def generate_user_claims(user, claims, jwt_mapping_config=None):
     jwt_mapping_config = {
         **DEFAULT_JWT_MAPPING,
-        **(current_app.config["OIDC"]["JWT"].get("MAPPING") or {}),
+        **(current_app.config["CANAILLE_OIDC"]["JWT"].get("MAPPING") or {}),
         **(jwt_mapping_config or {}),
     }
 
@@ -420,7 +421,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
 class ClientManagementMixin:
     def authenticate_token(self, request):
-        if current_app.config.get("OIDC", {}).get(
+        if current_app.config["CANAILLE_OIDC"].get(
             "DYNAMIC_CLIENT_REGISTRATION_OPEN", False
         ):
             return True
@@ -431,7 +432,9 @@ class ClientManagementMixin:
 
         bearer_token = auth_header.split()[1]
         if bearer_token not in (
-            current_app.config.get("OIDC", {}).get("DYNAMIC_CLIENT_REGISTRATION_TOKENS")
+            current_app.config["CANAILLE_OIDC"].get(
+                "DYNAMIC_CLIENT_REGISTRATION_TOKENS"
+            )
             or []
         ):
             return None
@@ -445,7 +448,7 @@ class ClientManagementMixin:
     def resolve_public_key(self, request):
         # At the moment the only keypair accepted in software statement
         # is the one used to isues JWTs. This might change somedays.
-        return current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
+        return current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"]
 
     def client_convert_data(self, **kwargs):
         if "client_id_issued_at" in kwargs:
@@ -533,6 +536,9 @@ def generate_access_token(client, grant_type, user, scope):
 
 
 def setup_oauth(app):
+    # hacky, but needed for tests as somehow the same 'authorization' object is used
+    # between tests
+    authorization.__init__()
     authorization.init_app(app, query_client=query_client, save_token=save_token)
 
     authorization.register_grant(PasswordGrant)
@@ -544,7 +550,7 @@ def setup_oauth(app):
         AuthorizationCodeGrant,
         [
             OpenIDCode(
-                require_nonce=app.config.get("OIDC", {}).get("REQUIRE_NONCE", True)
+                require_nonce=app.config["CANAILLE_OIDC"].get("REQUIRE_NONCE", True)
             ),
             CodeChallenge(required=True),
         ],

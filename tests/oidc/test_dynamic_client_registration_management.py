@@ -5,10 +5,10 @@ from canaille.app import models
 
 
 def test_get(testclient, backend, client, user):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
         "static-token"
     ]
 
@@ -51,10 +51,10 @@ def test_get(testclient, backend, client, user):
 
 
 def test_update(testclient, backend, client, user):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
         "static-token"
     ]
 
@@ -138,10 +138,10 @@ def test_update(testclient, backend, client, user):
 
 
 def test_delete(testclient, backend, user):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
         "static-token"
     ]
 
@@ -157,10 +157,10 @@ def test_delete(testclient, backend, user):
 
 
 def test_invalid_client(testclient, backend, user):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
         "static-token"
     ]
 

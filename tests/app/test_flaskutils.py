@@ -1,6 +1,5 @@
 import os
 
-import pytest
 import toml
 from flask_webtest import TestApp
 
@@ -32,17 +31,10 @@ def test_environment_configuration(configuration, tmp_path):
 
     os.environ["CONFIG"] = config_path
     app = create_app()
-    assert app.config["SMTP"]["FROM_ADDR"] == "admin@mydomain.tld"
+    assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "admin@mydomain.tld"
 
     del os.environ["CONFIG"]
     os.remove(config_path)
-
-
-def test_no_configuration():
-    with pytest.raises(Exception) as exc:
-        create_app()
-
-    assert "No configuration file found." in str(exc)
 
 
 def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
@@ -54,8 +46,8 @@ def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
     with open(config_file_path, "w") as fd:
         fd.write(file_content)
 
-    logging_configuration = {**configuration, "LOGGING": config_file_path}
-    app = create_app(logging_configuration, backend=backend)
+    configuration["CANAILLE"]["LOGGING"] = str(config_file_path)
+    app = create_app(configuration, backend=backend)
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:
@@ -77,30 +69,27 @@ def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
 def test_dict_log_config(configuration, backend, tmp_path, smtpd, admin):
     assert len(smtpd.messages) == 0
     log_path = os.path.join(tmp_path, "canaille-by-dict.log")
-    logging_configuration = {
-        **configuration,
-        "LOGGING": {
-            "version": 1,
-            "formatters": {
-                "default": {
-                    "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
-                }
-            },
-            "handlers": {
-                "wsgi": {
-                    "class": "logging.handlers.WatchedFileHandler",
-                    "filename": log_path,
-                    "formatter": "default",
-                }
-            },
-            "root": {"level": "DEBUG", "handlers": ["wsgi"]},
-            "loggers": {
-                "faker": {"level": "WARNING"},
-            },
-            "disable_existing_loggers": False,
+    configuration["CANAILLE"]["LOGGING"] = {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            }
         },
+        "handlers": {
+            "wsgi": {
+                "class": "logging.handlers.WatchedFileHandler",
+                "filename": log_path,
+                "formatter": "default",
+            }
+        },
+        "root": {"level": "DEBUG", "handlers": ["wsgi"]},
+        "loggers": {
+            "faker": {"level": "WARNING"},
+        },
+        "disable_existing_loggers": False,
     }
-    app = create_app(logging_configuration, backend=backend)
+    app = create_app(configuration, backend=backend)
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:

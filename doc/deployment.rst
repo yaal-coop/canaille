@@ -153,12 +153,12 @@ Apache
         RewriteRule "^/.well-know/webfinger" "https://auth.mydomain.tld/.well-known/webfinger" [R,L]
     </VirtualHost>
 
-Create your first user
-======================
+Create the first user
+=====================
 
 Once canaille is installed, you have several ways to populate the database. The obvious one is by adding
-directly users and group into your LDAP directory. You might also want to temporarily enable then
-``ENABLE_REGISTRATION`` configuration parameter to allow you to create your first users. Then, if you
+directly users and group into your LDAP directory. You might also want to temporarily enable then the
+:attr:`~canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION` configuration parameter to allow you to create your first users. Then, if you
 have configured your ACLs properly then you will be able to manage users and groups through the Canaille
 interface.
 

@@ -67,7 +67,7 @@ def index():
     if user.can_edit_self or user.can_manage_users:
         return redirect(url_for("core.account.profile_edition", edited_user=user))
 
-    if "OIDC" in current_app.config and user.can_use_oidc:
+    if "CANAILLE_OIDC" in current_app.config and user.can_use_oidc:
         return redirect(url_for("oidc.consents.consents"))
 
     return redirect(url_for("core.account.about"))
@@ -75,10 +75,10 @@ def index():
 
 @bp.route("/join", methods=("GET", "POST"))
 def join():
-    if not current_app.config.get("ENABLE_REGISTRATION", False):
+    if not current_app.config["CANAILLE"].get("ENABLE_REGISTRATION", False):
         abort(404)
 
-    if not current_app.config.get("EMAIL_CONFIRMATION", True):
+    if not current_app.config["CANAILLE"].get("EMAIL_CONFIRMATION", True):
         return redirect(url_for(".registration"))
 
     if current_user():
@@ -167,7 +167,7 @@ class VerificationPayload:
         return datetime.datetime.now(
             datetime.timezone.utc
         ) - self.creation_date > datetime.timedelta(
-            seconds=current_app.config.get(
+            seconds=current_app.config["CANAILLE"].get(
                 "INVITATION_EXPIRATION", DEFAULT_INVITATION_DURATION
             )
         )
@@ -235,9 +235,9 @@ def user_invitation(user):
 def registration(data=None, hash=None):
     if not data:
         payload = None
-        if not current_app.config.get(
+        if not current_app.config["CANAILLE"].get(
             "ENABLE_REGISTRATION", False
-        ) or current_app.config.get("EMAIL_CONFIRMATION", True):
+        ) or current_app.config["CANAILLE"].get("EMAIL_CONFIRMATION", True):
             abort(403)
 
     else:
@@ -285,9 +285,11 @@ def registration(data=None, hash=None):
             "groups": [models.Group.get(id=group_id) for group_id in payload.groups],
         }
 
-    has_smtp = "SMTP" in current_app.config
-    emails_readonly = current_app.config.get("EMAIL_CONFIRMATION") is True or (
-        current_app.config.get("EMAIL_CONFIRMATION") is None and has_smtp
+    has_smtp = "SMTP" in current_app.config["CANAILLE"]
+    emails_readonly = current_app.config["CANAILLE"].get(
+        "EMAIL_CONFIRMATION"
+    ) is True or (
+        current_app.config["CANAILLE"].get("EMAIL_CONFIRMATION") is None and has_smtp
     )
     readable_fields, writable_fields = default_fields()
 
@@ -581,9 +583,11 @@ def profile_edition(user, edited_user):
         abort(404)
 
     menuitem = "profile" if edited_user.id == user.id else "users"
-    has_smtp = "SMTP" in current_app.config
-    has_email_confirmation = current_app.config.get("EMAIL_CONFIRMATION") is True or (
-        current_app.config.get("EMAIL_CONFIRMATION") is None and has_smtp
+    has_smtp = "SMTP" in current_app.config["CANAILLE"]
+    has_email_confirmation = current_app.config["CANAILLE"].get(
+        "EMAIL_CONFIRMATION"
+    ) is True or (
+        current_app.config["CANAILLE"].get("EMAIL_CONFIRMATION") is None and has_smtp
     )
     emails_readonly = has_email_confirmation and not user.can_manage_users
 

@@ -8,7 +8,7 @@ def test_check_command(testclient):
 
 
 def test_check_command_fail(testclient):
-    testclient.app.config["SMTP"]["HOST"] = "invalid-domain.com"
+    testclient.app.config["CANAILLE"]["SMTP"]["HOST"] = "invalid-domain.com"
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["check"])
     assert res.exit_code == 1, res.stdout

@@ -2,7 +2,7 @@ from unittest import mock
 
 
 def test_password_forgotten_disabled(smtpd, testclient, user):
-    testclient.app.config["ENABLE_PASSWORD_RECOVERY"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
 
     testclient.get("/reset", status=404)
     testclient.get("/reset/user/hash", status=404)
@@ -54,7 +54,7 @@ def test_password_forgotten_invalid_form(smtpd, testclient, user):
 
 
 def test_password_forgotten_invalid(smtpd, testclient, user):
-    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "i-dont-really-exist"
@@ -65,7 +65,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
     ) in res.flashes
     res.mustcontain(no="The login &#39;i-dont-really-exist&#39; does not exist")
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = False
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "i-dont-really-exist"
@@ -80,10 +80,10 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
 
 
 def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient, user):
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     user.reload()
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = False
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"
@@ -97,7 +97,7 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
         "The user 'John (johnny) Doe' does not have permissions to update their password. We cannot send a password reset email.",
     ) in res.flashes
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
     user.reload()
     res = testclient.get("/reset", status=200)
 

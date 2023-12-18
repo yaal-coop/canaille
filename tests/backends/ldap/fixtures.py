@@ -27,21 +27,19 @@ def slapd_server():
 
 @pytest.fixture
 def ldap_configuration(configuration, slapd_server):
-    configuration["BACKENDS"] = {
-        "LDAP": {
-            "ROOT_DN": slapd_server.suffix,
-            "URI": slapd_server.ldap_uri,
-            "BIND_DN": slapd_server.root_dn,
-            "BIND_PW": slapd_server.root_pw,
-            "USER_BASE": "ou=users",
-            "USER_RDN": "uid",
-            "USER_FILTER": "(uid={{ login }})",
-            "GROUP_BASE": "ou=groups",
-            "TIMEOUT": 0.1,
-        },
+    configuration["CANAILLE_LDAP"] = {
+        "ROOT_DN": slapd_server.suffix,
+        "URI": slapd_server.ldap_uri,
+        "BIND_DN": slapd_server.root_dn,
+        "BIND_PW": slapd_server.root_pw,
+        "USER_BASE": "ou=users",
+        "USER_RDN": "uid",
+        "USER_FILTER": "(uid={{ login }})",
+        "GROUP_BASE": "ou=groups",
+        "TIMEOUT": 0.1,
     }
     yield configuration
-    del configuration["BACKENDS"]
+    del configuration["CANAILLE_LDAP"]
 
 
 @pytest.fixture
