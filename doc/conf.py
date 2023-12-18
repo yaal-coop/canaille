@@ -34,8 +34,10 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinx_enum_extend",
     "sphinx_issues",
     "sphinx_sitemap",
+    "sphinxcontrib.autodoc_pydantic",
 ]
 
 templates_path = ["_templates"]
@@ -61,6 +63,7 @@ intersphinx_mapping = {
     "flask": ("https://flask.palletsprojects.com", None),
     "flask-babel": ("https://python-babel.github.io/flask-babel", None),
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
+    "pydantic": ("https://docs.pydantic.dev/latest", None),
 }
 
 issues_uri = "https://gitlab.com/yaal/canaille/-/issues/{issue}"
@@ -122,3 +125,13 @@ texinfo_documents = [
 
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
+
+# -- Options for autodo_pydantic_settings -------------------------------------------
+
+autodoc_pydantic_settings_show_json = False
+autodoc_pydantic_settings_show_config_summary = False
+autodoc_pydantic_settings_show_config_summary = False
+autodoc_pydantic_settings_show_validator_summary = False
+autodoc_pydantic_settings_show_validator_members = False
+autodoc_pydantic_settings_show_field_summary = False
+autodoc_pydantic_field_list_validators = False

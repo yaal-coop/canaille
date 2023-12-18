@@ -2,41 +2,101 @@ import os
 import smtplib
 import socket
 import sys
-from collections.abc import Mapping
+from typing import Optional
 
 from flask import current_app
+from pydantic import create_model
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
-from canaille.app.mails import DEFAULT_SMTP_HOST
-from canaille.app.mails import DEFAULT_SMTP_PORT
+from canaille.core.configuration import CoreSettings
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+class RootSettings(BaseSettings):
+    """The top-level namespace contains holds the configuration settings
+    unrelated to Canaille. The configuration paramateres from the following
+    libraries can be used:
+
+    - :doc:`Flask <flask:config>`
+    - :doc:`Flask-WTF <flask-wtf:config>`
+    - :doc:`Flask-Babel <flask-babel:index>`
+    - :doc:`Authlib <authlib:flask/2/authorization-server>`
+    """
+
+    model_config = SettingsConfigDict(
+        extra="allow",
+        env_nested_delimiter="__",
+        case_sensitive=True,
+        env_file=".env",
+    )
+
+    SECRET_KEY: str
+    """The Flask :external:py:data:`SECRET_KEY` configuration setting.
+
+    You MUST change this.
+    """
+
+    SERVER_NAME: Optional[str] = None
+    """The Flask :external:py:data:`SERVER_NAME` configuration setting.
+
+    This sets domain name on which canaille will be served.
+    """
+
+    PREFERRED_URL_SCHEME: str = "https"
+    """The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration
+    setting.
+
+    This sets the url scheme by which canaille will be served.
+    """
+
+    DEBUG: bool = False
+    """The Flask :external:py:data:`DEBUG` configuration setting.
+
+    This enables debug options. This is useful for development but
+    should be absolutely avoided in production environments.
+    """
+
+
+def settings_factory(config):
+    """Overly complicated function that pushes the backend specific
+    configuration into CoreSettings, in the purpose break dependency against
+    backends libraries like python-ldap or sqlalchemy."""
+    attributes = {"CANAILLE": (Optional[CoreSettings], None)}
+
+    if "CANAILLE_SQL" in config or any(
+        var.startswith("CANAILLE_SQL__") for var in os.environ
+    ):
+        from canaille.backends.sql.configuration import SQLSettings
+
+        attributes["CANAILLE_SQL"] = (Optional[SQLSettings], None)
+
+    if "CANAILLE_LDAP" in config or any(
+        var.startswith("CANAILLE__LDAP__") for var in os.environ
+    ):
+        from canaille.backends.ldap.configuration import LDAPSettings
+
+        attributes["CANAILLE_LDAP"] = (Optional[LDAPSettings], None)
+
+    if "CANAILLE_OIDC" in config or any(
+        var.startswith("CANAILLE_OIDC__") for var in os.environ
+    ):
+        from canaille.oidc.configuration import OIDCSettings
+
+        attributes["CANAILLE_OIDC"] = (Optional[OIDCSettings], None)
+
+    Settings = create_model(
+        "Settings",
+        __base__=RootSettings,
+        **attributes,
+    )
+
+    return Settings(**config, _secrets_dir=os.environ.get("SECRETS_DIR"))
 
 
 class ConfigurationException(Exception):
     pass
-
-
-def parse_file_keys(config):
-    """Replaces configuration entries with the '_FILE' suffix with the matching
-    file content."""
-
-    SUFFIX = "_FILE"
-    new_config = {}
-    for key, value in config.items():
-        if isinstance(value, Mapping):
-            new_config[key] = parse_file_keys(value)
-
-        elif isinstance(key, str) and key.endswith(SUFFIX) and isinstance(value, str):
-            with open(value) as f:
-                value = f.read().rstrip("\n")
-
-            root_key = key[: -len(SUFFIX)]
-            new_config[root_key] = value
-
-        else:
-            new_config[key] = value
-
-    return new_config
 
 
 def toml_content(file_path):
@@ -55,7 +115,7 @@ def toml_content(file_path):
         raise Exception("toml library not installed. Cannot load configuration.")
 
 
-def setup_config(app, config=None, validate_config=True):
+def setup_config(app, config=None, test_config=True):
     from canaille.oidc.installation import install
 
     app.config.from_mapping(
@@ -65,29 +125,22 @@ def setup_config(app, config=None, validate_config=True):
             "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
         }
     )
+    if not config and "CONFIG" in os.environ:
+        config = toml_content(os.environ.get("CONFIG"))
 
-    if config:
-        app.config.from_mapping(parse_file_keys(config))
-
-    elif "CONFIG" in os.environ:
-        app.config.from_mapping(parse_file_keys(toml_content(os.environ["CONFIG"])))
-
-    else:
-        raise Exception(
-            "No configuration file found. "
-            "Either create conf/config.toml or set the 'CONFIG' variable environment."
-        )
+    config_obj = settings_factory(config)
+    app.config.from_mapping(config_obj.model_dump())
 
     if app.debug:
         install(app.config, debug=True)
 
-    if validate_config:
+    if test_config:
         validate(app.config)
 
 
 def validate(config, validate_remote=False):
-    validate_keypair(config)
-    validate_theme(config)
+    validate_keypair(config.get("CANAILLE_OIDC"))
+    validate_theme(config["CANAILLE"])
 
     if not validate_remote:
         return
@@ -95,39 +148,39 @@ def validate(config, validate_remote=False):
     from canaille.backends import BaseBackend
 
     BaseBackend.get().validate(config)
-    validate_smtp_configuration(config)
+    validate_smtp_configuration(config["CANAILLE"]["SMTP"])
 
 
 def validate_keypair(config):
     if (
-        config.get("OIDC")
-        and config["OIDC"].get("JWT")
-        and not config["OIDC"]["JWT"].get("PUBLIC_KEY")
+        config
+        and config["JWT"]
+        and not config["JWT"]["PUBLIC_KEY"]
         and not current_app.debug
     ):
         raise ConfigurationException("No public key has been set")
 
     if (
-        config.get("OIDC")
-        and config["OIDC"].get("JWT")
-        and not config["OIDC"]["JWT"].get("PRIVATE_KEY")
+        config
+        and config["JWT"]
+        and not config["JWT"]["PRIVATE_KEY"]
         and not current_app.debug
     ):
         raise ConfigurationException("No private key has been set")
 
 
 def validate_smtp_configuration(config):
-    host = config["SMTP"].get("HOST", DEFAULT_SMTP_HOST)
-    port = config["SMTP"].get("PORT", DEFAULT_SMTP_PORT)
+    host = config["HOST"]
+    port = config["PORT"]
     try:
         with smtplib.SMTP(host=host, port=port) as smtp:
-            if config["SMTP"].get("TLS"):
+            if config["TLS"]:
                 smtp.starttls()
 
-            if config["SMTP"].get("LOGIN"):
+            if config["LOGIN"]:
                 smtp.login(
-                    user=config["SMTP"]["LOGIN"],
-                    password=config["SMTP"].get("PASSWORD"),
+                    user=config["LOGIN"],
+                    password=config["PASSWORD"],
                 )
     except (socket.gaierror, ConnectionRefusedError) as exc:
         raise ConfigurationException(
@@ -136,7 +189,7 @@ def validate_smtp_configuration(config):
 
     except smtplib.SMTPAuthenticationError as exc:
         raise ConfigurationException(
-            f'SMTP authentication failed with user \'{config["SMTP"]["LOGIN"]}\''
+            f'SMTP authentication failed with user \'{config["LOGIN"]}\''
         ) from exc
 
     except smtplib.SMTPNotSupportedError as exc:
@@ -144,7 +197,7 @@ def validate_smtp_configuration(config):
 
 
 def validate_theme(config):
-    if not config.get("THEME"):
+    if not config or not config["THEME"]:
         return
 
     if not os.path.exists(config["THEME"]) and not os.path.exists(

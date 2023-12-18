@@ -1,4 +1,4 @@
-from canaille.oidc.oauth import DEFAULT_JWT_MAPPING
+from canaille.oidc.configuration import JWTSettings
 from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import generate_user_claims
 
@@ -267,7 +267,8 @@ STANDARD_CLAIMS = [
 def test_generate_user_standard_claims_with_default_config(testclient, backend, user):
     user.preferred_language = "fr"
 
-    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING)
+    default_jwt_mapping = JWTSettings().model_dump()
+    data = generate_user_claims(user, STANDARD_CLAIMS, default_jwt_mapping)
 
     assert data == {
         "address": "1235, somewhere",
@@ -283,7 +284,7 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
 
 
 def test_custom_config_format_claim_is_well_formated(testclient, backend, user):
-    jwt_mapping_config = DEFAULT_JWT_MAPPING.copy()
+    jwt_mapping_config = JWTSettings().model_dump()
     jwt_mapping_config["EMAIL"] = "{{ user.user_name }}@mydomain.tld"
 
     data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
@@ -297,6 +298,7 @@ def test_claim_is_omitted_if_empty(testclient, backend, user):
     user.emails = []
     user.save()
 
-    data = generate_user_claims(user, STANDARD_CLAIMS, DEFAULT_JWT_MAPPING)
+    default_jwt_mapping = JWTSettings().model_dump()
+    data = generate_user_claims(user, STANDARD_CLAIMS, default_jwt_mapping)
 
     assert "email" not in data

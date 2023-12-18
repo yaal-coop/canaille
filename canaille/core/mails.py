@@ -13,16 +13,16 @@ def send_test_mail(email):
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Test email from {website_name}").format(
-        website_name=current_app.config.get("NAME", "Canaille")
+        website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
         "mails/test.txt",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
     )
     html_body = render_template(
         "mails/test.html",
-        site_name=current_app.config.get("NAME", "Canaille"),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
@@ -52,17 +52,17 @@ def send_password_reset_mail(user, mail):
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Password reset on {website_name}").format(
-        website_name=current_app.config.get("NAME", base_url)
+        website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
         "mails/reset.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
         "mails/reset.html",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
@@ -93,17 +93,17 @@ def send_password_initialization_mail(user, email):
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Password initialization on {website_name}").format(
-        website_name=current_app.config.get("NAME", base_url)
+        website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
         "mails/firstlogin.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
         "mails/firstlogin.html",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
@@ -124,17 +124,17 @@ def send_invitation_mail(email, registration_url):
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("You have been invited to create an account on {website_name}").format(
-        website_name=current_app.config.get("NAME", base_url)
+        website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
         "mails/invitation.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
         "mails/invitation.html",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
@@ -155,17 +155,17 @@ def send_confirmation_email(email, confirmation_url):
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Confirm your address email on {website_name}").format(
-        website_name=current_app.config.get("NAME", base_url)
+        website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
         "mails/email-confirmation.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         confirmation_url=confirmation_url,
     )
     html_body = render_template(
         "mails/email-confirmation.html",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         confirmation_url=confirmation_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
@@ -186,17 +186,17 @@ def send_registration_mail(email, registration_url):
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Continue your registration on {website_name}").format(
-        website_name=current_app.config.get("NAME", registration_url)
+        website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
         "mails/registration.txt",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
         "mails/registration.html",
-        site_name=current_app.config.get("NAME", base_url),
+        site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,

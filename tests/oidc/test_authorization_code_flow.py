@@ -587,7 +587,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
 def test_authorization_code_flow_but_user_cannot_use_oidc(
     testclient, user, client, keypair, trusted_client
 ):
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     user.reload()
 
     res = testclient.get(
@@ -626,7 +626,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
 
 def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
     assert not models.Consent.query()
-    testclient.app.config["REQUIRE_NONCE"] = False
+    testclient.app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] = False
 
     res = testclient.get(
         "/oauth/authorize",
@@ -925,7 +925,7 @@ def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
         "client_credentials": 4000,
         "urn:ietf:params:oauth:grant-type:jwt-bearer": 5000,
     }
-    testclient.app.config["OIDC"]["JWT"]["EXP"] = 6000
+    testclient.app.config["CANAILLE_OIDC"]["JWT"]["EXP"] = 6000
     setup_oauth(testclient.app)
 
     res = testclient.get(

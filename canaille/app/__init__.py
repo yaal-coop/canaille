@@ -25,7 +25,7 @@ def build_hash(*args):
 def default_fields():
     read = set()
     write = set()
-    for acl in current_app.config.get("ACL", {}).values():
+    for acl in current_app.config["CANAILLE"]["ACL"].values():
         if not acl.get("FILTER"):
             read |= set(acl.get("READ", []))
             write |= set(acl.get("WRITE", []))
@@ -41,8 +41,8 @@ def get_current_domain():
 
 
 def get_current_mail_domain():
-    if current_app.config["SMTP"].get("FROM_ADDR"):
-        return current_app.config["SMTP"]["FROM_ADDR"].split("@")[-1]
+    if current_app.config["CANAILLE"]["SMTP"]["FROM_ADDR"]:
+        return current_app.config["CANAILLE"]["SMTP"]["FROM_ADDR"].split("@")[-1]
 
     return get_current_domain().split(":")[0]
 

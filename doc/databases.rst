@@ -11,7 +11,7 @@ Memory
 ======
 
 Canaille comes with a lightweight inmemory backend by default.
-It is used when no other backend has been configured, i.e. when the ``BACKENDS`` configuration parameter is unset or empty.
+It is used when no other backend has been configured.
 
 This backend is only for test purpose and should not be used in production environments.
 
@@ -21,18 +21,20 @@ SQL
 Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as
 sqlite, postgresql or mariadb.
 
-It is used when the ``BACKENDS.SQL`` configuration parameter is defined. For instance::
+It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For instance::
 
-    [BACKENDS.SQL]
+    [CANAILLE_SQL]
     SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
+
+You can find more details on the SQL configuration in the :class:`~canaille.backends.sql.configuration.SQLSettings` section.
 
 LDAP
 ====
 
 Canaille can use OpenLDAP as its main database.
-It is used when the ``BACKENDS.LDAP`` configuration parameter is defined. For instance::
+It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For instance::
 
-    [BACKENDS.LDAP]
+    [CANAILLE_LDAP]
     URI = "ldap://ldap"
     ROOT_DN = "dc=mydomain,dc=tld"
     BIND_DN = "cn=admin,dc=mydomain,dc=tld"
@@ -43,6 +45,8 @@ It is used when the ``BACKENDS.LDAP`` configuration parameter is defined. For in
     USER_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
 
     GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+
+You can find more details on the LDAP configuration in the :class:`~canaille.backends.ldap.configuration.LDAPSettings` section.
 
 .. note ::
    Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have been tested.

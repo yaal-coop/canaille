@@ -8,10 +8,10 @@ from canaille.app import models
 def test_client_registration_with_authentication_static_token(
     testclient, backend, client, user
 ):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
         "static-token"
     ]
 
@@ -70,7 +70,7 @@ def test_client_registration_with_authentication_static_token(
 def test_client_registration_with_authentication_no_token(
     testclient, backend, client, user
 ):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
 
@@ -104,7 +104,7 @@ def test_client_registration_with_authentication_no_token(
 def test_client_registration_with_authentication_invalid_token(
     testclient, backend, client, user
 ):
-    assert not testclient.app.config.get("OIDC", {}).get(
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
 
@@ -130,7 +130,7 @@ def test_client_registration_with_authentication_invalid_token(
 
 def test_client_registration_with_software_statement(testclient, backend, keypair):
     private_key, _ = keypair
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     software_statement_payload = {
         "software_id": "4NRB1-0XZABZI9E6-5SM3R",
@@ -181,7 +181,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
 
 
 def test_client_registration_without_authentication_ok(testclient, backend):
-    testclient.app.config["OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     payload = {
         "redirect_uris": [

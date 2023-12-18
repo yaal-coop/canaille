@@ -33,10 +33,10 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd):
     smtpd.config.use_ssl = True
     smtpd.config.use_starttls = False
 
-    testclient.app.config["SMTP"]["SSL"] = True
-    testclient.app.config["SMTP"]["TLS"] = False
-    del testclient.app.config["SMTP"]["LOGIN"]
-    del testclient.app.config["SMTP"]["PASSWORD"]
+    testclient.app.config["CANAILLE"]["SMTP"]["SSL"] = True
+    testclient.app.config["CANAILLE"]["SMTP"]["TLS"] = False
+    testclient.app.config["CANAILLE"]["SMTP"]["LOGIN"] = None
+    testclient.app.config["CANAILLE"]["SMTP"]["PASSWORD"] = None
 
     assert len(smtpd.messages) == 0
 
@@ -52,8 +52,8 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd):
 
 
 def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
-    del testclient.app.config["SMTP"]["LOGIN"]
-    del testclient.app.config["SMTP"]["PASSWORD"]
+    testclient.app.config["CANAILLE"]["SMTP"]["LOGIN"] = None
+    testclient.app.config["CANAILLE"]["SMTP"]["PASSWORD"] = None
 
     assert len(smtpd.messages) == 0
 
@@ -87,7 +87,7 @@ def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd
 
 
 def test_send_test_email_failed(testclient, logged_admin):
-    testclient.app.config["SMTP"]["TLS"] = False
+    testclient.app.config["CANAILLE"]["SMTP"]["TLS"] = False
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.com"
     with warnings.catch_warnings(record=True):
@@ -99,7 +99,7 @@ def test_send_test_email_failed(testclient, logged_admin):
 
 
 def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
-    testclient.app.config["LOGO"] = None
+    testclient.app.config["CANAILLE"]["LOGO"] = None
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
@@ -147,7 +147,7 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
         raw_logo = fd.read()
 
     httpserver.expect_request(logo_path).respond_with_data(raw_logo)
-    testclient.app.config["LOGO"] = (
+    testclient.app.config["CANAILLE"]["LOGO"] = (
         f"http://{httpserver.host}:{httpserver.port}{logo_path}"
     )
     assert len(smtpd.messages) == 0
@@ -183,7 +183,7 @@ def test_mail_debug_pages(testclient, logged_admin):
 
 
 def test_custom_from_addr(testclient, user, smtpd):
-    testclient.app.config["NAME"] = "My Canaille"
+    testclient.app.config["CANAILLE"]["NAME"] = "My Canaille"
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     res = res.form.submit(status=200)
@@ -192,7 +192,7 @@ def test_custom_from_addr(testclient, user, smtpd):
 
 
 def test_default_from_addr(testclient, user, smtpd):
-    del testclient.app.config["SMTP"]["FROM_ADDR"]
+    testclient.app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     res = res.form.submit(status=200)
@@ -202,7 +202,7 @@ def test_default_from_addr(testclient, user, smtpd):
 
 def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
     del configuration["SERVER_NAME"]
-    del configuration["SMTP"]["FROM_ADDR"]
+    configuration["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     app = create_app(configuration, backend=backend)
 
     testclient = TestApp(app)
@@ -215,7 +215,7 @@ def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
 
 def test_default_from_flask_server_name(configuration, user, smtpd, backend):
     app = create_app(configuration, backend=backend)
-    del app.config["SMTP"]["FROM_ADDR"]
+    app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     app.config["SERVER_NAME"] = "foobar.tld"
 
     testclient = TestApp(app)

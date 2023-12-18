@@ -13,7 +13,7 @@ def test_ldap_connection_remote_ldap_unreachable(configuration):
     app = create_app(configuration)
     testclient = TestApp(app)
 
-    app.config["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    app.config["CANAILLE_LDAP"]["URI"] = "ldap://invalid-ldap.com"
 
     app.config["DEBUG"] = False
     res = testclient.get("/", status=500, expect_errors=True)
@@ -24,7 +24,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(configuration):
     app = create_app(configuration)
     testclient = TestApp(app)
 
-    app.config["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
+    app.config["CANAILLE_LDAP"]["BIND_PW"] = "invalid-password"
 
     app.config["DEBUG"] = False
     res = testclient.get("/", status=500, expect_errors=True)

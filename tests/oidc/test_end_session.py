@@ -233,7 +233,7 @@ def test_no_jwt_no_logout(testclient, backend, logged_user, client):
 
 
 def test_jwt_not_issued_here(testclient, backend, logged_user, client, id_token):
-    testclient.app.config["OIDC"]["JWT"]["ISS"] = "https://foo.bar"
+    testclient.app.config["CANAILLE_OIDC"]["JWT"]["ISS"] = "https://foo.bar"
 
     testclient.get(f"/profile/{logged_user.identifier}", status=200)
 

@@ -1,19 +1,20 @@
 import pytest
 
+from canaille.app.configuration import settings_factory
 from canaille.backends.sql.backend import Backend
 
 
 @pytest.fixture
 def sqlalchemy_configuration(configuration):
-    configuration["BACKENDS"] = {
-        "SQL": {"SQL_DATABASE_URI": "sqlite:///:memory:"},
-    }
+    configuration["CANAILLE_SQL"] = {"DATABASE_URI": "sqlite:///:memory:"}
     yield configuration
-    del configuration["BACKENDS"]
+    del configuration["CANAILLE_SQL"]
 
 
 @pytest.fixture
 def sql_backend(sqlalchemy_configuration):
-    backend = Backend(sqlalchemy_configuration)
+    config_obj = settings_factory(sqlalchemy_configuration)
+    config_dict = config_obj.model_dump()
+    backend = Backend(config_dict)
     with backend.session(init=True):
         yield backend

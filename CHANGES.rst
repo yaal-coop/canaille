@@ -1,11 +1,14 @@
 Unreleased
 ----------
 
+🚨Configuration files must be updated.🚨
+
 Added
 ^^^^^
 
 - Add `created` and `last_modified` datetime for all models
 - Sitemap to the documentation :pr:`169`
+- Configuration management with pydantic-settings :issue:`138` :pr:`170`
 
 Changed
 ^^^^^^^

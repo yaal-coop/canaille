@@ -142,7 +142,7 @@ def firstlogin(user):
 @bp.route("/reset", methods=["GET", "POST"])
 @smtp_needed()
 def forgotten():
-    if not current_app.config.get("ENABLE_PASSWORD_RECOVERY", True):
+    if not current_app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]:
         abort(404)
 
     form = ForgottenPasswordForm(request.form)
@@ -158,7 +158,7 @@ def forgotten():
         "A password reset link has been sent at your email address. "
         "You should receive it within a few minutes."
     )
-    if current_app.config.get("HIDE_INVALID_LOGINS", True) and (
+    if current_app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] and (
         not user or not user.can_edit_self
     ):
         flash(success_message, "success")
@@ -191,7 +191,7 @@ def forgotten():
 
 @bp.route("/reset/<user:user>/<hash>", methods=["GET", "POST"])
 def reset(user, hash):
-    if not current_app.config.get("ENABLE_PASSWORD_RECOVERY", True):
+    if not current_app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]:
         abort(404)
 
     form = PasswordResetForm(request.form)

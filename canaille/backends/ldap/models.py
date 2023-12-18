@@ -12,10 +12,6 @@ from .ldapobject import LDAPObject
 
 
 class User(canaille.core.models.User, LDAPObject):
-    DEFAULT_OBJECT_CLASS = "inetOrgPerson"
-    DEFAULT_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
-    DEFAULT_RDN = "cn"
-
     attribute_map = {
         "id": "dn",
         "created": "createTimestamp",
@@ -46,9 +42,7 @@ class User(canaille.core.models.User, LDAPObject):
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):
-        raw_filter = current_app.config["BACKENDS"]["LDAP"].get(
-            "USER_FILTER", User.DEFAULT_FILTER
-        )
+        raw_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
         filter = (
             (
                 current_app.jinja_env.from_string(raw_filter).render(
@@ -98,11 +92,11 @@ class User(canaille.core.models.User, LDAPObject):
         return bool(self.password)
 
     def check_password(self, password):
-        conn = ldap.initialize(current_app.config["BACKENDS"]["LDAP"]["URI"])
+        conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
 
         conn.set_option(
             ldap.OPT_NETWORK_TIMEOUT,
-            current_app.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
+            current_app.config["CANAILLE_LDAP"]["TIMEOUT"],
         )
 
         message = None
@@ -180,7 +174,7 @@ class User(canaille.core.models.User, LDAPObject):
         self.read = set()
         self.write = set()
 
-        for access_group_name, details in current_app.config.get("ACL", {}).items():
+        for access_group_name, details in current_app.config["CANAILLE"]["ACL"].items():
             filter_ = self.acl_filter_to_ldap_filter(details.get("FILTER"))
             if not filter_ or (
                 self.id and conn.search_s(self.id, ldap.SCOPE_SUBTREE, filter_)
@@ -191,11 +185,6 @@ class User(canaille.core.models.User, LDAPObject):
 
 
 class Group(canaille.core.models.Group, LDAPObject):
-    DEFAULT_OBJECT_CLASS = "groupOfNames"
-    DEFAULT_RDN = "cn"
-    DEFAULT_NAME_ATTRIBUTE = "cn"
-    DEFAULT_USER_FILTER = "member={user.id}"
-
     attribute_map = {
         "id": "dn",
         "created": "createTimestamp",
@@ -211,9 +200,7 @@ class Group(canaille.core.models.Group, LDAPObject):
 
     @property
     def display_name(self):
-        attribute = current_app.config["BACKENDS"]["LDAP"].get(
-            "GROUP_NAME_ATTRIBUTE", Group.DEFAULT_NAME_ATTRIBUTE
-        )
+        attribute = current_app.config["CANAILLE_LDAP"]["GROUP_NAME_ATTRIBUTE"]
         return getattr(self, attribute)[0]
 
 
