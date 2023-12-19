@@ -29,7 +29,7 @@ def test_registration_without_email_validation(testclient, backend):
 
 def test_registration_with_email_validation(testclient, backend, smtpd):
     """
-    Tests a nominal registration without email validation.
+    Tests a nominal registration with email validation.
     """
     testclient.app.config["ENABLE_REGISTRATION"] = True
 

@@ -132,7 +132,7 @@ def generate_user_info(user, scope):
 def generate_user_claims(user, claims, jwt_mapping_config=None):
     jwt_mapping_config = {
         **DEFAULT_JWT_MAPPING,
-        **current_app.config["OIDC"]["JWT"].get("MAPPING", {}),
+        **(current_app.config["OIDC"]["JWT"].get("MAPPING") or {}),
         **(jwt_mapping_config or {}),
     }
 
@@ -357,8 +357,9 @@ class ClientManagementMixin:
             return None
 
         bearer_token = auth_header.split()[1]
-        if bearer_token not in current_app.config.get("OIDC", {}).get(
-            "DYNAMIC_CLIENT_REGISTRATION_TOKENS", []
+        if bearer_token not in (
+            current_app.config.get("OIDC", {}).get("DYNAMIC_CLIENT_REGISTRATION_TOKENS")
+            or []
         ):
             return None
 

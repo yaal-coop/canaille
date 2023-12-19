@@ -88,16 +88,16 @@ def validate(config, validate_remote=False):
 
 def validate_keypair(config):
     if (
-        "OIDC" in config
-        and "JWT" in config["OIDC"]
+        config.get("OIDC")
+        and config["OIDC"].get("JWT")
         and not config["OIDC"]["JWT"].get("PUBLIC_KEY")
         and not current_app.debug
     ):
         raise ConfigurationException("No public key has been set")
 
     if (
-        "OIDC" in config
-        and "JWT" in config["OIDC"]
+        config.get("OIDC")
+        and config["OIDC"].get("JWT")
         and not config["OIDC"]["JWT"].get("PRIVATE_KEY")
         and not current_app.debug
     ):

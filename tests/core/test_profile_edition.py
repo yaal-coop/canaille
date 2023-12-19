@@ -384,12 +384,10 @@ def test_inline_validation(testclient, logged_admin, user):
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
 
 
-def test_inline_validation_keep_indicators(
-    configuration, testclient, logged_admin, user
-):
-    configuration["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
-    configuration["ACL"]["DEFAULT"]["READ"].append("display_name")
-    configuration["ACL"]["ADMIN"]["WRITE"].append("display_name")
+def test_inline_validation_keep_indicators(testclient, logged_admin, user):
+    testclient.app.config["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
+    testclient.app.config["ACL"]["DEFAULT"]["READ"].append("display_name")
+    testclient.app.config["ACL"]["ADMIN"]["WRITE"].append("display_name")
     logged_admin.reload()
     user.reload()
 
