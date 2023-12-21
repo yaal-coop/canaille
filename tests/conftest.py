@@ -67,7 +67,7 @@ def configuration(smtpd):
         "ACL": {
             "DEFAULT": {
                 "READ": ["user_name", "groups"],
-                "PERMISSIONS": ["edit_self", "use_oidc", "lock_date"],
+                "PERMISSIONS": ["edit_self", "use_oidc"],
                 "WRITE": [
                     "emails",
                     "given_name",
@@ -86,6 +86,7 @@ def configuration(smtpd):
                     "preferred_language",
                     "title",
                     "organization",
+                    "lock_date",
                 ],
             },
             "ADMIN": {
