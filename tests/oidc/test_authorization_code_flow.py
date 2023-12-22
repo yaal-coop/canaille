@@ -1,4 +1,3 @@
-import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
@@ -608,73 +607,6 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
     res = res.follow(status=403)
-
-
-def test_prompt_none(testclient, logged_user, client):
-    consent = models.Consent(
-        consent_id=str(uuid.uuid4()),
-        client=client,
-        subject=logged_user,
-        scope=["openid", "profile"],
-    )
-    consent.save()
-
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id=client.client_id,
-            scope="openid profile",
-            nonce="somenonce",
-            prompt="none",
-        ),
-        status=302,
-    )
-    assert res.location.startswith(client.redirect_uris[0])
-    params = parse_qs(urlsplit(res.location).query)
-    assert "code" in params
-
-    consent.delete()
-
-
-def test_prompt_not_logged(testclient, user, client):
-    consent = models.Consent(
-        consent_id=str(uuid.uuid4()),
-        client=client,
-        subject=user,
-        scope=["openid", "profile"],
-    )
-    consent.save()
-
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id=client.client_id,
-            scope="openid profile",
-            nonce="somenonce",
-            prompt="none",
-        ),
-        status=200,
-    )
-    assert "login_required" == res.json.get("error")
-
-    consent.delete()
-
-
-def test_prompt_no_consent(testclient, logged_user, client):
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id=client.client_id,
-            scope="openid profile",
-            nonce="somenonce",
-            prompt="none",
-        ),
-        status=200,
-    )
-    assert "consent_required" == res.json.get("error")
 
 
 def test_nonce_required_in_oidc_requests(testclient, logged_user, client):

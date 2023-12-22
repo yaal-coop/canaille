@@ -55,9 +55,8 @@ def authorize():
         abort(400, "Invalid client.")
 
     user = current_user()
-    scopes = client.get_allowed_scope(request.args.get("scope", "").split(" ")).split(
-        " "
-    )
+    requested_scopes = request.args.get("scope", "").split(" ")
+    allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
 
     # LOGIN
 
@@ -69,7 +68,9 @@ def authorize():
         return redirect(url_for("core.auth.login"))
 
     if not user.can_use_oidc:
-        abort(403, "User does not have the permission to achieve OIDC authentication.")
+        abort(
+            403, "The user does not have the permission to achieve OIDC authentication."
+        )
 
     # CONSENT
 
@@ -82,7 +83,9 @@ def authorize():
     if request.method == "GET":
         if (
             (client.preconsent and (not consent or not consent.revoked))
-            or (consent and all(scope in set(consent.scope) for scope in scopes))
+            or (
+                consent and all(scope in set(consent.scope) for scope in allowed_scopes)
+            )
             and not consent.revoked
         ):
             return authorization.create_authorization_response(grant_user=user)
@@ -125,14 +128,14 @@ def authorize():
             if consent.revoked:
                 consent.restore()
             consent.scope = client.get_allowed_scope(
-                list(set(scopes + consents[0].scope))
+                list(set(allowed_scopes + consents[0].scope))
             ).split(" ")
         else:
             consent = models.Consent(
                 consent_id=str(uuid.uuid4()),
                 client=client,
                 subject=user,
-                scope=scopes,
+                scope=allowed_scopes,
                 issue_date=datetime.datetime.now(datetime.timezone.utc),
             )
         consent.save()
