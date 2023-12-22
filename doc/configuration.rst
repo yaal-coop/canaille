@@ -38,7 +38,7 @@ Canaille is based on Flask, so any `flask configuration <https://flask.palletspr
 
 :THEME:
     *Optional.* The name or the path to a canaille theme.
-    If the value is just a name, the theme should be in a directory with that namein the *themes* directory.
+    If the value is just a name, the theme should be in a directory with that name in the *themes* directory.
 
 :LANGUAGE:
     *Optional.* The locale code of the language to use. If not set, the language of the browser will be used.

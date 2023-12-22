@@ -13,7 +13,7 @@ if flask_themer:
 
     def setup_themer(app):
         additional_themes_dir = (
-            os.path.dirname(app.config["THEME"])
+            os.path.abspath(os.path.dirname(app.config["THEME"]))
             if app.config.get("THEME") and os.path.exists(app.config["THEME"])
             else None
         )

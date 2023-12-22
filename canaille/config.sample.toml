@@ -17,7 +17,7 @@ SECRET_KEY = "change me before you go in production"
 # Your favicon. If unset the LOGO will be used.
 # FAVICON = "/static/img/canaille-c.webp"
 
-# The name of a theme in the 'theme' directory, or an absolute path
+# The name of a theme in the 'theme' directory, or a path path
 # to a theme. Defaults to 'default'. Theming is done with
 # https://github.com/tktech/flask-themer
 # THEME = "default"

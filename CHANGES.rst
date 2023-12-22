@@ -6,6 +6,10 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 [0.0.39] - 2023-12-15
 =====================
 
+Added
+*****
+- ``THEME`` can be a relative path
+
 Fixed
 *****
 
