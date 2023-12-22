@@ -607,7 +607,7 @@ def test_authorization_code_flow_but_user_cannot_use_oidc(
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
-    res = res.follow(status=400)
+    res = res.follow(status=403)
 
 
 def test_prompt_none(testclient, logged_user, client):

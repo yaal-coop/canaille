@@ -48,11 +48,11 @@ def authorize():
     )
 
     if "client_id" not in request.args:
-        abort(400)
+        abort(400, "client_id parameter is missing.")
 
     client = models.Client.get(client_id=request.args["client_id"])
     if not client:
-        abort(400)
+        abort(400, "Invalid client.")
 
     user = current_user()
     scopes = client.get_allowed_scope(request.args.get("scope", "").split(" ")).split(
@@ -69,7 +69,7 @@ def authorize():
         return redirect(url_for("core.auth.login"))
 
     if not user.can_use_oidc:
-        abort(400)
+        abort(403, "User does not have the permission to achieve OIDC authentication.")
 
     # CONSENT
 
