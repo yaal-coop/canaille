@@ -41,7 +41,7 @@ def configuration(configuration, keypair):
 
 
 @pytest.fixture
-def client(testclient, other_client, backend):
+def client(testclient, trusted_client, backend):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -69,7 +69,7 @@ def client(testclient, other_client, backend):
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
     )
-    c.audience = [c, other_client]
+    c.audience = [c, trusted_client]
     c.save()
 
     yield c
@@ -77,7 +77,7 @@ def client(testclient, other_client, backend):
 
 
 @pytest.fixture
-def other_client(testclient, backend):
+def trusted_client(testclient, backend):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
@@ -104,6 +104,7 @@ def other_client(testclient, backend):
         jwks_uri="https://myotherdomain.tld/jwk",
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
+        preconsent=True,
     )
     c.audience = [c]
     c.save()

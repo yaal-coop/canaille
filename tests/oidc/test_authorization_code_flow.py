@@ -13,7 +13,7 @@ from . import client_credentials
 
 
 def test_authorization_code_flow(
-    testclient, logged_user, client, keypair, other_client
+    testclient, logged_user, client, keypair, trusted_client
 ):
     assert not models.Consent.query()
 
@@ -81,13 +81,13 @@ def test_authorization_code_flow(
     claims = jwt.decode(access_token, keypair[1])
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
-    assert claims["aud"] == [client.client_id, other_client.client_id]
+    assert claims["aud"] == [client.client_id, trusted_client.client_id]
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
-    assert claims["aud"] == [client.client_id, other_client.client_id]
+    assert claims["aud"] == [client.client_id, trusted_client.client_id]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -114,7 +114,7 @@ def test_invalid_client(testclient, logged_user, keypair):
 
 
 def test_authorization_code_flow_with_redirect_uri(
-    testclient, logged_user, client, keypair, other_client
+    testclient, logged_user, client, keypair, trusted_client
 ):
     assert not models.Consent.query()
 
@@ -161,7 +161,7 @@ def test_authorization_code_flow_with_redirect_uri(
 
 
 def test_authorization_code_flow_preconsented(
-    testclient, logged_user, client, keypair, other_client
+    testclient, logged_user, client, keypair, trusted_client
 ):
     assert not models.Consent.query()
 
@@ -209,7 +209,7 @@ def test_authorization_code_flow_preconsented(
     claims = jwt.decode(id_token, keypair[1])
     assert logged_user.user_name == claims["sub"]
     assert logged_user.formatted_name == claims["name"]
-    assert [client.client_id, other_client.client_id] == claims["aud"]
+    assert [client.client_id, trusted_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -584,7 +584,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
 
 
 def test_authorization_code_flow_but_user_cannot_use_oidc(
-    testclient, user, client, keypair, other_client
+    testclient, user, client, keypair, trusted_client
 ):
     testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     user.reload()
@@ -645,16 +645,17 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
 
 
 def test_authorization_code_request_scope_too_large(
-    testclient, logged_user, keypair, other_client
+    testclient, logged_user, keypair, client
 ):
     assert not models.Consent.query()
-    assert "email" not in other_client.scope
+    client.scope = ["openid", "profile", "groups"]
+    client.save()
 
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=other_client.client_id,
+            client_id=client.client_id,
             scope="openid profile email",
             nonce="somenonce",
         ),
@@ -671,7 +672,7 @@ def test_authorization_code_request_scope_too_large(
         "profile",
     }
 
-    consents = models.Consent.query(client=other_client, subject=logged_user)
+    consents = models.Consent.query(client=client, subject=logged_user)
     assert set(consents[0].scope) == {
         "openid",
         "profile",
@@ -683,15 +684,15 @@ def test_authorization_code_request_scope_too_large(
             grant_type="authorization_code",
             code=code,
             scope="openid profile email groups address phone",
-            redirect_uri=other_client.redirect_uris[0],
+            redirect_uri=client.redirect_uris[0],
         ),
-        headers={"Authorization": f"Basic {client_credentials(other_client)}"},
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
 
     access_token = res.json["access_token"]
     token = models.Token.get(access_token=access_token)
-    assert token.client == other_client
+    assert token.client == client
     assert token.subject == logged_user
     assert set(token.scope) == {
         "openid",

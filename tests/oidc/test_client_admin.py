@@ -21,7 +21,7 @@ def test_client_list(testclient, client, logged_admin):
     res.mustcontain(client.client_name)
 
 
-def test_client_list_pagination(testclient, logged_admin, client, other_client):
+def test_client_list_pagination(testclient, logged_admin, client, trusted_client):
     res = testclient.get("/admin/client")
     res.mustcontain("2 items")
     clients = []
@@ -67,18 +67,18 @@ def test_client_list_bad_pages(testclient, logged_admin):
     )
 
 
-def test_client_list_search(testclient, logged_admin, client, other_client):
+def test_client_list_search(testclient, logged_admin, client, trusted_client):
     res = testclient.get("/admin/client")
     res.mustcontain("2 items")
     res.mustcontain(client.client_name)
-    res.mustcontain(other_client.client_name)
+    res.mustcontain(trusted_client.client_name)
 
     form = res.forms["search"]
     form["query"] = "other"
     res = form.submit()
 
     res.mustcontain("1 item")
-    res.mustcontain(other_client.client_name)
+    res.mustcontain(trusted_client.client_name)
     res.mustcontain(no=client.client_name)
 
 
@@ -144,7 +144,7 @@ def test_add_missing_fields(testclient, logged_admin):
     ) in res.flashes
 
 
-def test_client_edit(testclient, client, logged_admin, other_client):
+def test_client_edit(testclient, client, logged_admin, trusted_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
         "client_name": "foobar",
@@ -162,7 +162,7 @@ def test_client_edit(testclient, client, logged_admin, other_client):
         "software_version": "1",
         "jwk": "jwk",
         "jwks_uri": "https://foo.bar/jwks.json",
-        "audience": [client.id, other_client.id],
+        "audience": [client.id, trusted_client.id],
         "preconsent": True,
         "post_logout_redirect_uris-0": "https://foo.bar/disconnected",
     }
@@ -196,12 +196,12 @@ def test_client_edit(testclient, client, logged_admin, other_client):
     assert client.software_version == "1"
     assert client.jwk == "jwk"
     assert client.jwks_uri == "https://foo.bar/jwks.json"
-    assert client.audience == [client, other_client]
+    assert client.audience == [client, trusted_client]
     assert not client.preconsent
     assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
 
 
-def test_client_edit_missing_fields(testclient, client, logged_admin, other_client):
+def test_client_edit_missing_fields(testclient, client, logged_admin, trusted_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clientaddform"]["client_name"] = ""
     res = res.forms["clientaddform"].submit(name="action", value="edit")
@@ -255,7 +255,7 @@ def test_client_delete_invalid_client(testclient, logged_admin, client):
     )
 
 
-def test_client_edit_preauth(testclient, client, logged_admin, other_client):
+def test_client_edit_preauth(testclient, client, logged_admin, trusted_client):
     assert not client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
@@ -275,7 +275,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, other_client):
     assert not client.preconsent
 
 
-def test_client_edit_invalid_uri(testclient, client, logged_admin, other_client):
+def test_client_edit_invalid_uri(testclient, client, logged_admin, trusted_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clientaddform"]["client_uri"] = "invalid"
     res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
