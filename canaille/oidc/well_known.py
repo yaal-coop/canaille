@@ -1,4 +1,5 @@
 from flask import Blueprint
+from flask import current_app
 from flask import g
 from flask import jsonify
 from flask import request
@@ -76,7 +77,8 @@ def openid_configuration():
         ],
         "subject_types_supported": ["pairwise", "public"],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
-        "prompt_values_supported": ["none"],
+        "prompt_values_supported": ["none"]
+        + (["create"] if current_app.config.get("ENABLE_REGISTRATION") else []),
     }
 
 

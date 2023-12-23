@@ -71,6 +71,10 @@ def test_registration_with_email_validation(testclient, backend, smtpd):
         res.form["family_name"] = "newuser"
         res = res.form.submit()
 
+    assert res.flashes == [
+        ("success", "Your account has been created successfully."),
+    ]
+
     user = models.User.get()
     assert user
     user.delete()

@@ -34,6 +34,7 @@ from .oauth import IntrospectionEndpoint
 from .oauth import require_oauth
 from .oauth import RevocationEndpoint
 from .utils import SCOPE_DETAILS
+from .well_known import openid_configuration
 
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
@@ -54,6 +55,23 @@ def authorize():
     if not client:
         abort(400, "Invalid client.")
 
+    # https://openid.net/specs/openid-connect-prompt-create-1_0.html#name-authorization-request
+    # If the OpenID Provider receives a prompt value that it does
+    # not support (not declared in the prompt_values_supported
+    # metadata field) the OP SHOULD respond with an HTTP 400 (Bad
+    # Request) status code and an error value of invalid_request.
+    # It is RECOMMENDED that the OP return an error_description
+    # value identifying the invalid parameter value.
+    if (
+        request.args.get("prompt")
+        and request.args["prompt"]
+        not in openid_configuration()["prompt_values_supported"]
+    ):
+        return {
+            "error": "invalid_request",
+            "error_description": f"prompt '{request.args['prompt'] }' value is not supported",
+        }, 400
+
     user = current_user()
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
@@ -65,6 +83,10 @@ def authorize():
             return jsonify({"error": "login_required"})
 
         session["redirect-after-login"] = request.url
+
+        if request.args.get("prompt") == "create":
+            return redirect(url_for("core.account.join"))
+
         return redirect(url_for("core.auth.login"))
 
     if not user.can_use_oidc:
