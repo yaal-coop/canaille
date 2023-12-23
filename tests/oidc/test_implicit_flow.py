@@ -50,7 +50,7 @@ def test_oauth_implicit(testclient, user, client):
     client.save()
 
 
-def test_oidc_implicit(testclient, keypair, user, client, other_client):
+def test_oidc_implicit(testclient, keypair, user, client, trusted_client):
     client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
@@ -88,7 +88,7 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
     claims = jwt.decode(id_token, keypair[1])
     assert user.user_name == claims["sub"]
     assert user.formatted_name == claims["name"]
-    assert [client.client_id, other_client.client_id] == claims["aud"]
+    assert [client.client_id, trusted_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -104,7 +104,7 @@ def test_oidc_implicit(testclient, keypair, user, client, other_client):
 
 
 def test_oidc_implicit_with_group(
-    testclient, keypair, user, client, foo_group, other_client
+    testclient, keypair, user, client, foo_group, trusted_client
 ):
     client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
@@ -143,7 +143,7 @@ def test_oidc_implicit_with_group(
     claims = jwt.decode(id_token, keypair[1])
     assert user.user_name == claims["sub"]
     assert user.formatted_name == claims["name"]
-    assert [client.client_id, other_client.client_id] == claims["aud"]
+    assert [client.client_id, trusted_client.client_id] == claims["aud"]
     assert ["foo"] == claims["groups"]
 
     res = testclient.get(

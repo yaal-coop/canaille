@@ -58,7 +58,7 @@ def test_token_invalid(testclient, client):
     assert {"active": False} == res.json
 
 
-def test_full_flow(testclient, logged_user, client, user, other_client):
+def test_full_flow(testclient, logged_user, client, user, trusted_client):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -103,7 +103,7 @@ def test_full_flow(testclient, logged_user, client, user, other_client):
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
-    assert set(res.json["aud"]) == {client.client_id, other_client.client_id}
+    assert set(res.json["aud"]) == {client.client_id, trusted_client.client_id}
     assert res.json["active"]
     assert res.json["client_id"] == client.client_id
     assert res.json["token_type"] == token.type

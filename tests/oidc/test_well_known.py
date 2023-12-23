@@ -100,3 +100,9 @@ def test_openid_configuration(testclient):
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
         "prompt_values_supported": ["none"],
     }
+
+
+def test_openid_configuration_prompt_value_create(testclient):
+    testclient.app.config["ENABLE_REGISTRATION"] = True
+    res = testclient.get("/.well-known/openid-configuration", status=200).json
+    assert "create" in res["prompt_values_supported"]
