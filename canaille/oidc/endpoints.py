@@ -3,6 +3,7 @@ import uuid
 
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
+from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
 from canaille import csrf
 from canaille.app import models
@@ -273,9 +274,18 @@ def end_session():
         return render_template("logout.html", form=form, client=client, menu=False)
 
     if data.get("id_token_hint"):
-        id_token = jwt.decode(
-            data["id_token_hint"], current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
-        )
+        try:
+            id_token = jwt.decode(
+                data["id_token_hint"], current_app.config["OIDC"]["JWT"]["PUBLIC_KEY"]
+            )
+        except JoseError as exc:
+            return jsonify(
+                {
+                    "status": "error",
+                    "message": str(exc),
+                }
+            )
+
         if not id_token["iss"] == get_issuer():
             return jsonify(
                 {

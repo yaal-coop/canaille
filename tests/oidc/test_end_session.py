@@ -284,6 +284,22 @@ def test_client_hint_mismatch(testclient, backend, logged_user, client):
     }
 
 
+def test_end_session_bad_id_token(testclient, backend, logged_user, client, id_token):
+    post_logout_redirect_url = "https://mydomain.tld/disconnected"
+    res = testclient.get(
+        "/oauth/end_session",
+        params={
+            "id_token_hint": "invalid",
+            "logout_hint": logged_user.identifier,
+            "client_id": client.client_id,
+            "post_logout_redirect_uri": post_logout_redirect_url,
+            "state": "foobar",
+        },
+    )
+
+    assert res.json == {"status": "error", "message": "Invalid input segments length: "}
+
+
 def test_bad_user_id_token_mismatch(testclient, backend, logged_user, client, admin):
     testclient.get(f"/profile/{logged_user.identifier}", status=200)
 

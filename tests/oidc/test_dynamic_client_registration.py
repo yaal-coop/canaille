@@ -19,6 +19,9 @@ def test_client_registration_with_authentication_static_token(
             "https://client.example.org/callback",
             "https://client.example.org/callback2",
         ],
+        "post_logout_redirect_uris": [
+            "https://client.example.org/logout_callback",
+        ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
         "logo_uri": "https://client.example.org/logo.webp",
@@ -52,6 +55,9 @@ def test_client_registration_with_authentication_static_token(
     assert client.redirect_uris == [
         "https://client.example.org/callback",
         "https://client.example.org/callback2",
+    ]
+    assert client.post_logout_redirect_uris == [
+        "https://client.example.org/logout_callback",
     ]
     assert client.token_endpoint_auth_method == "client_secret_basic"
     assert client.logo_uri == "https://client.example.org/logo.webp"

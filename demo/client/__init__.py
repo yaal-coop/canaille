@@ -13,23 +13,10 @@ from flask import session
 from flask import url_for
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_envvar("CONFIG")
-    app.static_folder = "../../canaille/static"
+oauth = OAuth()
 
-    oauth = OAuth()
-    oauth.init_app(app)
-    oauth.register(
-        name="canaille",
-        client_id=app.config["OAUTH_CLIENT_ID"],
-        client_secret=app.config["OAUTH_CLIENT_SECRET"],
-        server_metadata_url=get_well_known_url(
-            app.config["OAUTH_AUTH_SERVER"], external=True
-        ),
-        client_kwargs={"scope": "openid profile email phone address groups"},
-    )
 
+def setup_routes(app):
     @app.route("/")
     @app.route("/tos")
     @app.route("/policy")
@@ -40,10 +27,12 @@ def create_app():
 
     @app.route("/login")
     def login():
-        return oauth.canaille.authorize_redirect(url_for("authorize", _external=True))
+        return oauth.canaille.authorize_redirect(
+            url_for("login_callback", _external=True)
+        )
 
-    @app.route("/authorize")
-    def authorize():
+    @app.route("/login_callback")
+    def login_callback():
         try:
             token = oauth.canaille.authorize_access_token()
             session["user"] = token.get("userinfo")
@@ -56,13 +45,6 @@ def create_app():
 
     @app.route("/logout")
     def logout():
-        try:
-            del session["user"]
-        except KeyError:
-            pass
-
-        flash("You have been successfully logged out", "success")
-
         oauth.canaille.load_server_metadata()
         end_session_endpoint = oauth.canaille.server_metadata.get(
             "end_session_endpoint"
@@ -71,10 +53,41 @@ def create_app():
             end_session_endpoint,
             client_id=current_app.config["OAUTH_CLIENT_ID"],
             id_token_hint=session["id_token"],
-            post_logout_redirect_uri=url_for("index", _external=True),
+            post_logout_redirect_uri=url_for("logout_callback", _external=True),
         )
         return redirect(end_session_url)
 
+    @app.route("/logout_callback")
+    def logout_callback():
+        try:
+            del session["user"]
+        except KeyError:
+            pass
+
+        flash("You have been successfully logged out", "success")
+        return redirect(url_for("index"))
+
+
+def setup_oauth(app):
+    oauth.init_app(app)
+    oauth.register(
+        name="canaille",
+        client_id=app.config["OAUTH_CLIENT_ID"],
+        client_secret=app.config["OAUTH_CLIENT_SECRET"],
+        server_metadata_url=get_well_known_url(
+            app.config["OAUTH_AUTH_SERVER"], external=True
+        ),
+        client_kwargs={"scope": "openid profile email phone address groups"},
+    )
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_envvar("CONFIG")
+    app.static_folder = "../../canaille/static"
+
+    setup_routes(app)
+    setup_oauth(app)
     return app
 
 

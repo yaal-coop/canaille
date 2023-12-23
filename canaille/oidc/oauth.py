@@ -398,6 +398,10 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
 
     def save_client(self, client_info, client_metadata, request):
         client = models.Client(
+            # this won't be needed when OIDC RP Initiated Logout is
+            # directly implemented in authlib:
+            # https://gitlab.com/yaal/canaille/-/issues/157
+            post_logout_redirect_uris=request.data.get("post_logout_redirect_uris"),
             **self.client_convert_data(**client_info, **client_metadata)
         )
         client.audience = [client]
