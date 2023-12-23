@@ -400,6 +400,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
         client = models.Client(
             **self.client_convert_data(**client_info, **client_metadata)
         )
+        client.audience = [client]
         client.save()
         return client
 

@@ -56,6 +56,7 @@ def test_client_registration_with_authentication_static_token(
     assert client.token_endpoint_auth_method == "client_secret_basic"
     assert client.logo_uri == "https://client.example.org/logo.webp"
     assert client.jwks_uri == "https://client.example.org/my_public_keys.jwks"
+    assert client in client.audience
     client.delete()
 
 
