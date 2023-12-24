@@ -13,6 +13,7 @@ Fixed
 
 - Correctly set up Client audience during OIDC dynamic registration.
 - ``post_logout_redirect_uris`` was ignored during OIDC dynamic registration.
+- Group field error prevented the registration form validation.
 
 [0.0.40] - 2023-12-22
 =====================

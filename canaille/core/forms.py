@@ -274,6 +274,7 @@ PROFILE_FORM_FIELDS = dict(
     ),
     groups=wtforms.SelectMultipleField(
         _("Groups"),
+        default=[],
         choices=lambda: [(group, group.display_name) for group in models.Group.query()],
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),

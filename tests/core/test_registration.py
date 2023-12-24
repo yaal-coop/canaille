@@ -6,14 +6,14 @@ from canaille.core.account import RegistrationPayload
 from flask import url_for
 
 
-def test_registration_without_email_validation(testclient, backend):
+def test_registration_without_email_validation(testclient, backend, foo_group):
     """
     Tests a nominal registration without email validation.
     """
     testclient.app.config["ENABLE_REGISTRATION"] = True
     testclient.app.config["EMAIL_CONFIRMATION"] = False
 
-    assert not models.User.query()
+    assert not models.User.query(user_name="newuser")
     res = testclient.get(url_for("core.account.registration"), status=200)
     res.form["user_name"] = "newuser"
     res.form["password1"] = "password"
@@ -21,13 +21,14 @@ def test_registration_without_email_validation(testclient, backend):
     res.form["family_name"] = "newuser"
     res.form["emails-0"] = "newuser@example.com"
     res = res.form.submit()
+    assert ("success", "Your account has been created successfully.") in res.flashes
 
-    user = models.User.get()
+    user = models.User.get(user_name="newuser")
     assert user
     user.delete()
 
 
-def test_registration_with_email_validation(testclient, backend, smtpd):
+def test_registration_with_email_validation(testclient, backend, smtpd, foo_group):
     """
     Tests a nominal registration with email validation.
     """
@@ -62,7 +63,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd):
     text_mail = smtpd.messages[0].get_payload()[0].get_payload(decode=True).decode()
     assert registration_url in text_mail
 
-    assert not models.User.query()
+    assert not models.User.query(user_name="newuser")
     with freezegun.freeze_time("2020-01-01 02:01:00"):
         res = testclient.get(registration_url, status=200)
         res.form["user_name"] = "newuser"
@@ -75,12 +76,14 @@ def test_registration_with_email_validation(testclient, backend, smtpd):
         ("success", "Your account has been created successfully."),
     ]
 
-    user = models.User.get()
+    user = models.User.get(user_name="newuser")
     assert user
     user.delete()
 
 
-def test_registration_with_email_already_taken(testclient, backend, smtpd, user):
+def test_registration_with_email_already_taken(
+    testclient, backend, smtpd, user, foo_group
+):
     """
     Be sure to not leak email existence if HIDE_INVALID_LOGINS is true.
     """
@@ -106,7 +109,7 @@ def test_registration_with_email_already_taken(testclient, backend, smtpd, user)
 
 
 def test_registration_with_email_validation_needs_a_valid_link(
-    testclient, backend, smtpd
+    testclient, backend, smtpd, foo_group
 ):
     """
     Tests a nominal registration without email validation.
@@ -115,7 +118,7 @@ def test_registration_with_email_validation_needs_a_valid_link(
     testclient.get(url_for("core.account.registration"), status=403)
 
 
-def test_join_page_registration_disabled(testclient, backend, smtpd):
+def test_join_page_registration_disabled(testclient, backend, smtpd, foo_group):
     """
     The join page should not be available if registration is disabled.
     """
@@ -123,7 +126,7 @@ def test_join_page_registration_disabled(testclient, backend, smtpd):
     testclient.get(url_for("core.account.join"), status=404)
 
 
-def test_join_page_email_confirmation_disabled(testclient, backend, smtpd):
+def test_join_page_email_confirmation_disabled(testclient, backend, smtpd, foo_group):
     """
     The join page should directly redirect to the registration page if
     email confirmation is disabled.
@@ -134,7 +137,7 @@ def test_join_page_email_confirmation_disabled(testclient, backend, smtpd):
     assert res.location == url_for("core.account.registration")
 
 
-def test_join_page_already_logged_in(testclient, backend, logged_user):
+def test_join_page_already_logged_in(testclient, backend, logged_user, foo_group):
     """
     The join page should not be accessible for logged users.
     """
@@ -143,7 +146,7 @@ def test_join_page_already_logged_in(testclient, backend, logged_user):
 
 
 @mock.patch("smtplib.SMTP")
-def test_registration_mail_error(SMTP, testclient, backend, smtpd):
+def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
     """
     Display an error message if the registration mail could not be sent.
     """
