@@ -25,6 +25,24 @@ def setup_routes(app):
             "index.html", user=session.get("user"), name=app.config["NAME"]
         )
 
+    @app.route("/register")
+    def register():
+        return oauth.canaille.authorize_redirect(
+            url_for("register_callback", _external=True), prompt="create"
+        )
+
+    @app.route("/register_callback")
+    def register_callback():
+        try:
+            token = oauth.canaille.authorize_access_token()
+            session["user"] = token.get("userinfo")
+            session["id_token"] = token["id_token"]
+            flash("You account has been successfully created.", "success")
+        except AuthlibBaseError as exc:
+            flash(f"An error happened during registration: {exc.description}", "error")
+
+        return redirect(url_for("index"))
+
     @app.route("/login")
     def login():
         return oauth.canaille.authorize_redirect(
@@ -39,7 +57,7 @@ def setup_routes(app):
             session["id_token"] = token["id_token"]
             flash("You have been successfully logged in.", "success")
         except AuthlibBaseError as exc:
-            flash(f"You have not been logged in: {exc.description}", "error")
+            flash(f"An error happened during login: {exc.description}", "error")
 
         return redirect(url_for("index"))
 

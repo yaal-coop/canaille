@@ -107,7 +107,10 @@ def populate(app):
                 client_name="Client1",
                 contacts=["admin@mydomain.tld"],
                 client_uri="http://localhost:5001",
-                redirect_uris=["http://localhost:5001/login_callback"],
+                redirect_uris=[
+                    "http://localhost:5001/login_callback",
+                    "http://localhost:5001/register_callback",
+                ],
                 post_logout_redirect_uris=["http://localhost:5001/logout_callback"],
                 tos_uri="http://localhost:5001/tos",
                 policy_uri="http://localhost:5001/policy",
@@ -127,7 +130,10 @@ def populate(app):
                 contacts=["admin@mydomain.tld"],
                 client_uri="http://localhost:5002",
                 redirect_uris=["http://localhost:5002/login_callback"],
-                post_logout_redirect_uris=["http://localhost:5002/logout_callback"],
+                post_logout_redirect_uris=[
+                    "http://localhost:5002/logout_callback",
+                    "http://localhost:5002/register_callback",
+                ],
                 tos_uri="http://localhost:5002/tos",
                 policy_uri="http://localhost:5002/policy",
                 grant_types=["authorization_code", "refresh_token"],

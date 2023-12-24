@@ -118,7 +118,7 @@
                         </a>
                         <a class="ui huge negative button" href="{{ url_for('logout') }}">
                             Log out
-                            <i class="right arrow icon"></i>
+                            <i class="sign out icon"></i>
                         </a>
                     </div>
                 {% else %}
@@ -126,9 +126,13 @@
                         <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui huge button">
                             Identity server
                         </a>
+                        <a class="ui huge primary button" href="{{ url_for('register') }}">
+                            Sign up
+                            <i class="handshake icon"></i>
+                        </a>
                         <a class="ui huge primary button" href="{{ url_for('login') }}">
                             Sign in
-                            <i class="right arrow icon"></i>
+                            <i class="sign in icon"></i>
                         </a>
                     </div>
                 {% endif %}
