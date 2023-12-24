@@ -35,6 +35,7 @@ Table of contents
    :maxdepth: 2
 
    install
+   deployment
    backends
    configuration
    troubleshooting

@@ -1,10 +1,11 @@
 Backends
 #############
 
+Canaille can read and save data in different databases.
+This page presents the different database backends and their specificities:
+
 .. contents::
    :local:
-
-Canaille can read and save data in different databases:
 
 Memory
 ======

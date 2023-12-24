@@ -27,6 +27,7 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosectionlabel",
     "sphinx.ext.doctest",
     "sphinx.ext.graphviz",
     "sphinx.ext.intersphinx",
@@ -52,6 +53,10 @@ todo_include_todos = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+    "authlib": ("https://docs.authlib.org/en/latest", None),
+    "flask": ("https://flask.palletsprojects.com", None),
+    "flask-babel": ("https://python-babel.github.io/flask-babel", None),
+    "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
 }
 
 issues_uri = "https://gitlab.com/yaal/canaille/-/issues/{issue}"
@@ -94,3 +99,8 @@ texinfo_documents = [
         "Miscellaneous",
     )
 ]
+
+# -- Options for autosectionlabel -----------------------------------------
+
+autosectionlabel_prefix_document = True
+autosectionlabel_maxdepth = 2
