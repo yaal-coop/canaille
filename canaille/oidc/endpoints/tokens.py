@@ -6,11 +6,12 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
-from canaille.oidc.forms import TokenRevokationForm
 from flask import abort
 from flask import Blueprint
 from flask import flash
 from flask import request
+
+from .forms import TokenRevokationForm
 
 bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 

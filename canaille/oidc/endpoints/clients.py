@@ -6,7 +6,6 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
-from canaille.oidc.forms import ClientAddForm
 from flask import abort
 from flask import Blueprint
 from flask import flash
@@ -14,6 +13,8 @@ from flask import redirect
 from flask import request
 from flask import url_for
 from werkzeug.security import gen_salt
+
+from .forms import ClientAddForm
 
 
 bp = Blueprint("clients", __name__, url_prefix="/admin/client")

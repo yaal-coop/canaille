@@ -16,13 +16,13 @@ from flask import request
 from flask import session
 from flask import url_for
 
+from ..mails import send_password_initialization_mail
+from ..mails import send_password_reset_mail
 from .forms import FirstLoginForm
 from .forms import ForgottenPasswordForm
 from .forms import LoginForm
 from .forms import PasswordForm
 from .forms import PasswordResetForm
-from .mails import send_password_initialization_mail
-from .mails import send_password_reset_mail
 
 bp = Blueprint("auth", __name__)
 

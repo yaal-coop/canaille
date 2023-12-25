@@ -23,18 +23,18 @@ from flask import session
 from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
 
+from ..oauth import authorization
+from ..oauth import ClientConfigurationEndpoint
+from ..oauth import ClientRegistrationEndpoint
+from ..oauth import generate_user_info
+from ..oauth import get_issuer
+from ..oauth import get_jwks
+from ..oauth import IntrospectionEndpoint
+from ..oauth import require_oauth
+from ..oauth import RevocationEndpoint
+from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
 from .forms import LogoutForm
-from .oauth import authorization
-from .oauth import ClientConfigurationEndpoint
-from .oauth import ClientRegistrationEndpoint
-from .oauth import generate_user_info
-from .oauth import get_issuer
-from .oauth import get_jwks
-from .oauth import IntrospectionEndpoint
-from .oauth import require_oauth
-from .oauth import RevocationEndpoint
-from .utils import SCOPE_DETAILS
 from .well_known import openid_configuration
 
 

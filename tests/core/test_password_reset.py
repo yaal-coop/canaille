@@ -1,4 +1,4 @@
-from canaille.core.account import build_hash
+from canaille.core.endpoints.account import build_hash
 
 
 def test_password_reset(testclient, user):

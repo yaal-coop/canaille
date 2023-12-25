@@ -2,8 +2,8 @@ import datetime
 from unittest import mock
 
 import freezegun
-from canaille.core.account import EmailConfirmationPayload
-from canaille.core.account import RegistrationPayload
+from canaille.core.endpoints.account import EmailConfirmationPayload
+from canaille.core.endpoints.account import RegistrationPayload
 from flask import url_for
 
 

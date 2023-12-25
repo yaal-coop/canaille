@@ -10,7 +10,7 @@ from flask import flash
 from flask import redirect
 from flask import url_for
 
-from .utils import SCOPE_DETAILS
+from ..utils import SCOPE_DETAILS
 
 
 bp = Blueprint("consents", __name__, url_prefix="/consent")

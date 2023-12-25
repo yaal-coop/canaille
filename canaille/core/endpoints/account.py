@@ -42,16 +42,16 @@ from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
+from ..mails import send_confirmation_email
+from ..mails import send_invitation_mail
+from ..mails import send_password_initialization_mail
+from ..mails import send_password_reset_mail
+from ..mails import send_registration_mail
 from .forms import build_profile_form
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
 from .forms import MINIMUM_PASSWORD_LENGTH
-from .mails import send_confirmation_email
-from .mails import send_invitation_mail
-from .mails import send_password_initialization_mail
-from .mails import send_password_reset_mail
-from .mails import send_registration_mail
 
 
 bp = Blueprint("account", __name__)

@@ -64,16 +64,16 @@ def setup_jinja(app):
 
 
 def setup_blueprints(app):
-    import canaille.core.blueprints
+    import canaille.core.endpoints
 
     app.url_map.strict_slashes = False
 
-    app.register_blueprint(canaille.core.blueprints.bp)
+    app.register_blueprint(canaille.core.endpoints.bp)
 
     if "OIDC" in app.config:
-        import canaille.oidc.blueprints
+        import canaille.oidc.endpoints
 
-        app.register_blueprint(canaille.oidc.blueprints.bp)
+        app.register_blueprint(canaille.oidc.endpoints.bp)
 
 
 def setup_flask(app):

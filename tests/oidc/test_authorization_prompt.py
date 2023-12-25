@@ -8,7 +8,7 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 from canaille.app import models
-from canaille.core.account import RegistrationPayload
+from canaille.core.endpoints.account import RegistrationPayload
 from flask import url_for
 
 

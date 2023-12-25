@@ -1,7 +1,7 @@
 import datetime
 
 from canaille.app import models
-from canaille.core.account import RegistrationPayload
+from canaille.core.endpoints.account import RegistrationPayload
 from flask import g
 
 
