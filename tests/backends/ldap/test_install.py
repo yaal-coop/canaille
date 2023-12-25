@@ -1,4 +1,3 @@
-import ldap
 import pytest
 from canaille import create_app
 from canaille.app.installation import InstallationException
@@ -52,18 +51,13 @@ def test_install_schemas(configuration, slapd_server):
     configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
     configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    conn.protocol_version = 3
-    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-
-    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
+    with Backend(configuration).session():
+        assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
     Backend.setup_schemas(configuration)
 
-    assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
-
-    conn.unbind_s()
-    slapd_server.stop()
+    with Backend(configuration).session():
+        assert "oauthClient" in LDAPObject.ldap_object_classes(force=True)
 
 
 def test_install_schemas_twice(configuration, slapd_server):
@@ -72,20 +66,15 @@ def test_install_schemas_twice(configuration, slapd_server):
     configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
     configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    conn.protocol_version = 3
-    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-
-    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
+    with Backend(configuration).session():
+        assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
     Backend.setup_schemas(configuration)
 
-    assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
+    with Backend(configuration).session():
+        assert "oauthClient" in LDAPObject.ldap_object_classes(force=True)
 
     Backend.setup_schemas(configuration)
-
-    conn.unbind_s()
-    slapd_server.stop()
 
 
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
@@ -96,19 +85,13 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
     ] = "uid=admin,ou=users,dc=mydomain,dc=tld"
     configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "admin"
 
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    conn.protocol_version = 3
-    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
+    with Backend(configuration).session():
+        assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
-    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
+        with pytest.raises(InstallationException):
+            Backend.setup_schemas(configuration)
 
-    with pytest.raises(InstallationException):
-        Backend.setup_schemas(configuration)
-
-    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
-
-    conn.unbind_s()
-    slapd_server.stop()
+        assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
 
 def test_install_schemas_command(configuration, slapd_server):
@@ -117,18 +100,13 @@ def test_install_schemas_command(configuration, slapd_server):
     configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
     configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
 
-    conn = ldap.ldapobject.SimpleLDAPObject(slapd_server.ldap_uri)
-    conn.protocol_version = 3
-    conn.simple_bind_s(slapd_server.root_dn, slapd_server.root_pw)
-
-    assert "oauthClient" not in LDAPObject.ldap_object_classes(conn=conn, force=True)
+    with Backend(configuration).session():
+        assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["install"])
     assert res.exit_code == 0, res.stdout
 
-    assert "oauthClient" in LDAPObject.ldap_object_classes(conn=conn, force=True)
-
-    conn.unbind_s()
-    slapd_server.stop()
+    with Backend(configuration).session():
+        assert "oauthClient" in LDAPObject.ldap_object_classes(force=True)

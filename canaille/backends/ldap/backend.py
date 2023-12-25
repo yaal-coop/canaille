@@ -57,20 +57,18 @@ class Backend(BaseBackend):
     @classmethod
     def install(cls, config, debug=False):
         cls.setup_schemas(config)
-        with ldap_connection(config) as conn:
-            models.Token.install(conn)
-            models.AuthorizationCode.install(conn)
-            models.Client.install(conn)
-            models.Consent.install(conn)
+        with cls(config).session():
+            models.Token.install()
+            models.AuthorizationCode.install()
+            models.Client.install()
+            models.Consent.install()
 
     @classmethod
     def setup_schemas(cls, config):
         from .ldapobject import LDAPObject
 
-        with ldap_connection(config) as conn:
-            if "oauthClient" not in LDAPObject.ldap_object_classes(
-                conn=conn, force=True
-            ):
+        with cls(config).session():
+            if "oauthClient" not in LDAPObject.ldap_object_classes(force=True):
                 install_schema(
                     config,
                     os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
@@ -126,15 +124,10 @@ class Backend(BaseBackend):
     def validate(cls, config):
         from canaille.app import models
 
+        backend = cls(config)
         try:
-            conn = ldap.initialize(config["BACKENDS"]["LDAP"]["URI"])
-            conn.set_option(
-                ldap.OPT_NETWORK_TIMEOUT, config["BACKENDS"]["LDAP"].get("TIMEOUT")
-            )
-            conn.simple_bind_s(
-                config["BACKENDS"]["LDAP"]["BIND_DN"],
-                config["BACKENDS"]["LDAP"]["BIND_PW"],
-            )
+            backend.setup()
+            models.User.ldap_object_classes()
 
         except ldap.SERVER_DOWN as exc:
             raise ConfigurationException(
@@ -147,7 +140,6 @@ class Backend(BaseBackend):
             ) from exc
 
         try:
-            models.User.ldap_object_classes(conn)
             user = models.User(
                 formatted_name=f"canaille_{uuid.uuid4()}",
                 family_name=f"canaille_{uuid.uuid4()}",
@@ -155,8 +147,8 @@ class Backend(BaseBackend):
                 emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                 password="correct horse battery staple",
             )
-            user.save(conn)
-            user.delete(conn)
+            user.save()
+            user.delete()
 
         except ldap.INSUFFICIENT_ACCESS as exc:
             raise ConfigurationException(
@@ -165,7 +157,7 @@ class Backend(BaseBackend):
             ) from exc
 
         try:
-            models.Group.ldap_object_classes(conn)
+            models.Group.ldap_object_classes()
 
             user = models.User(
                 cn=f"canaille_{uuid.uuid4()}",
@@ -174,14 +166,14 @@ class Backend(BaseBackend):
                 emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                 password="correct horse battery staple",
             )
-            user.save(conn)
+            user.save()
 
             group = models.Group(
                 display_name=f"canaille_{uuid.uuid4()}",
                 members=[user],
             )
-            group.save(conn)
-            group.delete(conn)
+            group.save()
+            group.delete()
 
         except ldap.INSUFFICIENT_ACCESS as exc:
             raise ConfigurationException(
@@ -190,9 +182,9 @@ class Backend(BaseBackend):
             ) from exc
 
         finally:
-            user.delete(conn)
+            user.delete()
 
-        conn.unbind_s()
+        backend.teardown()
 
     @classmethod
     def login_placeholder(cls):

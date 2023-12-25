@@ -232,8 +232,8 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         return cls._must
 
     @classmethod
-    def install(cls, conn=None):
-        conn = conn or Backend.get().connection
+    def install(cls):
+        conn = Backend.get().connection
         cls.ldap_object_classes(conn)
         cls.ldap_object_attributes(conn)
 
@@ -254,11 +254,11 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
                 pass
 
     @classmethod
-    def ldap_object_classes(cls, conn=None, force=False):
+    def ldap_object_classes(cls, force=False):
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
-        conn = conn or Backend.get().connection
+        conn = Backend.get().connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -276,11 +276,11 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         return cls._object_class_by_name
 
     @classmethod
-    def ldap_object_attributes(cls, conn=None, force=False):
+    def ldap_object_attributes(cls, force=False):
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
-        conn = conn or Backend.get().connection
+        conn = Backend.get().connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -298,15 +298,15 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         return cls._attribute_type_by_name
 
     @classmethod
-    def get(cls, id=None, filter=None, conn=None, **kwargs):
+    def get(cls, id=None, filter=None, **kwargs):
         try:
-            return cls.query(id, filter, conn, **kwargs)[0]
+            return cls.query(id, filter, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 
     @classmethod
-    def query(cls, id=None, filter=None, conn=None, **kwargs):
-        conn = conn or Backend.get().connection
+    def query(cls, id=None, filter=None, **kwargs):
+        conn = Backend.get().connection
 
         base = id or kwargs.get("id")
         if base is None:
@@ -397,14 +397,14 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
     def python_attribute_to_ldap(cls, name):
         return cls.attribute_map.get(name, name) if cls.attribute_map else None
 
-    def reload(self, conn=None):
-        conn = conn or Backend.get().connection
+    def reload(self):
+        conn = Backend.get().connection
         result = conn.search_s(self.id, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.state = result[0][1]
 
-    def save(self, conn=None):
-        conn = conn or Backend.get().connection
+    def save(self):
+        conn = Backend.get().connection
 
         self.set_ldap_attribute("objectClass", self.ldap_object_class)
 
@@ -446,6 +446,6 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         self.state = {**self.state, **self.changes}
         self.changes = {}
 
-    def delete(self, conn=None):
-        conn = conn or Backend.get().connection
+    def delete(self):
+        conn = Backend.get().connection
         conn.delete_s(self.id)
