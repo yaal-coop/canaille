@@ -10,11 +10,6 @@ def test_required_methods(testclient):
         BaseBackend.validate({})
 
     backend = BaseBackend(testclient.app.config)
-    with pytest.raises(NotImplementedError):
-        backend.setup()
-
-    with pytest.raises(NotImplementedError):
-        backend.teardown()
 
     with pytest.raises(NotImplementedError):
         backend.has_account_lockability()

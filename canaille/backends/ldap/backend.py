@@ -10,7 +10,6 @@ from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
 from canaille.backends import BaseBackend
 from flask import current_app
-from flask import request
 
 from .utils import listify
 
@@ -51,7 +50,7 @@ def install_schema(config, schema_path):
 class Backend(BaseBackend):
     def __init__(self, config):
         super().__init__(config)
-        self.connection = None
+        self._connection = None
         setup_ldap_models(config)
 
     @classmethod
@@ -74,23 +73,18 @@ class Backend(BaseBackend):
                     os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
                 )
 
-    def setup(self):
-        if self.connection:
-            return
-
-        try:  # pragma: no cover
-            if request.endpoint == "static":
-                return
-        except RuntimeError:  # pragma: no cover
-            pass
+    @property
+    def connection(self):
+        if self._connection:
+            return self._connection
 
         try:
-            self.connection = ldap.initialize(self.config["BACKENDS"]["LDAP"]["URI"])
-            self.connection.set_option(
+            self._connection = ldap.initialize(self.config["BACKENDS"]["LDAP"]["URI"])
+            self._connection.set_option(
                 ldap.OPT_NETWORK_TIMEOUT,
                 self.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
             )
-            self.connection.simple_bind_s(
+            self._connection.simple_bind_s(
                 self.config["BACKENDS"]["LDAP"]["BIND_DN"],
                 self.config["BACKENDS"]["LDAP"]["BIND_PW"],
             )
@@ -109,82 +103,62 @@ class Backend(BaseBackend):
             logging.error(message)
             raise ConfigurationException(message) from exc
 
-    def teardown(self):
-        try:  # pragma: no cover
-            if request.endpoint == "static":
-                return
-        except RuntimeError:  # pragma: no cover
-            pass
+        return self._connection
 
-        if self.connection:  # pragma: no branch
-            self.connection.unbind_s()
-            self.connection = None
+    def teardown(self):
+        if self._connection:  # pragma: no branch
+            self._connection.unbind_s()
+            self._connection = None
 
     @classmethod
     def validate(cls, config):
         from canaille.app import models
 
-        backend = cls(config)
-        try:
-            backend.setup()
-            models.User.ldap_object_classes()
+        with cls(config).session():
+            try:
+                user = models.User(
+                    formatted_name=f"canaille_{uuid.uuid4()}",
+                    family_name=f"canaille_{uuid.uuid4()}",
+                    user_name=f"canaille_{uuid.uuid4()}",
+                    emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                    password="correct horse battery staple",
+                )
+                user.save()
+                user.delete()
 
-        except ldap.SERVER_DOWN as exc:
-            raise ConfigurationException(
-                f'Could not connect to the LDAP server \'{config["BACKENDS"]["LDAP"]["URI"]}\''
-            ) from exc
+            except ldap.INSUFFICIENT_ACCESS as exc:
+                raise ConfigurationException(
+                    f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
+                    f'users at \'{config["BACKENDS"]["LDAP"]["USER_BASE"]}\''
+                ) from exc
 
-        except ldap.INVALID_CREDENTIALS as exc:
-            raise ConfigurationException(
-                f'LDAP authentication failed with user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\''
-            ) from exc
+            try:
+                models.Group.ldap_object_classes()
 
-        try:
-            user = models.User(
-                formatted_name=f"canaille_{uuid.uuid4()}",
-                family_name=f"canaille_{uuid.uuid4()}",
-                user_name=f"canaille_{uuid.uuid4()}",
-                emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
-                password="correct horse battery staple",
-            )
-            user.save()
-            user.delete()
+                user = models.User(
+                    cn=f"canaille_{uuid.uuid4()}",
+                    family_name=f"canaille_{uuid.uuid4()}",
+                    user_name=f"canaille_{uuid.uuid4()}",
+                    emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                    password="correct horse battery staple",
+                )
+                user.save()
 
-        except ldap.INSUFFICIENT_ACCESS as exc:
-            raise ConfigurationException(
-                f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
-                f'users at \'{config["BACKENDS"]["LDAP"]["USER_BASE"]}\''
-            ) from exc
+                group = models.Group(
+                    display_name=f"canaille_{uuid.uuid4()}",
+                    members=[user],
+                )
+                group.save()
+                group.delete()
 
-        try:
-            models.Group.ldap_object_classes()
+            except ldap.INSUFFICIENT_ACCESS as exc:
+                raise ConfigurationException(
+                    f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
+                    f'groups at \'{config["BACKENDS"]["LDAP"]["GROUP_BASE"]}\''
+                ) from exc
 
-            user = models.User(
-                cn=f"canaille_{uuid.uuid4()}",
-                family_name=f"canaille_{uuid.uuid4()}",
-                user_name=f"canaille_{uuid.uuid4()}",
-                emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
-                password="correct horse battery staple",
-            )
-            user.save()
-
-            group = models.Group(
-                display_name=f"canaille_{uuid.uuid4()}",
-                members=[user],
-            )
-            group.save()
-            group.delete()
-
-        except ldap.INSUFFICIENT_ACCESS as exc:
-            raise ConfigurationException(
-                f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
-                f'groups at \'{config["BACKENDS"]["LDAP"]["GROUP_BASE"]}\''
-            ) from exc
-
-        finally:
-            user.delete()
-
-        backend.teardown()
+            finally:
+                user.delete()
 
     @classmethod
     def login_placeholder(cls):

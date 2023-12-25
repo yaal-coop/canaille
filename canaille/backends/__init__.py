@@ -44,14 +44,12 @@ class BaseBackend:
         This method will be called before each http request,
         it should open the connection to the backend.
         """
-        raise NotImplementedError()
 
     def teardown(self):
         """
         This method will be called after each http request,
         it should close the connections to the backend.
         """
-        raise NotImplementedError()
 
     @classmethod
     def validate(cls, config):
