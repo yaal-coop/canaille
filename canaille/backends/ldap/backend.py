@@ -8,7 +8,6 @@ import ldif
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
-from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
 from flask import current_app
 from flask import request
@@ -98,35 +97,19 @@ class Backend(BaseBackend):
                 self.config["BACKENDS"]["LDAP"]["BIND_PW"],
             )
 
-        except ldap.SERVER_DOWN:
+        except ldap.SERVER_DOWN as exc:
             message = _("Could not connect to the LDAP server '{uri}'").format(
                 uri=self.config["BACKENDS"]["LDAP"]["URI"]
             )
             logging.error(message)
-            return (
-                render_template(
-                    "error.html",
-                    error_code=500,
-                    icon="database",
-                    description=message,
-                ),
-                500,
-            )
+            raise ConfigurationException(message) from exc
 
-        except ldap.INVALID_CREDENTIALS:
+        except ldap.INVALID_CREDENTIALS as exc:
             message = _("LDAP authentication failed with user '{user}'").format(
                 user=self.config["BACKENDS"]["LDAP"]["BIND_DN"]
             )
             logging.error(message)
-            return (
-                render_template(
-                    "error.html",
-                    error_code=500,
-                    icon="key",
-                    description=message,
-                ),
-                500,
-            )
+            raise ConfigurationException(message) from exc
 
     def teardown(self):
         try:  # pragma: no cover
