@@ -127,7 +127,9 @@ def create_app(config=None, validate=True, backend=None):
     sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
-        setup_backend(app, backend)
+        backend = setup_backend(app, backend)
+        if app.debug:
+            backend.install(app.config, True)
         setup_flask_converters(app)
         setup_blueprints(app)
         setup_jinja(app)

@@ -89,11 +89,10 @@ class BaseBackend:
             models.register(getattr(backend_models, model_name))
 
 
-def setup_backend(app, backend):
+def setup_backend(app, backend=None):
     if not backend:
-        backend_name = list(app.config.get("BACKENDS", {"memory": {}}).keys())[
-            0
-        ].lower()
+        backend_names = list(app.config.get("BACKENDS", {"memory": {}}).keys())
+        backend_name = backend_names[0].lower()
         module = importlib.import_module(f"canaille.backends.{backend_name}.backend")
         backend_class = getattr(module, "Backend")
         backend = backend_class(app.config)
@@ -103,8 +102,7 @@ def setup_backend(app, backend):
         g.backend = backend
         app.backend = backend
 
-    if app.debug:
-        backend.install(app.config, True)
+    return backend
 
 
 def available_backends():
