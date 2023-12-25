@@ -7,8 +7,8 @@
 
         <title>Canaille test client</title>
 
-        <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
-        <link href="/static/css/base.css" rel="stylesheet">
+        <link href="{{ url_for("static", filename="fomanticui/semantic.min.css") }}" rel="stylesheet">
+        <link href="{{ url_for("static", filename="css/base.css") }}" rel="stylesheet">
         {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
         {% block style %}{% endblock %}
     </head>
@@ -18,7 +18,7 @@
             <div class="ui masthead center aligned segment">
                 <div class="ui text container">
                     <h2 class="ui header">
-                        <img class="ui image" src="/static/img/canaille-head.webp" alt="Canaille client" />
+                        <img class="ui image" src="{{ url_for("static", filename="img/canaille-head.webp") }}" alt="Canaille client" />
                         <div class="content">
                             {{ name }}
                         </div>
@@ -139,9 +139,9 @@
             </div>
         </div>
 
-        <script src="/static/jquery/jquery.min.js" defer></script>
-        <script src="/static/fomanticui/semantic.min.js" defer></script>
-        <script src="/static/js/base.js" defer></script>
+        <script src="{{ url_for("static", filename="jquery/jquery.min.js") }}" defer></script>
+        <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
+        <script src="{{ url_for("static", filename="js/base.js") }}" defer></script>
         {% block script %}{% endblock %}
     </body>
 </html>

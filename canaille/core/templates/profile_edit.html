@@ -13,7 +13,7 @@
 {%- endblock -%}
 
 {% block script %}
-    <script src="/static/js/profile.js" defer></script>
+    <script src="{{ url_for("static", filename="js/profile.js") }}" defer></script>
 {% endblock %}
 
 {% block submenu %}

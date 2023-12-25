@@ -9,9 +9,9 @@
 
         <title>{% block title %}{{ website_name|default("Canaille") }} {% trans %}authorization interface{% endtrans %}{% endblock %}</title>
 
-        <link href="/static/fomanticui/semantic.min.css" rel="stylesheet">
-        <link href="/static/fonts/lato.css" rel="stylesheet">
-        <link href="/static/css/base.css" rel="stylesheet">
+        <link href="{{ url_for("static", filename="fomanticui/semantic.min.css") }}" rel="stylesheet">
+        <link href="{{ url_for("static", filename="fonts/lato.css") }}" rel="stylesheet">
+        <link href="{{ url_for("static", filename="css/base.css") }}" rel="stylesheet">
         {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
         {% block style %}{% endblock %}
     </head>
@@ -95,9 +95,9 @@
         <footer>
             <a href="{{ url_for('core.account.about') }}">{{ _("About canaille") }}</a>
         </footer>
-        <script src="/static/jquery/jquery.min.js" defer></script>
-        <script src="/static/fomanticui/semantic.min.js" defer></script>
-        <script src="/static/js/base.js" defer></script>
+        <script src="{{ url_for("static", filename="jquery/jquery.min.js") }}" defer></script>
+        <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
+        <script src="{{ url_for("static", filename="js/base.js") }}" defer></script>
         {% block script %}{% endblock %}
 
         TEST_THEME

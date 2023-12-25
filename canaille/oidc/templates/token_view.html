@@ -6,7 +6,7 @@
 {%- endblock -%}
 
 {% block script %}
-    <script src="/static/js/copy.js" defer></script>
+    <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
 {% endblock %}
 
 {% block submenu %}
