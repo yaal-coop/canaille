@@ -158,7 +158,7 @@ def id_token(testclient, client, user, backend):
         {},
         generate_user_info(user, client.scope),
         aud=client.client_id,
-        **get_jwt_config(None)
+        **get_jwt_config(None),
     )
 
 
