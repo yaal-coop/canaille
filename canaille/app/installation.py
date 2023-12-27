@@ -8,4 +8,4 @@ class InstallationException(Exception):
 
 def install(config, debug=False):
     install_oidc(config, debug=debug)
-    BaseBackend.get().install(config, debug=debug)
+    BaseBackend.get().install(config)

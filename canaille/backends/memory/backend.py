@@ -3,7 +3,7 @@ from canaille.backends import BaseBackend
 
 class Backend(BaseBackend):
     @classmethod
-    def install(cls, config, debug=False):
+    def install(cls, config):
         pass
 
     def setup(self):

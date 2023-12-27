@@ -25,8 +25,7 @@ def slapd_server():
             "demo/ldif/bootstrap-users-tree.ldif",
             "demo/ldif/bootstrap-users.ldif",
         ):
-            with open(ldif) as fd:
-                slapd.ldapadd(fd.read())
+            slapd.ldapadd(None, ["-f", ldif])
 
         yield slapd
     finally:

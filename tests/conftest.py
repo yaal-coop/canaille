@@ -127,6 +127,7 @@ def configuration(smtpd):
 @pytest.fixture
 def app(configuration, backend):
     app = create_app(configuration, backend=backend)
+    backend.install(app.config)
     with app.test_request_context():
         yield app
 

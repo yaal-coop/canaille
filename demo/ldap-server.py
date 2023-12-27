@@ -17,6 +17,7 @@ schemas = [
     "ldif/memberof-config.ldif",
     "ldif/refint-config.ldif",
     "ldif/ppolicy-config.ldif",
+    "../canaille/backends/ldap/schemas/oauth2-openldap.ldif",
 ]
 
 slapd = slapd.Slapd(
@@ -30,35 +31,18 @@ slapd = slapd.Slapd(
 slapd.start()
 
 try:
-    suffix_dc = slapd.suffix.split(",")[0][3:]
-    slapd.ldapadd(
-        "\n".join(
-            [
-                "dn: " + slapd.suffix,
-                "objectClass: dcObject",
-                "objectClass: organization",
-                "dc: " + suffix_dc,
-                "o: " + suffix_dc,
-                "",
-                "dn: " + slapd.root_dn,
-                "objectClass: applicationProcess",
-                "cn: " + slapd.root_cn,
-            ]
-        )
-        + "\n"
-    )
-
+    slapd.init_tree()
     for ldif in (
         "ldif/ppolicy.ldif",
         "ldif/bootstrap-users-tree.ldif",
         "ldif/bootstrap-oidc-tree.ldif",
     ):
-        with open(ldif) as fd:
-            try:
-                slapd.ldapadd(fd.read())
-            except RuntimeError:
-                pass
+        try:
+            slapd.ldapadd(None, ["-f", ldif])
+        except RuntimeError:
+            pass
 
+    slapd.logger.info("slapd initialized: all ldif files loaded")
     slapd.wait()
 finally:
     slapd.stop()

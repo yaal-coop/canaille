@@ -33,7 +33,7 @@ class BaseBackend:
         self.teardown()
 
     @classmethod
-    def install(self, config, debug=False):
+    def install(self, config):
         """
         This methods prepares the database to host canaille data.
         """

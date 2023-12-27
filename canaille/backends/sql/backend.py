@@ -19,7 +19,7 @@ class Backend(BaseBackend):
     db_session = None
 
     @classmethod
-    def install(cls, config, debug=False):  # pragma: no cover
+    def install(cls, config):  # pragma: no cover
         engine = create_engine(
             config["BACKENDS"]["SQL"]["SQL_DATABASE_URI"],
             echo=False,
