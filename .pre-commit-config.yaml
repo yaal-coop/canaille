@@ -20,6 +20,10 @@ repos:
     hooks:
       - id: reorder-python-imports
         args: ["--application-directories", "canaille"]
+  - repo: https://github.com/PyCQA/docformatter
+    rev: v1.7.5
+    hooks:
+      - id: docformatter
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:

@@ -26,9 +26,7 @@ def with_backendcontext(func):
 @with_appcontext
 @with_backendcontext
 def check():
-    """
-    Check the configuration file.
-    """
+    """Check the configuration file."""
     from canaille.app.configuration import ConfigurationException
     from canaille.app.configuration import validate
 
@@ -42,9 +40,7 @@ def check():
 @click.command()
 @with_appcontext
 def install():
-    """
-    Installs canaille elements from the configuration.
-    """
+    """Installs canaille elements from the configuration."""
     from canaille.app.installation import install
     from canaille.app.configuration import ConfigurationException
 

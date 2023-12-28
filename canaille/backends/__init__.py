@@ -34,36 +34,29 @@ class BaseBackend:
 
     @classmethod
     def install(self, config):
-        """
-        This methods prepares the database to host canaille data.
-        """
+        """This methods prepares the database to host canaille data."""
         raise NotImplementedError()
 
     def setup(self):
-        """
-        This method will be called before each http request,
-        it should open the connection to the backend.
-        """
+        """This method will be called before each http request, it should open
+        the connection to the backend."""
 
     def teardown(self):
-        """
-        This method will be called after each http request,
-        it should close the connections to the backend.
-        """
+        """This method will be called after each http request, it should close
+        the connections to the backend."""
 
     @classmethod
     def validate(cls, config):
-        """
-        This method should validate the config part dedicated to the backend.
+        """This method should validate the config part dedicated to the
+        backend.
+
         It should raise :class:`~canaille.configuration.ConfigurationError` when
         errors are met.
         """
         raise NotImplementedError()
 
     def has_account_lockability(self):
-        """
-        Indicates wether the backend supports locking user accounts.
-        """
+        """Indicates wether the backend supports locking user accounts."""
         raise NotImplementedError()
 
     def register_models(self):

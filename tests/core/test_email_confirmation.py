@@ -8,10 +8,8 @@ from flask import url_for
 
 
 def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
-    """
-    If email confirmation is disabled, users should be able to pick
-    any email.
-    """
+    """If email confirmation is disabled, users should be able to pick any
+    email."""
     testclient.app.config["EMAIL_CONFIRMATION"] = False
 
     res = testclient.get("/profile/user")
@@ -34,11 +32,9 @@ def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
 def test_confirmation_unset_smtp_disabled_email_editable(
     testclient, backend, logged_admin, user
 ):
-    """
-    If email confirmation is unset and no SMTP server has
-    been configured, then email confirmation cannot be enabled,
-    thus users must be able to pick any email.
-    """
+    """If email confirmation is unset and no SMTP server has been configured,
+    then email confirmation cannot be enabled, thus users must be able to pick
+    any email."""
     del testclient.app.config["SMTP"]
     testclient.app.config["EMAIL_CONFIRMATION"] = None
 
@@ -59,9 +55,9 @@ def test_confirmation_unset_smtp_disabled_email_editable(
 
 
 def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged_user):
-    """
-    If email confirmation is enabled and no SMTP server is configured,
-    this might be a misconfiguration, or a temporary SMTP disabling.
+    """If email confirmation is enabled and no SMTP server is configured, this
+    might be a misconfiguration, or a temporary SMTP disabling.
+
     In doubt, users cannot edit their emails.
     """
     del testclient.app.config["SMTP"]
@@ -78,10 +74,8 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
 def test_confirmation_unset_smtp_enabled_email_admin_editable(
     testclient, backend, logged_admin, user
 ):
-    """
-    Administrators should be able to edit user email addresses,
-    even when email confirmation is unset and SMTP is configured.
-    """
+    """Administrators should be able to edit user email addresses, even when
+    email confirmation is unset and SMTP is configured."""
     testclient.app.config["EMAIL_CONFIRMATION"] = None
 
     res = testclient.get("/profile/user")
@@ -103,10 +97,8 @@ def test_confirmation_unset_smtp_enabled_email_admin_editable(
 def test_confirmation_enabled_smtp_disabled_admin_editable(
     testclient, backend, logged_admin, user
 ):
-    """
-    Administrators should be able to edit user email addresses,
-    even when email confirmation is enabled and SMTP is disabled.
-    """
+    """Administrators should be able to edit user email addresses, even when
+    email confirmation is enabled and SMTP is disabled."""
     testclient.app.config["EMAIL_CONFIRMATION"] = True
     del testclient.app.config["SMTP"]
 
@@ -129,11 +121,8 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
 def test_confirmation_unset_smtp_enabled_email_user_validation(
     smtpd, testclient, backend, user
 ):
-    """
-    If email confirmation is unset and there is a SMTP server
-    configured, then users emails should be validated by sending
-    a confirmation email.
-    """
+    """If email confirmation is unset and there is a SMTP server configured,
+    then users emails should be validated by sending a confirmation email."""
     testclient.app.config["EMAIL_CONFIRMATION"] = None
 
     with freezegun.freeze_time("2020-01-01 01:00:00"):
@@ -188,9 +177,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
 
 
 def test_confirmation_invalid_link(testclient, backend, user):
-    """
-    Random confirmation links should fail.
-    """
+    """Random confirmation links should fail."""
     res = testclient.get("/email-confirmation/invalid/invalid")
     assert (
         "error",
@@ -199,9 +186,7 @@ def test_confirmation_invalid_link(testclient, backend, user):
 
 
 def test_confirmation_mail_form_failed(testclient, backend, user):
-    """
-    Tests when an error happens during the mail sending.
-    """
+    """Tests when an error happens during the mail sending."""
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get("/login")
         res.form["login"] = "user"
@@ -227,9 +212,7 @@ def test_confirmation_mail_form_failed(testclient, backend, user):
 
 @mock.patch("smtplib.SMTP")
 def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
-    """
-    Tests when an error happens during the mail sending.
-    """
+    """Tests when an error happens during the mail sending."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get("/login")
@@ -255,9 +238,7 @@ def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
 
 
 def test_confirmation_expired_link(testclient, backend, user):
-    """
-    Expired valid confirmation links should fail.
-    """
+    """Expired valid confirmation links should fail."""
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
@@ -282,9 +263,7 @@ def test_confirmation_expired_link(testclient, backend, user):
 
 
 def test_confirmation_invalid_hash_link(testclient, backend, user):
-    """
-    Confirmation link with invalid hashes should fail.
-    """
+    """Confirmation link with invalid hashes should fail."""
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
@@ -309,10 +288,10 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
 
 
 def test_confirmation_invalid_user_link(testclient, backend, user):
-    """
-    Confirmation link about an unexisting user should fail.
-    For instance, when the user account has been deleted between
-    the mail is sent and the link is clicked.
+    """Confirmation link about an unexisting user should fail.
+
+    For instance, when the user account has been deleted between the
+    mail is sent and the link is clicked.
     """
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
@@ -338,9 +317,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
 
 
 def test_confirmation_email_already_confirmed_link(testclient, backend, user, admin):
-    """
-    Clicking twice on a confirmation link should fail.
-    """
+    """Clicking twice on a confirmation link should fail."""
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
@@ -365,10 +342,11 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
 
 
 def test_confirmation_email_already_used_link(testclient, backend, user, admin):
-    """
-    Confirmation link should fail if the target email is already associated
-    to another account. For instance, if an administrator already put
-    this email to someone else's profile.
+    """Confirmation link should fail if the target email is already associated
+    to another account.
+
+    For instance, if an administrator already put this email to someone
+    else's profile.
     """
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
@@ -394,10 +372,8 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
 
 
 def test_delete_email(testclient, logged_user):
-    """
-    Tests that user can deletes its emails unless they have only
-    one left.
-    """
+    """Tests that user can deletes its emails unless they have only one
+    left."""
     res = testclient.get("/profile/user")
     assert "email_remove" not in res.forms["emailconfirmationform"].fields
 
@@ -416,10 +392,7 @@ def test_delete_email(testclient, logged_user):
 
 
 def test_delete_wrong_email(testclient, logged_user):
-    """
-    Tests that removing an already removed email do not
-    produce anything.
-    """
+    """Tests that removing an already removed email do not produce anything."""
     logged_user.emails = logged_user.emails + ["new@email.com"]
     logged_user.save()
 
@@ -440,9 +413,7 @@ def test_delete_wrong_email(testclient, logged_user):
 
 
 def test_delete_last_email(testclient, logged_user):
-    """
-    Tests that users cannot remove their last email address.
-    """
+    """Tests that users cannot remove their last email address."""
     logged_user.emails = logged_user.emails + ["new@email.com"]
     logged_user.save()
 
@@ -463,10 +434,8 @@ def test_delete_last_email(testclient, logged_user):
 
 
 def test_edition_forced_mail(testclient, logged_user):
-    """
-    Tests that users that must perform email verification
-    cannot force the profile form.
-    """
+    """Tests that users that must perform email verification cannot force the
+    profile form."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     testclient.post(
@@ -483,10 +452,8 @@ def test_edition_forced_mail(testclient, logged_user):
 
 
 def test_invitation_form_mail_field_readonly(testclient):
-    """
-    Tests that the email field is readonly in the invitation
-    form creation if email confirmation is enabled.
-    """
+    """Tests that the email field is readonly in the invitation form creation
+    if email confirmation is enabled."""
     testclient.app.config["EMAIL_CONFIRMATION"] = True
 
     payload = RegistrationPayload(
@@ -504,10 +471,8 @@ def test_invitation_form_mail_field_readonly(testclient):
 
 
 def test_invitation_form_mail_field_writable(testclient):
-    """
-    Tests that the email field is writable in the invitation
-    form creation if email confirmation is disabled.
-    """
+    """Tests that the email field is writable in the invitation form creation
+    if email confirmation is disabled."""
     testclient.app.config["EMAIL_CONFIRMATION"] = False
 
     payload = RegistrationPayload(

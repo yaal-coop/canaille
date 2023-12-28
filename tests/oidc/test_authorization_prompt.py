@@ -1,5 +1,5 @@
-"""
-Tests the behavior of Canaille depending on the OIDC 'prompt' parameter.
+"""Tests the behavior of Canaille depending on the OIDC 'prompt' parameter.
+
 https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint
 """
 import datetime
@@ -13,9 +13,7 @@ from flask import url_for
 
 
 def test_prompt_none(testclient, logged_user, client):
-    """
-    Nominal case with prompt=none
-    """
+    """Nominal case with prompt=none."""
     consent = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client,
@@ -43,16 +41,14 @@ def test_prompt_none(testclient, logged_user, client):
 
 
 def test_prompt_not_logged(testclient, user, client):
-    """
-    prompt=none should return a login_required error when no
-    user is logged in.
+    """Prompt=none should return a login_required error when no user is logged
+    in.
 
-    login_required
-        The Authorization Server requires End-User authentication.
-        This error MAY be returned when the prompt parameter value in the
-        Authentication Request is none, but the Authentication Request
-        cannot be completed without displaying a user interface for End-User
-        authentication.
+    login_required     The Authorization Server requires End-User
+    authentication.     This error MAY be returned when the prompt
+    parameter value in the     Authentication Request is none, but the
+    Authentication Request     cannot be completed without displaying a
+    user interface for End-User     authentication.
     """
     consent = models.Consent(
         consent_id=str(uuid.uuid4()),
@@ -79,15 +75,14 @@ def test_prompt_not_logged(testclient, user, client):
 
 
 def test_prompt_no_consent(testclient, logged_user, client):
-    """
-    prompt=none should return a consent_required error when user
-    are logged in but have not granted their consent.
+    """Prompt=none should return a consent_required error when user are logged
+    in but have not granted their consent.
 
-    consent_required
-    The Authorization Server requires End-User consent. This error MAY be
-    returned when the prompt parameter value in the Authentication Request
-    is none, but the Authentication Request cannot be completed without
-    displaying a user interface for End-User consent.
+    consent_required The Authorization Server requires End-User consent.
+    This error MAY be returned when the prompt parameter value in the
+    Authentication Request is none, but the Authentication Request
+    cannot be completed without displaying a user interface for End-User
+    consent.
     """
     res = testclient.get(
         "/oauth/authorize",
@@ -104,10 +99,8 @@ def test_prompt_no_consent(testclient, logged_user, client):
 
 
 def test_prompt_create_logged(testclient, logged_user, client):
-    """
-    If prompt=create and user is already logged in,
-    then go straight to the consent page.
-    """
+    """If prompt=create and user is already logged in, then go straight to the
+    consent page."""
     testclient.app.config["ENABLE_REGISTRATION"] = True
 
     consent = models.Consent(
@@ -135,16 +128,15 @@ def test_prompt_create_logged(testclient, logged_user, client):
 
 
 def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
-    """
-    If prompt=create but Canaille registration is disabled,
-    an error response should be returned.
+    """If prompt=create but Canaille registration is disabled, an error
+    response should be returned.
 
-         If the OpenID Provider receives a prompt value that it does
-         not support (not declared in the prompt_values_supported
-         metadata field) the OP SHOULD respond with an HTTP 400 (Bad
-         Request) status code and an error value of invalid_request.
-         It is RECOMMENDED that the OP return an error_description
-         value identifying the invalid parameter value.
+    If the OpenID Provider receives a prompt value that it does not
+    support (not declared in the prompt_values_supported metadata field)
+    the OP SHOULD respond with an HTTP 400 (Bad Request) status code and
+    an error value of invalid_request. It is RECOMMENDED that the OP
+    return an error_description value identifying the invalid parameter
+    value.
     """
     res = testclient.get(
         "/oauth/authorize",
@@ -164,11 +156,11 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
 
 
 def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
-    """
-    If prompt=create and user is not logged in,
-    then display the registration form.
-    Check that the user is correctly redirected to
-    the client page after the registration process.
+    """If prompt=create and user is not logged in, then display the
+    registration form.
+
+    Check that the user is correctly redirected to the client page after
+    the registration process.
     """
     testclient.app.config["ENABLE_REGISTRATION"] = True
 

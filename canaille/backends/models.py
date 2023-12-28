@@ -4,9 +4,7 @@ from canaille.app import classproperty
 
 
 class Model:
-    """
-    Model abstract class.
-    """
+    """Model abstract class."""
 
     @classproperty
     def attributes(cls):
@@ -36,44 +34,37 @@ class Model:
 
     @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
-        """
-        Works like :meth:`~canaille.backends.models.query` but attribute values
-        loosely be matched.
-        """
+        """Works like :meth:`~canaille.backends.models.query` but attribute
+        values loosely be matched."""
         raise NotImplementedError()
 
     @classmethod
     def get(cls, identifier=None, **kwargs):
-        """
-        Works like :meth:`~canaille.backends.models.query` but return only one
-        element or :const:`None` if no item is matching.
-        """
+        """Works like :meth:`~canaille.backends.models.query` but return only
+        one element or :const:`None` if no item is matching."""
         raise NotImplementedError()
 
     @property
     def identifier(self):
-        """
-        Returns a unique value that will be used to identify the model instance.
-        This value will be used in URLs in canaille, so it should be unique and short.
+        """Returns a unique value that will be used to identify the model
+        instance.
+
+        This value will be used in URLs in canaille, so it should be
+        unique and short.
         """
         raise NotImplementedError()
 
     def save(self):
-        """
-        Validates the current modifications in the database.
-        """
+        """Validates the current modifications in the database."""
         raise NotImplementedError()
 
     def delete(self):
-        """
-        Removes the current instance from the database.
-        """
+        """Removes the current instance from the database."""
         raise NotImplementedError()
 
     def update(self, **kwargs):
-        """
-        Assign a whole dict to the current instance. This is useful to update
-        models based on forms.
+        """Assign a whole dict to the current instance. This is useful to
+        update models based on forms.
 
         >>> user = User.get(user_name="george")
         >>> user.first_name
@@ -89,8 +80,7 @@ class Model:
             setattr(self, attribute, value)
 
     def reload(self):
-        """
-        Cancels the unsaved modifications.
+        """Cancels the unsaved modifications.
 
         >>> user = User.get(user_name="george")
         >>> user.display_name

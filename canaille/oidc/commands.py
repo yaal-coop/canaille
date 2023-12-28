@@ -8,9 +8,7 @@ from flask.cli import with_appcontext
 @with_appcontext
 @with_backendcontext
 def clean():
-    """
-    Remove expired tokens and authorization codes.
-    """
+    """Remove expired tokens and authorization codes."""
     for t in models.Token.query():
         if t.is_expired():
             t.delete()

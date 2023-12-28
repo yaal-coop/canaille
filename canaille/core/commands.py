@@ -13,9 +13,7 @@ except ImportError:
 @click.pass_context
 @with_appcontext
 def populate(ctx, nb):
-    """
-    Populate the database with generated random data.
-    """
+    """Populate the database with generated random data."""
     ctx.ensure_object(dict)
 
     ctx.obj["number"] = nb
@@ -26,9 +24,7 @@ def populate(ctx, nb):
 @with_appcontext
 @with_backendcontext
 def users(ctx):
-    """
-    Populate the database with generated random users.
-    """
+    """Populate the database with generated random users."""
 
     from canaille.core.populate import fake_users
 
@@ -45,9 +41,7 @@ def users(ctx):
 @with_appcontext
 @with_backendcontext
 def groups(ctx, nb_users_max):
-    """
-    Populate the database with generated random groups.
-    """
+    """Populate the database with generated random groups."""
 
     from canaille.core.populate import fake_groups
 

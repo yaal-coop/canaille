@@ -32,9 +32,7 @@ def current_user():
 
 
 def login_user(user):
-    """
-    Opens a session for the user.
-    """
+    """Opens a session for the user."""
     g.user = user
     try:
         previous = (
@@ -48,9 +46,7 @@ def login_user(user):
 
 
 def logout_user():
-    """
-    Closes the user session.
-    """
+    """Closes the user session."""
     try:
         session["user_id"].pop()
         del g.user

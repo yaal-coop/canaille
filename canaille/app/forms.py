@@ -71,9 +71,7 @@ class HTMXFormMixin:
     render_field_extra_context = {}
 
     def field_from_name(self, field_name):
-        """
-        Returns a tuple containing a field and its rendering context
-        """
+        """Returns a tuple containing a field and its rendering context."""
         if self.SEPARATOR not in field_name:
             field = self[field_name] if field_name in self else None
             return field, {}
@@ -89,10 +87,11 @@ class HTMXFormMixin:
         return fieldlist[indice], context
 
     def validate(self, *args, **kwargs):
-        """
-        If the request is a HTMX request, this will only render the field
-        that triggered the request (after having validated the form). This
-        uses the Flask abort method to interrupt the flow with an exception.
+        """If the request is a HTMX request, this will only render the field
+        that triggered the request (after having validated the form).
+
+        This uses the Flask abort method to interrupt the flow with an
+        exception.
         """
         if not request_is_htmx():
             return super().validate(*args, **kwargs)
@@ -120,10 +119,8 @@ class HTMXFormMixin:
         abort(response)
 
     def form_control(self):
-        """
-        Checks wether the current request is the result of the users
-        adding or removing a field from a FieldList.
-        """
+        """Checks wether the current request is the result of the users adding
+        or removing a field from a FieldList."""
         FIELDLIST_ADD_BUTTON = "fieldlist_add"
         FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"
 

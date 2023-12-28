@@ -15,10 +15,8 @@ class ConfigurationException(Exception):
 
 
 def parse_file_keys(config):
-    """
-    Replaces configuration entries with the '_FILE' suffix with
-    the matching file content.
-    """
+    """Replaces configuration entries with the '_FILE' suffix with the matching
+    file content."""
 
     SUFFIX = "_FILE"
     new_config = {}
