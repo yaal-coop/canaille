@@ -40,6 +40,7 @@ def test_get(testclient, backend, client, user, client_jwks):
             "hybrid",
             "refresh_token",
             "client_credentials",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         "response_types": ["code", "token", "id_token"],
         "client_name": "Some client",

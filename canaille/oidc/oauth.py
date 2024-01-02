@@ -1,8 +1,11 @@
 import datetime
 import json
 
+import requests
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
+from authlib.jose import JsonWebKey
+from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
 )
@@ -14,6 +17,8 @@ from authlib.oauth2.rfc6749.grants import (
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
+from authlib.oauth2.rfc7523 import JWTBearerClientAssertion
+from authlib.oauth2.rfc7523 import JWTBearerGrant as _JWTBearerGrant
 from authlib.oauth2.rfc7591 import (
     ClientRegistrationEndpoint as _ClientRegistrationEndpoint,
 )
@@ -36,9 +41,11 @@ from werkzeug.security import gen_salt
 
 from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
+from canaille.app.flask import cache
 from canaille.backends import Backend
 
 AUTHORIZATION_CODE_LIFETIME = 84400
+JWT_JTI_CACHE_LIFETIME = 3600
 
 
 def oauth_authorization_server():
@@ -168,6 +175,28 @@ def get_jwks():
     }
 
 
+def get_client_jwks(client, kid=None):
+    """Get the client JWK set, either stored locally or by downloading them from the URI the client indicated."""
+
+    @cache.cached(timeout=50, key_prefix=f"jwks_{client.client_id}")
+    def get_jwks():
+        return requests.get(client.jwks_uri).json()
+
+    if client.jwks_uri:
+        raw_jwks = get_jwks()
+        key_set = JsonWebKey.import_key_set(raw_jwks)
+        jwk = key_set.find_by_kid(kid)
+        return jwk
+
+    if client.jwks:
+        raw_jwks = json.loads(client.jwks)
+        key_set = JsonWebKey.import_key_set(raw_jwks)
+        jwk = key_set.find_by_kid(kid)
+        return jwk
+
+    return None
+
+
 def claims_from_scope(scope):
     claims = {"sub"}
     if "profile" in scope:
@@ -246,8 +275,30 @@ def save_authorization_code(code, request):
     return code.code
 
 
+class JWTClientAuth(JWTBearerClientAssertion):
+    def validate_jti(self, claims, jti):
+        """Indicate whether the jti was used before."""
+        key = "jti:{}-{}".format(claims["sub"], jti)
+        if cache.get(key):
+            return False
+        cache.set(key, 1, timeout=JWT_JTI_CACHE_LIFETIME)
+        return True
+
+    def resolve_client_public_key(self, client, headers):
+        jwk = get_client_jwks(client)
+        if not jwk:
+            raise InvalidClientError(description="No matching JWK")
+
+        return jwk
+
+
 class AuthorizationCodeGrant(_AuthorizationCodeGrant):
-    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+    TOKEN_ENDPOINT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        "none",
+    ]
 
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
@@ -312,6 +363,27 @@ class RefreshTokenGrant(_RefreshTokenGrant):
     def revoke_old_credential(self, credential):
         credential.revokation_date = datetime.datetime.now(datetime.timezone.utc)
         Backend.instance.save(credential)
+
+
+class JWTBearerGrant(_JWTBearerGrant):
+    def resolve_issuer_client(self, issuer):
+        return Backend.instance.get(models.Client, client_id=issuer)
+
+    def resolve_client_key(self, client, headers, payload):
+        jwk = get_client_jwks(client, headers.get("kid"))
+        if not jwk:
+            raise InvalidClientError(description="No matching JWK")
+        return jwk
+
+    def authenticate_user(self, subject: str):
+        return Backend.instance.get_user_from_login(subject)
+
+    def has_granted_permission(self, client, user):
+        grant = Backend.instance.get(models.Consent, client=client, subject=user)
+        has_permission = (grant and not grant.revoked) or (
+            not grant and client.preconsent
+        )
+        return has_permission
 
 
 class OpenIDImplicitGrant(_OpenIDImplicitGrant):
@@ -562,7 +634,14 @@ def setup_oauth(app):
     authorization.register_grant(PasswordGrant)
     authorization.register_grant(ImplicitGrant)
     authorization.register_grant(RefreshTokenGrant)
+    authorization.register_grant(JWTBearerGrant)
     authorization.register_grant(ClientCredentialsGrant)
+
+    with app.app_context():
+        authorization.register_client_auth_method(
+            JWTClientAuth.CLIENT_AUTH_METHOD,
+            JWTClientAuth(url_for("oidc.endpoints.issue_token", _external=True)),
+        )
 
     authorization.register_grant(
         AuthorizationCodeGrant,
