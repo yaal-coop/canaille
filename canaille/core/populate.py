@@ -8,15 +8,14 @@ from faker.config import AVAILABLE_LOCALES
 
 def faker_generator(locales=None):
     locales = locales or list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
-    return [faker.Faker(locale) for locale in locales]
+    return faker.Faker(locales)
 
 
 def fake_users(nb=1):
-    fakes = faker_generator()
     users = list()
     for _ in range(nb):
         try:
-            fake = random.choice(fakes)
+            fake = faker_generator()
             name = fake.unique.name()
             user = models.User(
                 formatted_name=name,
@@ -45,10 +44,10 @@ def fake_users(nb=1):
 
 
 def fake_groups(nb=1, nb_users_max=1):
-    fake = faker_generator(["en_US"])[0]
     users = models.User.query()
     groups = list()
     for _ in range(nb):
+        fake = faker_generator(["en_US"])
         try:
             group = models.Group(
                 display_name=fake.unique.word(),
