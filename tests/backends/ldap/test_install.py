@@ -79,9 +79,9 @@ def test_install_schemas_twice(configuration, slapd_server):
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
     configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"][
-        "BIND_DN"
-    ] = "uid=admin,ou=users,dc=mydomain,dc=tld"
+    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = (
+        "uid=admin,ou=users,dc=mydomain,dc=tld"
+    )
     configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "admin"
 
     with Backend(configuration).session():

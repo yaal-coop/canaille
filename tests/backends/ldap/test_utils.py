@@ -306,8 +306,8 @@ def test_login_placeholder(testclient):
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "john@doe.com"
 
-    testclient.app.config["BACKENDS"]["LDAP"][
-        "USER_FILTER"
-    ] = "(|(uid={{ login }})(mail={{ login }}))"
+    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = (
+        "(|(uid={{ login }})(mail={{ login }}))"
+    )
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe or john@doe.com"

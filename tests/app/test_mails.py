@@ -146,9 +146,9 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
         raw_logo = fd.read()
 
     httpserver.expect_request(logo_path).respond_with_data(raw_logo)
-    testclient.app.config[
-        "LOGO"
-    ] = f"http://{httpserver.host}:{httpserver.port}{logo_path}"
+    testclient.app.config["LOGO"] = (
+        f"http://{httpserver.host}:{httpserver.port}{logo_path}"
+    )
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
