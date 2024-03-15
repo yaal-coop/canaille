@@ -67,16 +67,13 @@ ENABLE_REGISTRATION = true
 # Defaults to 2 days
 # INVITATION_EXPIRATION = 172800
 
-[LOGGING]
-# LEVEL can be one value among:
-# DEBUG, INFO, WARNING, ERROR, CRITICAL
-# Defaults to WARNING
-# LEVEL = "WARNING"
-LEVEL = "DEBUG"
-
-# The path of the log file. If not set (the default) logs are
-# written in the standard error output.
-# PATH = ""
+# LOGGING configures the logging output:
+# - if unset, everything is logged in the standard output
+#   the log level is debug if DEBUG is True, else this is INFO
+# - if this is a dictionnary, it is passed to the python dictConfig method:
+#   https://docs.python.org/3/library/logging.config.html#logging.config.dictConfig
+# - if this is a string, it is passed to the python fileConfig method
+#   https://docs.python.org/3/library/logging.config.html#logging.config.fileConfig
 
 [BACKENDS.SQL]
 # The SQL database connection string

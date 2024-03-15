@@ -207,7 +207,9 @@ def test_first_login_form_error(testclient, backend, smtpd):
 
     res = testclient.get("/firstlogin/temp", status=200)
     res.form["csrf_token"] = "invalid"
-    res = res.form.submit(name="action", value="sendmail", status=400)
+    res = res.form.submit(
+        name="action", value="sendmail", status=400, expect_errors=True
+    )
     assert len(smtpd.messages) == 0
     u.delete()
 

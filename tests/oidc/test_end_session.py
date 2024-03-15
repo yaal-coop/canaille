@@ -379,7 +379,7 @@ def test_no_jwt_bad_csrf(testclient, backend, logged_user, client):
 
     form = res.form
     form["csrf_token"] = "foobar"
-    res = form.submit(name="answer", value="logout", status=400)
+    res = form.submit(name="answer", value="logout", status=400, expect_errors=True)
 
 
 def test_end_session_already_disconnected(testclient, backend, user, client, id_token):
