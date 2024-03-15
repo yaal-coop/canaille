@@ -45,12 +45,60 @@ def test_no_configuration():
     assert "No configuration file found." in str(exc)
 
 
-def test_logging_to_file(configuration, backend, tmp_path, smtpd, admin):
+def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
     assert len(smtpd.messages) == 0
-    log_path = os.path.join(tmp_path, "canaille.log")
+    log_path = os.path.join(tmp_path, "canaille-by-file.log")
+
+    file_content = LOGGING_CONF_FILE_CONTENT.format(log_path=log_path)
+    config_file_path = tmp_path / "logging.conf"
+    with open(config_file_path, "w") as fd:
+        fd.write(file_content)
+
+    logging_configuration = {**configuration, "LOGGING": config_file_path}
+    app = create_app(logging_configuration, backend=backend)
+
+    testclient = TestApp(app)
+    with testclient.session_transaction() as sess:
+        sess["user_id"] = [admin.id]
+
+    res = testclient.get("/admin/mail")
+    res.form["email"] = "test@test.com"
+    res = res.form.submit()
+
+    assert len(smtpd.messages) == 1
+    assert "Test email from" in smtpd.messages[0].get("Subject")
+
+    with open(log_path) as fd:
+        log_content = fd.read()
+
+    assert "Sending a mail to test@test.com: Test email from" in log_content
+
+
+def test_dict_log_config(configuration, backend, tmp_path, smtpd, admin):
+    assert len(smtpd.messages) == 0
+    log_path = os.path.join(tmp_path, "canaille-by-dict.log")
     logging_configuration = {
         **configuration,
-        "LOGGING": {"LEVEL": "DEBUG", "PATH": log_path},
+        "LOGGING": {
+            "version": 1,
+            "formatters": {
+                "default": {
+                    "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+                }
+            },
+            "handlers": {
+                "wsgi": {
+                    "class": "logging.handlers.WatchedFileHandler",
+                    "filename": log_path,
+                    "formatter": "default",
+                }
+            },
+            "root": {"level": "DEBUG", "handlers": ["wsgi"]},
+            "loggers": {
+                "faker": {"level": "WARNING"},
+            },
+            "disable_existing_loggers": False,
+        },
     }
     app = create_app(logging_configuration, backend=backend)
 
@@ -69,3 +117,27 @@ def test_logging_to_file(configuration, backend, tmp_path, smtpd, admin):
         log_content = fd.read()
 
     assert "Sending a mail to test@test.com: Test email from" in log_content
+
+
+LOGGING_CONF_FILE_CONTENT = """
+[loggers]
+keys=root
+
+[handlers]
+keys=wsgi
+
+[formatters]
+keys=default
+
+[logger_root]
+level=DEBUG
+handlers=wsgi
+
+[handler_wsgi]
+class=logging.handlers.WatchedFileHandler
+args=('{log_path}',)
+formatter=default
+
+[formatter_default]
+format=[%(asctime)s] %(levelname)s in %(module)s: %(message)s
+"""

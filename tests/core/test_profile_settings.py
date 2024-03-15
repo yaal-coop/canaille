@@ -289,7 +289,12 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
 
 
 def test_admin_bad_request(testclient, logged_admin):
-    testclient.post("/profile/admin/settings", {"action": "foobar"}, status=400)
+    res = testclient.get("/profile/admin/settings")
+    testclient.post(
+        "/profile/admin/settings",
+        {"action": "foobar", "csrf_token": res.form["csrf_token"].value},
+        status=400,
+    )
     testclient.get("/profile/foobar/settings", status=404)
 
 

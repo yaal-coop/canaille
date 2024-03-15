@@ -1,5 +1,6 @@
 import datetime
 from logging.config import dictConfig
+from logging.config import fileConfig
 
 from flask import Flask
 from flask import request
@@ -25,36 +26,38 @@ def setup_sentry(app):  # pragma: no cover
 
 
 def setup_logging(app):
-    log_level = app.config.get("LOGGING", {}).get("LEVEL", "WARNING")
-    if not app.config.get("LOGGING", {}).get("PATH"):
-        handler = {
-            "class": "logging.StreamHandler",
-            "stream": "ext://flask.logging.wsgi_errors_stream",
-            "formatter": "default",
-        }
-    else:
-        handler = {
-            "class": "logging.handlers.WatchedFileHandler",
-            "filename": app.config["LOGGING"]["PATH"],
-            "formatter": "default",
-        }
+    conf = app.config.get("LOGGING")
+    if conf is None:
+        log_level = "DEBUG" if app.debug else "INFO"
+        dictConfig(
+            {
+                "version": 1,
+                "formatters": {
+                    "default": {
+                        "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+                    }
+                },
+                "handlers": {
+                    "wsgi": {
+                        "class": "logging.StreamHandler",
+                        "stream": "ext://flask.logging.wsgi_errors_stream",
+                        "formatter": "default",
+                    }
+                },
+                "root": {"level": log_level, "handlers": ["wsgi"]},
+                "loggers": {
+                    "faker": {"level": "WARNING"},
+                    "mail.log": {"level": "WARNING"},
+                },
+                "disable_existing_loggers": False,
+            }
+        )
 
-    dictConfig(
-        {
-            "version": 1,
-            "formatters": {
-                "default": {
-                    "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
-                }
-            },
-            "handlers": {"wsgi": handler},
-            "root": {"level": log_level, "handlers": ["wsgi"]},
-            "loggers": {
-                "faker": {"level": "WARNING"},
-            },
-            "disable_existing_loggers": False,
-        }
-    )
+    elif isinstance(conf, dict):
+        dictConfig(conf)
+
+    else:
+        fileConfig(conf, disable_existing_loggers=False)
 
 
 def setup_jinja(app):
