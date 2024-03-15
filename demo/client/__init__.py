@@ -4,14 +4,13 @@ from urllib.parse import urlunsplit
 from authlib.common.errors import AuthlibBaseError
 from authlib.integrations.flask_client import OAuth
 from authlib.oidc.discovery import get_well_known_url
+from flask import Flask
 from flask import current_app
 from flask import flash
-from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import session
 from flask import url_for
-
 
 oauth = OAuth()
 

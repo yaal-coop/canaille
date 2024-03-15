@@ -2,7 +2,6 @@ import datetime
 import os
 import sys
 
-
 if os.path.exists("../canaille"):
     sys.path.append("../canaille")
 

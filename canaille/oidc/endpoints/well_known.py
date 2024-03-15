@@ -5,7 +5,6 @@ from flask import request
 from ..oauth import oauth_authorization_server
 from ..oauth import openid_configuration
 
-
 bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
 

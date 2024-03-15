@@ -3,10 +3,11 @@ import datetime
 import pytest
 import wtforms
 from babel.dates import LOCALTZ
-from canaille.app.forms import DateTimeUTCField
-from canaille.app.forms import phone_number
 from flask import current_app
 from werkzeug.datastructures import ImmutableMultiDict
+
+from canaille.app.forms import DateTimeUTCField
+from canaille.app.forms import phone_number
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):

@@ -4,11 +4,12 @@ import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
+from werkzeug.security import gen_salt
+
 from canaille.app import models
 from canaille.oidc.installation import generate_keypair
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
-from werkzeug.security import gen_salt
 
 
 @pytest.fixture

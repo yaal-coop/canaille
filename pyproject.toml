@@ -170,7 +170,7 @@ exclude_lines = [
     "if app.debug",
 ]
 
-[tool.ruff]
+[tool.ruff.lint]
 ignore = ["E501", "E722"]
 
 [tool.tox]

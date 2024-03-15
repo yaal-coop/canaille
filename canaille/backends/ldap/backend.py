@@ -5,11 +5,12 @@ from contextlib import contextmanager
 
 import ldap.modlist
 import ldif
+from flask import current_app
+
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
 from canaille.backends import BaseBackend
-from flask import current_app
 
 from .utils import listify
 
@@ -188,8 +189,9 @@ class Backend(BaseBackend):
 
 
 def setup_ldap_models(config):
-    from .ldapobject import LDAPObject
     from canaille.app import models
+
+    from .ldapobject import LDAPObject
 
     LDAPObject.root_dn = config["BACKENDS"]["LDAP"]["ROOT_DN"]
 

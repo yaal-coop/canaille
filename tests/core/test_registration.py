@@ -1,9 +1,10 @@
 from unittest import mock
 
 import freezegun
+from flask import url_for
+
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
-from flask import url_for
 
 
 def test_registration_without_email_validation(testclient, backend, foo_group):

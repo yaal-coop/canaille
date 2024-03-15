@@ -1,4 +1,5 @@
 import pytest
+
 from canaille.backends.ldap.backend import Backend
 from tests.backends.ldap import CustomSlapdObject
 

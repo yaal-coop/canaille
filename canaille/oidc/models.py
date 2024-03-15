@@ -4,6 +4,7 @@ from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
+
 from canaille.app import models
 
 from .basemodels import AuthorizationCode as BaseAuthorizationCode

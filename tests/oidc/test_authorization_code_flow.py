@@ -4,10 +4,11 @@ from urllib.parse import urlsplit
 import freezegun
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
-from canaille.app import models
-from canaille.oidc.oauth import setup_oauth
 from flask import g
 from werkzeug.security import gen_salt
+
+from canaille.app import models
+from canaille.oidc.oauth import setup_oauth
 
 from . import client_credentials
 

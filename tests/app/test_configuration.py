@@ -1,10 +1,11 @@
 import os
 
 import pytest
+from flask_webtest import TestApp
+
 from canaille import create_app
 from canaille.app.configuration import ConfigurationException
 from canaille.app.configuration import validate
-from flask_webtest import TestApp
 
 
 def test_configuration_file_suffix(tmp_path, backend, configuration):

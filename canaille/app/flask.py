@@ -3,15 +3,16 @@ from functools import wraps
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
-from canaille.app import models
-from canaille.app.i18n import gettext as _
-from canaille.app.themes import render_template
 from flask import abort
 from flask import current_app
 from flask import g
 from flask import request
 from flask import session
 from werkzeug.routing import BaseConverter
+
+from canaille.app import models
+from canaille.app.i18n import gettext as _
+from canaille.app.themes import render_template
 
 
 def current_user():

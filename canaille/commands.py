@@ -1,9 +1,10 @@
+import click
+from flask.cli import FlaskGroup
+
 import canaille.app.commands
 import canaille.core.commands
 import canaille.oidc.commands
-import click
 from canaille import create_app
-from flask.cli import FlaskGroup
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)

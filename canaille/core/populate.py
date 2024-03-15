@@ -1,9 +1,10 @@
 import random
 
 import faker
+from faker.config import AVAILABLE_LOCALES
+
 from canaille.app import models
 from canaille.app.i18n import available_language_codes
-from faker.config import AVAILABLE_LOCALES
 
 
 def faker_generator(locales=None):

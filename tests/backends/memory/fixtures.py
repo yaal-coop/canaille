@@ -1,4 +1,5 @@
 import pytest
+
 from canaille.backends.memory.backend import Backend
 
 

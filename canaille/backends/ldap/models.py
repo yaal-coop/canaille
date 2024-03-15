@@ -1,10 +1,11 @@
-import canaille.core.models
-import canaille.oidc.models
 import ldap.filter
 from flask import current_app
 from ldap.controls import DecodeControlTuples
 from ldap.controls.ppolicy import PasswordPolicyControl
 from ldap.controls.ppolicy import PasswordPolicyError
+
+import canaille.core.models
+import canaille.oidc.models
 
 from .backend import Backend
 from .ldapobject import LDAPObject

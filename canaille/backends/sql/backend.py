@@ -1,8 +1,8 @@
-from canaille.backends import BaseBackend
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session
+from sqlalchemy.orm import declarative_base
 
+from canaille.backends import BaseBackend
 
 Base = declarative_base()
 

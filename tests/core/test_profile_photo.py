@@ -1,7 +1,8 @@
 import datetime
 
-from canaille.app import models
 from webtest import Upload
+
+from canaille.app import models
 
 
 def test_photo(testclient, user, jpeg_photo):

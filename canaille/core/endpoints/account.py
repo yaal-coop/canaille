@@ -7,6 +7,19 @@ from importlib import metadata
 from typing import List
 
 import wtforms
+from flask import Blueprint
+from flask import abort
+from flask import current_app
+from flask import flash
+from flask import g
+from flask import redirect
+from flask import request
+from flask import send_file
+from flask import session
+from flask import url_for
+from werkzeug.datastructures import CombinedMultiDict
+from werkzeug.datastructures import FileStorage
+
 from canaille.app import b64_to_obj
 from canaille.app import build_hash
 from canaille.app import default_fields
@@ -21,38 +34,25 @@ from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
+from canaille.app.forms import TableForm
 from canaille.app.forms import is_readonly
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
-from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
 from canaille.backends import BaseBackend
-from flask import abort
-from flask import Blueprint
-from flask import current_app
-from flask import flash
-from flask import g
-from flask import redirect
-from flask import request
-from flask import send_file
-from flask import session
-from flask import url_for
-from werkzeug.datastructures import CombinedMultiDict
-from werkzeug.datastructures import FileStorage
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
 from ..mails import send_password_initialization_mail
 from ..mails import send_password_reset_mail
 from ..mails import send_registration_mail
-from .forms import build_profile_form
+from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
-from .forms import MINIMUM_PASSWORD_LENGTH
-
+from .forms import build_profile_form
 
 bp = Blueprint("account", __name__)
 

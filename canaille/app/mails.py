@@ -4,10 +4,11 @@ import smtplib
 import urllib.request
 from email.utils import make_msgid
 
-from canaille.app import get_current_domain
-from canaille.app import get_current_mail_domain
 from flask import current_app
 from flask import request
+
+from canaille.app import get_current_domain
+from canaille.app import get_current_mail_domain
 
 DEFAULT_SMTP_HOST = "localhost"
 DEFAULT_SMTP_PORT = 25

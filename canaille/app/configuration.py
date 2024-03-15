@@ -3,9 +3,10 @@ import smtplib
 import socket
 from collections.abc import Mapping
 
+from flask import current_app
+
 from canaille.app.mails import DEFAULT_SMTP_HOST
 from canaille.app.mails import DEFAULT_SMTP_PORT
-from flask import current_app
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 

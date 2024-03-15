@@ -2,27 +2,28 @@ import datetime
 import uuid
 from typing import List
 
-import canaille.core.models
-import canaille.oidc.models
-from canaille.app import models
-from canaille.backends.models import Model
 from flask import current_app
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import LargeBinary
-from sqlalchemy import or_
-from sqlalchemy import select
 from sqlalchemy import String
 from sqlalchemy import Table
+from sqlalchemy import or_
+from sqlalchemy import select
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import reconstructor
 from sqlalchemy.orm import relationship
 from sqlalchemy_json import MutableJson
-from sqlalchemy_utils import force_auto_coercion
 from sqlalchemy_utils import PasswordType
+from sqlalchemy_utils import force_auto_coercion
+
+import canaille.core.models
+import canaille.oidc.models
+from canaille.app import models
+from canaille.backends.models import Model
 
 from .backend import Backend
 from .backend import Base

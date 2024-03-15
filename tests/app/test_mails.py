@@ -3,8 +3,9 @@ import warnings
 from unittest import mock
 
 import pytest
-from canaille import create_app
 from flask_webtest import TestApp
+
+from canaille import create_app
 
 
 @pytest.fixture

@@ -2,9 +2,10 @@ import datetime
 from unittest import mock
 
 import freezegun
+from flask import url_for
+
 from canaille.core.endpoints.account import EmailConfirmationPayload
 from canaille.core.endpoints.account import RegistrationPayload
-from flask import url_for
 
 
 def test_confirmation_disabled_email_editable(testclient, backend, logged_user):

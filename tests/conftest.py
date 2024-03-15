@@ -2,13 +2,14 @@ import os
 
 import pytest
 from babel.messages.frontend import compile_catalog
-from canaille import create_app
-from canaille.app import models
-from canaille.backends import available_backends
 from flask_webtest import TestApp
 from jinja2 import StrictUndefined
 from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
+
+from canaille import create_app
+from canaille.app import models
+from canaille.backends import available_backends
 
 
 @pytest.fixture(autouse=True, scope="session")

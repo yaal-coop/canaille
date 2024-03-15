@@ -1,4 +1,5 @@
 import pytest
+
 from canaille.app import models
 from canaille.backends.models import Model
 

@@ -1,8 +1,9 @@
 import datetime
 from unittest import mock
 
-from canaille.app import models
 from flask import g
+
+from canaille.app import models
 
 
 def test_index(testclient, user):

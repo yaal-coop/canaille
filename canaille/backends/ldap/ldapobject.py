@@ -3,6 +3,7 @@ from collections.abc import Iterable
 
 import ldap.dn
 import ldap.filter
+
 from canaille.backends.models import Model
 
 from .backend import Backend

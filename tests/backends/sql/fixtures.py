@@ -1,4 +1,5 @@
 import pytest
+
 from canaille.backends.sql.backend import Backend
 
 

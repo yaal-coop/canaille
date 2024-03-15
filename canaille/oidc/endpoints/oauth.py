@@ -5,15 +5,8 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
-from canaille import csrf
-from canaille.app import models
-from canaille.app.flask import current_user
-from canaille.app.flask import logout_user
-from canaille.app.flask import set_parameter_in_url_query
-from canaille.app.i18n import gettext as _
-from canaille.app.themes import render_template
-from flask import abort
 from flask import Blueprint
+from flask import abort
 from flask import current_app
 from flask import flash
 from flask import jsonify
@@ -23,20 +16,27 @@ from flask import session
 from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
 
-from ..oauth import authorization
+from canaille import csrf
+from canaille.app import models
+from canaille.app.flask import current_user
+from canaille.app.flask import logout_user
+from canaille.app.flask import set_parameter_in_url_query
+from canaille.app.i18n import gettext as _
+from canaille.app.themes import render_template
+
 from ..oauth import ClientConfigurationEndpoint
 from ..oauth import ClientRegistrationEndpoint
+from ..oauth import IntrospectionEndpoint
+from ..oauth import RevocationEndpoint
+from ..oauth import authorization
 from ..oauth import generate_user_info
 from ..oauth import get_issuer
 from ..oauth import get_jwks
-from ..oauth import IntrospectionEndpoint
 from ..oauth import require_oauth
-from ..oauth import RevocationEndpoint
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
 from .forms import LogoutForm
 from .well_known import openid_configuration
-
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 

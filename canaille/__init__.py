@@ -6,7 +6,6 @@ from flask import request
 from flask import session
 from flask_wtf.csrf import CSRFProtect
 
-
 csrf = CSRFProtect()
 
 
@@ -107,16 +106,16 @@ def setup_flask(app):
 
 
 def setup_flask_converters(app):
-    from canaille.app.flask import model_converter
     from canaille.app import models
+    from canaille.app.flask import model_converter
 
     for model_name, model_class in models.MODELS.items():
         app.url_map.converters[model_name.lower()] = model_converter(model_class)
 
 
 def create_app(config=None, validate=True, backend=None):
-    from .app.i18n import setup_i18n
     from .app.configuration import setup_config
+    from .app.i18n import setup_i18n
     from .app.themes import setup_themer
     from .backends import setup_backend
 

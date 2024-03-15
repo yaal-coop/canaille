@@ -2,9 +2,10 @@ import functools
 import sys
 
 import click
-from canaille.backends import BaseBackend
 from flask import current_app
 from flask.cli import with_appcontext
+
+from canaille.backends import BaseBackend
 
 
 def with_backendcontext(func):
@@ -41,8 +42,8 @@ def check():
 @with_appcontext
 def install():
     """Installs canaille elements from the configuration."""
-    from canaille.app.installation import install
     from canaille.app.configuration import ConfigurationException
+    from canaille.app.installation import install
 
     try:
         install(current_app.config)

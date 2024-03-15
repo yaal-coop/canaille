@@ -1,10 +1,11 @@
 import pytest
+from flask_webtest import TestApp
+
 from canaille import create_app
 from canaille.app.installation import InstallationException
 from canaille.backends.ldap.backend import Backend
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.commands import cli
-from flask_webtest import TestApp
 
 from . import CustomSlapdObject
 

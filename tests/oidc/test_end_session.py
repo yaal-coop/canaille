@@ -1,4 +1,5 @@
 from authlib.oidc.core.grants.util import generate_id_token
+
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
 

@@ -2,14 +2,16 @@
 
 https://openid.net/specs/openid-connect-core-1_0.html#AuthorizationEndpoint
 """
+
 import datetime
 import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+from flask import url_for
+
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
-from flask import url_for
 
 
 def test_prompt_none(testclient, logged_user, client):

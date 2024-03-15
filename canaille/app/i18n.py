@@ -74,8 +74,9 @@ def timezone_selector():
 
 def native_language_name_from_code(code):
     try:
-        import pycountry
         from gettext import translation
+
+        import pycountry
     except ImportError:
         return code
 

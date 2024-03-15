@@ -1,12 +1,12 @@
+from flask import Blueprint
+from flask import abort
+from flask import request
+
 from canaille.app import models
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.themes import render_template
-from flask import abort
-from flask import Blueprint
-from flask import request
-
 
 bp = Blueprint("authorizations", __name__, url_prefix="/admin/authorization")
 

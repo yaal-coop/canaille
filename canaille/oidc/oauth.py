@@ -27,13 +27,13 @@ from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from authlib.oidc.core.grants.util import generate_id_token
-from canaille.app import models
 from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
 from werkzeug.security import gen_salt
 
+from canaille.app import models
 
 DEFAULT_JWT_KTY = "RSA"
 DEFAULT_JWT_ALG = "RS256"

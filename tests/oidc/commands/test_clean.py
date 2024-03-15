@@ -1,8 +1,9 @@
 import datetime
 
+from werkzeug.security import gen_salt
+
 from canaille.app import models
 from canaille.commands import cli
-from werkzeug.security import gen_salt
 
 
 def test_clean_command(testclient, backend, client, user):

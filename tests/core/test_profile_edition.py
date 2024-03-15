@@ -1,7 +1,8 @@
 import pytest
-from canaille.core.populate import fake_users
 from flask import g
 from webtest import Upload
+
+from canaille.core.populate import fake_users
 
 
 @pytest.fixture

@@ -3,17 +3,18 @@ import math
 import re
 
 import wtforms.validators
-from canaille.app import models
-from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
-from canaille.app.i18n import gettext as _
-from canaille.app.i18n import locale_selector
-from canaille.app.i18n import timezone_selector
 from flask import abort
 from flask import current_app
 from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms.meta import DefaultMeta
+
+from canaille.app import models
+from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
+from canaille.app.i18n import gettext as _
+from canaille.app.i18n import locale_selector
+from canaille.app.i18n import timezone_selector
 
 from . import validate_uri
 from .flask import request_is_htmx

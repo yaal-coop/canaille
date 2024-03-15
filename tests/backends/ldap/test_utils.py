@@ -3,15 +3,16 @@ from unittest import mock
 
 import ldap.dn
 import pytest
+
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.configuration import validate
 from canaille.backends.ldap.backend import setup_ldap_models
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
+from canaille.backends.ldap.utils import Syntax
 from canaille.backends.ldap.utils import ldap_to_python
 from canaille.backends.ldap.utils import python_to_ldap
-from canaille.backends.ldap.utils import Syntax
 
 
 # TODO: tester le changement de cardinalité des attributs

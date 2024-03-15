@@ -1,5 +1,5 @@
-from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import DEFAULT_JWT_MAPPING
+from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import generate_user_claims
 
 

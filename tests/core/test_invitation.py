@@ -1,8 +1,9 @@
 import datetime
 
+from flask import g
+
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
-from flask import g
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd):

@@ -1,8 +1,9 @@
 import wtforms
+
 from canaille.app import models
-from canaille.app.forms import email_validator
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
+from canaille.app.forms import email_validator
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _

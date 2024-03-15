@@ -2,6 +2,7 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 from authlib.jose import jwt
+
 from canaille.app import models
 
 

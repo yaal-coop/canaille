@@ -2,11 +2,12 @@ import copy
 import datetime
 import uuid
 
+from flask import current_app
+
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
 from canaille.backends.models import Model
-from flask import current_app
 
 
 def listify(value):

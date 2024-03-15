@@ -2,9 +2,10 @@ import os
 
 import pytest
 import toml
+from flask_webtest import TestApp
+
 from canaille import create_app
 from canaille.app.flask import set_parameter_in_url_query
-from flask_webtest import TestApp
 
 
 def test_set_parameter_in_url_query():

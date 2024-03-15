@@ -1,5 +1,6 @@
-from canaille.app import models
 from werkzeug.security import gen_salt
+
+from canaille.app import models
 
 
 def test_no_logged_no_access(testclient):

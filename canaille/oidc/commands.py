@@ -1,7 +1,8 @@
 import click
+from flask.cli import with_appcontext
+
 from canaille.app import models
 from canaille.app.commands import with_backendcontext
-from flask.cli import with_appcontext
 
 
 @click.command()

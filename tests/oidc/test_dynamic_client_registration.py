@@ -1,6 +1,7 @@
 from unittest import mock
 
 from authlib.jose import jwt
+
 from canaille.app import models
 
 
