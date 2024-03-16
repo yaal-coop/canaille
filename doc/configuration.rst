@@ -17,7 +17,7 @@ Sections
 
 Miscellaneous
 -------------
-Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/2.3.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
+Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/3.0.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
 
 :SECRET_KEY:
     **Required.** The Flask secret key. You should set a random string here.
