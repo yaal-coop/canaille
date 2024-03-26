@@ -1,6 +1,7 @@
 import os
 import smtplib
 import socket
+import sys
 from collections.abc import Mapping
 
 from flask import current_app
@@ -38,13 +39,24 @@ def parse_file_keys(config):
     return new_config
 
 
+def toml_content(file_path):
+    try:
+        if sys.version_info < (3, 11):  # pragma: no cover
+            import toml
+
+            return toml.load(file_path)
+
+        import tomllib
+
+        with open(file_path, "rb") as fd:
+            return tomllib.load(fd)
+
+    except ImportError:
+        raise Exception("toml library not installed. Cannot load configuration.")
+
+
 def setup_config(app, config=None, validate_config=True):
     from canaille.oidc.installation import install
-
-    try:
-        import toml
-    except ImportError:
-        toml = None
 
     app.config.from_mapping(
         {
@@ -53,12 +65,13 @@ def setup_config(app, config=None, validate_config=True):
             "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
         }
     )
+
     if config:
         app.config.from_mapping(parse_file_keys(config))
+
     elif "CONFIG" in os.environ:
-        if not toml:  # pragma: no cover
-            raise Exception("toml library not installed. Cannot load configuration.")
-        app.config.from_mapping(parse_file_keys(toml.load(os.environ.get("CONFIG"))))
+        app.config.from_mapping(parse_file_keys(toml_content(os.environ["CONFIG"])))
+
     else:
         raise Exception(
             "No configuration file found. "
