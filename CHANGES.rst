@@ -8,6 +8,7 @@ Changed
 
 - Use default python logging configuration format. :issue:`188` :pr:`165`
 - Bump to htmx 1.99.11 :pr:`166`
+- Use the standard tomllib python module instead of `toml` starting from python 3.11 :pr:`167`
 
 [0.0.42] - 2023-12-29
 =====================
