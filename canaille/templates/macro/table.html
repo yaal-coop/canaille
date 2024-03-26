@@ -69,7 +69,7 @@
             {% endif %}
             {% if form.page.data > 1 %}
                 {% call button(form, "first", 1) %}
-                    1
+                    {{ 1|numberformat }}
                 {% endcall %}
             {% endif %}
             {% if form.page.data > 2 %}
@@ -78,7 +78,7 @@
                 {% endcall %}
             {% endif %}
             <span class="ui button active">
-                {{ form.page.data }}
+                {{ form.page.data|numberformat }}
             </span>
             {% if form.page.data < form.page_max - 1 %}
                 {% call button(form, "ellipsis-next", none) %}
@@ -87,7 +87,7 @@
             {% endif %}
             {% if form.page.data < form.page_max %}
                 {% call button(form, "last", form.page_max) %}
-                    {{ form.page_max }}
+                    {{ form.page_max|numberformat }}
                 {% endcall %}
             {% endif %}
             {% if form.page.data < form.page_max %}
@@ -103,10 +103,10 @@
     </div>
     <div class="ui left floated">
         <span class="disabled ui button">
-            {% trans nb_items=form.nb_items %}
-                {{ nb_items }} item
+            {% trans nb_items=form.nb_items, nb_items_formatted=form.nb_items|numberformat %}
+                {{ nb_items_formatted }} item
                 {% pluralize %}
-                {{ nb_items }} items
+                {{ nb_items_formatted }} items
             {% endtrans %}
         </span>
     </div>
