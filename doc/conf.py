@@ -66,10 +66,12 @@ issues_commit_uri = "https://gitlab.com/yaal/canaille/-/commit/{commit}"
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "shibuya"
-html_static_path = []
+html_static_path = ["_static"]
 html_baseurl = "https://canaille.readthedocs.io/"
 html_theme_options = {
     "accent_color": "yellow",
+    "light_logo": "_static/canaille-label-black.webp",
+    "dark_logo": "_static/canaille-label-white.webp",
     "gitlab_url": "https://gitlab.com/yaal/canaille",
     "mastodon_url": "https://toot.aquilenet.fr/@yaal",
     "nav_links": [
@@ -85,7 +87,6 @@ html_theme_options = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 htmlhelp_basename = "canailledoc"
-html_logo = "_static/logo.webp"
 
 
 # -- Options for LaTeX output ---------------------------------------------

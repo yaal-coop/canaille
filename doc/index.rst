@@ -1,5 +1,12 @@
-Canaille
-========
+.. figure:: _static/canaille-full-black.webp
+  :width: 400
+  :figclass: light-only
+  :align: center
+
+.. figure:: _static/canaille-full-white.webp
+  :width: 400
+  :figclass: dark-only
+  :align: center
 
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
 as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
