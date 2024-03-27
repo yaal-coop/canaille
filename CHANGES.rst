@@ -10,6 +10,7 @@ Changed
 - Bump to htmx 1.99.11 :pr:`166`
 - Use the standard tomllib python module instead of `toml` starting from python 3.11 :pr:`167`
 - Add `created` and `last_modified` datetime for all models
+- Use shibuya as the documentation theme
 
 [0.0.42] - 2023-12-29
 =====================
