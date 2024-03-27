@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-27 13:57+0100\n"
+"POT-Creation-Date: 2024-03-27 14:07+0100\n"
 "PO-Revision-Date: 2023-07-02 08:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -975,7 +975,8 @@ msgid ""
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:91
-msgid "Send email"
+#: canaille/core/templates/profile_settings.html:113
+msgid "Send mail"
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:95
@@ -1005,11 +1006,8 @@ msgstr ""
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
-#: canaille/core/templates/profile_settings.html:113
-msgid "Send mail"
-msgstr ""
-
 #: canaille/core/templates/mails/admin.html:97
+#: canaille/core/templates/mails/reset.html:19
 #: canaille/core/templates/profile_settings.html:116
 #: canaille/core/templates/reset-password.html:11
 #: canaille/core/templates/reset-password.html:16
@@ -1207,7 +1205,6 @@ msgid "Initialize password"
 msgstr ""
 
 #: canaille/core/templates/mails/firstlogin.txt:1
-#: canaille/core/templates/mails/reset.html:19
 msgid "Password reinitialisation"
 msgstr ""
 
