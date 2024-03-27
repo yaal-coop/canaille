@@ -65,9 +65,21 @@ issues_commit_uri = "https://gitlab.com/yaal/canaille/-/commit/{commit}"
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "shibuya"
 html_static_path = []
-
+html_theme_options = {
+    "accent_color": "yellow",
+    "gitlab_url": "https://gitlab.com/yaal/canaille",
+    "mastodon_url": "https://toot.aquilenet.fr/@yaal",
+    "nav_links": [
+        {
+            "title": "Homepage",
+            "url": "https://canaille.yaal.coop",
+            "summary": "The homepage for the Canaille project",
+        },
+        {"title": "PyPI", "url": "https://pypi.org/project/Canaille/"},
+    ],
+}
 
 # -- Options for HTMLHelp output ------------------------------------------
 
