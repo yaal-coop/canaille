@@ -8,12 +8,12 @@
     <a class="active item" href="{{ url_for('oidc.consents.consents') }}">
         <i class="handshake icon"></i>
         {% trans %}My consents{% endtrans %}
-        {% if nb_consents %}<div class="ui mini label">{{ nb_consents }}</div>{% endif %}
+        {% if nb_consents %}<div class="ui mini label">{{ nb_consents|numberformat }}</div>{% endif %}
     </a>
     <a class="item" href="{{ url_for('oidc.consents.pre_consents') }}">
         <i class="stamp icon"></i>
         {% trans %}Pre-authorized applications{% endtrans %}
-        {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents }}</div>{% endif %}
+        {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents|numberformat }}</div>{% endif %}
     </a>
 {% endblock %}
 
