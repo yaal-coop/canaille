@@ -18,7 +18,7 @@
                 </td>
                 <td><a href="{{ url_for('core.groups.group', group=group) }}">{{ group.display_name }}</a></td>
                 <td>{% if group.description %}{{ group.description }}{% endif %}</td>
-                <td>{{ group.members|len }}</td>
+                <td>{{ group.members|len|numberformat }}</td>
             </tr>
         {% else %}
             <tr>
