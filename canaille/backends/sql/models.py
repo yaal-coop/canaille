@@ -60,7 +60,7 @@ class SqlAlchemyModel(Model):
         filter = or_(
             getattr(cls, attribute_name).ilike(f"%{query}%")
             for attribute_name in attributes
-            if "str" in str(cls.__annotations__[attribute_name])
+            if "str" in str(cls.attributes[attribute_name])
         )
 
         return (
@@ -72,7 +72,7 @@ class SqlAlchemyModel(Model):
         if isinstance(value, list):
             return or_(cls.attribute_filter(name, v) for v in value)
 
-        multiple = "List" in str(cls.__annotations__[name])
+        multiple = "List" in str(cls.attributes[name])
         if multiple:
             return getattr(cls, name).contains(value)
 
@@ -98,6 +98,12 @@ class SqlAlchemyModel(Model):
         return getattr(self, self.identifier_attribute)
 
     def save(self):
+        self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
+        if not self.created:
+            self.created = self.last_modified
+
         Backend.get().db_session.add(self)
         Backend.get().db_session.commit()
 
@@ -124,6 +130,13 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
@@ -146,9 +159,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     department: Mapped[str] = mapped_column(String, nullable=True)
     title: Mapped[str] = mapped_column(String, nullable=True)
     organization: Mapped[str] = mapped_column(String, nullable=True)
-    last_modified: Mapped[datetime.datetime] = mapped_column(
-        TZDateTime(timezone=True), nullable=True
-    )
     groups: Mapped[List["Group"]] = relationship(
         secondary=membership_association_table, back_populates="members"
     )
@@ -193,7 +203,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
             return all(
                 self.normalize_filter_value(attribute, value)
                 in getattr(self, attribute, [])
-                if "List" in str(self.__annotations__[attribute])
+                if "List" in str(self.attributes[attribute])
                 else self.normalize_filter_value(attribute, value)
                 == getattr(self, attribute, None)
                 for attribute, value in filter.items()
@@ -221,12 +231,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         self.password = password
         self.save()
 
-    def save(self):
-        self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
-        super().save()
-
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     __tablename__ = "group"
@@ -235,6 +239,13 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+
     display_name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String, nullable=True)
     members: Mapped[List["User"]] = relationship(
@@ -252,11 +263,17 @@ client_audience_association_table = Table(
 
 class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     __tablename__ = "client"
+    identifier_attribute = "client_id"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
-    identifier_attribute = "client_id"
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
 
     description: Mapped[str] = mapped_column(String, nullable=True)
     preconsent: Mapped[bool] = mapped_column(Boolean, nullable=True)
@@ -301,6 +318,12 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
 
     authorization_code_id: Mapped[str] = mapped_column(String, nullable=True)
     code: Mapped[str] = mapped_column(String, nullable=True)
@@ -338,6 +361,12 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
 
     token_id: Mapped[str] = mapped_column(String, nullable=True)
     access_token: Mapped[str] = mapped_column(String, nullable=True)
@@ -369,6 +398,12 @@ class Consent(canaille.oidc.models.Consent, Base, SqlAlchemyModel):
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
+    )
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
     )
 
     consent_id: Mapped[str] = mapped_column(String, nullable=True)

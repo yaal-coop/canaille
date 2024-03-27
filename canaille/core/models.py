@@ -223,14 +223,6 @@ class User:
     department: Optional[str]
     """Identifies the name of a department."""
 
-    last_modified: Optional[datetime.datetime]
-    """The most recent DateTime that the details of this resource were updated
-    at the service provider.
-
-    If this resource has never been modified since its initial creation,
-    the value MUST be the same as the value of "created".
-    """
-
     groups: List["Group"]
     """A list of groups to which the user belongs, either through direct
     membership, through nested groups, or dynamically calculated.

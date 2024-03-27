@@ -85,6 +85,12 @@ class MemoryModel(Model):
         return results[0] if results else None
 
     def save(self):
+        self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
+        if not self.created:
+            self.created = self.last_modified
+
         self.delete()
 
         # update the id index
@@ -190,7 +196,7 @@ class MemoryModel(Model):
                 ]
                 values = [value for value in values if value]
 
-            unique_attribute = "List" not in str(self.__annotations__[name])
+            unique_attribute = "List" not in str(self.attributes[name])
             if unique_attribute:
                 return values[0] if values else None
             else:

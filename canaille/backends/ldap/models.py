@@ -18,6 +18,8 @@ class User(canaille.core.models.User, LDAPObject):
 
     attribute_map = {
         "id": "dn",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
         "user_name": "uid",
         "password": "userPassword",
         "preferred_language": "preferredLanguage",
@@ -38,7 +40,6 @@ class User(canaille.core.models.User, LDAPObject):
         "department": "departmentNumber",
         "title": "title",
         "organization": "o",
-        "last_modified": "modifyTimestamp",
         "groups": "memberOf",
         "lock_date": "pwdEndTime",
     }
@@ -197,6 +198,8 @@ class Group(canaille.core.models.Group, LDAPObject):
 
     attribute_map = {
         "id": "dn",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
         "display_name": "cn",
         "members": "member",
         "description": "description",
@@ -246,6 +249,8 @@ class Client(canaille.oidc.models.Client, LDAPObject):
 
     attribute_map = {
         "id": "dn",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
         "preconsent": "oauthPreconsent",
         # post_logout_redirect_uris is not yet supported by authlib
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
@@ -265,6 +270,8 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     rdn_attribute = "oauthAuthorizationCodeID"
     attribute_map = {
         "id": "dn",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
         "authorization_code_id": "oauthAuthorizationCodeID",
         "code": "oauthCode",
         "client": "oauthClient",
@@ -291,6 +298,8 @@ class Token(canaille.oidc.models.Token, LDAPObject):
     rdn_attribute = "oauthTokenID"
     attribute_map = {
         "id": "dn",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
         "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
         "client": "oauthClient",
@@ -315,6 +324,8 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
     rdn_attribute = "cn"
     attribute_map = {
         "id": "dn",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
         "consent_id": "cn",
         "subject": "oauthSubject",
         "client": "oauthClient",

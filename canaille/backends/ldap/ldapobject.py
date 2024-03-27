@@ -174,7 +174,7 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         if ldap_name == "dn":
             return self.dn_for(self.rdn_value)
 
-        python_single_value = "List" not in str(self.__annotations__[name])
+        python_single_value = "List" not in str(self.attributes[name])
         ldap_value = self.get_ldap_attribute(ldap_name)
         return cardinalize_attribute(python_single_value, ldap_value)
 

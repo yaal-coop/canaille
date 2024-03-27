@@ -1,3 +1,6 @@
+import datetime
+
+import freezegun
 import pytest
 
 from canaille.app import models
@@ -236,3 +239,36 @@ def test_model_references_set_unsaved_object(
     testclient.get("/groups/foo", status=200)
 
     group.delete()
+
+
+def test_model_creation_edition_datetime(testclient, backend):
+    if "ldap" in backend.__class__.__module__:
+        pytest.skip()
+
+    with freezegun.freeze_time("2020-01-01 02:00:00"):
+        user = models.User(
+            user_name="foo",
+            family_name="foo",
+            formatted_name="foo",
+        )
+        user.save()
+        user.reload()
+        assert user.created == datetime.datetime(
+            2020, 1, 1, 2, tzinfo=datetime.timezone.utc
+        )
+        assert user.last_modified == datetime.datetime(
+            2020, 1, 1, 2, tzinfo=datetime.timezone.utc
+        )
+
+    with freezegun.freeze_time("2021-01-01 02:00:00"):
+        user.family_name = "bar"
+        user.save()
+        user.reload()
+        assert user.created == datetime.datetime(
+            2020, 1, 1, 2, tzinfo=datetime.timezone.utc
+        )
+        assert user.last_modified == datetime.datetime(
+            2021, 1, 1, 2, tzinfo=datetime.timezone.utc
+        )
+
+    user.delete()

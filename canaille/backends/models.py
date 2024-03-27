@@ -1,10 +1,26 @@
+import datetime
 from collections import ChainMap
+from typing import Optional
 
 from canaille.app import classproperty
 
 
 class Model:
     """Model abstract class."""
+
+    created: Optional[datetime.datetime]
+    """The "DateTime" that the resource was added to the service provider.
+
+    This attribute MUST be a DateTime.
+    """
+
+    last_modified: Optional[datetime.datetime]
+    """The most recent DateTime that the details of this resource were updated
+    at the service provider.
+
+    If this resource has never been modified since its initial creation,
+    the value MUST be the same as the value of "created".
+    """
 
     @classproperty
     def attributes(cls):

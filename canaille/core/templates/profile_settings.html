@@ -39,6 +39,9 @@
             <div class="content">
                 {% trans %}Account settings{% endtrans %}
             </div>
+            <div class="sub header" title="{{ edited_user.created|datetimeformat }}">
+                {% trans creation_datetime=edited_user.created|dateformat %}Created on {{ creation_datetime }}{% endtrans %}
+            </div>
         </h2>
 
         {% call fui.render_form(form, class_="profile-form info warning") %}
