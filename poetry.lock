@@ -1712,6 +1712,20 @@ dev = ["pre-commit (>=3.6,<4.0)", "sphinx-issues[tests]", "tox"]
 tests = ["pytest"]
 
 [[package]]
+name = "sphinx-sitemap"
+version = "2.5.1"
+description = "Sitemap generator for Sphinx"
+optional = false
+python-versions = "*"
+files = [
+    {file = "sphinx-sitemap-2.5.1.tar.gz", hash = "sha256:984bef068bbdbc26cfae209a8b61392e9681abc9191b477cd30da406e3a60ee5"},
+    {file = "sphinx_sitemap-2.5.1-py3-none-any.whl", hash = "sha256:0b7bce2835f287687f75584d7695e4eb8efaec028e5e7b36e9f791de3c344686"},
+]
+
+[package.dependencies]
+sphinx = ">=1.2"
+
+[[package]]
 name = "sphinxcontrib-applehelp"
 version = "1.0.4"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
@@ -2112,4 +2126,4 @@ sql = ["passlib", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "8ae8b74a082bc9c3fab61ec59c021f4856fefb07cc3555f1eee085fe32e5e0bb"
+content-hash = "cdad69187a2573f15ce7f046afe8ba1ed502498149b7cc5970f8401b9ac724e4"

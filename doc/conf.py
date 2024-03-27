@@ -34,6 +34,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_issues",
+    "sphinx_sitemap",
 ]
 
 templates_path = ["_templates"]
@@ -44,8 +45,7 @@ year = datetime.datetime.now().strftime("%Y")
 copyright = f"{year}, Yaal Coop"
 author = "Yaal Coop"
 
-release = metadata.version("canaille")
-version = "%s.%s" % tuple(map(int, release.split(".")[:2]))
+version = metadata.version("canaille")
 language = "en"
 exclude_patterns = []
 pygments_style = "sphinx"
@@ -67,6 +67,7 @@ issues_commit_uri = "https://gitlab.com/yaal/canaille/-/commit/{commit}"
 
 html_theme = "shibuya"
 html_static_path = []
+html_baseurl = "https://canaille.readthedocs.io/"
 html_theme_options = {
     "accent_color": "yellow",
     "gitlab_url": "https://gitlab.com/yaal/canaille",
