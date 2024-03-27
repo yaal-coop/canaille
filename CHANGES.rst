@@ -6,6 +6,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 Added
 *****
 
+- Add `created` and `last_modified` datetime for all models
 - Sitemap to the documentation :pr:`169`
 
 Changed
@@ -14,8 +15,7 @@ Changed
 - Use default python logging configuration format. :issue:`188` :pr:`165`
 - Bump to htmx 1.99.11 :pr:`166`
 - Use the standard tomllib python module instead of `toml` starting from python 3.11 :pr:`167`
-- Add `created` and `last_modified` datetime for all models
-- Use shibuya as the documentation theme
+- Use shibuya as the documentation theme :pr:`168`
 
 [0.0.42] - 2023-12-29
 =====================
