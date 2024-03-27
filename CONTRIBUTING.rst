@@ -1,5 +1,5 @@
-Contribute
-==========
+Contributions
+=============
 
 Contributions are welcome!
 
