@@ -69,6 +69,7 @@ sqlalchemy-utils = {version = "^0.41.1", optional=true}
 optional = true
 
 [tool.poetry.group.doc.dependencies]
+myst-parser = "^2.0.0"
 shibuya = "^2024.3.1"
 sphinx = "^7.0.0"
 sphinx-sitemap = "^2.5.1"

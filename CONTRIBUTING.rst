@@ -144,11 +144,11 @@ The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
   not depend on jQuery at all.
   See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_.
 
-Translation
------------
+Translations
+------------
 
-Translations are done with `Weblate <https://hosted.weblate.org/engage/canaille/>`_,
-so all translation contributions should be done there.
+.. include:: ../canaille/translations/README.md
+   :parser: myst_parser.sphinx_
 
 Documentation
 -------------

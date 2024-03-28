@@ -26,6 +26,7 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
 extensions = [
+    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.doctest",
@@ -38,7 +39,10 @@ extensions = [
 ]
 
 templates_path = ["_templates"]
-source_suffix = [".rst"]
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}
 master_doc = "index"
 project = "canaille"
 year = datetime.datetime.now().strftime("%Y")
