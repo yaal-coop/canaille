@@ -43,7 +43,7 @@ Table of contents
 
    install
    deployment
-   backends
+   databases
    configuration
    troubleshooting
    contributing
