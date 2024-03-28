@@ -29,7 +29,7 @@ The canaille server has some default users:
 - An admin user which admin and password are **admin**;
 - A new user which login is **james**. This user has no password yet,
   and his first attempt to log-in would result in sending a password initialization
-  email (if a smtp server is configurated).
+  email (if a smtp server is configured).
 
 Backends
 ~~~~~~~~
