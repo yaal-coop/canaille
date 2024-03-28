@@ -1,6 +1,8 @@
 Specifications
 ##############
 
+This page details which specifications are implemented in Canaille, and compares Canaille with other well-known identity providers.
+
 State of the specs in Canaille
 ==============================
 
@@ -55,7 +57,6 @@ Comparison with other providers
 Here is a feature comparison with other OpenID Connect server software.
 
 Canaille voluntarily only implements the OpenID Connect protocol to keep its codebase simple.
-We are currently working on supporting SQL databases backends.
 
 +---------------+-------+-----------+------+---------------------------+--------------+
 | Software      | Project                  | Protocols implementations | Backends     |
