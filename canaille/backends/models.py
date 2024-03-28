@@ -57,7 +57,7 @@ class Model:
     @classmethod
     def get(cls, identifier=None, **kwargs):
         """Works like :meth:`~canaille.backends.models.query` but return only
-        one element or :const:`None` if no item is matching."""
+        one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
     @property

@@ -7,7 +7,7 @@ from canaille.core.populate import fake_users
 
 @pytest.fixture
 def configuration(configuration):
-    configuration["EMAIL_CONFIRMATION"] = False
+    configuration["CANAILLE"]["EMAIL_CONFIRMATION"] = False
     return configuration
 
 
@@ -86,7 +86,8 @@ def test_user_list_search_only_allowed_fields(
     res.mustcontain(user.formatted_name)
     res.mustcontain(no=moderator.formatted_name)
 
-    testclient.app.config["ACL"]["DEFAULT"]["READ"].remove("user_name")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].remove("user_name")
+    testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["READ"].remove("user_name")
     g.user.reload()
 
     form = res.forms["search"]
@@ -103,11 +104,11 @@ def test_edition_permission(
     logged_user,
     admin,
 ):
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     logged_user.reload()
     testclient.get("/profile/user", status=404)
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     g.user.reload()
     testclient.get("/profile/user", status=200)
 
@@ -202,7 +203,7 @@ def test_field_permissions_none(testclient, logged_user):
     logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
-    testclient.app.config["ACL"]["DEFAULT"] = {
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"] = {
         "READ": ["user_name"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
@@ -230,7 +231,7 @@ def test_field_permissions_read(testclient, logged_user):
     logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
-    testclient.app.config["ACL"]["DEFAULT"] = {
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"] = {
         "READ": ["user_name", "phone_numbers"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
@@ -257,7 +258,7 @@ def test_field_permissions_write(testclient, logged_user):
     logged_user.phone_numbers = ["555-666-777"]
     logged_user.save()
 
-    testclient.app.config["ACL"]["DEFAULT"] = {
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"] = {
         "READ": ["user_name"],
         "WRITE": ["phone_numbers"],
         "PERMISSIONS": ["edit_self"],
@@ -386,9 +387,9 @@ def test_inline_validation(testclient, logged_admin, user):
 
 
 def test_inline_validation_keep_indicators(testclient, logged_admin, user):
-    testclient.app.config["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
-    testclient.app.config["ACL"]["DEFAULT"]["READ"].append("display_name")
-    testclient.app.config["ACL"]["ADMIN"]["WRITE"].append("display_name")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("display_name")
+    testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["WRITE"].append("display_name")
     logged_admin.reload()
     user.reload()
 

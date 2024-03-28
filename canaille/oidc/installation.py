@@ -20,14 +20,15 @@ def generate_keypair():
 def install(config, debug=False):
     if (
         not debug
-        or not config.get("OIDC", {}).get("JWT")
+        or not config.get("CANAILLE_OIDC")
+        or not config["CANAILLE_OIDC"].get("JWT")
         or (
-            config["OIDC"]["JWT"].get("PUBLIC_KEY")
-            and config["OIDC"]["JWT"].get("PRIVATE_KEY")
+            config["CANAILLE_OIDC"]["JWT"].get("PUBLIC_KEY")
+            and config["CANAILLE_OIDC"]["JWT"].get("PRIVATE_KEY")
         )
     ):
         return
 
     private_key, public_key = generate_keypair()
-    config["OIDC"]["JWT"]["PUBLIC_KEY"] = public_key.decode()
-    config["OIDC"]["JWT"]["PRIVATE_KEY"] = private_key.decode()
+    config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"] = public_key.decode()
+    config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"] = private_key.decode()

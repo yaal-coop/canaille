@@ -10,14 +10,9 @@ from flask import request
 from canaille.app import get_current_domain
 from canaille.app import get_current_mail_domain
 
-DEFAULT_SMTP_HOST = "localhost"
-DEFAULT_SMTP_PORT = 25
-DEFAULT_SMTP_TLS = False
-DEFAULT_SMTP_SSL = False
-
 
 def logo():
-    logo_url = current_app.config.get("LOGO")
+    logo_url = current_app.config["CANAILLE"]["LOGO"]
     if not logo_url:
         return None, None, None
 
@@ -52,8 +47,8 @@ def send_email(subject, recipient, text, html, attachements=None):
     msg["Subject"] = subject
     msg["To"] = f"<{recipient}>"
 
-    name = current_app.config.get("NAME", "Canaille")
-    address = current_app.config["SMTP"].get("FROM_ADDR")
+    name = current_app.config["CANAILLE"]["NAME"]
+    address = current_app.config["CANAILLE"]["SMTP"]["FROM_ADDR"]
 
     if not address:
         domain = get_current_mail_domain()
@@ -76,19 +71,19 @@ def send_email(subject, recipient, text, html, attachements=None):
     try:
         connection_func = (
             smtplib.SMTP_SSL
-            if current_app.config["SMTP"].get("SSL", DEFAULT_SMTP_SSL)
+            if current_app.config["CANAILLE"]["SMTP"]["SSL"]
             else smtplib.SMTP
         )
         with connection_func(
-            host=current_app.config["SMTP"].get("HOST", DEFAULT_SMTP_HOST),
-            port=current_app.config["SMTP"].get("PORT", DEFAULT_SMTP_PORT),
+            host=current_app.config["CANAILLE"]["SMTP"]["HOST"],
+            port=current_app.config["CANAILLE"]["SMTP"]["PORT"],
         ) as smtp:
-            if current_app.config["SMTP"].get("TLS", DEFAULT_SMTP_TLS):
+            if current_app.config["CANAILLE"]["SMTP"]["TLS"]:
                 smtp.starttls()
-            if current_app.config["SMTP"].get("LOGIN"):
+            if current_app.config["CANAILLE"]["SMTP"]["LOGIN"]:
                 smtp.login(
-                    user=current_app.config["SMTP"].get("LOGIN"),
-                    password=current_app.config["SMTP"].get("PASSWORD"),
+                    user=current_app.config["CANAILLE"]["SMTP"]["LOGIN"],
+                    password=current_app.config["CANAILLE"]["SMTP"]["PASSWORD"],
                 )
             smtp.send_message(msg)
 

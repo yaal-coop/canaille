@@ -1,327 +1,61 @@
 Configuration
 #############
 
-Here are the different options you can have in your configuration file.
+Canaille can be configured either by a environment variables, or by a `toml` configuration file which path is passed in the ``CONFIG`` environment variable.
 
-.. contents::
-   :local:
+Toml file
+=========
 
-.. note ::
+::
 
-    Any configuration entry can be suffixed by *_FILE* and point to the path of
-    a file that contains the actual value. For instance you could have
-    ``SECRET_KEY_FILE = "/path/to/secret.txt"`` instead of ``SECRET_KEY = "very-secret"``
+    SECRET_KEY = "very-secret"
 
-Sections
-========
+    [CANAILLE]
+    NAME = "My organization"
 
-Miscellaneous
--------------
-Canaille is based on Flask, so any `flask configuration <https://flask.palletsprojects.com/en/3.0.x/config/#builtin-configuration-values>`_ option will be usable with canaille:
+    [CANAILLE_SQL]
+    DATABASE_URI = "postgresql://user:password@localhost/database"
+    ...
 
-:SECRET_KEY:
-    **Required.** The Flask secret key. You should set a random string here.
+You can have a look at the :ref:`configuration:Example file` for inspiration.
 
-    .. note ::
+Environment variables
+=====================
 
-        Remember that you can also use SECRET_KEY_FILE to store the secret key
-        outside the configuration file.
+In addition, parameters that have not been set in the configuration file can be read from environment variables.
+The way environment variables are parsed can be read from the `pydantic-settings documentation <https://docs.pydantic.dev/latest/concepts/pydantic_settings/#parsing-environment-variable-values>`_.
 
-:NAME:
-    *Optional.* The name of your organization. If not set `Canaille` will be used.
+Settings will also be read from a local ``.env`` file if present.
 
-:LOGO:
-    *Optional.* The URL ot the logo of your organization. The default is the canaille logo.
+Secret parameters
+=================
 
-:FAVICON:
-    *Optional.* An URL to a favicon. The default is the value of ``LOGO``.
+A ``SECRETS_DIR`` environment variable can be passed as an environment variable, being a path to a directory in which are stored files named after the configuration settings.
 
-:THEME:
-    *Optional.* The name or the path to a canaille theme.
-    If the value is just a name, the theme should be in a directory with that name in the *themes* directory.
+For instance, you can set ``SECRETS_DIR=/run/secrets`` and put your secret key in the file ``/run/secrets/SECRET_KEY``.
 
-:LANGUAGE:
-    *Optional.* The locale code of the language to use. If not set, the language of the browser will be used.
+Parameters
+==========
 
-:TIMEZONE:
-    *Optional.* The timezone in which datetimes will be displayed to the users. If unset, the server timezone will be used.
+.. autopydantic_settings:: canaille.app.configuration.RootSettings
 
-:JAVASCRIPT:
-    *Optional.* Wether javascript is used to smooth the user experience.
+.. autopydantic_settings:: canaille.core.configuration.CoreSettings
+.. autopydantic_settings:: canaille.core.configuration.SMTPSettings
+.. autopydantic_settings:: canaille.core.configuration.ACLSettings
+.. auto_autoenum:: canaille.core.configuration.Permission
 
-:HTMX:
-    *Optional.* Wether `HTMX <https://htmx.org>`_ will be used to accelerate webpages. Defaults to true.
+.. autopydantic_settings:: canaille.oidc.configuration.OIDCSettings
 
-:SENTRY_DSN:
-    *Optional.* A DSN to a sentry instance.
-    This needs the ``sentry_sdk`` python package to be installed.
-    This is useful if you want to collect the canaille exceptions in a production environment.
+.. autopydantic_settings:: canaille.oidc.configuration.JWTSettings
+.. autopydantic_settings:: canaille.oidc.configuration.JWTMappingSettings
 
-:ENABLE_REGISTRATION:
-    *Optional.* If true, then users can freely create an account
-    at this instance. If ``EMAIL_CONFIRMATION`` is true, users must confirm
-    their email before the account is created.
-    Defaults to false.
+.. autopydantic_settings:: canaille.backends.sql.configuration.SQLSettings
+.. autopydantic_settings:: canaille.backends.ldap.configuration.LDAPSettings
 
-:EMAIL_CONFIRMATION:
-    *Optional.*  If  set to true, users will need to click on
-    a confirmation link sent by email when they want to add a new email. By default,
-    this is true if SMTP is configured, else this is false. If explicitely set to
-    true and SMTP is disabled, the email field will be read-only.
+Example file
+============
 
-:HIDE_INVALID_LOGINS:
-    *Optional.* Wether to tell the users if a username exists during failing login attempts.
-    Defaults to ``True``. This may be a security issue to disable this, as this give a way to malicious people to if an account exists on this canaille instance.
+Here is a configuration file example:
 
-:ENABLE_PASSWORD_RECOVERY:
-    *Optional* Wether the password recovery feature is enabled or not.
-    Defaults to ``True``.
-
-:INVITATION_EXPIRATION:
-    *Optional* The validity duration of registration invitations, in seconds.
-    Defaults to 2 days.
-
-LOGGING
--------
-
-:LEVEL:
-    *Optional.* The logging level. Must be an either *DEBUG*, *INFO*, *WARNING*, *ERROR* or *CRITICAL*. Defults to *WARNING*.
-
-:PATH:
-    *Optional.* The log file path. If not set, logs are written in the standard error output.
-
-BACKENDS.SQL
-------------
-
-:SQL_DATABASE_URI:
-    **Required.** The SQL database connection string, as defined in
-    `SQLAlchemy documentation <https://docs.sqlalchemy.org/en/20/core/engines.html>`_.
-
-BACKENDS.LDAP
--------------
-
-:URI:
-    **Required.** The URI to the LDAP server.
-    e.g. ``ldaps://ldad.mydomain.tld``
-
-:ROOT_DN:
-    **Required.** The root DN of your LDAP server.
-    e.g. ``dc=mydomain,dc=tld``
-
-:BIND_DN:
-    **Required.** The LDAP DN to bind with.
-    e.g. ``cn=admin,dc=mydomain,dc=tld``
-
-:BIND_PW:
-    **Required.** The LDAP user associated with ``BIND_DN``.
-
-:TIMEOUT:
-    *Optional.* The time to wait for the LDAP server to respond before considering it is not functional.
-
-:USER_BASE:
-    **Required.** The DN of the node in which users will be searched for, and created.
-    e.g. ``ou=users,dc=mydomain,dc=tld``
-
-:USER_CLASS:
-    *Optional.* The LDAP object class to filter existing users, and create new users.
-    Can be a list of classes.
-    Defaults to ``inetOrgPerson``.
-
-:USER_RDN:
-    *Optional.* The attribute to identify an object in the User DN.
-    For example, if it has the value ``uid``, users DN will be in the form ``uid=foobar,ou=users,dc=mydomain,dc=tld``.
-    Defaults to ``cn``.
-
-:USER_FILTER:
-    *Optional.* The filter to match users on sign in.
-    Jinja syntax is supported and a `login` variable is available containing
-    the value passed in the login field.
-    Defaults to ``(|(uid={{ login }})(mail={{ login }}))``
-
-:GROUP_BASE:
-    **Required.** The DN where of the node in which LDAP groups will be created and searched for.
-    e.g. ``ou=groups,dc=mydomain,dc=tld``
-
-:GROUP_CLASS:
-    *Optional.* The LDAP object class to filter existing groups, and create new groups.
-    Can be a list of classes.
-    Defaults to ``groupOfNames``
-
-:GROUP_RDN:
-    *Optional.* The attribute to identify an object in a group DN.
-    For example, if it has the value ``cn``, groups DN will be in the form ``cn=foobar,ou=users,dc=mydomain,dc=tld``.
-    Defaults to ``cn``
-
-:GROUP_NAME_ATTRIBUTE:
-    *Optional.* The attribute to identify a group in the web interface.
-    Defaults to ``cn``
-
-ACL
----
-You can define access controls that define what users can do on canaille
-An access control consists in a ``FILTER`` to match users, a list of ``PERMISSIONS`` that users will be able to perform, and fields users will be able
-to ``READ`` and ``WRITE``. Users matching several filters will cumulate permissions.
-
-The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
-object that users will be able to read and/or write.
-
-:FILTER:
-    *Optional.* It can be:
-
-    - absent, in which case all the users will have the permissions in this ACL.
-    - a mapping where keys are user attributes name and the values those user
-      attribute values. All the values must be matched for the user to be part
-      of the access control.
-    - a list of those mappings. If a user values match at least one mapping,
-      then the user will be part of the access control
-
-    Here are some examples:
-
-    - ``FILTER = {'user_name': 'admin'}``
-    - ``FILTER = [{'groups': 'admin'}, {'groups': 'moderators'}]``
-
-:PERMISSIONS:
-    *Optional.* A list of items the users in the access control will be able to manage. Values can be:
-
-    - **edit_self** to allow users to edit their own profile
-    - **use_oidc** to allow OpenID Connect authentication
-    - **manage_oidc** to allow OpenID Connect client managements
-    - **manage_users** to allow other users management
-    - **manage_groups** to allow group edition and creation
-    - **delete_account** allows a user to delete his own account. If used with *manage_users*, the user can delete any account
-    - **impersonate_users** to allow a user to take the identity of another user
-
-:READ:
-    *Optional.* A list of attributes of ``USER_CLASS`` the user will be able to see, but not edit.
-    If the users has the ``edit_self`` permission, they will be able to see those fields on their own account.
-    If the users has the ``manage_users`` permission, the user will be able to see this fields on other users profile.
-    If the list containts the special ``groups`` field, the user will be able to see the groups he belongs to.
-
-:WRITE:
-    *Optional.* A list of attributes of ``USER_CLASS`` the user will be able to edit.
-    If the users has the ``edit_self`` permission, they will be able to edit those fields on their own account.
-    If the users has the ``manage_users`` permission, they will be able to edit those fields on other users profile.
-    If the list containts the special ``groups`` field, the user will be able to edit the groups he belongs to.
-
-OIDC
-----
-
-:DYNAMIC_CLIENT_REGISTRATION_OPEN:
-    *Optional.* Wether a token is needed for the RFC7591 dynamical client registration.
-    If true, no token is needed to register a client.
-    If false, dynamical client registration needs a token defined
-    in `DYNAMIC_CLIENT_REGISTRATION_TOKENS``
-    Defaults to ``False``
-
-:DYNAMIC_CLIENT_REGISTRATION_TOKENS:
-    *Optional.* A list of tokens that can be used for dynamic client registration
-
-:REQUIRE_NONE:
-    *Optional.* Forces the nonce exchange during the authentication flows.
-    This adds security but may not be supported by all clients.
-    Defaults to ``True``
-
-OIDC.JWT
---------
-Canaille needs a key pair to sign the JWT. The installation command will generate a key pair for you, but you can also do it manually. In debug mode, a in-memory keypair will be used.
-
-:PRIVATE_KEY:
-    **Required.** The content of the private key..
-
-:PUBLIC_KEY:
-    **Required.** The content of the public key.
-
-    .. note ::
-
-        Remember that you can also use PRIVATE_KEY_FILE and PUBLIC_KEY_FILE
-        to store the keys outside the configuration file.
-
-:ISS:
-    *Optional.* The URI of the identity provider.
-    Defaults to ``SERVER_NAME`` if set, else the current domain will be used.
-    e.g. ``https://auth.mydomain.tld``
-
-:KTY:
-    *Optional.* The key type parameter.
-    Defaults to ``RSA``.
-
-:ALG:
-    *Optional.* The key algorithm.
-    Defaults to ``RS256``.
-
-:EXP:
-    *Optional.* The time the JWT will be valid, in seconds.
-    Defaults to ``3600``
-
-OIDC.JWT.MAPPINGS
------------------
-
-A mapping where keys are JWT claims, and values are LDAP user object attributes.
-Attributes are rendered using jinja2, and can use a ``user`` variable.
-
-:SUB:
-    *Optional.* Defaults to ``{{ user.user_name }}``
-
-:NAME:
-    *Optional.* Defaults to ``{{ user.cn[0] }}``
-
-:PHONE_NUMBER:
-    *Optional.* Defaults to ``{{ user.phone_number[0] }}``
-
-:EMAIL:
-    *Optional.* Defaults to ``{{ user.mail[0] }}``
-
-:GIVEN_NAME:
-    *Optional.* Defaults to ``{{ user.given_name }}``
-
-:FAMILY_NAME:
-    *Optional.* Defaults to ``{{ user.family_name }}``
-
-:PREFERRED_USERNAME:
-    *Optional.* Defaults to ``{{ user.display_name[0] }}``
-
-:LOCALE:
-    *Optional.* Defaults to ``{{ user.locale }}``
-
-:ADDRESS:
-    *Optional.* Defaults to ``{{ user.address[0] }}``
-
-:PICTURE:
-    *Optional.* Defaults to ``{% if user.photo %}{{ url_for('core.account.photo', user_name=user.user_name, field='photo', _external=True) }}{% endif %}``
-
-:WEBSITE:
-    *Optional.* Defaults to ``{{ user.profile_url }}``
-
-
-SMTP
-----
-Canaille needs you to configure a SMTP server to send some mails, including the *I forgot my password* and the *invitation* mails.
-Without this section Canaille will still be usable, but all the features related to mail will be disabled.
-
-:HOST:
-    The SMTP server to connect to.
-    Defaults to ``localhost``
-
-:PORT:
-    The port to use with the SMTP connection.
-    Defaults to ``25``
-
-:TLS:
-    Whether the SMTP connection use TLS.
-    Default to ``False``
-
-:SSL:
-    Whether the SMTP connection use SSL.
-    Default to ``False``
-
-:LOGIN:
-    The SMTP server authentication login.
-    *Optional.*
-
-:PASSWORD:
-    The SMTP server authentication password.
-    *Optional.*
-
-:FROM_ADDR:
-    *Optional.* The mail address to use as the sender for Canaille emails.
-    Defaults to `admin@<HOSTNAME>` where `HOSTNAME` is the current hostname.
+.. literalinclude :: ../canaille/config.sample.toml
+   :language: toml

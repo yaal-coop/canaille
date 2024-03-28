@@ -14,7 +14,7 @@ def test_index(testclient, user):
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     g.user.reload()
     res = testclient.get("/", status=302)
     assert res.location == "/about"
@@ -284,7 +284,7 @@ def test_impersonate(testclient, logged_admin, user):
 
 
 def test_wrong_login(testclient, user):
-    testclient.app.config["HIDE_INVALID_LOGINS"] = True
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
@@ -295,7 +295,7 @@ def test_wrong_login(testclient, user):
     res = res.form.submit(status=200)
     res.mustcontain(no="The login &#39;invalid&#39; does not exist")
 
-    testclient.app.config["HIDE_INVALID_LOGINS"] = False
+    testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
@@ -341,11 +341,11 @@ def test_user_self_deletion(testclient, backend):
     with testclient.session_transaction() as sess:
         sess["user_id"] = [user.id]
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     res = testclient.get("/profile/temp/settings")
     res.mustcontain(no="Delete my account")
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = [
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = [
         "edit_self",
         "delete_account",
     ]
@@ -366,7 +366,7 @@ def test_user_self_deletion(testclient, backend):
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
 
-    testclient.app.config["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
 
 
 def test_account_locking(user, backend):

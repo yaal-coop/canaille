@@ -71,7 +71,7 @@ def test_language_config(testclient, logged_user):
     res.mustcontain("My profile")
     res.mustcontain(no="Mon profil")
 
-    testclient.app.config["LANGUAGE"] = "fr"
+    testclient.app.config["CANAILLE"]["LANGUAGE"] = "fr"
     refresh()
     res = testclient.get("/profile/user", status=200)
     assert res.pyquery("html")[0].attrib["lang"] == "fr"

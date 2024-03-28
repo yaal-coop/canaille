@@ -6,6 +6,7 @@ import pytest
 
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import settings_factory
 from canaille.app.configuration import validate
 from canaille.backends.ldap.backend import setup_ldap_models
 from canaille.backends.ldap.ldapobject import LDAPObject
@@ -194,7 +195,7 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
 
 
 def test_object_class_update(backend, testclient):
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
+    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
     setup_ldap_models(testclient.app.config)
 
     user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
@@ -205,7 +206,7 @@ def test_object_class_update(backend, testclient):
         "inetOrgPerson"
     ]
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_CLASS"] = [
+    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
         "extensibleObject",
     ]
@@ -241,33 +242,46 @@ def test_object_class_update(backend, testclient):
 
 
 def test_ldap_connection_no_remote(testclient, configuration):
-    validate(configuration)
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    validate(config_dict)
 
 
 def test_ldap_connection_remote(testclient, configuration, backend):
-    validate(configuration, validate_remote=True)
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    validate(config_dict, validate_remote=True)
 
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
-    configuration["BACKENDS"]["LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    configuration["CANAILLE_LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+
     with pytest.raises(
         ConfigurationException,
         match=r"Could not connect to the LDAP server",
     ):
-        validate(configuration, validate_remote=True)
+        validate(config_dict, validate_remote=True)
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "invalid-password"
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = "invalid-password"
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+
     with pytest.raises(
         ConfigurationException,
         match=r"LDAP authentication failed with user",
     ):
-        validate(configuration, validate_remote=True)
+        validate(config_dict, validate_remote=True)
 
 
 def test_ldap_cannot_create_users(testclient, configuration, backend):
     from canaille.core.models import User
+
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
 
     def fake_init(*args, **kwarg):
         raise ldap.INSUFFICIENT_ACCESS
@@ -277,11 +291,14 @@ def test_ldap_cannot_create_users(testclient, configuration, backend):
             ConfigurationException,
             match=r"cannot create users at",
         ):
-            validate(configuration, validate_remote=True)
+            validate(config_dict, validate_remote=True)
 
 
 def test_ldap_cannot_create_groups(testclient, configuration, backend):
     from canaille.core.models import Group
+
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
 
     def fake_init(*args, **kwarg):
         raise ldap.INSUFFICIENT_ACCESS
@@ -291,23 +308,23 @@ def test_ldap_cannot_create_groups(testclient, configuration, backend):
             ConfigurationException,
             match=r"cannot create groups at",
         ):
-            validate(configuration, validate_remote=True)
+            validate(config_dict, validate_remote=True)
 
 
 def test_login_placeholder(testclient):
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(uid={{ login }})"
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(uid={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe"
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(cn={{ login }})"
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(cn={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "John Doe"
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = "(mail={{ login }})"
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(mail={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "john@doe.com"
 
-    testclient.app.config["BACKENDS"]["LDAP"]["USER_FILTER"] = (
+    testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = (
         "(|(uid={{ login }})(mail={{ login }}))"
     )
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]

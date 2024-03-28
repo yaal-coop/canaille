@@ -1,15 +1,14 @@
-# All the Flask configuration values can be used:
-# https://flask.palletsprojects.com/en/3.0.x/config/#builtin-configuration-values
-
-# The flask secret key for cookies. You MUST change this.
+# The Flask secret key for cookies. You MUST change this.
 SECRET_KEY = "change me before you go in production"
-
-# Your organization name.
-# NAME = "Canaille"
 
 # The interface on which canaille will be served
 # SERVER_NAME = "auth.mydomain.tld"
 # PREFERRED_URL_SCHEME = "https"
+
+[CANAILLE]
+
+# Your organization name.
+# NAME = "Canaille"
 
 # You can display a logo to be recognized on login screens
 # LOGO = "/static/img/canaille-head.webp"
@@ -75,12 +74,12 @@ SECRET_KEY = "change me before you go in production"
 # - if this is a string, it is passed to the python fileConfig method
 #   https://docs.python.org/3/library/logging.config.html#logging.config.fileConfig
 
-# [BACKENDS.SQL]
+# [CANAILLE_SQL]
 # The SQL database connection string
 # Details on https://docs.sqlalchemy.org/en/20/core/engines.html
-# SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
+# DATABASE_URI = "postgresql://user:password@localhost/database"
 
-# [BACKENDS.LDAP]
+# [CANAILLE_LDAP]
 # URI = "ldap://ldap"
 # ROOT_DN = "dc=mydomain,dc=tld"
 # BIND_DN = "cn=admin,dc=mydomain,dc=tld"
@@ -113,7 +112,7 @@ SECRET_KEY = "change me before you go in production"
 # The attribute to use to identify a group
 # GROUP_NAME_ATTRIBUTE = "cn"
 
-[ACL]
+[CANAILLE.ACL]
 # You can define access controls that define what users can do on canaille
 # An access control consists in a FILTER to match users, a list of PERMISSIONS
 # matched users will be able to perform, and fields users will be able
@@ -146,7 +145,7 @@ SECRET_KEY = "change me before you go in production"
 #
 # The 'READ' and 'WRITE' attributes are the LDAP attributes of the user
 # object that users will be able to read and/or write.
-[ACL.DEFAULT]
+[CANAILLE.ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
 READ = [
     "user_name",
@@ -174,7 +173,7 @@ WRITE = [
     "organization",
 ]
 
-[ACL.ADMIN]
+[CANAILLE.ACL.ADMIN]
 FILTER = {groups = "admins"}
 PERMISSIONS = [
     "manage_users",
@@ -188,7 +187,7 @@ WRITE = [
     "lock_date",
 ]
 
-[OIDC]
+[CANAILLE_OIDC]
 # Wether a token is needed for the RFC7591 dynamical client registration.
 # If true, no token is needed to register a client.
 # If false, dynamical client registration needs a token defined
@@ -204,15 +203,15 @@ WRITE = [
 # This adds security but may not be supported by all clients.
 # REQUIRE_NONCE = true
 
-[OIDC.JWT]
-# PRIVATE_KEY_FILE and PUBLIC_KEY_FILE are the paths to the private and
+[CANAILLE_OIDC.JWT]
+# PRIVATE_KEY and PUBLIC_KEY are the private and
 # the public key. You can generate a RSA keypair with:
 # openssl genrsa -out private.pem 4096
 # openssl rsa -in private.pem -pubout -outform PEM -out public.pem
 # If the variables are unset, and debug mode is enabled,
 # a in-memory keypair will be used.
-# PRIVATE_KEY_FILE = "/path/to/private.pem"
-# PUBLIC_KEY_FILE = "/path/to/public.pem"
+# PRIVATE_KEY = "..."
+# PUBLIC_KEY = "..."
 # The URI of the identity provider
 # ISS = "https://auth.mydomain.tld"
 # The key type parameter
@@ -222,7 +221,7 @@ WRITE = [
 # The time the JWT will be valid, in seconds
 # EXP = 3600
 
-[OIDC.JWT.MAPPING]
+[CANAILLE_OIDC.JWT.MAPPING]
 # Mapping between JWT fields and LDAP attributes from your
 # User objectClass.
 # {attribute} will be replaced by the user ldap attribute value.
@@ -241,7 +240,7 @@ WRITE = [
 
 # The SMTP server options. If not set, mail related features such as
 # user invitations, and password reset emails, will be disabled.
-[SMTP]
+[CANAILLE.SMTP]
 # HOST = "localhost"
 # PORT = 25
 # TLS = false

@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def configuration(ldap_configuration):
-    ldap_configuration["BACKENDS"]["LDAP"]["USER_RDN"] = "mail"
+    ldap_configuration["CANAILLE_LDAP"]["USER_RDN"] = "mail"
     yield ldap_configuration
 
 

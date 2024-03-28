@@ -28,17 +28,14 @@ def keypair():
 @pytest.fixture
 def configuration(configuration, keypair):
     private_key, public_key = keypair
-    conf = {
-        **configuration,
-        "OIDC": {
-            "JWT": {
-                "PUBLIC_KEY": public_key,
-                "PRIVATE_KEY": private_key,
-                "ISS": "https://auth.mydomain.tld",
-            }
-        },
+    configuration["CANAILLE_OIDC"] = {
+        "JWT": {
+            "PUBLIC_KEY": public_key,
+            "PRIVATE_KEY": private_key,
+            "ISS": "https://auth.mydomain.tld",
+        }
     }
-    return conf
+    return configuration
 
 
 @pytest.fixture

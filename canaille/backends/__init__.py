@@ -82,8 +82,20 @@ class BaseBackend:
 
 def setup_backend(app, backend=None):
     if not backend:
-        backend_names = list(app.config.get("BACKENDS", {"memory": {}}).keys())
-        backend_name = backend_names[0].lower()
+        prefix = "CANAILLE_"
+        available_backends_names = [
+            f"{prefix}{name}".upper() for name in available_backends()
+        ]
+        configured_backend_names = [
+            key[len(prefix) :]
+            for key in app.config.keys()
+            if key in available_backends_names
+        ]
+        backend_name = (
+            configured_backend_names[0].lower()
+            if configured_backend_names
+            else "memory"
+        )
         module = importlib.import_module(f"canaille.backends.{backend_name}.backend")
         backend_class = getattr(module, "Backend")
         backend = backend_class(app.config)

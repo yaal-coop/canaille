@@ -11,7 +11,7 @@ from canaille.core.endpoints.account import RegistrationPayload
 def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
     """If email confirmation is disabled, users should be able to pick any
     email."""
-    testclient.app.config["EMAIL_CONFIRMATION"] = False
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
     res = testclient.get("/profile/user")
     assert "readonly" not in res.form["emails-0"].attrs
@@ -36,8 +36,8 @@ def test_confirmation_unset_smtp_disabled_email_editable(
     """If email confirmation is unset and no SMTP server has been configured,
     then email confirmation cannot be enabled, thus users must be able to pick
     any email."""
-    del testclient.app.config["SMTP"]
-    testclient.app.config["EMAIL_CONFIRMATION"] = None
+    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
     res = testclient.get("/profile/user")
     assert "readonly" not in res.form["emails-0"].attrs
@@ -61,8 +61,8 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
 
     In doubt, users cannot edit their emails.
     """
-    del testclient.app.config["SMTP"]
-    testclient.app.config["EMAIL_CONFIRMATION"] = True
+    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
 
     res = testclient.get("/profile/user")
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
@@ -77,7 +77,7 @@ def test_confirmation_unset_smtp_enabled_email_admin_editable(
 ):
     """Administrators should be able to edit user email addresses, even when
     email confirmation is unset and SMTP is configured."""
-    testclient.app.config["EMAIL_CONFIRMATION"] = None
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
     res = testclient.get("/profile/user")
     assert "readonly" not in res.form["emails-0"].attrs
@@ -100,8 +100,8 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
 ):
     """Administrators should be able to edit user email addresses, even when
     email confirmation is enabled and SMTP is disabled."""
-    testclient.app.config["EMAIL_CONFIRMATION"] = True
-    del testclient.app.config["SMTP"]
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
+    del testclient.app.config["CANAILLE"]["SMTP"]
 
     res = testclient.get("/profile/user")
     assert "readonly" not in res.form["emails-0"].attrs
@@ -124,7 +124,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
 ):
     """If email confirmation is unset and there is a SMTP server configured,
     then users emails should be validated by sending a confirmation email."""
-    testclient.app.config["EMAIL_CONFIRMATION"] = None
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get("/login")
@@ -165,9 +165,8 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     )
 
     assert len(smtpd.messages) == 1
-    assert email_confirmation_url in str(smtpd.messages[0].get_payload()[0]).replace(
-        "=\n", ""
-    )
+    email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    assert email_confirmation_url in email_content
 
     with freezegun.freeze_time("2020-01-01 03:00:00"):
         res = testclient.get(email_confirmation_url)
@@ -455,7 +454,7 @@ def test_edition_forced_mail(testclient, logged_user):
 def test_invitation_form_mail_field_readonly(testclient):
     """Tests that the email field is readonly in the invitation form creation
     if email confirmation is enabled."""
-    testclient.app.config["EMAIL_CONFIRMATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
 
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -474,7 +473,7 @@ def test_invitation_form_mail_field_readonly(testclient):
 def test_invitation_form_mail_field_writable(testclient):
     """Tests that the email field is writable in the invitation form creation
     if email confirmation is disabled."""
-    testclient.app.config["EMAIL_CONFIRMATION"] = False
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),

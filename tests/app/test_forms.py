@@ -11,7 +11,7 @@ from canaille.app.forms import phone_number
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
-    del current_app.config["TIMEZONE"]
+    current_app.config["CANAILLE"]["TIMEZONE"] = None
 
     class TestForm(wtforms.Form):
         dt = DateTimeUTCField()
@@ -56,7 +56,7 @@ def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
 
 
 def test_datetime_utc_field_utc(testclient):
-    current_app.config["TIMEZONE"] = "UTC"
+    current_app.config["CANAILLE"]["TIMEZONE"] = "UTC"
 
     class TestForm(wtforms.Form):
         dt = DateTimeUTCField()
@@ -99,7 +99,7 @@ def test_datetime_utc_field_utc(testclient):
 
 
 def test_datetime_utc_field_japan_timezone(testclient):
-    current_app.config["TIMEZONE"] = "Japan"
+    current_app.config["CANAILLE"]["TIMEZONE"] = "Japan"
 
     class TestForm(wtforms.Form):
         dt = DateTimeUTCField()
@@ -143,7 +143,7 @@ def test_datetime_utc_field_japan_timezone(testclient):
 
 
 def test_datetime_utc_field_invalid_timezone(testclient):
-    current_app.config["TIMEZONE"] = "invalid"
+    current_app.config["CANAILLE"]["TIMEZONE"] = "invalid"
 
     class TestForm(wtforms.Form):
         dt = DateTimeUTCField()
@@ -188,8 +188,8 @@ def test_datetime_utc_field_invalid_timezone(testclient):
 
 
 def test_fieldlist_add_readonly(testclient, logged_user):
-    testclient.app.config["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
-    testclient.app.config["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     logged_user.reload()
 
     res = testclient.get("/profile/user")
@@ -207,8 +207,8 @@ def test_fieldlist_add_readonly(testclient, logged_user):
 
 
 def test_fieldlist_remove_readonly(testclient, logged_user):
-    testclient.app.config["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
-    testclient.app.config["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     logged_user.reload()
 
     logged_user.phone_numbers = ["555-555-000", "555-555-111"]

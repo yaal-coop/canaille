@@ -103,6 +103,6 @@ def test_openid_configuration(testclient):
 
 
 def test_openid_configuration_prompt_value_create(testclient):
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     res = testclient.get("/.well-known/openid-configuration", status=200).json
     assert "create" in res["prompt_values_supported"]

@@ -103,7 +103,7 @@ def test_prompt_no_consent(testclient, logged_user, client):
 def test_prompt_create_logged(testclient, logged_user, client):
     """If prompt=create and user is already logged in, then go straight to the
     consent page."""
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
 
     consent = models.Consent(
         consent_id=str(uuid.uuid4()),
@@ -164,7 +164,7 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
     Check that the user is correctly redirected to the client page after
     the registration process.
     """
-    testclient.app.config["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
 
     res = testclient.get(
         "/oauth/authorize",

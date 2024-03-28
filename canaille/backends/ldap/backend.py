@@ -17,10 +17,10 @@ from .utils import listify
 
 @contextmanager
 def ldap_connection(config):
-    conn = ldap.initialize(config["BACKENDS"]["LDAP"]["URI"])
-    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["BACKENDS"]["LDAP"].get("TIMEOUT"))
+    conn = ldap.initialize(config["CANAILLE_LDAP"]["URI"])
+    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["CANAILLE_LDAP"]["TIMEOUT"])
     conn.simple_bind_s(
-        config["BACKENDS"]["LDAP"]["BIND_DN"], config["BACKENDS"]["LDAP"]["BIND_PW"]
+        config["CANAILLE_LDAP"]["BIND_DN"], config["CANAILLE_LDAP"]["BIND_PW"]
     )
 
     try:
@@ -44,7 +44,7 @@ def install_schema(config, schema_path):
 
     except ldap.INSUFFICIENT_ACCESS as exc:
         raise InstallationException(
-            f"The user '{config['BACKENDS']['LDAP']['BIND_DN']}' has insufficient permissions to install LDAP schemas."
+            f"The user '{config['CANAILLE_LDAP']['BIND_DN']}' has insufficient permissions to install LDAP schemas."
         ) from exc
 
 
@@ -80,26 +80,26 @@ class Backend(BaseBackend):
             return self._connection
 
         try:
-            self._connection = ldap.initialize(self.config["BACKENDS"]["LDAP"]["URI"])
+            self._connection = ldap.initialize(self.config["CANAILLE_LDAP"]["URI"])
             self._connection.set_option(
                 ldap.OPT_NETWORK_TIMEOUT,
-                self.config["BACKENDS"]["LDAP"].get("TIMEOUT"),
+                self.config["CANAILLE_LDAP"]["TIMEOUT"],
             )
             self._connection.simple_bind_s(
-                self.config["BACKENDS"]["LDAP"]["BIND_DN"],
-                self.config["BACKENDS"]["LDAP"]["BIND_PW"],
+                self.config["CANAILLE_LDAP"]["BIND_DN"],
+                self.config["CANAILLE_LDAP"]["BIND_PW"],
             )
 
         except ldap.SERVER_DOWN as exc:
             message = _("Could not connect to the LDAP server '{uri}'").format(
-                uri=self.config["BACKENDS"]["LDAP"]["URI"]
+                uri=self.config["CANAILLE_LDAP"]["URI"]
             )
             logging.error(message)
             raise ConfigurationException(message) from exc
 
         except ldap.INVALID_CREDENTIALS as exc:
             message = _("LDAP authentication failed with user '{user}'").format(
-                user=self.config["BACKENDS"]["LDAP"]["BIND_DN"]
+                user=self.config["CANAILLE_LDAP"]["BIND_DN"]
             )
             logging.error(message)
             raise ConfigurationException(message) from exc
@@ -129,8 +129,8 @@ class Backend(BaseBackend):
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
-                    f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
-                    f'users at \'{config["BACKENDS"]["LDAP"]["USER_BASE"]}\''
+                    f'LDAP user \'{config["CANAILLE_LDAP"]["BIND_DN"]}\' cannot create '
+                    f'users at \'{config["CANAILLE_LDAP"]["USER_BASE"]}\''
                 ) from exc
 
             try:
@@ -154,8 +154,8 @@ class Backend(BaseBackend):
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
-                    f'LDAP user \'{config["BACKENDS"]["LDAP"]["BIND_DN"]}\' cannot create '
-                    f'groups at \'{config["BACKENDS"]["LDAP"]["GROUP_BASE"]}\''
+                    f'LDAP user \'{config["CANAILLE_LDAP"]["BIND_DN"]}\' cannot create '
+                    f'groups at \'{config["CANAILLE_LDAP"]["GROUP_BASE"]}\''
                 ) from exc
 
             finally:
@@ -163,9 +163,7 @@ class Backend(BaseBackend):
 
     @classmethod
     def login_placeholder(cls):
-        user_filter = current_app.config["BACKENDS"]["LDAP"].get(
-            "USER_FILTER", models.User.DEFAULT_FILTER
-        )
+        user_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
         placeholders = []
 
         if "cn={{login" in user_filter.replace(" ", ""):
@@ -193,30 +191,20 @@ def setup_ldap_models(config):
 
     from .ldapobject import LDAPObject
 
-    LDAPObject.root_dn = config["BACKENDS"]["LDAP"]["ROOT_DN"]
+    LDAPObject.root_dn = config["CANAILLE_LDAP"]["ROOT_DN"]
 
-    user_base = config["BACKENDS"]["LDAP"]["USER_BASE"].replace(
-        f',{config["BACKENDS"]["LDAP"]["ROOT_DN"]}', ""
+    user_base = config["CANAILLE_LDAP"]["USER_BASE"].replace(
+        f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""
     )
     models.User.base = user_base
-    models.User.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "USER_RDN", models.User.DEFAULT_RDN
-    )
-    object_class = config["BACKENDS"]["LDAP"].get(
-        "USER_CLASS", models.User.DEFAULT_OBJECT_CLASS
-    )
+    models.User.rdn_attribute = config["CANAILLE_LDAP"]["USER_RDN"]
+    object_class = config["CANAILLE_LDAP"]["USER_CLASS"]
     models.User.ldap_object_class = listify(object_class)
 
-    group_base = (
-        config["BACKENDS"]["LDAP"]
-        .get("GROUP_BASE", "")
-        .replace(f',{config["BACKENDS"]["LDAP"]["ROOT_DN"]}', "")
+    group_base = config["CANAILLE_LDAP"]["GROUP_BASE"].replace(
+        f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""
     )
     models.Group.base = group_base or None
-    models.Group.rdn_attribute = config["BACKENDS"]["LDAP"].get(
-        "GROUP_RDN", models.Group.DEFAULT_RDN
-    )
-    object_class = config["BACKENDS"]["LDAP"].get(
-        "GROUP_CLASS", models.Group.DEFAULT_OBJECT_CLASS
-    )
+    models.Group.rdn_attribute = config["CANAILLE_LDAP"]["GROUP_RDN"]
+    object_class = config["CANAILLE_LDAP"]["GROUP_CLASS"]
     models.Group.ldap_object_class = listify(object_class)

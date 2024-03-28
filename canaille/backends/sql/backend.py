@@ -21,7 +21,7 @@ class Backend(BaseBackend):
     @classmethod
     def install(cls, config):  # pragma: no cover
         engine = create_engine(
-            config["BACKENDS"]["SQL"]["SQL_DATABASE_URI"],
+            config["CANAILLE_SQL"]["DATABASE_URI"],
             echo=False,
             future=True,
         )
@@ -30,7 +30,7 @@ class Backend(BaseBackend):
     def setup(self, init=False):
         if not self.db_session:
             self.db_session = db_session(
-                self.config["BACKENDS"]["SQL"]["SQL_DATABASE_URI"],
+                self.config["CANAILLE_SQL"]["DATABASE_URI"],
                 init=init,
             )
 

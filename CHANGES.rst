@@ -1,16 +1,17 @@
-All notable changes to this project will be documented in this file.
+Unreleased
+----------
 
-The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
-and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
+🚨Configuration files must be updated.🚨
 
 Added
-=====
+^^^^^
 
 - Add `created` and `last_modified` datetime for all models
 - Sitemap to the documentation :pr:`169`
+- Configuration management with pydantic-settings :issue:`138` :pr:`170`
 
 Changed
-=======
+^^^^^^^
 
 - Use default python logging configuration format. :issue:`188` :pr:`165`
 - Bump to htmx 1.99.11 :pr:`166`
@@ -21,7 +22,7 @@ Changed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Avoid to fail on imports if ``cryptography`` is missing.
 
@@ -29,12 +30,12 @@ Fixed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - OIDC `prompt=create` support. :issue:`185` :pr:`164`
 
 Fixed
-=====
+^^^^^
 
 - Correctly set up Client audience during OIDC dynamic registration.
 - ``post_logout_redirect_uris`` was ignored during OIDC dynamic registration.
@@ -44,7 +45,7 @@ Fixed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - ``THEME`` can be a relative path
 
@@ -52,7 +53,7 @@ Added
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Crash when no ACL were defined
 - OIDC Userinfo endpoint is also available in POST
@@ -62,7 +63,7 @@ Fixed
 ---------------------
 
 Changed
-=======
+^^^^^^^
 
 - Convert all the png in webp. :pr:`162`
 - Update to flask 3 :issue:`161` :pr:`163`
@@ -71,7 +72,7 @@ Changed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Handle 4xx and 5xx error codes with htmx. :issue:`171` :pr:`161`
 
@@ -79,7 +80,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Avoid crashing when LDAP groups references unexisting users.
 - Password reset and initialization mails were only sent to the
@@ -93,19 +94,19 @@ Fixed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Refresh token grant supports other client authentication methods. :pr:`157`
 - Implement a SQLAlchemy backend. :issue:`30` :pr:`158`
 
 Changed
-=======
+^^^^^^^
 
 - Model attributes cardinality is closer to SCIM model. :pr:`155`
 - Bump to htmx 1.9.9 :pr:`159`
 
 Fixed
-=====
+^^^^^
 
 - Disable HTMX boosting during the OIDC dance. :pr:`160`
 
@@ -113,13 +114,13 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Canaille installations without account lockabilty could not
   delete users. :pr:`153`
 
 Added
-=====
+^^^^^
 
 - If users register or authenticate during a OAuth Authorization
   phase, they get redirected back to that page afterwards.
@@ -133,12 +134,12 @@ Added
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - OIDC jwks endpoint do not return empty kid claim
 
 Added
-=====
+^^^^^
 
 - Documentation details on the canaille models.
 
@@ -146,7 +147,7 @@ Added
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Additional inmemory backend :issue:`30` :pr:`149`
 - Installation extras :issue:`167` :pr:`150`
@@ -155,7 +156,7 @@ Added
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Configuration option to disable the forced usage of OIDC nonce :pr:`143`
 - Validate phone numbers with a regex :pr:`146`
@@ -163,12 +164,12 @@ Added
 - Account registration :issue:`55` :pr:`133` :pr:`148`
 
 Fixed
-=====
+^^^^^
 
 - The `check` command uses the default configuration values.
 
 Changed
-=======
+^^^^^^^
 
 - Modals do not need use javascript at the moment. :issue:`158` :pr:`144`
 
@@ -179,12 +180,12 @@ Changed
 Check the new format with ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``
 
 Added
-=====
+^^^^^
 
 - Configuration option to disable javascript :pr:`141`
 
 Changed
-=======
+^^^^^^^
 
 - Configuration ``USER_FILTER`` is parsed with jinja.
 - Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and ``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``
@@ -193,7 +194,7 @@ Changed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Disabled HTMX boosting on OIDC forms to avoid errors.
 
@@ -201,7 +202,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - A template variable was misnamed.
 
@@ -212,7 +213,7 @@ Fixed
 Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``
 
 Added
-=====
+^^^^^
 
 - Configuration entries can be loaded from files if the entry key has a *_FILE* suffix
   and the entry value is the path to the file. :issue:`134` :pr:`134`
@@ -220,17 +221,17 @@ Added
 - Pages are boosted with HTMX :issue:`144` :issue:`145` :pr:`137`
 
 Changed
-=======
+^^^^^^^
 
 - Bump to jquery 3.7.0 :pr:`138`
 
 Fixed
-=====
+^^^^^
 
 - Profile edition when the user RDN was not ``uid`` :issue:`148` :pr:`139`
 
 Removed
-=======
+^^^^^^^
 
 - Stop support for python 3.7 :pr:`131`
 
@@ -238,14 +239,14 @@ Removed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Implemented account expiration based on OpenLDAP ppolicy overlay. Needs OpenLDAP 2.5+
   :issue:`13` :pr:`118`
 - Timezone configuration entry. :issue:`137` :pr:`130`
 
 Fixed
-=====
+^^^^^
 
 - Avoid setting ``None`` in JWT claims when they have no value.
 - Display password recovery button on OIDC login page. :pr:`129`
@@ -257,7 +258,7 @@ Fixed
 Check the new format with ``git diff 0.0.25 0.0.24 canaille/conf/config.sample.toml``
 
 Changed
-=======
+^^^^^^^
 
 - Renamed user model attributes to match SCIM naming convention. :pr:`123`
 - Moved OIDC related configuration entries in ``OIDC``
@@ -267,7 +268,7 @@ Changed
 - Bumped to htmx 1.9.2 :pr:`127`
 
 Fixed
-=====
+^^^^^
 
 - ``OIDC.JWT.MAPPING`` configuration entry is really optional now.
 - Fixed empty model attributes registration :pr:`125`
@@ -277,7 +278,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Fixed avatar update. :pr:`122`
 
@@ -285,20 +286,20 @@ Fixed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Organization field. :pr:`116`
 - ETag and Last-Modified headers on user photos. :pr:`116`
 - Dynamic form validation :pr:`120`
 
 Changed
-=======
+^^^^^^^
 
 - UX rework. Submenu addition. :pr:`114`
 - Properly handle LDAP date timezones. :pr:`117`
 
 Fixed
-=====
+^^^^^
 
 - CSRF protection on every forms. :pr:`119`
 
@@ -306,14 +307,14 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 - faker is not imported anymore when the `clean` command is called.
 
 [0.0.21] - 2023-03-12
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Display TOS and policy URI on the consent list page. :pr:`102`
 - Admin token deletion :pr:`100` :pr:`101`
@@ -329,13 +330,13 @@ Added
 - Title edition support :pr:`113`
 
 Fixed
-=====
+^^^^^
 
 - Client deletion also deletes related Consent, Token and
   AuthorizationCode objects. :issue:`126` :pr:`98`
 
 Changed
-=======
+^^^^^^^
 
 - Removed datatables.
 
@@ -343,7 +344,7 @@ Changed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Spanish translation. :pr:`85` :pr:`88`
 - Dedicated connectivity test email :pr:`89`
@@ -352,7 +353,7 @@ Added
 - Update to datatables 1.13.1 :pr:`90`
 
 Fixed
-=====
+^^^^^
 
 - Fix typos and grammar errors. :pr:`84`
 - Fix wording and punctuations. :pr:`86`
@@ -364,7 +365,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Ensures the token `expires_in` claim and the `access_token` `exp` claim
   have the same value. :pr:`83`
@@ -373,7 +374,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - OIDC end_session was not returning the ``state`` parameter in the
   ``post_logout_redirect_uri`` :pr:`82`
@@ -382,7 +383,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Fixed group deletion button. :pr:`80`
 - Fixed post requests in oidc clients views. :pr:`81`
@@ -391,7 +392,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Fixed LDAP operational attributes handling.
 
@@ -399,7 +400,7 @@ Fixed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - User can chose their favourite display name. :pr:`77`
 - Bumped to authlib 1.2. :pr:`78`
@@ -411,14 +412,14 @@ Added
 ---------------------
 
 Fixed
-=====
+^^^^^
 - Fixed translation mo files packaging.
 
 [0.0.13] - 2022-11-21
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Fixed a bug on the contacts field in the admin client form following
   the LDAP schema update of 0.0.12
@@ -432,14 +433,14 @@ Fixed
 - Fixed client preconsent disabling. :pr:`72`
 
 Added
-=====
+^^^^^
 
 - Python 3.11 support. :pr:`61`
 - apparmor slapd configuration instructions in CONTRIBUTING.rst :pr:`66`
 - ``preferredLanguage`` attribute support. :pr:`75`
 
 Changed
-=======
+^^^^^^^
 
 - Replaced the use of the deprecated `FLASK_ENV` environment variable by
   `FLASK_DEBUG`.
@@ -453,7 +454,7 @@ Changed
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Basic WebFinger endpoint. :pr:`59`
 - Bumped to FomanticUI 2.9.0 00ffffee
@@ -463,12 +464,12 @@ Added
 ---------------------
 
 Added
-=====
+^^^^^
 
 - Default theme has a dark variant. :pr:`57`
 
 Fixed
-=====
+^^^^^
 
 - Fixed missing ``canaille`` binary. :pr:`58`
 
@@ -476,7 +477,7 @@ Fixed
 ---------------------
 
 Fixed
-=====
+^^^^^
 
 - Online demo. :pr:`55`
 - The consent page was displaying scopes not supported by clients. :pr:`56`
@@ -486,14 +487,14 @@ Fixed
 --------------------
 
 Added
-=====
+^^^^^
 
 - ``DISABLE_PASSWORD_RESET`` configuration option to disable password recovery. :pr:`46`
 - ``edit_self`` ACL permission to control user self edition. :pr:`47`
 - Implemented RP-initiated logout :pr:`54`
 
 Changed
-=======
+^^^^^^^
 
 - Bumped to authlib 1 :pr:`48`
 - documentation improvements :pr:`50`
@@ -501,7 +502,7 @@ Changed
 - additional nonce tests :pr:`52`
 
 Fixed
-=====
+^^^^^
 - ``HIDE_INVALID_LOGIN`` behavior and default value.
 - mo files are not versionned anymore :pr:`49` :pr:`53`
 
@@ -509,7 +510,7 @@ Fixed
 --------------------
 
 Fixed
-=====
+^^^^^
 
 - Fixed dependencies
 
@@ -517,7 +518,7 @@ Fixed
 --------------------
 
 Fixed
-=====
+^^^^^
 
 - Fixed spaces and escaped special char in ldap cn/dn :pr:`43`
 
@@ -525,12 +526,12 @@ Fixed
 --------------------
 
 Changed
-=======
+^^^^^^^
 
 - Access token are JWT. :pr:`38`
 
 Fixed
-=====
+^^^^^
 
 - Default groups on invitations :pr:`41`
 - Schemas are shipped within the canaille package :pr:`42`
@@ -539,12 +540,12 @@ Fixed
 --------------------
 
 Changed
-=======
+^^^^^^^
 
 - LDAP model objects have new identifiers :pr:`37`
 
 Fixed
-=====
+^^^^^
 
 - Admin menu dropdown display :pr:`39`
 - `GROUP_ID_ATTRIBUTE` configuration typo :pr:`40`
@@ -553,7 +554,7 @@ Fixed
 --------------------
 
 Added
-=====
+^^^^^
 
 - Client preauthorization :pr:`11`
 - LDAP permissions check with the check command :pr:`12`
@@ -576,7 +577,7 @@ Added
 - LDAP backend refactoring :pr:`35`
 
 Fixed
-=====
+^^^^^
 
 - Fixed ghost members in a group :pr:`14`
 - Fixed email sender names :pr:`19`
@@ -591,7 +592,7 @@ Fixed
 --------------------
 
 Added
-=====
+^^^^^
 
 - Two-steps sign-in :issue:`49`
 - Tokens can have several audiences. :issue:`62` :pr:`9`
@@ -599,7 +600,7 @@ Added
 - Groups managament. :issue:`12` :pr:`6`
 
 Fixed
-=====
+^^^^^
 
 - Introspection access bugfix. :issue:`63` :pr:`10`
 - Introspection sub claim. :issue:`64` :pr:`7`
@@ -608,7 +609,7 @@ Fixed
 --------------------
 
 Added
-=====
+^^^^^
 
 - Login page is responsive. :issue:`1`
 - Adapt mobile keyboards to login page fields. :issue:`2`
@@ -630,13 +631,13 @@ Added
 - Password initialization mail. :pr:`51`
 
 Fixed
-=====
+^^^^^
 
 - Form translations. :issue:`19` :issue:`23`
 - Avoid to use Google Fonts. :issue:`21`
 
 Removed
-=======
+^^^^^^^
 
 - 'My tokens' page. :issue:`22`
 
@@ -644,6 +645,6 @@ Removed
 --------------------
 
 Added
-=====
+^^^^^
 
 - Initial release.

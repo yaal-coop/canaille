@@ -53,8 +53,8 @@ def locale_selector():
     if user is not None and user.preferred_language in available_language_codes:
         return user.preferred_language
 
-    if current_app.config.get("LANGUAGE"):
-        return current_app.config.get("LANGUAGE")
+    if current_app.config["CANAILLE"]["LANGUAGE"]:
+        return current_app.config["CANAILLE"]["LANGUAGE"]
 
     return request.accept_languages.best_match(available_language_codes)
 
@@ -67,7 +67,7 @@ def timezone_selector():
     from babel.dates import LOCALTZ
 
     try:
-        return pytz.timezone(current_app.config.get("TIMEZONE"))
+        return pytz.timezone(current_app.config["CANAILLE"]["TIMEZONE"])
     except pytz.exceptions.UnknownTimeZoneError:
         return LOCALTZ
 

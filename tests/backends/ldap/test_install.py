@@ -2,6 +2,7 @@ import pytest
 from flask_webtest import TestApp
 
 from canaille import create_app
+from canaille.app.configuration import settings_factory
 from canaille.app.installation import InstallationException
 from canaille.backends.ldap.backend import Backend
 from canaille.backends.ldap.ldapobject import LDAPObject
@@ -46,61 +47,67 @@ def test_setup_ldap_tree(slapd_server, configuration):
 
 
 def test_install_schemas(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
-    Backend.setup_schemas(configuration)
+    Backend.setup_schemas(config_dict)
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" in LDAPObject.ldap_object_classes(force=True)
 
 
 def test_install_schemas_twice(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
-    Backend.setup_schemas(configuration)
+    Backend.setup_schemas(config_dict)
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" in LDAPObject.ldap_object_classes(force=True)
 
-    Backend.setup_schemas(configuration)
+    Backend.setup_schemas(config_dict)
 
 
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = (
-        "uid=admin,ou=users,dc=mydomain,dc=tld"
-    )
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = "admin"
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=mydomain,dc=tld"
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = "admin"
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
         with pytest.raises(InstallationException):
-            Backend.setup_schemas(configuration)
+            Backend.setup_schemas(config_dict)
 
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
 
 def test_install_schemas_command(configuration, slapd_server):
-    configuration["BACKENDS"]["LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["BACKENDS"]["LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["BACKENDS"]["LDAP"]["BIND_DN"] = slapd_server.root_dn
-    configuration["BACKENDS"]["LDAP"]["BIND_PW"] = slapd_server.root_pw
+    configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
+    configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
     testclient = TestApp(create_app(configuration, validate=False))
@@ -108,5 +115,5 @@ def test_install_schemas_command(configuration, slapd_server):
     res = runner.invoke(cli, ["install"])
     assert res.exit_code == 0, res.stdout
 
-    with Backend(configuration).session():
+    with Backend(config_dict).session():
         assert "oauthClient" in LDAPObject.ldap_object_classes(force=True)

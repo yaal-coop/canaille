@@ -26,11 +26,11 @@ poetry install --with demo --all-extras
 
 if [ "$BACKEND" = "memory" ]; then
 
-    env poetry run honcho --procfile Procfile-memory start
+    poetry run honcho --procfile Procfile-memory start
 
 elif [ "$BACKEND" = "sql" ]; then
 
-    env poetry run honcho --procfile Procfile-sql start
+    poetry run honcho --procfile Procfile-sql start
 
 elif [ "$BACKEND" = "ldap" ]; then
 
@@ -40,7 +40,7 @@ elif [ "$BACKEND" = "ldap" ]; then
         exit 1
     fi
 
-    env poetry run honcho --procfile Procfile-ldap start
+    poetry run honcho --procfile Procfile-ldap start
 
 else
 
