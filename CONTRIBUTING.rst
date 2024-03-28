@@ -84,7 +84,8 @@ Local environment
 
 .. note ::
     If you want to run the demo locally with the LDAP backend, you need to have
-    OpenLDAP installed on your system.
+    `OpenLDAP <https://www.openldap.org/>`_ installed on your system.
+    It is generally shipped under the ``slapd`` or ``openldap`` package name.
 
 .. warning ::
     On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor,
