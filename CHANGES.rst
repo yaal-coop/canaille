@@ -1,3 +1,10 @@
+[Unreleased]
+------------
+
+Fixed
+^^^^^
+- Fix the default LDAP USER_FILTER value
+
 [0.0.43] - 2024-03-29
 ---------------------
 
