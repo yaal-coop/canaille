@@ -278,7 +278,7 @@ class CoreSettings(BaseModel):
             handlers = {
                 canaille = {
                     class = "logging.handlers.WatchedFileHandler",
-                    filename = /foo/bar/canaille.log,
+                    filename = "/foo/bar/canaille.log",
                     formatter = "default",
                 }
             },
