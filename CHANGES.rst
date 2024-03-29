@@ -1,10 +1,10 @@
-[Unreleased]
-------------
+[0.0.44] - 2024-03-29
+---------------------
 
 Fixed
 ^^^^^
 - Fix the default LDAP USER_FILTER value
-- Fix OIDC feature detection
+- Fix the OIDC feature detection
 
 [0.0.43] - 2024-03-29
 ---------------------
