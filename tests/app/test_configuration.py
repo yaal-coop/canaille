@@ -43,24 +43,20 @@ def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration)
 def test_configuration_from_environment_vars():
     os.environ["SECRET_KEY"] = "very-very-secret"
     os.environ["CANAILLE__SMTP__FROM_ADDR"] = "user@mydomain.tld"
-    os.environ["CANAILLE_OIDC__REQUIRE_NONCE"] = "false"
     os.environ["CANAILLE_SQL__DATABASE_URI"] = "sqlite:///anything.db"
 
     conf = settings_factory({"TIMEZONE": "UTC"})
     assert conf.SECRET_KEY == "very-very-secret"
     assert conf.CANAILLE.SMTP.FROM_ADDR == "user@mydomain.tld"
-    assert conf.CANAILLE_OIDC.REQUIRE_NONCE is False
     assert conf.CANAILLE_SQL.DATABASE_URI == "sqlite:///anything.db"
 
     app = create_app({"TIMEZONE": "UTC"})
     assert app.config["SECRET_KEY"] == "very-very-secret"
     assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "user@mydomain.tld"
-    assert app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] is False
     assert app.config["CANAILLE_SQL"]["DATABASE_URI"] == "sqlite:///anything.db"
 
     del os.environ["SECRET_KEY"]
     del os.environ["CANAILLE__SMTP__FROM_ADDR"]
-    del os.environ["CANAILLE_OIDC__REQUIRE_NONCE"]
     del os.environ["CANAILLE_SQL__DATABASE_URI"]
 
 
