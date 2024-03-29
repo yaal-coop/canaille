@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Dict
 from typing import List
 from typing import Optional
+from typing import Union
 
 from pydantic import BaseModel
 from pydantic import ValidationInfo
@@ -144,7 +145,7 @@ class ACLSettings(BaseModel):
         assert all(field in User.__annotations__ for field in write)
         return write
 
-    FILTER: Optional[Dict[str, str] | List[Dict[str, str]]] = None
+    FILTER: Optional[Union[Dict[str, str], List[Dict[str, str]]]] = None
     """:attr:`FILTER` can be:
 
     - :py:data:`None`, in which case all the users will match this access control
@@ -255,7 +256,7 @@ class CoreSettings(BaseModel):
     Defaults to 2 days.
     """
 
-    LOGGING: Optional[str | Dict] = None
+    LOGGING: Optional[Union[str, Dict]] = None
     """Configures the logging output using the python logging configuration format:
 
     - if :py:data:`None`, everything is logged in the standard output
