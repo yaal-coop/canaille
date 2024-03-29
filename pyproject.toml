@@ -170,6 +170,7 @@ branch = true
 
 [tool.coverage.report]
 exclude_lines = [
+    "@pytest.mark.skip",
     "pragma: no cover",
     "raise NotImplementedError",
     "except ImportError",
