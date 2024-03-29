@@ -1,5 +1,5 @@
-Unreleased
-----------
+[0.0.43] - 2024-03-29
+---------------------
 
 🚨Configuration files must be updated.🚨
 
