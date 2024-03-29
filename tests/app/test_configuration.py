@@ -23,7 +23,7 @@ def test_configuration_secrets_directory(tmp_path, backend, configuration):
     del os.environ["SECRETS_DIR"]
 
 
-@pytest.skip
+@pytest.mark.skip
 # Not fully implemented in pydantic-settings yet
 # https://github.com/pydantic/pydantic-settings/issues/154
 def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration):
