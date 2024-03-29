@@ -197,9 +197,6 @@ def validate_smtp_configuration(config):
 
 
 def validate_theme(config):
-    if not config or not config["THEME"]:
-        return
-
     if not os.path.exists(config["THEME"]) and not os.path.exists(
         os.path.join(ROOT, "themes", config["THEME"])
     ):
