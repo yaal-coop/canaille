@@ -9,16 +9,34 @@ from canaille.app.configuration import settings_factory
 from canaille.app.configuration import validate
 
 
-def test_configuration_file_suffix(tmp_path, backend, configuration):
+def test_configuration_secrets_directory(tmp_path, backend, configuration):
     os.environ["SECRETS_DIR"] = str(tmp_path)
-    file_path = os.path.join(tmp_path, "SECRET_KEY")
-    with open(file_path, "w") as fd:
+
+    secret_key_path = tmp_path / "SECRET_KEY"
+    with open(secret_key_path, "w") as fd:
         fd.write("very-secret")
 
     del configuration["SECRET_KEY"]
 
     app = create_app(configuration)
     assert app.config["SECRET_KEY"] == "very-secret"
+    del os.environ["SECRETS_DIR"]
+
+
+@pytest.skip
+# Not fully implemented in pydantic-settings yet
+# https://github.com/pydantic/pydantic-settings/issues/154
+def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration):
+    os.environ["SECRETS_DIR"] = str(tmp_path)
+
+    smtp_password_path = tmp_path / "CANAILLE__SMTP__PASSWORD"
+    with open(smtp_password_path, "w") as fd:
+        fd.write("very-very-secret")
+
+    del configuration["CANAILLE"]["SMTP"]["PASSWORD"]
+
+    app = create_app(configuration)
+    assert app.config["CANAILLE"]["SMTP"]["PASSWORD"] == "very-very-secret"
     del os.environ["SECRETS_DIR"]
 
 

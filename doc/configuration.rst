@@ -27,12 +27,15 @@ The way environment variables are parsed can be read from the `pydantic-settings
 
 Settings will also be read from a local ``.env`` file if present.
 
-Secret parameters
-=================
+.. TODO: Uncomment this when pydantic-settings implements nested secrets directories
+   https://github.com/pydantic/pydantic-settings/issues/154
 
-A ``SECRETS_DIR`` environment variable can be passed as an environment variable, being a path to a directory in which are stored files named after the configuration settings.
+    Secret parameters
+    =================
 
-For instance, you can set ``SECRETS_DIR=/run/secrets`` and put your secret key in the file ``/run/secrets/SECRET_KEY``.
+    A ``SECRETS_DIR`` environment variable can be passed as an environment variable, being a path to a directory in which are stored files named after the configuration settings.
+
+    For instance, you can set ``SECRETS_DIR=/run/secrets`` and put your secret key in the file ``/run/secrets/SECRET_KEY``.
 
 Parameters
 ==========
