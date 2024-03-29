@@ -1923,11 +1923,6 @@ msgstr[1] ""
 #~ msgid "Send email"
 #~ msgstr "Send e-post"
 
-#, fuzzy
-#~| msgid "This field is not editable"
-#~ msgid "This field cannot be edited"
-#~ msgstr "Dette feltet kan ikke endres"
-
 #~ msgid "You have been successfully logged out."
 #~ msgstr "Du har blitt utlogget."
 

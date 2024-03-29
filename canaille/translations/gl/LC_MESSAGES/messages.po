@@ -2029,11 +2029,6 @@ msgstr[1] ""
 #~ msgid "Send email"
 #~ msgstr "Enviar email"
 
-#, fuzzy
-#~| msgid "This field is not editable"
-#~ msgid "This field cannot be edited"
-#~ msgstr "Este campo non é editable"
-
 #~ msgid "You have been successfully logged out."
 #~ msgstr "A sesión foi pechada correctamente."
 

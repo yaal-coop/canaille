@@ -1859,11 +1859,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, fuzzy
-#~| msgid "The client has been edited."
-#~ msgid "This field cannot be edited"
-#~ msgstr "Der Kunde wurde bearbeitet."
-
-#, fuzzy
 #~ msgid "Employee number"
 #~ msgstr "Telefonnummer"
 
