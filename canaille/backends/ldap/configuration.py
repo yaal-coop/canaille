@@ -34,7 +34,7 @@ class LDAPSettings(BaseModel):
     USER_RDN: str = "uid"
     """The attribute to identify an object in the User DN."""
 
-    USER_FILTER: str = "member={user.id}"
+    USER_FILTER: str = "(|(uid={{ login }})(mail={{ login }}))"
     """Filter to match users on sign in.
 
     For instance ``(|(uid={{ login }})(mail={{ login }}))``.
