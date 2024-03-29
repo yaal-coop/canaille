@@ -95,7 +95,7 @@ def setup_flask(app):
         return {
             "debug": app.debug or app.config.get("TESTING", False),
             "has_smtp": "SMTP" in app.config["CANAILLE"],
-            "has_oidc": "CANAILLE_OIDC" in app.config["CANAILLE"],
+            "has_oidc": "CANAILLE_OIDC" in app.config,
             "has_password_recovery": app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"],
             "has_registration": app.config["CANAILLE"]["ENABLE_REGISTRATION"],
             "has_account_lockability": app.backend.get().has_account_lockability(),
