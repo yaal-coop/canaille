@@ -68,7 +68,7 @@ LDAP schemas
 
 As of OpenLDAP 2.4, two configuration methods are available:
 
-- The `deprecated <https://www.openldap.org/doc/admin24/slapdconf2.html>`_ one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);
+- The `deprecated <https://www.openldap.org/doc/admin26/slapdconf2.html>`_ one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);
 - The new one, based on a configuration directory (generally ``/etc/ldap/slapd.d``).
 
 Depending on the configuration method you use with your OpenLDAP installation, you need to chose how to add the canaille schemas:

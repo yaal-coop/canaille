@@ -6,20 +6,22 @@ from canaille.app import classproperty
 
 
 class Model:
-    """Model abstract class."""
+    """The model abstract class.
 
-    created: Optional[datetime.datetime]
-    """The "DateTime" that the resource was added to the service provider.
-
-    This attribute MUST be a DateTime.
+    It details all the methods and attributes that are expected to be
+    implemented for every model and for every backend.
     """
 
+    created: Optional[datetime.datetime]
+    """The :class:`~datetime.datetime` that the resource was added to the
+    service provider."""
+
     last_modified: Optional[datetime.datetime]
-    """The most recent DateTime that the details of this resource were updated
-    at the service provider.
+    """The most recent :class:`~datetime.datetime` that the details of this
+    resource were updated at the service provider.
 
     If this resource has never been modified since its initial creation,
-    the value MUST be the same as the value of "created".
+    the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`.
     """
 
     @classproperty
@@ -50,14 +52,14 @@ class Model:
 
     @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
-        """Works like :meth:`~canaille.backends.models.query` but attribute
-        values loosely be matched."""
+        """Works like :meth:`~canaille.backends.models.Model.query` but
+        attribute values loosely be matched."""
         raise NotImplementedError()
 
     @classmethod
     def get(cls, identifier=None, **kwargs):
-        """Works like :meth:`~canaille.backends.models.query` but return only
-        one element or :py:data:`None` if no item is matching."""
+        """Works like :meth:`~canaille.backends.models.Model.query` but return
+        only one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
     @property

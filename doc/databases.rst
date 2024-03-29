@@ -26,7 +26,7 @@ It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For ins
     [CANAILLE_SQL]
     SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
 
-You can find more details on the SQL configuration in the :class:`~canaille.backends.sql.configuration.SQLSettings` section.
+You can find more details on the SQL configuration in the :class:`dedicated section <canaille.backends.sql.configuration.SQLSettings>`.
 
 LDAP
 ====
@@ -46,7 +46,7 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 
     GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 
-You can find more details on the LDAP configuration in the :class:`~canaille.backends.ldap.configuration.LDAPSettings` section.
+You can find more details on the LDAP configuration in the :class:`dedicated section <canaille.backends.ldap.configuration.LDAPSettings>`.
 
 .. note ::
    Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have been tested.
@@ -61,8 +61,8 @@ Canaille can integrate with several OpenLDAP overlays:
 memberof / refint
 ~~~~~~~~~~~~~~~~~
 
-`memberof <https://www.openldap.org/doc/admin24/overlays.html#Reverse%20Group%20Membership%20Maintenance>`_
-and `refint <https://www.openldap.org/doc/admin24/overlays.html#Referential Integrity>`_
+`memberof <https://www.openldap.org/doc/admin26/overlays.html#Reverse%20Group%20Membership%20Maintenance>`_
+and `refint <https://www.openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_
 overlays are needed for the Canaille group membership to work correctly.
 
 Here is a configuration example compatible with canaille:
@@ -86,7 +86,7 @@ You can adapt and load those configuration files with:
 ppolicy
 ~~~~~~~
 
-If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-policy-11.html>`_ overlay is configured and the ``pwdEndTime`` attribute is available (since OpenLDAP 2.6), then account locking support will be enabled in canaille. To allow users to manage account expiration, they need to have a *write* permission on the ``lock_date`` attribute.
+If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-policy-11.html>`_ overlay is configured and the ``pwdEndTime`` attribute is available (since OpenLDAP 2.6), then account locking support will be enabled in canaille. To allow users to manage account expiration, they need to have a *write* permission on the :attr:`~canaille.core.models.User.lock_date` attribute.
 
 Here is a configuration example compatible with canaille:
 
