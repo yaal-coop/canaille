@@ -167,3 +167,16 @@ You can also run sphinx by hand, that should be faster since it avoids the tox e
    sphinx-build doc build/sphinx/html
 
 The generated documentation is located at ``build/sphinx/html``.
+
+Publish a new release
+---------------------
+
+1. Check that dependencies are up to date with ``poetry show --outdated --with dev,doc,demo`` and update dependencies accordingly in separated commits.
+2. Check that tests are still green
+3. Check that coverage is still at 100%
+4. Check that the :ref:`changelog:Release notes` section is correctly filled up
+5. Increase the version number in ``pyproject.toml``
+6. Commit with ``git commit``
+7. Publish with ``poetry publish --build``
+8. Tag you commit with ``git tag XX.YY.ZZ``
+9. Push the release commit and the new tag on the repository with ``git push --tags``
