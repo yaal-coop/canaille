@@ -1,4 +1,5 @@
 import datetime
+import sys
 from logging.config import dictConfig
 from logging.config import fileConfig
 
@@ -131,7 +132,8 @@ def create_app(config=None, validate=True, backend=None):
 
     app = Flask(__name__)
     with app.app_context():
-        setup_config(app, config, validate)
+        if not setup_config(app, config, validate):  # pragma: no cover
+            sys.exit(1)
 
     sentry_sdk = setup_sentry(app)
     try:

@@ -5,6 +5,7 @@ import sys
 from typing import Optional
 
 from flask import current_app
+from pydantic import ValidationError
 from pydantic import create_model
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
@@ -63,7 +64,7 @@ def settings_factory(config):
     """Overly complicated function that pushes the backend specific
     configuration into CoreSettings, in the purpose break dependency against
     backends libraries like python-ldap or sqlalchemy."""
-    attributes = {"CANAILLE": (Optional[CoreSettings], None)}
+    attributes = {"CANAILLE": (CoreSettings, CoreSettings())}
 
     if "CANAILLE_SQL" in config or any(
         var.startswith("CANAILLE_SQL__") for var in os.environ
@@ -128,7 +129,12 @@ def setup_config(app, config=None, test_config=True):
     if not config and "CONFIG" in os.environ:
         config = toml_content(os.environ.get("CONFIG"))
 
-    config_obj = settings_factory(config)
+    try:
+        config_obj = settings_factory(config or {})
+    except ValidationError as exc:  # pragma: no cover
+        app.logger.critical(str(exc))
+        return False
+
     app.config.from_mapping(config_obj.model_dump())
 
     if app.debug:
@@ -136,6 +142,8 @@ def setup_config(app, config=None, test_config=True):
 
     if test_config:
         validate(app.config)
+
+    return True
 
 
 def validate(config, validate_remote=False):
