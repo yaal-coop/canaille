@@ -102,5 +102,5 @@ class OIDCSettings(BaseModel):
     This adds security but may not be supported by all clients.
     """
 
-    JWT: Optional[JWTSettings] = None
+    JWT: JWTSettings = JWTSettings()
     """JSON Web Token settings."""

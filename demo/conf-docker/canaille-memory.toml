@@ -1,4 +1,5 @@
 SECRET_KEY = "change me before you go in production"
+DEBUG = true
 
 [CANAILLE]
 NAME = "Canaille"
