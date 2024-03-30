@@ -54,7 +54,7 @@ class MemoryModel(Model):
         if not class_name:
             class_name = cls.__name__
 
-        return MemoryModel.indexes.setdefault(class_name, {}).setdefault("id", {})
+        return MemoryModel.indexes.setdefault(class_name, {})
 
     @classmethod
     def attribute_index(cls, attribute="id", class_name=None):
