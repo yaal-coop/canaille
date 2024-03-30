@@ -47,8 +47,8 @@ def fake_users(nb=1):
 def fake_groups(nb=1, nb_users_max=1):
     users = models.User.query()
     groups = list()
+    fake = faker_generator(["en_US"])
     for _ in range(nb):
-        fake = faker_generator(["en_US"])
         try:
             group = models.Group(
                 display_name=fake.unique.word(),
