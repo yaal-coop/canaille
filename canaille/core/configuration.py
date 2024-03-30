@@ -267,26 +267,15 @@ class CoreSettings(BaseModel):
 
     For example::
 
-        [CANAILLE]
-        LOGGING = {
-            version = 1,
-            formatters = {
-                default = {
-                    format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
-                },
-            },
-            handlers = {
-                canaille = {
-                    class = "logging.handlers.WatchedFileHandler",
-                    filename = "/foo/bar/canaille.log",
-                    formatter = "default",
-                }
-            },
-            root = {
-                level = "INFO",
-                handlers = ["canaille"],
-            },
-        }
+        [CANAILLE.LOGGING]
+        version = 1
+        formatters.default.format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+        root = {level = "INFO", handlers = ["canaille"]}
+
+        [CANAILLE.LOGGING.handlers.canaille]
+        class = "logging.handlers.WatchedFileHandler"
+        filename = "/var/log/canaille.log"
+        formatter = "default"
     """
 
     SMTP: Optional[SMTPSettings] = None
