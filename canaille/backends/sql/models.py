@@ -207,7 +207,8 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
             return all(
                 self.normalize_filter_value(attribute, value)
                 in getattr(self, attribute, [])
-                if typing.get_origin(self.attributes[attribute]) is list
+                if typing.get_origin(typing.get_args(self.attributes[attribute])[0])
+                is list
                 else self.normalize_filter_value(attribute, value)
                 == getattr(self, attribute, None)
                 for attribute, value in filter.items()
