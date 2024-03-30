@@ -1,4 +1,5 @@
 import datetime
+import typing
 import uuid
 from typing import List
 
@@ -72,7 +73,10 @@ class SqlAlchemyModel(Model):
         if isinstance(value, list):
             return or_(cls.attribute_filter(name, v) for v in value)
 
-        multiple = "List" in str(cls.attributes[name])
+        # extract the sqlalchemy.orm.Mapped type
+        attribute_type = typing.get_args(cls.attributes[name])[0]
+        multiple = typing.get_origin(attribute_type) is list
+
         if multiple:
             return getattr(cls, name).contains(value)
 
@@ -203,7 +207,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
             return all(
                 self.normalize_filter_value(attribute, value)
                 in getattr(self, attribute, [])
-                if "List" in str(self.attributes[attribute])
+                if typing.get_origin(self.attributes[attribute]) is list
                 else self.normalize_filter_value(attribute, value)
                 == getattr(self, attribute, None)
                 for attribute, value in filter.items()

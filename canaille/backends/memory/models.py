@@ -1,5 +1,6 @@
 import copy
 import datetime
+import typing
 import uuid
 
 from flask import current_app
@@ -196,7 +197,7 @@ class MemoryModel(Model):
                 ]
                 values = [value for value in values if value]
 
-            unique_attribute = "List" not in str(self.attributes[name])
+            unique_attribute = typing.get_origin(self.attributes[name]) is not list
             if unique_attribute:
                 return values[0] if values else None
             else:

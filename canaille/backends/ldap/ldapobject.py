@@ -1,4 +1,5 @@
 import itertools
+import typing
 from collections.abc import Iterable
 
 import ldap.dn
@@ -174,7 +175,7 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
         if ldap_name == "dn":
             return self.dn_for(self.rdn_value)
 
-        python_single_value = "List" not in str(self.attributes[name])
+        python_single_value = typing.get_origin(self.attributes[name]) is not list
         ldap_value = self.get_ldap_attribute(ldap_name)
         return cardinalize_attribute(python_single_value, ldap_value)
 
