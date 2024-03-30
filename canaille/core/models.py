@@ -2,8 +2,10 @@ import datetime
 from typing import List
 from typing import Optional
 
+from canaille.backends.models import Model
 
-class User:
+
+class User(Model):
     """
     User model, based on the `SCIM User schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_,
@@ -296,7 +298,7 @@ class User:
         )
 
 
-class Group:
+class Group(Model):
     """
     User model, based on the `SCIM Group schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_.
