@@ -207,6 +207,7 @@ def test_field_permissions_none(testclient, logged_user):
         "READ": ["user_name"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
+        "FILTER": None,
     }
 
     g.user.reload()
@@ -235,6 +236,7 @@ def test_field_permissions_read(testclient, logged_user):
         "READ": ["user_name", "phone_numbers"],
         "WRITE": [],
         "PERMISSIONS": ["edit_self"],
+        "FILTER": None,
     }
     g.user.reload()
     res = testclient.get("/profile/user", status=200)
@@ -262,6 +264,7 @@ def test_field_permissions_write(testclient, logged_user):
         "READ": ["user_name"],
         "WRITE": ["phone_numbers"],
         "PERMISSIONS": ["edit_self"],
+        "FILTER": None,
     }
     g.user.reload()
     res = testclient.get("/profile/user", status=200)

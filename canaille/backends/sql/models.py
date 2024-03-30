@@ -180,10 +180,10 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         self.read = set()
         self.write = set()
         for access_group_name, details in current_app.config["CANAILLE"]["ACL"].items():
-            if self.match_filter(details.get("FILTER")):
-                self.permissions |= set(details.get("PERMISSIONS", []))
-                self.read |= set(details.get("READ", []))
-                self.write |= set(details.get("WRITE", []))
+            if self.match_filter(details["FILTER"]):
+                self.permissions |= set(details["PERMISSIONS"])
+                self.read |= set(details["READ"])
+                self.write |= set(details["WRITE"])
 
     def normalize_filter_value(self, attribute, value):
         # not super generic, but we can improve this when we have
