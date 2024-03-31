@@ -11,14 +11,6 @@ from canaille.app import models
 from canaille.backends.models import Model
 
 
-def listify(value):
-    return value if isinstance(value, list) else [value]
-
-
-def serialize(value):
-    return value.id if isinstance(value, MemoryModel) else value
-
-
 class MemoryModel(Model):
     indexes = {}
     attribute_indexes = {}
@@ -44,17 +36,14 @@ class MemoryModel(Model):
         ids = {
             id
             for attribute, values in kwargs.items()
-            for value in listify(values)
-            for id in cls.attribute_index(attribute).get(serialize(value), [])
+            for value in cls.cardinalize(values)
+            for id in cls.attribute_index(attribute).get(cls.serialize(value), [])
         }
         return [cls(**cls.index()[id]) for id in ids]
 
     @classmethod
     def index(cls, class_name=None):
-        if not class_name:
-            class_name = cls.__name__
-
-        return MemoryModel.indexes.setdefault(class_name, {})
+        return MemoryModel.indexes.setdefault(class_name or cls.__name__, {})
 
     @classmethod
     def attribute_index(cls, attribute="id", class_name=None):
@@ -82,8 +71,17 @@ class MemoryModel(Model):
     def get(cls, identifier=None, **kwargs):
         if identifier:
             kwargs[cls.identifier_attribute] = identifier
+
         results = cls.query(**kwargs)
         return results[0] if results else None
+
+    @classmethod
+    def cardinalize(cls, value):
+        return value if isinstance(value, list) else [value]
+
+    @classmethod
+    def serialize(cls, value):
+        return value.id if isinstance(value, MemoryModel) else value
 
     def save(self):
         self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
@@ -99,7 +97,7 @@ class MemoryModel(Model):
 
         # update the index for each attribute
         for attribute in self.attributes:
-            attribute_values = listify(getattr(self, attribute))
+            attribute_values = self.cardinalize(getattr(self, attribute))
             for value in attribute_values:
                 self.attribute_index(attribute).setdefault(value, set()).add(self.id)
 
@@ -130,7 +128,7 @@ class MemoryModel(Model):
 
         # update the index for each attribute
         for attribute in self.model_attributes:
-            attribute_values = listify(old_state.get(attribute, []))
+            attribute_values = self.cardinalize(old_state.get(attribute, []))
             for value in attribute_values:
                 if (
                     value in self.attribute_index(attribute)
@@ -158,7 +156,7 @@ class MemoryModel(Model):
 
         # update the index for each attribute
         for attribute in self.attributes:
-            attribute_values = listify(old_state.get(attribute, []))
+            attribute_values = self.cardinalize(old_state.get(attribute, []))
             for value in attribute_values:
                 if (
                     value in self.attribute_index(attribute)
@@ -207,9 +205,9 @@ class MemoryModel(Model):
 
     def __setattr__(self, name, value):
         if name in self.attributes:
-            values = listify(value)
+            values = self.cardinalize(value)
             self.cache[name] = [value for value in values if value]
-            values = [serialize(value) for value in values]
+            values = [self.serialize(value) for value in values]
             values = [value for value in values if value]
             self.state[name] = values
         else:
