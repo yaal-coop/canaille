@@ -16,14 +16,14 @@
         render_func=render_field,
         **kwargs
         ) }}
-    {% elif field.name in edited_user.write %}
+    {% elif field.name in edited_user._writable_fields %}
         {{ fui.render_field(
         field,
         user=user,
         render_func=render_field,
         **kwargs
         ) }}
-    {% elif field.name in edited_user.read %}
+    {% elif field.name in edited_user._readable_fields %}
         {{ fui.render_field(
         field,
         user=user,

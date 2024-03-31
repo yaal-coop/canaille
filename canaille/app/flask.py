@@ -78,7 +78,7 @@ def permissions_needed(*args):
         @wraps(view_function)
         def decorator(*args, **kwargs):
             user = current_user()
-            if not user or not permissions.issubset(user.permissions):
+            if not user or not permissions.issubset(user._permissions):
                 abort(403)
             return view_function(*args, user=user, **kwargs)
 

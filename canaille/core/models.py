@@ -255,9 +255,9 @@ class User(Model):
     """A DateTime indicating when the resource was locked."""
 
     def __init__(self, *args, **kwargs):
-        self.read = set()
-        self.write = set()
-        self.permissions = set()
+        self._readable_fields = set()
+        self._writable_fields = set()
+        self._permissions = set()
         super().__init__(*args, **kwargs)
 
     @classmethod
@@ -277,7 +277,7 @@ class User(Model):
         raise NotImplementedError()
 
     def can_read(self, field: str):
-        return field in self.read | self.write
+        return field in self._readable_fields | self._writable_fields
 
     @property
     def preferred_email(self):
@@ -286,7 +286,7 @@ class User(Model):
     def __getattr__(self, name):
         if name.startswith("can_") and name != "can_read":
             permission = name[4:]
-            return permission in self.permissions
+            return permission in self._permissions
 
         return super().__getattr__(name)
 

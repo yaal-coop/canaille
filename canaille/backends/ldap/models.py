@@ -170,18 +170,18 @@ class User(canaille.core.models.User, LDAPObject):
 
     def load_permissions(self):
         conn = Backend.get().connection
-        self.permissions = set()
-        self.read = set()
-        self.write = set()
+        self._permissions = set()
+        self._readable_fields = set()
+        self._writable_fields = set()
 
         for access_group_name, details in current_app.config["CANAILLE"]["ACL"].items():
             filter_ = self.acl_filter_to_ldap_filter(details["FILTER"])
             if not filter_ or (
                 self.id and conn.search_s(self.id, ldap.SCOPE_SUBTREE, filter_)
             ):
-                self.permissions |= set(details["PERMISSIONS"])
-                self.read |= set(details["READ"])
-                self.write |= set(details["WRITE"])
+                self._permissions |= set(details["PERMISSIONS"])
+                self._readable_fields |= set(details["READ"])
+                self._writable_fields |= set(details["WRITE"])
 
 
 class Group(canaille.core.models.Group, LDAPObject):
