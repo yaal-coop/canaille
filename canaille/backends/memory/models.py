@@ -17,8 +17,8 @@ class MemoryModel(Model):
 
     def __init__(self, **kwargs):
         kwargs.setdefault("id", str(uuid.uuid4()))
-        self.state = {}
-        self.cache = {}
+        self._state = {}
+        self._cache = {}
         for attribute, value in kwargs.items():
             setattr(self, attribute, value)
 
@@ -62,7 +62,7 @@ class MemoryModel(Model):
             if any(
                 query.lower() in value.lower()
                 for attribute in attributes
-                for value in cls.listify(instance.state.get(attribute, []))
+                for value in cls.listify(instance._state.get(attribute, []))
                 if isinstance(value, str)
             )
         ]
@@ -117,7 +117,7 @@ class MemoryModel(Model):
         self.delete()
 
         # update the id index
-        self.index()[self.id] = copy.deepcopy(self.state)
+        self.index()[self.id] = copy.deepcopy(self._state)
 
         # update the index for each attribute
         for attribute in self.attributes:
@@ -134,7 +134,7 @@ class MemoryModel(Model):
             mirror_attribute_index = self.attribute_index(
                 mirror_attribute, klass
             ).setdefault(self.id, set())
-            for subinstance_id in self.state.get(attribute, []):
+            for subinstance_id in self._state.get(attribute, []):
                 if not subinstance_id or subinstance_id not in self.index(klass):
                     continue
 
@@ -192,8 +192,8 @@ class MemoryModel(Model):
         del self.index()[self.id]
 
     def reload(self):
-        self.state = self.__class__.get(id=self.id).state
-        self.cache = {}
+        self._state = self.__class__.get(id=self.id)._state
+        self._cache = {}
 
     def __eq__(self, other):
         if other is None:
@@ -202,21 +202,21 @@ class MemoryModel(Model):
         if not isinstance(other, MemoryModel):
             return self == self.__class__.get(id=other)
 
-        return self.state == other.state
+        return self._state == other._state
 
     def __hash__(self):
         return hash(self.id)
 
     def __getattr__(self, name):
         if name in self.attributes:
-            return self.deserialize(name, self.cache.get(name, self.state.get(name)))
+            return self.deserialize(name, self._cache.get(name, self._state.get(name)))
 
         raise AttributeError()
 
     def __setattr__(self, name, value):
         if name in self.attributes:
-            self.cache[name] = value
-            self.state[name] = self.serialize(value)
+            self._cache[name] = value
+            self._state[name] = self.serialize(value)
         else:
             super().__setattr__(name, value)
 
