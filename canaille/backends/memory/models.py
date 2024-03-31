@@ -83,6 +83,10 @@ class MemoryModel(Model):
     def serialize(cls, value):
         return value.id if isinstance(value, MemoryModel) else value
 
+    @classmethod
+    def deserialize(cls, value):
+        return value if isinstance(value, MemoryModel) else cls.get(id=value)
+
     def save(self):
         self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
@@ -188,11 +192,8 @@ class MemoryModel(Model):
             values = self.cache.get(name, self.state.get(name, []))
 
             if name in self.model_attributes:
-                klass = getattr(models, self.model_attributes[name][0])
-                values = [
-                    value if isinstance(value, MemoryModel) else klass.get(id=value)
-                    for value in values
-                ]
+                model = getattr(models, self.model_attributes[name][0])
+                values = [model.deserialize(value) for value in values]
                 values = [value for value in values if value]
 
             unique_attribute = typing.get_origin(self.attributes[name]) is not list
