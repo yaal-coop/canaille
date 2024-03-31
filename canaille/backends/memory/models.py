@@ -127,18 +127,18 @@ class MemoryModel(Model):
 
         # update the mirror attributes of the submodel instances
         for attribute in self.model_attributes:
-            klass, mirror_attribute = self.model_attributes[attribute]
-            if not self.index(klass) or not mirror_attribute:
+            model, mirror_attribute = self.model_attributes[attribute]
+            if not self.index(model) or not mirror_attribute:
                 continue
 
             mirror_attribute_index = self.attribute_index(
-                mirror_attribute, klass
+                mirror_attribute, model
             ).setdefault(self.id, set())
             for subinstance_id in self._state.get(attribute, []):
-                if not subinstance_id or subinstance_id not in self.index(klass):
+                if not subinstance_id or subinstance_id not in self.index(model):
                     continue
 
-                subinstance_state = self.index(klass)[subinstance_id]
+                subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
                 subinstance_state[mirror_attribute].append(self.id)
 
@@ -161,18 +161,18 @@ class MemoryModel(Model):
                     self.attribute_index(attribute)[value].remove(self.id)
 
             # update the mirror attributes of the submodel instances
-            klass, mirror_attribute = self.model_attributes[attribute]
-            if not self.index(klass) or not mirror_attribute:
+            model, mirror_attribute = self.model_attributes[attribute]
+            if not self.index(model) or not mirror_attribute:
                 continue
 
             mirror_attribute_index = self.attribute_index(
-                mirror_attribute, klass
+                mirror_attribute, model
             ).setdefault(self.id, set())
             for subinstance_id in self.index()[self.id].get(attribute, []):
-                if subinstance_id not in self.index(klass):
+                if subinstance_id not in self.index(model):
                     continue
 
-                subinstance_state = self.index(klass)[subinstance_id]
+                subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state[mirror_attribute].remove(self.id)
 
                 if subinstance_id in mirror_attribute_index:
