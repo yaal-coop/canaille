@@ -13,7 +13,10 @@ from canaille.backends.models import Model
 
 class MemoryModel(Model):
     indexes = {}
+    """Associates ids and states."""
+
     attribute_indexes = {}
+    """Associates attribute values and ids."""
 
     def __init__(self, **kwargs):
         kwargs.setdefault("id", str(uuid.uuid4()))
@@ -27,19 +30,24 @@ class MemoryModel(Model):
 
     @classmethod
     def query(cls, **kwargs):
-        # no filter, return all models
+        # if there is no filter, return all models
         if not kwargs:
             states = cls.index().values()
             return [cls(**state) for state in states]
 
-        # read the attribute indexes
+        # get the ids from the attribute indexes
         ids = {
             id
             for attribute, values in kwargs.items()
             for value in cls.serialize(cls.listify(values))
             for id in cls.attribute_index(attribute).get(value, [])
         }
-        return [cls(**cls.index()[id]) for id in ids]
+
+        # get the states from the ids
+        states = [cls.index()[id] for id in ids]
+
+        # initialize instances from the states
+        return [cls(**state) for state in states]
 
     @classmethod
     def index(cls, class_name=None):
@@ -114,14 +122,19 @@ class MemoryModel(Model):
         if not self.created:
             self.created = self.last_modified
 
-        self.delete()
+        self.index_delete()
+        self.index_save()
 
+    def delete(self):
+        self.index_delete()
+
+    def index_save(self):
         # update the id index
         self.index()[self.id] = copy.deepcopy(self._state)
 
         # update the index for each attribute
         for attribute in self.attributes:
-            attribute_values = self.listify(getattr(self, attribute))
+            attribute_values = self.listify(self._state.get(attribute, []))
             for value in attribute_values:
                 self.attribute_index(attribute).setdefault(value, set()).add(self.id)
 
@@ -134,23 +147,25 @@ class MemoryModel(Model):
             mirror_attribute_index = self.attribute_index(
                 mirror_attribute, model
             ).setdefault(self.id, set())
-            for subinstance_id in self._state.get(attribute, []):
+            for subinstance_id in self.listify(self._state.get(attribute, [])):
                 if not subinstance_id or subinstance_id not in self.index(model):
                     continue
 
+                # add the current objet in the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
                 subinstance_state[mirror_attribute].append(self.id)
 
+                # add the current objet in the subinstance index
                 mirror_attribute_index.add(subinstance_id)
 
-    def delete(self):
+    def index_delete(self):
         if self.id not in self.index():
             return
 
         old_state = self.index()[self.id]
 
-        # update the index for each attribute
+        # update the mirror attributes of the submodel instances
         for attribute in self.model_attributes:
             attribute_values = self.listify(old_state.get(attribute, []))
             for value in attribute_values:
@@ -172,9 +187,11 @@ class MemoryModel(Model):
                 if subinstance_id not in self.index(model):
                     continue
 
+                # remove the current objet from the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state[mirror_attribute].remove(self.id)
 
+                # remove the current objet from the subinstance index
                 if subinstance_id in mirror_attribute_index:
                     mirror_attribute_index.remove(subinstance_id)
 
@@ -291,12 +308,6 @@ class User(canaille.core.models.User, MemoryModel):
     def set_password(self, password):
         self.password = password
         self.save()
-
-    def save(self):
-        self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
-        super().save()
 
 
 class Group(canaille.core.models.Group, MemoryModel):
