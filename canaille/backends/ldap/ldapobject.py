@@ -5,7 +5,7 @@ from collections.abc import Iterable
 import ldap.dn
 import ldap.filter
 
-from canaille.backends.models import Model
+from canaille.backends.models import BackendModel
 
 from .backend import Backend
 from .utils import cardinalize_attribute
@@ -104,7 +104,7 @@ class LDAPObjectQuery:
         return klass
 
 
-class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
+class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     _object_class_by_name = None
     _attribute_type_by_name = None
     _may = None
@@ -166,8 +166,8 @@ class LDAPObject(Model, metaclass=LDAPObjectMetaclass):
     def __hash__(self):
         return hash(self.id)
 
-    def __getattr__(self, name):
-        if name not in self.attributes:
+    def __getattribute__(self, name):
+        if name == "attributes" or name not in self.attributes:
             return super().__getattribute__(name)
 
         ldap_name = self.python_attribute_to_ldap(name)

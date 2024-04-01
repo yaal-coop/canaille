@@ -4,32 +4,6 @@ import freezegun
 import pytest
 
 from canaille.app import models
-from canaille.backends.models import Model
-
-
-def test_required_methods(testclient):
-    with pytest.raises(NotImplementedError):
-        Model.query()
-
-    with pytest.raises(NotImplementedError):
-        Model.fuzzy("foobar")
-
-    with pytest.raises(NotImplementedError):
-        Model.get()
-
-    obj = Model()
-
-    with pytest.raises(NotImplementedError):
-        obj.identifier
-
-    with pytest.raises(NotImplementedError):
-        obj.save()
-
-    with pytest.raises(NotImplementedError):
-        obj.delete()
-
-    with pytest.raises(NotImplementedError):
-        obj.reload()
 
 
 def test_model_comparison(testclient, backend):

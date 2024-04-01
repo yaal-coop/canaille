@@ -8,8 +8,7 @@ from canaille.app import classproperty
 class Model:
     """The model abstract class.
 
-    It details all the methods and attributes that are expected to be
-    implemented for every model and for every backend.
+    It details all the common attributes shared by every models.
     """
 
     created: Optional[datetime.datetime]
@@ -22,6 +21,14 @@ class Model:
 
     If this resource has never been modified since its initial creation,
     the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`.
+    """
+
+
+class BackendModel:
+    """The backend model abstract class.
+
+    It details all the methods and attributes that are expected to be
+    implemented for every model and for every backend.
     """
 
     @classproperty

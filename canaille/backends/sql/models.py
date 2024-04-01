@@ -24,7 +24,7 @@ from sqlalchemy_utils import force_auto_coercion
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
-from canaille.backends.models import Model
+from canaille.backends.models import BackendModel
 
 from .backend import Backend
 from .backend import Base
@@ -33,7 +33,7 @@ from .utils import TZDateTime
 force_auto_coercion()
 
 
-class SqlAlchemyModel(Model):
+class SqlAlchemyModel(BackendModel):
     def __html__(self):
         return self.id
 

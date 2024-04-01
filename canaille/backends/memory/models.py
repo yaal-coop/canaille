@@ -8,17 +8,17 @@ from flask import current_app
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
-from canaille.backends.models import Model
+from canaille.backends.models import BackendModel
 
 
-class MemoryModel(Model):
+class MemoryModel(BackendModel):
     indexes = {}
     """Associates ids and states."""
 
     attribute_indexes = {}
     """Associates attribute values and ids."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         kwargs.setdefault("id", str(uuid.uuid4()))
         self._state = {}
         self._cache = {}
