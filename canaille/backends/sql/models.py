@@ -183,7 +183,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         self._permissions = set()
         self._readable_fields = set()
         self._writable_fields = set()
-        for access_group_name, details in current_app.config["CANAILLE"]["ACL"].items():
+        for details in current_app.config["CANAILLE"]["ACL"].values():
             if self.match_filter(details["FILTER"]):
                 self._permissions |= set(details["PERMISSIONS"])
                 self._readable_fields |= set(details["READ"])

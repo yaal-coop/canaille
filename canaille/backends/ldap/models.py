@@ -174,7 +174,7 @@ class User(canaille.core.models.User, LDAPObject):
         self._readable_fields = set()
         self._writable_fields = set()
 
-        for access_group_name, details in current_app.config["CANAILLE"]["ACL"].items():
+        for details in current_app.config["CANAILLE"]["ACL"].values():
             filter_ = self.acl_filter_to_ldap_filter(details["FILTER"])
             if not filter_ or (
                 self.id and conn.search_s(self.id, ldap.SCOPE_SUBTREE, filter_)
