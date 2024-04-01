@@ -192,9 +192,9 @@ def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
 
 
 def test_model_references(testclient, user, foo_group, admin, bar_group, backend):
-    # assert foo_group.members == [user]
-    # assert user.groups == [foo_group]
-    # assert foo_group in models.Group.query(members=user)
+    assert foo_group.members == [user]
+    assert user.groups == [foo_group]
+    assert foo_group in models.Group.query(members=user)
     assert user in models.User.query(groups=foo_group)
 
     assert user not in bar_group.members
