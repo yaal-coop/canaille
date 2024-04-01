@@ -224,11 +224,11 @@ class MemoryModel(Model):
     def __hash__(self):
         return hash(self.id)
 
-    def __getattr__(self, name):
-        if name in self.attributes:
+    def __getattribute__(self, name):
+        if name != "attributes" and name in self.attributes:
             return self.deserialize(name, self._cache.get(name, self._state.get(name)))
 
-        raise AttributeError()
+        return super().__getattribute__(name)
 
     def __setattr__(self, name, value):
         if name in self.attributes:
