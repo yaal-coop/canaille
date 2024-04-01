@@ -36,7 +36,7 @@ class User(Model):
     Section 9 for additional considerations regarding privacy.
     """
 
-    user_name: Optional[str]
+    user_name: str
     """A service provider's unique identifier for the user, typically used by
     the user to directly authenticate to the service provider.
 
@@ -48,7 +48,7 @@ class User(Model):
     and is case insensitive.
     """
 
-    password: Optional[str]
+    password: Optional[str] = None
     """
     This attribute is intended to be used as a means to set, replace,
     or compare (i.e., filter for equality) a password.  The cleartext
@@ -93,7 +93,7 @@ class User(Model):
     "never").
     """
 
-    preferred_language: Optional[str]
+    preferred_language: Optional[str] = None
     """Indicates the user's preferred written or spoken languages and is
     generally used for selecting a localized user interface.
 
@@ -109,20 +109,20 @@ class User(Model):
     negotiation cannot take place.
     """
 
-    family_name: Optional[str]
+    family_name: Optional[str] = None
     """The family name of the User, or last name in most Western languages
     (e.g., "Jensen" given the full name "Ms. Barbara Jane Jensen, III")."""
 
-    given_name: Optional[str]
+    given_name: Optional[str] = None
     """The given name of the User, or first name in most Western languages
     (e.g., "Barbara" given the full name "Ms. Barbara Jane Jensen, III")."""
 
-    formatted_name: Optional[str]
+    formatted_name: Optional[str] = None
     """The full name, including all middle names, titles, and suffixes as
     appropriate, formatted for display (e.g., "Ms. Barbara Jane Jensen,
     III")."""
 
-    display_name: Optional[str]
+    display_name: Optional[str] = None
     """The name of the user, suitable for display to end-users.
 
     Each user returned MAY include a non-empty displayName value.  The
@@ -134,7 +134,7 @@ class User(Model):
     when presenting it to end-users.
     """
 
-    emails: List[str]
+    emails: List[str] = []
     """Email addresses for the User.
 
     The value SHOULD be specified according to [RFC5321].  Service
@@ -148,7 +148,7 @@ class User(Model):
     at the discretion of SCIM clients.
     """
 
-    phone_numbers: List[str]
+    phone_numbers: List[str] = []
     """Phone numbers for the user.
 
     The value SHOULD be specified according to the format defined in
@@ -161,14 +161,14 @@ class User(Model):
     defined by the SCIM clients.
     """
 
-    formatted_address: Optional[str]
+    formatted_address: Optional[str] = None
     """The full mailing address, formatted for display or use with a mailing
     label.
 
     This attribute MAY contain newlines.
     """
 
-    street: Optional[str]
+    street: Optional[str] = None
     """The full street address component, which may include house number,
     street name, P.O.
 
@@ -176,16 +176,16 @@ class User(Model):
     attribute MAY contain newlines.
     """
 
-    postal_code: Optional[str]
+    postal_code: Optional[str] = None
     """The zip code or postal code component."""
 
-    locality: Optional[str]
+    locality: Optional[str] = None
     """The city or locality component."""
 
-    region: Optional[str]
+    region: Optional[str] = None
     """The state or region component."""
 
-    photo: Optional[str]
+    photo: Optional[str] = None
     """A URI that is a uniform resource locator (as defined in Section 1.1.3 of
     [RFC3986]) that points to a resource location representing the user's
     image.
@@ -203,7 +203,7 @@ class User(Model):
     sizes: "photo" and "thumbnail".
     """
 
-    profile_url: Optional[str]
+    profile_url: Optional[str] = None
     """A URI that is a uniform resource locator (as defined in Section 1.1.3 of
     [RFC3986]) and that points to a location representing the user's online
     profile (e.g., a web page).
@@ -211,21 +211,21 @@ class User(Model):
     URIs are canonicalized per Section 6.2 of [RFC3986].
     """
 
-    title: Optional[str]
+    title: Optional[str] = None
     """The user's title, such as "Vice President"."""
 
-    organization: Optional[str]
+    organization: Optional[str] = None
     """Identifies the name of an organization."""
 
-    employee_number: Optional[str]
+    employee_number: Optional[str] = None
     """A string identifier, typically numeric or alphanumeric, assigned to a
     person, typically based on order of hire or association with an
     organization."""
 
-    department: Optional[str]
+    department: Optional[str] = None
     """Identifies the name of a department."""
 
-    groups: List["Group"]
+    groups: List["Group"] = []
     """A list of groups to which the user belongs, either through direct
     membership, through nested groups, or dynamically calculated.
 
@@ -251,7 +251,7 @@ class User(Model):
     "readOnly".
     """
 
-    lock_date: Optional[datetime.datetime]
+    lock_date: Optional[datetime.datetime] = None
     """A DateTime indicating when the resource was locked."""
 
     def __init__(self, *args, **kwargs):
@@ -327,7 +327,7 @@ class Group(Model):
     REQUIRED.
     """
 
-    members: List["User"]
+    members: List["User"] = []
     """A list of members of the Group.
 
     While values MAY be added or removed, sub-attributes of members are
@@ -341,4 +341,4 @@ class Group(Model):
     "Group" resource schema.
     """
 
-    description: Optional[str]
+    description: Optional[str] = None

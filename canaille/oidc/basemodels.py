@@ -17,9 +17,9 @@ class Client(Model):
     """
 
     id: str
-    description: Optional[str]
-    preconsent: Optional[bool]
-    audience: List["Client"]
+    description: Optional[str] = None
+    preconsent: Optional[bool] = False
+    audience: List["Client"] = []
 
     client_id: Optional[str]
     """REQUIRED.
@@ -30,7 +30,7 @@ class Client(Model):
     a registered client at its discretion.
     """
 
-    client_secret: Optional[str]
+    client_secret: Optional[str] = None
     """OPTIONAL.
 
     OAuth 2.0 client secret string.  If issued, this MUST be unique for
@@ -40,7 +40,7 @@ class Client(Model):
     described in OAuth 2.0 [RFC6749], Section 2.3.1.
     """
 
-    client_id_issued_at: Optional[datetime.datetime]
+    client_id_issued_at: Optional[datetime.datetime] = None
     """OPTIONAL.
 
     Time at which the client identifier was issued.  The time is
@@ -48,7 +48,7 @@ class Client(Model):
     measured in UTC until the date/time of issuance.
     """
 
-    client_secret_expires_at: Optional[datetime.datetime]
+    client_secret_expires_at: Optional[datetime.datetime] = None
     """REQUIRED if "client_secret" is issued.
 
     Time at which the client secret will expire or 0 if it will not
@@ -57,7 +57,7 @@ class Client(Model):
     expiration.
     """
 
-    redirect_uris: List[str]
+    redirect_uris: List[str] = []
     """Array of redirection URI strings for use in redirect-based flows such as
     the authorization code and implicit flows.
 
@@ -67,7 +67,7 @@ class Client(Model):
     redirect-based flows MUST implement support for this metadata value.
     """
 
-    token_endpoint_auth_method: Optional[str]
+    token_endpoint_auth_method: Optional[str] = None
     """String indicator of the requested authentication method for the token
     endpoint.  Values defined by this specification are:
 
@@ -88,7 +88,7 @@ class Client(Model):
     authentication scheme as specified in Section 2.3.1 of OAuth 2.0.
     """
 
-    grant_types: List[str]
+    grant_types: List[str] = ["authorization_code", "refresh_token"]
     """Array of OAuth 2.0 grant type strings that the client can use at the
     token endpoint.  These grant types are defined as follows:
 
@@ -124,7 +124,7 @@ class Client(Model):
     client will use only the "authorization_code" Grant Type.
     """
 
-    response_types: List[str]
+    response_types: List[str] = []
     """
     Array of the OAuth 2.0 response type strings that the client can
     use at the authorization endpoint.  These response types are
@@ -145,7 +145,7 @@ class Client(Model):
     default is that the client will use only the "code" response type.
     """
 
-    client_name: Optional[str]
+    client_name: Optional[str] = None
     """Human-readable string name of the client to be presented to the end-user
     during authorization.
 
@@ -155,7 +155,7 @@ class Client(Model):
     internationalized, as described in Section 2.2.
     """
 
-    client_uri: Optional[str]
+    client_uri: Optional[str] = None
     """URL string of a web page providing information about the client.
 
     If present, the server SHOULD display this URL to the end-user in a
@@ -165,7 +165,7 @@ class Client(Model):
     Section 2.2.
     """
 
-    logo_uri: Optional[str]
+    logo_uri: Optional[str] = None
     """URL string that references a logo for the client.
 
     If present, the server SHOULD display this image to the end-user
@@ -174,7 +174,7 @@ class Client(Model):
     described in Section 2.2.
     """
 
-    scope: List[str]
+    scope: List[str] = []
     """String containing a space-separated list of scope values (as described
     in Section 3.3 of OAuth 2.0 [RFC6749]) that the client can use when
     requesting access tokens.
@@ -184,7 +184,7 @@ class Client(Model):
     default set of scopes.
     """
 
-    contacts: List[str]
+    contacts: List[str] = None
     """Array of strings representing ways to contact people responsible for
     this client, typically email addresses.
 
@@ -193,7 +193,7 @@ class Client(Model):
     information on Privacy Considerations.
     """
 
-    tos_uri: Optional[str]
+    tos_uri: Optional[str] = None
     """URL string that points to a human-readable terms of service document for
     the client that describes a contractual relationship between the end-user
     and the client that the end-user accepts when authorizing the client.
@@ -204,7 +204,7 @@ class Client(Model):
     described in Section 2.2.
     """
 
-    policy_uri: Optional[str]
+    policy_uri: Optional[str] = None
     """URL string that points to a human-readable privacy policy document that
     describes how the deployment organization collects, uses, retains, and
     discloses personal data.
@@ -215,7 +215,7 @@ class Client(Model):
     described in Section 2.2.
     """
 
-    jwks_uri: Optional[str]
+    jwks_uri: Optional[str] = None
     """URL string referencing the client's JSON Web Key (JWK) Set [RFC7517]
     document, which contains the client's public keys.
 
@@ -229,7 +229,7 @@ class Client(Model):
     parameters MUST NOT both be present in the same request or response.
     """
 
-    jwk: Optional[str]
+    jwk: Optional[str] = None
     """Client's JSON Web Key Set [RFC7517] document value, which contains the
     client's public keys.
 
@@ -241,7 +241,7 @@ class Client(Model):
     parameters MUST NOT both be present in the same request or response.
     """
 
-    software_id: Optional[str]
+    software_id: Optional[str] = None
     """A unique identifier string (e.g., a Universally Unique Identifier
     (UUID)) assigned by the client developer or software publisher used by
     registration endpoints to identify the client software to be dynamically
@@ -256,7 +256,7 @@ class Client(Model):
     authorization server.
     """
 
-    software_version: Optional[str]
+    software_version: Optional[str] = None
     """A version identifier string for the client software identified by
     "software_id".
 
@@ -272,7 +272,7 @@ class Client(Model):
     itself and is outside the scope of this specification.
     """
 
-    post_logout_redirect_uris: List[str]
+    post_logout_redirect_uris: List[str] = []
     """OPTIONAL.
 
     Array of URLs supplied by the RP to which it MAY request that the
