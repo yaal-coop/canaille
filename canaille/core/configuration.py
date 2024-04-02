@@ -261,8 +261,8 @@ class CoreSettings(BaseModel):
 
     - if :py:data:`None`, everything is logged in the standard output
       the log level is :py:data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration.RootSettings.DEBUG` setting is :py:data:`True`, else this is :py:data:`~logging.INFO`
-    - if this is a dictionnary, it is passed to :func:`logging.config.dictConfig`:
-    - if this is a string, it is expected to be a file path that will be passed
+    - if this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`:
+    - if this is a :class:`str`, it is expected to be a file path that will be passed
       to :func:`logging.config.fileConfig`
 
     For example::
