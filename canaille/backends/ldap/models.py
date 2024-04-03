@@ -102,7 +102,7 @@ class User(canaille.core.models.User, LDAPObject):
         message = None
         try:
             res = conn.simple_bind_s(
-                self.id, password, serverctrls=[PasswordPolicyControl()]
+                self.dn, password, serverctrls=[PasswordPolicyControl()]
             )
             controls = res[3]
             result = True
@@ -133,7 +133,7 @@ class User(canaille.core.models.User, LDAPObject):
     def set_password(self, password):
         conn = Backend.get().connection
         conn.passwd_s(
-            self.id,
+            self.dn,
             None,
             password.encode("utf-8"),
         )
@@ -177,7 +177,7 @@ class User(canaille.core.models.User, LDAPObject):
         for details in current_app.config["CANAILLE"]["ACL"].values():
             filter_ = self.acl_filter_to_ldap_filter(details["FILTER"])
             if not filter_ or (
-                self.id and conn.search_s(self.id, ldap.SCOPE_SUBTREE, filter_)
+                self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter_)
             ):
                 self._permissions |= set(details["PERMISSIONS"])
                 self._readable_fields |= set(details["READ"])

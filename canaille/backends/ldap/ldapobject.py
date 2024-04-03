@@ -219,6 +219,10 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         value = self.get_ldap_attribute(self.rdn_attribute)
         return (value[0] if isinstance(value, list) else value).strip()
 
+    @property
+    def dn(self):
+        return self.dn_for(self.rdn_value)
+
     @classmethod
     def dn_for(cls, rdn):
         return f"{cls.rdn_attribute}={ldap.dn.escape_dn_chars(rdn)},{cls.base},{cls.root_dn}"
@@ -401,7 +405,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     def reload(self):
         conn = Backend.get().connection
-        result = conn.search_s(self.id, ldap.SCOPE_SUBTREE, None, ["+", "*"])
+        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.state = result[0][1]
 
@@ -431,7 +435,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
             ]
-            conn.modify_s(self.id, modlist)
+            conn.modify_s(self.dn, modlist)
 
         # Object does not exist yet in the LDAP database
         else:
@@ -442,7 +446,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             attributes = [(name, values) for name, values in formatted_changes.items()]
-            conn.add_s(self.id, attributes)
+            conn.add_s(self.dn, attributes)
 
         self.exists = True
         self.state = {**self.state, **self.changes}
@@ -450,4 +454,4 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     def delete(self):
         conn = Backend.get().connection
-        conn.delete_s(self.id)
+        conn.delete_s(self.dn)
