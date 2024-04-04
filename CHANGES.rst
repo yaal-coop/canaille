@@ -1,3 +1,10 @@
+[0.0.45] - 2024-04-04
+---------------------
+
+Changed
+^^^^^^^
+- Internal indexation mechanism of :class:`~canaille.backends.memory.model.MemoryModel`
+
 [0.0.44] - 2024-03-29
 ---------------------
 
