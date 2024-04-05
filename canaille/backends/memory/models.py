@@ -150,9 +150,6 @@ class MemoryModel(BackendModel):
                 mirror_attribute, model
             ).setdefault(self.id, set())
             for subinstance_id in self.listify(self._state.get(attribute, [])):
-                if not subinstance_id or subinstance_id not in self.index(model):
-                    continue
-
                 # add the current objet in the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
@@ -171,11 +168,7 @@ class MemoryModel(BackendModel):
         for attribute in self.model_attributes:
             attribute_values = self.listify(old_state.get(attribute, []))
             for value in attribute_values:
-                if (
-                    value in self.attribute_index(attribute)
-                    and self.id in self.attribute_index(attribute)[value]
-                ):
-                    self.attribute_index(attribute)[value].remove(self.id)
+                self.attribute_index(attribute)[value].remove(self.id)
 
             # update the mirror attributes of the submodel instances
             model, mirror_attribute = self.model_attributes[attribute]
@@ -186,16 +179,12 @@ class MemoryModel(BackendModel):
                 mirror_attribute, model
             ).setdefault(self.id, set())
             for subinstance_id in self.index()[self.id].get(attribute, []):
-                if subinstance_id not in self.index(model):
-                    continue
-
                 # remove the current objet from the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state[mirror_attribute].remove(self.id)
 
                 # remove the current objet from the subinstance index
-                if subinstance_id in mirror_attribute_index:
-                    mirror_attribute_index.remove(subinstance_id)
+                mirror_attribute_index.remove(subinstance_id)
 
         # update the index for each attribute
         for attribute in self.attributes:

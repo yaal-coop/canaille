@@ -193,10 +193,11 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         # not super generic, but we can improve this when we have
         # type checking and/or pydantic for the models
         if attribute == "groups":
-            if models.Group.get(id=value):
-                return models.Group.get(id=value)
-            elif models.Group.get(display_name=value):
-                return models.Group.get(display_name=value)
+            return (
+                models.Group.get(id=value)
+                or models.Group.get(display_name=value)
+                or None
+            )
         return value
 
     def match_filter(self, filter):
