@@ -11,6 +11,24 @@ class Model:
     It details all the common attributes shared by every models.
     """
 
+    id: Optional[str]
+    """A unique identifier for a SCIM resource as defined by the service
+    provider. Id will be :py:data:`None` until the
+    :meth:`~canaille.backends.models.BackendModel.save` method is called.
+
+    Each representation of the resource MUST include a non-empty "id"
+    value.  This identifier MUST be unique across the SCIM service
+    provider's entire set of resources.  It MUST be a stable, non-
+    reassignable identifier that does not change when the same resource
+    is returned in subsequent requests.  The value of the "id" attribute
+    is always issued by the service provider and MUST NOT be specified
+    by the client.  The string "bulkId" is a reserved keyword and MUST
+    NOT be used within any unique identifier value.  The attribute
+    characteristics are "caseExact" as "true", a mutability of
+    "readOnly", and a "returned" characteristic of "always".  See
+    Section 9 for additional considerations regarding privacy.
+    """
+
     created: Optional[datetime.datetime]
     """The :class:`~datetime.datetime` that the resource was added to the
     service provider."""

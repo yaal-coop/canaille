@@ -19,23 +19,6 @@ class User(Model):
     implementation in Canaille.
     """
 
-    id: str
-    """A unique identifier for a SCIM resource as defined by the service
-    provider.
-
-    Each representation of the resource MUST include a non-empty "id"
-    value.  This identifier MUST be unique across the SCIM service
-    provider's entire set of resources.  It MUST be a stable, non-
-    reassignable identifier that does not change when the same resource
-    is returned in subsequent requests.  The value of the "id" attribute
-    is always issued by the service provider and MUST NOT be specified
-    by the client.  The string "bulkId" is a reserved keyword and MUST
-    NOT be used within any unique identifier value.  The attribute
-    characteristics are "caseExact" as "true", a mutability of
-    "readOnly", and a "returned" characteristic of "always".  See
-    Section 9 for additional considerations regarding privacy.
-    """
-
     user_name: str
     """A service provider's unique identifier for the user, typically used by
     the user to directly authenticate to the service provider.
@@ -302,23 +285,6 @@ class Group(Model):
     """
     User model, based on the `SCIM Group schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_.
-    """
-
-    id: str
-    """A unique identifier for a SCIM resource as defined by the service
-    provider.
-
-    Each representation of the resource MUST include a non-empty "id"
-    value.  This identifier MUST be unique across the SCIM service
-    provider's entire set of resources.  It MUST be a stable, non-
-    reassignable identifier that does not change when the same resource
-    is returned in subsequent requests.  The value of the "id" attribute
-    is always issued by the service provider and MUST NOT be specified
-    by the client.  The string "bulkId" is a reserved keyword and MUST
-    NOT be used within any unique identifier value.  The attribute
-    characteristics are "caseExact" as "true", a mutability of
-    "readOnly", and a "returned" characteristic of "always".  See
-    Section 9 for additional considerations regarding privacy.
     """
 
     display_name: str

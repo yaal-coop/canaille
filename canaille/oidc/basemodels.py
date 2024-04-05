@@ -16,7 +16,6 @@ class Client(Model):
     specifications.
     """
 
-    id: str
     description: Optional[str] = None
     preconsent: Optional[bool] = False
     audience: List["Client"] = []
@@ -289,7 +288,6 @@ class Client(Model):
 class AuthorizationCode(Model):
     """OpenID Connect temporary authorization code definition."""
 
-    id: str
     authorization_code_id: str
     code: str
     client: "Client"
@@ -308,7 +306,6 @@ class AuthorizationCode(Model):
 class Token(Model):
     """OpenID Connect token definition."""
 
-    id: str
     token_id: str
     access_token: str
     client: "Client"
@@ -325,7 +322,6 @@ class Token(Model):
 class Consent(Model):
     """Long-term user consent to an application."""
 
-    id: str
     consent_id: str
     subject: User
     client: "Client"
