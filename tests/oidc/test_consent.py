@@ -33,7 +33,6 @@ def test_revokation(testclient, client, consent, logged_user, token):
 def test_revokation_already_revoked(testclient, client, consent, logged_user):
     consent.revoke()
 
-    consent.reload()
     assert consent.revoked
 
     res = testclient.get(f"/consent/revoke/{consent.consent_id}", status=302)
@@ -47,7 +46,6 @@ def test_revokation_already_revoked(testclient, client, consent, logged_user):
 def test_restoration(testclient, client, consent, logged_user, token):
     consent.revoke()
 
-    consent.reload()
     assert consent.revoked
     token.reload()
     assert token.revoked
@@ -101,7 +99,6 @@ def test_oidc_authorization_after_revokation(
 ):
     consent.revoke()
 
-    consent.reload()
     assert consent.revoked
 
     res = testclient.get(

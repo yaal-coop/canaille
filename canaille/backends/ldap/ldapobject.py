@@ -4,6 +4,7 @@ from collections.abc import Iterable
 
 import ldap.dn
 import ldap.filter
+from ldap.controls.readentry import PostReadControl
 
 from canaille.backends.models import BackendModel
 
@@ -136,6 +137,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     def __eq__(self, other):
         ldap_attributes = self.may() + self.must()
+
         if not (
             isinstance(other, self.__class__)
             and self.may() == other.may()
@@ -414,6 +416,13 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
         self.set_ldap_attribute("objectClass", self.ldap_object_class)
 
+        # PostReadControl allows to read the updated object attributes on creation/edition
+        attributes = ["objectClass"] + [
+            self.python_attribute_to_ldap(name) for name in self.attributes
+        ]
+        attributes.remove("dn")
+        read_post_control = PostReadControl(criticality=True, attrList=attributes)
+
         # Object already exists in the LDAP database
         if self.exists:
             deletions = [
@@ -435,7 +444,9 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
             ]
-            conn.modify_s(self.dn, modlist)
+            _, _, _, [result] = conn.modify_ext_s(
+                self.dn, modlist, serverctrls=[read_post_control]
+            )
 
         # Object does not exist yet in the LDAP database
         else:
@@ -445,11 +456,13 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 if value and value[0]
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
-            attributes = [(name, values) for name, values in formatted_changes.items()]
-            conn.add_s(self.dn, attributes)
+            modlist = [(name, values) for name, values in formatted_changes.items()]
+            _, _, _, [result] = conn.add_ext_s(
+                self.dn, modlist, serverctrls=[read_post_control]
+            )
 
         self.exists = True
-        self.state = {**self.state, **self.changes}
+        self.state = {**result.entry, **self.changes}
         self.changes = {}
 
     def delete(self):

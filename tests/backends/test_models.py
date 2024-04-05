@@ -226,7 +226,6 @@ def test_model_creation_edition_datetime(testclient, backend):
             formatted_name="foo",
         )
         user.save()
-        user.reload()
         assert user.created == datetime.datetime(
             2020, 1, 1, 2, tzinfo=datetime.timezone.utc
         )
@@ -237,7 +236,6 @@ def test_model_creation_edition_datetime(testclient, backend):
     with freezegun.freeze_time("2021-01-01 02:00:00"):
         user.family_name = "bar"
         user.save()
-        user.reload()
         assert user.created == datetime.datetime(
             2020, 1, 1, 2, tzinfo=datetime.timezone.utc
         )
