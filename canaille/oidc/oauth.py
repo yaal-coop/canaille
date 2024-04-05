@@ -456,6 +456,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
             post_logout_redirect_uris=request.data.get("post_logout_redirect_uris"),
             **self.client_convert_data(**client_info, **client_metadata),
         )
+        client.save()
         client.audience = [client]
         client.save()
         return client

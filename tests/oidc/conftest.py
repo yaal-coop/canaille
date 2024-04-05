@@ -67,6 +67,7 @@ def client(testclient, trusted_client, backend):
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
     )
+    c.save()
     c.audience = [c, trusted_client]
     c.save()
 
@@ -104,6 +105,7 @@ def trusted_client(testclient, backend):
         post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
         preconsent=True,
     )
+    c.save()
     c.audience = [c]
     c.save()
 

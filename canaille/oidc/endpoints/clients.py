@@ -73,6 +73,7 @@ def add(user):
         if form["token_endpoint_auth_method"].data == "none"
         else gen_salt(48),
     )
+    client.save()
     client.audience = [client]
     client.save()
     flash(

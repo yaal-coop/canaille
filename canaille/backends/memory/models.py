@@ -19,7 +19,6 @@ class MemoryModel(BackendModel):
     """Associates attribute values and ids."""
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault("id", str(uuid.uuid4()))
         self._state = {}
         self._cache = {}
         for attribute, value in kwargs.items():
@@ -116,6 +115,9 @@ class MemoryModel(BackendModel):
         return value
 
     def save(self):
+        if not self.id:
+            self.id = str(uuid.uuid4())
+
         self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
         )

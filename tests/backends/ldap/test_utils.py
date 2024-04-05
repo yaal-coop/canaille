@@ -48,14 +48,14 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
     )
     user.save()
 
-    dn = user.id
+    dn = user.dn
     assert dn == "uid=user,ou=users,dc=mydomain,dc=tld"
     assert ldap.dn.is_dn(dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
 
     assert user == models.User.get(user.identifier)
     assert user == models.User.get(user_name=user.identifier)
-    assert user == models.User.get(id=dn)
+    assert user == models.User.get(dn=dn)
 
     user.delete()
 
@@ -69,14 +69,14 @@ def test_special_chars_in_rdn(testclient, backend):
     )
     user.save()
 
-    dn = user.id
+    dn = user.dn
     assert ldap.dn.is_dn(dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
     assert dn == "uid=\\#user,ou=users,dc=mydomain,dc=tld"
 
     assert user == models.User.get(user.identifier)
     assert user == models.User.get(user_name=user.identifier)
-    assert user == models.User.get(id=dn)
+    assert user == models.User.get(dn=dn)
 
     user.delete()
 
@@ -184,13 +184,13 @@ def test_operational_attribute_conversion(backend):
 def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
     foo_group.save()
-    dn = foo_group.id
-    g = LDAPObject.get(id=dn)
+    dn = foo_group.dn
+    g = LDAPObject.get(dn=dn)
     assert isinstance(g, models.Group)
     assert g == foo_group
     assert g.display_name == foo_group.display_name
 
-    ou = LDAPObject.get(id=f"{models.Group.base},{models.Group.root_dn}")
+    ou = LDAPObject.get(dn=f"{models.Group.base},{models.Group.root_dn}")
     assert isinstance(ou, LDAPObject)
 
 

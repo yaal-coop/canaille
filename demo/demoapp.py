@@ -119,6 +119,7 @@ def populate(app):
                 response_types=["code", "id_token"],
                 token_endpoint_auth_method="client_secret_basic",
             )
+            client1.save()
             client1.audience = [client1]
             client1.save()
 
@@ -142,6 +143,7 @@ def populate(app):
                 token_endpoint_auth_method="client_secret_basic",
                 preconsent=True,
             )
+            client2.save()
             client2.audience = [client2]
             client2.save()
 

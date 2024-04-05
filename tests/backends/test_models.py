@@ -35,6 +35,7 @@ def test_model_lifecycle(testclient, backend):
         formatted_name="formatted_name",
     )
 
+    assert not user.id
     assert not models.User.query()
     assert not models.User.query(id=user.id)
     assert not models.User.query(id="invalid")

@@ -13,7 +13,7 @@ from .ldapobject import LDAPObject
 
 class User(canaille.core.models.User, LDAPObject):
     attribute_map = {
-        "id": "dn",
+        "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "user_name": "uid",
@@ -59,7 +59,10 @@ class User(canaille.core.models.User, LDAPObject):
         if isinstance(filter_, dict):
             # not super generic, but how can we improve this? ¯\_(ツ)_/¯
             if "groups" in filter_ and "=" not in filter_.get("groups"):
-                filter_["groups"] = Group.dn_for(filter_["groups"])
+                group_by_id = Group.get(id=filter_["groups"])
+                filter_["groups"] = (
+                    group_by_id.dn if group_by_id else Group.dn_for(filter_["groups"])
+                )
 
             base = "".join(
                 f"({cls.python_attribute_to_ldap(key)}={value})"
@@ -150,7 +153,7 @@ class User(canaille.core.models.User, LDAPObject):
 
         old_groups = self.state.get(group_attr) or []
         new_groups = [
-            v if isinstance(v, Group) else Group.get(id=v) for v in new_groups
+            v if isinstance(v, Group) else Group.get(dn=v) for v in new_groups
         ]
         to_add = set(new_groups) - set(old_groups)
         to_del = set(old_groups) - set(new_groups)
@@ -186,7 +189,7 @@ class User(canaille.core.models.User, LDAPObject):
 
 class Group(canaille.core.models.Group, LDAPObject):
     attribute_map = {
-        "id": "dn",
+        "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "display_name": "cn",
@@ -197,11 +200,6 @@ class Group(canaille.core.models.Group, LDAPObject):
     @property
     def identifier(self):
         return self.rdn_value
-
-    @property
-    def display_name(self):
-        attribute = current_app.config["CANAILLE_LDAP"]["GROUP_NAME_ATTRIBUTE"]
-        return getattr(self, attribute)[0]
 
 
 class Client(canaille.oidc.models.Client, LDAPObject):
@@ -235,7 +233,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
     }
 
     attribute_map = {
-        "id": "dn",
+        "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "preconsent": "oauthPreconsent",
@@ -256,7 +254,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     base = "ou=authorizations,ou=oauth"
     rdn_attribute = "oauthAuthorizationCodeID"
     attribute_map = {
-        "id": "dn",
+        "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "authorization_code_id": "oauthAuthorizationCodeID",
@@ -284,7 +282,7 @@ class Token(canaille.oidc.models.Token, LDAPObject):
     base = "ou=tokens,ou=oauth"
     rdn_attribute = "oauthTokenID"
     attribute_map = {
-        "id": "dn",
+        "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "token_id": "oauthTokenID",
@@ -310,7 +308,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
     attribute_map = {
-        "id": "dn",
+        "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "consent_id": "cn",

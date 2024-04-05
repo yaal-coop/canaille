@@ -174,9 +174,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
         ldap_name = self.python_attribute_to_ldap(name)
 
-        if ldap_name == "dn":
-            return self.dn_for(self.rdn_value)
-
         python_single_value = typing.get_origin(self.attributes[name]) is not list
         ldap_value = self.get_ldap_attribute(ldap_name)
         return cardinalize_attribute(python_single_value, ldap_value)
@@ -306,18 +303,18 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         return cls._attribute_type_by_name
 
     @classmethod
-    def get(cls, id=None, filter=None, **kwargs):
+    def get(cls, dn=None, filter=None, **kwargs):
         try:
-            return cls.query(id, filter, **kwargs)[0]
+            return cls.query(dn, filter, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 
     @classmethod
-    def query(cls, id=None, filter=None, **kwargs):
+    def query(cls, dn=None, filter=None, **kwargs):
         conn = Backend.get().connection
 
-        base = id or kwargs.get("id")
-        if base is None:
+        base = dn
+        if dn is None:
             base = f"{cls.base},{cls.root_dn}"
         elif "=" not in base:
             base = ldap.dn.escape_dn_chars(base)
@@ -330,15 +327,17 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         )
         if class_filter:
             class_filter = f"(|{class_filter})"
+
         arg_filter = ""
-        kwargs = python_attrs_to_ldap(
+        ldap_args = python_attrs_to_ldap(
             {
                 cls.python_attribute_to_ldap(name): values
                 for name, values in kwargs.items()
+                if values is not None
             },
             encode=False,
         )
-        for key, value in kwargs.items():
+        for key, value in ldap_args.items():
             if len(value) == 1:
                 escaped_value = ldap.filter.escape_filter_chars(value[0])
                 arg_filter += f"({key}={escaped_value})"
@@ -420,7 +419,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         attributes = ["objectClass"] + [
             self.python_attribute_to_ldap(name) for name in self.attributes
         ]
-        attributes.remove("dn")
         read_post_control = PostReadControl(criticality=True, attrList=attributes)
 
         # Object already exists in the LDAP database
