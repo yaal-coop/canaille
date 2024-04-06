@@ -22,7 +22,6 @@ from sqlalchemy_utils import force_auto_coercion
 
 import canaille.core.models
 import canaille.oidc.models
-from canaille.app import models
 from canaille.backends.models import BackendModel
 
 from .backend import Backend
@@ -82,9 +81,13 @@ class SqlAlchemyModel(BackendModel):
         return getattr(cls, name) == value
 
     @classmethod
-    def get(cls, identifier=None, **kwargs):
+    def get(cls, identifier=None, /, **kwargs):
         if identifier:
-            kwargs[cls.identifier_attribute] = identifier
+            return (
+                cls.get(**{cls.identifier_attribute: identifier})
+                or cls.get(id=identifier)
+                or None
+            )
 
         filter = [
             cls.attribute_filter(attribute_name, expected_value)
@@ -180,33 +183,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     @reconstructor
     def load_permissions(self):
         super().load_permissions()
-
-    def normalize_filter_value(self, attribute, value):
-        # not super generic, but we can improve this when we have
-        # type checking and/or pydantic for the models
-        if attribute == "groups":
-            return (
-                models.Group.get(id=value)
-                or models.Group.get(display_name=value)
-                or None
-            )
-        return value
-
-    def match_filter(self, filter):
-        if filter is None:
-            return True
-
-        if isinstance(filter, dict):
-            return all(
-                self.normalize_filter_value(attribute, value)
-                in getattr(self, attribute, [])
-                if typing.get_origin(self.attributes[attribute]) is list
-                else self.normalize_filter_value(attribute, value)
-                == getattr(self, attribute, None)
-                for attribute, value in filter.items()
-            )
-
-        return any(self.match_filter(subfilter) for subfilter in filter)
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):

@@ -1,9 +1,11 @@
 import datetime
+import inspect
 import typing
 from collections import ChainMap
 from typing import Optional
 
 from canaille.app import classproperty
+from canaille.app import models
 
 
 class Model:
@@ -141,3 +143,45 @@ class BackendModel:
         George
         """
         raise NotImplementedError()
+
+    @classmethod
+    def get_attribute_type(cls, attribute_name):
+        """Reads the attribute typing and extract the type, possibly burried
+        under list or Optional."""
+        attribute = cls.attributes[attribute_name]
+        core_type = (
+            typing.get_args(attribute)[0]
+            if typing.get_origin(attribute) == list
+            else attribute
+        )
+        return (
+            typing._eval_type(core_type, globals(), locals())
+            if isinstance(core_type, typing.ForwardRef)
+            else core_type
+        )
+
+    def match_filter(self, filter):
+        if filter is None:
+            return True
+
+        if isinstance(filter, list):
+            return any(self.match_filter(subfilter) for subfilter in filter)
+
+        # If attribute are models, resolve the instance
+        for attribute, value in filter.items():
+            attribute_type = self.get_attribute_type(attribute)
+
+            if not inspect.isclass(attribute_type) or not issubclass(
+                attribute_type, Model
+            ):
+                continue
+
+            model = getattr(models, attribute_type.__name__)
+
+            if instance := model.get(value):
+                filter[attribute] = instance
+
+        return all(
+            getattr(self, attribute) and value in getattr(self, attribute)
+            for attribute, value in filter.items()
+        )

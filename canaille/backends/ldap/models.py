@@ -55,36 +55,11 @@ class User(canaille.core.models.User, LDAPObject):
         return cls.get(filter=filter, **kwargs)
 
     def match_filter(self, filter):
-        conn = Backend.get().connection
-        filter_ = self.acl_filter_to_ldap_filter(filter)
-        return not filter_ or (
-            self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter_)
-        )
+        if isinstance(filter, str):
+            conn = Backend.get().connection
+            return self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter)
 
-    @classmethod
-    def acl_filter_to_ldap_filter(cls, filter_):
-        if isinstance(filter_, dict):
-            # not super generic, but how can we improve this? ¯\_(ツ)_/¯
-            if "groups" in filter_ and "=" not in filter_.get("groups"):
-                group_by_id = Group.get(id=filter_["groups"])
-                filter_["groups"] = (
-                    group_by_id.dn if group_by_id else Group.dn_for(filter_["groups"])
-                )
-
-            base = "".join(
-                f"({cls.python_attribute_to_ldap(key)}={value})"
-                for key, value in filter_.items()
-            )
-            return f"(&{base})" if len(filter_) > 1 else base
-
-        if isinstance(filter_, list):
-            return (
-                "(|"
-                + "".join(cls.acl_filter_to_ldap_filter(mapping) for mapping in filter_)
-                + ")"
-            )
-
-        return filter_
+        return super().match_filter(filter)
 
     @classmethod
     def get(cls, *args, **kwargs):
@@ -159,9 +134,7 @@ class User(canaille.core.models.User, LDAPObject):
             return super().save(*args, **kwargs)
 
         old_groups = self.state.get(group_attr) or []
-        new_groups = [
-            v if isinstance(v, Group) else Group.get(dn=v) for v in new_groups
-        ]
+        new_groups = [v if isinstance(v, Group) else Group.get(v) for v in new_groups]
         to_add = set(new_groups) - set(old_groups)
         to_del = set(old_groups) - set(new_groups)
 

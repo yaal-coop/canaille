@@ -73,9 +73,13 @@ class MemoryModel(BackendModel):
         ]
 
     @classmethod
-    def get(cls, identifier=None, **kwargs):
+    def get(cls, identifier=None, /, **kwargs):
         if identifier:
-            kwargs[cls.identifier_attribute] = identifier
+            return (
+                cls.get(**{cls.identifier_attribute: identifier})
+                or cls.get(id=identifier)
+                or None
+            )
 
         results = cls.query(**kwargs)
         return results[0] if results else None
@@ -232,26 +236,6 @@ class MemoryModel(BackendModel):
     @property
     def identifier(self):
         return getattr(self, self.identifier_attribute)
-
-    def match_filter(self, filter):
-        if filter is None:
-            return True
-
-        if isinstance(filter, dict):
-            # not super generic, but we can improve this when we have
-            # type checking and/or pydantic for the models
-            if "groups" in filter:
-                if models.Group.get(id=filter["groups"]):
-                    filter["groups"] = models.Group.get(id=filter["groups"])
-                elif models.Group.get(display_name=filter["groups"]):
-                    filter["groups"] = models.Group.get(display_name=filter["groups"])
-
-            return all(
-                getattr(self, attribute) and value in getattr(self, attribute)
-                for attribute, value in filter.items()
-            )
-
-        return any(self.match_filter(subfilter) for subfilter in filter)
 
 
 class User(canaille.core.models.User, MemoryModel):

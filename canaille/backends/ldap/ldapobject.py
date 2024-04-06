@@ -6,6 +6,7 @@ import ldap.dn
 import ldap.filter
 from ldap.controls.readentry import PostReadControl
 
+from canaille.app import classproperty
 from canaille.backends.models import BackendModel
 
 from .backend import Backend
@@ -130,6 +131,10 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             if self.rdn_attribute
             else "<LDAPOBject>"
         )
+
+    @classproperty
+    def identifier_attribute(cls):
+        return cls.rdn_attribute
 
     def __html__(self):
         return self.id
@@ -302,10 +307,17 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         return cls._attribute_type_by_name
 
     @classmethod
-    def get(cls, dn=None, **kwargs):
+    def get(cls, identifier=None, /, **kwargs):
         try:
-            return cls.query(dn, **kwargs)[0]
+            return cls.query(identifier, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
+            if identifier and cls.base:
+                return (
+                    cls.get(**{cls.identifier_attribute: identifier})
+                    or cls.get(id=identifier)
+                    or None
+                )
+
             return None
 
     @classmethod

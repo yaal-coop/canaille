@@ -55,7 +55,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
 
     assert user == models.User.get(user.identifier)
     assert user == models.User.get(user_name=user.identifier)
-    assert user == models.User.get(dn=dn)
+    assert user == models.User.get(dn)
 
     user.delete()
 
@@ -76,7 +76,7 @@ def test_special_chars_in_rdn(testclient, backend):
 
     assert user == models.User.get(user.identifier)
     assert user == models.User.get(user_name=user.identifier)
-    assert user == models.User.get(dn=dn)
+    assert user == models.User.get(dn)
 
     user.delete()
 
@@ -185,7 +185,7 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
     foo_group.save()
     dn = foo_group.dn
-    g = LDAPObject.get(dn=dn)
+    g = LDAPObject.get(dn)
     assert isinstance(g, models.Group)
     assert g == foo_group
     assert g.display_name == foo_group.display_name
