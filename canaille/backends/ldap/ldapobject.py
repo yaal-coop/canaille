@@ -302,9 +302,9 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         return cls._attribute_type_by_name
 
     @classmethod
-    def get(cls, dn=None, filter=None, **kwargs):
+    def get(cls, dn=None, **kwargs):
         try:
-            return cls.query(dn, filter, **kwargs)[0]
+            return cls.query(dn, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             return None
 
