@@ -131,7 +131,7 @@ class ACLSettings(BaseModel):
     ) -> List[str]:
         from canaille.core.models import User
 
-        assert all(field in User.__annotations__ for field in read)
+        assert all(field in User.attributes for field in read)
         return read
 
     @field_validator("WRITE")
@@ -142,7 +142,7 @@ class ACLSettings(BaseModel):
     ) -> List[str]:
         from canaille.core.models import User
 
-        assert all(field in User.__annotations__ for field in write)
+        assert all(field in User.attributes for field in write)
         return write
 
     FILTER: Optional[Union[Dict[str, str], List[Dict[str, str]]]] = None

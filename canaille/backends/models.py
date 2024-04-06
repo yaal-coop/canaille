@@ -1,4 +1,5 @@
 import datetime
+import typing
 from collections import ChainMap
 from typing import Optional
 
@@ -45,9 +46,9 @@ class Model:
     def attributes(cls):
         return ChainMap(
             *(
-                klass.__annotations__
+                typing.get_type_hints(klass)
                 for klass in reversed(cls.__mro__)
-                if "__annotations__" in klass.__dict__ and issubclass(klass, Model)
+                if issubclass(klass, Model)
             )
         )
 
