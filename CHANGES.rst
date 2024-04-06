@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - Group member removal can be achieved from the group edition page :issue:`192`
+- Model management commands :issue:`117` :issue:`54`
 
 Changed
 ^^^^^^^
