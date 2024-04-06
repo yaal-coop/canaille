@@ -3,8 +3,6 @@ import datetime
 import typing
 import uuid
 
-from flask import current_app
-
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
@@ -235,31 +233,6 @@ class MemoryModel(BackendModel):
     def identifier(self):
         return getattr(self, self.identifier_attribute)
 
-
-class User(canaille.core.models.User, MemoryModel):
-    identifier_attribute = "user_name"
-    model_attributes = {
-        "groups": ("Group", "members"),
-    }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.load_permissions()
-
-    def reload(self):
-        super().reload()
-        self.load_permissions()
-
-    def load_permissions(self):
-        self._permissions = set()
-        self._readable_fields = set()
-        self._writable_fields = set()
-        for details in current_app.config["CANAILLE"]["ACL"].values():
-            if self.match_filter(details["FILTER"]):
-                self._permissions |= set(details["PERMISSIONS"])
-                self._readable_fields |= set(details["READ"])
-                self._writable_fields |= set(details["WRITE"])
-
     def match_filter(self, filter):
         if filter is None:
             return True
@@ -279,6 +252,21 @@ class User(canaille.core.models.User, MemoryModel):
             )
 
         return any(self.match_filter(subfilter) for subfilter in filter)
+
+
+class User(canaille.core.models.User, MemoryModel):
+    identifier_attribute = "user_name"
+    model_attributes = {
+        "groups": ("Group", "members"),
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.load_permissions()
+
+    def reload(self):
+        super().reload()
+        self.load_permissions()
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):

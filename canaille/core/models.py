@@ -2,6 +2,8 @@ import datetime
 from typing import List
 from typing import Optional
 
+from flask import current_app
+
 from canaille.backends.models import Model
 
 
@@ -279,6 +281,17 @@ class User(Model):
         return bool(self.lock_date) and self.lock_date < datetime.datetime.now(
             datetime.timezone.utc
         )
+
+    def load_permissions(self):
+        self._permissions = set()
+        self._readable_fields = set()
+        self._writable_fields = set()
+        acls = current_app.config["CANAILLE"]["ACL"].values()
+        for details in acls:
+            if self.match_filter(details["FILTER"]):
+                self._permissions |= set(details["PERMISSIONS"])
+                self._readable_fields |= set(details["READ"])
+                self._writable_fields |= set(details["WRITE"])
 
 
 class Group(Model):

@@ -54,6 +54,13 @@ class User(canaille.core.models.User, LDAPObject):
         )
         return cls.get(filter=filter, **kwargs)
 
+    def match_filter(self, filter):
+        conn = Backend.get().connection
+        filter_ = self.acl_filter_to_ldap_filter(filter)
+        return not filter_ or (
+            self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter_)
+        )
+
     @classmethod
     def acl_filter_to_ldap_filter(cls, filter_):
         if isinstance(filter_, dict):
@@ -170,21 +177,6 @@ class User(canaille.core.models.User, LDAPObject):
             group.save()
 
         self.state[group_attr] = new_groups
-
-    def load_permissions(self):
-        conn = Backend.get().connection
-        self._permissions = set()
-        self._readable_fields = set()
-        self._writable_fields = set()
-
-        for details in current_app.config["CANAILLE"]["ACL"].values():
-            filter_ = self.acl_filter_to_ldap_filter(details["FILTER"])
-            if not filter_ or (
-                self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter_)
-            ):
-                self._permissions |= set(details["PERMISSIONS"])
-                self._readable_fields |= set(details["READ"])
-                self._writable_fields |= set(details["WRITE"])
 
 
 class Group(canaille.core.models.Group, LDAPObject):

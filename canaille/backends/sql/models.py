@@ -3,7 +3,6 @@ import typing
 import uuid
 from typing import List
 
-from flask import current_app
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -180,14 +179,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
 
     @reconstructor
     def load_permissions(self):
-        self._permissions = set()
-        self._readable_fields = set()
-        self._writable_fields = set()
-        for details in current_app.config["CANAILLE"]["ACL"].values():
-            if self.match_filter(details["FILTER"]):
-                self._permissions |= set(details["PERMISSIONS"])
-                self._readable_fields |= set(details["READ"])
-                self._writable_fields |= set(details["WRITE"])
+        super().load_permissions()
 
     def normalize_filter_value(self, attribute, value):
         # not super generic, but we can improve this when we have
