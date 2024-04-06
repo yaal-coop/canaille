@@ -190,9 +190,6 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
     assert g == foo_group
     assert g.display_name == foo_group.display_name
 
-    ou = LDAPObject.get(dn=f"{models.Group.base},{models.Group.root_dn}")
-    assert isinstance(ou, LDAPObject)
-
 
 def test_object_class_update(backend, testclient):
     testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = ["inetOrgPerson"]

@@ -61,6 +61,8 @@ class SqlAlchemyModel(BackendModel):
             getattr(cls, attribute_name).ilike(f"%{query}%")
             for attribute_name in attributes
             if "str" in str(cls.attributes[attribute_name])
+            # erk, photo is an URL string according to SCIM, but bytes here
+            and attribute_name != "photo"
         )
 
         return (
@@ -72,9 +74,7 @@ class SqlAlchemyModel(BackendModel):
         if isinstance(value, list):
             return or_(cls.attribute_filter(name, v) for v in value)
 
-        # extract the sqlalchemy.orm.Mapped type
-        attribute_type = typing.get_args(cls.attributes[name])[0]
-        multiple = typing.get_origin(attribute_type) is list
+        multiple = typing.get_origin(cls.attributes[name]) is list
 
         if multiple:
             return getattr(cls, name).contains(value)
@@ -200,8 +200,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
             return all(
                 self.normalize_filter_value(attribute, value)
                 in getattr(self, attribute, [])
-                if typing.get_origin(typing.get_args(self.attributes[attribute])[0])
-                is list
+                if typing.get_origin(self.attributes[attribute]) is list
                 else self.normalize_filter_value(attribute, value)
                 == getattr(self, attribute, None)
                 for attribute, value in filter.items()

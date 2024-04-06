@@ -41,6 +41,16 @@ class Model:
     the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`.
     """
 
+    @classproperty
+    def attributes(cls):
+        return ChainMap(
+            *(
+                klass.__annotations__
+                for klass in reversed(cls.__mro__)
+                if "__annotations__" in klass.__dict__ and issubclass(klass, Model)
+            )
+        )
+
 
 class BackendModel:
     """The backend model abstract class.
@@ -48,12 +58,6 @@ class BackendModel:
     It details all the methods and attributes that are expected to be
     implemented for every model and for every backend.
     """
-
-    @classproperty
-    def attributes(cls):
-        return ChainMap(
-            *(c.__annotations__ for c in cls.__mro__ if "__annotations__" in c.__dict__)
-        )
 
     @classmethod
     def query(cls, **kwargs):
