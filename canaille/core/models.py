@@ -315,7 +315,7 @@ class User(Model):
         This does not include the :attr:`writable
         <canaille.core.models.User.writable_fields>` fields.
         """
-        if self.readable_fields is None:
+        if self._readable_fields is None:
             self.load_permissions()
 
         return self._readable_fields
