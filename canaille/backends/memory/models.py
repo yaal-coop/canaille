@@ -4,6 +4,7 @@ import typing
 import uuid
 from typing import ClassVar
 from typing import Dict
+from typing import Optional
 
 import canaille.core.models
 import canaille.oidc.models
@@ -242,28 +243,28 @@ class MemoryModel(BackendModel):
 
 class User(canaille.core.models.User, MemoryModel):
     identifier_attribute: ClassVar[str] = "user_name"
-    model_attributes: ClassVar[Dict[str, str]] = {
+    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
         "groups": ("Group", "members"),
     }
 
 
 class Group(canaille.core.models.Group, MemoryModel):
-    model_attributes: ClassVar[Dict[str, str]] = {
+    identifier_attribute: ClassVar[str] = "display_name"
+    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
         "members": ("User", "groups"),
     }
-    identifier_attribute: ClassVar[str] = "display_name"
 
 
 class Client(canaille.oidc.models.Client, MemoryModel):
     identifier_attribute: ClassVar[str] = "client_id"
-    model_attributes: ClassVar[Dict[str, str]] = {
+    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
         "audience": ("Client", None),
     }
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
     identifier_attribute: ClassVar[str] = "authorization_code_id"
-    model_attributes: ClassVar[Dict[str, str]] = {
+    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
         "client": ("Client", None),
         "subject": ("User", None),
     }
@@ -271,7 +272,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
 
 class Token(canaille.oidc.models.Token, MemoryModel):
     identifier_attribute: ClassVar[str] = "token_id"
-    model_attributes: ClassVar[Dict[str, str]] = {
+    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
         "client": ("Client", None),
         "subject": ("User", None),
         "audience": ("Client", None),
@@ -280,7 +281,7 @@ class Token(canaille.oidc.models.Token, MemoryModel):
 
 class Consent(canaille.oidc.models.Consent, MemoryModel):
     identifier_attribute: ClassVar[str] = "consent_id"
-    model_attributes: ClassVar[Dict[str, str]] = {
+    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
         "client": ("Client", None),
         "subject": ("User", None),
     }
