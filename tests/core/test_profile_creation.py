@@ -6,7 +6,7 @@ def test_user_creation_edition_and_deletion(
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
-    assert models.User.get_from_login("george") is None
+    assert models.User.get(user_name="george") is None
     res.mustcontain(no="george")
 
     # Fill the profile for a new user.
@@ -24,7 +24,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="create-profile", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
-    george = models.User.get_from_login("george")
+    george = models.User.get(user_name="george")
     foo_group.reload()
     assert "George" == george.given_name
     assert george.groups == [foo_group]
@@ -45,7 +45,7 @@ def test_user_creation_edition_and_deletion(
     res.form["groups"] = [foo_group.id, bar_group.id]
     res = res.form.submit(name="action", value="edit-settings").follow()
 
-    george = models.User.get_from_login("george")
+    george = models.User.get(user_name="george")
     assert "Georgio" == george.given_name
     assert george.check_password("totoyolo")[0]
 
@@ -62,7 +62,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="confirm-delete", status=200)
     res = res.form.submit(name="action", value="delete", status=302)
     res = res.follow(status=200)
-    assert models.User.get_from_login("george") is None
+    assert models.User.get(user_name="george") is None
     res.mustcontain(no="george")
 
 
@@ -91,7 +91,7 @@ def test_user_creation_without_password(testclient, logged_moderator):
     res = res.form.submit(name="action", value="create-profile", status=302)
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
-    george = models.User.get_from_login("george")
+    george = models.User.get(user_name="george")
     assert george.user_name == "george"
     assert not george.has_password()
 
@@ -102,13 +102,13 @@ def test_user_creation_form_validation_failed(
     testclient, logged_moderator, foo_group, bar_group
 ):
     res = testclient.get("/users", status=200)
-    assert models.User.get_from_login("george") is None
+    assert models.User.get(user_name="george") is None
     res.mustcontain(no="george")
 
     res = testclient.get("/profile", status=200)
     res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
-    assert models.User.get_from_login("george") is None
+    assert models.User.get(user_name="george") is None
 
 
 def test_username_already_taken(
@@ -144,7 +144,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator):
         status=200
     )
 
-    george = models.User.get_from_login("george")
+    george = models.User.get(user_name="george")
     assert george.formatted_name == "George Abitbol"
     george.delete()
 
@@ -159,7 +159,7 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator):
         status=200
     )
 
-    george = models.User.get_from_login("george")
+    george = models.User.get(user_name="george")
     assert george.formatted_name == "Abitbol"
     george.delete()
 

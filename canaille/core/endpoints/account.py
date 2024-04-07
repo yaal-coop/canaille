@@ -257,7 +257,7 @@ def registration(data=None, hash=None):
             )
             return redirect(url_for("core.account.index"))
 
-        if payload.user_name and models.User.get_from_login(payload.user_name):
+        if payload.user_name and models.User.get(user_name=payload.user_name):
             flash(
                 _("Your account has already been created."),
                 "error",

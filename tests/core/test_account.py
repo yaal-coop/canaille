@@ -323,7 +323,7 @@ def test_admin_self_deletion(testclient, backend):
         .follow(status=200)
     )
 
-    assert models.User.get_from_login("temp") is None
+    assert models.User.get(user_name="temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
@@ -361,7 +361,7 @@ def test_user_self_deletion(testclient, backend):
         .follow(status=200)
     )
 
-    assert models.User.get_from_login("temp") is None
+    assert models.User.get(user_name="temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
