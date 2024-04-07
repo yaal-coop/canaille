@@ -5,6 +5,7 @@ from typing import Optional
 from flask import current_app
 
 from canaille.backends.models import Model
+from canaille.core.configuration import Permission
 
 
 class User(Model):
@@ -273,7 +274,10 @@ class User(Model):
 
         return super().__getattr__(name)
 
-    def can(self, *permissions):
+    def can(self, *permissions: Permission):
+        """Wether or not the user has the
+        :class:`~canaille.core.configuration.Permission` according to the
+        :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
             self.load_permissions()
 
@@ -305,13 +309,21 @@ class User(Model):
 
     @property
     def readable_fields(self):
-        if self._writable_fields is None:
+        """The fields the user can read according to the :class:`configuration
+        <canaille.core.configuration.ACLSettings>` configuration.
+
+        This does not include the :attr:`writable
+        <canaille.core.models.User.writable_fields>` fields.
+        """
+        if self.readable_fields is None:
             self.load_permissions()
 
         return self._readable_fields
 
     @property
     def writable_fields(self):
+        """The fields the user can write according to the :class:`configuration
+        <canaille.core.configuration.ACLSettings>`."""
         if self._writable_fields is None:
             self.load_permissions()
 
