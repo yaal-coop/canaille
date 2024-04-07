@@ -250,9 +250,6 @@ class User(canaille.core.models.User, MemoryModel):
     def get_from_login(cls, login=None, **kwargs):
         return User.get(user_name=login)
 
-    def has_password(self):
-        return bool(self.password)
-
     def check_password(self, password):
         if password != self.password:
             return (False, None)

@@ -65,9 +65,6 @@ class User(canaille.core.models.User, LDAPObject):
     def identifier(self):
         return self.rdn_value
 
-    def has_password(self):
-        return bool(self.password)
-
     def check_password(self, password):
         conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
 

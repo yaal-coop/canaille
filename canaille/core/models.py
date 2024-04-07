@@ -250,7 +250,7 @@ class User(Model):
 
     def has_password(self) -> bool:
         """Checks wether a password has been set for the user."""
-        raise NotImplementedError()
+        return self.password is not None
 
     def check_password(self, password: str) -> bool:
         """Checks if the password matches the user password in the database."""

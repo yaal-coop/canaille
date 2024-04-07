@@ -12,9 +12,6 @@ def test_required_methods(testclient):
     user = User()
 
     with pytest.raises(NotImplementedError):
-        user.has_password()
-
-    with pytest.raises(NotImplementedError):
         user.check_password("password")
 
     with pytest.raises(NotImplementedError):
