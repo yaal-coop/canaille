@@ -40,20 +40,6 @@ class User(canaille.core.models.User, LDAPObject):
         "lock_date": "pwdEndTime",
     }
 
-    @classmethod
-    def get_from_login(cls, login=None, **kwargs):
-        raw_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
-        filter = (
-            (
-                current_app.jinja_env.from_string(raw_filter).render(
-                    login=ldap.filter.escape_filter_chars(login)
-                )
-            )
-            if login
-            else None
-        )
-        return cls.get(filter=filter, **kwargs)
-
     def match_filter(self, filter):
         if isinstance(filter, str):
             conn = Backend.get().connection

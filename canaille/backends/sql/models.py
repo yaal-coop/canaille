@@ -171,10 +171,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         TZDateTime(timezone=True), nullable=True
     )
 
-    @classmethod
-    def get_from_login(cls, login=None, **kwargs):
-        return User.get(user_name=login)
-
     def check_password(self, password):
         if password != self.password:
             return (False, None)

@@ -185,6 +185,21 @@ class Backend(BaseBackend):
         except ldap.SERVER_DOWN:  # pragma: no cover
             return False
 
+    def get_user_from_login(self, login=None):
+        from .models import User
+
+        raw_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
+        filter = (
+            (
+                current_app.jinja_env.from_string(raw_filter).render(
+                    login=ldap.filter.escape_filter_chars(login)
+                )
+            )
+            if login
+            else None
+        )
+        return User.get(filter=filter)
+
 
 def setup_ldap_models(config):
     from canaille.app import models

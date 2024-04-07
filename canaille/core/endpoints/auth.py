@@ -8,7 +8,6 @@ from flask import session
 from flask import url_for
 
 from canaille.app import build_hash
-from canaille.app import models
 from canaille.app.flask import current_user
 from canaille.app.flask import login_user
 from canaille.app.flask import logout_user
@@ -42,7 +41,7 @@ def login():
     if not request.form or form.form_control():
         return render_template("login.html", form=form)
 
-    user = models.User.get_from_login(form.login.data)
+    user = BaseBackend.get().get_user_from_login(form.login.data)
     if user and not user.has_password():
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -68,7 +67,7 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    user = models.User.get_from_login(session["attempt_login"])
+    user = BaseBackend.get().get_user_from_login(session["attempt_login"])
     if user and not user.has_password():
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -153,7 +152,7 @@ def forgotten():
         flash(_("Could not send the password reset link."), "error")
         return render_template("forgotten-password.html", form=form)
 
-    user = models.User.get_from_login(form.login.data)
+    user = BaseBackend.get().get_user_from_login(form.login.data)
     success_message = _(
         "A password reset link has been sent at your email address. "
         "You should receive it within a few minutes."

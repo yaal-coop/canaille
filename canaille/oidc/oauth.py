@@ -34,6 +34,7 @@ from flask import url_for
 from werkzeug.security import gen_salt
 
 from canaille.app import models
+from canaille.backends import BaseBackend
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 
@@ -266,7 +267,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        user = models.User.get_from_login(username)
+        user = BaseBackend.get().get_user_from_login(username)
         if not user:
             return None
 

@@ -5,10 +5,7 @@ from canaille.core.models import Group
 from canaille.core.models import User
 
 
-def test_required_methods(testclient):
-    with pytest.raises(NotImplementedError):
-        User.get_from_login()
-
+def test_required_methods(testclient, backend):
     user = User()
 
     with pytest.raises(NotImplementedError):
@@ -20,9 +17,9 @@ def test_required_methods(testclient):
     Group()
 
 
-def test_user_get_from_login(testclient, user, backend):
-    assert models.User.get_from_login(login="invalid") is None
-    assert models.User.get_from_login(login="user") == user
+def test_user_get_user_from_login(testclient, user, backend):
+    assert backend.get_user_from_login(login="invalid") is None
+    assert backend.get_user_from_login(login="user") == user
 
 
 def test_user_has_password(testclient, backend):

@@ -47,3 +47,8 @@ class Backend(BaseBackend):
 
     def has_account_lockability(self):
         return True
+
+    def get_user_from_login(self, login):
+        from .models import User
+
+        return User.get(user_name=login)

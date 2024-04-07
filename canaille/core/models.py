@@ -244,10 +244,6 @@ class User(Model):
     _writable_fields = None
     _permissions = None
 
-    @classmethod
-    def get_from_login(cls, login=None, **kwargs) -> Optional["User"]:
-        raise NotImplementedError()
-
     def has_password(self) -> bool:
         """Checks wether a password has been set for the user."""
         return self.password is not None

@@ -17,6 +17,7 @@ from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
+from canaille.backends import BaseBackend
 
 MINIMUM_PASSWORD_LENGTH = 8
 
@@ -49,7 +50,7 @@ def unique_group(form, field):
 def existing_login(form, field):
     if not current_app.config["CANAILLE"][
         "HIDE_INVALID_LOGINS"
-    ] and not models.User.get_from_login(field.data):
+    ] and not BaseBackend.get().get_user_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )
