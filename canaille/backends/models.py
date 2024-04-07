@@ -44,21 +44,25 @@ class Model:
     the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`.
     """
 
+    _attributes = None
+
     @classproperty
     def attributes(cls):
-        annotations = ChainMap(
-            *(
-                typing.get_type_hints(klass)
-                for klass in reversed(cls.__mro__)
-                if issubclass(klass, Model)
+        if not cls._attributes:
+            annotations = ChainMap(
+                *(
+                    typing.get_type_hints(klass)
+                    for klass in reversed(cls.__mro__)
+                    if issubclass(klass, Model)
+                )
             )
-        )
-        # only keep types that are not typing.ClassVar
-        return {
-            key: value
-            for key, value in annotations.items()
-            if typing.get_origin(value) is not typing.ClassVar
-        }
+            # only keep types that are not typing.ClassVar
+            cls._attributes = {
+                key: value
+                for key, value in annotations.items()
+                if typing.get_origin(value) is not typing.ClassVar
+            }
+        return cls._attributes
 
 
 class BackendModel:
