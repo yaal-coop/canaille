@@ -120,7 +120,7 @@ def test_username_already_taken(
     res.form["emails-0"] = "any@thing.com"
     res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
-    res.mustcontain("The login &#39;user&#39; already exists")
+    res.mustcontain("The user name &#39;user&#39; already exists")
 
 
 def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_group):

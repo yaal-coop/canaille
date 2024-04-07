@@ -21,12 +21,12 @@ from canaille.app.i18n import native_language_name_from_code
 MINIMUM_PASSWORD_LENGTH = 8
 
 
-def unique_login(form, field):
-    if models.User.get_from_login(field.data) and (
+def unique_user_name(form, field):
+    if models.User.get(user_name=field.data) and (
         not getattr(form, "user", None) or form.user.user_name != field.data
     ):
         raise wtforms.ValidationError(
-            _("The login '{login}' already exists").format(login=field.data)
+            _("The user name '{user_name}' already exists").format(user_name=field.data)
         )
 
 
@@ -125,7 +125,7 @@ PROFILE_FORM_FIELDS = dict(
     user_name=wtforms.StringField(
         _("Username"),
         render_kw={"placeholder": _("jdoe")},
-        validators=[wtforms.validators.DataRequired(), unique_login],
+        validators=[wtforms.validators.DataRequired(), unique_user_name],
     ),
     formatted_name=wtforms.StringField(_("Name")),
     title=wtforms.StringField(
@@ -371,9 +371,9 @@ class JoinForm(Form):
 
 class InvitationForm(Form):
     user_name = wtforms.StringField(
-        _("Username"),
+        _("User name"),
         render_kw={"placeholder": _("jdoe")},
-        validators=[wtforms.validators.DataRequired(), unique_login],
+        validators=[wtforms.validators.DataRequired(), unique_user_name],
     )
     user_name_editable = wtforms.BooleanField(_("Username editable by the invitee"))
     email = wtforms.EmailField(
