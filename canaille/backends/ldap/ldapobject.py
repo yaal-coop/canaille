@@ -139,9 +139,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     def identifier_attribute(cls):
         return cls.rdn_attribute
 
-    def __html__(self):
-        return self.id
-
     def __eq__(self, other):
         ldap_attributes = self.may() + self.must()
 

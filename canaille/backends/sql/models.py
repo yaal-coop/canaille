@@ -31,9 +31,6 @@ force_auto_coercion()
 
 
 class SqlAlchemyModel(BackendModel):
-    def __html__(self):
-        return self.id
-
     def __repr__(self):
         return (
             f"<{self.__class__.__name__} {self.identifier_attribute}={self.identifier}>"

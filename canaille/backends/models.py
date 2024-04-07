@@ -195,3 +195,6 @@ class BackendModel:
             getattr(self, attribute) and value in getattr(self, attribute)
             for attribute, value in filter.items()
         )
+
+    def __html__(self):
+        return self.id
