@@ -6,6 +6,9 @@ from contextlib import contextmanager
 import ldap.modlist
 import ldif
 from flask import current_app
+from ldap.controls import DecodeControlTuples
+from ldap.controls.ppolicy import PasswordPolicyControl
+from ldap.controls.ppolicy import PasswordPolicyError
 
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
@@ -199,6 +202,53 @@ class Backend(BaseBackend):
             else None
         )
         return User.get(filter=filter)
+
+    def check_user_password(self, user, password):
+        conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
+
+        conn.set_option(
+            ldap.OPT_NETWORK_TIMEOUT,
+            current_app.config["CANAILLE_LDAP"]["TIMEOUT"],
+        )
+
+        message = None
+        try:
+            res = conn.simple_bind_s(
+                user.dn, password, serverctrls=[PasswordPolicyControl()]
+            )
+            controls = res[3]
+            result = True
+        except ldap.INVALID_CREDENTIALS as exc:
+            controls = DecodeControlTuples(exc.args[0]["ctrls"])
+            result = False
+        finally:
+            conn.unbind_s()
+
+        for control in controls:
+
+            def gettext(x):
+                return x
+
+            if (
+                control.controlType == PasswordPolicyControl.controlType
+                and control.error == PasswordPolicyError.namedValues["accountLocked"]
+            ):
+                message = gettext("Your account has been locked.")
+            elif (
+                control.controlType == PasswordPolicyControl.controlType
+                and control.error == PasswordPolicyError.namedValues["changeAfterReset"]
+            ):
+                message = gettext("You should change your password.")
+
+        return result, message
+
+    def set_user_password(self, user, password):
+        conn = Backend.get().connection
+        conn.passwd_s(
+            user.dn,
+            None,
+            password.encode("utf-8"),
+        )
 
 
 def setup_ldap_models(config):

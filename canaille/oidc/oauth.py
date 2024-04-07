@@ -271,7 +271,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
         if not user:
             return None
 
-        success, _ = user.check_password(password)
+        success, _ = BaseBackend.get().check_user_password(user, password)
         if not success:
             return None
 

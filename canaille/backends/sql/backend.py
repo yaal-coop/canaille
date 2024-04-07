@@ -52,3 +52,16 @@ class Backend(BaseBackend):
         from .models import User
 
         return User.get(user_name=login)
+
+    def check_user_password(self, user, password):
+        if password != user.password:
+            return (False, None)
+
+        if user.locked:
+            return (False, "Your account has been locked.")
+
+        return (True, None)
+
+    def set_user_password(self, user, password):
+        user.password = password
+        user.save()

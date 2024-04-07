@@ -6,7 +6,7 @@ from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
 
 
-def test_invitation(testclient, logged_admin, foo_group, smtpd):
+def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     assert models.User.get(user_name="someone") is None
 
     res = testclient.get("/invite", status=200)
@@ -48,7 +48,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
 
     user = models.User.get(user_name="someone")
     foo_group.reload()
-    assert user.check_password("whatever")[0]
+    assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -59,7 +59,9 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd):
     user.delete()
 
 
-def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtpd):
+def test_invitation_editable_user_name(
+    testclient, logged_admin, foo_group, smtpd, backend
+):
     assert models.User.get(user_name="jackyjack") is None
     assert models.User.get(user_name="djorje") is None
 
@@ -102,7 +104,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
 
     user = models.User.get(user_name="djorje")
     foo_group.reload()
-    assert user.check_password("whatever")[0]
+    assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -111,7 +113,7 @@ def test_invitation_editable_user_name(testclient, logged_admin, foo_group, smtp
     user.delete()
 
 
-def test_generate_link(testclient, logged_admin, foo_group, smtpd):
+def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     assert models.User.get(user_name="sometwo") is None
 
     res = testclient.get("/invite", status=200)
@@ -149,7 +151,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd):
 
     user = models.User.get(user_name="sometwo")
     foo_group.reload()
-    assert user.check_password("whatever")[0]
+    assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:

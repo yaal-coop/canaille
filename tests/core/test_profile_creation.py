@@ -2,7 +2,7 @@ from canaille.app import models
 
 
 def test_user_creation_edition_and_deletion(
-    testclient, logged_moderator, foo_group, bar_group
+    testclient, logged_moderator, foo_group, bar_group, backend
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)
@@ -28,7 +28,7 @@ def test_user_creation_edition_and_deletion(
     foo_group.reload()
     assert "George" == george.given_name
     assert george.groups == [foo_group]
-    assert george.check_password("totoyolo")[0]
+    assert backend.check_user_password(george, "totoyolo")[0]
 
     res = testclient.get("/users", status=200)
     res.mustcontain("george")
@@ -47,7 +47,7 @@ def test_user_creation_edition_and_deletion(
 
     george = models.User.get(user_name="george")
     assert "Georgio" == george.given_name
-    assert george.check_password("totoyolo")[0]
+    assert backend.check_user_password(george, "totoyolo")[0]
 
     foo_group.reload()
     bar_group.reload()

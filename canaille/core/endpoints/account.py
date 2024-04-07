@@ -455,7 +455,7 @@ def profile_create(current_app, form):
     user.save()
 
     if form["password1"].data:
-        user.set_password(form["password1"].data)
+        BaseBackend.get().set_user_password(user, form["password1"].data)
         user.save()
 
     return user
@@ -780,7 +780,7 @@ def profile_settings_edit(editor, edited_user):
                 and form["password1"].data
                 and request.form["action"] == "edit-settings"
             ):
-                edited_user.set_password(form["password1"].data)
+                BaseBackend.get().set_user_password(edited_user, form["password1"].data)
 
             edited_user.save()
             flash(_("Profile updated successfully."), "success")

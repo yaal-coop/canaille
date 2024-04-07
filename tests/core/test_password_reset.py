@@ -1,8 +1,8 @@
 from canaille.core.endpoints.account import build_hash
 
 
-def test_password_reset(testclient, user):
-    assert not user.check_password("foobarbaz")[0]
+def test_password_reset(testclient, user, backend):
+    assert not backend.check_user_password(user, "foobarbaz")[0]
     hash = build_hash("user", user.preferred_email, user.password)
 
     res = testclient.get("/reset/user/" + hash, status=200)
@@ -14,7 +14,7 @@ def test_password_reset(testclient, user):
     assert res.location == "/profile/user"
 
     user.reload()
-    assert user.check_password("foobarbaz")[0]
+    assert backend.check_user_password(user, "foobarbaz")[0]
 
     res = testclient.get("/reset/user/" + hash)
     assert (
@@ -23,11 +23,11 @@ def test_password_reset(testclient, user):
     ) in res.flashes
 
 
-def test_password_reset_multiple_emails(testclient, user):
+def test_password_reset_multiple_emails(testclient, user, backend):
     user.emails = ["foo@bar.com", "foo@baz.com"]
     user.save()
 
-    assert not user.check_password("foobarbaz")[0]
+    assert not backend.check_user_password(user, "foobarbaz")[0]
     hash = build_hash("user", "foo@baz.com", user.password)
 
     res = testclient.get("/reset/user/" + hash, status=200)
@@ -38,7 +38,7 @@ def test_password_reset_multiple_emails(testclient, user):
     assert ("success", "Your password has been updated successfully") in res.flashes
 
     user.reload()
-    assert user.check_password("foobarbaz")[0]
+    assert backend.check_user_password(user, "foobarbaz")[0]
 
     res = testclient.get("/reset/user/" + hash)
     assert (
@@ -55,7 +55,7 @@ def test_password_reset_bad_link(testclient, user):
     ) in res.flashes
 
 
-def test_password_reset_bad_password(testclient, user):
+def test_password_reset_bad_password(testclient, user, backend):
     hash = build_hash("user", user.preferred_email, user.password)
 
     res = testclient.get("/reset/user/" + hash, status=200)
@@ -64,7 +64,7 @@ def test_password_reset_bad_password(testclient, user):
     res.form["confirmation"] = "typo"
     res = res.form.submit(status=200)
 
-    assert user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
 
 
 def test_unavailable_if_no_smtp(testclient, user):

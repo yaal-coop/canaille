@@ -78,7 +78,7 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    success, message = user.check_password(form.password.data)
+    success, message = BaseBackend.get().check_user_password(user, form.password.data)
     if not success:
         logout_user()
         flash(message or _("Login failed, please check your information"), "error")
@@ -210,7 +210,7 @@ def reset(user, hash):
         return redirect(url_for("core.account.index"))
 
     if request.form and form.validate():
-        user.set_password(form.password.data)
+        BaseBackend.get().set_user_password(user, form.password.data)
         login_user(user)
 
         flash(_("Your password has been updated successfully"), "success")

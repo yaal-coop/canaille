@@ -6,13 +6,7 @@ from flask import g
 from canaille.app import models
 
 
-def test_edition(
-    testclient,
-    logged_user,
-    admin,
-    foo_group,
-    bar_group,
-):
+def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
     assert set(res.form["groups"].options) == {
         (foo_group.id, True, "foo"),
@@ -37,7 +31,7 @@ def test_edition(
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
 
-    assert logged_user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
     logged_user.user_name = "user"
     logged_user.save()
@@ -63,6 +57,7 @@ def test_edition_without_groups(
     testclient,
     logged_user,
     admin,
+    backend,
 ):
     res = testclient.get("/profile/user/settings", status=200)
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"] = []
@@ -74,13 +69,13 @@ def test_edition_without_groups(
     logged_user.reload()
 
     assert logged_user.user_name == "user"
-    assert logged_user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
     logged_user.user_name = "user"
     logged_user.save()
 
 
-def test_password_change(testclient, logged_user):
+def test_password_change(testclient, logged_user, backend):
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "new_password"
@@ -89,7 +84,7 @@ def test_password_change(testclient, logged_user):
     res = res.form.submit(name="action", value="edit-settings").follow()
 
     logged_user.reload()
-    assert logged_user.check_password("new_password")[0]
+    assert backend.check_user_password(logged_user, "new_password")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
@@ -101,10 +96,10 @@ def test_password_change(testclient, logged_user):
     res = res.follow()
 
     logged_user.reload()
-    assert logged_user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
 
-def test_password_change_fail(testclient, logged_user):
+def test_password_change_fail(testclient, logged_user, backend):
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "new_password"
@@ -113,7 +108,7 @@ def test_password_change_fail(testclient, logged_user):
     res = res.form.submit(name="action", value="edit-settings", status=200)
 
     logged_user.reload()
-    assert logged_user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
@@ -123,7 +118,7 @@ def test_password_change_fail(testclient, logged_user):
     res = res.form.submit(name="action", value="edit-settings", status=200)
 
     logged_user.reload()
-    assert logged_user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
 
 def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):

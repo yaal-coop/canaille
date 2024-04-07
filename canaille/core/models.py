@@ -248,14 +248,6 @@ class User(Model):
         """Checks wether a password has been set for the user."""
         return self.password is not None
 
-    def check_password(self, password: str) -> bool:
-        """Checks if the password matches the user password in the database."""
-        raise NotImplementedError()
-
-    def set_password(self, password: str):
-        """Sets a password for the user."""
-        raise NotImplementedError()
-
     def can_read(self, field: str):
         return field in self._readable_fields | self._writable_fields
 

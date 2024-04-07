@@ -171,19 +171,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         TZDateTime(timezone=True), nullable=True
     )
 
-    def check_password(self, password):
-        if password != self.password:
-            return (False, None)
-
-        if self.locked:
-            return (False, "Your account has been locked.")
-
-        return (True, None)
-
-    def set_password(self, password):
-        self.password = password
-        self.save()
-
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     __tablename__ = "group"

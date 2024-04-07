@@ -1,20 +1,4 @@
-import pytest
-
 from canaille.app import models
-from canaille.core.models import Group
-from canaille.core.models import User
-
-
-def test_required_methods(testclient, backend):
-    user = User()
-
-    with pytest.raises(NotImplementedError):
-        user.check_password("password")
-
-    with pytest.raises(NotImplementedError):
-        user.set_password("password")
-
-    Group()
 
 
 def test_user_get_user_from_login(testclient, user, backend):
@@ -44,10 +28,10 @@ def test_user_has_password(testclient, backend):
 
 
 def test_user_set_and_check_password(testclient, user, backend):
-    assert not user.check_password("something else")[0]
-    assert user.check_password("correct horse battery staple")[0]
+    assert not backend.check_user_password(user, "something else")[0]
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
 
-    user.set_password("something else")
+    backend.set_user_password(user, "something else")
 
-    assert user.check_password("something else")[0]
-    assert not user.check_password("correct horse battery staple")[0]
+    assert backend.check_user_password(user, "something else")[0]
+    assert not backend.check_user_password(user, "correct horse battery staple")[0]

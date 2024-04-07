@@ -55,6 +55,14 @@ class BaseBackend:
         """
         raise NotImplementedError()
 
+    def check_user_password(self, user, password: str) -> bool:
+        """Checks if the password matches the user password in the database."""
+        raise NotImplementedError()
+
+    def set_user_password(self, user, password: str):
+        """Sets a password for the user."""
+        raise NotImplementedError()
+
     def has_account_lockability(self):
         """Indicates wether the backend supports locking user accounts."""
         raise NotImplementedError()
