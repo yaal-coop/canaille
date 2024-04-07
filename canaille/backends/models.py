@@ -14,7 +14,7 @@ class Model:
     It details all the common attributes shared by every models.
     """
 
-    id: Optional[str]
+    id: Optional[str] = None
     """A unique identifier for a SCIM resource as defined by the service
     provider. Id will be :py:data:`None` until the
     :meth:`~canaille.backends.models.BackendModel.save` method is called.
@@ -32,11 +32,11 @@ class Model:
     Section 9 for additional considerations regarding privacy.
     """
 
-    created: Optional[datetime.datetime]
+    created: Optional[datetime.datetime] = None
     """The :class:`~datetime.datetime` that the resource was added to the
     service provider."""
 
-    last_modified: Optional[datetime.datetime]
+    last_modified: Optional[datetime.datetime] = None
     """The most recent :class:`~datetime.datetime` that the details of this
     resource were updated at the service provider.
 
