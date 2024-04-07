@@ -239,11 +239,9 @@ class User(Model):
     lock_date: Optional[datetime.datetime] = None
     """A DateTime indicating when the resource was locked."""
 
-    def __init__(self, *args, **kwargs):
-        self._readable_fields = set()
-        self._writable_fields = set()
-        self._permissions = set()
-        super().__init__(*args, **kwargs)
+    _readable_fields = None
+    _writable_fields = None
+    _permissions = None
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs) -> Optional["User"]:
@@ -269,11 +267,17 @@ class User(Model):
         return self.emails[0] if self.emails else None
 
     def __getattr__(self, name):
-        if name.startswith("can_") and name != "can_read":
-            permission = name[4:]
-            return permission in self._permissions
+        prefix = "can_"
+        if name.startswith(prefix) and name != "can_read":
+            return self.can(name[len(prefix) :])
 
         return super().__getattr__(name)
+
+    def can(self, *permissions):
+        if self._permissions is None:
+            self.load_permissions()
+
+        return set(permissions).issubset(self._permissions)
 
     @property
     def locked(self) -> bool:
@@ -292,6 +296,26 @@ class User(Model):
                 self._permissions |= set(details["PERMISSIONS"])
                 self._readable_fields |= set(details["READ"])
                 self._writable_fields |= set(details["WRITE"])
+
+    def reload(self):
+        self._readable = None
+        self._writable = None
+        self._permissions = None
+        super().reload()
+
+    @property
+    def readable_fields(self):
+        if self._writable_fields is None:
+            self.load_permissions()
+
+        return self._readable_fields
+
+    @property
+    def writable_fields(self):
+        if self._writable_fields is None:
+            self.load_permissions()
+
+        return self._writable_fields
 
 
 class Group(Model):

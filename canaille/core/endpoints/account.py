@@ -143,7 +143,7 @@ def about():
 def users(user):
     table_form = TableForm(
         models.User,
-        fields=user._readable_fields | user._writable_fields,
+        fields=user.readable_fields | user.writable_fields,
         formdata=request.form,
     )
     if request.form and not table_form.validate():
@@ -404,7 +404,7 @@ def email_confirmation(data, hash):
 @bp.route("/profile", methods=("GET", "POST"))
 @permissions_needed("manage_users")
 def profile_creation(user):
-    form = build_profile_form(user._writable_fields, user._readable_fields)
+    form = build_profile_form(user.writable_fields, user.readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
 
     for field in form:
@@ -458,8 +458,6 @@ def profile_create(current_app, form):
         user.set_password(form["password1"].data)
         user.save()
 
-    user.load_permissions()
-
     return user
 
 
@@ -488,8 +486,8 @@ def profile_edition_main_form(user, edited_user, emails_readonly):
     if emails_readonly:
         available_fields.remove("emails")
 
-    readable_fields = user._readable_fields & available_fields
-    writable_fields = user._writable_fields & available_fields
+    readable_fields = user.readable_fields & available_fields
+    writable_fields = user.writable_fields & available_fields
     data = {
         field: getattr(edited_user, field)
         for field in writable_fields | readable_fields
@@ -509,7 +507,7 @@ def profile_edition_main_form(user, edited_user, emails_readonly):
 
 def profile_edition_main_form_validation(user, edited_user, profile_form):
     for field in profile_form:
-        if field.name in edited_user.attributes and field.name in user._writable_fields:
+        if field.name in edited_user.attributes and field.name in user.writable_fields:
             if isinstance(field, wtforms.FieldList):
                 # too bad wtforms cannot sanitize the list itself
                 data = [value for value in field.data if value] or None
@@ -744,7 +742,7 @@ def profile_settings(user, edited_user):
 
 def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
-    fields = editor._readable_fields | editor._writable_fields
+    fields = editor.readable_fields | editor.writable_fields
 
     available_fields = {"password", "groups", "user_name", "lock_date"}
     data = {
@@ -758,8 +756,8 @@ def profile_settings_edit(editor, edited_user):
     data["groups"] = [g.id for g in edited_user.groups]
 
     form = build_profile_form(
-        editor._writable_fields & available_fields,
-        editor._readable_fields & available_fields,
+        editor.writable_fields & available_fields,
+        editor.readable_fields & available_fields,
         edited_user,
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
@@ -774,7 +772,7 @@ def profile_settings_edit(editor, edited_user):
 
         else:
             for attribute in form:
-                if attribute.name in available_fields & editor._writable_fields:
+                if attribute.name in available_fields & editor.writable_fields:
                     setattr(edited_user, attribute.name, attribute.data)
 
             if (

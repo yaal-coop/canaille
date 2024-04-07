@@ -24,9 +24,9 @@
     {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
     {% if edited_user.user_name == user.user_name or lock_indicator or noindicator %}
         {{ fui.render_field(field, **kwargs) }}
-    {% elif field.name in edited_user._writable_fields %}
+    {% elif field.name in edited_user.writable_fields %}
         {{ fui.render_field(field, **kwargs) }}
-    {% elif field.name in edited_user._readable_fields %}
+    {% elif field.name in edited_user.readable_fields %}
         {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
     {% else %}
         {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
@@ -140,7 +140,7 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    {% if has_account_lockability and "lock_date" in user._writable_fields and not edited_user.locked %}
+                    {% if has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-lock" id="lock" formnovalidate>
                             {% trans %}Lock the account{% endtrans %}
                         </button>

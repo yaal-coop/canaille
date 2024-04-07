@@ -61,14 +61,6 @@ class User(canaille.core.models.User, LDAPObject):
 
         return super().match_filter(filter)
 
-    @classmethod
-    def get(cls, *args, **kwargs):
-        user = super().get(*args, **kwargs)
-        if user:
-            user.load_permissions()
-
-        return user
-
     @property
     def identifier(self):
         return self.rdn_value
@@ -122,10 +114,6 @@ class User(canaille.core.models.User, LDAPObject):
             None,
             password.encode("utf-8"),
         )
-
-    def reload(self):
-        super().reload()
-        self.load_permissions()
 
     def save(self, *args, **kwargs):
         group_attr = self.python_attribute_to_ldap("groups")

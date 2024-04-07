@@ -162,7 +162,6 @@ def user(app, backend):
         formatted_address="1235, somewhere",
     )
     u.save()
-    u.load_permissions()
     yield u
     u.delete()
 
@@ -177,7 +176,6 @@ def admin(app, backend):
         password="admin",
     )
     u.save()
-    u.load_permissions()
     yield u
     u.delete()
 
@@ -192,7 +190,6 @@ def moderator(app, backend):
         password="moderator",
     )
     u.save()
-    u.load_permissions()
     yield u
     u.delete()
 

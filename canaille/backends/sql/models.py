@@ -14,7 +14,6 @@ from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import reconstructor
 from sqlalchemy.orm import relationship
 from sqlalchemy_json import MutableJson
 from sqlalchemy_utils import PasswordType
@@ -171,18 +170,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.load_permissions()
-
-    def reload(self):
-        super().reload()
-        self.load_permissions()
-
-    @reconstructor
-    def load_permissions(self):
-        super().load_permissions()
 
     @classmethod
     def get_from_login(cls, login=None, **kwargs):

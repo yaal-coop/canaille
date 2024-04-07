@@ -244,14 +244,6 @@ class User(canaille.core.models.User, MemoryModel):
         "groups": ("Group", "members"),
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.load_permissions()
-
-    def reload(self):
-        super().reload()
-        self.load_permissions()
-
     @classmethod
     def get_from_login(cls, login=None, **kwargs):
         return User.get(user_name=login)
