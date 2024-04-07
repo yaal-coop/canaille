@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-27 14:07+0100\n"
+"POT-Creation-Date: 2024-04-07 19:49+0200\n"
 "PO-Revision-Date: 2023-07-02 08:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -54,28 +54,28 @@ msgstr ""
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:172
+#: canaille/backends/ldap/backend.py:170
 msgid "John Doe"
 msgstr "Max Mustermann"
 
-#: canaille/backends/ldap/backend.py:175 canaille/core/endpoints/forms.py:127
+#: canaille/backends/ldap/backend.py:173 canaille/core/endpoints/forms.py:127
 #: canaille/core/endpoints/forms.py:375
 msgid "jdoe"
 msgstr "mmustermann"
 
-#: canaille/backends/ldap/backend.py:178
+#: canaille/backends/ldap/backend.py:176
 msgid "john@doe.com"
 msgstr "max@mustermann.de"
 
-#: canaille/backends/ldap/backend.py:180
+#: canaille/backends/ldap/backend.py:178
 msgid " or "
 msgstr " oder "
 
-#: canaille/backends/ldap/models.py:130
+#: canaille/backends/ldap/models.py:98
 msgid "Your account has been locked."
 msgstr "Ihr Konto wurde gesperrt."
 
-#: canaille/backends/ldap/models.py:135
+#: canaille/backends/ldap/models.py:103
 msgid "You should change your password."
 msgstr "Sie sollten Ihr Passwort ändern."
 
@@ -192,12 +192,12 @@ msgid "User account creation succeed."
 msgstr "Benutzerkonto erfolgreich erstellt."
 
 #: canaille/core/endpoints/account.py:609
-#: canaille/core/endpoints/account.py:769
+#: canaille/core/endpoints/account.py:771
 msgid "Profile edition failed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:613
-#: canaille/core/endpoints/account.py:784
+#: canaille/core/endpoints/account.py:786
 msgid "Profile updated successfully."
 msgstr "Profil erfolgreich aktualisiert."
 
@@ -271,12 +271,12 @@ msgstr "Das Konto wurde gesperrt"
 msgid "The account has been unlocked"
 msgstr "Das Konto wurde entsperrt"
 
-#: canaille/core/endpoints/account.py:804
+#: canaille/core/endpoints/account.py:806
 #, python-format
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
 
-#: canaille/core/endpoints/account.py:822 canaille/core/endpoints/auth.py:93
+#: canaille/core/endpoints/account.py:824 canaille/core/endpoints/auth.py:93
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Verbindung erfolgreich. Willkommen %(user)s"
@@ -365,7 +365,7 @@ msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 
 #: canaille/core/endpoints/forms.py:29
-msgid "The login '{login}' already exists"
+msgid "The user name '{user_name}' already exists"
 msgstr ""
 
 #: canaille/core/endpoints/forms.py:38
@@ -405,7 +405,7 @@ msgstr "Passwort und Bestätigung stimmen nicht überein."
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: canaille/core/endpoints/forms.py:126 canaille/core/endpoints/forms.py:374
+#: canaille/core/endpoints/forms.py:126
 msgid "Username"
 msgstr "Anmeldename"
 
@@ -574,6 +574,12 @@ msgstr "Beschreibung"
 #: canaille/core/endpoints/forms.py:355 canaille/core/endpoints/forms.py:380
 msgid "Email address"
 msgstr "E-Mail-Adresse"
+
+#: canaille/core/endpoints/forms.py:374
+#, fuzzy
+#| msgid "Username"
+msgid "User name"
+msgstr "Anmeldename"
 
 #: canaille/core/endpoints/forms.py:378
 msgid "Username editable by the invitee"
@@ -1413,19 +1419,19 @@ msgstr ""
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:79
+#: canaille/oidc/endpoints/clients.py:80
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:112
+#: canaille/oidc/endpoints/clients.py:113
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:141
+#: canaille/oidc/endpoints/clients.py:142
 msgid "The client has been edited."
 msgstr "Der Kunde wurde bearbeitet."
 
-#: canaille/oidc/endpoints/clients.py:149
+#: canaille/oidc/endpoints/clients.py:150
 msgid "The client has been deleted."
 msgstr ""
 
@@ -1525,11 +1531,11 @@ msgstr ""
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:340
+#: canaille/oidc/endpoints/oauth.py:341
 msgid "You have been disconnected"
 msgstr "Ihre Verbindung wurde unterbrochen"
 
-#: canaille/oidc/endpoints/oauth.py:357
+#: canaille/oidc/endpoints/oauth.py:358
 msgid "You have not been disconnected"
 msgstr ""
 
