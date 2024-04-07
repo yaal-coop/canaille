@@ -46,13 +46,19 @@ class Model:
 
     @classproperty
     def attributes(cls):
-        return ChainMap(
+        annotations = ChainMap(
             *(
                 typing.get_type_hints(klass)
                 for klass in reversed(cls.__mro__)
                 if issubclass(klass, Model)
             )
         )
+        # only keep types that are not typing.ClassVar
+        return {
+            key: value
+            for key, value in annotations.items()
+            if typing.get_origin(value) is not typing.ClassVar
+        }
 
 
 class BackendModel:
