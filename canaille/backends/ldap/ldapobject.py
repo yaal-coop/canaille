@@ -100,8 +100,11 @@ class LDAPObjectQuery:
 
     def guess_class(self, klass, object_classes):
         if klass == LDAPObject:
-            for oc in object_classes:
-                return LDAPObjectMetaclass.ldap_to_python_class[oc.decode()]
+            models = [
+                LDAPObjectMetaclass.ldap_to_python_class[oc.decode()]
+                for oc in object_classes
+            ]
+            return models[0]
         return klass
 
 
