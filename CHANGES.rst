@@ -1,6 +1,8 @@
+[0.0.46] - 2024-04-08
+---------------------
+
 Fixed
 ^^^^^
-
 - Saving an object with the LDAP backend keeps the objectClass un-managed by Canaille. :pr:`171`
 
 [0.0.45] - 2024-04-04
