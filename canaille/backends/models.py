@@ -181,8 +181,10 @@ class BackendModel:
         for attribute, value in filter.items():
             attribute_type = self.get_attribute_type(attribute)
 
-            if not inspect.isclass(attribute_type) or not issubclass(
-                attribute_type, Model
+            if (
+                isinstance(value, Model)
+                or not inspect.isclass(attribute_type)
+                or not issubclass(attribute_type, Model)
             ):
                 continue
 

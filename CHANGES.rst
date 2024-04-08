@@ -1,3 +1,8 @@
+Fixed
+^^^^^
+
+- Lazy permission loading exception.
+
 [0.0.46] - 2024-04-08
 ---------------------
 
