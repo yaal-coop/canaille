@@ -444,6 +444,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 for name, value in self.changes.items()
                 if (
                     value is None
+                    or value == []
                     or (isinstance(value, list) and len(value) == 1 and not value[0])
                 )
                 and name in self.state
@@ -453,6 +454,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 for name, value in self.changes.items()
                 if name not in deletions and self.state.get(name) != value
             }
+            print(deletions, changes)
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
                 (ldap.MOD_REPLACE, name, values)

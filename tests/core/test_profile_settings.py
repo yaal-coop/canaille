@@ -37,6 +37,24 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     logged_user.save()
 
 
+def test_group_removal(testclient, logged_admin, user, foo_group, backend):
+    foo_group.members = [user, logged_admin]
+    foo_group.save()
+    user.reload()
+    assert foo_group in user.groups
+
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["groups"] = []
+    res = res.form.submit(name="action", value="edit-settings")
+    assert res.flashes == [("success", "Profile updated successfully.")]
+
+    user.reload()
+    assert foo_group not in user.groups
+
+    foo_group.reload()
+    assert foo_group.members == [logged_admin]
+
+
 def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
     res = testclient.get("/profile/admin/settings")
     res = testclient.post(

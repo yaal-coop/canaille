@@ -753,7 +753,7 @@ def profile_settings_edit(editor, edited_user):
         if hasattr(edited_user, k) and k in available_fields
     }
 
-    data["groups"] = [g.id for g in edited_user.groups]
+    data["groups"] = [group.id for group in edited_user.groups]
 
     form = build_profile_form(
         editor.writable_fields & available_fields,
@@ -761,7 +761,6 @@ def profile_settings_edit(editor, edited_user):
         edited_user,
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
-
     if (
         request.form
         and request.form.get("action") == "edit-settings"
