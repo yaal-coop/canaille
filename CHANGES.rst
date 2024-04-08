@@ -1,3 +1,7 @@
+Fixed
+^^^^^
+- LDAP objectClass guessing exception.
+
 [0.0.47] - 2024-04-08
 ---------------------
 

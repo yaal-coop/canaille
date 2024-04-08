@@ -103,6 +103,7 @@ class LDAPObjectQuery:
             models = [
                 LDAPObjectMetaclass.ldap_to_python_class[oc.decode()]
                 for oc in object_classes
+                if oc.decode() in LDAPObjectMetaclass.ldap_to_python_class
             ]
             return models[0]
         return klass
