@@ -424,7 +424,11 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     def save(self):
         conn = Backend.get().connection
 
-        self.set_ldap_attribute("objectClass", self.ldap_object_class)
+        current_object_classes = self.get_ldap_attribute("objectClass") or []
+        self.set_ldap_attribute(
+            "objectClass",
+            list(set(self.ldap_object_class) | set(current_object_classes)),
+        )
 
         # PostReadControl allows to read the updated object attributes on creation/edition
         attributes = ["objectClass"] + [

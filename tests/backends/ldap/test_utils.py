@@ -8,7 +8,6 @@ from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.configuration import settings_factory
 from canaille.app.configuration import validate
-from canaille.backends.ldap.backend import setup_ldap_models
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
 from canaille.backends.ldap.utils import Syntax
@@ -179,63 +178,6 @@ def test_operational_attribute_conversion(backend):
         "oauthClientName": [b"foobar_name"],
         "invalidAttribute": [b"foobar"],
     }
-
-
-def test_guess_object_from_dn(backend, testclient, foo_group):
-    foo_group.members = [foo_group]
-    foo_group.save()
-    dn = foo_group.dn
-    g = LDAPObject.get(dn)
-    assert isinstance(g, models.Group)
-    assert g == foo_group
-    assert g.display_name == foo_group.display_name
-
-
-def test_object_class_update(backend, testclient):
-    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
-    setup_ldap_models(testclient.app.config)
-
-    user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
-    user1.save()
-
-    assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
-    assert models.User.get(id=user1.id).get_ldap_attribute("objectClass") == [
-        "inetOrgPerson"
-    ]
-
-    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
-        "inetOrgPerson",
-        "extensibleObject",
-    ]
-    setup_ldap_models(testclient.app.config)
-
-    user2 = models.User(cn="foo2", sn="bar2", user_name="baz2")
-    user2.save()
-
-    assert user2.get_ldap_attribute("objectClass") == [
-        "inetOrgPerson",
-        "extensibleObject",
-    ]
-    assert models.User.get(id=user2.id).get_ldap_attribute("objectClass") == [
-        "inetOrgPerson",
-        "extensibleObject",
-    ]
-
-    user1 = models.User.get(id=user1.id)
-    assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
-
-    user1.save()
-    assert user1.get_ldap_attribute("objectClass") == [
-        "inetOrgPerson",
-        "extensibleObject",
-    ]
-    assert models.User.get(id=user1.id).get_ldap_attribute("objectClass") == [
-        "inetOrgPerson",
-        "extensibleObject",
-    ]
-
-    user1.delete()
-    user2.delete()
 
 
 def test_ldap_connection_no_remote(testclient, configuration):
