@@ -256,7 +256,7 @@ class IDToModel:
 
     def __call__(self, data):
         model = getattr(models, self.model_name)
-        instance = data if isinstance(data, model) else model.get(id=data)
+        instance = data if isinstance(data, model) else model.get(data)
         if not instance:
             raise wtforms.ValidationError()
         return instance

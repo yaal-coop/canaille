@@ -56,6 +56,24 @@ def existing_login(form, field):
         )
 
 
+def non_empty_groups(form, field):
+    """LDAP groups cannot be empty because groupOfNames.member is a MUST
+    attribute.
+
+    https://www.rfc-editor.org/rfc/rfc2256.html#section-7.10
+    """
+    if not form.user:
+        return
+
+    for group in form.user.groups:
+        if len(group.members) == 1 and group not in field.data:
+            raise wtforms.ValidationError(
+                _(
+                    "The group '{group}' cannot be removed, because it must have at least one user left."
+                ).format(group=group.display_name)
+            )
+
+
 class LoginForm(Form):
     login = wtforms.StringField(
         _("Login"),
@@ -279,6 +297,7 @@ PROFILE_FORM_FIELDS = dict(
         choices=lambda: [(group, group.display_name) for group in models.Group.query()],
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),
+        validators=[non_empty_groups],
     ),
 )
 

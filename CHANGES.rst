@@ -2,6 +2,7 @@
 Fixed
 ^^^^^
 - LDAP user group removal.
+- Display an error message when trying to remove the last user from a group.
 
 [0.0.48] - 2024-04-08
 ---------------------

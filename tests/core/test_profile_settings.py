@@ -38,6 +38,7 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
 
 
 def test_group_removal(testclient, logged_admin, user, foo_group, backend):
+    """Tests that one can remove a group from a user."""
     foo_group.members = [user, logged_admin]
     foo_group.save()
     user.reload()
@@ -52,7 +53,31 @@ def test_group_removal(testclient, logged_admin, user, foo_group, backend):
     assert foo_group not in user.groups
 
     foo_group.reload()
+    logged_admin.reload()
     assert foo_group.members == [logged_admin]
+
+
+def test_empty_group_removal(testclient, logged_admin, user, foo_group, backend):
+    """Tests that one cannot remove a group from a user, when was the last
+    person in the group.
+
+    This is because LDAP groups cannot be empty because
+    groupOfNames.member is a MUST attribute.
+    https://www.rfc-editor.org/rfc/rfc2256.html#section-7.10
+    """
+    assert foo_group in user.groups
+
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["groups"] = []
+    res = res.form.submit(name="action", value="edit-settings")
+    assert res.flashes == [("error", "Profile edition failed.")]
+
+    res.mustcontain(
+        "The group &#39;foo&#39; cannot be removed, because it must have at least one user left."
+    )
+
+    user.reload()
+    assert foo_group in user.groups
 
 
 def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
