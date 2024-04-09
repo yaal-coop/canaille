@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-04-09 09:20+0200\n"
-"PO-Revision-Date: 2024-04-08 12:56+0000\n"
+"PO-Revision-Date: 2024-04-10 09:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -296,6 +296,8 @@ msgstr "La connexion a échoué, veuillez vérifier vos informations"
 #: canaille/core/endpoints/auth.py:65
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
+"Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
+"connecter"
 
 #: canaille/core/endpoints/auth.py:110
 #, python-format
@@ -366,6 +368,8 @@ msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
 msgstr ""
+"Le groupe « {group} » doit garder au minimum un utilisateur, et ne peut être "
+"retiré."
 
 #: canaille/core/endpoints/forms.py:79 canaille/core/endpoints/forms.py:99
 #: canaille/core/templates/partial/users.html:9
