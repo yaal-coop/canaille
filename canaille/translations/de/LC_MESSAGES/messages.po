@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-08 14:43+0200\n"
+"POT-Creation-Date: 2024-04-09 09:20+0200\n"
 "PO-Revision-Date: 2023-07-02 08:52+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -243,7 +243,7 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/account.py:689 canaille/core/endpoints/auth.py:136
+#: canaille/core/endpoints/account.py:689 canaille/core/endpoints/auth.py:142
 msgid "Could not send the password initialization email"
 msgstr "Die E-Mail zur Kennwortinitialisierung konnte nicht gesendet werden"
 
@@ -276,7 +276,7 @@ msgstr "Das Konto wurde entsperrt"
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
 
-#: canaille/core/endpoints/account.py:823 canaille/core/endpoints/auth.py:92
+#: canaille/core/endpoints/account.py:823 canaille/core/endpoints/auth.py:98
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Verbindung erfolgreich. Willkommen %(user)s"
@@ -311,17 +311,21 @@ msgstr ""
 msgid "Email confirmation on {website_name}"
 msgstr "Passwortinitialisierung auf {website_name}"
 
-#: canaille/core/endpoints/auth.py:50 canaille/core/endpoints/auth.py:76
-#: canaille/core/endpoints/auth.py:84
+#: canaille/core/endpoints/auth.py:50 canaille/core/endpoints/auth.py:82
+#: canaille/core/endpoints/auth.py:90
 msgid "Login failed, please check your information"
 msgstr "Anmeldung fehlgeschlagen, bitte überprüfen Sie Ihre Angaben"
 
-#: canaille/core/endpoints/auth.py:104
+#: canaille/core/endpoints/auth.py:65
+msgid "Cannot remember the login you attempted to sign in with"
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:110
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Ihre Verbindung wurde unterbrochen. Bis zum nächsten Mal %(user)s"
 
-#: canaille/core/endpoints/auth.py:129
+#: canaille/core/endpoints/auth.py:135
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -329,11 +333,11 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/auth.py:152
+#: canaille/core/endpoints/auth.py:158
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:156
+#: canaille/core/endpoints/auth.py:162
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
@@ -341,7 +345,7 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/auth.py:168
+#: canaille/core/endpoints/auth.py:174
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -350,17 +354,17 @@ msgstr ""
 "Der Benutzer „%(user)s“ hat nicht die Berechtigung, sein Passwort zu "
 "aktualisieren. Wir können keine E-Mail zum Zurücksetzen des Passworts senden."
 
-#: canaille/core/endpoints/auth.py:184
+#: canaille/core/endpoints/auth.py:190
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 "Beim Versand der E-Mail zur Wiederherstellung des Passworts ist ein Problem "
 "aufgetreten."
 
-#: canaille/core/endpoints/auth.py:207
+#: canaille/core/endpoints/auth.py:213
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:216
+#: canaille/core/endpoints/auth.py:222
 msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 

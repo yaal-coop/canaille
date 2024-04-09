@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-08 14:43+0200\n"
+"POT-Creation-Date: 2024-04-09 09:20+0200\n"
 "PO-Revision-Date: 2024-04-08 12:56+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -226,7 +226,7 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "courriel. Il devrait arriver d'ici une quelques minutes."
 
-#: canaille/core/endpoints/account.py:689 canaille/core/endpoints/auth.py:136
+#: canaille/core/endpoints/account.py:689 canaille/core/endpoints/auth.py:142
 msgid "Could not send the password initialization email"
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe"
 
@@ -255,7 +255,7 @@ msgstr "Le compte a été déverrouillé"
 msgid "The user %(user)s has been sucessfuly deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/core/endpoints/account.py:823 canaille/core/endpoints/auth.py:92
+#: canaille/core/endpoints/account.py:823 canaille/core/endpoints/auth.py:98
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
@@ -288,17 +288,21 @@ msgstr "Invitation sur {website_name}"
 msgid "Email confirmation on {website_name}"
 msgstr "Confirmation de votre adresse email sur {website_name}"
 
-#: canaille/core/endpoints/auth.py:50 canaille/core/endpoints/auth.py:76
-#: canaille/core/endpoints/auth.py:84
+#: canaille/core/endpoints/auth.py:50 canaille/core/endpoints/auth.py:82
+#: canaille/core/endpoints/auth.py:90
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
-#: canaille/core/endpoints/auth.py:104
+#: canaille/core/endpoints/auth.py:65
+msgid "Cannot remember the login you attempted to sign in with"
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:110
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Vous avez été déconnecté·e. À bientôt %(user)s"
 
-#: canaille/core/endpoints/auth.py:129
+#: canaille/core/endpoints/auth.py:135
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -306,11 +310,11 @@ msgstr ""
 "Un lien d'initialisation de votre mot de passe vous a été envoyé par "
 "courriel. Vous devriez le recevoir d'ici une quelques minutes."
 
-#: canaille/core/endpoints/auth.py:152
+#: canaille/core/endpoints/auth.py:158
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/core/endpoints/auth.py:156
+#: canaille/core/endpoints/auth.py:162
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
@@ -318,7 +322,7 @@ msgstr ""
 "Un lien de ré-initialisation de votre mot de passe vous a été envoyé par "
 "courriel. Vous devriez le recevoir d'ici quelques minutes."
 
-#: canaille/core/endpoints/auth.py:168
+#: canaille/core/endpoints/auth.py:174
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -327,17 +331,17 @@ msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
 "Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
 
-#: canaille/core/endpoints/auth.py:184
+#: canaille/core/endpoints/auth.py:190
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 "Nous avons rencontré un problème lors de l'envoi du courriel de "
 "réinitialisation de mot de passe."
 
-#: canaille/core/endpoints/auth.py:207
+#: canaille/core/endpoints/auth.py:213
 msgid "The password reset link that brought you here was invalid."
 msgstr "Le lien de réinitialisation qui vous a amené ici est invalide."
 
-#: canaille/core/endpoints/auth.py:216
+#: canaille/core/endpoints/auth.py:222
 msgid "Your password has been updated successfully"
 msgstr "Votre mot de passe a correctement été mis à jour"
 
