@@ -18,7 +18,7 @@
         {% block style %}{% endblock %}
     </head>
 
-    <body hx-boost="true">
+    <body{% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %} hx-boost="true"{% endif %}>
         {% block menu %}
             {% if user and menu %}
                 <div class="ui container menu-container">
@@ -90,11 +90,11 @@
         <footer>
             <a href="{{ url_for('core.account.about') }}">{{ _("About Canaille") }}</a>
         </footer>
-        {% if config.get("JAVASCRIPT", true) %}
+        {% if config["CANAILLE"]["JAVASCRIPT"] %}
             {% if not is_boosted %}
                 <script src="{{ url_for("static", filename="jquery/jquery.min.js") }}" defer></script>
                 <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
-                {% if config.get("HTMX", true) %}
+                {% if config["CANAILLE"]["HTMX"] %}
                     <script src="{{ url_for("static", filename="htmx/htmx.min.js") }}" defer></script>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
