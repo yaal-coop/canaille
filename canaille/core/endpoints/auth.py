@@ -85,13 +85,20 @@ def password():
         )
 
     success, message = BaseBackend.get().check_user_password(user, form.password.data)
+    request_ip = request.remote_addr or "unknown IP"
     if not success:
         logout_user()
+        current_app.logger.info(
+            f'Failed login attempt for {session["attempt_login"]} from {request_ip}'
+        )
         flash(message or _("Login failed, please check your information"), "error")
         return render_template(
             "password.html", form=form, username=session["attempt_login"]
         )
 
+    current_app.logger.info(
+        f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
+    )
     del session["attempt_login"]
     login_user(user)
     flash(
@@ -106,6 +113,9 @@ def logout():
     user = current_user()
 
     if user:
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.info(f"Logout {user.identifier} from {request_ip}")
+
         flash(
             _(
                 "You have been disconnected. See you next time %(user)s",

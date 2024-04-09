@@ -1,4 +1,5 @@
 import datetime
+import logging
 from unittest import mock
 
 from flask import g
@@ -20,7 +21,7 @@ def test_index(testclient, user):
     assert res.location == "/about"
 
 
-def test_signin_and_out(testclient, user):
+def test_signin_and_out(testclient, user, caplog):
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 
@@ -40,6 +41,11 @@ def test_signin_and_out(testclient, user):
         "success",
         "Connection successful. Welcome John (johnny) Doe",
     ) in res.flashes
+    assert (
+        "canaille",
+        logging.INFO,
+        "Succeed login attempt for user from unknown IP",
+    ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
 
@@ -54,6 +60,11 @@ def test_signin_and_out(testclient, user):
         "success",
         "You have been disconnected. See you next time John (johnny) Doe",
     ) in res.flashes
+    assert (
+        "canaille",
+        logging.INFO,
+        "Logout user from unknown IP",
+    ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
 
@@ -74,7 +85,7 @@ def test_visitor_logout(testclient, user):
         assert not session.get("user_id")
 
 
-def test_signin_wrong_password(testclient, user):
+def test_signin_wrong_password(testclient, user, caplog):
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 
@@ -86,6 +97,11 @@ def test_signin_wrong_password(testclient, user):
     res.form["password"] = "incorrect horse"
     res = res.form.submit(status=200)
     assert ("error", "Login failed, please check your information") in res.flashes
+    assert (
+        "canaille",
+        logging.INFO,
+        "Failed login attempt for user from unknown IP",
+    ) in caplog.record_tuples
 
 
 def test_signin_password_substring(testclient, user):

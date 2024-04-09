@@ -1,3 +1,8 @@
+Added
+^^^^^
+
+- Sign in/out events are logged in :issuer:`177`
+
 [0.0.49] - 2024-04-08
 ---------------------
 
