@@ -27,6 +27,13 @@ from .forms import PasswordResetForm
 bp = Blueprint("auth", __name__)
 
 
+@bp.context_processor
+def global_processor():
+    return {
+        "menu": False,
+    }
+
+
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     if current_user():

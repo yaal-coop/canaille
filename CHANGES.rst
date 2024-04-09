@@ -1,3 +1,7 @@
+Changed
+^^^^^^^
+- Display the menu bar on error pages.
+
 [0.0.50] - 2024-04-09
 ---------------------
 
