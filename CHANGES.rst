@@ -1,3 +1,6 @@
+[0.0.50] - 2024-04-09
+---------------------
+
 Added
 ^^^^^
 - Sign in/out events are logged in :issuer:`177`
