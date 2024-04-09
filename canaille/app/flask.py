@@ -20,7 +20,7 @@ def current_user():
         return g.user
 
     for user_id in session.get("user_id", [])[::-1]:
-        user = models.User.get(id=user_id)
+        user = models.User.get(user_id)
         if user and (
             not current_app.backend.has_account_lockability() or not user.locked
         ):

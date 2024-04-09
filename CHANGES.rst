@@ -5,6 +5,7 @@ Added
 Fixed
 ^^^^^
 - HTMX and JAVASCRIPT configuration settings.
+- Compatibility with old sessions IDs.
 
 [0.0.49] - 2024-04-08
 ---------------------
