@@ -29,6 +29,9 @@ def current_user():
 
         session["user_id"].remove(user_id)
 
+    if "user_id" in session and not session["user_id"]:
+        del session["user_id"]
+
     return None
 
 
