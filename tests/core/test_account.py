@@ -136,6 +136,14 @@ def test_signin_with_alternate_attribute(testclient, user):
 def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
     res = testclient.get("/password", status=302)
     assert res.location == "/login"
+    assert res.flashes == [
+        ("warning", "Cannot remember the login you attempted to sign in with")
+    ]
+
+
+def test_password_page_already_logged_in(testclient, logged_user):
+    res = testclient.get("/password", status=302)
+    assert res.location == "/profile/user"
 
 
 def test_user_without_password_first_login(testclient, backend, smtpd):

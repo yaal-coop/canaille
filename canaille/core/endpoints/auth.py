@@ -56,7 +56,13 @@ def login():
 
 @bp.route("/password", methods=("GET", "POST"))
 def password():
+    if current_user():
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
+
     if "attempt_login" not in session:
+        flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
 
     form = PasswordForm(request.form or None)
