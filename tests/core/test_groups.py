@@ -4,7 +4,7 @@ from canaille.core.populate import fake_users
 
 
 def test_no_group(app, backend):
-    assert models.Group.query() == []
+    assert backend.query(models.Group) == []
 
 
 def test_group_list_pagination(testclient, logged_admin, foo_group):

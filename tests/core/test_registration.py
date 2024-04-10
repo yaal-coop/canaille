@@ -12,7 +12,7 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
-    assert not models.User.query(user_name="newuser")
+    assert not backend.query(models.User, user_name="newuser")
     res = testclient.get(url_for("core.account.registration"), status=200)
     res.form["user_name"] = "newuser"
     res.form["password1"] = "password"
@@ -60,7 +60,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
     text_mail = smtpd.messages[0].get_payload()[0].get_payload(decode=True).decode()
     assert registration_url in text_mail
 
-    assert not models.User.query(user_name="newuser")
+    assert not backend.query(models.User, user_name="newuser")
     with time_machine.travel("2020-01-01 02:01:00+00:00", tick=False):
         res = testclient.get(registration_url, status=200)
         res.form["user_name"] = "newuser"

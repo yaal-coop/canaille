@@ -10,6 +10,7 @@ from canaille.app import models
 from canaille.app.flask import user_needed
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
+from canaille.backends import BaseBackend
 
 from ..utils import SCOPE_DETAILS
 
@@ -19,13 +20,13 @@ bp = Blueprint("consents", __name__, url_prefix="/consent")
 @bp.route("/")
 @user_needed()
 def consents(user):
-    consents = models.Consent.query(subject=user)
+    consents = BaseBackend.get().query(models.Consent, subject=user)
     clients = {t.client for t in consents}
 
     nb_consents = len(consents)
     nb_preconsents = sum(
         1
-        for client in models.Client.query()
+        for client in BaseBackend.get().query(models.Client)
         if client.preconsent and client not in clients
     )
 
@@ -43,11 +44,11 @@ def consents(user):
 @bp.route("/pre-consents")
 @user_needed()
 def pre_consents(user):
-    consents = models.Consent.query(subject=user)
+    consents = BaseBackend.get().query(models.Consent, subject=user)
     clients = {t.client for t in consents}
     preconsented = [
         client
-        for client in models.Client.query()
+        for client in BaseBackend.get().query(models.Client)
         if client.preconsent and client not in clients
     ]
 

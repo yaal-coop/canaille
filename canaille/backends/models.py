@@ -88,36 +88,15 @@ class BackendModel:
     """
 
     @classmethod
-    def query(cls, **kwargs):
-        """Perform a query on the database and return a collection of
-        instances.
-
-        Parameters can be any valid attribute with the expected value:
-
-        >>> User.query(first_name="George")
-
-        If several arguments are passed, the methods only returns the model
-        instances that return matches all the argument values:
-
-        >>> User.query(first_name="George", last_name="Abitbol")
-
-        If the argument value is a collection, the methods will return the
-        models that matches any of the values:
-
-        >>> User.query(first_name=["George", "Jane"])
-        """
-        raise NotImplementedError()
-
-    @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
-        """Works like :meth:`~canaille.backends.models.BackendModel.query` but
+        """Works like :meth:`~canaille.backends.BaseBackend.query` but
         attribute values loosely be matched."""
         raise NotImplementedError()
 
     @classmethod
     def get(cls, identifier=None, **kwargs):
-        """Works like :meth:`~canaille.backends.models.BackendModel.query` but
-        return only one element or :py:data:`None` if no item is matching."""
+        """Works like :meth:`~canaille.backends.BaseBackend.query` but return
+        only one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
     def save(self):

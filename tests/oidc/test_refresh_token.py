@@ -7,8 +7,8 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_refresh_token(testclient, logged_user, client):
-    assert not models.Consent.query()
+def test_refresh_token(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -27,7 +27,7 @@ def test_refresh_token(testclient, logged_user, client):
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(

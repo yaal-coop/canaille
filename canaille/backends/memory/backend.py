@@ -40,3 +40,28 @@ class Backend(BaseBackend):
     def set_user_password(self, user, password):
         user.password = password
         user.save()
+
+    def query(self, model, **kwargs):
+        # if there is no filter, return all models
+        if not kwargs:
+            states = model.index().values()
+            return [model(**state) for state in states]
+
+        # get the ids from the attribute indexes
+        ids = {
+            id
+            for attribute, values in kwargs.items()
+            for value in model.serialize(model.listify(values))
+            for id in model.attribute_index(attribute).get(value, [])
+        }
+
+        # get the states from the ids
+        states = [model.index()[id] for id in ids]
+
+        # initialize instances from the states
+        instances = [model(**state) for state in states]
+        for instance in instances:
+            # TODO: maybe find a way to not initialize the cache in the first place?
+            instance._cache = {}
+
+        return instances

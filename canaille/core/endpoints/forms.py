@@ -312,7 +312,10 @@ PROFILE_FORM_FIELDS = dict(
     groups=wtforms.SelectMultipleField(
         _("Groups"),
         default=[],
-        choices=lambda: [(group, group.display_name) for group in models.Group.query()],
+        choices=lambda: [
+            (group, group.display_name)
+            for group in BaseBackend.get().query(models.Group)
+        ],
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),
         validators=[non_empty_groups],
@@ -333,7 +336,7 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
         if PROFILE_FORM_FIELDS.get(name)
     }
 
-    if "groups" in fields and not models.Group.query():
+    if "groups" in fields and not BaseBackend.get().query(models.Group):
         del fields["groups"]
 
     if current_app.backend.get().has_account_lockability():  # pragma: no branch
@@ -436,7 +439,10 @@ class InvitationForm(Form):
     )
     groups = wtforms.SelectMultipleField(
         _("Groups"),
-        choices=lambda: [(group, group.display_name) for group in models.Group.query()],
+        choices=lambda: [
+            (group, group.display_name)
+            for group in BaseBackend.get().query(models.Group)
+        ],
         render_kw={},
         coerce=IDToModel("Group"),
     )

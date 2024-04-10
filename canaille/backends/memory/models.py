@@ -6,6 +6,7 @@ import uuid
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
+from canaille.backends import BaseBackend
 from canaille.backends.models import BackendModel
 
 
@@ -26,31 +27,6 @@ class MemoryModel(BackendModel):
         return f"<{self.__class__.__name__} id={self.id}>"
 
     @classmethod
-    def query(cls, **kwargs):
-        # if there is no filter, return all models
-        if not kwargs:
-            states = cls.index().values()
-            return [cls(**state) for state in states]
-
-        # get the ids from the attribute indexes
-        ids = {
-            id
-            for attribute, values in kwargs.items()
-            for value in cls.serialize(cls.listify(values))
-            for id in cls.attribute_index(attribute).get(value, [])
-        }
-
-        # get the states from the ids
-        states = [cls.index()[id] for id in ids]
-
-        # initialize instances from the states
-        instances = [cls(**state) for state in states]
-        for instance in instances:
-            # TODO: maybe find a way to not initialize the cache in the first place?
-            instance._cache = {}
-        return instances
-
-    @classmethod
     def index(cls, class_name=None):
         return MemoryModel.indexes.setdefault(class_name or cls.__name__, {})
 
@@ -63,7 +39,7 @@ class MemoryModel(BackendModel):
     @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
         attributes = attributes or cls.attributes
-        instances = cls.query(**kwargs)
+        instances = BaseBackend.get().query(cls, **kwargs)
 
         return [
             instance
@@ -85,7 +61,7 @@ class MemoryModel(BackendModel):
                 or None
             )
 
-        results = cls.query(**kwargs)
+        results = BaseBackend.get().query(cls, **kwargs)
         return results[0] if results else None
 
     @classmethod

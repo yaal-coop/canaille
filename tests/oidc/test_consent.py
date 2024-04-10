@@ -95,7 +95,7 @@ def test_someone_else_consent_restoration(
 
 
 def test_oidc_authorization_after_revokation(
-    testclient, logged_user, client, keypair, consent
+    testclient, logged_user, client, keypair, consent, backend
 ):
     consent.revoke()
 
@@ -114,7 +114,7 @@ def test_oidc_authorization_after_revokation(
 
     res = res.form.submit(name="answer", value="accept", status=302)
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     consent.reload()
     assert consents[0] == consent
     assert not consent.revoked

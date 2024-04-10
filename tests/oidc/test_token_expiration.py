@@ -9,7 +9,9 @@ from canaille.oidc.oauth import setup_oauth
 from . import client_credentials
 
 
-def test_token_default_expiration_date(testclient, logged_user, client, keypair):
+def test_token_default_expiration_date(
+    testclient, logged_user, client, keypair, backend
+):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -52,12 +54,14 @@ def test_token_default_expiration_date(testclient, logged_user, client, keypair)
     claims = jwt.decode(id_token, keypair[1])
     assert claims["exp"] - claims["iat"] == 3600
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:
         consent.delete()
 
 
-def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
+def test_token_custom_expiration_date(
+    testclient, logged_user, client, keypair, backend
+):
     testclient.app.config["OAUTH2_TOKEN_EXPIRES_IN"] = {
         "authorization_code": 1000,
         "implicit": 2000,
@@ -110,6 +114,6 @@ def test_token_custom_expiration_date(testclient, logged_user, client, keypair):
     claims = jwt.decode(id_token, keypair[1])
     assert claims["exp"] - claims["iat"] == 6000
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:
         consent.delete()

@@ -6,11 +6,11 @@ from canaille.core.populate import fake_users
 def test_populate_users(testclient, backend):
     runner = testclient.app.test_cli_runner()
 
-    assert len(models.User.query()) == 0
+    assert len(backend.query(models.User)) == 0
     res = runner.invoke(cli, ["populate", "--nb", "10", "users"])
     assert res.exit_code == 0, res.stdout
-    assert len(models.User.query()) == 10
-    for user in models.User.query():
+    assert len(backend.query(models.User)) == 10
+    for user in backend.query(models.User):
         user.delete()
 
 
@@ -18,13 +18,13 @@ def test_populate_groups(testclient, backend):
     fake_users(10)
     runner = testclient.app.test_cli_runner()
 
-    assert len(models.Group.query()) == 0
+    assert len(backend.query(models.Group)) == 0
     res = runner.invoke(cli, ["populate", "--nb", "10", "groups"])
     assert res.exit_code == 0, res.stdout
-    assert len(models.Group.query()) == 10
+    assert len(backend.query(models.Group)) == 10
 
-    for group in models.Group.query():
+    for group in backend.query(models.Group):
         group.delete()
 
-    for user in models.User.query():
+    for user in backend.query(models.User):
         user.delete()

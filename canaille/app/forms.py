@@ -15,6 +15,7 @@ from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
+from canaille.backends import BaseBackend
 
 from . import validate_uri
 from .flask import request_is_htmx
@@ -188,7 +189,7 @@ class TableForm(I18NFormMixin, FlaskForm):
         if self.query.data:
             self.items = cls.fuzzy(self.query.data, fields, **filter)
         else:
-            self.items = cls.query(**filter)
+            self.items = BaseBackend.get().query(cls, **filter)
 
         self.page_size = page_size
         self.nb_items = len(self.items)

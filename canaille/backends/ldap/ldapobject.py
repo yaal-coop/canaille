@@ -4,42 +4,15 @@ import ldap.dn
 import ldap.filter
 from ldap.controls.readentry import PostReadControl
 
+from canaille.backends import BaseBackend
 from canaille.backends.models import BackendModel
 
 from .backend import Backend
-from .ldapobjectquery import LDAPObjectQuery
+from .utils import attribute_ldap_syntax
 from .utils import cardinalize_attribute
 from .utils import ldap_to_python
 from .utils import listify
-from .utils import python_to_ldap
-
-
-def python_attrs_to_ldap(attrs, encode=True, null_allowed=True):
-    formatted_attrs = {
-        name: [
-            python_to_ldap(value, attribute_ldap_syntax(name), encode=encode)
-            for value in listify(values)
-        ]
-        for name, values in attrs.items()
-    }
-    if not null_allowed:
-        formatted_attrs = {
-            key: [value for value in values if value]
-            for key, values in formatted_attrs.items()
-            if values
-        }
-    return formatted_attrs
-
-
-def attribute_ldap_syntax(attribute_name):
-    ldap_attrs = LDAPObject.ldap_object_attributes()
-    if attribute_name not in ldap_attrs:
-        return None
-
-    if ldap_attrs[attribute_name].syntax:
-        return ldap_attrs[attribute_name].syntax
-
-    return attribute_ldap_syntax(ldap_attrs[attribute_name].sup[0])
+from .utils import python_attrs_to_ldap
 
 
 class LDAPObjectMetaclass(type):
@@ -256,7 +229,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     @classmethod
     def get(cls, identifier=None, /, **kwargs):
         try:
-            return cls.query(identifier, **kwargs)[0]
+            return BaseBackend.get().query(cls, identifier, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             if identifier and cls.base:
                 return (
@@ -268,58 +241,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             return None
 
     @classmethod
-    def query(cls, dn=None, filter=None, **kwargs):
-        conn = Backend.get().connection
-
-        base = dn
-        if dn is None:
-            base = f"{cls.base},{cls.root_dn}"
-        elif "=" not in base:
-            base = ldap.dn.escape_dn_chars(base)
-            base = f"{cls.rdn_attribute}={base},{cls.base},{cls.root_dn}"
-
-        class_filter = (
-            "".join([f"(objectClass={oc})" for oc in cls.ldap_object_class])
-            if getattr(cls, "ldap_object_class")
-            else ""
-        )
-        if class_filter:
-            class_filter = f"(|{class_filter})"
-
-        arg_filter = ""
-        ldap_args = python_attrs_to_ldap(
-            {
-                cls.python_attribute_to_ldap(name): values
-                for name, values in kwargs.items()
-                if values is not None
-            },
-            encode=False,
-        )
-        for key, value in ldap_args.items():
-            if len(value) == 1:
-                escaped_value = ldap.filter.escape_filter_chars(value[0])
-                arg_filter += f"({key}={escaped_value})"
-
-            else:
-                values = [ldap.filter.escape_filter_chars(v) for v in value]
-                arg_filter += (
-                    "(|" + "".join([f"({key}={value})" for value in values]) + ")"
-                )
-
-        if not filter:
-            filter = ""
-
-        ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
-        base = base or f"{cls.base},{cls.root_dn}"
-        try:
-            result = conn.search_s(
-                base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"]
-            )
-        except ldap.NO_SUCH_OBJECT:
-            result = []
-        return LDAPObjectQuery(cls, result)
-
-    @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
         query = ldap.filter.escape_filter_chars(query)
         attributes = attributes or cls.may() + cls.must()
@@ -327,7 +248,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         filter = (
             "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
         )
-        return cls.query(filter=filter, **kwargs)
+        return BaseBackend.get().query(cls, filter=filter, **kwargs)
 
     @classmethod
     def update_ldap_attributes(cls):

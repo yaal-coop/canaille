@@ -23,6 +23,7 @@ from canaille.app.flask import logout_user
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
+from canaille.backends import BaseBackend
 
 from ..oauth import ClientConfigurationEndpoint
 from ..oauth import ClientRegistrationEndpoint
@@ -109,7 +110,8 @@ def authorize_login(user):
 def authorize_consent(client, user):
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
-    consents = models.Consent.query(
+    consents = BaseBackend.get().query(
+        models.Consent,
         client=client,
         subject=user,
     )

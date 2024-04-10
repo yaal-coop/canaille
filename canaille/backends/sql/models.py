@@ -37,19 +37,6 @@ class SqlAlchemyModel(BackendModel):
         )
 
     @classmethod
-    def query(cls, **kwargs):
-        filter = [
-            cls.attribute_filter(attribute_name, expected_value)
-            for attribute_name, expected_value in kwargs.items()
-        ]
-        return (
-            Backend.get()
-            .db_session.execute(select(cls).filter(*filter))
-            .scalars()
-            .all()
-        )
-
-    @classmethod
     def fuzzy(cls, query, attributes=None, **kwargs):
         attributes = attributes or cls.attributes
         filter = or_(

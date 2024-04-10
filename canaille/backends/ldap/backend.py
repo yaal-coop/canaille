@@ -16,6 +16,7 @@ from canaille.app.i18n import gettext as _
 from canaille.backends import BaseBackend
 
 from .utils import listify
+from .utils import python_attrs_to_ldap
 
 
 @contextmanager
@@ -243,12 +244,63 @@ class Backend(BaseBackend):
         return result, message
 
     def set_user_password(self, user, password):
-        conn = Backend.get().connection
+        conn = self.connection
         conn.passwd_s(
             user.dn,
             None,
             password.encode("utf-8"),
         )
+
+    def query(self, model, dn=None, filter=None, **kwargs):
+        from .ldapobjectquery import LDAPObjectQuery
+
+        base = dn
+        if dn is None:
+            base = f"{model.base},{model.root_dn}"
+        elif "=" not in base:
+            base = ldap.dn.escape_dn_chars(base)
+            base = f"{model.rdn_attribute}={base},{model.base},{model.root_dn}"
+
+        class_filter = (
+            "".join([f"(objectClass={oc})" for oc in model.ldap_object_class])
+            if getattr(model, "ldap_object_class")
+            else ""
+        )
+        if class_filter:
+            class_filter = f"(|{class_filter})"
+
+        arg_filter = ""
+        ldap_args = python_attrs_to_ldap(
+            {
+                model.python_attribute_to_ldap(name): values
+                for name, values in kwargs.items()
+                if values is not None
+            },
+            encode=False,
+        )
+        for key, value in ldap_args.items():
+            if len(value) == 1:
+                escaped_value = ldap.filter.escape_filter_chars(value[0])
+                arg_filter += f"({key}={escaped_value})"
+
+            else:
+                values = [ldap.filter.escape_filter_chars(v) for v in value]
+                arg_filter += (
+                    "(|" + "".join([f"({key}={value})" for value in values]) + ")"
+                )
+
+        if not filter:
+            filter = ""
+
+        ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
+        base = base or f"{model.base},{model.root_dn}"
+        try:
+            result = self.connection.search_s(
+                base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"]
+            )
+        except ldap.NO_SUCH_OBJECT:
+            result = []
+        return LDAPObjectQuery(model, result)
 
 
 def setup_ldap_models(config):

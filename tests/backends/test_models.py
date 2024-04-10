@@ -36,16 +36,16 @@ def test_model_lifecycle(testclient, backend):
     )
 
     assert not user.id
-    assert not models.User.query()
-    assert not models.User.query(id=user.id)
-    assert not models.User.query(id="invalid")
+    assert not backend.query(models.User)
+    assert not backend.query(models.User, id=user.id)
+    assert not backend.query(models.User, id="invalid")
     assert not models.User.get(id=user.id)
 
     user.save()
 
-    assert models.User.query() == [user]
-    assert models.User.query(id=user.id) == [user]
-    assert not models.User.query(id="invalid")
+    assert backend.query(models.User) == [user]
+    assert backend.query(models.User, id=user.id) == [user]
+    assert not backend.query(models.User, id="invalid")
     assert models.User.get(id=user.id) == user
 
     user.family_name = "new_family_name"
@@ -58,7 +58,7 @@ def test_model_lifecycle(testclient, backend):
 
     user.delete()
 
-    assert not models.User.query(id=user.id)
+    assert not backend.query(models.User, id=user.id)
     assert not models.User.get(id=user.id)
 
     user.delete()
@@ -143,7 +143,7 @@ def test_model_indexation(testclient, backend):
 
 
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
-    assert set(models.User.query()) == {user, moderator, admin}
+    assert set(backend.query(models.User)) == {user, moderator, admin}
     assert set(models.User.fuzzy("Jack")) == {moderator}
     assert set(models.User.fuzzy("Jack", ["formatted_name"])) == {moderator}
     assert set(models.User.fuzzy("Jack", ["user_name"])) == set()
@@ -157,7 +157,7 @@ def test_fuzzy_unique_attribute(user, moderator, admin, backend):
 
 
 def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
-    assert set(models.User.query()) == {user, moderator, admin}
+    assert set(backend.query(models.User)) == {user, moderator, admin}
     assert set(models.User.fuzzy("jack@doe.com")) == {moderator}
     assert set(models.User.fuzzy("jack@doe.com", ["emails"])) == {moderator}
     assert set(models.User.fuzzy("jack@doe.com", ["formatted_name"])) == set()
@@ -171,8 +171,8 @@ def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
 def test_model_references(testclient, user, foo_group, admin, bar_group, backend):
     assert foo_group.members == [user]
     assert user.groups == [foo_group]
-    assert foo_group in models.Group.query(members=user)
-    assert user in models.User.query(groups=foo_group)
+    assert foo_group in backend.query(models.Group, members=user)
+    assert user in backend.query(models.User, groups=foo_group)
 
     assert user not in bar_group.members
     assert bar_group not in user.groups

@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 
@@ -65,3 +66,15 @@ class Backend(BaseBackend):
     def set_user_password(self, user, password):
         user.password = password
         user.save()
+
+    def query(self, model, **kwargs):
+        filter = [
+            model.attribute_filter(attribute_name, expected_value)
+            for attribute_name, expected_value in kwargs.items()
+        ]
+        return (
+            Backend.get()
+            .db_session.execute(select(model).filter(*filter))
+            .scalars()
+            .all()
+        )

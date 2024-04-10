@@ -5,6 +5,7 @@ from faker.config import AVAILABLE_LOCALES
 
 from canaille.app import models
 from canaille.app.i18n import available_language_codes
+from canaille.backends import BaseBackend
 
 
 def fake_users(nb=1):
@@ -47,7 +48,7 @@ def fake_users(nb=1):
 
 
 def fake_groups(nb=1, nb_users_max=1):
-    users = models.User.query()
+    users = BaseBackend.get().query(models.User)
     groups = list()
     fake = faker.Faker(["en_US"])
     for _ in range(nb):

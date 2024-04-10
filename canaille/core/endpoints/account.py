@@ -86,7 +86,7 @@ def join():
 
     form = JoinForm(request.form or None)
     if request.form and form.validate():
-        if models.User.query(emails=form.email.data):
+        if BaseBackend.get().query(models.User, emails=form.email.data):
             flash(
                 _(
                     "You will receive soon an email to continue the registration process."
@@ -295,7 +295,10 @@ def registration(data=None, hash=None):
     if "groups" not in form and payload and payload.groups:
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
-            choices=[(group, group.display_name) for group in models.Group.query()],
+            choices=[
+                (group, group.display_name)
+                for group in BaseBackend.get().query(models.Group)
+            ],
             coerce=IDToModel("Group"),
         )
         set_readonly(form["groups"])
@@ -388,7 +391,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    if models.User.query(emails=confirmation_obj.email):
+    if BaseBackend.get().query(models.User, emails=confirmation_obj.email):
         flash(
             _("This address email is already associated with another account."),
             "error",

@@ -81,15 +81,15 @@ def test_special_chars_in_rdn(testclient, backend):
 
 
 def test_filter(backend, foo_group, bar_group):
-    assert models.Group.query(display_name="foo") == [foo_group]
-    assert models.Group.query(display_name="bar") == [bar_group]
+    assert backend.query(models.Group, display_name="foo") == [foo_group]
+    assert backend.query(models.Group, display_name="bar") == [bar_group]
 
-    assert models.Group.query(display_name="foo") != 3
+    assert backend.query(models.Group, display_name="foo") != 3
 
-    assert models.Group.query(display_name=["foo"]) == [foo_group]
-    assert models.Group.query(display_name=["bar"]) == [bar_group]
+    assert backend.query(models.Group, display_name=["foo"]) == [foo_group]
+    assert backend.query(models.Group, display_name=["bar"]) == [bar_group]
 
-    assert set(models.Group.query(display_name=["foo", "bar"])) == {
+    assert set(backend.query(models.Group, display_name=["foo", "bar"])) == {
         foo_group,
         bar_group,
     }

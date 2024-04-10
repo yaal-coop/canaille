@@ -13,8 +13,10 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_nominal_case(testclient, logged_user, client, keypair, trusted_client):
-    assert not models.Consent.query()
+def test_nominal_case(
+    testclient, logged_user, client, keypair, trusted_client, backend
+):
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -43,7 +45,7 @@ def test_nominal_case(testclient, logged_user, client, keypair, trusted_client):
         "phone",
     }
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert set(consents[0].scope) == {
         "openid",
         "profile",
@@ -112,8 +114,10 @@ def test_invalid_client(testclient, logged_user, keypair):
     )
 
 
-def test_redirect_uri(testclient, logged_user, client, keypair, trusted_client):
-    assert not models.Consent.query()
+def test_redirect_uri(
+    testclient, logged_user, client, keypair, trusted_client, backend
+):
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -134,7 +138,7 @@ def test_redirect_uri(testclient, logged_user, client, keypair, trusted_client):
     code = params["code"][0]
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.post(
         "/oauth/token",
@@ -157,8 +161,10 @@ def test_redirect_uri(testclient, logged_user, client, keypair, trusted_client):
         consent.delete()
 
 
-def test_preconsented_client(testclient, logged_user, client, keypair, trusted_client):
-    assert not models.Consent.query()
+def test_preconsented_client(
+    testclient, logged_user, client, keypair, trusted_client, backend
+):
+    assert not backend.query(models.Consent)
 
     client.preconsent = True
     client.save()
@@ -180,7 +186,7 @@ def test_preconsented_client(testclient, logged_user, client, keypair, trusted_c
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert not consents
 
     res = testclient.post(
@@ -214,8 +220,8 @@ def test_preconsented_client(testclient, logged_user, client, keypair, trusted_c
     assert res.json["name"] == "John (johnny) Doe"
 
 
-def test_logout_login(testclient, logged_user, client):
-    assert not models.Consent.query()
+def test_logout_login(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -254,7 +260,7 @@ def test_logout_login(testclient, logged_user, client):
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(
@@ -285,8 +291,8 @@ def test_logout_login(testclient, logged_user, client):
         consent.delete()
 
 
-def test_deny(testclient, logged_user, client):
-    assert not models.Consent.query()
+def test_deny(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -305,11 +311,11 @@ def test_deny(testclient, logged_user, client):
     error = params["error"][0]
     assert error == "access_denied"
 
-    assert not models.Consent.query()
+    assert not backend.query(models.Consent)
 
 
-def test_code_challenge(testclient, logged_user, client):
-    assert not models.Consent.query()
+def test_code_challenge(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
 
     client.token_endpoint_auth_method = "none"
     client.save()
@@ -338,7 +344,7 @@ def test_code_challenge(testclient, logged_user, client):
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(
@@ -373,8 +379,8 @@ def test_code_challenge(testclient, logged_user, client):
         consent.delete()
 
 
-def test_consent_already_given(testclient, logged_user, client):
-    assert not models.Consent.query()
+def test_consent_already_given(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -395,7 +401,7 @@ def test_consent_already_given(testclient, logged_user, client):
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert "profile" in consents[0].scope
 
     res = testclient.post(
@@ -430,9 +436,9 @@ def test_consent_already_given(testclient, logged_user, client):
 
 
 def test_when_consent_already_given_but_for_a_smaller_scope(
-    testclient, logged_user, client
+    testclient, logged_user, client, backend
 ):
-    assert not models.Consent.query()
+    assert not backend.query(models.Consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -453,7 +459,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert "profile" in consents[0].scope
     assert "groups" not in consents[0].scope
 
@@ -489,7 +495,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
     authcode = models.AuthorizationCode.get(code=code)
     assert authcode is not None
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert "profile" in consents[0].scope
     assert "groups" in consents[0].scope
 
@@ -535,8 +541,8 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
     assert res.json.get("error") == "invalid_request"
 
 
-def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
-    assert not models.Consent.query()
+def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
     testclient.app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] = False
 
     res = testclient.get(
@@ -552,12 +558,12 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
     res = res.form.submit(name="answer", value="accept", status=302)
 
     assert res.location.startswith(client.redirect_uris[0])
-    for consent in models.Consent.query():
+    for consent in backend.query(models.Consent):
         consent.delete()
 
 
-def test_request_scope_too_large(testclient, logged_user, keypair, client):
-    assert not models.Consent.query()
+def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
+    assert not backend.query(models.Consent)
     client.scope = ["openid", "profile", "groups"]
     client.save()
 
@@ -582,7 +588,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client):
         "profile",
     }
 
-    consents = models.Consent.query(client=client, subject=logged_user)
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
     assert set(consents[0].scope) == {
         "openid",
         "profile",

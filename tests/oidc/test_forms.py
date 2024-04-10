@@ -5,8 +5,8 @@ from canaille.app import models
 # forms.
 
 
-def test_fieldlist_add(testclient, logged_admin):
-    assert not models.Client.query()
+def test_fieldlist_add(testclient, logged_admin, backend):
+    assert not backend.query(models.Client)
 
     res = testclient.get("/admin/client/add")
     assert "redirect_uris-1" not in res.form.fields
@@ -23,7 +23,7 @@ def test_fieldlist_add(testclient, logged_admin):
         res.form[k].force_value(v)
 
     res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
-    assert not models.Client.query()
+    assert not backend.query(models.Client)
 
     data["redirect_uris-1"] = "https://foo.bar/callback2"
     for k, v in data.items():
@@ -43,8 +43,8 @@ def test_fieldlist_add(testclient, logged_admin):
     client.delete()
 
 
-def test_fieldlist_delete(testclient, logged_admin):
-    assert not models.Client.query()
+def test_fieldlist_delete(testclient, logged_admin, backend):
+    assert not backend.query(models.Client)
     res = testclient.get("/admin/client/add")
 
     data = {
@@ -61,7 +61,7 @@ def test_fieldlist_delete(testclient, logged_admin):
 
     res.form["redirect_uris-1"] = "https://foo.bar/callback2"
     res = res.form.submit(status=200, name="fieldlist_remove", value="redirect_uris-1")
-    assert not models.Client.query()
+    assert not backend.query(models.Client)
     assert "redirect_uris-1" not in res.form.fields
 
     res = res.form.submit(status=302, name="action", value="edit")
@@ -92,8 +92,8 @@ def test_fieldlist_add_invalid_field(testclient, logged_admin):
     testclient.post("/admin/client/add", data, status=400)
 
 
-def test_fieldlist_delete_invalid_field(testclient, logged_admin):
-    assert not models.Client.query()
+def test_fieldlist_delete_invalid_field(testclient, logged_admin, backend):
+    assert not backend.query(models.Client)
     res = testclient.get("/admin/client/add")
 
     data = {

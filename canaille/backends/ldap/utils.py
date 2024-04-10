@@ -95,3 +95,33 @@ def cardinalize_attribute(python_unique, value):
         return value[0]
 
     return [v for v in value if v is not None]
+
+
+def python_attrs_to_ldap(attrs, encode=True, null_allowed=True):
+    formatted_attrs = {
+        name: [
+            python_to_ldap(value, attribute_ldap_syntax(name), encode=encode)
+            for value in listify(values)
+        ]
+        for name, values in attrs.items()
+    }
+    if not null_allowed:
+        formatted_attrs = {
+            key: [value for value in values if value]
+            for key, values in formatted_attrs.items()
+            if values
+        }
+    return formatted_attrs
+
+
+def attribute_ldap_syntax(attribute_name):
+    from .ldapobject import LDAPObject
+
+    ldap_attrs = LDAPObject.ldap_object_attributes()
+    if attribute_name not in ldap_attrs:
+        return None
+
+    if ldap_attrs[attribute_name].syntax:
+        return ldap_attrs[attribute_name].syntax
+
+    return attribute_ldap_syntax(ldap_attrs[attribute_name].sup[0])

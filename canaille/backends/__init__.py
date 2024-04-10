@@ -54,6 +54,25 @@ class BaseBackend:
         """
         raise NotImplementedError()
 
+    def query(self, model, **kwargs):
+        """
+        Perform a query on the database and return a collection of instances.
+        Parameters can be any valid attribute with the expected value:
+
+        >>> backend.query(User, first_name="George")
+
+        If several arguments are passed, the methods only returns the model
+        instances that return matches all the argument values:
+
+        >>> backend.query(User, first_name="George", last_name="Abitbol")
+
+        If the argument value is a collection, the methods will return the
+        models that matches any of the values:
+
+        >>> backend.query(User, first_name=["George", "Jane"])
+        """
+        raise NotImplementedError()
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()
