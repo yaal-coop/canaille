@@ -241,16 +241,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             return None
 
     @classmethod
-    def fuzzy(cls, query, attributes=None, **kwargs):
-        query = ldap.filter.escape_filter_chars(query)
-        attributes = attributes or cls.may() + cls.must()
-        attributes = [cls.python_attribute_to_ldap(name) for name in attributes]
-        filter = (
-            "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
-        )
-        return BaseBackend.get().query(cls, filter=filter, **kwargs)
-
-    @classmethod
     def update_ldap_attributes(cls):
         all_object_classes = cls.ldap_object_classes()
         this_object_classes = {

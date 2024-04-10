@@ -65,3 +65,18 @@ class Backend(BaseBackend):
             instance._cache = {}
 
         return instances
+
+    def fuzzy(self, model, query, attributes=None, **kwargs):
+        attributes = attributes or model.attributes
+        instances = self.query(model, **kwargs)
+
+        return [
+            instance
+            for instance in instances
+            if any(
+                query.lower() in value.lower()
+                for attribute in attributes
+                for value in model.listify(instance._state.get(attribute, []))
+                if isinstance(value, str)
+            )
+        ]

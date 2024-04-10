@@ -37,22 +37,6 @@ class MemoryModel(BackendModel):
         ).setdefault(attribute, {})
 
     @classmethod
-    def fuzzy(cls, query, attributes=None, **kwargs):
-        attributes = attributes or cls.attributes
-        instances = BaseBackend.get().query(cls, **kwargs)
-
-        return [
-            instance
-            for instance in instances
-            if any(
-                query.lower() in value.lower()
-                for attribute in attributes
-                for value in cls.listify(instance._state.get(attribute, []))
-                if isinstance(value, str)
-            )
-        ]
-
-    @classmethod
     def get(cls, identifier=None, /, **kwargs):
         if identifier:
             return (

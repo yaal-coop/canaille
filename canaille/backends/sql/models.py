@@ -37,21 +37,6 @@ class SqlAlchemyModel(BackendModel):
         )
 
     @classmethod
-    def fuzzy(cls, query, attributes=None, **kwargs):
-        attributes = attributes or cls.attributes
-        filter = or_(
-            getattr(cls, attribute_name).ilike(f"%{query}%")
-            for attribute_name in attributes
-            if "str" in str(cls.attributes[attribute_name])
-            # erk, photo is an URL string according to SCIM, but bytes here
-            and attribute_name != "photo"
-        )
-
-        return (
-            Backend.get().db_session.execute(select(cls).filter(filter)).scalars().all()
-        )
-
-    @classmethod
     def attribute_filter(cls, name, value):
         if isinstance(value, list):
             return or_(cls.attribute_filter(name, v) for v in value)

@@ -73,6 +73,11 @@ class BaseBackend:
         """
         raise NotImplementedError()
 
+    def fuzzy(self, model, query, attributes=None, **kwargs):
+        """Works like :meth:`~canaille.backends.BaseBackend.query` but
+        attribute values loosely be matched."""
+        raise NotImplementedError()
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()

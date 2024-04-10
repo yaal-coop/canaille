@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
@@ -78,3 +79,15 @@ class Backend(BaseBackend):
             .scalars()
             .all()
         )
+
+    def fuzzy(self, model, query, attributes=None, **kwargs):
+        attributes = attributes or model.attributes
+        filter = or_(
+            getattr(model, attribute_name).ilike(f"%{query}%")
+            for attribute_name in attributes
+            if "str" in str(model.attributes[attribute_name])
+            # erk, photo is an URL string according to SCIM, but bytes here
+            and attribute_name != "photo"
+        )
+
+        return self.db_session.execute(select(model).filter(filter)).scalars().all()

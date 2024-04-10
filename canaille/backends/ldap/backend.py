@@ -302,6 +302,15 @@ class Backend(BaseBackend):
             result = []
         return LDAPObjectQuery(model, result)
 
+    def fuzzy(self, model, query, attributes=None, **kwargs):
+        query = ldap.filter.escape_filter_chars(query)
+        attributes = attributes or model.may() + model.must()
+        attributes = [model.python_attribute_to_ldap(name) for name in attributes]
+        filter = (
+            "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
+        )
+        return self.query(model, filter=filter, **kwargs)
+
 
 def setup_ldap_models(config):
     from canaille.app import models

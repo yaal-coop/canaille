@@ -88,12 +88,6 @@ class BackendModel:
     """
 
     @classmethod
-    def fuzzy(cls, query, attributes=None, **kwargs):
-        """Works like :meth:`~canaille.backends.BaseBackend.query` but
-        attribute values loosely be matched."""
-        raise NotImplementedError()
-
-    @classmethod
     def get(cls, identifier=None, **kwargs):
         """Works like :meth:`~canaille.backends.BaseBackend.query` but return
         only one element or :py:data:`None` if no item is matching."""

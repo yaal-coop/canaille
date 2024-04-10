@@ -144,28 +144,28 @@ def test_model_indexation(testclient, backend):
 
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
     assert set(backend.query(models.User)) == {user, moderator, admin}
-    assert set(models.User.fuzzy("Jack")) == {moderator}
-    assert set(models.User.fuzzy("Jack", ["formatted_name"])) == {moderator}
-    assert set(models.User.fuzzy("Jack", ["user_name"])) == set()
-    assert set(models.User.fuzzy("Jack", ["user_name", "formatted_name"])) == {
+    assert set(backend.fuzzy(models.User, "Jack")) == {moderator}
+    assert set(backend.fuzzy(models.User, "Jack", ["formatted_name"])) == {moderator}
+    assert set(backend.fuzzy(models.User, "Jack", ["user_name"])) == set()
+    assert set(backend.fuzzy(models.User, "Jack", ["user_name", "formatted_name"])) == {
         moderator
     }
-    assert set(models.User.fuzzy("moderator")) == {moderator}
-    assert set(models.User.fuzzy("oderat")) == {moderator}
-    assert set(models.User.fuzzy("oDeRat")) == {moderator}
-    assert set(models.User.fuzzy("ack")) == {moderator}
+    assert set(backend.fuzzy(models.User, "moderator")) == {moderator}
+    assert set(backend.fuzzy(models.User, "oderat")) == {moderator}
+    assert set(backend.fuzzy(models.User, "oDeRat")) == {moderator}
+    assert set(backend.fuzzy(models.User, "ack")) == {moderator}
 
 
 def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
     assert set(backend.query(models.User)) == {user, moderator, admin}
-    assert set(models.User.fuzzy("jack@doe.com")) == {moderator}
-    assert set(models.User.fuzzy("jack@doe.com", ["emails"])) == {moderator}
-    assert set(models.User.fuzzy("jack@doe.com", ["formatted_name"])) == set()
-    assert set(models.User.fuzzy("jack@doe.com", ["emails", "formatted_name"])) == {
-        moderator
-    }
-    assert set(models.User.fuzzy("ack@doe.co")) == {moderator}
-    assert set(models.User.fuzzy("doe.com")) == {user, moderator, admin}
+    assert set(backend.fuzzy(models.User, "jack@doe.com")) == {moderator}
+    assert set(backend.fuzzy(models.User, "jack@doe.com", ["emails"])) == {moderator}
+    assert set(backend.fuzzy(models.User, "jack@doe.com", ["formatted_name"])) == set()
+    assert set(
+        backend.fuzzy(models.User, "jack@doe.com", ["emails", "formatted_name"])
+    ) == {moderator}
+    assert set(backend.fuzzy(models.User, "ack@doe.co")) == {moderator}
+    assert set(backend.fuzzy(models.User, "doe.com")) == {user, moderator, admin}
 
 
 def test_model_references(testclient, user, foo_group, admin, bar_group, backend):
