@@ -21,7 +21,7 @@ class LogoutForm(Form):
 def client_audiences():
     return [
         (client, client.client_name)
-        for client in BaseBackend.get().query(models.Client)
+        for client in BaseBackend.instance.query(models.Client)
     ]
 
 

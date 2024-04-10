@@ -11,11 +11,11 @@ from canaille.backends import BaseBackend
 @with_backendcontext
 def clean():
     """Remove expired tokens and authorization codes."""
-    for t in BaseBackend.get().query(models.Token):
+    for t in BaseBackend.instance.query(models.Token):
         if t.is_expired():
             t.delete()
 
-    for a in BaseBackend.get().query(models.AuthorizationCode):
+    for a in BaseBackend.instance.query(models.AuthorizationCode):
         if a.is_expired():
             a.delete()
 

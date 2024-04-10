@@ -96,13 +96,13 @@ class Client(BaseClient, ClientMixin):
         return metadata
 
     def delete(self):
-        for consent in BaseBackend.get().query(models.Consent, client=self):
+        for consent in BaseBackend.instance.query(models.Consent, client=self):
             consent.delete()
 
-        for code in BaseBackend.get().query(models.AuthorizationCode, client=self):
+        for code in BaseBackend.instance.query(models.AuthorizationCode, client=self):
             code.delete()
 
-        for token in BaseBackend.get().query(models.Token, client=self):
+        for token in BaseBackend.instance.query(models.Token, client=self):
             token.delete()
 
         super().delete()
@@ -186,7 +186,7 @@ class Consent(BaseConsent):
         self.revokation_date = datetime.datetime.now(datetime.timezone.utc)
         self.save()
 
-        tokens = BaseBackend.get().query(
+        tokens = BaseBackend.instance.query(
             models.Token,
             client=self.client,
             subject=self.subject,

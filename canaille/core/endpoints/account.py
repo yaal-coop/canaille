@@ -86,7 +86,7 @@ def join():
 
     form = JoinForm(request.form or None)
     if request.form and form.validate():
-        if BaseBackend.get().query(models.User, emails=form.email.data):
+        if BaseBackend.instance.query(models.User, emails=form.email.data):
             flash(
                 _(
                     "You will receive soon an email to continue the registration process."
@@ -297,7 +297,7 @@ def registration(data=None, hash=None):
             _("Groups"),
             choices=[
                 (group, group.display_name)
-                for group in BaseBackend.get().query(models.Group)
+                for group in BaseBackend.instance.query(models.Group)
             ],
             coerce=IDToModel("Group"),
         )
@@ -391,7 +391,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    if BaseBackend.get().query(models.User, emails=confirmation_obj.email):
+    if BaseBackend.instance.query(models.User, emails=confirmation_obj.email):
         flash(
             _("This address email is already associated with another account."),
             "error",
@@ -458,7 +458,7 @@ def profile_create(current_app, form):
     user.save()
 
     if form["password1"].data:
-        BaseBackend.get().set_user_password(user, form["password1"].data)
+        BaseBackend.instance.set_user_password(user, form["password1"].data)
         user.save()
 
     return user
@@ -713,14 +713,14 @@ def profile_settings(user, edited_user):
 
     if (
         request.form.get("action") == "confirm-lock"
-        and BaseBackend.get().has_account_lockability()
+        and BaseBackend.instance.has_account_lockability()
         and not edited_user.locked
     ):
         return render_template("modals/lock-account.html", edited_user=edited_user)
 
     if (
         request.form.get("action") == "lock"
-        and BaseBackend.get().has_account_lockability()
+        and BaseBackend.instance.has_account_lockability()
         and not edited_user.locked
     ):
         flash(_("The account has been locked"), "success")
@@ -731,7 +731,7 @@ def profile_settings(user, edited_user):
 
     if (
         request.form.get("action") == "unlock"
-        and BaseBackend.get().has_account_lockability()
+        and BaseBackend.instance.has_account_lockability()
         and edited_user.locked
     ):
         flash(_("The account has been unlocked"), "success")
@@ -782,7 +782,9 @@ def profile_settings_edit(editor, edited_user):
                 and form["password1"].data
                 and request.form["action"] == "edit-settings"
             ):
-                BaseBackend.get().set_user_password(edited_user, form["password1"].data)
+                BaseBackend.instance.set_user_password(
+                    edited_user, form["password1"].data
+                )
 
             edited_user.save()
             flash(_("Profile updated successfully."), "success")

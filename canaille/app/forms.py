@@ -187,9 +187,11 @@ class TableForm(I18NFormMixin, FlaskForm):
         filter = filter or {}
         super().__init__(**kwargs)
         if self.query.data:
-            self.items = BaseBackend.get().fuzzy(cls, self.query.data, fields, **filter)
+            self.items = BaseBackend.instance.fuzzy(
+                cls, self.query.data, fields, **filter
+            )
         else:
-            self.items = BaseBackend.get().query(cls, **filter)
+            self.items = BaseBackend.instance.query(cls, **filter)
 
         self.page_size = page_size
         self.nb_items = len(self.items)

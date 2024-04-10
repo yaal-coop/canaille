@@ -45,7 +45,7 @@ class MemoryModel(BackendModel):
                 or None
             )
 
-        results = BaseBackend.get().query(cls, **kwargs)
+        results = BaseBackend.instance.query(cls, **kwargs)
         return results[0] if results else None
 
     @classmethod

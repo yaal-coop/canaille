@@ -51,7 +51,7 @@ def unique_group(form, field):
 def existing_login(form, field):
     if not current_app.config["CANAILLE"][
         "HIDE_INVALID_LOGINS"
-    ] and not BaseBackend.get().get_user_from_login(field.data):
+    ] and not BaseBackend.instance.get_user_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )
@@ -314,7 +314,7 @@ PROFILE_FORM_FIELDS = dict(
         default=[],
         choices=lambda: [
             (group, group.display_name)
-            for group in BaseBackend.get().query(models.Group)
+            for group in BaseBackend.instance.query(models.Group)
         ],
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),
@@ -336,10 +336,10 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
         if PROFILE_FORM_FIELDS.get(name)
     }
 
-    if "groups" in fields and not BaseBackend.get().query(models.Group):
+    if "groups" in fields and not BaseBackend.instance.query(models.Group):
         del fields["groups"]
 
-    if current_app.backend.get().has_account_lockability():  # pragma: no branch
+    if current_app.backend.instance.has_account_lockability():  # pragma: no branch
         fields["lock_date"] = DateTimeUTCField(
             _("Account expiration"),
             validators=[wtforms.validators.Optional()],
@@ -441,7 +441,7 @@ class InvitationForm(Form):
         _("Groups"),
         choices=lambda: [
             (group, group.display_name)
-            for group in BaseBackend.get().query(models.Group)
+            for group in BaseBackend.instance.query(models.Group)
         ],
         render_kw={},
         coerce=IDToModel("Group"),

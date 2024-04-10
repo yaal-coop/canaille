@@ -4,6 +4,8 @@ from contextlib import contextmanager
 
 from flask import g
 
+from canaille.app import classproperty
+
 
 class BaseBackend:
     instance = None
@@ -13,8 +15,8 @@ class BaseBackend:
         BaseBackend.instance = self
         self.register_models()
 
-    @classmethod
-    def get(cls):
+    @classproperty
+    def instance(cls):
         return cls.instance
 
     def init_app(self, app):

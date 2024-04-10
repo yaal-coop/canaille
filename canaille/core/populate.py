@@ -48,7 +48,7 @@ def fake_users(nb=1):
 
 
 def fake_groups(nb=1, nb_users_max=1):
-    users = BaseBackend.get().query(models.User)
+    users = BaseBackend.instance.query(models.User)
     groups = list()
     fake = faker.Faker(["en_US"])
     for _ in range(nb):

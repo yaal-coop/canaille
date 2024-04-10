@@ -61,11 +61,9 @@ class SqlAlchemyModel(BackendModel):
             cls.attribute_filter(attribute_name, expected_value)
             for attribute_name, expected_value in kwargs.items()
         ]
-        return (
-            Backend.get()
-            .db_session.execute(select(cls).filter(*filter))
-            .scalar_one_or_none()
-        )
+        return Backend.instance.db_session.execute(
+            select(cls).filter(*filter)
+        ).scalar_one_or_none()
 
     def save(self):
         self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
@@ -74,15 +72,15 @@ class SqlAlchemyModel(BackendModel):
         if not self.created:
             self.created = self.last_modified
 
-        Backend.get().db_session.add(self)
-        Backend.get().db_session.commit()
+        Backend.instance.db_session.add(self)
+        Backend.instance.db_session.commit()
 
     def delete(self):
-        Backend.get().db_session.delete(self)
-        Backend.get().db_session.commit()
+        Backend.instance.db_session.delete(self)
+        Backend.instance.db_session.commit()
 
     def reload(self):
-        Backend.get().db_session.refresh(self)
+        Backend.instance.db_session.refresh(self)
 
 
 membership_association_table = Table(

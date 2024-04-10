@@ -110,7 +110,7 @@ def authorize_login(user):
 def authorize_consent(client, user):
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
-    consents = BaseBackend.get().query(
+    consents = BaseBackend.instance.query(
         models.Consent,
         client=client,
         subject=user,

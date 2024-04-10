@@ -74,8 +74,7 @@ class Backend(BaseBackend):
             for attribute_name, expected_value in kwargs.items()
         ]
         return (
-            Backend.get()
-            .db_session.execute(select(model).filter(*filter))
+            Backend.instance.db_session.execute(select(model).filter(*filter))
             .scalars()
             .all()
         )

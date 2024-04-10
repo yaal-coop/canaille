@@ -112,7 +112,7 @@ def openid_configuration():
 
 def exists_nonce(nonce, req):
     client = models.Client.get(id=req.client_id)
-    exists = BaseBackend.get().query(
+    exists = BaseBackend.instance.query(
         models.AuthorizationCode, client=client, nonce=nonce
     )
     return bool(exists)
@@ -239,7 +239,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = BaseBackend.get().query(
+        item = BaseBackend.instance.query(
             models.AuthorizationCode, code=code, client=client
         )
         if item and not item[0].is_expired():
@@ -272,11 +272,11 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        user = BaseBackend.get().get_user_from_login(username)
+        user = BaseBackend.instance.get_user_from_login(username)
         if not user:
             return None
 
-        success, _ = BaseBackend.get().check_user_password(user, password)
+        success, _ = BaseBackend.instance.check_user_password(user, password)
         if not success:
             return None
 
@@ -287,7 +287,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_refresh_token(self, refresh_token):
-        token = BaseBackend.get().query(models.Token, refresh_token=refresh_token)
+        token = BaseBackend.instance.query(models.Token, refresh_token=refresh_token)
         if token and token[0].is_refresh_token_active():
             return token[0]
 

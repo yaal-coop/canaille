@@ -162,7 +162,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     @classmethod
     def install(cls):
-        conn = Backend.get().connection
+        conn = Backend.instance.connection
         cls.ldap_object_classes(conn)
         cls.ldap_object_attributes(conn)
 
@@ -187,7 +187,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
-        conn = Backend.get().connection
+        conn = Backend.instance.connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -209,7 +209,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
-        conn = Backend.get().connection
+        conn = Backend.instance.connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -229,7 +229,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     @classmethod
     def get(cls, identifier=None, /, **kwargs):
         try:
-            return BaseBackend.get().query(cls, identifier, **kwargs)[0]
+            return BaseBackend.instance.query(cls, identifier, **kwargs)[0]
         except (IndexError, ldap.NO_SUCH_OBJECT):
             if identifier and cls.base:
                 return (
@@ -274,13 +274,13 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         return cls.attribute_map.get(name, name) if cls.attribute_map else None
 
     def reload(self):
-        conn = Backend.get().connection
+        conn = Backend.instance.connection
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.state = result[0][1]
 
     def save(self):
-        conn = Backend.get().connection
+        conn = Backend.instance.connection
 
         current_object_classes = self.get_ldap_attribute("objectClass") or []
         self.set_ldap_attribute(
@@ -338,7 +338,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         self.changes = {}
 
     def delete(self):
-        conn = Backend.get().connection
+        conn = Backend.instance.connection
         try:
             conn.delete_s(self.dn)
         except ldap.NO_SUCH_OBJECT:

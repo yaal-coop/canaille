@@ -99,7 +99,7 @@ def setup_flask(app):
             "has_oidc": "CANAILLE_OIDC" in app.config,
             "has_password_recovery": app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"],
             "has_registration": app.config["CANAILLE"]["ENABLE_REGISTRATION"],
-            "has_account_lockability": app.backend.get().has_account_lockability(),
+            "has_account_lockability": app.backend.instance.has_account_lockability(),
             "logo_url": app.config["CANAILLE"]["LOGO"],
             "favicon_url": app.config["CANAILLE"]["FAVICON"]
             or app.config["CANAILLE"]["LOGO"],

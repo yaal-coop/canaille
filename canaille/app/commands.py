@@ -12,7 +12,7 @@ def with_backendcontext(func):
     @functools.wraps(func)
     def _func(*args, **kwargs):
         if not current_app.config["TESTING"]:  # pragma: no cover
-            with BaseBackend.get().session():
+            with BaseBackend.instance.session():
                 result = func(*args, **kwargs)
 
         else:
