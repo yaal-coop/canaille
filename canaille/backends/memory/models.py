@@ -131,6 +131,7 @@ class MemoryModel(BackendModel):
 
         self.index_delete()
         self.index_save()
+        self._cache = {}
 
     def delete(self):
         self.index_delete()
