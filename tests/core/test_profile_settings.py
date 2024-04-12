@@ -265,6 +265,23 @@ def test_impersonate_invalid_user(testclient, backend, logged_admin):
     testclient.get("/impersonate/invalid", status=404)
 
 
+def test_impersonate_locked_user(testclient, backend, logged_admin, user):
+    res = testclient.get("/profile/user/settings")
+    res.mustcontain("Impersonate")
+
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
+        days=1
+    )
+    user.save()
+
+    assert user.locked
+    res = testclient.get("/profile/user/settings")
+    res.mustcontain(no="Impersonate")
+
+    res = testclient.get("/impersonate/user", status=403)
+    res.mustcontain("Locked users cannot be impersonated.")
+
+
 def test_invalid_form_request(testclient, logged_admin):
     res = testclient.get("/profile/admin/settings")
     res = res.form.submit(name="action", value="invalid-action", status=400)

@@ -1,3 +1,7 @@
+Changed
+^^^^^^^
+- Locked users cannot be impersonated anymore.
+
 [0.0.51] - 2024-04-09
 ---------------------
 

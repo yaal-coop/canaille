@@ -156,7 +156,7 @@
                         </button>
                     {% endif %}
 
-                    {% if user.can_impersonate_users and user.identifier != edited_user.identifier %}
+                    {% if user.can_impersonate_users and user.identifier != edited_user.identifier and not edited_user.locked %}
                         <a href="{{ url_for('core.account.impersonate', puppet=edited_user) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate" hx-boost="false">
                             {{ _("Impersonate") }}
                         </a>

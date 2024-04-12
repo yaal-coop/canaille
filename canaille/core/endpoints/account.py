@@ -818,6 +818,9 @@ def profile_delete(user, edited_user):
 @bp.route("/impersonate/<user:puppet>")
 @permissions_needed("impersonate_users")
 def impersonate(user, puppet):
+    if puppet.locked:
+        abort(403, _("Locked users cannot be impersonated."))
+
     login_user(puppet)
     flash(
         _("Connection successful. Welcome %(user)s", user=puppet.formatted_name),
