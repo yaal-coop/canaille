@@ -139,13 +139,15 @@ def test_oidc_authorization_after_revokation(
     assert token.subject == logged_user
 
 
-def test_preconsented_client_appears_in_consent_list(testclient, client, logged_user):
+def test_preconsented_client_appears_in_consent_list(
+    testclient, client, logged_user, backend
+):
     assert not client.preconsent
     res = testclient.get("/consent/pre-consents")
     res.mustcontain(no=client.client_name)
 
     client.preconsent = True
-    client.save()
+    backend.save(client)
 
     res = testclient.get("/consent/pre-consents")
     res.mustcontain(client.client_name)
@@ -153,7 +155,7 @@ def test_preconsented_client_appears_in_consent_list(testclient, client, logged_
 
 def test_revoke_preconsented_client(testclient, client, logged_user, token, backend):
     client.preconsent = True
-    client.save()
+    backend.save(client)
     assert not backend.get(models.Consent)
     assert not token.revoked
 
@@ -190,22 +192,22 @@ def test_revoke_invalid_preconsented_client(testclient, logged_user):
 
 
 def test_revoke_preconsented_client_with_manual_consent(
-    testclient, logged_user, client, consent
+    testclient, logged_user, client, consent, backend
 ):
     client.preconsent = True
-    client.save()
+    backend.save(client)
     res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
     res = res.follow()
     assert ("success", "The access has been revoked") in res.flashes
 
 
 def test_revoke_preconsented_client_with_manual_revokation(
-    testclient, logged_user, client, consent
+    testclient, logged_user, client, consent, backend
 ):
     client.preconsent = True
-    client.save()
+    backend.save(client)
     consent.revoke()
-    consent.save()
+    backend.save(consent)
 
     res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
     res = res.follow()

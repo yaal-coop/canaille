@@ -82,7 +82,7 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
         emails=["temp@temp.com"],
         password="correct horse battery staple",
     )
-    user.save()
+    backend.save(user)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -137,7 +137,9 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
     backend.get(models.Token, access_token=access_token).delete()
 
 
-def test_cannot_refresh_token_for_locked_users(testclient, logged_user, client):
+def test_cannot_refresh_token_for_locked_users(
+    testclient, logged_user, client, backend
+):
     """Canaille should not issue new tokens for locked users."""
     res = testclient.get(
         "/oauth/authorize",
@@ -167,7 +169,7 @@ def test_cannot_refresh_token_for_locked_users(testclient, logged_user, client):
     )
 
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.post(
         "/oauth/token",

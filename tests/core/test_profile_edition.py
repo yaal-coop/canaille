@@ -118,6 +118,7 @@ def test_edition(
     logged_user,
     admin,
     jpeg_photo,
+    backend,
 ):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
@@ -168,13 +169,14 @@ def test_edition(
     logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
-    logged_user.save()
+    backend.save(logged_user)
 
 
 def test_edition_remove_fields(
     testclient,
     logged_user,
     admin,
+    backend,
 ):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
@@ -195,13 +197,13 @@ def test_edition_remove_fields(
     logged_user.emails = ["john@doe.com"]
     logged_user.given_name = None
     logged_user.photo = None
-    logged_user.save()
+    backend.save(logged_user)
 
 
-def test_field_permissions_none(testclient, logged_user):
+def test_field_permissions_none(testclient, logged_user, backend):
     testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
-    logged_user.save()
+    backend.save(logged_user)
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"] = {
         "READ": ["user_name"],
@@ -227,10 +229,10 @@ def test_field_permissions_none(testclient, logged_user):
     assert logged_user.phone_numbers == ["555-666-777"]
 
 
-def test_field_permissions_read(testclient, logged_user):
+def test_field_permissions_read(testclient, logged_user, backend):
     testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
-    logged_user.save()
+    backend.save(logged_user)
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"] = {
         "READ": ["user_name", "phone_numbers"],
@@ -255,10 +257,10 @@ def test_field_permissions_read(testclient, logged_user):
     assert logged_user.phone_numbers == ["555-666-777"]
 
 
-def test_field_permissions_write(testclient, logged_user):
+def test_field_permissions_write(testclient, logged_user, backend):
     testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
-    logged_user.save()
+    backend.save(logged_user)
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"] = {
         "READ": ["user_name"],

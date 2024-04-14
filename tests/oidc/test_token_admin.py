@@ -18,7 +18,7 @@ def test_token_list(testclient, token, logged_admin):
     res.mustcontain(token.token_id)
 
 
-def test_token_list_pagination(testclient, logged_admin, client):
+def test_token_list_pagination(testclient, logged_admin, client, backend):
     res = testclient.get("/admin/token")
     res.mustcontain("0 items")
     tokens = []
@@ -36,7 +36,7 @@ def test_token_list_pagination(testclient, logged_admin, client):
             ),
             lifetime=3600,
         )
-        token.save()
+        backend.save(token)
         tokens.append(token)
 
     res = testclient.get("/admin/token")
@@ -74,7 +74,7 @@ def test_token_list_bad_pages(testclient, logged_admin):
     )
 
 
-def test_token_list_search(testclient, logged_admin, client):
+def test_token_list_search(testclient, logged_admin, client, backend):
     token1 = models.Token(
         token_id=gen_salt(48),
         access_token="this-token-is-ok",
@@ -88,7 +88,7 @@ def test_token_list_search(testclient, logged_admin, client):
         ),
         lifetime=3600,
     )
-    token1.save()
+    backend.save(token1)
     token2 = models.Token(
         token_id=gen_salt(48),
         access_token="this-token-is-valid",
@@ -102,7 +102,7 @@ def test_token_list_search(testclient, logged_admin, client):
         ),
         lifetime=3600,
     )
-    token2.save()
+    backend.save(token2)
 
     res = testclient.get("/admin/token")
     res.mustcontain("2 items")

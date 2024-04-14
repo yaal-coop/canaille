@@ -47,16 +47,6 @@ class SqlAlchemyModel(BackendModel):
 
         return getattr(cls, name) == value
 
-    def save(self):
-        self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
-        if not self.created:
-            self.created = self.last_modified
-
-        Backend.instance.db_session.add(self)
-        Backend.instance.db_session.commit()
-
     def delete(self):
         Backend.instance.db_session.delete(self)
         Backend.instance.db_session.commit()

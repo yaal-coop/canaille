@@ -85,6 +85,10 @@ class BaseBackend:
         only one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
+    def save(self, instance):
+        """Validate the current modifications in the database."""
+        raise NotImplementedError()
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()

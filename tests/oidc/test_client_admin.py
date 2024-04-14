@@ -22,13 +22,15 @@ def test_client_list(testclient, client, logged_admin):
     res.mustcontain(client.client_name)
 
 
-def test_client_list_pagination(testclient, logged_admin, client, trusted_client):
+def test_client_list_pagination(
+    testclient, logged_admin, client, trusted_client, backend
+):
     res = testclient.get("/admin/client")
     res.mustcontain("2 items")
     clients = []
     for _ in range(25):
         client = models.Client(client_id=gen_salt(48), client_name=gen_salt(48))
-        client.save()
+        backend.save(client)
         clients.append(client)
 
     res = testclient.get("/admin/client")
@@ -216,22 +218,22 @@ def test_client_edit_missing_fields(testclient, client, logged_admin, trusted_cl
 
 def test_client_delete(testclient, logged_admin, backend):
     client = models.Client(client_id="client_id")
-    client.save()
+    backend.save(client)
     token = models.Token(
         token_id="id",
         client=client,
         subject=logged_admin,
         issue_date=datetime.datetime.now(datetime.timezone.utc),
     )
-    token.save()
+    backend.save(token)
     consent = models.Consent(
         consent_id="consent_id", subject=logged_admin, client=client, scope=["openid"]
     )
-    consent.save()
+    backend.save(consent)
     authorization_code = models.AuthorizationCode(
         authorization_code_id="id", client=client, subject=logged_admin
     )
-    authorization_code.save()
+    backend.save(authorization_code)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res = res.forms["clientaddform"].submit(name="action", value="confirm-delete")

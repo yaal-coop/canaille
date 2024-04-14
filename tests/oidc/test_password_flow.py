@@ -33,7 +33,7 @@ def test_password_flow_basic(testclient, user, client, backend):
 
 def test_password_flow_post(testclient, user, client, backend):
     client.token_endpoint_auth_method = "client_secret_post"
-    client.save()
+    backend.save(client)
 
     res = testclient.post(
         "/oauth/token",

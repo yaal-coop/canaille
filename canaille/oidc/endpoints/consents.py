@@ -95,7 +95,7 @@ def restore(user, consent):
         consent.restore()
         if not consent.issue_date:
             consent.issue_date = datetime.datetime.now(datetime.timezone.utc)
-        consent.save()
+        BaseBackend.instance.save(consent)
         flash(_("The access has been restored"), "success")
 
     return redirect(url_for("oidc.consents.consents"))
@@ -119,7 +119,7 @@ def revoke_preconsent(user, client):
         scope=client.scope,
     )
     consent.revoke()
-    consent.save()
+    BaseBackend.instance.save(consent)
     flash(_("The access has been revoked"), "success")
 
     return redirect(url_for("oidc.consents.consents"))

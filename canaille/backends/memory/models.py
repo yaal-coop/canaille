@@ -1,7 +1,5 @@
 import copy
-import datetime
 import typing
-import uuid
 
 import canaille.core.models
 import canaille.oidc.models
@@ -66,20 +64,6 @@ class MemoryModel(BackendModel):
             return BaseBackend.instance.get(backend_model, id=value)
 
         return value
-
-    def save(self):
-        if not self.id:
-            self.id = str(uuid.uuid4())
-
-        self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
-        if not self.created:
-            self.created = self.last_modified
-
-        self.index_delete()
-        self.index_save()
-        self._cache = {}
 
     def delete(self):
         self.index_delete()

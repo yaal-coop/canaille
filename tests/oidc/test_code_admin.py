@@ -16,7 +16,7 @@ def test_authorizaton_list(testclient, authorization, logged_admin):
     res.mustcontain(authorization.authorization_code_id)
 
 
-def test_authorization_list_pagination(testclient, logged_admin, client):
+def test_authorization_list_pagination(testclient, logged_admin, client, backend):
     res = testclient.get("/admin/authorization")
     res.mustcontain("0 items")
     authorizations = []
@@ -24,7 +24,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client):
         code = models.AuthorizationCode(
             authorization_code_id=gen_salt(48), client=client, subject=logged_admin
         )
-        code.save()
+        backend.save(code)
         authorizations.append(code)
 
     res = testclient.get("/admin/authorization")
@@ -64,18 +64,18 @@ def test_authorization_list_bad_pages(testclient, logged_admin):
     )
 
 
-def test_authorization_list_search(testclient, logged_admin, client):
+def test_authorization_list_search(testclient, logged_admin, client, backend):
     id1 = gen_salt(48)
     auth1 = models.AuthorizationCode(
         authorization_code_id=id1, client=client, subject=logged_admin
     )
-    auth1.save()
+    backend.save(auth1)
 
     id2 = gen_salt(48)
     auth2 = models.AuthorizationCode(
         authorization_code_id=id2, client=client, subject=logged_admin
     )
-    auth2.save()
+    backend.save(auth2)
 
     res = testclient.get("/admin/authorization")
     res.mustcontain("2 items")

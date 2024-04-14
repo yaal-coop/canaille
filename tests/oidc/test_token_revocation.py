@@ -63,11 +63,11 @@ def test_revoke_refresh_token_with_hint(testclient, user, client, token):
     assert token.revokation_date
 
 
-def test_cannot_refresh_after_revocation(testclient, user, client, token):
+def test_cannot_refresh_after_revocation(testclient, user, client, token, backend):
     token.revokation_date = datetime.datetime.now(
         datetime.timezone.utc
     ) - datetime.timedelta(days=7)
-    token.save()
+    backend.save(token)
 
     res = testclient.post(
         "/oauth/token",

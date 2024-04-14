@@ -26,9 +26,9 @@ def test_password_forgotten(smtpd, testclient, user):
     assert len(smtpd.messages) == 1
 
 
-def test_password_forgotten_multiple_mails(smtpd, testclient, user):
+def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend):
     user.emails = ["foo@bar.com", "foo@baz.com", "foo@foo.com"]
-    user.save()
+    backend.save(user)
 
     res = testclient.get("/reset", status=200)
 

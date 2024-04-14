@@ -88,10 +88,6 @@ class BackendModel:
     implemented for every model and for every backend.
     """
 
-    def save(self):
-        """Validate the current modifications in the database."""
-        raise NotImplementedError()
-
     def delete(self):
         """Remove the current instance from the database."""
         raise NotImplementedError()

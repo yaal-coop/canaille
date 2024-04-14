@@ -27,7 +27,7 @@ def test_user_deleted_in_session(testclient, backend):
         emails=["jake@doe.com"],
         password="correct horse battery staple",
     )
-    u.save()
+    backend.save(u)
     testclient.get("/profile/jake", status=403)
 
     with testclient.session_transaction() as session:
@@ -66,7 +66,7 @@ def test_admin_self_deletion(testclient, backend):
         emails=["temp@temp.com"],
         password="admin",
     )
-    admin.save()
+    backend.save(admin)
     with testclient.session_transaction() as sess:
         sess["user_id"] = [admin.id]
 
@@ -92,7 +92,7 @@ def test_user_self_deletion(testclient, backend):
         emails=["temp@temp.com"],
         password="correct horse battery staple",
     )
-    user.save()
+    backend.save(user)
     with testclient.session_transaction() as sess:
         sess["user_id"] = [user.id]
 
@@ -134,7 +134,7 @@ def test_account_locking(user, backend):
 
     user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     assert user.locked
-    user.save()
+    backend.save(user)
     assert user.locked
     assert backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -143,7 +143,7 @@ def test_account_locking(user, backend):
     )
 
     user.lock_date = None
-    user.save()
+    backend.save(user)
     assert not user.locked
     assert not backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -163,7 +163,7 @@ def test_account_locking_past_date(user, backend):
     user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
         microsecond=0
     ) - datetime.timedelta(days=30)
-    user.save()
+    backend.save(user)
     assert user.locked
     assert backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -183,7 +183,7 @@ def test_account_locking_future_date(user, backend):
     user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
         microsecond=0
     ) + datetime.timedelta(days=365 * 4)
-    user.save()
+    backend.save(user)
     assert not user.locked
     assert not backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -192,7 +192,7 @@ def test_account_locking_future_date(user, backend):
     )
 
 
-def test_account_locked_during_session(testclient, logged_user):
+def test_account_locked_during_session(testclient, logged_user, backend):
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-    logged_user.save()
+    backend.save(logged_user)
     testclient.get("/profile/user/settings", status=403)

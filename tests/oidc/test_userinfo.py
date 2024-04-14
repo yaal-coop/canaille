@@ -146,9 +146,9 @@ def test_generate_user_claims(user, foo_group):
     }
 
 
-def test_userinfo(testclient, token, user, foo_group):
+def test_userinfo(testclient, token, user, foo_group, backend):
     token.scope = ["openid"]
-    token.save()
+    backend.save(token)
     testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
@@ -156,7 +156,7 @@ def test_userinfo(testclient, token, user, foo_group):
     )
 
     token.scope = ["openid", "profile"]
-    token.save()
+    backend.save(token)
     res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
@@ -172,7 +172,7 @@ def test_userinfo(testclient, token, user, foo_group):
     }
 
     token.scope = ["openid", "profile", "email"]
-    token.save()
+    backend.save(token)
     res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
@@ -189,7 +189,7 @@ def test_userinfo(testclient, token, user, foo_group):
     }
 
     token.scope = ["openid", "profile", "address"]
-    token.save()
+    backend.save(token)
     res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
@@ -206,7 +206,7 @@ def test_userinfo(testclient, token, user, foo_group):
     }
 
     token.scope = ["openid", "profile", "phone"]
-    token.save()
+    backend.save(token)
     res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
@@ -223,7 +223,7 @@ def test_userinfo(testclient, token, user, foo_group):
     }
 
     token.scope = ["openid", "profile", "groups"]
-    token.save()
+    backend.save(token)
     res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
@@ -296,7 +296,7 @@ def test_claim_is_omitted_if_empty(testclient, backend, user):
     # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
     # it's better to not insert a null or empty string value
     user.emails = []
-    user.save()
+    backend.save(user)
 
     default_jwt_mapping = JWTSettings().model_dump()
     data = generate_user_claims(user, STANDARD_CLAIMS, default_jwt_mapping)

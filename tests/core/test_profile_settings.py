@@ -34,13 +34,13 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
     logged_user.user_name = "user"
-    logged_user.save()
+    backend.save(logged_user)
 
 
 def test_group_removal(testclient, logged_admin, user, foo_group, backend):
     """Tests that one can remove a group from a user."""
     foo_group.members = [user, logged_admin]
-    foo_group.save()
+    backend.save(foo_group)
     user.reload()
     assert foo_group in user.groups
 
@@ -115,7 +115,7 @@ def test_edition_without_groups(
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
     logged_user.user_name = "user"
-    logged_user.save()
+    backend.save(logged_user)
 
 
 def test_password_change(testclient, logged_user, backend):
@@ -171,7 +171,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
         user_name="temp",
         emails=["john@doe.com"],
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/profile/temp/settings", status=200)
     res.mustcontain("This user does not have a password yet")
@@ -188,7 +188,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
 
     u.reload()
     u.password = "correct horse battery staple"
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/profile/temp/settings", status=200)
     res.mustcontain(no="This user does not have a password yet")
@@ -207,7 +207,7 @@ def test_password_initialization_mail_send_fail(
         user_name="temp",
         emails=["john@doe.com"],
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/profile/temp/settings", status=200)
     res.mustcontain("This user does not have a password yet")
@@ -272,7 +272,7 @@ def test_impersonate_locked_user(testclient, backend, logged_admin, user):
     user.lock_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         days=1
     )
-    user.save()
+    backend.save(user)
 
     assert user.locked
     res = testclient.get("/profile/user/settings")
@@ -295,7 +295,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
         emails=["john@doe.com"],
         password="correct horse battery staple",
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/profile/temp/settings", status=200)
     res.mustcontain("If the user has forgotten his password")
@@ -323,7 +323,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
         emails=["john@doe.com"],
         password="correct horse battery staple",
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/profile/temp/settings", status=200)
     res.mustcontain("If the user has forgotten his password")
@@ -454,7 +454,7 @@ def test_empty_lock_date(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
     user.lock_date = expiration_datetime
-    user.save()
+    backend.save(user)
 
     res = testclient.get("/profile/user/settings", status=200)
     res.form["lock_date"] = ""

@@ -228,7 +228,7 @@ def save_authorization_code(code, request):
         challenge=request.data.get("code_challenge"),
         challenge_method=request.data.get("code_challenge_method"),
     )
-    code.save()
+    BaseBackend.instance.save(code)
     return code.code
 
 
@@ -297,7 +297,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
 
     def revoke_old_credential(self, credential):
         credential.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-        credential.save()
+        BaseBackend.instance.save(credential)
 
 
 class OpenIDImplicitGrant(_OpenIDImplicitGrant):
@@ -351,7 +351,7 @@ def save_token(token, request):
         subject=request.user,
         audience=request.client.audience,
     )
-    t.save()
+    BaseBackend.instance.save(t)
 
 
 class BearerTokenValidator(_BearerTokenValidator):
@@ -382,7 +382,7 @@ class RevocationEndpoint(_RevocationEndpoint):
 
     def revoke_token(self, token, request):
         token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-        token.save()
+        BaseBackend.instance.save(token)
 
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):
@@ -463,9 +463,9 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
             post_logout_redirect_uris=request.data.get("post_logout_redirect_uris"),
             **self.client_convert_data(**client_info, **client_metadata),
         )
-        client.save()
+        BaseBackend.instance.save(client)
         client.audience = [client]
-        client.save()
+        BaseBackend.instance.save(client)
         return client
 
 
@@ -485,7 +485,7 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
 
     def update_client(self, client, client_metadata, request):
         client.update(**self.client_convert_data(**client_metadata))
-        client.save()
+        BaseBackend.instance.save(client)
         return client
 
     def generate_client_registration_info(self, client, request):

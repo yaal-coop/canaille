@@ -53,13 +53,13 @@ def test_group_deletion(testclient, backend):
         user_name="foobar",
         emails=["foo@bar.com"],
     )
-    user.save()
+    backend.save(user)
 
     group = models.Group(
         members=[user],
         display_name="foobar",
     )
-    group.save()
+    backend.save(group)
 
     user.reload()
     assert user.groups == [group]
@@ -86,19 +86,19 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     res.mustcontain(no=bar_group.display_name)
 
 
-def test_set_groups(app, user, foo_group, bar_group):
+def test_set_groups(app, user, foo_group, bar_group, backend):
     assert user in foo_group.members
     assert user.groups == [foo_group]
 
     user.groups = [foo_group, bar_group]
-    user.save()
+    backend.save(user)
 
     bar_group.reload()
     assert user in bar_group.members
     assert bar_group in user.groups
 
     user.groups = [foo_group]
-    user.save()
+    backend.save(user)
 
     foo_group.reload()
     bar_group.reload()
@@ -106,23 +106,23 @@ def test_set_groups(app, user, foo_group, bar_group):
     assert user not in bar_group.members
 
 
-def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
+def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group, backend):
     user = models.User(
         formatted_name=" Doe",  # leading space in id attribute
         family_name="Doe",
         user_name="user2",
         emails=["john@doe.com"],
     )
-    user.save()
+    backend.save(user)
 
     user.groups = [foo_group]
-    user.save()
+    backend.save(user)
 
     foo_group.reload()
     assert user in foo_group.members
 
     user.groups = []
-    user.save()
+    backend.save(user)
 
     foo_group.reload()
     assert user.id not in foo_group.members
@@ -231,14 +231,14 @@ def test_edition_failed(testclient, logged_moderator, foo_group):
     assert foo_group.display_name == "foo"
 
 
-def test_user_list_pagination(testclient, logged_admin, foo_group):
+def test_user_list_pagination(testclient, logged_admin, foo_group, backend):
     res = testclient.get("/groups/foo")
     res.mustcontain("1 item")
 
     users = fake_users(25)
     for user in users:
         foo_group.members = foo_group.members + [user]
-    foo_group.save()
+    backend.save(foo_group)
 
     assert len(foo_group.members) == 26
     res = testclient.get("/groups/foo")
@@ -274,9 +274,11 @@ def test_user_list_bad_pages(testclient, logged_admin, foo_group):
     )
 
 
-def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
+def test_user_list_search(
+    testclient, logged_admin, foo_group, user, moderator, backend
+):
     foo_group.members = foo_group.members + [logged_admin, moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
     res.mustcontain("3 items")
@@ -294,9 +296,9 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     res.mustcontain(no=moderator.formatted_name)
 
 
-def test_remove_member(testclient, logged_admin, foo_group, user, moderator):
+def test_remove_member(testclient, logged_admin, foo_group, user, moderator, backend):
     foo_group.members = [user, moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
     form = res.forms[f"deletegroupmemberform-{user.id}"]
@@ -313,15 +315,15 @@ def test_remove_member(testclient, logged_admin, foo_group, user, moderator):
 
 
 def test_remove_member_already_remove_from_group(
-    testclient, logged_admin, foo_group, user, moderator
+    testclient, logged_admin, foo_group, user, moderator, backend
 ):
     foo_group.members = [user, moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
     form = res.forms[f"deletegroupmemberform-{user.id}"]
     foo_group.members = [moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = form.submit(name="action", value="confirm-remove-member")
     assert (
@@ -331,17 +333,17 @@ def test_remove_member_already_remove_from_group(
 
 
 def test_confirm_remove_member_already_removed_from_group(
-    testclient, logged_admin, foo_group, user, moderator
+    testclient, logged_admin, foo_group, user, moderator, backend
 ):
     foo_group.members = [user, moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
     form = res.forms[f"deletegroupmemberform-{user.id}"]
     res = form.submit(name="action", value="confirm-remove-member")
 
     foo_group.members = [moderator]
-    foo_group.save()
+    backend.save(foo_group)
     res = res.form.submit(name="action", value="remove-member")
 
     assert (
@@ -351,10 +353,10 @@ def test_confirm_remove_member_already_removed_from_group(
 
 
 def test_remove_member_already_deleted(
-    testclient, logged_admin, foo_group, user, moderator
+    testclient, logged_admin, foo_group, user, moderator, backend
 ):
     foo_group.members = [user, moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
     form = res.forms[f"deletegroupmemberform-{user.id}"]
@@ -368,10 +370,10 @@ def test_remove_member_already_deleted(
 
 
 def test_confirm_remove_member_already_deleted(
-    testclient, logged_admin, foo_group, user, moderator
+    testclient, logged_admin, foo_group, user, moderator, backend
 ):
     foo_group.members = [user, moderator]
-    foo_group.save()
+    backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
     form = res.forms[f"deletegroupmemberform-{user.id}"]

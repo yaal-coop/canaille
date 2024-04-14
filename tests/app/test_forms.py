@@ -206,13 +206,13 @@ def test_fieldlist_add_readonly(testclient, logged_user):
     testclient.post("/profile/user", data, status=403)
 
 
-def test_fieldlist_remove_readonly(testclient, logged_user):
+def test_fieldlist_remove_readonly(testclient, logged_user, backend):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     logged_user.reload()
 
     logged_user.phone_numbers = ["555-555-000", "555-555-111"]
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.get("/profile/user")
     form = res.forms["baseform"]

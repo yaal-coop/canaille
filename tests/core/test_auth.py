@@ -154,7 +154,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         user_name="temp",
         emails=["john@doe.com", "johhny@doe.com"],
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "temp"
@@ -189,7 +189,7 @@ def test_first_login_account_initialization_mail_sending_failed(
         user_name="temp",
         emails=["john@doe.com"],
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/firstlogin/temp")
     res = res.form.submit(name="action", value="sendmail", expect_errors=True)
@@ -211,7 +211,7 @@ def test_first_login_form_error(testclient, backend, smtpd):
         user_name="temp",
         emails=["john@doe.com"],
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/firstlogin/temp", status=200)
     res.form["csrf_token"] = "invalid"
@@ -236,7 +236,7 @@ def test_user_password_deleted_during_login(testclient, backend):
         emails=["john@doe.com"],
         password="correct horse battery staple",
     )
-    u.save()
+    backend.save(u)
 
     res = testclient.get("/login")
     res.form["login"] = "temp"
@@ -244,7 +244,7 @@ def test_user_password_deleted_during_login(testclient, backend):
     res.form["password"] = "correct horse battery staple"
 
     u.password = None
-    u.save()
+    backend.save(u)
 
     res = res.form.submit(status=302)
     assert res.location == "/firstlogin/temp"
@@ -272,12 +272,12 @@ def test_wrong_login(testclient, user):
     res.mustcontain("The login &#39;invalid&#39; does not exist")
 
 
-def test_signin_locked_account(testclient, user):
+def test_signin_locked_account(testclient, user, backend):
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 
     user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-    user.save()
+    backend.save(user)
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "user"
@@ -289,4 +289,4 @@ def test_signin_locked_account(testclient, user):
     res.mustcontain("Your account has been locked.")
 
     user.lock_date = None
-    user.save()
+    backend.save(user)

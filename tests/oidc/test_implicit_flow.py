@@ -10,7 +10,7 @@ def test_oauth_implicit(testclient, user, client, backend):
     client.grant_types = ["token"]
     client.token_endpoint_auth_method = "none"
 
-    client.save()
+    backend.save(client)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -48,14 +48,14 @@ def test_oauth_implicit(testclient, user, client, backend):
 
     client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
-    client.save()
+    backend.save(client)
 
 
 def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backend):
     client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
-    client.save()
+    backend.save(client)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -101,7 +101,7 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backen
 
     client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
-    client.save()
+    backend.save(client)
 
 
 def test_oidc_implicit_with_group(
@@ -110,7 +110,7 @@ def test_oidc_implicit_with_group(
     client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
-    client.save()
+    backend.save(client)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -157,4 +157,4 @@ def test_oidc_implicit_with_group(
 
     client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
-    client.save()
+    backend.save(client)

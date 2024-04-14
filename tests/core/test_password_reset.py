@@ -25,7 +25,7 @@ def test_password_reset(testclient, user, backend):
 
 def test_password_reset_multiple_emails(testclient, user, backend):
     user.emails = ["foo@bar.com", "foo@baz.com"]
-    user.save()
+    backend.save(user)
 
     assert not backend.check_user_password(user, "foobarbaz")[0]
     hash = build_hash("user", "foo@baz.com", user.password)

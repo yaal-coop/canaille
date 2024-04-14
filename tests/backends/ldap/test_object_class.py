@@ -5,7 +5,7 @@ from canaille.backends.ldap.ldapobject import LDAPObject
 
 def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
-    foo_group.save()
+    backend.save(foo_group)
     dn = foo_group.dn
     g = backend.get(LDAPObject, dn)
     assert isinstance(g, models.Group)
@@ -18,7 +18,7 @@ def test_object_class_update(backend, testclient):
     setup_ldap_models(testclient.app.config)
 
     user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
-    user1.save()
+    backend.save(user1)
 
     assert set(user1.get_ldap_attribute("objectClass")) == {"inetOrgPerson"}
     assert set(
@@ -32,7 +32,7 @@ def test_object_class_update(backend, testclient):
     setup_ldap_models(testclient.app.config)
 
     user2 = models.User(cn="foo2", sn="bar2", user_name="baz2")
-    user2.save()
+    backend.save(user2)
 
     assert set(user2.get_ldap_attribute("objectClass")) == {
         "inetOrgPerson",
@@ -48,7 +48,7 @@ def test_object_class_update(backend, testclient):
     user1 = backend.get(models.User, id=user1.id)
     assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
 
-    user1.save()
+    backend.save(user1)
     assert set(user1.get_ldap_attribute("objectClass")) == {
         "inetOrgPerson",
         "extensibleObject",
@@ -72,7 +72,7 @@ def test_keep_old_object_classes(backend, testclient, slapd_server):
     attributes.
     """
     user = models.User(cn="foo", sn="bar", user_name="baz")
-    user.save()
+    backend.save(user)
 
     ldif = f"""dn: {user.dn}
 changetype: modify
@@ -95,6 +95,6 @@ homeDirectory: /home/foobar
     user.reload()
 
     # saving an object should not raise a ldap.OBJECT_CLASS_VIOLATION exception
-    user.save()
+    backend.save(user)
 
     user.delete()

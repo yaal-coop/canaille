@@ -146,7 +146,7 @@ def test_delete(testclient, backend, user):
     ]
 
     client = models.Client(client_id="foobar", client_name="Some client")
-    client.save()
+    backend.save(client)
 
     headers = {"Authorization": "Bearer static-token"}
     with warnings.catch_warnings(record=True):

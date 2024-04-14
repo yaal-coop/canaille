@@ -167,7 +167,7 @@ def test_preconsented_client(
     assert not backend.query(models.Consent)
 
     client.preconsent = True
-    client.save()
+    backend.save(client)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -318,7 +318,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
     assert not backend.query(models.Consent)
 
     client.token_endpoint_auth_method = "none"
-    client.save()
+    backend.save(client)
 
     code_verifier = gen_salt(48)
     code_challenge = create_s256_code_challenge(code_verifier)
@@ -373,7 +373,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
     assert res.json["name"] == "John (johnny) Doe"
 
     client.token_endpoint_auth_method = "client_secret_basic"
-    client.save()
+    backend.save(client)
 
     for consent in consents:
         consent.delete()
@@ -565,7 +565,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
 def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
     assert not backend.query(models.Consent)
     client.scope = ["openid", "profile", "groups"]
-    client.save()
+    backend.save(client)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -679,7 +679,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
         emails=["temp@temp.com"],
         password="correct horse battery staple",
     )
-    user.save()
+    backend.save(user)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -738,7 +738,7 @@ def test_locked_account(
     )
 
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-    logged_user.save()
+    backend.save(logged_user)
 
     res = res.form.submit(name="answer", value="accept", status=302)
 

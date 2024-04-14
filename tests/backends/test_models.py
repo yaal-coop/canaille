@@ -12,13 +12,13 @@ def test_model_comparison(testclient, backend):
         family_name="foo",
         formatted_name="foo",
     )
-    foo1.save()
+    backend.save(foo1)
     bar = models.User(
         user_name="bar",
         family_name="bar",
         formatted_name="bar",
     )
-    bar.save()
+    backend.save(bar)
     foo2 = backend.get(models.User, id=foo1.id)
 
     assert foo1 == foo2
@@ -41,7 +41,7 @@ def test_model_lifecycle(testclient, backend):
     assert not backend.query(models.User, id="invalid")
     assert not backend.get(models.User, id=user.id)
 
-    user.save()
+    backend.save(user)
 
     assert backend.query(models.User) == [user]
     assert backend.query(models.User, id=user.id) == [user]
@@ -72,7 +72,7 @@ def test_model_attribute_edition(testclient, backend):
         display_name="display_name",
         emails=["email1@user.com", "email2@user.com"],
     )
-    user.save()
+    backend.save(user)
 
     assert user.user_name == "user_name"
     assert user.family_name == "family_name"
@@ -85,7 +85,7 @@ def test_model_attribute_edition(testclient, backend):
 
     user.family_name = "new_family_name"
     user.emails = ["email1@user.com"]
-    user.save()
+    backend.save(user)
 
     assert user.family_name == "new_family_name"
     assert user.emails == ["email1@user.com"]
@@ -97,7 +97,7 @@ def test_model_attribute_edition(testclient, backend):
     user.display_name = ""
     assert not user.display_name
 
-    user.save()
+    backend.save(user)
     assert not user.display_name
 
     user.delete()
@@ -110,7 +110,7 @@ def test_model_indexation(testclient, backend):
         formatted_name="formatted_name",
         emails=["email1@user.com", "email2@user.com"],
     )
-    user.save()
+    backend.save(user)
 
     assert backend.get(models.User, family_name="family_name") == user
     assert not backend.get(models.User, family_name="new_family_name")
@@ -125,7 +125,7 @@ def test_model_indexation(testclient, backend):
     assert backend.get(models.User, emails=["email1@user.com"]) != user
     assert not backend.get(models.User, emails=["email3@user.com"])
 
-    user.save()
+    backend.save(user)
 
     assert not backend.get(models.User, family_name="family_name")
     assert backend.get(models.User, family_name="new_family_name") == user
@@ -177,14 +177,14 @@ def test_model_references(testclient, user, foo_group, admin, bar_group, backend
     assert user not in bar_group.members
     assert bar_group not in user.groups
     user.groups = user.groups + [bar_group]
-    user.save()
+    backend.save(user)
     bar_group.reload()
 
     assert user in bar_group.members
     assert bar_group in user.groups
 
     bar_group.members = [admin]
-    bar_group.save()
+    backend.save(bar_group)
     user.reload()
 
     assert user not in bar_group.members
@@ -201,7 +201,7 @@ def test_model_creation_edition_datetime(testclient, backend):
             family_name="foo",
             formatted_name="foo",
         )
-        user.save()
+        backend.save(user)
         assert user.created == datetime.datetime(
             2020, 1, 1, 2, tzinfo=datetime.timezone.utc
         )
@@ -211,7 +211,7 @@ def test_model_creation_edition_datetime(testclient, backend):
 
     with time_machine.travel("2021-01-01 02:00:00+00:00", tick=False):
         user.family_name = "bar"
-        user.save()
+        backend.save(user)
         assert user.created == datetime.datetime(
             2020, 1, 1, 2, tzinfo=datetime.timezone.utc
         )

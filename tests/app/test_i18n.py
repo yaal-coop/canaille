@@ -1,9 +1,9 @@
 from flask_babel import refresh
 
 
-def test_preferred_language(testclient, logged_user):
+def test_preferred_language(testclient, logged_user, backend):
     logged_user.preferred_language = None
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
@@ -49,9 +49,9 @@ def test_preferred_language(testclient, logged_user):
     res.mustcontain(no="Mon profil")
 
 
-def test_form_translations(testclient, logged_user):
+def test_form_translations(testclient, logged_user, backend):
     logged_user.preferred_language = "fr"
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
@@ -62,9 +62,9 @@ def test_form_translations(testclient, logged_user):
     res.mustcontain("N’est pas un numéro de téléphone valide")
 
 
-def test_language_config(testclient, logged_user):
+def test_language_config(testclient, logged_user, backend):
     logged_user.preferred_language = None
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.get("/profile/user", status=200)
     assert res.pyquery("html")[0].attrib["lang"] == "en"

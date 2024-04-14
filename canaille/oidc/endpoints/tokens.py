@@ -11,6 +11,7 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
+from canaille.backends import BaseBackend
 
 from .forms import TokenRevokationForm
 
@@ -40,7 +41,7 @@ def view(user, token):
 
         elif request.form.get("action") == "revoke":
             token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-            token.save()
+            BaseBackend.instance.save(token)
             flash(_("The token has successfully been revoked."), "success")
 
         else:

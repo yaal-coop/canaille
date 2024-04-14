@@ -13,13 +13,13 @@ def test_user_has_password(testclient, backend):
         user_name="temp",
         emails=["john@doe.com"],
     )
-    user.save()
+    backend.save(user)
 
     assert user.password is None
     assert not user.has_password()
 
     user.password = "foobar"
-    user.save()
+    backend.save(user)
 
     assert user.password is not None
     assert user.has_password()

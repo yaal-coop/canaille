@@ -371,14 +371,14 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
     assert "new_email@mydomain.tld" not in user.emails
 
 
-def test_delete_email(testclient, logged_user):
+def test_delete_email(testclient, logged_user, backend):
     """Tests that user can deletes its emails unless they have only one
     left."""
     res = testclient.get("/profile/user")
     assert "email_remove" not in res.forms["emailconfirmationform"].fields
 
     logged_user.emails = logged_user.emails + ["new@email.com"]
-    logged_user.save()
+    backend.save(logged_user)
     res = testclient.get("/profile/user")
     assert "email_remove" in res.forms["emailconfirmationform"].fields
 
@@ -391,10 +391,10 @@ def test_delete_email(testclient, logged_user):
     assert logged_user.emails == ["john@doe.com"]
 
 
-def test_delete_wrong_email(testclient, logged_user):
+def test_delete_wrong_email(testclient, logged_user, backend):
     """Tests that removing an already removed email do not produce anything."""
     logged_user.emails = logged_user.emails + ["new@email.com"]
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.get("/profile/user")
 
@@ -412,10 +412,10 @@ def test_delete_wrong_email(testclient, logged_user):
     assert logged_user.emails == ["john@doe.com"]
 
 
-def test_delete_last_email(testclient, logged_user):
+def test_delete_last_email(testclient, logged_user, backend):
     """Tests that users cannot remove their last email address."""
     logged_user.emails = logged_user.emails + ["new@email.com"]
-    logged_user.save()
+    backend.save(logged_user)
 
     res = testclient.get("/profile/user")
 

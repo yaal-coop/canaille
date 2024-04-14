@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from canaille.backends import BaseBackend
 
 
@@ -39,7 +42,7 @@ class Backend(BaseBackend):
 
     def set_user_password(self, user, password):
         user.password = password
-        user.save()
+        self.save(user)
 
     def query(self, model, **kwargs):
         # if there is no filter, return all models
@@ -91,3 +94,17 @@ class Backend(BaseBackend):
 
         results = self.query(model, **kwargs)
         return results[0] if results else None
+
+    def save(self, instance):
+        if not instance.id:
+            instance.id = str(uuid.uuid4())
+
+        instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
+        if not instance.created:
+            instance.created = instance.last_modified
+
+        instance.index_delete()
+        instance.index_save()
+        instance._cache = {}

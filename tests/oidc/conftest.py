@@ -67,9 +67,9 @@ def client(testclient, trusted_client, backend):
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
     )
-    c.save()
+    backend.save(c)
     c.audience = [c, trusted_client]
-    c.save()
+    backend.save(c)
 
     yield c
     c.delete()
@@ -105,9 +105,9 @@ def trusted_client(testclient, backend):
         post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
         preconsent=True,
     )
-    c.save()
+    backend.save(c)
     c.audience = [c]
-    c.save()
+    backend.save(c)
 
     yield c
     c.delete()
@@ -129,7 +129,7 @@ def authorization(testclient, user, client, backend):
         challenge="challenge",
         challenge_method="method",
     )
-    a.save()
+    backend.save(a)
     yield a
     a.delete()
 
@@ -147,7 +147,7 @@ def token(testclient, client, user, backend):
         issue_date=datetime.datetime.now(datetime.timezone.utc),
         lifetime=3600,
     )
-    t.save()
+    backend.save(t)
     yield t
     t.delete()
 
@@ -171,6 +171,6 @@ def consent(testclient, client, user, backend):
         scope=["openid", "profile"],
         issue_date=datetime.datetime.now(datetime.timezone.utc),
     )
-    t.save()
+    backend.save(t)
     yield t
     t.delete()

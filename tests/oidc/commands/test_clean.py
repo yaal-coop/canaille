@@ -21,7 +21,7 @@ def test_clean_command(testclient, backend, client, user):
         challenge="challenge",
         challenge_method="method",
     )
-    valid_code.save()
+    backend.save(valid_code)
     expired_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-expired-code",
@@ -39,7 +39,7 @@ def test_clean_command(testclient, backend, client, user):
         challenge="challenge",
         challenge_method="method",
     )
-    expired_code.save()
+    backend.save(expired_code)
 
     valid_token = models.Token(
         token_id=gen_salt(48),
@@ -53,7 +53,7 @@ def test_clean_command(testclient, backend, client, user):
         ),
         lifetime=3600,
     )
-    valid_token.save()
+    backend.save(valid_token)
     expired_token = models.Token(
         token_id=gen_salt(48),
         access_token="my-expired-token",
@@ -67,7 +67,7 @@ def test_clean_command(testclient, backend, client, user):
         ),
         lifetime=3600,
     )
-    expired_token.save()
+    backend.save(expired_token)
 
     assert backend.get(models.AuthorizationCode, code="my-expired-code")
     assert backend.get(models.Token, access_token="my-expired-token")

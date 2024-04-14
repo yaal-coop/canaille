@@ -14,7 +14,7 @@ from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
 
 
-def test_prompt_none(testclient, logged_user, client):
+def test_prompt_none(testclient, logged_user, client, backend):
     """Nominal case with prompt=none."""
     consent = models.Consent(
         consent_id=str(uuid.uuid4()),
@@ -22,7 +22,7 @@ def test_prompt_none(testclient, logged_user, client):
         subject=logged_user,
         scope=["openid", "profile"],
     )
-    consent.save()
+    backend.save(consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -42,7 +42,7 @@ def test_prompt_none(testclient, logged_user, client):
     consent.delete()
 
 
-def test_prompt_not_logged(testclient, user, client):
+def test_prompt_not_logged(testclient, user, client, backend):
     """Prompt=none should return a login_required error when no user is logged
     in.
 
@@ -58,7 +58,7 @@ def test_prompt_not_logged(testclient, user, client):
         subject=user,
         scope=["openid", "profile"],
     )
-    consent.save()
+    backend.save(consent)
 
     res = testclient.get(
         "/oauth/authorize",
@@ -100,7 +100,7 @@ def test_prompt_no_consent(testclient, logged_user, client):
     assert "consent_required" == res.json.get("error")
 
 
-def test_prompt_create_logged(testclient, logged_user, client):
+def test_prompt_create_logged(testclient, logged_user, client, backend):
     """If prompt=create and user is already logged in, then go straight to the
     consent page."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
@@ -111,7 +111,7 @@ def test_prompt_create_logged(testclient, logged_user, client):
         subject=logged_user,
         scope=["openid", "profile"],
     )
-    consent.save()
+    backend.save(consent)
 
     res = testclient.get(
         "/oauth/authorize",

@@ -43,10 +43,10 @@ class User(canaille.core.models.User, LDAPObject):
 
         return super().match_filter(filter)
 
-    def save(self, *args, **kwargs):
+    def save(self):
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:
-            return super().save(*args, **kwargs)
+            return
 
         # The LDAP attribute memberOf cannot directly be edited,
         # so this is needed to update the Group.member attribute
@@ -60,11 +60,11 @@ class User(canaille.core.models.User, LDAPObject):
         to_del = set(old_groups) - set(new_groups)
         del self.changes[group_attr]
 
-        super().save(*args, **kwargs)
+        yield
 
         for group in to_add:
             group.members = group.members + [self]
-            group.save()
+            Backend.instance.save(group)
 
         for group in to_del:
             # LDAP groups cannot be empty because groupOfNames.member
@@ -73,7 +73,7 @@ class User(canaille.core.models.User, LDAPObject):
             # TODO: properly manage the situation where one wants to
             # remove the last member of a group
             group.members = [member for member in group.members if member != self]
-            group.save()
+            Backend.instance.save(group)
 
         self.state[group_attr] = new_groups
 

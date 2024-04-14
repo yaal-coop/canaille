@@ -404,7 +404,7 @@ def email_confirmation(data, hash):
         return redirect(url_for("core.account.index"))
 
     user.emails = user.emails + [confirmation_obj.email]
-    user.save()
+    BaseBackend.instance.save(user)
     flash(_("Your email address have been confirmed."), "success")
     return redirect(url_for("core.account.index"))
 
@@ -460,11 +460,11 @@ def profile_create(current_app, form):
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
     user.formatted_name = f"{given_name} {family_name}".strip()
-    user.save()
+    BaseBackend.instance.save(user)
 
     if form["password1"].data:
         BaseBackend.instance.set_user_password(user, form["password1"].data)
-        user.save()
+        BaseBackend.instance.save(user)
 
     return user
 
@@ -536,7 +536,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
         if profile_form["preferred_language"].data == "auto":
             edited_user.preferred_language = None
 
-    edited_user.save()
+    BaseBackend.instance.save(edited_user)
     g.user.reload()
 
 
@@ -574,7 +574,7 @@ def profile_edition_remove_email(user, edited_user, email):
         return False
 
     edited_user.emails = [m for m in edited_user.emails if m != email]
-    edited_user.save()
+    BaseBackend.instance.save(edited_user)
     return True
 
 
@@ -730,7 +730,7 @@ def profile_settings(user, edited_user):
     ):
         flash(_("The account has been locked"), "success")
         edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-        edited_user.save()
+        BaseBackend.instance.save(edited_user)
 
         return profile_settings_edit(user, edited_user)
 
@@ -741,7 +741,7 @@ def profile_settings(user, edited_user):
     ):
         flash(_("The account has been unlocked"), "success")
         edited_user.lock_date = None
-        edited_user.save()
+        BaseBackend.instance.save(edited_user)
 
         return profile_settings_edit(user, edited_user)
 
@@ -791,7 +791,7 @@ def profile_settings_edit(editor, edited_user):
                     edited_user, form["password1"].data
                 )
 
-            edited_user.save()
+            BaseBackend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
             return redirect(
                 url_for("core.account.profile_settings", edited_user=edited_user)

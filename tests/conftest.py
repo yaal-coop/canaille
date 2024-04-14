@@ -191,7 +191,7 @@ def user(app, backend):
         profile_url="https://john.example",
         formatted_address="1235, somewhere",
     )
-    u.save()
+    backend.save(u)
     yield u
     u.delete()
 
@@ -205,7 +205,7 @@ def admin(app, backend):
         emails=["jane@doe.com"],
         password="admin",
     )
-    u.save()
+    backend.save(u)
     yield u
     u.delete()
 
@@ -219,7 +219,7 @@ def moderator(app, backend):
         emails=["jack@doe.com"],
         password="moderator",
     )
-    u.save()
+    backend.save(u)
     yield u
     u.delete()
 
@@ -251,7 +251,7 @@ def foo_group(app, user, backend):
         members=[user],
         display_name="foo",
     )
-    group.save()
+    backend.save(group)
     user.reload()
     yield group
     group.delete()
@@ -263,7 +263,7 @@ def bar_group(app, admin, backend):
         members=[admin],
         display_name="bar",
     )
-    group.save()
+    backend.save(group)
     admin.reload()
     yield group
     group.delete()

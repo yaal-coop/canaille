@@ -40,7 +40,7 @@ def fake_users(nb=1):
                 password=fake.password(),
                 preferred_language=fake._locales[0],
             )
-            user.save()
+            BaseBackend.instance.save(user)
             users.append(user)
         except Exception:  # pragma: no cover
             pass
@@ -59,7 +59,7 @@ def fake_groups(nb=1, nb_users_max=1):
             )
             nb_users = random.randrange(1, nb_users_max + 1)
             group.members = list({random.choice(users) for _ in range(nb_users)})
-            group.save()
+            BaseBackend.instance.save(group)
             groups.append(group)
         except Exception:  # pragma: no cover
             pass

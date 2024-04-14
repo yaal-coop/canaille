@@ -5,9 +5,9 @@ from webtest import Upload
 from canaille.app import models
 
 
-def test_photo(testclient, user, jpeg_photo):
+def test_photo(testclient, user, jpeg_photo, backend):
     user.photo = jpeg_photo
-    user.save()
+    backend.save(user)
     user.reload()
 
     res = testclient.get("/profile/user/photo")

@@ -184,7 +184,7 @@ class Consent(BaseConsent):
 
     def revoke(self):
         self.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-        self.save()
+        BaseBackend.instance.save(self)
 
         tokens = BaseBackend.instance.query(
             models.Token,
@@ -194,8 +194,8 @@ class Consent(BaseConsent):
         tokens = [token for token in tokens if not token.revoked]
         for t in tokens:
             t.revokation_date = self.revokation_date
-            t.save()
+            BaseBackend.instance.save(t)
 
     def restore(self):
         self.revokation_date = None
-        self.save()
+        BaseBackend.instance.save(self)

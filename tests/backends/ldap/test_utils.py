@@ -24,7 +24,7 @@ def test_object_creation(app, backend):
         emails=["john@doe.com"],
     )
     assert not user.exists
-    user.save()
+    backend.save(user)
     assert user.exists
 
     user = backend.get(models.User, id=user.id)
@@ -45,7 +45,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
         user_name=" user",
         emails=["john@doe.com"],
     )
-    user.save()
+    backend.save(user)
 
     dn = user.dn
     assert dn == "uid=user,ou=users,dc=mydomain,dc=tld"
@@ -66,7 +66,7 @@ def test_special_chars_in_rdn(testclient, backend):
         user_name="#user",  # special char
         emails=["john@doe.com"],
     )
-    user.save()
+    backend.save(user)
 
     dn = user.dn
     assert ldap.dn.is_dn(dn)

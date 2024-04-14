@@ -2,7 +2,6 @@ import typing
 
 import ldap.dn
 import ldap.filter
-from ldap.controls.readentry import PostReadControl
 
 from canaille.backends.models import BackendModel
 
@@ -263,64 +262,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.state = result[0][1]
-
-    def save(self):
-        conn = Backend.instance.connection
-
-        current_object_classes = self.get_ldap_attribute("objectClass") or []
-        self.set_ldap_attribute(
-            "objectClass",
-            list(set(self.ldap_object_class) | set(current_object_classes)),
-        )
-
-        # PostReadControl allows to read the updated object attributes on creation/edition
-        attributes = ["objectClass"] + [
-            self.python_attribute_to_ldap(name) for name in self.attributes
-        ]
-        read_post_control = PostReadControl(criticality=True, attrList=attributes)
-
-        # Object already exists in the LDAP database
-        if self.exists:
-            deletions = [
-                name
-                for name, value in self.changes.items()
-                if (
-                    value is None
-                    or value == []
-                    or (isinstance(value, list) and len(value) == 1 and not value[0])
-                )
-                and name in self.state
-            ]
-            changes = {
-                name: value
-                for name, value in self.changes.items()
-                if name not in deletions and self.state.get(name) != value
-            }
-            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
-            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
-                (ldap.MOD_REPLACE, name, values)
-                for name, values in formatted_changes.items()
-            ]
-            _, _, _, [result] = conn.modify_ext_s(
-                self.dn, modlist, serverctrls=[read_post_control]
-            )
-
-        # Object does not exist yet in the LDAP database
-        else:
-            changes = {
-                name: value
-                for name, value in {**self.state, **self.changes}.items()
-                if value and value[0]
-            }
-            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
-            modlist = [(name, values) for name, values in formatted_changes.items()]
-            _, _, _, [result] = conn.add_ext_s(
-                self.dn, modlist, serverctrls=[read_post_control]
-            )
-
-        self.exists = True
-        self.state = {**result.entry, **self.changes}
-        self.changes = {}
 
     def delete(self):
         conn = Backend.instance.connection

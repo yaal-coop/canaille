@@ -177,7 +177,7 @@ def authorize_consent(client, user):
                 scope=allowed_scopes,
                 issue_date=datetime.datetime.now(datetime.timezone.utc),
             )
-        consent.save()
+        BaseBackend.instance.save(consent)
 
     response = authorization.create_authorization_response(grant_user=grant_user)
     current_app.logger.debug("authorization endpoint response: %s", response.location)

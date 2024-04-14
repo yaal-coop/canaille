@@ -9,6 +9,7 @@ from flask import current_app
 from ldap.controls import DecodeControlTuples
 from ldap.controls.ppolicy import PasswordPolicyControl
 from ldap.controls.ppolicy import PasswordPolicyError
+from ldap.controls.readentry import PostReadControl
 
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
@@ -128,7 +129,7 @@ class Backend(BaseBackend):
                     emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                     password="correct horse battery staple",
                 )
-                user.save()
+                BaseBackend.instance.save(user)
                 user.delete()
 
             except ldap.INSUFFICIENT_ACCESS as exc:
@@ -147,13 +148,13 @@ class Backend(BaseBackend):
                     emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                     password="correct horse battery staple",
                 )
-                user.save()
+                BaseBackend.instance.save(user)
 
                 group = models.Group(
                     display_name=f"canaille_{uuid.uuid4()}",
                     members=[user],
                 )
-                group.save()
+                BaseBackend.instance.save(group)
                 group.delete()
 
             except ldap.INSUFFICIENT_ACCESS as exc:
@@ -323,6 +324,69 @@ class Backend(BaseBackend):
                 )
 
             return None
+
+    def save(self, instance):
+        # run the instance save callback if existing
+        save_callback = instance.save() if hasattr(instance, "save") else iter([])
+        next(save_callback, None)
+
+        current_object_classes = instance.get_ldap_attribute("objectClass") or []
+        instance.set_ldap_attribute(
+            "objectClass",
+            list(set(instance.ldap_object_class) | set(current_object_classes)),
+        )
+
+        # PostReadControl allows to read the updated object attributes on creation/edition
+        attributes = ["objectClass"] + [
+            instance.python_attribute_to_ldap(name) for name in instance.attributes
+        ]
+        read_post_control = PostReadControl(criticality=True, attrList=attributes)
+
+        # Object already exists in the LDAP database
+        if instance.exists:
+            deletions = [
+                name
+                for name, value in instance.changes.items()
+                if (
+                    value is None
+                    or value == []
+                    or (isinstance(value, list) and len(value) == 1 and not value[0])
+                )
+                and name in instance.state
+            ]
+            changes = {
+                name: value
+                for name, value in instance.changes.items()
+                if name not in deletions and instance.state.get(name) != value
+            }
+            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
+            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
+                (ldap.MOD_REPLACE, name, values)
+                for name, values in formatted_changes.items()
+            ]
+            _, _, _, [result] = self.connection.modify_ext_s(
+                instance.dn, modlist, serverctrls=[read_post_control]
+            )
+
+        # Object does not exist yet in the LDAP database
+        else:
+            changes = {
+                name: value
+                for name, value in {**instance.state, **instance.changes}.items()
+                if value and value[0]
+            }
+            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
+            modlist = [(name, values) for name, values in formatted_changes.items()]
+            _, _, _, [result] = self.connection.add_ext_s(
+                instance.dn, modlist, serverctrls=[read_post_control]
+            )
+
+        instance.exists = True
+        instance.state = {**result.entry, **instance.changes}
+        instance.changes = {}
+
+        # run the instance save callback again if existing
+        next(save_callback, None)
 
 
 def setup_ldap_models(config):

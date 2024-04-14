@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
@@ -66,7 +68,7 @@ class Backend(BaseBackend):
 
     def set_user_password(self, user, password):
         user.password = password
-        user.save()
+        self.save(user)
 
     def query(self, model, **kwargs):
         filter = [
@@ -106,3 +108,13 @@ class Backend(BaseBackend):
         return Backend.instance.db_session.execute(
             select(model).filter(*filter)
         ).scalar_one_or_none()
+
+    def save(self, instance):
+        instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
+        if not instance.created:
+            instance.created = instance.last_modified
+
+        Backend.instance.db_session.add(instance)
+        Backend.instance.db_session.commit()
