@@ -24,7 +24,7 @@ def test_user_has_password(testclient, backend):
     assert user.password is not None
     assert user.has_password()
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_user_set_and_check_password(testclient, user, backend):

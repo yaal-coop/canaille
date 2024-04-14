@@ -193,7 +193,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
     res = testclient.get("/profile/temp/settings", status=200)
     res.mustcontain(no="This user does not have a password yet")
 
-    u.delete()
+    backend.delete(u)
 
 
 @mock.patch("smtplib.SMTP")
@@ -224,7 +224,7 @@ def test_password_initialization_mail_send_fail(
     assert ("error", "Could not send the password initialization email") in res.flashes
     assert len(smtpd.messages) == 0
 
-    u.delete()
+    backend.delete(u)
 
 
 def test_password_initialization_invalid_user(smtpd, testclient, backend, logged_admin):
@@ -310,7 +310,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.com"
 
-    u.delete()
+    backend.delete(u)
 
 
 @mock.patch("smtplib.SMTP")
@@ -340,7 +340,7 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
     assert ("error", "Could not send the password reset email") in res.flashes
     assert len(smtpd.messages) == 0
 
-    u.delete()
+    backend.delete(u)
 
 
 def test_admin_bad_request(testclient, logged_admin):

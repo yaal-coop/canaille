@@ -108,3 +108,13 @@ class Backend(BaseBackend):
         instance.index_delete()
         instance.index_save()
         instance._cache = {}
+
+    def delete(self, instance):
+        # run the instance delete callback if existing
+        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
+        next(delete_callback, None)
+
+        instance.index_delete()
+
+        # run the instance delete callback again if existing
+        next(delete_callback, None)

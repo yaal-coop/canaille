@@ -7,7 +7,7 @@ def test_no_group(app, backend):
     assert backend.query(models.Group) == []
 
 
-def test_group_list_pagination(testclient, logged_admin, foo_group):
+def test_group_list_pagination(testclient, logged_admin, foo_group, backend):
     res = testclient.get("/groups")
     res.mustcontain("1 item")
 
@@ -26,7 +26,7 @@ def test_group_list_pagination(testclient, logged_admin, foo_group):
         ".groups tbody tr td:nth-of-type(2) a"
     ).text().split(" ")
     for group in groups:
-        group.delete()
+        backend.delete(group)
 
     res = testclient.get("/groups")
     res.mustcontain("1 item")
@@ -64,11 +64,11 @@ def test_group_deletion(testclient, backend):
     user.reload()
     assert user.groups == [group]
 
-    group.delete()
+    backend.delete(group)
     user.reload()
     assert not user.groups
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
@@ -127,7 +127,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group, back
     foo_group.reload()
     assert user.id not in foo_group.members
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_moderator_can_create_edit_and_delete_group(
@@ -252,7 +252,7 @@ def test_user_list_pagination(testclient, logged_admin, foo_group, backend):
         " "
     )
     for user in users:
-        user.delete()
+        backend.delete(user)
 
     res = testclient.get("/groups/foo")
     res.mustcontain("1 item")
@@ -360,7 +360,7 @@ def test_remove_member_already_deleted(
 
     res = testclient.get("/groups/foo")
     form = res.forms[f"deletegroupmemberform-{user.id}"]
-    user.delete()
+    backend.delete(user)
 
     res = form.submit(name="action", value="confirm-remove-member")
     assert (
@@ -379,7 +379,7 @@ def test_confirm_remove_member_already_deleted(
     form = res.forms[f"deletegroupmemberform-{user.id}"]
     res = form.submit(name="action", value="confirm-remove-member")
 
-    user.delete()
+    backend.delete(user)
     res = res.form.submit(name="action", value="remove-member")
 
     assert (

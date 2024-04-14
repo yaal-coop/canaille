@@ -24,7 +24,7 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
 
     user = backend.get(models.User, user_name="newuser")
     assert user
-    user.delete()
+    backend.delete(user)
 
 
 def test_registration_with_email_validation(testclient, backend, smtpd, foo_group):
@@ -75,7 +75,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
 
     user = backend.get(models.User, user_name="newuser")
     assert user
-    user.delete()
+    backend.delete(user)
 
 
 def test_registration_with_email_already_taken(

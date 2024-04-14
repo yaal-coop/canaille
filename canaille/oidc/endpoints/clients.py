@@ -151,5 +151,5 @@ def client_delete(client):
         _("The client has been deleted."),
         "success",
     )
-    client.delete()
+    BaseBackend.instance.delete(client)
     return redirect(url_for("oidc.clients.index"))

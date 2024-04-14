@@ -50,7 +50,7 @@ def test_token_list_pagination(testclient, logged_admin, client, backend):
         ".tokens tbody tr:nth-of-type(1) td:nth-of-type(1) a"
     ).text().split(" ")
     for token in tokens:
-        token.delete()
+        backend.delete(token)
 
     res = testclient.get("/admin/token")
     res.mustcontain("0 items")

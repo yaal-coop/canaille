@@ -98,7 +98,7 @@ def test_nominal_case(
     assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_invalid_client(testclient, logged_user, keypair):
@@ -158,7 +158,7 @@ def test_redirect_uri(
     assert token.subject == logged_user
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_preconsented_client(
@@ -288,7 +288,7 @@ def test_logout_login(testclient, logged_user, client, backend):
     assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_deny(testclient, logged_user, client, backend):
@@ -376,7 +376,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
     backend.save(client)
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_consent_already_given(testclient, logged_user, client, backend):
@@ -432,7 +432,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
     assert "code" in params
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_when_consent_already_given_but_for_a_smaller_scope(
@@ -500,7 +500,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
     assert "groups" in consents[0].scope
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_user_cannot_use_oidc(testclient, user, client, keypair, trusted_client):
@@ -559,7 +559,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
 
     assert res.location.startswith(client.redirect_uris[0])
     for consent in backend.query(models.Consent):
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
@@ -628,7 +628,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
     assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_code_expired(testclient, user, client):
@@ -701,7 +701,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
     code = params["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)
 
-    user.delete()
+    backend.delete(user)
 
     res = testclient.post(
         "/oauth/token",
@@ -718,7 +718,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
         "error": "invalid_grant",
         "error_description": 'There is no "user" for this code.',
     }
-    authcode.delete()
+    backend.delete(authcode)
 
 
 def test_locked_account(

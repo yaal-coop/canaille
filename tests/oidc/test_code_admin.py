@@ -40,7 +40,7 @@ def test_authorization_list_pagination(testclient, logged_admin, client, backend
         ".codes tbody tr td:nth-of-type(1) a"
     ).text().split(" ")
     for authorization in authorizations:
-        authorization.delete()
+        backend.delete(authorization)
 
     res = testclient.get("/admin/authorization")
     res.mustcontain("0 items")

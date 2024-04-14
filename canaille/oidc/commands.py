@@ -13,11 +13,11 @@ def clean():
     """Remove expired tokens and authorization codes."""
     for t in BaseBackend.instance.query(models.Token):
         if t.is_expired():
-            t.delete()
+            BaseBackend.instance.delete(t)
 
     for a in BaseBackend.instance.query(models.AuthorizationCode):
         if a.is_expired():
-            a.delete()
+            BaseBackend.instance.delete(a)
 
 
 def register(cli):

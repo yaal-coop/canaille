@@ -89,6 +89,10 @@ class BaseBackend:
         """Validate the current modifications in the database."""
         raise NotImplementedError()
 
+    def delete(self, instance):
+        """Remove the current instance from the database."""
+        raise NotImplementedError()
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()

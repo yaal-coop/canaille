@@ -173,7 +173,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
     assert len(smtpd.messages) == 2
     assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")
-    u.delete()
+    backend.delete(u)
 
 
 @mock.patch("smtplib.SMTP")
@@ -200,7 +200,7 @@ def test_first_login_account_initialization_mail_sending_failed(
     ) not in res.flashes
     assert ("error", "Could not send the password initialization email") in res.flashes
     assert len(smtpd.messages) == 0
-    u.delete()
+    backend.delete(u)
 
 
 def test_first_login_form_error(testclient, backend, smtpd):
@@ -219,7 +219,7 @@ def test_first_login_form_error(testclient, backend, smtpd):
         name="action", value="sendmail", status=400, expect_errors=True
     )
     assert len(smtpd.messages) == 0
-    u.delete()
+    backend.delete(u)
 
 
 def test_first_login_page_unavailable_for_users_with_password(
@@ -249,7 +249,7 @@ def test_user_password_deleted_during_login(testclient, backend):
     res = res.form.submit(status=302)
     assert res.location == "/firstlogin/temp"
 
-    u.delete()
+    backend.delete(u)
 
 
 def test_wrong_login(testclient, user):

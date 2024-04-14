@@ -97,15 +97,15 @@ class Client(BaseClient, ClientMixin):
 
     def delete(self):
         for consent in BaseBackend.instance.query(models.Consent, client=self):
-            consent.delete()
+            BaseBackend.instance.delete(consent)
 
         for code in BaseBackend.instance.query(models.AuthorizationCode, client=self):
-            code.delete()
+            BaseBackend.instance.delete(code)
 
         for token in BaseBackend.instance.query(models.Token, client=self):
-            token.delete()
+            BaseBackend.instance.delete(token)
 
-        super().delete()
+        yield
 
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):

@@ -162,5 +162,5 @@ def delete_group(group):
         _("The group %(group)s has been sucessfully deleted", group=group.display_name),
         "success",
     )
-    group.delete()
+    BaseBackend.instance.delete(group)
     return redirect(url_for("core.groups.groups"))

@@ -40,7 +40,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
         "https://foo.bar/callback2",
     ]
 
-    client.delete()
+    backend.delete(client)
 
 
 def test_fieldlist_delete(testclient, logged_admin, backend):
@@ -74,7 +74,7 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
         "https://foo.bar/callback1",
     ]
 
-    client.delete()
+    backend.delete(client)
 
 
 def test_fieldlist_add_invalid_field(testclient, logged_admin):
@@ -146,7 +146,7 @@ def test_fieldlist_empty_value(testclient, logged_admin, backend):
     )
     res.form.submit(status=302, name="action", value="edit")
     client = backend.get(models.Client)
-    client.delete()
+    backend.delete(client)
 
 
 def test_fieldlist_add_field_htmx(testclient, logged_admin):

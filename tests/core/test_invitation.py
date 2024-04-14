@@ -56,7 +56,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
         del sess["user_id"]
 
     res = testclient.get(url, status=302)
-    user.delete()
+    backend.delete(user)
 
 
 def test_invitation_editable_user_name(
@@ -110,7 +110,7 @@ def test_invitation_editable_user_name(
     with testclient.session_transaction() as sess:
         assert "user_id" in sess
         del sess["user_id"]
-    user.delete()
+    backend.delete(user)
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
@@ -159,7 +159,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
         del sess["user_id"]
 
     res = testclient.get(url, status=302)
-    user.delete()
+    backend.delete(user)
 
 
 def test_invitation_login_already_taken(testclient, logged_admin):
@@ -334,4 +334,4 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     user = backend.get(models.User, user_name="someoneelse")
     foo_group.reload()
     assert user.groups == [foo_group]
-    user.delete()
+    backend.delete(user)

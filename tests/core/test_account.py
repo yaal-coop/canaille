@@ -33,7 +33,7 @@ def test_user_deleted_in_session(testclient, backend):
     with testclient.session_transaction() as session:
         session["user_id"] = [u.id]
 
-    u.delete()
+    backend.delete(u)
 
     testclient.get("/profile/jake", status=404)
     with testclient.session_transaction() as session:

@@ -18,7 +18,7 @@ def test_invalid_form_request(testclient, logged_user):
     )
 
 
-def test_user_list_pagination(testclient, logged_admin):
+def test_user_list_pagination(testclient, logged_admin, backend):
     res = testclient.get("/users")
     res.mustcontain("1 item")
 
@@ -35,7 +35,7 @@ def test_user_list_pagination(testclient, logged_admin):
         ".users tbody tr td:nth-of-type(2) a"
     ).text().split(" ")
     for user in users:
-        user.delete()
+        backend.delete(user)
 
     res = testclient.get("/users")
     res.mustcontain("1 item")

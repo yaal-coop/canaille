@@ -11,7 +11,7 @@ def test_populate_users(testclient, backend):
     assert res.exit_code == 0, res.stdout
     assert len(backend.query(models.User)) == 10
     for user in backend.query(models.User):
-        user.delete()
+        backend.delete(user)
 
 
 def test_populate_groups(testclient, backend):
@@ -24,7 +24,7 @@ def test_populate_groups(testclient, backend):
     assert len(backend.query(models.Group)) == 10
 
     for group in backend.query(models.Group):
-        group.delete()
+        backend.delete(group)
 
     for user in backend.query(models.User):
-        user.delete()
+        backend.delete(user)

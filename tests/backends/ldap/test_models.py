@@ -24,4 +24,4 @@ def test_model_references_set_unsaved_object(
 
     testclient.get("/groups/foo", status=200)
 
-    group.delete()
+    backend.delete(group)

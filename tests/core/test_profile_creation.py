@@ -95,7 +95,7 @@ def test_user_creation_without_password(testclient, logged_moderator, backend):
     assert george.user_name == "george"
     assert not george.has_password()
 
-    george.delete()
+    backend.delete(george)
 
 
 def test_user_creation_form_validation_failed(
@@ -146,7 +146,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator, ba
 
     george = backend.get(models.User, user_name="george")
     assert george.formatted_name == "George Abitbol"
-    george.delete()
+    backend.delete(george)
 
 
 def test_cn_setting_with_surname_only(testclient, logged_moderator, backend):
@@ -161,7 +161,7 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator, backend):
 
     george = backend.get(models.User, user_name="george")
     assert george.formatted_name == "Abitbol"
-    george.delete()
+    backend.delete(george)
 
 
 def test_formcontrol(testclient, logged_admin):

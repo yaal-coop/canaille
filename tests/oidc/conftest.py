@@ -72,7 +72,7 @@ def client(testclient, trusted_client, backend):
     backend.save(c)
 
     yield c
-    c.delete()
+    backend.delete(c)
 
 
 @pytest.fixture
@@ -110,7 +110,7 @@ def trusted_client(testclient, backend):
     backend.save(c)
 
     yield c
-    c.delete()
+    backend.delete(c)
 
 
 @pytest.fixture
@@ -131,7 +131,7 @@ def authorization(testclient, user, client, backend):
     )
     backend.save(a)
     yield a
-    a.delete()
+    backend.delete(a)
 
 
 @pytest.fixture
@@ -149,7 +149,7 @@ def token(testclient, client, user, backend):
     )
     backend.save(t)
     yield t
-    t.delete()
+    backend.delete(t)
 
 
 @pytest.fixture
@@ -173,4 +173,4 @@ def consent(testclient, client, user, backend):
     )
     backend.save(t)
     yield t
-    t.delete()
+    backend.delete(t)

@@ -88,10 +88,6 @@ class BackendModel:
     implemented for every model and for every backend.
     """
 
-    def delete(self):
-        """Remove the current instance from the database."""
-        raise NotImplementedError()
-
     def update(self, **kwargs):
         """Assign a whole dict to the current instance. This is useful to
         update models based on forms.

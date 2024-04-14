@@ -60,8 +60,8 @@ def test_object_class_update(backend, testclient):
         "extensibleObject",
     }
 
-    user1.delete()
-    user2.delete()
+    backend.delete(user1)
+    backend.delete(user2)
 
 
 def test_keep_old_object_classes(backend, testclient, slapd_server):
@@ -97,4 +97,4 @@ homeDirectory: /home/foobar
     # saving an object should not raise a ldap.OBJECT_CLASS_VIOLATION exception
     backend.save(user)
 
-    user.delete()
+    backend.delete(user)

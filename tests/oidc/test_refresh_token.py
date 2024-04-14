@@ -71,7 +71,7 @@ def test_refresh_token(testclient, logged_user, client, backend):
     assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_refresh_token_with_invalid_user(testclient, client, backend):
@@ -119,7 +119,7 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
 
     refresh_token = res.json["refresh_token"]
     access_token = res.json["access_token"]
-    user.delete()
+    backend.delete(user)
 
     res = testclient.post(
         "/oauth/token",
@@ -134,7 +134,8 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
         "error": "invalid_request",
         "error_description": 'There is no "user" for this token.',
     }
-    backend.get(models.Token, access_token=access_token).delete()
+    token = backend.get(models.Token, access_token=access_token)
+    backend.delete(token)
 
 
 def test_cannot_refresh_token_for_locked_users(

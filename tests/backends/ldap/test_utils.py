@@ -30,7 +30,7 @@ def test_object_creation(app, backend):
     user = backend.get(models.User, id=user.id)
     assert user.exists
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_repr(backend, foo_group, user):
@@ -56,7 +56,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
     assert user == backend.get(models.User, user_name=user.user_name)
     assert user == backend.get(models.User, dn)
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_special_chars_in_rdn(testclient, backend):
@@ -77,7 +77,7 @@ def test_special_chars_in_rdn(testclient, backend):
     assert user == backend.get(models.User, user_name=user.user_name)
     assert user == backend.get(models.User, dn)
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_filter(backend, foo_group, bar_group):

@@ -47,10 +47,6 @@ class SqlAlchemyModel(BackendModel):
 
         return getattr(cls, name) == value
 
-    def delete(self):
-        Backend.instance.db_session.delete(self)
-        Backend.instance.db_session.commit()
-
     def reload(self):
         Backend.instance.db_session.refresh(self)
 

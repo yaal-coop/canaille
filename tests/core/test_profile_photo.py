@@ -121,7 +121,7 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin, backend
 
     user = backend.get(models.User, user_name="foobar")
     assert user.photo == jpeg_photo
-    user.delete()
+    backend.delete(user)
 
 
 def test_photo_deleted_on_profile_creation(
@@ -144,4 +144,4 @@ def test_photo_deleted_on_profile_creation(
 
     user = backend.get(models.User, user_name="foobar")
     assert user.photo is None
-    user.delete()
+    backend.delete(user)

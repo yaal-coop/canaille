@@ -130,7 +130,7 @@ class Backend(BaseBackend):
                     password="correct horse battery staple",
                 )
                 BaseBackend.instance.save(user)
-                user.delete()
+                BaseBackend.instance.delete(user)
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
@@ -155,7 +155,7 @@ class Backend(BaseBackend):
                     members=[user],
                 )
                 BaseBackend.instance.save(group)
-                group.delete()
+                BaseBackend.instance.delete(group)
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
@@ -164,7 +164,7 @@ class Backend(BaseBackend):
                 ) from exc
 
             finally:
-                user.delete()
+                BaseBackend.instance.delete(user)
 
     @classmethod
     def login_placeholder(cls):
@@ -386,6 +386,19 @@ class Backend(BaseBackend):
         instance.changes = {}
 
         # run the instance save callback again if existing
+        next(save_callback, None)
+
+    def delete(self, instance):
+        # run the instance delete callback if existing
+        save_callback = instance.delete() if hasattr(instance, "delete") else iter([])
+        next(save_callback, None)
+
+        try:
+            self.connection.delete_s(instance.dn)
+        except ldap.NO_SUCH_OBJECT:
+            pass
+
+        # run the instance delete callback again if existing
         next(save_callback, None)
 
 

@@ -193,7 +193,7 @@ def user(app, backend):
     )
     backend.save(u)
     yield u
-    u.delete()
+    backend.delete(u)
 
 
 @pytest.fixture
@@ -207,7 +207,7 @@ def admin(app, backend):
     )
     backend.save(u)
     yield u
-    u.delete()
+    backend.delete(u)
 
 
 @pytest.fixture
@@ -221,7 +221,7 @@ def moderator(app, backend):
     )
     backend.save(u)
     yield u
-    u.delete()
+    backend.delete(u)
 
 
 @pytest.fixture
@@ -254,7 +254,7 @@ def foo_group(app, user, backend):
     backend.save(group)
     user.reload()
     yield group
-    group.delete()
+    backend.delete(group)
 
 
 @pytest.fixture
@@ -266,7 +266,7 @@ def bar_group(app, admin, backend):
     backend.save(group)
     admin.reload()
     yield group
-    group.delete()
+    backend.delete(group)
 
 
 @pytest.fixture

@@ -39,7 +39,7 @@ def test_prompt_none(testclient, logged_user, client, backend):
     params = parse_qs(urlsplit(res.location).query)
     assert "code" in params
 
-    consent.delete()
+    backend.delete(consent)
 
 
 def test_prompt_not_logged(testclient, user, client, backend):
@@ -73,7 +73,7 @@ def test_prompt_not_logged(testclient, user, client, backend):
     )
     assert "login_required" == res.json.get("error")
 
-    consent.delete()
+    backend.delete(consent)
 
 
 def test_prompt_no_consent(testclient, logged_user, client):
@@ -126,7 +126,7 @@ def test_prompt_create_logged(testclient, logged_user, client, backend):
     )
     assert res.location.startswith(client.redirect_uris[0])
 
-    consent.delete()
+    backend.delete(consent)
 
 
 def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):

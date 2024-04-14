@@ -118,3 +118,14 @@ class Backend(BaseBackend):
 
         Backend.instance.db_session.add(instance)
         Backend.instance.db_session.commit()
+
+    def delete(self, instance):
+        # run the instance delete callback if existing
+        save_callback = instance.delete() if hasattr(instance, "delete") else iter([])
+        next(save_callback, None)
+
+        Backend.instance.db_session.delete(instance)
+        Backend.instance.db_session.commit()
+
+        # run the instance delete callback again if existing
+        next(save_callback, None)

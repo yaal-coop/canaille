@@ -56,7 +56,7 @@ def test_token_default_expiration_date(
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)
 
 
 def test_token_custom_expiration_date(
@@ -116,4 +116,4 @@ def test_token_custom_expiration_date(
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:
-        consent.delete()
+        backend.delete(consent)

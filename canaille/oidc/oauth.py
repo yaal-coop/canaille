@@ -246,7 +246,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
             return item[0]
 
     def delete_authorization_code(self, authorization_code):
-        authorization_code.delete()
+        BaseBackend.instance.delete(authorization_code)
 
     def authenticate_user(self, authorization_code):
         if authorization_code.subject and not authorization_code.subject.locked:
@@ -481,7 +481,7 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         return True
 
     def delete_client(self, client, request):
-        client.delete()
+        BaseBackend.instance.delete(client)
 
     def update_client(self, client, client_metadata, request):
         client.update(**self.client_convert_data(**client_metadata))

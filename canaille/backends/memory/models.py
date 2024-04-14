@@ -65,9 +65,6 @@ class MemoryModel(BackendModel):
 
         return value
 
-    def delete(self):
-        self.index_delete()
-
     def index_save(self):
         # update the id index
         self.index()[self.id] = copy.deepcopy(self._state)

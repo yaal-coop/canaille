@@ -46,7 +46,7 @@ def test_client_list_pagination(
         ".clients tbody tr td:nth-of-type(2) a"
     ).text().split(" ")
     for client in clients:
-        client.delete()
+        backend.delete(client)
 
     res = testclient.get("/admin/client")
     res.mustcontain("2 items")
@@ -135,7 +135,7 @@ def test_client_add(testclient, logged_admin, backend):
     assert not client.preconsent
     assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
 
-    client.delete()
+    backend.delete(client)
 
 
 def test_add_missing_fields(testclient, logged_admin):

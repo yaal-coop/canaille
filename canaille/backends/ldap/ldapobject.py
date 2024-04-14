@@ -262,10 +262,3 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         self.changes = {}
         self.state = result[0][1]
-
-    def delete(self):
-        conn = Backend.instance.connection
-        try:
-            conn.delete_s(self.dn)
-        except ldap.NO_SUCH_OBJECT:
-            pass

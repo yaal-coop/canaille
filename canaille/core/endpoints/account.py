@@ -818,7 +818,7 @@ def profile_delete(user, edited_user):
         ),
         "success",
     )
-    edited_user.delete()
+    BaseBackend.instance.delete(edited_user)
 
     if self_deletion:
         return redirect(url_for("core.account.index"))

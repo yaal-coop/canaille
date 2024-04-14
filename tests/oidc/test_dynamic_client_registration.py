@@ -64,7 +64,7 @@ def test_client_registration_with_authentication_static_token(
     assert client.logo_uri == "https://client.example.org/logo.webp"
     assert client.jwks_uri == "https://client.example.org/my_public_keys.jwks"
     assert client in client.audience
-    client.delete()
+    backend.delete(client)
 
 
 def test_client_registration_with_authentication_no_token(
@@ -177,7 +177,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
         "https://client.example.org/callback2",
     ]
     assert client.token_endpoint_auth_method == "client_secret_basic"
-    client.delete()
+    backend.delete(client)
 
 
 def test_client_registration_without_authentication_ok(testclient, backend):
@@ -246,4 +246,4 @@ def test_client_registration_without_authentication_ok(testclient, backend):
     assert client.policy_uri == "https://example.com/policy"
     assert client.software_id == "example"
     assert client.software_version == "x.y.z"
-    client.delete()
+    backend.delete(client)

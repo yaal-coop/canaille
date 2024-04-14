@@ -24,8 +24,8 @@ def test_model_comparison(testclient, backend):
     assert foo1 == foo2
     assert foo1 != bar
 
-    foo1.delete()
-    bar.delete()
+    backend.delete(foo1)
+    backend.delete(bar)
 
 
 def test_model_lifecycle(testclient, backend):
@@ -56,12 +56,12 @@ def test_model_lifecycle(testclient, backend):
 
     assert user.family_name == "family_name"
 
-    user.delete()
+    backend.delete(user)
 
     assert not backend.query(models.User, id=user.id)
     assert not backend.get(models.User, id=user.id)
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_model_attribute_edition(testclient, backend):
@@ -100,7 +100,7 @@ def test_model_attribute_edition(testclient, backend):
     backend.save(user)
     assert not user.display_name
 
-    user.delete()
+    backend.delete(user)
 
 
 def test_model_indexation(testclient, backend):
@@ -133,7 +133,7 @@ def test_model_indexation(testclient, backend):
     assert backend.get(models.User, emails=["email2@user.com"]) == user
     assert not backend.get(models.User, emails=["email3@user.com"])
 
-    user.delete()
+    backend.delete(user)
 
     assert not backend.get(models.User, family_name="family_name")
     assert not backend.get(models.User, family_name="new_family_name")
@@ -219,4 +219,4 @@ def test_model_creation_edition_datetime(testclient, backend):
             2021, 1, 1, 2, tzinfo=datetime.timezone.utc
         )
 
-    user.delete()
+    backend.delete(user)
