@@ -26,7 +26,7 @@ def test_token_default_expiration_date(
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode.lifetime == 84400
 
     res = testclient.post(
@@ -44,7 +44,7 @@ def test_token_default_expiration_date(
     assert res.json["expires_in"] == 864000
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 864000
 
     claims = jwt.decode(access_token, keypair[1])
@@ -86,7 +86,7 @@ def test_token_custom_expiration_date(
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode.lifetime == 84400
 
     res = testclient.post(
@@ -104,7 +104,7 @@ def test_token_custom_expiration_date(
     assert res.json["expires_in"] == 1000
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 1000
 
     claims = jwt.decode(access_token, keypair[1])

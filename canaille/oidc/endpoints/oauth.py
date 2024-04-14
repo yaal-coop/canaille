@@ -50,7 +50,9 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
-    client = models.Client.get(client_id=request.args["client_id"])
+    client = BaseBackend.instance.get(
+        models.Client, client_id=request.args["client_id"]
+    )
     user = current_user()
 
     if response := authorize_guards(client):
@@ -276,7 +278,7 @@ def end_session():
     valid_uris = []
 
     if "client_id" in data:
-        client = models.Client.get(client_id=data["client_id"])
+        client = BaseBackend.instance.get(models.Client, client_id=data["client_id"])
         if client:
             valid_uris = client.post_logout_redirect_uris
 
@@ -328,7 +330,7 @@ def end_session():
                 else [id_token["aud"]]
             )
             for client_id in client_ids:
-                client = models.Client.get(client_id=client_id)
+                client = BaseBackend.instance.get(models.Client, client_id=client_id)
                 if client:
                     valid_uris.extend(client.post_logout_redirect_uris or [])
 

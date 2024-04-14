@@ -6,7 +6,7 @@ from authlib.jose import jwt
 from canaille.app import models
 
 
-def test_oauth_implicit(testclient, user, client):
+def test_oauth_implicit(testclient, user, client, backend):
     client.grant_types = ["token"]
     client.token_endpoint_auth_method = "none"
 
@@ -37,7 +37,7 @@ def test_oauth_implicit(testclient, user, client):
     params = parse_qs(urlsplit(res.location).fragment)
 
     access_token = params["access_token"][0]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token is not None
 
     res = testclient.get(
@@ -51,7 +51,7 @@ def test_oauth_implicit(testclient, user, client):
     client.save()
 
 
-def test_oidc_implicit(testclient, keypair, user, client, trusted_client):
+def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backend):
     client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
@@ -82,7 +82,7 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client):
     params = parse_qs(urlsplit(res.location).fragment)
 
     access_token = params["access_token"][0]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token is not None
 
     id_token = params["id_token"][0]
@@ -105,7 +105,7 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client):
 
 
 def test_oidc_implicit_with_group(
-    testclient, keypair, user, client, foo_group, trusted_client
+    testclient, keypair, user, client, foo_group, trusted_client, backend
 ):
     client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
@@ -137,7 +137,7 @@ def test_oidc_implicit_with_group(
     params = parse_qs(urlsplit(res.location).fragment)
 
     access_token = params["access_token"][0]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token is not None
 
     id_token = params["id_token"][0]

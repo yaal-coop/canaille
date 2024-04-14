@@ -69,8 +69,8 @@ def test_clean_command(testclient, backend, client, user):
     )
     expired_token.save()
 
-    assert models.AuthorizationCode.get(code="my-expired-code")
-    assert models.Token.get(access_token="my-expired-token")
+    assert backend.get(models.AuthorizationCode, code="my-expired-code")
+    assert backend.get(models.Token, access_token="my-expired-token")
     assert expired_code.is_expired()
     assert expired_token.is_expired()
 
@@ -78,5 +78,5 @@ def test_clean_command(testclient, backend, client, user):
     res = runner.invoke(cli, ["clean"])
     assert res.exit_code == 0, res.stdout
 
-    assert models.AuthorizationCode.get() == valid_code
-    assert models.Token.get() == valid_token
+    assert backend.get(models.AuthorizationCode) == valid_code
+    assert backend.get(models.Token) == valid_token

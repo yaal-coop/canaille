@@ -37,18 +37,6 @@ class MemoryModel(BackendModel):
         ).setdefault(attribute, {})
 
     @classmethod
-    def get(cls, identifier=None, /, **kwargs):
-        if identifier:
-            return (
-                cls.get(**{cls.identifier_attribute: identifier})
-                or cls.get(id=identifier)
-                or None
-            )
-
-        results = BaseBackend.instance.query(cls, **kwargs)
-        return results[0] if results else None
-
-    @classmethod
     def listify(cls, value):
         return value if isinstance(value, list) else [value]
 
@@ -75,7 +63,7 @@ class MemoryModel(BackendModel):
         model, _ = cls.get_model_annotations(attribute_name)
         if model and not isinstance(value, model):
             backend_model = getattr(models, model.__name__)
-            return backend_model.get(id=value)
+            return BaseBackend.instance.get(backend_model, id=value)
 
         return value
 
@@ -166,7 +154,7 @@ class MemoryModel(BackendModel):
         del self.index()[self.id]
 
     def reload(self):
-        self._state = self.__class__.get(id=self.id)._state
+        self._state = BaseBackend.instance.get(self.__class__, id=self.id)._state
         self._cache = {}
 
     def __eq__(self, other):
@@ -174,7 +162,7 @@ class MemoryModel(BackendModel):
             return False
 
         if not isinstance(other, MemoryModel):
-            return self == self.__class__.get(id=other)
+            return self == BaseBackend.instance.get(self.__class__, id=other)
 
         return self._state == other._state
 

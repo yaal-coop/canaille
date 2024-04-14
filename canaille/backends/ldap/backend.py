@@ -202,7 +202,7 @@ class Backend(BaseBackend):
             if login
             else None
         )
-        return User.get(filter=filter)
+        return self.get(User, filter=filter)
 
     def check_user_password(self, user, password):
         conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
@@ -310,6 +310,19 @@ class Backend(BaseBackend):
             "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
         )
         return self.query(model, filter=filter, **kwargs)
+
+    def get(self, model, identifier=None, /, **kwargs):
+        try:
+            return self.query(model, identifier, **kwargs)[0]
+        except (IndexError, ldap.NO_SUCH_OBJECT):
+            if identifier and model.base:
+                return (
+                    self.get(model, **{model.identifier_attribute: identifier})
+                    or self.get(model, id=identifier)
+                    or None
+                )
+
+            return None
 
 
 def setup_ldap_models(config):

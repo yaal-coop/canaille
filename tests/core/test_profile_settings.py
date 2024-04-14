@@ -381,7 +381,7 @@ def test_account_locking(
 
     res = res.form.submit(name="action", value="confirm-lock")
     res = res.form.submit(name="action", value="lock")
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
     assert user.locked
     res.mustcontain("The account has been locked")
@@ -389,7 +389,7 @@ def test_account_locking(
     res.mustcontain("Unlock")
 
     res = res.form.submit(name="action", value="unlock")
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert not user.lock_date
     assert not user.locked
     res.mustcontain("The account has been unlocked")
@@ -415,7 +415,7 @@ def test_past_lock_date(
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert user.lock_date == expiration_datetime
     assert user.locked
 
@@ -438,7 +438,7 @@ def test_future_lock_date(
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert user.lock_date == expiration_datetime
     assert not user.locked
     assert res.form["lock_date"].value == expiration_datetime.strftime("%Y-%m-%d %H:%M")
@@ -484,7 +484,7 @@ def test_account_limit_values(
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert user.lock_date == expiration_datetime
     assert not user.locked
 

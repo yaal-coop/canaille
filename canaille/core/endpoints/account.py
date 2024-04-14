@@ -257,7 +257,9 @@ def registration(data=None, hash=None):
             )
             return redirect(url_for("core.account.index"))
 
-        if payload.user_name and models.User.get(user_name=payload.user_name):
+        if payload.user_name and BaseBackend.instance.get(
+            models.User, user_name=payload.user_name
+        ):
             flash(
                 _("Your account has already been created."),
                 "error",
@@ -282,7 +284,10 @@ def registration(data=None, hash=None):
         data = {
             "user_name": payload.user_name,
             "emails": [payload.email],
-            "groups": [models.Group.get(id=group_id) for group_id in payload.groups],
+            "groups": [
+                BaseBackend.instance.get(models.Group, id=group_id)
+                for group_id in payload.groups
+            ],
         }
 
     has_smtp = "SMTP" in current_app.config["CANAILLE"]
@@ -376,7 +381,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    user = models.User.get(confirmation_obj.identifier)
+    user = BaseBackend.instance.get(models.User, confirmation_obj.identifier)
     if not user:
         flash(
             _("The email confirmation link that brought you here is invalid."),

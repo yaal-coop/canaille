@@ -108,7 +108,7 @@ def revoke_preconsent(user, client):
         flash(_("Could not revoke this access"), "error")
         return redirect(url_for("oidc.consents.consents"))
 
-    consent = models.Consent.get(client=client, subject=user)
+    consent = BaseBackend.instance.get(models.Consent, client=client, subject=user)
     if consent:
         return redirect(url_for("oidc.consents.revoke", consent=consent))
 

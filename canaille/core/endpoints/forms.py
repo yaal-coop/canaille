@@ -24,7 +24,7 @@ MINIMUM_PASSWORD_LENGTH = 8
 
 
 def unique_user_name(form, field):
-    if models.User.get(user_name=field.data) and (
+    if BaseBackend.instance.get(models.User, user_name=field.data) and (
         not getattr(form, "user", None) or form.user.user_name != field.data
     ):
         raise wtforms.ValidationError(
@@ -33,7 +33,7 @@ def unique_user_name(form, field):
 
 
 def unique_email(form, field):
-    if models.User.get(emails=field.data) and (
+    if BaseBackend.instance.get(models.User, emails=field.data) and (
         not getattr(form, "user", None) or field.data not in form.user.emails
     ):
         raise wtforms.ValidationError(
@@ -42,7 +42,7 @@ def unique_email(form, field):
 
 
 def unique_group(form, field):
-    if models.Group.get(display_name=field.data):
+    if BaseBackend.instance.get(models.Group, display_name=field.data):
         raise wtforms.ValidationError(
             _("The group '{group}' already exists").format(group=field.data)
         )

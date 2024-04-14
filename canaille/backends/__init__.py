@@ -80,6 +80,11 @@ class BaseBackend:
         attribute values loosely be matched."""
         raise NotImplementedError()
 
+    def get(self, model, identifier=None, **kwargs):
+        """Works like :meth:`~canaille.backends.BaseBackend.query` but return
+        only one element or :py:data:`None` if no item is matching."""
+        raise NotImplementedError()
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()

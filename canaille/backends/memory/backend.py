@@ -26,7 +26,7 @@ class Backend(BaseBackend):
     def get_user_from_login(self, login):
         from .models import User
 
-        return User.get(user_name=login)
+        return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
         if password != user.password:
@@ -80,3 +80,14 @@ class Backend(BaseBackend):
                 if isinstance(value, str)
             )
         ]
+
+    def get(self, model, identifier=None, /, **kwargs):
+        if identifier:
+            return (
+                self.get(model, **{model.identifier_attribute: identifier})
+                or self.get(model, id=identifier)
+                or None
+            )
+
+        results = self.query(model, **kwargs)
+        return results[0] if results else None

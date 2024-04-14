@@ -111,7 +111,7 @@ def openid_configuration():
 
 
 def exists_nonce(nonce, req):
-    client = models.Client.get(id=req.client_id)
+    client = BaseBackend.instance.get(models.Client, id=req.client_id)
     exists = BaseBackend.instance.query(
         models.AuthorizationCode, client=client, nonce=nonce
     )
@@ -334,7 +334,7 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
 
 def query_client(client_id):
-    return models.Client.get(client_id=client_id)
+    return BaseBackend.instance.get(models.Client, client_id=client_id)
 
 
 def save_token(token, request):
@@ -356,20 +356,20 @@ def save_token(token, request):
 
 class BearerTokenValidator(_BearerTokenValidator):
     def authenticate_token(self, token_string):
-        return models.Token.get(access_token=token_string)
+        return BaseBackend.instance.get(models.Token, access_token=token_string)
 
 
 def query_token(token, token_type_hint):
     if token_type_hint == "access_token":
-        return models.Token.get(access_token=token)
+        return BaseBackend.instance.get(models.Token, access_token=token)
     elif token_type_hint == "refresh_token":
-        return models.Token.get(refresh_token=token)
+        return BaseBackend.instance.get(models.Token, refresh_token=token)
 
-    item = models.Token.get(access_token=token)
+    item = BaseBackend.instance.get(models.Token, access_token=token)
     if item:
         return item
 
-    item = models.Token.get(refresh_token=token)
+    item = BaseBackend.instance.get(models.Token, refresh_token=token)
     if item:
         return item
 
@@ -472,7 +472,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
 class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEndpoint):
     def authenticate_client(self, request):
         client_id = request.uri.split("/")[-1]
-        return models.Client.get(client_id=client_id)
+        return BaseBackend.instance.get(models.Client, client_id=client_id)
 
     def revoke_access_token(self, request, token):
         pass

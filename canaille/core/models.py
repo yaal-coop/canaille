@@ -258,12 +258,12 @@ class User(Model):
     def preferred_email(self):
         return self.emails[0] if self.emails else None
 
-    def __getattr__(self, name):
+    def __getattribute__(self, name):
         prefix = "can_"
         if name.startswith(prefix) and name != "can_read":
             return self.can(name[len(prefix) :])
 
-        return super().__getattr__(name)
+        return super().__getattribute__(name)
 
     def can(self, *permissions: Permission):
         """Wether or not the user has the

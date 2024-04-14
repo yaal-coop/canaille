@@ -95,7 +95,7 @@ def test_update(testclient, backend, client, user):
     res = testclient.put_json(
         f"/oauth/register/{client.client_id}", payload, headers=headers, status=200
     )
-    client = models.Client.get(client_id=res.json["client_id"])
+    client = backend.get(models.Client, client_id=res.json["client_id"])
 
     assert res.json == {
         "client_id": client.client_id,
@@ -153,7 +153,7 @@ def test_delete(testclient, backend, user):
         testclient.delete(
             f"/oauth/register/{client.client_id}", headers=headers, status=204
         )
-    assert not models.Client.get(client_id=client.client_id)
+    assert not backend.get(models.Client, client_id=client.client_id)
 
 
 def test_invalid_client(testclient, backend, user):

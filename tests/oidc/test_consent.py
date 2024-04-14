@@ -134,7 +134,7 @@ def test_oidc_authorization_after_revokation(
     )
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -151,16 +151,16 @@ def test_preconsented_client_appears_in_consent_list(testclient, client, logged_
     res.mustcontain(client.client_name)
 
 
-def test_revoke_preconsented_client(testclient, client, logged_user, token):
+def test_revoke_preconsented_client(testclient, client, logged_user, token, backend):
     client.preconsent = True
     client.save()
-    assert not models.Consent.get()
+    assert not backend.get(models.Consent)
     assert not token.revoked
 
     res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
 
-    consent = models.Consent.get()
+    consent = backend.get(models.Consent)
     assert consent.client == client
     assert consent.subject == logged_user
     assert consent.scope == ["openid", "email", "profile", "groups", "address", "phone"]

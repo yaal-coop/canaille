@@ -34,7 +34,7 @@ def test_nominal_case(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
     assert set(authcode.scope) == {
         "openid",
@@ -68,7 +68,7 @@ def test_nominal_case(
     )
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
     assert set(token.scope) == {
@@ -136,7 +136,7 @@ def test_redirect_uri(
     assert res.location.startswith(client.redirect_uris[1])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
     consents = backend.query(models.Consent, client=client, subject=logged_user)
 
@@ -153,7 +153,7 @@ def test_redirect_uri(
     )
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -183,7 +183,7 @@ def test_preconsented_client(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -202,7 +202,7 @@ def test_preconsented_client(
     )
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -257,7 +257,7 @@ def test_logout_login(testclient, logged_user, client, backend):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -276,7 +276,7 @@ def test_logout_login(testclient, logged_user, client, backend):
     )
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -341,7 +341,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -361,7 +361,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
     )
     access_token = res.json["access_token"]
 
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 
@@ -398,7 +398,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -456,7 +456,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -492,7 +492,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -582,7 +582,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert set(authcode.scope) == {
         "openid",
         "profile",
@@ -607,7 +607,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
     )
 
     access_token = res.json["access_token"]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
     assert set(token.scope) == {
@@ -671,7 +671,7 @@ def test_code_expired(testclient, user, client):
         }
 
 
-def test_code_with_invalid_user(testclient, admin, client):
+def test_code_with_invalid_user(testclient, admin, client, backend):
     user = models.User(
         formatted_name="John Doe",
         family_name="Doe",
@@ -699,7 +699,7 @@ def test_code_with_invalid_user(testclient, admin, client):
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
 
     user.delete()
 
@@ -721,7 +721,9 @@ def test_code_with_invalid_user(testclient, admin, client):
     authcode.delete()
 
 
-def test_locked_account(testclient, logged_user, client, keypair, trusted_client):
+def test_locked_account(
+    testclient, logged_user, client, keypair, trusted_client, backend
+):
     """Users with a locked account should not be able to exchange code against
     tokens."""
     res = testclient.get(
@@ -743,7 +745,7 @@ def test_locked_account(testclient, logged_user, client, keypair, trusted_client
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     res = testclient.post(

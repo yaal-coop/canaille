@@ -53,7 +53,7 @@ class Backend(BaseBackend):
     def get_user_from_login(self, login):
         from .models import User
 
-        return User.get(user_name=login)
+        return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
         if password != user.password:
@@ -90,3 +90,19 @@ class Backend(BaseBackend):
         )
 
         return self.db_session.execute(select(model).filter(filter)).scalars().all()
+
+    def get(self, model, identifier=None, /, **kwargs):
+        if identifier:
+            return (
+                self.get(model, **{model.identifier_attribute: identifier})
+                or self.get(model, id=identifier)
+                or None
+            )
+
+        filter = [
+            model.attribute_filter(attribute_name, expected_value)
+            for attribute_name, expected_value in kwargs.items()
+        ]
+        return Backend.instance.db_session.execute(
+            select(model).filter(*filter)
+        ).scalar_one_or_none()

@@ -83,7 +83,7 @@ def test_client_list_search(testclient, logged_admin, client, trusted_client):
     res.mustcontain(no=client.client_name)
 
 
-def test_client_add(testclient, logged_admin):
+def test_client_add(testclient, logged_admin, backend):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
@@ -112,7 +112,7 @@ def test_client_add(testclient, logged_admin):
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
-    client = models.Client.get(client_id=client_id)
+    client = backend.get(models.Client, client_id=client_id)
 
     assert client.client_name == "foobar"
     assert client.contacts == ["foo@bar.com"]
@@ -214,7 +214,7 @@ def test_client_edit_missing_fields(testclient, client, logged_admin, trusted_cl
     assert client.client_name
 
 
-def test_client_delete(testclient, logged_admin):
+def test_client_delete(testclient, logged_admin, backend):
     client = models.Client(client_id="client_id")
     client.save()
     token = models.Token(
@@ -238,10 +238,10 @@ def test_client_delete(testclient, logged_admin):
     res = res.form.submit(name="action", value="delete")
     res = res.follow()
 
-    assert not models.Client.get()
-    assert not models.Token.get()
-    assert not models.AuthorizationCode.get()
-    assert not models.Consent.get()
+    assert not backend.get(models.Client)
+    assert not backend.get(models.Token)
+    assert not backend.get(models.AuthorizationCode)
+    assert not backend.get(models.Consent)
 
 
 def test_client_delete_invalid_client(testclient, logged_admin, client):

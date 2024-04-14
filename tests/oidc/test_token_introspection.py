@@ -58,7 +58,7 @@ def test_token_invalid(testclient, client):
     assert {"active": False} == res.json
 
 
-def test_full_flow(testclient, logged_user, client, user, trusted_client):
+def test_full_flow(testclient, logged_user, client, user, trusted_client, backend):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -75,7 +75,7 @@ def test_full_flow(testclient, logged_user, client, user, trusted_client):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     res = testclient.post(
@@ -91,7 +91,7 @@ def test_full_flow(testclient, logged_user, client, user, trusted_client):
     )
     access_token = res.json["access_token"]
 
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
 

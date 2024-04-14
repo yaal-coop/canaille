@@ -32,11 +32,11 @@ def test_oauth_hybrid(testclient, backend, user, client):
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token is not None
 
     res = testclient.get(
@@ -65,11 +65,11 @@ def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, trusted_
     params = parse_qs(urlsplit(res.location).fragment)
 
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     access_token = params["access_token"][0]
-    token = models.Token.get(access_token=access_token)
+    token = backend.get(models.Token, access_token=access_token)
     assert token is not None
 
     id_token = params["id_token"][0]

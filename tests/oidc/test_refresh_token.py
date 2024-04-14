@@ -24,7 +24,7 @@ def test_refresh_token(testclient, logged_user, client, backend):
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = models.AuthorizationCode.get(code=code)
+    authcode = backend.get(models.AuthorizationCode, code=code)
     assert authcode is not None
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -42,7 +42,7 @@ def test_refresh_token(testclient, logged_user, client, backend):
         status=200,
     )
     access_token = res.json["access_token"]
-    old_token = models.Token.get(access_token=access_token)
+    old_token = backend.get(models.Token, access_token=access_token)
     assert old_token is not None
     assert not old_token.revokation_date
 
@@ -56,7 +56,7 @@ def test_refresh_token(testclient, logged_user, client, backend):
         status=200,
     )
     access_token = res.json["access_token"]
-    new_token = models.Token.get(access_token=access_token)
+    new_token = backend.get(models.Token, access_token=access_token)
     assert new_token is not None
     assert old_token.access_token != new_token.access_token
 
@@ -74,7 +74,7 @@ def test_refresh_token(testclient, logged_user, client, backend):
         consent.delete()
 
 
-def test_refresh_token_with_invalid_user(testclient, client):
+def test_refresh_token_with_invalid_user(testclient, client, backend):
     user = models.User(
         formatted_name="John Doe",
         family_name="Doe",
@@ -103,7 +103,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    models.AuthorizationCode.get(code=code)
+    backend.get(models.AuthorizationCode, code=code)
 
     res = testclient.post(
         "/oauth/token",
@@ -134,7 +134,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
         "error": "invalid_request",
         "error_description": 'There is no "user" for this token.',
     }
-    models.Token.get(access_token=access_token).delete()
+    backend.get(models.Token, access_token=access_token).delete()
 
 
 def test_cannot_refresh_token_for_locked_users(testclient, logged_user, client):

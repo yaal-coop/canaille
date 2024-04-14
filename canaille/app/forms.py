@@ -260,7 +260,9 @@ class IDToModel:
 
     def __call__(self, data):
         model = getattr(models, self.model_name)
-        instance = data if isinstance(data, model) else model.get(data)
+        instance = (
+            data if isinstance(data, model) else BaseBackend.instance.get(model, data)
+        )
         if instance:
             return instance
 

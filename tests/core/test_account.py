@@ -78,7 +78,7 @@ def test_admin_self_deletion(testclient, backend):
         .follow(status=200)
     )
 
-    assert models.User.get(user_name="temp") is None
+    assert backend.get(models.User, user_name="temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
@@ -116,7 +116,7 @@ def test_user_self_deletion(testclient, backend):
         .follow(status=200)
     )
 
-    assert models.User.get(user_name="temp") is None
+    assert backend.get(models.User, user_name="temp") is None
 
     with testclient.session_transaction() as sess:
         assert not sess.get("user_id")
@@ -136,7 +136,7 @@ def test_account_locking(user, backend):
     assert user.locked
     user.save()
     assert user.locked
-    assert models.User.get(id=user.id).locked
+    assert backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
         False,
         "Your account has been locked.",
@@ -145,7 +145,7 @@ def test_account_locking(user, backend):
     user.lock_date = None
     user.save()
     assert not user.locked
-    assert not models.User.get(id=user.id).locked
+    assert not backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
         True,
         None,
@@ -165,7 +165,7 @@ def test_account_locking_past_date(user, backend):
     ) - datetime.timedelta(days=30)
     user.save()
     assert user.locked
-    assert models.User.get(id=user.id).locked
+    assert backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
         False,
         "Your account has been locked.",
@@ -185,7 +185,7 @@ def test_account_locking_future_date(user, backend):
     ) + datetime.timedelta(days=365 * 4)
     user.save()
     assert not user.locked
-    assert not models.User.get(id=user.id).locked
+    assert not backend.get(models.User, id=user.id).locked
     assert backend.check_user_password(user, "correct horse battery staple") == (
         True,
         None,

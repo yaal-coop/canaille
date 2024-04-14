@@ -4,7 +4,6 @@ import ldap.dn
 import ldap.filter
 from ldap.controls.readentry import PostReadControl
 
-from canaille.backends import BaseBackend
 from canaille.backends.models import BackendModel
 
 from .backend import Backend
@@ -225,20 +224,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 cls._attribute_type_by_name[name] = object_class
 
         return cls._attribute_type_by_name
-
-    @classmethod
-    def get(cls, identifier=None, /, **kwargs):
-        try:
-            return BaseBackend.instance.query(cls, identifier, **kwargs)[0]
-        except (IndexError, ldap.NO_SUCH_OBJECT):
-            if identifier and cls.base:
-                return (
-                    cls.get(**{cls.identifier_attribute: identifier})
-                    or cls.get(id=identifier)
-                    or None
-                )
-
-            return None
 
     @classmethod
     def update_ldap_attributes(cls):

@@ -19,7 +19,7 @@ def test_model_comparison(testclient, backend):
         formatted_name="bar",
     )
     bar.save()
-    foo2 = models.User.get(id=foo1.id)
+    foo2 = backend.get(models.User, id=foo1.id)
 
     assert foo1 == foo2
     assert foo1 != bar
@@ -39,14 +39,14 @@ def test_model_lifecycle(testclient, backend):
     assert not backend.query(models.User)
     assert not backend.query(models.User, id=user.id)
     assert not backend.query(models.User, id="invalid")
-    assert not models.User.get(id=user.id)
+    assert not backend.get(models.User, id=user.id)
 
     user.save()
 
     assert backend.query(models.User) == [user]
     assert backend.query(models.User, id=user.id) == [user]
     assert not backend.query(models.User, id="invalid")
-    assert models.User.get(id=user.id) == user
+    assert backend.get(models.User, id=user.id) == user
 
     user.family_name = "new_family_name"
 
@@ -59,7 +59,7 @@ def test_model_lifecycle(testclient, backend):
     user.delete()
 
     assert not backend.query(models.User, id=user.id)
-    assert not models.User.get(id=user.id)
+    assert not backend.get(models.User, id=user.id)
 
     user.delete()
 
@@ -78,7 +78,7 @@ def test_model_attribute_edition(testclient, backend):
     assert user.family_name == "family_name"
     assert user.emails == ["email1@user.com", "email2@user.com"]
 
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert user.user_name == "user_name"
     assert user.family_name == "family_name"
     assert user.emails == ["email1@user.com", "email2@user.com"]
@@ -90,7 +90,7 @@ def test_model_attribute_edition(testclient, backend):
     assert user.family_name == "new_family_name"
     assert user.emails == ["email1@user.com"]
 
-    user = models.User.get(id=user.id)
+    user = backend.get(models.User, id=user.id)
     assert user.family_name == "new_family_name"
     assert user.emails == ["email1@user.com"]
 
@@ -112,34 +112,34 @@ def test_model_indexation(testclient, backend):
     )
     user.save()
 
-    assert models.User.get(family_name="family_name") == user
-    assert not models.User.get(family_name="new_family_name")
-    assert models.User.get(emails=["email1@user.com"]) == user
-    assert models.User.get(emails=["email2@user.com"]) == user
-    assert not models.User.get(emails=["email3@user.com"])
+    assert backend.get(models.User, family_name="family_name") == user
+    assert not backend.get(models.User, family_name="new_family_name")
+    assert backend.get(models.User, emails=["email1@user.com"]) == user
+    assert backend.get(models.User, emails=["email2@user.com"]) == user
+    assert not backend.get(models.User, emails=["email3@user.com"])
 
     user.family_name = "new_family_name"
     user.emails = ["email2@user.com"]
 
-    assert models.User.get(family_name="family_name") != user
-    assert models.User.get(emails=["email1@user.com"]) != user
-    assert not models.User.get(emails=["email3@user.com"])
+    assert backend.get(models.User, family_name="family_name") != user
+    assert backend.get(models.User, emails=["email1@user.com"]) != user
+    assert not backend.get(models.User, emails=["email3@user.com"])
 
     user.save()
 
-    assert not models.User.get(family_name="family_name")
-    assert models.User.get(family_name="new_family_name") == user
-    assert not models.User.get(emails=["email1@user.com"])
-    assert models.User.get(emails=["email2@user.com"]) == user
-    assert not models.User.get(emails=["email3@user.com"])
+    assert not backend.get(models.User, family_name="family_name")
+    assert backend.get(models.User, family_name="new_family_name") == user
+    assert not backend.get(models.User, emails=["email1@user.com"])
+    assert backend.get(models.User, emails=["email2@user.com"]) == user
+    assert not backend.get(models.User, emails=["email3@user.com"])
 
     user.delete()
 
-    assert not models.User.get(family_name="family_name")
-    assert not models.User.get(family_name="new_family_name")
-    assert not models.User.get(emails=["email1@user.com"])
-    assert not models.User.get(emails=["email2@user.com"])
-    assert not models.User.get(emails=["email3@user.com"])
+    assert not backend.get(models.User, family_name="family_name")
+    assert not backend.get(models.User, family_name="new_family_name")
+    assert not backend.get(models.User, emails=["email1@user.com"])
+    assert not backend.get(models.User, emails=["email2@user.com"])
+    assert not backend.get(models.User, emails=["email3@user.com"])
 
 
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):

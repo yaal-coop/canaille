@@ -11,6 +11,7 @@ from typing import get_type_hints
 
 from canaille.app import classproperty
 from canaille.app import models
+from canaille.backends import BaseBackend
 
 
 class Model:
@@ -86,12 +87,6 @@ class BackendModel:
     It details all the methods and attributes that are expected to be
     implemented for every model and for every backend.
     """
-
-    @classmethod
-    def get(cls, identifier=None, **kwargs):
-        """Works like :meth:`~canaille.backends.BaseBackend.query` but return
-        only one element or :py:data:`None` if no item is matching."""
-        raise NotImplementedError()
 
     def save(self):
         """Validate the current modifications in the database."""
@@ -175,7 +170,7 @@ class BackendModel:
 
             backend_model = getattr(models, model.__name__)
 
-            if instance := backend_model.get(value):
+            if instance := BaseBackend.instance.get(backend_model, value):
                 filter[attribute] = instance
 
         return all(

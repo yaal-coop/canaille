@@ -131,12 +131,12 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group):
 
 
 def test_moderator_can_create_edit_and_delete_group(
-    testclient, logged_moderator, foo_group
+    testclient, logged_moderator, foo_group, backend
 ):
     # The group does not exist
     res = testclient.get("/groups", status=200)
-    assert models.Group.get(display_name="bar") is None
-    assert models.Group.get(display_name="foo") == foo_group
+    assert backend.get(models.Group, display_name="bar") is None
+    assert backend.get(models.Group, display_name="foo") == foo_group
     res.mustcontain(no="bar")
     res.mustcontain("foo")
 
@@ -150,7 +150,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = form.submit(status=302).follow(status=200)
 
     logged_moderator.reload()
-    bar_group = models.Group.get(display_name="bar")
+    bar_group = backend.get(models.Group, display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == "yolo"
     assert bar_group.members == [
@@ -168,10 +168,10 @@ def test_moderator_can_create_edit_and_delete_group(
     assert res.flashes == [("error", "Group edition failed.")]
     res.mustcontain("This field cannot be edited")
 
-    bar_group = models.Group.get(display_name="bar")
+    bar_group = backend.get(models.Group, display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == "yolo"
-    assert models.Group.get(display_name="bar2") is None
+    assert backend.get(models.Group, display_name="bar2") is None
 
     # Group description can be edited
     res = testclient.get("/groups/bar", status=200)
@@ -182,14 +182,14 @@ def test_moderator_can_create_edit_and_delete_group(
     assert res.flashes == [("success", "The group bar has been sucessfully edited.")]
     res = res.follow()
 
-    bar_group = models.Group.get(display_name="bar")
+    bar_group = backend.get(models.Group, display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == "yolo2"
 
     # Group is deleted
     res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
     res = res.form.submit(name="action", value="delete", status=302)
-    assert models.Group.get(display_name="bar") is None
+    assert backend.get(models.Group, display_name="bar") is None
     assert ("success", "The group bar has been sucessfully deleted") in res.flashes
 
 

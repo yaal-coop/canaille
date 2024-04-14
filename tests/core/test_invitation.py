@@ -7,7 +7,7 @@ from canaille.core.endpoints.account import RegistrationPayload
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
-    assert models.User.get(user_name="someone") is None
+    assert backend.get(models.User, user_name="someone") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -46,7 +46,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     assert ("success", "Your account has been created successfully.") in res.flashes
     res = res.follow(status=200)
 
-    user = models.User.get(user_name="someone")
+    user = backend.get(models.User, user_name="someone")
     foo_group.reload()
     assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
@@ -62,8 +62,8 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
 def test_invitation_editable_user_name(
     testclient, logged_admin, foo_group, smtpd, backend
 ):
-    assert models.User.get(user_name="jackyjack") is None
-    assert models.User.get(user_name="djorje") is None
+    assert backend.get(models.User, user_name="jackyjack") is None
+    assert backend.get(models.User, user_name="djorje") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -102,7 +102,7 @@ def test_invitation_editable_user_name(
     assert ("success", "Your account has been created successfully.") in res.flashes
     res = res.follow(status=200)
 
-    user = models.User.get(user_name="djorje")
+    user = backend.get(models.User, user_name="djorje")
     foo_group.reload()
     assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
@@ -114,7 +114,7 @@ def test_invitation_editable_user_name(
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
-    assert models.User.get(user_name="sometwo") is None
+    assert backend.get(models.User, user_name="sometwo") is None
 
     res = testclient.get("/invite", status=200)
 
@@ -149,7 +149,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    user = models.User.get(user_name="sometwo")
+    user = backend.get(models.User, user_name="sometwo")
     foo_group.reload()
     assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
@@ -245,7 +245,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
     testclient.get(f"/register/{b64}/{hash}", status=302)
 
 
-def test_registration_no_password(testclient, foo_group):
+def test_registration_no_password(testclient, foo_group, backend):
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
@@ -264,7 +264,7 @@ def test_registration_no_password(testclient, foo_group):
     res = res.form.submit(status=200)
     res.mustcontain("This field is required.")
 
-    assert not models.User.get(user_name="someoneelse")
+    assert not backend.get(models.User, user_name="someoneelse")
 
     with testclient.session_transaction() as sess:
         assert "user_id" not in sess
@@ -302,7 +302,7 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
 
 
 def test_groups_are_saved_even_when_user_does_not_have_read_permission(
-    testclient, foo_group
+    testclient, foo_group, backend
 ):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"] = [
         "user_name"
@@ -331,7 +331,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    user = models.User.get(user_name="someoneelse")
+    user = backend.get(models.User, user_name="someoneelse")
     foo_group.reload()
     assert user.groups == [foo_group]
     user.delete()

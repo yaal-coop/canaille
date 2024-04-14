@@ -22,7 +22,7 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     res = res.form.submit()
     assert ("success", "Your account has been created successfully.") in res.flashes
 
-    user = models.User.get(user_name="newuser")
+    user = backend.get(models.User, user_name="newuser")
     assert user
     user.delete()
 
@@ -73,7 +73,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
         ("success", "Your account has been created successfully."),
     ]
 
-    user = models.User.get(user_name="newuser")
+    user = backend.get(models.User, user_name="newuser")
     assert user
     user.delete()
 

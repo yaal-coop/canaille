@@ -7,7 +7,7 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
     foo_group.members = [foo_group]
     foo_group.save()
     dn = foo_group.dn
-    g = LDAPObject.get(dn)
+    g = backend.get(LDAPObject, dn)
     assert isinstance(g, models.Group)
     assert g == foo_group
     assert g.display_name == foo_group.display_name
@@ -21,9 +21,9 @@ def test_object_class_update(backend, testclient):
     user1.save()
 
     assert set(user1.get_ldap_attribute("objectClass")) == {"inetOrgPerson"}
-    assert set(models.User.get(id=user1.id).get_ldap_attribute("objectClass")) == {
-        "inetOrgPerson"
-    }
+    assert set(
+        backend.get(models.User, id=user1.id).get_ldap_attribute("objectClass")
+    ) == {"inetOrgPerson"}
 
     testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
@@ -38,12 +38,14 @@ def test_object_class_update(backend, testclient):
         "inetOrgPerson",
         "extensibleObject",
     }
-    assert set(models.User.get(id=user2.id).get_ldap_attribute("objectClass")) == {
+    assert set(
+        backend.get(models.User, id=user2.id).get_ldap_attribute("objectClass")
+    ) == {
         "inetOrgPerson",
         "extensibleObject",
     }
 
-    user1 = models.User.get(id=user1.id)
+    user1 = backend.get(models.User, id=user1.id)
     assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
 
     user1.save()
@@ -51,7 +53,9 @@ def test_object_class_update(backend, testclient):
         "inetOrgPerson",
         "extensibleObject",
     }
-    assert set(models.User.get(id=user1.id).get_ldap_attribute("objectClass")) == {
+    assert set(
+        backend.get(models.User, id=user1.id).get_ldap_attribute("objectClass")
+    ) == {
         "inetOrgPerson",
         "extensibleObject",
     }

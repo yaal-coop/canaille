@@ -104,9 +104,9 @@ def test_photo_on_profile_edition(
     assert logged_user.photo is None
 
 
-def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
+def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin, backend):
     res = testclient.get("/users", status=200)
-    assert models.User.get(user_name="foobar") is None
+    assert backend.get(models.User, user_name="foobar") is None
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
@@ -119,14 +119,16 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin):
         status=200
     )
 
-    user = models.User.get(user_name="foobar")
+    user = backend.get(models.User, user_name="foobar")
     assert user.photo == jpeg_photo
     user.delete()
 
 
-def test_photo_deleted_on_profile_creation(testclient, jpeg_photo, logged_admin):
+def test_photo_deleted_on_profile_creation(
+    testclient, jpeg_photo, logged_admin, backend
+):
     res = testclient.get("/users", status=200)
-    assert models.User.get(user_name="foobar") is None
+    assert backend.get(models.User, user_name="foobar") is None
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
@@ -140,6 +142,6 @@ def test_photo_deleted_on_profile_creation(testclient, jpeg_photo, logged_admin)
         status=200
     )
 
-    user = models.User.get(user_name="foobar")
+    user = backend.get(models.User, user_name="foobar")
     assert user.photo is None
     user.delete()

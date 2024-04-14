@@ -20,7 +20,7 @@ def current_user():
         return g.user
 
     for user_id in session.get("user_id", [])[::-1]:
-        user = models.User.get(user_id)
+        user = current_app.backend.instance.get(models.User, user_id)
         if user and (
             not current_app.backend.has_account_lockability() or not user.locked
         ):
@@ -147,7 +147,7 @@ def model_converter(model):
 
         def to_python(self, identifier):
             current_app.backend.setup()
-            instance = model.get(identifier)
+            instance = current_app.backend.get(model, identifier)
             if self.required and not instance:
                 abort(404)
 

@@ -33,7 +33,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
-    client = models.Client.get(client_id=client_id)
+    client = backend.get(models.Client, client_id=client_id)
 
     assert client.redirect_uris == [
         "https://foo.bar/callback",
@@ -68,7 +68,7 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
-    client = models.Client.get(client_id=client_id)
+    client = backend.get(models.Client, client_id=client_id)
 
     assert client.redirect_uris == [
         "https://foo.bar/callback1",
@@ -128,7 +128,7 @@ def test_fieldlist_duplicate_value(testclient, logged_admin, client):
     res.mustcontain("This value is a duplicate")
 
 
-def test_fieldlist_empty_value(testclient, logged_admin):
+def test_fieldlist_empty_value(testclient, logged_admin, backend):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
@@ -145,7 +145,7 @@ def test_fieldlist_empty_value(testclient, logged_admin):
         status=200, name="fieldlist_add", value="post_logout_redirect_uris-0"
     )
     res.form.submit(status=302, name="action", value="edit")
-    client = models.Client.get()
+    client = backend.get(models.Client)
     client.delete()
 
 

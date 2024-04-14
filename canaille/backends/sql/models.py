@@ -11,7 +11,6 @@ from sqlalchemy import LargeBinary
 from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy import or_
-from sqlalchemy import select
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -47,23 +46,6 @@ class SqlAlchemyModel(BackendModel):
             return getattr(cls, name).contains(value)
 
         return getattr(cls, name) == value
-
-    @classmethod
-    def get(cls, identifier=None, /, **kwargs):
-        if identifier:
-            return (
-                cls.get(**{cls.identifier_attribute: identifier})
-                or cls.get(id=identifier)
-                or None
-            )
-
-        filter = [
-            cls.attribute_filter(attribute_name, expected_value)
-            for attribute_name, expected_value in kwargs.items()
-        ]
-        return Backend.instance.db_session.execute(
-            select(cls).filter(*filter)
-        ).scalar_one_or_none()
 
     def save(self):
         self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
