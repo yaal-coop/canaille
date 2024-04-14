@@ -537,7 +537,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
             edited_user.preferred_language = None
 
     BaseBackend.instance.save(edited_user)
-    g.user.reload()
+    BaseBackend.instance.reload(g.user)
 
 
 def profile_edition_emails_form(user, edited_user, has_smtp):

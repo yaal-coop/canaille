@@ -25,7 +25,7 @@ def test_user_creation_edition_and_deletion(
     assert ("success", "User account creation succeed.") in res.flashes
     res = res.follow(status=200)
     george = backend.get(models.User, user_name="george")
-    foo_group.reload()
+    backend.reload(foo_group)
     assert "George" == george.given_name
     assert george.groups == [foo_group]
     assert backend.check_user_password(george, "totoyolo")[0]
@@ -49,8 +49,8 @@ def test_user_creation_edition_and_deletion(
     assert "Georgio" == george.given_name
     assert backend.check_user_password(george, "totoyolo")[0]
 
-    foo_group.reload()
-    bar_group.reload()
+    backend.reload(foo_group)
+    backend.reload(bar_group)
     assert george in set(foo_group.members)
     assert george in set(bar_group.members)
     assert set(george.groups) == {foo_group, bar_group}

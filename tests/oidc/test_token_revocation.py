@@ -3,7 +3,7 @@ import datetime
 from . import client_credentials
 
 
-def test_revoke_access_token(testclient, user, client, token):
+def test_revoke_access_token(testclient, user, client, token, backend):
     assert not token.revokation_date
 
     res = testclient.post(
@@ -14,11 +14,11 @@ def test_revoke_access_token(testclient, user, client, token):
     )
     assert {} == res.json
 
-    token.reload()
+    backend.reload(token)
     assert token.revokation_date
 
 
-def test_revoke_access_token_with_hint(testclient, user, client, token):
+def test_revoke_access_token_with_hint(testclient, user, client, token, backend):
     assert not token.revokation_date
 
     res = testclient.post(
@@ -29,11 +29,11 @@ def test_revoke_access_token_with_hint(testclient, user, client, token):
     )
     assert {} == res.json
 
-    token.reload()
+    backend.reload(token)
     assert token.revokation_date
 
 
-def test_revoke_refresh_token(testclient, user, client, token):
+def test_revoke_refresh_token(testclient, user, client, token, backend):
     assert not token.revokation_date
 
     res = testclient.post(
@@ -44,11 +44,11 @@ def test_revoke_refresh_token(testclient, user, client, token):
     )
     assert {} == res.json
 
-    token.reload()
+    backend.reload(token)
     assert token.revokation_date
 
 
-def test_revoke_refresh_token_with_hint(testclient, user, client, token):
+def test_revoke_refresh_token_with_hint(testclient, user, client, token, backend):
     assert not token.revokation_date
 
     res = testclient.post(
@@ -59,7 +59,7 @@ def test_revoke_refresh_token_with_hint(testclient, user, client, token):
     )
     assert {} == res.json
 
-    token.reload()
+    backend.reload(token)
     assert token.revokation_date
 
 

@@ -8,7 +8,7 @@ from canaille.app import models
 def test_photo(testclient, user, jpeg_photo, backend):
     user.photo = jpeg_photo
     backend.save(user)
-    user.reload()
+    backend.reload(user)
 
     res = testclient.get("/profile/user/photo")
     assert res.body == jpeg_photo
@@ -52,6 +52,7 @@ def test_photo_on_profile_edition(
     testclient,
     logged_user,
     jpeg_photo,
+    backend,
 ):
     # Add a photo
     res = testclient.get("/profile/user", status=200)
@@ -62,7 +63,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.photo == jpeg_photo
 
@@ -74,7 +75,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.photo == jpeg_photo
 
@@ -86,7 +87,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.photo is None
 
@@ -99,7 +100,7 @@ def test_photo_on_profile_edition(
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.photo is None
 

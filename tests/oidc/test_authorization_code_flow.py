@@ -503,9 +503,11 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
         backend.delete(consent)
 
 
-def test_user_cannot_use_oidc(testclient, user, client, keypair, trusted_client):
+def test_user_cannot_use_oidc(
+    testclient, user, client, keypair, trusted_client, backend
+):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    user.reload()
+    backend.reload(user)
 
     res = testclient.get(
         "/oauth/authorize",

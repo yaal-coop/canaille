@@ -61,11 +61,11 @@ def test_group_deletion(testclient, backend):
     )
     backend.save(group)
 
-    user.reload()
+    backend.reload(user)
     assert user.groups == [group]
 
     backend.delete(group)
-    user.reload()
+    backend.reload(user)
     assert not user.groups
 
     backend.delete(user)
@@ -93,15 +93,15 @@ def test_set_groups(app, user, foo_group, bar_group, backend):
     user.groups = [foo_group, bar_group]
     backend.save(user)
 
-    bar_group.reload()
+    backend.reload(bar_group)
     assert user in bar_group.members
     assert bar_group in user.groups
 
     user.groups = [foo_group]
     backend.save(user)
 
-    foo_group.reload()
-    bar_group.reload()
+    backend.reload(foo_group)
+    backend.reload(bar_group)
     assert user in foo_group.members
     assert user not in bar_group.members
 
@@ -118,13 +118,13 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group, back
     user.groups = [foo_group]
     backend.save(user)
 
-    foo_group.reload()
+    backend.reload(foo_group)
     assert user in foo_group.members
 
     user.groups = []
     backend.save(user)
 
-    foo_group.reload()
+    backend.reload(foo_group)
     assert user.id not in foo_group.members
 
     backend.delete(user)
@@ -149,7 +149,7 @@ def test_moderator_can_create_edit_and_delete_group(
     # Group has been created
     res = form.submit(status=302).follow(status=200)
 
-    logged_moderator.reload()
+    backend.reload(logged_moderator)
     bar_group = backend.get(models.Group, display_name="bar")
     assert bar_group.display_name == "bar"
     assert bar_group.description == "yolo"
@@ -221,13 +221,13 @@ def test_invalid_form_request(testclient, logged_moderator, foo_group):
     res = form.submit(name="action", value="invalid-action", status=400)
 
 
-def test_edition_failed(testclient, logged_moderator, foo_group):
+def test_edition_failed(testclient, logged_moderator, foo_group, backend):
     res = testclient.get("/groups/foo")
     form = res.forms["editgroupform"]
     form["display_name"] = ""
     res = form.submit(name="action", value="edit")
     res.mustcontain("Group edition failed.")
-    foo_group.reload()
+    backend.reload(foo_group)
     assert foo_group.display_name == "foo"
 
 

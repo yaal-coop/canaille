@@ -22,7 +22,6 @@ import canaille.core.models
 import canaille.oidc.models
 from canaille.backends.models import BackendModel
 
-from .backend import Backend
 from .backend import Base
 from .utils import TZDateTime
 
@@ -46,9 +45,6 @@ class SqlAlchemyModel(BackendModel):
             return getattr(cls, name).contains(value)
 
         return getattr(cls, name) == value
-
-    def reload(self):
-        Backend.instance.db_session.refresh(self)
 
 
 membership_association_table = Table(

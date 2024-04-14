@@ -147,7 +147,7 @@ def test_add_missing_fields(testclient, logged_admin):
     ) in res.flashes
 
 
-def test_client_edit(testclient, client, logged_admin, trusted_client):
+def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
         "client_name": "foobar",
@@ -179,7 +179,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client):
     ) not in res.flashes
     assert ("success", "The client has been edited.") in res.flashes
 
-    client.reload()
+    backend.reload(client)
 
     assert client.client_name == "foobar"
     assert client.contacts == ["foo@bar.com"]
@@ -204,7 +204,9 @@ def test_client_edit(testclient, client, logged_admin, trusted_client):
     assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
 
 
-def test_client_edit_missing_fields(testclient, client, logged_admin, trusted_client):
+def test_client_edit_missing_fields(
+    testclient, client, logged_admin, trusted_client, backend
+):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clientaddform"]["client_name"] = ""
     res = res.forms["clientaddform"].submit(name="action", value="edit")
@@ -212,7 +214,7 @@ def test_client_edit_missing_fields(testclient, client, logged_admin, trusted_cl
         "error",
         "The client has not been edited. Please check your information.",
     ) in res.flashes
-    client.reload()
+    backend.reload(client)
     assert client.client_name
 
 
@@ -258,7 +260,7 @@ def test_client_delete_invalid_client(testclient, logged_admin, client):
     )
 
 
-def test_client_edit_preauth(testclient, client, logged_admin, trusted_client):
+def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, backend):
     assert not client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
@@ -266,7 +268,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client):
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
-    client.reload()
+    backend.reload(client)
     assert client.preconsent
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
@@ -274,7 +276,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client):
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
-    client.reload()
+    backend.reload(client)
     assert not client.preconsent
 
 

@@ -252,7 +252,7 @@ def foo_group(app, user, backend):
         display_name="foo",
     )
     backend.save(group)
-    user.reload()
+    backend.reload(user)
     yield group
     backend.delete(group)
 
@@ -264,7 +264,7 @@ def bar_group(app, admin, backend):
         display_name="bar",
     )
     backend.save(group)
-    admin.reload()
+    backend.reload(admin)
     yield group
     backend.delete(group)
 

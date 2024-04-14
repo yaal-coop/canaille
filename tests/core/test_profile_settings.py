@@ -21,12 +21,12 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("error", "Profile edition failed.")]
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.user_name == "user"
 
-    foo_group.reload()
-    bar_group.reload()
+    backend.reload(foo_group)
+    backend.reload(bar_group)
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
@@ -41,7 +41,7 @@ def test_group_removal(testclient, logged_admin, user, foo_group, backend):
     """Tests that one can remove a group from a user."""
     foo_group.members = [user, logged_admin]
     backend.save(foo_group)
-    user.reload()
+    backend.reload(user)
     assert foo_group in user.groups
 
     res = testclient.get("/profile/user/settings", status=200)
@@ -49,11 +49,11 @@ def test_group_removal(testclient, logged_admin, user, foo_group, backend):
     res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
-    user.reload()
+    backend.reload(user)
     assert foo_group not in user.groups
 
-    foo_group.reload()
-    logged_admin.reload()
+    backend.reload(foo_group)
+    backend.reload(logged_admin)
     assert foo_group.members == [logged_admin]
 
 
@@ -76,7 +76,7 @@ def test_empty_group_removal(testclient, logged_admin, user, foo_group, backend)
         "The group &#39;foo&#39; cannot be removed, because it must have at least one user left."
     )
 
-    user.reload()
+    backend.reload(user)
     assert foo_group in user.groups
 
 
@@ -109,7 +109,7 @@ def test_edition_without_groups(
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.user_name == "user"
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
@@ -126,7 +126,7 @@ def test_password_change(testclient, logged_user, backend):
 
     res = res.form.submit(name="action", value="edit-settings").follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "new_password")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
@@ -138,7 +138,7 @@ def test_password_change(testclient, logged_user, backend):
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
 
@@ -150,7 +150,7 @@ def test_password_change_fail(testclient, logged_user, backend):
 
     res = res.form.submit(name="action", value="edit-settings", status=200)
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
@@ -160,7 +160,7 @@ def test_password_change_fail(testclient, logged_user, backend):
 
     res = res.form.submit(name="action", value="edit-settings", status=200)
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
 
@@ -186,7 +186,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.com"
 
-    u.reload()
+    backend.reload(u)
     u.password = "correct horse battery staple"
     backend.save(u)
 
@@ -357,13 +357,14 @@ def test_edition_permission(
     testclient,
     logged_user,
     admin,
+    backend,
 ):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    logged_user.reload()
+    backend.reload(logged_user)
     testclient.get("/profile/user/settings", status=404)
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
-    g.user.reload()
+    backend.reload(g.user)
     testclient.get("/profile/user/settings", status=200)
 
 
@@ -462,7 +463,7 @@ def test_empty_lock_date(
     assert res.flashes == [("success", "Profile updated successfully.")]
 
     res = res.follow()
-    user.reload()
+    backend.reload(user)
     assert not user.lock_date
 
 

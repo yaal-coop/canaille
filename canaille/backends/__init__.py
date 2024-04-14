@@ -93,6 +93,21 @@ class BaseBackend:
         """Remove the current instance from the database."""
         raise NotImplementedError()
 
+    def reload(self, instance):
+        """Cancel the unsaved modifications.
+
+        >>> user = User.get(user_name="george")
+        >>> user.display_name
+        George
+        >>> user.display_name = "Jane"
+        >>> user.display_name
+        Jane
+        >>> BaseBackend.instance.reload(user)
+        >>> user.display_name
+        George
+        """
+        raise NotImplementedError()
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()

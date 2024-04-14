@@ -134,7 +134,7 @@ def test_revoke_bad_request(testclient, token, logged_admin):
     res = res.form.submit(name="action", value="invalid", status=400)
 
 
-def test_revoke_token(testclient, token, logged_admin):
+def test_revoke_token(testclient, token, logged_admin, backend):
     assert not token.revoked
 
     res = testclient.get(f"/admin/token/{token.token_id}")
@@ -142,7 +142,7 @@ def test_revoke_token(testclient, token, logged_admin):
     res = res.form.submit(name="action", value="revoke")
     assert ("success", "The token has successfully been revoked.") in res.flashes
 
-    token.reload()
+    backend.reload(token)
     assert token.revoked
 
 

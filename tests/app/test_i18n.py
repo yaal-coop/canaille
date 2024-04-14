@@ -17,7 +17,7 @@ def test_preferred_language(testclient, logged_user, backend):
     assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")]
     res = res.follow()
     form = res.forms["baseform"]
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.preferred_language == "fr"
     assert form["preferred_language"].value == "fr"
     assert res.pyquery("html")[0].attrib["lang"] == "fr"
@@ -29,7 +29,7 @@ def test_preferred_language(testclient, logged_user, backend):
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
     form = res.forms["baseform"]
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.preferred_language == "en"
     assert form["preferred_language"].value == "en"
     assert res.pyquery("html")[0].attrib["lang"] == "en"
@@ -41,7 +41,7 @@ def test_preferred_language(testclient, logged_user, backend):
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
     form = res.forms["baseform"]
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.preferred_language is None
     assert form["preferred_language"].value == "auto"
     assert res.pyquery("html")[0].attrib["lang"] == "en"

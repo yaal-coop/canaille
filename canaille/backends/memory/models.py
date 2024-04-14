@@ -134,10 +134,6 @@ class MemoryModel(BackendModel):
         # update the id index
         del self.index()[self.id]
 
-    def reload(self):
-        self._state = BaseBackend.instance.get(self.__class__, id=self.id)._state
-        self._cache = {}
-
     def __eq__(self, other):
         if other is None:
             return False

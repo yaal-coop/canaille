@@ -92,7 +92,7 @@ homeDirectory: /home/foobar
     process = slapd_server.ldapmodify(ldif)
     assert process.returncode == 0
 
-    user.reload()
+    backend.reload(user)
 
     # saving an object should not raise a ldap.OBJECT_CLASS_VIOLATION exception
     backend.save(user)

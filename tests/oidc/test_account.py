@@ -1,7 +1,7 @@
 from flask import g
 
 
-def test_index(testclient, user):
+def test_index(testclient, user, backend):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
@@ -10,11 +10,11 @@ def test_index(testclient, user):
     assert res.location == "/profile/user"
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["use_oidc"]
-    g.user.reload()
+    backend.reload(g.user)
     res = testclient.get("/", status=302)
     assert res.location == "/consent/"
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    g.user.reload()
+    backend.reload(g.user)
     res = testclient.get("/", status=302)
     assert res.location == "/about"

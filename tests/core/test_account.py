@@ -5,7 +5,7 @@ from flask import g
 from canaille.app import models
 
 
-def test_index(testclient, user):
+def test_index(testclient, user, backend):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
@@ -14,7 +14,7 @@ def test_index(testclient, user):
     assert res.location == "/profile/user"
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    g.user.reload()
+    backend.reload(g.user)
     res = testclient.get("/", status=302)
     assert res.location == "/about"
 
@@ -105,7 +105,7 @@ def test_user_self_deletion(testclient, backend):
         "delete_account",
     ]
     # Simulate an app restart
-    user.reload()
+    backend.reload(user)
 
     res = testclient.get("/profile/temp/settings")
     res.mustcontain("Delete my account")

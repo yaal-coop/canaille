@@ -25,7 +25,7 @@ def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
 
@@ -51,7 +51,7 @@ def test_confirmation_unset_smtp_disabled_email_editable(
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
-    user.reload()
+    backend.reload(user)
     assert user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
 
 
@@ -91,7 +91,7 @@ def test_confirmation_unset_smtp_enabled_email_admin_editable(
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
-    user.reload()
+    backend.reload(user)
     assert user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
 
 
@@ -115,7 +115,7 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
-    user.reload()
+    backend.reload(user)
     assert user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
 
 
@@ -172,7 +172,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
         res = testclient.get(email_confirmation_url)
 
     assert ("success", "Your email address have been confirmed.") in res.flashes
-    user.reload()
+    backend.reload(user)
     assert "new_email@mydomain.tld" in user.emails
 
 
@@ -206,7 +206,7 @@ def test_confirmation_mail_form_failed(testclient, backend, user):
         )
 
     assert res.flashes == [("error", "Email addition failed.")]
-    user.reload()
+    backend.reload(user)
     assert user.emails == ["john@doe.com"]
 
 
@@ -233,7 +233,7 @@ def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
         )
 
     assert res.flashes == [("error", "Could not send the verification email")]
-    user.reload()
+    backend.reload(user)
     assert user.emails == ["john@doe.com"]
 
 
@@ -258,7 +258,7 @@ def test_confirmation_expired_link(testclient, backend, user):
         "error",
         "The email confirmation link that brought you here has expired.",
     ) in res.flashes
-    user.reload()
+    backend.reload(user)
     assert "new_email@mydomain.tld" not in user.emails
 
 
@@ -283,7 +283,7 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
         "error",
         "The invitation link that brought you here was invalid.",
     ) in res.flashes
-    user.reload()
+    backend.reload(user)
     assert "new_email@mydomain.tld" not in user.emails
 
 
@@ -312,7 +312,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
         "error",
         "The email confirmation link that brought you here is invalid.",
     ) in res.flashes
-    user.reload()
+    backend.reload(user)
     assert "new_email@mydomain.tld" not in user.emails
 
 
@@ -337,7 +337,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
         "error",
         "This address email have already been confirmed.",
     ) in res.flashes
-    user.reload()
+    backend.reload(user)
     assert "new_email@mydomain.tld" not in user.emails
 
 
@@ -367,7 +367,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
         "error",
         "This address email is already associated with another account.",
     ) in res.flashes
-    user.reload()
+    backend.reload(user)
     assert "new_email@mydomain.tld" not in user.emails
 
 
@@ -387,7 +387,7 @@ def test_delete_email(testclient, logged_user, backend):
     )
     assert res.flashes == [("success", "The email have been successfully deleted.")]
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.com"]
 
 
@@ -408,7 +408,7 @@ def test_delete_wrong_email(testclient, logged_user, backend):
     )
     assert res2.flashes == [("error", "Email deletion failed.")]
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.com"]
 
 
@@ -429,11 +429,11 @@ def test_delete_last_email(testclient, logged_user, backend):
     )
     assert res2.flashes == [("error", "Email deletion failed.")]
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.com"]
 
 
-def test_edition_forced_mail(testclient, logged_user):
+def test_edition_forced_mail(testclient, logged_user, backend):
     """Tests that users that must perform email verification cannot force the
     profile form."""
     res = testclient.get("/profile/user", status=200)
@@ -447,7 +447,7 @@ def test_edition_forced_mail(testclient, logged_user):
         },
     )
 
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.com"]
 
 

@@ -47,7 +47,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     res = res.follow(status=200)
 
     user = backend.get(models.User, user_name="someone")
-    foo_group.reload()
+    backend.reload(foo_group)
     assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
 
@@ -103,7 +103,7 @@ def test_invitation_editable_user_name(
     res = res.follow(status=200)
 
     user = backend.get(models.User, user_name="djorje")
-    foo_group.reload()
+    backend.reload(foo_group)
     assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
 
@@ -150,7 +150,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     res = res.follow(status=200)
 
     user = backend.get(models.User, user_name="sometwo")
-    foo_group.reload()
+    backend.reload(foo_group)
     assert backend.check_user_password(user, "whatever")[0]
     assert user.groups == [foo_group]
 
@@ -332,6 +332,6 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     res = res.follow(status=200)
 
     user = backend.get(models.User, user_name="someoneelse")
-    foo_group.reload()
+    backend.reload(foo_group)
     assert user.groups == [foo_group]
     backend.delete(user)

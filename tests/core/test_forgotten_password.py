@@ -83,9 +83,11 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
     assert len(smtpd.messages) == 0
 
 
-def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient, user):
+def test_password_forgotten_invalid_when_user_cannot_self_edit(
+    smtpd, testclient, user, backend
+):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    user.reload()
+    backend.reload(user)
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
@@ -104,7 +106,7 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
     ) in res.flashes
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
-    user.reload()
+    backend.reload(user)
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"

@@ -118,3 +118,16 @@ class Backend(BaseBackend):
 
         # run the instance delete callback again if existing
         next(delete_callback, None)
+
+    def reload(self, instance):
+        # run the instance reload callback if existing
+        reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
+        next(reload_callback, None)
+
+        instance._state = BaseBackend.instance.get(
+            instance.__class__, id=instance.id
+        )._state
+        instance._cache = {}
+
+        # run the instance reload callback again if existing
+        next(reload_callback, None)

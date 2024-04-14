@@ -256,9 +256,3 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     @classmethod
     def python_attribute_to_ldap(cls, name):
         return cls.attribute_map.get(name, name) if cls.attribute_map else None
-
-    def reload(self):
-        conn = Backend.instance.connection
-        result = conn.search_s(self.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
-        self.changes = {}
-        self.state = result[0][1]

@@ -296,7 +296,7 @@ class User(Model):
         self._readable = None
         self._writable = None
         self._permissions = None
-        super().reload()
+        yield
 
     @property
     def readable_fields(self):

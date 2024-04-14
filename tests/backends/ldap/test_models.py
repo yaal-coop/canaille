@@ -8,7 +8,7 @@ def test_model_references_set_unsaved_object(
     exist."""
     group = models.Group(members=[user], display_name="foo")
     backend.save(group)
-    user.reload()
+    backend.reload(user)
 
     non_existent_user = models.User(
         formatted_name="foo", family_name="bar", user_name="baz"
@@ -19,7 +19,7 @@ def test_model_references_set_unsaved_object(
     backend.save(group)
     assert group.members == [user, non_existent_user]
 
-    group.reload()
+    backend.reload(group)
     assert group.members == [user]
 
     testclient.get("/groups/foo", status=200)

@@ -13,7 +13,7 @@ def test_password_reset(testclient, user, backend):
     assert ("success", "Your password has been updated successfully") in res.flashes
     assert res.location == "/profile/user"
 
-    user.reload()
+    backend.reload(user)
     assert backend.check_user_password(user, "foobarbaz")[0]
 
     res = testclient.get("/reset/user/" + hash)
@@ -37,7 +37,7 @@ def test_password_reset_multiple_emails(testclient, user, backend):
     res = res.form.submit()
     assert ("success", "Your password has been updated successfully") in res.flashes
 
-    user.reload()
+    backend.reload(user)
     assert backend.check_user_password(user, "foobarbaz")[0]
 
     res = testclient.get("/reset/user/" + hash)

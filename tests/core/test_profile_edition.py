@@ -71,7 +71,7 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
 
 
 def test_user_list_search_only_allowed_fields(
-    testclient, logged_admin, user, moderator
+    testclient, logged_admin, user, moderator, backend
 ):
     res = testclient.get("/users")
     res.mustcontain("3 items")
@@ -88,7 +88,7 @@ def test_user_list_search_only_allowed_fields(
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].remove("user_name")
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["READ"].remove("user_name")
-    g.user.reload()
+    backend.reload(g.user)
 
     form = res.forms["search"]
     form["query"] = "user"
@@ -103,13 +103,14 @@ def test_edition_permission(
     testclient,
     logged_user,
     admin,
+    backend,
 ):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    logged_user.reload()
+    backend.reload(logged_user)
     testclient.get("/profile/user", status=404)
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
-    g.user.reload()
+    backend.reload(g.user)
     testclient.get("/profile/user", status=200)
 
 
@@ -145,7 +146,7 @@ def test_edition(
     ], res.text
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert logged_user.given_name == "given_name"
     assert logged_user.family_name == "family_name"
@@ -187,7 +188,7 @@ def test_edition_remove_fields(
     assert res.flashes == [("success", "Profile updated successfully.")], res.text
     res = res.follow()
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert not logged_user.display_name
     assert not logged_user.phone_numbers
@@ -212,7 +213,7 @@ def test_field_permissions_none(testclient, logged_user, backend):
         "FILTER": None,
     }
 
-    g.user.reload()
+    backend.reload(g.user)
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" not in form.fields
@@ -225,7 +226,7 @@ def test_field_permissions_none(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.phone_numbers == ["555-666-777"]
 
 
@@ -240,7 +241,7 @@ def test_field_permissions_read(testclient, logged_user, backend):
         "PERMISSIONS": ["edit_self"],
         "FILTER": None,
     }
-    g.user.reload()
+    backend.reload(g.user)
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields
@@ -253,7 +254,7 @@ def test_field_permissions_read(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.phone_numbers == ["555-666-777"]
 
 
@@ -268,7 +269,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
         "PERMISSIONS": ["edit_self"],
         "FILTER": None,
     }
-    g.user.reload()
+    backend.reload(g.user)
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields
@@ -281,7 +282,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
-    logged_user.reload()
+    backend.reload(logged_user)
     assert logged_user.phone_numbers == ["000-000-000"]
 
 
@@ -306,7 +307,7 @@ def test_admin_bad_request(testclient, logged_moderator):
     testclient.get("/profile/foobar", status=404)
 
 
-def test_bad_email(testclient, logged_user):
+def test_bad_email(testclient, logged_user, backend):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
 
@@ -323,12 +324,12 @@ def test_bad_email(testclient, logged_user):
 
     res = form.submit(name="action", value="edit-profile", status=200)
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert ["john@doe.com"] == logged_user.emails
 
 
-def test_surname_is_mandatory(testclient, logged_user):
+def test_surname_is_mandatory(testclient, logged_user, backend):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     logged_user.family_name = "Doe"
@@ -337,7 +338,7 @@ def test_surname_is_mandatory(testclient, logged_user):
 
     res = form.submit(name="action", value="edit-profile", status=200)
 
-    logged_user.reload()
+    backend.reload(logged_user)
 
     assert "Doe" == logged_user.family_name
 
@@ -391,12 +392,12 @@ def test_inline_validation(testclient, logged_admin, user):
     res.mustcontain("The email &#39;john@doe.com&#39; is already used")
 
 
-def test_inline_validation_keep_indicators(testclient, logged_admin, user):
+def test_inline_validation_keep_indicators(testclient, logged_admin, user, backend):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("display_name")
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["WRITE"].append("display_name")
-    logged_admin.reload()
-    user.reload()
+    backend.reload(logged_admin)
+    backend.reload(user)
 
     res = testclient.get("/profile/admin")
     form = res.forms["baseform"]

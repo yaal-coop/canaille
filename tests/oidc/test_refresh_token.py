@@ -60,7 +60,7 @@ def test_refresh_token(testclient, logged_user, client, backend):
     assert new_token is not None
     assert old_token.access_token != new_token.access_token
 
-    old_token.reload()
+    backend.reload(old_token)
     assert old_token.revokation_date
 
     res = testclient.get(

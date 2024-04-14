@@ -401,6 +401,20 @@ class Backend(BaseBackend):
         # run the instance delete callback again if existing
         next(save_callback, None)
 
+    def reload(self, instance):
+        # run the instance reload callback if existing
+        reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
+        next(reload_callback, None)
+
+        result = self.connection.search_s(
+            instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"]
+        )
+        instance.changes = {}
+        instance.state = result[0][1]
+
+        # run the instance reload callback again if existing
+        next(reload_callback, None)
+
 
 def setup_ldap_models(config):
     from canaille.app import models

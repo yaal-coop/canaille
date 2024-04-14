@@ -10,7 +10,7 @@ def test_no_logged_no_access(testclient):
     testclient.get("/consent", status=403)
 
 
-def test_revokation(testclient, client, consent, logged_user, token):
+def test_revokation(testclient, client, consent, logged_user, token, backend):
     res = testclient.get("/consent", status=200)
     res.mustcontain(client.client_name)
     res.mustcontain("Revoke access")
@@ -24,13 +24,13 @@ def test_revokation(testclient, client, consent, logged_user, token):
     res.mustcontain(no="Revoke access")
     res.mustcontain("Restore access")
 
-    consent.reload()
+    backend.reload(consent)
     assert consent.revoked
-    token.reload()
+    backend.reload(token)
     assert token.revoked
 
 
-def test_revokation_already_revoked(testclient, client, consent, logged_user):
+def test_revokation_already_revoked(testclient, client, consent, logged_user, backend):
     consent.revoke()
 
     assert consent.revoked
@@ -39,24 +39,24 @@ def test_revokation_already_revoked(testclient, client, consent, logged_user):
     assert ("error", "The access is already revoked") in res.flashes
     res = res.follow(status=200)
 
-    consent.reload()
+    backend.reload(consent)
     assert consent.revoked
 
 
-def test_restoration(testclient, client, consent, logged_user, token):
+def test_restoration(testclient, client, consent, logged_user, token, backend):
     consent.revoke()
 
     assert consent.revoked
-    token.reload()
+    backend.reload(token)
     assert token.revoked
 
     res = testclient.get(f"/consent/restore/{consent.consent_id}", status=302)
     assert ("success", "The access has been restored") in res.flashes
     res = res.follow(status=200)
 
-    consent.reload()
+    backend.reload(consent)
     assert not consent.revoked
-    token.reload()
+    backend.reload(token)
     assert token.revoked
 
 
@@ -115,7 +115,7 @@ def test_oidc_authorization_after_revokation(
     res = res.form.submit(name="answer", value="accept", status=302)
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
-    consent.reload()
+    backend.reload(consent)
     assert consents[0] == consent
     assert not consent.revoked
 
@@ -167,21 +167,21 @@ def test_revoke_preconsented_client(testclient, client, logged_user, token, back
     assert consent.subject == logged_user
     assert consent.scope == ["openid", "email", "profile", "groups", "address", "phone"]
     assert not consent.issue_date
-    token.reload()
+    backend.reload(token)
     assert token.revoked
 
     res = testclient.get(f"/consent/restore/{consent.consent_id}", status=302)
     assert ("success", "The access has been restored") in res.flashes
 
-    consent.reload()
+    backend.reload(consent)
     assert not consent.revoked
     assert consent.issue_date
-    token.reload()
+    backend.reload(token)
     assert token.revoked
 
     res = testclient.get(f"/consent/revoke/{consent.consent_id}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
-    consent.reload()
+    backend.reload(consent)
     assert consent.revoked
     assert consent.issue_date
 

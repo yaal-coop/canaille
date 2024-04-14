@@ -52,7 +52,7 @@ def test_model_lifecycle(testclient, backend):
 
     assert user.family_name == "new_family_name"
 
-    user.reload()
+    backend.reload(user)
 
     assert user.family_name == "family_name"
 
@@ -178,14 +178,14 @@ def test_model_references(testclient, user, foo_group, admin, bar_group, backend
     assert bar_group not in user.groups
     user.groups = user.groups + [bar_group]
     backend.save(user)
-    bar_group.reload()
+    backend.reload(bar_group)
 
     assert user in bar_group.members
     assert bar_group in user.groups
 
     bar_group.members = [admin]
     backend.save(bar_group)
-    user.reload()
+    backend.reload(user)
 
     assert user not in bar_group.members
     assert bar_group not in user.groups

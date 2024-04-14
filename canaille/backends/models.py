@@ -105,21 +105,6 @@ class BackendModel:
         for attribute, value in kwargs.items():
             setattr(self, attribute, value)
 
-    def reload(self):
-        """Cancel the unsaved modifications.
-
-        >>> user = User.get(user_name="george")
-        >>> user.display_name
-        George
-        >>> user.display_name = "Jane"
-        >>> user.display_name
-        Jane
-        >>> user.reload()
-        >>> user.display_name
-        George
-        """
-        raise NotImplementedError()
-
     @classmethod
     def get_model_annotations(cls, attribute):
         annotations = cls.attributes[attribute]
