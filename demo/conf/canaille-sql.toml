@@ -7,6 +7,17 @@ FAVICON = "/static/img/canaille-c.webp"
 EMAIL_CONFIRMATION = false
 ENABLE_REGISTRATION = true
 
+[CANAILLE.LOGGING]
+version = 1
+formatters.default.format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+root = {level = "DEBUG", handlers = ["canaille"]}
+loggers = {watchdog = {level = "WARNING"}}
+
+[CANAILLE.LOGGING.handlers.canaille]
+class = "logging.StreamHandler"
+stream = "ext://sys.stdout"
+formatter = "default"
+
 [CANAILLE_SQL]
 DATABASE_URI = "sqlite:///demo.sqlite"
 

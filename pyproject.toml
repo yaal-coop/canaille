@@ -102,6 +102,7 @@ faker = "*"
 honcho = "*"
 slapd = "*"
 requests = "*"
+watchdog = "^4.0.0"
 
 [tool.poetry.extras]
 front = [

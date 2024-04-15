@@ -1,3 +1,3 @@
-canaille: env FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 CONFIG=conf/canaille-memory.toml FLASK_APP=demoapp flask run --extra-files conf/canaille-memory.toml
+canaille: env FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 CONFIG=conf/canaille-memory.toml FLASK_APP=demoapp flask run --extra-files conf/canaille-memory.toml --extra-files "$CANAILLE__THEME"
 client1: env FLASK_DEBUG=1 CONFIG=../conf/client1.cfg FLASK_APP=client flask run --port=5001
 client2: env FLASK_DEBUG=1 CONFIG=../conf/client2.cfg FLASK_APP=client flask run --port=5002
