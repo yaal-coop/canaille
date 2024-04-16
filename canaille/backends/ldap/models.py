@@ -3,7 +3,7 @@ import ldap.filter
 import canaille.core.models
 import canaille.oidc.models
 
-from .backend import Backend
+from .backend import LDAPBackend
 from .ldapobject import LDAPObject
 
 
@@ -38,7 +38,7 @@ class User(canaille.core.models.User, LDAPObject):
 
     def match_filter(self, filter):
         if isinstance(filter, str):
-            conn = Backend.instance.connection
+            conn = LDAPBackend.instance.connection
             return self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter)
 
         return super().match_filter(filter)
@@ -64,7 +64,7 @@ class User(canaille.core.models.User, LDAPObject):
 
         for group in to_add:
             group.members = group.members + [self]
-            Backend.instance.save(group)
+            LDAPBackend.instance.save(group)
 
         for group in to_del:
             # LDAP groups cannot be empty because groupOfNames.member
@@ -73,7 +73,7 @@ class User(canaille.core.models.User, LDAPObject):
             # TODO: properly manage the situation where one wants to
             # remove the last member of a group
             group.members = [member for member in group.members if member != self]
-            Backend.instance.save(group)
+            LDAPBackend.instance.save(group)
 
         self.state[group_attr] = new_groups
 

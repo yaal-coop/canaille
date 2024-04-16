@@ -1,7 +1,7 @@
 import pytest
 
 from canaille.app.configuration import settings_factory
-from canaille.backends.ldap.backend import Backend
+from canaille.backends.ldap.backend import LDAPBackend
 from tests.backends.ldap import CustomSlapdObject
 
 
@@ -47,6 +47,6 @@ def ldap_configuration(configuration, slapd_server):
 def ldap_backend(slapd_server, ldap_configuration):
     config_obj = settings_factory(ldap_configuration)
     config_dict = config_obj.model_dump()
-    backend = Backend(config_dict)
+    backend = LDAPBackend(config_dict)
     with backend.session():
         yield backend

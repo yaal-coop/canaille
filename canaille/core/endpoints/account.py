@@ -41,7 +41,7 @@ from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -86,7 +86,7 @@ def join():
 
     form = JoinForm(request.form or None)
     if request.form and form.validate():
-        if BaseBackend.instance.query(models.User, emails=form.email.data):
+        if Backend.instance.query(models.User, emails=form.email.data):
             flash(
                 _(
                     "You will receive soon an email to continue the registration process."
@@ -257,7 +257,7 @@ def registration(data=None, hash=None):
             )
             return redirect(url_for("core.account.index"))
 
-        if payload.user_name and BaseBackend.instance.get(
+        if payload.user_name and Backend.instance.get(
             models.User, user_name=payload.user_name
         ):
             flash(
@@ -285,7 +285,7 @@ def registration(data=None, hash=None):
             "user_name": payload.user_name,
             "emails": [payload.email],
             "groups": [
-                BaseBackend.instance.get(models.Group, id=group_id)
+                Backend.instance.get(models.Group, id=group_id)
                 for group_id in payload.groups
             ],
         }
@@ -302,7 +302,7 @@ def registration(data=None, hash=None):
             _("Groups"),
             choices=[
                 (group, group.display_name)
-                for group in BaseBackend.instance.query(models.Group)
+                for group in Backend.instance.query(models.Group)
             ],
             coerce=IDToModel("Group"),
         )
@@ -381,7 +381,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    user = BaseBackend.instance.get(models.User, confirmation_obj.identifier)
+    user = Backend.instance.get(models.User, confirmation_obj.identifier)
     if not user:
         flash(
             _("The email confirmation link that brought you here is invalid."),
@@ -396,7 +396,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    if BaseBackend.instance.query(models.User, emails=confirmation_obj.email):
+    if Backend.instance.query(models.User, emails=confirmation_obj.email):
         flash(
             _("This address email is already associated with another account."),
             "error",
@@ -404,7 +404,7 @@ def email_confirmation(data, hash):
         return redirect(url_for("core.account.index"))
 
     user.emails = user.emails + [confirmation_obj.email]
-    BaseBackend.instance.save(user)
+    Backend.instance.save(user)
     flash(_("Your email address have been confirmed."), "success")
     return redirect(url_for("core.account.index"))
 
@@ -460,11 +460,11 @@ def profile_create(current_app, form):
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
     user.formatted_name = f"{given_name} {family_name}".strip()
-    BaseBackend.instance.save(user)
+    Backend.instance.save(user)
 
     if form["password1"].data:
-        BaseBackend.instance.set_user_password(user, form["password1"].data)
-        BaseBackend.instance.save(user)
+        Backend.instance.set_user_password(user, form["password1"].data)
+        Backend.instance.save(user)
 
     return user
 
@@ -536,8 +536,8 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
         if profile_form["preferred_language"].data == "auto":
             edited_user.preferred_language = None
 
-    BaseBackend.instance.save(edited_user)
-    BaseBackend.instance.reload(g.user)
+    Backend.instance.save(edited_user)
+    Backend.instance.reload(g.user)
 
 
 def profile_edition_emails_form(user, edited_user, has_smtp):
@@ -574,7 +574,7 @@ def profile_edition_remove_email(user, edited_user, email):
         return False
 
     edited_user.emails = [m for m in edited_user.emails if m != email]
-    BaseBackend.instance.save(edited_user)
+    Backend.instance.save(edited_user)
     return True
 
 
@@ -718,30 +718,30 @@ def profile_settings(user, edited_user):
 
     if (
         request.form.get("action") == "confirm-lock"
-        and BaseBackend.instance.has_account_lockability()
+        and Backend.instance.has_account_lockability()
         and not edited_user.locked
     ):
         return render_template("modals/lock-account.html", edited_user=edited_user)
 
     if (
         request.form.get("action") == "lock"
-        and BaseBackend.instance.has_account_lockability()
+        and Backend.instance.has_account_lockability()
         and not edited_user.locked
     ):
         flash(_("The account has been locked"), "success")
         edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-        BaseBackend.instance.save(edited_user)
+        Backend.instance.save(edited_user)
 
         return profile_settings_edit(user, edited_user)
 
     if (
         request.form.get("action") == "unlock"
-        and BaseBackend.instance.has_account_lockability()
+        and Backend.instance.has_account_lockability()
         and edited_user.locked
     ):
         flash(_("The account has been unlocked"), "success")
         edited_user.lock_date = None
-        BaseBackend.instance.save(edited_user)
+        Backend.instance.save(edited_user)
 
         return profile_settings_edit(user, edited_user)
 
@@ -787,11 +787,9 @@ def profile_settings_edit(editor, edited_user):
                 and form["password1"].data
                 and request.form["action"] == "edit-settings"
             ):
-                BaseBackend.instance.set_user_password(
-                    edited_user, form["password1"].data
-                )
+                Backend.instance.set_user_password(edited_user, form["password1"].data)
 
-            BaseBackend.instance.save(edited_user)
+            Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
             return redirect(
                 url_for("core.account.profile_settings", edited_user=edited_user)
@@ -818,7 +816,7 @@ def profile_delete(user, edited_user):
         ),
         "success",
     )
-    BaseBackend.instance.delete(edited_user)
+    Backend.instance.delete(edited_user)
 
     if self_deletion:
         return redirect(url_for("core.account.index"))

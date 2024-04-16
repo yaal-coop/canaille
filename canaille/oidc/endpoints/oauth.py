@@ -23,7 +23,7 @@ from canaille.app.flask import logout_user
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from ..oauth import ClientConfigurationEndpoint
 from ..oauth import ClientRegistrationEndpoint
@@ -50,9 +50,7 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
-    client = BaseBackend.instance.get(
-        models.Client, client_id=request.args["client_id"]
-    )
+    client = Backend.instance.get(models.Client, client_id=request.args["client_id"])
     user = current_user()
 
     if response := authorize_guards(client):
@@ -112,7 +110,7 @@ def authorize_login(user):
 def authorize_consent(client, user):
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
-    consents = BaseBackend.instance.query(
+    consents = Backend.instance.query(
         models.Consent,
         client=client,
         subject=user,
@@ -177,7 +175,7 @@ def authorize_consent(client, user):
                 scope=allowed_scopes,
                 issue_date=datetime.datetime.now(datetime.timezone.utc),
             )
-        BaseBackend.instance.save(consent)
+        Backend.instance.save(consent)
 
     response = authorization.create_authorization_response(grant_user=grant_user)
     current_app.logger.debug("authorization endpoint response: %s", response.location)
@@ -278,7 +276,7 @@ def end_session():
     valid_uris = []
 
     if "client_id" in data:
-        client = BaseBackend.instance.get(models.Client, client_id=data["client_id"])
+        client = Backend.instance.get(models.Client, client_id=data["client_id"])
         if client:
             valid_uris = client.post_logout_redirect_uris
 
@@ -330,7 +328,7 @@ def end_session():
                 else [id_token["aud"]]
             )
             for client_id in client_ids:
-                client = BaseBackend.instance.get(models.Client, client_id=client_id)
+                client = Backend.instance.get(models.Client, client_id=client_id)
                 if client:
                     valid_uris.extend(client.post_logout_redirect_uris or [])
 

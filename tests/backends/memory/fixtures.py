@@ -1,10 +1,10 @@
 import pytest
 
-from canaille.backends.memory.backend import Backend
+from canaille.backends.memory.backend import MemoryBackend
 
 
 @pytest.fixture
 def memory_backend(configuration):
-    backend = Backend(configuration)
+    backend = MemoryBackend(configuration)
     with backend.session():
         yield backend

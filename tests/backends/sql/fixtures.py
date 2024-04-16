@@ -1,7 +1,7 @@
 import pytest
 
 from canaille.app.configuration import settings_factory
-from canaille.backends.sql.backend import Backend
+from canaille.backends.sql.backend import SQLBackend
 
 
 @pytest.fixture
@@ -15,6 +15,6 @@ def sqlalchemy_configuration(configuration):
 def sql_backend(sqlalchemy_configuration):
     config_obj = settings_factory(sqlalchemy_configuration)
     config_dict = config_obj.model_dump()
-    backend = Backend(config_dict)
+    backend = SQLBackend(config_dict)
     with backend.session(init=True):
         yield backend

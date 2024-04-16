@@ -1,10 +1,10 @@
 import datetime
 import uuid
 
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
-class Backend(BaseBackend):
+class MemoryBackend(Backend):
     @classmethod
     def install(cls, config):
         pass
@@ -124,7 +124,7 @@ class Backend(BaseBackend):
         reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
         next(reload_callback, None)
 
-        instance._state = BaseBackend.instance.get(
+        instance._state = Backend.instance.get(
             instance.__class__, id=instance.id
         )._state
         instance._cache = {}

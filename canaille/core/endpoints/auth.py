@@ -14,7 +14,7 @@ from canaille.app.flask import logout_user
 from canaille.app.flask import smtp_needed
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from ..mails import send_password_initialization_mail
 from ..mails import send_password_reset_mail
@@ -43,12 +43,12 @@ def login():
 
     form = LoginForm(request.form or None)
     form.render_field_macro_file = "partial/login_field.html"
-    form["login"].render_kw["placeholder"] = BaseBackend.instance.login_placeholder()
+    form["login"].render_kw["placeholder"] = Backend.instance.login_placeholder()
 
     if not request.form or form.form_control():
         return render_template("login.html", form=form)
 
-    user = BaseBackend.instance.get_user_from_login(form.login.data)
+    user = Backend.instance.get_user_from_login(form.login.data)
     if user and not user.has_password():
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -80,7 +80,7 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    user = BaseBackend.instance.get_user_from_login(session["attempt_login"])
+    user = Backend.instance.get_user_from_login(session["attempt_login"])
     if user and not user.has_password():
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -91,9 +91,7 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    success, message = BaseBackend.instance.check_user_password(
-        user, form.password.data
-    )
+    success, message = Backend.instance.check_user_password(user, form.password.data)
     request_ip = request.remote_addr or "unknown IP"
     if not success:
         logout_user()
@@ -177,7 +175,7 @@ def forgotten():
         flash(_("Could not send the password reset link."), "error")
         return render_template("forgotten-password.html", form=form)
 
-    user = BaseBackend.instance.get_user_from_login(form.login.data)
+    user = Backend.instance.get_user_from_login(form.login.data)
     success_message = _(
         "A password reset link has been sent at your email address. "
         "You should receive it within a few minutes."
@@ -235,7 +233,7 @@ def reset(user, hash):
         return redirect(url_for("core.account.index"))
 
     if request.form and form.validate():
-        BaseBackend.instance.set_user_password(user, form.password.data)
+        Backend.instance.set_user_password(user, form.password.data)
         login_user(user)
 
         flash(_("Your password has been updated successfully"), "success")

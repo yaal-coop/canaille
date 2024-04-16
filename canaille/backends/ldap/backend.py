@@ -14,7 +14,7 @@ from ldap.controls.readentry import PostReadControl
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from .utils import listify
 from .utils import python_attrs_to_ldap
@@ -53,7 +53,7 @@ def install_schema(config, schema_path):
         ) from exc
 
 
-class Backend(BaseBackend):
+class LDAPBackend(Backend):
     def __init__(self, config):
         super().__init__(config)
         self._connection = None
@@ -129,8 +129,8 @@ class Backend(BaseBackend):
                     emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                     password="correct horse battery staple",
                 )
-                BaseBackend.instance.save(user)
-                BaseBackend.instance.delete(user)
+                Backend.instance.save(user)
+                Backend.instance.delete(user)
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
@@ -148,14 +148,14 @@ class Backend(BaseBackend):
                     emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
                     password="correct horse battery staple",
                 )
-                BaseBackend.instance.save(user)
+                Backend.instance.save(user)
 
                 group = models.Group(
                     display_name=f"canaille_{uuid.uuid4()}",
                     members=[user],
                 )
-                BaseBackend.instance.save(group)
-                BaseBackend.instance.delete(group)
+                Backend.instance.save(group)
+                Backend.instance.delete(group)
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
@@ -164,7 +164,7 @@ class Backend(BaseBackend):
                 ) from exc
 
             finally:
-                BaseBackend.instance.delete(user)
+                Backend.instance.delete(user)
 
     @classmethod
     def login_placeholder(cls):

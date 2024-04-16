@@ -5,7 +5,7 @@ from faker.config import AVAILABLE_LOCALES
 
 from canaille.app import models
 from canaille.app.i18n import available_language_codes
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
 def fake_users(nb=1):
@@ -40,7 +40,7 @@ def fake_users(nb=1):
                 password=fake.password(),
                 preferred_language=fake._locales[0],
             )
-            BaseBackend.instance.save(user)
+            Backend.instance.save(user)
             users.append(user)
         except Exception:  # pragma: no cover
             pass
@@ -48,7 +48,7 @@ def fake_users(nb=1):
 
 
 def fake_groups(nb=1, nb_users_max=1):
-    users = BaseBackend.instance.query(models.User)
+    users = Backend.instance.query(models.User)
     groups = list()
     fake = faker.Faker(["en_US"])
     for _ in range(nb):
@@ -59,7 +59,7 @@ def fake_groups(nb=1, nb_users_max=1):
             )
             nb_users = random.randrange(1, nb_users_max + 1)
             group.members = list({random.choice(users) for _ in range(nb_users)})
-            BaseBackend.instance.save(group)
+            Backend.instance.save(group)
             groups.append(group)
         except Exception:  # pragma: no cover
             pass

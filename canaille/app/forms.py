@@ -15,7 +15,7 @@ from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from . import validate_uri
 from .flask import request_is_htmx
@@ -187,11 +187,9 @@ class TableForm(I18NFormMixin, FlaskForm):
         filter = filter or {}
         super().__init__(**kwargs)
         if self.query.data:
-            self.items = BaseBackend.instance.fuzzy(
-                cls, self.query.data, fields, **filter
-            )
+            self.items = Backend.instance.fuzzy(cls, self.query.data, fields, **filter)
         else:
-            self.items = BaseBackend.instance.query(cls, **filter)
+            self.items = Backend.instance.query(cls, **filter)
 
         self.page_size = page_size
         self.nb_items = len(self.items)
@@ -261,7 +259,7 @@ class IDToModel:
     def __call__(self, data):
         model = getattr(models, self.model_name)
         instance = (
-            data if isinstance(data, model) else BaseBackend.instance.get(model, data)
+            data if isinstance(data, model) else Backend.instance.get(model, data)
         )
         if instance:
             return instance

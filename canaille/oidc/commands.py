@@ -3,7 +3,7 @@ from flask.cli import with_appcontext
 
 from canaille.app import models
 from canaille.app.commands import with_backendcontext
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
 @click.command()
@@ -11,13 +11,13 @@ from canaille.backends import BaseBackend
 @with_backendcontext
 def clean():
     """Remove expired tokens and authorization codes."""
-    for t in BaseBackend.instance.query(models.Token):
+    for t in Backend.instance.query(models.Token):
         if t.is_expired():
-            BaseBackend.instance.delete(t)
+            Backend.instance.delete(t)
 
-    for a in BaseBackend.instance.query(models.AuthorizationCode):
+    for a in Backend.instance.query(models.AuthorizationCode):
         if a.is_expired():
-            BaseBackend.instance.delete(a)
+            Backend.instance.delete(a)
 
 
 def register(cli):

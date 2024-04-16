@@ -1,7 +1,7 @@
 import datetime
 from enum import Enum
 
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 LDAP_NULL_DATE = "000001010000Z"
 
@@ -52,7 +52,7 @@ def ldap_to_python(value, syntax):
         return value.decode("utf-8").upper() == "TRUE"
 
     if syntax == Syntax.DISTINGUISHED_NAME:
-        return BaseBackend.instance.get(LDAPObject, value.decode("utf-8"))
+        return Backend.instance.get(LDAPObject, value.decode("utf-8"))
 
     return value.decode("utf-8")
 

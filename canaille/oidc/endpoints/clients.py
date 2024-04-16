@@ -14,7 +14,7 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from .forms import ClientAddForm
 
@@ -74,9 +74,9 @@ def add(user):
         if form["token_endpoint_auth_method"].data == "none"
         else gen_salt(48),
     )
-    BaseBackend.instance.save(client)
+    Backend.instance.save(client)
     client.audience = [client]
-    BaseBackend.instance.save(client)
+    Backend.instance.save(client)
     flash(
         _("The client has been created."),
         "success",
@@ -118,7 +118,7 @@ def client_edit(client):
             "client_edit.html", form=form, client=client, menuitem="admin"
         )
 
-    BaseBackend.instance.update(
+    Backend.instance.update(
         client,
         client_name=form["client_name"].data,
         contacts=form["contacts"].data,
@@ -139,7 +139,7 @@ def client_edit(client):
         audience=form["audience"].data,
         preconsent=form["preconsent"].data,
     )
-    BaseBackend.instance.save(client)
+    Backend.instance.save(client)
     flash(
         _("The client has been edited."),
         "success",
@@ -152,5 +152,5 @@ def client_delete(client):
         _("The client has been deleted."),
         "success",
     )
-    BaseBackend.instance.delete(client)
+    Backend.instance.delete(client)
     return redirect(url_for("oidc.clients.index"))

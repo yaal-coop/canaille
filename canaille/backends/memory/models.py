@@ -4,7 +4,7 @@ import typing
 import canaille.core.models
 import canaille.oidc.models
 from canaille.app import models
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 from canaille.backends.models import BackendModel
 
 
@@ -61,7 +61,7 @@ class MemoryModel(BackendModel):
         model, _ = cls.get_model_annotations(attribute_name)
         if model and not isinstance(value, model):
             backend_model = getattr(models, model.__name__)
-            return BaseBackend.instance.get(backend_model, id=value)
+            return Backend.instance.get(backend_model, id=value)
 
         return value
 
@@ -139,7 +139,7 @@ class MemoryModel(BackendModel):
             return False
 
         if not isinstance(other, MemoryModel):
-            return self == BaseBackend.instance.get(self.__class__, id=other)
+            return self == Backend.instance.get(self.__class__, id=other)
 
         return self._state == other._state
 

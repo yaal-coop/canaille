@@ -8,7 +8,7 @@ from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
 
 from canaille.app import models
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from .basemodels import AuthorizationCode as BaseAuthorizationCode
 from .basemodels import Client as BaseClient
@@ -96,14 +96,14 @@ class Client(BaseClient, ClientMixin):
         return metadata
 
     def delete(self):
-        for consent in BaseBackend.instance.query(models.Consent, client=self):
-            BaseBackend.instance.delete(consent)
+        for consent in Backend.instance.query(models.Consent, client=self):
+            Backend.instance.delete(consent)
 
-        for code in BaseBackend.instance.query(models.AuthorizationCode, client=self):
-            BaseBackend.instance.delete(code)
+        for code in Backend.instance.query(models.AuthorizationCode, client=self):
+            Backend.instance.delete(code)
 
-        for token in BaseBackend.instance.query(models.Token, client=self):
-            BaseBackend.instance.delete(token)
+        for token in Backend.instance.query(models.Token, client=self):
+            Backend.instance.delete(token)
 
         yield
 
@@ -184,9 +184,9 @@ class Consent(BaseConsent):
 
     def revoke(self):
         self.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-        BaseBackend.instance.save(self)
+        Backend.instance.save(self)
 
-        tokens = BaseBackend.instance.query(
+        tokens = Backend.instance.query(
             models.Token,
             client=self.client,
             subject=self.subject,
@@ -194,8 +194,8 @@ class Consent(BaseConsent):
         tokens = [token for token in tokens if not token.revoked]
         for t in tokens:
             t.revokation_date = self.revokation_date
-            BaseBackend.instance.save(t)
+            Backend.instance.save(t)
 
     def restore(self):
         self.revokation_date = None
-        BaseBackend.instance.save(self)
+        Backend.instance.save(self)

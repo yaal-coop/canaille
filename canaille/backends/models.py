@@ -11,7 +11,7 @@ from typing import get_type_hints
 
 from canaille.app import classproperty
 from canaille.app import models
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
 class Model:
@@ -133,7 +133,7 @@ class BackendModel:
 
             backend_model = getattr(models, model.__name__)
 
-            if instance := BaseBackend.instance.get(backend_model, value):
+            if instance := Backend.instance.get(backend_model, value):
                 filter[attribute] = instance
 
         return all(

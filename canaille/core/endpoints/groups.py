@@ -11,7 +11,7 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 from .forms import CreateGroupForm
 from .forms import DeleteGroupMemberForm
@@ -43,7 +43,7 @@ def create_group(user):
             group.members = [user]
             group.display_name = form.display_name.data
             group.description = form.description.data
-            BaseBackend.instance.save(group)
+            Backend.instance.save(group)
             flash(
                 _(
                     "The group %(group)s has been sucessfully created",
@@ -103,7 +103,7 @@ def edit_group(group):
     ):
         if form.validate():
             group.description = form.description.data
-            BaseBackend.instance.save(group)
+            Backend.instance.save(group)
             flash(
                 _(
                     "The group %(group)s has been sucessfully edited.",
@@ -162,5 +162,5 @@ def delete_group(group):
         _("The group %(group)s has been sucessfully deleted", group=group.display_name),
         "success",
     )
-    BaseBackend.instance.delete(group)
+    Backend.instance.delete(group)
     return redirect(url_for("core.groups.groups"))

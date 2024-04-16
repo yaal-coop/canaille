@@ -7,7 +7,7 @@ from canaille.app.forms import email_validator
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
 class AuthorizeForm(Form):
@@ -20,8 +20,7 @@ class LogoutForm(Form):
 
 def client_audiences():
     return [
-        (client, client.client_name)
-        for client in BaseBackend.instance.query(models.Client)
+        (client, client.client_name) for client in Backend.instance.query(models.Client)
     ]
 
 

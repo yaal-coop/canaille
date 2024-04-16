@@ -5,14 +5,14 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
 def with_backendcontext(func):
     @functools.wraps(func)
     def _func(*args, **kwargs):
         if not current_app.config["TESTING"]:  # pragma: no cover
-            with BaseBackend.instance.session():
+            with Backend.instance.session():
                 result = func(*args, **kwargs)
 
         else:

@@ -160,9 +160,9 @@ def validate(config, validate_remote=False):
     if not validate_remote:
         return
 
-    from canaille.backends import BaseBackend
+    from canaille.backends import Backend
 
-    BaseBackend.instance.validate(config)
+    Backend.instance.validate(config)
     validate_smtp_configuration(config["CANAILLE"]["SMTP"])
 
 

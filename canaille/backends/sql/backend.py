@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 Base = declarative_base()
 
@@ -19,7 +19,7 @@ def db_session(db_uri=None, init=False):
     return session
 
 
-class Backend(BaseBackend):
+class SQLBackend(Backend):
     db_session = None
 
     @classmethod
@@ -76,7 +76,7 @@ class Backend(BaseBackend):
             for attribute_name, expected_value in kwargs.items()
         ]
         return (
-            Backend.instance.db_session.execute(select(model).filter(*filter))
+            SQLBackend.instance.db_session.execute(select(model).filter(*filter))
             .scalars()
             .all()
         )
@@ -105,7 +105,7 @@ class Backend(BaseBackend):
             model.attribute_filter(attribute_name, expected_value)
             for attribute_name, expected_value in kwargs.items()
         ]
-        return Backend.instance.db_session.execute(
+        return SQLBackend.instance.db_session.execute(
             select(model).filter(*filter)
         ).scalar_one_or_none()
 
@@ -116,16 +116,16 @@ class Backend(BaseBackend):
         if not instance.created:
             instance.created = instance.last_modified
 
-        Backend.instance.db_session.add(instance)
-        Backend.instance.db_session.commit()
+        SQLBackend.instance.db_session.add(instance)
+        SQLBackend.instance.db_session.commit()
 
     def delete(self, instance):
         # run the instance delete callback if existing
         save_callback = instance.delete() if hasattr(instance, "delete") else iter([])
         next(save_callback, None)
 
-        Backend.instance.db_session.delete(instance)
-        Backend.instance.db_session.commit()
+        SQLBackend.instance.db_session.delete(instance)
+        SQLBackend.instance.db_session.commit()
 
         # run the instance delete callback again if existing
         next(save_callback, None)
@@ -135,7 +135,7 @@ class Backend(BaseBackend):
         reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
         next(reload_callback, None)
 
-        Backend.instance.db_session.refresh(instance)
+        SQLBackend.instance.db_session.refresh(instance)
 
         # run the instance reload callback again if existing
         next(reload_callback, None)

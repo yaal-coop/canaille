@@ -34,7 +34,7 @@ from flask import url_for
 from werkzeug.security import gen_salt
 
 from canaille.app import models
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 
@@ -111,8 +111,8 @@ def openid_configuration():
 
 
 def exists_nonce(nonce, req):
-    client = BaseBackend.instance.get(models.Client, id=req.client_id)
-    exists = BaseBackend.instance.query(
+    client = Backend.instance.get(models.Client, id=req.client_id)
+    exists = Backend.instance.query(
         models.AuthorizationCode, client=client, nonce=nonce
     )
     return bool(exists)
@@ -228,7 +228,7 @@ def save_authorization_code(code, request):
         challenge=request.data.get("code_challenge"),
         challenge_method=request.data.get("code_challenge_method"),
     )
-    BaseBackend.instance.save(code)
+    Backend.instance.save(code)
     return code.code
 
 
@@ -239,14 +239,14 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         return save_authorization_code(code, request)
 
     def query_authorization_code(self, code, client):
-        item = BaseBackend.instance.query(
+        item = Backend.instance.query(
             models.AuthorizationCode, code=code, client=client
         )
         if item and not item[0].is_expired():
             return item[0]
 
     def delete_authorization_code(self, authorization_code):
-        BaseBackend.instance.delete(authorization_code)
+        Backend.instance.delete(authorization_code)
 
     def authenticate_user(self, authorization_code):
         if authorization_code.subject and not authorization_code.subject.locked:
@@ -272,11 +272,11 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        user = BaseBackend.instance.get_user_from_login(username)
+        user = Backend.instance.get_user_from_login(username)
         if not user:
             return None
 
-        success, _ = BaseBackend.instance.check_user_password(user, password)
+        success, _ = Backend.instance.check_user_password(user, password)
         if not success:
             return None
 
@@ -287,7 +287,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_refresh_token(self, refresh_token):
-        token = BaseBackend.instance.query(models.Token, refresh_token=refresh_token)
+        token = Backend.instance.query(models.Token, refresh_token=refresh_token)
         if token and token[0].is_refresh_token_active():
             return token[0]
 
@@ -297,7 +297,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
 
     def revoke_old_credential(self, credential):
         credential.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-        BaseBackend.instance.save(credential)
+        Backend.instance.save(credential)
 
 
 class OpenIDImplicitGrant(_OpenIDImplicitGrant):
@@ -334,7 +334,7 @@ class OpenIDHybridGrant(_OpenIDHybridGrant):
 
 
 def query_client(client_id):
-    return BaseBackend.instance.get(models.Client, client_id=client_id)
+    return Backend.instance.get(models.Client, client_id=client_id)
 
 
 def save_token(token, request):
@@ -351,25 +351,25 @@ def save_token(token, request):
         subject=request.user,
         audience=request.client.audience,
     )
-    BaseBackend.instance.save(t)
+    Backend.instance.save(t)
 
 
 class BearerTokenValidator(_BearerTokenValidator):
     def authenticate_token(self, token_string):
-        return BaseBackend.instance.get(models.Token, access_token=token_string)
+        return Backend.instance.get(models.Token, access_token=token_string)
 
 
 def query_token(token, token_type_hint):
     if token_type_hint == "access_token":
-        return BaseBackend.instance.get(models.Token, access_token=token)
+        return Backend.instance.get(models.Token, access_token=token)
     elif token_type_hint == "refresh_token":
-        return BaseBackend.instance.get(models.Token, refresh_token=token)
+        return Backend.instance.get(models.Token, refresh_token=token)
 
-    item = BaseBackend.instance.get(models.Token, access_token=token)
+    item = Backend.instance.get(models.Token, access_token=token)
     if item:
         return item
 
-    item = BaseBackend.instance.get(models.Token, refresh_token=token)
+    item = Backend.instance.get(models.Token, refresh_token=token)
     if item:
         return item
 
@@ -382,7 +382,7 @@ class RevocationEndpoint(_RevocationEndpoint):
 
     def revoke_token(self, token, request):
         token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
-        BaseBackend.instance.save(token)
+        Backend.instance.save(token)
 
 
 class IntrospectionEndpoint(_IntrospectionEndpoint):
@@ -463,16 +463,16 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
             post_logout_redirect_uris=request.data.get("post_logout_redirect_uris"),
             **self.client_convert_data(**client_info, **client_metadata),
         )
-        BaseBackend.instance.save(client)
+        Backend.instance.save(client)
         client.audience = [client]
-        BaseBackend.instance.save(client)
+        Backend.instance.save(client)
         return client
 
 
 class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEndpoint):
     def authenticate_client(self, request):
         client_id = request.uri.split("/")[-1]
-        return BaseBackend.instance.get(models.Client, client_id=client_id)
+        return Backend.instance.get(models.Client, client_id=client_id)
 
     def revoke_access_token(self, request, token):
         pass
@@ -481,13 +481,11 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         return True
 
     def delete_client(self, client, request):
-        BaseBackend.instance.delete(client)
+        Backend.instance.delete(client)
 
     def update_client(self, client, client_metadata, request):
-        BaseBackend.instance.update(
-            client, **self.client_convert_data(**client_metadata)
-        )
-        BaseBackend.instance.save(client)
+        Backend.instance.update(client, **self.client_convert_data(**client_metadata))
+        Backend.instance.save(client)
         return client
 
     def generate_client_registration_info(self, client, request):

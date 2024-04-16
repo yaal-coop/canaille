@@ -1,16 +1,16 @@
 import pytest
 
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 
 def test_required_methods(testclient):
     with pytest.raises(NotImplementedError):
-        BaseBackend.install(config=None)
+        Backend.install(config=None)
 
     with pytest.raises(NotImplementedError):
-        BaseBackend.validate({})
+        Backend.validate({})
 
-    backend = BaseBackend(testclient.app.config["CANAILLE"])
+    backend = Backend(testclient.app.config["CANAILLE"])
 
     with pytest.raises(NotImplementedError):
         backend.has_account_lockability()

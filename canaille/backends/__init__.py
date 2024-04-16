@@ -7,12 +7,12 @@ from flask import g
 from canaille.app import classproperty
 
 
-class BaseBackend:
+class Backend:
     instance = None
 
     def __init__(self, config):
         self.config = config
-        BaseBackend.instance = self
+        Backend.instance = self
         self.register_models()
 
     @classproperty
@@ -76,13 +76,13 @@ class BaseBackend:
         raise NotImplementedError()
 
     def fuzzy(self, model, query, attributes=None, **kwargs):
-        """Works like :meth:`~canaille.backends.BaseBackend.query` but
-        attribute values loosely be matched."""
+        """Works like :meth:`~canaille.backends.Backend.query` but attribute
+        values loosely be matched."""
         raise NotImplementedError()
 
     def get(self, model, identifier=None, **kwargs):
-        """Works like :meth:`~canaille.backends.BaseBackend.query` but return
-        only one element or :py:data:`None` if no item is matching."""
+        """Works like :meth:`~canaille.backends.Backend.query` but return only
+        one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
     def save(self, instance):
@@ -102,7 +102,7 @@ class BaseBackend:
         >>> user.display_name = "Jane"
         >>> user.display_name
         Jane
-        >>> BaseBackend.instance.reload(user)
+        >>> Backend.instance.reload(user)
         >>> user.display_name
         George
         """
@@ -176,7 +176,9 @@ def setup_backend(app, backend=None):
             else "memory"
         )
         module = importlib.import_module(f"canaille.backends.{backend_name}.backend")
-        backend_class = getattr(module, "Backend")
+        backend_class = getattr(
+            module, f"{backend_name.title()}Backend", None
+        ) or getattr(module, f"{backend_name.upper()}Backend", None)
         backend = backend_class(app.config)
         backend.init_app(app)
 

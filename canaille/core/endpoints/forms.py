@@ -18,13 +18,13 @@ from canaille.app.forms import unique_values
 from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
-from canaille.backends import BaseBackend
+from canaille.backends import Backend
 
 MINIMUM_PASSWORD_LENGTH = 8
 
 
 def unique_user_name(form, field):
-    if BaseBackend.instance.get(models.User, user_name=field.data) and (
+    if Backend.instance.get(models.User, user_name=field.data) and (
         not getattr(form, "user", None) or form.user.user_name != field.data
     ):
         raise wtforms.ValidationError(
@@ -33,7 +33,7 @@ def unique_user_name(form, field):
 
 
 def unique_email(form, field):
-    if BaseBackend.instance.get(models.User, emails=field.data) and (
+    if Backend.instance.get(models.User, emails=field.data) and (
         not getattr(form, "user", None) or field.data not in form.user.emails
     ):
         raise wtforms.ValidationError(
@@ -42,7 +42,7 @@ def unique_email(form, field):
 
 
 def unique_group(form, field):
-    if BaseBackend.instance.get(models.Group, display_name=field.data):
+    if Backend.instance.get(models.Group, display_name=field.data):
         raise wtforms.ValidationError(
             _("The group '{group}' already exists").format(group=field.data)
         )
@@ -51,7 +51,7 @@ def unique_group(form, field):
 def existing_login(form, field):
     if not current_app.config["CANAILLE"][
         "HIDE_INVALID_LOGINS"
-    ] and not BaseBackend.instance.get_user_from_login(field.data):
+    ] and not Backend.instance.get_user_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )
@@ -314,7 +314,7 @@ PROFILE_FORM_FIELDS = dict(
         default=[],
         choices=lambda: [
             (group, group.display_name)
-            for group in BaseBackend.instance.query(models.Group)
+            for group in Backend.instance.query(models.Group)
         ],
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),
@@ -336,7 +336,7 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
         if PROFILE_FORM_FIELDS.get(name)
     }
 
-    if "groups" in fields and not BaseBackend.instance.query(models.Group):
+    if "groups" in fields and not Backend.instance.query(models.Group):
         del fields["groups"]
 
     if current_app.backend.instance.has_account_lockability():  # pragma: no branch
@@ -441,7 +441,7 @@ class InvitationForm(Form):
         _("Groups"),
         choices=lambda: [
             (group, group.display_name)
-            for group in BaseBackend.instance.query(models.Group)
+            for group in Backend.instance.query(models.Group)
         ],
         render_kw={},
         coerce=IDToModel("Group"),

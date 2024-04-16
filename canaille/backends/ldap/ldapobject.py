@@ -5,7 +5,7 @@ import ldap.filter
 
 from canaille.backends.models import BackendModel
 
-from .backend import Backend
+from .backend import LDAPBackend
 from .utils import attribute_ldap_syntax
 from .utils import cardinalize_attribute
 from .utils import ldap_to_python
@@ -160,7 +160,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     @classmethod
     def install(cls):
-        conn = Backend.instance.connection
+        conn = LDAPBackend.instance.connection
         cls.ldap_object_classes(conn)
         cls.ldap_object_attributes(conn)
 
@@ -185,7 +185,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
-        conn = Backend.instance.connection
+        conn = LDAPBackend.instance.connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
@@ -207,7 +207,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
-        conn = Backend.instance.connection
+        conn = LDAPBackend.instance.connection
 
         res = conn.search_s(
             "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
