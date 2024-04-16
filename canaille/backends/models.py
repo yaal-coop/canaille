@@ -70,6 +70,9 @@ class Model:
             }
         return cls._attributes
 
+    def __html__(self):
+        return self.id
+
     @property
     def identifier(self):
         """Returns a unique value that will be used to identify the model
@@ -137,6 +140,3 @@ class BackendModel:
             getattr(self, attribute) and value in getattr(self, attribute)
             for attribute, value in filter.items()
         )
-
-    def __html__(self):
-        return self.id
