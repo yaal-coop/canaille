@@ -484,7 +484,9 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         BaseBackend.instance.delete(client)
 
     def update_client(self, client, client_metadata, request):
-        client.update(**self.client_convert_data(**client_metadata))
+        BaseBackend.instance.update(
+            client, **self.client_convert_data(**client_metadata)
+        )
         BaseBackend.instance.save(client)
         return client
 

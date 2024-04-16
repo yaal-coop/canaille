@@ -108,6 +108,24 @@ class BaseBackend:
         """
         raise NotImplementedError()
 
+    def update(self, instance, **kwargs):
+        """Assign a whole dict to the current instance. This is useful to
+        update models based on forms.
+
+        >>> user = User.get(user_name="george")
+        >>> user.first_name
+        George
+        >>> backend.update({
+        ...     client,
+        ...     first_name="Jane",
+        ...     last_name="Calamity",
+        ... })
+        >>> user.first_name
+        Jane
+        """
+        for attribute, value in kwargs.items():
+            setattr(instance, attribute, value)
+
     def check_user_password(self, user, password: str) -> bool:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()

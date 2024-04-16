@@ -118,7 +118,8 @@ def client_edit(client):
             "client_edit.html", form=form, client=client, menuitem="admin"
         )
 
-    client.update(
+    BaseBackend.instance.update(
+        client,
         client_name=form["client_name"].data,
         contacts=form["contacts"].data,
         client_uri=form["client_uri"].data,

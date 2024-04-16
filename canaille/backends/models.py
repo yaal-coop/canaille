@@ -88,23 +88,6 @@ class BackendModel:
     implemented for every model and for every backend.
     """
 
-    def update(self, **kwargs):
-        """Assign a whole dict to the current instance. This is useful to
-        update models based on forms.
-
-        >>> user = User.get(user_name="george")
-        >>> user.first_name
-        George
-        >>> user.update({
-        ...     first_name="Jane",
-        ...     last_name="Calamity",
-        ... })
-        >>> user.first_name
-        Jane
-        """
-        for attribute, value in kwargs.items():
-            setattr(self, attribute, value)
-
     @classmethod
     def get_model_annotations(cls, attribute):
         annotations = cls.attributes[attribute]
