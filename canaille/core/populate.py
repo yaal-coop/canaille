@@ -9,11 +9,16 @@ from canaille.app.i18n import available_language_codes
 
 def fake_users(nb=1):
     locales = list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
-    fakers = [faker.Faker([locale]) for locale in locales]
+    faker_obj = faker.Faker(locales)
     users = list()
+
+    # TODO The day faker supports unique profiles,
+    # we should use them so the different user values would be coherent
+    # https://github.com/joke2k/faker/issues/1817
     for _ in range(nb):
         try:
-            fake = random.choice(fakers)
+            locale = random.choice(locales)
+            fake = faker_obj[locale]
             name = fake.unique.name()
             user = models.User(
                 formatted_name=name,
