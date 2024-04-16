@@ -5,7 +5,6 @@ from babel.messages.frontend import compile_catalog
 from flask_webtest import TestApp
 from jinja2 import FileSystemBytecodeCache
 from jinja2 import StrictUndefined
-from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
 
 from canaille import create_app
@@ -48,12 +47,15 @@ def pytest_generate_tests(metafunc):
         if backend not in backends:  # pragma: no cover
             pytest.skip()
         elif "backend" in metafunc.fixturenames:
-            metafunc.parametrize("backend", [lazy_fixture(f"{backend}_backend")])
+            metafunc.parametrize(
+                "backend", [pytest.lazy_fixtures(f"{backend}_backend")]
+            )
             return
 
     elif "backend" in metafunc.fixturenames:
         metafunc.parametrize(
-            "backend", [lazy_fixture(f"{backend}_backend") for backend in backends]
+            "backend",
+            [pytest.lazy_fixtures(f"{backend}_backend") for backend in backends],
         )
 
 
