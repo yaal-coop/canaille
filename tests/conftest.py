@@ -3,6 +3,7 @@ import os
 import pytest
 from babel.messages.frontend import compile_catalog
 from flask_webtest import TestApp
+from jinja2 import FileSystemBytecodeCache
 from jinja2 import StrictUndefined
 from pytest_lazyfixture import lazy_fixture
 from werkzeug.security import gen_salt
@@ -151,9 +152,15 @@ def configuration(smtpd):
     return conf
 
 
+@pytest.fixture(scope="session")
+def jinja_cache_directory(tmp_path_factory):
+    return tmp_path_factory.mktemp("cache")
+
+
 @pytest.fixture
-def app(configuration, backend):
+def app(configuration, backend, jinja_cache_directory):
     app = create_app(configuration, backend=backend)
+    app.jinja_env.bytecode_cache = FileSystemBytecodeCache(jinja_cache_directory)
     backend.install(app.config)
     with app.test_request_context():
         yield app
