@@ -2,87 +2,73 @@ import datetime
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-import freezegun
-
 from canaille.app import models
 
 from . import client_credentials
 
 
-def test_refresh_token(testclient, user, client):
+def test_refresh_token(testclient, logged_user, client):
     assert not models.Consent.query()
 
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
-        res = testclient.get(
-            "/oauth/authorize",
-            params=dict(
-                response_type="code",
-                client_id=client.client_id,
-                scope="openid profile",
-                nonce="somenonce",
-            ),
-        )
-        res = res.follow()
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+        ),
+    )
+    res = res.form.submit(name="answer", value="accept")
 
-        res.form["login"] = "user"
-        res = res.form.submit(name="answer", value="accept")
-        res = res.follow()
-        res.form["password"] = "correct horse battery staple"
-        res = res.form.submit(name="answer", value="accept")
-        res = res.follow()
-        res = res.form.submit(name="answer", value="accept")
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = models.AuthorizationCode.get(code=code)
+    assert authcode is not None
 
-        assert res.location.startswith(client.redirect_uris[0])
-        params = parse_qs(urlsplit(res.location).query)
-        code = params["code"][0]
-        authcode = models.AuthorizationCode.get(code=code)
-        assert authcode is not None
+    consents = models.Consent.query(client=client, subject=logged_user)
+    assert "profile" in consents[0].scope
 
-        consents = models.Consent.query(client=client, subject=user)
-        assert "profile" in consents[0].scope
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    access_token = res.json["access_token"]
+    old_token = models.Token.get(access_token=access_token)
+    assert old_token is not None
+    assert not old_token.revokation_date
 
-    with freezegun.freeze_time("2020-01-01 00:01:00"):
-        res = testclient.post(
-            "/oauth/token",
-            params=dict(
-                grant_type="authorization_code",
-                code=code,
-                scope="openid profile",
-                redirect_uri=client.redirect_uris[0],
-            ),
-            headers={"Authorization": f"Basic {client_credentials(client)}"},
-            status=200,
-        )
-        access_token = res.json["access_token"]
-        old_token = models.Token.get(access_token=access_token)
-        assert old_token is not None
-        assert not old_token.revokation_date
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="refresh_token",
+            refresh_token=res.json["refresh_token"],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    access_token = res.json["access_token"]
+    new_token = models.Token.get(access_token=access_token)
+    assert new_token is not None
+    assert old_token.access_token != new_token.access_token
 
-    with freezegun.freeze_time("2020-01-01 00:02:00"):
-        res = testclient.post(
-            "/oauth/token",
-            params=dict(
-                grant_type="refresh_token",
-                refresh_token=res.json["refresh_token"],
-            ),
-            headers={"Authorization": f"Basic {client_credentials(client)}"},
-            status=200,
-        )
-        access_token = res.json["access_token"]
-        new_token = models.Token.get(access_token=access_token)
-        assert new_token is not None
-        assert old_token.access_token != new_token.access_token
+    old_token.reload()
+    assert old_token.revokation_date
 
-        old_token.reload()
-        assert old_token.revokation_date
-
-    with freezegun.freeze_time("2020-01-01 00:03:00"):
-        res = testclient.get(
-            "/oauth/userinfo",
-            headers={"Authorization": f"Bearer {access_token}"},
-            status=200,
-        )
-        assert res.json["name"] == "John (johnny) Doe"
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )
+    assert res.json["name"] == "John (johnny) Doe"
 
     for consent in consents:
         consent.delete()
