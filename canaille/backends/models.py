@@ -1,8 +1,14 @@
 import datetime
 import inspect
-import typing
 from collections import ChainMap
+from typing import ClassVar
+from typing import ForwardRef
+from typing import List
 from typing import Optional
+from typing import _eval_type
+from typing import get_args
+from typing import get_origin
+from typing import get_type_hints
 
 from canaille.app import classproperty
 from canaille.app import models
@@ -44,23 +50,23 @@ class Model:
     the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`.
     """
 
-    _attributes = None
+    _attributes: ClassVar[Optional[List[str]]] = None
 
     @classproperty
     def attributes(cls):
         if not cls._attributes:
             annotations = ChainMap(
                 *(
-                    typing.get_type_hints(klass)
+                    get_type_hints(klass)
                     for klass in reversed(cls.__mro__)
                     if issubclass(klass, Model)
                 )
             )
-            # only keep types that are not typing.ClassVar
+            # only keep types that are not ClassVar
             cls._attributes = {
                 key: value
                 for key, value in annotations.items()
-                if typing.get_origin(value) is not typing.ClassVar
+                if get_origin(value) is not ClassVar
             }
         return cls._attributes
 
@@ -160,13 +166,11 @@ class BackendModel:
         under list or Optional."""
         attribute = cls.attributes[attribute_name]
         core_type = (
-            typing.get_args(attribute)[0]
-            if typing.get_origin(attribute) == list
-            else attribute
+            get_args(attribute)[0] if get_origin(attribute) == list else attribute
         )
         return (
-            typing._eval_type(core_type, globals(), locals())
-            if isinstance(core_type, typing.ForwardRef)
+            _eval_type(core_type, globals(), locals())
+            if isinstance(core_type, ForwardRef)
             else core_type
         )
 
