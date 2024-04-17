@@ -52,8 +52,8 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
     assert ldap.dn.is_dn(dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
 
-    assert user == models.User.get(user.identifier)
-    assert user == models.User.get(user_name=user.identifier)
+    assert user == models.User.get(user.user_name)
+    assert user == models.User.get(user_name=user.user_name)
     assert user == models.User.get(dn)
 
     user.delete()
@@ -73,8 +73,8 @@ def test_special_chars_in_rdn(testclient, backend):
     assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
     assert dn == "uid=\\#user,ou=users,dc=mydomain,dc=tld"
 
-    assert user == models.User.get(user.identifier)
-    assert user == models.User.get(user_name=user.identifier)
+    assert user == models.User.get(user.user_name)
+    assert user == models.User.get(user_name=user.user_name)
     assert user == models.User.get(dn)
 
     user.delete()
