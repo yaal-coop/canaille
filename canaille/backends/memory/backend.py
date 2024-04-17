@@ -1,10 +1,35 @@
+import copy
 import datetime
 import uuid
+from typing import Any
+from typing import Dict
 
 from canaille.backends import Backend
 
 
 class MemoryBackend(Backend):
+    indexes: Dict[str, Dict[str, Any]] = None
+    """Associates ids and states."""
+
+    attribute_indexes = None
+    """Associates attribute values and ids."""
+
+    def index(self, model):
+        if not self.indexes:
+            self.indexes = {}
+
+        model_name = model if isinstance(model, str) else model.__name__
+        return self.indexes.setdefault(model_name, {})
+
+    def attribute_index(self, model, attribute="id"):
+        if not self.attribute_indexes:
+            self.attribute_indexes = {}
+
+        model_name = model if isinstance(model, str) else model.__name__
+        return self.attribute_indexes.setdefault(model_name, {}).setdefault(
+            attribute, {}
+        )
+
     @classmethod
     def install(cls, config):
         pass
@@ -47,7 +72,7 @@ class MemoryBackend(Backend):
     def query(self, model, **kwargs):
         # if there is no filter, return all models
         if not kwargs:
-            states = model.index().values()
+            states = self.index(model).values()
             return [model(**state) for state in states]
 
         # get the ids from the attribute indexes
@@ -55,11 +80,11 @@ class MemoryBackend(Backend):
             id
             for attribute, values in kwargs.items()
             for value in model.serialize(model.listify(values))
-            for id in model.attribute_index(attribute).get(value, [])
+            for id in self.attribute_index(model, attribute).get(value, [])
         }
 
         # get the states from the ids
-        states = [model.index()[id] for id in ids]
+        states = [self.index(model)[id] for id in ids]
 
         # initialize instances from the states
         instances = [model(**state) for state in states]
@@ -105,8 +130,8 @@ class MemoryBackend(Backend):
         if not instance.created:
             instance.created = instance.last_modified
 
-        instance.index_delete()
-        instance.index_save()
+        self.index_delete(instance)
+        self.index_save(instance)
         instance._cache = {}
 
     def delete(self, instance):
@@ -114,7 +139,7 @@ class MemoryBackend(Backend):
         delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
         next(delete_callback, None)
 
-        instance.index_delete()
+        self.index_delete(instance)
 
         # run the instance delete callback again if existing
         next(delete_callback, None)
@@ -131,3 +156,81 @@ class MemoryBackend(Backend):
 
         # run the instance reload callback again if existing
         next(reload_callback, None)
+
+    def index_save(self, instance):
+        # update the id index
+        self.index(instance.__class__)[instance.id] = copy.deepcopy(instance._state)
+
+        # update the index for each attribute
+        for attribute in instance.attributes:
+            attribute_values = instance.listify(instance._state.get(attribute, []))
+            for value in attribute_values:
+                self.attribute_index(instance.__class__, attribute).setdefault(
+                    value, set()
+                ).add(instance.id)
+
+        # update the mirror attributes of the submodel instances
+        for attribute in instance.attributes:
+            model, mirror_attribute = instance.get_model_annotations(attribute)
+            if not model or not self.index(model) or not mirror_attribute:
+                continue
+
+            mirror_attribute_index = self.attribute_index(
+                model, mirror_attribute
+            ).setdefault(instance.id, set())
+            for subinstance_id in instance.listify(instance._state.get(attribute, [])):
+                # add the current objet in the subinstance state
+                subinstance_state = self.index(model)[subinstance_id]
+                subinstance_state.setdefault(mirror_attribute, [])
+                subinstance_state[mirror_attribute].append(instance.id)
+
+                # add the current objet in the subinstance index
+                mirror_attribute_index.add(subinstance_id)
+
+    def index_delete(self, instance):
+        if instance.id not in self.index(instance.__class__):
+            return
+
+        old_state = self.index(instance.__class__)[instance.id]
+
+        # update the mirror attributes of the submodel instances
+        for attribute in instance.attributes:
+            attribute_values = instance.listify(old_state.get(attribute, []))
+            for value in attribute_values:
+                self.attribute_index(instance.__class__, attribute)[value].remove(
+                    instance.id
+                )
+
+            # update the mirror attributes of the submodel instances
+            model, mirror_attribute = instance.get_model_annotations(attribute)
+            if not model or not self.index(model) or not mirror_attribute:
+                continue
+
+            mirror_attribute_index = self.attribute_index(
+                model, mirror_attribute
+            ).setdefault(instance.id, set())
+            for subinstance_id in self.index(instance.__class__)[instance.id].get(
+                attribute, []
+            ):
+                # remove the current objet from the subinstance state
+                subinstance_state = self.index(model)[subinstance_id]
+                subinstance_state[mirror_attribute].remove(instance.id)
+
+                # remove the current objet from the subinstance index
+                mirror_attribute_index.remove(subinstance_id)
+
+        # update the index for each attribute
+        for attribute in instance.attributes:
+            attribute_values = instance.listify(old_state.get(attribute, []))
+            for value in attribute_values:
+                if (
+                    value in self.attribute_index(instance.__class__, attribute)
+                    and instance.id
+                    in self.attribute_index(instance.__class__, attribute)[value]
+                ):
+                    self.attribute_index(instance.__class__, attribute)[value].remove(
+                        instance.id
+                    )
+
+        # update the id index
+        del self.index(instance.__class__)[instance.id]
