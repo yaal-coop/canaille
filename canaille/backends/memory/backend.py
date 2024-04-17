@@ -7,6 +7,10 @@ from typing import Dict
 from canaille.backends import Backend
 
 
+def listify(value):
+    return value if isinstance(value, list) else [value]
+
+
 class MemoryBackend(Backend):
     indexes: Dict[str, Dict[str, Any]] = None
     """Associates ids and states."""
@@ -79,7 +83,7 @@ class MemoryBackend(Backend):
         ids = {
             id
             for attribute, values in kwargs.items()
-            for value in model.serialize(model.listify(values))
+            for value in model.serialize(listify(values))
             for id in self.attribute_index(model, attribute).get(value, [])
         }
 
@@ -104,7 +108,7 @@ class MemoryBackend(Backend):
             if any(
                 query.lower() in value.lower()
                 for attribute in attributes
-                for value in model.listify(instance._state.get(attribute, []))
+                for value in listify(instance._state.get(attribute, []))
                 if isinstance(value, str)
             )
         ]
@@ -163,7 +167,7 @@ class MemoryBackend(Backend):
 
         # update the index for each attribute
         for attribute in instance.attributes:
-            attribute_values = instance.listify(instance._state.get(attribute, []))
+            attribute_values = listify(instance._state.get(attribute, []))
             for value in attribute_values:
                 self.attribute_index(instance.__class__, attribute).setdefault(
                     value, set()
@@ -178,7 +182,7 @@ class MemoryBackend(Backend):
             mirror_attribute_index = self.attribute_index(
                 model, mirror_attribute
             ).setdefault(instance.id, set())
-            for subinstance_id in instance.listify(instance._state.get(attribute, [])):
+            for subinstance_id in listify(instance._state.get(attribute, [])):
                 # add the current objet in the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
@@ -195,7 +199,7 @@ class MemoryBackend(Backend):
 
         # update the mirror attributes of the submodel instances
         for attribute in instance.attributes:
-            attribute_values = instance.listify(old_state.get(attribute, []))
+            attribute_values = listify(old_state.get(attribute, []))
             for value in attribute_values:
                 self.attribute_index(instance.__class__, attribute)[value].remove(
                     instance.id
@@ -221,7 +225,7 @@ class MemoryBackend(Backend):
 
         # update the index for each attribute
         for attribute in instance.attributes:
-            attribute_values = instance.listify(old_state.get(attribute, []))
+            attribute_values = listify(old_state.get(attribute, []))
             for value in attribute_values:
                 if (
                     value in self.attribute_index(instance.__class__, attribute)

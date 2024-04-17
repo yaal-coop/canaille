@@ -18,10 +18,6 @@ class MemoryModel(BackendModel):
         return f"<{self.__class__.__name__} id={self.id}>"
 
     @classmethod
-    def listify(cls, value):
-        return value if isinstance(value, list) else [value]
-
-    @classmethod
     def serialize(cls, value):
         if isinstance(value, list):
             values = [cls.serialize(item) for item in value]
