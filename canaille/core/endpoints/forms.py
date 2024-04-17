@@ -91,6 +91,9 @@ class PasswordForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
+        render_kw={
+            "autocomplete": "current-password",
+        },
     )
 
 
