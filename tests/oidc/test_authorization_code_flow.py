@@ -12,9 +12,7 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_authorization_code_flow(
-    testclient, logged_user, client, keypair, trusted_client
-):
+def test_nominal_case(testclient, logged_user, client, keypair, trusted_client):
     assert not models.Consent.query()
 
     res = testclient.get(
@@ -113,9 +111,7 @@ def test_invalid_client(testclient, logged_user, keypair):
     )
 
 
-def test_authorization_code_flow_with_redirect_uri(
-    testclient, logged_user, client, keypair, trusted_client
-):
+def test_redirect_uri(testclient, logged_user, client, keypair, trusted_client):
     assert not models.Consent.query()
 
     res = testclient.get(
@@ -160,9 +156,7 @@ def test_authorization_code_flow_with_redirect_uri(
         consent.delete()
 
 
-def test_authorization_code_flow_preconsented(
-    testclient, logged_user, client, keypair, trusted_client
-):
+def test_preconsented_client(testclient, logged_user, client, keypair, trusted_client):
     assert not models.Consent.query()
 
     client.preconsent = True
@@ -378,9 +372,7 @@ def test_code_challenge(testclient, logged_user, client):
         consent.delete()
 
 
-def test_authorization_code_flow_when_consent_already_given(
-    testclient, logged_user, client
-):
+def test_consent_already_given(testclient, logged_user, client):
     assert not models.Consent.query()
 
     res = testclient.get(
@@ -436,7 +428,7 @@ def test_authorization_code_flow_when_consent_already_given(
         consent.delete()
 
 
-def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_scope(
+def test_when_consent_already_given_but_for_a_smaller_scope(
     testclient, logged_user, client
 ):
     assert not models.Consent.query()
@@ -504,9 +496,7 @@ def test_authorization_code_flow_when_consent_already_given_but_for_a_smaller_sc
         consent.delete()
 
 
-def test_authorization_code_flow_but_user_cannot_use_oidc(
-    testclient, user, client, keypair, trusted_client
-):
+def test_user_cannot_use_oidc(testclient, user, client, keypair, trusted_client):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     user.reload()
 
@@ -565,9 +555,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client):
         consent.delete()
 
 
-def test_authorization_code_request_scope_too_large(
-    testclient, logged_user, keypair, client
-):
+def test_request_scope_too_large(testclient, logged_user, keypair, client):
     assert not models.Consent.query()
     client.scope = ["openid", "profile", "groups"]
     client.save()
@@ -636,7 +624,7 @@ def test_authorization_code_request_scope_too_large(
         consent.delete()
 
 
-def test_authorization_code_expired(testclient, user, client):
+def test_code_expired(testclient, user, client):
     with freezegun.freeze_time("2020-01-01 01:00:00"):
         res = testclient.get(
             "/oauth/authorize",
