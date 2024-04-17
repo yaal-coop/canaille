@@ -151,7 +151,7 @@ def test_refresh_token_with_invalid_user(testclient, client):
     models.Token.get(access_token=access_token).delete()
 
 
-def test_cannot_refresh_token_for_locked_users(testclient, user, client):
+def test_cannot_refresh_token_for_locked_users(testclient, logged_user, client):
     """Canaille should not issue new tokens for locked users."""
     res = testclient.get(
         "/oauth/authorize",
@@ -162,14 +162,6 @@ def test_cannot_refresh_token_for_locked_users(testclient, user, client):
             nonce="somenonce",
         ),
     )
-    res = res.follow()
-
-    res.form["login"] = "user"
-    res = res.form.submit(name="answer", value="accept")
-    res = res.follow()
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit(name="answer", value="accept")
-    res = res.follow()
     res = res.form.submit(name="answer", value="accept")
 
     assert res.location.startswith(client.redirect_uris[0])
@@ -188,8 +180,8 @@ def test_cannot_refresh_token_for_locked_users(testclient, user, client):
         status=200,
     )
 
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-    user.save()
+    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    logged_user.save()
 
     res = testclient.post(
         "/oauth/token",
