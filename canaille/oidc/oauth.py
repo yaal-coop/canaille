@@ -287,7 +287,8 @@ class RefreshTokenGrant(_RefreshTokenGrant):
             return token[0]
 
     def authenticate_user(self, credential):
-        return credential.subject
+        if credential.subject and not credential.subject.locked:
+            return credential.subject
 
     def revoke_old_credential(self, credential):
         credential.revokation_date = datetime.datetime.now(datetime.timezone.utc)
