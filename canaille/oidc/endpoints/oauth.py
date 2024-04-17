@@ -49,10 +49,24 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
+    client = models.Client.get(client_id=request.args["client_id"])
+    user = current_user()
+
+    if response := authorize_guards(client):
+        return response
+
+    if response := authorize_login(user):
+        return response
+
+    response = authorize_consent(client, user)
+
+    return response
+
+
+def authorize_guards(client):
     if "client_id" not in request.args:
         abort(400, "client_id parameter is missing.")
 
-    client = models.Client.get(client_id=request.args["client_id"])
     if not client:
         abort(400, "Invalid client.")
 
@@ -73,12 +87,8 @@ def authorize():
             "error_description": f"prompt '{request.args['prompt'] }' value is not supported",
         }, 400
 
-    user = current_user()
-    requested_scopes = request.args.get("scope", "").split(" ")
-    allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
 
-    # LOGIN
-
+def authorize_login(user):
     if not user:
         if request.args.get("prompt") == "none":
             return jsonify({"error": "login_required"})
@@ -95,8 +105,10 @@ def authorize():
             403, "The user does not have the permission to achieve OIDC authentication."
         )
 
-    # CONSENT
 
+def authorize_consent(client, user):
+    requested_scopes = request.args.get("scope", "").split(" ")
+    allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
     consents = models.Consent.query(
         client=client,
         subject=user,
