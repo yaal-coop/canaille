@@ -245,7 +245,8 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
         authorization_code.delete()
 
     def authenticate_user(self, authorization_code):
-        return authorization_code.subject
+        if authorization_code.subject and not authorization_code.subject.locked:
+            return authorization_code.subject
 
 
 class OpenIDCode(_OpenIDCode):

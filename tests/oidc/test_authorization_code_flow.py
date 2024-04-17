@@ -1,3 +1,4 @@
+import datetime
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
@@ -712,3 +713,43 @@ def test_code_with_invalid_user(testclient, admin, client):
         "error_description": 'There is no "user" for this code.',
     }
     authcode.delete()
+
+
+def test_locked_account(testclient, logged_user, client, keypair, trusted_client):
+    """Users with a locked account should not be able to exchange code against
+    tokens."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    logged_user.save()
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = models.AuthorizationCode.get(code=code)
+    assert authcode is not None
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile email groups address phone",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=400,
+    )
+
+    assert "access_token" not in res.json
