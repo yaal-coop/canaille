@@ -47,7 +47,11 @@ class MemoryModel(BackendModel):
         states = [cls.index()[id] for id in ids]
 
         # initialize instances from the states
-        return [cls(**state) for state in states]
+        instances = [cls(**state) for state in states]
+        for instance in instances:
+            # TODO: maybe find a way to not initialize the cache in the first place?
+            instance._cache = {}
+        return instances
 
     @classmethod
     def index(cls, class_name=None):
