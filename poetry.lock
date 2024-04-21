@@ -1937,13 +1937,13 @@ files = [
 
 [[package]]
 name = "smtpdfix"
-version = "0.5.1"
+version = "0.5.2"
 description = "A SMTP server for use as a pytest fixture that implements encryption and authentication for testing."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "smtpdfix-0.5.1-py3-none-any.whl", hash = "sha256:fab6c8f9060d1dca4ac6f338dae00f487e59de69a2133e58f03f0fe7ff295f52"},
-    {file = "smtpdfix-0.5.1.tar.gz", hash = "sha256:f3cda2d13e84c9267a8f13a0a0cd75314fa16b8d577ca8c30e1523797eeabe9e"},
+    {file = "smtpdfix-0.5.2-py3-none-any.whl", hash = "sha256:85045723df6bb492af2ddbadfb0b8f8b5c52f69bb6fd4f6bca78c4f182d6c2b7"},
+    {file = "smtpdfix-0.5.2.tar.gz", hash = "sha256:e4d1ace90f3712a19127ed8874e697a86148c1f48d2b2db0c0720968e8e3ec95"},
 ]
 
 [package.dependencies]
@@ -1953,8 +1953,8 @@ portpicker = "*"
 pytest = "*"
 
 [package.extras]
-dev = ["flake8", "isort", "pytest-asyncio", "pytest-cov", "pytest-timeout", "tox"]
-typing = ["mypy"]
+dev = ["smtpdfix[testing]", "tox"]
+testing = ["flake8", "isort", "mypy", "pytest-asyncio", "pytest-cov", "pytest-timeout"]
 
 [[package]]
 name = "snowballstemmer"
