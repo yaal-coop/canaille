@@ -37,7 +37,7 @@ readme = "README.md"
 include = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 flask = "^3.0.0"
 flask-wtf = "^1.2.1"
 pydantic-settings = "^2.0.3"
@@ -188,7 +188,6 @@ isolated_build = true
 skipsdist = true
 envlist =
     style
-    py38
     py39
     py310
     py311

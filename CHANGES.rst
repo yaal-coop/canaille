@@ -1,6 +1,7 @@
 Changed
 ^^^^^^^
 - Locked users cannot be impersonated anymore.
+- Minimum python requirement is 3.9.
 
 [0.0.51] - 2024-04-09
 ---------------------
