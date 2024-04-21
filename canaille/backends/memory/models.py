@@ -3,8 +3,6 @@ import datetime
 import typing
 import uuid
 from typing import ClassVar
-from typing import Dict
-from typing import Optional
 
 import canaille.core.models
 import canaille.oidc.models
@@ -115,11 +113,10 @@ class MemoryModel(BackendModel):
             )
             return [] if multiple_attribute else None
 
-        if attribute_name in cls.model_attributes and not isinstance(
-            value, MemoryModel
-        ):
-            model = getattr(models, cls.model_attributes[attribute_name][0])
-            return model.get(id=value)
+        model, _ = cls.get_model_annotations(attribute_name)
+        if model and not isinstance(value, model):
+            backend_model = getattr(models, model.__name__)
+            return backend_model.get(id=value)
 
         return value
 
@@ -151,17 +148,17 @@ class MemoryModel(BackendModel):
                 self.attribute_index(attribute).setdefault(value, set()).add(self.id)
 
         # update the mirror attributes of the submodel instances
-        for attribute in self.model_attributes:
-            model, mirror_attribute = self.model_attributes[attribute]
-            if not self.index(model) or not mirror_attribute:
+        for attribute in self.attributes:
+            model, mirror_attribute = self.get_model_annotations(attribute)
+            if not model or not self.index(model.__name__) or not mirror_attribute:
                 continue
 
             mirror_attribute_index = self.attribute_index(
-                mirror_attribute, model
+                mirror_attribute, model.__name__
             ).setdefault(self.id, set())
             for subinstance_id in self.listify(self._state.get(attribute, [])):
                 # add the current objet in the subinstance state
-                subinstance_state = self.index(model)[subinstance_id]
+                subinstance_state = self.index(model.__name__)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
                 subinstance_state[mirror_attribute].append(self.id)
 
@@ -175,22 +172,22 @@ class MemoryModel(BackendModel):
         old_state = self.index()[self.id]
 
         # update the mirror attributes of the submodel instances
-        for attribute in self.model_attributes:
+        for attribute in self.attributes:
             attribute_values = self.listify(old_state.get(attribute, []))
             for value in attribute_values:
                 self.attribute_index(attribute)[value].remove(self.id)
 
             # update the mirror attributes of the submodel instances
-            model, mirror_attribute = self.model_attributes[attribute]
-            if not self.index(model) or not mirror_attribute:
+            model, mirror_attribute = self.get_model_annotations(attribute)
+            if not model or not self.index(model.__name__) or not mirror_attribute:
                 continue
 
             mirror_attribute_index = self.attribute_index(
-                mirror_attribute, model
+                mirror_attribute, model.__name__
             ).setdefault(self.id, set())
             for subinstance_id in self.index()[self.id].get(attribute, []):
                 # remove the current objet from the subinstance state
-                subinstance_state = self.index(model)[subinstance_id]
+                subinstance_state = self.index(model.__name__)[subinstance_id]
                 subinstance_state[mirror_attribute].remove(self.id)
 
                 # remove the current objet from the subinstance index
@@ -245,45 +242,23 @@ class MemoryModel(BackendModel):
 
 class User(canaille.core.models.User, MemoryModel):
     identifier_attribute: ClassVar[str] = "user_name"
-    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
-        "groups": ("Group", "members"),
-    }
 
 
 class Group(canaille.core.models.Group, MemoryModel):
     identifier_attribute: ClassVar[str] = "display_name"
-    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
-        "members": ("User", "groups"),
-    }
 
 
 class Client(canaille.oidc.models.Client, MemoryModel):
     identifier_attribute: ClassVar[str] = "client_id"
-    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
-        "audience": ("Client", None),
-    }
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
     identifier_attribute: ClassVar[str] = "authorization_code_id"
-    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
-        "client": ("Client", None),
-        "subject": ("User", None),
-    }
 
 
 class Token(canaille.oidc.models.Token, MemoryModel):
     identifier_attribute: ClassVar[str] = "token_id"
-    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
-        "client": ("Client", None),
-        "subject": ("User", None),
-        "audience": ("Client", None),
-    }
 
 
 class Consent(canaille.oidc.models.Consent, MemoryModel):
     identifier_attribute: ClassVar[str] = "consent_id"
-    model_attributes: ClassVar[Dict[str, Optional[str]]] = {
-        "client": ("Client", None),
-        "subject": ("User", None),
-    }

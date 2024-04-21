@@ -1,4 +1,5 @@
 import datetime
+from typing import Annotated
 from typing import List
 from typing import Optional
 
@@ -211,7 +212,7 @@ class User(Model):
     department: Optional[str] = None
     """Identifies the name of a department."""
 
-    groups: List["Group"] = []
+    groups: List[Annotated["Group", {"backref": "members"}]] = []
     """A list of groups to which the user belongs, either through direct
     membership, through nested groups, or dynamically calculated.
 
@@ -330,7 +331,7 @@ class Group(Model):
     REQUIRED.
     """
 
-    members: List["User"] = []
+    members: List[Annotated["User", {"backref": "groups"}]] = []
     """A list of members of the Group.
 
     While values MAY be added or removed, sub-attributes of members are

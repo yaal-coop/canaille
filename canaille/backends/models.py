@@ -1,12 +1,11 @@
 import datetime
 import inspect
+import typing
 from collections import ChainMap
+from typing import Annotated
 from typing import ClassVar
-from typing import ForwardRef
 from typing import List
 from typing import Optional
-from typing import _eval_type
-from typing import get_args
 from typing import get_origin
 from typing import get_type_hints
 
@@ -57,7 +56,7 @@ class Model:
         if not cls._attributes:
             annotations = ChainMap(
                 *(
-                    get_type_hints(klass)
+                    get_type_hints(klass, include_extras=True)
                     for klass in reversed(cls.__mro__)
                     if issubclass(klass, Model)
                 )
@@ -161,18 +160,30 @@ class BackendModel:
         raise NotImplementedError()
 
     @classmethod
-    def get_attribute_type(cls, attribute_name):
-        """Reads the attribute typing and extract the type, possibly burried
-        under list or Optional."""
-        attribute = cls.attributes[attribute_name]
-        core_type = (
-            get_args(attribute)[0] if get_origin(attribute) == list else attribute
+    def get_model_annotations(cls, attribute):
+        annotations = cls.attributes[attribute]
+
+        # Extract the list type from list annotations
+        attribute_type = (
+            typing.get_args(annotations)[0]
+            if typing.get_origin(annotations) is list
+            else annotations
         )
-        return (
-            _eval_type(core_type, globals(), locals())
-            if isinstance(core_type, ForwardRef)
-            else core_type
+
+        # Extract the Annotated annotation
+        attribute_type, metadata = (
+            typing.get_args(attribute_type)
+            if typing.get_origin(attribute_type) == Annotated
+            else (attribute_type, None)
         )
+
+        if not inspect.isclass(attribute_type) or not issubclass(attribute_type, Model):
+            return None, None
+
+        if not metadata:
+            return attribute_type, None
+
+        return attribute_type, metadata.get("backref")
 
     def match_filter(self, filter):
         if filter is None:
@@ -183,18 +194,14 @@ class BackendModel:
 
         # If attribute are models, resolve the instance
         for attribute, value in filter.items():
-            attribute_type = self.get_attribute_type(attribute)
+            model, _ = self.get_model_annotations(attribute)
 
-            if (
-                isinstance(value, Model)
-                or not inspect.isclass(attribute_type)
-                or not issubclass(attribute_type, Model)
-            ):
+            if not model or isinstance(value, Model):
                 continue
 
-            model = getattr(models, attribute_type.__name__)
+            backend_model = getattr(models, model.__name__)
 
-            if instance := model.get(value):
+            if instance := backend_model.get(value):
                 filter[attribute] = instance
 
         return all(
