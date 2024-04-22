@@ -124,7 +124,9 @@ def setup_flask_converters(app):
         app.url_map.converters[model_name.lower()] = model_converter(model_class)
 
 
-def create_app(config=None, validate=True, backend=None):
+def create_app(
+    config=None, validate=True, backend=None, env_file=".env", env_prefix=""
+):
     from .app.configuration import setup_config
     from .app.i18n import setup_i18n
     from .app.themes import setup_themer
@@ -132,7 +134,13 @@ def create_app(config=None, validate=True, backend=None):
 
     app = Flask(__name__)
     with app.app_context():
-        if not setup_config(app, config, validate):  # pragma: no cover
+        if not setup_config(
+            app=app,
+            config=config,
+            test_config=validate,
+            env_file=env_file,
+            env_prefix=env_prefix,
+        ):  # pragma: no cover
             sys.exit(1)
 
     sentry_sdk = setup_sentry(app)

@@ -1,9 +1,13 @@
+Added
+^^^^^
+- `env_prefix` create_app variable can select the environment var prefix.
+
 [0.0.52] - 2024-04-22
 ---------------------
 
 Added
 ^^^^^
-- `ENV_FILE` environment variable can customize/disable the .env file
+- `env_file` create_app variable can customize/disable the .env file
 
 Changed
 ^^^^^^^

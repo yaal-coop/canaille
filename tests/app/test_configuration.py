@@ -41,6 +41,7 @@ def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration)
 
 
 def test_configuration_from_environment_vars():
+    """Canaille should read configuration from environment vars."""
     os.environ["SECRET_KEY"] = "very-very-secret"
     os.environ["CANAILLE__SMTP__FROM_ADDR"] = "user@mydomain.tld"
     os.environ["CANAILLE_SQL__DATABASE_URI"] = "sqlite:///anything.db"
@@ -58,6 +59,22 @@ def test_configuration_from_environment_vars():
     del os.environ["SECRET_KEY"]
     del os.environ["CANAILLE__SMTP__FROM_ADDR"]
     del os.environ["CANAILLE_SQL__DATABASE_URI"]
+
+
+def test_disable_env_var_loading(tmp_path, configuration):
+    """Canaille should not read configuration from environment vars when
+    env_prefix is False."""
+    del configuration["SERVER_NAME"]
+    os.environ["SERVER_NAME"] = "example.com"
+    os.environ["FOOBAR_SERVER_NAME"] = "foobar.example.com"
+
+    app = create_app(configuration, env_prefix="")
+    assert app.config["SERVER_NAME"] == "example.com"
+
+    app = create_app(configuration, env_prefix="FOOBAR_")
+    assert app.config["SERVER_NAME"] == "foobar.example.com"
+
+    del os.environ["SERVER_NAME"]
 
 
 def test_dotenv_file(tmp_path, configuration):
@@ -81,8 +98,7 @@ def test_custom_dotenv_file(tmp_path, configuration):
     with open(dotenv, "w") as fd:
         fd.write("FOOBAR=other-custom-value")
 
-    configuration["ENV_FILE"] = dotenv
-    app = create_app(configuration)
+    app = create_app(configuration, env_file=dotenv)
     assert app.config["FOOBAR"] == "other-custom-value"
 
 
@@ -95,8 +111,7 @@ def test_disable_dotenv_file(tmp_path, configuration):
     with open(dotenv, "w") as fd:
         fd.write("FOOBAR=custom-value")
 
-    configuration["ENV_FILE"] = None
-    app = create_app(configuration)
+    app = create_app(configuration, env_file=None)
     assert "FOOBAR" not in app.config
     os.chdir(oldcwd)
 

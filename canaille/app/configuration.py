@@ -13,7 +13,6 @@ from pydantic_settings import SettingsConfigDict
 from canaille.core.configuration import CoreSettings
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_ENV_FILE = ".env"
 
 
 class RootSettings(BaseSettings):
@@ -60,10 +59,10 @@ class RootSettings(BaseSettings):
     """
 
 
-def settings_factory(config):
-    """Overly complicated function that pushes the backend specific
-    configuration into CoreSettings, in the purpose break dependency against
-    backends libraries like python-ldap or sqlalchemy."""
+def settings_factory(config, env_file=".env", env_prefix=""):
+    """Pushes the backend specific configuration into CoreSettings, in the
+    purpose break dependency against backends libraries like python-ldap or
+    sqlalchemy."""
     attributes = {"CANAILLE": (CoreSettings, CoreSettings())}
 
     if "CANAILLE_SQL" in config or any(
@@ -93,11 +92,11 @@ def settings_factory(config):
         **attributes,
     )
 
-    env_file = os.getenv("ENV_FILE", config.get("ENV_FILE", DEFAULT_ENV_FILE))
     return Settings(
         **config,
         _secrets_dir=os.environ.get("SECRETS_DIR"),
         _env_file=env_file,
+        _env_prefix=env_prefix,
     )
 
 
@@ -121,7 +120,7 @@ def toml_content(file_path):
         raise Exception("toml library not installed. Cannot load configuration.")
 
 
-def setup_config(app, config=None, test_config=True):
+def setup_config(app, config=None, test_config=True, env_file=".env", env_prefix=""):
     from canaille.oidc.installation import install
 
     app.config.from_mapping(
@@ -135,7 +134,9 @@ def setup_config(app, config=None, test_config=True):
         config = toml_content(os.environ.get("CONFIG"))
 
     try:
-        config_obj = settings_factory(config or {})
+        config_obj = settings_factory(
+            config or {}, env_file=env_file, env_prefix=env_prefix
+        )
     except ValidationError as exc:  # pragma: no cover
         app.logger.critical(str(exc))
         return False
