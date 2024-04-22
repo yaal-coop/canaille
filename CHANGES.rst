@@ -1,3 +1,6 @@
+[0.0.53] - 2024-04-22
+---------------------
+
 Added
 ^^^^^
 - `env_prefix` create_app variable can select the environment var prefix.
