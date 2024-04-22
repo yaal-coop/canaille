@@ -1,3 +1,7 @@
+Changed
+^^^^^^^
+- Model `identifier_attributes` are fixed.
+
 [0.0.53] - 2024-04-22
 ---------------------
 

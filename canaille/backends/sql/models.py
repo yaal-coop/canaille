@@ -95,10 +95,6 @@ class SqlAlchemyModel(BackendModel):
             .scalar_one_or_none()
         )
 
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)
-
     def save(self):
         self.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
@@ -127,7 +123,6 @@ membership_association_table = Table(
 
 class User(canaille.core.models.User, Base, SqlAlchemyModel):
     __tablename__ = "user"
-    identifier_attribute = "user_name"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
@@ -171,7 +166,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     __tablename__ = "group"
-    identifier_attribute = "display_name"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
@@ -200,7 +194,6 @@ client_audience_association_table = Table(
 
 class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     __tablename__ = "client"
-    identifier_attribute = "client_id"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
@@ -250,7 +243,6 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemyModel):
     __tablename__ = "authorization_code"
-    identifier_attribute = "authorization_code_id"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
@@ -293,7 +285,6 @@ token_audience_association_table = Table(
 
 class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     __tablename__ = "token"
-    identifier_attribute = "token_id"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
@@ -331,7 +322,6 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
 
 class Consent(canaille.oidc.models.Consent, Base, SqlAlchemyModel):
     __tablename__ = "consent"
-    identifier_attribute = "consent_id"
 
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())

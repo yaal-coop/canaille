@@ -43,10 +43,6 @@ class User(canaille.core.models.User, LDAPObject):
 
         return super().match_filter(filter)
 
-    @property
-    def identifier(self):
-        return self.rdn_value
-
     def save(self, *args, **kwargs):
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:
@@ -92,10 +88,6 @@ class Group(canaille.core.models.Group, LDAPObject):
         "description": "description",
     }
 
-    @property
-    def identifier(self):
-        return self.rdn_value
-
 
 class Client(canaille.oidc.models.Client, LDAPObject):
     ldap_object_class = ["oauthClient"]
@@ -139,10 +131,6 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         **client_metadata_attributes,
     }
 
-    @property
-    def identifier(self):
-        return self.rdn_value
-
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     ldap_object_class = ["oauthAuthorizationCode"]
@@ -167,10 +155,6 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
         "revokation_date": "oauthRevokationDate",
     }
 
-    @property
-    def identifier(self):
-        return self.rdn_value
-
 
 class Token(canaille.oidc.models.Token, LDAPObject):
     ldap_object_class = ["oauthToken"]
@@ -193,10 +177,6 @@ class Token(canaille.oidc.models.Token, LDAPObject):
         "audience": "oauthAudience",
     }
 
-    @property
-    def identifier(self):
-        return self.rdn_value
-
 
 class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
@@ -213,7 +193,3 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
         "issue_date": "oauthIssueDate",
         "revokation_date": "oauthRevokationDate",
     }
-
-    @property
-    def identifier(self):
-        return self.rdn_value

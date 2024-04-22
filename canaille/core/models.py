@@ -1,5 +1,6 @@
 import datetime
 from typing import Annotated
+from typing import ClassVar
 from typing import List
 from typing import Optional
 
@@ -22,6 +23,8 @@ class User(Model):
     information purpose. The description may not fit the current
     implementation in Canaille.
     """
+
+    identifier_attribute: ClassVar[str] = "user_name"
 
     user_name: str
     """A service provider's unique identifier for the user, typically used by
@@ -324,6 +327,8 @@ class Group(Model):
     User model, based on the `SCIM Group schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_.
     """
+
+    identifier_attribute: ClassVar[str] = "display_name"
 
     display_name: str
     """A human-readable name for the Group.

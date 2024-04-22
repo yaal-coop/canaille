@@ -2,7 +2,6 @@ import copy
 import datetime
 import typing
 import uuid
-from typing import ClassVar
 
 import canaille.core.models
 import canaille.oidc.models
@@ -235,30 +234,26 @@ class MemoryModel(BackendModel):
         else:
             super().__setattr__(name, value)
 
-    @property
-    def identifier(self):
-        return getattr(self, self.identifier_attribute)
-
 
 class User(canaille.core.models.User, MemoryModel):
-    identifier_attribute: ClassVar[str] = "user_name"
+    pass
 
 
 class Group(canaille.core.models.Group, MemoryModel):
-    identifier_attribute: ClassVar[str] = "display_name"
+    pass
 
 
 class Client(canaille.oidc.models.Client, MemoryModel):
-    identifier_attribute: ClassVar[str] = "client_id"
+    pass
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
-    identifier_attribute: ClassVar[str] = "authorization_code_id"
+    pass
 
 
 class Token(canaille.oidc.models.Token, MemoryModel):
-    identifier_attribute: ClassVar[str] = "token_id"
+    pass
 
 
 class Consent(canaille.oidc.models.Consent, MemoryModel):
-    identifier_attribute: ClassVar[str] = "consent_id"
+    pass

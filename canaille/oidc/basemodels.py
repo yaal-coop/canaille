@@ -1,4 +1,5 @@
 import datetime
+from typing import ClassVar
 from typing import List
 from typing import Optional
 
@@ -15,6 +16,8 @@ class Client(Model):
     <https://openid.net/specs/openid-connect-rpinitiated-1_0.html>`_
     specifications.
     """
+
+    identifier_attribute: ClassVar[str] = "client_id"
 
     description: Optional[str] = None
     preconsent: Optional[bool] = False
@@ -288,6 +291,8 @@ class Client(Model):
 class AuthorizationCode(Model):
     """OpenID Connect temporary authorization code definition."""
 
+    identifier_attribute: ClassVar[str] = "authorization_code_id"
+
     authorization_code_id: str
     code: str
     client: "Client"
@@ -306,6 +311,8 @@ class AuthorizationCode(Model):
 class Token(Model):
     """OpenID Connect token definition."""
 
+    identifier_attribute: ClassVar[str] = "token_id"
+
     token_id: str
     access_token: str
     client: "Client"
@@ -321,6 +328,8 @@ class Token(Model):
 
 class Consent(Model):
     """Long-term user consent to an application."""
+
+    identifier_attribute: ClassVar[str] = "consent_id"
 
     consent_id: str
     subject: User

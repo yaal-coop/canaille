@@ -69,6 +69,16 @@ class Model:
             }
         return cls._attributes
 
+    @property
+    def identifier(self):
+        """Returns a unique value that will be used to identify the model
+        instance.
+
+        This value will be used in URLs in canaille, so it should be
+        unique and short.
+        """
+        return getattr(self, self.identifier_attribute)
+
 
 class BackendModel:
     """The backend model abstract class.
@@ -107,16 +117,6 @@ class BackendModel:
     def get(cls, identifier=None, **kwargs):
         """Works like :meth:`~canaille.backends.models.BackendModel.query` but
         return only one element or :py:data:`None` if no item is matching."""
-        raise NotImplementedError()
-
-    @property
-    def identifier(self):
-        """Returns a unique value that will be used to identify the model
-        instance.
-
-        This value will be used in URLs in canaille, so it should be
-        unique and short.
-        """
         raise NotImplementedError()
 
     def save(self):

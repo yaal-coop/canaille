@@ -6,7 +6,6 @@ import ldap.dn
 import ldap.filter
 from ldap.controls.readentry import PostReadControl
 
-from canaille.app import classproperty
 from canaille.backends.models import BackendModel
 
 from .backend import Backend
@@ -135,10 +134,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             if self.rdn_attribute
             else "<LDAPOBject>"
         )
-
-    @classproperty
-    def identifier_attribute(cls):
-        return cls.rdn_attribute
 
     def __eq__(self, other):
         ldap_attributes = self.may() + self.must()
