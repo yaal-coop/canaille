@@ -13,6 +13,7 @@ from pydantic_settings import SettingsConfigDict
 from canaille.core.configuration import CoreSettings
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_ENV_FILE = ".env"
 
 
 class RootSettings(BaseSettings):
@@ -30,7 +31,6 @@ class RootSettings(BaseSettings):
         extra="allow",
         env_nested_delimiter="__",
         case_sensitive=True,
-        env_file=".env",
     )
 
     SECRET_KEY: str
@@ -93,7 +93,12 @@ def settings_factory(config):
         **attributes,
     )
 
-    return Settings(**config, _secrets_dir=os.environ.get("SECRETS_DIR"))
+    env_file = os.getenv("ENV_FILE", config.get("ENV_FILE", DEFAULT_ENV_FILE))
+    return Settings(
+        **config,
+        _secrets_dir=os.environ.get("SECRETS_DIR"),
+        _env_file=env_file,
+    )
 
 
 class ConfigurationException(Exception):

@@ -1,3 +1,7 @@
+Added
+^^^^^
+- `ENV_FILE` environment variable can customize/disable the .env file
+
 Changed
 ^^^^^^^
 - Locked users cannot be impersonated anymore.

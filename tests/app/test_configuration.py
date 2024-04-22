@@ -60,6 +60,47 @@ def test_configuration_from_environment_vars():
     del os.environ["CANAILLE_SQL__DATABASE_URI"]
 
 
+def test_dotenv_file(tmp_path, configuration):
+    """Canaille should read configuration from .env files."""
+    oldcwd = os.getcwd()
+    os.chdir(tmp_path)
+    dotenv = tmp_path / ".env"
+
+    with open(dotenv, "w") as fd:
+        fd.write("FOOBAR=custom-value")
+
+    app = create_app(configuration)
+    assert app.config["FOOBAR"] == "custom-value"
+    os.chdir(oldcwd)
+
+
+def test_custom_dotenv_file(tmp_path, configuration):
+    """Canaille should read configuration from custom .env files if they are
+    passed with ENV_FILE."""
+    dotenv = tmp_path / "custom.env"
+    with open(dotenv, "w") as fd:
+        fd.write("FOOBAR=other-custom-value")
+
+    configuration["ENV_FILE"] = dotenv
+    app = create_app(configuration)
+    assert app.config["FOOBAR"] == "other-custom-value"
+
+
+def test_disable_dotenv_file(tmp_path, configuration):
+    """Canaille should ignore .env files if ENV_FILE is None."""
+    oldcwd = os.getcwd()
+    os.chdir(tmp_path)
+    dotenv = tmp_path / ".env"
+
+    with open(dotenv, "w") as fd:
+        fd.write("FOOBAR=custom-value")
+
+    configuration["ENV_FILE"] = None
+    app = create_app(configuration)
+    assert "FOOBAR" not in app.config
+    os.chdir(oldcwd)
+
+
 def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configuration):
     configuration["CANAILLE"]["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     config_obj = settings_factory(configuration)
