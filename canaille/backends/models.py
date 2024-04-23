@@ -89,8 +89,9 @@ class BackendModel:
 
     @classmethod
     def query(cls, **kwargs):
-        """
-        Performs a query on the database and return a collection of instances.
+        """Perform a query on the database and return a collection of
+        instances.
+
         Parameters can be any valid attribute with the expected value:
 
         >>> User.query(first_name="George")
@@ -120,11 +121,11 @@ class BackendModel:
         raise NotImplementedError()
 
     def save(self):
-        """Validates the current modifications in the database."""
+        """Validate the current modifications in the database."""
         raise NotImplementedError()
 
     def delete(self):
-        """Removes the current instance from the database."""
+        """Remove the current instance from the database."""
         raise NotImplementedError()
 
     def update(self, **kwargs):
@@ -145,7 +146,7 @@ class BackendModel:
             setattr(self, attribute, value)
 
     def reload(self):
-        """Cancels the unsaved modifications.
+        """Cancel the unsaved modifications.
 
         >>> user = User.get(user_name="george")
         >>> user.display_name

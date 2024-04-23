@@ -72,7 +72,7 @@ class HTMXFormMixin:
     render_field_extra_context = {}
 
     def field_from_name(self, field_name):
-        """Returns a tuple containing a field and its rendering context."""
+        """Return a tuple containing a field and its rendering context."""
         if self.SEPARATOR not in field_name:
             field = self[field_name] if field_name in self else None
             return field, {}
@@ -120,7 +120,7 @@ class HTMXFormMixin:
         abort(response)
 
     def form_control(self):
-        """Checks wether the current request is the result of the users adding
+        """Check wether the current request is the result of the users adding
         or removing a field from a FieldList."""
         FIELDLIST_ADD_BUTTON = "fieldlist_add"
         FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"

@@ -8,8 +8,7 @@ from canaille.core.models import User
 
 
 class Client(Model):
-    """
-    OpenID Connect client definition, based on the
+    """OpenID Connect client definition, based on the
     `OAuth 2.0 Dynamic Client Registration protocols
     <https://datatracker.ietf.org/doc/html/rfc7591.html>`_
     and the `OpenID Connect RP-Initiated Logout

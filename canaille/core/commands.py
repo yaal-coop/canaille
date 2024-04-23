@@ -26,7 +26,6 @@ def populate(ctx, nb):
 @with_backendcontext
 def users(ctx):
     """Populate the database with generated random users."""
-
     from canaille.core.populate import fake_users
 
     fake_users(ctx.obj["number"])
@@ -43,7 +42,6 @@ def users(ctx):
 @with_backendcontext
 def groups(ctx, nb_users_max):
     """Populate the database with generated random groups."""
-
     from canaille.core.populate import fake_groups
 
     fake_groups(ctx.obj["number"], nb_users_max)

@@ -18,7 +18,8 @@ def test_password_forgotten(smtpd, testclient, user):
     res = res.form.submit(status=200)
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. You should receive "
+        "it within a few minutes.",
     ) in res.flashes
     res.mustcontain("Send again")
 
@@ -35,7 +36,8 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user):
     res = res.form.submit(status=200)
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. You should receive "
+        "it within a few minutes.",
     ) in res.flashes
     res.mustcontain("Send again")
 
@@ -61,7 +63,8 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
     res = res.form.submit(status=200)
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. "
+        "You should receive it within a few minutes.",
     ) in res.flashes
     res.mustcontain(no="The login &#39;i-dont-really-exist&#39; does not exist")
 
@@ -72,7 +75,8 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
     res = res.form.submit(status=200)
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. "
+        "You should receive it within a few minutes.",
     ) not in res.flashes
     res.mustcontain("The login &#39;i-dont-really-exist&#39; does not exist")
 
@@ -90,11 +94,13 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
     res = res.form.submit(status=200)
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. "
+        "You should receive it within a few minutes.",
     ) not in res.flashes
     assert (
         "error",
-        "The user 'John (johnny) Doe' does not have permissions to update their password. We cannot send a password reset email.",
+        "The user 'John (johnny) Doe' does not have permissions to update their "
+        "password. We cannot send a password reset email.",
     ) in res.flashes
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
@@ -105,11 +111,13 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(smtpd, testclient
     res = res.form.submit(status=200)
     assert (
         "error",
-        "The user 'John (johnny) Doe' does not have permissions to update their password. We cannot send a password reset email.",
+        "The user 'John (johnny) Doe' does not have permissions to update their "
+        "password. We cannot send a password reset email.",
     ) not in res.flashes
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. "
+        "You should receive it within a few minutes.",
     ) in res.flashes
 
     assert len(smtpd.messages) == 0
@@ -124,7 +132,8 @@ def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
     res = res.form.submit(status=200, expect_errors=True)
     assert (
         "success",
-        "A password reset link has been sent at your email address. You should receive it within a few minutes.",
+        "A password reset link has been sent at your email address. "
+        "You should receive it within a few minutes.",
     ) not in res.flashes
     assert (
         "error",

@@ -90,7 +90,8 @@ class OIDCSettings(BaseModel):
     """Wether a token is needed for the RFC7591 dynamical client registration.
 
     If :py:data:`True`, no token is needed to register a client.
-    If :py:data:`False`, dynamical client registration needs a token defined in :attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`.
+    If :py:data:`False`, dynamical client registration needs a token defined in
+    :attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`.
     """
 
     DYNAMIC_CLIENT_REGISTRATION_TOKENS: Optional[List[str]] = None

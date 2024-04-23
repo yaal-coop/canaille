@@ -67,7 +67,6 @@ def test_keep_old_object_classes(backend, testclient, slapd_server):
     In such a case Canaille should keep the unmanaged objectClass and
     attributes.
     """
-
     user = models.User(cn="foo", sn="bar", user_name="baz")
     user.save()
 

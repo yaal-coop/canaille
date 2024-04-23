@@ -179,7 +179,22 @@ exclude_lines = [
 ]
 
 [tool.ruff.lint]
-ignore = ["E501", "E722"]
+select = [
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501", # line-too-long
+    "E722", # bare-except
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[too.ruff.format]
+docstring-code-format = true
 
 [tool.tox]
 legacy_tox_ini = """

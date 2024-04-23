@@ -11,8 +11,7 @@ from canaille.core.configuration import Permission
 
 
 class User(Model):
-    """
-    User model, based on the `SCIM User schema
+    """User model, based on the `SCIM User schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_,
     `Entreprise User Schema Extension
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_
@@ -249,7 +248,7 @@ class User(Model):
     _permissions = None
 
     def has_password(self) -> bool:
-        """Checks wether a password has been set for the user."""
+        """Check wether a password has been set for the user."""
         return self.password is not None
 
     def can_read(self, field: str):
@@ -323,8 +322,7 @@ class User(Model):
 
 
 class Group(Model):
-    """
-    User model, based on the `SCIM Group schema
+    """User model, based on the `SCIM Group schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_.
     """
 
