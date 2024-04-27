@@ -39,9 +39,9 @@ def mail_index(user):
     form = MailTestForm(request.form or None)
     if request.form and form.validate():
         if send_test_mail(form.email.data):
-            flash(_("The test invitation mail has been sent correctly"), "success")
+            flash(_("The test mail has been sent correctly"), "success")
         else:
-            flash(_("The test invitation mail has not been sent correctly"), "error")
+            flash(_("The test mail has not been sent correctly"), "error")
 
     return render_template("mails/admin.html", form=form, menuitem="admin")
 

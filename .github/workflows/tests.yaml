@@ -42,7 +42,7 @@ jobs:
           export TZ=UTC
           poetry --version
           poetry install --extras all
-          poetry run pytest -x
+          poetry run pytest --showlocals
   minversions:
     name: minimum dependency versions
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
           poetry --version
           poetry lock
           poetry install --extras all
-          poetry run pytest
+          poetry run pytest --showlocals
   style:
     runs-on: ubuntu-latest
     steps:

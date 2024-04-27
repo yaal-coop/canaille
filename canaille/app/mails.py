@@ -38,6 +38,16 @@ def logo():
     return logo_cid, logo_filename, logo_raw
 
 
+def type_from_filename(filename):
+    filetype = mimetypes.guess_type(filename)
+    if not filetype or not filetype[0]:  # pragma: no cover
+        # For some reasons GHA fails to guess webp mimetypes
+        return "application", "octet-stream"
+
+    maintype, subtype = filetype[0].split("/")
+    return maintype, subtype
+
+
 def send_email(subject, recipient, text, html, attachements=None):
     current_app.logger.debug(f"Sending a mail to {recipient}: {subject}")
     msg = email.message.EmailMessage()
@@ -58,11 +68,7 @@ def send_email(subject, recipient, text, html, attachements=None):
 
     attachements = attachements or []
     for cid, filename, value in attachements:
-        filetype = mimetypes.guess_type(filename)
-        if not filetype or not filetype[0]:  # pragma: no cover
-            continue
-
-        maintype, subtype = filetype[0].split("/")
+        maintype, subtype = type_from_filename(filename)
         msg.get_payload()[1].add_related(
             value, maintype=maintype, subtype=subtype, cid=cid
         )

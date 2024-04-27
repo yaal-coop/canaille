@@ -23,7 +23,7 @@ def test_send_test_email(testclient, logged_admin, smtpd):
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 1
@@ -45,7 +45,7 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd):
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 1
@@ -62,7 +62,7 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 1
@@ -80,7 +80,7 @@ def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 0
@@ -94,7 +94,7 @@ def test_send_test_email_failed(testclient, logged_admin):
         res = res.form.submit(expect_errors=True)
     assert (
         "error",
-        "The test invitation mail has not been sent correctly",
+        "The test mail has not been sent correctly",
     ) in res.flashes
 
 
@@ -107,7 +107,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 1
@@ -129,7 +129,7 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 1
@@ -157,7 +157,7 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
     res = res.form.submit()
     assert (
         "success",
-        "The test invitation mail has been sent correctly",
+        "The test mail has been sent correctly",
     ) in res.flashes
 
     assert len(smtpd.messages) == 1
