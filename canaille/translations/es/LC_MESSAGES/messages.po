@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-04-27 14:07+0200\n"
-"PO-Revision-Date: 2024-04-10 09:01+0000\n"
+"PO-Revision-Date: 2024-04-28 13:07+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.5.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:100
@@ -257,7 +257,7 @@ msgstr "El usuario %(user)s ha sido eliminado correctamente"
 
 #: canaille/core/endpoints/account.py:822
 msgid "Locked users cannot be impersonated."
-msgstr ""
+msgstr "Los usuarios bloqueados no pueden ser suplantados."
 
 #: canaille/core/endpoints/account.py:826 canaille/core/endpoints/auth.py:112
 #, python-format
@@ -277,16 +277,12 @@ msgid "jane@doe.com"
 msgstr "jane@doe.com"
 
 #: canaille/core/endpoints/admin.py:42
-#, fuzzy
-#| msgid "The test invitation mail has been sent correctly"
 msgid "The test mail has been sent correctly"
-msgstr "El email de invitación de prueba se envió correctamente"
+msgstr "El correo electrónico de prueba se envió correctamente"
 
 #: canaille/core/endpoints/admin.py:44
-#, fuzzy
-#| msgid "The test invitation mail has not been sent correctly"
 msgid "The test mail has not been sent correctly"
-msgstr "No se pudo enviar el email de invitación de prueba"
+msgstr "El correo electrónico de prueba no se envió correctamente"
 
 #: canaille/core/endpoints/admin.py:182
 msgid "Invitation on {website_name}"
