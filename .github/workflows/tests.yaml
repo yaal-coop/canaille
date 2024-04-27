@@ -29,15 +29,20 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: 'poetry'
-      - name: Update apt repositories
-        run: sudo apt update
       - name: Install apt dependencies
-        run: sudo apt --yes install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+        run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
       - name: App armor configuration for slapd
+        if: ${{ !env.ACT }}
         run: sudo aa-complain /usr/sbin/slapd
-      - run: poetry --version
-      - run: poetry install --extras all
-      - run: poetry run pytest
+      - run: |
+          # python tzinfo fails on 'act' without this
+          ulimit -n 1024
+          export TZ=UTC
+          poetry --version
+          poetry install --extras all
+          poetry run pytest -x
   minversions:
     name: minimum dependency versions
     runs-on: ubuntu-latest
@@ -49,23 +54,27 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'poetry'
-      - name: Update apt repositories
-        run: sudo apt update
       - name: Install apt dependencies
-        run: sudo apt --yes install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+        run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
       - name: App armor configuration for slapd
+        if: ${{ !env.ACT }}
         run: sudo aa-complain /usr/sbin/slapd
       - run: sed -i -E 's/"(\^|>=)([0-9\.]+)(.*)"/"==\2"/' pyproject.toml
       - run: sed -i -E 's/python = "==/python = "^/' pyproject.toml
-      - run: poetry --version
-      - run: poetry lock
-      - run: poetry install --extras all
-      - run: poetry run pytest
+      - run: |
+          # python tzinfo fails on 'act' without this
+          ulimit -n 1024
+          export TZ=UTC
+          poetry --version
+          poetry lock
+          poetry install --extras all
+          poetry run pytest
   style:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
     - uses: pre-commit/action@v3.0.1
   doc:
     runs-on: ubuntu-latest
@@ -77,11 +86,11 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'poetry'
-      - name: Update apt repositories
-        run: sudo apt update
       - name: Install apt dependencies
-        run: sudo apt --yes install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
-      - name: App armor configuration for slapd
-        run: sudo aa-complain /usr/sbin/slapd
-      - run: poetry install --only doc
-      - run: poetry run sphinx-build doc build/sphinx/html
+        run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+      - run: |
+          export TZ=UTC
+          poetry install --with doc
+          poetry run sphinx-build doc build/sphinx/html

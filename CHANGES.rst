@@ -33,7 +33,7 @@ Changed
 
 Added
 ^^^^^
-- Sign in/out events are logged in :issuer:`177`
+- Sign in/out events are logged in :issue:`177`
 
 Fixed
 ^^^^^

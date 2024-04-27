@@ -8,7 +8,7 @@ stages:
 
 before_script:
   - apt update
-  - env DEBIAN_FRONTEND=noninteractive apt install --yes python3-dev libldap2-dev libsasl2-dev libssl-dev slapd ldap-utils python3-poetry
+  - env DEBIAN_FRONTEND=noninteractive apt install --yes --quiet python3-dev libldap2-dev libsasl2-dev libssl-dev slapd ldap-utils python3-poetry
   - poetry config virtualenvs.in-project true
 
 cache:
