@@ -6,6 +6,7 @@ import pytest
 from flask_webtest import TestApp
 
 from canaille import create_app
+from canaille.app.mails import type_from_filename
 
 
 @pytest.fixture
@@ -224,3 +225,8 @@ def test_default_from_flask_server_name(configuration, user, smtpd, backend):
     res = res.form.submit(status=200)
     assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
     assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'
+
+
+def test_type_from_filename():
+    assert type_from_filename("index.html") == ("text", "html")
+    assert type_from_filename("unknown") == ("application", "octet-stream")

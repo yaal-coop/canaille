@@ -40,8 +40,10 @@ def logo():
 
 def type_from_filename(filename):
     filetype = mimetypes.guess_type(filename)
-    if not filetype or not filetype[0]:  # pragma: no cover
+    if not filetype or not filetype[0]:
         # For some reasons GHA fails to guess webp mimetypes
+        # According to MDN, the default mimetype should be application/octet-stream
+        # https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
         return "application", "octet-stream"
 
     maintype, subtype = filetype[0].split("/")
