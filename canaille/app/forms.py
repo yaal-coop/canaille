@@ -251,12 +251,15 @@ def set_writable(field):
 
 
 class IDToModel:
-    def __init__(self, model_name):
+    def __init__(self, model_name, raise_on_errors=True):
         self.model_name = model_name
+        self.raise_on_errors = raise_on_errors
 
     def __call__(self, data):
         model = getattr(models, self.model_name)
         instance = data if isinstance(data, model) else model.get(data)
-        if not instance:
+        if instance:
+            return instance
+
+        if self.raise_on_errors:
             raise wtforms.ValidationError()
-        return instance

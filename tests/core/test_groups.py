@@ -292,3 +292,95 @@ def test_user_list_search(testclient, logged_admin, foo_group, user, moderator):
     res.mustcontain(user.formatted_name)
     res.mustcontain(no=logged_admin.formatted_name)
     res.mustcontain(no=moderator.formatted_name)
+
+
+def test_remove_member(testclient, logged_admin, foo_group, user, moderator):
+    foo_group.members = [user, moderator]
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    form = res.forms[f"deletegroupmemberform-{user.id}"]
+
+    res = form.submit(name="action", value="confirm-remove-member")
+    res = res.form.submit(name="action", value="remove-member")
+    assert (
+        "success",
+        "John (johnny) Doe has been removed from the group foo",
+    ) in res.flashes
+
+    foo_group.reload()
+    assert user not in foo_group.members
+
+
+def test_remove_member_already_remove_from_group(
+    testclient, logged_admin, foo_group, user, moderator
+):
+    foo_group.members = [user, moderator]
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    form = res.forms[f"deletegroupmemberform-{user.id}"]
+    foo_group.members = [moderator]
+    foo_group.save()
+
+    res = form.submit(name="action", value="confirm-remove-member")
+    assert (
+        "error",
+        "The user 'John (johnny) Doe' has already been removed from the group 'foo'",
+    ) in res.flashes
+
+
+def test_confirm_remove_member_already_removed_from_group(
+    testclient, logged_admin, foo_group, user, moderator
+):
+    foo_group.members = [user, moderator]
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    form = res.forms[f"deletegroupmemberform-{user.id}"]
+    res = form.submit(name="action", value="confirm-remove-member")
+
+    foo_group.members = [moderator]
+    foo_group.save()
+    res = res.form.submit(name="action", value="remove-member")
+
+    assert (
+        "error",
+        "The user 'John (johnny) Doe' has already been removed from the group 'foo'",
+    ) in res.flashes
+
+
+def test_remove_member_already_deleted(
+    testclient, logged_admin, foo_group, user, moderator
+):
+    foo_group.members = [user, moderator]
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    form = res.forms[f"deletegroupmemberform-{user.id}"]
+    user.delete()
+
+    res = form.submit(name="action", value="confirm-remove-member")
+    assert (
+        "error",
+        "The user you are trying to remove does not exist.",
+    ) in res.flashes
+
+
+def test_confirm_remove_member_already_deleted(
+    testclient, logged_admin, foo_group, user, moderator
+):
+    foo_group.members = [user, moderator]
+    foo_group.save()
+
+    res = testclient.get("/groups/foo")
+    form = res.forms[f"deletegroupmemberform-{user.id}"]
+    res = form.submit(name="action", value="confirm-remove-member")
+
+    user.delete()
+    res = res.form.submit(name="action", value="remove-member")
+
+    assert (
+        "error",
+        "The user you are trying to remove does not exist.",
+    ) in res.flashes

@@ -15,6 +15,7 @@ from canaille.app.forms import is_uri
 from canaille.app.forms import phone_number
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
+from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import BaseBackend
@@ -53,6 +54,20 @@ def existing_login(form, field):
     ] and not BaseBackend.get().get_user_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
+        )
+
+
+def existing_group_member(form, field):
+    if field.data is None:
+        raise wtforms.ValidationError(
+            gettext("The user you are trying to remove does not exist.")
+        )
+
+    if field.data not in form.group.members:
+        raise wtforms.ValidationError(
+            gettext(
+                "The user '{user}' has already been removed from the group '{group}'"
+            ).format(user=field.data.formatted_name, group=form.group.display_name)
         )
 
 
@@ -370,6 +385,13 @@ class EditGroupForm(Form):
     description = wtforms.StringField(
         _("Description"),
         validators=[wtforms.validators.Optional()],
+    )
+
+
+class DeleteGroupMemberForm(Form):
+    member = wtforms.StringField(
+        filters=[IDToModel("User", raise_on_errors=False)],
+        validators=[existing_group_member],
     )
 
 

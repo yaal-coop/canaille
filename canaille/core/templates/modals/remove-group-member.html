@@ -1,0 +1,31 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{% block content %}
+    <div class="ui warning message" id="modal-remove-member">
+        {% call fui.render_form(form) %}
+            <input type="hidden" name="member" value="{{ form.member.data }}">
+            <div class="ui icon header">
+                <i class="user minus alternate icon"></i>
+                {% trans %}Group member deletion{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans group_name=group.display_name, user_name=form.member.data.formatted_name %}
+                        Are you sure you want to remove {{ user_name }} from the group "{{ group_name }}"?
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ request.url }}" class="ui cancel button">
+                        {% trans %}Cancel{% endtrans %}
+                    </a>
+                    <button name="action" value="remove-member" id="remove-member" class="ui red approve button">
+                        {% trans %}Remove{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+{% endblock %}
