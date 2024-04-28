@@ -1,6 +1,7 @@
 Changed
 ^^^^^^^
 - Model `identifier_attributes` are fixed.
+- Bump to htmx 1.9.12 :pr:`172`
 
 [0.0.53] - 2024-04-22
 ---------------------
