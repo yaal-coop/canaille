@@ -477,4 +477,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     def delete(self):
         conn = Backend.get().connection
-        conn.delete_s(self.dn)
+        try:
+            conn.delete_s(self.dn)
+        except ldap.NO_SUCH_OBJECT:
+            pass

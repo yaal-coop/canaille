@@ -61,6 +61,8 @@ def test_model_lifecycle(testclient, backend):
     assert not models.User.query(id=user.id)
     assert not models.User.get(id=user.id)
 
+    user.delete()
+
 
 def test_model_attribute_edition(testclient, backend):
     user = models.User(
