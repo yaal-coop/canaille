@@ -39,6 +39,7 @@ def pytest_generate_tests(metafunc):
     backends = available_backends()
     if metafunc.config.getoption("backend"):  # pragma: no cover
         backends &= set(metafunc.config.getoption("backend"))
+    backends = sorted(backends)
 
     # tests in tests.backends.BACKENDNAME should only run one backend
     module_name_parts = metafunc.module.__name__.split(".")
