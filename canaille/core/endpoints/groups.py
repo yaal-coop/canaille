@@ -13,6 +13,7 @@ from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
 
 from .forms import CreateGroupForm
+from .forms import DeleteGroupMemberForm
 from .forms import EditGroupForm
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
@@ -72,6 +73,12 @@ def group(user, group):
     if request.form.get("action") == "delete":
         return delete_group(group)
 
+    if request.form.get("action") == "confirm-remove-member":
+        return delete_member(group)
+
+    if request.form.get("action") == "remove-member":
+        return delete_member(group)
+
     abort(400, f"bad form action: {request.form.get('action')}")
 
 
@@ -88,7 +95,11 @@ def edit_group(group):
         },
     )
 
-    if request.form and not request.form.get("page"):
+    if (
+        request.form
+        and request.form.get("action") == "edit"
+        and not request.form.get("page")
+    ):
         if form.validate():
             group.description = form.description.data
             group.save()
@@ -105,12 +116,42 @@ def edit_group(group):
 
     return render_htmx_template(
         "group.html",
-        "partial/users.html",
+        "partial/group-members.html",
         form=form,
         menuitem="groups",
         edited_group=group,
         table_form=table_form,
     )
+
+
+def delete_member(group):
+    form = DeleteGroupMemberForm(request.form or None)
+    form.group = group
+
+    if not form.validate():
+        flash(
+            "\n".join(form.errors.get("member")),
+            "error",
+        )
+
+    elif request.form.get("action") == "confirm-remove-member":
+        return render_template(
+            "modals/remove-group-member.html", group=group, form=form
+        )
+
+    else:
+        flash(
+            _(
+                f"{form.member.data.formatted_name} has been removed from the group {group.display_name}"
+            ),
+            "success",
+        )
+        group.members = [
+            member for member in group.members if member != form.member.data
+        ]
+        group.save()
+
+    return edit_group(group)
 
 
 def delete_group(group):

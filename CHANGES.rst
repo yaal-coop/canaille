@@ -1,3 +1,7 @@
+Added
+^^^^^
+- Group member removal can be achieved from the group edition page :issue:`192`
+
 Changed
 ^^^^^^^
 - Model `identifier_attributes` are fixed.
