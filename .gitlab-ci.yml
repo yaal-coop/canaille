@@ -19,7 +19,6 @@ style:
   image: python:3.12
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - pip install pre-commit
     - pre-commit run --all-files --show-diff-on-failure
 
@@ -27,7 +26,6 @@ python39:
   image: python:3.9
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - poetry install --extras all
     - poetry run pytest
 
@@ -35,7 +33,6 @@ python310:
   image: python:3.10
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - poetry install --extras all
     - poetry run pytest
 
@@ -43,7 +40,6 @@ python311:
   image: python:3.11
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - poetry install --extras all
     - poetry run pytest
 
@@ -51,7 +47,6 @@ python312:
   image: python:3.12
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - poetry install --extras all
     - poetry run pytest
 
@@ -59,7 +54,6 @@ minversions:
   image: python:3.9
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - sed -i -E 's/"(\^|>=)([0-9\.]+)(.*)"/"==\2"/' pyproject.toml
     - sed -i -E 's/python = "==/python = "^/' pyproject.toml
     - poetry lock
@@ -70,7 +64,6 @@ doc:
   image: python:3.12
   stage: test
   script:
-    - pip uninstall pytest-lazy-fixture
     - poetry install --only doc
     - poetry run sphinx-build doc build/sphinx/html
 
@@ -79,7 +72,6 @@ coverage:
   stage: test
   allow_failure: true
   script:
-    - pip uninstall pytest-lazy-fixture
     - pip install coveralls pyyaml tomli
     - poetry install --extras all
     - poetry run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered -n auto
