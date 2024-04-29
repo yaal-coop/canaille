@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-04-28 19:05+0200\n"
-"PO-Revision-Date: 2024-04-28 13:07+0000\n"
+"PO-Revision-Date: 2024-04-29 18:07+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.1\n"
+"X-Generator: Weblate 5.5.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:100
@@ -368,14 +368,12 @@ msgid "The login '{login}' does not exist"
 msgstr "El usuario '{login}' no existe"
 
 #: canaille/core/endpoints/forms.py:63
-#, fuzzy
-#| msgid "The page you are looking for does not exist"
 msgid "The user you are trying to remove does not exist."
-msgstr "La página que estás intentando acceder no existe"
+msgstr "El usuario que intenta eliminar no existe."
 
 #: canaille/core/endpoints/forms.py:68
 msgid "The user '{user}' has already been removed from the group '{group}'"
-msgstr ""
+msgstr "El usuario '{user}' ya ha sido eliminado del grupo '{group}'"
 
 #: canaille/core/endpoints/forms.py:86
 msgid ""
@@ -1429,10 +1427,8 @@ msgid "Lock"
 msgstr "Bloquear"
 
 #: canaille/core/templates/modals/remove-group-member.html:10
-#, fuzzy
-#| msgid "Group deletion"
 msgid "Group member deletion"
-msgstr "Eliminar grupo"
+msgstr "Eliminación de miembros del grupo"
 
 #: canaille/core/templates/modals/remove-group-member.html:14
 #, python-format
@@ -1440,15 +1436,17 @@ msgid ""
 "Are you sure you want to remove %(user_name)s from the group "
 "\"%(group_name)s\"?"
 msgstr ""
+"¿Estás seguro de que desea eliminar\n"
+"%(user_name)s del grupo \"%(group_name)s \"?"
 
 #: canaille/core/templates/modals/remove-group-member.html:25
 #: canaille/core/templates/partial/group-members.html:64
 msgid "Remove"
-msgstr ""
+msgstr "Quitar"
 
 #: canaille/core/templates/partial/group-members.html:16
 msgid "Actions"
-msgstr ""
+msgstr "Acciones"
 
 #: canaille/core/templates/partial/group-members.html:27
 #: canaille/core/templates/partial/users.html:29
