@@ -142,7 +142,9 @@ def delete_member(group):
     else:
         flash(
             _(
-                f"{form.member.data.formatted_name} has been removed from the group {group.display_name}"
+                "%(user_name)s has been removed from the group %(group_name)s",
+                user_name=form.member.data.formatted_name,
+                group_name=group.display_name,
             ),
             "success",
         )
