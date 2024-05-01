@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-04-28 19:05+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-05-01 18:39+0200\n"
 "PO-Revision-Date: 2024-04-29 18:07+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -605,7 +605,13 @@ msgstr "Le groupe %(group)s a bien été édité."
 msgid "Group edition failed."
 msgstr "L'édition du groupe a échoué."
 
-#: canaille/core/endpoints/groups.py:159
+#: canaille/core/endpoints/groups.py:144
+#, fuzzy, python-format
+#| msgid "The user '{user}' has already been removed from the group '{group}'"
+msgid "%(user_name)s has been removed from the group %(group_name)s"
+msgstr "L’utilisateur « {user} » a déjà été retiré du groupe « {group} »"
+
+#: canaille/core/endpoints/groups.py:161
 #, python-format
 msgid "The group %(group)s has been sucessfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
@@ -1450,6 +1456,7 @@ msgstr ""
 
 #: canaille/core/templates/modals/remove-group-member.html:25
 #: canaille/core/templates/partial/group-members.html:64
+#: canaille/core/templates/partial/group-members.html:69
 msgid "Remove"
 msgstr "Retirer"
 
@@ -1462,7 +1469,11 @@ msgstr "Actions"
 msgid "This account is locked"
 msgstr "Ce compte est verrouillé"
 
-#: canaille/core/templates/partial/group-members.html:79
+#: canaille/core/templates/partial/group-members.html:68
+msgid "Groups must have at least one member"
+msgstr ""
+
+#: canaille/core/templates/partial/group-members.html:83
 #: canaille/core/templates/partial/groups.html:31
 #: canaille/core/templates/partial/users.html:73
 #: canaille/oidc/templates/partial/authorization_list.html:31
@@ -1471,7 +1482,7 @@ msgstr "Ce compte est verrouillé"
 msgid "No item matches your request"
 msgstr "Aucun élément ne correspond à votre requête"
 
-#: canaille/core/templates/partial/group-members.html:81
+#: canaille/core/templates/partial/group-members.html:85
 #: canaille/core/templates/partial/groups.html:33
 #: canaille/core/templates/partial/users.html:75
 #: canaille/oidc/templates/partial/authorization_list.html:33
@@ -1480,7 +1491,7 @@ msgstr "Aucun élément ne correspond à votre requête"
 msgid "Maybe try with different criterias?"
 msgstr "Essayez peut-être avec des critères différents ?"
 
-#: canaille/core/templates/partial/group-members.html:84
+#: canaille/core/templates/partial/group-members.html:88
 #: canaille/core/templates/partial/groups.html:36
 #: canaille/core/templates/partial/users.html:78
 #: canaille/oidc/templates/partial/authorization_list.html:36
