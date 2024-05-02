@@ -2,7 +2,7 @@ import datetime
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-import freezegun
+import time_machine
 from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from flask import g
@@ -626,7 +626,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client):
 
 
 def test_code_expired(testclient, user, client):
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(
             "/oauth/authorize",
             params=dict(
@@ -647,7 +647,7 @@ def test_code_expired(testclient, user, client):
         params = parse_qs(urlsplit(res.location).query)
         code = params["code"][0]
 
-    with freezegun.freeze_time("2021-01-01 01:00:00"):
+    with time_machine.travel("2021-01-01 01:00:00+00:00", tick=False):
         res = testclient.post(
             "/oauth/token",
             params=dict(

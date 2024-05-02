@@ -1,6 +1,6 @@
 from unittest import mock
 
-import freezegun
+import time_machine
 from flask import url_for
 
 from canaille.app import models
@@ -31,7 +31,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
     """Tests a nominal registration with email validation."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res = testclient.get(url_for("core.account.join"))
         res.form["email"] = "foo@bar.com"
         res = res.form.submit()
@@ -61,7 +61,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
     assert registration_url in text_mail
 
     assert not models.User.query(user_name="newuser")
-    with freezegun.freeze_time("2020-01-01 02:01:00"):
+    with time_machine.travel("2020-01-01 02:01:00+00:00", tick=False):
         res = testclient.get(registration_url, status=200)
         res.form["user_name"] = "newuser"
         res.form["password1"] = "password"

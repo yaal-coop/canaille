@@ -1,7 +1,7 @@
 import datetime
 from unittest import mock
 
-import freezegun
+import time_machine
 from flask import url_for
 
 from canaille.core.endpoints.account import EmailConfirmationPayload
@@ -126,19 +126,19 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     then users emails should be validated by sending a confirmation email."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get("/login")
         res.form["login"] = "user"
         res = res.form.submit().follow()
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit()
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res = testclient.get("/profile/user")
 
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.tld"
         res = res.forms["emailconfirmationform"].submit(
             name="action", value="add_email"
@@ -168,7 +168,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
     assert email_confirmation_url in email_content
 
-    with freezegun.freeze_time("2020-01-01 03:00:00"):
+    with time_machine.travel("2020-01-01 03:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
     assert ("success", "Your email address have been confirmed.") in res.flashes
@@ -187,19 +187,19 @@ def test_confirmation_invalid_link(testclient, backend, user):
 
 def test_confirmation_mail_form_failed(testclient, backend, user):
     """Tests when an error happens during the mail sending."""
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get("/login")
         res.form["login"] = "user"
         res = res.form.submit().follow()
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit()
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res = testclient.get("/profile/user")
 
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res.forms["emailconfirmationform"]["new_email"] = "invalid"
         res = res.forms["emailconfirmationform"].submit(
             name="action", value="add_email"
@@ -214,19 +214,19 @@ def test_confirmation_mail_form_failed(testclient, backend, user):
 def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
     """Tests when an error happens during the mail sending."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get("/login")
         res.form["login"] = "user"
         res = res.form.submit().follow()
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit()
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res = testclient.get("/profile/user")
 
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.tld"
         res = res.forms["emailconfirmationform"].submit(
             name="action", value="add_email", expect_errors=True
@@ -251,7 +251,7 @@ def test_confirmation_expired_link(testclient, backend, user):
         _external=True,
     )
 
-    with freezegun.freeze_time("2021-01-01 01:00:00"):
+    with time_machine.travel("2021-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
     assert (
@@ -276,7 +276,7 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
         _external=True,
     )
 
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
     assert (
@@ -305,7 +305,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
         _external=True,
     )
 
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
     assert (
@@ -330,7 +330,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
         _external=True,
     )
 
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
     assert (
@@ -360,7 +360,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
         _external=True,
     )
 
-    with freezegun.freeze_time("2020-01-01 01:00:00"):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
     assert (

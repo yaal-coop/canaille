@@ -1,7 +1,7 @@
 import datetime
 
-import freezegun
 import pytest
+import time_machine
 
 from canaille.app import models
 
@@ -195,7 +195,7 @@ def test_model_creation_edition_datetime(testclient, backend):
     if "ldap" in backend.__class__.__module__:
         pytest.skip()
 
-    with freezegun.freeze_time("2020-01-01 02:00:00"):
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         user = models.User(
             user_name="foo",
             family_name="foo",
@@ -209,7 +209,7 @@ def test_model_creation_edition_datetime(testclient, backend):
             2020, 1, 1, 2, tzinfo=datetime.timezone.utc
         )
 
-    with freezegun.freeze_time("2021-01-01 02:00:00"):
+    with time_machine.travel("2021-01-01 02:00:00+00:00", tick=False):
         user.family_name = "bar"
         user.save()
         assert user.created == datetime.datetime(

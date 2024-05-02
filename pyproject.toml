@@ -82,17 +82,17 @@ sphinx-issues = "^4.0.0"
 coverage = {version = "*", extras=["toml"]}
 faker = "*"
 flask-webtest = "*"
-freezegun = "*"
 pre-commit = "*"
 pyquery = "*"
 pytest = "^8.0.0"
 pytest-coverage = "*"
 pytest-httpserver = "*"
+pytest-lazy-fixtures = "^1.0.7"
 pytest-smtpd = "^0.1.0"
 pytest-xdist = "^3.3.1"
 slapd = "*"
+time-machine = "^2.14.1"
 toml = "^0.10.0"
-pytest-lazy-fixtures = "^1.0.7"
 
 [tool.poetry.group.demo]
 optional = true
