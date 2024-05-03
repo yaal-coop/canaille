@@ -310,7 +310,7 @@ def test_remove_member(testclient, logged_admin, foo_group, user, moderator, bac
         "John (johnny) Doe has been removed from the group foo",
     ) in res.flashes
 
-    foo_group.reload()
+    backend.reload(foo_group)
     assert user not in foo_group.members
 
 

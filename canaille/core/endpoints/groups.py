@@ -152,7 +152,7 @@ def delete_member(group):
         group.members = [
             member for member in group.members if member != form.member.data
         ]
-        BaseBackend.instance.save(group)
+        Backend.instance.save(group)
 
     return edit_group(group)
 
