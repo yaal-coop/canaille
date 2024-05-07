@@ -11,7 +11,7 @@ ENABLE_REGISTRATION = true
 version = 1
 formatters.default.format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
 root = {level = "DEBUG", handlers = ["canaille"]}
-loggers = {watchdog = {level = "WARNING"}}
+loggers = {watchdog = {level = "WARNING"}, passlib = {level = "WARNING"}}
 
 [CANAILLE.LOGGING.handlers.canaille]
 class = "logging.StreamHandler"
