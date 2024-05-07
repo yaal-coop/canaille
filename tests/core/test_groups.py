@@ -356,7 +356,7 @@ def test_remove_member_already_deleted(
     testclient, logged_admin, foo_group, moderator, backend
 ):
     user = models.User(
-        given_name="Foo",
+        formatted_name="Foo bar",
         family_name="Bar",
         user_name="foobar",
         emails=["foobar@example.org"],
@@ -380,10 +380,10 @@ def test_confirm_remove_member_already_deleted(
     testclient, logged_admin, foo_group, moderator, backend
 ):
     user = models.User(
-        given_name="Foo",
+        formatted_name="Foo bar",
         family_name="Bar",
-        user_name="foobar",
         emails=["foobar@example.org"],
+        user_name="foobar",
     )
     backend.save(user)
     foo_group.members = [user, moderator]
