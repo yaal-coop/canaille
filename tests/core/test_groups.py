@@ -353,8 +353,15 @@ def test_confirm_remove_member_already_removed_from_group(
 
 
 def test_remove_member_already_deleted(
-    testclient, logged_admin, foo_group, user, moderator, backend
+    testclient, logged_admin, foo_group, moderator, backend
 ):
+    user = models.User(
+        given_name="Foo",
+        family_name="Bar",
+        user_name="foobar",
+        emails=["foobar@example.org"],
+    )
+    backend.save(user)
     foo_group.members = [user, moderator]
     backend.save(foo_group)
 
@@ -370,8 +377,15 @@ def test_remove_member_already_deleted(
 
 
 def test_confirm_remove_member_already_deleted(
-    testclient, logged_admin, foo_group, user, moderator, backend
+    testclient, logged_admin, foo_group, moderator, backend
 ):
+    user = models.User(
+        given_name="Foo",
+        family_name="Bar",
+        user_name="foobar",
+        emails=["foobar@example.org"],
+    )
+    backend.save(user)
     foo_group.members = [user, moderator]
     backend.save(foo_group)
 

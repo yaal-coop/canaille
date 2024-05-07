@@ -29,6 +29,11 @@ force_auto_coercion()
 
 
 class SqlAlchemyModel(BackendModel):
+    __mapper_args__ = {
+        # avoids warnings on double deletions
+        "confirm_deleted_rows": False,
+    }
+
     def __repr__(self):
         return (
             f"<{self.__class__.__name__} {self.identifier_attribute}={self.identifier}>"
