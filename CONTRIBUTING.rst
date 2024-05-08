@@ -148,8 +148,7 @@ The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
 Translations
 ------------
 
-.. include:: ../canaille/translations/README.md
-   :parser: myst_parser.sphinx_
+.. include:: ../canaille/translations/README.rst
 
 Documentation
 -------------

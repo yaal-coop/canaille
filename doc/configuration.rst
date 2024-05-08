@@ -30,8 +30,8 @@ Settings will also be read from a local ``.env`` file if present.
 .. TODO: Uncomment this when pydantic-settings implements nested secrets directories
    https://github.com/pydantic/pydantic-settings/issues/154
 
-    Secret parameters
-    =================
+Secret parameters
+=================
 
     A ``SECRETS_DIR`` environment variable can be passed as an environment variable, being a path to a directory in which are stored files named after the configuration settings.
 
