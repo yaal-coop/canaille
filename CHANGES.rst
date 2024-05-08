@@ -1,3 +1,6 @@
+[0.0.54] - Unreleased
+---------------------
+
 Added
 ^^^^^
 - Group member removal can be achieved from the group edition page :issue:`192`
