@@ -36,7 +36,8 @@ jobs:
       - name: App armor configuration for slapd
         if: ${{ !env.ACT }}
         run: sudo aa-complain /usr/sbin/slapd
-      - run: |
+      - name: Install dependencies and run tests
+        run: |
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
@@ -63,7 +64,8 @@ jobs:
         run: sudo aa-complain /usr/sbin/slapd
       - run: sed -i -E 's/"(\^|>=)([0-9\.]+)(.*)"/"==\2"/' pyproject.toml
       - run: sed -i -E 's/python = "==/python = "^/' pyproject.toml
-      - run: |
+      - name: Install dependencies and run tests
+        run: |
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
