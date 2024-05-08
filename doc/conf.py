@@ -35,6 +35,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_enum_extend",
+    "sphinx_click",
     "sphinx_issues",
     "sphinx_sitemap",
     "sphinxcontrib.autodoc_pydantic",

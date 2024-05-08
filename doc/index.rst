@@ -45,10 +45,11 @@ Table of contents
    deployment
    databases
    configuration
+   commands
    troubleshooting
-   contributing
    reference
    specifications
+   contributing
    changelog
 
 Indices and tables
