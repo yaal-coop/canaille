@@ -7,9 +7,14 @@ import canaille.oidc.commands
 from canaille import create_app
 
 
-@click.group(cls=FlaskGroup, create_app=create_app)
+@click.group(
+    cls=FlaskGroup,
+    create_app=create_app,
+    add_version_option=False,
+    add_default_commands=False,
+)
 def cli():
-    pass  # pragma: no cover
+    """Canaille management."""
 
 
 canaille.app.commands.register(cli)
