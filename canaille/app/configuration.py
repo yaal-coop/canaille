@@ -163,7 +163,8 @@ def validate(config, validate_remote=False):
     from canaille.backends import Backend
 
     Backend.instance.validate(config)
-    validate_smtp_configuration(config["CANAILLE"]["SMTP"])
+    if smtp_config := config["CANAILLE"]["SMTP"]:
+        validate_smtp_configuration(smtp_config)
 
 
 def validate_keypair(config):

@@ -12,3 +12,10 @@ def test_check_command_fail(testclient):
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["check"])
     assert res.exit_code == 1, res.stdout
+
+
+def test_check_command_no_smtp(testclient):
+    testclient.app.config["CANAILLE"]["SMTP"] = None
+    runner = testclient.app.test_cli_runner()
+    res = runner.invoke(cli, ["check"])
+    assert res.exit_code == 0, res.stdout
