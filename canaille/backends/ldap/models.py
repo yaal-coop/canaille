@@ -51,11 +51,8 @@ class User(canaille.core.models.User, LDAPObject):
         # The LDAP attribute memberOf cannot directly be edited,
         # so this is needed to update the Group.member attribute
         # instead.
-        old_groups = self.state.get(group_attr) or []
-        new_groups = [
-            value if isinstance(value, Group) else Group.get(value)
-            for value in self.changes[group_attr]
-        ]
+        old_groups = self.get_ldap_attribute(group_attr, lookup_changes=False) or []
+        new_groups = self.get_ldap_attribute(group_attr, lookup_state=False) or []
         to_add = set(new_groups) - set(old_groups)
         to_del = set(old_groups) - set(new_groups)
         del self.changes[group_attr]

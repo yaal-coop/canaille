@@ -112,11 +112,11 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             name in self.changes or name in self.state
         )
 
-    def get_ldap_attribute(self, name):
-        if name in self.changes:
+    def get_ldap_attribute(self, name, lookup_changes=True, lookup_state=True):
+        if name in self.changes and lookup_changes:
             return self.changes[name]
 
-        if not self.state.get(name):
+        if not self.state.get(name) or not lookup_state:
             return None
 
         # Lazy conversion from ldap format to python format

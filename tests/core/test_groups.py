@@ -3,6 +3,15 @@ from canaille.core.populate import fake_groups
 from canaille.core.populate import fake_users
 
 
+def test_delete_group(testclient, backend, user, admin, foo_group):
+    foo_group.members = [user, admin]
+    backend.save(foo_group)
+
+    user = backend.get(models.User, user.id)
+    user.groups = []
+    backend.save(user)
+
+
 def test_no_group(app, backend):
     assert backend.query(models.Group) == []
 
