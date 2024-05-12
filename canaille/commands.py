@@ -14,7 +14,7 @@ from canaille import create_app
     add_default_commands=False,
 )
 def cli():
-    """Canaille management."""
+    """Canaille management utilities."""
 
 
 canaille.app.commands.register(cli)
