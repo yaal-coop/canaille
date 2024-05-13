@@ -148,7 +148,7 @@ The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
 Translations
 ------------
 
-.. include:: ../canaille/translations/README.rst
+.. include:: ../../canaille/translations/README.rst
 
 Documentation
 -------------
@@ -173,7 +173,7 @@ Publish a new release
 1. Check that dependencies are up to date with ``poetry show --outdated --with dev,doc,demo`` and update dependencies accordingly in separated commits.
 2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``tox``
 3. Check that the demo environments are still working
-4. Check that the :ref:`changelog:Release notes` section is correctly filled up
+4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up
 5. Increase the version number in ``pyproject.toml``
 6. Commit with ``git commit``
 7. Publish with ``poetry publish --build``

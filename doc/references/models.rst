@@ -1,5 +1,5 @@
-Reference
-#########
+Data models
+###########
 
 This reference details the data models used by Canaille.
 This is mostly useful for developers.

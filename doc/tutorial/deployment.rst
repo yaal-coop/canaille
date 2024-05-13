@@ -10,7 +10,9 @@ Here are some WSGI server configuration examples you can pick. Do not forget to 
 gunicorn
 --------
 
-TBD
+.. todo::
+
+   Write a gunicorn configuration sample file.
 
 uwsgi
 -----
@@ -111,7 +113,9 @@ Nginx
 Apache
 ------
 
-TBD
+.. todo::
+
+   Write a Apache configuration file.
 
 Recurrent jobs
 ==============
@@ -131,10 +135,10 @@ You may want to configure a `WebFinger`_ endpoint on your main website to allow 
 
 The difficulty here is that the WebFinger endpoint must be hosted at the top-level domain (i.e. ``mydomain.tld``) while the authentication server might be hosted on a sublevel (i.e. ``auth.mydomain.tld``). Canaille provides a WebFinger endpoint, but if it is not hosted at the top-level domain, a web redirection is required on the ``/.well-known/webfinger`` path.
 
-Nginx
------
+Here are configuration examples for Nginx or Apache:
 
 .. code-block:: nginx
+   :caption: Nginx webfinger configuration for a top level domain
 
     server {
         listen 443;
@@ -142,10 +146,8 @@ Nginx
         rewrite  ^/.well-known/webfinger https://auth.mydomain.tld/.well-known/webfinger permanent;
     }
 
-Apache
-------
-
 .. code-block:: apache
+   :caption: Apache webfinger configuration for a top level domain
 
     <VirtualHost *:443>
         ServerName mydomain.tld
@@ -156,10 +158,11 @@ Apache
 Create the first user
 =====================
 
-Once canaille is installed, you have several ways to populate the database. The obvious one is by adding
-directly users and group into your LDAP directory. You might also want to temporarily enable then the
-:attr:`~canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION` configuration parameter to allow you to create your first users. Then, if you
-have configured your ACLs properly then you will be able to manage users and groups through the Canaille
-interface.
+Once canaille is installed, soon enough you will need to add users.
+To create your first user you can use the :ref:`canaille create <cli_create>` CLI.
+
+.. code-block:: bash
+
+   canaille create user --user-name admin --password admin --emails admin@mydomain.example --first-name George --last-name Abitbol
 
 .. _WebFinger: https://www.rfc-editor.org/rfc/rfc7033.html
