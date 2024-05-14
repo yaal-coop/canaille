@@ -33,7 +33,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "enum_tools.autoenum",
     "sphinx_click",
     "sphinx_issues",
     "sphinx_sitemap",
