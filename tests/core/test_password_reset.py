@@ -78,7 +78,7 @@ def test_unavailable_if_no_smtp(testclient, user):
 
     testclient.get("/reset", status=200)
 
-    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["SMTP"] = None
 
     res = testclient.get("/login")
     res.mustcontain(no="Forgotten password")

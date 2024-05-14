@@ -4,7 +4,7 @@ class Features:
 
     @property
     def has_smtp(self):
-        return "SMTP" in self.app.config["CANAILLE"]
+        return bool(self.app.config["CANAILLE"]["SMTP"])
 
     @property
     def has_oidc(self):

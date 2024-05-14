@@ -36,7 +36,7 @@ def test_confirmation_unset_smtp_disabled_email_editable(
     """If email confirmation is unset and no SMTP server has been configured,
     then email confirmation cannot be enabled, thus users must be able to pick
     any email."""
-    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["SMTP"] = None
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
     res = testclient.get("/profile/user")
@@ -61,7 +61,7 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
 
     In doubt, users cannot edit their emails.
     """
-    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["SMTP"] = None
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
 
     res = testclient.get("/profile/user")
@@ -101,7 +101,7 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
     """Administrators should be able to edit user email addresses, even when
     email confirmation is enabled and SMTP is disabled."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
-    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["SMTP"] = None
 
     res = testclient.get("/profile/user")
     assert "readonly" not in res.form["emails-0"].attrs

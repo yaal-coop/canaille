@@ -75,7 +75,7 @@ def index():
 
 @bp.route("/join", methods=("GET", "POST"))
 def join():
-    if not current_app.config["CANAILLE"]["ENABLE_REGISTRATION"]:
+    if not current_app.features.has_registration:
         abort(404)
 
     if not current_app.config["CANAILLE"]["EMAIL_CONFIRMATION"]:
@@ -235,8 +235,8 @@ def registration(data=None, hash=None):
     if not data:
         payload = None
         if (
-            not current_app.config["CANAILLE"]["ENABLE_REGISTRATION"]
-            or current_app.config["CANAILLE"]["EMAIL_CONFIRMATION"]
+            not current_app.features.has_registration
+            or current_app.features.has_email_confirmation
         ):
             abort(403)
 

@@ -292,7 +292,7 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
     res.mustcontain("Invite")
     testclient.get("/invite")
 
-    del testclient.app.config["CANAILLE"]["SMTP"]
+    testclient.app.config["CANAILLE"]["SMTP"] = None
 
     res = testclient.get("/users")
     res.mustcontain(no="Invite")
