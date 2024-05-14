@@ -15,6 +15,7 @@ Fixed
 ^^^^^
 
 - Dark theme colors for better readability
+- Crash for passwordless users at login when no SMTP server was configured.
 
 [0.0.53] - 2024-04-22
 ---------------------

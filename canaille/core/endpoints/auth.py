@@ -49,7 +49,7 @@ def login():
         return render_template("login.html", form=form)
 
     user = Backend.instance.get_user_from_login(form.login.data)
-    if user and not user.has_password():
+    if user and not user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.firstlogin", user=user))
 
     if not form.validate():
@@ -81,7 +81,7 @@ def password():
         )
 
     user = Backend.instance.get_user_from_login(session["attempt_login"])
-    if user and not user.has_password():
+    if user and not user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.firstlogin", user=user))
 
     if not form.validate() or not user:
