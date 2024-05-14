@@ -178,9 +178,24 @@ select.ui.multiple.dropdown option[selected] {
     .ui.label, table tbody tr td, .ui.card .bottom.button:hover, .ui.card .bottom.button:focus {
         background-color: #353535;
     }
+    .ui.button {
+        background-color: #282828;
+    }
+    .ui.button:hover, .ui.button:focus {
+        background-color: #181818;
+    }
     .ui.basic.negative.button, .ui.basic.negative.buttons .button {
         box-shadow: 0 0 0 1px #ffb7b7 inset;
         color: #ffb7b7;
+    }
+    .ui.right.floated.buttons.pagination .ui.button {
+        color: #F4F4F4;
+    }
+    .ui.right.floated.buttons.pagination .ui.button.active {
+        color: #181818;
+    }
+    .disabled.ui.button {
+        color: #c0c1c2;
     }
     .ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.menu a.item.active:hover {
         color: rgba(255,255,255,.95);
@@ -231,5 +246,13 @@ select.ui.multiple.dropdown option[selected] {
     }
     .ui.form .field .dropdown .menu > .item:hover {
         background-color: #282828;
+    }
+    .ui.form .field.field input:autofill {
+        box-shadow: 0 0 0 100px #888888 inset !important;
+        border: 1px solid rgba(255,255,255,0.60) !important;
+    }
+    .ui.form .field.field input:autofill:focus {
+        box-shadow: 0 0 0 100px #888888 inset !important;
+        border: 1px solid rgba(255,255,255,0.87) !important;
     }
 }
