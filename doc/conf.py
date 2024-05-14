@@ -26,7 +26,6 @@ sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 
 extensions = [
-    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.doctest",
