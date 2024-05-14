@@ -4,6 +4,7 @@ from typing import List
 from typing import Optional
 from typing import Union
 
+import enum_tools.documentation
 from pydantic import BaseModel
 from pydantic import ValidationInfo
 from pydantic import field_validator
@@ -43,8 +44,12 @@ class SMTPSettings(BaseModel):
     """
 
 
+@enum_tools.documentation.document_enum
 class Permission(str, Enum):
-    """The permissions that can be assigned to users."""
+    """The permissions that can be assigned to users.
+
+    The permissions are intended to be used in :attr:`ACLSettings <canaille.core.configuration.ACLSettings.PERMISSIONS>`.
+    """
 
     EDIT_SELF = "edit_self"
     """Allows users to edit their own profile."""
@@ -64,7 +69,7 @@ class Permission(str, Enum):
     DELETE_ACCOUNT = "delete_account"
     """Allows users to delete their account.
 
-    If used with :enum:member:`~canaille.core.configuration.Permission.MANAGE_USERS`, users can delete any account.
+    If used with :py:enum:member:`~canaille.core.configuration.Permission.MANAGE_USERS`, users can delete any account.
     """
 
     IMPERSONATE_USERS = "impersonate_users"

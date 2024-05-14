@@ -45,7 +45,8 @@ Parameters
 .. autopydantic_settings:: canaille.core.configuration.CoreSettings
 .. autopydantic_settings:: canaille.core.configuration.SMTPSettings
 .. autopydantic_settings:: canaille.core.configuration.ACLSettings
-.. auto_autoenum:: canaille.core.configuration.Permission
+.. autoenum:: canaille.core.configuration.Permission
+   :members:
 
 .. autopydantic_settings:: canaille.oidc.configuration.OIDCSettings
 
