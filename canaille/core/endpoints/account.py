@@ -290,10 +290,7 @@ def registration(data=None, hash=None):
             ],
         }
 
-    has_smtp = "SMTP" in current_app.config["CANAILLE"]
-    emails_readonly = current_app.config["CANAILLE"]["EMAIL_CONFIRMATION"] is True or (
-        current_app.config["CANAILLE"]["EMAIL_CONFIRMATION"] is None and has_smtp
-    )
+    emails_readonly = current_app.features.has_email_confirmation
     readable_fields, writable_fields = default_fields()
 
     form = build_profile_form(writable_fields, readable_fields)
@@ -587,17 +584,13 @@ def profile_edition(user, edited_user):
         abort(404)
 
     menuitem = "profile" if edited_user.id == user.id else "users"
-    has_smtp = "SMTP" in current_app.config["CANAILLE"]
-    has_email_confirmation = current_app.config["CANAILLE"][
-        "EMAIL_CONFIRMATION"
-    ] is True or (
-        current_app.config["CANAILLE"]["EMAIL_CONFIRMATION"] is None and has_smtp
+    emails_readonly = (
+        current_app.features.has_email_confirmation and not user.can_manage_users
     )
-    emails_readonly = has_email_confirmation and not user.can_manage_users
 
     profile_form = profile_edition_main_form(user, edited_user, emails_readonly)
     emails_form = (
-        profile_edition_emails_form(user, edited_user, has_smtp)
+        profile_edition_emails_form(user, edited_user, current_app.features.has_smtp)
         if emails_readonly
         else None
     )
@@ -718,14 +711,14 @@ def profile_settings(user, edited_user):
 
     if (
         request.form.get("action") == "confirm-lock"
-        and Backend.instance.has_account_lockability()
+        and current_app.features.has_account_lockability
         and not edited_user.locked
     ):
         return render_template("modals/lock-account.html", edited_user=edited_user)
 
     if (
         request.form.get("action") == "lock"
-        and Backend.instance.has_account_lockability()
+        and current_app.features.has_account_lockability
         and not edited_user.locked
     ):
         flash(_("The account has been locked"), "success")
@@ -736,7 +729,7 @@ def profile_settings(user, edited_user):
 
     if (
         request.form.get("action") == "unlock"
-        and Backend.instance.has_account_lockability()
+        and current_app.features.has_account_lockability
         and edited_user.locked
     ):
         flash(_("The account has been unlocked"), "success")

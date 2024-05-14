@@ -339,7 +339,7 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
     if "groups" in fields and not Backend.instance.query(models.Group):
         del fields["groups"]
 
-    if current_app.backend.instance.has_account_lockability():  # pragma: no branch
+    if current_app.features.has_account_lockability:  # pragma: no branch
         fields["lock_date"] = DateTimeUTCField(
             _("Account expiration"),
             validators=[wtforms.validators.Optional()],

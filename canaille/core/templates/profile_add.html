@@ -19,7 +19,7 @@
         <i class="plus icon"></i>
         {% trans %}Add{% endtrans %}
     </a>
-    {% if has_smtp %}
+    {% if features.has_smtp %}
         <a class="item" href="{{ url_for('core.account.user_invitation') }}">
             <i class="paper plane icon"></i>
             {% trans %}Invite{% endtrans %}
@@ -175,7 +175,7 @@
                         {% trans %}User password is not mandatory{% endtrans %}
                     </div>
                     <p>
-                        {% if has_smtp %}
+                        {% if features.has_smtp %}
                             {% trans %}The user will not be able to authenticate unless the password is set, but they will be able to ask for a password initialization mail.{% endtrans %}
                         {% else %}
                             {% trans %}The user will not be able to authenticate unless the password is set.{% endtrans %}

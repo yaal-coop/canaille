@@ -50,7 +50,7 @@
                 {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
             {% endif %}
 
-            {% if has_account_lockability and "lock_date" in form and not edited_user.locked %}
+            {% if features.has_account_lockability and "lock_date" in form and not edited_user.locked %}
                 {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
             {% endif %}
 
@@ -86,7 +86,7 @@
                 {% if not edited_user.has_password() %}
 
                     <div class="ui message warning visible">
-                        {% if has_smtp and edited_user.can_edit_self %}
+                        {% if features.has_smtp and edited_user.can_edit_self %}
                             <button type="submit" name="action" value="password-initialization-mail" class="ui right floated primary button">
                                 {% trans %}Send mail{% endtrans %}
                             </button>
@@ -94,7 +94,7 @@
                         <div class="header">
                             {% trans %}This user does not have a password yet{% endtrans %}
                         </div>
-                        {% if has_smtp and edited_user.can_edit_self %}
+                        {% if features.has_smtp and edited_user.can_edit_self %}
                             <p>{% trans %}You can solve this by:{% endtrans %}</p>
                             <ul class="ui list">
                                 <li>{% trans %}setting a password using this form;{% endtrans %}</li>
@@ -106,7 +106,7 @@
                         {% endif %}
                     </div>
 
-                {% elif has_smtp and edited_user.user_name != user.user_name and edited_user.has_password() and edited_user.can_edit_self %}
+                {% elif features.has_smtp and edited_user.user_name != user.user_name and edited_user.has_password() and edited_user.can_edit_self %}
 
                     <div class="ui message info">
                         <button type="submit" name="action" value="password-reset-mail" class="ui right floated button">
@@ -120,7 +120,7 @@
 
                 {% endif %}
 
-                {% if has_account_lockability and edited_user.locked %}
+                {% if features.has_account_lockability and edited_user.locked %}
 
                     <div class="ui message warning visible">
                         <button type="submit" name="action" value="unlock" class="ui right floated button">
@@ -140,7 +140,7 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    {% if has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
+                    {% if features.has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-lock" id="lock" formnovalidate>
                             {% trans %}Lock the account{% endtrans %}
                         </button>

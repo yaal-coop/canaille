@@ -37,7 +37,7 @@
                 <div class="ui right aligned container">
                     <div class="ui stackable buttons">
                         <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
-                        {% if has_smtp and has_password_recovery %}
+                        {% if features.has_smtp and features.has_password_recovery %}
                             <a type="button" class="ui right floated button" href="{{ url_for('core.auth.forgotten') }}">{{ _("Forgotten password") }}</a>
                         {% endif %}
                         <button type="submit" class="ui right floated primary button" name="action" value="create-profile" id="create-profile">

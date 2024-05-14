@@ -29,10 +29,10 @@
 
                     <div class="ui right aligned container">
                         <div class="ui stackable buttons">
-                            {% if has_registration %}
+                            {% if features.has_registration %}
                                 <a type="button" class="ui right floated button" href="{{ url_for('core.account.join') }}">{{ _("Create an account") }}</a>
                             {% endif %}
-                            {% if has_smtp and has_password_recovery %}
+                            {% if features.has_smtp and features.has_password_recovery %}
                                 <a type="button" class="ui right floated button" href="{{ url_for('core.auth.forgotten') }}">{{ _("Forgotten password") }}</a>
                             {% endif %}
                             <button type="submit" name="answer" class="ui right floated primary button" hx-boost="false">{{ _("Continue") }}</button>

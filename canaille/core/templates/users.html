@@ -14,7 +14,7 @@
         <i class="plus icon"></i>
         {% trans %}Add{% endtrans %}
     </a>
-    {% if has_smtp %}
+    {% if features.has_smtp %}
         <a class="item" href="{{ url_for('core.account.user_invitation') }}">
             <i class="paper plane icon"></i>
             {% trans %}Invite{% endtrans %}

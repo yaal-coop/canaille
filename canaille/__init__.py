@@ -95,11 +95,6 @@ def setup_flask(app):
 
         return {
             "debug": app.debug or app.config.get("TESTING", False),
-            "has_smtp": "SMTP" in app.config["CANAILLE"],
-            "has_oidc": "CANAILLE_OIDC" in app.config,
-            "has_password_recovery": app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"],
-            "has_registration": app.config["CANAILLE"]["ENABLE_REGISTRATION"],
-            "has_account_lockability": app.backend.instance.has_account_lockability(),
             "logo_url": app.config["CANAILLE"]["LOGO"],
             "favicon_url": app.config["CANAILLE"]["FAVICON"]
             or app.config["CANAILLE"]["LOGO"],
@@ -107,12 +102,7 @@ def setup_flask(app):
             "user": current_user(),
             "menu": True,
             "is_boosted": request.headers.get("HX-Boosted", False),
-            "has_email_confirmation": app.config["CANAILLE"]["EMAIL_CONFIRMATION"]
-            is True
-            or (
-                app.config["CANAILLE"]["EMAIL_CONFIRMATION"] is None
-                and "SMTP" in app.config["CANAILLE"]
-            ),
+            "features": app.features,
         }
 
 
@@ -128,6 +118,7 @@ def create_app(
     config=None, validate=True, backend=None, env_file=".env", env_prefix=""
 ):
     from .app.configuration import setup_config
+    from .app.features import setup_features
     from .app.i18n import setup_i18n
     from .app.themes import setup_themer
     from .backends import setup_backend
@@ -147,6 +138,7 @@ def create_app(
     try:
         setup_logging(app)
         backend = setup_backend(app, backend)
+        setup_features(app)
         setup_flask_converters(app)
         setup_blueprints(app)
         setup_jinja(app)

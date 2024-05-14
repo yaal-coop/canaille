@@ -10,7 +10,7 @@
         <i class="user mail icon"></i>
         {% trans %}Emails{% endtrans %}
     </a>
-    {% if has_oidc %}
+    {% if features.has_oidc %}
         <a class="item" href="{{ url_for('oidc.clients.index') }}">
             <i class="th list icon"></i>
             {% trans %}Clients{% endtrans %}
