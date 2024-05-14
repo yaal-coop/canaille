@@ -11,6 +11,11 @@ Changed
 - Model `identifier_attributes` are fixed.
 - Bump to htmx 1.9.12 :pr:`172`
 
+Fixed
+^^^^^
+
+- Dark theme colors for better readability
+
 [0.0.53] - 2024-04-22
 ---------------------
 
