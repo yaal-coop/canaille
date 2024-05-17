@@ -54,7 +54,8 @@ version = metadata.version("canaille")
 language = "en"
 exclude_patterns = []
 pygments_style = "sphinx"
-todo_include_todos = False
+todo_include_todos = True
+toctree_collapse = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
@@ -63,6 +64,7 @@ intersphinx_mapping = {
     "flask-babel": ("https://python-babel.github.io/flask-babel", None),
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
     "pydantic": ("https://docs.pydantic.dev/latest", None),
+    "pytest-iam": ("https://pytest-iam.readthedocs.io/en/latest/", None),
 }
 
 issues_uri = "https://gitlab.com/yaal/canaille/-/issues/{issue}"
@@ -75,19 +77,44 @@ html_theme = "shibuya"
 html_static_path = ["_static"]
 html_baseurl = "https://canaille.readthedocs.io/"
 html_theme_options = {
+    "globaltoc_expand_depth": 3,
     "accent_color": "yellow",
     "light_logo": "_static/canaille-label-black.webp",
     "dark_logo": "_static/canaille-label-white.webp",
     "gitlab_url": "https://gitlab.com/yaal/canaille",
     "mastodon_url": "https://toot.aquilenet.fr/@yaal",
+    "discussion_url": "https://matrix.to/#/#canaille-discuss:yaal.coop",
     "nav_links": [
         {
-            "title": "Homepage",
-            "url": "https://canaille.yaal.coop",
-            "summary": "The homepage for the Canaille project",
+            "title": "Demo",
+            "children": [
+                {
+                    "title": "Canaille demo server",
+                    "url": "https://demo.canaille.yaal.coop",
+                },
+                {
+                    "title": "OIDC Client 1",
+                    "url": "https://demo.client1.yaal.coop",
+                },
+                {
+                    "title": "OIDC Client 2",
+                    "url": "https://demo.client2.yaal.coop",
+                },
+            ],
         },
-        {"title": "PyPI", "url": "https://pypi.org/project/Canaille/"},
+        {"title": "PyPI", "url": "https://pypi.org/project/Canaille"},
+        {
+            "title": "Weblate",
+            "url": "https://hosted.weblate.org/projects/canaille/canaille",
+        },
     ],
+}
+html_context = {
+    "source_type": "gitlab",
+    "source_user": "yaal",
+    "source_repo": "canaille",
+    "source_version": "main",
+    "source_docs_path": "/doc/",
 }
 
 # -- Options for HTMLHelp output ------------------------------------------
@@ -125,7 +152,7 @@ texinfo_documents = [
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 2
 
-# -- Options for autodo_pydantic_settings -------------------------------------------
+# -- Options for autodoc_pydantic_settings -------------------------------------------
 
 autodoc_pydantic_settings_show_json = False
 autodoc_pydantic_settings_show_config_summary = False
@@ -133,4 +160,6 @@ autodoc_pydantic_settings_show_config_summary = False
 autodoc_pydantic_settings_show_validator_summary = False
 autodoc_pydantic_settings_show_validator_members = False
 autodoc_pydantic_settings_show_field_summary = False
+autodoc_pydantic_settings_signature_prefix = ""
+autodoc_pydantic_field_signature_prefix = ""
 autodoc_pydantic_field_list_validators = False
