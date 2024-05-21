@@ -1,5 +1,0 @@
-- screenshots partout
-- s'assurer qu'on reste pas trop techniques dans features.html
-- s'assurer que les concepts techniques pas mentionnés dans features.html sont bien mentionnés quelque part
-- écrire les usecases
-- s'assurer qu'il ne reste pas de TODO ou de TBD
