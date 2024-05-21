@@ -1,3 +1,5 @@
+:layout: landing
+
 .. figure:: _static/canaille-full-black.webp
   :width: 400
   :figclass: light-only
@@ -8,53 +10,71 @@
   :figclass: dark-only
   :align: center
 
+.. rst-class:: lead
+
+    Lightweight Identity and Autorization Management
+
+----
+
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
 as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
-
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 
-- User profile and groups management;
-- Authentication, registration, email confirmation, "I forgot my password" emails;
-- OpenID Connect identity provider;
-- postgresql, mariadb and OpenLDAP first-class citizenship;
-- Customizable, themable;
-- The code is easy to read and easy to edit!
+.. grid:: 3
+    :gutter: 2
+    :padding: 0
 
-Screenshots
-===========
+    .. grid-item-card:: Profile management
+        :link-type: ref
+        :link: feature_profile_management
 
-.. image:: _static/login.webp
-  :width: 225
-  :alt: Login
+        User profile and groups management,
+        Basic permissions
 
-.. image:: _static/profile.webp
-  :width: 225
-  :alt: Profile
+    .. grid-item-card:: User authentication
+        :link-type: ref
+        :link: feature_user_authentication
 
-.. image:: _static/consent.webp
-  :width: 225
-  :alt: Consent
+        Authentication, registration, email confirmation, "I forgot my password" emails
 
-Table of contents
-=================
+    .. grid-item-card:: :abbr:`SSO (Single Sign-On)`
+        :link-type: ref
+        :link: feature_oidc
+
+        OpenID Connect identity provider
+
+    .. grid-item-card:: Multi-database support
+        :link-type: ref
+        :link: feature_backends
+
+        PostgreSQL, Mariadb and OpenLDAP first-class citizenship
+
+    .. grid-item-card:: Customization
+        :link-type: ref
+        :link: feature_ui
+
+        Put Canaille at yours colors by choosing a logo or use a custom theme!
+
+    .. grid-item-card:: Developers friendliness
+        :link-type: ref
+        :link: feature_development
+
+        Canaille can easily fit in your unit tests suite or in your Continuous Integration.
+
+.. container:: buttons
+
+    :doc:`Full feature list <features>`
+
+.. rst-class:: lead
+
+    Documentation
+
+----
 
 .. toctree::
    :maxdepth: 2
 
-   install
-   deployment
-   databases
-   configuration
-   commands
-   troubleshooting
-   reference
-   specifications
-   contributing
-   changelog
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   features
+   tutorial/index
+   references/index
+   development/index

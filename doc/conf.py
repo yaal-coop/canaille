@@ -34,9 +34,11 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_click",
+    "sphinx_design",
     "sphinx_issues",
     "sphinx_sitemap",
     "sphinxcontrib.autodoc_pydantic",
+    "sphinxcontrib.images",
 ]
 
 templates_path = ["_templates"]
@@ -163,3 +165,10 @@ autodoc_pydantic_settings_show_field_summary = False
 autodoc_pydantic_settings_signature_prefix = ""
 autodoc_pydantic_field_signature_prefix = ""
 autodoc_pydantic_field_list_validators = False
+
+# -- Options for images
+
+images_config = {
+    "override_image_directive": True,
+    "download": False,
+}

@@ -25,6 +25,18 @@ class RootSettings(BaseSettings):
     - :doc:`Flask-WTF <flask-wtf:config>`
     - :doc:`Flask-Babel <flask-babel:index>`
     - :doc:`Authlib <authlib:flask/2/authorization-server>`
+
+    .. code-block:: toml
+        :caption: config.toml
+
+        SECRET_KEY = "very-secret"
+        SERVER_NAME = "auth.mydomain.example"
+        PREFERRED_URL_SCHEME = false
+        DEBUG = false
+
+        [CANAILLE]
+        NAME = "My organization"
+        ...
     """
 
     model_config = SettingsConfigDict(
@@ -55,8 +67,12 @@ class RootSettings(BaseSettings):
     DEBUG: bool = False
     """The Flask :external:py:data:`DEBUG` configuration setting.
 
-    This enables debug options. This is useful for development but
-    should be absolutely avoided in production environments.
+    This enables debug options.
+
+    .. danger::
+
+        This is useful for development but should be absolutely
+        avoided in production environments.
     """
 
 

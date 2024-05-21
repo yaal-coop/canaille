@@ -4,9 +4,6 @@ Databases
 Canaille can read and save data in different databases.
 This page presents the different database backends and their specificities:
 
-.. contents::
-   :local:
-
 Memory
 ======
 
@@ -21,7 +18,10 @@ SQL
 Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as
 sqlite, postgresql or mariadb.
 
-It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For instance::
+It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For instance:
+
+.. code-block:: toml
+    :caption: config.toml
 
     [CANAILLE_SQL]
     SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
@@ -32,7 +32,10 @@ LDAP
 ====
 
 Canaille can use OpenLDAP as its main database.
-It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For instance::
+It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For instance:
+
+.. code-block:: toml
+    :caption: config.toml
 
     [CANAILLE_LDAP]
     URI = "ldap://ldap"
@@ -67,11 +70,11 @@ overlays are needed for the Canaille group membership to work correctly.
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../demo/ldif/memberof-config.ldif
+.. literalinclude :: ../..//demo/ldif/memberof-config.ldif
    :language: ldif
    :caption: memberof-config.ldif
 
-.. literalinclude :: ../demo/ldif/refint-config.ldif
+.. literalinclude :: ../..//demo/ldif/refint-config.ldif
    :language: ldif
    :caption: refint-config.ldif
 
@@ -90,11 +93,11 @@ If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-poli
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../demo/ldif/ppolicy-config.ldif
+.. literalinclude :: ../../demo/ldif/ppolicy-config.ldif
    :language: ldif
    :caption: ppolicy-config.ldif
 
-.. literalinclude :: ../demo/ldif/ppolicy.ldif
+.. literalinclude :: ../../demo/ldif/ppolicy.ldif
    :language: ldif
    :caption: ppolicy.ldif
 

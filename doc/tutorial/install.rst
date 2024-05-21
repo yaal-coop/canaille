@@ -7,9 +7,6 @@ Installation
 
 The installation of canaille consist in several steps, some of which you can do manually or with command line tool:
 
-.. contents::
-   :local:
-
 Get the code
 ============
 
@@ -45,7 +42,7 @@ Choose a path where to store your configuration file. You can pass any configura
     sudo mkdir --parents "$CANAILLE_CONF_DIR"
     sudo cp $CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/config.sample.toml "$CANAILLE_CONF_DIR/config.toml"
 
-You should then edit your configuration file to adapt the values to your needs. Look at the configuration details in the :doc:`configuration` page.
+You should then edit your configuration file to adapt the values to your needs. Look at the configuration details in the :doc:`configuration <../references/configuration>` page.
 
 Install and check
 =================
