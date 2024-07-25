@@ -138,7 +138,8 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     @property
     def rdn_value(self):
         value = self.get_ldap_attribute(self.rdn_attribute)
-        return (value[0] if isinstance(value, list) else value).strip()
+        rdn_value = value[0] if isinstance(value, list) else value
+        return rdn_value.strip() if rdn_value else rdn_value
 
     @property
     def dn(self):
