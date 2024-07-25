@@ -40,6 +40,8 @@ def pytest_generate_tests(metafunc):
     backends = available_backends()
     if metafunc.config.getoption("backend"):  # pragma: no cover
         backends &= set(metafunc.config.getoption("backend"))
+
+    # sort so the backend list is deterministic. This makes pytest-xdist discovery possible
     backends = sorted(backends)
 
     # tests in tests.backends.BACKENDNAME should only run one backend

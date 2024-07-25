@@ -8,16 +8,16 @@ from canaille.app import classproperty
 
 
 class Backend:
-    instance = None
+    _instance = None
 
     def __init__(self, config):
         self.config = config
-        Backend.instance = self
+        Backend._instance = self
         self.register_models()
 
     @classproperty
     def instance(cls):
-        return cls.instance
+        return cls._instance
 
     def init_app(self, app):
         @app.before_request
