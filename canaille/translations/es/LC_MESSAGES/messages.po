@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-05-01 18:39+0200\n"
-"PO-Revision-Date: 2024-05-02 17:09+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2024-08-08 19:09+0000\n"
+"Last-Translator: Moha684 <nahil82466@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.3-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:100
@@ -55,16 +55,16 @@ msgstr "Falló la autenticación LDAP con el usuario '{user}'"
 
 #: canaille/backends/ldap/backend.py:173
 msgid "John Doe"
-msgstr "John Doe"
+msgstr "Jaime Duque"
 
 #: canaille/backends/ldap/backend.py:176 canaille/core/endpoints/forms.py:164
 #: canaille/core/endpoints/forms.py:420
 msgid "jdoe"
-msgstr "jdoe"
+msgstr "jduque"
 
 #: canaille/backends/ldap/backend.py:179
 msgid "john@doe.com"
-msgstr "john@doe.com"
+msgstr "jaime@duque.com"
 
 #: canaille/backends/ldap/backend.py:181
 msgid " or "
@@ -275,7 +275,7 @@ msgstr "Correo electrónico"
 #: canaille/core/endpoints/forms.py:406 canaille/core/endpoints/forms.py:432
 #: canaille/core/endpoints/forms.py:453 canaille/core/endpoints/forms.py:469
 msgid "jane@doe.com"
-msgstr "jane@doe.com"
+msgstr "jandra@duque.com"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "The test mail has been sent correctly"
@@ -435,7 +435,7 @@ msgstr "Nombre de pila"
 
 #: canaille/core/endpoints/forms.py:174
 msgid "John"
-msgstr "John"
+msgstr "Jaime"
 
 #: canaille/core/endpoints/forms.py:180
 msgid "Family Name"
@@ -443,7 +443,7 @@ msgstr "Apellidos"
 
 #: canaille/core/endpoints/forms.py:183
 msgid "Doe"
-msgstr "Doe"
+msgstr "Duque"
 
 #: canaille/core/endpoints/forms.py:189
 msgid "Display Name"
@@ -451,7 +451,7 @@ msgstr "Nombre a mostrar"
 
 #: canaille/core/endpoints/forms.py:192
 msgid "Johnny"
-msgstr "Johnny"
+msgstr "Máximo"
 
 #: canaille/core/endpoints/forms.py:199 canaille/core/endpoints/forms.py:459
 #: canaille/core/templates/profile_edit.html:176
