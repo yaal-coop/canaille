@@ -163,6 +163,6 @@ To create your first user you can use the :ref:`canaille create <cli_create>` CL
 
 .. code-block:: bash
 
-   canaille create user --user-name admin --password admin --emails admin@mydomain.example --first-name George --last-name Abitbol
+   canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol
 
 .. _WebFinger: https://www.rfc-editor.org/rfc/rfc7033.html
