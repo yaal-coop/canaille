@@ -62,8 +62,8 @@ Nginx
         listen 443 ssl http2;
         listen [::]:443 ssl http2;
 
-        ssl_certificate /etc/letsencrypt/live/moncompte.nubla.fr/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/moncompte.nubla.fr/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/auth.mydomain.tld/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/auth.mydomain.tld/privkey.pem;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
