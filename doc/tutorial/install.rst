@@ -31,8 +31,8 @@ Canaille provides different package options:
 - `sentry` provides sentry integration to watch Canaille exceptions;
 - `all` provides all the extras above.
 
-Configuration
-=============
+Configure
+=========
 
 Choose a path where to store your configuration file. You can pass any configuration path with the ``CONFIG`` environment variable.
 
@@ -44,68 +44,22 @@ Choose a path where to store your configuration file. You can pass any configura
 
 You should then edit your configuration file to adapt the values to your needs. Look at the configuration details in the :doc:`configuration <../references/configuration>` page.
 
-Install and check
-=================
+Install
+=======
 
-Automatic schemas installation
-------------------------------
-
-If you want to install the LDAP schemas yourself, then you can jump to the manual installation section.
+The :ref:`install command <cli_install>` will apply most of the things needed to get Canaille working.
+Depending on the configured :doc:`database <databases>` it will create the SQL tables, or install the LDAP schemas for instance.
 
 .. code-block:: bash
 
-    env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" install
+    export CONFIG="$CANAILLE_CONF_DIR/config.toml"
+    "$CANAILLE_INSTALL_DIR/env/bin/canaille" install
 
+Check
+=====
 
-Manual schemas installation
----------------------------
-
-LDAP schemas
-^^^^^^^^^^^^
-
-As of OpenLDAP 2.4, two configuration methods are available:
-
-- The `deprecated <https://www.openldap.org/doc/admin26/slapdconf2.html>`_ one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);
-- The new one, based on a configuration directory (generally ``/etc/ldap/slapd.d``).
-
-Depending on the configuration method you use with your OpenLDAP installation, you need to chose how to add the canaille schemas:
-
-Old fashion: Copy the schemas in your filesystem
-""""""""""""""""""""""""""""""""""""""""""""""""
+After a manual installation, you can check your configuration file using the :ref:`check command <cli_install>`:
 
 .. code-block:: bash
 
-    test -d /etc/openldap/schema && sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/backends/ldap/schemas/*" /etc/openldap/schema
-    test -d /etc/ldap/schema && sudo cp "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/backends/ldap/schemas/*" /etc/ldap/schema
-    sudo service slapd restart
-
-New fashion: Use slapadd to add the schemas
-"""""""""""""""""""""""""""""""""""""""""""
-
-Be careful to stop your ldap server before running ``slapadd``
-
-.. code-block:: bash
-
-    sudo service slapd stop
-    sudo -u openldap slapadd -n0 -l "$CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/backends/ldap/schemas/*.ldif"
-    sudo service slapd start
-
-Generate the key pair
----------------------
-
-You must generate a keypair that canaille will use to sign tokens.
-You can customize those commands, as long as they match the ``JWT`` section of your configuration file.
-
-.. code-block:: bash
-
-    sudo openssl genrsa -out "$CANAILLE_CONF_DIR/private.pem" 4096
-    sudo openssl rsa -in "$CANAILLE_CONF_DIR/private.pem" -pubout -outform PEM -out "$CANAILLE_CONF_DIR/public.pem"
-
-Configuration check
-^^^^^^^^^^^^^^^^^^^
-
-After a manual installation, you can check your configuration file with the following command:
-
-.. code-block:: bash
-
-    env CONFIG="$CANAILLE_CONF_DIR/config.toml" "$CANAILLE_INSTALL_DIR/env/bin/canaille" check
+    "$CANAILLE_INSTALL_DIR/env/bin/canaille" check
