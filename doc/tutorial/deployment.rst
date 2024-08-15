@@ -100,7 +100,7 @@ Nginx
             location ~* ^.+\.(?:css|cur|js|jpe?g|gif|htc|ico|png|html|xml|otf|ttf|eot|woff|woff2|svg)$ {
                 access_log off;
                 expires 30d;
-                add_header Cache-Control public;
+                more_set_headers Cache-Control public;
             }
         }
 
