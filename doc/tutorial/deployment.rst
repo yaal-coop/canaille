@@ -113,9 +113,41 @@ Nginx
 Apache
 ------
 
-.. todo::
+.. code-block:: apache
 
-   Write a Apache configuration file.
+    <VirtualHost *:80>
+        ServerName auth.mydomain.tld
+        ServerAdmin admin@mydomain.tld
+
+        CustomLog /opt/canaille/logs/apache-http-access.log combined
+        ErrorLog /opt/canaille/logs/apache-http-error.log
+
+        RewriteEngine On
+        RewriteCond %{REQUEST_URI} !^/\.well\-known/acme\-challenge/
+        RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]    </VirtualHost>
+    </VirtualHost>
+
+    <VirtualHost *:443>
+        ServerName auth.mydomain.tld
+        ServerAdmin admin@mydomain.tld
+        Protocols h2 http/1.1
+
+        CustomLog /opt/canaille/logs/apache-https-access.log combined
+        ErrorLog /opt/canaille/logs/apache-https-error.log
+
+        SSLEngine On
+        SSLCertificateFile      /etc/letsencrypt/live/auth.mydomain.tld/fullchain.pem
+        SSLCertificateKeyFile   /etc/letsencrypt/live/auth.mydomain.tld/privkey.pem
+        Include /etc/letsencrypt/options-ssl-apache.conf
+
+        ProxyPreserveHost On
+        ProxyPass /static/ !
+        ProxyPass / unix:/etc/canaille/uwsgi.sock
+        ProxyPassReverse / unix:/etc/canaille/uwsgi.sock
+
+        RequestHeader set X-FORWARDED-PROTOCOL ssl
+        RequestHeader set X-FORWARDED-SSL on
+    </VirtualHost>
 
 Recurrent jobs
 ==============
