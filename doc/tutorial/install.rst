@@ -28,8 +28,15 @@ Canaille provides different package options:
 - `front` provides all the things needed to produce the user interface;
 - `oidc` provides the dependencies to perform OAuth2/OIDC authentication;
 - `ldap` provides the dependencies to enable the LDAP backend;
+- `sql` provides the dependencies to enable the Postgresql or Mysql backends;
 - `sentry` provides sentry integration to watch Canaille exceptions;
 - `all` provides all the extras above.
+
+They can be installed with:
+
+.. code-block:: bash
+
+   pip install "canaille[front,oidc,sql]"
 
 Configure
 =========
