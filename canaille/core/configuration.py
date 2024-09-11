@@ -25,10 +25,10 @@ class SMTPSettings(BaseModel):
     """The SMTP port."""
 
     TLS: Optional[bool] = False
-    """Wether to use TLS to connect to the SMTP server."""
+    """Whether to use TLS to connect to the SMTP server."""
 
     SSL: Optional[bool] = False
-    """Wether to use SSL to connect to the SMTP server."""
+    """Whether to use SSL to connect to the SMTP server."""
 
     LOGIN: Optional[str] = None
     """The SMTP login."""
@@ -220,14 +220,14 @@ class CoreSettings(BaseModel):
     """Enables Javascript to smooth the user experience."""
 
     HTMX: bool = True
-    """Accelerates webpages loading with asynchroneous requests."""
+    """Accelerates webpages loading with asynchronous requests."""
 
     EMAIL_CONFIRMATION: bool = True
     """If :py:data:`True`, users will need to click on a confirmation link sent
     by email when they want to add a new email.
 
     By default, this is true
-    if ``SMTP`` is configured, else this is false. If explicitely set to true
+    if ``SMTP`` is configured, else this is false. If explicitly set to true
     and ``SMTP`` is disabled, the email field will be read-only.
     """
 
@@ -242,7 +242,7 @@ class CoreSettings(BaseModel):
     HIDE_INVALID_LOGINS: bool = True
     """If :py:data:`True`, when users try to sign in with an invalid login, a
     message is shown indicating that the password is wrong, but does not give a
-    clue wether the login exists or not.
+    clue whether the login exists or not.
 
     If :py:data:`False`,
     when a user tries to sign in with an invalid login, a message is shown
@@ -292,7 +292,7 @@ class CoreSettings(BaseModel):
     ACL: Optional[Dict[str, ACLSettings]] = {"DEFAULT": ACLSettings()}
     """Mapping of permission groups. See :class:`ACLSettings` for more details.
 
-    The ACL name can be freely choosed. For example::
+    The ACL name can be freely chosen. For example::
 
         [CANAILLE.ACL.DEFAULT]
         PERMISSIONS = ["edit_self", "use_oidc"]

@@ -12,7 +12,7 @@
 
 .. rst-class:: lead
 
-    Lightweight Identity and Autorization Management
+    Lightweight Identity and Authorization Management
 
 ----
 

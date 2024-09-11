@@ -248,7 +248,7 @@ class User(Model):
     _permissions = None
 
     def has_password(self) -> bool:
-        """Check wether a password has been set for the user."""
+        """Check whether a password has been set for the user."""
         return self.password is not None
 
     def can_read(self, field: str):
@@ -266,7 +266,7 @@ class User(Model):
         return super().__getattribute__(name)
 
     def can(self, *permissions: Permission):
-        """Wether or not the user has the
+        """Whether or not the user has the
         :class:`~canaille.core.configuration.Permission` according to the
         :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
@@ -276,7 +276,7 @@ class User(Model):
 
     @property
     def locked(self) -> bool:
-        """Wether the user account has been locked or has expired."""
+        """Whether the user account has been locked or has expired."""
         return bool(self.lock_date) and self.lock_date < datetime.datetime.now(
             datetime.timezone.utc
         )

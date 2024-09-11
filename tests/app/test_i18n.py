@@ -59,7 +59,7 @@ def test_form_translations(testclient, logged_user, backend):
     res = form.submit(name="action", value="edit-profile")
 
     res.mustcontain(no="Not a valid phone number")
-    res.mustcontain("N’est pas un numéro de téléphone valide")
+    res.mustcontain("N’est pas un numéro de téléphone valid")
 
 
 def test_language_config(testclient, logged_user, backend):

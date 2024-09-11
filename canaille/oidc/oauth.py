@@ -432,7 +432,7 @@ class ClientManagementMixin:
 
     def resolve_public_key(self, request):
         # At the moment the only keypair accepted in software statement
-        # is the one used to isues JWTs. This might change somedays.
+        # is the one used to issues JWTs. This might change somedays.
         return current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"]
 
     def client_convert_data(self, **kwargs):

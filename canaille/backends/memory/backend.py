@@ -183,12 +183,12 @@ class MemoryBackend(Backend):
                 model, mirror_attribute
             ).setdefault(instance.id, set())
             for subinstance_id in listify(instance._state.get(attribute, [])):
-                # add the current objet in the subinstance state
+                # add the current object in the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
                 subinstance_state[mirror_attribute].append(instance.id)
 
-                # add the current objet in the subinstance index
+                # add the current object in the subinstance index
                 mirror_attribute_index.add(subinstance_id)
 
     def index_delete(self, instance):
@@ -216,11 +216,11 @@ class MemoryBackend(Backend):
             for subinstance_id in self.index(instance.__class__)[instance.id].get(
                 attribute, []
             ):
-                # remove the current objet from the subinstance state
+                # remove the current object from the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state[mirror_attribute].remove(instance.id)
 
-                # remove the current objet from the subinstance index
+                # remove the current object from the subinstance index
                 mirror_attribute_index.remove(subinstance_id)
 
         # update the index for each attribute

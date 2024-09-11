@@ -15,7 +15,7 @@ from canaille.backends.ldap.utils import ldap_to_python
 from canaille.backends.ldap.utils import python_to_ldap
 
 
-# TODO: tester le changement de cardinalité des attributs
+# TODO: tester le changement de cardinalité des attributes
 def test_object_creation(app, backend):
     user = models.User(
         formatted_name="Doe",  # leading space

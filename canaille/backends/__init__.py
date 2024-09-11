@@ -135,7 +135,7 @@ class Backend:
         raise NotImplementedError()
 
     def has_account_lockability(self):
-        """Indicate wether the backend supports locking user accounts."""
+        """Indicate whether the backend supports locking user accounts."""
         raise NotImplementedError()
 
     def register_models(self):

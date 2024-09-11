@@ -46,7 +46,7 @@ def create_group(user):
             Backend.instance.save(group)
             flash(
                 _(
-                    "The group %(group)s has been sucessfully created",
+                    "The group %(group)s has been successfully created",
                     group=group.display_name,
                 ),
                 "success",
@@ -106,7 +106,7 @@ def edit_group(group):
             Backend.instance.save(group)
             flash(
                 _(
-                    "The group %(group)s has been sucessfully edited.",
+                    "The group %(group)s has been successfully edited.",
                     group=group.display_name,
                 ),
                 "success",
@@ -159,7 +159,10 @@ def delete_member(group):
 
 def delete_group(group):
     flash(
-        _("The group %(group)s has been sucessfully deleted", group=group.display_name),
+        _(
+            "The group %(group)s has been successfully deleted",
+            group=group.display_name,
+        ),
         "success",
     )
     Backend.instance.delete(group)

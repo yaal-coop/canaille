@@ -50,7 +50,7 @@ def type_from_filename(filename):
     return maintype, subtype
 
 
-def send_email(subject, recipient, text, html, attachements=None):
+def send_email(subject, recipient, text, html, attachments=None):
     current_app.logger.debug(f"Sending a mail to {recipient}: {subject}")
     msg = email.message.EmailMessage()
     msg.set_content(text)
@@ -68,8 +68,8 @@ def send_email(subject, recipient, text, html, attachements=None):
 
     msg["From"] = f'"{name}" <{address}>'
 
-    attachements = attachements or []
-    for cid, filename, value in attachements:
+    attachments = attachments or []
+    for cid, filename, value in attachments:
         maintype, subtype = type_from_filename(filename)
         msg.get_payload()[1].add_related(
             value, maintype=maintype, subtype=subtype, cid=cid

@@ -188,7 +188,7 @@ def test_moderator_can_create_edit_and_delete_group(
     form["description"] = "yolo2"
 
     res = form.submit(name="action", value="edit")
-    assert res.flashes == [("success", "The group bar has been sucessfully edited.")]
+    assert res.flashes == [("success", "The group bar has been successfully edited.")]
     res = res.follow()
 
     bar_group = backend.get(models.Group, display_name="bar")
@@ -199,7 +199,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
     res = res.form.submit(name="action", value="delete", status=302)
     assert backend.get(models.Group, display_name="bar") is None
-    assert ("success", "The group bar has been sucessfully deleted") in res.flashes
+    assert ("success", "The group bar has been successfully deleted") in res.flashes
 
 
 def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_group):

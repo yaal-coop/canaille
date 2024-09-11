@@ -121,7 +121,7 @@ class HTMXFormMixin:
         abort(response)
 
     def form_control(self):
-        """Check wether the current request is the result of the users adding
+        """Check whether the current request is the result of the users adding
         or removing a field from a FieldList."""
         FIELDLIST_ADD_BUTTON = "fieldlist_add"
         FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"

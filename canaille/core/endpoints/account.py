@@ -804,7 +804,7 @@ def profile_delete(user, edited_user):
 
     flash(
         _(
-            "The user %(user)s has been sucessfuly deleted",
+            "The user %(user)s has been successfully deleted",
             user=edited_user.formatted_name,
         ),
         "success",

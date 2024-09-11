@@ -33,7 +33,7 @@ def send_test_mail(email):
         recipient=email,
         text=text_body,
         html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
 
@@ -74,7 +74,7 @@ def send_password_reset_mail(user, mail):
         recipient=mail,
         text=text_body,
         html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
 
@@ -115,7 +115,7 @@ def send_password_initialization_mail(user, email):
         recipient=email,
         text=text_body,
         html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
 
@@ -146,7 +146,7 @@ def send_invitation_mail(email, registration_url):
         recipient=email,
         text=text_body,
         html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
 
@@ -177,7 +177,7 @@ def send_confirmation_email(email, confirmation_url):
         recipient=email,
         text=text_body,
         html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
 
 
@@ -208,5 +208,5 @@ def send_registration_mail(email, registration_url):
         recipient=email,
         text=text_body,
         html=html_body,
-        attachements=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )

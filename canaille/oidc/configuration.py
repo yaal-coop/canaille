@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class JWTMappingSettings(BaseModel):
     """Mapping between the user model and the JWT fields.
 
-    Fiels are evaluated with jinja.
+    Fields are evaluated with jinja.
     A ``user`` var is available.
     """
 
@@ -87,7 +87,7 @@ class OIDCSettings(BaseModel):
     """
 
     DYNAMIC_CLIENT_REGISTRATION_OPEN: bool = False
-    """Wether a token is needed for the RFC7591 dynamical client registration.
+    """Whether a token is needed for the RFC7591 dynamical client registration.
 
     If :py:data:`True`, no token is needed to register a client.
     If :py:data:`False`, dynamical client registration needs a token defined in

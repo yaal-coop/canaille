@@ -23,3 +23,11 @@ repos:
     rev: 3.0.6
     hooks:
       - id: djhtml
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+    - id: codespell
+      additional_dependencies:
+        - tomli
+      exclude: ".*\\.min\\..*|translations|\\.css$|^tests|fomanticui"
+      args: [--write-changes]

@@ -32,7 +32,7 @@ Profile management
 
 Canaille provides an interface to manage user profiles.
 
-The exact list of displayed fields, and wether they are :attr:`writable <canaille.core.configuration.ACLSettings.WRITE>` or :attr:`read-only <canaille.core.configuration.ACLSettings.READ>` depends on the user :class:`Access Control List settings (ACL) <canaille.core.configuration.ACLSettings>`.
+The exact list of displayed fields, and whether they are :attr:`writable <canaille.core.configuration.ACLSettings.WRITE>` or :attr:`read-only <canaille.core.configuration.ACLSettings.READ>` depends on the user :class:`Access Control List settings (ACL) <canaille.core.configuration.ACLSettings>`.
 
 Depending on their ACL :class:`permissions <canaille.core.configuration.Permission>`, users can either be allowed to edit their own profile, edit any user profile, or do nothing at all.
 
@@ -272,7 +272,7 @@ Thanks to its lightweight :ref:`in-memory database <tutorial/databases:Memory>` 
 
 It can also being launched in your development environment, if you find that launching a Keycloak in a Docker container is too heavy for your little web application.
 
-It also fits well in continuous integration scenarios. Thanks to its :ref:`CLI <feature_cli>`, you can prepare data in Canaille, let your application interract with it, and then check the side effects.
+It also fits well in continuous integration scenarios. Thanks to its :ref:`CLI <feature_cli>`, you can prepare data in Canaille, let your application interact with it, and then check the side effects.
 
 Roadmap
 *******

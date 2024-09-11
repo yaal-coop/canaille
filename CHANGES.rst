@@ -195,7 +195,7 @@ Fixed
   preferred user email address.
 - Password reset and initialization mails were not sent at all the user
   addresses if one email address could not be reached.
-- Password comparision was too permissive on login.
+- Password comparison was too permissive on login.
 - Encrypt passwords in the SQL backend.
 
 [0.0.35] - 2023-11-25
@@ -612,7 +612,7 @@ Changed
 Fixed
 ^^^^^
 - ``HIDE_INVALID_LOGIN`` behavior and default value.
-- mo files are not versionned anymore :pr:`49` :pr:`53`
+- mo files are not versioned anymore :pr:`49` :pr:`53`
 
 [0.0.8] - 2022-03-15
 --------------------
@@ -679,7 +679,7 @@ Added
 - Added an option to tune object IDs :pr:`26`
 - Avatar support :pr:`27`
 - Dynamical and configurable JWT claims :pr:`28`
-- UI improvemnts :pr:`29`
+- UI improvements :pr:`29`
 - Invitation links expiration :pr:`30`
 - Invitees can choose their IDs :pr:`31`
 - LDAP backend refactoring :pr:`35`
@@ -705,7 +705,7 @@ Added
 - Two-steps sign-in :issue:`49`
 - Tokens can have several audiences. :issue:`62` :pr:`9`
 - Configuration check command. :issue:`66` :pr:`8`
-- Groups managament. :issue:`12` :pr:`6`
+- Groups management. :issue:`12` :pr:`6`
 
 Fixed
 ^^^^^

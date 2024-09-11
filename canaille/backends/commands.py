@@ -111,7 +111,7 @@ def serialize(instance):
 
 
 def get_factory(model):
-    """Read informations about models.
+    """Read information about models.
 
     Options can be used to filter models::
 

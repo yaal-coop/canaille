@@ -40,7 +40,7 @@ SECRET_KEY = "change me before you go in production"
 # If EMAIL_CONFIRMATION is set to true, users will need to click on a
 # confirmation link sent by email when they want to add a new email.
 # By default, this is true if SMTP is configured, else this is false.
-# If explicitely set to true and SMTP is disabled, the email field
+# If explicitly set to true and SMTP is disabled, the email field
 # will be read-only.
 # EMAIL_CONFIRMATION =
 
@@ -51,7 +51,7 @@ SECRET_KEY = "change me before you go in production"
 
 # If HIDE_INVALID_LOGINS is set to true (the default), when a user
 # tries to sign in with an invalid login, a message is shown indicating
-# that the password is wrong, but does not give a clue wether the login
+# that the password is wrong, but does not give a clue whether the login
 # exists or not.
 # If HIDE_INVALID_LOGINS is set to false, when a user tries to sign in with
 # an invalid login, a message is shown indicating that the login does not
@@ -69,7 +69,7 @@ SECRET_KEY = "change me before you go in production"
 # LOGGING configures the logging output:
 # - if unset, everything is logged in the standard output
 #   the log level is debug if DEBUG is True, else this is INFO
-# - if this is a dictionnary, it is passed to the python dictConfig method:
+# - if this is a dictionary, it is passed to the python dictConfig method:
 #   https://docs.python.org/3/library/logging.config.html#logging.config.dictConfig
 # - if this is a string, it is passed to the python fileConfig method
 #   https://docs.python.org/3/library/logging.config.html#logging.config.fileConfig
@@ -133,7 +133,7 @@ SECRET_KEY = "change me before you go in production"
 #       - {groups = 'moderators'}
 #
 # The 'PERMISSIONS' parameter that is an list of items the users in the access
-# control will be able to manage. 'PERMISSIONS' is optionnal. Values can be:
+# control will be able to manage. 'PERMISSIONS' is optional. Values can be:
 # - "edit_self" to allow users to edit their own profile
 # - "use_oidc" to allow OpenID Connect authentication
 # - "manage_oidc" to allow OpenID Connect client managements
@@ -188,7 +188,7 @@ WRITE = [
 ]
 
 [CANAILLE_OIDC]
-# Wether a token is needed for the RFC7591 dynamical client registration.
+# Whether a token is needed for the RFC7591 dynamical client registration.
 # If true, no token is needed to register a client.
 # If false, dynamical client registration needs a token defined
 # in DYNAMIC_CLIENT_REGISTRATION_TOKENS
