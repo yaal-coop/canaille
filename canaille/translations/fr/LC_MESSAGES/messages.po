@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-09-12 19:28+0200\n"
-"PO-Revision-Date: 2024-05-02 17:09+0000\n"
+"PO-Revision-Date: 2024-09-13 08:47+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.5.3-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:100
@@ -252,8 +252,7 @@ msgid "The account has been unlocked"
 msgstr "Le compte a été déverrouillé"
 
 #: canaille/core/endpoints/account.py:806
-#, fuzzy, python-format
-#| msgid "The user %(user)s has been sucessfuly deleted"
+#, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
@@ -593,14 +592,12 @@ msgid "Group creation failed."
 msgstr "La création du groupe a échoué."
 
 #: canaille/core/endpoints/groups.py:48
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been sucessfully created"
+#, python-format
 msgid "The group %(group)s has been successfully created"
 msgstr "Le groupe %(group)s a bien été créé"
 
 #: canaille/core/endpoints/groups.py:108
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been sucessfully edited."
+#, python-format
 msgid "The group %(group)s has been successfully edited."
 msgstr "Le groupe %(group)s a bien été édité."
 
@@ -614,8 +611,7 @@ msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "L’utilisateur %(user_name)s a été retiré du groupe  %(group_name)s"
 
 #: canaille/core/endpoints/groups.py:162
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been sucessfully deleted"
+#, python-format
 msgid "The group %(group)s has been successfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
 
@@ -1491,10 +1487,8 @@ msgstr "Aucun élément ne correspond à votre requête"
 #: canaille/oidc/templates/partial/authorization_list.html:33
 #: canaille/oidc/templates/partial/client_list.html:37
 #: canaille/oidc/templates/partial/token_list.html:41
-#, fuzzy
-#| msgid "Maybe try with different criterias?"
 msgid "Maybe try with different criteria?"
-msgstr "Essayez peut-être avec des critères différents ?"
+msgstr "Essayez peut-être avec des critères différents ?"
 
 #: canaille/core/templates/partial/group-members.html:88
 #: canaille/core/templates/partial/groups.html:36
