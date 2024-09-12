@@ -233,3 +233,22 @@ commands =
     poetry run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered {posargs:-n auto}
     poetry run coverage html
 """
+
+[[tool.babel.mappings]]
+method = "python"
+pattern = "**.py"
+
+[[tool.babel.mappings]]
+method = "jinja2"
+pattern = "**/templates/**.html"
+trimmed = "true"
+
+[[tool.babel.mappings]]
+method = "jinja2"
+pattern = "**/themes/**.html"
+trimmed = "true"
+
+[[tool.babel.mappings]]
+method = "jinja2"
+pattern = "**/templates/**.txt"
+trimmed = "true"

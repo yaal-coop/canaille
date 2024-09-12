@@ -11,7 +11,7 @@ After you have edited translatable strings, you should extract the messages with
 
 .. code-block:: bash
 
-    pybabel extract --mapping-file canaille/translations/babel.cfg --copyright-holder="Yaal Coop" --output-file canaille/translations/messages.pot canaille
+    pybabel extract --mapping-file pyproject.toml --copyright-holder="Yaal Coop" --output-file canaille/translations/messages.pot canaille
 
 Language addition
 ~~~~~~~~~~~~~~~~~
