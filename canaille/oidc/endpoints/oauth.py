@@ -50,7 +50,9 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
-    client = Backend.instance.get(models.Client, client_id=request.args["client_id"])
+    client = Backend.instance.get(
+        models.Client, client_id=request.args.get("client_id")
+    )
     user = current_user()
 
     if response := authorize_guards(client):

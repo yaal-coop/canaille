@@ -763,3 +763,20 @@ def test_locked_account(
     )
 
     assert "access_token" not in res.json
+
+
+def test_missing_client_id(
+    testclient, logged_user, client, keypair, trusted_client, backend
+):
+    """Missing client_id should raise a 400 error."""
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+        ),
+        status=400,
+    )
+    res.mustcontain("client_id parameter is missing.")
