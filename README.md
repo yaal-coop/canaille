@@ -52,8 +52,8 @@ Online demo data are reset every night at 02:00 CEST.
 ⚠ Canaille is under heavy development and may not fit a production environment yet. However, [contributions](CONTRIBUTING.rst) are welcome! ⚠
 
 - Please have a look on our [documentation](https://canaille.readthedocs.io);
-- To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/en/latest/install.html);
-- To **contribute** to canaille, please read the [contribution guide](https://canaille.readthedocs.io/en/latest/contributing.html).
+- To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/en/latest/tutorial/install.html);
+- To **contribute** to canaille, please read the [contribution guide](https://canaille.readthedocs.io/en/latest/development/contributing.html).
 
 ## Translation status
 
