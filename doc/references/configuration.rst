@@ -28,10 +28,22 @@ Environment variables
 In addition, parameters that have not been set in the configuration file can be read from environment variables.
 The way environment variables are parsed can be read from the `pydantic-settings documentation <https://docs.pydantic.dev/latest/concepts/pydantic_settings/#parsing-environment-variable-values>`_.
 
+.. tip::
+
+   For environment vars, the separator between sections and variables is a double underscore: ``__``.
+   For instance, the ``NAME`` var in the ``CANAILLE`` section shown above is ``CANAILLE__NAME``.
+
 Environment file
 ================
 
 Any environment variable can also be written in a ``.env``, and will be read if present.
+
+.. code-block:: bash
+    :caption: .env
+
+    SECRET_KEY="very-secret"
+    CANAILLE__NAME="My organization"
+    CANAILLE_SQL__DATABASE_URI="postgresql://user:password@localhost/database"
 
 .. TODO: Uncomment this when pydantic-settings implements nested secrets directories
    https://github.com/pydantic/pydantic-settings/issues/154
