@@ -252,7 +252,7 @@ class User(Model):
         return self.password is not None
 
     def can_read(self, field: str):
-        return field in self._readable_fields | self._writable_fields
+        return field in self.readable_fields | self.writable_fields
 
     @property
     def preferred_email(self):
