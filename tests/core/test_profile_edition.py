@@ -218,7 +218,7 @@ def test_field_permissions_none(testclient, logged_user, backend):
     form = res.forms["baseform"]
     assert "phone_numbers-0" not in form.fields
 
-    testclient.post(
+    res = testclient.post(
         "/profile/user",
         {
             "action": "edit-profile",
@@ -226,6 +226,8 @@ def test_field_permissions_none(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
+    assert ("success", "Profile updated successfully.") in res.flashes
+
     backend.reload(logged_user)
     assert logged_user.phone_numbers == ["555-666-777"]
 
@@ -246,7 +248,7 @@ def test_field_permissions_read(testclient, logged_user, backend):
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields
 
-    testclient.post(
+    res = testclient.post(
         "/profile/user",
         {
             "action": "edit-profile",
@@ -254,6 +256,8 @@ def test_field_permissions_read(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
+    assert ("error", "Profile edition failed.") in res.flashes
+
     backend.reload(logged_user)
     assert logged_user.phone_numbers == ["555-666-777"]
 
@@ -274,7 +278,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields
 
-    testclient.post(
+    res = testclient.post(
         "/profile/user",
         {
             "action": "edit-profile",
@@ -282,6 +286,8 @@ def test_field_permissions_write(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
+    assert ("success", "Profile updated successfully.") in res.flashes
+
     backend.reload(logged_user)
     assert logged_user.phone_numbers == ["000-000-000"]
 
