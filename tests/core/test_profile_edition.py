@@ -73,23 +73,10 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
 def test_user_list_search_only_allowed_fields(
     testclient, logged_admin, user, moderator, backend
 ):
-    res = testclient.get("/users")
-    res.mustcontain("3 items")
-    res.mustcontain(moderator.formatted_name)
-    res.mustcontain(user.formatted_name)
-
-    form = res.forms["search"]
-    form["query"] = "user"
-    res = form.submit()
-
-    res.mustcontain("1 item")
-    res.mustcontain(user.formatted_name)
-    res.mustcontain(no=moderator.formatted_name)
-
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].remove("user_name")
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["READ"].remove("user_name")
-    backend.reload(g.user)
 
+    res = testclient.get("/users")
     form = res.forms["search"]
     form["query"] = "user"
     res = form.submit()
@@ -202,7 +189,6 @@ def test_edition_remove_fields(
 
 
 def test_field_permissions_none(testclient, logged_user, backend):
-    testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
     backend.save(logged_user)
 
@@ -213,7 +199,6 @@ def test_field_permissions_none(testclient, logged_user, backend):
         "FILTER": None,
     }
 
-    backend.reload(g.user)
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" not in form.fields
@@ -233,7 +218,6 @@ def test_field_permissions_none(testclient, logged_user, backend):
 
 
 def test_field_permissions_read(testclient, logged_user, backend):
-    testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
     backend.save(logged_user)
 
@@ -243,7 +227,7 @@ def test_field_permissions_read(testclient, logged_user, backend):
         "PERMISSIONS": ["edit_self"],
         "FILTER": None,
     }
-    backend.reload(g.user)
+
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields
@@ -263,7 +247,6 @@ def test_field_permissions_read(testclient, logged_user, backend):
 
 
 def test_field_permissions_write(testclient, logged_user, backend):
-    testclient.get("/profile/user", status=200)
     logged_user.phone_numbers = ["555-666-777"]
     backend.save(logged_user)
 
@@ -273,7 +256,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
         "PERMISSIONS": ["edit_self"],
         "FILTER": None,
     }
-    backend.reload(g.user)
+
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     assert "phone_numbers-0" in form.fields

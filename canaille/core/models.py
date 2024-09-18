@@ -270,7 +270,11 @@ class User(Model):
         :class:`~canaille.core.configuration.Permission` according to the
         :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
-            self.load_permissions()
+            self._permissions = set()
+            acls = current_app.config["CANAILLE"]["ACL"].values()
+            for details in acls:
+                if self.match_filter(details["FILTER"]):
+                    self._permissions |= set(details["PERMISSIONS"])
 
         return set(permissions).issubset(self._permissions)
 
@@ -280,17 +284,6 @@ class User(Model):
         return bool(self.lock_date) and self.lock_date < datetime.datetime.now(
             datetime.timezone.utc
         )
-
-    def load_permissions(self):
-        self._permissions = set()
-        self._readable_fields = set()
-        self._writable_fields = set()
-        acls = current_app.config["CANAILLE"]["ACL"].values()
-        for details in acls:
-            if self.match_filter(details["FILTER"]):
-                self._permissions |= set(details["PERMISSIONS"])
-                self._readable_fields |= set(details["READ"])
-                self._writable_fields |= set(details["WRITE"])
 
     def reload(self):
         self._readable = None
@@ -307,7 +300,11 @@ class User(Model):
         <canaille.core.models.User.writable_fields>` fields.
         """
         if self._readable_fields is None:
-            self.load_permissions()
+            self._readable_fields = set()
+            acls = current_app.config["CANAILLE"]["ACL"].values()
+            for details in acls:
+                if self.match_filter(details["FILTER"]):
+                    self._readable_fields |= set(details["READ"])
 
         return self._readable_fields
 
@@ -316,8 +313,11 @@ class User(Model):
         """The fields the user can write according to the :class:`configuration
         <canaille.core.configuration.ACLSettings>`."""
         if self._writable_fields is None:
-            self.load_permissions()
-
+            self._writable_fields = set()
+            acls = current_app.config["CANAILLE"]["ACL"].values()
+            for details in acls:
+                if self.match_filter(details["FILTER"]):
+                    self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
 
