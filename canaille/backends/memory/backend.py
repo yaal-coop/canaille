@@ -197,7 +197,7 @@ class MemoryBackend(Backend):
 
         old_state = self.index(instance.__class__)[instance.id]
 
-        # update the mirror attributes of the submodel instances
+        # update the index for each attribute
         for attribute in instance.attributes:
             attribute_values = listify(old_state.get(attribute, []))
             for value in attribute_values:
@@ -222,19 +222,6 @@ class MemoryBackend(Backend):
 
                 # remove the current object from the subinstance index
                 mirror_attribute_index.remove(subinstance_id)
-
-        # update the index for each attribute
-        for attribute in instance.attributes:
-            attribute_values = listify(old_state.get(attribute, []))
-            for value in attribute_values:
-                if (
-                    value in self.attribute_index(instance.__class__, attribute)
-                    and instance.id
-                    in self.attribute_index(instance.__class__, attribute)[value]
-                ):
-                    self.attribute_index(instance.__class__, attribute)[value].remove(
-                        instance.id
-                    )
 
         # update the id index
         del self.index(instance.__class__)[instance.id]
