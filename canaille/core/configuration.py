@@ -302,3 +302,9 @@ class CoreSettings(BaseModel):
         [CANAILLE.ACL.ADMIN]
         WRITE = ["user_name", "groups"]
     """
+
+    PASSWORD_LENGTH: Optional[int] = 8
+    """Minimum length for user password.
+
+    Defaults to 8.
+    """

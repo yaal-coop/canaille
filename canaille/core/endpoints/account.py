@@ -48,7 +48,6 @@ from ..mails import send_invitation_mail
 from ..mails import send_password_initialization_mail
 from ..mails import send_password_reset_mail
 from ..mails import send_registration_mail
-from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
@@ -314,11 +313,11 @@ def registration(data=None, hash=None):
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
+        wtforms.validators.Length(min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]),
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
+        wtforms.validators.Length(min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True
