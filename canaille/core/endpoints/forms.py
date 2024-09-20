@@ -262,7 +262,9 @@ PROFILE_FORM_FIELDS = dict(
         _("Password"),
         validators=[
             wtforms.validators.Optional(),
-            password_length,
+            wtforms.validators.Length(min=current_app.config["CANAILLE"][
+                "PASSWORD_LENGTH"
+            ]),
         ],
         render_kw={
             "autocomplete": "new-password",
