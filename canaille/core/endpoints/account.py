@@ -313,11 +313,15 @@ def registration(data=None, hash=None):
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]),
+        wtforms.validators.Length(
+            min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]
+        ),
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]),
+        wtforms.validators.Length(
+            min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]
+        ),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True
