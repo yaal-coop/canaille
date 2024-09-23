@@ -46,6 +46,11 @@ def phone_number(form, field):
         raise wtforms.ValidationError(_("Not a valid phone number"))
 
 
+def password_length(form, field):
+    if len(field.data) < (minimum_password_length := current_app.config["CANAILLE"]["PASSWORD_LENGTH"]):
+        raise wtforms.ValidationError(_("Password is too short, minimum length: ") + str(minimum_password_length))
+
+
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401

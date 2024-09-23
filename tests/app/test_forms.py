@@ -260,3 +260,22 @@ def test_phone_number_validator():
 
     with pytest.raises(wtforms.ValidationError):
         phone_number(None, Field("invalid"))
+
+
+def test_password_strength_validator(testclient):
+
+    class Field:
+        def __init__(self, data):
+            self.data = data
+
+    current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = 20
+    password_length(None, Field("12345678901234567890"))
+
+    with pytest.raises(wtforms.ValidationError):
+        password_length(None, Field("1234567890123456789"))
+
+    current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = 8
+    password_length(None, Field("12345678"))
+
+    with pytest.raises(wtforms.ValidationError):
+        password_length(None, Field("1234567"))
