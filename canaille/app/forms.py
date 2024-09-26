@@ -118,6 +118,7 @@ class HTMXFormMixin:
 
     def render_field(self, field, *args, **kwargs):
         form_macro = current_app.jinja_env.get_template(self.render_field_macro_file)
+        kwargs["password_strength"] = len(field.data) * 10
         response = make_response(
             form_macro.module.render_field(
                 field, *args, **kwargs, **self.render_field_extra_context

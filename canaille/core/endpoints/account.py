@@ -656,7 +656,7 @@ def profile_edition(user, edited_user):
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
 @user_needed()
-def profile_settings(user, edited_user):
+def profile_settings(user, edited_user, password_strength=0):
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
     ):
@@ -667,7 +667,7 @@ def profile_settings(user, edited_user):
         or request.form.get("action") == "edit-settings"
         or request_is_htmx()
     ):
-        return profile_settings_edit(user, edited_user)
+        return profile_settings_edit(user, edited_user, request.args.get("pwds", 0))
 
     if request.form.get("action") == "confirm-delete":
         return render_template("modals/delete-account.html", edited_user=edited_user)
@@ -744,7 +744,7 @@ def profile_settings(user, edited_user):
     abort(400, f"bad form action: {request.form.get('action')}")
 
 
-def profile_settings_edit(editor, edited_user):
+def profile_settings_edit(editor, edited_user, password_strength=0):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
 
@@ -783,12 +783,13 @@ def profile_settings_edit(editor, edited_user):
                 and form["password1"].data
                 and request.form["action"] == "edit-settings"
             ):
+                password_strength = len(form["password1"].data) * 10
                 Backend.instance.set_user_password(edited_user, form["password1"].data)
 
             Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
             return redirect(
-                url_for("core.account.profile_settings", edited_user=edited_user)
+                url_for("core.account.profile_settings", edited_user=edited_user, pwds=password_strength)
             )
 
     return render_template(
@@ -797,6 +798,7 @@ def profile_settings_edit(editor, edited_user):
         menuitem=menuitem,
         edited_user=edited_user,
         self_deletion=edited_user.can_delete_account,
+        password_strength=password_strength
     )
 
 

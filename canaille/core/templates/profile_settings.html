@@ -75,7 +75,7 @@
             {% if "password1" in form %}
                 {% block password_field scoped %}
                     <div class="two fields">
-                        {{ render_field(form.password1, noindicator=true) }}
+                        {{ render_field(form.password1, password_strength=password_strength, noindicator=true) }}
                         {{ render_field(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
