@@ -93,7 +93,7 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
             "HX-Trigger-Name": "password1",
         },
     )
-    res.mustcontain("Field must be at least 8 characters long.")
+    res.mustcontain("Password is too short, minimum length: 8")
 
 
 def test_edition_without_groups(

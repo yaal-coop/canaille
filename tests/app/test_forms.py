@@ -262,7 +262,7 @@ def test_phone_number_validator():
         phone_number(None, Field("invalid"))
 
 
-def test_password_strength_validator(testclient):
+def test_minimum_password_length_config(testclient):
 
     class Field:
         def __init__(self, data):
@@ -279,3 +279,17 @@ def test_password_strength_validator(testclient):
 
     with pytest.raises(wtforms.ValidationError):
         password_length(None, Field("1234567"))
+        password_length("Field must be at least 8 characters long.", Field("1"))
+
+
+def test_password_strength_progress_bar(testclient, logged_user):
+    res = testclient.get("/profile/user/settings", status=200)
+
+    res.form["password1"] = "new_password"
+    res.form["password2"] = "new_password"
+
+    res = res.form.submit(name="action", value="edit-settings").follow()
+    print(res.context)
+    assert res.context["password_strength"] == '21'
+
+    
