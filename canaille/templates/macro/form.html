@@ -115,9 +115,12 @@ del_button=false
     {% endfor %}
 {% endif %}
 
-{% if field.name == "password1" %}
-    <div class="ui indicating progress" data-percent="{{ password_strength }}">
-        <div class="bar" style="transition-duration: 300ms; display: block; width: {{ password_strength }}%;">
+{% if field.name == "password1" and password_strength and not field.errors %}
+    <div>
+        <p style="margin: 1em 0 0">Password strength</p>
+        <div class="ui indicating progress" data-percent="{{ password_strength }}"">
+            <div class="bar" style="width: {{ password_strength }}%;">
+            </div>
         </div>
     </div>
 {% endif %}

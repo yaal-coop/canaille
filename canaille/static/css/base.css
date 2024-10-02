@@ -255,4 +255,9 @@ select.ui.multiple.dropdown option[selected] {
         box-shadow: 0 0 0 100px #888888 inset !important;
         border: 1px solid rgba(255,255,255,0.87) !important;
     }
+    .ui.progress {
+        background: #222222;
+        margin-top: 0px;
+        padding-top: 0px;
+    }
 }
