@@ -9,6 +9,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import phone_number
 from canaille.app.forms import password_length
+from canaille.app.forms import password_too_long
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
@@ -292,4 +293,12 @@ def test_password_strength_progress_bar(testclient, logged_user):
     print(res.context)
     assert res.context["password_strength"] == '21'
 
-    
+def test_maximum_password_length_config(testclient):
+
+    class Field:
+        def __init__(self, data):
+            self.data = data
+
+    password_too_long(None, Field("a"*1001))
+    with pytest.raises(wtforms.ValidationError):
+        password_too_long("Invalid password", Field("a"*1002))

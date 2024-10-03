@@ -2,6 +2,7 @@ import datetime
 from unittest import mock
 
 from flask import g
+from flask import current_app
 
 from canaille.app import models
 
@@ -95,6 +96,27 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
     )
     res.mustcontain("Password is too short, minimum length: 8")
 
+def test_profile_settings_too_long_password(testclient, logged_user):
+    """Tests maximum length of password.
+    """
+    def with_different_values(password, message):
+        res = testclient.get("/profile/user/settings")
+        res = testclient.post(
+            "/profile/user/settings",
+            {
+                "csrf_token": res.form["csrf_token"].value,
+                "password1": password,
+            },
+            headers={
+                "HX-Request": "true",
+                "HX-Trigger-Name": "password1",
+            },
+        )
+        print(res.__dict__)
+        res.mustcontain(message)
+
+    with_different_values("a"*1003, "Invalid password")
+    with_different_values("a"*1001, 'password_strength="100"')
 
 def test_edition_without_groups(
     testclient,
