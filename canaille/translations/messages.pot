@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-12 19:28+0200\n"
+"POT-Creation-Date: 2024-10-03 10:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,11 +33,15 @@ msgstr ""
 msgid "Not a valid phone number"
 msgstr ""
 
-#: canaille/app/forms.py:206
+#: canaille/app/forms.py:51
+msgid "Password is too short, minimum length: {minimum_password_length}"
+msgstr ""
+
+#: canaille/app/forms.py:223
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:234
+#: canaille/app/forms.py:251
 msgid "Not a valid datetime value."
 msgstr ""
 
@@ -53,8 +57,8 @@ msgstr ""
 msgid "John Doe"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:164
-#: canaille/core/endpoints/forms.py:423
+#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:163
+#: canaille/core/endpoints/forms.py:422
 msgid "jdoe"
 msgstr ""
 
@@ -128,8 +132,8 @@ msgstr ""
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:299 canaille/core/endpoints/forms.py:313
-#: canaille/core/endpoints/forms.py:441 canaille/core/templates/groups.html:5
+#: canaille/core/endpoints/account.py:299 canaille/core/endpoints/forms.py:312
+#: canaille/core/endpoints/forms.py:440 canaille/core/templates/groups.html:5
 #: canaille/core/templates/groups.html:23
 #: canaille/core/templates/partial/group-members.html:15
 #: canaille/core/templates/partial/users.html:18
@@ -137,114 +141,114 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:336
-#: canaille/core/endpoints/account.py:429
+#: canaille/core/endpoints/account.py:340
+#: canaille/core/endpoints/account.py:433
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:347
+#: canaille/core/endpoints/account.py:351
 msgid "Your account has been created successfully."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:362
-#: canaille/core/endpoints/account.py:384
+#: canaille/core/endpoints/account.py:366
+#: canaille/core/endpoints/account.py:388
 msgid "The email confirmation link that brought you here is invalid."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:369
+#: canaille/core/endpoints/account.py:373
 msgid "The email confirmation link that brought you here has expired."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:376
+#: canaille/core/endpoints/account.py:380
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:391
+#: canaille/core/endpoints/account.py:395
 msgid "This address email have already been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:398
+#: canaille/core/endpoints/account.py:402
 msgid "This address email is already associated with another account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:405
+#: canaille/core/endpoints/account.py:409
 msgid "Your email address have been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:439
+#: canaille/core/endpoints/account.py:443
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:610
-#: canaille/core/endpoints/account.py:771
+#: canaille/core/endpoints/account.py:614
+#: canaille/core/endpoints/account.py:776
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:614
-#: canaille/core/endpoints/account.py:786
+#: canaille/core/endpoints/account.py:618
+#: canaille/core/endpoints/account.py:791
 msgid "Profile updated successfully."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:621
+#: canaille/core/endpoints/account.py:625
 msgid "Email addition failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:626
+#: canaille/core/endpoints/account.py:630
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:633
+#: canaille/core/endpoints/account.py:637
 msgid "Could not send the verification email"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:643
+#: canaille/core/endpoints/account.py:647
 msgid "Email deletion failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:646
+#: canaille/core/endpoints/account.py:650
 msgid "The email have been successfully deleted."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:683
+#: canaille/core/endpoints/account.py:687
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:690 canaille/core/endpoints/auth.py:159
+#: canaille/core/endpoints/account.py:694 canaille/core/endpoints/auth.py:159
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:701
+#: canaille/core/endpoints/account.py:705
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:708
+#: canaille/core/endpoints/account.py:712
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:724
+#: canaille/core/endpoints/account.py:728
 msgid "The account has been locked"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:735
+#: canaille/core/endpoints/account.py:739
 msgid "The account has been unlocked"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:806
+#: canaille/core/endpoints/account.py:812
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:823
+#: canaille/core/endpoints/account.py:829
 msgid "Locked users cannot be impersonated."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:827 canaille/core/endpoints/auth.py:112
+#: canaille/core/endpoints/account.py:833 canaille/core/endpoints/auth.py:112
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
@@ -254,10 +258,10 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:97
-#: canaille/core/endpoints/forms.py:120 canaille/core/endpoints/forms.py:209
-#: canaille/core/endpoints/forms.py:409 canaille/core/endpoints/forms.py:435
-#: canaille/core/endpoints/forms.py:459 canaille/core/endpoints/forms.py:475
+#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:96
+#: canaille/core/endpoints/forms.py:119 canaille/core/endpoints/forms.py:208
+#: canaille/core/endpoints/forms.py:408 canaille/core/endpoints/forms.py:434
+#: canaille/core/endpoints/forms.py:458 canaille/core/endpoints/forms.py:474
 msgid "jane@doe.com"
 msgstr ""
 
@@ -326,66 +330,66 @@ msgstr ""
 msgid "Your password has been updated successfully"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:31
+#: canaille/core/endpoints/forms.py:30
 msgid "The user name '{user_name}' already exists"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:40
+#: canaille/core/endpoints/forms.py:39
 msgid "The email '{email}' is already used"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:47
+#: canaille/core/endpoints/forms.py:46
 msgid "The group '{group}' already exists"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:56
+#: canaille/core/endpoints/forms.py:55
 msgid "The login '{login}' does not exist"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:63
+#: canaille/core/endpoints/forms.py:62
 msgid "The user you are trying to remove does not exist."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:68
+#: canaille/core/endpoints/forms.py:67
 msgid "The user '{user}' has already been removed from the group '{group}'"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:86
+#: canaille/core/endpoints/forms.py:85
 msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:94 canaille/core/endpoints/forms.py:117
+#: canaille/core/endpoints/forms.py:93 canaille/core/endpoints/forms.py:116
 #: canaille/core/templates/partial/group-members.html:9
 #: canaille/core/templates/partial/users.html:9
 msgid "Login"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:107 canaille/core/endpoints/forms.py:129
-#: canaille/core/endpoints/forms.py:263
+#: canaille/core/endpoints/forms.py:106 canaille/core/endpoints/forms.py:128
+#: canaille/core/endpoints/forms.py:262
 #: canaille/core/templates/profile_settings.html:63
 msgid "Password"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:136 canaille/core/endpoints/forms.py:273
+#: canaille/core/endpoints/forms.py:135 canaille/core/endpoints/forms.py:272
 msgid "Password confirmation"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:139 canaille/core/endpoints/forms.py:276
+#: canaille/core/endpoints/forms.py:138 canaille/core/endpoints/forms.py:275
 msgid "Password and confirmation do not match."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:158
+#: canaille/core/endpoints/forms.py:157
 msgid "Automatic"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:163
+#: canaille/core/endpoints/forms.py:162
 msgid "Username"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:167 canaille/core/endpoints/forms.py:365
-#: canaille/core/endpoints/forms.py:379
+#: canaille/core/endpoints/forms.py:166 canaille/core/endpoints/forms.py:364
+#: canaille/core/endpoints/forms.py:378
 #: canaille/core/templates/partial/group-members.html:12
 #: canaille/core/templates/partial/groups.html:6
 #: canaille/core/templates/partial/users.html:12
@@ -394,165 +398,165 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:169
+#: canaille/core/endpoints/forms.py:168
 msgid "Title"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:169
+#: canaille/core/endpoints/forms.py:168
 msgid "Vice president"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:172
+#: canaille/core/endpoints/forms.py:171
 msgid "Given name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:174
+#: canaille/core/endpoints/forms.py:173
 msgid "John"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:180
+#: canaille/core/endpoints/forms.py:179
 msgid "Family Name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:183
+#: canaille/core/endpoints/forms.py:182
 msgid "Doe"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:189
+#: canaille/core/endpoints/forms.py:188
 msgid "Display Name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:192
+#: canaille/core/endpoints/forms.py:191
 msgid "Johnny"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:199 canaille/core/endpoints/forms.py:465
+#: canaille/core/endpoints/forms.py:198 canaille/core/endpoints/forms.py:464
 #: canaille/core/templates/profile_edit.html:176
 msgid "Email addresses"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:205 canaille/core/endpoints/forms.py:455
+#: canaille/core/endpoints/forms.py:204 canaille/core/endpoints/forms.py:454
 msgid ""
 "This email will be used as a recovery address to reset the password if "
 "needed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:219
+#: canaille/core/endpoints/forms.py:218
 msgid "Phone numbers"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:220
+#: canaille/core/endpoints/forms.py:219
 msgid "555-000-555"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:227
+#: canaille/core/endpoints/forms.py:226
 msgid "Address"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:229
+#: canaille/core/endpoints/forms.py:228
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:233
+#: canaille/core/endpoints/forms.py:232
 msgid "Street"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:235
+#: canaille/core/endpoints/forms.py:234
 msgid "132, Foobar Street"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:239
+#: canaille/core/endpoints/forms.py:238
 msgid "Postal Code"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:245
+#: canaille/core/endpoints/forms.py:244
 msgid "Locality"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:247
+#: canaille/core/endpoints/forms.py:246
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:251
+#: canaille/core/endpoints/forms.py:250
 msgid "Region"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:253
+#: canaille/core/endpoints/forms.py:252
 msgid "North Pole"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:257
+#: canaille/core/endpoints/forms.py:256
 msgid "Photo"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:261
+#: canaille/core/endpoints/forms.py:260
 #: canaille/core/templates/profile_add.html:56
 #: canaille/core/templates/profile_edit.html:64
 msgid "Delete the photo"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:284
+#: canaille/core/endpoints/forms.py:283
 msgid "User number"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:286 canaille/core/endpoints/forms.py:292
+#: canaille/core/endpoints/forms.py:285 canaille/core/endpoints/forms.py:291
 msgid "1234"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:290
+#: canaille/core/endpoints/forms.py:289
 msgid "Department"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:296
+#: canaille/core/endpoints/forms.py:295
 msgid "Organization"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:298
+#: canaille/core/endpoints/forms.py:297
 msgid "Cogip LTD."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:302
+#: canaille/core/endpoints/forms.py:301
 msgid "Website"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:304
+#: canaille/core/endpoints/forms.py:303
 msgid "https://mywebsite.tld"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:309
+#: canaille/core/endpoints/forms.py:308
 msgid "Preferred language"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:319
+#: canaille/core/endpoints/forms.py:318
 msgid "users, admins …"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:344
+#: canaille/core/endpoints/forms.py:343
 msgid "Account expiration"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:368
+#: canaille/core/endpoints/forms.py:367
 msgid "group"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:372 canaille/core/endpoints/forms.py:389
+#: canaille/core/endpoints/forms.py:371 canaille/core/endpoints/forms.py:388
 #: canaille/core/templates/partial/groups.html:7
 msgid "Description"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:403 canaille/core/endpoints/forms.py:428
+#: canaille/core/endpoints/forms.py:402 canaille/core/endpoints/forms.py:427
 msgid "Email address"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:422
+#: canaille/core/endpoints/forms.py:421
 msgid "User name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:426
+#: canaille/core/endpoints/forms.py:425
 msgid "Username editable by the invitee"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:468
+#: canaille/core/endpoints/forms.py:467
 msgid "New email address"
 msgstr ""
 
@@ -1519,11 +1523,11 @@ msgstr ""
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:355
+#: canaille/oidc/endpoints/oauth.py:357
 msgid "You have been disconnected"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:372
+#: canaille/oidc/endpoints/oauth.py:374
 msgid "You have not been disconnected"
 msgstr ""
 
@@ -1574,7 +1578,7 @@ msgstr ""
 #: canaille/oidc/templates/client_edit.html:43
 #: canaille/oidc/templates/client_edit.html:52
 #: canaille/oidc/templates/client_edit.html:61
-#: canaille/templates/macro/form.html:67
+#: canaille/templates/macro/form.html:68
 msgid "This field is not editable"
 msgstr ""
 
@@ -1820,16 +1824,20 @@ msgstr ""
 msgid "Please contact your administrator"
 msgstr ""
 
-#: canaille/templates/macro/form.html:71
+#: canaille/templates/macro/form.html:72
 msgid "This field is required"
 msgstr ""
 
-#: canaille/templates/macro/form.html:84
+#: canaille/templates/macro/form.html:85
 msgid "Remove this field"
 msgstr ""
 
-#: canaille/templates/macro/form.html:96
+#: canaille/templates/macro/form.html:97
 msgid "Add another field"
+msgstr ""
+
+#: canaille/templates/macro/form.html:120
+msgid "Password strength"
 msgstr ""
 
 #: canaille/templates/macro/table.html:8
