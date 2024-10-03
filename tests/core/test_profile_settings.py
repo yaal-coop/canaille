@@ -96,6 +96,29 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
     )
     res.mustcontain("Password is too short, minimum length: 8")
 
+def test_profile_settings_minimum_password_length_validation(testclient, logged_user):
+    """Tests minimum length of password defined in configuration.
+    """
+    def with_different_values(password, length):
+        current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = length
+        res = testclient.get("/profile/user/settings")
+        res = testclient.post(
+            "/profile/user/settings",
+            {
+                "csrf_token": res.form["csrf_token"].value,
+                "password1": password,
+            },
+            headers={
+                "HX-Request": "true",
+                "HX-Trigger-Name": "password1",
+            },
+        )
+        res.mustcontain(f"Password is too short, minimum length: {length}")
+
+    with_different_values("short", 8)
+    with_different_values("aa", 3)
+    with_different_values("1234567890123456789", 20)
+
 def test_profile_settings_too_long_password(testclient, logged_user):
     """Tests maximum length of password.
     """
