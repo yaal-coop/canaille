@@ -59,6 +59,17 @@ def email_validator(form, field):
 
     wtforms.validators.Email()(form, field)
 
+def password_strength_validator(password):
+    strength_score = 0
+    if password and type(password) is str:
+        has_lower = any(c.islower() for c in password)
+        has_upper = any(c.isupper() for c in password)
+        has_digit = any(c.isdigit() for c in password)
+        has_special = any(not c.isalnum() for c in password)
+
+        strength_score = min(100, round(math.log10(sum([has_lower*26, has_upper*26, has_digit*10, has_special*33])**len(password))))
+
+    return strength_score
 
 meta = DefaultMeta()
 
@@ -118,7 +129,7 @@ class HTMXFormMixin:
 
     def render_field(self, field, *args, **kwargs):
         form_macro = current_app.jinja_env.get_template(self.render_field_macro_file)
-        kwargs["password_strength"] = len(field.data) * 10
+        kwargs["password_strength"] = password_strength_validator(field.data)
         response = make_response(
             form_macro.module.render_field(
                 field, *args, **kwargs, **self.render_field_extra_context

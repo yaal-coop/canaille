@@ -42,6 +42,7 @@ from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
 from canaille.backends import Backend
+from canaille.app.forms import password_strength_validator
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -770,6 +771,7 @@ def profile_settings_edit(editor, edited_user, password_strength=0):
         and request.form.get("action") == "edit-settings"
         or request_is_htmx()
     ):
+        password_strength = password_strength_validator(form["password1"].data)
         if not form.validate():
             flash(_("Profile edition failed."), "error")
 
@@ -783,7 +785,6 @@ def profile_settings_edit(editor, edited_user, password_strength=0):
                 and form["password1"].data
                 and request.form["action"] == "edit-settings"
             ):
-                password_strength = len(form["password1"].data) * 10
                 Backend.instance.set_user_password(edited_user, form["password1"].data)
 
             Backend.instance.save(edited_user)
