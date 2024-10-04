@@ -10,6 +10,7 @@ from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import phone_number
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
+from canaille.app.forms import pwned_password_validator
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
@@ -280,7 +281,8 @@ def test_minimum_password_length_config(testclient):
 
     with pytest.raises(wtforms.ValidationError):
         password_length_validator(None, Field("1234567"))
-        password_length_validator("Field must be at least 8 characters long.", Field("1"))
+    with pytest.raises(wtforms.ValidationError):
+        password_length_validator("Field must be at least 72 characters long.", Field("1"))
 
 
 def test_password_strength_progress_bar(testclient, logged_user):
@@ -300,4 +302,28 @@ def test_maximum_password_length_config(testclient):
 
     password_too_long_validator(None, Field("a"*1001))
     with pytest.raises(wtforms.ValidationError):
-        password_too_long_validator("Invalid password", Field("a"*1002))
+        password_too_long_validator(None, Field("a"*1002))
+
+def test_pwned_password(testclient, logged_user):
+    '''this function only works with password length >= min_password_length (default = 8)
+    '''
+    class Field:
+        def __init__(self, data):
+            self.data = data
+
+    pwned_password_validator(None, Field("i'm a little pea"))
+
+    with pytest.raises(wtforms.ValidationError):
+        pwned_password_validator(None, Field("1234567890"))
+    with pytest.raises(wtforms.ValidationError):
+        pwned_password_validator(None, Field("azertyuiop"))
+    with pytest.raises(wtforms.ValidationError):
+        pwned_password_validator(None, Field("aaaaaaaaaa"))
+    with pytest.raises(wtforms.ValidationError):
+        pwned_password_validator(None, Field("password"))
+    
+    current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = 1
+    pwned_password_validator(None, Field("kjvw"))
+    with pytest.raises(wtforms.ValidationError):
+        pwned_password_validator(None, Field("pass"))
+    
