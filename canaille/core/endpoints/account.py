@@ -316,14 +316,14 @@ def registration(data=None, hash=None):
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
         wtforms.validators.Length(
-            min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]
+            min=current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
         ),
         password_too_long_validator,
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
         wtforms.validators.Length(
-            min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]
+            min=current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
         ),
     ]
     form["password1"].flags.required = True

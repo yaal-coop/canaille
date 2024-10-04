@@ -303,7 +303,7 @@ class CoreSettings(BaseModel):
         WRITE = ["user_name", "groups"]
     """
 
-    PASSWORD_LENGTH: Optional[int] = 8
+    MIN_PASSWORD_LENGTH: Optional[int] = 8
     """Minimum length for user password.
 
     Defaults to 8.

@@ -20,7 +20,7 @@ from canaille.backends import Backend
 from . import validate_uri
 from .flask import request_is_htmx
 
-HIGH_LIMIT_PASSWORD_LENGTH = 1001
+MAX_PASSWORD_LENGTH = 1001
 
 def is_uri(form, field):
     if not validate_uri(field.data):
@@ -48,11 +48,11 @@ def phone_number(form, field):
 
 
 def password_length_validator(form, field):
-    if len(field.data) < (minimum_password_length := current_app.config["CANAILLE"]["PASSWORD_LENGTH"]):
+    if len(field.data) < (minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]):
         raise wtforms.ValidationError(_("Password is too short, minimum length: {minimum_password_length}").format(minimum_password_length=str(minimum_password_length)))
 
 def password_too_long_validator(form, field):
-    if len(field.data) > (HIGH_LIMIT_PASSWORD_LENGTH):
+    if len(field.data) > (MAX_PASSWORD_LENGTH):
         raise wtforms.ValidationError(_("Invalid password"))
 
 def password_strength_calculator(password):
