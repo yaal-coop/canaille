@@ -280,7 +280,8 @@ def test_minimum_password_length_config(testclient):
 
     with pytest.raises(wtforms.ValidationError):
         password_length_validator(None, Field("1234567"))
-        password_length_validator("Field must be at least 8 characters long.", Field("1"))
+    with pytest.raises(wtforms.ValidationError):
+        password_length_validator(None, Field("1"))
 
 
 def test_password_strength_progress_bar(testclient, logged_user):
@@ -300,4 +301,4 @@ def test_maximum_password_length_config(testclient):
 
     password_too_long_validator(None, Field("a"*1001))
     with pytest.raises(wtforms.ValidationError):
-        password_too_long_validator("Invalid password", Field("a"*1002))
+        password_too_long_validator(None, Field("a"*1002))
