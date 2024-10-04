@@ -100,7 +100,7 @@ def test_profile_settings_minimum_password_length_validation(testclient, logged_
     """Tests minimum length of password defined in configuration.
     """
     def with_different_values(password, length):
-        current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = length
+        current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = length
         res = testclient.get("/profile/user/settings")
         res = testclient.post(
             "/profile/user/settings",
@@ -135,7 +135,6 @@ def test_profile_settings_too_long_password(testclient, logged_user):
                 "HX-Trigger-Name": "password1",
             },
         )
-        print(res.__dict__)
         res.mustcontain(message)
 
     with_different_values("a"*1003, "Invalid password")

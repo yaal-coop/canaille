@@ -269,13 +269,13 @@ def test_minimum_password_length_config(testclient):
         def __init__(self, data):
             self.data = data
 
-    current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = 20
+    current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = 20
     password_length_validator(None, Field("12345678901234567890"))
 
     with pytest.raises(wtforms.ValidationError):
         password_length_validator(None, Field("1234567890123456789"))
 
-    current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = 8
+    current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = 8
     password_length_validator(None, Field("12345678"))
 
     with pytest.raises(wtforms.ValidationError):
@@ -290,7 +290,6 @@ def test_password_strength_progress_bar(testclient, logged_user):
     res.form["password2"] = "new_password"
 
     res = res.form.submit(name="action", value="edit-settings").follow()
-    print(res.context)
     assert res.context["password_strength"] == '21'
 
 def test_maximum_password_length_config(testclient):
