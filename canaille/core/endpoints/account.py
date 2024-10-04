@@ -42,8 +42,8 @@ from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
 from canaille.backends import Backend
-from canaille.app.forms import password_strength_validator
-from canaille.app.forms import password_too_long
+from canaille.app.forms import password_strength_calculator
+from canaille.app.forms import password_too_long_validator
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -318,7 +318,7 @@ def registration(data=None, hash=None):
         wtforms.validators.Length(
             min=current_app.config["CANAILLE"]["PASSWORD_LENGTH"]
         ),
-        password_too_long,
+        password_too_long_validator,
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
@@ -773,7 +773,7 @@ def profile_settings_edit(editor, edited_user, password_strength=0):
         and request.form.get("action") == "edit-settings"
         or request_is_htmx()
     ):
-        password_strength = password_strength_validator(form["password1"].data)
+        password_strength = password_strength_calculator(form["password1"].data)
         if not form.validate():
             flash(_("Profile edition failed."), "error")
 

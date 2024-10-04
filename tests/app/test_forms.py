@@ -8,8 +8,8 @@ from werkzeug.datastructures import ImmutableMultiDict
 
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import phone_number
-from canaille.app.forms import password_length
-from canaille.app.forms import password_too_long
+from canaille.app.forms import password_length_validator
+from canaille.app.forms import password_too_long_validator
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
@@ -270,17 +270,17 @@ def test_minimum_password_length_config(testclient):
             self.data = data
 
     current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = 20
-    password_length(None, Field("12345678901234567890"))
+    password_length_validator(None, Field("12345678901234567890"))
 
     with pytest.raises(wtforms.ValidationError):
-        password_length(None, Field("1234567890123456789"))
+        password_length_validator(None, Field("1234567890123456789"))
 
     current_app.config["CANAILLE"]["PASSWORD_LENGTH"] = 8
-    password_length(None, Field("12345678"))
+    password_length_validator(None, Field("12345678"))
 
     with pytest.raises(wtforms.ValidationError):
-        password_length(None, Field("1234567"))
-        password_length("Field must be at least 8 characters long.", Field("1"))
+        password_length_validator(None, Field("1234567"))
+        password_length_validator("Field must be at least 8 characters long.", Field("1"))
 
 
 def test_password_strength_progress_bar(testclient, logged_user):
@@ -299,6 +299,6 @@ def test_maximum_password_length_config(testclient):
         def __init__(self, data):
             self.data = data
 
-    password_too_long(None, Field("a"*1001))
+    password_too_long_validator(None, Field("a"*1001))
     with pytest.raises(wtforms.ValidationError):
-        password_too_long("Invalid password", Field("a"*1002))
+        password_too_long_validator("Invalid password", Field("a"*1002))

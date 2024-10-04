@@ -15,8 +15,8 @@ from canaille.app.forms import is_uri
 from canaille.app.forms import phone_number
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
-from canaille.app.forms import password_length
-from canaille.app.forms import password_too_long
+from canaille.app.forms import password_length_validator
+from canaille.app.forms import password_too_long_validator
 from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
@@ -263,8 +263,8 @@ PROFILE_FORM_FIELDS = dict(
         _("Password"),
         validators=[
             wtforms.validators.Optional(),
-            password_length,
-            password_too_long,
+            password_length_validator,
+            password_too_long_validator,
         ],
         render_kw={
             "autocomplete": "new-password",
