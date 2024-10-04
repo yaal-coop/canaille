@@ -165,25 +165,25 @@ def test_edition_without_groups(
 def test_password_change(testclient, logged_user, backend):
     res = testclient.get("/profile/user/settings", status=200)
 
-    res.form["password1"] = "new_password"
-    res.form["password2"] = "new_password"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
 
     res = res.form.submit(name="action", value="edit-settings").follow()
 
     backend.reload(logged_user)
-    assert backend.check_user_password(logged_user, "new_password")[0]
+    assert backend.check_user_password(logged_user, "i'm a little pea")[0]
 
     res = testclient.get("/profile/user/settings", status=200)
 
-    res.form["password1"] = "correct horse battery staple"
-    res.form["password2"] = "correct horse battery staple"
+    res.form["password1"] = "i'm singing in the rain"
+    res.form["password2"] = "i'm singing in the rain"
 
     res = res.form.submit(name="action", value="edit-settings")
     assert ("success", "Profile updated successfully.") in res.flashes
     res = res.follow()
 
     backend.reload(logged_user)
-    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
+    assert backend.check_user_password(logged_user, "i'm singing in the rain")[0]
 
 
 def test_password_change_fail(testclient, logged_user, backend):

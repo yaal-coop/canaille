@@ -15,8 +15,8 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     assert not backend.query(models.User, user_name="newuser")
     res = testclient.get(url_for("core.account.registration"), status=200)
     res.form["user_name"] = "newuser"
-    res.form["password1"] = "password"
-    res.form["password2"] = "password"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["family_name"] = "newuser"
     res.form["emails-0"] = "newuser@example.com"
     res = res.form.submit()
@@ -64,8 +64,8 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
     with time_machine.travel("2020-01-01 02:01:00+00:00", tick=False):
         res = testclient.get(registration_url, status=200)
         res.form["user_name"] = "newuser"
-        res.form["password1"] = "password"
-        res.form["password2"] = "password"
+        res.form["password1"] = "i'm a little pea"
+        res.form["password2"] = "i'm a little pea"
         res.form["family_name"] = "newuser"
         res = res.form.submit()
 
