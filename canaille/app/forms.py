@@ -9,6 +9,7 @@ from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms.meta import DefaultMeta
+from passpwnedcheck.pass_checker import PassChecker
 
 from canaille.app import models
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
@@ -54,6 +55,11 @@ def password_length_validator(form, field):
 def password_too_long_validator(form, field):
     if len(field.data) > (MAX_PASSWORD_LENGTH):
         raise wtforms.ValidationError(_("Invalid password"))
+
+def pwned_password_validator(form,field):
+    is_leaked = PassChecker().is_password_compromised(field.data)
+    if is_leaked[0] and len(field.data) >= current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]:
+        raise wtforms.ValidationError(_("This password is compromised."))
 
 def password_strength_calculator(password):
     strength_score = 0

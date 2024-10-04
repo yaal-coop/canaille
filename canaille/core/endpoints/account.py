@@ -44,6 +44,7 @@ from canaille.app.themes import render_template
 from canaille.backends import Backend
 from canaille.app.forms import password_strength_calculator
 from canaille.app.forms import password_too_long_validator
+from canaille.app.forms import pwned_password_validator
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -319,6 +320,7 @@ def registration(data=None, hash=None):
             min=current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
         ),
         password_too_long_validator,
+        pwned_password_validator,
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
