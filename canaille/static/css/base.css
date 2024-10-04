@@ -74,6 +74,9 @@ footer a {
     color: rgba(0,0,0,1);
 }
 
+.progress_bar:first-child {
+    margin: 1em 0 .28571429rem 0;
+}
 
 /* Fix button appearance for semantic-ui on webkit */
 [type=button] {
@@ -257,7 +260,5 @@ select.ui.multiple.dropdown option[selected] {
     }
     .ui.progress {
         background: #222222;
-        margin-top: 0px;
-        padding-top: 0px;
     }
 }

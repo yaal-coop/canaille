@@ -117,7 +117,7 @@ del_button=false
 
 {% if field.name == "password1" and password_strength and not field.errors %}
     <div>
-        <p style="margin: 1em 0 0">{% trans %}Password strength{% endtrans %}</p>
+        <p class="progress_bar">{% trans %}Password strength{% endtrans %}</p>
         <div class="ui indicating progress" data-percent="{{ password_strength }}"">
             <div class="bar" style="width: {{ password_strength }}%;">
             </div>
