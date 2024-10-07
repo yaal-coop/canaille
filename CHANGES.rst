@@ -1,6 +1,10 @@
 [0.0.56] - Unreleased
 ---------------------
 
+Changed
+^^^^^^^
+- Update to HTMX 2.0.3 :pr:`184`
+
 Removed
 ^^^^^^^
 - End support for python 3.9. :pr:`179`
