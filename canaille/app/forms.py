@@ -55,18 +55,6 @@ def password_too_long_validator(form, field):
     if len(field.data) > (MAX_PASSWORD_LENGTH):
         raise wtforms.ValidationError(_("Invalid password"))
 
-def password_strength_calculator(password):
-    strength_score = 0
-    if password and type(password) is str:
-        has_lower = any(c.islower() for c in password)
-        has_upper = any(c.isupper() for c in password)
-        has_digit = any(c.isdigit() for c in password)
-        has_special = any(not c.isalnum() for c in password)
-
-        strength_score = min(100, round(math.log10(sum([has_lower*26, has_upper*26, has_digit*10, has_special*33])**len(password))))
-
-    return strength_score
-
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401
@@ -134,7 +122,6 @@ class HTMXFormMixin:
 
     def render_field(self, field, *args, **kwargs):
         form_macro = current_app.jinja_env.get_template(self.render_field_macro_file)
-        kwargs["password_strength"] = password_strength_calculator(field.data)
         response = make_response(
             form_macro.module.render_field(
                 field, *args, **kwargs, **self.render_field_extra_context

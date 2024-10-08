@@ -17,7 +17,6 @@ del_button=false
 {% set lock_indicator = readonly or disabled %}
 {% set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required) %}
 {% set inline_validation = field.validators and field.type not in ("FileField", "MultipleFileField") %}
-{% set password_strength = kwargs.get("password_strength") %}
 {% if inline_validation %}
     {% set ignore_me = kwargs.update({"hx-post": ""}) %}
     {% set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms"}) %}
@@ -115,11 +114,11 @@ del_button=false
     {% endfor %}
 {% endif %}
 
-{% if field.name == "password1" and password_strength and not field.errors %}
+{% if field.name == "password1" and field.data|password_strength and not field.errors %}
     <div>
         <p class="progress_bar">{% trans %}Password strength{% endtrans %}</p>
-        <div class="ui indicating progress" data-percent="{{ password_strength }}"">
-            <div class="bar" style="width: {{ password_strength }}%;">
+        <div class="ui indicating progress" data-percent="{{ field.data|password_strength }}"">
+            <div class="bar" style="width: {{ field.data|password_strength }}%;">
             </div>
         </div>
     </div>

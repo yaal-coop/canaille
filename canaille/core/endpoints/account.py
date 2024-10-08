@@ -42,7 +42,6 @@ from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
 from canaille.backends import Backend
-from canaille.app.forms import password_strength_calculator
 from canaille.app.forms import password_too_long_validator
 
 from ..mails import send_confirmation_email
@@ -659,7 +658,7 @@ def profile_edition(user, edited_user):
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
 @user_needed()
-def profile_settings(user, edited_user, password_strength=0):
+def profile_settings(user, edited_user):
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
     ):
@@ -670,7 +669,7 @@ def profile_settings(user, edited_user, password_strength=0):
         or request.form.get("action") == "edit-settings"
         or request_is_htmx()
     ):
-        return profile_settings_edit(user, edited_user, request.args.get("pwds", 0))
+        return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "confirm-delete":
         return render_template("modals/delete-account.html", edited_user=edited_user)
@@ -747,7 +746,7 @@ def profile_settings(user, edited_user, password_strength=0):
     abort(400, f"bad form action: {request.form.get('action')}")
 
 
-def profile_settings_edit(editor, edited_user, password_strength=0):
+def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
 
@@ -773,7 +772,6 @@ def profile_settings_edit(editor, edited_user, password_strength=0):
         and request.form.get("action") == "edit-settings"
         or request_is_htmx()
     ):
-        password_strength = password_strength_calculator(form["password1"].data)
         if not form.validate():
             flash(_("Profile edition failed."), "error")
 
@@ -792,7 +790,7 @@ def profile_settings_edit(editor, edited_user, password_strength=0):
             Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
             return redirect(
-                url_for("core.account.profile_settings", edited_user=edited_user, pwds=password_strength)
+                url_for("core.account.profile_settings", edited_user=edited_user)
             )
 
     return render_template(
@@ -801,7 +799,6 @@ def profile_settings_edit(editor, edited_user, password_strength=0):
         menuitem=menuitem,
         edited_user=edited_user,
         self_deletion=edited_user.can_delete_account,
-        password_strength=password_strength
     )
 
 
