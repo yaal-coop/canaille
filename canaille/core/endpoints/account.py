@@ -744,6 +744,7 @@ def profile_settings(user, edited_user):
 def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
+    request_ip = request.remote_addr or "unknown IP"
 
     available_fields = {"password", "groups", "user_name", "lock_date"}
     data = {
@@ -781,6 +782,9 @@ def profile_settings_edit(editor, edited_user):
                 and request.form["action"] == "edit-settings"
             ):
                 Backend.instance.set_user_password(edited_user, form["password1"].data)
+                current_app.logger.info(
+                f'Changed password in settings for {edited_user.user_name} from {request_ip}'
+                )
 
             Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
