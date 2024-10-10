@@ -49,11 +49,11 @@ def phone_number(form, field):
 
 def password_length_validator(form, field):
     if len(field.data) < (minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]):
-        raise wtforms.ValidationError(_("Password is too short, minimum length: {minimum_password_length}").format(minimum_password_length=str(minimum_password_length)))
+        raise wtforms.ValidationError(_("Field must be at least {minimum_password_length} characters long.").format(minimum_password_length=str(minimum_password_length)))
 
 def password_too_long_validator(form, field):
     if len(field.data) > (MAX_PASSWORD_LENGTH):
-        raise wtforms.ValidationError(_("Invalid password"))
+        raise wtforms.ValidationError(_("Field cannot be longer than {MAX_PASSWORD_LENGTH} characters.").format(MAX_PASSWORD_LENGTH=str(MAX_PASSWORD_LENGTH)))
 
 def email_validator(form, field):
     try:

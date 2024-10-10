@@ -94,7 +94,7 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
             "HX-Trigger-Name": "password1",
         },
     )
-    res.mustcontain("Password is too short, minimum length: 8")
+    res.mustcontain("Field must be at least 8 characters long.")
 
 def test_profile_settings_minimum_password_length_validation(testclient, logged_user):
     """Tests minimum length of password defined in configuration.
@@ -113,7 +113,7 @@ def test_profile_settings_minimum_password_length_validation(testclient, logged_
                 "HX-Trigger-Name": "password1",
             },
         )
-        res.mustcontain(f"Password is too short, minimum length: {length}")
+        res.mustcontain(f"Field must be at least {length} characters long.")
 
     with_different_values("short", 8)
     with_different_values("aa", 3)
@@ -137,8 +137,8 @@ def test_profile_settings_too_long_password(testclient, logged_user):
         )
         res.mustcontain(message)
 
-    with_different_values("a"*1003, "Invalid password")
-    with_different_values("a"*1001, 'password_strength="100"')
+    with_different_values("a"*1003, "Field cannot be longer than 1001 characters.")
+    with_different_values("a"*1001, 'data-percent="100"')
 
 def test_edition_without_groups(
     testclient,
