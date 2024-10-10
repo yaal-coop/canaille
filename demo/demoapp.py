@@ -156,6 +156,6 @@ def create_app():
     try:
         populate(app)
     except:
-        raise
+        app.logger.exception("Something happen during the app initialization")
 
     return app
