@@ -17,6 +17,7 @@ from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
 
 from canaille import csrf
+from canaille.app import generate_security_log
 from canaille.app import models
 from canaille.app.flask import current_user
 from canaille.app.flask import logout_user
@@ -178,6 +179,12 @@ def authorize_consent(client, user):
                 issue_date=datetime.datetime.now(datetime.timezone.utc),
             )
         Backend.instance.save(consent)
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.info(
+            generate_security_log(
+                f"New consent for {user.user_name} in client {consent.client.client_name} from {request_ip}"
+            )
+        )
 
     response = authorization.create_authorization_response(grant_user=grant_user)
     current_app.logger.debug("authorization endpoint response: %s", response.location)
@@ -187,11 +194,22 @@ def authorize_consent(client, user):
 @bp.route("/token", methods=["POST"])
 @csrf.exempt
 def issue_token():
-    current_app.logger.debug(
-        "token endpoint request: POST: %s", request.form.to_dict(flat=False)
-    )
+    request_params = request.form.to_dict(flat=False)
+    print(request_params["grant_type"])
+    grant_type = request_params["grant_type"][0]
+    current_app.logger.debug("token endpoint request: POST: %s", request_params)
     response = authorization.create_token_response()
     current_app.logger.debug("token endpoint response: %s", response.json)
+
+    if response.json.get("access_token"):
+        access_token = response.json["access_token"]
+        token = Backend.instance.get(models.Token, access_token=access_token)
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.info(
+            generate_security_log(
+                f"Issued {grant_type} token for {token.subject.user_name} in client {token.client.client_name} from {request_ip}"
+            )
+        )
     return response
 
 

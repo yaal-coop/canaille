@@ -1,7 +1,9 @@
 import datetime
+import logging
 
 from werkzeug.security import gen_salt
 
+from canaille.app import generate_security_log
 from canaille.app import models
 
 
@@ -134,13 +136,20 @@ def test_revoke_bad_request(testclient, token, logged_admin):
     res = res.form.submit(name="action", value="invalid", status=400)
 
 
-def test_revoke_token(testclient, token, logged_admin, backend):
+def test_revoke_token(testclient, token, logged_admin, backend, caplog):
     assert not token.revoked
 
     res = testclient.get(f"/admin/token/{token.token_id}")
     res = res.form.submit(name="action", value="confirm-revoke")
     res = res.form.submit(name="action", value="revoke")
     assert ("success", "The token has successfully been revoked.") in res.flashes
+    assert (
+        "canaille",
+        logging.INFO,
+        generate_security_log(
+            "Revoked token for user in client Some client by admin from unknown IP"
+        ),
+    ) in caplog.record_tuples
 
     backend.reload(token)
     assert token.revoked

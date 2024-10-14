@@ -1,6 +1,8 @@
+import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+from canaille.app import generate_security_log
 from canaille.app import models
 
 from . import client_credentials
@@ -10,7 +12,7 @@ def test_no_logged_no_access(testclient):
     testclient.get("/consent", status=403)
 
 
-def test_revokation(testclient, client, consent, logged_user, token, backend):
+def test_revokation(testclient, client, consent, logged_user, token, backend, caplog):
     res = testclient.get("/consent", status=200)
     res.mustcontain(client.client_name)
     res.mustcontain("Revoke access")
@@ -20,6 +22,13 @@ def test_revokation(testclient, client, consent, logged_user, token, backend):
 
     res = testclient.get(f"/consent/revoke/{consent.consent_id}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
+    assert (
+        "canaille",
+        logging.INFO,
+        generate_security_log(
+            f"Consent revoked for {logged_user.user_name} in client {client.client_name} from unknown IP"
+        ),
+    ) in caplog.record_tuples
     res = res.follow(status=200)
     res.mustcontain(no="Revoke access")
     res.mustcontain("Restore access")

@@ -4,6 +4,7 @@ from unittest import mock
 
 from flask import g
 
+from canaille.app import generate_security_log
 from canaille.app import models
 
 
@@ -141,7 +142,7 @@ def test_password_change(testclient, logged_user, backend, caplog):
     assert (
         "canaille",
         logging.INFO,
-        "Changed password in settings for user from unknown IP",
+        generate_security_log("Changed password in settings for user from unknown IP"),
     ) in caplog.record_tuples
 
     res = res.follow()

@@ -23,6 +23,7 @@ from werkzeug.datastructures import FileStorage
 from canaille.app import b64_to_obj
 from canaille.app import build_hash
 from canaille.app import default_fields
+from canaille.app import generate_security_log
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app.flask import current_user
@@ -575,6 +576,17 @@ def profile_edition_remove_email(user, edited_user, email):
     return True
 
 
+def has_email_changed(old_emails):
+    emailstr = "emails-"
+    i = 0
+    new_emails = set()
+    while request.form.get(emailstr + str(i)):
+        new_emails.add(request.form.get(emailstr + str(i)))
+        i += 1
+
+    return set(old_emails) != new_emails
+
+
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, edited_user):
@@ -583,6 +595,9 @@ def profile_edition(user, edited_user):
     ):
         abort(404)
 
+    is_email_modified = has_email_changed(user.emails)
+
+    request_ip = request.remote_addr or "unknown IP"
     menuitem = "profile" if edited_user.id == user.id else "users"
     emails_readonly = (
         current_app.features.has_email_confirmation and not user.can_manage_users
@@ -611,7 +626,16 @@ def profile_edition(user, edited_user):
             return render_template("profile_edit.html", **render_context)
 
         profile_edition_main_form_validation(user, edited_user, profile_form)
+
+        if is_email_modified:
+            current_app.logger.info(
+                generate_security_log(
+                    f"Updated email for {edited_user.user_name} from {request_ip}"
+                )
+            )
+
         flash(_("Profile updated successfully."), "success")
+
         return redirect(
             url_for("core.account.profile_edition", edited_user=edited_user)
         )
@@ -783,7 +807,9 @@ def profile_settings_edit(editor, edited_user):
             ):
                 Backend.instance.set_user_password(edited_user, form["password1"].data)
                 current_app.logger.info(
-                f'Changed password in settings for {edited_user.user_name} from {request_ip}'
+                    generate_security_log(
+                        f"Changed password in settings for {edited_user.user_name} from {request_ip}"
+                    )
                 )
 
             Backend.instance.save(edited_user)

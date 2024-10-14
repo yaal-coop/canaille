@@ -66,3 +66,7 @@ class classproperty:
 
     def __get__(self, obj, owner):
         return self.f(owner)
+
+
+def generate_security_log(message):
+    return "[SECURITY] " + message

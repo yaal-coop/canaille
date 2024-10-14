@@ -8,6 +8,7 @@ from flask import session
 from flask import url_for
 
 from canaille.app import build_hash
+from canaille.app import generate_security_log
 from canaille.app.flask import current_user
 from canaille.app.flask import login_user
 from canaille.app.flask import logout_user
@@ -96,7 +97,9 @@ def password():
     if not success:
         logout_user()
         current_app.logger.info(
-            f'Failed login attempt for {session["attempt_login"]} from {request_ip}'
+            generate_security_log(
+                f'Failed login attempt for {session["attempt_login"]} from {request_ip}'
+            )
         )
         flash(message or _("Login failed, please check your information"), "error")
         return render_template(
@@ -104,7 +107,9 @@ def password():
         )
 
     current_app.logger.info(
-        f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
+        generate_security_log(
+            f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
+        )
     )
     del session["attempt_login"]
     login_user(user)
@@ -121,7 +126,9 @@ def logout():
 
     if user:
         request_ip = request.remote_addr or "unknown IP"
-        current_app.logger.info(f"Logout {user.identifier} from {request_ip}")
+        current_app.logger.info(
+            generate_security_log(f"Logout {user.identifier} from {request_ip}")
+        )
 
         flash(
             _(
@@ -197,8 +204,16 @@ def forgotten():
         )
         return render_template("forgotten-password.html", form=form)
 
-    statuses = [send_password_reset_mail(user, email) for email in user.emails]
-    success = all(statuses)
+    request_ip = request.remote_addr or "unknown IP"
+    success = True
+    for email in user.emails:
+        if not send_password_reset_mail(user, email):
+            success = False
+        current_app.logger.info(
+            generate_security_log(
+                f"Sending a reset password mail to {email} for {user.user_name} from {request_ip}"
+            )
+        )
 
     if success:
         flash(success_message, "success")

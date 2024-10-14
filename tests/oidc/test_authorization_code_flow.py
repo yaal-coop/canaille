@@ -1,4 +1,5 @@
 import datetime
+import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
@@ -8,13 +9,14 @@ from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from flask import g
 from werkzeug.security import gen_salt
 
+from canaille.app import generate_security_log
 from canaille.app import models
 
 from . import client_credentials
 
 
 def test_nominal_case(
-    testclient, logged_user, client, keypair, trusted_client, backend
+    testclient, logged_user, client, keypair, trusted_client, backend, caplog
 ):
     assert not backend.query(models.Consent)
 
@@ -28,8 +30,14 @@ def test_nominal_case(
         ),
         status=200,
     )
-
     res = res.form.submit(name="answer", value="accept", status=302)
+    assert (
+        "canaille",
+        logging.INFO,
+        generate_security_log(
+            "New consent for user in client Some client from unknown IP"
+        ),
+    ) in caplog.record_tuples
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -89,7 +97,13 @@ def test_nominal_case(
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
-
+    assert (
+        "canaille",
+        logging.INFO,
+        generate_security_log(
+            "Issued authorization_code token for user in client Some client from unknown IP"
+        ),
+    ) in caplog.record_tuples
     res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {access_token}"},
