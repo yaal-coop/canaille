@@ -1,6 +1,16 @@
 [0.0.56] - Unreleased
 ---------------------
 
+Added
+- 1 new parameter : MAX_PASSWORD_LENGTH
+- 1 new validator : maximum password length (default 1000)
+- password strength progress bar
+
+Changed
+- MIN_PASSWORD_LENGTH become a parameter
+- all password tests and validator are supported by password1 field
+- password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test
+
 Removed
 ^^^^^^^
 - End support for python 3.9. :pr:`179`
