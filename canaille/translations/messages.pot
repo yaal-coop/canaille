@@ -1586,7 +1586,7 @@ msgstr ""
 #: canaille/oidc/templates/client_edit.html:43
 #: canaille/oidc/templates/client_edit.html:52
 #: canaille/oidc/templates/client_edit.html:61
-#: canaille/templates/macro/form.html:68
+#: canaille/templates/macro/form.html:67
 msgid "This field is not editable"
 msgstr ""
 
@@ -1832,19 +1832,19 @@ msgstr ""
 msgid "Please contact your administrator"
 msgstr ""
 
-#: canaille/templates/macro/form.html:72
+#: canaille/templates/macro/form.html:71
 msgid "This field is required"
 msgstr ""
 
-#: canaille/templates/macro/form.html:85
+#: canaille/templates/macro/form.html:84
 msgid "Remove this field"
 msgstr ""
 
-#: canaille/templates/macro/form.html:97
+#: canaille/templates/macro/form.html:96
 msgid "Add another field"
 msgstr ""
 
-#: canaille/templates/macro/form.html:120
+#: canaille/templates/macro/form.html:119
 msgid "Password strength"
 msgstr ""
 

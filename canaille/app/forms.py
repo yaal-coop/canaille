@@ -8,8 +8,8 @@ from flask import current_app
 from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms.meta import DefaultMeta
 from passpwnedcheck.pass_checker import PassChecker
+from wtforms.meta import DefaultMeta
 
 from canaille.app import models
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
@@ -21,7 +21,6 @@ from canaille.backends import Backend
 from . import validate_uri
 from .flask import request_is_htmx
 
-MAX_PASSWORD_LENGTH = 1001
 
 def is_uri(form, field):
     if not validate_uri(field.data):
@@ -49,17 +48,35 @@ def phone_number(form, field):
 
 
 def password_length_validator(form, field):
-    if len(field.data) < (minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]):
-        raise wtforms.ValidationError(_("Password is too short, minimum length: {minimum_password_length}").format(minimum_password_length=str(minimum_password_length)))
+    if len(field.data) < (
+        minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
+    ):
+        raise wtforms.ValidationError(
+            _(
+                "Field must be at least {minimum_password_length} characters long."
+            ).format(minimum_password_length=str(minimum_password_length))
+        )
+
 
 def password_too_long_validator(form, field):
-    if len(field.data) > (MAX_PASSWORD_LENGTH):
-        raise wtforms.ValidationError(_("Invalid password"))
+    if len(field.data) > (
+        maximum_password_length := current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"]
+    ):
+        raise wtforms.ValidationError(
+            _(
+                "Field cannot be longer than {maximum_password_length} characters."
+            ).format(maximum_password_length=str(maximum_password_length))
+        )
 
-def pwned_password_validator(form,field):
+
+def pwned_password_validator(form, field):
     is_leaked = PassChecker().is_password_compromised(field.data)
-    if is_leaked[0] and len(field.data) >= current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]:
+    if (
+        is_leaked[0]
+        and len(field.data) >= current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
+    ):
         raise wtforms.ValidationError(_("This password is compromised."))
+
 
 def password_strength_calculator(password):
     strength_score = 0
@@ -69,9 +86,25 @@ def password_strength_calculator(password):
         has_digit = any(c.isdigit() for c in password)
         has_special = any(not c.isalnum() for c in password)
 
-        strength_score = min(100, round(math.log10(sum([has_lower*26, has_upper*26, has_digit*10, has_special*33])**len(password))))
+        strength_score = min(
+            100,
+            round(
+                math.log10(
+                    sum(
+                        [
+                            has_lower * 26,
+                            has_upper * 26,
+                            has_digit * 10,
+                            has_special * 33,
+                        ]
+                    )
+                    ** len(password)
+                )
+            ),
+        )
 
     return strength_score
+
 
 def email_validator(form, field):
     try:
@@ -140,7 +173,6 @@ class HTMXFormMixin:
 
     def render_field(self, field, *args, **kwargs):
         form_macro = current_app.jinja_env.get_template(self.render_field_macro_file)
-        kwargs["password_strength"] = password_strength_calculator(field.data)
         response = make_response(
             form_macro.module.render_field(
                 field, *args, **kwargs, **self.render_field_extra_context

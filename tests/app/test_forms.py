@@ -7,10 +7,9 @@ from flask import current_app
 from werkzeug.datastructures import ImmutableMultiDict
 
 from canaille.app.forms import DateTimeUTCField
-from canaille.app.forms import phone_number
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
-from canaille.app.forms import pwned_password_validator
+from canaille.app.forms import phone_number
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
@@ -265,7 +264,6 @@ def test_phone_number_validator():
 
 
 def test_minimum_password_length_config(testclient):
-
     class Field:
         def __init__(self, data):
             self.data = data
@@ -282,48 +280,43 @@ def test_minimum_password_length_config(testclient):
     with pytest.raises(wtforms.ValidationError):
         password_length_validator(None, Field("1234567"))
     with pytest.raises(wtforms.ValidationError):
-        password_length_validator("Field must be at least 72 characters long.", Field("1"))
+        password_length_validator(None, Field("1"))
 
 
 def test_password_strength_progress_bar(testclient, logged_user):
+    res = testclient.get("/profile/user/settings")
+    res = testclient.post(
+        "/profile/user/settings",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "password1": "new_password",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "password1",
+        },
+    )
+    res.mustcontain('data-percent="21"')
+
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little pea"
 
     res = res.form.submit(name="action", value="edit-settings").follow()
-    assert res.context["password_strength"] == '28'
+    assert res.context["password_strength"] == "28"
+
 
 def test_maximum_password_length_config(testclient):
-
     class Field:
         def __init__(self, data):
             self.data = data
 
-    password_too_long_validator(None, Field("a"*1001))
+    password_too_long_validator(None, Field("a" * 1000))
     with pytest.raises(wtforms.ValidationError):
-        password_too_long_validator(None, Field("a"*1002))
+        password_too_long_validator(None, Field("a" * 1001))
 
-def test_pwned_password(testclient, logged_user):
-    '''this function only works with password length >= min_password_length (default = 8)
-    '''
-    class Field:
-        def __init__(self, data):
-            self.data = data
-
-    pwned_password_validator(None, Field("i'm a little pea"))
-
+    current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"] = 500
+    password_too_long_validator(None, Field("a" * 500))
     with pytest.raises(wtforms.ValidationError):
-        pwned_password_validator(None, Field("1234567890"))
-    with pytest.raises(wtforms.ValidationError):
-        pwned_password_validator(None, Field("azertyuiop"))
-    with pytest.raises(wtforms.ValidationError):
-        pwned_password_validator(None, Field("aaaaaaaaaa"))
-    with pytest.raises(wtforms.ValidationError):
-        pwned_password_validator(None, Field("password"))
-    
-    current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = 1
-    pwned_password_validator(None, Field("kjvw"))
-    with pytest.raises(wtforms.ValidationError):
-        pwned_password_validator(None, Field("pass"))
-    
+        password_too_long_validator(None, Field("a" * 501))

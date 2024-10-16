@@ -8,6 +8,8 @@ from flask import request
 from flask import session
 from flask_wtf.csrf import CSRFProtect
 
+from canaille.app.forms import password_strength_calculator
+
 csrf = CSRFProtect()
 
 
@@ -65,6 +67,7 @@ def setup_logging(app):
 
 def setup_jinja(app):
     app.jinja_env.filters["len"] = len
+    app.jinja_env.filters["password_strength"] = password_strength_calculator
     app.jinja_env.policies["ext.i18n.trimmed"] = True
 
 
