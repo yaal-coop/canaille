@@ -17,7 +17,7 @@ def populate(app):
     with app.app_context():
         app.backend.install(app.config)
         with app.backend.session():
-            if models.User.query():
+            if app.backend.query(models.User):
                 return
 
             jane = models.User(
@@ -38,7 +38,7 @@ def populate(app):
                 employee_number="1000",
                 department="east",
             )
-            jane.save()
+            app.backend.save(jane)
 
             jack = models.User(
                 formatted_name="Jack Doe",
@@ -53,7 +53,7 @@ def populate(app):
                 employee_number="1002",
                 department="west",
             )
-            jack.save()
+            app.backend.save(jack)
 
             john = models.User(
                 formatted_name="John Doe",
@@ -68,7 +68,7 @@ def populate(app):
                 employee_number="1001",
                 department="west",
             )
-            john.save()
+            app.backend.save(john)
 
             james = models.User(
                 formatted_name="James Doe",
@@ -77,28 +77,28 @@ def populate(app):
                 user_name="james",
                 emails=["james@mydomain.tld"],
             )
-            james.save()
+            app.backend.save(james)
 
             users = models.Group(
                 display_name="users",
                 members=[jane, jack, john, james],
                 description="The regular users.",
             )
-            users.save()
+            app.backend.save(users)
 
-            users = models.Group(
+            admins = models.Group(
                 display_name="admins",
                 members=[jane],
                 description="The administrators.",
             )
-            users.save()
+            app.backend.save(admins)
 
             users = models.Group(
                 display_name="moderators",
                 members=[james],
                 description="People who can manage users.",
             )
-            users.save()
+            app.backend.save(users)
 
             client1 = models.Client(
                 client_id_issued_at=datetime.datetime.utcnow(),
@@ -119,9 +119,9 @@ def populate(app):
                 response_types=["code", "id_token"],
                 token_endpoint_auth_method="client_secret_basic",
             )
-            client1.save()
+            app.backend.save(client1)
             client1.audience = [client1]
-            client1.save()
+            app.backend.save(client1)
 
             client2 = models.Client(
                 client_id_issued_at=datetime.datetime.utcnow(),
@@ -143,9 +143,9 @@ def populate(app):
                 token_endpoint_auth_method="client_secret_basic",
                 preconsent=True,
             )
-            client2.save()
+            app.backend.save(client2)
             client2.audience = [client2]
-            client2.save()
+            app.backend.save(client2)
 
             fake_users(50)
             fake_groups(10, nb_users_max=10)
@@ -156,6 +156,6 @@ def create_app():
     try:
         populate(app)
     except:
-        pass
+        app.logger.exception("Something happen during the app initialization")
 
     return app

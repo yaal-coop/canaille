@@ -2,14 +2,17 @@
 ---------------------
 
 Added
-- 1 new parameter : MAX_PASSWORD_LENGTH
-- 1 new validator : maximum password length (default 1000)
-- password strength progress bar
+
+- 1 new parameter : MAX_PASSWORD_LENGTH :issue:`174`
+- 1 new validator : maximum password length (default 1000) :issue:`174`
+- password strength progress bar :issue:`174`
 
 Changed
-- MIN_PASSWORD_LENGTH become a parameter
-- all password tests and validator are supported by password1 field
-- password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test
+
+- MIN_PASSWORD_LENGTH become a parameter :issue:`174`
+- all password tests and validator are supported by password1 field :issue:`174`
+- password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test :issue:`174`
+- Update to HTMX 2.0.3 :pr:`184`
 
 Removed
 ^^^^^^^
