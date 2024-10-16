@@ -7,9 +7,9 @@ from flask import current_app
 from werkzeug.datastructures import ImmutableMultiDict
 
 from canaille.app.forms import DateTimeUTCField
-from canaille.app.forms import phone_number
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
+from canaille.app.forms import phone_number
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
@@ -264,7 +264,6 @@ def test_phone_number_validator():
 
 
 def test_minimum_password_length_config(testclient):
-
     class Field:
         def __init__(self, data):
             self.data = data
@@ -299,12 +298,17 @@ def test_password_strength_progress_bar(testclient, logged_user):
     )
     res.mustcontain('data-percent="21"')
 
-def test_maximum_password_length_config(testclient):
 
+def test_maximum_password_length_config(testclient):
     class Field:
         def __init__(self, data):
             self.data = data
 
-    password_too_long_validator(None, Field("a"*1001))
+    password_too_long_validator(None, Field("a" * 1000))
     with pytest.raises(wtforms.ValidationError):
-        password_too_long_validator(None, Field("a"*1002))
+        password_too_long_validator(None, Field("a" * 1001))
+
+    current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"] = 500
+    password_too_long_validator(None, Field("a" * 500))
+    with pytest.raises(wtforms.ValidationError):
+        password_too_long_validator(None, Field("a" * 501))

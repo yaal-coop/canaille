@@ -20,7 +20,6 @@ from canaille.backends import Backend
 from . import validate_uri
 from .flask import request_is_htmx
 
-MAX_PASSWORD_LENGTH = 1001
 
 def is_uri(form, field):
     if not validate_uri(field.data):
@@ -48,12 +47,54 @@ def phone_number(form, field):
 
 
 def password_length_validator(form, field):
-    if len(field.data) < (minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]):
-        raise wtforms.ValidationError(_("Field must be at least {minimum_password_length} characters long.").format(minimum_password_length=str(minimum_password_length)))
+    if len(field.data) < (
+        minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
+    ):
+        raise wtforms.ValidationError(
+            _(
+                "Field must be at least {minimum_password_length} characters long."
+            ).format(minimum_password_length=str(minimum_password_length))
+        )
+
 
 def password_too_long_validator(form, field):
-    if len(field.data) > (MAX_PASSWORD_LENGTH):
-        raise wtforms.ValidationError(_("Field cannot be longer than {MAX_PASSWORD_LENGTH} characters.").format(MAX_PASSWORD_LENGTH=str(MAX_PASSWORD_LENGTH)))
+    if len(field.data) > (
+        maximum_password_length := current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"]
+    ):
+        raise wtforms.ValidationError(
+            _(
+                "Field cannot be longer than {maximum_password_length} characters."
+            ).format(maximum_password_length=str(maximum_password_length))
+        )
+
+
+def password_strength_calculator(password):
+    strength_score = 0
+    if password and type(password) is str:
+        has_lower = any(c.islower() for c in password)
+        has_upper = any(c.isupper() for c in password)
+        has_digit = any(c.isdigit() for c in password)
+        has_special = any(not c.isalnum() for c in password)
+
+        strength_score = min(
+            100,
+            round(
+                math.log10(
+                    sum(
+                        [
+                            has_lower * 26,
+                            has_upper * 26,
+                            has_digit * 10,
+                            has_special * 33,
+                        ]
+                    )
+                    ** len(password)
+                )
+            ),
+        )
+
+    return strength_score
+
 
 def email_validator(form, field):
     try:

@@ -308,3 +308,9 @@ class CoreSettings(BaseModel):
 
     Defaults to 8.
     """
+
+    MAX_PASSWORD_LENGTH: Optional[int] = 1000
+    """Maximum length for user password.
+
+    Defaults to 1000.
+    """
