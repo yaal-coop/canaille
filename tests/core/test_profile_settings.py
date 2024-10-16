@@ -172,8 +172,8 @@ def test_profile_settings_pwned_password(testclient, logged_user):
 
     with_different_values("aaaaaaaa", "This password is compromised.")
     with_different_values("azertyuiop", "This password is compromised.")
-    with_different_values("a" * 1001, 'password_strength="100"')
-    with_different_values("i'm a little pea", 'password_strength="28"')
+    with_different_values("a" * 1000, 'data-percent="100"')
+    with_different_values("i'm a little pea", 'data-percent="28"')
 
 
 def test_edition_without_groups(

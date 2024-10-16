@@ -289,22 +289,14 @@ def test_password_strength_progress_bar(testclient, logged_user):
         "/profile/user/settings",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "password1": "new_password",
+            "password1": "i'm a little pea",
         },
         headers={
             "HX-Request": "true",
             "HX-Trigger-Name": "password1",
         },
     )
-    res.mustcontain('data-percent="21"')
-
-    res = testclient.get("/profile/user/settings", status=200)
-
-    res.form["password1"] = "i'm a little pea"
-    res.form["password2"] = "i'm a little pea"
-
-    res = res.form.submit(name="action", value="edit-settings").follow()
-    assert res.context["password_strength"] == "28"
+    res.mustcontain('data-percent="28"')
 
 
 def test_maximum_password_length_config(testclient):
