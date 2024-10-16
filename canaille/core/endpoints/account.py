@@ -775,21 +775,36 @@ def profile_settings_edit(editor, edited_user):
             flash(_("Profile edition failed."), "error")
 
         else:
-            for attribute in form:
-                if attribute.name in available_fields & editor.writable_fields:
-                    setattr(edited_user, attribute.name, attribute.data)
+            if form["password1"].data:
+                same_password = Backend.instance.check_user_password(
+                    edited_user, form["password1"].data
+                )
+            else:
+                same_password = (False,)
 
-            if (
-                "password1" in request.form
-                and form["password1"].data
-                and request.form["action"] == "edit-settings"
-            ):
-                Backend.instance.set_user_password(edited_user, form["password1"].data)
+            if same_password[0]:
+                flash(_("You must choose a new password."), "error")
+            else:
+                for attribute in form:
+                    if attribute.name in available_fields & editor.writable_fields:
+                        setattr(edited_user, attribute.name, attribute.data)
 
-            Backend.instance.save(edited_user)
-            flash(_("Profile updated successfully."), "success")
+                if (
+                    "password1" in request.form
+                    and form["password1"].data
+                    and request.form["action"] == "edit-settings"
+                ):
+                    Backend.instance.set_user_password(
+                        edited_user, form["password1"].data
+                    )
+
+                Backend.instance.save(edited_user)
+                flash(_("Profile updated successfully."), "success")
             return redirect(
-                url_for("core.account.profile_settings", edited_user=edited_user)
+                url_for(
+                    "core.account.profile_settings",
+                    edited_user=edited_user,
+                )
             )
 
     return render_template(

@@ -243,6 +243,14 @@ def test_password_change_fail(testclient, logged_user, backend):
     backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
+    res = testclient.get("/profile/user/settings", status=200)
+
+    res.form["password1"] = "correct horse battery staple"
+    res.form["password2"] = "correct horse battery staple"
+
+    res = res.form.submit(name="action", value="edit-settings", status=200)
+    assert ("error", "Profile edition failed.") in res.flashes
+
 
 def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
     u = models.User(
