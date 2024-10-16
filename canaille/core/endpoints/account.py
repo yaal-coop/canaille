@@ -36,13 +36,13 @@ from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
 from canaille.app.forms import is_readonly
+from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.themes import render_template
 from canaille.backends import Backend
-from canaille.app.forms import password_too_long_validator
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -321,9 +321,6 @@ def registration(data=None, hash=None):
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(
-            min=current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
-        ),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True
