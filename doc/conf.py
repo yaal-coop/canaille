@@ -36,7 +36,6 @@ extensions = [
     "sphinx_click",
     "sphinx_design",
     "sphinx_issues",
-    "sphinx_sitemap",
     "sphinxcontrib.autodoc_pydantic",
     "sphinxcontrib.images",
 ]
