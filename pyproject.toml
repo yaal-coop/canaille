@@ -74,7 +74,7 @@ autodoc-pydantic = "^2.0.1"
 shibuya = "^2024.3.1"
 sphinx = "^8.0.0"
 sphinx-design = "^0.6.0"
-sphinx-issues = "^4.0.0"
+sphinx-issues = "^5.0.0"
 sphinx-click = "^6.0.0"
 sphinxcontrib-images = "^0.9.4"
 
