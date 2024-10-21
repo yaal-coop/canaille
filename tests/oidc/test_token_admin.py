@@ -3,7 +3,6 @@ import logging
 
 from werkzeug.security import gen_salt
 
-from canaille.app import generate_security_log
 from canaille.app import models
 
 
@@ -145,10 +144,8 @@ def test_revoke_token(testclient, token, logged_admin, backend, caplog):
     assert ("success", "The token has successfully been revoked.") in res.flashes
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log(
-            "Revoked token for user in client Some client by admin from unknown IP"
-        ),
+        logging.SECURITY,
+        "Revoked token for user in client Some client by admin from unknown IP",
     ) in caplog.record_tuples
 
     backend.reload(token)

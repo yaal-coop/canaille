@@ -8,7 +8,6 @@ from flask import redirect
 from flask import request
 from flask import url_for
 
-from canaille.app import generate_security_log
 from canaille.app import models
 from canaille.app.flask import user_needed
 from canaille.app.i18n import gettext as _
@@ -81,10 +80,8 @@ def revoke(user, consent):
     else:
         consent.revoke()
         request_ip = request.remote_addr or "unknown IP"
-        current_app.logger.info(
-            generate_security_log(
-                f"Consent revoked for {user.user_name} in client {consent.client.client_name} from {request_ip}"
-            )
+        current_app.logger.security(
+            f"Consent revoked for {user.user_name} in client {consent.client.client_name} from {request_ip}"
         )
         flash(_("The access has been revoked"), "success")
 

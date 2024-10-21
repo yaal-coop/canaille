@@ -1,8 +1,6 @@
 import datetime
 import logging
 
-from canaille.app import generate_security_log
-
 
 def test_signin_and_out(testclient, user, caplog):
     with testclient.session_transaction() as session:
@@ -26,8 +24,8 @@ def test_signin_and_out(testclient, user, caplog):
     ) in res.flashes
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log("Succeed login attempt for user from unknown IP"),
+        logging.SECURITY,
+        "Succeed login attempt for user from unknown IP",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -45,8 +43,8 @@ def test_signin_and_out(testclient, user, caplog):
     ) in res.flashes
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log("Logout user from unknown IP"),
+        logging.SECURITY,
+        "Logout user from unknown IP",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -82,8 +80,8 @@ def test_signin_wrong_password(testclient, user, caplog):
     assert ("error", "Login failed, please check your information") in res.flashes
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log("Failed login attempt for user from unknown IP"),
+        logging.SECURITY,
+        "Failed login attempt for user from unknown IP",
     ) in caplog.record_tuples
 
 

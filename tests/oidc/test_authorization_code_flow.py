@@ -9,7 +9,6 @@ from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from flask import g
 from werkzeug.security import gen_salt
 
-from canaille.app import generate_security_log
 from canaille.app import models
 
 from . import client_credentials
@@ -33,10 +32,8 @@ def test_nominal_case(
     res = res.form.submit(name="answer", value="accept", status=302)
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log(
-            "New consent for user in client Some client from unknown IP"
-        ),
+        logging.SECURITY,
+        "New consent for user in client Some client from unknown IP",
     ) in caplog.record_tuples
 
     assert res.location.startswith(client.redirect_uris[0])
@@ -99,10 +96,8 @@ def test_nominal_case(
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log(
-            "Issued authorization_code token for user in client Some client from unknown IP"
-        ),
+        logging.SECURITY,
+        "Issued authorization_code token for user in client Some client from unknown IP",
     ) in caplog.record_tuples
     res = testclient.get(
         "/oauth/userinfo",

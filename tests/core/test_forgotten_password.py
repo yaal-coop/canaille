@@ -1,8 +1,6 @@
 import logging
 from unittest import mock
 
-from canaille.app import generate_security_log
-
 
 def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
@@ -26,10 +24,8 @@ def test_password_forgotten(smtpd, testclient, user, caplog):
     ) in res.flashes
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log(
-            "Sending a reset password mail to john@doe.com for user from unknown IP"
-        ),
+        logging.SECURITY,
+        "Sending a reset password mail to john@doe.com for user from unknown IP",
     ) in caplog.record_tuples
     res.mustcontain("Send again")
 
@@ -52,10 +48,8 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, cap
     for email in user.emails:
         assert (
             "canaille",
-            logging.INFO,
-            generate_security_log(
-                f"Sending a reset password mail to {email} for user from unknown IP"
-            ),
+            logging.SECURITY,
+            f"Sending a reset password mail to {email} for user from unknown IP",
         ) in caplog.record_tuples
     res.mustcontain("Send again")
 

@@ -4,7 +4,6 @@ import pytest
 from flask import g
 from webtest import Upload
 
-from canaille.app import generate_security_log
 from canaille.core.populate import fake_users
 
 
@@ -130,8 +129,8 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     ], res.text
     assert (
         "canaille",
-        logging.INFO,
-        generate_security_log("Updated email for user from unknown IP"),
+        logging.SECURITY,
+        "Updated email for user from unknown IP",
     ) in caplog.record_tuples
     res = res.follow()
 
