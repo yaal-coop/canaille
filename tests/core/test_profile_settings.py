@@ -1,4 +1,5 @@
 import datetime
+import logging
 from unittest import mock
 
 from flask import g
@@ -118,7 +119,7 @@ def test_edition_without_groups(
     backend.save(logged_user)
 
 
-def test_password_change(testclient, logged_user, backend):
+def test_password_change(testclient, logged_user, backend, caplog):
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "new_password"
@@ -136,6 +137,13 @@ def test_password_change(testclient, logged_user, backend):
 
     res = res.form.submit(name="action", value="edit-settings")
     assert ("success", "Profile updated successfully.") in res.flashes
+
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Changed password in settings for user from unknown IP",
+    ) in caplog.record_tuples
+
     res = res.follow()
 
     backend.reload(logged_user)

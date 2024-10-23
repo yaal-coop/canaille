@@ -95,7 +95,7 @@ def password():
     request_ip = request.remote_addr or "unknown IP"
     if not success:
         logout_user()
-        current_app.logger.info(
+        current_app.logger.security(
             f'Failed login attempt for {session["attempt_login"]} from {request_ip}'
         )
         flash(message or _("Login failed, please check your information"), "error")
@@ -103,7 +103,7 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    current_app.logger.info(
+    current_app.logger.security(
         f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
     )
     del session["attempt_login"]
@@ -121,7 +121,7 @@ def logout():
 
     if user:
         request_ip = request.remote_addr or "unknown IP"
-        current_app.logger.info(f"Logout {user.identifier} from {request_ip}")
+        current_app.logger.security(f"Logout {user.identifier} from {request_ip}")
 
         flash(
             _(
@@ -197,8 +197,14 @@ def forgotten():
         )
         return render_template("forgotten-password.html", form=form)
 
-    statuses = [send_password_reset_mail(user, email) for email in user.emails]
-    success = all(statuses)
+    request_ip = request.remote_addr or "unknown IP"
+    success = True
+    for email in user.emails:
+        if not send_password_reset_mail(user, email):
+            success = False
+        current_app.logger.security(
+            f"Sending a reset password mail to {email} for {user.user_name} from {request_ip}"
+        )
 
     if success:
         flash(success_message, "success")

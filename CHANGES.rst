@@ -1,6 +1,10 @@
 [0.0.56] - Unreleased
 ---------------------
 
+Added
+^^^^^
+- New security events logs :issue:`177`
+
 Changed
 ^^^^^^^
 - Update to HTMX 2.0.3 :pr:`184`

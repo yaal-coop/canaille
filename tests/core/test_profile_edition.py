@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 from flask import g
 from webtest import Upload
@@ -101,13 +103,7 @@ def test_edition_permission(
     testclient.get("/profile/user", status=200)
 
 
-def test_edition(
-    testclient,
-    logged_user,
-    admin,
-    jpeg_photo,
-    backend,
-):
+def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     form["given_name"] = "given_name"
@@ -131,6 +127,11 @@ def test_edition(
     assert res.flashes == [
         ("success", "Le profil a été mis à jour avec succès.")
     ], res.text
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Updated email for user from unknown IP",
+    ) in caplog.record_tuples
     res = res.follow()
 
     backend.reload(logged_user)

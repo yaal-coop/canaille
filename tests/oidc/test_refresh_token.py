@@ -1,4 +1,5 @@
 import datetime
+import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
@@ -7,7 +8,7 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_refresh_token(testclient, logged_user, client, backend):
+def test_refresh_token(testclient, logged_user, client, backend, caplog):
     assert not backend.query(models.Consent)
 
     res = testclient.get(
@@ -59,7 +60,11 @@ def test_refresh_token(testclient, logged_user, client, backend):
     new_token = backend.get(models.Token, access_token=access_token)
     assert new_token is not None
     assert old_token.access_token != new_token.access_token
-
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Issued refresh_token token for user in client Some client from unknown IP",
+    ) in caplog.record_tuples
     backend.reload(old_token)
     assert old_token.revokation_date
 
