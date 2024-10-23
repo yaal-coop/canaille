@@ -4,6 +4,8 @@ import uuid
 from typing import Any
 from typing import Dict
 
+from flask import current_app
+
 from canaille.backends import Backend
 
 
@@ -68,6 +70,24 @@ class MemoryBackend(Backend):
             return (False, "Your account has been locked.")
 
         return (True, None)
+
+    def check_user_password_history(self, user, password):
+        if not current_app.config["CANAILLE"]["PASSWORD_EXPIRY_POLICY"]:
+            return False
+        if password in user.password_history:
+            return True
+        return False
+
+    def password_history_manager(self, user):
+        if not current_app.config["CANAILLE"]["PASSWORD_EXPIRY_POLICY"]:
+            return user.password_history
+        user.password_history.append(user.password)
+        if (
+            len(user.password_history)
+            > current_app.config["CANAILLE"]["PASSWORD_HISTORY_SIZE"]
+        ):
+            user.password_history.pop(0)
+        return user.password_history
 
     def set_user_password(self, user, password):
         user.password = password

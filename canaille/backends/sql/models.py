@@ -77,6 +77,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     password: Mapped[str] = mapped_column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
     )
+    password_history: Mapped[list[str]] = mapped_column(
+        MutableJson, nullable=True, default=list
+    )
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
     given_name: Mapped[str] = mapped_column(String, nullable=True)

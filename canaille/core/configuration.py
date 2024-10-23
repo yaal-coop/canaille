@@ -314,3 +314,13 @@ class CoreSettings(BaseModel):
 
     Defaults to 1000.
     """
+
+    PASSWORD_EXPIRY_POLICY: Optional[bool] = False
+    """Default to False."""
+
+    PASSWORD_HISTORY_SIZE: Optional[int] = 5
+    """An Integer indicating the number of passwords that will be kept in
+    history that may not be used as a password.
+
+    Default to 5.
+    """

@@ -130,6 +130,16 @@ class Backend:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()
 
+    def check_user_password_history(self, user, password: str) -> bool:
+        """Check if the password matches one of the previous passwords in the
+        database."""
+        raise NotImplementedError()
+
+    def password_history_manager(self, user):
+        """Manage the creation of the list of previous passwords in the
+        database."""
+        raise NotImplementedError()
+
     def set_user_password(self, user, password: str):
         """Set a password for the user."""
         raise NotImplementedError()

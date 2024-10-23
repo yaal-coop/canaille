@@ -1,5 +1,7 @@
 import datetime
 
+from flask import current_app
+from passlib.context import CryptContext
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
@@ -65,6 +67,25 @@ class SQLBackend(Backend):
             return (False, "Your account has been locked.")
 
         return (True, None)
+
+    def check_user_password_history(self, user, password):
+        if current_app.config["CANAILLE"]["PASSWORD_EXPIRY_POLICY"]:
+            return False
+        for old_password in user.password_history:
+            if CryptContext(schemes=["pbkdf2_sha512"]).verify(password, old_password):
+                return True
+        return False
+
+    def password_history_manager(self, user):
+        if current_app.config["CANAILLE"]["PASSWORD_EXPIRY_POLICY"]:
+            return user.password_history
+        user.password_history.append(user.password.hash.decode("utf8"))
+        if (
+            len(user.password_history)
+            > current_app.config["CANAILLE"]["PASSWORD_HISTORY_SIZE"]
+        ):
+            user.password_history.pop(0)
+        return user.password_history
 
     def set_user_password(self, user, password):
         user.password = password

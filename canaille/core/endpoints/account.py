@@ -766,6 +766,10 @@ def profile_settings_edit(editor, edited_user):
         edited_user,
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
+
+    error = None
+    password = form["password1"].data
+
     if (
         request.form
         and request.form.get("action") == "edit-settings"
@@ -775,31 +779,33 @@ def profile_settings_edit(editor, edited_user):
             flash(_("Profile edition failed."), "error")
 
         else:
-            if form["password1"].data:
-                same_password = Backend.instance.check_user_password(
-                    edited_user, form["password1"].data
-                )
-            else:
-                same_password = (False,)
+            for attribute in form:
+                if attribute.name in available_fields & editor.writable_fields:
+                    setattr(edited_user, attribute.name, attribute.data)
 
-            if same_password[0]:
-                flash(_("You must choose a new password."), "error")
-            else:
-                for attribute in form:
-                    if attribute.name in available_fields & editor.writable_fields:
-                        setattr(edited_user, attribute.name, attribute.data)
-
-                if (
-                    "password1" in request.form
-                    and form["password1"].data
-                    and request.form["action"] == "edit-settings"
+            if (
+                "password1" in request.form
+                and password
+                and request.form["action"] == "edit-settings"
+            ):
+                if Backend.instance.check_user_password(edited_user, password)[0]:
+                    error = _("You must change your current assword.")
+                elif Backend.instance.check_user_password_history(
+                    edited_user, password
                 ):
-                    Backend.instance.set_user_password(
-                        edited_user, form["password1"].data
+                    error = _("You must not choose a recent password.")
+                else:
+                    edited_user.password_history = (
+                        Backend.instance.password_history_manager(edited_user)
                     )
+                    Backend.instance.set_user_password(edited_user, password)
 
+            if error is None:
                 Backend.instance.save(edited_user)
                 flash(_("Profile updated successfully."), "success")
+            else:
+                flash(error, "error")
+
             return redirect(
                 url_for(
                     "core.account.profile_settings",

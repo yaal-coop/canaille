@@ -82,6 +82,13 @@ class User(Model):
     "never").
     """
 
+    password_history: List[str] = []
+    """Lists previous passwords used by the user before the current password.
+
+    They are stored to enforce the user not to reuse a password already
+    used in the past.
+    """
+
     preferred_language: Optional[str] = None
     """Indicates the user's preferred written or spoken languages and is
     generally used for selecting a localized user interface.
