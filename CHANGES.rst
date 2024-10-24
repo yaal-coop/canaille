@@ -6,6 +6,7 @@ Added
 - 1 new parameter : MAX_PASSWORD_LENGTH :issue:`174`
 - 1 new validator : maximum password length (default 1000) :issue:`174`
 - password strength progress bar :issue:`174`
+- New security events logs :issue:`177`
 
 Changed
 

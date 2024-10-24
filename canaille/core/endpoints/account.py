@@ -585,6 +585,7 @@ def profile_edition(user, edited_user):
     ):
         abort(404)
 
+    request_ip = request.remote_addr or "unknown IP"
     menuitem = "profile" if edited_user.id == user.id else "users"
     emails_readonly = (
         current_app.features.has_email_confirmation and not user.can_manage_users
@@ -596,6 +597,10 @@ def profile_edition(user, edited_user):
         if emails_readonly
         else None
     )
+
+    has_email_changed = "emails" in profile_form and set(
+        profile_form["emails"].data
+    ) != set(user.emails)
 
     render_context = {
         "menuitem": menuitem,
@@ -613,7 +618,14 @@ def profile_edition(user, edited_user):
             return render_template("profile_edit.html", **render_context)
 
         profile_edition_main_form_validation(user, edited_user, profile_form)
+
+        if has_email_changed:
+            current_app.logger.security(
+                f"Updated email for {edited_user.user_name} from {request_ip}"
+            )
+
         flash(_("Profile updated successfully."), "success")
+
         return redirect(
             url_for("core.account.profile_edition", edited_user=edited_user)
         )
@@ -746,6 +758,7 @@ def profile_settings(user, edited_user):
 def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
+    request_ip = request.remote_addr or "unknown IP"
 
     available_fields = {"password", "groups", "user_name", "lock_date"}
     data = {
@@ -783,6 +796,9 @@ def profile_settings_edit(editor, edited_user):
                 and request.form["action"] == "edit-settings"
             ):
                 Backend.instance.set_user_password(edited_user, form["password1"].data)
+                current_app.logger.security(
+                    f"Changed password in settings for {edited_user.user_name} from {request_ip}"
+                )
 
             Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")

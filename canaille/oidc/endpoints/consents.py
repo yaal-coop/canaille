@@ -2,8 +2,10 @@ import datetime
 import uuid
 
 from flask import Blueprint
+from flask import current_app
 from flask import flash
 from flask import redirect
+from flask import request
 from flask import url_for
 
 from canaille.app import models
@@ -77,6 +79,10 @@ def revoke(user, consent):
 
     else:
         consent.revoke()
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.security(
+            f"Consent revoked for {user.user_name} in client {consent.client.client_name} from {request_ip}"
+        )
         flash(_("The access has been revoked"), "success")
 
     return redirect(url_for("oidc.consents.consents"))
