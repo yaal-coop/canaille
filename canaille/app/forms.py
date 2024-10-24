@@ -105,7 +105,6 @@ def password_strength_calculator(password):
         )
 
         strength_score *= zxcvbn(password).score
-        print(strength_score)
     return strength_score
 
 
