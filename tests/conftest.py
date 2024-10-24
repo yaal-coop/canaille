@@ -83,6 +83,7 @@ def configuration(smtpd):
                         "family_name",
                         "display_name",
                         "password",
+                        "password_history",
                         "phone_numbers",
                         "formatted_address",
                         "street",
@@ -186,6 +187,7 @@ def user(app, backend):
         user_name="user",
         emails=["john@doe.com"],
         password="correct horse battery staple",
+        password_history=[],
         display_name="Johnny",
         preferred_language="en",
         phone_numbers=["555-000-000"],
@@ -205,6 +207,7 @@ def admin(app, backend):
         user_name="admin",
         emails=["jane@doe.com"],
         password="admin",
+        password_history=[],
     )
     backend.save(u)
     yield u
@@ -219,6 +222,7 @@ def moderator(app, backend):
         user_name="moderator",
         emails=["jack@doe.com"],
         password="moderator",
+        password_history=[],
     )
     backend.save(u)
     yield u

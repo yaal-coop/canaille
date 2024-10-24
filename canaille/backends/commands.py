@@ -93,7 +93,7 @@ def serialize(instance):
         if model:
             return value.id
 
-        anonymized = ("password",)
+        anonymized = ("password", "password_history")
         if attribute_name in anonymized and value:
             return "***"
 

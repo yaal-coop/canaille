@@ -109,6 +109,7 @@ class ACLSettings(BaseModel):
         "family_name",
         "display_name",
         "password",
+        "password_history",
         "phone_numbers",
         "emails",
         "profile_url",
