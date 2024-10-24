@@ -36,6 +36,7 @@ from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
 from canaille.app.forms import is_readonly
+from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
@@ -314,9 +315,7 @@ def registration(data=None, hash=None):
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(
-            min=current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
-        ),
+        password_length_validator,
         password_too_long_validator,
     ]
     form["password2"].validators = [

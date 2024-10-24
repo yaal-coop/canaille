@@ -48,20 +48,21 @@ def phone_number(form, field):
 
 
 def password_length_validator(form, field):
-    if len(field.data) < (
-        minimum_password_length := current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
-    ):
-        raise wtforms.ValidationError(
-            _(
-                "Field must be at least {minimum_password_length} characters long."
-            ).format(minimum_password_length=str(minimum_password_length))
-        )
+    minimum_password_length = current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
+    if minimum_password_length:
+        if len(field.data) < minimum_password_length:
+            raise wtforms.ValidationError(
+                _(
+                    "Field must be at least {minimum_password_length} characters long."
+                ).format(minimum_password_length=str(minimum_password_length))
+            )
 
 
 def password_too_long_validator(form, field):
-    if len(field.data) > (
-        maximum_password_length := current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"]
-    ):
+    maximum_password_length = min(
+        current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"] or 4096, 4096
+    )
+    if len(field.data) > maximum_password_length:
         raise wtforms.ValidationError(
             _(
                 "Field cannot be longer than {maximum_password_length} characters."
