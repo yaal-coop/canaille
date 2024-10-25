@@ -2,7 +2,7 @@
 ---------------------
 
 Added
-
+^^^^^
 - 1 new validator : check if password is pwned with `passpwnedcheck` :issue:`179`
 - 1 new parameter : `MAX_PASSWORD_LENGTH` :issue:`174`
 - 1 new validator : maximum password length (default 1000) :issue:`174`
@@ -11,7 +11,7 @@ Added
 - New security events logs :issue:`177`
 
 Changed
-
+^^^^^^^
 - `MIN_PASSWORD_LENGTH` become a parameter :issue:`174`
 - Maximum Python requirement is < 3.13 (because of zxcvbn-rs-py)
 - MIN_PASSWORD_LENGTH become a parameter :issue:`174`

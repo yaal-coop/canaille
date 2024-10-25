@@ -84,7 +84,7 @@ sphinxcontrib-images = "^0.9.4"
 coverage = {version = "*", extras=["toml"]}
 faker = "*"
 flask-webtest = "*"
-pre-commit = "*"
+pre-commit = "3.8.0"
 pyquery = "*"
 pytest = "^8.0.0"
 pytest-coverage = "*"
