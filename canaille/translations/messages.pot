@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-16 10:34+0200\n"
+"POT-Creation-Date: 2024-10-24 16:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,31 +21,31 @@ msgstr ""
 msgid "No SMTP server has been configured"
 msgstr ""
 
-#: canaille/app/forms.py:25
+#: canaille/app/forms.py:27
 msgid "This is not a valid URL"
 msgstr ""
 
-#: canaille/app/forms.py:32 canaille/app/forms.py:33
+#: canaille/app/forms.py:34 canaille/app/forms.py:35
 msgid "This value is a duplicate"
 msgstr ""
 
-#: canaille/app/forms.py:45
+#: canaille/app/forms.py:47
 msgid "Not a valid phone number"
 msgstr ""
 
-#: canaille/app/forms.py:50
+#: canaille/app/forms.py:55
 msgid "Field must be at least {minimum_password_length} characters long."
 msgstr ""
 
-#: canaille/app/forms.py:54
+#: canaille/app/forms.py:67
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:225
+#: canaille/app/forms.py:269
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:253
+#: canaille/app/forms.py:297
 msgid "Not a valid datetime value."
 msgstr ""
 
@@ -108,35 +108,35 @@ msgstr ""
 msgid "Continue your registration on {website_name}"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:91 canaille/core/endpoints/account.py:117
+#: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:124
+#: canaille/core/endpoints/account.py:125
 msgid ""
 "An error happened while sending your registration mail. Please try again "
 "in a few minutes. If this still happens, please contact the "
 "administrators."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:248
-#: canaille/core/endpoints/account.py:271
+#: canaille/core/endpoints/account.py:249
+#: canaille/core/endpoints/account.py:272
 msgid "The registration link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:255
+#: canaille/core/endpoints/account.py:256
 msgid "The registration link that brought you here has expired."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:264
+#: canaille/core/endpoints/account.py:265
 msgid "Your account has already been created."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:278
+#: canaille/core/endpoints/account.py:279
 msgid "You are already logged in, you cannot create an account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:299 canaille/core/endpoints/forms.py:314
+#: canaille/core/endpoints/account.py:300 canaille/core/endpoints/forms.py:314
 #: canaille/core/endpoints/forms.py:442 canaille/core/templates/groups.html:5
 #: canaille/core/templates/groups.html:23
 #: canaille/core/templates/partial/group-members.html:15
@@ -145,114 +145,114 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:341
-#: canaille/core/endpoints/account.py:434
+#: canaille/core/endpoints/account.py:337
+#: canaille/core/endpoints/account.py:430
 msgid "User account creation failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:352
+#: canaille/core/endpoints/account.py:348
 msgid "Your account has been created successfully."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:367
-#: canaille/core/endpoints/account.py:389
+#: canaille/core/endpoints/account.py:363
+#: canaille/core/endpoints/account.py:385
 msgid "The email confirmation link that brought you here is invalid."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:374
+#: canaille/core/endpoints/account.py:370
 msgid "The email confirmation link that brought you here has expired."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:381
+#: canaille/core/endpoints/account.py:377
 msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:396
+#: canaille/core/endpoints/account.py:392
 msgid "This address email have already been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:403
+#: canaille/core/endpoints/account.py:399
 msgid "This address email is already associated with another account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:410
+#: canaille/core/endpoints/account.py:406
 msgid "Your email address have been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:444
+#: canaille/core/endpoints/account.py:440
 msgid "User account creation succeed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:615
-#: canaille/core/endpoints/account.py:776
+#: canaille/core/endpoints/account.py:616
+#: canaille/core/endpoints/account.py:785
 msgid "Profile edition failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:619
-#: canaille/core/endpoints/account.py:791
+#: canaille/core/endpoints/account.py:626
+#: canaille/core/endpoints/account.py:803
 msgid "Profile updated successfully."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:626
+#: canaille/core/endpoints/account.py:634
 msgid "Email addition failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:631
+#: canaille/core/endpoints/account.py:639
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:638
+#: canaille/core/endpoints/account.py:646
 msgid "Could not send the verification email"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:648
+#: canaille/core/endpoints/account.py:656
 msgid "Email deletion failed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:651
+#: canaille/core/endpoints/account.py:659
 msgid "The email have been successfully deleted."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:688
+#: canaille/core/endpoints/account.py:696
 msgid ""
 "A password initialization link has been sent at the user email address. "
 "It should be received within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:695 canaille/core/endpoints/auth.py:159
+#: canaille/core/endpoints/account.py:703 canaille/core/endpoints/auth.py:159
 msgid "Could not send the password initialization email"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:706
+#: canaille/core/endpoints/account.py:714
 msgid ""
 "A password reset link has been sent at the user email address. It should "
 "be received within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:713
+#: canaille/core/endpoints/account.py:721
 msgid "Could not send the password reset email"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:729
+#: canaille/core/endpoints/account.py:737
 msgid "The account has been locked"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:740
+#: canaille/core/endpoints/account.py:748
 msgid "The account has been unlocked"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:811
+#: canaille/core/endpoints/account.py:823
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:828
+#: canaille/core/endpoints/account.py:840
 msgid "Locked users cannot be impersonated."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:832 canaille/core/endpoints/auth.py:112
+#: canaille/core/endpoints/account.py:844 canaille/core/endpoints/auth.py:112
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
@@ -322,15 +322,15 @@ msgid ""
 "We cannot send a password reset email."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:207
+#: canaille/core/endpoints/auth.py:213
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:230
+#: canaille/core/endpoints/auth.py:236
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:239
+#: canaille/core/endpoints/auth.py:245
 msgid "Your password has been updated successfully"
 msgstr ""
 
@@ -1432,29 +1432,29 @@ msgstr ""
 msgid "The client has been deleted."
 msgstr ""
 
-#: canaille/oidc/endpoints/consents.py:73
-#: canaille/oidc/endpoints/consents.py:108
+#: canaille/oidc/endpoints/consents.py:75
+#: canaille/oidc/endpoints/consents.py:114
 msgid "Could not revoke this access"
 msgstr ""
 
-#: canaille/oidc/endpoints/consents.py:76
+#: canaille/oidc/endpoints/consents.py:78
 msgid "The access is already revoked"
 msgstr ""
 
-#: canaille/oidc/endpoints/consents.py:80
-#: canaille/oidc/endpoints/consents.py:123
+#: canaille/oidc/endpoints/consents.py:86
+#: canaille/oidc/endpoints/consents.py:129
 msgid "The access has been revoked"
 msgstr ""
 
-#: canaille/oidc/endpoints/consents.py:89
+#: canaille/oidc/endpoints/consents.py:95
 msgid "Could not restore this access"
 msgstr ""
 
-#: canaille/oidc/endpoints/consents.py:92
+#: canaille/oidc/endpoints/consents.py:98
 msgid "The access is not revoked"
 msgstr ""
 
-#: canaille/oidc/endpoints/consents.py:99
+#: canaille/oidc/endpoints/consents.py:105
 msgid "The access has been restored"
 msgstr ""
 
@@ -1527,15 +1527,15 @@ msgstr ""
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:357
+#: canaille/oidc/endpoints/oauth.py:369
 msgid "You have been disconnected"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:374
+#: canaille/oidc/endpoints/oauth.py:386
 msgid "You have not been disconnected"
 msgstr ""
 
-#: canaille/oidc/endpoints/tokens.py:45
+#: canaille/oidc/endpoints/tokens.py:50
 msgid "The token has successfully been revoked."
 msgstr ""
 
