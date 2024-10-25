@@ -36,7 +36,7 @@ def setup_logging(app):
 
     security_level_name = "SECURITY"
     if not hasattr(logging, security_level_name):
-        addLoggingLevel(security_level_name, logging.INFO + 5)
+        add_logging_level(security_level_name, logging.INFO + 5)
 
     if conf is None:
         log_level = "DEBUG" if app.debug else "INFO"
@@ -168,7 +168,7 @@ def create_app(
     return app
 
 
-def addLoggingLevel(levelName, levelNum, methodName=None):
+def add_logging_level(levelName, levelNum, methodName=None):
     """Comprehensively adds a new logging level to the `logging` module and the
     currently configured logging class.
 
@@ -198,7 +198,7 @@ def addLoggingLevel(levelName, levelNum, methodName=None):
         raise AttributeError(f"{levelName} already defined in logging module")
     if hasattr(logging, methodName):
         raise AttributeError(f"{methodName} already defined in logging module")
-    if hasattr(logging.getLoggerClass(), methodName):
+    if hasattr(logging.getLoggerClass(), methodName):  # pragma: no cover
         raise AttributeError(f"{methodName} already defined in logger class")
 
     # This method was inspired by the answers to Stack Overflow post
