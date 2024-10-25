@@ -307,10 +307,16 @@ class CoreSettings(BaseModel):
     """Minimum length for user password.
 
     Defaults to 8.
+
+    It is possible not to set a minimum, by entering None or 0.
     """
 
     MAX_PASSWORD_LENGTH: Optional[int] = 1000
     """Maximum length for user password.
 
     Defaults to 1000.
+
+    There is a technical limit with passlib used by sql database of 4096
+    characters. If the value entered is 0 or None, or greater than 4096,
+    then 4096 will be retained.
     """

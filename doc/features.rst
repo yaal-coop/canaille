@@ -263,6 +263,18 @@ Logging
 
 Canaille writes :attr:`logs <canaille.core.configuration.CoreSettings.LOGGING>` for every important event happening, to help administrators understand what is going on and debug funky situations.
 
+The following security events are logged with the tag [SECURITY] for easy retrieval :
+
+- Authentication attempt
+- Password update
+- Email update
+- Forgotten password mail sent to user
+- Token emission
+- Token refresh
+- Token revokation
+- New consent given for client application
+- Consent revokation
+
 .. _feature_development:
 
 A tool for your development and tests

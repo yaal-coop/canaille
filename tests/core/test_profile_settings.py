@@ -1,4 +1,5 @@
 import datetime
+import logging
 from unittest import mock
 
 from flask import current_app
@@ -146,6 +147,13 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     with_different_values("a" * 1000, 1000, 'data-percent="100"')
     with_different_values("a" * 501, 500, "Field cannot be longer than 500 characters.")
     with_different_values("a" * 500, 500, 'data-percent="100"')
+    with_different_values("a" * 4097, 0, "Field cannot be longer than 4096 characters.")
+    with_different_values(
+        "a" * 4097, None, "Field cannot be longer than 4096 characters."
+    )
+    with_different_values(
+        "a" * 4097, 5000, "Field cannot be longer than 4096 characters."
+    )
 
 
 def test_profile_settings_pwned_password(testclient, logged_user):
@@ -198,7 +206,7 @@ def test_edition_without_groups(
     backend.save(logged_user)
 
 
-def test_password_change(testclient, logged_user, backend):
+def test_password_change(testclient, logged_user, backend, caplog):
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "i'm a little pea"
@@ -216,6 +224,13 @@ def test_password_change(testclient, logged_user, backend):
 
     res = res.form.submit(name="action", value="edit-settings")
     assert ("success", "Profile updated successfully.") in res.flashes
+
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Changed password in settings for user from unknown IP",
+    ) in caplog.record_tuples
+
     res = res.follow()
 
     backend.reload(logged_user)

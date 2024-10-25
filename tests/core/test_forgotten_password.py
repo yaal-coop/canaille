@@ -1,3 +1,4 @@
+import logging
 from unittest import mock
 
 
@@ -11,7 +12,7 @@ def test_password_forgotten_disabled(smtpd, testclient, user):
     res.mustcontain(no="Forgotten password")
 
 
-def test_password_forgotten(smtpd, testclient, user):
+def test_password_forgotten(smtpd, testclient, user, caplog):
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"
@@ -21,12 +22,17 @@ def test_password_forgotten(smtpd, testclient, user):
         "A password reset link has been sent at your email address. You should receive "
         "it within a few minutes.",
     ) in res.flashes
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Sending a reset password mail to john@doe.com for user from unknown IP",
+    ) in caplog.record_tuples
     res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 1
 
 
-def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend):
+def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, caplog):
     user.emails = ["foo@bar.com", "foo@baz.com", "foo@foo.com"]
     backend.save(user)
 
@@ -39,6 +45,12 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend):
         "A password reset link has been sent at your email address. You should receive "
         "it within a few minutes.",
     ) in res.flashes
+    for email in user.emails:
+        assert (
+            "canaille",
+            logging.SECURITY,
+            f"Sending a reset password mail to {email} for user from unknown IP",
+        ) in caplog.record_tuples
     res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 3
