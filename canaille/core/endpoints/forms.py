@@ -23,6 +23,8 @@ from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
 
+OTP_LENGTH = 6
+
 
 def unique_user_name(form, field):
     if Backend.instance.get(models.User, user_name=field.data) and (
@@ -476,6 +478,21 @@ class EmailConfirmationForm(Form):
         ],
         render_kw={
             "placeholder": _("jane.doe@example.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
+class TwoFactorForm(Form):
+    otp = wtforms.StringField(
+        _("One-time password"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Length(min=OTP_LENGTH, max=OTP_LENGTH),
+        ],
+        render_kw={
+            "placeholder": _("123456"),
             "spellcheck": "false",
             "autocorrect": "off",
         },

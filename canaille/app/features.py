@@ -15,6 +15,10 @@ class Features:
         return self.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]
 
     @property
+    def has_totp(self):
+        return self.app.config["CANAILLE"]["ENABLE_TOTP"]
+
+    @property
     def has_registration(self):
         return self.app.config["CANAILLE"]["ENABLE_REGISTRATION"]
 

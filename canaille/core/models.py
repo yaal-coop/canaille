@@ -1,7 +1,9 @@
 import datetime
+import secrets
 from typing import Annotated
 from typing import ClassVar
 
+import otpauth
 from flask import current_app
 
 from canaille.backends.models import Model
@@ -241,6 +243,14 @@ class User(Model):
     lock_date: datetime.datetime | None = None
     """A DateTime indicating when the resource was locked."""
 
+    last_otp_login: datetime.datetime | None = None
+    """A DateTime indicating when the user last logged in with a one-time password.
+    This attribute is currently used to check whether the user has activated multi-factor authentication or not."""
+
+    secret_token: str | None = None
+    """Unique token generated for each user, used for
+    two-factor authentication."""
+
     _readable_fields = None
     _writable_fields = None
     _permissions = None
@@ -317,6 +327,20 @@ class User(Model):
                 if self.match_filter(details["FILTER"]):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
+
+    def generate_otp_token(self):
+        self.secret_token = secrets.token_hex(32)
+
+    def generate_otp(self):
+        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).generate()
+
+    def get_authentication_setup_uri(self):
+        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).to_uri(
+            label=self.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
+        )
+
+    def is_otp_valid(self, user_otp):
+        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
 
 
 class Group(Model):

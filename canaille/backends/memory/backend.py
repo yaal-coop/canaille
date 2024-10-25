@@ -3,6 +3,9 @@ import datetime
 import uuid
 from typing import Any
 
+from flask import current_app
+
+import canaille.backends.memory.models
 from canaille.backends import Backend
 
 
@@ -124,6 +127,13 @@ class MemoryBackend(Backend):
         return results[0] if results else None
 
     def save(self, instance):
+        if (
+            isinstance(instance, canaille.backends.memory.models.User)
+            and current_app.features.has_totp
+            and not instance.secret_token
+        ):
+            instance.generate_otp_token()
+
         if not instance.id:
             instance.id = str(uuid.uuid4())
 

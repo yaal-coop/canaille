@@ -248,6 +248,10 @@ class CoreSettings(BaseModel):
     """If :py:data:`False`, then users cannot ask for a password recovery link
     by email."""
 
+    ENABLE_TOTP: bool = False
+    """If :py:data:`True`, then users will need to authenticate themselves
+    using a time one-time password via an authenticator app."""
+
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.
 

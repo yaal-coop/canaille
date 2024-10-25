@@ -174,6 +174,13 @@ Password compromission check
 
 If :attr:`password compromission check feature <canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK>` is enabled, Canaille will check for password compromise on HIBP (https://haveibeenpwned.com/) every time a new password is register. You will need to set an :attr:`admin email <canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`.
 
+.. _feature_multi_factor_authentication:
+
+Multi-factor authentication
+==============
+
+If the :attr:`time one-time password feature <canaille.core.configuration.CoreSettings.ENABLE_TOTP>` is enabled, then users will need to authenticate themselves using a time one-time password via an authenticator app.
+
 Web interface
 *************
 
@@ -273,7 +280,7 @@ Logging
 
 Canaille writes :attr:`logs <canaille.core.configuration.CoreSettings.LOGGING>` for every important event happening, to help administrators understand what is going on and debug funky situations.
 
-The following security events are logged with the tag [SECURITY] for easy retrieval:
+The following security events are logged with the log level "security" for easy retrieval :
 
 - Authentication attempt
 - Password update

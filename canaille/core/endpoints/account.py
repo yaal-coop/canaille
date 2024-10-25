@@ -274,7 +274,8 @@ def registration(data=None, hash=None):
             )
             return redirect(url_for("core.account.index"))
 
-    if current_user():
+    user = current_user()
+    if user:
         flash(
             _("You are already logged in, you cannot create an account."),
             "error",
