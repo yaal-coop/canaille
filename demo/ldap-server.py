@@ -17,6 +17,7 @@ schemas = [
     "ldif/memberof-config.ldif",
     "ldif/refint-config.ldif",
     "ldif/ppolicy-config.ldif",
+    "ldif/otp-config.ldif",
     "../canaille/backends/ldap/schemas/oauth2-openldap.ldif",
 ]
 

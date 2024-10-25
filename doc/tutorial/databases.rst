@@ -49,10 +49,14 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 
     GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 
+If you want to use TOTP authentication, you will need to add the ``oathTOTPToken`` class to the user :
+.. code-block:: toml
+   USER_CLASS = ["inetOrgPerson", "oathTOTPToken"]
+
 You can find more details on the LDAP configuration in the :class:`dedicated section <canaille.backends.ldap.configuration.LDAPSettings>`.
 
 .. note ::
-   Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have been tested.
+   Currently, only the ``inetOrgPerson``, ``oathTOTPToken`` and ``groupOfNames`` schemas have been tested.
    If you want to use different schemas or LDAP servers, adaptations may be needed.
    Patches are welcome.
 
@@ -108,3 +112,21 @@ You can adapt and load those configuration files with:
     # Adapt those commands according to your setup
     sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy-config.ldif
     sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy.ldif
+
+otp
+~~~~~~~
+
+If the `otp <https://www.openldap.org/software/man.cgi?query=slapo-otp>`_ overlay is configured, you will be able to add one-time password authentication in canaille.
+
+Here is a configuration example compatible with canaille:
+
+.. literalinclude :: ../../demo/ldif/otp-config.ldif
+   :language: ldif
+   :caption: otp-config.ldif
+
+You can adapt and load this configuration file with:
+
+.. code-block:: bash
+
+    # Adapt this command according to your setup
+    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f otp-config.ldif

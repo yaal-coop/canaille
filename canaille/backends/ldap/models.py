@@ -1,4 +1,5 @@
 import ldap.filter
+from flask import current_app
 
 import canaille.core.models
 import canaille.oidc.models
@@ -34,6 +35,8 @@ class User(canaille.core.models.User, LDAPObject):
         "organization": "o",
         "groups": "memberOf",
         "lock_date": "pwdEndTime",
+        "secret_token": "oathSecret",
+        "last_otp_login": "oathLastLogin",
     }
 
     def match_filter(self, filter):
@@ -44,6 +47,9 @@ class User(canaille.core.models.User, LDAPObject):
         return super().match_filter(filter)
 
     def save(self):
+        if current_app.features.has_totp and not self.secret_token:
+            self.generate_otp_token()
+
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:
             return

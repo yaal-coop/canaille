@@ -261,4 +261,8 @@ select.ui.multiple.dropdown option[selected] {
     .ui.progress {
         background: #222222;
     }
+
+    .ui.label.token-label {
+        padding-left: 0;
+    }
 }

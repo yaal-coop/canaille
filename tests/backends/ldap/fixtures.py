@@ -16,6 +16,7 @@ def slapd_server():
             "demo/ldif/memberof-config.ldif",
             "demo/ldif/ppolicy-config.ldif",
             "demo/ldif/ppolicy.ldif",
+            "demo/ldif/otp-config.ldif",
             "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
             "demo/ldif/bootstrap-users-tree.ldif",
             "demo/ldif/bootstrap-oidc-tree.ldif",
@@ -38,6 +39,7 @@ def ldap_configuration(configuration, slapd_server):
         "USER_FILTER": "(uid={{ login }})",
         "GROUP_BASE": "ou=groups",
         "TIMEOUT": 0.1,
+        "USER_CLASS": ["inetOrgPerson", "oathTOTPToken"],
     }
     yield configuration
     del configuration["CANAILLE_LDAP"]

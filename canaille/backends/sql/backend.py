@@ -110,6 +110,10 @@ class SQLBackend(Backend):
         ).scalar_one_or_none()
 
     def save(self, instance):
+        # run the instance save callback if existing
+        if hasattr(instance, "save"):
+            instance.save()
+
         instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
         )
