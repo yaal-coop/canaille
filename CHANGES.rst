@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - New security events logs :issue:`177`
+- Support for Python 3.13 :pr:`186`
 
 Changed
 ^^^^^^^
