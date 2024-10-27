@@ -10,10 +10,7 @@ def add_log_level(level_name, level_num, method_name=None):
     Comprehensively adds a new logging level to the `logging` module and the
     currently configured logging class.
     `level_name` becomes an attribute of the `logging` module with the value
-    `level_num`. `method_name` becomes a convenience method for both `logging`
-    itself and the class returned by `logging.getLoggerClass()` (usually just
-    `logging.Logger`). If `methodName` is not specified, `levelName.lower()` is
-    used.
+    `level_num`.
     To avoid accidental clobberings of existing attributes, this method will
     raise an `AttributeError` if the level name is already an attribute of the
     `logging` module or if the method name is already present
@@ -28,13 +25,6 @@ def add_log_level(level_name, level_num, method_name=None):
     """
     if not method_name:
         method_name = level_name.lower()
-
-    if hasattr(logging, level_name):
-        raise AttributeError(f"{level_name} already defined in logging module")
-    if hasattr(logging, method_name):
-        raise AttributeError(f"{method_name} already defined in logging module")
-    if hasattr(logging.getLoggerClass(), method_name):
-        raise AttributeError(f"{method_name} already defined in logger class")
 
     # This method was inspired by the answers to Stack Overflow post
     # http://stackoverflow.com/q/2183233/2988730, especially
