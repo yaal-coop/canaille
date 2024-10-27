@@ -82,7 +82,9 @@ sphinxcontrib-images = "^0.9.4"
 coverage = {version = "*", extras=["toml"]}
 faker = "*"
 flask-webtest = "*"
-pre-commit = "*"
+# pre-commit version is fixed until docformatted hook is compatible
+# https://github.com/PyCQA/docformatter/issues/293
+pre-commit = "^3.0.0"
 pyquery = "*"
 pytest = "^8.0.0"
 pytest-coverage = "*"
@@ -223,7 +225,7 @@ commands =
 
 [testenv:style]
 commands =
-    pip install pre-commit
+    pip install pre-commit<4
     pre-commit run --all-files
 
 [testenv:doc]
