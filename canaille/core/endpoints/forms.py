@@ -12,6 +12,8 @@ from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
 from canaille.app.forms import email_validator
 from canaille.app.forms import is_uri
+from canaille.app.forms import password_length_validator
+from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import phone_number
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
@@ -19,8 +21,6 @@ from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
-
-MINIMUM_PASSWORD_LENGTH = 8
 
 
 def unique_user_name(form, field):
@@ -263,7 +263,8 @@ PROFILE_FORM_FIELDS = dict(
         _("Password"),
         validators=[
             wtforms.validators.Optional(),
-            wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
+            password_length_validator,
+            password_too_long_validator,
         ],
         render_kw={
             "autocomplete": "new-password",

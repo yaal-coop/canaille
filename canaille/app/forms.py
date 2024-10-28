@@ -46,6 +46,44 @@ def phone_number(form, field):
         raise wtforms.ValidationError(_("Not a valid phone number"))
 
 
+def password_length_validator(form, field):
+    minimum_password_length = current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
+    if minimum_password_length:
+        if len(field.data) < minimum_password_length:
+            raise wtforms.ValidationError(
+                _(
+                    "Field must be at least {minimum_password_length} characters long."
+                ).format(minimum_password_length=str(minimum_password_length))
+            )
+
+
+def password_too_long_validator(form, field):
+    maximum_password_length = min(
+        current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"] or 4096, 4096
+    )
+    if len(field.data) > maximum_password_length:
+        raise wtforms.ValidationError(
+            _(
+                "Field cannot be longer than {maximum_password_length} characters."
+            ).format(maximum_password_length=str(maximum_password_length))
+        )
+
+
+def password_strength_calculator(password):
+    try:
+        from zxcvbn_rs_py import zxcvbn
+    except ImportError:
+        return None
+
+    strength_score = 0
+
+    if password and type(password) is str:
+        strength_score = zxcvbn(password).score
+        strength_score = strength_score * 100 // 4
+
+    return strength_score
+
+
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401

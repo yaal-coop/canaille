@@ -2,6 +2,7 @@ import datetime
 import logging
 from unittest import mock
 
+from flask import current_app
 from flask import g
 
 from canaille.app import models
@@ -95,6 +96,64 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
         },
     )
     res.mustcontain("Field must be at least 8 characters long.")
+
+
+def test_profile_settings_minimum_password_length_validation(testclient, logged_user):
+    """Tests minimum length of password defined in configuration."""
+
+    def with_different_values(password, length):
+        current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = length
+        res = testclient.get("/profile/user/settings")
+        res = testclient.post(
+            "/profile/user/settings",
+            {
+                "csrf_token": res.form["csrf_token"].value,
+                "password1": password,
+            },
+            headers={
+                "HX-Request": "true",
+                "HX-Trigger-Name": "password1",
+            },
+        )
+        res.mustcontain(f"Field must be at least {length} characters long.")
+
+    with_different_values("short", 8)
+    with_different_values("aa", 3)
+    with_different_values("1234567890123456789", 20)
+
+
+def test_profile_settings_too_long_password(testclient, logged_user):
+    """Tests maximum length of password."""
+
+    def with_different_values(password, length, message):
+        current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"] = length
+        res = testclient.get("/profile/user/settings")
+        res = testclient.post(
+            "/profile/user/settings",
+            {
+                "csrf_token": res.form["csrf_token"].value,
+                "password1": password,
+            },
+            headers={
+                "HX-Request": "true",
+                "HX-Trigger-Name": "password1",
+            },
+        )
+        res.mustcontain(message)
+
+    with_different_values(
+        "a" * 1001, 1000, "Field cannot be longer than 1000 characters."
+    )
+    with_different_values("a1!A" * 250, 1000, 'data-percent="25"')
+    with_different_values("a" * 501, 500, "Field cannot be longer than 500 characters.")
+    with_different_values("a1!A" * 125, 500, 'data-percent="25"')
+    with_different_values("a" * 4097, 0, "Field cannot be longer than 4096 characters.")
+    with_different_values(
+        "a" * 4097, None, "Field cannot be longer than 4096 characters."
+    )
+    with_different_values(
+        "a" * 4097, 5000, "Field cannot be longer than 4096 characters."
+    )
 
 
 def test_edition_without_groups(
