@@ -2073,21 +2073,6 @@ standalone = ["Sphinx (>=5)"]
 test = ["html5lib", "pytest"]
 
 [[package]]
-name = "sphinxcontrib-images"
-version = "0.9.4"
-description = "Sphinx extension for thumbnails"
-optional = false
-python-versions = "*"
-files = [
-    {file = "sphinxcontrib-images-0.9.4.tar.gz", hash = "sha256:f6c237d0430793e65d91dbddb13b1fb26a2cf838040a9deeb52112969fbc4a4b"},
-    {file = "sphinxcontrib_images-0.9.4-py2.py3-none-any.whl", hash = "sha256:8863e8e8533a116f45cb92523938ab25879cc31dc594f5de4c3dbd9ab3d440b0"},
-]
-
-[package.dependencies]
-requests = ">2.2,<3"
-sphinx = {version = ">=2.0", markers = "python_version >= \"3.0\""}
-
-[[package]]
 name = "sphinxcontrib-jsmath"
 version = "1.0.1"
 description = "A sphinx extension which renders display math in HTML via JavaScript"
@@ -2556,4 +2541,4 @@ sql = ["passlib", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "cb90e045de6c9ea51dee723f4b54ded36296602cf642c1d8d696adc423da83fb"
+content-hash = "517bd8263531694f59c048263853d3599857eeaf04595e4552c8ab593e2861f4"
