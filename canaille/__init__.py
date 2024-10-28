@@ -205,10 +205,10 @@ def add_logging_level(levelName, levelNum, methodName=None):
     # http://stackoverflow.com/q/2183233/2988730, especially
     # http://stackoverflow.com/a/13638084/2988730
     def logForLevel(self, message, *args, **kwargs):
-        if self.isEnabledFor(levelNum):
+        if self.isEnabledFor(levelNum):  # pragma: no cover
             self._log(levelNum, message, args, **kwargs)
 
-    def logToRoot(message, *args, **kwargs):
+    def logToRoot(message, *args, **kwargs):  # pragma: no cover
         logging.log(levelNum, message, *args, **kwargs)
 
     logging.addLevelName(levelNum, levelName)
