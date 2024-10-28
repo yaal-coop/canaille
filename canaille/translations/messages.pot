@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-24 16:38+0200\n"
+"POT-Creation-Date: 2024-10-28 10:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,11 +41,11 @@ msgstr ""
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:269
+#: canaille/app/forms.py:240
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:297
+#: canaille/app/forms.py:268
 msgid "Not a valid datetime value."
 msgstr ""
 
