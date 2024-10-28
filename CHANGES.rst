@@ -17,6 +17,7 @@ Changed
 - all password tests and validator are supported by password1 field :issue:`174`
 - password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test :issue:`174`
 - Update to HTMX 2.0.3 :pr:`184`
+- Migrate from poetry to uv :pr:`187`
 
 Removed
 ^^^^^^^

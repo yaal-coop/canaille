@@ -9,9 +9,10 @@ RUN \
     libldap2-dev \
     libssl-dev
 
-COPY poetry.lock pyproject.toml demo/demoapp.py /opt/canaille/
-RUN pip install poetry
+COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md demo/demoapp.py /opt/canaille/
+COPY canaille /opt/canaille/canaille
+RUN pip install uv
 WORKDIR /opt/canaille
-RUN poetry install --with demo --without dev --extras all
+RUN uv sync --group demo --all-extras
 
-ENTRYPOINT ["poetry", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille-memory.toml", "--extra-files", "/opt/canaille/conf/canaille-ldap.toml", "--extra-files", "/opt/canaille/conf/canaille-sql.toml"]
+ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille-memory.toml", "--extra-files", "/opt/canaille/conf/canaille-ldap.toml", "--extra-files", "/opt/canaille/conf/canaille-sql.toml"]
