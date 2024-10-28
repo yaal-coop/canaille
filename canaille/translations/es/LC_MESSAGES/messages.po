@@ -7,9 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-10-28 11:57+0100\n"
-"PO-Revision-Date: 2024-09-13 08:47+0000\n"
+"PO-Revision-Date: 2024-10-29 22:11+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:100
@@ -39,11 +39,11 @@ msgstr "Número de teléfono no válido"
 
 #: canaille/app/forms.py:55
 msgid "Field must be at least {minimum_password_length} characters long."
-msgstr ""
+msgstr "El campo debe tener al menos {minimum_password_length} caracteres."
 
 #: canaille/app/forms.py:67
 msgid "Field cannot be longer than {maximum_password_length} characters."
-msgstr ""
+msgstr "El campo no puede tener más de {maximum_password_length} caracteres."
 
 #: canaille/app/forms.py:240
 msgid "The page number is not valid"
@@ -1958,10 +1958,8 @@ msgid "Add another field"
 msgstr "Agregar otro campo"
 
 #: canaille/templates/macro/form.html:119
-#, fuzzy
-#| msgid "Password reset"
 msgid "Password strength"
-msgstr "Restablecer contraseña"
+msgstr "Seguridad de la contraseña"
 
 #: canaille/templates/macro/table.html:8
 msgid "Search…"
