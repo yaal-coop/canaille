@@ -49,6 +49,7 @@ flask-themer = {version = "^2.0.0", optional=true}
 pycountry = {version = ">=22.1.10", optional=true}
 pytz = {version = ">=2022.7", optional=true}
 toml = {version = "^0.10.0", optional=true, python = "<3.11"}
+zxcvbn-rs-py = {version = "^0.1.1", optional=true}
 
 # extra : oidc
 authlib = {version = "^1.2.1", optional=true}
@@ -64,7 +65,6 @@ passlib = {version = "^1.7.4", optional=true}
 sqlalchemy = {version = "^2.0.23", optional=true}
 sqlalchemy-json = {version = "^0.7.0", optional=true}
 sqlalchemy-utils = {version = "^0.41.1", optional=true}
-zxcvbn-rs-py = "^0.1.1"
 
 [tool.poetry.group.doc]
 optional = true
@@ -120,6 +120,7 @@ front = [
     "pycountry",
     "pytz",
     "toml",
+    "zxcvbn-rs-py",
 ]
 ldap = [
     "python-ldap",
@@ -151,6 +152,7 @@ all = [
     "sqlalchemy",
     "sqlalchemy-json",
     "sqlalchemy-utils",
+    "zxcvbn-rs-py",
 ]
 
 [tool.poetry.scripts]

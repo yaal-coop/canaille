@@ -917,17 +917,6 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
-name = "legacy-cgi"
-version = "2.6.1"
-description = "Fork of the standard library cgi and cgitb modules, being deprecated in PEP-594"
-optional = false
-python-versions = "<4.0,>=3.10"
-files = [
-    {file = "legacy_cgi-2.6.1-py3-none-any.whl", hash = "sha256:8eacc1522d9f76451337a4b5a0abf494158d39250754b0d1bc19a14c6512af9b"},
-    {file = "legacy_cgi-2.6.1.tar.gz", hash = "sha256:f2ada99c747c3d72a473a6aaff6259a61f226b06fe9f3106e495ab83fd8f7a42"},
-]
-
-[[package]]
 name = "lxml"
 version = "5.3.0"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
@@ -2466,9 +2455,6 @@ files = [
     {file = "webob-1.8.9.tar.gz", hash = "sha256:ad6078e2edb6766d1334ec3dee072ac6a7f95b1e32ce10def8ff7f0f02d56589"},
 ]
 
-[package.dependencies]
-legacy-cgi = {version = ">=2.6", markers = "python_version >= \"3.13\""}
-
 [package.extras]
 docs = ["Sphinx (>=1.7.5)", "pylons-sphinx-themes"]
 testing = ["coverage", "pytest (>=3.1.0)", "pytest-cov", "pytest-xdist"]
@@ -2531,7 +2517,7 @@ email = ["email-validator"]
 name = "zxcvbn-rs-py"
 version = "0.1.1"
 description = "Python bindings for zxcvbn-rs, the Rust implementation of zxcvbn"
-optional = false
+optional = true
 python-versions = ">=3.7, <3.13"
 files = [
     {file = "zxcvbn_rs_py-0.1.1-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:2c16d2ffa0933ac014b8e79bccfd2e9cf2ef767db047df99a7cc4597bfdf4eb2"},
@@ -2616,8 +2602,8 @@ files = [
 ]
 
 [extras]
-all = ["authlib", "email_validator", "flask-babel", "flask-themer", "passlib", "pycountry", "python-ldap", "pytz", "sentry-sdk", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils", "toml"]
-front = ["email_validator", "flask-babel", "flask-themer", "pycountry", "pytz", "toml"]
+all = ["authlib", "email_validator", "flask-babel", "flask-themer", "passlib", "pycountry", "python-ldap", "pytz", "sentry-sdk", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils", "toml", "zxcvbn-rs-py"]
+front = ["email_validator", "flask-babel", "flask-themer", "pycountry", "pytz", "toml", "zxcvbn-rs-py"]
 ldap = ["python-ldap"]
 oidc = ["authlib"]
 sentry = ["sentry-sdk"]
@@ -2625,5 +2611,5 @@ sql = ["passlib", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10"
-content-hash = "4b4e4ce2d7a8d6d586177e74b67b3e1fcd744f33f36701b7d64b2994f10396f6"
+python-versions = "<3.13,>=3.10"
+content-hash = "6918a9fca20831192025f6d512c1c6ed567a76b1c908496788edd2d727d3d05d"

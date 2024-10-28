@@ -9,7 +9,6 @@ from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms.meta import DefaultMeta
-from zxcvbn_rs_py import zxcvbn
 
 from canaille.app import models
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
@@ -71,6 +70,11 @@ def password_too_long_validator(form, field):
 
 
 def password_strength_calculator(password):
+    try:
+        from zxcvbn_rs_py import zxcvbn
+    except ImportError:
+        return None
+
     strength_score = 0
 
     if password and type(password) is str:
