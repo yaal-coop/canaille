@@ -19,7 +19,9 @@ style:
   image: python:3.13
   stage: test
   script:
-    - pip install pre-commit
+    # pre-commit version is fixed until docformatted hook is compatible
+    # https://github.com/PyCQA/docformatter/issues/293
+    - pip install "pre-commit<4.0.0"
     - pre-commit run --all-files --show-diff-on-failure
 
 python310:
