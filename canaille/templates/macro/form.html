@@ -117,100 +117,100 @@ del_button=false
 {% if field.name == "password1" and field.data|password_strength and not field.errors %}
     <div>
         <p class="progress_bar">{% trans %}Password strength{% endtrans %}</p>
-        <div class="ui indicating progress" data-percent="{{ field.data|password_strength }}"">
-                                                                                              <div class="bar" style="width: {{ field.data|password_strength }}%;">
-                                                                                                                                                                               </div>
-                                                                                                                                                                               </div>
-                                                                                                                                                                               </div>
-                                                                                                                                                                       {% endif %}
+        <div class="ui indicating progress" data-percent="{{ field.data|password_strength }}">
+            <div class="bar" style="width: {{ field.data|password_strength }}%;">
+            </div>
+        </div>
+    </div>
+{% endif %}
 
-                                                                                                                                                                       {% if container and field_visible %}
-                                                                                                                                                                           </div>
-                                                                                                                                                                       {% endif %}
+{% if container and field_visible %}
+    </div>
+{% endif %}
 
-                                                                                                                                                                       {%- endmacro %}
+{%- endmacro %}
 
-                                                                                                                                                                       {% macro render_fields(form) %}
-                                                                                                                                                                           {% for field in form %}
-                                                                                                                                                                               {{ render_field(field) }}
-                                                                                                                                                                           {% endfor %}
-                                                                                                                                                                       {% endmacro %}
+{% macro render_fields(form) %}
+    {% for field in form %}
+        {{ render_field(field) }}
+    {% endfor %}
+{% endmacro %}
 
-                                                                                                                                                                       {% macro render_field(field, parent_list=none, parent_indice=none) -%}
-                                                                                                                                                                           {% if parent_list %}
-                                                                                                                                                                               {% set last = parent_indice >= parent_list.entries|len -1 %}
-                                                                                                                                                                               {% set ignore_me = kwargs.update({
-                                                                                                                                                                              "label_visible": false,
-                           "add_button": (last and (not parent_list.max_entries or parent_indice < parent_list.max_entries)),
-                        "del_button": (last and parent_list.min_entries and parent_indice >= parent_list.min_entries),
-                         }) %}
-                     {% endif %}
-                     {% if field.type == "FieldList" %}
-                         {{ render_list(field, **kwargs) }}
-                     {% elif field.type == "BooleanField" %}
-                         {{ render_checkbox(field, **kwargs) }}
-                     {% else %}
-                         {{ render_input(field, **kwargs) }}
-                     {% endif %}
-                 {%- endmacro %}
+{% macro render_field(field, parent_list=none, parent_indice=none) -%}
+    {% if parent_list %}
+        {% set last = parent_indice >= parent_list.entries|len -1 %}
+        {% set ignore_me = kwargs.update({
+        "label_visible": false,
+        "add_button": (last and (not parent_list.max_entries or parent_indice < parent_list.max_entries)),
+        "del_button": (last and parent_list.min_entries and parent_indice >= parent_list.min_entries),
+        }) %}
+    {% endif %}
+    {% if field.type == "FieldList" %}
+        {{ render_list(field, **kwargs) }}
+    {% elif field.type == "BooleanField" %}
+        {{ render_checkbox(field, **kwargs) }}
+    {% else %}
+        {{ render_input(field, **kwargs) }}
+    {% endif %}
+{%- endmacro %}
 
-                 {% macro render_list(field, render_func=none) -%}
-                     <div class="field fieldlist" id="{{ field.name }}">
+{% macro render_list(field, render_func=none) -%}
+    <div class="field fieldlist" id="{{ field.name }}">
         {# Strangely enough, translations are not rendered when using field.label() #}
-                                                                                {{ field[0].label() }}
-                                                                                {% for subfield in field %}
-                                                                                    {% set ignore_me = kwargs.update(**field.render_kw or {}) %}
-                                                                                    {{ (render_func or render_field)(
-                                                                                    subfield,
-                                                                                    parent_list=field,
-                                                                                    parent_indice=loop.index0,
-                                                                                    **kwargs
-                                                                                    ) }}
-                                                                                {% endfor %}
-                                                                                </div>
-                                                                            {%- endmacro %}
+        {{ field[0].label() }}
+        {% for subfield in field %}
+            {% set ignore_me = kwargs.update(**field.render_kw or {}) %}
+            {{ (render_func or render_field)(
+            subfield,
+            parent_list=field,
+            parent_indice=loop.index0,
+            **kwargs
+            ) }}
+        {% endfor %}
+    </div>
+{%- endmacro %}
 
-                                                                            {% macro render_checkbox(field, display=true) -%}
-                                                                                <div class="field"
-                                                                                                           {% if not display %}style="display: none"{% endif %}
-                                                  >
-                                                  <div class="ui toggle checkbox">
-                                                                                          {{ field(**kwargs) }}
-                                                                                          {{ field.label() }}
-                                                                                          </div>
-                                                                                          </div>
-                                                                                      {%- endmacro %}
+{% macro render_checkbox(field, display=true) -%}
+    <div class="field"
+         {% if not display %}style="display: none"{% endif %}
+    >
+        <div class="ui toggle checkbox">
+            {{ field(**kwargs) }}
+            {{ field.label() }}
+        </div>
+    </div>
+{%- endmacro %}
 
-                                                                                      {% macro render_form(
-                                                                                      form,
-                                                                                      action_text=none,
-                                                                                      class_='',
-                                                                                      btn_class='ui right floated primary button',
-                                                                                      action=none,
-                                                                                      id=none,
-                                                                                      csrf=true) -%}
-                                                                                      <form method="POST"
-                                                                                                              id="{{ id or form.__class__.__name__|lower }}"
-                                                   action="{% if action %}{{ action }}{% elif form.action is defined %}{{ form.action }}{% endif %}"
-                                                                                                      role="form"
-                enctype="multipart/form-data"
-                                  class="ui form {{ class_ }}"
-                                 {% for key, value in kwargs.items() %}{{ key.replace("_", "-") }}="{{ value }}" {% endfor %}
-                                                                                    >
-                                                                                    {% if caller is defined %}
-                                                                                        {% if csrf %}
-                                                                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                                                                                                                                                      {% endif %}
-                                                                                                                                                                      {{ caller() }}
-                                                                                                                                                                  {% else %}
-                                                                                                                                                                      {{ render_fields(form) }}
-                                                                                                                                                                  {% endif %}
-                                                                                                                                                                  {% if action_text %}
-                                                                                                                                                                      <div class="ui right aligned container">
-                                                                                                                                                                                                                      <div class="ui stackable buttons">
-                                                                                                                                                                                                                                                                <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
-                                                                                                                                                                                                                                                                                                                      </div>
-                                                                                                                                                                                                                                                                                                                      </div>
-                                                                                                                                                                                                                                                                                                                  {% endif %}
-                                                                                                                                                                                                                                                                                                                  </form>
-                                                                                                                                                                                                                                                                                                                  {%- endmacro %}
+{% macro render_form(
+form,
+action_text=none,
+class_='',
+btn_class='ui right floated primary button',
+action=none,
+id=none,
+csrf=true) -%}
+<form method="POST"
+      id="{{ id or form.__class__.__name__|lower }}"
+      action="{% if action %}{{ action }}{% elif form.action is defined %}{{ form.action }}{% endif %}"
+      role="form"
+      enctype="multipart/form-data"
+      class="ui form {{ class_ }}"
+      {% for key, value in kwargs.items() %}{{ key.replace("_", "-") }}="{{ value }}" {% endfor %}
+>
+    {% if caller is defined %}
+        {% if csrf %}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% endif %}
+        {{ caller() }}
+    {% else %}
+        {{ render_fields(form) }}
+    {% endif %}
+    {% if action_text %}
+        <div class="ui right aligned container">
+            <div class="ui stackable buttons">
+                <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+            </div>
+        </div>
+    {% endif %}
+</form>
+{%- endmacro %}
