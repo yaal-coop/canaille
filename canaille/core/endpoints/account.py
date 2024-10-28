@@ -35,6 +35,8 @@ from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
 from canaille.app.forms import is_readonly
+from canaille.app.forms import password_length_validator
+from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
@@ -47,7 +49,6 @@ from ..mails import send_invitation_mail
 from ..mails import send_password_initialization_mail
 from ..mails import send_password_reset_mail
 from ..mails import send_registration_mail
-from .forms import MINIMUM_PASSWORD_LENGTH
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
@@ -313,11 +314,11 @@ def registration(data=None, hash=None):
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
+        password_length_validator,
+        password_too_long_validator,
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
-        wtforms.validators.Length(min=MINIMUM_PASSWORD_LENGTH),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True

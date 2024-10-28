@@ -19,7 +19,7 @@ del_button=false
 {% set inline_validation = field.validators and field.type not in ("FileField", "MultipleFileField") %}
 {% if inline_validation %}
     {% set ignore_me = kwargs.update({"hx-post": ""}) %}
-    {% set ignore_me = kwargs.update({"hx-indicator": "closest .input"}) %}
+    {% set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms"}) %}
 {% endif %}
 
 {% if container and field_visible %}
@@ -112,6 +112,16 @@ del_button=false
             <p>{{ error }}</p>
         </div>
     {% endfor %}
+{% endif %}
+
+{% if field.name == "password1" and field.data|password_strength and not field.errors %}
+    <div>
+        <p class="progress_bar">{% trans %}Password strength{% endtrans %}</p>
+        <div class="ui indicating progress" data-percent="{{ field.data|password_strength }}">
+            <div class="bar" style="width: {{ field.data|password_strength }}%;">
+            </div>
+        </div>
+    </div>
 {% endif %}
 
 {% if container and field_visible %}
