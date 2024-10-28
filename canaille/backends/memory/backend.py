@@ -2,7 +2,6 @@ import copy
 import datetime
 import uuid
 from typing import Any
-from typing import Dict
 
 from canaille.backends import Backend
 
@@ -12,7 +11,7 @@ def listify(value):
 
 
 class MemoryBackend(Backend):
-    indexes: Dict[str, Dict[str, Any]] = None
+    indexes: dict[str, dict[str, Any]] = None
     """Associates ids and states."""
 
     attribute_indexes = None

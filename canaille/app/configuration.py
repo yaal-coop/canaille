@@ -2,7 +2,6 @@ import os
 import smtplib
 import socket
 import sys
-from typing import Optional
 
 from flask import current_app
 from pydantic import ValidationError
@@ -51,7 +50,7 @@ class RootSettings(BaseSettings):
     You MUST change this.
     """
 
-    SERVER_NAME: Optional[str] = None
+    SERVER_NAME: str | None = None
     """The Flask :external:py:data:`SERVER_NAME` configuration setting.
 
     This sets domain name on which canaille will be served.
@@ -87,21 +86,21 @@ def settings_factory(config, env_file=".env", env_prefix=""):
     ):
         from canaille.backends.sql.configuration import SQLSettings
 
-        attributes["CANAILLE_SQL"] = (Optional[SQLSettings], None)
+        attributes["CANAILLE_SQL"] = ((SQLSettings | None), None)
 
     if "CANAILLE_LDAP" in config or any(
         var.startswith("CANAILLE__LDAP__") for var in os.environ
     ):
         from canaille.backends.ldap.configuration import LDAPSettings
 
-        attributes["CANAILLE_LDAP"] = (Optional[LDAPSettings], None)
+        attributes["CANAILLE_LDAP"] = ((LDAPSettings | None), None)
 
     if "CANAILLE_OIDC" in config or any(
         var.startswith("CANAILLE_OIDC__") for var in os.environ
     ):
         from canaille.oidc.configuration import OIDCSettings
 
-        attributes["CANAILLE_OIDC"] = (Optional[OIDCSettings], None)
+        attributes["CANAILLE_OIDC"] = ((OIDCSettings | None), None)
 
     Settings = create_model(
         "Settings",

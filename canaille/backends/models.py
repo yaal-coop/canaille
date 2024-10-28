@@ -4,8 +4,6 @@ import typing
 from collections import ChainMap
 from typing import Annotated
 from typing import ClassVar
-from typing import List
-from typing import Optional
 from typing import get_origin
 from typing import get_type_hints
 
@@ -20,7 +18,7 @@ class Model:
     It details all the common attributes shared by every models.
     """
 
-    id: Optional[str] = None
+    id: str | None = None
     """A unique identifier for a SCIM resource as defined by the service
     provider. Id will be :py:data:`None` until the
     :meth:`~canaille.backends.models.BackendModel.save` method is called.
@@ -38,11 +36,11 @@ class Model:
     Section 9 for additional considerations regarding privacy.
     """
 
-    created: Optional[datetime.datetime] = None
+    created: datetime.datetime | None = None
     """The :class:`~datetime.datetime` that the resource was added to the
     service provider."""
 
-    last_modified: Optional[datetime.datetime] = None
+    last_modified: datetime.datetime | None = None
     """The most recent :class:`~datetime.datetime` that the details of this
     resource were updated at the service provider.
 
@@ -50,7 +48,7 @@ class Model:
     the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`.
     """
 
-    _attributes: ClassVar[Optional[List[str]]] = None
+    _attributes: ClassVar[list[str] | None] = None
 
     @classproperty
     def attributes(cls):

@@ -12,11 +12,10 @@ keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
 classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "License :: OSI Approved :: MIT License",
     "Environment :: Web Environment",
@@ -73,17 +72,18 @@ optional = true
 [tool.poetry.group.doc.dependencies]
 autodoc-pydantic = "^2.0.1"
 shibuya = "^2024.3.1"
-sphinx = "^8.0.0"
+sphinx = ">=7.0.0"
 sphinx-design = "^0.6.0"
 sphinx-issues = "^5.0.0"
 sphinx-click = "^6.0.0"
-sphinxcontrib-images = "^0.9.4"
 
 [tool.poetry.group.dev.dependencies]
 coverage = {version = "*", extras=["toml"]}
 faker = "*"
 flask-webtest = "*"
-pre-commit = "3.8.0"
+# pre-commit version is fixed until docformatted hook is compatible
+# https://github.com/PyCQA/docformatter/issues/293
+pre-commit = "^3.0.0"
 pyquery = "*"
 pytest = "^8.0.0"
 pytest-coverage = "*"
@@ -213,6 +213,7 @@ envlist =
     py310
     py311
     py312
+    py313
     doc
     coverage
 
@@ -224,7 +225,7 @@ commands =
 
 [testenv:style]
 commands =
-    pip install pre-commit
+    pip install pre-commit<4
     pre-commit run --all-files
 
 [testenv:doc]

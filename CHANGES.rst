@@ -8,6 +8,7 @@ Added
 - password strength progress bar :issue:`174`
 - implementation of zxcvbn-rs-py which score the password strength :issue:`174`
 - New security events logs :issue:`177`
+- Support for Python 3.13 :pr:`186`
 
 Changed
 ^^^^^^^
