@@ -1,6 +1,9 @@
 import datetime
 from typing import ClassVar
 
+# keep 'List' instead of 'list' for audiences to not break py310 with the memory backend
+from typing import List  # noqa: UP035
+
 from canaille.backends.models import Model
 from canaille.core.models import User
 
@@ -18,7 +21,8 @@ class Client(Model):
 
     description: str | None = None
     preconsent: bool | None = False
-    audience: list["Client"] = []
+    # keep 'List' instead of 'list' do not break py310 with the memory backend
+    audience: List["Client"] = []  # noqa: UP006
 
     client_id: str | None
     """REQUIRED.
@@ -320,7 +324,8 @@ class Token(Model):
     issue_date: datetime.datetime
     lifetime: int
     revokation_date: datetime.datetime
-    audience: list["Client"]
+    # keep 'List' instead of 'list' do not break py310 with the memory backend
+    audience: List["Client"]  # noqa: UP006
 
 
 class Consent(Model):
