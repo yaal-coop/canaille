@@ -1,8 +1,4 @@
 from enum import Enum
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Union
 
 from pydantic import BaseModel
 from pydantic import ValidationInfo
@@ -18,25 +14,25 @@ class SMTPSettings(BaseModel):
     authentication.
     """
 
-    HOST: Optional[str] = "localhost"
+    HOST: str | None = "localhost"
     """The SMTP host."""
 
-    PORT: Optional[int] = 25
+    PORT: int | None = 25
     """The SMTP port."""
 
-    TLS: Optional[bool] = False
+    TLS: bool | None = False
     """Whether to use TLS to connect to the SMTP server."""
 
-    SSL: Optional[bool] = False
+    SSL: bool | None = False
     """Whether to use SSL to connect to the SMTP server."""
 
-    LOGIN: Optional[str] = None
+    LOGIN: str | None = None
     """The SMTP login."""
 
-    PASSWORD: Optional[str] = None
+    PASSWORD: str | None = None
     """The SMTP password."""
 
-    FROM_ADDR: Optional[str] = None
+    FROM_ADDR: str | None = None
     """The sender for Canaille mails.
 
     Some mail provider might require a valid sender address.
@@ -83,7 +79,7 @@ class ACLSettings(BaseModel):
     to :attr:`READ` and :attr:`WRITE`. Users matching several filters will cumulate permissions.
     """
 
-    PERMISSIONS: List[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
+    PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
     """A list of :class:`Permission` users in the access control will be able
     to manage. For example::
 
@@ -95,7 +91,7 @@ class ACLSettings(BaseModel):
             "impersonate_users",
         ]"""
 
-    READ: List[str] = [
+    READ: list[str] = [
         "user_name",
         "groups",
         "lock_date",
@@ -103,7 +99,7 @@ class ACLSettings(BaseModel):
     """A list of :class:`~canaille.core.models.User` attributes that users in
     the ACL will be able to read."""
 
-    WRITE: List[str] = [
+    WRITE: list[str] = [
         "photo",
         "given_name",
         "family_name",
@@ -129,9 +125,9 @@ class ACLSettings(BaseModel):
     @field_validator("READ")
     def validate_read_values(
         cls,
-        read: List[str],
+        read: list[str],
         info: ValidationInfo,
-    ) -> List[str]:
+    ) -> list[str]:
         from canaille.core.models import User
 
         assert all(field in User.attributes for field in read)
@@ -140,15 +136,15 @@ class ACLSettings(BaseModel):
     @field_validator("WRITE")
     def validate_write_values(
         cls,
-        write: List[str],
+        write: list[str],
         info: ValidationInfo,
-    ) -> List[str]:
+    ) -> list[str]:
         from canaille.core.models import User
 
         assert all(field in User.attributes for field in write)
         return write
 
-    FILTER: Optional[Union[Dict[str, str], List[Dict[str, str]]]] = None
+    FILTER: dict[str, str] | list[dict[str, str]] | None = None
     """:attr:`FILTER` can be:
 
     - :py:data:`None`, in which case all the users will match this access control
@@ -181,11 +177,11 @@ class CoreSettings(BaseModel):
     Used for display purpose.
     """
 
-    LOGO: Optional[str] = None
+    LOGO: str | None = None
     """The logo of your organization, this is useful to make your organization
     recognizable on login screens."""
 
-    FAVICON: Optional[str] = None
+    FAVICON: str | None = None
     """You favicon.
 
     If unset and :attr:`LOGO` is set, then the logo will be used.
@@ -197,20 +193,20 @@ class CoreSettings(BaseModel):
     Defaults to ``default``. Theming is done with `flask-themer <https://github.com/tktech/flask-themer>`_.
     """
 
-    LANGUAGE: Optional[str] = None
+    LANGUAGE: str | None = None
     """If a language code is set, it will be used for every user.
 
     If unset, the language is guessed according to the users browser.
     """
 
-    TIMEZONE: Optional[str] = None
+    TIMEZONE: str | None = None
     """The timezone in which datetimes will be displayed to the users (e.g.
     ``CEST``).
 
     If unset, the server timezone will be used.
     """
 
-    SENTRY_DSN: Optional[str] = None
+    SENTRY_DSN: str | None = None
     """A `Sentry <https://sentry.io>`_ DSN to collect the exceptions.
 
     This is useful for tracking errors in test and production environments.
@@ -259,7 +255,7 @@ class CoreSettings(BaseModel):
     Defaults to 2 days.
     """
 
-    LOGGING: Optional[Union[str, Dict]] = None
+    LOGGING: str | dict | None = None
     """Configures the logging output using the python logging configuration format:
 
     - if :py:data:`None`, everything is logged in the standard error output
@@ -282,14 +278,14 @@ class CoreSettings(BaseModel):
         formatter = "default"
     """
 
-    SMTP: Optional[SMTPSettings] = None
+    SMTP: SMTPSettings | None = None
     """The settings related to SMTP and mail configuration.
 
     If unset, mail-related features like password recovery won't be
     enabled.
     """
 
-    ACL: Optional[Dict[str, ACLSettings]] = {"DEFAULT": ACLSettings()}
+    ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
     """Mapping of permission groups. See :class:`ACLSettings` for more details.
 
     The ACL name can be freely chosen. For example::

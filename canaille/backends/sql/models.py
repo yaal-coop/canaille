@@ -1,7 +1,6 @@
 import datetime
 import typing
 import uuid
-from typing import List
 
 from sqlalchemy import Boolean
 from sqlalchemy import Column
@@ -82,8 +81,8 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     given_name: Mapped[str] = mapped_column(String, nullable=True)
     formatted_name: Mapped[str] = mapped_column(String, nullable=True)
     display_name: Mapped[str] = mapped_column(String, nullable=True)
-    emails: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
-    phone_numbers: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    emails: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
+    phone_numbers: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     formatted_address: Mapped[str] = mapped_column(String, nullable=True)
     street: Mapped[str] = mapped_column(String, nullable=True)
     postal_code: Mapped[str] = mapped_column(String, nullable=True)
@@ -95,7 +94,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     department: Mapped[str] = mapped_column(String, nullable=True)
     title: Mapped[str] = mapped_column(String, nullable=True)
     organization: Mapped[str] = mapped_column(String, nullable=True)
-    groups: Mapped[List["Group"]] = relationship(
+    groups: Mapped[list["Group"]] = relationship(
         secondary=membership_association_table, back_populates="members"
     )
     lock_date: Mapped[datetime.datetime] = mapped_column(
@@ -118,7 +117,7 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
 
     display_name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String, nullable=True)
-    members: Mapped[List["User"]] = relationship(
+    members: Mapped[list["User"]] = relationship(
         secondary=membership_association_table, back_populates="groups"
     )
 
@@ -146,10 +145,10 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
 
     description: Mapped[str] = mapped_column(String, nullable=True)
     preconsent: Mapped[bool] = mapped_column(Boolean, nullable=True)
-    post_logout_redirect_uris: Mapped[List[str]] = mapped_column(
+    post_logout_redirect_uris: Mapped[list[str]] = mapped_column(
         MutableJson, nullable=True
     )
-    audience: Mapped[List["Client"]] = relationship(
+    audience: Mapped[list["Client"]] = relationship(
         "Client",
         secondary=client_audience_association_table,
         primaryjoin=id == client_audience_association_table.c.client_id,
@@ -164,13 +163,13 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
         TZDateTime(timezone=True), nullable=True
     )
     client_name: Mapped[str] = mapped_column(String, nullable=True)
-    contacts: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    contacts: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     client_uri: Mapped[str] = mapped_column(String, nullable=True)
-    redirect_uris: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    redirect_uris: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     logo_uri: Mapped[str] = mapped_column(String, nullable=True)
-    grant_types: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
-    response_types: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
-    scope: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    grant_types: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
+    response_types: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
+    scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     tos_uri: Mapped[str] = mapped_column(String, nullable=True)
     policy_uri: Mapped[str] = mapped_column(String, nullable=True)
     jwks_uri: Mapped[str] = mapped_column(String, nullable=True)
@@ -201,7 +200,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
     subject: Mapped["User"] = relationship()
     redirect_uri: Mapped[str] = mapped_column(String, nullable=True)
     response_type: Mapped[str] = mapped_column(String, nullable=True)
-    scope: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     nonce: Mapped[str] = mapped_column(String, nullable=True)
     issue_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
@@ -243,7 +242,7 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     subject: Mapped["User"] = relationship()
     type: Mapped[str] = mapped_column(String, nullable=True)
     refresh_token: Mapped[str] = mapped_column(String, nullable=True)
-    scope: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     issue_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
@@ -251,7 +250,7 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     revokation_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-    audience: Mapped[List["Client"]] = relationship(
+    audience: Mapped[list["Client"]] = relationship(
         "Client",
         secondary=token_audience_association_table,
         primaryjoin=id == token_audience_association_table.c.token_id,
@@ -277,7 +276,7 @@ class Consent(canaille.oidc.models.Consent, Base, SqlAlchemyModel):
     subject: Mapped["User"] = relationship()
     client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
     client: Mapped["Client"] = relationship()
-    scope: Mapped[List[str]] = mapped_column(MutableJson, nullable=True)
+    scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     issue_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )

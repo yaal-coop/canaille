@@ -1,6 +1,5 @@
 import datetime
 from typing import ClassVar
-from typing import List
 
 from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
@@ -17,14 +16,14 @@ from .basemodels import Token as BaseToken
 
 
 class Client(BaseClient, ClientMixin):
-    client_info_attributes: ClassVar[List[str]] = [
+    client_info_attributes: ClassVar[list[str]] = [
         "client_id",
         "client_secret",
         "client_id_issued_at",
         "client_secret_expires_at",
     ]
 
-    client_metadata_attributes: ClassVar[List[str]] = [
+    client_metadata_attributes: ClassVar[list[str]] = [
         "client_name",
         "contacts",
         "client_uri",
