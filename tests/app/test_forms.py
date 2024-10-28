@@ -302,7 +302,7 @@ def test_password_strength_progress_bar(testclient, logged_user):
             "HX-Trigger-Name": "password1",
         },
     )
-    res.mustcontain('data-percent="28"')
+    res.mustcontain('data-percent="100"')
 
 
 def test_maximum_password_length_config(testclient):

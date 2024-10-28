@@ -4,7 +4,6 @@ import io
 from dataclasses import astuple
 from dataclasses import dataclass
 from importlib import metadata
-from typing import List
 
 import wtforms
 from flask import Blueprint
@@ -191,7 +190,7 @@ class RegistrationPayload(VerificationPayload):
     user_name: str
     user_name_editable: bool
     email: str
-    groups: List[str]
+    groups: list[str]
 
 
 @bp.route("/invite", methods=["GET", "POST"])

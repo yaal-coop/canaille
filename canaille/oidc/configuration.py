@@ -1,6 +1,3 @@
-from typing import List
-from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -11,37 +8,33 @@ class JWTMappingSettings(BaseModel):
     A ``user`` var is available.
     """
 
-    SUB: Optional[str] = "{{ user.user_name }}"
-    NAME: Optional[str] = (
+    SUB: str | None = "{{ user.user_name }}"
+    NAME: str | None = (
         "{% if user.formatted_name %}{{ user.formatted_name }}{% endif %}"
     )
-    PHONE_NUMBER: Optional[str] = (
+    PHONE_NUMBER: str | None = (
         "{% if user.phone_numbers %}{{ user.phone_numbers[0] }}{% endif %}"
     )
-    EMAIL: Optional[str] = (
+    EMAIL: str | None = (
         "{% if user.preferred_email %}{{ user.preferred_email }}{% endif %}"
     )
-    GIVEN_NAME: Optional[str] = (
-        "{% if user.given_name %}{{ user.given_name }}{% endif %}"
-    )
-    FAMILY_NAME: Optional[str] = (
+    GIVEN_NAME: str | None = "{% if user.given_name %}{{ user.given_name }}{% endif %}"
+    FAMILY_NAME: str | None = (
         "{% if user.family_name %}{{ user.family_name }}{% endif %}"
     )
-    PREFERRED_USERNAME: Optional[str] = (
+    PREFERRED_USERNAME: str | None = (
         "{% if user.display_name %}{{ user.display_name }}{% endif %}"
     )
-    LOCALE: Optional[str] = (
+    LOCALE: str | None = (
         "{% if user.preferred_language %}{{ user.preferred_language }}{% endif %}"
     )
-    ADDRESS: Optional[str] = (
+    ADDRESS: str | None = (
         "{% if user.formatted_address %}{{ user.formatted_address }}{% endif %}"
     )
-    PICTURE: Optional[str] = (
+    PICTURE: str | None = (
         "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}"
     )
-    WEBSITE: Optional[str] = (
-        "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
-    )
+    WEBSITE: str | None = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
 
 
 class JWTSettings(BaseModel):
@@ -53,19 +46,19 @@ class JWTSettings(BaseModel):
         openssl rsa -in private.pem -pubout -outform PEM -out public.pem
     """
 
-    PRIVATE_KEY: Optional[str] = None
+    PRIVATE_KEY: str | None = None
     """The private key.
 
     If :py:data:`None` and debug mode is enabled, then an in-memory key will be used.
     """
 
-    PUBLIC_KEY: Optional[str] = None
+    PUBLIC_KEY: str | None = None
     """The public key.
 
     If :py:data:`None` and debug mode is enabled, then an in-memory key will be used.
     """
 
-    ISS: Optional[str] = None
+    ISS: str | None = None
     """The URI of the identity provider."""
 
     KTY: str = "RSA"
@@ -77,7 +70,7 @@ class JWTSettings(BaseModel):
     EXP: int = 3600
     """The time the JWT will be valid, in seconds."""
 
-    MAPPING: Optional[JWTMappingSettings] = JWTMappingSettings()
+    MAPPING: JWTMappingSettings | None = JWTMappingSettings()
 
 
 class OIDCSettings(BaseModel):
@@ -94,7 +87,7 @@ class OIDCSettings(BaseModel):
     :attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`.
     """
 
-    DYNAMIC_CLIENT_REGISTRATION_TOKENS: Optional[List[str]] = None
+    DYNAMIC_CLIENT_REGISTRATION_TOKENS: list[str] | None = None
     """A list of tokens that can be used for dynamic client registration."""
 
     REQUIRE_NONCE: bool = True

@@ -9,11 +9,12 @@ Added
 - password strength progress bar :issue:`174`
 - implementation of zxcvbn-rs-py which score the password strength :issue:`174`
 - New security events logs :issue:`177`
+- Support for Python 3.13 :pr:`186`
 
 Changed
 ^^^^^^^
 - `MIN_PASSWORD_LENGTH` become a parameter :issue:`174`
-- Maximum Python requirement is < 3.13 (because of zxcvbn-rs-py)
+- Maximum Python requirement is < 3.13 (because of the password_strength_calculator : zxcvbn-rs-py)
 - MIN_PASSWORD_LENGTH become a parameter :issue:`174`
 - all password tests and validator are supported by password1 field :issue:`174`
 - password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test :issue:`174`

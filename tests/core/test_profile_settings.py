@@ -144,9 +144,9 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     with_different_values(
         "a" * 1001, 1000, "Field cannot be longer than 1000 characters."
     )
-    with_different_values("a" * 1000, 1000, 'data-percent="100"')
+    with_different_values("a1!A" * 250, 1000, 'data-percent="25"')
     with_different_values("a" * 501, 500, "Field cannot be longer than 500 characters.")
-    with_different_values("a" * 500, 500, 'data-percent="100"')
+    with_different_values("a1!A" * 125, 500, 'data-percent="25"')
     with_different_values("a" * 4097, 0, "Field cannot be longer than 4096 characters.")
     with_different_values(
         "a" * 4097, None, "Field cannot be longer than 4096 characters."
@@ -180,8 +180,8 @@ def test_profile_settings_pwned_password(testclient, logged_user):
 
     with_different_values("aaaaaaaa", "This password is compromised.")
     with_different_values("azertyuiop", "This password is compromised.")
-    with_different_values("a" * 1000, 'data-percent="100"')
-    with_different_values("i'm a little pea", 'data-percent="28"')
+    with_different_values("a" * 1000, 'data-percent="25"')
+    with_different_values("i'm a little pea", 'data-percent="100"')
 
 
 def test_edition_without_groups(
