@@ -2541,4 +2541,4 @@ sql = ["passlib", "sqlalchemy", "sqlalchemy-json", "sqlalchemy-utils"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "517bd8263531694f59c048263853d3599857eeaf04595e4552c8ab593e2861f4"
+content-hash = "4b4e4ce2d7a8d6d586177e74b67b3e1fcd744f33f36701b7d64b2994f10396f6"
