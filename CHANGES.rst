@@ -13,9 +13,8 @@ Added
 
 Changed
 ^^^^^^^
-- `MIN_PASSWORD_LENGTH` become a parameter :issue:`174`
 - Maximum Python requirement is < 3.13 (because of the password_strength_calculator : zxcvbn-rs-py)
-- MIN_PASSWORD_LENGTH become a parameter :issue:`174`
+- `MIN_PASSWORD_LENGTH` become a parameter :issue:`174`
 - all password tests and validator are supported by password1 field :issue:`174`
 - password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test :issue:`174`
 - Update to HTMX 2.0.3 :pr:`184`

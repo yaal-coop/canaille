@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-28 12:32+0100\n"
+"POT-Creation-Date: 2024-10-29 10:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,35 +21,35 @@ msgstr ""
 msgid "No SMTP server has been configured"
 msgstr ""
 
-#: canaille/app/forms.py:28
+#: canaille/app/forms.py:27
 msgid "This is not a valid URL"
 msgstr ""
 
-#: canaille/app/forms.py:35 canaille/app/forms.py:36
+#: canaille/app/forms.py:34 canaille/app/forms.py:35
 msgid "This value is a duplicate"
 msgstr ""
 
-#: canaille/app/forms.py:48
+#: canaille/app/forms.py:47
 msgid "Not a valid phone number"
 msgstr ""
 
-#: canaille/app/forms.py:56
+#: canaille/app/forms.py:55
 msgid "Field must be at least {minimum_password_length} characters long."
 msgstr ""
 
-#: canaille/app/forms.py:68
+#: canaille/app/forms.py:67
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:80
+#: canaille/app/forms.py:94
 msgid "This password is compromised."
 msgstr ""
 
-#: canaille/app/forms.py:250
+#: canaille/app/forms.py:254
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:278
+#: canaille/app/forms.py:282
 msgid "Not a valid datetime value."
 msgstr ""
 

@@ -10,7 +10,6 @@ from flask import request
 from flask_wtf import FlaskForm
 from passpwnedcheck.pass_checker import PassChecker
 from wtforms.meta import DefaultMeta
-from zxcvbn_rs_py import zxcvbn
 
 from canaille.app import models
 from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
@@ -71,16 +70,12 @@ def password_too_long_validator(form, field):
         )
 
 
-def pwned_password_validator(form, field):
-    is_leaked = PassChecker().is_password_compromised(field.data)
-    if (
-        is_leaked[0]
-        and len(field.data) >= current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
-    ):
-        raise wtforms.ValidationError(_("This password is compromised."))
-
-
 def password_strength_calculator(password):
+    try:
+        from zxcvbn_rs_py import zxcvbn
+    except ImportError:
+        return None
+
     strength_score = 0
 
     if password and type(password) is str:
@@ -88,6 +83,15 @@ def password_strength_calculator(password):
         strength_score = strength_score * 100 // 4
 
     return strength_score
+
+
+def pwned_password_validator(form, field):
+    is_leaked = PassChecker().is_password_compromised(field.data)
+    if (
+        is_leaked[0]
+        and len(field.data) >= current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"]
+    ):
+        raise wtforms.ValidationError(_("This password is compromised."))
 
 
 def email_validator(form, field):
