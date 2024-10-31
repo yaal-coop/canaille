@@ -63,7 +63,7 @@ tests:
 minversions:
   needs: ["tests"]
   variables:
-    PYTHON_VERSION: 3.13
+    PYTHON_VERSION: 3.10
   image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
   stage: test
   script:

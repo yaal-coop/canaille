@@ -53,8 +53,8 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
-      - name: Install Python 3.13
-        run: uv python install 3.13
+      - name: Install Python 3.10
+        run: uv python install 3.10
       - name: Install apt dependencies
         run: |
           sudo apt update
