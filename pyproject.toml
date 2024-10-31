@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "babel", "setuptools; python_version>='3.12'"]
+requires = ["hatchling", "babel", "setuptools >= 50.0.0; python_version>='3.12'"]
 build-backend = "hatchling.build"
 
 [project]
@@ -96,7 +96,7 @@ dev = [
 # https://github.com/python-babel/babel/blob/40e60a1f6cf178d9f57fcc14f157ea1b2ab77361/CHANGES.rst?plain=1#L22-L24
 # and neither python 3.12 due to PEP 632
 # https://peps.python.org/pep-0632/
-    "setuptools; python_version>='3.12'"
+    "setuptools >= 50.0.0; python_version>='3.12'"
 ]
 
 doc = [
@@ -144,7 +144,7 @@ artifacts = ["canaille/translations/*/LC_MESSAGES/*.mo"]
 [tool.hatch.build.hooks.custom]
 dependencies = [
     "Babel>=2.6.0",
-    "setuptools; python_version>='3.12'",
+    "setuptools >= 50.0.0; python_version>='3.12'",
 ]
 
 [tool.coverage.run]
