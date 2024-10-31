@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-10-28 11:57+0100\n"
-"PO-Revision-Date: 2024-09-13 08:47+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2024-11-01 09:00+0000\n"
+"Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:100
@@ -40,11 +40,11 @@ msgstr "N’est pas un numéro de téléphone valide"
 
 #: canaille/app/forms.py:55
 msgid "Field must be at least {minimum_password_length} characters long."
-msgstr ""
+msgstr "Ce champ doit contenir au minimum {minimum_password_length} caractères."
 
 #: canaille/app/forms.py:67
 msgid "Field cannot be longer than {maximum_password_length} characters."
-msgstr ""
+msgstr "Ce champ doit contenir au maximum {maximum_password_length} caractères."
 
 #: canaille/app/forms.py:240
 msgid "The page number is not valid"
@@ -616,7 +616,7 @@ msgstr "L'édition du groupe a échoué."
 #: canaille/core/endpoints/groups.py:145
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
-msgstr "L’utilisateur %(user_name)s a été retiré du groupe  %(group_name)s"
+msgstr "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
 
 #: canaille/core/endpoints/groups.py:162
 #, python-format
@@ -1967,10 +1967,8 @@ msgid "Add another field"
 msgstr "Ajouter un autre champ"
 
 #: canaille/templates/macro/form.html:119
-#, fuzzy
-#| msgid "Password reset"
 msgid "Password strength"
-msgstr "Réinitialisation du mot de passe"
+msgstr "Robustesse du mot de passe"
 
 #: canaille/templates/macro/table.html:8
 msgid "Search…"
