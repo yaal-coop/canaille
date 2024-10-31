@@ -196,6 +196,9 @@ env_list = [
 ]
 
 [tool.tox.env_run_base]
+# Needed until zxcvbn supports Python 3.13
+# https://github.com/fief-dev/zxcvbn-rs-py/issues/2
+set_env = {PYO3_USE_ABI3_FORWARD_COMPATIBILITY = "1"}
 commands = [
     ["pytest", "--showlocals", "--full-trace", "{posargs}"],
 ]
