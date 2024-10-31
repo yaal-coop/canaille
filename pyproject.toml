@@ -74,7 +74,7 @@ repository = "https://gitlab.com/yaal/canaille"
 [dependency-groups]
 dev = [
     "babel",
-    "coverage[toml]",
+    "coverage[toml] >= 6.0.0",
     "faker",
     "flask-webtest",
     # pre-commit version is fixed until docformatted hook is compatible
