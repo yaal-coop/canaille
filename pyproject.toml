@@ -199,12 +199,15 @@ env_list = [
 # Needed until zxcvbn supports Python 3.13
 # https://github.com/fief-dev/zxcvbn-rs-py/issues/2
 set_env = {PYO3_USE_ABI3_FORWARD_COMPATIBILITY = "1"}
+runner = "uv-venv-lock-runner"
 commands = [
     ["pytest", "--showlocals", "--full-trace", "{posargs}"],
 ]
 
 [tool.tox.env.style]
+skip_install = true
 deps = ["pre-commit-uv", "pre-commit<4"]
+runner = "uv-venv-runner"
 commands = [
     ["pre-commit", "run", "--all-files", "--show-diff-on-failure"],
 ]
