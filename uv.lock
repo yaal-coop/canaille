@@ -1,7 +1,8 @@
 version = 1
 requires-python = ">=3.10"
 resolution-markers = [
-    "python_full_version < '3.13'",
+    "python_full_version < '3.12'",
+    "python_full_version == '3.12.*'",
     "python_full_version >= '3.13'",
 ]
 
@@ -121,7 +122,7 @@ wheels = [
 [[package]]
 name = "canaille"
 version = "0.0.55"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "flask" },
     { name = "flask-wtf" },
@@ -155,7 +156,7 @@ sql = [
     { name = "sqlalchemy-utils" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 demo = [
     { name = "faker" },
     { name = "honcho" },
@@ -169,6 +170,7 @@ dev = [
     { name = "faker" },
     { name = "flask-webtest" },
     { name = "pre-commit" },
+    { name = "pre-commit-uv" },
     { name = "pyquery" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -213,7 +215,7 @@ requires-dist = [
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.1.1" },
 ]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 demo = [
     { name = "faker" },
     { name = "honcho" },
@@ -227,6 +229,7 @@ dev = [
     { name = "faker", specifier = ">=30.0.0" },
     { name = "flask-webtest", specifier = ">=0.1.6" },
     { name = "pre-commit", specifier = "<4.0.0" },
+    { name = "pre-commit-uv", specifier = ">=4.1.4" },
     { name = "pyquery", specifier = ">=2.0.0" },
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
@@ -1020,6 +1023,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/64/10/97ee2fa54dff1e9da9badbc5e35d0bbaef0776271ea5907eccf64140f72f/pre_commit-3.8.0.tar.gz", hash = "sha256:8bb6494d4a20423842e198980c9ecf9f96607a07ea29549e180eef9ae80fe7af", size = 177815 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/07/92/caae8c86e94681b42c246f0bca35c059a2f0529e5b92619f6aba4cf7e7b6/pre_commit-3.8.0-py2.py3-none-any.whl", hash = "sha256:9a90a53bf82fdd8778d58085faf8d83df56e40dfe18f45b19446e26bf1b3a63f", size = 204643 },
+]
+
+[[package]]
+name = "pre-commit-uv"
+version = "4.1.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pre-commit" },
+    { name = "uv" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b1/6c/c3c1d01698c8abb0b546defc0304971fa7fb2ba84ad35587b9dad095d73f/pre_commit_uv-4.1.4.tar.gz", hash = "sha256:3db606a79b226127b27dbbd8381b78c0e30de3ac775a8492c576a68e9250535c", size = 6493 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f1/70/1b65f9118ef64f6ffe5d57a67170bbff25d4f4a3d1cb78e8ed3392e16114/pre_commit_uv-4.1.4-py3-none-any.whl", hash = "sha256:7f01fb494fa1caa5097d20a38f71df7cea0209197b2564699cef9b3f3aa9d135", size = 5578 },
 ]
 
 [[package]]

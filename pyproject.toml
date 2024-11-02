@@ -80,6 +80,7 @@ dev = [
     # pre-commit version is fixed until docformatted hook is compatible
     # https://github.com/PyCQA/docformatter/issues/293
     "pre-commit < 4.0.0",
+    "pre-commit-uv>=4.1.4",
     "pyquery >= 2.0.0",
     "pytest >= 8.0.0",
     "pytest-cov >= 6.0.0",
@@ -200,13 +201,14 @@ env_list = [
 # https://github.com/fief-dev/zxcvbn-rs-py/issues/2
 set_env = {PYO3_USE_ABI3_FORWARD_COMPATIBILITY = "1"}
 runner = "uv-venv-lock-runner"
+dependency_groups = ["dev"]
+uv_sync_flags = ["--all-extras"]
 commands = [
     ["pytest", "--showlocals", "--full-trace", "{posargs}"],
 ]
 
 [tool.tox.env.style]
 skip_install = true
-deps = ["pre-commit-uv", "pre-commit<4"]
 runner = "uv-venv-runner"
 commands = [
     ["pre-commit", "run", "--all-files", "--show-diff-on-failure"],
@@ -215,9 +217,6 @@ commands = [
 [tool.tox.env.minversions]
 uv_resolution = "lowest-direct"
 basepython = ["python3.10"]
-commands = [
-    ["pytest", "--showlocals", "--full-trace", "{posargs}"],
-]
 
 [tool.tox.env.doc]
 dependency_groups = ["doc"]
