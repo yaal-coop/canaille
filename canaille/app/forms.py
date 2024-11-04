@@ -96,7 +96,7 @@ def pwned_password_validator(form, field):
     hashed_password_splited = (hashed_password[:5].upper(), hashed_password[5:].upper())
     try:
         response = requests.api.get(
-            f"https://api2.pwnedpasswords.com/range/{hashed_password_splited[0]}",
+            f"https://api.pwnedpasswords.com/range/{hashed_password_splited[0]}",
             timeout=10,
         )
     except requests.exceptions.HTTPError as e:
