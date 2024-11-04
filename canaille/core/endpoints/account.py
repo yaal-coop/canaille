@@ -37,6 +37,7 @@ from canaille.app.forms import TableForm
 from canaille.app.forms import is_readonly
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
+from canaille.app.forms import pwned_password_validator
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
@@ -316,6 +317,7 @@ def registration(data=None, hash=None):
         wtforms.validators.DataRequired(),
         password_length_validator,
         password_too_long_validator,
+        pwned_password_validator,
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),

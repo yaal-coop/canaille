@@ -84,6 +84,31 @@ def password_strength_calculator(password):
     return strength_score
 
 
+def pwned_password_validator(form, field):
+    try:
+        from hashlib import sha1
+
+        import requests
+    except ImportError:
+        return None
+
+    hashed_password = sha1(field.data.encode("utf-8")).hexdigest()
+    hashed_password_splited = (hashed_password[:5].upper(), hashed_password[5:].upper())
+    try:
+        response = requests.api.get(
+            f"https://api2.pwnedpasswords.com/range/{hashed_password_splited[0]}",
+            timeout=10,
+        )
+    except requests.exceptions.HTTPError as e:
+        print("Error: " + str(e))
+
+    decoded_response = response.content.decode("utf8").split("\r\n")
+
+    for each in decoded_response:
+        if hashed_password_splited[1] == each.split(":")[0]:
+            raise wtforms.ValidationError(_("This password is compromised."))
+
+
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401
