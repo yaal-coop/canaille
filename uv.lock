@@ -202,7 +202,7 @@ requires-dist = [
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
     { name = "passlib", marker = "extra == 'sql'", specifier = ">=1.7.4" },
-    { name = "pycountry", marker = "extra == 'front'", specifier = ">=22.1.10" },
+    { name = "pycountry", marker = "extra == 'front'", specifier = ">=23.12.7" },
     { name = "pydantic-settings", specifier = ">=2.0.3" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
