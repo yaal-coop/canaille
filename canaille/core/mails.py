@@ -212,17 +212,17 @@ def send_registration_mail(email, registration_url):
     )
 
 
-def send_comprimised_password_check_failure_mail(
+def send_compromised_password_check_failure_mail(
     check_password_url, user_name, user_email, hashed_password
 ):
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
-    subject = _("Pwned password check incident on {website_name}").format(
+    subject = _("compromised password check failure on {website_name}").format(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/pwned-password-non-checked.txt",
+        "mails/compromised_password_check_failure.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         check_password_url=check_password_url,
@@ -231,7 +231,7 @@ def send_comprimised_password_check_failure_mail(
         hashed_password=hashed_password,
     )
     html_body = render_template(
-        "mails/pwned-password-non-checked.html",
+        "mails/compromised_password_check_failure.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         check_password_url=check_password_url,
