@@ -150,3 +150,22 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
         )
     ]
     assert len(smtpd.messages) == 0
+
+
+def test_registration_with_compromised_password(testclient, backend, foo_group):
+    """Tests a nominal registration with compromised password."""
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+    res = res.form.submit()
+    res.mustcontain("This password is compromised.")
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user is None

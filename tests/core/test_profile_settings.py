@@ -156,6 +156,30 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     )
 
 
+def test_profile_settings_pwned_password(testclient, logged_user):
+    """Tests if password is compromised."""
+
+    def with_different_values(password, message):
+        res = testclient.get("/profile/user/settings")
+        res = testclient.post(
+            "/profile/user/settings",
+            {
+                "csrf_token": res.form["csrf_token"].value,
+                "password1": password,
+            },
+            headers={
+                "HX-Request": "true",
+                "HX-Trigger-Name": "password1",
+            },
+        )
+        res.mustcontain(message)
+
+    with_different_values("aaaaaaaa", "This password is compromised.")
+    with_different_values("azertyuiop", "This password is compromised.")
+    with_different_values("a" * 1000, 'data-percent="25"')
+    with_different_values("i'm a little pea", 'data-percent="100"')
+
+
 def test_edition_without_groups(
     testclient,
     logged_user,
