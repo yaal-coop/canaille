@@ -195,7 +195,7 @@ doc = [
 
 [package.metadata]
 requires-dist = [
-    { name = "authlib", marker = "extra == 'oidc'", specifier = ">=1.2.1" },
+    { name = "authlib", marker = "extra == 'oidc'", specifier = ">=1.3.0" },
     { name = "email-validator", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask", specifier = ">=3.0.0" },
     { name = "flask-babel", marker = "extra == 'front'", specifier = ">=4.0.0" },
