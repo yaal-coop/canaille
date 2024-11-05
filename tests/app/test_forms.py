@@ -295,14 +295,14 @@ def test_password_strength_progress_bar(testclient, logged_user):
         "/profile/user/settings",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "password1": "new_password",
+            "password1": "i'm a little pea",
         },
         headers={
             "HX-Request": "true",
             "HX-Trigger-Name": "password1",
         },
     )
-    res.mustcontain('data-percent="50"')
+    res.mustcontain('data-percent="100"')
 
 
 def test_maximum_password_length_config(testclient):
