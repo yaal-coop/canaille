@@ -210,3 +210,43 @@ def send_registration_mail(email, registration_url):
         html=html_body,
         attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
+
+
+def send_comprimised_password_check_failure_mail(
+    check_password_url, user_name, user_email, hashed_password
+):
+    base_url = url_for("core.account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("Pwned password check incident on {website_name}").format(
+        website_name=current_app.config["CANAILLE"]["NAME"]
+    )
+    text_body = render_template(
+        "mails/pwned-password-non-checked.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        check_password_url=check_password_url,
+        user_name=user_name,
+        user_email=user_email,
+        hashed_password=hashed_password,
+    )
+    html_body = render_template(
+        "mails/pwned-password-non-checked.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        check_password_url=check_password_url,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+        title=subject,
+        user_name=user_name,
+        user_email=user_email,
+        hashed_password=hashed_password,
+    )
+
+    return send_email(
+        subject=subject,
+        # line to change with admin group mails....
+        recipient="sebastien@yaal.coop",
+        text=text_body,
+        html=html_body,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )

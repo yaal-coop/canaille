@@ -16,6 +16,7 @@ from canaille.app.i18n import gettext as _
 from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
 from canaille.backends import Backend
+from canaille.core.mails import send_comprimised_password_check_failure_mail
 
 from . import validate_uri
 from .flask import request_is_htmx
@@ -84,7 +85,7 @@ def password_strength_calculator(password):
     return strength_score
 
 
-def pwned_password_validator(form, field):
+def compromised_password_validator(form, field):
     try:
         from hashlib import sha1
 
@@ -94,18 +95,32 @@ def pwned_password_validator(form, field):
 
     hashed_password = sha1(field.data.encode("utf-8")).hexdigest()
     hashed_password_splited = (hashed_password[:5].upper(), hashed_password[5:].upper())
+
+    api_url = f"https://api.pwnedpasswords.com/range/{hashed_password_splited[0]}"
+
     try:
-        response = requests.api.get(
-            f"https://api.pwnedpasswords.com/range/{hashed_password_splited[0]}",
-            timeout=10,
-        )
-    except requests.exceptions.HTTPError as e:
+        response = requests.api.get(api_url, timeout=10)
+    except Exception as e:
         print("Error: " + str(e))
+
+        if current_app.features.has_smtp and not request_is_htmx():
+            if form.user is not None:
+                user_name = form.user.user_name
+                user_email = form.user.emails[0]
+            else:
+                user_name = form["user_name"].data
+                user_email = form["emails"].data[0]
+
+            send_comprimised_password_check_failure_mail(
+                api_url, user_name, user_email, hashed_password
+            )
+
+        return None
 
     decoded_response = response.content.decode("utf8").split("\r\n")
 
     for each in decoded_response:
-        if hashed_password_splited[1] == each.split(":")[0]:
+        if hashed_password_splited[1] in each.split(":")[0]:
             raise wtforms.ValidationError(_("This password is compromised."))
 
 
