@@ -213,7 +213,7 @@ def send_registration_mail(email, registration_url):
 
 
 def send_compromised_password_check_failure_mail(
-    check_password_url, user_name, user_email, hashed_password
+    check_password_url, user_name, user_email, hashed_password, admin_email
 ):
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
@@ -244,8 +244,7 @@ def send_compromised_password_check_failure_mail(
 
     return send_email(
         subject=subject,
-        # line to change with admin group mails....
-        recipient="sebastien@yaal.coop",
+        recipient=admin_email,
         text=text_body,
         html=html_body,
         attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
