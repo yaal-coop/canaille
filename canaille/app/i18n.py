@@ -46,7 +46,7 @@ def setup_i18n(app):
 
 
 def locale_selector():
-    from .flask import current_user
+    from .session import current_user
 
     user = current_user()
     available_language_codes = getattr(g, "available_language_codes", [])
