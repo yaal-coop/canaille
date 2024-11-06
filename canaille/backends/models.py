@@ -123,6 +123,7 @@ class BackendModel:
             return any(self.match_filter(subfilter) for subfilter in filter)
 
         # If attribute are models, resolve the instance
+        filter = filter.copy()
         for attribute, value in filter.items():
             model, _ = self.get_model_annotations(attribute)
 
