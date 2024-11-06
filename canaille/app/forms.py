@@ -107,7 +107,7 @@ def compromised_password_validator(form, field):
         hashed_password[5:].upper(),
     )
 
-    api_url = f"https://api2.pwnedpasswords.com/range/{hashed_password_prefix}"
+    api_url = f"https://api.pwnedpasswords.com/range/{hashed_password_prefix}"
 
     try:
         response = requests.api.get(api_url, timeout=10)
