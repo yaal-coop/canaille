@@ -156,7 +156,7 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     )
 
 
-def test_profile_settings_pwned_password(testclient, logged_user):
+def test_profile_settings_compromised_password(testclient, logged_user):
     """Tests if password is compromised."""
 
     def with_different_values(password, message):
