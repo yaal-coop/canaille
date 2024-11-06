@@ -41,7 +41,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --extras-all
+          uv sync --all-extras
           uv run pytest --showlocals
 
   minversions:
@@ -67,7 +67,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --extras-all --resolution=lowest-direct
+          uv sync --all-extras --resolution=lowest-direct
           uv run pytest --showlocals
 
   style:
