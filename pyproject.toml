@@ -44,7 +44,10 @@ front = [
     "pycountry >= 23.12.7",
     "pytz >= 2022.7",
     "toml >= 0.10.0",
-    "zxcvbn-rs-py >= 0.1.1",
+    # zxcvbn does not support Python 3.13 yet
+    # This leads to Canaille installation to fail in some situations.
+    # https://github.com/fief-dev/zxcvbn-rs-py/issues/2
+    "zxcvbn-rs-py >= 0.1.1; python_version<'3.13'",
 ]
 
 oidc = [

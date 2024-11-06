@@ -138,7 +138,7 @@ front = [
     { name = "pycountry" },
     { name = "pytz" },
     { name = "toml" },
-    { name = "zxcvbn-rs-py" },
+    { name = "zxcvbn-rs-py", marker = "python_full_version < '3.13'" },
 ]
 ldap = [
     { name = "python-ldap" },
@@ -212,7 +212,7 @@ requires-dist = [
     { name = "sqlalchemy-utils", marker = "extra == 'sql'", specifier = ">=0.41.1" },
     { name = "toml", marker = "extra == 'front'", specifier = ">=0.10.0" },
     { name = "wtforms", specifier = ">=3.1.1" },
-    { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.1.1" },
+    { name = "zxcvbn-rs-py", marker = "python_full_version < '3.13' and extra == 'front'", specifier = ">=0.1.1" },
 ]
 
 [package.metadata.requires-dev]
