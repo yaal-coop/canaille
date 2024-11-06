@@ -5,6 +5,7 @@ import re
 import wtforms.validators
 from flask import abort
 from flask import current_app
+from flask import flash
 from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
@@ -113,6 +114,12 @@ def compromised_password_validator(form, field):
     except Exception as e:
         print("Error: " + str(e))
         if current_app.features.has_smtp and not request_is_htmx():
+            flash(
+                _(
+                    "Password compromise investigation failed. Please contact the administrators."
+                ),
+                "error",
+            )
             if form.user is not None:
                 user_name = form.user.user_name
                 user_email = form.user.emails[0]
