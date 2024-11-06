@@ -106,23 +106,23 @@ users and groups with the ``populate`` command:
 .. code-block:: console
 
     # If using docker:
-    docker compose exec canaille env CONFIG=conf-docker/canaille-ldap.toml poetry run canaille populate --nb 100 users  # or docker-compose
+    docker compose exec canaille env CONFIG=conf-docker/canaille-ldap.toml uv run canaille populate --nb 100 users  # or docker-compose
 
     # If running in local environment
-    env CONFIG=conf/canaille-ldap.toml poetry run canaille populate  --nb 100 users
+    env CONFIG=conf/canaille-ldap.toml uv run canaille populate  --nb 100 users
 
 Adapt to use either the `ldap` or the `sql` configuration file. Note that this will not work with the memory backend.
 
 Unit tests
 ----------
 
-To run the tests, you just can run `poetry run pytest` and/or `tox` to test all the supported python environments.
+To run the tests, you just can run `uv run pytest` and/or `uv run tox` to test all the supported python environments.
 Everything must be green before patches get merged.
 
 To test a specific backend you can pass ``--backend memory``, ``--backend sql`` or ``--backend ldap`` to pytest and tox.
 
 The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the
-test coverage with ``poetry run pytest --cov --cov-report=html`` or ``tox -e coverage -- --cov-report=html``.
+test coverage with ``uv run pytest --cov --cov-report=html`` or ``tox -e coverage -- --cov-report=html``.
 You can check the HTML coverage report in the newly created `htmlcov` directory.
 
 Code style
@@ -170,12 +170,13 @@ The generated documentation is located at ``build/sphinx/html``.
 Publish a new release
 ---------------------
 
-1. Check that dependencies are up to date with ``poetry show --outdated --with dev,doc,demo`` and update dependencies accordingly in separated commits.
-2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``tox``
+1. Check that dependencies are up to date with ``uv sync --upgrade`` and update dependencies accordingly in separated commits.
+2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``
 3. Check that the demo environments are still working
 4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up
 5. Increase the version number in ``pyproject.toml``
 6. Commit with ``git commit``
-7. Publish with ``poetry publish --build``
+7. Build with ``uv build``
+7. Publish with ``uv publish``
 8. Tag you commit with ``git tag XX.YY.ZZ``
 9. Push the release commit and the new tag on the repository with ``git push --tags``

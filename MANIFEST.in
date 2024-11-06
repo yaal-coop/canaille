@@ -1,6 +1,0 @@
-include canaille/*.sample.*
-graft canaille/backends/ldap/schemas
-graft canaille/templates
-graft canaille/themes
-graft canaille/translations
-graft canaille/static

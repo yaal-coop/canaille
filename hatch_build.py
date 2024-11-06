@@ -1,7 +1,9 @@
 import os
 
+from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
-def create_mo_files(setup_kwargs):
+
+def create_mo_files():
     from babel.messages.frontend import compile_catalog
 
     cmd = compile_catalog()
@@ -10,7 +12,11 @@ def create_mo_files(setup_kwargs):
     cmd.statistics = True
     cmd.finalize_options()
     cmd.run()
-    return setup_kwargs
+
+
+class CustomBuildHook(BuildHookInterface):
+    def initialize(self, version, build_data):
+        create_mo_files()
 
 
 if __name__ == "__main__":

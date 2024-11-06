@@ -1,80 +1,82 @@
 ---
-image: python
-
 stages:
   - test
   - build
   - release
 
-before_script:
-  - apt update
-  - env DEBIAN_FRONTEND=noninteractive apt install --yes --quiet python3-dev libldap2-dev libsasl2-dev libssl-dev slapd ldap-utils python3-poetry
-  - poetry config virtualenvs.in-project true
+variables:
+  UV_VERSION: 0.4
+  UV_CACHE_DIR: .uv-cache
+  BASE_LAYER: bookworm-slim
 
 cache:
-  paths:
-    - .venv
+  - key:
+      files:
+        - uv.lock
+    paths:
+      - $UV_CACHE_DIR
+
+before_script:
+  - apt update
+  - env DEBIAN_FRONTEND=noninteractive apt install --yes --quiet gcc python3-dev libldap2-dev libsasl2-dev libssl-dev slapd ldap-utils git curl
+  # Rust is needed to install the zxcvbn dependency
+  - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  - export PATH="$HOME/.cargo/bin:$PATH"
+  # Needed until zxcvbn supports Python 3.13
+  # https://github.com/fief-dev/zxcvbn-rs-py/issues/2
+  - export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
 
 style:
-  image: python:3.13
+  variables:
+    PYTHON_VERSION: "3.13"
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
   stage: test
   script:
-    # pre-commit version is fixed until docformatted hook is compatible
-    # https://github.com/PyCQA/docformatter/issues/293
-    - pip install "pre-commit<4.0.0"
-    - pre-commit run --all-files --show-diff-on-failure
-
-python310:
-  image: python:3.10
-  stage: test
-  script:
-    - poetry install --extras all
-    - poetry run pytest
-
-python311:
-  image: python:3.11
-  stage: test
-  script:
-    - poetry install --extras all
-    - poetry run pytest
-
-python312:
-  image: python:3.12
-  stage: test
-  script:
-    - poetry install --extras all
-    - poetry run pytest
-
-python313:
-  image: python:3.13
-  stage: test
-  script:
-    - poetry install --extras all
-    - poetry run pytest
-
-minversions:
-  image: python:3.13
-  stage: test
-  script:
-    - sed -i -E 's/"(\^|>=)([0-9\.]+)([^,]*)"/"==\2"/' pyproject.toml
-    - sed -i -E 's/python = "==/python = "^/' pyproject.toml
-    - poetry lock
-    - poetry install --extras all
-    - poetry run pytest
-
-doc:
-  image: python:3.13
-  stage: test
-  script:
-    - poetry install --only doc
-    - poetry run sphinx-build doc build/sphinx/html
+    - uv sync --all-extras
+    - uv run pre-commit run --all-files --show-diff-on-failure
+    - uv cache prune --ci
 
 coverage:
-  image: python:3.13
+  variables:
+    PYTHON_VERSION: "3.13"
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
   stage: test
-  allow_failure: true
   script:
-    - pip install coveralls pyyaml tomli
-    - poetry install --extras all
-    - poetry run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered -n auto
-    - coveralls
+    - uv sync --all-extras
+    - uv pip install coveralls pyyaml tomli
+    - uv run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered -n auto
+    - uv run coveralls
+    - uv cache prune --ci
+
+tests:
+  needs: ["coverage", "style"]
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ['3.10', '3.11', '3.12']
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  stage: test
+  script:
+    - uv sync --all-extras
+    - uv run pytest
+    - uv cache prune --ci
+
+minversions:
+  needs: ["tests"]
+  variables:
+    PYTHON_VERSION: "3.10"
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  stage: test
+  script:
+    - uv sync --all-extras --resolution=lowest-direct
+    - uv run pytest
+    - uv cache prune --ci
+
+doc:
+  variables:
+    PYTHON_VERSION: "3.13"
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  stage: test
+  script:
+    - uv sync --group doc
+    - uv run sphinx-build doc build/sphinx/html
+    - uv cache prune --ci
