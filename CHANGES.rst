@@ -17,6 +17,7 @@ Changed
 ^^^^^^^
 - Update to HTMX 2.0.3 :pr:`184`
 - Migrate from poetry to uv :pr:`187`
+- The ``sql`` package extra is now split between ``sqlite``, ``postgresql`` and ``mysql``.
 
 Removed
 ^^^^^^^

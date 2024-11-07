@@ -62,9 +62,23 @@ sentry = [
     "sentry-sdk >= 2.0.0",
 ]
 
-sql = [
+sqlite = [
     "passlib >= 1.7.4",
     "sqlalchemy >= 2.0.23",
+    "sqlalchemy-json >= 0.7.0",
+    "sqlalchemy-utils >= 0.41.1",
+]
+
+postgresql = [
+    "passlib >= 1.7.4",
+    "sqlalchemy[postgresql] >= 2.0.23",
+    "sqlalchemy-json >= 0.7.0",
+    "sqlalchemy-utils >= 0.41.1",
+]
+
+mysql = [
+    "passlib >= 1.7.4",
+    "sqlalchemy[mysql] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]

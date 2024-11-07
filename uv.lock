@@ -143,13 +143,25 @@ front = [
 ldap = [
     { name = "python-ldap" },
 ]
+mysql = [
+    { name = "passlib" },
+    { name = "sqlalchemy", extra = ["mysql"] },
+    { name = "sqlalchemy-json" },
+    { name = "sqlalchemy-utils" },
+]
 oidc = [
     { name = "authlib" },
+]
+postgresql = [
+    { name = "passlib" },
+    { name = "sqlalchemy", extra = ["postgresql"] },
+    { name = "sqlalchemy-json" },
+    { name = "sqlalchemy-utils" },
 ]
 sentry = [
     { name = "sentry-sdk" },
 ]
-sql = [
+sqlite = [
     { name = "passlib" },
     { name = "sqlalchemy" },
     { name = "sqlalchemy-json" },
@@ -201,15 +213,23 @@ requires-dist = [
     { name = "flask-babel", marker = "extra == 'front'", specifier = ">=4.0.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
-    { name = "passlib", marker = "extra == 'sql'", specifier = ">=1.7.4" },
+    { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
+    { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
+    { name = "passlib", marker = "extra == 'sqlite'", specifier = ">=1.7.4" },
     { name = "pycountry", marker = "extra == 'front'", specifier = ">=23.12.7" },
     { name = "pydantic-settings", specifier = ">=2.0.3" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
-    { name = "sqlalchemy", marker = "extra == 'sql'", specifier = ">=2.0.23" },
-    { name = "sqlalchemy-json", marker = "extra == 'sql'", specifier = ">=0.7.0" },
-    { name = "sqlalchemy-utils", marker = "extra == 'sql'", specifier = ">=0.41.1" },
+    { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
+    { name = "sqlalchemy", extras = ["mysql"], marker = "extra == 'mysql'", specifier = ">=2.0.23" },
+    { name = "sqlalchemy", extras = ["postgresql"], marker = "extra == 'postgresql'", specifier = ">=2.0.23" },
+    { name = "sqlalchemy-json", marker = "extra == 'mysql'", specifier = ">=0.7.0" },
+    { name = "sqlalchemy-json", marker = "extra == 'postgresql'", specifier = ">=0.7.0" },
+    { name = "sqlalchemy-json", marker = "extra == 'sqlite'", specifier = ">=0.7.0" },
+    { name = "sqlalchemy-utils", marker = "extra == 'mysql'", specifier = ">=0.41.1" },
+    { name = "sqlalchemy-utils", marker = "extra == 'postgresql'", specifier = ">=0.41.1" },
+    { name = "sqlalchemy-utils", marker = "extra == 'sqlite'", specifier = ">=0.41.1" },
     { name = "toml", marker = "extra == 'front'", specifier = ">=0.10.0" },
     { name = "wtforms", specifier = ">=3.1.1" },
     { name = "zxcvbn-rs-py", marker = "python_full_version < '3.13' and extra == 'front'", specifier = ">=0.1.1" },
@@ -953,6 +973,19 @@ wheels = [
 ]
 
 [[package]]
+name = "mysqlclient"
+version = "2.2.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/be/95/1af2ee813d4f0b607082c18bb82aa05c98a95a402a1d2d5808999317cb16/mysqlclient-2.2.5.tar.gz", hash = "sha256:add8643c32f738014d252d2bdebb478623b04802e8396d5903905db36474d3ff", size = 90519 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/87/78/5dc4d98b998e957968aa8ad807a6ca7f751ef79ce462da11156317d7ca08/mysqlclient-2.2.5-cp310-cp310-win_amd64.whl", hash = "sha256:b78438314199504c64f69e1e3521f2c9b419f19fcd85158b44c997b64409a6af", size = 207205 },
+    { url = "https://files.pythonhosted.org/packages/9a/12/0e10b29d0a880e0d2482fe93d502d537bddf647f1a35468c8b98bb517c91/mysqlclient-2.2.5-cp311-cp311-win_amd64.whl", hash = "sha256:b54511648c1455b43ac28f8b4c1f732c5b0c343e87f7a3bd6fc9f9fe0f91934e", size = 207207 },
+    { url = "https://files.pythonhosted.org/packages/8b/96/962f16047ed35ee8c91c10c26a98057194242f6c8da3b78238909a8014fe/mysqlclient-2.2.5-cp312-cp312-win_amd64.whl", hash = "sha256:e871ede4261d0d42b8ed20a2459db411c7deafedd8e77b7e4ba760be4a6a752b", size = 207349 },
+    { url = "https://files.pythonhosted.org/packages/62/f9/4a43f9fde92eb463bdb08643c4a143751be2b68cd9ad0582d7ee80836ddc/mysqlclient-2.2.5-cp313-cp313-win_amd64.whl", hash = "sha256:8012c633aab8c91ea8172ac479807135b171501b9cad1a7cd9b58c4dc8dcdab5", size = 207343 },
+    { url = "https://files.pythonhosted.org/packages/be/17/cd1b80247f76968c1c5a643843c69c640a8548f4f5e131be6b10d4436def/mysqlclient-2.2.5-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:1d2e2ca0fe8405d8d6464edd01bf059951279e4bc27284d39341bd4737b2bc64", size = 207267 },
+]
+
+[[package]]
 name = "nodeenv"
 version = "1.9.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1051,6 +1084,20 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/27/c2/d034856ac47e3b3cdfa9720d0e113902e615f4190d5d1bdb8df4b2015fb2/psutil-6.1.0-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d905186d647b16755a800e7263d43df08b790d709d575105d419f8b6ef65423a", size = 288804 },
     { url = "https://files.pythonhosted.org/packages/ea/55/5389ed243c878725feffc0d6a3bc5ef6764312b6fc7c081faaa2cfa7ef37/psutil-6.1.0-cp37-abi3-win32.whl", hash = "sha256:1ad45a1f5d0b608253b11508f80940985d1d0c8f6111b5cb637533a0e6ddc13e", size = 250386 },
     { url = "https://files.pythonhosted.org/packages/11/91/87fa6f060e649b1e1a7b19a4f5869709fbf750b7c8c262ee776ec32f3028/psutil-6.1.0-cp37-abi3-win_amd64.whl", hash = "sha256:a8fb3752b491d246034fa4d279ff076501588ce8cbcdbb62c32fd7a377d996be", size = 254228 },
+]
+
+[[package]]
+name = "psycopg2"
+version = "2.9.10"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/51/2007ea29e605957a17ac6357115d0c1a1b60c8c984951c19419b3474cdfd/psycopg2-2.9.10.tar.gz", hash = "sha256:12ec0b40b0273f95296233e8750441339298e6a572f7039da5b260e3c8b60e11", size = 385672 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/a9/146b6bdc0d33539a359f5e134ee6dda9173fb8121c5b96af33fa299e50c4/psycopg2-2.9.10-cp310-cp310-win32.whl", hash = "sha256:5df2b672140f95adb453af93a7d669d7a7bf0a56bcd26f1502329166f4a61716", size = 1024527 },
+    { url = "https://files.pythonhosted.org/packages/47/50/c509e56f725fd2572b59b69bd964edaf064deebf1c896b2452f6b46fdfb3/psycopg2-2.9.10-cp310-cp310-win_amd64.whl", hash = "sha256:c6f7b8561225f9e711a9c47087388a97fdc948211c10a4bccbf0ba68ab7b3b5a", size = 1163735 },
+    { url = "https://files.pythonhosted.org/packages/20/a2/c51ca3e667c34e7852157b665e3d49418e68182081060231d514dd823225/psycopg2-2.9.10-cp311-cp311-win32.whl", hash = "sha256:47c4f9875125344f4c2b870e41b6aad585901318068acd01de93f3677a6522c2", size = 1024538 },
+    { url = "https://files.pythonhosted.org/packages/33/39/5a9a229bb5414abeb86e33b8fc8143ab0aecce5a7f698a53e31367d30caa/psycopg2-2.9.10-cp311-cp311-win_amd64.whl", hash = "sha256:0435034157049f6846e95103bd8f5a668788dd913a7c30162ca9503fdf542cb4", size = 1163736 },
+    { url = "https://files.pythonhosted.org/packages/3d/16/4623fad6076448df21c1a870c93a9774ad8a7b4dd1660223b59082dd8fec/psycopg2-2.9.10-cp312-cp312-win32.whl", hash = "sha256:65a63d7ab0e067e2cdb3cf266de39663203d38d6a8ed97f5ca0cb315c73fe067", size = 1025113 },
+    { url = "https://files.pythonhosted.org/packages/66/de/baed128ae0fc07460d9399d82e631ea31a1f171c0c4ae18f9808ac6759e3/psycopg2-2.9.10-cp312-cp312-win_amd64.whl", hash = "sha256:4a579d6243da40a7b3182e0430493dbd55950c493d8c68f4eec0b302f6bbf20e", size = 1163951 },
 ]
 
 [[package]]
@@ -1648,6 +1695,14 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a1/95/81babb6089938680dfe2cd3f88cd3fd39cccd1543b7cb603b21ad881bff1/SQLAlchemy-2.0.36-cp313-cp313-win32.whl", hash = "sha256:0572f4bd6f94752167adfd7c1bed84f4b240ee6203a95e05d1e208d488d0d436", size = 2060439 },
     { url = "https://files.pythonhosted.org/packages/c1/ce/5f7428df55660d6879d0522adc73a3364970b5ef33ec17fa125c5dbcac1d/SQLAlchemy-2.0.36-cp313-cp313-win_amd64.whl", hash = "sha256:8c78ac40bde930c60e0f78b3cd184c580f89456dd87fc08f9e3ee3ce8765ce88", size = 2084574 },
     { url = "https://files.pythonhosted.org/packages/b8/49/21633706dd6feb14cd3f7935fc00b60870ea057686035e1a99ae6d9d9d53/SQLAlchemy-2.0.36-py3-none-any.whl", hash = "sha256:fddbe92b4760c6f5d48162aef14824add991aeda8ddadb3c31d56eb15ca69f8e", size = 1883787 },
+]
+
+[package.optional-dependencies]
+mysql = [
+    { name = "mysqlclient" },
+]
+postgresql = [
+    { name = "psycopg2" },
 ]
 
 [[package]]
