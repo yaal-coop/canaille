@@ -24,9 +24,6 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
-from canaille.app.flask import current_user
-from canaille.app.flask import login_user
-from canaille.app.flask import logout_user
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
@@ -42,6 +39,9 @@ from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
+from canaille.app.session import current_user
+from canaille.app.session import login_user
+from canaille.app.session import logout_user
 from canaille.app.themes import render_template
 from canaille.backends import Backend
 

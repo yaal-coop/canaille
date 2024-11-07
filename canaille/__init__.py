@@ -57,7 +57,7 @@ def setup_flask(app):
 
     @app.context_processor
     def global_processor():
-        from canaille.app.flask import current_user
+        from canaille.app.session import current_user
 
         return {
             "debug": app.debug or app.config.get("TESTING", False),

@@ -1,22 +1,22 @@
 [0.0.56] - Unreleased
 ---------------------
 
+Fixed
+^^^^^
+- With LDAP backend, updating another user groups could result in a permission lost for the editor. :issue:`202`
+
 Added
 ^^^^^
-- 1 new parameter : MAX_PASSWORD_LENGTH :issue:`174`
-- 1 new validator : maximum password length (default 1000) :issue:`174`
-- password strength progress bar :issue:`174`
-- implementation of zxcvbn-rs-py which score the password strength :issue:`174`
-- New security events logs :issue:`177`
+- :attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and
+  :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` configuration options :issue:`174`
+- Password strength visual indicator :issue:`174`
+- Security events logs :issue:`177`
 - Support for Python 3.13 :pr:`186`
 
 Changed
 ^^^^^^^
-- Maximum Python requirement is < 3.13 (because of the password_strength_calculator : zxcvbn-rs-py)
-- MIN_PASSWORD_LENGTH become a parameter :issue:`174`
-- all password tests and validator are supported by password1 field :issue:`174`
-- password2 (or Password confirmation) field only support "EQUAL TO PASSWORD" test :issue:`174`
 - Update to HTMX 2.0.3 :pr:`184`
+- Migrate from poetry to uv :pr:`187`
 
 Removed
 ^^^^^^^

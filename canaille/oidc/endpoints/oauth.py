@@ -18,10 +18,10 @@ from werkzeug.datastructures import CombinedMultiDict
 
 from canaille import csrf
 from canaille.app import models
-from canaille.app.flask import current_user
-from canaille.app.flask import logout_user
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.i18n import gettext as _
+from canaille.app.session import current_user
+from canaille.app.session import logout_user
 from canaille.app.themes import render_template
 from canaille.backends import Backend
 
