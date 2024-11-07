@@ -86,6 +86,37 @@ def password_strength_calculator(password):
     return strength_score
 
 
+def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
+    if current_app.features.has_smtp and not request_is_htmx():
+        flash(
+            _(
+                "Password compromise investigation failed. Please contact the administrators."
+            ),
+            "error",
+        )
+
+        group_user = Backend.instance.query(models.User)
+        emails_of_admins = [
+            user.emails[0]
+            for user in group_user
+            if any(group.display_name == "admins" for group in user.groups)
+        ]
+
+        if form.user is not None:
+            user_name = form.user.user_name
+            user_email = form.user.emails[0]
+        else:
+            user_name = form["user_name"].data
+            user_email = form["emails"].data[0]
+
+        for admin_email in emails_of_admins:
+            send_compromised_password_check_failure_mail(
+                api_url, user_name, user_email, hashed_password_suffix, admin_email
+            )
+        return
+    return
+
+
 def compromised_password_validator(form, field):
     try:
         from hashlib import sha1
@@ -93,13 +124,6 @@ def compromised_password_validator(form, field):
         import requests
     except ImportError:
         return None
-
-    group_user = Backend.instance.query(models.User)
-    emails_of_admins = []
-    for user in group_user:
-        for group in user.groups:
-            if "admins" == group.display_name:
-                emails_of_admins.append(user.emails[0])
 
     hashed_password = sha1(field.data.encode("utf-8")).hexdigest()
     hashed_password_prefix, hashed_password_suffix = (
@@ -113,23 +137,8 @@ def compromised_password_validator(form, field):
         response = requests.api.get(api_url, timeout=10)
     except Exception as e:
         print("Error: " + str(e))
-        if current_app.features.has_smtp and not request_is_htmx():
-            flash(
-                _(
-                    "Password compromise investigation failed. Please contact the administrators."
-                ),
-                "error",
-            )
-            if form.user is not None:
-                user_name = form.user.user_name
-                user_email = form.user.emails[0]
-            else:
-                user_name = form["user_name"].data
-                user_email = form["emails"].data[0]
-            for admin_email in emails_of_admins:
-                send_compromised_password_check_failure_mail(
-                    api_url, user_name, user_email, hashed_password_suffix, admin_email
-                )
+
+        check_if_send_mail_to_admins(form, api_url, hashed_password_suffix)
 
         return None
 

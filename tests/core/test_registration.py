@@ -169,3 +169,33 @@ def test_registration_with_compromised_password(testclient, backend, foo_group):
 
     user = backend.get(models.User, user_name="newuser")
     assert user is None
+
+
+@mock.patch("requests.api.get")
+def test_registration_with_compromised_password_request_api_failed_but_account_created(
+    api_get, testclient, backend
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)

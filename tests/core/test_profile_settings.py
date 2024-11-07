@@ -180,6 +180,31 @@ def test_profile_settings_compromised_password(testclient, logged_user):
     with_different_values("i'm a little pea", 'data-percent="100"')
 
 
+@mock.patch("requests.api.get")
+def test_profile_settings_compromised_password_request_api_failed_but_password_updated(
+    api_get, testclient, user, logged_user, backend
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+
+    res = testclient.get("/profile/user/settings", status=200)
+
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+
+    res = res.form.submit(name="action", value="edit-settings")
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
+
+    backend.reload(logged_user)
+
+    assert logged_user.user_name == "user"
+    assert backend.check_user_password(logged_user, "123456789")[0]
+
+
 def test_edition_without_groups(
     testclient,
     logged_user,

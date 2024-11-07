@@ -7,6 +7,7 @@ from flask import current_app
 from werkzeug.datastructures import ImmutableMultiDict
 
 from canaille.app.forms import DateTimeUTCField
+from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import phone_number
@@ -333,3 +334,23 @@ def test_maximum_password_length_config(testclient):
     password_too_long_validator(None, Field("a" * 4096))
     with pytest.raises(wtforms.ValidationError):
         password_too_long_validator(None, Field("a" * 4097))
+
+
+def test_compromised_password_validator(testclient):
+    class Field:
+        def __init__(self, data):
+            self.data = data
+
+    compromised_password_validator(None, Field("i'm a little pea"))
+    compromised_password_validator(None, Field("i'm a little chickpea"))
+    compromised_password_validator(None, Field("i'm singing in the rain"))
+    with pytest.raises(wtforms.ValidationError):
+        compromised_password_validator(None, Field("password"))
+    with pytest.raises(wtforms.ValidationError):
+        compromised_password_validator(None, Field("987654321"))
+    with pytest.raises(wtforms.ValidationError):
+        compromised_password_validator(None, Field("correct horse battery staple"))
+    with pytest.raises(wtforms.ValidationError):
+        compromised_password_validator(None, Field("zxcvbn123"))
+    with pytest.raises(wtforms.ValidationError):
+        compromised_password_validator(None, Field("azertyuiop123"))
