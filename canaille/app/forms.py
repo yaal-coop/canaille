@@ -5,6 +5,7 @@ import re
 import wtforms.validators
 from flask import abort
 from flask import current_app
+from flask import flash
 from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
@@ -93,6 +94,13 @@ def compromised_password_validator(form, field):
     except ImportError:
         return None
 
+    group_user = Backend.instance.query(models.User)
+    emails_of_admins = []
+    for user in group_user:
+        for group in user.groups:
+            if "admins" == group.display_name:
+                emails_of_admins.append(user.emails[0])
+
     hashed_password = sha1(field.data.encode("utf-8")).hexdigest()
     hashed_password_prefix, hashed_password_suffix = (
         hashed_password[:5].upper(),
@@ -105,18 +113,23 @@ def compromised_password_validator(form, field):
         response = requests.api.get(api_url, timeout=10)
     except Exception as e:
         print("Error: " + str(e))
-
         if current_app.features.has_smtp and not request_is_htmx():
+            flash(
+                _(
+                    "Password compromise investigation failed. Please contact the administrators."
+                ),
+                "error",
+            )
             if form.user is not None:
                 user_name = form.user.user_name
                 user_email = form.user.emails[0]
             else:
                 user_name = form["user_name"].data
                 user_email = form["emails"].data[0]
-
-            send_compromised_password_check_failure_mail(
-                api_url, user_name, user_email, hashed_password_suffix
-            )
+            for admin_email in emails_of_admins:
+                send_compromised_password_check_failure_mail(
+                    api_url, user_name, user_email, hashed_password_suffix, admin_email
+                )
 
         return None
 
