@@ -16,6 +16,11 @@ Development environment
 -----------------------
 
 You can either run the demo locally or with docker.
+
+The only tool required for local development is `uv`.
+Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/getting-started/installation/>`_
+to be able to hack Canaille.
+
 After having launched the demo you have access to several services:
 
 - A canaille server at `localhost:5000 <http://localhost:5000>`_
@@ -122,16 +127,16 @@ Everything must be green before patches get merged.
 To test a specific backend you can pass ``--backend memory``, ``--backend sql`` or ``--backend ldap`` to pytest and tox.
 
 The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the
-test coverage with ``uv run pytest --cov --cov-report=html`` or ``tox -e coverage -- --cov-report=html``.
+test coverage with ``uv run pytest --cov --cov-report=html`` or ``uv run tox -e coverage -- --cov-report=html``.
 You can check the HTML coverage report in the newly created `htmlcov` directory.
 
 Code style
 ----------
 
 We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to format our code.
-Please run ``tox -e style`` on your patches before submitting them.
+Please run ``uv run tox -e style`` on your patches before submitting them.
 In order to perform a style check and correction at each commit you can use our
-`pre-commit <https://pre-commit.com/>`_ configuration with ``pre-commit install``.
+`pre-commit <https://pre-commit.com/>`_ configuration with ``uv run pre-commit install``.
 
 Front
 -----
