@@ -15,11 +15,13 @@ the `bugtracker <https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix roo
 Development environment
 -----------------------
 
-You can either run the demo locally or with docker.
+You can either run the demo locally or with Docker.
 
 The only tool required for local development is `uv`.
 Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/getting-started/installation/>`_
 to be able to hack Canaille.
+
+Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
 
 After having launched the demo you have access to several services:
 
