@@ -184,6 +184,8 @@ Publish a new release
 5. Increase the version number in ``pyproject.toml``
 6. Commit with ``git commit``
 7. Build with ``uv build``
-7. Publish with ``uv publish``
-8. Tag you commit with ``git tag XX.YY.ZZ``
-9. Push the release commit and the new tag on the repository with ``git push --tags``
+8. Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``
+9. Install the test package somewhere with ``pip install --index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine.
+10. Publish on production PyPI ``uv publish``
+11. Tag you commit with ``git tag XX.YY.ZZ``
+12. Push the release commit and the new tag on the repository with ``git push --tags``
