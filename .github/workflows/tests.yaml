@@ -73,8 +73,15 @@ jobs:
   style:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: pre-commit/action@v3.0.1
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - name: Run linters
+        run: |
+          uv sync --all-extras
+          uv run pre-commit run --all-files
 
   doc:
     runs-on: ubuntu-latest
