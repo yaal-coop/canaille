@@ -80,6 +80,16 @@ jobs:
           enable-cache: true
       - name: Run linters
         run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+      - name: App armor configuration for slapd
+        if: ${{ !env.ACT }}
+        run: sudo aa-complain /usr/sbin/slapd
+      - name: Run tests
+        run: |
+          # python tzinfo fails on 'act' without this
+          ulimit -n 1024
+          export TZ=UTC
           uv sync --all-extras
           uv run pre-commit run --all-files
 
