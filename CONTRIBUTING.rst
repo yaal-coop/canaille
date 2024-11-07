@@ -185,7 +185,7 @@ Publish a new release
 6. Commit with ``git commit``
 7. Build with ``uv build``
 8. Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``
-9. Install the test package somewhere with ``pip install --index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine.
+9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine.
 10. Publish on production PyPI ``uv publish``
 11. Tag you commit with ``git tag XX.YY.ZZ``
 12. Push the release commit and the new tag on the repository with ``git push --tags``
