@@ -90,12 +90,14 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
     if current_app.features.has_smtp and not request_is_htmx():
         flash(
             _(
-                "Password compromise investigation failed. Please contact the administrators."
+                "Password compromise investigation failed. "
+                "Please contact the administrators."
             ),
             "error",
         )
 
         group_user = Backend.instance.query(models.User)
+
         emails_of_admins = [
             user.emails[0]
             for user in group_user
@@ -109,12 +111,34 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
             user_name = form["user_name"].data
             user_email = form["emails"].data[0]
 
+        number_emails_send = 0
+
         for admin_email in emails_of_admins:
-            send_compromised_password_check_failure_mail(
+            if send_compromised_password_check_failure_mail(
                 api_url, user_name, user_email, hashed_password_suffix, admin_email
+            ):
+                number_emails_send += 1
+
+        if number_emails_send >= 1:
+            flash(
+                _(
+                    "We have informed your administrator about the failure of the password compromise investigation."
+                ),
+                "success",
             )
-        return
-    return
+        else:
+            flash(
+                _(
+                    "An error occurred while communicating the incident to the administrators. "
+                    "Please update your password as soon as possible. "
+                    "If this still happens, please contact the administrators."
+                ),
+                "error",
+            )
+            return None
+
+        return number_emails_send
+    return None
 
 
 def compromised_password_validator(form, field):
