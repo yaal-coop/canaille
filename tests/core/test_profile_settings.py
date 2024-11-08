@@ -182,7 +182,7 @@ def test_profile_settings_compromised_password(testclient, logged_user):
 
 @mock.patch("requests.api.get")
 def test_profile_settings_compromised_password_request_api_failed_but_password_updated(
-    api_get, testclient, user, logged_user, backend
+    api_get, testclient, logged_user, backend
 ):
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
