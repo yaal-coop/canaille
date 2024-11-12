@@ -1,3 +1,10 @@
+[0.0.57] - Unreleased
+---------------------
+
+Added
+^^^^^
+- Password compromise check :issue:`179`
+
 [0.0.56] - Unreleased
 ---------------------
 
