@@ -33,6 +33,7 @@ dependencies = [
     "flask >= 3.0.0",
     "flask-wtf >= 1.2.1",
     "pydantic-settings >= 2.0.3",
+    "requests>=2.32.3",
     "wtforms >= 3.1.1",
 ]
 
