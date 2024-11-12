@@ -96,12 +96,18 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
             "error",
         )
 
+        admin_group_display_name = current_app.config["CANAILLE"]["ACL"]["ADMIN"][
+            "FILTER"
+        ]["groups"]
+
         group_user = Backend.instance.query(models.User)
 
-        emails_of_admins = [
-            user.emails[0]
+        admins = [
+            user
             for user in group_user
-            if any(group.display_name == "admins" for group in user.groups)
+            if any(
+                group.display_name == admin_group_display_name for group in user.groups
+            )
         ]
 
         if form.user is not None:
@@ -113,13 +119,15 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
 
         number_emails_send = 0
 
-        for admin_email in emails_of_admins:
+        for admin in admins:
             if send_compromised_password_check_failure_mail(
-                api_url, user_name, user_email, hashed_password_suffix, admin_email
+                api_url, user_name, user_email, hashed_password_suffix, admin.emails[0]
             ):
                 number_emails_send += 1
+            else:
+                pass
 
-        if number_emails_send >= 1:
+        if number_emails_send > 0:
             flash(
                 _(
                     "We have informed your administrator about the failure of the password compromise investigation."
