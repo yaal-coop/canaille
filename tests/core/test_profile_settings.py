@@ -212,25 +212,30 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
     api_get, testclient, backend, admins_group, user, logged_user
 ):
     api_get.side_effect = mock.Mock(side_effect=Exception())
-    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
 
-    res = testclient.get("/profile/user/settings", status=200)
+    def with_and_without_admin_group(group):
+        current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = group
 
-    res.form.user = user
-    res.form["password1"] = "123456789"
-    res.form["password2"] = "123456789"
+        res = testclient.get("/profile/user/settings", status=200)
 
-    res = res.form.submit(name="action", value="edit-settings")
+        res.form.user = user
+        res.form["password1"] = "123456789"
+        res.form["password2"] = "123456789"
 
-    assert (
-        "error",
-        "Password compromise investigation failed. Please contact the administrators.",
-    ) in res.flashes
-    assert (
-        "success",
-        "We have informed your administrator about the failure of the password compromise investigation.",
-    ) in res.flashes
-    assert ("success", "Profile updated successfully.") in res.flashes
+        res = res.form.submit(name="action", value="edit-settings")
+
+        assert (
+            "error",
+            "Password compromise investigation failed. Please contact the administrators.",
+        ) in res.flashes
+        assert (
+            "success",
+            "We have informed your administrator about the failure of the password compromise investigation.",
+        ) in res.flashes
+        assert ("success", "Profile updated successfully.") in res.flashes
+
+    with_and_without_admin_group({"groups": "admins"})
+    with_and_without_admin_group(None)
 
 
 @mock.patch("requests.api.get")
