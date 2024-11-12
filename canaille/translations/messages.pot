@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-12 09:40+0100\n"
+"POT-Creation-Date: 2024-11-12 16:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,55 +21,55 @@ msgstr ""
 msgid "No SMTP server has been configured"
 msgstr ""
 
-#: canaille/app/forms.py:28
+#: canaille/app/forms.py:29
 msgid "This is not a valid URL"
 msgstr ""
 
-#: canaille/app/forms.py:35 canaille/app/forms.py:36
+#: canaille/app/forms.py:36 canaille/app/forms.py:37
 msgid "This value is a duplicate"
 msgstr ""
 
-#: canaille/app/forms.py:48
+#: canaille/app/forms.py:49
 msgid "Not a valid phone number"
 msgstr ""
 
-#: canaille/app/forms.py:56
+#: canaille/app/forms.py:57
 msgid "Field must be at least {minimum_password_length} characters long."
 msgstr ""
 
-#: canaille/app/forms.py:68
+#: canaille/app/forms.py:69
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:92
+#: canaille/app/forms.py:109
+msgid "This password is compromised."
+msgstr ""
+
+#: canaille/app/forms.py:269
+msgid "The page number is not valid"
+msgstr ""
+
+#: canaille/app/forms.py:297
+msgid "Not a valid datetime value."
+msgstr ""
+
+#: canaille/app/mails_sending_conditions.py:15
 msgid ""
 "Password compromise investigation failed. Please contact the "
 "administrators."
 msgstr ""
 
-#: canaille/app/forms.py:132
+#: canaille/app/mails_sending_conditions.py:64
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
 
-#: canaille/app/forms.py:139
+#: canaille/app/mails_sending_conditions.py:71
 msgid ""
 "An error occurred while communicating the incident to the administrators."
 " Please update your password as soon as possible. If this still happens, "
 "please contact the administrators."
-msgstr ""
-
-#: canaille/app/forms.py:181
-msgid "This password is compromised."
-msgstr ""
-
-#: canaille/app/forms.py:341
-msgid "The page number is not valid"
-msgstr ""
-
-#: canaille/app/forms.py:369
-msgid "Not a valid datetime value."
 msgstr ""
 
 #: canaille/backends/ldap/backend.py:99
