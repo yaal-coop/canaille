@@ -186,6 +186,8 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
 ):
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "123456789"
@@ -203,6 +205,62 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
 
     assert logged_user.user_name == "user"
     assert backend.check_user_password(logged_user, "123456789")[0]
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admins_from_settings_form(
+    api_get, testclient, backend, admins_group, user, logged_user
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+
+    res = testclient.get("/profile/user/settings", status=200)
+
+    res.form.user = user
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+
+    res = res.form.submit(name="action", value="edit-settings")
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "success",
+        "We have informed your administrator about the failure of the password compromise investigation.",
+    ) in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admins_from_settings_form(
+    api_get, testclient, backend, admins_group, user, logged_user
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+    current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form.user = user
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+
+    res = res.form.submit(name="action", value="edit-settings")
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "error",
+        "An error occurred while communicating the incident to the administrators. "
+        "Please update your password as soon as possible. "
+        "If this still happens, please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
 
 
 def test_edition_without_groups(
