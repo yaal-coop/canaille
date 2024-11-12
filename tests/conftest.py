@@ -151,6 +151,7 @@ def configuration(smtpd):
                 },
                 "disable_existing_loggers": False,
             },
+            "ADMIN_EMAIL": "admin_default_mail@mymail.com",
         },
     }
     return conf

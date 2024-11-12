@@ -312,3 +312,11 @@ class CoreSettings(BaseModel):
     characters. If the value entered is 0 or None, or greater than 4096,
     then 4096 will be retained.
     """
+
+    ADMIN_EMAIL: str = None
+    """Administration email contact.
+
+    In certain special cases (example : questioning about password
+    corruption), it is necessary to provide an administration contact
+    email.
+    """
