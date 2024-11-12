@@ -1,11 +1,12 @@
 import datetime
 import math
 import re
+from hashlib import sha1
 
+import requests
 import wtforms.validators
 from flask import abort
 from flask import current_app
-from flask import flash
 from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
@@ -16,8 +17,8 @@ from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
+from canaille.app.mails_sending_conditions import check_if_send_mail_to_admins
 from canaille.backends import Backend
-from canaille.core.mails import send_compromised_password_check_failure_mail
 
 from . import validate_uri
 from .flask import request_is_htmx
@@ -86,77 +87,7 @@ def password_strength_calculator(password):
     return strength_score
 
 
-def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
-    if current_app.features.has_smtp and not request_is_htmx():
-        flash(
-            _(
-                "Password compromise investigation failed. "
-                "Please contact the administrators."
-            ),
-            "error",
-        )
-
-        admin_group_display_name = current_app.config["CANAILLE"]["ACL"]["ADMIN"][
-            "FILTER"
-        ]["groups"]
-
-        group_user = Backend.instance.query(models.User)
-
-        admins = [
-            user
-            for user in group_user
-            if any(
-                group.display_name == admin_group_display_name for group in user.groups
-            )
-        ]
-
-        if form.user is not None:
-            user_name = form.user.user_name
-            user_email = form.user.emails[0]
-        else:
-            user_name = form["user_name"].data
-            user_email = form["emails"].data[0]
-
-        number_emails_send = 0
-
-        for admin in admins:
-            if send_compromised_password_check_failure_mail(
-                api_url, user_name, user_email, hashed_password_suffix, admin.emails[0]
-            ):
-                number_emails_send += 1
-            else:
-                pass
-
-        if number_emails_send > 0:
-            flash(
-                _(
-                    "We have informed your administrator about the failure of the password compromise investigation."
-                ),
-                "success",
-            )
-        else:
-            flash(
-                _(
-                    "An error occurred while communicating the incident to the administrators. "
-                    "Please update your password as soon as possible. "
-                    "If this still happens, please contact the administrators."
-                ),
-                "error",
-            )
-            return None
-
-        return number_emails_send
-    return None
-
-
 def compromised_password_validator(form, field):
-    try:
-        from hashlib import sha1
-
-        import requests
-    except ImportError:
-        return None
-
     hashed_password = sha1(field.data.encode("utf-8")).hexdigest()
     hashed_password_prefix, hashed_password_suffix = (
         hashed_password[:5].upper(),
@@ -167,11 +98,8 @@ def compromised_password_validator(form, field):
 
     try:
         response = requests.api.get(api_url, timeout=10)
-    except Exception as e:
-        print("Error: " + str(e))
-
+    except Exception:
         check_if_send_mail_to_admins(form, api_url, hashed_password_suffix)
-
         return None
 
     decoded_response = response.content.decode("utf8").split("\r\n")
