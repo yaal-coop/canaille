@@ -264,7 +264,7 @@ class LDAPBackend(Backend):
 
         class_filter = (
             "".join([f"(objectClass={oc})" for oc in model.ldap_object_class])
-            if getattr(model, "ldap_object_class")
+            if model.ldap_object_class
             else ""
         )
         if class_filter:

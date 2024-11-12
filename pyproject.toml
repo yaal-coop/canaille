@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "Canaille"
-version = "0.0.55"
+version = "0.0.56"
 description = "Lightweight identity and authorization management software"
 license = {file = "LICENSE.rst"}
 readme = "README.md"
@@ -62,9 +62,23 @@ sentry = [
     "sentry-sdk >= 2.0.0",
 ]
 
-sql = [
+sqlite = [
     "passlib >= 1.7.4",
     "sqlalchemy >= 2.0.23",
+    "sqlalchemy-json >= 0.7.0",
+    "sqlalchemy-utils >= 0.41.1",
+]
+
+postgresql = [
+    "passlib >= 1.7.4",
+    "sqlalchemy[postgresql] >= 2.0.23",
+    "sqlalchemy-json >= 0.7.0",
+    "sqlalchemy-utils >= 0.41.1",
+]
+
+mysql = [
+    "passlib >= 1.7.4",
+    "sqlalchemy[mysql] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
@@ -170,6 +184,7 @@ exclude_lines = [
 
 [tool.ruff.lint]
 select = [
+    "B", # flake8-bugbear
     "E", # pycodestyle
     "F", # pyflakes
     "I", # isort

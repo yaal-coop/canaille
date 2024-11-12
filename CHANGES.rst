@@ -5,7 +5,7 @@ Added
 ^^^^^
 - Password compromise check :issue:`179`
 
-[0.0.56] - Unreleased
+[0.0.56] - 2024-11-07
 ---------------------
 
 Fixed
@@ -24,6 +24,7 @@ Changed
 ^^^^^^^
 - Update to HTMX 2.0.3 :pr:`184`
 - Migrate from poetry to uv :pr:`187`
+- The ``sql`` package extra is now split between ``sqlite``, ``postgresql`` and ``mysql``.
 
 Removed
 ^^^^^^^

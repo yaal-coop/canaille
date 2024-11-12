@@ -132,8 +132,10 @@ def toml_content(file_path):
         with open(file_path, "rb") as fd:
             return tomllib.load(fd)
 
-    except ImportError:
-        raise Exception("toml library not installed. Cannot load configuration.")
+    except ImportError as exc:
+        raise Exception(
+            "toml library not installed. Cannot load configuration."
+        ) from exc
 
 
 def setup_config(app, config=None, test_config=True, env_file=".env", env_prefix=""):
