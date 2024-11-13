@@ -174,8 +174,14 @@ def test_profile_settings_compromised_password(testclient, logged_user):
         )
         res.mustcontain(message)
 
-    with_different_values("aaaaaaaa", "This password is compromised.")
-    with_different_values("azertyuiop", "This password is compromised.")
+    with_different_values(
+        "aaaaaaaa",
+        "This password appears on public compromission databases and is not secure.",
+    )
+    with_different_values(
+        "azertyuiop",
+        "This password appears on public compromission databases and is not secure.",
+    )
     with_different_values("a" * 1000, 'data-percent="25"')
     with_different_values("i'm a little pea", 'data-percent="100"')
 
@@ -208,42 +214,35 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
 
 
 @mock.patch("requests.api.get")
-def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admins_from_settings_form(
+def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_settings_form(
     api_get, testclient, backend, admins_group, user, logged_user
 ):
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
-    def with_and_without_admin_group(group):
-        current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = group
+    res = testclient.get("/profile/user/settings", status=200)
 
-        res = testclient.get("/profile/user/settings", status=200)
+    res.form.user = user
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
 
-        res.form.user = user
-        res.form["password1"] = "123456789"
-        res.form["password2"] = "123456789"
+    res = res.form.submit(name="action", value="edit-settings")
 
-        res = res.form.submit(name="action", value="edit-settings")
-
-        assert (
-            "error",
-            "Password compromise investigation failed. Please contact the administrators.",
-        ) in res.flashes
-        assert (
-            "success",
-            "We have informed your administrator about the failure of the password compromise investigation.",
-        ) in res.flashes
-        assert ("success", "Profile updated successfully.") in res.flashes
-
-    with_and_without_admin_group({"groups": "admins"})
-    with_and_without_admin_group(None)
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "success",
+        "We have informed your administrator about the failure of the password compromise investigation.",
+    ) in res.flashes
+    assert ("success", "Profile updated successfully.") in res.flashes
 
 
 @mock.patch("requests.api.get")
-def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admins_from_settings_form(
+def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_settings_form(
     api_get, testclient, backend, admins_group, user, logged_user
 ):
     api_get.side_effect = mock.Mock(side_effect=Exception())
-    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
     current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
 
     assert not backend.query(models.User, user_name="newuser")

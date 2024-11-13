@@ -107,7 +107,11 @@ def compromised_password_validator(form, field):
 
         for each in decoded_response:
             if hashed_password_suffix == each.split(":")[0]:
-                raise wtforms.ValidationError(_("This password appears on public compromission databases and is not secure."))
+                raise wtforms.ValidationError(
+                    _(
+                        "This password appears on public compromission databases and is not secure."
+                    )
+                )
 
 
 def email_validator(form, field):
