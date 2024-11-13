@@ -322,3 +322,6 @@ class CoreSettings(BaseModel):
     """
 
     ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
+    """Enable to check for password compromise on HIBP.
+    
+    """
