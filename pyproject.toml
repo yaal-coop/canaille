@@ -220,7 +220,7 @@ env_list = [
 set_env = {PYO3_USE_ABI3_FORWARD_COMPATIBILITY = "1"}
 runner = "uv-venv-lock-runner"
 dependency_groups = ["dev"]
-uv_sync_flags = ["--all-extras"]
+uv_sync_flags = ["--extra", "front", "--extra", "oidc", "--extra", "sqlite", "--extra", "ldap"]
 commands = [
     ["pytest", "--showlocals", "--full-trace", "{posargs}"],
 ]
