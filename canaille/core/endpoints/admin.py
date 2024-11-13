@@ -286,3 +286,47 @@ def registration_txt(user, email):
         site_url=base_url,
         registration_url=registration_url,
     )
+
+
+@bp.route("/mail/compromised_password_check_failure.html")
+@permissions_needed("manage_oidc")
+def compromised_password_check_failure_html(user):
+    base_url = url_for("core.account.index", _external=True)
+    user_name = "<USER NAME>"
+    check_password_url = "<URL TO CHECK PASSWORD>"
+    hashed_password = "<HASHED PASSWORD>"
+    user_email = "<USER EMAIL>"
+
+    return render_template(
+        "mails/compromised_password_check_failure.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        user_name=user_name,
+        check_password_url=check_password_url,
+        hashed_password=hashed_password,
+        logo=current_app.config["CANAILLE"]["LOGO"],
+        user_email=user_email,
+        title=_("Compromised password check failure on {website_name}").format(
+            website_name=current_app.config["CANAILLE"]["NAME"]
+        ),
+    )
+
+
+@bp.route("/mail/compromised_password_check_failure.txt")
+@permissions_needed("manage_oidc")
+def compromised_password_check_failure_txt(user):
+    base_url = url_for("core.account.index", _external=True)
+    user_name = "<USER NAME>"
+    check_password_url = "<URL TO CHECK PASSWORD>"
+    hashed_password = "<HASHED PASSWORD>"
+    user_email = "<USER EMAIL>"
+
+    return render_template(
+        "mails/compromised_password_check_failure.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        user_name=user_name,
+        check_password_url=check_password_url,
+        hashed_password=hashed_password,
+        user_email=user_email,
+    )

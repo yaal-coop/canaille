@@ -218,7 +218,7 @@ def send_compromised_password_check_failure_mail(
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
-    subject = _("compromised password check failure on {website_name}").format(
+    subject = _("Compromised password check failure on {website_name}").format(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(

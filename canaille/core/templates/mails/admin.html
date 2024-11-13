@@ -134,6 +134,20 @@
                 </div>
             </div>
 
+
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.compromised_password_check_failure_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.compromised_password_check_failure_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Compromised password check failure") }}
+                </div>
+            </div>
+
+
         </div>
     </div>
 {% endblock %}
