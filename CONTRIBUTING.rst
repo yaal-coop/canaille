@@ -178,15 +178,15 @@ The generated documentation is located at ``build/sphinx/html``.
 Publish a new release
 ---------------------
 
-1. Check that dependencies are up to date with ``uv sync --upgrade`` and update dependencies accordingly in separated commits.
-2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``
-3. Check that the demo environments are still working
-4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up
-5. Increase the version number in ``pyproject.toml``
-6. Commit with ``git commit``
-7. Build with ``uv build``
-8. Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``
-9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine.
-10. Publish on production PyPI ``uv publish``
-11. Tag you commit with ``git tag XX.YY.ZZ``
-12. Push the release commit and the new tag on the repository with ``git push --tags``
+1. Check that dependencies are up to date with ``uv sync --upgrade`` and update dependencies accordingly in separated commits;
+2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``;
+3. Check that the demo environments are still working, both the local and the Docker one;
+4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
+5. Increase the version number in ``pyproject.toml``;
+6. Commit with ``git commit``;
+7. Build with ``uv build``;
+8. Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
+9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine;
+10. Publish on production PyPI ``uv publish``;
+11. Tag the commit with ``git tag XX.YY.ZZ``;
+12. Push the release commit and the new tag on the repository with ``git push --tags``.
