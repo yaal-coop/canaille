@@ -21,6 +21,7 @@ The only tool required for local development is `uv`.
 Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/getting-started/installation/>`_
 to be able to hack Canaille.
 
+Initialize your development environment with ``uv sync --all-extras``.
 Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
 
 After having launched the demo you have access to several services:
