@@ -151,6 +151,7 @@ def configuration(smtpd):
                 },
                 "disable_existing_loggers": False,
             },
+            "ADMIN_EMAIL": "admin_default_mail@mymail.com",
         },
     }
     return conf
@@ -263,6 +264,18 @@ def bar_group(app, admin, backend):
     group = models.Group(
         members=[admin],
         display_name="bar",
+    )
+    backend.save(group)
+    backend.reload(admin)
+    yield group
+    backend.delete(group)
+
+
+@pytest.fixture
+def admins_group(app, admin, backend):
+    group = models.Group(
+        members=[admin],
+        display_name="admins",
     )
     backend.save(group)
     backend.reload(admin)

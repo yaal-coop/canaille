@@ -127,6 +127,7 @@ dependencies = [
     { name = "flask" },
     { name = "flask-wtf" },
     { name = "pydantic-settings" },
+    { name = "requests" },
     { name = "wtforms" },
 ]
 
@@ -220,6 +221,7 @@ requires-dist = [
     { name = "pydantic-settings", specifier = ">=2.0.3" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
+    { name = "requests", specifier = ">=2.32.3" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
     { name = "sqlalchemy", extras = ["mysql"], marker = "extra == 'mysql'", specifier = ">=2.0.23" },

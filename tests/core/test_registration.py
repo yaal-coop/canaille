@@ -1,6 +1,7 @@
 from unittest import mock
 
 import time_machine
+from flask import current_app
 from flask import url_for
 
 from canaille.app import models
@@ -15,8 +16,8 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     assert not backend.query(models.User, user_name="newuser")
     res = testclient.get(url_for("core.account.registration"), status=200)
     res.form["user_name"] = "newuser"
-    res.form["password1"] = "password"
-    res.form["password2"] = "password"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["family_name"] = "newuser"
     res.form["emails-0"] = "newuser@example.com"
     res = res.form.submit()
@@ -64,8 +65,8 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
     with time_machine.travel("2020-01-01 02:01:00+00:00", tick=False):
         res = testclient.get(registration_url, status=200)
         res.form["user_name"] = "newuser"
-        res.form["password1"] = "password"
-        res.form["password2"] = "password"
+        res.form["password1"] = "i'm a little pea"
+        res.form["password2"] = "i'm a little pea"
         res.form["family_name"] = "newuser"
         res = res.form.submit()
 
@@ -150,3 +151,161 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
         )
     ]
     assert len(smtpd.messages) == 0
+
+
+def test_registration_with_compromised_password(testclient, backend, foo_group):
+    """Tests a nominal registration with compromised password."""
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+    res = res.form.submit()
+    res.mustcontain("This password is compromised.")
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user is None
+
+
+@mock.patch("requests.api.get")
+def test_registration_with_compromised_password_request_api_failed_but_account_created(
+    api_get, testclient, backend
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admins_from_register_form_with_admin_group(
+    api_get, testclient, backend, admins_group
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "success",
+        "We have informed your administrator about the failure of the password compromise investigation.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admins_from_register_form_without_admin_group(
+    api_get, testclient, backend, admins_group
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = None
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "success",
+        "We have informed your administrator about the failure of the password compromise investigation.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admins_from_register_form(
+    api_get, testclient, backend, admins_group
+):
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+    current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "error",
+        "An error occurred while communicating the incident to the administrators. "
+        "Please update your password as soon as possible. "
+        "If this still happens, please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
