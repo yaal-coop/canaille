@@ -320,3 +320,5 @@ class CoreSettings(BaseModel):
     corruption), it is necessary to provide an administration contact
     email.
     """
+
+    ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
