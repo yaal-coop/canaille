@@ -753,6 +753,19 @@ def profile_settings(user, edited_user):
 
         return profile_settings_edit(user, edited_user)
 
+    if (
+        request.form.get("action") == "confirm-reset-mfa"
+        and current_app.features.has_otp
+    ):
+        return render_template("modals/reset-mfa.html", edited_user=edited_user)
+
+    if request.form.get("action") == "reset-mfa" and current_app.features.has_otp:
+        flash(_("Multi-factor authentication has been reset"), "success")
+        edited_user.initialize_otp()
+        Backend.instance.save(edited_user)
+
+        return profile_settings_edit(user, edited_user)
+
     abort(400, f"bad form action: {request.form.get('action')}")
 
 

@@ -229,3 +229,19 @@ def test_enable_password_compromission_check_with_and_without_admin_email(
         config_obj = settings_factory(configuration)
         config_dict = config_obj.model_dump()
         validate(config_dict, validate_remote=False)
+
+
+def test_invalid_otp_option(configuration, backend):
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+
+    validate(config_dict, validate_remote=False)
+
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Invalid OTP method",
+    ):
+        configuration["CANAILLE"]["OTP_METHOD"] = "invalid"
+        config_obj = settings_factory(configuration)
+        config_dict = config_obj.model_dump()
+        validate(config_dict, validate_remote=False)

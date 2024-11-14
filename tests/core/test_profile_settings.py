@@ -2,6 +2,7 @@ import datetime
 import logging
 from unittest import mock
 
+import pytest
 from flask import current_app
 from flask import g
 
@@ -733,3 +734,25 @@ def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
     res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("error", "Profile edition failed.")]
     res.mustcontain("Invalid choice(s): one or more data inputs could not be coerced.")
+
+
+@pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
+def test_account_reset_mfa(testclient, backend, logged_admin, user_otp, otp_method):
+    testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+
+    old_token = user_otp.secret_token
+    assert old_token is not None
+    assert user_otp.last_otp_login is not None
+
+    res = testclient.get("/profile/user/settings")
+    res.mustcontain("Reset multi-factor authentication")
+
+    res = res.form.submit(name="action", value="confirm-reset-mfa")
+    res = res.form.submit(name="action", value="reset-mfa")
+    user = backend.get(models.User, id=user_otp.id)
+    assert user.secret_token is not None
+    assert user.secret_token != old_token
+    assert user.last_otp_login is None
+    if otp_method == "HOTP":
+        assert user.hotp_counter == 1
+    res.mustcontain("Multi-factor authentication has been reset")

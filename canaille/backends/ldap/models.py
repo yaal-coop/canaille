@@ -37,6 +37,7 @@ class User(canaille.core.models.User, LDAPObject):
         "lock_date": "pwdEndTime",
         "secret_token": "oathSecret",
         "last_otp_login": "oathLastLogin",
+        "hotp_counter": "oathHOTPCounter",
     }
 
     def match_filter(self, filter):
@@ -47,8 +48,8 @@ class User(canaille.core.models.User, LDAPObject):
         return super().match_filter(filter)
 
     def save(self):
-        if current_app.features.has_totp and not self.secret_token:
-            self.generate_otp_token()
+        if current_app.features.has_otp and not self.secret_token:
+            self.initialize_otp()
 
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:

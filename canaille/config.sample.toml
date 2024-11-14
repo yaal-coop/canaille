@@ -62,9 +62,12 @@ SECRET_KEY = "change me before you go in production"
 # recovery link by email. This option is true by default.
 # ENABLE_PASSWORD_RECOVERY = true
 
-# If ENABLE_TOTP is true, then users will need to authenticate themselves
-# using a time one-time password via an authenticator app. This option is false by default.
-# ENABLE_TOTP = false
+# If OTP_METHOD is defined, then users will need to authenticate themselves
+# using a one-time password (OTP) via an authenticator app.
+# Two options are supported : "TOTP" for time one-time password,
+# and "HOTP" for HMAC-based one-time password.
+# This option is deactivated by default.
+# OTP_METHOD = "TOTP"
 
 # The validity duration of registration invitations, in seconds.
 # Defaults to 2 days
@@ -119,7 +122,7 @@ SECRET_KEY = "change me before you go in production"
 # USER_BASE = "ou=users,dc=mydomain,dc=tld"
 
 # The object class to use for creating new users
-# Note : If you plan on using TOTP authentication, use : USER_CLASS = ["inetOrgPerson", "oathTOTPToken"]
+# Note : If you plan on using TOTP/HOTP authentication, use : USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 # USER_CLASS = "inetOrgPerson"
 
 # The attribute to identify an object in the User dn.
