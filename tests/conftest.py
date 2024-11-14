@@ -201,10 +201,11 @@ def user(app, backend):
 
 
 @pytest.fixture
-def user_totp(app, user, backend):
+def user_otp(app, user, backend):
     user.secret_token = (
         "fefe9b106b8a033d3fcb4de16ac06b2cae71c7d95a41b158c30380d1bc35b2ba"
     )
+    user.hotp_counter = 1
     user.last_otp_login = datetime.datetime(2020, 1, 1)
     backend.save(user)
     yield user
@@ -246,10 +247,10 @@ def logged_user(user, testclient):
 
 
 @pytest.fixture
-def logged_user_totp(user_totp, testclient):
+def logged_user_otp(user_otp, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [user_totp.id]
-    return user_totp
+        sess["user_id"] = [user_otp.id]
+    return user_otp
 
 
 @pytest.fixture

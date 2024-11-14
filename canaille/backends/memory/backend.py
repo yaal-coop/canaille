@@ -129,10 +129,10 @@ class MemoryBackend(Backend):
     def save(self, instance):
         if (
             isinstance(instance, canaille.backends.memory.models.User)
-            and current_app.features.has_totp
+            and current_app.features.has_otp
             and not instance.secret_token
         ):
-            instance.generate_otp_token()
+            instance.initialize_otp()
 
         if not instance.id:
             instance.id = str(uuid.uuid4())

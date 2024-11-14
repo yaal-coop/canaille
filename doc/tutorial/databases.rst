@@ -49,14 +49,14 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 
     GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 
-If you want to use TOTP authentication, you will need to add the ``oathTOTPToken`` class to the user :
+If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user :
 .. code-block:: toml
-   USER_CLASS = ["inetOrgPerson", "oathTOTPToken"]
+   USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
 You can find more details on the LDAP configuration in the :class:`dedicated section <canaille.backends.ldap.configuration.LDAPSettings>`.
 
 .. note ::
-   Currently, only the ``inetOrgPerson``, ``oathTOTPToken`` and ``groupOfNames`` schemas have been tested.
+   Currently, only the ``inetOrgPerson``, ``oathHOTPToken`` and ``groupOfNames`` schemas have been tested.
    If you want to use different schemas or LDAP servers, adaptations may be needed.
    Patches are welcome.
 

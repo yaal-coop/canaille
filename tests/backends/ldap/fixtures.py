@@ -39,7 +39,7 @@ def ldap_configuration(configuration, slapd_server):
         "USER_FILTER": "(uid={{ login }})",
         "GROUP_BASE": "ou=groups",
         "TIMEOUT": 0.1,
-        "USER_CLASS": ["inetOrgPerson", "oathTOTPToken"],
+        "USER_CLASS": ["inetOrgPerson", "oathHOTPToken"],
     }
     yield configuration
     del configuration["CANAILLE_LDAP"]

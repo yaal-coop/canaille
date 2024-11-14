@@ -248,9 +248,11 @@ class CoreSettings(BaseModel):
     """If :py:data:`False`, then users cannot ask for a password recovery link
     by email."""
 
-    ENABLE_TOTP: bool = False
-    """If :py:data:`True`, then users will need to authenticate themselves
-    using a time one-time password via an authenticator app."""
+    OTP_METHOD: str = None
+    """If OTP_METHOD is defined, then users will need to authenticate themselves
+    using a one-time password (OTP) via an authenticator app.
+    If set to :py:data:`TOTP`, the application will use time one-time passwords,
+    If set to :py:data:`HOTP`, the application will use HMAC-based one-time passwords."""
 
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.

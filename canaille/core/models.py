@@ -9,6 +9,8 @@ from flask import current_app
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 
+HOTP_LOOK_AHEAD_WINDOW = 10
+
 
 class User(Model):
     """User model, based on the `SCIM User schema
@@ -251,6 +253,10 @@ class User(Model):
     """Unique token generated for each user, used for
     two-factor authentication."""
 
+    hotp_counter: int | None = None
+    """HMAC-based One Time Password counter, used for
+    two-factor authentication."""
+
     _readable_fields = None
     _writable_fields = None
     _permissions = None
@@ -328,19 +334,51 @@ class User(Model):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
-    def generate_otp_token(self):
+    def initialize_otp(self):
         self.secret_token = secrets.token_hex(32)
+        self.last_otp_login = None
+        if current_app.features.otp_method == "HOTP":
+            self.hotp_counter = 1
 
-    def generate_otp(self):
-        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).generate()
+    def generate_otp(self, counter_delta=0):
+        method = current_app.features.otp_method
+        if method == "TOTP":
+            totp = otpauth.TOTP(bytes(self.secret_token, "utf-8"))
+            return totp.string_code(totp.generate())
+        elif method == "HOTP":
+            hotp = otpauth.HOTP(bytes(self.secret_token, "utf-8"))
+            return hotp.string_code(hotp.generate(self.hotp_counter + counter_delta))
 
-    def get_authentication_setup_uri(self):
-        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).to_uri(
-            label=self.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
-        )
+    def get_otp_authentication_setup_uri(self):
+        method = current_app.features.otp_method
+        if method == "TOTP":
+            return otpauth.TOTP(bytes(self.secret_token, "utf-8")).to_uri(
+                label=self.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
+            )
+        elif method == "HOTP":
+            return otpauth.HOTP(bytes(self.secret_token, "utf-8")).to_uri(
+                label=self.user_name,
+                issuer=current_app.config["CANAILLE"]["NAME"],
+                counter=self.hotp_counter,
+            )
 
     def is_otp_valid(self, user_otp):
-        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
+        method = current_app.features.otp_method
+        if method == "TOTP":
+            return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
+        elif method == "HOTP":
+            counter = self.hotp_counter
+            is_valid = False
+            # if user token's counter is ahead of canaille's, try to catch up to it
+            while counter - self.hotp_counter <= HOTP_LOOK_AHEAD_WINDOW:
+                is_valid = otpauth.HOTP(bytes(self.secret_token, "utf-8")).verify(
+                    user_otp, counter
+                )
+                counter += 1
+                if is_valid:
+                    self.hotp_counter = counter
+                    return True
+            return False
 
 
 class Group(Model):

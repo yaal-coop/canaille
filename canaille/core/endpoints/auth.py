@@ -107,7 +107,7 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    if not current_app.features.has_totp:
+    if not current_app.features.has_otp:
         current_app.logger.security(
             f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
         )
@@ -271,7 +271,7 @@ def reset(user, hash):
 
 @bp.route("/setup-2fa")
 def setup_two_factor_auth():
-    if not current_app.features.has_totp:
+    if not current_app.features.has_otp:
         abort(404)
 
     if current_user():
@@ -287,7 +287,7 @@ def setup_two_factor_auth():
         session["attempt_login_with_correct_password"]
     )
 
-    uri = user.get_authentication_setup_uri()
+    uri = user.get_otp_authentication_setup_uri()
     base64_qr_image = get_b64encoded_qr_image(uri)
     return render_template(
         "setup-2fa.html",
@@ -299,7 +299,7 @@ def setup_two_factor_auth():
 
 @bp.route("/verify-2fa", methods=["GET", "POST"])
 def verify_two_factor_auth():
-    if not current_app.features.has_totp:
+    if not current_app.features.has_otp:
         abort(404)
 
     if current_user():
@@ -361,6 +361,6 @@ def verify_two_factor_auth():
         )
         request_ip = request.remote_addr or "unknown IP"
         current_app.logger.security(
-            f'Failed login attempt (wrong TOTP) for {session["attempt_login_with_correct_password"]} from {request_ip}'
+            f'Failed login attempt (wrong OTP) for {session["attempt_login_with_correct_password"]} from {request_ip}'
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))

@@ -175,6 +175,7 @@ def validate(config, validate_remote=False):
     validate_keypair(config.get("CANAILLE_OIDC"))
     validate_theme(config["CANAILLE"])
     validate_admin_email(config["CANAILLE"])
+    validate_otp_method(config["CANAILLE"])
 
     if not validate_remote:
         return
@@ -243,3 +244,8 @@ def validate_admin_email(config):
         raise ConfigurationException(
             "You must set an administration email if you want to check if users' passwords are compromised."
         )
+
+
+def validate_otp_method(config):
+    if config["OTP_METHOD"] not in [None, "TOTP", "HOTP"]:
+        raise ConfigurationException("Invalid OTP method")

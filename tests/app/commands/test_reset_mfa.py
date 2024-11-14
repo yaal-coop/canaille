@@ -1,0 +1,55 @@
+import json
+from unittest import mock
+
+import pytest
+
+from canaille.commands import cli
+
+
+@pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
+def test_reset_mfa_by_id(testclient, backend, user_otp, otp_method):
+    """Reset multi-factor authentication for a user by its id."""
+
+    testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+
+    old_token = user_otp.secret_token
+    assert old_token is not None
+    assert user_otp.last_otp_login is not None
+
+    runner = testclient.app.test_cli_runner()
+    res = runner.invoke(
+        cli,
+        [
+            "reset-mfa",
+            user_otp.id,
+        ],
+    )
+    assert res.exit_code == 0, res.stdout
+    assert json.loads(res.stdout) == {
+        "created": mock.ANY,
+        "display_name": "Johnny",
+        "emails": [
+            "john@doe.com",
+        ],
+        "family_name": "Doe",
+        "formatted_address": "1235, somewhere",
+        "formatted_name": "John (johnny) Doe",
+        "given_name": "John",
+        "id": user_otp.id,
+        "last_modified": mock.ANY,
+        "password": "***",
+        "phone_numbers": [
+            "555-000-000",
+        ],
+        "preferred_language": "en",
+        "profile_url": "https://john.example",
+        "user_name": "user",
+        "hotp_counter": 1,
+        "secret_token": mock.ANY,
+    }
+    backend.reload(user_otp)
+    assert user_otp.secret_token is not None
+    assert user_otp.secret_token != old_token
+    assert user_otp.last_otp_login is None
+    if otp_method == "HOTP":
+        assert user_otp.hotp_counter == 1

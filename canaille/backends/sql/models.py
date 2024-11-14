@@ -105,10 +105,11 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         TZDateTime(timezone=True), nullable=True
     )
     secret_token: Mapped[str] = mapped_column(String, nullable=True, unique=True)
+    hotp_counter: Mapped[int] = mapped_column(Integer, nullable=True)
 
     def save(self):
-        if current_app.features.has_totp and not self.secret_token:
-            self.generate_otp_token()
+        if current_app.features.has_otp and not self.secret_token:
+            self.initialize_otp()
 
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
