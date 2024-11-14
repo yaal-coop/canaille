@@ -1,7 +1,7 @@
 import datetime
+import hashlib
 import math
 import re
-from hashlib import sha1
 
 import requests
 import wtforms.validators
@@ -89,7 +89,7 @@ def password_strength_calculator(password):
 
 def compromised_password_validator(form, field):
     if current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"]:
-        hashed_password = sha1(field.data.encode("utf-8")).hexdigest()
+        hashed_password = hashlib.sha1(field.data.encode("utf-8")).hexdigest()
         hashed_password_prefix, hashed_password_suffix = (
             hashed_password[:5].upper(),
             hashed_password[5:].upper(),
