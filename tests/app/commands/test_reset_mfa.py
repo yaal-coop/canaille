@@ -53,3 +53,18 @@ def test_reset_mfa_by_id(testclient, backend, user_otp, otp_method):
     assert user_otp.last_otp_login is None
     if otp_method == "HOTP":
         assert user_otp.hotp_counter == 1
+
+
+def test_reset_mfa_unknown_id(testclient):
+    """Error case for trying to reset multi-factor authentication for an invalid user."""
+
+    runner = testclient.app.test_cli_runner()
+    res = runner.invoke(
+        cli,
+        [
+            "reset-mfa",
+            "invalid",
+        ],
+    )
+    assert res.exit_code == 1, res.stdout
+    assert res.stdout == "Error: No user with id 'invalid'\n"

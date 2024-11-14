@@ -1,32 +1,32 @@
 import datetime
 
-from flask import (
-    Blueprint,
-    abort,
-    current_app,
-    flash,
-    redirect,
-    request,
-    session,
-    url_for,
-)
+from flask import Blueprint
+from flask import abort
+from flask import current_app
+from flask import flash
+from flask import redirect
+from flask import request
+from flask import session
+from flask import url_for
 
-from canaille.app import build_hash, get_b64encoded_qr_image
-from canaille.app.flask import current_user, login_user, logout_user, smtp_needed
+from canaille.app import build_hash
+from canaille.app import get_b64encoded_qr_image
+from canaille.app.flask import smtp_needed
 from canaille.app.i18n import gettext as _
-from canaille.app.session import current_user, login_user, logout_user
+from canaille.app.session import current_user
+from canaille.app.session import login_user
+from canaille.app.session import logout_user
 from canaille.app.themes import render_template
 from canaille.backends import Backend
 from canaille.core.endpoints.forms import TwoFactorForm
 
-from ..mails import send_password_initialization_mail, send_password_reset_mail
-from .forms import (
-    FirstLoginForm,
-    ForgottenPasswordForm,
-    LoginForm,
-    PasswordForm,
-    PasswordResetForm,
-)
+from ..mails import send_password_initialization_mail
+from ..mails import send_password_reset_mail
+from .forms import FirstLoginForm
+from .forms import ForgottenPasswordForm
+from .forms import LoginForm
+from .forms import PasswordForm
+from .forms import PasswordResetForm
 
 bp = Blueprint("auth", __name__)
 

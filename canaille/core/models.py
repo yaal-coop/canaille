@@ -349,6 +349,8 @@ class User(Model):
             hotp = otpauth.HOTP(bytes(self.secret_token, "utf-8"))
             return hotp.string_code(hotp.generate(self.hotp_counter + counter_delta))
 
+        raise RuntimeError("Invalid one-time password method")  # pragma: no cover
+
     def get_otp_authentication_setup_uri(self):
         method = current_app.features.otp_method
         if method == "TOTP":
@@ -361,6 +363,8 @@ class User(Model):
                 issuer=current_app.config["CANAILLE"]["NAME"],
                 counter=self.hotp_counter,
             )
+
+        raise RuntimeError("Invalid one-time password method")  # pragma: no cover
 
     def is_otp_valid(self, user_otp):
         method = current_app.features.otp_method
@@ -379,6 +383,8 @@ class User(Model):
                     self.hotp_counter = counter
                     return True
             return False
+
+        raise RuntimeError("Invalid one-time password method")  # pragma: no cover
 
 
 class Group(Model):

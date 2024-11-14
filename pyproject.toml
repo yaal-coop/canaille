@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "babel", "setuptools >= 50.0.0; python_version>='3.12'"]
+requires = ["hatchling", "babel", "setuptools >= 50.0.0; python_version<'3.13'"]
 build-backend = "hatchling.build"
 
 [project]
@@ -32,8 +32,11 @@ requires-python = ">=3.10"
 dependencies = [
     "flask >= 3.0.0",
     "flask-wtf >= 1.2.1",
+    "otpauth>=2.1.1",
+    "pillow>=11.0.0",
     "pydantic-settings >= 2.0.3",
     "requests>=2.32.3",
+    "qrcode>=8.0",
     "wtforms >= 3.1.1",
 ]
 
