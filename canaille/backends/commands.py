@@ -7,6 +7,7 @@ import click
 from flask.cli import AppGroup
 from flask.cli import with_appcontext
 
+from canaille.app import models
 from canaille.app.commands import with_backendcontext
 from canaille.app.models import MODELS
 from canaille.backends import Backend
@@ -76,6 +77,8 @@ def register(cli):
 
         @cli.command(cls=ModelCommand, factory=factory, name=name, help=command_help)
         def factory_command(): ...
+
+    cli.add_command(reset_mfa)
 
 
 def serialize(instance):
@@ -281,3 +284,29 @@ def delete_factory(model):
             raise click.ClickException(exc) from exc
 
     return command
+
+
+@click.command()
+@with_appcontext
+@with_backendcontext
+@click.argument("identifier")
+def reset_mfa(identifier):
+    """Reset multi-factor authentication for a user and display the
+    edited user in JSON format in the standard output.
+
+    IDENTIFIER should be a user id or user_name
+    """
+
+    instance = Backend.instance.get(models.User, identifier)
+    if not instance:
+        raise click.ClickException(f"No user with id '{identifier}'")
+
+    instance.initialize_otp()
+
+    try:
+        Backend.instance.save(instance)
+    except Exception as exc:  # pragma: no cover
+        raise click.ClickException(exc) from exc
+
+    output = json.dumps(serialize(instance))
+    click.echo(output)

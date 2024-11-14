@@ -181,6 +181,7 @@ Multi-factor authentication
 
 If the :attr:`one-time password feature <canaille.core.configuration.CoreSettings.OTP_METHOD>` is set, then users will need to authenticate themselves using a one-time password via an authenticator app.
 Two options are supported : "TOTP" for time one-time password, and "HOTP" for HMAC-based one-time password.
+In case of lost token, multi-factor authentication can be reset by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
 
 Web interface
 *************

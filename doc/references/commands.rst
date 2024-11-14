@@ -58,3 +58,9 @@ For the sake of readability, it is omitted in the following examples.
 .. click:: doc.commands:delete
    :prog: canaille delete
    :nested: full
+
+.. _cli_reset_mfa:
+
+.. click:: doc.commands:reset-mfa
+   :prog: canaille reset-mfa
+   :nested: full
