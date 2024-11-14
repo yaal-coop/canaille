@@ -3,6 +3,13 @@ Command Line Interface
 
 Canaille provide several commands to help administrator manage their data.
 
+The configuration file has to be prefixed before running `canaille`. For readability's sake, it's omitted in the examples.
+
+.. code-block:: shell
+
+    env CONFIG=path/to/config.toml canaille ...
+
+
 .. _cli_check:
 
 .. click:: canaille.app.commands:check
