@@ -157,6 +157,7 @@ def test_profile_settings_too_long_password(testclient, logged_user):
 
 
 def test_profile_settings_compromised_password(testclient, logged_user):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     """Tests if password is compromised."""
 
     def with_different_values(password, message):
@@ -190,6 +191,7 @@ def test_profile_settings_compromised_password(testclient, logged_user):
 def test_profile_settings_compromised_password_request_api_failed_but_password_updated(
     api_get, testclient, logged_user, backend
 ):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
     current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
@@ -217,6 +219,7 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_settings_form(
     api_get, testclient, backend, admins_group, user, logged_user
 ):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
     res = testclient.get("/profile/user/settings", status=200)
@@ -242,6 +245,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_settings_form(
     api_get, testclient, backend, admins_group, user, logged_user
 ):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
     current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
 

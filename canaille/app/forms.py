@@ -112,6 +112,8 @@ def compromised_password_validator(form, field):
                         "This password appears on public compromission databases and is not secure."
                     )
                 )
+    else:
+        return None
 
 
 def email_validator(form, field):

@@ -155,6 +155,7 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
 
 def test_registration_with_compromised_password(testclient, backend):
     """Tests a nominal registration with compromised password."""
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
@@ -178,6 +179,7 @@ def test_registration_with_compromised_password(testclient, backend):
 def test_registration_with_compromised_password_request_api_failed_but_account_created(
     api_get, testclient, backend
 ):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
@@ -208,6 +210,7 @@ def test_registration_with_compromised_password_request_api_failed_but_account_c
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_register_form(
     api_get, testclient, backend, admins_group
 ):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
@@ -242,6 +245,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_register_form(
     api_get, testclient, backend, admins_group
 ):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
     current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
