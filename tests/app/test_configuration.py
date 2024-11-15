@@ -203,3 +203,29 @@ def test_invalid_theme(configuration, backend):
         config_obj = settings_factory(configuration)
         config_dict = config_obj.model_dump()
         validate(config_dict, validate_remote=False)
+
+
+def test_enable_password_compromission_check_with_and_without_admin_email(
+    configuration, backend
+):
+    configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = False
+    configuration["CANAILLE"]["ADMIN_EMAIL"] = None
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    validate(config_dict, validate_remote=False)
+
+    configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    configuration["CANAILLE"]["ADMIN_EMAIL"] = "admin_default_mail@mymail.com"
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    validate(config_dict, validate_remote=False)
+
+    with pytest.raises(
+        ConfigurationException,
+        match=r"You must set an administration email if you want to check if users' passwords are compromised.",
+    ):
+        configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+        configuration["CANAILLE"]["ADMIN_EMAIL"] = None
+        config_obj = settings_factory(configuration)
+        config_dict = config_obj.model_dump()
+        validate(config_dict, validate_remote=False)

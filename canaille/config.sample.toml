@@ -42,7 +42,7 @@ SECRET_KEY = "change me before you go in production"
 # By default, this is true if SMTP is configured, else this is false.
 # If explicitly set to true and SMTP is disabled, the email field
 # will be read-only.
-# EMAIL_CONFIRMATION =
+# EMAIL_CONFIRMATION = True
 
 # If ENABLE_REGISTRATION is true, then users can freely create an account
 # at this instance. If email verification is available, users must confirm
@@ -73,6 +73,28 @@ SECRET_KEY = "change me before you go in production"
 #   https://docs.python.org/3/library/logging.config.html#logging.config.dictConfig
 # - if this is a string, it is passed to the python fileConfig method
 #   https://docs.python.org/3/library/logging.config.html#logging.config.fileConfig
+
+#   Minimum length for user password.
+#   It is possible not to set a minimum, by entering None or 0.
+#   MIN_PASSWORD_LENGTH = 8
+
+#   Maximum length for user password.
+#   There is a technical limit with passlib used by sql database of 4096
+#   characters. If the value entered is 0 or None, or greater than 4096,
+#   then 4096 will be retained.
+#   MAX_PASSWORD_LENGTH = 1000
+
+#   Administration email contact.
+#   In certain special cases (example : questioning about password
+#   corruption), it is necessary to provide an administration contact
+#   email.
+#   ADMIN_EMAIL = "admin@mydomain.tld"
+
+#   If :py:data:`True`, Canaille will check for password compromise on HIBP
+#   every time a new password is register.
+#   (https://haveibeenpwned.com/)
+#   ENABLE_PASSWORD_COMPROMISSION_CHECK = False
+
 
 # [CANAILLE_SQL]
 # The SQL database connection string

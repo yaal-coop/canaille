@@ -313,7 +313,7 @@ class CoreSettings(BaseModel):
     then 4096 will be retained.
     """
 
-    ADMIN_EMAIL: str = None
+    ADMIN_EMAIL: str | None = None
     """Administration email contact.
 
     In certain special cases (example : questioning about password
@@ -322,6 +322,8 @@ class CoreSettings(BaseModel):
     """
 
     ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
-    """Enable to check for password compromise on HIBP.
-    
+    """If :py:data:`True`, Canaille will check for password compromise on HIBP
+    every time a new password is register.
+
+    (https://haveibeenpwned.com/)
     """
