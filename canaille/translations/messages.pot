@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-12 16:52+0100\n"
+"POT-Creation-Date: 2024-11-15 12:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,31 +41,31 @@ msgstr ""
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:109
-msgid "This password is compromised."
+#: canaille/app/forms.py:111
+msgid "This password appears on public compromission databases and is not secure."
 msgstr ""
 
-#: canaille/app/forms.py:269
+#: canaille/app/forms.py:276
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:297
+#: canaille/app/forms.py:304
 msgid "Not a valid datetime value."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:15
+#: canaille/app/mails_sending_conditions.py:13
 msgid ""
 "Password compromise investigation failed. Please contact the "
 "administrators."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:64
+#: canaille/app/mails_sending_conditions.py:35
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:71
+#: canaille/app/mails_sending_conditions.py:42
 msgid ""
 "An error occurred while communicating the incident to the administrators."
 " Please update your password as soon as possible. If this still happens, "
@@ -131,8 +131,8 @@ msgstr ""
 msgid "Continue your registration on {website_name}"
 msgstr ""
 
-#: canaille/core/mails.py:221
-msgid "compromised password check failure on {website_name}"
+#: canaille/core/endpoints/admin.py:309 canaille/core/mails.py:221
+msgid "Compromised password check failure on {website_name}"
 msgstr ""
 
 #: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
@@ -1166,6 +1166,7 @@ msgstr ""
 msgid "Registration"
 msgstr ""
 
+#: canaille/core/templates/mails/admin.html:146
 #: canaille/core/templates/mails/compromised_password_check_failure.html:19
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
