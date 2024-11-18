@@ -737,7 +737,9 @@ def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
 
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
-def test_account_reset_mfa(testclient, backend, logged_admin, user_otp, otp_method):
+def test_account_reset_otp(
+    testclient, backend, caplog, logged_admin, user_otp, otp_method
+):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     old_token = user_otp.secret_token
@@ -745,14 +747,19 @@ def test_account_reset_mfa(testclient, backend, logged_admin, user_otp, otp_meth
     assert user_otp.last_otp_login is not None
 
     res = testclient.get("/profile/user/settings")
-    res.mustcontain("Reset multi-factor authentication")
+    res.mustcontain("Reset one-time password authentication")
 
-    res = res.form.submit(name="action", value="confirm-reset-mfa")
-    res = res.form.submit(name="action", value="reset-mfa")
+    res = res.form.submit(name="action", value="confirm-reset-otp")
+    res = res.form.submit(name="action", value="reset-otp")
     user = backend.get(models.User, id=user_otp.id)
     assert user.secret_token is not None
     assert user.secret_token != old_token
     assert user.last_otp_login is None
     if otp_method == "HOTP":
         assert user.hotp_counter == 1
-    res.mustcontain("Multi-factor authentication has been reset")
+    res.mustcontain("One-time password authentication has been reset")
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Reset one-time password authentication for user by admin from unknown IP",
+    ) in caplog.record_tuples

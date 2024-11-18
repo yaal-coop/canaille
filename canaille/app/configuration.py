@@ -176,6 +176,7 @@ def validate(config, validate_remote=False):
     validate_theme(config["CANAILLE"])
     validate_admin_email(config["CANAILLE"])
     validate_otp_method(config["CANAILLE"])
+    validate_mail_otp(config["CANAILLE"])
 
     if not validate_remote:
         return
@@ -249,3 +250,10 @@ def validate_admin_email(config):
 def validate_otp_method(config):
     if config["OTP_METHOD"] not in [None, "TOTP", "HOTP"]:
         raise ConfigurationException("Invalid OTP method")
+
+
+def validate_mail_otp(config):
+    if config["EMAIL_OTP"] and not config["SMTP"]:
+        raise ConfigurationException(
+            "Cannot activate email one-time password authentication without SMTP"
+        )

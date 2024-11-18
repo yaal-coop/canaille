@@ -754,13 +754,17 @@ def profile_settings(user, edited_user):
         return profile_settings_edit(user, edited_user)
 
     if (
-        request.form.get("action") == "confirm-reset-mfa"
+        request.form.get("action") == "confirm-reset-otp"
         and current_app.features.has_otp
     ):
-        return render_template("modals/reset-mfa.html", edited_user=edited_user)
+        return render_template("modals/reset-otp.html", edited_user=edited_user)
 
-    if request.form.get("action") == "reset-mfa" and current_app.features.has_otp:
-        flash(_("Multi-factor authentication has been reset"), "success")
+    if request.form.get("action") == "reset-otp" and current_app.features.has_otp:
+        flash(_("One-time password authentication has been reset"), "success")
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.security(
+            f"Reset one-time password authentication for {edited_user.user_name} by {user.user_name} from {request_ip}"
+        )
         edited_user.initialize_otp()
         Backend.instance.save(edited_user)
 

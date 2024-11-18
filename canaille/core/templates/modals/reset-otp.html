@@ -1,22 +1,22 @@
 {% extends theme('base.html') %}
 
 {% block content %}
-    <div id="modal-reset-mfa" class="ui warning message">
+    <div id="modal-reset-otp" class="ui warning message">
         <form method="post" action="{{ request.url }}">
             <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
             <div class="ui icon header">
                 <i class="key icon"></i>
-                {% trans %}Multi-factor authentication reset{% endtrans %}
+                {% trans %}One-time password authentication reset{% endtrans %}
             </div>
             <div class="content">
                 <p>
                     {% if user != edited_user %}
                         {% trans user_name=(edited_user.formatted_name or edited_user.identifier) %}
-                            Are you sure you want to reset multi-factor authentication (MFA) for {{ user_name }} ? The user will have to perform MFA setup again at next login.
+                            Are you sure you want to reset one-time password (OTP) authentication for {{ user_name }} ? The user will have to perform OTP setup again at next login.
                         {% endtrans %}
                     {% else %}
                         {% trans %}
-                            Are you sure you want to reset multi-factor authentication (MFA)? You will have to perform MFA setup again at next login.
+                            Are you sure you want to reset one-time password (OTP) authentication? You will have to perform OTP setup again at next login.
                         {% endtrans %}
                     {% endif %}
                 </p>
@@ -24,7 +24,7 @@
             <div class="ui center aligned container">
                 <div class="ui stackable buttons">
                     <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
-                    <button type="submit" name="action" value="reset-mfa" class="ui red approve button">{% trans %}Reset multi-factor authentication{% endtrans %}</button>
+                    <button type="submit" name="action" value="reset-otp" class="ui red approve button">{% trans %}Reset one-time password authentication{% endtrans %}</button>
                 </div>
             </div>
         </form>

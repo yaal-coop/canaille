@@ -265,4 +265,13 @@ select.ui.multiple.dropdown option[selected] {
     .ui.label.token-label {
         padding-left: 0;
     }
+
+    .send-code-button {
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        text-decoration: underline;
+        cursor: pointer;
+        color: rgba(255,255,255,.87) !important;
+      }
 }

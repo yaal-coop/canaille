@@ -38,6 +38,8 @@ class User(canaille.core.models.User, LDAPObject):
         "secret_token": "oathSecret",
         "last_otp_login": "oathLastLogin",
         "hotp_counter": "oathHOTPCounter",
+        "one_time_password": "oathTokenPIN",
+        "one_time_password_emission_date": "oathSecretTime",
     }
 
     def match_filter(self, filter):

@@ -23,6 +23,10 @@ class Features:
         return bool(self.app.config["CANAILLE"]["OTP_METHOD"])
 
     @property
+    def has_email_otp(self):
+        return bool(self.app.config["CANAILLE"]["EMAIL_OTP"])
+
+    @property
     def has_registration(self):
         return self.app.config["CANAILLE"]["ENABLE_REGISTRATION"]
 

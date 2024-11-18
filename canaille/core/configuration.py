@@ -254,6 +254,10 @@ class CoreSettings(BaseModel):
     If set to :py:data:`TOTP`, the application will use time one-time passwords,
     If set to :py:data:`HOTP`, the application will use HMAC-based one-time passwords."""
 
+    EMAIL_OTP: bool = False
+    """If :py:data:`True`, then users will need to authenticate themselves
+    via a one-time password sent to their primary email address."""
+
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.
 

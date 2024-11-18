@@ -20,7 +20,7 @@
                         <div class="content">
                             {{ _("Sign in as %(username)s", username=username) }}
                         </div>
-                        <div class="sub header">{% trans %}Please enter the one-time password from your authenticator app.{% endtrans %}</div>
+                        <div class="sub header">{% trans %}One-time password authentication.{% endtrans %}</div>
                     </h2>
                 {% endblock %}
 
@@ -42,6 +42,12 @@
                         </div>
                     {% endblock %}
                 {% endcall %}
+                {% if method == "mail" %}
+                    <form action="{{ url_for('core.auth.send_mail_otp') }}" method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="send-code-button" type="submit">Didn't receive the mail? Click here to send a new code.</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>

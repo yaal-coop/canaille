@@ -11,6 +11,7 @@ from flask import url_for
 
 from canaille.app import build_hash
 from canaille.app import get_b64encoded_qr_image
+from canaille.app import mask_email
 from canaille.app.flask import smtp_needed
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
@@ -107,7 +108,38 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    if not current_app.features.has_otp:
+    if current_app.features.has_otp:
+        session["attempt_login_with_correct_password"] = session.pop("attempt_login")
+        if not user.last_otp_login:
+            flash(
+                "You have not enabled Two-Factor Authentication. Please enable it first to login.",
+                "info",
+            )
+            return redirect(url_for("core.auth.setup_two_factor_auth"))
+        flash(
+            "Please enter the one-time password from your authenticator app.",
+            "info",
+        )
+        return redirect(url_for("core.auth.verify_two_factor_auth"))
+    elif current_app.features.has_email_otp:
+        try:
+            user.generate_otp_mail()
+            Backend.instance.save(user)
+            session["attempt_login_with_correct_password"] = session.pop(
+                "attempt_login"
+            )
+            flash(
+                f"A one-time password has been sent to your email address {mask_email(user.emails[0])}. Please enter it below to login.",
+                "info",
+            )
+            current_app.logger.security(
+                f'Sent one-time password for {session["attempt_login_with_correct_password"]} to {user.emails[0]} from {request_ip}'
+            )
+        except Exception:  # pragma: no cover
+            flash("One-time password generation failed. Please try again.", "danger")
+            return redirect(url_for("core.auth.password"))
+        return redirect(url_for("core.auth.verify_two_factor_auth"))
+    else:
         current_app.logger.security(
             f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
         )
@@ -120,15 +152,6 @@ def password():
         return redirect(
             session.pop("redirect-after-login", url_for("core.account.index"))
         )
-    else:
-        session["attempt_login_with_correct_password"] = session.pop("attempt_login")
-        if not user.last_otp_login:
-            flash(
-                "You have not enabled Two-Factor Authentication. Please enable it first to login.",
-                "info",
-            )
-            return redirect(url_for("core.auth.setup_two_factor_auth"))
-        return redirect(url_for("core.auth.verify_two_factor_auth"))
 
 
 @bp.route("/logout")
@@ -299,7 +322,7 @@ def setup_two_factor_auth():
 
 @bp.route("/verify-2fa", methods=["GET", "POST"])
 def verify_two_factor_auth():
-    if not current_app.features.has_otp:
+    if not current_app.features.has_otp and not current_app.features.has_email_otp:
         abort(404)
 
     if current_user():
@@ -315,10 +338,12 @@ def verify_two_factor_auth():
     form.render_field_macro_file = "partial/login_field.html"
 
     if not request.form or form.form_control():
+        method = "mail" if current_app.features.has_email_otp else "authenticator"
         return render_template(
             "verify-2fa.html",
             form=form,
             username=session["attempt_login_with_correct_password"],
+            method=method,
         )
 
     user = Backend.instance.get_user_from_login(
@@ -327,9 +352,9 @@ def verify_two_factor_auth():
 
     if form.validate() and user.is_otp_valid(form.otp.data):
         welcome_message = (
-            "Connection successful."
-            if user.last_otp_login
-            else "Two-factor authentication setup successful."
+            "Two-factor authentication setup successful."
+            if current_app.features.has_otp and user.last_otp_login is None
+            else "Connection successful."
         )
         try:
             user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
@@ -364,3 +389,39 @@ def verify_two_factor_auth():
             f'Failed login attempt (wrong OTP) for {session["attempt_login_with_correct_password"]} from {request_ip}'
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+@bp.route("/send-mail-otp", methods=["POST"])
+def send_mail_otp():
+    if not current_app.features.has_email_otp:
+        abort(404)
+
+    if current_user():
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
+
+    if "attempt_login_with_correct_password" not in session:
+        flash(_("Cannot remember the login you attempted to sign in with"), "warning")
+        return redirect(url_for("core.auth.login"))
+
+    user = Backend.instance.get_user_from_login(
+        session["attempt_login_with_correct_password"]
+    )
+
+    try:
+        user.generate_otp_mail()
+        Backend.instance.save(user)
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.security(
+            f'Sent one-time password for {session["attempt_login_with_correct_password"]} to {user.emails[0]} from {request_ip}'
+        )
+        flash(
+            "Code successfully sent!",
+            "success",
+        )
+    except Exception:  # pragma: no cover
+        flash("One-time password generation failed. Please try again.", "danger")
+        return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+    return redirect(url_for("core.auth.verify_two_factor_auth"))

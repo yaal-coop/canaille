@@ -1,4 +1,5 @@
 import json
+import logging
 from unittest import mock
 
 import pytest
@@ -7,8 +8,8 @@ from canaille.commands import cli
 
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
-def test_reset_mfa_by_id(testclient, backend, user_otp, otp_method):
-    """Reset multi-factor authentication for a user by its id."""
+def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
+    """Reset one-time password authentication for a user by its id."""
 
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
@@ -20,7 +21,7 @@ def test_reset_mfa_by_id(testclient, backend, user_otp, otp_method):
     res = runner.invoke(
         cli,
         [
-            "reset-mfa",
+            "reset-otp",
             user_otp.id,
         ],
     )
@@ -47,6 +48,11 @@ def test_reset_mfa_by_id(testclient, backend, user_otp, otp_method):
         "hotp_counter": 1,
         "secret_token": mock.ANY,
     }
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Reset one-time password authentication from CLI for user",
+    ) in caplog.record_tuples
     backend.reload(user_otp)
     assert user_otp.secret_token is not None
     assert user_otp.secret_token != old_token
@@ -55,14 +61,14 @@ def test_reset_mfa_by_id(testclient, backend, user_otp, otp_method):
         assert user_otp.hotp_counter == 1
 
 
-def test_reset_mfa_unknown_id(testclient):
-    """Error case for trying to reset multi-factor authentication for an invalid user."""
+def test_reset_otp_unknown_id(testclient):
+    """Error case for trying to reset one-time password authentication for an invalid user."""
 
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(
         cli,
         [
-            "reset-mfa",
+            "reset-otp",
             "invalid",
         ],
     )
