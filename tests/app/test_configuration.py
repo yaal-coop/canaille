@@ -245,3 +245,20 @@ def test_invalid_otp_option(configuration, backend):
         config_obj = settings_factory(configuration)
         config_dict = config_obj.model_dump()
         validate(config_dict, validate_remote=False)
+
+
+def test_email_otp_without_smtp(configuration, backend):
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+
+    validate(config_dict, validate_remote=False)
+
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Cannot activate email one-time password authentication without SMTP",
+    ):
+        configuration["CANAILLE"]["SMTP"] = None
+        configuration["CANAILLE"]["EMAIL_OTP"] = True
+        config_obj = settings_factory(configuration)
+        config_dict = config_obj.model_dump()
+        validate(config_dict, validate_remote=False)

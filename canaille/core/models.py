@@ -8,8 +8,11 @@ from flask import current_app
 
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
+from canaille.core.mails import send_one_time_password_mail
 
 HOTP_LOOK_AHEAD_WINDOW = 10
+OTP_DIGITS = 6
+OTP_VALIDITY = 600
 
 
 class User(Model):
@@ -247,7 +250,7 @@ class User(Model):
 
     last_otp_login: datetime.datetime | None = None
     """A DateTime indicating when the user last logged in with a one-time password.
-    This attribute is currently used to check whether the user has activated multi-factor authentication or not."""
+    This attribute is currently used to check whether the user has activated one-time password authentication or not."""
 
     secret_token: str | None = None
     """Unique token generated for each user, used for
@@ -256,6 +259,12 @@ class User(Model):
     hotp_counter: int | None = None
     """HMAC-based One Time Password counter, used for
     two-factor authentication."""
+
+    one_time_password: str | None = None
+    """One time password used for email two-factor authentication."""
+
+    one_time_password_emission_date: datetime.datetime | None = None
+    """A DateTime indicating when the user last emitted an email one-time password."""
 
     _readable_fields = None
     _writable_fields = None
@@ -348,8 +357,17 @@ class User(Model):
         elif method == "HOTP":
             hotp = otpauth.HOTP(bytes(self.secret_token, "utf-8"))
             return hotp.string_code(hotp.generate(self.hotp_counter + counter_delta))
+        else:  # pragma: no cover
+            raise RuntimeError("Invalid one-time password method")
 
-        raise RuntimeError("Invalid one-time password method")  # pragma: no cover
+    def generate_otp_mail(self):
+        otp = string_code(secrets.randbelow(10**OTP_DIGITS), OTP_DIGITS)
+        self.one_time_password = otp
+        self.one_time_password_emission_date = datetime.datetime.now(
+            datetime.timezone.utc
+        )
+        send_one_time_password_mail(self.emails[0], otp)
+        return otp
 
     def get_otp_authentication_setup_uri(self):
         method = current_app.features.otp_method
@@ -363,28 +381,54 @@ class User(Model):
                 issuer=current_app.config["CANAILLE"]["NAME"],
                 counter=self.hotp_counter,
             )
-
-        raise RuntimeError("Invalid one-time password method")  # pragma: no cover
+        else:  # pragma: no cover
+            raise RuntimeError("Invalid one-time password method")
 
     def is_otp_valid(self, user_otp):
-        method = current_app.features.otp_method
-        if method == "TOTP":
-            return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
-        elif method == "HOTP":
-            counter = self.hotp_counter
-            is_valid = False
-            # if user token's counter is ahead of canaille's, try to catch up to it
-            while counter - self.hotp_counter <= HOTP_LOOK_AHEAD_WINDOW:
-                is_valid = otpauth.HOTP(bytes(self.secret_token, "utf-8")).verify(
-                    user_otp, counter
-                )
-                counter += 1
-                if is_valid:
-                    self.hotp_counter = counter
-                    return True
-            return False
+        method = None
+        if current_app.features.has_otp:
+            method = current_app.features.otp_method
+        elif current_app.features.has_email_otp:  # pragma: no branch
+            method = "EMAIL_OTP"
 
-        raise RuntimeError("Invalid one-time password method")  # pragma: no cover
+        if method == "TOTP":
+            return self.is_totp_valid(user_otp)
+        elif method == "HOTP":
+            return self.is_hotp_valid(user_otp)
+        elif method == "EMAIL_OTP":
+            return self.is_email_otp_valid(user_otp)
+        else:  # pragma: no cover
+            raise RuntimeError("Invalid one-time password method")
+
+    def is_totp_valid(self, user_otp):
+        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
+
+    def is_hotp_valid(self, user_otp):
+        counter = self.hotp_counter
+        is_valid = False
+        # if user token's counter is ahead of canaille's, try to catch up to it
+        while counter - self.hotp_counter <= HOTP_LOOK_AHEAD_WINDOW:
+            is_valid = otpauth.HOTP(bytes(self.secret_token, "utf-8")).verify(
+                user_otp, counter
+            )
+            counter += 1
+            if is_valid:
+                self.hotp_counter = counter
+                return True
+        return False
+
+    def is_email_otp_valid(self, user_otp):
+        return (
+            user_otp == self.one_time_password
+            and self.is_one_time_password_still_valid()
+        )
+
+    def is_one_time_password_still_valid(self):
+        return datetime.datetime.now(
+            datetime.timezone.utc
+        ) - self.one_time_password_emission_date < datetime.timedelta(
+            seconds=OTP_VALIDITY
+        )
 
 
 class Group(Model):
@@ -415,3 +459,15 @@ class Group(Model):
     """
 
     description: str | None = None
+
+
+def string_code(code: int, digit: int) -> str:
+    """Add leading 0 if the code length does not match the defined length.
+
+    For instance, parameter ``digit=6``, but ``code=123``, this method would
+    return ``000123``::
+
+        >>> otp.string_code(123)
+        '000123'
+    """
+    return f"{code:0{digit}}"

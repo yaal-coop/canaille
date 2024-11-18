@@ -249,3 +249,34 @@ def send_compromised_password_check_failure_mail(
         html=html_body,
         attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
+
+
+def send_one_time_password_mail(mail, otp):
+    base_url = url_for("core.account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("One-time password authentication on {website_name}").format(
+        website_name=current_app.config["CANAILLE"]["NAME"]
+    )
+    text_body = render_template(
+        "mails/email_otp.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        otp=otp,
+    )
+    html_body = render_template(
+        "mails/email_otp.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        otp=otp,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+        title=subject,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=mail,
+        text=text_body,
+        html=html_body,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )

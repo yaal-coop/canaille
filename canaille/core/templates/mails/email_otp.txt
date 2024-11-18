@@ -1,0 +1,6 @@
+# {% trans %}One-time password authentication{% endtrans %}
+
+{% trans %}Please enter the one-time password below at {{ site_name }} to complete your authentication.{% endtrans %}
+
+{% trans %}One-time password{% endtrans %}: {{ otp }}
+{{ site_name }}: {{ site_url }}

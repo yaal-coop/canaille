@@ -33,6 +33,10 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
+    assert (
+        "info",
+        "Please enter the one-time password from your authenticator app.",
+    ) in res.flashes
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:

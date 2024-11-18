@@ -79,3 +79,10 @@ def get_b64encoded_qr_image(data):
     buffered = BytesIO()
     img.save(buffered)
     return b64encode(buffered.getvalue()).decode("utf-8")
+
+
+def mask_email(email):
+    atpos = email.find("@")
+    if atpos > 0:
+        return email[0] + "#####" + email[atpos - 1 :]
+    return None

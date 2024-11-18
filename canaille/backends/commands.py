@@ -4,6 +4,7 @@ import json
 import typing
 
 import click
+from flask import current_app
 from flask.cli import AppGroup
 from flask.cli import with_appcontext
 
@@ -78,7 +79,7 @@ def register(cli):
         @cli.command(cls=ModelCommand, factory=factory, name=name, help=command_help)
         def factory_command(): ...
 
-    cli.add_command(reset_mfa)
+    cli.add_command(reset_otp)
 
 
 def serialize(instance):
@@ -290,23 +291,26 @@ def delete_factory(model):
 @with_appcontext
 @with_backendcontext
 @click.argument("identifier")
-def reset_mfa(identifier):
-    """Reset multi-factor authentication for a user and display the
+def reset_otp(identifier):
+    """Reset one-time password authentication for a user and display the
     edited user in JSON format in the standard output.
 
     IDENTIFIER should be a user id or user_name
     """
 
-    instance = Backend.instance.get(models.User, identifier)
-    if not instance:
+    user = Backend.instance.get(models.User, identifier)
+    if not user:
         raise click.ClickException(f"No user with id '{identifier}'")
 
-    instance.initialize_otp()
+    user.initialize_otp()
+    current_app.logger.security(
+        f"Reset one-time password authentication from CLI for {user.user_name}"
+    )
 
     try:
-        Backend.instance.save(instance)
+        Backend.instance.save(user)
     except Exception as exc:  # pragma: no cover
         raise click.ClickException(exc) from exc
 
-    output = json.dumps(serialize(instance))
+    output = json.dumps(serialize(user))
     click.echo(output)
