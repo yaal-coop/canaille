@@ -214,7 +214,7 @@ def test_registration_with_compromised_password_request_api_failed_but_account_c
 
 @mock.patch("requests.api.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_register_form(
-    api_get, testclient, backend, admins_group, caplog
+    api_get, testclient, backend, caplog
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -254,7 +254,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 
 @mock.patch("requests.api.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_register_form(
-    api_get, testclient, backend, admins_group, caplog
+    api_get, testclient, backend, caplog
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
