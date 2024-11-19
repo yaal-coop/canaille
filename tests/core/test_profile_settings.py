@@ -156,9 +156,16 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     )
 
 
-def test_profile_settings_compromised_password(testclient, logged_user):
+@mock.patch("requests.api.get")
+def test_profile_settings_compromised_password(api_get, testclient, logged_user):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     """Tests if password is compromised."""
+
+    # This content simulates a result from the hibp api containing the suffixes of the following password hashes: 'password', '987654321', 'correct horse battery staple', 'zxcvbn123', 'azertyuiop123'
+    class Response:
+        content = b"1E4C9B93F3F0682250B6CF8331B7EE68FD8:3\r\nCAA6D483CC3887DCE9D1B8EB91408F1EA7A:3\r\nAD6438836DBE526AA231ABDE2D0EEF74D42:3\r\n8289894DDB6317178960AB5AE98B81BBF97:1\r\n5FF0B6F9EAC40D5CA7B4DAA7B64F0E6F4AA:2\r\n"
+
+    api_get.return_value = Response
 
     def with_different_values(password, message):
         res = testclient.get("/profile/user/settings")
@@ -176,11 +183,11 @@ def test_profile_settings_compromised_password(testclient, logged_user):
         res.mustcontain(message)
 
     with_different_values(
-        "aaaaaaaa",
+        "password",
         "This password appears on public compromission databases and is not secure.",
     )
     with_different_values(
-        "azertyuiop",
+        "azertyuiop123",
         "This password appears on public compromission databases and is not secure.",
     )
     with_different_values("a" * 1000, 'data-percent="25"')
@@ -259,8 +266,6 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
     api_get.side_effect = mock.Mock(side_effect=Exception())
     current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
 
-    assert not backend.query(models.User, user_name="newuser")
-
     res = testclient.get("/profile/user/settings", status=200)
     res.form.user = user
     res.form["password1"] = "123456789"
@@ -284,6 +289,39 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "If this still happens, please contact the administrators.",
     ) in res.flashes
     assert ("success", "Profile updated successfully.") in res.flashes
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_without_smtp_or_without_admin_email_from_settings_form(
+    api_get, testclient, backend, user, logged_user, caplog
+):
+    def without_smtp_or_without_admin_email(smtp, mail):
+        current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+        api_get.side_effect = mock.Mock(side_effect=Exception())
+        current_app.config["CANAILLE"]["SMTP"] = smtp
+        current_app.config["CANAILLE"]["ADMIN_EMAIL"] = mail
+
+        res = testclient.get("/profile/user/settings", status=200)
+        res.form.user = user
+        res.form["password1"] = "123456789"
+        res.form["password2"] = "123456789"
+
+        res = res.form.submit(name="action", value="edit-settings")
+
+        assert (
+            "canaille",
+            logging.ERROR,
+            "Password compromise investigation failed on HIBP API.",
+        ) in caplog.record_tuples
+        assert (
+            "error",
+            "Password compromise investigation failed. Please contact the administrators.",
+        ) not in res.flashes
+
+    without_smtp_or_without_admin_email(
+        None, current_app.config["CANAILLE"]["ADMIN_EMAIL"]
+    )
+    without_smtp_or_without_admin_email(current_app.config["CANAILLE"]["SMTP"], None)
 
 
 def test_edition_without_groups(
