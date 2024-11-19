@@ -33,7 +33,7 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
                 _(
                     "We have informed your administrator about the failure of the password compromise investigation."
                 ),
-                "success",
+                "info",
             )
         else:
             flash(
