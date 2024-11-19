@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-15 16:28+0100\n"
+"POT-Creation-Date: 2024-11-19 15:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,31 +41,31 @@ msgstr ""
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:111
+#: canaille/app/forms.py:117
 msgid "This password appears on public compromission databases and is not secure."
 msgstr ""
 
-#: canaille/app/forms.py:276
+#: canaille/app/forms.py:282
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:304
+#: canaille/app/forms.py:310
 msgid "Not a valid datetime value."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:13
+#: canaille/app/mails_sending_conditions.py:11
 msgid ""
 "Password compromise investigation failed. Please contact the "
 "administrators."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:35
+#: canaille/app/mails_sending_conditions.py:33
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:42
+#: canaille/app/mails_sending_conditions.py:40
 msgid ""
 "An error occurred while communicating the incident to the administrators."
 " Please update your password as soon as possible. If this still happens, "
