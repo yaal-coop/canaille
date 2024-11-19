@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-10-28 11:57+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-13 10:57+0100\n"
 "PO-Revision-Date: 2024-11-01 09:00+0000\n"
 "Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -22,35 +22,37 @@ msgstr ""
 "X-Generator: Weblate 5.8.2-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: canaille/app/flask.py:100
+#: canaille/app/flask.py:53
 msgid "No SMTP server has been configured"
 msgstr "Aucun serveur SMTP n'a été configuré"
 
-#: canaille/app/forms.py:27
+#: canaille/app/forms.py:26
 msgid "This is not a valid URL"
 msgstr "Cette URL n’est pas valide"
 
-#: canaille/app/forms.py:34 canaille/app/forms.py:35
+#: canaille/app/forms.py:33 canaille/app/forms.py:34
 msgid "This value is a duplicate"
 msgstr "Cette valeur est un doublon"
 
-#: canaille/app/forms.py:47
+#: canaille/app/forms.py:46
 msgid "Not a valid phone number"
 msgstr "N’est pas un numéro de téléphone valide"
 
-#: canaille/app/forms.py:55
+#: canaille/app/forms.py:54
 msgid "Field must be at least {minimum_password_length} characters long."
-msgstr "Ce champ doit contenir au minimum {minimum_password_length} caractères."
+msgstr ""
+"Ce champ doit contenir au minimum {minimum_password_length} caractères."
 
-#: canaille/app/forms.py:67
+#: canaille/app/forms.py:66
 msgid "Field cannot be longer than {maximum_password_length} characters."
-msgstr "Ce champ doit contenir au maximum {maximum_password_length} caractères."
+msgstr ""
+"Ce champ doit contenir au maximum {maximum_password_length} caractères."
 
-#: canaille/app/forms.py:240
+#: canaille/app/forms.py:244
 msgid "The page number is not valid"
 msgstr "Le numéro de page est invalide"
 
-#: canaille/app/forms.py:268
+#: canaille/app/forms.py:272
 msgid "Not a valid datetime value."
 msgstr "N'est pas une date valide."
 
@@ -706,7 +708,7 @@ msgid "Send again"
 msgstr "Envoyer à nouveau"
 
 #: canaille/core/templates/forgotten-password.html:48
-#: canaille/core/templates/mails/admin.html:52
+#: canaille/core/templates/mails/admin.html:54
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1057,7 +1059,7 @@ msgstr ""
 "L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
 "défini"
 
-#: canaille/core/templates/mails/admin.html:97
+#: canaille/core/templates/mails/admin.html:109
 #: canaille/core/templates/mails/reset.html:19
 #: canaille/core/templates/profile_settings.html:116
 #: canaille/core/templates/reset-password.html:12
@@ -1176,7 +1178,7 @@ msgstr "Codes"
 msgid "Mail sending test"
 msgstr "Test d'envoi de courriel"
 
-#: canaille/core/templates/mails/admin.html:42
+#: canaille/core/templates/mails/admin.html:44
 msgid ""
 "This form will send a dummy email to the address you want. This should be "
 "used for testing mail configuration."
@@ -1184,32 +1186,36 @@ msgstr ""
 "Ce formulaire enverra un courriel factice à l'adresse que vous indiquerez. À "
 "utiliser pour tester les configurations de courriel."
 
-#: canaille/core/templates/mails/admin.html:61
+#: canaille/core/templates/mails/admin.html:62
+msgid "No mail server has been configured. The mail sending test is disabled."
+msgstr ""
+
+#: canaille/core/templates/mails/admin.html:73
 msgid "Email preview"
 msgstr "Prévisualisation des courriels"
 
-#: canaille/core/templates/mails/admin.html:73
+#: canaille/core/templates/mails/admin.html:85
 #: canaille/core/templates/mails/test.html:19
 #: canaille/core/templates/mails/test.txt:1
 msgid "Connectivity test"
 msgstr "Test de connectivité"
 
-#: canaille/core/templates/mails/admin.html:85
+#: canaille/core/templates/mails/admin.html:97
 #: canaille/core/templates/mails/firstlogin.html:19
 #: canaille/core/templates/mails/reset.txt:1
 msgid "Password initialization"
 msgstr "Initialisation du mot de passe"
 
-#: canaille/core/templates/mails/admin.html:109
+#: canaille/core/templates/mails/admin.html:121
 #: canaille/core/templates/mails/email-confirmation.txt:1
 msgid "Email verification"
 msgstr "Vérification de nouvelle adresse email"
 
-#: canaille/core/templates/mails/admin.html:121
+#: canaille/core/templates/mails/admin.html:133
 msgid "Invitation"
 msgstr "Invitation"
 
-#: canaille/core/templates/mails/admin.html:133
+#: canaille/core/templates/mails/admin.html:145
 #: canaille/core/templates/mails/registration.html:19
 #: canaille/core/templates/mails/registration.txt:1
 msgid "Registration"
