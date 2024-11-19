@@ -1,3 +1,4 @@
+import logging
 from unittest import mock
 
 import time_machine
@@ -177,7 +178,7 @@ def test_registration_with_compromised_password(testclient, backend):
 
 @mock.patch("requests.api.get")
 def test_registration_with_compromised_password_request_api_failed_but_account_created(
-    api_get, testclient, backend
+    api_get, testclient, backend, caplog
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -196,6 +197,11 @@ def test_registration_with_compromised_password_request_api_failed_but_account_c
     res = res.form.submit()
 
     assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
+    assert (
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
@@ -208,7 +214,7 @@ def test_registration_with_compromised_password_request_api_failed_but_account_c
 
 @mock.patch("requests.api.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_register_form(
-    api_get, testclient, backend, admins_group
+    api_get, testclient, backend, admins_group, caplog
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -226,6 +232,11 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 
     res = res.form.submit()
 
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
     assert (
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
@@ -243,7 +254,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 
 @mock.patch("requests.api.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_register_form(
-    api_get, testclient, backend, admins_group
+    api_get, testclient, backend, admins_group, caplog
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -262,6 +273,11 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
 
     res = res.form.submit()
 
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
     assert (
         "error",
         "Password compromise investigation failed. Please contact the administrators.",

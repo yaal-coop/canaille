@@ -9,6 +9,10 @@ from .flask import request_is_htmx
 
 def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
     if current_app.features.has_smtp and not request_is_htmx():
+        current_app.logger.exception(
+            "Password compromise investigation failed on HIBP API."
+        )
+
         flash(
             _(
                 "Password compromise investigation failed. "
@@ -46,7 +50,3 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
                 ),
                 "error",
             )
-            return None
-
-        return
-    return None
