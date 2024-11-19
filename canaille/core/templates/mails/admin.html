@@ -38,21 +38,33 @@
             </div>
         </h2>
 
-        <div class="ui info message">
-            {% trans %}
-                This form will send a dummy email to the address you want.
-                This should be used for testing mail configuration.
-            {% endtrans %}
-        </div>
+        {% if features.has_smtp %}
 
-        {% call fui.render_form(form) %}
-            {{ fui.render_field(form.email) }}
-            <div class="ui right aligned container">
-                <div class="ui stackable buttons">
-                    <input type="submit" class="ui primary button" value="{{ _("Send") }}">
-                </div>
+            <div class="ui info message">
+                {% trans %}
+                    This form will send a dummy email to the address you want.
+                    This should be used for testing mail configuration.
+                {% endtrans %}
             </div>
-        {% endcall %}
+
+            {% call fui.render_form(form) %}
+                {{ fui.render_field(form.email) }}
+                <div class="ui right aligned container">
+                    <div class="ui stackable buttons">
+                        <input type="submit" class="ui primary button" value="{{ _("Send") }}">
+                    </div>
+                </div>
+            {% endcall %}
+
+        {% else %}
+
+            <div class="ui warning message">
+                {% trans %}
+                    No mail server has been configured. The mail sending test is disabled.
+                {% endtrans %}
+            </div>
+
+        {% endif %}
     </div>
 
     <div class="ui segment">

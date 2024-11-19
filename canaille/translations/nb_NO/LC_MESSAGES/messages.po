@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-28 11:57+0100\n"
+"POT-Creation-Date: 2024-11-13 10:57+0100\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -20,38 +20,38 @@ msgstr ""
 "X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: canaille/app/flask.py:100
+#: canaille/app/flask.py:53
 msgid "No SMTP server has been configured"
 msgstr "Ingen SMTP-tjener er satt opp"
 
-#: canaille/app/forms.py:27
+#: canaille/app/forms.py:26
 msgid "This is not a valid URL"
 msgstr ""
 
-#: canaille/app/forms.py:34 canaille/app/forms.py:35
+#: canaille/app/forms.py:33 canaille/app/forms.py:34
 msgid "This value is a duplicate"
 msgstr ""
 
-#: canaille/app/forms.py:47
+#: canaille/app/forms.py:46
 #, fuzzy
 #| msgid "Your phone number."
 msgid "Not a valid phone number"
 msgstr "Ditt telefonnummer."
 
-#: canaille/app/forms.py:55
+#: canaille/app/forms.py:54
 msgid "Field must be at least {minimum_password_length} characters long."
 msgstr ""
 
-#: canaille/app/forms.py:67
+#: canaille/app/forms.py:66
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
-#: canaille/app/forms.py:240
+#: canaille/app/forms.py:244
 #, fuzzy
 msgid "The page number is not valid"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/app/forms.py:268
+#: canaille/app/forms.py:272
 msgid "Not a valid datetime value."
 msgstr ""
 
@@ -748,7 +748,7 @@ msgid "Send again"
 msgstr "Send igjen"
 
 #: canaille/core/templates/forgotten-password.html:48
-#: canaille/core/templates/mails/admin.html:52
+#: canaille/core/templates/mails/admin.html:54
 msgid "Send"
 msgstr "Send"
 
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:97
+#: canaille/core/templates/mails/admin.html:109
 #: canaille/core/templates/mails/reset.html:19
 #: canaille/core/templates/profile_settings.html:116
 #: canaille/core/templates/reset-password.html:12
@@ -1198,38 +1198,42 @@ msgstr "Koder"
 msgid "Mail sending test"
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:42
+#: canaille/core/templates/mails/admin.html:44
 msgid ""
 "This form will send a dummy email to the address you want. This should be "
 "used for testing mail configuration."
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:61
-msgid "Email preview"
+#: canaille/core/templates/mails/admin.html:62
+msgid "No mail server has been configured. The mail sending test is disabled."
 msgstr ""
 
 #: canaille/core/templates/mails/admin.html:73
+msgid "Email preview"
+msgstr ""
+
+#: canaille/core/templates/mails/admin.html:85
 #: canaille/core/templates/mails/test.html:19
 #: canaille/core/templates/mails/test.txt:1
 msgid "Connectivity test"
 msgstr "Tilkoblingstest"
 
-#: canaille/core/templates/mails/admin.html:85
+#: canaille/core/templates/mails/admin.html:97
 #: canaille/core/templates/mails/firstlogin.html:19
 #: canaille/core/templates/mails/reset.txt:1
 msgid "Password initialization"
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:109
+#: canaille/core/templates/mails/admin.html:121
 #: canaille/core/templates/mails/email-confirmation.txt:1
 msgid "Email verification"
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:121
+#: canaille/core/templates/mails/admin.html:133
 msgid "Invitation"
 msgstr "Invitasjon"
 
-#: canaille/core/templates/mails/admin.html:133
+#: canaille/core/templates/mails/admin.html:145
 #: canaille/core/templates/mails/registration.html:19
 #: canaille/core/templates/mails/registration.txt:1
 #, fuzzy
