@@ -321,7 +321,7 @@ class CoreSettings(BaseModel):
     email.
     """
 
-    ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = True
+    ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
     """If :py:data:`True`, Canaille will check for password compromise on HIBP
     every time a new password is register.
 
