@@ -1,4 +1,5 @@
 import datetime
+import logging
 from unittest import mock
 
 import pytest
@@ -370,30 +371,8 @@ def test_compromised_password_validator(api_get, testclient):
 
 
 @mock.patch("requests.api.get")
-def test_compromised_password_validator_with_failure_of_api_request_and_no_SMTP_in_config(
-    api_get, testclient, logged_user
-):
-    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
-    api_get.side_effect = mock.Mock(side_effect=Exception())
-    current_app.config["CANAILLE"]["SMTP"] = None
-
-    class Field:
-        def __init__(self, data):
-            self.data = data
-
-    compromised_password_validator(None, Field("i'm a little pea"))
-    compromised_password_validator(None, Field("i'm a little chickpea"))
-    compromised_password_validator(None, Field("i'm singing in the rain"))
-    compromised_password_validator(None, Field("password"))
-    compromised_password_validator(None, Field("987654321"))
-    compromised_password_validator(None, Field("correct horse battery staple"))
-    compromised_password_validator(None, Field("zxcvbn123"))
-    compromised_password_validator(None, Field("azertyuiop123"))
-
-
-@mock.patch("requests.api.get")
-def test_compromised_password_validator_with_failure_of_api_request_and_only_with_htmx(
-    api_get, testclient, logged_user
+def test_compromised_password_validator_with_failure_of_api_request_without_form_validation(
+    api_get, testclient, logged_user, caplog
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -412,3 +391,9 @@ def test_compromised_password_validator_with_failure_of_api_request_and_only_wit
     )
 
     res.mustcontain('data-percent="100"')
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) not in caplog.record_tuples

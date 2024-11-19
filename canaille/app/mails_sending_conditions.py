@@ -4,15 +4,9 @@ from flask import flash
 from canaille.app.i18n import gettext as _
 from canaille.core.mails import send_compromised_password_check_failure_mail
 
-from .flask import request_is_htmx
-
 
 def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
-    if current_app.features.has_smtp and not request_is_htmx():
-        current_app.logger.exception(
-            "Password compromise investigation failed on HIBP API."
-        )
-
+    if current_app.features.has_smtp:
         flash(
             _(
                 "Password compromise investigation failed. "

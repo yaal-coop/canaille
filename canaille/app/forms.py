@@ -98,12 +98,15 @@ def compromised_password_validator(form, field):
         api_url = (
             current_app.config["CANAILLE"]["API_URL_HIBP"] + hashed_password_prefix
         )
-        print(api_url)
 
         try:
             response = requests.api.get(api_url, timeout=10)
         except Exception:
-            check_if_send_mail_to_admins(form, api_url, hashed_password_suffix)
+            if not request_is_htmx():
+                current_app.logger.exception(
+                    "Password compromise investigation failed on HIBP API."
+                )
+                check_if_send_mail_to_admins(form, api_url, hashed_password_suffix)
             return None
 
         decoded_response = response.content.decode("utf8").split("\r\n")
