@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-19 15:40+0100\n"
+"POT-Creation-Date: 2024-11-19 15:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,23 +21,23 @@ msgstr ""
 msgid "No SMTP server has been configured"
 msgstr ""
 
-#: canaille/app/forms.py:26
+#: canaille/app/forms.py:29
 msgid "This is not a valid URL"
 msgstr ""
 
-#: canaille/app/forms.py:33 canaille/app/forms.py:34
+#: canaille/app/forms.py:36 canaille/app/forms.py:37
 msgid "This value is a duplicate"
 msgstr ""
 
-#: canaille/app/forms.py:46
+#: canaille/app/forms.py:49
 msgid "Not a valid phone number"
 msgstr ""
 
-#: canaille/app/forms.py:54
+#: canaille/app/forms.py:57
 msgid "Field must be at least {minimum_password_length} characters long."
 msgstr ""
 
-#: canaille/app/forms.py:66
+#: canaille/app/forms.py:69
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
@@ -1170,7 +1170,7 @@ msgstr ""
 msgid "Registration"
 msgstr ""
 
-#: canaille/core/templates/mails/admin.html:146
+#: canaille/core/templates/mails/admin.html:158
 #: canaille/core/templates/mails/compromised_password_check_failure.html:19
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
