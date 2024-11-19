@@ -95,7 +95,10 @@ def compromised_password_validator(form, field):
             hashed_password[5:].upper(),
         )
 
-        api_url = f"https://api.pwnedpasswords.com/range/{hashed_password_prefix}"
+        api_url = (
+            current_app.config["CANAILLE"]["API_URL_HIBP"] + hashed_password_prefix
+        )
+        print(api_url)
 
         try:
             response = requests.api.get(api_url, timeout=10)

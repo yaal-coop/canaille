@@ -95,6 +95,9 @@ SECRET_KEY = "change me before you go in production"
 #   (https://haveibeenpwned.com/)
 #   ENABLE_PASSWORD_COMPROMISSION_CHECK = False
 
+# Have i been pwned api url for compromission checks.
+# This url should not be modified.
+# API_URL_HIBP = "https://api.pwnedpasswords.com/range/"
 
 # [CANAILLE_SQL]
 # The SQL database connection string
