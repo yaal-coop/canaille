@@ -6,7 +6,7 @@ from canaille.core.mails import send_compromised_password_check_failure_mail
 
 
 def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
-    if current_app.features.has_smtp:
+    if current_app.features.has_smtp and current_app.config["CANAILLE"]["ADMIN_EMAIL"]:
         flash(
             _(
                 "Password compromise investigation failed. "
