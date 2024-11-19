@@ -3,7 +3,11 @@
 
 Added
 ^^^^^
-- Password compromise check :issue:`179`
+- Password compromission check :issue:`179`
+- :attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and
+  :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
+  :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP`
+  :issue:`179`
 
 [0.0.56] - 2024-11-07
 ---------------------
