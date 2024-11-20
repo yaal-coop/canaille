@@ -229,7 +229,7 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
 
 @mock.patch("requests.api.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_settings_form(
-    api_get, testclient, backend, user, logged_user, caplog
+    api_get, testclient, backend, user, logged_user, caplog, smtpd
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -252,15 +252,16 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
     assert (
-        "success",
+        "info",
         "We have informed your administrator about the failure of the password compromise investigation.",
     ) in res.flashes
     assert ("success", "Profile updated successfully.") in res.flashes
+    assert len(smtpd.messages) == 1
 
 
 @mock.patch("requests.api.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_settings_form(
-    api_get, testclient, backend, user, logged_user, caplog
+    api_get, testclient, backend, user, logged_user, caplog, smtpd
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -289,6 +290,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "If this still happens, please contact the administrators.",
     ) in res.flashes
     assert ("success", "Profile updated successfully.") in res.flashes
+    assert len(smtpd.messages) == 0
 
 
 @mock.patch("requests.api.get")
