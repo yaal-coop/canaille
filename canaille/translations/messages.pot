@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-19 15:43+0100\n"
+"POT-Creation-Date: 2024-11-20 23:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,27 +45,27 @@ msgstr ""
 msgid "This password appears on public compromission databases and is not secure."
 msgstr ""
 
-#: canaille/app/forms.py:282
+#: canaille/app/forms.py:281
 msgid "The page number is not valid"
 msgstr ""
 
-#: canaille/app/forms.py:310
+#: canaille/app/forms.py:309
 msgid "Not a valid datetime value."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:11
+#: canaille/app/mails_sending_conditions.py:16
 msgid ""
 "Password compromise investigation failed. Please contact the "
 "administrators."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:33
+#: canaille/app/mails_sending_conditions.py:38
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:40
+#: canaille/app/mails_sending_conditions.py:45
 msgid ""
 "An error occurred while communicating the incident to the administrators."
 " Please update your password as soon as possible. If this still happens, "
@@ -90,7 +90,7 @@ msgid "jdoe"
 msgstr ""
 
 #: canaille/backends/ldap/backend.py:181
-msgid "john@doe.com"
+msgid "john.doe@example.com"
 msgstr ""
 
 #: canaille/backends/ldap/backend.py:183
@@ -293,7 +293,7 @@ msgstr ""
 #: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
 #: canaille/core/endpoints/forms.py:412 canaille/core/endpoints/forms.py:438
 #: canaille/core/endpoints/forms.py:462 canaille/core/endpoints/forms.py:478
-msgid "jane@doe.com"
+msgid "jane.doe@example.com"
 msgstr ""
 
 #: canaille/core/endpoints/admin.py:42

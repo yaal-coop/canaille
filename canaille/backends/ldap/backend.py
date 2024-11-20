@@ -178,7 +178,7 @@ class LDAPBackend(Backend):
             placeholders.append(_("jdoe"))
 
         if "mail={{login" in user_filter.replace(" ", "") or not placeholders:
-            placeholders.append(_("john@doe.com"))
+            placeholders.append(_("john.doe@example.com"))
 
         return _(" or ").join(placeholders)
 

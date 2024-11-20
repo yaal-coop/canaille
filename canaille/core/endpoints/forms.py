@@ -95,7 +95,7 @@ class LoginForm(Form):
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
-            "placeholder": _("jane@doe.com"),
+            "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
             "inputmode": "email",
@@ -118,7 +118,7 @@ class ForgottenPasswordForm(Form):
         _("Login"),
         validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
-            "placeholder": _("jane@doe.com"),
+            "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
@@ -207,7 +207,7 @@ PROFILE_FORM_FIELDS = dict(
                 "This email will be used as a recovery address to reset the password if needed"
             ),
             render_kw={
-                "placeholder": _("jane@doe.com"),
+                "placeholder": _("jane.doe@example.com"),
                 "spellcheck": "false",
                 "autocorrect": "off",
             },
@@ -409,7 +409,7 @@ class JoinForm(Form):
             email_validator,
         ],
         render_kw={
-            "placeholder": _("jane@doe.com"),
+            "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
@@ -435,7 +435,7 @@ class InvitationForm(Form):
             unique_email,
         ],
         render_kw={
-            "placeholder": _("jane@doe.com"),
+            "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
@@ -459,7 +459,7 @@ class EmailConfirmationForm(Form):
                 "This email will be used as a recovery address to reset the password if needed"
             ),
             render_kw={
-                "placeholder": _("jane@doe.com"),
+                "placeholder": _("jane.doe@example.com"),
                 "spellcheck": "false",
                 "autocorrect": "off",
                 "readonly": "true",
@@ -475,7 +475,7 @@ class EmailConfirmationForm(Form):
             unique_email,
         ],
         render_kw={
-            "placeholder": _("jane@doe.com"),
+            "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },

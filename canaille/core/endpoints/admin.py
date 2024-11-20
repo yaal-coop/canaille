@@ -26,7 +26,7 @@ class MailTestForm(Form):
             email_validator,
         ],
         render_kw={
-            "placeholder": _("jane@doe.com"),
+            "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
         },
