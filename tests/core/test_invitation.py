@@ -36,8 +36,8 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     assert res.form["emails-0"].value == "someone@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
-    res.form["password1"] = "whatever"
-    res.form["password2"] = "whatever"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
 
@@ -48,7 +48,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
 
     user = backend.get(models.User, user_name="someone")
     backend.reload(foo_group)
-    assert backend.check_user_password(user, "whatever")[0]
+    assert backend.check_user_password(user, "i'm a little pea")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -92,8 +92,8 @@ def test_invitation_editable_user_name(
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["user_name"] = "djorje"
-    res.form["password1"] = "whatever"
-    res.form["password2"] = "whatever"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
 
@@ -104,7 +104,7 @@ def test_invitation_editable_user_name(
 
     user = backend.get(models.User, user_name="djorje")
     backend.reload(foo_group)
-    assert backend.check_user_password(user, "whatever")[0]
+    assert backend.check_user_password(user, "i'm a little pea")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -141,8 +141,8 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     assert res.form["emails-0"].value == "sometwo@domain.tld"
     assert res.form["groups"].value == [foo_group.id]
 
-    res.form["password1"] = "whatever"
-    res.form["password2"] = "whatever"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
 
@@ -151,7 +151,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
 
     user = backend.get(models.User, user_name="sometwo")
     backend.reload(foo_group)
-    assert backend.check_user_password(user, "whatever")[0]
+    assert backend.check_user_password(user, "i'm a little pea")[0]
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
@@ -323,8 +323,8 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     assert res.form["groups"].value == [foo_group.id]
     assert "readonly" in res.form["groups"].attrs
 
-    res.form["password1"] = "whatever"
-    res.form["password2"] = "whatever"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
 

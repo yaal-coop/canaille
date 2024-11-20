@@ -1,6 +1,8 @@
+import logging
 from unittest import mock
 
 import time_machine
+from flask import current_app
 from flask import url_for
 
 from canaille.app import models
@@ -15,8 +17,8 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     assert not backend.query(models.User, user_name="newuser")
     res = testclient.get(url_for("core.account.registration"), status=200)
     res.form["user_name"] = "newuser"
-    res.form["password1"] = "password"
-    res.form["password2"] = "password"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["family_name"] = "newuser"
     res.form["emails-0"] = "newuser@example.com"
     res = res.form.submit()
@@ -64,8 +66,8 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
     with time_machine.travel("2020-01-01 02:01:00+00:00", tick=False):
         res = testclient.get(registration_url, status=200)
         res.form["user_name"] = "newuser"
-        res.form["password1"] = "password"
-        res.form["password2"] = "password"
+        res.form["password1"] = "i'm a little pea"
+        res.form["password2"] = "i'm a little pea"
         res.form["family_name"] = "newuser"
         res = res.form.submit()
 
@@ -150,3 +152,226 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
         )
     ]
     assert len(smtpd.messages) == 0
+
+
+@mock.patch("requests.api.get")
+def test_registration_with_compromised_password(api_get, testclient, backend):
+    """Tests a nominal registration with compromised password."""
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    # This content simulates a result from the hibp api containing the suffixes of the following password hashes: 'password', '987654321', 'correct horse battery staple', 'zxcvbn123', 'azertyuiop123'
+    class Response:
+        content = b"1E4C9B93F3F0682250B6CF8331B7EE68FD8:3\r\nCAA6D483CC3887DCE9D1B8EB91408F1EA7A:3\r\nAD6438836DBE526AA231ABDE2D0EEF74D42:3\r\n8289894DDB6317178960AB5AE98B81BBF97:1\r\n5FF0B6F9EAC40D5CA7B4DAA7B64F0E6F4AA:2\r\n"
+
+    api_get.return_value = Response
+
+    assert not backend.query(models.User, user_name="newuser")
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "987654321"
+    res.form["password2"] = "987654321"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+    res = res.form.submit()
+    res.mustcontain(
+        "This password appears on public compromission databases and is not secure."
+    )
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user is None
+
+
+@mock.patch("requests.api.get")
+def test_registration_with_compromised_password_request_api_failed_but_account_created(
+    api_get, testclient, backend, caplog
+):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_register_form(
+    api_get, testclient, backend, caplog, smtpd
+):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "info",
+        "We have informed your administrator about the failure of the password compromise investigation.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+    assert len(smtpd.messages) == 1
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_register_form(
+    api_get, testclient, backend, caplog
+):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) in res.flashes
+    assert (
+        "error",
+        "An error occurred while communicating the incident to the administrators. "
+        "Please update your password as soon as possible. "
+        "If this still happens, please contact the administrators.",
+    ) in res.flashes
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_without_smtp_from_register_form(
+    api_get, testclient, backend, caplog
+):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    current_app.config["CANAILLE"]["SMTP"] = None
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) not in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
+@mock.patch("requests.api.get")
+def test_compromised_password_validator_with_failure_of_api_request_without_admin_email_from_register_form(
+    api_get, testclient, backend, caplog
+):
+    current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
+    api_get.side_effect = mock.Mock(side_effect=Exception())
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+
+    current_app.config["CANAILLE"]["ADMIN_EMAIL"] = None
+
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.com"
+
+    res = res.form.submit()
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "Password compromise investigation failed on HIBP API.",
+    ) in caplog.record_tuples
+    assert (
+        "error",
+        "Password compromise investigation failed. Please contact the administrators.",
+    ) not in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)

@@ -52,18 +52,18 @@ Nginx
     server {
         listen 80;
         listen [::]:80;
-        server_name auth.mydomain.tld;
+        server_name auth.mydomain.example;
         return 301 https://$server_name$request_uri;
     }
 
     server {
-        server_name auth.mydomain.tld;
+        server_name auth.mydomain.example;
 
         listen 443 ssl http2;
         listen [::]:443 ssl http2;
 
-        ssl_certificate /etc/letsencrypt/live/auth.mydomain.tld/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/auth.mydomain.tld/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/auth.mydomain.example/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/auth.mydomain.example/privkey.pem;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -116,8 +116,8 @@ Apache
 .. code-block:: apache
 
     <VirtualHost *:80>
-        ServerName auth.mydomain.tld
-        ServerAdmin admin@mydomain.tld
+        ServerName auth.mydomain.example
+        ServerAdmin admin@mydomain.example
 
         CustomLog /opt/canaille/logs/apache-http-access.log combined
         ErrorLog /opt/canaille/logs/apache-http-error.log
@@ -128,16 +128,16 @@ Apache
     </VirtualHost>
 
     <VirtualHost *:443>
-        ServerName auth.mydomain.tld
-        ServerAdmin admin@mydomain.tld
+        ServerName auth.mydomain.example
+        ServerAdmin admin@mydomain.example
         Protocols h2 http/1.1
 
         CustomLog /opt/canaille/logs/apache-https-access.log combined
         ErrorLog /opt/canaille/logs/apache-https-error.log
 
         SSLEngine On
-        SSLCertificateFile      /etc/letsencrypt/live/auth.mydomain.tld/fullchain.pem
-        SSLCertificateKeyFile   /etc/letsencrypt/live/auth.mydomain.tld/privkey.pem
+        SSLCertificateFile      /etc/letsencrypt/live/auth.mydomain.example/fullchain.pem
+        SSLCertificateKeyFile   /etc/letsencrypt/live/auth.mydomain.example/privkey.pem
         Include /etc/letsencrypt/options-ssl-apache.conf
 
         ProxyPreserveHost On
@@ -163,9 +163,9 @@ expired tokens and authorization codes with:
 Webfinger
 =========
 
-You may want to configure a `WebFinger`_ endpoint on your main website to allow the automatic discovery of your Canaille installation based on the account name of one of your users. For instance, suppose your domain is ``mydomain.tld`` and your Canaille domain is ``auth.mydomain.tld`` and there is a user ``john.doe``. A third-party application could require to authenticate the user and ask them for a user account. The user would give their account ``john.doe@mydomain.tld``, then the application would perform a WebFinger request at ``https://mydomain.tld/.well-known/webfinger`` and the response would contain the address of the authentication server ``https://auth.mydomain.tld``. With this information the third party application can redirect the user to the Canaille authentication page.
+You may want to configure a `WebFinger`_ endpoint on your main website to allow the automatic discovery of your Canaille installation based on the account name of one of your users. For instance, suppose your domain is ``mydomain.example`` and your Canaille domain is ``auth.mydomain.example`` and there is a user ``john.doe``. A third-party application could require to authenticate the user and ask them for a user account. The user would give their account ``john.doe@mydomain.example``, then the application would perform a WebFinger request at ``https://mydomain.example/.well-known/webfinger`` and the response would contain the address of the authentication server ``https://auth.mydomain.example``. With this information the third party application can redirect the user to the Canaille authentication page.
 
-The difficulty here is that the WebFinger endpoint must be hosted at the top-level domain (i.e. ``mydomain.tld``) while the authentication server might be hosted on a sublevel (i.e. ``auth.mydomain.tld``). Canaille provides a WebFinger endpoint, but if it is not hosted at the top-level domain, a web redirection is required on the ``/.well-known/webfinger`` path.
+The difficulty here is that the WebFinger endpoint must be hosted at the top-level domain (i.e. ``mydomain.example``) while the authentication server might be hosted on a sublevel (i.e. ``auth.mydomain.example``). Canaille provides a WebFinger endpoint, but if it is not hosted at the top-level domain, a web redirection is required on the ``/.well-known/webfinger`` path.
 
 Here are configuration examples for Nginx or Apache:
 
@@ -174,17 +174,17 @@ Here are configuration examples for Nginx or Apache:
 
     server {
         listen 443;
-        server_name mydomain.tld;
-        rewrite  ^/.well-known/webfinger https://auth.mydomain.tld/.well-known/webfinger permanent;
+        server_name mydomain.example;
+        rewrite  ^/.well-known/webfinger https://auth.mydomain.example/.well-known/webfinger permanent;
     }
 
 .. code-block:: apache
    :caption: Apache webfinger configuration for a top level domain
 
     <VirtualHost *:443>
-        ServerName mydomain.tld
+        ServerName mydomain.example
         RewriteEngine on
-        RewriteRule "^/.well-know/webfinger" "https://auth.mydomain.tld/.well-known/webfinger" [R,L]
+        RewriteRule "^/.well-know/webfinger" "https://auth.mydomain.example/.well-known/webfinger" [R,L]
     </VirtualHost>
 
 Create the first user

@@ -10,6 +10,7 @@ from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
+from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import email_validator
 from canaille.app.forms import is_uri
 from canaille.app.forms import password_length_validator
@@ -265,6 +266,7 @@ PROFILE_FORM_FIELDS = dict(
             wtforms.validators.Optional(),
             password_length_validator,
             password_too_long_validator,
+            compromised_password_validator,
         ],
         render_kw={
             "autocomplete": "new-password",

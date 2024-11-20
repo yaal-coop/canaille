@@ -31,6 +31,7 @@ from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
+from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import is_readonly
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
@@ -316,6 +317,7 @@ def registration(data=None, hash=None):
         wtforms.validators.DataRequired(),
         password_length_validator,
         password_too_long_validator,
+        compromised_password_validator,
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),

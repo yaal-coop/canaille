@@ -126,7 +126,7 @@ class LDAPBackend(Backend):
                     formatted_name=f"canaille_{uuid.uuid4()}",
                     family_name=f"canaille_{uuid.uuid4()}",
                     user_name=f"canaille_{uuid.uuid4()}",
-                    emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                    emails=f"canaille_{uuid.uuid4()}@mydomain.example",
                     password="correct horse battery staple",
                 )
                 Backend.instance.save(user)
@@ -145,7 +145,7 @@ class LDAPBackend(Backend):
                     cn=f"canaille_{uuid.uuid4()}",
                     family_name=f"canaille_{uuid.uuid4()}",
                     user_name=f"canaille_{uuid.uuid4()}",
-                    emails=f"canaille_{uuid.uuid4()}@mydomain.tld",
+                    emails=f"canaille_{uuid.uuid4()}@mydomain.example",
                     password="correct horse battery staple",
                 )
                 Backend.instance.save(user)
