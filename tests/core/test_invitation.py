@@ -13,7 +13,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
 
     res.form["user_name"] = "someone"
     res.form["user_name_editable"] = False
-    res.form["email"] = "someone@domain.tld"
+    res.form["email"] = "someone@domain.test"
     res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
@@ -33,7 +33,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     assert "readonly" in res.form["groups"].attrs
 
     assert res.form["user_name"].value == "someone"
-    assert res.form["emails-0"].value == "someone@domain.tld"
+    assert res.form["emails-0"].value == "someone@domain.test"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "i'm a little pea"
@@ -69,7 +69,7 @@ def test_invitation_editable_user_name(
 
     res.form["user_name"] = "jackyjack"
     res.form["user_name_editable"] = True
-    res.form["email"] = "jackyjack@domain.tld"
+    res.form["email"] = "jackyjack@domain.test"
     res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
@@ -88,7 +88,7 @@ def test_invitation_editable_user_name(
     assert "readonly" in res.form["groups"].attrs
 
     assert res.form["user_name"].value == "jackyjack"
-    assert res.form["emails-0"].value == "jackyjack@domain.tld"
+    assert res.form["emails-0"].value == "jackyjack@domain.test"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["user_name"] = "djorje"
@@ -119,7 +119,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     res = testclient.get("/invite", status=200)
 
     res.form["user_name"] = "sometwo"
-    res.form["email"] = "sometwo@domain.tld"
+    res.form["email"] = "sometwo@domain.test"
     res.form["groups"] = [foo_group.id]
     res = res.form.submit(name="action", value="generate", status=200)
     assert len(smtpd.messages) == 0
@@ -138,7 +138,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     assert "readonly" in res.form["groups"].attrs
 
     assert res.form["user_name"].value == "sometwo"
-    assert res.form["emails-0"].value == "sometwo@domain.tld"
+    assert res.form["emails-0"].value == "sometwo@domain.test"
     assert res.form["groups"].value == [foo_group.id]
 
     res.form["password1"] = "i'm a little pea"
@@ -170,7 +170,7 @@ def test_invitation_login_already_taken(testclient, logged_admin):
     res = res.form.submit(name="action", value="send", status=200)
 
     res.mustcontain("The user name &#39;admin&#39; already exists")
-    res.mustcontain("The email &#39;jane@doe.com&#39; is already used")
+    res.mustcontain("The email &#39;jane@doe.test&#39; is already used")
 
 
 def test_registration(testclient, foo_group):
@@ -178,7 +178,7 @@ def test_registration(testclient, foo_group):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [foo_group.id],
     )
     b64 = payload.b64()
@@ -192,7 +192,7 @@ def test_registration_formcontrol(testclient):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [],
     )
     b64 = payload.b64()
@@ -208,7 +208,7 @@ def test_registration_formcontrol(testclient):
 def test_registration_invalid_hash(testclient, foo_group):
     now = datetime.datetime.now(datetime.timezone.utc).isoformat()
     payload = RegistrationPayload(
-        now, "anything", False, "someone@mydomain.tld", [foo_group.id]
+        now, "anything", False, "someone@mydomain.test", [foo_group.id]
     )
     b64 = payload.b64()
 
@@ -220,7 +220,7 @@ def test_registration_invalid_data(testclient, foo_group):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [foo_group.id],
     )
     hash = payload.build_hash()
@@ -236,7 +236,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
         two_days_ago.isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [foo_group.id],
     )
     hash = payload.build_hash()
@@ -250,7 +250,7 @@ def test_registration_no_password(testclient, foo_group, backend):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [foo_group.id],
     )
     hash = payload.build_hash()
@@ -275,7 +275,7 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [foo_group.id],
     )
     hash = payload.build_hash()
@@ -312,7 +312,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [foo_group.id],
     )
     b64 = payload.b64()

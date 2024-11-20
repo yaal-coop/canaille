@@ -179,7 +179,7 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
 
     # Display the registration form
     res = res.follow()
-    res.form["email"] = "foo@bar.com"
+    res.form["email"] = "foo@bar.test"
     res = res.form.submit()
 
     # Checks the registration mail is sent
@@ -192,7 +192,7 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
         ).isoformat(),
         user_name="",
         user_name_editable=True,
-        email="foo@bar.com",
+        email="foo@bar.test",
         groups=[],
     )
     registration_url = url_for(

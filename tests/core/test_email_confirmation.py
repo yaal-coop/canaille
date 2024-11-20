@@ -18,8 +18,8 @@ def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
     res = res.form.submit(name="fieldlist_add", value="emails-0")
-    res.form["emails-0"] = "email1@mydomain.tld"
-    res.form["emails-1"] = "email2@mydomain.tld"
+    res.form["emails-0"] = "email1@mydomain.test"
+    res.form["emails-1"] = "email2@mydomain.test"
 
     res = res.form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")]
@@ -27,7 +27,7 @@ def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
 
     backend.reload(logged_user)
 
-    assert logged_user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
+    assert logged_user.emails == ["email1@mydomain.test", "email2@mydomain.test"]
 
 
 def test_confirmation_unset_smtp_disabled_email_editable(
@@ -44,15 +44,15 @@ def test_confirmation_unset_smtp_disabled_email_editable(
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
     res = res.form.submit(name="fieldlist_add", value="emails-0")
-    res.form["emails-0"] = "email1@mydomain.tld"
-    res.form["emails-1"] = "email2@mydomain.tld"
+    res.form["emails-0"] = "email1@mydomain.test"
+    res.form["emails-1"] = "email2@mydomain.test"
 
     res = res.form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
     backend.reload(user)
-    assert user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
+    assert user.emails == ["email1@mydomain.test", "email2@mydomain.test"]
 
 
 def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged_user):
@@ -68,7 +68,7 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
     assert "emails-0" not in res.forms["baseform"].fields
 
-    res.forms["emailconfirmationform"]["old_emails-0"] = "email1@mydomain.tld"
+    res.forms["emailconfirmationform"]["old_emails-0"] = "email1@mydomain.test"
     assert "action" not in res.forms["emailconfirmationform"].fields
 
 
@@ -84,15 +84,15 @@ def test_confirmation_unset_smtp_enabled_email_admin_editable(
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
     res = res.form.submit(name="fieldlist_add", value="emails-0")
-    res.form["emails-0"] = "email1@mydomain.tld"
-    res.form["emails-1"] = "email2@mydomain.tld"
+    res.form["emails-0"] = "email1@mydomain.test"
+    res.form["emails-1"] = "email2@mydomain.test"
 
     res = res.form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
     backend.reload(user)
-    assert user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
+    assert user.emails == ["email1@mydomain.test", "email2@mydomain.test"]
 
 
 def test_confirmation_enabled_smtp_disabled_admin_editable(
@@ -108,15 +108,15 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
     res = res.form.submit(name="fieldlist_add", value="emails-0")
-    res.form["emails-0"] = "email1@mydomain.tld"
-    res.form["emails-1"] = "email2@mydomain.tld"
+    res.form["emails-0"] = "email1@mydomain.test"
+    res.form["emails-1"] = "email2@mydomain.test"
 
     res = res.form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
 
     backend.reload(user)
-    assert user.emails == ["email1@mydomain.tld", "email2@mydomain.tld"]
+    assert user.emails == ["email1@mydomain.test", "email2@mydomain.test"]
 
 
 def test_confirmation_unset_smtp_enabled_email_user_validation(
@@ -139,7 +139,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
 
     with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
-        res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.tld"
+        res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.test"
         res = res.forms["emailconfirmationform"].submit(
             name="action", value="add_email"
         )
@@ -155,7 +155,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T02:00:00+00:00",
         "user",
-        "new_email@mydomain.tld",
+        "new_email@mydomain.test",
     )
     email_confirmation_url = url_for(
         "core.account.email_confirmation",
@@ -165,7 +165,9 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     )
 
     assert len(smtpd.messages) == 1
-    email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    email_content = (
+        str(smtpd.messages[0].get_payload()[0]).replace("=\n", "").replace("=3D", "=")
+    )
     assert email_confirmation_url in email_content
 
     with time_machine.travel("2020-01-01 03:00:00+00:00", tick=False):
@@ -173,7 +175,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
 
     assert ("success", "Your email address have been confirmed.") in res.flashes
     backend.reload(user)
-    assert "new_email@mydomain.tld" in user.emails
+    assert "new_email@mydomain.test" in user.emails
 
 
 def test_confirmation_invalid_link(testclient, backend, user):
@@ -207,7 +209,7 @@ def test_confirmation_mail_form_failed(testclient, backend, user):
 
     assert res.flashes == [("error", "Email addition failed.")]
     backend.reload(user)
-    assert user.emails == ["john@doe.com"]
+    assert user.emails == ["john@doe.test"]
 
 
 @mock.patch("smtplib.SMTP")
@@ -227,14 +229,14 @@ def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
 
     with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
-        res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.tld"
+        res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.test"
         res = res.forms["emailconfirmationform"].submit(
             name="action", value="add_email", expect_errors=True
         )
 
     assert res.flashes == [("error", "Could not send the verification email")]
     backend.reload(user)
-    assert user.emails == ["john@doe.com"]
+    assert user.emails == ["john@doe.test"]
 
 
 def test_confirmation_expired_link(testclient, backend, user):
@@ -242,7 +244,7 @@ def test_confirmation_expired_link(testclient, backend, user):
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
-        "new_email@mydomain.tld",
+        "new_email@mydomain.test",
     )
     email_confirmation_url = url_for(
         "core.account.email_confirmation",
@@ -259,7 +261,7 @@ def test_confirmation_expired_link(testclient, backend, user):
         "The email confirmation link that brought you here has expired.",
     ) in res.flashes
     backend.reload(user)
-    assert "new_email@mydomain.tld" not in user.emails
+    assert "new_email@mydomain.test" not in user.emails
 
 
 def test_confirmation_invalid_hash_link(testclient, backend, user):
@@ -267,7 +269,7 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
-        "new_email@mydomain.tld",
+        "new_email@mydomain.test",
     )
     email_confirmation_url = url_for(
         "core.account.email_confirmation",
@@ -284,7 +286,7 @@ def test_confirmation_invalid_hash_link(testclient, backend, user):
         "The invitation link that brought you here was invalid.",
     ) in res.flashes
     backend.reload(user)
-    assert "new_email@mydomain.tld" not in user.emails
+    assert "new_email@mydomain.test" not in user.emails
 
 
 def test_confirmation_invalid_user_link(testclient, backend, user):
@@ -296,7 +298,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "invalid-user",
-        "new_email@mydomain.tld",
+        "new_email@mydomain.test",
     )
     email_confirmation_url = url_for(
         "core.account.email_confirmation",
@@ -313,7 +315,7 @@ def test_confirmation_invalid_user_link(testclient, backend, user):
         "The email confirmation link that brought you here is invalid.",
     ) in res.flashes
     backend.reload(user)
-    assert "new_email@mydomain.tld" not in user.emails
+    assert "new_email@mydomain.test" not in user.emails
 
 
 def test_confirmation_email_already_confirmed_link(testclient, backend, user, admin):
@@ -321,7 +323,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
-        "john@doe.com",
+        "john@doe.test",
     )
     email_confirmation_url = url_for(
         "core.account.email_confirmation",
@@ -338,7 +340,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
         "This address email have already been confirmed.",
     ) in res.flashes
     backend.reload(user)
-    assert "new_email@mydomain.tld" not in user.emails
+    assert "new_email@mydomain.test" not in user.emails
 
 
 def test_confirmation_email_already_used_link(testclient, backend, user, admin):
@@ -351,7 +353,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T01:00:00+00:00",
         "user",
-        "jane@doe.com",
+        "jane@doe.test",
     )
     email_confirmation_url = url_for(
         "core.account.email_confirmation",
@@ -368,7 +370,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
         "This address email is already associated with another account.",
     ) in res.flashes
     backend.reload(user)
-    assert "new_email@mydomain.tld" not in user.emails
+    assert "new_email@mydomain.test" not in user.emails
 
 
 def test_delete_email(testclient, logged_user, backend):
@@ -377,60 +379,60 @@ def test_delete_email(testclient, logged_user, backend):
     res = testclient.get("/profile/user")
     assert "email_remove" not in res.forms["emailconfirmationform"].fields
 
-    logged_user.emails = logged_user.emails + ["new@email.com"]
+    logged_user.emails = logged_user.emails + ["new@email.test"]
     backend.save(logged_user)
     res = testclient.get("/profile/user")
     assert "email_remove" in res.forms["emailconfirmationform"].fields
 
     res = res.forms["emailconfirmationform"].submit(
-        name="email_remove", value="new@email.com"
+        name="email_remove", value="new@email.test"
     )
     assert res.flashes == [("success", "The email have been successfully deleted.")]
 
     backend.reload(logged_user)
-    assert logged_user.emails == ["john@doe.com"]
+    assert logged_user.emails == ["john@doe.test"]
 
 
 def test_delete_wrong_email(testclient, logged_user, backend):
     """Tests that removing an already removed email do not produce anything."""
-    logged_user.emails = logged_user.emails + ["new@email.com"]
+    logged_user.emails = logged_user.emails + ["new@email.test"]
     backend.save(logged_user)
 
     res = testclient.get("/profile/user")
 
     res1 = res.forms["emailconfirmationform"].submit(
-        name="email_remove", value="new@email.com"
+        name="email_remove", value="new@email.test"
     )
     assert res1.flashes == [("success", "The email have been successfully deleted.")]
 
     res2 = res.forms["emailconfirmationform"].submit(
-        name="email_remove", value="new@email.com"
+        name="email_remove", value="new@email.test"
     )
     assert res2.flashes == [("error", "Email deletion failed.")]
 
     backend.reload(logged_user)
-    assert logged_user.emails == ["john@doe.com"]
+    assert logged_user.emails == ["john@doe.test"]
 
 
 def test_delete_last_email(testclient, logged_user, backend):
     """Tests that users cannot remove their last email address."""
-    logged_user.emails = logged_user.emails + ["new@email.com"]
+    logged_user.emails = logged_user.emails + ["new@email.test"]
     backend.save(logged_user)
 
     res = testclient.get("/profile/user")
 
     res1 = res.forms["emailconfirmationform"].submit(
-        name="email_remove", value="new@email.com"
+        name="email_remove", value="new@email.test"
     )
     assert res1.flashes == [("success", "The email have been successfully deleted.")]
 
     res2 = res.forms["emailconfirmationform"].submit(
-        name="email_remove", value="john@doe.com"
+        name="email_remove", value="john@doe.test"
     )
     assert res2.flashes == [("error", "Email deletion failed.")]
 
     backend.reload(logged_user)
-    assert logged_user.emails == ["john@doe.com"]
+    assert logged_user.emails == ["john@doe.test"]
 
 
 def test_edition_forced_mail(testclient, logged_user, backend):
@@ -442,13 +444,13 @@ def test_edition_forced_mail(testclient, logged_user, backend):
         "/profile/user",
         {
             "csrf_token": form["csrf_token"].value,
-            "emails-0": "new@email.com",
+            "emails-0": "new@email.test",
             "action": "edit-profile",
         },
     )
 
     backend.reload(logged_user)
-    assert logged_user.emails == ["john@doe.com"]
+    assert logged_user.emails == ["john@doe.test"]
 
 
 def test_invitation_form_mail_field_readonly(testclient):
@@ -460,7 +462,7 @@ def test_invitation_form_mail_field_readonly(testclient):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [],
     )
     hash = payload.build_hash()
@@ -479,7 +481,7 @@ def test_invitation_form_mail_field_writable(testclient):
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
         False,
-        "someone@mydomain.tld",
+        "someone@mydomain.test",
         [],
     )
     hash = payload.build_hash()

@@ -115,7 +115,7 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin, backend
     form["photo"] = Upload("logo.jpg", jpeg_photo)
     form["user_name"] = "foobar"
     form["family_name"] = "Abitbol"
-    form["emails-0"] = "george@abitbol.com"
+    form["emails-0"] = "george@abitbol.test"
     res = form.submit(name="action", value="edit-profile", status=302).follow(
         status=200
     )
@@ -138,7 +138,7 @@ def test_photo_deleted_on_profile_creation(
     form["photo_delete"] = True
     form["user_name"] = "foobar"
     form["family_name"] = "Abitbol"
-    form["emails-0"] = "george@abitbol.com"
+    form["emails-0"] = "george@abitbol.test"
     res = form.submit(name="action", value="edit-profile", status=302).follow(
         status=200
     )

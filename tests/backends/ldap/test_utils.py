@@ -21,7 +21,7 @@ def test_object_creation(app, backend):
         formatted_name="Doe",  # leading space
         family_name="Doe",
         user_name="user",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
     )
     assert not user.exists
     backend.save(user)
@@ -43,7 +43,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
         formatted_name=" Doe",  # leading space
         family_name=" Doe",
         user_name=" user",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
     )
     backend.save(user)
 
@@ -64,7 +64,7 @@ def test_special_chars_in_rdn(testclient, backend):
         formatted_name="#Doe",
         family_name="#Doe",
         user_name="#user",  # special char
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
     )
     backend.save(user)
 
@@ -261,10 +261,10 @@ def test_login_placeholder(testclient):
 
     testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(mail={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "john@doe.com"
+    assert placeholder == "john@doe.test"
 
     testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = (
         "(|(uid={{ login }})(mail={{ login }}))"
     )
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "jdoe or john@doe.com"
+    assert placeholder == "jdoe or john@doe.test"

@@ -21,7 +21,7 @@ def test_access_token_introspection(testclient, user, client, token):
         "scope": token.get_scope(),
         "sub": user.user_name,
         "aud": [client.client_id],
-        "iss": "https://auth.mydomain.tld",
+        "iss": "https://auth.mydomain.test",
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
     } == res.json
@@ -42,7 +42,7 @@ def test_refresh_token_introspection(testclient, user, client, token):
         "scope": token.get_scope(),
         "sub": user.user_name,
         "aud": [client.client_id],
-        "iss": "https://auth.mydomain.tld",
+        "iss": "https://auth.mydomain.test",
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
     } == res.json
@@ -110,6 +110,6 @@ def test_full_flow(testclient, logged_user, client, user, trusted_client, backen
     assert res.json["username"] == user.formatted_name
     assert res.json["scope"] == token.get_scope()
     assert res.json["sub"] == user.user_name
-    assert res.json["iss"] == "https://auth.mydomain.tld"
+    assert res.json["iss"] == "https://auth.mydomain.test"
     assert res.json["exp"] == token.get_expires_at()
     assert res.json["iat"] == token.get_issued_at()

@@ -84,7 +84,7 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
         formatted_name="John Doe",
         family_name="Doe",
         user_name="temp",
-        emails=["temp@temp.com"],
+        emails=["temp@temp.test"],
         password="correct horse battery staple",
     )
     backend.save(user)

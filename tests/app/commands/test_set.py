@@ -14,7 +14,7 @@ def test_set_string_by_id(testclient, backend, user):
         "created": mock.ANY,
         "display_name": "Johnny",
         "emails": [
-            "john@doe.com",
+            "john@doe.test",
         ],
         "family_name": "Doe",
         "formatted_address": "1235, somewhere",
@@ -27,7 +27,7 @@ def test_set_string_by_id(testclient, backend, user):
             "555-000-000",
         ],
         "preferred_language": "en",
-        "profile_url": "https://john.example",
+        "profile_url": "https://john.test",
         "user_name": "user",
     }
     backend.reload(user)
@@ -44,7 +44,7 @@ def test_set_string_by_identifier(testclient, backend, user):
         "created": mock.ANY,
         "display_name": "Johnny",
         "emails": [
-            "john@doe.com",
+            "john@doe.test",
         ],
         "family_name": "Doe",
         "formatted_address": "1235, somewhere",
@@ -57,7 +57,7 @@ def test_set_string_by_identifier(testclient, backend, user):
             "555-000-000",
         ],
         "preferred_language": "en",
-        "profile_url": "https://john.example",
+        "profile_url": "https://john.test",
         "user_name": "user",
     }
     backend.reload(user)
@@ -75,9 +75,9 @@ def test_set_multiple(testclient, backend, user):
             "user",
             user.id,
             "--emails",
-            "foo@example.org",
+            "foo@example.test",
             "--emails",
-            "bar@example.org",
+            "bar@example.test",
         ],
     )
     assert res.exit_code == 0, res.stdout
@@ -85,8 +85,8 @@ def test_set_multiple(testclient, backend, user):
         "created": mock.ANY,
         "display_name": "Johnny",
         "emails": [
-            "foo@example.org",
-            "bar@example.org",
+            "foo@example.test",
+            "bar@example.test",
         ],
         "family_name": "Doe",
         "formatted_address": "1235, somewhere",
@@ -99,13 +99,13 @@ def test_set_multiple(testclient, backend, user):
             "555-000-000",
         ],
         "preferred_language": "en",
-        "profile_url": "https://john.example",
+        "profile_url": "https://john.test",
         "user_name": "user",
     }
     backend.reload(user)
     assert user.emails == [
-        "foo@example.org",
-        "bar@example.org",
+        "foo@example.test",
+        "bar@example.test",
     ]
 
 
@@ -129,7 +129,7 @@ def test_set_remove_simple_attribute(testclient, backend, user, admin):
         "created": mock.ANY,
         "display_name": "Johnny",
         "emails": [
-            "john@doe.com",
+            "john@doe.test",
         ],
         "family_name": "Doe",
         "formatted_name": "John (johnny) Doe",
@@ -141,7 +141,7 @@ def test_set_remove_simple_attribute(testclient, backend, user, admin):
             "555-000-000",
         ],
         "preferred_language": "en",
-        "profile_url": "https://john.example",
+        "profile_url": "https://john.test",
         "user_name": "user",
     }
     backend.reload(user)
@@ -161,7 +161,7 @@ def test_set_remove_multiple_attribute(testclient, backend, user, admin, foo_gro
         "created": mock.ANY,
         "display_name": "Johnny",
         "emails": [
-            "john@doe.com",
+            "john@doe.test",
         ],
         "family_name": "Doe",
         "formatted_name": "John (johnny) Doe",
@@ -174,7 +174,7 @@ def test_set_remove_multiple_attribute(testclient, backend, user, admin, foo_gro
             "555-000-000",
         ],
         "preferred_language": "en",
-        "profile_url": "https://john.example",
+        "profile_url": "https://john.test",
         "user_name": "user",
     }
     backend.reload(user)

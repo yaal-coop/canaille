@@ -102,7 +102,7 @@ def test_generate_user_claims(user, foo_group):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
     }
     assert generate_user_claims(user, claims_from_scope("openid profile email")) == {
         "sub": "user",
@@ -111,8 +111,8 @@ def test_generate_user_claims(user, foo_group):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
-        "email": "john@doe.com",
+        "website": "https://john.test",
+        "email": "john@doe.test",
     }
     assert generate_user_claims(user, claims_from_scope("openid profile address")) == {
         "sub": "user",
@@ -121,7 +121,7 @@ def test_generate_user_claims(user, foo_group):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
         "address": "1235, somewhere",
     }
     assert generate_user_claims(user, claims_from_scope("openid profile phone")) == {
@@ -131,7 +131,7 @@ def test_generate_user_claims(user, foo_group):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
         "phone_number": "555-000-000",
     }
     assert generate_user_claims(user, claims_from_scope("openid profile groups")) == {
@@ -141,7 +141,7 @@ def test_generate_user_claims(user, foo_group):
         "family_name": "Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
         "groups": ["foo"],
     }
 
@@ -168,7 +168,7 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         "name": "John (johnny) Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
     }
 
     token.scope = ["openid", "profile", "email"]
@@ -184,8 +184,8 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         "name": "John (johnny) Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
-        "email": "john@doe.com",
+        "website": "https://john.test",
+        "email": "john@doe.test",
     }
 
     token.scope = ["openid", "profile", "address"]
@@ -201,7 +201,7 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         "name": "John (johnny) Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
         "address": "1235, somewhere",
     }
 
@@ -218,7 +218,7 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         "name": "John (johnny) Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
         "phone_number": "555-000-000",
     }
 
@@ -235,7 +235,7 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         "name": "John (johnny) Doe",
         "preferred_username": "Johnny",
         "locale": "en",
-        "website": "https://john.example",
+        "website": "https://john.test",
         "groups": ["foo"],
     }
 
@@ -276,20 +276,20 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
         "name": "John (johnny) Doe",
         "family_name": "Doe",
         "preferred_username": "Johnny",
-        "email": "john@doe.com",
+        "email": "john@doe.test",
         "locale": "fr",
         "phone_number": "555-000-000",
-        "website": "https://john.example",
+        "website": "https://john.test",
     }
 
 
 def test_custom_config_format_claim_is_well_formated(testclient, backend, user):
     jwt_mapping_config = JWTSettings().model_dump()
-    jwt_mapping_config["EMAIL"] = "{{ user.user_name }}@mydomain.tld"
+    jwt_mapping_config["EMAIL"] = "{{ user.user_name }}@mydomain.test"
 
     data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
 
-    assert data["email"] == "user@mydomain.tld"
+    assert data["email"] == "user@mydomain.test"
 
 
 def test_claim_is_omitted_if_empty(testclient, backend, user):

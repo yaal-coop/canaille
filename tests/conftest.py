@@ -129,7 +129,7 @@ def configuration(smtpd):
                 "SSL": smtpd.config.use_ssl,
                 "LOGIN": smtpd.config.login_username,
                 "PASSWORD": smtpd.config.login_password,
-                "FROM_ADDR": "admin@mydomain.tld",
+                "FROM_ADDR": "admin@mydomain.test",
             },
             "LOGGING": {
                 "version": 1,
@@ -151,7 +151,7 @@ def configuration(smtpd):
                 },
                 "disable_existing_loggers": False,
             },
-            "ADMIN_EMAIL": "admin_default_mail@mymail.com",
+            "ADMIN_EMAIL": "admin_default_mail@mydomain.test",
             "API_URL_HIBP": "https://api.pwnedpasswords.test/range/",
         },
     }
@@ -186,12 +186,12 @@ def user(app, backend):
         given_name="John",
         family_name="Doe",
         user_name="user",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
         password="correct horse battery staple",
         display_name="Johnny",
         preferred_language="en",
         phone_numbers=["555-000-000"],
-        profile_url="https://john.example",
+        profile_url="https://john.test",
         formatted_address="1235, somewhere",
     )
     backend.save(u)
@@ -205,7 +205,7 @@ def admin(app, backend):
         formatted_name="Jane Doe",
         family_name="Doe",
         user_name="admin",
-        emails=["jane@doe.com"],
+        emails=["jane@doe.test"],
         password="admin",
     )
     backend.save(u)
@@ -219,7 +219,7 @@ def moderator(app, backend):
         formatted_name="Jack Doe",
         family_name="Doe",
         user_name="moderator",
-        emails=["jack@doe.com"],
+        emails=["jack@doe.test"],
         password="moderator",
     )
     backend.save(u)

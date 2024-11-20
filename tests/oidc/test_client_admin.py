@@ -89,23 +89,23 @@ def test_client_add(testclient, logged_admin, backend):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
-        "contacts-0": "foo@bar.com",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback",
+        "contacts-0": "foo@bar.test",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback",
         "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
-        "logo_uri": "https://foo.bar/logo.webp",
-        "tos_uri": "https://foo.bar/tos",
-        "policy_uri": "https://foo.bar/policy",
+        "logo_uri": "https://foobar.test/logo.webp",
+        "tos_uri": "https://foobar.test/tos",
+        "policy_uri": "https://foobar.test/policy",
         "software_id": "software",
         "software_version": "1",
         "jwk": "jwk",
-        "jwks_uri": "https://foo.bar/jwks.json",
+        "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [],
         "preconsent": False,
-        "post_logout_redirect_uris-0": "https://foo.bar/disconnected",
+        "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
         res.form[k].force_value(v)
@@ -117,23 +117,23 @@ def test_client_add(testclient, logged_admin, backend):
     client = backend.get(models.Client, client_id=client_id)
 
     assert client.client_name == "foobar"
-    assert client.contacts == ["foo@bar.com"]
-    assert client.client_uri == "https://foo.bar"
-    assert client.redirect_uris == ["https://foo.bar/callback"]
+    assert client.contacts == ["foo@bar.test"]
+    assert client.client_uri == "https://foobar.test"
+    assert client.redirect_uris == ["https://foobar.test/callback"]
     assert client.grant_types == ["password", "authorization_code"]
     assert client.scope == ["openid", "profile"]
     assert client.response_types == ["code", "token"]
     assert client.token_endpoint_auth_method == "none"
-    assert client.logo_uri == "https://foo.bar/logo.webp"
-    assert client.tos_uri == "https://foo.bar/tos"
-    assert client.policy_uri == "https://foo.bar/policy"
+    assert client.logo_uri == "https://foobar.test/logo.webp"
+    assert client.tos_uri == "https://foobar.test/tos"
+    assert client.policy_uri == "https://foobar.test/policy"
     assert client.software_id == "software"
     assert client.software_version == "1"
     assert client.jwk == "jwk"
-    assert client.jwks_uri == "https://foo.bar/jwks.json"
+    assert client.jwks_uri == "https://foobar.test/jwks.json"
     assert client.audience == [client]
     assert not client.preconsent
-    assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
+    assert client.post_logout_redirect_uris == ["https://foobar.test/disconnected"]
 
     backend.delete(client)
 
@@ -151,23 +151,23 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
         "client_name": "foobar",
-        "contacts-0": "foo@bar.com",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback",
+        "contacts-0": "foo@bar.test",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback",
         "grant_types": ["password", "authorization_code"],
         "scope": "openid profile",
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
-        "logo_uri": "https://foo.bar/logo.webp",
-        "tos_uri": "https://foo.bar/tos",
-        "policy_uri": "https://foo.bar/policy",
+        "logo_uri": "https://foobar.test/logo.webp",
+        "tos_uri": "https://foobar.test/tos",
+        "policy_uri": "https://foobar.test/policy",
         "software_id": "software",
         "software_version": "1",
         "jwk": "jwk",
-        "jwks_uri": "https://foo.bar/jwks.json",
+        "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [client.id, trusted_client.id],
         "preconsent": True,
-        "post_logout_redirect_uris-0": "https://foo.bar/disconnected",
+        "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
@@ -182,26 +182,26 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     backend.reload(client)
 
     assert client.client_name == "foobar"
-    assert client.contacts == ["foo@bar.com"]
-    assert client.client_uri == "https://foo.bar"
+    assert client.contacts == ["foo@bar.test"]
+    assert client.client_uri == "https://foobar.test"
     assert client.redirect_uris == [
-        "https://foo.bar/callback",
-        "https://mydomain.tld/redirect2",
+        "https://foobar.test/callback",
+        "https://mydomain.test/redirect2",
     ]
     assert client.grant_types == ["password", "authorization_code"]
     assert client.scope == ["openid", "profile"]
     assert client.response_types == ["code", "token"]
     assert client.token_endpoint_auth_method == "none"
-    assert client.logo_uri == "https://foo.bar/logo.webp"
-    assert client.tos_uri == "https://foo.bar/tos"
-    assert client.policy_uri == "https://foo.bar/policy"
+    assert client.logo_uri == "https://foobar.test/logo.webp"
+    assert client.tos_uri == "https://foobar.test/tos"
+    assert client.policy_uri == "https://foobar.test/policy"
     assert client.software_id == "software"
     assert client.software_version == "1"
     assert client.jwk == "jwk"
-    assert client.jwks_uri == "https://foo.bar/jwks.json"
+    assert client.jwks_uri == "https://foobar.test/jwks.json"
     assert client.audience == [client, trusted_client]
     assert not client.preconsent
-    assert client.post_logout_redirect_uris == ["https://foo.bar/disconnected"]
+    assert client.post_logout_redirect_uris == ["https://foobar.test/disconnected"]
 
 
 def test_client_edit_missing_fields(

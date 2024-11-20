@@ -239,7 +239,7 @@ def test_inline_validation_invalid_field(testclient, logged_admin, user):
         "/profile",
         {
             "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.com",
+            "email": "john@doe.test",
         },
         headers={
             "HX-Request": "true",

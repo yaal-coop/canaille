@@ -20,7 +20,7 @@ def test_send_test_email(testclient, logged_admin, smtpd):
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -42,7 +42,7 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd):
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -59,7 +59,7 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -72,12 +72,12 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
 @mock.patch("smtplib.SMTP")
 def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd):
     SMTP.side_effect = mock.Mock(
-        side_effect=smtplib.SMTPRecipientsRefused("test@test.com")
+        side_effect=smtplib.SMTPRecipientsRefused("test@test.test")
     )
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -90,7 +90,7 @@ def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd
 def test_send_test_email_failed(testclient, logged_admin):
     testclient.app.config["CANAILLE"]["SMTP"]["TLS"] = False
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     with warnings.catch_warnings(record=True):
         res = res.form.submit(expect_errors=True)
     assert (
@@ -104,7 +104,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -126,7 +126,7 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
     assert len(smtpd.messages) == 0
 
     res = testclient.get(f"http://{httpserver.host}:{httpserver.port}/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -154,7 +154,7 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.com"
+    res.form["email"] = "test@test.test"
     res = res.form.submit()
     assert (
         "success",
@@ -189,8 +189,8 @@ def test_custom_from_addr(testclient, user, smtpd):
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     res = res.form.submit(status=200)
-    assert smtpd.messages[0]["X-MailFrom"] == "admin@mydomain.tld"
-    assert smtpd.messages[0]["From"] == '"My Canaille" <admin@mydomain.tld>'
+    assert smtpd.messages[0]["X-MailFrom"] == "admin@mydomain.test"
+    assert smtpd.messages[0]["From"] == '"My Canaille" <admin@mydomain.test>'
 
 
 def test_default_from_addr(testclient, user, smtpd):

@@ -60,7 +60,7 @@ def test_group_deletion(testclient, backend):
         formatted_name="foobar",
         family_name="foobar",
         user_name="foobar",
-        emails=["foo@bar.com"],
+        emails=["foo@bar.test"],
     )
     backend.save(user)
 
@@ -120,7 +120,7 @@ def test_set_groups_with_leading_space_in_user_id_attribute(app, foo_group, back
         formatted_name=" Doe",  # leading space in id attribute
         family_name="Doe",
         user_name="user2",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
     )
     backend.save(user)
 
@@ -368,7 +368,7 @@ def test_remove_member_already_deleted(
         formatted_name="Foo bar",
         family_name="Bar",
         user_name="foobar",
-        emails=["foobar@example.org"],
+        emails=["foobar@example.test"],
     )
     backend.save(user)
     foo_group.members = [user, moderator]
@@ -391,7 +391,7 @@ def test_confirm_remove_member_already_deleted(
     user = models.User(
         formatted_name="Foo bar",
         family_name="Bar",
-        emails=["foobar@example.org"],
+        emails=["foobar@example.test"],
         user_name="foobar",
     )
     backend.save(user)

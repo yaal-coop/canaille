@@ -109,7 +109,7 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     form["given_name"] = "given_name"
     form["family_name"] = "family_name"
     form["display_name"] = "display_name"
-    form["emails-0"] = "email@mydomain.tld"
+    form["emails-0"] = "email@mydomain.test"
     form["phone_numbers-0"] = "555-666-777"
     form["formatted_address"] = "formatted_address"
     form["street"] = "street"
@@ -139,7 +139,7 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     assert logged_user.given_name == "given_name"
     assert logged_user.family_name == "family_name"
     assert logged_user.display_name == "display_name"
-    assert logged_user.emails == ["email@mydomain.tld"]
+    assert logged_user.emails == ["email@mydomain.test"]
     assert logged_user.phone_numbers == ["555-666-777"]
     assert logged_user.formatted_address == "formatted_address"
     assert logged_user.street == "street"
@@ -155,7 +155,7 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
 
     logged_user.formatted_name = "John (johnny) Doe"
     logged_user.family_name = "Doe"
-    logged_user.emails = ["john@doe.com"]
+    logged_user.emails = ["john@doe.test"]
     logged_user.given_name = None
     logged_user.photo = None
     backend.save(logged_user)
@@ -183,7 +183,7 @@ def test_edition_remove_fields(
 
     logged_user.formatted_name = "John (johnny) Doe"
     logged_user.family_name = "Doe"
-    logged_user.emails = ["john@doe.com"]
+    logged_user.emails = ["john@doe.test"]
     logged_user.given_name = None
     logged_user.photo = None
     backend.save(logged_user)
@@ -301,11 +301,11 @@ def test_bad_email(testclient, logged_user, backend):
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
 
-    form["emails-0"] = "john@doe.com"
+    form["emails-0"] = "john@doe.test"
 
     res = form.submit(name="action", value="edit-profile").follow()
 
-    assert ["john@doe.com"] == logged_user.emails
+    assert ["john@doe.test"] == logged_user.emails
 
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
@@ -316,7 +316,7 @@ def test_bad_email(testclient, logged_user, backend):
 
     backend.reload(logged_user)
 
-    assert ["john@doe.com"] == logged_user.emails
+    assert ["john@doe.test"] == logged_user.emails
 
 
 def test_surname_is_mandatory(testclient, logged_user, backend):
@@ -371,7 +371,7 @@ def test_inline_validation(testclient, logged_admin, user):
         "/profile/admin",
         {
             "csrf_token": form["csrf_token"].value,
-            "emails-0": "john@doe.com",
+            "emails-0": "john@doe.test",
             "action": "edit-profile",
         },
         headers={
@@ -379,7 +379,7 @@ def test_inline_validation(testclient, logged_admin, user):
             "HX-Trigger-Name": "emails-0",
         },
     )
-    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
+    res.mustcontain("The email &#39;john@doe.test&#39; is already used")
 
 
 def test_inline_validation_keep_indicators(testclient, logged_admin, user, backend):

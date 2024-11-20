@@ -126,6 +126,7 @@ def email_validator(form, field):
     except ImportError:
         pass
 
+    email_validator.TEST_ENVIRONMENT = current_app.config.get("TESTING", False)
     wtforms.validators.Email()(form, field)
 
 

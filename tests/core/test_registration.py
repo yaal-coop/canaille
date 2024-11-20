@@ -20,7 +20,7 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little pea"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
     res = res.form.submit()
     assert ("success", "Your account has been created successfully.") in res.flashes
 
@@ -35,7 +35,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
 
     with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
         res = testclient.get(url_for("core.account.join"))
-        res.form["email"] = "foo@bar.com"
+        res.form["email"] = "foo@bar.test"
         res = res.form.submit()
 
     assert res.flashes == [
@@ -50,7 +50,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
         creation_date_isoformat="2020-01-01T02:00:00+00:00",
         user_name="",
         user_name_editable=True,
-        email="foo@bar.com",
+        email="foo@bar.test",
         groups=[],
     )
     registration_url = url_for(
@@ -88,7 +88,7 @@ def test_registration_with_email_already_taken(
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
     res = testclient.get(url_for("core.account.join"))
-    res.form["email"] = "john@doe.com"
+    res.form["email"] = "john@doe.test"
     res = res.form.submit()
     assert res.flashes == [
         (
@@ -99,10 +99,10 @@ def test_registration_with_email_already_taken(
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
     res = testclient.get(url_for("core.account.join"))
-    res.form["email"] = "john@doe.com"
+    res.form["email"] = "john@doe.test"
     res = res.form.submit()
     assert res.flashes == []
-    res.mustcontain("The email &#39;john@doe.com&#39; is already used")
+    res.mustcontain("The email &#39;john@doe.test&#39; is already used")
 
 
 def test_registration_with_email_validation_needs_a_valid_link(
@@ -140,7 +140,7 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     res = testclient.get(url_for("core.account.join"))
-    res.form["email"] = "foo@bar.com"
+    res.form["email"] = "foo@bar.test"
     res = res.form.submit(expect_errors=True)
 
     assert res.flashes == [
@@ -173,7 +173,7 @@ def test_registration_with_compromised_password(api_get, testclient, backend):
     res.form["password1"] = "987654321"
     res.form["password2"] = "987654321"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
     res = res.form.submit()
     res.mustcontain(
         "This password appears on public compromission databases and is not secure."
@@ -199,7 +199,7 @@ def test_registration_with_compromised_password_request_api_failed_but_account_c
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
 
     res = res.form.submit()
 
@@ -235,7 +235,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
 
     res = res.form.submit()
 
@@ -277,7 +277,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
 
     res = res.form.submit()
 
@@ -321,7 +321,7 @@ def test_compromised_password_validator_with_failure_of_api_request_without_smtp
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
 
     res = res.form.submit()
 
@@ -358,7 +358,7 @@ def test_compromised_password_validator_with_failure_of_api_request_without_admi
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res.form["family_name"] = "newuser"
-    res.form["emails-0"] = "newuser@example.com"
+    res.form["emails-0"] = "newuser@example.test"
 
     res = res.form.submit()
 

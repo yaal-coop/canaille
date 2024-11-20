@@ -32,7 +32,7 @@ def configuration(configuration, keypair):
         "JWT": {
             "PUBLIC_KEY": public_key,
             "PRIVATE_KEY": private_key,
-            "ISS": "https://auth.mydomain.tld",
+            "ISS": "https://auth.mydomain.test",
         }
     }
     return configuration
@@ -43,13 +43,13 @@ def client(testclient, trusted_client, backend):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
-        contacts=["contact@mydomain.tld"],
-        client_uri="https://mydomain.tld",
+        contacts=["contact@mydomain.test"],
+        client_uri="https://mydomain.test",
         redirect_uris=[
-            "https://mydomain.tld/redirect1",
-            "https://mydomain.tld/redirect2",
+            "https://mydomain.test/redirect1",
+            "https://mydomain.test/redirect2",
         ],
-        logo_uri="https://mydomain.tld/logo.webp",
+        logo_uri="https://mydomain.test/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
@@ -61,11 +61,11 @@ def client(testclient, trusted_client, backend):
         ],
         response_types=["code", "token", "id_token"],
         scope=["openid", "email", "profile", "groups", "address", "phone"],
-        tos_uri="https://mydomain.tld/tos",
-        policy_uri="https://mydomain.tld/policy",
-        jwks_uri="https://mydomain.tld/jwk",
+        tos_uri="https://mydomain.test/tos",
+        policy_uri="https://mydomain.test/policy",
+        jwks_uri="https://mydomain.test/jwk",
         token_endpoint_auth_method="client_secret_basic",
-        post_logout_redirect_uris=["https://mydomain.tld/disconnected"],
+        post_logout_redirect_uris=["https://mydomain.test/disconnected"],
     )
     backend.save(c)
     c.audience = [c, trusted_client]
@@ -80,13 +80,13 @@ def trusted_client(testclient, backend):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
-        contacts=["contact@myotherdomain.tld"],
-        client_uri="https://myotherdomain.tld",
+        contacts=["contact@myotherdomain.test"],
+        client_uri="https://myotherdomain.test",
         redirect_uris=[
-            "https://myotherdomain.tld/redirect1",
-            "https://myotherdomain.tld/redirect2",
+            "https://myotherdomain.test/redirect1",
+            "https://myotherdomain.test/redirect2",
         ],
-        logo_uri="https://myotherdomain.tld/logo.webp",
+        logo_uri="https://myotherdomain.test/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
@@ -98,11 +98,11 @@ def trusted_client(testclient, backend):
         ],
         response_types=["code", "token", "id_token"],
         scope=["openid", "profile", "groups"],
-        tos_uri="https://myotherdomain.tld/tos",
-        policy_uri="https://myotherdomain.tld/policy",
-        jwks_uri="https://myotherdomain.tld/jwk",
+        tos_uri="https://myotherdomain.test/tos",
+        policy_uri="https://myotherdomain.test/policy",
+        jwks_uri="https://myotherdomain.test/jwk",
         token_endpoint_auth_method="client_secret_basic",
-        post_logout_redirect_uris=["https://myotherdomain.tld/disconnected"],
+        post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
         preconsent=True,
     )
     backend.save(c)
@@ -120,7 +120,7 @@ def authorization(testclient, user, client, backend):
         code="my-code",
         client=client,
         subject=user,
-        redirect_uri="https://foo.bar/callback",
+        redirect_uri="https://foobar.test/callback",
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",

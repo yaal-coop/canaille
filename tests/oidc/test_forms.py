@@ -13,8 +13,8 @@ def test_fieldlist_add(testclient, logged_admin, backend):
 
     data = {
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -25,7 +25,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
     res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
     assert not backend.query(models.Client)
 
-    data["redirect_uris-1"] = "https://foo.bar/callback2"
+    data["redirect_uris-1"] = "https://foobar.test/callback2"
     for k, v in data.items():
         res.form[k].force_value(v)
 
@@ -36,8 +36,8 @@ def test_fieldlist_add(testclient, logged_admin, backend):
     client = backend.get(models.Client, client_id=client_id)
 
     assert client.redirect_uris == [
-        "https://foo.bar/callback",
-        "https://foo.bar/callback2",
+        "https://foobar.test/callback",
+        "https://foobar.test/callback2",
     ]
 
     backend.delete(client)
@@ -49,8 +49,8 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
 
     data = {
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback1",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback1",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -59,7 +59,7 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
         res.form[k].force_value(v)
     res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
 
-    res.form["redirect_uris-1"] = "https://foo.bar/callback2"
+    res.form["redirect_uris-1"] = "https://foobar.test/callback2"
     res = res.form.submit(status=200, name="fieldlist_remove", value="redirect_uris-1")
     assert not backend.query(models.Client)
     assert "redirect_uris-1" not in res.form.fields
@@ -71,7 +71,7 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
     client = backend.get(models.Client, client_id=client_id)
 
     assert client.redirect_uris == [
-        "https://foo.bar/callback1",
+        "https://foobar.test/callback1",
     ]
 
     backend.delete(client)
@@ -82,8 +82,8 @@ def test_fieldlist_add_invalid_field(testclient, logged_admin):
     data = {
         "csrf_token": res.form["csrf_token"].value,
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -99,9 +99,9 @@ def test_fieldlist_delete_invalid_field(testclient, logged_admin, backend):
     data = {
         "csrf_token": res.form["csrf_token"].value,
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback1",
-        "redirect_uris-1": "https://foo.bar/callback2",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback1",
+        "redirect_uris-1": "https://foobar.test/callback2",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -114,8 +114,8 @@ def test_fieldlist_duplicate_value(testclient, logged_admin, client):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/samecallback",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/samecallback",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -123,7 +123,7 @@ def test_fieldlist_duplicate_value(testclient, logged_admin, client):
     for k, v in data.items():
         res.form[k].force_value(v)
     res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
-    res.form["redirect_uris-1"] = "https://foo.bar/samecallback"
+    res.form["redirect_uris-1"] = "https://foobar.test/samecallback"
     res = res.form.submit(status=200, name="action", value="edit")
     res.mustcontain("This value is a duplicate")
 
@@ -132,9 +132,9 @@ def test_fieldlist_empty_value(testclient, logged_admin, backend):
     res = testclient.get("/admin/client/add")
     data = {
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/samecallback",
-        "post_logout_redirect_uris-0": "https://foo.bar/callback1",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/samecallback",
+        "post_logout_redirect_uris-0": "https://foobar.test/callback1",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -154,8 +154,8 @@ def test_fieldlist_add_field_htmx(testclient, logged_admin):
     data = {
         "csrf_token": res.form["csrf_token"].value,
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -178,7 +178,7 @@ def test_fieldlist_add_field_htmx_validation(testclient, logged_admin):
     data = {
         "csrf_token": res.form["csrf_token"].value,
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
+        "client_uri": "https://foobar.test",
         "redirect_uris-0": "not-a-valid-uri",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
@@ -203,9 +203,9 @@ def test_fieldlist_remove_field_htmx(testclient, logged_admin):
     data = {
         "csrf_token": res.form["csrf_token"].value,
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
-        "redirect_uris-0": "https://foo.bar/callback1",
-        "redirect_uris-1": "https://foo.bar/callback2",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback1",
+        "redirect_uris-1": "https://foobar.test/callback2",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
@@ -228,9 +228,9 @@ def test_fieldlist_inline_validation(testclient, logged_admin):
     data = {
         "csrf_token": res.form["csrf_token"].value,
         "client_name": "foobar",
-        "client_uri": "https://foo.bar",
+        "client_uri": "https://foobar.test",
         "redirect_uris-0": "invalid-url",
-        "redirect_uris-1": "https://foo.bar/callback2",
+        "redirect_uris-1": "https://foobar.test/callback2",
         "grant_types": ["password", "authorization_code"],
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",

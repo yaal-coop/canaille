@@ -43,17 +43,17 @@ def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration)
 def test_configuration_from_environment_vars():
     """Canaille should read configuration from environment vars."""
     os.environ["SECRET_KEY"] = "very-very-secret"
-    os.environ["CANAILLE__SMTP__FROM_ADDR"] = "user@mydomain.tld"
+    os.environ["CANAILLE__SMTP__FROM_ADDR"] = "user@mydomain.test"
     os.environ["CANAILLE_SQL__DATABASE_URI"] = "sqlite:///anything.db"
 
     conf = settings_factory({"TIMEZONE": "UTC"})
     assert conf.SECRET_KEY == "very-very-secret"
-    assert conf.CANAILLE.SMTP.FROM_ADDR == "user@mydomain.tld"
+    assert conf.CANAILLE.SMTP.FROM_ADDR == "user@mydomain.test"
     assert conf.CANAILLE_SQL.DATABASE_URI == "sqlite:///anything.db"
 
     app = create_app({"TIMEZONE": "UTC"})
     assert app.config["SECRET_KEY"] == "very-very-secret"
-    assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "user@mydomain.tld"
+    assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "user@mydomain.test"
     assert app.config["CANAILLE_SQL"]["DATABASE_URI"] == "sqlite:///anything.db"
 
     del os.environ["SECRET_KEY"]
@@ -65,14 +65,14 @@ def test_disable_env_var_loading(tmp_path, configuration):
     """Canaille should not read configuration from environment vars when
     env_prefix is False."""
     del configuration["SERVER_NAME"]
-    os.environ["SERVER_NAME"] = "example.com"
-    os.environ["FOOBAR_SERVER_NAME"] = "foobar.example.com"
+    os.environ["SERVER_NAME"] = "example.test"
+    os.environ["FOOBAR_SERVER_NAME"] = "foobar.example.test"
 
     app = create_app(configuration, env_prefix="")
-    assert app.config["SERVER_NAME"] == "example.com"
+    assert app.config["SERVER_NAME"] == "example.test"
 
     app = create_app(configuration, env_prefix="FOOBAR_")
-    assert app.config["SERVER_NAME"] == "foobar.example.com"
+    assert app.config["SERVER_NAME"] == "foobar.example.test"
 
     del os.environ["SERVER_NAME"]
 
@@ -215,7 +215,7 @@ def test_enable_password_compromission_check_with_and_without_admin_email(
     validate(config_dict, validate_remote=False)
 
     configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
-    configuration["CANAILLE"]["ADMIN_EMAIL"] = "admin_default_mail@mymail.com"
+    configuration["CANAILLE"]["ADMIN_EMAIL"] = "admin_default_mail@mydomain.test"
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
     validate(config_dict, validate_remote=False)

@@ -24,7 +24,7 @@ def test_user_deleted_in_session(testclient, backend):
         formatted_name="Jake Doe",
         family_name="Jake",
         user_name="jake",
-        emails=["jake@doe.com"],
+        emails=["jake@doe.test"],
         password="correct horse battery staple",
     )
     backend.save(u)
@@ -63,7 +63,7 @@ def test_admin_self_deletion(testclient, backend):
         formatted_name="Temp admin",
         family_name="admin",
         user_name="temp",
-        emails=["temp@temp.com"],
+        emails=["temp@temp.test"],
         password="admin",
     )
     backend.save(admin)
@@ -89,7 +89,7 @@ def test_user_self_deletion(testclient, backend):
         formatted_name="Temp user",
         family_name="user",
         user_name="temp",
-        emails=["temp@temp.com"],
+        emails=["temp@temp.test"],
         password="correct horse battery staple",
     )
     backend.save(user)

@@ -26,7 +26,7 @@ def test_get(testclient, backend, user):
             "created": mock.ANY,
             "display_name": "Johnny",
             "emails": [
-                "john@doe.com",
+                "john@doe.test",
             ],
             "family_name": "Doe",
             "formatted_address": "1235, somewhere",
@@ -39,7 +39,7 @@ def test_get(testclient, backend, user):
                 "555-000-000",
             ],
             "preferred_language": "en",
-            "profile_url": "https://john.example",
+            "profile_url": "https://john.test",
             "user_name": "user",
         },
     ]
@@ -56,7 +56,7 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
             "created": mock.ANY,
             "display_name": "Johnny",
             "emails": [
-                "john@doe.com",
+                "john@doe.test",
             ],
             "family_name": "Doe",
             "formatted_address": "1235, somewhere",
@@ -69,7 +69,7 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
                 "555-000-000",
             ],
             "preferred_language": "en",
-            "profile_url": "https://john.example",
+            "profile_url": "https://john.test",
             "user_name": "user",
             "groups": [foo_group.id],
         },
@@ -87,7 +87,7 @@ def test_get_datetime_filter(testclient, backend, user):
             "created": mock.ANY,
             "display_name": "Johnny",
             "emails": [
-                "john@doe.com",
+                "john@doe.test",
             ],
             "family_name": "Doe",
             "formatted_address": "1235, somewhere",
@@ -100,7 +100,7 @@ def test_get_datetime_filter(testclient, backend, user):
                 "555-000-000",
             ],
             "preferred_language": "en",
-            "profile_url": "https://john.example",
+            "profile_url": "https://john.test",
             "user_name": "user",
         },
     ]

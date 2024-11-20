@@ -9,7 +9,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails=["john@doe.com", "johhny@doe.com"],
+        emails=["john@doe.test", "johhny@doe.test"],
     )
     backend.save(u)
 
@@ -44,7 +44,7 @@ def test_first_login_account_initialization_mail_sending_failed(
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
     )
     backend.save(u)
 
@@ -66,7 +66,7 @@ def test_first_login_form_error(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
     )
     backend.save(u)
 
@@ -90,7 +90,7 @@ def test_user_password_deleted_during_login(testclient, backend):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
         password="correct horse battery staple",
     )
     backend.save(u)
@@ -117,7 +117,7 @@ def test_smtp_disabled(testclient, backend, smtpd):
         formatted_name="Temp User",
         family_name="Temp",
         user_name="temp",
-        emails=["john@doe.com", "johhny@doe.com"],
+        emails=["john@doe.test", "johhny@doe.test"],
     )
     backend.save(u)
 

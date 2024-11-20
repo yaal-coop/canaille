@@ -7,7 +7,7 @@ def test_delete_by_id(testclient, backend):
     user = models.User(
         formatted_name="Foo bar",
         family_name="Bar",
-        emails=["foobar@example.org"],
+        emails=["foobar@example.test"],
         user_name="foobar",
     )
     backend.save(user)
@@ -24,7 +24,7 @@ def test_delete_by_identifier(testclient, backend):
     user = models.User(
         formatted_name="Foo bar",
         family_name="Bar",
-        emails=["foobar@example.org"],
+        emails=["foobar@example.test"],
         user_name="foobar",
     )
     backend.save(user)
