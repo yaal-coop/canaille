@@ -88,38 +88,36 @@ def password_strength_calculator(password):
 
 
 def compromised_password_validator(form, field):
-    if current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"]:
-        hashed_password = hashlib.sha1(field.data.encode("utf-8")).hexdigest()
-        hashed_password_prefix, hashed_password_suffix = (
-            hashed_password[:5].upper(),
-            hashed_password[5:].upper(),
-        )
-
-        api_url = (
-            current_app.config["CANAILLE"]["API_URL_HIBP"] + hashed_password_prefix
-        )
-
-        try:
-            response = requests.api.get(api_url, timeout=10)
-        except Exception:
-            if not request_is_htmx():
-                current_app.logger.exception(
-                    "Password compromise investigation failed on HIBP API."
-                )
-                check_if_send_mail_to_admins(form, api_url, hashed_password_suffix)
-            return None
-
-        decoded_response = response.content.decode("utf8").split("\r\n")
-
-        for each in decoded_response:
-            if hashed_password_suffix == each.split(":")[0]:
-                raise wtforms.ValidationError(
-                    _(
-                        "This password appears on public compromission databases and is not secure."
-                    )
-                )
-    else:
+    if not current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"]:
         return None
+
+    hashed_password = hashlib.sha1(field.data.encode("utf-8")).hexdigest()
+    hashed_password_prefix, hashed_password_suffix = (
+        hashed_password[:5].upper(),
+        hashed_password[5:].upper(),
+    )
+
+    api_url = current_app.config["CANAILLE"]["API_URL_HIBP"] + hashed_password_prefix
+
+    try:
+        response = requests.api.get(api_url, timeout=10)
+    except Exception:
+        if not request_is_htmx():
+            current_app.logger.exception(
+                "Password compromise investigation failed on HIBP API."
+            )
+            check_if_send_mail_to_admins(form, api_url, hashed_password_suffix)
+        return None
+
+    decoded_response = response.content.decode("utf8").split("\r\n")
+
+    for each in decoded_response:
+        if hashed_password_suffix == each.split(":")[0]:
+            raise wtforms.ValidationError(
+                _(
+                    "This password appears on public compromission databases and is not secure."
+                )
+            )
 
 
 def email_validator(form, field):
