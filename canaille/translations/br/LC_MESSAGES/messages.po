@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-19 15:43+0100\n"
+"POT-Creation-Date: 2024-11-20 23:42+0100\n"
 "PO-Revision-Date: 2024-08-08 19:09+0000\n"
 "Last-Translator: Moha684 <nahil82466@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -53,26 +53,26 @@ msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
 
-#: canaille/app/forms.py:282
+#: canaille/app/forms.py:281
 msgid "The page number is not valid"
 msgstr "Direizh eo niverenn ar bajenn"
 
-#: canaille/app/forms.py:310
+#: canaille/app/forms.py:309
 msgid "Not a valid datetime value."
 msgstr "N'eo ket un deiziad reizh."
 
-#: canaille/app/mails_sending_conditions.py:11
+#: canaille/app/mails_sending_conditions.py:16
 msgid ""
 "Password compromise investigation failed. Please contact the administrators."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:33
+#: canaille/app/mails_sending_conditions.py:38
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
 
-#: canaille/app/mails_sending_conditions.py:40
+#: canaille/app/mails_sending_conditions.py:45
 #, fuzzy
 #| msgid ""
 #| "An error happened while sending your registration mail. Please try again "
@@ -105,7 +105,9 @@ msgid "jdoe"
 msgstr "tutoriell"
 
 #: canaille/backends/ldap/backend.py:181
-msgid "john@doe.com"
+#, fuzzy
+#| msgid "john@doe.com"
+msgid "john.doe@example.com"
 msgstr "tifenn@utoriell.br"
 
 #: canaille/backends/ldap/backend.py:183
@@ -314,7 +316,9 @@ msgstr "Postel"
 #: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
 #: canaille/core/endpoints/forms.py:412 canaille/core/endpoints/forms.py:438
 #: canaille/core/endpoints/forms.py:462 canaille/core/endpoints/forms.py:478
-msgid "jane@doe.com"
+#, fuzzy
+#| msgid "jane@doe.com"
+msgid "jane.doe@example.com"
 msgstr "florian@utoriell.com.br"
 
 #: canaille/core/endpoints/admin.py:42
