@@ -167,6 +167,13 @@ User :attr:`passwords <canaille.core.models.User.password>` are optional.
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured, when users with no password attempt to sign in, they are invited to click a button that will send them a password initialization mail.
 The mail contains a link that leads to a form that allows users to choose a password.
 
+.. _feature_password_compromission_check:
+
+Password compromission check
+============================
+
+If :attr:`password compromission check feature <canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK>` is enabled, Canaille will check for password compromise on HIBP (https://haveibeenpwned.com/) every time a new password is register. You will need to set an :attr:`admin email <canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`.
+
 .. _feature_i18n:
 
 Internationalization
@@ -308,7 +315,6 @@ Security
 - :issue:`Authentication logging policy <177>`
 - :issue:`Intruder lockout <173>`
 - :issue:`Password expiry policy <176>`
-- :issue:`Password compromission check <179>`
 - :issue:`Multi-factor authentication: Email <47>`
 - :issue:`Multi-factor authentication: SMS <47>`
 - :issue:`Multi-factor authentication: OTP <47>`

@@ -205,8 +205,8 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
     # Fill the user creation form
     res = testclient.get(registration_url)
     res.form["user_name"] = "newuser"
-    res.form["password1"] = "password"
-    res.form["password2"] = "password"
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
     res.form["family_name"] = "newuser"
     res = res.form.submit()
 

@@ -312,3 +312,24 @@ class CoreSettings(BaseModel):
     characters. If the value entered is 0 or None, or greater than 4096,
     then 4096 will be retained.
     """
+
+    ADMIN_EMAIL: str | None = None
+    """Administration email contact.
+
+    In certain special cases (example : questioning about password
+    corruption), it is necessary to provide an administration contact
+    email.
+    """
+
+    ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
+    """If :py:data:`True`, Canaille will check for password compromise on HIBP
+    every time a new password is register.
+
+    (https://haveibeenpwned.com/)
+    """
+
+    API_URL_HIBP: str = "https://api.pwnedpasswords.com/range/"
+    """Have i been pwned api url for compromission checks.
+
+    This url should not be modified.
+    """
