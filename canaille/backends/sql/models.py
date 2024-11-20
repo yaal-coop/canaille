@@ -71,11 +71,20 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     last_modified: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+    last_login: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
 
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
     )
+    password_lifetime: Mapped[int] = mapped_column(Integer, nullable=True)
+    password_last_update: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    password_must_change: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
     given_name: Mapped[str] = mapped_column(String, nullable=True)

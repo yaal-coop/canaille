@@ -70,6 +70,15 @@ class MemoryBackend(Backend):
 
     def set_user_password(self, user, password):
         user.password = password
+        user.password_last_update = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
+        self.save(user)
+    
+    def set_last_login(self, user):
+        user.last_login = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
         self.save(user)
 
     def query(self, model, **kwargs):
@@ -132,7 +141,6 @@ class MemoryBackend(Backend):
         )
         if not instance.created:
             instance.created = instance.last_modified
-
         self.index_delete(instance)
         self.index_save(instance)
         instance._cache = {}

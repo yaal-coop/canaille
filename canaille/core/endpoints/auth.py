@@ -108,6 +108,7 @@ def password():
     )
     del session["attempt_login"]
     login_user(user)
+    Backend.instance.set_last_login(user)
     flash(
         _("Connection successful. Welcome %(user)s", user=user.formatted_name),
         "success",

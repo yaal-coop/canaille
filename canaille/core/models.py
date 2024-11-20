@@ -22,6 +22,8 @@ class User(Model):
     """
 
     identifier_attribute: ClassVar[str] = "user_name"
+    
+    last_login: datetime.datetime | None = None
 
     user_name: str
     """A service provider's unique identifier for the user, typically used by
@@ -79,6 +81,12 @@ class User(Model):
     provider in any form (the attribute characteristic "returned" is
     "never").
     """
+    
+    password_lifetime: int | None = None #can be null # integer in days
+    
+    password_last_update: datetime.datetime | None = None
+    
+    password_must_change: bool | None = None
 
     preferred_language: str | None = None
     """Indicates the user's preferred written or spoken languages and is

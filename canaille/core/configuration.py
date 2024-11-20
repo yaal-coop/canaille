@@ -312,3 +312,11 @@ class CoreSettings(BaseModel):
     characters. If the value entered is 0 or None, or greater than 4096,
     then 4096 will be retained.
     """
+
+    ENABLE_PASSWORD_EXPIRY_POLICY: bool = False
+    """
+    """
+    
+    MAX_DAYS_LOGOUT: int | None = None
+    """can be null or None
+    """
