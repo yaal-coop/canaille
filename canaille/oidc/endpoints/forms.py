@@ -34,7 +34,7 @@ class ClientAddForm(Form):
         wtforms.EmailField(
             _("Contacts"),
             validators=[wtforms.validators.Optional(), email_validator],
-            render_kw={"placeholder": "admin@mydomain.tld"},
+            render_kw={"placeholder": "admin@mydomain.example"},
         ),
         min_entries=1,
         validators=[unique_values],
@@ -45,7 +45,7 @@ class ClientAddForm(Form):
             wtforms.validators.DataRequired(),
             is_uri,
         ],
-        render_kw={"placeholder": "https://mydomain.tld"},
+        render_kw={"placeholder": "https://mydomain.example"},
     )
     redirect_uris = wtforms.FieldList(
         wtforms.URLField(
@@ -54,7 +54,7 @@ class ClientAddForm(Form):
                 wtforms.validators.DataRequired(),
                 is_uri,
             ],
-            render_kw={"placeholder": "https://mydomain.tld/callback"},
+            render_kw={"placeholder": "https://mydomain.example/callback"},
         ),
         min_entries=1,
         validators=[unique_values],
@@ -67,7 +67,7 @@ class ClientAddForm(Form):
                 is_uri,
             ],
             render_kw={
-                "placeholder": "https://mydomain.tld/you-have-been-disconnected"
+                "placeholder": "https://mydomain.example/you-have-been-disconnected"
             },
         ),
         min_entries=1,
@@ -120,7 +120,7 @@ class ClientAddForm(Form):
             wtforms.validators.Optional(),
             is_uri,
         ],
-        render_kw={"placeholder": "https://mydomain.tld/logo.png"},
+        render_kw={"placeholder": "https://mydomain.example/logo.png"},
     )
     tos_uri = wtforms.URLField(
         _("Terms of service URI"),
@@ -128,7 +128,7 @@ class ClientAddForm(Form):
             wtforms.validators.Optional(),
             is_uri,
         ],
-        render_kw={"placeholder": "https://mydomain.tld/tos.html"},
+        render_kw={"placeholder": "https://mydomain.example/tos.html"},
     )
     policy_uri = wtforms.URLField(
         _("Policy URI"),
@@ -136,7 +136,7 @@ class ClientAddForm(Form):
             wtforms.validators.Optional(),
             is_uri,
         ],
-        render_kw={"placeholder": "https://mydomain.tld/policy.html"},
+        render_kw={"placeholder": "https://mydomain.example/policy.html"},
     )
     software_id = wtforms.StringField(
         _("Software ID"),

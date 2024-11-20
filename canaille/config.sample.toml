@@ -2,7 +2,7 @@
 SECRET_KEY = "change me before you go in production"
 
 # The interface on which canaille will be served
-# SERVER_NAME = "auth.mydomain.tld"
+# SERVER_NAME = "auth.mydomain.example"
 # PREFERRED_URL_SCHEME = "https"
 
 [CANAILLE]
@@ -88,7 +88,7 @@ SECRET_KEY = "change me before you go in production"
 # In certain special cases (example : questioning about password
 # corruption), it is necessary to provide an administration contact
 # email.
-# ADMIN_EMAIL = "admin@mydomain.tld"
+# ADMIN_EMAIL = "admin@mydomain.example"
 
 # If :py:data:`True`, Canaille will check for password compromise on HIBP
 # every time a new password is register.
@@ -238,7 +238,7 @@ WRITE = [
 # PRIVATE_KEY = "..."
 # PUBLIC_KEY = "..."
 # The URI of the identity provider
-# ISS = "https://auth.mydomain.tld"
+# ISS = "https://auth.mydomain.example"
 # The key type parameter
 # KTY = "RSA"
 # The key algorithm
@@ -272,4 +272,4 @@ WRITE = [
 # SSL = false
 # LOGIN = ""
 # PASSWORD = ""
-# FROM_ADDR = "admin@mydomain.tld"
+# FROM_ADDR = "admin@mydomain.example"
