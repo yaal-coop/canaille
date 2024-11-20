@@ -3,12 +3,13 @@ Command Line Interface
 
 Canaille provide several commands to help administrator manage their data.
 
-The configuration file has to be prefixed before running `canaille`. For readability's sake, it's omitted in the examples.
+Generally, some configuration has to be loaded by `Canaille`.
+This can be achieved by :ref:`configuration loading method<references/configuration:Load the configuration>` available, but most of the time a ``CONFIG`` environent variable is used.
+For the sake of readability, it is omitted in the following examples.
 
 .. code-block:: shell
 
     env CONFIG=path/to/config.toml canaille ...
-
 
 .. _cli_check:
 

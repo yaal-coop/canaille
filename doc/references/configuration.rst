@@ -1,10 +1,13 @@
 Configuration
 #############
 
+Load the configuration
+======================
+
 Canaille can be configured either by a environment variables, environment file, or by a configuration file.
 
 Configuration file
-==================
+~~~~~~~~~~~~~~~~~~
 
 The configuration can be written in `toml` configuration file which path is passed in the :envvar:`CONFIG` environment variable.
 
@@ -23,7 +26,7 @@ The configuration can be written in `toml` configuration file which path is pass
 You can have a look at the :ref:`example file <references/configuration:Example file>` for inspiration.
 
 Environment variables
-=====================
+~~~~~~~~~~~~~~~~~~~~~
 
 In addition, parameters that have not been set in the configuration file can be read from environment variables.
 The way environment variables are parsed can be read from the `pydantic-settings documentation <https://docs.pydantic.dev/latest/concepts/pydantic_settings/#parsing-environment-variable-values>`_.
@@ -34,7 +37,7 @@ The way environment variables are parsed can be read from the `pydantic-settings
    For instance, the ``NAME`` var in the ``CANAILLE`` section shown above is ``CANAILLE__NAME``.
 
 Environment file
-================
+~~~~~~~~~~~~~~~~
 
 Any environment variable can also be written in a ``.env``, and will be read if present.
 
