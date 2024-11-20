@@ -156,7 +156,6 @@ class MemoryBackend(Backend):
         )
         if not instance.created:
             instance.created = instance.last_modified
-
         self.index_delete(instance)
         self.index_save(instance)
         instance._cache = {}

@@ -376,6 +376,22 @@ class CoreSettings(BaseModel):
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
 
+    ADMIN_EMAIL: str | None = None
+    """Administration email contact.
+
+    In certain special cases (example : questioning about password
+    corruption), it is necessary to provide an administration contact
+    email.
+    """
+
+    ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
+    """If :py:data:`True`, Canaille will check if passwords appears in
+    compromission databases such as `HIBP <https://haveibeenpwned.com>`_
+    when users choose a new one."""
+
+    PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
+    """Have i been pwned api url for compromission checks."""
+
     PASSWORD_LIFETIME: datetime.timedelta | None = None
     """Password validity duration.
 
