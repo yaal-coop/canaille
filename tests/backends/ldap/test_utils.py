@@ -261,10 +261,10 @@ def test_login_placeholder(testclient):
 
     testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = "(mail={{ login }})"
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "john@doe.test"
+    assert placeholder == "john.doe@example.com"
 
     testclient.app.config["CANAILLE_LDAP"]["USER_FILTER"] = (
         "(|(uid={{ login }})(mail={{ login }}))"
     )
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
-    assert placeholder == "jdoe or john@doe.test"
+    assert placeholder == "jdoe or john.doe@example.com"
