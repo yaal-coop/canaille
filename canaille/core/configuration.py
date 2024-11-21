@@ -322,14 +322,9 @@ class CoreSettings(BaseModel):
     """
 
     ENABLE_PASSWORD_COMPROMISSION_CHECK: bool = False
-    """If :py:data:`True`, Canaille will check for password compromise on HIBP
-    every time a new password is register.
+    """If :py:data:`True`, Canaille will check if passwords appears in
+    compromission databases such as `HIBP <https://haveibeenpwned.com>`_
+    when users choose a new one."""
 
-    (https://haveibeenpwned.com/)
-    """
-
-    API_URL_HIBP: str = "https://api.pwnedpasswords.com/range/"
-    """Have i been pwned api url for compromission checks.
-
-    This url should not be modified.
-    """
+    PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
+    """Have i been pwned api url for compromission checks."""

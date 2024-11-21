@@ -97,7 +97,10 @@ def compromised_password_validator(form, field):
         hashed_password[5:].upper(),
     )
 
-    api_url = current_app.config["CANAILLE"]["API_URL_HIBP"] + hashed_password_prefix
+    api_url = (
+        current_app.config["CANAILLE"]["PASSWORD_COMPROMISSION_CHECK_API_URL"]
+        + hashed_password_prefix
+    )
 
     try:
         response = requests.api.get(api_url, timeout=10)
