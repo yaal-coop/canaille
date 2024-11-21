@@ -459,6 +459,9 @@ def profile_create(current_app, form):
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
     user.formatted_name = f"{given_name} {family_name}".strip()
+    user.last_login = datetime.datetime.now(datetime.timezone.utc).replace(
+            microsecond=0
+        )
     Backend.instance.save(user)
 
     if form["password1"].data:

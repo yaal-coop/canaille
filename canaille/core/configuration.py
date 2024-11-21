@@ -333,3 +333,11 @@ class CoreSettings(BaseModel):
 
     This url should not be modified.
     """
+
+    ENABLE_PASSWORD_EXPIRY_POLICY: bool = False
+    """
+    """
+    
+    MAX_DAYS_LOGOUT: int | None = None
+    """can be null or None
+    """

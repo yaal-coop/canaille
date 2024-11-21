@@ -252,6 +252,10 @@ class LDAPBackend(Backend):
             password.encode("utf-8"),
         )
 
+    def set_last_login(self, user):
+        pass
+        
+
     def query(self, model, dn=None, filter=None, **kwargs):
         from .ldapobjectquery import LDAPObjectQuery
 

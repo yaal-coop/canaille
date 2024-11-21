@@ -133,6 +133,10 @@ class Backend:
     def set_user_password(self, user, password: str):
         """Set a password for the user."""
         raise NotImplementedError()
+    
+    def set_last_login(self, user):
+        """Set the date of the last success login."""
+        raise NotImplementedError()
 
     def has_account_lockability(self):
         """Indicate whether the backend supports locking user accounts."""
