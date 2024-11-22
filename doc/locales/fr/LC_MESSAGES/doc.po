@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-22 17:40+0100\n"
-"PO-Revision-Date: 2024-11-22 16:57+0000\n"
+"PO-Revision-Date: 2024-11-23 05:18+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -71,7 +71,7 @@ msgstr "Ajouté"
 
 #: ../../CHANGES.rst:6 d999b390f8524c928b1894427243548e
 msgid "Password compromission check :issue:`179`"
-msgstr ""
+msgstr "Vérification de la compromission des mots de passe :issue:`179`"
 
 #: ../../CHANGES.rst:7 6462dbba2e5a42ba8097d3f532479339
 msgid ""
@@ -80,10 +80,14 @@ msgid ""
 " and :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP` "
 ":issue:`179`"
 msgstr ""
+":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et "
+":attr:`~canaille.core.configuration.CoreSettings."
+"ENABLE_PASSWORD_COMPROMISSION_CHECK` et :attr:`~canaille.core.configuration."
+"CoreSettings.API_URL_HIBP` :issue:`179`"
 
 #: ../../CHANGES.rst:13 dd5cac3a17584534b4d6f98352d17e43
 msgid "[0.0.56] - 2024-11-07"
-msgstr ""
+msgstr "[0.0.56] - 2024-11-07"
 
 #: ../../CHANGES.rst:16 ../../CHANGES.rst:58 ../../CHANGES.rst:97
 #: ../../CHANGES.rst:105 ../../CHANGES.rst:113 ../../CHANGES.rst:120
@@ -122,13 +126,15 @@ msgstr ""
 #: fbd38d6d33f74c06954ee8f37b647101 fdf28506150e440b83dff3b421509253
 #: fe9fc3ab9266488fa5d7ff3c6a116550 ffbf845171dc4c788394ac32057988b3
 msgid "Fixed"
-msgstr ""
+msgstr "Corrigé"
 
 #: ../../CHANGES.rst:17 bc3381481b1547d685c56be207b19be0
 msgid ""
 "With LDAP backend, updating another user groups could result in a "
 "permission lost for the editor. :issue:`202`"
 msgstr ""
+"Avec la base de données LDAP, la mise à jour des groupes d’utilisateurs "
+"pouvait engendrer une perte de permissions de l’éditeur. :issue:`202`"
 
 #: ../../CHANGES.rst:21 8006f574ff2c44c7a025d270c8209674
 msgid ""
@@ -136,18 +142,21 @@ msgid ""
 " :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` "
 "configuration options :issue:`174`"
 msgstr ""
+"Options de configuration :attr:`~canaille.core.configuration.CoreSettings."
+"MAX_PASSWORD_LENGHT` et :attr:`~canaille.core.configuration.CoreSettings."
+"MIN_PASSWORD_LENGHT` :issue:`174`"
 
 #: ../../CHANGES.rst:23 f26ec8caf7ab464c90624b789eb2a272
 msgid "Password strength visual indicator :issue:`174`"
-msgstr ""
+msgstr "Indicateur visuel de la force des mots de pase :issue:`174`"
 
 #: ../../CHANGES.rst:24 c432db47193b4396beca35d06fa98009
 msgid "Security events logs :issue:`177`"
-msgstr ""
+msgstr "Journalisation des évènements de sécurité :issue:`177`"
 
 #: ../../CHANGES.rst:25 63204ec365834e619949c03aabce298e
 msgid "Support for Python 3.13 :pr:`186`"
-msgstr ""
+msgstr "Support de Python 3.13 :pr:`186`"
 
 #: ../../CHANGES.rst:28 ../../CHANGES.rst:41 ../../CHANGES.rst:53
 #: ../../CHANGES.rst:78 ../../CHANGES.rst:86 ../../CHANGES.rst:134
@@ -166,7 +175,7 @@ msgstr ""
 #: e1aa10c7563b41459f78a0b289e5e74c e969ad72eb4f46f78d44add5a74d04e5
 #: f02cb5a0a71e449883c4b767b0d03f65 f511a81ae64d49d3beca0311a05f6506
 msgid "Changed"
-msgstr ""
+msgstr "Modifié"
 
 #: ../../CHANGES.rst:29 772b297a85d24919a7020f1801ef2d53
 msgid "Update to HTMX 2.0.3 :pr:`184`"
@@ -216,35 +225,42 @@ msgstr ""
 
 #: ../../CHANGES.rst:54 aaf3e30baa7b467ea98e1b52054fe7df
 msgid "Model `identifier_attributes` are fixed."
-msgstr ""
+msgstr "L’attribut `identifier_attributes` des models est fixe."
 
 #: ../../CHANGES.rst:55 30380f5332814aaba304c105d39a25b9
 msgid "Bump to htmx 1.9.12 :pr:`172`"
-msgstr ""
+msgstr "Mise-à-jour vers HTMX 1.9.12 :pr:`172`"
 
 #: ../../CHANGES.rst:60 8341a10e300e4349a9f0c65283880008
 msgid "Dark theme colors for better readability"
-msgstr ""
+msgstr "Couleurs des champs dans le thème sombre"
 
 #: ../../CHANGES.rst:61 12f80ed63946464c999dc123c1ef327d
 msgid "Crash for passwordless users at login when no SMTP server was configured."
 msgstr ""
+"Erreur lorsque les utilisateurs sans mots de passe lorsqu’aucun serveur SMTP "
+"n’a été configuré."
 
 #: ../../CHANGES.rst:64 2ca835d7715645079cf9983da6e90f5d
 msgid "[0.0.53] - 2024-04-22"
-msgstr ""
+msgstr "[0.0.53] - 2024-04-22"
 
 #: ../../CHANGES.rst:68 c5e32fdab90943d9b2470c01da6f15bc
 msgid "`env_prefix` create_app variable can select the environment var prefix."
 msgstr ""
+"La variable `env_prefix`de la méthode `create_app` permet de choisir le "
+"préfixe des variables d’environnement."
 
 #: ../../CHANGES.rst:71 3837079e13ad4b91812ba85098ae0f85
+#, fuzzy
 msgid "[0.0.52] - 2024-04-22"
-msgstr ""
+msgstr "[0.0.52] - 2024-04-22"
 
 #: ../../CHANGES.rst:75 85c3b9d4b9784188ba7a2b77e5ba4367
 msgid "`env_file` create_app variable can customize/disable the .env file"
 msgstr ""
+"La variable `env_file` de la méthode `create_app` permet de désactiver ou "
+"personnaliser le fichier `.env`"
 
 #: ../../CHANGES.rst:79 4e1c06838a964523a5f3152cff12c745
 msgid "Locked users cannot be impersonated anymore."
