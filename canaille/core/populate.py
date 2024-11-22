@@ -56,6 +56,7 @@ def fake_groups(nb=1, nb_users_max=1):
             group = models.Group(
                 display_name=fake.unique.word(),
                 description=fake.sentence(),
+                password_attribute="userPassword",
             )
             nb_users = random.randrange(1, nb_users_max + 1)
             group.members = list({random.choice(users) for _ in range(nb_users)})

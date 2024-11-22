@@ -87,7 +87,6 @@ class Group(canaille.core.models.Group, LDAPObject):
         "display_name": "cn",
         "members": "member",
         "description": "description",
-        "add_objectclass": "objectClass",
         "password_attribute": "pwdAttribute",
         "password_lifetime": "pwdMaxAge",
     }

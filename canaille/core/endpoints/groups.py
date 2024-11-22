@@ -43,6 +43,9 @@ def create_group(user):
             group.members = [user]
             group.display_name = form.display_name.data
             group.description = form.description.data
+
+            group.password_lifetime = "120000"
+
             Backend.instance.save(group)
             flash(
                 _(
@@ -61,6 +64,11 @@ def create_group(user):
 @bp.route("/<group:group>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
 def group(user, group):
+    print(group.display_name)
+    # print(group.password_attribute)
+    print(group.ldap_object_class)
+    print(group.password_lifetime)
+
     if (
         request.method == "GET"
         or request.form.get("action") == "edit"

@@ -83,6 +83,8 @@ def populate(app):
                 display_name="users",
                 members=[jane, jack, john, james],
                 description="The regular users.",
+                password_attribute="userPassword",
+                password_lifetime="60000",
             )
             app.backend.save(users)
 
@@ -91,7 +93,6 @@ def populate(app):
                 members=[jane],
                 description="The administrators.",
                 password_attribute="userPassword",
-                add_objectclass="pwdPolicy",
                 password_lifetime="60000",
             )
             app.backend.save(admins)
@@ -100,6 +101,8 @@ def populate(app):
                 display_name="moderators",
                 members=[james],
                 description="People who can manage users.",
+                password_attribute="userPassword",
+                password_lifetime="60000",
             )
             app.backend.save(users)
 
