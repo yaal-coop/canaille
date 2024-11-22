@@ -3,29 +3,30 @@
 # This file is distributed under the same license as the canaille package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-22 17:40+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2024-11-22 16:57+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/canaille/"
+"documentation/fr/>\n"
 "Language: fr\n"
-"Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.9-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 67cd3658cd614334a30f658b422f2404
 msgid "Release notes"
-msgstr ""
+msgstr "Notes de versions"
 
 #: ../development/changelog.rst:4 3e481ceb031d44c598fdff3839fc2fa5
 msgid "All notable changes to this project will be documented in there."
-msgstr ""
+msgstr "Tous les changements notables du projet seront documentés ici."
 
 #: ../development/changelog.rst:6 961f4990e9bc499fbb370a780a32fe87
 msgid ""
@@ -33,10 +34,13 @@ msgid ""
 "<https://keepachangelog.com/en/1.0.0/>`_, and this project adheres to "
 "`Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_."
 msgstr ""
+"Le format est basé sur `tenez un changelog <https://keepachangelog.com/fr/1.0"
+".0/>`_, et ce projet adhère à la politique de `Semantic Versioning "
+"<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 f50c0c44028e40ffa2feb0f9b2b3a2ab
 msgid "[0.0.57] - Unreleased"
-msgstr ""
+msgstr "[0.0.57] - Inédit"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:20 ../../CHANGES.rst:48
 #: ../../CHANGES.rst:67 ../../CHANGES.rst:74 ../../CHANGES.rst:93
@@ -63,7 +67,7 @@ msgstr ""
 #: da95365e057541ea88dbf0b90de6746e e1d1622c457a4b0c89498b60c3c33654
 #: e90749e5ccdb4d26b84919858e7759aa f3e30fe98ddd43ec91b66ef13b4b8c24
 msgid "Added"
-msgstr ""
+msgstr "Ajouté"
 
 #: ../../CHANGES.rst:6 d999b390f8524c928b1894427243548e
 msgid "Password compromission check :issue:`179`"
@@ -5430,4 +5434,3 @@ msgid ""
 "commands, as long as they match the ``JWT`` section of your configuration"
 " file."
 msgstr ""
-
