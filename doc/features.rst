@@ -184,7 +184,7 @@ Internationalization
    :align: right
    :width: 600px
 
-Canaile will display in your :attr:`preferred language <canaille.core.models.User.preferred_language>` if available, or your browser language if available (and if it is not you can :ref:`help us with the translation <development/contributing:Translations>`).
+Canaile will display in your :attr:`preferred language <canaille.core.models.User.preferred_language>` if available, or your browser language if available (and if it is not you can :ref:`help us with the translation <development/contributing:Code translation>`).
 If you prefer, you can also :attr:`force a language <canaille.core.configuration.CoreSettings.FAVICON>` for every users.
 
 .. _feature_ui:

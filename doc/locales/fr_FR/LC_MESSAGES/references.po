@@ -1,0 +1,1831 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 15:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_FR\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../doc/references/commands.rst:2
+msgid "Command Line Interface"
+msgstr ""
+
+#: ../../doc/references/commands.rst:4
+msgid "Canaille provide several commands to help administrator manage their data."
+msgstr ""
+
+#: ../../doc/references/commands.rst:6
+msgid ""
+"Generally, some configuration has to be loaded by `Canaille`. This can be"
+" achieved by :ref:`configuration loading "
+"method<references/configuration:Load the configuration>` available, but "
+"most of the time a ``CONFIG`` environment variable is used. For the sake "
+"of readability, it is omitted in the following examples."
+msgstr ""
+
+#: ../../canaille check:1
+msgid "Test the configuration file."
+msgstr ""
+
+#: ../../canaille check:1
+msgid ""
+"Attempt to reach the database and the SMTP server with the provided "
+"credentials."
+msgstr ""
+
+#: ../../canaille clean:1
+msgid "Remove expired tokens and authorization codes."
+msgstr ""
+
+#: ../../canaille install:1
+msgid "Installs canaille elements from the configuration."
+msgstr ""
+
+#: ../../canaille install:1
+msgid ""
+"For instance, depending on the configuration, this can generate OIDC keys"
+" or install LDAP schemas."
+msgstr ""
+
+#: ../../canaille populate:1
+msgid "Populate the database with generated random data."
+msgstr ""
+
+#: ../../doc/references/commands.rst
+msgid "Options"
+msgstr ""
+
+#: ../../canaille populate:1
+msgid "Number of items to create"
+msgstr ""
+
+#: ../../canaille groups:1 populate
+msgid "Populate the database with generated random groups."
+msgstr ""
+
+#: ../../canaille groups:1 populate
+msgid "The maximum number of users that will randomly be affected in the group"
+msgstr ""
+
+#: ../../canaille populate users:1
+msgid "Populate the database with generated random users."
+msgstr ""
+
+#: ../../canaille get:1
+msgid "Read information about models."
+msgstr ""
+
+#: ../../canaille get:1
+msgid "Options can be used to filter models::"
+msgstr ""
+
+#: ../../canaille get:1
+msgid "Displays the matching models in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille authorizationcode:1 get
+msgid "Search for authorizationcodes and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille client:1 get
+msgid "Search for clients and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille consent:1 get
+msgid "Search for consents and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get group:1
+msgid "Search for groups and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get token:1
+msgid "Search for tokens and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get user:1
+msgid "Search for users and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille set:1
+msgid "Update models."
+msgstr ""
+
+#: ../../canaille set:1
+msgid "The command takes an model ID and edit one or several attributes::"
+msgstr ""
+
+#: ../../canaille set:1
+msgid "Displays the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille authorizationcode:1 set
+msgid ""
+"Update a authorizationcode and display the edited model in JSON format in"
+" the standard output."
+msgstr ""
+
+#: ../../canaille authorizationcode:1 delete set
+msgid "IDENTIFIER should be a authorizationcode id or authorization_code_id"
+msgstr ""
+
+#: ../../doc/references/commands.rst
+msgid "Arguments"
+msgstr ""
+
+#: ../../canaille authorizationcode:1 client:1 consent:1 delete group:1 set
+#: token:1 user:1
+msgid "Required argument"
+msgstr ""
+
+#: ../../canaille client:1 set
+msgid ""
+"Update a client and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille client:1 delete set
+msgid "IDENTIFIER should be a client id or client_id"
+msgstr ""
+
+#: ../../canaille consent:1 set
+msgid ""
+"Update a consent and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille consent:1 delete set
+msgid "IDENTIFIER should be a consent id or consent_id"
+msgstr ""
+
+#: ../../canaille group:1 set
+msgid ""
+"Update a group and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille delete group:1 set
+msgid "IDENTIFIER should be a group id or display_name"
+msgstr ""
+
+#: ../../canaille set token:1
+msgid ""
+"Update a token and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille delete set token:1
+msgid "IDENTIFIER should be a token id or token_id"
+msgstr ""
+
+#: ../../canaille set user:1
+msgid ""
+"Update a user and display the edited model in JSON format in the standard"
+" output."
+msgstr ""
+
+#: ../../canaille delete set user:1
+msgid "IDENTIFIER should be a user id or user_name"
+msgstr ""
+
+#: ../../canaille create:1
+msgid "Create models."
+msgstr ""
+
+#: ../../canaille create:1
+msgid "The model attributes can be passed as command options::"
+msgstr ""
+
+#: ../../canaille create:1
+msgid "Displays the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille authorizationcode:1 create
+msgid ""
+"Create a new authorizationcode and display the created model in JSON "
+"format in the standard output."
+msgstr ""
+
+#: ../../canaille client:1 create
+msgid ""
+"Create a new client and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille consent:1 create
+msgid ""
+"Create a new consent and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille create group:1
+msgid ""
+"Create a new group and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille create token:1
+msgid ""
+"Create a new token and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille create user:1
+msgid ""
+"Create a new user and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille delete:1
+msgid "Delete models."
+msgstr ""
+
+#: ../../canaille delete:1
+msgid "The command takes a model ID and deletes it::"
+msgstr ""
+
+#: ../../canaille authorizationcode:1 delete
+msgid "Delete a authorizationcode."
+msgstr ""
+
+#: ../../canaille client:1 delete
+msgid "Delete a client."
+msgstr ""
+
+#: ../../canaille consent:1 delete
+msgid "Delete a consent."
+msgstr ""
+
+#: ../../canaille delete group:1
+msgid "Delete a group."
+msgstr ""
+
+#: ../../canaille delete token:1
+msgid "Delete a token."
+msgstr ""
+
+#: ../../canaille delete user:1
+msgid "Delete a user."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:2
+msgid "Configuration"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:5
+msgid "Load the configuration"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:7
+msgid ""
+"Canaille can be configured either by a environment variables, environment"
+" file, or by a configuration file."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:10
+msgid "Configuration file"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:12
+msgid ""
+"The configuration can be written in `toml` configuration file which path "
+"is passed in the :envvar:`CONFIG` environment variable."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:14
+#: ../../doc/references/configuration.rst:85
+#: canaille.app.configuration.RootSettings:11 of
+msgid "config.toml"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:26
+msgid ""
+"You can have a look at the :ref:`example file "
+"<references/configuration:Example file>` for inspiration."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:29
+msgid "Environment variables"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:31
+msgid ""
+"In addition, parameters that have not been set in the configuration file "
+"can be read from environment variables. The way environment variables are"
+" parsed can be read from the `pydantic-settings documentation "
+"<https://docs.pydantic.dev/latest/concepts/pydantic_settings/#parsing-"
+"environment-variable-values>`_."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:36
+msgid ""
+"For environment vars, the separator between sections and variables is a "
+"double underscore: ``__``. For instance, the ``NAME`` var in the "
+"``CANAILLE`` section shown above is ``CANAILLE__NAME``."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:40
+msgid "Environment file"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:42
+msgid ""
+"Any environment variable can also be written in a ``.env``, and will be "
+"read if present."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:44
+msgid ".env"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:62
+msgid "Parameters"
+msgstr ""
+
+#: canaille.app.configuration.RootSettings:1 of
+msgid ""
+"The top-level namespace contains holds the configuration settings "
+"unrelated to Canaille."
+msgstr ""
+
+#: canaille.app.configuration.RootSettings:4 of
+msgid "The configuration paramateres from the following libraries can be used:"
+msgstr ""
+
+#: canaille.app.configuration.RootSettings:6 of
+msgid ":doc:`Flask <flask:config>`"
+msgstr ""
+
+#: canaille.app.configuration.RootSettings:7 of
+msgid ":doc:`Flask-WTF <flask-wtf:config>`"
+msgstr ""
+
+#: canaille.app.configuration.RootSettings:8 of
+msgid ":doc:`Flask-Babel <flask-babel:index>`"
+msgstr ""
+
+#: canaille.app.configuration.RootSettings:9 of
+msgid ":doc:`Authlib <authlib:flask/2/authorization-server>`"
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.DEBUG:1 of
+msgid "The Flask :external:py:data:`DEBUG` configuration setting."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.DEBUG:3 of
+msgid "This enables debug options."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.DEBUG:7 of
+msgid ""
+"This is useful for development but should be absolutely avoided in "
+"production environments."
+msgstr ""
+
+#: ../../docstring
+#: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:1 of
+msgid "The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration setting."
+msgstr ""
+
+#: ../../docstring
+#: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:4 of
+msgid "This sets the url scheme by which canaille will be served."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.SECRET_KEY:1 of
+msgid "The Flask :external:py:data:`SECRET_KEY` configuration setting."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.SECRET_KEY:3 of
+msgid "You MUST change this."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.SERVER_NAME:1 of
+msgid "The Flask :external:py:data:`SERVER_NAME` configuration setting."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.SERVER_NAME:3 of
+msgid "This sets domain name on which canaille will be served."
+msgstr ""
+
+#: canaille.core.configuration.CoreSettings:1 of
+msgid "The settings from the ``CANAILLE`` namespace."
+msgstr ""
+
+#: canaille.core.configuration.CoreSettings:3 of
+msgid ""
+"Those are all the configuration parameters that controls the behavior of "
+"Canaille."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.ACL:1 of
+msgid "Mapping of permission groups. See :class:`ACLSettings` for more details."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.ACL:3 of
+msgid "The ACL name can be freely chosen. For example::"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1 of
+msgid "Administration email contact."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.ADMIN_EMAIL:3 of
+msgid ""
+"In certain special cases (example : questioning about password "
+"corruption), it is necessary to provide an administration contact email."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:1 of
+msgid ""
+"If :py:data:`True`, users will need to click on a confirmation link sent "
+"by email when they want to add a new email."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:4 of
+msgid ""
+"By default, this is true if ``SMTP`` is configured, else this is false. "
+"If explicitly set to true and ``SMTP`` is disabled, the email field will "
+"be read-only."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK:1
+#: of
+msgid ""
+"If :py:data:`True`, Canaille will check if passwords appears in "
+"compromission databases such as `HIBP <https://haveibeenpwned.com>`_ when"
+" users choose a new one."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY:1 of
+msgid ""
+"If :py:data:`False`, then users cannot ask for a password recovery link "
+"by email."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:1 of
+msgid ""
+"If :py:data:`True`, then users can freely create an account at this "
+"instance."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:4 of
+msgid ""
+"If email verification is available, users must confirm their email before"
+" the account is created."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.FAVICON:1 of
+msgid "You favicon."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.FAVICON:3 of
+msgid "If unset and :attr:`LOGO` is set, then the logo will be used."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:1 of
+msgid ""
+"If :py:data:`True`, when users try to sign in with an invalid login, a "
+"message is shown indicating that the password is wrong, but does not give"
+" a clue whether the login exists or not."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:5 of
+msgid ""
+"If :py:data:`False`, when a user tries to sign in with an invalid login, "
+"a message is shown indicating that the login does not exist."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.HTMX:1 of
+msgid "Accelerates webpages loading with asynchronous requests."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:1 of
+msgid "The validity duration of registration invitations, in seconds."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:3 of
+msgid "Defaults to 2 days."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.JAVASCRIPT:1 of
+msgid "Enables Javascript to smooth the user experience."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LANGUAGE:1 of
+msgid "If a language code is set, it will be used for every user."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LANGUAGE:3 of
+msgid "If unset, the language is guessed according to the users browser."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:1 of
+msgid ""
+"Configures the logging output using the python logging configuration "
+"format:"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:3 of
+msgid ""
+"if :py:data:`None`, everything is logged in the standard error output the"
+" log level is :py:data:`~logging.DEBUG` if the "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` setting is "
+":py:data:`True`, else this is :py:data:`~logging.INFO`"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:6 of
+msgid ""
+"if this is a :class:`dict`, it is passed to "
+":func:`logging.config.dictConfig`:"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:7 of
+msgid ""
+"if this is a :class:`str`, it is expected to be a file path that will be "
+"passed to :func:`logging.config.fileConfig`"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:10 of
+msgid "For example::"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGO:1 of
+msgid ""
+"The logo of your organization, this is useful to make your organization "
+"recognizable on login screens."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:1 of
+msgid "Maximum length for user password."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:3 of
+msgid ""
+"There is a technical limit with passlib used by sql database of 4096 "
+"characters. If the value entered is 0 or None, or greater than 4096, then"
+" 4096 will be retained."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:1 of
+msgid "Minimum length for user password."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:3 of
+msgid "It is possible not to set a minimum, by entering None or 0."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.NAME:1 of
+msgid "Your organization name."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.NAME:3 of
+msgid "Used for display purpose."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL:1
+#: of
+msgid "Have i been pwned api url for compromission checks."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.SENTRY_DSN:1 of
+msgid "A `Sentry <https://sentry.io>`_ DSN to collect the exceptions."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.SENTRY_DSN:3 of
+msgid "This is useful for tracking errors in test and production environments."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.SMTP:1 of
+msgid "The settings related to SMTP and mail configuration."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.SMTP:3 of
+msgid "If unset, mail-related features like password recovery won't be enabled."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.THEME:1 of
+msgid "The name of a theme in the 'theme' directory, or a path to a theme."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.THEME:3 of
+msgid ""
+"Defaults to ``default``. Theming is done with `flask-themer "
+"<https://github.com/tktech/flask-themer>`_."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.TIMEZONE:1 of
+msgid ""
+"The timezone in which datetimes will be displayed to the users (e.g. "
+"``CEST``)."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.TIMEZONE:4 of
+msgid "If unset, the server timezone will be used."
+msgstr ""
+
+#: canaille.core.configuration.SMTPSettings:1 of
+msgid ""
+"The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace. If "
+"unset, mail related features will be disabled, such as mail verification "
+"or password recovery emails."
+msgstr ""
+
+#: canaille.core.configuration.SMTPSettings:5 of
+msgid ""
+"By default, Canaille will try to send mails from localhost without "
+"authentication."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.FROM_ADDR:1 of
+msgid "The sender for Canaille mails."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.FROM_ADDR:3 of
+msgid "Some mail provider might require a valid sender address."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.HOST:1 of
+msgid "The SMTP host."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.LOGIN:1 of
+msgid "The SMTP login."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.PASSWORD:1 of
+msgid "The SMTP password."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.PORT:1 of
+msgid "The SMTP port."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.SSL:1 of
+msgid "Whether to use SSL to connect to the SMTP server."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.TLS:1 of
+msgid "Whether to use TLS to connect to the SMTP server."
+msgstr ""
+
+#: canaille.core.configuration.ACLSettings:1 of
+msgid "Access Control List settings. Belong in the ``CANAILLE.ACL`` namespace."
+msgstr ""
+
+#: canaille.core.configuration.ACLSettings:3 of
+msgid ""
+"You can define access controls that define what users can do on canaille "
+"An access control consists in a :attr:`FILTER` to match users, a list of "
+":attr:`PERMISSIONS` matched users will be able to perform, and fields "
+"users will be able to :attr:`READ` and :attr:`WRITE`. Users matching "
+"several filters will cumulate permissions."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:1 of
+msgid ":attr:`FILTER` can be:"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:3 of
+msgid ""
+":py:data:`None`, in which case all the users will match this access "
+"control"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:4 of
+msgid ""
+"a mapping where keys are user attributes name and the values those user "
+"attribute values. All the values must be matched for the user to be part "
+"of the access control."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:7 of
+msgid ""
+"a list of those mappings. If a user values match at least one mapping, "
+"then the user will be part of the access control"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:10 of
+msgid "Here are some examples::"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.PERMISSIONS:1 of
+msgid ""
+"A list of :class:`Permission` users in the access control will be able to"
+" manage. For example::"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.READ:1 of
+msgid ""
+"A list of :class:`~canaille.core.models.User` attributes that users in "
+"the ACL will be able to read."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.WRITE:1 of
+msgid ""
+"A list of :class:`~canaille.core.models.User` attributes that users in "
+"the ACL will be able to edit."
+msgstr ""
+
+#: canaille.core.configuration.Permission:1 of
+msgid "The permissions that can be assigned to users."
+msgstr ""
+
+#: canaille.core.configuration.Permission:3 of
+msgid ""
+"The permissions are intended to be used in :attr:`ACLSettings "
+"<canaille.core.configuration.ACLSettings.PERMISSIONS>`."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.DELETE_ACCOUNT:1 of
+msgid "Allows users to delete their account."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.DELETE_ACCOUNT:3 of
+msgid ""
+"If used with "
+":attr:`~canaille.core.configuration.Permission.MANAGE_USERS`, users can "
+"delete any account."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.EDIT_SELF:1 of
+msgid "Allows users to edit their own profile."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.IMPERSONATE_USERS:1
+#: of
+msgid "Allows users to take the identity of another user."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.MANAGE_GROUPS:1 of
+msgid "Allows group edition and creation."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.MANAGE_OIDC:1 of
+msgid "Allows OpenID Connect client managements."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.MANAGE_USERS:1 of
+msgid "Allows other users management."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.USE_OIDC:1 of
+msgid "Allows OpenID Connect authentication."
+msgstr ""
+
+#: canaille.oidc.configuration.OIDCSettings:1 of
+msgid "OpenID Connect settings."
+msgstr ""
+
+#: canaille.oidc.configuration.OIDCSettings:3 of
+msgid "Belong in the ``CANAILLE_OIDC`` namespace."
+msgstr ""
+
+#: ../../docstring
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:1
+#: of
+msgid "Whether a token is needed for the RFC7591 dynamical client registration."
+msgstr ""
+
+#: ../../docstring
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:3
+#: of
+msgid ""
+"If :py:data:`True`, no token is needed to register a client. If "
+":py:data:`False`, dynamical client registration needs a token defined in "
+":attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`."
+msgstr ""
+
+#: ../../docstring
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_TOKENS:1
+#: of
+msgid "A list of tokens that can be used for dynamic client registration."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.OIDCSettings.JWT:1 of
+msgid "JSON Web Token settings."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:1 of
+msgid "Force the nonce exchange during the authentication flows."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:3 of
+msgid "This adds security but may not be supported by all clients."
+msgstr ""
+
+#: canaille.oidc.configuration.JWTSettings:1 of
+msgid "JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace."
+msgstr ""
+
+#: canaille.oidc.configuration.JWTSettings:3 of
+msgid "You can generate a RSA keypair with::"
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.ALG:1 of
+msgid "The key algorithm."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.EXP:1 of
+msgid "The time the JWT will be valid, in seconds."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.ISS:1 of
+msgid "The URI of the identity provider."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.KTY:1 of
+msgid "The key type."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:1 of
+msgid "The private key."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:3
+#: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:3 of
+msgid ""
+"If :py:data:`None` and debug mode is enabled, then an in-memory key will "
+"be used."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:1 of
+msgid "The public key."
+msgstr ""
+
+#: canaille.oidc.configuration.JWTMappingSettings:1 of
+msgid "Mapping between the user model and the JWT fields."
+msgstr ""
+
+#: canaille.oidc.configuration.JWTMappingSettings:3 of
+msgid "Fields are evaluated with jinja. A ``user`` var is available."
+msgstr ""
+
+#: canaille.backends.sql.configuration.SQLSettings:1 of
+msgid "Settings related to the SQL backend."
+msgstr ""
+
+#: canaille.backends.sql.configuration.SQLSettings:3 of
+msgid "Belong in the ``CANAILLE_SQL`` namespace."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:1 of
+msgid "The SQL server URI. For example::"
+msgstr ""
+
+#: canaille.backends.ldap.configuration.LDAPSettings:1 of
+msgid "Settings related to the LDAP backend."
+msgstr ""
+
+#: canaille.backends.ldap.configuration.LDAPSettings:3 of
+msgid "Belong in the ``CANAILLE_LDAP`` namespace."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.BIND_DN:1
+#: of
+msgid "The LDAP bind DN."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.BIND_PW:1
+#: of
+msgid "The LDAP bind password."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:1 of
+msgid "The LDAP node under which groups will be looked for and saved."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:3 of
+msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_CLASS:1 of
+msgid "The object class to use for creating new groups."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_NAME_ATTRIBUTE:1 of
+msgid "The attribute to use to identify a group."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_RDN:1 of
+msgid "The attribute to identify an object in the Group DN."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.ROOT_DN:1
+#: of
+msgid "The LDAP root DN."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.TIMEOUT:1
+#: of
+msgid "The LDAP connection timeout."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.URI:1 of
+msgid "The LDAP server URI."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:1 of
+msgid "The LDAP node under which users will be looked for and saved."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:3 of
+msgid "For instance `ou=users,dc=mydomain,dc=tld`."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_CLASS:1 of
+msgid "The object class to use for creating new users."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:1 of
+msgid "Filter to match users on sign in."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:3 of
+msgid ""
+"For instance ``(|(uid={{ login }})(mail={{ login }}))``. Jinja syntax is "
+"supported and a ``login`` variable is available, containing the value "
+"passed in the login field."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.USER_RDN:1
+#: of
+msgid "The attribute to identify an object in the User DN."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:81
+msgid "Example file"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:83
+msgid "Here is a configuration file example:"
+msgstr ""
+
+#: ../../doc/references/index.rst:2
+msgid "References"
+msgstr ""
+
+#: ../../doc/references/models.rst:2
+msgid "Data models"
+msgstr ""
+
+#: ../../doc/references/models.rst:4
+msgid ""
+"This reference details the data models used by Canaille. This is mostly "
+"useful for developers."
+msgstr ""
+
+#: canaille.backends.models.BackendModel:1 canaille.backends.models.Model:1 of
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: canaille.backends.models.BackendModel:1 of
+msgid "The backend model abstract class."
+msgstr ""
+
+#: canaille.backends.models.BackendModel:3 of
+msgid ""
+"It details all the methods and attributes that are expected to be "
+"implemented for every model and for every backend."
+msgstr ""
+
+#: canaille.backends.models.Model:1 of
+msgid "The model abstract class."
+msgstr ""
+
+#: canaille.backends.models.Model:3 of
+msgid "It details all the common attributes shared by every models."
+msgstr ""
+
+#: ../../docstring canaille.backends.models.Model.created:1 of
+msgid ""
+"The :class:`~datetime.datetime` that the resource was added to the "
+"service provider."
+msgstr ""
+
+#: ../../docstring canaille.backends.models.Model.id:1 of
+msgid ""
+"A unique identifier for a SCIM resource as defined by the service "
+"provider. Id will be :py:data:`None` until the "
+":meth:`~canaille.backends.models.BackendModel.save` method is called."
+msgstr ""
+
+#: ../../docstring canaille.backends.models.Model.id:5 of
+msgid ""
+"Each representation of the resource MUST include a non-empty \"id\" "
+"value.  This identifier MUST be unique across the SCIM service provider's"
+" entire set of resources.  It MUST be a stable, non- reassignable "
+"identifier that does not change when the same resource is returned in "
+"subsequent requests.  The value of the \"id\" attribute is always issued "
+"by the service provider and MUST NOT be specified by the client.  The "
+"string \"bulkId\" is a reserved keyword and MUST NOT be used within any "
+"unique identifier value.  The attribute characteristics are \"caseExact\""
+" as \"true\", a mutability of \"readOnly\", and a \"returned\" "
+"characteristic of \"always\".  See Section 9 for additional "
+"considerations regarding privacy."
+msgstr ""
+
+#: canaille.backends.models.Model.identifier:1 of
+msgid "Returns a unique value that will be used to identify the model instance."
+msgstr ""
+
+#: canaille.backends.models.Model.identifier:4 of
+msgid ""
+"This value will be used in URLs in canaille, so it should be unique and "
+"short."
+msgstr ""
+
+#: ../../docstring canaille.backends.models.Model.last_modified:1 of
+msgid ""
+"The most recent :class:`~datetime.datetime` that the details of this "
+"resource were updated at the service provider."
+msgstr ""
+
+#: ../../docstring canaille.backends.models.Model.last_modified:4 of
+msgid ""
+"If this resource has never been modified since its initial creation, the "
+"value MUST be the same as the value of "
+":attr:`~canaille.backends.models.Model.created`."
+msgstr ""
+
+#: canaille.core.models.Group:1 canaille.core.models.User:1
+#: canaille.oidc.basemodels.AuthorizationCode:1
+#: canaille.oidc.basemodels.Client:1 canaille.oidc.basemodels.Consent:1
+#: canaille.oidc.basemodels.Token:1 of
+msgid "Bases: :py:class:`~canaille.backends.models.Model`"
+msgstr ""
+
+#: canaille.core.models.Group:1 of
+msgid ""
+"User model, based on the `SCIM Group schema "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_."
+msgstr ""
+
+#: ../../docstring canaille.core.models.Group.display_name:1 of
+msgid "A human-readable name for the Group."
+msgstr ""
+
+#: ../../docstring canaille.core.models.Group.display_name:3
+#: canaille.oidc.basemodels.Client.client_id:1 of
+msgid "REQUIRED."
+msgstr ""
+
+#: ../../docstring canaille.core.models.Group.members:1 of
+msgid "A list of members of the Group."
+msgstr ""
+
+#: ../../docstring canaille.core.models.Group.members:3 of
+msgid ""
+"While values MAY be added or removed, sub-attributes of members are "
+"\"immutable\".  The \"value\" sub-attribute contains the value of an "
+"\"id\" attribute of a SCIM resource, and the \"$ref\" sub-attribute must "
+"be the URI of a SCIM resource such as a \"User\", or a \"Group\".  The "
+"intention of the \"Group\" type is to allow the service provider to "
+"support nested groups.  Service providers MAY require clients to provide "
+"a non-empty value by setting the \"required\" attribute characteristic of"
+" a sub-attribute of the \"members\" attribute in the \"Group\" resource "
+"schema."
+msgstr ""
+
+#: canaille.core.models.User:1 of
+msgid ""
+"User model, based on the `SCIM User schema "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_, "
+"`Entreprise User Schema Extension "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_ and `SCIM "
+"Password Management Extension <https://datatracker.ietf.org/doc/html"
+"/draft-hunt-scim-password-mgmt-00.html>`_ draft. Attribute description is"
+" based on SCIM and put there for information purpose. The description may"
+" not fit the current implementation in Canaille."
+msgstr ""
+
+#: canaille.core.models.User.can:1 of
+msgid ""
+"Whether or not the user has the "
+":class:`~canaille.core.configuration.Permission` according to the "
+":class:`configuration <canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.department:1 of
+msgid "Identifies the name of a department."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.display_name:1 of
+msgid "The name of the user, suitable for display to end-users."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.display_name:3 of
+msgid ""
+"Each user returned MAY include a non-empty displayName value.  The name "
+"SHOULD be the full name of the User being described, if known (e.g., "
+"\"Babs Jensen\" or \"Ms. Barbara J Jensen, III\") but MAY be a username "
+"or handle, if that is all that is available (e.g., \"bjensen\").  The "
+"value provided SHOULD be the primary textual label by which this User is "
+"normally displayed by the service provider when presenting it to end-"
+"users."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.emails:1 of
+msgid "Email addresses for the User."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.emails:3 of
+msgid ""
+"The value SHOULD be specified according to [RFC5321].  Service providers "
+"SHOULD canonicalize the value according to [RFC5321], e.g., "
+"\"bjensen@example.com\" instead of \"bjensen@EXAMPLE.COM\".  The "
+"\"display\" sub-attribute MAY be used to return the canonicalized "
+"representation of the email value. The \"type\" sub-attribute is used to "
+"provide a classification meaningful to the (human) user.  The user "
+"interface should encourage the use of basic values of \"work\", \"home\","
+" and \"other\" and MAY allow additional type values to be used at the "
+"discretion of SCIM clients."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.employee_number:1 of
+msgid ""
+"A string identifier, typically numeric or alphanumeric, assigned to a "
+"person, typically based on order of hire or association with an "
+"organization."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.family_name:1 of
+msgid ""
+"The family name of the User, or last name in most Western languages "
+"(e.g., \"Jensen\" given the full name \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.formatted_address:1 of
+msgid ""
+"The full mailing address, formatted for display or use with a mailing "
+"label."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.formatted_address:4 of
+msgid "This attribute MAY contain newlines."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.formatted_name:1 of
+msgid ""
+"The full name, including all middle names, titles, and suffixes as "
+"appropriate, formatted for display (e.g., \"Ms. Barbara Jane Jensen, "
+"III\")."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.given_name:1 of
+msgid ""
+"The given name of the User, or first name in most Western languages "
+"(e.g., \"Barbara\" given the full name \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.groups:1 of
+msgid ""
+"A list of groups to which the user belongs, either through direct "
+"membership, through nested groups, or dynamically calculated."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.groups:4 of
+msgid ""
+"The values are meant to enable expression of common group-based or role-"
+"based access control models, although no explicit authorization model is "
+"defined.  It is intended that the semantics of group membership and any "
+"behavior or authorization granted as a result of membership are defined "
+"by the service provider.  The canonical types \"direct\" and \"indirect\""
+" are defined to describe how the group membership was derived.  Direct "
+"group membership indicates that the user is directly associated with the "
+"group and SHOULD indicate that clients may modify membership through the "
+"\"Group\" resource. Indirect membership indicates that user membership is"
+" transitive or dynamic and implies that clients cannot modify indirect "
+"group membership through the \"Group\" resource but MAY modify direct "
+"group membership through the \"Group\" resource, which may influence "
+"indirect memberships.  If the SCIM service provider exposes a \"Group\" "
+"resource, the \"value\" sub-attribute MUST be the \"id\", and the "
+"\"$ref\" sub-attribute must be the URI of the corresponding \"Group\" "
+"resources to which the user belongs.  Since this attribute has a "
+"mutability of \"readOnly\", group membership changes MUST be applied via "
+"the \"Group\" Resource (Section 4.2).  This attribute has a mutability of"
+" \"readOnly\"."
+msgstr ""
+
+#: canaille.core.models.User.has_password:1 of
+msgid "Check whether a password has been set for the user."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.locality:1 of
+msgid "The city or locality component."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.lock_date:1 of
+msgid "A DateTime indicating when the resource was locked."
+msgstr ""
+
+#: canaille.core.models.User.locked:1 of
+msgid "Whether the user account has been locked or has expired."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.organization:1 of
+msgid "Identifies the name of an organization."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:1 of
+msgid ""
+"This attribute is intended to be used as a means to set, replace, or "
+"compare (i.e., filter for equality) a password.  The cleartext value or "
+"the hashed value of a password SHALL NOT be returnable by a service "
+"provider.  If a service provider holds the value locally, the value "
+"SHOULD be hashed.  When a password is set or changed by the client, the "
+"cleartext password SHOULD be processed by the service provider as "
+"follows:"
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:9 of
+msgid ""
+"Prepare the cleartext value for international language comparison.  See "
+"Section 7.8 of [RFC7644]."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:12 of
+msgid ""
+"Validate the value against server password policy.  Note: The definition "
+"and enforcement of password policy are beyond the scope of this document."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:16 of
+msgid ""
+"Ensure that the value is encrypted (e.g., hashed).  See Section 9.2 for "
+"acceptable hashing and encryption handling when storing or persisting for"
+" provisioning workflow reasons."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:20 of
+msgid ""
+"A service provider that immediately passes the cleartext value on to "
+"another system or programming interface MUST pass the value directly over"
+" a secured connection (e.g., Transport Layer Security (TLS)).  If the "
+"value needs to be temporarily persisted for a period of time (e.g., "
+"because of a workflow) before provisioning, then the value MUST be "
+"protected by some method, such as encryption."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:28 of
+msgid ""
+"Testing for an equality match MAY be supported if there is an existing "
+"stored hashed value.  When testing for equality, the service provider:"
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:32 of
+msgid ""
+"Prepares the filter value for international language comparison.  See "
+"Section 7.8 of [RFC7644]."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:35 of
+msgid ""
+"Generates the salted hash of the filter value and tests for a match with "
+"the locally held value."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:38 of
+msgid ""
+"The mutability of the password attribute is \"writeOnly\", indicating "
+"that the value MUST NOT be returned by a service provider in any form "
+"(the attribute characteristic \"returned\" is \"never\")."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.phone_numbers:1 of
+msgid "Phone numbers for the user."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.phone_numbers:3 of
+msgid ""
+"The value SHOULD be specified according to the format defined in "
+"[RFC3966], e.g., 'tel:+1-201-555-0123'.  Service providers SHOULD "
+"canonicalize the value according to [RFC3966] format, when appropriate.  "
+"The \"display\" sub-attribute MAY be used to return the canonicalized "
+"representation of the phone number value.  The sub- attribute \"type\" "
+"often has typical values of \"work\", \"home\", \"mobile\", \"fax\", "
+"\"pager\", and \"other\" and MAY allow more types to be defined by the "
+"SCIM clients."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.photo:1 of
+msgid ""
+"A URI that is a uniform resource locator (as defined in Section 1.1.3 of "
+"[RFC3986]) that points to a resource location representing the user's "
+"image."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.photo:5 of
+msgid ""
+"The resource MUST be a file (e.g., a GIF, JPEG, or PNG image file) rather"
+" than a web page containing an image.  Service providers MAY return the "
+"same image in different sizes, although it is recognized that no standard"
+" for describing images of various sizes currently exists.  Note that this"
+" attribute SHOULD NOT be used to send down arbitrary photos taken by this"
+" user; instead, profile photos of the user that are suitable for display "
+"when describing the user should be sent. Instead of the standard "
+"canonical values for type, this attribute defines the following canonical"
+" values to represent popular photo sizes: \"photo\" and \"thumbnail\"."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.postal_code:1 of
+msgid "The zip code or postal code component."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.preferred_language:1 of
+msgid ""
+"Indicates the user's preferred written or spoken languages and is "
+"generally used for selecting a localized user interface."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.preferred_language:4 of
+msgid ""
+"The value indicates the set of natural languages that are preferred. The "
+"format of the value is the same as the HTTP Accept-Language header field "
+"(not including \"Accept-Language:\") and is specified in Section 5.3.5 of"
+" [RFC7231].  The intent of this value is to enable cloud applications to "
+"perform matching of language tags [RFC4647] to the user's language "
+"preferences, regardless of what may be indicated by a user agent (which "
+"might be shared), or in an interaction that does not involve a user (such"
+" as in a delegated OAuth 2.0 [RFC6749] style interaction) where normal "
+"HTTP Accept-Language header negotiation cannot take place."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.profile_url:1 of
+msgid ""
+"A URI that is a uniform resource locator (as defined in Section 1.1.3 of "
+"[RFC3986]) and that points to a location representing the user's online "
+"profile (e.g., a web page)."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.profile_url:5 of
+msgid "URIs are canonicalized per Section 6.2 of [RFC3986]."
+msgstr ""
+
+#: canaille.core.models.User.readable_fields:1 of
+msgid ""
+"The fields the user can read according to the :class:`configuration "
+"<canaille.core.configuration.ACLSettings>` configuration."
+msgstr ""
+
+#: canaille.core.models.User.readable_fields:4 of
+msgid ""
+"This does not include the :attr:`writable "
+"<canaille.core.models.User.writable_fields>` fields."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.region:1 of
+msgid "The state or region component."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.street:1 of
+msgid ""
+"The full street address component, which may include house number, street"
+" name, P.O."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.street:4 of
+msgid ""
+"box, and multi-line extended street address information.  This attribute "
+"MAY contain newlines."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.title:1 of
+msgid "The user's title, such as \"Vice President\"."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.user_name:1 of
+msgid ""
+"A service provider's unique identifier for the user, typically used by "
+"the user to directly authenticate to the service provider."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.user_name:4 of
+msgid ""
+"Often displayed to the user as their unique identifier within the system "
+"(as opposed to \"id\" or \"externalId\", which are generally opaque and "
+"not user-friendly identifiers).  Each User MUST include a non-empty "
+"userName value.  This identifier MUST be unique across the service "
+"provider's entire set of Users.  This attribute is REQUIRED and is case "
+"insensitive."
+msgstr ""
+
+#: canaille.core.models.User.writable_fields:1 of
+msgid ""
+"The fields the user can write according to the :class:`configuration "
+"<canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: canaille.oidc.basemodels.AuthorizationCode:1 of
+msgid "OpenID Connect temporary authorization code definition."
+msgstr ""
+
+#: canaille.oidc.basemodels.Client:1 of
+msgid ""
+"OpenID Connect client definition, based on the `OAuth 2.0 Dynamic Client "
+"Registration protocols "
+"<https://datatracker.ietf.org/doc/html/rfc7591.html>`_ and the `OpenID "
+"Connect RP-Initiated Logout <https://openid.net/specs/openid-connect-"
+"rpinitiated-1_0.html>`_ specifications."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_id:3 of
+msgid ""
+"OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for"
+" any other registered client, though an authorization server MAY issue "
+"the same client identifier to multiple instances of a registered client "
+"at its discretion."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_id_issued_at:1
+#: canaille.oidc.basemodels.Client.client_secret:1
+#: canaille.oidc.basemodels.Client.post_logout_redirect_uris:1 of
+msgid "OPTIONAL."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_id_issued_at:3 of
+msgid ""
+"Time at which the client identifier was issued.  The time is represented "
+"as the number of seconds from 1970-01-01T00:00:00Z as measured in UTC "
+"until the date/time of issuance."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_name:1 of
+msgid ""
+"Human-readable string name of the client to be presented to the end-user "
+"during authorization."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_name:4 of
+msgid ""
+"If omitted, the authorization server MAY display the raw \"client_id\" "
+"value to the end-user instead.  It is RECOMMENDED that clients always "
+"send this field. The value of this field MAY be internationalized, as "
+"described in Section 2.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_secret:3 of
+msgid ""
+"OAuth 2.0 client secret string.  If issued, this MUST be unique for each "
+"\"client_id\" and SHOULD be unique for multiple instances of a client "
+"using the same \"client_id\".  This value is used by confidential clients"
+" to authenticate to the token endpoint, as described in OAuth 2.0 "
+"[RFC6749], Section 2.3.1."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_secret_expires_at:1
+#: of
+msgid "REQUIRED if \"client_secret\" is issued."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_secret_expires_at:3
+#: of
+msgid ""
+"Time at which the client secret will expire or 0 if it will not expire.  "
+"The time is represented as the number of seconds from "
+"1970-01-01T00:00:00Z as measured in UTC until the date/time of "
+"expiration."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_uri:1 of
+msgid "URL string of a web page providing information about the client."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_uri:3 of
+msgid ""
+"If present, the server SHOULD display this URL to the end-user in a "
+"clickable fashion.  It is RECOMMENDED that clients always send this "
+"field.  The value of this field MUST point to a valid web page.  The "
+"value of this field MAY be internationalized, as described in Section "
+"2.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.contacts:1 of
+msgid ""
+"Array of strings representing ways to contact people responsible for this"
+" client, typically email addresses."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.contacts:4 of
+msgid ""
+"The authorization server MAY make these contact addresses available to "
+"end-users for support requests for the client.  See Section 6 for "
+"information on Privacy Considerations."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:1 of
+msgid ""
+"Array of OAuth 2.0 grant type strings that the client can use at the "
+"token endpoint.  These grant types are defined as follows:"
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:4 of
+msgid ""
+"\"authorization_code\": The authorization code grant type defined in "
+"OAuth 2.0, Section 4.1."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:7 of
+msgid "\"implicit\": The implicit grant type defined in OAuth 2.0, Section 4.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:10 of
+msgid ""
+"\"password\": The resource owner password credentials grant type defined "
+"in OAuth 2.0, Section 4.3."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:13 of
+msgid ""
+"\"client_credentials\": The client credentials grant type defined in "
+"OAuth 2.0, Section 4.4."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:16 of
+msgid ""
+"\"refresh_token\": The refresh token grant type defined in OAuth 2.0, "
+"Section 6."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:19 of
+msgid ""
+"\"urn:ietf:params:oauth:grant-type:jwt-bearer\": The JWT Bearer Token "
+"Grant Type defined in OAuth JWT Bearer Token Profiles [RFC7523]."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:23 of
+msgid ""
+"\"urn:ietf:params:oauth:grant-type:saml2-bearer\": The SAML 2.0 Bearer "
+"Assertion Grant defined in OAuth SAML 2 Bearer Token Profiles [RFC7522]."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:27 of
+msgid ""
+"If the token endpoint is used in the grant type, the value of this "
+"parameter MUST be the same as the value of the \"grant_type\" parameter "
+"passed to the token endpoint defined in the grant type definition.  "
+"Authorization servers MAY allow for other values as defined in the grant "
+"type extension process described in OAuth 2.0, Section 4.5.  If omitted, "
+"the default behavior is that the client will use only the "
+"\"authorization_code\" Grant Type."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.jwk:1 of
+msgid ""
+"Client's JSON Web Key Set [RFC7517] document value, which contains the "
+"client's public keys."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.jwk:4 of
+msgid ""
+"The value of this field MUST be a JSON object containing a valid JWK Set."
+"  These keys can be used by higher-level protocols that use signing or "
+"encryption.  This parameter is intended to be used by clients that cannot"
+" use the \"jwks_uri\" parameter, such as native clients that cannot host "
+"public URLs.  The \"jwks_uri\" and \"jwks\" parameters MUST NOT both be "
+"present in the same request or response."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.jwks_uri:1 of
+msgid ""
+"URL string referencing the client's JSON Web Key (JWK) Set [RFC7517] "
+"document, which contains the client's public keys."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.jwks_uri:4 of
+msgid ""
+"The value of this field MUST point to a valid JWK Set document. These "
+"keys can be used by higher-level protocols that use signing or "
+"encryption.  For instance, these keys might be used by some applications "
+"for validating signed requests made to the token endpoint when using JWTs"
+" for client authentication [RFC7523].  Use of this parameter is preferred"
+" over the \"jwks\" parameter, as it allows for easier key rotation.  The "
+"\"jwks_uri\" and \"jwks\" parameters MUST NOT both be present in the same"
+" request or response."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.logo_uri:1 of
+msgid "URL string that references a logo for the client."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.logo_uri:3 of
+msgid ""
+"If present, the server SHOULD display this image to the end-user during "
+"approval. The value of this field MUST point to a valid image file.  The "
+"value of this field MAY be internationalized, as described in Section "
+"2.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.policy_uri:1 of
+msgid ""
+"URL string that points to a human-readable privacy policy document that "
+"describes how the deployment organization collects, uses, retains, and "
+"discloses personal data."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.policy_uri:5
+#: canaille.oidc.basemodels.Client.tos_uri:5 of
+msgid ""
+"The authorization server SHOULD display this URL to the end-user if it is"
+" provided.  The value of this field MUST point to a valid web page.  The "
+"value of this field MAY be internationalized, as described in Section "
+"2.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.post_logout_redirect_uris:3
+#: of
+msgid ""
+"Array of URLs supplied by the RP to which it MAY request that the End-"
+"User's User Agent be redirected using the post_logout_redirect_uri "
+"parameter after a logout has been performed. These URLs SHOULD use the "
+"https scheme and MAY contain port, path, and query parameter components; "
+"however, they MAY use the http scheme, provided that the Client Type is "
+"confidential, as defined in Section 2.1 of OAuth 2.0 [RFC6749], and "
+"provided the OP allows the use of http RP URIs."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.redirect_uris:1 of
+msgid ""
+"Array of redirection URI strings for use in redirect-based flows such as "
+"the authorization code and implicit flows."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.redirect_uris:4 of
+msgid ""
+"As required by Section 2 of OAuth 2.0 [RFC6749], clients using flows with"
+" redirection MUST register their redirection URI values. Authorization "
+"servers that support dynamic registration for redirect-based flows MUST "
+"implement support for this metadata value."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.response_types:1 of
+msgid ""
+"Array of the OAuth 2.0 response type strings that the client can use at "
+"the authorization endpoint.  These response types are defined as follows:"
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.response_types:5 of
+msgid ""
+"\"code\": The authorization code response type defined in OAuth 2.0, "
+"Section 4.1."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.response_types:8 of
+msgid "\"token\": The implicit response type defined in OAuth 2.0, Section 4.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.response_types:11 of
+msgid ""
+"If the authorization endpoint is used by the grant type, the value of "
+"this parameter MUST be the same as the value of the \"response_type\" "
+"parameter passed to the authorization endpoint defined in the grant type "
+"definition.  Authorization servers MAY allow for other values as defined "
+"in the grant type extension process is described in OAuth 2.0, Section "
+"4.5.  If omitted, the default is that the client will use only the "
+"\"code\" response type."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.scope:1 of
+msgid ""
+"String containing a space-separated list of scope values (as described in"
+" Section 3.3 of OAuth 2.0 [RFC6749]) that the client can use when "
+"requesting access tokens."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.scope:5 of
+msgid ""
+"The semantics of values in this list are service specific.  If omitted, "
+"an authorization server MAY register a client with a default set of "
+"scopes."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.software_id:1 of
+msgid ""
+"A unique identifier string (e.g., a Universally Unique Identifier (UUID))"
+" assigned by the client developer or software publisher used by "
+"registration endpoints to identify the client software to be dynamically "
+"registered."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.software_id:6 of
+msgid ""
+"Unlike \"client_id\", which is issued by the authorization server and "
+"SHOULD vary between instances, the \"software_id\" SHOULD remain the same"
+" for all instances of the client software.  The \"software_id\" SHOULD "
+"remain the same across multiple updates or versions of the same piece of "
+"software.  The value of this field is not intended to be human readable "
+"and is usually opaque to the client and authorization server."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.software_version:1 of
+msgid ""
+"A version identifier string for the client software identified by "
+"\"software_id\"."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.software_version:4 of
+msgid ""
+"The value of the \"software_version\" SHOULD change on any update to the "
+"client software identified by the same \"software_id\".  The value of "
+"this field is intended to be compared using string equality matching and "
+"no other comparison semantics are defined by this specification.  The "
+"value of this field is outside the scope of this specification, but it is"
+" not intended to be human readable and is usually opaque to the client "
+"and authorization server.  The definition of what constitutes an update "
+"to client software that would trigger a change to this value is specific "
+"to the software itself and is outside the scope of this specification."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.token_endpoint_auth_method:1
+#: of
+msgid ""
+"String indicator of the requested authentication method for the token "
+"endpoint.  Values defined by this specification are:"
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.token_endpoint_auth_method:4
+#: of
+msgid ""
+"\"none\": The client is a public client as defined in OAuth 2.0, Section "
+"2.1, and does not have a client secret."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.token_endpoint_auth_method:7
+#: of
+msgid ""
+"\"client_secret_post\": The client uses the HTTP POST parameters as "
+"defined in OAuth 2.0, Section 2.3.1."
+msgstr ""
+
+#: ../../docstring
+#: canaille.oidc.basemodels.Client.token_endpoint_auth_method:10 of
+msgid ""
+"\"client_secret_basic\": The client uses HTTP Basic as defined in OAuth "
+"2.0, Section 2.3.1."
+msgstr ""
+
+#: ../../docstring
+#: canaille.oidc.basemodels.Client.token_endpoint_auth_method:13 of
+msgid ""
+"Additional values can be defined via the IANA \"OAuth Token Endpoint "
+"Authentication Methods\" registry established in Section 4.2.  Absolute "
+"URIs can also be used as values for this parameter without being "
+"registered.  If unspecified or omitted, the default is "
+"\"client_secret_basic\", denoting the HTTP Basic authentication scheme as"
+" specified in Section 2.3.1 of OAuth 2.0."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.tos_uri:1 of
+msgid ""
+"URL string that points to a human-readable terms of service document for "
+"the client that describes a contractual relationship between the end-user"
+" and the client that the end-user accepts when authorizing the client."
+msgstr ""
+
+#: canaille.oidc.basemodels.Consent:1 of
+msgid "Long-term user consent to an application."
+msgstr ""
+
+#: canaille.oidc.basemodels.Token:1 of
+msgid "OpenID Connect token definition."
+msgstr ""
+

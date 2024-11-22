@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../locales/readme.rst:1
+#: 81c6815493714f6a873d6e86dc1a9c63
+msgid "Documentation translation Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgstr ""
+
+#: ../locales/readme.rst:4
+#: 87be09ce203040c2ade86291e682ff90
+msgid "The following commands are there as documentation, only the message extraction and the language addition is needed for contributors."
+msgstr ""
+
+#: ../locales/readme.rst:7
+#: 3bdfd8ba97e8414aa5c6cc81b43178a5
+msgid "Message extraction"
+msgstr ""
+
+#: ../locales/readme.rst:9
+#: 3b8b9e1408da403e9cdd7a3fb0cf90d8
+msgid "After you have edited translatable strings, you should extract the messages with:"
+msgstr ""
+
+#: ../locales/readme.rst:16
+#: b581058879de400ca67dde307da1912a
+msgid "Language addition"
+msgstr ""
+
+#: ../locales/readme.rst:18
+#: dab59f2e8ae44091a03cd2c554501487
+msgid "You can add a new language manually with the following command, however this should not be needed as Weblate takes car of this:"
+msgstr ""
+
+#: ../locales/readme.rst:25
+#: 348dad0adb834ca0a1cf2e7ffea89f8a
+msgid "Build the documentation in another language"
+msgstr ""

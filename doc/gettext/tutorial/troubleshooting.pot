@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../tutorial/troubleshooting.rst:2
+#: a7d8552e4975449789812d67b23b345f
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:5
+#: 00bfa2fa35ff434fae80081ae567520b
+msgid "The web interface throws useless error messages"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:7
+#: ec56d81e02e049808b5aa5d51d4b0c40
+msgid "Unless the current user has admin :class:`permissions <canaille.core.configuration.Permission>`, or the installation is in :attr:`~canaille.app.configuration.RootSettings.DEBUG` mode, error messages won't be too technical. For instance, you can see *The request you made is invalid*. To enable detailed error messages, you can **temporarily** enable the :attr:`~canaille.app.configuration.RootSettings.DEBUG` configuration parameter."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:12
+#: 6cd00bba302b4ac7a814318fff5f1d98
+msgid "How to manually install LDAP schemas?"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:16
+#: 383bf19fef474ad0bfcd432537867b7d
+msgid "Schema installation can be automatically done using the :ref:`install command <cli_install>`."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:18
+#: cfce89f0ed5141699a0b428579e47d58
+msgid "As of OpenLDAP 2.4, two configuration methods are available:"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:20
+#: f025a0ef2a9042cc82640e1686ca12ff
+msgid "The `deprecated <https://www.openldap.org/doc/admin26/slapdconf2.html>`_ one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:21
+#: a096f639d51d4f6fb17bb854d6afd1d7
+msgid "The new one, based on a configuration directory (generally ``/etc/ldap/slapd.d``)."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:23
+#: 87e24d478fbd4509bf4651ad0be9726f
+msgid "Depending on the configuration method you use with your OpenLDAP installation, you need to chose how to add the canaille schemas:"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:26
+#: e0948dcef218449b91b5908a0c030dc5
+msgid "Old fashion: Copy the schemas in your filesystem"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:35
+#: ff09602b1964432ca92439fcaab6c199
+msgid "New fashion: Use slapadd to add the schemas"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:37
+#: 6b3246d97f7744b19c937e63c4e0c223
+msgid "Be careful to stop your ldap server before running ``slapadd``"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:46
+#: c5be7d8dd34e4f36a0a4fb76f00bea5f
+msgid "How to manually generate the OIDC keypair?"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:50
+#: d73bed635d4748789de6ede7f53cc73d
+msgid "The keypair generation can be automatically done using the :ref:`install command <cli_install>`."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:52
+#: 0b9b5fcf3a594f0baaddf334e7880455
+msgid "Canaille needs a key pair to sign OIDC tokens. You can customize those commands, as long as they match the ``JWT`` section of your configuration file."
+msgstr ""

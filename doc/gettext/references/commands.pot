@@ -1,0 +1,366 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../references/commands.rst:2
+#: 578e5808cb99489e9808bf26f84831ea
+msgid "Command Line Interface"
+msgstr ""
+
+#: ../references/commands.rst:4
+#: 5a95d4c76b7b4692af568a958071ab9d
+msgid "Canaille provide several commands to help administrator manage their data."
+msgstr ""
+
+#: ../references/commands.rst:6
+#: 8f0f875b47a54e6e8911c751fb6872e8
+msgid "Generally, some configuration has to be loaded by `Canaille`. This can be achieved by :ref:`configuration loading method<references/configuration:Load the configuration>` available, but most of the time a ``CONFIG`` environment variable is used. For the sake of readability, it is omitted in the following examples."
+msgstr ""
+
+#: ../../canaille check:1
+#: dd0149729dc94239aed0af8d269dd418
+msgid "Test the configuration file."
+msgstr ""
+
+#: ../../canaille check:1
+#: 64fdd2232e6d405c9adbe11ddda10166
+msgid "Attempt to reach the database and the SMTP server with the provided credentials."
+msgstr ""
+
+#: ../../canaille clean:1
+#: 403b7781c30c4da58642667b26f9da55
+msgid "Remove expired tokens and authorization codes."
+msgstr ""
+
+#: ../../canaille install:1
+#: 9a6a207fe3ed4c7caffaaa4e5842fe02
+msgid "Installs canaille elements from the configuration."
+msgstr ""
+
+#: ../../canaille install:1
+#: 28c0bafefd7a42b7b247fa53ac641d4a
+msgid "For instance, depending on the configuration, this can generate OIDC keys or install LDAP schemas."
+msgstr ""
+
+#: ../../canaille populate:1
+#: 17d8b25dd51b42d5b32e343d1b4b44a9
+msgid "Populate the database with generated random data."
+msgstr ""
+
+#: ../references/commands.rst:0
+#: df7a3b4065244eb985f167583bf79d2c
+#: 10cb918ea05043929ba9cd9564ed5f3d
+#: aa7d87d3e6f647fa890560fd9096598b
+#: 9a2406777231461887cb7e76f3c0d470
+#: 84db04b30f9147e19f984bdaa49fe0fd
+#: f28f03fb7525446da298d805a01522d1
+#: 8506da751b21413fadc94d7bae19e387
+#: 1914dd13a47d4a778fb3f7c6d27e9aac
+#: d8c57a57c6c34d32a014fa466d8ee489
+#: 3059756528734dffb3d53c627edb9437
+#: cab60c25e07542a6908f059f31c77482
+#: ff6f04fe5ee944febc001fbffb1e5a30
+#: f8fe3d8b27884fe0a5b8c68cb3195b97
+#: 9b1086b74f9f4f15aae8f7174cc82fc4
+#: 00701bc7173f421aafe574606d46691e
+#: 5e7e4cdd8d664830a6d158e240b545c2
+#: 08bf63ad7771452cb070d2c2c7b8b568
+#: d71b61d168d443ac94f30e1aaf07e55f
+#: 93f79c7403074b0aac095f59df49b451
+#: bd21ceb952184931b1e198854fe9b031
+msgid "Options"
+msgstr ""
+
+#: ../../canaille populate:1
+#: a5bbf04166c049b3b9c315b02e311d6c
+msgid "Number of items to create"
+msgstr ""
+
+#: ../../canaille populate groups:1
+#: fa0ab4817a63487b929828c2e97373c1
+msgid "Populate the database with generated random groups."
+msgstr ""
+
+#: ../../canaille populate groups:1
+#: 5e6f489028a4446a8b507e422646fee8
+msgid "The maximum number of users that will randomly be affected in the group"
+msgstr ""
+
+#: ../../canaille populate users:1
+#: b0ccb196ccc549c7a57e03466d184b1b
+msgid "Populate the database with generated random users."
+msgstr ""
+
+#: ../../canaille get:1
+#: 37a97a0a6d98414e930446cfce3fefd0
+msgid "Read information about models."
+msgstr ""
+
+#: ../../canaille get:1
+#: 2fdd2c44ff8342c5b9dc3a122fc56d32
+msgid "Options can be used to filter models::"
+msgstr ""
+
+#: ../../canaille get:1
+#: 3466ddbfd1264c01a53a83d711a66146
+msgid "Displays the matching models in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille get authorizationcode:1
+#: 9475ba0522be4715ba147caf0e0debd8
+msgid "Search for authorizationcodes and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get client:1
+#: 31b8bbe27ff64f0da9e1684d3f048472
+msgid "Search for clients and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get consent:1
+#: 0be75cef5f6448ee81cfa44b378517ce
+msgid "Search for consents and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get group:1
+#: 9544c3af476441398e9a7dcbfd0d9c7a
+msgid "Search for groups and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get token:1
+#: 030ae9dcd3a143e9b1b19397c35d8b2f
+msgid "Search for tokens and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille get user:1
+#: 44dbe3502761468e8d2e29fa7f10f0d6
+msgid "Search for users and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille set:1
+#: 0af6277cc0874cefbd5fb0182d80d396
+msgid "Update models."
+msgstr ""
+
+#: ../../canaille set:1
+#: 72e13923d1454286b7367854fbec4e35
+msgid "The command takes an model ID and edit one or several attributes::"
+msgstr ""
+
+#: ../../canaille set:1
+#: d4f17ca6c53b40afb034134ffc118361
+msgid "Displays the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille set authorizationcode:1
+#: 4a23a7b2d8be45658f2eed6017194fba
+msgid "Update a authorizationcode and display the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete authorizationcode:1
+#: ../../canaille set authorizationcode:1
+#: 1bbb5cada3624f8aa2922939002323ae
+#: 5609a4557fff4e54a9fccabfddf5826e
+msgid "IDENTIFIER should be a authorizationcode id or authorization_code_id"
+msgstr ""
+
+#: ../references/commands.rst:0
+#: de8b06da947f4e23ba6727914cad6bb1
+#: fd47034cde92425f9f8bdb2393bf5460
+#: f8406bb87a054f629fd7cf5b07e9c3b6
+#: fdcf900e6c864eb4820f880f881a8b4f
+#: f524d61a7560403fa67d84b521b5420c
+#: 18b42ed5ae9b4a1b898866ba3cd7c098
+#: 7cbe82d6bd5b46919644b6d71984dc97
+#: 60e9504afe9e4c78b4181fd5481122c6
+#: 0dceb5df88e34fbc8332c8d8f641ab21
+#: d8105a54c6bf4353b614c9fd73859d45
+#: b6820eac28db47ab99be5b1ba431fa33
+#: d5fbab6b8b134648bcfa3ef1ac71ecc5
+msgid "Arguments"
+msgstr ""
+
+#: ../../canaille delete authorizationcode:1
+#: ../../canaille delete client:1
+#: ../../canaille delete consent:1
+#: ../../canaille delete group:1
+#: ../../canaille delete token:1
+#: ../../canaille delete user:1
+#: ../../canaille set authorizationcode:1
+#: ../../canaille set client:1
+#: ../../canaille set consent:1
+#: ../../canaille set group:1
+#: ../../canaille set token:1
+#: ../../canaille set user:1
+#: 6fa9d671478f4b0cb6a4335319aff6bc
+#: a4d8ffc45b5d455baa74d311e77cb0cc
+#: 06fdebc0ceaf42158ac034ba2f1fd5d5
+#: 821e6c57ca8a4c4b9543e569188ea90b
+#: ab251b3b601749e5ba8b449fa1f14e63
+#: e55c02eadb204bb9a9c03a8a1e37c0e0
+#: f3944ed8e87b432ca151e011c9eb2220
+#: 8aa832eba5aa4098ade467d1ffd2ea6d
+#: 91880f396bf64569ac8c1f4f3f2aca0f
+#: a2797259ebe548ee9f8d4528edfcef44
+#: 9cdac19055ca44318c473fa3bc620a43
+#: 217ddbe62c8c48a49ec792c9581b548d
+msgid "Required argument"
+msgstr ""
+
+#: ../../canaille set client:1
+#: c6fb20a6a9b04bb9ae7fa6930bd0e428
+msgid "Update a client and display the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete client:1
+#: ../../canaille set client:1
+#: a80bc63347194218987d36e8f7d79e40
+#: d219305e46a444f0b731ad5b73e79f2d
+msgid "IDENTIFIER should be a client id or client_id"
+msgstr ""
+
+#: ../../canaille set consent:1
+#: a651d44dec284d32b9e11bca8c0082be
+msgid "Update a consent and display the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete consent:1
+#: ../../canaille set consent:1
+#: 69e2a6ee623f45c1a39b0fbdf948e15f
+#: 6ba4152a82744f9b808e9947a943103f
+msgid "IDENTIFIER should be a consent id or consent_id"
+msgstr ""
+
+#: ../../canaille set group:1
+#: 7c9d22883354416a85d50f7410327d4f
+msgid "Update a group and display the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete group:1
+#: ../../canaille set group:1
+#: 9003e3f7ae3249ecb5084845becb33f2
+#: 31af71d5aaf74cb7b660614b3e1682ef
+msgid "IDENTIFIER should be a group id or display_name"
+msgstr ""
+
+#: ../../canaille set token:1
+#: deae6ee4325d4a99809f77fc2436562a
+msgid "Update a token and display the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete token:1
+#: ../../canaille set token:1
+#: 990488adf77741cbadcbea5c85e6741c
+#: 42483c1821a14a178b105f181946e188
+msgid "IDENTIFIER should be a token id or token_id"
+msgstr ""
+
+#: ../../canaille set user:1
+#: 5a2cf62efa9747429cfa9bf1cdf25b58
+msgid "Update a user and display the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete user:1
+#: ../../canaille set user:1
+#: c8550e9dc18646d294c8d797cb5d166d
+#: 9d649644572049378cd901b26b4b42f3
+msgid "IDENTIFIER should be a user id or user_name"
+msgstr ""
+
+#: ../../canaille create:1
+#: 876b9c46071040a083e7720fd1030ab9
+msgid "Create models."
+msgstr ""
+
+#: ../../canaille create:1
+#: 3b4c98b2ff45430f916dcaf1bd54da4c
+msgid "The model attributes can be passed as command options::"
+msgstr ""
+
+#: ../../canaille create:1
+#: 2ff64e0da89645b1820fba732d6098c9
+msgid "Displays the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille create authorizationcode:1
+#: a4a59533bbb141cb9c8cebd78f71ab9d
+msgid "Create a new authorizationcode and display the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille create client:1
+#: c2df315512ed4bc994164ce5283e17a0
+msgid "Create a new client and display the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille create consent:1
+#: 4d1193abf1814ba48fdb0c6ab1a7ed32
+msgid "Create a new consent and display the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille create group:1
+#: 2e32891340704090850f8f169b142aae
+msgid "Create a new group and display the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille create token:1
+#: 3a965857a34e4c89b46f554d42e0ce5b
+msgid "Create a new token and display the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille create user:1
+#: 9e30ed9353764ad986f7009e352a4e23
+msgid "Create a new user and display the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille delete:1
+#: 73aa4dc76f2d4b558bef94fb74c89926
+msgid "Delete models."
+msgstr ""
+
+#: ../../canaille delete:1
+#: 4e8dfe57593e4037a3af361c27a3fe2c
+msgid "The command takes a model ID and deletes it::"
+msgstr ""
+
+#: ../../canaille delete authorizationcode:1
+#: e252f5665c1d4beeadbc8e02a5616c52
+msgid "Delete a authorizationcode."
+msgstr ""
+
+#: ../../canaille delete client:1
+#: 9289cd0e6ea7448ea6d79efd656f4c93
+msgid "Delete a client."
+msgstr ""
+
+#: ../../canaille delete consent:1
+#: d2daf152e4a24521bbbd75a6cc2377ca
+msgid "Delete a consent."
+msgstr ""
+
+#: ../../canaille delete group:1
+#: 2e8bfb99cf0c48beb2da339112cef4c4
+msgid "Delete a group."
+msgstr ""
+
+#: ../../canaille delete token:1
+#: 0752e5025f47410bbd89191f2acb59c8
+msgid "Delete a token."
+msgstr ""
+
+#: ../../canaille delete user:1
+#: 7f1e103d1a9947949c4e310bbec9d067
+msgid "Delete a user."
+msgstr ""

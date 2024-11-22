@@ -1,0 +1,466 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 15:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_FR\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../doc/tutorial/databases.rst:2
+msgid "Databases"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:4
+msgid ""
+"Canaille can read and save data in different databases. This page "
+"presents the different database backends and their specificities:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:8
+msgid "Memory"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:10
+msgid ""
+"Canaille comes with a lightweight inmemory backend by default. It is used"
+" when no other backend has been configured."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:13
+msgid ""
+"This backend is only for test purpose and should not be used in "
+"production environments."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:16
+msgid "SQL"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:18
+msgid ""
+"Canaille can use any database supported by `SQLAlchemy "
+"<https://www.sqlalchemy.org/>`_, such as sqlite, postgresql or mariadb."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:21
+msgid ""
+"It is used when the ``CANAILLE_SQL`` configuration parameter is defined. "
+"For instance:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:23 ../../doc/tutorial/databases.rst:37
+msgid "config.toml"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:29
+msgid ""
+"You can find more details on the SQL configuration in the "
+":class:`dedicated section "
+"<canaille.backends.sql.configuration.SQLSettings>`."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:32
+msgid "LDAP"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:34
+msgid ""
+"Canaille can use OpenLDAP as its main database. It is used when the "
+"``CANAILLE_LDAP`` configuration parameter is defined. For instance:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:52
+msgid ""
+"You can find more details on the LDAP configuration in the "
+":class:`dedicated section "
+"<canaille.backends.ldap.configuration.LDAPSettings>`."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:55
+msgid ""
+"Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have "
+"been tested. If you want to use different schemas or LDAP servers, "
+"adaptations may be needed. Patches are welcome."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:60
+msgid "OpenLDAP overlays integration"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:62
+msgid "Canaille can integrate with several OpenLDAP overlays:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:65
+msgid "memberof / refint"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:67
+#, python-format
+msgid ""
+"`memberof "
+"<https://www.openldap.org/doc/admin26/overlays.html#Reverse%20Group%20Membership%20Maintenance>`_"
+" and `refint "
+"<https://www.openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_"
+" overlays are needed for the Canaille group membership to work correctly."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:71 ../../doc/tutorial/databases.rst:94
+msgid "Here is a configuration example compatible with canaille:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:73
+msgid "memberof-config.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:77
+msgid "refint-config.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:81 ../../doc/tutorial/databases.rst:104
+msgid "You can adapt and load those configuration files with:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:90
+msgid "ppolicy"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:92
+msgid ""
+"If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-"
+"password-policy-11.html>`_ overlay is configured and the ``pwdEndTime`` "
+"attribute is available (since OpenLDAP 2.6), then account locking support"
+" will be enabled in canaille. To allow users to manage account "
+"expiration, they need to have a *write* permission on the "
+":attr:`~canaille.core.models.User.lock_date` attribute."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:96
+msgid "ppolicy-config.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:100
+msgid "ppolicy.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:2
+msgid "Deployment"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:5
+msgid "Application service"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:7
+msgid ""
+"After having finished Canaille installation you have to run it in a WSGI "
+"application server. Here are some WSGI server configuration examples you "
+"can pick. Do not forget to update the paths."
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:11
+msgid "gunicorn"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:13
+msgid "Todo"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:15
+msgid "Write a gunicorn configuration sample file."
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:18
+msgid "uwsgi"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:42
+msgid "Webserver"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:44
+msgid ""
+"Now you have to plug your WSGI application server to your webserver so it"
+" is accessible on the internet. Here are some webserver configuration "
+"examples you can pick:"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:48
+msgid "Nginx"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:114
+msgid "Apache"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:153
+msgid "Recurrent jobs"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:155
+msgid ""
+"You might want to clean up your database to avoid it growing too much. "
+"You can regularly delete expired tokens and authorization codes with:"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:164
+msgid "Webfinger"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:166
+msgid ""
+"You may want to configure a `WebFinger`_ endpoint on your main website to"
+" allow the automatic discovery of your Canaille installation based on the"
+" account name of one of your users. For instance, suppose your domain is "
+"``mydomain.example`` and your Canaille domain is "
+"``auth.mydomain.example`` and there is a user ``john.doe``. A third-party"
+" application could require to authenticate the user and ask them for a "
+"user account. The user would give their account "
+"``john.doe@mydomain.example``, then the application would perform a "
+"WebFinger request at ``https://mydomain.example/.well-known/webfinger`` "
+"and the response would contain the address of the authentication server "
+"``https://auth.mydomain.example``. With this information the third party "
+"application can redirect the user to the Canaille authentication page."
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:168
+msgid ""
+"The difficulty here is that the WebFinger endpoint must be hosted at the "
+"top-level domain (i.e. ``mydomain.example``) while the authentication "
+"server might be hosted on a sublevel (i.e. ``auth.mydomain.example``). "
+"Canaille provides a WebFinger endpoint, but if it is not hosted at the "
+"top-level domain, a web redirection is required on the ``/.well-"
+"known/webfinger`` path."
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:170
+msgid "Here are configuration examples for Nginx or Apache:"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:172
+msgid "Nginx webfinger configuration for a top level domain"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:181
+msgid "Apache webfinger configuration for a top level domain"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:191
+msgid "Create the first user"
+msgstr ""
+
+#: ../../doc/tutorial/deployment.rst:193
+msgid ""
+"Once canaille is installed, soon enough you will need to add users. To "
+"create your first user you can use the :ref:`canaille create "
+"<cli_create>` CLI."
+msgstr ""
+
+#: ../../doc/tutorial/index.rst:2
+msgid "Tutorial"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:2
+msgid "Installation"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:6
+msgid ""
+"Canaille is under heavy development and may not fit a production "
+"environment yet."
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:8
+msgid ""
+"The installation of canaille consist in several steps, some of which you "
+"can do manually or with command line tool:"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:11
+msgid "Get the code"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:13
+msgid ""
+"As the moment there is no distribution package for canaille. However, it "
+"can be installed with the ``pip`` package manager. Let us choose a place "
+"for the canaille environment, like ``/opt/canaille/env``."
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:24
+msgid "Extras"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:26
+msgid "Canaille provides different package options:"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:28
+msgid "`front` provides all the things needed to produce the user interface;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:29
+msgid "`oidc` provides the dependencies to perform OAuth2/OIDC authentication;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:30
+msgid "`ldap` provides the dependencies to enable the LDAP backend;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:31
+msgid "`sqlite` provides the dependencies to enable the SQLite backend;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:32
+msgid "`postgresql` provides the dependencies to enable the PostgreSQL backend;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:33
+msgid "`mysql` provides the dependencies to enable the MySQL backend;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:34
+msgid "`sentry` provides sentry integration to watch Canaille exceptions;"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:35
+msgid "`all` provides all the extras above."
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:37
+msgid "They can be installed with:"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:44
+msgid "Configure"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:46
+msgid ""
+"Choose a path where to store your configuration file. You can pass any "
+"configuration path with the ``CONFIG`` environment variable."
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:54
+msgid ""
+"You should then edit your configuration file to adapt the values to your "
+"needs. Look at the configuration details in the :doc:`configuration "
+"<../references/configuration>` page."
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:57
+msgid "Install"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:59
+msgid ""
+"The :ref:`install command <cli_install>` will apply most of the things "
+"needed to get Canaille working. Depending on the configured "
+":doc:`database <databases>` it will create the SQL tables, or install the"
+" LDAP schemas for instance."
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:68
+msgid "Check"
+msgstr ""
+
+#: ../../doc/tutorial/install.rst:70
+msgid ""
+"After a manual installation, you can check your configuration file using "
+"the :ref:`check command <cli_install>`:"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:2
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:5
+msgid "The web interface throws useless error messages"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:7
+msgid ""
+"Unless the current user has admin :class:`permissions "
+"<canaille.core.configuration.Permission>`, or the installation is in "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` mode, error "
+"messages won't be too technical. For instance, you can see *The request "
+"you made is invalid*. To enable detailed error messages, you can "
+"**temporarily** enable the "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` configuration "
+"parameter."
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:12
+msgid "How to manually install LDAP schemas?"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:16
+msgid ""
+"Schema installation can be automatically done using the :ref:`install "
+"command <cli_install>`."
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:18
+msgid "As of OpenLDAP 2.4, two configuration methods are available:"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:20
+msgid ""
+"The `deprecated <https://www.openldap.org/doc/admin26/slapdconf2.html>`_ "
+"one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:21
+msgid ""
+"The new one, based on a configuration directory (generally "
+"``/etc/ldap/slapd.d``)."
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:23
+msgid ""
+"Depending on the configuration method you use with your OpenLDAP "
+"installation, you need to chose how to add the canaille schemas:"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:26
+msgid "Old fashion: Copy the schemas in your filesystem"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:35
+msgid "New fashion: Use slapadd to add the schemas"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:37
+msgid "Be careful to stop your ldap server before running ``slapadd``"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:46
+msgid "How to manually generate the OIDC keypair?"
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:50
+msgid ""
+"The keypair generation can be automatically done using the :ref:`install "
+"command <cli_install>`."
+msgstr ""
+
+#: ../../doc/tutorial/troubleshooting.rst:52
+msgid ""
+"Canaille needs a key pair to sign OIDC tokens. You can customize those "
+"commands, as long as they match the ``JWT`` section of your configuration"
+" file."
+msgstr ""
+

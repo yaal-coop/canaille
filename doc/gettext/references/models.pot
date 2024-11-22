@@ -1,0 +1,632 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../references/models.rst:2
+#: 41a7dc7b250e480db46d41e3aee22ad1
+msgid "Data models"
+msgstr ""
+
+#: ../references/models.rst:4
+#: 1b1a39298a8748d695327d8c3205861e
+msgid "This reference details the data models used by Canaille. This is mostly useful for developers."
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.BackendModel:1
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.Model:1
+#: 5dfedb2673a34cffab2636c959e69517
+#: 180db8c2a5484efcaaedab0d0259893c
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.BackendModel:1
+#: 054dc8cb64204518901c6f741d0a78db
+msgid "The backend model abstract class."
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.BackendModel:3
+#: d5425365fe8544d99d250bc36f79a9b9
+msgid "It details all the methods and attributes that are expected to be implemented for every model and for every backend."
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.Model:1
+#: eed98eef84344fa8a1dfa96630a2308d
+msgid "The model abstract class."
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.Model:3
+#: e45bdfd99f954f4c8fc3dc213443ff33
+msgid "It details all the common attributes shared by every models."
+msgstr ""
+
+#: ../../docstring of canaille.backends.models.Model.created:1
+#: 499d3761712a4423ada0b6c9e7336b9d
+msgid "The :class:`~datetime.datetime` that the resource was added to the service provider."
+msgstr ""
+
+#: ../../docstring of canaille.backends.models.Model.id:1
+#: eb26542ddccf459bbd8179d12e546226
+msgid "A unique identifier for a SCIM resource as defined by the service provider. Id will be :py:data:`None` until the :meth:`~canaille.backends.models.BackendModel.save` method is called."
+msgstr ""
+
+#: ../../docstring of canaille.backends.models.Model.id:5
+#: 99a3ebf8e2f0425f8f6b2cb0fd43b1aa
+msgid "Each representation of the resource MUST include a non-empty \"id\" value.  This identifier MUST be unique across the SCIM service provider's entire set of resources.  It MUST be a stable, non- reassignable identifier that does not change when the same resource is returned in subsequent requests.  The value of the \"id\" attribute is always issued by the service provider and MUST NOT be specified by the client.  The string \"bulkId\" is a reserved keyword and MUST NOT be used within any unique identifier value.  The attribute characteristics are \"caseExact\" as \"true\", a mutability of \"readOnly\", and a \"returned\" characteristic of \"always\".  See Section 9 for additional considerations regarding privacy."
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.Model.identifier:1
+#: d3ab1a41021449649f7fc65d7faa4b5a
+msgid "Returns a unique value that will be used to identify the model instance."
+msgstr ""
+
+#: ../../canaille/backends/models.py:docstring of canaille.backends.models.Model.identifier:4
+#: 730b5beedf3345e7a1f3c9152b471d76
+msgid "This value will be used in URLs in canaille, so it should be unique and short."
+msgstr ""
+
+#: ../../docstring of canaille.backends.models.Model.last_modified:1
+#: 6654492d947545cf99532d0bc78c607d
+msgid "The most recent :class:`~datetime.datetime` that the details of this resource were updated at the service provider."
+msgstr ""
+
+#: ../../docstring of canaille.backends.models.Model.last_modified:4
+#: a06610bf90c745bf97d7332606ee3e14
+msgid "If this resource has never been modified since its initial creation, the value MUST be the same as the value of :attr:`~canaille.backends.models.Model.created`."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.Group:1
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User:1
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.AuthorizationCode:1
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.Client:1
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.Consent:1
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.Token:1
+#: 25aac7c6a4de47149abecdba2643cf16
+#: 2fcb719579614323832335e883920d06
+#: 9fcbd7a341574bb0a12735c80577678c
+#: e686b323e13d49108d090d0ccec91b95
+#: a2f9ebd1047445d68a4211e9f7e7939d
+#: 474767a737ea4abeb51431231c5eeecd
+msgid "Bases: :py:class:`~canaille.backends.models.Model`"
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.Group:1
+#: 75d84fdf9b3e4d40a7388fde78daf7d4
+msgid "User model, based on the `SCIM Group schema <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.Group.display_name:1
+#: b34781220a204e858e24409b1a1059c7
+msgid "A human-readable name for the Group."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.Group.display_name:3
+#: ../../docstring of canaille.oidc.basemodels.Client.client_id:1
+#: 08b43e57fa894ae3b6317cc37297342c
+#: 48449512919d4b3ab2aa12fe6c48a3f4
+msgid "REQUIRED."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.Group.members:1
+#: 6028207848c745e381bd6946ce2d276d
+msgid "A list of members of the Group."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.Group.members:3
+#: f75ea88690b0435a917de111ae26b22b
+msgid "While values MAY be added or removed, sub-attributes of members are \"immutable\".  The \"value\" sub-attribute contains the value of an \"id\" attribute of a SCIM resource, and the \"$ref\" sub-attribute must be the URI of a SCIM resource such as a \"User\", or a \"Group\".  The intention of the \"Group\" type is to allow the service provider to support nested groups.  Service providers MAY require clients to provide a non-empty value by setting the \"required\" attribute characteristic of a sub-attribute of the \"members\" attribute in the \"Group\" resource schema."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User:1
+#: 539d0e7b4b0143c39c76c5e9ef16bd86
+msgid "User model, based on the `SCIM User schema <https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_, `Entreprise User Schema Extension <https://datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_ and `SCIM Password Management Extension <https://datatracker.ietf.org/doc/html/draft-hunt-scim-password-mgmt-00.html>`_ draft. Attribute description is based on SCIM and put there for information purpose. The description may not fit the current implementation in Canaille."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User.can:1
+#: 87eda29a61a745199883fc289a13c314
+msgid "Whether or not the user has the :class:`~canaille.core.configuration.Permission` according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.department:1
+#: c2e676f9335f408ab8318ffd79b0aa8a
+msgid "Identifies the name of a department."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.display_name:1
+#: 5881ae5858d447058eca54d075e1799a
+msgid "The name of the user, suitable for display to end-users."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.display_name:3
+#: 270a39dc6d7f49b49f5e21b2048c6c9a
+msgid "Each user returned MAY include a non-empty displayName value.  The name SHOULD be the full name of the User being described, if known (e.g., \"Babs Jensen\" or \"Ms. Barbara J Jensen, III\") but MAY be a username or handle, if that is all that is available (e.g., \"bjensen\").  The value provided SHOULD be the primary textual label by which this User is normally displayed by the service provider when presenting it to end-users."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.emails:1
+#: 8cb604df1a19481284ee1359685e6af0
+msgid "Email addresses for the User."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.emails:3
+#: cf1562e8f9334a6f9f9d1d8ed7fad99f
+msgid "The value SHOULD be specified according to [RFC5321].  Service providers SHOULD canonicalize the value according to [RFC5321], e.g., \"bjensen@example.com\" instead of \"bjensen@EXAMPLE.COM\".  The \"display\" sub-attribute MAY be used to return the canonicalized representation of the email value. The \"type\" sub-attribute is used to provide a classification meaningful to the (human) user.  The user interface should encourage the use of basic values of \"work\", \"home\", and \"other\" and MAY allow additional type values to be used at the discretion of SCIM clients."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.employee_number:1
+#: 636ed55260c74feeacbf312e64f05846
+msgid "A string identifier, typically numeric or alphanumeric, assigned to a person, typically based on order of hire or association with an organization."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.family_name:1
+#: 64675e899765403b9e7f5f7e20b6a4d4
+msgid "The family name of the User, or last name in most Western languages (e.g., \"Jensen\" given the full name \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.formatted_address:1
+#: d7bc625574aa4a92922b80a678dd2603
+msgid "The full mailing address, formatted for display or use with a mailing label."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.formatted_address:4
+#: 7b5cfe72fe824e41acc01e5b12836c38
+msgid "This attribute MAY contain newlines."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.formatted_name:1
+#: 3a0ffada2e8445b28acbba22cc25b66c
+msgid "The full name, including all middle names, titles, and suffixes as appropriate, formatted for display (e.g., \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.given_name:1
+#: 61ce490296b54da7ae1b542c1f705d86
+msgid "The given name of the User, or first name in most Western languages (e.g., \"Barbara\" given the full name \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.groups:1
+#: 690f1b154c004cd4b73b9f3942abe467
+msgid "A list of groups to which the user belongs, either through direct membership, through nested groups, or dynamically calculated."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.groups:4
+#: 2eb7b172e9b244b784e9be7ae251f62c
+msgid "The values are meant to enable expression of common group-based or role-based access control models, although no explicit authorization model is defined.  It is intended that the semantics of group membership and any behavior or authorization granted as a result of membership are defined by the service provider.  The canonical types \"direct\" and \"indirect\" are defined to describe how the group membership was derived.  Direct group membership indicates that the user is directly associated with the group and SHOULD indicate that clients may modify membership through the \"Group\" resource. Indirect membership indicates that user membership is transitive or dynamic and implies that clients cannot modify indirect group membership through the \"Group\" resource but MAY modify direct group membership through the \"Group\" resource, which may influence indirect memberships.  If the SCIM service provider exposes a \"Group\" resource, the \"value\" sub-attribute MUST be the \"id\", and the \"$ref\" sub-attribute must be the URI of the corresponding \"Group\" resources to which the user belongs.  Since this attribute has a mutability of \"readOnly\", group membership changes MUST be applied via the \"Group\" Resource (Section 4.2).  This attribute has a mutability of \"readOnly\"."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User.has_password:1
+#: 40ee4db8c45f4003bb48204deb440d98
+msgid "Check whether a password has been set for the user."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.locality:1
+#: 3512695046244d34b61291df0b2982f7
+msgid "The city or locality component."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.lock_date:1
+#: 31216009e3274f90bb09e07a3c667ccd
+msgid "A DateTime indicating when the resource was locked."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User.locked:1
+#: 1c62d35ba0c44d53870acd58383ae845
+msgid "Whether the user account has been locked or has expired."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.organization:1
+#: 9e66d1ff732c4c9498199b3cd30133c2
+msgid "Identifies the name of an organization."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:1
+#: dc7683784aaf49ad82908015dddc3327
+msgid "This attribute is intended to be used as a means to set, replace, or compare (i.e., filter for equality) a password.  The cleartext value or the hashed value of a password SHALL NOT be returnable by a service provider.  If a service provider holds the value locally, the value SHOULD be hashed.  When a password is set or changed by the client, the cleartext password SHOULD be processed by the service provider as follows:"
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:9
+#: 75d933d5170e459d871c082acdc18867
+msgid "Prepare the cleartext value for international language comparison.  See Section 7.8 of [RFC7644]."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:12
+#: 8448f08bb8d94e489d01759c44573b27
+msgid "Validate the value against server password policy.  Note: The definition and enforcement of password policy are beyond the scope of this document."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:16
+#: c21e45acd3eb4c948f20fad79c2589fb
+msgid "Ensure that the value is encrypted (e.g., hashed).  See Section 9.2 for acceptable hashing and encryption handling when storing or persisting for provisioning workflow reasons."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:20
+#: 71a63d1b1da4473aab7849d83bae865d
+msgid "A service provider that immediately passes the cleartext value on to another system or programming interface MUST pass the value directly over a secured connection (e.g., Transport Layer Security (TLS)).  If the value needs to be temporarily persisted for a period of time (e.g., because of a workflow) before provisioning, then the value MUST be protected by some method, such as encryption."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:28
+#: 6e667adf52f041cd91027ad22ec29e79
+msgid "Testing for an equality match MAY be supported if there is an existing stored hashed value.  When testing for equality, the service provider:"
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:32
+#: c5b24096ff7b4a70982efaf2b4a590a0
+msgid "Prepares the filter value for international language comparison.  See Section 7.8 of [RFC7644]."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:35
+#: a01917d7f406402aae04d9fab29cce1f
+msgid "Generates the salted hash of the filter value and tests for a match with the locally held value."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.password:38
+#: d014072927a8489c959cf01f30a02e52
+msgid "The mutability of the password attribute is \"writeOnly\", indicating that the value MUST NOT be returned by a service provider in any form (the attribute characteristic \"returned\" is \"never\")."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.phone_numbers:1
+#: 22dabe92b12f42999acc57125936d9a4
+msgid "Phone numbers for the user."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.phone_numbers:3
+#: 4e9f962969504e419f1ee1e42018b7e3
+msgid "The value SHOULD be specified according to the format defined in [RFC3966], e.g., 'tel:+1-201-555-0123'.  Service providers SHOULD canonicalize the value according to [RFC3966] format, when appropriate.  The \"display\" sub-attribute MAY be used to return the canonicalized representation of the phone number value.  The sub- attribute \"type\" often has typical values of \"work\", \"home\", \"mobile\", \"fax\", \"pager\", and \"other\" and MAY allow more types to be defined by the SCIM clients."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.photo:1
+#: 8a1be24639d748fbb92e9026057c6108
+msgid "A URI that is a uniform resource locator (as defined in Section 1.1.3 of [RFC3986]) that points to a resource location representing the user's image."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.photo:5
+#: 3c9a2c89c2e144e4a8e3a549099a0afc
+msgid "The resource MUST be a file (e.g., a GIF, JPEG, or PNG image file) rather than a web page containing an image.  Service providers MAY return the same image in different sizes, although it is recognized that no standard for describing images of various sizes currently exists.  Note that this attribute SHOULD NOT be used to send down arbitrary photos taken by this user; instead, profile photos of the user that are suitable for display when describing the user should be sent. Instead of the standard canonical values for type, this attribute defines the following canonical values to represent popular photo sizes: \"photo\" and \"thumbnail\"."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.postal_code:1
+#: b8fd039fd49448fb8a1f2602864cdb31
+msgid "The zip code or postal code component."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.preferred_language:1
+#: 78cc188b2ee94614ab5e68931c93b5e4
+msgid "Indicates the user's preferred written or spoken languages and is generally used for selecting a localized user interface."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.preferred_language:4
+#: e957b1c5b5a0404d887870c7cb30361e
+msgid "The value indicates the set of natural languages that are preferred. The format of the value is the same as the HTTP Accept-Language header field (not including \"Accept-Language:\") and is specified in Section 5.3.5 of [RFC7231].  The intent of this value is to enable cloud applications to perform matching of language tags [RFC4647] to the user's language preferences, regardless of what may be indicated by a user agent (which might be shared), or in an interaction that does not involve a user (such as in a delegated OAuth 2.0 [RFC6749] style interaction) where normal HTTP Accept-Language header negotiation cannot take place."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.profile_url:1
+#: 076f48982818474ca185bbb7ecc083bf
+msgid "A URI that is a uniform resource locator (as defined in Section 1.1.3 of [RFC3986]) and that points to a location representing the user's online profile (e.g., a web page)."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.profile_url:5
+#: 850461e9fb3b4d709fcf76dd09c142b0
+msgid "URIs are canonicalized per Section 6.2 of [RFC3986]."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User.readable_fields:1
+#: b97df5cf09a748e79ea9971b8dba39d1
+msgid "The fields the user can read according to the :class:`configuration <canaille.core.configuration.ACLSettings>` configuration."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User.readable_fields:4
+#: b76c15b84378406fbc1249573072e5ca
+msgid "This does not include the :attr:`writable <canaille.core.models.User.writable_fields>` fields."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.region:1
+#: 082b19222f8f4e25a4aa0aa0ecba0929
+msgid "The state or region component."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.street:1
+#: 2c8f12c4f115443998f8cd1e22299be9
+msgid "The full street address component, which may include house number, street name, P.O."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.street:4
+#: aba448bfd8da42758924353149dadc87
+msgid "box, and multi-line extended street address information.  This attribute MAY contain newlines."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.title:1
+#: 62e0f8e9c68a4ecfac80add78ccd7142
+msgid "The user's title, such as \"Vice President\"."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.user_name:1
+#: 293d739a09e94a099259ed4650bae8ac
+msgid "A service provider's unique identifier for the user, typically used by the user to directly authenticate to the service provider."
+msgstr ""
+
+#: ../../docstring of canaille.core.models.User.user_name:4
+#: c13edd0588bc4f9d991306cdfd54d80a
+msgid "Often displayed to the user as their unique identifier within the system (as opposed to \"id\" or \"externalId\", which are generally opaque and not user-friendly identifiers).  Each User MUST include a non-empty userName value.  This identifier MUST be unique across the service provider's entire set of Users.  This attribute is REQUIRED and is case insensitive."
+msgstr ""
+
+#: ../../canaille/core/models.py:docstring of canaille.core.models.User.writable_fields:1
+#: bce25550d966456fb325f488d3989446
+msgid "The fields the user can write according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.AuthorizationCode:1
+#: edd3de5bfc4d4ae881494d6ba9e94342
+msgid "OpenID Connect temporary authorization code definition."
+msgstr ""
+
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.Client:1
+#: 8e9b301343f149de94a1d40e8b591125
+msgid "OpenID Connect client definition, based on the `OAuth 2.0 Dynamic Client Registration protocols <https://datatracker.ietf.org/doc/html/rfc7591.html>`_ and the `OpenID Connect RP-Initiated Logout <https://openid.net/specs/openid-connect-rpinitiated-1_0.html>`_ specifications."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_id:3
+#: e45f4fee2fdb46e7bb31460fddf3400a
+msgid "OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for any other registered client, though an authorization server MAY issue the same client identifier to multiple instances of a registered client at its discretion."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_id_issued_at:1
+#: ../../docstring of canaille.oidc.basemodels.Client.client_secret:1
+#: ../../docstring of canaille.oidc.basemodels.Client.post_logout_redirect_uris:1
+#: c9328ff136fb490cb6810fd738cd32c3
+#: 7e4168f5eef24ce7a0fdfcd1a34ac0b1
+#: 1ea64fb459e343a58a8c09ffb8fb046c
+msgid "OPTIONAL."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_id_issued_at:3
+#: 673ada2798054ac5aaceccb2e11fa62c
+msgid "Time at which the client identifier was issued.  The time is represented as the number of seconds from 1970-01-01T00:00:00Z as measured in UTC until the date/time of issuance."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_name:1
+#: 884645dd183e4deaacd7b26efbeae4b0
+msgid "Human-readable string name of the client to be presented to the end-user during authorization."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_name:4
+#: e71d8bfba20a4451bf78c67859250e85
+msgid "If omitted, the authorization server MAY display the raw \"client_id\" value to the end-user instead.  It is RECOMMENDED that clients always send this field. The value of this field MAY be internationalized, as described in Section 2.2."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_secret:3
+#: 317b9d7d12754d8e81ccdbdbb69027a3
+msgid "OAuth 2.0 client secret string.  If issued, this MUST be unique for each \"client_id\" and SHOULD be unique for multiple instances of a client using the same \"client_id\".  This value is used by confidential clients to authenticate to the token endpoint, as described in OAuth 2.0 [RFC6749], Section 2.3.1."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_secret_expires_at:1
+#: 4e7d6ee56b7d4f3ba2bdda60e9a8428c
+msgid "REQUIRED if \"client_secret\" is issued."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_secret_expires_at:3
+#: 7eff790c6fed4a40b4afbf0c48e8f9b7
+msgid "Time at which the client secret will expire or 0 if it will not expire.  The time is represented as the number of seconds from 1970-01-01T00:00:00Z as measured in UTC until the date/time of expiration."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_uri:1
+#: c808c4be36474628b978c4f87622d9bb
+msgid "URL string of a web page providing information about the client."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.client_uri:3
+#: eadc2f25087d476fb020f699c9f630c0
+msgid "If present, the server SHOULD display this URL to the end-user in a clickable fashion.  It is RECOMMENDED that clients always send this field.  The value of this field MUST point to a valid web page.  The value of this field MAY be internationalized, as described in Section 2.2."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.contacts:1
+#: b2ba960845ec4d37955854ef04ff3439
+msgid "Array of strings representing ways to contact people responsible for this client, typically email addresses."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.contacts:4
+#: f16aba83e47541b9a0a1b9fb36d5ebbd
+msgid "The authorization server MAY make these contact addresses available to end-users for support requests for the client.  See Section 6 for information on Privacy Considerations."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:1
+#: 9279cc2620e247239620ce27cc3f25be
+msgid "Array of OAuth 2.0 grant type strings that the client can use at the token endpoint.  These grant types are defined as follows:"
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:4
+#: 3531d80222174772b72c7d0365ae585b
+msgid "\"authorization_code\": The authorization code grant type defined in OAuth 2.0, Section 4.1."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:7
+#: 700823977a854c0ab4b31683d3537526
+msgid "\"implicit\": The implicit grant type defined in OAuth 2.0, Section 4.2."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:10
+#: 9edafc4daf7d495d91ad5c3e3945373f
+msgid "\"password\": The resource owner password credentials grant type defined in OAuth 2.0, Section 4.3."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:13
+#: 606dd7b652ee432db4df96731cb74c83
+msgid "\"client_credentials\": The client credentials grant type defined in OAuth 2.0, Section 4.4."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:16
+#: e89ed9beba1c4bad87c8debcb3a6f7ea
+msgid "\"refresh_token\": The refresh token grant type defined in OAuth 2.0, Section 6."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:19
+#: 278f7b5438fc4abba32e99a2cfd051e0
+msgid "\"urn:ietf:params:oauth:grant-type:jwt-bearer\": The JWT Bearer Token Grant Type defined in OAuth JWT Bearer Token Profiles [RFC7523]."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:23
+#: f6d6e6c6e6fd4d059f4414322c5b2816
+msgid "\"urn:ietf:params:oauth:grant-type:saml2-bearer\": The SAML 2.0 Bearer Assertion Grant defined in OAuth SAML 2 Bearer Token Profiles [RFC7522]."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.grant_types:27
+#: df3a20a122e44a0f85ff153097c75299
+msgid "If the token endpoint is used in the grant type, the value of this parameter MUST be the same as the value of the \"grant_type\" parameter passed to the token endpoint defined in the grant type definition.  Authorization servers MAY allow for other values as defined in the grant type extension process described in OAuth 2.0, Section 4.5.  If omitted, the default behavior is that the client will use only the \"authorization_code\" Grant Type."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.jwk:1
+#: b28be1904349499bbb8a81a044e4d67d
+msgid "Client's JSON Web Key Set [RFC7517] document value, which contains the client's public keys."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.jwk:4
+#: f70ddda717154155a67fd9257f4e2a29
+msgid "The value of this field MUST be a JSON object containing a valid JWK Set.  These keys can be used by higher-level protocols that use signing or encryption.  This parameter is intended to be used by clients that cannot use the \"jwks_uri\" parameter, such as native clients that cannot host public URLs.  The \"jwks_uri\" and \"jwks\" parameters MUST NOT both be present in the same request or response."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.jwks_uri:1
+#: e77c6d704ba34b1a8ae9191a549fc105
+msgid "URL string referencing the client's JSON Web Key (JWK) Set [RFC7517] document, which contains the client's public keys."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.jwks_uri:4
+#: 07c3977b5cc6478582c40bfda3818dca
+msgid "The value of this field MUST point to a valid JWK Set document. These keys can be used by higher-level protocols that use signing or encryption.  For instance, these keys might be used by some applications for validating signed requests made to the token endpoint when using JWTs for client authentication [RFC7523].  Use of this parameter is preferred over the \"jwks\" parameter, as it allows for easier key rotation.  The \"jwks_uri\" and \"jwks\" parameters MUST NOT both be present in the same request or response."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.logo_uri:1
+#: 1e78b0b24ba74fce9796a178d03f9a68
+msgid "URL string that references a logo for the client."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.logo_uri:3
+#: 8047900a37a946c5819126e4d5b1a6f2
+msgid "If present, the server SHOULD display this image to the end-user during approval. The value of this field MUST point to a valid image file.  The value of this field MAY be internationalized, as described in Section 2.2."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.policy_uri:1
+#: 196ad277ca0d48e39e3b050fbd6c7420
+msgid "URL string that points to a human-readable privacy policy document that describes how the deployment organization collects, uses, retains, and discloses personal data."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.policy_uri:5
+#: ../../docstring of canaille.oidc.basemodels.Client.tos_uri:5
+#: 44ffb5b8755147ffa444c857bb4cb9d7
+#: ccc2d89b967b4e17a53b8ac2c26b263f
+msgid "The authorization server SHOULD display this URL to the end-user if it is provided.  The value of this field MUST point to a valid web page.  The value of this field MAY be internationalized, as described in Section 2.2."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.post_logout_redirect_uris:3
+#: 40a2fe5d5daf49c184873ddddffa1893
+msgid "Array of URLs supplied by the RP to which it MAY request that the End-User's User Agent be redirected using the post_logout_redirect_uri parameter after a logout has been performed. These URLs SHOULD use the https scheme and MAY contain port, path, and query parameter components; however, they MAY use the http scheme, provided that the Client Type is confidential, as defined in Section 2.1 of OAuth 2.0 [RFC6749], and provided the OP allows the use of http RP URIs."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.redirect_uris:1
+#: 9a28211e567845cbba7ac1bee6666f4a
+msgid "Array of redirection URI strings for use in redirect-based flows such as the authorization code and implicit flows."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.redirect_uris:4
+#: 2afba64218f040f1989433931c19d5e1
+msgid "As required by Section 2 of OAuth 2.0 [RFC6749], clients using flows with redirection MUST register their redirection URI values. Authorization servers that support dynamic registration for redirect-based flows MUST implement support for this metadata value."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.response_types:1
+#: 89ed3097a94f43dc83b564e94b3179f7
+msgid "Array of the OAuth 2.0 response type strings that the client can use at the authorization endpoint.  These response types are defined as follows:"
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.response_types:5
+#: f58fbc4e912f4a07910f7dde4deb4886
+msgid "\"code\": The authorization code response type defined in OAuth 2.0, Section 4.1."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.response_types:8
+#: ea813f0274b44fe2a03e1215606dcca0
+msgid "\"token\": The implicit response type defined in OAuth 2.0, Section 4.2."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.response_types:11
+#: e855edc4d7984aa68dd8bd2609bd4925
+msgid "If the authorization endpoint is used by the grant type, the value of this parameter MUST be the same as the value of the \"response_type\" parameter passed to the authorization endpoint defined in the grant type definition.  Authorization servers MAY allow for other values as defined in the grant type extension process is described in OAuth 2.0, Section 4.5.  If omitted, the default is that the client will use only the \"code\" response type."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.scope:1
+#: 203b6265a65f43678bd3525158d35ed5
+msgid "String containing a space-separated list of scope values (as described in Section 3.3 of OAuth 2.0 [RFC6749]) that the client can use when requesting access tokens."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.scope:5
+#: ccb3e8902413435da8ef2b347ee6f524
+msgid "The semantics of values in this list are service specific.  If omitted, an authorization server MAY register a client with a default set of scopes."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.software_id:1
+#: 1c3a6b1855e6484286e2a7ead64545ca
+msgid "A unique identifier string (e.g., a Universally Unique Identifier (UUID)) assigned by the client developer or software publisher used by registration endpoints to identify the client software to be dynamically registered."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.software_id:6
+#: 92bca122a33f4ad2aa156a357d7abbc9
+msgid "Unlike \"client_id\", which is issued by the authorization server and SHOULD vary between instances, the \"software_id\" SHOULD remain the same for all instances of the client software.  The \"software_id\" SHOULD remain the same across multiple updates or versions of the same piece of software.  The value of this field is not intended to be human readable and is usually opaque to the client and authorization server."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.software_version:1
+#: 7b41f56df51642a99f7bdbaf40269981
+msgid "A version identifier string for the client software identified by \"software_id\"."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.software_version:4
+#: 02558244f5a141e193400a177f45b84e
+msgid "The value of the \"software_version\" SHOULD change on any update to the client software identified by the same \"software_id\".  The value of this field is intended to be compared using string equality matching and no other comparison semantics are defined by this specification.  The value of this field is outside the scope of this specification, but it is not intended to be human readable and is usually opaque to the client and authorization server.  The definition of what constitutes an update to client software that would trigger a change to this value is specific to the software itself and is outside the scope of this specification."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.token_endpoint_auth_method:1
+#: e508c45da1ae48f19b7ee8441976c669
+msgid "String indicator of the requested authentication method for the token endpoint.  Values defined by this specification are:"
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.token_endpoint_auth_method:4
+#: 8a3f3b84f62b4438a5ed5fbb9e98bef5
+msgid "\"none\": The client is a public client as defined in OAuth 2.0, Section 2.1, and does not have a client secret."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.token_endpoint_auth_method:7
+#: 0a2a945397264911947f1eb4e8591bbf
+msgid "\"client_secret_post\": The client uses the HTTP POST parameters as defined in OAuth 2.0, Section 2.3.1."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.token_endpoint_auth_method:10
+#: 3852640761c84dbfb1e94502c59cd753
+msgid "\"client_secret_basic\": The client uses HTTP Basic as defined in OAuth 2.0, Section 2.3.1."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.token_endpoint_auth_method:13
+#: e1a40f43702c4916bcfa4584c26611ea
+msgid "Additional values can be defined via the IANA \"OAuth Token Endpoint Authentication Methods\" registry established in Section 4.2.  Absolute URIs can also be used as values for this parameter without being registered.  If unspecified or omitted, the default is \"client_secret_basic\", denoting the HTTP Basic authentication scheme as specified in Section 2.3.1 of OAuth 2.0."
+msgstr ""
+
+#: ../../docstring of canaille.oidc.basemodels.Client.tos_uri:1
+#: a6cd2971183b42bcbb8e50649d19fc7e
+msgid "URL string that points to a human-readable terms of service document for the client that describes a contractual relationship between the end-user and the client that the end-user accepts when authorizing the client."
+msgstr ""
+
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.Consent:1
+#: 5b6f0884f0fa40aa8a74cc3a3553d88f
+msgid "Long-term user consent to an application."
+msgstr ""
+
+#: ../../canaille/oidc/basemodels.py:docstring of canaille.oidc.basemodels.Token:1
+#: 0536543f92654e49b7a69b057d076a38
+msgid "OpenID Connect token definition."
+msgstr ""

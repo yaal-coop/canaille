@@ -1,0 +1,29 @@
+Documentation translation
+Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`_.
+
+The following commands are there as documentation, only the message extraction and the language addition is needed for contributors.
+
+Message extraction
+~~~~~~~~~~~~~~~~~~
+
+After you have edited translatable strings, you should extract the messages with:
+
+.. code-block:: bash
+
+    sphinx-build --builder gettext doc doc/gettext
+
+Language addition
+~~~~~~~~~~~~~~~~~
+
+You can add a new language manually with the following command, however this should not be needed as Weblate takes car of this:
+
+.. code-block:: bash
+
+    sphinx-intl update --pot-dir build/gettext --locale-dir doc/locales -l fr_FR
+
+Build the documentation in another language
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    sphinx-build --builder html --define language=fr_FR doc build/html/fr_FR

@@ -1,0 +1,836 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 15:37+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_FR\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../doc/references/configuration.rst:2 424d05c383324277a800335820e3fa6e
+msgid "Configuration"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:5 5d68e755dda14103904b8038717bb5b4
+msgid "Load the configuration"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:7 3138a09755a046a286748b624585f456
+msgid ""
+"Canaille can be configured either by a environment variables, environment"
+" file, or by a configuration file."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:10 967fe546c7f64dffbed7e7ecbe6a425f
+msgid "Configuration file"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:12 c60e21f322d14a3d8df3a5f80650198a
+msgid ""
+"The configuration can be written in `toml` configuration file which path "
+"is passed in the :envvar:`CONFIG` environment variable."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:14
+#: ../../doc/references/configuration.rst:85 5598260f6347465c9a7f8818cb9d5a76
+#: c43d890510d8485fac81e8a1b72b9152 canaille.app.configuration.RootSettings:11
+#: e7e0deef51b24803a825cee5f2feeb6b of
+msgid "config.toml"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:26 c223295f61c54f9eb7a25d9ec52a5a1e
+msgid ""
+"You can have a look at the :ref:`example file "
+"<references/configuration:Example file>` for inspiration."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:29 1cf9a6f193e74d718c0dbea6ab02b7e5
+msgid "Environment variables"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:31 21e22f7bcf484969bb578f6c6842a210
+msgid ""
+"In addition, parameters that have not been set in the configuration file "
+"can be read from environment variables. The way environment variables are"
+" parsed can be read from the `pydantic-settings documentation "
+"<https://docs.pydantic.dev/latest/concepts/pydantic_settings/#parsing-"
+"environment-variable-values>`_."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:36 3e3b489d0d0f4fdebf21bf4c4418422b
+msgid ""
+"For environment vars, the separator between sections and variables is a "
+"double underscore: ``__``. For instance, the ``NAME`` var in the "
+"``CANAILLE`` section shown above is ``CANAILLE__NAME``."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:40 bffb0a7bf9184ca092bd7f06798b5ed7
+msgid "Environment file"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:42 79fb1890082d49969ca45b0b243c537c
+msgid ""
+"Any environment variable can also be written in a ``.env``, and will be "
+"read if present."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:44 b9fc48127af945bda804aba757d7b7dd
+msgid ".env"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:62 e16e03560b974996b92551623c3a4728
+msgid "Parameters"
+msgstr ""
+
+#: 8c93b32620244c1c89cca6d261768a39 canaille.app.configuration.RootSettings:1
+#: of
+msgid ""
+"The top-level namespace contains holds the configuration settings "
+"unrelated to Canaille."
+msgstr ""
+
+#: bdff9ee3326e47838fa870fa10d24a4a canaille.app.configuration.RootSettings:4
+#: of
+msgid "The configuration paramateres from the following libraries can be used:"
+msgstr ""
+
+#: 0048354dd402460d9058c80014afc3a8 canaille.app.configuration.RootSettings:6
+#: of
+msgid ":doc:`Flask <flask:config>`"
+msgstr ""
+
+#: 97eef56c269a4976af0d8331d4028832 canaille.app.configuration.RootSettings:7
+#: of
+msgid ":doc:`Flask-WTF <flask-wtf:config>`"
+msgstr ""
+
+#: 980d5034607445a8936e13289adb634a canaille.app.configuration.RootSettings:8
+#: of
+msgid ":doc:`Flask-Babel <flask-babel:index>`"
+msgstr ""
+
+#: b04bbf26f86c49539b0378da858e25c0 canaille.app.configuration.RootSettings:9
+#: of
+msgid ":doc:`Authlib <authlib:flask/2/authorization-server>`"
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.DEBUG:1
+#: d2a0d7c0762940079150f885dec0d0e7 of
+msgid "The Flask :external:py:data:`DEBUG` configuration setting."
+msgstr ""
+
+#: ../../docstring 655fe302f2244cae8d4f7507b9bcf5ee
+#: canaille.app.configuration.RootSettings.DEBUG:3 of
+msgid "This enables debug options."
+msgstr ""
+
+#: ../../docstring 38930315245e43c8a21dea835f70de8a
+#: canaille.app.configuration.RootSettings.DEBUG:7 of
+msgid ""
+"This is useful for development but should be absolutely avoided in "
+"production environments."
+msgstr ""
+
+#: ../../docstring be190939a5b8407abc8051d973470b00
+#: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:1 of
+msgid "The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration setting."
+msgstr ""
+
+#: ../../docstring 8f1c5830bb7a4049a19023e8c78e2868
+#: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:4 of
+msgid "This sets the url scheme by which canaille will be served."
+msgstr ""
+
+#: ../../docstring b8116a14c0634f37a438a279518faf1b
+#: canaille.app.configuration.RootSettings.SECRET_KEY:1 of
+msgid "The Flask :external:py:data:`SECRET_KEY` configuration setting."
+msgstr ""
+
+#: ../../docstring 7899131820fe46ea8de0a235b307ab42
+#: canaille.app.configuration.RootSettings.SECRET_KEY:3 of
+msgid "You MUST change this."
+msgstr ""
+
+#: ../../docstring 625463c6bbe848c7977af2a13d58865e
+#: canaille.app.configuration.RootSettings.SERVER_NAME:1 of
+msgid "The Flask :external:py:data:`SERVER_NAME` configuration setting."
+msgstr ""
+
+#: ../../docstring 06598651788843eebda0b59e8eb7b2b1
+#: canaille.app.configuration.RootSettings.SERVER_NAME:3 of
+msgid "This sets domain name on which canaille will be served."
+msgstr ""
+
+#: 1c4603a9300b4baabfe80ba792d3e79a canaille.core.configuration.CoreSettings:1
+#: of
+msgid "The settings from the ``CANAILLE`` namespace."
+msgstr ""
+
+#: 84c7ae7efa5a47ad8789a59aa453354a canaille.core.configuration.CoreSettings:3
+#: of
+msgid ""
+"Those are all the configuration parameters that controls the behavior of "
+"Canaille."
+msgstr ""
+
+#: ../../docstring 9ddde712539a484d8d84b470795d5ea1
+#: canaille.core.configuration.CoreSettings.ACL:1 of
+msgid "Mapping of permission groups. See :class:`ACLSettings` for more details."
+msgstr ""
+
+#: ../../docstring 8cc6440505154248a19225a38dfa7d32
+#: canaille.core.configuration.CoreSettings.ACL:3 of
+msgid "The ACL name can be freely chosen. For example::"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1
+#: f6c14e52ce8f4c00834507e6f4274b8f of
+msgid "Administration email contact."
+msgstr ""
+
+#: ../../docstring c7ab87c0bfb34fc8b97870bbe1299631
+#: canaille.core.configuration.CoreSettings.ADMIN_EMAIL:3 of
+msgid ""
+"In certain special cases (example : questioning about password "
+"corruption), it is necessary to provide an administration contact email."
+msgstr ""
+
+#: ../../docstring 314eab36d7294cf0a47ed00aa7c84a0c
+#: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:1 of
+msgid ""
+"If :py:data:`True`, users will need to click on a confirmation link sent "
+"by email when they want to add a new email."
+msgstr ""
+
+#: ../../docstring b9c54b77527e411a8e1c313cd18ae3b2
+#: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:4 of
+msgid ""
+"By default, this is true if ``SMTP`` is configured, else this is false. "
+"If explicitly set to true and ``SMTP`` is disabled, the email field will "
+"be read-only."
+msgstr ""
+
+#: ../../docstring 9bd6dc224f794a3ab0af54733e45102c
+#: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK:1
+#: of
+msgid ""
+"If :py:data:`True`, Canaille will check if passwords appears in "
+"compromission databases such as `HIBP <https://haveibeenpwned.com>`_ when"
+" users choose a new one."
+msgstr ""
+
+#: ../../docstring 4f2a32a147fd4df48e723c7b7cda2c2b
+#: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY:1 of
+msgid ""
+"If :py:data:`False`, then users cannot ask for a password recovery link "
+"by email."
+msgstr ""
+
+#: ../../docstring b40754c5a7354a7c8105ef95608cf381
+#: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:1 of
+msgid ""
+"If :py:data:`True`, then users can freely create an account at this "
+"instance."
+msgstr ""
+
+#: ../../docstring 02798211a1944569b105076267bc34c9
+#: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:4 of
+msgid ""
+"If email verification is available, users must confirm their email before"
+" the account is created."
+msgstr ""
+
+#: ../../docstring 3c2cbc6dbe0d4ba9acb99c6fd93ef0f9
+#: canaille.core.configuration.CoreSettings.FAVICON:1 of
+msgid "You favicon."
+msgstr ""
+
+#: ../../docstring 88c7ad9cd97949129cb8b2e58a149fc9
+#: canaille.core.configuration.CoreSettings.FAVICON:3 of
+msgid "If unset and :attr:`LOGO` is set, then the logo will be used."
+msgstr ""
+
+#: ../../docstring add94b3b94144337b44f24a644cc1430
+#: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:1 of
+msgid ""
+"If :py:data:`True`, when users try to sign in with an invalid login, a "
+"message is shown indicating that the password is wrong, but does not give"
+" a clue whether the login exists or not."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:5
+#: dcfa98e306544b75973c667a9944d89a of
+msgid ""
+"If :py:data:`False`, when a user tries to sign in with an invalid login, "
+"a message is shown indicating that the login does not exist."
+msgstr ""
+
+#: ../../docstring c1590e635df24e1486be1e562a5b0034
+#: canaille.core.configuration.CoreSettings.HTMX:1 of
+msgid "Accelerates webpages loading with asynchronous requests."
+msgstr ""
+
+#: ../../docstring 35b5c6a840a047cc87fa606818c7e7f4
+#: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:1 of
+msgid "The validity duration of registration invitations, in seconds."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:3
+#: f61374773e154a55ad905df27019923d of
+msgid "Defaults to 2 days."
+msgstr ""
+
+#: ../../docstring bd6c3be93bda402092ac6f3cfca24265
+#: canaille.core.configuration.CoreSettings.JAVASCRIPT:1 of
+msgid "Enables Javascript to smooth the user experience."
+msgstr ""
+
+#: ../../docstring 08e45b94110845a6a2cf237d5dd01508
+#: canaille.core.configuration.CoreSettings.LANGUAGE:1 of
+msgid "If a language code is set, it will be used for every user."
+msgstr ""
+
+#: ../../docstring 124a41b6ceeb47e3b952d23619d85139
+#: canaille.core.configuration.CoreSettings.LANGUAGE:3 of
+msgid "If unset, the language is guessed according to the users browser."
+msgstr ""
+
+#: ../../docstring 40ed5d3d85104c57a1b384eeb7aaef40
+#: canaille.core.configuration.CoreSettings.LOGGING:1 of
+msgid ""
+"Configures the logging output using the python logging configuration "
+"format:"
+msgstr ""
+
+#: ../../docstring 4df8127b60254f5bb0cc247c30469d27
+#: canaille.core.configuration.CoreSettings.LOGGING:3 of
+msgid ""
+"if :py:data:`None`, everything is logged in the standard error output the"
+" log level is :py:data:`~logging.DEBUG` if the "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` setting is "
+":py:data:`True`, else this is :py:data:`~logging.INFO`"
+msgstr ""
+
+#: ../../docstring 03db8dc130ad49e8b59d79e0f6aa9154
+#: canaille.core.configuration.CoreSettings.LOGGING:6 of
+msgid ""
+"if this is a :class:`dict`, it is passed to "
+":func:`logging.config.dictConfig`:"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:7
+#: f00409f6957e42c29f599a74667becb2 of
+msgid ""
+"if this is a :class:`str`, it is expected to be a file path that will be "
+"passed to :func:`logging.config.fileConfig`"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:10
+#: f45e3f7a67724ea9882d55fa6b07d3f6 of
+msgid "For example::"
+msgstr ""
+
+#: ../../docstring 23d3cf2c128d44fa8b149a6b3548a302
+#: canaille.core.configuration.CoreSettings.LOGO:1 of
+msgid ""
+"The logo of your organization, this is useful to make your organization "
+"recognizable on login screens."
+msgstr ""
+
+#: ../../docstring 6279cd5aa6ba484493c72cc708780ff2
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:1 of
+msgid "Maximum length for user password."
+msgstr ""
+
+#: ../../docstring 6dda33511f5c41249a65ba949f5f422f
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:3 of
+msgid ""
+"There is a technical limit with passlib used by sql database of 4096 "
+"characters. If the value entered is 0 or None, or greater than 4096, then"
+" 4096 will be retained."
+msgstr ""
+
+#: ../../docstring 8a907f495b1c4e059084f17f24bac4ac
+#: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:1 of
+msgid "Minimum length for user password."
+msgstr ""
+
+#: ../../docstring 78c7324a8e4f4cca974dfea5be0fc93d
+#: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:3 of
+msgid "It is possible not to set a minimum, by entering None or 0."
+msgstr ""
+
+#: ../../docstring b0bea46879234cb8a42cefca791fbb65
+#: canaille.core.configuration.CoreSettings.NAME:1 of
+msgid "Your organization name."
+msgstr ""
+
+#: ../../docstring c821d6608be5485fa7c3b9574007b964
+#: canaille.core.configuration.CoreSettings.NAME:3 of
+msgid "Used for display purpose."
+msgstr ""
+
+#: ../../docstring c53cf47a679b4844925c70c352dea0bf
+#: canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL:1
+#: of
+msgid "Have i been pwned api url for compromission checks."
+msgstr ""
+
+#: ../../docstring 9990747398ac4f5895282ab305c072dc
+#: canaille.core.configuration.CoreSettings.SENTRY_DSN:1 of
+msgid "A `Sentry <https://sentry.io>`_ DSN to collect the exceptions."
+msgstr ""
+
+#: ../../docstring 790c865da20f435aa1be69714403de01
+#: canaille.core.configuration.CoreSettings.SENTRY_DSN:3 of
+msgid "This is useful for tracking errors in test and production environments."
+msgstr ""
+
+#: ../../docstring 85951eb2b027483eba736e336af20f81
+#: canaille.core.configuration.CoreSettings.SMTP:1 of
+msgid "The settings related to SMTP and mail configuration."
+msgstr ""
+
+#: ../../docstring c409cbcf49e7469ca8b2dd052c011a52
+#: canaille.core.configuration.CoreSettings.SMTP:3 of
+msgid "If unset, mail-related features like password recovery won't be enabled."
+msgstr ""
+
+#: ../../docstring 2cb83696c7f149289e9f3dbc012182ef
+#: canaille.core.configuration.CoreSettings.THEME:1 of
+msgid "The name of a theme in the 'theme' directory, or a path to a theme."
+msgstr ""
+
+#: ../../docstring b3d1237eb0144f97974e071fc00ea0b7
+#: canaille.core.configuration.CoreSettings.THEME:3 of
+msgid ""
+"Defaults to ``default``. Theming is done with `flask-themer "
+"<https://github.com/tktech/flask-themer>`_."
+msgstr ""
+
+#: ../../docstring b1e60d33d31a47f4bc40640338cb284b
+#: canaille.core.configuration.CoreSettings.TIMEZONE:1 of
+msgid ""
+"The timezone in which datetimes will be displayed to the users (e.g. "
+"``CEST``)."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.TIMEZONE:4
+#: dc4cf4f473ea40a5bb1c9a049a3ca1e2 of
+msgid "If unset, the server timezone will be used."
+msgstr ""
+
+#: 06acb103d58a4e9786be0d9ccca36999 canaille.core.configuration.SMTPSettings:1
+#: of
+msgid ""
+"The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace. If "
+"unset, mail related features will be disabled, such as mail verification "
+"or password recovery emails."
+msgstr ""
+
+#: 331241c793784690be8c9746d3366e56 canaille.core.configuration.SMTPSettings:5
+#: of
+msgid ""
+"By default, Canaille will try to send mails from localhost without "
+"authentication."
+msgstr ""
+
+#: ../../docstring 92f12abb0bac49e5867285e04a5c9d6a
+#: canaille.core.configuration.SMTPSettings.FROM_ADDR:1 of
+msgid "The sender for Canaille mails."
+msgstr ""
+
+#: ../../docstring 10b0c6ea9c92453cae3d9e33632a4ad4
+#: canaille.core.configuration.SMTPSettings.FROM_ADDR:3 of
+msgid "Some mail provider might require a valid sender address."
+msgstr ""
+
+#: ../../docstring 3535c00f832b4d2c964be48c7b91231b
+#: canaille.core.configuration.SMTPSettings.HOST:1 of
+msgid "The SMTP host."
+msgstr ""
+
+#: ../../docstring 652e684442a4480f8d5604a28e5f3ce8
+#: canaille.core.configuration.SMTPSettings.LOGIN:1 of
+msgid "The SMTP login."
+msgstr ""
+
+#: ../../docstring 8670279f8f9f4fbebc169da4c79f23a9
+#: canaille.core.configuration.SMTPSettings.PASSWORD:1 of
+msgid "The SMTP password."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.PORT:1
+#: e23e9bd935054912937b4a19c870e950 of
+msgid "The SMTP port."
+msgstr ""
+
+#: ../../docstring 610bdbb8787348feb7afed6f3d60c0c2
+#: canaille.core.configuration.SMTPSettings.SSL:1 of
+msgid "Whether to use SSL to connect to the SMTP server."
+msgstr ""
+
+#: ../../docstring 3cc08150a5ea4ed5ae2e0dc3c4fca472
+#: canaille.core.configuration.SMTPSettings.TLS:1 of
+msgid "Whether to use TLS to connect to the SMTP server."
+msgstr ""
+
+#: 62b3f9dcea0643de96b1ca7638f6a5e9 canaille.core.configuration.ACLSettings:1
+#: of
+msgid "Access Control List settings. Belong in the ``CANAILLE.ACL`` namespace."
+msgstr ""
+
+#: bdd0385786694ea6ab8802833275fa4e canaille.core.configuration.ACLSettings:3
+#: of
+msgid ""
+"You can define access controls that define what users can do on canaille "
+"An access control consists in a :attr:`FILTER` to match users, a list of "
+":attr:`PERMISSIONS` matched users will be able to perform, and fields "
+"users will be able to :attr:`READ` and :attr:`WRITE`. Users matching "
+"several filters will cumulate permissions."
+msgstr ""
+
+#: ../../docstring 1097669d2b994281b4d5d413097e0623
+#: canaille.core.configuration.ACLSettings.FILTER:1 of
+msgid ":attr:`FILTER` can be:"
+msgstr ""
+
+#: ../../docstring bb053c15eb704432bb84e56edeadf167
+#: canaille.core.configuration.ACLSettings.FILTER:3 of
+msgid ""
+":py:data:`None`, in which case all the users will match this access "
+"control"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:4
+#: cbdb019e3b284edf87da4f15d2b78bf4 of
+msgid ""
+"a mapping where keys are user attributes name and the values those user "
+"attribute values. All the values must be matched for the user to be part "
+"of the access control."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:7
+#: d4572cf46999451ca8cf28217ded5167 of
+msgid ""
+"a list of those mappings. If a user values match at least one mapping, "
+"then the user will be part of the access control"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.FILTER:10
+#: fac47b79b4dd4a3da08e3237472a7b7d of
+msgid "Here are some examples::"
+msgstr ""
+
+#: ../../docstring 62ff0c3020c8448a944704b0062a8cb2
+#: canaille.core.configuration.ACLSettings.PERMISSIONS:1 of
+msgid ""
+"A list of :class:`Permission` users in the access control will be able to"
+" manage. For example::"
+msgstr ""
+
+#: ../../docstring 1099209ca53345d387496ab4312ed097
+#: canaille.core.configuration.ACLSettings.READ:1 of
+msgid ""
+"A list of :class:`~canaille.core.models.User` attributes that users in "
+"the ACL will be able to read."
+msgstr ""
+
+#: ../../docstring 58a9e524f70f4e7baf522ef1c8157e32
+#: canaille.core.configuration.ACLSettings.WRITE:1 of
+msgid ""
+"A list of :class:`~canaille.core.models.User` attributes that users in "
+"the ACL will be able to edit."
+msgstr ""
+
+#: canaille.core.configuration.Permission:1 e8e63c7026de41bcba4f2349159e7261 of
+msgid "The permissions that can be assigned to users."
+msgstr ""
+
+#: 9c4460d4bbf14419aa95957ca5a5e952 canaille.core.configuration.Permission:3 of
+msgid ""
+"The permissions are intended to be used in :attr:`ACLSettings "
+"<canaille.core.configuration.ACLSettings.PERMISSIONS>`."
+msgstr ""
+
+#: ../../docstring 7605a3b0da5e4979ac17a807d8134c54
+#: canaille.core.configuration.Permission.DELETE_ACCOUNT:1 of
+msgid "Allows users to delete their account."
+msgstr ""
+
+#: ../../docstring ae2fe25c6c344a97864852f01f57e296
+#: canaille.core.configuration.Permission.DELETE_ACCOUNT:3 of
+msgid ""
+"If used with "
+":attr:`~canaille.core.configuration.Permission.MANAGE_USERS`, users can "
+"delete any account."
+msgstr ""
+
+#: ../../docstring 82ed41275cc2499f994e6bc2dd5d1e3c
+#: canaille.core.configuration.Permission.EDIT_SELF:1 of
+msgid "Allows users to edit their own profile."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.IMPERSONATE_USERS:1
+#: fbc8c78392de4edcac1b152a1b08e63b of
+msgid "Allows users to take the identity of another user."
+msgstr ""
+
+#: ../../docstring 6884efcf056942198b52e3612b827d05
+#: canaille.core.configuration.Permission.MANAGE_GROUPS:1 of
+msgid "Allows group edition and creation."
+msgstr ""
+
+#: ../../docstring 38db5db2588046459a54a6a0fcbd608f
+#: canaille.core.configuration.Permission.MANAGE_OIDC:1 of
+msgid "Allows OpenID Connect client managements."
+msgstr ""
+
+#: ../../docstring 902c5fb366a74c5a9a03ad5fcd2e6cf1
+#: canaille.core.configuration.Permission.MANAGE_USERS:1 of
+msgid "Allows other users management."
+msgstr ""
+
+#: ../../docstring 96fbdc9c5ccf421db8c2e110eb59536a
+#: canaille.core.configuration.Permission.USE_OIDC:1 of
+msgid "Allows OpenID Connect authentication."
+msgstr ""
+
+#: canaille.oidc.configuration.OIDCSettings:1 f949952a659545e6a0eb5e7df32b2619
+#: of
+msgid "OpenID Connect settings."
+msgstr ""
+
+#: 8396f08e1b0e42ec94c732847bea4bfc canaille.oidc.configuration.OIDCSettings:3
+#: of
+msgid "Belong in the ``CANAILLE_OIDC`` namespace."
+msgstr ""
+
+#: ../../docstring 70c636d7dae842b09d6533627f4b65e2
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:1
+#: of
+msgid "Whether a token is needed for the RFC7591 dynamical client registration."
+msgstr ""
+
+#: ../../docstring
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:3
+#: e333e90c5649498b9d34e691efcd8ab5 of
+msgid ""
+"If :py:data:`True`, no token is needed to register a client. If "
+":py:data:`False`, dynamical client registration needs a token defined in "
+":attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`."
+msgstr ""
+
+#: ../../docstring 70e5e4ec0dc64daba69f85bf4ec84708
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_TOKENS:1
+#: of
+msgid "A list of tokens that can be used for dynamic client registration."
+msgstr ""
+
+#: ../../docstring 5418fb5b02384cc29f1426c4c1d30759
+#: canaille.oidc.configuration.OIDCSettings.JWT:1 of
+msgid "JSON Web Token settings."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:1
+#: e928ff6b3928470e8ad7c82caa4a3d07 of
+msgid "Force the nonce exchange during the authentication flows."
+msgstr ""
+
+#: ../../docstring 7359057f9f5d43f1a42cd646a4300f42
+#: canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:3 of
+msgid "This adds security but may not be supported by all clients."
+msgstr ""
+
+#: 27a60f8e093d4917ac66b7d131143b97 canaille.oidc.configuration.JWTSettings:1
+#: of
+msgid "JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace."
+msgstr ""
+
+#: 3764ee3b65474edf8ebb66a6c372c243 canaille.oidc.configuration.JWTSettings:3
+#: of
+msgid "You can generate a RSA keypair with::"
+msgstr ""
+
+#: ../../docstring a1a6dcd429094759b1efb11226baf5a2
+#: canaille.oidc.configuration.JWTSettings.ALG:1 of
+msgid "The key algorithm."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.EXP:1
+#: dd523d20e02b48cdb29cbc016cf04c7b of
+msgid "The time the JWT will be valid, in seconds."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.ISS:1
+#: f0cf8022dba44fbd8663ad45a1888b91 of
+msgid "The URI of the identity provider."
+msgstr ""
+
+#: ../../docstring 8028f588edca4da58a09dc75ca349aba
+#: canaille.oidc.configuration.JWTSettings.KTY:1 of
+msgid "The key type."
+msgstr ""
+
+#: ../../docstring 41e83a2048a44f919950e1750910a1d0
+#: canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:1 of
+msgid "The private key."
+msgstr ""
+
+#: ../../docstring 7348c4741ca84317877a04bdf03d99ae
+#: bd2c3564a3af4101abb4393b1aac729c
+#: canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:3
+#: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:3 of
+msgid ""
+"If :py:data:`None` and debug mode is enabled, then an in-memory key will "
+"be used."
+msgstr ""
+
+#: ../../docstring b7a0baa78585417d8dcdbe96a8b98583
+#: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:1 of
+msgid "The public key."
+msgstr ""
+
+#: a9d6eabbdca247c2af37e29d96568a03
+#: canaille.oidc.configuration.JWTMappingSettings:1 of
+msgid "Mapping between the user model and the JWT fields."
+msgstr ""
+
+#: 886826dc265c4c7cb8766afe83095133
+#: canaille.oidc.configuration.JWTMappingSettings:3 of
+msgid "Fields are evaluated with jinja. A ``user`` var is available."
+msgstr ""
+
+#: 9590d902318d4c8580d37bbcd979932a
+#: canaille.backends.sql.configuration.SQLSettings:1 of
+msgid "Settings related to the SQL backend."
+msgstr ""
+
+#: 15c8d7294eff4cb0aad980f15edac5a9
+#: canaille.backends.sql.configuration.SQLSettings:3 of
+msgid "Belong in the ``CANAILLE_SQL`` namespace."
+msgstr ""
+
+#: ../../docstring 8b41da4ffa2646dcb6cd9b93a4807cf3
+#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:1 of
+msgid "The SQL server URI. For example::"
+msgstr ""
+
+#: b0bc548513934f1da3667d30279d82c4
+#: canaille.backends.ldap.configuration.LDAPSettings:1 of
+msgid "Settings related to the LDAP backend."
+msgstr ""
+
+#: 49283fbc5e9a4eb7a3dcebf404cc3870
+#: canaille.backends.ldap.configuration.LDAPSettings:3 of
+msgid "Belong in the ``CANAILLE_LDAP`` namespace."
+msgstr ""
+
+#: ../../docstring 8824324541e74294beab8b504d38368a
+#: canaille.backends.ldap.configuration.LDAPSettings.BIND_DN:1 of
+msgid "The LDAP bind DN."
+msgstr ""
+
+#: ../../docstring 40026a12323e48a3a0753e08ca363e83
+#: canaille.backends.ldap.configuration.LDAPSettings.BIND_PW:1 of
+msgid "The LDAP bind password."
+msgstr ""
+
+#: ../../docstring a7e3ac64d2044be3ab6c5d2d293db37d
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:1 of
+msgid "The LDAP node under which groups will be looked for and saved."
+msgstr ""
+
+#: ../../docstring bda60eee8e474c65925adb75f0e02164
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:3 of
+msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
+msgstr ""
+
+#: ../../docstring 68bffd35121746e8bfbb70d05a8c176b
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_CLASS:1 of
+msgid "The object class to use for creating new groups."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_NAME_ATTRIBUTE:1
+#: f33128abab5f4ce59d431244a8c757ea of
+msgid "The attribute to use to identify a group."
+msgstr ""
+
+#: ../../docstring 9292125ade5c4f9e912f543664860791
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_RDN:1 of
+msgid "The attribute to identify an object in the Group DN."
+msgstr ""
+
+#: ../../docstring 813682b1e3b54072ab07e295c38b2fbc
+#: canaille.backends.ldap.configuration.LDAPSettings.ROOT_DN:1 of
+msgid "The LDAP root DN."
+msgstr ""
+
+#: ../../docstring 2e43c3ede5a54158abcc1bb480b98026
+#: canaille.backends.ldap.configuration.LDAPSettings.TIMEOUT:1 of
+msgid "The LDAP connection timeout."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.URI:1
+#: cda749d2c3be41e3928f0e759f206889 of
+msgid "The LDAP server URI."
+msgstr ""
+
+#: ../../docstring 7b97343c77204e699fc3961a28bf66fc
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:1 of
+msgid "The LDAP node under which users will be looked for and saved."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:3
+#: ea6864b7befc4c46a1a463a3df375e57 of
+msgid "For instance `ou=users,dc=mydomain,dc=tld`."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_CLASS:1
+#: d749e90737ba453393324ade8c1e9b9f of
+msgid "The object class to use for creating new users."
+msgstr ""
+
+#: ../../docstring 1b1aeacb6c754ecd871e160f614ebe30
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:1 of
+msgid "Filter to match users on sign in."
+msgstr ""
+
+#: ../../docstring 7d7bade071b84039810c29d01ee7af4e
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:3 of
+msgid ""
+"For instance ``(|(uid={{ login }})(mail={{ login }}))``. Jinja syntax is "
+"supported and a ``login`` variable is available, containing the value "
+"passed in the login field."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.USER_RDN:1
+#: fbb6d8c8e73946e8ae9d0b5b8ef6ac7a of
+msgid "The attribute to identify an object in the User DN."
+msgstr ""
+
+#: ../../doc/references/configuration.rst:81 c71a6c99d5c649468d25d73245d1ce81
+msgid "Example file"
+msgstr ""
+
+#: ../../doc/references/configuration.rst:83 e3d5ff7b824e465fa78cf064e047e2bf
+msgid "Here is a configuration file example:"
+msgstr ""
+

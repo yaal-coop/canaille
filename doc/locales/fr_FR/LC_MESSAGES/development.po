@@ -1,0 +1,2152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 15:35+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_FR\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../doc/development/changelog.rst:2
+msgid "Release notes"
+msgstr ""
+
+#: ../../doc/development/changelog.rst:4
+msgid "All notable changes to this project will be documented in there."
+msgstr ""
+
+#: ../../doc/development/changelog.rst:6
+msgid ""
+"The format is based on `Keep a Changelog "
+"<https://keepachangelog.com/en/1.0.0/>`_, and this project adheres to "
+"`Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_."
+msgstr ""
+
+#: ../../CHANGES.rst:2
+msgid "[0.0.57] - Unreleased"
+msgstr ""
+
+#: ../../CHANGES.rst:5 ../../CHANGES.rst:20 ../../CHANGES.rst:48
+#: ../../CHANGES.rst:67 ../../CHANGES.rst:74 ../../CHANGES.rst:93
+#: ../../CHANGES.rst:151 ../../CHANGES.rst:177 ../../CHANGES.rst:192
+#: ../../CHANGES.rst:241 ../../CHANGES.rst:267 ../../CHANGES.rst:286
+#: ../../CHANGES.rst:294 ../../CHANGES.rst:303 ../../CHANGES.rst:327
+#: ../../CHANGES.rst:360 ../../CHANGES.rst:386 ../../CHANGES.rst:433
+#: ../../CHANGES.rst:461 ../../CHANGES.rst:491 ../../CHANGES.rst:547
+#: ../../CHANGES.rst:580 ../../CHANGES.rst:601 ../../CHANGES.rst:611
+#: ../../CHANGES.rst:634 ../../CHANGES.rst:701 ../../CHANGES.rst:739
+#: ../../CHANGES.rst:756 ../../CHANGES.rst:792
+msgid "Added"
+msgstr ""
+
+#: ../../CHANGES.rst:6
+msgid "Password compromission check :issue:`179`"
+msgstr ""
+
+#: ../../CHANGES.rst:7
+msgid ""
+":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and "
+":attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK`"
+" and :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP` "
+":issue:`179`"
+msgstr ""
+
+#: ../../CHANGES.rst:13
+msgid "[0.0.56] - 2024-11-07"
+msgstr ""
+
+#: ../../CHANGES.rst:16 ../../CHANGES.rst:58 ../../CHANGES.rst:97
+#: ../../CHANGES.rst:105 ../../CHANGES.rst:113 ../../CHANGES.rst:120
+#: ../../CHANGES.rst:127 ../../CHANGES.rst:141 ../../CHANGES.rst:169
+#: ../../CHANGES.rst:182 ../../CHANGES.rst:200 ../../CHANGES.rst:219
+#: ../../CHANGES.rst:227 ../../CHANGES.rst:253 ../../CHANGES.rst:261
+#: ../../CHANGES.rst:281 ../../CHANGES.rst:311 ../../CHANGES.rst:341
+#: ../../CHANGES.rst:349 ../../CHANGES.rst:373 ../../CHANGES.rst:393
+#: ../../CHANGES.rst:415 ../../CHANGES.rst:425 ../../CHANGES.rst:446
+#: ../../CHANGES.rst:454 ../../CHANGES.rst:477 ../../CHANGES.rst:500
+#: ../../CHANGES.rst:512 ../../CHANGES.rst:521 ../../CHANGES.rst:530
+#: ../../CHANGES.rst:539 ../../CHANGES.rst:559 ../../CHANGES.rst:566
+#: ../../CHANGES.rst:616 ../../CHANGES.rst:624 ../../CHANGES.rst:649
+#: ../../CHANGES.rst:657 ../../CHANGES.rst:665 ../../CHANGES.rst:678
+#: ../../CHANGES.rst:692 ../../CHANGES.rst:724 ../../CHANGES.rst:747
+#: ../../CHANGES.rst:778
+msgid "Fixed"
+msgstr ""
+
+#: ../../CHANGES.rst:17
+msgid ""
+"With LDAP backend, updating another user groups could result in a "
+"permission lost for the editor. :issue:`202`"
+msgstr ""
+
+#: ../../CHANGES.rst:21
+msgid ""
+":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and"
+" :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` "
+"configuration options :issue:`174`"
+msgstr ""
+
+#: ../../CHANGES.rst:23
+msgid "Password strength visual indicator :issue:`174`"
+msgstr ""
+
+#: ../../CHANGES.rst:24
+msgid "Security events logs :issue:`177`"
+msgstr ""
+
+#: ../../CHANGES.rst:25
+msgid "Support for Python 3.13 :pr:`186`"
+msgstr ""
+
+#: ../../CHANGES.rst:28 ../../CHANGES.rst:41 ../../CHANGES.rst:53
+#: ../../CHANGES.rst:78 ../../CHANGES.rst:86 ../../CHANGES.rst:134
+#: ../../CHANGES.rst:158 ../../CHANGES.rst:210 ../../CHANGES.rst:247
+#: ../../CHANGES.rst:316 ../../CHANGES.rst:332 ../../CHANGES.rst:368
+#: ../../CHANGES.rst:405 ../../CHANGES.rst:440 ../../CHANGES.rst:483
+#: ../../CHANGES.rst:587 ../../CHANGES.rst:641 ../../CHANGES.rst:673
+#: ../../CHANGES.rst:687
+msgid "Changed"
+msgstr ""
+
+#: ../../CHANGES.rst:29
+msgid "Update to HTMX 2.0.3 :pr:`184`"
+msgstr ""
+
+#: ../../CHANGES.rst:30
+msgid "Migrate from poetry to uv :pr:`187`"
+msgstr ""
+
+#: ../../CHANGES.rst:31
+msgid ""
+"The ``sql`` package extra is now split between ``sqlite``, ``postgresql``"
+" and ``mysql``."
+msgstr ""
+
+#: ../../CHANGES.rst:34 ../../CHANGES.rst:378 ../../CHANGES.rst:784
+msgid "Removed"
+msgstr ""
+
+#: ../../CHANGES.rst:35
+msgid "End support for python 3.9. :pr:`179`"
+msgstr ""
+
+#: ../../CHANGES.rst:38
+msgid "[0.0.55] - 2024-08-30"
+msgstr ""
+
+#: ../../CHANGES.rst:42
+msgid "Use poetry-core build backend. :pr:`178`"
+msgstr ""
+
+#: ../../CHANGES.rst:45
+msgid "[0.0.54] - 2024-07-25"
+msgstr ""
+
+#: ../../CHANGES.rst:49
+msgid ""
+"Group member removal can be achieved from the group edition page "
+":issue:`192`"
+msgstr ""
+
+#: ../../CHANGES.rst:50
+msgid "Model management commands :issue:`117` :issue:`54`"
+msgstr ""
+
+#: ../../CHANGES.rst:54
+msgid "Model `identifier_attributes` are fixed."
+msgstr ""
+
+#: ../../CHANGES.rst:55
+msgid "Bump to htmx 1.9.12 :pr:`172`"
+msgstr ""
+
+#: ../../CHANGES.rst:60
+msgid "Dark theme colors for better readability"
+msgstr ""
+
+#: ../../CHANGES.rst:61
+msgid "Crash for passwordless users at login when no SMTP server was configured."
+msgstr ""
+
+#: ../../CHANGES.rst:64
+msgid "[0.0.53] - 2024-04-22"
+msgstr ""
+
+#: ../../CHANGES.rst:68
+msgid "`env_prefix` create_app variable can select the environment var prefix."
+msgstr ""
+
+#: ../../CHANGES.rst:71
+msgid "[0.0.52] - 2024-04-22"
+msgstr ""
+
+#: ../../CHANGES.rst:75
+msgid "`env_file` create_app variable can customize/disable the .env file"
+msgstr ""
+
+#: ../../CHANGES.rst:79
+msgid "Locked users cannot be impersonated anymore."
+msgstr ""
+
+#: ../../CHANGES.rst:80
+msgid "Minimum python requirement is 3.9."
+msgstr ""
+
+#: ../../CHANGES.rst:83
+msgid "[0.0.51] - 2024-04-09"
+msgstr ""
+
+#: ../../CHANGES.rst:87
+msgid "Display the menu bar on error pages."
+msgstr ""
+
+#: ../../CHANGES.rst:90
+msgid "[0.0.50] - 2024-04-09"
+msgstr ""
+
+#: ../../CHANGES.rst:94
+msgid "Sign in/out events are logged in :issue:`177`"
+msgstr ""
+
+#: ../../CHANGES.rst:98
+msgid "HTMX and JAVASCRIPT configuration settings."
+msgstr ""
+
+#: ../../CHANGES.rst:99
+msgid "Compatibility with old sessions IDs."
+msgstr ""
+
+#: ../../CHANGES.rst:102
+msgid "[0.0.49] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:106
+msgid "LDAP user group removal."
+msgstr ""
+
+#: ../../CHANGES.rst:107
+msgid "Display an error message when trying to remove the last user from a group."
+msgstr ""
+
+#: ../../CHANGES.rst:110
+msgid "[0.0.48] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:114
+msgid "LDAP objectClass guessing exception."
+msgstr ""
+
+#: ../../CHANGES.rst:117
+msgid "[0.0.47] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:121
+msgid "Lazy permission loading exception."
+msgstr ""
+
+#: ../../CHANGES.rst:124
+msgid "[0.0.46] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:128
+msgid ""
+"Saving an object with the LDAP backend keeps the objectClass un-managed "
+"by Canaille. :pr:`171`"
+msgstr ""
+
+#: ../../CHANGES.rst:131
+msgid "[0.0.45] - 2024-04-04"
+msgstr ""
+
+#: ../../CHANGES.rst:135
+msgid ""
+"Internal indexation mechanism of "
+":class:`~canaille.backends.memory.model.MemoryModel`"
+msgstr ""
+
+#: ../../CHANGES.rst:138
+msgid "[0.0.44] - 2024-03-29"
+msgstr ""
+
+#: ../../CHANGES.rst:142
+msgid "Fix the default LDAP USER_FILTER value"
+msgstr ""
+
+#: ../../CHANGES.rst:143
+msgid "Fix the OIDC feature detection"
+msgstr ""
+
+#: ../../CHANGES.rst:146
+msgid "[0.0.43] - 2024-03-29"
+msgstr ""
+
+#: ../../CHANGES.rst:148
+msgid "🚨Configuration files must be updated.🚨"
+msgstr ""
+
+#: ../../CHANGES.rst:153
+msgid "Add `created` and `last_modified` datetime for all models"
+msgstr ""
+
+#: ../../CHANGES.rst:154
+msgid "Sitemap to the documentation :pr:`169`"
+msgstr ""
+
+#: ../../CHANGES.rst:155
+msgid "Configuration management with pydantic-settings :issue:`138` :pr:`170`"
+msgstr ""
+
+#: ../../CHANGES.rst:160
+msgid "Use default python logging configuration format. :issue:`188` :pr:`165`"
+msgstr ""
+
+#: ../../CHANGES.rst:161
+msgid "Bump to htmx 1.99.11 :pr:`166`"
+msgstr ""
+
+#: ../../CHANGES.rst:162
+msgid ""
+"Use the standard tomllib python module instead of `toml` starting from "
+"python 3.11 :pr:`167`"
+msgstr ""
+
+#: ../../CHANGES.rst:163
+msgid "Use shibuya as the documentation theme :pr:`168`"
+msgstr ""
+
+#: ../../CHANGES.rst:166
+msgid "[0.0.42] - 2023-12-29"
+msgstr ""
+
+#: ../../CHANGES.rst:171
+msgid "Avoid to fail on imports if ``cryptography`` is missing."
+msgstr ""
+
+#: ../../CHANGES.rst:174
+msgid "[0.0.41] - 2023-12-25"
+msgstr ""
+
+#: ../../CHANGES.rst:179
+msgid "OIDC `prompt=create` support. :issue:`185` :pr:`164`"
+msgstr ""
+
+#: ../../CHANGES.rst:184
+msgid "Correctly set up Client audience during OIDC dynamic registration."
+msgstr ""
+
+#: ../../CHANGES.rst:185
+msgid ""
+"``post_logout_redirect_uris`` was ignored during OIDC dynamic "
+"registration."
+msgstr ""
+
+#: ../../CHANGES.rst:186
+msgid "Group field error prevented the registration form validation."
+msgstr ""
+
+#: ../../CHANGES.rst:189
+msgid "[0.0.40] - 2023-12-22"
+msgstr ""
+
+#: ../../CHANGES.rst:194
+msgid "``THEME`` can be a relative path"
+msgstr ""
+
+#: ../../CHANGES.rst:197
+msgid "[0.0.39] - 2023-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:202
+msgid "Crash when no ACL were defined"
+msgstr ""
+
+#: ../../CHANGES.rst:203
+msgid "OIDC Userinfo endpoint is also available in POST"
+msgstr ""
+
+#: ../../CHANGES.rst:204
+msgid "Fix redirection after password reset :issue:`159`"
+msgstr ""
+
+#: ../../CHANGES.rst:207
+msgid "[0.0.38] - 2023-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:212
+msgid "Convert all the png in webp. :pr:`162`"
+msgstr ""
+
+#: ../../CHANGES.rst:213
+msgid "Update to flask 3 :issue:`161` :pr:`163`"
+msgstr ""
+
+#: ../../CHANGES.rst:216
+msgid "[0.0.37] - 2023-12-01"
+msgstr ""
+
+#: ../../CHANGES.rst:221
+msgid "Handle 4xx and 5xx error codes with htmx. :issue:`171` :pr:`161`"
+msgstr ""
+
+#: ../../CHANGES.rst:224
+msgid "[0.0.36] - 2023-12-01"
+msgstr ""
+
+#: ../../CHANGES.rst:229
+msgid "Avoid crashing when LDAP groups references unexisting users."
+msgstr ""
+
+#: ../../CHANGES.rst:230
+msgid ""
+"Password reset and initialization mails were only sent to the preferred "
+"user email address."
+msgstr ""
+
+#: ../../CHANGES.rst:232
+msgid ""
+"Password reset and initialization mails were not sent at all the user "
+"addresses if one email address could not be reached."
+msgstr ""
+
+#: ../../CHANGES.rst:234
+msgid "Password comparison was too permissive on login."
+msgstr ""
+
+#: ../../CHANGES.rst:235
+msgid "Encrypt passwords in the SQL backend."
+msgstr ""
+
+#: ../../CHANGES.rst:238
+msgid "[0.0.35] - 2023-11-25"
+msgstr ""
+
+#: ../../CHANGES.rst:243
+msgid ""
+"Refresh token grant supports other client authentication methods. "
+":pr:`157`"
+msgstr ""
+
+#: ../../CHANGES.rst:244
+msgid "Implement a SQLAlchemy backend. :issue:`30` :pr:`158`"
+msgstr ""
+
+#: ../../CHANGES.rst:249
+msgid "Model attributes cardinality is closer to SCIM model. :pr:`155`"
+msgstr ""
+
+#: ../../CHANGES.rst:250
+msgid "Bump to htmx 1.9.9 :pr:`159`"
+msgstr ""
+
+#: ../../CHANGES.rst:255
+msgid "Disable HTMX boosting during the OIDC dance. :pr:`160`"
+msgstr ""
+
+#: ../../CHANGES.rst:258
+msgid "[0.0.34] - 2023-10-02"
+msgstr ""
+
+#: ../../CHANGES.rst:263
+msgid ""
+"Canaille installations without account lockabilty could not delete users."
+" :pr:`153`"
+msgstr ""
+
+#: ../../CHANGES.rst:269
+msgid ""
+"If users register or authenticate during a OAuth Authorization phase, "
+"they get redirected back to that page afterwards. :issue:`168` :pr:`151`"
+msgstr ""
+
+#: ../../CHANGES.rst:272
+msgid "flask-babel and pytz are now part of the `front` extras"
+msgstr ""
+
+#: ../../CHANGES.rst:273
+msgid "Bump to fomantic-ui 2.9.3 :pr:`152`"
+msgstr ""
+
+#: ../../CHANGES.rst:274
+msgid "Bump to htmx 1.9.6 :pr:`154`"
+msgstr ""
+
+#: ../../CHANGES.rst:275
+msgid "Add support for python 3.12 :pr:`155`"
+msgstr ""
+
+#: ../../CHANGES.rst:278
+msgid "[0.0.33] - 2023-08-26"
+msgstr ""
+
+#: ../../CHANGES.rst:283
+msgid "OIDC jwks endpoint do not return empty kid claim"
+msgstr ""
+
+#: ../../CHANGES.rst:288
+msgid "Documentation details on the canaille models."
+msgstr ""
+
+#: ../../CHANGES.rst:291
+msgid "[0.0.32] - 2023-08-17"
+msgstr ""
+
+#: ../../CHANGES.rst:296
+msgid "Additional inmemory backend :issue:`30` :pr:`149`"
+msgstr ""
+
+#: ../../CHANGES.rst:297
+msgid "Installation extras :issue:`167` :pr:`150`"
+msgstr ""
+
+#: ../../CHANGES.rst:300
+msgid "[0.0.31] - 2023-08-15"
+msgstr ""
+
+#: ../../CHANGES.rst:305
+msgid "Configuration option to disable the forced usage of OIDC nonce :pr:`143`"
+msgstr ""
+
+#: ../../CHANGES.rst:306
+msgid "Validate phone numbers with a regex :pr:`146`"
+msgstr ""
+
+#: ../../CHANGES.rst:307
+msgid "Email verification :issue:`41` :pr:`147`"
+msgstr ""
+
+#: ../../CHANGES.rst:308
+msgid "Account registration :issue:`55` :pr:`133` :pr:`148`"
+msgstr ""
+
+#: ../../CHANGES.rst:313
+msgid "The `check` command uses the default configuration values."
+msgstr ""
+
+#: ../../CHANGES.rst:318
+msgid "Modals do not need use javascript at the moment. :issue:`158` :pr:`144`"
+msgstr ""
+
+#: ../../CHANGES.rst:321
+msgid "[0.0.30] - 2023-07-06"
+msgstr ""
+
+#: ../../CHANGES.rst:323
+msgid ""
+"🚨Configuration files must be updated.🚨 Check the new format with ``git "
+"diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``"
+msgstr ""
+
+#: ../../CHANGES.rst:329
+msgid "Configuration option to disable javascript :pr:`141`"
+msgstr ""
+
+#: ../../CHANGES.rst:334
+msgid "Configuration ``USER_FILTER`` is parsed with jinja."
+msgstr ""
+
+#: ../../CHANGES.rst:335
+msgid ""
+"Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and "
+"``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``"
+msgstr ""
+
+#: ../../CHANGES.rst:338
+msgid "[0.0.29] - 2023-06-30"
+msgstr ""
+
+#: ../../CHANGES.rst:343
+msgid "Disabled HTMX boosting on OIDC forms to avoid errors."
+msgstr ""
+
+#: ../../CHANGES.rst:346
+msgid "[0.0.28] - 2023-06-30"
+msgstr ""
+
+#: ../../CHANGES.rst:351
+msgid "A template variable was misnamed."
+msgstr ""
+
+#: ../../CHANGES.rst:354
+msgid "[0.0.27] - 2023-06-29"
+msgstr ""
+
+#: ../../CHANGES.rst:356
+msgid ""
+"🚨Configuration files must be updated.🚨 Check the new format with ``git "
+"diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``"
+msgstr ""
+
+#: ../../CHANGES.rst:362
+msgid ""
+"Configuration entries can be loaded from files if the entry key has a "
+"*_FILE* suffix and the entry value is the path to the file. :issue:`134` "
+":pr:`134`"
+msgstr ""
+
+#: ../../CHANGES.rst:364
+msgid "Field list support. :issue:`115` :pr:`136`"
+msgstr ""
+
+#: ../../CHANGES.rst:365
+msgid "Pages are boosted with HTMX :issue:`144` :issue:`145` :pr:`137`"
+msgstr ""
+
+#: ../../CHANGES.rst:370
+msgid "Bump to jquery 3.7.0 :pr:`138`"
+msgstr ""
+
+#: ../../CHANGES.rst:375
+msgid "Profile edition when the user RDN was not ``uid`` :issue:`148` :pr:`139`"
+msgstr ""
+
+#: ../../CHANGES.rst:380
+msgid "Stop support for python 3.7 :pr:`131`"
+msgstr ""
+
+#: ../../CHANGES.rst:383
+msgid "[0.0.26] - 2023-06-03"
+msgstr ""
+
+#: ../../CHANGES.rst:388
+msgid ""
+"Implemented account expiration based on OpenLDAP ppolicy overlay. Needs "
+"OpenLDAP 2.5+ :issue:`13` :pr:`118`"
+msgstr ""
+
+#: ../../CHANGES.rst:390
+msgid "Timezone configuration entry. :issue:`137` :pr:`130`"
+msgstr ""
+
+#: ../../CHANGES.rst:395
+msgid "Avoid setting ``None`` in JWT claims when they have no value."
+msgstr ""
+
+#: ../../CHANGES.rst:396
+msgid "Display password recovery button on OIDC login page. :pr:`129`"
+msgstr ""
+
+#: ../../CHANGES.rst:399
+msgid "[0.0.25] - 2023-05-05"
+msgstr ""
+
+#: ../../CHANGES.rst:401
+msgid ""
+"🚨Configuration files must be updated.🚨 Check the new format with ``git "
+"diff 0.0.25 0.0.24 canaille/conf/config.sample.toml``"
+msgstr ""
+
+#: ../../CHANGES.rst:407
+msgid "Renamed user model attributes to match SCIM naming convention. :pr:`123`"
+msgstr ""
+
+#: ../../CHANGES.rst:408
+msgid "Moved OIDC related configuration entries in ``OIDC``"
+msgstr ""
+
+#: ../../CHANGES.rst:409
+msgid "Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``"
+msgstr ""
+
+#: ../../CHANGES.rst:410
+msgid "Bumped to htmx 1.9.0 :pr:`124`"
+msgstr ""
+
+#: ../../CHANGES.rst:411
+msgid ""
+"ACL filters are no more LDAP filters but user attribute mappings. "
+":pr:`125`"
+msgstr ""
+
+#: ../../CHANGES.rst:412
+msgid "Bumped to htmx 1.9.2 :pr:`127`"
+msgstr ""
+
+#: ../../CHANGES.rst:417
+msgid "``OIDC.JWT.MAPPING`` configuration entry is really optional now."
+msgstr ""
+
+#: ../../CHANGES.rst:418
+msgid "Fixed empty model attributes registration :pr:`125`"
+msgstr ""
+
+#: ../../CHANGES.rst:419
+msgid "Password initialization mails were not correctly sent. :pr:`128`"
+msgstr ""
+
+#: ../../CHANGES.rst:422
+msgid "[0.0.24] - 2023-04-07"
+msgstr ""
+
+#: ../../CHANGES.rst:427
+msgid "Fixed avatar update. :pr:`122`"
+msgstr ""
+
+#: ../../CHANGES.rst:430
+msgid "[0.0.23] - 2023-04-05"
+msgstr ""
+
+#: ../../CHANGES.rst:435
+msgid "Organization field. :pr:`116`"
+msgstr ""
+
+#: ../../CHANGES.rst:436
+msgid "ETag and Last-Modified headers on user photos. :pr:`116`"
+msgstr ""
+
+#: ../../CHANGES.rst:437
+msgid "Dynamic form validation :pr:`120`"
+msgstr ""
+
+#: ../../CHANGES.rst:442
+msgid "UX rework. Submenu addition. :pr:`114`"
+msgstr ""
+
+#: ../../CHANGES.rst:443
+msgid "Properly handle LDAP date timezones. :pr:`117`"
+msgstr ""
+
+#: ../../CHANGES.rst:448
+msgid "CSRF protection on every forms. :pr:`119`"
+msgstr ""
+
+#: ../../CHANGES.rst:451
+msgid "[0.0.22] - 2023-03-13"
+msgstr ""
+
+#: ../../CHANGES.rst:455
+msgid "faker is not imported anymore when the `clean` command is called."
+msgstr ""
+
+#: ../../CHANGES.rst:458
+msgid "[0.0.21] - 2023-03-12"
+msgstr ""
+
+#: ../../CHANGES.rst:463
+msgid "Display TOS and policy URI on the consent list page. :pr:`102`"
+msgstr ""
+
+#: ../../CHANGES.rst:464
+msgid "Admin token deletion :pr:`100` :pr:`101`"
+msgstr ""
+
+#: ../../CHANGES.rst:465
+msgid "Revoked consents can be restored. :pr:`103`"
+msgstr ""
+
+#: ../../CHANGES.rst:466
+msgid ""
+"Pre-consented clients are displayed in the user consent list, and their "
+"consents can be revoked. :issue:`69` :pr:`103`"
+msgstr ""
+
+#: ../../CHANGES.rst:468
+msgid ""
+"A ``populate`` command can be used to fill the database with random users"
+" generated with faker. :pr:`105`"
+msgstr ""
+
+#: ../../CHANGES.rst:470
+msgid "SMTP SSL support. :pr:`108`"
+msgstr ""
+
+#: ../../CHANGES.rst:471
+msgid "Server side pagination. :issue:`114` :pr:`111`"
+msgstr ""
+
+#: ../../CHANGES.rst:472
+msgid "Department number support. :issue:`129`"
+msgstr ""
+
+#: ../../CHANGES.rst:473
+msgid "Address edition support (but not in the OIDC claims yet) :pr:`112`"
+msgstr ""
+
+#: ../../CHANGES.rst:474
+msgid "Title edition support :pr:`113`"
+msgstr ""
+
+#: ../../CHANGES.rst:479
+msgid ""
+"Client deletion also deletes related Consent, Token and AuthorizationCode"
+" objects. :issue:`126` :pr:`98`"
+msgstr ""
+
+#: ../../CHANGES.rst:485
+msgid "Removed datatables."
+msgstr ""
+
+#: ../../CHANGES.rst:488
+msgid "[0.0.20] - 2023-01-28"
+msgstr ""
+
+#: ../../CHANGES.rst:493
+msgid "Spanish translation. :pr:`85` :pr:`88`"
+msgstr ""
+
+#: ../../CHANGES.rst:494
+msgid "Dedicated connectivity test email :pr:`89`"
+msgstr ""
+
+#: ../../CHANGES.rst:495
+msgid "Update to jquery 3.6.3 :pr:`90`"
+msgstr ""
+
+#: ../../CHANGES.rst:496
+msgid "Update to fomantic-ui 2.9.1 :pr:`90`"
+msgstr ""
+
+#: ../../CHANGES.rst:497
+msgid "Update to datatables 1.13.1 :pr:`90`"
+msgstr ""
+
+#: ../../CHANGES.rst:502
+msgid "Fix typos and grammar errors. :pr:`84`"
+msgstr ""
+
+#: ../../CHANGES.rst:503
+msgid "Fix wording and punctuations. :pr:`86`"
+msgstr ""
+
+#: ../../CHANGES.rst:504
+msgid "Fix HTML lang tag :issue:`122` :pr:`87`"
+msgstr ""
+
+#: ../../CHANGES.rst:505
+msgid "Automatically trims the HTML translated strings. :pr:`91`"
+msgstr ""
+
+#: ../../CHANGES.rst:506
+msgid "Fixed dynamic registration scope management. :issue:`123` :pr:`93`"
+msgstr ""
+
+#: ../../CHANGES.rst:509
+msgid "[0.0.19] - 2023-01-14"
+msgstr ""
+
+#: ../../CHANGES.rst:514
+msgid ""
+"Ensures the token `expires_in` claim and the `access_token` `exp` claim "
+"have the same value. :pr:`83`"
+msgstr ""
+
+#: ../../CHANGES.rst:518
+msgid "[0.0.18] - 2022-12-28"
+msgstr ""
+
+#: ../../CHANGES.rst:523
+msgid ""
+"OIDC end_session was not returning the ``state`` parameter in the "
+"``post_logout_redirect_uri`` :pr:`82`"
+msgstr ""
+
+#: ../../CHANGES.rst:527
+msgid "[0.0.17] - 2022-12-26"
+msgstr ""
+
+#: ../../CHANGES.rst:532
+msgid "Fixed group deletion button. :pr:`80`"
+msgstr ""
+
+#: ../../CHANGES.rst:533
+msgid "Fixed post requests in oidc clients views. :pr:`81`"
+msgstr ""
+
+#: ../../CHANGES.rst:536
+msgid "[0.0.16] - 2022-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:541
+msgid "Fixed LDAP operational attributes handling."
+msgstr ""
+
+#: ../../CHANGES.rst:544
+msgid "[0.0.15] - 2022-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:549
+msgid "User can chose their favourite display name. :pr:`77`"
+msgstr ""
+
+#: ../../CHANGES.rst:550
+msgid "Bumped to authlib 1.2. :pr:`78`"
+msgstr ""
+
+#: ../../CHANGES.rst:551
+msgid ""
+"Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management "
+"Protocol :pr:`79`"
+msgstr ""
+
+#: ../../CHANGES.rst:553
+msgid "Added ``nonce`` to the ``claims_supported`` server metadata list."
+msgstr ""
+
+#: ../../CHANGES.rst:556
+msgid "[0.0.14] - 2022-11-29"
+msgstr ""
+
+#: ../../CHANGES.rst:560
+msgid "Fixed translation mo files packaging."
+msgstr ""
+
+#: ../../CHANGES.rst:563
+msgid "[0.0.13] - 2022-11-21"
+msgstr ""
+
+#: ../../CHANGES.rst:568
+msgid ""
+"Fixed a bug on the contacts field in the admin client form following the "
+"LDAP schema update of 0.0.12"
+msgstr ""
+
+#: ../../CHANGES.rst:570
+msgid ""
+"Fixed a bug happening during RP initiated logout on clients without "
+"`post_logout_redirect_uri` defined."
+msgstr ""
+
+#: ../../CHANGES.rst:572
+msgid "Gitlab CI fix. :pr:`64`"
+msgstr ""
+
+#: ../../CHANGES.rst:573
+msgid "Fixed `client_secret` display on the client administration page. :pr:`65`"
+msgstr ""
+
+#: ../../CHANGES.rst:574
+msgid "Fixed non-square logo CSS. :pr:`67`"
+msgstr ""
+
+#: ../../CHANGES.rst:575
+msgid "Fixed schema path on installation. :pr:`68`"
+msgstr ""
+
+#: ../../CHANGES.rst:576
+msgid "Fixed RFC7591 ``software_statement`` claim support. :pr:`70`"
+msgstr ""
+
+#: ../../CHANGES.rst:577
+msgid "Fixed client preconsent disabling. :pr:`72`"
+msgstr ""
+
+#: ../../CHANGES.rst:582
+msgid "Python 3.11 support. :pr:`61`"
+msgstr ""
+
+#: ../../CHANGES.rst:583
+msgid "apparmor slapd configuration instructions in CONTRIBUTING.rst :pr:`66`"
+msgstr ""
+
+#: ../../CHANGES.rst:584
+msgid "``preferredLanguage`` attribute support. :pr:`75`"
+msgstr ""
+
+#: ../../CHANGES.rst:589
+msgid ""
+"Replaced the use of the deprecated `FLASK_ENV` environment variable by "
+"`FLASK_DEBUG`."
+msgstr ""
+
+#: ../../CHANGES.rst:591
+msgid ""
+"Dynamically generate the server metadata. Users won't have to copy and "
+"manually edit ``oauth-authorizationserver.json`` and ``openid-"
+"configuration.json``. :pr:`71`"
+msgstr ""
+
+#: ../../CHANGES.rst:594
+msgid "The `FROM_ADDR` configuration option is not mandatory anymore. :pr:`73`"
+msgstr ""
+
+#: ../../CHANGES.rst:595
+msgid "The `JWT.ISS` configuration option is not mandatory anymore. :pr:`74`"
+msgstr ""
+
+#: ../../CHANGES.rst:598
+msgid "[0.0.12] - 2022-10-24"
+msgstr ""
+
+#: ../../CHANGES.rst:603
+msgid "Basic WebFinger endpoint. :pr:`59`"
+msgstr ""
+
+#: ../../CHANGES.rst:604
+msgid "Bumped to FomanticUI 2.9.0 00ffffee"
+msgstr ""
+
+#: ../../CHANGES.rst:605
+msgid "Implemented Dynamic Client Registration :pr:`60`"
+msgstr ""
+
+#: ../../CHANGES.rst:608
+msgid "[0.0.11] - 2022-08-11"
+msgstr ""
+
+#: ../../CHANGES.rst:613
+msgid "Default theme has a dark variant. :pr:`57`"
+msgstr ""
+
+#: ../../CHANGES.rst:618
+msgid "Fixed missing ``canaille`` binary. :pr:`58`"
+msgstr ""
+
+#: ../../CHANGES.rst:621
+msgid "[0.0.10] - 2022-07-07"
+msgstr ""
+
+#: ../../CHANGES.rst:626
+msgid "Online demo. :pr:`55`"
+msgstr ""
+
+#: ../../CHANGES.rst:627
+msgid "The consent page was displaying scopes not supported by clients. :pr:`56`"
+msgstr ""
+
+#: ../../CHANGES.rst:628
+msgid "Fixed end session when user are already disconnected."
+msgstr ""
+
+#: ../../CHANGES.rst:631
+msgid "[0.0.9] - 2022-06-05"
+msgstr ""
+
+#: ../../CHANGES.rst:636
+msgid ""
+"``DISABLE_PASSWORD_RESET`` configuration option to disable password "
+"recovery. :pr:`46`"
+msgstr ""
+
+#: ../../CHANGES.rst:637
+msgid "``edit_self`` ACL permission to control user self edition. :pr:`47`"
+msgstr ""
+
+#: ../../CHANGES.rst:638
+msgid "Implemented RP-initiated logout :pr:`54`"
+msgstr ""
+
+#: ../../CHANGES.rst:643
+msgid "Bumped to authlib 1 :pr:`48`"
+msgstr ""
+
+#: ../../CHANGES.rst:644
+msgid "documentation improvements :pr:`50`"
+msgstr ""
+
+#: ../../CHANGES.rst:645
+msgid "use poetry instead of setuptools :pr:`51`"
+msgstr ""
+
+#: ../../CHANGES.rst:646
+msgid "additional nonce tests :pr:`52`"
+msgstr ""
+
+#: ../../CHANGES.rst:650
+msgid "``HIDE_INVALID_LOGIN`` behavior and default value."
+msgstr ""
+
+#: ../../CHANGES.rst:651
+msgid "mo files are not versioned anymore :pr:`49` :pr:`53`"
+msgstr ""
+
+#: ../../CHANGES.rst:654
+msgid "[0.0.8] - 2022-03-15"
+msgstr ""
+
+#: ../../CHANGES.rst:659
+msgid "Fixed dependencies"
+msgstr ""
+
+#: ../../CHANGES.rst:662
+msgid "[0.0.7] - 2022-03-15"
+msgstr ""
+
+#: ../../CHANGES.rst:667
+msgid "Fixed spaces and escaped special char in ldap cn/dn :pr:`43`"
+msgstr ""
+
+#: ../../CHANGES.rst:670
+msgid "[0.0.6] - 2022-03-08"
+msgstr ""
+
+#: ../../CHANGES.rst:675
+msgid "Access token are JWT. :pr:`38`"
+msgstr ""
+
+#: ../../CHANGES.rst:680
+msgid "Default groups on invitations :pr:`41`"
+msgstr ""
+
+#: ../../CHANGES.rst:681
+msgid "Schemas are shipped within the canaille package :pr:`42`"
+msgstr ""
+
+#: ../../CHANGES.rst:684
+msgid "[0.0.5] - 2022-02-17"
+msgstr ""
+
+#: ../../CHANGES.rst:689
+msgid "LDAP model objects have new identifiers :pr:`37`"
+msgstr ""
+
+#: ../../CHANGES.rst:694
+msgid "Admin menu dropdown display :pr:`39`"
+msgstr ""
+
+#: ../../CHANGES.rst:695
+msgid "`GROUP_ID_ATTRIBUTE` configuration typo :pr:`40`"
+msgstr ""
+
+#: ../../CHANGES.rst:698
+msgid "[0.0.4] - 2022-02-16"
+msgstr ""
+
+#: ../../CHANGES.rst:703
+msgid "Client preauthorization :pr:`11`"
+msgstr ""
+
+#: ../../CHANGES.rst:704
+msgid "LDAP permissions check with the check command :pr:`12`"
+msgstr ""
+
+#: ../../CHANGES.rst:705
+msgid ""
+"Update consents when a scope required is larger than the scope of an "
+"already given consent :pr:`13`"
+msgstr ""
+
+#: ../../CHANGES.rst:707
+msgid "Theme customization :pr:`15`"
+msgstr ""
+
+#: ../../CHANGES.rst:708
+msgid "Logging configuration :pr:`16`"
+msgstr ""
+
+#: ../../CHANGES.rst:709
+msgid "Installation command :pr:`17`"
+msgstr ""
+
+#: ../../CHANGES.rst:710
+msgid "Invitation links :pr:`18`"
+msgstr ""
+
+#: ../../CHANGES.rst:711
+msgid "Advanced permissions :pr:`20`"
+msgstr ""
+
+#: ../../CHANGES.rst:712
+msgid "An option to not use OIDC :pr:`23`"
+msgstr ""
+
+#: ../../CHANGES.rst:713
+msgid "Disable some features when no SMTP server is configured :pr:`24`"
+msgstr ""
+
+#: ../../CHANGES.rst:714
+msgid ""
+"Login placeholder dynamically generated according to the configuration "
+":pr:`25`"
+msgstr ""
+
+#: ../../CHANGES.rst:715
+msgid "Added an option to tune object IDs :pr:`26`"
+msgstr ""
+
+#: ../../CHANGES.rst:716
+msgid "Avatar support :pr:`27`"
+msgstr ""
+
+#: ../../CHANGES.rst:717
+msgid "Dynamical and configurable JWT claims :pr:`28`"
+msgstr ""
+
+#: ../../CHANGES.rst:718
+msgid "UI improvements :pr:`29`"
+msgstr ""
+
+#: ../../CHANGES.rst:719
+msgid "Invitation links expiration :pr:`30`"
+msgstr ""
+
+#: ../../CHANGES.rst:720
+msgid "Invitees can choose their IDs :pr:`31`"
+msgstr ""
+
+#: ../../CHANGES.rst:721
+msgid "LDAP backend refactoring :pr:`35`"
+msgstr ""
+
+#: ../../CHANGES.rst:726
+msgid "Fixed ghost members in a group :pr:`14`"
+msgstr ""
+
+#: ../../CHANGES.rst:727
+msgid "Fixed email sender names :pr:`19`"
+msgstr ""
+
+#: ../../CHANGES.rst:728
+msgid "Fixed filter being not escaped :pr:`21`"
+msgstr ""
+
+#: ../../CHANGES.rst:729
+msgid "Demo script good practices :pr:`32`"
+msgstr ""
+
+#: ../../CHANGES.rst:730
+msgid "Binary path for Debian :pr:`33`"
+msgstr ""
+
+#: ../../CHANGES.rst:731
+msgid ""
+"Last name was not mandatory in the forms while this was mandatory in the "
+"LDAP server :pr:`34`"
+msgstr ""
+
+#: ../../CHANGES.rst:733
+msgid "Spelling typos :pr:`36`"
+msgstr ""
+
+#: ../../CHANGES.rst:736
+msgid "[0.0.3] - 2021-10-13"
+msgstr ""
+
+#: ../../CHANGES.rst:741
+msgid "Two-steps sign-in :issue:`49`"
+msgstr ""
+
+#: ../../CHANGES.rst:742
+msgid "Tokens can have several audiences. :issue:`62` :pr:`9`"
+msgstr ""
+
+#: ../../CHANGES.rst:743
+msgid "Configuration check command. :issue:`66` :pr:`8`"
+msgstr ""
+
+#: ../../CHANGES.rst:744
+msgid "Groups management. :issue:`12` :pr:`6`"
+msgstr ""
+
+#: ../../CHANGES.rst:749
+msgid "Introspection access bugfix. :issue:`63` :pr:`10`"
+msgstr ""
+
+#: ../../CHANGES.rst:750
+msgid "Introspection sub claim. :issue:`64` :pr:`7`"
+msgstr ""
+
+#: ../../CHANGES.rst:753
+msgid "[0.0.2] - 2021-01-06"
+msgstr ""
+
+#: ../../CHANGES.rst:758
+msgid "Login page is responsive. :issue:`1`"
+msgstr ""
+
+#: ../../CHANGES.rst:759
+msgid "Adapt mobile keyboards to login page fields. :issue:`2`"
+msgstr ""
+
+#: ../../CHANGES.rst:760
+msgid "Password recovery interface. :issue:`3`"
+msgstr ""
+
+#: ../../CHANGES.rst:761
+msgid "User profile interface. :issue:`4`"
+msgstr ""
+
+#: ../../CHANGES.rst:762
+msgid "Renamed the project *canaille*. :issue:`5`"
+msgstr ""
+
+#: ../../CHANGES.rst:763
+msgid "Command to remove old tokens. :issue:`17`"
+msgstr ""
+
+#: ../../CHANGES.rst:764
+msgid "Improved password recovery email. :issue:`14` :issue:`26`"
+msgstr ""
+
+#: ../../CHANGES.rst:765
+msgid ""
+"Use flask `SERVER_NAME` configuration variable instead of `URL`. "
+":issue:`24`"
+msgstr ""
+
+#: ../../CHANGES.rst:766
+msgid "Improved consents page. :issue:`27`"
+msgstr ""
+
+#: ../../CHANGES.rst:767
+msgid "Admin user page. :issue:`8`"
+msgstr ""
+
+#: ../../CHANGES.rst:768
+msgid "Project logo. :pr:`29`"
+msgstr ""
+
+#: ../../CHANGES.rst:769
+msgid ""
+"User account self-deletion can be enabled in the configuration with "
+"`SELF_DELETION`. :issue:`35`"
+msgstr ""
+
+#: ../../CHANGES.rst:770
+msgid "Admins can impersonate users. :issue:`39`"
+msgstr ""
+
+#: ../../CHANGES.rst:771
+msgid "Forgotten page UX improvement. :pr:`43`"
+msgstr ""
+
+#: ../../CHANGES.rst:772
+msgid "Admins can remove clients. :pr:`45`"
+msgstr ""
+
+#: ../../CHANGES.rst:773
+msgid ""
+"Option `HIDE_INVALID_LOGIN` that can be unactivated to let the user know "
+"if the login he attempt to sign in with exists or not. :pr:`48`"
+msgstr ""
+
+#: ../../CHANGES.rst:775
+msgid "Password initialization mail. :pr:`51`"
+msgstr ""
+
+#: ../../CHANGES.rst:780
+msgid "Form translations. :issue:`19` :issue:`23`"
+msgstr ""
+
+#: ../../CHANGES.rst:781
+msgid "Avoid to use Google Fonts. :issue:`21`"
+msgstr ""
+
+#: ../../CHANGES.rst:786
+msgid "'My tokens' page. :issue:`22`"
+msgstr ""
+
+#: ../../CHANGES.rst:789
+msgid "[0.0.1] - 2020-10-21"
+msgstr ""
+
+#: ../../CHANGES.rst:794
+msgid "Initial release."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:2
+msgid "Contributions"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:4
+msgid "Contributions are welcome!"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:6
+msgid ""
+"The repository is hosted at `gitlab.com/yaal/canaille "
+"<https://gitlab.com/yaal/canaille>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:9
+msgid "Discuss"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:11
+msgid ""
+"If you want to implement a feature or a bugfix, please start by "
+"discussing it with us on the `bugtracker "
+"<https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix room "
+"<https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:16
+msgid "Development environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:18
+msgid "You can either run the demo locally or with Docker."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:20
+msgid ""
+"The only tool required for local development is `uv`. Make sure to have "
+"uv `installed on your computer <https://docs.astral.sh/uv/getting-"
+"started/installation/>`_ to be able to hack Canaille."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:24
+msgid ""
+"Initialize your development environment with: - ``uv sync --extra front "
+"--extra oidc`` to have a minimal working development environment. This "
+"will allow you to run the tests with ``uv pytest --backend memory``. - "
+"``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal "
+"working development environment with SQLite backend support. This will "
+"allow you to run the tests with ``uv pytest --backend sql``. - ``uv sync "
+"--extra front --extra oidc --extra ldap`` to have a minimal working "
+"development environment with LDAP backend support. This will allow you to"
+" run the tests with ``uv pytest --backend ldap``. - ``uv sync --all-"
+"extras`` if you want to have everything at your fingertips. Note that it "
+"may compile some Python dependencies that would expect things to be "
+"installed on your system; Some dependencies of Canaille might need to be "
+"compiled, so you probably want to check that `GCC` and `cargo` are "
+"available on your computer."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:31
+msgid "After having launched the demo you have access to several services:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:33
+msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:34
+msgid "A dummy client at `localhost:5001 <http://localhost:5001>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:35
+msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:37
+msgid "The canaille server has some default users:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:39
+msgid "A regular user which login and password are **user**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:40
+msgid "A moderator user which login and password are **moderator**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:41
+msgid "An admin user which admin and password are **admin**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:42
+msgid ""
+"A new user which login is **james**. This user has no password yet, and "
+"his first attempt to log-in would result in sending a password "
+"initialization email (if a smtp server is configured)."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:47 ../../doc/development/specifications.rst:62
+msgid "Backends"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:49
+msgid "Canaille comes with several backends:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:51
+msgid "a lightweight test purpose `memory` backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:52
+msgid "a `sql` backend, based on sqlalchemy"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:53
+msgid "a production-ready `LDAP` backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:56
+msgid "Docker environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:58
+msgid ""
+"If you want to develop with docker, your browser needs to be able to "
+"reach the `canaille` container. The docker-compose file exposes the right"
+" ports, but front requests are from outside the docker network: the "
+"`canaille` url that makes sense for docker, points nowhere from your "
+"browser. As exposed ports are on `localhost`, you need to tell your "
+"computer that `canaille` url means `localhost`."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:63
+msgid "To do that, you can add the following line to your `/etc/hosts`:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:69
+msgid "To launch containers, use:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:84
+msgid "Local environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:98
+msgid ""
+"If you want to run the demo locally with the LDAP backend, you need to "
+"have `OpenLDAP <https://www.openldap.org/>`_ installed on your system. It"
+" is generally shipped under the ``slapd`` or ``openldap`` package name."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:103
+msgid ""
+"On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be "
+"restricted by apparmor, and thus makes the tests and the demo fail. This "
+"can be mitigated by removing apparmor restrictions on `slapd`."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:113
+msgid "Populate the database"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:115
+msgid ""
+"The demo database comes populated with some random users and groups. If "
+"you need more, you can generate users and groups with the ``populate`` "
+"command:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:126
+msgid ""
+"Adapt to use either the `ldap` or the `sql` configuration file. Note that"
+" this will not work with the memory backend."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:129
+msgid "Unit tests"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:131
+msgid ""
+"To run the tests, you just can run `uv run pytest` and/or `uv run tox` to"
+" test all the supported python environments. Everything must be green "
+"before patches get merged."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:134
+msgid ""
+"To test a specific backend you can pass ``--backend memory``, ``--backend"
+" sql`` or ``--backend ldap`` to pytest and tox."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:136
+msgid ""
+"The test coverage is 100%, patches won't be accepted if not entirely "
+"covered. You can check the test coverage with ``uv run pytest --cov "
+"--cov-report=html`` or ``uv run tox -e coverage -- --cov-report=html``. "
+"You can check the HTML coverage report in the newly created `htmlcov` "
+"directory."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:141
+msgid "Code style"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:143
+msgid ""
+"We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to "
+"format our code. Please run ``uv run tox -e style`` on your patches "
+"before submitting them. In order to perform a style check and correction "
+"at each commit you can use our `pre-commit <https://pre-commit.com/>`_ "
+"configuration with ``uv run pre-commit install``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:149
+msgid "Front"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:151
+msgid ""
+"The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_"
+" CSS framework. The dynamical parts of the interface use `htmx "
+"<https://htmx.org/>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:154
+msgid ""
+"Using Javascript in the interface is tolerated, but the whole website "
+"MUST be accessible for browsers without Javascript support, and without "
+"any feature loss."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:156
+msgid ""
+"Because of Fomantic UI we have a dependency to jQuery, however new "
+"contributions should not depend on jQuery at all. See the `related issue "
+"<https://gitlab.com/yaal/canaille/-/issues/130>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:161
+msgid "Translations"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:1
+msgid ""
+"Translations are done with `Weblate "
+"<https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:3
+msgid ""
+"The following commands are there as documentation, only the message "
+"extraction is needed for contributors. All the other steps are "
+"automatically done with Weblate."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:8
+msgid "Message extraction"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:10
+msgid ""
+"After you have edited translatable strings, you should extract the "
+"messages with:"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:17
+msgid "Language addition"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:19
+msgid ""
+"You can add a new language manually with the following command, however "
+"this should not be needed as Weblate takes car of this:"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:26
+msgid "Catalog update"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:28
+msgid ""
+"You can update the catalogs with the following command, however this "
+"should not be needed as Weblate automatically update language catalogs "
+"when it detects new strings or when someone translate some existing "
+"strings. Weblate pushes happen every 24h."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:36
+msgid "Catalog compilation"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:38
+msgid ""
+"You can compile the catalogs with the following command, however this "
+"should not be needed as catalogs are automatically compiled before "
+"running the unit tests, before launching the demo and before compiling "
+"the Canaille python package:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:166
+msgid "Documentation"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:168
+msgid "The documentation is generated when the tests run:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:174
+msgid ""
+"You can also run sphinx by hand, that should be faster since it avoids "
+"the tox environment initialization:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:180
+msgid "The generated documentation is located at ``build/sphinx/html``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:183
+msgid "Publish a new release"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:185
+msgid ""
+"Check that dependencies are up to date with ``uv sync --all-extras "
+"--upgrade`` and update dependencies accordingly in separated commits;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:186
+msgid ""
+"Check that tests are still green for every supported python version, and "
+"that coverage is still at 100%, by running ``uv run tox``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:187
+msgid ""
+"Check that the demo environments are still working, both the local and "
+"the Docker one;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:188
+msgid ""
+"Check that the :ref:`development/changelog:Release notes` section is "
+"correctly filled up;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:189
+msgid "Increase the version number in ``pyproject.toml``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:190
+msgid "Commit with ``git commit``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:191
+msgid "Build with ``uv build``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:192
+msgid ""
+"Publish on test PyPI with ``uv publish --publish-url "
+"https://test.pypi.org/legacy/``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:193
+msgid ""
+"Install the test package somewhere with ``pip install --extra-index-url "
+"https://test.pypi.org/simple --upgrade canaille``. Check that everything "
+"looks fine;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:194
+msgid "Publish on production PyPI ``uv publish``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:195
+msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:196
+msgid ""
+"Push the release commit and the new tag on the repository with ``git push"
+" --tags``."
+msgstr ""
+
+#: ../../doc/development/index.rst:2
+msgid "Development"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:2
+msgid "Specifications"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:4
+msgid ""
+"This page details which specifications are implemented in Canaille, and "
+"compares Canaille with other well-known identity providers."
+msgstr ""
+
+#: ../../doc/development/specifications.rst:7
+msgid "State of the specs in Canaille"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:10
+msgid "OAuth2"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:12
+msgid "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:13
+msgid ""
+"✅ `RFC6750: OAuth 2.0 Bearer Tokens "
+"<https://tools.ietf.org/html/rfc6750>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:14
+msgid ""
+"✅ `RFC7009: OAuth 2.0 Token Revocation "
+"<https://tools.ietf.org/html/rfc7009>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:15
+msgid ""
+"❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
+"Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:16
+msgid ""
+"✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol "
+"<https://tools.ietf.org/html/rfc7591>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:17
+msgid ""
+"✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol "
+"<https://tools.ietf.org/html/rfc7592>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:18
+msgid ""
+"✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients "
+"<https://tools.ietf.org/html/rfc7636>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:19
+msgid ""
+"✅ `RFC7662: OAuth 2.0 Token Introspection "
+"<https://tools.ietf.org/html/rfc7662>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:20
+msgid ""
+"✅ `RFC8414: OAuth 2.0 Authorization Server Metadata "
+"<https://tools.ietf.org/html/rfc8414>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:21
+msgid ""
+"❌ `RFC8428: OAuth 2.0 Device Authorization Grant "
+"<https://tools.ietf.org/html/rfc8428>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:22
+msgid ""
+"❌ `RFC8693: OAuth 2.0 Token Exchange "
+"<https://tools.ietf.org/html/rfc8693>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:23
+msgid ""
+"❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-"
+"Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:24
+msgid ""
+"❌ `RFC8707: Resource Indicators for OAuth 2.0 "
+"<https://tools.ietf.org/html/rfc8707>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:25
+msgid ""
+"❌ `RFC9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens "
+"<https://tools.ietf.org/html/rfc9068>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:26
+msgid ""
+"❌ `RFC9101: OAuth 2.0 JWT-Secured Authorization Request (JAR) "
+"<https://tools.ietf.org/html/rfc9101>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:27
+msgid ""
+"❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests "
+"<https://tools.ietf.org/html/rfc9126>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:28
+msgid ""
+"❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification "
+"<https://tools.ietf.org/html/rfc9207>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:29
+msgid ""
+"❌ `RFC9394: OAuth 2.0 Rich Authorization Requests <https://www.rfc-"
+"editor.org/rfc/rfc9396.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:30
+msgid ""
+"❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2"
+"-multiple-response-types-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:31
+msgid ""
+"❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2"
+"-form-post-response-mode-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:34
+msgid "OpenID Connect"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:36
+msgid ""
+"✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-"
+"core-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:37
+msgid ""
+"✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-"
+"discovery-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:38
+msgid ""
+"✅ `OpenID Connect Dynamic Client Registration <https://openid.net/specs"
+"/openid-connect-registration-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:39
+msgid ""
+"✅ `OpenID Connect RP Initiated Logout <https://openid.net/specs/openid-"
+"connect-rpinitiated-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:40
+msgid ""
+"❌ `OpenID Connect Session Management <https://openid.net/specs/openid-"
+"connect-session-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:41
+msgid ""
+"❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-"
+"connect-frontchannel-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:42
+msgid ""
+"❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-"
+"connect-backchannel-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:43
+msgid ""
+"❌ `OpenID Connect Back Channel Authentication Flow "
+"<https://openid.net/specs/openid-client-initiated-backchannel-"
+"authentication-core-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:44
+msgid ""
+"❌ `OpenID Connect Core Error Code unmet_authentication_requirements "
+"<https://openid.net/specs/openid-connect-unmet-authentication-"
+"requirements-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:45
+msgid ""
+"✅ `Initiating User Registration via OpenID Connect 1.0 "
+"<https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:48
+#: ../../doc/development/specifications.rst:64
+msgid "SCIM"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:50
+msgid ""
+"❌ `RFC7642: System for Cross-domain Identity Management: Definitions, "
+"Overview, Concepts, and Requirements <https://www.rfc-"
+"editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:51
+msgid ""
+"❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:52
+msgid ""
+"❌ `RFC7644: System for Cross-domain Identity Management: Protocol "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:55
+msgid "Comparison with other providers"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:57
+msgid "Here is a feature comparison with other OpenID Connect server software."
+msgstr ""
+
+#: ../../doc/development/specifications.rst:59
+msgid ""
+"Canaille voluntarily only implements the OpenID Connect protocol to keep "
+"its codebase simple."
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62
+msgid "Software"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62
+msgid "Project"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62
+msgid "Protocols implementations"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "FLOSS"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "Language"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "LOC"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "OIDC"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "SAML"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "CAS"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "LDAP"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64
+msgid "SQL"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+msgid "Canaille"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+#: ../../doc/development/specifications.rst:68
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:72
+#: ../../doc/development/specifications.rst:74
+#: ../../doc/development/specifications.rst:76
+#: ../../doc/development/specifications.rst:78
+#: ../../doc/development/specifications.rst:80
+#: ../../doc/development/specifications.rst:82
+#: ../../doc/development/specifications.rst:84
+#: ../../doc/development/specifications.rst:86
+#: ../../doc/development/specifications.rst:88
+msgid "✅"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+#: ../../doc/development/specifications.rst:72
+#: ../../doc/development/specifications.rst:74
+msgid "Python"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+msgid "10k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+#: ../../doc/development/specifications.rst:68
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:72
+#: ../../doc/development/specifications.rst:74
+#: ../../doc/development/specifications.rst:76
+#: ../../doc/development/specifications.rst:78
+#: ../../doc/development/specifications.rst:82
+#: ../../doc/development/specifications.rst:86
+#: ../../doc/development/specifications.rst:88
+msgid "❌"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:68
+msgid "`Auth0`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:68
+#: ../../doc/development/specifications.rst:78
+#: ../../doc/development/specifications.rst:80
+#: ../../doc/development/specifications.rst:88
+msgid "❔"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:70
+msgid "`Authelia`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:82
+msgid "Go"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:82
+msgid "50k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:72
+msgid "`Authentic2`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:72
+msgid "65k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:74
+msgid "`Authentik`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:74
+msgid "55k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:76
+msgid "`CAS`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:76
+#: ../../doc/development/specifications.rst:80
+#: ../../doc/development/specifications.rst:84
+msgid "Java"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:76
+msgid "360k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:78
+msgid "`Connect2id`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:80
+msgid "`Gluu`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:82
+msgid "`Hydra`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:84
+msgid "`Keycloak`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:84
+msgid "600k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:86
+msgid "`LemonLDAP`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:86
+msgid "Perl"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:86
+msgid "130k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:88
+msgid "`Okta`_"
+msgstr ""
+

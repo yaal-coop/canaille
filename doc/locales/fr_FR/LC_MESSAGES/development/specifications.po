@@ -1,0 +1,491 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 15:37+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_FR\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../doc/development/specifications.rst:2 51c59cc44a2c41e5b41657630b0f0294
+msgid "Specifications"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:4 a7ce3c060d6843c58af29aa75bef3528
+msgid ""
+"This page details which specifications are implemented in Canaille, and "
+"compares Canaille with other well-known identity providers."
+msgstr ""
+
+#: ../../doc/development/specifications.rst:7 9693a4b998134bc08184a485a6a85b08
+msgid "State of the specs in Canaille"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:10 f8563fa341304001ba3c2c550055a0e4
+msgid "OAuth2"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:12 b901b23486424b70ab53ad600c552405
+msgid "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:13 93b26d88ddfb4c24a975c86fafdca3f9
+msgid ""
+"✅ `RFC6750: OAuth 2.0 Bearer Tokens "
+"<https://tools.ietf.org/html/rfc6750>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:14 8d4d4d01ff5843faa2bb7c6da2d5a43e
+msgid ""
+"✅ `RFC7009: OAuth 2.0 Token Revocation "
+"<https://tools.ietf.org/html/rfc7009>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:15 3bf9581f076d491baa8e2c23f3e1d39c
+msgid ""
+"❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
+"Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:16 6ae1c3b70dfa4a10805ed2d7a7acda83
+msgid ""
+"✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol "
+"<https://tools.ietf.org/html/rfc7591>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:17 9ccadb41365c46cb815b73b88fdc8fc3
+msgid ""
+"✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol "
+"<https://tools.ietf.org/html/rfc7592>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:18 fbbef7cd04a04efe8daa71b13569dfd6
+msgid ""
+"✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients "
+"<https://tools.ietf.org/html/rfc7636>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:19 54a6ec4e30b94788a749bcfcd52149ab
+msgid ""
+"✅ `RFC7662: OAuth 2.0 Token Introspection "
+"<https://tools.ietf.org/html/rfc7662>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:20 9829a6dc3aca4e2589ce52b529e26208
+msgid ""
+"✅ `RFC8414: OAuth 2.0 Authorization Server Metadata "
+"<https://tools.ietf.org/html/rfc8414>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:21 c4f9b42536a94adfab90da79ef7ec77e
+msgid ""
+"❌ `RFC8428: OAuth 2.0 Device Authorization Grant "
+"<https://tools.ietf.org/html/rfc8428>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:22 b46f678389a140d28f571fa65ef508c0
+msgid ""
+"❌ `RFC8693: OAuth 2.0 Token Exchange "
+"<https://tools.ietf.org/html/rfc8693>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:23 762b143d7a3343ea96d19d65b5d20d33
+msgid ""
+"❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-"
+"Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:24 b0149247e739412db12e27f13ff03105
+msgid ""
+"❌ `RFC8707: Resource Indicators for OAuth 2.0 "
+"<https://tools.ietf.org/html/rfc8707>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:25 343ed4b6215343d9a44d5807c6d6b1a7
+msgid ""
+"❌ `RFC9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens "
+"<https://tools.ietf.org/html/rfc9068>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:26 a6e3b2cb30c94a5f9922b7a184a36847
+msgid ""
+"❌ `RFC9101: OAuth 2.0 JWT-Secured Authorization Request (JAR) "
+"<https://tools.ietf.org/html/rfc9101>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:27 f971ecf0bf144571891910d1f2437c6e
+msgid ""
+"❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests "
+"<https://tools.ietf.org/html/rfc9126>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:28 fc3312ad72d24fbdbc4bc3bdc41f4975
+msgid ""
+"❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification "
+"<https://tools.ietf.org/html/rfc9207>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:29 6ea9045b875440f0b158c45cfbbb5da3
+msgid ""
+"❌ `RFC9394: OAuth 2.0 Rich Authorization Requests <https://www.rfc-"
+"editor.org/rfc/rfc9396.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:30 6e9ed12e1d5f4cee9063c63f16639809
+msgid ""
+"❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2"
+"-multiple-response-types-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:31 c179be51a4324be6b1822dc762c64017
+msgid ""
+"❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2"
+"-form-post-response-mode-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:34 c4536360f9c34e52bc7c196ca083864c
+msgid "OpenID Connect"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:36 1bac333e62e748228f06d4cd4b3f79cd
+msgid ""
+"✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-"
+"core-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:37 177f627cd2c844afab7f72adc78309fe
+msgid ""
+"✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-"
+"discovery-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:38 46d6426d7eb845aea7af55e24b5cbfde
+msgid ""
+"✅ `OpenID Connect Dynamic Client Registration <https://openid.net/specs"
+"/openid-connect-registration-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:39 a38ba47e2d234fc588e8515e052117d5
+msgid ""
+"✅ `OpenID Connect RP Initiated Logout <https://openid.net/specs/openid-"
+"connect-rpinitiated-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:40 12b246f565674f6d8a709b119eaa077e
+msgid ""
+"❌ `OpenID Connect Session Management <https://openid.net/specs/openid-"
+"connect-session-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:41 244a1b92839c4b30b556b2d5eb88a8c4
+msgid ""
+"❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-"
+"connect-frontchannel-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:42 32210e35cc3644d88a7d6b8088b82665
+msgid ""
+"❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-"
+"connect-backchannel-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:43 9bb794d88635474291dd79ab7f85184c
+msgid ""
+"❌ `OpenID Connect Back Channel Authentication Flow "
+"<https://openid.net/specs/openid-client-initiated-backchannel-"
+"authentication-core-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:44 729d88fd26854bc8a0f1458669120be0
+msgid ""
+"❌ `OpenID Connect Core Error Code unmet_authentication_requirements "
+"<https://openid.net/specs/openid-connect-unmet-authentication-"
+"requirements-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:45 e9353600371c470f8a92e7b50c324427
+msgid ""
+"✅ `Initiating User Registration via OpenID Connect 1.0 "
+"<https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:48
+#: ../../doc/development/specifications.rst:64 9786673925304d99b1e09ab9fb786761
+#: e5c086aeada14b3fbd12df6a3150ddf7
+msgid "SCIM"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:50 cdaeb22c0b254f32be04c950554ddcf2
+msgid ""
+"❌ `RFC7642: System for Cross-domain Identity Management: Definitions, "
+"Overview, Concepts, and Requirements <https://www.rfc-"
+"editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:51 1d65726f19194dcfb004e9d50c72164c
+msgid ""
+"❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:52 fb0be7fecb5f467f9162dd9eec3f0e1a
+msgid ""
+"❌ `RFC7644: System for Cross-domain Identity Management: Protocol "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:55 dc882e47451d47009071e021bce6d0ae
+msgid "Comparison with other providers"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:57 367a086f3b274c379d00b9d3f7451c10
+msgid "Here is a feature comparison with other OpenID Connect server software."
+msgstr ""
+
+#: ../../doc/development/specifications.rst:59 6d484ee0fa4f45e18d14992b444b5da4
+msgid ""
+"Canaille voluntarily only implements the OpenID Connect protocol to keep "
+"its codebase simple."
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62 4fdd66f3032141698f64213f7f9184ae
+msgid "Software"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62 5e6caeffa6a44dfebe3eaba4d692f509
+msgid "Project"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62 5fb63fe0df34482fb1cf4148afb11b4e
+msgid "Protocols implementations"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:62 b542f41780b54cddbcaa336caef7399b
+msgid "Backends"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 355f58ee2ecb43ea94091562af7d74cd
+msgid "FLOSS"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 86dc1e42e8ee4cbcacd8d8cb43b6a08a
+msgid "Language"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 a1da5f980cb349e6b6d4ce525b8931cd
+msgid "LOC"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 6860a212b6b040d889bc0e351071b7d4
+msgid "OIDC"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 ef9c2076ea46467aad1d9ca648f7f111
+msgid "SAML"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 01c4b6fc96cf430f8932876fca8122fc
+msgid "CAS"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 ab7b125e263945e38b55ab23a5c48b03
+msgid "LDAP"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:64 eed21c65e10546848ea44ae9c158b17c
+msgid "SQL"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66 4646c46739f74295bb793fa497beac7f
+msgid "Canaille"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+#: ../../doc/development/specifications.rst:68
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:72
+#: ../../doc/development/specifications.rst:74
+#: ../../doc/development/specifications.rst:76
+#: ../../doc/development/specifications.rst:78
+#: ../../doc/development/specifications.rst:80
+#: ../../doc/development/specifications.rst:82
+#: ../../doc/development/specifications.rst:84
+#: ../../doc/development/specifications.rst:86
+#: ../../doc/development/specifications.rst:88 00293b6e57934791a96bb65ea530e7e3
+#: 01dbc5d8500441ae826f7bb6c44184ee 0e45c0b5fb8a455b825489ef91815aab
+#: 1883b31912d845d780648dad9f2c7d5f 1b5972edea444b8f96e3c0e500ec6ed3
+#: 2357097a3ffd43a5857e088ea7621fd7 24962f9ba6f94d71a57951f93da5c6ab
+#: 26a2bac48d6241d7b32da47d9cb0fd03 278244ffdee941dc805168676ef552c8
+#: 2e5c12b7d21547b8804d029415b457c8 2f277618e8ec414aa45d8106e488681a
+#: 2fdeb6b4b44349ddb453bc46b19c83a6 36975ba3452146d1bc37fe93b1d60a06
+#: 3c6cbfc7fc814259b1a9e713d9a28fa2 440ad3e13b164b1283d4dddd77b8a83f
+#: 4717b3efb8374abe81b40288d6723d91 4b4d576e661e470e925471981828e3f4
+#: 4de9003654ed4009a37269e47f9fc650 5157da20dfe7472d924b475d0bc6ef00
+#: 58462071871e4a508c73293cb88ddba0 5e8e224f803942c2b777233d3460002f
+#: 6481d1cbfbda4977a528e311cdb6e45a 64b1ba5f02d949e18e5e50ba43a565cf
+#: 680ea8f447ca46bbb03083506be230d3 6a2575788fbc4d8bb4401d564c8b29de
+#: 6def3fc95d7749e68dee237357a6520d 6e247f54da384c19af348447c679a0a4
+#: 76a44c050d7f452088ec710c29f9468a 77dd41e02a5d4991ad02046266c3da94
+#: 7cabbe22b77e416aaa0ebaa6515d6826 7f43f9c1d41b4b47840621d27460386b
+#: 80f4793cb22b4d498847a665504c28d4 87f39b103616430298baa9af6b1271bf
+#: 8c1ee96d1d4d4f7881ecf966281e95df 8e6cbb670d1848cca11a08071f5506ad
+#: 979bc49081c3450b810383be914dfa0f 98a3414fac4845c7855b49beaf1269b3
+#: a03168cd752049cbb5a68f0773c27829 a66547d346ad4979bc23767ec423f3ca
+#: aa29a491f5f1472587243f1b902dfef1 abfe8861b9734fe7a0168ce8bcbe0747
+#: ac5d1add8dd2470298644d9d0fc90b71 b095dbb17ffb4397839efb52dbb87144
+#: b429c62a736943a4966d5ae9be588be0 b8ba6e7a47584a4e81a3f4329bbfad6d
+#: b8d6c565a4334f2ea9a6bae0529571ea be6cb24ed08c40c485299d3ca1055164
+#: c51b21470fab4ab085f54916088046d1 c9e8569829e94b5781080d8ccb76dfaa
+#: ce8c0c10adea474692578f0a43b0ce44 ce9ff7f88334402bbdf2209311c57ac0
+#: d3c8bf29f67348bda1b295eee5389554 d72946d0f55e40cc9114dd63fb5562ff
+#: d8009cabba824e8a95aafa929a92f89f de9e4a16c0eb40139020df82932fc8e0
+#: e0047cbe13924a94aed567b6df998bcd e67ac152809e4b41904a0ace000bd468
+#: e7fb6b76aba4412d90acee023ea0dcad ee37067b5b034fe88895e5d4172fd357
+#: f4424c75ebf5412db2f9821ff0865a36 f5d1cd95ba594da083656eeb12708d54
+#: f681b918be214fd7ae82f55767672a84 f937b44ef8484c7d8b5343d6097e1827
+msgid "✅"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+#: ../../doc/development/specifications.rst:72
+#: ../../doc/development/specifications.rst:74 3ccef219dd8c477b83d63ac89a4628e8
+#: 53af1c5800bf4065ae54d6d3fed76f74 e675a5e8ceb145cd95b802b537a7e503
+msgid "Python"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66 55d8af1bbebd4ef9b87c918cbe6c63c0
+msgid "10k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:66
+#: ../../doc/development/specifications.rst:68
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:72
+#: ../../doc/development/specifications.rst:74
+#: ../../doc/development/specifications.rst:76
+#: ../../doc/development/specifications.rst:78
+#: ../../doc/development/specifications.rst:82
+#: ../../doc/development/specifications.rst:86
+#: ../../doc/development/specifications.rst:88 0ca4ec4e0e36486597b620c01710ede2
+#: 0d8be7ed0dd04e7aacdab8c88bbde44f 10d4091b215047ec8ac2fe800c138bc2
+#: 23374fd3c7854a519ec633a63306212f 271a7490fdb548d2bed49a96984704ba
+#: 28b95cc1d4b54403beb65719a6a0a44d 2d146d48e0b54a28ad1950749bd515b7
+#: 45a986934d4d492b9dfa18a4127d6ef9 4d851a9f3cbd43beb53c65b8ff05baee
+#: 50f6ec62752848868fcb308ab63cc924 7af084bb69fa4edcaa102e20f361e23b
+#: 833072d393d04be79950691b5f124d3f 8638185efb444679ab524a599085007e
+#: 9deb93b33a6c4bf68fec09cfc0703a79 b1bd472561e14226bc0d15889e2ee0cf
+#: b4668a65b4af46e198f3765ef1c43102 b5e6ca29e6334015bf61656c832464c2
+#: c0dece63fd6f49039a7a522f81d417c0 ec8938b15b76427eaf45b604c4e966ee
+msgid "❌"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:68 174c40b07c47456cbfcecc5f1aaa7aa3
+msgid "`Auth0`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:68
+#: ../../doc/development/specifications.rst:78
+#: ../../doc/development/specifications.rst:80
+#: ../../doc/development/specifications.rst:88 10089c17dd034fdabaf398ab5d8b0dd4
+#: 15817ce6f87540a19809b41de19081e4 3cc58548a2c3408384b260f3ebc1f4b2
+#: 490c945f86a449019cb6426b6d6ef8ac 59a7c804697644d7aa483f4964bde66b
+#: 7a560e268e94470387a5a260c87d709e 92e1fd71f69d44819434698949a46567
+#: 9fa9ffd2119844f085e9fa700f58be6c c15a675d112448f496bf71ad7d1cfcb5
+msgid "❔"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:70 697388cfa36a4b208c5a2099201b5452
+msgid "`Authelia`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:82 3cbf4ade038d48d8bf888c2aa06bce50
+#: 4b4504f562e44862900606dbb8915b0c
+msgid "Go"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:70
+#: ../../doc/development/specifications.rst:82 19b7f1f58631476c9cbbd616ab8ac70b
+#: d493f60bd51c493b852256574a34b5f2
+msgid "50k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:72 b836b3e6fd19456f956d1b547f0de413
+msgid "`Authentic2`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:72 f37a11dc4f5a40f78f60d69c27a0dc4d
+msgid "65k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:74 8a058ec3fd37473fb49a681ff210a6a2
+msgid "`Authentik`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:74 2bcb15a8634f49a9bd61534d212878b0
+msgid "55k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:76 2210617edefe419f9cb47dc6b57920b6
+msgid "`CAS`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:76
+#: ../../doc/development/specifications.rst:80
+#: ../../doc/development/specifications.rst:84 4230943e8b00424ca185ec2dfc44a471
+#: 71af08dffe3e4b06ab43a5a7babb784b 9e72b5d3fb9640e2b5369ec4fa8d0a78
+msgid "Java"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:76 ff56d27fde11433b982d1a133c733e85
+msgid "360k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:78 46b4a92a2c564ee6a3a1fc2487b23d1f
+msgid "`Connect2id`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:80 b1faedc73a864d72b858c85a712322f0
+msgid "`Gluu`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:82 7f52b801d5dd4d4f8d9d62c18b595d47
+msgid "`Hydra`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:84 349f9919048b4d9da7a72a321c10f9f7
+msgid "`Keycloak`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:84 6aae961ac7d14623b453e34e0a3ec1f1
+msgid "600k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:86 2d37d2699f7a4b63bc98b3ff41b0642e
+msgid "`LemonLDAP`_"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:86 eb1b85f500ff47a3b20ec299df109168
+msgid "Perl"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:86 59be9d49572942058056ceb2588ce133
+msgid "130k"
+msgstr ""
+
+#: ../../doc/development/specifications.rst:88 5350f918d9c54b7f87b2134183072fd7
+msgid "`Okta`_"
+msgstr ""
+
