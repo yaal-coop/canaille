@@ -90,6 +90,9 @@ def populate(app):
                 display_name="admins",
                 members=[jane],
                 description="The administrators.",
+                password_attribute="userPassword",
+                add_objectclass="pwdPolicy",
+                password_lifetime="60000",
             )
             app.backend.save(admins)
 
