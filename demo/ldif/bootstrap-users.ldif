@@ -67,6 +67,9 @@ member: uid=user,ou=users,dc=mydomain,dc=tld
 
 dn: cn=admins,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
+objectClass: pwdPolicy
+pwdAttribute: userPassword
+pwdMaxAge: 60000
 cn: admins
 description: The administrators.
 member: uid=admin,ou=users,dc=mydomain,dc=tld
