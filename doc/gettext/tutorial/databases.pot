@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"POT-Creation-Date: 2024-11-22 17:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,137 +17,137 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../tutorial/databases.rst:2
-#: 527d8f3cbe0a441abe4e66c3c3a8e45b
+#: 34b6a5df315e4629b9710884e3f5be9e
 msgid "Databases"
 msgstr ""
 
 #: ../tutorial/databases.rst:4
-#: 7ba0b9a14fce436595c5ebde78aae946
+#: 31f93a60c87648478dfe7a6c74d5f36a
 msgid "Canaille can read and save data in different databases. This page presents the different database backends and their specificities:"
 msgstr ""
 
 #: ../tutorial/databases.rst:8
-#: 79cee50c147545ce9bdac814bcfe8609
+#: 8dc081315c7a4eea8be2e81b8a049162
 msgid "Memory"
 msgstr ""
 
 #: ../tutorial/databases.rst:10
-#: e3f9746afd40417e9b6324eb9feed900
+#: 08608b21b52a4a22ac26b3a2a2d29f6a
 msgid "Canaille comes with a lightweight inmemory backend by default. It is used when no other backend has been configured."
 msgstr ""
 
 #: ../tutorial/databases.rst:13
-#: c99976af30a84dd88144af1f94fa4f1f
+#: dbb9009fcf724d6290135aa1d6a32026
 msgid "This backend is only for test purpose and should not be used in production environments."
 msgstr ""
 
 #: ../tutorial/databases.rst:16
-#: 2cc56bb5b80e44acbf72f33c06b160ac
+#: 06113268bf4a49d0880cdae75f961fc5
 msgid "SQL"
 msgstr ""
 
 #: ../tutorial/databases.rst:18
-#: 810f5fc5e5c44da2aeed71b98964cdb5
+#: 2bb9cb1d3c4f4e4f93d649960bca123d
 msgid "Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as sqlite, postgresql or mariadb."
 msgstr ""
 
 #: ../tutorial/databases.rst:21
-#: 2bc43b31141a40ee931dd4dccb78072b
+#: bb4ec73e439d430aa8dbdddb0301bf5b
 msgid "It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For instance:"
 msgstr ""
 
 #: ../tutorial/databases.rst:23
 #: ../tutorial/databases.rst:37
-#: 4c8504504a3647198afac5c8d87813f7
-#: 196b09a796c04d4b9066bd463f5e239b
+#: 7de375f96b054244a9fb0c7c60663f32
+#: ebab073f2f894dfb87705d06ebb870af
 msgid "config.toml"
 msgstr ""
 
 #: ../tutorial/databases.rst:29
-#: 05c9a85af5f04ad08741ff83efa7a3a0
+#: 6e78f6be25cb4151951a1bc6994643a9
 msgid "You can find more details on the SQL configuration in the :class:`dedicated section <canaille.backends.sql.configuration.SQLSettings>`."
 msgstr ""
 
 #: ../tutorial/databases.rst:32
-#: 91a683cbbdc745549e37499598c1aa4a
+#: bcfa707ba3b2494ab1af853bcdc7673f
 msgid "LDAP"
 msgstr ""
 
 #: ../tutorial/databases.rst:34
-#: 0dcba883340c4f67b21d69b9f9078c48
+#: 426e632fa07a44369bdadb8a290672bf
 msgid "Canaille can use OpenLDAP as its main database. It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For instance:"
 msgstr ""
 
 #: ../tutorial/databases.rst:52
-#: 90ed3908de454594b1e76e5725056c81
+#: 0c319bcdd3b649569745572bb2944fec
 msgid "You can find more details on the LDAP configuration in the :class:`dedicated section <canaille.backends.ldap.configuration.LDAPSettings>`."
 msgstr ""
 
 #: ../tutorial/databases.rst:55
-#: 2c43e9f79276492c84248e35508188a9
+#: ebc6e35e9a6049be8bc66eb127adf882
 msgid "Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have been tested. If you want to use different schemas or LDAP servers, adaptations may be needed. Patches are welcome."
 msgstr ""
 
 #: ../tutorial/databases.rst:60
-#: ad13059a843e41ceb3d105e609722063
+#: 6a9ec2b8bf724122b5752c753bdaea7a
 msgid "OpenLDAP overlays integration"
 msgstr ""
 
 #: ../tutorial/databases.rst:62
-#: 4574a3d570f04d96a49722ff77c2695a
+#: ce6daa0ac4974084990221c2806a5549
 msgid "Canaille can integrate with several OpenLDAP overlays:"
 msgstr ""
 
 #: ../tutorial/databases.rst:65
-#: 4dd1354faaac48559deae338b4f090b5
+#: 24a7dc4d61504545ac841910fbaca48b
 msgid "memberof / refint"
 msgstr ""
 
 #: ../tutorial/databases.rst:67
-#: 0439ad64ecb844fdaa1737a3c9e473cc
+#: d24183e3349f42bfbbecde663f03f846
 msgid "`memberof <https://www.openldap.org/doc/admin26/overlays.html#Reverse%20Group%20Membership%20Maintenance>`_ and `refint <https://www.openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_ overlays are needed for the Canaille group membership to work correctly."
 msgstr ""
 
 #: ../tutorial/databases.rst:71
 #: ../tutorial/databases.rst:94
-#: faa33ea8871f4e34ac2c64cc72fdf812
-#: 06709ee4d5f844568221f14c64b5c30b
+#: 65357e9c96e341128f9448507ce02f1b
+#: 692bdeebfc9c40999c9b09c8d9371e52
 msgid "Here is a configuration example compatible with canaille:"
 msgstr ""
 
 #: ../tutorial/databases.rst:73
-#: ebbf217acbd74c889aa84489628bae35
+#: 511312387435410987a190cf7b68f2ab
 msgid "memberof-config.ldif"
 msgstr ""
 
 #: ../tutorial/databases.rst:77
-#: 6b433a46ef87490bbaba6472563969c4
+#: c95e78d9dde84102b1a97c2399430c23
 msgid "refint-config.ldif"
 msgstr ""
 
 #: ../tutorial/databases.rst:81
 #: ../tutorial/databases.rst:104
-#: 861e354e7cfb47049661986cb4e35787
-#: b8ccf6ef78aa471ead32733e0381b055
+#: 2e0fddced7e949f8a66653530c8a120b
+#: 8686380cd79949259b48f68fe6c4d3b8
 msgid "You can adapt and load those configuration files with:"
 msgstr ""
 
 #: ../tutorial/databases.rst:90
-#: 3a182ba0d6784956b95eaf634a6fc06f
+#: af864ca7a8ef4d128d3fbe54749a944c
 msgid "ppolicy"
 msgstr ""
 
 #: ../tutorial/databases.rst:92
-#: 83a2d62977b045ad8abe86ccc98759cb
+#: fc8d77f8ca4d48de9eba6c408a9f5fc2
 msgid "If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-policy-11.html>`_ overlay is configured and the ``pwdEndTime`` attribute is available (since OpenLDAP 2.6), then account locking support will be enabled in canaille. To allow users to manage account expiration, they need to have a *write* permission on the :attr:`~canaille.core.models.User.lock_date` attribute."
 msgstr ""
 
 #: ../tutorial/databases.rst:96
-#: 791a6d05f787498487e083e108ce34de
+#: 15e6cfdc691149efbbdc2f3834c7a3d0
 msgid "ppolicy-config.ldif"
 msgstr ""
 
 #: ../tutorial/databases.rst:100
-#: 0f9d8b20ec7f4043b83d6312b1058939
+#: ef7f7bd8dd0445be8596864cb1b50fa5
 msgid "ppolicy.ldif"
 msgstr ""

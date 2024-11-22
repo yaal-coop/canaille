@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"POT-Creation-Date: 2024-11-22 17:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,106 +17,106 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../tutorial/deployment.rst:2
-#: eeee7ba0fc3d44e7ad224ef2b2aad5d0
+#: a7ef8cd4696b4e53a1ffdb87fb18c375
 msgid "Deployment"
 msgstr ""
 
 #: ../tutorial/deployment.rst:5
-#: e9ce862abbc94cd280400ab2e3b54839
+#: 0f1f7c0caa8a4dfcb659c15bedda5aae
 msgid "Application service"
 msgstr ""
 
 #: ../tutorial/deployment.rst:7
-#: 433485ad5c09467dafdf34069fca8cf7
+#: b93527ef33ad4a65af273da09bb780f3
 msgid "After having finished Canaille installation you have to run it in a WSGI application server. Here are some WSGI server configuration examples you can pick. Do not forget to update the paths."
 msgstr ""
 
 #: ../tutorial/deployment.rst:11
-#: b95ad5bdf60a4fa38668de444a350143
+#: 1ffbe89a8ff744fc9686484ce526e541
 msgid "gunicorn"
 msgstr ""
 
 #: ../tutorial/deployment.rst:13
-#: 71031d675d424a039075b7010b6aecaa
+#: 418a0ab3603442f2b0a515962f003029
 msgid "Todo"
 msgstr ""
 
 #: ../tutorial/deployment.rst:15
-#: b4cd24e95f8649feb0bccc4077c530cc
+#: c40ad558fd584c01a6c564f8f72d12f3
 msgid "Write a gunicorn configuration sample file."
 msgstr ""
 
 #: ../tutorial/deployment.rst:18
-#: 1035487ff04444699065497aa5c27428
+#: ec3a0c7c05b74be6b1640ff6a4090aec
 msgid "uwsgi"
 msgstr ""
 
 #: ../tutorial/deployment.rst:42
-#: 99cd8ef482f84cbb9a924a9a3fef3f8f
+#: 5c4862bc3810432195a2e9a353f60b54
 msgid "Webserver"
 msgstr ""
 
 #: ../tutorial/deployment.rst:44
-#: 123b2a6d36ba426cb333611e82f4b49f
+#: 94e56452db9741f0a3eee45f672e73a8
 msgid "Now you have to plug your WSGI application server to your webserver so it is accessible on the internet. Here are some webserver configuration examples you can pick:"
 msgstr ""
 
 #: ../tutorial/deployment.rst:48
-#: a4206d1009c949e1aa406adc1e6f37a0
+#: 7c4ae615fbd44c3f8ab3ece2d0201ed7
 msgid "Nginx"
 msgstr ""
 
 #: ../tutorial/deployment.rst:114
-#: 15b5ad9ca9d3428f889b223b0ffb58c7
+#: ac66da9f7d1342bdad81dbdf97218b4e
 msgid "Apache"
 msgstr ""
 
 #: ../tutorial/deployment.rst:153
-#: fb75b2d60ce34f30a23ebcb46860c0b4
+#: ad13e4fdf804422facdde8b1b619e9a2
 msgid "Recurrent jobs"
 msgstr ""
 
 #: ../tutorial/deployment.rst:155
-#: 7f2c34b8393547c3ae17c156d98e0080
+#: b9ba07959e7f4d57846b44490735d913
 msgid "You might want to clean up your database to avoid it growing too much. You can regularly delete expired tokens and authorization codes with:"
 msgstr ""
 
 #: ../tutorial/deployment.rst:164
-#: 0189b125934b4accb96c2ac6431dda33
+#: 4a9929824eba46a883f1147dcdaa526e
 msgid "Webfinger"
 msgstr ""
 
 #: ../tutorial/deployment.rst:166
-#: 2fb122255bb94ea38ac3fe43bc6ee696
+#: cbd15001d4a043e5a0ec93a5eff80b9f
 msgid "You may want to configure a `WebFinger`_ endpoint on your main website to allow the automatic discovery of your Canaille installation based on the account name of one of your users. For instance, suppose your domain is ``mydomain.example`` and your Canaille domain is ``auth.mydomain.example`` and there is a user ``john.doe``. A third-party application could require to authenticate the user and ask them for a user account. The user would give their account ``john.doe@mydomain.example``, then the application would perform a WebFinger request at ``https://mydomain.example/.well-known/webfinger`` and the response would contain the address of the authentication server ``https://auth.mydomain.example``. With this information the third party application can redirect the user to the Canaille authentication page."
 msgstr ""
 
 #: ../tutorial/deployment.rst:168
-#: 2d0d75109fc0461282d6917878208cea
+#: e515d97f8d8248f98081746a9b723611
 msgid "The difficulty here is that the WebFinger endpoint must be hosted at the top-level domain (i.e. ``mydomain.example``) while the authentication server might be hosted on a sublevel (i.e. ``auth.mydomain.example``). Canaille provides a WebFinger endpoint, but if it is not hosted at the top-level domain, a web redirection is required on the ``/.well-known/webfinger`` path."
 msgstr ""
 
 #: ../tutorial/deployment.rst:170
-#: 82732f3561f44bba97416ecd74352d0e
+#: 3c7cb4cd4a2d498098fe4387a5ae3b2a
 msgid "Here are configuration examples for Nginx or Apache:"
 msgstr ""
 
 #: ../tutorial/deployment.rst:172
-#: b9f6e24c2e3b4b3c8ba3e8a7c225d03c
+#: a11ff6002ffc46b7b401b29c222cb984
 msgid "Nginx webfinger configuration for a top level domain"
 msgstr ""
 
 #: ../tutorial/deployment.rst:181
-#: 6613fc5b59614b38b1a967034e5ba97e
+#: cc81b2ca58b842bab2583d46cd8ac1dc
 msgid "Apache webfinger configuration for a top level domain"
 msgstr ""
 
 #: ../tutorial/deployment.rst:191
-#: c8e3fbc8941d4a40861b215a2e7fb645
+#: b9b3713c6f724e5cb3cad50756e8211c
 msgid "Create the first user"
 msgstr ""
 
 #: ../tutorial/deployment.rst:193
-#: c96af5c60d2b4472ac220cde78341607
+#: 02df7f55e6df4452ac60d899b5a98cc2
 msgid "Once canaille is installed, soon enough you will need to add users. To create your first user you can use the :ref:`canaille create <cli_create>` CLI."
 msgstr ""
