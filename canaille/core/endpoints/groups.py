@@ -44,7 +44,8 @@ def create_group(user):
             group.display_name = form.display_name.data
             group.description = form.description.data
 
-            group.password_lifetime = "120000"
+            group.password_attribute = "userPassword"
+            group.password_lifetime = form.password_expiration_time.data
 
             Backend.instance.save(group)
             flash(
@@ -65,7 +66,7 @@ def create_group(user):
 @permissions_needed("manage_groups")
 def group(user, group):
     print(group.display_name)
-    # print(group.password_attribute)
+    print(group.password_attribute)
     print(group.ldap_object_class)
     print(group.password_lifetime)
 
@@ -101,6 +102,7 @@ def edit_group(group):
         data={
             "display_name": group.display_name,
             "description": group.description or "",
+            "password_expiration_time": group.password_lifetime or 0,
         },
     )
 
