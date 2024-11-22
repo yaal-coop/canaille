@@ -126,10 +126,11 @@ def compromised_password_validator(form, field):
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401
+
+        email_validator.TEST_ENVIRONMENT = current_app.config.get("TESTING", False)
     except ImportError:
         pass
 
-    email_validator.TEST_ENVIRONMENT = current_app.config.get("TESTING", False)
     wtforms.validators.Email()(form, field)
 
 
