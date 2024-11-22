@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../index.rst:15
+#: 73ace75ab0614252bcdf4b38427a6bbe
+msgid "Lightweight Identity and Authorization Management"
+msgstr ""
+
+#: ../index.rst:19
+#: 51406a546f1944abb1f60d21591b8da6
+msgid "**Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**, as in *Can I access your data?* Canaille is a lightweight identity and authorization management software. It aims to be very light, simple to install and simple to maintain. Its main features are :"
+msgstr ""
+
+#: ../index.rst:27
+#: 8ce19e6702f74a9d846822da4e95cd05
+msgid "Profile management"
+msgstr ""
+
+#: ../index.rst:31
+#: 69855370f33846c6beb1d9f8141c9da5
+msgid "User profile and groups management, Basic permissions"
+msgstr ""
+
+#: ../index.rst:34
+#: 76c5bf395a1c4e5d84450804af9408fc
+msgid "User authentication"
+msgstr ""
+
+#: ../index.rst:38
+#: 8482faeb12174d9186e34291c5d03ac9
+msgid "Authentication, registration, email confirmation, \"I forgot my password\" emails"
+msgstr ""
+
+#: ../index.rst:40
+#: 0e50a42ab7744344a33d3dcfac6d8e09
+msgid "SSO"
+msgstr ""
+
+#: ../index.rst:44
+#: 8de8aed898404726ad012faf46986847
+msgid "OpenID Connect identity provider"
+msgstr ""
+
+#: ../index.rst:46
+#: af19bc8e23374e43b47b764ead0e7718
+msgid "Multi-database support"
+msgstr ""
+
+#: ../index.rst:50
+#: 71baa0d1d0fc4c9d9d748133495b0141
+msgid "PostgreSQL, Mariadb and OpenLDAP first-class citizenship"
+msgstr ""
+
+#: ../index.rst:52
+#: 8e0020b8e0324b6fa5728ceac3acad78
+msgid "Customization"
+msgstr ""
+
+#: ../index.rst:56
+#: f324ccfc4a7e4e4dbe6cd7d2fa2dca24
+msgid "Put Canaille at yours colors by choosing a logo or use a custom theme!"
+msgstr ""
+
+#: ../index.rst:58
+#: 9a6d1f33fa9641d7b71944454c84d819
+msgid "Developers friendliness"
+msgstr ""
+
+#: ../index.rst:62
+#: b474739321e84bc684d5fe1cd536d5b8
+msgid "Canaille can easily fit in your unit tests suite or in your Continuous Integration."
+msgstr ""
+
+#: ../index.rst:66
+#: be4a6a405d2b40dc86b55103e99277ba
+msgid ":doc:`Full feature list <features>`"
+msgstr ""
+
+#: ../index.rst:70
+#: 2f91d5ac3db248bd9905419c6ebfee68
+msgid "Documentation"
+msgstr ""

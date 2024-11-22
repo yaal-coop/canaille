@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 15:37+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr_FR\n"
+"Language-Team: fr_FR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../../doc/tutorial/databases.rst:2 13be28a98aa44e67ad2da068019679b0
+msgid "Databases"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:4 34d3c5ad89ca430a847e45d05e2f5019
+msgid ""
+"Canaille can read and save data in different databases. This page "
+"presents the different database backends and their specificities:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:8 2e496b7a0aee4d17b567eb4dc478ea17
+msgid "Memory"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:10 ceb74ab4c8774778844a94ed861484f0
+msgid ""
+"Canaille comes with a lightweight inmemory backend by default. It is used"
+" when no other backend has been configured."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:13 81d31cff81344214af9be762d9e2d86b
+msgid ""
+"This backend is only for test purpose and should not be used in "
+"production environments."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:16 230473fa22cf4e1ea512779b93a88d50
+msgid "SQL"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:18 cbb94e64da22446d94826e4b2d8aa841
+msgid ""
+"Canaille can use any database supported by `SQLAlchemy "
+"<https://www.sqlalchemy.org/>`_, such as sqlite, postgresql or mariadb."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:21 f1512d513bd543719e9fc2b41a002ec4
+msgid ""
+"It is used when the ``CANAILLE_SQL`` configuration parameter is defined. "
+"For instance:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:23 ../../doc/tutorial/databases.rst:37
+#: 1652808637864b219ffc895ff0b385e2 26343cfad8b1468e857c9af6a929296f
+msgid "config.toml"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:29 20d5bb9612194746981991360681be81
+msgid ""
+"You can find more details on the SQL configuration in the "
+":class:`dedicated section "
+"<canaille.backends.sql.configuration.SQLSettings>`."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:32 7666e750708b4faa8ed74fbe9dd71455
+msgid "LDAP"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:34 d76fc51f518344c1ad042668dc0f6f7f
+msgid ""
+"Canaille can use OpenLDAP as its main database. It is used when the "
+"``CANAILLE_LDAP`` configuration parameter is defined. For instance:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:52 343f1bb31591486da7186300d79ff254
+msgid ""
+"You can find more details on the LDAP configuration in the "
+":class:`dedicated section "
+"<canaille.backends.ldap.configuration.LDAPSettings>`."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:55 61cd64aa6b24444eb95c7b328a9bb80a
+msgid ""
+"Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have "
+"been tested. If you want to use different schemas or LDAP servers, "
+"adaptations may be needed. Patches are welcome."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:60 2945818fe9854775be50bbbe9bd4920c
+msgid "OpenLDAP overlays integration"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:62 a37ceed58a974812bf0449864b97bc36
+msgid "Canaille can integrate with several OpenLDAP overlays:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:65 d6b79a05710643b5ac394738613ef6d7
+msgid "memberof / refint"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:67 5afe1236e936402584f1478f77e90a8c
+#, python-format
+msgid ""
+"`memberof "
+"<https://www.openldap.org/doc/admin26/overlays.html#Reverse%20Group%20Membership%20Maintenance>`_"
+" and `refint "
+"<https://www.openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_"
+" overlays are needed for the Canaille group membership to work correctly."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:71 ../../doc/tutorial/databases.rst:94
+#: 43fe5b2a235e4e779a591dfb57e5bd9f 7cadb14c4e324d4d82eaa6503a4f7d5c
+msgid "Here is a configuration example compatible with canaille:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:73 f4492ab7254f48958441eb03ee6cafa0
+msgid "memberof-config.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:77 5a5c78def64b4d699a257b2e407b9c9d
+msgid "refint-config.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:81 ../../doc/tutorial/databases.rst:104
+#: 211625cc561840cfa82975d79ca478ef c4486a215813426b82fcc0d4fecd212b
+msgid "You can adapt and load those configuration files with:"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:90 b123a4b628d84343858da2932e77fbfc
+msgid "ppolicy"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:92 6e77957f1af14258a453f712e7e4b5ce
+msgid ""
+"If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-"
+"password-policy-11.html>`_ overlay is configured and the ``pwdEndTime`` "
+"attribute is available (since OpenLDAP 2.6), then account locking support"
+" will be enabled in canaille. To allow users to manage account "
+"expiration, they need to have a *write* permission on the "
+":attr:`~canaille.core.models.User.lock_date` attribute."
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:96 25a6006c6ec0431d9a6e5e979aedf2c6
+msgid "ppolicy-config.ldif"
+msgstr ""
+
+#: ../../doc/tutorial/databases.rst:100 84603122ff0c46c7b8f149e8af826433
+msgid "ppolicy.ldif"
+msgstr ""
+

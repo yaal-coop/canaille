@@ -1,0 +1,400 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 16:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../CONTRIBUTING.rst:2
+#: 002b7b86e67341a3abe1dc69ec1e6a70
+msgid "Contributions"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:4
+#: dd19b789311b44ddbfebef856907661f
+msgid "Contributions are welcome!"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:6
+#: 5a0c060f5510420485f21f180a8d16c8
+msgid "The repository is hosted at `gitlab.com/yaal/canaille <https://gitlab.com/yaal/canaille>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:9
+#: ba0d490fa2454469b836749c6f260ba3
+msgid "Discuss"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:11
+#: 5e6f9e2ce04d441c834bd51320b99525
+msgid "If you want to implement a feature or a bugfix, please start by discussing it with us on the `bugtracker <https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix room <https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:16
+#: 0140e772bf834f889e84ec0e993fdb45
+msgid "Development environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:18
+#: fa5a69a308724bcf98d79d3d2e3f28f2
+msgid "You can either run the demo locally or with Docker."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:20
+#: 0a41b0d076254191ad0614c09d718c96
+msgid "The only tool required for local development is `uv`. Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/getting-started/installation/>`_ to be able to hack Canaille."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:24
+#: b0c122affe964f63a9d237b87ae8043f
+msgid "Initialize your development environment with: - ``uv sync --extra front --extra oidc`` to have a minimal working development environment. This will allow you to run the tests with ``uv pytest --backend memory``. - ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``. - ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``. - ``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system; Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:31
+#: 06d722cef5bf4514bbb820a4d1e43cf3
+msgid "After having launched the demo you have access to several services:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:33
+#: ea39f2cd97274d7eb688562b3b05444c
+msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:34
+#: 880dcaf1bf8e4753bead6e6f5051c8bb
+msgid "A dummy client at `localhost:5001 <http://localhost:5001>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:35
+#: f0ab0940d9b04b9f91cbb3dcf7953e56
+msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:37
+#: 347d5b12d2054eed8ede671233b3ce85
+msgid "The canaille server has some default users:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:39
+#: 6323897e96df481db1bdd48ec861915e
+msgid "A regular user which login and password are **user**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:40
+#: b10c66fe4dae4efca925aebcc307439a
+msgid "A moderator user which login and password are **moderator**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:41
+#: 379aa4fc7d7a427ead3a6802bd843c79
+msgid "An admin user which admin and password are **admin**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:42
+#: 17002848baf846bead5f780f81d8f555
+msgid "A new user which login is **james**. This user has no password yet, and his first attempt to log-in would result in sending a password initialization email (if a smtp server is configured)."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:47
+#: 0fb9b013289d432280da24a3c0b3bd7f
+msgid "Backends"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:49
+#: 958b994659a74b6d92def6f9eded872f
+msgid "Canaille comes with several backends:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:51
+#: 1f1357d0032747dab9f508a4e0a42b8c
+msgid "a lightweight test purpose `memory` backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:52
+#: 1891b9a2fc514712b4adbf69c3ce1c65
+msgid "a `sql` backend, based on sqlalchemy"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:53
+#: dfe5ba8564c34dd5a5059defdbd7265d
+msgid "a production-ready `LDAP` backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:56
+#: e61ba8769c274e26b93a9379b2318c66
+msgid "Docker environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:58
+#: 789cfcce161041aab0a9ec38e60d1ce3
+msgid "If you want to develop with docker, your browser needs to be able to reach the `canaille` container. The docker-compose file exposes the right ports, but front requests are from outside the docker network: the `canaille` url that makes sense for docker, points nowhere from your browser. As exposed ports are on `localhost`, you need to tell your computer that `canaille` url means `localhost`."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:63
+#: 243bc254bb984976a9b7a1ebdfb164e9
+msgid "To do that, you can add the following line to your `/etc/hosts`:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:69
+#: 4c97cc128cde4bde9a615540fac34a37
+msgid "To launch containers, use:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:84
+#: 37903a2ee9264932bfda81ccfc8c2f23
+msgid "Local environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:98
+#: 9fd679598df14c87983d9a3db07c1b14
+msgid "If you want to run the demo locally with the LDAP backend, you need to have `OpenLDAP <https://www.openldap.org/>`_ installed on your system. It is generally shipped under the ``slapd`` or ``openldap`` package name."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:103
+#: cabb1f62e5ab4f649333fb4bdea44bb7
+msgid "On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor, and thus makes the tests and the demo fail. This can be mitigated by removing apparmor restrictions on `slapd`."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:113
+#: a968344527c248d28ee118a01deac886
+msgid "Populate the database"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:115
+#: f86dab9375c843329fda042e45a18fad
+msgid "The demo database comes populated with some random users and groups. If you need more, you can generate users and groups with the ``populate`` command:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:126
+#: e1c8a2e4f1154d4da564a52eed57bf70
+msgid "Adapt to use either the `ldap` or the `sql` configuration file. Note that this will not work with the memory backend."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:129
+#: 3f7cb689b8c04892bacc9a1e69369f5a
+msgid "Unit tests"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:131
+#: 5a55d7ab327844ecb7e5cdfba5692648
+msgid "To run the tests, you just can run `uv run pytest` and/or `uv run tox` to test all the supported python environments. Everything must be green before patches get merged."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:134
+#: b59e6cc3d02e43cb809a4e917bdc9c9b
+msgid "To test a specific backend you can pass ``--backend memory``, ``--backend sql`` or ``--backend ldap`` to pytest and tox."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:136
+#: 31a0a090499441cab7c275bced31a11e
+msgid "The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the test coverage with ``uv run pytest --cov --cov-report=html`` or ``uv run tox -e coverage -- --cov-report=html``. You can check the HTML coverage report in the newly created `htmlcov` directory."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:141
+#: 4cd3c9737c4244de8817eb59ca927124
+msgid "Code style"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:143
+#: 0f2b878130954759a11524c208e26a5d
+msgid "We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to format our code. Please run ``uv run tox -e style`` on your patches before submitting them. In order to perform a style check and correction at each commit you can use our `pre-commit <https://pre-commit.com/>`_ configuration with ``uv run pre-commit install``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:149
+#: cba1248331964d159b2b1253ae50634d
+msgid "Front"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:151
+#: 1bc0bb39fb2b47c2aac56db867fa0d93
+msgid "The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_ CSS framework. The dynamical parts of the interface use `htmx <https://htmx.org/>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:154
+#: b4a85f39680449cf9f911d541d794c6d
+msgid "Using Javascript in the interface is tolerated, but the whole website MUST be accessible for browsers without Javascript support, and without any feature loss."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:156
+#: cb749cb0196846578e5e04df1df97062
+msgid "Because of Fomantic UI we have a dependency to jQuery, however new contributions should not depend on jQuery at all. See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:161
+#: deea2dbf6acb42e99b95f661d4a540a5
+msgid "Documentation"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:163
+#: bde97657892b41d3a44e9c29919882a8
+msgid "The documentation is generated when the tests run:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:169
+#: 91d5753457ef4fe08d82c1c03c30a4c6
+msgid "You can also run sphinx by hand, that should be faster since it avoids the tox environment initialization:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:175
+#: 84a7965f74c342f4a767d918ec7e7fc8
+msgid "The generated documentation is located at ``build/sphinx/html``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:178
+#: 3523b0c7c50544a7ae680fd16c821a28
+msgid "Code translation"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:1
+#: a8f1fb9815754963a29bcfa65855ef88
+msgid "Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:3
+#: 3d5f471d16f5427dbad3a203cdd90503
+msgid "The following commands are there as documentation, only the message extraction is needed for contributors. All the other steps are automatically done with Weblate."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:8
+#: ../locales/readme.rst:7
+#: f11c4c84df6d443190d1b60d4f858fce
+#: 7a6d3aff28fe4cf7a4e975ff7935d31e
+msgid "Message extraction"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:10
+#: ../locales/readme.rst:9
+#: c7318169ac354feeae24e67436dd1c6b
+#: 5830609426e04e7ba3aeea18c413ee2e
+msgid "After you have edited translatable strings, you should extract the messages with:"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:17
+#: ../locales/readme.rst:16
+#: 764623358ada4e1684d1b572d61b712e
+#: e3af01ce677943feaa7ade5343c8e90a
+msgid "Language addition"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:19
+#: ../locales/readme.rst:18
+#: a2b5aff4084044d78c59e0fabc992490
+#: 546fd984ffa64b31972b1670b09ca6b3
+msgid "You can add a new language manually with the following command, however this should not be needed as Weblate takes car of this:"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:26
+#: a61a44e0a1914d6c95e4ce4a2fb7ca42
+msgid "Catalog update"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:28
+#: 1c475d88301b4d3aa56d82f20a24cc27
+msgid "You can update the catalogs with the following command, however this should not be needed as Weblate automatically update language catalogs when it detects new strings or when someone translate some existing strings. Weblate pushes happen every 24h."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:36
+#: 4200924e358f45499f460769cc67c6a9
+msgid "Catalog compilation"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:38
+#: 40de58e8a420485eb689e4abb8a4fa5e
+msgid "You can compile the catalogs with the following command, however this should not be needed as catalogs are automatically compiled before running the unit tests, before launching the demo and before compiling the Canaille python package:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:184
+#: a168ea61caf74157be0b82d1d9952af6
+msgid "Documentation translation"
+msgstr ""
+
+#: ../locales/readme.rst:1
+#: b466e2381f024d40a12476d4846059f6
+msgid "Documentation translation Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgstr ""
+
+#: ../locales/readme.rst:4
+#: 1294588ccb444efda7d1edc0ac45c573
+msgid "The following commands are there as documentation, only the message extraction and the language addition is needed for contributors."
+msgstr ""
+
+#: ../locales/readme.rst:25
+#: 5574bcc510534444bf74cc4471725689
+msgid "Build the documentation in another language"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:189
+#: 6215d4058c6b45c9ab9c57244986b560
+msgid "Publish a new release"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:191
+#: 5c63146cdc484f34a4ac23b3b60f7364
+msgid "Check that dependencies are up to date with ``uv sync --all-extras --upgrade`` and update dependencies accordingly in separated commits;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:192
+#: 4d516e6db43048a99f1112b743916559
+msgid "Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:193
+#: 785c12428a4943288820c40c5d0ac261
+msgid "Check that the demo environments are still working, both the local and the Docker one;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:194
+#: 0700ba761ff7459b8a1aa7e48afb8da8
+msgid "Check that the :ref:`development/changelog:Release notes` section is correctly filled up;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:195
+#: 19f01831d3c04d36b74e4355021cf704
+msgid "Increase the version number in ``pyproject.toml``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:196
+#: 3cc39e4b68bf400292e544a33e9dcda3
+msgid "Commit with ``git commit``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:197
+#: b2f863f911f24805a109793d6806f83d
+msgid "Build with ``uv build``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:198
+#: fc01b4e40b58444391e922a6e8ea9e95
+msgid "Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:199
+#: 0c7fbbb63e1e49ea871ca01165cb3b8a
+msgid "Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:200
+#: e1a8cc289c9040c198eb0f8f8ba502d8
+msgid "Publish on production PyPI ``uv publish``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:201
+#: 572996fb9dae4a3cad4a53104b812f70
+msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:202
+#: 91cf66e174e845fbad4201c90209fdad
+msgid "Push the release commit and the new tag on the repository with ``git push --tags``."
+msgstr ""

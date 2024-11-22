@@ -117,7 +117,6 @@ dev = [
 # https://peps.python.org/pep-0632/
     "setuptools >= 50.0.0; python_version>='3.12'"
 ]
-
 doc = [
     "autodoc-pydantic >= 2.0.1",
     "shibuya >= 2024.3.1",
@@ -125,8 +124,8 @@ doc = [
     "sphinx-design >= 0.6.0",
     "sphinx-issues >= 5.0.0",
     "sphinx-click >= 6.0.0",
+    "sphinx-intl>=2.3.0",
 ]
-
 demo = [
     "faker",
     "honcho",
