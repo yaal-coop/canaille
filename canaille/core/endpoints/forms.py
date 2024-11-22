@@ -375,6 +375,10 @@ class CreateGroupForm(Form):
         _("Description"),
         validators=[wtforms.validators.Optional()],
     )
+    password_expiration_time = wtforms.IntegerField(
+        _("Password expiration time (in days)"),
+        validators=[wtforms.validators.Optional()],
+    )
 
 
 class EditGroupForm(Form):
@@ -390,6 +394,10 @@ class EditGroupForm(Form):
     )
     description = wtforms.StringField(
         _("Description"),
+        validators=[wtforms.validators.Optional()],
+    )
+    password_expiration_time = wtforms.IntegerField(
+        _("Password expiration time (in days)"),
         validators=[wtforms.validators.Optional()],
     )
 

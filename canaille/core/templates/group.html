@@ -44,6 +44,7 @@
         {% call fui.render_form(form) %}
             {{ fui.render_field(form.display_name) }}
             {{ fui.render_field(form.description) }}
+            {{ fui.render_field(form.password_expiration_time) }}
 
             {% if not edited_group %}
                 <div class="ui info visible message">
