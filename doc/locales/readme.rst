@@ -19,11 +19,11 @@ You can add a new language manually with the following command, however this sho
 
 .. code-block:: bash
 
-    sphinx-intl update --pot-dir build/gettext --locale-dir doc/locales -l fr_FR
+    sphinx-intl update --pot-dir build/gettext --locale-dir doc/locales -l fr
 
 Build the documentation in another language
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-    sphinx-build --builder html --define language=fr_FR doc build/html/fr_FR
+    sphinx-build --builder html --define language=fr doc build/html/fr
