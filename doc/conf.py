@@ -167,4 +167,4 @@ autodoc_pydantic_field_list_validators = False
 # -- Translation options ------------------------------------------------------
 # Advised by https://docs.readthedocs.io/en/latest/guides/manage-translations-sphinx.html#create-translatable-files
 gettext_uuid = True
-gettext_compact = False
+gettext_compact = "doc"

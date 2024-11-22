@@ -1,0 +1,5433 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, Yaal Coop
+# This file is distributed under the same license as the canaille package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: canaille 0.0.56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-22 17:40+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: ../development/changelog.rst:2 67cd3658cd614334a30f658b422f2404
+msgid "Release notes"
+msgstr ""
+
+#: ../development/changelog.rst:4 3e481ceb031d44c598fdff3839fc2fa5
+msgid "All notable changes to this project will be documented in there."
+msgstr ""
+
+#: ../development/changelog.rst:6 961f4990e9bc499fbb370a780a32fe87
+msgid ""
+"The format is based on `Keep a Changelog "
+"<https://keepachangelog.com/en/1.0.0/>`_, and this project adheres to "
+"`Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_."
+msgstr ""
+
+#: ../../CHANGES.rst:2 f50c0c44028e40ffa2feb0f9b2b3a2ab
+msgid "[0.0.57] - Unreleased"
+msgstr ""
+
+#: ../../CHANGES.rst:5 ../../CHANGES.rst:20 ../../CHANGES.rst:48
+#: ../../CHANGES.rst:67 ../../CHANGES.rst:74 ../../CHANGES.rst:93
+#: ../../CHANGES.rst:151 ../../CHANGES.rst:177 ../../CHANGES.rst:192
+#: ../../CHANGES.rst:241 ../../CHANGES.rst:267 ../../CHANGES.rst:286
+#: ../../CHANGES.rst:294 ../../CHANGES.rst:303 ../../CHANGES.rst:327
+#: ../../CHANGES.rst:360 ../../CHANGES.rst:386 ../../CHANGES.rst:433
+#: ../../CHANGES.rst:461 ../../CHANGES.rst:491 ../../CHANGES.rst:547
+#: ../../CHANGES.rst:580 ../../CHANGES.rst:601 ../../CHANGES.rst:611
+#: ../../CHANGES.rst:634 ../../CHANGES.rst:701 ../../CHANGES.rst:739
+#: ../../CHANGES.rst:756 ../../CHANGES.rst:792 0b6929fd54ae473a911ad9dafff9e022
+#: 1a22660429954c62a520dcc5dcabb331 24ee4cccf3764dcc9e95dd59c385cf07
+#: 270885d95d534553b64478f0e0046dec 31885dc1d8214e11855ce6c39934215a
+#: 31b20d31eada452f98cac078d960b7db 391fece98d594f21b99afc42f81f769f
+#: 4873d84261654e5b85450dc24a06d459 55f98faca33845c0806b83f30472fb49
+#: 578c69e38e8e4879b064a7d8ecc1613c 5bcc6ebb7907430cbf3b0904af4cf16a
+#: 5c719eed5f284875b81c868720fc429f 76e193e0c1bd46108fb01d3fbc3c9459
+#: 791a6f8c8e2140b4b0920e1b66ae2fbf 7b7dfc5dec75407d9bc52873a8a2dc16
+#: 80d77b86f90949ccbcb5bb75b27e0743 8391cf668e094280bb1407b08d3d60d7
+#: 8aafc67fde50493a8f449723e5bfb5cd 987c1ee9744940a6ad2e3d92abc14f5a
+#: 98cc8c05fcdc47ab8ff37567dbf1358f a44c70e258fb44e2be6b7eabeac57a26
+#: ab5aa1f397154334946c24484c5207db afe74fa2118f41bd9d429d1c42cb1d61
+#: c1836f6086134cee8b1a6d42936d74df d5fb53279eab428eb46a59bf9d88d259
+#: da95365e057541ea88dbf0b90de6746e e1d1622c457a4b0c89498b60c3c33654
+#: e90749e5ccdb4d26b84919858e7759aa f3e30fe98ddd43ec91b66ef13b4b8c24
+msgid "Added"
+msgstr ""
+
+#: ../../CHANGES.rst:6 d999b390f8524c928b1894427243548e
+msgid "Password compromission check :issue:`179`"
+msgstr ""
+
+#: ../../CHANGES.rst:7 6462dbba2e5a42ba8097d3f532479339
+msgid ""
+":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and "
+":attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK`"
+" and :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP` "
+":issue:`179`"
+msgstr ""
+
+#: ../../CHANGES.rst:13 dd5cac3a17584534b4d6f98352d17e43
+msgid "[0.0.56] - 2024-11-07"
+msgstr ""
+
+#: ../../CHANGES.rst:16 ../../CHANGES.rst:58 ../../CHANGES.rst:97
+#: ../../CHANGES.rst:105 ../../CHANGES.rst:113 ../../CHANGES.rst:120
+#: ../../CHANGES.rst:127 ../../CHANGES.rst:141 ../../CHANGES.rst:169
+#: ../../CHANGES.rst:182 ../../CHANGES.rst:200 ../../CHANGES.rst:219
+#: ../../CHANGES.rst:227 ../../CHANGES.rst:253 ../../CHANGES.rst:261
+#: ../../CHANGES.rst:281 ../../CHANGES.rst:311 ../../CHANGES.rst:341
+#: ../../CHANGES.rst:349 ../../CHANGES.rst:373 ../../CHANGES.rst:393
+#: ../../CHANGES.rst:415 ../../CHANGES.rst:425 ../../CHANGES.rst:446
+#: ../../CHANGES.rst:454 ../../CHANGES.rst:477 ../../CHANGES.rst:500
+#: ../../CHANGES.rst:512 ../../CHANGES.rst:521 ../../CHANGES.rst:530
+#: ../../CHANGES.rst:539 ../../CHANGES.rst:559 ../../CHANGES.rst:566
+#: ../../CHANGES.rst:616 ../../CHANGES.rst:624 ../../CHANGES.rst:649
+#: ../../CHANGES.rst:657 ../../CHANGES.rst:665 ../../CHANGES.rst:678
+#: ../../CHANGES.rst:692 ../../CHANGES.rst:724 ../../CHANGES.rst:747
+#: ../../CHANGES.rst:778 07a02b9c7c5447319f5009e477b13d1a
+#: 0b894d80fc864b2a8983a2edb309e3c9 222acb03686541a2bde8cc653791ee4b
+#: 3c910fae907e42bf911b9ea6a94e01d2 408f57d0b94342f6891d16ac8ce0331f
+#: 40a3c8e81a6648b4ba51557af9c86ff2 423cedf221ab478c9a6de9df30a6c81b
+#: 477d4760f44944e398031dea3e25deed 490dd374db164c78a36f8a9ba0eabc79
+#: 4f439967ff3b460a8a3b83e83340f8d9 5881793d805b46b98957183e86138253
+#: 5b7de269e34a429cb8e89036a1a9cbfc 5ced8330e1f84595a7976fd9c12fd827
+#: 5d59ba8ccbb44b0d9d7d104edabf99b9 5dfcee70e03c471099b7d52e9e0000f1
+#: 5e3e6de8ebbc4a158dcb6fa2d0872949 6271c228dfed4fa49cc6e264cb72c27c
+#: 6baacc56a2cb4785b0cd7dfb5b38fdf8 7a4377bf54fa419e823f67f3c7f87e54
+#: 80ba9f67468f450087de87e55cdd4a45 8358e68914904e3ea9714ffadd98440b
+#: 86165f9a20374dc5a2f9fabb7357d074 88b8ec3a072d4a0eb0d97d379a719248
+#: 972e1ac3a4f24490a8d3479840e340cd 9c393de405d945ebb22f14fc82160d15
+#: 9c531f1e246c49bbab5dc0bb54a61535 9ec7d988b004481581bf9eed558b81f3
+#: a8df1cc5739743078a2f1eda61d5cabe ab3f1f2d7da74fd390bd72d2c2555d46
+#: abee9b741be34fe5b2f12526e4282942 ad92c14fc4b346fa89c8384e34f444b6
+#: aea8a815749a40648b0cfdfcec09c482 b0e8696994bd426aacf9197b9893e792
+#: b23fafeb1bd941dab95ab487940cef40 bd0a6780aaad40d582494457a6e11e96
+#: ca94f59104aa48719be683ce49196ed9 d947d9c255af46908f904cd495736c31
+#: f02c14b560e7436aa5e3e64361475949 f04e873a41b4484f80cf316e3af98f88
+#: fbd38d6d33f74c06954ee8f37b647101 fdf28506150e440b83dff3b421509253
+#: fe9fc3ab9266488fa5d7ff3c6a116550 ffbf845171dc4c788394ac32057988b3
+msgid "Fixed"
+msgstr ""
+
+#: ../../CHANGES.rst:17 bc3381481b1547d685c56be207b19be0
+msgid ""
+"With LDAP backend, updating another user groups could result in a "
+"permission lost for the editor. :issue:`202`"
+msgstr ""
+
+#: ../../CHANGES.rst:21 8006f574ff2c44c7a025d270c8209674
+msgid ""
+":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and"
+" :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` "
+"configuration options :issue:`174`"
+msgstr ""
+
+#: ../../CHANGES.rst:23 f26ec8caf7ab464c90624b789eb2a272
+msgid "Password strength visual indicator :issue:`174`"
+msgstr ""
+
+#: ../../CHANGES.rst:24 c432db47193b4396beca35d06fa98009
+msgid "Security events logs :issue:`177`"
+msgstr ""
+
+#: ../../CHANGES.rst:25 63204ec365834e619949c03aabce298e
+msgid "Support for Python 3.13 :pr:`186`"
+msgstr ""
+
+#: ../../CHANGES.rst:28 ../../CHANGES.rst:41 ../../CHANGES.rst:53
+#: ../../CHANGES.rst:78 ../../CHANGES.rst:86 ../../CHANGES.rst:134
+#: ../../CHANGES.rst:158 ../../CHANGES.rst:210 ../../CHANGES.rst:247
+#: ../../CHANGES.rst:316 ../../CHANGES.rst:332 ../../CHANGES.rst:368
+#: ../../CHANGES.rst:405 ../../CHANGES.rst:440 ../../CHANGES.rst:483
+#: ../../CHANGES.rst:587 ../../CHANGES.rst:641 ../../CHANGES.rst:673
+#: ../../CHANGES.rst:687 0d8f005a24614c829c50bbcb08fc3a55
+#: 1065ec7b5d194101bc6a26e1bc91d6e0 205ee486c99f45f980a8ec1333ab6840
+#: 20e6cab81af843709f5971457b7e2a9a 2660c3be83544fd2b75efd31ef841b4b
+#: 3ca72317f36f432b84b488d6b627b2ba 409cf18e41564685b1304826f83bb82e
+#: 4a17bb23ba68435885c9ead313854c97 5c25e29c3fbe4854bb196b2b7b7bcffd
+#: a07ef9c714354188b5f14a8e06c92218 a1f0d7f6c1ec47d6a204ad9287a89e9a
+#: c093a9288c774441994eafd94d6d7c4a c36c838c3245430ab8e80467cad4493a
+#: d5c71b9db5364918b67f3fbecd0c98a0 d7dc2bd5de644365aeb40d0dbec0d196
+#: e1aa10c7563b41459f78a0b289e5e74c e969ad72eb4f46f78d44add5a74d04e5
+#: f02cb5a0a71e449883c4b767b0d03f65 f511a81ae64d49d3beca0311a05f6506
+msgid "Changed"
+msgstr ""
+
+#: ../../CHANGES.rst:29 772b297a85d24919a7020f1801ef2d53
+msgid "Update to HTMX 2.0.3 :pr:`184`"
+msgstr ""
+
+#: ../../CHANGES.rst:30 04fbacaeecca493a950405e7ccdb9b9e
+msgid "Migrate from poetry to uv :pr:`187`"
+msgstr ""
+
+#: ../../CHANGES.rst:31 f5087c2835224603a98a4be790b6abf5
+msgid ""
+"The ``sql`` package extra is now split between ``sqlite``, ``postgresql``"
+" and ``mysql``."
+msgstr ""
+
+#: ../../CHANGES.rst:34 ../../CHANGES.rst:378 ../../CHANGES.rst:784
+#: 03965a024d1a4713ac9e7cd0aa777c2e 11c684b9a5194d2cb0ebd9f9401ae1b9
+#: 52ad2462d9414e3db1dde9095d84f94b
+msgid "Removed"
+msgstr ""
+
+#: ../../CHANGES.rst:35 c4ed2628b8dd4ecc887d0a695ed173f2
+msgid "End support for python 3.9. :pr:`179`"
+msgstr ""
+
+#: ../../CHANGES.rst:38 4f318e1e657f471a8d0d8294b9acc9c9
+msgid "[0.0.55] - 2024-08-30"
+msgstr ""
+
+#: ../../CHANGES.rst:42 eb3a9d38860f40cebd255a348218bd62
+msgid "Use poetry-core build backend. :pr:`178`"
+msgstr ""
+
+#: ../../CHANGES.rst:45 57daa02be9184f998cdff17e8a34e2a5
+msgid "[0.0.54] - 2024-07-25"
+msgstr ""
+
+#: ../../CHANGES.rst:49 b5c787c52c8d4bbb8fb68b84104780a9
+msgid ""
+"Group member removal can be achieved from the group edition page "
+":issue:`192`"
+msgstr ""
+
+#: ../../CHANGES.rst:50 7992eed042904424ac33cf866a27b04b
+msgid "Model management commands :issue:`117` :issue:`54`"
+msgstr ""
+
+#: ../../CHANGES.rst:54 aaf3e30baa7b467ea98e1b52054fe7df
+msgid "Model `identifier_attributes` are fixed."
+msgstr ""
+
+#: ../../CHANGES.rst:55 30380f5332814aaba304c105d39a25b9
+msgid "Bump to htmx 1.9.12 :pr:`172`"
+msgstr ""
+
+#: ../../CHANGES.rst:60 8341a10e300e4349a9f0c65283880008
+msgid "Dark theme colors for better readability"
+msgstr ""
+
+#: ../../CHANGES.rst:61 12f80ed63946464c999dc123c1ef327d
+msgid "Crash for passwordless users at login when no SMTP server was configured."
+msgstr ""
+
+#: ../../CHANGES.rst:64 2ca835d7715645079cf9983da6e90f5d
+msgid "[0.0.53] - 2024-04-22"
+msgstr ""
+
+#: ../../CHANGES.rst:68 c5e32fdab90943d9b2470c01da6f15bc
+msgid "`env_prefix` create_app variable can select the environment var prefix."
+msgstr ""
+
+#: ../../CHANGES.rst:71 3837079e13ad4b91812ba85098ae0f85
+msgid "[0.0.52] - 2024-04-22"
+msgstr ""
+
+#: ../../CHANGES.rst:75 85c3b9d4b9784188ba7a2b77e5ba4367
+msgid "`env_file` create_app variable can customize/disable the .env file"
+msgstr ""
+
+#: ../../CHANGES.rst:79 4e1c06838a964523a5f3152cff12c745
+msgid "Locked users cannot be impersonated anymore."
+msgstr ""
+
+#: ../../CHANGES.rst:80 279ee70c54204bdeb774ad443da884b3
+msgid "Minimum python requirement is 3.9."
+msgstr ""
+
+#: ../../CHANGES.rst:83 50150ebfa4ee46f89359c2ac24a23afa
+msgid "[0.0.51] - 2024-04-09"
+msgstr ""
+
+#: ../../CHANGES.rst:87 cef19dd2bbe34a82ae327ae3ef555e64
+msgid "Display the menu bar on error pages."
+msgstr ""
+
+#: ../../CHANGES.rst:90 c2c4f10439aa46fca505b6d66dc12fe5
+msgid "[0.0.50] - 2024-04-09"
+msgstr ""
+
+#: ../../CHANGES.rst:94 2d669c2640004f48a8a90b817e7102e6
+msgid "Sign in/out events are logged in :issue:`177`"
+msgstr ""
+
+#: ../../CHANGES.rst:98 d9f688dfcb194333b8c3f88e25414a12
+msgid "HTMX and JAVASCRIPT configuration settings."
+msgstr ""
+
+#: ../../CHANGES.rst:99 1109da2610e54dce877fdaf7303ccb7c
+msgid "Compatibility with old sessions IDs."
+msgstr ""
+
+#: ../../CHANGES.rst:102 3594c96423614043905b1a659a2a5f75
+msgid "[0.0.49] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:106 c3135f57d77e4af7ba16a158aa3940bd
+msgid "LDAP user group removal."
+msgstr ""
+
+#: ../../CHANGES.rst:107 bbd2812d503c4219a82acab0da1eebe4
+msgid "Display an error message when trying to remove the last user from a group."
+msgstr ""
+
+#: ../../CHANGES.rst:110 580674f1c6c84d43b9f2e36bcb63fd19
+msgid "[0.0.48] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:114 b1e83de115e94004a0286ceb6fb0f43e
+msgid "LDAP objectClass guessing exception."
+msgstr ""
+
+#: ../../CHANGES.rst:117 5869129c770142f593d850e7769b53d7
+msgid "[0.0.47] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:121 672cd5d7429b4bf19e618b27f39b3bed
+msgid "Lazy permission loading exception."
+msgstr ""
+
+#: ../../CHANGES.rst:124 24c6fd1776144722b58f994f4897f31a
+msgid "[0.0.46] - 2024-04-08"
+msgstr ""
+
+#: ../../CHANGES.rst:128 45d2c205d12f4e4a8ef2c3dd3b260716
+msgid ""
+"Saving an object with the LDAP backend keeps the objectClass un-managed "
+"by Canaille. :pr:`171`"
+msgstr ""
+
+#: ../../CHANGES.rst:131 8037692934c0458e9af204802119652e
+msgid "[0.0.45] - 2024-04-04"
+msgstr ""
+
+#: ../../CHANGES.rst:135 6c147cf1a17149f793621d4e849340d4
+msgid ""
+"Internal indexation mechanism of "
+":class:`~canaille.backends.memory.model.MemoryModel`"
+msgstr ""
+
+#: ../../CHANGES.rst:138 7a6e44921aed4e0d8853ed35180af7eb
+msgid "[0.0.44] - 2024-03-29"
+msgstr ""
+
+#: ../../CHANGES.rst:142 642b0bf28736445e9dc4bf118eb694c5
+msgid "Fix the default LDAP USER_FILTER value"
+msgstr ""
+
+#: ../../CHANGES.rst:143 8102138696f442faa87e34a341b6a386
+msgid "Fix the OIDC feature detection"
+msgstr ""
+
+#: ../../CHANGES.rst:146 176cf871ea17465483927093589a62bf
+msgid "[0.0.43] - 2024-03-29"
+msgstr ""
+
+#: ../../CHANGES.rst:148 d202c6932dba459eb731d4f313e26ed6
+msgid "🚨Configuration files must be updated.🚨"
+msgstr ""
+
+#: ../../CHANGES.rst:153 3418403c2c6c4b22ac95a1484edf0090
+msgid "Add `created` and `last_modified` datetime for all models"
+msgstr ""
+
+#: ../../CHANGES.rst:154 2faf3c09645a47a389e7ee28401c1cc1
+msgid "Sitemap to the documentation :pr:`169`"
+msgstr ""
+
+#: ../../CHANGES.rst:155 7dc819a2236242d59d0f0231995bf4db
+msgid "Configuration management with pydantic-settings :issue:`138` :pr:`170`"
+msgstr ""
+
+#: ../../CHANGES.rst:160 f966fcd0a59d4b8a84700f0c1fc7affb
+msgid "Use default python logging configuration format. :issue:`188` :pr:`165`"
+msgstr ""
+
+#: ../../CHANGES.rst:161 0e54ffbaaa59428c9f70e646a34b589f
+msgid "Bump to htmx 1.99.11 :pr:`166`"
+msgstr ""
+
+#: ../../CHANGES.rst:162 fa00a76a7cc640d8a4ab38aff4588754
+msgid ""
+"Use the standard tomllib python module instead of `toml` starting from "
+"python 3.11 :pr:`167`"
+msgstr ""
+
+#: ../../CHANGES.rst:163 71da1b5d24524012b000cebfef9da015
+msgid "Use shibuya as the documentation theme :pr:`168`"
+msgstr ""
+
+#: ../../CHANGES.rst:166 07e9974f609349f184d5352e95803c56
+msgid "[0.0.42] - 2023-12-29"
+msgstr ""
+
+#: ../../CHANGES.rst:171 55826cff5ebf47e3a0fa65745076d338
+msgid "Avoid to fail on imports if ``cryptography`` is missing."
+msgstr ""
+
+#: ../../CHANGES.rst:174 1bf1f3563cc74ca4bdadbb1d5e91e812
+msgid "[0.0.41] - 2023-12-25"
+msgstr ""
+
+#: ../../CHANGES.rst:179 9b77b5fcd33e47769be00b04243124c3
+msgid "OIDC `prompt=create` support. :issue:`185` :pr:`164`"
+msgstr ""
+
+#: ../../CHANGES.rst:184 6209cf36283e4748a0ce92573c947e5c
+msgid "Correctly set up Client audience during OIDC dynamic registration."
+msgstr ""
+
+#: ../../CHANGES.rst:185 73cf49f960fc4cb59885f6a1842dbd1b
+msgid ""
+"``post_logout_redirect_uris`` was ignored during OIDC dynamic "
+"registration."
+msgstr ""
+
+#: ../../CHANGES.rst:186 6f9de7829cdf45408bac9c822831cc34
+msgid "Group field error prevented the registration form validation."
+msgstr ""
+
+#: ../../CHANGES.rst:189 4666a556cec5416ea0a2fa82c6ac8774
+msgid "[0.0.40] - 2023-12-22"
+msgstr ""
+
+#: ../../CHANGES.rst:194 a9b7a9ae69d348249652eaebe584e684
+msgid "``THEME`` can be a relative path"
+msgstr ""
+
+#: ../../CHANGES.rst:197 109c1ca0876a4c0e9c15bc2915eddbfb
+msgid "[0.0.39] - 2023-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:202 f9008fb79f12470bb23cd30348b93d9a
+msgid "Crash when no ACL were defined"
+msgstr ""
+
+#: ../../CHANGES.rst:203 3310cde4950a4781b8b78cca6f57c3a7
+msgid "OIDC Userinfo endpoint is also available in POST"
+msgstr ""
+
+#: ../../CHANGES.rst:204 c0a168fd6568499cb6a2f3a620c0b089
+msgid "Fix redirection after password reset :issue:`159`"
+msgstr ""
+
+#: ../../CHANGES.rst:207 f97779b5f3a840bc8afe089f6e29aa71
+msgid "[0.0.38] - 2023-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:212 122aa8a1b3754780b670922404886b17
+msgid "Convert all the png in webp. :pr:`162`"
+msgstr ""
+
+#: ../../CHANGES.rst:213 5898c4a08c4d4f1f92fd2d4bff41a0f9
+msgid "Update to flask 3 :issue:`161` :pr:`163`"
+msgstr ""
+
+#: ../../CHANGES.rst:216 47b92ff1907c44098c19285b348962df
+msgid "[0.0.37] - 2023-12-01"
+msgstr ""
+
+#: ../../CHANGES.rst:221 16ecd2c9e49841a08c45873e9ffc15a5
+msgid "Handle 4xx and 5xx error codes with htmx. :issue:`171` :pr:`161`"
+msgstr ""
+
+#: ../../CHANGES.rst:224 025f7e23694c4a5a9e3e7b35f9398803
+msgid "[0.0.36] - 2023-12-01"
+msgstr ""
+
+#: ../../CHANGES.rst:229 1e87982a9767434c93e77fe04ef6b732
+msgid "Avoid crashing when LDAP groups references unexisting users."
+msgstr ""
+
+#: ../../CHANGES.rst:230 0c0c7a63d17c449d995f1a09e94e5ce5
+msgid ""
+"Password reset and initialization mails were only sent to the preferred "
+"user email address."
+msgstr ""
+
+#: ../../CHANGES.rst:232 46093d04b37742d4aa6d6c833efb9169
+msgid ""
+"Password reset and initialization mails were not sent at all the user "
+"addresses if one email address could not be reached."
+msgstr ""
+
+#: ../../CHANGES.rst:234 aaa0ed1234884df4bd166fc3660940f6
+msgid "Password comparison was too permissive on login."
+msgstr ""
+
+#: ../../CHANGES.rst:235 f7923902c7b848c8b410734447def6be
+msgid "Encrypt passwords in the SQL backend."
+msgstr ""
+
+#: ../../CHANGES.rst:238 54117dbe4a9d4a3ab1122bbdd02e54cc
+msgid "[0.0.35] - 2023-11-25"
+msgstr ""
+
+#: ../../CHANGES.rst:243 b270c023d5b24c7a9e36aa1604cba899
+msgid ""
+"Refresh token grant supports other client authentication methods. "
+":pr:`157`"
+msgstr ""
+
+#: ../../CHANGES.rst:244 1be4f2f6c6744ab48dc04db54e9ba156
+msgid "Implement a SQLAlchemy backend. :issue:`30` :pr:`158`"
+msgstr ""
+
+#: ../../CHANGES.rst:249 fa13759d0fc34677a489f85c9272cdd8
+msgid "Model attributes cardinality is closer to SCIM model. :pr:`155`"
+msgstr ""
+
+#: ../../CHANGES.rst:250 cb188a2c909e4a9799665644315d9b7b
+msgid "Bump to htmx 1.9.9 :pr:`159`"
+msgstr ""
+
+#: ../../CHANGES.rst:255 b04c65689fb543b7be31f7a0a2aaf0ea
+msgid "Disable HTMX boosting during the OIDC dance. :pr:`160`"
+msgstr ""
+
+#: ../../CHANGES.rst:258 5167fe4d3b5a436dabe0f4a02355f4ed
+msgid "[0.0.34] - 2023-10-02"
+msgstr ""
+
+#: ../../CHANGES.rst:263 3ee50efe016d4052907aef5c6102b484
+msgid ""
+"Canaille installations without account lockabilty could not delete users."
+" :pr:`153`"
+msgstr ""
+
+#: ../../CHANGES.rst:269 38504ec51a164f3b98569149fec29ee4
+msgid ""
+"If users register or authenticate during a OAuth Authorization phase, "
+"they get redirected back to that page afterwards. :issue:`168` :pr:`151`"
+msgstr ""
+
+#: ../../CHANGES.rst:272 e651c1a66dce44f39fad07fba2c1f291
+msgid "flask-babel and pytz are now part of the `front` extras"
+msgstr ""
+
+#: ../../CHANGES.rst:273 ffea0a5e9c3d4381afd56a9273bcf12e
+msgid "Bump to fomantic-ui 2.9.3 :pr:`152`"
+msgstr ""
+
+#: ../../CHANGES.rst:274 f11437acd1b741059f3daec3560a112d
+msgid "Bump to htmx 1.9.6 :pr:`154`"
+msgstr ""
+
+#: ../../CHANGES.rst:275 7feafc0715454e30bc4e8fd8a9cc309f
+msgid "Add support for python 3.12 :pr:`155`"
+msgstr ""
+
+#: ../../CHANGES.rst:278 b96d712d22ab448db7e33cd686e11721
+msgid "[0.0.33] - 2023-08-26"
+msgstr ""
+
+#: ../../CHANGES.rst:283 833955120d3a473c84983c46fe718b91
+msgid "OIDC jwks endpoint do not return empty kid claim"
+msgstr ""
+
+#: ../../CHANGES.rst:288 f5898ac6a32f4c499a4c5580a7c54966
+msgid "Documentation details on the canaille models."
+msgstr ""
+
+#: ../../CHANGES.rst:291 da7d4a30e26f4a5cb07a2f7dfe43fea2
+msgid "[0.0.32] - 2023-08-17"
+msgstr ""
+
+#: ../../CHANGES.rst:296 316d70c2680d4a78ad27c3dc1aea14e0
+msgid "Additional inmemory backend :issue:`30` :pr:`149`"
+msgstr ""
+
+#: ../../CHANGES.rst:297 a65a596439904aefbb39f8b05fe30f30
+msgid "Installation extras :issue:`167` :pr:`150`"
+msgstr ""
+
+#: ../../CHANGES.rst:300 9127245373594fca9b7a36e4848cdc10
+msgid "[0.0.31] - 2023-08-15"
+msgstr ""
+
+#: ../../CHANGES.rst:305 a5b07d1b747c49d4875b0d0860ff5d9d
+msgid "Configuration option to disable the forced usage of OIDC nonce :pr:`143`"
+msgstr ""
+
+#: ../../CHANGES.rst:306 9b93d35fa85d464ba8ff56e6a38a0427
+msgid "Validate phone numbers with a regex :pr:`146`"
+msgstr ""
+
+#: ../../CHANGES.rst:307 59c4d6e85f8e43a5a4fcc4479ffd512e
+msgid "Email verification :issue:`41` :pr:`147`"
+msgstr ""
+
+#: ../../CHANGES.rst:308 59c116d74ac144fe844d61d9c74b0388
+msgid "Account registration :issue:`55` :pr:`133` :pr:`148`"
+msgstr ""
+
+#: ../../CHANGES.rst:313 62c1175ad9334e10b4b8d6830a988f34
+msgid "The `check` command uses the default configuration values."
+msgstr ""
+
+#: ../../CHANGES.rst:318 afc98e6a88ed40b39c8b7a58ec19ac83
+msgid "Modals do not need use javascript at the moment. :issue:`158` :pr:`144`"
+msgstr ""
+
+#: ../../CHANGES.rst:321 7fa3744f2d2245578bb1366b65c4b95d
+msgid "[0.0.30] - 2023-07-06"
+msgstr ""
+
+#: ../../CHANGES.rst:323 06acb9ecdeda40e6ab9779ac29a2683f
+msgid ""
+"🚨Configuration files must be updated.🚨 Check the new format with ``git "
+"diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``"
+msgstr ""
+
+#: ../../CHANGES.rst:329 67ac5239414e4ba8afc8c1c79b68778b
+msgid "Configuration option to disable javascript :pr:`141`"
+msgstr ""
+
+#: ../../CHANGES.rst:334 ee3585b455904ce290bfdb4510a5d263
+msgid "Configuration ``USER_FILTER`` is parsed with jinja."
+msgstr ""
+
+#: ../../CHANGES.rst:335 197fa7a065954dc3b68b12e027896ffc
+msgid ""
+"Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and "
+"``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``"
+msgstr ""
+
+#: ../../CHANGES.rst:338 34ee8ce4f3084993be4d50e7eb00b49e
+msgid "[0.0.29] - 2023-06-30"
+msgstr ""
+
+#: ../../CHANGES.rst:343 d631a992cd814dc5906f324cd2c5ce73
+msgid "Disabled HTMX boosting on OIDC forms to avoid errors."
+msgstr ""
+
+#: ../../CHANGES.rst:346 200926f2c212448b80c7725f63519043
+msgid "[0.0.28] - 2023-06-30"
+msgstr ""
+
+#: ../../CHANGES.rst:351 5223a0abf9b64396b5fa2418bd5751a8
+msgid "A template variable was misnamed."
+msgstr ""
+
+#: ../../CHANGES.rst:354 be7ee2a030cf43219aae50a4c5f0ab6a
+msgid "[0.0.27] - 2023-06-29"
+msgstr ""
+
+#: ../../CHANGES.rst:356 2666915938534406a320536bdbbd0554
+msgid ""
+"🚨Configuration files must be updated.🚨 Check the new format with ``git "
+"diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``"
+msgstr ""
+
+#: ../../CHANGES.rst:362 5f5b722aee9f4ba29479b672f35ccf7c
+msgid ""
+"Configuration entries can be loaded from files if the entry key has a "
+"*_FILE* suffix and the entry value is the path to the file. :issue:`134` "
+":pr:`134`"
+msgstr ""
+
+#: ../../CHANGES.rst:364 1371c61101714aafb244d8cd1e8253e3
+msgid "Field list support. :issue:`115` :pr:`136`"
+msgstr ""
+
+#: ../../CHANGES.rst:365 6a2be3993ef94f059661f156a00d1998
+msgid "Pages are boosted with HTMX :issue:`144` :issue:`145` :pr:`137`"
+msgstr ""
+
+#: ../../CHANGES.rst:370 6a7eb394ccac4c1c861366a87abfca96
+msgid "Bump to jquery 3.7.0 :pr:`138`"
+msgstr ""
+
+#: ../../CHANGES.rst:375 37e230a7a27b4edebb7d15cf8eac1ed3
+msgid "Profile edition when the user RDN was not ``uid`` :issue:`148` :pr:`139`"
+msgstr ""
+
+#: ../../CHANGES.rst:380 7b579ed05a6143ad8b71083558ad4886
+msgid "Stop support for python 3.7 :pr:`131`"
+msgstr ""
+
+#: ../../CHANGES.rst:383 58a9bf28b3474e37890ba7d28b82ab30
+msgid "[0.0.26] - 2023-06-03"
+msgstr ""
+
+#: ../../CHANGES.rst:388 d8c168a1e8f949809571bff78a2bd99c
+msgid ""
+"Implemented account expiration based on OpenLDAP ppolicy overlay. Needs "
+"OpenLDAP 2.5+ :issue:`13` :pr:`118`"
+msgstr ""
+
+#: ../../CHANGES.rst:390 d33a02c2d22b48deadb6a1fffffa3997
+msgid "Timezone configuration entry. :issue:`137` :pr:`130`"
+msgstr ""
+
+#: ../../CHANGES.rst:395 4617a577ef234215b9353bad4f557134
+msgid "Avoid setting ``None`` in JWT claims when they have no value."
+msgstr ""
+
+#: ../../CHANGES.rst:396 39881e258b72450389337909f09e6440
+msgid "Display password recovery button on OIDC login page. :pr:`129`"
+msgstr ""
+
+#: ../../CHANGES.rst:399 63debedadfec46be9f414faff076a86c
+msgid "[0.0.25] - 2023-05-05"
+msgstr ""
+
+#: ../../CHANGES.rst:401 a6e54c1befb64af68886d55fc7b6bfc4
+msgid ""
+"🚨Configuration files must be updated.🚨 Check the new format with ``git "
+"diff 0.0.25 0.0.24 canaille/conf/config.sample.toml``"
+msgstr ""
+
+#: ../../CHANGES.rst:407 bdf8599b7bf142c0bf114ba5ff3746c9
+msgid "Renamed user model attributes to match SCIM naming convention. :pr:`123`"
+msgstr ""
+
+#: ../../CHANGES.rst:408 0334473536484446a99dcc1b75e33ead
+msgid "Moved OIDC related configuration entries in ``OIDC``"
+msgstr ""
+
+#: ../../CHANGES.rst:409 cddd4c4e432942cb8b461a086258701e
+msgid "Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``"
+msgstr ""
+
+#: ../../CHANGES.rst:410 3d7f3d84aa8f48259eb46e977185c408
+msgid "Bumped to htmx 1.9.0 :pr:`124`"
+msgstr ""
+
+#: ../../CHANGES.rst:411 543f6a2c0efa47f38c7399f5c05080c9
+msgid ""
+"ACL filters are no more LDAP filters but user attribute mappings. "
+":pr:`125`"
+msgstr ""
+
+#: ../../CHANGES.rst:412 7a24cba4271641348073bcce9f541d7b
+msgid "Bumped to htmx 1.9.2 :pr:`127`"
+msgstr ""
+
+#: ../../CHANGES.rst:417 844ae11353a542cba52926d11be58a8f
+msgid "``OIDC.JWT.MAPPING`` configuration entry is really optional now."
+msgstr ""
+
+#: ../../CHANGES.rst:418 d32333109d8844b3851200fd42b32843
+msgid "Fixed empty model attributes registration :pr:`125`"
+msgstr ""
+
+#: ../../CHANGES.rst:419 03d34520a30b4ac882cf036e16e38899
+msgid "Password initialization mails were not correctly sent. :pr:`128`"
+msgstr ""
+
+#: ../../CHANGES.rst:422 c2a78f890b3a427d9e9dc01262d5d5ea
+msgid "[0.0.24] - 2023-04-07"
+msgstr ""
+
+#: ../../CHANGES.rst:427 24f752a301b2496591f67fcffdeafe25
+msgid "Fixed avatar update. :pr:`122`"
+msgstr ""
+
+#: ../../CHANGES.rst:430 3a298aaac36145feb91c222086bee8a4
+msgid "[0.0.23] - 2023-04-05"
+msgstr ""
+
+#: ../../CHANGES.rst:435 5000bcfa626b414aa9ce51abbfbe7216
+msgid "Organization field. :pr:`116`"
+msgstr ""
+
+#: ../../CHANGES.rst:436 c8bed00e30b74ebeb69409b0c40df754
+msgid "ETag and Last-Modified headers on user photos. :pr:`116`"
+msgstr ""
+
+#: ../../CHANGES.rst:437 cafc105434e34a70b25c9e0b1020474d
+msgid "Dynamic form validation :pr:`120`"
+msgstr ""
+
+#: ../../CHANGES.rst:442 9dbaf487296d41708aee2a7e3675712d
+msgid "UX rework. Submenu addition. :pr:`114`"
+msgstr ""
+
+#: ../../CHANGES.rst:443 9bea6b30702b4bf0867cb65d2db2921e
+msgid "Properly handle LDAP date timezones. :pr:`117`"
+msgstr ""
+
+#: ../../CHANGES.rst:448 58b9bc8d6a1d49bcbe843f0dd6634119
+msgid "CSRF protection on every forms. :pr:`119`"
+msgstr ""
+
+#: ../../CHANGES.rst:451 77840b152a3c43f691e7069af9126b79
+msgid "[0.0.22] - 2023-03-13"
+msgstr ""
+
+#: ../../CHANGES.rst:455 820347a1b1904089be2bfdf7e5ecccb8
+msgid "faker is not imported anymore when the `clean` command is called."
+msgstr ""
+
+#: ../../CHANGES.rst:458 c370eda737bc49ad942e8e1352ed3fbc
+msgid "[0.0.21] - 2023-03-12"
+msgstr ""
+
+#: ../../CHANGES.rst:463 f1a36d309e9d44fea5195d47bbfef221
+msgid "Display TOS and policy URI on the consent list page. :pr:`102`"
+msgstr ""
+
+#: ../../CHANGES.rst:464 9ba464ef1e6f4d288c776cd5d8f4d92d
+msgid "Admin token deletion :pr:`100` :pr:`101`"
+msgstr ""
+
+#: ../../CHANGES.rst:465 e2ef22ae1f5843e0a2ef673fa7f7c50c
+msgid "Revoked consents can be restored. :pr:`103`"
+msgstr ""
+
+#: ../../CHANGES.rst:466 60b5b8d41456436ab6dc5f94bd9fb25d
+msgid ""
+"Pre-consented clients are displayed in the user consent list, and their "
+"consents can be revoked. :issue:`69` :pr:`103`"
+msgstr ""
+
+#: ../../CHANGES.rst:468 c855058215b74c03bf29bb17f52b44b3
+msgid ""
+"A ``populate`` command can be used to fill the database with random users"
+" generated with faker. :pr:`105`"
+msgstr ""
+
+#: ../../CHANGES.rst:470 bcdc9b4284cf4d96ac95036837bd6cb8
+msgid "SMTP SSL support. :pr:`108`"
+msgstr ""
+
+#: ../../CHANGES.rst:471 1c546550c9e44068a9f7ac2bd4dc24d9
+msgid "Server side pagination. :issue:`114` :pr:`111`"
+msgstr ""
+
+#: ../../CHANGES.rst:472 274c2da3f10a4443af767d398c72caae
+msgid "Department number support. :issue:`129`"
+msgstr ""
+
+#: ../../CHANGES.rst:473 d0025fabcf5748d7b84b989bca461f8d
+msgid "Address edition support (but not in the OIDC claims yet) :pr:`112`"
+msgstr ""
+
+#: ../../CHANGES.rst:474 a66ab0cdc2704584a8e18bab7768fa51
+msgid "Title edition support :pr:`113`"
+msgstr ""
+
+#: ../../CHANGES.rst:479 630e1bb97016446788f2729aab365de3
+msgid ""
+"Client deletion also deletes related Consent, Token and AuthorizationCode"
+" objects. :issue:`126` :pr:`98`"
+msgstr ""
+
+#: ../../CHANGES.rst:485 09d7bf4a44e748859b8e8a1dcd6245fd
+msgid "Removed datatables."
+msgstr ""
+
+#: ../../CHANGES.rst:488 d68570950096439c99d3e685956660fe
+msgid "[0.0.20] - 2023-01-28"
+msgstr ""
+
+#: ../../CHANGES.rst:493 79178006e2874f1393320079455156f6
+msgid "Spanish translation. :pr:`85` :pr:`88`"
+msgstr ""
+
+#: ../../CHANGES.rst:494 c7578b67e89e4d7e8479f0cb4f016e22
+msgid "Dedicated connectivity test email :pr:`89`"
+msgstr ""
+
+#: ../../CHANGES.rst:495 8b1da3651919458da0895f6e8d6fb54f
+msgid "Update to jquery 3.6.3 :pr:`90`"
+msgstr ""
+
+#: ../../CHANGES.rst:496 75423d75c9ed4f0fb527ab970e3478ee
+msgid "Update to fomantic-ui 2.9.1 :pr:`90`"
+msgstr ""
+
+#: ../../CHANGES.rst:497 6f4d1b59e9044315bdc22634324f9473
+msgid "Update to datatables 1.13.1 :pr:`90`"
+msgstr ""
+
+#: ../../CHANGES.rst:502 7ac8e3c501f9420daa7493e80a88b25e
+msgid "Fix typos and grammar errors. :pr:`84`"
+msgstr ""
+
+#: ../../CHANGES.rst:503 978be82816ec4286ac1b5f42943c89c5
+msgid "Fix wording and punctuations. :pr:`86`"
+msgstr ""
+
+#: ../../CHANGES.rst:504 396b9df072c9403082e80e55b46e1927
+msgid "Fix HTML lang tag :issue:`122` :pr:`87`"
+msgstr ""
+
+#: ../../CHANGES.rst:505 7bb7722c07524ea8a2da66c6d5d0e8e0
+msgid "Automatically trims the HTML translated strings. :pr:`91`"
+msgstr ""
+
+#: ../../CHANGES.rst:506 81e6ce27ee054614a99f2e35d793834b
+msgid "Fixed dynamic registration scope management. :issue:`123` :pr:`93`"
+msgstr ""
+
+#: ../../CHANGES.rst:509 81bd9cc8e92543cc9a5a7bb1e0bf3ba9
+msgid "[0.0.19] - 2023-01-14"
+msgstr ""
+
+#: ../../CHANGES.rst:514 2fffaa8902364cb598b956febacab5a7
+msgid ""
+"Ensures the token `expires_in` claim and the `access_token` `exp` claim "
+"have the same value. :pr:`83`"
+msgstr ""
+
+#: ../../CHANGES.rst:518 d808dc60e83141ea8b4df96d7be0981e
+msgid "[0.0.18] - 2022-12-28"
+msgstr ""
+
+#: ../../CHANGES.rst:523 fd9ec96bc77a4b48af2ef15435efd97a
+msgid ""
+"OIDC end_session was not returning the ``state`` parameter in the "
+"``post_logout_redirect_uri`` :pr:`82`"
+msgstr ""
+
+#: ../../CHANGES.rst:527 00f55eac59fd40a8aac2e64639b338fb
+msgid "[0.0.17] - 2022-12-26"
+msgstr ""
+
+#: ../../CHANGES.rst:532 de2d0bd26dcc4d9e85636b7aec93f477
+msgid "Fixed group deletion button. :pr:`80`"
+msgstr ""
+
+#: ../../CHANGES.rst:533 aca6ee4b724747fdbb2ff63faf9260a7
+msgid "Fixed post requests in oidc clients views. :pr:`81`"
+msgstr ""
+
+#: ../../CHANGES.rst:536 c681882951634cdc9642ad433c3b14e4
+msgid "[0.0.16] - 2022-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:541 d3b63fd6277c4505bb90ed30d63feb17
+msgid "Fixed LDAP operational attributes handling."
+msgstr ""
+
+#: ../../CHANGES.rst:544 4eaed5f2828a460b8a6ab3c274dec8f9
+msgid "[0.0.15] - 2022-12-15"
+msgstr ""
+
+#: ../../CHANGES.rst:549 32501311a27a44ce8f4ca4c70f217b9d
+msgid "User can chose their favourite display name. :pr:`77`"
+msgstr ""
+
+#: ../../CHANGES.rst:550 c1a1bc1b748e45148aec5bc1698b6482
+msgid "Bumped to authlib 1.2. :pr:`78`"
+msgstr ""
+
+#: ../../CHANGES.rst:551 73a75a1d074a416da3d9224262e47c4b
+msgid ""
+"Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management "
+"Protocol :pr:`79`"
+msgstr ""
+
+#: ../../CHANGES.rst:553 941cf9889d0945f2b6f7086ab74d6a0d
+msgid "Added ``nonce`` to the ``claims_supported`` server metadata list."
+msgstr ""
+
+#: ../../CHANGES.rst:556 290bfbc5be994362a7c461bddae68239
+msgid "[0.0.14] - 2022-11-29"
+msgstr ""
+
+#: ../../CHANGES.rst:560 938f721e12344e9eaa6339418089ac62
+msgid "Fixed translation mo files packaging."
+msgstr ""
+
+#: ../../CHANGES.rst:563 dc2b4309dac14824a6f762923e99ecb8
+msgid "[0.0.13] - 2022-11-21"
+msgstr ""
+
+#: ../../CHANGES.rst:568 222a7bdf5ad147699be17b5b1d482795
+msgid ""
+"Fixed a bug on the contacts field in the admin client form following the "
+"LDAP schema update of 0.0.12"
+msgstr ""
+
+#: ../../CHANGES.rst:570 9bcceeb9b16c48aca35c3e24349b7eb2
+msgid ""
+"Fixed a bug happening during RP initiated logout on clients without "
+"`post_logout_redirect_uri` defined."
+msgstr ""
+
+#: ../../CHANGES.rst:572 159af058202743fcb0486353f1c74ece
+msgid "Gitlab CI fix. :pr:`64`"
+msgstr ""
+
+#: ../../CHANGES.rst:573 86dd1ccc54f64cea825b5905f5c7f345
+msgid "Fixed `client_secret` display on the client administration page. :pr:`65`"
+msgstr ""
+
+#: ../../CHANGES.rst:574 53ad61ce433e4fa594dca68529988d46
+msgid "Fixed non-square logo CSS. :pr:`67`"
+msgstr ""
+
+#: ../../CHANGES.rst:575 40ee80b30fc84c889c7b5cd67d1c02c7
+msgid "Fixed schema path on installation. :pr:`68`"
+msgstr ""
+
+#: ../../CHANGES.rst:576 64213050390145db906dd2609820855c
+msgid "Fixed RFC7591 ``software_statement`` claim support. :pr:`70`"
+msgstr ""
+
+#: ../../CHANGES.rst:577 a05884be9bd24638b5c33339363e4b51
+msgid "Fixed client preconsent disabling. :pr:`72`"
+msgstr ""
+
+#: ../../CHANGES.rst:582 2574335adaa24f349ea52f684397d2ed
+msgid "Python 3.11 support. :pr:`61`"
+msgstr ""
+
+#: ../../CHANGES.rst:583 03878041c3014e518264e9edf1caa544
+msgid "apparmor slapd configuration instructions in CONTRIBUTING.rst :pr:`66`"
+msgstr ""
+
+#: ../../CHANGES.rst:584 fb788ae2d8044a5487a78862d11d49fb
+msgid "``preferredLanguage`` attribute support. :pr:`75`"
+msgstr ""
+
+#: ../../CHANGES.rst:589 b3b8433b408045f4ac2326f236b91445
+msgid ""
+"Replaced the use of the deprecated `FLASK_ENV` environment variable by "
+"`FLASK_DEBUG`."
+msgstr ""
+
+#: ../../CHANGES.rst:591 981b5e2bdcc04694b51e784d25e8d046
+msgid ""
+"Dynamically generate the server metadata. Users won't have to copy and "
+"manually edit ``oauth-authorizationserver.json`` and ``openid-"
+"configuration.json``. :pr:`71`"
+msgstr ""
+
+#: ../../CHANGES.rst:594 3b00ccf2444141cd8822d92b97ed6053
+msgid "The `FROM_ADDR` configuration option is not mandatory anymore. :pr:`73`"
+msgstr ""
+
+#: ../../CHANGES.rst:595 94f401fe37d64a87a9c46e8444c320b0
+msgid "The `JWT.ISS` configuration option is not mandatory anymore. :pr:`74`"
+msgstr ""
+
+#: ../../CHANGES.rst:598 9f898ef7445a403c934afd0d8bdd7309
+msgid "[0.0.12] - 2022-10-24"
+msgstr ""
+
+#: ../../CHANGES.rst:603 a9ea99e80b5044489ac2776a6921bad2
+msgid "Basic WebFinger endpoint. :pr:`59`"
+msgstr ""
+
+#: ../../CHANGES.rst:604 4407eb810f564c388ebacbc03d71909b
+msgid "Bumped to FomanticUI 2.9.0 00ffffee"
+msgstr ""
+
+#: ../../CHANGES.rst:605 874ed8b234184d08b196ccccddec7939
+msgid "Implemented Dynamic Client Registration :pr:`60`"
+msgstr ""
+
+#: ../../CHANGES.rst:608 97f44d9b82ea4375abffbcc306c9d57a
+msgid "[0.0.11] - 2022-08-11"
+msgstr ""
+
+#: ../../CHANGES.rst:613 1f6b0b91546a4b1d8fe0d2a9a918aba1
+msgid "Default theme has a dark variant. :pr:`57`"
+msgstr ""
+
+#: ../../CHANGES.rst:618 fd0ec66c12da46659d54721b72996afc
+msgid "Fixed missing ``canaille`` binary. :pr:`58`"
+msgstr ""
+
+#: ../../CHANGES.rst:621 92b1d721a1fa4b8096b8e2798c16bff3
+msgid "[0.0.10] - 2022-07-07"
+msgstr ""
+
+#: ../../CHANGES.rst:626 d56498d4078e4192ad16b221a5063fb6
+msgid "Online demo. :pr:`55`"
+msgstr ""
+
+#: ../../CHANGES.rst:627 eeb4a3ccc4124e65a3ea654fc8984a62
+msgid "The consent page was displaying scopes not supported by clients. :pr:`56`"
+msgstr ""
+
+#: ../../CHANGES.rst:628 31b230fa246e43c7b94368e938c713f7
+msgid "Fixed end session when user are already disconnected."
+msgstr ""
+
+#: ../../CHANGES.rst:631 b28210e5c5eb4f8bbaf4e4d8d4367ca3
+msgid "[0.0.9] - 2022-06-05"
+msgstr ""
+
+#: ../../CHANGES.rst:636 d273331200ae4b2393ef57600cc5803c
+msgid ""
+"``DISABLE_PASSWORD_RESET`` configuration option to disable password "
+"recovery. :pr:`46`"
+msgstr ""
+
+#: ../../CHANGES.rst:637 cdc9a1acc7cd4e97b364b897c75bc7b7
+msgid "``edit_self`` ACL permission to control user self edition. :pr:`47`"
+msgstr ""
+
+#: ../../CHANGES.rst:638 6cae26c486a9428e82ecab5871fe38c8
+msgid "Implemented RP-initiated logout :pr:`54`"
+msgstr ""
+
+#: ../../CHANGES.rst:643 b66d1dea48ea465fb1a24a681c9c42d4
+msgid "Bumped to authlib 1 :pr:`48`"
+msgstr ""
+
+#: ../../CHANGES.rst:644 c2572fb40b7c4b6c9046b27142efdfd0
+msgid "documentation improvements :pr:`50`"
+msgstr ""
+
+#: ../../CHANGES.rst:645 6855cf1f37cf4323befaed034b4f6d6b
+msgid "use poetry instead of setuptools :pr:`51`"
+msgstr ""
+
+#: ../../CHANGES.rst:646 f1290c925e174c7992384ccedef040b6
+msgid "additional nonce tests :pr:`52`"
+msgstr ""
+
+#: ../../CHANGES.rst:650 59ef0ddc1bf14b0dad16ad22641c3386
+msgid "``HIDE_INVALID_LOGIN`` behavior and default value."
+msgstr ""
+
+#: ../../CHANGES.rst:651 c595d06befba47b8be48a357e02c3d27
+msgid "mo files are not versioned anymore :pr:`49` :pr:`53`"
+msgstr ""
+
+#: ../../CHANGES.rst:654 c4902a72e08241479a3dd830495e1e21
+msgid "[0.0.8] - 2022-03-15"
+msgstr ""
+
+#: ../../CHANGES.rst:659 96164d0e2a7e49bea54f2c428087908d
+msgid "Fixed dependencies"
+msgstr ""
+
+#: ../../CHANGES.rst:662 0c82079f96d647439755cddc37a06943
+msgid "[0.0.7] - 2022-03-15"
+msgstr ""
+
+#: ../../CHANGES.rst:667 197a6ee29d77411f81c5bedc462a9699
+msgid "Fixed spaces and escaped special char in ldap cn/dn :pr:`43`"
+msgstr ""
+
+#: ../../CHANGES.rst:670 ad07a539305344a99595ca0f3957f080
+msgid "[0.0.6] - 2022-03-08"
+msgstr ""
+
+#: ../../CHANGES.rst:675 229628dd374e405eb938b9ded3ceb1a9
+msgid "Access token are JWT. :pr:`38`"
+msgstr ""
+
+#: ../../CHANGES.rst:680 b840a7dd1e5c49049e9c42a6dcc2cdd6
+msgid "Default groups on invitations :pr:`41`"
+msgstr ""
+
+#: ../../CHANGES.rst:681 9bd87857eca846b5a7ce2eb78aa3b98a
+msgid "Schemas are shipped within the canaille package :pr:`42`"
+msgstr ""
+
+#: ../../CHANGES.rst:684 29e4efc1bc38404b98ed95a9bea98654
+msgid "[0.0.5] - 2022-02-17"
+msgstr ""
+
+#: ../../CHANGES.rst:689 b25170ebddba4781a06b71ea8c212411
+msgid "LDAP model objects have new identifiers :pr:`37`"
+msgstr ""
+
+#: ../../CHANGES.rst:694 4fe23c23cb264a8a976be5984cfffccd
+msgid "Admin menu dropdown display :pr:`39`"
+msgstr ""
+
+#: ../../CHANGES.rst:695 311170f2960e462a8710c34e68e17f5e
+msgid "`GROUP_ID_ATTRIBUTE` configuration typo :pr:`40`"
+msgstr ""
+
+#: ../../CHANGES.rst:698 2b26718a9b1341c787d0bf9be620a5d0
+msgid "[0.0.4] - 2022-02-16"
+msgstr ""
+
+#: ../../CHANGES.rst:703 edf0938d51834ee99b5ab70345fbf965
+msgid "Client preauthorization :pr:`11`"
+msgstr ""
+
+#: ../../CHANGES.rst:704 1a40388976dc432e810b4d99937c9d44
+msgid "LDAP permissions check with the check command :pr:`12`"
+msgstr ""
+
+#: ../../CHANGES.rst:705 89f59530fe4b458491ff240282d546af
+msgid ""
+"Update consents when a scope required is larger than the scope of an "
+"already given consent :pr:`13`"
+msgstr ""
+
+#: ../../CHANGES.rst:707 9c5fb554f5a24297a2b5427488413dd0
+msgid "Theme customization :pr:`15`"
+msgstr ""
+
+#: ../../CHANGES.rst:708 d14a00a5d6ec4e9db215fb6d68e3c65e
+msgid "Logging configuration :pr:`16`"
+msgstr ""
+
+#: ../../CHANGES.rst:709 0ca72541f86849f7b789e833c11cfd48
+msgid "Installation command :pr:`17`"
+msgstr ""
+
+#: ../../CHANGES.rst:710 c11b918827644f168592b76f423f7762
+msgid "Invitation links :pr:`18`"
+msgstr ""
+
+#: ../../CHANGES.rst:711 dc0e344ee1ac4d89841b404ac286cdbb
+msgid "Advanced permissions :pr:`20`"
+msgstr ""
+
+#: ../../CHANGES.rst:712 81c86c070a904d57be88f7c9d9b28895
+msgid "An option to not use OIDC :pr:`23`"
+msgstr ""
+
+#: ../../CHANGES.rst:713 68011d12b1b2444da423776414eb9c58
+msgid "Disable some features when no SMTP server is configured :pr:`24`"
+msgstr ""
+
+#: ../../CHANGES.rst:714 acd6cedde2b34836ab29657171968453
+msgid ""
+"Login placeholder dynamically generated according to the configuration "
+":pr:`25`"
+msgstr ""
+
+#: ../../CHANGES.rst:715 f9d1cc0bc3d34e469d512834b192b4b2
+msgid "Added an option to tune object IDs :pr:`26`"
+msgstr ""
+
+#: ../../CHANGES.rst:716 3dc13715b3eb41c4a9c9ac8a8388d024
+msgid "Avatar support :pr:`27`"
+msgstr ""
+
+#: ../../CHANGES.rst:717 f73abd3a60014fb8a117a4eac6482a47
+msgid "Dynamical and configurable JWT claims :pr:`28`"
+msgstr ""
+
+#: ../../CHANGES.rst:718 795843f468c946d0b282d39d69f491d8
+msgid "UI improvements :pr:`29`"
+msgstr ""
+
+#: ../../CHANGES.rst:719 1a1cc1890a464ecd9e88038a2e3a948e
+msgid "Invitation links expiration :pr:`30`"
+msgstr ""
+
+#: ../../CHANGES.rst:720 82908f54c8464b60bc31e055769c27ab
+msgid "Invitees can choose their IDs :pr:`31`"
+msgstr ""
+
+#: ../../CHANGES.rst:721 99f351a2973748d0afd34d40d5bdb736
+msgid "LDAP backend refactoring :pr:`35`"
+msgstr ""
+
+#: ../../CHANGES.rst:726 d467678d501149308dadaf66191e539f
+msgid "Fixed ghost members in a group :pr:`14`"
+msgstr ""
+
+#: ../../CHANGES.rst:727 1fc764e3f7904f85bf16a0518a4dcae0
+msgid "Fixed email sender names :pr:`19`"
+msgstr ""
+
+#: ../../CHANGES.rst:728 762cec2be7084103848f63f08c17ac78
+msgid "Fixed filter being not escaped :pr:`21`"
+msgstr ""
+
+#: ../../CHANGES.rst:729 0bd6ef3db9a949b6a764366bc44473c8
+msgid "Demo script good practices :pr:`32`"
+msgstr ""
+
+#: ../../CHANGES.rst:730 d6390a77df244e1aab4395426bdf2a48
+msgid "Binary path for Debian :pr:`33`"
+msgstr ""
+
+#: ../../CHANGES.rst:731 49392d82626245468db66609b164694e
+msgid ""
+"Last name was not mandatory in the forms while this was mandatory in the "
+"LDAP server :pr:`34`"
+msgstr ""
+
+#: ../../CHANGES.rst:733 4bd138b857ee46b0b20158863b90161d
+msgid "Spelling typos :pr:`36`"
+msgstr ""
+
+#: ../../CHANGES.rst:736 788bfaf9894445909c8158278ce15bd2
+msgid "[0.0.3] - 2021-10-13"
+msgstr ""
+
+#: ../../CHANGES.rst:741 8fad9ca44d3b452f85b71d932cc31c19
+msgid "Two-steps sign-in :issue:`49`"
+msgstr ""
+
+#: ../../CHANGES.rst:742 4eeef635dea440a08a2898b7eb3230a8
+msgid "Tokens can have several audiences. :issue:`62` :pr:`9`"
+msgstr ""
+
+#: ../../CHANGES.rst:743 0c8f51332d8e46d0986f570ff22e0ff1
+msgid "Configuration check command. :issue:`66` :pr:`8`"
+msgstr ""
+
+#: ../../CHANGES.rst:744 eacb7f4bd0f14a1cab39447065809e75
+msgid "Groups management. :issue:`12` :pr:`6`"
+msgstr ""
+
+#: ../../CHANGES.rst:749 f7439c841aa840888f0c083ec8adfe74
+msgid "Introspection access bugfix. :issue:`63` :pr:`10`"
+msgstr ""
+
+#: ../../CHANGES.rst:750 d1f0bc7e377343c09b18e6d8a63a5010
+msgid "Introspection sub claim. :issue:`64` :pr:`7`"
+msgstr ""
+
+#: ../../CHANGES.rst:753 dc5c8ef174484f35a42b31cd3f2a9f08
+msgid "[0.0.2] - 2021-01-06"
+msgstr ""
+
+#: ../../CHANGES.rst:758 d44afb15022f44959c9677ca62f14d2b
+msgid "Login page is responsive. :issue:`1`"
+msgstr ""
+
+#: ../../CHANGES.rst:759 4baa37708ab1438c971fb346cdd01e94
+msgid "Adapt mobile keyboards to login page fields. :issue:`2`"
+msgstr ""
+
+#: ../../CHANGES.rst:760 99d9f04a69b4471eb1e70d2277c9205c
+msgid "Password recovery interface. :issue:`3`"
+msgstr ""
+
+#: ../../CHANGES.rst:761 87ee8c581db74c4e8f63cbc2697afb33
+msgid "User profile interface. :issue:`4`"
+msgstr ""
+
+#: ../../CHANGES.rst:762 e078cbb83f754d9eb59d944fe0a3578c
+msgid "Renamed the project *canaille*. :issue:`5`"
+msgstr ""
+
+#: ../../CHANGES.rst:763 b857f069d51048058e186f728d743edd
+msgid "Command to remove old tokens. :issue:`17`"
+msgstr ""
+
+#: ../../CHANGES.rst:764 ced480248bc3492e8e816a75e8218f25
+msgid "Improved password recovery email. :issue:`14` :issue:`26`"
+msgstr ""
+
+#: ../../CHANGES.rst:765 245ec1976f2b4f63be97bbc1afe62454
+msgid ""
+"Use flask `SERVER_NAME` configuration variable instead of `URL`. "
+":issue:`24`"
+msgstr ""
+
+#: ../../CHANGES.rst:766 c56fe72201d349e0855ffb946909db00
+msgid "Improved consents page. :issue:`27`"
+msgstr ""
+
+#: ../../CHANGES.rst:767 b7059f4e5c70478bae9372e27a44836b
+msgid "Admin user page. :issue:`8`"
+msgstr ""
+
+#: ../../CHANGES.rst:768 4169f2f4a58c4f618de700da350aadad
+msgid "Project logo. :pr:`29`"
+msgstr ""
+
+#: ../../CHANGES.rst:769 b39b14dad63d485b9870eca1f6d16c9e
+msgid ""
+"User account self-deletion can be enabled in the configuration with "
+"`SELF_DELETION`. :issue:`35`"
+msgstr ""
+
+#: ../../CHANGES.rst:770 20abce934b714676b97e9b2a0745b7bd
+msgid "Admins can impersonate users. :issue:`39`"
+msgstr ""
+
+#: ../../CHANGES.rst:771 4f62f72e118348aeba0e31aca0ced22a
+msgid "Forgotten page UX improvement. :pr:`43`"
+msgstr ""
+
+#: ../../CHANGES.rst:772 a76c7f3833c34952aec02584bcfa1039
+msgid "Admins can remove clients. :pr:`45`"
+msgstr ""
+
+#: ../../CHANGES.rst:773 6be5896f77054ae39df134400b1870d9
+msgid ""
+"Option `HIDE_INVALID_LOGIN` that can be unactivated to let the user know "
+"if the login he attempt to sign in with exists or not. :pr:`48`"
+msgstr ""
+
+#: ../../CHANGES.rst:775 510877991b7d405dae6c77b61b31d71f
+msgid "Password initialization mail. :pr:`51`"
+msgstr ""
+
+#: ../../CHANGES.rst:780 6a3654cde6ee4927bee7a8aa0359c656
+msgid "Form translations. :issue:`19` :issue:`23`"
+msgstr ""
+
+#: ../../CHANGES.rst:781 ec324330dee34013ad82c1d00fe8c7c9
+msgid "Avoid to use Google Fonts. :issue:`21`"
+msgstr ""
+
+#: ../../CHANGES.rst:786 e5515578ce384bb5814068c9c9a70567
+msgid "'My tokens' page. :issue:`22`"
+msgstr ""
+
+#: ../../CHANGES.rst:789 5f1ce59b42134ab296e053facb181b09
+msgid "[0.0.1] - 2020-10-21"
+msgstr ""
+
+#: ../../CHANGES.rst:794 4ea47aa0a66c4cacbf10523af477f36a
+msgid "Initial release."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:2 0b841ff58ceb49d58df5854258f7f6e4
+msgid "Contributions"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:4 3a228b3941b845fe9f97a98dda21b6c1
+msgid "Contributions are welcome!"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:6 376791696837443799d15eaac3fece86
+msgid ""
+"The repository is hosted at `gitlab.com/yaal/canaille "
+"<https://gitlab.com/yaal/canaille>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:9 cf4f8584594a4b14814becbcde09e445
+msgid "Discuss"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:11 4d13d0df9201499c849d24523ae1bcd0
+msgid ""
+"If you want to implement a feature or a bugfix, please start by "
+"discussing it with us on the `bugtracker "
+"<https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix room "
+"<https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:16 fa5c801973694e3a8b366eca8118e245
+msgid "Development environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:18 f4955bb4916c4ef3aa872fd9d42e4280
+msgid "You can either run the demo locally or with Docker."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:20 c52b8ce6082d4254a73f64cdea1750c6
+msgid ""
+"The only tool required for local development is `uv`. Make sure to have "
+"uv `installed on your computer <https://docs.astral.sh/uv/getting-"
+"started/installation/>`_ to be able to hack Canaille."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:24 ec22edb478cc46a8b24ae8abab8a4075
+msgid ""
+"Initialize your development environment with: - ``uv sync --extra front "
+"--extra oidc`` to have a minimal working development environment. This "
+"will allow you to run the tests with ``uv pytest --backend memory``. - "
+"``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal "
+"working development environment with SQLite backend support. This will "
+"allow you to run the tests with ``uv pytest --backend sql``. - ``uv sync "
+"--extra front --extra oidc --extra ldap`` to have a minimal working "
+"development environment with LDAP backend support. This will allow you to"
+" run the tests with ``uv pytest --backend ldap``. - ``uv sync --all-"
+"extras`` if you want to have everything at your fingertips. Note that it "
+"may compile some Python dependencies that would expect things to be "
+"installed on your system; Some dependencies of Canaille might need to be "
+"compiled, so you probably want to check that `GCC` and `cargo` are "
+"available on your computer."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:31 85d3edc02ca447c2bc95484ee5b24366
+msgid "After having launched the demo you have access to several services:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:33 1f803759ce7c424f99c2b6379d78221e
+msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:34 f35728db0c4c4c34a77e986a30d13b9b
+msgid "A dummy client at `localhost:5001 <http://localhost:5001>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:35 1b3293f8aa8b4347a5e68fb8cd379dc9
+msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`_"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:37 dc367e129b3c4a338790f50ee1c157d1
+msgid "The canaille server has some default users:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:39 917cd6e723084a88829205c5544100bb
+msgid "A regular user which login and password are **user**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:40 9dcb660b7bcb4adc96e5497d248b08e6
+msgid "A moderator user which login and password are **moderator**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:41 bd86721dd0704d62846642b06c6295ac
+msgid "An admin user which admin and password are **admin**;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:42 4d97d74c5e0e44b29ba6d2176066f3e2
+msgid ""
+"A new user which login is **james**. This user has no password yet, and "
+"his first attempt to log-in would result in sending a password "
+"initialization email (if a smtp server is configured)."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:47 ../development/specifications.rst:62
+#: ../features.rst:258 5e1960df6cbc48ef8d4e518999525455
+#: 6680030625d24566b0ce617d85b05a09 8fc0509085aa46a1a6c157e63ececab3
+msgid "Backends"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:49 3acf5b56655c4e31877e624fbfe62ef7
+msgid "Canaille comes with several backends:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:51 e74e335e14a948379ebcffcd2e179a83
+msgid "a lightweight test purpose `memory` backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:52 b75cb89dfc354a1582d8e3e27d358962
+msgid "a `sql` backend, based on sqlalchemy"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:53 6bf1fa26de7c4e159c4f75f5afc0e05c
+msgid "a production-ready `LDAP` backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:56 b16bac707a05428fa5bfed53f6a32db0
+msgid "Docker environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:58 742ff809c71a40c088c3f89eb73b2b93
+msgid ""
+"If you want to develop with docker, your browser needs to be able to "
+"reach the `canaille` container. The docker-compose file exposes the right"
+" ports, but front requests are from outside the docker network: the "
+"`canaille` url that makes sense for docker, points nowhere from your "
+"browser. As exposed ports are on `localhost`, you need to tell your "
+"computer that `canaille` url means `localhost`."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:63 be0d34c286ef4ab4ac7122eb6e9e65f5
+msgid "To do that, you can add the following line to your `/etc/hosts`:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:69 16faae905af04224adbc24373e4638b6
+msgid "To launch containers, use:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:84 5ade389862524550a35a0eeb916d1997
+msgid "Local environment"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:98 112bb71df28044c5ac80aad688c2e626
+msgid ""
+"If you want to run the demo locally with the LDAP backend, you need to "
+"have `OpenLDAP <https://www.openldap.org/>`_ installed on your system. It"
+" is generally shipped under the ``slapd`` or ``openldap`` package name."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:103 baa2b719fe074ed7b24161707a9c3ae5
+msgid ""
+"On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be "
+"restricted by apparmor, and thus makes the tests and the demo fail. This "
+"can be mitigated by removing apparmor restrictions on `slapd`."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:113 47f2c33951314a88983f4b9ba69c4859
+msgid "Populate the database"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:115 0b3c84f80f704c37b09ef3777c9a455b
+msgid ""
+"The demo database comes populated with some random users and groups. If "
+"you need more, you can generate users and groups with the ``populate`` "
+"command:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:126 417b21826b5a42d0b6a96b0189e048db
+msgid ""
+"Adapt to use either the `ldap` or the `sql` configuration file. Note that"
+" this will not work with the memory backend."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:129 b65a089d8c04494897e62def00c3e8d0
+msgid "Unit tests"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:131 4c0a14a03a96497b976695bb31de269a
+msgid ""
+"To run the tests, you just can run `uv run pytest` and/or `uv run tox` to"
+" test all the supported python environments. Everything must be green "
+"before patches get merged."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:134 bbc93760dbce46ed81fac989a27dffbe
+msgid ""
+"To test a specific backend you can pass ``--backend memory``, ``--backend"
+" sql`` or ``--backend ldap`` to pytest and tox."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:136 5d65f7f964fe4749af55ea833170718d
+msgid ""
+"The test coverage is 100%, patches won't be accepted if not entirely "
+"covered. You can check the test coverage with ``uv run pytest --cov "
+"--cov-report=html`` or ``uv run tox -e coverage -- --cov-report=html``. "
+"You can check the HTML coverage report in the newly created `htmlcov` "
+"directory."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:141 00c8610b432d42279b50f4886592ca4d
+msgid "Code style"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:143 065cd1c8fe3248cfa39fdbd5ddc971a6
+msgid ""
+"We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to "
+"format our code. Please run ``uv run tox -e style`` on your patches "
+"before submitting them. In order to perform a style check and correction "
+"at each commit you can use our `pre-commit <https://pre-commit.com/>`_ "
+"configuration with ``uv run pre-commit install``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:149 b3c1556e731a47fb849c8241222bd055
+msgid "Front"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:151 b1a19093596c40bb8f8f2135549d1e09
+msgid ""
+"The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_"
+" CSS framework. The dynamical parts of the interface use `htmx "
+"<https://htmx.org/>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:154 f869aeed650d483089c231afb5bbf53b
+msgid ""
+"Using Javascript in the interface is tolerated, but the whole website "
+"MUST be accessible for browsers without Javascript support, and without "
+"any feature loss."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:156 a5dd1b880eff47448537cc901ee9e805
+msgid ""
+"Because of Fomantic UI we have a dependency to jQuery, however new "
+"contributions should not depend on jQuery at all. See the `related issue "
+"<https://gitlab.com/yaal/canaille/-/issues/130>`_."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:161 ../index.rst:70 41500af8731e4ba89744089904b7c0dc
+#: b913aeba1ad5474fb1e44c894a5bfa90
+msgid "Documentation"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:163 a1e7ca49e6ba469f808cea47212aaad1
+msgid "The documentation is generated when the tests run:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:169 5d14700fab344aac97b45d2355edd8cb
+msgid ""
+"You can also run sphinx by hand, that should be faster since it avoids "
+"the tox environment initialization:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:175 281ffc8c56eb44a6902c1e433a2f06c1
+msgid "The generated documentation is located at ``build/sphinx/html``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:178 84d2b6e65e9844bba85242b5a1dbde0d
+msgid "Code translation"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:1 17e0507823c7454aa4685f731f4a6a39
+msgid ""
+"Translations are done with `Weblate "
+"<https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:3 98859d4a4cfb4e1099d9e41e0c0dc7ad
+msgid ""
+"The following commands are there as documentation, only the message "
+"extraction is needed for contributors. All the other steps are "
+"automatically done with Weblate."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:8 8feb9440d14b454e81ddf182624d1e11
+#: 98940c0798314aa780b5900389189be1 da9cbe0a91494687be53577e7ba0858b
+#: readme.rst:7
+msgid "Message extraction"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:10 614744bdefa745f28730c40f989b7991
+#: f4203275c2e54c12936bf1a4b21abeef f6d23bb322dc4bd3a41ec61872b946d9
+#: readme.rst:9
+msgid ""
+"After you have edited translatable strings, you should extract the "
+"messages with:"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:17 7a3f0bdd22e14dca8142ecd0c54feae1
+#: 896afe4ce83d4752adae753409df8c33 d7b7d615e7624c7684b03f1a25460740
+#: readme.rst:16
+msgid "Language addition"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:19 24fa92b04b464da48e956b12869393b2
+#: 84be22f280a940ec9b76a9b71946e086 ac14b64d752d4a0abe2546b275ff10d0
+#: readme.rst:18
+msgid ""
+"You can add a new language manually with the following command, however "
+"this should not be needed as Weblate takes car of this:"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:26 af0d8d1b10944e9db96f3f4cefee66fb
+msgid "Catalog update"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:28 b5475c2944234984b620d6d91f8a2221
+msgid ""
+"You can update the catalogs with the following command, however this "
+"should not be needed as Weblate automatically update language catalogs "
+"when it detects new strings or when someone translate some existing "
+"strings. Weblate pushes happen every 24h."
+msgstr ""
+
+#: ../../canaille/translations/README.rst:36 eeb2fd4d30b74eb4bcd9d441fa01605f
+msgid "Catalog compilation"
+msgstr ""
+
+#: ../../canaille/translations/README.rst:38 36c99b1985b547079944012018f0eb07
+msgid ""
+"You can compile the catalogs with the following command, however this "
+"should not be needed as catalogs are automatically compiled before "
+"running the unit tests, before launching the demo and before compiling "
+"the Canaille python package:"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:184 c074b1f74e174501a3f82e2f736a4a1d
+msgid "Documentation translation"
+msgstr ""
+
+#: 244b268047014a85b0176ab1c8faf3a6 ade9f769db9e4cc9a997baaf4373a2ed
+#: readme.rst:1
+msgid ""
+"Documentation translation Translations are done with `Weblate "
+"<https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgstr ""
+
+#: 38e647d5a9464b878efff0dc35b0f653 440db8cf5e02467e9855c9851fbbf21e
+#: readme.rst:4
+msgid ""
+"The following commands are there as documentation, only the message "
+"extraction and the language addition is needed for contributors."
+msgstr ""
+
+#: 831101c27e9c44c3a3b18a9ac292e1f3 be0097273ba54257ba9fb2f693f2634b
+#: readme.rst:25
+msgid "Build the documentation in another language"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:189 9291446656944a00b33c9fbdf1114940
+msgid "Publish a new release"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:191 075d9467ced14c0ea318dc63f97a5dbf
+msgid ""
+"Check that dependencies are up to date with ``uv sync --all-extras "
+"--upgrade`` and update dependencies accordingly in separated commits;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:192 e686349f49f841c78d74268faeb196a9
+msgid ""
+"Check that tests are still green for every supported python version, and "
+"that coverage is still at 100%, by running ``uv run tox``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:193 3cf6b2ec316847b58530da654eda9540
+msgid ""
+"Check that the demo environments are still working, both the local and "
+"the Docker one;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:194 173fc656e33848fd88eadf5bb585f2ae
+msgid ""
+"Check that the :ref:`development/changelog:Release notes` section is "
+"correctly filled up;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:195 d675a44fa1c243e8833393195118b668
+msgid "Increase the version number in ``pyproject.toml``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:196 a370194bde174420b1624bea7fc03740
+msgid "Commit with ``git commit``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:197 38fdd454db454cc09194cdcb7eec0800
+msgid "Build with ``uv build``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:198 56d61d64dbd34871b51373eff47f1c17
+msgid ""
+"Publish on test PyPI with ``uv publish --publish-url "
+"https://test.pypi.org/legacy/``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:199 e5e02aeb2f9f427aabdb97e641225d4b
+msgid ""
+"Install the test package somewhere with ``pip install --extra-index-url "
+"https://test.pypi.org/simple --upgrade canaille``. Check that everything "
+"looks fine;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:200 1f8fb7fc4f584453a55bc4ca71d6df58
+msgid "Publish on production PyPI ``uv publish``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:201 23a34ce733234745bbf20e30bc019787
+msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:202 da5c48d7b95249ed9a1e27daadebda82
+msgid ""
+"Push the release commit and the new tag on the repository with ``git push"
+" --tags``."
+msgstr ""
+
+#: ../development/index.rst:2 5805b71daf2c4d62b7a12e73891ac186
+msgid "Development"
+msgstr ""
+
+#: ../development/specifications.rst:2 541a33a86701416aa6f6de99fa89a89f
+msgid "Specifications"
+msgstr ""
+
+#: ../development/specifications.rst:4 67840439174a4881931bc037fde8743c
+msgid ""
+"This page details which specifications are implemented in Canaille, and "
+"compares Canaille with other well-known identity providers."
+msgstr ""
+
+#: ../development/specifications.rst:7 b4abbced46ae4d8a8b1c472b3136cf39
+msgid "State of the specs in Canaille"
+msgstr ""
+
+#: ../development/specifications.rst:10 9a3397cff55841c19b9a57f7dfd88bcb
+msgid "OAuth2"
+msgstr ""
+
+#: ../development/specifications.rst:12 982fce2fb6334d98bbbc81472971a405
+msgid "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
+msgstr ""
+
+#: ../development/specifications.rst:13 9c699279ecc14e5bb9d9f48e5710a9db
+msgid ""
+"✅ `RFC6750: OAuth 2.0 Bearer Tokens "
+"<https://tools.ietf.org/html/rfc6750>`_"
+msgstr ""
+
+#: ../development/specifications.rst:14 f3f197758b264989884d266347d3ba8a
+msgid ""
+"✅ `RFC7009: OAuth 2.0 Token Revocation "
+"<https://tools.ietf.org/html/rfc7009>`_"
+msgstr ""
+
+#: ../development/specifications.rst:15 f6956483bbeb4f35945627f5724bfc5c
+msgid ""
+"❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
+"Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
+msgstr ""
+
+#: ../development/specifications.rst:16 e42ed4cd37bb4409bcf1fe7871137dc1
+msgid ""
+"✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol "
+"<https://tools.ietf.org/html/rfc7591>`_"
+msgstr ""
+
+#: ../development/specifications.rst:17 be51ea22e68546c1a12b9dfa63a731ba
+msgid ""
+"✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol "
+"<https://tools.ietf.org/html/rfc7592>`_"
+msgstr ""
+
+#: ../development/specifications.rst:18 6c9ec9a5a87e4bdd96fff518d06e787e
+msgid ""
+"✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients "
+"<https://tools.ietf.org/html/rfc7636>`_"
+msgstr ""
+
+#: ../development/specifications.rst:19 9047e9898e4b49f98ce261d0a2fb4cbd
+msgid ""
+"✅ `RFC7662: OAuth 2.0 Token Introspection "
+"<https://tools.ietf.org/html/rfc7662>`_"
+msgstr ""
+
+#: ../development/specifications.rst:20 40f87de1a5224a99909a3218cd9fa4ab
+msgid ""
+"✅ `RFC8414: OAuth 2.0 Authorization Server Metadata "
+"<https://tools.ietf.org/html/rfc8414>`_"
+msgstr ""
+
+#: ../development/specifications.rst:21 810495f0829a4909997a3568b09009f3
+msgid ""
+"❌ `RFC8428: OAuth 2.0 Device Authorization Grant "
+"<https://tools.ietf.org/html/rfc8428>`_"
+msgstr ""
+
+#: ../development/specifications.rst:22 6e3b1b1a7e334b53b5433b0bbdd964be
+msgid ""
+"❌ `RFC8693: OAuth 2.0 Token Exchange "
+"<https://tools.ietf.org/html/rfc8693>`_"
+msgstr ""
+
+#: ../development/specifications.rst:23 f63df281155c46e7b0ccb4d295b26afa
+msgid ""
+"❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-"
+"Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
+msgstr ""
+
+#: ../development/specifications.rst:24 f7f1714cd1fd4ebc8da4adcba61204bf
+msgid ""
+"❌ `RFC8707: Resource Indicators for OAuth 2.0 "
+"<https://tools.ietf.org/html/rfc8707>`_"
+msgstr ""
+
+#: ../development/specifications.rst:25 4c81ff0463f0459bb59988673f95ec7b
+msgid ""
+"❌ `RFC9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens "
+"<https://tools.ietf.org/html/rfc9068>`_"
+msgstr ""
+
+#: ../development/specifications.rst:26 d99715c092aa45368ee02279cb881b8c
+msgid ""
+"❌ `RFC9101: OAuth 2.0 JWT-Secured Authorization Request (JAR) "
+"<https://tools.ietf.org/html/rfc9101>`_"
+msgstr ""
+
+#: ../development/specifications.rst:27 db841cabe8574440a5bd327392eae3ce
+msgid ""
+"❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests "
+"<https://tools.ietf.org/html/rfc9126>`_"
+msgstr ""
+
+#: ../development/specifications.rst:28 6089cd66288f469aad49dcb633c9ad8d
+msgid ""
+"❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification "
+"<https://tools.ietf.org/html/rfc9207>`_"
+msgstr ""
+
+#: ../development/specifications.rst:29 bdcb5633d457472b9bfa4c20911cbe8e
+msgid ""
+"❌ `RFC9394: OAuth 2.0 Rich Authorization Requests <https://www.rfc-"
+"editor.org/rfc/rfc9396.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:30 0733f63579444ccfb93581ec894cb572
+msgid ""
+"❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2"
+"-multiple-response-types-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:31 2d58df0df7db40e78e17bcb7f2491b42
+msgid ""
+"❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2"
+"-form-post-response-mode-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:34 ../features.rst:209
+#: 0a20707e101e45afa3f82b62af246323 2f59334003324960bba9d54c9f47216e
+msgid "OpenID Connect"
+msgstr ""
+
+#: ../development/specifications.rst:36 b40621335ff74dc9836d2c995a088af3
+msgid ""
+"✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-"
+"core-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:37 5925bd07cffb47c788e8a75d56483c6d
+msgid ""
+"✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-"
+"discovery-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:38 12e8166baefa44a98f2b795f408704f8
+msgid ""
+"✅ `OpenID Connect Dynamic Client Registration <https://openid.net/specs"
+"/openid-connect-registration-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:39 56b5e2a3193d449f9a061e3899d91992
+msgid ""
+"✅ `OpenID Connect RP Initiated Logout <https://openid.net/specs/openid-"
+"connect-rpinitiated-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:40 906f18b7ff604da3ae72feade553ef4a
+msgid ""
+"❌ `OpenID Connect Session Management <https://openid.net/specs/openid-"
+"connect-session-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:41 1c16150e6322426fb3155ecbf92125fd
+msgid ""
+"❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-"
+"connect-frontchannel-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:42 d42d494526544c7586ed231bb9e393aa
+msgid ""
+"❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-"
+"connect-backchannel-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:43 6461e3cb0d0b4256ad5d94fdfa2cc155
+msgid ""
+"❌ `OpenID Connect Back Channel Authentication Flow "
+"<https://openid.net/specs/openid-client-initiated-backchannel-"
+"authentication-core-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:44 68291985376c4a6db9c3ab6a46033253
+msgid ""
+"❌ `OpenID Connect Core Error Code unmet_authentication_requirements "
+"<https://openid.net/specs/openid-connect-unmet-authentication-"
+"requirements-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:45 a2240ab89c4f44b797b79e3d30c90abf
+msgid ""
+"✅ `Initiating User Registration via OpenID Connect 1.0 "
+"<https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:48 ../development/specifications.rst:64
+#: 8cf876840eef4f91837d07a3eb9405e8 a37c085fe15b465493dc56abef81e060
+msgid "SCIM"
+msgstr ""
+
+#: ../development/specifications.rst:50 0be32dfe41d8496896234e5ff032ba40
+msgid ""
+"❌ `RFC7642: System for Cross-domain Identity Management: Definitions, "
+"Overview, Concepts, and Requirements <https://www.rfc-"
+"editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../development/specifications.rst:51 bee2f7d338c8450cb90adcf9c9f9281e
+msgid ""
+"❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../development/specifications.rst:52 6f91f5ed607e4cf39c2a8314400a2ee7
+msgid ""
+"❌ `RFC7644: System for Cross-domain Identity Management: Protocol "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+msgstr ""
+
+#: ../development/specifications.rst:55 78ff63eb07e14723b41c4ca485b5fe13
+msgid "Comparison with other providers"
+msgstr ""
+
+#: ../development/specifications.rst:57 772e1ea09b8340ee907752a6904b8cb8
+msgid "Here is a feature comparison with other OpenID Connect server software."
+msgstr ""
+
+#: ../development/specifications.rst:59 dee0ee93785246d6bc5cb709cfaf1969
+msgid ""
+"Canaille voluntarily only implements the OpenID Connect protocol to keep "
+"its codebase simple."
+msgstr ""
+
+#: ../development/specifications.rst:62 74858f3ddf8e4ae6a176fefccdf473fb
+msgid "Software"
+msgstr ""
+
+#: ../development/specifications.rst:62 ba941f5487be4fb4a13f2d875f26777a
+msgid "Project"
+msgstr ""
+
+#: ../development/specifications.rst:62 2c0a3b118a2e4a94a5c056e36a49ce50
+msgid "Protocols implementations"
+msgstr ""
+
+#: ../development/specifications.rst:64 af3e8056a72344e3ac2aac9c686c08fc
+msgid "FLOSS"
+msgstr ""
+
+#: ../development/specifications.rst:64 f0ea1551608e45c8b959de23db5fb272
+msgid "Language"
+msgstr ""
+
+#: ../development/specifications.rst:64 16ed291530bb4083b085a20a1e3f3362
+msgid "LOC"
+msgstr ""
+
+#: ../development/specifications.rst:64 b9aba1af73ba42588efc6ca3124c3dea
+msgid "OIDC"
+msgstr ""
+
+#: ../development/specifications.rst:64 212283f1dc3b4f22a78d9f971c0af2cd
+msgid "SAML"
+msgstr ""
+
+#: ../development/specifications.rst:64 1fc558c88ce84195bb750b6c123f7a77
+msgid "CAS"
+msgstr ""
+
+#: ../development/specifications.rst:64 ../tutorial/databases.rst:32
+#: 1ceef2c6fccc4464b60a6c5337c1cd4f f3c208b0013342d4ba7fbbda4b19b2fa
+msgid "LDAP"
+msgstr ""
+
+#: ../development/specifications.rst:64 ../tutorial/databases.rst:16
+#: 7945ca3b0a7949a6a6a3a4ef16a7eab2 c74ad1da8a0842e6be8402df2dd18a31
+msgid "SQL"
+msgstr ""
+
+#: ../development/specifications.rst:66 cbf6e8ae235146018da50b0114e86455
+msgid "Canaille"
+msgstr ""
+
+#: ../development/specifications.rst:66 ../development/specifications.rst:68
+#: ../development/specifications.rst:70 ../development/specifications.rst:72
+#: ../development/specifications.rst:74 ../development/specifications.rst:76
+#: ../development/specifications.rst:78 ../development/specifications.rst:80
+#: ../development/specifications.rst:82 ../development/specifications.rst:84
+#: ../development/specifications.rst:86 ../development/specifications.rst:88
+#: 0253cd2fe1324ddb948bd137e519f25b 070fdfaadf054697b41ed39126fabe32
+#: 07997ea45fed41529c2661ca8c161c3b 08eed524f5304d86bb24c89ab0fe8807
+#: 0b399aa7b19e4bccba7876a778dfaccb 0d53b1d0888f48c0a763e67a137bfc77
+#: 1a97db98eaea41888169721b95e3a886 1e89e5fdc9c34ef288f1e0360118495b
+#: 2211ccf419b7434793ecdbd27bf26e97 2f36d181cc6f47b9aea3f96b450809eb
+#: 34abe08c17954ce1b3d4b1da442aa8f7 37d0a8ee8a2f4eafa2859641a6dc0980
+#: 38a888c2d1c549f7bb6783e081b81416 38e06b09967246ba8cb5a1ada12bb166
+#: 393612fe9a3f4bbc8bca2d652979dcb3 40df4a5e0f4c4368b0415d35adf52e4b
+#: 41fb6ced67fa417a98a80584e517571d 4215050f8a22420ba19f21acbed88833
+#: 435444825399405e94dd7183b949f5fc 4fdd524e3fbe47408fcb4f52c445e239
+#: 50f1e55288bd48f1af7433da3f1d54e6 545841fc65b94e6aa84ada7e8511bd02
+#: 56b16b5ae3ab4d7c85755a05008086ff 582fda38e83e4443bb8aa7f6685b5ab7
+#: 5ecdc4755da348cb94e4b70855703843 610cdec2e1154438a7747ffd7735b566
+#: 6933615888f646bdb1673f8f3b84ec0a 6f8d532996b643b899c7cd09bc9b6b74
+#: 70b52c3e7e844018bf36c4b751d9016a 79ba7ced015548468833c8911ef1bdb6
+#: 7eb0d20fbf7c4d65b3ba750aa3394a2e 806372aabbb14464930fe2246de1c609
+#: 8f4dd9278b6c4b1ca9d7dc1c2e566a59 94569393487a4b72bc67d0dd07cabb38
+#: 961891453d6e4fc99e9506c207a8b098 9640138d1a96401bad19b354f6fd9e7d
+#: 989d885a2efb40deb3ad0a5f78a1b6d1 9e9a94718e7648658847d06dadfa8a55
+#: a00b4327bed6464588d29d2a0ea4f673 a245e2fb5a4d438fac669915f0f671ca
+#: a29eb7d6aa8f451ba1a3513983821102 a4d6cadb72fd4b80a15f112edb394810
+#: a4d6dbf940c84ffda8daf7cce8c24415 a58510175a1045199e968b4805952548
+#: a696235fdb1a4a56a2c7eea1895ba684 a70652161ef1405cb55c5d6aa1415ae7
+#: aaf704f11a6a498eb0e005dfb7e1262f b433b602f0054b3991e0301fb2b67f33
+#: b7cbb88134a243dba4be4a5c09cf37e3 bfc4e623a0684e6598e9413702bd45c8
+#: c04b57739c564f68bda88094930d8cbc c80d88c4a6e04153a25389043fe8a712
+#: cdca6833a8524c83ad2ebc80d0e42db9 d0a52c0e66db4e55a54123132630d181
+#: d6b2a74aba90481fa6b0ce3af68a836a dabb11444a81435ea4eaa8955a10cc1e
+#: dca9af08ed434f06809a8638aad8d561 e200ca9d0acf461299c6b23179bdfe7d
+#: e2391b0c105b40f39bf01a41cc81fcae e3406ed721054ee68b01e898497c29c7
+#: e9a66b5cd10448ee891d2c05dfc75684 f4b7ba2f313f482eb179f511c435101e
+#: f81d7912337944ac8fa4c93af71266dd
+msgid "✅"
+msgstr ""
+
+#: ../development/specifications.rst:66 ../development/specifications.rst:72
+#: ../development/specifications.rst:74 67342b37165d46be81d107ecfc38aa2b
+#: 6a530e4336fc4290900ca0c39a17a53c 7c487169b35c4737ba5d1d77d47e1b18
+msgid "Python"
+msgstr ""
+
+#: ../development/specifications.rst:66 4d3726bbaeeb43a29a12235898727667
+msgid "10k"
+msgstr ""
+
+#: ../development/specifications.rst:66 ../development/specifications.rst:68
+#: ../development/specifications.rst:70 ../development/specifications.rst:72
+#: ../development/specifications.rst:74 ../development/specifications.rst:76
+#: ../development/specifications.rst:78 ../development/specifications.rst:82
+#: ../development/specifications.rst:86 ../development/specifications.rst:88
+#: 228b07d3191142a496e67819b35c600b 2d8217d4097c4ac8adac64b895ae33b2
+#: 4ef1da3636bb4c35bb7aeb289a5db48c 5436f07dce5c4c008e1066a384cf8f1a
+#: 5823d390106f476ab3690d34b49ad05f 64662a1e93e7406ebc5a108f04f43a74
+#: 6b26f147fdfa45c9aac7f6bc8add7138 741fcf98b5d946d4ba107d6b5c7f246b
+#: 83399675c77c4f41aee741a10312bd56 89cc6cda082b4025bb1d051f8fb8bbb0
+#: 8dfd4eb9b6334beaba470bc878bd06d2 a0d411055e1b466384c97be328c53777
+#: abaa385107d44946ad61332cb6fa1d12 af47b038140b4b37ac29615fe00cee92
+#: cc6b3813a41242d98e45acfbf5ca5c33 d9e1f9eb30244b29bf391b0d43e300e2
+#: e2529fb8470441b29c8b597bb73baae6 ecdbfc3910de4714bd0a77b9d6213e2a
+#: f3bd14a9b3d847018b0ddb16c031a737
+msgid "❌"
+msgstr ""
+
+#: ../development/specifications.rst:68 7f36d1d9dc62465d9eb255f75eba6398
+msgid "`Auth0`_"
+msgstr ""
+
+#: ../development/specifications.rst:68 ../development/specifications.rst:78
+#: ../development/specifications.rst:80 ../development/specifications.rst:88
+#: 0155612f74b44f23bfd8267127d92d67 0f895c01b3ba4cb6818f1fc12bccda20
+#: 32e7c6db6c1b4de59f59376cf4176f63 599a5bd1bcec4bffbd532d872ce522b3
+#: 5ff33d26530e4037b70aa52c9e155b37 9336d1dc31c0499ab54d6b4f61626c42
+#: b4fbad82bf084f42885d17fcb98a1b7f b8031c3236a9445c906feba92cc228b7
+#: e65014a6ac324aeb80c7382e9aa70fb1
+msgid "❔"
+msgstr ""
+
+#: ../development/specifications.rst:70 e0fe771a1a044537ad3204bc346e5a65
+msgid "`Authelia`_"
+msgstr ""
+
+#: ../development/specifications.rst:70 ../development/specifications.rst:82
+#: 4abb4f1183884001acc006d82f3acd68 ca8775c15a854aa29d2dbbe4d9d34279
+msgid "Go"
+msgstr ""
+
+#: ../development/specifications.rst:70 ../development/specifications.rst:82
+#: 7df3b4133c77418b895fb20d7e18d810 94e079211f604613a0ae5454e10c5a77
+msgid "50k"
+msgstr ""
+
+#: ../development/specifications.rst:72 9a9137c2f96740fa9c67fccc54a07f7c
+msgid "`Authentic2`_"
+msgstr ""
+
+#: ../development/specifications.rst:72 fd0d5d325a434c698577c90859e43eea
+msgid "65k"
+msgstr ""
+
+#: ../development/specifications.rst:74 cd260a7f246a432f957288beacf88feb
+msgid "`Authentik`_"
+msgstr ""
+
+#: ../development/specifications.rst:74 e04f9a501a4d4d19843fb02dc5d3b5d0
+msgid "55k"
+msgstr ""
+
+#: ../development/specifications.rst:76 4af38869fe9248bbb8a8356c71a0fe04
+msgid "`CAS`_"
+msgstr ""
+
+#: ../development/specifications.rst:76 ../development/specifications.rst:80
+#: ../development/specifications.rst:84 6424b80dfa3e453496467c6bf19860b6
+#: 7099b6c2f67e4a53bda8973393a4cc09 999917716d4a428abf0d2fa39c685ef0
+msgid "Java"
+msgstr ""
+
+#: ../development/specifications.rst:76 8c53682aa6de4d97af8484288f105f75
+msgid "360k"
+msgstr ""
+
+#: ../development/specifications.rst:78 f034219704a64e408fb8a35fdf7d0f9e
+msgid "`Connect2id`_"
+msgstr ""
+
+#: ../development/specifications.rst:80 28eabbd3498447c7bf1b686b9df5eec1
+msgid "`Gluu`_"
+msgstr ""
+
+#: ../development/specifications.rst:82 18179359c90c4306bd88fad4381c30ac
+msgid "`Hydra`_"
+msgstr ""
+
+#: ../development/specifications.rst:84 bba652cb185946eba8c8c783379eb27d
+msgid "`Keycloak`_"
+msgstr ""
+
+#: ../development/specifications.rst:84 34ce6f8d73014ac797e8f4038cde782f
+msgid "600k"
+msgstr ""
+
+#: ../development/specifications.rst:86 c4d8ef8479c74f0ba8014615a03b11bf
+msgid "`LemonLDAP`_"
+msgstr ""
+
+#: ../development/specifications.rst:86 8c2121ada16f4a35a2b4420dc0677205
+msgid "Perl"
+msgstr ""
+
+#: ../development/specifications.rst:86 3464b118737442fd84b78b8250b4a41e
+msgid "130k"
+msgstr ""
+
+#: ../development/specifications.rst:88 0cfdb98c1ffe40ce8cbc11407ba449f3
+msgid "`Okta`_"
+msgstr ""
+
+#: ../features.rst:9 8c6f27a19b0143e3a3f73f26be2fdad1
+msgid "Features"
+msgstr ""
+
+#: ../features.rst:11 f01fce00043842a8861a13cdea47d9bb
+msgid ""
+"Here are the different features that Canaille provides. You can enable "
+"any of those features with the :doc:`configuration "
+"<references/configuration>` to fit any :doc:`use cases <usecases>` you "
+"may meet. Check our  :ref:`roadmap <features:Roadmap>` to see what is "
+"coming next."
+msgstr ""
+
+#: ../features.rst:15 e4cb789716264a95b49940e09a0f1ed8
+msgid ""
+"Users can interact with Canaille through its :ref:`web interface "
+"<features:Web interface>` and administrators can also use its "
+":ref:`command line interface <features:Command line interface>`. Canaille"
+" can handle data stored in different :ref:`database backends "
+"<features:Backends>`."
+msgstr ""
+
+#: ../features.rst:19 8e5eabb163034aa9b0dbca7607ad12b7
+msgid "Web interface"
+msgstr ""
+
+#: ../features.rst:21 097fd226627540eda62043b78e47d2f2
+msgid ""
+"Canaille web interface can be used either in :doc:`production "
+"environments <tutorial/deployment>` or locally for development purposes."
+msgstr ""
+
+#: ../features.rst:26 ../index.rst:27 011f08b4e11e4d63840a7387215410f3
+#: a626b8cba7e647c5ac789006e1c0fe4b
+msgid "Profile management"
+msgstr ""
+
+#: ../features.rst:28 ../features.rst:217 0378e1a22862405b9b1b019b5dca8866
+#: ebc71d5ce73c45ed98c8fd852dbc6641
+msgid "Profile"
+msgstr ""
+
+#: ../features.rst:33 1ef57a6d2c9a4236bc9289554bf8ccf1
+msgid "Canaille provides an interface to manage user profiles."
+msgstr ""
+
+#: ../features.rst:35 7f324ac6e3444aa2ad9e122e8bb42efe
+msgid ""
+"The exact list of displayed fields, and whether they are :attr:`writable "
+"<canaille.core.configuration.ACLSettings.WRITE>` or :attr:`read-only "
+"<canaille.core.configuration.ACLSettings.READ>` depends on the user "
+":class:`Access Control List settings (ACL) "
+"<canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: ../features.rst:37 215efc9273a74fcbb4e2659609001c6a
+msgid ""
+"Depending on their ACL :class:`permissions "
+"<canaille.core.configuration.Permission>`, users can either be allowed to"
+" edit their own profile, edit any user profile, or do nothing at all."
+msgstr ""
+
+#: ../features.rst:42 d5487afaa4c848c8bb7c9bd24d81bb96
+msgid "Email confirmation"
+msgstr ""
+
+#: ../features.rst:44 33292ee96e984fbeb2093fa92d7d3575
+msgid ""
+"If the :attr:`email confirmation feature "
+"<canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>` is "
+"enabled, any modification or addition of a profile email will send a "
+"confirmation mail to the new address. The mail will contain a link that "
+"users will need to click on to confirm their email address."
+msgstr ""
+
+#: ../features.rst:46 ef14f974e7ff4e1296f90b0b8bc0e157
+msgid ""
+"Users with :attr:`user management permission "
+"<canaille.core.configuration.Permission.MANAGE_USERS>` can set user "
+"emails without confirmation though."
+msgstr ""
+
+#: ../features.rst:51 db83f0da80b04e81aa15c4fa11425422
+msgid "Group management"
+msgstr ""
+
+#: ../features.rst:53 ../features.rst:140 e3dc5ad68c594a948a78ab36d9d8e316
+#: fa6296be5a994444a4df23ad4ea9565c
+msgid "Group edition"
+msgstr ""
+
+#: ../features.rst:58 82b3c76e2b374f8ebdfdedab4226c025
+msgid ""
+"In a similar fashion than :ref:`profile management "
+"<feature_profile_management>` Canaille provides an interface to manage "
+"user groups."
+msgstr ""
+
+#: ../features.rst:60 dfabecd9ab43469fb3849f1e7c35daf9
+msgid ""
+"The group management is quite simple at the moment and consists in a "
+"group name and description, and the list of its members. Group membership"
+" can be use as :attr:`ACL Filter "
+"<canaille.core.configuration.ACLSettings.FILTER>` to define user "
+"permissions."
+msgstr ""
+
+#: ../features.rst:63 ../features.rst:83 ../features.rst:149
+#: ../tutorial/deployment.rst:13 38137b6c7d5c491c820ea1dfc8756344
+#: 4578f8d000284fe9b6f75541820b3496 92de75de0184485bb56f811648d3f99e
+#: c2f67f4d44754b0aa9c78c106b1ca6ae
+msgid "Todo"
+msgstr ""
+
+#: ../features.rst:64 0e2be121eec5421c936dac23c0f1a7df
+msgid ""
+"At the moment adding an user to a group can only be achieved by the user "
+"settings page, but we are :issue:`working to improve this <192>`."
+msgstr ""
+
+#: ../features.rst:66 2b5e85bbb5c54361a1b5552ac23fb86a
+msgid ""
+"Group management can be enable with a :attr:`dedicated user permission "
+"<canaille.core.configuration.Permission.MANAGE_GROUPS>`."
+msgstr ""
+
+#: ../features.rst:69 66b65881cc3a4405bbe68bb6aaf40062
+msgid ""
+"Due to limitations in the :ref:`LDAP backend <tutorial/databases:LDAP>`, "
+"groups must have at least one member. Thus it is not possible to remove "
+"the last user of a group without removing the group."
+msgstr ""
+
+#: ../features.rst:75 ../index.rst:34 ae1b08e44f984e5c9ac45e11ba77ada3
+#: ea71d79aa29e4fe39fa0d3bf14f54543
+msgid "User authentication"
+msgstr ""
+
+#: ../features.rst:77 8e696875cf8a453ea0a28a52658a661d
+msgid ""
+"Unless their account is :ref:`locked <feature_account_locking>`, users "
+"can authenticate with a login and a password."
+msgstr ""
+
+#: ../features.rst:81 fcee840ee53749b89b6d8262aa8fa8b0
+msgid ""
+"For security reasons, it won't be told to users if they try to sign in "
+"with an unexisting logging, unless explicitly :attr:`set in the "
+"configuration "
+"<canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS>`."
+msgstr ""
+
+#: ../features.rst:83 c3c47dc180fb481d8da68e9b4604e880
+msgid ""
+":ref:`LDAP backend <tutorial/databases:LDAP>` users can define which "
+":class:`user field <canaille.core.models.User>` should be used as the "
+"login (such as :attr:`~canaille.core.models.User.user_name` or "
+":attr:`~canaille.core.models.User.emails`) using a :attr:`configuration "
+"parameter "
+"<canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER>`, but "
+"other backends can only login using "
+":attr:`~canaille.core.models.User.user_name`. We are :issue:`working to "
+"improve this <196>`."
+msgstr ""
+
+#: ../features.rst:88 594eabf009f7494db771fa08fb9db18c
+msgid "User registration"
+msgstr ""
+
+#: ../features.rst:90 2f550e9df3914b9082e3826b0e5a810e
+msgid ""
+"Users can create accounts on Canaille if the feature :attr:`registration "
+"feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` "
+"is enabled. They will be able to fill a registration form with the fields"
+" detailed in the default :class:`ACL settings "
+"<canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: ../features.rst:92 2f4667bbe5da4680b68ab9f03422fa9a
+msgid ""
+"If :attr:`email confirmation "
+"<canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>` is also "
+"enabled, users will be sent a confirmation link to their email address, "
+"on which they will need to click in order to finalize their registration."
+msgstr ""
+
+#: ../features.rst:97 ../features.rst:99 5540b138288a46928a7e15b8cd620fce
+#: df01264bb889437e823a16dc82e5f041
+msgid "User invitation"
+msgstr ""
+
+#: ../features.rst:104 ba8f14356d2f47e8a8c4f5770706f033
+msgid ""
+"If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
+"configured, users with :attr:`user management permission "
+"<canaille.core.configuration.Permission.MANAGE_USERS>` can create an "
+"invitation link for one user."
+msgstr ""
+
+#: ../features.rst:106 15b51c64dd944a64ad31b262dcbee7f1
+msgid ""
+"The link goes to a registration form, even if regular :ref:`user "
+"registration <feature_user_registration>` is disabled."
+msgstr ""
+
+#: ../features.rst:108 e315be38469c4f67a7e34b66d8528ace
+msgid "It can be automatically sent by email to the new user."
+msgstr ""
+
+#: ../features.rst:113 622f876f79ee44d2a2d17656d798701c
+msgid "Account locking"
+msgstr ""
+
+#: ../features.rst:115 6cbed0d1e1c1450c97c3e29b0ce6fe4c
+msgid ""
+"If Canaille is plugged to a :ref:`backend <features:Backends>` that "
+"supports it, user accounts can be locked by users with :attr:`user "
+"management permission "
+"<canaille.core.configuration.Permission.MANAGE_USERS>`. The lock date can"
+" be set instantly or at a given date in the future."
+msgstr ""
+
+#: ../features.rst:118 e04a870ae8a94a8c8bf374ccde99aef5
+msgid "At the moment a user account is locked:"
+msgstr ""
+
+#: ../features.rst:120 c5860585c6584cd395cdd61d21bdbdac
+msgid "their open sessions will be closed;"
+msgstr ""
+
+#: ../features.rst:121 41f560bb4b5645b89f131bc3e98f5be2
+msgid "they won't be able to sign in again;"
+msgstr ""
+
+#: ../features.rst:122 c0f7c52078d24a1dad56ea0129a363e0
+msgid "no new OIDC token will be issued;"
+msgstr ""
+
+#: ../features.rst:124 3fa952b37fa9400b886a8c28ced2c511
+msgid ""
+"User accounts must be manually unlocked by an administrator for the users"
+" to regain access to those actions."
+msgstr ""
+
+#: ../features.rst:129 29c5e463d73c4fcaa0fa9a7545c2d002
+msgid "Account deletion"
+msgstr ""
+
+#: ../features.rst:131 7333ea043bdb40c59b9ea021e9dd93c8
+msgid ""
+"Users with the :attr:`account deletion permission "
+"<canaille.core.configuration.Permission.DELETE_ACCOUNT>` are allowed to "
+"delete their own account."
+msgstr ""
+
+#: ../features.rst:133 7abe455f5058498d869a4d1126722af9
+msgid ""
+"Users that also have the :attr:`user management permission "
+"<canaille.core.configuration.Permission.MANAGE_USERS>` are also allowed "
+"to delete other users accounts."
+msgstr ""
+
+#: ../features.rst:138 c623f83c5d3b4188a139dd7fa6afb522
+msgid "Password recovery"
+msgstr ""
+
+#: ../features.rst:145 9e5c9c5910e64abd9053787f7af4ffbe
+msgid ""
+"If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
+"configured and the :attr:`password recovery feature "
+"<canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` is "
+"enabled, then users can ask for a password reset email if they cannot "
+"remember their password."
+msgstr ""
+
+#: ../features.rst:147 b04d879c3804492ca480b798aea8206b
+msgid ""
+"The email will be sent to the email addresses filled in their profile, "
+"and will contain a link that will allow them to choose a new password. ."
+msgstr ""
+
+#: ../features.rst:151 2bfa064b1d9f4f19bc06e9f3b4a49434
+msgid "Check that password recovery is disabled on locked accounts."
+msgstr ""
+
+#: ../features.rst:156 749c0cd6b3e447728e0b5a7a32ecd5ae
+msgid "Password reset"
+msgstr ""
+
+#: ../features.rst:158 161c7f1759084b0fae25682fb68ee789
+msgid ""
+"If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
+"configured, :attr:`user management permission "
+"<canaille.core.configuration.Permission.MANAGE_USERS>` can send password "
+"reset mails to users. The mails contains a link that allow users to "
+"choose a new password without having to retrieve the old one."
+msgstr ""
+
+#: ../features.rst:164 b34780ff9a1d42408988b09c45e73790
+msgid "Password initialization"
+msgstr ""
+
+#: ../features.rst:166 184926167dc149538673c832e5a6e8d9
+msgid ""
+"User :attr:`passwords <canaille.core.models.User.password>` are optional."
+" If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
+"configured, when users with no password attempt to sign in, they are "
+"invited to click a button that will send them a password initialization "
+"mail. The mail contains a link that leads to a form that allows users to "
+"choose a password."
+msgstr ""
+
+#: ../features.rst:173 cda3572a37f547b2a399d22faceb6139
+msgid "Password compromission check"
+msgstr ""
+
+#: ../features.rst:175 d4d014c8ebde4af2adec05ee77092d62
+msgid ""
+"If :attr:`password compromission check feature "
+"<canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK>`"
+" is enabled, Canaille will check for password compromise on HIBP "
+"(https://haveibeenpwned.com/) every time a new password is register. You "
+"will need to set an :attr:`admin email "
+"<canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`."
+msgstr ""
+
+#: ../features.rst:180 e9d336f4732f46deb4b3d7c10bf0ecdc
+msgid "Internationalization"
+msgstr ""
+
+#: ../features.rst:182 d8f73db0cc4541f187532866889f1bbc
+msgid "Translation state"
+msgstr ""
+
+#: ../features.rst:187 6617c11399334a92a4ec4c23f1960786
+msgid ""
+"Canaile will display in your :attr:`preferred language "
+"<canaille.core.models.User.preferred_language>` if available, or your "
+"browser language if available (and if it is not you can :ref:`help us "
+"with the translation <development/contributing:Code translation>`). If "
+"you prefer, you can also :attr:`force a language "
+"<canaille.core.configuration.CoreSettings.FAVICON>` for every users."
+msgstr ""
+
+#: ../features.rst:193 ac391969b7934df6946f47c3531db86c
+msgid "Lightweight"
+msgstr ""
+
+#: ../features.rst:195 3d8eedb8a1174eef906a45ac046a256e
+msgid ""
+"The web interface is lightweight, so everything should load quickly. "
+"There is a few Javascript here and there to smooth the experience, but no"
+" Javascript at all is needed to use Canaille."
+msgstr ""
+
+#: ../features.rst:199 bec04e5daaa842cabc697ea10dd76741
+msgid "Customizable"
+msgstr ""
+
+#: ../features.rst:201 9faca91f5eb54469a96e1addf8e1ad53
+msgid ""
+"The default theme should be good enough for most usages. It has a dark "
+"theme, display well on mobile, and let you choose a :attr:`logo "
+"<canaille.core.configuration.CoreSettings.LOGO>` and a :attr:`favicon "
+"<canaille.core.configuration.CoreSettings.FAVICON>`."
+msgstr ""
+
+#: ../features.rst:204 47e5ba6df7b14fbcb2a228efc3977510
+msgid ""
+"If you need more you can also use a :attr:`custom theme "
+"<canaille.core.configuration.CoreSettings.THEME>`."
+msgstr ""
+
+#: ../features.rst:211 8ebcdacd997a4f6b84d5a94ff12b375b
+msgid ""
+"Canaille implements a :ref:`subset<development/specifications:State of "
+"the specs in Canaille>` of the OAuth2/OpenID Connect specifications . "
+"This allows to provide :abbr:`SSO (Single Sign-On)` and :abbr:`SLO "
+"(Single Log-On)` to applications plugged to Canaille."
+msgstr ""
+
+#: ../features.rst:215 f5131ae01237415893ad7b82cad06eee
+msgid "Consent management"
+msgstr ""
+
+#: ../features.rst:223 5c1e30229f8342cca14a719154f13663
+msgid ""
+"Users can give their consent to application requesting access to their "
+"personal information, and then revoke those consent at their will."
+msgstr ""
+
+#: ../features.rst:227 49cf0197632946e0b9075c7e2fdbd360
+msgid "Application management"
+msgstr ""
+
+#: ../features.rst:229 8e68f1b6ed3d46d5aba2963cc622a2a4
+msgid ""
+"Users with the right :attr:`permission "
+"<canaille.core.configuration.Permission.MANAGE_OIDC>` can manager OIDC "
+"clients through the web interface."
+msgstr ""
+
+#: ../features.rst:231 0592389bab674f07a0841c1db605317e
+msgid ""
+"In some cases, it might be useful to avoid the consent page for some "
+"trusted applications, so clients can be pre-consented."
+msgstr ""
+
+#: ../features.rst:234 43de9225e8e64315852fa3be54e4e1ae
+msgid "Discovery"
+msgstr ""
+
+#: ../features.rst:236 afe8b4de53b149768ed3844fb31bfb5d
+msgid ""
+"Canaille implements the :doc:`Discovery specifications "
+"<development/specifications>` so most of the applications plugged to "
+"Canaille can auto-configure themselves."
+msgstr ""
+
+#: ../features.rst:239 8fd3c2f8a6b34c4bb1856c7f7b2456aa
+msgid "Dynamic Client Registration"
+msgstr ""
+
+#: ../features.rst:241 d654b7ab18ee4b248164694dccb45ee9
+msgid ""
+"Canaille implements the :doc:`Dynamic Client Registration specifications "
+"<development/specifications>`, so when the :attr:`feature is enabled "
+"<canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN>`,"
+" clients can register themselves on Canaille without an administrator "
+"intervention."
+msgstr ""
+
+#: ../features.rst:246 ../references/commands.rst:2
+#: 133164d3d2ba4f248487892419a54e0c 5bea804e7c634bfd848fa6b3fd6595b1
+msgid "Command Line Interface"
+msgstr ""
+
+#: ../features.rst:248 e45d846ca75e48c58dfff6446ceef41b
+msgid ""
+"Canaille comes with a :abbr:`CLI (Command Line Interface)` to help "
+"administrators in hosting and management."
+msgstr ""
+
+#: ../features.rst:250 6df8b5ff51934b40b28b0eb330ca006a
+msgid ""
+"There are tools to :ref:`check your configuration <cli_check>` or to "
+":ref:`install missing parts <cli_install>`. You can use the CLI to "
+":ref:`create <cli_create>`, :ref:`read <cli_get>`, :ref:`update "
+"<cli_set>` and :ref:`delete <cli_delete>` models such as :class:`users "
+"<canaille.core.models.User>`, :class:`groups "
+"<canaille.core.models.Group>` or  :class:`OIDC clients "
+"<canaille.oidc.basemodels.Client>`."
+msgstr ""
+
+#: ../features.rst:253 9530a59b347148dc878bbf85fa3f1cbf
+msgid ""
+"There are also tools to :ref:`fill your database <cli_populate>` with "
+"random objects, for tests purpose for instance."
+msgstr ""
+
+#: ../features.rst:260 1efac35545954eb68349bded2786425b
+msgid ""
+"Canaille can handle data from the most :ref:`common SQL databases "
+"<tutorial/databases:SQL>` such as PostgreSQL, MariaDB or SQLite, as well "
+"as :ref:`OpenLDAP <tutorial/databases:LDAP>`. It also comes with a no-"
+"dependency :ref:`in-memory database <tutorial/databases:Memory>` that can"
+" be used in unit tests suites."
+msgstr ""
+
+#: ../features.rst:264 3975534728f14201b516fc1a9b900f60
+msgid "Miscellaneous"
+msgstr ""
+
+#: ../features.rst:269 14fb617a136148219dd7eba89d44ba2b
+msgid "Logging"
+msgstr ""
+
+#: ../features.rst:271 0369d49b2bed40719bebba61c5942191
+msgid ""
+"Canaille writes :attr:`logs "
+"<canaille.core.configuration.CoreSettings.LOGGING>` for every important "
+"event happening, to help administrators understand what is going on and "
+"debug funky situations."
+msgstr ""
+
+#: ../features.rst:273 82ebb6275eaa49d493817762a000414c
+msgid ""
+"The following security events are logged with the tag [SECURITY] for easy"
+" retrieval :"
+msgstr ""
+
+#: ../features.rst:275 cdf706a41edf42e69c1822865f0f07d7
+msgid "Authentication attempt"
+msgstr ""
+
+#: ../features.rst:276 9a83b47ae2bd458fb963330e0d0d66c2
+msgid "Password update"
+msgstr ""
+
+#: ../features.rst:277 38789ff5c505446c879e10dd6cd1a454
+msgid "Email update"
+msgstr ""
+
+#: ../features.rst:278 1f7d74cb372340f5acba36ef1401b163
+msgid "Forgotten password mail sent to user"
+msgstr ""
+
+#: ../features.rst:279 b2734f0dd98e436484f4c1ca073bee72
+msgid "Token emission"
+msgstr ""
+
+#: ../features.rst:280 2fc4d93991a947c884c2ea88df6cc198
+msgid "Token refresh"
+msgstr ""
+
+#: ../features.rst:281 d4a0043ab3ea4f40934ed11bbc3bc529
+msgid "Token revokation"
+msgstr ""
+
+#: ../features.rst:282 e3eb71ac04be4200bde8d2208314b110
+msgid "New consent given for client application"
+msgstr ""
+
+#: ../features.rst:283 e0b4b7bc1b8d491b8c9e0a318523faf6
+msgid "Consent revokation"
+msgstr ""
+
+#: ../features.rst:288 fc6769d46bd24576b571018b77c433c9
+msgid "A tool for your development and tests"
+msgstr ""
+
+#: ../features.rst:290 5880d3d1142d427d94c6734b8281336b
+msgid ""
+"Thanks to its lightweight :ref:`in-memory database "
+"<tutorial/databases:Memory>` and its curated :ref:`dependency list "
+"<tutorial/install:Get the code>`, Canaille can be used in the unit test "
+"suite of your application, so you can check how it behaves against a real"
+" world OpenID Connect server. If you work with python you might want to "
+"check :doc:`pytest-iam:index`."
+msgstr ""
+
+#: ../features.rst:292 6e7ddfd7b794434d8fc6c4d42e9f26f1
+msgid ""
+"It can also being launched in your development environment, if you find "
+"that launching a Keycloak in a Docker container is too heavy for your "
+"little web application."
+msgstr ""
+
+#: ../features.rst:294 50148b863e2e4e308ee5fb3fd687cf48
+msgid ""
+"It also fits well in continuous integration scenarios. Thanks to its "
+":ref:`CLI <feature_cli>`, you can prepare data in Canaille, let your "
+"application interact with it, and then check the side effects."
+msgstr ""
+
+#: ../features.rst:297 0274ee651c5f490a92895314cc7cf60a
+msgid "Roadmap"
+msgstr ""
+
+#: ../features.rst:300 aa5ee9c8a58a4b6aa10835ff6dacd0c1
+msgid "Bêta version"
+msgstr ""
+
+#: ../features.rst:302 b5f3738cf721475890fb246b0eacdf84
+msgid ""
+"To go out of the current Alpha version we want to achieve the following "
+"tasks:"
+msgstr ""
+
+#: ../features.rst:304 8ff349dd7a4e40b0a89605752d03bf0a
+msgid ":issue:`Configuration validation using pydantic <138>`"
+msgstr ""
+
+#: ../features.rst:307 13f37196fd344e078d2054f1d29bed6f
+msgid "Stable version"
+msgstr ""
+
+#: ../features.rst:309 0204098590904172a9fa676986f8e0f9
+msgid ""
+"Before we push Canaille in stable version we want to achieve the "
+"following tasks:"
+msgstr ""
+
+#: ../features.rst:312 0f1ac7382abb4404b122e637924dc261
+msgid "Security"
+msgstr ""
+
+#: ../features.rst:314 48d9a102c5b146d09aa2b6c10ff73710
+msgid ":issue:`Password hashing configuration <175>`"
+msgstr ""
+
+#: ../features.rst:315 cd5537e26bfd48769d3c1f5eef4cc658
+msgid ":issue:`Authentication logging policy <177>`"
+msgstr ""
+
+#: ../features.rst:316 9e9ac7840ae34e08946b89db09c6b4a3
+msgid ":issue:`Intruder lockout <173>`"
+msgstr ""
+
+#: ../features.rst:317 1d4d9a14d3e247fe89f095eb9e17b88f
+msgid ":issue:`Password expiry policy <176>`"
+msgstr ""
+
+#: ../features.rst:318 016578f2cb3942bfaded36aa36d92d19
+msgid ":issue:`Multi-factor authentication: Email <47>`"
+msgstr ""
+
+#: ../features.rst:319 31407f025f9040d2be345b0b4f0d04c4
+msgid ":issue:`Multi-factor authentication: SMS <47>`"
+msgstr ""
+
+#: ../features.rst:320 3080c691cd6a4e988b3a0c45c383f08e
+msgid ":issue:`Multi-factor authentication: OTP <47>`"
+msgstr ""
+
+#: ../features.rst:323 4cf1cd4b94fc4c809e874d7c1e1a92ba
+msgid "Packaging"
+msgstr ""
+
+#: ../features.rst:325 60e7a1ce1d2a4a3497d58ddb5597cabe
+msgid ":issue:`Nix package <190>`"
+msgstr ""
+
+#: ../features.rst:326 2e0a824bc6c541ff8c9e5933a853e846
+msgid ":issue:`Docker / OCI package <59>`"
+msgstr ""
+
+#: ../features.rst:329 d450eec0b52144e799df185beb731b0c
+msgid "And beyond"
+msgstr ""
+
+#: ../features.rst:331 5b12f1e1eebc46a19e869d70adce3e2b
+msgid ":issue:`OpenID Connect certification <182>`"
+msgstr ""
+
+#: ../features.rst:332 72f4ad7970e84bd9bb1967004c12d872
+msgid ":issue:`SCIM support <116>`"
+msgstr ""
+
+#: ../index.rst:15 9d15ef3adb8b43269f40f89704162113
+msgid "Lightweight Identity and Authorization Management"
+msgstr "Serveur d’identité et d'autorisations ultra-léger"
+
+#: ../index.rst:19 63555539d7ac4fd5be29f7ba12d17380
+msgid ""
+"**Canaille** is a French word meaning *rascal*. It is roughly pronounced "
+"**Can I?**, as in *Can I access your data?* Canaille is a lightweight "
+"identity and authorization management software. It aims to be very light,"
+" simple to install and simple to maintain. Its main features are :"
+msgstr ""
+
+#: ../index.rst:31 482f66603f0d4d13967a03fc501a0a09
+msgid "User profile and groups management, Basic permissions"
+msgstr ""
+
+#: ../index.rst:38 a9ad6aad7cfa4964b08dcdcb5dca6e1f
+msgid ""
+"Authentication, registration, email confirmation, \"I forgot my "
+"password\" emails"
+msgstr ""
+
+#: ../index.rst:40 30091c4589b2418eb1c53d59451c665e
+msgid "SSO"
+msgstr ""
+
+#: ../index.rst:44 31751956680949df87d95d3ab9ec853a
+msgid "OpenID Connect identity provider"
+msgstr ""
+
+#: ../index.rst:46 7087c013714547e188dbc5914099ae87
+msgid "Multi-database support"
+msgstr ""
+
+#: ../index.rst:50 f15cd7b2a3f94e528e072166239a594a
+msgid "PostgreSQL, Mariadb and OpenLDAP first-class citizenship"
+msgstr ""
+
+#: ../index.rst:52 28db56c2471f4c7fa5a662aa213554df
+msgid "Customization"
+msgstr ""
+
+#: ../index.rst:56 018795356807421c9a9b32532bb82f54
+msgid "Put Canaille at yours colors by choosing a logo or use a custom theme!"
+msgstr ""
+
+#: ../index.rst:58 a0213d640faf44c0b73a7ad5a4eae0ba
+msgid "Developers friendliness"
+msgstr ""
+
+#: ../index.rst:62 d5b04a5b5a0347b2b0f56cf042f08caa
+msgid ""
+"Canaille can easily fit in your unit tests suite or in your Continuous "
+"Integration."
+msgstr ""
+
+#: ../index.rst:66 71700aadcf074eeea1dc33b6fa0a059f
+msgid ":doc:`Full feature list <features>`"
+msgstr ""
+
+#: ../references/commands.rst:4 d805088752104171bfc1a0f9e85eaa9b
+msgid "Canaille provide several commands to help administrator manage their data."
+msgstr ""
+
+#: ../references/commands.rst:6 87f700343e984d5e8cb49e738ae4044e
+msgid ""
+"Generally, some configuration has to be loaded by `Canaille`. This can be"
+" achieved by :ref:`configuration loading "
+"method<references/configuration:Load the configuration>` available, but "
+"most of the time a ``CONFIG`` environment variable is used. For the sake "
+"of readability, it is omitted in the following examples."
+msgstr ""
+
+#: ../../canaille check:1 fbc424f5325d4a19a935352888f29d01
+msgid "Test the configuration file."
+msgstr ""
+
+#: ../../canaille 418ba385398646fd816f185a67ce8bd5 check:1
+msgid ""
+"Attempt to reach the database and the SMTP server with the provided "
+"credentials."
+msgstr ""
+
+#: ../../canaille clean:1 e90ccaeb4b6944c5ab88355200ae294f
+msgid "Remove expired tokens and authorization codes."
+msgstr ""
+
+#: ../../canaille 2ec4bd237b8948aebcdf6c6bce095ab7 install:1
+msgid "Installs canaille elements from the configuration."
+msgstr ""
+
+#: ../../canaille a095355bc54247cb818c953fb63169c4 install:1
+msgid ""
+"For instance, depending on the configuration, this can generate OIDC keys"
+" or install LDAP schemas."
+msgstr ""
+
+#: ../../canaille a1d4993f2c76448c8dcddcc82f39e525 populate:1
+msgid "Populate the database with generated random data."
+msgstr ""
+
+#: ../references/commands.rst 0563fd9db59544e08c7c7ab98765f774
+#: 103d0ae97c71407b885b9a27c34ef565 1c203a2874544ca1adef912f2797495b
+#: 1e9bb0588956405b84291437b0ebd836 1f2230ba476f47a3b62222e86094ea81
+#: 335d1c72d63f40059afc88d0c509cd36 40493b4962c142629e6b898af6718ec1
+#: 4e6beac30d774a23bff25e656347334d 5aec26e8d4934e499f03163d0a8428a9
+#: 6a61086965b147438896840aea772f7c 7a58ba1f625346689fbc48b3fd5b738c
+#: 8b7038ef01b44dd4b5366c2779e68409 8bc6ee432f204f69b5353ed9175e843e
+#: 8d9591d2bbf9466abbdd0ebc2ee1ff0e a978e7c83a7e4b4ea8e3d82feef85196
+#: ae2b21fd71364723884392241f3f7d5e cc652d48991e4c229f22106de917297d
+#: d993ea825ac64ddea72e50b37b04a93f fa4e54d423b048b5aca69258f18b6f5f
+#: fc173744533e4dc189dc8f71cee2498e
+msgid "Options"
+msgstr ""
+
+#: ../../canaille db62c80da08a4081a31776270318923b populate:1
+msgid "Number of items to create"
+msgstr ""
+
+#: ../../canaille b60de313ad704984b3690146652d0fc5 groups:1 populate
+msgid "Populate the database with generated random groups."
+msgstr ""
+
+#: ../../canaille cd7a8c9df804436db29c41ef21a53088 groups:1 populate
+msgid "The maximum number of users that will randomly be affected in the group"
+msgstr ""
+
+#: ../../canaille 44049a2cdda740ce9f01ec0442ab14f3 populate users:1
+msgid "Populate the database with generated random users."
+msgstr ""
+
+#: ../../canaille 879cf6dbaeef4ece86ce21c77319c4a5 get:1
+msgid "Read information about models."
+msgstr ""
+
+#: ../../canaille 1f0a65cef38d4eb88baf5b79eef1f673 get:1
+msgid "Options can be used to filter models::"
+msgstr ""
+
+#: ../../canaille ab391b963923488d948397502e480ad4 get:1
+msgid "Displays the matching models in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille 9002873a53184c2a98b41e33688149b1 authorizationcode:1 get
+msgid "Search for authorizationcodes and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille 437b69d46c7f4695ac925220f7a371f1 client:1 get
+msgid "Search for clients and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille 1c763bdcba4f43cea24ca9aacfbff3e0 consent:1 get
+msgid "Search for consents and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille 17df630c95b04c0886ccaf36c9193b21 get group:1
+msgid "Search for groups and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille 7f17720ff40f42dd885d65fe9e8f59e2 get token:1
+msgid "Search for tokens and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille a151d938028c4003bebb5fcbb52a27c7 get user:1
+msgid "Search for users and display the matching models as JSON."
+msgstr ""
+
+#: ../../canaille 91aadcb20b32470a88032277831ae077 set:1
+msgid "Update models."
+msgstr ""
+
+#: ../../canaille 90e11794fa3d4989afb3130e7cf30618 set:1
+msgid "The command takes an model ID and edit one or several attributes::"
+msgstr ""
+
+#: ../../canaille 4cc584efd3974a3ea8b30293c3db2d18 set:1
+msgid "Displays the edited model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille 7a6ee7808f7a422093783368327042d3 authorizationcode:1 set
+msgid ""
+"Update a authorizationcode and display the edited model in JSON format in"
+" the standard output."
+msgstr ""
+
+#: ../../canaille 354ef9ea4a5341e3b874b16e532aef63
+#: 8aa17f992f704160aa8601cdd8237d98 authorizationcode:1 delete set
+msgid "IDENTIFIER should be a authorizationcode id or authorization_code_id"
+msgstr ""
+
+#: ../references/commands.rst 00feef5ec9de4e849cce7e1c0f50dd1f
+#: 1735973cfa0e459fae305d56a9643932 22496b37c86f4aedb422d18935a6fc92
+#: 432eab1fd2864846893937d0c2da8094 4442ffe83e874250af0d8f80c973723f
+#: 63ffd951c7cc4d618683b6d052abf6ec 700a076da8ad43a4836c710f7eda7935
+#: b72b40bd26424adf9f3665c82fb585f0 bb2354e8862a4ffb98313a479813e8e9
+#: d637f778575549a7b67f5b2d0877ab72 d8609a806ca041808309413fb078353f
+#: f474780c65a44b5487f94be32b580bcc
+msgid "Arguments"
+msgstr ""
+
+#: ../../canaille 2b83caf4ac07464fabf44420ccf70d73
+#: 5db4ae73eb0048508019d5db38ea43ba 5ff4a396400b40458ba83bf83f979e4c
+#: 684cf33f22ae44e8a7b20d277ce4c954 7cdb8114feb144ebbba85e051a84deff
+#: 9eaf4d054b6a4d6691a92ba0db22f3c6 authorizationcode:1
+#: c81126aae20544fc836702561e7190da ca2baf5dcc224c9098355799ea5242a6 client:1
+#: consent:1 delete e0fd1547c43348d3a0f11cd017ae3006
+#: e4c2174472f5469c9135698f12ea9f2c f533de7094834bcfa36dbb888a270fc2
+#: f9d4b3c0c9ed410ebb6616ecc417e5db group:1 set token:1 user:1
+msgid "Required argument"
+msgstr ""
+
+#: ../../canaille client:1 fb8df7363a174f388b11fd17dc83a482 set
+msgid ""
+"Update a client and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 69f381cf8ac749f8a128d37a776db296
+#: 9d6d48ba12eb45d9add164c653d20a26 client:1 delete set
+msgid "IDENTIFIER should be a client id or client_id"
+msgstr ""
+
+#: ../../canaille 066941918e6b49cda8d88d3ccb4e1776 consent:1 set
+msgid ""
+"Update a consent and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 3e13ccf6b92b4142a78bdce4c662a8dd
+#: 6303724f2f8642fc8dbd189856fc9b6e consent:1 delete set
+msgid "IDENTIFIER should be a consent id or consent_id"
+msgstr ""
+
+#: ../../canaille 6da3f9d8b33a4cd192d9217aa5e6922f group:1 set
+msgid ""
+"Update a group and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 1336819c19a94300bd98f00f3f785406
+#: 14fc59d743fe4246b7de3fd9193db735 delete group:1 set
+msgid "IDENTIFIER should be a group id or display_name"
+msgstr ""
+
+#: ../../canaille ae3f677991f44768a2a4006bfcc18484 set token:1
+msgid ""
+"Update a token and display the edited model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 5c644649d9da4bb589d8ad6556addf45
+#: 7ebbe0cb72c4420682f872fcfe0cdafe delete set token:1
+msgid "IDENTIFIER should be a token id or token_id"
+msgstr ""
+
+#: ../../canaille b59ea0f88c9547318c3d2862564e4867 set user:1
+msgid ""
+"Update a user and display the edited model in JSON format in the standard"
+" output."
+msgstr ""
+
+#: ../../canaille 18c9c485c1c441198da36260f364b52f delete
+#: e4e3a473feaf43a583f7e8bba4f6183d set user:1
+msgid "IDENTIFIER should be a user id or user_name"
+msgstr ""
+
+#: ../../canaille 605a14edddd54170be0c24a33f1021ac create:1
+msgid "Create models."
+msgstr ""
+
+#: ../../canaille b881b7a48af54c1b885442b7bed6cc75 create:1
+msgid "The model attributes can be passed as command options::"
+msgstr ""
+
+#: ../../canaille 07b0fbb5f9fb48d9ac0ad7cfd5b8e3bc create:1
+msgid "Displays the created model in JSON format in the standard output."
+msgstr ""
+
+#: ../../canaille aec8c03feca04b74ab37ec107629a8b3 authorizationcode:1 create
+msgid ""
+"Create a new authorizationcode and display the created model in JSON "
+"format in the standard output."
+msgstr ""
+
+#: ../../canaille c2e852f32065476bb808ea03d20e01ad client:1 create
+msgid ""
+"Create a new client and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille c1705c7f1e144847bd822b97fca76d28 consent:1 create
+msgid ""
+"Create a new consent and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 0e19ea47c231433694b2b78701b94ee1 create group:1
+msgid ""
+"Create a new group and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 843835b181304f8d9c304fff21970e8d create token:1
+msgid ""
+"Create a new token and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 8ef737ce1c904c118018fc2fd5c1ff99 create user:1
+msgid ""
+"Create a new user and display the created model in JSON format in the "
+"standard output."
+msgstr ""
+
+#: ../../canaille 0c2fb48446e0467f871e7394498efacd delete:1
+msgid "Delete models."
+msgstr ""
+
+#: ../../canaille 1243c16c71984aeb90044d9ac25900b4 delete:1
+msgid "The command takes a model ID and deletes it::"
+msgstr ""
+
+#: ../../canaille authorizationcode:1 delete f782ac2a36364390be2c7f8575d9cd5d
+msgid "Delete a authorizationcode."
+msgstr ""
+
+#: ../../canaille client:1 d52c590dbdd641fab6c315cbd5a52f4a delete
+msgid "Delete a client."
+msgstr ""
+
+#: ../../canaille 09754540ffbf4f55a9db2e06dcd7fa6e consent:1 delete
+msgid "Delete a consent."
+msgstr ""
+
+#: ../../canaille delete ff86522775314885af2377fe45c0d8f8 group:1
+msgid "Delete a group."
+msgstr ""
+
+#: ../../canaille 0cbb643004a24e0596e7dcc5b5edd1c3 delete token:1
+msgid "Delete a token."
+msgstr ""
+
+#: ../../canaille 76b2297ab6e3462091b01e2fe8a212bc delete user:1
+msgid "Delete a user."
+msgstr ""
+
+#: ../references/configuration.rst:2 4717f2a001574ece8191c8c20b91924e
+msgid "Configuration"
+msgstr ""
+
+#: ../references/configuration.rst:5 f480a4340d5a4430bc462e3b410e085d
+msgid "Load the configuration"
+msgstr ""
+
+#: ../references/configuration.rst:7 a67085c57c054b57a5b9aef9551b7628
+msgid ""
+"Canaille can be configured either by a environment variables, environment"
+" file, or by a configuration file."
+msgstr ""
+
+#: ../references/configuration.rst:10 130165a77f484778a09072c8aaf83ab9
+msgid "Configuration file"
+msgstr ""
+
+#: ../references/configuration.rst:12 536370e596ec44e4ab0a16fda5cea46a
+msgid ""
+"The configuration can be written in `toml` configuration file which path "
+"is passed in the :envvar:`CONFIG` environment variable."
+msgstr ""
+
+#: ../references/configuration.rst:14 ../references/configuration.rst:85
+#: ../tutorial/databases.rst:23 ../tutorial/databases.rst:37
+#: 16d4d4bf27a747fa863261d22958587a 5046e4d1a38e4be6b7be652c40bbf3e2
+#: 6cdc5f8505ee4a1d8ef4d9dc30a4d899 canaille.app.configuration.RootSettings:11
+#: d61bf716b6424de7b78afa84a56b8c9a df84c415de8c410594a8894c06ad63aa of
+msgid "config.toml"
+msgstr ""
+
+#: ../references/configuration.rst:26 ad81171b6de546299da7cda72d9d81d9
+msgid ""
+"You can have a look at the :ref:`example file "
+"<references/configuration:Example file>` for inspiration."
+msgstr ""
+
+#: ../references/configuration.rst:29 bbe729efee2e425ba7bf63d0d795c024
+msgid "Environment variables"
+msgstr ""
+
+#: ../references/configuration.rst:31 78bada65e24145408401a73abde6c115
+msgid ""
+"In addition, parameters that have not been set in the configuration file "
+"can be read from environment variables. The way environment variables are"
+" parsed can be read from the `pydantic-settings documentation "
+"<https://docs.pydantic.dev/latest/concepts/pydantic_settings/#parsing-"
+"environment-variable-values>`_."
+msgstr ""
+
+#: ../references/configuration.rst:36 372d0840e9f44b6cb843873b606bf272
+msgid ""
+"For environment vars, the separator between sections and variables is a "
+"double underscore: ``__``. For instance, the ``NAME`` var in the "
+"``CANAILLE`` section shown above is ``CANAILLE__NAME``."
+msgstr ""
+
+#: ../references/configuration.rst:40 7155c45bef3148808457a02dfb189eb6
+msgid "Environment file"
+msgstr ""
+
+#: ../references/configuration.rst:42 f8483b8a71fa4402945e5de5c60a3a34
+msgid ""
+"Any environment variable can also be written in a ``.env``, and will be "
+"read if present."
+msgstr ""
+
+#: ../references/configuration.rst:44 3ff74982d2c149a488ea79beb76b9016
+msgid ".env"
+msgstr ""
+
+#: ../references/configuration.rst:62 6f339b9fcda24614a4c9d464fbe167cc
+msgid "Parameters"
+msgstr ""
+
+#: ca3607a39ced4aa99c020fdbd129b60a canaille.app.configuration.RootSettings:1
+#: of
+msgid ""
+"The top-level namespace contains holds the configuration settings "
+"unrelated to Canaille."
+msgstr ""
+
+#: b4cbd14086fa4ff9937bf36b1d166ccb canaille.app.configuration.RootSettings:4
+#: of
+msgid "The configuration paramateres from the following libraries can be used:"
+msgstr ""
+
+#: 62dd8b4eb7e247f3921d292c36acf20a canaille.app.configuration.RootSettings:6
+#: of
+msgid ":doc:`Flask <flask:config>`"
+msgstr ""
+
+#: a3c625fea06d4980b69eeb9c9fd37bea canaille.app.configuration.RootSettings:7
+#: of
+msgid ":doc:`Flask-WTF <flask-wtf:config>`"
+msgstr ""
+
+#: 4e5f69ad21fa48d99a45d294bdb27006 canaille.app.configuration.RootSettings:8
+#: of
+msgid ":doc:`Flask-Babel <flask-babel:index>`"
+msgstr ""
+
+#: 0d5858c06dca4739bfba193b2a9c47c5 canaille.app.configuration.RootSettings:9
+#: of
+msgid ":doc:`Authlib <authlib:flask/2/authorization-server>`"
+msgstr ""
+
+#: ../../docstring ba3addc71f704dc4a647f7d04b43a433
+#: canaille.app.configuration.RootSettings.DEBUG:1 of
+msgid "The Flask :external:py:data:`DEBUG` configuration setting."
+msgstr ""
+
+#: ../../docstring 021751b062154dd89a16d10a064885e7
+#: canaille.app.configuration.RootSettings.DEBUG:3 of
+msgid "This enables debug options."
+msgstr ""
+
+#: ../../docstring 8246771c26b548bd88184af9ab15b474
+#: canaille.app.configuration.RootSettings.DEBUG:7 of
+msgid ""
+"This is useful for development but should be absolutely avoided in "
+"production environments."
+msgstr ""
+
+#: ../../docstring 14ca7557e08646bc8f21e743f9fdf471
+#: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:1 of
+msgid "The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration setting."
+msgstr ""
+
+#: ../../docstring
+#: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:4
+#: fb085bd345a64cd3ab76141e055c1229 of
+msgid "This sets the url scheme by which canaille will be served."
+msgstr ""
+
+#: ../../docstring 2413329e95cd45f28f8edf63e7e3578e
+#: canaille.app.configuration.RootSettings.SECRET_KEY:1 of
+msgid "The Flask :external:py:data:`SECRET_KEY` configuration setting."
+msgstr ""
+
+#: ../../docstring 8b329b5688944ab68544c7b072fa2846
+#: canaille.app.configuration.RootSettings.SECRET_KEY:3 of
+msgid "You MUST change this."
+msgstr ""
+
+#: ../../docstring canaille.app.configuration.RootSettings.SERVER_NAME:1
+#: f951ac0955154ad28b6871274226716b of
+msgid "The Flask :external:py:data:`SERVER_NAME` configuration setting."
+msgstr ""
+
+#: ../../docstring b085d221f26d47909f2cbc174e5cab2b
+#: canaille.app.configuration.RootSettings.SERVER_NAME:3 of
+msgid "This sets domain name on which canaille will be served."
+msgstr ""
+
+#: 0c13d8e65e484aca84620ac088f6c1e6 canaille.core.configuration.CoreSettings:1
+#: of
+msgid "The settings from the ``CANAILLE`` namespace."
+msgstr ""
+
+#: 1d62851d1e184a9aaf4fc175018b665e canaille.core.configuration.CoreSettings:3
+#: of
+msgid ""
+"Those are all the configuration parameters that controls the behavior of "
+"Canaille."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.ACL:1
+#: e7acb8d7152040f9a569147fe9f58390 of
+msgid "Mapping of permission groups. See :class:`ACLSettings` for more details."
+msgstr ""
+
+#: ../../docstring 354ac41600854e89a7dbec29e2dbdc4b
+#: canaille.core.configuration.CoreSettings.ACL:3 of
+msgid "The ACL name can be freely chosen. For example::"
+msgstr ""
+
+#: ../../docstring 8826d0c7c5a846538420fb4f6de5633c
+#: canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1 of
+msgid "Administration email contact."
+msgstr ""
+
+#: ../../docstring 6fc562dc68404a0fafecc6f0f75b55d5
+#: canaille.core.configuration.CoreSettings.ADMIN_EMAIL:3 of
+msgid ""
+"In certain special cases (example : questioning about password "
+"corruption), it is necessary to provide an administration contact email."
+msgstr ""
+
+#: ../../docstring 2be02b3b84724c22a4dbafbdfdb74108
+#: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:1 of
+msgid ""
+"If :py:data:`True`, users will need to click on a confirmation link sent "
+"by email when they want to add a new email."
+msgstr ""
+
+#: ../../docstring 23396b7657bb4f6598654f0aca9c7e0b
+#: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:4 of
+msgid ""
+"By default, this is true if ``SMTP`` is configured, else this is false. "
+"If explicitly set to true and ``SMTP`` is disabled, the email field will "
+"be read-only."
+msgstr ""
+
+#: ../../docstring ab71d8b5687e4ae0b5daf416aa111fea
+#: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK:1
+#: of
+msgid ""
+"If :py:data:`True`, Canaille will check if passwords appears in "
+"compromission databases such as `HIBP <https://haveibeenpwned.com>`_ when"
+" users choose a new one."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY:1
+#: f9cc696903434a3c9f1f957244880a26 of
+msgid ""
+"If :py:data:`False`, then users cannot ask for a password recovery link "
+"by email."
+msgstr ""
+
+#: ../../docstring 8a7e8a6a8b944bb5b7f584a330c0474b
+#: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:1 of
+msgid ""
+"If :py:data:`True`, then users can freely create an account at this "
+"instance."
+msgstr ""
+
+#: ../../docstring 534e391bfaca45fb9f92dd32813a7128
+#: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:4 of
+msgid ""
+"If email verification is available, users must confirm their email before"
+" the account is created."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.FAVICON:1
+#: d701f8dcb04b48c0a6e3178707069f9e of
+msgid "You favicon."
+msgstr ""
+
+#: ../../docstring 3f81e8b8a0b14ea29760b5f6cccb4f74
+#: canaille.core.configuration.CoreSettings.FAVICON:3 of
+msgid "If unset and :attr:`LOGO` is set, then the logo will be used."
+msgstr ""
+
+#: ../../docstring 53d18a038f154d11ac8802a8330d8a64
+#: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:1 of
+msgid ""
+"If :py:data:`True`, when users try to sign in with an invalid login, a "
+"message is shown indicating that the password is wrong, but does not give"
+" a clue whether the login exists or not."
+msgstr ""
+
+#: ../../docstring 439b41524c5440749de2ab91c1e75b22
+#: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:5 of
+msgid ""
+"If :py:data:`False`, when a user tries to sign in with an invalid login, "
+"a message is shown indicating that the login does not exist."
+msgstr ""
+
+#: ../../docstring 4f20d3e138434a77ba55d36978b094be
+#: canaille.core.configuration.CoreSettings.HTMX:1 of
+msgid "Accelerates webpages loading with asynchronous requests."
+msgstr ""
+
+#: ../../docstring 1c1b0c138fb14880ac9a7d3310daac91
+#: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:1 of
+msgid "The validity duration of registration invitations, in seconds."
+msgstr ""
+
+#: ../../docstring 92f6e534420048079c73bef63a596f0e
+#: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:3 of
+msgid "Defaults to 2 days."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.JAVASCRIPT:1
+#: f892f17ef8b6441695fce46d31c8e757 of
+msgid "Enables Javascript to smooth the user experience."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LANGUAGE:1
+#: d7fa71e9bca048d99305cadb433bc5f7 of
+msgid "If a language code is set, it will be used for every user."
+msgstr ""
+
+#: ../../docstring ae18c7372a364452a54c1207e2e3c20b
+#: canaille.core.configuration.CoreSettings.LANGUAGE:3 of
+msgid "If unset, the language is guessed according to the users browser."
+msgstr ""
+
+#: ../../docstring 8652a5e948794d9ca1dfca0d7b3eb00f
+#: canaille.core.configuration.CoreSettings.LOGGING:1 of
+msgid ""
+"Configures the logging output using the python logging configuration "
+"format:"
+msgstr ""
+
+#: ../../docstring 24507175b32948a0a166b7a95fd2bbea
+#: canaille.core.configuration.CoreSettings.LOGGING:3 of
+msgid ""
+"if :py:data:`None`, everything is logged in the standard error output the"
+" log level is :py:data:`~logging.DEBUG` if the "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` setting is "
+":py:data:`True`, else this is :py:data:`~logging.INFO`"
+msgstr ""
+
+#: ../../docstring 2132cfdff1dd4ac48cc86437c60deedd
+#: canaille.core.configuration.CoreSettings.LOGGING:6 of
+msgid ""
+"if this is a :class:`dict`, it is passed to "
+":func:`logging.config.dictConfig`:"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.LOGGING:7
+#: f9e2edbbc1c0422483be175b3c89f681 of
+msgid ""
+"if this is a :class:`str`, it is expected to be a file path that will be "
+"passed to :func:`logging.config.fileConfig`"
+msgstr ""
+
+#: ../../docstring 9f3feaf17bb04736af38c2c71dc850c3
+#: canaille.core.configuration.CoreSettings.LOGGING:10 of
+msgid "For example::"
+msgstr ""
+
+#: ../../docstring 706bb2a426fe47bfbff9eec1f8d3340a
+#: canaille.core.configuration.CoreSettings.LOGO:1 of
+msgid ""
+"The logo of your organization, this is useful to make your organization "
+"recognizable on login screens."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:1
+#: f7e1cfde263d4033ab5a072c2c8073f9 of
+msgid "Maximum length for user password."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:3
+#: ec4eff47c3414a0e95240588bbc7b96a of
+msgid ""
+"There is a technical limit with passlib used by sql database of 4096 "
+"characters. If the value entered is 0 or None, or greater than 4096, then"
+" 4096 will be retained."
+msgstr ""
+
+#: ../../docstring 49a32046c38943479c91a6e26ad12885
+#: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:1 of
+msgid "Minimum length for user password."
+msgstr ""
+
+#: ../../docstring 5e3a17e0fe1f49c59af521f8bb4117e6
+#: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:3 of
+msgid "It is possible not to set a minimum, by entering None or 0."
+msgstr ""
+
+#: ../../docstring 79b379d0c00641c98bfd074cb7a5de8f
+#: canaille.core.configuration.CoreSettings.NAME:1 of
+msgid "Your organization name."
+msgstr ""
+
+#: ../../docstring 502d5daa195f4a069d5e01a8f17a32d7
+#: canaille.core.configuration.CoreSettings.NAME:3 of
+msgid "Used for display purpose."
+msgstr ""
+
+#: ../../docstring
+#: canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL:1
+#: d067d220d19b4e638975fc10825433fd of
+msgid "Have i been pwned api url for compromission checks."
+msgstr ""
+
+#: ../../docstring 804df457dea74bc3b32a12fb5625d804
+#: canaille.core.configuration.CoreSettings.SENTRY_DSN:1 of
+msgid "A `Sentry <https://sentry.io>`_ DSN to collect the exceptions."
+msgstr ""
+
+#: ../../docstring 7f42487bcd384c839248df71986bd1e7
+#: canaille.core.configuration.CoreSettings.SENTRY_DSN:3 of
+msgid "This is useful for tracking errors in test and production environments."
+msgstr ""
+
+#: ../../docstring 7486766d5efe42a69686be9a4be65935
+#: canaille.core.configuration.CoreSettings.SMTP:1 of
+msgid "The settings related to SMTP and mail configuration."
+msgstr ""
+
+#: ../../docstring b1e077f69a64495e93d1d91482278907
+#: canaille.core.configuration.CoreSettings.SMTP:3 of
+msgid "If unset, mail-related features like password recovery won't be enabled."
+msgstr ""
+
+#: ../../docstring 91d0533cabba48249953cc0b5f45d336
+#: canaille.core.configuration.CoreSettings.THEME:1 of
+msgid "The name of a theme in the 'theme' directory, or a path to a theme."
+msgstr ""
+
+#: ../../docstring 17ea1b66ebf84b86b371ccc7e2d56f4b
+#: canaille.core.configuration.CoreSettings.THEME:3 of
+msgid ""
+"Defaults to ``default``. Theming is done with `flask-themer "
+"<https://github.com/tktech/flask-themer>`_."
+msgstr ""
+
+#: ../../docstring 890ae4ec22a8402c8ae07fbd757c5c9a
+#: canaille.core.configuration.CoreSettings.TIMEZONE:1 of
+msgid ""
+"The timezone in which datetimes will be displayed to the users (e.g. "
+"``CEST``)."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.CoreSettings.TIMEZONE:4
+#: f390001b96764212950188d49beeae62 of
+msgid "If unset, the server timezone will be used."
+msgstr ""
+
+#: canaille.core.configuration.SMTPSettings:1 ec897111dca1408788e83869c017f25e
+#: of
+msgid ""
+"The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace. If "
+"unset, mail related features will be disabled, such as mail verification "
+"or password recovery emails."
+msgstr ""
+
+#: 46719e6acf4942c895c090b48d6b9949 canaille.core.configuration.SMTPSettings:5
+#: of
+msgid ""
+"By default, Canaille will try to send mails from localhost without "
+"authentication."
+msgstr ""
+
+#: ../../docstring 325edd30d50248b592b82685f4e00edd
+#: canaille.core.configuration.SMTPSettings.FROM_ADDR:1 of
+msgid "The sender for Canaille mails."
+msgstr ""
+
+#: ../../docstring 1574cd5eb1dd4e6893ba2e1f5d78e946
+#: canaille.core.configuration.SMTPSettings.FROM_ADDR:3 of
+msgid "Some mail provider might require a valid sender address."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.HOST:1
+#: f146f18cbf9a4b6a8e569002e35b33f3 of
+msgid "The SMTP host."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.LOGIN:1
+#: e92b851ae5764d2d96142d4c1ec4b2e0 of
+msgid "The SMTP login."
+msgstr ""
+
+#: ../../docstring 49cbd4a29c174b05b60f619bc6f148f8
+#: canaille.core.configuration.SMTPSettings.PASSWORD:1 of
+msgid "The SMTP password."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.SMTPSettings.PORT:1
+#: db67a609bb1146bd924f4e883576a0e7 of
+msgid "The SMTP port."
+msgstr ""
+
+#: ../../docstring 32ca0a0c5de04fd581707a9b0599f98b
+#: canaille.core.configuration.SMTPSettings.SSL:1 of
+msgid "Whether to use SSL to connect to the SMTP server."
+msgstr ""
+
+#: ../../docstring 47a21d1aa3334dd498fc8a2f92cf87b9
+#: canaille.core.configuration.SMTPSettings.TLS:1 of
+msgid "Whether to use TLS to connect to the SMTP server."
+msgstr ""
+
+#: canaille.core.configuration.ACLSettings:1 de42eb9a951e4074aa4384b708c54ec1
+#: of
+msgid "Access Control List settings. Belong in the ``CANAILLE.ACL`` namespace."
+msgstr ""
+
+#: 96228ae9d24e43cf8cb0765cfe307061 canaille.core.configuration.ACLSettings:3
+#: of
+msgid ""
+"You can define access controls that define what users can do on canaille "
+"An access control consists in a :attr:`FILTER` to match users, a list of "
+":attr:`PERMISSIONS` matched users will be able to perform, and fields "
+"users will be able to :attr:`READ` and :attr:`WRITE`. Users matching "
+"several filters will cumulate permissions."
+msgstr ""
+
+#: ../../docstring a94f9d4825dd4cf6b51f6c08cdd05ed5
+#: canaille.core.configuration.ACLSettings.FILTER:1 of
+msgid ":attr:`FILTER` can be:"
+msgstr ""
+
+#: ../../docstring 38b00d981c0745858bd5afee6e376a10
+#: canaille.core.configuration.ACLSettings.FILTER:3 of
+msgid ""
+":py:data:`None`, in which case all the users will match this access "
+"control"
+msgstr ""
+
+#: ../../docstring 8f65cf744a144dedaad8b87c1bf60aac
+#: canaille.core.configuration.ACLSettings.FILTER:4 of
+msgid ""
+"a mapping where keys are user attributes name and the values those user "
+"attribute values. All the values must be matched for the user to be part "
+"of the access control."
+msgstr ""
+
+#: ../../docstring 8127a4c682cf4ed6b49080ad7fdce3a4
+#: canaille.core.configuration.ACLSettings.FILTER:7 of
+msgid ""
+"a list of those mappings. If a user values match at least one mapping, "
+"then the user will be part of the access control"
+msgstr ""
+
+#: ../../docstring 92de0b6919df4875b14a88a269aaf3d4
+#: canaille.core.configuration.ACLSettings.FILTER:10 of
+msgid "Here are some examples::"
+msgstr ""
+
+#: ../../docstring 2c469868fe214b12b9c58e4dc69d2337
+#: canaille.core.configuration.ACLSettings.PERMISSIONS:1 of
+msgid ""
+"A list of :class:`Permission` users in the access control will be able to"
+" manage. For example::"
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.ACLSettings.READ:1
+#: d4c1573c24484da685264970beeab6ac of
+msgid ""
+"A list of :class:`~canaille.core.models.User` attributes that users in "
+"the ACL will be able to read."
+msgstr ""
+
+#: ../../docstring 7ad86e8e1c2940c99c9d5122b8c240ea
+#: canaille.core.configuration.ACLSettings.WRITE:1 of
+msgid ""
+"A list of :class:`~canaille.core.models.User` attributes that users in "
+"the ACL will be able to edit."
+msgstr ""
+
+#: 4e2f14152dad42ff830a82653102d205 canaille.core.configuration.Permission:1 of
+msgid "The permissions that can be assigned to users."
+msgstr ""
+
+#: canaille.core.configuration.Permission:3 f30678104bf14db99cf235c70fe4f306 of
+msgid ""
+"The permissions are intended to be used in :attr:`ACLSettings "
+"<canaille.core.configuration.ACLSettings.PERMISSIONS>`."
+msgstr ""
+
+#: ../../docstring 28b6407f946a4a9d86fb24c5e1134ee8
+#: canaille.core.configuration.Permission.DELETE_ACCOUNT:1 of
+msgid "Allows users to delete their account."
+msgstr ""
+
+#: ../../docstring canaille.core.configuration.Permission.DELETE_ACCOUNT:3
+#: ccce0fde7b484a6aa630805d656c566d of
+msgid ""
+"If used with "
+":attr:`~canaille.core.configuration.Permission.MANAGE_USERS`, users can "
+"delete any account."
+msgstr ""
+
+#: ../../docstring a848267e5289499799c80b360d319ee5
+#: canaille.core.configuration.Permission.EDIT_SELF:1 of
+msgid "Allows users to edit their own profile."
+msgstr ""
+
+#: ../../docstring 4c0db7f5fd9d482e8321158b3651e086
+#: canaille.core.configuration.Permission.IMPERSONATE_USERS:1 of
+msgid "Allows users to take the identity of another user."
+msgstr ""
+
+#: ../../docstring 9cf40563d9d54237928b0e0fdd6720eb
+#: canaille.core.configuration.Permission.MANAGE_GROUPS:1 of
+msgid "Allows group edition and creation."
+msgstr ""
+
+#: ../../docstring aaa7fee0b7514c6c924c96e822d6e994
+#: canaille.core.configuration.Permission.MANAGE_OIDC:1 of
+msgid "Allows OpenID Connect client managements."
+msgstr ""
+
+#: ../../docstring 2f5b0b1b7bee480cbf903b58d6741db8
+#: canaille.core.configuration.Permission.MANAGE_USERS:1 of
+msgid "Allows other users management."
+msgstr ""
+
+#: ../../docstring 32cdb36f2e8c426296ce9fb22ae9af4f
+#: canaille.core.configuration.Permission.USE_OIDC:1 of
+msgid "Allows OpenID Connect authentication."
+msgstr ""
+
+#: 7db6f94eb6ce4fd6ad6eb73de65f6168 canaille.oidc.configuration.OIDCSettings:1
+#: of
+msgid "OpenID Connect settings."
+msgstr ""
+
+#: ada0ce32653d45c4b9818161c6709d2d canaille.oidc.configuration.OIDCSettings:3
+#: of
+msgid "Belong in the ``CANAILLE_OIDC`` namespace."
+msgstr ""
+
+#: ../../docstring 4d0306630177446e9af4813cf6dc0442
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:1
+#: of
+msgid "Whether a token is needed for the RFC7591 dynamical client registration."
+msgstr ""
+
+#: ../../docstring 9b96e0f332ad46daa33d03de5a000425
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:3
+#: of
+msgid ""
+"If :py:data:`True`, no token is needed to register a client. If "
+":py:data:`False`, dynamical client registration needs a token defined in "
+":attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`."
+msgstr ""
+
+#: ../../docstring 543b2a5f70a948fb8526e2a4991fb549
+#: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_TOKENS:1
+#: of
+msgid "A list of tokens that can be used for dynamic client registration."
+msgstr ""
+
+#: ../../docstring 565aaf8210214a41b1dbb08139be8d97
+#: canaille.oidc.configuration.OIDCSettings.JWT:1 of
+msgid "JSON Web Token settings."
+msgstr ""
+
+#: ../../docstring 816df8d87e8d4526b01fc137e7bb5eb6
+#: canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:1 of
+msgid "Force the nonce exchange during the authentication flows."
+msgstr ""
+
+#: ../../docstring 679b9c979e4742fcb5de316379514a2d
+#: canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:3 of
+msgid "This adds security but may not be supported by all clients."
+msgstr ""
+
+#: canaille.oidc.configuration.JWTSettings:1 fdb2a1d51be14928b6edd8b3ea2f18e1
+#: of
+msgid "JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace."
+msgstr ""
+
+#: 0ab3e97636744b9697532be502541752 canaille.oidc.configuration.JWTSettings:3
+#: of
+msgid "You can generate a RSA keypair with::"
+msgstr ""
+
+#: ../../docstring 7d783adb55c8412280608afa00d9e70c
+#: canaille.oidc.configuration.JWTSettings.ALG:1 of
+msgid "The key algorithm."
+msgstr ""
+
+#: ../../docstring 2e9a009538254743b34f0e7790a50a46
+#: canaille.oidc.configuration.JWTSettings.EXP:1 of
+msgid "The time the JWT will be valid, in seconds."
+msgstr ""
+
+#: ../../docstring b23ca2745b5e4113be82cae0f38a3a1f
+#: canaille.oidc.configuration.JWTSettings.ISS:1 of
+msgid "The URI of the identity provider."
+msgstr ""
+
+#: ../../docstring 24cc64567a194e92b55107a516bc68ce
+#: canaille.oidc.configuration.JWTSettings.KTY:1 of
+msgid "The key type."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:1
+#: cc7b13206d214456820761c3ad9b8672 of
+msgid "The private key."
+msgstr ""
+
+#: ../../docstring a69ce459dfa84bd08ac906a80ebeb83a
+#: canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:3
+#: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:3
+#: f1c349cd7a364052afcbcf80dc11d193 of
+msgid ""
+"If :py:data:`None` and debug mode is enabled, then an in-memory key will "
+"be used."
+msgstr ""
+
+#: ../../docstring canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:1
+#: db3cf3cf3d9142d1b0d53dd8781fbb7b of
+msgid "The public key."
+msgstr ""
+
+#: a1801ef18fd142b79510e61399ebcdec
+#: canaille.oidc.configuration.JWTMappingSettings:1 of
+msgid "Mapping between the user model and the JWT fields."
+msgstr ""
+
+#: 07be4f83902040b5a007c0e5bd384a54
+#: canaille.oidc.configuration.JWTMappingSettings:3 of
+msgid "Fields are evaluated with jinja. A ``user`` var is available."
+msgstr ""
+
+#: 45a1f89226a1491ea91db08de5b3d9a8
+#: canaille.backends.sql.configuration.SQLSettings:1 of
+msgid "Settings related to the SQL backend."
+msgstr ""
+
+#: c8c79789fa1e4d189d780e54c5eabf09
+#: canaille.backends.sql.configuration.SQLSettings:3 of
+msgid "Belong in the ``CANAILLE_SQL`` namespace."
+msgstr ""
+
+#: ../../docstring 7fc80f4433e94a3ca3edb04ee05141d6
+#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:1 of
+msgid "The SQL server URI. For example::"
+msgstr ""
+
+#: 1facbb44bb7c447bb6021c7725909dc7
+#: canaille.backends.ldap.configuration.LDAPSettings:1 of
+msgid "Settings related to the LDAP backend."
+msgstr ""
+
+#: canaille.backends.ldap.configuration.LDAPSettings:3
+#: d15577fbbe16479999f587861a8762c6 of
+msgid "Belong in the ``CANAILLE_LDAP`` namespace."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.BIND_DN:1
+#: ef98c69f41e3460f978b3bded0f3c087 of
+msgid "The LDAP bind DN."
+msgstr ""
+
+#: ../../docstring 509dc31fbf9f4b5681dec463406a6ffa
+#: canaille.backends.ldap.configuration.LDAPSettings.BIND_PW:1 of
+msgid "The LDAP bind password."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:1
+#: f3770af8c9d144e486ef530d9b314a7e of
+msgid "The LDAP node under which groups will be looked for and saved."
+msgstr ""
+
+#: ../../docstring
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:3
+#: f769828768134b21b3f4883749a97b1e of
+msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
+msgstr ""
+
+#: ../../docstring 4ed53e9c8dc4469191c174372a2ff731
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_CLASS:1 of
+msgid "The object class to use for creating new groups."
+msgstr ""
+
+#: ../../docstring b3b7dc496aed41b49201db301f09445b
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_NAME_ATTRIBUTE:1 of
+msgid "The attribute to use to identify a group."
+msgstr ""
+
+#: ../../docstring 3e708b296a59452a8b4894ad1a6c5343
+#: canaille.backends.ldap.configuration.LDAPSettings.GROUP_RDN:1 of
+msgid "The attribute to identify an object in the Group DN."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.ROOT_DN:1
+#: dfa7a6f410a541fdab5e1265483ffc8a of
+msgid "The LDAP root DN."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.TIMEOUT:1
+#: ddfd58d7e14442129a26fda35deefa60 of
+msgid "The LDAP connection timeout."
+msgstr ""
+
+#: ../../docstring ba3913fb1d764fab9ddb72f0f1d336e6
+#: canaille.backends.ldap.configuration.LDAPSettings.URI:1 of
+msgid "The LDAP server URI."
+msgstr ""
+
+#: ../../docstring 47221563b06e4096a3eb964bfe4f70b2
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:1 of
+msgid "The LDAP node under which users will be looked for and saved."
+msgstr ""
+
+#: ../../docstring af59e7749bcc4e92bad0573d3aef861b
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:3 of
+msgid "For instance `ou=users,dc=mydomain,dc=tld`."
+msgstr ""
+
+#: ../../docstring 17148b32db674420b2e17bd7bc4d64b7
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_CLASS:1 of
+msgid "The object class to use for creating new users."
+msgstr ""
+
+#: ../../docstring 9c0f28dd1ec547a2a2105c43a1ea8cb1
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:1 of
+msgid "Filter to match users on sign in."
+msgstr ""
+
+#: ../../docstring 6dc2f7e50029421093cbb6605d5cd308
+#: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:3 of
+msgid ""
+"For instance ``(|(uid={{ login }})(mail={{ login }}))``. Jinja syntax is "
+"supported and a ``login`` variable is available, containing the value "
+"passed in the login field."
+msgstr ""
+
+#: ../../docstring canaille.backends.ldap.configuration.LDAPSettings.USER_RDN:1
+#: ed6628f1f92c48e79f4c04c45933ca49 of
+msgid "The attribute to identify an object in the User DN."
+msgstr ""
+
+#: ../references/configuration.rst:81 36e85ca0b73141169e01878dc817bde1
+msgid "Example file"
+msgstr ""
+
+#: ../references/configuration.rst:83 211faaedf62448aaa8b8313556464c28
+msgid "Here is a configuration file example:"
+msgstr ""
+
+#: ../references/index.rst:2 1714dcd8524a4572bf33cf225306ae48
+msgid "References"
+msgstr ""
+
+#: ../references/models.rst:2 b3035bd19cc343468abaf3cbb88eacbc
+msgid "Data models"
+msgstr ""
+
+#: ../references/models.rst:4 a1202312f9e44824958514224dd6d7ee
+msgid ""
+"This reference details the data models used by Canaille. This is mostly "
+"useful for developers."
+msgstr ""
+
+#: 461cc5d773ed46ddafdec33d26872246 6f4075b2615c4c5799703c8ee15fb71e
+#: canaille.backends.models.BackendModel:1 canaille.backends.models.Model:1 of
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: 266d3c351347457882173839a5494304 canaille.backends.models.BackendModel:1 of
+msgid "The backend model abstract class."
+msgstr ""
+
+#: canaille.backends.models.BackendModel:3 ef3fa6cad04d49a3b1feecbe4cdd9ce6 of
+msgid ""
+"It details all the methods and attributes that are expected to be "
+"implemented for every model and for every backend."
+msgstr ""
+
+#: aa2bf0341a1d4bc08c14e9e06532b515 canaille.backends.models.Model:1 of
+msgid "The model abstract class."
+msgstr ""
+
+#: canaille.backends.models.Model:3 e9a0f6f9d07542ffacc925102ab9b167 of
+msgid "It details all the common attributes shared by every models."
+msgstr ""
+
+#: ../../docstring 26f896206d434c66af18e1554c2b39cf
+#: canaille.backends.models.Model.created:1 of
+msgid ""
+"The :class:`~datetime.datetime` that the resource was added to the "
+"service provider."
+msgstr ""
+
+#: ../../docstring a8f940801e7f489ba20546301316692f
+#: canaille.backends.models.Model.id:1 of
+msgid ""
+"A unique identifier for a SCIM resource as defined by the service "
+"provider. Id will be :py:data:`None` until the "
+":meth:`~canaille.backends.models.BackendModel.save` method is called."
+msgstr ""
+
+#: ../../docstring 41caefe3a8144846b58b2bddff61d7ff
+#: canaille.backends.models.Model.id:5 of
+msgid ""
+"Each representation of the resource MUST include a non-empty \"id\" "
+"value.  This identifier MUST be unique across the SCIM service provider's"
+" entire set of resources.  It MUST be a stable, non- reassignable "
+"identifier that does not change when the same resource is returned in "
+"subsequent requests.  The value of the \"id\" attribute is always issued "
+"by the service provider and MUST NOT be specified by the client.  The "
+"string \"bulkId\" is a reserved keyword and MUST NOT be used within any "
+"unique identifier value.  The attribute characteristics are \"caseExact\""
+" as \"true\", a mutability of \"readOnly\", and a \"returned\" "
+"characteristic of \"always\".  See Section 9 for additional "
+"considerations regarding privacy."
+msgstr ""
+
+#: c44ba47611ea4698af894455d44619fb canaille.backends.models.Model.identifier:1
+#: of
+msgid "Returns a unique value that will be used to identify the model instance."
+msgstr ""
+
+#: 72da2a346972433780bc2e636e106d7b canaille.backends.models.Model.identifier:4
+#: of
+msgid ""
+"This value will be used in URLs in canaille, so it should be unique and "
+"short."
+msgstr ""
+
+#: ../../docstring afaa2a0f154b4160b54eee630032e6f8
+#: canaille.backends.models.Model.last_modified:1 of
+msgid ""
+"The most recent :class:`~datetime.datetime` that the details of this "
+"resource were updated at the service provider."
+msgstr ""
+
+#: ../../docstring 2874d8a267c640548a423bdca56df111
+#: canaille.backends.models.Model.last_modified:4 of
+msgid ""
+"If this resource has never been modified since its initial creation, the "
+"value MUST be the same as the value of "
+":attr:`~canaille.backends.models.Model.created`."
+msgstr ""
+
+#: 02d1e4d034464e64bae8a9f5627df315 30d0a769f9d840fdafcc398405631bf1
+#: 3b6e85588ce44d42b2ab8fc4afaf5396 4991c2c94129405bb96a3dfe507108c5
+#: 78cd110181444adf8891551c1927a7c9 canaille.core.models.Group:1
+#: canaille.core.models.User:1 canaille.oidc.basemodels.AuthorizationCode:1
+#: canaille.oidc.basemodels.Client:1 canaille.oidc.basemodels.Consent:1
+#: canaille.oidc.basemodels.Token:1 d8d3391e1d3d4c76bacd2799816a12b3 of
+msgid "Bases: :py:class:`~canaille.backends.models.Model`"
+msgstr ""
+
+#: b108f7af66b24928910eb2657acab297 canaille.core.models.Group:1 of
+msgid ""
+"User model, based on the `SCIM Group schema "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_."
+msgstr ""
+
+#: ../../docstring 81ca9ec1c2e0433abc0d872911dfc3e9
+#: canaille.core.models.Group.display_name:1 of
+msgid "A human-readable name for the Group."
+msgstr ""
+
+#: ../../docstring 11d7ce5c28e749c6a6525d5007e0f95b
+#: canaille.core.models.Group.display_name:3
+#: canaille.oidc.basemodels.Client.client_id:1 d6e6ff5ae1eb42bb84697629aa921407
+#: of
+msgid "REQUIRED."
+msgstr ""
+
+#: ../../docstring a82069d01e4c4d2682b446c98505ca6e
+#: canaille.core.models.Group.members:1 of
+msgid "A list of members of the Group."
+msgstr ""
+
+#: ../../docstring 665081b51e814449b2a29f7a56e1968b
+#: canaille.core.models.Group.members:3 of
+msgid ""
+"While values MAY be added or removed, sub-attributes of members are "
+"\"immutable\".  The \"value\" sub-attribute contains the value of an "
+"\"id\" attribute of a SCIM resource, and the \"$ref\" sub-attribute must "
+"be the URI of a SCIM resource such as a \"User\", or a \"Group\".  The "
+"intention of the \"Group\" type is to allow the service provider to "
+"support nested groups.  Service providers MAY require clients to provide "
+"a non-empty value by setting the \"required\" attribute characteristic of"
+" a sub-attribute of the \"members\" attribute in the \"Group\" resource "
+"schema."
+msgstr ""
+
+#: 62fa68900e434762bd85c5ade2cb2a00 canaille.core.models.User:1 of
+msgid ""
+"User model, based on the `SCIM User schema "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_, "
+"`Entreprise User Schema Extension "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_ and `SCIM "
+"Password Management Extension <https://datatracker.ietf.org/doc/html"
+"/draft-hunt-scim-password-mgmt-00.html>`_ draft. Attribute description is"
+" based on SCIM and put there for information purpose. The description may"
+" not fit the current implementation in Canaille."
+msgstr ""
+
+#: b248b2f62dfe4e68bddd63bec00966e4 canaille.core.models.User.can:1 of
+msgid ""
+"Whether or not the user has the "
+":class:`~canaille.core.configuration.Permission` according to the "
+":class:`configuration <canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: ../../docstring 57dd6a9a0b8c4864a95af69346964dea
+#: canaille.core.models.User.department:1 of
+msgid "Identifies the name of a department."
+msgstr ""
+
+#: ../../docstring 1d49d216d1b343d295dfdfa77e551b77
+#: canaille.core.models.User.display_name:1 of
+msgid "The name of the user, suitable for display to end-users."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.display_name:3
+#: dd9d3ca768b642dfa17f5495f422fd8a of
+msgid ""
+"Each user returned MAY include a non-empty displayName value.  The name "
+"SHOULD be the full name of the User being described, if known (e.g., "
+"\"Babs Jensen\" or \"Ms. Barbara J Jensen, III\") but MAY be a username "
+"or handle, if that is all that is available (e.g., \"bjensen\").  The "
+"value provided SHOULD be the primary textual label by which this User is "
+"normally displayed by the service provider when presenting it to end-"
+"users."
+msgstr ""
+
+#: ../../docstring 7ea26c780ca2493aafee136baf8ec9a2
+#: canaille.core.models.User.emails:1 of
+msgid "Email addresses for the User."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.emails:3
+#: d06efcedf29f45ddb8bd45ab1e754b09 of
+msgid ""
+"The value SHOULD be specified according to [RFC5321].  Service providers "
+"SHOULD canonicalize the value according to [RFC5321], e.g., "
+"\"bjensen@example.com\" instead of \"bjensen@EXAMPLE.COM\".  The "
+"\"display\" sub-attribute MAY be used to return the canonicalized "
+"representation of the email value. The \"type\" sub-attribute is used to "
+"provide a classification meaningful to the (human) user.  The user "
+"interface should encourage the use of basic values of \"work\", \"home\","
+" and \"other\" and MAY allow additional type values to be used at the "
+"discretion of SCIM clients."
+msgstr ""
+
+#: ../../docstring 088e38d69f594804bbde39f7de054cfb
+#: canaille.core.models.User.employee_number:1 of
+msgid ""
+"A string identifier, typically numeric or alphanumeric, assigned to a "
+"person, typically based on order of hire or association with an "
+"organization."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.family_name:1
+#: e71992364a4b4d6ca7ff849be03fa98d of
+msgid ""
+"The family name of the User, or last name in most Western languages "
+"(e.g., \"Jensen\" given the full name \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring 8d3a3acc6f51434f9bdc7a56166e8d2b
+#: canaille.core.models.User.formatted_address:1 of
+msgid ""
+"The full mailing address, formatted for display or use with a mailing "
+"label."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.formatted_address:4
+#: d02f4c440ff84c9b8e7859f1c2f8e437 of
+msgid "This attribute MAY contain newlines."
+msgstr ""
+
+#: ../../docstring 13d24f362e354f1ca1f97bccb45f4d52
+#: canaille.core.models.User.formatted_name:1 of
+msgid ""
+"The full name, including all middle names, titles, and suffixes as "
+"appropriate, formatted for display (e.g., \"Ms. Barbara Jane Jensen, "
+"III\")."
+msgstr ""
+
+#: ../../docstring 89b59cdc575f4da4a95d5812c79a2d44
+#: canaille.core.models.User.given_name:1 of
+msgid ""
+"The given name of the User, or first name in most Western languages "
+"(e.g., \"Barbara\" given the full name \"Ms. Barbara Jane Jensen, III\")."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.groups:1
+#: f93da1a83db14690a1319e00e75bc91a of
+msgid ""
+"A list of groups to which the user belongs, either through direct "
+"membership, through nested groups, or dynamically calculated."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.groups:4
+#: f8de4887ea8e4881852d8a2ddb6aefbb of
+msgid ""
+"The values are meant to enable expression of common group-based or role-"
+"based access control models, although no explicit authorization model is "
+"defined.  It is intended that the semantics of group membership and any "
+"behavior or authorization granted as a result of membership are defined "
+"by the service provider.  The canonical types \"direct\" and \"indirect\""
+" are defined to describe how the group membership was derived.  Direct "
+"group membership indicates that the user is directly associated with the "
+"group and SHOULD indicate that clients may modify membership through the "
+"\"Group\" resource. Indirect membership indicates that user membership is"
+" transitive or dynamic and implies that clients cannot modify indirect "
+"group membership through the \"Group\" resource but MAY modify direct "
+"group membership through the \"Group\" resource, which may influence "
+"indirect memberships.  If the SCIM service provider exposes a \"Group\" "
+"resource, the \"value\" sub-attribute MUST be the \"id\", and the "
+"\"$ref\" sub-attribute must be the URI of the corresponding \"Group\" "
+"resources to which the user belongs.  Since this attribute has a "
+"mutability of \"readOnly\", group membership changes MUST be applied via "
+"the \"Group\" Resource (Section 4.2).  This attribute has a mutability of"
+" \"readOnly\"."
+msgstr ""
+
+#: a3755516ad3d4a4e99d463daf04d0900 canaille.core.models.User.has_password:1 of
+msgid "Check whether a password has been set for the user."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.locality:1
+#: cc940278bc2a4693ba6fcbd7005d155a of
+msgid "The city or locality component."
+msgstr ""
+
+#: ../../docstring 54a5441c515f4520990822788d729733
+#: canaille.core.models.User.lock_date:1 of
+msgid "A DateTime indicating when the resource was locked."
+msgstr ""
+
+#: 1ee89e8c473a47b09e2292ac7c153492 canaille.core.models.User.locked:1 of
+msgid "Whether the user account has been locked or has expired."
+msgstr ""
+
+#: ../../docstring ac701d69d25a4388969ae1e0e9edbfa2
+#: canaille.core.models.User.organization:1 of
+msgid "Identifies the name of an organization."
+msgstr ""
+
+#: ../../docstring 27b5210c75804a148814c2f4d8c42844
+#: canaille.core.models.User.password:1 of
+msgid ""
+"This attribute is intended to be used as a means to set, replace, or "
+"compare (i.e., filter for equality) a password.  The cleartext value or "
+"the hashed value of a password SHALL NOT be returnable by a service "
+"provider.  If a service provider holds the value locally, the value "
+"SHOULD be hashed.  When a password is set or changed by the client, the "
+"cleartext password SHOULD be processed by the service provider as "
+"follows:"
+msgstr ""
+
+#: ../../docstring 6394c05116d44a0b81cf02b402587ef5
+#: canaille.core.models.User.password:9 of
+msgid ""
+"Prepare the cleartext value for international language comparison.  See "
+"Section 7.8 of [RFC7644]."
+msgstr ""
+
+#: ../../docstring 62cb13571d0f4f338277a23d1b7f59cf
+#: canaille.core.models.User.password:12 of
+msgid ""
+"Validate the value against server password policy.  Note: The definition "
+"and enforcement of password policy are beyond the scope of this document."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.password:16
+#: e9565b52217d46068ab1e33cf70f3de8 of
+msgid ""
+"Ensure that the value is encrypted (e.g., hashed).  See Section 9.2 for "
+"acceptable hashing and encryption handling when storing or persisting for"
+" provisioning workflow reasons."
+msgstr ""
+
+#: ../../docstring 602d688e5a5d44eea1eeb90863b271d3
+#: canaille.core.models.User.password:20 of
+msgid ""
+"A service provider that immediately passes the cleartext value on to "
+"another system or programming interface MUST pass the value directly over"
+" a secured connection (e.g., Transport Layer Security (TLS)).  If the "
+"value needs to be temporarily persisted for a period of time (e.g., "
+"because of a workflow) before provisioning, then the value MUST be "
+"protected by some method, such as encryption."
+msgstr ""
+
+#: ../../docstring 725d3e55f8b140caadb1db419a887ff4
+#: canaille.core.models.User.password:28 of
+msgid ""
+"Testing for an equality match MAY be supported if there is an existing "
+"stored hashed value.  When testing for equality, the service provider:"
+msgstr ""
+
+#: ../../docstring c7c0a12a3a2d4db3afb0a55a2721da5c
+#: canaille.core.models.User.password:32 of
+msgid ""
+"Prepares the filter value for international language comparison.  See "
+"Section 7.8 of [RFC7644]."
+msgstr ""
+
+#: ../../docstring b0ed5c3e41d847e8a79f87078a3a17ff
+#: canaille.core.models.User.password:35 of
+msgid ""
+"Generates the salted hash of the filter value and tests for a match with "
+"the locally held value."
+msgstr ""
+
+#: ../../docstring b2d2eeb3c4a04b449fd372664c86b359
+#: canaille.core.models.User.password:38 of
+msgid ""
+"The mutability of the password attribute is \"writeOnly\", indicating "
+"that the value MUST NOT be returned by a service provider in any form "
+"(the attribute characteristic \"returned\" is \"never\")."
+msgstr ""
+
+#: ../../docstring 4853bce35133497cae1a3b254bf8a8dc
+#: canaille.core.models.User.phone_numbers:1 of
+msgid "Phone numbers for the user."
+msgstr ""
+
+#: ../../docstring 8979006771cb41f9ba3c56ae427fa8a5
+#: canaille.core.models.User.phone_numbers:3 of
+msgid ""
+"The value SHOULD be specified according to the format defined in "
+"[RFC3966], e.g., 'tel:+1-201-555-0123'.  Service providers SHOULD "
+"canonicalize the value according to [RFC3966] format, when appropriate.  "
+"The \"display\" sub-attribute MAY be used to return the canonicalized "
+"representation of the phone number value.  The sub- attribute \"type\" "
+"often has typical values of \"work\", \"home\", \"mobile\", \"fax\", "
+"\"pager\", and \"other\" and MAY allow more types to be defined by the "
+"SCIM clients."
+msgstr ""
+
+#: ../../docstring 7a6291de70a4447485ba45c111f90be8
+#: canaille.core.models.User.photo:1 of
+msgid ""
+"A URI that is a uniform resource locator (as defined in Section 1.1.3 of "
+"[RFC3986]) that points to a resource location representing the user's "
+"image."
+msgstr ""
+
+#: ../../docstring be028a013b384ca2807895828962c04e
+#: canaille.core.models.User.photo:5 of
+msgid ""
+"The resource MUST be a file (e.g., a GIF, JPEG, or PNG image file) rather"
+" than a web page containing an image.  Service providers MAY return the "
+"same image in different sizes, although it is recognized that no standard"
+" for describing images of various sizes currently exists.  Note that this"
+" attribute SHOULD NOT be used to send down arbitrary photos taken by this"
+" user; instead, profile photos of the user that are suitable for display "
+"when describing the user should be sent. Instead of the standard "
+"canonical values for type, this attribute defines the following canonical"
+" values to represent popular photo sizes: \"photo\" and \"thumbnail\"."
+msgstr ""
+
+#: ../../docstring 40c51c5235f944bca20e65ec9f0177d4
+#: canaille.core.models.User.postal_code:1 of
+msgid "The zip code or postal code component."
+msgstr ""
+
+#: ../../docstring 6a834d66c4e749e0a7c3a0b9ed517ba7
+#: canaille.core.models.User.preferred_language:1 of
+msgid ""
+"Indicates the user's preferred written or spoken languages and is "
+"generally used for selecting a localized user interface."
+msgstr ""
+
+#: ../../docstring 64e8efd5ee21421f891b0238f90d182e
+#: canaille.core.models.User.preferred_language:4 of
+msgid ""
+"The value indicates the set of natural languages that are preferred. The "
+"format of the value is the same as the HTTP Accept-Language header field "
+"(not including \"Accept-Language:\") and is specified in Section 5.3.5 of"
+" [RFC7231].  The intent of this value is to enable cloud applications to "
+"perform matching of language tags [RFC4647] to the user's language "
+"preferences, regardless of what may be indicated by a user agent (which "
+"might be shared), or in an interaction that does not involve a user (such"
+" as in a delegated OAuth 2.0 [RFC6749] style interaction) where normal "
+"HTTP Accept-Language header negotiation cannot take place."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.profile_url:1
+#: fa9b1e7e37904969b4de73ff84cc9496 of
+msgid ""
+"A URI that is a uniform resource locator (as defined in Section 1.1.3 of "
+"[RFC3986]) and that points to a location representing the user's online "
+"profile (e.g., a web page)."
+msgstr ""
+
+#: ../../docstring 332359d0d5e640aa93c3a27e4525fe7c
+#: canaille.core.models.User.profile_url:5 of
+msgid "URIs are canonicalized per Section 6.2 of [RFC3986]."
+msgstr ""
+
+#: canaille.core.models.User.readable_fields:1 fe414ec9cf444092b3085cfc0afee6a4
+#: of
+msgid ""
+"The fields the user can read according to the :class:`configuration "
+"<canaille.core.configuration.ACLSettings>` configuration."
+msgstr ""
+
+#: 5d4191b52d494aafb0d738e298cf7a18 canaille.core.models.User.readable_fields:4
+#: of
+msgid ""
+"This does not include the :attr:`writable "
+"<canaille.core.models.User.writable_fields>` fields."
+msgstr ""
+
+#: ../../docstring 8e9d9d348e0b499aa5c100d1d651a313
+#: canaille.core.models.User.region:1 of
+msgid "The state or region component."
+msgstr ""
+
+#: ../../docstring c4ef32cb99c34e7fa69f07785320e3d7
+#: canaille.core.models.User.street:1 of
+msgid ""
+"The full street address component, which may include house number, street"
+" name, P.O."
+msgstr ""
+
+#: ../../docstring 3c26b79f2ed1414a87524f8ec611dddf
+#: canaille.core.models.User.street:4 of
+msgid ""
+"box, and multi-line extended street address information.  This attribute "
+"MAY contain newlines."
+msgstr ""
+
+#: ../../docstring 755fa0dc5a0c4871becc12d9cffb60e8
+#: canaille.core.models.User.title:1 of
+msgid "The user's title, such as \"Vice President\"."
+msgstr ""
+
+#: ../../docstring a454c05e71764f9cbdf0071193616eb9
+#: canaille.core.models.User.user_name:1 of
+msgid ""
+"A service provider's unique identifier for the user, typically used by "
+"the user to directly authenticate to the service provider."
+msgstr ""
+
+#: ../../docstring canaille.core.models.User.user_name:4
+#: ff8b08db92cf4100bb12a40b25d77063 of
+msgid ""
+"Often displayed to the user as their unique identifier within the system "
+"(as opposed to \"id\" or \"externalId\", which are generally opaque and "
+"not user-friendly identifiers).  Each User MUST include a non-empty "
+"userName value.  This identifier MUST be unique across the service "
+"provider's entire set of Users.  This attribute is REQUIRED and is case "
+"insensitive."
+msgstr ""
+
+#: 2c92ce75a6e0498d9fe69da2b9ea1bdd canaille.core.models.User.writable_fields:1
+#: of
+msgid ""
+"The fields the user can write according to the :class:`configuration "
+"<canaille.core.configuration.ACLSettings>`."
+msgstr ""
+
+#: canaille.oidc.basemodels.AuthorizationCode:1
+#: febb3bfac0654b0b8e7d9ab0eba842ab of
+msgid "OpenID Connect temporary authorization code definition."
+msgstr ""
+
+#: canaille.oidc.basemodels.Client:1 dc9e974e3ac24619b2133e74cde093a5 of
+msgid ""
+"OpenID Connect client definition, based on the `OAuth 2.0 Dynamic Client "
+"Registration protocols "
+"<https://datatracker.ietf.org/doc/html/rfc7591.html>`_ and the `OpenID "
+"Connect RP-Initiated Logout <https://openid.net/specs/openid-connect-"
+"rpinitiated-1_0.html>`_ specifications."
+msgstr ""
+
+#: ../../docstring 58c086f6b9f4483fbccebdae8625a9a1
+#: canaille.oidc.basemodels.Client.client_id:3 of
+msgid ""
+"OAuth 2.0 client identifier string.  It SHOULD NOT be currently valid for"
+" any other registered client, though an authorization server MAY issue "
+"the same client identifier to multiple instances of a registered client "
+"at its discretion."
+msgstr ""
+
+#: ../../docstring 6d4d8773f22a4d00831ae8220b1299a8
+#: 6e3d1a288719499ba55a83dcdc05991f
+#: canaille.oidc.basemodels.Client.client_id_issued_at:1
+#: canaille.oidc.basemodels.Client.client_secret:1
+#: canaille.oidc.basemodels.Client.post_logout_redirect_uris:1
+#: da0dddd7ce6948c5acd4e8208e91d09e of
+msgid "OPTIONAL."
+msgstr ""
+
+#: ../../docstring 58a3537d7ac54fc08d00307052c5b70d
+#: canaille.oidc.basemodels.Client.client_id_issued_at:3 of
+msgid ""
+"Time at which the client identifier was issued.  The time is represented "
+"as the number of seconds from 1970-01-01T00:00:00Z as measured in UTC "
+"until the date/time of issuance."
+msgstr ""
+
+#: ../../docstring a6cb1caecdc943869da758960df78317
+#: canaille.oidc.basemodels.Client.client_name:1 of
+msgid ""
+"Human-readable string name of the client to be presented to the end-user "
+"during authorization."
+msgstr ""
+
+#: ../../docstring 978a5c80bd8240a08b092fc06405aa60
+#: canaille.oidc.basemodels.Client.client_name:4 of
+msgid ""
+"If omitted, the authorization server MAY display the raw \"client_id\" "
+"value to the end-user instead.  It is RECOMMENDED that clients always "
+"send this field. The value of this field MAY be internationalized, as "
+"described in Section 2.2."
+msgstr ""
+
+#: ../../docstring 90d413e051f9438fa0c1703d8ccdff54
+#: canaille.oidc.basemodels.Client.client_secret:3 of
+msgid ""
+"OAuth 2.0 client secret string.  If issued, this MUST be unique for each "
+"\"client_id\" and SHOULD be unique for multiple instances of a client "
+"using the same \"client_id\".  This value is used by confidential clients"
+" to authenticate to the token endpoint, as described in OAuth 2.0 "
+"[RFC6749], Section 2.3.1."
+msgstr ""
+
+#: ../../docstring 74762eb67d8a475d80da339a3b63a8ed
+#: canaille.oidc.basemodels.Client.client_secret_expires_at:1 of
+msgid "REQUIRED if \"client_secret\" is issued."
+msgstr ""
+
+#: ../../docstring 6d76b51fe1644041a8a0677567570b44
+#: canaille.oidc.basemodels.Client.client_secret_expires_at:3 of
+msgid ""
+"Time at which the client secret will expire or 0 if it will not expire.  "
+"The time is represented as the number of seconds from "
+"1970-01-01T00:00:00Z as measured in UTC until the date/time of "
+"expiration."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.client_uri:1
+#: f4ab021f927b4563a070257c60a8f559 of
+msgid "URL string of a web page providing information about the client."
+msgstr ""
+
+#: ../../docstring 663428e642c4466a86390083dade6126
+#: canaille.oidc.basemodels.Client.client_uri:3 of
+msgid ""
+"If present, the server SHOULD display this URL to the end-user in a "
+"clickable fashion.  It is RECOMMENDED that clients always send this "
+"field.  The value of this field MUST point to a valid web page.  The "
+"value of this field MAY be internationalized, as described in Section "
+"2.2."
+msgstr ""
+
+#: ../../docstring b4e312f3e2444f468929113a44b0dea8
+#: canaille.oidc.basemodels.Client.contacts:1 of
+msgid ""
+"Array of strings representing ways to contact people responsible for this"
+" client, typically email addresses."
+msgstr ""
+
+#: ../../docstring 5dc7df1445694544a1c57bcd9f761467
+#: canaille.oidc.basemodels.Client.contacts:4 of
+msgid ""
+"The authorization server MAY make these contact addresses available to "
+"end-users for support requests for the client.  See Section 6 for "
+"information on Privacy Considerations."
+msgstr ""
+
+#: ../../docstring 85e0a62561344a348cb6deb5dd8a218c
+#: canaille.oidc.basemodels.Client.grant_types:1 of
+msgid ""
+"Array of OAuth 2.0 grant type strings that the client can use at the "
+"token endpoint.  These grant types are defined as follows:"
+msgstr ""
+
+#: ../../docstring 294a968347e54e68818115f6d4368c47
+#: canaille.oidc.basemodels.Client.grant_types:4 of
+msgid ""
+"\"authorization_code\": The authorization code grant type defined in "
+"OAuth 2.0, Section 4.1."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:7
+#: d868b67264bd4b4bb96713fb8ade25fa of
+msgid "\"implicit\": The implicit grant type defined in OAuth 2.0, Section 4.2."
+msgstr ""
+
+#: ../../docstring 7175000760ec4455b3c87aa38f9559e4
+#: canaille.oidc.basemodels.Client.grant_types:10 of
+msgid ""
+"\"password\": The resource owner password credentials grant type defined "
+"in OAuth 2.0, Section 4.3."
+msgstr ""
+
+#: ../../docstring 812e9d7d2ac2411e92eb9ee9fb0a20a6
+#: canaille.oidc.basemodels.Client.grant_types:13 of
+msgid ""
+"\"client_credentials\": The client credentials grant type defined in "
+"OAuth 2.0, Section 4.4."
+msgstr ""
+
+#: ../../docstring 1af63b16669d4631b071b96034202e28
+#: canaille.oidc.basemodels.Client.grant_types:16 of
+msgid ""
+"\"refresh_token\": The refresh token grant type defined in OAuth 2.0, "
+"Section 6."
+msgstr ""
+
+#: ../../docstring 438cafec18834b8c8befa16ecfa98fa4
+#: canaille.oidc.basemodels.Client.grant_types:19 of
+msgid ""
+"\"urn:ietf:params:oauth:grant-type:jwt-bearer\": The JWT Bearer Token "
+"Grant Type defined in OAuth JWT Bearer Token Profiles [RFC7523]."
+msgstr ""
+
+#: ../../docstring b572770632ac490ab9b3850fc9fb07e5
+#: canaille.oidc.basemodels.Client.grant_types:23 of
+msgid ""
+"\"urn:ietf:params:oauth:grant-type:saml2-bearer\": The SAML 2.0 Bearer "
+"Assertion Grant defined in OAuth SAML 2 Bearer Token Profiles [RFC7522]."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.grant_types:27
+#: faf8a507ee9c481399137c43cf6c91dd of
+msgid ""
+"If the token endpoint is used in the grant type, the value of this "
+"parameter MUST be the same as the value of the \"grant_type\" parameter "
+"passed to the token endpoint defined in the grant type definition.  "
+"Authorization servers MAY allow for other values as defined in the grant "
+"type extension process described in OAuth 2.0, Section 4.5.  If omitted, "
+"the default behavior is that the client will use only the "
+"\"authorization_code\" Grant Type."
+msgstr ""
+
+#: ../../docstring 8512b3f0a754434ebc4aff8e329c1e6b
+#: canaille.oidc.basemodels.Client.jwk:1 of
+msgid ""
+"Client's JSON Web Key Set [RFC7517] document value, which contains the "
+"client's public keys."
+msgstr ""
+
+#: ../../docstring b6f78d3c718c4fc4a0b2ba99b2e4e480
+#: canaille.oidc.basemodels.Client.jwk:4 of
+msgid ""
+"The value of this field MUST be a JSON object containing a valid JWK Set."
+"  These keys can be used by higher-level protocols that use signing or "
+"encryption.  This parameter is intended to be used by clients that cannot"
+" use the \"jwks_uri\" parameter, such as native clients that cannot host "
+"public URLs.  The \"jwks_uri\" and \"jwks\" parameters MUST NOT both be "
+"present in the same request or response."
+msgstr ""
+
+#: ../../docstring 02f4c953df3948d09f78ccd7ab5cedb1
+#: canaille.oidc.basemodels.Client.jwks_uri:1 of
+msgid ""
+"URL string referencing the client's JSON Web Key (JWK) Set [RFC7517] "
+"document, which contains the client's public keys."
+msgstr ""
+
+#: ../../docstring 7f1548f2b6c145d785f3f1c43317df1b
+#: canaille.oidc.basemodels.Client.jwks_uri:4 of
+msgid ""
+"The value of this field MUST point to a valid JWK Set document. These "
+"keys can be used by higher-level protocols that use signing or "
+"encryption.  For instance, these keys might be used by some applications "
+"for validating signed requests made to the token endpoint when using JWTs"
+" for client authentication [RFC7523].  Use of this parameter is preferred"
+" over the \"jwks\" parameter, as it allows for easier key rotation.  The "
+"\"jwks_uri\" and \"jwks\" parameters MUST NOT both be present in the same"
+" request or response."
+msgstr ""
+
+#: ../../docstring 2f0ad1518603470b8cd4fe2f265e6f85
+#: canaille.oidc.basemodels.Client.logo_uri:1 of
+msgid "URL string that references a logo for the client."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.logo_uri:3
+#: ff7134b134b645a9a3156d42a980f08e of
+msgid ""
+"If present, the server SHOULD display this image to the end-user during "
+"approval. The value of this field MUST point to a valid image file.  The "
+"value of this field MAY be internationalized, as described in Section "
+"2.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.policy_uri:1
+#: f47d9200239d48d1ac74db6f323f9ce5 of
+msgid ""
+"URL string that points to a human-readable privacy policy document that "
+"describes how the deployment organization collects, uses, retains, and "
+"discloses personal data."
+msgstr ""
+
+#: ../../docstring 1d5a279df85d4897bf38af1e0c3f13ea
+#: c917b2d3bd2d481eb5c0eeb265eedb4e
+#: canaille.oidc.basemodels.Client.policy_uri:5
+#: canaille.oidc.basemodels.Client.tos_uri:5 of
+msgid ""
+"The authorization server SHOULD display this URL to the end-user if it is"
+" provided.  The value of this field MUST point to a valid web page.  The "
+"value of this field MAY be internationalized, as described in Section "
+"2.2."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.post_logout_redirect_uris:3
+#: db13c682dc054c7080a82f49c47e45c8 of
+msgid ""
+"Array of URLs supplied by the RP to which it MAY request that the End-"
+"User's User Agent be redirected using the post_logout_redirect_uri "
+"parameter after a logout has been performed. These URLs SHOULD use the "
+"https scheme and MAY contain port, path, and query parameter components; "
+"however, they MAY use the http scheme, provided that the Client Type is "
+"confidential, as defined in Section 2.1 of OAuth 2.0 [RFC6749], and "
+"provided the OP allows the use of http RP URIs."
+msgstr ""
+
+#: ../../docstring 4c50516d7ce84dbc84e0e788dc2b1889
+#: canaille.oidc.basemodels.Client.redirect_uris:1 of
+msgid ""
+"Array of redirection URI strings for use in redirect-based flows such as "
+"the authorization code and implicit flows."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.redirect_uris:4
+#: e9fe092e8543426e8253d4369f184a7c of
+msgid ""
+"As required by Section 2 of OAuth 2.0 [RFC6749], clients using flows with"
+" redirection MUST register their redirection URI values. Authorization "
+"servers that support dynamic registration for redirect-based flows MUST "
+"implement support for this metadata value."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.response_types:1
+#: ec8ccaf66a7c4d418729d34c822db639 of
+msgid ""
+"Array of the OAuth 2.0 response type strings that the client can use at "
+"the authorization endpoint.  These response types are defined as follows:"
+msgstr ""
+
+#: ../../docstring 4810215d814142339501c3e889df1062
+#: canaille.oidc.basemodels.Client.response_types:5 of
+msgid ""
+"\"code\": The authorization code response type defined in OAuth 2.0, "
+"Section 4.1."
+msgstr ""
+
+#: ../../docstring 61fd38354038452c9503ca876a220cf3
+#: canaille.oidc.basemodels.Client.response_types:8 of
+msgid "\"token\": The implicit response type defined in OAuth 2.0, Section 4.2."
+msgstr ""
+
+#: ../../docstring 9ca40a61a3094e45a8fd09ee68901d00
+#: canaille.oidc.basemodels.Client.response_types:11 of
+msgid ""
+"If the authorization endpoint is used by the grant type, the value of "
+"this parameter MUST be the same as the value of the \"response_type\" "
+"parameter passed to the authorization endpoint defined in the grant type "
+"definition.  Authorization servers MAY allow for other values as defined "
+"in the grant type extension process is described in OAuth 2.0, Section "
+"4.5.  If omitted, the default is that the client will use only the "
+"\"code\" response type."
+msgstr ""
+
+#: ../../docstring a536f9f5ebf048e0868b8cf753e95abe
+#: canaille.oidc.basemodels.Client.scope:1 of
+msgid ""
+"String containing a space-separated list of scope values (as described in"
+" Section 3.3 of OAuth 2.0 [RFC6749]) that the client can use when "
+"requesting access tokens."
+msgstr ""
+
+#: ../../docstring 517eb5ade29e4685af967e3e4ea061ef
+#: canaille.oidc.basemodels.Client.scope:5 of
+msgid ""
+"The semantics of values in this list are service specific.  If omitted, "
+"an authorization server MAY register a client with a default set of "
+"scopes."
+msgstr ""
+
+#: ../../docstring 10472d4f71fc4d6b89e31a7693238615
+#: canaille.oidc.basemodels.Client.software_id:1 of
+msgid ""
+"A unique identifier string (e.g., a Universally Unique Identifier (UUID))"
+" assigned by the client developer or software publisher used by "
+"registration endpoints to identify the client software to be dynamically "
+"registered."
+msgstr ""
+
+#: ../../docstring 41725941c0414bb5bf434777b6c2f028
+#: canaille.oidc.basemodels.Client.software_id:6 of
+msgid ""
+"Unlike \"client_id\", which is issued by the authorization server and "
+"SHOULD vary between instances, the \"software_id\" SHOULD remain the same"
+" for all instances of the client software.  The \"software_id\" SHOULD "
+"remain the same across multiple updates or versions of the same piece of "
+"software.  The value of this field is not intended to be human readable "
+"and is usually opaque to the client and authorization server."
+msgstr ""
+
+#: ../../docstring 9eda381133c04d49b847dde1ca563f5d
+#: canaille.oidc.basemodels.Client.software_version:1 of
+msgid ""
+"A version identifier string for the client software identified by "
+"\"software_id\"."
+msgstr ""
+
+#: ../../docstring 37e5f81fd7d04871b092880a4bf00185
+#: canaille.oidc.basemodels.Client.software_version:4 of
+msgid ""
+"The value of the \"software_version\" SHOULD change on any update to the "
+"client software identified by the same \"software_id\".  The value of "
+"this field is intended to be compared using string equality matching and "
+"no other comparison semantics are defined by this specification.  The "
+"value of this field is outside the scope of this specification, but it is"
+" not intended to be human readable and is usually opaque to the client "
+"and authorization server.  The definition of what constitutes an update "
+"to client software that would trigger a change to this value is specific "
+"to the software itself and is outside the scope of this specification."
+msgstr ""
+
+#: ../../docstring ac49c352aeb24e19894497192955193d
+#: canaille.oidc.basemodels.Client.token_endpoint_auth_method:1 of
+msgid ""
+"String indicator of the requested authentication method for the token "
+"endpoint.  Values defined by this specification are:"
+msgstr ""
+
+#: ../../docstring 66854b08d62a4a36a60d0ab4d4c4884f
+#: canaille.oidc.basemodels.Client.token_endpoint_auth_method:4 of
+msgid ""
+"\"none\": The client is a public client as defined in OAuth 2.0, Section "
+"2.1, and does not have a client secret."
+msgstr ""
+
+#: ../../docstring canaille.oidc.basemodels.Client.token_endpoint_auth_method:7
+#: e1ef3f2f13bd4f4bac6eec072813ff0e of
+msgid ""
+"\"client_secret_post\": The client uses the HTTP POST parameters as "
+"defined in OAuth 2.0, Section 2.3.1."
+msgstr ""
+
+#: ../../docstring 6ddcb23b2028416abec55125e12600e8
+#: canaille.oidc.basemodels.Client.token_endpoint_auth_method:10 of
+msgid ""
+"\"client_secret_basic\": The client uses HTTP Basic as defined in OAuth "
+"2.0, Section 2.3.1."
+msgstr ""
+
+#: ../../docstring 9e65b281bf3d4bee9bf7be88f0b182de
+#: canaille.oidc.basemodels.Client.token_endpoint_auth_method:13 of
+msgid ""
+"Additional values can be defined via the IANA \"OAuth Token Endpoint "
+"Authentication Methods\" registry established in Section 4.2.  Absolute "
+"URIs can also be used as values for this parameter without being "
+"registered.  If unspecified or omitted, the default is "
+"\"client_secret_basic\", denoting the HTTP Basic authentication scheme as"
+" specified in Section 2.3.1 of OAuth 2.0."
+msgstr ""
+
+#: ../../docstring b587edfc8a414f71a53b8781b4c61cbe
+#: canaille.oidc.basemodels.Client.tos_uri:1 of
+msgid ""
+"URL string that points to a human-readable terms of service document for "
+"the client that describes a contractual relationship between the end-user"
+" and the client that the end-user accepts when authorizing the client."
+msgstr ""
+
+#: 233ce80e24414377b8b348cc25c9f546 canaille.oidc.basemodels.Consent:1 of
+msgid "Long-term user consent to an application."
+msgstr ""
+
+#: 065b6fae2d0b4b978efc341415d5f9ce canaille.oidc.basemodels.Token:1 of
+msgid "OpenID Connect token definition."
+msgstr ""
+
+#: ../tutorial/databases.rst:2 c56d43f65c3c44dea55086004f87d424
+msgid "Databases"
+msgstr ""
+
+#: ../tutorial/databases.rst:4 ecfe588effe545d8ae53e3d1364a6a62
+msgid ""
+"Canaille can read and save data in different databases. This page "
+"presents the different database backends and their specificities:"
+msgstr ""
+
+#: ../tutorial/databases.rst:8 3d861b0b33454ebcb8a100f03117f95c
+msgid "Memory"
+msgstr ""
+
+#: ../tutorial/databases.rst:10 da5c1f33abc145e9a2f5f30bfa4cb4a5
+msgid ""
+"Canaille comes with a lightweight inmemory backend by default. It is used"
+" when no other backend has been configured."
+msgstr ""
+
+#: ../tutorial/databases.rst:13 3dc9f8a6f72341d9afb9ad783b6cb6ff
+msgid ""
+"This backend is only for test purpose and should not be used in "
+"production environments."
+msgstr ""
+
+#: ../tutorial/databases.rst:18 50d41eb5fb044bcea6d2590d46430c93
+msgid ""
+"Canaille can use any database supported by `SQLAlchemy "
+"<https://www.sqlalchemy.org/>`_, such as sqlite, postgresql or mariadb."
+msgstr ""
+
+#: ../tutorial/databases.rst:21 b764027163c7461bb9c7241427cbcf36
+msgid ""
+"It is used when the ``CANAILLE_SQL`` configuration parameter is defined. "
+"For instance:"
+msgstr ""
+
+#: ../tutorial/databases.rst:29 27782e5f5733401eaae184f758a9a573
+msgid ""
+"You can find more details on the SQL configuration in the "
+":class:`dedicated section "
+"<canaille.backends.sql.configuration.SQLSettings>`."
+msgstr ""
+
+#: ../tutorial/databases.rst:34 d44cefd06b98488b805db56a0202c0bf
+msgid ""
+"Canaille can use OpenLDAP as its main database. It is used when the "
+"``CANAILLE_LDAP`` configuration parameter is defined. For instance:"
+msgstr ""
+
+#: ../tutorial/databases.rst:52 3bd4bdee4fd4426a845056c5967226e8
+msgid ""
+"You can find more details on the LDAP configuration in the "
+":class:`dedicated section "
+"<canaille.backends.ldap.configuration.LDAPSettings>`."
+msgstr ""
+
+#: ../tutorial/databases.rst:55 93c8f6b8a1c745408a04056b0b032443
+msgid ""
+"Currently, only the ``inetOrgPerson`` and ``groupOfNames`` schemas have "
+"been tested. If you want to use different schemas or LDAP servers, "
+"adaptations may be needed. Patches are welcome."
+msgstr ""
+
+#: ../tutorial/databases.rst:60 5f8f1f384da142af9a3aea4af3137f8b
+msgid "OpenLDAP overlays integration"
+msgstr ""
+
+#: ../tutorial/databases.rst:62 33e4deac08f841e0ae82a2812a57898d
+msgid "Canaille can integrate with several OpenLDAP overlays:"
+msgstr ""
+
+#: ../tutorial/databases.rst:65 9952860e43ac44d58a4c0b238d99b594
+msgid "memberof / refint"
+msgstr ""
+
+#: ../tutorial/databases.rst:67 6d93926918dd4d42ab6840e24d2f1280
+#, python-format
+msgid ""
+"`memberof "
+"<https://www.openldap.org/doc/admin26/overlays.html#Reverse%20Group%20Membership%20Maintenance>`_"
+" and `refint "
+"<https://www.openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_"
+" overlays are needed for the Canaille group membership to work correctly."
+msgstr ""
+
+#: ../tutorial/databases.rst:71 ../tutorial/databases.rst:94
+#: 1f3bd6033c794de89a2cecdb89da88d2 e02bdcbeafd54699be7a7cc5620cc347
+msgid "Here is a configuration example compatible with canaille:"
+msgstr ""
+
+#: ../tutorial/databases.rst:73 273efda248f449f0b9ccc2302162ffd6
+msgid "memberof-config.ldif"
+msgstr ""
+
+#: ../tutorial/databases.rst:77 8635eb947c1044f5bf93a338216afe4d
+msgid "refint-config.ldif"
+msgstr ""
+
+#: ../tutorial/databases.rst:81 ../tutorial/databases.rst:104
+#: 3313776d90f948c8bfc38f063fe4760f d7bc0b31b5fa4710b03c9d7254b43205
+msgid "You can adapt and load those configuration files with:"
+msgstr ""
+
+#: ../tutorial/databases.rst:90 a7caeee53d6f49949063891052dff0cf
+msgid "ppolicy"
+msgstr ""
+
+#: ../tutorial/databases.rst:92 5eaa978aede642999fffec3b585e95eb
+msgid ""
+"If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-"
+"password-policy-11.html>`_ overlay is configured and the ``pwdEndTime`` "
+"attribute is available (since OpenLDAP 2.6), then account locking support"
+" will be enabled in canaille. To allow users to manage account "
+"expiration, they need to have a *write* permission on the "
+":attr:`~canaille.core.models.User.lock_date` attribute."
+msgstr ""
+
+#: ../tutorial/databases.rst:96 485205f101564fcc8466539600ea7230
+msgid "ppolicy-config.ldif"
+msgstr ""
+
+#: ../tutorial/databases.rst:100 6c34e1f947e54eb6b88507cfe8cdbd85
+msgid "ppolicy.ldif"
+msgstr ""
+
+#: ../tutorial/deployment.rst:2 d116f5fdf1304552840b1293c3d042ae
+msgid "Deployment"
+msgstr ""
+
+#: ../tutorial/deployment.rst:5 ddb242bd454340f5bd16124fd50dd495
+msgid "Application service"
+msgstr ""
+
+#: ../tutorial/deployment.rst:7 7bc0484c925642c0827c7f565c3b688a
+msgid ""
+"After having finished Canaille installation you have to run it in a WSGI "
+"application server. Here are some WSGI server configuration examples you "
+"can pick. Do not forget to update the paths."
+msgstr ""
+
+#: ../tutorial/deployment.rst:11 50579a6360574db497f9a84c04177fe8
+msgid "gunicorn"
+msgstr ""
+
+#: ../tutorial/deployment.rst:15 81137fb9e92544649b2adb45d64507de
+msgid "Write a gunicorn configuration sample file."
+msgstr ""
+
+#: ../tutorial/deployment.rst:18 879978c80d7f4f6181d9a70a95b6b153
+msgid "uwsgi"
+msgstr ""
+
+#: ../tutorial/deployment.rst:42 f91a46a6139c45628fcfc9ed127499e8
+msgid "Webserver"
+msgstr ""
+
+#: ../tutorial/deployment.rst:44 762fa82b13ea4b35aa14aef41c9c81e9
+msgid ""
+"Now you have to plug your WSGI application server to your webserver so it"
+" is accessible on the internet. Here are some webserver configuration "
+"examples you can pick:"
+msgstr ""
+
+#: ../tutorial/deployment.rst:48 8f95f4501bd144d784302880ddf5781f
+msgid "Nginx"
+msgstr ""
+
+#: ../tutorial/deployment.rst:114 f66b50373add4f8080c502d00668b6d2
+msgid "Apache"
+msgstr ""
+
+#: ../tutorial/deployment.rst:153 fd41fc0986e44364a3ebf8d63f225377
+msgid "Recurrent jobs"
+msgstr ""
+
+#: ../tutorial/deployment.rst:155 893232816cb34c5e91d4536bcaaf035d
+msgid ""
+"You might want to clean up your database to avoid it growing too much. "
+"You can regularly delete expired tokens and authorization codes with:"
+msgstr ""
+
+#: ../tutorial/deployment.rst:164 d27e43638d824fcbb819dffbb1bb1117
+msgid "Webfinger"
+msgstr ""
+
+#: ../tutorial/deployment.rst:166 c77203551edd4f9a8ebff3d9e99a49e8
+msgid ""
+"You may want to configure a `WebFinger`_ endpoint on your main website to"
+" allow the automatic discovery of your Canaille installation based on the"
+" account name of one of your users. For instance, suppose your domain is "
+"``mydomain.example`` and your Canaille domain is "
+"``auth.mydomain.example`` and there is a user ``john.doe``. A third-party"
+" application could require to authenticate the user and ask them for a "
+"user account. The user would give their account "
+"``john.doe@mydomain.example``, then the application would perform a "
+"WebFinger request at ``https://mydomain.example/.well-known/webfinger`` "
+"and the response would contain the address of the authentication server "
+"``https://auth.mydomain.example``. With this information the third party "
+"application can redirect the user to the Canaille authentication page."
+msgstr ""
+
+#: ../tutorial/deployment.rst:168 0b1886b7075141e9841779211fb3d839
+msgid ""
+"The difficulty here is that the WebFinger endpoint must be hosted at the "
+"top-level domain (i.e. ``mydomain.example``) while the authentication "
+"server might be hosted on a sublevel (i.e. ``auth.mydomain.example``). "
+"Canaille provides a WebFinger endpoint, but if it is not hosted at the "
+"top-level domain, a web redirection is required on the ``/.well-"
+"known/webfinger`` path."
+msgstr ""
+
+#: ../tutorial/deployment.rst:170 da52dafa168c49d98f063ba08002235b
+msgid "Here are configuration examples for Nginx or Apache:"
+msgstr ""
+
+#: ../tutorial/deployment.rst:172 d17492a36d764bae8cb689daab3bb03e
+msgid "Nginx webfinger configuration for a top level domain"
+msgstr ""
+
+#: ../tutorial/deployment.rst:181 3343c0ba522e427c80bcf7bbca5e36ba
+msgid "Apache webfinger configuration for a top level domain"
+msgstr ""
+
+#: ../tutorial/deployment.rst:191 05d1c340250345fc8a9d69ca3c82aa51
+msgid "Create the first user"
+msgstr ""
+
+#: ../tutorial/deployment.rst:193 64922658d6454ed3b774c84a324aa79d
+msgid ""
+"Once canaille is installed, soon enough you will need to add users. To "
+"create your first user you can use the :ref:`canaille create "
+"<cli_create>` CLI."
+msgstr ""
+
+#: ../tutorial/index.rst:2 29acce67ab35458f814960316dcc91c1
+msgid "Tutorial"
+msgstr ""
+
+#: ../tutorial/install.rst:2 01c587979263466db551b80e89b4c413
+msgid "Installation"
+msgstr ""
+
+#: ../tutorial/install.rst:6 55621e136b2b4cf3ab3893036899e351
+msgid ""
+"Canaille is under heavy development and may not fit a production "
+"environment yet."
+msgstr ""
+
+#: ../tutorial/install.rst:8 74396a34870f4c62aaa0ca5ad1bdb3c8
+msgid ""
+"The installation of canaille consist in several steps, some of which you "
+"can do manually or with command line tool:"
+msgstr ""
+
+#: ../tutorial/install.rst:11 4c999740fb044077afcdfedad103b7d3
+msgid "Get the code"
+msgstr ""
+
+#: ../tutorial/install.rst:13 254ece36aab0456897d2ac5758d6d5c1
+msgid ""
+"As the moment there is no distribution package for canaille. However, it "
+"can be installed with the ``pip`` package manager. Let us choose a place "
+"for the canaille environment, like ``/opt/canaille/env``."
+msgstr ""
+
+#: ../tutorial/install.rst:24 66b21bf62a734f80b42551f4c902cfb0
+msgid "Extras"
+msgstr ""
+
+#: ../tutorial/install.rst:26 e701f5586f66419d987c1c6e8174aeba
+msgid "Canaille provides different package options:"
+msgstr ""
+
+#: ../tutorial/install.rst:28 d6c52c3add814cdd899bf03f0d6f3cc9
+msgid "`front` provides all the things needed to produce the user interface;"
+msgstr ""
+
+#: ../tutorial/install.rst:29 a3ae7076136c46de9b174a8981834b66
+msgid "`oidc` provides the dependencies to perform OAuth2/OIDC authentication;"
+msgstr ""
+
+#: ../tutorial/install.rst:30 c756e602833e4b6caf6791f830ffe9df
+msgid "`ldap` provides the dependencies to enable the LDAP backend;"
+msgstr ""
+
+#: ../tutorial/install.rst:31 17bb2a8ba5dc4996a7aa0ca8814c2c55
+msgid "`sqlite` provides the dependencies to enable the SQLite backend;"
+msgstr ""
+
+#: ../tutorial/install.rst:32 f05ed507e190475da10c20469b153b27
+msgid "`postgresql` provides the dependencies to enable the PostgreSQL backend;"
+msgstr ""
+
+#: ../tutorial/install.rst:33 9027bab8a01a430483f86c718a1ce50e
+msgid "`mysql` provides the dependencies to enable the MySQL backend;"
+msgstr ""
+
+#: ../tutorial/install.rst:34 61298e4e91ab4e529451dd0d499579ce
+msgid "`sentry` provides sentry integration to watch Canaille exceptions;"
+msgstr ""
+
+#: ../tutorial/install.rst:35 bd6441bbc1d64cc0b2b69403d1515acf
+msgid "`all` provides all the extras above."
+msgstr ""
+
+#: ../tutorial/install.rst:37 da8e4e257b604589bb14e0b29a80e745
+msgid "They can be installed with:"
+msgstr ""
+
+#: ../tutorial/install.rst:44 f889916cd6b3493bbf9066a5df580354
+msgid "Configure"
+msgstr ""
+
+#: ../tutorial/install.rst:46 9f549ce7c01b431890b3153e580d2c2c
+msgid ""
+"Choose a path where to store your configuration file. You can pass any "
+"configuration path with the ``CONFIG`` environment variable."
+msgstr ""
+
+#: ../tutorial/install.rst:54 9a40cf9c7a5947998256e361f20bf9a9
+msgid ""
+"You should then edit your configuration file to adapt the values to your "
+"needs. Look at the configuration details in the :doc:`configuration "
+"<../references/configuration>` page."
+msgstr ""
+
+#: ../tutorial/install.rst:57 da62c365141849c7a38413ed0c62c572
+msgid "Install"
+msgstr ""
+
+#: ../tutorial/install.rst:59 fba2798a50c747339fc1f5327717d998
+msgid ""
+"The :ref:`install command <cli_install>` will apply most of the things "
+"needed to get Canaille working. Depending on the configured "
+":doc:`database <databases>` it will create the SQL tables, or install the"
+" LDAP schemas for instance."
+msgstr ""
+
+#: ../tutorial/install.rst:68 40405f2e68734d9ab601f682dc194f69
+msgid "Check"
+msgstr ""
+
+#: ../tutorial/install.rst:70 b5ca9b39ad7a4111a92c0cb3f951c4ed
+msgid ""
+"After a manual installation, you can check your configuration file using "
+"the :ref:`check command <cli_install>`:"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:2 9a695ffaea0e4a7488315b67eb88cf1f
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:5 15ff521e84d24e16999f0e82a052b184
+msgid "The web interface throws useless error messages"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:7 cec2dc1cd8bd4a1b9b2b8027d260212a
+msgid ""
+"Unless the current user has admin :class:`permissions "
+"<canaille.core.configuration.Permission>`, or the installation is in "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` mode, error "
+"messages won't be too technical. For instance, you can see *The request "
+"you made is invalid*. To enable detailed error messages, you can "
+"**temporarily** enable the "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` configuration "
+"parameter."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:12 9432afd575d14608a8d9b41b98aeab4a
+msgid "How to manually install LDAP schemas?"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:16 b590da23aad9437f853ad3ff608cec9e
+msgid ""
+"Schema installation can be automatically done using the :ref:`install "
+"command <cli_install>`."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:18 62cc8bfce68f4b9abadf1d93bd4cd947
+msgid "As of OpenLDAP 2.4, two configuration methods are available:"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:20 fee299f66bc944fdb8e6e116b4f57947
+msgid ""
+"The `deprecated <https://www.openldap.org/doc/admin26/slapdconf2.html>`_ "
+"one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:21 fe0e6259626c429d98cd16394b446ee3
+msgid ""
+"The new one, based on a configuration directory (generally "
+"``/etc/ldap/slapd.d``)."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:23 ce0dcdbce977446dac9bc6ab3e4e1157
+msgid ""
+"Depending on the configuration method you use with your OpenLDAP "
+"installation, you need to chose how to add the canaille schemas:"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:26 c6a807a8f8e94e18a2d11ada0a12e313
+msgid "Old fashion: Copy the schemas in your filesystem"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:35 f39d1bb4d7834a6ba529a16ab8921ed2
+msgid "New fashion: Use slapadd to add the schemas"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:37 e8349577bee7420aac4743631a866e89
+msgid "Be careful to stop your ldap server before running ``slapadd``"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:46 fc33c258f8374c7798e4a12514b0c1cc
+msgid "How to manually generate the OIDC keypair?"
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:50 66f74b4b66584e609d3835f218254761
+msgid ""
+"The keypair generation can be automatically done using the :ref:`install "
+"command <cli_install>`."
+msgstr ""
+
+#: ../tutorial/troubleshooting.rst:52 11a4a2a8235a4d0ba8bb724d14003fd8
+msgid ""
+"Canaille needs a key pair to sign OIDC tokens. You can customize those "
+"commands, as long as they match the ``JWT`` section of your configuration"
+" file."
+msgstr ""
+

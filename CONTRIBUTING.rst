@@ -170,9 +170,9 @@ You can also run sphinx by hand, that should be faster since it avoids the tox e
 
 .. code-block:: bash
 
-   sphinx-build doc build/sphinx/html
+   sphinx-build doc build/sphinx/html/en
 
-The generated documentation is located at ``build/sphinx/html``.
+The generated documentation is located at ``build/sphinx/html/en``.
 
 Code translation
 ----------------
