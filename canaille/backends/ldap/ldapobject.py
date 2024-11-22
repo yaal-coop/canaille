@@ -40,6 +40,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     rdn_attribute = None
     attribute_map = None
     ldap_object_class = None
+    password_attribute = None
 
     def __init__(self, dn=None, **kwargs):
         self.state = {}

@@ -48,7 +48,7 @@ class LDAPSettings(BaseModel):
     For instance `"ou=groups,dc=mydomain,dc=tld"`.
     """
 
-    GROUP_CLASS: str = "groupOfNames"
+    GROUP_CLASS: list[str] = ["groupOfNames", "pwdPolicy"]
     """The object class to use for creating new groups."""
 
     GROUP_RDN: str = "cn"
