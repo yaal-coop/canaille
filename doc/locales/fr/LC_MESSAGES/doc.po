@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-22 17:40+0100\n"
-"PO-Revision-Date: 2024-11-23 05:18+0000\n"
+"PO-Revision-Date: 2024-11-23 19:17+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -179,45 +179,50 @@ msgstr "Modifié"
 
 #: ../../CHANGES.rst:29 772b297a85d24919a7020f1801ef2d53
 msgid "Update to HTMX 2.0.3 :pr:`184`"
-msgstr ""
+msgstr "Mise à jours vers HTMX 2.0.3 :pr:`184`"
 
 #: ../../CHANGES.rst:30 04fbacaeecca493a950405e7ccdb9b9e
 msgid "Migrate from poetry to uv :pr:`187`"
-msgstr ""
+msgstr "Migration de poetry à uv :pr:`187`"
 
 #: ../../CHANGES.rst:31 f5087c2835224603a98a4be790b6abf5
 msgid ""
 "The ``sql`` package extra is now split between ``sqlite``, ``postgresql``"
 " and ``mysql``."
 msgstr ""
+"L’extra de paquet ``sql`` a été divisé en ``sqlite``, ``postgresql`` et "
+"``mysql``."
 
 #: ../../CHANGES.rst:34 ../../CHANGES.rst:378 ../../CHANGES.rst:784
 #: 03965a024d1a4713ac9e7cd0aa777c2e 11c684b9a5194d2cb0ebd9f9401ae1b9
 #: 52ad2462d9414e3db1dde9095d84f94b
 msgid "Removed"
-msgstr ""
+msgstr "Supprimé"
 
 #: ../../CHANGES.rst:35 c4ed2628b8dd4ecc887d0a695ed173f2
 msgid "End support for python 3.9. :pr:`179`"
-msgstr ""
+msgstr "Fin de support pour Python 3.9. :pr:`179`"
 
 #: ../../CHANGES.rst:38 4f318e1e657f471a8d0d8294b9acc9c9
 msgid "[0.0.55] - 2024-08-30"
-msgstr ""
+msgstr "[0.0.55] - 2024-08-30"
 
 #: ../../CHANGES.rst:42 eb3a9d38860f40cebd255a348218bd62
 msgid "Use poetry-core build backend. :pr:`178`"
 msgstr ""
+"Utilisation de `poetry-core` comme outil de construction de paquets. :pr:`178"
 
 #: ../../CHANGES.rst:45 57daa02be9184f998cdff17e8a34e2a5
 msgid "[0.0.54] - 2024-07-25"
-msgstr ""
+msgstr "[0.0.54] - 2024-07-25"
 
 #: ../../CHANGES.rst:49 b5c787c52c8d4bbb8fb68b84104780a9
 msgid ""
 "Group member removal can be achieved from the group edition page "
 ":issue:`192`"
 msgstr ""
+"La suppression des membres de groupes peut être effectuée depuis la page d’"
+"édition des groupes :issue:`192`"
 
 #: ../../CHANGES.rst:50 7992eed042904424ac33cf866a27b04b
 msgid "Model management commands :issue:`117` :issue:`54`"
@@ -252,7 +257,6 @@ msgstr ""
 "préfixe des variables d’environnement."
 
 #: ../../CHANGES.rst:71 3837079e13ad4b91812ba85098ae0f85
-#, fuzzy
 msgid "[0.0.52] - 2024-04-22"
 msgstr "[0.0.52] - 2024-04-22"
 
@@ -264,23 +268,23 @@ msgstr ""
 
 #: ../../CHANGES.rst:79 4e1c06838a964523a5f3152cff12c745
 msgid "Locked users cannot be impersonated anymore."
-msgstr ""
+msgstr "Les comptes verrouillés ne peuvent plus être incarnés."
 
 #: ../../CHANGES.rst:80 279ee70c54204bdeb774ad443da884b3
 msgid "Minimum python requirement is 3.9."
-msgstr ""
+msgstr "La version minimum requise de Python est 3.9."
 
 #: ../../CHANGES.rst:83 50150ebfa4ee46f89359c2ac24a23afa
 msgid "[0.0.51] - 2024-04-09"
-msgstr ""
+msgstr "[0.0.51] - 2024-04-09"
 
 #: ../../CHANGES.rst:87 cef19dd2bbe34a82ae327ae3ef555e64
 msgid "Display the menu bar on error pages."
-msgstr ""
+msgstr "Affichage de la barre de menu sur les pages d’erreur."
 
 #: ../../CHANGES.rst:90 c2c4f10439aa46fca505b6d66dc12fe5
 msgid "[0.0.50] - 2024-04-09"
-msgstr ""
+msgstr "[0.0.50] - 2024-04-09"
 
 #: ../../CHANGES.rst:94 2d669c2640004f48a8a90b817e7102e6
 msgid "Sign in/out events are logged in :issue:`177`"
@@ -292,31 +296,33 @@ msgstr ""
 
 #: ../../CHANGES.rst:99 1109da2610e54dce877fdaf7303ccb7c
 msgid "Compatibility with old sessions IDs."
-msgstr ""
+msgstr "Compatibilité avec les anciens identifiants de session."
 
 #: ../../CHANGES.rst:102 3594c96423614043905b1a659a2a5f75
 msgid "[0.0.49] - 2024-04-08"
-msgstr ""
+msgstr "[0.0.49] - 2024-04-08"
 
 #: ../../CHANGES.rst:106 c3135f57d77e4af7ba16a158aa3940bd
 msgid "LDAP user group removal."
-msgstr ""
+msgstr "Suppression des groupes d’utilisateurs avec LDAP."
 
 #: ../../CHANGES.rst:107 bbd2812d503c4219a82acab0da1eebe4
 msgid "Display an error message when trying to remove the last user from a group."
 msgstr ""
+"Affichage d’un message d’erreur lors de tentatives de suppression du dernier "
+"utilisateur d’un groupe."
 
 #: ../../CHANGES.rst:110 580674f1c6c84d43b9f2e36bcb63fd19
 msgid "[0.0.48] - 2024-04-08"
-msgstr ""
+msgstr "[0.0.48] - 2024-04-08"
 
 #: ../../CHANGES.rst:114 b1e83de115e94004a0286ceb6fb0f43e
 msgid "LDAP objectClass guessing exception."
-msgstr ""
+msgstr "Exception lors de la détection des classes d’object LDAP."
 
 #: ../../CHANGES.rst:117 5869129c770142f593d850e7769b53d7
 msgid "[0.0.47] - 2024-04-08"
-msgstr ""
+msgstr "[0.0.47] - 2024-04-08"
 
 #: ../../CHANGES.rst:121 672cd5d7429b4bf19e618b27f39b3bed
 msgid "Lazy permission loading exception."
@@ -324,7 +330,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:124 24c6fd1776144722b58f994f4897f31a
 msgid "[0.0.46] - 2024-04-08"
-msgstr ""
+msgstr "[0.0.46] - 2024-04-08"
 
 #: ../../CHANGES.rst:128 45d2c205d12f4e4a8ef2c3dd3b260716
 msgid ""
@@ -334,7 +340,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:131 8037692934c0458e9af204802119652e
 msgid "[0.0.45] - 2024-04-04"
-msgstr ""
+msgstr "[0.0.45] - 2024-04-04"
 
 #: ../../CHANGES.rst:135 6c147cf1a17149f793621d4e849340d4
 msgid ""
@@ -344,23 +350,23 @@ msgstr ""
 
 #: ../../CHANGES.rst:138 7a6e44921aed4e0d8853ed35180af7eb
 msgid "[0.0.44] - 2024-03-29"
-msgstr ""
+msgstr "[0.0.44] - 2024-03-29"
 
 #: ../../CHANGES.rst:142 642b0bf28736445e9dc4bf118eb694c5
 msgid "Fix the default LDAP USER_FILTER value"
-msgstr ""
+msgstr "Correction de la valeur par défaut de ``USER_FILTER`` pour LDAP"
 
 #: ../../CHANGES.rst:143 8102138696f442faa87e34a341b6a386
 msgid "Fix the OIDC feature detection"
-msgstr ""
+msgstr "Correction de la détection de la fonctionnalité OIDC"
 
 #: ../../CHANGES.rst:146 176cf871ea17465483927093589a62bf
 msgid "[0.0.43] - 2024-03-29"
-msgstr ""
+msgstr "[0.0.43] - 2024-03-29"
 
 #: ../../CHANGES.rst:148 d202c6932dba459eb731d4f313e26ed6
 msgid "🚨Configuration files must be updated.🚨"
-msgstr ""
+msgstr "🚨Les fichiers de configuration doivent être mis à jour.🚨"
 
 #: ../../CHANGES.rst:153 3418403c2c6c4b22ac95a1484edf0090
 msgid "Add `created` and `last_modified` datetime for all models"
@@ -394,15 +400,16 @@ msgstr ""
 
 #: ../../CHANGES.rst:166 07e9974f609349f184d5352e95803c56
 msgid "[0.0.42] - 2023-12-29"
-msgstr ""
+msgstr "[0.0.42] - 2023-12-29"
 
 #: ../../CHANGES.rst:171 55826cff5ebf47e3a0fa65745076d338
 msgid "Avoid to fail on imports if ``cryptography`` is missing."
 msgstr ""
+"Correction d’une erreur d’import lorsque ``cryptography`` était manquant."
 
 #: ../../CHANGES.rst:174 1bf1f3563cc74ca4bdadbb1d5e91e812
 msgid "[0.0.41] - 2023-12-25"
-msgstr ""
+msgstr "[0.0.41] - 2023-12-25"
 
 #: ../../CHANGES.rst:179 9b77b5fcd33e47769be00b04243124c3
 msgid "OIDC `prompt=create` support. :issue:`185` :pr:`164`"
@@ -432,7 +439,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:197 109c1ca0876a4c0e9c15bc2915eddbfb
 msgid "[0.0.39] - 2023-12-15"
-msgstr ""
+msgstr "[0.0.39] - 2023-12-15"
 
 #: ../../CHANGES.rst:202 f9008fb79f12470bb23cd30348b93d9a
 msgid "Crash when no ACL were defined"
@@ -1654,7 +1661,7 @@ msgstr ""
 #: ../../CONTRIBUTING.rst:161 ../index.rst:70 41500af8731e4ba89744089904b7c0dc
 #: b913aeba1ad5474fb1e44c894a5bfa90
 msgid "Documentation"
-msgstr ""
+msgstr "Documentation"
 
 #: ../../CONTRIBUTING.rst:163 a1e7ca49e6ba469f808cea47212aaad1
 msgid "The documentation is generated when the tests run:"
@@ -2327,7 +2334,7 @@ msgstr ""
 #: ../features.rst:28 ../features.rst:217 0378e1a22862405b9b1b019b5dca8866
 #: ebc71d5ce73c45ed98c8fd852dbc6641
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: ../features.rst:33 1ef57a6d2c9a4236bc9289554bf8ccf1
 msgid "Canaille provides an interface to manage user profiles."
@@ -2376,7 +2383,7 @@ msgstr ""
 #: ../features.rst:53 ../features.rst:140 e3dc5ad68c594a948a78ab36d9d8e316
 #: fa6296be5a994444a4df23ad4ea9565c
 msgid "Group edition"
-msgstr ""
+msgstr "Édition de groupes"
 
 #: ../features.rst:58 82b3c76e2b374f8ebdfdedab4226c025
 msgid ""
@@ -2498,7 +2505,7 @@ msgstr ""
 
 #: ../features.rst:113 622f876f79ee44d2a2d17656d798701c
 msgid "Account locking"
-msgstr ""
+msgstr "Verrouillage des comptes"
 
 #: ../features.rst:115 6cbed0d1e1c1450c97c3e29b0ce6fe4c
 msgid ""
@@ -2533,7 +2540,7 @@ msgstr ""
 
 #: ../features.rst:129 29c5e463d73c4fcaa0fa9a7545c2d002
 msgid "Account deletion"
-msgstr ""
+msgstr "Suppression des comptes"
 
 #: ../features.rst:131 7333ea043bdb40c59b9ea021e9dd93c8
 msgid ""
@@ -2574,7 +2581,7 @@ msgstr ""
 
 #: ../features.rst:156 749c0cd6b3e447728e0b5a7a32ecd5ae
 msgid "Password reset"
-msgstr ""
+msgstr "Réinitialisation des mots de passe"
 
 #: ../features.rst:158 161c7f1759084b0fae25682fb68ee789
 msgid ""
@@ -2587,7 +2594,7 @@ msgstr ""
 
 #: ../features.rst:164 b34780ff9a1d42408988b09c45e73790
 msgid "Password initialization"
-msgstr ""
+msgstr "Initialisation des mots de passe"
 
 #: ../features.rst:166 184926167dc149538673c832e5a6e8d9
 msgid ""
@@ -2804,7 +2811,7 @@ msgstr ""
 
 #: ../features.rst:281 d4a0043ab3ea4f40934ed11bbc3bc529
 msgid "Token revokation"
-msgstr ""
+msgstr "Révocation des jetons"
 
 #: ../features.rst:282 e3eb71ac04be4200bde8d2208314b110
 msgid "New consent given for client application"
