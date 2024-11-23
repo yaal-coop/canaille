@@ -1,7 +1,7 @@
 ---
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.7.4'
+    rev: 'v0.8.0'
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -29,5 +29,5 @@ repos:
     - id: codespell
       additional_dependencies:
         - tomli
-      exclude: ".*\\.min\\..*|translations|\\.css$|^tests|fomanticui"
+      exclude: ".*\\.min\\..*|translations|\\.css$|^tests|fomanticui|doc/locales"
       args: [--write-changes]
