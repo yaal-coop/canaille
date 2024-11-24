@@ -20,19 +20,19 @@ Added
 ^^^^^
 - :attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and
   :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` configuration options :issue:`174`
-- Password strength visual indicator :issue:`174`
-- Security events logs :issue:`177`
-- Support for Python 3.13 :pr:`186`
+- Password strength visual indicator. :issue:`174`
+- Security events logs. :issue:`177`
+- Support for Python 3.13. :pr:`186`
 
 Changed
 ^^^^^^^
-- Update to HTMX 2.0.3 :pr:`184`
-- Migrate from poetry to uv :pr:`187`
+- Update to `HTMX` 2.0.3. :pr:`184`
+- Migrate the Python project management tool from poetry to uv. :pr:`187`
 - The ``sql`` package extra is now split between ``sqlite``, ``postgresql`` and ``mysql``.
 
 Removed
 ^^^^^^^
-- End support for python 3.9. :pr:`179`
+- End support for Python 3.9. :pr:`179`
 
 [0.0.55] - 2024-08-30
 ---------------------
@@ -46,18 +46,18 @@ Changed
 
 Added
 ^^^^^
-- Group member removal can be achieved from the group edition page :issue:`192`
-- Model management commands :issue:`117` :issue:`54`
+- Group member removal can be achieved from the group edition page. :issue:`192`
+- Model management commands. :issue:`117` :issue:`54`
 
 Changed
 ^^^^^^^
 - Model `identifier_attributes` are fixed.
-- Bump to htmx 1.9.12 :pr:`172`
+- Bump to `HTMX` 1.9.12. :pr:`172`
 
 Fixed
 ^^^^^
 
-- Dark theme colors for better readability
+- Dark theme colors for better readability.
 - Crash for passwordless users at login when no SMTP server was configured.
 
 [0.0.53] - 2024-04-22
@@ -65,19 +65,19 @@ Fixed
 
 Added
 ^^^^^
-- `env_prefix` create_app variable can select the environment var prefix.
+- `env_prefix` :meth:`~canaille.create_app` variable can select the environment var prefix.
 
 [0.0.52] - 2024-04-22
 ---------------------
 
 Added
 ^^^^^
-- `env_file` create_app variable can customize/disable the .env file
+- `env_file` create_app variable can customize/disable the .env file.
 
 Changed
 ^^^^^^^
 - Locked users cannot be impersonated anymore.
-- Minimum python requirement is 3.9.
+- Minimum Python requirement is 3.9.
 
 [0.0.51] - 2024-04-09
 ---------------------
@@ -91,11 +91,11 @@ Changed
 
 Added
 ^^^^^
-- Sign in/out events are logged in :issue:`177`
+- Sign in/out events are logged in. :issue:`177`
 
 Fixed
 ^^^^^
-- HTMX and JAVASCRIPT configuration settings.
+- `HTMX` and `JAVASCRIPT` configuration settings.
 - Compatibility with old sessions IDs.
 
 [0.0.49] - 2024-04-08
@@ -111,7 +111,7 @@ Fixed
 
 Fixed
 ^^^^^
-- LDAP objectClass guessing exception.
+- LDAP ``objectClass`` guessing exception.
 
 [0.0.47] - 2024-04-08
 ---------------------
@@ -125,41 +125,43 @@ Fixed
 
 Fixed
 ^^^^^
-- Saving an object with the LDAP backend keeps the objectClass un-managed by Canaille. :pr:`171`
+- Saving an object with the LDAP backend keeps the ``objectClass`` un-managed by Canaille. :pr:`171`
 
 [0.0.45] - 2024-04-04
 ---------------------
 
 Changed
 ^^^^^^^
-- Internal indexation mechanism of :class:`~canaille.backends.memory.model.MemoryModel`
+- Internal indexation mechanism of :class:`~canaille.backends.memory.model.MemoryModel`.
 
 [0.0.44] - 2024-03-29
 ---------------------
 
 Fixed
 ^^^^^
-- Fix the default LDAP USER_FILTER value
-- Fix the OIDC feature detection
+- Fix the default LDAP ``USER_FILTER`` value.
+- Fix the OIDC feature detection.
 
 [0.0.43] - 2024-03-29
 ---------------------
 
-🚨Configuration files must be updated.🚨
+.. warning::
+
+    Configuration files must be updated.
 
 Added
 ^^^^^
 
-- Add `created` and `last_modified` datetime for all models
-- Sitemap to the documentation :pr:`169`
-- Configuration management with pydantic-settings :issue:`138` :pr:`170`
+- Add ``created`` and ``last_modified`` datetime for all models.
+- Sitemap to the documentation. :pr:`169`
+- Configuration management with `pydantic-settings`. :issue:`138` :pr:`170`
 
 Changed
 ^^^^^^^
 
-- Use default python logging configuration format. :issue:`188` :pr:`165`
-- Bump to htmx 1.99.11 :pr:`166`
-- Use the standard tomllib python module instead of `toml` starting from python 3.11 :pr:`167`
+- Use default Python logging configuration format. :issue:`188` :pr:`165`
+- Bump to `HTMX` 1.99.11. :pr:`166`
+- Use the standard tomllib Python module instead of `toml` starting from Python 3.11. :pr:`167`
 - Use shibuya as the documentation theme :pr:`168`
 
 [0.0.42] - 2023-12-29
@@ -176,12 +178,12 @@ Fixed
 Added
 ^^^^^
 
-- OIDC `prompt=create` support. :issue:`185` :pr:`164`
+- OIDC support for the ``create`` value of the ``prompt`` parameter. :issue:`185` :pr:`164`
 
 Fixed
 ^^^^^
 
-- Correctly set up Client audience during OIDC dynamic registration.
+- Correctly set up :attr:`~canaille.oidc.basemodels.Client.audience` during OIDC dynamic registration.
 - ``post_logout_redirect_uris`` was ignored during OIDC dynamic registration.
 - Group field error prevented the registration form validation.
 
@@ -191,7 +193,7 @@ Fixed
 Added
 ^^^^^
 
-- ``THEME`` can be a relative path
+- ``THEME`` can be a relative path.
 
 [0.0.39] - 2023-12-15
 ---------------------
@@ -199,9 +201,9 @@ Added
 Fixed
 ^^^^^
 
-- Crash when no ACL were defined
-- OIDC Userinfo endpoint is also available in POST
-- Fix redirection after password reset :issue:`159`
+- Crash when no ACL were defined.
+- OIDC Userinfo endpoint is also available in POST.
+- Fix redirection after password reset. :issue:`159`
 
 [0.0.38] - 2023-12-15
 ---------------------
@@ -209,8 +211,8 @@ Fixed
 Changed
 ^^^^^^^
 
-- Convert all the png in webp. :pr:`162`
-- Update to flask 3 :issue:`161` :pr:`163`
+- Convert all the `PNG` pictures in `Webp`. :pr:`162`
+- Update to Flask 3. :issue:`161` :pr:`163`
 
 [0.0.37] - 2023-12-01
 ---------------------
@@ -218,7 +220,7 @@ Changed
 Fixed
 ^^^^^
 
-- Handle 4xx and 5xx error codes with htmx. :issue:`171` :pr:`161`
+- Handle 4xx and 5xx error codes with HTMX. :issue:`171` :pr:`161`
 
 [0.0.36] - 2023-12-01
 ---------------------
@@ -247,12 +249,12 @@ Changed
 ^^^^^^^
 
 - Model attributes cardinality is closer to SCIM model. :pr:`155`
-- Bump to htmx 1.9.9 :pr:`159`
+- Bump to `HTMX` 1.9.9. :pr:`159`
 
 Fixed
 ^^^^^
 
-- Disable HTMX boosting during the OIDC dance. :pr:`160`
+- Disable `HTMX` boosting during the OIDC dance. :pr:`160`
 
 [0.0.34] - 2023-10-02
 ---------------------
@@ -269,10 +271,10 @@ Added
 - If users register or authenticate during a OAuth Authorization
   phase, they get redirected back to that page afterwards.
   :issue:`168` :pr:`151`
-- flask-babel and pytz are now part of the `front` extras
-- Bump to fomantic-ui 2.9.3 :pr:`152`
-- Bump to htmx 1.9.6 :pr:`154`
-- Add support for python 3.12 :pr:`155`
+- flask-babel and pytz are now part of the `front` packaging extras.
+- Bump to `fomantic-ui` 2.9.3. :pr:`152`
+- Bump to `HTMX` 1.9.6. :pr:`154`
+- Support for Python 3.12. :pr:`155`
 
 [0.0.33] - 2023-08-26
 ---------------------
@@ -280,7 +282,7 @@ Added
 Fixed
 ^^^^^
 
-- OIDC jwks endpoint do not return empty kid claim
+- OIDC jwks endpoint do not return empty kid claim.
 
 Added
 ^^^^^
@@ -293,8 +295,8 @@ Added
 Added
 ^^^^^
 
-- Additional inmemory backend :issue:`30` :pr:`149`
-- Installation extras :issue:`167` :pr:`150`
+- Additional inmemory backend. :issue:`30` :pr:`149`
+- Installation extras. :issue:`167` :pr:`150`
 
 [0.0.31] - 2023-08-15
 ---------------------
@@ -302,10 +304,10 @@ Added
 Added
 ^^^^^
 
-- Configuration option to disable the forced usage of OIDC nonce :pr:`143`
-- Validate phone numbers with a regex :pr:`146`
-- Email verification :issue:`41` :pr:`147`
-- Account registration :issue:`55` :pr:`133` :pr:`148`
+- Configuration option to disable the forced usage of OIDC `nonce` parameter. :pr:`143`
+- Validate phone numbers with a regex. :pr:`146`
+- Email verification. :issue:`41` :pr:`147`
+- Account registration. :issue:`55` :pr:`133` :pr:`148`
 
 Fixed
 ^^^^^
@@ -315,24 +317,26 @@ Fixed
 Changed
 ^^^^^^^
 
-- Modals do not need use javascript at the moment. :issue:`158` :pr:`144`
+- Modals do not need use Javascript at the moment. :issue:`158` :pr:`144`
 
 [0.0.30] - 2023-07-06
 ---------------------
 
-🚨Configuration files must be updated.🚨
-Check the new format with ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``
+.. warning::
+
+    Configuration files must be updated.
+    Check the new format with ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``
 
 Added
 ^^^^^
 
-- Configuration option to disable javascript :pr:`141`
+- Configuration option to disable Javascript .:pr:`141`
 
 Changed
 ^^^^^^^
 
-- Configuration ``USER_FILTER`` is parsed with jinja.
-- Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and ``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``
+- Configuration ``USER_FILTER`` is parsed with Jinja.
+- Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and ``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``.
 
 [0.0.29] - 2023-06-30
 ---------------------
@@ -340,7 +344,7 @@ Changed
 Fixed
 ^^^^^
 
-- Disabled HTMX boosting on OIDC forms to avoid errors.
+- Disabled `HTMX` boosting on OIDC forms to avoid errors.
 
 [0.0.28] - 2023-06-30
 ---------------------
@@ -353,8 +357,10 @@ Fixed
 [0.0.27] - 2023-06-29
 ---------------------
 
-🚨Configuration files must be updated.🚨
-Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``
+.. warning::
+
+    Configuration files must be updated.🚨
+    Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``
 
 Added
 ^^^^^
@@ -362,22 +368,22 @@ Added
 - Configuration entries can be loaded from files if the entry key has a *_FILE* suffix
   and the entry value is the path to the file. :issue:`134` :pr:`134`
 - Field list support. :issue:`115` :pr:`136`
-- Pages are boosted with HTMX :issue:`144` :issue:`145` :pr:`137`
+- Pages are boosted with `HTMX`. :issue:`144` :issue:`145` :pr:`137`
 
 Changed
 ^^^^^^^
 
-- Bump to jquery 3.7.0 :pr:`138`
+- Bump to jquery 3.7.0. :pr:`138`
 
 Fixed
 ^^^^^
 
-- Profile edition when the user RDN was not ``uid`` :issue:`148` :pr:`139`
+- Profile edition when the user RDN was not ``uid``. :issue:`148` :pr:`139`
 
 Removed
 ^^^^^^^
 
-- Stop support for python 3.7 :pr:`131`
+- Stop support for Python 3.7. :pr:`131`
 
 [0.0.26] - 2023-06-03
 ---------------------
@@ -385,7 +391,7 @@ Removed
 Added
 ^^^^^
 
-- Implemented account expiration based on OpenLDAP ppolicy overlay. Needs OpenLDAP 2.5+
+- Implemented account expiration based on OpenLDAP ppolicy overlay. Needs OpenLDAP 2.5+.
   :issue:`13` :pr:`118`
 - Timezone configuration entry. :issue:`137` :pr:`130`
 
@@ -398,24 +404,26 @@ Fixed
 [0.0.25] - 2023-05-05
 ---------------------
 
-🚨Configuration files must be updated.🚨
-Check the new format with ``git diff 0.0.25 0.0.24 canaille/conf/config.sample.toml``
+.. warning::
+
+   Configuration files must be updated.
+    Check the new format with ``git diff 0.0.25 0.0.24 canaille/conf/config.sample.toml``
 
 Changed
 ^^^^^^^
 
 - Renamed user model attributes to match SCIM naming convention. :pr:`123`
-- Moved OIDC related configuration entries in ``OIDC``
-- Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``
-- Bumped to htmx 1.9.0 :pr:`124`
+- Moved OIDC related configuration entries in ``OIDC``.
+- Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``.
+- Bumped to `HTMX` 1.9.0. :pr:`124`
 - ACL filters are no more LDAP filters but user attribute mappings. :pr:`125`
-- Bumped to htmx 1.9.2 :pr:`127`
+- Bumped to `HTMX` 1.9.2. :pr:`127`
 
 Fixed
 ^^^^^
 
 - ``OIDC.JWT.MAPPING`` configuration entry is really optional now.
-- Fixed empty model attributes registration :pr:`125`
+- Fixed empty model attributes registration. :pr:`125`
 - Password initialization mails were not correctly sent. :pr:`128`
 
 [0.0.24] - 2023-04-07
@@ -434,7 +442,7 @@ Added
 
 - Organization field. :pr:`116`
 - ETag and Last-Modified headers on user photos. :pr:`116`
-- Dynamic form validation :pr:`120`
+- Dynamic form validation. :pr:`120`
 
 Changed
 ^^^^^^^
@@ -452,7 +460,7 @@ Fixed
 
 Fixed
 ^^^^^
-- faker is not imported anymore when the `clean` command is called.
+- The `Faker` library is not imported anymore when the `clean` command is called.
 
 [0.0.21] - 2023-03-12
 ---------------------
@@ -461,7 +469,7 @@ Added
 ^^^^^
 
 - Display TOS and policy URI on the consent list page. :pr:`102`
-- Admin token deletion :pr:`100` :pr:`101`
+- Admin token deletion. :pr:`100` :pr:`101`
 - Revoked consents can be restored. :pr:`103`
 - Pre-consented clients are displayed in the user consent list,
   and their consents can be revoked. :issue:`69` :pr:`103`
@@ -470,19 +478,19 @@ Added
 - SMTP SSL support. :pr:`108`
 - Server side pagination. :issue:`114` :pr:`111`
 - Department number support. :issue:`129`
-- Address edition support (but not in the OIDC claims yet) :pr:`112`
-- Title edition support :pr:`113`
+- Address edition support (but not in the OIDC claims yet). :pr:`112`
+- Title edition support. :pr:`113`
 
 Fixed
 ^^^^^
 
-- Client deletion also deletes related Consent, Token and
-  AuthorizationCode objects. :issue:`126` :pr:`98`
+- Client deletion also deletes related :class:`~canaille.oidc.basemodels.Consent`, :class:`~canaille.oidc.basemodels.Token` and
+  :class:`~canaille.oidc.basemodels.AuthorizationCode` objects. :issue:`126` :pr:`98`
 
 Changed
 ^^^^^^^
 
-- Removed datatables.
+- Removed the `DataTables` Javascript library.
 
 [0.0.20] - 2023-01-28
 ---------------------
@@ -491,17 +499,17 @@ Added
 ^^^^^
 
 - Spanish translation. :pr:`85` :pr:`88`
-- Dedicated connectivity test email :pr:`89`
-- Update to jquery 3.6.3 :pr:`90`
-- Update to fomantic-ui 2.9.1 :pr:`90`
-- Update to datatables 1.13.1 :pr:`90`
+- Dedicated connectivity test email. :pr:`89`
+- Update to jquery 3.6.3. :pr:`90`
+- Update to fomantic-ui 2.9.1. :pr:`90`
+- Update to DataTables 1.13.1. :pr:`90`
 
 Fixed
 ^^^^^
 
 - Fix typos and grammar errors. :pr:`84`
 - Fix wording and punctuations. :pr:`86`
-- Fix HTML lang tag :issue:`122` :pr:`87`
+- Fix HTML lang tag. :issue:`122` :pr:`87`
 - Automatically trims the HTML translated strings. :pr:`91`
 - Fixed dynamic registration scope management. :issue:`123` :pr:`93`
 
@@ -521,7 +529,7 @@ Fixed
 ^^^^^
 
 - OIDC end_session was not returning the ``state`` parameter in the
-  ``post_logout_redirect_uri`` :pr:`82`
+  ``post_logout_redirect_uri``. :pr:`82`
 
 [0.0.17] - 2022-12-26
 ---------------------
@@ -549,7 +557,7 @@ Added
 - User can chose their favourite display name. :pr:`77`
 - Bumped to authlib 1.2. :pr:`78`
 - Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management
-  Protocol :pr:`79`
+  Protocol. :pr:`79`
 - Added ``nonce`` to the ``claims_supported`` server metadata list.
 
 [0.0.14] - 2022-11-29
@@ -566,7 +574,7 @@ Fixed
 ^^^^^
 
 - Fixed a bug on the contacts field in the admin client form following
-  the LDAP schema update of 0.0.12
+  the LDAP schema update of 0.0.12.
 - Fixed a bug happening during RP initiated logout on clients without
   `post_logout_redirect_uri` defined.
 - Gitlab CI fix. :pr:`64`
@@ -580,7 +588,7 @@ Added
 ^^^^^
 
 - Python 3.11 support. :pr:`61`
-- apparmor slapd configuration instructions in CONTRIBUTING.rst :pr:`66`
+- ``apparmor`` slapd configuration instructions in ``CONTRIBUTING.rst``. :pr:`66`
 - ``preferredLanguage`` attribute support. :pr:`75`
 
 Changed
@@ -601,8 +609,8 @@ Added
 ^^^^^
 
 - Basic WebFinger endpoint. :pr:`59`
-- Bumped to FomanticUI 2.9.0 00ffffee
-- Implemented Dynamic Client Registration :pr:`60`
+- Bumped to FomanticUI 2.9.0.
+- Implemented Dynamic Client Registration. :pr:`60`
 
 [0.0.11] - 2022-08-11
 ---------------------
@@ -635,20 +643,20 @@ Added
 
 - ``DISABLE_PASSWORD_RESET`` configuration option to disable password recovery. :pr:`46`
 - ``edit_self`` ACL permission to control user self edition. :pr:`47`
-- Implemented RP-initiated logout :pr:`54`
+- `RP-initiated logout` implementation. :pr:`54`
 
 Changed
 ^^^^^^^
 
-- Bumped to authlib 1 :pr:`48`
-- documentation improvements :pr:`50`
-- use poetry instead of setuptools :pr:`51`
-- additional nonce tests :pr:`52`
+- Bumped to Authlib 1. :pr:`48`
+- Various documentation improvements. :pr:`50`
+- Use poetry instead of setuptools as project management tool. :pr:`51`
+- Additional ``nonce`` tests. :pr:`52`
 
 Fixed
 ^^^^^
 - ``HIDE_INVALID_LOGIN`` behavior and default value.
-- mo files are not versioned anymore :pr:`49` :pr:`53`
+- Compiled translation catalogs are not versioned anymore. :pr:`49` :pr:`53`
 
 [0.0.8] - 2022-03-15
 --------------------
@@ -656,7 +664,7 @@ Fixed
 Fixed
 ^^^^^
 
-- Fixed dependencies
+- Fixed dependencies.
 
 [0.0.7] - 2022-03-15
 --------------------
@@ -664,7 +672,7 @@ Fixed
 Fixed
 ^^^^^
 
-- Fixed spaces and escaped special char in ldap cn/dn :pr:`43`
+- Fixed spaces and escaped special char in LDAP ``cn/dn`` attributes. :pr:`43`
 
 [0.0.6] - 2022-03-08
 --------------------
@@ -677,8 +685,8 @@ Changed
 Fixed
 ^^^^^
 
-- Default groups on invitations :pr:`41`
-- Schemas are shipped within the canaille package :pr:`42`
+- Default groups on invitations. :pr:`41`
+- LDAP schemas are shipped within the Canaille package. :pr:`42`
 
 [0.0.5] - 2022-02-17
 --------------------
@@ -686,13 +694,13 @@ Fixed
 Changed
 ^^^^^^^
 
-- LDAP model objects have new identifiers :pr:`37`
+- LDAP model objects have new identifiers. :pr:`37`
 
 Fixed
 ^^^^^
 
-- Admin menu dropdown display :pr:`39`
-- `GROUP_ID_ATTRIBUTE` configuration typo :pr:`40`
+- Admin menu dropdown display. :pr:`39`
+- ``GROUP_ID_ATTRIBUTE`` configuration typo. :pr:`40`
 
 [0.0.4] - 2022-02-16
 --------------------
@@ -700,37 +708,37 @@ Fixed
 Added
 ^^^^^
 
-- Client preauthorization :pr:`11`
-- LDAP permissions check with the check command :pr:`12`
+- Client pre-authorization. :pr:`11`
+- LDAP permissions check with the check command. :pr:`12`
 - Update consents when a scope required is larger than the scope of an already
-  given consent :pr:`13`
-- Theme customization :pr:`15`
-- Logging configuration :pr:`16`
-- Installation command :pr:`17`
-- Invitation links :pr:`18`
-- Advanced permissions :pr:`20`
-- An option to not use OIDC :pr:`23`
-- Disable some features when no SMTP server is configured :pr:`24`
-- Login placeholder dynamically generated according to the configuration :pr:`25`
-- Added an option to tune object IDs :pr:`26`
-- Avatar support :pr:`27`
-- Dynamical and configurable JWT claims :pr:`28`
-- UI improvements :pr:`29`
-- Invitation links expiration :pr:`30`
-- Invitees can choose their IDs :pr:`31`
-- LDAP backend refactoring :pr:`35`
+  given consent. :pr:`13`
+- Theme customization. :pr:`15`
+- Logging configuration. :pr:`16`
+- Installation command. :pr:`17`
+- Invitation links. :pr:`18`
+- Advanced permissions. :pr:`20`
+- An option to not use OIDC. :pr:`23`
+- Disable some features when no SMTP server is configured. :pr:`24`
+- Login placeholder dynamically generated according to the configuration. :pr:`25`
+- Added an option to tune object IDs. :pr:`26`
+- Avatar support. :pr:`27`
+- Dynamical and configurable JWT claims. :pr:`28`
+- UI improvements. :pr:`29`
+- Invitation links expiration. :pr:`30`
+- Invitees can choose their IDs. :pr:`31`
+- LDAP backend refactoring. :pr:`35`
 
 Fixed
 ^^^^^
 
-- Fixed ghost members in a group :pr:`14`
-- Fixed email sender names :pr:`19`
-- Fixed filter being not escaped :pr:`21`
-- Demo script good practices :pr:`32`
-- Binary path for Debian :pr:`33`
+- Fixed ghost members in a group. :pr:`14`
+- Fixed email sender names. :pr:`19`
+- Fixed filter being not escaped. :pr:`21`
+- Demo script good practices. :pr:`32`
+- Binary path for Debian. :pr:`33`
 - Last name was not mandatory in the forms while this was mandatory
-  in the LDAP server :pr:`34`
-- Spelling typos :pr:`36`
+  in the LDAP server. :pr:`34`
+- Spelling typos. :pr:`36`
 
 [0.0.3] - 2021-10-13
 --------------------
@@ -738,7 +746,7 @@ Fixed
 Added
 ^^^^^
 
-- Two-steps sign-in :issue:`49`
+- Two-steps sign-in. :issue:`49`
 - Tokens can have several audiences. :issue:`62` :pr:`9`
 - Configuration check command. :issue:`66` :pr:`8`
 - Groups management. :issue:`12` :pr:`6`
@@ -759,10 +767,10 @@ Added
 - Adapt mobile keyboards to login page fields. :issue:`2`
 - Password recovery interface. :issue:`3`
 - User profile interface. :issue:`4`
-- Renamed the project *canaille*. :issue:`5`
+- Renamed the project *Canaille*. :issue:`5`
 - Command to remove old tokens. :issue:`17`
 - Improved password recovery email. :issue:`14` :issue:`26`
-- Use flask `SERVER_NAME` configuration variable instead of `URL`. :issue:`24`
+- Use Flask `SERVER_NAME` configuration variable instead of `URL`. :issue:`24`
 - Improved consents page. :issue:`27`
 - Admin user page. :issue:`8`
 - Project logo. :pr:`29`
