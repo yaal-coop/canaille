@@ -115,6 +115,10 @@ html_context = {
     "source_repo": "canaille",
     "source_version": "main",
     "source_docs_path": "/doc/",
+    "languages": [
+        ("English", "/en/"),
+        ("Français", "/fr/"),
+    ],
 }
 
 # -- Options for HTMLHelp output ------------------------------------------
