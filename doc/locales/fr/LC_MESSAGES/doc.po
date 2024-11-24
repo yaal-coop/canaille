@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-22 17:40+0100\n"
-"PO-Revision-Date: 2024-11-23 19:17+0000\n"
+"PO-Revision-Date: 2024-11-24 18:32+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -35,7 +35,7 @@ msgid ""
 "`Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_."
 msgstr ""
 "Le format est basé sur `tenez un changelog <https://keepachangelog.com/fr/1.0"
-".0/>`_, et ce projet adhère à la politique de `Semantic Versioning "
+".0/>`_, et ce projet adhère à la politique de `versionnage sémantique "
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 f50c0c44028e40ffa2feb0f9b2b3a2ab
@@ -226,7 +226,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:50 7992eed042904424ac33cf866a27b04b
 msgid "Model management commands :issue:`117` :issue:`54`"
-msgstr ""
+msgstr "Commande de gestion des modèles :issue:`117` :issue:`54`"
 
 #: ../../CHANGES.rst:54 aaf3e30baa7b467ea98e1b52054fe7df
 msgid "Model `identifier_attributes` are fixed."
@@ -288,11 +288,11 @@ msgstr "[0.0.50] - 2024-04-09"
 
 #: ../../CHANGES.rst:94 2d669c2640004f48a8a90b817e7102e6
 msgid "Sign in/out events are logged in :issue:`177`"
-msgstr ""
+msgstr "Journalisation des évènements de connexion et déconnexion :issue:`177`"
 
 #: ../../CHANGES.rst:98 d9f688dfcb194333b8c3f88e25414a12
 msgid "HTMX and JAVASCRIPT configuration settings."
-msgstr ""
+msgstr "Paramètres de configuration `HTMX` et `JAVASCRIPT`."
 
 #: ../../CHANGES.rst:99 1109da2610e54dce877fdaf7303ccb7c
 msgid "Compatibility with old sessions IDs."
@@ -326,7 +326,7 @@ msgstr "[0.0.47] - 2024-04-08"
 
 #: ../../CHANGES.rst:121 672cd5d7429b4bf19e618b27f39b3bed
 msgid "Lazy permission loading exception."
-msgstr ""
+msgstr "Exception lors du chargement paresseux des permissions."
 
 #: ../../CHANGES.rst:124 24c6fd1776144722b58f994f4897f31a
 msgid "[0.0.46] - 2024-04-08"
@@ -337,6 +337,8 @@ msgid ""
 "Saving an object with the LDAP backend keeps the objectClass un-managed "
 "by Canaille. :pr:`171`"
 msgstr ""
+"La sauvegarde des objets avec LDAP garde les valeurs de `objectClass` non "
+"gérés par Canaille. :pr:`171"
 
 #: ../../CHANGES.rst:131 8037692934c0458e9af204802119652e
 msgid "[0.0.45] - 2024-04-04"
@@ -347,6 +349,8 @@ msgid ""
 "Internal indexation mechanism of "
 ":class:`~canaille.backends.memory.model.MemoryModel`"
 msgstr ""
+"Mécanisme d’indexation interne de :class:`~canaille.backends.memory.model."
+"MemoryModel`"
 
 #: ../../CHANGES.rst:138 7a6e44921aed4e0d8853ed35180af7eb
 msgid "[0.0.44] - 2024-03-29"
@@ -370,7 +374,7 @@ msgstr "🚨Les fichiers de configuration doivent être mis à jour.🚨"
 
 #: ../../CHANGES.rst:153 3418403c2c6c4b22ac95a1484edf0090
 msgid "Add `created` and `last_modified` datetime for all models"
-msgstr ""
+msgstr "Ajout des dates `created` et `last_modified` pour tous les modèles"
 
 #: ../../CHANGES.rst:154 2faf3c09645a47a389e7ee28401c1cc1
 msgid "Sitemap to the documentation :pr:`169`"
