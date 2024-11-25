@@ -10,6 +10,9 @@ from canaille.backends import Backend
 
 
 def listify(value):
+    if value is None:
+        return []
+
     return value if isinstance(value, list) else [value]
 
 
