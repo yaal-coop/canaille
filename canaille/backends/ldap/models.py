@@ -38,6 +38,7 @@ class User(canaille.core.models.User, LDAPObject):
         "organization": "o",
         "groups": "memberOf",
         "lock_date": "pwdEndTime",
+        "password_attribute": "pwdAttribute",
     }
 
     def match_filter(self, filter):
@@ -87,8 +88,6 @@ class Group(canaille.core.models.Group, LDAPObject):
         "display_name": "cn",
         "members": "member",
         "description": "description",
-        "password_attribute": "pwdAttribute",
-        "password_lifetime": "pwdMaxAge",
     }
 
 

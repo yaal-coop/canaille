@@ -459,9 +459,7 @@ def profile_create(current_app, form):
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
     user.formatted_name = f"{given_name} {family_name}".strip()
-    user.last_login = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
+    user.password_attribute = "userPassword"
     Backend.instance.save(user)
 
     if form["password1"].data:
@@ -583,6 +581,7 @@ def profile_edition_remove_email(user, edited_user, email):
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, edited_user):
+    print(user.last_login)
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
     ):

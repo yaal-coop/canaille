@@ -28,7 +28,7 @@ class LDAPSettings(BaseModel):
     For instance `ou=users,dc=mydomain,dc=tld`.
     """
 
-    USER_CLASS: str = "inetOrgPerson"
+    USER_CLASS: list[str] = ["inetOrgPerson", "pwdPolicy"]
     """The object class to use for creating new users."""
 
     USER_RDN: str = "uid"
@@ -48,7 +48,7 @@ class LDAPSettings(BaseModel):
     For instance `"ou=groups,dc=mydomain,dc=tld"`.
     """
 
-    GROUP_CLASS: list[str] = ["groupOfNames", "pwdPolicy"]
+    GROUP_CLASS: str = "groupOfNames"
     """The object class to use for creating new groups."""
 
     GROUP_RDN: str = "cn"

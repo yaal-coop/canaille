@@ -249,6 +249,8 @@ class User(Model):
     lock_date: datetime.datetime | None = None
     """A DateTime indicating when the resource was locked."""
 
+    password_attribute: str | None = None
+
     _readable_fields = None
     _writable_fields = None
     _permissions = None
@@ -355,7 +357,3 @@ class Group(Model):
     """
 
     description: str | None = None
-
-    password_attribute: str | None = None
-
-    password_lifetime: int | None = None
