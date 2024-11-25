@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-25 14:07+0100\n"
-"PO-Revision-Date: 2024-11-24 18:32+0000\n"
+"PO-Revision-Date: 2024-11-26 12:52+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -147,22 +147,16 @@ msgstr ""
 "MIN_PASSWORD_LENGHT` :issue:`174`"
 
 #: ../../CHANGES.rst:23 cdab69b7537c452caa3eadb572993a40
-#, fuzzy
-#| msgid "Password strength visual indicator :issue:`174`"
 msgid "Password strength visual indicator. :issue:`174`"
-msgstr "Indicateur visuel de la force des mots de pase :issue:`174`"
+msgstr "Indicateur visuel de la force des mots de passe :issue:`174`"
 
 #: ../../CHANGES.rst:24 2ae6bad543d64621886630d3db7832e6
-#, fuzzy
-#| msgid "Security events logs :issue:`177`"
 msgid "Security events logs. :issue:`177`"
-msgstr "Journalisation des évènements de sécurité :issue:`177`"
+msgstr "Journalisation des évènements de sécurité. :issue:`177`"
 
 #: ../../CHANGES.rst:25 40ab5f1ed3bc406fb662d0025e5b3212
-#, fuzzy
-#| msgid "Support for Python 3.13 :pr:`186`"
 msgid "Support for Python 3.13. :pr:`186`"
-msgstr "Support de Python 3.13 :pr:`186`"
+msgstr "Support de Python 3.13. :pr:`186`"
 
 #: ../../CHANGES.rst:28 ../../CHANGES.rst:41 ../../CHANGES.rst:53
 #: ../../CHANGES.rst:78 ../../CHANGES.rst:86 ../../CHANGES.rst:134
@@ -184,16 +178,13 @@ msgid "Changed"
 msgstr "Modifié"
 
 #: ../../CHANGES.rst:29 c7940e351aac4939b964ccb80cebd616
-#, fuzzy
-#| msgid "Update to HTMX 2.0.3 :pr:`184`"
 msgid "Update to `HTMX` 2.0.3. :pr:`184`"
-msgstr "Mise à jours vers HTMX 2.0.3 :pr:`184`"
+msgstr "Mise à jours vers HTMX 2.0.3. :pr:`184`"
 
 #: ../../CHANGES.rst:30 dfc1569ae0ec412d86503a0695522fa5
-#, fuzzy
-#| msgid "Migrate from poetry to uv :pr:`187`"
 msgid "Migrate the Python project management tool from poetry to uv. :pr:`187`"
-msgstr "Migration de poetry à uv :pr:`187`"
+msgstr ""
+"Migration de poetry à uv comme outil de gestion de projet Python. :pr:`187`"
 
 #: ../../CHANGES.rst:31 40c97bec2553487fa62efc486d3ee444
 msgid ""
@@ -210,8 +201,6 @@ msgid "Removed"
 msgstr "Supprimé"
 
 #: ../../CHANGES.rst:35 3f97d00692d047dbbecb5c18a2d45b07
-#, fuzzy
-#| msgid "End support for python 3.9. :pr:`179`"
 msgid "End support for Python 3.9. :pr:`179`"
 msgstr "Fin de support pour Python 3.9. :pr:`179`"
 
@@ -229,32 +218,24 @@ msgid "[0.0.54] - 2024-07-25"
 msgstr "[0.0.54] - 2024-07-25"
 
 #: ../../CHANGES.rst:49 062bcc176aac499384187fcb06e2a00b
-#, fuzzy
-#| msgid ""
-#| "Group member removal can be achieved from the group edition page :issue:"
-#| "`192`"
 msgid ""
 "Group member removal can be achieved from the group edition page. :issue:"
 "`192`"
 msgstr ""
-"La suppression des membres de groupes peut être effectuée depuis la page "
-"d’édition des groupes :issue:`192`"
+"La suppression des membres de groupes peut être effectuée depuis la page d’"
+"édition des groupes. :issue:`192`"
 
 #: ../../CHANGES.rst:50 8680469549c74d37a52b1c6252c74d57
-#, fuzzy
-#| msgid "Model management commands :issue:`117` :issue:`54`"
 msgid "Model management commands. :issue:`117` :issue:`54`"
-msgstr "Commande de gestion des modèles :issue:`117` :issue:`54`"
+msgstr "Commande de gestion des modèles. :issue:`117` :issue:`54`"
 
 #: ../../CHANGES.rst:54 c19428c67d8f4d198d0ab97defe14fb3
 msgid "Model `identifier_attributes` are fixed."
 msgstr "L’attribut `identifier_attributes` des models est fixe."
 
 #: ../../CHANGES.rst:55 571f38b1484b43e2beed6f33eb675700
-#, fuzzy
-#| msgid "Bump to htmx 1.9.12 :pr:`172`"
 msgid "Bump to `HTMX` 1.9.12. :pr:`172`"
-msgstr "Mise-à-jour vers HTMX 1.9.12 :pr:`172`"
+msgstr "Mise-à-jour vers `HTMX 1.9.12. :pr:`172`"
 
 #: ../../CHANGES.rst:60 9e54da898699471194477836791f08a6
 #, fuzzy
@@ -388,32 +369,24 @@ msgid "[0.0.45] - 2024-04-04"
 msgstr "[0.0.45] - 2024-04-04"
 
 #: ../../CHANGES.rst:135 9690ab893eef4290a52b1137f24b9be8
-#, fuzzy
-#| msgid ""
-#| "Internal indexation mechanism of :class:`~canaille.backends.memory.model."
-#| "MemoryModel`"
 msgid ""
 "Internal indexation mechanism of :class:`~canaille.backends.memory.model."
 "MemoryModel`."
 msgstr ""
 "Mécanisme d’indexation interne de :class:`~canaille.backends.memory.model."
-"MemoryModel`"
+"MemoryModel`."
 
 #: ../../CHANGES.rst:138 be79650410904879b53da2c62ac092d5
 msgid "[0.0.44] - 2024-03-29"
 msgstr "[0.0.44] - 2024-03-29"
 
 #: ../../CHANGES.rst:142 1c2533bc36b548c59361d7b3e304cce6
-#, fuzzy
-#| msgid "Fix the default LDAP USER_FILTER value"
 msgid "Fix the default LDAP ``USER_FILTER`` value."
-msgstr "Correction de la valeur par défaut de ``USER_FILTER`` pour LDAP"
+msgstr "Correction de la valeur par défaut de ``USER_FILTER`` pour LDAP."
 
 #: ../../CHANGES.rst:143 c429e79bd5aa46edb7b4cd1bd87c3ad8
-#, fuzzy
-#| msgid "Fix the OIDC feature detection"
 msgid "Fix the OIDC feature detection."
-msgstr "Correction de la détection de la fonctionnalité OIDC"
+msgstr "Correction de la détection de la fonctionnalité OIDC."
 
 #: ../../CHANGES.rst:146 51a43a574cc943b5912effdaa67f8690
 msgid "[0.0.43] - 2024-03-29"
@@ -421,45 +394,45 @@ msgstr "[0.0.43] - 2024-03-29"
 
 #: ../../CHANGES.rst:150 ../../CHANGES.rst:409 02e8eccba3b74e889a68c78dc51e0a24
 #: 163717d0290841848f3b3a4c7a95efb4
-#, fuzzy
-#| msgid "🚨Configuration files must be updated.🚨"
 msgid "Configuration files must be updated."
-msgstr "🚨Les fichiers de configuration doivent être mis à jour.🚨"
+msgstr "Les fichiers de configuration doivent être mis à jour."
 
 #: ../../CHANGES.rst:155 a39fba5f25754fdc9f0f339142ff0320
-#, fuzzy
-#| msgid "Add `created` and `last_modified` datetime for all models"
 msgid "Add ``created`` and ``last_modified`` datetime for all models."
-msgstr "Ajout des dates `created` et `last_modified` pour tous les modèles"
+msgstr "Ajout des dates ``created`` et ``last_modified`` pour tous les modèles."
 
 #: ../../CHANGES.rst:156 b1e37ddf62994798a70a23cff76ed4d6
 msgid "Sitemap to the documentation. :pr:`169`"
-msgstr ""
+msgstr "Cartographie de la documentation. :pr:`169"
 
 #: ../../CHANGES.rst:157 54cf20bc59af4634af6b3f2d0e10c5e9
 msgid ""
 "Configuration management with `pydantic-settings`. :issue:`138` :pr:`170`"
 msgstr ""
+"Gestion des paramètres de configuration avec `pydantic-settings`. "
+":issue:`138` :pr:`170`"
 
 #: ../../CHANGES.rst:162 689b4f88ba4b43db8c8b1a7bff0aebe6
 msgid "Use default Python logging configuration format. :issue:`188` :pr:`165`"
 msgstr ""
+"Utilisation de la configuration de journalisation par défaut de Python. "
+":issue:`188` :pr:`165`"
 
 #: ../../CHANGES.rst:163 7d18c66450654e25a65749ea273b859d
-#, fuzzy
-#| msgid "Bump to htmx 1.9.12 :pr:`172`"
 msgid "Bump to `HTMX` 1.99.11. :pr:`166`"
-msgstr "Mise-à-jour vers HTMX 1.9.12 :pr:`172`"
+msgstr "Mise à jour vers ``HTMX`` 1.9.12. :pr:`172`"
 
 #: ../../CHANGES.rst:164 9d053f12577548bc8cff1add00376bae
 msgid ""
 "Use the standard tomllib Python module instead of `toml` starting from "
 "Python 3.11. :pr:`167`"
 msgstr ""
+"Utilisation du module Python standard `tomllib` à la place de `toml` à "
+"partir de Python 3.11. :pr:`167"
 
 #: ../../CHANGES.rst:165 fd8c1c0314b2465c9cacb4ba593eae77
 msgid "Use shibuya as the documentation theme :pr:`168`"
-msgstr ""
+msgstr "Utilisation du thème de documentation `shibuya`. :pr:`168"
 
 #: ../../CHANGES.rst:168 abc0b3ba739e4f99866d02027d8128d2
 msgid "[0.0.42] - 2023-12-29"
