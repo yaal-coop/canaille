@@ -46,6 +46,11 @@ def setup_blueprints(app):
 
         app.register_blueprint(canaille.oidc.endpoints.bp)
 
+    if "CANAILLE_SCIM" in app.config and app.config["CANAILLE_SCIM"]["ENABLE_SERVER"]:
+        import canaille.scim.endpoints
+
+        app.register_blueprint(canaille.scim.endpoints.bp)
+
 
 def setup_flask(app):
     csrf.init_app(app)
