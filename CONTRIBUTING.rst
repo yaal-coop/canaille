@@ -157,11 +157,6 @@ The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
   not depend on jQuery at all.
   See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_.
 
-Translations
-------------
-
-.. include:: ../../canaille/translations/README.rst
-
 Documentation
 -------------
 
@@ -175,9 +170,20 @@ You can also run sphinx by hand, that should be faster since it avoids the tox e
 
 .. code-block:: bash
 
-   sphinx-build doc build/sphinx/html
+   sphinx-build doc build/sphinx/html/en
 
-The generated documentation is located at ``build/sphinx/html``.
+The generated documentation is located at ``build/sphinx/html/en``.
+
+Code translation
+----------------
+
+.. include:: ../../canaille/translations/README.rst
+
+
+Documentation translation
+-------------------------
+
+.. include:: ../locales/readme.rst
 
 Publish a new release
 ---------------------

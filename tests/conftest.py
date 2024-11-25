@@ -152,7 +152,7 @@ def configuration(smtpd):
                 "disable_existing_loggers": False,
             },
             "ADMIN_EMAIL": "admin_default_mail@mydomain.test",
-            "API_URL_HIBP": "https://api.pwnedpasswords.test/range/",
+            "PASSWORD_COMPROMISSION_CHECK_API_URL": "https://api.pwnedpasswords.test/range/",
         },
     }
     return conf
