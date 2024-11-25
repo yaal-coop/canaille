@@ -159,6 +159,9 @@ postgresql = [
     { name = "sqlalchemy-json" },
     { name = "sqlalchemy-utils" },
 ]
+scim = [
+    { name = "scim2-models" },
+]
 sentry = [
     { name = "sentry-sdk" },
 ]
@@ -191,6 +194,7 @@ dev = [
     { name = "pytest-lazy-fixtures" },
     { name = "pytest-smtpd" },
     { name = "pytest-xdist" },
+    { name = "scim2-tester" },
     { name = "setuptools", marker = "python_full_version >= '3.12'" },
     { name = "slapd" },
     { name = "time-machine" },
@@ -223,6 +227,7 @@ requires-dist = [
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "requests", specifier = ">=2.32.3" },
+    { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.2.2" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
     { name = "sqlalchemy", extras = ["mysql-connector"], marker = "extra == 'mysql'", specifier = ">=2.0.23" },
@@ -260,6 +265,7 @@ dev = [
     { name = "pytest-lazy-fixtures", specifier = ">=1.0.7" },
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
+    { name = "scim2-tester", specifier = ">=0.1.7" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0" },
     { name = "slapd", specifier = ">=0.1.5" },
     { name = "time-machine", specifier = ">=2.14.1" },
@@ -1219,6 +1225,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/62/51/72c18c55cf2f46ff4f91ebcc8f75aa30f7305f3d726be3f4ebffb4ae972b/pydantic-2.10.3-py3-none-any.whl", hash = "sha256:be04d85bbc7b65651c5f8e6b9976ed9c6f41782a55524cef079a34a0bb82144d", size = 456997 },
 ]
 
+[package.optional-dependencies]
+email = [
+    { name = "email-validator" },
+]
+
 [[package]]
 name = "pydantic-core"
 version = "2.27.1"
@@ -1519,6 +1530,42 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760", size = 131218 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f9/9b/335f9764261e915ed497fcdeb11df5dfd6f7bf257d4a6a2a686d80da4d54/requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6", size = 64928 },
+]
+
+[[package]]
+name = "scim2-client"
+version = "0.4.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "scim2-models" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c9/44/1b228a6a680ca96a1274f2ca1dd22aa3e61e656c5e829c348b27f793dc9d/scim2_client-0.4.3.tar.gz", hash = "sha256:69f55e1c296cb018cb4d71954485b6dab8153bb59935647b1e063a659c141ede", size = 85428 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fa/75/d56f022664d6db564b0e85265ab5e97b49133f796ff1d502bd652e7c075f/scim2_client-0.4.3-py3-none-any.whl", hash = "sha256:051578f4e56e57149b1b6ea06c30cd4d831b8f2278c301e92421b0ebf524b813", size = 22373 },
+]
+
+[[package]]
+name = "scim2-models"
+version = "0.2.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic", extra = ["email"] },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d6/ab/30c537635c2f4591db3a74acc90d8bd5a87107a01645f6c5a64c9f9e7619/scim2_models-0.2.10.tar.gz", hash = "sha256:1cbdaab551ec9fd06b3eaf4d1540f7c60cf065fdd6932ee5493e109d33163e2f", size = 131248 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/97/8c/ec957904e8e2d3f8cfa83c65f144aaa72527a816a485881eb7d5fb75968c/scim2_models-0.2.10-py3-none-any.whl", hash = "sha256:a8576a6c7a87bcfce9c5851f58ea1361ccbb6c53452cc96e70a2dda571cedcea", size = 39925 },
+]
+
+[[package]]
+name = "scim2-tester"
+version = "0.1.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "scim2-client" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/25/e5/d2b682ab9c46da87622271126b7be53ab82650144bff50b2243f5593bca0/scim2_tester-0.1.10.tar.gz", hash = "sha256:bcfb8bd16d3f2101ae2ebdeb24e1865b6ed21b9120ad1ecb13f4a2628e26973c", size = 67237 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4f/53/6e0bb75472cd621dc447c7cc93a45c0d4d0756e63d9f56ee9ea705710c1c/scim2_tester-0.1.10-py3-none-any.whl", hash = "sha256:9dfc8dfdab00d4d89d4ce8d4b0330c74eadfa482a52b66927c342cdef35547de", size = 17619 },
 ]
 
 [[package]]

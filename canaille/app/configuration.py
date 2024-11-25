@@ -102,6 +102,13 @@ def settings_factory(config, env_file=None, env_prefix=""):
 
         attributes["CANAILLE_OIDC"] = ((OIDCSettings | None), None)
 
+    if "CANAILLE_SCIM" in config or any(
+        var.startswith("CANAILLE_SCIM__") for var in os.environ
+    ):
+        from canaille.scim.configuration import SCIMSettings
+
+        attributes["CANAILLE_SCIM"] = ((SCIMSettings | None), None)
+
     Settings = create_model(
         "Settings",
         __base__=RootSettings,
