@@ -116,8 +116,8 @@ html_context = {
     "source_version": "main",
     "source_docs_path": "/doc/",
     "languages": [
-        ("English", "/en/"),
-        ("Français", "/fr/"),
+        ("English", "/en/%s"),
+        ("Français", "/fr/%s"),
     ],
 }
 
