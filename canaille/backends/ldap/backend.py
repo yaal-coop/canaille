@@ -439,6 +439,7 @@ def setup_ldap_models(config):
     models.User.rdn_attribute = config["CANAILLE_LDAP"]["USER_RDN"]
     object_class = config["CANAILLE_LDAP"]["USER_CLASS"]
     models.User.ldap_object_class = listify(object_class)
+    models.User.password_attribute = "userPassword"
 
     group_base = config["CANAILLE_LDAP"]["GROUP_BASE"].replace(
         f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""
@@ -447,4 +448,3 @@ def setup_ldap_models(config):
     models.Group.rdn_attribute = config["CANAILLE_LDAP"]["GROUP_RDN"]
     object_class = config["CANAILLE_LDAP"]["GROUP_CLASS"]
     models.Group.ldap_object_class = listify(object_class)
-    models.Group.password_attribute = "userPassword"

@@ -37,6 +37,7 @@ def populate(app):
                 region="North Pole",
                 employee_number="1000",
                 department="east",
+                password_attribute="userPassword",
             )
             app.backend.save(jane)
 
@@ -52,6 +53,7 @@ def populate(app):
                 profile_url="https://moderator.example",
                 employee_number="1002",
                 department="west",
+                password_attribute="userPassword",
             )
             app.backend.save(jack)
 
@@ -67,6 +69,7 @@ def populate(app):
                 profile_url="https://user.example",
                 employee_number="1001",
                 department="west",
+                password_attribute="userPassword",
             )
             app.backend.save(john)
 
@@ -76,6 +79,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="james",
                 emails=["james@mydomain.tld"],
+                password_attribute="userPassword",
             )
             app.backend.save(james)
 
@@ -83,8 +87,6 @@ def populate(app):
                 display_name="users",
                 members=[jane, jack, john, james],
                 description="The regular users.",
-                password_attribute="userPassword",
-                password_lifetime="60000",
             )
             app.backend.save(users)
 
@@ -99,8 +101,6 @@ def populate(app):
                 display_name="moderators",
                 members=[james],
                 description="People who can manage users.",
-                password_attribute="userPassword",
-                password_lifetime="60000",
             )
             app.backend.save(users)
 
