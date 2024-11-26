@@ -8,7 +8,7 @@ version = "0.0.56"
 description = "Lightweight identity and authorization management software"
 license = {file = "LICENSE.rst"}
 readme = "README.md"
-keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
+keywords = ["oidc", "oauth", "oauth2", "openid", "identity", "authentication"]
 classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 3 - Alpha",
