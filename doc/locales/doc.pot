@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 14:07+0100\n"
+"POT-Creation-Date: 2024-11-26 18:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -560,7 +560,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:196
 #: aae4204166c443f99e04d84842dd6dd9
-msgid "``THEME`` can be a relative path."
+msgid "The ``THEME`` setting can be a relative path."
 msgstr ""
 
 #: ../../CHANGES.rst:199
@@ -685,7 +685,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:274
 #: 298ffe26093441918be8b38d13f0cc58
-msgid "flask-babel and pytz are now part of the `front` packaging extras."
+msgid "The `flask-babel` and `pytz` libraries are now part of the `front` packaging extras."
 msgstr ""
 
 #: ../../CHANGES.rst:275
@@ -710,12 +710,12 @@ msgstr ""
 
 #: ../../CHANGES.rst:285
 #: 1179dc27648248188fdecf5696fd5045
-msgid "OIDC jwks endpoint do not return empty kid claim."
+msgid "OIDC jwks endpoint do not return empty `kid` claim."
 msgstr ""
 
 #: ../../CHANGES.rst:290
 #: b8b2caca239b4b609143ffd267522a16
-msgid "Documentation details on the canaille models."
+msgid "Documentation details on the Canaille models."
 msgstr ""
 
 #: ../../CHANGES.rst:293
@@ -780,12 +780,12 @@ msgstr ""
 
 #: ../../CHANGES.rst:333
 #: ab83051dda0b48d185846e49011f2429
-msgid "Configuration option to disable Javascript .:pr:`141`"
+msgid "Configuration option to disable Javascript. :pr:`141`"
 msgstr ""
 
 #: ../../CHANGES.rst:338
 #: 85fb804c891f444c9de116e6e4771526
-msgid "Configuration ``USER_FILTER`` is parsed with Jinja."
+msgid "The configuration parameter ``USER_FILTER`` is parsed with Jinja."
 msgstr ""
 
 #: ../../CHANGES.rst:339
@@ -820,7 +820,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:362
 #: ccf84fb0d4cd47058c3849498bd92259
-msgid "Configuration files must be updated.🚨 Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``"
+msgid "Configuration files must be updated. Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``"
 msgstr ""
 
 #: ../../CHANGES.rst:368
@@ -1160,22 +1160,22 @@ msgstr ""
 
 #: ../../CHANGES.rst:557
 #: 7194a505926740e3b52b81708d2818de
-msgid "User can chose their favourite display name. :pr:`77`"
+msgid "User can chose their display name. :pr:`77`"
 msgstr ""
 
 #: ../../CHANGES.rst:558
 #: 5c5a59a03bd5497aa7474ae59e88f6bf
-msgid "Bumped to authlib 1.2. :pr:`78`"
+msgid "Bumped to Authlib 1.2. :pr:`78`"
 msgstr ""
 
 #: ../../CHANGES.rst:559
 #: 0a3d037fae66464b8c2dfeea28dd3eaf
-msgid "Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management Protocol. :pr:`79`"
+msgid "Implemented :rfc:`RFC7592 <7592>` OAuth 2.0 Dynamic Client Registration Management Protocol. :pr:`79`"
 msgstr ""
 
 #: ../../CHANGES.rst:561
 #: 0670727ea1074acf968c49e71dc4062b
-msgid "Added ``nonce`` to the ``claims_supported`` server metadata list."
+msgid "Add the ``nonce`` parameter to the ``claims_supported`` server metadata list."
 msgstr ""
 
 #: ../../CHANGES.rst:564
@@ -1185,7 +1185,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:568
 #: 9903a64c05994256813debf83e9a6b21
-msgid "Fixed translation mo files packaging."
+msgid "Fixed translation catalogs packaging."
 msgstr ""
 
 #: ../../CHANGES.rst:571
@@ -1240,7 +1240,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:591
 #: dfa820f752f64485950bd9f2f4f2f798
-msgid "``apparmor`` slapd configuration instructions in ``CONTRIBUTING.rst``. :pr:`66`"
+msgid "``apparmor`` slapd configuration instructions in the documentation page for contributions. :pr:`66`"
 msgstr ""
 
 #: ../../CHANGES.rst:592
@@ -1359,8 +1359,8 @@ msgid "Use poetry instead of setuptools as project management tool. :pr:`51`"
 msgstr ""
 
 #: ../../CHANGES.rst:654
-#: da9cbcb141c646c2b49e44737122cd53
-msgid "Additional ``nonce`` tests. :pr:`52`"
+#: 3b65181a80b64d0d8a474a5e643d3f80
+msgid "Additional tests for the OIDC ``nonce`` parameter. :pr:`52`"
 msgstr ""
 
 #: ../../CHANGES.rst:658
@@ -2477,10 +2477,8 @@ msgstr ""
 
 #: ../development/specifications.rst:66
 #: ../development/specifications.rst:72
-#: ../development/specifications.rst:74
 #: 86f975b8aaab4af9bfc62ef2df91ba28
 #: 9dd4f11a08ae4fb0b0fde477b7209bc3
-#: 9cfb3e9bccaf45e691975588a1739e16
 msgid "Python"
 msgstr ""
 
@@ -2548,8 +2546,10 @@ msgid "`Authelia`_"
 msgstr ""
 
 #: ../development/specifications.rst:70
+#: ../development/specifications.rst:74
 #: ../development/specifications.rst:82
 #: 5db56fd3e64948f5a108d2f74f7070b4
+#: 336fd480628c4851957b790dee759f7c
 #: f263685446a54133804e5f8517d59f1d
 msgid "Go"
 msgstr ""
