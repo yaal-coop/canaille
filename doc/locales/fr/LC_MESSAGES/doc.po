@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-25 14:07+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-26 18:42+0100\n"
 "PO-Revision-Date: 2024-11-26 17:43+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -222,8 +222,8 @@ msgid ""
 "Group member removal can be achieved from the group edition page. :issue:"
 "`192`"
 msgstr ""
-"La suppression des membres de groupes peut être effectuée depuis la page d’"
-"édition des groupes. :issue:`192`"
+"La suppression des membres de groupes peut être effectuée depuis la page "
+"d’édition des groupes. :issue:`192`"
 
 #: ../../CHANGES.rst:50 8680469549c74d37a52b1c6252c74d57
 msgid "Model management commands. :issue:`117` :issue:`54`"
@@ -292,7 +292,8 @@ msgstr "[0.0.50] - 2024-04-09"
 
 #: ../../CHANGES.rst:94 fc1bc503759c4beb943e9dcbf0c4a9cf
 msgid "Sign in/out events are logged in. :issue:`177`"
-msgstr "Journalisation des évènements de connexion et déconnexion. :issue:`177`"
+msgstr ""
+"Journalisation des évènements de connexion et déconnexion. :issue:`177`"
 
 #: ../../CHANGES.rst:98 cfe0182123c94bcc9ee847739bd2e114
 msgid "`HTMX` and `JAVASCRIPT` configuration settings."
@@ -380,7 +381,8 @@ msgstr "Les fichiers de configuration doivent être mis à jour."
 
 #: ../../CHANGES.rst:155 a39fba5f25754fdc9f0f339142ff0320
 msgid "Add ``created`` and ``last_modified`` datetime for all models."
-msgstr "Ajout des dates ``created`` et ``last_modified`` pour tous les modèles."
+msgstr ""
+"Ajout des dates ``created`` et ``last_modified`` pour tous les modèles."
 
 #: ../../CHANGES.rst:156 b1e37ddf62994798a70a23cff76ed4d6
 msgid "Sitemap to the documentation. :pr:`169`"
@@ -390,14 +392,14 @@ msgstr "Cartographie de la documentation. :pr:`169"
 msgid ""
 "Configuration management with `pydantic-settings`. :issue:`138` :pr:`170`"
 msgstr ""
-"Gestion des paramètres de configuration avec `pydantic-settings`. "
-":issue:`138` :pr:`170`"
+"Gestion des paramètres de configuration avec `pydantic-settings`. :issue:"
+"`138` :pr:`170`"
 
 #: ../../CHANGES.rst:162 689b4f88ba4b43db8c8b1a7bff0aebe6
 msgid "Use default Python logging configuration format. :issue:`188` :pr:`165`"
 msgstr ""
-"Utilisation de la configuration de journalisation par défaut de Python. "
-":issue:`188` :pr:`165`"
+"Utilisation de la configuration de journalisation par défaut de Python. :"
+"issue:`188` :pr:`165`"
 
 #: ../../CHANGES.rst:163 7d18c66450654e25a65749ea273b859d
 msgid "Bump to `HTMX` 1.99.11. :pr:`166`"
@@ -433,16 +435,16 @@ msgid ""
 "OIDC support for the ``create`` value of the ``prompt`` parameter. :issue:"
 "`185` :pr:`164`"
 msgstr ""
-"Support pour la valeur ``create`` du paramètre ``prompt`` d’OIDC. "
-":issue:`185` :pr:`164`"
+"Support pour la valeur ``create`` du paramètre ``prompt`` d’OIDC. :issue:"
+"`185` :pr:`164`"
 
 #: ../../CHANGES.rst:186 8940d9836a9f46a09613c3646e1d55f8
 msgid ""
 "Correctly set up :attr:`~canaille.oidc.basemodels.Client.audience` during "
 "OIDC dynamic registration."
 msgstr ""
-"Configuration correcte de l’:attr:`~canaille.oidc.basemodels.Client.audience`"
-" durant l’enregistrement dynamique OIDC."
+"Configuration correcte de l’:attr:`~canaille.oidc.basemodels.Client."
+"audience` durant l’enregistrement dynamique OIDC."
 
 #: ../../CHANGES.rst:187 bb9a9230771445b6a7c93f042fb289ee
 msgid ""
@@ -462,7 +464,7 @@ msgid "[0.0.40] - 2023-12-22"
 msgstr "[0.0.40] - 2023-12-22"
 
 #: ../../CHANGES.rst:196 aae4204166c443f99e04d84842dd6dd9
-msgid "``THEME`` can be a relative path."
+msgid "The ``THEME`` setting can be a relative path."
 msgstr ""
 
 #: ../../CHANGES.rst:199 26224cfa5ee647a2b15239a78065f5f7
@@ -482,8 +484,8 @@ msgstr ""
 #: ../../CHANGES.rst:206 ed1da2958a1646fd82c70171a5c04317
 msgid "Fix redirection after password reset. :issue:`159`"
 msgstr ""
-"Correction de la redirection après réinitialisation du mot de passe. "
-":issue:`159"
+"Correction de la redirection après réinitialisation du mot de passe. :issue:"
+"`159"
 
 #: ../../CHANGES.rst:209 8f2bc47f69554f539aa2836958029d59
 msgid "[0.0.38] - 2023-12-15"
@@ -521,16 +523,16 @@ msgid ""
 "Password reset and initialization mails were only sent to the preferred user "
 "email address."
 msgstr ""
-"Les courriels d’initialisation et de réinitialisation de mots de passe n’"
-"étaient envoyés qu’à l’adresse préférée des utilisateurs."
+"Les courriels d’initialisation et de réinitialisation de mots de passe "
+"n’étaient envoyés qu’à l’adresse préférée des utilisateurs."
 
 #: ../../CHANGES.rst:234 4e121ada1cc24b7b8051d085b0ce464b
 msgid ""
 "Password reset and initialization mails were not sent at all the user "
 "addresses if one email address could not be reached."
 msgstr ""
-"Les courriels d’initialisation et de réinitialisation de mots de passe n’"
-"étaient pas tous envoyés si l’un des envois échouait."
+"Les courriels d’initialisation et de réinitialisation de mots de passe "
+"n’étaient pas tous envoyés si l’un des envois échouait."
 
 #: ../../CHANGES.rst:236 c5fc8c86d3df4732b3a06f70dd89af18
 msgid "Password comparison was too permissive on login."
@@ -553,7 +555,8 @@ msgstr ""
 
 #: ../../CHANGES.rst:246 c52cda2685214bcab533db539acee007
 msgid "Implement a SQLAlchemy backend. :issue:`30` :pr:`158`"
-msgstr "Support des bases de données SQL avec SQLAlchemy. :issue:`30` :pr:`158`"
+msgstr ""
+"Support des bases de données SQL avec SQLAlchemy. :issue:`30` :pr:`158`"
 
 #: ../../CHANGES.rst:251 57670f55b7644a0888ab65cd2da2fd8c
 msgid "Model attributes cardinality is closer to SCIM model. :pr:`155`"
@@ -588,11 +591,13 @@ msgid ""
 "get redirected back to that page afterwards. :issue:`168` :pr:`151`"
 msgstr ""
 "Si les utilisateurs s’enregistrent durant la phase d’authentification OAuth, "
-"ils sont ensuite redirigés vers la page dont ils viennent. :issue:`168` "
-":pr:`151`"
+"ils sont ensuite redirigés vers la page dont ils viennent. :issue:`168` :pr:"
+"`151`"
 
 #: ../../CHANGES.rst:274 298ffe26093441918be8b38d13f0cc58
-msgid "flask-babel and pytz are now part of the `front` packaging extras."
+msgid ""
+"The `flask-babel` and `pytz` libraries are now part of the `front` packaging "
+"extras."
 msgstr ""
 
 #: ../../CHANGES.rst:275 ccb502180d634f11ad173619af1b68d8
@@ -612,13 +617,17 @@ msgid "[0.0.33] - 2023-08-26"
 msgstr "[0.0.33] - 2023-08-26"
 
 #: ../../CHANGES.rst:285 1179dc27648248188fdecf5696fd5045
-msgid "OIDC jwks endpoint do not return empty kid claim."
+#, fuzzy
+#| msgid "OIDC jwks endpoint do not return empty kid claim."
+msgid "OIDC jwks endpoint do not return empty `kid` claim."
 msgstr ""
-"Le point de terminaison OIDC jwks ne retourne plus le paramètre `kid` lorsqu’"
-"il est vide."
+"Le point de terminaison OIDC jwks ne retourne plus le paramètre `kid` "
+"lorsqu’il est vide."
 
 #: ../../CHANGES.rst:290 b8b2caca239b4b609143ffd267522a16
-msgid "Documentation details on the canaille models."
+#, fuzzy
+#| msgid "Documentation details on the canaille models."
+msgid "Documentation details on the Canaille models."
 msgstr "Documentation des modèles de Canaille."
 
 #: ../../CHANGES.rst:293 dd35ed0e27664b6b954e9b39881f14bc
@@ -628,8 +637,8 @@ msgstr "[0.0.32] - 2023-08-17"
 #: ../../CHANGES.rst:298 bdcae061315a4e92a6bc1a48475cb351
 msgid "Additional inmemory backend. :issue:`30` :pr:`149`"
 msgstr ""
-"Implémentation d’un connecteur de base de données en mémoire. :issue:`30` "
-":pr:`149`"
+"Implémentation d’un connecteur de base de données en mémoire. :issue:`30` :"
+"pr:`149`"
 
 #: ../../CHANGES.rst:299 c39cbed721254ce5ad9c250de1e7ea41
 msgid "Installation extras. :issue:`167` :pr:`150`"
@@ -667,8 +676,8 @@ msgstr "La commande `check` utilise les valeurs de configuration par défaut."
 #: ../../CHANGES.rst:320 15f35fa96af04e508b1a6448d866cb5f
 msgid "Modals do not need use Javascript at the moment. :issue:`158` :pr:`144`"
 msgstr ""
-"Les fenêtres modales ne nécessitent plus l’utilisation de Javascript. "
-":issue:`158` :pr:`144`"
+"Les fenêtres modales ne nécessitent plus l’utilisation de Javascript. :issue:"
+"`158` :pr:`144`"
 
 #: ../../CHANGES.rst:323 add3188842de44b691dfbe3152546f7b
 msgid "[0.0.30] - 2023-07-06"
@@ -683,11 +692,13 @@ msgstr ""
 "format avec ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``"
 
 #: ../../CHANGES.rst:333 ab83051dda0b48d185846e49011f2429
-msgid "Configuration option to disable Javascript .:pr:`141`"
+#, fuzzy
+#| msgid "Configuration option to disable Javascript .:pr:`141`"
+msgid "Configuration option to disable Javascript. :pr:`141`"
 msgstr "Option de configuration pour désactiver Javascript. :pr:`141"
 
 #: ../../CHANGES.rst:338 85fb804c891f444c9de116e6e4771526
-msgid "Configuration ``USER_FILTER`` is parsed with Jinja."
+msgid "The configuration parameter ``USER_FILTER`` is parsed with Jinja."
 msgstr ""
 
 #: ../../CHANGES.rst:339 42d91f7cf5a3438a8bcb0bd5c193f1ea
@@ -721,10 +732,16 @@ msgid "[0.0.27] - 2023-06-29"
 msgstr "[0.0.27] - 2023-06-29"
 
 #: ../../CHANGES.rst:362 ccf84fb0d4cd47058c3849498bd92259
+#, fuzzy
+#| msgid ""
+#| "Configuration files must be updated. Check the new format with ``git diff "
+#| "0.0.29 0.0.30 canaille/conf/config.sample.toml``"
 msgid ""
-"Configuration files must be updated.🚨 Check the new format with ``git diff "
+"Configuration files must be updated. Check the new format with ``git diff "
 "0.0.26 0.0.27 canaille/conf/config.sample.toml``"
 msgstr ""
+"Les fichiers de configuration doivent être mis à jour. Vérifiez le nouveau "
+"format avec ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``"
 
 #: ../../CHANGES.rst:368 0856562aad23492aa6efc7f6e4bf8f90
 msgid ""
@@ -753,8 +770,8 @@ msgstr "Mise à jour vers jquery 3.7.0. :pr:`138`"
 msgid ""
 "Profile edition when the user RDN was not ``uid``. :issue:`148` :pr:`139`"
 msgstr ""
-"L’édition des profils utilisateurs lorsque le RDN n’était pas ``uid`. "
-":issue:`148` :pr:`139`"
+"L’édition des profils utilisateurs lorsque le RDN n’était pas ``uid`. :issue:"
+"`148` :pr:`139`"
 
 #: ../../CHANGES.rst:386 cfcf7ee77bb84df1bcd780df223e9044
 msgid "Stop support for Python 3.7. :pr:`131`"
@@ -1038,21 +1055,29 @@ msgid "[0.0.15] - 2022-12-15"
 msgstr ""
 
 #: ../../CHANGES.rst:557 7194a505926740e3b52b81708d2818de
-msgid "User can chose their favourite display name. :pr:`77`"
+#, fuzzy
+#| msgid "User can chose their favourite display name. :pr:`77`"
+msgid "User can chose their display name. :pr:`77`"
 msgstr "Les utilisateurs peuvent choisir leur nom d’affichage. :pr:`77`"
 
 #: ../../CHANGES.rst:558 5c5a59a03bd5497aa7474ae59e88f6bf
-msgid "Bumped to authlib 1.2. :pr:`78`"
-msgstr ""
+#, fuzzy
+#| msgid "Bumped to Authlib 1. :pr:`48`"
+msgid "Bumped to Authlib 1.2. :pr:`78`"
+msgstr "Mise à jour vers Authlib 1. :pr:`48`"
 
 #: ../../CHANGES.rst:559 0a3d037fae66464b8c2dfeea28dd3eaf
+#, fuzzy
+#| msgid "Implemented Dynamic Client Registration. :pr:`60`"
 msgid ""
-"Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management "
-"Protocol. :pr:`79`"
+"Implemented :rfc:`RFC7592 <7592>` OAuth 2.0 Dynamic Client Registration "
+"Management Protocol. :pr:`79`"
 msgstr ""
+"Implémentation de l’enregistrement dynamique des clients OIDC. :pr:`60`"
 
 #: ../../CHANGES.rst:561 0670727ea1074acf968c49e71dc4062b
-msgid "Added ``nonce`` to the ``claims_supported`` server metadata list."
+msgid ""
+"Add the ``nonce`` parameter to the ``claims_supported`` server metadata list."
 msgstr ""
 
 #: ../../CHANGES.rst:564 eb86b7335b7b4971812f25c9a2d37d1e
@@ -1060,7 +1085,7 @@ msgid "[0.0.14] - 2022-11-29"
 msgstr "[0.0.14] - 2022-11-29"
 
 #: ../../CHANGES.rst:568 9903a64c05994256813debf83e9a6b21
-msgid "Fixed translation mo files packaging."
+msgid "Fixed translation catalogs packaging."
 msgstr ""
 
 #: ../../CHANGES.rst:571 eb1e508e7d2c46bdb471cffecbe4d897
@@ -1072,9 +1097,9 @@ msgid ""
 "Fixed a bug on the contacts field in the admin client form following the "
 "LDAP schema update of 0.0.12."
 msgstr ""
-"Correction d’une erreur sur le champs `contacts` du formulaire d’"
-"administration des clients OIDC, du à la mise à jour des schémas LDAP de la "
-"version 0.0.12."
+"Correction d’une erreur sur le champs `contacts` du formulaire "
+"d’administration des clients OIDC, du à la mise à jour des schémas LDAP de "
+"la version 0.0.12."
 
 #: ../../CHANGES.rst:578 374bd3f105af42bc8ea5c0de35e7437f
 msgid ""
@@ -1092,8 +1117,8 @@ msgstr "Correction de l’intégration continue de Gitlab. :pr:`64`"
 msgid ""
 "Fixed `client_secret` display on the client administration page. :pr:`65`"
 msgstr ""
-"Correction de l’affichage de l’attribut `client_secret` sur la page d’"
-"administration des clients. :pr:`65`"
+"Correction de l’affichage de l’attribut `client_secret` sur la page "
+"d’administration des clients. :pr:`65`"
 
 #: ../../CHANGES.rst:582 be276c6c0aed433987b562fa51a9af06
 msgid "Fixed non-square logo CSS. :pr:`67`"
@@ -1118,8 +1143,8 @@ msgstr "Support de Python 3.11. :pr:`61`"
 
 #: ../../CHANGES.rst:591 dfa820f752f64485950bd9f2f4f2f798
 msgid ""
-"``apparmor`` slapd configuration instructions in ``CONTRIBUTING.rst``. :pr:"
-"`66`"
+"``apparmor`` slapd configuration instructions in the documentation page for "
+"contributions. :pr:`66`"
 msgstr ""
 
 #: ../../CHANGES.rst:592 33f4b497e723467fb7cca94de105b331
@@ -1141,12 +1166,13 @@ msgid ""
 "json``. :pr:`71`"
 msgstr ""
 "Génération dynamique des métadonnées du serveur. Les utilisateurs n’auront "
-"plus à copier manuellement et éditer les fichiers ``oauth-authorizationserver"
-".json`` et ``openid-configuration.json``. :pr:`71`"
+"plus à copier manuellement et éditer les fichiers ``oauth-"
+"authorizationserver.json`` et ``openid-configuration.json``. :pr:`71`"
 
 #: ../../CHANGES.rst:602 b56f59b2dd124c91a6268830cf4ddecc
 msgid "The `FROM_ADDR` configuration option is not mandatory anymore. :pr:`73`"
-msgstr "L’option de configuration ``FROM_ADDR``n’est plus obligatoire. :pr:`73`"
+msgstr ""
+"L’option de configuration ``FROM_ADDR``n’est plus obligatoire. :pr:`73`"
 
 #: ../../CHANGES.rst:603 d701256eb4764f81827acd7b0a0dbda3
 msgid "The `JWT.ISS` configuration option is not mandatory anymore. :pr:`74`"
@@ -1166,7 +1192,8 @@ msgstr "Mise à jour vers FomanticUI 2.9.0."
 
 #: ../../CHANGES.rst:613 2cfcbdba2e9541dbab610bc724a2683a
 msgid "Implemented Dynamic Client Registration. :pr:`60`"
-msgstr "Implémentation de l’enregistrement dynamique des clients OIDC. :pr:`60`"
+msgstr ""
+"Implémentation de l’enregistrement dynamique des clients OIDC. :pr:`60`"
 
 #: ../../CHANGES.rst:616 4acb242ffb5440d1a468e2d3c3856fe8
 msgid "[0.0.11] - 2022-08-11"
@@ -1237,9 +1264,15 @@ msgstr ""
 "Utilisation de poetry à la place de setuptools comme outil de gestion de "
 "projet. :pr:`51`"
 
-#: ../../CHANGES.rst:654 da9cbcb141c646c2b49e44737122cd53
-msgid "Additional ``nonce`` tests. :pr:`52`"
+#: ../../CHANGES.rst:654 3b65181a80b64d0d8a474a5e643d3f80
+#, fuzzy
+#| msgid ""
+#| "Configuration option to disable the forced usage of OIDC `nonce` "
+#| "parameter. :pr:`143`"
+msgid "Additional tests for the OIDC ``nonce`` parameter. :pr:`52`"
 msgstr ""
+"Option de configuration pour désactiver l’utilisation du paramètre OIDC "
+"`nonce`. :pr:`143`"
 
 #: ../../CHANGES.rst:658 35eef6ab06b940e8ad49bf31b7620404
 msgid "``HIDE_INVALID_LOGIN`` behavior and default value."
@@ -1249,8 +1282,8 @@ msgstr "Comportement et valeur par défaut de ``HIDE_INVALID_LOGIN``."
 msgid ""
 "Compiled translation catalogs are not versioned anymore. :pr:`49` :pr:`53`"
 msgstr ""
-"Les catalogues de traduction compilés ne sont plus versionnés. :pr:`49` "
-":pr:`53`"
+"Les catalogues de traduction compilés ne sont plus versionnés. :pr:`49` :pr:"
+"`53`"
 
 #: ../../CHANGES.rst:662 8766634316d146ab8929259434391f34
 msgid "[0.0.8] - 2022-03-15"
@@ -2296,8 +2329,7 @@ msgid "✅"
 msgstr ""
 
 #: ../development/specifications.rst:66 ../development/specifications.rst:72
-#: ../development/specifications.rst:74 86f975b8aaab4af9bfc62ef2df91ba28
-#: 9dd4f11a08ae4fb0b0fde477b7209bc3 9cfb3e9bccaf45e691975588a1739e16
+#: 86f975b8aaab4af9bfc62ef2df91ba28 9dd4f11a08ae4fb0b0fde477b7209bc3
 msgid "Python"
 msgstr ""
 
@@ -2341,8 +2373,9 @@ msgstr ""
 msgid "`Authelia`_"
 msgstr ""
 
-#: ../development/specifications.rst:70 ../development/specifications.rst:82
-#: 5db56fd3e64948f5a108d2f74f7070b4 f263685446a54133804e5f8517d59f1d
+#: ../development/specifications.rst:70 ../development/specifications.rst:74
+#: ../development/specifications.rst:82 5db56fd3e64948f5a108d2f74f7070b4
+#: 336fd480628c4851957b790dee759f7c f263685446a54133804e5f8517d59f1d
 msgid "Go"
 msgstr ""
 
