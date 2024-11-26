@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-20 23:42+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-26 13:31+0100\n"
 "PO-Revision-Date: 2024-11-26 12:52+0000\n"
 "Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -48,18 +48,18 @@ msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 "Ce champ doit contenir au maximum {maximum_password_length} caractères."
 
-#: canaille/app/forms.py:117
+#: canaille/app/forms.py:120
 msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
 "Ce mot de passe apparaît dans les bases de données publiques compromises et "
 "n'est pas sécurisé."
 
-#: canaille/app/forms.py:281
+#: canaille/app/forms.py:285
 msgid "The page number is not valid"
 msgstr "Le numéro de page est invalide"
 
-#: canaille/app/forms.py:309
+#: canaille/app/forms.py:313
 msgid "Not a valid datetime value."
 msgstr "N'est pas une date valide."
 
@@ -1304,8 +1304,8 @@ msgstr "Suivez ces étapes :"
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:7
 msgid "1. click on the link above \"Check if password is compromised\"."
 msgstr ""
-"1. Cliquez sur le lien ci-dessus « Vérifier si le mot de passe est compromis "
-"»."
+"1. Cliquez sur le lien ci-dessus « Vérifier si le mot de passe est "
+"compromis »."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:40
 #: canaille/core/templates/mails/compromised_password_check_failure.html:75
@@ -1349,18 +1349,24 @@ msgstr ""
 "%(user_email)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Our services were unable to verify if the %(user_name)s's password is "
+#| "compromised."
 msgid ""
-"Our services were unable to verify if the http://127.0.0.1:5000/profile/"
-"%(user_name)s/settings's password is compromised."
+"Our services were unable to verify if the %(site_url)s/profile/%(user_name)s/"
+"settings's password is compromised."
 msgstr ""
+"Nos services n'ont pas pu vérifier si le mot de passe de %(user_name)s est "
+"compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
-#, python-format
+#, fuzzy, python-format
+#| msgid "3.1. open this link and reset user's password."
 msgid ""
-"3.1. open this link http://127.0.0.1:5000/profile/%(user_name)s/settings and "
-"reset user's password."
-msgstr ""
+"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset "
+"user's password."
+msgstr "3.1. ouvrez ce lien et réinitialisez le mot de passe de l'utilisateur."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
 #, python-format

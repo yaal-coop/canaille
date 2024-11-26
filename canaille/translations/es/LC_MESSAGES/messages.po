@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-20 23:42+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-26 13:31+0100\n"
 "PO-Revision-Date: 2024-11-21 00:08+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -45,16 +45,16 @@ msgstr "El campo debe tener al menos {minimum_password_length} caracteres."
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr "El campo no puede tener más de {maximum_password_length} caracteres."
 
-#: canaille/app/forms.py:117
+#: canaille/app/forms.py:120
 msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
 
-#: canaille/app/forms.py:281
+#: canaille/app/forms.py:285
 msgid "The page number is not valid"
 msgstr "El número de página no es válido"
 
-#: canaille/app/forms.py:309
+#: canaille/app/forms.py:313
 msgid "Not a valid datetime value."
 msgstr "No es una fecha u hora válida."
 
@@ -1323,15 +1323,15 @@ msgstr ""
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
 #, python-format
 msgid ""
-"Our services were unable to verify if the http://127.0.0.1:5000/profile/"
-"%(user_name)s/settings's password is compromised."
+"Our services were unable to verify if the %(site_url)s/profile/%(user_name)s/"
+"settings's password is compromised."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
 #, python-format
 msgid ""
-"3.1. open this link http://127.0.0.1:5000/profile/%(user_name)s/settings and "
-"reset user's password."
+"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset "
+"user's password."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
