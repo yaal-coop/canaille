@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-20 23:42+0100\n"
-"PO-Revision-Date: 2024-11-01 09:00+0000\n"
+"PO-Revision-Date: 2024-11-26 12:52+0000\n"
 "Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.9-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:53
@@ -52,6 +52,8 @@ msgstr ""
 msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
+"Ce mot de passe apparaît dans les bases de données publiques compromises et "
+"n'est pas sécurisé."
 
 #: canaille/app/forms.py:281
 msgid "The page number is not valid"
@@ -65,12 +67,16 @@ msgstr "N'est pas une date valide."
 msgid ""
 "Password compromise investigation failed. Please contact the administrators."
 msgstr ""
+"La recherche sur la compromission du mot de passe a échoué. Veuillez "
+"contacter les administrateurs."
 
 #: canaille/app/mails_sending_conditions.py:38
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
+"Nous avons informé votre administrateur de l'échec de la recherche sur la "
+"compromission du mot de passe."
 
 #: canaille/app/mails_sending_conditions.py:45
 #, fuzzy
@@ -1230,6 +1236,8 @@ msgstr ""
 #: canaille/core/templates/mails/admin.html:62
 msgid "No mail server has been configured. The mail sending test is disabled."
 msgstr ""
+"Aucun serveur de messagerie n'a été configuré. L'envoi du courriel test est "
+"désactivé."
 
 #: canaille/core/templates/mails/admin.html:73
 msgid "Email preview"
@@ -1266,7 +1274,7 @@ msgstr "Inscription"
 #: canaille/core/templates/mails/compromised_password_check_failure.html:19
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
-msgstr ""
+msgstr "Échec de la vérification de la compromission du mot de passe"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:28
 #, python-format
@@ -1274,6 +1282,8 @@ msgid ""
 "Our services were unable to verify if the %(user_name)s's password is "
 "compromised."
 msgstr ""
+"Nos services n'ont pas pu vérifier si le mot de passe de %(user_name)s est "
+"compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:31
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:5
@@ -1282,22 +1292,26 @@ msgid ""
 "You have to check manually if the new password of the user %(user_name)s is "
 "compromised."
 msgstr ""
+"Vous devez vérifier manuellement si le nouveau mot de passe de l'utilisateur "
+"%(user_name)s est compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:32
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:6
 msgid "Follow this steps :"
-msgstr ""
+msgstr "Suivez ces étapes :"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:33
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:7
 msgid "1. click on the link above \"Check if password is compromised\"."
 msgstr ""
+"1. Cliquez sur le lien ci-dessus « Vérifier si le mot de passe est compromis "
+"»."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:40
 #: canaille/core/templates/mails/compromised_password_check_failure.html:75
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:13
 msgid "Check if password is compromised"
-msgstr ""
+msgstr "Vérifier si le mot de passe est compromis"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:47
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:8
@@ -1306,6 +1320,8 @@ msgid ""
 "2. in the page that will open, search the following hashed password in the "
 "page : %(hashed_password)s"
 msgstr ""
+"2. Dans la page qui s'ouvre, recherchez le mot de passe haché suivant dans "
+"la page : %(hashed_password)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:48
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:9
@@ -1316,7 +1332,7 @@ msgstr "renseignant un mot de passe via ce formulaire ;"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:49
 msgid "3.1. open this link and reset user's password."
-msgstr ""
+msgstr "3.1. ouvrez ce lien et réinitialisez le mot de passe de l'utilisateur."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:57
 #, fuzzy, python-format
@@ -1329,6 +1345,8 @@ msgstr "Réinitialiser votre mot de passe"
 msgid ""
 "3.2. send an email to the user to explain the situation : %(user_email)s"
 msgstr ""
+"3.2. envoyer un email à l'utilisateur pour lui expliquer la situation : "
+"%(user_email)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
 #, python-format
