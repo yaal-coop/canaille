@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-26 13:31+0100\n"
-"PO-Revision-Date: 2024-11-26 12:52+0000\n"
+"PO-Revision-Date: 2024-11-26 17:43+0000\n"
 "Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -79,19 +79,14 @@ msgstr ""
 "compromission du mot de passe."
 
 #: canaille/app/mails_sending_conditions.py:45
-#, fuzzy
-#| msgid ""
-#| "An error happened while sending your registration mail. Please try again "
-#| "in a few minutes. If this still happens, please contact the "
-#| "administrators."
 msgid ""
 "An error occurred while communicating the incident to the administrators. "
 "Please update your password as soon as possible. If this still happens, "
 "please contact the administrators."
 msgstr ""
-"Une erreur est survenue lors de l’envoi de votre courriel d'inscription. "
-"Veuillez retenter dans quelques minutes. Si le problème subsite, veuillez "
-"contacter les administrateurs."
+"Une erreur s'est produite lors de la communication de l'incident aux "
+"administrateurs. Veuillez mettre à jour votre mot de passe dès que possible. "
+"Si cela se produit encore, veuillez contacter les administrateurs."
 
 #: canaille/backends/ldap/backend.py:99
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -112,10 +107,8 @@ msgid "jdoe"
 msgstr "cdupont"
 
 #: canaille/backends/ldap/backend.py:181
-#, fuzzy
-#| msgid "john@doe.com"
 msgid "john.doe@example.com"
-msgstr "camille@dupont.fr"
+msgstr "camille.dupont@exemple.fr"
 
 #: canaille/backends/ldap/backend.py:183
 msgid " or "
@@ -156,10 +149,10 @@ msgid "Continue your registration on {website_name}"
 msgstr "Poursuivez votre inscription sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:309 canaille/core/mails.py:221
-#, fuzzy
-#| msgid "Password reset on {website_name}"
 msgid "Compromised password check failure on {website_name}"
-msgstr "Réinitialisation du mot de passe sur {website_name}"
+msgstr ""
+"Échec de la vérification de la compromission du mot de passe sur "
+"{website_name}"
 
 #: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
@@ -331,10 +324,8 @@ msgstr "Courriel"
 #: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
 #: canaille/core/endpoints/forms.py:412 canaille/core/endpoints/forms.py:438
 #: canaille/core/endpoints/forms.py:462 canaille/core/endpoints/forms.py:478
-#, fuzzy
-#| msgid "jane@doe.com"
 msgid "jane.doe@example.com"
-msgstr "camille@dupont.fr"
+msgstr "camille.dupont@exemple.fr"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "The test mail has been sent correctly"
@@ -1325,20 +1316,17 @@ msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:48
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:9
-#, fuzzy
-#| msgid "setting a password using this form;"
 msgid "3. if the password is in the list :"
-msgstr "renseignant un mot de passe via ce formulaire ;"
+msgstr "3. si le mot de passe est dans la liste :"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:49
 msgid "3.1. open this link and reset user's password."
 msgstr "3.1. ouvrez ce lien et réinitialisez le mot de passe de l'utilisateur."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:57
-#, fuzzy, python-format
-#| msgid "Reset password"
+#, python-format
 msgid "Reset %(user_name)s's password"
-msgstr "Réinitialiser votre mot de passe"
+msgstr "Réinitialiser le mot de passe de %(user_name)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:64
 #, python-format
@@ -1349,30 +1337,30 @@ msgstr ""
 "%(user_email)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
-#, fuzzy, python-format
-#| msgid ""
-#| "Our services were unable to verify if the %(user_name)s's password is "
-#| "compromised."
+#, python-format
 msgid ""
 "Our services were unable to verify if the %(site_url)s/profile/%(user_name)s/"
 "settings's password is compromised."
 msgstr ""
-"Nos services n'ont pas pu vérifier si le mot de passe de %(user_name)s est "
-"compromis."
+"Nos services n'ont pas pu vérifier si le mot de passe de %(site_url)s/"
+"profile/%(user_name)s/settings est compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
-#, fuzzy, python-format
-#| msgid "3.1. open this link and reset user's password."
+#, python-format
 msgid ""
 "3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset "
 "user's password."
-msgstr "3.1. ouvrez ce lien et réinitialisez le mot de passe de l'utilisateur."
+msgstr ""
+"3.1. ouvrez ce lien %(site_url)s/profile/%(user_name)s/settings et "
+"réinitialisez le mot de passe de l'utilisateur."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
 #, python-format
 msgid ""
 "3.2. send an email to the user to explain the situation : %(user_email)s."
 msgstr ""
+"3.2. envoyer un email à l'utilisateur pour expliquer la situation : "
+"%(user_email)s."
 
 #: canaille/core/templates/mails/email-confirmation.html:19
 msgid "Email address confirmation"
