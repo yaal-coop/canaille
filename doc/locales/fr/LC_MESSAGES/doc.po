@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-26 18:42+0100\n"
-"PO-Revision-Date: 2024-11-27 19:01+0000\n"
+"PO-Revision-Date: 2024-11-28 20:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -1541,84 +1541,96 @@ msgstr ""
 msgid ""
 "Use Flask `SERVER_NAME` configuration variable instead of `URL`. :issue:`24`"
 msgstr ""
+"Utilisation du paramètre de configuration Flask ``SERVER_NAME`` à la place "
+"d’``URL``. :issue:`24`"
 
 #: ../../CHANGES.rst:774 62c1e3da0a87437aaa529dcc936c7dbc
 msgid "Improved consents page. :issue:`27`"
-msgstr ""
+msgstr "Améliorations sur la page de consentement. :issue:`27`"
 
 #: ../../CHANGES.rst:775 f816ffeb73244ae0b1171b8c156d1e12
 msgid "Admin user page. :issue:`8`"
-msgstr ""
+msgstr "Page d’administration des utilisateurs. :issue:`8`"
 
 #: ../../CHANGES.rst:776 2241f2b45f1e426f99f68ccc516c6b60
 msgid "Project logo. :pr:`29`"
-msgstr ""
+msgstr "Logo pour le projet. :pr:`29`"
 
 #: ../../CHANGES.rst:777 dd802cef3e384fdc928fc43178ab119a
 msgid ""
 "User account self-deletion can be enabled in the configuration with "
 "`SELF_DELETION`. :issue:`35`"
 msgstr ""
+"L’auto-suppression des comptes est configurable avec le paramètre de "
+"configuration ``SELF_DELETION``. :issue:`35`"
 
 #: ../../CHANGES.rst:778 75d6d908a827424284ea63478783cbf9
 msgid "Admins can impersonate users. :issue:`39`"
 msgstr ""
+"Les administrateurs peuvent prendre l’identité des utilisateurs. :issue:`39`"
 
 #: ../../CHANGES.rst:779 b4eee6e748f94ba9b6e62e2e7fd4d86b
 msgid "Forgotten page UX improvement. :pr:`43`"
 msgstr ""
+"Améliorations sur l’interface utilisateur de la page des mots de passe "
+"oubliés. :pr:`43`"
 
 #: ../../CHANGES.rst:780 44489482b8d54ae78c70959758d6f825
 msgid "Admins can remove clients. :pr:`45`"
-msgstr ""
+msgstr "Les administrateurs peuvent supprimer des clients. :pr:`45`"
 
 #: ../../CHANGES.rst:781 be6e5371ee2a48efa0d9d276e9caa9a0
 msgid ""
 "Option `HIDE_INVALID_LOGIN` that can be unactivated to let the user know if "
 "the login he attempt to sign in with exists or not. :pr:`48`"
 msgstr ""
+"Le paramètre de configuration ``HIDE_INVALID_LOGIN`` peut-être utilisé pour "
+"laisser ou non les utilisateurs savoir si le compte avec lequel ils tentent "
+"de se connecter existe ou pas. :pr:`48`"
 
 #: ../../CHANGES.rst:783 b1df16b2411a440d8d2a0745c972f368
 msgid "Password initialization mail. :pr:`51`"
-msgstr ""
+msgstr "Courriels d’initialisation des mots de passe. :pr:`51`"
 
 #: ../../CHANGES.rst:788 ba317999584d46d7b5bfda36157bc111
 msgid "Form translations. :issue:`19` :issue:`23`"
-msgstr ""
+msgstr "Traductions des formulaires. :issue:`19` :issue:`23`"
 
 #: ../../CHANGES.rst:789 e0d773fd3f814a438321528df1c4d67d
 msgid "Avoid to use Google Fonts. :issue:`21`"
-msgstr ""
+msgstr "Utilisations d’autres polices que celles de Google Fonts. :issue:`21`"
 
 #: ../../CHANGES.rst:794 d7c5d0509cfe422ab95beb9c1929e413
 msgid "'My tokens' page. :issue:`22`"
-msgstr ""
+msgstr "Page « Mes jetons ». :issue:`22`"
 
 #: ../../CHANGES.rst:797 35ab727ebe564ff2a2aa3e28f9392f5b
 msgid "[0.0.1] - 2020-10-21"
-msgstr ""
+msgstr "[0.0.1] - 2020-10-21"
 
 #: ../../CHANGES.rst:802 487e834d3b154f69991d042f97ce3734
 msgid "Initial release."
-msgstr ""
+msgstr "Publication initiale."
 
 #: ../../CONTRIBUTING.rst:2 77d0a023f5f34e7c804011fd50b75bc3
 msgid "Contributions"
-msgstr ""
+msgstr "Contributions"
 
 #: ../../CONTRIBUTING.rst:4 9955ba6bbfb54c74930043f9d86335dc
 msgid "Contributions are welcome!"
-msgstr ""
+msgstr "Les contributions sont bienvenues !"
 
 #: ../../CONTRIBUTING.rst:6 dd58980e1983404d8bc93b9e0866785d
 msgid ""
 "The repository is hosted at `gitlab.com/yaal/canaille <https://gitlab.com/"
 "yaal/canaille>`_."
 msgstr ""
+"Le dépôt de code est hébergé sur `gitlab.com/yaal/canaille <https://gitlab."
+"com/yaal/canaille>`_."
 
 #: ../../CONTRIBUTING.rst:9 880fd4b263fa4f5aa77f826cf6d7a13e
 msgid "Discuss"
-msgstr ""
+msgstr "Discuter"
 
 #: ../../CONTRIBUTING.rst:11 0e5a0bf82cd4444ebc3ff1dd43a4362c
 msgid ""
@@ -1629,7 +1641,7 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:16 032421a7ce0548e38943bb37b9e46f90
 msgid "Development environment"
-msgstr ""
+msgstr "Environnement de développement"
 
 #: ../../CONTRIBUTING.rst:18 464b7af189da4cf2ba346183c47e6264
 msgid "You can either run the demo locally or with Docker."
@@ -1701,11 +1713,11 @@ msgstr ""
 #: ../development/specifications.rst:62 ../../CONTRIBUTING.rst:47
 #: c01f125a22914f369ef28ef090a728b1 01a043d4a4364011b8a22a53549b20da
 msgid "Backends"
-msgstr ""
+msgstr "Bases de données"
 
 #: ../../CONTRIBUTING.rst:49 12c4afcb316c448797ed9784ef9fbaa1
 msgid "Canaille comes with several backends:"
-msgstr ""
+msgstr "Canaille peut se connecter à plusieurs types de bases de données :"
 
 #: ../../CONTRIBUTING.rst:51 853d2b906b80415db33c707e29640f4c
 msgid "a lightweight test purpose `memory` backend"
@@ -1758,26 +1770,35 @@ msgid ""
 "restricted by apparmor, and thus makes the tests and the demo fail. This can "
 "be mitigated by removing apparmor restrictions on `slapd`."
 msgstr ""
+"Si vous souhaitez apporter une correction ou développer une fonctionnalité, "
+"veuillez commencer par en discuter sur l’`outil de gestion de tickets "
+"<https://gitlab.com/yaal/canaille/-/issues>`_ ou le `salon Matrix "
+"<https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
 
 #: ../../CONTRIBUTING.rst:113 3d21757ba34c4721af043c150330c2e4
 msgid "Populate the database"
-msgstr ""
+msgstr "Remplissage de la base de données"
 
 #: ../../CONTRIBUTING.rst:115 a412d39e98cf44f6b911566e1ebcdbde
 msgid ""
 "The demo database comes populated with some random users and groups. If you "
 "need more, you can generate users and groups with the ``populate`` command:"
 msgstr ""
+"La base de donnée de démonstration est remplie avec des utilisateurs et des "
+"groupes générés aléatoirement. Si vous avez besoin de plus, vous pouvez "
+"générer des utilisateurs et des groupes avec la commande ``populate`` :"
 
 #: ../../CONTRIBUTING.rst:126 cdf90f875bcc44d5b41197a7cdbb275c
 msgid ""
 "Adapt to use either the `ldap` or the `sql` configuration file. Note that "
 "this will not work with the memory backend."
 msgstr ""
+"Adaptez pour utiliser le fichier de configuration `ldap` ou `sql`. Notez que "
+"cela ne fonctionnera pas avec la base de données en mémoire."
 
 #: ../../CONTRIBUTING.rst:129 2db32f774df8429fa4c9e83d00616a96
 msgid "Unit tests"
-msgstr ""
+msgstr "Tests unitaires"
 
 #: ../../CONTRIBUTING.rst:131 5d6a9b57b35d49c48e2b615f8128ebcc
 msgid ""
@@ -1785,6 +1806,10 @@ msgid ""
 "test all the supported python environments. Everything must be green before "
 "patches get merged."
 msgstr ""
+"Pour exécuter les tests, vous pouvez simplement lancer la commande `uv run "
+"pytest`et/ou `uv run tox`pour tester tous les environnements Python "
+"supportés. Tout doit être au vert avant que les contributions soient "
+"fusionnées."
 
 #: ../../CONTRIBUTING.rst:134 e1e6e475ff78404f930bb453f1f26e3b
 msgid ""
