@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-29 00:30+0100\n"
-"PO-Revision-Date: 2024-11-28 23:31+0000\n"
+"PO-Revision-Date: 2024-11-30 00:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -1665,10 +1665,8 @@ msgstr ""
 "started/installation/>`_ afin de pouvoir développer Canaille."
 
 #: ../../CONTRIBUTING.rst:24 56f217cf35444c72b1bc1a1cb3ee9e53
-#, fuzzy
-#| msgid "Development environment"
 msgid "Initialize your development environment with:"
-msgstr "Environnement de développement"
+msgstr "Initialisez votre environnement de développement avec :"
 
 #: ../../CONTRIBUTING.rst:26 9cf0a292c2bb408fa660e14ab61f0e43
 msgid ""
@@ -1676,6 +1674,9 @@ msgid ""
 "environment. This will allow you to run the tests with ``uv pytest --backend "
 "memory``."
 msgstr ""
+"``uv sync --extra front --extra oidc`` pour obtenir un environnement de "
+"développement minimal. Cela vous permettra d’exécuter les tests avec ``uv "
+"pytest --backend memory``."
 
 #: ../../CONTRIBUTING.rst:27 8d29fc6ad3bd43c5b232963f5137c91a
 msgid ""
@@ -1683,6 +1684,10 @@ msgid ""
 "working development environment with SQLite backend support. This will allow "
 "you to run the tests with ``uv pytest --backend sql``."
 msgstr ""
+"``uv sync --extra front --extra oidc --extra sqlite`` pour obtenir un "
+"environnement de développement minimal avec le support des bases de données "
+"SQLite. Cela vous permettra d’exécuter les tests avec ``uv pytest --backend "
+"sql``."
 
 #: ../../CONTRIBUTING.rst:28 928d535d56314259b20055eea3a4ceb4
 msgid ""
@@ -1690,6 +1695,10 @@ msgid ""
 "working development environment with LDAP backend support. This will allow "
 "you to run the tests with ``uv pytest --backend ldap``."
 msgstr ""
+"``uv sync --extra front --extra oidc --extra ldap`` pour obtenir un "
+"environnement de développement minimal avec le support pour les bases de "
+"données LDAP. Cela vous permettra d’exécuter les tests avec ``uv pytest --"
+"backend ldap``."
 
 #: ../../CONTRIBUTING.rst:29 45c310bb345740648d6f7fe00c190191
 msgid ""
@@ -1697,32 +1706,43 @@ msgid ""
 "Note that it may compile some Python dependencies that would expect things "
 "to be installed on your system;"
 msgstr ""
+"``uv sync --all-extras`` si vous souhaitez avoir tout à portée de main. "
+"Notez que cela requerra peut-être de compiler certaines dépendances Python, "
+"qui nécessiterons l’installation de certaines bibliothèques sur votre "
+"système ;"
 
 #: ../../CONTRIBUTING.rst:30 184edc3e6ce942af9c0c653d38b3be67
 msgid ""
 "Some dependencies of Canaille might need to be compiled, so you probably "
 "want to check that `GCC` and `cargo` are available on your computer."
 msgstr ""
+"Certaines dépendances de Canaille peuvent nécessiter une compilation, donc "
+"devriez sans doute vérifier que `GCC` et `cargo` sont installés sur votre "
+"système."
 
 #: ../../CONTRIBUTING.rst:32 1a514a3605f243979b2d04e1a329368a
 msgid "After having launched the demo you have access to several services:"
 msgstr ""
+"Après avoir lancé l’instance de démonstration, vous avec accès à plusieurs "
+"services :"
 
 #: ../../CONTRIBUTING.rst:34 bbde54dc79ba4241bd97323b5152b50b
 msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
 msgstr ""
+"Un serveur Canaille à l’adresse `localhost:5000 <http://localhost:5000>`_"
 
 #: ../../CONTRIBUTING.rst:35 d028b9cbae714b2d945ba4d70a75fb99
 msgid "A dummy client at `localhost:5001 <http://localhost:5001>`_"
-msgstr ""
+msgstr "Un client factice à l’adresse `localhost:5001 <http://localhost:5001>`_"
 
 #: ../../CONTRIBUTING.rst:36 dbd0340fc974432798237b9b3efe01ea
 msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`_"
 msgstr ""
+"Un autre client factice à l’adresse `localhost:5002 <http://localhost:5002>`_"
 
 #: ../../CONTRIBUTING.rst:38 9ff28ddd679b42f4a5bf288242e8c827
 msgid "The canaille server has some default users:"
-msgstr ""
+msgstr "Le serveur Canaille embarque quelques utilisateurs par défaut :"
 
 #: ../../CONTRIBUTING.rst:40 324e9f4f1d744fa49a0c3e7fe60cf46b
 msgid "A regular user which login and password are **user**;"
