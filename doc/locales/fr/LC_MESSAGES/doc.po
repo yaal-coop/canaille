@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-26 18:42+0100\n"
-"PO-Revision-Date: 2024-11-28 20:00+0000\n"
+"PO-Revision-Date: 2024-11-28 23:31+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -1638,6 +1638,10 @@ msgid ""
 "it with us on the `bugtracker <https://gitlab.com/yaal/canaille/-/issues>`_ "
 "or the `matrix room <https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
 msgstr ""
+"Si vous souhaitez développer une fonctionnalité ou corriger un "
+"dysfonctionnement, veuillez commencer par en discuter sur `l’outil de "
+"gestion de ticket <https://gitlab.com/yaal/canaille/-/issues>`_ ou bien sur "
+"le `salon Matrix <https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
 
 #: ../../CONTRIBUTING.rst:16 032421a7ce0548e38943bb37b9e46f90
 msgid "Development environment"
@@ -1646,6 +1650,8 @@ msgstr "Environnement de développement"
 #: ../../CONTRIBUTING.rst:18 464b7af189da4cf2ba346183c47e6264
 msgid "You can either run the demo locally or with Docker."
 msgstr ""
+"Vous pouvez exécuter l’instance de démonstration localement ou bien à l’aide "
+"de Docker."
 
 #: ../../CONTRIBUTING.rst:20 b918844970c545a3826d0b39a79cb08c
 msgid ""
@@ -1653,6 +1659,9 @@ msgid ""
 "`installed on your computer <https://docs.astral.sh/uv/getting-started/"
 "installation/>`_ to be able to hack Canaille."
 msgstr ""
+"Le seul outil requis pour développer localement est `uv`. Assurez-vous d’"
+"avoir uv `installé sur votre système <https://docs.astral.sh/uv/"
+"getting-started/installation/>`_ afin de pouvoir développer Canaille."
 
 #: ../../CONTRIBUTING.rst:24 3aab256d0e47465899e430a1229c3d1a
 msgid ""
