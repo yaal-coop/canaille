@@ -154,6 +154,7 @@ class Backend:
             "Group",
             "Token",
             "User",
+            "Policy",
         ]
         for model_name in model_names:
             models.register(getattr(backend_models, model_name))

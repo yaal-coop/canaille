@@ -56,3 +56,9 @@ class LDAPSettings(BaseModel):
 
     GROUP_NAME_ATTRIBUTE: str = "cn"
     """The attribute to use to identify a group."""
+
+    POLICY_BASE: str = "dc=mydomain,dc=tld"
+
+    POLICY_CLASS: list[str] = ["pwdPolicy", "top", "person"]
+
+    POLICY_RDN: str = "cn"

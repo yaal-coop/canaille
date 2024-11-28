@@ -35,6 +35,12 @@ class User(Model):
     and is case insensitive.
     """
 
+    password_policy_subentry: str = "cn=passwordDefault,dc=mydomain,dc=tld"
+
+    last_login: datetime.datetime | None = None
+
+    password_last_update: datetime.datetime | None = None
+
     password: str | None = None
     """
     This attribute is intended to be used as a means to set, replace,
@@ -347,3 +353,21 @@ class Group(Model):
     """
 
     description: str | None = None
+
+
+class Policy(Model):
+    identifier_attribute: ClassVar[str] = "display_name"
+
+    display_name: str
+
+    policy_name: str | None = None
+
+    password_attribute: str | None = None
+
+    password_must_change: bool | None = None
+
+    user_lockout: bool | None = None
+
+    allow_user_change: bool | None = None
+
+    grace_authentication_limit: int | None = None

@@ -20,6 +20,17 @@ def populate(app):
             if app.backend.query(models.User):
                 return
 
+            policy = models.Policy(
+                display_name="passwordDefault",
+                policy_name="passwordDefault",
+                password_attribute="userPassword",
+                password_must_change=True,
+                user_lockout=True,
+                allow_user_change=True,
+                grace_authentication_limit=1,
+            )
+            app.backend.save(policy)
+
             jane = models.User(
                 formatted_name="Jane Doe",
                 given_name="Jane",
@@ -37,6 +48,7 @@ def populate(app):
                 region="North Pole",
                 employee_number="1000",
                 department="east",
+                password_policy_subentry="cn=passwordDefault,dc=mydomain,dc=tld",
             )
             app.backend.save(jane)
 
@@ -52,6 +64,7 @@ def populate(app):
                 profile_url="https://moderator.example",
                 employee_number="1002",
                 department="west",
+                password_policy_subentry="cn=passwordDefault,dc=mydomain,dc=tld",
             )
             app.backend.save(jack)
 
@@ -67,6 +80,7 @@ def populate(app):
                 profile_url="https://user.example",
                 employee_number="1001",
                 department="west",
+                password_policy_subentry="cn=passwordDefault,dc=mydomain,dc=tld",
             )
             app.backend.save(john)
 
@@ -76,6 +90,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="james",
                 emails=["james@mydomain.tld"],
+                password_policy_subentry="cn=passwordDefault,dc=mydomain,dc=tld",
             )
             app.backend.save(james)
 
@@ -147,8 +162,8 @@ def populate(app):
             client2.audience = [client2]
             app.backend.save(client2)
 
-            fake_users(50)
-            fake_groups(10, nb_users_max=10)
+            fake_users(0)
+            fake_groups(0, nb_users_max=10)
 
 
 def create_app():

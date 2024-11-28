@@ -77,7 +77,8 @@ def python_to_ldap(value, syntax, encode=True):
         value = "TRUE" if value else "FALSE"
 
     if syntax == Syntax.DISTINGUISHED_NAME:
-        value = value.dn if value else None
+        if type(value) is not str:
+            value = value.dn if value else None
 
     if not value:
         return None

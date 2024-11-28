@@ -34,6 +34,9 @@ class User(canaille.core.models.User, LDAPObject):
         "organization": "o",
         "groups": "memberOf",
         "lock_date": "pwdEndTime",
+        "password_last_update": "pwdChangedTime",
+        "password_policy_subentry": "pwdPolicySubentry",
+        "last_login": "pwdLastSuccess",
     }
 
     def match_filter(self, filter):
@@ -83,6 +86,19 @@ class Group(canaille.core.models.Group, LDAPObject):
         "display_name": "cn",
         "members": "member",
         "description": "description",
+    }
+
+
+class Policy(canaille.core.models.Policy, LDAPObject):
+    attribute_map = {
+        "id": "entryUUID",
+        "display_name": "cn",
+        "policy_name": "sn",
+        "password_attribute": "pwdAttribute",
+        "password_must_change": "pwdMustChange",
+        "user_lockout": "pwdLockout",
+        "allow_user_change": "pwdAllowUserChange",
+        "grace_authentication_limit": "pwdGraceAuthNLimit",
     }
 
 
