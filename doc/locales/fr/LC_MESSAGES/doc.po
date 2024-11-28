@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-26 18:42+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-29 00:30+0100\n"
 "PO-Revision-Date: 2024-11-28 23:31+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -211,8 +211,8 @@ msgstr "[0.0.55] - 2024-08-30"
 #: ../../CHANGES.rst:42 a037ad5da20049ad82e9f9b0d766cfbb
 msgid "Use poetry-core build backend. :pr:`178`"
 msgstr ""
-"Utilisation de `poetry-core` comme outil de construction de paquets. "
-":pr:`178`"
+"Utilisation de `poetry-core` comme outil de construction de paquets. :pr:"
+"`178`"
 
 #: ../../CHANGES.rst:45 d6bf96b8e5cc4a6f8e099b48c1951a6a
 msgid "[0.0.54] - 2024-07-25"
@@ -485,8 +485,8 @@ msgstr ""
 #: ../../CHANGES.rst:206 ed1da2958a1646fd82c70171a5c04317
 msgid "Fix redirection after password reset. :issue:`159`"
 msgstr ""
-"Correction de la redirection après réinitialisation du mot de passe. "
-":issue:`159`"
+"Correction de la redirection après réinitialisation du mot de passe. :issue:"
+"`159`"
 
 #: ../../CHANGES.rst:209 8f2bc47f69554f539aa2836958029d59
 msgid "[0.0.38] - 2023-12-15"
@@ -622,8 +622,8 @@ msgstr "[0.0.33] - 2023-08-26"
 #: ../../CHANGES.rst:285 1179dc27648248188fdecf5696fd5045
 msgid "OIDC jwks endpoint do not return empty `kid` claim."
 msgstr ""
-"Le point de terminaison OIDC jwks ne retourne plus le paramètre `kid` lorsqu’"
-"il est vide."
+"Le point de terminaison OIDC jwks ne retourne plus le paramètre `kid` "
+"lorsqu’il est vide."
 
 #: ../../CHANGES.rst:290 b8b2caca239b4b609143ffd267522a16
 msgid "Documentation details on the Canaille models."
@@ -658,8 +658,8 @@ msgstr ""
 #: ../../CHANGES.rst:308 37eb24ef005e44da8ae0f4c48bda766c
 msgid "Validate phone numbers with a regex. :pr:`146`"
 msgstr ""
-"Validation des numéros de téléphone avec des expressions régulières. "
-":pr:`146`"
+"Validation des numéros de téléphone avec des expressions régulières. :pr:"
+"`146`"
 
 #: ../../CHANGES.rst:309 2be2120a0500430a8d854d1b8f19a0bf
 msgid "Email verification. :issue:`41` :pr:`147`"
@@ -808,8 +808,8 @@ msgid ""
 "Check the new format with ``git diff 0.0.25 0.0.24 canaille/conf/config."
 "sample.toml``"
 msgstr ""
-"Vérifiez le nouveau format avec ``git diff 0.0.25 0.0.24 canaille/conf/config"
-".sample.toml``"
+"Vérifiez le nouveau format avec ``git diff 0.0.25 0.0.24 canaille/conf/"
+"config.sample.toml``"
 
 #: ../../CHANGES.rst:415 c4645c08f789400bba029897871bb828
 msgid ""
@@ -968,10 +968,10 @@ msgid ""
 "Consent`, :class:`~canaille.oidc.basemodels.Token` and :class:`~canaille."
 "oidc.basemodels.AuthorizationCode` objects. :issue:`126` :pr:`98`"
 msgstr ""
-"La suppression d’un client supprime aussi les objets des classes liées "
-":class:`~canaille.oidc.basemodels.Consent`, :class:`~canaille.oidc.basemodels"
-".Token` et :class:`~canaille.oidc.basemodels.AuthorizationCode`. :issue:`126`"
-" :pr:`98`"
+"La suppression d’un client supprime aussi les objets des classes liées :"
+"class:`~canaille.oidc.basemodels.Consent`, :class:`~canaille.oidc.basemodels."
+"Token` et :class:`~canaille.oidc.basemodels.AuthorizationCode`. :issue:"
+"`126` :pr:`98`"
 
 #: ../../CHANGES.rst:493 a1c057df21a9436a9b149fb91fdb28d0
 msgid "Removed the `DataTables` Javascript library."
@@ -1022,8 +1022,8 @@ msgstr ""
 #: ../../CHANGES.rst:514 9a91064adb7f414fab73518fbc77b01d
 msgid "Fixed dynamic registration scope management. :issue:`123` :pr:`93`"
 msgstr ""
-"Correction de la gestion du domaine de l’enregistrement dynamique. "
-":issues:`123` :pr:`93`"
+"Correction de la gestion du domaine de l’enregistrement dynamique. :issues:"
+"`123` :pr:`93`"
 
 #: ../../CHANGES.rst:517 d7a2cda6d8e24cc484f13ee4df40c1ea
 msgid "[0.0.19] - 2023-01-14"
@@ -1361,7 +1361,8 @@ msgstr "Pré-autorisation des clients OIDC. :pr:`11`"
 
 #: ../../CHANGES.rst:712 b1444e5514e3495f8f05b00bfb31e54b
 msgid "LDAP permissions check with the check command. :pr:`12`"
-msgstr "Vérification des permissions LDAP grâce à la commande `check`. :pr:`12`"
+msgstr ""
+"Vérification des permissions LDAP grâce à la commande `check`. :pr:`12`"
 
 #: ../../CHANGES.rst:713 81badbb21dfe4dd0bd990037947c24cf
 msgid ""
@@ -1493,8 +1494,8 @@ msgstr "Gestion des groupes. :issue:`12` :pr:`6`"
 #: ../../CHANGES.rst:757 e08a9eafc49f45cbb361ed3bd89d4649
 msgid "Introspection access bugfix. :issue:`63` :pr:`10`"
 msgstr ""
-"Correction de l’accès au point de terminaison d’introspection OIDC. "
-":issue:`63`:pr:`10`"
+"Correction de l’accès au point de terminaison d’introspection OIDC. :issue:"
+"`63`:pr:`10`"
 
 #: ../../CHANGES.rst:758 48e63a4a411d4aab8259f74b1d257a37
 msgid "Introspection sub claim. :issue:`64` :pr:`7`"
@@ -1512,8 +1513,8 @@ msgstr "La page de connexion est réactive. :issue:`1`"
 #: ../../CHANGES.rst:767 8a87683d8d524cd482264473256b3777
 msgid "Adapt mobile keyboards to login page fields. :issue:`2`"
 msgstr ""
-"Adaptation des claviers mobiles sur les champs de la page de connexion. "
-":issue:`2`"
+"Adaptation des claviers mobiles sur les champs de la page de connexion. :"
+"issue:`2`"
 
 #: ../../CHANGES.rst:768 c777083179094cd994619adcfc8499d9
 msgid "Password recovery interface. :issue:`3`"
@@ -1534,8 +1535,8 @@ msgstr "Commande pour supprimer les jetons expirés. :issue:`17`"
 #: ../../CHANGES.rst:772 8e168b1583984a71848678112365d1c7
 msgid "Improved password recovery email. :issue:`14` :issue:`26`"
 msgstr ""
-"Améliorations sur le courriel de réinitialisation de mot de passe. "
-":issue:`14` :issue:`26`"
+"Améliorations sur le courriel de réinitialisation de mot de passe. :issue:"
+"`14` :issue:`26`"
 
 #: ../../CHANGES.rst:773 901de9a21dd94541b3c23946ada4cd88
 msgid ""
@@ -1659,92 +1660,115 @@ msgid ""
 "`installed on your computer <https://docs.astral.sh/uv/getting-started/"
 "installation/>`_ to be able to hack Canaille."
 msgstr ""
-"Le seul outil requis pour développer localement est `uv`. Assurez-vous d’"
-"avoir uv `installé sur votre système <https://docs.astral.sh/uv/"
-"getting-started/installation/>`_ afin de pouvoir développer Canaille."
+"Le seul outil requis pour développer localement est `uv`. Assurez-vous "
+"d’avoir uv `installé sur votre système <https://docs.astral.sh/uv/getting-"
+"started/installation/>`_ afin de pouvoir développer Canaille."
 
-#: ../../CONTRIBUTING.rst:24 3aab256d0e47465899e430a1229c3d1a
+#: ../../CONTRIBUTING.rst:24 56f217cf35444c72b1bc1a1cb3ee9e53
+#, fuzzy
+#| msgid "Development environment"
+msgid "Initialize your development environment with:"
+msgstr "Environnement de développement"
+
+#: ../../CONTRIBUTING.rst:26 9cf0a292c2bb408fa660e14ab61f0e43
 msgid ""
-"Initialize your development environment with: - ``uv sync --extra front --"
-"extra oidc`` to have a minimal working development environment. This will "
-"allow you to run the tests with ``uv pytest --backend memory``. - ``uv sync "
-"--extra front --extra oidc --extra sqlite`` to have a minimal working "
-"development environment with SQLite backend support. This will allow you to "
-"run the tests with ``uv pytest --backend sql``. - ``uv sync --extra front --"
-"extra oidc --extra ldap`` to have a minimal working development environment "
-"with LDAP backend support. This will allow you to run the tests with ``uv "
-"pytest --backend ldap``. - ``uv sync --all-extras`` if you want to have "
-"everything at your fingertips. Note that it may compile some Python "
-"dependencies that would expect things to be installed on your system; Some "
-"dependencies of Canaille might need to be compiled, so you probably want to "
-"check that `GCC` and `cargo` are available on your computer."
+"``uv sync --extra front --extra oidc`` to have a minimal working development "
+"environment. This will allow you to run the tests with ``uv pytest --backend "
+"memory``."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:31 1a514a3605f243979b2d04e1a329368a
+#: ../../CONTRIBUTING.rst:27 8d29fc6ad3bd43c5b232963f5137c91a
+msgid ""
+"``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal "
+"working development environment with SQLite backend support. This will allow "
+"you to run the tests with ``uv pytest --backend sql``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:28 928d535d56314259b20055eea3a4ceb4
+msgid ""
+"``uv sync --extra front --extra oidc --extra ldap`` to have a minimal "
+"working development environment with LDAP backend support. This will allow "
+"you to run the tests with ``uv pytest --backend ldap``."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:29 45c310bb345740648d6f7fe00c190191
+msgid ""
+"``uv sync --all-extras`` if you want to have everything at your fingertips. "
+"Note that it may compile some Python dependencies that would expect things "
+"to be installed on your system;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:30 184edc3e6ce942af9c0c653d38b3be67
+msgid ""
+"Some dependencies of Canaille might need to be compiled, so you probably "
+"want to check that `GCC` and `cargo` are available on your computer."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:32 1a514a3605f243979b2d04e1a329368a
 msgid "After having launched the demo you have access to several services:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:33 bbde54dc79ba4241bd97323b5152b50b
+#: ../../CONTRIBUTING.rst:34 bbde54dc79ba4241bd97323b5152b50b
 msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:34 d028b9cbae714b2d945ba4d70a75fb99
+#: ../../CONTRIBUTING.rst:35 d028b9cbae714b2d945ba4d70a75fb99
 msgid "A dummy client at `localhost:5001 <http://localhost:5001>`_"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:35 dbd0340fc974432798237b9b3efe01ea
+#: ../../CONTRIBUTING.rst:36 dbd0340fc974432798237b9b3efe01ea
 msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`_"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:37 9ff28ddd679b42f4a5bf288242e8c827
+#: ../../CONTRIBUTING.rst:38 9ff28ddd679b42f4a5bf288242e8c827
 msgid "The canaille server has some default users:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:39 324e9f4f1d744fa49a0c3e7fe60cf46b
+#: ../../CONTRIBUTING.rst:40 324e9f4f1d744fa49a0c3e7fe60cf46b
 msgid "A regular user which login and password are **user**;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:40 30a3f2679a4b456791471ac6d4c15e2b
+#: ../../CONTRIBUTING.rst:41 30a3f2679a4b456791471ac6d4c15e2b
 msgid "A moderator user which login and password are **moderator**;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:41 d5e4f771a0854678af55e11ae4c8fc3d
+#: ../../CONTRIBUTING.rst:42 d5e4f771a0854678af55e11ae4c8fc3d
 msgid "An admin user which admin and password are **admin**;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:42 325a060f0844402d80a7267a46291010
+#: ../../CONTRIBUTING.rst:43 325a060f0844402d80a7267a46291010
 msgid ""
 "A new user which login is **james**. This user has no password yet, and his "
 "first attempt to log-in would result in sending a password initialization "
 "email (if a smtp server is configured)."
 msgstr ""
 
-#: ../development/specifications.rst:62 ../../CONTRIBUTING.rst:47
+#: ../development/specifications.rst:62 ../../CONTRIBUTING.rst:48
 #: c01f125a22914f369ef28ef090a728b1 01a043d4a4364011b8a22a53549b20da
 msgid "Backends"
 msgstr "Bases de données"
 
-#: ../../CONTRIBUTING.rst:49 12c4afcb316c448797ed9784ef9fbaa1
+#: ../../CONTRIBUTING.rst:50 12c4afcb316c448797ed9784ef9fbaa1
 msgid "Canaille comes with several backends:"
 msgstr "Canaille peut se connecter à plusieurs types de bases de données :"
 
-#: ../../CONTRIBUTING.rst:51 853d2b906b80415db33c707e29640f4c
+#: ../../CONTRIBUTING.rst:52 853d2b906b80415db33c707e29640f4c
 msgid "a lightweight test purpose `memory` backend"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:52 b280dce615cb48ec8456abf65fec4a9e
+#: ../../CONTRIBUTING.rst:53 b280dce615cb48ec8456abf65fec4a9e
 msgid "a `sql` backend, based on sqlalchemy"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:53 ad6d07459c274a9e8282e290875d5bfb
+#: ../../CONTRIBUTING.rst:54 ad6d07459c274a9e8282e290875d5bfb
 msgid "a production-ready `LDAP` backend"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:56 7db1494e281b4b89949e18e1ece1cb6c
+#: ../../CONTRIBUTING.rst:57 7db1494e281b4b89949e18e1ece1cb6c
 msgid "Docker environment"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:58 c8e61bddd24e4af0ab8ee2bd2709652d
+#: ../../CONTRIBUTING.rst:59 c8e61bddd24e4af0ab8ee2bd2709652d
 msgid ""
 "If you want to develop with docker, your browser needs to be able to reach "
 "the `canaille` container. The docker-compose file exposes the right ports, "
@@ -1754,26 +1778,26 @@ msgid ""
 "means `localhost`."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:63 0e3e6469d25f43998fce20bcb1291b86
+#: ../../CONTRIBUTING.rst:64 0e3e6469d25f43998fce20bcb1291b86
 msgid "To do that, you can add the following line to your `/etc/hosts`:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:69 c0dce613d6384dd18a1d6abce742bf55
+#: ../../CONTRIBUTING.rst:70 c0dce613d6384dd18a1d6abce742bf55
 msgid "To launch containers, use:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:84 9e2c9acef9184e34b00d62c97980467d
+#: ../../CONTRIBUTING.rst:85 9e2c9acef9184e34b00d62c97980467d
 msgid "Local environment"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:98 5fffaf4bff884b5a839078ad5a889fc9
+#: ../../CONTRIBUTING.rst:99 5fffaf4bff884b5a839078ad5a889fc9
 msgid ""
 "If you want to run the demo locally with the LDAP backend, you need to have "
 "`OpenLDAP <https://www.openldap.org/>`_ installed on your system. It is "
 "generally shipped under the ``slapd`` or ``openldap`` package name."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:103 aa9aab912ff04dd68c3b59bf1e36575a
+#: ../../CONTRIBUTING.rst:104 aa9aab912ff04dd68c3b59bf1e36575a
 msgid ""
 "On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be "
 "restricted by apparmor, and thus makes the tests and the demo fail. This can "
@@ -1781,14 +1805,14 @@ msgid ""
 msgstr ""
 "Si vous souhaitez apporter une correction ou développer une fonctionnalité, "
 "veuillez commencer par en discuter sur l’`outil de gestion de tickets "
-"<https://gitlab.com/yaal/canaille/-/issues>`_ ou le `salon Matrix "
-"<https://matrix.to/#/#canaille-discuss:yaal.coop>`_."
+"<https://gitlab.com/yaal/canaille/-/issues>`_ ou le `salon Matrix <https://"
+"matrix.to/#/#canaille-discuss:yaal.coop>`_."
 
-#: ../../CONTRIBUTING.rst:113 3d21757ba34c4721af043c150330c2e4
+#: ../../CONTRIBUTING.rst:114 3d21757ba34c4721af043c150330c2e4
 msgid "Populate the database"
 msgstr "Remplissage de la base de données"
 
-#: ../../CONTRIBUTING.rst:115 a412d39e98cf44f6b911566e1ebcdbde
+#: ../../CONTRIBUTING.rst:116 a412d39e98cf44f6b911566e1ebcdbde
 msgid ""
 "The demo database comes populated with some random users and groups. If you "
 "need more, you can generate users and groups with the ``populate`` command:"
@@ -1797,7 +1821,7 @@ msgstr ""
 "groupes générés aléatoirement. Si vous avez besoin de plus, vous pouvez "
 "générer des utilisateurs et des groupes avec la commande ``populate`` :"
 
-#: ../../CONTRIBUTING.rst:126 cdf90f875bcc44d5b41197a7cdbb275c
+#: ../../CONTRIBUTING.rst:127 cdf90f875bcc44d5b41197a7cdbb275c
 msgid ""
 "Adapt to use either the `ldap` or the `sql` configuration file. Note that "
 "this will not work with the memory backend."
@@ -1805,11 +1829,11 @@ msgstr ""
 "Adaptez pour utiliser le fichier de configuration `ldap` ou `sql`. Notez que "
 "cela ne fonctionnera pas avec la base de données en mémoire."
 
-#: ../../CONTRIBUTING.rst:129 2db32f774df8429fa4c9e83d00616a96
+#: ../../CONTRIBUTING.rst:130 2db32f774df8429fa4c9e83d00616a96
 msgid "Unit tests"
 msgstr "Tests unitaires"
 
-#: ../../CONTRIBUTING.rst:131 5d6a9b57b35d49c48e2b615f8128ebcc
+#: ../../CONTRIBUTING.rst:132 5d6a9b57b35d49c48e2b615f8128ebcc
 msgid ""
 "To run the tests, you just can run `uv run pytest` and/or `uv run tox` to "
 "test all the supported python environments. Everything must be green before "
@@ -1820,13 +1844,13 @@ msgstr ""
 "supportés. Tout doit être au vert avant que les contributions soient "
 "fusionnées."
 
-#: ../../CONTRIBUTING.rst:134 e1e6e475ff78404f930bb453f1f26e3b
+#: ../../CONTRIBUTING.rst:135 e1e6e475ff78404f930bb453f1f26e3b
 msgid ""
 "To test a specific backend you can pass ``--backend memory``, ``--backend "
 "sql`` or ``--backend ldap`` to pytest and tox."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:136 2cb85029b4274de388878da3d3285369
+#: ../../CONTRIBUTING.rst:137 2cb85029b4274de388878da3d3285369
 msgid ""
 "The test coverage is 100%, patches won't be accepted if not entirely "
 "covered. You can check the test coverage with ``uv run pytest --cov --cov-"
@@ -1834,11 +1858,11 @@ msgid ""
 "check the HTML coverage report in the newly created `htmlcov` directory."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:141 4408d499056c480f86f450a781d2ca0d
+#: ../../CONTRIBUTING.rst:142 4408d499056c480f86f450a781d2ca0d
 msgid "Code style"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:143 93e483f2a66a4d8f82feb8ca9a739818
+#: ../../CONTRIBUTING.rst:144 93e483f2a66a4d8f82feb8ca9a739818
 msgid ""
 "We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to "
 "format our code. Please run ``uv run tox -e style`` on your patches before "
@@ -1847,51 +1871,51 @@ msgid ""
 "with ``uv run pre-commit install``."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:149 0dca6207e6734ab487cb3fe72c3e90e8
+#: ../../CONTRIBUTING.rst:150 0dca6207e6734ab487cb3fe72c3e90e8
 msgid "Front"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:151 930e01d770324dc68f73095cd5456a8e
+#: ../../CONTRIBUTING.rst:152 930e01d770324dc68f73095cd5456a8e
 msgid ""
 "The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_ "
 "CSS framework. The dynamical parts of the interface use `htmx <https://htmx."
 "org/>`_."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:154 fc0da8a2736e461dab5a7d242c1cfa9a
+#: ../../CONTRIBUTING.rst:155 fc0da8a2736e461dab5a7d242c1cfa9a
 msgid ""
 "Using Javascript in the interface is tolerated, but the whole website MUST "
 "be accessible for browsers without Javascript support, and without any "
 "feature loss."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:156 a13b055a65244362a025440451de998d
+#: ../../CONTRIBUTING.rst:157 a13b055a65244362a025440451de998d
 msgid ""
 "Because of Fomantic UI we have a dependency to jQuery, however new "
 "contributions should not depend on jQuery at all. See the `related issue "
 "<https://gitlab.com/yaal/canaille/-/issues/130>`_."
 msgstr ""
 
-#: ../index.rst:71 ../../CONTRIBUTING.rst:161 e3ff6afa466e4e61aa4f677cd58d3ed2
+#: ../index.rst:71 ../../CONTRIBUTING.rst:162 e3ff6afa466e4e61aa4f677cd58d3ed2
 #: a08d8d5331494e7d93508eaf25f41a07
 msgid "Documentation"
 msgstr "Documentation"
 
-#: ../../CONTRIBUTING.rst:163 2e1fdcae75de46a6b50db7e4155758af
+#: ../../CONTRIBUTING.rst:164 2e1fdcae75de46a6b50db7e4155758af
 msgid "The documentation is generated when the tests run:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:169 94405109592b47c09c8726c305fa5edc
+#: ../../CONTRIBUTING.rst:170 94405109592b47c09c8726c305fa5edc
 msgid ""
 "You can also run sphinx by hand, that should be faster since it avoids the "
 "tox environment initialization:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:175 fe4610d142474897ae4f97d321448fac
+#: ../../CONTRIBUTING.rst:176 fe4610d142474897ae4f97d321448fac
 msgid "The generated documentation is located at ``build/sphinx/html/en``."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:178 bf09dd8ed31742bca2fa80175ae85bb3
+#: ../../CONTRIBUTING.rst:179 bf09dd8ed31742bca2fa80175ae85bb3
 msgid "Code translation"
 msgstr ""
 
@@ -1909,28 +1933,24 @@ msgid ""
 msgstr ""
 
 #: readme.rst:7 ../../canaille/translations/README.rst:8
-#: ea5bd05b09984bcaa643efa7a1a7618c 9dde116540474fe597aa26dda8187cae
-#: 33490a8ff4a3465fb8648393ff65eb75
+#: ea5bd05b09984bcaa643efa7a1a7618c 33490a8ff4a3465fb8648393ff65eb75
 msgid "Message extraction"
 msgstr ""
 
 #: readme.rst:9 ../../canaille/translations/README.rst:10
-#: 210e9ff98db74777830a5a1f4746df44 00b6ba25d89746df982a4b2d864883d3
-#: 16b22e2bc3cf495bbef529f5732887e3
+#: 210e9ff98db74777830a5a1f4746df44 16b22e2bc3cf495bbef529f5732887e3
 msgid ""
 "After you have edited translatable strings, you should extract the messages "
 "with:"
 msgstr ""
 
 #: readme.rst:16 ../../canaille/translations/README.rst:17
-#: 54ecd51acf494402964ae281c6cd639b 5368f206663b441d93e573282bf7a98f
-#: 02fa7225075346f89ad702cba8aabdeb
+#: 54ecd51acf494402964ae281c6cd639b 02fa7225075346f89ad702cba8aabdeb
 msgid "Language addition"
 msgstr ""
 
 #: readme.rst:18 ../../canaille/translations/README.rst:19
-#: 5429b47768e2472ea597ed48140a5621 0c25b2a0b91f4ebeb6b3a29d613c2344
-#: 015d6a437f7e4d099c8cad60986c0b68
+#: 5429b47768e2472ea597ed48140a5621 015d6a437f7e4d099c8cad60986c0b68
 msgid ""
 "You can add a new language manually with the following command, however this "
 "should not be needed as Weblate takes car of this:"
@@ -1960,7 +1980,7 @@ msgid ""
 "package:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:184 4ff341d941384c029ed9c0b49d1062f9
+#: ../../CONTRIBUTING.rst:185 4ff341d941384c029ed9c0b49d1062f9
 msgid "Documentation translation"
 msgstr ""
 
@@ -1983,68 +2003,68 @@ msgstr ""
 msgid "Build the documentation in another language"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:189 4b1dc3dae99f4c6fbbeec3e54be3e922
+#: ../../CONTRIBUTING.rst:190 4b1dc3dae99f4c6fbbeec3e54be3e922
 msgid "Publish a new release"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:191 975b37a07edc4a42bbef14c2ca80a34f
+#: ../../CONTRIBUTING.rst:192 975b37a07edc4a42bbef14c2ca80a34f
 msgid ""
 "Check that dependencies are up to date with ``uv sync --all-extras --"
 "upgrade`` and update dependencies accordingly in separated commits;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:192 e9bd8386c6c64ef99aac12ee831f39d1
+#: ../../CONTRIBUTING.rst:193 e9bd8386c6c64ef99aac12ee831f39d1
 msgid ""
 "Check that tests are still green for every supported python version, and "
 "that coverage is still at 100%, by running ``uv run tox``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:193 3e7d5493a8e44c1a9067010115678723
+#: ../../CONTRIBUTING.rst:194 3e7d5493a8e44c1a9067010115678723
 msgid ""
 "Check that the demo environments are still working, both the local and the "
 "Docker one;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:194 fe7867ea9416424e81c518f77853958a
+#: ../../CONTRIBUTING.rst:195 fe7867ea9416424e81c518f77853958a
 msgid ""
 "Check that the :ref:`development/changelog:Release notes` section is "
 "correctly filled up;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:195 7d89adc1c3e6478ab9e8faa02f97bf03
+#: ../../CONTRIBUTING.rst:196 7d89adc1c3e6478ab9e8faa02f97bf03
 msgid "Increase the version number in ``pyproject.toml``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:196 a376131776cd4e469611fa3ad6749be9
+#: ../../CONTRIBUTING.rst:197 a376131776cd4e469611fa3ad6749be9
 msgid "Commit with ``git commit``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:197 655fd489e5324dc5b6172d438a6b8e3e
+#: ../../CONTRIBUTING.rst:198 655fd489e5324dc5b6172d438a6b8e3e
 msgid "Build with ``uv build``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:198 79fc61b7c13647a285a918a0c126ea53
+#: ../../CONTRIBUTING.rst:199 79fc61b7c13647a285a918a0c126ea53
 msgid ""
 "Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/"
 "legacy/``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:199 93540129ce0c440eba4da63ed3ddb769
+#: ../../CONTRIBUTING.rst:200 93540129ce0c440eba4da63ed3ddb769
 msgid ""
 "Install the test package somewhere with ``pip install --extra-index-url "
 "https://test.pypi.org/simple --upgrade canaille``. Check that everything "
 "looks fine;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:200 8a73b31d1fe14fdda15e6c2dea0cafc9
+#: ../../CONTRIBUTING.rst:201 8a73b31d1fe14fdda15e6c2dea0cafc9
 msgid "Publish on production PyPI ``uv publish``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:201 93131bb37ccc4207825449d393f92201
+#: ../../CONTRIBUTING.rst:202 93131bb37ccc4207825449d393f92201
 msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:202 a98a5168d5f949ec9e96f16d8ff8b6f5
+#: ../../CONTRIBUTING.rst:203 a98a5168d5f949ec9e96f16d8ff8b6f5
 msgid ""
 "Push the release commit and the new tag on the repository with ``git push --"
 "tags``."
