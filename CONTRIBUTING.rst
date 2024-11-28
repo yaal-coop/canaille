@@ -22,6 +22,7 @@ Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/gett
 to be able to hack Canaille.
 
 Initialize your development environment with:
+
 - ``uv sync --extra front --extra oidc`` to have a minimal working development environment. This will allow you to run the tests with ``uv pytest --backend memory``.
 - ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``.
 - ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``.
