@@ -588,6 +588,7 @@ def profile_edition(user, edited_user):
     print("password_policy_subentry", user.password_policy_subentry)
     print("password_policy_subentry", user.password_policy_subentry.dn)
     print("password_last_update", user.password_last_update)
+    print("password_history", user.password_history)
     print("")
 
     if not user.can_manage_users and not (

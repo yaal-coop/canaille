@@ -377,6 +377,12 @@ class LDAPBackend(Backend):
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             modlist = [(name, values) for name, values in formatted_changes.items()]
+            print("# # #")
+            print(instance.dn)
+            print(modlist)
+            print(attributes)
+            print(read_post_control.__dict__)
+            print("# # #")
             _, _, _, [result] = self.connection.add_ext_s(
                 instance.dn, modlist, serverctrls=[read_post_control]
             )

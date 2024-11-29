@@ -9,3 +9,4 @@ pwdMustChange: TRUE
 pwdLockout: TRUE
 pwdAllowUserChange: TRUE
 pwdGraceAuthNLimit: 1
+pwdInHistory: 5

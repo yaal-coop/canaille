@@ -41,6 +41,8 @@ class User(Model):
 
     password_last_update: datetime.datetime | None = None
 
+    password_history: list[str] | None = None
+
     password: str | None = None
     """
     This attribute is intended to be used as a means to set, replace,
@@ -371,3 +373,5 @@ class Policy(Model):
     allow_user_change: bool | None = None
 
     grace_authentication_limit: int | None = None
+
+    pwdInHistory: int | None = None
