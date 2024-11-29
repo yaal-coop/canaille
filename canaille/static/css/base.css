@@ -274,4 +274,14 @@ select.ui.multiple.dropdown option[selected] {
         cursor: pointer;
         color: rgba(255,255,255,.87) !important;
       }
+
+    .send-code-button:disabled {
+        text-decoration: none;
+        cursor: auto;
+        color: rgba(255, 255, 255, 0.524) !important;
+    }
+
+    #countdown {
+        font-size: 1.5em;
+    }
 }

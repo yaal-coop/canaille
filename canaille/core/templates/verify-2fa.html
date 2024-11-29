@@ -42,13 +42,38 @@
                         </div>
                     {% endblock %}
                 {% endcall %}
-                {% if method == "mail" %}
-                    <form action="{{ url_for('core.auth.send_mail_otp') }}" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button class="send-code-button" type="submit">Didn't receive the mail? Click here to send a new code.</button>
+                {% if method == "EMAIL_OTP" or method == "SMS_OTP" %}
+                    {% if method == "EMAIL_OTP" %}
+                        <form action="{{ url_for('core.auth.send_mail_otp') }}" method="post">
+                    {% endif %}
+                    {% if method == "SMS_OTP" %}
+                        <form action="{{ url_for('core.auth.send_sms_otp') }}" method="post">
+                    {% endif %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="send-code-button" type="submit">Didn't receive the code? Click here to send another one. <span id="countdown"></span></button>
                     </form>
                 {% endif %}
             </div>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        countDownDuration = 10;
+        countdown = document.getElementById("countdown");
+        countdown.innerHTML = countDownDuration;
+        button = countdown.parentNode;
+        button.setAttribute("disabled", "");
+
+        x = setInterval(() => {
+            countDownDuration--;
+            if (countDownDuration <= 0) {
+                clearInterval(x);
+                countdown.innerHTML = "";
+                button.removeAttribute("disabled");
+            } else {
+                countdown.innerHTML = countDownDuration;
+            }
+        }, 1000);
+    </script>
 {% endblock %}

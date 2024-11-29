@@ -186,7 +186,7 @@ def test_ldap_connection_no_remote(testclient, configuration):
     validate(config_dict)
 
 
-def test_ldap_connection_remote(testclient, configuration, backend):
+def test_ldap_connection_remote(testclient, configuration, backend, mock_smpp):
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
     validate(config_dict, validate_remote=True)

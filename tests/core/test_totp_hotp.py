@@ -10,7 +10,9 @@ from canaille.core.models import HOTP_LOOK_AHEAD_WINDOW
 
 def test_otp_disabled(testclient):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = None
-
+    with testclient.session_transaction() as session:
+        session["remaining_otp_methods"] = ["TOTP"]
+        session["attempt_login_with_correct_password"] = "id"
     testclient.get("/setup-2fa", status=404)
     testclient.get("/verify-2fa", status=404)
 
@@ -151,7 +153,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
         formatted_name="Otp User",
         family_name="Otp",
         user_name="otp",
-        emails=["john@doe.com"],
+        emails=["john@doe.test"],
         password="correct horse battery staple",
     )
     backend.save(u)
@@ -186,7 +188,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
 
     assert (
         "success",
-        "Two-factor authentication setup successful. Welcome Otp User",
+        "Connection successful. Welcome Otp User",
     ) in res.flashes
     assert (
         "canaille",

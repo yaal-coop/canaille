@@ -142,7 +142,9 @@ def test_smtp_connection_remote_smtp_wrong_credentials(
         validate(config_dict, validate_remote=True)
 
 
-def test_smtp_connection_remote_smtp_no_credentials(testclient, backend, configuration):
+def test_smtp_connection_remote_smtp_no_credentials(
+    testclient, backend, configuration, mock_smpp
+):
     del configuration["CANAILLE"]["SMTP"]["LOGIN"]
     del configuration["CANAILLE"]["SMTP"]["PASSWORD"]
     config_obj = settings_factory(configuration)
@@ -262,3 +264,54 @@ def test_email_otp_without_smtp(configuration, backend):
         config_obj = settings_factory(configuration)
         config_dict = config_obj.model_dump()
         validate(config_dict, validate_remote=False)
+
+
+def test_sms_otp_without_smpp(configuration, backend):
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+
+    validate(config_dict, validate_remote=False)
+
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Cannot activate sms one-time password authentication without SMPP",
+    ):
+        configuration["CANAILLE"]["SMPP"] = None
+        configuration["CANAILLE"]["SMS_OTP"] = True
+        config_obj = settings_factory(configuration)
+        config_dict = config_obj.model_dump()
+        validate(config_dict, validate_remote=False)
+
+
+def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configuration):
+    configuration["CANAILLE"]["SMPP"] = {
+        "HOST": "invalid-smpp.com",
+        "PORT": 2775,
+        "LOGIN": "user",
+        "PASSWORD": "user",
+    }
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    with pytest.raises(
+        ConfigurationException,
+        match=r"Could not connect to the SMPP server 'invalid-smpp.com' on port '2775'",
+    ):
+        validate(config_dict, validate_remote=True)
+
+
+def test_validate_without_smpp(configuration, backend, mock_smpp):
+    configuration["CANAILLE"]["SMPP"] = None
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+
+    validate(config_dict, validate_remote=True)
+
+
+def test_smpp_connection_remote_smpp_no_credentials(
+    testclient, backend, configuration, mock_smpp
+):
+    del configuration["CANAILLE"]["SMPP"]["LOGIN"]
+    del configuration["CANAILLE"]["SMPP"]["PASSWORD"]
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    validate(config_dict, validate_remote=True)

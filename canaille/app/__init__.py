@@ -86,3 +86,7 @@ def mask_email(email):
     if atpos > 0:
         return email[0] + "#####" + email[atpos - 1 :]
     return None
+
+
+def mask_phone(phone):
+    return phone[0:3] + "#####" + phone[-2:]

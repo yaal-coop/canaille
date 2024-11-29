@@ -9,10 +9,12 @@ from flask import current_app
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
+from canaille.core.sms import send_one_time_password_sms
 
 HOTP_LOOK_AHEAD_WINDOW = 10
 OTP_DIGITS = 6
 OTP_VALIDITY = 600
+SEND_NEW_OTP_DELAY = 10
 
 
 class User(Model):
@@ -261,10 +263,10 @@ class User(Model):
     two-factor authentication."""
 
     one_time_password: str | None = None
-    """One time password used for email two-factor authentication."""
+    """One time password used for email or sms two-factor authentication."""
 
     one_time_password_emission_date: datetime.datetime | None = None
-    """A DateTime indicating when the user last emitted an email one-time password."""
+    """A DateTime indicating when the user last emitted an email or sms one-time password."""
 
     _readable_fields = None
     _writable_fields = None
@@ -360,13 +362,22 @@ class User(Model):
         else:  # pragma: no cover
             raise RuntimeError("Invalid one-time password method")
 
-    def generate_otp_mail(self):
+    def generate_sms_or_mail_otp(self):
         otp = string_code(secrets.randbelow(10**OTP_DIGITS), OTP_DIGITS)
         self.one_time_password = otp
         self.one_time_password_emission_date = datetime.datetime.now(
             datetime.timezone.utc
         )
+        return otp
+
+    def generate_and_send_otp_mail(self):
+        otp = self.generate_sms_or_mail_otp()
         send_one_time_password_mail(self.emails[0], otp)
+        return otp
+
+    def generate_and_send_otp_sms(self):
+        otp = self.generate_sms_or_mail_otp()
+        send_one_time_password_sms(self.phone_numbers[0], otp)
         return otp
 
     def get_otp_authentication_setup_uri(self):
@@ -384,19 +395,13 @@ class User(Model):
         else:  # pragma: no cover
             raise RuntimeError("Invalid one-time password method")
 
-    def is_otp_valid(self, user_otp):
-        method = None
-        if current_app.features.has_otp:
-            method = current_app.features.otp_method
-        elif current_app.features.has_email_otp:  # pragma: no branch
-            method = "EMAIL_OTP"
-
+    def is_otp_valid(self, user_otp, method):
         if method == "TOTP":
             return self.is_totp_valid(user_otp)
         elif method == "HOTP":
             return self.is_hotp_valid(user_otp)
-        elif method == "EMAIL_OTP":
-            return self.is_email_otp_valid(user_otp)
+        elif method == "EMAIL_OTP" or method == "SMS_OTP":
+            return self.is_email_or_sms_otp_valid(user_otp)
         else:  # pragma: no cover
             raise RuntimeError("Invalid one-time password method")
 
@@ -417,17 +422,21 @@ class User(Model):
                 return True
         return False
 
-    def is_email_otp_valid(self, user_otp):
-        return (
-            user_otp == self.one_time_password
-            and self.is_one_time_password_still_valid()
-        )
+    def is_email_or_sms_otp_valid(self, user_otp):
+        return user_otp == self.one_time_password and self.is_otp_still_valid()
 
-    def is_one_time_password_still_valid(self):
+    def is_otp_still_valid(self):
         return datetime.datetime.now(
             datetime.timezone.utc
         ) - self.one_time_password_emission_date < datetime.timedelta(
             seconds=OTP_VALIDITY
+        )
+
+    def is_can_send_new_otp(self):
+        return self.one_time_password_emission_date is None or (
+            datetime.datetime.now(datetime.timezone.utc)
+            - self.one_time_password_emission_date
+            >= datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
         )
 
 
