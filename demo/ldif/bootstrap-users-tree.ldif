@@ -5,3 +5,7 @@ ou: users
 dn: ou=groups,dc=mydomain,dc=tld
 objectclass: organizationalUnit
 ou: groups
+
+dn: ou=policies,dc=mydomain,dc=tld
+objectclass: organizationalUnit
+ou: policies

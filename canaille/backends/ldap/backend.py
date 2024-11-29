@@ -430,7 +430,9 @@ def setup_ldap_models(config):
     models.User.rdn_attribute = config["CANAILLE_LDAP"]["USER_RDN"]
     object_class = config["CANAILLE_LDAP"]["USER_CLASS"]
     models.User.ldap_object_class = listify(object_class)
-    # models.User.password_policy_subentry= "cn=passwordDefault,dc=mydomain,dc=tld"
+    models.User.password_policy_subentry = (
+        "cn=passwordDefault,ou=policies,dc=mydomain,dc=tld"
+    )
 
     group_base = config["CANAILLE_LDAP"]["GROUP_BASE"].replace(
         f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""

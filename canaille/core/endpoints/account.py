@@ -459,7 +459,7 @@ def profile_create(current_app, form):
     given_name = user.given_name if user.given_name else ""
     family_name = user.family_name if user.family_name else ""
     user.formatted_name = f"{given_name} {family_name}".strip()
-    user.password_policy_subentry = "cn=passwordDefault,dc=mydomain,dc=tld"
+    user.password_policy_subentry = "cn=passwordDefault,ou=policies,dc=mydomain,dc=tld"
     Backend.instance.save(user)
 
     if form["password1"].data:

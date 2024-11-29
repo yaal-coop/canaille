@@ -35,7 +35,7 @@ class User(Model):
     and is case insensitive.
     """
 
-    password_policy_subentry: str = "cn=passwordDefault,dc=mydomain,dc=tld"
+    password_policy_subentry: str = "cn=passwordDefault,ou=policies,dc=mydomain,dc=tld"
 
     last_login: datetime.datetime | None = None
 

@@ -27,7 +27,7 @@ BIND_PW = "admin"
 TIMEOUT = 10
 USER_BASE = "ou=users,dc=mydomain,dc=tld"
 GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
-POLICY_BASE = "dc=mydomain,dc=tld"
+POLICY_BASE = "ou=policies,dc=mydomain,dc=tld"
 
 [CANAILLE.ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
