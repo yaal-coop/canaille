@@ -30,7 +30,7 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
         "created": mock.ANY,
         "display_name": "Johnny",
         "emails": [
-            "john@doe.com",
+            "john@doe.test",
         ],
         "family_name": "Doe",
         "formatted_address": "1235, somewhere",
@@ -43,7 +43,7 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
             "555-000-000",
         ],
         "preferred_language": "en",
-        "profile_url": "https://john.example",
+        "profile_url": "https://john.test",
         "user_name": "user",
         "hotp_counter": 1,
         "secret_token": mock.ANY,

@@ -3,6 +3,12 @@
 
 Added
 ^^^^^
+- Multi-factor authentication :issue:`47`
+- :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and
+  :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and
+  :attr:`~canaille.core.configuration.CoreSettings.SMS_OTP` and
+  :attr:`~canaille.core.configuration.CoreSettings.SMPP`
+  :issue:`47`
 - Password compromission check :issue:`179`
 - :attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and

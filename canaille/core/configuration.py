@@ -39,6 +39,24 @@ class SMTPSettings(BaseModel):
     """
 
 
+class SMPPSettings(BaseModel):
+    """The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace. If
+    not set, sms related features such as sms one-time passwords will be disabled.
+    """
+
+    HOST: str | None = "localhost"
+    """The SMPP host."""
+
+    PORT: int | None = 2775
+    """The SMPP port. Use 8775 for SMPP over TLS (recommended)."""
+
+    LOGIN: str | None = None
+    """The SMPP login."""
+
+    PASSWORD: str | None = None
+    """The SMPP password."""
+
+
 class Permission(str, Enum):
     """The permissions that can be assigned to users.
 
@@ -258,6 +276,10 @@ class CoreSettings(BaseModel):
     """If :py:data:`True`, then users will need to authenticate themselves
     via a one-time password sent to their primary email address."""
 
+    SMS_OTP: bool = False
+    """If :py:data:`True`, then users will need to authenticate themselves
+    via a one-time password sent to their primary phone number."""
+
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.
 
@@ -293,6 +315,13 @@ class CoreSettings(BaseModel):
     """The settings related to SMTP and mail configuration.
 
     If unset, mail-related features like password recovery won't be
+    enabled.
+    """
+
+    SMPP: SMPPSettings | None = None
+    """The settings related to SMPP configuration.
+
+    If unset, sms-related features like sms one-time passwords won't be
     enabled.
     """
 

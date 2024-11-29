@@ -177,12 +177,13 @@ If :attr:`password compromission check feature <canaille.core.configuration.Core
 .. _feature_multi_factor_authentication:
 
 Multi-factor authentication
-==============
+===========================
 
 If the :attr:`one-time password feature <canaille.core.configuration.CoreSettings.OTP_METHOD>` is set, then users will need to authenticate themselves using a one-time password via an authenticator app.
 Two options are supported : "TOTP" for time one-time password, and "HOTP" for HMAC-based one-time password.
-In case of lost token, one-time password authentication can be reset by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
-If the :attr:`email multi-factor authentication feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary email address.
+In case of lost token, TOTP/HOTP authentication can be reset by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
+If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`email one-time password feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary email address.
+If a :class:`smpp server <canaille.core.configuration.SMPPSettings>` is configured and the :attr:`sms one-time password feature <canaille.core.configuration.CoreSettings.SMS_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary phone number.
 
 Web interface
 *************

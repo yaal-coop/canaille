@@ -1,3 +1,4 @@
+import importlib.util
 import os
 import smtplib
 import socket
@@ -175,9 +176,7 @@ def validate(config, validate_remote=False):
     validate_keypair(config.get("CANAILLE_OIDC"))
     validate_theme(config["CANAILLE"])
     validate_admin_email(config["CANAILLE"])
-    validate_otp_method(config["CANAILLE"])
-    validate_mail_otp(config["CANAILLE"])
-
+    validate_otp_config(config["CANAILLE"])
     if not validate_remote:
         return
 
@@ -186,6 +185,8 @@ def validate(config, validate_remote=False):
     Backend.instance.validate(config)
     if smtp_config := config["CANAILLE"]["SMTP"]:
         validate_smtp_configuration(smtp_config)
+    if smpp_config := config["CANAILLE"]["SMPP"]:
+        validate_smpp_configuration(smpp_config)
 
 
 def validate_keypair(config):
@@ -233,6 +234,31 @@ def validate_smtp_configuration(config):
         raise ConfigurationException(exc) from exc
 
 
+def validate_smpp_configuration(config):
+    try:
+        import smpplib
+    except ImportError as exc:
+        raise ConfigurationException(
+            "You have configured a SMPP server but the 'sms' extra is not installed."
+        ) from exc
+
+    host = config["HOST"]
+    port = config["PORT"]
+    try:
+        with smpplib.client.Client(host, port, allow_unknown_opt_params=True) as client:
+            client.connect()
+            if config["LOGIN"]:
+                client.bind_transmitter(
+                    system_id=config["LOGIN"], password=config["PASSWORD"]
+                )
+    except smpplib.exceptions.ConnectionError as exc:
+        raise ConfigurationException(
+            f"Could not connect to the SMPP server '{host}' on port '{port}'"
+        ) from exc
+    except smpplib.exceptions.UnknownCommandError as exc:  # pragma: no cover
+        raise ConfigurationException(exc) from exc
+
+
 def validate_theme(config):
     if not os.path.exists(config["THEME"]) and not os.path.exists(
         os.path.join(ROOT, "themes", config["THEME"])
@@ -247,13 +273,23 @@ def validate_admin_email(config):
         )
 
 
-def validate_otp_method(config):
+def validate_otp_config(config):
+    if (
+        config["OTP_METHOD"] or config["EMAIL_OTP"] or config["SMS_OTP"]
+    ) and not importlib.util.find_spec("otpauth"):  # pragma: no cover
+        raise ConfigurationException(
+            "You are trying to use OTP but the 'otp' extra is not installed."
+        )
+
     if config["OTP_METHOD"] not in [None, "TOTP", "HOTP"]:
         raise ConfigurationException("Invalid OTP method")
 
-
-def validate_mail_otp(config):
     if config["EMAIL_OTP"] and not config["SMTP"]:
         raise ConfigurationException(
             "Cannot activate email one-time password authentication without SMTP"
+        )
+
+    if config["SMS_OTP"] and not config["SMPP"]:
+        raise ConfigurationException(
+            "Cannot activate sms one-time password authentication without SMPP"
         )

@@ -126,11 +126,8 @@ source = { editable = "." }
 dependencies = [
     { name = "flask" },
     { name = "flask-wtf" },
-    { name = "otpauth" },
-    { name = "pillow" },
     { name = "pydantic-settings" },
     { name = "requests" },
-    { name = "qrcode" },
     { name = "wtforms" },
 ]
 
@@ -156,6 +153,11 @@ mysql = [
 oidc = [
     { name = "authlib" },
 ]
+otp = [
+    { name = "otpauth" },
+    { name = "pillow" },
+    { name = "qrcode" },
+]
 postgresql = [
     { name = "passlib" },
     { name = "sqlalchemy", extra = ["postgresql-psycopg2binary"] },
@@ -164,6 +166,9 @@ postgresql = [
 ]
 sentry = [
     { name = "sentry-sdk" },
+]
+sms = [
+    { name = "smpplib" },
 ]
 sqlite = [
     { name = "passlib" },
@@ -218,18 +223,19 @@ requires-dist = [
     { name = "flask-babel", marker = "extra == 'front'", specifier = ">=4.0.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
-    { name = "otpauth", specifier = ">=2.1.1" },
+    { name = "otpauth", marker = "extra == 'otp'", specifier = ">=2.1.1" },
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'sqlite'", specifier = ">=1.7.4" },
-    { name = "pillow", specifier = ">=11.0.0" },
+    { name = "pillow", marker = "extra == 'otp'", specifier = ">=11.0.0" },
     { name = "pycountry", marker = "extra == 'front'", specifier = ">=23.12.7" },
     { name = "pydantic-settings", specifier = ">=2.0.3" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
+    { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
     { name = "requests", specifier = ">=2.32.3" },
-    { name = "qrcode", specifier = ">=8.0" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
+    { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },
     { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
     { name = "sqlalchemy", extras = ["mysql-connector"], marker = "extra == 'mysql'", specifier = ">=2.0.23" },
     { name = "sqlalchemy", extras = ["postgresql-psycopg2binary"], marker = "extra == 'postgresql'", specifier = ">=2.0.23" },
@@ -1665,6 +1671,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/8a/11/1e09b5dfa0b3e0827c7490e5fd2d30ce9712963e0275eede2ed70739d731/slapd-0.1.5.tar.gz", hash = "sha256:ac64be31914808325f8b9200c7115e76e61b819434915400ce46099789b6b693", size = 19652 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/45/8d/f0451d9d733de0ebe6ec4b461ea051374c4a53f161798deea3353222d151/slapd-0.1.5-py3-none-any.whl", hash = "sha256:b6aa9e75c6fb280e76877864a101564e3088e3ee211a74d11bedcfb6aec18923", size = 22124 },
+]
+
+[[package]]
+name = "smpplib"
+version = "2.2.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/dd/c0/9427c820f5514a5b43f98f99b746334fcae71f8385466766c3510b07d706/smpplib-2.2.3.tar.gz", hash = "sha256:5215a95b0538d26f189600e0982b31da8281f7453cd6e2862c5b21e3e1002331", size = 24819 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/88/cd/9af2de1d421807ed8c683346435d61dc6edcccc2ef30d22751ede3b96bd5/smpplib-2.2.3-py3-none-any.whl", hash = "sha256:62abc429602bd3f4e351ee786eed514f9d12fffc05d1b8d2dc715d96a733820a", size = 28875 },
 ]
 
 [[package]]

@@ -32,11 +32,8 @@ requires-python = ">=3.10"
 dependencies = [
     "flask >= 3.0.0",
     "flask-wtf >= 1.2.1",
-    "otpauth>=2.1.1",
-    "pillow>=11.0.0",
     "pydantic-settings >= 2.0.3",
     "requests>=2.32.3",
-    "qrcode>=8.0",
     "wtforms >= 3.1.1",
 ]
 
@@ -82,6 +79,16 @@ mysql = [
     "sqlalchemy[mysql-connector] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
+]
+
+otp = [
+    "otpauth>=2.1.1",
+    "pillow>=11.0.0",
+    "qrcode>=8.0",
+]
+
+sms = [
+    "smpplib>=2.2.3",
 ]
 
 [project.urls]

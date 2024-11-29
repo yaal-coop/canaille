@@ -22,8 +22,7 @@ from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
-
-OTP_LENGTH = 6
+from canaille.core.models import OTP_DIGITS
 
 
 def unique_user_name(form, field):
@@ -489,7 +488,7 @@ class TwoFactorForm(Form):
         _("One-time password"),
         validators=[
             wtforms.validators.DataRequired(),
-            wtforms.validators.Length(min=OTP_LENGTH, max=OTP_LENGTH),
+            wtforms.validators.Length(min=OTP_DIGITS, max=OTP_DIGITS),
         ],
         render_kw={
             "placeholder": _("123456"),

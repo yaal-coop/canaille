@@ -74,6 +74,11 @@ SECRET_KEY = "change me before you go in production"
 # This option is false by default.
 # EMAIL_OTP = false
 
+# If SMS_OTP is true, then users will need to authenticate themselves
+# via a one-time password sent to their primary phone number.
+# This option is false by default.
+# SMS_OTP = false
+
 # The validity duration of registration invitations, in seconds.
 # Defaults to 2 days
 # INVITATION_EXPIRATION = 172800
@@ -286,3 +291,11 @@ WRITE = [
 # LOGIN = ""
 # PASSWORD = ""
 # FROM_ADDR = "admin@mydomain.example"
+
+# The SMPP server options. If not set, sms related features such as
+# sms one-time passwords will be disabled.
+[CANAILLE.SMPP]
+# HOST = "localhost"
+# PORT = 2775
+# LOGIN = ""
+# PASSWORD = ""

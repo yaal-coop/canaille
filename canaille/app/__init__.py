@@ -5,7 +5,6 @@ import re
 from base64 import b64encode
 from io import BytesIO
 
-import qrcode
 from flask import current_app
 from flask import request
 
@@ -72,6 +71,11 @@ class classproperty:
 
 
 def get_b64encoded_qr_image(data):
+    try:
+        import qrcode
+    except ImportError:
+        return None
+
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
     qr.add_data(data)
     qr.make(fit=True)
@@ -86,3 +90,7 @@ def mask_email(email):
     if atpos > 0:
         return email[0] + "#####" + email[atpos - 1 :]
     return None
+
+
+def mask_phone(phone):
+    return phone[0:3] + "#####" + phone[-2:]
