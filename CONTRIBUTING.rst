@@ -27,7 +27,7 @@ Initialize your development environment with:
 - ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``.
 - ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``.
 - ``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;
-Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
+  Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
 
 After having launched the demo you have access to several services:
 

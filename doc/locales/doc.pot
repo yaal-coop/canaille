@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-29 00:30+0100\n"
+"POT-Creation-Date: 2024-11-30 13:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1774,13 +1774,8 @@ msgid "``uv sync --extra front --extra oidc --extra ldap`` to have a minimal wor
 msgstr ""
 
 #: ../../CONTRIBUTING.rst:29
-#: 45c310bb345740648d6f7fe00c190191
-msgid "``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;"
-msgstr ""
-
-#: ../../CONTRIBUTING.rst:30
-#: 184edc3e6ce942af9c0c653d38b3be67
-msgid "Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer."
+#: 56b8780399064aec89d3099841d1b017
+msgid "``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system; Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer."
 msgstr ""
 
 #: ../../CONTRIBUTING.rst:32
@@ -2057,7 +2052,7 @@ msgstr ""
 #: readme.rst:1
 #: 2e38a895387e4821a3f61eccb03496a4
 #: 7abe83f2eeb54b3f9f3d1a8542696765
-msgid "Documentation translation Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`_."
+msgid "Documentation translation Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/documentation>`_."
 msgstr ""
 
 #: readme.rst:4
