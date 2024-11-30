@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-30 13:37+0100\n"
-"PO-Revision-Date: 2024-11-30 12:37+0000\n"
+"PO-Revision-Date: 2024-12-01 13:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -2049,6 +2049,9 @@ msgid ""
 "The following commands are there as documentation, only the message "
 "extraction and the language addition is needed for contributors."
 msgstr ""
+"Les commandes suivantes sont montrées à titre de documentation, seules l’"
+"extraction de message et l’ajout de langues de traduction sont utiles aux "
+"contributeurs."
 
 #: readme.rst:25 3d142fe9f633400ea029e949f1e869ee
 #: 74cc2740b1584972aa3c0e672dff5f3e
@@ -2057,7 +2060,7 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:190 4b1dc3dae99f4c6fbbeec3e54be3e922
 msgid "Publish a new release"
-msgstr ""
+msgstr "Publier une nouvelle version"
 
 #: ../../CONTRIBUTING.rst:192 975b37a07edc4a42bbef14c2ca80a34f
 msgid ""
