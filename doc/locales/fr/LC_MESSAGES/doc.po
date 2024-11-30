@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-29 00:30+0100\n"
-"PO-Revision-Date: 2024-11-30 00:00+0000\n"
+"PO-Revision-Date: 2024-11-30 12:37+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -1808,7 +1808,7 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:85 9e2c9acef9184e34b00d62c97980467d
 msgid "Local environment"
-msgstr ""
+msgstr "Environnement local"
 
 #: ../../CONTRIBUTING.rst:99 5fffaf4bff884b5a839078ad5a889fc9
 msgid ""
@@ -1816,6 +1816,10 @@ msgid ""
 "`OpenLDAP <https://www.openldap.org/>`_ installed on your system. It is "
 "generally shipped under the ``slapd`` or ``openldap`` package name."
 msgstr ""
+"Si vous souhaitez exécuter l’instance de démonstration localement avec le "
+"support pour LDAP, vous devez avoir `OpenLDAP <https://www.openldap.org/>`_ "
+"installé sur votre système. OpenLDAP est généralement fourni via les paquets "
+"nommés ``slapd`` ou ``openldap``."
 
 #: ../../CONTRIBUTING.rst:104 aa9aab912ff04dd68c3b59bf1e36575a
 msgid ""
@@ -1869,6 +1873,9 @@ msgid ""
 "To test a specific backend you can pass ``--backend memory``, ``--backend "
 "sql`` or ``--backend ldap`` to pytest and tox."
 msgstr ""
+"Pour tester une base de données en particulier, vous pouvez passer les "
+"argumentes ``--backend memory``, ``--backend sql`` ou ``--backend ldap`` à "
+"pytest et tox."
 
 #: ../../CONTRIBUTING.rst:137 2cb85029b4274de388878da3d3285369
 msgid ""
@@ -1877,10 +1884,15 @@ msgid ""
 "report=html`` or ``uv run tox -e coverage -- --cov-report=html``. You can "
 "check the HTML coverage report in the newly created `htmlcov` directory."
 msgstr ""
+"La couverture de code est de 100%, les contributions ne seront acceptées que "
+"si leur code est entièrement couvert. Vous pouvez vérifier la couverture "
+"avec ``uv run pytest --cov --cov-report=html``ou ``uv run tox -e coverage -- "
+"--cov-report=html`. Vous pouvez ensuite consulter le rapport de couverture "
+"HTML dans le dossier `htmlcov` nouvellement créé."
 
 #: ../../CONTRIBUTING.rst:142 4408d499056c480f86f450a781d2ca0d
 msgid "Code style"
-msgstr ""
+msgstr "Style de code"
 
 #: ../../CONTRIBUTING.rst:144 93e483f2a66a4d8f82feb8ca9a739818
 msgid ""
@@ -1890,10 +1902,15 @@ msgid ""
 "commit you can use our `pre-commit <https://pre-commit.com/>`_ configuration "
 "with ``uv run pre-commit install``."
 msgstr ""
+"Canaille utilise `ruff <https://docs.astral.sh/ruff/>`_ ainsi que d’autres "
+"outils pour formater le code. Veuillez exécuter ``uv run tox -e style`` "
+"avant de soumettre une contribution. Afin d’effectuer les vérifications de "
+"style à chaque commit, vous pouvez utiliser la configuration `pre-commit "
+"<https://pre-commit.com/>`_ avec ``uv run pre-commit install``."
 
 #: ../../CONTRIBUTING.rst:150 0dca6207e6734ab487cb3fe72c3e90e8
 msgid "Front"
-msgstr ""
+msgstr "Interface utilisateur"
 
 #: ../../CONTRIBUTING.rst:152 930e01d770324dc68f73095cd5456a8e
 msgid ""
@@ -1901,6 +1918,8 @@ msgid ""
 "CSS framework. The dynamical parts of the interface use `htmx <https://htmx."
 "org/>`_."
 msgstr ""
+"L’interface utilisateur est construite avec `Fomantic UI <https://fomantic-ui"
+".com/>`_. Les parties dynamiques utilisent `HTMX <https://htmx.org/>`_."
 
 #: ../../CONTRIBUTING.rst:155 fc0da8a2736e461dab5a7d242c1cfa9a
 msgid ""
@@ -1908,6 +1927,9 @@ msgid ""
 "be accessible for browsers without Javascript support, and without any "
 "feature loss."
 msgstr ""
+"L’utilisation de Javascript dans l’interface est tolérée, mais l’ensemble de "
+"l’application DOIT pouvoir être utilisé par des navigateurs sans support "
+"Javascript, et sans perte de fonctionnalité."
 
 #: ../../CONTRIBUTING.rst:157 a13b055a65244362a025440451de998d
 msgid ""
@@ -1915,6 +1937,9 @@ msgid ""
 "contributions should not depend on jQuery at all. See the `related issue "
 "<https://gitlab.com/yaal/canaille/-/issues/130>`_."
 msgstr ""
+"À cause de Fomantic UI, Canaille a une dépendance vers jQuery, cependant les "
+"nouvelles contributions ne devraient pas utiliser jQuery. Lisez le `ticket à "
+"ce sujet<https://gitlab.com/yaal/canaille/-/issues/130>`_."
 
 #: ../index.rst:71 ../../CONTRIBUTING.rst:162 e3ff6afa466e4e61aa4f677cd58d3ed2
 #: a08d8d5331494e7d93508eaf25f41a07
@@ -1923,13 +1948,15 @@ msgstr "Documentation"
 
 #: ../../CONTRIBUTING.rst:164 2e1fdcae75de46a6b50db7e4155758af
 msgid "The documentation is generated when the tests run:"
-msgstr ""
+msgstr "La documentation est générée lors de l’exécution des tests :"
 
 #: ../../CONTRIBUTING.rst:170 94405109592b47c09c8726c305fa5edc
 msgid ""
 "You can also run sphinx by hand, that should be faster since it avoids the "
 "tox environment initialization:"
 msgstr ""
+"Vous pouvez aussi exécuter `sphinx` à la main, cela devrait être plus rapide "
+"puisque cela évite l’initialisation des environnements tox :"
 
 #: ../../CONTRIBUTING.rst:176 fe4610d142474897ae4f97d321448fac
 msgid "The generated documentation is located at ``build/sphinx/html/en``."
@@ -2002,7 +2029,7 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:185 4ff341d941384c029ed9c0b49d1062f9
 msgid "Documentation translation"
-msgstr ""
+msgstr "Traduction de la documentation"
 
 #: readme.rst:1 2e38a895387e4821a3f61eccb03496a4
 #: 7abe83f2eeb54b3f9f3d1a8542696765
@@ -2010,6 +2037,8 @@ msgid ""
 "Documentation translation Translations are done with `Weblate <https://"
 "hosted.weblate.org/projects/canaille/canaille>`_."
 msgstr ""
+"La traduction de la documentation est faite avec `Weblate <https://hosted."
+"weblate.org/projects/canaille/documentation>`_."
 
 #: readme.rst:4 de92a131ecf44614963dd89770f593ae
 #: 0ca00925251d48668c7673ddece41d66
