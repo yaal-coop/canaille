@@ -69,30 +69,64 @@ To do that, you can add the following line to your `/etc/hosts`:
 
 To launch containers, use:
 
+SQL
+^^^
+With the SQL backend, the demo instance will load and save data in a local sqlite database.
+
 .. code-block:: console
+    :caption: Run the demo instance with the SQL backend
 
     cd demo
-    # To run the demo with the sql backend:
     docker compose up
 
-    # To run the demo with the memory backend:
+Memory
+^^^^^^
+With the memory backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the memory backend
+
+    cd demo
     docker compose --file docker-compose-memory.yml up
 
-    # To run the demo with the LDAP backend:
+LDAP
+^^^^
+With the LDAP backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the LDAP backend
+
+    cd demo
     docker compose --file docker-compose-ldap.yml up
 
 Local environment
 ~~~~~~~~~~~~~~~~~
 
-.. code-block:: console
+SQL
+^^^
+With the SQL backend, the demo instance will load and save data in a local sqlite database.
 
-    # To run the demo with the sql backend:
+.. code-block:: console
+    :caption: Run the demo instance with the SQL backend
+
     ./demo/run.sh
 
-    # To run the demo with the memory backend:
+Memory
+^^^^^^
+With the memory backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the memory backend
+
     ./demo/run.sh --backend memory
 
-    # To run the demo with the LDAP backend:
+LDAP
+^^^^
+With the LDAP backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the LDAP backend
+
     ./demo/run.sh --backend ldap
 
 .. note ::
