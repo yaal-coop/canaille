@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-30 13:37+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-30 14:50+0100\n"
 "PO-Revision-Date: 2024-12-01 13:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -1805,11 +1805,63 @@ msgstr ""
 msgid "To launch containers, use:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:85 9e2c9acef9184e34b00d62c97980467d
+#: ../development/specifications.rst:64 ../tutorial/databases.rst:16
+#: ../../CONTRIBUTING.rst:73 ../../CONTRIBUTING.rst:106
+#: 32e05154931e4a6fadcba3b0720e0655 f1b0c988daa54dd4a0c5b30a062cf012
+#: 94f958ac7cab437580604c64cdfa27be 528aa40e3cd04297b5ebf44fc955e9a9
+msgid "SQL"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:74 ../../CONTRIBUTING.rst:107
+#: c66d8a018f064cb3ba36abf12473b5f4 15c287c63f7f441f991033e23cbb9f95
+msgid ""
+"With the SQL backend, the demo instance will load and save data in a local "
+"sqlite database."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:76 ../../CONTRIBUTING.rst:109
+#: 6ddf226447fa4bb89cbf73cc8376c371 c72bd69b5ad94f5992bfe2d30f5b0e8d
+msgid "Run the demo instance with the SQL backend"
+msgstr ""
+
+#: ../tutorial/databases.rst:8 ../../CONTRIBUTING.rst:83
+#: ../../CONTRIBUTING.rst:115 e5f82f8945b747ac81b31a20cc241e5d
+#: 9a11f967d4c74ad8b9dff673e77d2315 84a192a56d404fb1baf97b065f6ceaa8
+msgid "Memory"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:84 ../../CONTRIBUTING.rst:116
+#: 9c56b31ca9724e62a5aee62e28196764 22784d30d5a748d2b73ebe7c423c64bc
+msgid "With the memory backend, all data is lost when Canaille stops."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:86 ../../CONTRIBUTING.rst:118
+#: da0af4f3bc5147ae8130399630381126 c1436f14bd2049479ac16384a47f2d38
+msgid "Run the demo instance with the memory backend"
+msgstr ""
+
+#: ../development/specifications.rst:64 ../tutorial/databases.rst:32
+#: ../../CONTRIBUTING.rst:93 ../../CONTRIBUTING.rst:124
+#: 6f4008249f544ff4afa4e2a7ccebfab2 ce4afa36ab774346b11322758b51325e
+#: f9a9bf9c1c6d49b99edee201000ea0a0 2e130a461dc64b989f22d4f932976a65
+msgid "LDAP"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:94 ../../CONTRIBUTING.rst:125
+#: 4f3a2e440337421f95f937952e7dc9be db5ad48ecaa94207ab2b7d84bbebf569
+msgid "With the LDAP backend, all data is lost when Canaille stops."
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:96 ../../CONTRIBUTING.rst:127
+#: 50095289006e499588719acc50eb5a56 80a55900cfc34f4e8b34b5e653a7fdfb
+msgid "Run the demo instance with the LDAP backend"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:103 9e2c9acef9184e34b00d62c97980467d
 msgid "Local environment"
 msgstr "Environnement local"
 
-#: ../../CONTRIBUTING.rst:99 5fffaf4bff884b5a839078ad5a889fc9
+#: ../../CONTRIBUTING.rst:133 5fffaf4bff884b5a839078ad5a889fc9
 msgid ""
 "If you want to run the demo locally with the LDAP backend, you need to have "
 "`OpenLDAP <https://www.openldap.org/>`_ installed on your system. It is "
@@ -1820,7 +1872,7 @@ msgstr ""
 "installé sur votre système. OpenLDAP est généralement fourni via les paquets "
 "nommés ``slapd`` ou ``openldap``."
 
-#: ../../CONTRIBUTING.rst:104 aa9aab912ff04dd68c3b59bf1e36575a
+#: ../../CONTRIBUTING.rst:138 aa9aab912ff04dd68c3b59bf1e36575a
 msgid ""
 "On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be "
 "restricted by apparmor, and thus makes the tests and the demo fail. This can "
@@ -1831,11 +1883,11 @@ msgstr ""
 "<https://gitlab.com/yaal/canaille/-/issues>`_ ou le `salon Matrix <https://"
 "matrix.to/#/#canaille-discuss:yaal.coop>`_."
 
-#: ../../CONTRIBUTING.rst:114 3d21757ba34c4721af043c150330c2e4
+#: ../../CONTRIBUTING.rst:148 3d21757ba34c4721af043c150330c2e4
 msgid "Populate the database"
 msgstr "Remplissage de la base de données"
 
-#: ../../CONTRIBUTING.rst:116 a412d39e98cf44f6b911566e1ebcdbde
+#: ../../CONTRIBUTING.rst:150 a412d39e98cf44f6b911566e1ebcdbde
 msgid ""
 "The demo database comes populated with some random users and groups. If you "
 "need more, you can generate users and groups with the ``populate`` command:"
@@ -1844,7 +1896,7 @@ msgstr ""
 "groupes générés aléatoirement. Si vous avez besoin de plus, vous pouvez "
 "générer des utilisateurs et des groupes avec la commande ``populate`` :"
 
-#: ../../CONTRIBUTING.rst:127 cdf90f875bcc44d5b41197a7cdbb275c
+#: ../../CONTRIBUTING.rst:161 cdf90f875bcc44d5b41197a7cdbb275c
 msgid ""
 "Adapt to use either the `ldap` or the `sql` configuration file. Note that "
 "this will not work with the memory backend."
@@ -1852,11 +1904,11 @@ msgstr ""
 "Adaptez pour utiliser le fichier de configuration `ldap` ou `sql`. Notez que "
 "cela ne fonctionnera pas avec la base de données en mémoire."
 
-#: ../../CONTRIBUTING.rst:130 2db32f774df8429fa4c9e83d00616a96
+#: ../../CONTRIBUTING.rst:164 2db32f774df8429fa4c9e83d00616a96
 msgid "Unit tests"
 msgstr "Tests unitaires"
 
-#: ../../CONTRIBUTING.rst:132 5d6a9b57b35d49c48e2b615f8128ebcc
+#: ../../CONTRIBUTING.rst:166 5d6a9b57b35d49c48e2b615f8128ebcc
 msgid ""
 "To run the tests, you just can run `uv run pytest` and/or `uv run tox` to "
 "test all the supported python environments. Everything must be green before "
@@ -1867,7 +1919,7 @@ msgstr ""
 "supportés. Tout doit être au vert avant que les contributions soient "
 "fusionnées."
 
-#: ../../CONTRIBUTING.rst:135 e1e6e475ff78404f930bb453f1f26e3b
+#: ../../CONTRIBUTING.rst:169 e1e6e475ff78404f930bb453f1f26e3b
 msgid ""
 "To test a specific backend you can pass ``--backend memory``, ``--backend "
 "sql`` or ``--backend ldap`` to pytest and tox."
@@ -1876,7 +1928,7 @@ msgstr ""
 "argumentes ``--backend memory``, ``--backend sql`` ou ``--backend ldap`` à "
 "pytest et tox."
 
-#: ../../CONTRIBUTING.rst:137 2cb85029b4274de388878da3d3285369
+#: ../../CONTRIBUTING.rst:171 2cb85029b4274de388878da3d3285369
 msgid ""
 "The test coverage is 100%, patches won't be accepted if not entirely "
 "covered. You can check the test coverage with ``uv run pytest --cov --cov-"
@@ -1889,11 +1941,11 @@ msgstr ""
 "--cov-report=html`. Vous pouvez ensuite consulter le rapport de couverture "
 "HTML dans le dossier `htmlcov` nouvellement créé."
 
-#: ../../CONTRIBUTING.rst:142 4408d499056c480f86f450a781d2ca0d
+#: ../../CONTRIBUTING.rst:176 4408d499056c480f86f450a781d2ca0d
 msgid "Code style"
 msgstr "Style de code"
 
-#: ../../CONTRIBUTING.rst:144 93e483f2a66a4d8f82feb8ca9a739818
+#: ../../CONTRIBUTING.rst:178 93e483f2a66a4d8f82feb8ca9a739818
 msgid ""
 "We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to "
 "format our code. Please run ``uv run tox -e style`` on your patches before "
@@ -1907,11 +1959,11 @@ msgstr ""
 "style à chaque commit, vous pouvez utiliser la configuration `pre-commit "
 "<https://pre-commit.com/>`_ avec ``uv run pre-commit install``."
 
-#: ../../CONTRIBUTING.rst:150 0dca6207e6734ab487cb3fe72c3e90e8
+#: ../../CONTRIBUTING.rst:184 0dca6207e6734ab487cb3fe72c3e90e8
 msgid "Front"
 msgstr "Interface utilisateur"
 
-#: ../../CONTRIBUTING.rst:152 930e01d770324dc68f73095cd5456a8e
+#: ../../CONTRIBUTING.rst:186 930e01d770324dc68f73095cd5456a8e
 msgid ""
 "The interface is built upon the `Fomantic UI <https://fomantic-ui.com/>`_ "
 "CSS framework. The dynamical parts of the interface use `htmx <https://htmx."
@@ -1920,7 +1972,7 @@ msgstr ""
 "L’interface utilisateur est construite avec `Fomantic UI <https://fomantic-"
 "ui.com/>`_. Les parties dynamiques utilisent `HTMX <https://htmx.org/>`_."
 
-#: ../../CONTRIBUTING.rst:155 fc0da8a2736e461dab5a7d242c1cfa9a
+#: ../../CONTRIBUTING.rst:189 fc0da8a2736e461dab5a7d242c1cfa9a
 msgid ""
 "Using Javascript in the interface is tolerated, but the whole website MUST "
 "be accessible for browsers without Javascript support, and without any "
@@ -1930,7 +1982,7 @@ msgstr ""
 "l’application DOIT pouvoir être utilisé par des navigateurs sans support "
 "Javascript, et sans perte de fonctionnalité."
 
-#: ../../CONTRIBUTING.rst:157 a13b055a65244362a025440451de998d
+#: ../../CONTRIBUTING.rst:191 a13b055a65244362a025440451de998d
 msgid ""
 "Because of Fomantic UI we have a dependency to jQuery, however new "
 "contributions should not depend on jQuery at all. See the `related issue "
@@ -1940,16 +1992,16 @@ msgstr ""
 "nouvelles contributions ne devraient pas utiliser jQuery. Lisez le `ticket à "
 "ce sujet<https://gitlab.com/yaal/canaille/-/issues/130>`_."
 
-#: ../index.rst:71 ../../CONTRIBUTING.rst:162 e3ff6afa466e4e61aa4f677cd58d3ed2
+#: ../index.rst:71 ../../CONTRIBUTING.rst:196 e3ff6afa466e4e61aa4f677cd58d3ed2
 #: a08d8d5331494e7d93508eaf25f41a07
 msgid "Documentation"
 msgstr "Documentation"
 
-#: ../../CONTRIBUTING.rst:164 2e1fdcae75de46a6b50db7e4155758af
+#: ../../CONTRIBUTING.rst:198 2e1fdcae75de46a6b50db7e4155758af
 msgid "The documentation is generated when the tests run:"
 msgstr "La documentation est générée lors de l’exécution des tests :"
 
-#: ../../CONTRIBUTING.rst:170 94405109592b47c09c8726c305fa5edc
+#: ../../CONTRIBUTING.rst:204 94405109592b47c09c8726c305fa5edc
 msgid ""
 "You can also run sphinx by hand, that should be faster since it avoids the "
 "tox environment initialization:"
@@ -1957,11 +2009,11 @@ msgstr ""
 "Vous pouvez aussi exécuter `sphinx` à la main, cela devrait être plus rapide "
 "puisque cela évite l’initialisation des environnements tox :"
 
-#: ../../CONTRIBUTING.rst:176 fe4610d142474897ae4f97d321448fac
+#: ../../CONTRIBUTING.rst:210 fe4610d142474897ae4f97d321448fac
 msgid "The generated documentation is located at ``build/sphinx/html/en``."
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:179 bf09dd8ed31742bca2fa80175ae85bb3
+#: ../../CONTRIBUTING.rst:213 bf09dd8ed31742bca2fa80175ae85bb3
 msgid "Code translation"
 msgstr ""
 
@@ -2026,7 +2078,7 @@ msgid ""
 "package:"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:185 4ff341d941384c029ed9c0b49d1062f9
+#: ../../CONTRIBUTING.rst:219 4ff341d941384c029ed9c0b49d1062f9
 msgid "Documentation translation"
 msgstr "Traduction de la documentation"
 
@@ -2049,8 +2101,8 @@ msgid ""
 "The following commands are there as documentation, only the message "
 "extraction and the language addition is needed for contributors."
 msgstr ""
-"Les commandes suivantes sont montrées à titre de documentation, seules l’"
-"extraction de message et l’ajout de langues de traduction sont utiles aux "
+"Les commandes suivantes sont montrées à titre de documentation, seules "
+"l’extraction de message et l’ajout de langues de traduction sont utiles aux "
 "contributeurs."
 
 #: readme.rst:25 3d142fe9f633400ea029e949f1e869ee
@@ -2058,68 +2110,68 @@ msgstr ""
 msgid "Build the documentation in another language"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:190 4b1dc3dae99f4c6fbbeec3e54be3e922
+#: ../../CONTRIBUTING.rst:224 4b1dc3dae99f4c6fbbeec3e54be3e922
 msgid "Publish a new release"
 msgstr "Publier une nouvelle version"
 
-#: ../../CONTRIBUTING.rst:192 975b37a07edc4a42bbef14c2ca80a34f
+#: ../../CONTRIBUTING.rst:226 975b37a07edc4a42bbef14c2ca80a34f
 msgid ""
 "Check that dependencies are up to date with ``uv sync --all-extras --"
 "upgrade`` and update dependencies accordingly in separated commits;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:193 e9bd8386c6c64ef99aac12ee831f39d1
+#: ../../CONTRIBUTING.rst:227 e9bd8386c6c64ef99aac12ee831f39d1
 msgid ""
 "Check that tests are still green for every supported python version, and "
 "that coverage is still at 100%, by running ``uv run tox``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:194 3e7d5493a8e44c1a9067010115678723
+#: ../../CONTRIBUTING.rst:228 3e7d5493a8e44c1a9067010115678723
 msgid ""
 "Check that the demo environments are still working, both the local and the "
 "Docker one;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:195 fe7867ea9416424e81c518f77853958a
+#: ../../CONTRIBUTING.rst:229 fe7867ea9416424e81c518f77853958a
 msgid ""
 "Check that the :ref:`development/changelog:Release notes` section is "
 "correctly filled up;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:196 7d89adc1c3e6478ab9e8faa02f97bf03
+#: ../../CONTRIBUTING.rst:230 7d89adc1c3e6478ab9e8faa02f97bf03
 msgid "Increase the version number in ``pyproject.toml``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:197 a376131776cd4e469611fa3ad6749be9
+#: ../../CONTRIBUTING.rst:231 a376131776cd4e469611fa3ad6749be9
 msgid "Commit with ``git commit``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:198 655fd489e5324dc5b6172d438a6b8e3e
+#: ../../CONTRIBUTING.rst:232 655fd489e5324dc5b6172d438a6b8e3e
 msgid "Build with ``uv build``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:199 79fc61b7c13647a285a918a0c126ea53
+#: ../../CONTRIBUTING.rst:233 79fc61b7c13647a285a918a0c126ea53
 msgid ""
 "Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/"
 "legacy/``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:200 93540129ce0c440eba4da63ed3ddb769
+#: ../../CONTRIBUTING.rst:234 93540129ce0c440eba4da63ed3ddb769
 msgid ""
 "Install the test package somewhere with ``pip install --extra-index-url "
 "https://test.pypi.org/simple --upgrade canaille``. Check that everything "
 "looks fine;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:201 8a73b31d1fe14fdda15e6c2dea0cafc9
+#: ../../CONTRIBUTING.rst:235 8a73b31d1fe14fdda15e6c2dea0cafc9
 msgid "Publish on production PyPI ``uv publish``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:202 93131bb37ccc4207825449d393f92201
+#: ../../CONTRIBUTING.rst:236 93131bb37ccc4207825449d393f92201
 msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:203 a98a5168d5f949ec9e96f16d8ff8b6f5
+#: ../../CONTRIBUTING.rst:237 a98a5168d5f949ec9e96f16d8ff8b6f5
 msgid ""
 "Push the release commit and the new tag on the repository with ``git push --"
 "tags``."
@@ -2402,16 +2454,6 @@ msgstr ""
 
 #: ../development/specifications.rst:64 6ae5803282c4439a9e7b1c1570e4c505
 msgid "CAS"
-msgstr ""
-
-#: ../development/specifications.rst:64 ../tutorial/databases.rst:32
-#: f9a9bf9c1c6d49b99edee201000ea0a0 2e130a461dc64b989f22d4f932976a65
-msgid "LDAP"
-msgstr ""
-
-#: ../development/specifications.rst:64 ../tutorial/databases.rst:16
-#: 94f958ac7cab437580604c64cdfa27be 528aa40e3cd04297b5ebf44fc955e9a9
-msgid "SQL"
 msgstr ""
 
 #: ../development/specifications.rst:66 f4c4ac6fdea74558a74bc9a3cefbb5c7
@@ -5361,10 +5403,6 @@ msgstr ""
 msgid ""
 "Canaille can read and save data in different databases. This page presents "
 "the different database backends and their specificities:"
-msgstr ""
-
-#: ../tutorial/databases.rst:8 84a192a56d404fb1baf97b065f6ceaa8
-msgid "Memory"
 msgstr ""
 
 #: ../tutorial/databases.rst:10 4d8d9b1634cf47eca9c118b3af6173df
