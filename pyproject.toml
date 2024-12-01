@@ -72,14 +72,14 @@ sqlite = [
 
 postgresql = [
     "passlib >= 1.7.4",
-    "sqlalchemy[postgresql] >= 2.0.23",
+    "sqlalchemy[postgresql-psycopg2binary] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
 
 mysql = [
     "passlib >= 1.7.4",
-    "sqlalchemy[mysql] >= 2.0.23",
+    "sqlalchemy[mysql-connector-python] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]

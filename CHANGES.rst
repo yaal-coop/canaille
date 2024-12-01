@@ -9,6 +9,10 @@ Added
   :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP`
   :issue:`179`
 
+Changed
+^^^^^^^
+- PostgreSQL and MySQL extras does not rely on libraries that need to be compiled.
+
 [0.0.56] - 2024-11-07
 ---------------------
 
