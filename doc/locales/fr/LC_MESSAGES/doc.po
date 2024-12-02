@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-30 14:50+0100\n"
-"PO-Revision-Date: 2024-12-01 13:00+0000\n"
+"PO-Revision-Date: 2024-12-02 20:32+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -1701,11 +1701,6 @@ msgstr ""
 "backend ldap``."
 
 #: ../../CONTRIBUTING.rst:29 56b8780399064aec89d3099841d1b017
-#, fuzzy
-#| msgid ""
-#| "``uv sync --all-extras`` if you want to have everything at your "
-#| "fingertips. Note that it may compile some Python dependencies that would "
-#| "expect things to be installed on your system;"
 msgid ""
 "``uv sync --all-extras`` if you want to have everything at your fingertips. "
 "Note that it may compile some Python dependencies that would expect things "
@@ -1716,7 +1711,9 @@ msgstr ""
 "``uv sync --all-extras`` si vous souhaitez avoir tout à portée de main. "
 "Notez que cela requerra peut-être de compiler certaines dépendances Python, "
 "qui nécessiterons l’installation de certaines bibliothèques sur votre "
-"système ;"
+"système ; Certaines dépendances de Canaille auront peut-être besoin d’être "
+"compilées, vous voudrez probablement vérifier que `GCC` et `cargo` sont "
+"installés sur votre système."
 
 #: ../../CONTRIBUTING.rst:32 1a514a3605f243979b2d04e1a329368a
 msgid "After having launched the demo you have access to several services:"
@@ -1746,14 +1743,17 @@ msgstr "Le serveur Canaille embarque quelques utilisateurs par défaut :"
 #: ../../CONTRIBUTING.rst:40 324e9f4f1d744fa49a0c3e7fe60cf46b
 msgid "A regular user which login and password are **user**;"
 msgstr ""
+"Un utilisateur de base dont l’identifiant et le mot de passe sont **user** ;"
 
 #: ../../CONTRIBUTING.rst:41 30a3f2679a4b456791471ac6d4c15e2b
 msgid "A moderator user which login and password are **moderator**;"
 msgstr ""
+"Un modérateur dont l’identifiant et le mot de passe sont **moderator** ;"
 
 #: ../../CONTRIBUTING.rst:42 d5e4f771a0854678af55e11ae4c8fc3d
 msgid "An admin user which admin and password are **admin**;"
 msgstr ""
+"Un administrateur dont l’identifiant et le mot de passe sont **admin** ;"
 
 #: ../../CONTRIBUTING.rst:43 325a060f0844402d80a7267a46291010
 msgid ""
@@ -1761,6 +1761,10 @@ msgid ""
 "first attempt to log-in would result in sending a password initialization "
 "email (if a smtp server is configured)."
 msgstr ""
+"Un nouvel utilisateur dont l’identifiant est **james**. Cet utilisateur n’a "
+"pas de mot de passe défini, et sa première tentative de connexion résultera "
+"en l'envoi d’un email d’initialisation de mot de pass (si un serveur SMTP "
+"est configuré)."
 
 #: ../development/specifications.rst:62 ../../CONTRIBUTING.rst:48
 #: c01f125a22914f369ef28ef090a728b1 01a043d4a4364011b8a22a53549b20da
@@ -1773,19 +1777,19 @@ msgstr "Canaille peut se connecter à plusieurs types de bases de données :"
 
 #: ../../CONTRIBUTING.rst:52 853d2b906b80415db33c707e29640f4c
 msgid "a lightweight test purpose `memory` backend"
-msgstr ""
+msgstr "une base de données très légère `memory` à fins de tests"
 
 #: ../../CONTRIBUTING.rst:53 b280dce615cb48ec8456abf65fec4a9e
 msgid "a `sql` backend, based on sqlalchemy"
-msgstr ""
+msgstr "une base de données `SQL`, utilsant SQLAlchemy"
 
 #: ../../CONTRIBUTING.rst:54 ad6d07459c274a9e8282e290875d5bfb
 msgid "a production-ready `LDAP` backend"
-msgstr ""
+msgstr "une base de données `LDAP` prête à l’emploi"
 
 #: ../../CONTRIBUTING.rst:57 7db1494e281b4b89949e18e1ece1cb6c
 msgid "Docker environment"
-msgstr ""
+msgstr "Environnement Docker"
 
 #: ../../CONTRIBUTING.rst:59 c8e61bddd24e4af0ab8ee2bd2709652d
 msgid ""
@@ -1796,21 +1800,29 @@ msgid ""
 "ports are on `localhost`, you need to tell your computer that `canaille` url "
 "means `localhost`."
 msgstr ""
+"Si vous souhaitez développer avec Docker, votre navigateur doit être en "
+"mesure de joindre le conteneur `canaille`. Le fichier docker-compose expose "
+"les bons ports, mais les requêtes viendront de l’extérieur du réseau Docker :"
+" l'URL `canaille` a un sens à l’intérieur du réseau Docker, mais ne désigne "
+"rien pour votre navigateur. Comme les ports sont exposés sur `localhost`, "
+"vous devez configurer votre ordinateur pour que `canaille` pointe vers "
+"`localhost`."
 
 #: ../../CONTRIBUTING.rst:64 0e3e6469d25f43998fce20bcb1291b86
 msgid "To do that, you can add the following line to your `/etc/hosts`:"
 msgstr ""
+"Pour effectuer ceci, vous pouvez ajouter la ligne suivante à `/etc/hosts` :"
 
 #: ../../CONTRIBUTING.rst:70 c0dce613d6384dd18a1d6abce742bf55
 msgid "To launch containers, use:"
-msgstr ""
+msgstr "Pour lancer les conteneurs, utilisez :"
 
 #: ../development/specifications.rst:64 ../tutorial/databases.rst:16
 #: ../../CONTRIBUTING.rst:73 ../../CONTRIBUTING.rst:106
 #: 32e05154931e4a6fadcba3b0720e0655 f1b0c988daa54dd4a0c5b30a062cf012
 #: 94f958ac7cab437580604c64cdfa27be 528aa40e3cd04297b5ebf44fc955e9a9
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 #: ../../CONTRIBUTING.rst:74 ../../CONTRIBUTING.rst:107
 #: c66d8a018f064cb3ba36abf12473b5f4 15c287c63f7f441f991033e23cbb9f95
@@ -1818,44 +1830,48 @@ msgid ""
 "With the SQL backend, the demo instance will load and save data in a local "
 "sqlite database."
 msgstr ""
+"Avec la base de données SQL, l’instance de démonstration chargera et "
+"enregistrera les données dans un fichier sqlite local."
 
 #: ../../CONTRIBUTING.rst:76 ../../CONTRIBUTING.rst:109
 #: 6ddf226447fa4bb89cbf73cc8376c371 c72bd69b5ad94f5992bfe2d30f5b0e8d
 msgid "Run the demo instance with the SQL backend"
-msgstr ""
+msgstr "Lancer l’instance de démonstration avec la base de données SQL"
 
 #: ../tutorial/databases.rst:8 ../../CONTRIBUTING.rst:83
 #: ../../CONTRIBUTING.rst:115 e5f82f8945b747ac81b31a20cc241e5d
 #: 9a11f967d4c74ad8b9dff673e77d2315 84a192a56d404fb1baf97b065f6ceaa8
 msgid "Memory"
-msgstr ""
+msgstr "En-mémoire"
 
 #: ../../CONTRIBUTING.rst:84 ../../CONTRIBUTING.rst:116
 #: 9c56b31ca9724e62a5aee62e28196764 22784d30d5a748d2b73ebe7c423c64bc
 msgid "With the memory backend, all data is lost when Canaille stops."
 msgstr ""
+"Avec la base de données en mémoire, toutes les données sont perdues lorsque "
+"Canaille s'arrête."
 
 #: ../../CONTRIBUTING.rst:86 ../../CONTRIBUTING.rst:118
 #: da0af4f3bc5147ae8130399630381126 c1436f14bd2049479ac16384a47f2d38
 msgid "Run the demo instance with the memory backend"
-msgstr ""
+msgstr "Lancer l’instance de démonstration avec la base de données en mémoire"
 
 #: ../development/specifications.rst:64 ../tutorial/databases.rst:32
 #: ../../CONTRIBUTING.rst:93 ../../CONTRIBUTING.rst:124
 #: 6f4008249f544ff4afa4e2a7ccebfab2 ce4afa36ab774346b11322758b51325e
 #: f9a9bf9c1c6d49b99edee201000ea0a0 2e130a461dc64b989f22d4f932976a65
 msgid "LDAP"
-msgstr ""
+msgstr "LDAP"
 
 #: ../../CONTRIBUTING.rst:94 ../../CONTRIBUTING.rst:125
 #: 4f3a2e440337421f95f937952e7dc9be db5ad48ecaa94207ab2b7d84bbebf569
 msgid "With the LDAP backend, all data is lost when Canaille stops."
-msgstr ""
+msgstr "Avec LDAP, toutes les données sont perdues lorsque Canaille s’arrête."
 
 #: ../../CONTRIBUTING.rst:96 ../../CONTRIBUTING.rst:127
 #: 50095289006e499588719acc50eb5a56 80a55900cfc34f4e8b34b5e653a7fdfb
 msgid "Run the demo instance with the LDAP backend"
-msgstr ""
+msgstr "Lancer l’instance de démo avec le support de LDAP"
 
 #: ../../CONTRIBUTING.rst:103 9e2c9acef9184e34b00d62c97980467d
 msgid "Local environment"
@@ -2011,17 +2027,19 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:210 fe4610d142474897ae4f97d321448fac
 msgid "The generated documentation is located at ``build/sphinx/html/en``."
-msgstr ""
+msgstr "La documentation générée se situe à ``build/sphinx/html/en``."
 
 #: ../../CONTRIBUTING.rst:213 bf09dd8ed31742bca2fa80175ae85bb3
 msgid "Code translation"
-msgstr ""
+msgstr "Traduction du code"
 
 #: ../../canaille/translations/README.rst:1 35fff9d115334ec6aa6a99ec5da8a27f
 msgid ""
 "Translations are done with `Weblate <https://hosted.weblate.org/projects/"
 "canaille/canaille>`_."
 msgstr ""
+"La traduction s’effectue avec `Weblate <https://hosted.weblate.org/projects/"
+"canaille/canaille>`_."
 
 #: ../../canaille/translations/README.rst:3 b72ee2174a9b42c493780415e3d3fcfd
 msgid ""
@@ -2029,11 +2047,14 @@ msgid ""
 "extraction is needed for contributors. All the other steps are automatically "
 "done with Weblate."
 msgstr ""
+"Les commandes suivantes sont présentées à titre de documentation, seule l’"
+"extraction des messages est utile aux contributeurs. Toutes les autres "
+"étapes sont effectuées automatiquement par Weblate."
 
 #: readme.rst:7 ../../canaille/translations/README.rst:8
 #: ea5bd05b09984bcaa643efa7a1a7618c 33490a8ff4a3465fb8648393ff65eb75
 msgid "Message extraction"
-msgstr ""
+msgstr "Extraction des messages"
 
 #: readme.rst:9 ../../canaille/translations/README.rst:10
 #: 210e9ff98db74777830a5a1f4746df44 16b22e2bc3cf495bbef529f5732887e3
@@ -2041,11 +2062,13 @@ msgid ""
 "After you have edited translatable strings, you should extract the messages "
 "with:"
 msgstr ""
+"Après avoir édité des chaînes de caractères traductibles, vous pouvez "
+"extraire les messages avec :"
 
 #: readme.rst:16 ../../canaille/translations/README.rst:17
 #: 54ecd51acf494402964ae281c6cd639b 02fa7225075346f89ad702cba8aabdeb
 msgid "Language addition"
-msgstr ""
+msgstr "Ajout de langues"
 
 #: readme.rst:18 ../../canaille/translations/README.rst:19
 #: 5429b47768e2472ea597ed48140a5621 015d6a437f7e4d099c8cad60986c0b68
@@ -2053,10 +2076,13 @@ msgid ""
 "You can add a new language manually with the following command, however this "
 "should not be needed as Weblate takes car of this:"
 msgstr ""
+"Vous pouvez ajouter une nouvelle langue manuellement avec la commande "
+"suivante, cependant cela ne devrait pas être nécessaire puisque Weblate s'en "
+"occupe automatiquement :"
 
 #: ../../canaille/translations/README.rst:26 bdfbb4ef60c54b26abf457ba930b7fcf
 msgid "Catalog update"
-msgstr ""
+msgstr "Mise à jour des catalogues"
 
 #: ../../canaille/translations/README.rst:28 94b8fc10d3aa4e05b54d619c4b1aaa25
 msgid ""
@@ -2065,10 +2091,15 @@ msgid ""
 "detects new strings or when someone translate some existing strings. Weblate "
 "pushes happen every 24h."
 msgstr ""
+"Vous pouvez mettre à jour les catalogues avec la commande suivante, "
+"cependant cela ne devrait pas être nécessaire puisque Weblate met à jour "
+"automatiquement les catalogues lorsqu’il détecte de nouvelles chaînes de "
+"caractères ou lorsque quelqu’un traduit des chaînes de caractères "
+"existantes. Weblate pousse ses modifications toutes les 24 heures."
 
 #: ../../canaille/translations/README.rst:36 f232cbfdd201463ab74fe71353c8e23b
 msgid "Catalog compilation"
-msgstr ""
+msgstr "Compilation des catalogues"
 
 #: ../../canaille/translations/README.rst:38 3c756dd105564866a8d74e994e65f2b6
 msgid ""
