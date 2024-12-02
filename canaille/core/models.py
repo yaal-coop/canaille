@@ -374,4 +374,4 @@ class Policy(Model):
 
     grace_authentication_limit: int | None = None
 
-    pwdInHistory: int | None = None
+    password_in_history: int | None = None
