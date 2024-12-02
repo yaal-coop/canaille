@@ -96,7 +96,7 @@ def model_converter(model):
             super().__init__(self, *args, **kwargs)
 
         def to_url(self, instance):
-            return instance.identifier
+            return instance.identifier or instance.id
 
         def to_python(self, identifier):
             current_app.backend.setup()
