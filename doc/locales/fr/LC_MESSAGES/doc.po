@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-30 14:50+0100\n"
-"PO-Revision-Date: 2024-12-02 20:32+0000\n"
+"PO-Revision-Date: 2024-12-03 21:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -2108,6 +2108,11 @@ msgid ""
 "tests, before launching the demo and before compiling the Canaille python "
 "package:"
 msgstr ""
+"Vous pouvez compiler les catalogues avec la commande suivante, cependant "
+"cela ne devrait pas être nécessaire puisque les catalogues sont "
+"automatiquement compilés avant le lancement des tests unitaires, avant le "
+"lancement de l’instance de démonstration et avant la compilation du paquet "
+"Python de Canaille :"
 
 #: ../../CONTRIBUTING.rst:219 4ff341d941384c029ed9c0b49d1062f9
 msgid "Documentation translation"
@@ -2115,10 +2120,6 @@ msgstr "Traduction de la documentation"
 
 #: readme.rst:1 2e38a895387e4821a3f61eccb03496a4
 #: 7abe83f2eeb54b3f9f3d1a8542696765
-#, fuzzy
-#| msgid ""
-#| "Documentation translation Translations are done with `Weblate <https://"
-#| "hosted.weblate.org/projects/canaille/canaille>`_."
 msgid ""
 "Documentation translation Translations are done with `Weblate <https://"
 "hosted.weblate.org/projects/canaille/documentation>`_."
@@ -2139,7 +2140,7 @@ msgstr ""
 #: readme.rst:25 3d142fe9f633400ea029e949f1e869ee
 #: 74cc2740b1584972aa3c0e672dff5f3e
 msgid "Build the documentation in another language"
-msgstr ""
+msgstr "Construire la documentation dans une autre langue"
 
 #: ../../CONTRIBUTING.rst:224 4b1dc3dae99f4c6fbbeec3e54be3e922
 msgid "Publish a new release"
@@ -2150,42 +2151,53 @@ msgid ""
 "Check that dependencies are up to date with ``uv sync --all-extras --"
 "upgrade`` and update dependencies accordingly in separated commits;"
 msgstr ""
+"Vérifiez que les dépendances sont à jour avec ``uv sync --all-extras "
+"--upgrade`` et mettez à jour chaque dépendance dans un commit séparé ;"
 
 #: ../../CONTRIBUTING.rst:227 e9bd8386c6c64ef99aac12ee831f39d1
 msgid ""
 "Check that tests are still green for every supported python version, and "
 "that coverage is still at 100%, by running ``uv run tox``;"
 msgstr ""
+"Vérifiez que les tests sont toujours verts pour chaque version supportée de "
+"Python, et que la couverture de code est toujours de 100%, en lançant ``uv "
+"run tox`` ;"
 
 #: ../../CONTRIBUTING.rst:228 3e7d5493a8e44c1a9067010115678723
 msgid ""
 "Check that the demo environments are still working, both the local and the "
 "Docker one;"
 msgstr ""
+"Vérifiez que les instances de démonstration sont toujours fonctionnelles, à "
+"la fois en local et avec Docker ;"
 
 #: ../../CONTRIBUTING.rst:229 fe7867ea9416424e81c518f77853958a
 msgid ""
 "Check that the :ref:`development/changelog:Release notes` section is "
 "correctly filled up;"
 msgstr ""
+"Vérifiez que les :ref:`development/changelog:notes de versioin` sont "
+"correctement renseignées ;"
 
 #: ../../CONTRIBUTING.rst:230 7d89adc1c3e6478ab9e8faa02f97bf03
 msgid "Increase the version number in ``pyproject.toml``;"
-msgstr ""
+msgstr "Incrémentez le numéro de version dans ``pyproject.toml`` ;"
 
 #: ../../CONTRIBUTING.rst:231 a376131776cd4e469611fa3ad6749be9
 msgid "Commit with ``git commit``;"
-msgstr ""
+msgstr "Commitez avec ``git commit`` ;"
 
 #: ../../CONTRIBUTING.rst:232 655fd489e5324dc5b6172d438a6b8e3e
 msgid "Build with ``uv build``;"
-msgstr ""
+msgstr "Construisez le paquet avec ``uv build`` ;"
 
 #: ../../CONTRIBUTING.rst:233 79fc61b7c13647a285a918a0c126ea53
 msgid ""
 "Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/"
 "legacy/``;"
 msgstr ""
+"Publiez le paquet sur l’instance de test de PyPI avec ``uv publish --publish-"
+"url https://test.pypi.org/legacy/`` ;"
 
 #: ../../CONTRIBUTING.rst:234 93540129ce0c440eba4da63ed3ddb769
 msgid ""
@@ -2193,212 +2205,271 @@ msgid ""
 "https://test.pypi.org/simple --upgrade canaille``. Check that everything "
 "looks fine;"
 msgstr ""
+"Installez le paquet dans un projet quelconque avec ``pip install --extra-"
+"index-url https://test.pypi.org/simple --upgrade canaille``. Vérifiez que l’"
+"installation s’est bien passée ;"
 
 #: ../../CONTRIBUTING.rst:235 8a73b31d1fe14fdda15e6c2dea0cafc9
 msgid "Publish on production PyPI ``uv publish``;"
-msgstr ""
+msgstr "Publiez sur l’instance de production de PyPI avec ``uv publish`` ;"
 
 #: ../../CONTRIBUTING.rst:236 93131bb37ccc4207825449d393f92201
 msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
-msgstr ""
+msgstr "Étiquetez le commit avec ``git tag XX.YY.ZZ`` ;"
 
 #: ../../CONTRIBUTING.rst:237 a98a5168d5f949ec9e96f16d8ff8b6f5
 msgid ""
 "Push the release commit and the new tag on the repository with ``git push --"
 "tags``."
 msgstr ""
+"Poussez le commit de publication avec la nouvelle étiquette avec ``git push "
+"--tags``."
 
 #: ../development/index.rst:2 c0f14bad2988468fa0700bbd47fe1de0
 msgid "Development"
-msgstr ""
+msgstr "Développement"
 
 #: ../development/specifications.rst:2 156d2082306649a89c7c6ff9b0879911
 msgid "Specifications"
-msgstr ""
+msgstr "Normes"
 
 #: ../development/specifications.rst:4 2c830d15b604470ca1912e9a07b2deb6
 msgid ""
 "This page details which specifications are implemented in Canaille, and "
 "compares Canaille with other well-known identity providers."
 msgstr ""
+"Cette page détaille les spécifications implémentées dans Canaille, et "
+"compare Canaille avec d’autres serveurs d’identité renommés."
 
 #: ../development/specifications.rst:7 bfa87dc7f42445fb96172a2ce7643950
 msgid "State of the specs in Canaille"
-msgstr ""
+msgstr "L’état des spécifications dans Canaille"
 
 #: ../development/specifications.rst:10 b57576e6aa1e46c0ab9b0d74e40f7a1c
 msgid "OAuth2"
-msgstr ""
+msgstr "OAuth2"
 
 #: ../development/specifications.rst:12 44156ac1d21c44f89d2090ae27ad397e
 msgid ""
 "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
-msgstr ""
+msgstr "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
 
 #: ../development/specifications.rst:13 3dd5d1bc312e4808b9dfb7e906f9a1b3
 msgid ""
 "✅ `RFC6750: OAuth 2.0 Bearer Tokens <https://tools.ietf.org/html/rfc6750>`_"
 msgstr ""
+"✅ `RFC6750: OAuth 2.0 Bearer Tokens <https://tools.ietf.org/html/rfc6750>`_"
 
 #: ../development/specifications.rst:14 3f7c67f6ca7049a0a99455d27e7b9278
 msgid ""
 "✅ `RFC7009: OAuth 2.0 Token Revocation <https://tools.ietf.org/html/"
 "rfc7009>`_"
 msgstr ""
+"✅ `RFC7009: OAuth 2.0 Token Revocation <https://tools.ietf.org/html/"
+"rfc7009>`_"
 
 #: ../development/specifications.rst:15 b11098fcf9e64dfca026aa25e97624cc
 msgid ""
 "❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
 "Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
 msgstr ""
+"❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
+"Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
 
 #: ../development/specifications.rst:16 0213796d176a4938a10c902cfb737a18
 msgid ""
 "✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol <https://tools."
 "ietf.org/html/rfc7591>`_"
 msgstr ""
+"✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol <https://tools."
+"ietf.org/html/rfc7591>`_"
 
 #: ../development/specifications.rst:17 afdc8def073c495e8bb24a1ec6a0d62a
 msgid ""
 "✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol "
 "<https://tools.ietf.org/html/rfc7592>`_"
 msgstr ""
+"✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol "
+"<https://tools.ietf.org/html/rfc7592>`_"
 
 #: ../development/specifications.rst:18 f592e7f0f2074289b67beb893604277d
 msgid ""
 "✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients <https://"
 "tools.ietf.org/html/rfc7636>`_"
 msgstr ""
+"✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients "
+"<https://tools.ietf.org/html/rfc7636>`_"
 
 #: ../development/specifications.rst:19 bc914d1d327d4ce6a638c5245c4cfcc3
 msgid ""
 "✅ `RFC7662: OAuth 2.0 Token Introspection <https://tools.ietf.org/html/"
 "rfc7662>`_"
 msgstr ""
+"✅ `RFC7662: OAuth 2.0 Token Introspection <https://tools.ietf.org/html/"
+"rfc7662>`_"
 
 #: ../development/specifications.rst:20 08bbaa19162d456899ba99be7b0f9e3d
 msgid ""
 "✅ `RFC8414: OAuth 2.0 Authorization Server Metadata <https://tools.ietf.org/"
 "html/rfc8414>`_"
 msgstr ""
+"✅ `RFC8414: OAuth 2.0 Authorization Server Metadata <https://tools.ietf.org/"
+"html/rfc8414>`_"
 
 #: ../development/specifications.rst:21 abbbc93f57ba4660bafa5396616419d8
 msgid ""
 "❌ `RFC8428: OAuth 2.0 Device Authorization Grant <https://tools.ietf.org/"
 "html/rfc8428>`_"
 msgstr ""
+"❌ `RFC8428: OAuth 2.0 Device Authorization Grant <https://tools.ietf.org/"
+"html/rfc8428>`_"
 
 #: ../development/specifications.rst:22 a9adf95822164ad9a91366b631a095ab
 msgid ""
 "❌ `RFC8693: OAuth 2.0 Token Exchange <https://tools.ietf.org/html/rfc8693>`_"
 msgstr ""
+"❌ `RFC8693: OAuth 2.0 Token Exchange <https://tools.ietf.org/html/rfc8693>`_"
 
 #: ../development/specifications.rst:23 fac77fd04d2c457cbdda2f46d21a549d
 msgid ""
 "❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-"
 "Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
 msgstr ""
+"❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-"
+"Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
 
 #: ../development/specifications.rst:24 772cbe80f8cd44faa3230ee4e690e5f3
 msgid ""
 "❌ `RFC8707: Resource Indicators for OAuth 2.0 <https://tools.ietf.org/html/"
 "rfc8707>`_"
 msgstr ""
+"❌ `RFC8707: Resource Indicators for OAuth 2.0 <https://tools.ietf.org/html/"
+"rfc8707>`_"
 
 #: ../development/specifications.rst:25 8b06eb72e70742fc821332a4676ba48e
 msgid ""
 "❌ `RFC9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens "
 "<https://tools.ietf.org/html/rfc9068>`_"
 msgstr ""
+"❌ `RFC9068: JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens "
+"<https://tools.ietf.org/html/rfc9068>`_"
 
 #: ../development/specifications.rst:26 088615a4afdc48a5b6449df856cb1eb3
 msgid ""
 "❌ `RFC9101: OAuth 2.0 JWT-Secured Authorization Request (JAR) <https://"
 "tools.ietf.org/html/rfc9101>`_"
 msgstr ""
+"❌ `RFC9101: OAuth 2.0 JWT-Secured Authorization Request (JAR) <https://tools"
+".ietf.org/html/rfc9101>`_"
 
 #: ../development/specifications.rst:27 4bd307887c6a4dcebb9d5ff9b9c3176a
 msgid ""
 "❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests <https://tools.ietf.org/"
 "html/rfc9126>`_"
 msgstr ""
+"❌ `RFC9126: OAuth 2.0 Pushed Authorization Requests <https://tools.ietf.org/"
+"html/rfc9126>`_"
 
 #: ../development/specifications.rst:28 bf777af155ec47bb85265068ff053b85
 msgid ""
 "❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification <https://"
 "tools.ietf.org/html/rfc9207>`_"
 msgstr ""
+"❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification "
+"<https://tools.ietf.org/html/rfc9207>`_"
 
 #: ../development/specifications.rst:29 06b84e457b3f423099a45450e8be7b96
 msgid ""
 "❌ `RFC9394: OAuth 2.0 Rich Authorization Requests <https://www.rfc-editor."
 "org/rfc/rfc9396.html>`_"
 msgstr ""
+"❌ `RFC9394: OAuth 2.0 Rich Authorization Requests <https://www.rfc-editor."
+"org/rfc/rfc9396.html>`_"
 
 #: ../development/specifications.rst:30 17a488e183c64a7696ff1f8b3f02e3d8
 msgid ""
 "❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2-"
 "multiple-response-types-1_0.html>`_"
 msgstr ""
+"❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2"
+"-multiple-response-types-1_0.html>`_"
 
 #: ../development/specifications.rst:31 28df30b698994c9ebb429fbe577701ac
 msgid ""
 "❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-"
 "post-response-mode-1_0.html>`_"
 msgstr ""
+"❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-"
+"post-response-mode-1_0.html>`_"
 
 #: ../development/specifications.rst:34 ../features.rst:212
 #: 273611a66c514122bd1b8986c81f8464 511272a32c844e4cb9ca0d2c2b0aeb42
 msgid "OpenID Connect"
-msgstr ""
+msgstr "OpenID Connect"
 
 #: ../development/specifications.rst:36 1b811c589c884281a965b470a69c935c
 msgid ""
 "✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-core-1_0."
 "html>`_"
 msgstr ""
+"✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-core-1_0."
+"html>`_"
 
 #: ../development/specifications.rst:37 8eb4c67d2de84a09ba6681ab0ad1dcf0
 msgid ""
 "✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-"
 "discovery-1_0.html>`_"
 msgstr ""
+"✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-"
+"discovery-1_0.html>`_"
 
 #: ../development/specifications.rst:38 3dd0ab1827034c7f8bb58dd56463cb2a
 msgid ""
 "✅ `OpenID Connect Dynamic Client Registration <https://openid.net/specs/"
 "openid-connect-registration-1_0.html>`_"
 msgstr ""
+"✅ `OpenID Connect Dynamic Client Registration <https://openid.net/specs/"
+"openid-connect-registration-1_0.html>`_"
 
 #: ../development/specifications.rst:39 5202769d4fed46999e56f7d6a0a03c5d
 msgid ""
 "✅ `OpenID Connect RP Initiated Logout <https://openid.net/specs/openid-"
 "connect-rpinitiated-1_0.html>`_"
 msgstr ""
+"✅ `OpenID Connect RP Initiated Logout <https://openid.net/specs/openid-"
+"connect-rpinitiated-1_0.html>`_"
 
 #: ../development/specifications.rst:40 768d7dd2182a418fb9344db3f5cba48a
 msgid ""
 "❌ `OpenID Connect Session Management <https://openid.net/specs/openid-"
 "connect-session-1_0.html>`_"
 msgstr ""
+"❌ `OpenID Connect Session Management <https://openid.net/specs/openid-"
+"connect-session-1_0.html>`_"
 
 #: ../development/specifications.rst:41 bffbc632d9bf4c89b64bb51cdece0844
 msgid ""
 "❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-"
 "connect-frontchannel-1_0.html>`_"
 msgstr ""
+"❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-"
+"connect-frontchannel-1_0.html>`_"
 
 #: ../development/specifications.rst:42 3001306e82cc4e9b80078a4631c791f9
 msgid ""
 "❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-"
 "connect-backchannel-1_0.html>`_"
 msgstr ""
+"❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-"
+"connect-backchannel-1_0.html>`_"
 
 #: ../development/specifications.rst:43 3e1058c4a8154eb58a563e171a03a51b
 msgid ""
 "❌ `OpenID Connect Back Channel Authentication Flow <https://openid.net/"
 "specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_"
 msgstr ""
+"❌ `OpenID Connect Back Channel Authentication Flow <https://openid.net/"
+"specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_"
 
 #: ../development/specifications.rst:44 7d20317b02f54007a0d6e9e79b82b243
 msgid ""
@@ -2406,17 +2477,22 @@ msgid ""
 "<https://openid.net/specs/openid-connect-unmet-authentication-"
 "requirements-1_0.html>`_"
 msgstr ""
+"❌ `OpenID Connect Core Error Code unmet_authentication_requirements "
+"<https://openid.net/specs/openid-connect-unmet-authentication-"
+"requirements-1_0.html>`_"
 
 #: ../development/specifications.rst:45 cc695337a4a4431c9a62bdc2471f489d
 msgid ""
 "✅ `Initiating User Registration via OpenID Connect 1.0 <https://openid.net/"
 "specs/openid-connect-prompt-create-1_0.html>`_"
 msgstr ""
+"✅ `Initiating User Registration via OpenID Connect 1.0 <https://openid.net/"
+"specs/openid-connect-prompt-create-1_0.html>`_"
 
 #: ../development/specifications.rst:48 ../development/specifications.rst:64
 #: d9278a9cbe784818b57f9fd9d76dda68 7ad1170acbe7400785a02a07e408ce3b
 msgid "SCIM"
-msgstr ""
+msgstr "SCIM"
 
 #: ../development/specifications.rst:50 c91f11a0512e4782981c5bb98a8038d7
 msgid ""
@@ -2424,72 +2500,82 @@ msgid ""
 "Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/"
 "rfc7642>`_"
 msgstr ""
+"❌ `RFC7642: System for Cross-domain Identity Management: Definitions, "
+"Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/"
+"rfc7642>`_"
 
 #: ../development/specifications.rst:51 2f4ea31b4c80425a8e3075b8597ae8e5
 msgid ""
 "❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
 "<https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
+"❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
 
 #: ../development/specifications.rst:52 6ffdb285557144afb301b05c33fecddf
 msgid ""
 "❌ `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
 "www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
+"❌ `RFC7644: System for Cross-domain Identity Management: Protocol "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
 
 #: ../development/specifications.rst:55 ac600b38603f4fb999aebf5ffbe33cc7
 msgid "Comparison with other providers"
-msgstr ""
+msgstr "Comparaison avec d’autres serveurs d’identité"
 
 #: ../development/specifications.rst:57 2ef9567e17694a669ed5071c882661ad
 msgid "Here is a feature comparison with other OpenID Connect server software."
 msgstr ""
+"Voici une comparaison de fonctionnalités avec d’autres serveurs d’identité."
 
 #: ../development/specifications.rst:59 d6d241980d3e46e192dd54a5082b0197
 msgid ""
 "Canaille voluntarily only implements the OpenID Connect protocol to keep its "
 "codebase simple."
 msgstr ""
+"Afin de garder la base de code réduite, Canaille n’implémente que le "
+"protocole OpenID Connect."
 
 #: ../development/specifications.rst:62 0b9a4fba353c483692ed6fb04227691e
 msgid "Software"
-msgstr ""
+msgstr "Logiciel"
 
 #: ../development/specifications.rst:62 62c2fe7c97644cfa8e7d297a337bfe36
 msgid "Project"
-msgstr ""
+msgstr "Projet"
 
 #: ../development/specifications.rst:62 f4700ad912314bfc8d66be8471a4c772
 msgid "Protocols implementations"
-msgstr ""
+msgstr "Protocoles implémentés"
 
 #: ../development/specifications.rst:64 ea237be2a99a4940be67516a1b95d97d
 msgid "FLOSS"
-msgstr ""
+msgstr "Libre"
 
 #: ../development/specifications.rst:64 55d5dd9174f94ca9850b999864598259
 msgid "Language"
-msgstr ""
+msgstr "Langage"
 
 #: ../development/specifications.rst:64 27002c409c6440d29ae89e91559a6994
 msgid "LOC"
-msgstr ""
+msgstr "LOC"
 
 #: ../development/specifications.rst:64 3ba35fd6c6d44150b4b049cf603e4a85
 msgid "OIDC"
-msgstr ""
+msgstr "OIDC"
 
 #: ../development/specifications.rst:64 dc762bcd6eca4fc79dae1ca65c411351
 msgid "SAML"
-msgstr ""
+msgstr "SAML"
 
 #: ../development/specifications.rst:64 6ae5803282c4439a9e7b1c1570e4c505
 msgid "CAS"
-msgstr ""
+msgstr "CAS"
 
 #: ../development/specifications.rst:66 f4c4ac6fdea74558a74bc9a3cefbb5c7
 msgid "Canaille"
-msgstr ""
+msgstr "Canaille"
 
 #: ../development/specifications.rst:66 ../development/specifications.rst:68
 #: ../development/specifications.rst:70 ../development/specifications.rst:72
@@ -2530,16 +2616,16 @@ msgstr ""
 #: 911d55a0575e40f68acac8945e382a6f 888a30003d764dd28c8744ea11295da4
 #: f5320617a03e47dea905ac5a70208c70
 msgid "✅"
-msgstr ""
+msgstr "✅"
 
 #: ../development/specifications.rst:66 ../development/specifications.rst:72
 #: 86f975b8aaab4af9bfc62ef2df91ba28 9dd4f11a08ae4fb0b0fde477b7209bc3
 msgid "Python"
-msgstr ""
+msgstr "Python"
 
 #: ../development/specifications.rst:66 3a757539fafc4e3aa92dbdec5227a2df
 msgid "10k"
-msgstr ""
+msgstr "10k"
 
 #: ../development/specifications.rst:66 ../development/specifications.rst:68
 #: ../development/specifications.rst:70 ../development/specifications.rst:72
@@ -2557,11 +2643,11 @@ msgstr ""
 #: 2f498851758b4c13943c69ec1ce9a3db 205c9937da9946108d0a0e2b4f8458aa
 #: 7aa2bbcd681b45e3b3027de382926640
 msgid "❌"
-msgstr ""
+msgstr "❌"
 
 #: ../development/specifications.rst:68 41d7747dc9384c6b908b8394168b5b5a
 msgid "`Auth0`_"
-msgstr ""
+msgstr "`Auth0`_"
 
 #: ../development/specifications.rst:68 ../development/specifications.rst:78
 #: ../development/specifications.rst:80 ../development/specifications.rst:88
@@ -2571,92 +2657,92 @@ msgstr ""
 #: 40c78abb3bce4fc8a59fabdef15f0f33 d6fbf12d6eb6429d84551ea23bf8eecc
 #: f682275b9cb14280a7f2654d727c75d1
 msgid "❔"
-msgstr ""
+msgstr "❔"
 
 #: ../development/specifications.rst:70 47ff7b1213464f85b246c4282f3af933
 msgid "`Authelia`_"
-msgstr ""
+msgstr "`Authelia`_"
 
 #: ../development/specifications.rst:70 ../development/specifications.rst:74
 #: ../development/specifications.rst:82 5db56fd3e64948f5a108d2f74f7070b4
 #: 336fd480628c4851957b790dee759f7c f263685446a54133804e5f8517d59f1d
 msgid "Go"
-msgstr ""
+msgstr "Go"
 
 #: ../development/specifications.rst:70 ../development/specifications.rst:82
 #: 741e97755b8c4478b7e19ba006898401 ffc79e1d4373446e88d2065ff0109fc8
 msgid "50k"
-msgstr ""
+msgstr "50k"
 
 #: ../development/specifications.rst:72 7fb71b70103e40eeb178e1281ea81de3
 msgid "`Authentic2`_"
-msgstr ""
+msgstr "`Authentic2`_"
 
 #: ../development/specifications.rst:72 cb26c38797d9416fafe5d1a1b5c5b03b
 msgid "65k"
-msgstr ""
+msgstr "65k"
 
 #: ../development/specifications.rst:74 6f7fc7bbb2694f09a12393a74ffc8013
 msgid "`Authentik`_"
-msgstr ""
+msgstr "`Authentik`_"
 
 #: ../development/specifications.rst:74 bb964534c0704925b6d856bd54af7c7f
 msgid "55k"
-msgstr ""
+msgstr "55k"
 
 #: ../development/specifications.rst:76 4604cb0778044b63807b2be23ced893c
 msgid "`CAS`_"
-msgstr ""
+msgstr "`CAS`_"
 
 #: ../development/specifications.rst:76 ../development/specifications.rst:80
 #: ../development/specifications.rst:84 aa3618e441ac413e83acdfe56631d15a
 #: 1dc363d8cf99410890cbd44e0f60699c 4104aef4b998447299aa6b10e861098c
 msgid "Java"
-msgstr ""
+msgstr "Java"
 
 #: ../development/specifications.rst:76 c316893b4f00454a8c5745071e0888b1
 msgid "360k"
-msgstr ""
+msgstr "360k"
 
 #: ../development/specifications.rst:78 c8a158afb8d841209c20b9ef42e563cb
 msgid "`Connect2id`_"
-msgstr ""
+msgstr "`Connect2id`_"
 
 #: ../development/specifications.rst:80 a264cd68201c442faf08474397c550aa
 msgid "`Gluu`_"
-msgstr ""
+msgstr "`Gluu`_"
 
 #: ../development/specifications.rst:82 e54b53bfeafd4764b01095c1cd0077b7
 msgid "`Hydra`_"
-msgstr ""
+msgstr "`Hydra`_"
 
 #: ../development/specifications.rst:84 87594578370246d494ef5e63196a3a92
 msgid "`Keycloak`_"
-msgstr ""
+msgstr "`Keycloak`_"
 
 #: ../development/specifications.rst:84 d6304d1f41714ad5af15edb6febbfbc5
 msgid "600k"
-msgstr ""
+msgstr "600k"
 
 #: ../development/specifications.rst:86 2efe7957b848447dacfecb082a95c438
 msgid "`LemonLDAP`_"
-msgstr ""
+msgstr "`LemonLDAP`_"
 
 #: ../development/specifications.rst:86 cdd25b565e5d4de4b4202f82f4407843
 msgid "Perl"
-msgstr ""
+msgstr "Perl"
 
 #: ../development/specifications.rst:86 51b2d4fcc1fc43d2a692826a2b2c62d1
 msgid "130k"
-msgstr ""
+msgstr "130k"
 
 #: ../development/specifications.rst:88 4c2a5d27487345f7bc3c1bbd0c897c47
 msgid "`Okta`_"
-msgstr ""
+msgstr "`Okta`_"
 
 #: ../features.rst:9 61a68141a485477a9fb49921e7b8aa3a
 msgid "Features"
-msgstr ""
+msgstr "Fonctionnalités"
 
 #: ../features.rst:11 5dd070084abb440ebf87c36df501f197
 msgid ""
@@ -2676,7 +2762,7 @@ msgstr ""
 
 #: ../features.rst:19 73c7e363c37147fc825deea06ee26975
 msgid "User and group management"
-msgstr ""
+msgstr "Gestion d’utilisateurs et de groupes"
 
 #: ../features.rst:21 e19b2b99a8544219b61bbedc1229e77c
 msgid ""
@@ -2735,7 +2821,7 @@ msgstr ""
 
 #: ../features.rst:51 4a6be5a6b71a4a5ea35d7c4a41630e35
 msgid "Group management"
-msgstr ""
+msgstr "Gestion de groupes"
 
 #: ../features.rst:53 ../features.rst:140 4824338c1fbf4fdd8c2e01534219ee98
 #: 3d8b9fc086e945d890bf9b3e01c82984
