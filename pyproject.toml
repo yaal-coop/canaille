@@ -79,7 +79,7 @@ postgresql = [
 
 mysql = [
     "passlib >= 1.7.4",
-    "sqlalchemy[mysql-connector-python] >= 2.0.23",
+    "sqlalchemy[mysql-connector] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
