@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-11-26 13:31+0100\n"
-"PO-Revision-Date: 2024-12-03 21:00+0000\n"
+"PO-Revision-Date: 2024-12-05 09:36+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
 "kab/>\n"
@@ -408,7 +408,7 @@ msgstr "Awal n uεeddi"
 
 #: canaille/core/endpoints/forms.py:137 canaille/core/endpoints/forms.py:276
 msgid "Password confirmation"
-msgstr ""
+msgstr "Sentem awal n uɛeddi"
 
 #: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:279
 msgid "Password and confirmation do not match."
@@ -509,7 +509,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:248
 msgid "Gotham City"
-msgstr ""
+msgstr "Gotham City"
 
 #: canaille/core/endpoints/forms.py:252
 msgid "Region"
@@ -559,7 +559,7 @@ msgstr "https://asmel-inu.tld"
 
 #: canaille/core/endpoints/forms.py:312
 msgid "Preferred language"
-msgstr ""
+msgstr "Tutlayt tamenyaft"
 
 #: canaille/core/endpoints/forms.py:322
 msgid "users, admins …"
@@ -650,7 +650,7 @@ msgstr "Tangalt taɣbalutt"
 
 #: canaille/core/templates/firstlogin.html:12
 msgid "First login"
-msgstr ""
+msgstr "Tuqqna tamezwarut"
 
 #: canaille/core/templates/firstlogin.html:19
 msgid ""
@@ -739,11 +739,11 @@ msgstr ""
 
 #: canaille/core/templates/group.html:58
 msgid "Delete group"
-msgstr ""
+msgstr "Kkes agraw"
 
 #: canaille/core/templates/group.html:63
 msgid "Create group"
-msgstr ""
+msgstr "Snulfu-d agraw"
 
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
@@ -842,7 +842,7 @@ msgstr ""
 #: canaille/core/templates/profile_add.html:34
 #: canaille/core/templates/profile_edit.html:7
 msgid "User creation"
-msgstr ""
+msgstr "Aseqdac amaynut"
 
 #: canaille/core/templates/join.html:19
 #: canaille/core/templates/profile_add.html:37
@@ -891,7 +891,7 @@ msgstr ""
 
 #: canaille/core/templates/password.html:43 canaille/templates/base.html:74
 msgid "Sign in"
-msgstr ""
+msgstr "Qqen"
 
 #: canaille/core/templates/profile_add.html:42
 #: canaille/core/templates/profile_edit.html:22
@@ -911,7 +911,7 @@ msgstr ""
 #: canaille/core/templates/profile_settings.html:19
 #: canaille/core/templates/profile_settings.html:40
 msgid "Account settings"
-msgstr ""
+msgstr "Iɣewwaṛen n umiḍan"
 
 #: canaille/core/templates/profile_add.html:175
 msgid "User password is not mandatory"
@@ -931,7 +931,7 @@ msgstr ""
 #: canaille/core/templates/profile_edit.html:35
 #: canaille/core/templates/profile_settings.html:6
 msgid "My profile"
-msgstr ""
+msgstr "Amaɣnu-inu"
 
 #: canaille/core/templates/profile_edit.html:11
 #: canaille/core/templates/profile_edit.html:37
@@ -1318,7 +1318,7 @@ msgstr ""
 #: canaille/core/templates/mails/invitation.html:19
 #: canaille/core/templates/mails/invitation.txt:1
 msgid "Account creation"
-msgstr ""
+msgstr "Asnulfu n umiḍan"
 
 #: canaille/core/templates/mails/invitation.html:27
 #, python-format
@@ -1385,7 +1385,7 @@ msgstr ""
 
 #: canaille/core/templates/modals/delete-account.html:9
 msgid "Account deletion"
-msgstr ""
+msgstr "Tukksa n umiḍan"
 
 #: canaille/core/templates/modals/delete-account.html:14
 #, python-format
@@ -1630,7 +1630,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:147
 msgid "Software Version"
-msgstr ""
+msgstr "Lqem n useɣẓan"
 
 #: canaille/oidc/endpoints/forms.py:152
 msgid "JWK"
@@ -1638,7 +1638,7 @@ msgstr "JWK"
 
 #: canaille/oidc/endpoints/forms.py:157
 msgid "JKW URI"
-msgstr ""
+msgstr "URI n JKW"
 
 #: canaille/oidc/endpoints/forms.py:165
 msgid "Pre-consent"
@@ -1735,7 +1735,7 @@ msgstr ""
 
 #: canaille/oidc/templates/consent_list.html:45
 msgid "From:"
-msgstr ""
+msgstr "Seg:"
 
 #: canaille/oidc/templates/consent_list.html:48
 msgid "Revoked:"
@@ -1753,7 +1753,7 @@ msgstr ""
 #: canaille/oidc/templates/consent_list.html:78
 #: canaille/oidc/templates/preconsent_list.html:68
 msgid "Policy"
-msgstr ""
+msgstr "Tasertit n tbaḍnit"
 
 #: canaille/oidc/templates/consent_list.html:86
 #: canaille/oidc/templates/preconsent_list.html:76
@@ -1775,7 +1775,7 @@ msgstr ""
 
 #: canaille/oidc/templates/logout.html:9 canaille/templates/base.html:69
 msgid "Log out"
-msgstr ""
+msgstr "Senser tuqqna"
 
 #: canaille/oidc/templates/logout.html:10
 msgid "Do you want to log out?"
@@ -1797,7 +1797,7 @@ msgstr ""
 
 #: canaille/oidc/templates/logout.html:30
 msgid "Logout"
-msgstr ""
+msgstr "Senser tuqqna"
 
 #: canaille/oidc/templates/preconsent_list.html:27
 msgid "Those applications automatically have authorizations to access you data."
@@ -1881,7 +1881,7 @@ msgstr ""
 
 #: canaille/oidc/templates/partial/authorization_list.html:5
 msgid "Code"
-msgstr ""
+msgstr "Tangalt"
 
 #: canaille/oidc/templates/partial/authorization_list.html:8
 #: canaille/oidc/templates/partial/client_list.html:8
