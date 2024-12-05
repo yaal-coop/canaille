@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-26 13:31+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-12-05 13:23+0100\n"
 "PO-Revision-Date: 2024-11-27 19:01+0000\n"
 "Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -362,7 +362,8 @@ msgstr ""
 
 #: canaille/core/endpoints/auth.py:175
 msgid "Could not send the password reset link."
-msgstr "No se pudo enviar el correo electrónico para restablecer de contraseña."
+msgstr ""
+"No se pudo enviar el correo electrónico para restablecer de contraseña."
 
 #: canaille/core/endpoints/auth.py:179
 msgid ""
@@ -1362,9 +1363,10 @@ msgid ""
 "You added an email address to your account on %(site_name)s. Please click on "
 "the \"Validate email address\" button below to confirm your email address."
 msgstr ""
-"Has añadido una dirección de correo electrónico a tu cuenta en %(site_name)"
-"s. Haz clic en el botón \"Validar dirección de correo electrónico\" a "
-"continuación para confirmar tu dirección de correo electrónico."
+"Has añadido una dirección de correo electrónico a tu cuenta en "
+"%(site_name)s. Haz clic en el botón \"Validar dirección de correo "
+"electrónico\" a continuación para confirmar tu dirección de correo "
+"electrónico."
 
 #: canaille/core/templates/mails/email-confirmation.html:39
 msgid "Validate email address"
@@ -1396,32 +1398,24 @@ msgstr ""
 "contraseña\" que aparece a continuación y sigue las instrucciones."
 
 #: canaille/core/templates/mails/firstlogin.html:38
+#: canaille/core/templates/mails/firstlogin.txt:1
+#: canaille/core/templates/mails/firstlogin.txt:5
 #: canaille/core/templates/mails/invitation.txt:5
 #: canaille/core/templates/mails/reset.txt:5
 msgid "Initialize password"
 msgstr "Inicializar contraseña"
 
-#: canaille/core/templates/mails/firstlogin.txt:1
-msgid "Password reinitialisation"
-msgstr "Reinicialización de la contraseña"
-
 #: canaille/core/templates/mails/firstlogin.txt:3
+#: canaille/core/templates/mails/reset.txt:3
 #, python-format
 msgid ""
-"Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. If you "
-"need to reset your password, please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
-"Alguien, probablemente tú, solicitó un enlace para la reinicialización de la "
-"contraseña en %(site_name)s. Si no has solicitado este correo electrónico, "
-"por favor ignóralo. Si necesitas restablecer tu contraseña, haz clic en el "
-"siguiente enlace y sigue las instrucciones."
-
-#: canaille/core/templates/mails/firstlogin.txt:5
-#: canaille/core/templates/mails/reset.html:38
-msgid "Reset password"
-msgstr "Restablecer contraseña"
+"Para finalizar la configuración de tu cuenta en %(site_name)s, necesitas "
+"establecer una contraseña. Por favor haz clic en el siguiente enlace y sigue "
+"las instrucciones."
 
 #: canaille/core/templates/mails/invitation.html:19
 #: canaille/core/templates/mails/invitation.txt:1
@@ -1489,16 +1483,9 @@ msgstr ""
 "necesitas restablecer tu contraseña, haz clic en el botón \"Restablecer "
 "contraseña\" que aparece a continuación y sigue las instrucciones."
 
-#: canaille/core/templates/mails/reset.txt:3
-#, python-format
-msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need to "
-"setup your password. Please click on the link below and follow the "
-"instructions."
-msgstr ""
-"Para finalizar la configuración de tu cuenta en %(site_name)s, necesitas "
-"establecer una contraseña. Por favor haz clic en el siguiente enlace y sigue "
-"las instrucciones."
+#: canaille/core/templates/mails/reset.html:38
+msgid "Reset password"
+msgstr "Restablecer contraseña"
 
 #: canaille/core/templates/mails/test.html:27
 #: canaille/core/templates/mails/test.txt:3
@@ -1594,8 +1581,8 @@ msgid ""
 "Are you sure you want to remove %(user_name)s from the group "
 "\"%(group_name)s\"?"
 msgstr ""
-"¿Estás seguro de que deseas eliminar %(user_name)s del grupo \"%(group_name)"
-"s\"?"
+"¿Estás seguro de que deseas eliminar %(user_name)s del grupo "
+"\"%(group_name)s\"?"
 
 #: canaille/core/templates/modals/remove-group-member.html:25
 #: canaille/core/templates/partial/group-members.html:64
@@ -2124,6 +2111,21 @@ msgid "%(nb_items_formatted)s item"
 msgid_plural "%(nb_items_formatted)s items"
 msgstr[0] "%(nb_items_formatted)s elemento"
 msgstr[1] "%(nb_items_formatted)s elementos"
+
+#~ msgid "Password reinitialisation"
+#~ msgstr "Reinicialización de la contraseña"
+
+#, python-format
+#~ msgid ""
+#~ "Someone, probably you, asked for a password reinitialization link at "
+#~ "%(site_name)s. If you did not asked for this email, please ignore it. If "
+#~ "you need to reset your password, please click on the link below and "
+#~ "follow the instructions."
+#~ msgstr ""
+#~ "Alguien, probablemente tú, solicitó un enlace para la reinicialización de "
+#~ "la contraseña en %(site_name)s. Si no has solicitado este correo "
+#~ "electrónico, por favor ignóralo. Si necesitas restablecer tu contraseña, "
+#~ "haz clic en el siguiente enlace y sigue las instrucciones."
 
 #~ msgid "Send email"
 #~ msgstr "Enviar email"
