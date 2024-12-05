@@ -193,6 +193,7 @@ def user(app, backend):
         phone_numbers=["555-000-000"],
         profile_url="https://john.test",
         formatted_address="1235, somewhere",
+        password_policy_subentry="cn=passwordDefault,ou=policies,dc=mydomain,dc=tld",
     )
     backend.save(u)
     yield u
@@ -207,6 +208,7 @@ def admin(app, backend):
         user_name="admin",
         emails=["jane@doe.test"],
         password="admin",
+        password_policy_subentry="cn=passwordDefault,ou=policies,dc=mydomain,dc=tld",
     )
     backend.save(u)
     yield u
@@ -221,6 +223,7 @@ def moderator(app, backend):
         user_name="moderator",
         emails=["jack@doe.test"],
         password="moderator",
+        password_policy_subentry="cn=passwordDefault,ou=policies,dc=mydomain,dc=tld",
     )
     backend.save(u)
     yield u

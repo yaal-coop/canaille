@@ -581,16 +581,6 @@ def profile_edition_remove_email(user, edited_user, email):
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, edited_user):
-    print("")
-    print("__dict__", user.__dict__)
-    print("user_name", user.user_name)
-    print("last_login", user.last_login)
-    print("password_policy_subentry", user.password_policy_subentry)
-    print("password_policy_subentry", user.password_policy_subentry.dn)
-    print("password_last_update", user.password_last_update)
-    print("password_history", user.password_history)
-    print("")
-
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
     ):

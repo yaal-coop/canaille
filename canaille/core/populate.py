@@ -39,6 +39,7 @@ def fake_users(nb=1):
                 title=fake.job(),
                 password=fake.password(),
                 preferred_language=fake._locales[0],
+                password_policy_subentry="cn=passwordDefault,ou=policies,dc=mydomain,dc=tld",
             )
             Backend.instance.save(user)
             users.append(user)

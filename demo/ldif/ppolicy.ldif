@@ -1,12 +1,10 @@
 dn: cn=passwordDefault,ou=policies,dc=mydomain,dc=tld
-objectClass: person
+objectClass: device
 objectClass: top
 objectClass: pwdPolicy
-sn: passwordDefault
 cn: passwordDefault
 pwdAttribute: userPassword
 pwdMustChange: TRUE
 pwdLockout: TRUE
 pwdAllowUserChange: TRUE
 pwdGraceAuthNLimit: 1
-pwdInHistory: 5

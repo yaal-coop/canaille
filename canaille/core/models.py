@@ -35,13 +35,9 @@ class User(Model):
     and is case insensitive.
     """
 
-    password_policy_subentry: str = "cn=passwordDefault,ou=policies,dc=mydomain,dc=tld"
-
-    last_login: datetime.datetime | None = None
-
-    password_last_update: datetime.datetime | None = None
-
-    password_history: list[str] | None = None
+    password_policy_subentry: str | None = None
+    """Attribute pointing to the password policy that should be used for the
+    current user."""
 
     password: str | None = None
     """
@@ -361,17 +357,27 @@ class Policy(Model):
     identifier_attribute: ClassVar[str] = "display_name"
 
     display_name: str
+    """A human readable name for the password policy.
 
-    policy_name: str | None = None
+    Required.
+    """
 
     password_attribute: str | None = None
+    """This attribute points to the password to which the password policy will
+    be applied."""
 
     password_must_change: bool | None = None
+    """This attribute sets if the current user much change their passwords when
+    first logging-in or after a password reset."""
 
     user_lockout: bool | None = None
+    """This attribute sets if the current user is locked out of logging-in for
+    a time, after too many failed log-in attempts."""
 
     allow_user_change: bool | None = None
+    """This attributes defines if the user can or cannot change their own
+    password."""
 
     grace_authentication_limit: int | None = None
-
-    password_in_history: int | None = None
+    """This attribute defines the amount of times an expired password can be
+    used to successfully authenticate."""

@@ -33,9 +33,9 @@ slapd.start()
 try:
     slapd.init_tree()
     for ldif in (
+        "ldif/ppolicy.ldif",
         "ldif/bootstrap-users-tree.ldif",
         "ldif/bootstrap-oidc-tree.ldif",
-        "ldif/ppolicy.ldif",
     ):
         try:
             slapd.ldapadd(None, ["-f", ldif])

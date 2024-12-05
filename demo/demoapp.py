@@ -151,8 +151,8 @@ def populate(app):
             client2.audience = [client2]
             app.backend.save(client2)
 
-            fake_users(0)
-            fake_groups(0, nb_users_max=10)
+            fake_users(50)
+            fake_groups(10, nb_users_max=10)
 
 
 def create_app():
