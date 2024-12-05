@@ -58,6 +58,14 @@ Any environment variable can also be written in a ``.env``, and will be read if 
 
         For instance, you can set ``SECRETS_DIR=/run/secrets`` and put your secret key in the file ``/run/secrets/SECRET_KEY``.
 
+Configuration methods priority
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a same configuration option is defined by different ways, here is how Canaille will choose which one to use:
+
+- environment vars have priority over the environment file and the configuration file;
+- environment file will have priority over the configuration file.
+
 Parameters
 ==========
 
