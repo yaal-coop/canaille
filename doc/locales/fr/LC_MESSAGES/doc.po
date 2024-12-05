@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 10:35+0100\n"
-"PO-Revision-Date: 2024-12-03 21:00+0000\n"
+"PO-Revision-Date: 2024-12-05 12:24+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -110,6 +110,8 @@ msgid ""
 "PostgreSQL and MySQL extras does not rely on libraries that need to be "
 "compiled."
 msgstr ""
+"Les extras PostgreSQL et MySQL ne dépendent plus de bibliothèques qui "
+"doivent être compilées."
 
 #: ../../CHANGES.rst:17 56edbd9989cf41c4b9b58dfd5e108991
 msgid "[0.0.56] - 2024-11-07"
@@ -2763,6 +2765,12 @@ msgid ""
 "to fit any :doc:`use cases <usecases>` you may meet. Check our  :ref:"
 "`roadmap <features:Roadmap>` to see what is coming next."
 msgstr ""
+"Voici les différentes fonctionnalités que Canaille propose. Vous pouvez "
+"activer n’importe laquelle de ces fonctionnalités avec la :doc:`"
+"configuration <references/configuration>` pour que Canaille s’adapte au "
+":doc:`cas d’usage <usecases>` que vous rencontrez. Jetez un œil à notre "
+":ref:`feuille de route <features:Roadmap>` pour savoir ce qui arrive dans le "
+"futur."
 
 #: ../features.rst:15 cf814f15959a43cfaa0392cd83755fce
 msgid ""
@@ -2860,7 +2868,7 @@ msgstr ""
 #: 2cf4c2bbf0ab431f857b4fe0f7b840a0 1382b05cef654b76b8fb57324f33b950
 #: 757f761fb4724713bdc1308505431bfb
 msgid "Todo"
-msgstr ""
+msgstr "À faire"
 
 #: ../features.rst:64 89199041503f41d3b7cad73267f4cf96
 msgid ""
