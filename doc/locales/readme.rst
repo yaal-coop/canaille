@@ -1,5 +1,4 @@
-Documentation translation
-Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/documentation>`_.
+Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/documentation>`__.
 
 The following commands are there as documentation, only the message extraction and the language addition is needed for contributors.
 
