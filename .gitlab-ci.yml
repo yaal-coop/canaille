@@ -78,5 +78,5 @@ doc:
   stage: test
   script:
     - uv sync --group doc
-    - uv run sphinx-build doc build/sphinx/html
+    - uv run sphinx-build doc build/sphinx/html --fail-on-warning
     - uv cache prune --ci

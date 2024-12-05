@@ -239,7 +239,7 @@ basepython = ["python3.10"]
 [tool.tox.env.doc]
 dependency_groups = ["doc"]
 commands = [
-    ["sphinx-build", "--builder", "html", "doc", "build/sphinx/html"],
+    ["sphinx-build", "--builder", "html", "--fail-on-warning", "doc", "build/sphinx/html"],
     ["sphinx-build", "--builder", "man", "doc", "build/sphinx/html"],
 ]
 
