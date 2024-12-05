@@ -10,6 +10,7 @@ from flask import g
 from werkzeug.security import gen_salt
 
 from canaille.app import models
+from canaille.core.models import PASSWORD_MIN_DELAY
 
 from . import client_credentials
 
@@ -789,3 +790,56 @@ def test_missing_client_id(
         status=400,
     )
     res.mustcontain("client_id parameter is missing.")
+
+
+def test_logout_login_with_intruder_lockout(testclient, logged_user, client, backend):
+    testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
+
+    # add 100 milliseconds to account for LDAP time
+    with time_machine.travel(
+        datetime.datetime.now(datetime.timezone.utc)
+        + datetime.timedelta(milliseconds=100),
+        tick=False,
+    ) as traveller:
+        res = testclient.get(
+            "/oauth/authorize",
+            params=dict(
+                response_type="code",
+                client_id=client.client_id,
+                scope="openid profile",
+                nonce="somenonce",
+            ),
+            status=200,
+        )
+
+        res = res.form.submit(name="answer", value="logout")
+        res = res.follow()
+        g.user = None
+        res = res.follow()
+        res = res.follow()
+
+        res.form["login"] = logged_user.user_name
+        res = res.form.submit()
+        res = res.follow()
+
+        res.form["password"] = "wrong password"
+        res = res.form.submit(status=200)
+        assert ("error", "Login failed, please check your information") in res.flashes
+
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(status=200)
+
+        assert (
+            "error",
+            f"Too much attempts. Please wait for {PASSWORD_MIN_DELAY} seconds before trying to login again.",
+        ) in res.flashes
+
+        traveller.shift(datetime.timedelta(seconds=PASSWORD_MIN_DELAY))
+
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(status=302)
+        res = res.follow(status=200)
+
+        res = res.form.submit(name="answer", value="accept", status=302)
+
+        assert res.location.startswith(client.redirect_uris[0])

@@ -185,6 +185,13 @@ In case of lost token, TOTP/HOTP authentication can be reset by users with :attr
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`email one-time password feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary email address.
 If a :class:`smpp server <canaille.core.configuration.SMPPSettings>` is configured and the :attr:`sms one-time password feature <canaille.core.configuration.CoreSettings.SMS_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary phone number.
 
+.. _feature_intruder_lockout:
+
+Intruder lockout
+================
+
+If the :attr:`intruder lockout feature <canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>` is enabled, then users will have to wait for an increasingly long time between each failed login attempt.
+
 Web interface
 *************
 

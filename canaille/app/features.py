@@ -15,6 +15,10 @@ class Features:
         return self.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]
 
     @property
+    def has_intruder_lockout(self):
+        return self.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"]
+
+    @property
     def otp_method(self):
         return self.app.config["CANAILLE"]["OTP_METHOD"]
 
