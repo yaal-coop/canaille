@@ -1,6 +1,7 @@
 import importlib
 import os
 from contextlib import contextmanager
+from math import ceil
 
 from flask import g
 
@@ -195,3 +196,7 @@ def available_backends():
         for elt in os.scandir(os.path.dirname(__file__))
         if elt.is_dir() and os.path.exists(os.path.join(elt, "backend.py"))
     }
+
+
+def get_lockout_delay_message(current_lockout_delay):
+    return f"Too much attempts. Please wait for {ceil(current_lockout_delay)} seconds before trying to login again."

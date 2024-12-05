@@ -71,10 +71,12 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     last_modified: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
+    )
+    _password_failure_timestamps: Mapped[list[str]] = mapped_column(
+        MutableJson, nullable=True
     )
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
@@ -100,6 +102,22 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+
+    @property
+    def password_failure_timestamps(self):
+        if self._password_failure_timestamps:
+            return [
+                datetime.datetime.fromisoformat(d)
+                for d in self._password_failure_timestamps
+            ]
+        return self._password_failure_timestamps
+
+    @password_failure_timestamps.setter
+    def password_failure_timestamps(self, dates_list):
+        if dates_list:
+            self._password_failure_timestamps = [str(d) for d in dates_list]
+        else:
+            self._password_failure_timestamps = dates_list
 
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):

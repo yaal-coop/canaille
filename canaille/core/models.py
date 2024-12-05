@@ -7,6 +7,10 @@ from flask import current_app
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 
+PASSWORD_MIN_DELAY = 2
+PASSWORD_MAX_DELAY = 600
+PASSWORD_FAILURE_COUNT_INTERVAL = 600
+
 
 class User(Model):
     """User model, based on the `SCIM User schema
@@ -33,6 +37,13 @@ class User(Model):
     non-empty userName value.  This identifier MUST be unique across the
     service provider's entire set of Users.  This attribute is REQUIRED
     and is case insensitive.
+    """
+
+    password_failure_timestamps: list[datetime.datetime] = []
+    """This attribute stores the timestamps of the user's failed
+    authentications.
+
+    It's currently used by the intruder lockout delay system.
     """
 
     password: str | None = None
@@ -317,6 +328,29 @@ class User(Model):
                 if self.match_filter(details["FILTER"]):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
+
+    def get_intruder_lockout_delay(self):
+        if self.password_failure_timestamps:
+            # discard old attempts
+            self.password_failure_timestamps = [
+                attempt
+                for attempt in self.password_failure_timestamps
+                if attempt
+                > datetime.datetime.now(datetime.timezone.utc)
+                - datetime.timedelta(seconds=PASSWORD_FAILURE_COUNT_INTERVAL)
+            ]
+        if not self.password_failure_timestamps:
+            return 0
+        failed_login_count = len(self.password_failure_timestamps)
+        # delay is multiplied by 2 each failed attempt, starting at min delay, limited to max delay
+        calculated_delay = min(
+            PASSWORD_MIN_DELAY * 2 ** (failed_login_count - 1), PASSWORD_MAX_DELAY
+        )
+        time_since_last_failed_bind = (
+            datetime.datetime.now(datetime.timezone.utc)
+            - self.password_failure_timestamps[-1]
+        ).total_seconds()
+        return max(calculated_delay - time_since_last_failed_bind, 0)
 
 
 class Group(Model):

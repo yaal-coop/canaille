@@ -34,6 +34,7 @@ class User(canaille.core.models.User, LDAPObject):
         "organization": "o",
         "groups": "memberOf",
         "lock_date": "pwdEndTime",
+        "password_failure_timestamps": "pwdFailureTime",
     }
 
     def match_filter(self, filter):

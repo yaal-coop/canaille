@@ -15,6 +15,7 @@ from canaille.app import models
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
 from canaille.backends import Backend
+from canaille.backends import get_lockout_delay_message
 
 from .utils import listify
 from .utils import python_attrs_to_ldap
@@ -206,6 +207,11 @@ class LDAPBackend(Backend):
         return self.get(User, filter=filter)
 
     def check_user_password(self, user, password):
+        if current_app.features.has_intruder_lockout:
+            if current_lockout_delay := user.get_intruder_lockout_delay():
+                self.save(user)
+                return (False, get_lockout_delay_message(current_lockout_delay))
+
         conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
 
         conn.set_option(
