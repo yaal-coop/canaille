@@ -39,7 +39,8 @@ The way environment variables are parsed can be read from the `pydantic-settings
 Environment file
 ~~~~~~~~~~~~~~~~
 
-Any environment variable can also be written in a ``.env``, and will be read if present.
+Any environment variable can also be written in an environment file, which path should be passed in the ``ENV_FILE`` environment variable.
+For instance, set ``ENV_FILE=.env`` to load a ``.env`` file.
 
 .. code-block:: bash
     :caption: .env
@@ -57,6 +58,14 @@ Any environment variable can also be written in a ``.env``, and will be read if 
         A :envvar:`SECRETS_DIR` environment variable can be passed as an environment variable, being a path to a directory in which are stored files named after the configuration settings.
 
         For instance, you can set ``SECRETS_DIR=/run/secrets`` and put your secret key in the file ``/run/secrets/SECRET_KEY``.
+
+Configuration methods priority
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If a same configuration option is defined by different ways, here is how Canaille will choose which one to use:
+
+- environment vars have priority over the environment file and the configuration file;
+- environment file will have priority over the configuration file.
 
 Parameters
 ==========

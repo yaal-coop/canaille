@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-11-26 13:31+0100\n"
-"PO-Revision-Date: 2024-11-26 17:43+0000\n"
-"Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-12-05 13:23+0100\n"
+"PO-Revision-Date: 2024-12-05 12:24+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -1401,37 +1401,29 @@ msgid ""
 "below and follow the instructions."
 msgstr ""
 "Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
-"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
-"dessous, et suivre les instructions qui vous seront présentées."
+"devons mettre en place un mot de passe. Veuillez cliquer sur le bouton « "
+"Initialiser mon mot de passe », et suivre les instructions qui vous seront "
+"présentées."
 
 #: canaille/core/templates/mails/firstlogin.html:38
+#: canaille/core/templates/mails/firstlogin.txt:1
+#: canaille/core/templates/mails/firstlogin.txt:5
 #: canaille/core/templates/mails/invitation.txt:5
 #: canaille/core/templates/mails/reset.txt:5
 msgid "Initialize password"
 msgstr "Initialiser mon mot de passe"
 
-#: canaille/core/templates/mails/firstlogin.txt:1
-msgid "Password reinitialisation"
-msgstr "Réinitialisation du mot de passe"
-
 #: canaille/core/templates/mails/firstlogin.txt:3
+#: canaille/core/templates/mails/reset.txt:3
 #, python-format
 msgid ""
-"Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. If you "
-"need to reset your password, please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
-"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
-"mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
-"ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
-"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
-"qui vous seront soumises."
-
-#: canaille/core/templates/mails/firstlogin.txt:5
-#: canaille/core/templates/mails/reset.html:38
-msgid "Reset password"
-msgstr "Réinitialiser votre mot de passe"
+"Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
+"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
+"dessous, et suivre les instructions qui vous seront présentées."
 
 #: canaille/core/templates/mails/invitation.html:19
 #: canaille/core/templates/mails/invitation.txt:1
@@ -1446,7 +1438,8 @@ msgid ""
 "instructions."
 msgstr ""
 "Vous avez été invités à créer un compte sur %(site_name)s. Pour continuer, "
-"vous pouvez cliquer sur le lien ci-dessous et suivre les instructions."
+"vous pouvez cliquer sur bouton « Créer mon compte » et suivre les "
+"instructions."
 
 #: canaille/core/templates/mails/invitation.html:38
 msgid "Create my account"
@@ -1498,16 +1491,9 @@ msgstr ""
 "passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
 "qui vous seront soumises."
 
-#: canaille/core/templates/mails/reset.txt:3
-#, python-format
-msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need to "
-"setup your password. Please click on the link below and follow the "
-"instructions."
-msgstr ""
-"Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
-"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
-"dessous, et suivre les instructions qui vous seront présentées."
+#: canaille/core/templates/mails/reset.html:38
+msgid "Reset password"
+msgstr "Réinitialiser votre mot de passe"
 
 #: canaille/core/templates/mails/test.html:27
 #: canaille/core/templates/mails/test.txt:3
@@ -2135,6 +2121,22 @@ msgid "%(nb_items_formatted)s item"
 msgid_plural "%(nb_items_formatted)s items"
 msgstr[0] "%(nb_items_formatted)s élément"
 msgstr[1] "%(nb_items_formatted)s éléments"
+
+#~ msgid "Password reinitialisation"
+#~ msgstr "Réinitialisation du mot de passe"
+
+#, python-format
+#~ msgid ""
+#~ "Someone, probably you, asked for a password reinitialization link at "
+#~ "%(site_name)s. If you did not asked for this email, please ignore it. If "
+#~ "you need to reset your password, please click on the link below and "
+#~ "follow the instructions."
+#~ msgstr ""
+#~ "Quelqu'un, probablement vous, a demandé un lien de réinitialisation de "
+#~ "votre mot de passe pour le site %(site_name)s. Si vous n'êtes pas à "
+#~ "l'origine de ce message, veuillez l'ignorer. Si vous voulez réinitialiser "
+#~ "votre mot de passe, veuillez cliquer sur le lien ci-dessous, et suivre "
+#~ "les instructions qui vous seront soumises."
 
 #~ msgid "Send email"
 #~ msgstr "Envoyer le courriel"

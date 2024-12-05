@@ -56,7 +56,6 @@ exclude_patterns = []
 pygments_style = "sphinx"
 todo_include_todos = True
 toctree_collapse = False
-
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "authlib": ("https://docs.authlib.org/en/latest", None),

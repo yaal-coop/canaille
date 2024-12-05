@@ -3,18 +3,21 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-12-05 13:23+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2024-12-05 09:36+0000\n"
+"Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
+"Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
+"kab/>\n"
+"Language: kab\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.9-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: canaille/app/flask.py:53
@@ -42,7 +45,8 @@ msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 
 #: canaille/app/forms.py:120
-msgid "This password appears on public compromission databases and is not secure."
+msgid ""
+"This password appears on public compromission databases and is not secure."
 msgstr ""
 
 #: canaille/app/forms.py:285
@@ -55,8 +59,7 @@ msgstr ""
 
 #: canaille/app/mails_sending_conditions.py:16
 msgid ""
-"Password compromise investigation failed. Please contact the "
-"administrators."
+"Password compromise investigation failed. Please contact the administrators."
 msgstr ""
 
 #: canaille/app/mails_sending_conditions.py:38
@@ -67,8 +70,8 @@ msgstr ""
 
 #: canaille/app/mails_sending_conditions.py:45
 msgid ""
-"An error occurred while communicating the incident to the administrators."
-" Please update your password as soon as possible. If this still happens, "
+"An error occurred while communicating the incident to the administrators. "
+"Please update your password as soon as possible. If this still happens, "
 "please contact the administrators."
 msgstr ""
 
@@ -95,7 +98,7 @@ msgstr ""
 
 #: canaille/backends/ldap/backend.py:183
 msgid " or "
-msgstr ""
+msgstr " neɣ "
 
 #: canaille/backends/ldap/backend.py:238
 msgid "Your account has been locked."
@@ -141,9 +144,8 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:125
 msgid ""
-"An error happened while sending your registration mail. Please try again "
-"in a few minutes. If this still happens, please contact the "
-"administrators."
+"An error happened while sending your registration mail. Please try again in "
+"a few minutes. If this still happens, please contact the administrators."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:249
@@ -170,7 +172,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:18
 #: canaille/templates/base.html:58
 msgid "Groups"
-msgstr ""
+msgstr "Igrawen"
 
 #: canaille/core/endpoints/account.py:338
 #: canaille/core/endpoints/account.py:431
@@ -244,8 +246,8 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:697
 msgid ""
-"A password initialization link has been sent at the user email address. "
-"It should be received within a few minutes."
+"A password initialization link has been sent at the user email address. It "
+"should be received within a few minutes."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:159
@@ -254,8 +256,8 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:715
 msgid ""
-"A password reset link has been sent at the user email address. It should "
-"be received within a few minutes."
+"A password reset link has been sent at the user email address. It should be "
+"received within a few minutes."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:722
@@ -287,7 +289,7 @@ msgstr ""
 #: canaille/core/endpoints/admin.py:23
 #: canaille/core/templates/partial/users.html:15
 msgid "Email"
-msgstr ""
+msgstr "Imayl"
 
 #: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:98
 #: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
@@ -345,8 +347,8 @@ msgstr ""
 #: canaille/core/endpoints/auth.py:191
 #, python-format
 msgid ""
-"The user '%(user)s' does not have permissions to update their password. "
-"We cannot send a password reset email."
+"The user '%(user)s' does not have permissions to update their password. We "
+"cannot send a password reset email."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:213
@@ -395,17 +397,17 @@ msgstr ""
 #: canaille/core/templates/partial/group-members.html:9
 #: canaille/core/templates/partial/users.html:9
 msgid "Login"
-msgstr ""
+msgstr "Aseqdac"
 
 #: canaille/core/endpoints/forms.py:108 canaille/core/endpoints/forms.py:130
 #: canaille/core/endpoints/forms.py:264
 #: canaille/core/templates/profile_settings.html:63
 msgid "Password"
-msgstr ""
+msgstr "Awal n uεeddi"
 
 #: canaille/core/endpoints/forms.py:137 canaille/core/endpoints/forms.py:276
 msgid "Password confirmation"
-msgstr ""
+msgstr "Sentem awal n uɛeddi"
 
 #: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:279
 msgid "Password and confirmation do not match."
@@ -413,11 +415,11 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:159
 msgid "Automatic"
-msgstr ""
+msgstr "Awurman"
 
 #: canaille/core/endpoints/forms.py:164
 msgid "Username"
-msgstr ""
+msgstr "Isem n useqdac"
 
 #: canaille/core/endpoints/forms.py:168 canaille/core/endpoints/forms.py:368
 #: canaille/core/endpoints/forms.py:382
@@ -427,11 +429,11 @@ msgstr ""
 #: canaille/oidc/endpoints/forms.py:29
 #: canaille/oidc/templates/partial/client_list.html:6
 msgid "Name"
-msgstr ""
+msgstr "Isem"
 
 #: canaille/core/endpoints/forms.py:170
 msgid "Title"
-msgstr ""
+msgstr "Azwel"
 
 #: canaille/core/endpoints/forms.py:170
 msgid "Vice president"
@@ -464,25 +466,24 @@ msgstr ""
 #: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:468
 #: canaille/core/templates/profile_edit.html:176
 msgid "Email addresses"
-msgstr ""
+msgstr "Tansiwin n yimayl"
 
 #: canaille/core/endpoints/forms.py:206 canaille/core/endpoints/forms.py:458
 msgid ""
-"This email will be used as a recovery address to reset the password if "
-"needed"
+"This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 
 #: canaille/core/endpoints/forms.py:220
 msgid "Phone numbers"
-msgstr ""
+msgstr "Uṭṭunen n tiliɣri"
 
 #: canaille/core/endpoints/forms.py:221
 msgid "555-000-555"
-msgstr ""
+msgstr "06 01 02 03 04"
 
 #: canaille/core/endpoints/forms.py:228
 msgid "Address"
-msgstr ""
+msgstr "Tansa"
 
 #: canaille/core/endpoints/forms.py:230
 msgid "132, Foobar Street, Gotham City 12401, XX"
@@ -490,7 +491,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:234
 msgid "Street"
-msgstr ""
+msgstr "Azniq"
 
 #: canaille/core/endpoints/forms.py:236
 msgid "132, Foobar Street"
@@ -498,7 +499,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:240
 msgid "Postal Code"
-msgstr ""
+msgstr "Tangalt n lbuṣṭa"
 
 #: canaille/core/endpoints/forms.py:246
 msgid "Locality"
@@ -506,7 +507,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:248
 msgid "Gotham City"
-msgstr ""
+msgstr "Gotham City"
 
 #: canaille/core/endpoints/forms.py:252
 msgid "Region"
@@ -518,7 +519,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:258
 msgid "Photo"
-msgstr ""
+msgstr "Tawlaft"
 
 #: canaille/core/endpoints/forms.py:262
 #: canaille/core/templates/profile_add.html:56
@@ -532,7 +533,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:289 canaille/core/endpoints/forms.py:295
 msgid "1234"
-msgstr ""
+msgstr "1234"
 
 #: canaille/core/endpoints/forms.py:293
 msgid "Department"
@@ -540,7 +541,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:299
 msgid "Organization"
-msgstr ""
+msgstr "Tuddsa"
 
 #: canaille/core/endpoints/forms.py:301
 msgid "Cogip LTD."
@@ -548,15 +549,15 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:305
 msgid "Website"
-msgstr ""
+msgstr "Asmel web"
 
 #: canaille/core/endpoints/forms.py:307
 msgid "https://mywebsite.tld"
-msgstr ""
+msgstr "https://asmel-inu.tld"
 
 #: canaille/core/endpoints/forms.py:312
 msgid "Preferred language"
-msgstr ""
+msgstr "Tutlayt tamenyaft"
 
 #: canaille/core/endpoints/forms.py:322
 msgid "users, admins …"
@@ -568,20 +569,20 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:371
 msgid "group"
-msgstr ""
+msgstr "agraw"
 
 #: canaille/core/endpoints/forms.py:375 canaille/core/endpoints/forms.py:392
 #: canaille/core/templates/partial/groups.html:7
 msgid "Description"
-msgstr ""
+msgstr "Aglam"
 
 #: canaille/core/endpoints/forms.py:406 canaille/core/endpoints/forms.py:431
 msgid "Email address"
-msgstr ""
+msgstr "Tansa imayl"
 
 #: canaille/core/endpoints/forms.py:425
 msgid "User name"
-msgstr ""
+msgstr "Isem n useqdac"
 
 #: canaille/core/endpoints/forms.py:429
 msgid "Username editable by the invitee"
@@ -622,7 +623,7 @@ msgstr ""
 #: canaille/core/templates/about.html:5 canaille/core/templates/about.html:16
 #: canaille/templates/base.html:99
 msgid "About Canaille"
-msgstr ""
+msgstr "Ɣef Canaille"
 
 #: canaille/core/templates/about.html:18
 msgid "Free and open-source identity provider."
@@ -631,31 +632,31 @@ msgstr ""
 #: canaille/core/templates/about.html:21
 #, python-format
 msgid "Version %(version)s"
-msgstr ""
+msgstr "Lqem %(version)s"
 
 #: canaille/core/templates/about.html:22
 msgid "Homepage"
-msgstr ""
+msgstr "Asmel unṣib"
 
 #: canaille/core/templates/about.html:23
 msgid "Documentation"
-msgstr ""
+msgstr "Tasemlit"
 
 #: canaille/core/templates/about.html:24
 msgid "Source code"
-msgstr ""
+msgstr "Tangalt taɣbalutt"
 
 #: canaille/core/templates/firstlogin.html:12
 msgid "First login"
-msgstr ""
+msgstr "Tuqqna tamezwarut"
 
 #: canaille/core/templates/firstlogin.html:19
 msgid ""
-"It seems this is the first time you are logging here. In order to "
-"finalize your account configuration, you need to set a password to your "
-"account. We will send you an email containing a link that will allow you "
-"to set a password. Please click on the \"Send the initialization email\" "
-"button below to send the email."
+"It seems this is the first time you are logging here. In order to finalize "
+"your account configuration, you need to set a password to your account. We "
+"will send you an email containing a link that will allow you to set a "
+"password. Please click on the \"Send the initialization email\" button below "
+"to send the email."
 msgstr ""
 
 #: canaille/core/templates/firstlogin.html:34
@@ -663,7 +664,7 @@ msgstr ""
 #: canaille/core/templates/join.html:39
 #: canaille/core/templates/profile_add.html:191
 msgid "Login page"
-msgstr ""
+msgstr "Astebter n tuqqna"
 
 #: canaille/core/templates/firstlogin.html:35
 msgid "Send the initialization email"
@@ -679,8 +680,8 @@ msgstr ""
 #: canaille/core/templates/forgotten-password.html:23
 msgid ""
 "After this form is sent, if the email address or the login you provided "
-"exists, you will receive an email containing a link that will allow you "
-"to reset your password."
+"exists, you will receive an email containing a link that will allow you to "
+"reset your password."
 msgstr ""
 
 #: canaille/core/templates/forgotten-password.html:41
@@ -695,11 +696,11 @@ msgstr ""
 #: canaille/core/templates/forgotten-password.html:48
 #: canaille/core/templates/mails/admin.html:54
 msgid "Send"
-msgstr ""
+msgstr "Azen"
 
 #: canaille/core/templates/group.html:7 canaille/core/templates/group.html:29
 msgid "Group creation"
-msgstr ""
+msgstr "Agraw anaynut"
 
 #: canaille/core/templates/group.html:9 canaille/core/templates/group.html:31
 msgid "Group edition"
@@ -710,14 +711,14 @@ msgstr ""
 #: canaille/core/templates/profile_add.html:16
 #: canaille/core/templates/users.html:11
 msgid "View"
-msgstr ""
+msgstr "Wali"
 
 #: canaille/core/templates/group.html:20 canaille/core/templates/groups.html:15
 #: canaille/core/templates/invite.html:19
 #: canaille/core/templates/profile_add.html:20
 #: canaille/core/templates/users.html:15
 msgid "Add"
-msgstr ""
+msgstr "Rnu"
 
 #: canaille/core/templates/group.html:37
 msgid "Create a new group"
@@ -736,18 +737,18 @@ msgstr ""
 
 #: canaille/core/templates/group.html:58
 msgid "Delete group"
-msgstr ""
+msgstr "Kkes agraw"
 
 #: canaille/core/templates/group.html:63
 msgid "Create group"
-msgstr ""
+msgstr "Snulfu-d agraw"
 
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
 #: canaille/core/templates/profile_settings.html:166
 #: canaille/oidc/templates/client_edit.html:78
 msgid "Edit"
-msgstr ""
+msgstr "Ẓreg"
 
 #: canaille/core/templates/group.html:77
 msgid "Group members"
@@ -761,7 +762,7 @@ msgstr ""
 #: canaille/core/templates/profile_add.html:25
 #: canaille/core/templates/users.html:20
 msgid "Invite"
-msgstr ""
+msgstr "Snubeg"
 
 #: canaille/core/templates/invite.html:35
 msgid "Invitation link"
@@ -777,8 +778,7 @@ msgstr ""
 
 #: canaille/core/templates/invite.html:47
 msgid ""
-"Here is the invitation link you can provide to the user you want to "
-"invite:"
+"Here is the invitation link you can provide to the user you want to invite:"
 msgstr ""
 
 #: canaille/core/templates/invite.html:54
@@ -788,28 +788,26 @@ msgstr ""
 
 #: canaille/core/templates/invite.html:55
 msgid ""
-"If you need to provide this link by other ways than email, you can copy "
-"it there:"
+"If you need to provide this link by other ways than email, you can copy it "
+"there:"
 msgstr ""
 
 #: canaille/core/templates/invite.html:62
 #, python-format
 msgid ""
-"This invitation link could not be sent to %(email)s due to technical "
-"issues."
+"This invitation link could not be sent to %(email)s due to technical issues."
 msgstr ""
 
 #: canaille/core/templates/invite.html:63
 msgid ""
-"However you can copy the link there to provide it by other ways than "
-"email:"
+"However you can copy the link there to provide it by other ways than email:"
 msgstr ""
 
 #: canaille/core/templates/invite.html:74
 #: canaille/oidc/templates/token_view.html:117
 #: canaille/oidc/templates/token_view.html:128
 msgid "Copy"
-msgstr ""
+msgstr "Nɣel"
 
 #: canaille/core/templates/invite.html:81
 #: canaille/core/templates/invite.html:128
@@ -822,8 +820,8 @@ msgstr ""
 
 #: canaille/core/templates/invite.html:102
 msgid ""
-"After this form is sent, the recipient your indicated will receive an "
-"email containing an account creation link."
+"After this form is sent, the recipient your indicated will receive an email "
+"containing an account creation link."
 msgstr ""
 
 #: canaille/core/templates/invite.html:131
@@ -839,7 +837,7 @@ msgstr ""
 #: canaille/core/templates/profile_add.html:34
 #: canaille/core/templates/profile_edit.html:7
 msgid "User creation"
-msgstr ""
+msgstr "Aseqdac amaynut"
 
 #: canaille/core/templates/join.html:19
 #: canaille/core/templates/profile_add.html:37
@@ -848,9 +846,9 @@ msgstr ""
 
 #: canaille/core/templates/join.html:24
 msgid ""
-"Before you can create an account, please enter a valid email address. "
-"Then you will receive an email containing a link that will allow you to "
-"finish your registration."
+"Before you can create an account, please enter a valid email address. Then "
+"you will receive an email containing a link that will allow you to finish "
+"your registration."
 msgstr ""
 
 #: canaille/core/templates/join.html:44
@@ -870,7 +868,7 @@ msgstr ""
 #: canaille/core/templates/login.html:45
 #: canaille/core/templates/mails/registration.txt:5
 msgid "Continue"
-msgstr ""
+msgstr "Ddu"
 
 #: canaille/core/templates/password.html:21
 #, python-format
@@ -888,7 +886,7 @@ msgstr ""
 
 #: canaille/core/templates/password.html:43 canaille/templates/base.html:74
 msgid "Sign in"
-msgstr ""
+msgstr "Qqen"
 
 #: canaille/core/templates/profile_add.html:42
 #: canaille/core/templates/profile_edit.html:22
@@ -908,7 +906,7 @@ msgstr ""
 #: canaille/core/templates/profile_settings.html:19
 #: canaille/core/templates/profile_settings.html:40
 msgid "Account settings"
-msgstr ""
+msgstr "Iɣewwaṛen n umiḍan"
 
 #: canaille/core/templates/profile_add.html:175
 msgid "User password is not mandatory"
@@ -916,8 +914,8 @@ msgstr ""
 
 #: canaille/core/templates/profile_add.html:179
 msgid ""
-"The user will not be able to authenticate unless the password is set, but"
-" they will be able to ask for a password initialization mail."
+"The user will not be able to authenticate unless the password is set, but "
+"they will be able to ask for a password initialization mail."
 msgstr ""
 
 #: canaille/core/templates/profile_add.html:181
@@ -928,7 +926,7 @@ msgstr ""
 #: canaille/core/templates/profile_edit.html:35
 #: canaille/core/templates/profile_settings.html:6
 msgid "My profile"
-msgstr ""
+msgstr "Amaɣnu-inu"
 
 #: canaille/core/templates/profile_edit.html:11
 #: canaille/core/templates/profile_edit.html:37
@@ -958,7 +956,7 @@ msgstr ""
 
 #: canaille/core/templates/profile_edit.html:221
 msgid "Verify"
-msgstr ""
+msgstr "Senqed"
 
 #: canaille/core/templates/partial/profile_field.html:31
 #: canaille/core/templates/profile_settings.html:30
@@ -977,10 +975,10 @@ msgstr ""
 
 #: canaille/core/templates/profile_settings.html:67
 msgid ""
-"You can change your password here by typing it once it each fields below."
-" The more a password is long, the more it is strong. A good password is a"
-" long password that you will remember, not a complicated password that "
-"your use for all your accounts."
+"You can change your password here by typing it once it each fields below. "
+"The more a password is long, the more it is strong. A good password is a "
+"long password that you will remember, not a complicated password that your "
+"use for all your accounts."
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:91
@@ -1001,13 +999,14 @@ msgid "setting a password using this form;"
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:101
-msgid "sending the user a password initialization mail, by clicking this button;"
+msgid ""
+"sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:102
 msgid ""
-"or simply waiting for the user to sign-in a first time, and then receive "
-"a password initialization mail."
+"or simply waiting for the user to sign-in a first time, and then receive a "
+"password initialization mail."
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:105
@@ -1024,8 +1023,8 @@ msgstr ""
 
 #: canaille/core/templates/profile_settings.html:118
 msgid ""
-"If the user has forgotten his password, you can send him a password reset"
-" email by clicking this button."
+"If the user has forgotten his password, you can send him a password reset "
+"email by clicking this button."
 msgstr ""
 
 #: canaille/core/templates/profile_settings.html:127
@@ -1059,7 +1058,7 @@ msgstr ""
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29
 #: canaille/templates/base.html:51
 msgid "Users"
-msgstr ""
+msgstr "Iseqdacen"
 
 #: canaille/core/templates/mails/admin.html:5
 #: canaille/core/templates/mails/admin.html:11
@@ -1071,7 +1070,7 @@ msgstr ""
 #: canaille/oidc/templates/token_list.html:11
 #: canaille/oidc/templates/token_view.html:15
 msgid "Emails"
-msgstr ""
+msgstr "Imaylen"
 
 #: canaille/core/templates/mails/admin.html:16
 #: canaille/oidc/templates/authorization_list.html:15
@@ -1131,8 +1130,8 @@ msgstr ""
 
 #: canaille/core/templates/mails/admin.html:44
 msgid ""
-"This form will send a dummy email to the address you want. This should be"
-" used for testing mail configuration."
+"This form will send a dummy email to the address you want. This should be "
+"used for testing mail configuration."
 msgstr ""
 
 #: canaille/core/templates/mails/admin.html:62
@@ -1162,7 +1161,7 @@ msgstr ""
 
 #: canaille/core/templates/mails/admin.html:133
 msgid "Invitation"
-msgstr ""
+msgstr "Tinnubga"
 
 #: canaille/core/templates/mails/admin.html:145
 #: canaille/core/templates/mails/registration.html:19
@@ -1187,8 +1186,8 @@ msgstr ""
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:5
 #, python-format
 msgid ""
-"You have to check manually if the new password of the user %(user_name)s "
-"is compromised."
+"You have to check manually if the new password of the user %(user_name)s is "
+"compromised."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:32
@@ -1211,8 +1210,8 @@ msgstr ""
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:8
 #, python-format
 msgid ""
-"2. in the page that will open, search the following hashed password in "
-"the page : %(hashed_password)s"
+"2. in the page that will open, search the following hashed password in the "
+"page : %(hashed_password)s"
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:48
@@ -1231,26 +1230,28 @@ msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:64
 #, python-format
-msgid "3.2. send an email to the user to explain the situation : %(user_email)s"
+msgid ""
+"3.2. send an email to the user to explain the situation : %(user_email)s"
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
 #, python-format
 msgid ""
-"Our services were unable to verify if the "
-"%(site_url)s/profile/%(user_name)s/settings's password is compromised."
+"Our services were unable to verify if the %(site_url)s/profile/%(user_name)s/"
+"settings's password is compromised."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
 #, python-format
 msgid ""
-"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset"
-" user's password."
+"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset "
+"user's password."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
 #, python-format
-msgid "3.2. send an email to the user to explain the situation : %(user_email)s."
+msgid ""
+"3.2. send an email to the user to explain the situation : %(user_email)s."
 msgstr ""
 
 #: canaille/core/templates/mails/email-confirmation.html:19
@@ -1260,9 +1261,8 @@ msgstr ""
 #: canaille/core/templates/mails/email-confirmation.html:27
 #, python-format
 msgid ""
-"You added an email address to your account on %(site_name)s. Please click"
-" on the \"Validate email address\" button below to confirm your email "
-"address."
+"You added an email address to your account on %(site_name)s. Please click on "
+"the \"Validate email address\" button below to confirm your email address."
 msgstr ""
 
 #: canaille/core/templates/mails/email-confirmation.html:39
@@ -1272,8 +1272,8 @@ msgstr ""
 #: canaille/core/templates/mails/email-confirmation.txt:3
 #, python-format
 msgid ""
-"You added an email address to your account on %(site_name)s. Please click"
-" on the link below to confirm your email address."
+"You added an email address to your account on %(site_name)s. Please click on "
+"the link below to confirm your email address."
 msgstr ""
 
 #: canaille/core/templates/mails/email-confirmation.txt:8
@@ -1283,9 +1283,9 @@ msgstr ""
 #: canaille/core/templates/mails/firstlogin.html:27
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the \"Initialize password\" "
-"button below and follow the instructions."
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the \"Initialize password\" button "
+"below and follow the instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/firstlogin.html:38
@@ -1300,21 +1300,21 @@ msgstr ""
 #: canaille/core/templates/mails/reset.txt:3
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/invitation.html:19
 #: canaille/core/templates/mails/invitation.txt:1
 msgid "Account creation"
-msgstr ""
+msgstr "Asnulfu n umiḍan"
 
 #: canaille/core/templates/mails/invitation.html:27
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the \"Create my account\" button below and follow the "
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the \"Create my account\" button below and follow the "
 "instructions."
 msgstr ""
 
@@ -1325,16 +1325,16 @@ msgstr ""
 #: canaille/core/templates/mails/invitation.txt:3
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the link below and follow the instructions."
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the link below and follow the instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/registration.html:27
 #, python-format
 msgid ""
-"You've started the registration process at %(site_name)s. To proceed you "
-"can click on the \"Continue account creation\" button below and follow "
-"the instructions."
+"You've started the registration process at %(site_name)s. To proceed you can "
+"click on the \"Continue account creation\" button below and follow the "
+"instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/registration.html:38
@@ -1344,17 +1344,17 @@ msgstr ""
 #: canaille/core/templates/mails/registration.txt:3
 #, python-format
 msgid ""
-"You've started the registration process at %(site_name)s. To proceed you "
-"can click on the link below and follow the instructions."
+"You've started the registration process at %(site_name)s. To proceed you can "
+"click on the link below and follow the instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/reset.html:27
 #, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not ask for this email, please ignore it. If "
-"you need to reset your password, please click on the \"Reset password\" "
-"button below and follow the instructions."
+"%(site_name)s. If you did not ask for this email, please ignore it. If you "
+"need to reset your password, please click on the \"Reset password\" button "
+"below and follow the instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/reset.html:38
@@ -1371,19 +1371,19 @@ msgstr ""
 
 #: canaille/core/templates/modals/delete-account.html:9
 msgid "Account deletion"
-msgstr ""
+msgstr "Tukksa n umiḍan"
 
 #: canaille/core/templates/modals/delete-account.html:14
 #, python-format
 msgid ""
-"Are you sure you want to delete the account of %(user_name)s? This action"
-" is unrevokable and all the data about this user will be removed."
+"Are you sure you want to delete the account of %(user_name)s? This action is "
+"unrevokable and all the data about this user will be removed."
 msgstr ""
 
 #: canaille/core/templates/modals/delete-account.html:18
 msgid ""
-"Are you sure you want to delete your account? This action is unrevokable "
-"and all your data will be removed forever."
+"Are you sure you want to delete your account? This action is unrevokable and "
+"all your data will be removed forever."
 msgstr ""
 
 #: canaille/core/templates/modals/delete-account.html:26
@@ -1393,13 +1393,13 @@ msgstr ""
 #: canaille/oidc/templates/modals/delete-client.html:20
 #: canaille/oidc/templates/modals/revoke-token.html:20
 msgid "Cancel"
-msgstr ""
+msgstr "Sefsex"
 
 #: canaille/core/templates/modals/delete-account.html:27
 #: canaille/core/templates/modals/delete-group.html:25
 #: canaille/oidc/templates/modals/delete-client.html:21
 msgid "Delete"
-msgstr ""
+msgstr "Kkes"
 
 #: canaille/core/templates/modals/delete-group.html:9
 msgid "Group deletion"
@@ -1408,8 +1408,8 @@ msgstr ""
 #: canaille/core/templates/modals/delete-group.html:13
 #, python-format
 msgid ""
-"Are you sure you want to delete the group \"%(group_name)s\"? This action"
-" is unrevokable and all the data about this group will be removed."
+"Are you sure you want to delete the group \"%(group_name)s\"? This action is "
+"unrevokable and all the data about this group will be removed."
 msgstr ""
 
 #: canaille/core/templates/modals/lock-account.html:9
@@ -1419,14 +1419,14 @@ msgstr ""
 #: canaille/core/templates/modals/lock-account.html:14
 #, python-format
 msgid ""
-"Are you sure you want to lock the account of %(user_name)s ? The user "
-"won't be able to login until their account is unlocked."
+"Are you sure you want to lock the account of %(user_name)s ? The user won't "
+"be able to login until their account is unlocked."
 msgstr ""
 
 #: canaille/core/templates/modals/lock-account.html:18
 msgid ""
-"Are you sure you want to lock your account? You won't be able to login "
-"until your account is unlocked."
+"Are you sure you want to lock your account? You won't be able to login until "
+"your account is unlocked."
 msgstr ""
 
 #: canaille/core/templates/modals/lock-account.html:27
@@ -1452,7 +1452,7 @@ msgstr ""
 
 #: canaille/core/templates/partial/group-members.html:16
 msgid "Actions"
-msgstr ""
+msgstr "Tigawin"
 
 #: canaille/core/templates/partial/group-members.html:27
 #: canaille/core/templates/partial/users.html:29
@@ -1567,7 +1567,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:43
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: canaille/oidc/endpoints/forms.py:52
 msgid "Redirect URIs"
@@ -1616,15 +1616,15 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:147
 msgid "Software Version"
-msgstr ""
+msgstr "Lqem n useɣẓan"
 
 #: canaille/oidc/endpoints/forms.py:152
 msgid "JWK"
-msgstr ""
+msgstr "JWK"
 
 #: canaille/oidc/endpoints/forms.py:157
 msgid "JKW URI"
-msgstr ""
+msgstr "URI n JKW"
 
 #: canaille/oidc/endpoints/forms.py:165
 msgid "Pre-consent"
@@ -1671,7 +1671,7 @@ msgstr ""
 
 #: canaille/oidc/templates/client_add.html:37
 msgid "Create"
-msgstr ""
+msgstr "Snulfu-d"
 
 #: canaille/oidc/templates/client_edit.html:5
 #: canaille/oidc/templates/client_edit.html:34
@@ -1680,7 +1680,7 @@ msgstr ""
 
 #: canaille/oidc/templates/client_edit.html:40
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: canaille/oidc/templates/client_edit.html:43
 #: canaille/oidc/templates/client_edit.html:52
@@ -1721,7 +1721,7 @@ msgstr ""
 
 #: canaille/oidc/templates/consent_list.html:45
 msgid "From:"
-msgstr ""
+msgstr "Seg:"
 
 #: canaille/oidc/templates/consent_list.html:48
 msgid "Revoked:"
@@ -1739,7 +1739,7 @@ msgstr ""
 #: canaille/oidc/templates/consent_list.html:78
 #: canaille/oidc/templates/preconsent_list.html:68
 msgid "Policy"
-msgstr ""
+msgstr "Tasertit n tbaḍnit"
 
 #: canaille/oidc/templates/consent_list.html:86
 #: canaille/oidc/templates/preconsent_list.html:76
@@ -1761,7 +1761,7 @@ msgstr ""
 
 #: canaille/oidc/templates/logout.html:9 canaille/templates/base.html:69
 msgid "Log out"
-msgstr ""
+msgstr "Senser tuqqna"
 
 #: canaille/oidc/templates/logout.html:10
 msgid "Do you want to log out?"
@@ -1783,10 +1783,11 @@ msgstr ""
 
 #: canaille/oidc/templates/logout.html:30
 msgid "Logout"
-msgstr ""
+msgstr "Senser tuqqna"
 
 #: canaille/oidc/templates/preconsent_list.html:27
-msgid "Those applications automatically have authorizations to access you data."
+msgid ""
+"Those applications automatically have authorizations to access you data."
 msgstr ""
 
 #: canaille/oidc/templates/token_view.html:5
@@ -1849,8 +1850,8 @@ msgstr ""
 #: canaille/oidc/templates/modals/delete-client.html:13
 #, python-format
 msgid ""
-"Are you sure you want to delete the client %(client_name)s? This action "
-"is unrevokable and all the data about this client will be removed."
+"Are you sure you want to delete the client %(client_name)s? This action is "
+"unrevokable and all the data about this client will be removed."
 msgstr ""
 
 #: canaille/oidc/templates/modals/revoke-token.html:9
@@ -1867,7 +1868,7 @@ msgstr ""
 
 #: canaille/oidc/templates/partial/authorization_list.html:5
 msgid "Code"
-msgstr ""
+msgstr "Tangalt"
 
 #: canaille/oidc/templates/partial/authorization_list.html:8
 #: canaille/oidc/templates/partial/client_list.html:8
@@ -1877,7 +1878,7 @@ msgstr ""
 
 #: canaille/oidc/templates/partial/client_list.html:7
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: canaille/oidc/templates/partial/token_list.html:5
 msgid "Token"
@@ -1889,7 +1890,7 @@ msgstr ""
 
 #: canaille/templates/base.html:37
 msgid "Profile"
-msgstr ""
+msgstr "Amaɣnu"
 
 #: canaille/templates/base.html:44
 msgid "Consents"
@@ -1897,7 +1898,7 @@ msgstr ""
 
 #: canaille/templates/base.html:64
 msgid "Admin"
-msgstr ""
+msgstr "Tadbelt"
 
 #: canaille/templates/error.html:19
 msgid "Bad request"
@@ -1949,15 +1950,15 @@ msgstr ""
 
 #: canaille/templates/macro/table.html:8
 msgid "Search…"
-msgstr ""
+msgstr "Nadi…"
 
 #: canaille/templates/macro/table.html:20
 msgid "Search"
-msgstr ""
+msgstr "Nadi"
 
 #: canaille/templates/macro/table.html:59
 msgid "Page"
-msgstr ""
+msgstr "Asebter"
 
 #: canaille/templates/macro/table.html:106
 #, python-format
@@ -1965,4 +1966,3 @@ msgid "%(nb_items_formatted)s item"
 msgid_plural "%(nb_items_formatted)s items"
 msgstr[0] ""
 msgstr[1] ""
-

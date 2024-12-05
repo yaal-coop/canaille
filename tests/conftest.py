@@ -68,6 +68,7 @@ def configuration(smtpd):
         "SECRET_KEY": gen_salt(24),
         "SERVER_NAME": "canaille.test",
         "PREFERRED_URL_SCHEME": "http",
+        "TESTING": True,
         "CANAILLE": {
             "JAVASCRIPT": False,
             "LOGO": "/static/img/canaille-head.webp",
@@ -174,7 +175,6 @@ def app(configuration, backend, jinja_cache_directory):
 
 @pytest.fixture
 def testclient(app):
-    app.config["TESTING"] = True
     app.jinja_env.undefined = StrictUndefined
     yield TestApp(app)
 
