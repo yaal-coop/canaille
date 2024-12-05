@@ -47,7 +47,7 @@ def smtp_needed():
     def wrapper(view_function):
         @wraps(view_function)
         def decorator(*args, **kwargs):
-            if current_app.config["CANAILLE"].get("SMTP"):
+            if current_app.features.has_smtp:
                 return view_function(*args, **kwargs)
 
             message = _("No SMTP server has been configured")

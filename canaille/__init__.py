@@ -41,7 +41,7 @@ def setup_blueprints(app):
 
     app.register_blueprint(canaille.core.endpoints.bp)
 
-    if "CANAILLE_OIDC" in app.config:
+    if app.features.has_oidc:
         import canaille.oidc.endpoints
 
         app.register_blueprint(canaille.oidc.endpoints.bp)
@@ -113,7 +113,7 @@ def create_app(
         setup_themer(app)
         setup_flask(app)
 
-        if "CANAILLE_OIDC" in app.config:
+        if app.features.has_oidc:
             from .oidc.oauth import setup_oauth
 
             setup_oauth(app)
