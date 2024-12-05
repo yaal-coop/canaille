@@ -249,6 +249,10 @@ class CoreSettings(BaseModel):
     """If :py:data:`False`, then users cannot ask for a password recovery link
     by email."""
 
+    ENABLE_INTRUDER_LOCKOUT: bool = False
+    """If :py:data:`True`, then users will have to wait for an increasingly
+    long time between each login attempt."""
+
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.
 

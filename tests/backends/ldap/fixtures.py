@@ -15,10 +15,10 @@ def slapd_server():
         for ldif in (
             "demo/ldif/memberof-config.ldif",
             "demo/ldif/ppolicy-config.ldif",
-            "demo/ldif/ppolicy.ldif",
             "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
             "demo/ldif/bootstrap-users-tree.ldif",
             "demo/ldif/bootstrap-oidc-tree.ldif",
+            "demo/ldif/ppolicy.ldif",
         ):
             slapd.ldapadd(None, ["-f", ldif])
         yield slapd
@@ -37,6 +37,7 @@ def ldap_configuration(configuration, slapd_server):
         "USER_RDN": "uid",
         "USER_FILTER": "(uid={{ login }})",
         "GROUP_BASE": "ou=groups",
+        "POLICY_BASE": "ou=policies,dc=mydomain,dc=tld",
         "TIMEOUT": 0.1,
     }
     yield configuration

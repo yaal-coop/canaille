@@ -7,6 +7,10 @@ from flask import current_app
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 
+PASSWORD_MIN_DELAY = 5
+PASSWORD_MAX_DELAY = 15
+PASSWORD_FAILURE_COUNT_INTERVAL = 600
+
 
 class User(Model):
     """User model, based on the `SCIM User schema
@@ -41,7 +45,9 @@ class User(Model):
 
     password_last_update: datetime.datetime | None = None
 
-    password_history: list[str] | None = None
+    password_history: list[str] = []
+
+    password_failure_time: list[datetime.datetime] = []
 
     password: str | None = None
     """
@@ -326,6 +332,32 @@ class User(Model):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
+    def get_intruder_lockout_delay(self):
+        print("failure times", self.password_failure_time)
+        if self.password_failure_time:
+            # discard old attempts
+            self.password_failure_time = [
+                attempt
+                for attempt in self.password_failure_time
+                if attempt
+                > datetime.datetime.now(datetime.timezone.utc)
+                - datetime.timedelta(seconds=PASSWORD_FAILURE_COUNT_INTERVAL)
+            ]
+        if not self.password_failure_time:
+            return 0
+        failed_login_count = len(self.password_failure_time)
+        # delay is multiplied by 2 each failed attempt, starting at min delay, limited to max delay
+        calculated_delay = min(
+            PASSWORD_MIN_DELAY * 2 ** (failed_login_count - 1), PASSWORD_MAX_DELAY
+        )
+        time_since_last_failed_bind = (
+            datetime.datetime.now(datetime.timezone.utc)
+            - self.password_failure_time[-1]
+        ).total_seconds()
+        print("timesince", time_since_last_failed_bind)
+        print("calculated_delay", calculated_delay)
+        return max(calculated_delay - time_since_last_failed_bind, 0)
+
 
 class Group(Model):
     """User model, based on the `SCIM Group schema
@@ -374,4 +406,4 @@ class Policy(Model):
 
     grace_authentication_limit: int | None = None
 
-    pwdInHistory: int | None = None
+    password_in_history: int | None = None

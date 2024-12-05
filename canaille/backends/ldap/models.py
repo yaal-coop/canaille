@@ -38,6 +38,7 @@ class User(canaille.core.models.User, LDAPObject):
         "password_policy_subentry": "pwdPolicySubentry",
         "last_login": "pwdLastSuccess",
         "password_history": "pwdHistory",
+        "password_failure_time": "pwdFailureTime",
     }
 
     def match_filter(self, filter):
@@ -103,6 +104,9 @@ class Policy(canaille.core.models.Policy, LDAPObject):
         "allow_user_change": "pwdAllowUserChange",
         "grace_authentication_limit": "pwdGraceAuthNLimit",
         "password_in_history": "pwdInHistory",
+        "password_min_delay": "pwdMinDelay",
+        "password_max_delay": "pwdMaxDelay",
+        "password_failure_count_interval": "pwdFailureCountInterval",
     }
 
 

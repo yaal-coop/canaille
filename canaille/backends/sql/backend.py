@@ -1,5 +1,6 @@
 import datetime
 
+from flask import current_app
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
@@ -59,6 +60,13 @@ class SQLBackend(Backend):
 
     def check_user_password(self, user, password):
         if password != user.password:
+            if current_app.features.has_intruder_lockout:
+                if user.password_failure_time is None:
+                    user.password_failure_time = []
+                user._password_failure_time.append(
+                    str(datetime.datetime.now(datetime.timezone.utc))
+                )
+                self.save(user)
             return (False, None)
 
         if user.locked:

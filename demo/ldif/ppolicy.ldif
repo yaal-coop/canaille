@@ -10,3 +10,4 @@ pwdLockout: TRUE
 pwdAllowUserChange: TRUE
 pwdGraceAuthNLimit: 1
 pwdInHistory: 5
+pwdMaxFailure: 20

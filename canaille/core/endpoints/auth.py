@@ -1,3 +1,5 @@
+from math import ceil
+
 from flask import Blueprint
 from flask import abort
 from flask import current_app
@@ -91,8 +93,34 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    success, message = Backend.instance.check_user_password(user, form.password.data)
     request_ip = request.remote_addr or "unknown IP"
+
+    if current_app.features.has_intruder_lockout:
+        current_lockout_delay = user.get_intruder_lockout_delay()
+        Backend.instance.save(user)
+        if not current_lockout_delay:
+            success, message = Backend.instance.check_user_password(
+                user, form.password.data
+            )
+        else:
+            logout_user()
+            current_app.logger.security(
+                f'Too much login attempts for {session["attempt_login"]} from {request_ip}'
+            )
+            flash(
+                _(
+                    f"Too much attempts. Please wait for {ceil(current_lockout_delay)} seconds before trying to login again."
+                ),
+                "error",
+            )
+            return render_template(
+                "password.html", form=form, username=session["attempt_login"]
+            )
+    else:
+        success, message = Backend.instance.check_user_password(
+            user, form.password.data
+        )
+
     if not success:
         logout_user()
         current_app.logger.security(

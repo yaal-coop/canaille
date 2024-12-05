@@ -78,6 +78,10 @@ class Group(canaille.core.models.Group, MemoryModel):
     pass
 
 
+class Policy(canaille.core.models.Policy, MemoryModel):
+    pass
+
+
 class Client(canaille.oidc.models.Client, MemoryModel):
     pass
 

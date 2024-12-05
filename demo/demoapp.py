@@ -20,16 +20,16 @@ def populate(app):
             if app.backend.query(models.User):
                 return
 
-            policy = models.Policy(
-                display_name="passwordDefault",
-                policy_name="passwordDefault",
-                password_attribute="userPassword",
-                password_must_change=True,
-                user_lockout=True,
-                allow_user_change=True,
-                grace_authentication_limit=1,
-            )
-            app.backend.save(policy)
+            # policy = models.Policy(
+            #     display_name="passwordDefault",
+            #     policy_name="passwordDefault",
+            #     password_attribute="userPassword",
+            #     password_must_change=True,
+            #     user_lockout=True,
+            #     allow_user_change=True,
+            #     grace_authentication_limit=1,
+            # )
+            # app.backend.save(policy)
 
             jane = models.User(
                 formatted_name="Jane Doe",

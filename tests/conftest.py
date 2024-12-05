@@ -153,6 +153,7 @@ def configuration(smtpd):
             },
             "ADMIN_EMAIL": "admin_default_mail@mydomain.test",
             "PASSWORD_COMPROMISSION_CHECK_API_URL": "https://api.pwnedpasswords.test/range/",
+            "ENABLE_INTRUDER_LOCKOUT": False,
         },
     }
     return conf

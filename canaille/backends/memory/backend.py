@@ -3,6 +3,8 @@ import datetime
 import uuid
 from typing import Any
 
+from flask import current_app
+
 from canaille.backends import Backend
 
 
@@ -61,6 +63,16 @@ class MemoryBackend(Backend):
 
     def check_user_password(self, user, password):
         if password != user.password:
+            if current_app.features.has_intruder_lockout:
+                if user.password_failure_time is None:
+                    user.password_failure_time = []
+                print("maintenant", datetime.datetime.now(datetime.timezone.utc))
+                print("avant", user.password_failure_time)
+                user.password_failure_time += [
+                    datetime.datetime.now(datetime.timezone.utc)
+                ]
+                print("apres", user.password_failure_time)
+                self.save(user)
             return (False, None)
 
         if user.locked:

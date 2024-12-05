@@ -174,6 +174,13 @@ Password compromission check
 
 If :attr:`password compromission check feature <canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK>` is enabled, Canaille will check for password compromise on HIBP (https://haveibeenpwned.com/) every time a new password is register. You will need to set an :attr:`admin email <canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`.
 
+Intruder lockout
+==============
+
+If the :attr:`intruder lockout feature <canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>` is enabled, then users will have to wait for an increasingly long time between each login attempt.
+
+.. _feature_password_initialization:
+
 Web interface
 *************
 

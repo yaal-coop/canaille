@@ -37,7 +37,7 @@ def ldap_to_python(value, syntax):
             # python cannot represent datetimes with year 0
             return datetime.datetime.min
         if value.endswith("Z"):
-            return datetime.datetime.strptime(value, "%Y%m%d%H%M%SZ").replace(
+            return datetime.datetime.strptime(value, "%Y%m%d%H%M%S.%fZ").replace(
                 tzinfo=datetime.timezone.utc
             )
         return datetime.datetime.strptime(value, "%Y%m%d%H%M%S%z")

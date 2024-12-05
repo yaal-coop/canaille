@@ -71,10 +71,12 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     last_modified: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
+    )
+    _password_failure_time: Mapped[list[str]] = mapped_column(
+        MutableJson, nullable=True
     )
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
@@ -100,6 +102,21 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+
+    @property
+    def password_failure_time(self):
+        if self._password_failure_time:
+            return [
+                datetime.datetime.fromisoformat(d) for d in self._password_failure_time
+            ]
+        return self._password_failure_time
+
+    @password_failure_time.setter
+    def password_failure_time(self, dates_list):
+        if dates_list:
+            self._password_failure_time = [str(d) for d in dates_list]
+        else:
+            self._password_failure_time = dates_list
 
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
@@ -128,6 +145,22 @@ client_audience_association_table = Table(
     Column("audience_id", ForeignKey("client.id"), primary_key=True, nullable=True),
     Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
 )
+
+
+class Policy(canaille.core.models.Policy, Base, SqlAlchemyModel):
+    __tablename__ = "policy"
+
+    id: Mapped[str] = mapped_column(
+        String, primary_key=True, default=lambda: str(uuid.uuid4())
+    )
+    display_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    policy_name: Mapped[str] = mapped_column(String, nullable=True)
+    password_attribute: Mapped[str] = mapped_column(String, nullable=True)
+    password_must_change: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    user_lockout: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    allow_user_change: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    grace_authentication_limit: Mapped[int] = mapped_column(Integer, nullable=True)
+    password_in_history: Mapped[int] = mapped_column(Integer, nullable=True)
 
 
 class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):

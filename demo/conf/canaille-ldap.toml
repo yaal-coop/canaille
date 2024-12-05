@@ -7,6 +7,7 @@ FAVICON = "/static/img/canaille-c.webp"
 EMAIL_CONFIRMATION = false
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@mydomain.tld"
+ENABLE_INTRUDER_LOCKOUT = true
 
 [CANAILLE.LOGGING]
 version = 1
