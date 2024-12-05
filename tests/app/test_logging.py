@@ -31,7 +31,6 @@ format=[%(asctime)s] %(levelname)s in %(module)s: %(message)s
 
 
 def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
-    configuration["TESTING"] = True
     assert len(smtpd.messages) == 0
     log_path = os.path.join(tmp_path, "canaille-by-file.log")
 
@@ -63,7 +62,6 @@ def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
 
 
 def test_dict_log_config(configuration, backend, tmp_path, smtpd, admin):
-    configuration["TESTING"] = True
     assert len(smtpd.messages) == 0
     log_path = os.path.join(tmp_path, "canaille-by-dict.log")
     configuration["CANAILLE"]["LOGGING"] = {

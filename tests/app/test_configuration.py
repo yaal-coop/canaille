@@ -161,8 +161,6 @@ def test_smtp_bad_tls(testclient, backend, smtpd, configuration):
 
 @pytest.fixture
 def themed_testclient(app, configuration, backend):
-    configuration["TESTING"] = True
-
     root = os.path.dirname(os.path.abspath(__file__))
     test_theme_path = os.path.join(root, "fixtures", "themes", "test")
     configuration["CANAILLE"]["THEME"] = test_theme_path
