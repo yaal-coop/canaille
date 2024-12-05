@@ -267,6 +267,10 @@ class CoreSettings(BaseModel):
     """If :py:data:`False`, then users cannot ask for a password recovery link
     by email."""
 
+    ENABLE_INTRUDER_LOCKOUT: bool = False
+    """If :py:data:`True`, then users will have to wait for an increasingly
+    long time between each failed login attempt."""
+
     OTP_METHOD: str = None
     """If OTP_METHOD is defined, then users will need to authenticate themselves
     using a one-time password (OTP) via an authenticator app.

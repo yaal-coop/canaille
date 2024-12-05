@@ -1,5 +1,6 @@
 import datetime
 
+from flask import current_app
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
@@ -7,6 +8,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 
 from canaille.backends import Backend
+from canaille.backends import get_lockout_delay_message
 
 Base = declarative_base()
 
@@ -58,7 +60,14 @@ class SQLBackend(Backend):
         return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
+        if current_app.features.has_intruder_lockout:
+            if current_lockout_delay := user.get_intruder_lockout_delay():
+                self.save(user)
+                return (False, get_lockout_delay_message(current_lockout_delay))
+
         if password != user.password:
+            if current_app.features.has_intruder_lockout:
+                self.record_failed_attempt(user)
             return (False, None)
 
         if user.locked:
@@ -146,3 +155,11 @@ class SQLBackend(Backend):
 
         # run the instance reload callback again if existing
         next(reload_callback, None)
+
+    def record_failed_attempt(self, user):
+        if user.password_failure_timestamps is None:
+            user.password_failure_timestamps = []
+        user._password_failure_timestamps.append(
+            str(datetime.datetime.now(datetime.timezone.utc))
+        )
+        self.save(user)

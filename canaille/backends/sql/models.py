@@ -79,6 +79,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     password_last_update: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+    _password_failure_timestamps: Mapped[list[str]] = mapped_column(
+        MutableJson, nullable=True
+    )
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
     given_name: Mapped[str] = mapped_column(String, nullable=True)
@@ -116,6 +119,22 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     def save(self):
         if current_app.features.has_otp and not self.secret_token:
             self.initialize_otp()
+
+    @property
+    def password_failure_timestamps(self):
+        if self._password_failure_timestamps:
+            return [
+                datetime.datetime.fromisoformat(d)
+                for d in self._password_failure_timestamps
+            ]
+        return self._password_failure_timestamps
+
+    @password_failure_timestamps.setter
+    def password_failure_timestamps(self, dates_list):
+        if dates_list:
+            self._password_failure_timestamps = [str(d) for d in dates_list]
+        else:
+            self._password_failure_timestamps = dates_list
 
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
