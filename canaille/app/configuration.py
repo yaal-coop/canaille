@@ -75,7 +75,7 @@ class RootSettings(BaseSettings):
     """
 
 
-def settings_factory(config, env_file=".env", env_prefix=""):
+def settings_factory(config, env_file=None, env_prefix=""):
     """Pushes the backend specific configuration into CoreSettings, in the
     purpose break dependency against backends libraries like python-ldap or
     sqlalchemy."""
@@ -138,7 +138,7 @@ def toml_content(file_path):
         ) from exc
 
 
-def setup_config(app, config=None, test_config=True, env_file=".env", env_prefix=""):
+def setup_config(app, config=None, test_config=True, env_file=None, env_prefix=""):
     from canaille.oidc.installation import install
 
     app.config.from_mapping(
@@ -151,6 +151,7 @@ def setup_config(app, config=None, test_config=True, env_file=".env", env_prefix
     if not config and "CONFIG" in os.environ:
         config = toml_content(os.environ.get("CONFIG"))
 
+    env_file = env_file or os.getenv("ENV_FILE")
     try:
         config_obj = settings_factory(
             config or {}, env_file=env_file, env_prefix=env_prefix

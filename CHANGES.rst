@@ -12,6 +12,7 @@ Added
 Changed
 ^^^^^^^
 - PostgreSQL and MySQL extras does not rely on libraries that need to be compiled.
+- ``.env`` files are not loaded by default. The ``ENV_FILE`` env var must be passed so ``.env`` files are loaded.
 
 [0.0.56] - 2024-11-07
 ---------------------

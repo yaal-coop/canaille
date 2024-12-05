@@ -39,7 +39,8 @@ The way environment variables are parsed can be read from the `pydantic-settings
 Environment file
 ~~~~~~~~~~~~~~~~
 
-Any environment variable can also be written in a ``.env``, and will be read if present.
+Any environment variable can also be written in an environment file, which path should be passed in the ``ENV_FILE`` environment variable.
+For instance, set ``ENV_FILE=.env`` to load a ``.env`` file.
 
 .. code-block:: bash
     :caption: .env

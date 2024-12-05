@@ -93,7 +93,7 @@ def test_dotenv_file(tmp_path, configuration):
 
 def test_custom_dotenv_file(tmp_path, configuration):
     """Canaille should read configuration from custom .env files if they are
-    passed with ENV_FILE."""
+    passed with env_file."""
     dotenv = tmp_path / "custom.env"
     with open(dotenv, "w") as fd:
         fd.write("FOOBAR=other-custom-value")
@@ -103,7 +103,7 @@ def test_custom_dotenv_file(tmp_path, configuration):
 
 
 def test_disable_dotenv_file(tmp_path, configuration):
-    """Canaille should ignore .env files if ENV_FILE is None."""
+    """Canaille should ignore .env files if env_file is None."""
     oldcwd = os.getcwd()
     os.chdir(tmp_path)
     dotenv = tmp_path / ".env"

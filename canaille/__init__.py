@@ -80,9 +80,7 @@ def setup_flask_converters(app):
         app.url_map.converters[model_name.lower()] = model_converter(model_class)
 
 
-def create_app(
-    config=None, validate=True, backend=None, env_file=".env", env_prefix=""
-):
+def create_app(config=None, validate=True, backend=None, env_file=None, env_prefix=""):
     from .app.configuration import setup_config
     from .app.features import setup_features
     from .app.i18n import setup_i18n
