@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 10:35+0100\n"
-"PO-Revision-Date: 2024-12-05 12:24+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2024-12-05 14:31+0000\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -2779,6 +2779,11 @@ msgid ""
 "interface <feature_cli>`. Canaille can handle data stored in different :ref:"
 "`database backends <feature_databases>`."
 msgstr ""
+"Les utilisateurs peuvent interagir avec Canaille grâce à son :ref:`web "
+"interface <features:interface web>` et les administrateurs peuvent aussi "
+"utiliser son :ref:`interface en ligne de commande <feature_cli>`. Canaille "
+"peut enregistrer les données dans différentes :ref:`bases de données "
+"<feature_databases>`."
 
 #: ../features.rst:19 02e100abc6e44fe49224f9e4046dc49e
 msgid "User and group management"
@@ -2822,7 +2827,7 @@ msgstr ""
 
 #: ../features.rst:42 e4d34befed5941bab9161eb3c0330fad
 msgid "Email confirmation"
-msgstr ""
+msgstr "Confirmation de l'e-mail"
 
 #: ../features.rst:44 28a9397d838e4ffaaf5c8f8558416355
 msgid ""
