@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-05 13:23+0100\n"
+"POT-Creation-Date: 2024-12-06 14:57+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -925,8 +925,8 @@ msgstr ""
 "non sexa por correo electrónico:"
 
 #: canaille/core/templates/invite.html:74
-#: canaille/oidc/templates/token_view.html:117
-#: canaille/oidc/templates/token_view.html:128
+#: canaille/oidc/templates/token_view.html:123
+#: canaille/oidc/templates/token_view.html:134
 msgid "Copy"
 msgstr "Copiar"
 
@@ -1704,7 +1704,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:73
 #: canaille/oidc/templates/partial/authorization_list.html:31
 #: canaille/oidc/templates/partial/client_list.html:35
-#: canaille/oidc/templates/partial/token_list.html:39
+#: canaille/oidc/templates/partial/token_list.html:46
 msgid "No item matches your request"
 msgstr ""
 
@@ -1713,7 +1713,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:75
 #: canaille/oidc/templates/partial/authorization_list.html:33
 #: canaille/oidc/templates/partial/client_list.html:37
-#: canaille/oidc/templates/partial/token_list.html:41
+#: canaille/oidc/templates/partial/token_list.html:48
 msgid "Maybe try with different criteria?"
 msgstr ""
 
@@ -1722,7 +1722,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:78
 #: canaille/oidc/templates/partial/authorization_list.html:36
 #: canaille/oidc/templates/partial/client_list.html:40
-#: canaille/oidc/templates/partial/token_list.html:44
+#: canaille/oidc/templates/partial/token_list.html:51
 #: canaille/oidc/templates/preconsent_list.html:91
 #, fuzzy
 msgid "There is nothing here"
@@ -1820,60 +1820,60 @@ msgstr "URIs de redirección tras pechar sesión"
 msgid "Grant types"
 msgstr "Tipos de acceso"
 
-#: canaille/oidc/endpoints/forms.py:89
-#: canaille/oidc/templates/token_view.html:61
+#: canaille/oidc/endpoints/forms.py:90
+#: canaille/oidc/templates/token_view.html:67
 msgid "Scope"
 msgstr "Ámbito"
 
-#: canaille/oidc/endpoints/forms.py:95
+#: canaille/oidc/endpoints/forms.py:96
 msgid "Response types"
 msgstr "Tipos de respostas"
 
-#: canaille/oidc/endpoints/forms.py:101
+#: canaille/oidc/endpoints/forms.py:102
 msgid "Token Endpoint Auth Method"
 msgstr "Método de autenticación para o endpoint do token"
 
-#: canaille/oidc/endpoints/forms.py:111
+#: canaille/oidc/endpoints/forms.py:112
 msgid "Token audiences"
 msgstr "Audiencias do token"
 
-#: canaille/oidc/endpoints/forms.py:118
+#: canaille/oidc/endpoints/forms.py:119
 msgid "Logo URI"
 msgstr "URI do logo"
 
-#: canaille/oidc/endpoints/forms.py:126
+#: canaille/oidc/endpoints/forms.py:127
 msgid "Terms of service URI"
 msgstr "URI dos termos do servizo"
 
-#: canaille/oidc/endpoints/forms.py:134
+#: canaille/oidc/endpoints/forms.py:135
 msgid "Policy URI"
 msgstr "URI da política"
 
-#: canaille/oidc/endpoints/forms.py:142
+#: canaille/oidc/endpoints/forms.py:143
 msgid "Software ID"
 msgstr "ID do software"
 
-#: canaille/oidc/endpoints/forms.py:147
+#: canaille/oidc/endpoints/forms.py:148
 msgid "Software Version"
 msgstr "Versión do software"
 
-#: canaille/oidc/endpoints/forms.py:152
+#: canaille/oidc/endpoints/forms.py:153
 msgid "JWK"
 msgstr "JWK"
 
-#: canaille/oidc/endpoints/forms.py:157
+#: canaille/oidc/endpoints/forms.py:158
 msgid "JKW URI"
 msgstr "URI de JKW"
 
-#: canaille/oidc/endpoints/forms.py:165
+#: canaille/oidc/endpoints/forms.py:166
 msgid "Pre-consent"
 msgstr "Preconsentemento"
 
-#: canaille/oidc/endpoints/oauth.py:369
+#: canaille/oidc/endpoints/oauth.py:377
 msgid "You have been disconnected"
 msgstr "Fuches desconectado"
 
-#: canaille/oidc/endpoints/oauth.py:386
+#: canaille/oidc/endpoints/oauth.py:394
 msgid "You have not been disconnected"
 msgstr "Non fuches desconectado"
 
@@ -2050,40 +2050,46 @@ msgstr "Cliente"
 msgid "Subject"
 msgstr "Suxeito"
 
-#: canaille/oidc/templates/token_view.html:71
+#: canaille/oidc/templates/token_view.html:77
 msgid "Audience"
 msgstr "Audiencia"
 
-#: canaille/oidc/templates/token_view.html:85
+#: canaille/oidc/templates/token_view.html:91
 msgid "Issue date"
 msgstr "Data de emisión"
 
-#: canaille/oidc/templates/token_view.html:89
+#: canaille/oidc/templates/token_view.html:95
 msgid "Expiration date"
 msgstr "Data de caducidade"
 
-#: canaille/oidc/templates/token_view.html:93
+#: canaille/oidc/templates/token_view.html:99
 msgid "Revokation date"
 msgstr "Data de revogación"
 
-#: canaille/oidc/templates/token_view.html:99
+#: canaille/oidc/templates/token_view.html:105
 msgid "Revoke token"
 msgstr "Revogar token"
 
-#: canaille/oidc/templates/token_view.html:102
+#: canaille/oidc/templates/token_view.html:108
 msgid "This token has not been revoked"
 msgstr "Este token non foi revogado"
 
-#: canaille/oidc/templates/token_view.html:108
+#: canaille/oidc/templates/token_view.html:114
 msgid "Token type"
 msgstr "Tipo de token"
 
-#: canaille/oidc/templates/token_view.html:112
+#: canaille/oidc/templates/token_view.html:118
 msgid "Access token"
 msgstr "Token de acceso"
 
-#: canaille/oidc/templates/token_view.html:123
+#: canaille/oidc/templates/token_view.html:129
 msgid "Refresh token"
+msgstr "Refrescar token"
+
+#: canaille/oidc/templates/token_view.html:131
+#, fuzzy
+#| msgid "Refresh token"
+msgid "No refresh token"
 msgstr "Refrescar token"
 
 #: canaille/oidc/templates/modals/delete-client.html:9
