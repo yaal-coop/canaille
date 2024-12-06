@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
 "PO-Revision-Date: 2024-12-06 14:12+0000\n"
-"Last-Translator: Brunelie <brunelie.lauret@nubla.fr>\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: ../development/changelog.rst:2 939119e221dc48ccadef61738f593f75
 msgid "Release notes"
-msgstr "Notes de versions"
+msgstr "Notes de version"
 
 #: ../development/changelog.rst:4 5c86e0ddf13b4a11afae719b4a8c4213
 msgid "All notable changes to this project will be documented in there."
@@ -34,8 +34,8 @@ msgid ""
 "en/1.0.0/>`_, and this project adheres to `Semantic Versioning <https://"
 "semver.org/spec/v2.0.0.html>`_."
 msgstr ""
-"Le format est basé sur `tenez un changelog <https://keepachangelog.com/"
-"fr/1.0.0/>`_, et ce projet adhère à la politique de `versionnage sémantique "
+"Le format est basé sur `Keep a Changelog <https://keepachangelog.com/fr/1.0."
+"0/>`_, et ce projet adhère à la politique de `versionnage sémantique "
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 206f6798b58b44e9ade1689d820c7552
@@ -96,6 +96,9 @@ msgid ""
 "``.env`` files are not loaded by default. The ``ENV_FILE`` env var must be "
 "passed so ``.env`` files are loaded."
 msgstr ""
+"Les fichiers ``.env`` ne sont pas chargés par défaut. La variable "
+"d'environnement ``ENV_FILE`` doit être passé pour que les fichiers ``.env`` "
+"soient chargées."
 
 #: ../../CHANGES.rst:18 56edbd9989cf41c4b9b58dfd5e108991
 msgid "[0.0.56] - 2024-11-07"
@@ -2004,16 +2007,12 @@ msgid "Code translation"
 msgstr "Traduction du code"
 
 #: ../../canaille/translations/README.rst:1 3f134d116261469d8e6e9a05b5c47b47
-#, fuzzy
-#| msgid ""
-#| "Translations are done with `Weblate <https://hosted.weblate.org/projects/"
-#| "canaille/canaille>`_."
 msgid ""
 "Translations are done with `Weblate <https://hosted.weblate.org/projects/"
 "canaille/canaille>`__."
 msgstr ""
-"La traduction s’effectue avec `Weblate <https://hosted.weblate.org/projects/"
-"canaille/canaille>`_."
+"Les traductions s’effectuent sur `Weblate <https://hosted.weblate.org/"
+"projects/canaille/canaille>`_."
 
 #: ../../canaille/translations/README.rst:3 f5045b02a67f426188352a5d6ff207e1
 msgid ""
@@ -2098,16 +2097,12 @@ msgstr "Traduction de la documentation"
 
 #: readme.rst:1 3f134d116261469d8e6e9a05b5c47b47
 #: 82307c31bbd04c86b438e8a4e005cbfd
-#, fuzzy
-#| msgid ""
-#| "Translations are done with `Weblate <https://hosted.weblate.org/projects/"
-#| "canaille/canaille>`_."
 msgid ""
 "Translations are done with `Weblate <https://hosted.weblate.org/projects/"
 "canaille/documentation>`__."
 msgstr ""
-"La traduction s’effectue avec `Weblate <https://hosted.weblate.org/projects/"
-"canaille/canaille>`_."
+"Les traductions s’effectuent sur `Weblate <https://hosted.weblate.org/"
+"projects/canaille/documentation>`__."
 
 #: readme.rst:3 e68bab4e55074d099971067e8585e7bc
 #: 36d72bb59c6442f0ac0078ec35cff7db
@@ -2763,11 +2758,14 @@ msgid ""
 "Canaille web interface can be used either in :doc:`production environments "
 "<tutorial/deployment>` or locally for development purposes."
 msgstr ""
+"L'interface web de Canaille web interface peut être utilisé dans des :doc:`"
+"environnements de production <tutorial/deployment>` ou localement pour "
+"permettre les développements."
 
 #: ../features.rst:26 ../index.rst:27 4a8e8cfdbaaf4d86a28840ef0939d7d9
 #: 947ce49c0ff9406fb81b5e3cc5329c24
 msgid "Profile management"
-msgstr ""
+msgstr "Gestion de profil"
 
 #: ../features.rst:28 ../features.rst:220 d4de0b07d24e47b9aba16e48ed9cbe27
 #: 542fdff284144a8c805b4824d03d6b76
@@ -2776,7 +2774,7 @@ msgstr "Profil"
 
 #: ../features.rst:33 c59d37a518514008bc2c6f2c18dd6326
 msgid "Canaille provides an interface to manage user profiles."
-msgstr ""
+msgstr "Canaille fournit une interface pour gérer les profils utilisateur."
 
 #: ../features.rst:35 8b67e3a00af440328b615d2921dc27a6
 msgid ""
@@ -2786,6 +2784,11 @@ msgid ""
 "`Access Control List settings (ACL) <canaille.core.configuration."
 "ACLSettings>`."
 msgstr ""
+"La liste exacte des champs affichés ainsi que s'ils sont accessible en "
+":attr:`écriture <canaille.core.configuration.ACLSettings.WRITE>` ou en "
+":attr:`lecture seule <canaille.core.configuration.ACLSettings.READ>` dépend "
+"du paramètre utilisateur :class:`liste de contrôle d'accès (ACL) <canaille."
+"core.configuration.ACLSettings>`."
 
 #: ../features.rst:37 eb4ca5b563c44281aefc8d4ad4c549e8
 msgid ""
@@ -2793,6 +2796,10 @@ msgid ""
 "Permission>`, users can either be allowed to edit their own profile, edit "
 "any user profile, or do nothing at all."
 msgstr ""
+"Selon les :class:`droits <canaille.core.configuration.Permission>` de leur "
+"liste de contrôle d'accès (ACL) , les utilisateurs peuvent soit modifier "
+"leur profil, modifier le profil de n'importe quel utilisateur ou ne rien "
+"faire du tout."
 
 #: ../features.rst:42 e4d34befed5941bab9161eb3c0330fad
 msgid "Email confirmation"
@@ -2806,12 +2813,20 @@ msgid ""
 "mail will contain a link that users will need to click on to confirm their "
 "email address."
 msgstr ""
+"Si la :attr:`fonctionnalité de confirmation d'e-mail <canaille.core."
+"configuration.CoreSettings.EMAIL_CONFIRMATION>` est activée, toute "
+"modification ou ajout de profil enverra un e-mail de confirmation à la "
+"nouvelle adresse. L'e-mail contiendra un lien sur lequel l'utilisateur devra "
+"cliquer pour confirmer son adresse."
 
 #: ../features.rst:46 d3563178a13d42268ae8a3f0cb15b90f
 msgid ""
 "Users with :attr:`user management permission <canaille.core.configuration."
 "Permission.MANAGE_USERS>` can set user emails without confirmation though."
 msgstr ""
+"Les utilisateurs avec le :attr:`droit de gérer les utilisateurs <canaille."
+"core.configuration.Permission.MANAGE_USERS>` peut paramétrer les e-mails des "
+"utilisateurs sans confirmation."
 
 #: ../features.rst:51 280cf35bfcbe4a25b39bb567780bafdb
 msgid "Group management"
@@ -2828,6 +2843,9 @@ msgid ""
 "<feature_profile_management>` Canaille provides an interface to manage user "
 "groups."
 msgstr ""
+"De manière similaire à la :ref:`gestion de profil "
+"<feature_profile_management>`, Canaille fournit une interface pour gérer les "
+"groupes d'utilisateur."
 
 #: ../features.rst:60 08eb7bac987947149589e0b40c938b0c
 msgid ""
@@ -2836,6 +2854,10 @@ msgid ""
 "use as :attr:`ACL Filter <canaille.core.configuration.ACLSettings.FILTER>` "
 "to define user permissions."
 msgstr ""
+"La gestion de groupe est assez simple actuellement et consiste en un nom de "
+"groupe, une description et la liste de ses membres. Appartenir au groupe "
+"peut être utilisé comme :attr:`filtre ACL <canaille.core.configuration."
+"ACLSettings.FILTER>` pour définir les droits utilisateur."
 
 #: ../features.rst:63 ../features.rst:83 ../features.rst:149
 #: ../tutorial/deployment.rst:13 4ca7b990ff9c429aa56f1ec0ab57aef9
@@ -2849,12 +2871,17 @@ msgid ""
 "At the moment adding an user to a group can only be achieved by the user "
 "settings page, but we are :issue:`working to improve this <192>`."
 msgstr ""
+"Actuellement, l'ajout d'utilisateur dans un groupe ne peut être fait que "
+"depuis la page de paramètre de l'utilisateur, mais nous :issue:`travaillons "
+"à améliorer cela <192>`."
 
 #: ../features.rst:66 fcdf9f9d5f1e4723b46a2ca1fc89539e
 msgid ""
 "Group management can be enable with a :attr:`dedicated user permission "
 "<canaille.core.configuration.Permission.MANAGE_GROUPS>`."
 msgstr ""
+"La gestion de groupe peut être activée avec un :attr:`droit utilisateur "
+"dédié <canaille.core.configuration.Permission.MANAGE_GROUPS>`."
 
 #: ../features.rst:69 95eff978c7994138a3200e090c84471d
 msgid ""
@@ -2862,17 +2889,22 @@ msgid ""
 "groups must have at least one member. Thus it is not possible to remove the "
 "last user of a group without removing the group."
 msgstr ""
+"À cause d'une contrainte dans :ref:`LDAP <tutorial/databases:LDAP>`, les "
+"groupes doivent avoir au moins un membre. Il n'est donc pas possible de "
+"supprimer le dernier utilisateur d'un groupe sans supprimer le groupe."
 
 #: ../features.rst:75 ../index.rst:34 177c53d2c6094d43875d87ca2a55ed98
 #: 937baa96f2514cdaad76f4d28816abe7
 msgid "User authentication"
-msgstr ""
+msgstr "Authentification utilisateur"
 
 #: ../features.rst:77 d461efae4b9d41e4b7dba32a75588df0
 msgid ""
 "Unless their account is :ref:`locked <feature_account_locking>`, users can "
 "authenticate with a login and a password."
 msgstr ""
+"Sauf si leur compte est :ref:`verrouillé <feature_account_locking>`, les "
+"utilisateurs peuvent s'authentifier avec un identifiant et un mot de passe."
 
 #: ../features.rst:81 3c53cd1507ce48c780297457fc4efd97
 msgid ""
@@ -2880,6 +2912,10 @@ msgid ""
 "an unexisting logging, unless explicitly :attr:`set in the configuration "
 "<canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS>`."
 msgstr ""
+"Pour des raisons de sécurité, si un utilisateur essaie de se connecter avec "
+"un identifiant inexistant, cela ne sera pas précisé, sauf :attr:`paramétrage "
+"explicite dans la configuration <canaille.core.configuration.CoreSettings."
+"HIDE_INVALID_LOGINS>`."
 
 #: ../features.rst:83 80eee19145c64fbc9ea0c26464fab965
 msgid ""
@@ -2891,10 +2927,18 @@ msgid ""
 "can only login using :attr:`~canaille.core.models.User.user_name`. We are :"
 "issue:`working to improve this <196>`."
 msgstr ""
+"Les utilisateurs :ref:`basé sur LDAP <tutorial/databases:LDAP>` peuvent "
+"définir quel :class:`champ utilisateur <canaille.core.models.User>` doit "
+"être utilisé comme identifiant (tel que :attr:`~canaille.core.models.User."
+"user_name` ou :attr:`~canaille.core.models.User.emails`) en utilisant un "
+":attr:`paramètre de configuration <canaille.backends.ldap.configuration."
+"LDAPSettings.USER_FILTER>`, mais les autres backends peuvent seulement se "
+"connecter avec :attr:`~canaille.core.models.User.user_name`. Nous :issue:`"
+"travaillons à améliorer cette situation <196>`."
 
 #: ../features.rst:88 560be09061014d5485f75f3c90d3790c
 msgid "User registration"
-msgstr ""
+msgstr "Enregistrement d'un utilisateur"
 
 #: ../features.rst:90 4780fab4d36744c6991df9ae3919e4a0
 msgid ""
@@ -2904,6 +2948,11 @@ msgid ""
 "detailed in the default :class:`ACL settings <canaille.core.configuration."
 "ACLSettings>`."
 msgstr ""
+"Les utilisateurs peuvent créer des comptes sur Canaille si la fonctionnalité "
+":attr:`d'enregistrement <canaille.core.configuration.CoreSettings."
+"ENABLE_REGISTRATION>` est activée. Ils pourront remplir un formulaire "
+"d'enregistrement contenant les champs détaillés dans les :class:`paramètres "
+"ACL <canaille.core.configuration.ACLSettings>` par défaut."
 
 #: ../features.rst:92 f1e0991feda34f918887bf7653c16801
 msgid ""
@@ -2912,11 +2961,15 @@ msgid ""
 "to their email address, on which they will need to click in order to "
 "finalize their registration."
 msgstr ""
+"Si la :attr:` confirmation par e-mail <canaille.core.configuration."
+"CoreSettings.EMAIL_CONFIRMATION>` est aussi activée, les utilisateurs "
+"recevront un lien de confirmation sur leur adresse e-mail. Ils devront "
+"cliquer dessus pour valider la création du compte."
 
 #: ../features.rst:97 ../features.rst:99 6edf18a1ecff4430baaed61db6717c23
 #: a2293ea9f6564b6b8bc9c02c5a8f0f40
 msgid "User invitation"
-msgstr ""
+msgstr "Invitation d'utilisateur"
 
 #: ../features.rst:104 7f4e56bdbb9842beba1644e2fabad41f
 msgid ""
@@ -2925,16 +2978,22 @@ msgid ""
 "configuration.Permission.MANAGE_USERS>` can create an invitation link for "
 "one user."
 msgstr ""
+"Si un :class:`serveur e-mail <canaille.core.configuration.SMTPSettings>` est "
+"configuré, les utilisateurs avec le :attr:`droit de gérer les utilisateurs "
+"<canaille.core.configuration.Permission.MANAGE_USERS>` peuvent créer un lien "
+"d'invitation pour un autre utilisateur."
 
 #: ../features.rst:106 05145189cce34c4d80a56aa785cee5f5
 msgid ""
 "The link goes to a registration form, even if regular :ref:`user "
 "registration <feature_user_registration>` is disabled."
 msgstr ""
+"Le lien pointe vers le formulaire d'neregistrement, même si :ref:`"
+"l'enregistrement d'utilisateur <feature_user_registration>` est désactivée."
 
 #: ../features.rst:108 24a4d13134934174aaedf461e03f2363
 msgid "It can be automatically sent by email to the new user."
-msgstr ""
+msgstr "Il peut être envoyé automatiquement par e-mail au nouvel utilisateur."
 
 #: ../features.rst:113 a05444b5846248f9aebaa28b316be1b8
 msgid "Account locking"
@@ -2959,15 +3018,15 @@ msgstr "Au moment où un compte utilisateur est verrouillé :"
 
 #: ../features.rst:120 1614c2a9020a4da58427064a8b480050
 msgid "their open sessions will be closed;"
-msgstr ""
+msgstr "leurs sessions ouvertes seront fermées ;"
 
 #: ../features.rst:121 bd083a39c3e94f20b0ca06eb45a6ee68
 msgid "they won't be able to sign in again;"
-msgstr ""
+msgstr "ils ne pourront plus se connecter à nouveau ;"
 
 #: ../features.rst:122 3f671916358b469d91fb687a638b5c39
 msgid "no new OIDC token will be issued;"
-msgstr ""
+msgstr "aucun nouveau token OIDC ne sera émis ;"
 
 #: ../features.rst:124 2cc679d736b341e4bde79d159d806618
 msgid ""
