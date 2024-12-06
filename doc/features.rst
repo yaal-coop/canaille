@@ -87,7 +87,7 @@ Unless their account is :ref:`locked <feature_account_locking>`, users can authe
 User registration
 =================
 
-Users can create accounts on Canaille if the feature :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`.
+Users can create accounts on Canaille if the :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`.
 
 If :attr:`email confirmation <canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>` is also enabled, users will be sent a confirmation link to their email address, on which they will need to click in order to finalize their registration.
 

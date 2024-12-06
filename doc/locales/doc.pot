@@ -2882,7 +2882,7 @@ msgstr ""
 
 #: ../features.rst:90
 #: 4780fab4d36744c6991df9ae3919e4a0
-msgid "Users can create accounts on Canaille if the feature :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`."
+msgid "Users can create accounts on Canaille if the :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`."
 msgstr ""
 
 #: ../features.rst:92
