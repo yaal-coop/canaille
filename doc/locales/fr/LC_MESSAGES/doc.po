@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
-"PO-Revision-Date: 2024-12-05 14:31+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2024-12-06 14:12+0000\n"
+"Last-Translator: Brunelie <brunelie.lauret@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -2947,10 +2947,15 @@ msgid ""
 "permission <canaille.core.configuration.Permission.MANAGE_USERS>`. The lock "
 "date can be set instantly or at a given date in the future."
 msgstr ""
+"Si Canaille est branché à un :ref:`backend <feature_databases>` supportant "
+"cette fonctionnalité, les comptes utilisateurs peuvent être verrouillés avec "
+"la :attr:`permission de gestion des utilisateurs <canaille.core.configuration"
+".Permission.MANAGE_USERS>`. La date de verrouillage du compte peut être "
+"immédiate, ou bien effective à une date future définie."
 
 #: ../features.rst:118 e6053c7a0e4c4feabd77b2aa14c50018
 msgid "At the moment a user account is locked:"
-msgstr ""
+msgstr "Au moment où un compte utilisateur est verrouillé :"
 
 #: ../features.rst:120 1614c2a9020a4da58427064a8b480050
 msgid "their open sessions will be closed;"
@@ -2969,6 +2974,9 @@ msgid ""
 "User accounts must be manually unlocked by an administrator for the users to "
 "regain access to those actions."
 msgstr ""
+"Les comptes utilisateur doivent être déverrouillés manuellement par un "
+"administrateur pour que les utilisateurs concernés récupèrent l'accès à ces "
+"actions."
 
 #: ../features.rst:129 fb080216984840ba99f095aece85255d
 msgid "Account deletion"
@@ -2980,6 +2988,9 @@ msgid ""
 "configuration.Permission.DELETE_ACCOUNT>` are allowed to delete their own "
 "account."
 msgstr ""
+"Les utilisateurs avec la :attr:`permission de suppression de compte <canaille"
+".core.configuration.Permission.DELETE_ACCOUNT>` peuvent supprimer leur "
+"propre compte."
 
 #: ../features.rst:133 65b2e1806f3a437aa8b5238f022e0352
 msgid ""
@@ -2987,10 +2998,13 @@ msgid ""
 "configuration.Permission.MANAGE_USERS>` are also allowed to delete other "
 "users accounts."
 msgstr ""
+"Les utilisateurs qui ont additionnellement la :attr:`permission de gestion "
+"des utilisateurs <canaille.core.configuration.Permission.MANAGE_USERS>` "
+"peuvent également supprimer les comptes d'autres utilisateurs."
 
 #: ../features.rst:138 278ed12bce6b4b318f677aa6d22138f5
 msgid "Password recovery"
-msgstr ""
+msgstr "Récupération de mot de passe"
 
 #: ../features.rst:145 c2409768ec7a46d584ed1ed235e7a4d0
 msgid ""
@@ -2999,16 +3013,25 @@ msgid ""
 "configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` is enabled, then users "
 "can ask for a password reset email if they cannot remember their password."
 msgstr ""
+"Si un :class:`serveur e-mail <canaille.core.configuration.SMTPSettings>` est "
+"configuré, et la :attr:`fonctionnalité de récupération de mot de passe "
+"<canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` est "
+"activée, les utilisateurs peuvent demander l'envoi d'un e-mail de "
+"réinitialisation de mot de passe s'ils ont oublié leur mot de passe."
 
 #: ../features.rst:147 7dbfa07474cd40c7a7c17748fbb21a07
 msgid ""
 "The email will be sent to the email addresses filled in their profile, and "
 "will contain a link that will allow them to choose a new password. ."
 msgstr ""
+"L'e-mail sera envoyé à l'adresse e-mail saisie dans leur profil, et "
+"contiendra un lien leur permettant de choisir un nouveau mot de passe."
 
 #: ../features.rst:151 410c54a611eb4b1c8a372b80f744f941
 msgid "Check that password recovery is disabled on locked accounts."
 msgstr ""
+"Vérifie que la récupération de mot de passe est désactivée pour les comptes "
+"verrouillés."
 
 #: ../features.rst:156 2c4f6c64da0c42eab5520711fca1dc46
 msgid "Password reset"
@@ -3022,6 +3045,12 @@ msgid ""
 "contains a link that allow users to choose a new password without having to "
 "retrieve the old one."
 msgstr ""
+"Si un :class:`serveur e-mail <canaille.core.configuration.SMTPSettings>` est "
+"configuré, la :attr:`permission de gestion des utilisateurs <canaille.core."
+"configuration.Permission.MANAGE_USERS>` permet d'envoyer des e-mails de "
+"réinitialisation de mot de passe aux utilisateurs. Les e-mails contiennent "
+"un lien qui permet aux utilisateurs de choisir un nouveau mot de passe sans "
+"avoir besoin de retrouver l'ancien."
 
 #: ../features.rst:164 7be9af4a393e4203b3da626d93d71d69
 msgid "Password initialization"
@@ -3036,10 +3065,17 @@ msgid ""
 "mail contains a link that leads to a form that allows users to choose a "
 "password."
 msgstr ""
+"Les :attr:`mots de passe <canaille.core.models.User.password>` utilisateur "
+"sont optionnels. Si un :class:`serveur e-mail <canaille.core.configuration."
+"SMTPSettings>` est configuré, quand un utilisateur sans mot de passe tente "
+"de se connecter, il est invité à cliquer sur un bouton déclenchant l'envoi "
+"d'un e-mail de réinitialisation de mot de passe. Cet e-mail contient un lien "
+"dirigeant vers un formulaire permettant à l'utilisateur de choisir un mot de "
+"passe."
 
 #: ../features.rst:173 4f60c7a56e5544afa1bbaee9df0805e0
 msgid "Password compromission check"
-msgstr ""
+msgstr "Vérification de la compromission du mot de passe"
 
 #: ../features.rst:175 3dc13b94cd014d6f976426da9840a3d6
 msgid ""
@@ -3049,10 +3085,17 @@ msgid ""
 "time a new password is register. You will need to set an :attr:`admin email "
 "<canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`."
 msgstr ""
+"Si l' :attr:`option de vérification de compromission du mot de passe "
+"<canaille.core.configuration.CoreSettings."
+"ENABLE_PASSWORD_COMPROMISSION_CHECK>` est activée, Canaille va vérifier la "
+"compromission du mot de passe sur HIBP (https://haveibeenpwned.com/) à "
+"chaque fois qu'un nouveau mot de passe est saisi. La configuration d'un "
+":attr:`e-mail administrateur <canaille.core.configuration.CoreSettings."
+"ADMIN_EMAIL>` est nécessaire."
 
 #: ../features.rst:178 a9118911f6a341a3b529fd8882c4e3e4
 msgid "Web interface"
-msgstr ""
+msgstr "Interface web"
 
 #: ../features.rst:183 277603f8de354f15857ad0068f148115
 msgid "Internationalization"
@@ -3060,7 +3103,7 @@ msgstr ""
 
 #: ../features.rst:185 6bc7d90be4bf486d8a2e84a48cc76b66
 msgid "Translation state"
-msgstr ""
+msgstr "État de la traduction"
 
 #: ../features.rst:190 a1f40124b57e452a85abf8af401dc2b1
 msgid ""
@@ -3071,10 +3114,16 @@ msgid ""
 "attr:`force a language <canaille.core.configuration.CoreSettings.FAVICON>` "
 "for every users."
 msgstr ""
+"Canaille va s'afficher dans votre :attr:`langue préférée <canaille.core."
+"models.User.preferred_language>` si disponible, ou la langue de votre "
+"navigateur si disponible (si elle ne l'est pas, vous pouvez :ref:`noud aider "
+"à la traduire <development/contributing:Code translation>`). Si vous le "
+"souhaitez, vous pouvez également :attr:`forcer une langue <canaille.core."
+"configuration.CoreSettings.FAVICON>` pour tous les utilisateurs."
 
 #: ../features.rst:196 8bf0ddac3fee4b4f931bd704bbb167dc
 msgid "Lightweight"
-msgstr ""
+msgstr "Léger"
 
 #: ../features.rst:198 3774910a87b34b9dba3b6c28a1e6ba68
 msgid ""
@@ -3082,10 +3131,13 @@ msgid ""
 "is a few Javascript here and there to smooth the experience, but no "
 "Javascript at all is needed to use Canaille."
 msgstr ""
+"L'interface web est légère, donc tout devrait se charger rapidement. Il y a "
+"un peu de Javascript ici et là pour lisser l'expérience, mais aucun "
+"Javascript n'est absolument nécessaire à l'utilisation de Canaille."
 
 #: ../features.rst:202 0da766448075460d9360204e6975a0f4
 msgid "Customizable"
-msgstr ""
+msgstr "Personnalisable"
 
 #: ../features.rst:204 737f45bc79a542ee903e8349947c3b5f
 msgid ""
@@ -3094,46 +3146,66 @@ msgid ""
 "core.configuration.CoreSettings.LOGO>` and a :attr:`favicon <canaille.core."
 "configuration.CoreSettings.FAVICON>`."
 msgstr ""
+"Le thème par défaut devrait suffir à la plupart des usages. Il dispose d'un "
+"thème sombre, s'affiche bien sur mobile, et vous laissez choisir un :attr:`"
+"logo <canaille.core.configuration.CoreSettings.LOGO>` et un :attr:`favicon "
+"<canaille.core.configuration.CoreSettings.FAVICON>`."
 
 #: ../features.rst:207 36b615461b0c49e9aca81c65a60c3308
 msgid ""
 "If you need more you can also use a :attr:`custom theme <canaille.core."
 "configuration.CoreSettings.THEME>`."
 msgstr ""
+"Si vous avez besoin de plus, vous pouvez utiliser un :attr:`thème "
+"personnalisé <canaille.core.configuration.CoreSettings.THEME>`."
 
 #: ../features.rst:214 02908b4590a0462cac7afbc2fd17d7f6
+#, fuzzy
 msgid ""
 "Canaille implements a :ref:`subset<development/specifications:State of the "
 "specs in Canaille>` of the OAuth2/OpenID Connect specifications . This "
 "allows to provide :abbr:`SSO (Single Sign-On)` and :abbr:`SLO (Single Log-"
 "On)` to applications plugged to Canaille."
 msgstr ""
+"Canaille implémente un :ref:`sous-ensemble<development/specifications:State "
+"of the specs in Canaille>` de la spécification de OAuth2/OpenID Connect. "
+"Cela permet d'avoir la :abbr:`SSO (Single Sign-On)` et la :abbr:`SLO (Single "
+"Log-On)` aux applications branchées à Canaille."
 
 #: ../features.rst:218 f8c59847b97049d19a13ccaa6539f863
 msgid "Consent management"
-msgstr ""
+msgstr "Gestion des autorisations"
 
 #: ../features.rst:226 8e7afe2e2e6943feb664ab03ae9da770
 msgid ""
 "Users can give their consent to application requesting access to their "
 "personal information, and then revoke those consent at their will."
 msgstr ""
+"Les utilisateurs peuvent donner leur autorisation aux applications qui "
+"demandent un accès à leurs informations personnelles, et révoquer ces "
+"autorisations lorsqu'ils le souhaitent."
 
 #: ../features.rst:230 c7a8da519165448ebc4e1c53eb25f207
 msgid "Application management"
-msgstr ""
+msgstr "Gestion des applications"
 
 #: ../features.rst:232 2e65c0c497da4a77bc85c9500a074047
 msgid ""
 "Users with the right :attr:`permission <canaille.core.configuration."
 "Permission.MANAGE_OIDC>` can manager OIDC clients through the web interface."
 msgstr ""
+"Les utilisateurs ayant la :attr:`permission <canaille.core.configuration."
+"Permission.MANAGE_OIDC>` nécessaire peuvent gérer les clients OIDC depuis "
+"l'interface web."
 
 #: ../features.rst:234 bafe35db98f749d99557feec3ceaf4e7
 msgid ""
 "In some cases, it might be useful to avoid the consent page for some trusted "
 "applications, so clients can be pre-consented."
 msgstr ""
+"Dans certains cas, il peut être utile d'éviter la page d'autorisation pour "
+"certaines applications de confiance, pour que des clients puissent être "
+"pré-autorisés."
 
 #: ../features.rst:237 76b48b09fc1c44038a697dfa816afbcc
 msgid "Discovery"
@@ -3161,18 +3233,21 @@ msgstr ""
 
 #: ../features.rst:247 ec8846e6d8404a8185860b509814e54c
 msgid "System administration"
-msgstr ""
+msgstr "Administration système"
 
 #: ../features.rst:252 ../references/commands.rst:2
 #: 511d3810fbd4411dbf14065b1f014256 a07ec9235c4347858a3f9dd667ade4b6
 msgid "Command Line Interface"
-msgstr ""
+msgstr "Interface en ligne de commande"
 
 #: ../features.rst:254 446a668dea4548ffb184afa168ed6115
 msgid ""
 "Canaille comes with a :abbr:`CLI (Command Line Interface)` to help "
 "administrators in hosting and management."
 msgstr ""
+"Canaille est équipé d'un :abbr:`CLI (Command Line Interface)`, ou interface "
+"en ligne de commande, pour aider les administrateurs à l'hébergement et à la "
+"gestion."
 
 #: ../features.rst:256 1b76ec06f2f841ccb8396a5345014ffd
 msgid ""
@@ -3183,17 +3258,26 @@ msgid ""
 "User>`, :class:`groups <canaille.core.models.Group>` or  :class:`OIDC "
 "clients <canaille.oidc.basemodels.Client>`."
 msgstr ""
+"L'interface en ligne de commande dispose d'outils pour :ref:`vérifier votre "
+"configuration <cli_check>` ou pour :ref:`installer des éléments manquants "
+"<cli_install>`. Vous pouvez utiliser le CLI pour :ref:`créer <cli_create>`, "
+":ref:`lire <cli_get>`, :ref:`mettre à jour <cli_set>` et :ref:`supprimer "
+"<cli_delete>` des modèles comme les :class:`utilisateurs <canaille.core."
+"models.User>`, :class:`groupes <canaille.core.models.Group>` ou les  :class:`"
+"clients OIDC <canaille.oidc.basemodels.Client>`."
 
 #: ../features.rst:259 9f10d5a6354c4cda8b1a4e652c129231
 msgid ""
 "There are also tools to :ref:`fill your database <cli_populate>` with random "
 "objects, for tests purpose for instance."
 msgstr ""
+"Elle dispose également d'outils pour :ref:`remplir votre base de données "
+"<cli_populate>` avec des objets aléatoires, par exemple à des fins de test."
 
 #: ../features.rst:264 ../tutorial/databases.rst:2
 #: 3f06ed32b21149799d58c75cad1db5ff fbfabda71be84552b6583acdaa13af3e
 msgid "Databases"
-msgstr ""
+msgstr "Bases de données"
 
 #: ../features.rst:266 004f29ea7eb74ee2912627a929e87f1c
 msgid ""
@@ -3203,6 +3287,12 @@ msgid ""
 "ref:`in-memory database <tutorial/databases:Memory>` that can be used in "
 "unit tests suites."
 msgstr ""
+"Canaille peut manipuler de la donnée depuis des  :ref:`bases de données SQL <"
+"tutorial/databases:SQL>` les plus communes, telles que PostgreSQL, MariaDB "
+"ou SQLite, ainsi que depuis :ref:`OpenLDAP <tutorial/databases:LDAP>`. "
+"Canaille dispose également d'une :ref:`base de données en mémoire <tutorial/"
+"databases:Memory>` sans dépendances qui peut être utilisée dans des tests "
+"unitaires."
 
 #: ../features.rst:272 8add6581a16b4877a66ba7c8827152ca
 msgid "Logging"
@@ -3223,27 +3313,27 @@ msgstr ""
 
 #: ../features.rst:278 49f7ec7627e7414aa616f1060c33d110
 msgid "Authentication attempt"
-msgstr ""
+msgstr "Tentative d'authentification"
 
 #: ../features.rst:279 a26713f492ff4f14a2e3a881e7ab19f1
 msgid "Password update"
-msgstr ""
+msgstr "Mise à jour du mot de passe"
 
 #: ../features.rst:280 ca7c103705f14293950cc12dedd96378
 msgid "Email update"
-msgstr ""
+msgstr "Mise à jour de l'e-mail"
 
 #: ../features.rst:281 0e01ba62ff054e4e849ae1d4c1f6fdee
 msgid "Forgotten password mail sent to user"
-msgstr ""
+msgstr "Mail d'oubli de mot de passe envoyé à l'utilisateur"
 
 #: ../features.rst:282 8f4e5a1567114749b944d391c43ad2bb
 msgid "Token emission"
-msgstr ""
+msgstr "Emission de jeton"
 
 #: ../features.rst:283 04cf77b4e9514ab7805b4f4156209cff
 msgid "Token refresh"
-msgstr ""
+msgstr "Rafraichissement de jeton"
 
 #: ../features.rst:284 ec6501d110694e58b6181468d6154bda
 msgid "Token revokation"
@@ -3251,19 +3341,19 @@ msgstr "Révocation des jetons"
 
 #: ../features.rst:285 76f7ecd101a541d3a1dbb7b3090db868
 msgid "New consent given for client application"
-msgstr ""
+msgstr "Nouvelle autorisation donnée pour l'application client"
 
 #: ../features.rst:286 100d9e39db3644c78ed000b9d27342a4
 msgid "Consent revokation"
-msgstr ""
+msgstr "Révocation de l'autorisation"
 
 #: ../features.rst:291 267852d80a8f4235af2ca961f8de8f09
 msgid "Development and testing tool"
-msgstr ""
+msgstr "Outil de développement et de test"
 
 #: ../features.rst:296 3dd5b1afcdf74705a07096fb3d7fd788
 msgid "Unit-testing tool"
-msgstr ""
+msgstr "Outil de test unitaire"
 
 #: ../features.rst:298 8c74a6c31d294bcb85e4fd0db0bb40fd
 msgid ""
@@ -3273,10 +3363,16 @@ msgid ""
 "you can check how it behaves against a real world OpenID Connect server. If "
 "you work with python you might want to check :doc:`pytest-iam:index`."
 msgstr ""
+"Grâce à sa :ref:`base de données en mémoire <tutorial/databases:Memory>`"
+"légère et sa :ref:`liste de dépendances <tutorial/install:Get the code>`, "
+"Canaille peut être utilisé dans la suite de tests unitaires de votre "
+"application, pour que vous puissiez vérifier comment l'application se "
+"comporte face à un vrai serveur OpenID Connect. Si vous travaillez en "
+"python, vous pourriez être intéressé par :doc:`pytest-iam:index`."
 
 #: ../features.rst:301 197c22656e1b44b89c3587f95b3bb5c8
 msgid "Development server"
-msgstr ""
+msgstr "Serveur de développement"
 
 #: ../features.rst:303 5f930c719ffe484d9680e8d7f3169e54
 msgid ""
@@ -3284,10 +3380,13 @@ msgid ""
 "launching a Keycloak in a Docker container is too heavy for your little web "
 "application."
 msgstr ""
+"Canaille peut également être lancé dans votre environnement de "
+"développement, si vous trouvez que lancer un Keycloak dans un conteneur "
+"Docker est trop lourd pour votre application web."
 
 #: ../features.rst:308 e9cc836cf3d54a32ad7b1d691826bc39
 msgid "Continuous Integration tools"
-msgstr ""
+msgstr "Outils d'intégration continue"
 
 #: ../features.rst:310 a4c714c1c0d44b7ab7a10dff7105a725
 msgid ""
@@ -3295,6 +3394,10 @@ msgid ""
 "`CLI <feature_cli>`, you can prepare data in Canaille, let your application "
 "interact with it, and then check the side effects."
 msgstr ""
+"Canaille s'intègre également bien dans des scénarios d'intégration continue. "
+"Grâce à son :ref:`CLI <feature_cli>`, vous pouvez préparer la donnée dans "
+"Canaille, laisser votre application interagir avec, puis observer les effets "
+"secondaires."
 
 #: ../features.rst:313 cef90af6922045ccb06933f9c96c6f6e
 msgid "Roadmap"
@@ -3302,13 +3405,15 @@ msgstr ""
 
 #: ../features.rst:316 35efac03aaf843308e6941fa96ff921b
 msgid "Bêta version"
-msgstr ""
+msgstr "Version bêta"
 
 #: ../features.rst:318 390267ac81744daf95a62fffcd0af834
 msgid ""
 "To go out of the current Alpha version we want to achieve the following "
 "tasks:"
 msgstr ""
+"Pour sortir de la version Alpha actuelle, nous voulons réaliser les taches "
+"suivantes :"
 
 #: ../features.rst:320 16cbac25ee2f420abda2992cd351559c
 msgid ":issue:`Configuration validation using pydantic <138>`"
@@ -3323,10 +3428,12 @@ msgid ""
 "Before we push Canaille in stable version we want to achieve the following "
 "tasks:"
 msgstr ""
+"Avant de déployer Canaille en version stable, nous voulons réaliser les "
+"taches suivantes :"
 
 #: ../features.rst:328 4a9ef596fb13405185ef106cd2dda007
 msgid "Security"
-msgstr ""
+msgstr "Sécurité"
 
 #: ../features.rst:330 a09c2af5ad3e424eba893efd02faf213
 msgid ":issue:`Password hashing configuration <175>`"
@@ -3394,13 +3501,15 @@ msgstr ""
 
 #: ../index.rst:31 d12af997fa5e48da987d2ecfcb4f149f
 msgid "User profile and groups management, Basic permissions"
-msgstr ""
+msgstr "Gestion de profils utilisateur et de groupes, permissions simples"
 
 #: ../index.rst:38 ea53cfd918924c97a6726cfd357f5ce5
 msgid ""
 "Authentication, registration, email confirmation, \"I forgot my password\" "
 "emails"
 msgstr ""
+"Authentification, inscription, confirmation par e-mail, e-mails \"J'ai "
+"oublié mon mot de passe\""
 
 #: ../index.rst:40 127cca0af1054bf08a8ce05d1c55d539
 msgid "SSO"
@@ -3420,11 +3529,13 @@ msgstr ""
 
 #: ../index.rst:52 b1569cdc9eef44d68ed3b52496ef75b3
 msgid "Customization"
-msgstr ""
+msgstr "Personnalisation"
 
 #: ../index.rst:56 68415646dbfa4be79d953583749246fe
 msgid "Put Canaille at yours colors by choosing a logo or use a custom theme!"
 msgstr ""
+"Mettez Canaille à vos couleurs en choisissant un logo ou en utilisant un "
+"thème personnalisé !"
 
 #: ../index.rst:58 2a6a4e752e494f65b7766a082624d1a4
 msgid "Developers friendliness"
@@ -3435,15 +3546,21 @@ msgid ""
 "Canaille can easily fit in your unit tests suite or in your Continuous "
 "Integration."
 msgstr ""
+"Canaille peut s'intégrer facilement dans votre suite de tests unitaires ou "
+"dans votre Intégration Continue."
 
 #: ../index.rst:66 bc563a309b784f2cbc15399c3ad8f51c
 msgid ":doc:`Full feature list <features>` :doc:`Common use cases <usecases>`"
 msgstr ""
+":doc:`Liste complète des fonctionnalités <features>` :doc:`Cas d'usage "
+"<usecases>`"
 
 #: ../references/commands.rst:4 aebb427c91ed41da9c0b7ecdfcaf590a
 msgid ""
 "Canaille provide several commands to help administrator manage their data."
 msgstr ""
+"Canaille dispose de plusieurs commandes pour aider les administrateurs à "
+"gérer leurs données."
 
 #: ../references/commands.rst:6 b907889f6d0d4dabb1a963c60758fedf
 msgid ""
