@@ -82,6 +82,7 @@ class ClientAddForm(Form):
             ("implicit", "implicit"),
             ("hybrid", "hybrid"),
             ("refresh_token", "refresh_token"),
+            ("client_credentials", "client_credentials"),
         ],
         default=["authorization_code", "refresh_token"],
     )

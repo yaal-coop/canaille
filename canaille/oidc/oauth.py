@@ -509,6 +509,11 @@ require_oauth = ResourceProtector()
 
 
 def generate_access_token(client, grant_type, user, scope):
+    if grant_type == "client_credentials":
+        # Canaille could generate a JWT with iss/sub/aud/exp/iat/jti/scope/client_id
+        # instead of a random string
+        return gen_salt(48)
+
     audience = [client.client_id for client in client.audience]
     bearer_token_generator = authorization._token_generators["default"]
     kwargs = {
