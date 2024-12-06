@@ -24,6 +24,11 @@ from .forms import LoginForm
 from .forms import PasswordForm
 from .forms import PasswordResetForm
 
+import wtforms
+from canaille.app.forms import password_length_validator
+from canaille.app.forms import password_too_long_validator
+from canaille.app.forms import compromised_password_validator
+
 bp = Blueprint("auth", __name__)
 
 
@@ -238,6 +243,18 @@ def reset(user, hash):
         )
         return redirect(url_for("core.account.index"))
 
+    form["password"].validators = [
+        wtforms.validators.DataRequired(),
+        password_length_validator,
+        password_too_long_validator,
+        compromised_password_validator,
+    ]
+    form["confirmation"].validators = [
+        wtforms.validators.DataRequired(),
+    ]
+    form["password"].flags.required = True
+    form["confirmation"].flags.required = True
+    
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
         login_user(user)
