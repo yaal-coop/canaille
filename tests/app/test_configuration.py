@@ -79,6 +79,7 @@ def test_disable_env_var_loading(tmp_path, configuration):
 
 def test_dotenv_file(tmp_path, configuration):
     """Canaille should read configuration from .env files."""
+    os.environ["ENV_FILE"] = ".env"
     oldcwd = os.getcwd()
     os.chdir(tmp_path)
     dotenv = tmp_path / ".env"
@@ -89,6 +90,7 @@ def test_dotenv_file(tmp_path, configuration):
     app = create_app(configuration)
     assert app.config["FOOBAR"] == "custom-value"
     os.chdir(oldcwd)
+    del os.environ["ENV_FILE"]
 
 
 def test_custom_dotenv_file(tmp_path, configuration):
