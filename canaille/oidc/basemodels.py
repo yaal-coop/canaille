@@ -317,7 +317,7 @@ class Token(Model):
     token_id: str
     access_token: str
     client: "Client"
-    subject: User
+    subject: User | None
     type: str
     refresh_token: str
     scope: list[str]
