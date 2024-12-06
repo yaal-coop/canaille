@@ -2,6 +2,7 @@ import datetime
 
 from flask import Blueprint
 from flask import abort
+from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import request
@@ -94,6 +95,9 @@ def edit(user, client):
     if request.form and request.form.get("action") == "delete":
         return client_delete(client)
 
+    if request.form and request.form.get("action") == "new-token":
+        return client_new_token(client)
+
     return client_edit(client)
 
 
@@ -154,3 +158,23 @@ def client_delete(client):
     )
     Backend.instance.delete(client)
     return redirect(url_for("oidc.clients.index"))
+
+
+def client_new_token(client):
+    flash(
+        _(f"A token have been created for the client {client.client_name}"),
+        "success",
+    )
+    now = datetime.datetime.now(datetime.timezone.utc)
+    token = models.Token(
+        token_id=gen_salt(48),
+        type="access_token",
+        access_token=gen_salt(48),
+        issue_date=now,
+        lifetime=current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
+        scope=client.scope,
+        client=client,
+        audience=client.audience,
+    )
+    Backend.instance.save(token)
+    return redirect(url_for("oidc.tokens.view", token=token))
