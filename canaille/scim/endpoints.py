@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+from authlib.integrations.flask_oauth2 import ResourceProtector
+from authlib.oauth2.rfc6750 import BearerTokenValidator
 from flask import Blueprint
 from flask import Response
 from flask import abort
@@ -44,6 +46,16 @@ bp = Blueprint("scim", __name__, url_prefix="/scim")
 group_schema = Group.to_schema()
 group_schema.attributes[0].required = Required.true
 Group = Resource.from_schema(group_schema)
+
+
+class SCIMBearerTokenValidator(BearerTokenValidator):
+    def authenticate_token(self, token_string: str):
+        token = Backend.instance.get(models.Token, access_token=token_string)
+        return token if token and not token.subject else None
+
+
+require_oauth = ResourceProtector()
+require_oauth.register_token_validator(SCIMBearerTokenValidator())
 
 
 @bp.after_request
@@ -291,6 +303,7 @@ def group_from_scim_to_canaille(scim_group: Group, group):
 
 @bp.route("/Users", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_users():
     req = parse_search_request(request)
     start_index_1 = req.start_index or 1
@@ -313,6 +326,7 @@ def query_users():
 
 @bp.route("/Users/<user:user>", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_user(user):
     scim_user = user_from_canaille_to_scim(user)
     return scim_user.model_dump(
@@ -322,6 +336,7 @@ def query_user(user):
 
 @bp.route("/Groups", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_groups():
     req = parse_search_request(request)
     start_index_1 = req.start_index or 1
@@ -344,6 +359,7 @@ def query_groups():
 
 @bp.route("/Groups/<group:group>", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_group(group):
     scim_group = group_from_canaille_to_scim(group)
     return scim_group.model_dump(
@@ -353,6 +369,7 @@ def query_group(group):
 
 @bp.route("/Schemas", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_schemas():
     req = parse_search_request(request)
     start_index_1 = req.start_index or 1
@@ -370,6 +387,7 @@ def query_schemas():
 
 @bp.route("/Schemas/<string:schema_id>", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_schema(schema_id):
     schema = get_schemas().get(schema_id)
     if not schema:
@@ -380,6 +398,7 @@ def query_schema(schema_id):
 
 @bp.route("/ResourceTypes", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_resource_types():
     req = parse_search_request(request)
     start_index_1 = req.start_index or 1
@@ -397,6 +416,7 @@ def query_resource_types():
 
 @bp.route("/ResourceTypes/<string:resource_type_name>", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_resource_type(resource_type_name):
     resource_type = get_resource_types().get(resource_type_name)
     if not resource_type:
@@ -407,6 +427,7 @@ def query_resource_type(resource_type_name):
 
 @bp.route("/ServiceProviderConfig", methods=["GET"])
 @csrf.exempt
+@require_oauth()
 def query_service_provider_config():
     spc = ServiceProviderConfig(
         meta=Meta(
@@ -436,6 +457,7 @@ def query_service_provider_config():
 
 @bp.route("/Users", methods=["POST"])
 @csrf.exempt
+@require_oauth()
 def create_user():
     request_user = User[EnterpriseUser].model_validate(
         request.json, scim_ctx=Context.RESOURCE_CREATION_REQUEST
@@ -449,6 +471,7 @@ def create_user():
 
 @bp.route("/Groups", methods=["POST"])
 @csrf.exempt
+@require_oauth()
 def create_group():
     request_group = Group.model_validate(
         request.json, scim_ctx=Context.RESOURCE_CREATION_REQUEST
@@ -464,6 +487,7 @@ def create_group():
 
 @bp.route("/Users/<user:user>", methods=["PUT"])
 @csrf.exempt
+@require_oauth()
 def replace_user(user):
     request_user = User[EnterpriseUser].model_validate(
         request.json, scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST
@@ -477,6 +501,7 @@ def replace_user(user):
 
 @bp.route("/Groups/<group:group>", methods=["PUT"])
 @csrf.exempt
+@require_oauth()
 def replace_group(group):
     request_group = Group.model_validate(
         request.json, scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST
@@ -490,6 +515,7 @@ def replace_group(group):
 
 @bp.route("/Users/<user:user>", methods=["DELETE"])
 @csrf.exempt
+@require_oauth()
 def delete_user(user):
     Backend.instance.delete(user)
     return "", HTTPStatus.NO_CONTENT
@@ -497,6 +523,7 @@ def delete_user(user):
 
 @bp.route("/Groups/<group:group>", methods=["DELETE"])
 @csrf.exempt
+@require_oauth()
 def delete_group(group):
     Backend.instance.delete(group)
     return "", HTTPStatus.NO_CONTENT
