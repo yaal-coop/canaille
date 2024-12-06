@@ -165,6 +165,7 @@ postgresql = [
     { name = "sqlalchemy-utils" },
 ]
 scim = [
+    { name = "authlib" },
     { name = "scim2-models" },
 ]
 sentry = [
@@ -222,6 +223,7 @@ doc = [
 [package.metadata]
 requires-dist = [
     { name = "authlib", marker = "extra == 'oidc'", specifier = ">=1.3.0" },
+    { name = "authlib", marker = "extra == 'scim'", specifier = ">=1.3.0" },
     { name = "email-validator", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask", specifier = ">=3.0.0" },
     { name = "flask-babel", marker = "extra == 'front'", specifier = ">=4.0.0" },
@@ -1634,14 +1636,14 @@ wheels = [
 
 [[package]]
 name = "scim2-client"
-version = "0.4.3"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "scim2-models" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c9/44/1b228a6a680ca96a1274f2ca1dd22aa3e61e656c5e829c348b27f793dc9d/scim2_client-0.4.3.tar.gz", hash = "sha256:69f55e1c296cb018cb4d71954485b6dab8153bb59935647b1e063a659c141ede", size = 85428 }
+sdist = { url = "https://files.pythonhosted.org/packages/4f/d0/06a2a68c8b6a840fd8020ebfaf0141e1eadff0a24b4a2ba87c1d0fb9607d/scim2_client-0.5.0.tar.gz", hash = "sha256:f485864c0148cbbddd6a4120a4b3c2553ca89a8076d5cf7bdfa8ad6aba2c1e6e", size = 85783 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fa/75/d56f022664d6db564b0e85265ab5e97b49133f796ff1d502bd652e7c075f/scim2_client-0.4.3-py3-none-any.whl", hash = "sha256:051578f4e56e57149b1b6ea06c30cd4d831b8f2278c301e92421b0ebf524b813", size = 22373 },
+    { url = "https://files.pythonhosted.org/packages/4b/e3/195d64ace80effcb948773914b72a8705565afbd02471ac827b28dfa977a/scim2_client-0.5.0-py3-none-any.whl", hash = "sha256:9f290aafea88d4220372a4902a17b3e7ea4dbdae69dfe9489b938d8d7a7ac827", size = 22500 },
 ]
 
 [[package]]

@@ -54,6 +54,7 @@ oidc = [
 
 scim = [
     "scim2-models>=0.2.2",
+    "authlib >= 1.3.0",
 ]
 
 ldap = [
