@@ -179,6 +179,7 @@ def test_mail_debug_pages(testclient, logged_admin):
         "admin/admin@admin.com/email-confirmation",
         "admin@admin.com/registration",
         "compromised_password_check_failure",
+        "email_otp",
     ]:
         testclient.get(f"/admin/mail/{base}.html")
         testclient.get(f"/admin/mail/{base}.txt")

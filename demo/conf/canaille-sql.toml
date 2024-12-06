@@ -74,12 +74,3 @@ DYNAMIC_CLIENT_REGISTRATION_OPEN = true
 DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
     "xxxxxxx-yyyyyyy-zzzzzz",
 ]
-
-[CANAILLE.SMTP]
-HOST = "mailhog.yaal.coop"
-PORT = 1025
-TLS = false
-SSL = false
-LOGIN = ""
-PASSWORD = ""
-FROM_ADDR = "admin@mydomain.tld"

@@ -1,9 +1,9 @@
+import importlib.util
 import os
 import smtplib
 import socket
 import sys
 
-import smpplib
 from flask import current_app
 from pydantic import ValidationError
 from pydantic import create_model
@@ -177,7 +177,6 @@ def validate(config, validate_remote=False):
     validate_theme(config["CANAILLE"])
     validate_admin_email(config["CANAILLE"])
     validate_otp_config(config["CANAILLE"])
-
     if not validate_remote:
         return
 
@@ -236,10 +235,17 @@ def validate_smtp_configuration(config):
 
 
 def validate_smpp_configuration(config):
+    try:
+        import smpplib
+    except ImportError as exc:
+        raise ConfigurationException(
+            "You have configured a SMPP server but the 'sms' extra is not installed."
+        ) from exc
+
     host = config["HOST"]
     port = config["PORT"]
     try:
-        with smpplib.client.Client(host, port) as client:
+        with smpplib.client.Client(host, port, allow_unknown_opt_params=True) as client:
             client.connect()
             if config["LOGIN"]:
                 client.bind_transmitter(
@@ -268,6 +274,13 @@ def validate_admin_email(config):
 
 
 def validate_otp_config(config):
+    if (
+        config["OTP_METHOD"] or config["EMAIL_OTP"] or config["SMS_OTP"]
+    ) and not importlib.util.find_spec("otpauth"):  # pragma: no cover
+        raise ConfigurationException(
+            "You are trying to use OTP but the 'otp' extra is not installed."
+        )
+
     if config["OTP_METHOD"] not in [None, "TOTP", "HOTP"]:
         raise ConfigurationException("Invalid OTP method")
 

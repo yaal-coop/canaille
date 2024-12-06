@@ -356,30 +356,23 @@ def verify_two_factor_auth():
                 url_for("core.auth.verify_two_factor_auth"),
             )
         else:
-            try:
-                user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
-                Backend.instance.save(user)
-                current_app.logger.security(
-                    f'Succeed login attempt for {session["attempt_login_with_correct_password"]} from {request_ip}'
-                )
-                del session["attempt_login_with_correct_password"]
-                login_user(user)
-                flash(
-                    _(
-                        "Connection successful. Welcome %(user)s",
-                        user=user.formatted_name,
-                    ),
-                    "success",
-                )
-                return redirect(
-                    session.pop("redirect-after-login", url_for("core.account.index"))
-                )
-            except Exception:  # pragma: no cover
-                flash(
-                    "Two-factor authentication setup failed. Please try again.",
-                    "danger",
-                )
-                return redirect(url_for("core.auth.verify_two_factor_auth"))
+            user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
+            Backend.instance.save(user)
+            current_app.logger.security(
+                f'Succeed login attempt for {session["attempt_login_with_correct_password"]} from {request_ip}'
+            )
+            del session["attempt_login_with_correct_password"]
+            login_user(user)
+            flash(
+                _(
+                    "Connection successful. Welcome %(user)s",
+                    user=user.formatted_name,
+                ),
+                "success",
+            )
+            return redirect(
+                session.pop("redirect-after-login", url_for("core.account.index"))
+            )
     else:
         flash(
             "The one-time password you entered is invalid. Please try again",
@@ -410,9 +403,8 @@ def send_mail_otp():
         session["attempt_login_with_correct_password"]
     )
 
-    try:
-        if user.is_can_send_new_otp():
-            user.generate_and_send_otp_mail()
+    if user.is_can_send_new_otp():
+        if user.generate_and_send_otp_mail():
             Backend.instance.save(user)
             request_ip = request.remote_addr or "unknown IP"
             current_app.logger.security(
@@ -423,13 +415,12 @@ def send_mail_otp():
                 "success",
             )
         else:
-            flash(
-                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
-                "danger",
-            )
-    except Exception:  # pragma: no cover
-        flash("One-time password generation failed. Please try again.", "danger")
-        return redirect(url_for("core.auth.verify_two_factor_auth"))
+            flash("Error while sending one-time password. Please try again.", "danger")
+    else:
+        flash(
+            f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+            "danger",
+        )
 
     return redirect(url_for("core.auth.verify_two_factor_auth"))
 
@@ -452,9 +443,8 @@ def send_sms_otp():
         session["attempt_login_with_correct_password"]
     )
 
-    try:
-        if user.is_can_send_new_otp():
-            user.generate_and_send_otp_sms()
+    if user.is_can_send_new_otp():
+        if user.generate_and_send_otp_sms():
             Backend.instance.save(user)
             request_ip = request.remote_addr or "unknown IP"
             current_app.logger.security(
@@ -465,13 +455,12 @@ def send_sms_otp():
                 "success",
             )
         else:
-            flash(
-                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
-                "danger",
-            )
-    except Exception:  # pragma: no cover
-        flash("One-time password generation failed. Please try again.", "danger")
-        return redirect(url_for("core.auth.verify_two_factor_auth"))
+            flash("Error while sending one-time password. Please try again.", "danger")
+    else:
+        flash(
+            f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+            "danger",
+        )
 
     return redirect(url_for("core.auth.verify_two_factor_auth"))
 
@@ -490,9 +479,8 @@ def redirect_to_verify_2fa(user, otp_method, request_ip, fail_redirect_url):
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))
     elif otp_method == "EMAIL_OTP":
-        try:
-            if user.is_can_send_new_otp():
-                user.generate_and_send_otp_mail()
+        if user.is_can_send_new_otp():
+            if user.generate_and_send_otp_mail():
                 Backend.instance.save(user)
                 flash(
                     f"A one-time password has been sent to your email address {mask_email(user.emails[0])}. Please enter it below to login.",
@@ -504,17 +492,18 @@ def redirect_to_verify_2fa(user, otp_method, request_ip, fail_redirect_url):
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:
                 flash(
-                    f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
-                    "danger",
+                    "Error while sending one-time password. Please try again.", "danger"
                 )
                 return redirect(fail_redirect_url)
-        except Exception:  # pragma: no cover
-            flash("One-time password generation failed. Please try again.", "danger")
+        else:
+            flash(
+                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                "danger",
+            )
             return redirect(fail_redirect_url)
     else:  # sms
-        try:
-            if user.is_can_send_new_otp():
-                user.generate_and_send_otp_sms()
+        if user.is_can_send_new_otp():
+            if user.generate_and_send_otp_sms():
                 Backend.instance.save(user)
                 flash(
                     f"A one-time password has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login.",
@@ -526,10 +515,13 @@ def redirect_to_verify_2fa(user, otp_method, request_ip, fail_redirect_url):
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:
                 flash(
-                    f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                    "Error while sending one-time password. Please try again.",
                     "danger",
                 )
                 return redirect(fail_redirect_url)
-        except Exception:  # pragma: no cover
-            flash("One-time password generation failed. Please try again.", "danger")
+        else:
+            flash(
+                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                "danger",
+            )
             return redirect(fail_redirect_url)

@@ -3,7 +3,6 @@ import secrets
 from typing import Annotated
 from typing import ClassVar
 
-import otpauth
 from flask import current_app
 
 from canaille.backends.models import Model
@@ -352,6 +351,8 @@ class User(Model):
             self.hotp_counter = 1
 
     def generate_otp(self, counter_delta=0):
+        import otpauth
+
         method = current_app.features.otp_method
         if method == "TOTP":
             totp = otpauth.TOTP(bytes(self.secret_token, "utf-8"))
@@ -372,15 +373,19 @@ class User(Model):
 
     def generate_and_send_otp_mail(self):
         otp = self.generate_sms_or_mail_otp()
-        send_one_time_password_mail(self.emails[0], otp)
-        return otp
+        if send_one_time_password_mail(self.preferred_email, otp):
+            return otp
+        return False
 
     def generate_and_send_otp_sms(self):
         otp = self.generate_sms_or_mail_otp()
-        send_one_time_password_sms(self.phone_numbers[0], otp)
-        return otp
+        if send_one_time_password_sms(self.phone_numbers[0], otp):
+            return otp
+        return False
 
     def get_otp_authentication_setup_uri(self):
+        import otpauth
+
         method = current_app.features.otp_method
         if method == "TOTP":
             return otpauth.TOTP(bytes(self.secret_token, "utf-8")).to_uri(
@@ -406,9 +411,13 @@ class User(Model):
             raise RuntimeError("Invalid one-time password method")
 
     def is_totp_valid(self, user_otp):
+        import otpauth
+
         return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
 
     def is_hotp_valid(self, user_otp):
+        import otpauth
+
         counter = self.hotp_counter
         is_valid = False
         # if user token's counter is ahead of canaille's, try to catch up to it

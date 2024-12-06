@@ -109,6 +109,32 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     res = res.follow(status=200)
 
 
+def test_signin_with_email_otp_failed_to_send_code(testclient, user):
+    testclient.app.config["CANAILLE"]["EMAIL_OTP"] = True
+    testclient.app.config["CANAILLE"]["SMTP"]["HOST"] = "invalid host"
+
+    with testclient.session_transaction() as session:
+        assert not session.get("user_id")
+
+    res = testclient.get("/login", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    with testclient.session_transaction() as session:
+        assert "user" == session.get("attempt_login")
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+    assert (
+        "danger",
+        "Error while sending one-time password. Please try again.",
+    ) in res.flashes
+
+    assert res.location == "/password"
+
+
 def test_signin_wrong_email_otp(testclient, user, caplog):
     testclient.app.config["CANAILLE"]["EMAIL_OTP"] = True
 
@@ -284,6 +310,32 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     res = res.follow(status=200)
 
 
+def test_signin_with_sms_otp_failed_to_send_code(testclient, user):
+    testclient.app.config["CANAILLE"]["SMS_OTP"] = True
+    testclient.app.config["CANAILLE"]["SMPP"]["HOST"] = "invalid host"
+
+    with testclient.session_transaction() as session:
+        assert not session.get("user_id")
+
+    res = testclient.get("/login", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    with testclient.session_transaction() as session:
+        assert "user" == session.get("attempt_login")
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+    assert (
+        "danger",
+        "Error while sending one-time password. Please try again.",
+    ) in res.flashes
+
+    assert res.location == "/password"
+
+
 def test_signin_wrong_sms_otp(testclient, user, caplog, mock_smpp):
     testclient.app.config["CANAILLE"]["SMS_OTP"] = True
 
@@ -437,6 +489,23 @@ def test_send_mail_otp_multiple_attempts(testclient, backend, user, caplog):
         ) in res.flashes
 
 
+def test_send_new_mail_otp_failed(testclient, user):
+    testclient.app.config["CANAILLE"]["EMAIL_OTP"] = True
+    testclient.app.config["CANAILLE"]["SMTP"]["HOST"] = "invalid host"
+    testclient.app.config["WTF_CSRF_ENABLED"] = False
+    with testclient.session_transaction() as session:
+        session["attempt_login_with_correct_password"] = user.user_name
+
+    res = testclient.post("/send-mail-otp", status=302)
+
+    assert (
+        "danger",
+        "Error while sending one-time password. Please try again.",
+    ) in res.flashes
+
+    assert res.location == "/verify-2fa"
+
+
 def test_send_new_sms_otp(testclient, backend, user, caplog, mock_smpp):
     testclient.app.config["CANAILLE"]["SMS_OTP"] = True
     testclient.app.config["WTF_CSRF_ENABLED"] = False
@@ -489,6 +558,23 @@ def test_send_sms_otp_multiple_attempts(testclient, backend, user, caplog, mock_
             "success",
             "Code successfully sent!",
         ) in res.flashes
+
+
+def test_send_new_sms_otp_failed(testclient, user):
+    testclient.app.config["CANAILLE"]["SMS_OTP"] = True
+    testclient.app.config["CANAILLE"]["SMPP"]["HOST"] = "invalid host"
+    testclient.app.config["WTF_CSRF_ENABLED"] = False
+    with testclient.session_transaction() as session:
+        session["attempt_login_with_correct_password"] = user.user_name
+
+    res = testclient.post("/send-sms-otp", status=302)
+
+    assert (
+        "danger",
+        "Error while sending one-time password. Please try again.",
+    ) in res.flashes
+
+    assert res.location == "/verify-2fa"
 
 
 def test_signin_with_multiple_otp_methods(

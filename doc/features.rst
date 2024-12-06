@@ -177,7 +177,7 @@ If :attr:`password compromission check feature <canaille.core.configuration.Core
 .. _feature_multi_factor_authentication:
 
 Multi-factor authentication
-==============
+===========================
 
 If the :attr:`one-time password feature <canaille.core.configuration.CoreSettings.OTP_METHOD>` is set, then users will need to authenticate themselves using a one-time password via an authenticator app.
 Two options are supported : "TOTP" for time one-time password, and "HOTP" for HMAC-based one-time password.
