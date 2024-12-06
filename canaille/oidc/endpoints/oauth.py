@@ -192,7 +192,9 @@ def authorize_consent(client, user):
 @csrf.exempt
 def issue_token():
     request_params = request.form.to_dict(flat=False)
-    grant_type = request_params["grant_type"][0]
+    grant_type = (
+        request_params["grant_type"][0] if request_params["grant_type"] else None
+    )
     current_app.logger.debug("token endpoint request: POST: %s", request_params)
     response = authorization.create_token_response()
     current_app.logger.debug("token endpoint response: %s", response.json)
@@ -201,9 +203,15 @@ def issue_token():
         access_token = response.json["access_token"]
         token = Backend.instance.get(models.Token, access_token=access_token)
         request_ip = request.remote_addr or "unknown IP"
-        current_app.logger.security(
-            f"Issued {grant_type} token for {token.subject.user_name} in client {token.client.client_name} from {request_ip}"
-        )
+        if token.subject:
+            current_app.logger.security(
+                f"Issued {grant_type} token for {token.subject.user_name} in client {token.client.client_name} from {request_ip}"
+            )
+        else:
+            current_app.logger.security(
+                f"Issued {grant_type} token for client {token.client.client_name} from {request_ip}"
+            )
+
     return response
 
 

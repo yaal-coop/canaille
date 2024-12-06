@@ -238,7 +238,7 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     access_token: Mapped[str] = mapped_column(String, nullable=True)
     client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
     client: Mapped["Client"] = relationship()
-    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"))
+    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
     subject: Mapped["User"] = relationship()
     type: Mapped[str] = mapped_column(String, nullable=True)
     refresh_token: Mapped[str] = mapped_column(String, nullable=True)

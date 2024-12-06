@@ -8,6 +8,7 @@ Added
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
   :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP`
   :issue:`179`
+- Implement OIDC client_credentials flow. :issue:`207`
 
 Changed
 ^^^^^^^
