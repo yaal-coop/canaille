@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
-"PO-Revision-Date: 2024-12-06 14:12+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2024-12-07 14:58+0000\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -3164,7 +3164,7 @@ msgstr "Interface web"
 
 #: ../features.rst:183 277603f8de354f15857ad0068f148115
 msgid "Internationalization"
-msgstr ""
+msgstr "Internationalisation"
 
 #: ../features.rst:185 6bc7d90be4bf486d8a2e84a48cc76b66
 msgid "Translation state"
@@ -3274,7 +3274,7 @@ msgstr ""
 
 #: ../features.rst:237 76b48b09fc1c44038a697dfa816afbcc
 msgid "Discovery"
-msgstr ""
+msgstr "Découverte"
 
 #: ../features.rst:239 f251fff6b3374ecd9fde5bdebced6313
 msgid ""
@@ -3282,10 +3282,13 @@ msgid ""
 "specifications>` so most of the applications plugged to Canaille can auto-"
 "configure themselves."
 msgstr ""
+"Canaille implémente les :doc:`spécifications de découverte <development/"
+"specifications>` donc la plupart des applications branchées à Canaille "
+"peuvent se configurer automatiquement par eux-même."
 
 #: ../features.rst:242 4fac1fe3bcd346aeb34e8c600df0d542
 msgid "Dynamic Client Registration"
-msgstr ""
+msgstr "Enregistrement de client dynamique"
 
 #: ../features.rst:244 f53321a9a89d40c0b7fdc48be51240a4
 msgid ""
@@ -3295,6 +3298,11 @@ msgid ""
 "DYNAMIC_CLIENT_REGISTRATION_OPEN>`, clients can register themselves on "
 "Canaille without an administrator intervention."
 msgstr ""
+"Canaille implémente les :doc:`spécifications d'enregistrement de client "
+"dynamique <development/specifications>`, donc quand la :attr:`fonctionnalité "
+"est activée <canaille.oidc.configuration.OIDCSettings."
+"DYNAMIC_CLIENT_REGISTRATION_OPEN>`, les clients peuvent s'enregistrer eux-"
+"même sur Canaille sans l'intervention d'un administrateur."
 
 #: ../features.rst:247 ec8846e6d8404a8185860b509814e54c
 msgid "System administration"
@@ -3361,7 +3369,7 @@ msgstr ""
 
 #: ../features.rst:272 8add6581a16b4877a66ba7c8827152ca
 msgid "Logging"
-msgstr ""
+msgstr "Connexion"
 
 #: ../features.rst:274 1179b565c1de4b11a03ca824cce52977
 msgid ""
@@ -3369,12 +3377,17 @@ msgid ""
 "LOGGING>` for every important event happening, to help administrators "
 "understand what is going on and debug funky situations."
 msgstr ""
+"Canaille écrit des :attr:`journaux <canaille.core.configuration.CoreSettings."
+"LOGGING>` pour tous les événements importants dans le but d'aider les "
+"administrateurs à comprendre ce qui se passe et déboguer les cas bizarres."
 
 #: ../features.rst:276 a6282bdfca0b4e2c8ecfd02478d3623d
 msgid ""
 "The following security events are logged with the tag [SECURITY] for easy "
 "retrieval :"
 msgstr ""
+"Les événements de sécurité suivants sont enregistrés avec l'étiquette "
+"[SECURITY] pour les retrouver facilement :"
 
 #: ../features.rst:278 49f7ec7627e7414aa616f1060c33d110
 msgid "Authentication attempt"
@@ -3466,7 +3479,7 @@ msgstr ""
 
 #: ../features.rst:313 cef90af6922045ccb06933f9c96c6f6e
 msgid "Roadmap"
-msgstr ""
+msgstr "Prévisionnel"
 
 #: ../features.rst:316 35efac03aaf843308e6941fa96ff921b
 msgid "Bêta version"
@@ -3483,10 +3496,11 @@ msgstr ""
 #: ../features.rst:320 16cbac25ee2f420abda2992cd351559c
 msgid ":issue:`Configuration validation using pydantic <138>`"
 msgstr ""
+":issue:`Validation de la configuration en utilisant using pydantic <138>`"
 
 #: ../features.rst:323 9f7d9a2a96974645bd8fc63a44d1a2c8
 msgid "Stable version"
-msgstr ""
+msgstr "Version stable"
 
 #: ../features.rst:325 2736b944f850403f9592ba3265b6f986
 msgid ""
@@ -3502,7 +3516,7 @@ msgstr "Sécurité"
 
 #: ../features.rst:330 a09c2af5ad3e424eba893efd02faf213
 msgid ":issue:`Password hashing configuration <175>`"
-msgstr ""
+msgstr ":issue:`Configuration du hashage du mot de passe <175>`"
 
 #: ../features.rst:331 3001ee87077c4479b3f3c8b3b5aecd33
 msgid ":issue:`Authentication logging policy <177>`"
@@ -3530,7 +3544,7 @@ msgstr ""
 
 #: ../features.rst:339 277364ce7ca04a169409ad5acf68d075
 msgid "Packaging"
-msgstr ""
+msgstr "Paquets"
 
 #: ../features.rst:341 dece9c7d75d441cdbdce48eb7a4bebcf
 msgid ":issue:`Nix package <190>`"
@@ -3542,11 +3556,11 @@ msgstr ""
 
 #: ../features.rst:345 6a738414fcb944ac9c4d5b61a53f0d11
 msgid "And beyond"
-msgstr ""
+msgstr "Et au-delà"
 
 #: ../features.rst:347 66a95c24a32940118517f6bb3bf27838
 msgid ":issue:`OpenID Connect certification <182>`"
-msgstr ""
+msgstr ":issue:`Certification OpenID Connect <182>`"
 
 #: ../features.rst:348 73307b368d454e338ff4bbd05657bbcc
 msgid ":issue:`SCIM support <116>`"
@@ -3563,6 +3577,11 @@ msgid ""
 "identity and authorization management software. It aims to be very light, "
 "simple to install and simple to maintain. Its main features are :"
 msgstr ""
+"**Canaille** est un mot français dont la prononciation (en anglais) "
+"ressemble à **Can I?**, comme dans *Can I access your data?* (Puis-je "
+"accéder à vos données ?). Canaille est un logiciel de gestion d'autorisation "
+"et d'identité léger. Il est conçu pour être très léger, simple à installer "
+"et simple à maintenir. Ses fonctionnalités principales sont :"
 
 #: ../index.rst:31 d12af997fa5e48da987d2ecfcb4f149f
 msgid "User profile and groups management, Basic permissions"
@@ -3578,19 +3597,19 @@ msgstr ""
 
 #: ../index.rst:40 127cca0af1054bf08a8ce05d1c55d539
 msgid "SSO"
-msgstr ""
+msgstr "Authentification unique (SSO)"
 
 #: ../index.rst:44 f4b6d7b278ba480da9d7c964849ba988
 msgid "OpenID Connect identity provider"
-msgstr ""
+msgstr "Fournisseur d'identité OpenID Connect"
 
 #: ../index.rst:46 be1ff5f7d2ca468fa300f595696d9c10
 msgid "Multi-database support"
-msgstr ""
+msgstr "Gestion de multiples bases de données"
 
 #: ../index.rst:50 92a7a7f6ee474890bf705bd67945dd9e
 msgid "PostgreSQL, Mariadb and OpenLDAP first-class citizenship"
-msgstr ""
+msgstr "PostgreSQL, Mariadb et OpenLDAP sont des citoyens de première classe"
 
 #: ../index.rst:52 b1569cdc9eef44d68ed3b52496ef75b3
 msgid "Customization"
@@ -3635,34 +3654,43 @@ msgid ""
 "variable is used. For the sake of readability, it is omitted in the "
 "following examples."
 msgstr ""
+"Généralement, une configuration doit être chargée par `Canaille`. Cela peut "
+"être réalisé par :ref:`une méthode de chargement de la configuration<"
+"references/configuration:Load the configuration>` disponible, mais la "
+"plupart du temps une variable d'environnement ``CONFIG`` est utilisée. Pour "
+"des raisons de lisibilité, elle est omise dans les exemples suivants."
 
 #: ../../canaille check:1 e48a730fe9c94efcb41a272f5478ed19
 msgid "Test the configuration file."
-msgstr ""
+msgstr "Test du fichier de configuration."
 
 #: ../../canaille check:1 41aae9c8d46743aba9e79f57c079d0c7
 msgid ""
 "Attempt to reach the database and the SMTP server with the provided "
 "credentials."
 msgstr ""
+"Tentative pour accéder à la base de données et le serveur SMTP avec les "
+"identifiants fournis."
 
 #: ../../canaille clean:1 e4dceb9281e14cf0adbd56154fffbc04
 msgid "Remove expired tokens and authorization codes."
-msgstr ""
+msgstr "Suppression des jetons expirés et des codes d'autorisation."
 
 #: ../../canaille install:1 fade86f4801a403dab35e0e1cf5bb2a9
 msgid "Installs canaille elements from the configuration."
-msgstr ""
+msgstr "Installe les éléments de Canaille issus de la configuration."
 
 #: ../../canaille install:1 59f7082a6fc74329965dacbbd4b29d74
 msgid ""
 "For instance, depending on the configuration, this can generate OIDC keys or "
 "install LDAP schemas."
 msgstr ""
+"Par exemple, selon la configuration, cela peut générer les clefs OIDC ou "
+"installer des schémas LDAP."
 
 #: ../../canaille populate:1 10dd1f2f8dfd4382ba79586e84d228b6
 msgid "Populate the database with generated random data."
-msgstr ""
+msgstr "Remplit la base de données avec des données générées aléatoirement."
 
 #: ../references/commands.rst:0 eef93c8f7efa4bcca26a9984edfec552
 #: ab621caa7a2c4d8fa849e7797625d3ba f8d114457ca741bf800ee8c4b3f942a1
@@ -3676,82 +3704,93 @@ msgstr ""
 #: aa0eedc786284ae49d37dab255457175 1715de5f32c34e7cab8f1379549071f9
 #: f9c437d0c28c4079995fd7bc83ed2ec9
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #: ../../canaille populate:1 94ba9e16305a484ea1415b3237723cf1
 msgid "Number of items to create"
-msgstr ""
+msgstr "Nombre d'éléments à créer"
 
 #: ../../canaille populate groups:1 379afc690fa147acb76c519bccb010a6
 msgid "Populate the database with generated random groups."
-msgstr ""
+msgstr "Remplit la base de données avec des groupes générés aléatoirement."
 
 #: ../../canaille populate groups:1 da4cf29b95b846119a772e8d9f73f96b
 msgid "The maximum number of users that will randomly be affected in the group"
 msgstr ""
+"Le nombre maximum d'utilisateurs qui seront aléatoirement affectés dans le "
+"groupe"
 
 #: ../../canaille populate users:1 b87d2b5df82a46e0a11fccb84a997ab9
 msgid "Populate the database with generated random users."
-msgstr ""
+msgstr "Remplit la base de données avec des utilisateurs générés aléatoirement."
 
 #: ../../canaille get:1 ce45ebf26cf149d3b0fd406e1ed2b5a9
 msgid "Read information about models."
-msgstr ""
+msgstr "Lit les informations concernant les modèles."
 
 #: ../../canaille get:1 00dbea345e914dafb4a736214b895b1c
 msgid "Options can be used to filter models::"
-msgstr ""
+msgstr "Les options peuvent être utilisées pour filtrer les modèles :"
 
 #: ../../canaille get:1 43207b9c3af4494e9714cbf6ff2c473d
 msgid "Displays the matching models in JSON format in the standard output."
 msgstr ""
+"Affiche les modèles correspondants au format JSON sur la sortie standard."
 
 #: ../../canaille get authorizationcode:1 8f0d2152f80d49e8be0e904a850cacdd
 msgid "Search for authorizationcodes and display the matching models as JSON."
 msgstr ""
+"Recherche les codes d'autorisation et affiche les modèles correspondants en "
+"JSON."
 
 #: ../../canaille get client:1 bef20cbd666c49ff993234428725ddd3
 msgid "Search for clients and display the matching models as JSON."
-msgstr ""
+msgstr "Recherche les clients et affiche les modèles correspondants en JSON."
 
 #: ../../canaille get consent:1 173ac74323844b969fdb2ce7bb9632c7
 msgid "Search for consents and display the matching models as JSON."
 msgstr ""
+"Recherche les consentements et affiche les modèles correspondants en JSON."
 
 #: ../../canaille get group:1 8cc4308278af4625bc3d625a22ea5aa3
 msgid "Search for groups and display the matching models as JSON."
-msgstr ""
+msgstr "Recherche les groupes et affiche les modèles correspondants en JSON."
 
 #: ../../canaille get token:1 5307294d0c7a49d6ad21d0d505f11aab
 msgid "Search for tokens and display the matching models as JSON."
-msgstr ""
+msgstr "Recherche les jetons et affiche les modèles correspondants en JSON."
 
 #: ../../canaille get user:1 db01fd1777f4431793d3885c834b7680
 msgid "Search for users and display the matching models as JSON."
 msgstr ""
+"Recherche les utilisateurs et affiche les modèles correspondants en JSON."
 
 #: ../../canaille set:1 cec2b45a156b461faacc323380171e6f
 msgid "Update models."
-msgstr ""
+msgstr "Mise-à-jour des modèles."
 
 #: ../../canaille set:1 e5fc377719b04495a57faa42a87be86a
 msgid "The command takes an model ID and edit one or several attributes::"
 msgstr ""
+"La commande prend un identifiant de modèle et modifie un ou plusieurs "
+"attributs::"
 
 #: ../../canaille set:1 4e8bb50216e741f0bb44ecc365265370
 msgid "Displays the edited model in JSON format in the standard output."
-msgstr ""
+msgstr "Affiche le modèle modifié au format JSON sur la sortie standard."
 
 #: ../../canaille set authorizationcode:1 03d1eebac72e42b58b3aef5a429dee1b
 msgid ""
 "Update a authorizationcode and display the edited model in JSON format in "
 "the standard output."
 msgstr ""
+"Met à jour un code d'autorisation et affiche le modèle modifié au format "
+"JSON sur la sortie standard."
 
 #: ../../canaille delete authorizationcode:1 set
 #: ddbdb0447cd34e59b5e1c6f9f852c619 4abf794613df4e5c8472ce2a6e7dc989
 msgid "IDENTIFIER should be a authorizationcode id or authorization_code_id"
-msgstr ""
+msgstr "IDENTIFIER devrait être un code d'autorisation ou authorization_code_id"
 
 #: ../references/commands.rst:0 f2adfafce0754af79d2770a34dae5309
 #: 283f0c7412de4a97bb4e7954f008ff3e 46a35e9dcc73463db8ff772da3638b31
@@ -3761,7 +3800,7 @@ msgstr ""
 #: fea5ce77581940eabec5498e9347643b 7b57a6d1d40d40eaa51b6bba807602b5
 #: 0c5b1219cf2c4d97bc0cf7717c7b4ef3
 msgid "Arguments"
-msgstr ""
+msgstr "Paramètres"
 
 #: ../../canaille delete authorizationcode:1 client:1 consent:1 group:1 token:1
 #: user:1 set c0f3d574bd3640aca180dbe7695f53e9 61c7448c4a41497a8b923a636124b2be
@@ -3771,166 +3810,193 @@ msgstr ""
 #: 3b9c5a9904f74f9e8308a21d4ee8da42 a6ecc5cf2bb54dfe98d8553f7f49c5d6
 #: 6492e2a92bac400c990cc3182c8b1cb0 ca2ec2ca915e40438b1b18eb27c46670
 msgid "Required argument"
-msgstr ""
+msgstr "Paramètre obligatoire"
 
 #: ../../canaille set client:1 f2b0a1421fdf46d684fbe616a1771b62
 msgid ""
 "Update a client and display the edited model in JSON format in the standard "
 "output."
 msgstr ""
+"Mise-à-jour du client et affiche le modèle modifié au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille delete client:1 set 04f98ee9b5254ad58f59cba6824a2ef0
 #: db9ef2c5ffc342fe858b000bc05fbcc8
 msgid "IDENTIFIER should be a client id or client_id"
-msgstr ""
+msgstr "IDENTIFIER devrait être un identifiant client ou client_id"
 
 #: ../../canaille set consent:1 d8dbf4d59a0e4afcac26174972d6804c
 msgid ""
 "Update a consent and display the edited model in JSON format in the standard "
 "output."
 msgstr ""
+"Met à jour un consentement et affiche un modèle modifié au format JSON sur "
+"la sortie standard."
 
 #: ../../canaille delete consent:1 set ecded87087fb4018854b4d14a277df8f
 #: bfebd623b59243cb8efe4178994c8209
 msgid "IDENTIFIER should be a consent id or consent_id"
-msgstr ""
+msgstr "IDENTIFIER devrait être un identifiant de consentement ou consent_id"
 
 #: ../../canaille set group:1 1f36d3e6d60343989097aac3e4424ed4
 msgid ""
 "Update a group and display the edited model in JSON format in the standard "
 "output."
 msgstr ""
+"Met à jour un groupe et affiche le modèle modifié au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille delete group:1 set 772ff82f2ff54593b9ef8dc8e0af8d4f
 #: f5e84ce4a1dc4bcdbf5a660209e2d7d9
 msgid "IDENTIFIER should be a group id or display_name"
-msgstr ""
+msgstr "IDENTIFIER devrait être un identifiant de groupe ou display_name"
 
 #: ../../canaille set token:1 6534c48546d94e76a03c8ea1521c5cd4
 msgid ""
 "Update a token and display the edited model in JSON format in the standard "
 "output."
 msgstr ""
+"Met à jour un jeton et affiche un modèle modifié au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille delete token:1 set edecbc4f0f9946c48834bf53a5fbf0f8
 #: 3dacc05a5d1240ea812eb792ed737810
 msgid "IDENTIFIER should be a token id or token_id"
-msgstr ""
+msgstr "IDENTIFIER devrait être un identifiant de token ou token_id"
 
 #: ../../canaille set user:1 da1f8e5fba5f40ad8f20a017e886aa02
 msgid ""
 "Update a user and display the edited model in JSON format in the standard "
 "output."
 msgstr ""
+"Met à jour un utilisateur et affiche un modèle modifié au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille delete user:1 set bf3b446f2eda4b26a9ef702f4c6dd0b9
 #: 881aab67b4fb4777a160e9affc77be0c
 msgid "IDENTIFIER should be a user id or user_name"
-msgstr ""
+msgstr "IDENTIFIER devrait être un identifiant utilisateur ou user_name"
 
 #: ../../canaille create:1 563f23f330bc43ed951ca8812fa0c2fc
 msgid "Create models."
-msgstr ""
+msgstr "Crée des modèles."
 
 #: ../../canaille create:1 9d4c06295f304ac093848a3de8b716bb
 msgid "The model attributes can be passed as command options::"
 msgstr ""
+"Les attributs de modèle peuvent être passés comme options de la commande::"
 
 #: ../../canaille create:1 63735ef4eb924ae1ab2a244a018dc3be
 msgid "Displays the created model in JSON format in the standard output."
-msgstr ""
+msgstr "Affiche le modèle créé au format JSON sur la sortie standard."
 
 #: ../../canaille create authorizationcode:1 a96e7d0b6bed4a7bb8e0257b08600be1
 msgid ""
 "Create a new authorizationcode and display the created model in JSON format "
 "in the standard output."
 msgstr ""
+"Crée un nouveau code d'autorisation et affiche le modèle créé au format JSON "
+"sur la sortie standard."
 
 #: ../../canaille create client:1 41428e12aeae44479602c0f92a840d2c
 msgid ""
 "Create a new client and display the created model in JSON format in the "
 "standard output."
 msgstr ""
+"Crée un nouveau client et affiche le modèle créé au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille create consent:1 994455a2e844478bbffe389520751a33
 msgid ""
 "Create a new consent and display the created model in JSON format in the "
 "standard output."
 msgstr ""
+"Crée un nouveau consentement et affiche le modèle créé au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille create group:1 c3b6e110307b45c4b7e8ce07a66a4cf9
 msgid ""
 "Create a new group and display the created model in JSON format in the "
 "standard output."
 msgstr ""
+"Crée un nouveau groupe et affiche le modèle créé au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille create token:1 3774f3cf8635474fb6ba63ac1b57aa1b
 msgid ""
 "Create a new token and display the created model in JSON format in the "
 "standard output."
 msgstr ""
+"Crée un nouveau jeton et affiche le modèle créé au format JSON sur la sortie "
+"standard."
 
 #: ../../canaille create user:1 ae4b9357629c41f2bd3443048f12f734
 msgid ""
 "Create a new user and display the created model in JSON format in the "
 "standard output."
 msgstr ""
+"Crée un nouvel utilisateur et affiche le modèle créé au format JSON sur la "
+"sortie standard."
 
 #: ../../canaille delete:1 416fbf5d468742f6af7aa3afe222389c
 msgid "Delete models."
-msgstr ""
+msgstr "Supprime des modèles."
 
 #: ../../canaille delete:1 05ea570bc20b42c9943f9073f58c19f9
 msgid "The command takes a model ID and deletes it::"
-msgstr ""
+msgstr "La commande prend un identifiant de modèle et le supprime::"
 
 #: ../../canaille delete authorizationcode:1 e73a91f3f9d347d082621014cb60fd7f
 msgid "Delete a authorizationcode."
-msgstr ""
+msgstr "Supprime un code d'autorisation."
 
 #: ../../canaille delete client:1 d376d0088bff46ca817210c0ae84ccec
 msgid "Delete a client."
-msgstr ""
+msgstr "Supprime un client."
 
 #: ../../canaille delete consent:1 2cd2f844ba974bbaa3c2a84cd7fa1a68
 msgid "Delete a consent."
-msgstr ""
+msgstr "Supprime un consentement."
 
 #: ../../canaille delete group:1 bf80244164a54ae887b7caadf7914dc1
 msgid "Delete a group."
-msgstr ""
+msgstr "Supprime un groupe."
 
 #: ../../canaille delete token:1 3bf34916fadf48139dbcf439545c4276
 msgid "Delete a token."
-msgstr ""
+msgstr "Supprime un jeton."
 
 #: ../../canaille delete user:1 22a78b7140094b6ebe34988f5b37fec3
 msgid "Delete a user."
-msgstr ""
+msgstr "Supprime un utilisateur."
 
 #: ../references/configuration.rst:2 e23c84272ce74d1d87f815825cb4a488
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #: ../references/configuration.rst:5 90eeb71ed1294fd7bc6bf7f8c8ed5c8c
 msgid "Load the configuration"
-msgstr ""
+msgstr "Charge la configuration"
 
 #: ../references/configuration.rst:7 f2621ade958b4ffb9815fa8322ca64e5
 msgid ""
 "Canaille can be configured either by a environment variables, environment "
 "file, or by a configuration file."
 msgstr ""
+"Canaille peut être configuré soit par des variables d'environnement "
+"variables, un fichier d'environnement ou par un fichier de configuration."
 
 #: ../references/configuration.rst:10 37d9f514da104c6aa15bf83cb6303487
 msgid "Configuration file"
-msgstr ""
+msgstr "Fichier de configuration"
 
 #: ../references/configuration.rst:12 88467c2beaea43a19228f85c1f398494
 msgid ""
 "The configuration can be written in `toml` configuration file which path is "
 "passed in the :envvar:`CONFIG` environment variable."
 msgstr ""
+"La configuration peut être écrite dans un fichier de configuration `toml` "
+"dont le chemin est passé dans la variable d'environnement :envvar:`CONFIG`."
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:11
@@ -3940,17 +4006,19 @@ msgstr ""
 #: ee90ce99e8a4449fbb7cb28d559147b5 84cfcdaa79ef439cb013e00e3c4cd792
 #: cb517d061c4a4d16ae4a868999611801
 msgid "config.toml"
-msgstr ""
+msgstr "config.toml"
 
 #: ../references/configuration.rst:26 4f4e3b14ad79434b93659ff0d99e92d5
 msgid ""
 "You can have a look at the :ref:`example file <references/configuration:"
 "Example file>` for inspiration."
 msgstr ""
+"Regardez le :ref:`fichier d'exemple <references/configuration:Example file>` "
+"pour vous inspirer."
 
 #: ../references/configuration.rst:29 52e72a243eda4c6d8c20601ec11d21ea
 msgid "Environment variables"
-msgstr ""
+msgstr "Variables d'environnement"
 
 #: ../references/configuration.rst:31 5a5db358ab214e86b11ce341a71a4abb
 msgid ""
@@ -3960,6 +4028,11 @@ msgid ""
 "dev/latest/concepts/pydantic_settings/#parsing-environment-variable-"
 "values>`_."
 msgstr ""
+"De plus, les paramètres qui n'ont pas été définis dans le fichier de "
+"configuration peuvent être lus depuis les variables d'environnement. La "
+"façon dont les variables d'environnement sont analysées peut être lu dans la "
+"`documentation pydantic-settings <https://docs.pydantic.dev/latest/concepts/"
+"pydantic_settings/#parsing-environment-variable-values>`_."
 
 #: ../references/configuration.rst:36 9c85a8e682a74e9d9d8c3aa79e2d02ba
 msgid ""
@@ -3967,10 +4040,14 @@ msgid ""
 "double underscore: ``__``. For instance, the ``NAME`` var in the "
 "``CANAILLE`` section shown above is ``CANAILLE__NAME``."
 msgstr ""
+"Pour les variables d'environnement, le séparateur entre les sections et les "
+"variables est un double souligné (underscore) : ``__``. Par exemple, la "
+"variable ``NAME`` dans la section ``CANAILLE`` affichée au-dessus est "
+"``CANAILLE__NAME``."
 
 #: ../references/configuration.rst:40 26c9129f81c54386966cffd31c323f14
 msgid "Environment file"
-msgstr ""
+msgstr "Fichier d'environnement"
 
 #: ../references/configuration.rst:42 54056c93ac3b40e882bf20789d72fded
 msgid ""
@@ -3978,34 +4055,43 @@ msgid ""
 "path should be passed in the ``ENV_FILE`` environment variable. For "
 "instance, set ``ENV_FILE=.env`` to load a ``.env`` file."
 msgstr ""
+"N'importe quel variable d'environnement peut aussi être écrit dans un "
+"fichier d'environnement, dont le chemin devrait être passé dans la variable "
+"d'environnement ``ENV_FILE``. Par exemple, paramétrer ``ENV_FILE=.env`` pour "
+"charger un fichier ``.env``."
 
 #: ../references/configuration.rst:45 ba796d7f6bdb4ef5a32865f844ead63e
 msgid ".env"
-msgstr ""
+msgstr ".env"
 
 #: ../references/configuration.rst:63 3c2136aab27c4650acf0d25ced3636e2
 msgid "Configuration methods priority"
-msgstr ""
+msgstr "Priorité des méthodes de configuration"
 
 #: ../references/configuration.rst:65 6e85c7ec407f4fc68adff17adb6652b2
 msgid ""
 "If a same configuration option is defined by different ways, here is how "
 "Canaille will choose which one to use:"
 msgstr ""
+"Si une option de configuration est définie de multiples façons, voici "
+"comment Canaille sélectionnera celle à utiliser :"
 
 #: ../references/configuration.rst:67 8857be48d8f54be7aa8d350d5346887a
 msgid ""
 "environment vars have priority over the environment file and the "
 "configuration file;"
 msgstr ""
+"Les variables d'environnement sont prioritaires sur le fichier "
+"d'environnement et le fichier de configuration ;"
 
 #: ../references/configuration.rst:68 d946c715e1c34f55acfe97acc96cab68
 msgid "environment file will have priority over the configuration file."
 msgstr ""
+"Le fichier d'environnement est prioritaire sur le fichier de configuration."
 
 #: ../references/configuration.rst:71 369d25ff21b042fbabf703be7b66e138
 msgid "Parameters"
-msgstr ""
+msgstr "Paramètres"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:1 2226ecd0f90440d58a4089df736be757
@@ -4013,41 +4099,45 @@ msgid ""
 "The top-level namespace contains holds the configuration settings unrelated "
 "to Canaille."
 msgstr ""
+"L'espace de nom de plus haut niveau contient les paramètres de configuration "
+"sans rapport avec Canaille."
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:4 f53fd6edbc9148c781006d112688f022
 msgid "The configuration paramateres from the following libraries can be used:"
 msgstr ""
+"Les paramètres de configuration provenant des bibliothèques suivantes "
+"peuvent être utilisées :"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:6 0a1ba7d3d9d24c598640a87301549190
 msgid ":doc:`Flask <flask:config>`"
-msgstr ""
+msgstr ":doc:`Flask <flask:config>`"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:7 6288bee773454f6fb13d7c3c43c0acfe
 msgid ":doc:`Flask-WTF <flask-wtf:config>`"
-msgstr ""
+msgstr ":doc:`Flask-WTF <flask-wtf:config>`"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:8 8dc449c88676405aa689c232c0c17eaa
 msgid ":doc:`Flask-Babel <flask-babel:index>`"
-msgstr ""
+msgstr ":doc:`Flask-Babel <flask-babel:index>`"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:9 f0f21a8b4661490ea85203669e05fe2a
 msgid ":doc:`Authlib <authlib:flask/2/authorization-server>`"
-msgstr ""
+msgstr ":doc:`Authlib <authlib:flask/2/authorization-server>`"
 
 #: ../../docstring of canaille.app.configuration.RootSettings.DEBUG:1
 #: aee2c3dead184d3ab7655e0df3b9f66c
 msgid "The Flask :external:py:data:`DEBUG` configuration setting."
-msgstr ""
+msgstr "Le paramétrage de configuration de Flask :external:py:data:`DEBUG`."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.DEBUG:3
 #: da1c3a1146284b0597c12fab8ac713a9
 msgid "This enables debug options."
-msgstr ""
+msgstr "Cela active les options de débogage."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.DEBUG:7
 #: 22813fdeb3ad46729bf6d91f1a6a799b
@@ -4055,6 +4145,8 @@ msgid ""
 "This is useful for development but should be absolutely avoided in "
 "production environments."
 msgstr ""
+"C'est utile lors du développement mais devrait être absolument évité sur des "
+"environnements de production."
 
 #: ../../docstring of
 #: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:1
@@ -4062,37 +4154,41 @@ msgstr ""
 msgid ""
 "The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration setting."
 msgstr ""
+"Le paramétrage de la configuration de Flask "
+":external:py:data:`PREFERRED_URL_SCHEME`."
 
 #: ../../docstring of
 #: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:4
 #: 33538d7dda284e2da14720d9ecf5b81f
 msgid "This sets the url scheme by which canaille will be served."
-msgstr ""
+msgstr "Cela paramètre le schéma d'URL avec lequel Canaille sera servi."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.SECRET_KEY:1
 #: ca299cb1b21a4aff913e478725dee516
 msgid "The Flask :external:py:data:`SECRET_KEY` configuration setting."
 msgstr ""
+"Le paramétrage de la configuration de Flask :external:py:data:`SECRET_KEY`."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.SECRET_KEY:3
 #: e0e842ea56e7409da386c9fa3b44f45f
 msgid "You MUST change this."
-msgstr ""
+msgstr "Vous DEVEZ le changer."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.SERVER_NAME:1
 #: 8aaa9ab83eb245a996e82b25f47a18be
 msgid "The Flask :external:py:data:`SERVER_NAME` configuration setting."
 msgstr ""
+"Le paramétrage de la configuration de Flask :external:py:data:`SERVER_NAME`."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.SERVER_NAME:3
 #: a7a33ff93b6d471e9395fffab55b8497
 msgid "This sets domain name on which canaille will be served."
-msgstr ""
+msgstr "Cela paramètre le nom de domaine sur lequel Canaille sera servi."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.CoreSettings:1 49b29a899f644466acba509b0b3e9f00
 msgid "The settings from the ``CANAILLE`` namespace."
-msgstr ""
+msgstr "Les paramètres issus de l'espace de nom ``CANAILLE``."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.CoreSettings:3 63104b7fc45e4ef39f55f96c7a093f33
@@ -4100,17 +4196,21 @@ msgid ""
 "Those are all the configuration parameters that controls the behavior of "
 "Canaille."
 msgstr ""
+"Ce sont tous les paramètres de configuration contrôlant le comportement de "
+"Canaille."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ACL:1
 #: 1c134db317ea498d8b595a7a3b2f610e
 msgid ""
 "Mapping of permission groups. See :class:`ACLSettings` for more details."
 msgstr ""
+"Correspondance des groupes de droits. Voir :class:`ACLSettings` pour plus de "
+"détails."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ACL:3
 #: c2f72f20b39c4706b4e5ba01db79eb2c
 msgid "The ACL name can be freely chosen. For example::"
-msgstr ""
+msgstr "Le nom des ACL peut être choisi librement. Par exemple :"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1
 #: da428b02fcc6465ca83593370a8c52c1
