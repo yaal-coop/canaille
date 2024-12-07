@@ -1,13 +1,7 @@
-import pytest
+from scim2_tester import Status
 from scim2_tester import check_server
 
 
-def test_scim_tester(scim_client, backend):
-    # currently the tester create empty groups because it cannot handle references
-    # but LDAP does not support empty groups
-    # https://github.com/python-scim/scim2-tester/issues/15
-
-    if "ldap" in backend.__class__.__module__:
-        pytest.skip()
-
-    check_server(scim_client, raise_exceptions=True)
+def test_scim_tester(scim_client):
+    results = check_server(scim_client, raise_exceptions=True)
+    assert all(result.status == Status.SUCCESS for result in results)
