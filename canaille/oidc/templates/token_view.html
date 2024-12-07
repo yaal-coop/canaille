@@ -89,11 +89,18 @@
                     </tr>
                     <tr>
                         <td>{{ _("Issue date") }}</td>
-                        <td>{{ token.issue_date }}</td>
+                        <td>{{ token.issue_date|datetimeformat }}</td>
                     </tr>
                     <tr>
                         <td>{{ _("Expiration date") }}</td>
-                        <td>{{ token.expire_date }}</td>
+                        <td>
+                            {{ token.expire_date|datetimeformat }}
+                            {% if token.is_expired() %}
+                                <a class="item">
+                                    <div class="ui red horizontal label">{% trans %}This token has expired.{% endtrans %}</div>
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <td>{{ _("Revokation date") }}</td>
