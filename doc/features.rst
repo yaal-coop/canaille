@@ -273,7 +273,7 @@ Logging
 
 Canaille writes :attr:`logs <canaille.core.configuration.CoreSettings.LOGGING>` for every important event happening, to help administrators understand what is going on and debug funky situations.
 
-The following security events are logged with the tag [SECURITY] for easy retrieval :
+The following security events are logged with the tag [SECURITY] for easy retrieval:
 
 - Authentication attempt
 - Password update
