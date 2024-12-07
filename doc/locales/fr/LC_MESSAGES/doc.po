@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
 "PO-Revision-Date: 2024-12-07 14:58+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
@@ -3382,9 +3382,13 @@ msgstr ""
 "administrateurs à comprendre ce qui se passe et déboguer les cas bizarres."
 
 #: ../features.rst:276 a6282bdfca0b4e2c8ecfd02478d3623d
+#, fuzzy
+#| msgid ""
+#| "The following security events are logged with the tag [SECURITY] for easy "
+#| "retrieval :"
 msgid ""
 "The following security events are logged with the tag [SECURITY] for easy "
-"retrieval :"
+"retrieval:"
 msgstr ""
 "Les événements de sécurité suivants sont enregistrés avec l'étiquette "
 "[SECURITY] pour les retrouver facilement :"
@@ -3655,10 +3659,11 @@ msgid ""
 "following examples."
 msgstr ""
 "Généralement, une configuration doit être chargée par `Canaille`. Cela peut "
-"être réalisé par :ref:`une méthode de chargement de la configuration<"
-"references/configuration:Load the configuration>` disponible, mais la "
-"plupart du temps une variable d'environnement ``CONFIG`` est utilisée. Pour "
-"des raisons de lisibilité, elle est omise dans les exemples suivants."
+"être réalisé par :ref:`une méthode de chargement de la "
+"configuration<references/configuration:Load the configuration>` disponible, "
+"mais la plupart du temps une variable d'environnement ``CONFIG`` est "
+"utilisée. Pour des raisons de lisibilité, elle est omise dans les exemples "
+"suivants."
 
 #: ../../canaille check:1 e48a730fe9c94efcb41a272f5478ed19
 msgid "Test the configuration file."
@@ -3722,7 +3727,8 @@ msgstr ""
 
 #: ../../canaille populate users:1 b87d2b5df82a46e0a11fccb84a997ab9
 msgid "Populate the database with generated random users."
-msgstr "Remplit la base de données avec des utilisateurs générés aléatoirement."
+msgstr ""
+"Remplit la base de données avec des utilisateurs générés aléatoirement."
 
 #: ../../canaille get:1 ce45ebf26cf149d3b0fd406e1ed2b5a9
 msgid "Read information about models."
@@ -3790,7 +3796,8 @@ msgstr ""
 #: ../../canaille delete authorizationcode:1 set
 #: ddbdb0447cd34e59b5e1c6f9f852c619 4abf794613df4e5c8472ce2a6e7dc989
 msgid "IDENTIFIER should be a authorizationcode id or authorization_code_id"
-msgstr "IDENTIFIER devrait être un code d'autorisation ou authorization_code_id"
+msgstr ""
+"IDENTIFIER devrait être un code d'autorisation ou authorization_code_id"
 
 #: ../references/commands.rst:0 f2adfafce0754af79d2770a34dae5309
 #: 283f0c7412de4a97bb4e7954f008ff3e 46a35e9dcc73463db8ff772da3638b31
@@ -4095,16 +4102,23 @@ msgstr "Paramètres"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:1 2226ecd0f90440d58a4089df736be757
+#, fuzzy
+#| msgid ""
+#| "The top-level namespace contains holds the configuration settings "
+#| "unrelated to Canaille."
 msgid ""
-"The top-level namespace contains holds the configuration settings unrelated "
-"to Canaille."
+"The top-level namespace contains the configuration settings unrelated to "
+"Canaille."
 msgstr ""
 "L'espace de nom de plus haut niveau contient les paramètres de configuration "
 "sans rapport avec Canaille."
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:4 f53fd6edbc9148c781006d112688f022
-msgid "The configuration paramateres from the following libraries can be used:"
+#, fuzzy
+#| msgid ""
+#| "The configuration paramateres from the following libraries can be used:"
+msgid "The configuration parameters from the following libraries can be used:"
 msgstr ""
 "Les paramètres de configuration provenant des bibliothèques suivantes "
 "peuvent être utilisées :"
@@ -4154,8 +4168,8 @@ msgstr ""
 msgid ""
 "The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration setting."
 msgstr ""
-"Le paramétrage de la configuration de Flask "
-":external:py:data:`PREFERRED_URL_SCHEME`."
+"Le paramétrage de la configuration de Flask :external:py:data:"
+"`PREFERRED_URL_SCHEME`."
 
 #: ../../docstring of
 #: canaille.app.configuration.RootSettings.PREFERRED_URL_SCHEME:4
