@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
 "PO-Revision-Date: 2024-12-08 10:28+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -4210,7 +4210,7 @@ msgstr "Le nom des ACL peut être choisi librement. Par exemple :"
 #: ../../docstring of canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1
 #: da428b02fcc6465ca83593370a8c52c1
 msgid "Administration email contact."
-msgstr ""
+msgstr "Contact e-mail de l'administration."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ADMIN_EMAIL:3
 #: 80265b26992742b4a55529bb9514ef19
@@ -4218,6 +4218,9 @@ msgid ""
 "In certain special cases (example : questioning about password corruption), "
 "it is necessary to provide an administration contact email."
 msgstr ""
+"Dans certains cas particuliers (par exemple en cas de questionnement sur la "
+"corruption de mot de passe), il est nécessaire de fournir un e-mail de "
+"contact pour l'administration."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:1
@@ -4226,6 +4229,8 @@ msgid ""
 "If :py:data:`True`, users will need to click on a confirmation link sent by "
 "email when they want to add a new email."
 msgstr ""
+"Si :py:data:`True`, les utilisateurs auront besoin de cliquer sur un lien de "
+"confirmation envoyé par e-mail quand ils voudront en ajouter un nouveau."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:4
@@ -4235,6 +4240,9 @@ msgid ""
 "explicitly set to true and ``SMTP`` is disabled, the email field will be "
 "read-only."
 msgstr ""
+"Par défaut, cela est vrai si ``SMTP`` est configuré, sinon c'est faux. S'il "
+"est explicitement paramétré à `true` et que ``SMTP`` est désactivé, le champ "
+"e-mail sera en lecture seule."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK:1
@@ -4244,6 +4252,10 @@ msgid ""
 "compromission databases such as `HIBP <https://haveibeenpwned.com>`_ when "
 "users choose a new one."
 msgstr ""
+"Si :py:data:`True`, Canaille vérifiera si les mots de passe apparaissent "
+"dans des bases contenant des mots de passe compromis telles que `HIBP "
+"<https://haveibeenpwned.com>`_ quand les utilisateurs en choisiront un "
+"nouveau."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY:1
@@ -4252,6 +4264,8 @@ msgid ""
 "If :py:data:`False`, then users cannot ask for a password recovery link by "
 "email."
 msgstr ""
+"Si :py:data:`False`, alors les utilisateurs ne peuvent pas demander un lien "
+"de récupération de mot de passe par e-mail."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:1
@@ -4259,6 +4273,8 @@ msgstr ""
 msgid ""
 "If :py:data:`True`, then users can freely create an account at this instance."
 msgstr ""
+"Si :py:data:`True`, les utilisateurs peuvent librement créer un compte sur "
+"cette instance."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION:4
@@ -4267,6 +4283,8 @@ msgid ""
 "If email verification is available, users must confirm their email before "
 "the account is created."
 msgstr ""
+"Si la vérification d'e-mail est disponible, les utilisateurs doivent "
+"confirmer leur e-mail avant que le compte ne soit créé."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.FAVICON:1
 #: ad1dce6bc9dd49608f1556cebf0f44fe
@@ -4276,7 +4294,7 @@ msgstr "Votre favicon."
 #: ../../docstring of canaille.core.configuration.CoreSettings.FAVICON:3
 #: 36086dc79c1b485fa6594ef442028011
 msgid "If unset and :attr:`LOGO` is set, then the logo will be used."
-msgstr ""
+msgstr "Si non paramétré et :attr:`LOGO` renseigné, alors le logo sera utilisé."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:1
@@ -4286,6 +4304,9 @@ msgid ""
 "message is shown indicating that the password is wrong, but does not give a "
 "clue whether the login exists or not."
 msgstr ""
+"Si :py:data:`True`, quand les utilisateurs essaient de se connecter avec un "
+"identifiant invalide, un message indique que le mot de passe est incorrect "
+"mais ne fournit pas d'indice si l'identifiant existe ou non."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:5
@@ -4294,44 +4315,52 @@ msgid ""
 "If :py:data:`False`, when a user tries to sign in with an invalid login, a "
 "message is shown indicating that the login does not exist."
 msgstr ""
+"Si :py:data:`False`, quand un utilisateur essaie de se connecter avec un "
+"identifiant invalide, un message indique que l'identifiant n'existe pas."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.HTMX:1
 #: fca447a64b184732b6664c3c20ade0ce
 msgid "Accelerates webpages loading with asynchronous requests."
-msgstr ""
+msgstr "Accélère le chargement des pages web grâce à des requêtes asynchrones."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:1
 #: c3295518c8ce46359cb5fc8012267002
 msgid "The validity duration of registration invitations, in seconds."
-msgstr ""
+msgstr "Durée de validité des invitations, en secondes."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.INVITATION_EXPIRATION:3
 #: cca98367f271454987d915c9da1deecc
 msgid "Defaults to 2 days."
-msgstr ""
+msgstr "Deux jours par défaut."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.JAVASCRIPT:1
 #: f10d5dbbd4054185b5caff2aa7b4602c
 msgid "Enables Javascript to smooth the user experience."
-msgstr ""
+msgstr "Active Javascript pour améliorer l'expérience utilisateur."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LANGUAGE:1
 #: caa7570c19d343d8a5350b38ab890a08
 msgid "If a language code is set, it will be used for every user."
 msgstr ""
+"Si un code de langue est paramétré, il sera utilisé pour tous les "
+"utilisateurs."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LANGUAGE:3
 #: 2f02910686974fa68a6b3af15a9e1c42
 msgid "If unset, the language is guessed according to the users browser."
 msgstr ""
+"Si non renseigné, la langue est déterminée selon les préférences navigateur "
+"des utilisateurs."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:1
 #: aad50a21706943fda6f1cde1c79762fb
 msgid ""
 "Configures the logging output using the python logging configuration format:"
 msgstr ""
+"Configure l'enregistrement des journaux en utilisant le format de "
+"configuration des journaux Python :"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:3
 #: 75bb9ce97f514d3eb50ed11a5fcaf986
