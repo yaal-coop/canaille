@@ -7,4 +7,5 @@ Tutorial
    install
    deployment
    databases
+   provisioning
    troubleshooting
