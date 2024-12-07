@@ -3158,7 +3158,7 @@ msgstr ""
 
 #: ../features.rst:276
 #: a6282bdfca0b4e2c8ecfd02478d3623d
-msgid "The following security events are logged with the tag [SECURITY] for easy retrieval :"
+msgid "The following security events are logged with the tag [SECURITY] for easy retrieval:"
 msgstr ""
 
 #: ../features.rst:278
@@ -3850,12 +3850,12 @@ msgstr ""
 
 #: ../../canaille/app/configuration.py:docstring of canaille.app.configuration.RootSettings:1
 #: 2226ecd0f90440d58a4089df736be757
-msgid "The top-level namespace contains holds the configuration settings unrelated to Canaille."
+msgid "The top-level namespace contains the configuration settings unrelated to Canaille."
 msgstr ""
 
 #: ../../canaille/app/configuration.py:docstring of canaille.app.configuration.RootSettings:4
 #: f53fd6edbc9148c781006d112688f022
-msgid "The configuration paramateres from the following libraries can be used:"
+msgid "The configuration parameters from the following libraries can be used:"
 msgstr ""
 
 #: ../../canaille/app/configuration.py:docstring of canaille.app.configuration.RootSettings:6
