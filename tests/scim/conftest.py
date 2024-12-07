@@ -71,4 +71,5 @@ def scim_client(app, oidc_client, oidc_token):
         Client(app),
         scim_prefix=bp.url_prefix,
         environ={"headers": {"Authorization": f"Bearer {oidc_token.access_token}"}},
+        check_response_status_codes=False,
     )

@@ -48,9 +48,52 @@ OpenID Connect
 SCIM
 ----
 
-- ❌ `RFC7642: System for Cross-domain Identity Management: Definitions, Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/rfc7642>`_
-- ❌ `RFC7643: System for Cross-domain Identity Management: Core Schema <https://www.rfc-editor.org/rfc/rfc7642>`_
-- ❌ `RFC7644: System for Cross-domain Identity Management: Protocol <https://www.rfc-editor.org/rfc/rfc7642>`_
+Canaille provides a basic SCIM server implementation.
+
+- 🟠 `RFC7642: System for Cross-domain Identity Management: Definitions, Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/rfc7642>`_
+- 🟠 `RFC7643: System for Cross-domain Identity Management: Core Schema <https://www.rfc-editor.org/rfc/rfc7642>`_
+- 🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://www.rfc-editor.org/rfc/rfc7642>`_
+
+Client-side implementation (i.e. broadcasting changes on users and groups among clients) and advanced features will be implemented in the future.
+
+What's implemented
+~~~~~~~~~~~~~~~~~~
+
+Endpoints:
+
+- /Users (GET, POST)
+- /Users/<user_id> (GET, PUT, DELETE)
+- /Groups (GET, POST)
+- /Groups/<user_id> (GET, PUT, DELETE)
+- /ServiceProviderConfig (GET)
+- /Schemas (GET)
+- /Schemas/<schema_id> (GET)
+- /ResourceTypes (GET)
+- /ResourceTypes/<resource_type_id> (GET)
+
+Features:
+
+- :rfc:`pagination <7644#section-3.4.2.4>`
+
+.. _scim_unimplemented:
+
+What is not implemented yet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Endpoints:
+
+- /Users (PATCH)
+- /Groups (PATCH)
+- :rfc:`/Me <7644#section-3.11>` (GET, POST, PUT, PATCH, DELETE)
+- :rfc:`/Bulk <7644#section-3.11>` (POST)
+- :rfc:`/.search <7644#section-3.4.3>` (POST)
+
+Features
+
+- :rfc:`filtering <7644#section-3.4.2.2>`
+- :rfc:`sorting <7644#section-3.4.2.3>`
+- :rfc:`attributes selection <7644#section-3.4.2.5>`
+- :rfc:`ETags <7644#section-3.14>`
 
 Comparison with other providers
 ===============================
@@ -64,7 +107,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
 |               +-------+-----------+------+------+------+------+------+------+-------+
 |               | FLOSS | Language  | LOC  | OIDC | SAML | CAS  | SCIM | LDAP | SQL   |
 +===============+=======+===========+======+======+======+======+======+======+=======+
-| Canaille      | ✅    | Python    | 10k  | ✅   | ❌   | ❌   | ❌   | ✅   | ✅    |
+| Canaille      | ✅    | Python    | 10k  | ✅   | ❌   | ❌   | 🟠   | ✅   | ✅    |
 +---------------+-------+-----------+------+------+------+------+------+------+-------+
 | `Auth0`_      | ❌    | ❔        | ❔   | ✅   | ✅   | ❌   | ✅   | ✅   | ❔    |
 +---------------+-------+-----------+------+------+------+------+------+------+-------+
