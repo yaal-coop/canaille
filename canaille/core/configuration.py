@@ -81,7 +81,9 @@ class ACLSettings(BaseModel):
 
     PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
     """A list of :class:`Permission` users in the access control will be able
-    to manage. For example::
+    to manage. For example:
+
+    ..code-block:: toml
 
         PERMISSIONS = [
             "manage_users",
@@ -89,7 +91,8 @@ class ACLSettings(BaseModel):
             "manage_oidc",
             "delete_account",
             "impersonate_users",
-        ]"""
+        ]
+    """
 
     READ: list[str] = [
         "user_name",
@@ -265,7 +268,9 @@ class CoreSettings(BaseModel):
     - If this is a :class:`str`, it is expected to be a file path that will be passed
       to :func:`logging.config.fileConfig`.
 
-    For example::
+    For example:
+
+    ..code-block:: toml
 
         [CANAILLE.LOGGING]
         version = 1
@@ -288,7 +293,9 @@ class CoreSettings(BaseModel):
     ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
     """Mapping of permission groups. See :class:`ACLSettings` for more details.
 
-    The ACL name can be freely chosen. For example::
+    The ACL name can be freely chosen. For example:
+
+    ..code-block:: toml
 
         [CANAILLE.ACL.DEFAULT]
         PERMISSIONS = ["edit_self", "use_oidc"]

@@ -9,7 +9,9 @@ class SQLSettings(BaseModel):
 
     DATABASE_URI: str
     """The SQL server URI.
-    For example::
+    For example:
+
+    ..code-block:: toml
 
         DATABASE_URI = "postgresql://user:password@localhost/database_name"
     """

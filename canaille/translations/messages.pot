@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-08 11:27+0100\n"
+"POT-Creation-Date: 2024-12-08 11:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -806,8 +806,8 @@ msgid ""
 msgstr ""
 
 #: canaille/core/templates/invite.html:74
-#: canaille/oidc/templates/token_view.html:123
-#: canaille/oidc/templates/token_view.html:134
+#: canaille/oidc/templates/token_view.html:130
+#: canaille/oidc/templates/token_view.html:141
 msgid "Copy"
 msgstr ""
 
@@ -1822,31 +1822,35 @@ msgstr ""
 msgid "Expiration date"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:99
+#: canaille/oidc/templates/token_view.html:100
+msgid "This token has expired."
+msgstr ""
+
+#: canaille/oidc/templates/token_view.html:106
 msgid "Revokation date"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:105
+#: canaille/oidc/templates/token_view.html:112
 msgid "Revoke token"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:108
+#: canaille/oidc/templates/token_view.html:115
 msgid "This token has not been revoked"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:114
+#: canaille/oidc/templates/token_view.html:121
 msgid "Token type"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:118
+#: canaille/oidc/templates/token_view.html:125
 msgid "Access token"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:129
+#: canaille/oidc/templates/token_view.html:136
 msgid "Refresh token"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:131
+#: canaille/oidc/templates/token_view.html:138
 msgid "No refresh token"
 msgstr ""
 
