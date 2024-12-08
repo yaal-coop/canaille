@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
 "PO-Revision-Date: 2024-12-08 11:22+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -4370,6 +4370,10 @@ msgid ""
 "configuration.RootSettings.DEBUG` setting is :py:data:`True`, else this is :"
 "py:data:`~logging.INFO`"
 msgstr ""
+"Si :py:data:`None`, tout est écrit sur la sortie d'erreur standard. Le "
+"niveau de verbosité est :py:data:`~logging.DEBUG` si le paramètre "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` est :py:data:`True`, "
+"sinon elle est:py:data:`~logging.INFO`"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:6
 #: a8552f90740e4287bd06aab66b4dc85d
@@ -4391,7 +4395,7 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:10
 #: edd8ec5aad1047688bbbc5613d9896f5
 msgid "For example::"
-msgstr ""
+msgstr "Par exemple :"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1
 #: 40c46d3aa7bb4e81a857540a99eb3df9
@@ -4416,18 +4420,21 @@ msgid ""
 "characters. If the value entered is 0 or None, or greater than 4096, then "
 "4096 will be retained."
 msgstr ""
+"passlib est utilisée la base de données SQL et contient une limite à 4096 "
+"caractères. Si la valeur saise est 0 ou None, ou supérieur à 4096, alors la "
+"valeur prise en compte sera 4096."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:1
 #: 2455bc17b90543f18e8d447f48d22c1f
 msgid "Minimum length for user password."
-msgstr ""
+msgstr "Longueur minimum pour le mot de passe utilisateur."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:3
 #: 005b934e855440ae9fd177eb40ccb253
 msgid "It is possible not to set a minimum, by entering None or 0."
-msgstr ""
+msgstr "Il est possible de ne pas choisir de minimum en saisisant None ou 0."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.NAME:1
 #: befe22deda144065bcee73d9d0404dea
