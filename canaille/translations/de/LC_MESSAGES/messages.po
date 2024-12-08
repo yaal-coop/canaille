@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-08 11:27+0100\n"
+"POT-Creation-Date: 2024-12-08 11:32+0100\n"
 "PO-Revision-Date: 2024-06-26 11:09+0000\n"
 "Last-Translator: Sascha <swi@thechameleonway.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -866,8 +866,8 @@ msgstr ""
 "zu übermitteln:"
 
 #: canaille/core/templates/invite.html:74
-#: canaille/oidc/templates/token_view.html:123
-#: canaille/oidc/templates/token_view.html:134
+#: canaille/oidc/templates/token_view.html:130
+#: canaille/oidc/templates/token_view.html:141
 msgid "Copy"
 msgstr "Kopieren"
 
@@ -1968,31 +1968,37 @@ msgstr "Ausgabedatum"
 msgid "Expiration date"
 msgstr "Verfallsdatum"
 
-#: canaille/oidc/templates/token_view.html:99
+#: canaille/oidc/templates/token_view.html:100
+#, fuzzy
+#| msgid "This token has not been revoked"
+msgid "This token has expired."
+msgstr "Dieses Token wurde nicht widerrufen"
+
+#: canaille/oidc/templates/token_view.html:106
 msgid "Revokation date"
 msgstr "Widerrufsdatum"
 
-#: canaille/oidc/templates/token_view.html:105
+#: canaille/oidc/templates/token_view.html:112
 msgid "Revoke token"
 msgstr "Token widerrufen"
 
-#: canaille/oidc/templates/token_view.html:108
+#: canaille/oidc/templates/token_view.html:115
 msgid "This token has not been revoked"
 msgstr "Dieses Token wurde nicht widerrufen"
 
-#: canaille/oidc/templates/token_view.html:114
+#: canaille/oidc/templates/token_view.html:121
 msgid "Token type"
 msgstr "Token-Typ"
 
-#: canaille/oidc/templates/token_view.html:118
+#: canaille/oidc/templates/token_view.html:125
 msgid "Access token"
 msgstr "Zugangstoken"
 
-#: canaille/oidc/templates/token_view.html:129
+#: canaille/oidc/templates/token_view.html:136
 msgid "Refresh token"
 msgstr "Token aktualisieren"
 
-#: canaille/oidc/templates/token_view.html:131
+#: canaille/oidc/templates/token_view.html:138
 #, fuzzy
 #| msgid "Refresh token"
 msgid "No refresh token"
