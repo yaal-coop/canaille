@@ -307,16 +307,16 @@ class CoreSettings(BaseModel):
     """
 
     MIN_PASSWORD_LENGTH: int = 8
-    """Minimum length for user password.
+    """User password minimum length.
 
-    It is possible not to set a minimum, by entering None or 0.
+    If 0 or :data:`None`, password won't have a minimum length.
     """
 
     MAX_PASSWORD_LENGTH: int = 1000
-    """Maximum length for user password.
+    """User password maximum length.
 
-    There is a technical limit with passlib used by sql database of 4096
-    characters. If the value entered is 0 or None, or greater than 4096,
+    There is a technical of 4096 characters with the SQL backend.
+    If the value is 0, :data:`None`, or greater than 4096,
     then 4096 will be retained.
     """
 
