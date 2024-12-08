@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
 "PO-Revision-Date: 2024-12-08 19:06+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
@@ -4227,8 +4227,8 @@ msgid ""
 "[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
 "[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
 msgstr ""
-"[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = ["
-"\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
+"[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
+"[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ACL:12
 #: 56d15bcfdbcc4556a3848702228b970f
@@ -4400,9 +4400,9 @@ msgid ""
 "`~logging.INFO`."
 msgstr ""
 "Si :py:data:`None`, tout est écrit sur la sortie d'erreur standard. Le "
-"niveau de verbosité est :py:data:`~logging.DEBUG` si le paramètre "
-":attr:`~canaille.app.configuration.RootSettings.DEBUG` est :py:data:`True`, "
-"sinon elle est:py:data:`~logging."
+"niveau de verbosité est :py:data:`~logging.DEBUG` si le paramètre :attr:"
+"`~canaille.app.configuration.RootSettings.DEBUG` est :py:data:`True`, sinon "
+"elle est:py:data:`~logging."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:6
 #: 44c6ded187ab4e44aac024c2cdb85303
@@ -4633,7 +4633,7 @@ msgstr ""
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.ACLSettings:3 733df203b313404eb417f40ed8708a2e
 msgid ""
-"You can define access controls that define what users can do on canaille An "
+"You can define access controls that define what users can do on canaille. An "
 "access control consists in a :attr:`FILTER` to match users, a list of :attr:"
 "`PERMISSIONS` matched users will be able to perform, and fields users will "
 "be able to :attr:`READ` and :attr:`WRITE`. Users matching several filters "
@@ -4734,8 +4734,8 @@ msgid ""
 "If used with :attr:`~canaille.core.configuration.Permission.MANAGE_USERS`, "
 "users can delete any account."
 msgstr ""
-"Si utilisé avec :attr:`~canaille.core.configuration.Permission.MANAGE_USERS`"
-", les utilisateurs peuvent supprimer n'importe quel compte."
+"Si utilisé avec :attr:`~canaille.core.configuration.Permission."
+"MANAGE_USERS`, les utilisateurs peuvent supprimer n'importe quel compte."
 
 #: ../../docstring of canaille.core.configuration.Permission.EDIT_SELF:1
 #: 1f716bb0d0ec481ab5dff0a02f5c9e37
@@ -5099,8 +5099,8 @@ msgid ""
 "BackendModel.save` method is called."
 msgstr ""
 "Un identifiant unique pour une ressource SCIM tel que définie par le "
-"fournisseur du service. Id sera :py:data:`None` jusqu'à ce que la méthode "
-":meth:`~canaille.backends.models.BackendModel.save` soit appelée."
+"fournisseur du service. Id sera :py:data:`None` jusqu'à ce que la méthode :"
+"meth:`~canaille.backends.models.BackendModel.save` soit appelée."
 
 #: ../../docstring of canaille.backends.models.Model.id:5
 #: fe3e4be3b44b43ebbbd11fe81fdc2613
@@ -5116,8 +5116,8 @@ msgid ""
 "\"readOnly\", and a \"returned\" characteristic of \"always\".  See Section "
 "9 for additional considerations regarding privacy."
 msgstr ""
-"Chaque représentation de la ressource DOIT inclure une valeur non vide \"id\""
-". Cet identifiant DOIT être unique dans l'ensemble des ressources du "
+"Chaque représentation de la ressource DOIT inclure une valeur non vide "
+"\"id\". Cet identifiant DOIT être unique dans l'ensemble des ressources du "
 "fournisseur de service SCIM. L'identifiant DOIT être stable et non "
 "réassignable et ne pas change quand la même ressource est retournée dans les "
 "requêtes suivantes. La valeur de l'attribut \"id\" est toujours produite par "
