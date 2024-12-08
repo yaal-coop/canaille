@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-06 14:57+0100\n"
+"POT-Creation-Date: 2024-12-08 11:27+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -857,7 +857,7 @@ msgstr "Crear grupo"
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
 #: canaille/core/templates/profile_settings.html:166
-#: canaille/oidc/templates/client_edit.html:78
+#: canaille/oidc/templates/client_edit.html:81
 msgid "Edit"
 msgstr "Editar"
 
@@ -1704,7 +1704,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:73
 #: canaille/oidc/templates/partial/authorization_list.html:31
 #: canaille/oidc/templates/partial/client_list.html:35
-#: canaille/oidc/templates/partial/token_list.html:46
+#: canaille/oidc/templates/partial/token_list.html:45
 msgid "No item matches your request"
 msgstr ""
 
@@ -1713,7 +1713,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:75
 #: canaille/oidc/templates/partial/authorization_list.html:33
 #: canaille/oidc/templates/partial/client_list.html:37
-#: canaille/oidc/templates/partial/token_list.html:48
+#: canaille/oidc/templates/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
 msgstr ""
 
@@ -1722,7 +1722,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:78
 #: canaille/oidc/templates/partial/authorization_list.html:36
 #: canaille/oidc/templates/partial/client_list.html:40
-#: canaille/oidc/templates/partial/token_list.html:51
+#: canaille/oidc/templates/partial/token_list.html:50
 #: canaille/oidc/templates/preconsent_list.html:91
 #, fuzzy
 msgid "There is nothing here"
@@ -1752,23 +1752,23 @@ msgstr "Número de teléfono."
 msgid "Groups you belong to."
 msgstr "Grupos ós que pertences."
 
-#: canaille/oidc/endpoints/clients.py:46
+#: canaille/oidc/endpoints/clients.py:47
 msgid "The client has not been added. Please check your information."
 msgstr "O cliente non foi engadido. Comproba a información."
 
-#: canaille/oidc/endpoints/clients.py:81
+#: canaille/oidc/endpoints/clients.py:82
 msgid "The client has been created."
 msgstr "O cliente foi creado."
 
-#: canaille/oidc/endpoints/clients.py:114
+#: canaille/oidc/endpoints/clients.py:118
 msgid "The client has not been edited. Please check your information."
 msgstr "O cliente non foi actualizado. Comproba a información."
 
-#: canaille/oidc/endpoints/clients.py:144
+#: canaille/oidc/endpoints/clients.py:148
 msgid "The client has been edited."
 msgstr "O cliente foi actualizado."
 
-#: canaille/oidc/endpoints/clients.py:152
+#: canaille/oidc/endpoints/clients.py:156
 msgid "The client has been deleted."
 msgstr "O cliente foi eliminado."
 
@@ -1939,6 +1939,12 @@ msgid "Issued at"
 msgstr "Emitido en"
 
 #: canaille/oidc/templates/client_edit.html:75
+#, fuzzy
+#| msgid "Revoke token"
+msgid "New token"
+msgstr "Revogar token"
+
+#: canaille/oidc/templates/client_edit.html:78
 msgid "Delete the client"
 msgstr "Eliminar o cliente"
 

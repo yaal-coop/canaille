@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-06 14:57+0100\n"
+"POT-Creation-Date: 2024-12-08 11:27+0100\n"
 "PO-Revision-Date: 2024-11-27 19:01+0000\n"
 "Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -796,7 +796,7 @@ msgstr "Crear grupo"
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
 #: canaille/core/templates/profile_settings.html:166
-#: canaille/oidc/templates/client_edit.html:78
+#: canaille/oidc/templates/client_edit.html:81
 msgid "Edit"
 msgstr "Editar"
 
@@ -1608,7 +1608,7 @@ msgstr "Los grupos deben tener al menos un miembro"
 #: canaille/core/templates/partial/users.html:73
 #: canaille/oidc/templates/partial/authorization_list.html:31
 #: canaille/oidc/templates/partial/client_list.html:35
-#: canaille/oidc/templates/partial/token_list.html:46
+#: canaille/oidc/templates/partial/token_list.html:45
 msgid "No item matches your request"
 msgstr "Ningún elemento coincide con tu solicitud"
 
@@ -1617,7 +1617,7 @@ msgstr "Ningún elemento coincide con tu solicitud"
 #: canaille/core/templates/partial/users.html:75
 #: canaille/oidc/templates/partial/authorization_list.html:33
 #: canaille/oidc/templates/partial/client_list.html:37
-#: canaille/oidc/templates/partial/token_list.html:48
+#: canaille/oidc/templates/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
 msgstr "¿Quizás intentarlo con criterios diferentes?"
 
@@ -1626,7 +1626,7 @@ msgstr "¿Quizás intentarlo con criterios diferentes?"
 #: canaille/core/templates/partial/users.html:78
 #: canaille/oidc/templates/partial/authorization_list.html:36
 #: canaille/oidc/templates/partial/client_list.html:40
-#: canaille/oidc/templates/partial/token_list.html:51
+#: canaille/oidc/templates/partial/token_list.html:50
 #: canaille/oidc/templates/preconsent_list.html:91
 msgid "There is nothing here"
 msgstr "No hay nada aquí"
@@ -1655,23 +1655,23 @@ msgstr "Número de teléfono."
 msgid "Groups you belong to."
 msgstr "Grupos a los que perteneces."
 
-#: canaille/oidc/endpoints/clients.py:46
+#: canaille/oidc/endpoints/clients.py:47
 msgid "The client has not been added. Please check your information."
 msgstr "El cliente no ha sido añadido. Comprueba tu información."
 
-#: canaille/oidc/endpoints/clients.py:81
+#: canaille/oidc/endpoints/clients.py:82
 msgid "The client has been created."
 msgstr "El cliente ha sido creado."
 
-#: canaille/oidc/endpoints/clients.py:114
+#: canaille/oidc/endpoints/clients.py:118
 msgid "The client has not been edited. Please check your information."
 msgstr "El cliente no ha sido editado. Comprueba tu información."
 
-#: canaille/oidc/endpoints/clients.py:144
+#: canaille/oidc/endpoints/clients.py:148
 msgid "The client has been edited."
 msgstr "El cliente ha sido editado."
 
-#: canaille/oidc/endpoints/clients.py:152
+#: canaille/oidc/endpoints/clients.py:156
 msgid "The client has been deleted."
 msgstr "El cliente ha sido eliminado."
 
@@ -1838,6 +1838,12 @@ msgid "Issued at"
 msgstr "Emitido en"
 
 #: canaille/oidc/templates/client_edit.html:75
+#, fuzzy
+#| msgid "View a token"
+msgid "New token"
+msgstr "Ver un token"
+
+#: canaille/oidc/templates/client_edit.html:78
 msgid "Delete the client"
 msgstr "Eliminar el cliente"
 
@@ -2294,9 +2300,6 @@ msgstr[1] "%(nb_items_formatted)s elementos"
 #~ "%(site_name)s. Para proceder, haz clic en el botón «Crear mi cuenta» a "
 #~ "continuación y sigue las instrucciones.\n"
 #~ "                   "
-
-#~ msgid "View a token"
-#~ msgstr "Ver un token"
 
 #~ msgid "Lifetime"
 #~ msgstr "Duración"
