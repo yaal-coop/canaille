@@ -15,8 +15,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class RootSettings(BaseSettings):
-    """The top-level namespace contains the configuration settings
-    unrelated to Canaille.
+    """The top-level namespace contains the configuration settings unrelated to
+    Canaille.
 
     The configuration parameters from the following libraries can be used:
 

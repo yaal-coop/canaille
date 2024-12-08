@@ -81,17 +81,13 @@ class ACLSettings(BaseModel):
 
     PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
     """A list of :class:`Permission` users in the access control will be able
-    to manage. For example:
+    to manage.
+
+    For example:
 
     ..code-block:: toml
 
-        PERMISSIONS = [
-            "manage_users",
-            "manage_groups",
-            "manage_oidc",
-            "delete_account",
-            "impersonate_users",
-        ]
+        PERMISSIONS = ["manage_users", "manage_groups", "manage_oidc", "delete_account", "impersonate_users"]
     """
 
     READ: list[str] = [
