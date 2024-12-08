@@ -73,7 +73,7 @@ class Permission(str, Enum):
 class ACLSettings(BaseModel):
     """Access Control List settings. Belong in the ``CANAILLE.ACL`` namespace.
 
-    You can define access controls that define what users can do on canaille
+    You can define access controls that define what users can do on canaille.
     An access control consists in a :attr:`FILTER` to match users, a list of :attr:`PERMISSIONS`
     matched users will be able to perform, and fields users will be able
     to :attr:`READ` and :attr:`WRITE`. Users matching several filters will cumulate permissions.
