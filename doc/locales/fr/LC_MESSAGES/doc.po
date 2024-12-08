@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
-"PO-Revision-Date: 2024-12-08 19:06+0000\n"
+"PO-Revision-Date: 2024-12-08 22:40+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -4660,6 +4660,9 @@ msgid ""
 "attribute values. All the values must be matched for the user to be part of "
 "the access control."
 msgstr ""
+"une correspondance où les clefs sont des noms d'attribts utilisateur et les "
+"valeurs sont les valeurs d'attribut utilisateur. Toutes les valeurs doivent "
+"correspondre à l'utilisateur pour faire partie du contrôle d'accès."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:7
 #: 2ed07fdd7da94cfd90167b2d1f4cb4eb
@@ -4667,6 +4670,9 @@ msgid ""
 "a list of those mappings. If a user values match at least one mapping, then "
 "the user will be part of the access control"
 msgstr ""
+"une liste de ces correspondances. Si les valeurs d'un utilisateur "
+"correspondent au moins à une de ces correspondances, alors l'utilisateur "
+"fera partie du contrôle d'accès"
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:10
 #: 657a11f5921947b88bfc47cf8affbe00
@@ -5010,7 +5016,7 @@ msgstr "La classe d'objet pour créer de nouveaux utilisateurs."
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:1
 #: 228fcd64b4704fa0b4ea52ab85f48f08
 msgid "Filter to match users on sign in."
-msgstr ""
+msgstr "Filtre de correspondance des utilisateurs lors de la connexion."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:3
@@ -5063,7 +5069,7 @@ msgstr "Bases : :py:class:`object`"
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.BackendModel:1 664ca63468e648ddb0b2f2f957139ae9
 msgid "The backend model abstract class."
-msgstr ""
+msgstr "La classe abstraite du modèle backend."
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.BackendModel:3 e16c978524f44a57affe6f2e15fdb5e2
@@ -5090,6 +5096,8 @@ msgid ""
 "The :class:`~datetime.datetime` that the resource was added to the service "
 "provider."
 msgstr ""
+"La date ( :class:`~datetime.datetime`) à laquelle la ressource a été ajoutée "
+"par le fournisseur de service."
 
 #: ../../docstring of canaille.backends.models.Model.id:1
 #: 112d9fd0a032418682875fe5f5685fc8
@@ -5133,6 +5141,8 @@ msgstr ""
 msgid ""
 "Returns a unique value that will be used to identify the model instance."
 msgstr ""
+"Retourne une valeur unique qui sera utilisée pour identifier l'instance du "
+"modèle."
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.Model.identifier:4 570af0c54d8a4b9ca5e1180a154578c6
@@ -5140,6 +5150,8 @@ msgid ""
 "This value will be used in URLs in canaille, so it should be unique and "
 "short."
 msgstr ""
+"Cette valeur sera utilisée dans les URL de Canaille, il devrait donc être "
+"unique et court."
 
 #: ../../docstring of canaille.backends.models.Model.last_modified:1
 #: a64d636f5ae843698bae18cbc27adae5
@@ -5147,6 +5159,8 @@ msgid ""
 "The most recent :class:`~datetime.datetime` that the details of this "
 "resource were updated at the service provider."
 msgstr ""
+"La date la plus récente (:class:`~datetime.datetime`) à laquelle les détails "
+"de cette ressource a été mise-à-jour par le fournisseur de service."
 
 #: ../../docstring of canaille.backends.models.Model.last_modified:4
 #: 1478742051c64d3c8e8cb44b101c2337
@@ -5155,6 +5169,8 @@ msgid ""
 "value MUST be the same as the value of :attr:`~canaille.backends.models."
 "Model.created`."
 msgstr ""
+"Si cette ressource n'a jamais été modifié depuis sa création initiale, la "
+"valeur DOIT être la même que :attr:`~canaille.backends.models.Model.created`."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.Group:1
 #: canaille.core.models.User:1 ../../canaille/oidc/basemodels.py:docstring
@@ -5165,7 +5181,7 @@ msgstr ""
 #: fac7abe230f5419eadc03a768bc0872c 1269097fb76b42c29248af6773628ec4
 #: 25aa111736e44c4ea89c97864274d146
 msgid "Bases: :py:class:`~canaille.backends.models.Model`"
-msgstr ""
+msgstr "Bases : :py:class:`~canaille.backends.models.Model`"
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.Group:1
 #: d8d4759602c44e048e0d4f053dc5c895
@@ -5173,22 +5189,24 @@ msgid ""
 "User model, based on the `SCIM Group schema <https://datatracker.ietf.org/"
 "doc/html/rfc7643#section-4.2>`_."
 msgstr ""
+"Modèle utilisateur, basé sur le `schéma de Groupe SCIM <https://datatracker."
+"ietf.org/doc/html/rfc7643#section-4.2>`_."
 
 #: ../../docstring of canaille.core.models.Group.display_name:1
 #: f557ae62a380458ca1e212165ff7ebd2
 msgid "A human-readable name for the Group."
-msgstr ""
+msgstr "Un nom lisible par un humain pour le Groupe."
 
 #: ../../docstring of canaille.core.models.Group.display_name:3
 #: canaille.oidc.basemodels.Client.client_id:1 3a782effac4c44f2b4084280c168f909
 #: 038998149ec146249f6cd7993b6ea7c2
 msgid "REQUIRED."
-msgstr ""
+msgstr "OBLIGATOIRE."
 
 #: ../../docstring of canaille.core.models.Group.members:1
 #: 83c94299de834bb7899fc5d919567ddf
 msgid "A list of members of the Group."
-msgstr ""
+msgstr "Une liste des membres du Groupe."
 
 #: ../../docstring of canaille.core.models.Group.members:3
 #: f8395458983d4efd966c1f2bd3e771dc
@@ -5300,6 +5318,9 @@ msgid ""
 "The given name of the User, or first name in most Western languages (e.g., "
 "\"Barbara\" given the full name \"Ms. Barbara Jane Jensen, III\")."
 msgstr ""
+"Le nom courant de l'utilisateur, ou prénom dans la plupart des langues "
+"occidentales (par exemple., \"Barbara\" dans le nom complet \"Ms. Barbara "
+"Jane Jensen, III\")."
 
 #: ../../docstring of canaille.core.models.User.groups:1
 #: ef755a48c32047c187a2405190a88b07
@@ -5307,6 +5328,8 @@ msgid ""
 "A list of groups to which the user belongs, either through direct "
 "membership, through nested groups, or dynamically calculated."
 msgstr ""
+"Une liste de groupes auxquels l'utilisateur appartient, soit par "
+"appartenance directe, soit par groupes imbriqués ou calculés dynamiquement."
 
 #: ../../docstring of canaille.core.models.User.groups:4
 #: 0d7136476f7649ddad322de96971e938
@@ -5334,27 +5357,27 @@ msgstr ""
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.User.has_password:1 034f9fa73a5d455382726ac4b448c136
 msgid "Check whether a password has been set for the user."
-msgstr ""
+msgstr "Vérifie si un mot de passe a été définie pour l'utilisateur."
 
 #: ../../docstring of canaille.core.models.User.locality:1
 #: 3d50110e459f4ba3b06af609c8f2bef8
 msgid "The city or locality component."
-msgstr ""
+msgstr "Le composant de ville ou de localité."
 
 #: ../../docstring of canaille.core.models.User.lock_date:1
 #: bc9386fb2f7c41cc82308c45d919feb9
 msgid "A DateTime indicating when the resource was locked."
-msgstr ""
+msgstr "Une date (DateTime) indiquant quand la ressource a été verrouillée."
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.User.locked:1 8f227ede6e584fda946d50e86049afcb
 msgid "Whether the user account has been locked or has expired."
-msgstr ""
+msgstr "Si le compte utilisateur a été verrouillé ou a expiré."
 
 #: ../../docstring of canaille.core.models.User.organization:1
 #: 39b14adbf8ad42b39c2cdd9fb0fcf96c
 msgid "Identifies the name of an organization."
-msgstr ""
+msgstr "Identifie le nom de l'organisation."
 
 #: ../../docstring of canaille.core.models.User.password:1
 #: a4ec9a6f72834b47b82db401e1ebed2f
@@ -5366,6 +5389,13 @@ msgid ""
 "a password is set or changed by the client, the cleartext password SHOULD be "
 "processed by the service provider as follows:"
 msgstr ""
+"Cette attribut a pour but d'être utilisé pour définir, remplacer ou comparer "
+"(c'est-à-dire fitrer par égalité) un mot de passe. La valeur en clair ou "
+"hashée du mot de passe NE DEVRAIT PAS être retournable par le fournisseur de "
+"service. Si un fournisseur de service détient la valeur localement, la "
+"valeur DEVRAIT être hashée. Quand un mot de passe est défini ou changé par "
+"le client, le mot de passe en clair DEVRAIT être traité par le fournisseur "
+"de service comme suit :"
 
 #: ../../docstring of canaille.core.models.User.password:9
 #: 4a4c0608f0ac4739bbb358ebfffbc94c
@@ -5373,6 +5403,8 @@ msgid ""
 "Prepare the cleartext value for international language comparison.  See "
 "Section 7.8 of [RFC7644]."
 msgstr ""
+"Prépare la valeur en clair pour une comparaison de langue internationale. "
+"Voir la section 7.8 de [RFC7644]."
 
 #: ../../docstring of canaille.core.models.User.password:12
 #: 770cfb12f1c943188e281ef2e527ccb2
@@ -5380,6 +5412,9 @@ msgid ""
 "Validate the value against server password policy.  Note: The definition and "
 "enforcement of password policy are beyond the scope of this document."
 msgstr ""
+"Valide la valeur contre la politique du mot de passe serveur. Note : La "
+"définition et les contraintes de la politique de mot de passe sont hors du "
+"périmètre de ce document."
 
 #: ../../docstring of canaille.core.models.User.password:16
 #: 736bf805f27d4dfb8c1292b5afaca0be
@@ -5388,6 +5423,9 @@ msgid ""
 "acceptable hashing and encryption handling when storing or persisting for "
 "provisioning workflow reasons."
 msgstr ""
+"Force que le valeur soit cryptée (par exemple, hashée). Voir la section 9.2 "
+"pour un hash acceptable et la gestion de chiffrement quand l'enregistrement "
+"et la persistance pour des raisons de suivi de fourniture."
 
 #: ../../docstring of canaille.core.models.User.password:20
 #: 605f5a91894e42ee9d14686ae2f346cd
@@ -5399,6 +5437,12 @@ msgid ""
 "before provisioning, then the value MUST be protected by some method, such "
 "as encryption."
 msgstr ""
+"Un fournisseur de service qui passe immédiatement la valeur en clair à un "
+"autre système ou interface de programmation DOIT passer la valeur "
+"directement sur une connexion sécurisé (e.g., Transport Layer Security (TLS))"
+". Si la valeur a besoin d'être temporairement persistée pour une période de "
+"temps (e.g., à cause du processus utilisé) avant son transfert, alors la "
+"valeur DOIT être protégée par diverses méthode, tel que le chiffrement."
 
 #: ../../docstring of canaille.core.models.User.password:28
 #: 198ed93545fe467ea461cef9a184362c
