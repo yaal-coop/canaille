@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
-"PO-Revision-Date: 2024-12-08 10:36+0000\n"
+"PO-Revision-Date: 2024-12-08 11:22+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -4432,28 +4432,33 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.NAME:1
 #: befe22deda144065bcee73d9d0404dea
 msgid "Your organization name."
-msgstr ""
+msgstr "Le nom de votre organisation."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.NAME:3
 #: 0a659d2aa1994859a59506e97a715ea7
 msgid "Used for display purpose."
-msgstr ""
+msgstr "Utilisé à fins d'affichage."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL:1
 #: 6ab659ea03d349d88fef1b5cdc9da5f8
 msgid "Have i been pwned api url for compromission checks."
 msgstr ""
+"URL du service HaveIBeenPwned, utilisé pour les vérifications de "
+"compromission des mots de passe."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SENTRY_DSN:1
 #: 42626c8f0fa24a3fbfc131099bae6302
 msgid "A `Sentry <https://sentry.io>`_ DSN to collect the exceptions."
 msgstr ""
+"Un DSN `Sentry <https://sentry.io>`_ pour collecter les erreurs techniques."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SENTRY_DSN:3
 #: b29a9995f9b04c71a953d7ea902bd1f5
 msgid "This is useful for tracking errors in test and production environments."
 msgstr ""
+"Utile pour centraliser les erreurs dans les environnements de test et de "
+"production."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMTP:1
 #: 78b26880da2746c583f686747b26f179
