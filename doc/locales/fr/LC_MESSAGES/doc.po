@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
-"PO-Revision-Date: 2024-12-08 11:22+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2024-12-08 19:06+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -74,11 +74,11 @@ msgstr ""
 
 #: ../../CHANGES.rst:11 2cfcbdba2e9541dbab610bc724a2683a
 msgid "Implement OIDC client_credentials flow. :issue:`207`"
-msgstr ""
+msgstr "Implémentation du flux OIDC `client_credentials`. :issue:`207`"
 
 #: ../../CHANGES.rst:12 1e36a8464f6045708cf07b39bcdfea1c
 msgid "Button in the client admin page to create client tokens."
-msgstr ""
+msgstr "Bouton de création de jetons sur la page d’administration des clients."
 
 #: ../../CHANGES.rst:15 ../../CHANGES.rst:35 ../../CHANGES.rst:48
 #: ../../CHANGES.rst:60 ../../CHANGES.rst:85 ../../CHANGES.rst:93
@@ -4208,8 +4208,6 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ACL:3
 #: 1f85af06bed64d9da4417c6e6f7e244e
-#, fuzzy
-#| msgid "The ACL name can be freely chosen. For example::"
 msgid "The ACL name can be freely chosen. For example:"
 msgstr "Le nom des ACL peut être choisi librement. Par exemple :"
 
@@ -4221,7 +4219,7 @@ msgstr "Le nom des ACL peut être choisi librement. Par exemple :"
 #: 56ce67b55d3b4d8eba9a07b4feed2587 d9b0f4816c2644679233ec3b797c2fc4
 #: ea4face810944c2e934e593ccfe99a84
 msgid "..code-block:: toml"
-msgstr ""
+msgstr "..code-block:: toml"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ACL:7
 #: dc73b62baf4f465598787ebb33191c7b
@@ -4229,11 +4227,13 @@ msgid ""
 "[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
 "[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
 msgstr ""
+"[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = ["
+"\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ACL:12
 #: 56d15bcfdbcc4556a3848702228b970f
 msgid "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
-msgstr ""
+msgstr "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1
 #: e07c109febe5434e95b532da3dadf454
@@ -4393,12 +4393,6 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:3
 #: 62d20006362a45ca8ff0f0a8fbb82bf4
-#, fuzzy
-#| msgid ""
-#| "if :py:data:`None`, everything is logged in the standard error output the "
-#| "log level is :py:data:`~logging.DEBUG` if the :attr:`~canaille.app."
-#| "configuration.RootSettings.DEBUG` setting is :py:data:`True`, else this "
-#| "is :py:data:`~logging.INFO`"
 msgid ""
 "If :data:`None`, everything is logged in the standard error output. The log "
 "level is :data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration."
@@ -4406,40 +4400,30 @@ msgid ""
 "`~logging.INFO`."
 msgstr ""
 "Si :py:data:`None`, tout est écrit sur la sortie d'erreur standard. Le "
-"niveau de verbosité est :py:data:`~logging.DEBUG` si le paramètre :attr:"
-"`~canaille.app.configuration.RootSettings.DEBUG` est :py:data:`True`, sinon "
-"elle est:py:data:`~logging.INFO`"
+"niveau de verbosité est :py:data:`~logging.DEBUG` si le paramètre "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG` est :py:data:`True`, "
+"sinon elle est:py:data:`~logging."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:6
 #: 44c6ded187ab4e44aac024c2cdb85303
-#, fuzzy
-#| msgid ""
-#| "if this is a :class:`dict`, it is passed to :func:`logging.config."
-#| "dictConfig`:"
 msgid ""
 "If this is a :class:`dict`, it is passed to :func:`logging.config."
 "dictConfig`:"
 msgstr ""
-"si c’est un :class:`dict`, il est passé à :func:`logging.config.dictConfig`:"
+"Si c’est un :class:`dict`, il est passé à :func:`logging.config.dictConfig` :"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:7
 #: 6e269ac8b9144e9699a5856c375d7a37
-#, fuzzy
-#| msgid ""
-#| "if this is a :class:`str`, it is expected to be a file path that will be "
-#| "passed to :func:`logging.config.fileConfig`"
 msgid ""
 "If this is a :class:`str`, it is expected to be a file path that will be "
 "passed to :func:`logging.config.fileConfig`."
 msgstr ""
-"si c'est une :class:`str`, c'est supposé être un chemin de fichier qui sera "
-"passé à :func:`logging.config.fileConfig"
+"Si c'est une :class:`str`, c'est supposé être un chemin de fichier qui sera "
+"passé à :func:`logging.config.fileConfig."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:4
 #: canaille.core.configuration.CoreSettings.LOGGING:10
 #: ba8b9d6794e2459492abfa778736328a 4d1ff118c1a44a50a962e527d1a8e2a2
-#, fuzzy
-#| msgid "For example::"
 msgid "For example:"
 msgstr "Par exemple :"
 
@@ -4450,6 +4434,9 @@ msgid ""
 "%(levelname)s in %(module)s: %(message)s\" root = {level = \"INFO\", "
 "handlers = [\"canaille\"]}"
 msgstr ""
+"[CANAILLE.LOGGING] version = 1 formatters.default.format = \"[%(asctime)s] "
+"%(levelname)s in %(module)s: %(message)s\" root = {level = \"INFO\", "
+"handlers = [\"canaille\"]}"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:19
 #: 4b44c1c288c3433fb0edba70dd9c1343
@@ -4458,6 +4445,9 @@ msgid ""
 "WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
 "\"default\""
 msgstr ""
+"[CANAILLE.LOGGING.handlers.canaille] class = \"logging.handlers."
+"WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
+"\"default\""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1
 #: 851b93aeb7b54426872a6b4a2ed973b9
@@ -4472,35 +4462,31 @@ msgstr ""
 #: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:1
 #: 88cd67b65c954dc7a261df77d1823cda
 msgid "User password maximum length."
-msgstr ""
+msgstr "Longueur minimum des mots de passe utilisateur."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:3
 #: 435e72d3f33642da9016c521a88f15e6
-#, fuzzy
-#| msgid ""
-#| "There is a technical limit with passlib used by sql database of 4096 "
-#| "characters. If the value entered is 0 or None, or greater than 4096, then "
-#| "4096 will be retained."
 msgid ""
 "There is a technical of 4096 characters with the SQL backend. If the value "
 "is 0, :data:`None`, or greater than 4096, then 4096 will be retained."
 msgstr ""
-"passlib est utilisée la base de données SQL et contient une limite à 4096 "
-"caractères. Si la valeur saise est 0 ou None, ou supérieur à 4096, alors la "
-"valeur prise en compte sera 4096."
+"Il y a une limite technique de 4096 caractères pour les bases de données "
+"SQL. Si la valeur est 0, :data:`None`ou supérieure à 4096, alors 4096 sera "
+"utilisée."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:1
 #: b15846ed6b2a4ad49bbb19cde177023a
 msgid "User password minimum length."
-msgstr ""
+msgstr "Longueur maximum des mots de passe utilisateur."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH:3
 #: 820670101aa7436eb014aa61e1c1a7eb
 msgid "If 0 or :data:`None`, password won't have a minimum length."
 msgstr ""
+"Si 0 ou :data:`None, les mots de passe n'auront pas de longueur minimum."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.NAME:1
 #: a41944f564f5438fb8572449b5d13995
@@ -4536,18 +4522,21 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMTP:1
 #: 79d66e38b7d94974a21563fac9a58149
 msgid "The settings related to SMTP and mail configuration."
-msgstr ""
+msgstr "Les paramètres liés à la configuration des serveur mail et SMTP."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMTP:3
 #: 41d396512e7d40b28223841b21f8ed09
 msgid ""
 "If unset, mail-related features like password recovery won't be enabled."
 msgstr ""
+"Si non renseigné, les fonctionnalités liées aux mail, telles que la "
+"réinitialisation des mots de passe, ne seront pas activées."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.THEME:1
 #: e327a089ace6495285f29ade69226d1b
 msgid "The name of a theme in the 'theme' directory, or a path to a theme."
 msgstr ""
+"Le nom d'un thème dans le répertoire `theme` ou bien le chemin vers un thème."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.THEME:3
 #: 641146b41ecc461d9fa7280687a462d9
@@ -4555,6 +4544,8 @@ msgid ""
 "Defaults to ``default``. Theming is done with `flask-themer <https://github."
 "com/tktech/flask-themer>`_."
 msgstr ""
+"Par défaut, la valeur vaut ``default``. La personnalisation des thèmes est "
+"faite avec `flask-themer <https://github.com/tktech/flask-themer>`_."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.TIMEZONE:1
 #: 421c3427b77b4cc4af9619406463c1c2
@@ -4562,11 +4553,13 @@ msgid ""
 "The timezone in which datetimes will be displayed to the users (e.g. "
 "``CEST``)."
 msgstr ""
+"Le fuseau horaire utilisé pour afficher les dates aux utilisateurs (par "
+"exemple ``CEST``)."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.TIMEZONE:4
 #: d8d80524578e4697a5bb9f7e83c7d113
 msgid "If unset, the server timezone will be used."
-msgstr ""
+msgstr "Si non renseigné, le fuseau horaire du serveur sera utilisé."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMTPSettings:1 2f0178f9dbe747c695273f89e42da8c2
@@ -4575,6 +4568,10 @@ msgid ""
 "mail related features will be disabled, such as mail verification or "
 "password recovery emails."
 msgstr ""
+"La configuration SMTP. Appartient à l'espace de nom ``CANAILLE.SMTP``. SI "
+"non renseigné, les fonctionnalités liées au mail seront désactivées, telles "
+"quel la vérification des adresses email ou bien la réinitialisation des mots "
+"de passe."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMTPSettings:5 598e1ca109154455ad98b50d8853891d
@@ -4582,51 +4579,56 @@ msgid ""
 "By default, Canaille will try to send mails from localhost without "
 "authentication."
 msgstr ""
+"Par défaut, Canaille tente d’envoyer des mails depuis `localhost` sans "
+"authentification."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.FROM_ADDR:1
 #: 8ab9425f8a6b42dc9097b69e3eaa334a
 msgid "The sender for Canaille mails."
-msgstr ""
+msgstr "L’émetteur des emails de Canaille."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.FROM_ADDR:3
 #: f8f5f1377e5147d4baf9782ff95b4aa3
 msgid "Some mail provider might require a valid sender address."
 msgstr ""
+"Certains services de mail pourraient exiger une adresse émettrice valide."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.HOST:1
 #: 9059b29ae44849efb180f3b2da128c19
 msgid "The SMTP host."
-msgstr ""
+msgstr "Le serveur SMTP."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.LOGIN:1
 #: 0bf8168dc84545cb810a8f25bbb4abf7
 msgid "The SMTP login."
-msgstr ""
+msgstr "L’identifiant SMTP."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.PASSWORD:1
 #: ec1b4f81894e45f5abcae80dfaee87a9
 msgid "The SMTP password."
-msgstr ""
+msgstr "Le mot de passe SMTP."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.PORT:1
 #: 514104bb8bcc4331b1e7fff12e550ba3
 msgid "The SMTP port."
-msgstr ""
+msgstr "Le port SMTP."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.SSL:1
 #: f4e65d7811cb43d5b7d86ec07af2576d
 msgid "Whether to use SSL to connect to the SMTP server."
-msgstr ""
+msgstr "Utiliser ou non SSL pour se connecter au serveur SMTP."
 
 #: ../../docstring of canaille.core.configuration.SMTPSettings.TLS:1
 #: bd8dac0e38f14b6583d024fca1768b7d
 msgid "Whether to use TLS to connect to the SMTP server."
-msgstr ""
+msgstr "Utiliser ou non TLS pour se connecter au serveur SMTP."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.ACLSettings:1 45f3089188214078ab06f2b1cff3b0e0
 msgid "Access Control List settings. Belong in the ``CANAILLE.ACL`` namespace."
 msgstr ""
+"Paramètres des listes de contrôle d'accès. Appartient à l'espace de nom "
+"``CANAILLE.ACL``."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.ACLSettings:3 733df203b313404eb417f40ed8708a2e
@@ -4641,13 +4643,15 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:1
 #: a14933a4c7244138bb59a43c9d288955
 msgid ":attr:`FILTER` can be:"
-msgstr ""
+msgstr ":attr:`FILTER`peut être :"
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:3
 #: d0f71dfab2ec47fca2184767e58eec59
 msgid ""
 ":py:data:`None`, in which case all the users will match this access control"
 msgstr ""
+":py:data`None`, auquel cas tous les utilisateurs correspondront au contrôle "
+"d’accès"
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:4
 #: e33849bb0c954228951cb18c56a9e70d
