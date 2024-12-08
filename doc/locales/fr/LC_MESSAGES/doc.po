@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
-"PO-Revision-Date: 2024-12-07 14:58+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2024-12-08 10:28+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -2941,24 +2941,17 @@ msgid "User registration"
 msgstr "Enregistrement d'un utilisateur"
 
 #: ../features.rst:90 4780fab4d36744c6991df9ae3919e4a0
-#, fuzzy
-#| msgid ""
-#| "Users can create accounts on Canaille if the feature :attr:`registration "
-#| "feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` "
-#| "is enabled. They will be able to fill a registration form with the fields "
-#| "detailed in the default :class:`ACL settings <canaille.core.configuration."
-#| "ACLSettings>`."
 msgid ""
 "Users can create accounts on Canaille if the :attr:`registration feature "
 "<canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. "
 "They will be able to fill a registration form with the fields detailed in "
 "the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`."
 msgstr ""
-"Les utilisateurs peuvent créer des comptes sur Canaille si la "
-"fonctionnalité :attr:`d'enregistrement <canaille.core.configuration."
-"CoreSettings.ENABLE_REGISTRATION>` est activée. Ils pourront remplir un "
-"formulaire d'enregistrement contenant les champs détaillés dans les :class:"
-"`paramètres ACL <canaille.core.configuration.ACLSettings>` par défaut."
+"Les utilisateurs peuvent créer des comptes sur Canaille si la fonctionnalité "
+":attr:`d'enregistrement <canaille.core.configuration.CoreSettings."
+"ENABLE_REGISTRATION>` est activée. Ils pourront remplir un formulaire "
+"d'enregistrement contenant les champs détaillés dans les :class:`paramètres "
+"ACL <canaille.core.configuration.ACLSettings>` par défaut."
 
 #: ../features.rst:92 f1e0991feda34f918887bf7653c16801
 msgid ""
@@ -3225,7 +3218,6 @@ msgstr ""
 "personnalisé <canaille.core.configuration.CoreSettings.THEME>`."
 
 #: ../features.rst:214 02908b4590a0462cac7afbc2fd17d7f6
-#, fuzzy
 msgid ""
 "Canaille implements a :ref:`subset<development/specifications:State of the "
 "specs in Canaille>` of the OAuth2/OpenID Connect specifications . This "
@@ -3382,10 +3374,6 @@ msgstr ""
 "administrateurs à comprendre ce qui se passe et déboguer les cas bizarres."
 
 #: ../features.rst:276 a6282bdfca0b4e2c8ecfd02478d3623d
-#, fuzzy
-#| msgid ""
-#| "The following security events are logged with the tag [SECURITY] for easy "
-#| "retrieval :"
 msgid ""
 "The following security events are logged with the tag [SECURITY] for easy "
 "retrieval:"
@@ -3524,27 +3512,27 @@ msgstr ":issue:`Configuration du hashage du mot de passe <175>`"
 
 #: ../features.rst:331 3001ee87077c4479b3f3c8b3b5aecd33
 msgid ":issue:`Authentication logging policy <177>`"
-msgstr ""
+msgstr ":issue:`Politique de journalisation des authentifications <177>`"
 
 #: ../features.rst:332 e4387f0454dd483eb1c33ce14ef1d9ea
 msgid ":issue:`Intruder lockout <173>`"
-msgstr ""
+msgstr ":issue:`Blocage des connexions après échecs <173>`"
 
 #: ../features.rst:333 e38560428a8f48528d9f02a5e00197fb
 msgid ":issue:`Password expiry policy <176>`"
-msgstr ""
+msgstr ":issue:`Politique d’expiration des mots de passe <176>`"
 
 #: ../features.rst:334 de013ed91c4443d190d9783c5cff060a
 msgid ":issue:`Multi-factor authentication: Email <47>`"
-msgstr ""
+msgstr ":issue:`Authentification multi-facteurs : Email <47>`"
 
 #: ../features.rst:335 d0049b96f7c1401a91d968aa93715930
 msgid ":issue:`Multi-factor authentication: SMS <47>`"
-msgstr ""
+msgstr ":issue:`Authentification multi-facteurs : SMS <47>`"
 
 #: ../features.rst:336 e5e2f43901ae4d00bd1c675076fb846d
 msgid ":issue:`Multi-factor authentication: OTP <47>`"
-msgstr ""
+msgstr ":issue:`Authentification multi-facteurs : OTP <47>`"
 
 #: ../features.rst:339 277364ce7ca04a169409ad5acf68d075
 msgid "Packaging"
@@ -3552,11 +3540,11 @@ msgstr "Paquets"
 
 #: ../features.rst:341 dece9c7d75d441cdbdce48eb7a4bebcf
 msgid ":issue:`Nix package <190>`"
-msgstr ""
+msgstr ":issue:`Paquet Nix <190>`"
 
 #: ../features.rst:342 a53f52a497344bb6b889fa63de7d9c26
 msgid ":issue:`Docker / OCI package <59>`"
-msgstr ""
+msgstr ":issue:`Paquet Docker / OCI <59>`"
 
 #: ../features.rst:345 6a738414fcb944ac9c4d5b61a53f0d11
 msgid "And beyond"
@@ -3568,7 +3556,7 @@ msgstr ":issue:`Certification OpenID Connect <182>`"
 
 #: ../features.rst:348 73307b368d454e338ff4bbd05657bbcc
 msgid ":issue:`SCIM support <116>`"
-msgstr ""
+msgstr ":issue:`Support SCIM <116>`"
 
 #: ../index.rst:15 8d018998cb4b4ff38d92f2a73326716e
 msgid "Lightweight Identity and Authorization Management"
@@ -3627,7 +3615,7 @@ msgstr ""
 
 #: ../index.rst:58 2a6a4e752e494f65b7766a082624d1a4
 msgid "Developers friendliness"
-msgstr ""
+msgstr "Facilité de développement"
 
 #: ../index.rst:62 42693164646349bcbe9f680b08cd904b
 msgid ""
@@ -4102,10 +4090,6 @@ msgstr "Paramètres"
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:1 2226ecd0f90440d58a4089df736be757
-#, fuzzy
-#| msgid ""
-#| "The top-level namespace contains holds the configuration settings "
-#| "unrelated to Canaille."
 msgid ""
 "The top-level namespace contains the configuration settings unrelated to "
 "Canaille."
@@ -4115,9 +4099,6 @@ msgstr ""
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:4 f53fd6edbc9148c781006d112688f022
-#, fuzzy
-#| msgid ""
-#| "The configuration paramateres from the following libraries can be used:"
 msgid "The configuration parameters from the following libraries can be used:"
 msgstr ""
 "Les paramètres de configuration provenant des bibliothèques suivantes "
@@ -4290,7 +4271,7 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.FAVICON:1
 #: ad1dce6bc9dd49608f1556cebf0f44fe
 msgid "You favicon."
-msgstr ""
+msgstr "Votre favicon."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.FAVICON:3
 #: 36086dc79c1b485fa6594ef442028011
