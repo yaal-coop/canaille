@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-05 15:13+0100\n"
-"PO-Revision-Date: 2024-12-08 10:28+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2024-12-08 10:36+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -4377,6 +4377,7 @@ msgid ""
 "if this is a :class:`dict`, it is passed to :func:`logging.config."
 "dictConfig`:"
 msgstr ""
+"si c’est un :class:`dict`, il est passé à :func:`logging.config.dictConfig`:"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:7
 #: 1987a5781d6e42af97e3df073b29599b
@@ -4384,6 +4385,8 @@ msgid ""
 "if this is a :class:`str`, it is expected to be a file path that will be "
 "passed to :func:`logging.config.fileConfig`"
 msgstr ""
+"si c'est une :class:`str`, c'est supposé être un chemin de fichier qui sera "
+"passé à :func:`logging.config.fileConfig"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:10
 #: edd8ec5aad1047688bbbc5613d9896f5
@@ -4396,12 +4399,14 @@ msgid ""
 "The logo of your organization, this is useful to make your organization "
 "recognizable on login screens."
 msgstr ""
+"Le logo de votre organisation, cela permet de rendre votre organisation "
+"reconnaissable sur l'écran de connexion."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:1
 #: 7f1980ff808c4d0682ddb5d03a50714b
 msgid "Maximum length for user password."
-msgstr ""
+msgstr "Longueur maximum des mots de passe utilisateur."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:3
