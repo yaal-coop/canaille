@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 11:58+0100\n"
-"PO-Revision-Date: 2024-12-06 19:37+0000\n"
-"Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
+"PO-Revision-Date: 2024-12-08 11:22+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -1848,10 +1848,8 @@ msgid "Issued at"
 msgstr "Créé le"
 
 #: canaille/oidc/templates/client_edit.html:75
-#, fuzzy
-#| msgid "View a token"
 msgid "New token"
-msgstr "Voir un jeton"
+msgstr "Nouveau jeton"
 
 #: canaille/oidc/templates/client_edit.html:78
 msgid "Delete the client"
@@ -1977,10 +1975,8 @@ msgid "Expiration date"
 msgstr "Date d'expiration"
 
 #: canaille/oidc/templates/token_view.html:100
-#, fuzzy
-#| msgid "This token has not been revoked"
 msgid "This token has expired."
-msgstr "Le jeton n'a pas été révoqué"
+msgstr "Le jeton a expiré."
 
 #: canaille/oidc/templates/token_view.html:106
 msgid "Revokation date"
@@ -2007,10 +2003,8 @@ msgid "Refresh token"
 msgstr "Jeton de rafraîchissement"
 
 #: canaille/oidc/templates/token_view.html:138
-#, fuzzy
-#| msgid "Refresh token"
 msgid "No refresh token"
-msgstr "Jeton de rafraîchissement"
+msgstr "Pas de jeton de rafraîchissement"
 
 #: canaille/oidc/templates/modals/delete-client.html:9
 msgid "Client deletion"
