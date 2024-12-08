@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
 "PO-Revision-Date: 2024-12-08 19:06+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -4671,7 +4671,7 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:10
 #: 657a11f5921947b88bfc47cf8affbe00
 msgid "Here are some examples::"
-msgstr ""
+msgstr "Voici quelques exemples :"
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:1
 #: df95253032c647229909e34386b1e5cc
@@ -4679,6 +4679,8 @@ msgid ""
 "A list of :class:`Permission` users in the access control will be able to "
 "manage."
 msgstr ""
+"Une liste de def :class:`Permission` utilisateur dans le controle d'accès "
+"seront capables de gérer."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:8
 #: 700fa74aeea44e9aa6dd204df7870e90
@@ -4686,6 +4688,8 @@ msgid ""
 "PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
 "\"delete_account\", \"impersonate_users\"]"
 msgstr ""
+"PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
+"\"delete_account\", \"impersonate_users\"]"
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.READ:1
 #: ab801708874c4b1bb937f62969614340
@@ -4693,6 +4697,8 @@ msgid ""
 "A list of :class:`~canaille.core.models.User` attributes that users in the "
 "ACL will be able to read."
 msgstr ""
+"Une liste d'attributs de :class:`~canaille.core.models.User` que les "
+"utilisateurs dans les ACL seront capables de lire."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.WRITE:1
 #: 384d296240314638a1f1b6b7719c6bb6
@@ -4700,11 +4706,13 @@ msgid ""
 "A list of :class:`~canaille.core.models.User` attributes that users in the "
 "ACL will be able to edit."
 msgstr ""
+"Une liste d'attributs de :class:`~canaille.core.models.User` que les "
+"utilisateurs dans les ACL seront capables de modifier."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.Permission:1 f9eec27878c64e608b2783b5e89172ed
 msgid "The permissions that can be assigned to users."
-msgstr ""
+msgstr "Les droits qui peuvent être assignés aux utilisateurs."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.Permission:3 217cf0cc0b9b4a48a26abeaad488c131
@@ -4712,11 +4720,13 @@ msgid ""
 "The permissions are intended to be used in :attr:`ACLSettings <canaille.core."
 "configuration.ACLSettings.PERMISSIONS>`."
 msgstr ""
+"Les droits sont prévus pour être utilisé dans :attr:`ACLSettings <canaille."
+"core.configuration.ACLSettings.PERMISSIONS>`."
 
 #: ../../docstring of canaille.core.configuration.Permission.DELETE_ACCOUNT:1
 #: 370dec6e2b8049d0b7353b085340b102
 msgid "Allows users to delete their account."
-msgstr ""
+msgstr "Permettre aux utilisateurs de supprimer leur compte."
 
 #: ../../docstring of canaille.core.configuration.Permission.DELETE_ACCOUNT:3
 #: f7be239942c94727a948d27c6c93408e
@@ -4724,47 +4734,49 @@ msgid ""
 "If used with :attr:`~canaille.core.configuration.Permission.MANAGE_USERS`, "
 "users can delete any account."
 msgstr ""
+"Si utilisé avec :attr:`~canaille.core.configuration.Permission.MANAGE_USERS`"
+", les utilisateurs peuvent supprimer n'importe quel compte."
 
 #: ../../docstring of canaille.core.configuration.Permission.EDIT_SELF:1
 #: 1f716bb0d0ec481ab5dff0a02f5c9e37
 msgid "Allows users to edit their own profile."
-msgstr ""
+msgstr "Permet aux utilisateurs de modifier leur propre profil."
 
 #: ../../docstring of
 #: canaille.core.configuration.Permission.IMPERSONATE_USERS:1
 #: c9018bb9aceb40bc9536cc03320c5bad
 msgid "Allows users to take the identity of another user."
-msgstr ""
+msgstr "Permet aux utilisateurs de prendre l'identité d'un autre utilisateur."
 
 #: ../../docstring of canaille.core.configuration.Permission.MANAGE_GROUPS:1
 #: 1072c369689f4922997715eb5337795a
 msgid "Allows group edition and creation."
-msgstr ""
+msgstr "Permet la création et la modification de groupe."
 
 #: ../../docstring of canaille.core.configuration.Permission.MANAGE_OIDC:1
 #: 014b4028381e4f4d8dcc8dc8a5e3a26f
 msgid "Allows OpenID Connect client managements."
-msgstr ""
+msgstr "Permet les gestion de client OpenID Connect."
 
 #: ../../docstring of canaille.core.configuration.Permission.MANAGE_USERS:1
 #: ff39df8edc7143c7b23d22bb773b5198
 msgid "Allows other users management."
-msgstr ""
+msgstr "Permet la gestion des autres utilisateurs."
 
 #: ../../docstring of canaille.core.configuration.Permission.USE_OIDC:1
 #: c7e27c4618a9460e8373c17f558f8d1e
 msgid "Allows OpenID Connect authentication."
-msgstr ""
+msgstr "Permet l'authentification OpenID Connect."
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.OIDCSettings:1 e2e226bd197b4d6f87291ee45a3004ef
 msgid "OpenID Connect settings."
-msgstr ""
+msgstr "Paramètres OpenID Connect."
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.OIDCSettings:3 db9af81a48ac4b1a914370a2e47bf4e0
 msgid "Belong in the ``CANAILLE_OIDC`` namespace."
-msgstr ""
+msgstr "Appartient à l'espace de nom ``CANAILLE_OIDC``."
 
 #: ../../docstring of
 #: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:1
@@ -4772,6 +4784,8 @@ msgstr ""
 msgid ""
 "Whether a token is needed for the RFC7591 dynamical client registration."
 msgstr ""
+"Si un jeton est nécessaire pour l’enregistrement dynamique du client selon "
+"la RFC7591."
 
 #: ../../docstring of
 #: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN:3
@@ -4781,62 +4795,70 @@ msgid ""
 "`False`, dynamical client registration needs a token defined in :attr:"
 "`DYNAMIC_CLIENT_REGISTRATION_TOKENS`."
 msgstr ""
+"Si :py:data:`True`, aucun jeton n'est nécessaire pour enregistrer un client. "
+"Si :py:data:`False`, l'enregistrement de client dynamique a besoin d'un "
+"jeton défini dans :attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`."
 
 #: ../../docstring of
 #: canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_TOKENS:1
 #: 30861c9a3a294daf8105dd5ac9007282
 msgid "A list of tokens that can be used for dynamic client registration."
 msgstr ""
+"Une liste de jeton utilisables pour l'enregistrement de client dynamique."
 
 #: ../../docstring of canaille.oidc.configuration.OIDCSettings.JWT:1
 #: 04e054bb3d094e4ea8f23ab6fdec9bf6
 msgid "JSON Web Token settings."
-msgstr ""
+msgstr "Paramètres de jeton web JSON."
 
 #: ../../docstring of canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:1
 #: 95b1ee4fd0da4ec2b30beb3e25944cd9
 msgid "Force the nonce exchange during the authentication flows."
-msgstr ""
+msgstr "Force l'échange de nonce durant le processus d'authentification."
 
 #: ../../docstring of canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE:3
 #: de680082bc4546a6883ff4826df0067b
 msgid "This adds security but may not be supported by all clients."
 msgstr ""
+"Cela améliore la sécurité mais pourrait ne pas être géré par tous les "
+"clients."
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.JWTSettings:1 750fbe7d77954d87855e68d3199c81e7
 msgid "JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace."
 msgstr ""
+"Paramètres de jeton Web JSON. Appartient à l'espace de nom ``CANAILLE_OIDC."
+"JWT``."
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.JWTSettings:3 03945dc4192c4f7abefbcd2b5c7c2bd9
 msgid "You can generate a RSA keypair with::"
-msgstr ""
+msgstr "Vous pouvez générer un poire de clefs RSA avec :"
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.ALG:1
 #: d65a4aaf4cb64130ac59c97cddcffb0b
 msgid "The key algorithm."
-msgstr ""
+msgstr "L'algorithme de clef."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.EXP:1
 #: c0c460480db94b1a9ebceea06528d426
 msgid "The time the JWT will be valid, in seconds."
-msgstr ""
+msgstr "La durée pendant laquelle le JWT sera valide, en secondes."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.ISS:1
 #: 6501426215db4b27b7b5d217954ca6be
 msgid "The URI of the identity provider."
-msgstr ""
+msgstr "L'URI du fournisseur d'identité."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.KTY:1
 #: 3e338458e42e405fb025bfcfc53688f4
 msgid "The key type."
-msgstr ""
+msgstr "Le type de clef."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:1
 #: 27a15f235d63447884175edd85e55cf4
 msgid "The private key."
-msgstr ""
+msgstr "La clef privée."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:3
 #: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:3
@@ -4845,35 +4867,38 @@ msgid ""
 "If :py:data:`None` and debug mode is enabled, then an in-memory key will be "
 "used."
 msgstr ""
+"Si :py:data:`None` et que le mode débogage est activé, une clef en mémoire "
+"sera utilisée."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:1
 #: e88605c89e4b47989186fd27e5aff172
 msgid "The public key."
-msgstr ""
+msgstr "La clef publique."
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.JWTMappingSettings:1
 #: 235687b99f2c408aaf1c063061975f77
 msgid "Mapping between the user model and the JWT fields."
-msgstr ""
+msgstr "Correspondance entre le modèle utilisateur et les champs JWT."
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.JWTMappingSettings:3
 #: ebe87d5efdaa458b97451b5ab4fdeb3d
 msgid "Fields are evaluated with jinja. A ``user`` var is available."
 msgstr ""
+"Les champs sont évalués avec jinja. Une variable ``user`` est disponible."
 
 #: ../../canaille/backends/sql/configuration.py:docstring of
 #: canaille.backends.sql.configuration.SQLSettings:1
 #: b7ccdac0ebd14f47be2d77ea52bd75d7
 msgid "Settings related to the SQL backend."
-msgstr ""
+msgstr "Paramètres concernant le serveur SQL."
 
 #: ../../canaille/backends/sql/configuration.py:docstring of
 #: canaille.backends.sql.configuration.SQLSettings:3
 #: 07e03b184cb54e0a92ca3a33033da5cd
 msgid "Belong in the ``CANAILLE_SQL`` namespace."
-msgstr ""
+msgstr "Appartient à l'espace de nom ``CANAILLE_SQL``."
 
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:1
@@ -4888,18 +4913,20 @@ msgstr "Le nom des ACL peut être choisi librement. Par exemple :"
 #: 4bb9ca2e412a461caacf1a146582247f
 msgid "DATABASE_URI = \"postgresql://user:password@localhost/database_name\""
 msgstr ""
+"DATABASE_URI = \"postgresql://utilisateur:motdepasse@localhost/"
+"nom_de_la_BdD\""
 
 #: ../../canaille/backends/ldap/configuration.py:docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings:1
 #: e656ae1d120e45109618f653d29d845e
 msgid "Settings related to the LDAP backend."
-msgstr ""
+msgstr "Paramètres concernant le serveur LDAP."
 
 #: ../../canaille/backends/ldap/configuration.py:docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings:3
 #: 9877879932a3406b87f9893f4a6bf8f3
 msgid "Belong in the ``CANAILLE_LDAP`` namespace."
-msgstr ""
+msgstr "Appartient à l'espace de nom ``CANAILLE_LDAP``."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.BIND_DN:1
@@ -4917,31 +4944,31 @@ msgstr ""
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:1
 #: 8f56c7d2bfb348afbcc36de24398dfac
 msgid "The LDAP node under which groups will be looked for and saved."
-msgstr ""
+msgstr "Le noeud LDAP dans lequel les groupes seront cherchés et enregistrés."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:3
 #: 58cf9c9e87464b709e4e8508577fbd63
 msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
-msgstr ""
+msgstr "Par exemple `\"ou=groups,dc=mondomaine,dc=tld\"`."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_CLASS:1
 #: 3b6a2121763e4302aa1780cb6d51d9d6
 msgid "The object class to use for creating new groups."
-msgstr ""
+msgstr "La classe objet à utiliser pour créer de nouveaux groupes."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_NAME_ATTRIBUTE:1
 #: 10d8bb8232bf4b30b6c631847ea70b2b
 msgid "The attribute to use to identify a group."
-msgstr ""
+msgstr "L'attribut à utiliser pour identifier un groupe."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_RDN:1
 #: 688132cb0d4e4f27973a02406d50edaa
 msgid "The attribute to identify an object in the Group DN."
-msgstr ""
+msgstr "L'attribut pour identifier un objet dans le Groupe DN."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.ROOT_DN:1
@@ -4953,30 +4980,31 @@ msgstr ""
 #: canaille.backends.ldap.configuration.LDAPSettings.TIMEOUT:1
 #: 5a175d6a66e445458ee6bc473d614a45
 msgid "The LDAP connection timeout."
-msgstr ""
+msgstr "Le délai d'expiration de connexion LDAP."
 
 #: ../../docstring of canaille.backends.ldap.configuration.LDAPSettings.URI:1
 #: 3172b80b5b86434699f226a3b713c52f
 msgid "The LDAP server URI."
-msgstr ""
+msgstr "L'URI du serveur LDAP."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:1
 #: 0e03c3262f504b79b84847041ee442e5
 msgid "The LDAP node under which users will be looked for and saved."
 msgstr ""
+"Le noeud LDAP dans lequel les utilisateurs seront recherchés et enregistrés."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:3
 #: e1d16301542b40929d9e65c9a949b303
 msgid "For instance `ou=users,dc=mydomain,dc=tld`."
-msgstr ""
+msgstr "Par exemple `ou=users,dc=mondomainedc=tld`."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_CLASS:1
 #: 92a1f8f8665848c9aaf4d5f9f1f3b6b7
 msgid "The object class to use for creating new users."
-msgstr ""
+msgstr "La classe d'objet pour créer de nouveaux utilisateurs."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER:1
@@ -4992,40 +5020,45 @@ msgid ""
 "supported and a ``login`` variable is available, containing the value passed "
 "in the login field."
 msgstr ""
+"Par exemple ``(|(uid={{ login }})(mail={{ login }}))``. La syntaxe Jinja est "
+"acceptée et une variable ``login`` est disponible, contenant la valeur "
+"passée dans le champ login."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_RDN:1
 #: d49e7765b3d6440d9fdcb0ecb18c06c1
 msgid "The attribute to identify an object in the User DN."
-msgstr ""
+msgstr "L'attribut pour identifier un objet dans le DN Utilisateur."
 
 #: ../references/configuration.rst:90 c4674c5a1b434e81944983c7ec2fb0f1
 msgid "Example file"
-msgstr ""
+msgstr "Fichier d'exemple"
 
 #: ../references/configuration.rst:92 87c3dcb2ef5a4f649ec0fa9005449a79
 msgid "Here is a configuration file example:"
-msgstr ""
+msgstr "Voici un exemple de fichier de configuration :"
 
 #: ../references/index.rst:2 51ac90bb647f41b69879253e3e7c475e
 msgid "References"
-msgstr ""
+msgstr "Références"
 
 #: ../references/models.rst:2 bf9a972313e94c6aa0e72470dfc9677c
 msgid "Data models"
-msgstr ""
+msgstr "Modèles de donnée"
 
 #: ../references/models.rst:4 620f9112555349eba4cc5daecdb72217
 msgid ""
 "This reference details the data models used by Canaille. This is mostly "
 "useful for developers."
 msgstr ""
+"Cette référence détaille les modèles de donnée utilisés par Canaille. Cela "
+"est surtout utile pour les développeurs."
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.BackendModel:1 canaille.backends.models.Model:1
 #: b407db3f81d14e789f9f7f2e2bec7613 b29fcc3a6bdc4ee582d1e14851e430b7
 msgid "Bases: :py:class:`object`"
-msgstr ""
+msgstr "Bases : :py:class:`object`"
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.BackendModel:1 664ca63468e648ddb0b2f2f957139ae9
@@ -5038,16 +5071,18 @@ msgid ""
 "It details all the methods and attributes that are expected to be "
 "implemented for every model and for every backend."
 msgstr ""
+"Il détaille tous les méthodes et attributs qui doivent être implémentées "
+"pour chaque modèle et chaque backend."
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.Model:1 9f46b7e1801e4a57a346c598161cbdac
 msgid "The model abstract class."
-msgstr ""
+msgstr "La classe abstraite de modèle."
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.Model:3 f4dad754b1d7448f842620b4f7b6069b
 msgid "It details all the common attributes shared by every models."
-msgstr ""
+msgstr "Il détaille tous les attributs en commun entre tous les modèles."
 
 #: ../../docstring of canaille.backends.models.Model.created:1
 #: 8685782e932b476a8b6f80256ebca659
@@ -5063,6 +5098,9 @@ msgid ""
 "Id will be :py:data:`None` until the :meth:`~canaille.backends.models."
 "BackendModel.save` method is called."
 msgstr ""
+"Un identifiant unique pour une ressource SCIM tel que définie par le "
+"fournisseur du service. Id sera :py:data:`None` jusqu'à ce que la méthode "
+":meth:`~canaille.backends.models.BackendModel.save` soit appelée."
 
 #: ../../docstring of canaille.backends.models.Model.id:5
 #: fe3e4be3b44b43ebbbd11fe81fdc2613
@@ -5078,6 +5116,17 @@ msgid ""
 "\"readOnly\", and a \"returned\" characteristic of \"always\".  See Section "
 "9 for additional considerations regarding privacy."
 msgstr ""
+"Chaque représentation de la ressource DOIT inclure une valeur non vide \"id\""
+". Cet identifiant DOIT être unique dans l'ensemble des ressources du "
+"fournisseur de service SCIM. L'identifiant DOIT être stable et non "
+"réassignable et ne pas change quand la même ressource est retournée dans les "
+"requêtes suivantes. La valeur de l'attribut \"id\" est toujours produite par "
+"le fournisseur de service est NE DOIT PAS être fournie par le client. La "
+"chaîne \"bulkId\" est un mot-clef réservé et NE DOIT PAS être utilisée comme "
+"une valeur d'identifiant unique. Les caractéristiques d'attribut sont "
+"\"caseExact\" à \"true\", la modification de \"readOnly\" et une "
+"caractéristique\"returned\" à \"always\". Voir la Section 9 pour les "
+"considérations supplémentaires concernant la vie privée."
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.Model.identifier:1 4f16f8a2628746e0bbb013e0ebdd53de
