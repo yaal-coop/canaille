@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
-"PO-Revision-Date: 2024-12-08 22:40+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2024-12-09 19:54+0000\n"
+"Last-Translator: Brunelie <brunelie.lauret@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -5286,6 +5286,9 @@ msgid ""
 "A string identifier, typically numeric or alphanumeric, assigned to a "
 "person, typically based on order of hire or association with an organization."
 msgstr ""
+"Un identifiant en chaîne de caractères, généralement numérique ou "
+"alphanumérique, assigné à une personne, généralement basée sur l'ordre "
+"d'embauche ou d'association avec une organisation."
 
 #: ../../docstring of canaille.core.models.User.family_name:1
 #: db1cbc1b88a44555ac36431d951ed1bc
@@ -5293,6 +5296,8 @@ msgid ""
 "The family name of the User, or last name in most Western languages (e.g., "
 "\"Jensen\" given the full name \"Ms. Barbara Jane Jensen, III\")."
 msgstr ""
+"Le nom de famille de l'utilisateur, ou le patronyme (e.g., \"Jensen\" given "
+"the full name \"Ms. Barbara Jane Jensen, III\")."
 
 #: ../../docstring of canaille.core.models.User.formatted_address:1
 #: 19bb2c52eb2747a8bae2df988b0f3226
@@ -5311,6 +5316,8 @@ msgid ""
 "The full name, including all middle names, titles, and suffixes as "
 "appropriate, formatted for display (e.g., \"Ms. Barbara Jane Jensen, III\")."
 msgstr ""
+"Le nom complet, incluant tous les prénoms, titres et suffixes appropriés, "
+"formatés pour l'affichage (e.g., \"Mme. Barbara Jane Jensen, III\")."
 
 #: ../../docstring of canaille.core.models.User.given_name:1
 #: 0adf168d41024021aca8fcbf22e2b575
@@ -5476,7 +5483,7 @@ msgstr ""
 #: ../../docstring of canaille.core.models.User.phone_numbers:1
 #: 636757499c76498ca8a1cbad6ea4fbb7
 msgid "Phone numbers for the user."
-msgstr ""
+msgstr "Numéros de téléphone pour l'utilisateur."
 
 #: ../../docstring of canaille.core.models.User.phone_numbers:3
 #: dabf654512714fda965fded70f74aeac
@@ -5522,6 +5529,8 @@ msgid ""
 "Indicates the user's preferred written or spoken languages and is generally "
 "used for selecting a localized user interface."
 msgstr ""
+"Indique la langue préférée de l'utilisateur, parlée ou écrite, et est "
+"généralement utilisée pour sélectionner la langue de l'interface utilisateur."
 
 #: ../../docstring of canaille.core.models.User.preferred_language:4
 #: c45f7e1feb59446daa9dbea7cce24305
@@ -5586,7 +5595,7 @@ msgstr ""
 #: ../../docstring of canaille.core.models.User.title:1
 #: 96571ab69f47443087e9de7cdf2af3ef
 msgid "The user's title, such as \"Vice President\"."
-msgstr ""
+msgstr "Le titre de l'utilisateur, par exemple \"Vice Président\"."
 
 #: ../../docstring of canaille.core.models.User.user_name:1
 #: 5a41c74aee6040d78b20e68feedbe91d
@@ -5594,6 +5603,9 @@ msgid ""
 "A service provider's unique identifier for the user, typically used by the "
 "user to directly authenticate to the service provider."
 msgstr ""
+"L'identifiant unique de l'utilisateur pour un fournisseur de service, "
+"généralement utilisé par l'utilisateur pour s'authentifier directement "
+"auprès de ce fournisseur de service."
 
 #: ../../docstring of canaille.core.models.User.user_name:4
 #: 305c46ac8a734b4fb513c2da9c0bd78d
@@ -5658,6 +5670,8 @@ msgid ""
 "Human-readable string name of the client to be presented to the end-user "
 "during authorization."
 msgstr ""
+"Le nom du client à présenter à l'utilisateur final durant l'autorisation, "
+"sous la forme d'une chaîne de caractères lisible par un être humain."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_name:4
 #: 2f438f6285d3455f81459326d3ed2a3d
@@ -5697,6 +5711,7 @@ msgstr ""
 #: c7ec8c5c04bd41fa87825f3d6f4e71b3
 msgid "URL string of a web page providing information about the client."
 msgstr ""
+"URL en chaîne de caractères d'une page d'information à propos du client."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_uri:3
 #: 8be313c7ec5848419e7a0062beefd60c
@@ -5713,6 +5728,9 @@ msgid ""
 "Array of strings representing ways to contact people responsible for this "
 "client, typically email addresses."
 msgstr ""
+"Un tableau de chaînes de caractères représentant différentes façon de "
+"contacter les personnes responsables de ce client, généralement des adresses "
+"e-mail."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.contacts:4
 #: 4c4d89f737af445da4e7eb5882887e00
@@ -5829,7 +5847,7 @@ msgstr ""
 #: ../../docstring of canaille.oidc.basemodels.Client.logo_uri:1
 #: 723f17b9b9df481394bcff341b2730b1
 msgid "URL string that references a logo for the client."
-msgstr ""
+msgstr "URL en chaîne de caractères pointant vers un logo pour le client."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.logo_uri:3
 #: 6b1a034be4f248e98f185c7a0ef2c3b5
@@ -5838,6 +5856,10 @@ msgid ""
 "approval. The value of this field MUST point to a valid image file.  The "
 "value of this field MAY be internationalized, as described in Section 2.2."
 msgstr ""
+"Si présente, le serveur DOIT afficher cette image à l'utilisateur final "
+"pendant l'approbation. La valeur de ce chant DOIT pointer vers un fichier "
+"d'image valide. La valeur de ce champ PEUT être dans plusieurs langues, "
+"comme décrit dans la Section 2.2."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.policy_uri:1
 #: 92446c1f45fc4da9bf18fed32b046f26
@@ -5846,6 +5868,10 @@ msgid ""
 "describes how the deployment organization collects, uses, retains, and "
 "discloses personal data."
 msgstr ""
+"URL en chaîne de caractères pointant vers un document de politique de "
+"confidentialité compréhensible, décrivant la façon dont l'organisation "
+"déployant l'application collecte, utilise, conserve et partage les données "
+"personnelles."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.policy_uri:5
 #: canaille.oidc.basemodels.Client.tos_uri:5 470f3a6ebe5a470d97207d2d724d7a50
