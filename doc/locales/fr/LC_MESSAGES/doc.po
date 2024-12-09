@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
 "PO-Revision-Date: 2024-12-09 19:54+0000\n"
-"Last-Translator: Brunelie <brunelie.lauret@nubla.fr>\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -4639,6 +4639,13 @@ msgid ""
 "be able to :attr:`READ` and :attr:`WRITE`. Users matching several filters "
 "will cumulate permissions."
 msgstr ""
+"Vous pouvez définir des contrôles d'accès pour paramétrer ce que les "
+"utilisateurs sont autorisés à faire sur Canaille. Un contrôle d'accès "
+"consiste en un :attr:`FILTTER`de sélection des utilisateurs, une liste de "
+":attr:`PERMISSIONS` qui décrit ce que les utilisateurs sélectionnés pourront "
+"effectuer, et les champs de leurs profil que les utilisateurs pourront lire "
+"et écrire avec :attr:`READ`et :attr:`WRITE`. Les utilisateurs correspondant "
+"à plusieurs filtres cumuleront les permissions."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:1
 #: a14933a4c7244138bb59a43c9d288955
@@ -4660,7 +4667,7 @@ msgid ""
 "attribute values. All the values must be matched for the user to be part of "
 "the access control."
 msgstr ""
-"une correspondance où les clefs sont des noms d'attribts utilisateur et les "
+"une correspondance où les clefs sont des noms d'attributs utilisateur et les "
 "valeurs sont les valeurs d'attribut utilisateur. Toutes les valeurs doivent "
 "correspondre à l'utilisateur pour faire partie du contrôle d'accès."
 
@@ -4938,13 +4945,13 @@ msgstr "Appartient à l'espace de nom ``CANAILLE_LDAP``."
 #: canaille.backends.ldap.configuration.LDAPSettings.BIND_DN:1
 #: 96d852cc067c459cabfcc201a7271cf0
 msgid "The LDAP bind DN."
-msgstr ""
+msgstr "Le DN de connexion LDAP."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.BIND_PW:1
 #: 084f3814a8604375aed794d649845045
 msgid "The LDAP bind password."
-msgstr ""
+msgstr "Le mot de passe de connexion LDAP."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:1
@@ -4980,7 +4987,7 @@ msgstr "L'attribut pour identifier un objet dans le Groupe DN."
 #: canaille.backends.ldap.configuration.LDAPSettings.ROOT_DN:1
 #: 4428b1de4b664a55b077caa3969d6769
 msgid "The LDAP root DN."
-msgstr ""
+msgstr "Le DN racine LDAP."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.TIMEOUT:1
@@ -5220,6 +5227,15 @@ msgid ""
 "setting the \"required\" attribute characteristic of a sub-attribute of the "
 "\"members\" attribute in the \"Group\" resource schema."
 msgstr ""
+"Tandis que certaines valeurs PEUVENT être ajoutées ou supprimées, les sous-"
+"attributs de `members` sont « immutables »..  Le sous-attribut `value` "
+"contient la valeur de l'attribut « id » d'une ressource SCIM, and le sous-"
+"attribut « $ref » doit être l'URI d'une ressource SCIM telle que « User » ou "
+"« Group »..  L'intention du type « Group » est d'autoriser les fournisseurs "
+"de service à supporter les groupes imbriqués.  Les fournisseurs de service "
+"PEUVENT exiger des clients qu'ils fournissent une valeur non nulle en "
+"paramétrant la caractéristique d'attribut « required » d'un sous-attribut de "
+"l'attribut « members » dans le schéma de la ressource « Group »."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.User:1
 #: 3de74c338e4e45d4ada0909e1d6a2c1d
@@ -5232,6 +5248,12 @@ msgid ""
 "put there for information purpose. The description may not fit the current "
 "implementation in Canaille."
 msgstr ""
+"Modèle utilisateurs, basé sur les spécifications`SCIM User schema "
+"<https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_, `Entreprise "
+"User Schema Extension <https://datatracker.ietf.org/doc/html/"
+"rfc7643#section-4.3>`_ et le brouillon `SCIM Password Management Extension "
+"<https://datatracker.ietf.org/doc/html/draft-hunt-scim-password-mgmt-00."
+"html>`_."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.User.can:1
 #: dd44c29c7f88458e923a6bdc89ff4bd8
@@ -5240,16 +5262,20 @@ msgid ""
 "Permission` according to the :class:`configuration <canaille.core."
 "configuration.ACLSettings>`."
 msgstr ""
+"L’utilisateur a ou non la :class:`~canaille.core.configuration.Permission` "
+"en fonction de la :class:`configuration <canaille.core.configuration."
+"ACLSettings>`."
 
 #: ../../docstring of canaille.core.models.User.department:1
 #: d09b761f1c3d4bcda3c7c5841cb86768
 msgid "Identifies the name of a department."
-msgstr ""
+msgstr "Identifie le nom d’un service."
 
 #: ../../docstring of canaille.core.models.User.display_name:1
 #: 7a92e34396f14701a901c6342ba43372
 msgid "The name of the user, suitable for display to end-users."
 msgstr ""
+"Le nom de l’utilisateur, destiné à être affiché auprès d’autres utilisateurs."
 
 #: ../../docstring of canaille.core.models.User.display_name:3
 #: e89fec83b2eb42deaac70264489240e3
@@ -5261,11 +5287,18 @@ msgid ""
 "SHOULD be the primary textual label by which this User is normally displayed "
 "by the service provider when presenting it to end-users."
 msgstr ""
+"Chaque utilisateur retourné PEUT inclure une valeur « displayName » non "
+"nulle.  Le nom DOIT être le nom complet de l’utilisateur décrit, is connu ("
+"par exemple « Babs Jensen » ou « Mme. Barbara J Jensen, III ») mais PEUT "
+"être un nom d’utilisateur, si c'est la seule information disponible (par "
+"exemple « bjensen »)  La valeur fournie DOIT être le nom d'affichage avec "
+"lequel l’utilisateur est normalement affiché par le fournisseur de service "
+"quand affiché auprès d'autres utilisateurs."
 
 #: ../../docstring of canaille.core.models.User.emails:1
 #: 5383ce6b712040c4a0bba18c1bbef93d
 msgid "Email addresses for the User."
-msgstr ""
+msgstr "L'adresse email de l'utilisateur."
 
 #: ../../docstring of canaille.core.models.User.emails:3
 #: dcbfe09f878141a4bd5a20b9e2d9b6da
@@ -5279,6 +5312,15 @@ msgid ""
 "of basic values of \"work\", \"home\", and \"other\" and MAY allow "
 "additional type values to be used at the discretion of SCIM clients."
 msgstr ""
+"La valeur DOIT être en accord avec [RFC5321].  Les fournisseurs de service "
+"DOIT normaliser la valeur en fonction de [RFC5321], par exemple « bjensen@"
+"example.com » à la place de « bjensen@EXAMPLE.COM ».  Le sous-attribut « "
+"display » PEUT être utilisé pour retourner la représentation normalisée de "
+"l'adresse email. Le sous-attribut « type » est utilisé pour fournir une "
+"classification significative pour l'utilisateur (humain).  L'interface "
+"utilisateur devrait encourager l'utilisateur des valeurs basiques « work », «"
+" home » et « other » et PEUT autoriser des types additionnels pouvant être "
+"utilisés à la discrétion des clients SCIM."
 
 #: ../../docstring of canaille.core.models.User.employee_number:1
 #: 6cc0c003bd234628a0bc0a0c27cccaee
