@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 12:21+0100\n"
-"PO-Revision-Date: 2024-12-09 19:54+0000\n"
+"PO-Revision-Date: 2024-12-09 22:26+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -5229,7 +5229,7 @@ msgstr ""
 "attributs de `members` sont « immutables »..  Le sous-attribut `value` "
 "contient la valeur de l'attribut « id » d'une ressource SCIM, and le sous-"
 "attribut « $ref » doit être l'URI d'une ressource SCIM telle que « User » ou "
-"« Group »..  L'intention du type « Group » est d'autoriser les fournisseurs "
+"« Group ».  L'intention du type « Group » est d'autoriser les fournisseurs "
 "de service à supporter les groupes imbriqués.  Les fournisseurs de service "
 "PEUVENT exiger des clients qu'ils fournissent une valeur non nulle en "
 "paramétrant la caractéristique d'attribut « required » d'un sous-attribut de "
@@ -5499,6 +5499,8 @@ msgid ""
 "Testing for an equality match MAY be supported if there is an existing "
 "stored hashed value.  When testing for equality, the service provider:"
 msgstr ""
+"Tester l'égalité PEUT être gérée si une valeur hashée enregistrée existe. "
+"Quand un test d'égalité est fait, le fournisseur du service :"
 
 #: ../../docstring of canaille.core.models.User.password:32
 #: becd82e6d299471d94ab4906ce105218
@@ -5506,6 +5508,8 @@ msgid ""
 "Prepares the filter value for international language comparison.  See "
 "Section 7.8 of [RFC7644]."
 msgstr ""
+"Prépare la valeur du filtre pour une comparaison de langue internationale. "
+"Voir la section7.8 de [RFC7644]."
 
 #: ../../docstring of canaille.core.models.User.password:35
 #: ca91b3fdd3ae434dbb47d55b73ccbcb2
@@ -5545,6 +5549,9 @@ msgid ""
 "A URI that is a uniform resource locator (as defined in Section 1.1.3 of "
 "[RFC3986]) that points to a resource location representing the user's image."
 msgstr ""
+"Une URI qui est une URL (telle que définie dans la section 1.1.3 de "
+"[RFC3986]) pointant vers la localisation de la ressource représentant "
+"l'image de l'utilisateur."
 
 #: ../../docstring of canaille.core.models.User.photo:5
 #: 8d0e8ca2555c48b0aad26fa7fdb102cf
@@ -5559,11 +5566,21 @@ msgid ""
 "for type, this attribute defines the following canonical values to represent "
 "popular photo sizes: \"photo\" and \"thumbnail\"."
 msgstr ""
+"La ressource DOIT être un fichier (par exemple une image au format GIF, "
+"JPEG, ou PNG) plutôt qu'une page web contenant une image. Les fournisseurs "
+"de service PEUVENT retourner la même image dans différentes tailles, bien "
+"qu'il n'existe pas actuellement de standard pour décrire les images de "
+"différentes tailles. Notez que cet attribut NE DEVRAIT PAS être utilisé pour "
+"envoyer n'importe quelle photo prise par cet utilisateur mais plutôt les "
+"photos de profil de l'utilisateur affichable quand une description "
+"l'utilisateur devrait être envoyé. À la place des valeurs canoniques "
+"standard pour le type, cet attribut définit les valeurs canoniques suivantes "
+"pour représenter les tailles de photo populaire: « photo » et « vignette »."
 
 #: ../../docstring of canaille.core.models.User.postal_code:1
 #: ca9c10bc74eb4a2b90365bbd3473b1be
 msgid "The zip code or postal code component."
-msgstr ""
+msgstr "Le composant code zip ou postal."
 
 #: ../../docstring of canaille.core.models.User.preferred_language:1
 #: 5c7d29d6e6334161b21068010f566af2
@@ -5587,6 +5604,16 @@ msgid ""
 "in a delegated OAuth 2.0 [RFC6749] style interaction) where normal HTTP "
 "Accept-Language header negotiation cannot take place."
 msgstr ""
+"La valeur indique l'ensemble des langues naturelles qui sont préférées. Le "
+"format de la valeur est la même que le champ d'en-tête HTTP Accept-Language ("
+"sans inclure « Accept-Language: » et est défini dans la section 5.3.5 de "
+"[RFC7231]. Le but de cette valeur est d'activer les applications cloud à "
+"exécuter une correspondance des étiquettes de langue [RFC4647] avec les "
+"préférences de langues de l'utilisateur, sans prendre en compte ce que le "
+"user-agent (qui pourrait être partagé) pourrait indiquer, ou dans un "
+"interaction qui n'implique pas un utilisateur (tel que dans une interaction "
+"du type d'OAuth 2.0 déléguée [RFC6749]) où il n'y a pas de negociation avec l"
+"'en-tête HTTP Accept-Language."
 
 #: ../../docstring of canaille.core.models.User.profile_url:1
 #: 267adc8c4ecf4750a9db3464eb2b8573
@@ -5595,11 +5622,14 @@ msgid ""
 "[RFC3986]) and that points to a location representing the user's online "
 "profile (e.g., a web page)."
 msgstr ""
+"Une URI qui est une URL (tel que définie dans une section 1.1.3 de [RFC3986])"
+" et pointant à une localisation représentant le profil en ligne de "
+"l'utilisateur (par exemple une page web)."
 
 #: ../../docstring of canaille.core.models.User.profile_url:5
 #: 7f227419ab034b3da8303fe94affeb6c
 msgid "URIs are canonicalized per Section 6.2 of [RFC3986]."
-msgstr ""
+msgstr "Les URI sont au format canonique selon la section 6.2 de [RFC3986]."
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.User.readable_fields:1 e064888816ad4e228797af005daa0c1b
@@ -5607,6 +5637,8 @@ msgid ""
 "The fields the user can read according to the :class:`configuration "
 "<canaille.core.configuration.ACLSettings>` configuration."
 msgstr ""
+"Les champs que l'utilisateur peut lire dans la configuration de :class:`"
+"configuration <canaille.core.configuration.ACLSettings>."
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.User.readable_fields:4 d51b5c9a3058444187f7f52aafcc57ce
@@ -5614,11 +5646,13 @@ msgid ""
 "This does not include the :attr:`writable <canaille.core.models.User."
 "writable_fields>` fields."
 msgstr ""
+"Cela n'inclut pas les champs :attr:`writable <canaille.core.models.User."
+"writable_fields>`."
 
 #: ../../docstring of canaille.core.models.User.region:1
 #: 7781da46bb4f45c19d4061a73efd1860
 msgid "The state or region component."
-msgstr ""
+msgstr "Le composant État ou région."
 
 #: ../../docstring of canaille.core.models.User.street:1
 #: e15de46ed1a745e580399d0bf40e96b8
@@ -5626,6 +5660,8 @@ msgid ""
 "The full street address component, which may include house number, street "
 "name, P.O."
 msgstr ""
+"Le composant d'adresse rue complète, qui peut inclure le numéro de la "
+"maison, le nom de la rue, code"
 
 #: ../../docstring of canaille.core.models.User.street:4
 #: 663a1b080f3646f5bbc30492beccda49
@@ -5633,6 +5669,8 @@ msgid ""
 "box, and multi-line extended street address information.  This attribute MAY "
 "contain newlines."
 msgstr ""
+"postal et les informations de rue étendues sur plusieurs lignes. Cet "
+"attribut PEUT contenir des retours à la ligne."
 
 #: ../../docstring of canaille.core.models.User.title:1
 #: 96571ab69f47443087e9de7cdf2af3ef
