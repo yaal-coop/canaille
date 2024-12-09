@@ -12,12 +12,8 @@ class User(canaille.core.models.User, LDAPObject):
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
-        "last_login": "pwdLastSuccess",
         "user_name": "uid",
         "password": "userPassword",
-        "password_lifetime": "pwdMaxAge",
-        "password_last_update": "pwdChangedTime",
-        "password_must_change": "pwdMustChange",
         "preferred_language": "preferredLanguage",
         "family_name": "sn",
         "given_name": "givenName",
@@ -38,7 +34,7 @@ class User(canaille.core.models.User, LDAPObject):
         "organization": "o",
         "groups": "memberOf",
         "lock_date": "pwdEndTime",
-        "password_attribute": "pwdAttribute",
+        "password_last_update": "pwdChangedTime",
     }
 
     def match_filter(self, filter):

@@ -23,8 +23,6 @@ class User(Model):
 
     identifier_attribute: ClassVar[str] = "user_name"
 
-    last_login: datetime.datetime | None = None
-
     user_name: str
     """A service provider's unique identifier for the user, typically used by
     the user to directly authenticate to the service provider.
@@ -82,11 +80,7 @@ class User(Model):
     "never").
     """
 
-    password_lifetime: int | None = None  # can be null # integer in days
-
     password_last_update: datetime.datetime | None = None
-
-    password_must_change: bool | None = None
 
     preferred_language: str | None = None
     """Indicates the user's preferred written or spoken languages and is
@@ -248,8 +242,6 @@ class User(Model):
 
     lock_date: datetime.datetime | None = None
     """A DateTime indicating when the resource was locked."""
-
-    password_attribute: str | None = None
 
     _readable_fields = None
     _writable_fields = None

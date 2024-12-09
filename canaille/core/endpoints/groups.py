@@ -93,7 +93,6 @@ def edit_group(group):
         data={
             "display_name": group.display_name,
             "description": group.description or "",
-            "password_expiration_time": group.password_lifetime or 0,
         },
     )
 

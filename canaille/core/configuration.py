@@ -331,5 +331,5 @@ class CoreSettings(BaseModel):
 
     ENABLE_PASSWORD_EXPIRY_POLICY: bool = False
 
-    MAX_DAYS_LOGOUT: int | None = None
+    PASSWORD_MAX_DAYS_EXPIRATION: int | None = None
     """Can be null or None."""

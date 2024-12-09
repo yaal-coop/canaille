@@ -74,12 +74,6 @@ class MemoryBackend(Backend):
             microsecond=0
         )
         self.save(user)
-    
-    def set_last_login(self, user):
-        user.last_login = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
-        self.save(user)
 
     def query(self, model, **kwargs):
         # if there is no filter, return all models
