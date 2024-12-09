@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-08 11:58+0100\n"
-"PO-Revision-Date: 2024-11-27 19:01+0000\n"
-"Last-Translator: Kamborio <Kamborio15@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2024-12-10 23:12+0000\n"
+"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
 "Language: es\n"
@@ -1838,10 +1838,8 @@ msgid "Issued at"
 msgstr "Emitido en"
 
 #: canaille/oidc/templates/client_edit.html:75
-#, fuzzy
-#| msgid "View a token"
 msgid "New token"
-msgstr "Ver un token"
+msgstr "Nuevo token"
 
 #: canaille/oidc/templates/client_edit.html:78
 msgid "Delete the client"
@@ -1968,10 +1966,8 @@ msgid "Expiration date"
 msgstr "Fecha de caducidad"
 
 #: canaille/oidc/templates/token_view.html:100
-#, fuzzy
-#| msgid "This token has not been revoked"
 msgid "This token has expired."
-msgstr "Este token no ha sido revocado"
+msgstr "Este token ha expirado."
 
 #: canaille/oidc/templates/token_view.html:106
 msgid "Revokation date"
@@ -1998,10 +1994,8 @@ msgid "Refresh token"
 msgstr "Token de refresco"
 
 #: canaille/oidc/templates/token_view.html:138
-#, fuzzy
-#| msgid "Refresh token"
 msgid "No refresh token"
-msgstr "Token de refresco"
+msgstr "Sin token de actualización"
 
 #: canaille/oidc/templates/modals/delete-client.html:9
 msgid "Client deletion"
