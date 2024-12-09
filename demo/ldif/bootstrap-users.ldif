@@ -17,8 +17,6 @@ street: Admin Lane
 postalCode: 12345
 l: Gotham City
 st: North Pole
-objectClass: pwdPolicy
-pwdAttribute: userPassword
 
 dn: uid=moderator,ou=users,dc=mydomain,dc=tld
 objectclass: top
@@ -34,8 +32,6 @@ departmentNumber: west
 labeledURI: https://moderator.example
 userPassword: {SSHA}+eHyxWqajMHsOWnhONC2vbtfNZzKTkag
 displayName: 👮 Jack 👮
-objectClass: pwdPolicy
-pwdAttribute: userPassword
 
 dn: uid=user,ou=users,dc=mydomain,dc=tld
 objectclass: top
@@ -51,8 +47,6 @@ departmentNumber: west
 labeledURI: https://user.example
 userPassword: {SSHA}Yr1ZxSljRsKyaTB30suY2iZ1KRTStF1X
 displayName: Johnny
-objectClass: pwdPolicy
-pwdAttribute: userPassword
 
 dn: uid=james,ou=users,dc=mydomain,dc=tld
 objectclass: top
@@ -63,8 +57,6 @@ sn: Doe
 uid: james
 mail: james@mydomain.tld
 telephoneNumber: 555-000-003
-objectClass: pwdPolicy
-pwdAttribute: userPassword
 
 dn: cn=users,ou=groups,dc=mydomain,dc=tld
 objectclass: groupOfNames
