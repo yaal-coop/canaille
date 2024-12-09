@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-08 12:21+0100\n"
+"POT-Creation-Date: 2024-12-09 23:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1845,7 +1845,7 @@ msgstr ""
 msgid "A new user which login is **james**. This user has no password yet, and his first attempt to log-in would result in sending a password initialization email (if a smtp server is configured)."
 msgstr ""
 
-#: ../development/specifications.rst:62
+#: ../development/specifications.rst:63
 #: ../../CONTRIBUTING.rst:48
 #: c01f125a22914f369ef28ef090a728b1
 #: 01a043d4a4364011b8a22a53549b20da
@@ -1892,7 +1892,7 @@ msgstr ""
 msgid "To launch containers, use:"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: ../tutorial/databases.rst:16
 #: ../../CONTRIBUTING.rst:73
 #: ../../CONTRIBUTING.rst:106
@@ -1940,7 +1940,7 @@ msgstr ""
 msgid "Run the demo instance with the memory backend"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: ../tutorial/databases.rst:32
 #: ../../CONTRIBUTING.rst:93
 #: ../../CONTRIBUTING.rst:124
@@ -2411,337 +2411,342 @@ msgstr ""
 msgid "✅ `Initiating User Registration via OpenID Connect 1.0 <https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_"
 msgstr ""
 
-#: ../development/specifications.rst:48
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:46
+#: 6cfd3e82e2bb4f80a58d8864be2ef301
+msgid "❌  `OpenID Connect Profile for SCIM Services <https://openid.net/specs/openid-connect-scim-profile-1_0.html>`_"
+msgstr ""
+
+#: ../development/specifications.rst:49
+#: ../development/specifications.rst:65
 #: d9278a9cbe784818b57f9fd9d76dda68
-#: 7ad1170acbe7400785a02a07e408ce3b
+#: d9278a9cbe784818b57f9fd9d76dda68
 msgid "SCIM"
 msgstr ""
 
-#: ../development/specifications.rst:50
+#: ../development/specifications.rst:51
 #: c91f11a0512e4782981c5bb98a8038d7
 msgid "❌ `RFC7642: System for Cross-domain Identity Management: Definitions, Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
 
-#: ../development/specifications.rst:51
+#: ../development/specifications.rst:52
 #: 2f4ea31b4c80425a8e3075b8597ae8e5
 msgid "❌ `RFC7643: System for Cross-domain Identity Management: Core Schema <https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
 
-#: ../development/specifications.rst:52
+#: ../development/specifications.rst:53
 #: 6ffdb285557144afb301b05c33fecddf
 msgid "❌ `RFC7644: System for Cross-domain Identity Management: Protocol <https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
 
-#: ../development/specifications.rst:55
+#: ../development/specifications.rst:56
 #: ac600b38603f4fb999aebf5ffbe33cc7
 msgid "Comparison with other providers"
 msgstr ""
 
-#: ../development/specifications.rst:57
+#: ../development/specifications.rst:58
 #: 2ef9567e17694a669ed5071c882661ad
 msgid "Here is a feature comparison with other OpenID Connect server software."
 msgstr ""
 
-#: ../development/specifications.rst:59
+#: ../development/specifications.rst:60
 #: d6d241980d3e46e192dd54a5082b0197
 msgid "Canaille voluntarily only implements the OpenID Connect protocol to keep its codebase simple."
 msgstr ""
 
-#: ../development/specifications.rst:62
+#: ../development/specifications.rst:63
 #: 0b9a4fba353c483692ed6fb04227691e
 msgid "Software"
 msgstr ""
 
-#: ../development/specifications.rst:62
+#: ../development/specifications.rst:63
 #: 62c2fe7c97644cfa8e7d297a337bfe36
 msgid "Project"
 msgstr ""
 
-#: ../development/specifications.rst:62
+#: ../development/specifications.rst:63
 #: f4700ad912314bfc8d66be8471a4c772
 msgid "Protocols implementations"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: ea237be2a99a4940be67516a1b95d97d
 msgid "FLOSS"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: 55d5dd9174f94ca9850b999864598259
 msgid "Language"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: 27002c409c6440d29ae89e91559a6994
 msgid "LOC"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: 3ba35fd6c6d44150b4b049cf603e4a85
 msgid "OIDC"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: dc762bcd6eca4fc79dae1ca65c411351
 msgid "SAML"
 msgstr ""
 
-#: ../development/specifications.rst:64
+#: ../development/specifications.rst:65
 #: 6ae5803282c4439a9e7b1c1570e4c505
 msgid "CAS"
 msgstr ""
 
-#: ../development/specifications.rst:66
+#: ../development/specifications.rst:67
 #: f4c4ac6fdea74558a74bc9a3cefbb5c7
 msgid "Canaille"
 msgstr ""
 
-#: ../development/specifications.rst:66
-#: ../development/specifications.rst:68
-#: ../development/specifications.rst:70
-#: ../development/specifications.rst:72
-#: ../development/specifications.rst:74
-#: ../development/specifications.rst:76
-#: ../development/specifications.rst:78
-#: ../development/specifications.rst:80
-#: ../development/specifications.rst:82
-#: ../development/specifications.rst:84
-#: ../development/specifications.rst:86
-#: ../development/specifications.rst:88
+#: ../development/specifications.rst:67
+#: ../development/specifications.rst:69
+#: ../development/specifications.rst:71
+#: ../development/specifications.rst:73
+#: ../development/specifications.rst:75
+#: ../development/specifications.rst:77
+#: ../development/specifications.rst:79
+#: ../development/specifications.rst:81
+#: ../development/specifications.rst:83
+#: ../development/specifications.rst:85
+#: ../development/specifications.rst:87
+#: ../development/specifications.rst:89
 #: c2035a448fa9405a92d51c9c90277394
-#: 1fff4f30a7714816a18b3fcc116290ea
-#: c40b5154d16f4769a90f544f921ff160
+#: c2035a448fa9405a92d51c9c90277394
 #: b4f8f14c2ccd48d7a2df4514e072872c
-#: 070425d5941a41a5b151cd30b60c8759
+#: c2035a448fa9405a92d51c9c90277394
 #: ae10fc61ac05465c88b82d0432b9f6f3
-#: 487a8e03d0e34a79b0382407ce0105e6
+#: c2035a448fa9405a92d51c9c90277394
 #: aa47e755d8094a54a72e5a984eca8212
-#: 1e641255c61242d782202c8eafa965b0
-#: 66fcd17bb81c48538f3b165edb4842e4
-#: 28011cbaa1f84bc2b0c07e50fe8ee4c1
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: 33e7166b401144bcadff959d61e03c4c
-#: 3e414716fb234b5a98cbd381348c05b8
-#: 4233cb97a80043599c2ab7b25dfc7e09
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: 01a61d6ece794b39adc441233aef3a3d
 #: 7bba6b8427854a41b99c15b883290007
-#: 87f7b258b9084896962266eef600ead0
+#: c2035a448fa9405a92d51c9c90277394
 #: 35d2af03a40c44f3be85f38d56883d26
-#: d90d1af7efe04fa397f58ec889a042d2
-#: 721544149a7244feb2fd14bc071b9ba4
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: 588ab8a50fca4528b9a471dbddfb7d4a
-#: 814ccdbc41184e08ac5d1dfc65486f1c
+#: c2035a448fa9405a92d51c9c90277394
 #: 5b92e201931a462c90a3d3883c2bd94a
 #: ba65de35554741a48a7eb4a72fc66433
-#: c5d5335a195a44cd882f443ae316348f
-#: 9a77ea56aecb4e859046a32bcd052251
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: b845153d9ebc4c2e83791da5c5d0bf5a
 #: 4dd20636352243038f0bdad8d15e8449
 #: 5b23071246ab41f1abd1bfa5596a4b46
 #: e9195a6880cc4824bb5fbfce4b1d26dc
-#: f0943b3b5cd34615a55cb2f9b1608b4a
+#: c2035a448fa9405a92d51c9c90277394
 #: d95ce6d1875045fc8442060795ebfe22
-#: eaa0089f734b48eea7a06ed3c5a0dad5
+#: c2035a448fa9405a92d51c9c90277394
 #: c1aa2d442f2047f9a1194e38c2b1ddd1
-#: f86c1eae20714e9dba1f0f48395c4dc9
-#: 0657decbae9645678985ea6020d354d2
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: ce03d94ab7954c02968bfb44eb0f72fd
 #: 9fb4e3e247d846419051f2852ffa3f31
 #: f5e5911bcb704af19c073370f437c1b4
 #: 2a75e780caa141b798c8b207bcc8fcbe
-#: 47c3b428281d41fcb8e7bc0cdc16581f
-#: 44dd040e077248b48b1ed0af53404b9c
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: e063ffcc58474df4a66b2814eb4c0f61
-#: 24cd7d2b70af4d138d065f2b568969bc
+#: c2035a448fa9405a92d51c9c90277394
 #: 1b724ec2c443410fa224420a2dc57059
-#: 9909afe63bb34adcafa5eca97a23cd03
-#: cb0aa79288f1454880b063396f3803e5
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: b96e91bf613c4f4cb6ac463fad5a68fe
 #: cff48ca4a13545309d9e1b58c3dede80
 #: e55ccef99f4a45be8fb35a1ed8bb1ac4
 #: a5b3f91649094efebe4e858d745ccb2e
 #: 4b09487097334807804aaba873d4dc7b
-#: a981b83da6074c448bcbcfaf442ff4f8
-#: 93c98f61c81b4628a9acfd096e11e7a4
+#: c2035a448fa9405a92d51c9c90277394
+#: c2035a448fa9405a92d51c9c90277394
 #: c9b45500d9d145a8862c978d95329330
 #: c34b7940cbbd4218af2cb94e8eb24fc7
-#: 007275e0e3314ae5a27bc93732d22221
+#: c2035a448fa9405a92d51c9c90277394
 #: 8a394726b7b941dfbbd8af3e546782c1
-#: eda36ba62e4947528d14d5bb46f98767
+#: c2035a448fa9405a92d51c9c90277394
 #: 78eb76570364482583c3cb19d0303903
-#: 911d55a0575e40f68acac8945e382a6f
+#: c2035a448fa9405a92d51c9c90277394
 #: 888a30003d764dd28c8744ea11295da4
 #: f5320617a03e47dea905ac5a70208c70
+#: c2035a448fa9405a92d51c9c90277394
 msgid "✅"
 msgstr ""
 
-#: ../development/specifications.rst:66
-#: ../development/specifications.rst:72
+#: ../development/specifications.rst:67
+#: ../development/specifications.rst:73
 #: 86f975b8aaab4af9bfc62ef2df91ba28
-#: 9dd4f11a08ae4fb0b0fde477b7209bc3
+#: 86f975b8aaab4af9bfc62ef2df91ba28
 msgid "Python"
 msgstr ""
 
-#: ../development/specifications.rst:66
+#: ../development/specifications.rst:67
 #: 3a757539fafc4e3aa92dbdec5227a2df
 msgid "10k"
 msgstr ""
 
-#: ../development/specifications.rst:66
-#: ../development/specifications.rst:68
-#: ../development/specifications.rst:70
-#: ../development/specifications.rst:72
-#: ../development/specifications.rst:74
-#: ../development/specifications.rst:76
-#: ../development/specifications.rst:78
-#: ../development/specifications.rst:82
-#: ../development/specifications.rst:86
-#: ../development/specifications.rst:88
-#: d1129a1abbbe451393139f636f972160
+#: ../development/specifications.rst:67
+#: ../development/specifications.rst:69
+#: ../development/specifications.rst:71
+#: ../development/specifications.rst:73
+#: ../development/specifications.rst:75
+#: ../development/specifications.rst:77
+#: ../development/specifications.rst:79
+#: ../development/specifications.rst:83
+#: ../development/specifications.rst:87
+#: ../development/specifications.rst:89
 #: 0baee04e46584b46ab2b5bd83dea4c0d
 #: cab3dd361d004e25bc0250cb2e0ffe9a
-#: d3bccdee48f340dcac2b45c0892ceceb
-#: 71b748e4a2b34c0bb767e54e9a6035e5
-#: a2b3f6f336424dbbaf5dc3d387d841e6
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
 #: 465d3f3e0fd74093b25163100de425b3
 #: 7d6b64f2f3bd472bac864db31a8369db
-#: 56488a2c86774489986852389d9bdc8b
-#: 31a1e7b5acc84a55bcb704865acece12
-#: 64856df8e2b846fc9b5af8a2091645a0
-#: bfba022e99874f03afc35e4de5bd4708
-#: a879dcda766c4da185322f35d22e6f46
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
 #: fd884c4495c144699d4ed019e0264719
-#: aa15002c037b42d49c62426116a999c9
+#: d1129a1abbbe451393139f636f972160
 #: 94a1a61f502a42569788cfe93ad6bcf7
-#: 2f498851758b4c13943c69ec1ce9a3db
-#: 205c9937da9946108d0a0e2b4f8458aa
-#: 7aa2bbcd681b45e3b3027de382926640
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
+#: d1129a1abbbe451393139f636f972160
 msgid "❌"
 msgstr ""
 
-#: ../development/specifications.rst:68
+#: ../development/specifications.rst:69
 #: 41d7747dc9384c6b908b8394168b5b5a
 msgid "`Auth0`_"
 msgstr ""
 
-#: ../development/specifications.rst:68
-#: ../development/specifications.rst:78
-#: ../development/specifications.rst:80
-#: ../development/specifications.rst:88
-#: b391b0e5e2724d7f9d457a4e64303697
+#: ../development/specifications.rst:69
+#: ../development/specifications.rst:79
+#: ../development/specifications.rst:81
+#: ../development/specifications.rst:89
 #: 8f85eeab9d6945af894c55e2a4aa0b9b
-#: 042200dd8e5446a9bf353b47b219b1bb
-#: cf98ae825b30479499de8a4c5ffa1941
+#: b391b0e5e2724d7f9d457a4e64303697
+#: b391b0e5e2724d7f9d457a4e64303697
 #: 9d4e74c78b2b439785310a334d06a1c7
-#: 29630d08824746cb989fd0b402a48ba1
-#: 40c78abb3bce4fc8a59fabdef15f0f33
-#: d6fbf12d6eb6429d84551ea23bf8eecc
+#: b391b0e5e2724d7f9d457a4e64303697
+#: b391b0e5e2724d7f9d457a4e64303697
+#: b391b0e5e2724d7f9d457a4e64303697
 #: f682275b9cb14280a7f2654d727c75d1
+#: b391b0e5e2724d7f9d457a4e64303697
 msgid "❔"
 msgstr ""
 
-#: ../development/specifications.rst:70
+#: ../development/specifications.rst:71
 #: 47ff7b1213464f85b246c4282f3af933
 msgid "`Authelia`_"
 msgstr ""
 
-#: ../development/specifications.rst:70
-#: ../development/specifications.rst:74
-#: ../development/specifications.rst:82
+#: ../development/specifications.rst:71
+#: ../development/specifications.rst:75
+#: ../development/specifications.rst:83
 #: 5db56fd3e64948f5a108d2f74f7070b4
-#: 336fd480628c4851957b790dee759f7c
-#: f263685446a54133804e5f8517d59f1d
+#: 5db56fd3e64948f5a108d2f74f7070b4
+#: 5db56fd3e64948f5a108d2f74f7070b4
 msgid "Go"
 msgstr ""
 
-#: ../development/specifications.rst:70
-#: ../development/specifications.rst:82
+#: ../development/specifications.rst:71
+#: ../development/specifications.rst:83
 #: 741e97755b8c4478b7e19ba006898401
-#: ffc79e1d4373446e88d2065ff0109fc8
+#: 741e97755b8c4478b7e19ba006898401
 msgid "50k"
 msgstr ""
 
-#: ../development/specifications.rst:72
+#: ../development/specifications.rst:73
 #: 7fb71b70103e40eeb178e1281ea81de3
 msgid "`Authentic2`_"
 msgstr ""
 
-#: ../development/specifications.rst:72
+#: ../development/specifications.rst:73
 #: cb26c38797d9416fafe5d1a1b5c5b03b
 msgid "65k"
 msgstr ""
 
-#: ../development/specifications.rst:74
+#: ../development/specifications.rst:75
 #: 6f7fc7bbb2694f09a12393a74ffc8013
 msgid "`Authentik`_"
 msgstr ""
 
-#: ../development/specifications.rst:74
+#: ../development/specifications.rst:75
 #: bb964534c0704925b6d856bd54af7c7f
 msgid "55k"
 msgstr ""
 
-#: ../development/specifications.rst:76
+#: ../development/specifications.rst:77
 #: 4604cb0778044b63807b2be23ced893c
 msgid "`CAS`_"
 msgstr ""
 
-#: ../development/specifications.rst:76
-#: ../development/specifications.rst:80
-#: ../development/specifications.rst:84
+#: ../development/specifications.rst:77
+#: ../development/specifications.rst:81
+#: ../development/specifications.rst:85
 #: aa3618e441ac413e83acdfe56631d15a
-#: 1dc363d8cf99410890cbd44e0f60699c
-#: 4104aef4b998447299aa6b10e861098c
+#: aa3618e441ac413e83acdfe56631d15a
+#: aa3618e441ac413e83acdfe56631d15a
 msgid "Java"
 msgstr ""
 
-#: ../development/specifications.rst:76
+#: ../development/specifications.rst:77
 #: c316893b4f00454a8c5745071e0888b1
 msgid "360k"
 msgstr ""
 
-#: ../development/specifications.rst:78
+#: ../development/specifications.rst:79
 #: c8a158afb8d841209c20b9ef42e563cb
 msgid "`Connect2id`_"
 msgstr ""
 
-#: ../development/specifications.rst:80
+#: ../development/specifications.rst:81
 #: a264cd68201c442faf08474397c550aa
 msgid "`Gluu`_"
 msgstr ""
 
-#: ../development/specifications.rst:82
+#: ../development/specifications.rst:83
 #: e54b53bfeafd4764b01095c1cd0077b7
 msgid "`Hydra`_"
 msgstr ""
 
-#: ../development/specifications.rst:84
+#: ../development/specifications.rst:85
 #: 87594578370246d494ef5e63196a3a92
 msgid "`Keycloak`_"
 msgstr ""
 
-#: ../development/specifications.rst:84
+#: ../development/specifications.rst:85
 #: d6304d1f41714ad5af15edb6febbfbc5
 msgid "600k"
 msgstr ""
 
-#: ../development/specifications.rst:86
+#: ../development/specifications.rst:87
 #: 2efe7957b848447dacfecb082a95c438
 msgid "`LemonLDAP`_"
 msgstr ""
 
-#: ../development/specifications.rst:86
+#: ../development/specifications.rst:87
 #: cdd25b565e5d4de4b4202f82f4407843
 msgid "Perl"
 msgstr ""
 
-#: ../development/specifications.rst:86
+#: ../development/specifications.rst:87
 #: 51b2d4fcc1fc43d2a692826a2b2c62d1
 msgid "130k"
 msgstr ""
 
-#: ../development/specifications.rst:88
+#: ../development/specifications.rst:89
 #: 4c2a5d27487345f7bc3c1bbd0c897c47
 msgid "`Okta`_"
 msgstr ""
@@ -2778,7 +2783,8 @@ msgstr ""
 msgid "Profile management"
 msgstr ""
 
-#: ../features.rst:-1
+#: ../features.rst:28
+#: ../features.rst:220
 #: 53e5483c51ae4df28138ae990c16de07
 #: 0a36f2261b84450b98131ff740f7ceb9
 msgid "Profile"
@@ -2819,7 +2825,8 @@ msgstr ""
 msgid "Group management"
 msgstr ""
 
-#: ../features.rst:-1
+#: ../features.rst:53
+#: ../features.rst:140
 #: 4824338c1fbf4fdd8c2e01534219ee98
 #: 3d8b9fc086e945d890bf9b3e01c82984
 msgid "Group edition"
@@ -2898,8 +2905,8 @@ msgstr ""
 msgid "If :attr:`email confirmation <canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>` is also enabled, users will be sent a confirmation link to their email address, on which they will need to click in order to finalize their registration."
 msgstr ""
 
-#: ../features.rst:-1
 #: ../features.rst:97
+#: ../features.rst:99
 #: 3d200c871e19420db3ce1885f7414a3c
 #: 7bf61d1ad01240f7b1ed2db4ab0fdf77
 msgid "User invitation"
@@ -3030,7 +3037,7 @@ msgstr ""
 msgid "Internationalization"
 msgstr ""
 
-#: ../features.rst:-1
+#: ../features.rst:185
 #: 46cf7a3a3e9047439aa7fa6654b07921
 msgid "Translation state"
 msgstr ""
