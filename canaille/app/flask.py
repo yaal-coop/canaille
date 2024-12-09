@@ -1,3 +1,5 @@
+import datetime
+from pytz import timezone, UTC
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -8,9 +10,11 @@ from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import make_response
+from flask import redirect
 from flask import request
 from flask import url_for
 from werkzeug.exceptions import HTTPException
+from flask import url_for
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
@@ -18,7 +22,32 @@ from canaille.app.session import current_user
 from canaille.app.themes import render_template
 
 
-def user_needed(*args):
+def user_needed():
+    def wrapper(view_function):
+        @wraps(view_function)
+        def decorator(*args, **kwargs):
+            user = current_user()
+            if not user:
+                abort(403)
+
+            password_expiration = current_app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"]
+            if (
+               current_app.config["CANAILLE"]["ENABLE_PASSWORD_EXPIRY_POLICY"]
+               and password_expiration is not None
+               and password_expiration != 0
+            ): 
+                if user.password_last_update + datetime.timedelta(days=password_expiration) < UTC.localize(datetime.datetime.now()):
+                    return redirect(url_for(
+                        "core.account.reset",
+                        user=user,
+                    ))
+
+            return view_function(*args, user=user, **kwargs)
+        return decorator
+    return wrapper
+
+
+def permissions_needed(*args):
     permissions = set(args)
 
     def wrapper(view_function):

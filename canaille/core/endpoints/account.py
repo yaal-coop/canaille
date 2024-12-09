@@ -54,6 +54,7 @@ from .forms import InvitationForm
 from .forms import JoinForm
 from .forms import PasswordResetForm
 from .forms import build_profile_form
+from .forms import PasswordResetForm
 
 bp = Blueprint("account", __name__)
 
@@ -581,10 +582,6 @@ def profile_edition_remove_email(user, edited_user, email):
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
 @user_needed()
 def profile_edition(user, edited_user):
-    print("")
-    print(user.user_name)
-    print(user.password_last_update)
-    print("")
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
     ):
@@ -910,3 +907,23 @@ def reset(user):
             )
         )
     return render_template("reset-password.html", form=form, user=user, hash=None)
+
+
+@bp.route("/reset/<user:user>", methods=["GET", "POST"])
+def reset(user):
+    form = PasswordResetForm(request.form)
+
+    if request.form and form.validate():
+        Backend.instance.set_user_password(user, form.password.data)
+
+        flash(_("Your password has been updated successfully"), "success")
+        return redirect(
+        session.pop(
+            "redirect-after-login",
+            url_for("core.account.profile_edition", edited_user=user),
+        )
+        )
+
+    return render_template("reset-password.html", form=form, user=user)
+
+
