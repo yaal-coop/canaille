@@ -3,6 +3,9 @@
 
 Added
 ^^^^^
+- Intruder lockout :issue:`173`
+- :attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT`
+  :issue:`173`
 - Multi-factor authentication :issue:`47`
 - :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and
   :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and
@@ -31,8 +34,8 @@ Fixed
 
 Added
 ^^^^^
-- :attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and
-  :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` configuration options :issue:`174`
+- :attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH` and
+  :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH` configuration options :issue:`174`
 - Password strength visual indicator. :issue:`174`
 - Security events logs. :issue:`177`
 - Support for Python 3.13. :pr:`186`
