@@ -99,6 +99,13 @@ SECRET_KEY = "change me before you go in production"
 # This url should not be modified.
 # API_URL_HIBP = "https://api.pwnedpasswords.com/range/"
 
+# Password validity in days.
+# If a value is recorded Canaille will check if user's password is expired.
+# Then, the user is forced to change his password.
+# This value represents the number of days the password is valid.
+It is possible to disable this option, by entering None or 0.
+# PASSWORD_MAX_DAYS_EXPIRATION = None
+
 # [CANAILLE_SQL]
 # The SQL database connection string
 # Details on https://docs.sqlalchemy.org/en/20/core/engines.html

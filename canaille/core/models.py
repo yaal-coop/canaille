@@ -81,6 +81,9 @@ class User(Model):
     """
 
     password_last_update: datetime.datetime | None = None
+    """Specifies the last time the entry's password was changed.
+    By default, the date of creation of the password is retained.
+    """
 
     preferred_language: str | None = None
     """Indicates the user's preferred written or spoken languages and is

@@ -328,8 +328,12 @@ class CoreSettings(BaseModel):
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
-
-    ENABLE_PASSWORD_EXPIRY_POLICY: bool = False
-
+    
     PASSWORD_MAX_DAYS_EXPIRATION: int | None = None
-    """Can be null or None."""
+    """Password validity in days.
+    
+    If a value is recorded Canaille will check if user's password is expired.
+    Then, the user is forced to change his password.
+    This value represents the number of days the password is valid.
+    It is possible to disable this option, by entering None or 0.
+    """

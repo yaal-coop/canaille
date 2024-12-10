@@ -8,6 +8,8 @@ Added
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
   :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP`
   :issue:`179`
+- Password expiry policy :issue:`176`
+- :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_MAX_DAYS_EXPIRATION`
 
 [0.0.56] - 2024-11-07
 ---------------------
