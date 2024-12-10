@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-09 23:25+0100\n"
 "PO-Revision-Date: 2024-12-10 23:12+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -2473,16 +2473,12 @@ msgstr ""
 "specs/openid-connect-prompt-create-1_0.html>`_"
 
 #: ../development/specifications.rst:46 6cfd3e82e2bb4f80a58d8864be2ef301
-#, fuzzy
-#| msgid ""
-#| "✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-core-1_0."
-#| "html>`_"
 msgid ""
 "❌  `OpenID Connect Profile for SCIM Services <https://openid.net/specs/"
 "openid-connect-scim-profile-1_0.html>`_"
 msgstr ""
-"✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-core-1_0."
-"html>`_"
+"❌  `OpenID Connect Profile for SCIM Services <https://openid.net/specs/"
+"openid-connect-scim-profile-1_0.html>`_"
 
 #: ../development/specifications.rst:49 ../development/specifications.rst:65
 #: d9278a9cbe784818b57f9fd9d76dda68
