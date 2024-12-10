@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-09 23:25+0100\n"
-"PO-Revision-Date: 2024-12-09 22:26+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2024-12-10 23:12+0000\n"
+"Last-Translator: Félix Rohrlich <felix@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -5504,6 +5504,8 @@ msgid ""
 "Generates the salted hash of the filter value and tests for a match with the "
 "locally held value."
 msgstr ""
+"Génère le hash salé de la valeur du filtre et teste la correspondance avec "
+"la valeur locale."
 
 #: ../../docstring of canaille.core.models.User.password:38
 #: 0c4d62a31f2d442981432c2f841abdac
@@ -5512,6 +5514,10 @@ msgid ""
 "the value MUST NOT be returned by a service provider in any form (the "
 "attribute characteristic \"returned\" is \"never\")."
 msgstr ""
+"La mutabilité de l'attribut password est \"writeOnly\" (écriture seule), "
+"indiquant que la valeur NE DOIT PAS être renvoyée par un fournisseur de "
+"service sous quelque forme que ce soit (la caractéristique \"returned\" de "
+"l'attribut est \"never\")."
 
 #: ../../docstring of canaille.core.models.User.phone_numbers:1
 #: 636757499c76498ca8a1cbad6ea4fbb7
@@ -5529,6 +5535,14 @@ msgid ""
 "\"work\", \"home\", \"mobile\", \"fax\", \"pager\", and \"other\" and MAY "
 "allow more types to be defined by the SCIM clients."
 msgstr ""
+"La valeur DOIT être spécifiée en accord avec le format défini dans [RFC3966]"
+", par exemple, 'tel:+33123456789'. Les fournisseurs de service DOIVENT "
+"normaliser la valeur selon le format [RFC3966], quand cela est approprié. Le "
+"sous-attribut \"display\" PEUT être utilisé pour renvoyer la représentation "
+"normalisée de la valeur du numéro de téléphone. Le sous-attribut \"type\" "
+"prend souvent les valeurs habituelles de \"work\", \"home\", \"mobile\", "
+"\"fax\", \"pager\", et \"other\" et PEUT autoriser d'autres types définis "
+"par les clients SCIM."
 
 #: ../../docstring of canaille.core.models.User.photo:1
 #: 27d8a36d06ce46858ed9974cfb3a9a9b
@@ -5683,6 +5697,12 @@ msgid ""
 "This identifier MUST be unique across the service provider's entire set of "
 "Users.  This attribute is REQUIRED and is case insensitive."
 msgstr ""
+"Souvent affiché à l'utilisateur comme leur identifiant unique dans le "
+"système (au contraire de \"id\" ou \"externalId\", qui sont généralement des "
+"identifiants opaques et non conviviaux). Chaque utilisateur DOIT inclure une "
+"valeur de userName non vide. Cet identifiant DOIT être unique parmi tous les "
+"Users (utilisateurs) du fournisseur de service. Cet attribut est OBLIGATOIRE "
+"et n'est pas sensible à la casse."
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.User.writable_fields:1 f99945951b7f476484908fef5eb9bee4
@@ -5690,12 +5710,14 @@ msgid ""
 "The fields the user can write according to the :class:`configuration "
 "<canaille.core.configuration.ACLSettings>`."
 msgstr ""
+"Les champs que l'utilisateur peut modifier selon la :class:`configuration "
+"<canaille.core.configuration.ACLSettings>`."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.AuthorizationCode:1
 #: 470216f2acc344a9bc4fe9408cf38b4c
 msgid "OpenID Connect temporary authorization code definition."
-msgstr ""
+msgstr "Définition du code temporaire d'autorisation OpenID Connect."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Client:1 b0248a05ffa44100bfcf4e84de0e154b
@@ -5705,6 +5727,10 @@ msgid ""
 "html>`_ and the `OpenID Connect RP-Initiated Logout <https://openid.net/"
 "specs/openid-connect-rpinitiated-1_0.html>`_ specifications."
 msgstr ""
+"Définition du client OpenID Connect, basée sur les protocoles `OAuth 2.0 "
+"Dynamic Client Registration <https://datatracker.ietf.org/doc/html/rfc7591."
+"html>`_ et les spécifications `OpenID Connect RP-Initiated Logout "
+"<https://openid.net/specs/openid-connect-rpinitiated-1_0.html>`_."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_id:3
 #: 9630f3464163481993a425c28c308969
@@ -5714,6 +5740,10 @@ msgid ""
 "same client identifier to multiple instances of a registered client at its "
 "discretion."
 msgstr ""
+"Chaîne de caractères contenant l'identifiant du client OAuth 2.0. "
+"L'identifiant NE DOIT PAS être actuellement valide pour un autre client "
+"inscrit, bien qu'un serveur d'autorisation PUISSE donner le même identifiant "
+"client à plusieurs instances d'un client inscrit à sa discrétion."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_id_issued_at:1
 #: canaille.oidc.basemodels.Client.client_secret:1
@@ -5721,7 +5751,7 @@ msgstr ""
 #: 05d209d5010c49c99c2e88fd070c5595 b2cf2367cc664e0dbd0d237edd72509a
 #: 9da6221c08544d5b9c043002d77e9a04
 msgid "OPTIONAL."
-msgstr ""
+msgstr "OPTIONNEL."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_id_issued_at:3
 #: fb189c4d73054f559edc1f71e252013c
@@ -5730,6 +5760,9 @@ msgid ""
 "the number of seconds from 1970-01-01T00:00:00Z as measured in UTC until the "
 "date/time of issuance."
 msgstr ""
+"La date à laquelle l'identifiant client a été émis. La date est représentée "
+"comme le nombre de secondes écoulées depuis 1970-01-01T00:00:00Z mesuré en "
+"UTC jusqu'à la date d'émission."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_name:1
 #: 90b1171c71784152b30c868ce6a69e92
@@ -5748,6 +5781,10 @@ msgid ""
 "field. The value of this field MAY be internationalized, as described in "
 "Section 2.2."
 msgstr ""
+"Si omis, le serveur d'autorisation PEUT afficher la valeur brute \"client_id"
+"\" à l'utilisateur final à la place. Il est RECOMMANDÉ que les clients "
+"envoient toujours ce champ. La valeur de ce champ PEUT être "
+"internationalisée, comme décrit dans la Section 2.2."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_secret:3
 #: b659e17a18ae49d6b460ce4bfd3ef720
@@ -5763,7 +5800,7 @@ msgstr ""
 #: canaille.oidc.basemodels.Client.client_secret_expires_at:1
 #: fe3efeb714e642038fddaee69b85a240
 msgid "REQUIRED if \"client_secret\" is issued."
-msgstr ""
+msgstr "REQUIS si \"client_secret\" est émis."
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.client_secret_expires_at:3
@@ -5773,6 +5810,9 @@ msgid ""
 "time is represented as the number of seconds from 1970-01-01T00:00:00Z as "
 "measured in UTC until the date/time of expiration."
 msgstr ""
+"La date à laquelle le secret du client va expirer ou 0 s'il n'expire pas. La "
+"date est représentée comme le nombre de secondes écoulées depuis "
+"1970-01-01T00:00:00Z mesuré en UTC jusqu'à la date d'expiration."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_uri:1
 #: c7ec8c5c04bd41fa87825f3d6f4e71b3
