@@ -4,9 +4,11 @@ import json
 import typing
 
 import click
+from flask import current_app
 from flask.cli import AppGroup
 from flask.cli import with_appcontext
 
+from canaille.app import models
 from canaille.app.commands import with_backendcontext
 from canaille.app.models import MODELS
 from canaille.backends import Backend
@@ -76,6 +78,8 @@ def register(cli):
 
         @cli.command(cls=ModelCommand, factory=factory, name=name, help=command_help)
         def factory_command(): ...
+
+    cli.add_command(reset_otp)
 
 
 def serialize(instance):
@@ -281,3 +285,32 @@ def delete_factory(model):
             raise click.ClickException(exc) from exc
 
     return command
+
+
+@click.command()
+@with_appcontext
+@with_backendcontext
+@click.argument("identifier")
+def reset_otp(identifier):
+    """Reset one-time password authentication for a user and display the
+    edited user in JSON format in the standard output.
+
+    IDENTIFIER should be a user id or user_name
+    """
+
+    user = Backend.instance.get(models.User, identifier)
+    if not user:
+        raise click.ClickException(f"No user with id '{identifier}'")
+
+    user.initialize_otp()
+    current_app.logger.security(
+        f"Reset one-time password authentication from CLI for {user.user_name}"
+    )
+
+    try:
+        Backend.instance.save(user)
+    except Exception as exc:  # pragma: no cover
+        raise click.ClickException(exc) from exc
+
+    output = json.dumps(serialize(user))
+    click.echo(output)

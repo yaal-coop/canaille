@@ -160,6 +160,18 @@
             </div>
 
 
+            <div class="item">
+                <div class="right floated content">
+                    <div class="ui buttons">
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_otp_txt") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_otp_html") }}">HTML</a>
+                    </div>
+                </div>
+                <div class="middle aligned content">
+                    {{ _("Email one-time password") }}
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}

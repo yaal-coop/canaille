@@ -74,6 +74,7 @@ Parameters
 
 .. autopydantic_settings:: canaille.core.configuration.CoreSettings
 .. autopydantic_settings:: canaille.core.configuration.SMTPSettings
+.. autopydantic_settings:: canaille.core.configuration.SMPPSettings
 .. autopydantic_settings:: canaille.core.configuration.ACLSettings
 .. autoclass:: canaille.core.configuration.Permission
    :members:

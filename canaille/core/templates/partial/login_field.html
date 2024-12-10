@@ -6,4 +6,7 @@
     {% if field.name == "password" %}
         {{ fui.render_field(field, icon="key", noindicator=true, **kwargs) }}
     {% endif %}
+    {% if field.name == "otp" %}
+        {{ fui.render_field(field, icon="key", noindicator=true, **kwargs) }}
+    {% endif %}
 {% endmacro %}
