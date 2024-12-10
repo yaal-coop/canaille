@@ -24,12 +24,12 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
+from canaille.app.flask import non_expired_passsword_needed
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
-from canaille.app.flask import non_expired_passsword_needed
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
 from canaille.app.forms import compromised_password_validator
@@ -54,8 +54,8 @@ from ..mails import send_registration_mail
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
-from .forms import build_profile_form
 from .forms import PasswordResetForm
+from .forms import build_profile_form
 
 bp = Blueprint("account", __name__)
 
@@ -881,23 +881,19 @@ def photo(user, field):
 
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])
 def reset(user):
-    print(user.user_name)
     form = PasswordResetForm(request.form)
     if user != current_user():
-      abort(403)
-        
-    
+        abort(403)
+
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
 
         flash(_("Your password has been updated successfully"), "success")
         return redirect(
-        session.pop(
-            "redirect-after-login",
-            url_for("core.account.profile_edition", edited_user=user),
-        )
+            session.pop(
+                "redirect-after-login",
+                url_for("core.account.profile_edition", edited_user=user),
+            )
         )
 
     return render_template("reset-password.html", form=form, user=user)
-
-
