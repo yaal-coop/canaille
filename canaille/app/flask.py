@@ -17,6 +17,31 @@ from canaille.app.session import current_user
 from canaille.app.themes import render_template
 
 
+def non_expired_passsword_needed():
+    """check if password has not expired.
+    """
+    def wrapper(view_function):
+        @wraps(view_function)
+        def decorator(*args, **kwargs):
+            if current_user():
+                user = current_user()
+
+                last_update = user.password_last_update or UTC.localize(datetime.datetime.now())
+                password_expiration = current_app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"]
+                if (
+                    password_expiration is not None
+                    and password_expiration != 0
+                    and last_update + datetime.timedelta(days=password_expiration) < UTC.localize(datetime.datetime.now())
+                ):
+                    return redirect(url_for(
+                        "core.account.reset",
+                        user=user,
+                    ))
+            return view_function(*args, **kwargs)
+        return decorator
+    return wrapper
+
+
 def user_needed():
     def wrapper(view_function):
         @wraps(view_function)
@@ -24,18 +49,6 @@ def user_needed():
             user = current_user()
             if not user:
                 abort(403)
-            last_update = user.password_last_update
-            password_expiration = current_app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"]
-            if (
-                password_expiration is not None
-                and password_expiration != 0
-                and last_update + datetime.timedelta(days=password_expiration) < UTC.localize(datetime.datetime.now())
-            ):
-                    return redirect(url_for(
-                        "core.account.reset",
-                        user=user,
-                    ))
-
             return view_function(*args, user=user, **kwargs)
         return decorator
     return wrapper

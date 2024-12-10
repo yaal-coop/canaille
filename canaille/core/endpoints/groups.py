@@ -7,6 +7,7 @@ from flask import url_for
 
 from canaille.app import models
 from canaille.app.flask import permissions_needed
+from canaille.app.flask import non_expired_passsword_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
@@ -22,6 +23,7 @@ bp = Blueprint("groups", __name__, url_prefix="/groups")
 
 @bp.route("/", methods=["GET", "POST"])
 @permissions_needed("manage_groups")
+@non_expired_passsword_needed()
 def groups(user):
     table_form = TableForm(models.Group, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
@@ -32,6 +34,7 @@ def groups(user):
 
 @bp.route("/add", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
+@non_expired_passsword_needed()
 def create_group(user):
     form = CreateGroupForm(request.form or None)
 
@@ -60,6 +63,7 @@ def create_group(user):
 
 @bp.route("/<group:group>", methods=("GET", "POST"))
 @permissions_needed("manage_groups")
+@non_expired_passsword_needed()
 def group(user, group):
     if (
         request.method == "GET"
