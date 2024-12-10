@@ -884,6 +884,7 @@ def reset(user):
     form = PasswordResetForm(request.form)
     if user != current_user():
         abort(403)
+    flash(_("Your password has expired, please choose a new password."), "info")
 
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
