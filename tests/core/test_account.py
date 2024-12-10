@@ -1,6 +1,8 @@
 import datetime
+from unittest import mock
 
 from flask import g
+from pytz import UTC
 
 from canaille.app import models
 
@@ -196,3 +198,25 @@ def test_account_locked_during_session(testclient, logged_user, backend):
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(logged_user)
     testclient.get("/profile/user/settings", status=403)
+
+
+@mock.patch("canaille.app.flask.get_today_datetime")
+def test_expired_password_redirection(
+    get_future_datetime, testclient, logged_user, user, backend, admin
+):
+    get_future_datetime.return_value = UTC.localize(
+        datetime.datetime.now()
+    ) + datetime.timedelta(days=10)
+
+    res = testclient.get("/profile/user/settings")
+
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res = res.form.submit(name="action", value="edit-settings")
+    backend.reload(logged_user)
+
+    testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = 5
+    res = testclient.get("/profile/user/settings")
+
+    assert res.location == "/reset/user"
+    assert testclient.get("/reset/admin", status=403)

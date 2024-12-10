@@ -1,5 +1,4 @@
 import datetime
-from pytz import timezone, UTC
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -10,6 +9,7 @@ from flask import current_app
 from flask import redirect
 from flask import request
 from flask import url_for
+from pytz import UTC
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
@@ -17,28 +17,42 @@ from canaille.app.session import current_user
 from canaille.app.themes import render_template
 
 
+def get_today_datetime():
+    return UTC.localize(datetime.datetime.now())
+
+
 def non_expired_passsword_needed():
-    """check if password has not expired.
-    """
+    """Check if password has not expired."""
+
     def wrapper(view_function):
         @wraps(view_function)
         def decorator(*args, **kwargs):
             if current_user():
                 user = current_user()
 
-                last_update = user.password_last_update or UTC.localize(datetime.datetime.now())
-                password_expiration = current_app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"]
+                last_update = user.password_last_update or UTC.localize(
+                    datetime.datetime.now()
+                )
+
+                password_expiration = current_app.config["CANAILLE"][
+                    "PASSWORD_MAX_DAYS_EXPIRATION"
+                ]
                 if (
                     password_expiration is not None
                     and password_expiration != 0
-                    and last_update + datetime.timedelta(days=password_expiration) < UTC.localize(datetime.datetime.now())
+                    and last_update + datetime.timedelta(days=password_expiration)
+                    < get_today_datetime()
                 ):
-                    return redirect(url_for(
-                        "core.account.reset",
-                        user=user,
-                    ))
+                    return redirect(
+                        url_for(
+                            "core.account.reset",
+                            user=user,
+                        )
+                    )
             return view_function(*args, **kwargs)
+
         return decorator
+
     return wrapper
 
 
@@ -50,7 +64,9 @@ def user_needed():
             if not user:
                 abort(403)
             return view_function(*args, user=user, **kwargs)
+
         return decorator
+
     return wrapper
 
 
