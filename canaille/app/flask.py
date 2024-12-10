@@ -1,5 +1,4 @@
 import datetime
-from pytz import timezone, UTC
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -15,6 +14,7 @@ from flask import request
 from flask import url_for
 from werkzeug.exceptions import HTTPException
 from flask import url_for
+from pytz import UTC
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
@@ -43,7 +43,9 @@ def user_needed():
                     ))
 
             return view_function(*args, user=user, **kwargs)
+
         return decorator
+
     return wrapper
 
 

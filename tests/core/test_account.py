@@ -4,6 +4,7 @@ from unittest import mock
 import pytest
 import time_machine
 from flask import g
+from pytz import UTC
 
 from canaille.app import models
 
