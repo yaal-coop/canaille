@@ -17,6 +17,8 @@ Added
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
   :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL`
   :issue:`179`
+- Password expiry policy :issue:`176`
+- :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`
 - Implement OIDC client_credentials flow. :issue:`207`
 - Button in the client admin page to create client tokens.
 - Basic SCIM implementation. :issue:`116` :pr:`197`
