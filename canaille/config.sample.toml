@@ -103,7 +103,7 @@ SECRET_KEY = "change me before you go in production"
 # If a value is recorded Canaille will check if user's password is expired.
 # Then, the user is forced to change his password.
 # This value represents the number of days the password is valid.
-It is possible to disable this option, by entering None or 0.
+# It is possible to disable this option, by entering None or 0.
 # PASSWORD_MAX_DAYS_EXPIRATION = None
 
 # [CANAILLE_SQL]
