@@ -304,7 +304,7 @@ def test_client_new_token(testclient, logged_admin, backend, client):
     assert not token.subject
     assert token.type == "access_token"
     assert token.scope == client.scope
-    assert token.audience == client.audience
+    assert client in token.audience
 
     res = res.follow()
     assert res.template == "token_view.html"
