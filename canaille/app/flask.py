@@ -24,14 +24,13 @@ def user_needed():
             user = current_user()
             if not user:
                 abort(403)
-
+            last_update = user.password_last_update
             password_expiration = current_app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"]
             if (
-               current_app.config["CANAILLE"]["ENABLE_PASSWORD_EXPIRY_POLICY"]
-               and password_expiration is not None
-               and password_expiration != 0
-            ): 
-                if user.password_last_update + datetime.timedelta(days=password_expiration) < UTC.localize(datetime.datetime.now()):
+                password_expiration is not None
+                and password_expiration != 0
+                and last_update + datetime.timedelta(days=password_expiration) < UTC.localize(datetime.datetime.now())
+            ):
                     return redirect(url_for(
                         "core.account.reset",
                         user=user,
