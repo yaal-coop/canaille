@@ -255,3 +255,7 @@ def test_not_expired_password_or_wrong_user_redirection(
     res.form["password2"] = "123456789"
     res = res.form.submit(name="action", value="edit-settings")
     test_two_redirections(1)
+
+
+def test_expired_password_needed_without_current_user(testclient, user):
+    testclient.get("/reset/user", status=403)
