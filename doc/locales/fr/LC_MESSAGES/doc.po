@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-11 17:35+0100\n"
-"PO-Revision-Date: 2024-12-10 23:12+0000\n"
+"PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -57,28 +57,19 @@ msgid "Added"
 msgstr "Ajouté"
 
 #: ../../CHANGES.rst:6 0952593cb9c24691baaf0bbbeafbefd0
-#, fuzzy
-#| msgid ":issue:`Multi-factor authentication: Email <47>`"
 msgid "Multi-factor authentication :issue:`47`"
-msgstr ":issue:`Authentification multi-facteurs : Email <47>`"
+msgstr "Authentification multi-facteurs :issue:`47`"
 
 #: ../../CHANGES.rst:7 4eaf987f0daa4715826a62f691583866
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and :attr:"
-#| "`~canaille.core.configuration.CoreSettings."
-#| "ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:`~canaille.core."
-#| "configuration.CoreSettings.API_URL_HIBP` :issue:`179`"
 msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and :attr:"
 "`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and :attr:`~canaille."
 "core.configuration.CoreSettings.SMS_OTP` and :attr:`~canaille.core."
 "configuration.CoreSettings.SMPP` :issue:`47`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et :attr:"
-"`~canaille.core.configuration.CoreSettings."
-"ENABLE_PASSWORD_COMPROMISSION_CHECK` et :attr:`~canaille.core.configuration."
-"CoreSettings.API_URL_HIBP` :issue:`179`"
+":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` et "
+":attr:`~canaille.core.configuration.CoreSettings.MAIL_OTP` et "
+":attr:`~canaille.core.configuration.CoreSettings.SMPP` :issue:`47`"
 
 #: ../../CHANGES.rst:12 ba76f44c46d54198af2dcd0692442ce2
 msgid "Password compromission check :issue:`179`"
@@ -2514,131 +2505,119 @@ msgstr "SCIM"
 
 #: ../development/specifications.rst:51 c3e061fe92e4451ea24e50dacd112c46
 msgid "Canaille provides a basic SCIM server implementation."
-msgstr ""
+msgstr "Canaille fournit une implémentation basique du protocole SCIM."
 
 #: ../development/specifications.rst:53 aefb1b937f7a4e35a4eae6d8648c6303
-#, fuzzy
-#| msgid ""
-#| "❌ `RFC7642: System for Cross-domain Identity Management: Definitions, "
-#| "Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/"
-#| "rfc7642>`_"
 msgid ""
 "🟠 `RFC7642: System for Cross-domain Identity Management: Definitions, "
 "Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/"
 "rfc7642>`_"
 msgstr ""
-"❌ `RFC7642: System for Cross-domain Identity Management: Definitions, "
+"🟠 `RFC7642: System for Cross-domain Identity Management: Definitions, "
 "Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/"
 "rfc7642>`_"
 
 #: ../development/specifications.rst:54 6193cd6fb48643e99f0e2018dbdaba83
-#, fuzzy
-#| msgid ""
-#| "❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
-#| "<https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgid ""
 "🟠 `RFC7643: System for Cross-domain Identity Management: Core Schema "
 "<https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
-"❌ `RFC7643: System for Cross-domain Identity Management: Core Schema "
+"🟠 `RFC7643: System for Cross-domain Identity Management: Core Schema "
 "<https://www.rfc-editor.org/rfc/rfc7642>`_"
 
 #: ../development/specifications.rst:55 9b124b409b3041f5bdefedf9b0593d06
-#, fuzzy
-#| msgid ""
-#| "❌ `RFC7644: System for Cross-domain Identity Management: Protocol "
-#| "<https://www.rfc-editor.org/rfc/rfc7642>`_"
 msgid ""
 "🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
 "www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
-"❌ `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
-"www.rfc-editor.org/rfc/rfc7642>`_"
+"🟠 `RFC7644: System for Cross-domain Identity Management: Protocol "
+"<https://www.rfc-editor.org/rfc/rfc7642>`_"
 
 #: ../development/specifications.rst:57 e6062c405e8948d38ec280a762370179
 msgid ""
 "Client-side implementation (i.e. broadcasting changes on users and groups "
 "among clients) and advanced features will be implemented in the future."
 msgstr ""
+"L'implémentation côté client (c'est à dire la diffusion à tous les clients "
+"des modifications sur les utilisateurs et groupes) ainsi que les "
+"fonctionnalités avancées seront implémentées dans le futur."
 
 #: ../development/specifications.rst:60 da7a2a26dbfb494abca9e21b3178087e
 msgid "What's implemented"
-msgstr ""
+msgstr "Ce qui est implémenté"
 
 #: ../development/specifications.rst:62 ../development/specifications.rst:83
 #: f00bbd829f164b10bea0b4a04ac7123d e66e2017457c4526a39df9630674c5ac
 msgid "Endpoints:"
-msgstr ""
+msgstr "Les points terminaux :"
 
 #: ../development/specifications.rst:64 0eb744fd5a6c4e60a41e71982f000800
 msgid "/Users (GET, POST)"
-msgstr ""
+msgstr "/Users (GET, POST)"
 
 #: ../development/specifications.rst:65 f537052ae8b94a3a83c0e84c52855dc7
 msgid "/Users/<user_id> (GET, PUT, DELETE)"
-msgstr ""
+msgstr "/Users/<user_id> (GET, PUT, DELETE)"
 
 #: ../development/specifications.rst:66 3b4e9d3e1079430b97611c8dadee4395
 msgid "/Groups (GET, POST)"
-msgstr ""
+msgstr "/Groups (GET, POST)"
 
 #: ../development/specifications.rst:67 3e673b4744e945b89c77ced8145f54fc
 msgid "/Groups/<user_id> (GET, PUT, DELETE)"
-msgstr ""
+msgstr "/Groups/<user_id> (GET, PUT, DELETE)"
 
 #: ../development/specifications.rst:68 c279b1a6193b4de49c1ac392b9c9f1f8
 msgid "/ServiceProviderConfig (GET)"
-msgstr ""
+msgstr "/ServiceProviderConfig (GET)"
 
 #: ../development/specifications.rst:69 833aa61f227c44bebf4cab293e712391
 msgid "/Schemas (GET)"
-msgstr ""
+msgstr "/Schemas (GET)"
 
 #: ../development/specifications.rst:70 437a13d677eb4961a96df34b5f5081dc
 msgid "/Schemas/<schema_id> (GET)"
-msgstr ""
+msgstr "/Schemas/<schema_id> (GET)"
 
 #: ../development/specifications.rst:71 31b2a6d444504b8c88257b25f6fd6467
 msgid "/ResourceTypes (GET)"
-msgstr ""
+msgstr "/ResourceTypes (GET)"
 
 #: ../development/specifications.rst:72 e9a55c28a7944c5fbaa20d14508ac6ed
 msgid "/ResourceTypes/<resource_type_id> (GET)"
-msgstr ""
+msgstr "/ResourceTypes/<resource_type_id> (GET)"
 
 #: ../development/specifications.rst:74 7bd6fb34cea64198b21ae7f53d85a6a5
-#, fuzzy
-#| msgid "Features"
 msgid "Features:"
-msgstr "Fonctionnalités"
+msgstr "Fonctionnalités :"
 
 #: ../development/specifications.rst:76 bb39dc2c17084a99bfe91991bff98c65
 msgid ":rfc:`pagination <7644#section-3.4.2.4>`"
-msgstr ""
+msgstr "la :rfc:`pagination <7644#section-3.4.2.4>`"
 
 #: ../development/specifications.rst:81 da7a2a26dbfb494abca9e21b3178087e
 msgid "What is not implemented yet"
-msgstr ""
+msgstr "Ce qui n'est pas encore implémenté"
 
 #: ../development/specifications.rst:85 3f5bbff2d4e645e2bac778dfde9ed8dc
 msgid "/Users (PATCH)"
-msgstr ""
+msgstr "/Users (PATCH)"
 
 #: ../development/specifications.rst:86 b04a230b285c4f929df30d29d39f4adc
 msgid "/Groups (PATCH)"
-msgstr ""
+msgstr "/Groups (PATCH)"
 
 #: ../development/specifications.rst:87 a9624bebc96e4cde8a86dca7891fc608
 msgid ":rfc:`/Me <7644#section-3.11>` (GET, POST, PUT, PATCH, DELETE)"
-msgstr ""
+msgstr ":rfc:`/Me <7644#section-3.11>` (GET, POST, PUT, PATCH, DELETE)"
 
 #: ../development/specifications.rst:88 0d99d94d47e2444bb6f01c2ec9473a56
 msgid ":rfc:`/Bulk <7644#section-3.11>` (POST)"
-msgstr ""
+msgstr ":rfc:`/Bulk <7644#section-3.11>` (POST)"
 
 #: ../development/specifications.rst:89 506274526a7647ceb7d2e5261bbf9651
 msgid ":rfc:`/.search <7644#section-3.4.3>` (POST)"
-msgstr ""
+msgstr ":rfc:`/.search <7644#section-3.4.3>` (POST)"
 
 #: ../development/specifications.rst:91 ../features.rst:9
 #: 5939a5db19484022bdfaec1794dc1516 f057b88a8b504465b8ed8e332fd5a830
@@ -2647,19 +2626,19 @@ msgstr "Fonctionnalités"
 
 #: ../development/specifications.rst:93 6296feda85f44091a6fc410094a96b28
 msgid ":rfc:`filtering <7644#section-3.4.2.2>`"
-msgstr ""
+msgstr "les :rfc:`filtres <7644#section-3.4.2.2>`"
 
 #: ../development/specifications.rst:94 85a81b4268b44d729dfb8c5e7de75331
 msgid ":rfc:`sorting <7644#section-3.4.2.3>`"
-msgstr ""
+msgstr "le :rfc:`tri <7644#section-3.4.2.3>`"
 
 #: ../development/specifications.rst:95 48122d4760344fb9ae3744592a4391d1
 msgid ":rfc:`attributes selection <7644#section-3.4.2.5>`"
-msgstr ""
+msgstr "la :rfc:`sélection d'attributs <7644#section-3.4.2.5>`"
 
 #: ../development/specifications.rst:96 2b86a717dda044408341557e54acab93
 msgid ":rfc:`ETags <7644#section-3.14>`"
-msgstr ""
+msgstr "les :rfc:`ETags <7644#section-3.14>`"
 
 #: ../development/specifications.rst:99 efa9edcb4c094b339af9010d82b9f505
 msgid "Comparison with other providers"
@@ -2759,7 +2738,7 @@ msgstr "❌"
 
 #: ../development/specifications.rst:110 5cfccc6b8c584d5cbdd54736cddb3502
 msgid "🟠"
-msgstr ""
+msgstr "🟠"
 
 #: ../development/specifications.rst:112 d9d78032f92a41c7bf30d755415a3cbb
 msgid "`Auth0`_"
@@ -3281,10 +3260,8 @@ msgstr ""
 "ADMIN_EMAIL>` est nécessaire."
 
 #: ../features.rst:180 d0049b96f7c1401a91d968aa93715930
-#, fuzzy
-#| msgid ":issue:`Multi-factor authentication: SMS <47>`"
 msgid "Multi-factor authentication"
-msgstr ":issue:`Authentification multi-facteurs : SMS <47>`"
+msgstr "Authentification multi-facteurs"
 
 #: ../features.rst:182 c480b36838b64abbbe3986a7295613d5
 msgid ""
@@ -3528,16 +3505,12 @@ msgstr ""
 "administrateurs à comprendre ce qui se passe et déboguer les cas bizarres."
 
 #: ../features.rst:287 a6282bdfca0b4e2c8ecfd02478d3623d
-#, fuzzy
-#| msgid ""
-#| "The following security events are logged with the tag [SECURITY] for easy "
-#| "retrieval:"
 msgid ""
 "The following security events are logged with the log level \"security\" for "
 "easy retrieval :"
 msgstr ""
-"Les événements de sécurité suivants sont enregistrés avec l'étiquette "
-"[SECURITY] pour les retrouver facilement :"
+"Les événements de sécurité suivants sont enregistrés avec l'étiquette « "
+"security » pour les retrouver facilement :"
 
 #: ../features.rst:289 49f7ec7627e7414aa616f1060c33d110
 msgid "Authentication attempt"
@@ -3556,16 +3529,12 @@ msgid "Forgotten password mail sent to user"
 msgstr "Mail d'oubli de mot de passe envoyé à l'utilisateur"
 
 #: ../features.rst:293 0e01ba62ff054e4e849ae1d4c1f6fdee
-#, fuzzy
-#| msgid "Forgotten password mail sent to user"
 msgid "One-time password mail sent to user"
-msgstr "Mail d'oubli de mot de passe envoyé à l'utilisateur"
+msgstr "Le mot de passe à usage unique a correctement été envoyé par mail"
 
 #: ../features.rst:294 d0049b96f7c1401a91d968aa93715930
-#, fuzzy
-#| msgid ":issue:`Multi-factor authentication: SMS <47>`"
 msgid "Multi-factor authentication reset"
-msgstr ":issue:`Authentification multi-facteurs : SMS <47>`"
+msgstr "Réinitialisation de l'authentification multi-facteurs"
 
 #: ../features.rst:295 8f4e5a1567114749b944d391c43ad2bb
 msgid "Token emission"
