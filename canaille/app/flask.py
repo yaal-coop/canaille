@@ -5,7 +5,9 @@ from urllib.parse import urlunsplit
 
 from flask import abort
 from flask import current_app
+from flask import make_response
 from flask import request
+from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
@@ -107,3 +109,19 @@ def model_converter(model):
             return instance
 
     return ModelConverter
+
+
+def redirect_to_bp_handlers(app, error):
+    """Find and execute blueprint handlers matching an error.
+
+    There is currently no way to make 404 handling generic:
+    https://flask.palletsprojects.com/en/stable/errorhandling/#handling
+        However, the blueprint cannot handle 404 routing errors because the
+        404 occurs at the routing level before the blueprint can be determined.
+    """
+    for bp in app.blueprints.values():
+        if bp.url_prefix and request.path.startswith(bp.url_prefix):
+            for type_, handler in bp.error_handler_spec[None][None].items():
+                if type_ in (error.code, HTTPException):  # pragma: no branch
+                    return make_response(handler(error))
+    return None
