@@ -16,6 +16,7 @@ Added
   :issue:`179`
 - Implement OIDC client_credentials flow. :issue:`207`
 - Button in the client admin page to create client tokens.
+- Basic SCIM implementation. :issue:`116` :pr:`197`
 
 Changed
 ^^^^^^^
