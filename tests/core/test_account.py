@@ -213,6 +213,7 @@ def test_expired_password_redirection_and_register_new_password(
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res = res.form.submit(name="action", value="edit-settings")
+
     backend.reload(logged_user)
     backend.reload(g.user)
     testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = 5
@@ -224,7 +225,7 @@ def test_expired_password_redirection_and_register_new_password(
     ) in res.flashes
     assert res.location == "/reset/user"
 
-    assert testclient.get("/reset/admin", status=403)
+    testclient.get("/reset/admin", status=403)
 
     res = testclient.get("/reset/user")
 
@@ -232,3 +233,25 @@ def test_expired_password_redirection_and_register_new_password(
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
     assert ("success", "Your password has been updated successfully") in res.flashes
+
+
+def test_not_expired_password_or_wrong_user_redirection(
+    testclient, logged_user, user, backend, admin
+):
+    def test_two_redirections(password_lifetime):
+        testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = (
+            password_lifetime
+        )
+        testclient.get("/reset/user", status=403)
+        testclient.get("/reset/admin", status=403)
+        backend.reload(g.user)
+
+    test_two_redirections(None)
+
+    test_two_redirections(0)
+
+    res = testclient.get("/profile/user/settings")
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res = res.form.submit(name="action", value="edit-settings")
+    test_two_redirections(1)
