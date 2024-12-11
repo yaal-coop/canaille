@@ -52,6 +52,7 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user :
 
 .. code-block:: toml
+
    USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
 You can find more details on the LDAP configuration in the :class:`dedicated section <canaille.backends.ldap.configuration.LDAPSettings>`.
