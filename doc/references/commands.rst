@@ -61,6 +61,6 @@ For the sake of readability, it is omitted in the following examples.
 
 .. _cli_reset_otp:
 
-.. click:: doc.commands:reset-otp
+.. click:: canaille.backends.commands:reset_otp
    :prog: canaille reset-otp
    :nested: full
