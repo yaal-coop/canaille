@@ -40,6 +40,14 @@ if flask_themer:
 
         @app.errorhandler(404)
         def page_not_found(error):
+            # There is currently no way to make 404 handling generic
+            # https://flask.palletsprojects.com/en/stable/errorhandling/#handling
+            #     However, the blueprint cannot handle 404 routing errors because the
+            #     404 occurs at the routing level before the blueprint can be determined.
+            if flask.request.path.startswith("/scim/"):
+                from canaille.scim.endpoints import http_error_handler
+
+                return http_error_handler(error)
             return render_template("error.html", description=error, error_code=404), 404
 
         @app.errorhandler(500)
