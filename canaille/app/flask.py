@@ -19,7 +19,7 @@ from canaille.app.themes import render_template
 
 
 def get_today_datetime():
-    return UTC.localize(datetime.datetime.now())
+    return UTC.localize(datetime.datetime.now())  # pragma: no cover
 
 
 def non_expired_password_needed():
@@ -31,9 +31,7 @@ def non_expired_password_needed():
             if current_user():
                 user = current_user()
 
-                last_update = user.password_last_update or UTC.localize(
-                    datetime.datetime.now()
-                )
+                last_update = user.password_last_update or get_today_datetime()
 
                 password_expiration = current_app.config["CANAILLE"][
                     "PASSWORD_MAX_DAYS_EXPIRATION"
@@ -70,9 +68,7 @@ def expired_password_needed():
             if current_user():
                 user = current_user()
 
-                last_update = user.password_last_update or UTC.localize(
-                    datetime.datetime.now()
-                )
+                last_update = user.password_last_update or get_today_datetime()
 
                 password_expiration = current_app.config["CANAILLE"][
                     "PASSWORD_MAX_DAYS_EXPIRATION"

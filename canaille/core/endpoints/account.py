@@ -897,15 +897,4 @@ def reset(user):
                 url_for("core.account.profile_edition", edited_user=user),
             )
         )
-    if request.form and form.validate():
-        Backend.instance.set_user_password(user, form.password.data)
-        login_user(user)
-
-        flash(_("Your password has been updated successfully"), "success")
-        return redirect(
-            session.pop(
-                "redirect-after-login",
-                url_for("core.account.profile_edition", edited_user=user),
-            )
-        )
     return render_template("reset-password.html", form=form, user=user, hash=None)

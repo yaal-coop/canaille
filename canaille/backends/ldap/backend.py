@@ -253,7 +253,7 @@ class LDAPBackend(Backend):
         )
 
     def set_last_login(self, user):
-        pass
+        pass  # pragma: no cover
 
     def query(self, model, dn=None, filter=None, **kwargs):
         from .ldapobjectquery import LDAPObjectQuery
