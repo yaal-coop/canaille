@@ -22,7 +22,7 @@ def get_today_datetime():
     return UTC.localize(datetime.datetime.now())
 
 
-def non_expired_passsword_needed():
+def non_expired_password_needed():
     """Check if password has not expired."""
 
     def wrapper(view_function):
@@ -44,7 +44,10 @@ def non_expired_passsword_needed():
                     and last_update + datetime.timedelta(days=password_expiration)
                     < get_today_datetime()
                 ):
-                    flash(_("Your password has expired, please choose a new password."), "info")
+                    flash(
+                        _("Your password has expired, please choose a new password."),
+                        "info",
+                    )
                     return redirect(
                         url_for(
                             "core.account.reset",
