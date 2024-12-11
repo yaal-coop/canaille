@@ -22,8 +22,8 @@ bp = Blueprint("groups", __name__, url_prefix="/groups")
 
 
 @bp.route("/", methods=["GET", "POST"])
-@permissions_needed("manage_groups")
 @non_expired_passsword_needed()
+@permissions_needed("manage_groups")
 def groups(user):
     table_form = TableForm(models.Group, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
@@ -33,8 +33,8 @@ def groups(user):
 
 
 @bp.route("/add", methods=("GET", "POST"))
-@permissions_needed("manage_groups")
 @non_expired_passsword_needed()
+@permissions_needed("manage_groups")
 def create_group(user):
     form = CreateGroupForm(request.form or None)
 
@@ -62,8 +62,8 @@ def create_group(user):
 
 
 @bp.route("/<group:group>", methods=("GET", "POST"))
-@permissions_needed("manage_groups")
 @non_expired_passsword_needed()
+@permissions_needed("manage_groups")
 def group(user, group):
     if (
         request.method == "GET"

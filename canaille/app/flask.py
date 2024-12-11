@@ -6,6 +6,7 @@ from urllib.parse import urlunsplit
 
 from flask import abort
 from flask import current_app
+from flask import flash
 from flask import redirect
 from flask import request
 from flask import url_for
@@ -43,12 +44,43 @@ def non_expired_passsword_needed():
                     and last_update + datetime.timedelta(days=password_expiration)
                     < get_today_datetime()
                 ):
+                    flash(_("Your password has expired, please choose a new password."), "info")
                     return redirect(
                         url_for(
                             "core.account.reset",
                             user=user,
                         )
                     )
+            return view_function(*args, **kwargs)
+
+        return decorator
+
+    return wrapper
+
+
+def expired_password_needed():
+    """Check if password has not expired."""
+
+    def wrapper(view_function):
+        @wraps(view_function)
+        def decorator(*args, **kwargs):
+            if current_user():
+                user = current_user()
+
+                last_update = user.password_last_update or UTC.localize(
+                    datetime.datetime.now()
+                )
+
+                password_expiration = current_app.config["CANAILLE"][
+                    "PASSWORD_MAX_DAYS_EXPIRATION"
+                ]
+                if (
+                    password_expiration is None
+                    or password_expiration == 0
+                    or last_update + datetime.timedelta(days=password_expiration)
+                    >= get_today_datetime()
+                ):
+                    abort(403)
             return view_function(*args, **kwargs)
 
         return decorator

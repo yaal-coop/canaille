@@ -24,6 +24,7 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
+from canaille.app.flask import expired_password_needed
 from canaille.app.flask import non_expired_passsword_needed
 from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
@@ -197,9 +198,9 @@ class RegistrationPayload(VerificationPayload):
 
 
 @bp.route("/invite", methods=["GET", "POST"])
+@non_expired_passsword_needed()
 @smtp_needed()
 @permissions_needed("manage_users")
-@non_expired_passsword_needed()
 def user_invitation(user):
     form = InvitationForm(request.form or None)
     email_sent = None
@@ -413,8 +414,8 @@ def email_confirmation(data, hash):
 
 
 @bp.route("/profile", methods=("GET", "POST"))
-@permissions_needed("manage_users")
 @non_expired_passsword_needed()
+@permissions_needed("manage_users")
 def profile_creation(user):
     form = build_profile_form(user.writable_fields, user.readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
@@ -583,8 +584,8 @@ def profile_edition_remove_email(user, edited_user, email):
 
 
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
-@user_needed()
 @non_expired_passsword_needed()
+@user_needed()
 def profile_edition(user, edited_user):
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
@@ -672,8 +673,8 @@ def profile_edition(user, edited_user):
 
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
-@user_needed()
 @non_expired_passsword_needed()
+@user_needed()
 def profile_settings(user, edited_user):
     if not user.can_manage_users and not (
         user.can_edit_self and edited_user.id == user.id
@@ -842,8 +843,8 @@ def profile_delete(user, edited_user):
 
 
 @bp.route("/impersonate/<user:puppet>")
-@permissions_needed("impersonate_users")
 @non_expired_passsword_needed()
+@permissions_needed("impersonate_users")
 def impersonate(user, puppet):
     if puppet.locked:
         abort(403, _("Locked users cannot be impersonated."))
@@ -878,13 +879,14 @@ def photo(user, field):
         stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
     )
 
-
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])
+@expired_password_needed()
 def reset(user):
+    print("THERE"*5)
     form = PasswordResetForm(request.form)
     if user != current_user():
         abort(403)
-    flash(_("Your password has expired, please choose a new password."), "info")
+    
 
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
@@ -896,5 +898,16 @@ def reset(user):
                 url_for("core.account.profile_edition", edited_user=user),
             )
         )
+    if request.form and form.validate():
+        Backend.instance.set_user_password(user, form.password.data)
+        login_user(user)
 
+        flash(_("Your password has been updated successfully"), "success")
+        return redirect(
+            session.pop(
+                "redirect-after-login",
+                url_for("core.account.profile_edition", edited_user=user),
+            )
+        )
     return render_template("reset-password.html", form=form, user=user)
+
