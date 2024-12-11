@@ -217,6 +217,10 @@ def test_expired_password_redirection(
 
     testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = 5
     res = testclient.get("/profile/user/settings")
-
+    assert (
+        "info",
+        "Your password has expired, please choose a new password.",
+    ) in res.flashes
     assert res.location == "/reset/user"
+
     assert testclient.get("/reset/admin", status=403)
