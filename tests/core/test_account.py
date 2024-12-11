@@ -201,7 +201,7 @@ def test_account_locked_during_session(testclient, logged_user, backend):
 
 
 @mock.patch("canaille.app.flask.get_today_datetime")
-def test_expired_password_redirection(
+def test_expired_password_redirection_and_register_new_password(
     get_future_datetime, testclient, logged_user, user, backend, admin
 ):
     get_future_datetime.return_value = UTC.localize(
@@ -214,9 +214,10 @@ def test_expired_password_redirection(
     res.form["password2"] = "123456789"
     res = res.form.submit(name="action", value="edit-settings")
     backend.reload(logged_user)
-
+    backend.reload(g.user)
     testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = 5
     res = testclient.get("/profile/user/settings")
+
     assert (
         "info",
         "Your password has expired, please choose a new password.",
@@ -224,3 +225,10 @@ def test_expired_password_redirection(
     assert res.location == "/reset/user"
 
     assert testclient.get("/reset/admin", status=403)
+
+    res = testclient.get("/reset/user")
+
+    res.form["password"] = "foobarbaz"
+    res.form["confirmation"] = "foobarbaz"
+    res = res.form.submit()
+    assert ("success", "Your password has been updated successfully") in res.flashes
