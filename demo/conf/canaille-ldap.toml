@@ -27,6 +27,7 @@ BIND_PW = "admin"
 TIMEOUT = 10
 USER_BASE = "ou=users,dc=mydomain,dc=tld"
 GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
 [CANAILLE.ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]

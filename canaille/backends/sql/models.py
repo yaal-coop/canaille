@@ -2,6 +2,7 @@ import datetime
 import typing
 import uuid
 
+from flask import current_app
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -77,7 +78,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     )
     password_last_update: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
-    )    
+    )
     preferred_language: Mapped[str] = mapped_column(String, nullable=True)
     family_name: Mapped[str] = mapped_column(String, nullable=True)
     given_name: Mapped[str] = mapped_column(String, nullable=True)
@@ -102,6 +103,19 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+    last_otp_login: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    secret_token: Mapped[str] = mapped_column(String, nullable=True, unique=True)
+    hotp_counter: Mapped[int] = mapped_column(Integer, nullable=True)
+    one_time_password: Mapped[str] = mapped_column(String, nullable=True)
+    one_time_password_emission_date: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+
+    def save(self):
+        if current_app.features.has_otp and not self.secret_token:
+            self.initialize_otp()
 
 
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
@@ -240,7 +254,7 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     access_token: Mapped[str] = mapped_column(String, nullable=True)
     client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
     client: Mapped["Client"] = relationship()
-    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"))
+    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
     subject: Mapped["User"] = relationship()
     type: Mapped[str] = mapped_column(String, nullable=True)
     refresh_token: Mapped[str] = mapped_column(String, nullable=True)

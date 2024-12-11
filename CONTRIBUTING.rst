@@ -22,11 +22,12 @@ Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/gett
 to be able to hack Canaille.
 
 Initialize your development environment with:
+
 - ``uv sync --extra front --extra oidc`` to have a minimal working development environment. This will allow you to run the tests with ``uv pytest --backend memory``.
 - ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``.
 - ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``.
 - ``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;
-Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
+  Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
 
 After having launched the demo you have access to several services:
 
@@ -68,30 +69,64 @@ To do that, you can add the following line to your `/etc/hosts`:
 
 To launch containers, use:
 
+SQL
+^^^
+With the SQL backend, the demo instance will load and save data in a local sqlite database.
+
 .. code-block:: console
+    :caption: Run the demo instance with the SQL backend
 
     cd demo
-    # To run the demo with the sql backend:
     docker compose up
 
-    # To run the demo with the memory backend:
+Memory
+^^^^^^
+With the memory backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the memory backend
+
+    cd demo
     docker compose --file docker-compose-memory.yml up
 
-    # To run the demo with the LDAP backend:
+LDAP
+^^^^
+With the LDAP backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the LDAP backend
+
+    cd demo
     docker compose --file docker-compose-ldap.yml up
 
 Local environment
 ~~~~~~~~~~~~~~~~~
 
-.. code-block:: console
+SQL
+^^^
+With the SQL backend, the demo instance will load and save data in a local sqlite database.
 
-    # To run the demo with the sql backend:
+.. code-block:: console
+    :caption: Run the demo instance with the SQL backend
+
     ./demo/run.sh
 
-    # To run the demo with the memory backend:
+Memory
+^^^^^^
+With the memory backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the memory backend
+
     ./demo/run.sh --backend memory
 
-    # To run the demo with the LDAP backend:
+LDAP
+^^^^
+With the LDAP backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the LDAP backend
+
     ./demo/run.sh --backend ldap
 
 .. note ::

@@ -22,19 +22,14 @@ fi
 
 pushd "$DIR" > /dev/null 2>&1 || exit
 
-# Needed until zxcvbn supports Python 3.13
-# https://github.com/fief-dev/zxcvbn-rs-py/issues/2
-export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
-
-
 if [ "$BACKEND" = "memory" ]; then
 
-    uv sync --group demo --extra front --extra oidc
+    uv sync --inexact --group demo --extra front --extra oidc
     uv run honcho --env ../.env --procfile Procfile-memory start
 
 elif [ "$BACKEND" = "sql" ]; then
 
-    uv sync --group demo --extra front --extra oidc --extra sqlite
+    uv sync --inexact --group demo --extra front --extra oidc --extra sqlite
     uv run honcho --env ../.env --procfile Procfile-sql start
 
 elif [ "$BACKEND" = "ldap" ]; then
@@ -45,7 +40,7 @@ elif [ "$BACKEND" = "ldap" ]; then
         exit 1
     fi
 
-    uv sync --group demo --extra front --extra oidc --extra ldap
+    uv sync --inexact --group demo --extra front --extra oidc --extra ldap
     uv run honcho --env ../.env --procfile Procfile-ldap start
 
 else

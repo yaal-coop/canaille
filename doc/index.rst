@@ -45,7 +45,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
     .. grid-item-card:: Multi-database support
         :link-type: ref
-        :link: feature_backends
+        :link: feature_databases
 
         PostgreSQL, Mariadb and OpenLDAP first-class citizenship
 
@@ -64,6 +64,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 .. container:: buttons
 
     :doc:`Full feature list <features>`
+    :doc:`Common use cases <usecases>`
 
 .. rst-class:: lead
 
@@ -75,6 +76,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
    :maxdepth: 2
 
    features
+   usecases
    tutorial/index
    references/index
    development/index

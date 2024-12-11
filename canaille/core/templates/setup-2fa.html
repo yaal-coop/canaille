@@ -1,0 +1,74 @@
+{% extends theme('base.html') %}
+{% import 'macro/flask.html' as flask %}
+{% import 'macro/form.html' as fui %}
+{% import 'partial/login_field.html' as login_field %}
+
+{% block container %}
+    <div class="ui container">
+        <div class="content">
+            <div class="ui clearing segment">
+                {% block header %}
+                    {% if logo_url %}
+                        <a href="{{ url_for('core.account.index') }}">
+                            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+                        </a>
+                    {% else %}
+                        <i class="massive sign in icon image ui"></i>
+                    {% endif %}
+
+                    <h2 class="ui center aligned header">
+                        <div class="content">
+                            {{ _("Sign in as %(username)s", username=username) }}
+                        </div>
+                        <div class="sub header">{% trans %}Set up Two-Factor Authentication.{% endtrans %}</div>
+                    </h2>
+                {% endblock %}
+
+                {% block messages %}
+                    {{ flask.messages() }}
+                {% endblock %}
+
+                <div class="ui segment">
+                    <h3 class="ui header">Instructions:</h3>
+                    <ol class="ui list">
+                        <li class="item">Install a One-Time Password (OTP) generator application on your mobile.</li>
+                        <li class="item">Set up a new authenticator.</li>
+                        <li class="item">Scan the QR code below and click "Continue".</li>
+                    </ol>
+                    <p><strong>Note:</strong> If you can't scan the QR code, try entering the secret token in your authenticator app directly.</p>
+                </div>
+                <div>
+                    <img src="data:image/png;base64, {{ qr_image }}" alt="Secret Token" class="ui centered medium image"/>
+                </div>
+                <form class="ui segment grid action input">
+                    <label class="ui large label token-label" for="secret">Secret token:</label>
+                    <input type="text" id="secret" name="secret" value="{{ secret }}" readonly>
+                    <button type="button" class="ui secondary right labeled icon button" onclick="copySecret(this)">
+                        Copy Secret
+                    </button>
+                </form>
+                {% block buttons %}
+                    <div class="ui right aligned container">
+                        <div class="ui stackable buttons">
+                            <a type="button" class="ui right floated primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">{{ _("Continue") }}</a>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        function copySecret(clickedButton) {
+            var copyText = document.getElementById("secret");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("copy");
+            clickedButton.textContent = "Successfully copied!";
+            setTimeout(() => {
+                clickedButton.textContent = "Copy Secret";
+            }, 2000);
+        }
+    </script>
+{% endblock %}

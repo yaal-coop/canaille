@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Blueprint
 from flask import abort
 from flask import current_app
@@ -8,6 +10,9 @@ from flask import session
 from flask import url_for
 
 from canaille.app import build_hash
+from canaille.app import get_b64encoded_qr_image
+from canaille.app import mask_email
+from canaille.app import mask_phone
 from canaille.app.flask import smtp_needed
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
@@ -15,6 +20,8 @@ from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.themes import render_template
 from canaille.backends import Backend
+from canaille.core.endpoints.forms import TwoFactorForm
+from canaille.core.models import SEND_NEW_OTP_DELAY
 
 from ..mails import send_password_initialization_mail
 from ..mails import send_password_reset_mail
@@ -103,16 +110,33 @@ def password():
             "password.html", form=form, username=session["attempt_login"]
         )
 
-    current_app.logger.security(
-        f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
-    )
-    del session["attempt_login"]
-    login_user(user)
-    flash(
-        _("Connection successful. Welcome %(user)s", user=user.formatted_name),
-        "success",
-    )
-    return redirect(session.pop("redirect-after-login", url_for("core.account.index")))
+    otp_methods = []
+    if current_app.features.has_otp:
+        otp_methods.append(current_app.features.otp_method)  # TOTP or HOTP
+    if current_app.features.has_email_otp:
+        otp_methods.append("EMAIL_OTP")
+    if current_app.features.has_sms_otp:
+        otp_methods.append("SMS_OTP")
+
+    if otp_methods:
+        session["remaining_otp_methods"] = otp_methods
+        session["attempt_login_with_correct_password"] = session.pop("attempt_login")
+        return redirect_to_verify_2fa(
+            user, otp_methods[0], request_ip, url_for("core.auth.password")
+        )
+    else:
+        current_app.logger.security(
+            f'Succeed login attempt for {session["attempt_login"]} from {request_ip}'
+        )
+        del session["attempt_login"]
+        login_user(user)
+        flash(
+            _("Connection successful. Welcome %(user)s", user=user.formatted_name),
+            "success",
+        )
+        return redirect(
+            session.pop("redirect-after-login", url_for("core.account.index"))
+        )
 
 
 @bp.route("/logout")
@@ -251,3 +275,253 @@ def reset(user, hash):
         )
 
     return render_template("reset-password.html", form=form, user=user, hash=hash)
+
+
+@bp.route("/setup-2fa")
+def setup_two_factor_auth():
+    if not current_app.features.has_otp:
+        abort(404)
+
+    if current_user():
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
+
+    if "attempt_login_with_correct_password" not in session:
+        flash(_("Cannot remember the login you attempted to sign in with"), "warning")
+        return redirect(url_for("core.auth.login"))
+
+    user = Backend.instance.get_user_from_login(
+        session["attempt_login_with_correct_password"]
+    )
+
+    uri = user.get_otp_authentication_setup_uri()
+    base64_qr_image = get_b64encoded_qr_image(uri)
+    return render_template(
+        "setup-2fa.html",
+        secret=user.secret_token,
+        qr_image=base64_qr_image,
+        username=user.user_name,
+    )
+
+
+@bp.route("/verify-2fa", methods=["GET", "POST"])
+def verify_two_factor_auth():
+    if current_user():
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
+
+    if (
+        "attempt_login_with_correct_password" not in session
+        or "remaining_otp_methods" not in session
+        or not session["remaining_otp_methods"]
+    ):
+        flash(_("Cannot remember the login you attempted to sign in with"), "warning")
+        return redirect(url_for("core.auth.login"))
+
+    current_otp_method = session["remaining_otp_methods"][0]
+    if (
+        (current_otp_method in ["TOTP", "HOTP"] and not current_app.features.has_otp)
+        or (
+            current_otp_method == "EMAIL_OTP" and not current_app.features.has_email_otp
+        )
+        or (current_otp_method == "SMS_OTP" and not current_app.features.has_sms_otp)
+    ):
+        abort(404)
+
+    form = TwoFactorForm(request.form or None)
+    form.render_field_macro_file = "partial/login_field.html"
+
+    if not request.form or form.form_control():
+        return render_template(
+            "verify-2fa.html",
+            form=form,
+            username=session["attempt_login_with_correct_password"],
+            method=current_otp_method,
+        )
+
+    user = Backend.instance.get_user_from_login(
+        session["attempt_login_with_correct_password"]
+    )
+
+    if form.validate() and user.is_otp_valid(form.otp.data, current_otp_method):
+        session["remaining_otp_methods"].pop(0)
+        request_ip = request.remote_addr or "unknown IP"
+        if session["remaining_otp_methods"]:
+            return redirect_to_verify_2fa(
+                user,
+                session["remaining_otp_methods"][0],
+                request_ip,
+                url_for("core.auth.verify_two_factor_auth"),
+            )
+        else:
+            user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
+            Backend.instance.save(user)
+            current_app.logger.security(
+                f'Succeed login attempt for {session["attempt_login_with_correct_password"]} from {request_ip}'
+            )
+            del session["attempt_login_with_correct_password"]
+            login_user(user)
+            flash(
+                _(
+                    "Connection successful. Welcome %(user)s",
+                    user=user.formatted_name,
+                ),
+                "success",
+            )
+            return redirect(
+                session.pop("redirect-after-login", url_for("core.account.index"))
+            )
+    else:
+        flash(
+            "The one-time password you entered is invalid. Please try again",
+            "error",
+        )
+        request_ip = request.remote_addr or "unknown IP"
+        current_app.logger.security(
+            f'Failed login attempt (wrong OTP) for {session["attempt_login_with_correct_password"]} from {request_ip}'
+        )
+        return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+@bp.route("/send-mail-otp", methods=["POST"])
+def send_mail_otp():
+    if not current_app.features.has_email_otp:
+        abort(404)
+
+    if current_user():
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
+
+    if "attempt_login_with_correct_password" not in session:
+        flash(_("Cannot remember the login you attempted to sign in with"), "warning")
+        return redirect(url_for("core.auth.login"))
+
+    user = Backend.instance.get_user_from_login(
+        session["attempt_login_with_correct_password"]
+    )
+
+    if user.can_send_new_otp():
+        if user.generate_and_send_otp_mail():
+            Backend.instance.save(user)
+            request_ip = request.remote_addr or "unknown IP"
+            current_app.logger.security(
+                f'Sent one-time password for {session["attempt_login_with_correct_password"]} to {user.emails[0]} from {request_ip}'
+            )
+            flash(
+                "Code successfully sent!",
+                "success",
+            )
+        else:
+            flash("Error while sending one-time password. Please try again.", "danger")
+    else:
+        flash(
+            f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+            "danger",
+        )
+
+    return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+@bp.route("/send-sms-otp", methods=["POST"])
+def send_sms_otp():
+    if not current_app.features.has_sms_otp:
+        abort(404)
+
+    if current_user():
+        return redirect(
+            url_for("core.account.profile_edition", edited_user=current_user())
+        )
+
+    if "attempt_login_with_correct_password" not in session:
+        flash(_("Cannot remember the login you attempted to sign in with"), "warning")
+        return redirect(url_for("core.auth.login"))
+
+    user = Backend.instance.get_user_from_login(
+        session["attempt_login_with_correct_password"]
+    )
+
+    if user.can_send_new_otp():
+        if user.generate_and_send_otp_sms():
+            Backend.instance.save(user)
+            request_ip = request.remote_addr or "unknown IP"
+            current_app.logger.security(
+                f'Sent one-time password for {session["attempt_login_with_correct_password"]} to {user.phone_numbers[0]} from {request_ip}'
+            )
+            flash(
+                "Code successfully sent!",
+                "success",
+            )
+        else:
+            flash("Error while sending one-time password. Please try again.", "danger")
+    else:
+        flash(
+            f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+            "danger",
+        )
+
+    return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+def redirect_to_verify_2fa(user, otp_method, request_ip, fail_redirect_url):
+    if otp_method in ["HOTP", "TOTP"]:
+        if not user.last_otp_login:
+            flash(
+                "You have not enabled Two-Factor Authentication. Please enable it first to login.",
+                "info",
+            )
+            return redirect(url_for("core.auth.setup_two_factor_auth"))
+        flash(
+            "Please enter the one-time password from your authenticator app.",
+            "info",
+        )
+        return redirect(url_for("core.auth.verify_two_factor_auth"))
+    elif otp_method == "EMAIL_OTP":
+        if user.can_send_new_otp():
+            if user.generate_and_send_otp_mail():
+                Backend.instance.save(user)
+                flash(
+                    f"A one-time password has been sent to your email address {mask_email(user.emails[0])}. Please enter it below to login.",
+                    "info",
+                )
+                current_app.logger.security(
+                    f'Sent one-time password for {session["attempt_login_with_correct_password"]} to {user.emails[0]} from {request_ip}'
+                )
+                return redirect(url_for("core.auth.verify_two_factor_auth"))
+            else:
+                flash(
+                    "Error while sending one-time password. Please try again.", "danger"
+                )
+                return redirect(fail_redirect_url)
+        else:
+            flash(
+                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                "danger",
+            )
+            return redirect(fail_redirect_url)
+    else:  # sms
+        if user.can_send_new_otp():
+            if user.generate_and_send_otp_sms():
+                Backend.instance.save(user)
+                flash(
+                    f"A one-time password has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login.",
+                    "info",
+                )
+                current_app.logger.security(
+                    f'Sent one-time password for {session["attempt_login_with_correct_password"]} to {user.phone_numbers[0]} from {request_ip}'
+                )
+                return redirect(url_for("core.auth.verify_two_factor_auth"))
+            else:
+                flash(
+                    "Error while sending one-time password. Please try again.",
+                    "danger",
+                )
+                return redirect(fail_redirect_url)
+        else:
+            flash(
+                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                "danger",
+            )
+            return redirect(fail_redirect_url)

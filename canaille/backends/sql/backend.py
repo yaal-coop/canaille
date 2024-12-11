@@ -68,9 +68,9 @@ class SQLBackend(Backend):
 
     def set_user_password(self, user, password):
         user.password = password
-        user.password_last_update = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
+        user.password_last_update = datetime.datetime.now(
+            datetime.timezone.utc
+        ).replace(microsecond=0)
         self.save(user)
 
     def query(self, model, **kwargs):
@@ -113,6 +113,10 @@ class SQLBackend(Backend):
         ).scalar_one_or_none()
 
     def save(self, instance):
+        # run the instance save callback if existing
+        if hasattr(instance, "save"):
+            instance.save()
+
         instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
         )

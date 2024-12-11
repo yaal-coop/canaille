@@ -43,6 +43,7 @@ OpenID Connect
 - ❌ `OpenID Connect Back Channel Authentication Flow <https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_
 - ❌ `OpenID Connect Core Error Code unmet_authentication_requirements <https://openid.net/specs/openid-connect-unmet-authentication-requirements-1_0.html>`_
 - ✅ `Initiating User Registration via OpenID Connect 1.0 <https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_
+- ❌  `OpenID Connect Profile for SCIM Services <https://openid.net/specs/openid-connect-scim-profile-1_0.html>`_
 
 SCIM
 ----
@@ -71,7 +72,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
 +---------------+-------+-----------+------+------+------+------+------+------+-------+
 | `Authentic2`_ | ✅    | Python    | 65k  | ✅   | ✅   | ✅   | ❌   | ✅   | ✅    |
 +---------------+-------+-----------+------+------+------+------+------+------+-------+
-| `Authentik`_  | ✅    | Python    | 55k  | ✅   | ✅   | ❌   | ✅   | ✅   | ✅    |
+| `Authentik`_  | ✅    | Go        | 55k  | ✅   | ✅   | ❌   | ✅   | ✅   | ✅    |
 +---------------+-------+-----------+------+------+------+------+------+------+-------+
 | `CAS`_        | ✅    | Java      | 360k | ✅   | ✅   | ✅   | ✅   | ✅   | ❌    |
 +---------------+-------+-----------+------+------+------+------+------+------+-------+

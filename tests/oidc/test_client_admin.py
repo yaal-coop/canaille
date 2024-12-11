@@ -289,3 +289,22 @@ def test_client_edit_invalid_uri(testclient, client, logged_admin, trusted_clien
         "The client has not been edited. Please check your information.",
     ) in res.flashes
     res.mustcontain("This is not a valid URL")
+
+
+def test_client_new_token(testclient, logged_admin, backend, client):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res = res.forms["clientaddform"].submit(name="action", value="new-token")
+    assert (
+        "success",
+        "A token have been created for the client Some client",
+    ) in res.flashes
+
+    token = backend.get(models.Token)
+    assert token.client == client
+    assert not token.subject
+    assert token.type == "access_token"
+    assert token.scope == client.scope
+    assert client in token.audience
+
+    res = res.follow()
+    assert res.template == "token_view.html"

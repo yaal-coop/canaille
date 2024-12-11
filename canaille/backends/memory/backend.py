@@ -3,6 +3,9 @@ import datetime
 import uuid
 from typing import Any
 
+from flask import current_app
+
+import canaille.backends.memory.models
 from canaille.backends import Backend
 
 
@@ -70,9 +73,9 @@ class MemoryBackend(Backend):
 
     def set_user_password(self, user, password):
         user.password = password
-        user.password_last_update = datetime.datetime.now(datetime.timezone.utc).replace(
-            microsecond=0
-        )
+        user.password_last_update = datetime.datetime.now(
+            datetime.timezone.utc
+        ).replace(microsecond=0)
         self.save(user)
 
     def query(self, model, **kwargs):
@@ -127,6 +130,13 @@ class MemoryBackend(Backend):
         return results[0] if results else None
 
     def save(self, instance):
+        if (
+            isinstance(instance, canaille.backends.memory.models.User)
+            and current_app.features.has_otp
+            and not instance.secret_token
+        ):
+            instance.initialize_otp()
+
         if not instance.id:
             instance.id = str(uuid.uuid4())
 

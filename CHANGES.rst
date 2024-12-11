@@ -3,11 +3,24 @@
 
 Added
 ^^^^^
+- Multi-factor authentication :issue:`47`
+- :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and
+  :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and
+  :attr:`~canaille.core.configuration.CoreSettings.SMS_OTP` and
+  :attr:`~canaille.core.configuration.CoreSettings.SMPP`
+  :issue:`47`
 - Password compromission check :issue:`179`
 - :attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
   :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP`
   :issue:`179`
+- Implement OIDC client_credentials flow. :issue:`207`
+- Button in the client admin page to create client tokens.
+
+Changed
+^^^^^^^
+- PostgreSQL and MySQL extras does not rely on libraries that need to be compiled.
+- ``.env`` files are not loaded by default. The ``ENV_FILE`` env var must be passed so ``.env`` files are loaded.
 - Password expiry policy :issue:`176`
 - :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_MAX_DAYS_EXPIRATION`
 
@@ -195,7 +208,7 @@ Fixed
 Added
 ^^^^^
 
-- ``THEME`` can be a relative path.
+- The ``THEME`` setting can be a relative path.
 
 [0.0.39] - 2023-12-15
 ---------------------
@@ -273,7 +286,7 @@ Added
 - If users register or authenticate during a OAuth Authorization
   phase, they get redirected back to that page afterwards.
   :issue:`168` :pr:`151`
-- flask-babel and pytz are now part of the `front` packaging extras.
+- The `flask-babel` and `pytz` libraries are now part of the `front` packaging extras.
 - Bump to `fomantic-ui` 2.9.3. :pr:`152`
 - Bump to `HTMX` 1.9.6. :pr:`154`
 - Support for Python 3.12. :pr:`155`
@@ -284,12 +297,12 @@ Added
 Fixed
 ^^^^^
 
-- OIDC jwks endpoint do not return empty kid claim.
+- OIDC jwks endpoint do not return empty `kid` claim.
 
 Added
 ^^^^^
 
-- Documentation details on the canaille models.
+- Documentation details on the Canaille models.
 
 [0.0.32] - 2023-08-17
 ---------------------
@@ -332,12 +345,12 @@ Changed
 Added
 ^^^^^
 
-- Configuration option to disable Javascript .:pr:`141`
+- Configuration option to disable Javascript. :pr:`141`
 
 Changed
 ^^^^^^^
 
-- Configuration ``USER_FILTER`` is parsed with Jinja.
+- The configuration parameter ``USER_FILTER`` is parsed with Jinja.
 - Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and ``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``.
 
 [0.0.29] - 2023-06-30
@@ -361,7 +374,7 @@ Fixed
 
 .. warning::
 
-    Configuration files must be updated.🚨
+    Configuration files must be updated.
     Check the new format with ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``
 
 Added
@@ -556,18 +569,18 @@ Fixed
 Added
 ^^^^^
 
-- User can chose their favourite display name. :pr:`77`
-- Bumped to authlib 1.2. :pr:`78`
-- Implemented RFC7592 OAuth 2.0 Dynamic Client Registration Management
+- User can chose their display name. :pr:`77`
+- Bumped to Authlib 1.2. :pr:`78`
+- Implemented :rfc:`RFC7592 <7592>` OAuth 2.0 Dynamic Client Registration Management
   Protocol. :pr:`79`
-- Added ``nonce`` to the ``claims_supported`` server metadata list.
+- Add the ``nonce`` parameter to the ``claims_supported`` server metadata list.
 
 [0.0.14] - 2022-11-29
 ---------------------
 
 Fixed
 ^^^^^
-- Fixed translation mo files packaging.
+- Fixed translation catalogs packaging.
 
 [0.0.13] - 2022-11-21
 ---------------------
@@ -590,7 +603,7 @@ Added
 ^^^^^
 
 - Python 3.11 support. :pr:`61`
-- ``apparmor`` slapd configuration instructions in ``CONTRIBUTING.rst``. :pr:`66`
+- ``apparmor`` slapd configuration instructions in the documentation page for contributions. :pr:`66`
 - ``preferredLanguage`` attribute support. :pr:`75`
 
 Changed
@@ -653,7 +666,7 @@ Changed
 - Bumped to Authlib 1. :pr:`48`
 - Various documentation improvements. :pr:`50`
 - Use poetry instead of setuptools as project management tool. :pr:`51`
-- Additional ``nonce`` tests. :pr:`52`
+- Additional tests for the OIDC ``nonce`` parameter. :pr:`52`
 
 Fixed
 ^^^^^

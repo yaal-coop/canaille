@@ -22,9 +22,15 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ url_for("core.account.profile_edition", edited_user=token.subject) }}">
-                        {{ token.subject.user_name }}
-                    </a>
+                    {% if token.subject %}
+                        <a href="{{ url_for("core.account.profile_edition", edited_user=token.subject) }}">
+                            {{ token.subject.user_name }}
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('oidc.clients.edit', client=token.client) }}">
+                            {{ token.client.client_name }}
+                        </a>
+                    {% endif %}
                 </td>
                 <td>{{ token.issue_date }}</td>
             </tr>

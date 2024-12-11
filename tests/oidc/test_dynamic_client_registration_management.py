@@ -34,6 +34,7 @@ def test_get(testclient, backend, client, user):
             "implicit",
             "hybrid",
             "refresh_token",
+            "client_credentials",
         ],
         "response_types": ["code", "token", "id_token"],
         "client_name": "Some client",

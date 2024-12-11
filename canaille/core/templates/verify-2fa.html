@@ -1,0 +1,79 @@
+{% extends theme('base.html') %}
+{% import 'macro/flask.html' as flask %}
+{% import 'macro/form.html' as fui %}
+{% import 'partial/login_field.html' as login_field %}
+
+{% block container %}
+    <div class="ui container">
+        <div class="content">
+            <div class="ui clearing segment">
+                {% block header %}
+                    {% if logo_url %}
+                        <a href="{{ url_for('core.account.index') }}">
+                            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+                        </a>
+                    {% else %}
+                        <i class="massive sign in icon image ui"></i>
+                    {% endif %}
+
+                    <h2 class="ui center aligned header">
+                        <div class="content">
+                            {{ _("Sign in as %(username)s", username=username) }}
+                        </div>
+                        <div class="sub header">{% trans %}One-time password authentication.{% endtrans %}</div>
+                    </h2>
+                {% endblock %}
+
+                {% block messages %}
+                    {{ flask.messages() }}
+                {% endblock %}
+
+                {% call fui.render_form(form, hx_boost="false") %}
+                    {% block fields %}
+                        {{ login_field.render_field(form.otp, class="autofocus") }}
+                    {% endblock %}
+
+                    {% block buttons %}
+                        <div class="ui right aligned container">
+                            <div class="ui stackable buttons">
+                                <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("I am not %(username)s", username=username) }}</a>
+                                <button type="submit" class="ui right floated primary button">{{ _("Verify") }}</button>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endcall %}
+                {% if method == "EMAIL_OTP" or method == "SMS_OTP" %}
+                    {% if method == "EMAIL_OTP" %}
+                        <form action="{{ url_for('core.auth.send_mail_otp') }}" method="post">
+                    {% endif %}
+                    {% if method == "SMS_OTP" %}
+                        <form action="{{ url_for('core.auth.send_sms_otp') }}" method="post">
+                    {% endif %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="send-code-button" type="submit">Didn't receive the code? Click here to send another one. <span id="countdown"></span></button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        countDownDuration = 10;
+        countdown = document.getElementById("countdown");
+        countdown.innerHTML = countDownDuration;
+        button = countdown.parentNode;
+        button.setAttribute("disabled", "");
+
+        x = setInterval(() => {
+            countDownDuration--;
+            if (countDownDuration <= 0) {
+                clearInterval(x);
+                countdown.innerHTML = "";
+                button.removeAttribute("disabled");
+            } else {
+                countdown.innerHTML = countDownDuration;
+            }
+        }, 1000);
+    </script>
+{% endblock %}

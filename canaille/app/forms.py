@@ -81,7 +81,7 @@ def password_strength_calculator(password):
     strength_score = 0
 
     if password and type(password) is str:
-        strength_score = zxcvbn(password).score
+        strength_score = int(zxcvbn(password).score)
         strength_score = strength_score * 100 // 4
 
     return strength_score

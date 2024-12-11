@@ -52,9 +52,15 @@
                     <tr>
                         <td>{{ _("Subject") }}</td>
                         <td>
-                            <a href="{{ url_for("core.account.profile_edition", edited_user=token.subject) }}">
-                                {{ token.subject.identifier }}
-                            </a>
+                            {% if token.subject %}
+                                <a href="{{ url_for("core.account.profile_edition", edited_user=token.subject) }}">
+                                    {{ token.subject.identifier }}
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for("oidc.clients.edit", client=token.client) }}">
+                                    {{ token.client.client_name }}
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>
@@ -83,11 +89,18 @@
                     </tr>
                     <tr>
                         <td>{{ _("Issue date") }}</td>
-                        <td>{{ token.issue_date }}</td>
+                        <td>{{ token.issue_date|datetimeformat }}</td>
                     </tr>
                     <tr>
                         <td>{{ _("Expiration date") }}</td>
-                        <td>{{ token.expire_date }}</td>
+                        <td>
+                            {{ token.expire_date|datetimeformat }}
+                            {% if token.is_expired() %}
+                                <a class="item">
+                                    <div class="ui red horizontal label">{% trans %}This token has expired.{% endtrans %}</div>
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <td>{{ _("Revokation date") }}</td>
@@ -122,7 +135,7 @@
                     <tr>
                         <td>{{ _("Refresh token") }}</td>
                         <td class="ui fluid action input">
-                            <input type="text" value="{{ token.refresh_token }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token">
+                            <input type="text" value="{{ token.refresh_token or "" }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token" {% if not token.refresh_token %}placeholder="{% trans %}No refresh token{% endtrans %}"{% endif %}>
                             <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
                                 <i class="copy icon"></i>
                                 {% trans %}Copy{% endtrans %}

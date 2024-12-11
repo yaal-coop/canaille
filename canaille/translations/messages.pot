@@ -749,7 +749,7 @@ msgstr ""
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
 #: canaille/core/templates/profile_settings.html:166
-#: canaille/oidc/templates/client_edit.html:78
+#: canaille/oidc/templates/client_edit.html:81
 msgid "Edit"
 msgstr ""
 
@@ -810,8 +810,8 @@ msgid ""
 msgstr ""
 
 #: canaille/core/templates/invite.html:74
-#: canaille/oidc/templates/token_view.html:117
-#: canaille/oidc/templates/token_view.html:128
+#: canaille/oidc/templates/token_view.html:130
+#: canaille/oidc/templates/token_view.html:141
 msgid "Copy"
 msgstr ""
 
@@ -1243,15 +1243,14 @@ msgstr ""
 #, python-format
 msgid ""
 "Our services were unable to verify if the "
-"http://127.0.0.1:5000/profile/%(user_name)s/settings's password is "
-"compromised."
+"%(site_url)s/profile/%(user_name)s/settings's password is compromised."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
 #, python-format
 msgid ""
-"3.1. open this link http://127.0.0.1:5000/profile/%(user_name)s/settings "
-"and reset user's password."
+"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset"
+" user's password."
 msgstr ""
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
@@ -1295,27 +1294,20 @@ msgid ""
 msgstr ""
 
 #: canaille/core/templates/mails/firstlogin.html:38
+#: canaille/core/templates/mails/firstlogin.txt:1
+#: canaille/core/templates/mails/firstlogin.txt:5
 #: canaille/core/templates/mails/invitation.txt:5
 #: canaille/core/templates/mails/reset.txt:5
 msgid "Initialize password"
 msgstr ""
 
-#: canaille/core/templates/mails/firstlogin.txt:1
-msgid "Password reinitialisation"
-msgstr ""
-
 #: canaille/core/templates/mails/firstlogin.txt:3
+#: canaille/core/templates/mails/reset.txt:3
 #, python-format
 msgid ""
-"Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. If "
-"you need to reset your password, please click on the link below and "
-"follow the instructions."
-msgstr ""
-
-#: canaille/core/templates/mails/firstlogin.txt:5
-#: canaille/core/templates/mails/reset.html:38
-msgid "Reset password"
+"In order to finalize your account configuration at %(site_name)s, we need"
+" to setup your password. Please click on the link below and follow the "
+"instructions."
 msgstr ""
 
 #: canaille/core/templates/mails/invitation.html:19
@@ -1370,12 +1362,8 @@ msgid ""
 "button below and follow the instructions."
 msgstr ""
 
-#: canaille/core/templates/mails/reset.txt:3
-#, python-format
-msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the link below and follow the "
-"instructions."
+#: canaille/core/templates/mails/reset.html:38
+msgid "Reset password"
 msgstr ""
 
 #: canaille/core/templates/mails/test.html:27
@@ -1485,7 +1473,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:73
 #: canaille/oidc/templates/partial/authorization_list.html:31
 #: canaille/oidc/templates/partial/client_list.html:35
-#: canaille/oidc/templates/partial/token_list.html:39
+#: canaille/oidc/templates/partial/token_list.html:45
 msgid "No item matches your request"
 msgstr ""
 
@@ -1494,7 +1482,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:75
 #: canaille/oidc/templates/partial/authorization_list.html:33
 #: canaille/oidc/templates/partial/client_list.html:37
-#: canaille/oidc/templates/partial/token_list.html:41
+#: canaille/oidc/templates/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
 msgstr ""
 
@@ -1503,7 +1491,7 @@ msgstr ""
 #: canaille/core/templates/partial/users.html:78
 #: canaille/oidc/templates/partial/authorization_list.html:36
 #: canaille/oidc/templates/partial/client_list.html:40
-#: canaille/oidc/templates/partial/token_list.html:44
+#: canaille/oidc/templates/partial/token_list.html:50
 #: canaille/oidc/templates/preconsent_list.html:91
 msgid "There is nothing here"
 msgstr ""
@@ -1532,23 +1520,23 @@ msgstr ""
 msgid "Groups you belong to."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:46
+#: canaille/oidc/endpoints/clients.py:47
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:81
+#: canaille/oidc/endpoints/clients.py:82
 msgid "The client has been created."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:114
+#: canaille/oidc/endpoints/clients.py:118
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:144
+#: canaille/oidc/endpoints/clients.py:148
 msgid "The client has been edited."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:152
+#: canaille/oidc/endpoints/clients.py:156
 msgid "The client has been deleted."
 msgstr ""
 
@@ -1598,60 +1586,60 @@ msgstr ""
 msgid "Grant types"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:89
-#: canaille/oidc/templates/token_view.html:61
+#: canaille/oidc/endpoints/forms.py:90
+#: canaille/oidc/templates/token_view.html:67
 msgid "Scope"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:95
+#: canaille/oidc/endpoints/forms.py:96
 msgid "Response types"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:101
+#: canaille/oidc/endpoints/forms.py:102
 msgid "Token Endpoint Auth Method"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:111
+#: canaille/oidc/endpoints/forms.py:112
 msgid "Token audiences"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:118
+#: canaille/oidc/endpoints/forms.py:119
 msgid "Logo URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:126
+#: canaille/oidc/endpoints/forms.py:127
 msgid "Terms of service URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:134
+#: canaille/oidc/endpoints/forms.py:135
 msgid "Policy URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:142
+#: canaille/oidc/endpoints/forms.py:143
 msgid "Software ID"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:147
+#: canaille/oidc/endpoints/forms.py:148
 msgid "Software Version"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:152
+#: canaille/oidc/endpoints/forms.py:153
 msgid "JWK"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:157
+#: canaille/oidc/endpoints/forms.py:158
 msgid "JKW URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:165
+#: canaille/oidc/endpoints/forms.py:166
 msgid "Pre-consent"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:369
+#: canaille/oidc/endpoints/oauth.py:377
 msgid "You have been disconnected"
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:386
+#: canaille/oidc/endpoints/oauth.py:394
 msgid "You have not been disconnected"
 msgstr ""
 
@@ -1715,6 +1703,10 @@ msgid "Issued at"
 msgstr ""
 
 #: canaille/oidc/templates/client_edit.html:75
+msgid "New token"
+msgstr ""
+
+#: canaille/oidc/templates/client_edit.html:78
 msgid "Delete the client"
 msgstr ""
 
@@ -1823,40 +1815,48 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:71
+#: canaille/oidc/templates/token_view.html:77
 msgid "Audience"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:85
+#: canaille/oidc/templates/token_view.html:91
 msgid "Issue date"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:89
+#: canaille/oidc/templates/token_view.html:95
 msgid "Expiration date"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:93
+#: canaille/oidc/templates/token_view.html:100
+msgid "This token has expired."
+msgstr ""
+
+#: canaille/oidc/templates/token_view.html:106
 msgid "Revokation date"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:99
+#: canaille/oidc/templates/token_view.html:112
 msgid "Revoke token"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:102
+#: canaille/oidc/templates/token_view.html:115
 msgid "This token has not been revoked"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:108
+#: canaille/oidc/templates/token_view.html:121
 msgid "Token type"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:112
+#: canaille/oidc/templates/token_view.html:125
 msgid "Access token"
 msgstr ""
 
-#: canaille/oidc/templates/token_view.html:123
+#: canaille/oidc/templates/token_view.html:136
 msgid "Refresh token"
+msgstr ""
+
+#: canaille/oidc/templates/token_view.html:138
+msgid "No refresh token"
 msgstr ""
 
 #: canaille/oidc/templates/modals/delete-client.html:9

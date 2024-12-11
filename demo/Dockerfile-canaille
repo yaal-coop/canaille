@@ -14,10 +14,6 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Needed until zxcvbn supports Python 3.13
-# https://github.com/fief-dev/zxcvbn-rs-py/issues/2
-ENV PYO3_USE_ABI3_FORWARD_COMPATIBILITY="1"
-
 COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md demo/demoapp.py /opt/canaille/
 COPY canaille /opt/canaille/canaille
 RUN pip install uv

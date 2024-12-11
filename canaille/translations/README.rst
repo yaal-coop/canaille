@@ -1,4 +1,4 @@
-Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`_.
+Translations are done with `Weblate <https://hosted.weblate.org/projects/canaille/canaille>`__.
 
 The following commands are there as documentation, only the message extraction is needed for contributors.
 All the other steps are automatically done with Weblate.

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "babel", "setuptools >= 50.0.0; python_version>='3.12'"]
+requires = ["hatchling", "babel", "setuptools >= 50.0.0; python_version<'3.13'"]
 build-backend = "hatchling.build"
 
 [project]
@@ -8,7 +8,7 @@ version = "0.0.56"
 description = "Lightweight identity and authorization management software"
 license = {file = "LICENSE.rst"}
 readme = "README.md"
-keywords = ["oidc", "oauth", "oauth2", "openid", "identity"]
+keywords = ["oidc", "oauth", "oauth2", "openid", "identity", "authentication"]
 classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 3 - Alpha",
@@ -45,10 +45,7 @@ front = [
     "pycountry >= 23.12.7",
     "pytz >= 2022.7",
     "toml >= 0.10.0",
-    # zxcvbn does not support Python 3.13 yet
-    # This leads to Canaille installation to fail in some situations.
-    # https://github.com/fief-dev/zxcvbn-rs-py/issues/2
-    "zxcvbn-rs-py >= 0.1.1; python_version<'3.13'",
+    "zxcvbn-rs-py >= 0.2.0",
 ]
 
 oidc = [
@@ -72,16 +69,26 @@ sqlite = [
 
 postgresql = [
     "passlib >= 1.7.4",
-    "sqlalchemy[postgresql] >= 2.0.23",
+    "sqlalchemy[postgresql-psycopg2binary] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
 
 mysql = [
     "passlib >= 1.7.4",
-    "sqlalchemy[mysql] >= 2.0.23",
+    "sqlalchemy[mysql-connector] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
+]
+
+otp = [
+    "otpauth>=2.1.1",
+    "pillow>=11.0.0",
+    "qrcode>=8.0",
+]
+
+sms = [
+    "smpplib>=2.2.3",
 ]
 
 [project.urls]
@@ -215,9 +222,6 @@ env_list = [
 ]
 
 [tool.tox.env_run_base]
-# Needed until zxcvbn supports Python 3.13
-# https://github.com/fief-dev/zxcvbn-rs-py/issues/2
-set_env = {PYO3_USE_ABI3_FORWARD_COMPATIBILITY = "1"}
 runner = "uv-venv-lock-runner"
 dependency_groups = ["dev"]
 uv_sync_flags = ["--extra", "front", "--extra", "oidc", "--extra", "sqlite", "--extra", "ldap"]
@@ -239,7 +243,7 @@ basepython = ["python3.10"]
 [tool.tox.env.doc]
 dependency_groups = ["doc"]
 commands = [
-    ["sphinx-build", "--builder", "html", "doc", "build/sphinx/html"],
+    ["sphinx-build", "--builder", "html", "--fail-on-warning", "doc", "build/sphinx/html"],
     ["sphinx-build", "--builder", "man", "doc", "build/sphinx/html"],
 ]
 

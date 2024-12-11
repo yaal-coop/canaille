@@ -4,12 +4,21 @@ import typing
 from collections import ChainMap
 from typing import Annotated
 from typing import ClassVar
+from typing import Union
 from typing import get_origin
 from typing import get_type_hints
 
 from canaille.app import classproperty
 from canaille.app import models
 from canaille.backends import Backend
+
+try:
+    from types import UnionType  # type: ignore
+
+    UNION_TYPES = [Union, UnionType]
+except ImportError:
+    # Python 3.9 has no UnionType
+    UNION_TYPES = [Union]
 
 
 class Model:
@@ -98,6 +107,13 @@ class BackendModel:
             typing.get_args(annotations)[0]
             if typing.get_origin(annotations) is list
             else annotations
+        )
+
+        # Extract the Optional and Union type
+        attribute_type = (
+            typing.get_args(attribute_type)[0]
+            if typing.get_origin(attribute_type) in UNION_TYPES
+            else attribute_type
         )
 
         # Extract the Annotated annotation

@@ -140,6 +140,12 @@
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
+                    {% if features.has_otp and user.can_manage_users %}
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-reset-otp" id="reset-otp" formnovalidate>
+                            {% trans %}Reset one-time password authentication{% endtrans %}
+                        </button>
+                    {% endif %}
+
                     {% if features.has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-lock" id="lock" formnovalidate>
                             {% trans %}Lock the account{% endtrans %}

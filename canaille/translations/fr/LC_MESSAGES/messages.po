@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-20 23:42+0100\n"
-"PO-Revision-Date: 2024-11-01 09:00+0000\n"
-"Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
+"POT-Creation-Date: 2024-12-08 11:58+0100\n"
+"PO-Revision-Date: 2024-12-08 11:22+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8.2-dev\n"
+"X-Generator: Weblate 5.9-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:53
@@ -48,16 +48,18 @@ msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 "Ce champ doit contenir au maximum {maximum_password_length} caractères."
 
-#: canaille/app/forms.py:117
+#: canaille/app/forms.py:120
 msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
+"Ce mot de passe apparaît dans les bases de données publiques compromises et "
+"n'est pas sécurisé."
 
-#: canaille/app/forms.py:281
+#: canaille/app/forms.py:285
 msgid "The page number is not valid"
 msgstr "Le numéro de page est invalide"
 
-#: canaille/app/forms.py:309
+#: canaille/app/forms.py:313
 msgid "Not a valid datetime value."
 msgstr "N'est pas une date valide."
 
@@ -65,27 +67,26 @@ msgstr "N'est pas une date valide."
 msgid ""
 "Password compromise investigation failed. Please contact the administrators."
 msgstr ""
+"La recherche sur la compromission du mot de passe a échoué. Veuillez "
+"contacter les administrateurs."
 
 #: canaille/app/mails_sending_conditions.py:38
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
 msgstr ""
+"Nous avons informé votre administrateur de l'échec de la recherche sur la "
+"compromission du mot de passe."
 
 #: canaille/app/mails_sending_conditions.py:45
-#, fuzzy
-#| msgid ""
-#| "An error happened while sending your registration mail. Please try again "
-#| "in a few minutes. If this still happens, please contact the "
-#| "administrators."
 msgid ""
 "An error occurred while communicating the incident to the administrators. "
 "Please update your password as soon as possible. If this still happens, "
 "please contact the administrators."
 msgstr ""
-"Une erreur est survenue lors de l’envoi de votre courriel d'inscription. "
-"Veuillez retenter dans quelques minutes. Si le problème subsite, veuillez "
-"contacter les administrateurs."
+"Une erreur s'est produite lors de la communication de l'incident aux "
+"administrateurs. Veuillez mettre à jour votre mot de passe dès que possible. "
+"Si cela se produit encore, veuillez contacter les administrateurs."
 
 #: canaille/backends/ldap/backend.py:99
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -106,10 +107,8 @@ msgid "jdoe"
 msgstr "cdupont"
 
 #: canaille/backends/ldap/backend.py:181
-#, fuzzy
-#| msgid "john@doe.com"
 msgid "john.doe@example.com"
-msgstr "camille@dupont.fr"
+msgstr "camille.dupont@exemple.fr"
 
 #: canaille/backends/ldap/backend.py:183
 msgid " or "
@@ -150,10 +149,10 @@ msgid "Continue your registration on {website_name}"
 msgstr "Poursuivez votre inscription sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:309 canaille/core/mails.py:221
-#, fuzzy
-#| msgid "Password reset on {website_name}"
 msgid "Compromised password check failure on {website_name}"
-msgstr "Réinitialisation du mot de passe sur {website_name}"
+msgstr ""
+"Échec de la vérification de la compromission du mot de passe sur "
+"{website_name}"
 
 #: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
@@ -325,10 +324,8 @@ msgstr "Courriel"
 #: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
 #: canaille/core/endpoints/forms.py:412 canaille/core/endpoints/forms.py:438
 #: canaille/core/endpoints/forms.py:462 canaille/core/endpoints/forms.py:478
-#, fuzzy
-#| msgid "jane@doe.com"
 msgid "jane.doe@example.com"
-msgstr "camille@dupont.fr"
+msgstr "camille.dupont@exemple.fr"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "The test mail has been sent correctly"
@@ -463,7 +460,7 @@ msgstr "Automatique"
 
 #: canaille/core/endpoints/forms.py:164
 msgid "Username"
-msgstr "Identifiant"
+msgstr "Nom d'utilisateur"
 
 #: canaille/core/endpoints/forms.py:168 canaille/core/endpoints/forms.py:368
 #: canaille/core/endpoints/forms.py:382
@@ -628,7 +625,7 @@ msgstr "Courriel"
 
 #: canaille/core/endpoints/forms.py:425
 msgid "User name"
-msgstr "Identifiant"
+msgstr "Nom d'utilisateur"
 
 #: canaille/core/endpoints/forms.py:429
 msgid "Username editable by the invitee"
@@ -804,7 +801,7 @@ msgstr "Créer le groupe"
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
 #: canaille/core/templates/profile_settings.html:166
-#: canaille/oidc/templates/client_edit.html:78
+#: canaille/oidc/templates/client_edit.html:81
 msgid "Edit"
 msgstr "Modifier"
 
@@ -870,8 +867,8 @@ msgstr ""
 "moyens que le courriel :"
 
 #: canaille/core/templates/invite.html:74
-#: canaille/oidc/templates/token_view.html:117
-#: canaille/oidc/templates/token_view.html:128
+#: canaille/oidc/templates/token_view.html:130
+#: canaille/oidc/templates/token_view.html:141
 msgid "Copy"
 msgstr "Copier"
 
@@ -1230,6 +1227,8 @@ msgstr ""
 #: canaille/core/templates/mails/admin.html:62
 msgid "No mail server has been configured. The mail sending test is disabled."
 msgstr ""
+"Aucun serveur de messagerie n'a été configuré. L'envoi du courriel test est "
+"désactivé."
 
 #: canaille/core/templates/mails/admin.html:73
 msgid "Email preview"
@@ -1266,7 +1265,7 @@ msgstr "Inscription"
 #: canaille/core/templates/mails/compromised_password_check_failure.html:19
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
-msgstr ""
+msgstr "Échec de la vérification de la compromission du mot de passe"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:28
 #, python-format
@@ -1274,6 +1273,8 @@ msgid ""
 "Our services were unable to verify if the %(user_name)s's password is "
 "compromised."
 msgstr ""
+"Nos services n'ont pas pu vérifier si le mot de passe de %(user_name)s est "
+"compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:31
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:5
@@ -1282,22 +1283,26 @@ msgid ""
 "You have to check manually if the new password of the user %(user_name)s is "
 "compromised."
 msgstr ""
+"Vous devez vérifier manuellement si le nouveau mot de passe de l'utilisateur "
+"%(user_name)s est compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:32
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:6
 msgid "Follow this steps :"
-msgstr ""
+msgstr "Suivez ces étapes :"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:33
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:7
 msgid "1. click on the link above \"Check if password is compromised\"."
 msgstr ""
+"1. Cliquez sur le lien ci-dessus « Vérifier si le mot de passe est "
+"compromis »."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:40
 #: canaille/core/templates/mails/compromised_password_check_failure.html:75
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:13
 msgid "Check if password is compromised"
-msgstr ""
+msgstr "Vérifier si le mot de passe est compromis"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:47
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:8
@@ -1306,49 +1311,56 @@ msgid ""
 "2. in the page that will open, search the following hashed password in the "
 "page : %(hashed_password)s"
 msgstr ""
+"2. Dans la page qui s'ouvre, recherchez le mot de passe haché suivant dans "
+"la page : %(hashed_password)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:48
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:9
-#, fuzzy
-#| msgid "setting a password using this form;"
 msgid "3. if the password is in the list :"
-msgstr "renseignant un mot de passe via ce formulaire ;"
+msgstr "3. si le mot de passe est dans la liste :"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:49
 msgid "3.1. open this link and reset user's password."
-msgstr ""
+msgstr "3.1. ouvrez ce lien et réinitialisez le mot de passe de l'utilisateur."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:57
-#, fuzzy, python-format
-#| msgid "Reset password"
+#, python-format
 msgid "Reset %(user_name)s's password"
-msgstr "Réinitialiser votre mot de passe"
+msgstr "Réinitialiser le mot de passe de %(user_name)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:64
 #, python-format
 msgid ""
 "3.2. send an email to the user to explain the situation : %(user_email)s"
 msgstr ""
+"3.2. envoyer un email à l'utilisateur pour lui expliquer la situation : "
+"%(user_email)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
 #, python-format
 msgid ""
-"Our services were unable to verify if the http://127.0.0.1:5000/profile/"
-"%(user_name)s/settings's password is compromised."
+"Our services were unable to verify if the %(site_url)s/profile/%(user_name)s/"
+"settings's password is compromised."
 msgstr ""
+"Nos services n'ont pas pu vérifier si le mot de passe de %(site_url)s/"
+"profile/%(user_name)s/settings est compromis."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
 #, python-format
 msgid ""
-"3.1. open this link http://127.0.0.1:5000/profile/%(user_name)s/settings and "
-"reset user's password."
+"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset "
+"user's password."
 msgstr ""
+"3.1. ouvrez ce lien %(site_url)s/profile/%(user_name)s/settings et "
+"réinitialisez le mot de passe de l'utilisateur."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
 #, python-format
 msgid ""
 "3.2. send an email to the user to explain the situation : %(user_email)s."
 msgstr ""
+"3.2. envoyer un email à l'utilisateur pour expliquer la situation : "
+"%(user_email)s."
 
 #: canaille/core/templates/mails/email-confirmation.html:19
 msgid "Email address confirmation"
@@ -1389,37 +1401,29 @@ msgid ""
 "below and follow the instructions."
 msgstr ""
 "Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
-"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
-"dessous, et suivre les instructions qui vous seront présentées."
+"devons mettre en place un mot de passe. Veuillez cliquer sur le bouton « "
+"Initialiser mon mot de passe », et suivre les instructions qui vous seront "
+"présentées."
 
 #: canaille/core/templates/mails/firstlogin.html:38
+#: canaille/core/templates/mails/firstlogin.txt:1
+#: canaille/core/templates/mails/firstlogin.txt:5
 #: canaille/core/templates/mails/invitation.txt:5
 #: canaille/core/templates/mails/reset.txt:5
 msgid "Initialize password"
 msgstr "Initialiser mon mot de passe"
 
-#: canaille/core/templates/mails/firstlogin.txt:1
-msgid "Password reinitialisation"
-msgstr "Réinitialisation du mot de passe"
-
 #: canaille/core/templates/mails/firstlogin.txt:3
+#: canaille/core/templates/mails/reset.txt:3
 #, python-format
 msgid ""
-"Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not asked for this email, please ignore it. If you "
-"need to reset your password, please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
-"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
-"mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
-"ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
-"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
-"qui vous seront soumises."
-
-#: canaille/core/templates/mails/firstlogin.txt:5
-#: canaille/core/templates/mails/reset.html:38
-msgid "Reset password"
-msgstr "Réinitialiser votre mot de passe"
+"Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
+"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
+"dessous, et suivre les instructions qui vous seront présentées."
 
 #: canaille/core/templates/mails/invitation.html:19
 #: canaille/core/templates/mails/invitation.txt:1
@@ -1434,7 +1438,8 @@ msgid ""
 "instructions."
 msgstr ""
 "Vous avez été invités à créer un compte sur %(site_name)s. Pour continuer, "
-"vous pouvez cliquer sur le lien ci-dessous et suivre les instructions."
+"vous pouvez cliquer sur bouton « Créer mon compte » et suivre les "
+"instructions."
 
 #: canaille/core/templates/mails/invitation.html:38
 msgid "Create my account"
@@ -1486,16 +1491,9 @@ msgstr ""
 "passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
 "qui vous seront soumises."
 
-#: canaille/core/templates/mails/reset.txt:3
-#, python-format
-msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need to "
-"setup your password. Please click on the link below and follow the "
-"instructions."
-msgstr ""
-"Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
-"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
-"dessous, et suivre les instructions qui vous seront présentées."
+#: canaille/core/templates/mails/reset.html:38
+msgid "Reset password"
+msgstr "Réinitialiser votre mot de passe"
 
 #: canaille/core/templates/mails/test.html:27
 #: canaille/core/templates/mails/test.txt:3
@@ -1620,7 +1618,7 @@ msgstr "Les groupes doivent avoir au moins un membre"
 #: canaille/core/templates/partial/users.html:73
 #: canaille/oidc/templates/partial/authorization_list.html:31
 #: canaille/oidc/templates/partial/client_list.html:35
-#: canaille/oidc/templates/partial/token_list.html:39
+#: canaille/oidc/templates/partial/token_list.html:45
 msgid "No item matches your request"
 msgstr "Aucun élément ne correspond à votre requête"
 
@@ -1629,7 +1627,7 @@ msgstr "Aucun élément ne correspond à votre requête"
 #: canaille/core/templates/partial/users.html:75
 #: canaille/oidc/templates/partial/authorization_list.html:33
 #: canaille/oidc/templates/partial/client_list.html:37
-#: canaille/oidc/templates/partial/token_list.html:41
+#: canaille/oidc/templates/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
 msgstr "Essayez peut-être avec des critères différents ?"
 
@@ -1638,7 +1636,7 @@ msgstr "Essayez peut-être avec des critères différents ?"
 #: canaille/core/templates/partial/users.html:78
 #: canaille/oidc/templates/partial/authorization_list.html:36
 #: canaille/oidc/templates/partial/client_list.html:40
-#: canaille/oidc/templates/partial/token_list.html:44
+#: canaille/oidc/templates/partial/token_list.html:50
 #: canaille/oidc/templates/preconsent_list.html:91
 msgid "There is nothing here"
 msgstr "Il n'y a rien ici"
@@ -1667,23 +1665,23 @@ msgstr "Votre numéro de téléphone."
 msgid "Groups you belong to."
 msgstr "Les groupes auxquels vous appartenez."
 
-#: canaille/oidc/endpoints/clients.py:46
+#: canaille/oidc/endpoints/clients.py:47
 msgid "The client has not been added. Please check your information."
 msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
 
-#: canaille/oidc/endpoints/clients.py:81
+#: canaille/oidc/endpoints/clients.py:82
 msgid "The client has been created."
 msgstr "Le client a été créé."
 
-#: canaille/oidc/endpoints/clients.py:114
+#: canaille/oidc/endpoints/clients.py:118
 msgid "The client has not been edited. Please check your information."
 msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 
-#: canaille/oidc/endpoints/clients.py:144
+#: canaille/oidc/endpoints/clients.py:148
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
-#: canaille/oidc/endpoints/clients.py:152
+#: canaille/oidc/endpoints/clients.py:156
 msgid "The client has been deleted."
 msgstr "Le client a été supprimé."
 
@@ -1733,60 +1731,60 @@ msgstr "URIs de redirection post-déconnexion"
 msgid "Grant types"
 msgstr "Types de consentements"
 
-#: canaille/oidc/endpoints/forms.py:89
-#: canaille/oidc/templates/token_view.html:61
+#: canaille/oidc/endpoints/forms.py:90
+#: canaille/oidc/templates/token_view.html:67
 msgid "Scope"
 msgstr "Portée"
 
-#: canaille/oidc/endpoints/forms.py:95
+#: canaille/oidc/endpoints/forms.py:96
 msgid "Response types"
 msgstr "Types de réponse"
 
-#: canaille/oidc/endpoints/forms.py:101
+#: canaille/oidc/endpoints/forms.py:102
 msgid "Token Endpoint Auth Method"
 msgstr "Méthode d'authentification du point d'accès des jetons"
 
-#: canaille/oidc/endpoints/forms.py:111
+#: canaille/oidc/endpoints/forms.py:112
 msgid "Token audiences"
 msgstr "Audiences des jetons"
 
-#: canaille/oidc/endpoints/forms.py:118
+#: canaille/oidc/endpoints/forms.py:119
 msgid "Logo URI"
 msgstr "URI du logo"
 
-#: canaille/oidc/endpoints/forms.py:126
+#: canaille/oidc/endpoints/forms.py:127
 msgid "Terms of service URI"
 msgstr "URI des conditions d'utilisation"
 
-#: canaille/oidc/endpoints/forms.py:134
+#: canaille/oidc/endpoints/forms.py:135
 msgid "Policy URI"
 msgstr "URI de la politique de confidentialité"
 
-#: canaille/oidc/endpoints/forms.py:142
+#: canaille/oidc/endpoints/forms.py:143
 msgid "Software ID"
 msgstr "ID du logiciel"
 
-#: canaille/oidc/endpoints/forms.py:147
+#: canaille/oidc/endpoints/forms.py:148
 msgid "Software Version"
 msgstr "Version du logiciel"
 
-#: canaille/oidc/endpoints/forms.py:152
+#: canaille/oidc/endpoints/forms.py:153
 msgid "JWK"
 msgstr "JWK"
 
-#: canaille/oidc/endpoints/forms.py:157
+#: canaille/oidc/endpoints/forms.py:158
 msgid "JKW URI"
 msgstr "URI du JWK"
 
-#: canaille/oidc/endpoints/forms.py:165
+#: canaille/oidc/endpoints/forms.py:166
 msgid "Pre-consent"
 msgstr "Pré-autorisé"
 
-#: canaille/oidc/endpoints/oauth.py:369
+#: canaille/oidc/endpoints/oauth.py:377
 msgid "You have been disconnected"
 msgstr "Vous avez été déconnecté·e"
 
-#: canaille/oidc/endpoints/oauth.py:386
+#: canaille/oidc/endpoints/oauth.py:394
 msgid "You have not been disconnected"
 msgstr "Vous n'avez pas été déconnecté"
 
@@ -1850,6 +1848,10 @@ msgid "Issued at"
 msgstr "Créé le"
 
 #: canaille/oidc/templates/client_edit.html:75
+msgid "New token"
+msgstr "Nouveau jeton"
+
+#: canaille/oidc/templates/client_edit.html:78
 msgid "Delete the client"
 msgstr "Supprimer le client"
 
@@ -1960,41 +1962,49 @@ msgstr "Client"
 msgid "Subject"
 msgstr "Utilisateur"
 
-#: canaille/oidc/templates/token_view.html:71
+#: canaille/oidc/templates/token_view.html:77
 msgid "Audience"
 msgstr "Audience"
 
-#: canaille/oidc/templates/token_view.html:85
+#: canaille/oidc/templates/token_view.html:91
 msgid "Issue date"
 msgstr "Date d’émission"
 
-#: canaille/oidc/templates/token_view.html:89
+#: canaille/oidc/templates/token_view.html:95
 msgid "Expiration date"
 msgstr "Date d'expiration"
 
-#: canaille/oidc/templates/token_view.html:93
+#: canaille/oidc/templates/token_view.html:100
+msgid "This token has expired."
+msgstr "Le jeton a expiré."
+
+#: canaille/oidc/templates/token_view.html:106
 msgid "Revokation date"
 msgstr "Date de révocation"
 
-#: canaille/oidc/templates/token_view.html:99
+#: canaille/oidc/templates/token_view.html:112
 msgid "Revoke token"
 msgstr "Révoquer le jeton"
 
-#: canaille/oidc/templates/token_view.html:102
+#: canaille/oidc/templates/token_view.html:115
 msgid "This token has not been revoked"
 msgstr "Le jeton n'a pas été révoqué"
 
-#: canaille/oidc/templates/token_view.html:108
+#: canaille/oidc/templates/token_view.html:121
 msgid "Token type"
 msgstr "Type de jeton"
 
-#: canaille/oidc/templates/token_view.html:112
+#: canaille/oidc/templates/token_view.html:125
 msgid "Access token"
 msgstr "Jeton d'accès"
 
-#: canaille/oidc/templates/token_view.html:123
+#: canaille/oidc/templates/token_view.html:136
 msgid "Refresh token"
 msgstr "Jeton de rafraîchissement"
+
+#: canaille/oidc/templates/token_view.html:138
+msgid "No refresh token"
+msgstr "Pas de jeton de rafraîchissement"
 
 #: canaille/oidc/templates/modals/delete-client.html:9
 msgid "Client deletion"
@@ -2123,6 +2133,22 @@ msgid "%(nb_items_formatted)s item"
 msgid_plural "%(nb_items_formatted)s items"
 msgstr[0] "%(nb_items_formatted)s élément"
 msgstr[1] "%(nb_items_formatted)s éléments"
+
+#~ msgid "Password reinitialisation"
+#~ msgstr "Réinitialisation du mot de passe"
+
+#, python-format
+#~ msgid ""
+#~ "Someone, probably you, asked for a password reinitialization link at "
+#~ "%(site_name)s. If you did not asked for this email, please ignore it. If "
+#~ "you need to reset your password, please click on the link below and "
+#~ "follow the instructions."
+#~ msgstr ""
+#~ "Quelqu'un, probablement vous, a demandé un lien de réinitialisation de "
+#~ "votre mot de passe pour le site %(site_name)s. Si vous n'êtes pas à "
+#~ "l'origine de ce message, veuillez l'ignorer. Si vous voulez réinitialiser "
+#~ "votre mot de passe, veuillez cliquer sur le lien ci-dessous, et suivre "
+#~ "les instructions qui vous seront soumises."
 
 #~ msgid "Send email"
 #~ msgstr "Envoyer le courriel"
@@ -2445,9 +2471,6 @@ msgstr[1] "%(nb_items_formatted)s éléments"
 #~ "continuer, vous pouvez cliquer sur le lien ci-dessous et suivre les "
 #~ "instructions.\n"
 #~ "                    "
-
-#~ msgid "View a token"
-#~ msgstr "Voir un jeton"
 
 #~ msgid "Lifetime"
 #~ msgstr "Durée de vie"

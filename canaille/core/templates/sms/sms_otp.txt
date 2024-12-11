@@ -1,0 +1,1 @@
+{% trans %}Here is the one-time password you requested for {{ website_name }}: {{ otp }}{% endtrans %}

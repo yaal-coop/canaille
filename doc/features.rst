@@ -12,11 +12,11 @@ Here are the different features that Canaille provides.
 You can enable any of those features with the :doc:`configuration <references/configuration>` to fit any :doc:`use cases <usecases>` you may meet.
 Check our  :ref:`roadmap <features:Roadmap>` to see what is coming next.
 
-Users can interact with Canaille through its :ref:`web interface <features:Web interface>` and administrators can also use its :ref:`command line interface <features:Command line interface>`.
-Canaille can handle data stored in different :ref:`database backends <features:Backends>`.
+Users can interact with Canaille through its :ref:`web interface <features:Web interface>` and administrators can also use its :ref:`command line interface <feature_cli>`.
+Canaille can handle data stored in different :ref:`database backends <feature_databases>`.
 
-Web interface
-*************
+User and group management
+*************************
 
 Canaille web interface can be used either in :doc:`production environments <tutorial/deployment>` or locally for development purposes.
 
@@ -87,7 +87,7 @@ Unless their account is :ref:`locked <feature_account_locking>`, users can authe
 User registration
 =================
 
-Users can create accounts on Canaille if the feature :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`.
+Users can create accounts on Canaille if the :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`.
 
 If :attr:`email confirmation <canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>` is also enabled, users will be sent a confirmation link to their email address, on which they will need to click in order to finalize their registration.
 
@@ -112,7 +112,7 @@ It can be automatically sent by email to the new user.
 Account locking
 ===============
 
-If Canaille is plugged to a :ref:`backend <features:Backends>` that supports it, user accounts can be locked by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
+If Canaille is plugged to a :ref:`backend <feature_databases>` that supports it, user accounts can be locked by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
 The lock date can be set instantly or at a given date in the future.
 
 At the moment a user account is locked:
@@ -173,6 +173,20 @@ Password compromission check
 ============================
 
 If :attr:`password compromission check feature <canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK>` is enabled, Canaille will check for password compromise on HIBP (https://haveibeenpwned.com/) every time a new password is register. You will need to set an :attr:`admin email <canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`.
+
+.. _feature_multi_factor_authentication:
+
+Multi-factor authentication
+===========================
+
+If the :attr:`one-time password feature <canaille.core.configuration.CoreSettings.OTP_METHOD>` is set, then users will need to authenticate themselves using a one-time password via an authenticator app.
+Two options are supported : "TOTP" for time one-time password, and "HOTP" for HMAC-based one-time password.
+In case of lost token, TOTP/HOTP authentication can be reset by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
+If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`email one-time password feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary email address.
+If a :class:`smpp server <canaille.core.configuration.SMPPSettings>` is configured and the :attr:`sms one-time password feature <canaille.core.configuration.CoreSettings.SMS_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary phone number.
+
+Web interface
+*************
 
 .. _feature_i18n:
 
@@ -240,10 +254,13 @@ Dynamic Client Registration
 
 Canaille implements the :doc:`Dynamic Client Registration specifications <development/specifications>`, so when the :attr:`feature is enabled <canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN>`, clients can register themselves on Canaille without an administrator intervention.
 
+System administration
+*********************
+
 .. _feature_cli:
 
 Command Line Interface
-**********************
+======================
 
 Canaille comes with a :abbr:`CLI (Command Line Interface)` to help administrators in hosting and management.
 
@@ -252,16 +269,13 @@ You can use the CLI to :ref:`create <cli_create>`, :ref:`read <cli_get>`, :ref:`
 
 There are also tools to :ref:`fill your database <cli_populate>` with random objects, for tests purpose for instance.
 
-.. _feature_backends:
+.. _feature_databases:
 
-Backends
-********
+Databases
+=========
 
 Canaille can handle data from the most :ref:`common SQL databases <tutorial/databases:SQL>` such as PostgreSQL, MariaDB or SQLite, as well as :ref:`OpenLDAP <tutorial/databases:LDAP>`.
 It also comes with a no-dependency :ref:`in-memory database <tutorial/databases:Memory>` that can be used in unit tests suites.
-
-Miscellaneous
-*************
 
 .. _feature_logging:
 
@@ -270,12 +284,14 @@ Logging
 
 Canaille writes :attr:`logs <canaille.core.configuration.CoreSettings.LOGGING>` for every important event happening, to help administrators understand what is going on and debug funky situations.
 
-The following security events are logged with the tag [SECURITY] for easy retrieval :
+The following security events are logged with the log level "security" for easy retrieval :
 
 - Authentication attempt
 - Password update
 - Email update
 - Forgotten password mail sent to user
+- One-time password mail sent to user
+- Multi-factor authentication reset
 - Token emission
 - Token refresh
 - Token revokation
@@ -284,12 +300,25 @@ The following security events are logged with the tag [SECURITY] for easy retrie
 
 .. _feature_development:
 
-A tool for your development and tests
-=====================================
+Development and testing tool
+****************************
+
+.. _feature_testing:
+
+Unit-testing tool
+=================
 
 Thanks to its lightweight :ref:`in-memory database <tutorial/databases:Memory>` and its curated :ref:`dependency list <tutorial/install:Get the code>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
 
+Development server
+==================
+
 It can also being launched in your development environment, if you find that launching a Keycloak in a Docker container is too heavy for your little web application.
+
+.. _feature_ci:
+
+Continuous Integration tools
+============================
 
 It also fits well in continuous integration scenarios. Thanks to its :ref:`CLI <feature_cli>`, you can prepare data in Canaille, let your application interact with it, and then check the side effects.
 

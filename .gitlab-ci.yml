@@ -22,9 +22,6 @@ before_script:
   # Rust is needed to install the zxcvbn dependency
   - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
   - export PATH="$HOME/.cargo/bin:$PATH"
-  # Needed until zxcvbn supports Python 3.13
-  # https://github.com/fief-dev/zxcvbn-rs-py/issues/2
-  - export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
 
 style:
   variables:
@@ -78,5 +75,5 @@ doc:
   stage: test
   script:
     - uv sync --group doc
-    - uv run sphinx-build doc build/sphinx/html
+    - uv run sphinx-build doc build/sphinx/html --fail-on-warning
     - uv cache prune --ci

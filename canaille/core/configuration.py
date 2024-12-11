@@ -39,6 +39,24 @@ class SMTPSettings(BaseModel):
     """
 
 
+class SMPPSettings(BaseModel):
+    """The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace. If
+    not set, sms related features such as sms one-time passwords will be disabled.
+    """
+
+    HOST: str | None = "localhost"
+    """The SMPP host."""
+
+    PORT: int | None = 2775
+    """The SMPP port. Use 8775 for SMPP over TLS (recommended)."""
+
+    LOGIN: str | None = None
+    """The SMPP login."""
+
+    PASSWORD: str | None = None
+    """The SMPP password."""
+
+
 class Permission(str, Enum):
     """The permissions that can be assigned to users.
 
@@ -73,7 +91,7 @@ class Permission(str, Enum):
 class ACLSettings(BaseModel):
     """Access Control List settings. Belong in the ``CANAILLE.ACL`` namespace.
 
-    You can define access controls that define what users can do on canaille
+    You can define access controls that define what users can do on canaille.
     An access control consists in a :attr:`FILTER` to match users, a list of :attr:`PERMISSIONS`
     matched users will be able to perform, and fields users will be able
     to :attr:`READ` and :attr:`WRITE`. Users matching several filters will cumulate permissions.
@@ -81,15 +99,14 @@ class ACLSettings(BaseModel):
 
     PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
     """A list of :class:`Permission` users in the access control will be able
-    to manage. For example::
+    to manage.
 
-        PERMISSIONS = [
-            "manage_users",
-            "manage_groups",
-            "manage_oidc",
-            "delete_account",
-            "impersonate_users",
-        ]"""
+    For example:
+
+    ..code-block:: toml
+
+        PERMISSIONS = ["manage_users", "manage_groups", "manage_oidc", "delete_account", "impersonate_users"]
+    """
 
     READ: list[str] = [
         "user_name",
@@ -249,6 +266,20 @@ class CoreSettings(BaseModel):
     """If :py:data:`False`, then users cannot ask for a password recovery link
     by email."""
 
+    OTP_METHOD: str = None
+    """If OTP_METHOD is defined, then users will need to authenticate themselves
+    using a one-time password (OTP) via an authenticator app.
+    If set to :py:data:`TOTP`, the application will use time one-time passwords,
+    If set to :py:data:`HOTP`, the application will use HMAC-based one-time passwords."""
+
+    EMAIL_OTP: bool = False
+    """If :py:data:`True`, then users will need to authenticate themselves
+    via a one-time password sent to their primary email address."""
+
+    SMS_OTP: bool = False
+    """If :py:data:`True`, then users will need to authenticate themselves
+    via a one-time password sent to their primary phone number."""
+
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.
 
@@ -258,14 +289,16 @@ class CoreSettings(BaseModel):
     LOGGING: str | dict | None = None
     """Configures the logging output using the python logging configuration format:
 
-    - if :py:data:`None`, everything is logged in the standard error output
-      the log level is :py:data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration.RootSettings.DEBUG`
-      setting is :py:data:`True`, else this is :py:data:`~logging.INFO`
-    - if this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`:
-    - if this is a :class:`str`, it is expected to be a file path that will be passed
-      to :func:`logging.config.fileConfig`
+    - If :data:`None`, everything is logged in the standard error output.
+      The log level is :data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration.RootSettings.DEBUG`
+      setting is :py:data:`True`, else this is :py:data:`~logging.INFO`.
+    - If this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`:
+    - If this is a :class:`str`, it is expected to be a file path that will be passed
+      to :func:`logging.config.fileConfig`.
 
-    For example::
+    For example:
+
+    ..code-block:: toml
 
         [CANAILLE.LOGGING]
         version = 1
@@ -285,10 +318,19 @@ class CoreSettings(BaseModel):
     enabled.
     """
 
+    SMPP: SMPPSettings | None = None
+    """The settings related to SMPP configuration.
+
+    If unset, sms-related features like sms one-time passwords won't be
+    enabled.
+    """
+
     ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
     """Mapping of permission groups. See :class:`ACLSettings` for more details.
 
-    The ACL name can be freely chosen. For example::
+    The ACL name can be freely chosen. For example:
+
+    ..code-block:: toml
 
         [CANAILLE.ACL.DEFAULT]
         PERMISSIONS = ["edit_self", "use_oidc"]
@@ -300,16 +342,16 @@ class CoreSettings(BaseModel):
     """
 
     MIN_PASSWORD_LENGTH: int = 8
-    """Minimum length for user password.
+    """User password minimum length.
 
-    It is possible not to set a minimum, by entering None or 0.
+    If 0 or :data:`None`, password won't have a minimum length.
     """
 
     MAX_PASSWORD_LENGTH: int = 1000
-    """Maximum length for user password.
+    """User password maximum length.
 
-    There is a technical limit with passlib used by sql database of 4096
-    characters. If the value entered is 0 or None, or greater than 4096,
+    There is a technical of 4096 characters with the SQL backend.
+    If the value is 0, :data:`None`, or greater than 4096,
     then 4096 will be retained.
     """
 
@@ -328,10 +370,10 @@ class CoreSettings(BaseModel):
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
-    
+
     PASSWORD_MAX_DAYS_EXPIRATION: int | None = None
     """Password validity in days.
-    
+
     If a value is recorded Canaille will check if user's password is expired.
     Then, the user is forced to change his password.
     This value represents the number of days the password is valid.

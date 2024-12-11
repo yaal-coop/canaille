@@ -346,3 +346,35 @@ def compromised_password_check_failure_txt(user):
         hashed_password=hashed_password,
         user_email=user_email,
     )
+
+
+@bp.route("/mail/email_otp.html")
+@permissions_needed("manage_oidc")
+def email_otp_html(user):
+    base_url = url_for("core.account.index", _external=True)
+    otp = "000000"
+
+    return render_template(
+        "mails/email_otp.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        otp=otp,
+        logo=current_app.config["CANAILLE"]["LOGO"],
+        title=_("One-time password authentication on {website_name}").format(
+            website_name=current_app.config["CANAILLE"]["NAME"]
+        ),
+    )
+
+
+@bp.route("/mail/email_otp.txt")
+@permissions_needed("manage_oidc")
+def email_otp_txt(user):
+    base_url = url_for("core.account.index", _external=True)
+    otp = "000000"
+
+    return render_template(
+        "mails/email_otp.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        otp=otp,
+    )
