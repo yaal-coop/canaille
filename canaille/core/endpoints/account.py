@@ -24,6 +24,9 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
+from canaille.app.flask import expired_password_needed
+from canaille.app.flask import non_expired_passsword_needed
+from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
@@ -195,6 +198,7 @@ class RegistrationPayload(VerificationPayload):
 
 
 @bp.route("/invite", methods=["GET", "POST"])
+@non_expired_passsword_needed()
 @smtp_needed()
 @user_needed("manage_users")
 def user_invitation(user):
@@ -889,9 +893,10 @@ def photo(user, field):
         stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
     )
 
-
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])
+@expired_password_needed()
 def reset(user):
+    print("THERE"*5)
     form = PasswordResetForm(request.form)
     if user != current_user() or not user.has_expired_password():
         abort(403)
@@ -923,7 +928,17 @@ def reset(user):
             url_for("core.account.profile_edition", edited_user=user),
         )
         )
+    if request.form and form.validate():
+        Backend.instance.set_user_password(user, form.password.data)
+        login_user(user)
 
+        flash(_("Your password has been updated successfully"), "success")
+        return redirect(
+            session.pop(
+                "redirect-after-login",
+                url_for("core.account.profile_edition", edited_user=user),
+            )
+        )
     return render_template("reset-password.html", form=form, user=user)
 
 
