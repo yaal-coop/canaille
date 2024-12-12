@@ -1092,7 +1092,7 @@ msgid "Impersonate"
 msgstr ""
 
 #: canaille/core/templates/setup-2fa.html:23
-msgid "Set up Two-Factor Authentication."
+msgid "Set up multi-factor authentication."
 msgstr ""
 
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29

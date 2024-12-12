@@ -260,14 +260,14 @@ class User(Model):
 
     secret_token: str | None = None
     """Unique token generated for each user, used for
-    two-factor authentication."""
+    multi-factor authentication."""
 
     hotp_counter: int | None = None
     """HMAC-based One Time Password counter, used for
-    two-factor authentication."""
+    multi-factor authentication."""
 
     one_time_password: str | None = None
-    """One time password used for email or sms two-factor authentication."""
+    """One time password used for email or sms multi-factor authentication."""
 
     one_time_password_emission_date: datetime.datetime | None = None
     """A DateTime indicating when the user last emitted an email or sms one-time password."""

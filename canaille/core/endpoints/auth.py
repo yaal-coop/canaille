@@ -469,7 +469,7 @@ def redirect_to_verify_2fa(user, otp_method, request_ip, fail_redirect_url):
     if otp_method in ["HOTP", "TOTP"]:
         if not user.last_otp_login:
             flash(
-                "You have not enabled Two-Factor Authentication. Please enable it first to login.",
+                "You have not enabled multi-factor authentication. Please enable it first to login.",
                 "info",
             )
             return redirect(url_for("core.auth.setup_two_factor_auth"))
