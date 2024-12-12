@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-12 12:02+0100\n"
+"POT-Creation-Date: 2024-12-12 22:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -70,7 +70,7 @@ msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and :attr:"
 "`~canaille.core.configuration.CoreSettings."
 "ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:`~canaille.core.configuration."
-"CoreSettings.API_URL_HIBP` :issue:`179`"
+"CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:`179`"
 msgstr ""
 
 #: ../../CHANGES.rst:17 2cfcbdba2e9541dbab610bc724a2683a
@@ -138,8 +138,8 @@ msgstr ""
 
 #: ../../CHANGES.rst:35 efa1fc20329f42918fe6a530617cf102
 msgid ""
-":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and :"
-"attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` "
+":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH` and :"
+"attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH` "
 "configuration options :issue:`174`"
 msgstr ""
 
@@ -223,8 +223,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:82 17fbf739a68a4e59b5cc6da8befa1c6f
 msgid ""
-"`env_prefix` :meth:`~canaille.create_app` variable can select the "
-"environment var prefix."
+"`env_prefix` `create_app`` variable can select the environment var prefix."
 msgstr ""
 
 #: ../../CHANGES.rst:85 7bdc8f732053463b95353cdf5c994838
@@ -311,9 +310,7 @@ msgid "[0.0.45] - 2024-04-04"
 msgstr ""
 
 #: ../../CHANGES.rst:149 9690ab893eef4290a52b1137f24b9be8
-msgid ""
-"Internal indexation mechanism of :class:`~canaille.backends.memory.model."
-"MemoryModel`."
+msgid "Internal indexation mechanism of ``MemoryModel``."
 msgstr ""
 
 #: ../../CHANGES.rst:152 be79650410904879b53da2c62ac092d5
@@ -3452,7 +3449,7 @@ msgstr ""
 msgid "Configuration file"
 msgstr ""
 
-#: ../references/configuration.rst:12 0fc2b0bc764345caba3f9402376e279a
+#: ../references/configuration.rst:14 0fc2b0bc764345caba3f9402376e279a
 msgid ""
 "The configuration can be written in `toml` configuration file which path is "
 "passed in the :envvar:`CONFIG` environment variable."
@@ -3460,7 +3457,7 @@ msgstr ""
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:11
-#: ../references/configuration.rst:14 ../references/configuration.rst:96
+#: ../references/configuration.rst:16 ../references/configuration.rst:98
 #: ../tutorial/databases.rst:23 ../tutorial/databases.rst:37
 #: ../tutorial/databases.rst:138 3626de52eeca4eecbda8f1d47354a80c
 #: f59eab2f20b542f1af3ae7e6e4856266 c1e56e5ab5ba40228c68cd9eb470348d
@@ -3468,17 +3465,17 @@ msgstr ""
 msgid "config.toml"
 msgstr ""
 
-#: ../references/configuration.rst:26 4b63b3891e1c45788780ea1af554d1db
+#: ../references/configuration.rst:28 4b63b3891e1c45788780ea1af554d1db
 msgid ""
 "You can have a look at the :ref:`example file <references/configuration:"
 "Example file>` for inspiration."
 msgstr ""
 
-#: ../references/configuration.rst:29 8cbac0cd9e3e4bc3ad5fc60d82180568
+#: ../references/configuration.rst:31 8cbac0cd9e3e4bc3ad5fc60d82180568
 msgid "Environment variables"
 msgstr ""
 
-#: ../references/configuration.rst:31 b909831b5aed44a4b439b37701feabb7
+#: ../references/configuration.rst:33 b909831b5aed44a4b439b37701feabb7
 msgid ""
 "In addition, parameters that have not been set in the configuration file can "
 "be read from environment variables. The way environment variables are parsed "
@@ -3487,49 +3484,49 @@ msgid ""
 "values>`_."
 msgstr ""
 
-#: ../references/configuration.rst:36 fd22a354c18f4733b8b1962cfcbe2139
+#: ../references/configuration.rst:38 fd22a354c18f4733b8b1962cfcbe2139
 msgid ""
 "For environment vars, the separator between sections and variables is a "
 "double underscore: ``__``. For instance, the ``NAME`` var in the "
 "``CANAILLE`` section shown above is ``CANAILLE__NAME``."
 msgstr ""
 
-#: ../references/configuration.rst:40 f12f0cbb606e4627be2fa3b2a895f162
+#: ../references/configuration.rst:42 f12f0cbb606e4627be2fa3b2a895f162
 msgid "Environment file"
 msgstr ""
 
-#: ../references/configuration.rst:42 434c11ee0d6a4a118f9b8802d407d447
+#: ../references/configuration.rst:44 434c11ee0d6a4a118f9b8802d407d447
 msgid ""
 "Any environment variable can also be written in an environment file, which "
 "path should be passed in the ``ENV_FILE`` environment variable. For "
 "instance, set ``ENV_FILE=.env`` to load a ``.env`` file."
 msgstr ""
 
-#: ../references/configuration.rst:45 83d91b20c3204d09b61a4a6de8c84769
+#: ../references/configuration.rst:47 83d91b20c3204d09b61a4a6de8c84769
 msgid ".env"
 msgstr ""
 
-#: ../references/configuration.rst:63 8fc48610072c4e248c494befe2a4c8f6
+#: ../references/configuration.rst:65 8fc48610072c4e248c494befe2a4c8f6
 msgid "Configuration methods priority"
 msgstr ""
 
-#: ../references/configuration.rst:65 d3fdde7c8d9841e49e92bcba763e33d8
+#: ../references/configuration.rst:67 d3fdde7c8d9841e49e92bcba763e33d8
 msgid ""
 "If a same configuration option is defined by different ways, here is how "
 "Canaille will choose which one to use:"
 msgstr ""
 
-#: ../references/configuration.rst:67 b79bfecad485446b85a8866657222448
+#: ../references/configuration.rst:69 b79bfecad485446b85a8866657222448
 msgid ""
 "environment vars have priority over the environment file and the "
 "configuration file;"
 msgstr ""
 
-#: ../references/configuration.rst:68 63800f5a14d44e1fa3ed0266e19f5482
+#: ../references/configuration.rst:70 63800f5a14d44e1fa3ed0266e19f5482
 msgid "environment file will have priority over the configuration file."
 msgstr ""
 
-#: ../references/configuration.rst:71 e8e7a0f78d68479a9586036adf25e183
+#: ../references/configuration.rst:73 e8e7a0f78d68479a9586036adf25e183
 msgid "Parameters"
 msgstr ""
 
@@ -3884,9 +3881,9 @@ msgstr ""
 #: 622f83bdd580459cad5b3b328fb2de3b
 msgid ""
 "If OTP_METHOD is defined, then users will need to authenticate themselves "
-"using a one-time password (OTP) via an authenticator app. If set to :py:data:"
-"`TOTP`, the application will use time one-time passwords, If set to :py:data:"
-"`HOTP`, the application will use HMAC-based one-time passwords."
+"using a one-time password (OTP) via an authenticator app. If set to "
+"``TOTP``, the application will use time one-time passwords, If set to "
+"``HOTP``, the application will use HMAC-based one-time passwords."
 msgstr ""
 
 #: ../../docstring of
@@ -4415,11 +4412,11 @@ msgstr ""
 msgid "The attribute to identify an object in the User DN."
 msgstr ""
 
-#: ../references/configuration.rst:92 c4674c5a1b434e81944983c7ec2fb0f1
+#: ../references/configuration.rst:94 c4674c5a1b434e81944983c7ec2fb0f1
 msgid "Example file"
 msgstr ""
 
-#: ../references/configuration.rst:94 87c3dcb2ef5a4f649ec0fa9005449a79
+#: ../references/configuration.rst:96 87c3dcb2ef5a4f649ec0fa9005449a79
 msgid "Here is a configuration file example:"
 msgstr ""
 
@@ -4476,8 +4473,7 @@ msgstr ""
 #: 112d9fd0a032418682875fe5f5685fc8
 msgid ""
 "A unique identifier for a SCIM resource as defined by the service provider. "
-"Id will be :py:data:`None` until the :meth:`~canaille.backends.models."
-"BackendModel.save` method is called."
+"Id will be :data:`None` until the ``Backend.save`` method is called."
 msgstr ""
 
 #: ../../docstring of canaille.backends.models.Model.id:5
@@ -5394,6 +5390,10 @@ msgstr ""
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Token:1 a20eaa516c854599a62222141346d76b
 msgid "OpenID Connect token definition."
+msgstr ""
+
+#: ../references/templates.rst:2 25d974aba30140f4ad6e3445c3d71f50
+msgid "Templates"
 msgstr ""
 
 #: ../tutorial/databases.rst:4 2934007ee99c4b5096855dd9bf47208b
