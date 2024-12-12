@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-12 09:58+0100\n"
+"POT-Creation-Date: 2024-12-12 12:02+0100\n"
 "PO-Revision-Date: 2024-12-08 11:22+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1180,7 +1180,7 @@ msgid "Impersonate"
 msgstr "Prendre l'identité"
 
 #: canaille/core/templates/setup-2fa.html:23
-msgid "Set up Two-Factor Authentication."
+msgid "Set up multi-factor authentication."
 msgstr ""
 
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29
