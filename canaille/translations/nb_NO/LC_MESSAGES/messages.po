@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-08 11:58+0100\n"
+"POT-Creation-Date: 2024-12-12 09:54+0100\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: canaille/app/flask.py:53
+#: canaille/app/flask.py:55
 msgid "No SMTP server has been configured"
 msgstr "Ingen SMTP-tjener er satt opp"
 
@@ -90,8 +90,8 @@ msgstr ""
 msgid "John Doe"
 msgstr "Ola Nordmann"
 
-#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:165
-#: canaille/core/endpoints/forms.py:426
+#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:166
+#: canaille/core/endpoints/forms.py:427
 msgid "jdoe"
 msgstr "onord"
 
@@ -152,6 +152,11 @@ msgstr "Test per e-post fra {website_name}"
 msgid "Compromised password check failure on {website_name}"
 msgstr "Passord tilbakestilt på {website_name}"
 
+#: canaille/core/endpoints/admin.py:347 canaille/core/mails.py:258
+#, fuzzy
+msgid "One-time password authentication on {website_name}"
+msgstr "Oppsett av passord på {website_name}"
+
 #: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
@@ -179,13 +184,13 @@ msgstr "Invitasjonslenken som tok deg hit har utløpt."
 msgid "Your account has already been created."
 msgstr "Kontoen din har allerede blitt opprettet."
 
-#: canaille/core/endpoints/account.py:279
+#: canaille/core/endpoints/account.py:280
 #, fuzzy
 msgid "You are already logged in, you cannot create an account."
 msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 
-#: canaille/core/endpoints/account.py:300 canaille/core/endpoints/forms.py:316
-#: canaille/core/endpoints/forms.py:444 canaille/core/templates/groups.html:5
+#: canaille/core/endpoints/account.py:301 canaille/core/endpoints/forms.py:317
+#: canaille/core/endpoints/forms.py:445 canaille/core/templates/groups.html:5
 #: canaille/core/templates/groups.html:23
 #: canaille/core/templates/partial/group-members.html:15
 #: canaille/core/templates/partial/users.html:18
@@ -193,105 +198,105 @@ msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 msgid "Groups"
 msgstr "Grupper"
 
-#: canaille/core/endpoints/account.py:338
-#: canaille/core/endpoints/account.py:431
+#: canaille/core/endpoints/account.py:339
+#: canaille/core/endpoints/account.py:432
 #, fuzzy
 msgid "User account creation failed."
 msgstr "Kunne ikke opprette brukerkonto."
 
-#: canaille/core/endpoints/account.py:349
+#: canaille/core/endpoints/account.py:350
 #, fuzzy
 msgid "Your account has been created successfully."
 msgstr "Kontoen din ble opprettet."
 
-#: canaille/core/endpoints/account.py:364
-#: canaille/core/endpoints/account.py:386
+#: canaille/core/endpoints/account.py:365
+#: canaille/core/endpoints/account.py:387
 #, fuzzy
 #| msgid "The invitation link that brought you here was invalid."
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/account.py:371
+#: canaille/core/endpoints/account.py:372
 #, fuzzy
 #| msgid "The invitation link that brought you here has expired."
 msgid "The email confirmation link that brought you here has expired."
 msgstr "Invitasjonslenken som tok deg hit har utløpt."
 
-#: canaille/core/endpoints/account.py:378
+#: canaille/core/endpoints/account.py:379
 msgid "The invitation link that brought you here was invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/account.py:393
+#: canaille/core/endpoints/account.py:394
 msgid "This address email have already been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:400
+#: canaille/core/endpoints/account.py:401
 msgid "This address email is already associated with another account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:407
+#: canaille/core/endpoints/account.py:408
 #, fuzzy
 msgid "Your email address have been confirmed."
 msgstr "Din e-postadresse."
 
-#: canaille/core/endpoints/account.py:441
+#: canaille/core/endpoints/account.py:442
 #, fuzzy
 msgid "User account creation succeed."
 msgstr "Brukerkonto opprettet."
 
-#: canaille/core/endpoints/account.py:617
-#: canaille/core/endpoints/account.py:786
+#: canaille/core/endpoints/account.py:618
+#: canaille/core/endpoints/account.py:804
 #, fuzzy
 msgid "Profile edition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/endpoints/account.py:627
-#: canaille/core/endpoints/account.py:804
+#: canaille/core/endpoints/account.py:628
+#: canaille/core/endpoints/account.py:822
 #, fuzzy
 #| msgid "Profile updated successfuly."
 msgid "Profile updated successfully."
 msgstr "Profil redigert."
 
-#: canaille/core/endpoints/account.py:635
+#: canaille/core/endpoints/account.py:636
 #, fuzzy
 msgid "Email addition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/endpoints/account.py:640
+#: canaille/core/endpoints/account.py:641
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:647
+#: canaille/core/endpoints/account.py:648
 #, fuzzy
 msgid "Could not send the verification email"
 msgstr "Kunne ikke sende e-post for oppsett av passord"
 
-#: canaille/core/endpoints/account.py:657
+#: canaille/core/endpoints/account.py:658
 #, fuzzy
 msgid "Email deletion failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/endpoints/account.py:660
+#: canaille/core/endpoints/account.py:661
 #, fuzzy
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The email have been successfully deleted."
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/core/endpoints/account.py:697
+#: canaille/core/endpoints/account.py:698
 #, fuzzy
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:159
+#: canaille/core/endpoints/account.py:705 canaille/core/endpoints/auth.py:183
 #, fuzzy
 msgid "Could not send the password initialization email"
 msgstr "Kunne ikke sende e-post for oppsett av passord"
 
-#: canaille/core/endpoints/account.py:715
+#: canaille/core/endpoints/account.py:716
 #, fuzzy
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
@@ -300,33 +305,38 @@ msgstr ""
 "Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
 "bør være mottatt i løpet av et par minutter."
 
-#: canaille/core/endpoints/account.py:722
+#: canaille/core/endpoints/account.py:723
 msgid "Could not send the password reset email"
 msgstr "Kunne ikke sende e-post for tilbakestilling av passord"
 
-#: canaille/core/endpoints/account.py:738
+#: canaille/core/endpoints/account.py:739
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been locked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/endpoints/account.py:749
+#: canaille/core/endpoints/account.py:750
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been unlocked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/endpoints/account.py:824
+#: canaille/core/endpoints/account.py:763
+msgid "One-time password authentication has been reset"
+msgstr ""
+
+#: canaille/core/endpoints/account.py:842
 #, fuzzy, python-format
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The user %(user)s has been successfully deleted"
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/core/endpoints/account.py:841
+#: canaille/core/endpoints/account.py:859
 msgid "Locked users cannot be impersonated."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:845 canaille/core/endpoints/auth.py:112
+#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:134
+#: canaille/core/endpoints/auth.py:367
 #, fuzzy, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Velkommen %(user)s"
@@ -337,10 +347,10 @@ msgstr "Velkommen %(user)s"
 msgid "Email"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:98
-#: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
-#: canaille/core/endpoints/forms.py:412 canaille/core/endpoints/forms.py:438
-#: canaille/core/endpoints/forms.py:462 canaille/core/endpoints/forms.py:478
+#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:99
+#: canaille/core/endpoints/forms.py:122 canaille/core/endpoints/forms.py:211
+#: canaille/core/endpoints/forms.py:413 canaille/core/endpoints/forms.py:439
+#: canaille/core/endpoints/forms.py:463 canaille/core/endpoints/forms.py:479
 #, fuzzy
 #| msgid "jane@doe.com"
 msgid "jane.doe@example.com"
@@ -366,39 +376,41 @@ msgstr "Invitasjon på {website_name}"
 msgid "Email confirmation on {website_name}"
 msgstr "Invitasjon på {website_name}"
 
-#: canaille/core/endpoints/auth.py:57 canaille/core/endpoints/auth.py:89
-#: canaille/core/endpoints/auth.py:101
+#: canaille/core/endpoints/auth.py:64 canaille/core/endpoints/auth.py:96
+#: canaille/core/endpoints/auth.py:108
 #, fuzzy
 msgid "Login failed, please check your information"
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
-#: canaille/core/endpoints/auth.py:72
+#: canaille/core/endpoints/auth.py:79 canaille/core/endpoints/auth.py:291
+#: canaille/core/endpoints/auth.py:320 canaille/core/endpoints/auth.py:399
+#: canaille/core/endpoints/auth.py:439
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:127
+#: canaille/core/endpoints/auth.py:151
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Du har blitt frakoblet. På gjensyn %(user)s"
 
-#: canaille/core/endpoints/auth.py:152
+#: canaille/core/endpoints/auth.py:176
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/core/endpoints/auth.py:175
+#: canaille/core/endpoints/auth.py:199
 msgid "Could not send the password reset link."
 msgstr "Kunne ikke sende lenke for passordgjenoppretting."
 
-#: canaille/core/endpoints/auth.py:179
+#: canaille/core/endpoints/auth.py:203
 #, fuzzy
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
 msgstr "Lenke for tilbakestilling av passord sendt til din e-postadresse."
 
-#: canaille/core/endpoints/auth.py:191
+#: canaille/core/endpoints/auth.py:215
 #, fuzzy, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -407,87 +419,87 @@ msgstr ""
 "Brukeren «%(user)s» har ikke tilgang til å oppdatere passordet sitt. Kan "
 "ikke sende e-post om tilbakestilling av passord."
 
-#: canaille/core/endpoints/auth.py:213
+#: canaille/core/endpoints/auth.py:237
 #, fuzzy
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "Kunne ikke sende e-post for gjenoppretting av passord."
 
-#: canaille/core/endpoints/auth.py:236
+#: canaille/core/endpoints/auth.py:260
 msgid "The password reset link that brought you here was invalid."
 msgstr "Passordtilbakestillingslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/auth.py:245
+#: canaille/core/endpoints/auth.py:269
 #, fuzzy
 msgid "Your password has been updated successfully"
 msgstr "Passordet ditt er oppdatert."
 
-#: canaille/core/endpoints/forms.py:32
+#: canaille/core/endpoints/forms.py:33
 #, fuzzy
 #| msgid "The login '{login}' already exists"
 msgid "The user name '{user_name}' already exists"
 msgstr "Innloggingen «{login}» finnes allerede"
 
-#: canaille/core/endpoints/forms.py:41
+#: canaille/core/endpoints/forms.py:42
 #, fuzzy
 #| msgid "The email '{email}' already exists"
 msgid "The email '{email}' is already used"
 msgstr "E-postadressen «{email}» finnes allerede"
 
-#: canaille/core/endpoints/forms.py:48
+#: canaille/core/endpoints/forms.py:49
 msgid "The group '{group}' already exists"
 msgstr "Gruppen «{group}» finnes allerede"
 
-#: canaille/core/endpoints/forms.py:57
+#: canaille/core/endpoints/forms.py:58
 msgid "The login '{login}' does not exist"
 msgstr "Innloggingen «{login}» finnes ikke"
 
-#: canaille/core/endpoints/forms.py:64
+#: canaille/core/endpoints/forms.py:65
 #, fuzzy
 #| msgid "The page you are looking for does not exist"
 msgid "The user you are trying to remove does not exist."
 msgstr "Siden du leter etter finnes ikke"
 
-#: canaille/core/endpoints/forms.py:69
+#: canaille/core/endpoints/forms.py:70
 msgid "The user '{user}' has already been removed from the group '{group}'"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:87
+#: canaille/core/endpoints/forms.py:88
 msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:95 canaille/core/endpoints/forms.py:118
+#: canaille/core/endpoints/forms.py:96 canaille/core/endpoints/forms.py:119
 #: canaille/core/templates/partial/group-members.html:9
 #: canaille/core/templates/partial/users.html:9
 #, fuzzy
 msgid "Login"
 msgstr "Logg inn"
 
-#: canaille/core/endpoints/forms.py:108 canaille/core/endpoints/forms.py:130
-#: canaille/core/endpoints/forms.py:264
+#: canaille/core/endpoints/forms.py:109 canaille/core/endpoints/forms.py:131
+#: canaille/core/endpoints/forms.py:265
 #: canaille/core/templates/profile_settings.html:63
 msgid "Password"
 msgstr "Passord"
 
-#: canaille/core/endpoints/forms.py:137 canaille/core/endpoints/forms.py:276
+#: canaille/core/endpoints/forms.py:138 canaille/core/endpoints/forms.py:277
 msgid "Password confirmation"
 msgstr "Passordbekreftelse"
 
-#: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:279
+#: canaille/core/endpoints/forms.py:141 canaille/core/endpoints/forms.py:280
 msgid "Password and confirmation do not match."
 msgstr "Passordet og bekreftelsen samsvarer ikke."
 
-#: canaille/core/endpoints/forms.py:159
+#: canaille/core/endpoints/forms.py:160
 msgid "Automatic"
 msgstr "Automatisk"
 
-#: canaille/core/endpoints/forms.py:164
+#: canaille/core/endpoints/forms.py:165
 msgid "Username"
 msgstr "Brukernavn"
 
-#: canaille/core/endpoints/forms.py:168 canaille/core/endpoints/forms.py:368
-#: canaille/core/endpoints/forms.py:382
+#: canaille/core/endpoints/forms.py:169 canaille/core/endpoints/forms.py:369
+#: canaille/core/endpoints/forms.py:383
 #: canaille/core/templates/partial/group-members.html:12
 #: canaille/core/templates/partial/groups.html:6
 #: canaille/core/templates/partial/users.html:12
@@ -496,183 +508,196 @@ msgstr "Brukernavn"
 msgid "Name"
 msgstr "Navn"
 
-#: canaille/core/endpoints/forms.py:170
+#: canaille/core/endpoints/forms.py:171
 msgid "Title"
 msgstr "Tittel"
 
-#: canaille/core/endpoints/forms.py:170
+#: canaille/core/endpoints/forms.py:171
 msgid "Vice president"
 msgstr "Visepresident"
 
-#: canaille/core/endpoints/forms.py:173
+#: canaille/core/endpoints/forms.py:174
 msgid "Given name"
 msgstr "Fornavn"
 
-#: canaille/core/endpoints/forms.py:175
+#: canaille/core/endpoints/forms.py:176
 msgid "John"
 msgstr "Ola"
 
-#: canaille/core/endpoints/forms.py:181
+#: canaille/core/endpoints/forms.py:182
 msgid "Family Name"
 msgstr "Etternavn"
 
-#: canaille/core/endpoints/forms.py:184
+#: canaille/core/endpoints/forms.py:185
 msgid "Doe"
 msgstr "Nordmann"
 
-#: canaille/core/endpoints/forms.py:190
+#: canaille/core/endpoints/forms.py:191
 msgid "Display Name"
 msgstr "Visningsnavn"
 
-#: canaille/core/endpoints/forms.py:193
+#: canaille/core/endpoints/forms.py:194
 msgid "Johnny"
 msgstr "Ola"
 
-#: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:468
+#: canaille/core/endpoints/forms.py:201 canaille/core/endpoints/forms.py:469
 #: canaille/core/templates/profile_edit.html:176
 #, fuzzy
 #| msgid "Email address"
 msgid "Email addresses"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/forms.py:206 canaille/core/endpoints/forms.py:458
+#: canaille/core/endpoints/forms.py:207 canaille/core/endpoints/forms.py:459
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:220
+#: canaille/core/endpoints/forms.py:221
 #, fuzzy
 #| msgid "Phone number"
 msgid "Phone numbers"
 msgstr "Telefonnummer"
 
-#: canaille/core/endpoints/forms.py:221
+#: canaille/core/endpoints/forms.py:222
 msgid "555-000-555"
 msgstr "87 65 43 21"
 
-#: canaille/core/endpoints/forms.py:228
+#: canaille/core/endpoints/forms.py:229
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/core/endpoints/forms.py:230
+#: canaille/core/endpoints/forms.py:231
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:234
+#: canaille/core/endpoints/forms.py:235
 #, fuzzy
 msgid "Street"
 msgstr "Hemmelighet"
 
-#: canaille/core/endpoints/forms.py:236
+#: canaille/core/endpoints/forms.py:237
 msgid "132, Foobar Street"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:240
+#: canaille/core/endpoints/forms.py:241
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: canaille/core/endpoints/forms.py:246
+#: canaille/core/endpoints/forms.py:247
 msgid "Locality"
 msgstr "Kommune"
 
-#: canaille/core/endpoints/forms.py:248
+#: canaille/core/endpoints/forms.py:249
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:252
+#: canaille/core/endpoints/forms.py:253
 msgid "Region"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:254
+#: canaille/core/endpoints/forms.py:255
 msgid "North Pole"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:258
+#: canaille/core/endpoints/forms.py:259
 msgid "Photo"
 msgstr "Bilde"
 
-#: canaille/core/endpoints/forms.py:262
+#: canaille/core/endpoints/forms.py:263
 #: canaille/core/templates/profile_add.html:56
 #: canaille/core/templates/profile_edit.html:64
 msgid "Delete the photo"
 msgstr "Slett bildet"
 
-#: canaille/core/endpoints/forms.py:287
+#: canaille/core/endpoints/forms.py:288
 #, fuzzy
 #| msgid "Username"
 msgid "User number"
 msgstr "Brukernavn"
 
-#: canaille/core/endpoints/forms.py:289 canaille/core/endpoints/forms.py:295
+#: canaille/core/endpoints/forms.py:290 canaille/core/endpoints/forms.py:296
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:293
+#: canaille/core/endpoints/forms.py:294
 #, fuzzy
 msgid "Department"
 msgstr "Telefonnummer"
 
-#: canaille/core/endpoints/forms.py:299
+#: canaille/core/endpoints/forms.py:300
 #, fuzzy
 #| msgid "Invitation"
 msgid "Organization"
 msgstr "Invitasjon"
 
-#: canaille/core/endpoints/forms.py:301
+#: canaille/core/endpoints/forms.py:302
 msgid "Cogip LTD."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:305
+#: canaille/core/endpoints/forms.py:306
 msgid "Website"
 msgstr "Nettside"
 
-#: canaille/core/endpoints/forms.py:307
+#: canaille/core/endpoints/forms.py:308
 msgid "https://mywebsite.tld"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:312
+#: canaille/core/endpoints/forms.py:313
 msgid "Preferred language"
 msgstr "Foretrukket språk"
 
-#: canaille/core/endpoints/forms.py:322
+#: canaille/core/endpoints/forms.py:323
 #, fuzzy
 msgid "users, admins …"
 msgstr "brukere, administratorer …"
 
-#: canaille/core/endpoints/forms.py:347
+#: canaille/core/endpoints/forms.py:348
 #, fuzzy
 #| msgid "Account creation"
 msgid "Account expiration"
 msgstr "Kontoopprettelse"
 
-#: canaille/core/endpoints/forms.py:371
+#: canaille/core/endpoints/forms.py:372
 msgid "group"
 msgstr "gruppe"
 
-#: canaille/core/endpoints/forms.py:375 canaille/core/endpoints/forms.py:392
+#: canaille/core/endpoints/forms.py:376 canaille/core/endpoints/forms.py:393
 #: canaille/core/templates/partial/groups.html:7
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: canaille/core/endpoints/forms.py:406 canaille/core/endpoints/forms.py:431
+#: canaille/core/endpoints/forms.py:407 canaille/core/endpoints/forms.py:432
 msgid "Email address"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/forms.py:425
+#: canaille/core/endpoints/forms.py:426
 #, fuzzy
 #| msgid "Username"
 msgid "User name"
 msgstr "Brukernavn"
 
-#: canaille/core/endpoints/forms.py:429
+#: canaille/core/endpoints/forms.py:430
 msgid "Username editable by the invitee"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:471
+#: canaille/core/endpoints/forms.py:472
 #, fuzzy
 #| msgid "Email address"
 msgid "New email address"
 msgstr "E-postadresse"
+
+#: canaille/core/endpoints/forms.py:488
+#: canaille/core/templates/mails/email_otp.txt:5
+#, fuzzy
+#| msgid "Reset password"
+msgid "One-time password"
+msgstr "Tilbakestill passord"
+
+#: canaille/core/endpoints/forms.py:494
+#, fuzzy
+#| msgid "1234"
+msgid "123456"
+msgstr "1234"
 
 #: canaille/core/endpoints/groups.py:40
 #, fuzzy
@@ -834,7 +859,7 @@ msgstr "Opprett gruppe"
 
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
-#: canaille/core/templates/profile_settings.html:166
+#: canaille/core/templates/profile_settings.html:172
 #: canaille/oidc/templates/client_edit.html:81
 msgid "Edit"
 msgstr "Rediger"
@@ -958,10 +983,13 @@ msgstr ""
 
 #: canaille/core/templates/login.html:45
 #: canaille/core/templates/mails/registration.txt:5
+#: canaille/core/templates/setup-2fa.html:53
 msgid "Continue"
 msgstr "Fortsett"
 
 #: canaille/core/templates/password.html:21
+#: canaille/core/templates/setup-2fa.html:21
+#: canaille/core/templates/verify-2fa.html:21
 #, python-format
 msgid "Sign in as %(username)s"
 msgstr "Logg inn som %(username)s"
@@ -971,6 +999,7 @@ msgid "Please enter your password for this account."
 msgstr ""
 
 #: canaille/core/templates/password.html:39
+#: canaille/core/templates/verify-2fa.html:39
 #, python-format
 msgid "I am not %(username)s"
 msgstr "Jeg er ikke %(username)s"
@@ -1053,6 +1082,7 @@ msgid "Send a verification email to validate this address."
 msgstr ""
 
 #: canaille/core/templates/profile_edit.html:221
+#: canaille/core/templates/verify-2fa.html:40
 msgid "Verify"
 msgstr ""
 
@@ -1139,28 +1169,41 @@ msgstr "Denne brukeren kan ikke redigere dette feltet"
 msgid "The user won't be able to connect until their account is unlocked."
 msgstr ""
 
+#: canaille/core/templates/modals/reset-otp.html:27
 #: canaille/core/templates/profile_settings.html:145
+msgid "Reset one-time password authentication"
+msgstr ""
+
+#: canaille/core/templates/profile_settings.html:151
 #, fuzzy
 #| msgid "Delete my account"
 msgid "Lock the account"
 msgstr "Slett kontoen min"
 
-#: canaille/core/templates/profile_settings.html:152
+#: canaille/core/templates/profile_settings.html:158
 msgid "Delete the user"
 msgstr "Slett brukeren"
 
-#: canaille/core/templates/profile_settings.html:154
+#: canaille/core/templates/profile_settings.html:160
 msgid "Delete my account"
 msgstr "Slett kontoen min"
 
-#: canaille/core/templates/profile_settings.html:161
+#: canaille/core/templates/profile_settings.html:167
 msgid "Impersonate"
+msgstr ""
+
+#: canaille/core/templates/setup-2fa.html:23
+msgid "Set up Two-Factor Authentication."
 msgstr ""
 
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29
 #: canaille/templates/base.html:51
 msgid "Users"
 msgstr "Brukere"
+
+#: canaille/core/templates/verify-2fa.html:23
+msgid "One-time password authentication."
+msgstr ""
 
 #: canaille/core/templates/mails/admin.html:5
 #: canaille/core/templates/mails/admin.html:11
@@ -1280,6 +1323,10 @@ msgstr "Invitasjon"
 msgid "Compromised password check failure"
 msgstr ""
 
+#: canaille/core/templates/mails/admin.html:171
+msgid "Email one-time password"
+msgstr ""
+
 #: canaille/core/templates/mails/compromised_password_check_failure.html:28
 #, python-format
 msgid ""
@@ -1391,6 +1438,32 @@ msgstr ""
 #| msgid "Invitation link"
 msgid "Verification link"
 msgstr "Invitasjonslenke"
+
+#: canaille/core/templates/mails/email_otp.html:19
+#: canaille/core/templates/mails/email_otp.txt:1
+msgid "One-time password authentication"
+msgstr ""
+
+#: canaille/core/templates/mails/email_otp.html:27
+#, python-format
+msgid ""
+"Someone, probably you, asked for a one-time password at %(site_name)s. If "
+"you did not ask for this email, please ignore it. If you did, please enter "
+"the one-time password below at %(site_name)s to complete your authentication."
+msgstr ""
+
+#: canaille/core/templates/mails/email_otp.html:30
+#, fuzzy
+#| msgid "Forgotten password"
+msgid "Your one-time password"
+msgstr "Glemt passord"
+
+#: canaille/core/templates/mails/email_otp.txt:3
+#, python-format
+msgid ""
+"Please enter the one-time password below at %(site_name)s to complete your "
+"authentication."
+msgstr ""
 
 #: canaille/core/templates/mails/firstlogin.html:27
 #, python-format
@@ -1504,6 +1577,7 @@ msgstr ""
 #: canaille/core/templates/modals/delete-group.html:22
 #: canaille/core/templates/modals/lock-account.html:26
 #: canaille/core/templates/modals/remove-group-member.html:22
+#: canaille/core/templates/modals/reset-otp.html:26
 #: canaille/oidc/templates/modals/delete-client.html:20
 #: canaille/oidc/templates/modals/revoke-token.html:20
 msgid "Cancel"
@@ -1568,6 +1642,23 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+#: canaille/core/templates/modals/reset-otp.html:9
+msgid "One-time password authentication reset"
+msgstr ""
+
+#: canaille/core/templates/modals/reset-otp.html:14
+#, python-format
+msgid ""
+"Are you sure you want to reset one-time password (OTP) authentication for "
+"%(user_name)s ? The user will have to perform OTP setup again at next login."
+msgstr ""
+
+#: canaille/core/templates/modals/reset-otp.html:18
+msgid ""
+"Are you sure you want to reset one-time password (OTP) authentication? You "
+"will have to perform OTP setup again at next login."
+msgstr ""
+
 #: canaille/core/templates/partial/group-members.html:16
 msgid "Actions"
 msgstr ""
@@ -1613,6 +1704,12 @@ msgstr "Tilgangen har blitt tilbakekalt"
 #: canaille/core/templates/partial/groups.html:8
 msgid "Number of members"
 msgstr "Antall medlemmer"
+
+#: canaille/core/templates/sms/sms_otp.txt:1
+#, python-format
+msgid ""
+"Here is the one-time password you requested for %(website_name)s: %(otp)s"
+msgstr ""
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
