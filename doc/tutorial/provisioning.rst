@@ -1,7 +1,7 @@
 Provisioning
 ############
 
-Canaille partially implemnet the :rfc:`SCIM <7642>` provisioning protocol at the ``/scim/v2`` endpoint.
+Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol at the ``/scim/v2`` endpoint.
 
 At the moment, only the server part is implemented.
 It allows client applications to manage user profiles directly in Canaille.
@@ -9,6 +9,14 @@ It allows client applications to manage user profiles directly in Canaille.
 To allow clients to access the SCIM API, the client must have the ``client_credentials`` grant type configured.
 This allows clients to ask an authentication token on their own behalf and use this token to perform queries.
 Currently, user tokens are not supported.
+
+Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled.
+
+.. code-block:: toml
+
+   ...
+   [CANAILLE_SCIM]
+   ENABLE_SERVER = true
 
 .. todo::
 
