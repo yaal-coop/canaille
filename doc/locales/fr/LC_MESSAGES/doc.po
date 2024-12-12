@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 12:02+0100\n"
-"PO-Revision-Date: 2024-12-12 11:05+0000\n"
+"PO-Revision-Date: 2024-12-12 21:03+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -5674,9 +5674,6 @@ msgstr "Vérifie si un mot de passe a été définie pour l'utilisateur."
 
 #: ../../docstring of canaille.core.models.User.hotp_counter:1
 #: 05380b82ddda46bfa9678288cebf85a7
-#, fuzzy
-#| msgid ""
-#| "HMAC-based One Time Password counter, used for two-factor authentication."
 msgid ""
 "HMAC-based One Time Password counter, used for multi-factor authentication."
 msgstr ""
@@ -5708,23 +5705,20 @@ msgstr "Si le compte utilisateur a été verrouillé ou a expiré."
 
 #: ../../docstring of canaille.core.models.User.one_time_password:1
 #: 4f6ac05bac3845ea8325c2b34e8c0824
-#, fuzzy
-#| msgid ""
-#| "HMAC-based One Time Password counter, used for two-factor authentication."
 msgid "One time password used for email or sms multi-factor authentication."
 msgstr ""
-"Compteur de mots de passes à usage unique HMAC. Utilisé pour "
-"l'authentification multi-facteurs."
+"Mot de passe à usage unique utilisé pour l'authentification multi-facteurs "
+"par email ou SMS."
 
 #: ../../docstring of
 #: canaille.core.models.User.one_time_password_emission_date:1
 #: cc1503678fc046f9bb759040e7e561e1
-#, fuzzy
-#| msgid "A DateTime indicating when the resource was locked."
 msgid ""
 "A DateTime indicating when the user last emitted an email or sms one-time "
 "password."
-msgstr "Une date (DateTime) indiquant quand la ressource a été verrouillée."
+msgstr ""
+"Une date (DateTime) indiquant la dernière émission de mot de passe à usage "
+"unique par SMS ou email."
 
 #: ../../docstring of canaille.core.models.User.organization:1
 #: 39b14adbf8ad42b39c2cdd9fb0fcf96c
@@ -5974,14 +5968,11 @@ msgstr "Le composant État ou région."
 
 #: ../../docstring of canaille.core.models.User.secret_token:1
 #: 3764681cd7844fdaa69cc2ab072ff732
-#, fuzzy
-#| msgid ""
-#| "HMAC-based One Time Password counter, used for two-factor authentication."
 msgid ""
 "Unique token generated for each user, used for multi-factor authentication."
 msgstr ""
-"Compteur de mots de passes à usage unique HMAC. Utilisé pour "
-"l'authentification multi-facteurs."
+"Jeton unique généré pour chaque utilisateur, utilisé pour l'authentification "
+"multi-facteurs."
 
 #: ../../docstring of canaille.core.models.User.street:1
 #: e15de46ed1a745e580399d0bf40e96b8
@@ -6641,10 +6632,8 @@ msgid ""
 msgstr ""
 
 #: ../tutorial/databases.rst:125 0194f8cb96554ed9a209784cd1a5a10e
-#, fuzzy
-#| msgid "config.toml"
 msgid "otp-config.ldif"
-msgstr "config.toml"
+msgstr "otp-config.ldif"
 
 #: ../tutorial/databases.rst:129 4070700e524f481ba82662576453c6b3
 msgid "You can adapt and load this configuration file with:"
