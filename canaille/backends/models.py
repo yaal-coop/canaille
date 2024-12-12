@@ -29,8 +29,8 @@ class Model:
 
     id: str | None = None
     """A unique identifier for a SCIM resource as defined by the service
-    provider. Id will be :py:data:`None` until the
-    :meth:`~canaille.backends.models.BackendModel.save` method is called.
+    provider. Id will be :data:`None` until the
+    ``Backend.save`` method is called.
 
     Each representation of the resource MUST include a non-empty "id"
     value.  This identifier MUST be unique across the SCIM service

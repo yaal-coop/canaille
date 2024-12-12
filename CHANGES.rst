@@ -12,7 +12,7 @@ Added
 - Password compromission check :issue:`179`
 - :attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
-  :attr:`~canaille.core.configuration.CoreSettings.API_URL_HIBP`
+  :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL`
   :issue:`179`
 - Implement OIDC client_credentials flow. :issue:`207`
 - Button in the client admin page to create client tokens.
@@ -34,8 +34,8 @@ Fixed
 
 Added
 ^^^^^
-- :attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and
-  :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` configuration options :issue:`174`
+- :attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH` and
+  :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH` configuration options :issue:`174`
 - Password strength visual indicator. :issue:`174`
 - Security events logs. :issue:`177`
 - Support for Python 3.13. :pr:`186`
@@ -81,7 +81,7 @@ Fixed
 
 Added
 ^^^^^
-- `env_prefix` :meth:`~canaille.create_app` variable can select the environment var prefix.
+- `env_prefix` `create_app`` variable can select the environment var prefix.
 
 [0.0.52] - 2024-04-22
 ---------------------
@@ -148,7 +148,7 @@ Fixed
 
 Changed
 ^^^^^^^
-- Internal indexation mechanism of :class:`~canaille.backends.memory.model.MemoryModel`.
+- Internal indexation mechanism of ``MemoryModel``.
 
 [0.0.44] - 2024-03-29
 ---------------------

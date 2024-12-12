@@ -85,7 +85,21 @@ def setup_flask_converters(app):
         app.url_map.converters[model_name.lower()] = model_converter(model_class)
 
 
-def create_app(config=None, validate=True, backend=None, env_file=None, env_prefix=""):
+def create_app(
+    config: dict = None,
+    validate: bool = True,
+    backend=None,
+    env_file: str = None,
+    env_prefix: str = "",
+):
+    """Application entry point.
+
+    :param config: A configuration dict. This will take priority over any other configuration method.
+    :param validate: Whether to validate or not the configuration.
+    :param backend: An optional backend to force. If unset backend will be initialized according to the configuration.
+    :param env_file: The path to an environment var file in which configuration can be loaded.
+    :param env_prefix: The prefix to configuration environment vars.
+    """
     from .app.configuration import setup_config
     from .app.features import setup_features
     from .app.i18n import setup_i18n

@@ -270,8 +270,8 @@ class CoreSettings(BaseModel):
     OTP_METHOD: str = None
     """If OTP_METHOD is defined, then users will need to authenticate themselves
     using a one-time password (OTP) via an authenticator app.
-    If set to :py:data:`TOTP`, the application will use time one-time passwords,
-    If set to :py:data:`HOTP`, the application will use HMAC-based one-time passwords."""
+    If set to ``TOTP``, the application will use time one-time passwords,
+    If set to ``HOTP``, the application will use HMAC-based one-time passwords."""
 
     EMAIL_OTP: bool = False
     """If :py:data:`True`, then users will need to authenticate themselves
