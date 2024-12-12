@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-11 17:35+0100\n"
-"PO-Revision-Date: 2024-12-12 04:24+0000\n"
+"PO-Revision-Date: 2024-12-12 08:58+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -3281,6 +3281,26 @@ msgid ""
 "SMS_OTP>` is enabled, then users will need to authenticate themselves via a "
 "one-time password sent to their primary phone number."
 msgstr ""
+"Si la fonctionnalité de :attr:`mots de passe à usage unique <canaille.core."
+"configuration.CoreSettings.OTP_METHOD>` est activée, alors les utilisateurs "
+"devront s'authentifier avec un mot de passe temporaire généré par une "
+"application d'authentification.\n"
+"Deux méthodes sont supportées : \"TOTP\" pour les mots de passes temporaires "
+"basés sur temps, et \"HOTP\" pour les mots de passes temporaires basés sur "
+"HMAC.\n"
+"En cas de perte de jeton, l'authentification TOTP/HOTP peut être "
+"réinitialisée par les utilisateurs avec la :attr:`permission de gestion des "
+"utilisateurs <canaille.core.configuration.Permission.MANAGE_USERS>`.\n"
+"Si un :class:`serveur mail <canaille.core.configuration.SMTPSettings>` est "
+"configuré et que la fonctionnalité de :attr:`mots de passe temporaires par "
+"mail <canaille.core.configuration.CoreSettings.EMAIL_OTP>` est activée, "
+"alors les utilisateurs devront pour s'authentifier entrer un mot de passe "
+"temporaire envoyé à leur adresse email principale.\n"
+"Si un :class:`serveur SMPP <canaille.core.configuration.SMPPSettings>` est "
+"configuré et que la fonctionnalité de :attr:`mots de passe temporaires par "
+"SMS <canaille.core.configuration.CoreSettings.SMS_OTP>` est activée, alors "
+"les utilisateurs devront pour s'authentifier entrer un mot de passe "
+"temporaire envoyé à leur numéro de téléphone principal."
 
 #: ../features.rst:189 a9118911f6a341a3b529fd8882c4e3e4
 msgid "Web interface"
@@ -4414,6 +4434,8 @@ msgid ""
 "If :py:data:`True`, then users will need to authenticate themselves via a "
 "one-time password sent to their primary email address."
 msgstr ""
+"Si :py:data:`True`, alors les utilisateurs devront saisir un mot de passe "
+"temporaire envoyé à leur adresse email principale pour s'authentifier."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK:1
@@ -4649,6 +4671,13 @@ msgid ""
 "`TOTP`, the application will use time one-time passwords, If set to :py:data:"
 "`HOTP`, the application will use HMAC-based one-time passwords."
 msgstr ""
+"Si `OTP_METHOD` est défini, alors pour s'authentifier les utilisateurs "
+"devront saisir un mot de passe à usage unique (OTP) généré par une "
+"application d'authentification.\n"
+"Si la valeur est ``TOTP``l'application utilisera des mots de passes à usage "
+"unique basés sur le temps.\n"
+"Si la valeur est ``HOTP``, l'application utilisera des mots de passes à "
+"usage unique basés sur HMAC."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL:1
@@ -4673,21 +4702,16 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMPP:1
 #: 78b26880da2746c583f686747b26f179
-#, fuzzy
-#| msgid "The settings related to SMTP and mail configuration."
 msgid "The settings related to SMPP configuration."
-msgstr "Les paramètres liés à la configuration des serveur mail et SMTP."
+msgstr "Les paramètres liés à la configuration des serveurs SMPP."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMPP:3
 #: 24787179b702424697f1fe11214d1f9c
-#, fuzzy
-#| msgid ""
-#| "If unset, mail-related features like password recovery won't be enabled."
 msgid ""
 "If unset, sms-related features like sms one-time passwords won't be enabled."
 msgstr ""
-"Si non renseigné, les fonctionnalités liées aux mail, telles que la "
-"réinitialisation des mots de passe, ne seront pas activées."
+"Si non renseigné, les fonctionnalités liées aux SMS, telles que la "
+"réinitialisation des mots de passe par SMS, ne seront pas activées."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMS_OTP:1
 #: 15d696ce895d4517964f6a9fe0269d30
@@ -4695,6 +4719,9 @@ msgid ""
 "If :py:data:`True`, then users will need to authenticate themselves via a "
 "one-time password sent to their primary phone number."
 msgstr ""
+"Si :py:data:`True`, alors pour s'authentifier les utilisateurs devront "
+"saisir un mot de passe temporaire envoyé par SMS à leur numéro de téléphone "
+"principal."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SMTP:1
 #: 78b26880da2746c583f686747b26f179
@@ -4802,45 +4829,33 @@ msgstr "Utiliser ou non TLS pour se connecter au serveur SMTP."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMPPSettings:1 0513a51a39d44f719e5bf3b7abfe7224
-#, fuzzy
-#| msgid ""
-#| "The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace. If "
-#| "unset, mail related features will be disabled, such as mail verification "
-#| "or password recovery emails."
 msgid ""
 "The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace. If not "
 "set, sms related features such as sms one-time passwords will be disabled."
 msgstr ""
-"La configuration SMTP. Appartient à l'espace de nom ``CANAILLE.SMTP``. SI "
-"non renseigné, les fonctionnalités liées au mail seront désactivées, telles "
-"quel la vérification des adresses email ou bien la réinitialisation des mots "
-"de passe."
+"La configuration SMPP. Appartient à l'espace de nom ``CANAILLE.SMPP``. SI "
+"non renseigné, les fonctionnalités liées au SMS seront désactivées, telles "
+"que la réinitialisation des mots de passe par SMS."
 
 #: ../../docstring of canaille.core.configuration.SMPPSettings.HOST:1
 #: 734742323e1a40e482a2433adbed3cf9
-#, fuzzy
-#| msgid "The SMTP host."
 msgid "The SMPP host."
-msgstr "Le serveur SMTP."
+msgstr "Le serveur SMPP."
 
 #: ../../docstring of canaille.core.configuration.SMPPSettings.LOGIN:1
 #: 6b56c482d9274a7d9b308055ce3d8b07
-#, fuzzy
-#| msgid "The SMTP login."
 msgid "The SMPP login."
-msgstr "L’identifiant SMTP."
+msgstr "L’identifiant SMPP."
 
 #: ../../docstring of canaille.core.configuration.SMPPSettings.PASSWORD:1
 #: 8ca424cbdc7647a99400ae460510a183
-#, fuzzy
-#| msgid "The SMTP password."
 msgid "The SMPP password."
-msgstr "Le mot de passe SMTP."
+msgstr "Le mot de passe SMPP."
 
 #: ../../docstring of canaille.core.configuration.SMPPSettings.PORT:1
 #: 0780176282814cd1ad4ceb1567e2f160
 msgid "The SMPP port. Use 8775 for SMPP over TLS (recommended)."
-msgstr ""
+msgstr "Le port SMPP. Utilisez `8775` pour SMPP avec TLS (recommandé)."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.ACLSettings:1 ddbf39ff35684a7c8be7dd8442348d9b
