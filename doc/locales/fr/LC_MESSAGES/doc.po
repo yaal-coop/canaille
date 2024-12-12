@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-12-11 17:35+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-12 09:58+0100\n"
 "PO-Revision-Date: 2024-12-12 08:58+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -42,16 +42,16 @@ msgstr ""
 msgid "[0.0.57] - Unreleased"
 msgstr "[0.0.57] - Inédit"
 
-#: ../../CHANGES.rst:5 ../../CHANGES.rst:33 ../../CHANGES.rst:61
-#: ../../CHANGES.rst:80 ../../CHANGES.rst:87 ../../CHANGES.rst:106
-#: ../../CHANGES.rst:166 ../../CHANGES.rst:192 ../../CHANGES.rst:207
-#: ../../CHANGES.rst:256 ../../CHANGES.rst:282 ../../CHANGES.rst:301
-#: ../../CHANGES.rst:309 ../../CHANGES.rst:318 ../../CHANGES.rst:344
-#: ../../CHANGES.rst:379 ../../CHANGES.rst:405 ../../CHANGES.rst:454
-#: ../../CHANGES.rst:482 ../../CHANGES.rst:512 ../../CHANGES.rst:568
-#: ../../CHANGES.rst:601 ../../CHANGES.rst:622 ../../CHANGES.rst:632
-#: ../../CHANGES.rst:655 ../../CHANGES.rst:722 ../../CHANGES.rst:760
-#: ../../CHANGES.rst:777 ../../CHANGES.rst:813 5b2ae28202d249e39370b51c82a35bda
+#: ../../CHANGES.rst:5 ../../CHANGES.rst:34 ../../CHANGES.rst:62
+#: ../../CHANGES.rst:81 ../../CHANGES.rst:88 ../../CHANGES.rst:107
+#: ../../CHANGES.rst:167 ../../CHANGES.rst:193 ../../CHANGES.rst:208
+#: ../../CHANGES.rst:257 ../../CHANGES.rst:283 ../../CHANGES.rst:302
+#: ../../CHANGES.rst:310 ../../CHANGES.rst:319 ../../CHANGES.rst:345
+#: ../../CHANGES.rst:380 ../../CHANGES.rst:406 ../../CHANGES.rst:455
+#: ../../CHANGES.rst:483 ../../CHANGES.rst:513 ../../CHANGES.rst:569
+#: ../../CHANGES.rst:602 ../../CHANGES.rst:623 ../../CHANGES.rst:633
+#: ../../CHANGES.rst:656 ../../CHANGES.rst:723 ../../CHANGES.rst:761
+#: ../../CHANGES.rst:778 ../../CHANGES.rst:814 5b2ae28202d249e39370b51c82a35bda
 #: a10a871fc6ea42e8a52a1aa323001a53
 msgid "Added"
 msgstr "Ajouté"
@@ -67,9 +67,9 @@ msgid ""
 "core.configuration.CoreSettings.SMS_OTP` and :attr:`~canaille.core."
 "configuration.CoreSettings.SMPP` :issue:`47`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` et "
-":attr:`~canaille.core.configuration.CoreSettings.MAIL_OTP` et "
-":attr:`~canaille.core.configuration.CoreSettings.SMPP` :issue:`47`"
+":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` et :attr:"
+"`~canaille.core.configuration.CoreSettings.MAIL_OTP` et :attr:`~canaille."
+"core.configuration.CoreSettings.SMPP` :issue:`47`"
 
 #: ../../CHANGES.rst:12 ba76f44c46d54198af2dcd0692442ce2
 msgid "Password compromission check :issue:`179`"
@@ -95,18 +95,23 @@ msgstr "Implémentation du flux OIDC `client_credentials`. :issue:`207`"
 msgid "Button in the client admin page to create client tokens."
 msgstr "Bouton de création de jetons sur la page d’administration des clients."
 
-#: ../../CHANGES.rst:21 ../../CHANGES.rst:41 ../../CHANGES.rst:54
-#: ../../CHANGES.rst:66 ../../CHANGES.rst:91 ../../CHANGES.rst:99
-#: ../../CHANGES.rst:147 ../../CHANGES.rst:173 ../../CHANGES.rst:225
-#: ../../CHANGES.rst:262 ../../CHANGES.rst:331 ../../CHANGES.rst:349
-#: ../../CHANGES.rst:387 ../../CHANGES.rst:426 ../../CHANGES.rst:461
-#: ../../CHANGES.rst:504 ../../CHANGES.rst:608 ../../CHANGES.rst:662
-#: ../../CHANGES.rst:694 ../../CHANGES.rst:708 51ebea9760e04f049db58a8d1e2fdd09
-#: f16b19d1f00741a9a6ac39eca0c46f63
+#: ../../CHANGES.rst:19 6f16cdf0ce864a20b13344f84e6dfefb
+#, fuzzy
+#| msgid "Email verification. :issue:`41` :pr:`147`"
+msgid "Basic SCIM implementation. :issue:`116` :pr:`197`"
+msgstr "Vérification des adresses email. :issue:`41`:pr:`147`"
+
+#: ../../CHANGES.rst:22 ../../CHANGES.rst:42 ../../CHANGES.rst:55
+#: ../../CHANGES.rst:67 ../../CHANGES.rst:92 ../../CHANGES.rst:100
+#: ../../CHANGES.rst:148 ../../CHANGES.rst:174 ../../CHANGES.rst:226
+#: ../../CHANGES.rst:263 ../../CHANGES.rst:332 ../../CHANGES.rst:350
+#: ../../CHANGES.rst:388 ../../CHANGES.rst:427 ../../CHANGES.rst:462
+#: ../../CHANGES.rst:505 ../../CHANGES.rst:609 ../../CHANGES.rst:663
+#: ../../CHANGES.rst:695 ../../CHANGES.rst:709 51ebea9760e04f049db58a8d1e2fdd09
 msgid "Changed"
 msgstr "Modifié"
 
-#: ../../CHANGES.rst:22 5085714dd09e40dcbf2540a73162985c
+#: ../../CHANGES.rst:23 5085714dd09e40dcbf2540a73162985c
 msgid ""
 "PostgreSQL and MySQL extras does not rely on libraries that need to be "
 "compiled."
@@ -114,7 +119,7 @@ msgstr ""
 "Les extras PostgreSQL et MySQL ne dépendent plus de bibliothèques qui "
 "doivent être compilées."
 
-#: ../../CHANGES.rst:23 9108b999fecf4abf910d338c13fd0fc0
+#: ../../CHANGES.rst:24 9108b999fecf4abf910d338c13fd0fc0
 msgid ""
 "``.env`` files are not loaded by default. The ``ENV_FILE`` env var must be "
 "passed so ``.env`` files are loaded."
@@ -123,29 +128,29 @@ msgstr ""
 "d'environnement ``ENV_FILE`` doit être passé pour que les fichiers ``.env`` "
 "soient chargées."
 
-#: ../../CHANGES.rst:26 56edbd9989cf41c4b9b58dfd5e108991
+#: ../../CHANGES.rst:27 56edbd9989cf41c4b9b58dfd5e108991
 msgid "[0.0.56] - 2024-11-07"
 msgstr "[0.0.56] - 2024-11-07"
 
-#: ../../CHANGES.rst:29 ../../CHANGES.rst:71 ../../CHANGES.rst:110
-#: ../../CHANGES.rst:118 ../../CHANGES.rst:126 ../../CHANGES.rst:133
-#: ../../CHANGES.rst:140 ../../CHANGES.rst:154 ../../CHANGES.rst:184
-#: ../../CHANGES.rst:197 ../../CHANGES.rst:215 ../../CHANGES.rst:234
-#: ../../CHANGES.rst:242 ../../CHANGES.rst:268 ../../CHANGES.rst:276
-#: ../../CHANGES.rst:296 ../../CHANGES.rst:326 ../../CHANGES.rst:358
-#: ../../CHANGES.rst:366 ../../CHANGES.rst:392 ../../CHANGES.rst:412
-#: ../../CHANGES.rst:436 ../../CHANGES.rst:446 ../../CHANGES.rst:467
-#: ../../CHANGES.rst:475 ../../CHANGES.rst:498 ../../CHANGES.rst:521
-#: ../../CHANGES.rst:533 ../../CHANGES.rst:542 ../../CHANGES.rst:551
-#: ../../CHANGES.rst:560 ../../CHANGES.rst:580 ../../CHANGES.rst:587
-#: ../../CHANGES.rst:637 ../../CHANGES.rst:645 ../../CHANGES.rst:670
-#: ../../CHANGES.rst:678 ../../CHANGES.rst:686 ../../CHANGES.rst:699
-#: ../../CHANGES.rst:713 ../../CHANGES.rst:745 ../../CHANGES.rst:768
-#: ../../CHANGES.rst:799 ada79906de064c77a4cff6eda5238016
+#: ../../CHANGES.rst:30 ../../CHANGES.rst:72 ../../CHANGES.rst:111
+#: ../../CHANGES.rst:119 ../../CHANGES.rst:127 ../../CHANGES.rst:134
+#: ../../CHANGES.rst:141 ../../CHANGES.rst:155 ../../CHANGES.rst:185
+#: ../../CHANGES.rst:198 ../../CHANGES.rst:216 ../../CHANGES.rst:235
+#: ../../CHANGES.rst:243 ../../CHANGES.rst:269 ../../CHANGES.rst:277
+#: ../../CHANGES.rst:297 ../../CHANGES.rst:327 ../../CHANGES.rst:359
+#: ../../CHANGES.rst:367 ../../CHANGES.rst:393 ../../CHANGES.rst:413
+#: ../../CHANGES.rst:437 ../../CHANGES.rst:447 ../../CHANGES.rst:468
+#: ../../CHANGES.rst:476 ../../CHANGES.rst:499 ../../CHANGES.rst:522
+#: ../../CHANGES.rst:534 ../../CHANGES.rst:543 ../../CHANGES.rst:552
+#: ../../CHANGES.rst:561 ../../CHANGES.rst:581 ../../CHANGES.rst:588
+#: ../../CHANGES.rst:638 ../../CHANGES.rst:646 ../../CHANGES.rst:671
+#: ../../CHANGES.rst:679 ../../CHANGES.rst:687 ../../CHANGES.rst:700
+#: ../../CHANGES.rst:714 ../../CHANGES.rst:746 ../../CHANGES.rst:769
+#: ../../CHANGES.rst:800 ada79906de064c77a4cff6eda5238016
 msgid "Fixed"
 msgstr "Corrigé"
 
-#: ../../CHANGES.rst:30 3d50d62c605c4973956375e2229be4f1
+#: ../../CHANGES.rst:31 3d50d62c605c4973956375e2229be4f1
 msgid ""
 "With LDAP backend, updating another user groups could result in a permission "
 "lost for the editor. :issue:`202`"
@@ -153,7 +158,7 @@ msgstr ""
 "Avec la base de données LDAP, la mise à jour des groupes d’utilisateurs "
 "pouvait engendrer une perte de permissions de l’éditeur. :issue:`202`"
 
-#: ../../CHANGES.rst:34 ce5db69d7e134a938f544bc4c14c2dbc
+#: ../../CHANGES.rst:35 ce5db69d7e134a938f544bc4c14c2dbc
 msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` and :"
 "attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` "
@@ -163,28 +168,28 @@ msgstr ""
 "MAX_PASSWORD_LENGHT` et :attr:`~canaille.core.configuration.CoreSettings."
 "MIN_PASSWORD_LENGHT` :issue:`174`"
 
-#: ../../CHANGES.rst:36 0952593cb9c24691baaf0bbbeafbefd0
+#: ../../CHANGES.rst:37 0952593cb9c24691baaf0bbbeafbefd0
 msgid "Password strength visual indicator. :issue:`174`"
 msgstr "Indicateur visuel de la force des mots de passe :issue:`174`"
 
-#: ../../CHANGES.rst:37 34660cc568ac402485a0ae2a226c3ed9
+#: ../../CHANGES.rst:38 34660cc568ac402485a0ae2a226c3ed9
 msgid "Security events logs. :issue:`177`"
 msgstr "Journalisation des évènements de sécurité. :issue:`177`"
 
-#: ../../CHANGES.rst:38 74390b590e9e4714bff818c8d9d95630
+#: ../../CHANGES.rst:39 74390b590e9e4714bff818c8d9d95630
 msgid "Support for Python 3.13. :pr:`186`"
 msgstr "Support de Python 3.13. :pr:`186`"
 
-#: ../../CHANGES.rst:42 962e298f8c7c44a8b3b0f450eb596537
+#: ../../CHANGES.rst:43 962e298f8c7c44a8b3b0f450eb596537
 msgid "Update to `HTMX` 2.0.3. :pr:`184`"
 msgstr "Mise à jour vers HTMX 2.0.3. :pr:`184`"
 
-#: ../../CHANGES.rst:43 ab78bee0981041d3ade7f68673ab3f12
+#: ../../CHANGES.rst:44 ab78bee0981041d3ade7f68673ab3f12
 msgid "Migrate the Python project management tool from poetry to uv. :pr:`187`"
 msgstr ""
 "Migration de poetry à uv comme outil de gestion de projet Python. :pr:`187`"
 
-#: ../../CHANGES.rst:44 7cb284d8934d4df7b96b3d995f0ae69a
+#: ../../CHANGES.rst:45 7cb284d8934d4df7b96b3d995f0ae69a
 msgid ""
 "The ``sql`` package extra is now split between ``sqlite``, ``postgresql`` "
 "and ``mysql``."
@@ -192,30 +197,30 @@ msgstr ""
 "L’extra de paquet ``sql`` a été divisé en ``sqlite``, ``postgresql`` et "
 "``mysql``."
 
-#: ../../CHANGES.rst:47 ../../CHANGES.rst:397 ../../CHANGES.rst:805
+#: ../../CHANGES.rst:48 ../../CHANGES.rst:398 ../../CHANGES.rst:806
 #: 06fd8459f24443f5bc2dd961a2174774
 msgid "Removed"
 msgstr "Supprimé"
 
-#: ../../CHANGES.rst:48 7dbb1818231144988378efbcc14e0335
+#: ../../CHANGES.rst:49 7dbb1818231144988378efbcc14e0335
 msgid "End support for Python 3.9. :pr:`179`"
 msgstr "Fin de support pour Python 3.9. :pr:`179`"
 
-#: ../../CHANGES.rst:51 bb731fcd74024f44b0b679df8fd1de3b
+#: ../../CHANGES.rst:52 bb731fcd74024f44b0b679df8fd1de3b
 msgid "[0.0.55] - 2024-08-30"
 msgstr "[0.0.55] - 2024-08-30"
 
-#: ../../CHANGES.rst:55 e3f7e5b1ec3d471bbaad41ad6afbd38e
+#: ../../CHANGES.rst:56 e3f7e5b1ec3d471bbaad41ad6afbd38e
 msgid "Use poetry-core build backend. :pr:`178`"
 msgstr ""
 "Utilisation de `poetry-core` comme outil de construction de paquets. :pr:"
 "`178`"
 
-#: ../../CHANGES.rst:58 97d86f7b7b6d4df3a78b00068c114b55
+#: ../../CHANGES.rst:59 97d86f7b7b6d4df3a78b00068c114b55
 msgid "[0.0.54] - 2024-07-25"
 msgstr "[0.0.54] - 2024-07-25"
 
-#: ../../CHANGES.rst:62 0f6a7830c88b4121b1141a68853d36fd
+#: ../../CHANGES.rst:63 0f6a7830c88b4121b1141a68853d36fd
 msgid ""
 "Group member removal can be achieved from the group edition page. :issue:"
 "`192`"
@@ -223,34 +228,34 @@ msgstr ""
 "La suppression des membres de groupes peut être effectuée depuis la page "
 "d’édition des groupes. :issue:`192`"
 
-#: ../../CHANGES.rst:63 761788b232b74eb089dd20c1a57bcf2a
+#: ../../CHANGES.rst:64 761788b232b74eb089dd20c1a57bcf2a
 msgid "Model management commands. :issue:`117` :issue:`54`"
 msgstr "Commande de gestion des modèles. :issue:`117` :issue:`54`"
 
-#: ../../CHANGES.rst:67 1e28ba0fab8947bfbb7b10fc9dfca645
+#: ../../CHANGES.rst:68 1e28ba0fab8947bfbb7b10fc9dfca645
 msgid "Model `identifier_attributes` are fixed."
 msgstr "L’attribut `identifier_attributes` des models est fixe."
 
-#: ../../CHANGES.rst:68 72287f1ba34c4cc8b2cf0b4af47bbd53
+#: ../../CHANGES.rst:69 72287f1ba34c4cc8b2cf0b4af47bbd53
 msgid "Bump to `HTMX` 1.9.12. :pr:`172`"
 msgstr "Mise-à-jour vers `HTMX` 1.9.12. :pr:`172`"
 
-#: ../../CHANGES.rst:73 72071aa06de847d29dcd9500881409d0
+#: ../../CHANGES.rst:74 72071aa06de847d29dcd9500881409d0
 msgid "Dark theme colors for better readability."
 msgstr "Couleurs des champs dans le thème sombre."
 
-#: ../../CHANGES.rst:74 600f70e2aecd4eba9ddee16500df48db
+#: ../../CHANGES.rst:75 600f70e2aecd4eba9ddee16500df48db
 msgid ""
 "Crash for passwordless users at login when no SMTP server was configured."
 msgstr ""
 "Erreur lorsque les utilisateurs sans mots de passe lorsqu’aucun serveur SMTP "
 "n’a été configuré."
 
-#: ../../CHANGES.rst:77 09953502ecec43198af93b4c10d5dc3e
+#: ../../CHANGES.rst:78 09953502ecec43198af93b4c10d5dc3e
 msgid "[0.0.53] - 2024-04-22"
 msgstr "[0.0.53] - 2024-04-22"
 
-#: ../../CHANGES.rst:81 4627291987094c60b1acc76d520719b4
+#: ../../CHANGES.rst:82 4627291987094c60b1acc76d520719b4
 msgid ""
 "`env_prefix` :meth:`~canaille.create_app` variable can select the "
 "environment var prefix."
@@ -258,85 +263,85 @@ msgstr ""
 "La variable `env_prefix`de la méthode :meth:`~canaille.create_app` permet de "
 "choisir le préfixe des variables d’environnement."
 
-#: ../../CHANGES.rst:84 f21535ae9e6643708c8459143e861870
+#: ../../CHANGES.rst:85 f21535ae9e6643708c8459143e861870
 msgid "[0.0.52] - 2024-04-22"
 msgstr "[0.0.52] - 2024-04-22"
 
-#: ../../CHANGES.rst:88 c9c3eb7bdd894b96b0adf60e33691fd4
+#: ../../CHANGES.rst:89 c9c3eb7bdd894b96b0adf60e33691fd4
 msgid "`env_file` create_app variable can customize/disable the .env file."
 msgstr ""
 "La variable `env_file` de la méthode `create_app` permet de désactiver ou "
 "personnaliser le fichier `.env`."
 
-#: ../../CHANGES.rst:92 7cda9bf8a22540d0b3233546e130847f
+#: ../../CHANGES.rst:93 7cda9bf8a22540d0b3233546e130847f
 msgid "Locked users cannot be impersonated anymore."
 msgstr "Les comptes verrouillés ne peuvent plus être incarnés."
 
-#: ../../CHANGES.rst:93 965223cd352948c8a77f1b4ce2b50ce4
+#: ../../CHANGES.rst:94 965223cd352948c8a77f1b4ce2b50ce4
 msgid "Minimum Python requirement is 3.9."
 msgstr "La version minimum requise de Python est 3.9."
 
-#: ../../CHANGES.rst:96 de227140ea8e4d629ffd4189dbd43460
+#: ../../CHANGES.rst:97 de227140ea8e4d629ffd4189dbd43460
 msgid "[0.0.51] - 2024-04-09"
 msgstr "[0.0.51] - 2024-04-09"
 
-#: ../../CHANGES.rst:100 79f55debd9964020a684739fd256ef14
+#: ../../CHANGES.rst:101 79f55debd9964020a684739fd256ef14
 msgid "Display the menu bar on error pages."
 msgstr "Affichage de la barre de menu sur les pages d’erreur."
 
-#: ../../CHANGES.rst:103 27a5f8ea8faa41deaf71ae8564fd43a5
+#: ../../CHANGES.rst:104 27a5f8ea8faa41deaf71ae8564fd43a5
 msgid "[0.0.50] - 2024-04-09"
 msgstr "[0.0.50] - 2024-04-09"
 
-#: ../../CHANGES.rst:107 8d78dcd06ac84e7d9075dbb55d08b68c
+#: ../../CHANGES.rst:108 8d78dcd06ac84e7d9075dbb55d08b68c
 msgid "Sign in/out events are logged in. :issue:`177`"
 msgstr ""
 "Journalisation des évènements de connexion et déconnexion. :issue:`177`"
 
-#: ../../CHANGES.rst:111 f54c1f04263c4f19bf7c01a9e9fb1533
+#: ../../CHANGES.rst:112 f54c1f04263c4f19bf7c01a9e9fb1533
 msgid "`HTMX` and `JAVASCRIPT` configuration settings."
 msgstr "Paramètres de configuration `HTMX` et `JAVASCRIPT`."
 
-#: ../../CHANGES.rst:112 aac9f0d6bc274a6998bed8663e581445
+#: ../../CHANGES.rst:113 aac9f0d6bc274a6998bed8663e581445
 msgid "Compatibility with old sessions IDs."
 msgstr "Compatibilité avec les anciens identifiants de session."
 
-#: ../../CHANGES.rst:115 6c309d659a9d4b00897c0c86136117f2
+#: ../../CHANGES.rst:116 6c309d659a9d4b00897c0c86136117f2
 msgid "[0.0.49] - 2024-04-08"
 msgstr "[0.0.49] - 2024-04-08"
 
-#: ../../CHANGES.rst:119 e40c5385bf174d4dbdeb1e6c8f2bbca9
+#: ../../CHANGES.rst:120 e40c5385bf174d4dbdeb1e6c8f2bbca9
 msgid "LDAP user group removal."
 msgstr "Suppression des groupes d’utilisateurs avec LDAP."
 
-#: ../../CHANGES.rst:120 db426dd917e9449ea1571f6d90fb59cb
+#: ../../CHANGES.rst:121 db426dd917e9449ea1571f6d90fb59cb
 msgid ""
 "Display an error message when trying to remove the last user from a group."
 msgstr ""
 "Affichage d’un message d’erreur lors de tentatives de suppression du dernier "
 "utilisateur d’un groupe."
 
-#: ../../CHANGES.rst:123 aa9c1e96a9d84eb388b2ad22b0b9fa86
+#: ../../CHANGES.rst:124 aa9c1e96a9d84eb388b2ad22b0b9fa86
 msgid "[0.0.48] - 2024-04-08"
 msgstr "[0.0.48] - 2024-04-08"
 
-#: ../../CHANGES.rst:127 3bbde6f2fc244902955a6b16a1d9bdc6
+#: ../../CHANGES.rst:128 3bbde6f2fc244902955a6b16a1d9bdc6
 msgid "LDAP ``objectClass`` guessing exception."
 msgstr "Exception lors de la détection des classes d’objet LDAP."
 
-#: ../../CHANGES.rst:130 f55a477d72624ef691e7a783940c3208
+#: ../../CHANGES.rst:131 f55a477d72624ef691e7a783940c3208
 msgid "[0.0.47] - 2024-04-08"
 msgstr "[0.0.47] - 2024-04-08"
 
-#: ../../CHANGES.rst:134 aa6227db351548d1a883af36de508805
+#: ../../CHANGES.rst:135 aa6227db351548d1a883af36de508805
 msgid "Lazy permission loading exception."
 msgstr "Exception lors du chargement paresseux des permissions."
 
-#: ../../CHANGES.rst:137 665fb2129c5f4c498a9eca30a7625d69
+#: ../../CHANGES.rst:138 665fb2129c5f4c498a9eca30a7625d69
 msgid "[0.0.46] - 2024-04-08"
 msgstr "[0.0.46] - 2024-04-08"
 
-#: ../../CHANGES.rst:141 a736243f81d845d5a13e66303db4632d
+#: ../../CHANGES.rst:142 a736243f81d845d5a13e66303db4632d
 msgid ""
 "Saving an object with the LDAP backend keeps the ``objectClass`` un-managed "
 "by Canaille. :pr:`171`"
@@ -344,11 +349,11 @@ msgstr ""
 "La sauvegarde des objets avec LDAP garde les valeurs de ``objectClass`` non "
 "gérés par Canaille. :pr:`171`"
 
-#: ../../CHANGES.rst:144 23d50243f242497eafeb43190b191910
+#: ../../CHANGES.rst:145 23d50243f242497eafeb43190b191910
 msgid "[0.0.45] - 2024-04-04"
 msgstr "[0.0.45] - 2024-04-04"
 
-#: ../../CHANGES.rst:148 8ca38c12afde4e1d881f0f631dee2180
+#: ../../CHANGES.rst:149 8ca38c12afde4e1d881f0f631dee2180
 msgid ""
 "Internal indexation mechanism of :class:`~canaille.backends.memory.model."
 "MemoryModel`."
@@ -356,53 +361,53 @@ msgstr ""
 "Mécanisme d’indexation interne de :class:`~canaille.backends.memory.model."
 "MemoryModel`."
 
-#: ../../CHANGES.rst:151 0ec8aaff2a864d52beaead02de313d2f
+#: ../../CHANGES.rst:152 0ec8aaff2a864d52beaead02de313d2f
 msgid "[0.0.44] - 2024-03-29"
 msgstr "[0.0.44] - 2024-03-29"
 
-#: ../../CHANGES.rst:155 23af820d08664c0dbf3229567505e6a9
+#: ../../CHANGES.rst:156 23af820d08664c0dbf3229567505e6a9
 msgid "Fix the default LDAP ``USER_FILTER`` value."
 msgstr "Correction de la valeur par défaut de ``USER_FILTER`` pour LDAP."
 
-#: ../../CHANGES.rst:156 695d4f4fe29a4f07960244b87ee1db21
+#: ../../CHANGES.rst:157 695d4f4fe29a4f07960244b87ee1db21
 msgid "Fix the OIDC feature detection."
 msgstr "Correction de la détection de la fonctionnalité OIDC."
 
-#: ../../CHANGES.rst:159 e7f1b082e81e4486b09fc76512e49dc5
+#: ../../CHANGES.rst:160 e7f1b082e81e4486b09fc76512e49dc5
 msgid "[0.0.43] - 2024-03-29"
 msgstr "[0.0.43] - 2024-03-29"
 
-#: ../../CHANGES.rst:163 ../../CHANGES.rst:422 5cd7f27a291e46298c9a3aa6ee0e5cf0
+#: ../../CHANGES.rst:164 ../../CHANGES.rst:423 5cd7f27a291e46298c9a3aa6ee0e5cf0
 msgid "Configuration files must be updated."
 msgstr "Les fichiers de configuration doivent être mis à jour."
 
-#: ../../CHANGES.rst:168 d7d284cc9b424ec69d5240b428964d52
+#: ../../CHANGES.rst:169 d7d284cc9b424ec69d5240b428964d52
 msgid "Add ``created`` and ``last_modified`` datetime for all models."
 msgstr ""
 "Ajout des dates ``created`` et ``last_modified`` pour tous les modèles."
 
-#: ../../CHANGES.rst:169 19050fc882664743866b11a49ca7e398
+#: ../../CHANGES.rst:170 19050fc882664743866b11a49ca7e398
 msgid "Sitemap to the documentation. :pr:`169`"
 msgstr "Cartographie de la documentation. :pr:`169"
 
-#: ../../CHANGES.rst:170 bd7c56451cfa479fb3b8d19275045b6e
+#: ../../CHANGES.rst:171 bd7c56451cfa479fb3b8d19275045b6e
 msgid ""
 "Configuration management with `pydantic-settings`. :issue:`138` :pr:`170`"
 msgstr ""
 "Gestion des paramètres de configuration avec `pydantic-settings`. :issue:"
 "`138` :pr:`170`"
 
-#: ../../CHANGES.rst:175 d3e65f7666664d4f8ca54f02bf597c71
+#: ../../CHANGES.rst:176 d3e65f7666664d4f8ca54f02bf597c71
 msgid "Use default Python logging configuration format. :issue:`188` :pr:`165`"
 msgstr ""
 "Utilisation de la configuration de journalisation par défaut de Python. :"
 "issue:`188` :pr:`165`"
 
-#: ../../CHANGES.rst:176 ae5e4441862443b9aac1e26cf19a8908
+#: ../../CHANGES.rst:177 ae5e4441862443b9aac1e26cf19a8908
 msgid "Bump to `HTMX` 1.99.11. :pr:`166`"
 msgstr "Mise à jour vers ``HTMX`` 1.9.11. :pr:`166`"
 
-#: ../../CHANGES.rst:177 e487c2a78a354c6e85ec43fda9f59c4d
+#: ../../CHANGES.rst:178 e487c2a78a354c6e85ec43fda9f59c4d
 msgid ""
 "Use the standard tomllib Python module instead of `toml` starting from "
 "Python 3.11. :pr:`167`"
@@ -410,24 +415,24 @@ msgstr ""
 "Utilisation du module Python standard `tomllib` à la place de `toml` à "
 "partir de Python 3.11. :pr:`167`"
 
-#: ../../CHANGES.rst:178 e80e66bd46e14c0fae82950444ba043b
+#: ../../CHANGES.rst:179 e80e66bd46e14c0fae82950444ba043b
 msgid "Use shibuya as the documentation theme :pr:`168`"
 msgstr "Utilisation du thème de documentation `shibuya`. :pr:`168`"
 
-#: ../../CHANGES.rst:181 0eb0c4eec73848d283d54626e8538c61
+#: ../../CHANGES.rst:182 0eb0c4eec73848d283d54626e8538c61
 msgid "[0.0.42] - 2023-12-29"
 msgstr "[0.0.42] - 2023-12-29"
 
-#: ../../CHANGES.rst:186 8e57897d767b4603a54db28c97416ee8
+#: ../../CHANGES.rst:187 8e57897d767b4603a54db28c97416ee8
 msgid "Avoid to fail on imports if ``cryptography`` is missing."
 msgstr ""
 "Correction d’une erreur d’import lorsque ``cryptography`` était manquant."
 
-#: ../../CHANGES.rst:189 f4ff69324e6e4a24b2f5aabf9ee71655
+#: ../../CHANGES.rst:190 f4ff69324e6e4a24b2f5aabf9ee71655
 msgid "[0.0.41] - 2023-12-25"
 msgstr "[0.0.41] - 2023-12-25"
 
-#: ../../CHANGES.rst:194 39dd9ec6c6c2415fa90973a715a08d9f
+#: ../../CHANGES.rst:195 39dd9ec6c6c2415fa90973a715a08d9f
 msgid ""
 "OIDC support for the ``create`` value of the ``prompt`` parameter. :issue:"
 "`185` :pr:`164`"
@@ -435,7 +440,7 @@ msgstr ""
 "Support pour la valeur ``create`` du paramètre ``prompt`` d’OIDC. :issue:"
 "`185` :pr:`164`"
 
-#: ../../CHANGES.rst:199 7d59a023c9bc4a9b94f4339112602d32
+#: ../../CHANGES.rst:200 7d59a023c9bc4a9b94f4339112602d32
 msgid ""
 "Correctly set up :attr:`~canaille.oidc.basemodels.Client.audience` during "
 "OIDC dynamic registration."
@@ -443,79 +448,79 @@ msgstr ""
 "Configuration correcte de l’:attr:`~canaille.oidc.basemodels.Client."
 "audience` durant l’enregistrement dynamique OIDC."
 
-#: ../../CHANGES.rst:200 1e194b3a94034c65936a18174d1078c5
+#: ../../CHANGES.rst:201 1e194b3a94034c65936a18174d1078c5
 msgid ""
 "``post_logout_redirect_uris`` was ignored during OIDC dynamic registration."
 msgstr ""
 "``post_logout_redirect_uris`` était ignoré durant l’enregistrement dynamique "
 "OIDC."
 
-#: ../../CHANGES.rst:201 d9f10cf1c5b3401d95f461f57dbfbece
+#: ../../CHANGES.rst:202 d9f10cf1c5b3401d95f461f57dbfbece
 msgid "Group field error prevented the registration form validation."
 msgstr ""
 "Une erreur sur le champ `groupe` empêchait la validation du formulaire "
 "d’enregistrement."
 
-#: ../../CHANGES.rst:204 6653ebc2588a4ad8989581ca1060f1d9
+#: ../../CHANGES.rst:205 6653ebc2588a4ad8989581ca1060f1d9
 msgid "[0.0.40] - 2023-12-22"
 msgstr "[0.0.40] - 2023-12-22"
 
-#: ../../CHANGES.rst:209 1eb728d8f35e4e57bd9b4284c7dd677b
+#: ../../CHANGES.rst:210 1eb728d8f35e4e57bd9b4284c7dd677b
 msgid "The ``THEME`` setting can be a relative path."
 msgstr "Le paramètre de configuration ``THEME`` peut être un chemin relatif."
 
-#: ../../CHANGES.rst:212 37f2ef92582741e2985bab37fb6495df
+#: ../../CHANGES.rst:213 37f2ef92582741e2985bab37fb6495df
 msgid "[0.0.39] - 2023-12-15"
 msgstr "[0.0.39] - 2023-12-15"
 
-#: ../../CHANGES.rst:217 b46f180dbba54aafb438013586a4100f
+#: ../../CHANGES.rst:218 b46f180dbba54aafb438013586a4100f
 msgid "Crash when no ACL were defined."
 msgstr "Erreur lorsqu’aucun ACL n’était défini."
 
-#: ../../CHANGES.rst:218 958f8c3ecc57438e835053b3a7d87721
+#: ../../CHANGES.rst:219 958f8c3ecc57438e835053b3a7d87721
 msgid "OIDC Userinfo endpoint is also available in POST."
 msgstr ""
 "Le point de terminaison OIDC `Userinfo` est aussi disponible avec la méthode "
 "POST."
 
-#: ../../CHANGES.rst:219 c37693d772f44c64b03f3baee793c0a1
+#: ../../CHANGES.rst:220 c37693d772f44c64b03f3baee793c0a1
 msgid "Fix redirection after password reset. :issue:`159`"
 msgstr ""
 "Correction de la redirection après réinitialisation du mot de passe. :issue:"
 "`159`"
 
-#: ../../CHANGES.rst:222 9f0b57bb752141079ef51cc0833d3597
+#: ../../CHANGES.rst:223 9f0b57bb752141079ef51cc0833d3597
 msgid "[0.0.38] - 2023-12-15"
 msgstr "[0.0.38] - 2023-12-15"
 
-#: ../../CHANGES.rst:227 b208dfe943e64175906f965703dc33dd
+#: ../../CHANGES.rst:228 b208dfe943e64175906f965703dc33dd
 msgid "Convert all the `PNG` pictures in `Webp`. :pr:`162`"
 msgstr "Conversion de toutes les images `PNG` en `Webp`. :pr:`162`"
 
-#: ../../CHANGES.rst:228 3827e636cee240479b1fcedbc86bdfde
+#: ../../CHANGES.rst:229 3827e636cee240479b1fcedbc86bdfde
 msgid "Update to Flask 3. :issue:`161` :pr:`163`"
 msgstr "Mise à jour vers Flask 3. :issue:`161` :pr:`163`"
 
-#: ../../CHANGES.rst:231 acb7a5113f214b84b7f8fd21b48e22de
+#: ../../CHANGES.rst:232 acb7a5113f214b84b7f8fd21b48e22de
 msgid "[0.0.37] - 2023-12-01"
 msgstr "[0.0.37] - 2023-12-01"
 
-#: ../../CHANGES.rst:236 a22ebfb72b3d4c8c8285d99f4a18ed88
+#: ../../CHANGES.rst:237 a22ebfb72b3d4c8c8285d99f4a18ed88
 msgid "Handle 4xx and 5xx error codes with HTMX. :issue:`171` :pr:`161`"
 msgstr ""
 "Gestion des codes d’erreur 4xx et 5xx avec `HTMX`. :issue:`171` :pr:`161`"
 
-#: ../../CHANGES.rst:239 5033ceb76b61492896a738cbabdf0e1a
+#: ../../CHANGES.rst:240 5033ceb76b61492896a738cbabdf0e1a
 msgid "[0.0.36] - 2023-12-01"
 msgstr "[0.0.36] - 2023-12-01"
 
-#: ../../CHANGES.rst:244 df785fb08515480b8205eb8d521d699b
+#: ../../CHANGES.rst:245 df785fb08515480b8205eb8d521d699b
 msgid "Avoid crashing when LDAP groups references unexisting users."
 msgstr ""
 "Correction d’une erreur avec LDAP lorsque des groupes référencent des "
 "utilisateurs inexistants."
 
-#: ../../CHANGES.rst:245 e24d3cf2b5344f3196d44717249eeac9
+#: ../../CHANGES.rst:246 e24d3cf2b5344f3196d44717249eeac9
 msgid ""
 "Password reset and initialization mails were only sent to the preferred user "
 "email address."
@@ -523,7 +528,7 @@ msgstr ""
 "Les courriels d’initialisation et de réinitialisation de mots de passe "
 "n’étaient envoyés qu’à l’adresse préférée des utilisateurs."
 
-#: ../../CHANGES.rst:247 279eb5763cb9437e98472ba23ef09cb9
+#: ../../CHANGES.rst:248 279eb5763cb9437e98472ba23ef09cb9
 msgid ""
 "Password reset and initialization mails were not sent at all the user "
 "addresses if one email address could not be reached."
@@ -531,50 +536,50 @@ msgstr ""
 "Les courriels d’initialisation et de réinitialisation de mots de passe "
 "n’étaient pas tous envoyés si l’un des envois échouait."
 
-#: ../../CHANGES.rst:249 8dbbbb93c0d9468db5756b74091a0346
+#: ../../CHANGES.rst:250 8dbbbb93c0d9468db5756b74091a0346
 msgid "Password comparison was too permissive on login."
 msgstr "La comparaison des mots de passe était trop permissive à la connexion."
 
-#: ../../CHANGES.rst:250 2d5c6dab823a45df94ab7061b78fa140
+#: ../../CHANGES.rst:251 2d5c6dab823a45df94ab7061b78fa140
 msgid "Encrypt passwords in the SQL backend."
 msgstr "Chiffrement des mots de passe dans la base de données SQL."
 
-#: ../../CHANGES.rst:253 09acf9167bb14934ac3e4b763914df5c
+#: ../../CHANGES.rst:254 09acf9167bb14934ac3e4b763914df5c
 msgid "[0.0.35] - 2023-11-25"
 msgstr "[0.0.35] - 2023-11-25"
 
-#: ../../CHANGES.rst:258 b616ae34c6084446b826cbb4bea285ce
+#: ../../CHANGES.rst:259 b616ae34c6084446b826cbb4bea285ce
 msgid ""
 "Refresh token grant supports other client authentication methods. :pr:`157`"
 msgstr ""
 "Support de méthodes d’authentifications additionnels pour les jetons de "
 "rafraîchissement. :pr:`157`"
 
-#: ../../CHANGES.rst:259 5e0cc8d4b2f9482cb0dd7d15578824ca
+#: ../../CHANGES.rst:260 5e0cc8d4b2f9482cb0dd7d15578824ca
 msgid "Implement a SQLAlchemy backend. :issue:`30` :pr:`158`"
 msgstr ""
 "Support des bases de données SQL avec SQLAlchemy. :issue:`30` :pr:`158`"
 
-#: ../../CHANGES.rst:264 1379d1aee7ee46fca1a78b6015f8d450
+#: ../../CHANGES.rst:265 1379d1aee7ee46fca1a78b6015f8d450
 msgid "Model attributes cardinality is closer to SCIM model. :pr:`155`"
 msgstr ""
 "La cardinalité des attributs des modèles est un peu plus ressemblante à "
 "celle des attributs de modèles SCIM. :pr:`155`"
 
-#: ../../CHANGES.rst:265 08f54a2189ba47dbb2e65e442181d6fd
+#: ../../CHANGES.rst:266 08f54a2189ba47dbb2e65e442181d6fd
 msgid "Bump to `HTMX` 1.9.9. :pr:`159`"
 msgstr "Mise à jour vers `HTMX` 1.9.9. :pr:`159`"
 
-#: ../../CHANGES.rst:270 001465c19ae140678ce9a78eb0ae7ff5
+#: ../../CHANGES.rst:271 001465c19ae140678ce9a78eb0ae7ff5
 msgid "Disable `HTMX` boosting during the OIDC dance. :pr:`160`"
 msgstr ""
 "Désactivation de `HTMX` pendant la phase d’identification OIDC. :pr:`160`"
 
-#: ../../CHANGES.rst:273 e063fae1c9984dc0af421058e9bfb500
+#: ../../CHANGES.rst:274 e063fae1c9984dc0af421058e9bfb500
 msgid "[0.0.34] - 2023-10-02"
 msgstr "[0.0.34] - 2023-10-02"
 
-#: ../../CHANGES.rst:278 3aadd82912d6401f8fddc3655ad594b9
+#: ../../CHANGES.rst:279 3aadd82912d6401f8fddc3655ad594b9
 msgid ""
 "Canaille installations without account lockabilty could not delete users. :"
 "pr:`153`"
@@ -582,7 +587,7 @@ msgstr ""
 "Les installations de Canaille n’ayant pas la fonctionnalité de verrouillage "
 "des comptes ne pouvaient pas supprimer des utilisateurs. :pr:`153`"
 
-#: ../../CHANGES.rst:284 52c2946196324ed2bfacac3fb518a6a1
+#: ../../CHANGES.rst:285 52c2946196324ed2bfacac3fb518a6a1
 msgid ""
 "If users register or authenticate during a OAuth Authorization phase, they "
 "get redirected back to that page afterwards. :issue:`168` :pr:`151`"
@@ -591,7 +596,7 @@ msgstr ""
 "ils sont ensuite redirigés vers la page dont ils viennent. :issue:`168` :pr:"
 "`151`"
 
-#: ../../CHANGES.rst:287 e0bb3561373b4651b98fcc1df2e5db94
+#: ../../CHANGES.rst:288 e0bb3561373b4651b98fcc1df2e5db94
 msgid ""
 "The `flask-babel` and `pytz` libraries are now part of the `front` packaging "
 "extras."
@@ -599,51 +604,51 @@ msgstr ""
 "Les bibliothèques `flask-babel` et `pytz` font désormais partie de l’extra "
 "d'empaquetage `front`."
 
-#: ../../CHANGES.rst:288 9cc1748f2a624399ae9983904d6765fc
+#: ../../CHANGES.rst:289 9cc1748f2a624399ae9983904d6765fc
 msgid "Bump to `fomantic-ui` 2.9.3. :pr:`152`"
 msgstr "Mise à jour vers `fomantic-ui` 2.9.3. :pr:`152`"
 
-#: ../../CHANGES.rst:289 ec7e3985dc034f43bc0e2411086928e7
+#: ../../CHANGES.rst:290 ec7e3985dc034f43bc0e2411086928e7
 msgid "Bump to `HTMX` 1.9.6. :pr:`154`"
 msgstr "Mise à jour vers `HTMX` 1.9.6. :pr:`154`"
 
-#: ../../CHANGES.rst:290 768b97eabcb04396a1c3f7e3691c3ed2
+#: ../../CHANGES.rst:291 768b97eabcb04396a1c3f7e3691c3ed2
 msgid "Support for Python 3.12. :pr:`155`"
 msgstr "Support de Python 3.12 :pr:`155`"
 
-#: ../../CHANGES.rst:293 4664970b84d545e18a553f8191bc6e8b
+#: ../../CHANGES.rst:294 4664970b84d545e18a553f8191bc6e8b
 msgid "[0.0.33] - 2023-08-26"
 msgstr "[0.0.33] - 2023-08-26"
 
-#: ../../CHANGES.rst:298 3456a02cbd894fccb45ffc1108226c5a
+#: ../../CHANGES.rst:299 3456a02cbd894fccb45ffc1108226c5a
 msgid "OIDC jwks endpoint do not return empty `kid` claim."
 msgstr ""
 "Le point de terminaison OIDC jwks ne retourne plus le paramètre `kid` "
 "lorsqu’il est vide."
 
-#: ../../CHANGES.rst:303 fd6c83b8455f4402b82ffe670e6c83c1
+#: ../../CHANGES.rst:304 fd6c83b8455f4402b82ffe670e6c83c1
 msgid "Documentation details on the Canaille models."
 msgstr "Documentation des modèles de Canaille."
 
-#: ../../CHANGES.rst:306 1f3135eb404e412787af9b4f971ea523
+#: ../../CHANGES.rst:307 1f3135eb404e412787af9b4f971ea523
 msgid "[0.0.32] - 2023-08-17"
 msgstr "[0.0.32] - 2023-08-17"
 
-#: ../../CHANGES.rst:311 fe7a0cb646094a3d9b2428f7b7d2f3d4
+#: ../../CHANGES.rst:312 fe7a0cb646094a3d9b2428f7b7d2f3d4
 msgid "Additional inmemory backend. :issue:`30` :pr:`149`"
 msgstr ""
 "Implémentation d’un connecteur de base de données en mémoire. :issue:`30` :"
 "pr:`149`"
 
-#: ../../CHANGES.rst:312 82523d1da67a46089ffd899f134486dd
+#: ../../CHANGES.rst:313 82523d1da67a46089ffd899f134486dd
 msgid "Installation extras. :issue:`167` :pr:`150`"
 msgstr "Définition de dépendances `extra`. :issue:`167` :pr:`150`"
 
-#: ../../CHANGES.rst:315 9b5b3399c9fd4f3bbc8e152ee37e7910
+#: ../../CHANGES.rst:316 9b5b3399c9fd4f3bbc8e152ee37e7910
 msgid "[0.0.31] - 2023-08-15"
 msgstr "[0.0.31] - 2023-08-15"
 
-#: ../../CHANGES.rst:320 b2ebe664d67047a5882a33ac5c75875b
+#: ../../CHANGES.rst:321 b2ebe664d67047a5882a33ac5c75875b
 msgid ""
 "Configuration option to disable the forced usage of OIDC `nonce` parameter. :"
 "pr:`143`"
@@ -651,35 +656,35 @@ msgstr ""
 "Option de configuration pour désactiver l’utilisation du paramètre OIDC "
 "`nonce`. :pr:`143`"
 
-#: ../../CHANGES.rst:321 463b404944d9465fa6a17d3d3c0ea106
+#: ../../CHANGES.rst:322 463b404944d9465fa6a17d3d3c0ea106
 msgid "Validate phone numbers with a regex. :pr:`146`"
 msgstr ""
 "Validation des numéros de téléphone avec des expressions régulières. :pr:"
 "`146`"
 
-#: ../../CHANGES.rst:322 0effe02b658f49698ab59c14e9103fbe
+#: ../../CHANGES.rst:323 0effe02b658f49698ab59c14e9103fbe
 msgid "Email verification. :issue:`41` :pr:`147`"
 msgstr "Vérification des adresses email. :issue:`41`:pr:`147`"
 
-#: ../../CHANGES.rst:323 ca5e445840644c90980662464ea67abc
+#: ../../CHANGES.rst:324 ca5e445840644c90980662464ea67abc
 msgid "Account registration. :issue:`55` :pr:`133` :pr:`148`"
 msgstr "Enregistrement de comptes utilisateur. :issue:`55` :pr:`133` :pr:`148`"
 
-#: ../../CHANGES.rst:328 3792c9999c5a44c892129bce1c222552
+#: ../../CHANGES.rst:329 3792c9999c5a44c892129bce1c222552
 msgid "The `check` command uses the default configuration values."
 msgstr "La commande `check` utilise les valeurs de configuration par défaut."
 
-#: ../../CHANGES.rst:333 6e0b77065c024ebb96f30998294a3b8d
+#: ../../CHANGES.rst:334 6e0b77065c024ebb96f30998294a3b8d
 msgid "Modals do not need use Javascript at the moment. :issue:`158` :pr:`144`"
 msgstr ""
 "Les fenêtres modales ne nécessitent plus l’utilisation de Javascript. :issue:"
 "`158` :pr:`144`"
 
-#: ../../CHANGES.rst:336 e513ff9194cb493fb3273e811b5b96d0
+#: ../../CHANGES.rst:337 e513ff9194cb493fb3273e811b5b96d0
 msgid "[0.0.30] - 2023-07-06"
 msgstr "[0.0.30] - 2023-07-06"
 
-#: ../../CHANGES.rst:340 7bd32f1cc1c24ce9a6a7a4f3d7fd6024
+#: ../../CHANGES.rst:341 7bd32f1cc1c24ce9a6a7a4f3d7fd6024
 msgid ""
 "Configuration files must be updated. Check the new format with ``git diff "
 "0.0.29 0.0.30 canaille/conf/config.sample.toml``"
@@ -687,15 +692,15 @@ msgstr ""
 "Les fichiers de configuration doivent être mis à jour. Vérifiez le nouveau "
 "format avec ``git diff 0.0.29 0.0.30 canaille/conf/config.sample.toml``"
 
-#: ../../CHANGES.rst:346 a3f5487d18624886a2adee2c28346eae
+#: ../../CHANGES.rst:347 a3f5487d18624886a2adee2c28346eae
 msgid "Configuration option to disable Javascript. :pr:`141`"
 msgstr "Option de configuration pour désactiver Javascript. :pr:`141"
 
-#: ../../CHANGES.rst:351 e6ab42f3565b415f85d7778e5ac18966
+#: ../../CHANGES.rst:352 e6ab42f3565b415f85d7778e5ac18966
 msgid "The configuration parameter ``USER_FILTER`` is parsed with Jinja."
 msgstr "Le paramètre de configuration ``USER_FILTER`` est analysé avec Jinja."
 
-#: ../../CHANGES.rst:352 de4e44a5b6324f389effc64a28a69c5d
+#: ../../CHANGES.rst:353 de4e44a5b6324f389effc64a28a69c5d
 msgid ""
 "Configuration use ``PRIVATE_KEY_FILE`` instead of ``PRIVATE_KEY`` and "
 "``PUBLIC_KEY_FILE`` instead of ``PUBLIC_KEY``."
@@ -703,29 +708,29 @@ msgstr ""
 "La configuration utilise ``PRIVATE_KEY_FILE`` à la place de ``PRIVATE_KEY`` "
 "et ``PUBLIC_KEY_FILE`` à la place de ``PUBLIC_KEY``."
 
-#: ../../CHANGES.rst:355 812f9e5828dd4912bc832214d5ae721d
+#: ../../CHANGES.rst:356 812f9e5828dd4912bc832214d5ae721d
 msgid "[0.0.29] - 2023-06-30"
 msgstr "[0.0.29] - 2023-06-30"
 
-#: ../../CHANGES.rst:360 81bf1e1132f44c5399805dc865372873
+#: ../../CHANGES.rst:361 81bf1e1132f44c5399805dc865372873
 msgid "Disabled `HTMX` boosting on OIDC forms to avoid errors."
 msgstr ""
 "Désactivation d’`HTMX` sur les formulaires OIDC pour éviter des erreurs lors "
 "des redirections."
 
-#: ../../CHANGES.rst:363 0b442eaa0f7f44919f3793aac59d4b4d
+#: ../../CHANGES.rst:364 0b442eaa0f7f44919f3793aac59d4b4d
 msgid "[0.0.28] - 2023-06-30"
 msgstr "[0.0.28] - 2023-06-30"
 
-#: ../../CHANGES.rst:368 3b645ba8d22642f7ae36a9401a170414
+#: ../../CHANGES.rst:369 3b645ba8d22642f7ae36a9401a170414
 msgid "A template variable was misnamed."
 msgstr "Une variable de template était mal nommée."
 
-#: ../../CHANGES.rst:371 1c8d7269601c4cbf8c6952063000a5f1
+#: ../../CHANGES.rst:372 1c8d7269601c4cbf8c6952063000a5f1
 msgid "[0.0.27] - 2023-06-29"
 msgstr "[0.0.27] - 2023-06-29"
 
-#: ../../CHANGES.rst:375 3082667648f14f86a48ba1f4c71c6bf1
+#: ../../CHANGES.rst:376 3082667648f14f86a48ba1f4c71c6bf1
 msgid ""
 "Configuration files must be updated. Check the new format with ``git diff "
 "0.0.26 0.0.27 canaille/conf/config.sample.toml``"
@@ -733,7 +738,7 @@ msgstr ""
 "Les fichiers de configuration doivent être mis à jour. Vérifiez le nouveau "
 "format avec ``git diff 0.0.26 0.0.27 canaille/conf/config.sample.toml``"
 
-#: ../../CHANGES.rst:381 d37a0bf60d6a407094dca1df32907bc3
+#: ../../CHANGES.rst:382 d37a0bf60d6a407094dca1df32907bc3
 msgid ""
 "Configuration entries can be loaded from files if the entry key has a "
 "*_FILE* suffix and the entry value is the path to the file. :issue:`134` :pr:"
@@ -743,35 +748,35 @@ msgstr ""
 "paramètre a un suffixe *_FILE* et que sa valeur correspond à un chemin de "
 "fichier. :issue:`134` :pr:`134`"
 
-#: ../../CHANGES.rst:383 b198cedfd2dc4b1ca5caffb7281b2b77
+#: ../../CHANGES.rst:384 b198cedfd2dc4b1ca5caffb7281b2b77
 msgid "Field list support. :issue:`115` :pr:`136`"
 msgstr "Support pour les listes de champ. :issue:`115` :pr:`136`"
 
-#: ../../CHANGES.rst:384 bda5916225d046aa92eee4df020d31d7
+#: ../../CHANGES.rst:385 bda5916225d046aa92eee4df020d31d7
 msgid "Pages are boosted with `HTMX`. :issue:`144` :issue:`145` :pr:`137`"
 msgstr ""
 "Les pages sont boostées avec `HTMX`. :issue:`144` :issue:`145` :pr:`137`"
 
-#: ../../CHANGES.rst:389 f0103671112e414da54f464537b92886
+#: ../../CHANGES.rst:390 f0103671112e414da54f464537b92886
 msgid "Bump to jquery 3.7.0. :pr:`138`"
 msgstr "Mise à jour vers jquery 3.7.0. :pr:`138`"
 
-#: ../../CHANGES.rst:394 a3de7cd9d0b74333bbe2252c30b27d24
+#: ../../CHANGES.rst:395 a3de7cd9d0b74333bbe2252c30b27d24
 msgid ""
 "Profile edition when the user RDN was not ``uid``. :issue:`148` :pr:`139`"
 msgstr ""
 "L’édition des profils utilisateurs lorsque le RDN n’était pas ``uid`. :issue:"
 "`148` :pr:`139`"
 
-#: ../../CHANGES.rst:399 a8ee95c286e44ee190211fc2e7792b41
+#: ../../CHANGES.rst:400 a8ee95c286e44ee190211fc2e7792b41
 msgid "Stop support for Python 3.7. :pr:`131`"
 msgstr "Arrêt du support pour Python 3.7. :pr:`131`"
 
-#: ../../CHANGES.rst:402 031ef0bde1a142fda5313115f399b305
+#: ../../CHANGES.rst:403 031ef0bde1a142fda5313115f399b305
 msgid "[0.0.26] - 2023-06-03"
 msgstr "[0.0.26] - 2023-06-03"
 
-#: ../../CHANGES.rst:407 8cd815265cd245d8ae32992c885e4c63
+#: ../../CHANGES.rst:408 8cd815265cd245d8ae32992c885e4c63
 msgid ""
 "Implemented account expiration based on OpenLDAP ppolicy overlay. Needs "
 "OpenLDAP 2.5+. :issue:`13` :pr:`118`"
@@ -779,27 +784,27 @@ msgstr ""
 "Implémentation de l’expiration des comptes en se basant sur l’overlay "
 "OpenLDAP `ppolicy``. Nécessite au minimun OpenLDAP 2.5. :issue:`13` :pr:`118`"
 
-#: ../../CHANGES.rst:409 f7ab79e41d1c400fa0f5be534df749eb
+#: ../../CHANGES.rst:410 f7ab79e41d1c400fa0f5be534df749eb
 msgid "Timezone configuration entry. :issue:`137` :pr:`130`"
 msgstr "Paramètre de configuration des fuseaux horaire. :issue:`137` :pr:`130`"
 
-#: ../../CHANGES.rst:414 01a6b5ffbd164e11a7d13c2a720b6230
+#: ../../CHANGES.rst:415 01a6b5ffbd164e11a7d13c2a720b6230
 msgid "Avoid setting ``None`` in JWT claims when they have no value."
 msgstr ""
 "Les paramètres du jeton d'accès ne sont pas ``None`` lorsqu'ils n’ont pas de "
 "valeur définie."
 
-#: ../../CHANGES.rst:415 1b9beda783b14033b13b34bb69dcf94e
+#: ../../CHANGES.rst:416 1b9beda783b14033b13b34bb69dcf94e
 msgid "Display password recovery button on OIDC login page. :pr:`129`"
 msgstr ""
 "Affichage du bouton de réinitialisation de mots de passe sur la page de "
 "connexion OIDC. :pr:`129`"
 
-#: ../../CHANGES.rst:418 98f294fe9c78448e92a9340f14812660
+#: ../../CHANGES.rst:419 98f294fe9c78448e92a9340f14812660
 msgid "[0.0.25] - 2023-05-05"
 msgstr "[0.0.25] - 2023-05-05"
 
-#: ../../CHANGES.rst:423 b9e80a38348a4fabb577d17c476ef787
+#: ../../CHANGES.rst:424 b9e80a38348a4fabb577d17c476ef787
 msgid ""
 "Check the new format with ``git diff 0.0.25 0.0.24 canaille/conf/config."
 "sample.toml``"
@@ -807,93 +812,93 @@ msgstr ""
 "Vérifiez le nouveau format avec ``git diff 0.0.25 0.0.24 canaille/conf/"
 "config.sample.toml``"
 
-#: ../../CHANGES.rst:428 d72e485b1606403e895166193d518a26
+#: ../../CHANGES.rst:429 d72e485b1606403e895166193d518a26
 msgid ""
 "Renamed user model attributes to match SCIM naming convention. :pr:`123`"
 msgstr ""
 "Renommage des modèles d’attributs d’'utilisateurs en suivant la convention "
 "SCIM. :pr:`123`"
 
-#: ../../CHANGES.rst:429 f53dae9936ca4478b6575167779eb297
+#: ../../CHANGES.rst:430 f53dae9936ca4478b6575167779eb297
 msgid "Moved OIDC related configuration entries in ``OIDC``."
 msgstr "Déplacement des paramètres de configuration OIDC dans ``OIDC``."
 
-#: ../../CHANGES.rst:430 c097b3593a1f42d882167cef3925368a
+#: ../../CHANGES.rst:431 c097b3593a1f42d882167cef3925368a
 msgid "Moved ``LDAP`` configuration entry to ``BACKENDS.LDAP``."
 msgstr ""
 "Déplacement des paramètres de configuration ``LDAP`` dans ``BACKENDS.LDAP``."
 
-#: ../../CHANGES.rst:431 88b8faa16b314ab3bc05c8a24dc7432e
+#: ../../CHANGES.rst:432 88b8faa16b314ab3bc05c8a24dc7432e
 msgid "Bumped to `HTMX` 1.9.0. :pr:`124`"
 msgstr "Mise à jour vers HTMX 1.9.0. :pr:`184`"
 
-#: ../../CHANGES.rst:432 391a6692f5de4897ac370fc253b7caf4
+#: ../../CHANGES.rst:433 391a6692f5de4897ac370fc253b7caf4
 msgid ""
 "ACL filters are no more LDAP filters but user attribute mappings. :pr:`125`"
 msgstr ""
 "Les filtres de permissions ne sont plus des filtres LDAP mais des "
 "associations de paramètres utilisateur. :pr:`125`"
 
-#: ../../CHANGES.rst:433 286baa01210c47ee8a9c71a8c51e72fb
+#: ../../CHANGES.rst:434 286baa01210c47ee8a9c71a8c51e72fb
 msgid "Bumped to `HTMX` 1.9.2. :pr:`127`"
 msgstr "Mise-à-jour vers `HTMX` 1.9.2. :pr:`127`"
 
-#: ../../CHANGES.rst:438 2f5e152512fe493c9e5f291f3dc47ca3
+#: ../../CHANGES.rst:439 2f5e152512fe493c9e5f291f3dc47ca3
 msgid "``OIDC.JWT.MAPPING`` configuration entry is really optional now."
 msgstr ""
 "Le paramètre de configuration ``OIDC.JWT.MAPPING`` est réellement facultatif."
 
-#: ../../CHANGES.rst:439 646ffd29b1694f58a41036fec066e023
+#: ../../CHANGES.rst:440 646ffd29b1694f58a41036fec066e023
 msgid "Fixed empty model attributes registration. :pr:`125`"
 msgstr "Correction des attributs vides lors de l’enregistrement. :pr:`125`"
 
-#: ../../CHANGES.rst:440 8ef81a1e8e584cab90c6401a07c88b81
+#: ../../CHANGES.rst:441 8ef81a1e8e584cab90c6401a07c88b81
 msgid "Password initialization mails were not correctly sent. :pr:`128`"
 msgstr ""
 "Les courriels d’initialisation de mot de passe n’étaient pas correctement "
 "envoyés. :pr:`128`"
 
-#: ../../CHANGES.rst:443 e9729b8de309453a862cb61a500d83a6
+#: ../../CHANGES.rst:444 e9729b8de309453a862cb61a500d83a6
 msgid "[0.0.24] - 2023-04-07"
 msgstr "[0.0.24] - 2023-04-07"
 
-#: ../../CHANGES.rst:448 e25900ea2cb9451f9def4f1230cf311b
+#: ../../CHANGES.rst:449 e25900ea2cb9451f9def4f1230cf311b
 msgid "Fixed avatar update. :pr:`122`"
 msgstr "Correction de la mise à jour des avatars. :pr:`122`"
 
-#: ../../CHANGES.rst:451 6b0ff68eb4d048f9a87c723077b6a917
+#: ../../CHANGES.rst:452 6b0ff68eb4d048f9a87c723077b6a917
 msgid "[0.0.23] - 2023-04-05"
 msgstr "[0.0.23] - 2023-04-05"
 
-#: ../../CHANGES.rst:456 45d12b8c7b044a6aa129a826cb589403
+#: ../../CHANGES.rst:457 45d12b8c7b044a6aa129a826cb589403
 msgid "Organization field. :pr:`116`"
 msgstr "Champ `organization` :pr:`116`"
 
-#: ../../CHANGES.rst:457 7554a21c2da44a10ae7044507e7e8ef1
+#: ../../CHANGES.rst:458 7554a21c2da44a10ae7044507e7e8ef1
 msgid "ETag and Last-Modified headers on user photos. :pr:`116`"
 msgstr "En-têtes `ETag` et `Last-Modified` sur les avatars. :pr:`116`"
 
-#: ../../CHANGES.rst:458 56e3c78c43bc4ebfb789357d53401f12
+#: ../../CHANGES.rst:459 56e3c78c43bc4ebfb789357d53401f12
 msgid "Dynamic form validation. :pr:`120`"
 msgstr "Validation dynamique des formulaires. :pr:`120`"
 
-#: ../../CHANGES.rst:463 eef201e52d6e487fb83b276678dcf6ad
+#: ../../CHANGES.rst:464 eef201e52d6e487fb83b276678dcf6ad
 msgid "UX rework. Submenu addition. :pr:`114`"
 msgstr "Travaux sur l’interface utilisateur. Ajout de sous-menus. :pr:`114`"
 
-#: ../../CHANGES.rst:464 f6dfc94a3486418cb94ebe88c6078543
+#: ../../CHANGES.rst:465 f6dfc94a3486418cb94ebe88c6078543
 msgid "Properly handle LDAP date timezones. :pr:`117`"
 msgstr "Gestion correcte des fuseaux horaire des dates dans LDAP. :pr:`117`"
 
-#: ../../CHANGES.rst:469 c81b6adf5d6e40e8b0aeb2898e40c692
+#: ../../CHANGES.rst:470 c81b6adf5d6e40e8b0aeb2898e40c692
 msgid "CSRF protection on every forms. :pr:`119`"
 msgstr "Protection CSRF sur tous les formulaires. :pr:`119`"
 
-#: ../../CHANGES.rst:472 41e5cc643b4e4c35b9d04ed3c6eba537
+#: ../../CHANGES.rst:473 41e5cc643b4e4c35b9d04ed3c6eba537
 msgid "[0.0.22] - 2023-03-13"
 msgstr "[0.0.22] - 2023-03-13"
 
-#: ../../CHANGES.rst:476 e510bec507814d5387a49ba6117ef0a7
+#: ../../CHANGES.rst:477 e510bec507814d5387a49ba6117ef0a7
 msgid ""
 "The `Faker` library is not imported anymore when the `clean` command is "
 "called."
@@ -901,26 +906,26 @@ msgstr ""
 "La bibliothèque `Faker` n’est plus importée lorsque la commande `clean` est "
 "appelée."
 
-#: ../../CHANGES.rst:479 9af418bca29f4c169f5720ea8e14e9ac
+#: ../../CHANGES.rst:480 9af418bca29f4c169f5720ea8e14e9ac
 msgid "[0.0.21] - 2023-03-12"
 msgstr "[0.0.21] - 2023-03-12"
 
-#: ../../CHANGES.rst:484 6c81ccf5040343cebb06fe34cc66221e
+#: ../../CHANGES.rst:485 6c81ccf5040343cebb06fe34cc66221e
 msgid "Display TOS and policy URI on the consent list page. :pr:`102`"
 msgstr ""
 "Affichage des liens vers les conditions d’utilisation sur la page de liste "
 "des consentements. :pr:`102`"
 
-#: ../../CHANGES.rst:485 4d19d14961744e028504787840181114
+#: ../../CHANGES.rst:486 4d19d14961744e028504787840181114
 msgid "Admin token deletion. :pr:`100` :pr:`101`"
 msgstr ""
 "Suppression des jetons via l’interface administrateur. :pr:`100` :pr:`101`"
 
-#: ../../CHANGES.rst:486 cf00a4a47f2a4463a3cc06dd126d589d
+#: ../../CHANGES.rst:487 cf00a4a47f2a4463a3cc06dd126d589d
 msgid "Revoked consents can be restored. :pr:`103`"
 msgstr "Les consentements révoqués peuvent être restaurés. :pr:`103`"
 
-#: ../../CHANGES.rst:487 06108983455940049911e3b8892f8735
+#: ../../CHANGES.rst:488 06108983455940049911e3b8892f8735
 msgid ""
 "Pre-consented clients are displayed in the user consent list, and their "
 "consents can be revoked. :issue:`69` :pr:`103`"
@@ -928,7 +933,7 @@ msgstr ""
 "Les clients pré-autorisés apparaissent dans la liste de consentement des "
 "utilisateurs, et leur consentement peut être révoqué. :issue:`69` :pr:`103`"
 
-#: ../../CHANGES.rst:489 2f26c80f733b42f99df3af94c8774ad5
+#: ../../CHANGES.rst:490 2f26c80f733b42f99df3af94c8774ad5
 msgid ""
 "A ``populate`` command can be used to fill the database with random users "
 "generated with faker. :pr:`105`"
@@ -936,29 +941,29 @@ msgstr ""
 "Implémentation d’une commande ``populate`` qui remplit la base de données "
 "avec des valeurs aléatoires générées avec la bibliothèque `Faker`. :pr:`105`"
 
-#: ../../CHANGES.rst:491 64049d3aa81141f3b29778b9f2f3d188
+#: ../../CHANGES.rst:492 64049d3aa81141f3b29778b9f2f3d188
 msgid "SMTP SSL support. :pr:`108`"
 msgstr "Support des connexions SMTP avec SSL. :pr:`108`"
 
-#: ../../CHANGES.rst:492 6f16cdf0ce864a20b13344f84e6dfefb
+#: ../../CHANGES.rst:493 6f16cdf0ce864a20b13344f84e6dfefb
 msgid "Server side pagination. :issue:`114` :pr:`111`"
 msgstr "Pagination côté serveur. :issue:`114`:pr:`111`"
 
-#: ../../CHANGES.rst:493 7aeacbe0b4fa48c79db52ed0cf7229fd
+#: ../../CHANGES.rst:494 7aeacbe0b4fa48c79db52ed0cf7229fd
 msgid "Department number support. :issue:`129`"
 msgstr "Support du champs de numéro de département. :issue:`129`"
 
-#: ../../CHANGES.rst:494 e5bb989cd1fe472cb845dfe3de958f55
+#: ../../CHANGES.rst:495 e5bb989cd1fe472cb845dfe3de958f55
 msgid "Address edition support (but not in the OIDC claims yet). :pr:`112`"
 msgstr ""
 "Support de l’édition de l’adresse (sans que cela apparaisse dans les "
 "paramètres du jeton OIDC). :pr:`112`"
 
-#: ../../CHANGES.rst:495 1140843546bf41dd826bf71bea29ff23
+#: ../../CHANGES.rst:496 1140843546bf41dd826bf71bea29ff23
 msgid "Title edition support. :pr:`113`"
 msgstr "Support de l’édition du paramètre `title`. :pr:`113`"
 
-#: ../../CHANGES.rst:500 d9bd3caa1f4f47ebb304efd457802ca1
+#: ../../CHANGES.rst:501 d9bd3caa1f4f47ebb304efd457802ca1
 msgid ""
 "Client deletion also deletes related :class:`~canaille.oidc.basemodels."
 "Consent`, :class:`~canaille.oidc.basemodels.Token` and :class:`~canaille."
@@ -969,63 +974,63 @@ msgstr ""
 "Token` et :class:`~canaille.oidc.basemodels.AuthorizationCode`. :issue:"
 "`126` :pr:`98`"
 
-#: ../../CHANGES.rst:506 ac1feaf507284b65bab96bc30457d263
+#: ../../CHANGES.rst:507 ac1feaf507284b65bab96bc30457d263
 msgid "Removed the `DataTables` Javascript library."
 msgstr "Suppression de la bibliothèque Javascript `Datatables`."
 
-#: ../../CHANGES.rst:509 d0d7087c87844d069df327a34667ef31
+#: ../../CHANGES.rst:510 d0d7087c87844d069df327a34667ef31
 msgid "[0.0.20] - 2023-01-28"
 msgstr "[0.0.20] - 2023-01-28"
 
-#: ../../CHANGES.rst:514 6254c6b37dea417d908d7679fa0c2df5
+#: ../../CHANGES.rst:515 6254c6b37dea417d908d7679fa0c2df5
 msgid "Spanish translation. :pr:`85` :pr:`88`"
 msgstr "Traduction espagnole. :pr:`85` :pr:`88`"
 
-#: ../../CHANGES.rst:515 3a8a7c3e462e4388a29c87ea44bbca31
+#: ../../CHANGES.rst:516 3a8a7c3e462e4388a29c87ea44bbca31
 msgid "Dedicated connectivity test email. :pr:`89`"
 msgstr "Test de connectivité. :pr:`89`"
 
-#: ../../CHANGES.rst:516 6c73a2cff39a4b8caacfca57f27ba60b
+#: ../../CHANGES.rst:517 6c73a2cff39a4b8caacfca57f27ba60b
 msgid "Update to jquery 3.6.3. :pr:`90`"
 msgstr "Mise à jour vers jquery 3.6.3. :pr:`90`"
 
-#: ../../CHANGES.rst:517 2a31509ad04a41d4a9ceab66e4447c61
+#: ../../CHANGES.rst:518 2a31509ad04a41d4a9ceab66e4447c61
 msgid "Update to fomantic-ui 2.9.1. :pr:`90`"
 msgstr "Mise à jour vers Fomantic-UI 2.9.1. :pr:`90`"
 
-#: ../../CHANGES.rst:518 1b8798a48e73416383644caadcb8c9d0
+#: ../../CHANGES.rst:519 1b8798a48e73416383644caadcb8c9d0
 msgid "Update to DataTables 1.13.1. :pr:`90`"
 msgstr "Mise à jour vers DataTAbles 1.13.1. :pr:`90`"
 
-#: ../../CHANGES.rst:523 43bb3fea7c22470bb734e723ae6ec2dc
+#: ../../CHANGES.rst:524 43bb3fea7c22470bb734e723ae6ec2dc
 msgid "Fix typos and grammar errors. :pr:`84`"
 msgstr "Correction de fautes de frappe et d’erreurs de grammaire. :pr:`84`"
 
-#: ../../CHANGES.rst:524 28f37a5212944339bb10de4c91b1555d
+#: ../../CHANGES.rst:525 28f37a5212944339bb10de4c91b1555d
 msgid "Fix wording and punctuations. :pr:`86`"
 msgstr "Correction de formulations et de ponctuations. :pr:`86`"
 
-#: ../../CHANGES.rst:525 3511a582ca4d4dd5b57f04e945ff2615
+#: ../../CHANGES.rst:526 3511a582ca4d4dd5b57f04e945ff2615
 msgid "Fix HTML lang tag. :issue:`122` :pr:`87`"
 msgstr "Correction de la balise HTML de langue. :issue:`122` :pr:`87`"
 
-#: ../../CHANGES.rst:526 227f6ecacee547eab969399f3543c1a9
+#: ../../CHANGES.rst:527 227f6ecacee547eab969399f3543c1a9
 msgid "Automatically trims the HTML translated strings. :pr:`91`"
 msgstr ""
 "Suppression automatique des espaces autour des chaîne de caractères à "
 "traduire. :pr:`91`"
 
-#: ../../CHANGES.rst:527 ce4262a979b34e588c4d99db8ec9fae6
+#: ../../CHANGES.rst:528 ce4262a979b34e588c4d99db8ec9fae6
 msgid "Fixed dynamic registration scope management. :issue:`123` :pr:`93`"
 msgstr ""
 "Correction de la gestion du domaine de l’enregistrement dynamique. :issues:"
 "`123` :pr:`93`"
 
-#: ../../CHANGES.rst:530 3326dbb8be62452d8140320a39612093
+#: ../../CHANGES.rst:531 3326dbb8be62452d8140320a39612093
 msgid "[0.0.19] - 2023-01-14"
 msgstr "[0.0.19] - 2023-01-14"
 
-#: ../../CHANGES.rst:535 c15def45121b4d30ab4c57c640f5da6a
+#: ../../CHANGES.rst:536 c15def45121b4d30ab4c57c640f5da6a
 msgid ""
 "Ensures the token `expires_in` claim and the `access_token` `exp` claim have "
 "the same value. :pr:`83`"
@@ -1033,11 +1038,11 @@ msgstr ""
 "Le paramètre ``expires_in`` du flux d’autorisation et le paramètre ``exp``du "
 "jeton d’accès ont la même valeur. :pr:`83"
 
-#: ../../CHANGES.rst:539 2e2f24525dba4a819e97e6589907d0a5
+#: ../../CHANGES.rst:540 2e2f24525dba4a819e97e6589907d0a5
 msgid "[0.0.18] - 2022-12-28"
 msgstr "[0.0.18] - 2022-12-28"
 
-#: ../../CHANGES.rst:544 82745fec4b984965b3d0b81bed5a3941
+#: ../../CHANGES.rst:545 82745fec4b984965b3d0b81bed5a3941
 msgid ""
 "OIDC end_session was not returning the ``state`` parameter in the "
 "``post_logout_redirect_uri``. :pr:`82`"
@@ -1045,40 +1050,40 @@ msgstr ""
 "Le paramètre ``state`` n’était pas transmis à l’URL de redirection post "
 "déconnexion. :pr:`82`"
 
-#: ../../CHANGES.rst:548 3bd062d77c0048d3816421ed0de978e6
+#: ../../CHANGES.rst:549 3bd062d77c0048d3816421ed0de978e6
 msgid "[0.0.17] - 2022-12-26"
 msgstr "[0.0.17] - 2022-12-26"
 
-#: ../../CHANGES.rst:553 4f0e0feb2cca4a8eb54473f5764cfcc7
+#: ../../CHANGES.rst:554 4f0e0feb2cca4a8eb54473f5764cfcc7
 msgid "Fixed group deletion button. :pr:`80`"
 msgstr "Correction du bouton de suppression de groupe. :pr:`80`"
 
-#: ../../CHANGES.rst:554 b6fc018fb2dc41ecaf43a313cf5330b9
+#: ../../CHANGES.rst:555 b6fc018fb2dc41ecaf43a313cf5330b9
 msgid "Fixed post requests in oidc clients views. :pr:`81`"
 msgstr ""
 "Correction des requêtes POST sur la vue de gestion des clients OIDC. :pr:`81`"
 
-#: ../../CHANGES.rst:557 0e9699c0d5a74e689fdb73d2ac431d28
+#: ../../CHANGES.rst:558 0e9699c0d5a74e689fdb73d2ac431d28
 msgid "[0.0.16] - 2022-12-15"
 msgstr "[0.0.16] - 2022-12-15"
 
-#: ../../CHANGES.rst:562 a43af598d338438ea64a3352a866610c
+#: ../../CHANGES.rst:563 a43af598d338438ea64a3352a866610c
 msgid "Fixed LDAP operational attributes handling."
 msgstr "Correction sur le comportement des attributs LDAP opérationnels."
 
-#: ../../CHANGES.rst:565 11d5f04851c847e6b3939176add7c1e2
+#: ../../CHANGES.rst:566 11d5f04851c847e6b3939176add7c1e2
 msgid "[0.0.15] - 2022-12-15"
 msgstr "[0.0.15] - 2022-12-15"
 
-#: ../../CHANGES.rst:570 ce751d2ad6e44f438e092afbdcfe72ce
+#: ../../CHANGES.rst:571 ce751d2ad6e44f438e092afbdcfe72ce
 msgid "User can chose their display name. :pr:`77`"
 msgstr "Les utilisateurs peuvent choisir leur nom d’affichage. :pr:`77`"
 
-#: ../../CHANGES.rst:571 008bcd50172d46429d218c6afbd7bc0f
+#: ../../CHANGES.rst:572 008bcd50172d46429d218c6afbd7bc0f
 msgid "Bumped to Authlib 1.2. :pr:`78`"
 msgstr "Mise à jour vers Authlib 1.2. :pr:`78`"
 
-#: ../../CHANGES.rst:572 3edcc407205b44918ab63920f9734a50
+#: ../../CHANGES.rst:573 3edcc407205b44918ab63920f9734a50
 msgid ""
 "Implemented :rfc:`RFC7592 <7592>` OAuth 2.0 Dynamic Client Registration "
 "Management Protocol. :pr:`79`"
@@ -1086,26 +1091,26 @@ msgstr ""
 "Implémentation de la :rfc:`RFC7592 <7592>` OAuth 2.0 Dynamic Client "
 "Registration Management Protocol. :pr:`79`"
 
-#: ../../CHANGES.rst:574 e327d602ecac448f8f73a848047f6319
+#: ../../CHANGES.rst:575 e327d602ecac448f8f73a848047f6319
 msgid ""
 "Add the ``nonce`` parameter to the ``claims_supported`` server metadata list."
 msgstr ""
 "Ajout du paramètre ``nonce`` à la métadonnée du serveur OIDC "
 "``claims_supported``."
 
-#: ../../CHANGES.rst:577 74ad576932584357834751ca5edd823a
+#: ../../CHANGES.rst:578 74ad576932584357834751ca5edd823a
 msgid "[0.0.14] - 2022-11-29"
 msgstr "[0.0.14] - 2022-11-29"
 
-#: ../../CHANGES.rst:581 1205e961f8944bbb8dbc519bbfdf4993
+#: ../../CHANGES.rst:582 1205e961f8944bbb8dbc519bbfdf4993
 msgid "Fixed translation catalogs packaging."
 msgstr "Correction de l'empaquetage des catalogues de traduction."
 
-#: ../../CHANGES.rst:584 fc089f22a3a14548b469d6c4668bb3dc
+#: ../../CHANGES.rst:585 fc089f22a3a14548b469d6c4668bb3dc
 msgid "[0.0.13] - 2022-11-21"
 msgstr "[0.0.13] - 2022-11-21"
 
-#: ../../CHANGES.rst:589 ea1f503e84f04965b18a569cf25d2941
+#: ../../CHANGES.rst:590 ea1f503e84f04965b18a569cf25d2941
 msgid ""
 "Fixed a bug on the contacts field in the admin client form following the "
 "LDAP schema update of 0.0.12."
@@ -1114,7 +1119,7 @@ msgstr ""
 "d’administration des clients OIDC, du à la mise à jour des schémas LDAP de "
 "la version 0.0.12."
 
-#: ../../CHANGES.rst:591 95a73e92dd77499c9109135edf0040cf
+#: ../../CHANGES.rst:592 95a73e92dd77499c9109135edf0040cf
 msgid ""
 "Fixed a bug happening during RP initiated logout on clients without "
 "`post_logout_redirect_uri` defined."
@@ -1122,39 +1127,39 @@ msgstr ""
 "Correction d’une erreur survenant dans la phase de déconnexion initiée par "
 "les clients sans paramètre `post_logout_redirect_uri` défini."
 
-#: ../../CHANGES.rst:593 5648d45162744cf4956d8d9c7d9bbf3d
+#: ../../CHANGES.rst:594 5648d45162744cf4956d8d9c7d9bbf3d
 msgid "Gitlab CI fix. :pr:`64`"
 msgstr "Correction de l’intégration continue de Gitlab. :pr:`64`"
 
-#: ../../CHANGES.rst:594 1b490834cff04cb99ff4b83f9e5dd758
+#: ../../CHANGES.rst:595 1b490834cff04cb99ff4b83f9e5dd758
 msgid ""
 "Fixed `client_secret` display on the client administration page. :pr:`65`"
 msgstr ""
 "Correction de l’affichage de l’attribut `client_secret` sur la page "
 "d’administration des clients. :pr:`65`"
 
-#: ../../CHANGES.rst:595 5d7cd051df4c45eb9b8e2beea6ec9659
+#: ../../CHANGES.rst:596 5d7cd051df4c45eb9b8e2beea6ec9659
 msgid "Fixed non-square logo CSS. :pr:`67`"
 msgstr "Correction de la feuille de style pour les logos non carrés. :pr:`67`"
 
-#: ../../CHANGES.rst:596 16e68eaca761436eb1add2beea510963
+#: ../../CHANGES.rst:597 16e68eaca761436eb1add2beea510963
 msgid "Fixed schema path on installation. :pr:`68`"
 msgstr "Correction des chemins d’installation des schémas. :pr:`68`"
 
-#: ../../CHANGES.rst:597 5d87e6344c9d474c821419beb33a1d56
+#: ../../CHANGES.rst:598 5d87e6344c9d474c821419beb33a1d56
 msgid "Fixed RFC7591 ``software_statement`` claim support. :pr:`70`"
 msgstr "Correction du paramètre ``software_statement` de la RFC7591. :pr:`70`"
 
-#: ../../CHANGES.rst:598 b65b8f602a7d4440936987b7c0143cf7
+#: ../../CHANGES.rst:599 b65b8f602a7d4440936987b7c0143cf7
 msgid "Fixed client preconsent disabling. :pr:`72`"
 msgstr ""
 "Correction de la désactivation du pré-consentement des clients. :pr:`72`"
 
-#: ../../CHANGES.rst:603 05f32b1852b34334be85dc02f3bc2689
+#: ../../CHANGES.rst:604 05f32b1852b34334be85dc02f3bc2689
 msgid "Python 3.11 support. :pr:`61`"
 msgstr "Support de Python 3.11. :pr:`61`"
 
-#: ../../CHANGES.rst:604 33289ea27c844082832e8eea78498d86
+#: ../../CHANGES.rst:605 33289ea27c844082832e8eea78498d86
 msgid ""
 "``apparmor`` slapd configuration instructions in the documentation page for "
 "contributions. :pr:`66`"
@@ -1162,11 +1167,11 @@ msgstr ""
 "Instructions concernant la configuration ``apparmor`` pour OpenLDAP dans la "
 "page de documentation sur les contributions. :pr:`66`"
 
-#: ../../CHANGES.rst:605 d12ad2a4e17244f8b2719ba9d0749597
+#: ../../CHANGES.rst:606 d12ad2a4e17244f8b2719ba9d0749597
 msgid "``preferredLanguage`` attribute support. :pr:`75`"
 msgstr "Support de l’attribut utilisateur ``preferredLanguage``. :pr:`75`"
 
-#: ../../CHANGES.rst:610 dac1b885aa8243af874405b4ccce52f2
+#: ../../CHANGES.rst:611 dac1b885aa8243af874405b4ccce52f2
 msgid ""
 "Replaced the use of the deprecated `FLASK_ENV` environment variable by "
 "`FLASK_DEBUG`."
@@ -1174,7 +1179,7 @@ msgstr ""
 "Remplacement de la variable d’environnement dépréciée `FLASK_ENV` par "
 "`FLASK_DEBUG`."
 
-#: ../../CHANGES.rst:612 b6ca7ce41fa346b8bb3fa325f1e1ac0d
+#: ../../CHANGES.rst:613 b6ca7ce41fa346b8bb3fa325f1e1ac0d
 msgid ""
 "Dynamically generate the server metadata. Users won't have to copy and "
 "manually edit ``oauth-authorizationserver.json`` and ``openid-configuration."
@@ -1184,70 +1189,70 @@ msgstr ""
 "plus à copier manuellement et éditer les fichiers ``oauth-"
 "authorizationserver.json`` et ``openid-configuration.json``. :pr:`71`"
 
-#: ../../CHANGES.rst:615 ae1b6570238e43f1ac83a511fece3cf5
+#: ../../CHANGES.rst:616 ae1b6570238e43f1ac83a511fece3cf5
 msgid "The `FROM_ADDR` configuration option is not mandatory anymore. :pr:`73`"
 msgstr ""
 "L’option de configuration ``FROM_ADDR``n’est plus obligatoire. :pr:`73`"
 
-#: ../../CHANGES.rst:616 cba8b0fae91a4dfe9f0e05ddb541f667
+#: ../../CHANGES.rst:617 cba8b0fae91a4dfe9f0e05ddb541f667
 msgid "The `JWT.ISS` configuration option is not mandatory anymore. :pr:`74`"
 msgstr "L’option de configuration ``JWT.ISS``n’est plus obligatoire. :pr:`74`"
 
-#: ../../CHANGES.rst:619 36caf034f254408aa020410594ab0cce
+#: ../../CHANGES.rst:620 36caf034f254408aa020410594ab0cce
 msgid "[0.0.12] - 2022-10-24"
 msgstr "[0.0.12] - 2022-10-24"
 
-#: ../../CHANGES.rst:624 319c8b51be714d25ab11b9a83241970d
+#: ../../CHANGES.rst:625 319c8b51be714d25ab11b9a83241970d
 msgid "Basic WebFinger endpoint. :pr:`59`"
 msgstr "Support basique du point de terminaison WebFinger. :pr:`59`"
 
-#: ../../CHANGES.rst:625 97c9f28850884353be68c0ada430c443
+#: ../../CHANGES.rst:626 97c9f28850884353be68c0ada430c443
 msgid "Bumped to FomanticUI 2.9.0."
 msgstr "Mise à jour vers FomanticUI 2.9.0."
 
-#: ../../CHANGES.rst:626 c3938df1d7fc47aa9e9e686b32366a0a
+#: ../../CHANGES.rst:627 c3938df1d7fc47aa9e9e686b32366a0a
 msgid "Implemented Dynamic Client Registration. :pr:`60`"
 msgstr ""
 "Implémentation de l’enregistrement dynamique des clients OIDC. :pr:`60`"
 
-#: ../../CHANGES.rst:629 5fbfc5c654b0443bac204c4743931636
+#: ../../CHANGES.rst:630 5fbfc5c654b0443bac204c4743931636
 msgid "[0.0.11] - 2022-08-11"
 msgstr "[0.0.11] - 2022-08-11"
 
-#: ../../CHANGES.rst:634 d3758c7b32f54dc38b34ab4f54a526ba
+#: ../../CHANGES.rst:635 d3758c7b32f54dc38b34ab4f54a526ba
 msgid "Default theme has a dark variant. :pr:`57`"
 msgstr "Le thème par défaut a une variante sombre. :pr:`57`"
 
-#: ../../CHANGES.rst:639 eac5e673605c44bebeab671117d02935
+#: ../../CHANGES.rst:640 eac5e673605c44bebeab671117d02935
 msgid "Fixed missing ``canaille`` binary. :pr:`58`"
 msgstr "Correction du binaire manquant ``canaille``. :pr:`58`"
 
-#: ../../CHANGES.rst:642 be7d08fe65be48d09396c1c7af7f0e49
+#: ../../CHANGES.rst:643 be7d08fe65be48d09396c1c7af7f0e49
 msgid "[0.0.10] - 2022-07-07"
 msgstr "[0.0.10] - 2022-07-07"
 
-#: ../../CHANGES.rst:647 f2759b5afad84126b4041f583edb72eb
+#: ../../CHANGES.rst:648 f2759b5afad84126b4041f583edb72eb
 msgid "Online demo. :pr:`55`"
 msgstr "Démo en ligne. :pr:`55`"
 
-#: ../../CHANGES.rst:648 e3d980415ffb4cccb2272b1cf96719cc
+#: ../../CHANGES.rst:649 e3d980415ffb4cccb2272b1cf96719cc
 msgid ""
 "The consent page was displaying scopes not supported by clients. :pr:`56`"
 msgstr ""
 "La page de consentement affichait des domaines non supportés par les "
 "clients. :pr:`56`"
 
-#: ../../CHANGES.rst:649 d936dc556a9f4503b0802988273649d3
+#: ../../CHANGES.rst:650 d936dc556a9f4503b0802988273649d3
 msgid "Fixed end session when user are already disconnected."
 msgstr ""
 "Correction de la fin de session lorsque les utilisateurs sont déjà "
 "déconnectés."
 
-#: ../../CHANGES.rst:652 1732d28f09b24b89854f21bfe7942840
+#: ../../CHANGES.rst:653 1732d28f09b24b89854f21bfe7942840
 msgid "[0.0.9] - 2022-06-05"
 msgstr "[0.0.9] - 2022-06-05"
 
-#: ../../CHANGES.rst:657 a298893156394c80b5f843c7193b0ca8
+#: ../../CHANGES.rst:658 a298893156394c80b5f843c7193b0ca8
 msgid ""
 "``DISABLE_PASSWORD_RESET`` configuration option to disable password "
 "recovery. :pr:`46`"
@@ -1255,112 +1260,112 @@ msgstr ""
 "Mise en place de l’option de configuration ``DISABLE_PASSWORD_RESET`` pour "
 "désactiver la fonctionnalité de réinitialisation des mots de passe. :pr:`46`"
 
-#: ../../CHANGES.rst:658 c831a4847472435881495bdc121788f9
+#: ../../CHANGES.rst:659 c831a4847472435881495bdc121788f9
 msgid "``edit_self`` ACL permission to control user self edition. :pr:`47`"
 msgstr ""
 "Ajout de la permission ``edit_self`` pour contrôler l'auto-édition des "
 "données personnelles par les utilisateurs. :pr:`47`"
 
-#: ../../CHANGES.rst:659 312e6a546170436ea1fa95b58e7d91e1
+#: ../../CHANGES.rst:660 312e6a546170436ea1fa95b58e7d91e1
 msgid "`RP-initiated logout` implementation. :pr:`54`"
 msgstr "Implémentation de la norme OIDC `RP-initiated logout` :pr:`54`"
 
-#: ../../CHANGES.rst:664 797b8359f6a449e5ba16bcc78088768f
+#: ../../CHANGES.rst:665 797b8359f6a449e5ba16bcc78088768f
 msgid "Bumped to Authlib 1. :pr:`48`"
 msgstr "Mise à jour vers Authlib 1. :pr:`48`"
 
-#: ../../CHANGES.rst:665 4d9126ad1c3742759d3d204f1cf76dac
+#: ../../CHANGES.rst:666 4d9126ad1c3742759d3d204f1cf76dac
 msgid "Various documentation improvements. :pr:`50`"
 msgstr "Diverses améliorations de la documentation. :pr:`50`"
 
-#: ../../CHANGES.rst:666 36dc25439ee04162b5a0a808de0e823e
+#: ../../CHANGES.rst:667 36dc25439ee04162b5a0a808de0e823e
 msgid "Use poetry instead of setuptools as project management tool. :pr:`51`"
 msgstr ""
 "Utilisation de poetry à la place de setuptools comme outil de gestion de "
 "projet. :pr:`51`"
 
-#: ../../CHANGES.rst:667 f1fc01004b2f41349cbe787739c40b03
+#: ../../CHANGES.rst:668 f1fc01004b2f41349cbe787739c40b03
 msgid "Additional tests for the OIDC ``nonce`` parameter. :pr:`52`"
 msgstr "Tests additionnels concernant le paramètre OIDC ``nonce``. :pr:`52`"
 
-#: ../../CHANGES.rst:671 0183302671b24cb0b537b104dc58a9ea
+#: ../../CHANGES.rst:672 0183302671b24cb0b537b104dc58a9ea
 msgid "``HIDE_INVALID_LOGIN`` behavior and default value."
 msgstr "Comportement et valeur par défaut de ``HIDE_INVALID_LOGIN``."
 
-#: ../../CHANGES.rst:672 781578064d2347228773e4f950d612b2
+#: ../../CHANGES.rst:673 781578064d2347228773e4f950d612b2
 msgid ""
 "Compiled translation catalogs are not versioned anymore. :pr:`49` :pr:`53`"
 msgstr ""
 "Les catalogues de traduction compilés ne sont plus versionnés. :pr:`49` :pr:"
 "`53`"
 
-#: ../../CHANGES.rst:675 d816db34635d4549985bb9d94d9a7862
+#: ../../CHANGES.rst:676 d816db34635d4549985bb9d94d9a7862
 msgid "[0.0.8] - 2022-03-15"
 msgstr "[0.0.8] - 2022-03-15"
 
-#: ../../CHANGES.rst:680 5c82cce323c6462687804d2c7f006f8d
+#: ../../CHANGES.rst:681 5c82cce323c6462687804d2c7f006f8d
 msgid "Fixed dependencies."
 msgstr "Correction des dépendances."
 
-#: ../../CHANGES.rst:683 e6ab77996ddc43dab6022173bbd8eae0
+#: ../../CHANGES.rst:684 e6ab77996ddc43dab6022173bbd8eae0
 msgid "[0.0.7] - 2022-03-15"
 msgstr "[0.0.7] - 2022-03-15"
 
-#: ../../CHANGES.rst:688 db3701add4984f8c8dd764706a9639fd
+#: ../../CHANGES.rst:689 db3701add4984f8c8dd764706a9639fd
 msgid ""
 "Fixed spaces and escaped special char in LDAP ``cn/dn`` attributes. :pr:`43`"
 msgstr ""
 "Correction des espaces et échappement des caractères spéciaux dans les "
 "attributs LDAP ``cn`` et ``dn``. :pr:`43`"
 
-#: ../../CHANGES.rst:691 099a78c093eb4078914a63b9f15403b7
+#: ../../CHANGES.rst:692 099a78c093eb4078914a63b9f15403b7
 msgid "[0.0.6] - 2022-03-08"
 msgstr "[0.0.6] - 2022-03-08"
 
-#: ../../CHANGES.rst:696 4598be258efa4e99ab34d7bd5648a824
+#: ../../CHANGES.rst:697 4598be258efa4e99ab34d7bd5648a824
 msgid "Access token are JWT. :pr:`38`"
 msgstr "Les jetons d’accès sont des JWT. :pr:`38`"
 
-#: ../../CHANGES.rst:701 19eb39b5f802426f9c1380f0d3c0dfbb
+#: ../../CHANGES.rst:702 19eb39b5f802426f9c1380f0d3c0dfbb
 msgid "Default groups on invitations. :pr:`41`"
 msgstr "Groupes par défaut lors des invitations. :pr:`41`"
 
-#: ../../CHANGES.rst:702 81b3f2d331284cd1bd5d5a148b5d3b77
+#: ../../CHANGES.rst:703 81b3f2d331284cd1bd5d5a148b5d3b77
 msgid "LDAP schemas are shipped within the Canaille package. :pr:`42`"
 msgstr "Les schémas LDAP sont fournis avec le paquet Canaille. :pr:`42`"
 
-#: ../../CHANGES.rst:705 bc34ed5400c7449886a6d25b679c7ae2
+#: ../../CHANGES.rst:706 bc34ed5400c7449886a6d25b679c7ae2
 msgid "[0.0.5] - 2022-02-17"
 msgstr "[0.0.5] - 2022-02-17"
 
-#: ../../CHANGES.rst:710 45fc46e1672846778b27bc8766c1aeae
+#: ../../CHANGES.rst:711 45fc46e1672846778b27bc8766c1aeae
 msgid "LDAP model objects have new identifiers. :pr:`37`"
 msgstr "Les objects LDAP ont de nouveaux identifiants. :pr:`37`"
 
-#: ../../CHANGES.rst:715 8973b4acdebf481783a30266f9502cc2
+#: ../../CHANGES.rst:716 8973b4acdebf481783a30266f9502cc2
 msgid "Admin menu dropdown display. :pr:`39`"
 msgstr "Le menu d’administration est déroulant. :pr:`39`"
 
-#: ../../CHANGES.rst:716 b5deb21feb4d45e58f0b010788916ecd
+#: ../../CHANGES.rst:717 b5deb21feb4d45e58f0b010788916ecd
 msgid "``GROUP_ID_ATTRIBUTE`` configuration typo. :pr:`40`"
 msgstr ""
 "Correction d’une faute de frappe pour le paramètre de configuration "
 "``GROUP_ID_ATTRIBUTE`` :pr:`40`"
 
-#: ../../CHANGES.rst:719 3dad472d941b4b5392930e039a934df2
+#: ../../CHANGES.rst:720 3dad472d941b4b5392930e039a934df2
 msgid "[0.0.4] - 2022-02-16"
 msgstr "[0.0.4] - 2022-02-16"
 
-#: ../../CHANGES.rst:724 3086c540c13844a3b626a211f86a856b
+#: ../../CHANGES.rst:725 3086c540c13844a3b626a211f86a856b
 msgid "Client pre-authorization. :pr:`11`"
 msgstr "Pré-autorisation des clients OIDC. :pr:`11`"
 
-#: ../../CHANGES.rst:725 b621896643ca409cac8c3007137ed084
+#: ../../CHANGES.rst:726 b621896643ca409cac8c3007137ed084
 msgid "LDAP permissions check with the check command. :pr:`12`"
 msgstr ""
 "Vérification des permissions LDAP grâce à la commande `check`. :pr:`12`"
 
-#: ../../CHANGES.rst:726 ac5232266c154c829a210031f4d8a1bc
+#: ../../CHANGES.rst:727 ac5232266c154c829a210031f4d8a1bc
 msgid ""
 "Update consents when a scope required is larger than the scope of an already "
 "given consent. :pr:`13`"
@@ -1368,37 +1373,37 @@ msgstr ""
 "Mise à jour des consentements lorsque le domaine requis est plus large que "
 "le domaine déjà autorisé. :pr:`13`"
 
-#: ../../CHANGES.rst:728 7af42dde14864ada93162b9ea16e7cd4
+#: ../../CHANGES.rst:729 7af42dde14864ada93162b9ea16e7cd4
 msgid "Theme customization. :pr:`15`"
 msgstr "Personnalisation du thème. :pr:`15`"
 
-#: ../../CHANGES.rst:729 b8096ecde48d430b91666fa493e4fffe
+#: ../../CHANGES.rst:730 b8096ecde48d430b91666fa493e4fffe
 msgid "Logging configuration. :pr:`16`"
 msgstr "Configuration de la journalisation. :pr:`16`"
 
-#: ../../CHANGES.rst:730 0db8075af2664c10be1433c0426592e5
+#: ../../CHANGES.rst:731 0db8075af2664c10be1433c0426592e5
 msgid "Installation command. :pr:`17`"
 msgstr "Commande d’installation. :pr:`17`"
 
-#: ../../CHANGES.rst:731 5a0d7f3aca6b446fba5f0d36512be8c1
+#: ../../CHANGES.rst:732 5a0d7f3aca6b446fba5f0d36512be8c1
 msgid "Invitation links. :pr:`18`"
 msgstr "Liens d’invitation. :pr:`18`"
 
-#: ../../CHANGES.rst:732 900b1cb1421848c78ccd8559ce8aa513
+#: ../../CHANGES.rst:733 900b1cb1421848c78ccd8559ce8aa513
 msgid "Advanced permissions. :pr:`20`"
 msgstr "Permissions avancées. :pr:`20`"
 
-#: ../../CHANGES.rst:733 be2815e3ce9b44f6aeb64d24d7cd75ee
+#: ../../CHANGES.rst:734 be2815e3ce9b44f6aeb64d24d7cd75ee
 msgid "An option to not use OIDC. :pr:`23`"
 msgstr "Une option pour désactiver OIDC. :pr:`23`"
 
-#: ../../CHANGES.rst:734 6fe21ccaf0474887a8c6c04e69154ada
+#: ../../CHANGES.rst:735 6fe21ccaf0474887a8c6c04e69154ada
 msgid "Disable some features when no SMTP server is configured. :pr:`24`"
 msgstr ""
 "Désactivation de quelques fonctionnalités lorsqu’aucun serveur SMTP n’a été "
 "configuré. :pr:`24`"
 
-#: ../../CHANGES.rst:735 7fcdcf093e8849e59445af91ec4cfab6
+#: ../../CHANGES.rst:736 7fcdcf093e8849e59445af91ec4cfab6
 msgid ""
 "Login placeholder dynamically generated according to the configuration. :pr:"
 "`25`"
@@ -1406,56 +1411,56 @@ msgstr ""
 "Le texte d’exemple du champ de connexion est généré dynamiquement en "
 "fonction de la configuration. :pr:`25`"
 
-#: ../../CHANGES.rst:736 9bebc076e1b64cb3be67690a3e46e808
+#: ../../CHANGES.rst:737 9bebc076e1b64cb3be67690a3e46e808
 msgid "Added an option to tune object IDs. :pr:`26`"
 msgstr ""
 "Ajout d’une option pour paramétrer les identifiants des objets. :pr:`26`"
 
-#: ../../CHANGES.rst:737 983fa51b51db46409b73d0ba279c76d5
+#: ../../CHANGES.rst:738 983fa51b51db46409b73d0ba279c76d5
 msgid "Avatar support. :pr:`27`"
 msgstr "Support des avatars. :pr:`27`"
 
-#: ../../CHANGES.rst:738 94758b3cf72342d2948e727f6deb10a7
+#: ../../CHANGES.rst:739 94758b3cf72342d2948e727f6deb10a7
 msgid "Dynamical and configurable JWT claims. :pr:`28`"
 msgstr "Paramètres des jetons d’accès dynamiques et configurables. :pr:`28`"
 
-#: ../../CHANGES.rst:739 33402d7e6d47455cbfc52aeb276a12f2
+#: ../../CHANGES.rst:740 33402d7e6d47455cbfc52aeb276a12f2
 msgid "UI improvements. :pr:`29`"
 msgstr "Améliorations de l’interface utilisateur. :pr:`29`"
 
-#: ../../CHANGES.rst:740 181fed73a01445ea9865aadc802e9642
+#: ../../CHANGES.rst:741 181fed73a01445ea9865aadc802e9642
 msgid "Invitation links expiration. :pr:`30`"
 msgstr "Expiration des liens d’invitation. :pr:`30`"
 
-#: ../../CHANGES.rst:741 eeaa39f7f6c842d39c1d8d40c6e4fbf8
+#: ../../CHANGES.rst:742 eeaa39f7f6c842d39c1d8d40c6e4fbf8
 msgid "Invitees can choose their IDs. :pr:`31`"
 msgstr "Les invités peuvent choisir leur identifiant. :pr:`31`"
 
-#: ../../CHANGES.rst:742 8123032bb5d341ec82aa2b0ac8caf886
+#: ../../CHANGES.rst:743 8123032bb5d341ec82aa2b0ac8caf886
 msgid "LDAP backend refactoring. :pr:`35`"
 msgstr "Ré-usinage concernant la base de données LDAP. :pr:`35`"
 
-#: ../../CHANGES.rst:747 c9a12647745f472890eff2ceb165a8b8
+#: ../../CHANGES.rst:748 c9a12647745f472890eff2ceb165a8b8
 msgid "Fixed ghost members in a group. :pr:`14`"
 msgstr "Correction des membres fantômes dans les groupes. :pr:`14`"
 
-#: ../../CHANGES.rst:748 834311277daf401e9c654cfe0751d4f2
+#: ../../CHANGES.rst:749 834311277daf401e9c654cfe0751d4f2
 msgid "Fixed email sender names. :pr:`19`"
 msgstr "Correction de l’adresse email des émetteurs. :pr:`19`"
 
-#: ../../CHANGES.rst:749 5fa1016aa05747ca84948a30c452d5a4
+#: ../../CHANGES.rst:750 5fa1016aa05747ca84948a30c452d5a4
 msgid "Fixed filter being not escaped. :pr:`21`"
 msgstr "Les filtres n’étaient pas échappés. :pr:`21`"
 
-#: ../../CHANGES.rst:750 a221c0e18ffd40e3986f7d20f6eac01a
+#: ../../CHANGES.rst:751 a221c0e18ffd40e3986f7d20f6eac01a
 msgid "Demo script good practices. :pr:`32`"
 msgstr "Bonnes pratiques du script de démo. :pr:`32`"
 
-#: ../../CHANGES.rst:751 7e90135fab824314847bb5f4e9ab0664
+#: ../../CHANGES.rst:752 7e90135fab824314847bb5f4e9ab0664
 msgid "Binary path for Debian. :pr:`33`"
 msgstr "Chemins des binaires pour Debian. :pr:`33`"
 
-#: ../../CHANGES.rst:752 39205a39be2c4d4bbc2359ba32796266
+#: ../../CHANGES.rst:753 39205a39be2c4d4bbc2359ba32796266
 msgid ""
 "Last name was not mandatory in the forms while this was mandatory in the "
 "LDAP server. :pr:`34`"
@@ -1463,97 +1468,97 @@ msgstr ""
 "Le nom de famille était facultatif dans les formulaires alors que c’est un "
 "paramètre obligatoire pour LDAP. :pr:`34`"
 
-#: ../../CHANGES.rst:754 bef3030603fa42ccaeffb936e450cfeb
+#: ../../CHANGES.rst:755 bef3030603fa42ccaeffb936e450cfeb
 msgid "Spelling typos. :pr:`36`"
 msgstr "Corrections de fautes d’orthographe. :pr:`36`"
 
-#: ../../CHANGES.rst:757 2dc8f2d4014f4eb9805a19921e4e336a
+#: ../../CHANGES.rst:758 2dc8f2d4014f4eb9805a19921e4e336a
 msgid "[0.0.3] - 2021-10-13"
 msgstr "[0.0.3] - 2021-10-13"
 
-#: ../../CHANGES.rst:762 f0b73ca5d1da4a728d770d11887f9754
+#: ../../CHANGES.rst:763 f0b73ca5d1da4a728d770d11887f9754
 msgid "Two-steps sign-in. :issue:`49`"
 msgstr "Connexion en deux étapes. :issue:`49`"
 
-#: ../../CHANGES.rst:763 d8353e939a4341fdb9d8b51ac4e03c75
+#: ../../CHANGES.rst:764 d8353e939a4341fdb9d8b51ac4e03c75
 msgid "Tokens can have several audiences. :issue:`62` :pr:`9`"
 msgstr "Les jetons peuvent avoir plusieurs audiences. :issue:`62` :pr:`9`"
 
-#: ../../CHANGES.rst:764 a8bf6576f8214a6299aadf379a50f282
+#: ../../CHANGES.rst:765 a8bf6576f8214a6299aadf379a50f282
 msgid "Configuration check command. :issue:`66` :pr:`8`"
 msgstr "Commande de vérification de la configuration. :issue:`66` :pr:`8`"
 
-#: ../../CHANGES.rst:765 05a103a6101241a9afbfeffb28b04ee2
+#: ../../CHANGES.rst:766 05a103a6101241a9afbfeffb28b04ee2
 msgid "Groups management. :issue:`12` :pr:`6`"
 msgstr "Gestion des groupes. :issue:`12` :pr:`6`"
 
-#: ../../CHANGES.rst:770 f9681903b632489e99eb53fdf5301bb7
+#: ../../CHANGES.rst:771 f9681903b632489e99eb53fdf5301bb7
 msgid "Introspection access bugfix. :issue:`63` :pr:`10`"
 msgstr ""
 "Correction de l’accès au point de terminaison d’introspection OIDC. :issue:"
 "`63`:pr:`10`"
 
-#: ../../CHANGES.rst:771 08202024eda84dd2b15e255de912389d
+#: ../../CHANGES.rst:772 08202024eda84dd2b15e255de912389d
 msgid "Introspection sub claim. :issue:`64` :pr:`7`"
 msgstr ""
 "Support du paramètre ``sub``dans l’introspection OIDC. :issue:`64` :pr:`7`"
 
-#: ../../CHANGES.rst:774 c8cf3465674b4ecb94bf3a4548fc5601
+#: ../../CHANGES.rst:775 c8cf3465674b4ecb94bf3a4548fc5601
 msgid "[0.0.2] - 2021-01-06"
 msgstr "[0.0.2] - 2021-01-06"
 
-#: ../../CHANGES.rst:779 a52712c92f57496f9cbaf32727c9a2df
+#: ../../CHANGES.rst:780 a52712c92f57496f9cbaf32727c9a2df
 msgid "Login page is responsive. :issue:`1`"
 msgstr "La page de connexion est réactive. :issue:`1`"
 
-#: ../../CHANGES.rst:780 3e40e18b9ffa4afd9036177b6d1a0393
+#: ../../CHANGES.rst:781 3e40e18b9ffa4afd9036177b6d1a0393
 msgid "Adapt mobile keyboards to login page fields. :issue:`2`"
 msgstr ""
 "Adaptation des claviers mobiles sur les champs de la page de connexion. :"
 "issue:`2`"
 
-#: ../../CHANGES.rst:781 cf124fc4d201473f9a1d604b092c8c0a
+#: ../../CHANGES.rst:782 cf124fc4d201473f9a1d604b092c8c0a
 msgid "Password recovery interface. :issue:`3`"
 msgstr "Interface de réinitialisation des mots de passe. :issue:`3`"
 
-#: ../../CHANGES.rst:782 6a024dfd785b44f09e231f0f3b6a1bdd
+#: ../../CHANGES.rst:783 6a024dfd785b44f09e231f0f3b6a1bdd
 msgid "User profile interface. :issue:`4`"
 msgstr "Interface de gestion des profiles utilisateur. :issue:`4`"
 
-#: ../../CHANGES.rst:783 295718a0674c41749936c9ee63d895b2
+#: ../../CHANGES.rst:784 295718a0674c41749936c9ee63d895b2
 msgid "Renamed the project *Canaille*. :issue:`5`"
 msgstr "Renommage du projet en *Canaille*. :issue:`5`"
 
-#: ../../CHANGES.rst:784 5572ba58f8934db484ed5914858c1f61
+#: ../../CHANGES.rst:785 5572ba58f8934db484ed5914858c1f61
 msgid "Command to remove old tokens. :issue:`17`"
 msgstr "Commande pour supprimer les jetons expirés. :issue:`17`"
 
-#: ../../CHANGES.rst:785 da0ebb8c52d34d209bbbc13ec7a1902a
+#: ../../CHANGES.rst:786 da0ebb8c52d34d209bbbc13ec7a1902a
 msgid "Improved password recovery email. :issue:`14` :issue:`26`"
 msgstr ""
 "Améliorations sur le courriel de réinitialisation de mot de passe. :issue:"
 "`14` :issue:`26`"
 
-#: ../../CHANGES.rst:786 2eca9a011ae64f8788ff5b22428f2b63
+#: ../../CHANGES.rst:787 2eca9a011ae64f8788ff5b22428f2b63
 msgid ""
 "Use Flask `SERVER_NAME` configuration variable instead of `URL`. :issue:`24`"
 msgstr ""
 "Utilisation du paramètre de configuration Flask ``SERVER_NAME`` à la place "
 "d’``URL``. :issue:`24`"
 
-#: ../../CHANGES.rst:787 42eb9a40233047e4a8d632b8b60a4220
+#: ../../CHANGES.rst:788 42eb9a40233047e4a8d632b8b60a4220
 msgid "Improved consents page. :issue:`27`"
 msgstr "Améliorations sur la page de consentement. :issue:`27`"
 
-#: ../../CHANGES.rst:788 4511807efd4b4f6ea558d2632d914cae
+#: ../../CHANGES.rst:789 4511807efd4b4f6ea558d2632d914cae
 msgid "Admin user page. :issue:`8`"
 msgstr "Page d’administration des utilisateurs. :issue:`8`"
 
-#: ../../CHANGES.rst:789 9928a9d6301649a2bb80e54f26506c4e
+#: ../../CHANGES.rst:790 9928a9d6301649a2bb80e54f26506c4e
 msgid "Project logo. :pr:`29`"
 msgstr "Logo pour le projet. :pr:`29`"
 
-#: ../../CHANGES.rst:790 4403f90b28a249c2b38248bf0c9f77f7
+#: ../../CHANGES.rst:791 4403f90b28a249c2b38248bf0c9f77f7
 msgid ""
 "User account self-deletion can be enabled in the configuration with "
 "`SELF_DELETION`. :issue:`35`"
@@ -1561,22 +1566,22 @@ msgstr ""
 "L’auto-suppression des comptes est configurable avec le paramètre de "
 "configuration ``SELF_DELETION``. :issue:`35`"
 
-#: ../../CHANGES.rst:791 21fd51a849844a03b830dc97bc05ab0c
+#: ../../CHANGES.rst:792 21fd51a849844a03b830dc97bc05ab0c
 msgid "Admins can impersonate users. :issue:`39`"
 msgstr ""
 "Les administrateurs peuvent prendre l’identité des utilisateurs. :issue:`39`"
 
-#: ../../CHANGES.rst:792 31d73c9489164e0e92e62ac84bc8c22a
+#: ../../CHANGES.rst:793 31d73c9489164e0e92e62ac84bc8c22a
 msgid "Forgotten page UX improvement. :pr:`43`"
 msgstr ""
 "Améliorations sur l’interface utilisateur de la page des mots de passe "
 "oubliés. :pr:`43`"
 
-#: ../../CHANGES.rst:793 2b400ada80514bc68dd82d954fff040d
+#: ../../CHANGES.rst:794 2b400ada80514bc68dd82d954fff040d
 msgid "Admins can remove clients. :pr:`45`"
 msgstr "Les administrateurs peuvent supprimer des clients. :pr:`45`"
 
-#: ../../CHANGES.rst:794 2355c3ec7d674d50ace6ac3ad2065627
+#: ../../CHANGES.rst:795 2355c3ec7d674d50ace6ac3ad2065627
 msgid ""
 "Option `HIDE_INVALID_LOGIN` that can be unactivated to let the user know if "
 "the login he attempt to sign in with exists or not. :pr:`48`"
@@ -1585,27 +1590,27 @@ msgstr ""
 "laisser ou non les utilisateurs savoir si le compte avec lequel ils tentent "
 "de se connecter existe ou pas. :pr:`48`"
 
-#: ../../CHANGES.rst:796 ad8e32ede8504576b73db0b8b7bf303a
+#: ../../CHANGES.rst:797 ad8e32ede8504576b73db0b8b7bf303a
 msgid "Password initialization mail. :pr:`51`"
 msgstr "Courriels d’initialisation des mots de passe. :pr:`51`"
 
-#: ../../CHANGES.rst:801 0f2d8650e76545438f92a8ca420e65e9
+#: ../../CHANGES.rst:802 0f2d8650e76545438f92a8ca420e65e9
 msgid "Form translations. :issue:`19` :issue:`23`"
 msgstr "Traductions des formulaires. :issue:`19` :issue:`23`"
 
-#: ../../CHANGES.rst:802 6f367157d7464c9492c0f8a528dbd11f
+#: ../../CHANGES.rst:803 6f367157d7464c9492c0f8a528dbd11f
 msgid "Avoid to use Google Fonts. :issue:`21`"
 msgstr "Utilisations d’autres polices que celles de Google Fonts. :issue:`21`"
 
-#: ../../CHANGES.rst:807 ae2646eead6a4983998e7b76396f3862
+#: ../../CHANGES.rst:808 ae2646eead6a4983998e7b76396f3862
 msgid "'My tokens' page. :issue:`22`"
 msgstr "Page « Mes jetons ». :issue:`22`"
 
-#: ../../CHANGES.rst:810 b2a9ee20e0214e2eb650a3c0c80c6a8f
+#: ../../CHANGES.rst:811 b2a9ee20e0214e2eb650a3c0c80c6a8f
 msgid "[0.0.1] - 2020-10-21"
 msgstr "[0.0.1] - 2020-10-21"
 
-#: ../../CHANGES.rst:815 974217beadfa4205ad58a4fff852a8d4
+#: ../../CHANGES.rst:816 974217beadfa4205ad58a4fff852a8d4
 msgid "Initial release."
 msgstr "Publication initiale."
 
@@ -2530,8 +2535,8 @@ msgid ""
 "🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
 "www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
-"🟠 `RFC7644: System for Cross-domain Identity Management: Protocol "
-"<https://www.rfc-editor.org/rfc/rfc7642>`_"
+"🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
+"www.rfc-editor.org/rfc/rfc7642>`_"
 
 #: ../development/specifications.rst:57 e6062c405e8948d38ec280a762370179
 msgid ""
@@ -2967,7 +2972,7 @@ msgstr ""
 "ACLSettings.FILTER>` pour définir les droits utilisateur."
 
 #: ../features.rst:63 ../features.rst:83 ../features.rst:149
-#: ../tutorial/deployment.rst:13 ../tutorial/provisioning.rst:13
+#: ../tutorial/deployment.rst:13 ../tutorial/provisioning.rst:21
 #: 4ca7b990ff9c429aa56f1ec0ab57aef9 2cf4c2bbf0ab431f857b4fe0f7b840a0
 #: 1382b05cef654b76b8fb57324f33b950 757f761fb4724713bdc1308505431bfb
 #: 12614607f99a412c9cf9f161db77c3ac
@@ -3952,17 +3957,18 @@ msgstr ""
 #: 3115c2cba5f04f9094165896feac1cc9 e3c459094f734f6382847753305e76aa
 #: 4e8a2cd6e1224733b644484774cf0621 6f97567dcca64c4a92c0b869a6ce337d
 #: fea5ce77581940eabec5498e9347643b 7b57a6d1d40d40eaa51b6bba807602b5
-#: 0c5b1219cf2c4d97bc0cf7717c7b4ef3
+#: 0c5b1219cf2c4d97bc0cf7717c7b4ef3 db2adb3cef774a07b40893884737f7d0
 msgid "Arguments"
 msgstr "Paramètres"
 
 #: ../../canaille delete authorizationcode:1 client:1 consent:1 group:1 token:1
-#: user:1 set c0f3d574bd3640aca180dbe7695f53e9 61c7448c4a41497a8b923a636124b2be
-#: e523b87636874d088f2ef6e7c2d8c79a 3e12bc882bce4c71928c127525ee8358
-#: ef0be6baac8a4a44bd4a317601ea2018 f60f6b4edba24b98a79df93768b3041f
-#: c1192e9d2ddc429f911056db63d54e6c 4e3ae120210c4d62bfd1cc1d7c199f7a
-#: 3b9c5a9904f74f9e8308a21d4ee8da42 a6ecc5cf2bb54dfe98d8553f7f49c5d6
-#: 6492e2a92bac400c990cc3182c8b1cb0 ca2ec2ca915e40438b1b18eb27c46670
+#: user:1 reset-otp:1 set c0f3d574bd3640aca180dbe7695f53e9
+#: 61c7448c4a41497a8b923a636124b2be e523b87636874d088f2ef6e7c2d8c79a
+#: 3e12bc882bce4c71928c127525ee8358 ef0be6baac8a4a44bd4a317601ea2018
+#: f60f6b4edba24b98a79df93768b3041f c1192e9d2ddc429f911056db63d54e6c
+#: 4e3ae120210c4d62bfd1cc1d7c199f7a 3b9c5a9904f74f9e8308a21d4ee8da42
+#: a6ecc5cf2bb54dfe98d8553f7f49c5d6 6492e2a92bac400c990cc3182c8b1cb0
+#: ca2ec2ca915e40438b1b18eb27c46670 b4375f9e9c624b5f8667c31b65446bcf
 msgid "Required argument"
 msgstr "Paramètre obligatoire"
 
@@ -4026,8 +4032,9 @@ msgstr ""
 "Met à jour un utilisateur et affiche un modèle modifié au format JSON sur la "
 "sortie standard."
 
-#: ../../canaille delete user:1 set bf3b446f2eda4b26a9ef702f4c6dd0b9
-#: 881aab67b4fb4777a160e9affc77be0c
+#: ../../canaille delete user:1 reset-otp:1 set
+#: bf3b446f2eda4b26a9ef702f4c6dd0b9 881aab67b4fb4777a160e9affc77be0c
+#: 16e4d79ff89a42ea92ea157e3c46c583
 msgid "IDENTIFIER should be a user id or user_name"
 msgstr "IDENTIFIER devrait être un identifiant utilisateur ou user_name"
 
@@ -4124,6 +4131,18 @@ msgstr "Supprime un jeton."
 msgid "Delete a user."
 msgstr "Supprime un utilisateur."
 
+#: ../../canaille reset-otp:1 7c6ec1734fad47e29b224fb85e9a66f3
+#, fuzzy
+#| msgid ""
+#| "Update a user and display the edited model in JSON format in the standard "
+#| "output."
+msgid ""
+"Reset one-time password authentication for a user and display the edited "
+"user in JSON format in the standard output."
+msgstr ""
+"Met à jour un utilisateur et affiche un modèle modifié au format JSON sur la "
+"sortie standard."
+
 #: ../references/configuration.rst:2 e23c84272ce74d1d87f815825cb4a488
 msgid "Configuration"
 msgstr "Configuration"
@@ -4154,7 +4173,7 @@ msgstr ""
 
 #: ../../canaille/app/configuration.py:docstring of
 #: canaille.app.configuration.RootSettings:11
-#: ../references/configuration.rst:14 ../references/configuration.rst:95
+#: ../references/configuration.rst:14 ../references/configuration.rst:96
 #: ../tutorial/databases.rst:23 ../tutorial/databases.rst:37
 #: ../tutorial/databases.rst:138 1b8aaa7b767b49eb9a81d6663fb6c1e8
 #: bb4c8f23d29248f5abfd0d96af2d80bf ee90ce99e8a4449fbb7cb28d559147b5
@@ -5135,6 +5154,11 @@ msgid "Fields are evaluated with jinja. A ``user`` var is available."
 msgstr ""
 "Les champs sont évalués avec jinja. Une variable ``user`` est disponible."
 
+#: ../../canaille/scim/configuration.py:docstring of
+#: canaille.scim.configuration.SCIMSettings:1 a52a23313e76499f8eb015c9a754c440
+msgid "SCIM settings."
+msgstr ""
+
 #: ../../canaille/backends/sql/configuration.py:docstring of
 #: canaille.backends.sql.configuration.SQLSettings:1
 #: 8a43c250075c4918b0ce4204fa803047
@@ -5275,11 +5299,11 @@ msgstr ""
 msgid "The attribute to identify an object in the User DN."
 msgstr "L'attribut pour identifier un objet dans le DN Utilisateur."
 
-#: ../references/configuration.rst:91 d0a193b9740940ceac9bbb0b609c7b38
+#: ../references/configuration.rst:92 d0a193b9740940ceac9bbb0b609c7b38
 msgid "Example file"
 msgstr "Fichier d'exemple"
 
-#: ../references/configuration.rst:93 380ab48a596a497789c004a25fd645c8
+#: ../references/configuration.rst:94 380ab48a596a497789c004a25fd645c8
 msgid "Here is a configuration file example:"
 msgstr "Voici un exemple de fichier de configuration :"
 
@@ -6865,7 +6889,7 @@ msgstr ""
 
 #: ../tutorial/provisioning.rst:4 b34dc5e4480d4812abe1d615b40724ce
 msgid ""
-"Canaille partially implemnet the :rfc:`SCIM <7642>` provisioning protocol at "
+"Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol at "
 "the ``/scim/v2`` endpoint."
 msgstr ""
 
@@ -6883,19 +6907,25 @@ msgid ""
 "queries. Currently, user tokens are not supported."
 msgstr ""
 
-#: ../tutorial/provisioning.rst:15 5540926bcd3a4ff59b5c440933d22e93
+#: ../tutorial/provisioning.rst:13 7dc6ae431db5465aa6c1f6b104ef027b
+msgid ""
+"Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
+"SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
+msgstr ""
+
+#: ../tutorial/provisioning.rst:23 5540926bcd3a4ff59b5c440933d22e93
 msgid ""
 "Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not "
 "implemented. In addition to these, Canaille will implement in the future:"
 msgstr ""
 
-#: ../tutorial/provisioning.rst:18 df30885f79fd424fb426110529797eeb
+#: ../tutorial/provisioning.rst:26 df30885f79fd424fb426110529797eeb
 msgid ""
 "Access control for clients on the SCIM API endpoint, to finely manage "
 "permissions depending on clients."
 msgstr ""
 
-#: ../tutorial/provisioning.rst:19 e37b47a3e64940adbfecfffc6245bb5f
+#: ../tutorial/provisioning.rst:27 e37b47a3e64940adbfecfffc6245bb5f
 msgid ""
 "Client-side implementation, to broadcast user and groups modifications among "
 "all the clients."
