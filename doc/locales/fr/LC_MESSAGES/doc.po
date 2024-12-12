@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 22:02+0100\n"
 "PO-Revision-Date: 2024-12-13 10:55+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -5681,6 +5681,10 @@ msgid ""
 "This attribute is currently used to check whether the user has activated one-"
 "time password authentication or not."
 msgstr ""
+"Une date (DateTime) indiquant quand l'utilisateur est connecté avec un mot "
+"de passe unique (« one-time password », OTP). Cet attribut est actuellement "
+"utilisé pour vérifier si l'utilisateur a activé l'authentification OTP ou "
+"pas."
 
 #: ../../docstring of canaille.core.models.User.locality:1
 #: 3d50110e459f4ba3b06af609c8f2bef8
@@ -6030,6 +6034,8 @@ msgstr ""
 #: canaille.core.models.string_code:1 81f725c1782d45b395593f37c0776e41
 msgid "Add leading 0 if the code length does not match the defined length."
 msgstr ""
+"Ajoute des 0 au début si la longueur du code ne correspond pas la longueur "
+"définie."
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.string_code:3 1cc69f629da14627a5d08132c7388c45
@@ -6037,6 +6043,8 @@ msgid ""
 "For instance, parameter ``digit=6``, but ``code=123``, this method would "
 "return ``000123``::"
 msgstr ""
+"Par exemple, avec le paramètre ``digit=6`` et le ``code=123``, cette méthode "
+"retournerait ``000123`` :"
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.AuthorizationCode:1
@@ -6157,6 +6165,11 @@ msgid ""
 "The value of this field MUST point to a valid web page.  The value of this "
 "field MAY be internationalized, as described in Section 2.2."
 msgstr ""
+"Si présent, le serveur DEVRAIT afficher cette URL à l'utilisateur final de "
+"manière cliquable. Il est RECOMMANDÉ que les clients envoient toujours ce "
+"champ. La valeur de ce champ DOIT pointer vers une page web valide. La "
+"valeur de ce champ DEVRAIT être internationalisée, comme décrit dans la "
+"section 2.2."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.contacts:1
 #: 133418eefb1d484ba26f492838063c04
