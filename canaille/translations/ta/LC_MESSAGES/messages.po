@@ -6,21 +6,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-12-08 11:58+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-12-12 09:54+0100\n"
 "PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
 "ta/>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.9-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: canaille/app/flask.py:53
+#: canaille/app/flask.py:55
 msgid "No SMTP server has been configured"
 msgstr "SMTP சேவையகம் எதுவும் கட்டமைக்கப்படவில்லை"
 
@@ -43,13 +43,12 @@ msgstr ""
 
 #: canaille/app/forms.py:69
 msgid "Field cannot be longer than {maximum_password_length} characters."
-msgstr ""
-"புலம் {maximum_password_length} எழுத்துக்களை விட நீளமாக இருக்க முடியாது."
+msgstr "புலம் {maximum_password_length} எழுத்துக்களை விட நீளமாக இருக்க முடியாது."
 
 #: canaille/app/forms.py:120
-msgid "This password appears on public compromission databases and is not secure."
-msgstr ""
-"இந்த கடவுச்சொல் பொது சமரச தரவுத்தளங்களில் தோன்றும் மற்றும் பாதுகாப்பாக இல்லை."
+msgid ""
+"This password appears on public compromission databases and is not secure."
+msgstr "இந்த கடவுச்சொல் பொது சமரச தரவுத்தளங்களில் தோன்றும் மற்றும் பாதுகாப்பாக இல்லை."
 
 #: canaille/app/forms.py:285
 msgid "The page number is not valid"
@@ -61,8 +60,7 @@ msgstr "சரியான தேதிநேர மதிப்பு அல்
 
 #: canaille/app/mails_sending_conditions.py:16
 msgid ""
-"Password compromise investigation failed. Please contact the "
-"administrators."
+"Password compromise investigation failed. Please contact the administrators."
 msgstr "கடவுச்சொல் சமரச வினவல் தோல்வியடைந்தது. நிர்வாகிகளை தொடர்பு கொள்ளவும்."
 
 #: canaille/app/mails_sending_conditions.py:38
@@ -74,12 +72,12 @@ msgstr ""
 
 #: canaille/app/mails_sending_conditions.py:45
 msgid ""
-"An error occurred while communicating the incident to the administrators."
-" Please update your password as soon as possible. If this still happens, "
+"An error occurred while communicating the incident to the administrators. "
+"Please update your password as soon as possible. If this still happens, "
 "please contact the administrators."
 msgstr ""
-"சம்பவத்தை நிர்வாகிகளிடம் தொடர்பு கொள்ளும்போது பிழை ஏற்பட்டது. உங்கள் கடவுச்சொல்லை விரைவில் புதுப்பிக்கவும். இது இன்னும் "
-"நடந்தால், தயவுசெய்து நிர்வாகிகளை தொடர்பு கொள்ளவும்."
+"சம்பவத்தை நிர்வாகிகளிடம் தொடர்பு கொள்ளும்போது பிழை ஏற்பட்டது. உங்கள் கடவுச்சொல்லை விரைவில் "
+"புதுப்பிக்கவும். இது இன்னும் நடந்தால், தயவுசெய்து நிர்வாகிகளை தொடர்பு கொள்ளவும்."
 
 #: canaille/backends/ldap/backend.py:99
 msgid "Could not connect to the LDAP server '{uri}'"
@@ -93,8 +91,8 @@ msgstr "LDAP ஏற்பு பயனருடன் '{user}' உடன் த�
 msgid "John Doe"
 msgstr "சான் டோ"
 
-#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:165
-#: canaille/core/endpoints/forms.py:426
+#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:166
+#: canaille/core/endpoints/forms.py:427
 msgid "jdoe"
 msgstr "jdoe"
 
@@ -144,18 +142,23 @@ msgstr "{website_name} இல் உங்கள் பதிவைத் தொ
 msgid "Compromised password check failure on {website_name}"
 msgstr "வேறுபாடின்மை செய்யப்பட்ட கடவுச்சொல் சோதனை தோல்வி {website_name}"
 
+#: canaille/core/endpoints/admin.py:347 canaille/core/mails.py:258
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time password authentication on {website_name}"
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
+
 #: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
 msgstr "பதிவு செயல்முறையைத் தொடர விரைவில் ஒரு மின்னஞ்சலைப் பெறுவீர்கள்."
 
 #: canaille/core/endpoints/account.py:125
 msgid ""
-"An error happened while sending your registration mail. Please try again "
-"in a few minutes. If this still happens, please contact the "
-"administrators."
+"An error happened while sending your registration mail. Please try again in "
+"a few minutes. If this still happens, please contact the administrators."
 msgstr ""
-"உங்கள் பதிவு அஞ்சலை அனுப்பும்போது பிழை ஏற்பட்டது. சில நிமிடங்களில் மீண்டும் முயற்சிக்கவும். இது இன்னும் நடந்தால், "
-"தயவுசெய்து நிர்வாகிகளை தொடர்பு கொள்ளவும்."
+"உங்கள் பதிவு அஞ்சலை அனுப்பும்போது பிழை ஏற்பட்டது. சில நிமிடங்களில் மீண்டும் முயற்சிக்கவும். "
+"இது இன்னும் நடந்தால், தயவுசெய்து நிர்வாகிகளை தொடர்பு கொள்ளவும்."
 
 #: canaille/core/endpoints/account.py:249
 #: canaille/core/endpoints/account.py:272
@@ -170,13 +173,12 @@ msgstr "உங்களை இங்கு கொண்டு வந்த ப�
 msgid "Your account has already been created."
 msgstr "உங்கள் கணக்கு ஏற்கனவே உருவாக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:279
+#: canaille/core/endpoints/account.py:280
 msgid "You are already logged in, you cannot create an account."
-msgstr ""
-"நீங்கள் ஏற்கனவே உள்நுழைந்துள்ளீர்கள், நீங்கள் ஒரு கணக்கை உருவாக்க முடியாது."
+msgstr "நீங்கள் ஏற்கனவே உள்நுழைந்துள்ளீர்கள், நீங்கள் ஒரு கணக்கை உருவாக்க முடியாது."
 
-#: canaille/core/endpoints/account.py:300 canaille/core/endpoints/forms.py:316
-#: canaille/core/endpoints/forms.py:444 canaille/core/templates/groups.html:5
+#: canaille/core/endpoints/account.py:301 canaille/core/endpoints/forms.py:317
+#: canaille/core/endpoints/forms.py:445 canaille/core/templates/groups.html:5
 #: canaille/core/templates/groups.html:23
 #: canaille/core/templates/partial/group-members.html:15
 #: canaille/core/templates/partial/users.html:18
@@ -184,120 +186,125 @@ msgstr ""
 msgid "Groups"
 msgstr "குழுக்கள்"
 
-#: canaille/core/endpoints/account.py:338
-#: canaille/core/endpoints/account.py:431
+#: canaille/core/endpoints/account.py:339
+#: canaille/core/endpoints/account.py:432
 msgid "User account creation failed."
 msgstr "பயனர் கணக்கு உருவாக்கம் தோல்வியடைந்தது."
 
-#: canaille/core/endpoints/account.py:349
+#: canaille/core/endpoints/account.py:350
 msgid "Your account has been created successfully."
 msgstr "உங்கள் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:364
-#: canaille/core/endpoints/account.py:386
+#: canaille/core/endpoints/account.py:365
+#: canaille/core/endpoints/account.py:387
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "உங்களை இங்கு கொண்டு வந்த மின்னஞ்சல் உறுதிப்படுத்தல் இணைப்பு தவறானது."
 
-#: canaille/core/endpoints/account.py:371
+#: canaille/core/endpoints/account.py:372
 msgid "The email confirmation link that brought you here has expired."
-msgstr ""
-"உங்களை இங்கு கொண்டு வந்த மின்னஞ்சல் உறுதிப்படுத்தல் இணைப்பு காலாவதியானது."
+msgstr "உங்களை இங்கு கொண்டு வந்த மின்னஞ்சல் உறுதிப்படுத்தல் இணைப்பு காலாவதியானது."
 
-#: canaille/core/endpoints/account.py:378
+#: canaille/core/endpoints/account.py:379
 msgid "The invitation link that brought you here was invalid."
 msgstr "உங்களை இங்கு கொண்டு வந்த அழைப்பிதழ் இணைப்பு தவறானது."
 
-#: canaille/core/endpoints/account.py:393
+#: canaille/core/endpoints/account.py:394
 msgid "This address email have already been confirmed."
 msgstr "இந்த முகவரி மின்னஞ்சல் ஏற்கனவே உறுதிப்படுத்தப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:400
+#: canaille/core/endpoints/account.py:401
 msgid "This address email is already associated with another account."
 msgstr "இந்த முகவரி மின்னஞ்சல் ஏற்கனவே மற்றொரு கணக்குடன் தொடர்புடையது."
 
-#: canaille/core/endpoints/account.py:407
+#: canaille/core/endpoints/account.py:408
 msgid "Your email address have been confirmed."
 msgstr "உங்கள் மின்னஞ்சல் முகவரி உறுதிப்படுத்தப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:441
+#: canaille/core/endpoints/account.py:442
 msgid "User account creation succeed."
 msgstr "பயனர் கணக்கு உருவாக்கம் செய் பெறுகிறது."
 
-#: canaille/core/endpoints/account.py:617
-#: canaille/core/endpoints/account.py:786
+#: canaille/core/endpoints/account.py:618
+#: canaille/core/endpoints/account.py:804
 msgid "Profile edition failed."
 msgstr "சுயவிவர பதிப்பு தோல்வியடைந்தது."
 
-#: canaille/core/endpoints/account.py:627
-#: canaille/core/endpoints/account.py:804
+#: canaille/core/endpoints/account.py:628
+#: canaille/core/endpoints/account.py:822
 msgid "Profile updated successfully."
 msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
-#: canaille/core/endpoints/account.py:635
+#: canaille/core/endpoints/account.py:636
 msgid "Email addition failed."
 msgstr "மின்னஞ்சல் கூடுதலாக தோல்வியடைந்தது."
 
-#: canaille/core/endpoints/account.py:640
+#: canaille/core/endpoints/account.py:641
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
-"மின்னஞ்சல் முகவரிக்கு மின்னஞ்சல் அனுப்பப்பட்டுள்ளது. தயவுசெய்து உங்கள் இன்பாக்சை சரிபார்த்து, அதில் உள்ள சரிபார்ப்பு "
-"இணைப்பைக் சொடுக்கு செய்க"
+"மின்னஞ்சல் முகவரிக்கு மின்னஞ்சல் அனுப்பப்பட்டுள்ளது. தயவுசெய்து உங்கள் இன்பாக்சை சரிபார்த்து, "
+"அதில் உள்ள சரிபார்ப்பு இணைப்பைக் சொடுக்கு செய்க"
 
-#: canaille/core/endpoints/account.py:647
+#: canaille/core/endpoints/account.py:648
 msgid "Could not send the verification email"
 msgstr "சரிபார்ப்பு மின்னஞ்சலை அனுப்ப முடியவில்லை"
 
-#: canaille/core/endpoints/account.py:657
+#: canaille/core/endpoints/account.py:658
 msgid "Email deletion failed."
 msgstr "மின்னஞ்சல் நீக்குதல் தோல்வியடைந்தது."
 
-#: canaille/core/endpoints/account.py:660
+#: canaille/core/endpoints/account.py:661
 msgid "The email have been successfully deleted."
 msgstr "மின்னஞ்சல் வெற்றிகரமாக நீக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:697
+#: canaille/core/endpoints/account.py:698
 msgid ""
-"A password initialization link has been sent at the user email address. "
-"It should be received within a few minutes."
+"A password initialization link has been sent at the user email address. It "
+"should be received within a few minutes."
 msgstr ""
-"கடவுச்சொல் துவக்க இணைப்பு பயனர் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. இது சில நிமிடங்களுக்குள் பெறப்பட வேண்டும்."
+"கடவுச்சொல் துவக்க இணைப்பு பயனர் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. இது சில "
+"நிமிடங்களுக்குள் பெறப்பட வேண்டும்."
 
-#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:159
+#: canaille/core/endpoints/account.py:705 canaille/core/endpoints/auth.py:183
 msgid "Could not send the password initialization email"
 msgstr "கடவுச்சொல் துவக்க மின்னஞ்சலை அனுப்ப முடியவில்லை"
 
-#: canaille/core/endpoints/account.py:715
+#: canaille/core/endpoints/account.py:716
 msgid ""
-"A password reset link has been sent at the user email address. It should "
-"be received within a few minutes."
+"A password reset link has been sent at the user email address. It should be "
+"received within a few minutes."
 msgstr ""
-"கடவுச்சொல் மீட்டமைப்பு இணைப்பு பயனர் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. இது சில நிமிடங்களுக்குள் பெறப்பட "
-"வேண்டும்."
+"கடவுச்சொல் மீட்டமைப்பு இணைப்பு பயனர் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. இது சில "
+"நிமிடங்களுக்குள் பெறப்பட வேண்டும்."
 
-#: canaille/core/endpoints/account.py:722
+#: canaille/core/endpoints/account.py:723
 msgid "Could not send the password reset email"
 msgstr "கடவுச்சொல் மீட்டமைப்பு மின்னஞ்சலை அனுப்ப முடியவில்லை"
 
-#: canaille/core/endpoints/account.py:738
+#: canaille/core/endpoints/account.py:739
 msgid "The account has been locked"
 msgstr "கணக்கு பூட்டப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/account.py:749
+#: canaille/core/endpoints/account.py:750
 msgid "The account has been unlocked"
 msgstr "கணக்கு திறக்கப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/account.py:824
+#: canaille/core/endpoints/account.py:763
+msgid "One-time password authentication has been reset"
+msgstr ""
+
+#: canaille/core/endpoints/account.py:842
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "பயனர் %(user)s வெற்றிகரமாக நீக்கப்பட்டன"
 
-#: canaille/core/endpoints/account.py:841
+#: canaille/core/endpoints/account.py:859
 msgid "Locked users cannot be impersonated."
 msgstr "பூட்டப்பட்ட பயனர்களை ஆள்மாறாட்டம் செய்ய முடியாது."
 
-#: canaille/core/endpoints/account.py:845 canaille/core/endpoints/auth.py:112
+#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:134
+#: canaille/core/endpoints/auth.py:367
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "இணைப்பு வெற்றிகரமாக. வரவேற்பு %(user)s"
@@ -307,10 +314,10 @@ msgstr "இணைப்பு வெற்றிகரமாக. வரவேற
 msgid "Email"
 msgstr "மின்னஞ்சல்"
 
-#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:98
-#: canaille/core/endpoints/forms.py:121 canaille/core/endpoints/forms.py:210
-#: canaille/core/endpoints/forms.py:412 canaille/core/endpoints/forms.py:438
-#: canaille/core/endpoints/forms.py:462 canaille/core/endpoints/forms.py:478
+#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:99
+#: canaille/core/endpoints/forms.py:122 canaille/core/endpoints/forms.py:211
+#: canaille/core/endpoints/forms.py:413 canaille/core/endpoints/forms.py:439
+#: canaille/core/endpoints/forms.py:463 canaille/core/endpoints/forms.py:479
 msgid "jane.doe@example.com"
 msgstr "jane.doe@example.com"
 
@@ -330,122 +337,125 @@ msgstr "{website_name} இல் அழைப்பு"
 msgid "Email confirmation on {website_name}"
 msgstr "{website_name}"
 
-#: canaille/core/endpoints/auth.py:57 canaille/core/endpoints/auth.py:89
-#: canaille/core/endpoints/auth.py:101
+#: canaille/core/endpoints/auth.py:64 canaille/core/endpoints/auth.py:96
+#: canaille/core/endpoints/auth.py:108
 msgid "Login failed, please check your information"
 msgstr "உள்நுழைவு தோல்வியுற்றது, தயவுசெய்து உங்கள் தகவல்களைச் சரிபார்க்கவும்"
 
-#: canaille/core/endpoints/auth.py:72
+#: canaille/core/endpoints/auth.py:79 canaille/core/endpoints/auth.py:291
+#: canaille/core/endpoints/auth.py:320 canaille/core/endpoints/auth.py:399
+#: canaille/core/endpoints/auth.py:439
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr "நீங்கள் உள்நுழைய முயற்சித்த உள்நுழைவை நினைவில் கொள்ள முடியாது"
 
-#: canaille/core/endpoints/auth.py:127
+#: canaille/core/endpoints/auth.py:151
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "நீங்கள் துண்டிக்கப்பட்டுள்ளீர்கள். அடுத்த முறை %(user)s சந்திப்போம்"
 
-#: canaille/core/endpoints/auth.py:152
+#: canaille/core/endpoints/auth.py:176
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
 msgstr ""
-"உங்கள் மின்னஞ்சல் முகவரியில் கடவுச்சொல் துவக்க இணைப்பு அனுப்பப்பட்டுள்ளது. நீங்கள் அதை சில நிமிடங்களுக்குள் பெற "
-"வேண்டும்."
+"உங்கள் மின்னஞ்சல் முகவரியில் கடவுச்சொல் துவக்க இணைப்பு அனுப்பப்பட்டுள்ளது. நீங்கள் அதை சில "
+"நிமிடங்களுக்குள் பெற வேண்டும்."
 
-#: canaille/core/endpoints/auth.py:175
+#: canaille/core/endpoints/auth.py:199
 msgid "Could not send the password reset link."
 msgstr "கடவுச்சொல் மீட்டமைப்பு இணைப்பை அனுப்ப முடியவில்லை."
 
-#: canaille/core/endpoints/auth.py:179
+#: canaille/core/endpoints/auth.py:203
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
 msgstr ""
-"கடவுச்சொல் மீட்டமைப்பு இணைப்பு உங்கள் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. நீங்கள் அதை சில நிமிடங்களுக்குள் பெற "
-"வேண்டும்."
+"கடவுச்சொல் மீட்டமைப்பு இணைப்பு உங்கள் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. நீங்கள் அதை சில "
+"நிமிடங்களுக்குள் பெற வேண்டும்."
 
-#: canaille/core/endpoints/auth.py:191
+#: canaille/core/endpoints/auth.py:215
 #, python-format
 msgid ""
-"The user '%(user)s' does not have permissions to update their password. "
-"We cannot send a password reset email."
+"The user '%(user)s' does not have permissions to update their password. We "
+"cannot send a password reset email."
 msgstr ""
-"பயனர் '%(user)s' தங்கள் கடவுச்சொல்லைப் புதுப்பிக்க இசைவு இல்லை. கடவுச்சொல் மீட்டமைப்பு மின்னஞ்சலை நாங்கள் அனுப்ப "
-"முடியாது."
+"பயனர் '%(user)s' தங்கள் கடவுச்சொல்லைப் புதுப்பிக்க இசைவு இல்லை. கடவுச்சொல் மீட்டமைப்பு "
+"மின்னஞ்சலை நாங்கள் அனுப்ப முடியாது."
 
-#: canaille/core/endpoints/auth.py:213
+#: canaille/core/endpoints/auth.py:237
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "கடவுச்சொல் மீட்பு மின்னஞ்சலை அனுப்பும்போது ஒரு சிக்கலை சந்தித்தோம்."
 
-#: canaille/core/endpoints/auth.py:236
+#: canaille/core/endpoints/auth.py:260
 msgid "The password reset link that brought you here was invalid."
 msgstr "உங்களை இங்கு கொண்டு வந்த கடவுச்சொல் மீட்டமைப்பு இணைப்பு தவறானது."
 
-#: canaille/core/endpoints/auth.py:245
+#: canaille/core/endpoints/auth.py:269
 msgid "Your password has been updated successfully"
 msgstr "உங்கள் கடவுச்சொல் வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/forms.py:32
+#: canaille/core/endpoints/forms.py:33
 msgid "The user name '{user_name}' already exists"
 msgstr "'{user_name}' பயனர்பெயர் ஏற்கனவே உள்ளது"
 
-#: canaille/core/endpoints/forms.py:41
+#: canaille/core/endpoints/forms.py:42
 msgid "The email '{email}' is already used"
 msgstr "'{email}' என்ற மின்னஞ்சல் ஏற்கனவே பயன்படுத்தப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/forms.py:48
+#: canaille/core/endpoints/forms.py:49
 msgid "The group '{group}' already exists"
 msgstr "'{group}' குழு ஏற்கனவே உள்ளது"
 
-#: canaille/core/endpoints/forms.py:57
+#: canaille/core/endpoints/forms.py:58
 msgid "The login '{login}' does not exist"
 msgstr "உள்நுழைவு '{login}' இல்லை"
 
-#: canaille/core/endpoints/forms.py:64
+#: canaille/core/endpoints/forms.py:65
 msgid "The user you are trying to remove does not exist."
 msgstr "நீங்கள் அகற்ற முயற்சிக்கும் பயனர் இல்லை."
 
-#: canaille/core/endpoints/forms.py:69
+#: canaille/core/endpoints/forms.py:70
 msgid "The user '{user}' has already been removed from the group '{group}'"
 msgstr "பயனர் '{user}' ஏற்கனவே '{group}' குழுவிலிருந்து அகற்றப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/forms.py:87
+#: canaille/core/endpoints/forms.py:88
 msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
 msgstr ""
-"'{group}' குழுவை அகற்ற முடியாது, ஏனென்றால் அதற்கு குறைந்தது ஒரு பயனராவது இருக்க வேண்டும்."
+"'{group}' குழுவை அகற்ற முடியாது, ஏனென்றால் அதற்கு குறைந்தது ஒரு பயனராவது இருக்க "
+"வேண்டும்."
 
-#: canaille/core/endpoints/forms.py:95 canaille/core/endpoints/forms.py:118
+#: canaille/core/endpoints/forms.py:96 canaille/core/endpoints/forms.py:119
 #: canaille/core/templates/partial/group-members.html:9
 #: canaille/core/templates/partial/users.html:9
 msgid "Login"
 msgstr "புகுபதிவு"
 
-#: canaille/core/endpoints/forms.py:108 canaille/core/endpoints/forms.py:130
-#: canaille/core/endpoints/forms.py:264
+#: canaille/core/endpoints/forms.py:109 canaille/core/endpoints/forms.py:131
+#: canaille/core/endpoints/forms.py:265
 #: canaille/core/templates/profile_settings.html:63
 msgid "Password"
 msgstr "கடவுச்சொல்"
 
-#: canaille/core/endpoints/forms.py:137 canaille/core/endpoints/forms.py:276
+#: canaille/core/endpoints/forms.py:138 canaille/core/endpoints/forms.py:277
 msgid "Password confirmation"
 msgstr "கடவுச்சொல் உறுதிப்படுத்தல்"
 
-#: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:279
+#: canaille/core/endpoints/forms.py:141 canaille/core/endpoints/forms.py:280
 msgid "Password and confirmation do not match."
 msgstr "கடவுச்சொல் மற்றும் உறுதிப்படுத்தல் பொருந்தவில்லை."
 
-#: canaille/core/endpoints/forms.py:159
+#: canaille/core/endpoints/forms.py:160
 msgid "Automatic"
 msgstr "தானியங்கி"
 
-#: canaille/core/endpoints/forms.py:164
+#: canaille/core/endpoints/forms.py:165
 msgid "Username"
 msgstr "பயனர்பெயர்"
 
-#: canaille/core/endpoints/forms.py:168 canaille/core/endpoints/forms.py:368
-#: canaille/core/endpoints/forms.py:382
+#: canaille/core/endpoints/forms.py:169 canaille/core/endpoints/forms.py:369
+#: canaille/core/endpoints/forms.py:383
 #: canaille/core/templates/partial/group-members.html:12
 #: canaille/core/templates/partial/groups.html:6
 #: canaille/core/templates/partial/users.html:12
@@ -454,168 +464,179 @@ msgstr "பயனர்பெயர்"
 msgid "Name"
 msgstr "பெயர்"
 
-#: canaille/core/endpoints/forms.py:170
+#: canaille/core/endpoints/forms.py:171
 msgid "Title"
 msgstr "தலைப்பு"
 
-#: canaille/core/endpoints/forms.py:170
+#: canaille/core/endpoints/forms.py:171
 msgid "Vice president"
 msgstr "துணைத் தலைவர்"
 
-#: canaille/core/endpoints/forms.py:173
+#: canaille/core/endpoints/forms.py:174
 msgid "Given name"
 msgstr "கொடுக்கப்பட்ட பெயர்"
 
-#: canaille/core/endpoints/forms.py:175
+#: canaille/core/endpoints/forms.py:176
 msgid "John"
 msgstr "சான்"
 
-#: canaille/core/endpoints/forms.py:181
+#: canaille/core/endpoints/forms.py:182
 msgid "Family Name"
 msgstr "குடும்ப பெயர்"
 
-#: canaille/core/endpoints/forms.py:184
+#: canaille/core/endpoints/forms.py:185
 msgid "Doe"
 msgstr "டியோ"
 
-#: canaille/core/endpoints/forms.py:190
+#: canaille/core/endpoints/forms.py:191
 msgid "Display Name"
 msgstr "காட்சி பெயர்"
 
-#: canaille/core/endpoints/forms.py:193
+#: canaille/core/endpoints/forms.py:194
 msgid "Johnny"
 msgstr "சானி"
 
-#: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:468
+#: canaille/core/endpoints/forms.py:201 canaille/core/endpoints/forms.py:469
 #: canaille/core/templates/profile_edit.html:176
 msgid "Email addresses"
 msgstr "மின்னஞ்சல் முகவரிகள்"
 
-#: canaille/core/endpoints/forms.py:206 canaille/core/endpoints/forms.py:458
+#: canaille/core/endpoints/forms.py:207 canaille/core/endpoints/forms.py:459
 msgid ""
-"This email will be used as a recovery address to reset the password if "
-"needed"
-msgstr ""
-"தேவைப்பட்டால் கடவுச்சொல்லை மீட்டமைக்க இந்த மின்னஞ்சல் மீட்பு முகவரியாக பயன்படுத்தப்படும்"
+"This email will be used as a recovery address to reset the password if needed"
+msgstr "தேவைப்பட்டால் கடவுச்சொல்லை மீட்டமைக்க இந்த மின்னஞ்சல் மீட்பு முகவரியாக பயன்படுத்தப்படும்"
 
-#: canaille/core/endpoints/forms.py:220
+#: canaille/core/endpoints/forms.py:221
 msgid "Phone numbers"
 msgstr "தொலைபேசி எண்கள்"
 
-#: canaille/core/endpoints/forms.py:221
+#: canaille/core/endpoints/forms.py:222
 msgid "555-000-555"
 msgstr "555-000-555"
 
-#: canaille/core/endpoints/forms.py:228
+#: canaille/core/endpoints/forms.py:229
 msgid "Address"
 msgstr "முகவரி"
 
-#: canaille/core/endpoints/forms.py:230
+#: canaille/core/endpoints/forms.py:231
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "132, ஃபூபார் தெரு, கோதம் சிட்டி 12401, xx"
 
-#: canaille/core/endpoints/forms.py:234
+#: canaille/core/endpoints/forms.py:235
 msgid "Street"
 msgstr "தெரு"
 
-#: canaille/core/endpoints/forms.py:236
+#: canaille/core/endpoints/forms.py:237
 msgid "132, Foobar Street"
 msgstr "132, ஃபூபார் தெரு"
 
-#: canaille/core/endpoints/forms.py:240
+#: canaille/core/endpoints/forms.py:241
 msgid "Postal Code"
 msgstr "அஞ்சல் குறியீடு"
 
-#: canaille/core/endpoints/forms.py:246
+#: canaille/core/endpoints/forms.py:247
 msgid "Locality"
 msgstr "இடம்"
 
-#: canaille/core/endpoints/forms.py:248
+#: canaille/core/endpoints/forms.py:249
 msgid "Gotham City"
 msgstr "கோதம் சிட்டி"
 
-#: canaille/core/endpoints/forms.py:252
+#: canaille/core/endpoints/forms.py:253
 msgid "Region"
 msgstr "பகுதி"
 
-#: canaille/core/endpoints/forms.py:254
+#: canaille/core/endpoints/forms.py:255
 msgid "North Pole"
 msgstr "வட முனை"
 
-#: canaille/core/endpoints/forms.py:258
+#: canaille/core/endpoints/forms.py:259
 msgid "Photo"
 msgstr "புகைப்படம்"
 
-#: canaille/core/endpoints/forms.py:262
+#: canaille/core/endpoints/forms.py:263
 #: canaille/core/templates/profile_add.html:56
 #: canaille/core/templates/profile_edit.html:64
 msgid "Delete the photo"
 msgstr "புகைப்படத்தை நீக்கு"
 
-#: canaille/core/endpoints/forms.py:287
+#: canaille/core/endpoints/forms.py:288
 msgid "User number"
 msgstr "பயனர் எண்"
 
-#: canaille/core/endpoints/forms.py:289 canaille/core/endpoints/forms.py:295
+#: canaille/core/endpoints/forms.py:290 canaille/core/endpoints/forms.py:296
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:293
+#: canaille/core/endpoints/forms.py:294
 msgid "Department"
 msgstr "துறை"
 
-#: canaille/core/endpoints/forms.py:299
+#: canaille/core/endpoints/forms.py:300
 msgid "Organization"
 msgstr "அமைப்பு"
 
-#: canaille/core/endpoints/forms.py:301
+#: canaille/core/endpoints/forms.py:302
 msgid "Cogip LTD."
 msgstr "கோகிப் லிமிடெட்."
 
-#: canaille/core/endpoints/forms.py:305
+#: canaille/core/endpoints/forms.py:306
 msgid "Website"
 msgstr "வலைத்தளம்"
 
-#: canaille/core/endpoints/forms.py:307
+#: canaille/core/endpoints/forms.py:308
 msgid "https://mywebsite.tld"
 msgstr "https: //mywebsite.tld"
 
-#: canaille/core/endpoints/forms.py:312
+#: canaille/core/endpoints/forms.py:313
 msgid "Preferred language"
 msgstr "விருப்பமான மொழி"
 
-#: canaille/core/endpoints/forms.py:322
+#: canaille/core/endpoints/forms.py:323
 msgid "users, admins …"
 msgstr "பயனர்கள், நிர்வாகிகள்…"
 
-#: canaille/core/endpoints/forms.py:347
+#: canaille/core/endpoints/forms.py:348
 msgid "Account expiration"
 msgstr "கணக்கு காலாவதி"
 
-#: canaille/core/endpoints/forms.py:371
+#: canaille/core/endpoints/forms.py:372
 msgid "group"
 msgstr "குழு"
 
-#: canaille/core/endpoints/forms.py:375 canaille/core/endpoints/forms.py:392
+#: canaille/core/endpoints/forms.py:376 canaille/core/endpoints/forms.py:393
 #: canaille/core/templates/partial/groups.html:7
 msgid "Description"
 msgstr "விவரம்"
 
-#: canaille/core/endpoints/forms.py:406 canaille/core/endpoints/forms.py:431
+#: canaille/core/endpoints/forms.py:407 canaille/core/endpoints/forms.py:432
 msgid "Email address"
 msgstr "மின்னஞ்சல் முகவரி"
 
-#: canaille/core/endpoints/forms.py:425
+#: canaille/core/endpoints/forms.py:426
 msgid "User name"
 msgstr "பயனர் பெயர்"
 
-#: canaille/core/endpoints/forms.py:429
+#: canaille/core/endpoints/forms.py:430
 msgid "Username editable by the invitee"
 msgstr "அழைப்பாளரால் திருத்தக்கூடிய பயனர்பெயர்"
 
-#: canaille/core/endpoints/forms.py:471
+#: canaille/core/endpoints/forms.py:472
 msgid "New email address"
 msgstr "புதிய மின்னஞ்சல் முகவரி"
+
+#: canaille/core/endpoints/forms.py:488
+#: canaille/core/templates/mails/email_otp.txt:5
+#, fuzzy
+#| msgid "Initialize password"
+msgid "One-time password"
+msgstr "கடவுச்சொல்லைத் தொடங்கவும்"
+
+#: canaille/core/endpoints/forms.py:494
+#, fuzzy
+#| msgid "1234"
+msgid "123456"
+msgstr "1234"
 
 #: canaille/core/endpoints/groups.py:40
 msgid "Group creation failed."
@@ -677,15 +698,16 @@ msgstr "முதல் உள்நுழைவு"
 
 #: canaille/core/templates/firstlogin.html:19
 msgid ""
-"It seems this is the first time you are logging here. In order to "
-"finalize your account configuration, you need to set a password to your "
-"account. We will send you an email containing a link that will allow you "
-"to set a password. Please click on the \"Send the initialization email\" "
-"button below to send the email."
+"It seems this is the first time you are logging here. In order to finalize "
+"your account configuration, you need to set a password to your account. We "
+"will send you an email containing a link that will allow you to set a "
+"password. Please click on the \"Send the initialization email\" button below "
+"to send the email."
 msgstr ""
-"நீங்கள் இங்கே உள்நுழைவது இதுவே முதல் முறை என்று தெரிகிறது. உங்கள் கணக்கு உள்ளமைவை இறுதி செய்ய, உங்கள் கணக்கில் "
-"கடவுச்சொல்லை அமைக்க வேண்டும். கடவுச்சொல்லை அமைக்க அனுமதிக்கும் இணைப்பைக் கொண்ட மின்னஞ்சலை நாங்கள் உங்களுக்கு அனுப்புவோம். "
-"மின்னஞ்சலை அனுப்ப கீழே உள்ள \"துவக்க மின்னஞ்சலை அனுப்பு\" பொத்தானைக் சொடுக்கு செய்க."
+"நீங்கள் இங்கே உள்நுழைவது இதுவே முதல் முறை என்று தெரிகிறது. உங்கள் கணக்கு உள்ளமைவை இறுதி "
+"செய்ய, உங்கள் கணக்கில் கடவுச்சொல்லை அமைக்க வேண்டும். கடவுச்சொல்லை அமைக்க அனுமதிக்கும் "
+"இணைப்பைக் கொண்ட மின்னஞ்சலை நாங்கள் உங்களுக்கு அனுப்புவோம். மின்னஞ்சலை அனுப்ப கீழே உள்ள "
+"\"துவக்க மின்னஞ்சலை அனுப்பு\" பொத்தானைக் சொடுக்கு செய்க."
 
 #: canaille/core/templates/firstlogin.html:34
 #: canaille/core/templates/forgotten-password.html:43
@@ -708,11 +730,11 @@ msgstr "மறந்துவிட்ட கடவுச்சொல்"
 #: canaille/core/templates/forgotten-password.html:23
 msgid ""
 "After this form is sent, if the email address or the login you provided "
-"exists, you will receive an email containing a link that will allow you "
-"to reset your password."
+"exists, you will receive an email containing a link that will allow you to "
+"reset your password."
 msgstr ""
-"இந்த படிவம் அனுப்பப்பட்ட பிறகு, மின்னஞ்சல் முகவரி அல்லது நீங்கள் வழங்கிய உள்நுழைவு இருந்தால், உங்கள் கடவுச்சொல்லை "
-"மீட்டமைக்க அனுமதிக்கும் இணைப்பைக் கொண்ட மின்னஞ்சலைப் பெறுவீர்கள்."
+"இந்த படிவம் அனுப்பப்பட்ட பிறகு, மின்னஞ்சல் முகவரி அல்லது நீங்கள் வழங்கிய உள்நுழைவு "
+"இருந்தால், உங்கள் கடவுச்சொல்லை மீட்டமைக்க அனுமதிக்கும் இணைப்பைக் கொண்ட மின்னஞ்சலைப் பெறுவீர்கள்."
 
 #: canaille/core/templates/forgotten-password.html:41
 #: canaille/core/templates/login.html:40
@@ -764,8 +786,8 @@ msgid ""
 "remove you later by editing your profile when you will have added other "
 "members to the group."
 msgstr ""
-"குழு காலியாக இருக்க முடியாது என்பதால், நீங்கள் குழுவில் சேர்க்கப்படுவீர்கள். குழுவில் மற்ற உறுப்பினர்களைச் சேர்த்தபோது "
-"உங்கள் சுயவிவரத்தைத் திருத்துவதன் மூலம் பின்னர் உங்களை அகற்றலாம்."
+"குழு காலியாக இருக்க முடியாது என்பதால், நீங்கள் குழுவில் சேர்க்கப்படுவீர்கள். குழுவில் மற்ற "
+"உறுப்பினர்களைச் சேர்த்தபோது உங்கள் சுயவிவரத்தைத் திருத்துவதன் மூலம் பின்னர் உங்களை அகற்றலாம்."
 
 #: canaille/core/templates/group.html:58
 msgid "Delete group"
@@ -777,7 +799,7 @@ msgstr "குழுவை உருவாக்கவும்"
 
 #: canaille/core/templates/group.html:65
 #: canaille/core/templates/profile_edit.html:164
-#: canaille/core/templates/profile_settings.html:166
+#: canaille/core/templates/profile_settings.html:172
 #: canaille/oidc/templates/client_edit.html:81
 msgid "Edit"
 msgstr "தொகு"
@@ -810,10 +832,8 @@ msgstr "அழைப்பு அனுப்பப்படவில்லை"
 
 #: canaille/core/templates/invite.html:47
 msgid ""
-"Here is the invitation link you can provide to the user you want to "
-"invite:"
-msgstr ""
-"நீங்கள் அழைக்க விரும்பும் பயனருக்கு நீங்கள் வழங்கக்கூடிய அழைப்பிதழ் இணைப்பு இங்கே:"
+"Here is the invitation link you can provide to the user you want to invite:"
+msgstr "நீங்கள் அழைக்க விரும்பும் பயனருக்கு நீங்கள் வழங்கக்கூடிய அழைப்பிதழ் இணைப்பு இங்கே:"
 
 #: canaille/core/templates/invite.html:54
 #, python-format
@@ -822,23 +842,22 @@ msgstr "இந்த அழைப்பிதழ் இணைப்பு %(emai
 
 #: canaille/core/templates/invite.html:55
 msgid ""
-"If you need to provide this link by other ways than email, you can copy "
-"it there:"
+"If you need to provide this link by other ways than email, you can copy it "
+"there:"
 msgstr ""
-"மின்னஞ்சலைத் தவிர வேறு வழிகளில் இந்த இணைப்பை நீங்கள் வழங்க வேண்டும் என்றால், அதை அங்கு நகலெடுக்கலாம்:"
+"மின்னஞ்சலைத் தவிர வேறு வழிகளில் இந்த இணைப்பை நீங்கள் வழங்க வேண்டும் என்றால், அதை அங்கு "
+"நகலெடுக்கலாம்:"
 
 #: canaille/core/templates/invite.html:62
 #, python-format
 msgid ""
-"This invitation link could not be sent to %(email)s due to technical "
-"issues."
+"This invitation link could not be sent to %(email)s due to technical issues."
 msgstr ""
 "தொழில்நுட்ப சிக்கல்கள் காரணமாக இந்த அழைப்பிதழ் இணைப்பை %(email)sு அனுப்ப முடியவில்லை."
 
 #: canaille/core/templates/invite.html:63
 msgid ""
-"However you can copy the link there to provide it by other ways than "
-"email:"
+"However you can copy the link there to provide it by other ways than email:"
 msgstr ""
 "எவ்வாறாயினும், மின்னஞ்சலைத் தவிர வேறு வழிகளில் வழங்க நீங்கள் அங்கு இணைப்பை நகலெடுக்கலாம்:"
 
@@ -859,11 +878,11 @@ msgstr "மற்றொரு பயனரை அழைக்கவும்"
 
 #: canaille/core/templates/invite.html:102
 msgid ""
-"After this form is sent, the recipient your indicated will receive an "
-"email containing an account creation link."
+"After this form is sent, the recipient your indicated will receive an email "
+"containing an account creation link."
 msgstr ""
-"இந்த படிவம் அனுப்பப்பட்ட பிறகு, உங்கள் சுட்டிக்காட்டப்பட்ட பெறுநர் கணக்கு உருவாக்கும் இணைப்பைக் கொண்ட மின்னஞ்சலைப் "
-"பெறுவார்."
+"இந்த படிவம் அனுப்பப்பட்ட பிறகு, உங்கள் சுட்டிக்காட்டப்பட்ட பெறுநர் கணக்கு உருவாக்கும் "
+"இணைப்பைக் கொண்ட மின்னஞ்சலைப் பெறுவார்."
 
 #: canaille/core/templates/invite.html:131
 msgid "Generate a link"
@@ -887,12 +906,12 @@ msgstr "புதிய பயனர் கணக்கை உருவாக்
 
 #: canaille/core/templates/join.html:24
 msgid ""
-"Before you can create an account, please enter a valid email address. "
-"Then you will receive an email containing a link that will allow you to "
-"finish your registration."
+"Before you can create an account, please enter a valid email address. Then "
+"you will receive an email containing a link that will allow you to finish "
+"your registration."
 msgstr ""
-"நீங்கள் ஒரு கணக்கை உருவாக்குவதற்கு முன், சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும். உங்கள் பதிவை முடிக்க அனுமதிக்கும் "
-"இணைப்பைக் கொண்ட மின்னஞ்சலைப் பெறுவீர்கள்."
+"நீங்கள் ஒரு கணக்கை உருவாக்குவதற்கு முன், சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும். உங்கள் "
+"பதிவை முடிக்க அனுமதிக்கும் இணைப்பைக் கொண்ட மின்னஞ்சலைப் பெறுவீர்கள்."
 
 #: canaille/core/templates/join.html:44
 #: canaille/core/templates/profile_add.html:194
@@ -910,10 +929,13 @@ msgstr "உங்கள் தகவல்களையும் உங்கள�
 
 #: canaille/core/templates/login.html:45
 #: canaille/core/templates/mails/registration.txt:5
+#: canaille/core/templates/setup-2fa.html:53
 msgid "Continue"
 msgstr "தொடரவும்"
 
 #: canaille/core/templates/password.html:21
+#: canaille/core/templates/setup-2fa.html:21
+#: canaille/core/templates/verify-2fa.html:21
 #, python-format
 msgid "Sign in as %(username)s"
 msgstr "%(username)s என உள்நுழைக"
@@ -923,6 +945,7 @@ msgid "Please enter your password for this account."
 msgstr "இந்த கணக்கிற்கான உங்கள் கடவுச்சொல்லை உள்ளிடவும்."
 
 #: canaille/core/templates/password.html:39
+#: canaille/core/templates/verify-2fa.html:39
 #, python-format
 msgid "I am not %(username)s"
 msgstr "நான் %(username)s அல்ல"
@@ -957,10 +980,11 @@ msgstr "பயனர் கடவுச்சொல் கட்டாயமி�
 
 #: canaille/core/templates/profile_add.html:179
 msgid ""
-"The user will not be able to authenticate unless the password is set, but"
-" they will be able to ask for a password initialization mail."
+"The user will not be able to authenticate unless the password is set, but "
+"they will be able to ask for a password initialization mail."
 msgstr ""
-"கடவுச்சொல் அமைக்கப்படாவிட்டால் பயனரால் அங்கீகரிக்க முடியாது, ஆனால் அவர்கள் கடவுச்சொல் துவக்க அஞ்சலைக் கேட்க முடியும்."
+"கடவுச்சொல் அமைக்கப்படாவிட்டால் பயனரால் அங்கீகரிக்க முடியாது, ஆனால் அவர்கள் கடவுச்சொல் துவக்க "
+"அஞ்சலைக் கேட்க முடியும்."
 
 #: canaille/core/templates/profile_add.html:181
 msgid "The user will not be able to authenticate unless the password is set."
@@ -999,6 +1023,7 @@ msgid "Send a verification email to validate this address."
 msgstr "இந்த முகவரியை சரிபார்க்க சரிபார்ப்பு மின்னஞ்சலை அனுப்பவும்."
 
 #: canaille/core/templates/profile_edit.html:221
+#: canaille/core/templates/verify-2fa.html:40
 msgid "Verify"
 msgstr "சரிபார்க்கவும்"
 
@@ -1019,14 +1044,15 @@ msgstr "%(creation_datetime)s"
 
 #: canaille/core/templates/profile_settings.html:67
 msgid ""
-"You can change your password here by typing it once it each fields below."
-" The more a password is long, the more it is strong. A good password is a"
-" long password that you will remember, not a complicated password that "
-"your use for all your accounts."
+"You can change your password here by typing it once it each fields below. "
+"The more a password is long, the more it is strong. A good password is a "
+"long password that you will remember, not a complicated password that your "
+"use for all your accounts."
 msgstr ""
-"உங்கள் கடவுச்சொல்லை கீழே உள்ள ஒவ்வொரு புலங்களுக்கும் தட்டச்சு செய்வதன் மூலம் இங்கே மாற்றலாம். கடவுச்சொல் அதிகமாக "
-"இருப்பதால், அது வலுவாக இருக்கும். ஒரு நல்ல கடவுச்சொல் என்பது நீங்கள் நினைவில் வைத்திருக்கும் நீண்ட கடவுச்சொல், உங்கள் "
-"எல்லா கணக்குகளுக்கும் உங்கள் பயன்பாடு சிக்கலான கடவுச்சொல் அல்ல."
+"உங்கள் கடவுச்சொல்லை கீழே உள்ள ஒவ்வொரு புலங்களுக்கும் தட்டச்சு செய்வதன் மூலம் இங்கே மாற்றலாம். "
+"கடவுச்சொல் அதிகமாக இருப்பதால், அது வலுவாக இருக்கும். ஒரு நல்ல கடவுச்சொல் என்பது நீங்கள் "
+"நினைவில் வைத்திருக்கும் நீண்ட கடவுச்சொல், உங்கள் எல்லா கணக்குகளுக்கும் உங்கள் பயன்பாடு "
+"சிக்கலான கடவுச்சொல் அல்ல."
 
 #: canaille/core/templates/profile_settings.html:91
 #: canaille/core/templates/profile_settings.html:113
@@ -1046,16 +1072,18 @@ msgid "setting a password using this form;"
 msgstr "இந்த படிவத்தைப் பயன்படுத்தி கடவுச்சொல்லை அமைத்தல்;"
 
 #: canaille/core/templates/profile_settings.html:101
-msgid "sending the user a password initialization mail, by clicking this button;"
+msgid ""
+"sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 "இந்த பொத்தானைக் சொடுக்கு செய்வதன் மூலம் பயனருக்கு கடவுச்சொல் துவக்க அஞ்சலை அனுப்புகிறது;"
 
 #: canaille/core/templates/profile_settings.html:102
 msgid ""
-"or simply waiting for the user to sign-in a first time, and then receive "
-"a password initialization mail."
+"or simply waiting for the user to sign-in a first time, and then receive a "
+"password initialization mail."
 msgstr ""
-"அல்லது பயனர் முதல் முறையாக உள்நுழைய காத்திருக்கிறார், பின்னர் கடவுச்சொல் துவக்க அஞ்சலைப் பெறுங்கள்."
+"அல்லது பயனர் முதல் முறையாக உள்நுழைய காத்திருக்கிறார், பின்னர் கடவுச்சொல் துவக்க அஞ்சலைப் "
+"பெறுங்கள்."
 
 #: canaille/core/templates/profile_settings.html:105
 msgid "The user will not be able to authenticate unless the password is set"
@@ -1071,11 +1099,11 @@ msgstr "கடவுச்சொல் மீட்டமைப்பு"
 
 #: canaille/core/templates/profile_settings.html:118
 msgid ""
-"If the user has forgotten his password, you can send him a password reset"
-" email by clicking this button."
+"If the user has forgotten his password, you can send him a password reset "
+"email by clicking this button."
 msgstr ""
-"பயனர் தனது கடவுச்சொல்லை மறந்துவிட்டால், இந்த பொத்தானைக் சொடுக்கு செய்வதன் மூலம் கடவுச்சொல் மீட்டமைப்பு மின்னஞ்சலை "
-"அவருக்கு அனுப்பலாம்."
+"பயனர் தனது கடவுச்சொல்லை மறந்துவிட்டால், இந்த பொத்தானைக் சொடுக்கு செய்வதன் மூலம் கடவுச்சொல் "
+"மீட்டமைப்பு மின்னஞ்சலை அவருக்கு அனுப்பலாம்."
 
 #: canaille/core/templates/profile_settings.html:127
 msgid "Unlock"
@@ -1089,26 +1117,39 @@ msgstr "இந்த பயனர் கணக்கு பூட்டப்ப
 msgid "The user won't be able to connect until their account is unlocked."
 msgstr "பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை இணைக்க முடியாது."
 
+#: canaille/core/templates/modals/reset-otp.html:27
 #: canaille/core/templates/profile_settings.html:145
+msgid "Reset one-time password authentication"
+msgstr ""
+
+#: canaille/core/templates/profile_settings.html:151
 msgid "Lock the account"
 msgstr "கணக்கைப் பூட்டவும்"
 
-#: canaille/core/templates/profile_settings.html:152
+#: canaille/core/templates/profile_settings.html:158
 msgid "Delete the user"
 msgstr "பயனரை நீக்கு"
 
-#: canaille/core/templates/profile_settings.html:154
+#: canaille/core/templates/profile_settings.html:160
 msgid "Delete my account"
 msgstr "எனது கணக்கை நீக்கு"
 
-#: canaille/core/templates/profile_settings.html:161
+#: canaille/core/templates/profile_settings.html:167
 msgid "Impersonate"
 msgstr "ஆள்மாறாட்டம்"
+
+#: canaille/core/templates/setup-2fa.html:23
+msgid "Set up Two-Factor Authentication."
+msgstr ""
 
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29
 #: canaille/templates/base.html:51
 msgid "Users"
 msgstr "பயனர்கள்"
+
+#: canaille/core/templates/verify-2fa.html:23
+msgid "One-time password authentication."
+msgstr ""
 
 #: canaille/core/templates/mails/admin.html:5
 #: canaille/core/templates/mails/admin.html:11
@@ -1180,16 +1221,15 @@ msgstr "அஞ்சல் அனுப்பும் சோதனை"
 
 #: canaille/core/templates/mails/admin.html:44
 msgid ""
-"This form will send a dummy email to the address you want. This should be"
-" used for testing mail configuration."
+"This form will send a dummy email to the address you want. This should be "
+"used for testing mail configuration."
 msgstr ""
-"இந்த படிவம் நீங்கள் விரும்பும் முகவரிக்கு போலி மின்னஞ்சலை அனுப்பும். அஞ்சல் உள்ளமைவை சோதிக்க இது பயன்படுத்தப்பட "
-"வேண்டும்."
+"இந்த படிவம் நீங்கள் விரும்பும் முகவரிக்கு போலி மின்னஞ்சலை அனுப்பும். அஞ்சல் உள்ளமைவை சோதிக்க "
+"இது பயன்படுத்தப்பட வேண்டும்."
 
 #: canaille/core/templates/mails/admin.html:62
 msgid "No mail server has been configured. The mail sending test is disabled."
-msgstr ""
-"எந்த அஞ்சல் சேவையகமும் கட்டமைக்கப்படவில்லை. அஞ்சல் அனுப்பும் சோதனை முடக்கப்பட்டுள்ளது."
+msgstr "எந்த அஞ்சல் சேவையகமும் கட்டமைக்கப்படவில்லை. அஞ்சல் அனுப்பும் சோதனை முடக்கப்பட்டுள்ளது."
 
 #: canaille/core/templates/mails/admin.html:73
 msgid "Email preview"
@@ -1228,22 +1268,30 @@ msgstr "பதிவு"
 msgid "Compromised password check failure"
 msgstr "வேறுபாடின்மை செய்யப்பட்ட கடவுச்சொல் சோதனை தோல்வி"
 
+#: canaille/core/templates/mails/admin.html:171
+#, fuzzy
+#| msgid "Initialize password"
+msgid "Email one-time password"
+msgstr "கடவுச்சொல்லைத் தொடங்கவும்"
+
 #: canaille/core/templates/mails/compromised_password_check_failure.html:28
 #, python-format
 msgid ""
 "Our services were unable to verify if the %(user_name)s's password is "
 "compromised."
 msgstr ""
-"%(user_name)s இன் கடவுச்சொல் வேறுபாடின்மை செய்யப்பட்டதா என்பதை எங்கள் சேவைகளால் சரிபார்க்க முடியவில்லை."
+"%(user_name)s இன் கடவுச்சொல் வேறுபாடின்மை செய்யப்பட்டதா என்பதை எங்கள் சேவைகளால் "
+"சரிபார்க்க முடியவில்லை."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:31
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:5
 #, python-format
 msgid ""
-"You have to check manually if the new password of the user %(user_name)s "
-"is compromised."
+"You have to check manually if the new password of the user %(user_name)s is "
+"compromised."
 msgstr ""
-"பயனரின் புதிய கடவுச்சொல் (பயனர்_பெயர்) கள் வேறுபாடின்மை செய்யப்பட்டால் நீங்கள் கைமுறையாக சரிபார்க்க வேண்டும்."
+"பயனரின் புதிய கடவுச்சொல் (பயனர்_பெயர்) கள் வேறுபாடின்மை செய்யப்பட்டால் நீங்கள் கைமுறையாக "
+"சரிபார்க்க வேண்டும்."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:32
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:6
@@ -1254,7 +1302,8 @@ msgstr "இந்த படிகளைப் பின்பற்றவும�
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:7
 msgid "1. click on the link above \"Check if password is compromised\"."
 msgstr ""
-"1. மேலே உள்ள இணைப்பைக் சொடுக்கு செய்க \"கடவுச்சொல் வேறுபாடின்மை செய்யப்பட்டதா என்பதை சரிபார்க்கவும்\"."
+"1. மேலே உள்ள இணைப்பைக் சொடுக்கு செய்க \"கடவுச்சொல் வேறுபாடின்மை செய்யப்பட்டதா என்பதை "
+"சரிபார்க்கவும்\"."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:40
 #: canaille/core/templates/mails/compromised_password_check_failure.html:75
@@ -1266,10 +1315,11 @@ msgstr "கடவுச்சொல் வேறுபாடின்மை ச�
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:8
 #, python-format
 msgid ""
-"2. in the page that will open, search the following hashed password in "
-"the page : %(hashed_password)s"
+"2. in the page that will open, search the following hashed password in the "
+"page : %(hashed_password)s"
 msgstr ""
-"2. திறக்கும் பக்கத்தில், பக்கத்தில் பின்வரும் ஆசெட் கடவுச்சொல்லைத் தேடுங்கள்: %(hashed_password)s"
+"2. திறக்கும் பக்கத்தில், பக்கத்தில் பின்வரும் ஆசெட் கடவுச்சொல்லைத் தேடுங்கள்: "
+"%(hashed_password)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:48
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:9
@@ -1287,30 +1337,32 @@ msgstr "மீட்டமை %(user_name)s இன் கடவுச்சொ�
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:64
 #, python-format
-msgid "3.2. send an email to the user to explain the situation : %(user_email)s"
+msgid ""
+"3.2. send an email to the user to explain the situation : %(user_email)s"
 msgstr "3.2. நிலைமையை விளக்க பயனருக்கு மின்னஞ்சல் அனுப்புங்கள்: %(user_email)s"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:3
 #, python-format
 msgid ""
-"Our services were unable to verify if the "
-"%(site_url)s/profile/%(user_name)s/settings's password is compromised."
+"Our services were unable to verify if the %(site_url)s/profile/%(user_name)s/"
+"settings's password is compromised."
 msgstr ""
-"%(site_url)s/சுயவிவரம்/ %(user_name)s/அமைப்புகளின் கடவுச்சொல் வேறுபாடின்மை செய்யப்பட்டதா என்பதை எங்கள் "
-"சேவைகளால் சரிபார்க்க முடியவில்லை."
+"%(site_url)s/சுயவிவரம்/ %(user_name)s/அமைப்புகளின் கடவுச்சொல் வேறுபாடின்மை "
+"செய்யப்பட்டதா என்பதை எங்கள் சேவைகளால் சரிபார்க்க முடியவில்லை."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:10
 #, python-format
 msgid ""
-"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset"
-" user's password."
+"3.1. open this link %(site_url)s/profile/%(user_name)s/settings and reset "
+"user's password."
 msgstr ""
-"3.1. இந்த இணைப்பை %(site_url)s/சுயவிவரம்/ %(user_name)s/அமைப்புகளைத் திறந்து பயனரின் கடவுச்சொல்லை "
-"மீட்டமைக்கவும்."
+"3.1. இந்த இணைப்பை %(site_url)s/சுயவிவரம்/ %(user_name)s/அமைப்புகளைத் திறந்து "
+"பயனரின் கடவுச்சொல்லை மீட்டமைக்கவும்."
 
 #: canaille/core/templates/mails/compromised_password_check_failure.txt:11
 #, python-format
-msgid "3.2. send an email to the user to explain the situation : %(user_email)s."
+msgid ""
+"3.2. send an email to the user to explain the situation : %(user_email)s."
 msgstr "3.2. நிலைமையை விளக்க பயனருக்கு மின்னஞ்சல் அனுப்புங்கள்: %(user_email)s."
 
 #: canaille/core/templates/mails/email-confirmation.html:19
@@ -1320,12 +1372,12 @@ msgstr "மின்னஞ்சல் முகவரி உறுதிப்�
 #: canaille/core/templates/mails/email-confirmation.html:27
 #, python-format
 msgid ""
-"You added an email address to your account on %(site_name)s. Please click"
-" on the \"Validate email address\" button below to confirm your email "
-"address."
+"You added an email address to your account on %(site_name)s. Please click on "
+"the \"Validate email address\" button below to confirm your email address."
 msgstr ""
-"உங்கள் கணக்கில் ஒரு மின்னஞ்சல் முகவரியை %(site_name)s இல் சேர்த்துள்ளீர்கள். உங்கள் மின்னஞ்சல் முகவரியை "
-"உறுதிப்படுத்த கீழே உள்ள \"மின்னஞ்சல் முகவரியை சரிபார்க்கவும்\" பொத்தானைக் சொடுக்கு செய்க."
+"உங்கள் கணக்கில் ஒரு மின்னஞ்சல் முகவரியை %(site_name)s இல் சேர்த்துள்ளீர்கள். உங்கள் மின்னஞ்சல் "
+"முகவரியை உறுதிப்படுத்த கீழே உள்ள \"மின்னஞ்சல் முகவரியை சரிபார்க்கவும்\" பொத்தானைக் "
+"சொடுக்கு செய்க."
 
 #: canaille/core/templates/mails/email-confirmation.html:39
 msgid "Validate email address"
@@ -1334,25 +1386,61 @@ msgstr "மின்னஞ்சல் முகவரியை சரிபா�
 #: canaille/core/templates/mails/email-confirmation.txt:3
 #, python-format
 msgid ""
-"You added an email address to your account on %(site_name)s. Please click"
-" on the link below to confirm your email address."
+"You added an email address to your account on %(site_name)s. Please click on "
+"the link below to confirm your email address."
 msgstr ""
-"உங்கள் கணக்கில் ஒரு மின்னஞ்சல் முகவரியை %(site_name)s இல் சேர்த்துள்ளீர்கள். உங்கள் மின்னஞ்சல் முகவரியை "
-"உறுதிப்படுத்த கீழே உள்ள இணைப்பைக் சொடுக்கு செய்க."
+"உங்கள் கணக்கில் ஒரு மின்னஞ்சல் முகவரியை %(site_name)s இல் சேர்த்துள்ளீர்கள். உங்கள் மின்னஞ்சல் "
+"முகவரியை உறுதிப்படுத்த கீழே உள்ள இணைப்பைக் சொடுக்கு செய்க."
 
 #: canaille/core/templates/mails/email-confirmation.txt:8
 msgid "Verification link"
 msgstr "சரிபார்ப்பு இணைப்பு"
 
+#: canaille/core/templates/mails/email_otp.html:19
+#: canaille/core/templates/mails/email_otp.txt:1
+msgid "One-time password authentication"
+msgstr ""
+
+#: canaille/core/templates/mails/email_otp.html:27
+#, fuzzy, python-format
+#| msgid ""
+#| "Someone, probably you, asked for a password reinitialization link at "
+#| "%(site_name)s. If you did not ask for this email, please ignore it. If "
+#| "you need to reset your password, please click on the \"Reset password\" "
+#| "button below and follow the instructions."
+msgid ""
+"Someone, probably you, asked for a one-time password at %(site_name)s. If "
+"you did not ask for this email, please ignore it. If you did, please enter "
+"the one-time password below at %(site_name)s to complete your authentication."
+msgstr ""
+"யாரோ, அநேகமாக நீங்கள், கடவுச்சொல் மறுசீரமைப்பு இணைப்பை %(site_name)s இல் கேட்டீர்கள். இந்த "
+"மின்னஞ்சலை நீங்கள் கேட்கவில்லை என்றால், தயவுசெய்து அதை புறக்கணிக்கவும். உங்கள் கடவுச்சொல்லை "
+"மீட்டமைக்க வேண்டும் என்றால், கீழே உள்ள \"கடவுச்சொல்லை மீட்டமை\" பொத்தானைக் சொடுக்கு செய்து "
+"வழிமுறைகளைப் பின்பற்றவும்."
+
+#: canaille/core/templates/mails/email_otp.html:30
+#, fuzzy
+#| msgid "Forgotten password"
+msgid "Your one-time password"
+msgstr "மறந்துவிட்ட கடவுச்சொல்"
+
+#: canaille/core/templates/mails/email_otp.txt:3
+#, python-format
+msgid ""
+"Please enter the one-time password below at %(site_name)s to complete your "
+"authentication."
+msgstr ""
+
 #: canaille/core/templates/mails/firstlogin.html:27
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the \"Initialize password\" "
-"button below and follow the instructions."
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the \"Initialize password\" button "
+"below and follow the instructions."
 msgstr ""
-"உங்கள் கணக்கு உள்ளமைவை %(site_name)s இல் இறுதி செய்ய, நாங்கள் உங்கள் கடவுச்சொல்லை அமைக்க வேண்டும். கீழே உள்"
-"ள \"கடவுச்சொல்லைத் துவக்கவும்\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றவும்."
+"உங்கள் கணக்கு உள்ளமைவை %(site_name)s இல் இறுதி செய்ய, நாங்கள் உங்கள் கடவுச்சொல்லை அமைக்க "
+"வேண்டும். கீழே உள்ள \"கடவுச்சொல்லைத் துவக்கவும்\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் "
+"பின்பற்றவும்."
 
 #: canaille/core/templates/mails/firstlogin.html:38
 #: canaille/core/templates/mails/firstlogin.txt:1
@@ -1366,12 +1454,12 @@ msgstr "கடவுச்சொல்லைத் தொடங்கவும�
 #: canaille/core/templates/mails/reset.txt:3
 #, python-format
 msgid ""
-"In order to finalize your account configuration at %(site_name)s, we need"
-" to setup your password. Please click on the link below and follow the "
+"In order to finalize your account configuration at %(site_name)s, we need to "
+"setup your password. Please click on the link below and follow the "
 "instructions."
 msgstr ""
-"உங்கள் கணக்கு உள்ளமைவை %(site_name)s இல் இறுதி செய்ய, நாங்கள் உங்கள் கடவுச்சொல்லை அமைக்க வேண்டும். கீழேயுள்ள "
-"இணைப்பைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றவும்."
+"உங்கள் கணக்கு உள்ளமைவை %(site_name)s இல் இறுதி செய்ய, நாங்கள் உங்கள் கடவுச்சொல்லை அமைக்க "
+"வேண்டும். கீழேயுள்ள இணைப்பைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றவும்."
 
 #: canaille/core/templates/mails/invitation.html:19
 #: canaille/core/templates/mails/invitation.txt:1
@@ -1381,12 +1469,12 @@ msgstr "கணக்கு உருவாக்கம்"
 #: canaille/core/templates/mails/invitation.html:27
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the \"Create my account\" button below and follow the "
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the \"Create my account\" button below and follow the "
 "instructions."
 msgstr ""
-"%(site_name)s இல் ஒரு கணக்கை உருவாக்க நீங்கள் அழைக்கப்பட்டுள்ளீர்கள். தொடர நீங்கள் கீழே உள்ள \"எனது கணக்கை"
-" உருவாக்கு\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றலாம்."
+"%(site_name)s இல் ஒரு கணக்கை உருவாக்க நீங்கள் அழைக்கப்பட்டுள்ளீர்கள். தொடர நீங்கள் கீழே உள்ள "
+"\"எனது கணக்கை உருவாக்கு\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றலாம்."
 
 #: canaille/core/templates/mails/invitation.html:38
 msgid "Create my account"
@@ -1395,21 +1483,21 @@ msgstr "எனது கணக்கை உருவாக்கவும்"
 #: canaille/core/templates/mails/invitation.txt:3
 #, python-format
 msgid ""
-"You have been invited to create an account at %(site_name)s. To proceed "
-"you can click on the link below and follow the instructions."
+"You have been invited to create an account at %(site_name)s. To proceed you "
+"can click on the link below and follow the instructions."
 msgstr ""
-"%(site_name)s இல் ஒரு கணக்கை உருவாக்க நீங்கள் அழைக்கப்பட்டுள்ளீர்கள். தொடர நீங்கள் கீழேயுள்ள இணைப்பைக் சொடுக்கு "
-"செய்து வழிமுறைகளைப் பின்பற்றலாம்."
+"%(site_name)s இல் ஒரு கணக்கை உருவாக்க நீங்கள் அழைக்கப்பட்டுள்ளீர்கள். தொடர நீங்கள் கீழேயுள்ள "
+"இணைப்பைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றலாம்."
 
 #: canaille/core/templates/mails/registration.html:27
 #, python-format
 msgid ""
-"You've started the registration process at %(site_name)s. To proceed you "
-"can click on the \"Continue account creation\" button below and follow "
-"the instructions."
+"You've started the registration process at %(site_name)s. To proceed you can "
+"click on the \"Continue account creation\" button below and follow the "
+"instructions."
 msgstr ""
-"நீங்கள் பதிவு செயல்முறையை %(site_name)s இல் தொடங்கினீர்கள். தொடர நீங்கள் கீழே உள்ள \"கணக்கு உருவாக்கத்தைத் "
-"தொடரவும்\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றலாம்."
+"நீங்கள் பதிவு செயல்முறையை %(site_name)s இல் தொடங்கினீர்கள். தொடர நீங்கள் கீழே உள்ள \"கணக்கு "
+"உருவாக்கத்தைத் தொடரவும்\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றலாம்."
 
 #: canaille/core/templates/mails/registration.html:38
 msgid "Continue account creation"
@@ -1418,23 +1506,24 @@ msgstr "கணக்கு உருவாக்கத்தைத் தொட�
 #: canaille/core/templates/mails/registration.txt:3
 #, python-format
 msgid ""
-"You've started the registration process at %(site_name)s. To proceed you "
-"can click on the link below and follow the instructions."
+"You've started the registration process at %(site_name)s. To proceed you can "
+"click on the link below and follow the instructions."
 msgstr ""
-"நீங்கள் பதிவு செயல்முறையை %(site_name)s இல் தொடங்கினீர்கள். தொடர நீங்கள் கீழேயுள்ள இணைப்பைக் சொடுக்கு செய்து "
-"வழிமுறைகளைப் பின்பற்றலாம்."
+"நீங்கள் பதிவு செயல்முறையை %(site_name)s இல் தொடங்கினீர்கள். தொடர நீங்கள் கீழேயுள்ள இணைப்பைக் "
+"சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றலாம்."
 
 #: canaille/core/templates/mails/reset.html:27
 #, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization link at "
-"%(site_name)s. If you did not ask for this email, please ignore it. If "
-"you need to reset your password, please click on the \"Reset password\" "
-"button below and follow the instructions."
+"%(site_name)s. If you did not ask for this email, please ignore it. If you "
+"need to reset your password, please click on the \"Reset password\" button "
+"below and follow the instructions."
 msgstr ""
-"யாரோ, அநேகமாக நீங்கள், கடவுச்சொல் மறுசீரமைப்பு இணைப்பை %(site_name)s இல் கேட்டீர்கள். இந்த மின்னஞ்சலை நீங்கள் "
-"கேட்கவில்லை என்றால், தயவுசெய்து அதை புறக்கணிக்கவும். உங்கள் கடவுச்சொல்லை மீட்டமைக்க வேண்டும் என்றால், கீழே உள்ள \"கடவ"
-"ுச்சொல்லை மீட்டமை\" பொத்தானைக் சொடுக்கு செய்து வழிமுறைகளைப் பின்பற்றவும்."
+"யாரோ, அநேகமாக நீங்கள், கடவுச்சொல் மறுசீரமைப்பு இணைப்பை %(site_name)s இல் கேட்டீர்கள். இந்த "
+"மின்னஞ்சலை நீங்கள் கேட்கவில்லை என்றால், தயவுசெய்து அதை புறக்கணிக்கவும். உங்கள் கடவுச்சொல்லை "
+"மீட்டமைக்க வேண்டும் என்றால், கீழே உள்ள \"கடவுச்சொல்லை மீட்டமை\" பொத்தானைக் சொடுக்கு செய்து "
+"வழிமுறைகளைப் பின்பற்றவும்."
 
 #: canaille/core/templates/mails/reset.html:38
 msgid "Reset password"
@@ -1447,7 +1536,8 @@ msgid ""
 "This email is a test to check that you receive communications from "
 "%(site_name)s."
 msgstr ""
-"இந்த மின்னஞ்சல் %(site_name)s இலிருந்து தகவல்தொடர்புகளைப் பெறுகிறீர்களா என்பதைச் சரிபார்க்க ஒரு சோதனை."
+"இந்த மின்னஞ்சல் %(site_name)s இலிருந்து தகவல்தொடர்புகளைப் பெறுகிறீர்களா என்பதைச் "
+"சரிபார்க்க ஒரு சோதனை."
 
 #: canaille/core/templates/modals/delete-account.html:9
 msgid "Account deletion"
@@ -1456,24 +1546,25 @@ msgstr "கணக்கு நீக்குதல்"
 #: canaille/core/templates/modals/delete-account.html:14
 #, python-format
 msgid ""
-"Are you sure you want to delete the account of %(user_name)s? This action"
-" is unrevokable and all the data about this user will be removed."
+"Are you sure you want to delete the account of %(user_name)s? This action is "
+"unrevokable and all the data about this user will be removed."
 msgstr ""
-"%(user_name)s இன் கணக்கை நீக்க விரும்புகிறீர்களா? இந்த செயல் மறுபரிசீலனை செய்ய முடியாதது மற்றும் இந்த பயனரைப்"
-" பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
+"%(user_name)s இன் கணக்கை நீக்க விரும்புகிறீர்களா? இந்த செயல் மறுபரிசீலனை செய்ய "
+"முடியாதது மற்றும் இந்த பயனரைப் பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
 
 #: canaille/core/templates/modals/delete-account.html:18
 msgid ""
-"Are you sure you want to delete your account? This action is unrevokable "
-"and all your data will be removed forever."
+"Are you sure you want to delete your account? This action is unrevokable and "
+"all your data will be removed forever."
 msgstr ""
-"உங்கள் கணக்கை நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மாற்ற முடியாதது மற்றும் உங்கள் எல்லா தரவுகளும் எப்போதும் "
-"அகற்றப்படும்."
+"உங்கள் கணக்கை நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மாற்ற முடியாதது மற்றும் உங்கள் எல்லா "
+"தரவுகளும் எப்போதும் அகற்றப்படும்."
 
 #: canaille/core/templates/modals/delete-account.html:26
 #: canaille/core/templates/modals/delete-group.html:22
 #: canaille/core/templates/modals/lock-account.html:26
 #: canaille/core/templates/modals/remove-group-member.html:22
+#: canaille/core/templates/modals/reset-otp.html:26
 #: canaille/oidc/templates/modals/delete-client.html:20
 #: canaille/oidc/templates/modals/revoke-token.html:20
 msgid "Cancel"
@@ -1492,11 +1583,11 @@ msgstr "குழு நீக்குதல்"
 #: canaille/core/templates/modals/delete-group.html:13
 #, python-format
 msgid ""
-"Are you sure you want to delete the group \"%(group_name)s\"? This action"
-" is unrevokable and all the data about this group will be removed."
+"Are you sure you want to delete the group \"%(group_name)s\"? This action is "
+"unrevokable and all the data about this group will be removed."
 msgstr ""
-"\"%(group_name)s\" குழுவை நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மறுபரிசீலனை செய்ய முடியாதது மற்றும் இந்த "
-"குழுவைப் பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
+"\"%(group_name)s\" குழுவை நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மறுபரிசீலனை செய்ய "
+"முடியாதது மற்றும் இந்த குழுவைப் பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
 
 #: canaille/core/templates/modals/lock-account.html:9
 msgid "Account locking"
@@ -1505,17 +1596,19 @@ msgstr "கணக்கு பூட்டுதல்"
 #: canaille/core/templates/modals/lock-account.html:14
 #, python-format
 msgid ""
-"Are you sure you want to lock the account of %(user_name)s ? The user "
-"won't be able to login until their account is unlocked."
+"Are you sure you want to lock the account of %(user_name)s ? The user won't "
+"be able to login until their account is unlocked."
 msgstr ""
-"%(user_name)s கணக்கை பூட்ட விரும்புகிறீர்களா? பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை உள்நுழைய முடியாது."
+"%(user_name)s கணக்கை பூட்ட விரும்புகிறீர்களா? பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை "
+"உள்நுழைய முடியாது."
 
 #: canaille/core/templates/modals/lock-account.html:18
 msgid ""
-"Are you sure you want to lock your account? You won't be able to login "
-"until your account is unlocked."
+"Are you sure you want to lock your account? You won't be able to login until "
+"your account is unlocked."
 msgstr ""
-"உங்கள் கணக்கை பூட்ட விரும்புகிறீர்களா? உங்கள் கணக்கு திறக்கப்படும் வரை நீங்கள் உள்நுழைய முடியாது."
+"உங்கள் கணக்கை பூட்ட விரும்புகிறீர்களா? உங்கள் கணக்கு திறக்கப்படும் வரை நீங்கள் உள்நுழைய "
+"முடியாது."
 
 #: canaille/core/templates/modals/lock-account.html:27
 msgid "Lock"
@@ -1537,6 +1630,28 @@ msgstr "\" %(user_name)s குழுவிலிருந்து %(group_name
 #: canaille/core/templates/partial/group-members.html:69
 msgid "Remove"
 msgstr "அகற்று"
+
+#: canaille/core/templates/modals/reset-otp.html:9
+msgid "One-time password authentication reset"
+msgstr ""
+
+#: canaille/core/templates/modals/reset-otp.html:14
+#, fuzzy, python-format
+#| msgid ""
+#| "Are you sure you want to lock the account of %(user_name)s ? The user "
+#| "won't be able to login until their account is unlocked."
+msgid ""
+"Are you sure you want to reset one-time password (OTP) authentication for "
+"%(user_name)s ? The user will have to perform OTP setup again at next login."
+msgstr ""
+"%(user_name)s கணக்கை பூட்ட விரும்புகிறீர்களா? பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை "
+"உள்நுழைய முடியாது."
+
+#: canaille/core/templates/modals/reset-otp.html:18
+msgid ""
+"Are you sure you want to reset one-time password (OTP) authentication? You "
+"will have to perform OTP setup again at next login."
+msgstr ""
 
 #: canaille/core/templates/partial/group-members.html:16
 msgid "Actions"
@@ -1582,6 +1697,12 @@ msgstr "இங்கே எதுவும் இல்லை"
 #: canaille/core/templates/partial/groups.html:8
 msgid "Number of members"
 msgstr "உறுப்பினர்களின் எண்ணிக்கை"
+
+#: canaille/core/templates/sms/sms_otp.txt:1
+#, python-format
+msgid ""
+"Here is the one-time password you requested for %(website_name)s: %(otp)s"
+msgstr ""
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
@@ -1878,7 +1999,8 @@ msgid "Logout"
 msgstr "வெளியேற்றம்"
 
 #: canaille/oidc/templates/preconsent_list.html:27
-msgid "Those applications automatically have authorizations to access you data."
+msgid ""
+"Those applications automatically have authorizations to access you data."
 msgstr "அந்த பயன்பாடுகள் உங்கள் தரவை அணுக தானாகவே அங்கீகாரங்களைக் கொண்டுள்ளன."
 
 #: canaille/oidc/templates/token_view.html:5
@@ -1949,11 +2071,11 @@ msgstr "வாங்கி நீக்குதல்"
 #: canaille/oidc/templates/modals/delete-client.html:13
 #, python-format
 msgid ""
-"Are you sure you want to delete the client %(client_name)s? This action "
-"is unrevokable and all the data about this client will be removed."
+"Are you sure you want to delete the client %(client_name)s? This action is "
+"unrevokable and all the data about this client will be removed."
 msgstr ""
-"கிளையன்ட் %(client_name)s நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மறுபரிசீலனை செய்ய முடியாதது மற்றும் இந்த "
-"கிளையண்டைப் பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
+"கிளையன்ட் %(client_name)s நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மறுபரிசீலனை செய்ய "
+"முடியாதது மற்றும் இந்த கிளையண்டைப் பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
 
 #: canaille/oidc/templates/modals/revoke-token.html:9
 msgid "Token revokation"
@@ -1961,8 +2083,7 @@ msgstr "கிள்ளாக்கு ரத்து"
 
 #: canaille/oidc/templates/modals/revoke-token.html:13
 msgid "Are you sure you want to revoke this token? This action is unrevokable."
-msgstr ""
-"இந்த கிள்ளாக்கை ரத்து செய்ய விரும்புகிறீர்களா? இந்த நடவடிக்கை மாற்ற முடியாதது."
+msgstr "இந்த கிள்ளாக்கை ரத்து செய்ய விரும்புகிறீர்களா? இந்த நடவடிக்கை மாற்ற முடியாதது."
 
 #: canaille/oidc/templates/modals/revoke-token.html:21
 msgid "Revoke"
