@@ -177,7 +177,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     assert res.location == "/setup-2fa"
     assert (
         "info",
-        "You have not enabled Two-Factor Authentication. Please enable it first to login.",
+        "You have not enabled multi-factor authentication. Please enable it first to login.",
     ) in res.flashes
     res = testclient.get("/setup-2fa", status=200)
     assert u.secret_token == res.form["secret"].value

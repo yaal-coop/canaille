@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-12 09:58+0100\n"
+"POT-Creation-Date: 2024-12-12 12:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1087,7 +1087,7 @@ msgid "Impersonate"
 msgstr ""
 
 #: canaille/core/templates/setup-2fa.html:23
-msgid "Set up Two-Factor Authentication."
+msgid "Set up multi-factor authentication."
 msgstr ""
 
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29
