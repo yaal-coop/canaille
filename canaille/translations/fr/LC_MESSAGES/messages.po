@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 12:02+0100\n"
-"PO-Revision-Date: 2024-12-08 11:22+0000\n"
+"PO-Revision-Date: 2024-12-12 21:03+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -155,10 +155,8 @@ msgstr ""
 "{website_name}"
 
 #: canaille/core/endpoints/admin.py:347 canaille/core/mails.py:258
-#, fuzzy
-#| msgid "Password initialization on {website_name}"
 msgid "One-time password authentication on {website_name}"
-msgstr "Initialisation de votre mot de passe sur {website_name}"
+msgstr "Mot de passe à usage unique sur {website_name}"
 
 #: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
@@ -308,6 +306,7 @@ msgstr "Le compte a été déverrouillé"
 #: canaille/core/endpoints/account.py:763
 msgid "One-time password authentication has been reset"
 msgstr ""
+"L'authentification par mots de passe à usage unique a été ré-initialisée"
 
 #: canaille/core/endpoints/account.py:842
 #, python-format
@@ -650,16 +649,12 @@ msgstr "Nouvelle adresse email"
 
 #: canaille/core/endpoints/forms.py:488
 #: canaille/core/templates/mails/email_otp.txt:5
-#, fuzzy
-#| msgid "Initialize password"
 msgid "One-time password"
-msgstr "Initialiser mon mot de passe"
+msgstr "Mot de passe à usage unique"
 
 #: canaille/core/endpoints/forms.py:494
-#, fuzzy
-#| msgid "1234"
 msgid "123456"
-msgstr "1234"
+msgstr "123456"
 
 #: canaille/core/endpoints/groups.py:40
 msgid "Group creation failed."
@@ -1161,7 +1156,7 @@ msgstr ""
 #: canaille/core/templates/modals/reset-otp.html:27
 #: canaille/core/templates/profile_settings.html:145
 msgid "Reset one-time password authentication"
-msgstr ""
+msgstr "Réinitialiser l'authentification par mot de passe à usage unique"
 
 #: canaille/core/templates/profile_settings.html:151
 msgid "Lock the account"
@@ -1181,7 +1176,7 @@ msgstr "Prendre l'identité"
 
 #: canaille/core/templates/setup-2fa.html:23
 msgid "Set up multi-factor authentication."
-msgstr ""
+msgstr "Mettre en place l'authentification multi-facteurs."
 
 #: canaille/core/templates/users.html:5 canaille/core/templates/users.html:29
 #: canaille/templates/base.html:51
@@ -1190,7 +1185,7 @@ msgstr "Utilisateurs"
 
 #: canaille/core/templates/verify-2fa.html:23
 msgid "One-time password authentication."
-msgstr ""
+msgstr "Authentification par mot de passe à usage unique."
 
 #: canaille/core/templates/mails/admin.html:5
 #: canaille/core/templates/mails/admin.html:11
@@ -1312,10 +1307,8 @@ msgid "Compromised password check failure"
 msgstr "Échec de la vérification de la compromission du mot de passe"
 
 #: canaille/core/templates/mails/admin.html:171
-#, fuzzy
-#| msgid "Initialize password"
 msgid "Email one-time password"
-msgstr "Initialiser mon mot de passe"
+msgstr "Mot de passe à usage unique par email"
 
 #: canaille/core/templates/mails/compromised_password_check_failure.html:28
 #, python-format
@@ -1446,31 +1439,23 @@ msgstr "Lien de vérification"
 #: canaille/core/templates/mails/email_otp.html:19
 #: canaille/core/templates/mails/email_otp.txt:1
 msgid "One-time password authentication"
-msgstr ""
+msgstr "Authentification par mot de passe à usage unique"
 
 #: canaille/core/templates/mails/email_otp.html:27
-#, fuzzy, python-format
-#| msgid ""
-#| "Someone, probably you, asked for a password reinitialization link at "
-#| "%(site_name)s. If you did not ask for this email, please ignore it. If "
-#| "you need to reset your password, please click on the \"Reset password\" "
-#| "button below and follow the instructions."
+#, python-format
 msgid ""
 "Someone, probably you, asked for a one-time password at %(site_name)s. If "
 "you did not ask for this email, please ignore it. If you did, please enter "
 "the one-time password below at %(site_name)s to complete your authentication."
 msgstr ""
-"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
-"mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
-"ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
-"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
-"qui vous seront soumises."
+"Quelqu'un, probablement vous, a demandé un mot de passe à usage unique pour "
+"le site %(site_name)s. Si vous n'êtes pas à l'origine de ce message, "
+"veuillez l'ignorer. Si vous l'êtes, saisissez le mot de passe à usage unique "
+"ci-dessous sur %(site_name)s pour terminer votre authentification."
 
 #: canaille/core/templates/mails/email_otp.html:30
-#, fuzzy
-#| msgid "Forgotten password"
 msgid "Your one-time password"
-msgstr "Mot de passe oublié"
+msgstr "Votre mot de passe à usage unique"
 
 #: canaille/core/templates/mails/email_otp.txt:3
 #, python-format
@@ -1478,6 +1463,8 @@ msgid ""
 "Please enter the one-time password below at %(site_name)s to complete your "
 "authentication."
 msgstr ""
+"Veuillez saisir le mot de passe à usage unique ci-dessous à %(site_name)s "
+"pour terminer votre authentification."
 
 #: canaille/core/templates/mails/firstlogin.html:27
 #, python-format
@@ -1689,26 +1676,27 @@ msgstr "Retirer"
 
 #: canaille/core/templates/modals/reset-otp.html:9
 msgid "One-time password authentication reset"
-msgstr ""
+msgstr "Réinitialisation de l'authentification par mot de passe à usage unique"
 
 #: canaille/core/templates/modals/reset-otp.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to lock the account of %(user_name)s ? The user "
-#| "won't be able to login until their account is unlocked."
+#, python-format
 msgid ""
 "Are you sure you want to reset one-time password (OTP) authentication for "
 "%(user_name)s ? The user will have to perform OTP setup again at next login."
 msgstr ""
-"Êtes-vous sûrs de vouloir verrouiller le compte de %(user_name)s ? "
-"L’utilisateur ne pourra pas s’authentifier jusqu’à ce que son compte soit "
-"déverrouillé."
+"Êtes-vous sûrs de vouloir réinitialiser l'authentification par mot de passe "
+"à usage unique (OTP) pour %(user_name)s ? L'utilisateur devra mettre en "
+"place son authentification à sa prochaine connexion."
 
 #: canaille/core/templates/modals/reset-otp.html:18
 msgid ""
 "Are you sure you want to reset one-time password (OTP) authentication? You "
 "will have to perform OTP setup again at next login."
 msgstr ""
+"Êtes-vous sûr de vouloir réinitialiser votre authentification par mot de "
+"passe à usage unique (OTP) ? Vous devrez procéder à la mise en place de "
+"l'authentification par mot de passe à usage unique à votre prochaine "
+"connexion."
 
 #: canaille/core/templates/partial/group-members.html:16
 msgid "Actions"
@@ -1760,6 +1748,8 @@ msgstr "Nombre de membres"
 msgid ""
 "Here is the one-time password you requested for %(website_name)s: %(otp)s"
 msgstr ""
+"Voici le mot de passe à usage unique que vous avez demandé pour "
+"%(website_name)s : %(otp)s"
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
