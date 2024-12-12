@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 09:58+0100\n"
-"PO-Revision-Date: 2024-12-12 08:58+0000\n"
+"PO-Revision-Date: 2024-12-12 11:05+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -96,10 +96,8 @@ msgid "Button in the client admin page to create client tokens."
 msgstr "Bouton de création de jetons sur la page d’administration des clients."
 
 #: ../../CHANGES.rst:19 6f16cdf0ce864a20b13344f84e6dfefb
-#, fuzzy
-#| msgid "Email verification. :issue:`41` :pr:`147`"
 msgid "Basic SCIM implementation. :issue:`116` :pr:`197`"
-msgstr "Vérification des adresses email. :issue:`41`:pr:`147`"
+msgstr "Implémentation basique du protocole SCIM. :issue:`116` :pr:`197`"
 
 #: ../../CHANGES.rst:22 ../../CHANGES.rst:42 ../../CHANGES.rst:55
 #: ../../CHANGES.rst:67 ../../CHANGES.rst:92 ../../CHANGES.rst:100
@@ -4132,16 +4130,12 @@ msgid "Delete a user."
 msgstr "Supprime un utilisateur."
 
 #: ../../canaille reset-otp:1 7c6ec1734fad47e29b224fb85e9a66f3
-#, fuzzy
-#| msgid ""
-#| "Update a user and display the edited model in JSON format in the standard "
-#| "output."
 msgid ""
 "Reset one-time password authentication for a user and display the edited "
 "user in JSON format in the standard output."
 msgstr ""
-"Met à jour un utilisateur et affiche un modèle modifié au format JSON sur la "
-"sortie standard."
+"Réinitialise le jeton des mots de passes à usage unique pour un utilisateur, "
+"et affiche l'utilisateur édité au format JSON dans la sortie standard."
 
 #: ../references/configuration.rst:2 e23c84272ce74d1d87f815825cb4a488
 msgid "Configuration"
@@ -5157,7 +5151,7 @@ msgstr ""
 #: ../../canaille/scim/configuration.py:docstring of
 #: canaille.scim.configuration.SCIMSettings:1 a52a23313e76499f8eb015c9a754c440
 msgid "SCIM settings."
-msgstr ""
+msgstr "Paramètres SCIM."
 
 #: ../../canaille/backends/sql/configuration.py:docstring of
 #: canaille.backends.sql.configuration.SQLSettings:1
@@ -5690,6 +5684,8 @@ msgstr "Vérifie si un mot de passe a été définie pour l'utilisateur."
 msgid ""
 "HMAC-based One Time Password counter, used for two-factor authentication."
 msgstr ""
+"Compteur de mots de passes à usage unique HMAC. Utilisé pour "
+"l'authentification multi-facteurs."
 
 #: ../../docstring of canaille.core.models.User.last_otp_login:1
 #: aeffd6550ea64663ab67d8acca53691b
