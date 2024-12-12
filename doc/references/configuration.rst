@@ -9,7 +9,9 @@ Canaille can be configured either by a environment variables, environment file, 
 Configuration file
 ~~~~~~~~~~~~~~~~~~
 
-The configuration can be written in `toml` configuration file which path is passed in the :envvar:`CONFIG` environment variable.
+.. envvar:: CONFIG
+
+    The configuration can be written in `toml` configuration file which path is passed in the :envvar:`CONFIG` environment variable.
 
 .. code-block:: toml
     :caption: config.toml
