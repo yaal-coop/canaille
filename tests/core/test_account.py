@@ -201,10 +201,20 @@ def test_account_locked_during_session(testclient, logged_user, backend):
 
 
 @mock.patch("canaille.app.flask.get_today_datetime")
+@mock.patch("canaille.core.endpoints.account.get_today_datetime")
 def test_expired_password_redirection_and_register_new_password(
-    get_future_datetime, testclient, logged_user, user, backend, admin
+    get_future_datetime1,
+    get_future_datetime2,
+    testclient,
+    logged_user,
+    user,
+    backend,
+    admin,
 ):
-    get_future_datetime.return_value = UTC.localize(
+    get_future_datetime1.return_value = UTC.localize(
+        datetime.datetime.now()
+    ) + datetime.timedelta(days=10)
+    get_future_datetime2.return_value = UTC.localize(
         datetime.datetime.now()
     ) + datetime.timedelta(days=10)
 
@@ -216,6 +226,7 @@ def test_expired_password_redirection_and_register_new_password(
 
     backend.reload(logged_user)
     backend.reload(g.user)
+    backend.reload(user)
 
     testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = datetime.timedelta(days=5)
     res = testclient.get("/profile/user/settings")
@@ -234,6 +245,9 @@ def test_expired_password_redirection_and_register_new_password(
     print(user.password_last_update)
     print(testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"])
 
+    backend.reload(logged_user)
+    backend.reload(g.user)
+    backend.reload(user)
     res = testclient.get("/reset/user")
 
     res.form["password"] = "foobarbaz"

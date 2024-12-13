@@ -22,34 +22,6 @@ def get_today_datetime():
     return UTC.localize(datetime.datetime.now())  # pragma: no cover
 
 
-def expired_password_needed():
-    """Check if password has not expired."""
-
-    def wrapper(view_function):
-        @wraps(view_function)
-        def decorator(*args, **kwargs):
-            if current_user():
-                user = current_user()
-
-                last_update = user.password_last_update or get_today_datetime()
-
-                password_expiration = current_app.config["CANAILLE"][
-                    "PASSWORD_LIFETIME"
-                ]
-                if (
-                    password_expiration is None
-                    or password_expiration == 0
-                    or password_expiration == datetime.timedelta(microseconds=0)
-                    or last_update + password_expiration >= get_today_datetime()
-                ):
-                    abort(403)
-            return view_function(*args, **kwargs)
-
-        return decorator
-
-    return wrapper
-
-
 def user_needed(*args):
     permissions = set(args)
 

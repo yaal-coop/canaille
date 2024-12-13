@@ -16,6 +16,7 @@ from flask import request
 from flask import send_file
 from flask import session
 from flask import url_for
+from pytz import UTC
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
@@ -24,7 +25,6 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
-from canaille.app.flask import expired_password_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
@@ -890,11 +890,26 @@ def photo(user, field):
     )
 
 
+def get_today_datetime():
+    return UTC.localize(datetime.datetime.now())  # pragma: no cover
+
+
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])
-@expired_password_needed()
 def reset(user):
     form = PasswordResetForm(request.form)
     if user != current_user():
+        print("WHAT ?????")
+        abort(403)
+
+    last_update = user.password_last_update or get_today_datetime()
+
+    password_expiration = current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
+    if (
+        password_expiration is None
+        or password_expiration == 0
+        or password_expiration == datetime.timedelta(microseconds=0)
+        or last_update + password_expiration >= get_today_datetime()
+    ):
         abort(403)
 
     if request.form and form.validate():
