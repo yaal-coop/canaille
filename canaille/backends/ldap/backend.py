@@ -252,9 +252,6 @@ class LDAPBackend(Backend):
             password.encode("utf-8"),
         )
 
-    def set_last_login(self, user):
-        pass  # pragma: no cover
-
     def query(self, model, dn=None, filter=None, **kwargs):
         from .ldapobjectquery import LDAPObjectQuery
 
@@ -433,7 +430,6 @@ def setup_ldap_models(config):
     models.User.rdn_attribute = config["CANAILLE_LDAP"]["USER_RDN"]
     object_class = config["CANAILLE_LDAP"]["USER_CLASS"]
     models.User.ldap_object_class = listify(object_class)
-    models.User.password_attribute = "userPassword"
 
     group_base = config["CANAILLE_LDAP"]["GROUP_BASE"].replace(
         f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""
