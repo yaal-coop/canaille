@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 22:02+0100\n"
-"PO-Revision-Date: 2024-12-12 21:03+0000\n"
+"PO-Revision-Date: 2024-12-13 10:55+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -76,22 +76,16 @@ msgid "Password compromission check :issue:`179`"
 msgstr "Vérification de la compromission des mots de passe :issue:`179`"
 
 #: ../../CHANGES.rst:13 a90b270f7e144a4b81babbac96f5ff22
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and :attr:"
-#| "`~canaille.core.configuration.CoreSettings."
-#| "ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:`~canaille.core."
-#| "configuration.CoreSettings.API_URL_HIBP` :issue:`179`"
 msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and :attr:"
 "`~canaille.core.configuration.CoreSettings."
 "ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:`~canaille.core.configuration."
 "CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:`179`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et :attr:"
-"`~canaille.core.configuration.CoreSettings."
+":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et "
+":attr:`~canaille.core.configuration.CoreSettings."
 "ENABLE_PASSWORD_COMPROMISSION_CHECK` et :attr:`~canaille.core.configuration."
-"CoreSettings.API_URL_HIBP` :issue:`179`"
+"CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:`179`"
 
 #: ../../CHANGES.rst:17 2cfcbdba2e9541dbab610bc724a2683a
 msgid "Implement OIDC client_credentials flow. :issue:`207`"
@@ -164,19 +158,14 @@ msgstr ""
 "pouvait engendrer une perte de permissions de l’éditeur. :issue:`202`"
 
 #: ../../CHANGES.rst:35 efa1fc20329f42918fe6a530617cf102
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGHT` "
-#| "and :attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGHT` "
-#| "configuration options :issue:`174`"
 msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH` and :"
 "attr:`~canaille.core.configuration.CoreSettings.MIN_PASSWORD_LENGTH` "
 "configuration options :issue:`174`"
 msgstr ""
 "Options de configuration :attr:`~canaille.core.configuration.CoreSettings."
-"MAX_PASSWORD_LENGHT` et :attr:`~canaille.core.configuration.CoreSettings."
-"MIN_PASSWORD_LENGHT` :issue:`174`"
+"MAX_PASSWORD_LENGTH` et :attr:`~canaille.core.configuration.CoreSettings."
+"MIN_PASSWORD_LENGTH` :issue:`174`"
 
 #: ../../CHANGES.rst:37 cdab69b7537c452caa3eadb572993a40
 msgid "Password strength visual indicator. :issue:`174`"
@@ -266,15 +255,11 @@ msgid "[0.0.53] - 2024-04-22"
 msgstr "[0.0.53] - 2024-04-22"
 
 #: ../../CHANGES.rst:82 17fbf739a68a4e59b5cc6da8befa1c6f
-#, fuzzy
-#| msgid ""
-#| "`env_prefix` :meth:`~canaille.create_app` variable can select the "
-#| "environment var prefix."
 msgid ""
 "`env_prefix` `create_app`` variable can select the environment var prefix."
 msgstr ""
-"La variable `env_prefix`de la méthode :meth:`~canaille.create_app` permet de "
-"choisir le préfixe des variables d’environnement."
+"La variable `env_prefix`de la méthode ``create_app`` permet de choisir le "
+"préfixe des variables d’environnement."
 
 #: ../../CHANGES.rst:85 7bdc8f732053463b95353cdf5c994838
 msgid "[0.0.52] - 2024-04-22"
@@ -367,14 +352,8 @@ msgid "[0.0.45] - 2024-04-04"
 msgstr "[0.0.45] - 2024-04-04"
 
 #: ../../CHANGES.rst:149 9690ab893eef4290a52b1137f24b9be8
-#, fuzzy
-#| msgid ""
-#| "Internal indexation mechanism of :class:`~canaille.backends.memory.model."
-#| "MemoryModel`."
 msgid "Internal indexation mechanism of ``MemoryModel``."
-msgstr ""
-"Mécanisme d’indexation interne de :class:`~canaille.backends.memory.model."
-"MemoryModel`."
+msgstr "Mécanisme d’indexation interne de ``MemoryModel``."
 
 #: ../../CHANGES.rst:152 be79650410904879b53da2c62ac092d5
 msgid "[0.0.44] - 2024-03-29"
@@ -4687,12 +4666,6 @@ msgstr "Utilisé à fins d'affichage."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.OTP_METHOD:1
 #: 622f83bdd580459cad5b3b328fb2de3b
-#, fuzzy
-#| msgid ""
-#| "If OTP_METHOD is defined, then users will need to authenticate themselves "
-#| "using a one-time password (OTP) via an authenticator app. If set to :py:"
-#| "data:`TOTP`, the application will use time one-time passwords, If set to :"
-#| "py:data:`HOTP`, the application will use HMAC-based one-time passwords."
 msgid ""
 "If OTP_METHOD is defined, then users will need to authenticate themselves "
 "using a one-time password (OTP) via an authenticator app. If set to "
@@ -5373,18 +5346,13 @@ msgstr ""
 
 #: ../../docstring of canaille.backends.models.Model.id:1
 #: 112d9fd0a032418682875fe5f5685fc8
-#, fuzzy
-#| msgid ""
-#| "A unique identifier for a SCIM resource as defined by the service "
-#| "provider. Id will be :py:data:`None` until the :meth:`~canaille.backends."
-#| "models.BackendModel.save` method is called."
 msgid ""
 "A unique identifier for a SCIM resource as defined by the service provider. "
 "Id will be :data:`None` until the ``Backend.save`` method is called."
 msgstr ""
 "Un identifiant unique pour une ressource SCIM tel que définie par le "
-"fournisseur du service. Id sera :py:data:`None` jusqu'à ce que la méthode :"
-"meth:`~canaille.backends.models.BackendModel.save` soit appelée."
+"fournisseur du service. Id sera :data:`None` jusqu'à ce que la méthode "
+"``BackendModel.save`` soit appelée."
 
 #: ../../docstring of canaille.backends.models.Model.id:5
 #: fe3e4be3b44b43ebbbd11fe81fdc2613
@@ -6518,7 +6486,7 @@ msgstr ""
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Consent:1 bf6c359aadbc4404ba1967b1b8d26255
 msgid "Long-term user consent to an application."
-msgstr ""
+msgstr "Consentement utilisateur à long terme à une application."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Token:1 a20eaa516c854599a62222141346d76b
@@ -6600,7 +6568,7 @@ msgstr ""
 
 #: ../tutorial/databases.rst:71 b1eebe57d90648b3b24cb48cb49c5436
 msgid "memberof / refint"
-msgstr ""
+msgstr "memberof / refint"
 
 #: ../tutorial/databases.rst:73 6bb596696373483ab0a52f0e8169ab9e
 msgid ""
@@ -6609,6 +6577,11 @@ msgid ""
 "openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_ overlays "
 "are needed for the Canaille group membership to work correctly."
 msgstr ""
+"les greffons `memberof <https://www.openldap.org/doc/admin26/overlays."
+"html#Reverse%20Group%20Membership%20Maintenance>`_ et `refint <https://www."
+"openldap.org/doc/admin26/overlays.html#Referential%20Integrity>`_ sont "
+"nécessaires pour que l'appartenance d'un utilisateur à un groupe fonctionne "
+"correctement dans Canaille."
 
 #: ../tutorial/databases.rst:77 ../tutorial/databases.rst:100
 #: ../tutorial/databases.rst:123 bff8a12ffd4b4d179d6938a046810186
@@ -6617,11 +6590,11 @@ msgstr ""
 
 #: ../tutorial/databases.rst:79 d8858049d6d44b7cae4cbd659f9f8ba2
 msgid "memberof-config.ldif"
-msgstr ""
+msgstr "memberof-config.ldif"
 
 #: ../tutorial/databases.rst:83 830059290ddc4cf1b2249c45fc303b98
 msgid "refint-config.ldif"
-msgstr ""
+msgstr "refint-config.ldif"
 
 #: ../tutorial/databases.rst:87 ../tutorial/databases.rst:110
 #: 4070700e524f481ba82662576453c6b3
@@ -6630,7 +6603,7 @@ msgstr ""
 
 #: ../tutorial/databases.rst:96 e37e96d3eac048e191b4da59788b6096
 msgid "ppolicy"
-msgstr ""
+msgstr "ppolicy"
 
 #: ../tutorial/databases.rst:98 88ed660b0098483fa77e880febad6b52
 msgid ""
@@ -6644,15 +6617,15 @@ msgstr ""
 
 #: ../tutorial/databases.rst:102 0194f8cb96554ed9a209784cd1a5a10e
 msgid "ppolicy-config.ldif"
-msgstr ""
+msgstr "ppolicy-config.ldif"
 
 #: ../tutorial/databases.rst:106 09776d76a5c54f6eb7d79e15a0dbed82
 msgid "ppolicy.ldif"
-msgstr ""
+msgstr "ppolicy.ldif"
 
 #: ../tutorial/databases.rst:119 7bb7048ad0234c28a245626aa50d9c62
 msgid "otp"
-msgstr ""
+msgstr "otp"
 
 #: ../tutorial/databases.rst:121 89b862fd590f4c49a156ed490b778051
 msgid ""
@@ -6675,11 +6648,11 @@ msgstr ""
 
 #: ../tutorial/deployment.rst:2 f396d7b4fa884f55bf66b57b6c046fdb
 msgid "Deployment"
-msgstr ""
+msgstr "Déploiement"
 
 #: ../tutorial/deployment.rst:5 2cbff8a64b41470396973c1f66482110
 msgid "Application service"
-msgstr ""
+msgstr "Serveur d’application"
 
 #: ../tutorial/deployment.rst:7 d60be98207bd489299d7492480a091c5
 msgid ""
@@ -6690,7 +6663,7 @@ msgstr ""
 
 #: ../tutorial/deployment.rst:11 cf41e4599bea477a8b6742ed38c09555
 msgid "gunicorn"
-msgstr ""
+msgstr "gunicorn"
 
 #: ../tutorial/deployment.rst:15 9f4888747a6d4f5d85d9b94bc2814aff
 msgid "Write a gunicorn configuration sample file."
@@ -6698,11 +6671,11 @@ msgstr ""
 
 #: ../tutorial/deployment.rst:18 beb61a6d85dc407c923f0a1797571b4b
 msgid "uwsgi"
-msgstr ""
+msgstr "uwsgi"
 
 #: ../tutorial/deployment.rst:42 804b59080cfb46a5bece65e9dfe52ae4
 msgid "Webserver"
-msgstr ""
+msgstr "Serveur web"
 
 #: ../tutorial/deployment.rst:44 3fd8ef72a9db483aaa18397b136708a4
 msgid ""
@@ -6713,15 +6686,15 @@ msgstr ""
 
 #: ../tutorial/deployment.rst:48 40d9837c5cdd4c9faf94797e578e409d
 msgid "Nginx"
-msgstr ""
+msgstr "Nginx"
 
 #: ../tutorial/deployment.rst:114 5407fc49df8b4871a993d95ebe6b216e
 msgid "Apache"
-msgstr ""
+msgstr "Apache"
 
 #: ../tutorial/deployment.rst:153 9e1ca64c07984a218f094949ed99bc6e
 msgid "Recurrent jobs"
-msgstr ""
+msgstr "Tâches récurrentes"
 
 #: ../tutorial/deployment.rst:155 283551b28f2d465a830885e57a802334
 msgid ""
@@ -6731,7 +6704,7 @@ msgstr ""
 
 #: ../tutorial/deployment.rst:164 3a91c9769ca04ed289ef4e08d71c84e0
 msgid "Webfinger"
-msgstr ""
+msgstr "Webfinger"
 
 #: ../tutorial/deployment.rst:166 c0c2aa060ee743e797e0e0e69ed34aad
 msgid ""
@@ -6782,11 +6755,11 @@ msgstr ""
 
 #: ../tutorial/index.rst:2 40de96b13f0b46ba88769f9f0c91bece
 msgid "Tutorial"
-msgstr ""
+msgstr "Tutoriel"
 
 #: ../tutorial/install.rst:2 990b0c4570294a4c914942072b835544
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
 #: ../tutorial/install.rst:6 1f5645b8ce114b08abc62b4f03e8d613
 msgid ""
