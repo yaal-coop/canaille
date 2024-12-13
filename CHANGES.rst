@@ -22,7 +22,7 @@ Changed
 - PostgreSQL and MySQL extras does not rely on libraries that need to be compiled.
 - ``.env`` files are not loaded by default. The ``ENV_FILE`` env var must be passed so ``.env`` files are loaded.
 - Password expiry policy :issue:`176`
-- :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_MAX_DAYS_EXPIRATION`
+- :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`
 
 [0.0.56] - 2024-11-07
 ---------------------

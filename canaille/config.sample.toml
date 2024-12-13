@@ -118,10 +118,13 @@ SECRET_KEY = "change me before you go in production"
 
 # Password validity in days.
 # If a value is recorded Canaille will check if user's password is expired.
-# Then, the user is forced to change his password.
-# This value represents the number of days the password is valid.
-# It is possible to disable this option, by entering None or 0.
-# PASSWORD_MAX_DAYS_EXPIRATION = None
+# Then, the user is forced to change his password when the lifetime of the password is over.
+# This value is expressed in timedelta format.
+# Example: datetime.timedelta(weeks=0, days=0, hours=0, minutes=0, seconds=0, microseconds=0, # # milliseconds=0)
+# You can select one or more attributes of the type 'days' or 'hours'.
+# If all the attributes you have chosen are null, then PASSWORD_LIFETIME option is disable.
+# It is also possible to disable this option, by entering None or 0.
+# PASSWORD_LIFETIME = None
 
 # [CANAILLE_SQL]
 # The SQL database connection string

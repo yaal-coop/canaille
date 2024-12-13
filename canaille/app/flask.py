@@ -34,13 +34,13 @@ def non_expired_password_needed():
                 last_update = user.password_last_update or get_today_datetime()
 
                 password_expiration = current_app.config["CANAILLE"][
-                    "PASSWORD_MAX_DAYS_EXPIRATION"
+                    "PASSWORD_LIFETIME"
                 ]
                 if (
                     password_expiration is not None
                     and password_expiration != 0
-                    and last_update + datetime.timedelta(days=password_expiration)
-                    < get_today_datetime()
+                    and password_expiration != datetime.timedelta(milliseconds=0)
+                    and last_update + password_expiration < get_today_datetime()
                 ):
                     flash(
                         _("Your password has expired, please choose a new password."),
@@ -71,13 +71,13 @@ def expired_password_needed():
                 last_update = user.password_last_update or get_today_datetime()
 
                 password_expiration = current_app.config["CANAILLE"][
-                    "PASSWORD_MAX_DAYS_EXPIRATION"
+                    "PASSWORD_LIFETIME"
                 ]
                 if (
                     password_expiration is None
                     or password_expiration == 0
-                    or last_update + datetime.timedelta(days=password_expiration)
-                    >= get_today_datetime()
+                    or password_expiration == datetime.timedelta(microseconds=0)
+                    or last_update + password_expiration >= get_today_datetime()
                 ):
                     abort(403)
             return view_function(*args, **kwargs)

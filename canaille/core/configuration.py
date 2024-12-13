@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 
 from pydantic import BaseModel
@@ -371,11 +372,14 @@ class CoreSettings(BaseModel):
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
 
-    PASSWORD_MAX_DAYS_EXPIRATION: int | None = None
+    PASSWORD_LIFETIME: datetime.timedelta | None = None
     """Password validity in days.
 
     If a value is recorded Canaille will check if user's password is expired.
-    Then, the user is forced to change his password.
-    This value represents the number of days the password is valid.
-    It is possible to disable this option, by entering None or 0.
+    Then, the user is forced to change his password when the lifetime of the password is over.
+    This value is expressed in timedelta format.
+    Example: datetime.timedelta(weeks=0, days=0, hours=0, minutes=0, seconds=0, milliseconds=0, microseconds=0)
+    You can select one or more attributes of the type 'days' or 'hours'.
+    If all the attributes you have chosen are null, then PASSWORD_LIFETIME is disable.
+    It is also possible to disable this option, by entering None or 0.
     """

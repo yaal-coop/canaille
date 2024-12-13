@@ -216,7 +216,7 @@ def test_expired_password_redirection_and_register_new_password(
 
     backend.reload(logged_user)
     backend.reload(g.user)
-    testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = 5
+    testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = datetime.timedelta(days=5)
     res = testclient.get("/profile/user/settings")
 
     assert (
@@ -239,9 +239,7 @@ def test_not_expired_password_or_wrong_user_redirection(
     testclient, logged_user, user, backend, admin
 ):
     def test_two_redirections(password_lifetime):
-        testclient.app.config["CANAILLE"]["PASSWORD_MAX_DAYS_EXPIRATION"] = (
-            password_lifetime
-        )
+        testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = password_lifetime
         testclient.get("/reset/user", status=403)
         testclient.get("/reset/admin", status=403)
         backend.reload(g.user)
@@ -250,11 +248,22 @@ def test_not_expired_password_or_wrong_user_redirection(
 
     test_two_redirections(0)
 
+    testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = datetime.timedelta(
+        microseconds=1
+    )
+    res = testclient.get("/profile/user/settings")
+    assert (
+        "info",
+        "Your password has expired, please choose a new password.",
+    ) in res.flashes
+    assert res.location == "/reset/user"
+
+    testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = datetime.timedelta(days=1)
     res = testclient.get("/profile/user/settings")
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
     res = res.form.submit(name="action", value="edit-settings")
-    test_two_redirections(1)
+    test_two_redirections(datetime.timedelta(days=1))
 
 
 def test_expired_password_needed_without_current_user(testclient, user):
