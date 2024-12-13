@@ -216,6 +216,7 @@ def test_expired_password_redirection_and_register_new_password(
 
     backend.reload(logged_user)
     backend.reload(g.user)
+
     testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = datetime.timedelta(days=5)
     res = testclient.get("/profile/user/settings")
 
@@ -224,8 +225,14 @@ def test_expired_password_redirection_and_register_new_password(
         "Your password has expired, please choose a new password.",
     ) in res.flashes
     assert res.location == "/reset/user"
-
+    print("just after save", logged_user.password_last_update)
+    print("just after save", user.password_last_update)
+    print("just after save", testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"])
     testclient.get("/reset/admin", status=403)
+
+    print(logged_user.password_last_update)
+    print(user.password_last_update)
+    print(testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"])
 
     res = testclient.get("/reset/user")
 

@@ -22,43 +22,6 @@ def get_today_datetime():
     return UTC.localize(datetime.datetime.now())  # pragma: no cover
 
 
-def non_expired_password_needed():
-    """Check if password has not expired."""
-
-    def wrapper(view_function):
-        @wraps(view_function)
-        def decorator(*args, **kwargs):
-            if current_user():
-                user = current_user()
-
-                last_update = user.password_last_update or get_today_datetime()
-
-                password_expiration = current_app.config["CANAILLE"][
-                    "PASSWORD_LIFETIME"
-                ]
-                if (
-                    password_expiration is not None
-                    and password_expiration != 0
-                    and password_expiration != datetime.timedelta(milliseconds=0)
-                    and last_update + password_expiration < get_today_datetime()
-                ):
-                    flash(
-                        _("Your password has expired, please choose a new password."),
-                        "info",
-                    )
-                    return redirect(
-                        url_for(
-                            "core.account.reset",
-                            user=user,
-                        )
-                    )
-            return view_function(*args, **kwargs)
-
-        return decorator
-
-    return wrapper
-
-
 def expired_password_needed():
     """Check if password has not expired."""
 
@@ -87,21 +50,7 @@ def expired_password_needed():
     return wrapper
 
 
-def user_needed():
-    def wrapper(view_function):
-        @wraps(view_function)
-        def decorator(*args, **kwargs):
-            user = current_user()
-            if not user:
-                abort(403)
-            return view_function(*args, user=user, **kwargs)
-
-        return decorator
-
-    return wrapper
-
-
-def permissions_needed(*args):
+def user_needed(*args):
     permissions = set(args)
 
     def wrapper(view_function):
@@ -110,6 +59,27 @@ def permissions_needed(*args):
             user = current_user()
             if not user or not user.can(*permissions):
                 abort(403)
+
+            last_update = user.password_last_update or get_today_datetime()
+
+            password_expiration = current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
+            if (
+                password_expiration is not None
+                and password_expiration != 0
+                and password_expiration != datetime.timedelta(milliseconds=0)
+                and last_update + password_expiration < get_today_datetime()
+            ):
+                flash(
+                    _("Your password has expired, please choose a new password."),
+                    "info",
+                )
+                return redirect(
+                    url_for(
+                        "core.account.reset",
+                        user=user,
+                    )
+                )
+
             return view_function(*args, user=user, **kwargs)
 
         return decorator

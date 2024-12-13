@@ -25,8 +25,6 @@ from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app.flask import expired_password_needed
-from canaille.app.flask import non_expired_password_needed
-from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
@@ -143,8 +141,7 @@ def about():
 
 
 @bp.route("/users", methods=["GET", "POST"])
-@non_expired_password_needed()
-@permissions_needed("manage_users")
+@user_needed("manage_users")
 def users(user):
     table_form = TableForm(
         models.User,
@@ -198,9 +195,8 @@ class RegistrationPayload(VerificationPayload):
 
 
 @bp.route("/invite", methods=["GET", "POST"])
-@non_expired_password_needed()
 @smtp_needed()
-@permissions_needed("manage_users")
+@user_needed("manage_users")
 def user_invitation(user):
     form = InvitationForm(request.form or None)
     email_sent = None
@@ -415,8 +411,7 @@ def email_confirmation(data, hash):
 
 
 @bp.route("/profile", methods=("GET", "POST"))
-@non_expired_password_needed()
-@permissions_needed("manage_users")
+@user_needed("manage_users")
 def profile_creation(user):
     form = build_profile_form(user.writable_fields, user.readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
@@ -585,7 +580,6 @@ def profile_edition_remove_email(user, edited_user, email):
 
 
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
-@non_expired_password_needed()
 @user_needed()
 def profile_edition(user, edited_user):
     if not user.can_manage_users and not (
@@ -674,7 +668,6 @@ def profile_edition(user, edited_user):
 
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
-@non_expired_password_needed()
 @user_needed()
 def profile_settings(user, edited_user):
     if not user.can_manage_users and not (
@@ -861,8 +854,7 @@ def profile_delete(user, edited_user):
 
 
 @bp.route("/impersonate/<user:puppet>")
-@non_expired_password_needed()
-@permissions_needed("impersonate_users")
+@user_needed("impersonate_users")
 def impersonate(user, puppet):
     if puppet.locked:
         abort(403, _("Locked users cannot be impersonated."))

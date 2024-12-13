@@ -7,8 +7,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 
 from canaille.app import obj_to_b64
-from canaille.app.flask import non_expired_password_needed
-from canaille.app.flask import permissions_needed
+from canaille.app.flask import user_needed
 from canaille.app.forms import Form
 from canaille.app.forms import email_validator
 from canaille.app.i18n import gettext as _
@@ -35,8 +34,7 @@ class MailTestForm(Form):
 
 
 @bp.route("/mail", methods=["GET", "POST"])
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def mail_index(user):
     form = MailTestForm(request.form or None)
     if request.form and form.validate():
@@ -49,8 +47,7 @@ def mail_index(user):
 
 
 @bp.route("/mail/test.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def test_html(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
@@ -65,8 +62,7 @@ def test_html(user):
 
 
 @bp.route("/mail/test.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def test_txt(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
@@ -77,8 +73,7 @@ def test_txt(user):
 
 
 @bp.route("/mail/password-init.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def password_init_html(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
@@ -104,8 +99,7 @@ def password_init_html(user):
 
 
 @bp.route("/mail/password-init.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def password_init_txt(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
@@ -124,8 +118,7 @@ def password_init_txt(user):
 
 
 @bp.route("/mail/reset.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def password_reset_html(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
@@ -151,8 +144,7 @@ def password_reset_html(user):
 
 
 @bp.route("/mail/reset.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def password_reset_txt(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
@@ -171,8 +163,7 @@ def password_reset_txt(user):
 
 
 @bp.route("/mail/<identifier>/<email>/invitation.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def invitation_html(user, identifier, email):
     base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
@@ -195,8 +186,7 @@ def invitation_html(user, identifier, email):
 
 
 @bp.route("/mail/<identifier>/<email>/invitation.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def invitation_txt(user, identifier, email):
     base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
@@ -215,8 +205,7 @@ def invitation_txt(user, identifier, email):
 
 
 @bp.route("/mail/<identifier>/<email>/email-confirmation.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def email_confirmation_html(user, identifier, email):
     base_url = url_for("core.account.index", _external=True)
     email_confirmation_url = url_for(
@@ -239,8 +228,7 @@ def email_confirmation_html(user, identifier, email):
 
 
 @bp.route("/mail/<identifier>/<email>/email-confirmation.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def email_confirmation_txt(user, identifier, email):
     base_url = url_for("core.account.index", _external=True)
     email_confirmation_url = url_for(
@@ -259,8 +247,7 @@ def email_confirmation_txt(user, identifier, email):
 
 
 @bp.route("/mail/<email>/registration.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def registration_html(user, email):
     base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
@@ -283,8 +270,7 @@ def registration_html(user, email):
 
 
 @bp.route("/mail/<email>/registration.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def registration_txt(user, email):
     base_url = url_for("core.account.index", _external=True)
     registration_url = url_for(
@@ -303,8 +289,7 @@ def registration_txt(user, email):
 
 
 @bp.route("/mail/compromised_password_check_failure.html")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def compromised_password_check_failure_html(user):
     base_url = url_for("core.account.index", _external=True)
     user_name = "<USER NAME>"
@@ -328,8 +313,7 @@ def compromised_password_check_failure_html(user):
 
 
 @bp.route("/mail/compromised_password_check_failure.txt")
-@non_expired_password_needed()
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def compromised_password_check_failure_txt(user):
     base_url = url_for("core.account.index", _external=True)
     user_name = "<USER NAME>"
@@ -349,7 +333,7 @@ def compromised_password_check_failure_txt(user):
 
 
 @bp.route("/mail/email_otp.html")
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def email_otp_html(user):
     base_url = url_for("core.account.index", _external=True)
     otp = "000000"
@@ -367,7 +351,7 @@ def email_otp_html(user):
 
 
 @bp.route("/mail/email_otp.txt")
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def email_otp_txt(user):
     base_url = url_for("core.account.index", _external=True)
     otp = "000000"
