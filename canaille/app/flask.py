@@ -40,13 +40,13 @@ def non_expired_passsword_needed():
                 )
 
                 password_expiration = current_app.config["CANAILLE"][
-                    "PASSWORD_MAX_DAYS_EXPIRATION"
+                    "PASSWORD_LIFETIME"
                 ]
                 if (
                     password_expiration is not None
                     and password_expiration != 0
-                    and last_update + datetime.timedelta(days=password_expiration)
-                    < get_today_datetime()
+                    and password_expiration != datetime.timedelta(milliseconds=0)
+                    and last_update + password_expiration < get_today_datetime()
                 ):
                     return redirect(
                         url_for(
