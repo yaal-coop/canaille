@@ -5492,7 +5492,7 @@ msgstr ""
 
 #: ../tutorial/databases.rst:52
 #: dbd09fe39b724102813c8d259ad336f6
-msgid "If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user :"
+msgid "If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user:"
 msgstr ""
 
 #: ../tutorial/databases.rst:58
