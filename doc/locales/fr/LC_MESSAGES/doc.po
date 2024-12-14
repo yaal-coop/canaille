@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 22:02+0100\n"
-"PO-Revision-Date: 2024-12-14 07:43+0000\n"
+"PO-Revision-Date: 2024-12-15 14:00+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -6702,10 +6702,6 @@ msgstr ""
 "Par exemple :"
 
 #: ../tutorial/databases.rst:52 dbd09fe39b724102813c8d259ad336f6
-#, fuzzy
-#| msgid ""
-#| "If you want to use TOTP/HOTP authentication, you will need to add the "
-#| "``oathHOTPToken`` class to the user :"
 msgid ""
 "If you want to use TOTP/HOTP authentication, you will need to add the "
 "``oathHOTPToken`` class to the user:"
@@ -6914,6 +6910,19 @@ msgid ""
 "server ``https://auth.mydomain.example``. With this information the third "
 "party application can redirect the user to the Canaille authentication page."
 msgstr ""
+"Vous pourriez vouloir configurer un terminal `WebFinger`_ sur votre site web "
+"principal pour permettre la découverte automatique de votre installation "
+"Canaille basée sur le nom de compte d'un de vos utilisateurs. Par exemple, "
+"supposons que votre domaine soit ``mydomain.example`` et que votre domaine "
+"Canaille soit ``auth.mydomain.example`` et qu'il existe un utilisateur ``john"
+".doe``. Une application tierce pourrait avoir besoin d'authentifier "
+"l'utilisateur et lui demander son compte. L'utilisateur fournirait son "
+"compte ``john.doe@mydomain.example``, alors l'application exécuterait une "
+"requête WebFinger sur ``https://mydomain.example/.well-known/webfinger`` et "
+"la réponse contiendrait l'adresse du serveur d'authentification "
+"``https://auth.mydomain.example``. Avec cette information, l'application "
+"tierce pourrait rediriger l'utilisateur vers la page d'authentification "
+"Canaille."
 
 #: ../tutorial/deployment.rst:168 d4f07f118d4443bcbd44e55144cf4d1f
 msgid ""
@@ -6923,22 +6932,28 @@ msgid ""
 "provides a WebFinger endpoint, but if it is not hosted at the top-level "
 "domain, a web redirection is required on the ``/.well-known/webfinger`` path."
 msgstr ""
+"La difficulté est que le terminal WebFinger doit être hébergé sur le domaine "
+"de plus haut niveau (c'est-à-dire ``mydomain.example``) alors que le serveur "
+"d'authentification peut être hébergé sur un sous-niveau(par exemple ``auth."
+"mydomain.example``). Canaille fournit un terminal WebFinger, mais il n'est "
+"pas hébergé sur le domaine de plus haut niveau, une redirection est "
+"obligatoire sur le chemin ``/.well-known/webfinger``."
 
 #: ../tutorial/deployment.rst:170 b305def4f6e74643b1c47e5491e46126
 msgid "Here are configuration examples for Nginx or Apache:"
-msgstr ""
+msgstr "Voici des exemples de configuration pour Nginx ou Apache :"
 
 #: ../tutorial/deployment.rst:172 f07e30950c0443ea830fb6d01181cbce
 msgid "Nginx webfinger configuration for a top level domain"
-msgstr ""
+msgstr "Configuration webfinger Nginx pour le domaine de plus haut niveau"
 
 #: ../tutorial/deployment.rst:181 f166862da12146e286d09f1189b44637
 msgid "Apache webfinger configuration for a top level domain"
-msgstr ""
+msgstr "Configuration webfinger Apache pour le domaine de plus haut niveau"
 
 #: ../tutorial/deployment.rst:191 ed7f25a6ab90437984c0249217556b7a
 msgid "Create the first user"
-msgstr ""
+msgstr "Créer le premier utilisateur"
 
 #: ../tutorial/deployment.rst:193 e983e9c5998a475e9472c54742b25c9f
 msgid ""
@@ -6946,6 +6961,9 @@ msgid ""
 "create your first user you can use the :ref:`canaille create <cli_create>` "
 "CLI."
 msgstr ""
+"Une fois Canaille installé, vous allez assez rapidement avoir besoin "
+"d'ajouter des utilisateurs. Pour créer votre premier utilisateur, vous "
+"pouvez utiliser la ligne de commande :ref:`canaille create <cli_create>`."
 
 #: ../tutorial/index.rst:2 40de96b13f0b46ba88769f9f0c91bece
 msgid "Tutorial"
@@ -6960,16 +6978,20 @@ msgid ""
 "Canaille is under heavy development and may not fit a production environment "
 "yet."
 msgstr ""
+"Canaille est en cours de développement et peut ne pas être encore prêt pour "
+"un environnement de production."
 
 #: ../tutorial/install.rst:8 a76d3b71c19b4667a34e1d4b68261499
 msgid ""
 "The installation of canaille consist in several steps, some of which you can "
 "do manually or with command line tool:"
 msgstr ""
+"L'installation de Canaille consiste en plusieurs étapes, certaines sont "
+"faisables manuellement ou l'outil en ligne de commande :"
 
 #: ../tutorial/install.rst:11 de05573555224e75869a68ac41471c97
 msgid "Get the code"
-msgstr ""
+msgstr "Récupérer le code source"
 
 #: ../tutorial/install.rst:13 8d5ce5f2ad284774a673cad8e1be2cc5
 msgid ""
@@ -6977,70 +6999,86 @@ msgid ""
 "be installed with the ``pip`` package manager. Let us choose a place for the "
 "canaille environment, like ``/opt/canaille/env``."
 msgstr ""
+"Actuellement, les distributions ne fournissent pas de paquet pour Canaille. "
+"Cependant, il peut être installé avec le gestionnaire de paquet ``pppip``. "
+"Choisissons un endroit pour l'environnement de Canaille, comme ``/opt/"
+"canaille/env``."
 
 #: ../tutorial/install.rst:24 5e8dbf51cc8e401d8e7f2738c4c1e500
 msgid "Extras"
-msgstr ""
+msgstr "Extras"
 
 #: ../tutorial/install.rst:26 ff09c579e2834394992e462c1a7830e6
 msgid "Canaille provides different package options:"
-msgstr ""
+msgstr "Canaille fournit différentes options de paquet :"
 
 #: ../tutorial/install.rst:28 fba9a7d4ab8f42c1ba19ec58827c49bb
 msgid "`front` provides all the things needed to produce the user interface;"
 msgstr ""
+"`front` fournit tous les éléments nécessaires pour produire l'interface "
+"utilisateur ;"
 
 #: ../tutorial/install.rst:29 3c368569b3434d0c8821fcc5aa2a9fcd
 msgid "`oidc` provides the dependencies to perform OAuth2/OIDC authentication;"
 msgstr ""
+"`oidc` fournit les dépendances pour exécuter une authentification OAuth2/"
+"OIDC ;"
 
 #: ../tutorial/install.rst:30 d2fa3adf12b04e879e8eb1ad5a86d131
 msgid "`ldap` provides the dependencies to enable the LDAP backend;"
-msgstr ""
+msgstr "`ldap` fournit les dépendances pour activer le backend LDAP ;"
 
 #: ../tutorial/install.rst:31 9f0ac2527c844d26999ac4722b7a3062
 msgid "`sqlite` provides the dependencies to enable the SQLite backend;"
-msgstr ""
+msgstr "`sqlite` fournit les dépendances pour activer le backend SQLite ;"
 
 #: ../tutorial/install.rst:32 9f8652296fdd460d9d0885fd934a924f
 msgid ""
 "`postgresql` provides the dependencies to enable the PostgreSQL backend;"
 msgstr ""
+"`postgresql` fournit les dépendances pour activer le backend PostgreSQL :;"
 
 #: ../tutorial/install.rst:33 dba3b5d89e9e46c6b3774b01bf2ae122
 msgid "`mysql` provides the dependencies to enable the MySQL backend;"
-msgstr ""
+msgstr "`mysql` fournit les dépendances pour activer le backend MySQL ;"
 
 #: ../tutorial/install.rst:34 3284b40cd5ff4177a9369e471dcd1de2
 msgid "`sentry` provides sentry integration to watch Canaille exceptions;"
 msgstr ""
+"`sentry` fournit l'intégration Sentry pour visualiser les exceptions "
+"survenues dans Canaille ;"
 
 #: ../tutorial/install.rst:35 11d315c8ffbb415cab5068a2fb287590
 msgid ""
 "`otp` provides the dependencies to enable one-time password authentication;"
 msgstr ""
+"`otp` fournit les dépendances pour activer l'authentification à mot de passe "
+"unique (OTP) ;"
 
 #: ../tutorial/install.rst:36 c60670612f384704ad46fba12f41dcf9
 msgid "`sms` provides the dependencies to enable sms sending;"
-msgstr ""
+msgstr "`sms` fournit les dépendances pour activer l'envoi de SMS ;"
 
 #: ../tutorial/install.rst:37 dfd39313c050407193deac1f01f23e54
 msgid "`all` provides all the extras above."
-msgstr ""
+msgstr "`all` fournit tous les éléments supplémentaires ci-dessus."
 
 #: ../tutorial/install.rst:39 3d0f7f47cc1a469e9762578aed91f002
 msgid "They can be installed with:"
-msgstr ""
+msgstr "Ils peuvent être installés avec :"
 
 #: ../tutorial/install.rst:46 b7732a260ca84ba3a4130bd6cb0d1619
 msgid "Configure"
-msgstr ""
+msgstr "Configurer"
 
 #: ../tutorial/install.rst:48 86df5b7acf954ddfbb2982dbe0a51da1
 msgid ""
 "Choose a path where to store your configuration file. You can pass any "
 "configuration path with the ``CONFIG`` environment variable."
 msgstr ""
+"Choissisez un chemin où enregistrer le fichier de configuration. Vous pouvez "
+"passer n'importe quel chemin de configuration avec la variable "
+"d'environnement ``CONFING``."
 
 #: ../tutorial/install.rst:56 042753d9c5704f21b0da35d38a17a620
 msgid ""
@@ -7048,10 +7086,13 @@ msgid ""
 "needs. Look at the configuration details in the :doc:`configuration <../"
 "references/configuration>` page."
 msgstr ""
+"Vous devriez alors modifier votre fichier de configuration pour adapter les "
+"valeurs à vos besoins. Regardez les détails de configuration dans la page "
+":doc:`configuration <../references/configuration>`."
 
 #: ../tutorial/install.rst:59 a87138181fe64cd9891206619cad6d2d
 msgid "Install"
-msgstr ""
+msgstr "Installer"
 
 #: ../tutorial/install.rst:61 2a7cde9a8ef54f6fb6b527734b5e471d
 msgid ""
@@ -7060,32 +7101,43 @@ msgid ""
 "<databases>` it will create the SQL tables, or install the LDAP schemas for "
 "instance."
 msgstr ""
+"La :ref:`commande d'installation <cli_install>` appliquera la plupart des "
+"choses nécessaires au fonctionnement de Canaille. Selon la :doc:`base de "
+"données <databases>` configurée, il créera les tables SQL ou installera les "
+"schémas LDAP par exemple."
 
 #: ../tutorial/install.rst:70 faefbbda355349e19671492f478d3153
 msgid "Check"
-msgstr ""
+msgstr "Vérifier"
 
 #: ../tutorial/install.rst:72 ab77edb446f44686bf26ef04fbf3dc7d
 msgid ""
 "After a manual installation, you can check your configuration file using "
 "the :ref:`check command <cli_install>`:"
 msgstr ""
+"Après une installation manuelle, vous pouvez vérifier votre fichier de "
+"configuration en utilisant la :ref:`commande check <cli_install>` :"
 
 #: ../tutorial/provisioning.rst:2 96b0ed3d70cf436a80f82cf3cd89bf37
 msgid "Provisioning"
-msgstr ""
+msgstr "Provisionnement"
 
 #: ../tutorial/provisioning.rst:4 a4047f8d0f904f6799d549e2f65181b2
 msgid ""
 "Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol at "
 "the ``/scim/v2`` endpoint."
 msgstr ""
+"Canaille implémente partiellement le protocole de provisionnement :rfc:`SCIM "
+"<7642>`au terminal ``/scim/v2``."
 
 #: ../tutorial/provisioning.rst:6 969c0c2d7d2a47de8fb1c7441ec62e2d
 msgid ""
 "At the moment, only the server part is implemented. It allows client "
 "applications to manage user profiles directly in Canaille."
 msgstr ""
+"Actuellement, seule la partie serveur est réalisée. Elle permet aux "
+"applications clientes de gérer les profils utilisateur directement dans "
+"Canaille."
 
 #: ../tutorial/provisioning.rst:9 706556a4f4de43658b7ee3583115216a
 msgid ""
@@ -7094,12 +7146,19 @@ msgid ""
 "authentication token on their own behalf and use this token to perform "
 "queries. Currently, user tokens are not supported."
 msgstr ""
+"Pour permettre aux clients d'accéder à l'API SCIM, le client doit avoir le "
+"type d'autorisation ``client_credentials`` configuré. Cela permet aux "
+"clients de demander un jeton d'authentification pour eux-même et d'utiliser "
+"ce jeton pour exécuter des requêtes. Actuellement, les jetons utilisateurs "
+"ne sont pas disponibles."
 
 #: ../tutorial/provisioning.rst:13 5abc69c6a6ff4cd48e3f2b01cdaa1a52
 msgid ""
 "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
 "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgstr ""
+"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
+"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
 
 #: ../tutorial/provisioning.rst:23 37c0e4ee9eb54f9f94754fec060e0ac5
 msgid ""
