@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 22:02+0100\n"
-"PO-Revision-Date: 2024-12-13 10:55+0000\n"
+"PO-Revision-Date: 2024-12-14 07:43+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.9-rc\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 3fb33c37ddc0459280f3c58be943008e
@@ -6188,6 +6188,10 @@ msgid ""
 "users for support requests for the client.  See Section 6 for information on "
 "Privacy Considerations."
 msgstr ""
+"Le serveur d'autorisation PEUT rendre ces adresse de contact disponibles aux "
+"utilisateurs finaux pour traiter les requêtes pour le client. Consultez la "
+"section 6 pour obtenir des informations sur des considérations concernant la "
+"vie privée."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:1
 #: 5105e93451e946fea6c3fd0b09c19683
@@ -6195,6 +6199,9 @@ msgid ""
 "Array of OAuth 2.0 grant type strings that the client can use at the token "
 "endpoint.  These grant types are defined as follows:"
 msgstr ""
+"Tableau de chaînes de caractères de type autorisation (« grant ») OAuth 2.0 "
+"que le client peut utiliser au terminal jeton. Ces types d'autorisation sont "
+"définies comme suit :"
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:4
 #: 471bb398e08d45d588f320d2c25cb025
@@ -6202,12 +6209,16 @@ msgid ""
 "\"authorization_code\": The authorization code grant type defined in OAuth "
 "2.0, Section 4.1."
 msgstr ""
+"\"authorization_code\" : le type de code d'autorisation défini dans OAuth "
+"2.0, section 4.1."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:7
 #: c1785e60703f46e5a3a6e7131ba26894
 msgid ""
 "\"implicit\": The implicit grant type defined in OAuth 2.0, Section 4.2."
 msgstr ""
+"\"implicit\" : le type d'autorisation implicite définie dans OAuth 2.0, "
+"section 4.2."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:10
 #: 99ec3801466340bd83367ab92a351ac3
@@ -6215,6 +6226,8 @@ msgid ""
 "\"password\": The resource owner password credentials grant type defined in "
 "OAuth 2.0, Section 4.3."
 msgstr ""
+"\"password\" : le type d'autorisation avec le mot de passe du propriétaire "
+"de la ressource défini dans OAuth 2.0, section 4.3."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:13
 #: a62c7b8185ee4863aec423c5fe445ae5
@@ -6222,6 +6235,8 @@ msgid ""
 "\"client_credentials\": The client credentials grant type defined in OAuth "
 "2.0, Section 4.4."
 msgstr ""
+"\"client_credentials\" : le type d'autorisation par identification du client "
+"défini dans OAuth 2.0, section 4.4."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:16
 #: 2fd298fce6974e4da2f670da31280955
@@ -6229,6 +6244,8 @@ msgid ""
 "\"refresh_token\": The refresh token grant type defined in OAuth 2.0, "
 "Section 6."
 msgstr ""
+"\"refresh_token\" : le type d'autorisation par jeton renouvelé dans OAuth "
+"2.0, section 6."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:19
 #: 2fb0f1de8f46429eb46970d53c954d91
@@ -6236,6 +6253,8 @@ msgid ""
 "\"urn:ietf:params:oauth:grant-type:jwt-bearer\": The JWT Bearer Token Grant "
 "Type defined in OAuth JWT Bearer Token Profiles [RFC7523]."
 msgstr ""
+"\"urn:ietf:params:oauth:grant-type:jwt-bearer\" : le type d'autorisation de "
+"jeton Bearer JWT défini dans OAuth JWT Bearer Token Profiles [RFC7523]."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:23
 #: dd4f8e0551e048d599a3f95740ea3cf1
@@ -6243,6 +6262,8 @@ msgid ""
 "\"urn:ietf:params:oauth:grant-type:saml2-bearer\": The SAML 2.0 Bearer "
 "Assertion Grant defined in OAuth SAML 2 Bearer Token Profiles [RFC7522]."
 msgstr ""
+"\"urn:ietf:params:oauth:grant-type:saml2-bearer\" : l'autorisation SAML 2.0 «"
+" Bearer Assertion » défini dans OAuth SAML 2 Bearer Token Profiles [RFC7522]."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:27
 #: 241768369988480b8f79cae93fa06ff4
@@ -6254,6 +6275,13 @@ msgid ""
 "described in OAuth 2.0, Section 4.5.  If omitted, the default behavior is "
 "that the client will use only the \"authorization_code\" Grant Type."
 msgstr ""
+"Si le terminal du jeton est utilisé dans le type d'autorisation, la valeur "
+"de ce paramètre DOIT être la même que la valeur du paramètre \"grant_type\" "
+"passé au terminal du jeton défini dans la définition du type d'autorisation. "
+"Les serveurs d'autorisation PEUVENT accepter d'autres valeurs comme défini "
+"dans le processus d'extension destype d'autorisation dans OAuth 2.0, section "
+"4.5. S'il est omis, le comportement par défaut est un client utilisant "
+"uniquement le type d'autorisation \"authorization_code\"."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.jwk:1
 #: 779d5b8c355f4e469d0880100f197dbd
@@ -6261,6 +6289,8 @@ msgid ""
 "Client's JSON Web Key Set [RFC7517] document value, which contains the "
 "client's public keys."
 msgstr ""
+"Valeur du document JSON Web Key Set [RFC7517] du client, qui contient les "
+"clés publiques du client."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.jwk:4
 #: 786a840808f042fdb3a97eb1bd7f7a98
@@ -6272,6 +6302,13 @@ msgid ""
 "public URLs.  The \"jwks_uri\" and \"jwks\" parameters MUST NOT both be "
 "present in the same request or response."
 msgstr ""
+"La valeur de ce champ DOIT être un objet JSON contenant un « JWK Set » "
+"valide. Ces clefs peuvent être utilisées par des protocoles de plus haut "
+"niveau qui utilise des signatures ou le chiffrement. Ce paramètre est conçu "
+"pour être utilisé par des clients qui ne peuvent pas utiliser le paramètre "
+"\"jwks_uri\", tel que des clients natifs qui ne peuvent pas disposer d'URL "
+"publiques. Les paramètres \"jwks_uri\" et \"jwks\" NE DOIVENT PAS être "
+"présent dans la même requête our réponse."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.jwks_uri:1
 #: 29bbb97b4b0545df84cf23ec1e6b14cf
@@ -6279,6 +6316,8 @@ msgid ""
 "URL string referencing the client's JSON Web Key (JWK) Set [RFC7517] "
 "document, which contains the client's public keys."
 msgstr ""
+"Chaîne de caractères URL référençant le document JSON Web Key (JWK) Set "
+"[RFC7517] du client, qui contient les clefs publiques du client."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.jwks_uri:4
 #: 4021b5fbeabb464d938a3903ef7e718b
@@ -6292,6 +6331,15 @@ msgid ""
 "and \"jwks\" parameters MUST NOT both be present in the same request or "
 "response."
 msgstr ""
+"La valeur de ce champ DOIT pointer vers un document JWK Set valide. Ces "
+"clefs peuvent être utilisées par des protocoles de plus haut niveau "
+"utilisant des signatures ou du chiffrement. Par exemple, ces clefs peuvent "
+"être utilisées par des applications pour valider des requêtes signées faites "
+"pour le terminal du jeton quand des JWTs sont utilisées pour "
+"l'authentification cliente [RFC7523]. L'utilisation de ce paramètre est "
+"préféré au paramètre \"jwks\", car il permet une rotation des clefs plus "
+"facile. Les paramètres \"jwks_uri\" et \"jwks\" NE DOIVENT PAS être tous les "
+"deux présents dans la même requête ou réponse."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.logo_uri:1
 #: 723f17b9b9df481394bcff341b2730b1
@@ -6329,6 +6377,10 @@ msgid ""
 "provided.  The value of this field MUST point to a valid web page.  The "
 "value of this field MAY be internationalized, as described in Section 2.2."
 msgstr ""
+"Le serveur d'autorisation DEVRAIT afficher cette URL à l'utilisateur final "
+"s'il est fourni. La valeur de ce champ DOIT pointer vers une page web "
+"valide. La valeur de ce champ PEUT être internationalisée, comme décrit dans "
+"la section 2.2."
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.post_logout_redirect_uris:3
@@ -6342,6 +6394,14 @@ msgid ""
 "in Section 2.1 of OAuth 2.0 [RFC6749], and provided the OP allows the use of "
 "http RP URIs."
 msgstr ""
+"Tableau d'URL fourni par le RP qui PEUT demander que l'agent utilisateur de "
+"d'utilisateur final soit redirigé en utilisant le paramètre "
+"post_logout_redirect_uri après que la déconnexion ait été réalisée. Ces URL "
+"DEVRAIT utiliser le schéma https et PEUVENT contenir des composants tel que "
+"le port, chemin et des paramètres de requête ; cependant, ils PEUVENT "
+"utiliser le schéma http, à condition que le type du client est confidentiel, "
+"tel que défini dans la section 2.1 de OAuth 2.0 [RFC6749], et que l'OP "
+"autorise l'utilisation d'URI RP http."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.redirect_uris:1
 #: 9864218626a9495d837ca07ecabe2e83
@@ -6349,6 +6409,9 @@ msgid ""
 "Array of redirection URI strings for use in redirect-based flows such as the "
 "authorization code and implicit flows."
 msgstr ""
+"Tableau de chaîne de caractères de redirection URI à utiliser pour les flux "
+"basés sur les redirections tel que le code d'autorisation et les flux "
+"implicites."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.redirect_uris:4
 #: a1f4e7a342764daf9b91f5c582e0d704
@@ -6358,6 +6421,11 @@ msgid ""
 "servers that support dynamic registration for redirect-based flows MUST "
 "implement support for this metadata value."
 msgstr ""
+"La section 2 de OAuth 2.0 [RFC6749] oblige à ce que les clients utilisant "
+"des flux avec une redirection DOIVENT enregistrer les valeurs des URI de "
+"redirection. Les serveurs d'autorisation acceptant l'enregistrement "
+"dynamique pour des flux basés sur les redirections DOIVENT implémenter la "
+"gestion de la valeur de cette métadonnéee."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.response_types:1
 #: 2b675d8a76b64442baaf96288a99145f
@@ -6365,6 +6433,9 @@ msgid ""
 "Array of the OAuth 2.0 response type strings that the client can use at the "
 "authorization endpoint.  These response types are defined as follows:"
 msgstr ""
+"Tableau de chaînes de caractères de type réponse OAuth 2.0 que le client "
+"peut utiliser dans un terminal d'autorisation. Ces types de réponse sont "
+"définies comme suit :"
 
 #: ../../docstring of canaille.oidc.basemodels.Client.response_types:5
 #: 3f19f3d3bf244c669c336230f4e548e5
@@ -6372,12 +6443,15 @@ msgid ""
 "\"code\": The authorization code response type defined in OAuth 2.0, Section "
 "4.1."
 msgstr ""
+"\"code\" : le type de réponse du code d'autorisation défini dans OAuth 2.0, "
+"section 4.1."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.response_types:8
 #: 8be17e9ef4c642a0a227974a40450da2
 msgid ""
 "\"token\": The implicit response type defined in OAuth 2.0, Section 4.2."
 msgstr ""
+"\"token\" : le type de réponse implicite défini dans OAuth 2.0, section 4.2."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.response_types:11
 #: 3be1d7f3ab82407ebcf77c9ad6294934
@@ -6389,6 +6463,14 @@ msgid ""
 "type extension process is described in OAuth 2.0, Section 4.5.  If omitted, "
 "the default is that the client will use only the \"code\" response type."
 msgstr ""
+"Si le terminal d'autorisation est utilisé par le type d'autorisation, la "
+"valeur de ce paramètre DOIT être le même que la valeur du paramètre "
+"\"response_type\" passé au terminal d'autorisation défini dans la définition "
+"du type d'autorisation. Les serveurs d'autorisation PEUVENT autoriser "
+"d'autres valeurs telles que définies dans le processus d'extension des types "
+"d'autorisation tel que décrit dans OAuth 2.0, section 4.5. S'il est omis, la "
+"valeur par défaut est que le client utilisera uniquement le type de réponse "
+"\"code\"."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.scope:1
 #: 99bf5a0735f3490eb63943c7926eb165
@@ -6397,6 +6479,9 @@ msgid ""
 "Section 3.3 of OAuth 2.0 [RFC6749]) that the client can use when requesting "
 "access tokens."
 msgstr ""
+"Chaîne de caractères contenant une liste séparée par des espaces de valeurs "
+"de périmètre (comme décrit dans la section 3.3 de OAuth 2.0 [RFC6749]) que "
+"le client peut utiliser quand il demande des jetons d'accès."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.scope:5
 #: d9c4d3be73ae454fbc08c0452c4cafba
@@ -6404,6 +6489,9 @@ msgid ""
 "The semantics of values in this list are service specific.  If omitted, an "
 "authorization server MAY register a client with a default set of scopes."
 msgstr ""
+"La sémantique des valeur dans cette liste sont spécifiques au service. Si "
+"omis, un serveur d'autorisation PEUT enregistrer un client avec un ensemble "
+"de périmètres par défaut."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.software_id:1
 #: ee3bd26091c94945b33584e781c19370
@@ -6412,6 +6500,10 @@ msgid ""
 "assigned by the client developer or software publisher used by registration "
 "endpoints to identify the client software to be dynamically registered."
 msgstr ""
+"Une chaîne de caractère servant d'identifiant unique (par exemple un « "
+"Universally Unique Identifier » (UUID)) assigné par le développeur du client "
+"ou le fournisseur du logiciel utilisé par les terminaux d'enregistrement "
+"identifie le logiciel client pour l'enregistrer dynamiquement."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.software_id:6
 #: 8fd0e02b12354b72b7175ade2536eac3
@@ -6423,6 +6515,13 @@ msgid ""
 "value of this field is not intended to be human readable and is usually "
 "opaque to the client and authorization server."
 msgstr ""
+"Contrairement à \"client_id\", qui est généré par le serveur d'autorisation "
+"et DEVRAIT varier selon les instances, \"software_id\" DEVRAIT rester le "
+"même pour toutes les instances du logiciel client. La valeur \"software_id\" "
+"DEVRAIT rester la même après de multiple mises-à-jour ou version du "
+"logiciel. La valeur de ce champ n'est pas prévu pour être lisible par des "
+"humain et est généralement opaque pour le client et le serveur "
+"d'autorisation."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.software_version:1
 #: 2d69ee9b36d244ec98fb0ca3135ac74f
@@ -6430,6 +6529,8 @@ msgid ""
 "A version identifier string for the client software identified by "
 "\"software_id\"."
 msgstr ""
+"Une chaîne de caractère identifiant une version pour le logiciel client "
+"identifié par \"software_id\"."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.software_version:4
 #: 0da082aab3354aad8196b87ea111796f
@@ -6444,6 +6545,16 @@ msgid ""
 "that would trigger a change to this value is specific to the software itself "
 "and is outside the scope of this specification."
 msgstr ""
+"La valeur de \"software_version\" DEVRAIT changer à chaque mise-à-jour du "
+"logiciel client identifié par le même \"software_id\". La valeur de ce champ "
+"est conçu pour être comparé en utilisant les comparaisons de chaînes et "
+"aucune autre sémantique de comparaison n'est définie dans cette "
+"spécification. La valeur de ce champ est exclu du périmètre de cette "
+"spécification, mais elle n'est pas conçu pour être lisible par des humains "
+"et est généralement opaque pour le client et le serveur d'autorisation. La "
+"définition de ce qui constitue une mise-à-jour du logiciel client provoquant "
+"un changement de cette valeur est spécifique au logiciel lui-même et est "
+"exclu du périmètre de cette spécification."
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.token_endpoint_auth_method:1
@@ -6452,6 +6563,9 @@ msgid ""
 "String indicator of the requested authentication method for the token "
 "endpoint.  Values defined by this specification are:"
 msgstr ""
+"Indicateur en chaîne de caractères de la méthode d'authentification demandée "
+"pour le terminal du jeton. Les valeurs définies par cette spécification sont "
+":"
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.token_endpoint_auth_method:4
@@ -6460,6 +6574,8 @@ msgid ""
 "\"none\": The client is a public client as defined in OAuth 2.0, Section "
 "2.1, and does not have a client secret."
 msgstr ""
+"\"none\" : le client est un client public tel que défini dans OAuth 2.0, "
+"section 2.1, et n'a pas de secret client."
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.token_endpoint_auth_method:7
@@ -6468,6 +6584,8 @@ msgid ""
 "\"client_secret_post\": The client uses the HTTP POST parameters as defined "
 "in OAuth 2.0, Section 2.3.1."
 msgstr ""
+"\"client_secret_post\" : le client utilise les paramètres HTTP POST tel que "
+"défini dans OAuth 2.0, section 2.3.1."
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.token_endpoint_auth_method:10
@@ -6476,6 +6594,8 @@ msgid ""
 "\"client_secret_basic\": The client uses HTTP Basic as defined in OAuth 2.0, "
 "Section 2.3.1."
 msgstr ""
+"\"client_secret_basic\" : le client utilise HTTP Basic tel que défini dans "
+"OAuth 2.0, section 2.3.1."
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.token_endpoint_auth_method:13
@@ -6487,6 +6607,12 @@ msgid ""
 "unspecified or omitted, the default is \"client_secret_basic\", denoting the "
 "HTTP Basic authentication scheme as specified in Section 2.3.1 of OAuth 2.0."
 msgstr ""
+"Des valeurs supplémentaires peuvent être défini par le registre \"OAuth "
+"Token Endpoint Authentication Methods\" IANA indiqué dans la section 4.2. "
+"Des URI absolues peuvent aussi être utilisées comme valeurs pour ce "
+"paramètre sans être enregistrées. Si non définie ou omise, la valeur par "
+"défaut est \"client_secret_basic\", indiquant un schéma « HTTP Basic "
+"authentication » comme spécifié dans la section 2.3.1 de OAuth 2.0."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.tos_uri:1
 #: 95cc7b66c6da48e5a189a32abaa9c24e
@@ -6495,6 +6621,10 @@ msgid ""
 "client that describes a contractual relationship between the end-user and "
 "the client that the end-user accepts when authorizing the client."
 msgstr ""
+"Chaîne de caractères URL pointant vers un document des conditions "
+"d'utilisation du service lisible par des humains pour le client, décrivant "
+"la relation contractuelle entre l'utilisateur final et le client que "
+"l'utilisateur final accepte quand il autorise le client."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Consent:1 bf6c359aadbc4404ba1967b1b8d26255
@@ -6504,65 +6634,87 @@ msgstr "Consentement utilisateur à long terme à une application."
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Token:1 a20eaa516c854599a62222141346d76b
 msgid "OpenID Connect token definition."
-msgstr ""
+msgstr "Définition de jeton OpenID Connect."
 
 #: ../references/templates.rst:2 25d974aba30140f4ad6e3445c3d71f50
 msgid "Templates"
-msgstr ""
+msgstr "Patrons (« templates »)"
 
 #: ../tutorial/databases.rst:4 2934007ee99c4b5096855dd9bf47208b
 msgid ""
 "Canaille can read and save data in different databases. This page presents "
 "the different database backends and their specificities:"
 msgstr ""
+"Canaille peut lire et écrire dans différentes bases de données. Cette page "
+"présente les differents « backends » des bases de données et leurs "
+"spécificités :"
 
 #: ../tutorial/databases.rst:10 4d8d9b1634cf47eca9c118b3af6173df
 msgid ""
 "Canaille comes with a lightweight inmemory backend by default. It is used "
 "when no other backend has been configured."
 msgstr ""
+"Canaille est fourni avec un«  backend » léger en mémoire par défaut. Il est "
+"utilisé lorsqu'aucun autre backend n'a été configuré."
 
 #: ../tutorial/databases.rst:13 5383f833c2634382a279cf9c2e9efff5
 msgid ""
 "This backend is only for test purpose and should not be used in production "
 "environments."
 msgstr ""
+"Ce backend est destiné uniquement à des fins de test et ne devrait pas être "
+"utilisé dans des environnements de production."
 
 #: ../tutorial/databases.rst:18 5c04f9416e954990a51ad770b994755d
 msgid ""
 "Canaille can use any database supported by `SQLAlchemy <https://www."
 "sqlalchemy.org/>`_, such as sqlite, postgresql or mariadb."
 msgstr ""
+"Canaille peut utiliser n'importe quelle base de données acceptées par `"
+"SQLAlchemy <https://www.sqlalchemy.org/>`_, comme sqlite, postgresql ou "
+"mariadb."
 
 #: ../tutorial/databases.rst:21 5cef0f1dda384284a256492c7b8dfcca
 msgid ""
 "It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For "
 "instance:"
 msgstr ""
+"Il est utilisé quand le paramètre de configuration ``CANAILLE_SQL`` est "
+"défini. Par exemple :"
 
 #: ../tutorial/databases.rst:29 cedc3bb2dba0427b93cf11791b189c96
 msgid ""
 "You can find more details on the SQL configuration in the :class:`dedicated "
 "section <canaille.backends.sql.configuration.SQLSettings>`."
 msgstr ""
+"Vous pouvez trouver plus de détails sur la configuration SQL dans la :class:`"
+"dedicated section <canaille.backends.sql.configuration.SQLSettings>`."
 
 #: ../tutorial/databases.rst:34 fd9f8f823d184c72840274fd13de5b91
 msgid ""
 "Canaille can use OpenLDAP as its main database. It is used when the "
 "``CANAILLE_LDAP`` configuration parameter is defined. For instance:"
 msgstr ""
+"Canaille peut utiliser OpenLDAP comme base de données principale. Elle est "
+"utilisée quand le paramètre de configuration ``CANAILLE_LDAP`` est défini. "
+"Par exemple :"
 
 #: ../tutorial/databases.rst:52 dbd09fe39b724102813c8d259ad336f6
 msgid ""
 "If you want to use TOTP/HOTP authentication, you will need to add the "
 "``oathHOTPToken`` class to the user :"
 msgstr ""
+"Si vous voulez utiliser l'authentification TOTP/HOTP, vous devrez ajouter la "
+"classe ``oathHOTPToken`` à l'utilisateur :"
 
 #: ../tutorial/databases.rst:58 fcbc8501c455465daa5142894408bb38
 msgid ""
 "You can find more details on the LDAP configuration in the :class:`dedicated "
 "section <canaille.backends.ldap.configuration.LDAPSettings>`."
 msgstr ""
+"Vous pouvez trouver plus de détails sur la configuration LDAP dans la "
+":class:`dedicated section <canaille.backends.ldap.configuration."
+"LDAPSettings>`."
 
 #: ../tutorial/databases.rst:61 2c710def18bc46539b2962ee1bde2bf6
 msgid ""
@@ -6570,14 +6722,18 @@ msgid ""
 "``groupOfNames`` schemas have been tested. If you want to use different "
 "schemas or LDAP servers, adaptations may be needed. Patches are welcome."
 msgstr ""
+"Actuellement, seuls les schémas ``inetOrgPerson``, ``oathHOTPToken`` et "
+"``groupOfNames`` ont été testés. Si vous voulez utiliser différents schémas "
+"ou serveurs LDAP, des adaptations peuvent être nécessaires. Toute "
+"amélioration est bienvenue."
 
 #: ../tutorial/databases.rst:66 b7014bf888504dcc865871e8275190f6
 msgid "OpenLDAP overlays integration"
-msgstr ""
+msgstr "Intégration de surcouches (« overlays ») OpenLDAP"
 
 #: ../tutorial/databases.rst:68 a67abbc0745e4c7e9353697969a4fbab
 msgid "Canaille can integrate with several OpenLDAP overlays:"
-msgstr ""
+msgstr "Canaille peut s'intégrer avec plusieurs « overlays » OpenLDAP :"
 
 #: ../tutorial/databases.rst:71 b1eebe57d90648b3b24cb48cb49c5436
 msgid "memberof / refint"
@@ -6599,7 +6755,7 @@ msgstr ""
 #: ../tutorial/databases.rst:77 ../tutorial/databases.rst:100
 #: ../tutorial/databases.rst:123 bff8a12ffd4b4d179d6938a046810186
 msgid "Here is a configuration example compatible with canaille:"
-msgstr ""
+msgstr "Voici un exemple de configuration compatible avec canaille :"
 
 #: ../tutorial/databases.rst:79 d8858049d6d44b7cae4cbd659f9f8ba2
 msgid "memberof-config.ldif"
@@ -6612,7 +6768,7 @@ msgstr "refint-config.ldif"
 #: ../tutorial/databases.rst:87 ../tutorial/databases.rst:110
 #: 4070700e524f481ba82662576453c6b3
 msgid "You can adapt and load those configuration files with:"
-msgstr ""
+msgstr "Vous pouvez adapter et charger ces fichiers de configuration avec :"
 
 #: ../tutorial/databases.rst:96 e37e96d3eac048e191b4da59788b6096
 msgid "ppolicy"
@@ -6627,6 +6783,12 @@ msgid ""
 "a *write* permission on the :attr:`~canaille.core.models.User.lock_date` "
 "attribute."
 msgstr ""
+"Si l'overlay `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-"
+"password-policy-11.html>`_ est configuré et que l'attribut ``pwdEndTime`` "
+"est disponible (depuis OpenLDAP 2.6), alors la gestion du bloquage de compte "
+"sera activée dans Canaille. Pour permettre aux utilisateurs de gérer "
+"l'expiration de leur compte, ils ont besoin du droit d'*écriture* sur "
+"l'attribut :attr:`~canaille.core.models.User.lock_date`."
 
 #: ../tutorial/databases.rst:102 0194f8cb96554ed9a209784cd1a5a10e
 msgid "ppolicy-config.ldif"
@@ -6646,6 +6808,9 @@ msgid ""
 "overlay is configured, you will be able to add one-time password "
 "authentication in canaille."
 msgstr ""
+"Si l'overlay `otp <https://www.openldap.org/software/man.cgi?query=slapo-"
+"otp>`_ est configuré, vous pourrez ajouter l'authentification par mot de "
+"passe unique (OTP) dans Canaille."
 
 #: ../tutorial/databases.rst:125 0194f8cb96554ed9a209784cd1a5a10e
 msgid "otp-config.ldif"
@@ -6653,11 +6818,13 @@ msgstr "otp-config.ldif"
 
 #: ../tutorial/databases.rst:129 4070700e524f481ba82662576453c6b3
 msgid "You can adapt and load this configuration file with:"
-msgstr ""
+msgstr "Vous pouvez adapter et charger ce fichier de configuration avec :"
 
 #: ../tutorial/databases.rst:136 14e54c22e9114f30b809b1605c494c6f
 msgid "You will also need to add the ``oathHOTPToken`` class to the user:"
 msgstr ""
+"Vous aurez aussi besoin d'ajouter la classe ``oathHOTPToken`` à "
+"l'utilisateur :"
 
 #: ../tutorial/deployment.rst:2 f396d7b4fa884f55bf66b57b6c046fdb
 msgid "Deployment"
@@ -6673,6 +6840,9 @@ msgid ""
 "application server. Here are some WSGI server configuration examples you can "
 "pick. Do not forget to update the paths."
 msgstr ""
+"Après avoir fini l'installation de Canaille, vous devez l'exécuter dans un "
+"serveur d'application WSGI. Voici des exemples de configuration de serveur "
+"WSGI que vous pouvez utiliser. Pensez à adapter les chemins."
 
 #: ../tutorial/deployment.rst:11 cf41e4599bea477a8b6742ed38c09555
 msgid "gunicorn"
@@ -6680,7 +6850,7 @@ msgstr "gunicorn"
 
 #: ../tutorial/deployment.rst:15 9f4888747a6d4f5d85d9b94bc2814aff
 msgid "Write a gunicorn configuration sample file."
-msgstr ""
+msgstr "Écrire un fichier d'exemple de configuration gunicorn."
 
 #: ../tutorial/deployment.rst:18 beb61a6d85dc407c923f0a1797571b4b
 msgid "uwsgi"
@@ -6696,6 +6866,9 @@ msgid ""
 "accessible on the internet. Here are some webserver configuration examples "
 "you can pick:"
 msgstr ""
+"Maintenant vous devez brancher votre serveur d'application WSGI à votre "
+"serveur web pour qu'il soit accessible sur internet. Voici quelques exemples "
+"de configuration de serveur web que vous pouvez utiliser :"
 
 #: ../tutorial/deployment.rst:48 40d9837c5cdd4c9faf94797e578e409d
 msgid "Nginx"
@@ -6714,6 +6887,9 @@ msgid ""
 "You might want to clean up your database to avoid it growing too much. You "
 "can regularly delete expired tokens and authorization codes with:"
 msgstr ""
+"Vous pourriez vouloir nettoyer la base de données pour limiter sa "
+"croissance. Vous pouvez supprimer régulièrement les jetons expirés et les "
+"code d'autorisation avec :"
 
 #: ../tutorial/deployment.rst:164 3a91c9769ca04ed289ef4e08d71c84e0
 msgid "Webfinger"
