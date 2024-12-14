@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-12 22:02+0100\n"
 "PO-Revision-Date: 2024-12-14 07:43+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
@@ -82,8 +82,8 @@ msgid ""
 "ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:`~canaille.core.configuration."
 "CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:`179`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et "
-":attr:`~canaille.core.configuration.CoreSettings."
+":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et :attr:"
+"`~canaille.core.configuration.CoreSettings."
 "ENABLE_PASSWORD_COMPROMISSION_CHECK` et :attr:`~canaille.core.configuration."
 "CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:`179`"
 
@@ -5351,8 +5351,8 @@ msgid ""
 "Id will be :data:`None` until the ``Backend.save`` method is called."
 msgstr ""
 "Un identifiant unique pour une ressource SCIM tel que définie par le "
-"fournisseur du service. Id sera :data:`None` jusqu'à ce que la méthode "
-"``BackendModel.save`` soit appelée."
+"fournisseur du service. Id sera :data:`None` jusqu'à ce que la "
+"méthode ``BackendModel.save`` soit appelée."
 
 #: ../../docstring of canaille.backends.models.Model.id:5
 #: fe3e4be3b44b43ebbbd11fe81fdc2613
@@ -6262,8 +6262,9 @@ msgid ""
 "\"urn:ietf:params:oauth:grant-type:saml2-bearer\": The SAML 2.0 Bearer "
 "Assertion Grant defined in OAuth SAML 2 Bearer Token Profiles [RFC7522]."
 msgstr ""
-"\"urn:ietf:params:oauth:grant-type:saml2-bearer\" : l'autorisation SAML 2.0 «"
-" Bearer Assertion » défini dans OAuth SAML 2 Bearer Token Profiles [RFC7522]."
+"\"urn:ietf:params:oauth:grant-type:saml2-bearer\" : l'autorisation SAML 2.0 "
+"« Bearer Assertion » défini dans OAuth SAML 2 Bearer Token Profiles "
+"[RFC7522]."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.grant_types:27
 #: 241768369988480b8f79cae93fa06ff4
@@ -6500,10 +6501,11 @@ msgid ""
 "assigned by the client developer or software publisher used by registration "
 "endpoints to identify the client software to be dynamically registered."
 msgstr ""
-"Une chaîne de caractère servant d'identifiant unique (par exemple un « "
-"Universally Unique Identifier » (UUID)) assigné par le développeur du client "
-"ou le fournisseur du logiciel utilisé par les terminaux d'enregistrement "
-"identifie le logiciel client pour l'enregistrer dynamiquement."
+"Une chaîne de caractère servant d'identifiant unique (par exemple un "
+"« Universally Unique Identifier » (UUID)) assigné par le développeur du "
+"client ou le fournisseur du logiciel utilisé par les terminaux "
+"d'enregistrement identifie le logiciel client pour l'enregistrer "
+"dynamiquement."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.software_id:6
 #: 8fd0e02b12354b72b7175ade2536eac3
@@ -6564,8 +6566,8 @@ msgid ""
 "endpoint.  Values defined by this specification are:"
 msgstr ""
 "Indicateur en chaîne de caractères de la méthode d'authentification demandée "
-"pour le terminal du jeton. Les valeurs définies par cette spécification sont "
-":"
+"pour le terminal du jeton. Les valeurs définies par cette spécification "
+"sont :"
 
 #: ../../docstring of
 #: canaille.oidc.basemodels.Client.token_endpoint_auth_method:4
@@ -6670,8 +6672,8 @@ msgid ""
 "Canaille can use any database supported by `SQLAlchemy <https://www."
 "sqlalchemy.org/>`_, such as sqlite, postgresql or mariadb."
 msgstr ""
-"Canaille peut utiliser n'importe quelle base de données acceptées par `"
-"SQLAlchemy <https://www.sqlalchemy.org/>`_, comme sqlite, postgresql ou "
+"Canaille peut utiliser n'importe quelle base de données acceptées par "
+"`SQLAlchemy <https://www.sqlalchemy.org/>`_, comme sqlite, postgresql ou "
 "mariadb."
 
 #: ../tutorial/databases.rst:21 5cef0f1dda384284a256492c7b8dfcca
@@ -6687,8 +6689,8 @@ msgid ""
 "You can find more details on the SQL configuration in the :class:`dedicated "
 "section <canaille.backends.sql.configuration.SQLSettings>`."
 msgstr ""
-"Vous pouvez trouver plus de détails sur la configuration SQL dans la :class:`"
-"dedicated section <canaille.backends.sql.configuration.SQLSettings>`."
+"Vous pouvez trouver plus de détails sur la configuration SQL dans la :class:"
+"`dedicated section <canaille.backends.sql.configuration.SQLSettings>`."
 
 #: ../tutorial/databases.rst:34 fd9f8f823d184c72840274fd13de5b91
 msgid ""
@@ -6700,9 +6702,13 @@ msgstr ""
 "Par exemple :"
 
 #: ../tutorial/databases.rst:52 dbd09fe39b724102813c8d259ad336f6
+#, fuzzy
+#| msgid ""
+#| "If you want to use TOTP/HOTP authentication, you will need to add the "
+#| "``oathHOTPToken`` class to the user :"
 msgid ""
 "If you want to use TOTP/HOTP authentication, you will need to add the "
-"``oathHOTPToken`` class to the user :"
+"``oathHOTPToken`` class to the user:"
 msgstr ""
 "Si vous voulez utiliser l'authentification TOTP/HOTP, vous devrez ajouter la "
 "classe ``oathHOTPToken`` à l'utilisateur :"
@@ -6712,9 +6718,8 @@ msgid ""
 "You can find more details on the LDAP configuration in the :class:`dedicated "
 "section <canaille.backends.ldap.configuration.LDAPSettings>`."
 msgstr ""
-"Vous pouvez trouver plus de détails sur la configuration LDAP dans la "
-":class:`dedicated section <canaille.backends.ldap.configuration."
-"LDAPSettings>`."
+"Vous pouvez trouver plus de détails sur la configuration LDAP dans la :class:"
+"`dedicated section <canaille.backends.ldap.configuration.LDAPSettings>`."
 
 #: ../tutorial/databases.rst:61 2c710def18bc46539b2962ee1bde2bf6
 msgid ""
