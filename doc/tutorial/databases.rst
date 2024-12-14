@@ -49,7 +49,7 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 
     GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
 
-If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user :
+If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user:
 
 .. code-block:: toml
 
