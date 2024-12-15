@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-12 22:02+0100\n"
-"PO-Revision-Date: 2024-12-15 14:00+0000\n"
+"PO-Revision-Date: 2024-12-16 20:00+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.9-rc\n"
+"X-Generator: Weblate 5.9\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 3fb33c37ddc0459280f3c58be943008e
@@ -7165,26 +7165,33 @@ msgid ""
 "Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not "
 "implemented. In addition to these, Canaille will implement in the future:"
 msgstr ""
+"Certaines :ref:`fonctionnalités et terminaux <scim_unimplemented>` de SCIM "
+"ne sont pas implémentées. En plus de celles-ci, Canaille implémentera dans "
+"le future :"
 
 #: ../tutorial/provisioning.rst:26 a5d6aea95b444cbb9d10731986ae66ac
 msgid ""
 "Access control for clients on the SCIM API endpoint, to finely manage "
 "permissions depending on clients."
 msgstr ""
+"Contrôle d'accès pour les clients sur le terminal API de SCIM, pour gérer "
+"finement les droits en fonction des clients."
 
 #: ../tutorial/provisioning.rst:27 98d88ce07bc640bcafedee10c9bbc98f
 msgid ""
 "Client-side implementation, to broadcast user and groups modifications among "
 "all the clients."
 msgstr ""
+"Implémentation côté client, pour envoyer les modification d'utilisateur et "
+"de groupes à tous les clients."
 
 #: ../tutorial/troubleshooting.rst:2 d5cca3688aea45bb9ed015f84d324407
 msgid "Troubleshooting"
-msgstr ""
+msgstr "Dépannage"
 
 #: ../tutorial/troubleshooting.rst:5 584a62a0d78b4af391bfc8bd916e3934
 msgid "The web interface throws useless error messages"
-msgstr ""
+msgstr "L'interface web affiche des messages erreurs inutiles"
 
 #: ../tutorial/troubleshooting.rst:7 acc3175f98324e73b0154a833f4291de
 msgid ""
@@ -7195,60 +7202,79 @@ msgid ""
 "enable detailed error messages, you can **temporarily** enable the :attr:"
 "`~canaille.app.configuration.RootSettings.DEBUG` configuration parameter."
 msgstr ""
+"À moins que l'utilisateur actuel ait des :class:`droits d'administration "
+"<canaille.core.configuration.Permission>`, ou que l'installation soit en "
+"mode :attr:`~canaille.app.configuration.RootSettings.DEBUG`, les messages "
+"d'erreurs ne seront pas trop techniques. Par exemple, vous pourrez voir *La "
+"requête que vous avez faite est invalide*. Pour activer les messages "
+"d'erreur détaillées, vous pouvez **temporairement** activer le paramètre de "
+"configuration :attr:`~canaille.app.configuration.RootSettings.DEBUG`."
 
 #: ../tutorial/troubleshooting.rst:12 358b28e47d4a4b48ba2bde7ddd4bc5f3
 msgid "How to manually install LDAP schemas?"
-msgstr ""
+msgstr "Comment installer manuellement les schémas LDAP ?"
 
 #: ../tutorial/troubleshooting.rst:16 5e241c1fdd044454a5a27a9d4d609a6c
 msgid ""
 "Schema installation can be automatically done using the :ref:`install "
 "command <cli_install>`."
 msgstr ""
+"L'installation de schema peut être automatiquement réalisé en utilisant la "
+":ref:`commande d'installation <cli_install>`."
 
 #: ../tutorial/troubleshooting.rst:18 fa20dff6817848489fee9434d3e8c154
 msgid "As of OpenLDAP 2.4, two configuration methods are available:"
-msgstr ""
+msgstr "Avec OpenLDAP 2.4, deux méthodes de configuration sont disponibles :"
 
 #: ../tutorial/troubleshooting.rst:20 536b6d4fabea43d48240f3b1b4e256c6
 msgid ""
 "The `deprecated <https://www.openldap.org/doc/admin26/slapdconf2.html>`_ "
 "one, based on a configuration file (generally ``/etc/ldap/slapd.conf``);"
 msgstr ""
+"La métohde `obsolète <https://www.openldap.org/doc/admin26/slapdconf2.html>`"
+"_ , basée sur un fichier de configuration (généralement ``/etc/ldap/slapd."
+"conf``) ;"
 
 #: ../tutorial/troubleshooting.rst:21 2681e5ed98de4633ab3e958980570c61
 msgid ""
 "The new one, based on a configuration directory (generally ``/etc/ldap/slapd."
 "d``)."
 msgstr ""
+"La nouvelle méthode, basée sur un répertoire de configuration "
+"(généralement``/etc/ldap/slapd.d``)."
 
 #: ../tutorial/troubleshooting.rst:23 e623df73a33a4425874322d64990dd09
 msgid ""
 "Depending on the configuration method you use with your OpenLDAP "
 "installation, you need to chose how to add the canaille schemas:"
 msgstr ""
+"Selon la méthode de configuration utilisée avec votre installation OpenLDAP, "
+"vous aurez besoin de choisir comment ajouter les schémas Canaille :"
 
 #: ../tutorial/troubleshooting.rst:26 7fa64ce5f9834bfc8a84a6b147776135
 msgid "Old fashion: Copy the schemas in your filesystem"
-msgstr ""
+msgstr "À l'ancienne : copier les schémas sur votre système de fichier"
 
 #: ../tutorial/troubleshooting.rst:35 89ec7d1a5b9c488898dd0aeec512eb0f
 msgid "New fashion: Use slapadd to add the schemas"
-msgstr ""
+msgstr "Méthode moderne : utiliser slapadd pour ajouter les schémas"
 
 #: ../tutorial/troubleshooting.rst:37 cf355b0d0d224146b9aa9bde63c3285b
 msgid "Be careful to stop your ldap server before running ``slapadd``"
 msgstr ""
+"Soyez attentif à arrêter votre serveur LDAP avant d'exécuter ``slapadd``"
 
 #: ../tutorial/troubleshooting.rst:46 b688808b89a1486ea46f0a30671f0772
 msgid "How to manually generate the OIDC keypair?"
-msgstr ""
+msgstr "Comment générer manuellement la paire de clef OIDC ?"
 
 #: ../tutorial/troubleshooting.rst:50 fe622e23c48a4ec0ba3a9e00e24cfb88
 msgid ""
 "The keypair generation can be automatically done using the :ref:`install "
 "command <cli_install>`."
 msgstr ""
+"La génération de la paire de clef peut être automatiquement faite en "
+"utilisant la :ref:`commande d'installation <cli_install>`."
 
 #: ../tutorial/troubleshooting.rst:52 2467c8ae6d2a4ba19056d44a89656984
 msgid ""
@@ -7256,20 +7282,27 @@ msgid ""
 "commands, as long as they match the ``JWT`` section of your configuration "
 "file."
 msgstr ""
+"Canaille a besoin d'une paire de clefs pour signer les jetons OIDC. Vous "
+"pouvez personnaliser ces commandes tant qu'elles correspondent la section "
+"``JWT``de votre fichier de configuration."
 
 #: ../usecases.rst:4 dde73820d8ff46128f0ae5a245d4f212
 msgid "Use cases"
-msgstr ""
+msgstr "Cas d'usage"
 
 #: ../usecases.rst:6 936471ec6e494f839a45d1a5048ddbe9
 msgid ""
 "Canaille is a lightweight IAM for simple needs. Here are a few use cases you "
 "might recognize in, where Canaille would fit your needs."
 msgstr ""
+"Canaille est un Gestionnaire des Identités et des Accès (en anglais « "
+"Identity and Access Management » ou IAM) pour des besoins simples. Voici "
+"quelques cas d'usage dans lesquels vous pourriez vous reconnaître où "
+"Canaille pourrait répondre à votre besoin."
 
 #: ../usecases.rst:10 0c06bc8fc0754db6bdfbae05fe718b2e
 msgid "OpenID Connect provider on top of a LDAP directory"
-msgstr ""
+msgstr "Fournisseur OpenID Connect au-dessus d'un annuaire LDAP"
 
 #: ../usecases.rst:12 0ec337c5784a4dc296538609b9d75dd6
 msgid ""
@@ -7278,10 +7311,15 @@ msgid ""
 "(Single Sign-On)` layer on top of it, so users can use all your application "
 "while signin-in only once, without any data migration."
 msgstr ""
+"Votre organisation a un ref:`annuaire LDAP <feature_databases>` historique "
+"et vous voulez ajouter une couche :ref:`OpenID Connect <feature_oidc>` "
+":abbr:`SSO (Single Sign-On)` au-dessus, pour que les utilisateurs puissent "
+"utiliser toutes vos applications tout en ne se connectant qu'une seule fois, "
+"sans aucune migration de données."
 
 #: ../usecases.rst:15 35bb9bbb50064dc7a5383c9d5371adfd
 msgid "Profile edition of LDAP users"
-msgstr ""
+msgstr "Modification de profil d'utilisateurs LDAP"
 
 #: ../usecases.rst:17 87226e31a4ef425585e8de20647d72a3
 msgid ""
@@ -7290,10 +7328,14 @@ msgid ""
 "<feature_profile_management>` by themselves, without requiring any "
 "administrator intervention."
 msgstr ""
+"Votre organisation a un :ref:`annuaire LDAP <feature_databases>` et vous "
+"voulez fournir une façon à vos utilisateurs de :ref:`modifier leurs "
+"informations personnelles <feature_profile_management>` par eux-mêmes, sans "
+"nécessiter l'intervention d'un administrateur."
 
 #: ../usecases.rst:20 22ec6d0c58ed413b80cd6aca23f637b6
 msgid "Password recovery with a LDAP directory"
-msgstr ""
+msgstr "Récupération de mot de passe avec un annuaire LDAP"
 
 #: ../usecases.rst:22 46f418970c7640f9ace069002ed337bd
 msgid ""
@@ -7302,10 +7344,14 @@ msgid ""
 "<feature_password_recovery>` when they cannot remember it, without any "
 "administrator intervention."
 msgstr ""
+"Votre organisation a un :ref:`annuaire LDAP <feature_databases>` historique "
+"et vous voulez fournir une façon à vos utilisateurs de :ref:`récupérer leur "
+"mot de passe <feature_password_recovery>` quand ils ne s'en rappellent plus, "
+"sans intervention d'un administrateur."
 
 #: ../usecases.rst:25 f44f325b29594fc7b31521d259e27d5f
 msgid "A lightweight IAM for unit testing"
-msgstr ""
+msgstr "un GIA (IAM) léger pour les tests unitaires"
 
 #: ../usecases.rst:27 c9f537fbf3cd4b3cb0e6d140b8a2327b
 msgid ""
@@ -7315,10 +7361,16 @@ msgid ""
 "`perform real OAuth2/OIDC requests <feature_testing>`, and test your "
 "application against different identity provider tunings."
 msgstr ""
+"Vous êtes en train de :ref:`développer <feature_development>` une "
+"application basée sur OAuth2 ou OpenID Connect pour authentifier les "
+"utilisateurs. Vous ne voulez pas masquer les appels vers le fournisseur "
+"d'identité pour les tests unitaires mais vous voulez :ref:`exécuter de "
+"véritables requêtes OAuth2/OIDC <feature_testing>`, et tester vos "
+"applications avec les différents réglages du fournisseur d'identité."
 
 #: ../usecases.rst:30 5b9b8e07b9154150a105088cc630ce6a
 msgid "A lightweight IAM for developing"
-msgstr ""
+msgstr "Un GIA (IAM) léger pour le développement"
 
 #: ../usecases.rst:32 7a4ff703b94e4706b5123edb0c2abe51
 msgid ""
@@ -7327,10 +7379,15 @@ msgid ""
 "server to develop <feature_development>` locally, but your old computer "
 "cannot bear launching a full Keycloak in a Docker container."
 msgstr ""
+"Vous êtes en train de :ref:`développer <feature_development>` une "
+"application basée sur OAuth2 ou OpenID Connect pour authentifier les "
+"utilisateurs. Vous avez besoin d'un :ref:`serveur IAM pour développer "
+"<feature_development>` localement, mais votre vieil ordinateur ne peut pas "
+"lancer un Keycloak complet dans un conteneur Docker."
 
 #: ../usecases.rst:35 e594e15fba204d65a3f483c36e7c0aab
 msgid "A lightweight IAM for CIs"
-msgstr ""
+msgstr "Un GIA (IAM) léger pour de l'Intégration Continue"
 
 #: ../usecases.rst:37 ff03e5a191564f90af81c7d210a3de24
 msgid ""
@@ -7339,10 +7396,17 @@ msgid ""
 "that could can populate with custom data, and integrate in your :ref:"
 "`continuous integration environment <feature_ci>`."
 msgstr ""
+"Vous êtes en train de :ref:`développer <feature_development>` une "
+"application basée sur OAuth2 ou OpenID Connect pour authentifier les "
+"utilisateurs. Vous avez besoin d'un serveur IAM server que vous pouvez "
+"remplir de données personnalisées et intégrer dans votre :ref:`environnement "
+"d'intégration continue <feature_ci>`."
 
 #: ../usecases.rst:40 8a37de08f6594334a3ba6ed2f9a3b71e
 msgid "A CLI to quickly edit LDAP directory users"
 msgstr ""
+"Une interface en ligne de commande pour modifier rapidement les utilisateurs "
+"d'un annuaire LDAP"
 
 #: ../usecases.rst:42 b9d55e6eeca547aabb9bbfef3998f6d2
 msgid ""
@@ -7350,6 +7414,10 @@ msgid ""
 "You are tired to deal with *ldif* syntax to manage your users and group and "
 "would prefer a simple human-readable CLI."
 msgstr ""
+"Votre organisation a un :ref:`annuaire LDAP <feature_databases>` historique. "
+"Vous êtes fatigué d'utiliser la syntaxe *ldif* pour gérer vos utilisateurs "
+"et groupes, et préférez utiliser une ligne de commande simple et lisible par "
+"les humains."
 
 #~ msgid "Maximum length for user password."
 #~ msgstr "Longueur maximum des mots de passe utilisateur."
