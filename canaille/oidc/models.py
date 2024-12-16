@@ -5,6 +5,7 @@ from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
+from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -105,6 +106,30 @@ class Client(BaseClient, ClientMixin):
             Backend.instance.delete(token)
 
         yield
+
+    def get_access_token(self):
+        scim_tokens = Backend.instance.query(models.Token, client=self, subject=None)
+        valid_scim_tokens = [
+            token
+            for token in scim_tokens
+            if not token.is_expired() and not token.is_revoked()
+        ]
+        if valid_scim_tokens:
+            scim_token = valid_scim_tokens[0]
+        else:
+            scim_token = models.Token(
+                token_id=gen_salt(48),
+                access_token=gen_salt(48),
+                subject=None,
+                audience=[self],
+                client=self,
+                refresh_token=gen_salt(48),
+                scope=["openid", "profile"],
+                issue_date=datetime.datetime.now(datetime.timezone.utc),
+                lifetime=3600,
+            )
+            Backend.instance.save(scim_token)
+        return scim_token
 
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
