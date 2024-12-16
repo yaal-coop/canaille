@@ -893,25 +893,9 @@ def photo(user, field):
         stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
     )
 
-@bp.route("/reset/<user:user>", methods=["GET", "POST"])
-@expired_password_needed()
-def reset(user):
-    print("THERE"*5)
-    form = PasswordResetForm(request.form)
-    if user != current_user() or not user.has_expired_password():
-        abort(403)
 
-    if request.form and form.validate():
-        Backend.instance.set_user_password(user, form.password.data)
-
-        flash(_("Your password has been updated successfully"), "success")
-        return redirect(
-            session.pop(
-                "redirect-after-login",
-                url_for("core.account.profile_edition", edited_user=user),
-            )
-        )
-    return render_template("reset-password.html", form=form, user=user, hash=None)
+def get_today_datetime():
+    return UTC.localize(datetime.datetime.now())  # pragma: no cover
 
 
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])

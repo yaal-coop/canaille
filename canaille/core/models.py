@@ -503,6 +503,18 @@ class User(Model):
         ).total_seconds()
         return max(calculated_delay - time_since_last_failed_bind, 0)
 
+    def has_expired_password(self):
+        last_update = self.password_last_update or datetime.datetime.now(
+            datetime.timezone.utc
+        )
+        password_expiration = current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
+
+        return (
+            password_expiration is not None
+            and last_update + password_expiration
+            < datetime.datetime.now(datetime.timezone.utc)
+        )
+
 
 class Group(Model):
     """User model, based on the `SCIM Group schema
