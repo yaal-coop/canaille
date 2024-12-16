@@ -109,16 +109,16 @@ msgstr ""
 msgid "You should change your password."
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:61 canaille/core/mails.py:15
+#: canaille/core/endpoints/admin.py:58 canaille/core/mails.py:15
 msgid "Test email from {website_name}"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:135 canaille/core/endpoints/admin.py:147
+#: canaille/core/endpoints/admin.py:128 canaille/core/endpoints/admin.py:140
 #: canaille/core/mails.py:54
 msgid "Password reset on {website_name}"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:88 canaille/core/endpoints/admin.py:100
+#: canaille/core/endpoints/admin.py:83 canaille/core/endpoints/admin.py:95
 #: canaille/core/mails.py:95
 msgid "Password initialization on {website_name}"
 msgstr ""
@@ -135,7 +135,7 @@ msgstr ""
 msgid "Continue your registration on {website_name}"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:324 canaille/core/mails.py:221
+#: canaille/core/endpoints/admin.py:309 canaille/core/mails.py:221
 msgid "Compromised password check failure on {website_name}"
 msgstr ""
 
@@ -147,23 +147,23 @@ msgstr ""
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:128
+#: canaille/core/endpoints/account.py:125
 msgid ""
 "An error happened while sending your registration mail. Please try again "
 "in a few minutes. If this still happens, please contact the "
 "administrators."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:254
-#: canaille/core/endpoints/account.py:277
+#: canaille/core/endpoints/account.py:249
+#: canaille/core/endpoints/account.py:272
 msgid "The registration link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:261
+#: canaille/core/endpoints/account.py:256
 msgid "The registration link that brought you here has expired."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:270
+#: canaille/core/endpoints/account.py:265
 msgid "Your account has already been created."
 msgstr ""
 
@@ -313,19 +313,19 @@ msgstr ""
 msgid "jane.doe@example.com"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:44
+#: canaille/core/endpoints/admin.py:42
 msgid "The test mail has been sent correctly"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:46
+#: canaille/core/endpoints/admin.py:44
 msgid "The test mail has not been sent correctly"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:191
+#: canaille/core/endpoints/admin.py:182
 msgid "Invitation on {website_name}"
 msgstr ""
 
-#: canaille/core/endpoints/admin.py:235 canaille/core/endpoints/admin.py:279
+#: canaille/core/endpoints/admin.py:224 canaille/core/endpoints/admin.py:266
 msgid "Email confirmation on {website_name}"
 msgstr ""
 
@@ -619,26 +619,26 @@ msgstr ""
 msgid "Group creation failed."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:51
+#: canaille/core/endpoints/groups.py:48
 #, python-format
 msgid "The group %(group)s has been successfully created"
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:112
+#: canaille/core/endpoints/groups.py:108
 #, python-format
 msgid "The group %(group)s has been successfully edited."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:120
+#: canaille/core/endpoints/groups.py:116
 msgid "Group edition failed."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:149
+#: canaille/core/endpoints/groups.py:145
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:166
+#: canaille/core/endpoints/groups.py:162
 #, python-format
 msgid "The group %(group)s has been successfully deleted"
 msgstr ""
