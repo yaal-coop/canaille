@@ -262,7 +262,13 @@ class BaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
 
 
 class TableForm(I18NFormMixin, FlaskForm):
-    def __init__(self, cls=None, page_size=25, fields=None, filter=None, **kwargs):
+    """
+    A form for table rendering of object collections.
+    """
+
+    def __init__(
+        self, cls=None, page_size: int = 25, fields=None, filter=None, **kwargs
+    ):
         filter = filter or {}
         super().__init__(**kwargs)
         if self.query.data:

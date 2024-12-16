@@ -1,3 +1,13 @@
+{# Consent request template.
+
+This templates is displayed to users accessing a new application that requests to access to personal information.
+It lists the personal information requested by the application, and offers the user to accept or decline.
+
+:param user: The user whose consent is asked.
+:type user: :class:`~canaille.core.models.User`
+:param grant: The OIDC grant.
+:type grant: An Authlib ``Grant``
+#}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 

@@ -37,9 +37,9 @@ extensions = [
     "sphinx_design",
     "sphinx_issues",
     "sphinxcontrib.autodoc_pydantic",
+    "jinja_autodoc",
 ]
 
-templates_path = ["_templates"]
 source_suffix = {
     ".rst": "restructuredtext",
     ".md": "markdown",
@@ -64,6 +64,7 @@ intersphinx_mapping = {
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
     "pydantic": ("https://docs.pydantic.dev/latest", None),
     "pytest-iam": ("https://pytest-iam.readthedocs.io/en/latest/", None),
+    "wtforms": ("https://wtforms.readthedocs.io", None),
 }
 
 issues_uri = "https://gitlab.com/yaal/canaille/-/issues/{issue}"
@@ -171,3 +172,5 @@ autodoc_pydantic_field_list_validators = False
 # Advised by https://docs.readthedocs.io/en/latest/guides/manage-translations-sphinx.html#create-translatable-files
 gettext_uuid = True
 gettext_compact = "doc"
+
+jinja_template_path = "canaille/templates"

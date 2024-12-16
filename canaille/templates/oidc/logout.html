@@ -1,3 +1,12 @@
+{# The OIDC logout template.
+
+Used during OIDC RP-initiated logout, when an user confirmation is needed.
+
+:param form: The logout form.
+:type form: :class:`~canaille.oidc.endpoints.forms.LogoutForm`.
+:param client: The client requesting the logout.
+:type client: :class:`~canaille.oidc.basemodels.Client`
+#}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 

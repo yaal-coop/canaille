@@ -1,3 +1,15 @@
+{# The profile edition template.
+
+Displays a user profile edition form.
+
+:param edited_user: The user that the form will edit.
+:type edited_user: :class:`~canaille.core.models.User`
+:param profile_form: The user profile edition form. Dynamically built according to the user :attr:`~canaille.core.configuration.ACLSettings.READ` and :attr:`~canaille.core.configuration.ACLSettings.WRITE` permissions. The available fields are those appearing in *READ* and *WRITE*, those only appearing in *READ* are read-only.
+:type profile_form: :class:`~flask_wtf.FlaskForm`
+:param emails_form: An email edition form. Used when the :attr:`~canaille.app.features.Features.has_email_confirmation` feature is enabled.
+:type emails_form: :class:`~canaille.core.endpoints.forms.EmailConfirmationForm`
+#}
+
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/profile_field.html' as profile %}

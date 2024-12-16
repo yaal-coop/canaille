@@ -1,3 +1,12 @@
+{# Group edition page.
+
+Displays the group edition or creation form.
+
+:param edited_group: :data:`None` in a creation context. In edition context this is the edited group.
+:type edited_group: :class:`~canaille.core.models.Group`
+:param form: The group edition/creation form.
+:type form: :class:`~canaille.core.endpoints.forms.CreateGroupForm` or :class:`~canaille.core.endpoints.forms.EditGroupForm`
+#}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import "macro/table.html" as table %}

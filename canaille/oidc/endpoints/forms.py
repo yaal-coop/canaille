@@ -18,7 +18,7 @@ class LogoutForm(Form):
     answer = wtforms.SubmitField()
 
 
-def client_audiences():
+def _client_audiences():
     return [
         (client, client.client_name) for client in Backend.instance.query(models.Client)
     ]
@@ -111,7 +111,7 @@ class ClientAddForm(Form):
     audience = wtforms.SelectMultipleField(
         _("Token audiences"),
         validators=[wtforms.validators.Optional()],
-        choices=client_audiences,
+        choices=_client_audiences,
         validate_choice=False,
         coerce=IDToModel("Client"),
     )

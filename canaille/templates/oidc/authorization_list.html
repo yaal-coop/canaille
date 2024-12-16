@@ -1,3 +1,10 @@
+{# The list of authorizations.
+
+Displays a paginated list of :class:`~canaille.oidc.basemodels.AuthorizationCode`.
+
+:param table_form: The paginated list form.
+:type table_form: :class:`~canaille.app.forms.TableForm` of :class:`~canaille.oidc.basemodels.AuthorizationCode`.
+#}
 {% extends theme('base.html') %}
 {% import "macro/table.html" as table %}
 

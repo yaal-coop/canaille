@@ -99,6 +99,8 @@ With the LDAP backend, all data is lost when Canaille stops.
     cd demo
     docker compose --file docker-compose-ldap.yml up
 
+.. _local_environment:
+
 Local environment
 ~~~~~~~~~~~~~~~~~
 

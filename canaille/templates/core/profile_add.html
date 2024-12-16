@@ -1,3 +1,11 @@
+{# User account creation page.
+
+This template displays an account creation form.
+It is used in the registration page, and in the manual account creation page available for users with *user management* permission.
+
+:param form: The user creation form. Dynamically built according to the user :attr:`~canaille.core.configuration.ACLSettings.READ` and :attr:`~canaille.core.configuration.ACLSettings.WRITE` permissions. The available fields are those appearing in *READ* and *WRITE*, those only appearing in *READ* are read-only.
+:type form: :class:`~flask_wtf.FlaskForm`
+#}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/profile_field.html' as profile %}

@@ -1,3 +1,14 @@
+{# The multi-factor authentication initialization template.
+
+Display a QR-code and the OTP secret.
+
+:param user: The user initializing the OTP.
+:type user: :class:`~canaille.core.models.User`
+:param secret: The OTP secret.
+:type secret: :class:`str`
+:param qr_image: A QR-code image representing the OTP secret.
+:type qr_image: A base64 encoded :class:`str`
+#}
 {% extends theme('base.html') %}
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}
@@ -18,7 +29,7 @@
 
                     <h2 class="ui center aligned header">
                         <div class="content">
-                            {{ _("Sign in as %(username)s", username=username) }}
+                            {{ _("Sign in as %(username)s", username=user.user_name) }}
                         </div>
                         <div class="sub header">{% trans %}Set up multi-factor authentication.{% endtrans %}</div>
                     </h2>

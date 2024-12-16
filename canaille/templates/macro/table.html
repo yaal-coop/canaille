@@ -1,3 +1,6 @@
+{#
+Macros for rendering table paginated with HTMX.
+#}
 {% macro search(form, target) %}
     <form id="search" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" class="ui form">
         {{ form.hidden_tag() if form.hidden_tag }}

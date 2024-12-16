@@ -61,6 +61,7 @@ def pre_consents(user):
         "oidc/preconsent_list.html",
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
+        # TODO: do not delegate this var to the templates, or set this explicitly in the templates.
         ignored_scopes=["openid"],
         preconsented=preconsented,
         nb_consents=nb_consents,

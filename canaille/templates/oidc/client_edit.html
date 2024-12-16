@@ -1,3 +1,12 @@
+{# The client edition template.
+
+Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
+
+:param form: The client creation form.
+:type form: :class:`~canaille.oidc.endpoints.forms.ClientAddForm`.
+:param client: The edited client.
+:type client: :class:`~canaille.oidc.basemodels.Client`
+#}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 
