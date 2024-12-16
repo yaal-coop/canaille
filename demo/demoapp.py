@@ -100,6 +100,9 @@ def populate(app):
             )
             app.backend.save(users)
 
+            fake_users(50)
+            fake_groups(10, nb_users_max=10)
+
             client1 = models.Client(
                 client_id_issued_at=datetime.datetime.utcnow(),
                 client_id="client1",
@@ -187,9 +190,6 @@ def populate(app):
                 audience=[client1],
             )
             app.backend.save(token)
-
-            fake_users(50)
-            fake_groups(10, nb_users_max=10)
 
 
 def create_app(config=None):

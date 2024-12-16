@@ -62,6 +62,21 @@ wheels = [
 ]
 
 [[package]]
+name = "anyio"
+version = "4.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "idna" },
+    { name = "sniffio" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f6/40/318e58f669b1a9e00f5c4453910682e2d9dd594334539c7b7817dabb765f/anyio-4.7.0.tar.gz", hash = "sha256:2f834749c602966b7d456a7567cafcb309f96482b5081d14ac93ccd457f9dd48", size = 177076 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/7a/4daaf3b6c08ad7ceffea4634ec206faeff697526421c20f07628c7372156/anyio-4.7.0-py3-none-any.whl", hash = "sha256:ea60c3723ab42ba6fff7e8ccb0488c898ec538ff4df1f1d5e642c3601d07e352", size = 93052 },
+]
+
+[[package]]
 name = "atpublic"
 version = "5.1"
 source = { registry = "https://pypi.org/simple" }
@@ -163,6 +178,7 @@ dependencies = [
     { name = "flask" },
     { name = "flask-caching" },
     { name = "flask-wtf" },
+    { name = "httpx" },
     { name = "pydantic-settings" },
     { name = "requests" },
     { name = "wtforms" },
@@ -207,6 +223,7 @@ postgresql = [
 scim = [
     { name = "authlib" },
     { name = "scim2-models" },
+    { name = "scim2-server" },
 ]
 sentry = [
     { name = "sentry-sdk" },
@@ -289,6 +306,7 @@ requires-dist = [
     { name = "flask-wtf", specifier = ">=1.2.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.0.2" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "otpauth", marker = "extra == 'otp'", specifier = ">=2.1.1" },
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
@@ -301,6 +319,7 @@ requires-dist = [
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.2.2" },
+    { name = "scim2-server", marker = "extra == 'scim'", specifier = ">=0.1.2" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },
     { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
@@ -1000,6 +1019,34 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/02/e7/94f8232d4a74cc99514c13a9f995811485a6903d48e5d952771ef6322e30/hyperframe-6.1.0.tar.gz", hash = "sha256:f630908a00854a7adeabd6382b43923a4c4cd4b821fcb527e6ab9e15382a3b08", size = 26566 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/48/30/47d0bf6072f7252e6521f3447ccfa40b421b6824517f82854703d0f5a98b/hyperframe-6.1.0-py3-none-any.whl", hash = "sha256:b03380493a519fce58ea5af42e4a42317bf9bd425596f7a0835ffce80f1a42e5", size = 13007 },
+]
+
+[[package]]
+name = "httpcore"
+version = "1.0.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "h11" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6a/41/d7d0a89eb493922c37d343b607bc1b5da7f5be7e383740b4753ad8943e90/httpcore-1.0.7.tar.gz", hash = "sha256:8551cb62a169ec7162ac7be8d4817d561f60e08eaa485234898414bb5a8a0b4c", size = 85196 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/87/f5/72347bc88306acb359581ac4d52f23c0ef445b57157adedb9aee0cd689d2/httpcore-1.0.7-py3-none-any.whl", hash = "sha256:a3fff8f43dc260d5bd363d9f9cf1830fa3a458b332856f34282de498ed420edd", size = 78551 },
+]
+
+[[package]]
+name = "httpx"
+version = "0.28.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "certifi" },
+    { name = "httpcore" },
+    { name = "idna" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b1/df/48c586a5fe32a0f01324ee087459e112ebb7224f646c0b5023f5e79e9956/httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc", size = 141406 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad", size = 73517 },
 ]
 
 [[package]]
@@ -2268,6 +2315,18 @@ wheels = [
 ]
 
 [[package]]
+name = "scim2-filter-parser"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sly" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/25/c0/2f4d5caee8faa8f0d0979584c4aab95fa69d626d6f9d211dd6bb7089bc2f/scim2_filter_parser-0.7.0.tar.gz", hash = "sha256:1e11dbe2e186fc1be6d93732b467a3bbaa9deff272dfeb3a0540394cfab7030c", size = 21358 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/57/54/b54961bfc5018fa593758c439fe0d4a22fbadfabff49a7559850af9a79e1/scim2_filter_parser-0.7.0-py3-none-any.whl", hash = "sha256:a74f90a2d52a77e0f1bc4d77e84b79f88749469f6f7192d64a4f92e4fe50ab69", size = 23409 },
+]
+
+[[package]]
 name = "scim2-models"
 version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2277,6 +2336,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d9/42/e7f986b1ebfba7f8b6105764aec0a8c526100b0d8bfd9e28cf08432ad693/scim2_models-0.3.0.tar.gz", hash = "sha256:a1db62385e7820e67c94fd758246815397eb3b3bd1bca797a2a3ef346e81d827", size = 132910 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/ed/708165169928aae94a0596a557e4c674bcc781e429802fb951b9af1d21b1/scim2_models-0.3.0-py3-none-any.whl", hash = "sha256:1ff78d93b9ed0a4d89f04835777e1cee796e0d1881e71f8242a86af2ec9f0612", size = 40663 },
+]
+
+[[package]]
+name = "scim2-server"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "scim2-filter-parser" },
+    { name = "scim2-models" },
+    { name = "werkzeug" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3b/dd/9a0221a5dd2ba6964ffdcfe7817f44295a98bc16e528526f47ca359ee519/scim2_server-0.1.2.tar.gz", hash = "sha256:e8c1d0568d2fa89ffaf62073dc6b47d5fd983bf561fcc3914a41044f0cbff691", size = 80680 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/17/c7f49843d63a604130bb6f98aaaa9fdf4847386aac737bd843f89e9b85d2/scim2_server-0.1.2-py3-none-any.whl", hash = "sha256:07cf93294e7d6951fa744d85a6119de6030decaad6794223dd147552bd4fdba0", size = 33060 },
 ]
 
 [[package]]
@@ -2345,6 +2418,15 @@ wheels = [
 ]
 
 [[package]]
+name = "sly"
+version = "0.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/41/8a/59e943f7b27904c7756a7b565ffbd55f3841f5cd3d2da2b2b0713c49e488/sly-0.5.tar.gz", hash = "sha256:251d42015e8507158aec2164f06035df4a82b0314ce6450f457d7125e7649024", size = 66702 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8e/4d/c96d807295183f2360329cd8d8bf5e8072c53d664125b3858c04153f026e/sly-0.5-py3-none-any.whl", hash = "sha256:20485483259eec7f6ba85ff4d2e96a4e50c6621902667fc2695cc8bc2a3e5133", size = 28864 },
+]
+
+[[package]]
 name = "smpplib"
 version = "2.2.4"
 source = { registry = "https://pypi.org/simple" }
@@ -2369,6 +2451,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/db/4a/561500fd9db689746449888045758a74d19f7a9a739e595fd6e3b2d92078/smtpdfix-0.5.2.tar.gz", hash = "sha256:e4d1ace90f3712a19127ed8874e697a86148c1f48d2b2db0c0720968e8e3ec95", size = 23542 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/72/14/1c4107f0e625a4f95c5412b82f20ea05665c515d74e724898d4c3a8c7ac5/smtpdfix-0.5.2-py3-none-any.whl", hash = "sha256:85045723df6bb492af2ddbadfb0b8f8b5c52f69bb6fd4f6bca78c4f182d6c2b7", size = 17294 },
+]
+
+[[package]]
+name = "sniffio"
+version = "1.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc", size = 20372 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/44/75a9c9421471a6c4805dbf2356f7c181a29c1879239abab1ea2cc8f38b40/sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2", size = 10235 },
 ]
 
 [[package]]

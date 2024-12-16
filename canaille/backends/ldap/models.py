@@ -3,6 +3,8 @@ from blinker import signal
 
 import canaille.core.models
 import canaille.oidc.models
+from canaille.scim.models import propagate_group_scim_modification
+from canaille.scim.models import propagate_user_scim_modification
 
 from .backend import LDAPBackend
 from .ldapobject import LDAPObject
@@ -104,6 +106,11 @@ class Group(canaille.core.models.Group, LDAPObject):
         "members": "member",
         "description": "description",
     }
+
+    def save(self):
+        propagate_group_scim_modification(self, method="save")
+
+        yield
 
 
 class Client(canaille.oidc.models.Client, LDAPObject):

@@ -43,6 +43,7 @@ from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.scim.models import propagate_group_scim_modification
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -818,6 +819,15 @@ def profile_settings_edit(editor, edited_user):
                 )
 
             Backend.instance.save(edited_user)
+            # The SCIM User attribute groups is read only,
+            # so this is needed to update the Group.members attribute
+            # instead.
+            old_groups = data["groups"]
+            new_groups = edited_user.groups
+            for group in set(old_groups) ^ set(new_groups):
+                Backend.instance.reload(group)
+                propagate_group_scim_modification(group, "save")
+
             flash(_("Profile updated successfully."), "success")
             return redirect(
                 url_for("core.account.profile_settings", edited_user=edited_user)
