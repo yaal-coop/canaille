@@ -7,6 +7,7 @@ from flask import current_app
 
 import canaille.backends.memory.models
 from canaille.backends import Backend
+from canaille.backends import get_lockout_delay_message
 
 
 def listify(value):
@@ -66,7 +67,14 @@ class MemoryBackend(Backend):
         return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
+        if current_app.features.has_intruder_lockout:
+            if current_lockout_delay := user.get_intruder_lockout_delay():
+                self.save(user)
+                return (False, get_lockout_delay_message(current_lockout_delay))
+
         if password != user.password:
+            if current_app.features.has_intruder_lockout:
+                self.record_failed_attempt(user)
             return (False, None)
 
         if user.locked:
@@ -237,3 +245,9 @@ class MemoryBackend(Backend):
 
         # update the id index
         del self.index(instance.__class__)[instance.id]
+
+    def record_failed_attempt(self, user):
+        user.password_failure_timestamps += [
+            datetime.datetime.now(datetime.timezone.utc)
+        ]
+        self.save(user)

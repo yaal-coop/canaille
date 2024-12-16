@@ -3,6 +3,9 @@
 
 Added
 ^^^^^
+- Intruder lockout :issue:`173`
+- :attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT`
+  :issue:`173`
 - Multi-factor authentication :issue:`47`
 - :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and
   :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and

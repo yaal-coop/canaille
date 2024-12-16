@@ -40,6 +40,7 @@ class User(canaille.core.models.User, LDAPObject):
         "hotp_counter": "oathHOTPCounter",
         "one_time_password": "oathTokenPIN",
         "one_time_password_emission_date": "oathSecretTime",
+        "password_failure_timestamps": "pwdFailureTime",
     }
 
     def match_filter(self, filter):
