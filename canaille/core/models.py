@@ -4,11 +4,17 @@ from typing import Annotated
 from typing import ClassVar
 
 from flask import current_app
+from httpx import Client as httpx_client
+from scim2_client.engines.httpx import SyncSCIMClient
+from scim2_models import SearchRequest
 
+from canaille.app import models
+from canaille.backends import Backend
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
 from canaille.core.sms import send_one_time_password_sms
+from canaille.scim.models import user_from_canaille_to_scim_for_client
 
 HOTP_LOOK_AHEAD_WINDOW = 10
 OTP_DIGITS = 6
@@ -278,9 +284,19 @@ class User(Model):
     one_time_password_emission_date: datetime.datetime | None = None
     """A DateTime indicating when the user last emitted an email or sms one-time password."""
 
+    scim_id: str | None = None
+
     _readable_fields = None
     _writable_fields = None
     _permissions = None
+
+    def save(self):
+        if current_app.features.has_otp and not self.secret_token:
+            self.initialize_otp()
+        self.propagate_scim_changes()
+
+    def delete(self):
+        self.propagate_scim_delete()
 
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
@@ -485,6 +501,57 @@ class User(Model):
             - self.password_failure_timestamps[-1]
         ).total_seconds()
         return max(calculated_delay - time_since_last_failed_bind, 0)
+
+    def propagate_scim_changes(self):
+        for client in self.get_clients():
+            tokens = Backend.instance.query(models.Token, subject=self, client=client)
+            if tokens:
+                token = tokens[0]
+                client = httpx_client(
+                    base_url=client.client_uri,
+                    headers={"Authorization": f"Bearer {token.access_token}"},
+                )
+                scim = SyncSCIMClient(client)
+                scim.discover()
+                User = scim.get_resource_model("User")
+                EnterpriseUser = User.get_extension_model("EnterpriseUser")
+                user = user_from_canaille_to_scim_for_client(self, User, EnterpriseUser)
+
+                req = SearchRequest(filter=f'userName eq "{self.user_name}"')
+                response = scim.query(User, search_request=req)
+
+                if not response:
+                    try:
+                        scim.create(user)
+                    except:
+                        current_app.logger.warning(
+                            f"SCIM User {self.user_name} creation for client {client.client_name} failed"
+                        )
+                else:
+                    user.id = response.id
+                    try:
+                        scim.replace(user)
+                    except:
+                        current_app.logger.warning(
+                            f"SCIM User {self.user_name} update for client {client.client_name} failed"
+                        )
+
+    def propagate_scim_delete(self):
+        client = httpx_client(
+            base_url="http://localhost:8080",
+            headers={"Authorization": "Bearer MON_SUPER_TOKEN"},
+        )
+        scim = SyncSCIMClient(client)
+        scim.discover()
+        User = scim.get_resource_model("User")
+        try:
+            scim.delete(User, self.scim_id)
+        except:
+            current_app.logger.warning(f"SCIM User {self.user_name} delete failed")
+
+    def get_clients(self):
+        consents = Backend.instance.query(models.Consent, subject=self)
+        return {t.client for t in consents}
 
 
 class Group(Model):

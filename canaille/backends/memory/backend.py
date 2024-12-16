@@ -5,7 +5,6 @@ from typing import Any
 
 from flask import current_app
 
-import canaille.backends.memory.models
 from canaille.backends import Backend
 from canaille.backends import get_lockout_delay_message
 
@@ -138,12 +137,9 @@ class MemoryBackend(Backend):
         return results[0] if results else None
 
     def save(self, instance):
-        if (
-            isinstance(instance, canaille.backends.memory.models.User)
-            and current_app.features.has_otp
-            and not instance.secret_token
-        ):
-            instance.initialize_otp()
+        # run the instance save callback if existing
+        if hasattr(instance, "save"):
+            instance.save()
 
         if not instance.id:
             instance.id = str(uuid.uuid4())
@@ -160,13 +156,10 @@ class MemoryBackend(Backend):
 
     def delete(self, instance):
         # run the instance delete callback if existing
-        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(delete_callback, None)
+        if hasattr(instance, "delete"):
+            instance.delete()
 
         self.index_delete(instance)
-
-        # run the instance delete callback again if existing
-        next(delete_callback, None)
 
     def reload(self, instance):
         # run the instance reload callback if existing

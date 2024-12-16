@@ -289,3 +289,86 @@ def group_from_scim_to_canaille(scim_group: Group, group):
     group.members = members
 
     return group
+
+
+def user_from_canaille_to_scim_for_client(user, User, EnterpriseUser):
+    scim_user = User(
+        meta=Meta(
+            resource_type="User",
+            created=user.created,
+            last_modified=user.last_modified,
+            location=url_for("scim.query_user", user=user, _external=True),
+        ),
+        id=user.id,
+        user_name=user.user_name,
+        preferred_language=user.preferred_language,
+        name=User.Name(
+            formatted=user.formatted_name,
+            family_name=user.family_name,
+            given_name=user.given_name,
+        )
+        if (user.formatted_name or user.family_name or user.given_name)
+        else None,
+        display_name=user.display_name,
+        title=user.title,
+        profile_url=user.profile_url,
+        emails=[
+            User.Emails(
+                value=email,
+                primary=email == user.emails[0],
+            )
+            for email in user.emails or []
+        ]
+        or None,
+        phone_numbers=[
+            User.PhoneNumbers(
+                value=phone_number, primary=phone_number == user.phone_numbers[0]
+            )
+            for phone_number in user.phone_numbers or []
+        ]
+        or None,
+        addresses=[
+            User.Addresses(
+                formatted=user.formatted_address,
+                street_address=user.street,
+                postal_code=user.postal_code,
+                locality=user.locality,
+                region=user.region,
+                primary=True,
+            )
+        ]
+        if (
+            user.formatted_address
+            or user.street
+            or user.postal_code
+            or user.locality
+            or user.region
+        )
+        else None,
+        photos=[
+            User.Photos(
+                value=url_for(
+                    "core.account.photo", user=user, field="photo", _external=True
+                ),
+                primary=True,
+                type=User.Photos.Type.photo,
+            )
+        ]
+        if user.photo
+        else None,
+        groups=[
+            User.Groups(
+                value=group.id,
+                display=group.display_name,
+                ref=url_for("scim.query_group", group=group, _external=True),
+            )
+            for group in user.groups or []
+        ]
+        or None,
+    )
+    scim_user[EnterpriseUser] = EnterpriseUser(
+        employee_number=user.employee_number,
+        organization=user.organization,
+        department=user.department,
+    )
+    return scim_user

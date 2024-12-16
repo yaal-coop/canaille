@@ -134,14 +134,11 @@ class SQLBackend(Backend):
 
     def delete(self, instance):
         # run the instance delete callback if existing
-        save_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(save_callback, None)
+        if hasattr(instance, "delete"):
+            instance.delete()
 
         SQLBackend.instance.db_session.delete(instance)
         SQLBackend.instance.db_session.commit()
-
-        # run the instance delete callback again if existing
-        next(save_callback, None)
 
     def reload(self, instance):
         # run the instance reload callback if existing
