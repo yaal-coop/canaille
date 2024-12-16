@@ -18,77 +18,16 @@ from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import phone_number
 from canaille.app.forms import set_readonly
 from canaille.app.forms import unique_values
-from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
 from canaille.core.models import OTP_DIGITS
-
-
-def unique_user_name(form, field):
-    if Backend.instance.get(models.User, user_name=field.data) and (
-        not getattr(form, "user", None) or form.user.user_name != field.data
-    ):
-        raise wtforms.ValidationError(
-            _("The user name '{user_name}' already exists").format(user_name=field.data)
-        )
-
-
-def unique_email(form, field):
-    if Backend.instance.get(models.User, emails=field.data) and (
-        not getattr(form, "user", None) or field.data not in form.user.emails
-    ):
-        raise wtforms.ValidationError(
-            _("The email '{email}' is already used").format(email=field.data)
-        )
-
-
-def unique_group(form, field):
-    if Backend.instance.get(models.Group, display_name=field.data):
-        raise wtforms.ValidationError(
-            _("The group '{group}' already exists").format(group=field.data)
-        )
-
-
-def existing_login(form, field):
-    if not current_app.config["CANAILLE"][
-        "HIDE_INVALID_LOGINS"
-    ] and not Backend.instance.get_user_from_login(field.data):
-        raise wtforms.ValidationError(
-            _("The login '{login}' does not exist").format(login=field.data)
-        )
-
-
-def existing_group_member(form, field):
-    if field.data is None:
-        raise wtforms.ValidationError(
-            gettext("The user you are trying to remove does not exist.")
-        )
-
-    if field.data not in form.group.members:
-        raise wtforms.ValidationError(
-            gettext(
-                "The user '{user}' has already been removed from the group '{group}'"
-            ).format(user=field.data.formatted_name, group=form.group.display_name)
-        )
-
-
-def non_empty_groups(form, field):
-    """LDAP groups cannot be empty because groupOfNames.member is a MUST
-    attribute.
-
-    https://www.rfc-editor.org/rfc/rfc2256.html#section-7.10
-    """
-    if not form.user:
-        return
-
-    for group in form.user.groups:
-        if len(group.members) == 1 and group not in field.data:
-            raise wtforms.ValidationError(
-                _(
-                    "The group '{group}' cannot be removed, because it must have at least one user left."
-                ).format(group=group.display_name)
-            )
+from canaille.core.validators import existing_group_member
+from canaille.core.validators import existing_login
+from canaille.core.validators import non_empty_groups
+from canaille.core.validators import unique_email
+from canaille.core.validators import unique_group
+from canaille.core.validators import unique_user_name
 
 
 class LoginForm(Form):
@@ -365,6 +304,8 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
 
 
 class CreateGroupForm(Form):
+    """The group creation form."""
+
     display_name = wtforms.StringField(
         _("Name"),
         validators=[wtforms.validators.DataRequired(), unique_group],
@@ -379,6 +320,8 @@ class CreateGroupForm(Form):
 
 
 class EditGroupForm(Form):
+    """The group edition form."""
+
     display_name = wtforms.StringField(
         _("Name"),
         validators=[
@@ -422,6 +365,8 @@ class JoinForm(Form):
 
 
 class InvitationForm(Form):
+    """The user invitation form."""
+
     user_name = wtforms.StringField(
         _("User name"),
         render_kw={"placeholder": _("jdoe")},

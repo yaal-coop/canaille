@@ -331,8 +331,6 @@ def registration(data=None, hash=None):
             "core/profile_add.html",
             form=form,
             menuitem="users",
-            edited_user=None,
-            self_deletion=False,
         )
 
     if not form.validate():
@@ -341,8 +339,6 @@ def registration(data=None, hash=None):
             "core/profile_add.html",
             form=form,
             menuitem="users",
-            edited_user=None,
-            self_deletion=False,
         )
 
     user = profile_create(current_app, form)
@@ -424,8 +420,6 @@ def profile_creation(user):
             "core/profile_add.html",
             form=form,
             menuitem="users",
-            edited_user=None,
-            self_deletion=False,
         )
 
     if not form.validate():
@@ -434,8 +428,6 @@ def profile_creation(user):
             "core/profile_add.html",
             form=form,
             menuitem="users",
-            edited_user=None,
-            self_deletion=False,
         )
 
     user = profile_create(current_app, form)

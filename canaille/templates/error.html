@@ -1,3 +1,13 @@
+{#
+The error page. Displayed for all kinds of errors (not found, internal server error etc.).
+
+:param error_code: The code of the HTTP error (404, 500, etc.)
+:type error_code: :class:`int`
+:param description: The error code description.
+:type description: :class:`str`
+:param icon: An optional Font Awesome icon reference.
+:type icon: :class:`str`
+#}
 {% extends theme('base.html') %}
 
 {% block content %}

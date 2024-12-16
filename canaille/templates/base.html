@@ -1,3 +1,25 @@
+{#
+The main template inherited by almost every other templates.
+
+:param user: The current user, if logged in.
+:type user: :class:`~canaille.core.models.User`
+:param features: The features enabled and available in Canaille.
+:type features: :class:`~canaille.app.features.Features`
+:param locale: The user locale.
+:type locale: :class:`str`
+:param website_name: The Canaille instance defined in :attr:`~canaille.core.configuration.CoreSettings.NAME`.
+:type website_name: :class:`str`
+:param logo_url: The URL of the instance logo defined in :attr:`~canaille.core.configuration.CoreSettings.LOGO`.
+:type logo_url: :class:`str`
+:param favicon_url: The URL of the instance favicon defined in :attr:`~canaille.core.configuration.CoreSettings.FAVICON`.
+:type favicon_url: :class:`str`
+:param is_boosted: Whether the page is boosted by :attr:`~canaille.core.configuration.CoreSettings.HTMX`.
+:type is_boosted: :class:`bool`
+:param menu: Whether to display the menu or not.
+:type menu: :class:`bool`
+:param debug: Whether the app has been launched in debug mode.
+:type debug: :class:`bool`
+#}
 {%- import 'macro/flask.html' as flask -%}
 
 <!doctype html>

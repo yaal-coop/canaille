@@ -18,3 +18,8 @@ This is mostly useful for developers.
     :members:
     :show-inheritance:
     :undoc-members:
+
+.. autoclass:: canaille.app.features.Features
+    :members:
+    :show-inheritance:
+    :undoc-members:

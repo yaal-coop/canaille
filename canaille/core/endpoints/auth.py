@@ -301,7 +301,7 @@ def setup_two_factor_auth():
         "core/setup-2fa.html",
         secret=user.secret_token,
         qr_image=base64_qr_image,
-        username=user.user_name,
+        user=user,
     )
 
 

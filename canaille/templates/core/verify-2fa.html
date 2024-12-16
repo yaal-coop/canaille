@@ -1,3 +1,14 @@
+{# The multi-factor authentication code verification template.
+
+Displays a form that asks for the multi-factor authentication code.
+
+:param form: The code verification form.
+:type form: :class:`~canaille.core.endpoints.forms.TwoFactorForm`
+:param username: The username of the user attempting to log-in.
+:type username: :class:`str`
+:param method: The authentication factor method.
+:type method: :class:`str` (*TOTP*, *HOTP*, *EMAIL_OTP*, *SMS_OTP*)
+#}
 {% extends theme('base.html') %}
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}

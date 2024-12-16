@@ -140,6 +140,7 @@ doc = [
     "sphinx-issues >= 5.0.0",
     "sphinx-click >= 6.0.0",
     "sphinx-intl>=2.3.0",
+    "jinja-autodoc>=0.1.2",
 ]
 demo = [
     "faker",
