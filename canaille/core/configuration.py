@@ -373,13 +373,12 @@ class CoreSettings(BaseModel):
     """Have i been pwned api url for compromission checks."""
 
     PASSWORD_LIFETIME: datetime.timedelta | None = None
-    """Password validity in days.
+    """Password validity duration.
 
     If a value is recorded Canaille will check if user's password is expired.
     Then, the user is forced to change his password when the lifetime of the password is over.
     This value is expressed in timedelta format.
-    Example: datetime.timedelta(weeks=0, days=0, hours=0, minutes=0, seconds=0, milliseconds=0, microseconds=0)
+    Example: datetime.timedelta(days=60, hours=10)
     You can select one or more attributes of the type 'days' or 'hours'.
-    If all the attributes you have chosen are null, then PASSWORD_LIFETIME is disable.
-    It is also possible to disable this option, by entering None or 0.
+    It is possible to disable this option by entering None.
     """
