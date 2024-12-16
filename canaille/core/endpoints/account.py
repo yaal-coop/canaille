@@ -16,7 +16,6 @@ from flask import request
 from flask import send_file
 from flask import session
 from flask import url_for
-from pytz import UTC
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
@@ -890,26 +889,10 @@ def photo(user, field):
     )
 
 
-def get_today_datetime():
-    return UTC.localize(datetime.datetime.now())  # pragma: no cover
-
-
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])
 def reset(user):
     form = PasswordResetForm(request.form)
-    if user != current_user():
-        print("WHAT ?????")
-        abort(403)
-
-    last_update = user.password_last_update or get_today_datetime()
-
-    password_expiration = current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
-    if (
-        password_expiration is None
-        or password_expiration == 0
-        or password_expiration == datetime.timedelta(microseconds=0)
-        or last_update + password_expiration >= get_today_datetime()
-    ):
+    if user != current_user() or not user.has_expired_password():
         abort(403)
 
     if request.form and form.validate():

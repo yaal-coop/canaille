@@ -1,4 +1,3 @@
-import datetime
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -10,16 +9,11 @@ from flask import flash
 from flask import redirect
 from flask import request
 from flask import url_for
-from pytz import UTC
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.themes import render_template
-
-
-def get_today_datetime():
-    return UTC.localize(datetime.datetime.now())  # pragma: no cover
 
 
 def user_needed(*args):
@@ -32,15 +26,7 @@ def user_needed(*args):
             if not user or not user.can(*permissions):
                 abort(403)
 
-            last_update = user.password_last_update or get_today_datetime()
-
-            password_expiration = current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
-            if (
-                password_expiration is not None
-                and password_expiration != 0
-                and password_expiration != datetime.timedelta(milliseconds=0)
-                and last_update + password_expiration < get_today_datetime()
-            ):
+            if user.has_expired_password():
                 flash(
                     _("Your password has expired, please choose a new password."),
                     "info",

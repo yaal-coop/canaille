@@ -457,6 +457,18 @@ class User(Model):
             >= datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
         )
 
+    def has_expired_password(self):
+        last_update = self.password_last_update or datetime.datetime.now(
+            datetime.timezone.utc
+        )
+        password_expiration = current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
+
+        return (
+            password_expiration is not None
+            and last_update + password_expiration
+            < datetime.datetime.now(datetime.timezone.utc)
+        )
+
 
 class Group(Model):
     """User model, based on the `SCIM Group schema
