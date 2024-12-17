@@ -374,3 +374,13 @@ class CoreSettings(BaseModel):
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
+
+    PASSWORD_LIFETIME: str | None = None
+    """Password validity duration.
+
+    If a value is recorded Canaille will check if user's password is expired.
+    Then, the user is forced to change his password when the lifetime of the password is over.
+    This value is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+    Example for 60 days: "P60D"
+    It is possible to disable this option by entering None.
+    """

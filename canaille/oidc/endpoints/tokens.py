@@ -7,8 +7,8 @@ from flask import flash
 from flask import request
 
 from canaille.app import models
-from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
+from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
@@ -20,7 +20,7 @@ bp = Blueprint("tokens", __name__, url_prefix="/admin/token")
 
 
 @bp.route("/", methods=["GET", "POST"])
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def index(user):
     table_form = TableForm(models.Token, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
@@ -32,7 +32,7 @@ def index(user):
 
 
 @bp.route("/<token:token>", methods=["GET", "POST"])
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def view(user, token):
     form = TokenRevokationForm(request.form or None)
 
