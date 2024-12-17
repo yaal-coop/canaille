@@ -504,37 +504,39 @@ class User(Model):
 
     def propagate_scim_changes(self):
         for client in self.get_clients():
-            tokens = Backend.instance.query(models.Token, subject=self, client=client)
-            if tokens:
-                token = tokens[0]
-                client = httpx_client(
-                    base_url=client.client_uri,
-                    headers={"Authorization": f"Bearer {token.access_token}"},
-                )
-                scim = SyncSCIMClient(client)
-                scim.discover()
-                User = scim.get_resource_model("User")
-                EnterpriseUser = User.get_extension_model("EnterpriseUser")
-                user = user_from_canaille_to_scim_for_client(self, User, EnterpriseUser)
+            client_httpx = httpx_client(
+                base_url=client.client_uri,
+                headers={
+                    "Authorization": "Bearer NXeEceY820rnlzoh0FUxc4TFVKO5aAqikopiPEQacvL81ukk"
+                },
+            )
+            scim = SyncSCIMClient(client_httpx)
+            scim.discover()
+            User = scim.get_resource_model("User")
+            EnterpriseUser = User.get_extension_model("EnterpriseUser")
+            user = user_from_canaille_to_scim_for_client(self, User, EnterpriseUser)
 
-                req = SearchRequest(filter=f'userName eq "{self.user_name}"')
-                response = scim.query(User, search_request=req)
+            req = SearchRequest(filter=f'userName eq "{self.user_name}"')
+            response = scim.query(User, search_request=req)
 
-                if not response:
-                    try:
-                        scim.create(user)
-                    except:
-                        current_app.logger.warning(
-                            f"SCIM User {self.user_name} creation for client {client.client_name} failed"
-                        )
-                else:
-                    user.id = response.id
-                    try:
-                        scim.replace(user)
-                    except:
-                        current_app.logger.warning(
-                            f"SCIM User {self.user_name} update for client {client.client_name} failed"
-                        )
+            if not response.resources:
+                try:
+                    scim.create(user)
+                except Exception:
+                    current_app.logger.warning(
+                        f"SCIM User {self.user_name} creation for client {client.client_name} failed"
+                    )
+            else:
+                user.id = response.resources[0].id
+                try:
+                    scim.replace(user)
+                except:
+                    current_app.logger.warning(
+                        f"SCIM User {self.user_name} update for client {client.client_name} failed"
+                    )
+            req = SearchRequest(filter=f'userName eq "{self.user_name}"')
+            response = scim.query(User, search_request=req)
+            print("response:", response)
 
     def propagate_scim_delete(self):
         client = httpx_client(
@@ -550,8 +552,10 @@ class User(Model):
             current_app.logger.warning(f"SCIM User {self.user_name} delete failed")
 
     def get_clients(self):
-        consents = Backend.instance.query(models.Consent, subject=self)
-        return {t.client for t in consents}
+        if self.id:
+            consents = Backend.instance.query(models.Consent, subject=self)
+            return {t.client for t in consents}
+        return []
 
 
 class Group(Model):
