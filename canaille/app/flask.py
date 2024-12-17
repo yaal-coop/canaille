@@ -5,8 +5,11 @@ from urllib.parse import urlunsplit
 
 from flask import abort
 from flask import current_app
+from flask import flash
 from flask import make_response
+from flask import redirect
 from flask import request
+from flask import url_for
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
 
@@ -15,21 +18,7 @@ from canaille.app.session import current_user
 from canaille.app.themes import render_template
 
 
-def user_needed():
-    def wrapper(view_function):
-        @wraps(view_function)
-        def decorator(*args, **kwargs):
-            user = current_user()
-            if not user:
-                abort(403)
-            return view_function(*args, user=user, **kwargs)
-
-        return decorator
-
-    return wrapper
-
-
-def permissions_needed(*args):
+def user_needed(*args):
     permissions = set(args)
 
     def wrapper(view_function):
@@ -38,6 +27,19 @@ def permissions_needed(*args):
             user = current_user()
             if not user or not user.can(*permissions):
                 abort(403)
+
+            if user.has_expired_password():
+                flash(
+                    _("Your password has expired, please choose a new password."),
+                    "info",
+                )
+                return redirect(
+                    url_for(
+                        "core.account.reset",
+                        user=user,
+                    )
+                )
+
             return view_function(*args, user=user, **kwargs)
 
         return decorator

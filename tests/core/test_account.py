@@ -1,5 +1,8 @@
 import datetime
+from unittest import mock
 
+import pytest
+import time_machine
 from flask import g
 
 from canaille.app import models
@@ -196,3 +199,126 @@ def test_account_locked_during_session(testclient, logged_user, backend):
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(logged_user)
     testclient.get("/profile/user/settings", status=403)
+
+
+def test_expired_password_redirection_and_register_new_password_for_memory_and_sql(
+    testclient,
+    logged_user,
+    user,
+    backend,
+    admin,
+):
+    """time_machine does not work with ldap."""
+    if "ldap" in backend.__class__.__module__:
+        pytest.skip()
+
+    testclient.app.config["WTF_CSRF_ENABLED"] = False
+    backend.reload(logged_user)
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
+        res = res.form.submit(name="action", value="edit-settings")
+
+        testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = "P5D"
+
+        traveller.shift(datetime.timedelta(days=5, minutes=1))
+
+        backend.reload(g.user)
+
+        res = testclient.get("/profile/user/settings")
+
+        testclient.get("/reset/admin", status=403)
+
+        assert (
+            "info",
+            "Your password has expired, please choose a new password.",
+        ) in res.flashes
+        assert res.location == "/reset/user"
+
+        backend.reload(logged_user)
+        res = testclient.get("/reset/user")
+
+        res.form["password"] = "foobarbaz"
+        res.form["confirmation"] = "foobarbaz"
+        res = res.form.submit()
+        assert ("success", "Your password has been updated successfully") in res.flashes
+
+
+@mock.patch("canaille.core.models.User.has_expired_password")
+def test_expired_password_redirection_and_register_new_password_for_ldap_sql_and_memory(
+    has_expired,
+    testclient,
+    logged_user,
+    user,
+    backend,
+    admin,
+):
+    """time_machine does not work with ldap."""
+    has_expired.return_value = False
+    assert user.password_last_update is None
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res = res.form.submit(name="action", value="edit-settings")
+    backend.reload(logged_user)
+    assert user.password_last_update is not None
+
+    has_expired.return_value = True
+    res = testclient.get("/profile/user/settings")
+    testclient.get("/reset/admin", status=403)
+    assert (
+        "info",
+        "Your password has expired, please choose a new password.",
+    ) in res.flashes
+    assert res.location == "/reset/user"
+    backend.reload(logged_user)
+    backend.reload(g.user)
+    backend.reload(user)
+
+    res = testclient.get("/reset/user")
+
+    res.form["password"] = "foobarbaz"
+    res.form["confirmation"] = "foobarbaz"
+    res = res.form.submit()
+    assert ("success", "Your password has been updated successfully") in res.flashes
+
+
+def test_not_expired_password_or_wrong_user_redirection(
+    testclient, logged_user, user, backend, admin
+):
+    assert user.password_last_update is None
+    res = testclient.get("/profile/user/settings", status=200)
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res = res.form.submit(name="action", value="edit-settings")
+    backend.reload(logged_user)
+    assert user.password_last_update is not None
+
+    def test_two_redirections(password_lifetime):
+        testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = password_lifetime
+        testclient.get("/reset/user", status=403)
+        testclient.get("/reset/admin", status=403)
+
+    test_two_redirections(None)
+
+    testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = "PT0S"
+    res = testclient.get("/profile/user/settings")
+    assert (
+        "info",
+        "Your password has expired, please choose a new password.",
+    ) in res.flashes
+    assert res.location == "/reset/user"
+
+    testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = "P1D"
+    res = testclient.get("/profile/user/settings")
+    res.form["password1"] = "123456789"
+    res.form["password2"] = "123456789"
+    res = res.form.submit(name="action", value="edit-settings")
+
+    test_two_redirections("P1D")
+
+
+def test_expired_password_needed_without_current_user(testclient, user):
+    testclient.get("/reset/user", status=403)

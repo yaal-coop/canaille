@@ -24,7 +24,6 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
-from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_htmx
 from canaille.app.flask import smtp_needed
@@ -53,6 +52,7 @@ from ..mails import send_registration_mail
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
+from .forms import PasswordResetForm
 from .forms import build_profile_form
 
 bp = Blueprint("account", __name__)
@@ -140,7 +140,7 @@ def about():
 
 
 @bp.route("/users", methods=["GET", "POST"])
-@permissions_needed("manage_users")
+@user_needed("manage_users")
 def users(user):
     table_form = TableForm(
         models.User,
@@ -195,7 +195,7 @@ class RegistrationPayload(VerificationPayload):
 
 @bp.route("/invite", methods=["GET", "POST"])
 @smtp_needed()
-@permissions_needed("manage_users")
+@user_needed("manage_users")
 def user_invitation(user):
     form = InvitationForm(request.form or None)
     email_sent = None
@@ -406,7 +406,7 @@ def email_confirmation(data, hash):
 
 
 @bp.route("/profile", methods=("GET", "POST"))
-@permissions_needed("manage_users")
+@user_needed("manage_users")
 def profile_creation(user):
     form = build_profile_form(user.writable_fields, user.readable_fields)
     form.process(CombinedMultiDict((request.files, request.form)) or None)
@@ -847,7 +847,7 @@ def profile_delete(user, edited_user):
 
 
 @bp.route("/impersonate/<user:puppet>")
-@permissions_needed("impersonate_users")
+@user_needed("impersonate_users")
 def impersonate(user, puppet):
     if puppet.locked:
         abort(403, _("Locked users cannot be impersonated."))
@@ -881,3 +881,23 @@ def photo(user, field):
     return send_file(
         stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
     )
+
+
+@bp.route("/reset/<user:user>", methods=["GET", "POST"])
+def reset(user):
+    form = PasswordResetForm(request.form)
+    if user != current_user() or not user.has_expired_password():
+        abort(403)
+
+    if request.form and form.validate():
+        Backend.instance.set_user_password(user, form.password.data)
+        login_user(user)
+        flash(_("Your password has been updated successfully"), "success")
+        return redirect(
+            session.pop(
+                "redirect-after-login",
+                url_for("core.account.profile_edition", edited_user=user),
+            )
+        )
+
+    return render_template("reset-password.html", form=form, hash=None, user=user)
