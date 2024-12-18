@@ -8,7 +8,7 @@ def send_one_time_password_sms(phone_number, otp):
     website_name = current_app.config["CANAILLE"]["NAME"]
 
     text_body = render_template(
-        "sms/sms_otp.txt",
+        "core/sms/sms_otp.txt",
         website_name=website_name,
         otp=otp,
     )

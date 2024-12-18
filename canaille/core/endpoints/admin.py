@@ -43,7 +43,7 @@ def mail_index(user):
         else:
             flash(_("The test mail has not been sent correctly"), "error")
 
-    return render_template("mails/admin.html", form=form, menuitem="admin")
+    return render_template("core/mails/admin.html", form=form, menuitem="admin")
 
 
 @bp.route("/mail/test.html")
@@ -51,7 +51,7 @@ def mail_index(user):
 def test_html(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
-        "mails/test.html",
+        "core/mails/test.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         logo=current_app.config["CANAILLE"]["LOGO"],
@@ -66,7 +66,7 @@ def test_html(user):
 def test_txt(user):
     base_url = url_for("core.account.index", _external=True)
     return render_template(
-        "mails/test.txt",
+        "core/mails/test.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
     )
@@ -87,7 +87,7 @@ def password_init_html(user):
     )
 
     return render_template(
-        "mails/firstlogin.html",
+        "core/mails/firstlogin.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
@@ -110,7 +110,7 @@ def password_init_txt(user):
     )
 
     return render_template(
-        "mails/firstlogin.txt",
+        "core/mails/firstlogin.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
@@ -132,7 +132,7 @@ def password_reset_html(user):
     )
 
     return render_template(
-        "mails/reset.html",
+        "core/mails/reset.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
@@ -155,7 +155,7 @@ def password_reset_txt(user):
     )
 
     return render_template(
-        "mails/reset.txt",
+        "core/mails/reset.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
@@ -174,7 +174,7 @@ def invitation_html(user, identifier, email):
     )
 
     return render_template(
-        "mails/invitation.html",
+        "core/mails/invitation.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
@@ -197,7 +197,7 @@ def invitation_txt(user, identifier, email):
     )
 
     return render_template(
-        "mails/invitation.txt",
+        "core/mails/invitation.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
@@ -216,7 +216,7 @@ def email_confirmation_html(user, identifier, email):
     )
 
     return render_template(
-        "mails/email-confirmation.html",
+        "core/mails/email-confirmation.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         confirmation_url=email_confirmation_url,
@@ -239,7 +239,7 @@ def email_confirmation_txt(user, identifier, email):
     )
 
     return render_template(
-        "mails/email-confirmation.txt",
+        "core/mails/email-confirmation.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         confirmation_url=email_confirmation_url,
@@ -258,7 +258,7 @@ def registration_html(user, email):
     )
 
     return render_template(
-        "mails/registration.html",
+        "core/mails/registration.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
@@ -281,7 +281,7 @@ def registration_txt(user, email):
     )
 
     return render_template(
-        "mails/registration.txt",
+        "core/mails/registration.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
@@ -298,7 +298,7 @@ def compromised_password_check_failure_html(user):
     user_email = "<USER EMAIL>"
 
     return render_template(
-        "mails/compromised_password_check_failure.html",
+        "core/mails/compromised_password_check_failure.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         user_name=user_name,
@@ -322,7 +322,7 @@ def compromised_password_check_failure_txt(user):
     user_email = "<USER EMAIL>"
 
     return render_template(
-        "mails/compromised_password_check_failure.txt",
+        "core/mails/compromised_password_check_failure.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         user_name=user_name,
@@ -339,7 +339,7 @@ def email_otp_html(user):
     otp = "000000"
 
     return render_template(
-        "mails/email_otp.html",
+        "core/mails/email_otp.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         otp=otp,
@@ -357,7 +357,7 @@ def email_otp_txt(user):
     otp = "000000"
 
     return render_template(
-        "mails/email_otp.txt",
+        "core/mails/email_otp.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         otp=otp,

@@ -27,7 +27,7 @@ def index(user):
         abort(404)
 
     return render_htmx_template(
-        "token_list.html", menuitem="admin", table_form=table_form
+        "oidc/token_list.html", menuitem="admin", table_form=table_form
     )
 
 
@@ -38,7 +38,7 @@ def view(user, token):
 
     if request.form and form.validate():
         if request.form.get("action") == "confirm-revoke":
-            return render_template("modals/revoke-token.html", token=token)
+            return render_template("oidc/modals/revoke-token.html", token=token)
 
         elif request.form.get("action") == "revoke":
             token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
@@ -53,7 +53,7 @@ def view(user, token):
             abort(400, f"bad form action: {request.form.get('action')}")
 
     return render_template(
-        "token_view.html",
+        "oidc/token_view.html",
         token=token,
         menuitem="admin",
         form=form,

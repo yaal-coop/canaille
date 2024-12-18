@@ -94,7 +94,7 @@ def join():
                 ),
                 "success",
             )
-            return render_template("join.html", form=form)
+            return render_template("core/join.html", form=form)
 
         payload = RegistrationPayload(
             creation_date_isoformat=datetime.datetime.now(
@@ -130,13 +130,13 @@ def join():
                 "error",
             )
 
-    return render_template("join.html", form=form)
+    return render_template("core/join.html", form=form)
 
 
 @bp.route("/about")
 def about():
     version = metadata.version("canaille")
-    return render_template("about.html", version=version)
+    return render_template("core/about.html", version=version)
 
 
 @bp.route("/users", methods=["GET", "POST"])
@@ -151,7 +151,7 @@ def users(user):
         abort(404)
 
     return render_htmx_template(
-        "users.html",
+        "core/users.html",
         menuitem="users",
         table_form=table_form,
     )
@@ -221,7 +221,7 @@ def user_invitation(user):
             email_sent = send_invitation_mail(form.email.data, registration_url)
 
     return render_template(
-        "invite.html",
+        "core/invite.html",
         form=form,
         menuitems="users",
         form_validated=form_validated,
@@ -328,7 +328,7 @@ def registration(data=None, hash=None):
 
     if not request.form or form.form_control():
         return render_template(
-            "profile_add.html",
+            "core/profile_add.html",
             form=form,
             menuitem="users",
             edited_user=None,
@@ -338,7 +338,7 @@ def registration(data=None, hash=None):
     if not form.validate():
         flash(_("User account creation failed."), "error")
         return render_template(
-            "profile_add.html",
+            "core/profile_add.html",
             form=form,
             menuitem="users",
             edited_user=None,
@@ -421,7 +421,7 @@ def profile_creation(user):
 
     if not request.form or form.form_control():
         return render_template(
-            "profile_add.html",
+            "core/profile_add.html",
             form=form,
             menuitem="users",
             edited_user=None,
@@ -431,7 +431,7 @@ def profile_creation(user):
     if not form.validate():
         flash(_("User account creation failed."), "error")
         return render_template(
-            "profile_add.html",
+            "core/profile_add.html",
             form=form,
             menuitem="users",
             edited_user=None,
@@ -505,7 +505,7 @@ def profile_edition_main_form(user, edited_user, emails_readonly):
     profile_form = build_profile_form(writable_fields, readable_fields)
     profile_form.process(request_data or None, data=data)
     profile_form.user = edited_user
-    profile_form.render_field_macro_file = "partial/profile_field.html"
+    profile_form.render_field_macro_file = "core/partial/profile_field.html"
     profile_form.render_field_extra_context = {
         "user": user,
         "edited_user": edited_user,
@@ -611,12 +611,12 @@ def profile_edition(user, edited_user):
     }
 
     if not request.form or profile_form.form_control():
-        return render_template("profile_edit.html", **render_context)
+        return render_template("core/profile_edit.html", **render_context)
 
     if request_is_htmx() or request.form.get("action") == "edit-profile":
         if not profile_form.validate():
             flash(_("Profile edition failed."), "error")
-            return render_template("profile_edit.html", **render_context)
+            return render_template("core/profile_edit.html", **render_context)
 
         profile_edition_main_form_validation(user, edited_user, profile_form)
 
@@ -634,7 +634,7 @@ def profile_edition(user, edited_user):
     if request.form.get("action") == "add_email":
         if not emails_form.validate():
             flash(_("Email addition failed."), "error")
-            return render_template("profile_edit.html", **render_context)
+            return render_template("core/profile_edit.html", **render_context)
 
         if profile_edition_add_email(user, edited_user, emails_form):
             flash(
@@ -656,7 +656,7 @@ def profile_edition(user, edited_user):
             user, edited_user, request.form.get("email_remove")
         ):
             flash(_("Email deletion failed."), "error")
-            return render_template("profile_edit.html", **render_context)
+            return render_template("core/profile_edit.html", **render_context)
 
         flash(_("The email have been successfully deleted."), "success")
         return redirect(
@@ -682,7 +682,9 @@ def profile_settings(user, edited_user):
         return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "confirm-delete":
-        return render_template("modals/delete-account.html", edited_user=edited_user)
+        return render_template(
+            "core/modals/delete-account.html", edited_user=edited_user
+        )
 
     if request.form.get("action") == "delete":
         return profile_delete(user, edited_user)
@@ -729,7 +731,7 @@ def profile_settings(user, edited_user):
         and current_app.features.has_account_lockability
         and not edited_user.locked
     ):
-        return render_template("modals/lock-account.html", edited_user=edited_user)
+        return render_template("core/modals/lock-account.html", edited_user=edited_user)
 
     if (
         request.form.get("action") == "lock"
@@ -757,7 +759,7 @@ def profile_settings(user, edited_user):
         request.form.get("action") == "confirm-reset-otp"
         and current_app.features.has_otp
     ):
-        return render_template("modals/reset-otp.html", edited_user=edited_user)
+        return render_template("core/modals/reset-otp.html", edited_user=edited_user)
 
     if request.form.get("action") == "reset-otp" and current_app.features.has_otp:
         flash(_("One-time password authentication has been reset"), "success")
@@ -825,7 +827,7 @@ def profile_settings_edit(editor, edited_user):
             )
 
     return render_template(
-        "profile_settings.html",
+        "core/profile_settings.html",
         form=form,
         menuitem=menuitem,
         edited_user=edited_user,

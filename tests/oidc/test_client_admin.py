@@ -307,4 +307,4 @@ def test_client_new_token(testclient, logged_admin, backend, client):
     assert client in token.audience
 
     res = res.follow()
-    assert res.template == "token_view.html"
+    assert res.template == "oidc/token_view.html"

@@ -27,7 +27,9 @@ def groups(user):
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
-    return render_htmx_template("groups.html", menuitem="groups", table_form=table_form)
+    return render_htmx_template(
+        "core/groups.html", menuitem="groups", table_form=table_form
+    )
 
 
 @bp.route("/add", methods=("GET", "POST"))
@@ -54,7 +56,7 @@ def create_group(user):
             return redirect(url_for("core.groups.group", group=group))
 
     return render_template(
-        "group.html", menuitem="groups", form=form, edited_group=None, members=None
+        "core/group.html", menuitem="groups", form=form, edited_group=None, members=None
     )
 
 
@@ -69,7 +71,7 @@ def group(user, group):
         return edit_group(group)
 
     if request.form.get("action") == "confirm-delete":
-        return render_template("modals/delete-group.html", group=group)
+        return render_template("core/modals/delete-group.html", group=group)
 
     if request.form.get("action") == "delete":
         return delete_group(group)
@@ -116,8 +118,8 @@ def edit_group(group):
             flash(_("Group edition failed."), "error")
 
     return render_htmx_template(
-        "group.html",
-        "partial/group-members.html",
+        "core/group.html",
+        "core/partial/group-members.html",
         form=form,
         menuitem="groups",
         edited_group=group,
@@ -137,7 +139,7 @@ def delete_member(group):
 
     elif request.form.get("action") == "confirm-remove-member":
         return render_template(
-            "modals/remove-group-member.html", group=group, form=form
+            "core/modals/remove-group-member.html", group=group, form=form
         )
 
     else:
