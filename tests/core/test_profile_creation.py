@@ -190,3 +190,58 @@ def test_formcontrol_htmx(testclient, logged_admin):
     )
     assert "emails-0" in response.text
     assert "emails-1" in response.text
+
+
+def test_user_creation_edition_and_edition_of_profile_by_user_with_group(
+    testclient, logged_moderator, foo_group, bar_group, backend
+):
+    # The user does not exist.
+    res = testclient.get("/users", status=200)
+    assert backend.get(models.User, user_name="george") is None
+    res.mustcontain(no="george")
+
+    # Fill the profile for a new user.
+    res = testclient.get("/profile", status=200)
+    res.form["user_name"] = "george"
+    res.form["given_name"] = "George"
+    res.form["family_name"] = "Abitbol"
+    res.form["emails-0"] = "george@abitbol.test"
+    res.form["phone_numbers-0"] = "555-666-888"
+    res.form["groups"] = [foo_group.id]
+    res.form["password1"] = "totoyolo"
+    res.form["password2"] = "totoyolo"
+
+    # User have been created
+    res = res.form.submit(name="action", value="create-profile", status=302)
+    assert ("success", "User account creation succeed.") in res.flashes
+    res = res.follow(status=200)
+    george = backend.get(models.User, user_name="george")
+    backend.reload(foo_group)
+    assert "George" == george.given_name
+    assert george.groups == [foo_group]
+    assert backend.check_user_password(george, "totoyolo")[0]
+
+    res = testclient.get("/users", status=200)
+    res.mustcontain("george")
+
+    res = testclient.get("/profile/george/settings", status=200)
+    assert "readonly" not in res.form["groups"].attrs
+
+    res = testclient.get("/logout")
+    res = testclient.get("/")
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "george"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    res.form["password"] = "totoyolo"
+    res = res.form.submit().follow()
+    print(res.location)
+    res = testclient.get("/profile/george/settings", status=200)
+    print(res.location)
+    res.form["password1"] = "i'm a little chickpea"
+    res.form["password2"] = "i'm a little chickpea"
+
+    res = res.form.submit(name="action", value="edit-settings")
+    print(res.flashes)
+    assert ("success", "Profile updated successfully.") in res.flashes
