@@ -85,9 +85,12 @@ def request_is_htmx():
 
 
 def render_htmx_template(template, htmx_template=None, **kwargs):
-    template = (
-        (htmx_template or f"partial/{template}") if request_is_htmx() else template
-    )
+    if request_is_htmx():
+        if htmx_template:
+            template = htmx_template
+        else:
+            *dirs, file = template.split("/")
+            template = "/".join([*dirs, "partial", file])
     return render_template(template, **kwargs)
 
 

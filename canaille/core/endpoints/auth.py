@@ -49,11 +49,11 @@ def login():
         )
 
     form = LoginForm(request.form or None)
-    form.render_field_macro_file = "partial/login_field.html"
+    form.render_field_macro_file = "core/partial/login_field.html"
     form["login"].render_kw["placeholder"] = Backend.instance.login_placeholder()
 
     if not request.form or form.form_control():
-        return render_template("login.html", form=form)
+        return render_template("core/login.html", form=form)
 
     user = Backend.instance.get_user_from_login(form.login.data)
     if user and not user.has_password() and current_app.features.has_smtp:
@@ -62,7 +62,7 @@ def login():
     if not form.validate():
         logout_user()
         flash(_("Login failed, please check your information"), "error")
-        return render_template("login.html", form=form)
+        return render_template("core/login.html", form=form)
 
     session["attempt_login"] = form.login.data
     return redirect(url_for("core.auth.password"))
@@ -80,11 +80,11 @@ def password():
         return redirect(url_for("core.auth.login"))
 
     form = PasswordForm(request.form or None)
-    form.render_field_macro_file = "partial/login_field.html"
+    form.render_field_macro_file = "core/partial/login_field.html"
 
     if not request.form or form.form_control():
         return render_template(
-            "password.html", form=form, username=session["attempt_login"]
+            "core/password.html", form=form, username=session["attempt_login"]
         )
 
     user = Backend.instance.get_user_from_login(session["attempt_login"])
@@ -95,7 +95,7 @@ def password():
         logout_user()
         flash(_("Login failed, please check your information"), "error")
         return render_template(
-            "password.html", form=form, username=session["attempt_login"]
+            "core/password.html", form=form, username=session["attempt_login"]
         )
 
     success, message = Backend.instance.check_user_password(user, form.password.data)
@@ -107,7 +107,7 @@ def password():
         )
         flash(message or _("Login failed, please check your information"), "error")
         return render_template(
-            "password.html", form=form, username=session["attempt_login"]
+            "core/password.html", form=form, username=session["attempt_login"]
         )
 
     otp_methods = []
@@ -165,7 +165,7 @@ def firstlogin(user):
 
     form = FirstLoginForm(request.form or None)
     if not request.form:
-        return render_template("firstlogin.html", form=form, user=user)
+        return render_template("core/firstlogin.html", form=form, user=user)
 
     form.validate()
 
@@ -182,7 +182,7 @@ def firstlogin(user):
     else:
         flash(_("Could not send the password initialization email"), "error")
 
-    return render_template("firstlogin.html", form=form)
+    return render_template("core/firstlogin.html", form=form)
 
 
 @bp.route("/reset", methods=["GET", "POST"])
@@ -193,11 +193,11 @@ def forgotten():
 
     form = ForgottenPasswordForm(request.form)
     if not request.form:
-        return render_template("forgotten-password.html", form=form)
+        return render_template("core/forgotten-password.html", form=form)
 
     if not form.validate():
         flash(_("Could not send the password reset link."), "error")
-        return render_template("forgotten-password.html", form=form)
+        return render_template("core/forgotten-password.html", form=form)
 
     user = Backend.instance.get_user_from_login(form.login.data)
     success_message = _(
@@ -208,7 +208,7 @@ def forgotten():
         not user or not user.can_edit_self
     ):
         flash(success_message, "success")
-        return render_template("forgotten-password.html", form=form)
+        return render_template("core/forgotten-password.html", form=form)
 
     if not user.can_edit_self:
         flash(
@@ -219,7 +219,7 @@ def forgotten():
             ),
             "error",
         )
-        return render_template("forgotten-password.html", form=form)
+        return render_template("core/forgotten-password.html", form=form)
 
     request_ip = request.remote_addr or "unknown IP"
     success = True
@@ -238,7 +238,7 @@ def forgotten():
             "error",
         )
 
-    return render_template("forgotten-password.html", form=form)
+    return render_template("core/forgotten-password.html", form=form)
 
 
 @bp.route("/reset/<user:user>/<hash>", methods=["GET", "POST"])
@@ -274,7 +274,7 @@ def reset(user, hash):
             )
         )
 
-    return render_template("reset-password.html", form=form, user=user, hash=hash)
+    return render_template("core/reset-password.html", form=form, user=user, hash=hash)
 
 
 @bp.route("/setup-2fa")
@@ -298,7 +298,7 @@ def setup_two_factor_auth():
     uri = user.get_otp_authentication_setup_uri()
     base64_qr_image = get_b64encoded_qr_image(uri)
     return render_template(
-        "setup-2fa.html",
+        "core/setup-2fa.html",
         secret=user.secret_token,
         qr_image=base64_qr_image,
         username=user.user_name,
@@ -331,11 +331,11 @@ def verify_two_factor_auth():
         abort(404)
 
     form = TwoFactorForm(request.form or None)
-    form.render_field_macro_file = "partial/login_field.html"
+    form.render_field_macro_file = "core/partial/login_field.html"
 
     if not request.form or form.form_control():
         return render_template(
-            "verify-2fa.html",
+            "core/verify-2fa.html",
             form=form,
             username=session["attempt_login_with_correct_password"],
             method=current_otp_method,

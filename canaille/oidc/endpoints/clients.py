@@ -30,7 +30,7 @@ def index(user):
         abort(404)
 
     return render_htmx_template(
-        "client_list.html", menuitem="admin", table_form=table_form
+        "oidc/client_list.html", menuitem="admin", table_form=table_form
     )
 
 
@@ -40,14 +40,14 @@ def add(user):
     form = ClientAddForm(request.form or None)
 
     if not request.form or form.form_control():
-        return render_template("client_add.html", form=form, menuitem="admin")
+        return render_template("oidc/client_add.html", form=form, menuitem="admin")
 
     if not form.validate():
         flash(
             _("The client has not been added. Please check your information."),
             "error",
         )
-        return render_template("client_add.html", form=form, menuitem="admin")
+        return render_template("oidc/client_add.html", form=form, menuitem="admin")
 
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now(datetime.timezone.utc)
@@ -90,7 +90,7 @@ def add(user):
 @permissions_needed("manage_oidc")
 def edit(user, client):
     if request.form.get("action") == "confirm-delete":
-        return render_template("modals/delete-client.html", client=client)
+        return render_template("oidc/modals/delete-client.html", client=client)
 
     if request.form and request.form.get("action") == "delete":
         return client_delete(client)
@@ -110,7 +110,7 @@ def client_edit(client):
 
     if not request.form or form.form_control():
         return render_template(
-            "client_edit.html", form=form, client=client, menuitem="admin"
+            "oidc/client_edit.html", form=form, client=client, menuitem="admin"
         )
 
     if not form.validate():
@@ -119,7 +119,7 @@ def client_edit(client):
             "error",
         )
         return render_template(
-            "client_edit.html", form=form, client=client, menuitem="admin"
+            "oidc/client_edit.html", form=form, client=client, menuitem="admin"
         )
 
     Backend.instance.update(

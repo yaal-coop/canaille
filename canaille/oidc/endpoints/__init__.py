@@ -7,7 +7,7 @@ from . import oauth
 from . import tokens
 from . import well_known
 
-bp = Blueprint("oidc", __name__, template_folder="../templates")
+bp = Blueprint("oidc", __name__)
 
 bp.register_blueprint(authorizations.bp)
 bp.register_blueprint(clients.bp)

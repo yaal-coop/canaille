@@ -143,7 +143,7 @@ def authorize_consent(client, user):
 
         form = AuthorizeForm(request.form or None)
         return render_template(
-            "authorize.html",
+            "oidc/authorize.html",
             user=user,
             grant=grant,
             client=client,
@@ -307,7 +307,7 @@ def end_session():
         or (data.get("logout_hint") and data["logout_hint"] != user.user_name)
     ) and not session.get("end_session_confirmation"):
         session["end_session_data"] = data
-        return render_template("logout.html", form=form, client=client, menu=False)
+        return render_template("oidc/logout.html", form=form, client=client, menu=False)
 
     if data.get("id_token_hint"):
         try:
@@ -358,7 +358,9 @@ def end_session():
             "end_session_confirmation"
         ):
             session["end_session_data"] = data
-            return render_template("logout.html", form=form, client=client, menu=False)
+            return render_template(
+                "oidc/logout.html", form=form, client=client, menu=False
+            )
 
     logout_user()
 

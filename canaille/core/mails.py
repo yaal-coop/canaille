@@ -16,12 +16,12 @@ def send_test_mail(email):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/test.txt",
+        "core/mails/test.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
     )
     html_body = render_template(
-        "mails/test.html",
+        "core/mails/test.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
@@ -55,13 +55,13 @@ def send_password_reset_mail(user, mail):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/reset.txt",
+        "core/mails/reset.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
-        "mails/reset.html",
+        "core/mails/reset.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
@@ -96,13 +96,13 @@ def send_password_initialization_mail(user, email):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/firstlogin.txt",
+        "core/mails/firstlogin.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
     )
     html_body = render_template(
-        "mails/firstlogin.html",
+        "core/mails/firstlogin.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
@@ -127,13 +127,13 @@ def send_invitation_mail(email, registration_url):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/invitation.txt",
+        "core/mails/invitation.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
-        "mails/invitation.html",
+        "core/mails/invitation.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
@@ -158,13 +158,13 @@ def send_confirmation_email(email, confirmation_url):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/email-confirmation.txt",
+        "core/mails/email-confirmation.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         confirmation_url=confirmation_url,
     )
     html_body = render_template(
-        "mails/email-confirmation.html",
+        "core/mails/email-confirmation.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         confirmation_url=confirmation_url,
@@ -189,13 +189,13 @@ def send_registration_mail(email, registration_url):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/registration.txt",
+        "core/mails/registration.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
     )
     html_body = render_template(
-        "mails/registration.html",
+        "core/mails/registration.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         registration_url=registration_url,
@@ -222,7 +222,7 @@ def send_compromised_password_check_failure_mail(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/compromised_password_check_failure.txt",
+        "core/mails/compromised_password_check_failure.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         check_password_url=check_password_url,
@@ -231,7 +231,7 @@ def send_compromised_password_check_failure_mail(
         hashed_password=hashed_password,
     )
     html_body = render_template(
-        "mails/compromised_password_check_failure.html",
+        "core/mails/compromised_password_check_failure.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         check_password_url=check_password_url,
@@ -259,13 +259,13 @@ def send_one_time_password_mail(mail, otp):
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(
-        "mails/email_otp.txt",
+        "core/mails/email_otp.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         otp=otp,
     )
     html_body = render_template(
-        "mails/email_otp.html",
+        "core/mails/email_otp.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         otp=otp,
