@@ -236,12 +236,12 @@ def test_user_creation_edition_and_edition_of_profile_by_user_with_group(
     res = res.follow(status=200)
     res.form["password"] = "totoyolo"
     res = res.form.submit().follow()
-    print(res.location)
+
     res = testclient.get("/profile/george/settings", status=200)
-    print(res.location)
+
     res.form["password1"] = "i'm a little chickpea"
     res.form["password2"] = "i'm a little chickpea"
 
     res = res.form.submit(name="action", value="edit-settings")
-    print(res.flashes)
+
     assert ("success", "Profile updated successfully.") in res.flashes
