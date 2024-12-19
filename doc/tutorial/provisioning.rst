@@ -40,7 +40,7 @@ Then, we recommend the use of :doc:`scim2-cli:index` to interact with the API:
    :caption: scim2-cli usage example
 
     $ pip install scim2-cli
-    $ export SCIM_CLI_URL="https://auth.example"
+    $ export SCIM_CLI_URL="https://canaille.example/scim/v2"
     $ export SCIM_CLI_HEADERS="Authorization: Bearer <MY_CLIENT_TOKEN>"
     $ scim query user bjensen
     {
