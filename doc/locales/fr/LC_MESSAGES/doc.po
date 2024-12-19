@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-19 15:22+0100\n"
-"PO-Revision-Date: 2024-12-19 14:22+0000\n"
+"PO-Revision-Date: 2024-12-19 14:42+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -7176,48 +7176,40 @@ msgid "The user invitation form."
 msgstr "Le formulaire d'invitation d'utilisateurs."
 
 #: ../references/templates.rst:50 13810cd50256469884ba89a8eafd1bf8
-#, fuzzy
-#| msgid ""
-#| "The core templates are displayed in the authentication and profile "
-#| "edition pages."
 msgid "The OIDC templates are displayed in the OIDC consent pages."
-msgstr ""
-"Ces patrons sont affichés dans les pages d'authentification et d'édition de "
-"profiles utilisateurs."
+msgstr "Les patrons OIDC sont affichés lors des étapes de consentement OIDC."
 
 #: ../../<autotemplate>:1 a93e6a645c4843d381565c2923e8d0ce
-#, fuzzy
-#| msgid "Delete a authorizationcode."
 msgid "The list of authorizations."
-msgstr "Supprime un code d'autorisation."
+msgstr "La liste des autorisations."
 
 #: ../../<autotemplate>:1 b6f19eca0ccf4d1c8fc695f9b1d9f1a4
 msgid ""
 "Displays a paginated list of :class:`~canaille.oidc.basemodels."
 "AuthorizationCode`."
 msgstr ""
+"Affiche une liste paginées "
+"d':class:`~canaille.oidc.basemodels.AuthorizationCode`."
 
 #: ../../<autotemplate>:1 4c9bc2607e924e4581aa46607336a840
-#, fuzzy
-#| msgid "Authentication attempt"
 msgid "Authorization details template."
-msgstr "Tentative d'authentification"
+msgstr "Patron de détails d'un code d'autorisation."
 
 #: ../../<autotemplate>:1 b5479f45faa14695b64b04a6b44000b3
 msgid ""
 "Displays details about an :class:`~canaille.oidc.basemodels."
 "AuthorizationCode`."
 msgstr ""
+"Affiche les détails d'un "
+":class:`~canaille.oidc.basemodels.AuthorizationCode`."
 
 #: ../../<autotemplate>:1 7c89cde145294acf9a5723a077c5bc15
-#, fuzzy
-#| msgid "Delete a authorizationcode."
 msgid "The detailed authorization."
-msgstr "Supprime un code d'autorisation."
+msgstr "Le code d'autorisation détaillé."
 
 #: ../../<autotemplate>:1 5dda81f8b0f94025a53662601636dff3
 msgid "Consent request template."
-msgstr ""
+msgstr "Le patron de requête de consentement."
 
 #: ../../<autotemplate>:1 d254d5aa848a4858bcb16ed0e2d854e7
 msgid ""
@@ -7226,132 +7218,127 @@ msgid ""
 "information requested by the application, and offers the user to accept or "
 "decline."
 msgstr ""
+"Ce patron est affiché aux utilisateurs accédant à une nouvelle application "
+"qui requête l'accès à des informations personnelles. Il liste les "
+"informations personnelles demandées, et propose à l'utilisateur d'accepter "
+"ou de refuser."
 
 #: ../../<autotemplate>:1 1971d5d569d24224915c904298df51f5
 msgid "The user whose consent is asked."
-msgstr ""
+msgstr "L'utilisateur dont le consentement est requis."
 
 #: ../../<autotemplate>:1 e26315210e18439090ccab390392173e
 msgid "The OIDC grant."
-msgstr ""
+msgstr "Le flux OIDC."
 
 #: ../../<autotemplate>:1 28e3e52f5d13488fb42d6446033ad577
 msgid "The client addition template."
-msgstr ""
+msgstr "Le patron d'ajout d'application cliente."
 
 #: ../../<autotemplate>:1 74a13f58dad04bac9a30683859ad85c6
 msgid ""
 "Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`."
 msgstr ""
+"Affiche un formulaire de création de "
+":class:`~canaille.oidc.basemodels.Client`."
 
 #: ../../<autotemplate>:1 0d8bdc8c2adc4d9daa20cc33cfadd48b
 #: b6dec07e895342c6904b1500f7144bc3
 msgid "The client creation form."
-msgstr ""
+msgstr "Le formulaire de création de client."
 
 #: ../../<autotemplate>:1 68010fedf65f454abbedadbf6ec560b0
-#, fuzzy
-#| msgid "Authentication attempt"
 msgid "The client edition template."
-msgstr "Tentative d'authentification"
+msgstr "Le formulaire d'édition de client."
 
 #: ../../<autotemplate>:1 ccbffcf83c4c42e09ab947ca0e0dc2a8
 msgid "Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`."
 msgstr ""
+"Affiche un formulaire d'édition de :class:`~canaille.oidc.basemodels.Client`."
 
 #: ../../<autotemplate>:1 4b9aed0542ff452f9817ce3a91e5a334
-#, fuzzy
-#| msgid "Delete a client."
 msgid "The edited client."
-msgstr "Supprime un client."
+msgstr "Le client édité."
 
 #: ../../<autotemplate>:1 d3d45377f29a429ca66ec3ca69d8c794
 msgid "The list of OIDC clients."
-msgstr ""
+msgstr "La liste des clients OIDC."
 
 #: ../../<autotemplate>:1 a2c3f61ac81e407898abfe07dd066e60
 msgid "Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`."
-msgstr ""
+msgstr "Affiche une liste paginée de :class:`~canaille.oidc.basemodels.Client`."
 
 #: ../../<autotemplate>:1 ebc1fbe38e844fdd97fb8a74c0ea798a
 msgid "The OIDC logout template."
-msgstr ""
+msgstr "Le patron de déconnexion OIDC."
 
 #: ../../<autotemplate>:1 a1842044005d49b4806b740360c623d7
 msgid ""
 "Used during OIDC RP-initiated logout, when an user confirmation is needed."
 msgstr ""
+"Utilisé durant la *déconnexion initiée par les applications clients OIDC*, "
+"lorsque le consentement de l'utilisateur est nécessaire."
 
 #: ../../<autotemplate>:1 54c1371a6e8c49bd8cd47a5f557d78e2
 msgid "The logout form."
-msgstr ""
+msgstr "Le formulaire de déconnexion."
 
 #: ../../<autotemplate>:1 62b38596ea684351aef9e53f121329e5
 msgid "The client requesting the logout."
-msgstr ""
+msgstr "Le client requérant la déconnexion."
 
 #: ../../<autotemplate>:1 af38180c9bdc4bd580ca9d0702ee48f3
-#, fuzzy
-#| msgid "Long-term user consent to an application."
 msgid "The preconsented applications list."
-msgstr "Consentement utilisateur à long terme à une application."
+msgstr "La liste d'application avec consentement implicite."
 
 #: ../../<autotemplate>:1 3ef8a4ae66fa419d839de54deb6f80aa
 msgid ""
 "Display a list of trusted clients for which it is implied that users don't "
 "need to explicitly give their consent."
 msgstr ""
+"Affiche une liste d'applications clientes de confiance dont il est établi "
+"que les utilisateurs n'ont pas besoin de fournir un consentement explicite."
 
 #: ../../<autotemplate>:1 4c2a8d818ba449aabb54c49cd50fb04a
 msgid "Description of the OIDC scopes."
-msgstr ""
+msgstr "Description des *scopes* OIDC."
 
 #: ../../<autotemplate>:1 21232c26e39e4fe39caa345d9422c403
 msgid "The scopes to hide."
-msgstr ""
+msgstr "Les *scopes* à masquer."
 
 #: ../../<autotemplate>:1 e2e636d23ecd4f9e9cd48abd4e36f82c
-#, fuzzy
-#| msgid "The city or locality component."
 msgid "The list of implicitly consented clients."
-msgstr "Le composant de ville ou de localité."
+msgstr "La liste des clients avec consentements implicite."
 
 #: ../../<autotemplate>:1 e881d65a62cb498b825ba356453ec3c6
-#, fuzzy
-#| msgid "The state or region component."
 msgid "The number of consents."
-msgstr "Le composant État ou région."
+msgstr "Le nombre de consentements."
 
 #: ../../<autotemplate>:1 d1787fefbf964e82ba7893e17b0ac2ab
 msgid "The number of preconsented clients."
-msgstr ""
+msgstr "Le nombre de clients avec consentement implicite."
 
 #: ../../<autotemplate>:1 f3a2bc4f0b984f44a76ee005a9af4821
-#, fuzzy
-#| msgid "Delete a token."
 msgid "The list of tokens."
-msgstr "Supprime un jeton."
+msgstr "La liste des jetons."
 
 #: ../../<autotemplate>:1 92da1ee51fad4754835604fef0685626
-#, fuzzy
-#| msgid "Bases: :py:class:`~canaille.backends.models.Model`"
 msgid "Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`."
-msgstr "Bases : :py:class:`~canaille.backends.models.Model`"
+msgstr "Affiche une liste paginée de :class:`~canaille.oidc.basemodels.Token`."
 
 #: ../../<autotemplate>:1 042e45babf7e428996636bc87c880ee5
 msgid "The token edition template."
-msgstr ""
+msgstr "Le patron d'édition de jetons."
 
 #: ../../<autotemplate>:1 c41796c860ac41e9a0f6d2cb145158bb
 msgid ""
 "Displays the details of a token :class:`~canaille.oidc.basemodels.Token`."
-msgstr ""
+msgstr "Affiche les détails d'un :class:`~canaille.oidc.basemodels.Token`."
 
 #: ../../<autotemplate>:1 b2f4c67385114855b7d1783467fbaaa2
-#, fuzzy
-#| msgid "Token revokation"
 msgid "A token revokation form."
-msgstr "Révocation des jetons"
+msgstr "Un formulaire de révocation de jeton."
 
 #: ../tutorial/databases.rst:4 5748f2a24c36444993b0ac2c8ce280bb
 msgid ""
@@ -7897,37 +7884,45 @@ msgstr ""
 
 #: ../tutorial/provisioning.rst:33 5cbe19dfab2848509d2ecb1670f762af
 msgid "Implementation details"
-msgstr ""
+msgstr "Détails d'implémentation"
 
 #: ../tutorial/provisioning.rst:35 18971a7e6bd84e8a813c8dd48feb4060
 msgid ""
 "Due to technical reasons, the Canaille *User* and *Group* resources "
 "implementation subtly differs from the :rfc:`RFC7643 <7643>` definitions:"
 msgstr ""
+"Pour des raisons techniques, les implémentations des resources *User* et "
+"*Group* diffèrent subtilement entre Canaille et la :rfc:`RFC7643 <7643>` :"
 
 #: ../tutorial/provisioning.rst:37 ee13305a62da466097f8be31dcd58cbc
 msgid "``User.userName`` is immutable (while it is read-write in RFC7643)."
 msgstr ""
+"``User.userName`` est immuable (tandis qu'il est en lecture-écriture dans la "
+"RFC7643)."
 
 #: ../tutorial/provisioning.rst:38 65f9f9f8c43d45f38c16ee9a1fa4bebd
 msgid "``User.name.familyName`` is required (while it is optional in RFC7643)."
 msgstr ""
+"``User.name.familyName`` est requis (tandis qu'il est optionnel dans la "
+"RFC7643)."
 
 #: ../tutorial/provisioning.rst:39 5f60bb02615b4cbda2ebebed1334f087
 msgid "``Group.displayName`` is required (while it is optional in RFC7643)."
 msgstr ""
+"``Group.displayName`` est requis (tandis qu'il est optionnel dans la "
+"RFC7643)."
 
 #: ../tutorial/provisioning.rst:40 7d53ff82185640b79b3254af1c5ea824
 msgid ""
 "``Group.members`` is required (while it is optional in RFC7643), i.e. groups "
 "cannot be empty."
 msgstr ""
+"``Group.members`` est requis (tandis qu'il est optionnel dans la RFC7643), "
+"c'est à dire que les groupes ne peuvent être vides."
 
 #: ../tutorial/provisioning.rst:43 28d3fec6f2f94f219904c4cfed944c03
-#, fuzzy
-#| msgid "Logging"
 msgid "Debugging"
-msgstr "Connexion"
+msgstr "Débogage"
 
 #: ../tutorial/provisioning.rst:45 40c8e2548c5a4f9183a842044ecae152
 msgid ""
@@ -7937,14 +7932,20 @@ msgid ""
 "administration page. Then, we recommend the use of :doc:`scim2-cli:index` to "
 "interact with the API:"
 msgstr ""
+"Afin de vérifier les données exposées par l'API SCIM de Canaille, vous aurez "
+"besoin d'un *jeton client* et d'une application SCIM cliente. Afin de "
+"générer un jeton, vous pouvez simplement en créer un manuellement avec le "
+"bouton présent sur la page d'administration des clients. Enfin, nous vous "
+"recommandons l'utilisation de :doc:`scim2-cli:index` pour interagir avec "
+"l'API :"
 
 #: ../tutorial/provisioning.rst:49 64800b3ed0e04be0a59b95f3da2dffe3
 msgid "scim2-cli usage example"
-msgstr ""
+msgstr "Exemple d'utilisation de scim2-cli"
 
 #: ../tutorial/theming.rst:2 07dd676f278c44e3b1263e9afdebfc25
 msgid "Theming"
-msgstr ""
+msgstr "Habillage"
 
 #: ../tutorial/theming.rst:4 7ea6047471dd43e89c2ed87579b965e3
 msgid ""
@@ -7952,12 +7953,14 @@ msgid ""
 "ui.com/>`__ but any part of the UI can be slightly modified or even "
 "entierely rewritten if needed."
 msgstr ""
+"Canaille est fourni avec un thème par défaut basé sur `Fomantic UI <https"
+"://fomantic-ui.com/>`__, mais n'importe quelle partie de l'interface "
+"utilisateur peut être légèrement modifiée, ou bien complètement ré-écrite si "
+"besoin."
 
 #: ../tutorial/theming.rst:7 3ffd0598489b46bdadc078f3a6f5ac40
-#, fuzzy
-#| msgid "Templates"
 msgid "Custom templates"
-msgstr "Patrons (« templates »)"
+msgstr "Patrons personnalisés"
 
 #: ../tutorial/theming.rst:9 9dc5dde77f144803be650a110ae46f79
 msgid ""
@@ -7965,6 +7968,9 @@ msgid ""
 "CoreSettings.THEME` to a path to a directory where you will host your custom "
 "templates."
 msgstr ""
+"Pour utiliser un thème personnalisé, pointez le paramètre de configuration "
+":attr:`~canaille.core.configuration.CoreSettings.THEME` vers un répertoire "
+"dans lequel sont enregistrés vos patrons."
 
 #: ../tutorial/theming.rst:11 225c0a63ef7443368da6d8f99c9d3fc9
 msgid ""
@@ -7975,14 +7981,20 @@ msgid ""
 "``core/about.html`` file. You can inherit from the origin template by using "
 "the Jinja ``extend`` directive."
 msgstr ""
+"Dans ce répertoire, créez de nouveaux fichiers pour les patrons que vous "
+"voulez remplacer ou affiner. Une liste exhaustive des patrons est disponible "
+"dans la :doc:`référence <../references/templates>`. Vous devez respecter les "
+"chemins des patrons. Par exemple, si vous souhaitez personnaliser la *page « "
+"À propos »*, vous devez le faire dans un fichier ``core/about.html``. Vous "
+"pouvez hériter du patron original en utilisant la directive Jinja ``extend``."
 
 #: ../tutorial/theming.rst:15 e59413935c4c4947b00e419d6e7eb2aa
 msgid "core/about.html"
-msgstr ""
+msgstr "core/about.html"
 
 #: ../tutorial/theming.rst:26 cdf094c2bf964e69b59a467298d39266
 msgid "Custom style sheets"
-msgstr ""
+msgstr "Feuilles de style personnalisées"
 
 #: ../tutorial/theming.rst:28 bf6bfe83391d443590898ce01670c8ca
 msgid ""
@@ -7991,10 +8003,14 @@ msgid ""
 "``static`` subdirectory of your theme, for instance ``static/css/custom."
 "css`` and reference it with ``theme_static``."
 msgstr ""
+"Si vous souhaitez simplement utiliser votre feuille de style dans le thème "
+"par défaut, vous pouvez simplement l'insérer dans le patron ``base.html``. "
+"Placez votre fichier dans un sous-répertoire ``static`` de votre thème, par "
+"exemple ``static/css/custom.css`` et référencez-le avec ``theme_static``."
 
 #: ../tutorial/theming.rst:31 386ecd9d792e47768914612ebf3c8931
 msgid "base.html"
-msgstr ""
+msgstr "base.html"
 
 #: ../tutorial/theming.rst:43 43e2b83c38d845c4b121529d5bca8e89
 msgid ""
@@ -8002,12 +8018,14 @@ msgid ""
 "path to your theme in a ``.env`` file and run the Canaille demo instance, as "
 "described in the :ref:`contributing guide <local_environment>`"
 msgstr ""
+"Pour écrire votre thème personnalisé et vérifier comment il s'affiche, vous "
+"pouvez configurer le chemin vers votre thème dans un fichier ``.env``et "
+"lancer l'instance de démonstration de Canaille, comme décrit dans le :ref:`"
+"guide de contribution <local_environment>`"
 
 #: ../tutorial/theming.rst:50 282912adb49347b48bb2a8a0525ff3c9
-#, fuzzy
-#| msgid "Run the demo instance with the SQL backend"
 msgid "Run the demo instance"
-msgstr "Lancer l’instance de démonstration avec la base de données SQL"
+msgstr "Lancement de l’instance de démonstration"
 
 #: ../tutorial/troubleshooting.rst:2 a2179a1e932c44c59ec327cabf7a8b0e
 msgid "Troubleshooting"
