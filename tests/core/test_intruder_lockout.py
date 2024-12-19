@@ -68,10 +68,10 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
 def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplog):
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
-    # add 100 milliseconds to account for LDAP time
+    # add 500 milliseconds to account for LDAP time
     with time_machine.travel(
         datetime.datetime.now(datetime.timezone.utc)
-        + datetime.timedelta(milliseconds=100),
+        + datetime.timedelta(milliseconds=500),
         tick=False,
     ) as traveller:
         res = testclient.get("/login", status=200)
