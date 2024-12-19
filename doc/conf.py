@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import datetime
 import os
+import pathlib
 import sys
 from importlib import metadata
 from unittest import mock
@@ -174,4 +175,6 @@ autodoc_pydantic_field_list_validators = False
 gettext_uuid = True
 gettext_compact = "doc"
 
-jinja_template_path = "canaille/templates"
+jinja_template_path = str(
+    pathlib.Path(__file__).parent.parent.resolve() / "canaille/templates"
+)
