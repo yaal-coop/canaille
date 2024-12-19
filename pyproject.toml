@@ -233,7 +233,7 @@ env_list = [
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 dependency_groups = ["dev"]
-uv_sync_flags = ["--extra", "front", "--extra", "oidc", "--extra", "sqlite", "--extra", "ldap"]
+uv_sync_flags = ["--all-extras"]
 commands = [
     ["pytest", "--showlocals", "--full-trace", "{posargs}"],
 ]
@@ -251,6 +251,7 @@ basepython = ["python3.10"]
 
 [tool.tox.env.doc]
 dependency_groups = ["doc"]
+uv_sync_flags = ["--all-extras"]
 commands = [
     ["sphinx-build", "--builder", "html", "--fail-on-warning", "doc", "build/sphinx/html"],
     ["sphinx-build", "--builder", "man", "doc", "build/sphinx/html"],

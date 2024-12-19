@@ -107,5 +107,5 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
       - run: |
           export TZ=UTC
-          uv sync --group doc
+          uv sync --group doc --all-extras
           uv run sphinx-build doc build/sphinx/html --fail-on-warning
