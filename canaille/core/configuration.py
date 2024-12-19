@@ -374,3 +374,10 @@ class CoreSettings(BaseModel):
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
+
+    PASSWORD_SCHEMES: str = "pbkdf2_sha512"
+    """Password hashing scheme.
+
+    Defines password hashing scheme in SQL database.
+    example : "mssql2000"
+    """
