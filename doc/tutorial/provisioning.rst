@@ -29,6 +29,16 @@ Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSet
    [CANAILLE_SCIM]
    ENABLE_SERVER = true
 
+Implementation details
+======================
+
+Due to technical reasons, the Canaille *User* and *Group* resources implementation subtly differs from the :rfc:`RFC7643 <7643>` definitions:
+
+- ``User.userName`` is immutable (while it is read-write in RFC7643).
+- ``User.name.familyName`` is required (while it is optional in RFC7643).
+- ``Group.displayName`` is required (while it is optional in RFC7643).
+- ``Group.members`` is required (while it is optional in RFC7643), i.e. groups cannot be empty.
+
 Debugging
 =========
 
