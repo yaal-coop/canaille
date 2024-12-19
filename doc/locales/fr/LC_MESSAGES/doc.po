@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-19 15:13+0100\n"
-"PO-Revision-Date: 2024-12-19 14:13+0000\n"
+"PO-Revision-Date: 2024-12-19 14:22+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -8059,8 +8059,6 @@ msgstr ""
 "le groupe édité."
 
 #: ../../<autotemplate>:1 8f4f48c95a19495da5f380dddd9823b6
-#, fuzzy
-#| msgid "Allows group edition and creation."
 msgid "The group edition/creation form."
 msgstr "Le formulaire de création et d'édition de groupes."
 
@@ -8075,8 +8073,6 @@ msgid "A :class:`~canaille.core.models.Group` pagination form."
 msgstr "Un formulaire de pagination de :class:`~canaille.core.models.Group`."
 
 #: ../../<autotemplate>:1 d0946bbb0bd14c34ace7504415be383b
-#, fuzzy
-#| msgid "User invitation"
 msgid "The invitation form page."
 msgstr "La page de formulaire d'invitation."
 
@@ -8282,8 +8278,6 @@ msgid "The user initializing the OTP."
 msgstr "L'utilisateur initialisant l'OTP."
 
 #: ../../<autotemplate>:1 bbed5e87f983475a86be5ec208d98c9e
-#, fuzzy
-#| msgid "The SMTP host."
 msgid "The OTP secret."
 msgstr "Le secret de l'OTP."
 
@@ -8293,14 +8287,10 @@ msgid "A QR-code image representing the OTP secret."
 msgstr "Une image QR-code représentant le secret OTP."
 
 #: ../../<autotemplate>:1 8fdf2ab2f3ec4a5c9470bd666ec71165
-#, fuzzy
-#| msgid "The key algorithm."
 msgid "The users list."
 msgstr "La liste des utilisateurs."
 
 #: ../../<autotemplate>:1 673d9ae747324fa8972b9cc35261ecdc
-#, fuzzy
-#| msgid "Bases: :py:class:`~canaille.backends.models.Model`"
 msgid "Displays a paginated list of :class:`~canaille.core.models.User`."
 msgstr "Affiche une liste paginée de :class:`~canaille.core.models.User`."
 
@@ -8314,14 +8304,10 @@ msgid "The paginated list form."
 msgstr "Le formulaire de listes paginées."
 
 #: ../../<autotemplate>:1 e35a8d9d144d4f4f8027308df29a923b
-#, fuzzy
-#| msgid "Multi-factor authentication reset"
 msgid "The multi-factor authentication code verification template."
 msgstr "Le patron de vérification de codes d'authentification multi-facteurs."
 
 #: ../../<autotemplate>:1 e7343293162a47f8959a7976321ae6fe
-#, fuzzy
-#| msgid "One time password used for email or sms multi-factor authentication."
 msgid "Displays a form that asks for the multi-factor authentication code."
 msgstr ""
 "Affiche un formulaire qui requière un code d'authentification multi-facteurs."
@@ -8337,8 +8323,6 @@ msgid "The username of the user attempting to log-in."
 msgstr "L'identifiant de l'utilisateur tentant de se connecter."
 
 #: ../../<autotemplate>:1 40b5acf3ff7d4b1c8e3d17873cd23ca6
-#, fuzzy
-#| msgid "Authentication attempt"
 msgid "The authentication factor method."
 msgstr "La méthode d'authentification multi-facteur."
 
@@ -8368,8 +8352,6 @@ msgstr "La méthode d'authentification multi-facteur."
 #: 6811888036c840ffa62cdca6507f07c4 f6f607cb02474039a4f8e9dda8aa7bfb
 #: 0ea30096b9fe4f05863d9240858cf64f b02d791ed89c4596b8be274d6f61c729
 #: 6e3187beb8164e27b5c52a3775c40963 d89578bbdbe44c99bc178db03e5ea600
-#, fuzzy
-#| msgid "Bases: :py:class:`~canaille.backends.models.Model`"
 msgid "Bases: :py:class:`~canaille.app.forms.Form`"
 msgstr "Bases: :py:class:`~canaille.app.forms.Form`"
 
@@ -8383,16 +8365,12 @@ msgstr "Le formulaire de création de groupes."
 #: ../../canaille/core/endpoints/forms.py:docstring of
 #: canaille.core.endpoints.forms.EditGroupForm:1
 #: cde12e17e7ba4d5d92190cade8939b1c
-#, fuzzy
-#| msgid "Group edition"
 msgid "The group edition form."
 msgstr "Le formulaire d'édition de groupes."
 
 #: ../../canaille/core/endpoints/forms.py:docstring of
 #: canaille.core.endpoints.forms.InvitationForm:1
 #: 0da4f947d5cf44eb99d4504d1eb952ba
-#, fuzzy
-#| msgid "User invitation"
 msgid "The user invitation form."
 msgstr "Le formulaire d'invitation d'utilisateurs."
 
