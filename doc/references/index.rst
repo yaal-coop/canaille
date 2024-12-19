@@ -6,3 +6,4 @@ References
    configuration
    commands
    models
+   templates

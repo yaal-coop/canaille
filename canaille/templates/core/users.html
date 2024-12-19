@@ -1,3 +1,10 @@
+{# The users list.
+
+Displays a paginated list of :class:`~canaille.core.models.User`.
+
+:param table_form: The paginated list form.
+:type table_form: :class:`~canaille.app.forms.TableForm` of :class:`~canaille.core.models.User`.
+#}
 {% extends theme('base.html') %}
 {% import "macro/table.html" as table %}
 

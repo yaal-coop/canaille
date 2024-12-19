@@ -8,4 +8,5 @@ Tutorial
    deployment
    databases
    provisioning
+   theming
    troubleshooting

@@ -1,3 +1,10 @@
+{# The list of OIDC clients.
+
+Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
+
+:param table_form: The paginated list form.
+:type table_form: :class:`~canaille.app.forms.TableForm` of :class:`~canaille.oidc.basemodels.Client`.
+#}
 {% extends theme('base.html') %}
 {% import "macro/table.html" as table %}
 

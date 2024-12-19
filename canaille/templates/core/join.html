@@ -1,3 +1,11 @@
+{# The invitation acceptation page.
+
+This page is displayed to users who have clicked on invitation links sent by mail (or by other media).
+It displays a basic account creation form.
+
+:param form: The account creation form.
+:type form: :class:`~canaille.core.endpoints.forms.JoinForm`
+#}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/profile_field.html' as profile %}

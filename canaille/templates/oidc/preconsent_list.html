@@ -1,3 +1,18 @@
+{# The preconsented applications list.
+
+Display a list of trusted clients for which it is implied that users don't need to explicitly give their consent.
+
+:param scope_details: Description of the OIDC scopes.
+:type scope_details: :class:`dict`
+:param ignored_scopes: The scopes to hide.
+:type ignored_scopes: :class:`list`
+:param preconsented: The list of implicitly consented clients.
+:type preconsented: :class:`list` [ :class:`~canaille.oidc.basemodels.Client` ]
+:param nb_consents: The number of consents.
+:type nb_consents: :class:`int`
+:param nb_preconsents: The number of preconsented clients.
+:type nb_preconsents: :class:`int`
+#}
 {% extends theme('base.html') %}
 
 {%- block title -%}
