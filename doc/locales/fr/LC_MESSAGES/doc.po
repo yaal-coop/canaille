@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-19 10:18+0100\n"
-"PO-Revision-Date: 2024-12-16 20:00+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2024-12-19 14:13+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.9\n"
+"X-Generator: Weblate 5.9.2-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 3fb33c37ddc0459280f3c58be943008e
@@ -57,16 +57,16 @@ msgid "Added"
 msgstr "Ajouté"
 
 #: ../../CHANGES.rst:6 5b4f3aa107a74df3ba845920503dfdc5
-#, fuzzy
-#| msgid ":issue:`Intruder lockout <173>`"
 msgid "Intruder lockout :issue:`173`"
-msgstr ":issue:`Blocage des connexions après échecs <173>`"
+msgstr "Blocage des connexions après échecs :issue:`173`"
 
 #: ../../CHANGES.rst:7 efa1fc20329f42918fe6a530617cf102
 msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT` :"
 "issue:`173`"
 msgstr ""
+":attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT` "
+":issue:`173`"
 
 #: ../../CHANGES.rst:9 cdab69b7537c452caa3eadb572993a40
 msgid "Multi-factor authentication :issue:`47`"
@@ -3309,10 +3309,8 @@ msgstr ""
 "temporaire envoyé à leur numéro de téléphone principal."
 
 #: ../features.rst:191 39adf64b80444b27bb6f9f11747a6960
-#, fuzzy
-#| msgid ":issue:`Intruder lockout <173>`"
 msgid "Intruder lockout"
-msgstr ":issue:`Blocage des connexions après échecs <173>`"
+msgstr "Blocage des connexions infructueuses"
 
 #: ../features.rst:193 e884c68544f2480db394e53aeb54a811
 msgid ""
@@ -3320,6 +3318,10 @@ msgid ""
 "CoreSettings.ENABLE_INTRUDER_LOCKOUT>` is enabled, then users will have to "
 "wait for an increasingly long time between each failed login attempt."
 msgstr ""
+"Si le :attr:`blocage de connexions infructueuses "
+"<canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>` est "
+"activé, alors les utilisateurs devront attendre un temps croissant entre "
+"deux connexions infructueuses."
 
 #: ../features.rst:196 cbba3fccd9f84230b6eb0774cfd7e109
 msgid "Web interface"
@@ -4482,16 +4484,12 @@ msgstr ""
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT:1
 #: 8e19d8a485fe456191ab16773f84483e
-#, fuzzy
-#| msgid ""
-#| "If :py:data:`True`, users will need to click on a confirmation link sent "
-#| "by email when they want to add a new email."
 msgid ""
 "If :py:data:`True`, then users will have to wait for an increasingly long "
 "time between each failed login attempt."
 msgstr ""
-"Si :py:data:`True`, les utilisateurs auront besoin de cliquer sur un lien de "
-"confirmation envoyé par e-mail quand ils voudront en ajouter un nouveau."
+"Si :py:data:`True`, les utilisateurs devront attendre un temps croissant "
+"entre des tentatives de connexion infructueuses."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK:1
@@ -5890,11 +5888,15 @@ msgstr ""
 msgid ""
 "This attribute stores the timestamps of the user's failed authentications."
 msgstr ""
+"Cet attribut stocke les dates des tentatives de connexions infructueuses de "
+"l'utilisateur."
 
 #: ../../docstring of canaille.core.models.User.password_failure_timestamps:4
 #: 785dc2a557f5471fb7e5cdebbaf84443
 msgid "It's currently used by the intruder lockout delay system."
 msgstr ""
+"C'est actuellement utilisé par le système de blocage des connexions "
+"infructueuses."
 
 #: ../../docstring of canaille.core.models.User.phone_numbers:1
 #: 636757499c76498ca8a1cbad6ea4fbb7
@@ -6716,136 +6718,122 @@ msgid ""
 "in their contexts. The intended audience for this reference is designers "
 "wishing to build their custom Canaille theme."
 msgstr ""
+"Cette page référence les fichiers de patrons (« template »), leurs rôles "
+"ainsi que les variables disponibles dans leurs contextes. L'audience visée "
+"pour cette référence sont les designers qui souhaitent construire un thème "
+"personnalisé pour Canaille."
 
 #: ../references/templates.rst:8 a9dc7731e37b4ca3900d9a269af917b2
 msgid "Base"
-msgstr ""
+msgstr "Base"
 
 #: ../references/templates.rst:10 0083cf8f344a4aebb0db66182082b38e
 msgid "Those templates are shared by all the pages rendered by Canaille."
-msgstr ""
+msgstr "Ces patrons sont partagés par toutes les pages de Canaille."
 
 #: ../references/templates.rst:13 ../references/templates.rst:35
 #: ../references/templates.rst:53 b7454449e2d74b1ba858b35dd9506974
 #: 017f3391e5324507b57d461e17c87379 d98c6d77a83046edba83238c1c41f765
-#, fuzzy
-#| msgid "Templates"
 msgid "Template files"
-msgstr "Patrons (« templates »)"
+msgstr "Fichiers de patrons"
 
 #: ../../<autotemplate>:1 8da82919623541cf99ddb3719a66ce6c
 msgid "The main template inherited by almost every other templates."
-msgstr ""
+msgstr "Le patron principal dont hérite à peu près tous les autres patrons."
 
 #: ../../<autotemplate>:1 0302eac895db4e9192dcda1cf138e681
 msgid "The current user, if logged in."
-msgstr ""
+msgstr "L'utilisateur courant, si connecté."
 
 #: ../../<autotemplate>:1 e3c9d7ed1b37441a9ea451dc09bf0256
 msgid "The features enabled and available in Canaille."
-msgstr ""
+msgstr "Les fonctionnalités disponibles, et activées dans Canaille."
 
 #: ../../<autotemplate>:1 92d32aa698334d27bccff184e7f56f4a
 msgid "The user locale."
-msgstr ""
+msgstr "La code de la langue utilisée par l'utilisateur."
 
 #: ../../<autotemplate>:1 46c7365e792d4e44bd0964d401ba3d8d
-#, fuzzy
-#| msgid ""
-#| "The permissions are intended to be used in :attr:`ACLSettings <canaille."
-#| "core.configuration.ACLSettings.PERMISSIONS>`."
 msgid ""
 "The Canaille instance defined in :attr:`~canaille.core.configuration."
 "CoreSettings.NAME`."
 msgstr ""
-"Les droits sont prévus pour être utilisé dans :attr:`ACLSettings <canaille."
-"core.configuration.ACLSettings.PERMISSIONS>`."
+"Le nom de l'instance de Canaille défini dans "
+":attr:`~canaille.core.configuration.CoreSettings.NAME`."
 
 #: ../../<autotemplate>:1 4eb0dc013f754cd19b2b0ead85436fc2
-#, fuzzy
-#| msgid ""
-#| "The permissions are intended to be used in :attr:`ACLSettings <canaille."
-#| "core.configuration.ACLSettings.PERMISSIONS>`."
 msgid ""
 "The URL of the instance logo defined in :attr:`~canaille.core.configuration."
 "CoreSettings.LOGO`."
 msgstr ""
-"Les droits sont prévus pour être utilisé dans :attr:`ACLSettings <canaille."
-"core.configuration.ACLSettings.PERMISSIONS>`."
+"L'URL du logo de l'instance défini dans "
+":attr:`~canaille.core.configuration.CoreSettings.LOGO`."
 
 #: ../../<autotemplate>:1 36b2a2855bb84f5a82440c1ce7a066af
-#, fuzzy
-#| msgid ""
-#| "The permissions are intended to be used in :attr:`ACLSettings <canaille."
-#| "core.configuration.ACLSettings.PERMISSIONS>`."
 msgid ""
 "The URL of the instance favicon defined in :attr:`~canaille.core."
 "configuration.CoreSettings.FAVICON`."
 msgstr ""
-"Les droits sont prévus pour être utilisé dans :attr:`ACLSettings <canaille."
-"core.configuration.ACLSettings.PERMISSIONS>`."
+"L'URL du *favicon* de l'instance de Canaille défini dans "
+":attr:`~canaille.core.configuration.CoreSettings.FAVICON`."
 
 #: ../../<autotemplate>:1 b5502e90eb964459b7477ba8cfd4bb56
-#, fuzzy
-#| msgid ""
-#| "If you need more you can also use a :attr:`custom theme <canaille.core."
-#| "configuration.CoreSettings.THEME>`."
 msgid ""
 "Whether the page is boosted by :attr:`~canaille.core.configuration."
 "CoreSettings.HTMX`."
 msgstr ""
-"Si vous avez besoin de plus, vous pouvez utiliser un :attr:`thème "
-"personnalisé <canaille.core.configuration.CoreSettings.THEME>`."
+"Indique si les pages sont propulsées par "
+":attr:`~canaille.core.configuration.CoreSettings.HTMX`."
 
 #: ../../<autotemplate>:1 abaac915defc44a39bb760b0fa1ca058
 msgid "Whether to display the menu or not."
-msgstr ""
+msgstr "Indique si le menu doit être affiché ou non."
 
 #: ../../<autotemplate>:1 4a846a9c1bf04b76bce93d3f51c2c63a
-#, fuzzy
-#| msgid "Whether the user account has been locked or has expired."
 msgid "Whether the app has been launched in debug mode."
-msgstr "Si le compte utilisateur a été verrouillé ou a expiré."
+msgstr "Indique si Canaille a été lancé en mode débogage."
 
 #: ../../<autotemplate>:1 9a6481ec7a844690a56433119b0a980a
 msgid ""
 "The error page. Displayed for all kinds of errors (not found, internal "
 "server error etc.)."
 msgstr ""
+"La page d'erreur. Cette page est affichée pour tous types d'erreurs (page "
+"non trouvée, erreur interne du serveur, etc.)."
 
 #: ../../<autotemplate>:1 3c9236009d544093ab37e413f94d45b3
 msgid "The code of the HTTP error (404, 500, etc.)"
-msgstr ""
+msgstr "Le code HTTP de l'erreur (404, 500, etc.)"
 
 #: ../../<autotemplate>:1 072ab6b535b245c0b5c16c84a51e0293
 msgid "The error code description."
-msgstr ""
+msgstr "La description du code d'erreur."
 
 #: ../../<autotemplate>:1 01363257f0fd47a9beba953b1580f6f2
 msgid "An optional Font Awesome icon reference."
-msgstr ""
+msgstr "La référence optionnelle à un icône *Font Awesome*."
 
 #: ../../<autotemplate>:1 5eee8575ceec4ab6bb88624d75a23204
 msgid "Macros for Flask flash message rendering"
-msgstr ""
+msgstr "Macros pour l'affichage des messages informatifs de Flask"
 
 #: ../../<autotemplate>:1 6df3858522a34bc181b21c3985dab099
 msgid "Macros for form and form field rendering."
-msgstr ""
+msgstr "Macros pour l'affichage des formulaires et de leurs champs."
 
 #: ../../<autotemplate>:1 45d3e7a61b2247f0b294c31fcdfd752b
 msgid "Connects WTForms, Fomantic-UI and HTMX."
-msgstr ""
+msgstr "Connecte WTForms, Fomantic-UI et HTMX."
 
 #: ../../<autotemplate>:1 29a5444bd2c545e3a16b992c005e6626
 msgid "Macros for rendering table paginated with HTMX."
-msgstr ""
+msgstr "Macros pour l'affichage de tables paginées avec HTMX."
 
 #: ../references/templates.rst:22 ../references/templates.rst:40
 #: ../references/templates.rst:58 4e87bb3eb49f4aef877cc6d31a2141b8
 #: 10827c0bcbb14fc3a1b8054d412a9a7d a1745ac8a300467b9a58c9ae79837332
 msgid "Forms"
-msgstr ""
+msgstr "Formulaires"
 
 #: ../../canaille/app/forms.py:docstring of canaille.app.forms.TableForm:1
 #: 438cfba9a79f484b9721d0f91a75b81a
@@ -6853,67 +6841,67 @@ msgid ""
 "Bases: :py:class:`~canaille.app.forms.I18NFormMixin`, :py:class:`~flask_wtf."
 "form.FlaskForm`"
 msgstr ""
+"Bases: :py:class:`~canaille.app.forms.I18NFormMixin`, "
+":py:class:`~flask_wtf.form.FlaskForm`"
 
 #: ../../canaille/app/forms.py:docstring of canaille.app.forms.TableForm:1
 #: 57e0185db0a449f485f8c651f063748f
 msgid "A form for table rendering of object collections."
-msgstr ""
+msgstr "Un formulaire pour le rendu en tableau de collection d'objets."
 
 #: ../references/templates.rst:30 162e7b075ee14548a43f9cff48b480a2
 msgid "Core"
-msgstr ""
+msgstr "Cœur"
 
 #: ../references/templates.rst:32 006bb138232740cdba8de572fe62fa24
 msgid ""
 "The core templates are displayed in the authentication and profile edition "
 "pages."
 msgstr ""
+"Ces patrons sont affichés dans les pages d'authentification et d'édition de "
+"profiles utilisateurs."
 
 #: ../../<autotemplate>:1 e38aa98840094488a64497fcdbaa0264
 msgid ""
 "The 'About' page. This is an informational page, displaying the project "
 "links."
 msgstr ""
+"La page « À propos ». Cette page est informationnelle, elle affiche les "
+"liens du projet."
 
 #: ../../<autotemplate>:1 4c4ed92740f14deb87533cfa65ee80bf
-#, fuzzy
-#| msgid "The sender for Canaille mails."
 msgid "The current Canaille version."
-msgstr "L’émetteur des emails de Canaille."
+msgstr "La version de l'instance de Canaille."
 
 #: ../../<autotemplate>:1 d95f55f7f9ff4b5f9686be3dc9a7847f
-#, fuzzy
-#| msgid "The SMTP login."
 msgid "The first login page."
-msgstr "L’identifiant SMTP."
+msgstr "La page de première connexion."
 
 #: ../../<autotemplate>:1 25602187d8a1450d93af69c3a5cb8676
 msgid "This page is displayed to users who do not have set a password yet."
 msgstr ""
+"Cette page est affichée aux utilisateurs qui n'ont pas encore paramétré un "
+"mot de passe."
 
 #: ../../<autotemplate>:1 b40d8dbabfb942b9a7e43fd2be5260fb
-#, fuzzy
-#| msgid "Password reset"
 msgid "Password forgotten page."
-msgstr "Réinitialisation des mots de passe"
+msgstr "Page d'oubli du mot de passe."
 
 #: ../../<autotemplate>:1 168380710d5343d3ab70eaa096d1eaba
 msgid ""
 "This page displays a form asking for the email address of users who cannot "
 "remember their password."
 msgstr ""
+"Cette page affiche un formulaire requérant l'adresse email d'un utilisateur "
+"ayant oublié son mot de passe."
 
 #: ../../<autotemplate>:1 c5a709077f1948dc85448baca9d505b2
-#, fuzzy
-#| msgid "Group edition"
 msgid "Group edition page."
-msgstr "Édition de groupes"
+msgstr "Page d'édition des groupes."
 
 #: ../../<autotemplate>:1 1d741cc01a7b477ebe6484f595b1ae27
-#, fuzzy
-#| msgid "Allows group edition and creation."
 msgid "Displays the group edition or creation form."
-msgstr "Permet la création et la modification de groupe."
+msgstr "Affiche le formulaire d'édition ou de création d'un groupe."
 
 #: ../../<autotemplate>:1 1bb598284f574fadb4afdaa186936d45
 msgid ""
@@ -6946,46 +6934,42 @@ msgid "Displays the invitation form to users with the invitation permission."
 msgstr ""
 
 #: ../../<autotemplate>:1 06e9aef4cee8405f96f76c99084ab2ef
-#, fuzzy
-#| msgid "User invitation"
 msgid "The invitation form."
-msgstr "Invitation d'utilisateur"
+msgstr "Le formulaire d'invitation d'utilisateurs."
 
 #: ../../<autotemplate>:1 50937b6a974343eab8527a1977b6280a
 msgid "The invitation acceptation page."
-msgstr ""
+msgstr "La page d'acceptation d'une invitation."
 
 #: ../../<autotemplate>:1 5781a7c918ac43d0842b01eb38b74cd5
 msgid ""
 "This page is displayed to users who have clicked on invitation links sent by "
 "mail (or by other media). It displays a basic account creation form."
 msgstr ""
+"Cette page est affichée aux utilisateurs qui ont cliqué sur le lien "
+"d'invitation qui leur a été envoyé par mail (ou par un autre médium). Il "
+"affiche un formulaire basique de création de compte."
 
 #: ../../<autotemplate>:1 b447524d0fb1461b81bf503c13eb3788
 msgid "The account creation form."
-msgstr ""
+msgstr "Le formulaire de création de compte."
 
 #: ../../<autotemplate>:1 6f56b461666743eabb55c179df25b96b
-#, fuzzy
-#| msgid "The SMTP login."
 msgid "The login page."
-msgstr "L’identifiant SMTP."
+msgstr "La page de connexion."
 
 #: ../../<autotemplate>:1 0160e1cfedb04735a642a373eba00f85
 msgid "This page displays a form to get the user identifier."
 msgstr ""
+"Cette page affiche un formulaire qui récupère l'identifiant d'un utilisateur."
 
 #: ../../<autotemplate>:1 d2c554cbdaa941f089c6e1d178e2c40a
-#, fuzzy
-#| msgid "The SMTP login."
 msgid "The login form."
-msgstr "L’identifiant SMTP."
+msgstr "Le formulaire de connexion."
 
 #: ../../<autotemplate>:1 5bf5c4af6d5949978459c9558e5959c0
-#, fuzzy
-#| msgid "User authentication"
 msgid "User account creation page."
-msgstr "Authentification utilisateur"
+msgstr "Page de création de compte utilisateur."
 
 #: ../../<autotemplate>:1 052f0f9a73e54baa90e2beb51100c62f
 msgid ""
@@ -6993,6 +6977,10 @@ msgid ""
 "registration page, and in the manual account creation page available for "
 "users with *user management* permission."
 msgstr ""
+"Ce patron affiche un formulaire de création de compte. Il est utilisé par la "
+"page d'enregistrement, et sur la page de création manuelle de compte "
+"disponibles aux utilisateurs avec les permissions de gestion des "
+"utilisateurs."
 
 #: ../../<autotemplate>:1 32e07b796f2542448a5c4f651407e05e
 msgid ""
@@ -7002,19 +6990,24 @@ msgid ""
 "appearing in *READ* and *WRITE*, those only appearing in *READ* are read-"
 "only."
 msgstr ""
+"Le formulaire de création d'utilisateur. Fabriqué dynamiquement à partir des "
+"permissions de :attr:`~canaille.core.configuration.ACLSettings.READ` et "
+":attr:`~canaille.core.configuration.ACLSettings.WRITE`. Les champs "
+"disponibles sont ceux listés dans *READ* et *WRITE*. Ceux n'apparaissant que "
+"dans *READ* sont en lecture seule."
 
 #: ../../<autotemplate>:1 94e9b36ee7a04d4db509845398904973
 msgid "The profile edition template."
-msgstr ""
+msgstr "Le patron d'édition de profil."
 
 #: ../../<autotemplate>:1 b86d69135b324d5b879980406f1b321b
 msgid "Displays a user profile edition form."
-msgstr ""
+msgstr "Affiche un formulaire d'édition de profil utilisateur."
 
 #: ../../<autotemplate>:1 b7dedbaafbf4421dad65efa4edb64bc7
 #: f4ab6a408b4846a28755a25c75d49e9d
 msgid "The user that the form will edit."
-msgstr ""
+msgstr "L'utilisateur édité par le formulaire."
 
 #: ../../<autotemplate>:1 e971a69e070545b6a3efb2ef229a5e78
 #: 57372626a5504526a6602a9903be25f3
@@ -7025,58 +7018,63 @@ msgid ""
 "appearing in *READ* and *WRITE*, those only appearing in *READ* are read-"
 "only."
 msgstr ""
+"Le formulaire d'édition de profil utilisateur. Fabriqué dynamiquement à "
+"partir des permissions de "
+":attr:`~canaille.core.configuration.ACLSettings.READ` et "
+":attr:`~canaille.core.configuration.ACLSettings.WRITE`. Les champs "
+"disponibles sont ceux listés dans *READ* et *WRITE*. Ceux n'apparaissant que "
+"dans *READ* sont en lecture seule."
 
 #: ../../<autotemplate>:1 232f10ffd4634e3e8d30fd95968ff20e
 msgid ""
 "An email edition form. Used when the :attr:`~canaille.app.features.Features."
 "has_email_confirmation` feature is enabled."
 msgstr ""
+"Un formulaire d'édition d'adresse email. Utilisé lorsque la fonctionnalité "
+"de :attr:`confirmation des adresses email "
+"<canaille.app.features.Features.has_email_confirmation>` est activée."
 
 #: ../../<autotemplate>:1 6f083b8c024042d2afc6e830605fcb29
 msgid "The profile settings template."
-msgstr ""
+msgstr "Le patron de paramètres de profil utilisateur."
 
 #: ../../<autotemplate>:1 1e1b6ca57eee407ea373fabfa6b68203
 msgid "Displays the user settings edition form."
-msgstr ""
+msgstr "Affiche le formulaire d'édition des paramètres utilisateur."
 
 #: ../../<autotemplate>:1 79751bf3182a4e728ce7c771919c012e
 msgid "Whether the editor is allowed to delete the account of the edited user."
 msgstr ""
+"Indique si l'éditeur a la permission de supprimé le compte de l'utilisateur "
+"édité."
 
 #: ../../<autotemplate>:1 f6fbc394bb0e4d23b2025ad9512ed7f8
-#, fuzzy
-#| msgid "Password reset"
 msgid "The password reset template."
-msgstr "Réinitialisation des mots de passe"
+msgstr "Le patron de réinitialisation de mot de passe."
 
 #: ../../<autotemplate>:1 ac11fe027baa47d08507ce462ccf6521
 msgid "Displays a password reset form."
-msgstr ""
+msgstr "Affiche un formulaire de réinitialisation de mot de passe."
 
 #: ../../<autotemplate>:1 022dc36a70434d0cbbc929e6389ed667
-#, fuzzy
-#| msgid "Password reset"
 msgid "The password reset form."
-msgstr "Réinitialisation des mots de passe"
+msgstr "Le formulaire de réinitialisation de mot de passe."
 
 #: ../../<autotemplate>:1 b78ecf9a56b94a57a3b3708a76eb115e
 msgid "The user associated with the URL."
-msgstr ""
+msgstr "L'utilisateur associé à l'URL."
 
 #: ../../<autotemplate>:1 2ad2199bf9a543bc89f2b1eab1575ed3
 msgid "The secret link hash."
-msgstr ""
+msgstr "Le hachage du lien secret."
 
 #: ../../<autotemplate>:1 d33d88c5756d4573bff6aed0f8b22df9
-#, fuzzy
-#| msgid "Multi-factor authentication reset"
 msgid "The multi-factor authentication initialization template."
-msgstr "Réinitialisation de l'authentification multi-facteurs"
+msgstr "Le patron d'initialisation de l'authentification multi-facteurs."
 
 #: ../../<autotemplate>:1 fd9b649f626b4b3e93dc09db80ce6ca4
 msgid "Display a QR-code and the OTP secret."
-msgstr ""
+msgstr "Affiche un QR-code et le secret OTP."
 
 #: ../../<autotemplate>:1 0f8aaa24949f428d91f05bb8ea510a5e
 msgid "The user initializing the OTP."
