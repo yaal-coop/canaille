@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-19 15:13+0100\n"
-"PO-Revision-Date: 2024-12-19 14:13+0000\n"
+"PO-Revision-Date: 2024-12-19 14:22+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -6915,30 +6915,29 @@ msgid ""
 ":data:`None` in a creation context. In edition context this is the edited "
 "group."
 msgstr ""
+":data:`None` dans un contexte de création. Dans un contexte d'édition, c'est "
+"le groupe édité."
 
 #: ../../<autotemplate>:1 8f4f48c95a19495da5f380dddd9823b6
-#, fuzzy
-#| msgid "Allows group edition and creation."
 msgid "The group edition/creation form."
-msgstr "Permet la création et la modification de groupe."
+msgstr "Le formulaire de création et d'édition de groupes."
 
 #: ../../<autotemplate>:1 28ea1c41993f4d13965a27d0dd485434
 msgid "The group list page."
-msgstr ""
+msgstr "La page de liste des groupes."
 
 #: ../../<autotemplate>:1 ee0ede57db1547eca27127f5f0b4b0d7
 msgid "A :class:`~canaille.core.models.Group` pagination form."
-msgstr ""
+msgstr "Un formulaire de pagination de :class:`~canaille.core.models.Group`."
 
 #: ../../<autotemplate>:1 d0946bbb0bd14c34ace7504415be383b
-#, fuzzy
-#| msgid "User invitation"
 msgid "The invitation form page."
-msgstr "Invitation d'utilisateur"
+msgstr "La page de formulaire d'invitation."
 
 #: ../../<autotemplate>:1 8d2816a3ca9b4c4db1e123e97bd3d703
 msgid "Displays the invitation form to users with the invitation permission."
 msgstr ""
+"Affiche le formulaire d'invitation aux utilisateurs en ayant la permission."
 
 #: ../../<autotemplate>:1 52530a1438a04cad9867183b902dce3f
 msgid "The invitation form."
@@ -7084,63 +7083,50 @@ msgstr "Affiche un QR-code et le secret OTP."
 
 #: ../../<autotemplate>:1 09d47ae85f584199a8f344714c95d278
 msgid "The user initializing the OTP."
-msgstr ""
+msgstr "L'utilisateur initialisant l'OTP."
 
 #: ../../<autotemplate>:1 bbed5e87f983475a86be5ec208d98c9e
-#, fuzzy
-#| msgid "The SMTP host."
 msgid "The OTP secret."
-msgstr "Le serveur SMTP."
+msgstr "Le secret de l'OTP."
 
 #: ../../<autotemplate>:1 6aadc7a696fa4f9895b710bc5a79c247
 msgid "A QR-code image representing the OTP secret."
-msgstr ""
+msgstr "Une image QR-code représentant le secret OTP."
 
 #: ../../<autotemplate>:1 8fdf2ab2f3ec4a5c9470bd666ec71165
-#, fuzzy
-#| msgid "The key algorithm."
 msgid "The users list."
-msgstr "L'algorithme de clef."
+msgstr "La liste des utilisateurs."
 
 #: ../../<autotemplate>:1 673d9ae747324fa8972b9cc35261ecdc
-#, fuzzy
-#| msgid "Bases: :py:class:`~canaille.backends.models.Model`"
 msgid "Displays a paginated list of :class:`~canaille.core.models.User`."
-msgstr "Bases : :py:class:`~canaille.backends.models.Model`"
+msgstr "Affiche une liste paginée de :class:`~canaille.core.models.User`."
 
 #: ../../<autotemplate>:1 ca3a4357e2714750a83ca5a423b5cd13
 #: 69ff288df1234788a6c8bd64d644a4ca 236b5f5517d447fa86c71e5280396360
 #: b2d63892fd3b4bb09698bcb62b4a67ce
 msgid "The paginated list form."
-msgstr ""
+msgstr "Le formulaire de listes paginées."
 
 #: ../../<autotemplate>:1 e35a8d9d144d4f4f8027308df29a923b
-#, fuzzy
-#| msgid "Multi-factor authentication reset"
 msgid "The multi-factor authentication code verification template."
-msgstr "Réinitialisation de l'authentification multi-facteurs"
+msgstr "Le patron de vérification de codes d'authentification multi-facteurs."
 
 #: ../../<autotemplate>:1 e7343293162a47f8959a7976321ae6fe
-#, fuzzy
-#| msgid "One time password used for email or sms multi-factor authentication."
 msgid "Displays a form that asks for the multi-factor authentication code."
 msgstr ""
-"Mot de passe à usage unique utilisé pour l'authentification multi-facteurs "
-"par email ou SMS."
+"Affiche un formulaire qui requière un code d'authentification multi-facteurs."
 
 #: ../../<autotemplate>:1 848a17c1ad644233b4f6775f39681e17
 msgid "The code verification form."
-msgstr ""
+msgstr "Le formulaire de vérification de code."
 
 #: ../../<autotemplate>:1 25d25aa8e4b44ed0ae2cad3db8b61414
 msgid "The username of the user attempting to log-in."
-msgstr ""
+msgstr "L'identifiant de l'utilisateur tentant de se connecter."
 
 #: ../../<autotemplate>:1 40b5acf3ff7d4b1c8e3d17873cd23ca6
-#, fuzzy
-#| msgid "Authentication attempt"
 msgid "The authentication factor method."
-msgstr "Tentative d'authentification"
+msgstr "La méthode d'authentification multi-facteur."
 
 #: ../../canaille/core/endpoints/forms.py:docstring of
 #: canaille.core.endpoints.forms.CreateGroupForm:1
@@ -7168,32 +7154,26 @@ msgstr "Tentative d'authentification"
 #: 6811888036c840ffa62cdca6507f07c4 f6f607cb02474039a4f8e9dda8aa7bfb
 #: 0ea30096b9fe4f05863d9240858cf64f b02d791ed89c4596b8be274d6f61c729
 #: 6e3187beb8164e27b5c52a3775c40963 d89578bbdbe44c99bc178db03e5ea600
-#, fuzzy
-#| msgid "Bases: :py:class:`~canaille.backends.models.Model`"
 msgid "Bases: :py:class:`~canaille.app.forms.Form`"
-msgstr "Bases : :py:class:`~canaille.backends.models.Model`"
+msgstr "Bases: :py:class:`~canaille.app.forms.Form`"
 
 #: ../../canaille/core/endpoints/forms.py:docstring of
 #: canaille.core.endpoints.forms.CreateGroupForm:1
 #: a0f2bee3e8c641749e0071f8153e6407
 msgid "The group creation form."
-msgstr ""
+msgstr "Le formulaire de création de groupes."
 
 #: ../../canaille/core/endpoints/forms.py:docstring of
 #: canaille.core.endpoints.forms.EditGroupForm:1
 #: cde12e17e7ba4d5d92190cade8939b1c
-#, fuzzy
-#| msgid "Group edition"
 msgid "The group edition form."
-msgstr "Édition de groupes"
+msgstr "Le formulaire d'édition de groupes."
 
 #: ../../canaille/core/endpoints/forms.py:docstring of
 #: canaille.core.endpoints.forms.InvitationForm:1
 #: 0da4f947d5cf44eb99d4504d1eb952ba
-#, fuzzy
-#| msgid "User invitation"
 msgid "The user invitation form."
-msgstr "Invitation d'utilisateur"
+msgstr "Le formulaire d'invitation d'utilisateurs."
 
 #: ../references/templates.rst:50 13810cd50256469884ba89a8eafd1bf8
 msgid "The OIDC process are displayed in the OIDC consent pages."
