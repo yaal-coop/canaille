@@ -379,5 +379,5 @@ class CoreSettings(BaseModel):
     """Password hashing scheme.
 
     Defines password hashing scheme in SQL database.
-    example : "mssql2000"
+    example : "mssql2000", "ldap_salted_sha1"
     """
