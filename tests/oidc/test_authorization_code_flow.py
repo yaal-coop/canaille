@@ -795,10 +795,10 @@ def test_missing_client_id(
 def test_logout_login_with_intruder_lockout(testclient, logged_user, client, backend):
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
-    # add 100 milliseconds to account for LDAP time
+    # add 500 milliseconds to account for LDAP time
     with time_machine.travel(
         datetime.datetime.now(datetime.timezone.utc)
-        + datetime.timedelta(milliseconds=100),
+        + datetime.timedelta(milliseconds=500),
         tick=False,
     ) as traveller:
         res = testclient.get(
