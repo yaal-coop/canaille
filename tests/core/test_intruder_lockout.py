@@ -15,10 +15,10 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
     with testclient.session_transaction() as session:
         assert not session.get("user_id")
 
-    # add 100 milliseconds to account for LDAP time
+    # add 500 milliseconds to account for LDAP time
     with time_machine.travel(
         datetime.datetime.now(datetime.timezone.utc)
-        + datetime.timedelta(milliseconds=100),
+        + datetime.timedelta(milliseconds=500),
         tick=False,
     ) as traveller:
         res = testclient.get("/login", status=200)
