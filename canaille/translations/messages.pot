@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-12 12:02+0100\n"
+"POT-Creation-Date: 2024-12-19 09:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: canaille/app/flask.py:55
+#: canaille/app/flask.py:33
+msgid "Your password has expired, please choose a new password."
+msgstr ""
+
+#: canaille/app/flask.py:57
 msgid "No SMTP server has been configured"
 msgstr ""
 
@@ -72,36 +76,36 @@ msgid ""
 "please contact the administrators."
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:99
+#: canaille/backends/ldap/backend.py:100
 msgid "Could not connect to the LDAP server '{uri}'"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:106
+#: canaille/backends/ldap/backend.py:107
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:175
+#: canaille/backends/ldap/backend.py:176
 msgid "John Doe"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:178 canaille/core/endpoints/forms.py:166
+#: canaille/backends/ldap/backend.py:179 canaille/core/endpoints/forms.py:166
 #: canaille/core/endpoints/forms.py:427
 msgid "jdoe"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:181
+#: canaille/backends/ldap/backend.py:182
 msgid "john.doe@example.com"
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:183
+#: canaille/backends/ldap/backend.py:184
 msgid " or "
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:238
+#: canaille/backends/ldap/backend.py:244
 msgid "Your account has been locked."
 msgstr ""
 
-#: canaille/backends/ldap/backend.py:243
+#: canaille/backends/ldap/backend.py:249
 msgid "You should change your password."
 msgstr ""
 
@@ -293,6 +297,10 @@ msgstr ""
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
+#: canaille/core/endpoints/account.py:901 canaille/core/endpoints/auth.py:269
+msgid "Your password has been updated successfully"
+msgstr ""
+
 #: canaille/core/endpoints/admin.py:23
 #: canaille/core/templates/partial/users.html:15
 msgid "Email"
@@ -366,10 +374,6 @@ msgstr ""
 
 #: canaille/core/endpoints/auth.py:260
 msgid "The password reset link that brought you here was invalid."
-msgstr ""
-
-#: canaille/core/endpoints/auth.py:269
-msgid "Your password has been updated successfully"
 msgstr ""
 
 #: canaille/core/endpoints/forms.py:33
@@ -1043,7 +1047,8 @@ msgstr ""
 #: canaille/core/templates/mails/reset.html:19
 #: canaille/core/templates/profile_settings.html:116
 #: canaille/core/templates/reset-password.html:12
-#: canaille/core/templates/reset-password.html:18
+#: canaille/core/templates/reset-password.html:19
+#: canaille/core/templates/reset-password.html:23
 msgid "Password reset"
 msgstr ""
 
