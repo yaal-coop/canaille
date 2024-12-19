@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-19 15:22+0100\n"
-"PO-Revision-Date: 2024-12-19 14:42+0000\n"
+"PO-Revision-Date: 2024-12-20 08:38+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -6717,7 +6717,7 @@ msgstr "Définition de jeton OpenID Connect."
 
 #: ../references/templates.rst:2 4c788f59982340db8280e3706614cc90
 msgid "Templates"
-msgstr "Patrons (« templates »)"
+msgstr "Patrons"
 
 #: ../references/templates.rst:4 facd58545ccb4a139db30dce66a02b3a
 msgid ""
@@ -7825,7 +7825,7 @@ msgid ""
 "the ``/scim/v2`` endpoint."
 msgstr ""
 "Canaille implémente partiellement le protocole de provisionnement :rfc:`SCIM "
-"<7642>`au terminal ``/scim/v2``."
+"<7642>` au terminal ``/scim/v2``."
 
 #: ../tutorial/provisioning.rst:6 b435649989a5462fb58feedb7deff9e7
 msgid ""
@@ -8019,7 +8019,7 @@ msgid ""
 "described in the :ref:`contributing guide <local_environment>`"
 msgstr ""
 "Pour écrire votre thème personnalisé et vérifier comment il s'affiche, vous "
-"pouvez configurer le chemin vers votre thème dans un fichier ``.env``et "
+"pouvez configurer le chemin vers votre thème dans un fichier ``.env`` et "
 "lancer l'instance de démonstration de Canaille, comme décrit dans le :ref:`"
 "guide de contribution <local_environment>`"
 
