@@ -47,7 +47,7 @@ Forms
 OIDC
 ====
 
-The OIDC process are displayed in the OIDC consent pages.
+The OIDC templates are displayed in the OIDC consent pages.
 
 Template files
 --------------

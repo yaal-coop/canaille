@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-19 15:13+0100\n"
+"POT-Creation-Date: 2024-12-19 15:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5976,7 +5976,7 @@ msgstr ""
 
 #: ../references/templates.rst:50
 #: 13810cd50256469884ba89a8eafd1bf8
-msgid "The OIDC process are displayed in the OIDC consent pages."
+msgid "The OIDC templates are displayed in the OIDC consent pages."
 msgstr ""
 
 #: ../../<autotemplate>:1
