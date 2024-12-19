@@ -131,6 +131,9 @@ dev = [
 ]
 doc = [
     "autodoc-pydantic >= 2.0.1",
+    # used to compute sphinx uuids
+    # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-gettext_uuid
+    "levenshtein>=0.26.1",
     "shibuya >= 2024.3.1",
     "sphinx >= 7.0.0",
     "sphinx-design >= 0.6.0",
