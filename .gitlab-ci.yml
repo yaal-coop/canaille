@@ -74,6 +74,6 @@ doc:
   image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
   stage: test
   script:
-    - uv sync --group doc
+    - uv sync --group doc --all-extras
     - uv run sphinx-build doc build/sphinx/html --fail-on-warning
     - uv cache prune --ci
