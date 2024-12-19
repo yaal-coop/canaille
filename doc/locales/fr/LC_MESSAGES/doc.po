@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-19 10:08+0100\n"
+"POT-Creation-Date: 2024-12-19 10:18+0100\n"
 "PO-Revision-Date: 2024-12-16 20:00+0000\n"
 "Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -2973,7 +2973,7 @@ msgstr ""
 "ACLSettings.FILTER>` pour définir les droits utilisateur."
 
 #: ../features.rst:63 ../features.rst:83 ../features.rst:149
-#: ../tutorial/deployment.rst:13 ../tutorial/provisioning.rst:21
+#: ../tutorial/deployment.rst:13 ../tutorial/provisioning.rst:9
 #: 6fdf0a969ccb49e1bf9bfc28f4df9169 4065a0b70a1444058df3bb16f0abc445
 #: bc0be7a805e04b5f91b89db28d7dffae 7ab21494d11e4287acffeb771f8f5244
 #: 9df6890219304d7dbb04c9b7817147f5
@@ -4153,7 +4153,8 @@ msgstr ""
 "Réinitialise le jeton des mots de passes à usage unique pour un utilisateur, "
 "et affiche l'utilisateur édité au format JSON dans la sortie standard."
 
-#: ../references/configuration.rst:2 6c3d1ad364a84afb9586b1b62e42dedb
+#: ../references/configuration.rst:2 ../tutorial/provisioning.rst:18
+#: 6c3d1ad364a84afb9586b1b62e42dedb 07783d84d6c64841b473c97c38f85937
 msgid "Configuration"
 msgstr "Configuration"
 
@@ -7858,7 +7859,32 @@ msgstr ""
 "applications clientes de gérer les profils utilisateur directement dans "
 "Canaille."
 
-#: ../tutorial/provisioning.rst:9 706556a4f4de43658b7ee3583115216a
+#: ../tutorial/provisioning.rst:11 37c0e4ee9eb54f9f94754fec060e0ac5
+msgid ""
+"Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not "
+"implemented. In addition to these, Canaille will implement in the future:"
+msgstr ""
+"Certaines :ref:`fonctionnalités et terminaux <scim_unimplemented>` de SCIM "
+"ne sont pas implémentées. En plus de celles-ci, Canaille implémentera dans "
+"le future :"
+
+#: ../tutorial/provisioning.rst:14 a5d6aea95b444cbb9d10731986ae66ac
+msgid ""
+"Access control for clients on the SCIM API endpoint, to finely manage "
+"permissions depending on clients."
+msgstr ""
+"Contrôle d'accès pour les clients sur le terminal API de SCIM, pour gérer "
+"finement les droits en fonction des clients."
+
+#: ../tutorial/provisioning.rst:15 98d88ce07bc640bcafedee10c9bbc98f
+msgid ""
+"Client-side implementation, to broadcast user and groups modifications among "
+"all the clients."
+msgstr ""
+"Implémentation côté client, pour envoyer les modification d'utilisateur et "
+"de groupes à tous les clients."
+
+#: ../tutorial/provisioning.rst:20 706556a4f4de43658b7ee3583115216a
 msgid ""
 "To allow clients to access the SCIM API, the client must have the "
 "``client_credentials`` grant type configured. This allows clients to ask an "
@@ -7871,7 +7897,7 @@ msgstr ""
 "ce jeton pour exécuter des requêtes. Actuellement, les jetons utilisateurs "
 "ne sont pas disponibles."
 
-#: ../tutorial/provisioning.rst:13 5abc69c6a6ff4cd48e3f2b01cdaa1a52
+#: ../tutorial/provisioning.rst:24 5abc69c6a6ff4cd48e3f2b01cdaa1a52
 msgid ""
 "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
 "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
@@ -7879,30 +7905,24 @@ msgstr ""
 "Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
 "<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
 
-#: ../tutorial/provisioning.rst:23 37c0e4ee9eb54f9f94754fec060e0ac5
-msgid ""
-"Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not "
-"implemented. In addition to these, Canaille will implement in the future:"
-msgstr ""
-"Certaines :ref:`fonctionnalités et terminaux <scim_unimplemented>` de SCIM "
-"ne sont pas implémentées. En plus de celles-ci, Canaille implémentera dans "
-"le future :"
+#: ../tutorial/provisioning.rst:33 432c05f5057e4d6ab93225079865e789
+#, fuzzy
+#| msgid "Logging"
+msgid "Debugging"
+msgstr "Connexion"
 
-#: ../tutorial/provisioning.rst:26 a5d6aea95b444cbb9d10731986ae66ac
+#: ../tutorial/provisioning.rst:35 ecce1ab63ddd4b1a8dd3c7c65e9a990c
 msgid ""
-"Access control for clients on the SCIM API endpoint, to finely manage "
-"permissions depending on clients."
+"To check what data are exposed through the Canaille SCIM API, you need a "
+"*client token* and a SCIM client application. To generate a client token, "
+"you can simply manually create a token from the button on the client "
+"administration page. Then, we recommend the use of :doc:`scim2-cli:index` to "
+"interact with the API:"
 msgstr ""
-"Contrôle d'accès pour les clients sur le terminal API de SCIM, pour gérer "
-"finement les droits en fonction des clients."
 
-#: ../tutorial/provisioning.rst:27 98d88ce07bc640bcafedee10c9bbc98f
-msgid ""
-"Client-side implementation, to broadcast user and groups modifications among "
-"all the clients."
+#: ../tutorial/provisioning.rst:39 0494884602794d818953870e734c721b
+msgid "scim2-cli usage example"
 msgstr ""
-"Implémentation côté client, pour envoyer les modification d'utilisateur et "
-"de groupes à tous les clients."
 
 #: ../tutorial/theming.rst:2 1e8d2a5169ed4313896d1a9c33dee1ab
 msgid "Theming"
