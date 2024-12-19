@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-12-19 15:13+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-19 15:22+0100\n"
 "PO-Revision-Date: 2024-12-19 14:22+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -7176,8 +7176,14 @@ msgid "The user invitation form."
 msgstr "Le formulaire d'invitation d'utilisateurs."
 
 #: ../references/templates.rst:50 13810cd50256469884ba89a8eafd1bf8
-msgid "The OIDC process are displayed in the OIDC consent pages."
+#, fuzzy
+#| msgid ""
+#| "The core templates are displayed in the authentication and profile "
+#| "edition pages."
+msgid "The OIDC templates are displayed in the OIDC consent pages."
 msgstr ""
+"Ces patrons sont affichés dans les pages d'authentification et d'édition de "
+"profiles utilisateurs."
 
 #: ../../<autotemplate>:1 a93e6a645c4843d381565c2923e8d0ce
 #, fuzzy
