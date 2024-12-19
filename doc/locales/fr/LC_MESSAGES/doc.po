@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-19 15:22+0100\n"
-"PO-Revision-Date: 2024-12-19 14:22+0000\n"
+"PO-Revision-Date: 2024-12-19 14:42+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -8375,18 +8375,10 @@ msgid "The user invitation form."
 msgstr "Le formulaire d'invitation d'utilisateurs."
 
 #: ../references/templates.rst:50 13810cd50256469884ba89a8eafd1bf8
-#, fuzzy
-#| msgid ""
-#| "The core templates are displayed in the authentication and profile "
-#| "edition pages."
 msgid "The OIDC templates are displayed in the OIDC consent pages."
-msgstr ""
-"Ces patrons sont affichés dans les pages d'authentification et d'édition de "
-"profiles utilisateurs."
+msgstr "Les patrons OIDC sont affichés lors des étapes de consentement OIDC."
 
 #: ../../<autotemplate>:1 a93e6a645c4843d381565c2923e8d0ce
-#, fuzzy
-#| msgid "Delete a authorizationcode."
 msgid "The list of authorizations."
 msgstr "La liste des autorisations."
 
@@ -8400,8 +8392,6 @@ msgstr ""
 "d':class:`~canaille.oidc.basemodels.AuthorizationCode`."
 
 #: ../../<autotemplate>:1 4c9bc2607e924e4581aa46607336a840
-#, fuzzy
-#| msgid "Authentication attempt"
 msgid "Authorization details template."
 msgstr "Patron de détails d'un code d'autorisation."
 
@@ -8415,8 +8405,6 @@ msgstr ""
 ":class:`~canaille.oidc.basemodels.AuthorizationCode`."
 
 #: ../../<autotemplate>:1 7c89cde145294acf9a5723a077c5bc15
-#, fuzzy
-#| msgid "Delete a authorizationcode."
 msgid "The detailed authorization."
 msgstr "Le code d'autorisation détaillé."
 
@@ -8469,8 +8457,6 @@ msgid "The client creation form."
 msgstr "Le formulaire de création de client."
 
 #: ../../<autotemplate>:1 68010fedf65f454abbedadbf6ec560b0
-#, fuzzy
-#| msgid "Authentication attempt"
 msgid "The client edition template."
 msgstr "Le formulaire d'édition de client."
 
@@ -8481,8 +8467,6 @@ msgstr ""
 "Affiche un formulaire d'édition de :class:`~canaille.oidc.basemodels.Client`."
 
 #: ../../<autotemplate>:1 4b9aed0542ff452f9817ce3a91e5a334
-#, fuzzy
-#| msgid "Delete a client."
 msgid "The edited client."
 msgstr "Le client édité."
 
@@ -8520,8 +8504,6 @@ msgid "The client requesting the logout."
 msgstr "Le client requérant la déconnexion."
 
 #: ../../<autotemplate>:1 af38180c9bdc4bd580ca9d0702ee48f3
-#, fuzzy
-#| msgid "Long-term user consent to an application."
 msgid "The preconsented applications list."
 msgstr "La liste d'application avec consentement implicite."
 
@@ -8545,14 +8527,10 @@ msgid "The scopes to hide."
 msgstr "Les *scopes* à masquer."
 
 #: ../../<autotemplate>:1 e2e636d23ecd4f9e9cd48abd4e36f82c
-#, fuzzy
-#| msgid "The city or locality component."
 msgid "The list of implicitly consented clients."
 msgstr "La liste des clients avec consentements implicite."
 
 #: ../../<autotemplate>:1 e881d65a62cb498b825ba356453ec3c6
-#, fuzzy
-#| msgid "The state or region component."
 msgid "The number of consents."
 msgstr "Le nombre de consentements."
 
@@ -8562,14 +8540,10 @@ msgid "The number of preconsented clients."
 msgstr "Le nombre de clients avec consentement implicite."
 
 #: ../../<autotemplate>:1 f3a2bc4f0b984f44a76ee005a9af4821
-#, fuzzy
-#| msgid "Delete a token."
 msgid "The list of tokens."
 msgstr "La liste des jetons."
 
 #: ../../<autotemplate>:1 92da1ee51fad4754835604fef0685626
-#, fuzzy
-#| msgid "Bases: :py:class:`~canaille.backends.models.Model`"
 msgid "Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`."
 msgstr "Affiche une liste paginée de :class:`~canaille.oidc.basemodels.Token`."
 
@@ -8585,8 +8559,6 @@ msgid ""
 msgstr "Affiche les détails d'un :class:`~canaille.oidc.basemodels.Token`."
 
 #: ../../<autotemplate>:1 b2f4c67385114855b7d1783467fbaaa2
-#, fuzzy
-#| msgid "Token revokation"
 msgid "A token revokation form."
 msgstr "Un formulaire de révocation de jeton."
 
@@ -9215,35 +9187,43 @@ msgstr ""
 
 #: ../tutorial/provisioning.rst:33 5cbe19dfab2848509d2ecb1670f762af
 msgid "Implementation details"
-msgstr ""
+msgstr "Détails d'implémentation"
 
 #: ../tutorial/provisioning.rst:35 18971a7e6bd84e8a813c8dd48feb4060
 msgid ""
 "Due to technical reasons, the Canaille *User* and *Group* resources "
 "implementation subtly differs from the :rfc:`RFC7643 <7643>` definitions:"
 msgstr ""
+"Pour des raisons techniques, les implémentations des resources *User* et "
+"*Group* diffèrent subtilement entre Canaille et la :rfc:`RFC7643 <7643>` :"
 
 #: ../tutorial/provisioning.rst:37 ee13305a62da466097f8be31dcd58cbc
 msgid "``User.userName`` is immutable (while it is read-write in RFC7643)."
 msgstr ""
+"``User.userName`` est immuable (tandis qu'il est en lecture-écriture dans la "
+"RFC7643)."
 
 #: ../tutorial/provisioning.rst:38 65f9f9f8c43d45f38c16ee9a1fa4bebd
 msgid "``User.name.familyName`` is required (while it is optional in RFC7643)."
 msgstr ""
+"``User.name.familyName`` est requis (tandis qu'il est optionnel dans la "
+"RFC7643)."
 
 #: ../tutorial/provisioning.rst:39 5f60bb02615b4cbda2ebebed1334f087
 msgid "``Group.displayName`` is required (while it is optional in RFC7643)."
 msgstr ""
+"``Group.displayName`` est requis (tandis qu'il est optionnel dans la "
+"RFC7643)."
 
 #: ../tutorial/provisioning.rst:40 7d53ff82185640b79b3254af1c5ea824
 msgid ""
 "``Group.members`` is required (while it is optional in RFC7643), i.e. groups "
 "cannot be empty."
 msgstr ""
+"``Group.members`` est requis (tandis qu'il est optionnel dans la RFC7643), "
+"c'est à dire que les groupes ne peuvent être vides."
 
 #: ../tutorial/provisioning.rst:43 28d3fec6f2f94f219904c4cfed944c03
-#, fuzzy
-#| msgid "Logging"
 msgid "Debugging"
 msgstr "Débogage"
 
@@ -9286,8 +9266,6 @@ msgstr ""
 "besoin."
 
 #: ../tutorial/theming.rst:7 3ffd0598489b46bdadc078f3a6f5ac40
-#, fuzzy
-#| msgid "Templates"
 msgid "Custom templates"
 msgstr "Patrons personnalisés"
 
@@ -9360,8 +9338,6 @@ msgstr ""
 "guide de contribution <local_environment>`"
 
 #: ../tutorial/theming.rst:50 282912adb49347b48bb2a8a0525ff3c9
-#, fuzzy
-#| msgid "Run the demo instance with the SQL backend"
 msgid "Run the demo instance"
 msgstr "Lancement de l’instance de démonstration"
 
