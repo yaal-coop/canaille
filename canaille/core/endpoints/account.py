@@ -900,4 +900,4 @@ def reset(user):
             )
         )
 
-    return render_template("reset-password.html", form=form, hash=None, user=user)
+    return render_template("core/reset-password.html", form=form, user=user, hash=None)
