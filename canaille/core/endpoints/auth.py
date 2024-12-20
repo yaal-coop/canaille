@@ -1,6 +1,5 @@
 import datetime
 
-import wtforms
 from flask import Blueprint
 from flask import abort
 from flask import current_app
@@ -15,9 +14,7 @@ from canaille.app import get_b64encoded_qr_image
 from canaille.app import mask_email
 from canaille.app import mask_phone
 from canaille.app.flask import smtp_needed
-from canaille.app.forms import compromised_password_validator
-from canaille.app.forms import password_length_validator
-from canaille.app.forms import password_too_long_validator
+from canaille.app.forms import form_password_validation
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.session import login_user
@@ -266,20 +263,7 @@ def reset(user, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    form["password"].validators = [
-        wtforms.validators.DataRequired(),
-        password_length_validator,
-        password_too_long_validator,
-        compromised_password_validator,
-    ]
-    form["confirmation"].validators = [
-        wtforms.validators.DataRequired(),
-        wtforms.validators.EqualTo(
-            "password", message=_("Password and confirmation do not match.")
-        ),
-    ]
-    form["password"].flags.required = True
-    form["confirmation"].flags.required = True
+    form_password_validation(form["password"], form["confirmation"], "password")
 
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
