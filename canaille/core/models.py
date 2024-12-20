@@ -4,6 +4,7 @@ from typing import Annotated
 from typing import ClassVar
 
 from flask import current_app
+from pydantic import TypeAdapter
 
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
@@ -97,6 +98,11 @@ class User(Model):
     indicating that the value MUST NOT be returned by a service
     provider in any form (the attribute characteristic "returned" is
     "never").
+    """
+
+    password_last_update: datetime.datetime | None = None
+    """Specifies the last time the entry's password was changed.
+    By default, the date of creation of the password is retained.
     """
 
     preferred_language: str | None = None
@@ -485,6 +491,23 @@ class User(Model):
             - self.password_failure_timestamps[-1]
         ).total_seconds()
         return max(calculated_delay - time_since_last_failed_bind, 0)
+
+    def has_expired_password(self):
+        last_update = self.password_last_update or datetime.datetime.now(
+            datetime.timezone.utc
+        )
+        if current_app.config["CANAILLE"]["PASSWORD_LIFETIME"] is None:
+            password_expiration = None
+        else:
+            password_expiration = TypeAdapter(datetime.timedelta).validate_python(
+                current_app.config["CANAILLE"]["PASSWORD_LIFETIME"]
+            )
+
+        return (
+            password_expiration is not None
+            and last_update + password_expiration
+            < datetime.datetime.now(datetime.timezone.utc)
+        )
 
 
 class Group(Model):

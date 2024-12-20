@@ -76,6 +76,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     password: Mapped[str] = mapped_column(
         PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
     )
+    password_last_update: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
     _password_failure_timestamps: Mapped[list[str]] = mapped_column(
         MutableJson, nullable=True
     )

@@ -10,8 +10,8 @@ from flask import url_for
 from werkzeug.security import gen_salt
 
 from canaille.app import models
-from canaille.app.flask import permissions_needed
 from canaille.app.flask import render_htmx_template
+from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.themes import render_template
@@ -23,7 +23,7 @@ bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 
 
 @bp.route("/", methods=["GET", "POST"])
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def index(user):
     table_form = TableForm(models.Client, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
@@ -35,7 +35,7 @@ def index(user):
 
 
 @bp.route("/add", methods=["GET", "POST"])
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def add(user):
     form = ClientAddForm(request.form or None)
 
@@ -87,7 +87,7 @@ def add(user):
 
 
 @bp.route("/edit/<client:client>", methods=["GET", "POST"])
-@permissions_needed("manage_oidc")
+@user_needed("manage_oidc")
 def edit(user, client):
     if request.form.get("action") == "confirm-delete":
         return render_template("oidc/modals/delete-client.html", client=client)
