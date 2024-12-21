@@ -13,8 +13,8 @@ def test_otp_disabled(testclient):
     with testclient.session_transaction() as session:
         session["remaining_otp_methods"] = ["TOTP"]
         session["attempt_login_with_correct_password"] = "id"
-    testclient.get("/setup-2fa", status=404)
-    testclient.get("/verify-2fa", status=404)
+    testclient.get("/setup-mfa", status=404)
+    testclient.get("/verify-mfa", status=404)
 
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
@@ -45,7 +45,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
         assert "attempt_login" not in session
         assert "user" == session.get("attempt_login_with_correct_password")
 
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
     res.form["otp"] = user_otp.generate_otp()
     res = res.form.submit(status=302)
 
@@ -174,15 +174,15 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
 
-    assert res.location == "/setup-2fa"
+    assert res.location == "/setup-mfa"
     assert (
         "info",
         "You have not enabled multi-factor authentication. Please enable it first to login.",
     ) in res.flashes
-    res = testclient.get("/setup-2fa", status=200)
+    res = testclient.get("/setup-mfa", status=200)
     assert u.secret_token == res.form["secret"].value
 
-    res = testclient.get("/verify-2fa", status=200)
+    res = testclient.get("/verify-mfa", status=200)
     res.form["otp"] = u.generate_otp()
     res = res.form.submit(status=302)
 
@@ -213,7 +213,7 @@ def test_verify_otp_page_without_signin_in_redirects_to_login_page(
 ):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    res = testclient.get("/verify-2fa", status=302)
+    res = testclient.get("/verify-mfa", status=302)
     assert res.location == "/login"
     assert res.flashes == [
         ("warning", "Cannot remember the login you attempted to sign in with")
@@ -226,7 +226,7 @@ def test_setup_otp_page_without_signin_in_redirects_to_login_page(
 ):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    res = testclient.get("/setup-2fa", status=302)
+    res = testclient.get("/setup-mfa", status=302)
     assert res.location == "/login"
     assert res.flashes == [
         ("warning", "Cannot remember the login you attempted to sign in with")
@@ -237,7 +237,7 @@ def test_setup_otp_page_without_signin_in_redirects_to_login_page(
 def test_verify_otp_page_already_logged_in(testclient, logged_user_otp, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    res = testclient.get("/verify-2fa", status=302)
+    res = testclient.get("/verify-mfa", status=302)
     assert res.location == "/profile/user"
 
 
@@ -266,7 +266,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(
         assert "attempt_login" not in session
         assert "user" == session.get("attempt_login_with_correct_password")
 
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
     for _x in range(3):
         res.form["otp"] = "111111"
         res = res.form.submit(status=302).follow()
@@ -290,7 +290,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(
 def test_setup_otp_page_already_logged_in(testclient, logged_user_otp, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    res = testclient.get("/setup-2fa", status=302)
+    res = testclient.get("/setup-mfa", status=302)
     assert res.location == "/profile/user"
 
 
@@ -319,7 +319,7 @@ def test_signin_inside_hotp_look_ahead_window(testclient, backend, user_otp, cap
         assert "attempt_login" not in session
         assert "user" == session.get("attempt_login_with_correct_password")
 
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
 
     res.form["otp"] = user_otp.generate_otp(HOTP_LOOK_AHEAD_WINDOW)
     res = res.form.submit(status=302)
@@ -365,7 +365,7 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user_otp, ca
         assert "attempt_login" not in session
         assert "user" == session.get("attempt_login_with_correct_password")
 
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
 
     res.form["otp"] = user_otp.generate_otp(HOTP_LOOK_AHEAD_WINDOW + 1)
     res = res.form.submit(status=302)
