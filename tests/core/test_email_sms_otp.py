@@ -16,7 +16,7 @@ def test_email_otp_disabled(testclient):
     with testclient.session_transaction() as session:
         session["remaining_otp_methods"] = ["EMAIL_OTP"]
         session["attempt_login_with_correct_password"] = "id"
-    testclient.get("/verify-2fa", status=404)
+    testclient.get("/verify-mfa", status=404)
 
     testclient.app.config["WTF_CSRF_ENABLED"] = False
     testclient.post("/send-mail-otp", status=404)
@@ -27,7 +27,7 @@ def test_sms_otp_disabled(testclient):
     with testclient.session_transaction() as session:
         session["remaining_otp_methods"] = ["SMS_OTP"]
         session["attempt_login_with_correct_password"] = "id"
-    testclient.get("/verify-2fa", status=404)
+    testclient.get("/verify-mfa", status=404)
 
     testclient.app.config["WTF_CSRF_ENABLED"] = False
     testclient.post("/send-sms-otp", status=404)
@@ -64,7 +64,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
         assert "attempt_login" not in session
         assert "user" == session.get("attempt_login_with_correct_password")
 
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
 
     backend.reload(user)
     otp = user.one_time_password
@@ -266,7 +266,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
         assert "attempt_login" not in session
         assert "user" == session.get("attempt_login_with_correct_password")
 
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
 
     backend.reload(user)
     otp = user.one_time_password
@@ -373,7 +373,7 @@ def test_verify_mail_or_sms_otp_page_without_signin_in_redirects_to_login_page(
 ):
     testclient.app.config["CANAILLE"][otp_method] = True
 
-    res = testclient.get("/verify-2fa", status=302)
+    res = testclient.get("/verify-mfa", status=302)
     assert res.location == "/login"
     assert res.flashes == [
         ("warning", "Cannot remember the login you attempted to sign in with")
@@ -386,7 +386,7 @@ def test_verify_mail_or_sms_otp_page_already_logged_in(
 ):
     testclient.app.config["CANAILLE"][otp_method] = True
 
-    res = testclient.get("/verify-2fa", status=302)
+    res = testclient.get("/verify-mfa", status=302)
     assert res.location == "/profile/user"
 
 
@@ -458,7 +458,7 @@ def test_send_new_mail_otp(smtpd, testclient, backend, user, caplog):
         "Sent one-time password for user to john@doe.test from unknown IP",
     ) in caplog.record_tuples
 
-    assert res.location == "/verify-2fa"
+    assert res.location == "/verify-mfa"
 
 
 def test_send_mail_otp_multiple_attempts(testclient, backend, user, caplog):
@@ -470,7 +470,7 @@ def test_send_mail_otp_multiple_attempts(testclient, backend, user, caplog):
             session["attempt_login_with_correct_password"] = user.user_name
 
         res = testclient.post("/send-mail-otp", status=302)
-        assert res.location == "/verify-2fa"
+        assert res.location == "/verify-mfa"
 
         traveller.shift(datetime.timedelta(seconds=SEND_NEW_OTP_DELAY - 1))
         res = testclient.post("/send-mail-otp", status=302)
@@ -478,7 +478,7 @@ def test_send_mail_otp_multiple_attempts(testclient, backend, user, caplog):
             "danger",
             f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
         ) in res.flashes
-        assert res.location == "/verify-2fa"
+        assert res.location == "/verify-mfa"
 
         traveller.shift(datetime.timedelta(seconds=1))
 
@@ -503,7 +503,7 @@ def test_send_new_mail_otp_failed(testclient, user):
         "Error while sending one-time password. Please try again.",
     ) in res.flashes
 
-    assert res.location == "/verify-2fa"
+    assert res.location == "/verify-mfa"
 
 
 def test_send_new_sms_otp(testclient, backend, user, caplog, mock_smpp):
@@ -529,7 +529,7 @@ def test_send_new_sms_otp(testclient, backend, user, caplog, mock_smpp):
         "Sent one-time password for user to 555-000-000 from unknown IP",
     ) in caplog.record_tuples
 
-    assert res.location == "/verify-2fa"
+    assert res.location == "/verify-mfa"
 
 
 def test_send_sms_otp_multiple_attempts(testclient, backend, user, caplog, mock_smpp):
@@ -541,7 +541,7 @@ def test_send_sms_otp_multiple_attempts(testclient, backend, user, caplog, mock_
             session["attempt_login_with_correct_password"] = user.user_name
 
         res = testclient.post("/send-sms-otp", status=302)
-        assert res.location == "/verify-2fa"
+        assert res.location == "/verify-mfa"
 
         traveller.shift(datetime.timedelta(seconds=SEND_NEW_OTP_DELAY - 1))
         res = testclient.post("/send-sms-otp", status=302)
@@ -549,7 +549,7 @@ def test_send_sms_otp_multiple_attempts(testclient, backend, user, caplog, mock_
             "danger",
             f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
         ) in res.flashes
-        assert res.location == "/verify-2fa"
+        assert res.location == "/verify-mfa"
 
         traveller.shift(datetime.timedelta(seconds=1))
 
@@ -574,7 +574,7 @@ def test_send_new_sms_otp_failed(testclient, user):
         "Error while sending one-time password. Please try again.",
     ) in res.flashes
 
-    assert res.location == "/verify-2fa"
+    assert res.location == "/verify-mfa"
 
 
 def test_signin_with_multiple_otp_methods(
@@ -604,12 +604,12 @@ def test_signin_with_multiple_otp_methods(
         assert "user" == session.get("attempt_login_with_correct_password")
 
     # TOTP/HOTP
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
     res.form["otp"] = user_otp.generate_otp()
     res = res.form.submit(status=302).follow(status=200)
 
     # EMAIL_OTP
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
     backend.reload(user_otp)
     otp = user_otp.one_time_password
     main_form = res.forms[0]
@@ -617,7 +617,7 @@ def test_signin_with_multiple_otp_methods(
     res = main_form.submit(status=302).follow(status=200)
 
     # SMS_OTP
-    res = testclient.get("/verify-2fa")
+    res = testclient.get("/verify-mfa")
     backend.reload(user_otp)
     otp = user_otp.one_time_password
     main_form = res.forms[0]

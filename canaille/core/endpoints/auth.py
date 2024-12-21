@@ -121,7 +121,7 @@ def password():
     if otp_methods:
         session["remaining_otp_methods"] = otp_methods
         session["attempt_login_with_correct_password"] = session.pop("attempt_login")
-        return redirect_to_verify_2fa(
+        return redirect_to_verify_mfa(
             user, otp_methods[0], request_ip, url_for("core.auth.password")
         )
     else:
@@ -277,7 +277,7 @@ def reset(user, hash):
     return render_template("core/reset-password.html", form=form, user=user, hash=hash)
 
 
-@bp.route("/setup-2fa")
+@bp.route("/setup-mfa")
 def setup_two_factor_auth():
     if not current_app.features.has_otp:
         abort(404)
@@ -298,14 +298,14 @@ def setup_two_factor_auth():
     uri = user.get_otp_authentication_setup_uri()
     base64_qr_image = get_b64encoded_qr_image(uri)
     return render_template(
-        "core/setup-2fa.html",
+        "core/setup-mfa.html",
         secret=user.secret_token,
         qr_image=base64_qr_image,
         user=user,
     )
 
 
-@bp.route("/verify-2fa", methods=["GET", "POST"])
+@bp.route("/verify-mfa", methods=["GET", "POST"])
 def verify_two_factor_auth():
     if current_user():
         return redirect(
@@ -335,7 +335,7 @@ def verify_two_factor_auth():
 
     if not request.form or form.form_control():
         return render_template(
-            "core/verify-2fa.html",
+            "core/verify-mfa.html",
             form=form,
             username=session["attempt_login_with_correct_password"],
             method=current_otp_method,
@@ -349,7 +349,7 @@ def verify_two_factor_auth():
         session["remaining_otp_methods"].pop(0)
         request_ip = request.remote_addr or "unknown IP"
         if session["remaining_otp_methods"]:
-            return redirect_to_verify_2fa(
+            return redirect_to_verify_mfa(
                 user,
                 session["remaining_otp_methods"][0],
                 request_ip,
@@ -465,7 +465,7 @@ def send_sms_otp():
     return redirect(url_for("core.auth.verify_two_factor_auth"))
 
 
-def redirect_to_verify_2fa(user, otp_method, request_ip, fail_redirect_url):
+def redirect_to_verify_mfa(user, otp_method, request_ip, fail_redirect_url):
     if otp_method in ["HOTP", "TOTP"]:
         if not user.last_otp_login:
             flash(
