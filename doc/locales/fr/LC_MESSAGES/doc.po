@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-22 12:26+0100\n"
-"PO-Revision-Date: 2024-12-20 08:38+0000\n"
+"PO-Revision-Date: 2024-12-22 15:13+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.9.2-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 3fb33c37ddc0459280f3c58be943008e
@@ -79,9 +79,9 @@ msgid ""
 "core.configuration.CoreSettings.SMS_OTP` and :attr:`~canaille.core."
 "configuration.CoreSettings.SMPP` :issue:`47`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` et :attr:"
-"`~canaille.core.configuration.CoreSettings.MAIL_OTP` et :attr:`~canaille."
-"core.configuration.CoreSettings.SMPP` :issue:`47`"
+":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`, "
+":attr:`~canaille.core.configuration.CoreSettings.MAIL_OTP` et "
+":attr:`~canaille.core.configuration.CoreSettings.SMPP` :issue:`47`"
 
 #: ../../CHANGES.rst:15 05060126fea740ef82fba8246132aa6e
 msgid "Password compromission check :issue:`179`"
@@ -112,20 +112,12 @@ msgid "Basic SCIM implementation. :issue:`116` :pr:`197`"
 msgstr "Implémentation basique du protocole SCIM. :issue:`116` :pr:`197`"
 
 #: ../../CHANGES.rst:23 c777083179094cd994619adcfc8499d9
-#, fuzzy
-#| msgid ":issue:`Password expiry policy <176>`"
 msgid "Password expiry policy :issue:`176`"
-msgstr ":issue:`Politique d’expiration des mots de passe <176>`"
+msgstr "Politique d’expiration des mots de passe :issue:`176`"
 
 #: ../../CHANGES.rst:24 efa1fc20329f42918fe6a530617cf102
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings."
-#| "ENABLE_INTRUDER_LOCKOUT` :issue:`173`"
 msgid ":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`"
-msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT` :"
-"issue:`173`"
+msgstr ":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`"
 
 #: ../../CHANGES.rst:27 ../../CHANGES.rst:47 ../../CHANGES.rst:60
 #: ../../CHANGES.rst:72 ../../CHANGES.rst:97 ../../CHANGES.rst:105
@@ -4743,11 +4735,10 @@ msgid ""
 msgstr ""
 "Si `OTP_METHOD` est défini, alors pour s'authentifier les utilisateurs "
 "devront saisir un mot de passe à usage unique (OTP) généré par une "
-"application d'authentification.\n"
-"Si la valeur est ``TOTP``l'application utilisera des mots de passes à usage "
-"unique basés sur le temps.\n"
-"Si la valeur est ``HOTP``, l'application utilisera des mots de passes à "
-"usage unique basés sur HMAC."
+"application d'authentification. Si la valeur est ``TOTP``l'application "
+"utilisera des mots de passes à usage unique basés sur le temps. Si la valeur "
+"est ``HOTP``, l'application utilisera des mots de passes à usage unique "
+"basés sur HMAC."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL:1
@@ -4760,10 +4751,8 @@ msgstr ""
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME:1
 #: 1072c369689f4922997715eb5337795a
-#, fuzzy
-#| msgid "Password initialization"
 msgid "Password validity duration."
-msgstr "Initialisation des mots de passe"
+msgstr "Durée de validité du mot de passe."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME:3
@@ -6753,10 +6742,8 @@ msgstr "Définition de jeton OpenID Connect."
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_account_lockability:1
 #: 51e69cc91e5b411db5b8ebdb30702245
-#, fuzzy
-#| msgid "Whether the user account has been locked or has expired."
 msgid "Indicate whether the user accounts can be locked."
-msgstr "Si le compte utilisateur a été verrouillé ou a expiré."
+msgstr "Indique si les comptes utilisateur peuvent être verrouillés."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_account_lockability:3
