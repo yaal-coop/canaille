@@ -11,7 +11,7 @@ from flask import url_for
 from canaille.app import models
 from canaille.app.flask import user_needed
 from canaille.app.i18n import gettext as _
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 from canaille.backends import Backend
 
 from ..utils import SCOPE_DETAILS

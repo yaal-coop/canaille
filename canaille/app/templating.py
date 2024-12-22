@@ -1,6 +1,7 @@
 import os
 
 import flask
+from flask import request
 
 try:
     import flask_themer
@@ -33,3 +34,27 @@ if flask_themer:
 
 else:  # pragma: no cover
     render_template = flask.render_template
+
+
+def setup_jinja(app):
+    from canaille.app.forms import password_strength_calculator
+
+    app.jinja_env.filters["len"] = len
+    app.jinja_env.filters["password_strength"] = password_strength_calculator
+    app.jinja_env.policies["ext.i18n.trimmed"] = True
+
+    @app.context_processor
+    def global_processor():
+        from canaille.app.session import current_user
+
+        return {
+            "debug": app.debug or app.config.get("TESTING", False),
+            "logo_url": app.config["CANAILLE"]["LOGO"],
+            "favicon_url": app.config["CANAILLE"]["FAVICON"]
+            or app.config["CANAILLE"]["LOGO"],
+            "website_name": app.config["CANAILLE"]["NAME"],
+            "user": current_user(),
+            "menu": True,
+            "is_boosted": request.headers.get("HX-Boosted", False),
+            "features": app.features,
+        }
