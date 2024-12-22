@@ -15,6 +15,7 @@ from flask import request
 from flask import session
 from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
+from werkzeug.exceptions import HTTPException
 
 from canaille import csrf
 from canaille.app import models
@@ -40,6 +41,14 @@ from .forms import LogoutForm
 from .well_known import openid_configuration
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
+
+
+@bp.errorhandler(HTTPException)
+def http_error_handler(error):
+    return {
+        "error": error.name.lower().replace(" ", "_"),
+        "error_description": error.description,
+    }, error.code
 
 
 @bp.route("/authorize", methods=["GET", "POST"])
