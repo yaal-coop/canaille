@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-22 16:12+0100\n"
-"PO-Revision-Date: 2024-12-22 15:13+0000\n"
+"PO-Revision-Date: 2024-12-22 15:36+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -6747,82 +6747,73 @@ msgstr "Indique si les comptes utilisateur peuvent être verrouillés."
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_account_lockability:3
 #: e8475984eb0f465f97109240832fc978
-#, fuzzy
-#| msgid ""
-#| "This reference details the data models used by Canaille. This is mostly "
-#| "useful for developers."
 msgid ""
 "It depends on the backend used by Canaille. This is only disabled for "
 "OpenLDAP versions under 2.6."
 msgstr ""
-"Cette référence détaille les modèles de donnée utilisés par Canaille. Cela "
-"est surtout utile pour les développeurs."
+"Cela dépend de la base de données utilisée par Canaille. C'est uniquement "
+"désactivé pour les versions d'OpenLDAP inférieures à 2.6."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_email_confirmation:1
 #: db40ea1562de466b8cd314d95f04fb64
 msgid "Indicate whether the user email confirmation is enabled."
 msgstr ""
+"Indique si la confirmation des adresses email des utilisateurs est activée."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_email_confirmation:3
 #: 24739facc2bd4c75aaabe0ab4f870c52
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.EMAIL_CONFIRMATION <canaille.core."
 "configuration.CoreSettings.EMAIL_CONFIRMATION>` configuration parameter."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Contrôlé par le paramètre de configuration :attr:`"
+"CANAILLE.EMAIL_CONFIRMATION "
+"<canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_email_otp:1
 #: 21ca21a9a0c240f7899bc11bca2da3b0
 msgid "Indicate whether the email OTP authentication factor is enabled."
 msgstr ""
+"Indique si le facteur d'authentification de mot de passe à usage unique "
+"envoyé par mail est activé."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_email_otp:3
 #: e064888816ad4e228797af005daa0c1b
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.EMAIL_OTP <canaille.core."
 "configuration.CoreSettings.EMAIL_OTP>` configuration parameter."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Contrôlé par le paramètre de configuration :attr:`CANAILLE.EMAIL_OTP "
+"<canaille.core.configuration.CoreSettings.EMAIL_OTP>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_intruder_lockout:1
 #: 1998dd6eda9e42f981d690ad9c3114d3
 msgid "Indicate whether the intruder lockout feature is enabled."
 msgstr ""
+"Indique si le verrouillage temporaire des comptes utilisateur après échecs "
+"de connexion est activé."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_intruder_lockout:3
 #: f673ed471ad545b18ac0693ba051f9ba
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.ENABLE_INTRUDER_LOCKOUT <canaille."
 "core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>` configuration "
 "parameter."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Contrôlé par le paramètre de configuration :attr:`"
+"CANAILLE.ENABLE_INTRUDER_LOCKOUT "
+"<canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_oidc:1 07510d9a21e7471a86b8cb67ebd3f818
 msgid "Indicate whether the OIDC feature is enabled."
-msgstr ""
+msgstr "Indique si la fonctionnalité OIDC est activé."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_oidc:3 aabe8d66effa4394829dee8ebdbc387b
@@ -6832,121 +6823,114 @@ msgid ""
 "<canaille.oidc.configuration.OIDCSettings>` configuration parameter, and "
 "needs the ``oidc`` extra package to be installed."
 msgstr ""
+"Cette fonctionnalité est requise pour que Canaille fasse office de serveur "
+"d'authentification et d'autorisation pour d'autres applications, et "
+"permettre l'authentification unique des utilisateurs. Cette fonctionnalité "
+"est contrôlée par le paramètre de configuration :class:`CANAILLE_OIDC "
+"<canaille.oidc.configuration.OIDCSettings>` ainsi que le paquet extra "
+"``oidc``."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_otp:1 aa9a89f7384f49e680ea30d8baa145b3
-#, fuzzy
-#| msgid "The authentication factor method."
 msgid "Indicate whether the OTP authentication factor is enabled."
-msgstr "La méthode d'authentification multi-facteur."
+msgstr ""
+"Indique si le facteur d'authentification de mot de passe à usage unique est "
+"actif."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_otp:3 97dbc9427f2942639739f4ca336b2c5f
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.OTP_METHOD <canaille.core."
 "configuration.CoreSettings.OTP_METHOD>` configuration parameter, and needs "
 "the ``otp`` extra package to be installed."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Cette fonctionnalité est contrôléé par le paramètre de configuration :attr:`"
+"CANAILLE.OTP_METHOD <canaille.core.configuration.CoreSettings.OTP_METHOD>`, "
+"et nécessite le paquet extra ``otp``."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_password_recovery:1
 #: be057526037b4c0ca9eeadd4d59faf00
-#, fuzzy
-#| msgid ""
-#| "If unset, mail-related features like password recovery won't be enabled."
 msgid "Indicate whether the password recovery feature is enabled."
 msgstr ""
-"Si non renseigné, les fonctionnalités liées aux mail, telles que la "
-"réinitialisation des mots de passe, ne seront pas activées."
+"Indique si la fonctionnalité de réinitialisation de mot de passe est activée."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_password_recovery:3
 #: 25817e283da2497d805bfcad9c0175cf
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.ENABLE_PASSWORD_RECOVERY <canaille."
 "core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` configuration "
 "parameter."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Cette fonctionnalité est contrôlé par le paramètre de configuration :attr:`"
+"CANAILLE.ENABLE_PASSWORD_RECOVERY "
+"<canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_registration:1
 #: 625966afc8b04095b75167729f416662
 msgid "Indicate whether the user account registration is enabled."
 msgstr ""
+"Indique si la fonctionnalité d'enregistrement de comptes utilisateurs est "
+"activée."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_registration:3
 #: 2805f75ef1fb4cd0832d589018d21548
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.ENABLE_REGISTRATION <canaille.core."
 "configuration.CoreSettings.ENABLE_REGISTRATION>` configuration parameter."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Cette fonctionnalité est contrôlée par le paramètre de configuration :attr:`"
+"CANAILLE.ENABLE_REGISTRATION "
+"<canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_server:1
 #: aaecfeba0f154fe2977fa24558dac7f8
 msgid "Indicate whether the SCIM server feature is enabled."
-msgstr ""
+msgstr "Indique si la fonctionnalité de serveur SCIM est activée."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_server:3
 #: f585e4196fbb439189756d2389b6c9fc
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "This feature is required to make Canaille a provisioning server. It is "
 "controlled by the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim."
 "configuration.SCIMSettings.ENABLE_SERVER>` configuration parameter, and "
 "needs the ``scim`` extra package to be installed."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Cette fonctionnalité est requise pour faire de Canaille un serveur de "
+"provisionnement. Elle est contrôlée par le paramètre de configuration :attr:`"
+"CANAILLE_SCIM.ENABLE_SERVER "
+"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`, ainsi que le "
+"paquet extra ``scim``."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_sms_otp:1
 #: 961e256a62724e12aafb8a09b127b0fd
 msgid "Indicate whether the SMS OTP authentication factor is enabled."
 msgstr ""
+"Indique si le facteur d'authentification de mot de passe à usage unique "
+"envoyé par SMS est activé."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_sms_otp:3
 #: 9f61b04bb6874c56a8774ff9c10a23e3
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "It is controlled by the :attr:`CANAILLE.SMS_OTP <canaille.core.configuration."
 "CoreSettings.SMS_OTP>` configuration parameter, and needs the ``smpp`` extra "
 "package to be installed."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Cette fonctionnalité est contrôlée par le paramètre de configuration :attr:`"
+"CANAILLE.SMS_OTP <canaille.core.configuration.CoreSettings.SMS_OTP>`, et "
+"requière le paquet extra ``smpp``."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_smtp:1 3a89ac39a9e643149dc0173956a001a3
 msgid "Indicate whether the mail sending feature is enabled."
-msgstr ""
+msgstr "Indique si la fonctionnalité d'envoi de mail est activée."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_smtp:3 28bd58a812e84704a83f61aa5e9f0832
@@ -6956,6 +6940,11 @@ msgid ""
 "etc. It is controlled by the :attr:`CANAILLE.SMTP <canaille.core."
 "configuration.CoreSettings.SMTP>` configuration parameter."
 msgstr ""
+"Cette fonctionnalité est requise pour :attr:`valider les adresses email des "
+"utilsiateurs <canaille.app.features.Features.has_email_confirmation>`, "
+"envoyer des mots de passe à usage unique par mail etc. Elle est contrôlée "
+"par le paramètre de configuration :attr:`CANAILLE.SMTP "
+"<canaille.core.configuration.CoreSettings.SMTP>`."
 
 #: ../references/templates.rst:2 25d974aba30140f4ad6e3445c3d71f50
 msgid "Templates"
