@@ -381,5 +381,5 @@ class CoreSettings(BaseModel):
     If set, user passwords expire after this delay.
     Users are forced to change their password when the lifetime of the password is over.
     The duration value is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
-    Example a delay of 60 days is written "P60D".
+    For example, delay of 60 days is written "P60D".
     """

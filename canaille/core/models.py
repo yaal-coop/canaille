@@ -101,7 +101,7 @@ class User(Model):
     """
 
     password_last_update: datetime.datetime | None = None
-    """Specifies the last time the entry's password was changed.
+    """Specifies the last time the user password was changed.
     By default, the date of creation of the password is retained.
     """
 
