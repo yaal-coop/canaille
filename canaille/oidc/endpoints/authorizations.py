@@ -6,7 +6,7 @@ from canaille.app import models
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 
 bp = Blueprint("authorizations", __name__, url_prefix="/admin/authorization")
 

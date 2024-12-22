@@ -5,7 +5,7 @@ from canaille.app import build_hash
 from canaille.app.i18n import gettext as _
 from canaille.app.mails import logo
 from canaille.app.mails import send_email
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 
 
 def send_test_mail(email):

@@ -1,7 +1,7 @@
 from flask import current_app
 
 from canaille.app.sms import send_sms
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 
 
 def send_one_time_password_sms(phone_number, otp):

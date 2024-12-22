@@ -23,7 +23,7 @@ from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.session import logout_user
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 from canaille.backends import Backend
 
 from ..oauth import ClientConfigurationEndpoint

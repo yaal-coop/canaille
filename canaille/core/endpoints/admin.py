@@ -11,7 +11,7 @@ from canaille.app.flask import user_needed
 from canaille.app.forms import Form
 from canaille.app.forms import email_validator
 from canaille.app.i18n import gettext as _
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 from canaille.core.mails import build_hash
 from canaille.core.mails import send_test_mail
 

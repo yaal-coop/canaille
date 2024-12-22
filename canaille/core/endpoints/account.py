@@ -41,7 +41,7 @@ from canaille.app.i18n import reload_translations
 from canaille.app.session import current_user
 from canaille.app.session import login_user
 from canaille.app.session import logout_user
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 from canaille.backends import Backend
 
 from ..mails import send_confirmation_email

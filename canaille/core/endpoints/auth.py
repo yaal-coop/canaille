@@ -18,7 +18,7 @@ from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.session import login_user
 from canaille.app.session import logout_user
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.endpoints.forms import TwoFactorForm
 from canaille.core.models import SEND_NEW_OTP_DELAY

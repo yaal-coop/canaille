@@ -15,7 +15,7 @@ from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
-from canaille.app.themes import render_template
+from canaille.app.templating import render_template
 
 
 def user_needed(*args):

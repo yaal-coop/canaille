@@ -2,11 +2,8 @@ import datetime
 import sys
 
 from flask import Flask
-from flask import request
 from flask import session
 from flask_wtf.csrf import CSRFProtect
-
-from canaille.app.forms import password_strength_calculator
 
 csrf = CSRFProtect()
 
@@ -28,12 +25,6 @@ def setup_sentry(app):  # pragma: no cover
     return sentry_sdk
 
 
-def setup_jinja(app):
-    app.jinja_env.filters["len"] = len
-    app.jinja_env.filters["password_strength"] = password_strength_calculator
-    app.jinja_env.policies["ext.i18n.trimmed"] = True
-
-
 def setup_blueprints(app):
     import canaille.core.endpoints
 
@@ -53,7 +44,7 @@ def setup_blueprints(app):
 
 
 def setup_flask(app):
-    from canaille.app.themes import render_template
+    from canaille.app.templating import render_template
 
     csrf.init_app(app)
 
@@ -61,22 +52,6 @@ def setup_flask(app):
     def make_session_permanent():
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(days=365)
-
-    @app.context_processor
-    def global_processor():
-        from canaille.app.session import current_user
-
-        return {
-            "debug": app.debug or app.config.get("TESTING", False),
-            "logo_url": app.config["CANAILLE"]["LOGO"],
-            "favicon_url": app.config["CANAILLE"]["FAVICON"]
-            or app.config["CANAILLE"]["LOGO"],
-            "website_name": app.config["CANAILLE"]["NAME"],
-            "user": current_user(),
-            "menu": True,
-            "is_boosted": request.headers.get("HX-Boosted", False),
-            "features": app.features,
-        }
 
     @app.errorhandler(400)
     def bad_request(error):
@@ -126,7 +101,8 @@ def create_app(
     from .app.features import setup_features
     from .app.i18n import setup_i18n
     from .app.logging import setup_logging
-    from .app.themes import setup_themer
+    from .app.templating import setup_jinja
+    from .app.templating import setup_themer
     from .backends import setup_backend
 
     app = Flask(__name__)
