@@ -53,6 +53,8 @@ def setup_blueprints(app):
 
 
 def setup_flask(app):
+    from canaille.app.themes import render_template
+
     csrf.init_app(app)
 
     @app.before_request
@@ -75,6 +77,26 @@ def setup_flask(app):
             "is_boosted": request.headers.get("HX-Boosted", False),
             "features": app.features,
         }
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return render_template("error.html", description=error, error_code=400), 400
+
+    @app.errorhandler(403)
+    def unauthorized(error):
+        return render_template("error.html", description=error, error_code=403), 403
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        from canaille.app.flask import redirect_to_bp_handlers
+
+        return redirect_to_bp_handlers(app, error) or render_template(
+            "error.html", description=error, error_code=404
+        ), 404
+
+    @app.errorhandler(500)
+    def server_error(error):  # pragma: no cover
+        return render_template("error.html", description=error, error_code=500), 500
 
 
 def setup_flask_converters(app):
