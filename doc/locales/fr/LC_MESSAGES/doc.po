@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2024-12-22 16:12+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-22 16:35+0100\n"
 "PO-Revision-Date: 2024-12-22 15:36+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -4761,7 +4761,7 @@ msgid ""
 "If set, user passwords expire after this delay. Users are forced to change "
 "their password when the lifetime of the password is over. The duration value "
 "is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/"
-"ISO_8601#Durations>`_. Example a delay of 60 days is written \"P60D\"."
+"ISO_8601#Durations>`_. For example, delay of 60 days is written \"P60D\"."
 msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SENTRY_DSN:1
@@ -5924,8 +5924,8 @@ msgstr ""
 #: ../../docstring of canaille.core.models.User.password_last_update:1
 #: f1bb412648244da18357a6e88d57836b
 msgid ""
-"Specifies the last time the entry's password was changed. By default, the "
-"date of creation of the password is retained."
+"Specifies the last time the user password was changed. By default, the date "
+"of creation of the password is retained."
 msgstr ""
 
 #: ../../docstring of canaille.core.models.User.phone_numbers:1
@@ -6768,9 +6768,9 @@ msgid ""
 "It is controlled by the :attr:`CANAILLE.EMAIL_CONFIRMATION <canaille.core."
 "configuration.CoreSettings.EMAIL_CONFIRMATION>` configuration parameter."
 msgstr ""
-"Contrôlé par le paramètre de configuration :attr:`"
-"CANAILLE.EMAIL_CONFIRMATION "
-"<canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>`."
+"Contrôlé par le paramètre de configuration :attr:`CANAILLE."
+"EMAIL_CONFIRMATION <canaille.core.configuration.CoreSettings."
+"EMAIL_CONFIRMATION>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_email_otp:1
@@ -6806,9 +6806,9 @@ msgid ""
 "core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>` configuration "
 "parameter."
 msgstr ""
-"Contrôlé par le paramètre de configuration :attr:`"
-"CANAILLE.ENABLE_INTRUDER_LOCKOUT "
-"<canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>`."
+"Contrôlé par le paramètre de configuration :attr:`CANAILLE."
+"ENABLE_INTRUDER_LOCKOUT <canaille.core.configuration.CoreSettings."
+"ENABLE_INTRUDER_LOCKOUT>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_oidc:1 07510d9a21e7471a86b8cb67ebd3f818
@@ -6844,8 +6844,8 @@ msgid ""
 "configuration.CoreSettings.OTP_METHOD>` configuration parameter, and needs "
 "the ``otp`` extra package to be installed."
 msgstr ""
-"Cette fonctionnalité est contrôléé par le paramètre de configuration :attr:`"
-"CANAILLE.OTP_METHOD <canaille.core.configuration.CoreSettings.OTP_METHOD>`, "
+"Cette fonctionnalité est contrôléé par le paramètre de configuration :attr:"
+"`CANAILLE.OTP_METHOD <canaille.core.configuration.CoreSettings.OTP_METHOD>`, "
 "et nécessite le paquet extra ``otp``."
 
 #: ../../canaille/app/features.py:docstring of
@@ -6863,9 +6863,9 @@ msgid ""
 "core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` configuration "
 "parameter."
 msgstr ""
-"Cette fonctionnalité est contrôlé par le paramètre de configuration :attr:`"
-"CANAILLE.ENABLE_PASSWORD_RECOVERY "
-"<canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>`."
+"Cette fonctionnalité est contrôlé par le paramètre de configuration :attr:"
+"`CANAILLE.ENABLE_PASSWORD_RECOVERY <canaille.core.configuration.CoreSettings."
+"ENABLE_PASSWORD_RECOVERY>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_registration:1
@@ -6882,9 +6882,9 @@ msgid ""
 "It is controlled by the :attr:`CANAILLE.ENABLE_REGISTRATION <canaille.core."
 "configuration.CoreSettings.ENABLE_REGISTRATION>` configuration parameter."
 msgstr ""
-"Cette fonctionnalité est contrôlée par le paramètre de configuration :attr:`"
-"CANAILLE.ENABLE_REGISTRATION "
-"<canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>`."
+"Cette fonctionnalité est contrôlée par le paramètre de configuration :attr:"
+"`CANAILLE.ENABLE_REGISTRATION <canaille.core.configuration.CoreSettings."
+"ENABLE_REGISTRATION>`."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_server:1
@@ -6902,10 +6902,9 @@ msgid ""
 "needs the ``scim`` extra package to be installed."
 msgstr ""
 "Cette fonctionnalité est requise pour faire de Canaille un serveur de "
-"provisionnement. Elle est contrôlée par le paramètre de configuration :attr:`"
-"CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`, ainsi que le "
-"paquet extra ``scim``."
+"provisionnement. Elle est contrôlée par le paramètre de configuration :attr:"
+"`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings."
+"ENABLE_SERVER>`, ainsi que le paquet extra ``scim``."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_sms_otp:1
@@ -6923,8 +6922,8 @@ msgid ""
 "CoreSettings.SMS_OTP>` configuration parameter, and needs the ``smpp`` extra "
 "package to be installed."
 msgstr ""
-"Cette fonctionnalité est contrôlée par le paramètre de configuration :attr:`"
-"CANAILLE.SMS_OTP <canaille.core.configuration.CoreSettings.SMS_OTP>`, et "
+"Cette fonctionnalité est contrôlée par le paramètre de configuration :attr:"
+"`CANAILLE.SMS_OTP <canaille.core.configuration.CoreSettings.SMS_OTP>`, et "
 "requière le paquet extra ``smpp``."
 
 #: ../../canaille/app/features.py:docstring of
@@ -6943,8 +6942,8 @@ msgstr ""
 "Cette fonctionnalité est requise pour :attr:`valider les adresses email des "
 "utilsiateurs <canaille.app.features.Features.has_email_confirmation>`, "
 "envoyer des mots de passe à usage unique par mail etc. Elle est contrôlée "
-"par le paramètre de configuration :attr:`CANAILLE.SMTP "
-"<canaille.core.configuration.CoreSettings.SMTP>`."
+"par le paramètre de configuration :attr:`CANAILLE.SMTP <canaille.core."
+"configuration.CoreSettings.SMTP>`."
 
 #: ../references/templates.rst:2 25d974aba30140f4ad6e3445c3d71f50
 msgid "Templates"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-22 16:12+0100\n"
+"POT-Creation-Date: 2024-12-22 16:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3958,7 +3958,7 @@ msgid ""
 "If set, user passwords expire after this delay. Users are forced to change "
 "their password when the lifetime of the password is over. The duration value "
 "is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/"
-"ISO_8601#Durations>`_. Example a delay of 60 days is written \"P60D\"."
+"ISO_8601#Durations>`_. For example, delay of 60 days is written \"P60D\"."
 msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SENTRY_DSN:1
@@ -4902,8 +4902,8 @@ msgstr ""
 #: ../../docstring of canaille.core.models.User.password_last_update:1
 #: f1bb412648244da18357a6e88d57836b
 msgid ""
-"Specifies the last time the entry's password was changed. By default, the "
-"date of creation of the password is retained."
+"Specifies the last time the user password was changed. By default, the date "
+"of creation of the password is retained."
 msgstr ""
 
 #: ../../docstring of canaille.core.models.User.phone_numbers:1
