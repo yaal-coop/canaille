@@ -30,33 +30,6 @@ if flask_themer:
             # if config['THEME'] may be a theme name or a path
             return app.config["CANAILLE"]["THEME"].split("/")[-1]
 
-        @app.errorhandler(400)
-        def bad_request(error):
-            return render_template("error.html", description=error, error_code=400), 400
-
-        @app.errorhandler(403)
-        def unauthorized(error):
-            return render_template("error.html", description=error, error_code=403), 403
-
-        @app.errorhandler(404)
-        def page_not_found(error):
-            from canaille.app.flask import redirect_to_bp_handlers
-
-            return redirect_to_bp_handlers(app, error) or render_template(
-                "error.html", description=error, error_code=404
-            ), 404
-
-        @app.errorhandler(500)
-        def server_error(error):  # pragma: no cover
-            return render_template("error.html", description=error, error_code=500), 500
 
 else:  # pragma: no cover
     render_template = flask.render_template
-
-    def setup_themer(app):
-        @app.errorhandler(404)
-        def page_not_found(error):
-            from canaille.app.flask import redirect_to_bp_handlers
-
-            if not redirect_to_bp_handlers(app, error):
-                raise error
