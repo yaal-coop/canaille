@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-22 12:26+0100\n"
+"POT-Creation-Date: 2024-12-22 16:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4414,7 +4414,7 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME:3
 #: 4262b875a3a148dab5e94595cb2a981f
-msgid "If a value is recorded Canaille will check if user's password is expired. Then, the user is forced to change his password when the lifetime of the password is over. This value is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_. Example for 60 days: \"P60D\" It is possible to disable this option by entering None."
+msgid "If set, user passwords expire after this delay. Users are forced to change their password when the lifetime of the password is over. The duration value is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_. Example a delay of 60 days is written \"P60D\"."
 msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.SENTRY_DSN:1
