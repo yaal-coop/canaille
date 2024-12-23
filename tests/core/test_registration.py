@@ -29,6 +29,40 @@ def test_registration_without_email_validation(testclient, backend, foo_group):
     backend.delete(user)
 
 
+def test_registration_failure_with_different_passwords_and_too_short_password(
+    testclient, backend, foo_group
+):
+    """Tests a nominal registration without email validation but with a wrong confirmation password and a too short password."""
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
+
+    assert not backend.query(models.User, user_name="newuser")
+    res = testclient.get(url_for("core.account.registration"), status=200)
+    res.form["user_name"] = "newuser"
+    res.form["password1"] = "123"
+    res.form["password2"] = "123"
+    res.form["family_name"] = "newuser"
+    res.form["emails-0"] = "newuser@example.test"
+    res = res.form.submit()
+    assert ("error", "User account creation failed.") in res.flashes
+    res.mustcontain("Field must be at least 8 characters long.")
+
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm not a little pea"
+    res = res.form.submit()
+    res.mustcontain("Password and confirmation do not match.")
+    res.mustcontain('data-percent="100"')
+
+    res.form["password1"] = "i'm a little pea"
+    res.form["password2"] = "i'm a little pea"
+    res = res.form.submit()
+    assert ("success", "Your account has been created successfully.") in res.flashes
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
+
+
 def test_registration_with_email_validation(testclient, backend, smtpd, foo_group):
     """Tests a nominal registration with email validation."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True

@@ -322,6 +322,9 @@ def registration(data=None, hash=None):
     ]
     form["password2"].validators = [
         wtforms.validators.DataRequired(),
+        wtforms.validators.EqualTo(
+            "password1", message=_("Password and confirmation do not match.")
+        ),
     ]
     form["password1"].flags.required = True
     form["password2"].flags.required = True

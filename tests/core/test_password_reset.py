@@ -8,6 +8,17 @@ def test_password_reset(testclient, user, backend):
     res = testclient.get("/reset/user/" + hash, status=200)
 
     res.form["password"] = "foobarbaz"
+    res.form["confirmation"] = "foobar"
+    res = res.form.submit()
+    res.mustcontain("Password and confirmation do not match.")
+    res.mustcontain('data-percent="50"')
+
+    res.form["password"] = "123"
+    res.form["confirmation"] = "123"
+    res = res.form.submit()
+    res.mustcontain("Field must be at least 8 characters long.")
+
+    res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
     assert ("success", "Your password has been updated successfully") in res.flashes
