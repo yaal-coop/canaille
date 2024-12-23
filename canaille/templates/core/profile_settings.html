@@ -66,7 +66,22 @@ Displays the user settings edition form.
             {% endif %}
 
             {% if "groups" in form %}
-                {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
+                {% block groups_field scoped %}{{ render_field(form.groups, noindicator=True) }}{% endblock %}
+            {% else %}
+                <div class="field" hx-target="this" hx-swap="outerHTML">
+                    <label for="groups">Groups</label>
+                    <div class="ui corner labeled input">
+                        <div class="ui fluid dropdown multiple read-only selection">
+                            {% for group in edited_user.groups %}
+                                <option class="ui label" value={{group.display_name}} selected>{{group.display_name}}</option>
+                            {% endfor %}
+                        </div>
+                        <div class="ui corner label" title="This field is not editable">
+                            <i class="lock icon">
+                            </i>
+                        </div>
+                    </div>
+                </div>
             {% endif %}
 
             <h2 class="ui center aligned header">

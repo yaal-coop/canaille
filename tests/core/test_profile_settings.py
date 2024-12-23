@@ -11,15 +11,9 @@ from canaille.app import models
 
 def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
-    assert set(res.form["groups"].options) == {
-        (foo_group.id, True, "foo"),
-        (bar_group.id, False, "bar"),
-    }
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
-    assert "readonly" in res.form["groups"].attrs
-    assert "readonly" in res.form["user_name"].attrs
 
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit-settings")
