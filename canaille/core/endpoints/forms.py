@@ -68,7 +68,12 @@ class ForgottenPasswordForm(Form):
 class PasswordResetForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
-        validators=[wtforms.validators.DataRequired()],
+        validators=[
+            wtforms.validators.DataRequired(),
+            password_length_validator,
+            password_too_long_validator,
+            compromised_password_validator,
+        ],
         render_kw={
             "autocomplete": "new-password",
         },
