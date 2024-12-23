@@ -14,7 +14,6 @@ from canaille.app import get_b64encoded_qr_image
 from canaille.app import mask_email
 from canaille.app import mask_phone
 from canaille.app.flask import smtp_needed
-from canaille.app.forms import form_password_validation
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.session import login_user
@@ -262,8 +261,6 @@ def reset(user, hash):
             "error",
         )
         return redirect(url_for("core.account.index"))
-
-    form_password_validation(form["password"], form["confirmation"], "password")
 
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
