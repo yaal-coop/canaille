@@ -123,23 +123,6 @@ def compromised_password_validator(form, field):
             )
 
 
-def form_password_validation(password, confirmation, password_field_name):
-    password.validators = [
-        wtforms.validators.DataRequired(),
-        password_length_validator,
-        password_too_long_validator,
-        compromised_password_validator,
-    ]
-    confirmation.validators = [
-        wtforms.validators.DataRequired(),
-        wtforms.validators.EqualTo(
-            password_field_name, message=_("Password and confirmation do not match.")
-        ),
-    ]
-    password.flags.required = True
-    confirmation.flags.required = True
-
-
 def email_validator(form, field):
     try:
         import email_validator  # noqa: F401

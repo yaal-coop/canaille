@@ -30,8 +30,10 @@ from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
-from canaille.app.forms import form_password_validation
+from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import is_readonly
+from canaille.app.forms import password_length_validator
+from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
@@ -312,7 +314,20 @@ def registration(data=None, hash=None):
     if not is_readonly(form["emails"]) and emails_readonly:
         set_readonly(form["emails"])
 
-    form_password_validation(form["password1"], form["password2"], "password1")
+    form["password1"].validators = [
+        wtforms.validators.DataRequired(),
+        password_length_validator,
+        password_too_long_validator,
+        compromised_password_validator,
+    ]
+    form["password2"].validators = [
+        wtforms.validators.DataRequired(),
+        wtforms.validators.EqualTo(
+            "password1", message=_("Password and confirmation do not match.")
+        ),
+    ]
+    form["password1"].flags.required = True
+    form["password2"].flags.required = True
 
     if not request.form or form.form_control():
         return render_template(
@@ -876,8 +891,6 @@ def reset(user):
     form = PasswordResetForm(request.form)
     if user != current_user() or not user.has_expired_password():
         abort(403)
-
-    form_password_validation(form["password"], form["confirmation"], "password")
 
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
