@@ -11,9 +11,14 @@ from canaille.app import models
 
 def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
+    res.mustcontain("foo")
+    res.mustcontain(no="bar")
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
+    assert "readonly" in res.form["user_name"].attrs
+    assert not hasattr(res.form, "groups")
+    res.mustcontain("groups")
 
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit-settings")
