@@ -284,8 +284,6 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
         or ("groups" in readonly_field_names and "groups" not in write_field_names)
     ):
         del fields["groups"]
-    # if "groups" in fields and not Backend.instance.query(models.Group):
-    #     del fields["groups"]
 
     if current_app.features.has_account_lockability:  # pragma: no branch
         fields["lock_date"] = DateTimeUTCField(
