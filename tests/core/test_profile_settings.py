@@ -9,7 +9,7 @@ from flask import g
 from canaille.app import models
 
 
-def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
+def test_edition(testclient, logged_user, user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
     res.mustcontain("foo")
     res.mustcontain(no="bar")
@@ -19,6 +19,7 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     assert "readonly" in res.form["user_name"].attrs
     assert not hasattr(res.form, "groups")
     res.mustcontain("groups")
+    res.mustcontain("foo")
 
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit-settings")
@@ -32,8 +33,25 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
+    assert "readonly" in res.form["user_name"].attrs
+    assert not hasattr(res.form, "groups")
+    res.mustcontain("groups")
+    res.mustcontain("foo")
 
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
+
+    def update_password(new_password):
+        res = testclient.get("/profile/user/settings", status=200)
+        res.form.user = user
+        res.form["password1"] = new_password
+        res.form["password2"] = new_password
+        res = res.form.submit(name="action", value="edit-settings")
+        backend.reload(logged_user)
+        assert res.flashes == [("success", "Profile updated successfully.")]
+        assert backend.check_user_password(logged_user, new_password)[0]
+
+    update_password("i'm a little pea")
+    update_password("correct horse battery staple")
 
     logged_user.user_name = "user"
     backend.save(logged_user)
