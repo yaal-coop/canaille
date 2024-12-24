@@ -39,6 +39,7 @@ extensions = [
     "sphinx_issues",
     "sphinxcontrib.autodoc_pydantic",
     "jinja_autodoc",
+    "sphinxcontrib.screenshot",
 ]
 
 source_suffix = {
@@ -176,6 +177,22 @@ autodoc_pydantic_field_list_validators = False
 gettext_uuid = True
 gettext_compact = "doc"
 
+# -- Templates options ------------------------------------------------------
 jinja_template_path = str(
     pathlib.Path(__file__).parent.parent.resolve() / "canaille/templates"
 )
+
+# -- Screenshots options ------------------------------------------------------
+screenshot_apps = {
+    "canaille": "doc.doc_app:create_doc_app",
+}
+
+screenshot_contexts = {
+    "admin": "doc.doc_app:admin_login",
+    "user": "doc.doc_app:user_login",
+    "james": "doc.doc_app:james_login",
+}
+screenshot_default_browser = "firefox"
+screenshot_default_viewport_width = 770
+screenshot_default_viewport_height = 1
+screenshot_default_full_page = True

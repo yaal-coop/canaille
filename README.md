@@ -13,14 +13,6 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 - Customizable, themable;
 - The code is easy to read and easy to edit!
 
-# Screenshots
-
-<div align="center">
-    <img src="doc/_static/login.webp" width="225" alt="Canaille login page" />
-    <img src="doc/_static/profile.webp" width="225" alt="Canaille profile page" />
-    <img src="doc/_static/consent.webp" width="225" alt="Canaille consent page" />
-</div>
-
 # Try it!
 
 ## Locally
