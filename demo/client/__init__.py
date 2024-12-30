@@ -1,17 +1,17 @@
-import datetime
 import json
 import uuid
 from http import HTTPStatus
 from urllib.parse import urlsplit
 from urllib.parse import urlunsplit
 
+import requests
 from authlib.common.errors import AuthlibBaseError
 from authlib.integrations.flask_client import OAuth
 from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.integrations.flask_oauth2.errors import (
     _HTTPException as AuthlibHTTPException,
 )
-from authlib.oauth2.rfc6750 import BearerTokenValidator
+from authlib.oauth2.rfc7662 import IntrospectTokenValidator
 from authlib.oidc.discovery import get_well_known_url
 from flask import Blueprint
 from flask import Flask
@@ -37,7 +37,6 @@ from scim2_models import User
 from werkzeug.exceptions import HTTPException
 
 from canaille import csrf
-from canaille.oidc.models import Token
 from canaille.scim.models import get_resource_types
 from canaille.scim.models import get_schemas
 from canaille.scim.models import get_service_provider_config
@@ -46,17 +45,17 @@ bp = Blueprint("scim", __name__)
 oauth = OAuth()
 
 
-class SCIMBearerTokenValidator(BearerTokenValidator):
-    def authenticate_token(self, token_string: str):
-        token = Token()
-        token.token_id = "bidulos"
-        token.access_token = "NXeEceY820rnlzoh0FUxc4TFVKO5aAqikopiPEQacvL81ukk"
-        token.issue_date = datetime.datetime.now(datetime.timezone.utc)
-        token.lifetime = 600
-        token.revokation_date = None
-        token.scope = "openid profile email groups address phone"
-        backend.add_token(token)
-        return backend.get_token(token_string)
+class SCIMBearerTokenValidator(IntrospectTokenValidator):
+    def introspect_token(self, token_string: str):
+        url = current_app.config["OAUTH_AUTH_SERVER"] + "/oauth/introspect"
+        data = {"token": token_string, "token_type_hint": "access_token"}
+        auth = (
+            current_app.config["OAUTH_CLIENT_ID"],
+            current_app.config["OAUTH_CLIENT_SECRET"],
+        )
+        resp = requests.post(url, data=data, auth=auth)
+        resp.raise_for_status()
+        return resp.json()
 
 
 require_oauth = ResourceProtector()
@@ -68,9 +67,9 @@ class ClientBackend:
     groups: list[Group] = []
     tokens: list = []
 
-    def get_user_by_username(self, username):
+    def get_user_by_id(self, id):
         for user in self.users:
-            if user.user_name == username:
+            if user.id == id:
                 return user
         return None
 
@@ -79,9 +78,9 @@ class ClientBackend:
         self.users.append(user)
 
     def replace_user(self, user):
-        for saved_user in self.users:
-            if saved_user.userName == user.userName:
-                saved_user = user
+        for i, saved_user in enumerate(self.users):
+            if saved_user.id == user.id:
+                self.users[i] = user
                 break
 
     def delete_user(self, user):
@@ -104,15 +103,6 @@ class ClientBackend:
             if saved_group.group_name == group.groupName:
                 self.groups.remove(saved_group)
                 break
-
-    def add_token(self, token):
-        self.tokens.append(token)
-
-    def get_token(self, access_token):
-        for token in self.tokens:
-            if token.access_token == access_token:
-                return token
-        return None
 
 
 backend = ClientBackend()
@@ -205,11 +195,11 @@ def setup_routes(app):
         )
         return payload
 
-    @bp.route("/Users/<string:username>", methods=["GET"])
+    @bp.route("/Users/<string:id>", methods=["GET"])
     @csrf.exempt
     @require_oauth()
-    def query_user(username):
-        user = backend.get_user_by_username(username)
+    def query_user(id):
+        user = backend.get_user_by_id(id)
         if user:
             return user.model_dump(
                 scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
@@ -283,27 +273,28 @@ def setup_routes(app):
         payload = user.model_dump_json(scim_ctx=Context.RESOURCE_CREATION_RESPONSE)
         return Response(payload, status=HTTPStatus.CREATED)
 
-    @bp.route("/Users/<string:username>", methods=["PUT"])
+    @bp.route("/Users/<string:id>", methods=["PUT"])
     @csrf.exempt
     @require_oauth()
-    def replace_user(username):
-        user = backend.get_user_by_username(username)
+    def replace_user(id):
+        user = backend.get_user_by_id(id)
         request_scim_user = User[EnterpriseUser].model_validate(
             request.json,
             scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
             original=user,
         )
+        request_scim_user.id = user.id
         backend.replace_user(request_scim_user)
         payload = request_scim_user.model_dump(
             scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE
         )
         return payload
 
-    @bp.route("/Users/<string:username>", methods=["DELETE"])
+    @bp.route("/Users/<string:id>", methods=["DELETE"])
     @csrf.exempt
     @require_oauth()
-    def delete_user(username):
-        user = backend.get_user_by_username(username)
+    def delete_user(id):
+        user = backend.get_user_by_id(id)
         backend.delete_user(user)
         return "", HTTPStatus.NO_CONTENT
 

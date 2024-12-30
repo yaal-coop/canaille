@@ -111,7 +111,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     one_time_password_emission_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-    scim_id: Mapped[str] = mapped_column(String, nullable=True, unique=True)
 
     @property
     def password_failure_timestamps(self):

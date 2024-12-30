@@ -34,6 +34,7 @@ dependencies = [
     "flask-wtf >= 1.2.1",
     "httpx>=0.28.1",
     "pydantic-settings >= 2.0.3",
+    "q>=2.7",
     "requests>=2.32.3",
     "wtforms >= 3.1.1",
 ]

@@ -7,6 +7,7 @@ from flask import current_app
 from httpx import Client as httpx_client
 from scim2_client.engines.httpx import SyncSCIMClient
 from scim2_models import SearchRequest
+from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -284,8 +285,6 @@ class User(Model):
     one_time_password_emission_date: datetime.datetime | None = None
     """A DateTime indicating when the user last emitted an email or sms one-time password."""
 
-    scim_id: str | None = None
-
     _readable_fields = None
     _writable_fields = None
     _permissions = None
@@ -504,11 +503,33 @@ class User(Model):
 
     def propagate_scim_changes(self):
         for client in self.get_clients():
+            scim_tokens = Backend.instance.query(
+                models.Token, client=client, subject=None
+            )
+            valid_scim_tokens = [
+                token
+                for token in scim_tokens
+                if not token.is_expired() and not token.is_revoked()
+            ]
+            if valid_scim_tokens:
+                scim_token = valid_scim_tokens[0]
+            else:
+                scim_token = models.Token(
+                    token_id=gen_salt(48),
+                    access_token=gen_salt(48),
+                    subject=None,
+                    audience=[client],
+                    client=client,
+                    refresh_token=gen_salt(48),
+                    scope=["openid", "profile"],
+                    issue_date=datetime.datetime.now(datetime.timezone.utc),
+                    lifetime=3600,
+                )
+                Backend.instance.save(scim_token)
+
             client_httpx = httpx_client(
                 base_url=client.client_uri,
-                headers={
-                    "Authorization": "Bearer NXeEceY820rnlzoh0FUxc4TFVKO5aAqikopiPEQacvL81ukk"
-                },
+                headers={"Authorization": f"Bearer {scim_token.access_token}"},
             )
             scim = SyncSCIMClient(client_httpx)
             scim.discover()
@@ -518,7 +539,6 @@ class User(Model):
 
             req = SearchRequest(filter=f'userName eq "{self.user_name}"')
             response = scim.query(User, search_request=req)
-
             if not response.resources:
                 try:
                     scim.create(user)
@@ -536,7 +556,6 @@ class User(Model):
                     )
             req = SearchRequest(filter=f'userName eq "{self.user_name}"')
             response = scim.query(User, search_request=req)
-            print("response:", response)
 
     def propagate_scim_delete(self):
         client = httpx_client(
@@ -554,7 +573,13 @@ class User(Model):
     def get_clients(self):
         if self.id:
             consents = Backend.instance.query(models.Consent, subject=self)
-            return {t.client for t in consents}
+            consented_clients = {t.client for t in consents}
+            preconsented_clients = [
+                client
+                for client in Backend.instance.query(models.Client)
+                if client.preconsent and client not in consented_clients
+            ]
+            return list(consented_clients) + list(preconsented_clients)
         return []
 
 
