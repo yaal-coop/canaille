@@ -67,7 +67,7 @@ Displays the user settings edition form.
 
             {% if "groups" in form %}
                 {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
-            {% else %}
+            {% elif able_to_read_groups %}
                 <div class="field">
                     <label for="groups">{% trans %}Groups{% endtrans %}</label>
                     <div class="ui corner labeled input">

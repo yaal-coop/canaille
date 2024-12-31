@@ -791,6 +791,14 @@ def profile_settings_edit(editor, edited_user):
         editor.readable_fields & available_fields,
         edited_user,
     )
+
+    able_to_read_groups = False
+    if (
+        "groups" not in editor.writable_fields & available_fields
+        and "groups" in editor.readable_fields & available_fields
+    ):
+        able_to_read_groups = True
+
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
     if (
         request.form
@@ -827,6 +835,7 @@ def profile_settings_edit(editor, edited_user):
         menuitem=menuitem,
         edited_user=edited_user,
         self_deletion=edited_user.can_delete_account,
+        able_to_read_groups=able_to_read_groups,
     )
 
 
