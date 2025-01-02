@@ -42,7 +42,7 @@ jobs:
           ulimit -n 1024
           export TZ=UTC
           uv sync --all-extras
-          uv run pytest --showlocals
+          uv run pytest --numprocesses auto
 
   minversions:
     name: minimum dependency versions
@@ -68,7 +68,7 @@ jobs:
           ulimit -n 1024
           export TZ=UTC
           uv sync --all-extras --resolution=lowest-direct
-          uv run pytest --showlocals
+          uv run pytest --numprocesses auto
 
   style:
     runs-on: ubuntu-latest

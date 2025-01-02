@@ -41,7 +41,7 @@ coverage:
   script:
     - uv sync --all-extras
     - uv pip install coveralls pyyaml tomli
-    - uv run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered -n auto
+    - uv run pytest --cov --cov-fail-under=100 --cov-report term:skip-covered --numprocesses auto
     - uv run coveralls
     - uv cache prune --ci
 
@@ -54,7 +54,7 @@ tests:
   stage: test
   script:
     - uv sync --all-extras
-    - uv run pytest
+    - uv run pytest --numprocesses auto
     - uv cache prune --ci
 
 minversions:
@@ -65,7 +65,7 @@ minversions:
   stage: test
   script:
     - uv sync --all-extras --resolution=lowest-direct
-    - uv run pytest
+    - uv run pytest --numprocesses auto
     - uv cache prune --ci
 
 doc:
