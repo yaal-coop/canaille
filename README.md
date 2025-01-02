@@ -40,19 +40,14 @@ You have access to:
 - a dummy client at [https://demo.client1.yaal.coop](https://demo.client1.yaal.coop)
 - another dummy client at [https://demo.client2.yaal.coop](https://demo.client2.yaal.coop)
 
-The canaille server has some default users:
-- A regular user which login and password are **user**
-- A moderator user which login and password are **moderator**
-- An admin user which login and password are **admin**
-
-Online demo data are reset every night at 02:00 CEST.
+Authentication details are available on the demo pages. Data is reset every night at 02:00 CEST.
 
 # Documentation
 
 ⚠ Canaille is under heavy development and may not fit a production environment yet. However, [contributions](CONTRIBUTING.rst) are welcome! ⚠
 
 - Please have a look on our [documentation](https://canaille.readthedocs.io);
-- To **install** canaille, just follow the [installation guide](https://canaille.readthedocs.io/en/latest/tutorial/install.html);
+- To **install** canaille, follow the [installation guide](https://canaille.readthedocs.io/en/latest/tutorial/install.html);
 - To **contribute** to canaille, please read the [contribution guide](https://canaille.readthedocs.io/en/latest/development/contributing.html).
 
 ## Translation status
