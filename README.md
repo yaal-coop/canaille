@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="canaille/static/img/canaille-full.webp" height="200" alt="Canaille" />
+    <img src="https://gitlab.com/yaal/canaille/-/raw/main/canaille/static/img/canaille-full.webp" height="200" alt="Canaille" />
 </div>
 
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
