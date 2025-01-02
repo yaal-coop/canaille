@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-22 16:35+0100\n"
-"PO-Revision-Date: 2024-12-23 13:26+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2025-01-03 13:01+0000\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -79,9 +79,10 @@ msgid ""
 "core.configuration.CoreSettings.SMS_OTP` and :attr:`~canaille.core."
 "configuration.CoreSettings.SMPP` :issue:`47`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`, :attr:"
-"`~canaille.core.configuration.CoreSettings.MAIL_OTP` et :attr:`~canaille."
-"core.configuration.CoreSettings.SMPP` :issue:`47`"
+":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`, "
+":attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP`  "
+":attr:`~canaille.core.configuration.CoreSettings.SMS_OTP` et "
+":attr:`~canaille.core.configuration.CoreSettings.SMPP` :issue:`47`"
 
 #: ../../CHANGES.rst:15 05060126fea740ef82fba8246132aa6e
 msgid "Password compromission check :issue:`179`"
@@ -1783,7 +1784,7 @@ msgstr ""
 #: ../development/specifications.rst:106 ../../CONTRIBUTING.rst:48
 #: c01f125a22914f369ef28ef090a728b1 01a043d4a4364011b8a22a53549b20da
 msgid "Backends"
-msgstr "Bases de données"
+msgstr "Backends"
 
 #: ../../CONTRIBUTING.rst:50 12c4afcb316c448797ed9784ef9fbaa1
 msgid "Canaille comes with several backends:"
@@ -2545,7 +2546,7 @@ msgid ""
 "🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
 "www.rfc-editor.org/rfc/rfc7642>`_"
 msgstr ""
-"🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://"
+"🟠 `RFC7644 : System for Cross-domain Identity Management: Protocol <https://"
 "www.rfc-editor.org/rfc/rfc7642>`_"
 
 #: ../development/specifications.rst:57 0b5af403924542a99c63f28eaab81ca5
@@ -2956,7 +2957,7 @@ msgstr "Gestion de groupes"
 #: ../features.rst:53 ../features.rst:140 4824338c1fbf4fdd8c2e01534219ee98
 #: 3d8b9fc086e945d890bf9b3e01c82984
 msgid "Group edition"
-msgstr "Édition de groupes"
+msgstr "Modification de groupes"
 
 #: ../features.rst:58 afc7e192d41148e0a2ef8ec6f8944729
 msgid ""
@@ -3118,7 +3119,7 @@ msgstr "Il peut être envoyé automatiquement par e-mail au nouvel utilisateur."
 
 #: ../features.rst:113 c24731829c1949aeb3f54f0167ed8b37
 msgid "Account locking"
-msgstr "Verrouillage des comptes"
+msgstr "Verrouillage de compte"
 
 #: ../features.rst:115 48e7bf2282b5487f9437be3863edc5ed
 msgid ""
@@ -3160,7 +3161,7 @@ msgstr ""
 
 #: ../features.rst:129 da2f0b388508475cbb3fd080de1ff44c
 msgid "Account deletion"
-msgstr "Suppression des comptes"
+msgstr "Suppression de compte"
 
 #: ../features.rst:131 5bc09c4f89764a1a950c44dc255b98d2
 msgid ""
@@ -3215,7 +3216,7 @@ msgstr ""
 
 #: ../features.rst:156 1bdb193d14a444a2a823f0dcef03e8ad
 msgid "Password reset"
-msgstr "Réinitialisation des mots de passe"
+msgstr "Réinitialisation de mot de passe"
 
 #: ../features.rst:158 077ee41f3059484dad80b08733aae520
 msgid ""
@@ -3234,7 +3235,7 @@ msgstr ""
 
 #: ../features.rst:164 c4e7b07761674e608a0e2bfdd50a659a
 msgid "Password initialization"
-msgstr "Initialisation des mots de passe"
+msgstr "Initialisation de mot de passe"
 
 #: ../features.rst:166 5043df71775449a78e19ce0296f8d9ee
 msgid ""
@@ -3595,7 +3596,7 @@ msgstr "Rafraichissement de jeton"
 
 #: ../features.rst:304 4489f99b64dd40248f28453fb8b4b0df
 msgid "Token revokation"
-msgstr "Révocation des jetons"
+msgstr "Révocation de jeton"
 
 #: ../features.rst:305 99abcc04f85649c1b184e22e67b36f18
 msgid "New consent given for client application"
@@ -3675,8 +3676,7 @@ msgstr ""
 
 #: ../features.rst:340 c8aec1fe7d574a789319e75cc64bd2e7
 msgid ":issue:`Configuration validation using pydantic <138>`"
-msgstr ""
-":issue:`Validation de la configuration en utilisant using pydantic <138>`"
+msgstr ":issue:`Validation de la configuration en utilisant pydantic <138>`"
 
 #: ../features.rst:343 706d590389f54c40ba1b219877946bb5
 msgid "Stable version"
@@ -3696,7 +3696,7 @@ msgstr "Sécurité"
 
 #: ../features.rst:350 577ab46503ee45e89daa8c42938635e5
 msgid ":issue:`Password hashing configuration <175>`"
-msgstr ":issue:`Configuration du hashage du mot de passe <175>`"
+msgstr ":issue:`Configuration du hachage du mot de passe <175>`"
 
 #: ../features.rst:351 a337cb0aac704dbca90dd70f1d68456d
 msgid ":issue:`Authentication logging policy <177>`"
@@ -5992,7 +5992,7 @@ msgstr ""
 "photos de profil de l'utilisateur affichable quand une description "
 "l'utilisateur devrait être envoyé. À la place des valeurs canoniques "
 "standard pour le type, cet attribut définit les valeurs canoniques suivantes "
-"pour représenter les tailles de photo populaire: « photo » et « vignette »."
+"pour représenter les tailles de photo populaire : « photo » et « vignette »."
 
 #: ../../docstring of canaille.core.models.User.postal_code:1
 #: ca9c10bc74eb4a2b90365bbd3473b1be
