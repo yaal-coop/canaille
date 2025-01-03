@@ -1,5 +1,3 @@
-.. terminer les paragraphes par 'user feature and feature'
-
 Use cases
 #########
 

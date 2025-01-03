@@ -156,6 +156,9 @@ demo = [
     "requests",
     "watchdog >= 4.0.0",
 ]
+release = [
+    "pyinstaller>=6.11.1",
+]
 
 [project.scripts]
 canaille = "canaille.commands:cli"
@@ -246,6 +249,7 @@ env_list = [
     "minversions",
     "doc",
     "coverage",
+    "binary",
 ]
 
 [tool.tox.env_run_base]
@@ -281,6 +285,15 @@ commands = [
     ["coverage", "html"],
 ]
 
+[tool.tox.env.binary]
+skip_install = true
+runner = "uv-venv-lock-runner"
+dependency_groups = ["release"]
+uv_sync_flags = ["--all-extras"]
+commands = [
+    ["pyinstaller", "--log-level", "WARN", "canaille.spec"],
+]
+
 [[tool.babel.mappings]]
 method = "python"
 pattern = "**.py"
@@ -299,3 +312,6 @@ trimmed = "true"
 method = "jinja2"
 pattern = "**/templates/**.txt"
 trimmed = "true"
+
+[tool.codespell]
+exclude-file = "canaille.spec"

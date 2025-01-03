@@ -1,30 +1,64 @@
 Installation
 ############
 
-.. warning ::
-
-    Canaille is under heavy development and may not fit a production environment yet.
-
-The installation of canaille consist in several steps, some of which you can do manually or with command line tool:
+The installation of canaille consist in several steps, some of which you can do manually or with command line tools:
 
 Get the code
 ============
 
-As the moment there is no distribution package for canaille.
-However, it can be installed with Python package managers such as ``pip``.
-Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
+Binaries
+--------
+
+Canaille provides a ready-to-use single file executable for Linux.
+The binary installation is the easiest way to get a production-ready Canaille release, though this is not the most customizable.
+This is generally the recommended method to use Canaille in production.
+
+.. parsed-literal::
+
+    wget https://github.com/yaal-coop/canaille/releases/download/\ |version|\ /canaille -o canaille
+    chmod +x canaille
+
+.. note::
+
+    Canaille binaries comes with lesser performances than other installation methods on startup.
+    This is generally not an issue, since Canaille is used as a long-running service,
+    but if this is important for you, you might want to choose another installation method.
+
+Linux packages
+--------------
+
+At the moment, only NixOS provides a `Canaille package <Canaille_NixOS>`_.
+For other distros, you must use a different way to install Canaille.
+
+.. _Canaille_NixOS: https://mynixos.com/nixpkgs/package/canaille
+
+Python package
+--------------
+
+Canaille provides a `Python package <Canaille_PyPI>`_ that you can install with package managers like ``uv`` or ``pip``.
+This is the recommended method if you want fast CLI performances, if you need to customize the dependencies, or if you want to use Canaille in a development environment.
+
+In the following example, we use a custom virtualenv to install Canaille.
+Note that you should customize the ``EXTRAS`` packages, depending on your needs.
 
 .. code-block:: bash
+   :caption: Canaille installation using a Python virtualenv
 
-    export CANAILLE_INSTALL_DIR=/opt/canaille
-    sudo mkdir --parents "$CANAILLE_INSTALL_DIR"
-    sudo virtualenv --python=python3 "$CANAILLE_INSTALL_DIR/env"
+   sudo mkdir --parents /opt/canaille
+   virtualenv /opt/canaille/env
+   . /opt/canaille/env/bin/activate
+   pip install "canaille[EXTRAS]"
+   canaille --version
 
-    # Adapt the package extras at your will:
-    sudo "$CANAILLE_INSTALL_DIR/env/bin/pip" install "canaille[EXTRAS]"
+.. _Canaille_PyPI: https://pypi.org/project/Canaille
+
+.. note::
+
+   In the rest of the documentation, we consider that your virtualenv is activated,
+   and that the ``canaille`` command is available.
 
 Extras
-------
+~~~~~~
 
 Canaille provides different package options:
 
@@ -61,6 +95,10 @@ A configuration file with default values can be initialized with the :ref:`expor
 You can then edit your configuration file and tune its values.
 Have a look at the :ref:`reference <references/configuration:Parameters>` to know the exhaustive list of available parameters.
 
+.. note::
+
+   In the rest of the documentation, we consider that your Canaille instance is configured by one of the available methods (either with a :envvar:`CONFIG` environment var, either with ``.env`` files etc.).
+
 Install
 =======
 
@@ -69,8 +107,7 @@ Depending on the configured :doc:`database <databases>` it will create the SQL t
 
 .. code-block:: bash
 
-    export CONFIG="$CANAILLE_CONF_DIR/config.toml"
-    "$CANAILLE_INSTALL_DIR/env/bin/canaille" install
+    canaille install
 
 Check
 =====
@@ -79,4 +116,4 @@ After a manual installation, you can check your configuration file using the :re
 
 .. code-block:: bash
 
-    "$CANAILLE_INSTALL_DIR/env/bin/canaille" check
+    canaille check
