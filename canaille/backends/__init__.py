@@ -1,7 +1,6 @@
 import datetime
 import importlib
 import json
-import os
 import typing
 from contextlib import contextmanager
 from math import ceil
@@ -228,11 +227,7 @@ def setup_backend(app, backend=None, init_backend=None):
 
 
 def available_backends():
-    return {
-        elt.name
-        for elt in os.scandir(os.path.dirname(__file__))
-        if elt.is_dir() and os.path.exists(os.path.join(elt, "backend.py"))
-    }
+    return {"sql", "memory", "ldap"}
 
 
 def get_lockout_delay_message(current_lockout_delay):

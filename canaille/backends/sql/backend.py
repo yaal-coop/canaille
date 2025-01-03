@@ -35,7 +35,9 @@ class SQLBackend(Backend):
         SQLBackend.engine = create_engine(
             self.config["CANAILLE_SQL"]["DATABASE_URI"], echo=False, future=True
         )
-        SQLBackend.alembic = Alembic(metadatas=Base.metadata, engines=SQLBackend.engine)
+        SQLBackend.alembic = Alembic(
+            metadatas=Base.metadata, engines=SQLBackend.engine, run_mkdir=False
+        )
 
     @classmethod
     def install(cls, app):  # pragma: no cover
