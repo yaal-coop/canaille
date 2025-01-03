@@ -65,6 +65,7 @@ intersphinx_mapping = {
     "flask-alembic": ("https://flask-alembic.readthedocs.io/en/latest", None),
     "flask-babel": ("https://python-babel.github.io/flask-babel", None),
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
+    "hypercorn": ("https://hypercorn.readthedocs.io/en/latest", None),
     "pydantic": ("https://docs.pydantic.dev/latest", None),
     "pytest-iam": ("https://pytest-iam.readthedocs.io/en/latest/", None),
     "wtforms": ("https://wtforms.readthedocs.io", None),

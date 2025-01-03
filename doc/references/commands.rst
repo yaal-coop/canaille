@@ -17,6 +17,12 @@ For the sake of readability, it is omitted in the following examples.
    :prog: canaille check
    :nested: full
 
+.. _cli_run:
+
+.. click:: canaille.app.commands:run
+   :prog: canaille run
+   :nested: full
+
 .. _cli_clean:
 
 .. click:: canaille.oidc.commands:clean

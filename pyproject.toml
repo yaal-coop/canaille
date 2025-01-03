@@ -99,6 +99,10 @@ sms = [
     "smpplib>=2.2.3",
 ]
 
+server = [
+    "hypercorn>=0.17.3",
+]
+
 [project.urls]
 homepage = "https://canaille.yaal.coop"
 documentation = "https://canaille.readthedocs.io/en/latest/"

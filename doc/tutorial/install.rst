@@ -37,12 +37,13 @@ Canaille provides different package options:
 - `sentry` provides sentry integration to watch Canaille exceptions;
 - `otp` provides the dependencies to enable one-time password authentication;
 - `sms` provides the dependencies to enable sms sending;
+- `server` provides the dependencies to run a production server.
 
 They can be installed with:
 
 .. code-block:: bash
 
-   pip install "canaille[front,oidc,postgresql]"
+   pip install "canaille[front,oidc,postgresql,server]"
 
 Configure
 =========
