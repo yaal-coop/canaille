@@ -383,3 +383,11 @@ class CoreSettings(BaseModel):
     The duration value is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
     For example, delay of 60 days is written "P60D".
     """
+    
+    PASSWORD_SCHEMES: str = "pbkdf2_sha512"
+    """Password hashing scheme.
+
+    Defines password hashing scheme in SQL database.
+    example : "mssql2000", "ldap_salted_sha1", "pbkdf2_sha512"
+    """
+

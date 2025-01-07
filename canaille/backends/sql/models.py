@@ -74,7 +74,13 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     )
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
-        PasswordType(schemes=["pbkdf2_sha512"]), nullable=True
+        PasswordType(
+            onload=lambda **kwargs: dict(
+                schemes=current_app.config["CANAILLE"]["PASSWORD_SCHEMES"], **kwargs
+            ),
+        ),
+        nullable=True,
+
     )
     password_last_update: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
