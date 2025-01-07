@@ -260,10 +260,13 @@ PROFILE_FORM_FIELDS = dict(
     groups=wtforms.SelectMultipleField(
         _("Groups"),
         default=[],
-        choices=lambda: [
-            (group, group.display_name)
-            for group in Backend.instance.query(models.Group)
-        ],
+        choices=lambda: sorted(
+            [
+                (group, group.display_name)
+                for group in Backend.instance.query(models.Group)
+            ],
+            key=lambda group: group[0].id,
+        ),
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),
         validators=[non_empty_groups],
