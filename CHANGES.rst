@@ -5,6 +5,10 @@ Added
 ^^^^^
 - ``--version`` option to the CLI. :pr:`209`
 
+Changed
+^^^^^^^
+- fixed a bug on updating user's settings :issue:`206`
+
 [0.0.57] - 2024-12-31
 ---------------------
 
