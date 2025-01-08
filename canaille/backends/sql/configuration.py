@@ -15,3 +15,10 @@ class SQLSettings(BaseModel):
 
         DATABASE_URI = "postgresql://user:password@localhost/database_name"
     """
+
+    PASSWORD_SCHEMES: str = "pbkdf2_sha512"
+    """Password hashing scheme.
+
+    Defines password hashing scheme in SQL database.
+    examples : "mssql2000", "ldap_salted_sha1", "pbkdf2_sha512"
+    """

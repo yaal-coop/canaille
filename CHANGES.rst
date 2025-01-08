@@ -4,6 +4,11 @@
 Added
 ^^^^^
 - ``--version`` option to the CLI. :pr:`209`
+- :attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` :issue:`175`
+
+Changed
+^^^^^^^
+- fixed a bug on updating user's settings :issue:`206`
 
 Changed
 ^^^^^^^
