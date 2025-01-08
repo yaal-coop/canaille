@@ -20,6 +20,7 @@ from sqlalchemy_utils import force_auto_coercion
 
 import canaille.core.models
 import canaille.oidc.models
+from canaille.backends import Backend
 from canaille.backends.models import BackendModel
 
 from .backend import Base
@@ -63,6 +64,13 @@ membership_association_table = Table(
 class User(canaille.core.models.User, Base, SqlAlchemyModel):
     __tablename__ = "user"
 
+    @staticmethod
+    def default_password_arguments(**kwargs):
+        return dict(
+            schemes=Backend.instance.config["CANAILLE_SQL"]["PASSWORD_SCHEMES"],
+            **kwargs,
+        )
+
     id: Mapped[str] = mapped_column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
@@ -75,9 +83,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         PasswordType(
-            onload=lambda **kwargs: dict(
-                schemes=current_app.config["CANAILLE_SQL"]["PASSWORD_SCHEMES"], **kwargs
-            ),
+            onload=default_password_arguments,
         ),
         nullable=True,
     )
