@@ -1,5 +1,4 @@
 import datetime
-import inspect
 import json
 import typing
 
@@ -70,15 +69,10 @@ def is_multiple(attribute_type):
 def register(cli):
     """Generate commands using factories that each have one subcommand per
     available model."""
-    factories = [get_factory, set_factory, create_factory, delete_factory]
-
-    for factory in factories:
-        command_help = inspect.getdoc(factory)
-        name = factory.__name__.replace("_factory", "")
-
-        @cli.command(cls=ModelCommand, factory=factory, name=name, help=command_help)
-        def factory_command(): ...
-
+    cli.add_command(get_command)
+    cli.add_command(set_command)
+    cli.add_command(create_command)
+    cli.add_command(delete_command)
     cli.add_command(reset_otp)
 
 
@@ -115,15 +109,6 @@ def serialize(instance):
 
 
 def get_factory(model):
-    """Read information about models.
-
-    Options can be used to filter models::
-
-        canaille get user --given-name John --last-name Doe
-
-    Displays the matching models in JSON format in the standard output.
-    """
-
     command_help = f"""Search for {model.__name__.lower()}s and display the
     matching models as JSON."""
 
@@ -145,16 +130,43 @@ def get_factory(model):
     return command
 
 
-def set_factory(model):
-    """Update models.
+@click.command(
+    cls=ModelCommand, factory=get_factory, name="get", invoke_without_command=True
+)
+@click.option(
+    "--all",
+    is_flag=True,
+    show_default=True,
+    default=False,
+    help="Dump all the model instances",
+)
+@click.pass_context
+def get_command(ctx, all: bool):
+    """Read information about models.
 
-    The command takes an model ID and edit one or several attributes::
+    Options can be used to filter models::
 
-        canaille set user 229d112e-1bb5-452f-b2ac-f7680ffe7fb8 --given-name Jack
+        canaille get user --given-name John --last-name Doe
 
-    Displays the edited model in JSON format in the standard output.
+    Displays the matching models in JSON format in the standard output.
     """
 
+    if not all and not ctx.invoked_subcommand:
+        click.echo(ctx.get_help())
+        ctx.exit(0)
+
+    if all:
+        objects = {}
+        for model_name, model in MODELS.items():
+            objects[model_name] = [
+                serialize(instance) for instance in Backend.instance.query(model)
+            ]
+
+        output = json.dumps(objects)
+        click.echo(output)
+
+
+def set_factory(model):
     command_help = f"""Update a {model.__name__.lower()} and display the
     edited model in JSON format in the standard output.
 
@@ -204,16 +216,19 @@ def set_factory(model):
     return command
 
 
-def create_factory(model):
-    """Create models.
+@click.command(cls=ModelCommand, factory=set_factory, name="set")
+def set_command():
+    """Update models.
 
-    The model attributes can be passed as command options::
+    The command takes an model ID and edit one or several attributes::
 
-        canaille create user --given-name John --last-name Doe
+        canaille set user 229d112e-1bb5-452f-b2ac-f7680ffe7fb8 --given-name Jack
 
-    Displays the created model in JSON format in the standard output.
+    Displays the edited model in JSON format in the standard output.
     """
 
+
+def create_factory(model):
     command_help = f"""Create a new {model.__name__.lower()} and display the
     created model in JSON format in the standard output.
     """
@@ -254,14 +269,19 @@ def create_factory(model):
     return command
 
 
-def delete_factory(model):
-    """Delete models.
+@click.command(cls=ModelCommand, factory=create_factory, name="create")
+def create_command():
+    """Create models.
 
-    The command takes a model ID and deletes it::
+    The model attributes can be passed as command options::
 
-        canaille delete user --id 229d112e-1bb5-452f-b2ac-f7680ffe7fb8
+        canaille create user --given-name John --last-name Doe
+
+    Displays the created model in JSON format in the standard output.
     """
 
+
+def delete_factory(model):
     command_help = f"""Delete a {model.__name__.lower()}.
 
     IDENTIFIER should be a {model.__name__.lower()} id or
@@ -285,6 +305,16 @@ def delete_factory(model):
             raise click.ClickException(exc) from exc
 
     return command
+
+
+@click.command(cls=ModelCommand, factory=delete_factory, name="delete")
+def delete_command():
+    """Delete models.
+
+    The command takes a model ID and deletes it::
+
+        canaille delete user --id 229d112e-1bb5-452f-b2ac-f7680ffe7fb8
+    """
 
 
 @click.command()
