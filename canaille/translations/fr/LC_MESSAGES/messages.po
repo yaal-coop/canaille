@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2024-12-23 10:40+0100\n"
-"PO-Revision-Date: 2024-12-12 21:03+0000\n"
+"PO-Revision-Date: 2025-01-10 09:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:33
 msgid "Your password has expired, please choose a new password."
-msgstr ""
+msgstr "Votre mot de passe a expiré, veuillez choisir un nouveau mot de passe."
 
 #: canaille/app/flask.py:57
 msgid "No SMTP server has been configured"
