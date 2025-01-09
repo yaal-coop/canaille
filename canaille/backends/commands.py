@@ -74,6 +74,20 @@ def register(cli):
     cli.add_command(create_command)
     cli.add_command(delete_command)
     cli.add_command(reset_otp)
+    cli.add_command(dump)
+
+
+@click.command()
+@with_appcontext
+@with_backendcontext
+def dump():
+    """Dump all the available models."""
+    objects = {}
+    for model_name, model in MODELS.items():
+        objects[model_name] = list(Backend.instance.query(model))
+
+    output = json.dumps(objects, cls=Backend.instance.json_encoder)
+    click.echo(output)
 
 
 def get_factory(model):
@@ -98,20 +112,8 @@ def get_factory(model):
     return command
 
 
-@click.command(
-    cls=ModelCommand, factory=get_factory, name="get", invoke_without_command=True
-)
-@click.option(
-    "--all",
-    is_flag=True,
-    show_default=True,
-    default=False,
-    help="Dump all the model instances",
-)
-@click.pass_context
-@with_appcontext
-@with_backendcontext
-def get_command(ctx, all: bool):
+@click.command(cls=ModelCommand, factory=get_factory, name="get")
+def get_command():
     """Read information about models.
 
     Options can be used to filter models::
@@ -120,18 +122,6 @@ def get_command(ctx, all: bool):
 
     Displays the matching models in JSON format in the standard output.
     """
-
-    if not all and not ctx.invoked_subcommand:
-        click.echo(ctx.get_help())
-        ctx.exit(0)
-
-    if all:
-        objects = {}
-        for model_name, model in MODELS.items():
-            objects[model_name] = list(Backend.instance.query(model))
-
-        output = json.dumps(objects, cls=Backend.instance.json_encoder)
-        click.echo(output)
 
 
 def set_factory(model):

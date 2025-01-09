@@ -23,6 +23,12 @@ For the sake of readability, it is omitted in the following examples.
    :prog: canaille clean
    :nested: full
 
+.. _cli_dump:
+
+.. click:: canaille.app.commands:dump
+   :prog: canaille dump
+   :nested: full
+
 .. _cli_install:
 
 .. click:: canaille.app.commands:install

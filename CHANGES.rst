@@ -5,7 +5,7 @@ Added
 ^^^^^
 - ``--version`` option to the CLI. :pr:`209`
 - :attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` :issue:`175`
-- `canaille get --all` command option to perform full database dumps
+- `canaille dump` command option to perform full database dumps
 
 Changed
 ^^^^^^^
