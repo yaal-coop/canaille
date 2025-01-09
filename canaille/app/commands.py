@@ -54,7 +54,7 @@ def install():
     from canaille.app.installation import install
 
     try:
-        install(current_app.config)
+        install(current_app)
 
     except ConfigurationException as exc:  # pragma: no cover
         print(exc)

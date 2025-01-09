@@ -66,6 +66,7 @@ sentry = [
 ]
 
 sqlite = [
+    "flask-alembic>=3.1.1",
     "passlib >= 1.7.4",
     "sqlalchemy >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
@@ -73,6 +74,7 @@ sqlite = [
 ]
 
 postgresql = [
+    "flask-alembic>=3.1.1",
     "passlib >= 1.7.4",
     "sqlalchemy[postgresql-psycopg2binary] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",
@@ -80,6 +82,7 @@ postgresql = [
 ]
 
 mysql = [
+    "flask-alembic>=3.1.1",
     "passlib >= 1.7.4",
     "sqlalchemy[mysql-connector] >= 2.0.23",
     "sqlalchemy-json >= 0.7.0",

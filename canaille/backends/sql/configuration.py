@@ -22,3 +22,14 @@ class SQLSettings(BaseModel):
     Defines password hashing scheme in SQL database.
     examples : "mssql2000", "ldap_salted_sha1", "pbkdf2_sha512"
     """
+
+    AUTO_MIGRATE: bool = True
+    """Whether to automatically apply database migrations.
+
+    If :data:`True`, database migrations will be automatically applied when Canaille web application is launched.
+    If :data:`False`, migrations must be applied manually with ``canaille db upgrade``.
+
+    .. note::
+
+        When running the CLI, migrations will never be applied.
+    """

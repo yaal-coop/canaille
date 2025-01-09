@@ -29,6 +29,20 @@ wheels = [
 ]
 
 [[package]]
+name = "alembic"
+version = "1.14.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mako" },
+    { name = "sqlalchemy" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/00/1e/8cb8900ba1b6360431e46fb7a89922916d3a1b017a8908a7c0499cc7e5f6/alembic-1.14.0.tar.gz", hash = "sha256:b00892b53b3642d0b8dbedba234dbf1924b69be83a9a769d5a624b01094e304b", size = 1916172 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cb/06/8b505aea3d77021b18dcbd8133aa1418f1a1e37e432a465b14c46b2c0eaa/alembic-1.14.0-py3-none-any.whl", hash = "sha256:99bd884ca390466db5e27ffccff1d179ec5c05c965cfefc0607e69f9e411cb25", size = 233482 },
+]
+
+[[package]]
 name = "annotated-types"
 version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -145,6 +159,7 @@ ldap = [
     { name = "python-ldap" },
 ]
 mysql = [
+    { name = "flask-alembic" },
     { name = "passlib" },
     { name = "sqlalchemy", extra = ["mysql-connector"] },
     { name = "sqlalchemy-json" },
@@ -159,6 +174,7 @@ otp = [
     { name = "qrcode" },
 ]
 postgresql = [
+    { name = "flask-alembic" },
     { name = "passlib" },
     { name = "sqlalchemy", extra = ["postgresql-psycopg2binary"] },
     { name = "sqlalchemy-json" },
@@ -175,6 +191,7 @@ sms = [
     { name = "smpplib" },
 ]
 sqlite = [
+    { name = "flask-alembic" },
     { name = "passlib" },
     { name = "sqlalchemy" },
     { name = "sqlalchemy-json" },
@@ -228,6 +245,9 @@ requires-dist = [
     { name = "authlib", marker = "extra == 'scim'", specifier = ">=1.3.0" },
     { name = "email-validator", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask", specifier = ">=3.0.0" },
+    { name = "flask-alembic", marker = "extra == 'mysql'", specifier = ">=3.1.1" },
+    { name = "flask-alembic", marker = "extra == 'postgresql'", specifier = ">=3.1.1" },
+    { name = "flask-alembic", marker = "extra == 'sqlite'", specifier = ">=3.1.1" },
     { name = "flask-babel", marker = "extra == 'front'", specifier = ">=4.0.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
@@ -673,6 +693,20 @@ wheels = [
 ]
 
 [[package]]
+name = "flask-alembic"
+version = "3.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "alembic" },
+    { name = "flask" },
+    { name = "sqlalchemy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2f/08/84d5a3155bef151190bf665bc31389971daf9e82271086439bc8f8d3a7a5/flask_alembic-3.1.1.tar.gz", hash = "sha256:358a0ad8f74e2969273a8d89feaf5842f65cc909064b51fde4b51415790d92f4", size = 11943 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/32/9ecc1df856fd6ba96276393d374c8e7592c89bc1e5861c1c66d6a81b68f8/flask_alembic-3.1.1-py3-none-any.whl", hash = "sha256:1d0cda58518d4332d8563da555bee03107fe2169c7157f61a2e0759d0150209b", size = 12070 },
+]
+
+[[package]]
 name = "flask-babel"
 version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1026,6 +1060,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/68/de/96cb6d3269bc994b4f5ede8ca7bf0840f5de0a278bc6e50cb317ff71cafa/lxml-5.3.0-pp310-pypy310_pp73-manylinux_2_28_aarch64.whl", hash = "sha256:8dc2c0395bea8254d8daebc76dcf8eb3a95ec2a46fa6fae5eaccee366bfe02ce", size = 4218377 },
     { url = "https://files.pythonhosted.org/packages/a5/43/19b1ef6cbffa4244a217f95cc5f41a6cb4720fed33510a49670b03c5f1a0/lxml-5.3.0-pp310-pypy310_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:6ba0d3dcac281aad8a0e5b14c7ed6f9fa89c8612b47939fc94f80b16e2e9bc83", size = 4351237 },
     { url = "https://files.pythonhosted.org/packages/ba/b2/6a22fb5c0885da3b00e116aee81f0b829ec9ac8f736cd414b4a09413fc7d/lxml-5.3.0-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:6e91cf736959057f7aac7adfc83481e03615a8e8dd5758aa1d95ea69e8931dba", size = 3487557 },
+]
+
+[[package]]
+name = "mako"
+version = "1.3.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "markupsafe" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5f/d9/8518279534ed7dace1795d5a47e49d5299dd0994eed1053996402a8902f9/mako-1.3.8.tar.gz", hash = "sha256:577b97e414580d3e088d47c2dbbe9594aa7a5146ed2875d4dfa9075af2dd3cc8", size = 392069 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1e/bf/7a6a36ce2e4cafdfb202752be68850e22607fccd692847c45c1ae3c17ba6/Mako-1.3.8-py3-none-any.whl", hash = "sha256:42f48953c7eb91332040ff567eb7eea69b22e7a4affbc5ba8e845e8f730f6627", size = 78569 },
 ]
 
 [[package]]

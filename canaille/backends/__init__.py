@@ -63,7 +63,7 @@ class Backend:
     def instance(cls):
         return cls._instance
 
-    def init_app(self, app):
+    def init_app(self, app, init_backend=None):
         @app.before_request
         def before_request():
             return self.setup()
@@ -79,7 +79,7 @@ class Backend:
         self.teardown()
 
     @classmethod
-    def install(self, config):
+    def install(self, app):
         """Prepare the database to host canaille data."""
         raise NotImplementedError()
 
@@ -203,7 +203,7 @@ class Backend:
             models.register(getattr(backend_models, model_name))
 
 
-def setup_backend(app, backend=None):
+def setup_backend(app, backend=None, init_backend=None):
     if not backend:
         prefix = "CANAILLE_"
         available_backends_names = [
@@ -224,7 +224,7 @@ def setup_backend(app, backend=None):
             module, f"{backend_name.title()}Backend", None
         ) or getattr(module, f"{backend_name.upper()}Backend", None)
         backend = backend_class(app.config)
-        backend.init_app(app)
+        backend.init_app(app, init_backend)
 
     with app.app_context():
         g.backend = backend
