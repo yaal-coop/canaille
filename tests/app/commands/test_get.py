@@ -1,14 +1,26 @@
+import datetime
 import json
 from unittest import mock
 
+from canaille.backends import ModelEncoder
 from canaille.commands import cli
+
+
+def test_serialize(user):
+    """Test ModelSerializer with basic types."""
+    assert json.dumps({"foo": "bar"}, cls=ModelEncoder) == '{"foo": "bar"}'
+
+    assert (
+        json.dumps({"foo": datetime.datetime(1970, 1, 1)}, cls=ModelEncoder)
+        == '{"foo": "1970-01-01T00:00:00"}'
+    )
 
 
 def test_get_list_models(testclient, backend, user):
     """Nominal case test for model get command."""
 
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get"])
+    res = runner.invoke(cli, ["get"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     models = ("user", "group")
     for model in models:
@@ -19,7 +31,7 @@ def test_get(testclient, backend, user):
     """Nominal case test for model get command."""
 
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get", "user"])
+    res = runner.invoke(cli, ["get", "user"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == [
         {
@@ -34,7 +46,7 @@ def test_get(testclient, backend, user):
             "given_name": "John",
             "id": user.id,
             "last_modified": mock.ANY,
-            "password": "***",
+            "password": mock.ANY,
             "phone_numbers": [
                 "555-000-000",
             ],
@@ -49,7 +61,9 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
     """Test model get filter."""
 
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get", "user", "--groups", foo_group.id])
+    res = runner.invoke(
+        cli, ["get", "user", "--groups", foo_group.id], catch_exceptions=False
+    )
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == [
         {
@@ -64,7 +78,7 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
             "given_name": "John",
             "id": user.id,
             "last_modified": mock.ANY,
-            "password": "***",
+            "password": mock.ANY,
             "phone_numbers": [
                 "555-000-000",
             ],
@@ -80,7 +94,11 @@ def test_get_datetime_filter(testclient, backend, user):
     """Test model get filter."""
 
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get", "user", "--created", user.created.isoformat()])
+    res = runner.invoke(
+        cli,
+        ["get", "user", "--created", user.created.isoformat()],
+        catch_exceptions=False,
+    )
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == [
         {
@@ -95,7 +113,7 @@ def test_get_datetime_filter(testclient, backend, user):
             "given_name": "John",
             "id": user.id,
             "last_modified": mock.ANY,
-            "password": "***",
+            "password": mock.ANY,
             "phone_numbers": [
                 "555-000-000",
             ],
@@ -110,7 +128,7 @@ def test_get_all(testclient, backend, user, foo_group):
     """Test the full database dump command."""
 
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get", "--all"])
+    res = runner.invoke(cli, ["get", "--all"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == {
         "authorizationcode": [],
@@ -142,7 +160,7 @@ def test_get_all(testclient, backend, user, foo_group):
                 "groups": [foo_group.id],
                 "id": user.id,
                 "last_modified": mock.ANY,
-                "password": "***",
+                "password": mock.ANY,
                 "phone_numbers": [
                     "555-000-000",
                 ],

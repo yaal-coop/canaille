@@ -10,6 +10,7 @@ Added
 Changed
 ^^^^^^^
 - fixed a bug on updating user's settings :issue:`206`
+- CLI commands dump hashed passwords :issue:`214`
 
 Changed
 ^^^^^^^

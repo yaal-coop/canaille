@@ -76,38 +76,6 @@ def register(cli):
     cli.add_command(reset_otp)
 
 
-def serialize(instance):
-    """Quick and dirty serialization method.
-
-    This can probably be made simpler when we will use pydantic models.
-    """
-
-    def serialize_attribute(attribute_name, value):
-        multiple = is_multiple(instance.attributes[attribute_name])
-        if multiple and isinstance(value, list):
-            return [serialize_attribute(attribute_name, v) for v in value]
-
-        model, _ = instance.get_model_annotations(attribute_name)
-        if model:
-            return value.id
-
-        anonymized = ("password",)
-        if attribute_name in anonymized and value:
-            return "***"
-
-        if isinstance(value, datetime.datetime):
-            return value.isoformat()
-
-        return value
-
-    result = {}
-    for attribute in instance.attributes:
-        if serialized := serialize_attribute(attribute, getattr(instance, attribute)):
-            result[attribute] = serialized
-
-    return result
-
-
 def get_factory(model):
     command_help = f"""Search for {model.__name__.lower()}s and display the
     matching models as JSON."""
@@ -120,7 +88,7 @@ def get_factory(model):
             attribute: value for attribute, value in kwargs.items() if value is not None
         }
         items = Backend.instance.query(model, **filter)
-        output = json.dumps([serialize(item) for item in items])
+        output = json.dumps(list(items), cls=Backend.instance.json_encoder)
         click.echo(output)
 
     for attribute, attribute_type in model.attributes.items():
@@ -141,6 +109,8 @@ def get_factory(model):
     help="Dump all the model instances",
 )
 @click.pass_context
+@with_appcontext
+@with_backendcontext
 def get_command(ctx, all: bool):
     """Read information about models.
 
@@ -158,11 +128,9 @@ def get_command(ctx, all: bool):
     if all:
         objects = {}
         for model_name, model in MODELS.items():
-            objects[model_name] = [
-                serialize(instance) for instance in Backend.instance.query(model)
-            ]
+            objects[model_name] = list(Backend.instance.query(model))
 
-        output = json.dumps(objects)
+        output = json.dumps(objects, cls=Backend.instance.json_encoder)
         click.echo(output)
 
 
@@ -200,7 +168,7 @@ def set_factory(model):
         except Exception as exc:  # pragma: no cover
             raise click.ClickException(exc) from exc
 
-        output = json.dumps(serialize(instance))
+        output = json.dumps(instance, cls=Backend.instance.json_encoder)
         click.echo(output)
 
     attributes = dict(model.attributes)
@@ -253,7 +221,7 @@ def create_factory(model):
         except Exception as exc:  # pragma: no cover
             raise click.ClickException(exc) from exc
 
-        output = json.dumps(serialize(instance))
+        output = json.dumps(instance, cls=Backend.instance.json_encoder)
         click.echo(output)
 
     attributes = dict(model.attributes)
@@ -342,5 +310,5 @@ def reset_otp(identifier):
     except Exception as exc:  # pragma: no cover
         raise click.ClickException(exc) from exc
 
-    output = json.dumps(serialize(user))
+    output = json.dumps(user, cls=Backend.instance.json_encoder)
     click.echo(output)
