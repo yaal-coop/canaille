@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-08 17:04+0100\n"
-"PO-Revision-Date: 2025-01-03 13:01+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2025-01-10 09:00+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 c415689d242946298da972c97d5bb0c4
-#, fuzzy
-#| msgid "[0.0.57] - Unreleased"
 msgid "[0.0.58] - Unreleased"
-msgstr "[0.0.57] - Inédit"
+msgstr "[0.0.58] - Inédit"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:22 ../../CHANGES.rst:56
 #: ../../CHANGES.rst:84 ../../CHANGES.rst:103 ../../CHANGES.rst:110
@@ -59,22 +57,22 @@ msgid "Added"
 msgstr "Ajouté"
 
 #: ../../CHANGES.rst:6 8593aca44439457296e5591823f56739
-#, fuzzy
-#| msgid "An option to not use OIDC. :pr:`23`"
 msgid "``--version`` option to the CLI. :pr:`209`"
-msgstr "Une option pour désactiver OIDC. :pr:`23`"
+msgstr "Option ``--version`` pour l'interface en ligne de commandes :pr:`209`"
 
 #: ../../CHANGES.rst:7 efa1fc20329f42918fe6a530617cf102
-#, fuzzy
-#| msgid ":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`"
 msgid ""
 ":attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` :"
 "issue:`175`"
-msgstr ":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`"
+msgstr ""
+":attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` "
+":issue:`175`"
 
 #: ../../CHANGES.rst:8 0f7d8f6a51e545499fcff7acd93586e3
 msgid "`canaille get --all` command option to perform full database dumps"
 msgstr ""
+"Option ``canaille get--all`` pour effectuer des sauvegardes complètes de la "
+"base de données"
 
 #: ../../CHANGES.rst:11 ../../CHANGES.rst:15 ../../CHANGES.rst:44
 #: ../../CHANGES.rst:64 ../../CHANGES.rst:77 ../../CHANGES.rst:89
@@ -91,12 +89,12 @@ msgstr "Modifié"
 #: c15803fd37484051a8f92213756c4d22
 msgid "fixed a bug on updating user's settings :issue:`206`"
 msgstr ""
+"Correction d'un bug sur la mise à jours des paramètres utilisateurs "
+":issue:`206`"
 
 #: ../../CHANGES.rst:19 9d53638e5933499baafec12390f02e23
-#, fuzzy
-#| msgid "[0.0.37] - 2023-12-01"
 msgid "[0.0.57] - 2024-12-31"
-msgstr "[0.0.37] - 2023-12-01"
+msgstr "[0.0.57] - 2024-12-31"
 
 #: ../../CHANGES.rst:23 5b4f3aa107a74df3ba845920503dfdc5
 msgid "Intruder lockout :issue:`173`"
@@ -5210,10 +5208,8 @@ msgstr ""
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES:1
 #: b1827fc993454e8fbfbe2868c28e751c
-#, fuzzy
-#| msgid "Password compromission check"
 msgid "Password hashing scheme."
-msgstr "Vérification de la compromission du mot de passe"
+msgstr "Algorithme de hachage des mots de passe."
 
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES:3
@@ -5222,6 +5218,8 @@ msgid ""
 "Defines password hashing scheme in SQL database. examples : \"mssql2000\", "
 "\"ldap_salted_sha1\", \"pbkdf2_sha512\""
 msgstr ""
+"Définit l'algorithme de hachage de mots de passe dans les bases de données "
+"SQL. Par exemple : \"mssql2000\", \"ldap_salted_sha1\", \"pbkdf2_sha512\""
 
 #: ../../canaille/backends/ldap/configuration.py:docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings:1
