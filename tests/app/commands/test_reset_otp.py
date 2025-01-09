@@ -38,7 +38,7 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
         "given_name": "John",
         "id": user_otp.id,
         "last_modified": mock.ANY,
-        "password": "***",
+        "password": mock.ANY,
         "phone_numbers": [
             "555-000-000",
         ],

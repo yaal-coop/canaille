@@ -1,5 +1,8 @@
+import datetime
 import importlib
+import json
 import os
+import typing
 from contextlib import contextmanager
 from math import ceil
 
@@ -8,8 +11,48 @@ from flask import g
 from canaille.app import classproperty
 
 
+class ModelEncoder(json.JSONEncoder):
+    """JSON serializer that can handle Canaille models."""
+
+    @staticmethod
+    def serialize_model(instance):
+        def serialize_attribute(attribute_name, value):
+            """Replace model instances by their id."""
+
+            multiple = typing.get_origin(instance.attributes[attribute_name]) is list
+            if multiple and isinstance(value, list):
+                return [serialize_attribute(attribute_name, v) for v in value]
+
+            model, _ = instance.get_model_annotations(attribute_name)
+            if model:
+                return value.id
+
+            return value
+
+        result = {}
+        for attribute in instance.attributes:
+            if serialized := serialize_attribute(
+                attribute, getattr(instance, attribute)
+            ):
+                result[attribute] = serialized
+
+        return result
+
+    def default(self, obj):
+        from canaille.backends.models import Model
+
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+
+        if isinstance(obj, Model):
+            return self.serialize_model(obj)
+
+        return super().default(obj)
+
+
 class Backend:
     _instance = None
+    json_encoder = ModelEncoder
 
     def __init__(self, config):
         self.config = config

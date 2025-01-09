@@ -22,7 +22,7 @@ def test_set_string_by_id(testclient, backend, user):
         "given_name": "foobar",
         "id": user.id,
         "last_modified": mock.ANY,
-        "password": "***",
+        "password": mock.ANY,
         "phone_numbers": [
             "555-000-000",
         ],
@@ -52,7 +52,7 @@ def test_set_string_by_identifier(testclient, backend, user):
         "given_name": "foobar",
         "id": user.id,
         "last_modified": mock.ANY,
-        "password": "***",
+        "password": mock.ANY,
         "phone_numbers": [
             "555-000-000",
         ],
@@ -94,7 +94,7 @@ def test_set_multiple(testclient, backend, user):
         "given_name": "John",
         "id": user.id,
         "last_modified": mock.ANY,
-        "password": "***",
+        "password": mock.ANY,
         "phone_numbers": [
             "555-000-000",
         ],
@@ -136,7 +136,7 @@ def test_set_remove_simple_attribute(testclient, backend, user, admin):
         "given_name": "John",
         "id": user.id,
         "last_modified": mock.ANY,
-        "password": "***",
+        "password": mock.ANY,
         "phone_numbers": [
             "555-000-000",
         ],
@@ -169,7 +169,7 @@ def test_set_remove_multiple_attribute(testclient, backend, user, admin, foo_gro
         "given_name": "John",
         "id": user.id,
         "last_modified": mock.ANY,
-        "password": "***",
+        "password": mock.ANY,
         "phone_numbers": [
             "555-000-000",
         ],

@@ -6,8 +6,10 @@ from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
+from sqlalchemy_utils import Password
 
 from canaille.backends import Backend
+from canaille.backends import ModelEncoder
 from canaille.backends import get_lockout_delay_message
 
 Base = declarative_base()
@@ -21,8 +23,16 @@ def db_session(db_uri=None, init=False):
     return session
 
 
+class SQLModelEncoder(ModelEncoder):
+    def default(self, obj):
+        if isinstance(obj, Password):
+            return obj.hash.decode()
+        return super().default(obj)
+
+
 class SQLBackend(Backend):
     db_session = None
+    json_encoder = SQLModelEncoder
 
     @classmethod
     def install(cls, config):  # pragma: no cover
