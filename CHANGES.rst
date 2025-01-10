@@ -1,6 +1,10 @@
 [0.0.59] - Unreleased
 ---------------------
 
+Fixed
+^^^^^
+- Fix password fields auto-refilling when input is reset. :issue:`218`
+
 Changed
 ^^^^^^^
 - Bump to HTMX 2.0.4

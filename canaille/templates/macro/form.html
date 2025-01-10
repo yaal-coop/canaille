@@ -25,6 +25,14 @@ del_button=false
     {% set ignore_me = kwargs.update({"hx-post": ""}) %}
     {% set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms"}) %}
 {% endif %}
+{% if request.headers.get("HX-Request") and not request.headers.get("HX-Boosted") %}
+    {# Prevent password to be automatically refilled when reset during edition #}
+    {% if field.type == "PasswordField" %}
+        {% set ignore_me = kwargs.update({"autocomplete": "new-password"}) %}
+    {% else %}
+        {% set ignore_me = kwargs.update({"autocomplete": "off"}) %}
+    {% endif %}
+{% endif %}
 
 {% if container and field_visible %}
     <div class="field {{ kwargs.pop('class_', '') }}
