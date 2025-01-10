@@ -21,7 +21,7 @@ from canaille.app.mails_sending_conditions import check_if_send_mail_to_admins
 from canaille.backends import Backend
 
 from . import validate_uri
-from .flask import request_is_htmx
+from .flask import request_is_partial
 
 
 def is_uri(form, field):
@@ -105,7 +105,7 @@ def compromised_password_validator(form, field):
     try:
         response = requests.api.get(api_url, timeout=10)
     except Exception:
-        if not request_is_htmx():
+        if not request_is_partial():
             current_app.logger.exception(
                 "Password compromise investigation failed on HIBP API."
             )
@@ -174,7 +174,7 @@ class HTMXFormMixin:
         This uses the Flask abort method to interrupt the flow with an
         exception.
         """
-        if not request_is_htmx():
+        if not request_is_partial():
             return super().validate(*args, **kwargs)
 
         field_name = request.headers.get("HX-Trigger-Name")
@@ -218,12 +218,12 @@ class HTMXFormMixin:
             ):
                 abort(403)
 
-            if request_is_htmx():
+            if request_is_partial():
                 self.validate_field(fieldlist)
 
             fieldlist.append_entry()
 
-            if request_is_htmx():
+            if request_is_partial():
                 self.render_field(fieldlist, **context)
 
             return True
@@ -240,12 +240,12 @@ class HTMXFormMixin:
             ):
                 abort(403)
 
-            if request_is_htmx():
+            if request_is_partial():
                 self.validate_field(fieldlist)
 
             fieldlist.pop_entry()
 
-            if request_is_htmx():
+            if request_is_partial():
                 self.render_field(fieldlist, **context)
 
             return True

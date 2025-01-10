@@ -25,7 +25,7 @@ from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app.flask import render_htmx_template
-from canaille.app.flask import request_is_htmx
+from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import IDToModel
@@ -608,7 +608,7 @@ def profile_edition(user, edited_user):
     if not request.form or profile_form.form_control():
         return render_template("core/profile_edit.html", **render_context)
 
-    if request_is_htmx() or request.form.get("action") == "edit-profile":
+    if request_is_partial() or request.form.get("action") == "edit-profile":
         if not profile_form.validate():
             flash(_("Profile edition failed."), "error")
             return render_template("core/profile_edit.html", **render_context)
@@ -672,7 +672,7 @@ def profile_settings(user, edited_user):
     if (
         request.method == "GET"
         or request.form.get("action") == "edit-settings"
-        or request_is_htmx()
+        or request_is_partial()
     ):
         return profile_settings_edit(user, edited_user)
 
@@ -795,7 +795,7 @@ def profile_settings_edit(editor, edited_user):
     if (
         request.form
         and request.form.get("action") == "edit-settings"
-        or request_is_htmx()
+        or request_is_partial()
     ):
         if not form.validate():
             flash(_("Profile edition failed."), "error")

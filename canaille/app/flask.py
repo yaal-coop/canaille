@@ -88,7 +88,7 @@ def request_is_boosted() -> bool:
     return request.headers.get("HX-Boosted", False)
 
 
-def request_is_htmx() -> bool:
+def request_is_partial() -> bool:
     """Whether the request only updates a subset of the DOM.
 
     True for form inline validation for instance.
@@ -97,7 +97,7 @@ def request_is_htmx() -> bool:
 
 
 def render_htmx_template(template, htmx_template=None, **kwargs):
-    if request_is_htmx():
+    if request_is_partial():
         if htmx_template:
             template = htmx_template
         else:
