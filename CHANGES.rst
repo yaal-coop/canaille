@@ -33,25 +33,24 @@ Fixed
 
 Added
 ^^^^^
-- Intruder lockout :issue:`173`
-- :attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT`
-  :issue:`173`
-- Multi-factor authentication :issue:`47`
-- :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and
-  :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and
-  :attr:`~canaille.core.configuration.CoreSettings.SMS_OTP` and
-  :attr:`~canaille.core.configuration.CoreSettings.SMPP`
+- Intruder lockout, controlled by the
+  :attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT`
+  configuration setting. :issue:`173`
+- Multi-factor authentication, controlled by the
+  :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`,
+  :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP`,
+  :attr:`~canaille.core.configuration.CoreSettings.SMS_OTP` configuration settings.
   :issue:`47`
-- Password compromission check :issue:`179`
-- :attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and
+- Password compromission check, controlled by the
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
-  :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL`
+  :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` settings.
   :issue:`179`
-- Implement OIDC client_credentials flow. :issue:`207`
+- :attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` configuration setting.
+- OIDC ``client_credentials`` flow implementation. :issue:`207`
 - Button in the client admin page to create client tokens.
 - Basic SCIM implementation. :issue:`116` :pr:`197`
-- Password expiry policy :issue:`176`
-- :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`
+- Password expiry policy, controlled by the
+  :attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME` configuration setting. :issue:`176`
 
 Changed
 ^^^^^^^
