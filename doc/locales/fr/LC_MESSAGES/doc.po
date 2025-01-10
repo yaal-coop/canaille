@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-10 12:36+0100\n"
-"PO-Revision-Date: 2025-01-10 09:00+0000\n"
+"PO-Revision-Date: 2025-01-10 15:25+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -75,30 +75,24 @@ msgid "``--version`` option to the CLI. :pr:`209`"
 msgstr "Option ``--version`` pour l'interface en ligne de commandes :pr:`209`"
 
 #: ../../CHANGES.rst:7 d659628d516c40b0a36d750e59d99921
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.backends.sql.configuration.SQLSettings."
-#| "PASSWORD_SCHEMES` :issue:`175`"
 msgid ""
 "Password hashing scheme customization with the :attr:`~canaille.backends.sql."
 "configuration.SQLSettings.PASSWORD_SCHEMES` parameter. :issue:`175`"
 msgstr ""
-":attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` :"
-"issue:`175`"
+"Personnalisation de l'algorithme de hachage des mots de passe avec le "
+"paramètre de configuration "
+":attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES`. "
+":issue:`175`"
 
 #: ../../CHANGES.rst:8 63808a8f2ece4e8299c1d6a3d48678fb
-#, fuzzy
-#| msgid "`canaille get --all` command option to perform full database dumps"
 msgid "`canaille dump` command option to perform full database dumps."
 msgstr ""
-"Option ``canaille get--all`` pour effectuer des sauvegardes complètes de la "
-"base de données"
+"Option ``canaille dump`` pour effectuer des sauvegardes complètes de la base "
+"de données."
 
 #: ../../CHANGES.rst:9 23d1dcb15ca24490ba863091cd087ff0
-#, fuzzy
-#| msgid "Email verification. :issue:`41` :pr:`147`"
 msgid "Automatic SQL database migrations. :issue:`217` :pr:`214`"
-msgstr "Vérification des adresses email. :issue:`41`:pr:`147`"
+msgstr "Migration automatique des bases de données SQL. :issue:`217` :pr:`214`"
 
 #: ../../CHANGES.rst:12 ../../CHANGES.rst:45 ../../CHANGES.rst:65
 #: ../../CHANGES.rst:78 ../../CHANGES.rst:90 ../../CHANGES.rst:115
@@ -123,7 +117,7 @@ msgstr "Modifié"
 
 #: ../../CHANGES.rst:13 fe7429ca2df94118964bd4c3ea5cb945
 msgid "CLI commands dump hashed passwords. :issue:`214`"
-msgstr ""
+msgstr "Les commandes console affichent les mots de passe hachés. :issue:`214`"
 
 #: ../../CHANGES.rst:16 ../../CHANGES.rst:53 ../../CHANGES.rst:95
 #: ../../CHANGES.rst:134 ../../CHANGES.rst:142 ../../CHANGES.rst:150
@@ -166,12 +160,10 @@ msgid "Fixed"
 msgstr "Corrigé"
 
 #: ../../CHANGES.rst:17 2bd1e492a77e48be91838061fed5e7b8
-#, fuzzy
-#| msgid "fixed a bug on updating user's settings :issue:`206`"
 msgid "A bug on updating user's settings. :issue:`206`"
 msgstr ""
-"Correction d'un bug sur la mise à jours des paramètres utilisateurs :issue:"
-"`206`"
+"Correction d'un bug sur la mise à jours des paramètres utilisateurs. "
+":issue:`206`"
 
 #: ../../CHANGES.rst:20 a9391eece84240bb82abe2cbcd0d2367
 msgid "[0.0.57] - 2024-12-31"
@@ -3993,10 +3985,8 @@ msgid "Remove expired tokens and authorization codes."
 msgstr "Suppression des jetons expirés et des codes d'autorisation."
 
 #: ../../canaille dump:1 328ab9586ff247b599244e1ed1ec4ee1
-#, fuzzy
-#| msgid "Documentation details on the Canaille models."
 msgid "Dump all the available models."
-msgstr "Documentation des modèles de Canaille."
+msgstr "Retourne tous les objets disponibles."
 
 #: ../../canaille install:1 ecf525c0e8d24ed887d09a8bce106b90
 msgid "Installs canaille elements from the configuration."
@@ -5333,7 +5323,7 @@ msgstr "Appartient à l'espace de nom ``CANAILLE_SQL``."
 #: canaille.backends.sql.configuration.SQLSettings.AUTO_MIGRATE:1
 #: c49da2725c2b4bcaa81ff15f505ea439
 msgid "Whether to automatically apply database migrations."
-msgstr ""
+msgstr "Appliquer automatiquement ou non les migrations de base de données."
 
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.AUTO_MIGRATE:3
@@ -5343,12 +5333,18 @@ msgid ""
 "Canaille web application is launched. If :data:`False`, migrations must be "
 "applied manually with ``canaille db upgrade``."
 msgstr ""
+"Si :data:`True`, les migrations de base de données sont appliquées "
+"automatiquement lorsque l'application web de Canaille est lancée. Si "
+":data:`False`, les migrations doivent être appliquées manuellement avec ``"
+"canaille db upgrade``."
 
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.AUTO_MIGRATE:8
 #: b58635cfdb7f4240854239418e78fe14
 msgid "When running the CLI, migrations will never be applied."
 msgstr ""
+"Les migrations ne sont jamais appliquées automatiquement lorsque l'interface "
+"en ligne de commandes est utilisée."
 
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:1
@@ -7765,10 +7761,8 @@ msgstr ""
 "`dedicated section <canaille.backends.sql.configuration.SQLSettings>`."
 
 #: ../tutorial/databases.rst:35 10baeaf0e5e64feba07dc33caa1c50ff
-#, fuzzy
-#| msgid "Configuration"
 msgid "Migrations"
-msgstr "Configuration"
+msgstr "Migrations"
 
 #: ../tutorial/databases.rst:37 eddaa2b6515740d895284b1d2b49955a
 msgid ""
@@ -7777,6 +7771,12 @@ msgid ""
 "SQLSettings.AUTO_MIGRATE` setting. Migrations are not automatically applied "
 "with the use of the CLI though."
 msgstr ""
+"Par défaut, les migrations sont appliquées lorsque l'application web est "
+"lancée. Vous pouvez désactiver ce comportement avec le paramètre de "
+"configuration "
+":attr:`~canaille.backends.sql.configuration.SQLSettings.AUTO_MIGRATE`. "
+"Cependant les migrations ne sont pas appliquées lorsque l'interface en ligne "
+"de commande est utilisée."
 
 #: ../tutorial/databases.rst:41 dc824fe2ce9047a98a90bc5ac22b09d9
 msgid ""
@@ -7785,6 +7785,10 @@ msgid ""
 "`flask-alembic documentation <flask-alembic:index>` and the ``canaille db`` "
 "command line if you are in trouble."
 msgstr ""
+"Les migrations sont effectuées avec :doc:`flask-alembic <flask-alembic:use>`"
+", qui fournit un outil console dédié pour les paramétrer. Vous pouvez "
+"consulter la :doc:`documentation de flask-alembic <flask-alembic:index>` et "
+"la commande ``canaille db`` si vous rencontrez des soucis."
 
 #: ../tutorial/databases.rst:47 8a13bd9f5910475bb70637ce82181eb9
 msgid ""
