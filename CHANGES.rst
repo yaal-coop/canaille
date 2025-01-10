@@ -4,17 +4,17 @@
 Added
 ^^^^^
 - ``--version`` option to the CLI. :pr:`209`
-- :attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` :issue:`175`
-- `canaille dump` command option to perform full database dumps
+- Password hashing scheme customization with the :attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` parameter. :issue:`175`
+- `canaille dump` command option to perform full database dumps.
+- Automatic SQL database migrations. :issue:`217` :pr:`214`
 
 Changed
 ^^^^^^^
-- fixed a bug on updating user's settings :issue:`206`
-- CLI commands dump hashed passwords :issue:`214`
+- CLI commands dump hashed passwords. :issue:`214`
 
-Changed
+Fixed
 ^^^^^^^
-- fixed a bug on updating user's settings :issue:`206`
+- A bug on updating user's settings. :issue:`206`
 
 [0.0.57] - 2024-12-31
 ---------------------
