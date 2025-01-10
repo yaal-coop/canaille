@@ -4,7 +4,6 @@ DEBUG = true
 [CANAILLE]
 LOGO = "/static/img/canaille-head.webp"
 FAVICON = "/static/img/canaille-c.webp"
-EMAIL_CONFIRMATION = false
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@mydomain.tld"
 
