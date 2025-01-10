@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-10 12:34+0100\n"
+"POT-Creation-Date: 2025-01-10 12:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -67,25 +67,28 @@ msgstr ""
 msgid "``--version`` option to the CLI. :pr:`209`"
 msgstr ""
 
-#: ../../CHANGES.rst:7 68dd17fef135479c891a55e7657b2af9
+#: ../../CHANGES.rst:7 d659628d516c40b0a36d750e59d99921
 msgid ""
-":attr:`~canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES` :"
-"issue:`175`"
+"Password hashing scheme customization with the :attr:`~canaille.backends.sql."
+"configuration.SQLSettings.PASSWORD_SCHEMES` parameter. :issue:`175`"
 msgstr ""
 
 #: ../../CHANGES.rst:8 63808a8f2ece4e8299c1d6a3d48678fb
-msgid "`canaille dump` command option to perform full database dumps"
+msgid "`canaille dump` command option to perform full database dumps."
 msgstr ""
 
-#: ../../CHANGES.rst:11 ../../CHANGES.rst:16 ../../CHANGES.rst:45
-#: ../../CHANGES.rst:65 ../../CHANGES.rst:78 ../../CHANGES.rst:90
-#: ../../CHANGES.rst:115 ../../CHANGES.rst:123 ../../CHANGES.rst:171
-#: ../../CHANGES.rst:197 ../../CHANGES.rst:249 ../../CHANGES.rst:286
-#: ../../CHANGES.rst:355 ../../CHANGES.rst:373 ../../CHANGES.rst:411
-#: ../../CHANGES.rst:450 ../../CHANGES.rst:485 ../../CHANGES.rst:528
-#: ../../CHANGES.rst:632 ../../CHANGES.rst:686 ../../CHANGES.rst:718
-#: ../../CHANGES.rst:732 9d6779c7467447bf9348630f9df9f7a6
-#: c9d0c3771a1545029cbf181cdaaf010e b71b6cc4093d47b0a025a6084ee10b82
+#: ../../CHANGES.rst:9 23d1dcb15ca24490ba863091cd087ff0
+msgid "Automatic SQL database migrations. :issue:`217` :pr:`214`"
+msgstr ""
+
+#: ../../CHANGES.rst:12 ../../CHANGES.rst:45 ../../CHANGES.rst:65
+#: ../../CHANGES.rst:78 ../../CHANGES.rst:90 ../../CHANGES.rst:115
+#: ../../CHANGES.rst:123 ../../CHANGES.rst:171 ../../CHANGES.rst:197
+#: ../../CHANGES.rst:249 ../../CHANGES.rst:286 ../../CHANGES.rst:355
+#: ../../CHANGES.rst:373 ../../CHANGES.rst:411 ../../CHANGES.rst:450
+#: ../../CHANGES.rst:485 ../../CHANGES.rst:528 ../../CHANGES.rst:632
+#: ../../CHANGES.rst:686 ../../CHANGES.rst:718 ../../CHANGES.rst:732
+#: 9d6779c7467447bf9348630f9df9f7a6 b71b6cc4093d47b0a025a6084ee10b82
 #: 3a1c46806f3a4fcd9bbcf94b8f2ecd6f 4ecdd331965d4307bcae6b8e23cc2758
 #: 3007fe60da8b497489115528ff73a22a d97da6e417504c30905b3bbbcff0a3e5
 #: 8379ca38044741609b60ac5563f117e8 a65d6cf0ec7440a89b6e4e26bcee20a9
@@ -99,13 +102,52 @@ msgstr ""
 msgid "Changed"
 msgstr ""
 
-#: ../../CHANGES.rst:12 ../../CHANGES.rst:17 6f26098796454b3cad6eb8ecdb44eddf
-#: 2bd1e492a77e48be91838061fed5e7b8
-msgid "fixed a bug on updating user's settings :issue:`206`"
+#: ../../CHANGES.rst:13 fe7429ca2df94118964bd4c3ea5cb945
+msgid "CLI commands dump hashed passwords. :issue:`214`"
 msgstr ""
 
-#: ../../CHANGES.rst:13 fe7429ca2df94118964bd4c3ea5cb945
-msgid "CLI commands dump hashed passwords :issue:`214`"
+#: ../../CHANGES.rst:16 ../../CHANGES.rst:53 ../../CHANGES.rst:95
+#: ../../CHANGES.rst:134 ../../CHANGES.rst:142 ../../CHANGES.rst:150
+#: ../../CHANGES.rst:157 ../../CHANGES.rst:164 ../../CHANGES.rst:178
+#: ../../CHANGES.rst:208 ../../CHANGES.rst:221 ../../CHANGES.rst:239
+#: ../../CHANGES.rst:258 ../../CHANGES.rst:266 ../../CHANGES.rst:292
+#: ../../CHANGES.rst:300 ../../CHANGES.rst:320 ../../CHANGES.rst:350
+#: ../../CHANGES.rst:382 ../../CHANGES.rst:390 ../../CHANGES.rst:416
+#: ../../CHANGES.rst:436 ../../CHANGES.rst:460 ../../CHANGES.rst:470
+#: ../../CHANGES.rst:491 ../../CHANGES.rst:499 ../../CHANGES.rst:522
+#: ../../CHANGES.rst:545 ../../CHANGES.rst:557 ../../CHANGES.rst:566
+#: ../../CHANGES.rst:575 ../../CHANGES.rst:584 ../../CHANGES.rst:604
+#: ../../CHANGES.rst:611 ../../CHANGES.rst:661 ../../CHANGES.rst:669
+#: ../../CHANGES.rst:694 ../../CHANGES.rst:702 ../../CHANGES.rst:710
+#: ../../CHANGES.rst:723 ../../CHANGES.rst:737 ../../CHANGES.rst:769
+#: ../../CHANGES.rst:792 ../../CHANGES.rst:823 a91b918636794649b7d165413624cf43
+#: 53c5a65f508e4ce4a2cdb301851dd948 b274bbd1b95e42bcb8153fc3514259ce
+#: 2533d3c823f74185b35b06fa4e1b80e3 ed1e8ab37be64a8f8ca5ffecb229e0ad
+#: df88f1d57bf34873bffea45537b3af4c 6172e8c8655f4dcc9adc6bea34c0fc95
+#: f69752d371734b35af74db0812516dd9 e84d4fc2503b4cb9bc30b43d71515f3d
+#: de5ce855802f402a8b90fd3f7401d7d9 b0d8d589bafb44e7a50e1df6b5a2c0ee
+#: df7c8e6f591146ae9d0214b5cf2ef20c 01c7173e0c4f4edd9b9435c71cf0b42f
+#: f852bdbb77364a7e9cc6b146e56ed402 0fde0faefcc74c63814c308767cfece9
+#: 646698a0b8834d5a82e6251501ac750e 72754d5c2e904a22a329f4254a514e9c
+#: 7e1ac803c25144c0b2b9c902530a21a2 526a14aecd6f4e87b95a6edb635fc92c
+#: 194cefb8995b489fb1cedfa349a864c0 50050907eee8458fb96d8c32a755b0d4
+#: acbb3ec553594f6680d223653479eff4 089020254ca745848ba3bc24c50f593b
+#: 2dccac9b689a4eefab864be77ee5a433 7ac15c877d0e44deadcfbb9c99e14ca6
+#: 0606f5a65c6d412a96cb74b9eaf59706 08260e612848485cb1928449b08ddfa2
+#: 0a5801741e6e4f68b248e8eefc11e32e d6643e325d37484d9c9b14c4dc3e26ff
+#: ff19c7e139e64f40be24d0d3766e12d1 70025a466d2940dd82bb4d943cae9cbc
+#: bc7c7a9dc156475c8a65bfe5b94c66df 10d045405e844791b053eee9e1f845e2
+#: 66784d9272f44414a23d2b25cc73b179 02d5e48f9ea0441688e6d8e75da2bc20
+#: daca4e664b6d4a949f8825c48941a1f2 42fe0d93e6da4649b6315591d95fabfd
+#: e344dc15cfcd4ebaa54ed440b8745fd8 52a9e522d4784784aa9db400ec187e1f
+#: 0d260c98b74242b0bde5f2cca4aca9b0 7f343e5272b14cdabcd8606c3af8de59
+#: 6c2e38da89e548bcb490b4ef93d4cdd1 27d0795441ff491e8d5599a42d03f41b
+#: e74496b8550542b7a5061fffdd77cddc
+msgid "Fixed"
+msgstr ""
+
+#: ../../CHANGES.rst:17 2bd1e492a77e48be91838061fed5e7b8
+msgid "A bug on updating user's settings. :issue:`206`"
 msgstr ""
 
 #: ../../CHANGES.rst:20 a9391eece84240bb82abe2cbcd0d2367
@@ -180,45 +222,6 @@ msgstr ""
 
 #: ../../CHANGES.rst:50 50fe28668fa04a39b0004b6cd8cb9e68
 msgid "[0.0.56] - 2024-11-07"
-msgstr ""
-
-#: ../../CHANGES.rst:53 ../../CHANGES.rst:95 ../../CHANGES.rst:134
-#: ../../CHANGES.rst:142 ../../CHANGES.rst:150 ../../CHANGES.rst:157
-#: ../../CHANGES.rst:164 ../../CHANGES.rst:178 ../../CHANGES.rst:208
-#: ../../CHANGES.rst:221 ../../CHANGES.rst:239 ../../CHANGES.rst:258
-#: ../../CHANGES.rst:266 ../../CHANGES.rst:292 ../../CHANGES.rst:300
-#: ../../CHANGES.rst:320 ../../CHANGES.rst:350 ../../CHANGES.rst:382
-#: ../../CHANGES.rst:390 ../../CHANGES.rst:416 ../../CHANGES.rst:436
-#: ../../CHANGES.rst:460 ../../CHANGES.rst:470 ../../CHANGES.rst:491
-#: ../../CHANGES.rst:499 ../../CHANGES.rst:522 ../../CHANGES.rst:545
-#: ../../CHANGES.rst:557 ../../CHANGES.rst:566 ../../CHANGES.rst:575
-#: ../../CHANGES.rst:584 ../../CHANGES.rst:604 ../../CHANGES.rst:611
-#: ../../CHANGES.rst:661 ../../CHANGES.rst:669 ../../CHANGES.rst:694
-#: ../../CHANGES.rst:702 ../../CHANGES.rst:710 ../../CHANGES.rst:723
-#: ../../CHANGES.rst:737 ../../CHANGES.rst:769 ../../CHANGES.rst:792
-#: ../../CHANGES.rst:823 53c5a65f508e4ce4a2cdb301851dd948
-#: b274bbd1b95e42bcb8153fc3514259ce 2533d3c823f74185b35b06fa4e1b80e3
-#: ed1e8ab37be64a8f8ca5ffecb229e0ad df88f1d57bf34873bffea45537b3af4c
-#: 6172e8c8655f4dcc9adc6bea34c0fc95 f69752d371734b35af74db0812516dd9
-#: e84d4fc2503b4cb9bc30b43d71515f3d de5ce855802f402a8b90fd3f7401d7d9
-#: b0d8d589bafb44e7a50e1df6b5a2c0ee df7c8e6f591146ae9d0214b5cf2ef20c
-#: 01c7173e0c4f4edd9b9435c71cf0b42f f852bdbb77364a7e9cc6b146e56ed402
-#: 0fde0faefcc74c63814c308767cfece9 646698a0b8834d5a82e6251501ac750e
-#: 72754d5c2e904a22a329f4254a514e9c 7e1ac803c25144c0b2b9c902530a21a2
-#: 526a14aecd6f4e87b95a6edb635fc92c 194cefb8995b489fb1cedfa349a864c0
-#: 50050907eee8458fb96d8c32a755b0d4 acbb3ec553594f6680d223653479eff4
-#: 089020254ca745848ba3bc24c50f593b 2dccac9b689a4eefab864be77ee5a433
-#: 7ac15c877d0e44deadcfbb9c99e14ca6 0606f5a65c6d412a96cb74b9eaf59706
-#: 08260e612848485cb1928449b08ddfa2 0a5801741e6e4f68b248e8eefc11e32e
-#: d6643e325d37484d9c9b14c4dc3e26ff ff19c7e139e64f40be24d0d3766e12d1
-#: 70025a466d2940dd82bb4d943cae9cbc bc7c7a9dc156475c8a65bfe5b94c66df
-#: 10d045405e844791b053eee9e1f845e2 66784d9272f44414a23d2b25cc73b179
-#: 02d5e48f9ea0441688e6d8e75da2bc20 daca4e664b6d4a949f8825c48941a1f2
-#: 42fe0d93e6da4649b6315591d95fabfd e344dc15cfcd4ebaa54ed440b8745fd8
-#: 52a9e522d4784784aa9db400ec187e1f 0d260c98b74242b0bde5f2cca4aca9b0
-#: 7f343e5272b14cdabcd8606c3af8de59 6c2e38da89e548bcb490b4ef93d4cdd1
-#: 27d0795441ff491e8d5599a42d03f41b e74496b8550542b7a5061fffdd77cddc
-msgid "Fixed"
 msgstr ""
 
 #: ../../CHANGES.rst:54 d1079f04609745a5b2b84388ffbafe12
