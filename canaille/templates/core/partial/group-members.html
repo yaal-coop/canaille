@@ -78,7 +78,7 @@
                     <div class="ui icon message">
                         <i class="exclamation icon"></i>
                         <div class="content">
-                            {% if request.headers.get("Hx-Request") %}
+                            {% if request_is_partial %}
                                 <div class="header">
                                     {% trans %}No item matches your request{% endtrans %}
                                 </div>
