@@ -25,7 +25,7 @@ For the sake of readability, it is omitted in the following examples.
 
 .. _cli_dump:
 
-.. click:: canaille.app.commands:dump
+.. click:: canaille.backends.commands:dump
    :prog: canaille dump
    :nested: full
 
