@@ -13,8 +13,8 @@ The main template inherited by almost every other templates.
 :type logo_url: :class:`str`
 :param favicon_url: The URL of the instance favicon defined in :attr:`~canaille.core.configuration.CoreSettings.FAVICON`.
 :type favicon_url: :class:`str`
-:param is_boosted: Whether the page is boosted by :attr:`~canaille.core.configuration.CoreSettings.HTMX`.
-:type is_boosted: :class:`bool`
+:param request_is_boosted: Whether the page is boosted by :attr:`~canaille.core.configuration.CoreSettings.HTMX`.
+:type request_is_boosted: :class:`bool`
 :param menu: Whether to display the menu or not.
 :type menu: :class:`bool`
 :param debug: Whether the app has been launched in debug mode.
@@ -27,7 +27,7 @@ The main template inherited by almost every other templates.
     <head>
         <title>{% block title -%}{% trans %}Authorization interface{% endtrans %}{%- endblock %} - {{ website_name|default("Canaille") }}</title>
 
-        {% if not is_boosted %}
+        {% if not request_is_boosted %}
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -121,7 +121,7 @@ The main template inherited by almost every other templates.
             <a href="{{ url_for('core.account.about') }}">{{ _("About Canaille") }}</a>
         </footer>
         {% if config["CANAILLE"]["JAVASCRIPT"] %}
-            {% if not is_boosted %}
+            {% if not request_is_boosted %}
                 <script src="{{ url_for("static", filename="jquery/jquery.min.js") }}" defer></script>
                 <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
                 {% if config["CANAILLE"]["HTMX"] %}

@@ -1,7 +1,6 @@
 import os
 
 import flask
-from flask import request
 
 try:
     import flask_themer
@@ -45,6 +44,7 @@ def setup_jinja(app):
 
     @app.context_processor
     def global_processor():
+        from canaille.app.flask import request_is_boosted
         from canaille.app.session import current_user
 
         return {
@@ -55,6 +55,6 @@ def setup_jinja(app):
             "website_name": app.config["CANAILLE"]["NAME"],
             "user": current_user(),
             "menu": True,
-            "is_boosted": request.headers.get("HX-Boosted", False),
+            "request_is_boosted": request_is_boosted(),
             "features": app.features,
         }

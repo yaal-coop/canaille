@@ -80,10 +80,20 @@ def set_parameter_in_url_query(url, **kwargs):
     return urlunsplit(split)
 
 
-def request_is_htmx():
-    return request.headers.get("HX-Request", False) and not request.headers.get(
-        "HX-Boosted", False
-    )
+def request_is_boosted() -> bool:
+    """Whether the request is boosted with HTMX.
+
+    https://htmx.org/docs/#boosting
+    """
+    return request.headers.get("HX-Boosted", False)
+
+
+def request_is_htmx() -> bool:
+    """Whether the request only updates a subset of the DOM.
+
+    True for form inline validation for instance.
+    """
+    return request.headers.get("HX-Request", False) and not request_is_boosted()
 
 
 def render_htmx_template(template, htmx_template=None, **kwargs):
