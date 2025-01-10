@@ -19,6 +19,10 @@ class = "logging.StreamHandler"
 stream = "ext://sys.stdout"
 formatter = "default"
 
+[CANAILLE.SMTP]
+HOST = "localhost"
+PORT = 1025
+
 [CANAILLE_LDAP]
 URI = "ldap://127.0.0.1:5389"
 ROOT_DN = "dc=mydomain,dc=tld"

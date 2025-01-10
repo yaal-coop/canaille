@@ -31,9 +31,10 @@ Initialize your development environment with:
 
 After having launched the demo you have access to several services:
 
-- A canaille server at `localhost:5000 <http://localhost:5000>`_
-- A dummy client at `localhost:5001 <http://localhost:5001>`_
-- Another dummy client at `localhost:5002 <http://localhost:5002>`_
+- A canaille server at `localhost:5000 <http://localhost:5000>`__
+- A dummy client at `localhost:5001 <http://localhost:5001>`__
+- Another dummy client at `localhost:5002 <http://localhost:5002>`__
+- A mail catcher at `localhost:1080 <http://localhost:1080>`__
 
 The canaille server has some default users:
 

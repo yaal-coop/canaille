@@ -110,6 +110,7 @@ dev = [
     "coverage[toml] >= 6.0.0",
     "faker >= 30.0.0",
     "flask-webtest >= 0.1.6",
+    "maildump>=1.0",
     # pre-commit version is fixed until docformatted hook is compatible
     # https://github.com/PyCQA/docformatter/issues/293
     "pre-commit < 4.0.0",
