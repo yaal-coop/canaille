@@ -2,6 +2,8 @@ import datetime
 import json
 from unittest import mock
 
+import pytest
+
 from canaille.backends import ModelEncoder
 from canaille.commands import cli
 
@@ -14,6 +16,9 @@ def test_serialize(user):
         json.dumps({"foo": datetime.datetime(1970, 1, 1)}, cls=ModelEncoder)
         == '{"foo": "1970-01-01T00:00:00"}'
     )
+
+    with pytest.raises(TypeError):
+        json.dumps({"foo": object()}, cls=ModelEncoder)
 
 
 def test_get_list_models(testclient, backend, user):

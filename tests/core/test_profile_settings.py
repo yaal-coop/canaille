@@ -35,7 +35,7 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     assert bar_group.members == [admin]
     assert "readonly" in res.form["groups"].attrs
     assert "readonly" in res.form["user_name"].attrs
-    
+
     res = testclient.get("/profile/user/settings", status=200)
     res.form["user_name"] = "user"
     res.form["password1"] = "i'm a little pea"
