@@ -540,6 +540,7 @@ def profile_edition_emails_form(user, edited_user, has_smtp):
         request.form or None, data={"old_emails": edited_user.emails}
     )
     emails_form.add_email_button = has_smtp
+    emails_form.render_field_macro_file = "core/partial/emails_field.html"
     return emails_form
 
 
@@ -608,7 +609,9 @@ def profile_edition(user, edited_user):
     if not request.form or profile_form.form_control():
         return render_template("core/profile_edit.html", **render_context)
 
-    if request_is_partial() or request.form.get("action") == "edit-profile":
+    if request.form.get("action") == "edit-profile" or (
+        request_is_partial() and request.headers.get("HX-Trigger-Name") in profile_form
+    ):
         if not profile_form.validate():
             flash(_("Profile edition failed."), "error")
             return render_template("core/profile_edit.html", **render_context)
@@ -626,7 +629,9 @@ def profile_edition(user, edited_user):
             url_for("core.account.profile_edition", edited_user=edited_user)
         )
 
-    if request.form.get("action") == "add_email":
+    if request.form.get("action") == "add_email" or (
+        request_is_partial() and request.headers.get("HX-Trigger-Name") in emails_form
+    ):
         if not emails_form.validate():
             flash(_("Email addition failed."), "error")
             return render_template("core/profile_edit.html", **render_context)
