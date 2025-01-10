@@ -176,8 +176,10 @@ def jinja_cache_directory(tmp_path_factory):
 @pytest.fixture
 def app(configuration, backend, jinja_cache_directory):
     app = create_app(configuration, backend=backend)
+    # caches the Jinja compiled files for faster unit test execution
     app.jinja_env.bytecode_cache = FileSystemBytecodeCache(jinja_cache_directory)
-    backend.install(app.config)
+    with app.app_context():
+        backend.install(app)
     with app.test_request_context():
         yield app
 

@@ -16,5 +16,5 @@ def sql_backend(sqlalchemy_configuration):
     config_obj = settings_factory(sqlalchemy_configuration)
     config_dict = config_obj.model_dump()
     backend = SQLBackend(config_dict)
-    with backend.session(init=True):
+    with backend.session():
         yield backend

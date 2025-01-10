@@ -1,6 +1,8 @@
 import datetime
+from pathlib import Path
 
 from flask import current_app
+from flask_alembic import Alembic
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
@@ -15,14 +17,6 @@ from canaille.backends import get_lockout_delay_message
 Base = declarative_base()
 
 
-def db_session(db_uri=None, init=False):
-    engine = create_engine(db_uri, echo=False, future=True)
-    if init:
-        Base.metadata.create_all(engine)
-    session = Session(engine)
-    return session
-
-
 class SQLModelEncoder(ModelEncoder):
     def default(self, obj):
         if isinstance(obj, Password):
@@ -31,24 +25,45 @@ class SQLModelEncoder(ModelEncoder):
 
 
 class SQLBackend(Backend):
+    engine = None
     db_session = None
     json_encoder = SQLModelEncoder
+    alembic = None
+
+    def __init__(self, config):
+        super().__init__(config)
+        SQLBackend.engine = create_engine(
+            self.config["CANAILLE_SQL"]["DATABASE_URI"], echo=False, future=True
+        )
+        SQLBackend.alembic = Alembic(metadatas=Base.metadata, engines=SQLBackend.engine)
 
     @classmethod
-    def install(cls, config):  # pragma: no cover
-        engine = create_engine(
-            config["CANAILLE_SQL"]["DATABASE_URI"],
-            echo=False,
-            future=True,
-        )
-        Base.metadata.create_all(engine)
+    def install(cls, app):  # pragma: no cover
+        cls.init_alembic(app)
+        SQLBackend.alembic.upgrade()
 
-    def setup(self, init=False):
+    @classmethod
+    def init_alembic(cls, app):
+        app.config["ALEMBIC"] = {
+            "script_location": str(Path(__file__).resolve().parent / "migrations"),
+        }
+        SQLBackend.alembic.init_app(app)
+
+    def init_app(self, app, init_backend=None):
+        super().init_app(app)
+        self.init_alembic(app)
+        init_backend = (
+            app.config["CANAILLE_SQL"]["AUTO_MIGRATE"]
+            if init_backend is None
+            else init_backend
+        )
+        if init_backend:  # pragma: no cover
+            with app.app_context():
+                self.alembic.upgrade()
+
+    def setup(self):
         if not self.db_session:
-            self.db_session = db_session(
-                self.config["CANAILLE_SQL"]["DATABASE_URI"],
-                init=init,
-            )
+            self.db_session = Session(SQLBackend.engine)
 
     def teardown(self):
         pass

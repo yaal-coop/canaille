@@ -15,7 +15,7 @@ def populate(app):
     from canaille.core.populate import fake_users
 
     with app.app_context():
-        app.backend.install(app.config)
+        app.backend.install(app)
         with app.backend.session():
             if app.backend.query(models.User):
                 return

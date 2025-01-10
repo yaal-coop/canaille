@@ -86,6 +86,7 @@ def create_app(
     config: dict = None,
     validate: bool = True,
     backend=None,
+    init_backend=None,
     env_file: str = None,
     env_prefix: str = "",
 ):
@@ -119,7 +120,7 @@ def create_app(
     sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
-        backend = setup_backend(app, backend)
+        backend = setup_backend(app, backend, init_backend)
         setup_features(app)
         setup_flask_converters(app)
         setup_blueprints(app)

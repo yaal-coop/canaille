@@ -41,7 +41,7 @@ class MemoryBackend(Backend):
         )
 
     @classmethod
-    def install(cls, config):
+    def install(cls, app):
         pass
 
     def setup(self):
