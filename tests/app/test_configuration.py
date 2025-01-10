@@ -44,18 +44,19 @@ def test_configuration_from_environment_vars(tmp_path):
     """Canaille should read configuration from environment vars."""
     os.environ["SECRET_KEY"] = "very-very-secret"
     os.environ["CANAILLE__SMTP__FROM_ADDR"] = "user@mydomain.test"
-    os.environ["CANAILLE_SQL__DATABASE_URI"] = f"sqlite://{tmp_path}/anything.db"
+    os.environ["CANAILLE_SQL__DATABASE_URI"] = f"sqlite:///{tmp_path}/anything.db"
 
     conf = settings_factory({"TIMEZONE": "UTC"})
     assert conf.SECRET_KEY == "very-very-secret"
     assert conf.CANAILLE.SMTP.FROM_ADDR == "user@mydomain.test"
-    assert conf.CANAILLE_SQL.DATABASE_URI == f"sqlite://{tmp_path}/anything.db"
+    assert conf.CANAILLE_SQL.DATABASE_URI == f"sqlite:///{tmp_path}/anything.db"
 
     app = create_app({"TIMEZONE": "UTC"})
     assert app.config["SECRET_KEY"] == "very-very-secret"
     assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "user@mydomain.test"
     assert (
-        app.config["CANAILLE_SQL"]["DATABASE_URI"] == f"sqlite://{tmp_path}/anything.db"
+        app.config["CANAILLE_SQL"]["DATABASE_URI"]
+        == f"sqlite:///{tmp_path}/anything.db"
     )
 
     del os.environ["SECRET_KEY"]
