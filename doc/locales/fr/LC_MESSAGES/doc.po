@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-10 17:29+0100\n"
-"PO-Revision-Date: 2025-01-10 15:25+0000\n"
+"PO-Revision-Date: 2025-01-11 19:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 d7a2cda6d8e24cc484f13ee4df40c1ea
-#, fuzzy
-#| msgid "[0.0.8] - 2022-03-15"
 msgid "[0.0.59] - 2025-01-10"
-msgstr "[0.0.8] - 2022-03-15"
+msgstr "[0.0.59] - 2025-01-10"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:28 ../../CHANGES.rst:64
 #: ../../CHANGES.rst:106 ../../CHANGES.rst:145 ../../CHANGES.rst:153
@@ -68,10 +66,14 @@ msgid ""
 "Fix password fields auto-refilling when input is reset. :issue:`218` :pr:"
 "`215`"
 msgstr ""
+"Correction du remplissage automatique du champs de mot de passe lorsqu'il "
+"est vidé. :issue:`218` :pr:`215`"
 
 #: ../../CHANGES.rst:7 8dc7de6abbd447f4a78272f33cbcb6cf
 msgid "Fix HTMX integration with the email confirmation form. :pr:`216`"
 msgstr ""
+"Correction de l'intégration d'HTMX avec le champ de confirmation des "
+"adresses email. :pr:`216`"
 
 #: ../../CHANGES.rst:10 ../../CHANGES.rst:24 ../../CHANGES.rst:56
 #: ../../CHANGES.rst:76 ../../CHANGES.rst:89 ../../CHANGES.rst:101
@@ -85,16 +87,12 @@ msgid "Changed"
 msgstr "Modifié"
 
 #: ../../CHANGES.rst:11 7413676f512d4473972484920ff5f060
-#, fuzzy
-#| msgid "Bumped to `HTMX` 1.9.0. :pr:`124`"
 msgid "Bump to HTMX 2.0.4"
-msgstr "Mise à jour vers HTMX 1.9.0. :pr:`184`"
+msgstr "Mise à jour vers HTMX 2.0.4"
 
 #: ../../CHANGES.rst:14 4a57056601f148969254d2f049e0f460
-#, fuzzy
-#| msgid "[0.0.8] - 2022-03-15"
 msgid "[0.0.58] - 2025-01-10"
-msgstr "[0.0.8] - 2022-03-15"
+msgstr "[0.0.58] - 2025-01-10"
 
 #: ../../CHANGES.rst:17 ../../CHANGES.rst:35 ../../CHANGES.rst:68
 #: ../../CHANGES.rst:96 ../../CHANGES.rst:115 ../../CHANGES.rst:122
@@ -148,67 +146,52 @@ msgid "[0.0.57] - 2024-12-31"
 msgstr "[0.0.57] - 2024-12-31"
 
 #: ../../CHANGES.rst:36 efa1fc20329f42918fe6a530617cf102
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings."
-#| "ENABLE_INTRUDER_LOCKOUT` :issue:`173`"
 msgid ""
 "Intruder lockout, controlled by the :attr:`~canaille.core.configuration."
 "CoreSettings.ENABLE_INTRUDER_LOCKOUT` configuration setting. :issue:`173`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT` :"
-"issue:`173`"
+"Verrouillage des comptes utilisateurs après connexions infructueuses, "
+"contrôlé par le paramètre de configuration "
+":attr:`~canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT`. "
+":issue:`173`"
 
 #: ../../CHANGES.rst:39 a90b270f7e144a4b81babbac96f5ff22
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD` and :attr:"
-#| "`~canaille.core.configuration.CoreSettings.EMAIL_OTP` and :attr:"
-#| "`~canaille.core.configuration.CoreSettings.SMS_OTP` and :attr:`~canaille."
-#| "core.configuration.CoreSettings.SMPP` :issue:`47`"
 msgid ""
 "Multi-factor authentication, controlled by the :attr:`~canaille.core."
 "configuration.CoreSettings.OTP_METHOD`, :attr:`~canaille.core.configuration."
 "CoreSettings.EMAIL_OTP`, :attr:`~canaille.core.configuration.CoreSettings."
 "SMS_OTP` configuration settings. :issue:`47`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`, :attr:"
-"`~canaille.core.configuration.CoreSettings.EMAIL_OTP`  :attr:`~canaille.core."
-"configuration.CoreSettings.SMS_OTP` et :attr:`~canaille.core.configuration."
-"CoreSettings.SMPP` :issue:`47`"
+"Authentification multi-facteurs, contrôlée par les paramètres de "
+"configuration :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`, "
+":attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP`, et "
+":attr:`~canaille.core.configuration.CoreSettings.SMS_OTP`. :issue:`47`"
 
 #: ../../CHANGES.rst:44 a90b270f7e144a4b81babbac96f5ff22
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` and :attr:"
-#| "`~canaille.core.configuration.CoreSettings."
-#| "ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:`~canaille.core."
-#| "configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:"
-#| "`179`"
 msgid ""
 "Password compromission check, controlled by the :attr:`~canaille.core."
 "configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and :attr:"
 "`~canaille.core.configuration.CoreSettings."
 "PASSWORD_COMPROMISSION_CHECK_API_URL` settings. :issue:`179`"
 msgstr ""
-":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` et :attr:"
-"`~canaille.core.configuration.CoreSettings."
-"ENABLE_PASSWORD_COMPROMISSION_CHECK` et :attr:`~canaille.core.configuration."
-"CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL` :issue:`179`"
+"Vérification de la compromission des mots de passe, contrôlée par les "
+"paramètres de configuration "
+":attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK`"
+" et "
+":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_COMPROMISSION_CHECK_API_URL`"
+". :issue:`179`"
 
 #: ../../CHANGES.rst:48 efa1fc20329f42918fe6a530617cf102
-#, fuzzy
-#| msgid ":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`"
 msgid ""
 ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` configuration "
 "setting."
-msgstr ":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`"
+msgstr ""
+"Paramètre de configuration "
+":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL`."
 
 #: ../../CHANGES.rst:49 2cfcbdba2e9541dbab610bc724a2683a
-#, fuzzy
-#| msgid "Implement OIDC client_credentials flow. :issue:`207`"
 msgid "OIDC ``client_credentials`` flow implementation. :issue:`207`"
-msgstr "Implémentation du flux OIDC `client_credentials`. :issue:`207`"
+msgstr "Implémentation du flux OIDC ``client_credentials``. :issue:`207`"
 
 #: ../../CHANGES.rst:50 1e36a8464f6045708cf07b39bcdfea1c
 msgid "Button in the client admin page to create client tokens."
@@ -219,18 +202,15 @@ msgid "Basic SCIM implementation. :issue:`116` :pr:`197`"
 msgstr "Implémentation basique du protocole SCIM. :issue:`116` :pr:`197`"
 
 #: ../../CHANGES.rst:52 efa1fc20329f42918fe6a530617cf102
-#, fuzzy
-#| msgid ""
-#| "Password hashing scheme customization with the :attr:`~canaille.backends."
-#| "sql.configuration.SQLSettings.PASSWORD_SCHEMES` parameter. :issue:`175`"
 msgid ""
 "Password expiry policy, controlled by the :attr:`~canaille.core."
 "configuration.CoreSettings.PASSWORD_LIFETIME` configuration setting. :issue:"
 "`176`"
 msgstr ""
-"Personnalisation de l'algorithme de hachage des mots de passe avec le "
-"paramètre de configuration :attr:`~canaille.backends.sql.configuration."
-"SQLSettings.PASSWORD_SCHEMES`. :issue:`175`"
+"Politique d'expiration des mots de passe, contrôlée par le paramètre de "
+"configuration "
+":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`. "
+":issue:`176`"
 
 #: ../../CHANGES.rst:57 bb196cd8528b48628628ab53c5288b49
 msgid ""
@@ -1821,32 +1801,25 @@ msgstr ""
 "services :"
 
 #: ../../CONTRIBUTING.rst:34 bbde54dc79ba4241bd97323b5152b50b
-#, fuzzy
-#| msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
 msgid "A canaille server at `localhost:5000 <http://localhost:5000>`__"
 msgstr ""
-"Un serveur Canaille à l’adresse `localhost:5000 <http://localhost:5000>`_"
+"Un serveur Canaille à l’adresse `localhost:5000 <http://localhost:5000>`__"
 
 #: ../../CONTRIBUTING.rst:35 d028b9cbae714b2d945ba4d70a75fb99
-#, fuzzy
-#| msgid "A dummy client at `localhost:5001 <http://localhost:5001>`_"
 msgid "A dummy client at `localhost:5001 <http://localhost:5001>`__"
 msgstr ""
-"Un client factice à l’adresse `localhost:5001 <http://localhost:5001>`_"
+"Un client factice à l’adresse `localhost:5001 <http://localhost:5001>`__"
 
 #: ../../CONTRIBUTING.rst:36 dbd0340fc974432798237b9b3efe01ea
-#, fuzzy
-#| msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`_"
 msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`__"
 msgstr ""
-"Un autre client factice à l’adresse `localhost:5002 <http://localhost:5002>`_"
+"Un autre client factice à l’adresse `localhost:5002 "
+"<http://localhost:5002>`__"
 
 #: ../../CONTRIBUTING.rst:37 bbde54dc79ba4241bd97323b5152b50b
-#, fuzzy
-#| msgid "A canaille server at `localhost:5000 <http://localhost:5000>`_"
 msgid "A mail catcher at `localhost:1080 <http://localhost:1080>`__"
 msgstr ""
-"Un serveur Canaille à l’adresse `localhost:5000 <http://localhost:5000>`_"
+"Un serveur mail factice à l'adresse `localhost:1080 <http://localhost:1080>`_"
 
 #: ../../CONTRIBUTING.rst:39 9ff28ddd679b42f4a5bf288242e8c827
 msgid "The canaille server has some default users:"
