@@ -1,0 +1,20 @@
+{% import 'macro/form.html' as fui %}
+{% macro render_field(field, user=none, edited_user=none, noindicator=false) %}
+    {% call fui.render_field(field) %}
+        <button
+            class="ui primary right labeled icon button"
+            type="submit"
+            name="action"
+            value="add_email"
+            title="{% trans %}Send a verification email to validate this address.{% endtrans %}"
+            hx-target="closest .fieldlist"
+            formnovalidate
+        >
+            <i class="send icon"></i>
+            {% trans %}
+                Verify
+            {% endtrans %}
+        </button>
+    {% endcall %}
+
+{% endmacro %}

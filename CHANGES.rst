@@ -3,7 +3,8 @@
 
 Fixed
 ^^^^^
-- Fix password fields auto-refilling when input is reset. :issue:`218`
+- Fix password fields auto-refilling when input is reset. :issue:`218` :pr:`215`
+- Fix HTMX integration with the email confirmation form. :pr:`216`
 
 Changed
 ^^^^^^^
