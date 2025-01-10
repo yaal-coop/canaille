@@ -124,9 +124,9 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     form["photo"] = Upload("logo.jpg", jpeg_photo)
 
     res = form.submit(name="action", value="edit-profile")
-    assert res.flashes == [
-        ("success", "Le profil a été mis à jour avec succès.")
-    ], res.text
+    assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")], (
+        res.text
+    )
     assert (
         "canaille",
         logging.SECURITY,

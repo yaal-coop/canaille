@@ -96,7 +96,7 @@ def authorize_guards(client):
     ):
         return {
             "error": "invalid_request",
-            "error_description": f"prompt '{request.args['prompt'] }' value is not supported",
+            "error_description": f"prompt '{request.args['prompt']}' value is not supported",
         }, 400
 
 

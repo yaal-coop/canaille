@@ -234,7 +234,7 @@ def validate_smtp_configuration(config):
 
     except smtplib.SMTPAuthenticationError as exc:
         raise ConfigurationException(
-            f'SMTP authentication failed with user \'{config["LOGIN"]}\''
+            f"SMTP authentication failed with user '{config['LOGIN']}'"
         ) from exc
 
     except smtplib.SMTPNotSupportedError as exc:
@@ -270,7 +270,7 @@ def validate_theme(config):
     if not os.path.exists(config["THEME"]) and not os.path.exists(
         os.path.join(ROOT, "themes", config["THEME"])
     ):
-        raise ConfigurationException(f'Cannot find theme \'{config["THEME"]}\'')
+        raise ConfigurationException(f"Cannot find theme '{config['THEME']}'")
 
 
 def validate_admin_email(config):

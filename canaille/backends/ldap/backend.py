@@ -135,8 +135,8 @@ class LDAPBackend(Backend):
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
-                    f'LDAP user \'{config["CANAILLE_LDAP"]["BIND_DN"]}\' cannot create '
-                    f'users at \'{config["CANAILLE_LDAP"]["USER_BASE"]}\''
+                    f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                    f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'"
                 ) from exc
 
             try:
@@ -160,8 +160,8 @@ class LDAPBackend(Backend):
 
             except ldap.INSUFFICIENT_ACCESS as exc:
                 raise ConfigurationException(
-                    f'LDAP user \'{config["CANAILLE_LDAP"]["BIND_DN"]}\' cannot create '
-                    f'groups at \'{config["CANAILLE_LDAP"]["GROUP_BASE"]}\''
+                    f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                    f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'"
                 ) from exc
 
             finally:
@@ -430,7 +430,7 @@ def setup_ldap_models(config):
     LDAPObject.root_dn = config["CANAILLE_LDAP"]["ROOT_DN"]
 
     user_base = config["CANAILLE_LDAP"]["USER_BASE"].replace(
-        f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""
+        f",{config['CANAILLE_LDAP']['ROOT_DN']}", ""
     )
     models.User.base = user_base
     models.User.rdn_attribute = config["CANAILLE_LDAP"]["USER_RDN"]
@@ -438,7 +438,7 @@ def setup_ldap_models(config):
     models.User.ldap_object_class = listify(object_class)
 
     group_base = config["CANAILLE_LDAP"]["GROUP_BASE"].replace(
-        f',{config["CANAILLE_LDAP"]["ROOT_DN"]}', ""
+        f",{config['CANAILLE_LDAP']['ROOT_DN']}", ""
     )
     models.Group.base = group_base or None
     models.Group.rdn_attribute = config["CANAILLE_LDAP"]["GROUP_RDN"]

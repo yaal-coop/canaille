@@ -122,7 +122,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
 
         assert (
             "error",
-            f"Too much attempts. Please wait for {PASSWORD_MIN_DELAY*2 - ldap_shift} seconds before trying to login again.",
+            f"Too much attempts. Please wait for {PASSWORD_MIN_DELAY * 2 - ldap_shift} seconds before trying to login again.",
         ) in res.flashes
         assert (
             "canaille",

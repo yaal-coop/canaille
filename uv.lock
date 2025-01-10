@@ -135,7 +135,7 @@ wheels = [
 
 [[package]]
 name = "canaille"
-version = "0.0.57"
+version = "0.0.58"
 source = { editable = "." }
 dependencies = [
     { name = "flask" },
