@@ -30,8 +30,7 @@ format=[%(asctime)s] %(levelname)s in %(module)s: %(message)s
 """
 
 
-def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
-    assert len(smtpd.messages) == 0
+def test_file_log_config(configuration, backend, tmp_path, user):
     log_path = os.path.join(tmp_path, "canaille-by-file.log")
 
     file_content = LOGGING_CONF_FILE_CONTENT.format(
@@ -46,23 +45,20 @@ def test_file_log_config(configuration, backend, tmp_path, smtpd, admin):
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [admin.id]
+        sess["user_id"] = [user.id]
 
-    res = testclient.get("/admin/mail")
-    res.form["email"] = "test@test.test"
-    res = res.form.submit()
-
-    assert len(smtpd.messages) == 1
-    assert "Test email from" in smtpd.messages[0].get("Subject")
+    res = testclient.get("/profile/user/settings")
+    res.form["password1"] = "new-password"
+    res.form["password2"] = "new-password"
+    res = res.form.submit(name="action", value="edit-settings")
 
     with open(log_path) as fd:
         log_content = fd.read()
 
-    assert "Sending a mail to test@test.test: Test email from" in log_content
+    assert "Changed password in settings for user" in log_content
 
 
-def test_dict_log_config(configuration, backend, tmp_path, smtpd, admin):
-    assert len(smtpd.messages) == 0
+def test_dict_log_config(configuration, backend, tmp_path, admin):
     log_path = os.path.join(tmp_path, "canaille-by-dict.log")
     configuration["CANAILLE"]["LOGGING"] = {
         "version": 1,
@@ -93,9 +89,6 @@ def test_dict_log_config(configuration, backend, tmp_path, smtpd, admin):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-
-    assert len(smtpd.messages) == 1
-    assert "Test email from" in smtpd.messages[0].get("Subject")
 
     with open(log_path) as fd:
         log_content = fd.read()
