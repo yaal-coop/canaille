@@ -2,6 +2,15 @@ import logging
 from logging.config import dictConfig
 from logging.config import fileConfig
 
+from flask import has_request_context
+from flask import request
+
+
+class IPFilter(logging.Filter):
+    def filter(self, record):
+        record.ip = request.remote_addr if has_request_context else "unknown"
+        return True
+
 
 def add_log_level(level_name, level_num, method_name=None):
     """
@@ -46,6 +55,7 @@ def setup_logging(app):
     conf = app.config["CANAILLE"]["LOGGING"]
 
     security_level_name = "SECURITY"
+    # SECURITY is between INFO and WARNING
     security_level = logging.INFO + 5
 
     if not hasattr(logging, security_level_name):
@@ -58,7 +68,7 @@ def setup_logging(app):
                 "version": 1,
                 "formatters": {
                     "default": {
-                        "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+                        "format": "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s",
                     }
                 },
                 "handlers": {
@@ -82,3 +92,5 @@ def setup_logging(app):
 
     else:
         fileConfig(conf, disable_existing_loggers=False)
+
+    app.logger.addFilter(IPFilter())

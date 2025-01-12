@@ -187,9 +187,8 @@ def authorize_consent(client, user):
                 issue_date=datetime.datetime.now(datetime.timezone.utc),
             )
         Backend.instance.save(consent)
-        request_ip = request.remote_addr or "unknown IP"
         current_app.logger.security(
-            f"New consent for {user.user_name} in client {consent.client.client_name} from {request_ip}"
+            f"New consent for {user.user_name} in client {consent.client.client_name}"
         )
 
     response = authorization.create_authorization_response(grant_user=grant_user)
@@ -211,14 +210,13 @@ def issue_token():
     if response.json.get("access_token"):
         access_token = response.json["access_token"]
         token = Backend.instance.get(models.Token, access_token=access_token)
-        request_ip = request.remote_addr or "unknown IP"
         if token.subject:
             current_app.logger.security(
-                f"Issued {grant_type} token for {token.subject.user_name} in client {token.client.client_name} from {request_ip}"
+                f"Issued {grant_type} token for {token.subject.user_name} in client {token.client.client_name}"
             )
         else:
             current_app.logger.security(
-                f"Issued {grant_type} token for client {token.client.client_name} from {request_ip}"
+                f"Issued {grant_type} token for client {token.client.client_name}"
             )
 
     return response

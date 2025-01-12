@@ -24,7 +24,7 @@ def test_revokation(testclient, client, consent, logged_user, token, backend, ca
     assert (
         "canaille",
         logging.SECURITY,
-        f"Consent revoked for {logged_user.user_name} in client {client.client_name} from unknown IP",
+        f"Consent revoked for {logged_user.user_name} in client {client.client_name}",
     ) in caplog.record_tuples
     res = res.follow(status=200)
     res.mustcontain(no="Revoke access")

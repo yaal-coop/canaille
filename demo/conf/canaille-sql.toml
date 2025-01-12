@@ -9,9 +9,8 @@ ADMIN_EMAIL = "admin@mydomain.tld"
 
 [CANAILLE.LOGGING]
 version = 1
-formatters.default.format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
-root = {level = "DEBUG", handlers = ["canaille"]}
-loggers = {faker = {level = "WARNING"}, watchdog = {level = "WARNING"}, passlib = {level = "WARNING"}}
+formatters.default.format = "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s"
+loggers = {faker = {level = "WARNING"}, watchdog = {level = "WARNING"}, passlib = {level = "WARNING"}, canaille = {level = "DEBUG", handlers = ["canaille"]}}
 
 [CANAILLE.LOGGING.handlers.canaille]
 class = "logging.StreamHandler"

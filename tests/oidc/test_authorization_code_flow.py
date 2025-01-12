@@ -34,7 +34,7 @@ def test_nominal_case(
     assert (
         "canaille",
         logging.SECURITY,
-        "New consent for user in client Some client from unknown IP",
+        "New consent for user in client Some client",
     ) in caplog.record_tuples
 
     assert res.location.startswith(client.redirect_uris[0])
@@ -98,7 +98,7 @@ def test_nominal_case(
     assert (
         "canaille",
         logging.SECURITY,
-        "Issued authorization_code token for user in client Some client from unknown IP",
+        "Issued authorization_code token for user in client Some client",
     ) in caplog.record_tuples
     res = testclient.get(
         "/oauth/userinfo",

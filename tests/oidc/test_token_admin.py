@@ -145,7 +145,7 @@ def test_revoke_token(testclient, token, logged_admin, backend, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Revoked token for user in client Some client by admin from unknown IP",
+        "Revoked token for user in client Some client by admin",
     ) in caplog.record_tuples
 
     backend.reload(token)

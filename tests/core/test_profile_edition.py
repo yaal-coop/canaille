@@ -130,7 +130,7 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Updated email for user from unknown IP",
+        "Updated email for user",
     ) in caplog.record_tuples
     res = res.follow()
 

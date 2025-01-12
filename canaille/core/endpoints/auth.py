@@ -99,11 +99,10 @@ def password():
         )
 
     success, message = Backend.instance.check_user_password(user, form.password.data)
-    request_ip = request.remote_addr or "unknown IP"
     if not success:
         logout_user()
         current_app.logger.security(
-            f"Failed login attempt for {session['attempt_login']} from {request_ip}"
+            f"Failed login attempt for {session['attempt_login']}"
         )
         flash(message or _("Login failed, please check your information"), "error")
         return render_template(
@@ -122,11 +121,11 @@ def password():
         session["remaining_otp_methods"] = otp_methods
         session["attempt_login_with_correct_password"] = session.pop("attempt_login")
         return redirect_to_verify_mfa(
-            user, otp_methods[0], request_ip, url_for("core.auth.password")
+            user, otp_methods[0], url_for("core.auth.password")
         )
     else:
         current_app.logger.security(
-            f"Succeed login attempt for {session['attempt_login']} from {request_ip}"
+            f"Succeed login attempt for {session['attempt_login']}"
         )
         del session["attempt_login"]
         login_user(user)
@@ -144,8 +143,7 @@ def logout():
     user = current_user()
 
     if user:
-        request_ip = request.remote_addr or "unknown IP"
-        current_app.logger.security(f"Logout {user.identifier} from {request_ip}")
+        current_app.logger.security(f"Logout {user.identifier}")
 
         flash(
             _(
@@ -221,13 +219,12 @@ def forgotten():
         )
         return render_template("core/forgotten-password.html", form=form)
 
-    request_ip = request.remote_addr or "unknown IP"
     success = True
     for email in user.emails:
         if not send_password_reset_mail(user, email):
             success = False
         current_app.logger.security(
-            f"Sending a reset password mail to {email} for {user.user_name} from {request_ip}"
+            f"Sending a reset password mail to {email} for {user.user_name}"
         )
 
     if success:
@@ -347,19 +344,17 @@ def verify_two_factor_auth():
 
     if form.validate() and user.is_otp_valid(form.otp.data, current_otp_method):
         session["remaining_otp_methods"].pop(0)
-        request_ip = request.remote_addr or "unknown IP"
         if session["remaining_otp_methods"]:
             return redirect_to_verify_mfa(
                 user,
                 session["remaining_otp_methods"][0],
-                request_ip,
                 url_for("core.auth.verify_two_factor_auth"),
             )
         else:
             user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
             Backend.instance.save(user)
             current_app.logger.security(
-                f"Succeed login attempt for {session['attempt_login_with_correct_password']} from {request_ip}"
+                f"Succeed login attempt for {session['attempt_login_with_correct_password']}"
             )
             del session["attempt_login_with_correct_password"]
             login_user(user)
@@ -378,9 +373,8 @@ def verify_two_factor_auth():
             "The one-time password you entered is invalid. Please try again",
             "error",
         )
-        request_ip = request.remote_addr or "unknown IP"
         current_app.logger.security(
-            f"Failed login attempt (wrong OTP) for {session['attempt_login_with_correct_password']} from {request_ip}"
+            f"Failed login attempt (wrong OTP) for {session['attempt_login_with_correct_password']}"
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))
 
@@ -406,9 +400,8 @@ def send_mail_otp():
     if user.can_send_new_otp():
         if user.generate_and_send_otp_mail():
             Backend.instance.save(user)
-            request_ip = request.remote_addr or "unknown IP"
             current_app.logger.security(
-                f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.emails[0]} from {request_ip}"
+                f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.emails[0]}"
             )
             flash(
                 "Code successfully sent!",
@@ -446,9 +439,8 @@ def send_sms_otp():
     if user.can_send_new_otp():
         if user.generate_and_send_otp_sms():
             Backend.instance.save(user)
-            request_ip = request.remote_addr or "unknown IP"
             current_app.logger.security(
-                f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]} from {request_ip}"
+                f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
             )
             flash(
                 "Code successfully sent!",
@@ -465,7 +457,7 @@ def send_sms_otp():
     return redirect(url_for("core.auth.verify_two_factor_auth"))
 
 
-def redirect_to_verify_mfa(user, otp_method, request_ip, fail_redirect_url):
+def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
     if otp_method in ["HOTP", "TOTP"]:
         if not user.last_otp_login:
             flash(
@@ -487,7 +479,7 @@ def redirect_to_verify_mfa(user, otp_method, request_ip, fail_redirect_url):
                     "info",
                 )
                 current_app.logger.security(
-                    f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.emails[0]} from {request_ip}"
+                    f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.emails[0]}"
                 )
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:
@@ -510,7 +502,7 @@ def redirect_to_verify_mfa(user, otp_method, request_ip, fail_redirect_url):
                     "info",
                 )
                 current_app.logger.security(
-                    f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]} from {request_ip}"
+                    f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
                 )
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:

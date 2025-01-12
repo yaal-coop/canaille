@@ -43,9 +43,8 @@ def view(user, token):
         elif request.form.get("action") == "revoke":
             token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
             Backend.instance.save(token)
-            request_ip = request.remote_addr or "unknown IP"
             current_app.logger.security(
-                f"Revoked token for {token.subject.user_name} in client {token.client.client_name} by {user.user_name} from {request_ip}"
+                f"Revoked token for {token.subject.user_name} in client {token.client.client_name} by {user.user_name}"
             )
             flash(_("The token has successfully been revoked."), "success")
 

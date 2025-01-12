@@ -582,7 +582,6 @@ def profile_edition(user, edited_user):
     ):
         abort(404)
 
-    request_ip = request.remote_addr or "unknown IP"
     menuitem = "profile" if edited_user.id == user.id else "users"
     emails_readonly = (
         current_app.features.has_email_confirmation and not user.can_manage_users
@@ -619,9 +618,7 @@ def profile_edition(user, edited_user):
         profile_edition_main_form_validation(user, edited_user, profile_form)
 
         if has_email_changed:
-            current_app.logger.security(
-                f"Updated email for {edited_user.user_name} from {request_ip}"
-            )
+            current_app.logger.security(f"Updated email for {edited_user.user_name}")
 
         flash(_("Profile updated successfully."), "success")
 
@@ -763,9 +760,8 @@ def profile_settings(user, edited_user):
 
     if request.form.get("action") == "reset-otp" and current_app.features.has_otp:
         flash(_("One-time password authentication has been reset"), "success")
-        request_ip = request.remote_addr or "unknown IP"
         current_app.logger.security(
-            f"Reset one-time password authentication for {edited_user.user_name} by {user.user_name} from {request_ip}"
+            f"Reset one-time password authentication for {edited_user.user_name} by {user.user_name}"
         )
         edited_user.initialize_otp()
         Backend.instance.save(edited_user)
@@ -778,7 +774,6 @@ def profile_settings(user, edited_user):
 def profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
-    request_ip = request.remote_addr or "unknown IP"
 
     available_fields = {"password", "groups", "user_name", "lock_date"}
     data = {
@@ -817,7 +812,7 @@ def profile_settings_edit(editor, edited_user):
             ):
                 Backend.instance.set_user_password(edited_user, form["password1"].data)
                 current_app.logger.security(
-                    f"Changed password in settings for {edited_user.user_name} from {request_ip}"
+                    f"Changed password in settings for {edited_user.user_name}"
                 )
 
             Backend.instance.save(edited_user)

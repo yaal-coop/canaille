@@ -63,7 +63,7 @@ def test_refresh_token(testclient, logged_user, client, backend, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Issued refresh_token token for user in client Some client from unknown IP",
+        "Issued refresh_token token for user in client Some client",
     ) in caplog.record_tuples
     backend.reload(old_token)
     assert old_token.revokation_date

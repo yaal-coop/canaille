@@ -381,7 +381,7 @@ def test_password_change(testclient, logged_user, backend, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Changed password in settings for user from unknown IP",
+        "Changed password in settings for user",
     ) in caplog.record_tuples
 
     res = res.follow()
@@ -771,5 +771,5 @@ def test_account_reset_otp(
     assert (
         "canaille",
         logging.SECURITY,
-        "Reset one-time password authentication for user by admin from unknown IP",
+        "Reset one-time password authentication for user by admin",
     ) in caplog.record_tuples

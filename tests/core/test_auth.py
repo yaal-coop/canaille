@@ -25,7 +25,7 @@ def test_signin_and_out(testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for user from unknown IP",
+        "Succeed login attempt for user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -44,7 +44,7 @@ def test_signin_and_out(testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Logout user from unknown IP",
+        "Logout user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -81,7 +81,7 @@ def test_signin_wrong_password(testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Failed login attempt for user from unknown IP",
+        "Failed login attempt for user",
     ) in caplog.record_tuples
 
 

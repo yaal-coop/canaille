@@ -57,7 +57,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to john@doe.test from unknown IP",
+        "Sent one-time password for user to john@doe.test",
     ) in caplog.record_tuples
     res = res.follow(status=200)
     with testclient.session_transaction() as session:
@@ -83,7 +83,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for user from unknown IP",
+        "Succeed login attempt for user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -103,7 +103,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     assert (
         "canaille",
         logging.SECURITY,
-        "Logout user from unknown IP",
+        "Logout user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -162,7 +162,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Failed login attempt (wrong OTP) for user from unknown IP",
+        "Failed login attempt (wrong OTP) for user",
     ) in caplog.record_tuples
 
 
@@ -196,7 +196,7 @@ def test_signin_expired_email_otp(testclient, user, caplog):
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt (wrong OTP) for user from unknown IP",
+            "Failed login attempt (wrong OTP) for user",
         ) in caplog.record_tuples
 
 
@@ -231,7 +231,7 @@ def test_signin_expired_sms_otp(testclient, user, caplog, mock_smpp):
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt (wrong OTP) for user from unknown IP",
+            "Failed login attempt (wrong OTP) for user",
         ) in caplog.record_tuples
 
 
@@ -259,7 +259,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to 555-000-000 from unknown IP",
+        "Sent one-time password for user to 555-000-000",
     ) in caplog.record_tuples
     res = res.follow(status=200)
     with testclient.session_transaction() as session:
@@ -284,7 +284,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for user from unknown IP",
+        "Succeed login attempt for user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -304,7 +304,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     assert (
         "canaille",
         logging.SECURITY,
-        "Logout user from unknown IP",
+        "Logout user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -363,7 +363,7 @@ def test_signin_wrong_sms_otp(testclient, user, caplog, mock_smpp):
     assert (
         "canaille",
         logging.SECURITY,
-        "Failed login attempt (wrong OTP) for user from unknown IP",
+        "Failed login attempt (wrong OTP) for user",
     ) in caplog.record_tuples
 
 
@@ -455,7 +455,7 @@ def test_send_new_mail_otp(smtpd, testclient, backend, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to john@doe.test from unknown IP",
+        "Sent one-time password for user to john@doe.test",
     ) in caplog.record_tuples
 
     assert res.location == "/verify-mfa"
@@ -526,7 +526,7 @@ def test_send_new_sms_otp(testclient, backend, user, caplog, mock_smpp):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to 555-000-000 from unknown IP",
+        "Sent one-time password for user to 555-000-000",
     ) in caplog.record_tuples
 
     assert res.location == "/verify-mfa"

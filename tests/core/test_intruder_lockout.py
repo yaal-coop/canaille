@@ -33,7 +33,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt for user from unknown IP",
+            "Failed login attempt for user",
         ) in caplog.record_tuples
 
         res.form["password"] = "correct horse battery staple"
@@ -46,7 +46,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt for user from unknown IP",
+            "Failed login attempt for user",
         ) in caplog.record_tuples
 
         traveller.shift(datetime.timedelta(seconds=PASSWORD_MIN_DELAY))
@@ -61,7 +61,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
         assert (
             "canaille",
             logging.SECURITY,
-            "Succeed login attempt for user from unknown IP",
+            "Succeed login attempt for user",
         ) in caplog.record_tuples
 
 
@@ -86,7 +86,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt for user from unknown IP",
+            "Failed login attempt for user",
         ) in caplog.record_tuples
 
         res.form["password"] = "correct horse battery staple"
@@ -99,7 +99,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt for user from unknown IP",
+            "Failed login attempt for user",
         ) in caplog.record_tuples
 
         traveller.shift(datetime.timedelta(seconds=PASSWORD_MIN_DELAY))
@@ -114,7 +114,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt for user from unknown IP",
+            "Failed login attempt for user",
         ) in caplog.record_tuples
 
         res.form["password"] = "correct horse battery staple"
@@ -127,7 +127,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt for user from unknown IP",
+            "Failed login attempt for user",
         ) in caplog.record_tuples
 
         traveller.shift(datetime.timedelta(seconds=PASSWORD_MIN_DELAY * 2))
@@ -142,5 +142,5 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
         assert (
             "canaille",
             logging.SECURITY,
-            "Succeed login attempt for user from unknown IP",
+            "Succeed login attempt for user",
         ) in caplog.record_tuples

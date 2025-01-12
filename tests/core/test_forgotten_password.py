@@ -25,7 +25,7 @@ def test_password_forgotten(smtpd, testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sending a reset password mail to john@doe.test for user from unknown IP",
+        "Sending a reset password mail to john@doe.test for user",
     ) in caplog.record_tuples
     res.mustcontain("Send again")
 
@@ -49,7 +49,7 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, cap
         assert (
             "canaille",
             logging.SECURITY,
-            f"Sending a reset password mail to {email} for user from unknown IP",
+            f"Sending a reset password mail to {email} for user",
         ) in caplog.record_tuples
     res.mustcontain("Send again")
 

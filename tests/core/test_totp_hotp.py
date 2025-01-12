@@ -56,7 +56,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for user from unknown IP",
+        "Succeed login attempt for user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -76,7 +76,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
     assert (
         "canaille",
         logging.SECURITY,
-        "Logout user from unknown IP",
+        "Logout user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -109,7 +109,7 @@ def test_signin_wrong_otp(testclient, user_otp, caplog, otp_method):
     assert (
         "canaille",
         logging.SECURITY,
-        "Failed login attempt (wrong OTP) for user from unknown IP",
+        "Failed login attempt (wrong OTP) for user",
     ) in caplog.record_tuples
 
 
@@ -141,7 +141,7 @@ def test_signin_expired_totp(testclient, user_otp, caplog):
         assert (
             "canaille",
             logging.SECURITY,
-            "Failed login attempt (wrong OTP) for user from unknown IP",
+            "Failed login attempt (wrong OTP) for user",
         ) in caplog.record_tuples
 
 
@@ -193,7 +193,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for otp from unknown IP",
+        "Succeed login attempt for otp",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -280,7 +280,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for user from unknown IP",
+        "Succeed login attempt for user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -331,7 +331,7 @@ def test_signin_inside_hotp_look_ahead_window(testclient, backend, user_otp, cap
     assert (
         "canaille",
         logging.SECURITY,
-        "Succeed login attempt for user from unknown IP",
+        "Succeed login attempt for user",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
@@ -377,7 +377,7 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user_otp, ca
     assert (
         "canaille",
         logging.SECURITY,
-        "Failed login attempt (wrong OTP) for user from unknown IP",
+        "Failed login attempt (wrong OTP) for user",
     ) in caplog.record_tuples
 
     user = backend.get(models.User, id=user_otp.id)
