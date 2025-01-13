@@ -8,6 +8,7 @@ build:
     - libsasl2-dev
     - libldap2-dev
     - libssl-dev
+    - libasound2 # used for playwright firefox
   tools:
     python: "3.13"
   jobs:
