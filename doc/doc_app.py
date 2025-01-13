@@ -56,7 +56,7 @@ def context_login(browser, url, color_scheme, user, password=True):
             page.locator("*[type=submit]").click()
             page.wait_for_load_state()
 
-        contexts[user] = context.storage_state(path=f"build/{user}.json")
+        contexts[user] = context.storage_state()
     return context
 
 
