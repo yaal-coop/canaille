@@ -1,4 +1,5 @@
 import os
+import pathlib
 import sys
 from urllib.parse import urlparse
 from wsgiref.simple_server import WSGIRequestHandler
@@ -12,7 +13,10 @@ WSGIRequestHandler.log_request = lambda *args, **kwargs: None
 
 
 def create_doc_app(sphinx_app):
-    conf = toml_content("demo/conf/canaille-memory.toml")
+    conf_path = (
+        pathlib.Path(__file__).parent.parent / "demo" / "conf" / "canaille-memory.toml"
+    )
+    conf = toml_content(str(conf_path))
     conf["CANAILLE"]["SECRET_KEY"] = "doc"
     conf["CANAILLE"]["SMTP"] = {"HOST": "localhost"}
     conf["CANAILLE"]["LANGUAGE"] = sphinx_app.config["language"]
