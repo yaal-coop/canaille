@@ -90,7 +90,7 @@ def settings_factory(config, env_file=None, env_prefix=""):
         attributes["CANAILLE_SQL"] = ((SQLSettings | None), None)
 
     if "CANAILLE_LDAP" in config or any(
-        var.startswith("CANAILLE__LDAP__") for var in os.environ
+        var.startswith("CANAILLE_LDAP__") for var in os.environ
     ):
         from canaille.backends.ldap.configuration import LDAPSettings
 
