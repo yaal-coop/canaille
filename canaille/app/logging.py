@@ -4,6 +4,7 @@ from logging.config import fileConfig
 
 from flask import has_request_context
 from flask import request
+from flask.logging import default_handler
 
 
 class IPFilter(logging.Filter):
@@ -62,30 +63,18 @@ def setup_logging(app):
         add_log_level(security_level_name, security_level)
 
     if conf is None:
+        root_logger = logging.getLogger()
+        root_logger.setLevel(logging.WARNING)
+
         log_level = "DEBUG" if app.debug else "INFO"
-        dictConfig(
-            {
-                "version": 1,
-                "formatters": {
-                    "default": {
-                        "format": "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s",
-                    }
-                },
-                "handlers": {
-                    "wsgi": {
-                        "class": "logging.StreamHandler",
-                        "stream": "ext://flask.logging.wsgi_errors_stream",
-                        "formatter": "default",
-                    }
-                },
-                "root": {"level": log_level, "handlers": ["wsgi"]},
-                "loggers": {
-                    "faker": {"level": "WARNING"},
-                    "mail.log": {"level": "WARNING"},
-                },
-                "disable_existing_loggers": False,
-            }
+        formatter = logging.Formatter(
+            "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s"
         )
+        handler = logging.StreamHandler(stream="ext://flask.logging.wsgi_errors_stream")
+        handler.setFormatter(formatter)
+        app.logger.setLevel(log_level)
+        app.logger.removeHandler(default_handler)
+        app.logger.addHandler(handler)
 
     elif isinstance(conf, dict):
         dictConfig(conf)
