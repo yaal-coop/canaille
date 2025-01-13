@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-13 10:40+0100\n"
-"PO-Revision-Date: 2025-01-11 19:00+0000\n"
+"PO-Revision-Date: 2025-01-13 17:05+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -57,10 +57,8 @@ msgid "Added"
 msgstr "Ajouté"
 
 #: ../../CHANGES.rst:6 2cfcbdba2e9541dbab610bc724a2683a
-#, fuzzy
-#| msgid "Sitemap to the documentation. :pr:`169`"
 msgid "Add screenshots in the documentation. :issue:`210`"
-msgstr "Cartographie de la documentation. :pr:`169"
+msgstr "Captures d'écran dans la documentation. :pr:`210`"
 
 #: ../../CHANGES.rst:9 ../../CHANGES.rst:32 ../../CHANGES.rst:68
 #: ../../CHANGES.rst:110 ../../CHANGES.rst:149 ../../CHANGES.rst:157
@@ -2122,6 +2120,9 @@ msgid ""
 "`sphinxcontrib-screenshot`_, that internally uses `Playwright`_. Playwright "
 "needs to be initialized with the following command:"
 msgstr ""
+"La documentation génère dynamiquement des captures d'écran de Canaille en "
+"utilisiant `sphinxcontrib-screenshot`_, qui utilise `Playwright`_. Il est "
+"nécessaire d'initialiser Playwright avec la commande suivante :"
 
 #: ../../CONTRIBUTING.rst:228 bf09dd8ed31742bca2fa80175ae85bb3
 msgid "Code translation"
@@ -2970,10 +2971,8 @@ msgstr "Gestion de profil"
 
 #: ../features.rst:33 ../../<autotemplate>:1 ad209a4083cf4730ab82a7aff2519c7d
 #: 94e9b36ee7a04d4db509845398904973
-#, fuzzy
-#| msgid "The profile edition template."
 msgid "The user profile edition page."
-msgstr "Le patron d'édition de profil."
+msgstr "La page d'édition de profil utilisateur."
 
 #: ../features.rst:35 864adfa77693422cad803b08d9187a5e
 msgid "Canaille provides an interface to manage user profiles."
@@ -3144,10 +3143,8 @@ msgid "User registration"
 msgstr "Enregistrement d'un utilisateur"
 
 #: ../features.rst:98 02d719c7df914795ab38a03d740ba865
-#, fuzzy
-#| msgid "The invitation form page."
 msgid "The registration page."
-msgstr "La page de formulaire d'invitation."
+msgstr "La page d'inscription."
 
 #: ../features.rst:100 c81ba8ba520c4d8bb6c8475fe023404b
 msgid ""
@@ -3279,10 +3276,8 @@ msgstr "Récupération de mot de passe"
 
 #: ../features.rst:156 ../../<autotemplate>:1 bd0936deb7994f8fb59f2f0a47115edc
 #: 022dc36a70434d0cbbc929e6389ed667
-#, fuzzy
-#| msgid "The password reset template."
 msgid "The password reset page."
-msgstr "Le patron de réinitialisation de mot de passe."
+msgstr "La page de réinitialisation de mot de passe."
 
 #: ../features.rst:158 6693db5e96354da69ed660a259c109ce
 msgid ""
@@ -3518,10 +3513,8 @@ msgstr "Gestion des autorisations"
 
 #: ../features.rst:263 ../../<autotemplate>:1 99abcc04f85649c1b184e22e67b36f18
 #: b6c0b03d71bf4873ac7b8565605d158e
-#, fuzzy
-#| msgid "The client requesting the logout."
 msgid "The consent request dialog."
-msgstr "Le client requérant la déconnexion."
+msgstr "La page de requête de consentement."
 
 #: ../features.rst:265 a613e3d10f1243f3bc5d4e796b278c89
 msgid ""
@@ -3538,10 +3531,8 @@ msgstr "Gestion des applications"
 
 #: ../features.rst:276 ../../<autotemplate>:1 e6fdcab020c4415bbf97e1214191dcdc
 #: f6bbf416c64247dbb06044aa221ab515
-#, fuzzy
-#| msgid "The client addition template."
 msgid "The client addition page."
-msgstr "Le patron d'ajout d'application cliente."
+msgstr "La page d'ajout d'application cliente."
 
 #: ../features.rst:278 526d36374a8747d6ad6280379bcf664c
 msgid ""
@@ -4691,19 +4682,14 @@ msgstr "Par exemple :"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:14
 #: 2eedaa2fba4545698dfd11007a2e0c9c
-#, fuzzy
-#| msgid ""
-#| "[CANAILLE.LOGGING] version = 1 formatters.default.format = "
-#| "\"[%(asctime)s] %(levelname)s in %(module)s: %(message)s\" root = {level "
-#| "= \"INFO\", handlers = [\"canaille\"]}"
 msgid ""
 "[CANAILLE.LOGGING] version = 1 formatters.default.format = \"[%(asctime)s] - "
 "$(ip)s - %(levelname)s in %(module)s: %(message)s\" root = {level = "
 "\"INFO\", handlers = [\"canaille\"]}"
 msgstr ""
-"[CANAILLE.LOGGING] version = 1 formatters.default.format = \"[%(asctime)s] "
-"%(levelname)s in %(module)s: %(message)s\" root = {level = \"INFO\", "
-"handlers = [\"canaille\"]}"
+"[CANAILLE.LOGGING] version = 1 formatters.default.format = "
+"\"[%(asctime)s] - $(ip)s - %(levelname)s in %(module)s: %(message)s\" root = "
+"{level = \"INFO\", handlers = [\"canaille\"]}"
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:19
 #: 4b44c1c288c3433fb0edba70dd9c1343
@@ -4997,8 +4983,8 @@ msgid ""
 msgstr ""
 "Vous pouvez définir des contrôles d'accès pour paramétrer ce que les "
 "utilisateurs sont autorisés à faire sur Canaille. Un contrôle d'accès "
-"consiste en un :attr:`FILTTER`de sélection des utilisateurs, une liste de :"
-"attr:`PERMISSIONS` qui décrit ce que les utilisateurs sélectionnés pourront "
+"consiste en un :attr:`FILTER`de sélection des utilisateurs, une liste de "
+":attr:`PERMISSIONS` qui décrit ce que les utilisateurs sélectionnés pourront "
 "effectuer, et les champs de leurs profil que les utilisateurs pourront lire "
 "et écrire avec :attr:`READ`et :attr:`WRITE`. Les utilisateurs correspondant "
 "à plusieurs filtres cumuleront les permissions."
@@ -6137,8 +6123,8 @@ msgid ""
 "The fields the user can read according to the :class:`configuration "
 "<canaille.core.configuration.ACLSettings>` configuration."
 msgstr ""
-"Les champs que l'utilisateur peut lire dans la configuration de :class:"
-"`configuration <canaille.core.configuration.ACLSettings>."
+"Les champs que l'utilisateur peut lire dans la configuration de :class:`"
+"configuration <canaille.core.configuration.ACLSettings>`."
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.User.readable_fields:4 d51b5c9a3058444187f7f52aafcc57ce
@@ -7189,20 +7175,12 @@ msgstr ""
 "profiles utilisateurs."
 
 #: ../../<autotemplate>:1 6f56b461666743eabb55c179df25b96b
-#, fuzzy
-#| msgid "The group list page."
 msgid "The 'About' page."
-msgstr "La page de liste des groupes."
+msgstr "La page « À propos »."
 
 #: ../../<autotemplate>:1 e38aa98840094488a64497fcdbaa0264
-#, fuzzy
-#| msgid ""
-#| "The 'About' page. This is an informational page, displaying the project "
-#| "links."
 msgid "This is an informational page, displaying the project links."
-msgstr ""
-"La page « À propos ». Cette page est informationnelle, elle affiche les "
-"liens du projet."
+msgstr "Cette page est informationnelle, elle affiche les liens du projet."
 
 #: ../../<autotemplate>:1 4c4ed92740f14deb87533cfa65ee80bf
 msgid "The current Canaille version."
@@ -7215,10 +7193,8 @@ msgstr ""
 "mot de passe."
 
 #: ../../<autotemplate>:1 f6fbc394bb0e4d23b2025ad9512ed7f8
-#, fuzzy
-#| msgid "Password initialization"
 msgid "The password reinitialization page."
-msgstr "Initialisation de mot de passe"
+msgstr "La page de réinitialisation de mot de passe."
 
 #: ../../<autotemplate>:1 b40d8dbabfb942b9a7e43fd2be5260fb
 msgid "Password forgotten page."
@@ -7233,10 +7209,8 @@ msgstr ""
 "ayant oublié son mot de passe."
 
 #: ../../<autotemplate>:1 d3488ce4b62b455cbc5919a3592c5eaf
-#, fuzzy
-#| msgid "Group edition page."
 msgid "The group edition page."
-msgstr "Page d'édition des groupes."
+msgstr "La page d'édition des groupes."
 
 #: ../../<autotemplate>:1 c5a709077f1948dc85448baca9d505b2
 msgid "Group edition page."
@@ -7370,10 +7344,8 @@ msgstr ""
 "has_email_confirmation>` est activée."
 
 #: ../../<autotemplate>:1 6f083b8c024042d2afc6e830605fcb29
-#, fuzzy
-#| msgid "The profile settings template."
 msgid "The user profile settings edition page."
-msgstr "Le patron de paramètres de profil utilisateur."
+msgstr "La page de paramètres de profil utilisateur."
 
 #: ../../<autotemplate>:1 6f083b8c024042d2afc6e830605fcb29
 msgid "The profile settings template."
@@ -7597,22 +7569,16 @@ msgstr ""
 "Affiche une liste paginée de :class:`~canaille.oidc.basemodels.Client`."
 
 #: ../../<autotemplate>:1 5bac6224d1084ae98930ff6ccdb785f4
-#, fuzzy
-#| msgid "The preconsented applications list."
 msgid "The consented applications list."
-msgstr "La liste d'application avec consentement implicite."
+msgstr "La liste d'application avec consentement explicite."
 
 #: ../../<autotemplate>:1 9c634a235c2c4991b5e7af9769279832
-#, fuzzy
-#| msgid ""
-#| "Display a list of trusted clients for which it is implied that users "
-#| "don't need to explicitly give their consent."
 msgid ""
 "Display a list of clients for which users have given or revoked their "
 "consent."
 msgstr ""
-"Affiche une liste d'applications clientes de confiance dont il est établi "
-"que les utilisateurs n'ont pas besoin de fournir un consentement explicite."
+"Affiche une liste d'applications clientes auxquelles l'utilisateur a donné "
+"ou révoqué son consentement."
 
 #: ../../<autotemplate>:1 c246254d28664995a358d16c42110b49
 msgid "Description of the OIDC scopes."
@@ -7674,16 +7640,12 @@ msgid "Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`."
 msgstr "Affiche une liste paginée de :class:`~canaille.oidc.basemodels.Token`."
 
 #: ../../<autotemplate>:1 6a01b239a7364e059ac20e5c32156147
-#, fuzzy
-#| msgid "The login page."
 msgid "The token view page."
-msgstr "La page de connexion."
+msgstr "La page de visualisation de jeton."
 
 #: ../../<autotemplate>:1 7aa26abc05944ecd9afa89d71ca3f60a
-#, fuzzy
-#| msgid "The token edition template."
 msgid "The token view template."
-msgstr "Le patron d'édition de jetons."
+msgstr "Le patron de visualisation de jetons."
 
 #: ../../<autotemplate>:1 0051850e1f994570be480414cb1a8e50
 msgid ""
@@ -8536,9 +8498,9 @@ msgid ""
 "(Single Sign-On)` layer on top of it, so users can use all your application "
 "while signin-in only once, without any data migration."
 msgstr ""
-"Votre organisation a un ref:`annuaire LDAP <feature_databases>` historique "
-"et vous voulez ajouter une couche :ref:`OpenID Connect <feature_oidc>` :abbr:"
-"`SSO (Single Sign-On)` au-dessus, pour que les utilisateurs puissent "
+"Votre organisation a un :ref:`annuaire LDAP <feature_databases>` historique "
+"et vous voulez ajouter une couche :ref:`OpenID Connect <feature_oidc>` "
+":abbr:`SSO (Single Sign-On)` au-dessus, pour que les utilisateurs puissent "
 "utiliser toutes vos applications tout en ne se connectant qu'une seule fois, "
 "sans aucune migration de données."
 
