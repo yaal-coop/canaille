@@ -15,6 +15,6 @@ build:
       - pip install uv
       - uv export --group doc --no-hashes --output-file requirements.txt
     post_install:
-      - pip install .
+      - pip install .[front,oidc,otp,sms]
       - pip install --requirement requirements.txt
       - playwright install firefox
