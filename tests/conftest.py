@@ -145,7 +145,7 @@ def configuration(smtpd):
                 "version": 1,
                 "formatters": {
                     "default": {
-                        "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+                        "format": "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s",
                     }
                 },
                 "handlers": {
@@ -155,9 +155,9 @@ def configuration(smtpd):
                         "formatter": "default",
                     }
                 },
-                "root": {"level": "DEBUG", "handlers": ["wsgi"]},
                 "loggers": {
                     "faker": {"level": "WARNING"},
+                    "canaille": {"level": "DEBUG", "handlers": ["wsgi"]},
                 },
                 "disable_existing_loggers": False,
             },

@@ -131,7 +131,7 @@ def test_silent_custom_logger(testclient, caplog, tmp_path, configuration, backe
         "version": 1,
         "formatters": {
             "default": {
-                "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+                "format": "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s",
             }
         },
         "handlers": {
@@ -141,9 +141,9 @@ def test_silent_custom_logger(testclient, caplog, tmp_path, configuration, backe
                 "formatter": "default",
             }
         },
-        "root": {"level": "FOOBAZ", "handlers": ["wsgi"]},
         "loggers": {
             "faker": {"level": "FOOBAZ"},
+            "canaille": {"level": "FOOBAZ", "handlers": ["wsgi"]},
         },
         "disable_existing_loggers": False,
     }

@@ -306,7 +306,7 @@ class CoreSettings(BaseModel):
 
         [CANAILLE.LOGGING]
         version = 1
-        formatters.default.format = "[%(asctime)s] %(levelname)s in %(module)s: %(message)s"
+        formatters.default.format = "[%(asctime)s] - $(ip)s - %(levelname)s in %(module)s: %(message)s"
         root = {level = "INFO", handlers = ["canaille"]}
 
         [CANAILLE.LOGGING.handlers.canaille]
