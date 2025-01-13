@@ -1,3 +1,24 @@
+{#
+.. screenshot:: |canaille|/consent
+   :context: user
+   :align: right
+   :width: 275px
+
+   The consented applications list.
+
+The consented applications list.
+
+Display a list of clients for which users have given or revoked their consent.
+
+:param scope_details: Description of the OIDC scopes.
+:type scope_details: :class:`dict`
+:param ignored_scopes: The scopes to hide.
+:type ignored_scopes: :class:`list`
+:param nb_consents: The number of consents.
+:type nb_consents: :class:`int`
+:param nb_preconsents: The number of preconsented clients.
+:type nb_preconsents: :class:`int`
+#}
 {% extends theme('base.html') %}
 
 {%- block title -%}

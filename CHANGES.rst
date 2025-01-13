@@ -1,6 +1,10 @@
 [0.0.59] - 2025-01-10
 ---------------------
 
+Added
+^^^^^
+- Add screenshots in the documentation. :issue:`210`
+
 Fixed
 ^^^^^
 - Fix password fields auto-refilling when input is reset. :issue:`218` :pr:`215`

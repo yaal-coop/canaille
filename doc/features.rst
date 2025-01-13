@@ -25,10 +25,12 @@ Canaille web interface can be used either in :doc:`production environments <tuto
 Profile management
 ==================
 
-.. image:: _static/profile.webp
-   :width: 200px
-   :alt: Profile
+.. screenshot:: |canaille|/profile/user
+   :context: user
    :align: right
+   :width: 275px
+
+   The user profile edition page.
 
 Canaille provides an interface to manage user profiles.
 
@@ -50,10 +52,12 @@ Users with :attr:`user management permission <canaille.core.configuration.Permis
 Group management
 ================
 
-.. image:: _static/group-edition.webp
-   :width: 200px
-   :alt: Group edition
+.. screenshot:: |canaille|/groups/users
+   :context: admin
    :align: right
+   :width: 275px
+
+   Group edition
 
 In a similar fashion than :ref:`profile management <feature_profile_management>` Canaille provides an interface to manage user groups.
 
@@ -87,6 +91,12 @@ Unless their account is :ref:`locked <feature_account_locking>`, users can authe
 User registration
 =================
 
+.. screenshot:: |canaille|/join
+   :align: right
+   :width: 275px
+
+   The registration page.
+
 Users can create accounts on Canaille if the :attr:`registration feature <canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. They will be able to fill a registration form with the fields detailed in the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`.
 
 If :attr:`email confirmation <canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>` is also enabled, users will be sent a confirmation link to their email address, on which they will need to click in order to finalize their registration.
@@ -96,10 +106,12 @@ If :attr:`email confirmation <canaille.core.configuration.CoreSettings.EMAIL_CON
 User invitation
 ===============
 
-.. image:: _static/user-invite.webp
-   :width: 200px
-   :alt: User invitation
+.. screenshot:: |canaille|/invite
+   :context: admin
    :align: right
+   :width: 275px
+
+   The invitation form page.
 
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured, users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>` can create an invitation link for one user.
 
@@ -137,10 +149,11 @@ Users that also have the :attr:`user management permission <canaille.core.config
 Password recovery
 =================
 
-.. image:: _static/password-recovery.webp
-   :width: 200px
-   :alt: Group edition
+.. screenshot:: |canaille|/reset
    :align: right
+   :width: 275px
+
+   The password reset page.
 
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`password recovery feature <canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` is enabled, then users can ask for a password reset email if they cannot remember their password.
 
@@ -162,6 +175,13 @@ The mails contains a link that allow users to choose a new password without havi
 
 Password initialization
 =======================
+
+.. screenshot:: |canaille|/firstlogin/james
+   :context: james
+   :align: right
+   :width: 275px
+
+   The first login page.
 
 User :attr:`passwords <canaille.core.models.User.password>` are optional.
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured, when users with no password attempt to sign in, they are invited to click a button that will send them a password initialization mail.
@@ -235,17 +255,25 @@ This allows to provide :abbr:`SSO (Single Sign-On)` and :abbr:`SLO (Single Log-O
 Consent management
 ==================
 
-.. image:: _static/consent.webp
-   :width: 200px
-   :alt: Profile
+.. screenshot:: |canaille|/oauth/authorize?response_type=code&client_id=client1&redirect_uri=http%3A%2F%2Flocalhost%3A5001%2Flogin_callback&scope=openid+profile+email+phone+address+groups&state=state&nonce=nonce
+   :context: admin
    :align: right
+   :width: 275px
 
+   The consent request dialog.
 
 Users can give their consent to application requesting access to their personal information,
 and then revoke those consent at their will.
 
 Application management
 ======================
+
+.. screenshot:: |canaille|/admin/client/edit/client1
+   :context: admin
+   :align: right
+   :width: 275px
+
+   The client addition page.
 
 Users with the right :attr:`permission <canaille.core.configuration.Permission.MANAGE_OIDC>` can manager OIDC clients through the web interface.
 

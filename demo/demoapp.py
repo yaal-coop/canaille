@@ -102,7 +102,7 @@ def populate(app):
 
             client1 = models.Client(
                 client_id_issued_at=datetime.datetime.utcnow(),
-                client_id="1JGkkzCbeHpGtlqgI5EENByf",
+                client_id="client1",
                 client_secret="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x",
                 client_name="Client1",
                 contacts=["admin@mydomain.tld"],
@@ -129,7 +129,7 @@ def populate(app):
 
             client2 = models.Client(
                 client_id_issued_at=datetime.datetime.utcnow(),
-                client_id="gn4yFN7GDykL7QP8v8gS9YfV",
+                client_id="client2",
                 client_secret="ouFJE5WpICt6hxTyf8icXPeeklMektMY4gV0Rmf3aY60VElA",
                 client_name="Client2",
                 contacts=["admin@mydomain.tld"],
@@ -155,12 +155,33 @@ def populate(app):
             client2.audience = [client2]
             app.backend.save(client2)
 
+            token = models.Token(
+                token_id="EZWsi6omQRbJjWeq7rk8vcBVYz4PNbBXov97Z1D4mqxZgyQv",
+                access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjpbIjFKR2trekNiZUhwR3RscWdJNUVFTkJ5ZiJdLCJpYXQiOjE3MzYxNjQwODIsImV4cCI6MTczNzAyODA4MiwiYXV0aF90aW1lIjoxNzM2MTY0MDgyLCJuYW1lIjoiSmFuZSBEb2UiLCJncm91cHMiOlsiaW1wb3J0YW50IiwiYWRtaW5zIiwidXNlcnMiXSwic3ViIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiSmFuZSIsImVtYWlsIjoiYWRtaW5AbXlkb21haW4udGxkIiwicGhvbmVfbnVtYmVyIjoiNTU1LTAwMC0wMDAiLCJmYW1pbHlfbmFtZSI6IkRvZSIsIndlYnNpdGUiOiJodHRwczovL2FkbWluLmV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJKYW5lLkQiLCJhZGRyZXNzIjoiMTIzLCBBZG1pbiBMYW5lIC0gR290aGFtIENpdHkgMTIzNDUifQ.gUy9wahjIy4PGGaI_8nIIeXyFdL2ngRLA43uuvlSLXq25bLfi9gsXNGuuuvwya0Qd6zjXJ4S9_q_Kr9oSgWAUQ1J-_F7-59_LSr2YYWYh05gWaRvKG7TqHHX7PIbx3Iv_ire_73xkLVQOG8KhLcP3DHfpBecwJbdFzk30CWDbCVFtWK8DdsffAaFGb2pnK-FdodmEQOBM0i58phbQcGdhJdCSMjJUy0y3KzSt9WqbkGA0avqzAXhiHCOn5A1rveqV0oBgFIODwcqA59XLcXTAD40DKFWQMm4AhH33R4Y4IHr3rupv2h06UTg_UvHw12xdwJgzKrPfZmAxUB8ZQKRBw",
+                client=client1,
+                subject=john,
+                type="Bearer",
+                refresh_token="aCm97aw3gFlPBpV6EpUq8WnN0LVm4mFwAxkOMkVhAEjqu2tZ",
+                scope=[
+                    "openid",
+                    "profile",
+                    "email",
+                    "groups",
+                    "address",
+                    "phone",
+                ],
+                issue_date=datetime.datetime.now(tz=datetime.timezone.utc),
+                lifetime=60 * 60 * 24,
+                audience=[client1],
+            )
+            app.backend.save(token)
+
             fake_users(50)
             fake_groups(10, nb_users_max=10)
 
 
-def create_app():
-    app = canaille_app()
+def create_app(config=None):
+    app = canaille_app(config=config)
     try:
         populate(app)
     except:

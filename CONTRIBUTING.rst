@@ -212,6 +212,18 @@ You can also run sphinx by hand, that should be faster since it avoids the tox e
 
 The generated documentation is located at ``build/sphinx/html/en``.
 
+.. note::
+
+   The documentation generates dynamic screenshots of Canaille using `sphinxcontrib-screenshot`_, that internally uses `Playwright`_.
+   Playwright needs to be initialized with the following command:
+
+   .. code-block:: bash
+
+      uv run playwright install firefox
+
+.. _sphinxcontrib-screenshot: https://sphinxcontrib-screenshot.readthedocs.io
+.. _Playwright: https://playwright.dev/python
+
 Code translation
 ----------------
 
