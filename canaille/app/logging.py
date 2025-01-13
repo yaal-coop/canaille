@@ -5,6 +5,7 @@ from logging.config import fileConfig
 from flask import has_request_context
 from flask import request
 from flask.logging import default_handler
+from flask.logging import wsgi_errors_stream
 
 
 class IPFilter(logging.Filter):
@@ -70,7 +71,7 @@ def setup_logging(app):
         formatter = logging.Formatter(
             "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s"
         )
-        handler = logging.StreamHandler(stream="ext://flask.logging.wsgi_errors_stream")
+        handler = logging.StreamHandler(stream=wsgi_errors_stream)
         handler.setFormatter(formatter)
         app.logger.setLevel(log_level)
         app.logger.removeHandler(default_handler)
