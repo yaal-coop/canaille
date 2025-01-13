@@ -18,4 +18,4 @@ build:
     post_install:
       - pip install .[front,oidc,otp,sms]
       - pip install --requirement requirements.txt
-      - playwright install firefox --with-deps
+      - playwright install firefox
