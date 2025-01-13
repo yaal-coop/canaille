@@ -56,3 +56,10 @@ You can customize those commands, as long as they match the ``JWT`` section of y
 
     sudo openssl genrsa -out "$CANAILLE_CONF_DIR/private.pem" 4096
     sudo openssl rsa -in "$CANAILLE_CONF_DIR/private.pem" -pubout -outform PEM -out "$CANAILLE_CONF_DIR/public.pem"
+
+My application return errors with the Canaille connection
+=========================================================
+
+If your Canaille client is misconfigured, you can get error messages in your application logs such as ``{"error": "invalid_client"}``.
+If this happens, check you application documentation to find what is the expected configuration.
+A common misconfiguration is to use ``client_secret_basic`` instead of ``client_secret_post`` as client authentication method.
