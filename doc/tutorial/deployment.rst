@@ -5,38 +5,43 @@ Application service
 ===================
 
 After having finished Canaille installation you have to run it in a WSGI application server.
-Here are some WSGI server configuration examples you can pick. Do not forget to update the paths.
+Several application servers are available, like `Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example.
 
-gunicorn
---------
+Canaille comes with a light Hypercorn integration but you can use it with any application server.
+The WSGI entry-point to configure in your server of choice is ``canaille:create_app``.
 
-.. todo::
+Hypercorn integration
+---------------------
 
-   Write a gunicorn configuration sample file.
+To run the integrated Hypercorn application server, you can simply run the :ref:`cli_run` command.
+For the hypercorn integration to be available, you will need the ``[server]`` extra (for instance with ``pip install canaille[server]``.
 
-uwsgi
------
+.. code-block:: console
+   :caption: Running the Canaille run command
 
-.. code-block:: ini
+   $ canaille run
+   [2025-01-02 16:39:18 +0100] [304043] [INFO] Running on http://127.0.0.1:8000 (CTRL + C to quit)
+   [2025-01-02 16:39:18,412] INFO in logging: Running on http://127.0.0.1:8000 (CTRL + C to quit)
 
-   [uwsgi]
-   virtualenv=/opt/canaille/env
-   socket=/etc/canaille/uwsgi.sock
-   plugin=python3
-   module=canaille:create_app()
-   lazy-apps=true
-   master=true
-   processes=1
-   threads=10
-   need-app=true
-   thunder-lock=true
-   touch-chain-reload=/etc/canaille/uwsgi-reload.fifo
-   enable-threads=true
-   reload-on-rss=1024
-   worker-reload-mercy=600
-   buffer-size=65535
-   disable-write-exception = true
-   env = CONFIG=/etc/canaille/config.toml
+By default it runs on the port `8000` of localhost, this could be enough but you might want to customize it a little bit more.
+Fortunately Hypercorn provides a :doc:`configuration documentation <hypercorn:how_to_guides/configuring>` to adjust it to your needs.
+You can write a TOML Hypercorn configuration file and pass it in parameter.
+
+.. code-block:: console
+   :caption: Running the Canaille run command with a configuration file
+
+   $ canaille run --config hypercorn.toml
+
+Here is a basic Hypercorn configuration file that you can tune:
+
+.. code-block:: toml
+    :caption: Hypercorn toml configuration example
+
+    workers = 4
+    bind = "unix:/run/canaille.sock"
+    umask = "007"
+    logfile = "/var/log/hypercorn/canaille.log"
+    loglevel = "info"
 
 Webserver
 =========
@@ -48,6 +53,7 @@ Nginx
 -----
 
 .. code-block:: nginx
+    :caption: Nginx configuration example for Canaille
 
     server {
         listen 80;
@@ -105,8 +111,11 @@ Nginx
         }
 
         location / {
-            include uwsgi_params;
-            uwsgi_pass unix:/etc/canaille/uwsgi.sock;
+            proxy_pass http://unix:/run/canaille.sock;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
     }
 
@@ -114,6 +123,7 @@ Apache
 ------
 
 .. code-block:: apache
+    :caption: Apache configuration example for Canaille
 
     <VirtualHost *:80>
         ServerName auth.mydomain.example
@@ -142,8 +152,8 @@ Apache
 
         ProxyPreserveHost On
         ProxyPass /static/ !
-        ProxyPass / unix:/etc/canaille/uwsgi.sock
-        ProxyPassReverse / unix:/etc/canaille/uwsgi.sock
+        ProxyPass / unix:/run/canaille.sock
+        ProxyPassReverse / unix:/run/canaille.sock
 
         RequestHeader set X-FORWARDED-PROTOCOL ssl
         RequestHeader set X-FORWARDED-SSL on
@@ -198,3 +208,7 @@ To create your first user you can use the :ref:`canaille create <cli_create>` CL
    canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol
 
 .. _WebFinger: https://www.rfc-editor.org/rfc/rfc7033.html
+.. _Gunicorn: https://gunicorn.org
+.. _uWSGI: https://uwsgi-docs.readthedocs.io
+.. _uvicorn: https://www.uvicorn.org
+.. _Hypercorn: https://Hypercorn.readthedocs.io

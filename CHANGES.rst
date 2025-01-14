@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - Add screenshots in the documentation. :issue:`210`
+- Implement a ``canaille run`` command that runs a production server with Hypercorn. :pr:`219`
 
 Fixed
 ^^^^^
