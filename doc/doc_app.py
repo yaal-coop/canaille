@@ -20,7 +20,6 @@ def create_doc_app(sphinx_app):
     conf["CANAILLE"]["SECRET_KEY"] = "doc"
     conf["CANAILLE"]["SMTP"] = {"HOST": "localhost"}
     conf["CANAILLE"]["LANGUAGE"] = sphinx_app.config["language"]
-    del conf["CANAILLE"]["LOGGING"]
     app = create_app(conf)
     return app
 
