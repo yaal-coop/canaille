@@ -76,6 +76,7 @@ class PasswordResetForm(Form):
         ],
         render_kw={
             "autocomplete": "new-password",
+            "class": "password_strength",
         },
     )
     confirmation = wtforms.PasswordField(
@@ -215,6 +216,7 @@ PROFILE_FORM_FIELDS = dict(
         ],
         render_kw={
             "autocomplete": "new-password",
+            "class": "password_strength",
         },
     ),
     password2=wtforms.PasswordField(
