@@ -37,7 +37,6 @@ Canaille provides different package options:
 - `sentry` provides sentry integration to watch Canaille exceptions;
 - `otp` provides the dependencies to enable one-time password authentication;
 - `sms` provides the dependencies to enable sms sending;
-- `all` provides all the extras above.
 
 They can be installed with:
 
