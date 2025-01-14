@@ -1,4 +1,10 @@
 [0.0.60] - Unreleased
+---------------------
+
+Added
+^^^^^
+- Add screenshots in the documentation. :issue:`210`
+- Implement a ``canaille run`` command that runs a production server with Hypercorn. :pr:`219`
 
 Changed
 ^^^^^^^
@@ -6,11 +12,6 @@ Changed
 
 [0.0.59] - 2025-01-10
 ---------------------
-
-Added
-^^^^^
-- Add screenshots in the documentation. :issue:`210`
-- Implement a ``canaille run`` command that runs a production server with Hypercorn. :pr:`219`
 
 Fixed
 ^^^^^
