@@ -1,3 +1,9 @@
+[0.0.60] - Unreleased
+
+Changed
+^^^^^^^
+- Avoid displaying password strength progress bar in login form
+
 [0.0.59] - 2025-01-10
 ---------------------
 

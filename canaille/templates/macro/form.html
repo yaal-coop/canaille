@@ -126,7 +126,8 @@ del_button=false
     {% endfor %}
 {% endif %}
 
-{% if field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] and field.data|password_strength and  not field.errors %}
+{% set display_strength_indicator = field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] %}
+{% if display_strength_indicator and field.data|password_strength and not field.errors %}
     <div>
         <p class="progress_bar">{% trans %}Password strength{% endtrans %}</p>
         <div class="ui indicating progress" data-percent="{{ field.data|password_strength }}">
