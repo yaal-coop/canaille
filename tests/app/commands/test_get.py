@@ -23,7 +23,6 @@ def test_serialize(user):
 
 def test_get_list_models(testclient, backend, user):
     """Nominal case test for model get command."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["get"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
@@ -34,7 +33,6 @@ def test_get_list_models(testclient, backend, user):
 
 def test_get(testclient, backend, user):
     """Nominal case test for model get command."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["get", "user"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
@@ -64,7 +62,6 @@ def test_get(testclient, backend, user):
 
 def test_get_model_filter(testclient, backend, user, admin, foo_group):
     """Test model get filter."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(
         cli, ["get", "user", "--groups", foo_group.id], catch_exceptions=False
@@ -97,7 +94,6 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
 
 def test_get_datetime_filter(testclient, backend, user):
     """Test model get filter."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(
         cli,

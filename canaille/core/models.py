@@ -22,7 +22,9 @@ PASSWORD_FAILURE_COUNT_INTERVAL = 600
 
 
 class User(Model):
-    """User model, based on the `SCIM User schema
+    """User model.
+
+    Based on the `SCIM User schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_,
     `Entreprise User Schema Extension
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_
@@ -311,9 +313,7 @@ class User(Model):
             raise
 
     def can(self, *permissions: Permission):
-        """Whether or not the user has the
-        :class:`~canaille.core.configuration.Permission` according to the
-        :class:`configuration <canaille.core.configuration.ACLSettings>`."""
+        """Whether or not the user has the :class:`~canaille.core.configuration.Permission` according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
             self._permissions = set()
             acls = current_app.config["CANAILLE"]["ACL"].values()
@@ -338,8 +338,7 @@ class User(Model):
 
     @property
     def readable_fields(self):
-        """The fields the user can read according to the :class:`configuration
-        <canaille.core.configuration.ACLSettings>` configuration.
+        """The fields the user can read according to the :class:`configuration <canaille.core.configuration.ACLSettings>` configuration.
 
         This does not include the :attr:`writable
         <canaille.core.models.User.writable_fields>` fields.
@@ -355,8 +354,7 @@ class User(Model):
 
     @property
     def writable_fields(self):
-        """The fields the user can write according to the :class:`configuration
-        <canaille.core.configuration.ACLSettings>`."""
+        """The fields the user can write according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._writable_fields is None:
             self._writable_fields = set()
             acls = current_app.config["CANAILLE"]["ACL"].values()
@@ -511,7 +509,9 @@ class User(Model):
 
 
 class Group(Model):
-    """User model, based on the `SCIM Group schema
+    """Group model.
+
+    Based on the `SCIM Group schema
     <https://datatracker.ietf.org/doc/html/rfc7643#section-4.2>`_.
     """
 

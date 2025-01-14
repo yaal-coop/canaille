@@ -18,7 +18,6 @@ class ModelEncoder(json.JSONEncoder):
     def serialize_model(instance):
         def serialize_attribute(attribute_name, value):
             """Replace model instances by their id."""
-
             multiple = typing.get_origin(instance.attributes[attribute_name]) is list
             if multiple and isinstance(value, list):
                 return [serialize_attribute(attribute_name, v) for v in value]
@@ -84,12 +83,10 @@ class Backend:
         raise NotImplementedError()
 
     def setup(self):
-        """Is called before each http request, it should open the connection to
-        the backend."""
+        """Is called before each http request, it should open the connection to the backend."""
 
     def teardown(self):
-        """Is called after each http request, it should close the connections
-        to the backend."""
+        """Is called after each http request, it should close the connections to the backend."""
 
     @classmethod
     def validate(cls, config):
@@ -101,8 +98,8 @@ class Backend:
         raise NotImplementedError()
 
     def query(self, model, **kwargs):
-        """
-        Perform a query on the database and return a collection of instances.
+        """Perform a query on the database and return a collection of instances.
+
         Parameters can be any valid attribute with the expected value:
 
         >>> backend.query(User, first_name="George")
@@ -120,13 +117,11 @@ class Backend:
         raise NotImplementedError()
 
     def fuzzy(self, model, query, attributes=None, **kwargs):
-        """Works like :meth:`~canaille.backends.Backend.query` but attribute
-        values loosely be matched."""
+        """Work like :meth:`~canaille.backends.Backend.query` but attribute values loosely be matched."""
         raise NotImplementedError()
 
     def get(self, model, identifier=None, **kwargs):
-        """Works like :meth:`~canaille.backends.Backend.query` but return only
-        one element or :py:data:`None` if no item is matching."""
+        """Work like :meth:`~canaille.backends.Backend.query` but return only one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
     def save(self, instance):
@@ -153,8 +148,7 @@ class Backend:
         raise NotImplementedError()
 
     def update(self, instance, **kwargs):
-        """Assign a whole dict to the current instance. This is useful to
-        update models based on forms.
+        """Assign a whole dict to the current instance. This is useful to update models based on forms.
 
         >>> user = User.get(user_name="george")
         >>> user.first_name

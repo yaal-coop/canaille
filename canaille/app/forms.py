@@ -168,8 +168,7 @@ class HTMXFormMixin:
         return fieldlist[indice], context
 
     def validate(self, *args, **kwargs):
-        """If the request is a HTMX request, this will only render the field
-        that triggered the request (after having validated the form).
+        """If the request is a HTMX request, this will only render the field that triggered the request (after having validated the form).
 
         This uses the Flask abort method to interrupt the flow with an
         exception.
@@ -200,8 +199,7 @@ class HTMXFormMixin:
         abort(response)
 
     def form_control(self):
-        """Check whether the current request is the result of the users adding
-        or removing a field from a FieldList."""
+        """Check whether the current request is the result of the users adding or removing a field from a FieldList."""
         FIELDLIST_ADD_BUTTON = "fieldlist_add"
         FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"
 
@@ -262,9 +260,7 @@ class BaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
 
 
 class TableForm(I18NFormMixin, FlaskForm):
-    """
-    A form for table rendering of object collections.
-    """
+    """A form for table rendering of object collections."""
 
     def __init__(
         self, cls=None, page_size: int = 25, fields=None, filter=None, **kwargs

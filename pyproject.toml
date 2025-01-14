@@ -115,9 +115,7 @@ dev = [
     "faker >= 30.0.0",
     "flask-webtest >= 0.1.6",
     "maildump>=1.0",
-    # pre-commit version is fixed until docformatted hook is compatible
-    # https://github.com/PyCQA/docformatter/issues/293
-    "pre-commit < 4.0.0",
+    "pre-commit >= 4.0.0",
     "pre-commit-uv>=4.1.4",
     "pyquery >= 2.0.0",
     "pytest >= 8.0.0",
@@ -209,6 +207,7 @@ exclude_lines = [
 
 [tool.ruff.lint]
 select = [
+    "D", # pydocstyle
     "B", # flake8-bugbear
     "E", # pycodestyle
     "F", # pyflakes
@@ -218,6 +217,16 @@ select = [
 ignore = [
     "E501", # line-too-long
     "E722", # bare-except
+    "D100", # public module
+    "D101", # public class
+    "D102", # public method
+    "D103", # public function
+    "D104", # public package
+    "D105", # magic method
+    "D106", # nested class
+    "D107", # public init
+    "D203", # no-blank-line-before-class
+    "D213", # multi-line-summary-second-line
 ]
 
 [tool.ruff.lint.isort]

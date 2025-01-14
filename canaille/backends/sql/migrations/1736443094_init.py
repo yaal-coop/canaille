@@ -1,4 +1,4 @@
-"""initial migration
+"""initial migration.
 
 Represents the state of the database in version 0.0.56
 

@@ -68,8 +68,7 @@ def get_service_provider_config():
 
 
 def get_resource_types():
-    """The resource types implemented by Canaille."""
-
+    """Return the resource types implemented by Canaille."""
     return {
         "User": ResourceType(
             id="User",

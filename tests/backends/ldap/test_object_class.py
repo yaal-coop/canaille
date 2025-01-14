@@ -65,8 +65,7 @@ def test_object_class_update(backend, testclient):
 
 
 def test_keep_old_object_classes(backend, testclient, slapd_server):
-    """When using a populated LDAP database, some objects may have existing
-    objectClass not handled by Canaille.
+    """When using a populated LDAP database, some objects may have existing objectClass not handled by Canaille.
 
     In such a case Canaille should keep the unmanaged objectClass and
     attributes.

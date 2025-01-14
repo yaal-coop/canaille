@@ -38,7 +38,6 @@ def test_delete_by_identifier(testclient, backend):
 
 def test_delete_unknown_id(testclient, backend):
     """Error case for trying to set a value for an invalid object."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["delete", "user", "invalid"])
     assert res.exit_code == 1, res.stdout

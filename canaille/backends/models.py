@@ -82,8 +82,7 @@ class Model:
 
     @property
     def identifier(self):
-        """Returns a unique value that will be used to identify the model
-        instance.
+        """Return a unique value that will be used to identify the model instance.
 
         This value will be used in URLs in canaille, so it should be
         unique and short.

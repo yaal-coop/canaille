@@ -9,8 +9,7 @@ from canaille.core.endpoints.account import RegistrationPayload
 
 
 def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
-    """If email confirmation is disabled, users should be able to pick any
-    email."""
+    """If email confirmation is disabled, users should be able to pick any email."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
     res = testclient.get("/profile/user")
@@ -33,9 +32,7 @@ def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
 def test_confirmation_unset_smtp_disabled_email_editable(
     testclient, backend, logged_admin, user
 ):
-    """If email confirmation is unset and no SMTP server has been configured,
-    then email confirmation cannot be enabled, thus users must be able to pick
-    any email."""
+    """If email confirmation is unset and no SMTP server has been configured, then email confirmation cannot be enabled, thus users must be able to pick any email."""
     testclient.app.config["CANAILLE"]["SMTP"] = None
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
@@ -56,8 +53,7 @@ def test_confirmation_unset_smtp_disabled_email_editable(
 
 
 def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged_user):
-    """If email confirmation is enabled and no SMTP server is configured, this
-    might be a misconfiguration, or a temporary SMTP disabling.
+    """If email confirmation is enabled and no SMTP server is configured, this might be a misconfiguration, or a temporary SMTP disabling.
 
     In doubt, users cannot edit their emails.
     """
@@ -75,8 +71,7 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
 def test_confirmation_unset_smtp_enabled_email_admin_editable(
     testclient, backend, logged_admin, user
 ):
-    """Administrators should be able to edit user email addresses, even when
-    email confirmation is unset and SMTP is configured."""
+    """Administrators should be able to edit user email addresses, even when email confirmation is unset and SMTP is configured."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
     res = testclient.get("/profile/user")
@@ -98,8 +93,7 @@ def test_confirmation_unset_smtp_enabled_email_admin_editable(
 def test_confirmation_enabled_smtp_disabled_admin_editable(
     testclient, backend, logged_admin, user
 ):
-    """Administrators should be able to edit user email addresses, even when
-    email confirmation is enabled and SMTP is disabled."""
+    """Administrators should be able to edit user email addresses, even when email confirmation is enabled and SMTP is disabled."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
     testclient.app.config["CANAILLE"]["SMTP"] = None
 
@@ -122,8 +116,7 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
 def test_confirmation_unset_smtp_enabled_email_user_validation(
     smtpd, testclient, backend, user
 ):
-    """If email confirmation is unset and there is a SMTP server configured,
-    then users emails should be validated by sending a confirmation email."""
+    """If email confirmation is unset and there is a SMTP server configured, then users emails should be validated by sending a confirmation email."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
 
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
@@ -344,8 +337,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
 
 
 def test_confirmation_email_already_used_link(testclient, backend, user, admin):
-    """Confirmation link should fail if the target email is already associated
-    to another account.
+    """Confirmation link should fail if the target email is already associated to another account.
 
     For instance, if an administrator already put this email to someone
     else's profile.
@@ -374,8 +366,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
 
 
 def test_delete_email(testclient, logged_user, backend):
-    """Tests that user can deletes its emails unless they have only one
-    left."""
+    """Tests that user can deletes its emails unless they have only one left."""
     res = testclient.get("/profile/user")
     assert "email_remove" not in res.forms["emailconfirmationform"].fields
 
@@ -436,8 +427,7 @@ def test_delete_last_email(testclient, logged_user, backend):
 
 
 def test_edition_forced_mail(testclient, logged_user, backend):
-    """Tests that users that must perform email verification cannot force the
-    profile form."""
+    """Tests that users that must perform email verification cannot force the profile form."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     testclient.post(
@@ -454,8 +444,7 @@ def test_edition_forced_mail(testclient, logged_user, backend):
 
 
 def test_invitation_form_mail_field_readonly(testclient):
-    """Tests that the email field is readonly in the invitation form creation
-    if email confirmation is enabled."""
+    """Tests that the email field is readonly in the invitation form creation if email confirmation is enabled."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
 
     payload = RegistrationPayload(
@@ -473,8 +462,7 @@ def test_invitation_form_mail_field_readonly(testclient):
 
 
 def test_invitation_form_mail_field_writable(testclient):
-    """Tests that the email field is writable in the invitation form creation
-    if email confirmation is disabled."""
+    """Tests that the email field is writable in the invitation form creation if email confirmation is disabled."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
     payload = RegistrationPayload(

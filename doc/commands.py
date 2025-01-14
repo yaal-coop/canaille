@@ -1,4 +1,4 @@
-"""Temporary workaround for https://github.com/click-contrib/sphinx-click/issues/139"""
+"""Temporary workaround for https://github.com/click-contrib/sphinx-click/issues/139."""
 
 import inspect
 

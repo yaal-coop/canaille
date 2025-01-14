@@ -8,7 +8,6 @@ from canaille.commands import cli
 
 def test_create(testclient, backend, foo_group):
     """Nominal case test for model create command."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(
         cli,

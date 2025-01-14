@@ -15,8 +15,7 @@ class IPFilter(logging.Filter):
 
 
 def add_log_level(level_name, level_num, method_name=None):
-    """
-    Adapted from https://stackoverflow.com/a/35804945/2700168
+    """Adapted from https://stackoverflow.com/a/35804945/2700168.
 
     Comprehensively adds a new logging level to the `logging` module and the
     currently configured logging class.
@@ -25,7 +24,8 @@ def add_log_level(level_name, level_num, method_name=None):
     To avoid accidental clobberings of existing attributes, this method will
     raise an `AttributeError` if the level name is already an attribute of the
     `logging` module or if the method name is already present
-    Example
+
+    Example:
     -------
     >>> addLoggingLevel("TRACE", logging.DEBUG - 5)
     >>> logging.getLogger(__name__).setLevel("TRACE")
@@ -33,6 +33,7 @@ def add_log_level(level_name, level_num, method_name=None):
     >>> logging.trace("so did this")
     >>> logging.TRACE
     5
+
     """
     if not method_name:
         method_name = level_name.lower()

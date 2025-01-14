@@ -71,8 +71,7 @@ def test_group_removal(testclient, logged_admin, user, foo_group, backend):
 
 
 def test_empty_group_removal(testclient, logged_admin, user, foo_group, backend):
-    """Tests that one cannot remove a group from a user, when was the last
-    person in the group.
+    """Tests that one cannot remove a group from a user, when was the last person in the group.
 
     This is because LDAP groups cannot be empty because
     groupOfNames.member is a MUST attribute.

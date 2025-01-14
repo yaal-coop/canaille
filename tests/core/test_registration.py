@@ -154,8 +154,7 @@ def test_join_page_registration_disabled(testclient, backend, smtpd, foo_group):
 
 
 def test_join_page_email_confirmation_disabled(testclient, backend, smtpd, foo_group):
-    """The join page should directly redirect to the registration page if email
-    confirmation is disabled."""
+    """The join page should directly redirect to the registration page if email confirmation is disabled."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
     res = testclient.get(url_for("core.account.join"), status=302)

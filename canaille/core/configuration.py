@@ -6,8 +6,9 @@ from pydantic import field_validator
 
 
 class SMTPSettings(BaseModel):
-    """The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace. If
-    unset, mail related features will be disabled, such as mail verification or
+    """The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace.
+
+    If unset, mail related features will be disabled, such as mail verification or
     password recovery emails.
 
     By default, Canaille will try to send mails from localhost without
@@ -40,8 +41,9 @@ class SMTPSettings(BaseModel):
 
 
 class SMPPSettings(BaseModel):
-    """The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace. If
-    not set, sms related features such as sms one-time passwords will be disabled.
+    """The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace.
+
+    If not set, sms related features such as sms one-time passwords will be disabled.
     """
 
     HOST: str | None = "localhost"

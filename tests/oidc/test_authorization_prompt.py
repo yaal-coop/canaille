@@ -43,8 +43,7 @@ def test_prompt_none(testclient, logged_user, client, backend):
 
 
 def test_prompt_not_logged(testclient, user, client, backend):
-    """Prompt=none should return a login_required error when no user is logged
-    in.
+    """Prompt=none should return a login_required error when no user is logged in.
 
     login_required     The Authorization Server requires End-User
     authentication.     This error MAY be returned when the prompt
@@ -77,8 +76,7 @@ def test_prompt_not_logged(testclient, user, client, backend):
 
 
 def test_prompt_no_consent(testclient, logged_user, client):
-    """Prompt=none should return a consent_required error when user are logged
-    in but have not granted their consent.
+    """Prompt=none should return a consent_required error when user are logged in but have not granted their consent.
 
     consent_required The Authorization Server requires End-User consent.
     This error MAY be returned when the prompt parameter value in the
@@ -101,8 +99,7 @@ def test_prompt_no_consent(testclient, logged_user, client):
 
 
 def test_prompt_create_logged(testclient, logged_user, client, backend):
-    """If prompt=create and user is already logged in, then go straight to the
-    consent page."""
+    """If prompt=create and user is already logged in, then go straight to the consent page."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
 
     consent = models.Consent(
@@ -130,8 +127,7 @@ def test_prompt_create_logged(testclient, logged_user, client, backend):
 
 
 def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
-    """If prompt=create but Canaille registration is disabled, an error
-    response should be returned.
+    """If prompt=create but Canaille registration is disabled, an error response should be returned.
 
     If the OpenID Provider receives a prompt value that it does not
     support (not declared in the prompt_values_supported metadata field)
@@ -158,8 +154,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
 
 
 def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
-    """If prompt=create and user is not logged in, then display the
-    registration form.
+    """If prompt=create and user is not logged in, then display the registration form.
 
     Check that the user is correctly redirected to the client page after
     the registration process.

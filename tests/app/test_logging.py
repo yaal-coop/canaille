@@ -98,7 +98,6 @@ def test_dict_log_config(configuration, backend, tmp_path, admin):
 
 def test_custom_root_logger(caplog):
     """Checks adding custom log levels to the root logger."""
-
     add_log_level("FOOBAR", logging.INFO + 6)
     logging.foobar("foobar")
     assert ("root", logging.FOOBAR, "foobar") in caplog.record_tuples
@@ -110,7 +109,6 @@ def test_custom_root_logger(caplog):
 
 def test_custom_flask_logger(testclient, caplog):
     """Checks adding custom log levels to the Flask logger."""
-
     add_log_level("FOOBAR", logging.INFO + 6)
     testclient.app.logger.foobar("foobar")
     assert ("canaille", logging.FOOBAR, "foobar") in caplog.record_tuples
@@ -122,7 +120,6 @@ def test_custom_flask_logger(testclient, caplog):
 
 def test_silent_custom_logger(testclient, caplog, tmp_path, configuration, backend):
     """Checks custom log levels de-activated by configuration."""
-
     add_log_level("FOOBAR", logging.INFO + 6)
     add_log_level("FOOBAZ", logging.INFO + 7)
 

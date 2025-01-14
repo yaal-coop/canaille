@@ -16,8 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class RootSettings(BaseSettings):
-    """The top-level namespace contains the configuration settings unrelated to
-    Canaille.
+    """The top-level namespace contains the configuration settings unrelated to Canaille.
 
     The configuration parameters from the following libraries can be used:
 
@@ -77,9 +76,11 @@ class RootSettings(BaseSettings):
 
 
 def settings_factory(config, env_file=None, env_prefix=""):
-    """Pushes the backend specific configuration into CoreSettings, in the
-    purpose break dependency against backends libraries like python-ldap or
-    sqlalchemy."""
+    """Push the backend specific configuration into CoreSettings.
+
+    In the purpose to break dependency against backends libraries like python-ldap or
+    sqlalchemy.
+    """
     attributes = {"CANAILLE": (CoreSettings, CoreSettings())}
 
     if "CANAILLE_SQL" in config or any(

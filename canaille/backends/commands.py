@@ -67,8 +67,7 @@ def is_multiple(attribute_type):
 
 
 def register(cli):
-    """Generate commands using factories that each have one subcommand per
-    available model."""
+    """Generate commands using factories that each have one subcommand per available model."""
     cli.add_command(get_command)
     cli.add_command(set_command)
     cli.add_command(create_command)
@@ -280,12 +279,10 @@ def delete_command():
 @with_backendcontext
 @click.argument("identifier")
 def reset_otp(identifier):
-    """Reset one-time password authentication for a user and display the
-    edited user in JSON format in the standard output.
+    """Reset one-time password authentication for a user and display the edited user in JSON format in the standard output.
 
     IDENTIFIER should be a user id or user_name
     """
-
     user = Backend.instance.get(models.User, identifier)
     if not user:
         raise click.ClickException(f"No user with id '{identifier}'")

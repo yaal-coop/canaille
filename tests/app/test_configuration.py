@@ -65,8 +65,7 @@ def test_configuration_from_environment_vars(tmp_path):
 
 
 def test_disable_env_var_loading(tmp_path, configuration):
-    """Canaille should not read configuration from environment vars when
-    env_prefix is False."""
+    """Canaille should not read configuration from environment vars when env_prefix is False."""
     del configuration["SERVER_NAME"]
     os.environ["SERVER_NAME"] = "example.test"
     os.environ["FOOBAR_SERVER_NAME"] = "foobar.example.test"
@@ -97,8 +96,7 @@ def test_dotenv_file(tmp_path, configuration):
 
 
 def test_custom_dotenv_file(tmp_path, configuration):
-    """Canaille should read configuration from custom .env files if they are
-    passed with env_file."""
+    """Canaille should read configuration from custom .env files if they are passed with env_file."""
     dotenv = tmp_path / "custom.env"
     with open(dotenv, "w") as fd:
         fd.write("FOOBAR=other-custom-value")

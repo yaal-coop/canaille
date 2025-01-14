@@ -736,8 +736,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
 def test_locked_account(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
-    """Users with a locked account should not be able to exchange code against
-    tokens."""
+    """Users with a locked account should not be able to exchange code against tokens."""
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -779,7 +778,6 @@ def test_missing_client_id(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
     """Missing client_id should raise a 400 error."""
-
     res = testclient.get(
         "/oauth/authorize",
         params=dict(

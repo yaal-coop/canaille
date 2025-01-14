@@ -6,7 +6,6 @@ from canaille.commands import cli
 
 def test_dump_stdout(testclient, backend, user, foo_group):
     """Test the full database dump command."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout

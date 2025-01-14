@@ -57,8 +57,7 @@ def existing_group_member(form, field):
 
 
 def non_empty_groups(form, field):
-    """LDAP groups cannot be empty because groupOfNames.member is a MUST
-    attribute.
+    """LDAP groups cannot be empty because groupOfNames.member is a MUST attribute.
 
     https://www.rfc-editor.org/rfc/rfc2256.html#section-7.10
     """

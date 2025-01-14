@@ -6,7 +6,6 @@ from canaille.commands import cli
 
 def test_set_string_by_id(testclient, backend, user):
     """Set a string attribute to a model identifier by its id."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["set", "user", user.id, "--given-name", "foobar"])
     assert res.exit_code == 0, res.stdout
@@ -36,7 +35,6 @@ def test_set_string_by_id(testclient, backend, user):
 
 def test_set_string_by_identifier(testclient, backend, user):
     """Set a string attribute to a model identifier by its identifier."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["set", "user", "user", "--given-name", "foobar"])
     assert res.exit_code == 0, res.stdout
@@ -66,7 +64,6 @@ def test_set_string_by_identifier(testclient, backend, user):
 
 def test_set_multiple(testclient, backend, user):
     """Test setting several emails."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(
         cli,
@@ -111,7 +108,6 @@ def test_set_multiple(testclient, backend, user):
 
 def test_set_unknown_id(testclient, backend):
     """Error case for trying to set a value for an invalid object."""
-
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["set", "user", "invalid", "--given-name", "foobar"])
     assert res.exit_code == 1, res.stdout
