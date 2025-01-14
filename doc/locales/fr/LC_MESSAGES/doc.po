@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-13 18:04+0100\n"
-"PO-Revision-Date: 2025-01-13 17:05+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2025-01-14 12:50+0000\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -8544,7 +8544,7 @@ msgstr ""
 
 #: ../tutorial/troubleshooting.rst:61 d808fb998107415a952e8d68ef674831
 msgid "My application return errors with the Canaille connection"
-msgstr ""
+msgstr "Mon application retourne des erreurs avec la connexion à Canaille"
 
 #: ../tutorial/troubleshooting.rst:63 a924aed42ef74d6facd507ddd2e081ff
 msgid ""
@@ -8554,6 +8554,12 @@ msgid ""
 "configuration. A common misconfiguration is to use ``client_secret_basic`` "
 "instead of ``client_secret_post`` as client authentication method."
 msgstr ""
+"Si votre client Canaille est mal configuré, vous pouvez obtenir des messages "
+"d'erreur dans les journaux de l'application logs tel que ``{\"error\": "
+"\"invalid_client\"}``. Si cela survient, vérifiez la documentation de "
+"l'application pour trouver la configuration attendue. Un mauvaise "
+"configuration courante est d'utiliser ``client_secret_basic`` à la place de "
+"``client_secret_post`` pour la méthode d'authentification du client."
 
 #: ../usecases.rst:4 168d233560c64d829ee09d581aa7d361
 msgid "Use cases"
