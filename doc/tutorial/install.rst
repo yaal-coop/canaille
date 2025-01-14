@@ -10,7 +10,8 @@ The installation of canaille consist in several steps, some of which you can do 
 Get the code
 ============
 
-As the moment there is no distribution package for canaille. However, it can be installed with the ``pip`` package manager.
+As the moment there is no distribution package for canaille.
+However, it can be installed with Python package managers such as ``pip``.
 Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
 
 .. code-block:: bash
@@ -18,7 +19,9 @@ Let us choose a place for the canaille environment, like ``/opt/canaille/env``.
     export CANAILLE_INSTALL_DIR=/opt/canaille
     sudo mkdir --parents "$CANAILLE_INSTALL_DIR"
     sudo virtualenv --python=python3 "$CANAILLE_INSTALL_DIR/env"
-    sudo "$CANAILLE_INSTALL_DIR/env/bin/pip" install "canaille[all]"
+
+    # Adapt the package extras at your will:
+    sudo "$CANAILLE_INSTALL_DIR/env/bin/pip" install "canaille[EXTRAS]"
 
 Extras
 ------
