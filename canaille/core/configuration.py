@@ -206,10 +206,10 @@ class CoreSettings(BaseModel):
     If unset and :attr:`LOGO` is set, then the logo will be used.
     """
 
-    THEME: str = "default"
-    """The name of a theme in the 'theme' directory, or a path to a theme.
+    THEME: str | None = None
+    """A path to a theme.
 
-    Defaults to ``default``. Theming is done with `flask-themer <https://github.com/tktech/flask-themer>`_.
+    See the :doc:`theming documentation <tutorial/theming>` for more details.
     """
 
     LANGUAGE: str | None = None

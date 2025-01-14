@@ -268,7 +268,7 @@ def validate_smpp_configuration(config):
 
 
 def validate_theme(config):
-    if not os.path.exists(config["THEME"]) and not os.path.exists(
+    if config["THEME"] is not None and not os.path.exists(
         os.path.join(ROOT, "themes", config["THEME"])
     ):
         raise ConfigurationException(f"Cannot find theme '{config['THEME']}'")

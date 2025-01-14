@@ -1,6 +1,7 @@
 import os
 
 import flask
+from flask import current_app
 
 try:
     import flask_themer
@@ -8,31 +9,35 @@ except ImportError:
     flask_themer = None
 
 
-if flask_themer:
-    render_template = flask_themer.render_template
+def render_template(*args, **kwargs):
+    if flask_themer and current_app.config["CANAILLE"]["THEME"]:
+        return flask_themer.render_template(*args, **kwargs)
 
-    def setup_themer(app):
-        theme_config = app.config["CANAILLE"]["THEME"]
-        additional_themes_dir = (
-            os.path.abspath(os.path.dirname(theme_config))
-            if theme_config and os.path.exists(theme_config)
-            else None
-        )
-        themer = flask_themer.Themer(
-            app,
-            loaders=[flask_themer.FileSystemThemeLoader(additional_themes_dir)]
-            if additional_themes_dir
-            else None,
-        )
-
-        @themer.current_theme_loader
-        def get_current_theme():
-            # if config['THEME'] may be a theme name or a path
-            return app.config["CANAILLE"]["THEME"].split("/")[-1]
+    return flask.render_template(*args, **kwargs)
 
 
-else:  # pragma: no cover
-    render_template = flask.render_template
+def setup_themer(app):
+    theme_path = app.config["CANAILLE"]["THEME"]
+
+    if not theme_path:
+        with app.app_context():
+
+            @current_app.context_processor
+            def global_processor():
+                return {"theme": lambda theme: theme}
+
+        return
+
+    theme_path = os.path.abspath(theme_path)
+    themes_dir, theme_name = theme_path.rsplit("/", 1)
+
+    themer = flask_themer.Themer(
+        app, loaders=[flask_themer.FileSystemThemeLoader(themes_dir)]
+    )
+
+    @themer.current_theme_loader
+    def get_current_theme():
+        return theme_name
 
 
 def setup_jinja(app):
