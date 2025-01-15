@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-14 13:49+0100\n"
-"PO-Revision-Date: 2025-01-14 12:50+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2025-01-16 08:00+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -65,6 +65,8 @@ msgid ""
 "Implement a ``canaille run`` command that runs a production server with "
 "Hypercorn. :pr:`219`"
 msgstr ""
+"Implémentation d'une commande ``canaille run`` qui lance un serveur de "
+"production avec Hypercorn. :pr:`219`"
 
 #: ../../CHANGES.rst:10 ../../CHANGES.rst:33 ../../CHANGES.rst:69
 #: ../../CHANGES.rst:111 ../../CHANGES.rst:150 ../../CHANGES.rst:158
@@ -4003,13 +4005,15 @@ msgstr ""
 
 #: ../../canaille run:1 b0624234887c422881770ed440fb7af0
 msgid "Run Canaille in a hypercorn application server."
-msgstr ""
+msgstr "Lance un serveur de production Canaille avec Hypercorn."
 
 #: ../../canaille run:1 657b57f802d54094839e93e0e48c7b46
 msgid ""
 "Have a look at the :doc:`Hypercorn configuration documentation <hypercorn:"
 "how_to_guides/configuring>` to find how to configure it."
 msgstr ""
+"Jetez un œil à la :doc:`documentation d'Hypercorn <hypercorn:how_to_guides/"
+"configuring>` pour savoir comment le configurer."
 
 #: ../references/commands.rst:0 0be3fdcbc5e8477eb729119840fc94db
 #: a72c738435cf4a199cc28f9e168d61b4 f82b2b0573fb4be1bce67c535184ce1b
@@ -4021,10 +4025,8 @@ msgid "Options"
 msgstr "Options"
 
 #: ../../canaille run:1 ef88ef631586410abc53bd5a91dce1f1
-#, fuzzy
-#| msgid "Test the configuration file."
 msgid "Path to a TOML hypercorn configuration file."
-msgstr "Test du fichier de configuration."
+msgstr "Un chemin vers un fichier de configuration Hypercorn au format TOML."
 
 #: ../../canaille clean:1 e54877b8950d4ca586a827146ddc381b
 msgid "Remove expired tokens and authorization codes."
@@ -7953,19 +7955,15 @@ msgid "Application service"
 msgstr "Serveur d’application"
 
 #: ../tutorial/deployment.rst:7 93f18dfd47d74293b2d4395f986d2df8
-#, fuzzy
-#| msgid ""
-#| "After having finished Canaille installation you have to run it in a WSGI "
-#| "application server. Here are some WSGI server configuration examples you "
-#| "can pick. Do not forget to update the paths."
 msgid ""
 "After having finished Canaille installation you have to run it in a WSGI "
 "application server. Several application servers are available, like "
 "`Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
 msgstr ""
 "Après avoir fini l'installation de Canaille, vous devez l'exécuter dans un "
-"serveur d'application WSGI. Voici des exemples de configuration de serveur "
-"WSGI que vous pouvez utiliser. Pensez à adapter les chemins."
+"serveur d'application WSGI. Il existe de nombreux serveurs d'applications "
+"que vous pouvez utiliser avec Canaille, comme `Gunicorn`_, `uWSGI`_, "
+"`uvicorn`_ ou `Hypercorn`_ par exemple."
 
 #: ../tutorial/deployment.rst:10 ba3e4a6165494fceb6200e02a852df81
 msgid ""
