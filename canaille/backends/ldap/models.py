@@ -1,10 +1,8 @@
 import ldap.filter
-from flask import current_app
 
 import canaille.core.models
 import canaille.oidc.models
 from canaille.scim.models import propagate_group_scim_modification
-from canaille.scim.models import propagate_user_scim_modification
 
 from .backend import LDAPBackend
 from .ldapobject import LDAPObject
@@ -54,9 +52,9 @@ class User(canaille.core.models.User, LDAPObject):
         return super().match_filter(filter)
 
     def save(self):
-        if current_app.features.has_otp and not self.secret_token:
-            self.initialize_otp()
-        propagate_user_scim_modification(self, method="save")
+        # run the instance save callback if existing
+        save_callback = canaille.core.models.User.save(self)
+        next(save_callback, None)
 
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:
@@ -87,6 +85,9 @@ class User(canaille.core.models.User, LDAPObject):
             LDAPBackend.instance.save(group)
 
         self.state[group_attr] = new_groups
+
+        # run the instance save callback again if existing
+        next(save_callback, None)
 
 
 class Group(canaille.core.models.Group, LDAPObject):

@@ -83,9 +83,9 @@ def scim_client(app, oidc_client, oidc_token):
     )
 
 
-@pytest.fixture
-def scim_server(scope="module"):
-    from werkzeug.serving import make_server
+@pytest.fixture(scope="session")
+def scim_server():
+    from werkzeug.serving import run_simple
 
     backend = InMemoryBackend()
     app = SCIMProvider(backend)
@@ -95,13 +95,19 @@ def scim_server(scope="module"):
     for resource_type in load_default_resource_types().values():
         app.register_resource_type(resource_type)
 
-    s = make_server("localhost", 8080, app)
-    t = threading.Thread(target=s.serve_forever)
+    t = threading.Thread(
+        target=run_simple,
+        daemon=True,
+        kwargs=dict(
+            hostname="localhost",
+            port=8080,
+            application=app,
+            use_debugger=True,
+        ),
+    )
     t.start()
 
-    yield s
-
-    s.shutdown()
+    yield app
 
 
 @pytest.fixture

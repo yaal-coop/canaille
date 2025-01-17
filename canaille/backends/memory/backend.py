@@ -142,8 +142,8 @@ class MemoryBackend(Backend):
 
     def save(self, instance):
         # run the instance save callback if existing
-        if hasattr(instance, "save"):
-            instance.save()
+        save_callback = instance.save() if hasattr(instance, "save") else iter([])
+        next(save_callback, None)
 
         if not instance.id:
             instance.id = str(uuid.uuid4())
@@ -158,12 +158,18 @@ class MemoryBackend(Backend):
         self.index_save(instance)
         instance._cache = {}
 
+        # run the instance save callback again if existing
+        next(save_callback, None)
+
     def delete(self, instance):
         # run the instance delete callback if existing
-        if hasattr(instance, "delete"):
-            instance.delete()
+        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
+        next(delete_callback, None)
 
         self.index_delete(instance)
+
+        # run the instance delete callback again if existing
+        next(delete_callback, None)
 
     def reload(self, instance):
         # run the instance reload callback if existing

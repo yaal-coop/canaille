@@ -150,8 +150,8 @@ class SQLBackend(Backend):
 
     def save(self, instance):
         # run the instance save callback if existing
-        if hasattr(instance, "save"):
-            instance.save()
+        save_callback = instance.save() if hasattr(instance, "save") else iter([])
+        next(save_callback, None)
 
         instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
@@ -162,13 +162,19 @@ class SQLBackend(Backend):
         SQLBackend.instance.db_session.add(instance)
         SQLBackend.instance.db_session.commit()
 
+        # run the instance save callback again if existing
+        next(save_callback, None)
+
     def delete(self, instance):
         # run the instance delete callback if existing
-        if hasattr(instance, "delete"):
-            instance.delete()
+        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
+        next(delete_callback, None)
 
         SQLBackend.instance.db_session.delete(instance)
         SQLBackend.instance.db_session.commit()
+
+        # run the instance delete callback again if existing
+        next(delete_callback, None)
 
     def reload(self, instance):
         # run the instance reload callback if existing
