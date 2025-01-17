@@ -5,11 +5,7 @@ from typing import ClassVar
 
 from blinker import signal
 from flask import current_app
-from httpx import Client as httpx_client
 from pydantic import TypeAdapter
-from scim2_client.engines.httpx import SyncSCIMClient
-from scim2_models import SearchRequest
-from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -302,6 +298,8 @@ class User(Model):
         super().__init__(*args, **kwargs)
         signal("before_user_reload").connect(self.on_reload, sender=self)
 
+        yield
+
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
         return self.password is not None
@@ -469,75 +467,6 @@ class User(Model):
             < datetime.datetime.now(datetime.timezone.utc)
         )
 
-    def propagate_scim_changes(self):
-        for client in self.get_clients():
-            scim_tokens = Backend.instance.query(
-                models.Token, client=client, subject=None
-            )
-            valid_scim_tokens = [
-                token
-                for token in scim_tokens
-                if not token.is_expired() and not token.is_revoked()
-            ]
-            if valid_scim_tokens:
-                scim_token = valid_scim_tokens[0]
-            else:
-                scim_token = models.Token(
-                    token_id=gen_salt(48),
-                    access_token=gen_salt(48),
-                    subject=None,
-                    audience=[client],
-                    client=client,
-                    refresh_token=gen_salt(48),
-                    scope=["openid", "profile"],
-                    issue_date=datetime.datetime.now(datetime.timezone.utc),
-                    lifetime=3600,
-                )
-                Backend.instance.save(scim_token)
-
-            client_httpx = httpx_client(
-                base_url=client.client_uri,
-                headers={"Authorization": f"Bearer {scim_token.access_token}"},
-            )
-            scim = SyncSCIMClient(client_httpx)
-            scim.discover()
-            User = scim.get_resource_model("User")
-            EnterpriseUser = User.get_extension_model("EnterpriseUser")
-            user = user_from_canaille_to_scim_for_client(self, User, EnterpriseUser)
-
-            req = SearchRequest(filter=f'userName eq "{self.user_name}"')
-            response = scim.query(User, search_request=req)
-            if not response.resources:
-                try:
-                    scim.create(user)
-                except Exception:
-                    current_app.logger.warning(
-                        f"SCIM User {self.user_name} creation for client {client.client_name} failed"
-                    )
-            else:
-                user.id = response.resources[0].id
-                try:
-                    scim.replace(user)
-                except:
-                    current_app.logger.warning(
-                        f"SCIM User {self.user_name} update for client {client.client_name} failed"
-                    )
-            req = SearchRequest(filter=f'userName eq "{self.user_name}"')
-            response = scim.query(User, search_request=req)
-
-    def propagate_scim_delete(self):
-        client = httpx_client(
-            base_url="http://localhost:8080",
-            headers={"Authorization": "Bearer MON_SUPER_TOKEN"},
-        )
-        scim = SyncSCIMClient(client)
-        scim.discover()
-        User = scim.get_resource_model("User")
-        try:
-            scim.delete(User, self.scim_id)
-        except:
-            current_app.logger.warning(f"SCIM User {self.user_name} delete failed")
-
     def get_clients(self):
         if self.id:
             consents = Backend.instance.query(models.Consent, subject=self)
@@ -585,8 +514,12 @@ class Group(Model):
     def save(self):
         propagate_group_scim_modification(self, method="save")
 
+        yield
+
     def delete(self):
         propagate_group_scim_modification(self, method="delete")
+
+        yield
 
 
 def string_code(code: int, digit: int) -> str:

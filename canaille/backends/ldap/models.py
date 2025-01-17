@@ -4,7 +4,6 @@ from blinker import signal
 import canaille.core.models
 import canaille.oidc.models
 from canaille.scim.models import propagate_group_scim_modification
-from canaille.scim.models import propagate_user_scim_modification
 
 from .backend import LDAPBackend
 from .ldapobject import LDAPObject
@@ -95,6 +94,9 @@ class User(canaille.core.models.User, LDAPObject):
 
         if "new_groups" in data:
             self.state[data["group_attr"]] = data["new_groups"]
+
+        # run the instance save callback again if existing
+        next(save_callback, None)
 
 
 class Group(canaille.core.models.Group, LDAPObject):

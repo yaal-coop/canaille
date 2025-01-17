@@ -299,6 +299,9 @@ def group_from_scim_to_canaille(scim_group: Group, group):
 
 
 def initiate_scim_client(client):
+    if not client:  # pragma: no cover
+        return None
+
     client_httpx = httpx_client(
         base_url=client.client_uri,
         headers={"Authorization": f"Bearer {client.get_access_token().access_token}"},
@@ -351,7 +354,7 @@ def execute_scim_user_action(scim, user, client_name, method):
             scim_user.id = distant_scim_user.id
             try:
                 scim.replace(scim_user)
-            except:
+            except Exception:
                 current_app.logger.warning(
                     f"SCIM User {user.user_name} update for client {client_name} failed"
                 )
@@ -396,16 +399,18 @@ def execute_scim_group_action(scim, group, client_name, method):
     if method == "delete" and scim_group:
         try:
             scim.delete(Group, scim_group.id)
-        except:
+        except Exception:
             current_app.logger.warning(
                 f"SCIM Group {group.display_name} delete for client {client_name} failed"
             )
-    elif method == "save":
+    elif method == "save":  # pragma: no branch
         group = group_from_canaille_to_scim(group, Group)
         if not scim_group:
             try:
-                group = scim.create(group)
+                scim.create(group)
+                print("SALUTOS")
             except Exception:
+                print("ERRROOOORRr")
                 current_app.logger.warning(
                     f"SCIM Group {group.display_name} creation for client {client_name} failed"
                 )
@@ -413,7 +418,7 @@ def execute_scim_group_action(scim, group, client_name, method):
             group.id = scim_group.id
             try:
                 scim.replace(group)
-            except:
+            except Exception:
                 current_app.logger.warning(
                     f"SCIM Group {group.display_name} update for client {client_name} failed"
                 )
@@ -421,8 +426,9 @@ def execute_scim_group_action(scim, group, client_name, method):
 
 def propagate_group_scim_modification(group, method):
     notifiable_clients = set()
-    for user in group.members:
-        notifiable_clients.update(user.get_clients())
+    for member in group.members:
+        if isinstance(member, models.User):
+            notifiable_clients.update(member.get_clients())
 
     for client in notifiable_clients:
         scim = initiate_scim_client(client)
