@@ -9,6 +9,7 @@ Added
 Changed
 ^^^^^^^
 - Avoid displaying password strength progress bar in login form
+- Mysql extra depends on ``pymysql`` instead of ``mysql-connector``.
 
 [0.0.59] - 2025-01-10
 ---------------------
