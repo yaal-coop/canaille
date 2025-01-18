@@ -360,28 +360,10 @@ It also fits well in continuous integration scenarios. Thanks to its :ref:`CLI <
 Roadmap
 *******
 
-Bêta version
-============
-
-To go out of the current Alpha version we want to achieve the following tasks:
-
-- :issue:`Configuration validation using pydantic <138>`
-
 Stable version
 ==============
 
 Before we push Canaille in stable version we want to achieve the following tasks:
-
-Security
---------
-
-- :issue:`Password hashing configuration <175>`
-- :issue:`Authentication logging policy <177>`
-- :issue:`Intruder lockout <173>`
-- :issue:`Password expiry policy <176>`
-- :issue:`Multi-factor authentication: Email <47>`
-- :issue:`Multi-factor authentication: SMS <47>`
-- :issue:`Multi-factor authentication: OTP <47>`
 
 Packaging
 ---------
