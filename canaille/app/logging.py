@@ -10,7 +10,7 @@ from flask.logging import wsgi_errors_stream
 
 class IPFilter(logging.Filter):
     def filter(self, record):
-        record.ip = request.remote_addr if has_request_context else "unknown"
+        record.ip = request.remote_addr if has_request_context() else ""
         return True
 
 
