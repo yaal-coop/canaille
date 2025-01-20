@@ -1,3 +1,4 @@
+import logging
 import os
 
 import pytest
@@ -316,3 +317,21 @@ def test_smpp_connection_remote_smpp_no_credentials(
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
     validate(config_dict, validate_remote=True)
+
+
+def test_no_secret_key(configuration, caplog):
+    del configuration["SECRET_KEY"]
+
+    from canaille.app.server import app
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Missing 'SECRET_KEY' configuration parameter.",
+    ) in caplog.record_tuples
+
+    testclient = TestApp(app)
+    res = testclient.get("/login")
+    res.mustcontain(
+        "Your Canaille instance is not fully configured and not ready for production."
+    )
