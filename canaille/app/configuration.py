@@ -44,10 +44,10 @@ class RootSettings(BaseSettings):
         case_sensitive=True,
     )
 
-    SECRET_KEY: str
+    SECRET_KEY: str | None = None
     """The Flask :external:py:data:`SECRET_KEY` configuration setting.
 
-    You MUST change this.
+    You MUST set a value before deploying in production.
     """
 
     SERVER_NAME: str | None = None
@@ -169,7 +169,9 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
         app.logger.critical(str(exc))
         return False
 
-    app.config.from_mapping(config_obj.model_dump())
+    config_dict = config_obj.model_dump()
+    app.no_secret_key = config_dict["SECRET_KEY"] is None
+    app.config.from_mapping(config_dict)
 
     if app.debug:
         install(app.config, debug=True)

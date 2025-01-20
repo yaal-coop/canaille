@@ -19,6 +19,8 @@ The main template inherited by almost every other templates.
 :type menu: :class:`bool`
 :param debug: Whether the app has been launched in debug mode.
 :type debug: :class:`bool`
+:param no_secret_key: Whether a :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` has been defined.
+:type no_secret_key: bool
 #}
 {%- import 'macro/flask.html' as flask -%}
 
@@ -41,10 +43,23 @@ The main template inherited by almost every other templates.
     </head>
 
     <body{% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %} hx-boost="true"{% endif %}>
+        {% if no_secret_key %}
+            <div class="ui container attached menu-container">
+                <div class="ui error icon message">
+                    <i class="exclamation circle icon"></i>
+                    <div class="content">
+                        {% trans %}
+                            Your Canaille instance is not fully configured and not ready for production.<br>
+                            Have a look at your server logs and at the <a href="https://canaille.readthedocs.io/en/latest/references/configuration.html">documentation</a> for more details.
+                        {% endtrans %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         {% block menu %}
             {% if menu %}
                 <div class="ui container menu-container">
-                    <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}top attached{% endif %} menu">
+                    <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}{% if not not_secret_key %}top {% endif %}attached{% endif %} menu">
                         {% if logo_url %}
                             <a href="/" class="item logo">
                                 <img class="ui img" src="{{ logo_url }}" alt="{{ website_name }}" />
