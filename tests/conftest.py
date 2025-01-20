@@ -141,6 +141,26 @@ def configuration(smtpd):
                 "LOGIN": "user",
                 "PASSWORD": "user",
             },
+            "LOGGING": {
+                "version": 1,
+                "formatters": {
+                    "default": {
+                        "format": "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s",
+                    }
+                },
+                "handlers": {
+                    "wsgi": {
+                        "class": "logging.StreamHandler",
+                        "stream": "ext://sys.stdout",
+                        "formatter": "default",
+                    }
+                },
+                "loggers": {
+                    "faker": {"level": "WARNING"},
+                    "canaille": {"level": "DEBUG", "handlers": ["wsgi"]},
+                },
+                "disable_existing_loggers": False,
+            },
             "ADMIN_EMAIL": "admin_default_mail@mydomain.test",
             "PASSWORD_COMPROMISSION_CHECK_API_URL": "https://api.pwnedpasswords.test/range/",
         },
