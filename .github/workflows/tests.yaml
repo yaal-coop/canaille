@@ -1,4 +1,6 @@
 ---
+# The runners use ubuntu-22.04, because ubuntu-24.04 on GHA does not have this fix yet:
+# https://bugs.launchpad.net/ubuntu/+source/apparmor/+bug/2079019
 name: tests
 on:
   push:
@@ -12,7 +14,7 @@ on:
 jobs:
   tests:
     name: py${{ matrix.python }} unit tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -46,7 +48,7 @@ jobs:
 
   minversions:
     name: minimum dependency versions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Install uv
@@ -71,7 +73,7 @@ jobs:
           uv run pytest --numprocesses auto
 
   style:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Install uv
@@ -94,7 +96,7 @@ jobs:
           uv run pre-commit run --all-files
 
   doc:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Install uv
