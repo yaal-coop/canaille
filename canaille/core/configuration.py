@@ -209,7 +209,7 @@ class CoreSettings(BaseModel):
     THEME: str | None = None
     """A path to a theme.
 
-    See the :doc:`theming documentation <tutorial/theming>` for more details.
+    See the :doc:`theming documentation </tutorial/theming>` for more details.
     """
 
     LANGUAGE: str | None = None
