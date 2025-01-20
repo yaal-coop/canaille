@@ -64,4 +64,5 @@ def setup_jinja(app):
             "request_is_boosted": request_is_boosted(),
             "request_is_partial": request_is_partial(),
             "features": app.features,
+            "no_secret_key": app.no_secret_key,
         }
