@@ -527,6 +527,11 @@ def generate_access_token(client, grant_type, user, scope):
 
 
 def setup_oauth(app):
+    app.config["OAUTH2_REFRESH_TOKEN_GENERATOR"] = True
+    app.config["OAUTH2_ACCESS_TOKEN_GENERATOR"] = (
+        "canaille.oidc.oauth.generate_access_token"
+    )
+
     # hacky, but needed for tests as somehow the same 'authorization' object is used
     # between tests
     authorization.__init__()
@@ -553,3 +558,4 @@ def setup_oauth(app):
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(ClientRegistrationEndpoint)
     authorization.register_endpoint(ClientConfigurationEndpoint)
+

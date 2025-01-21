@@ -153,8 +153,6 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
     app.config.from_mapping(
         {
             "SESSION_COOKIE_NAME": "canaille",
-            "OAUTH2_REFRESH_TOKEN_GENERATOR": True,
-            "OAUTH2_ACCESS_TOKEN_GENERATOR": "canaille.oidc.oauth.generate_access_token",
         }
     )
     if not config and "CONFIG" in os.environ:
