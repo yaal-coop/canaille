@@ -59,7 +59,7 @@ The main template inherited by almost every other templates.
         {% block menu %}
             {% if menu %}
                 <div class="ui container menu-container">
-                    <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}{% if not not_secret_key %}top {% endif %}attached{% endif %} menu">
+                    <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}{% if not no_secret_key %}top {% endif %}attached{% endif %} menu">
                         {% if logo_url %}
                             <a href="/" class="item logo">
                                 <img class="ui img" src="{{ logo_url }}" alt="{{ website_name }}" />
