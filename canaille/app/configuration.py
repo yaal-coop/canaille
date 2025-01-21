@@ -2,7 +2,6 @@ import importlib.util
 import os
 import smtplib
 import socket
-import sys
 
 from flask import current_app
 from pydantic import ValidationError
@@ -12,6 +11,12 @@ from pydantic_settings import SettingsConfigDict
 
 from canaille.core.configuration import CoreSettings
 
+try:
+    import tomlkit
+
+    HAS_TOMLKIT = True
+except ImportError:
+    HAS_TOMLKIT = False
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -129,24 +134,6 @@ class ConfigurationException(Exception):
     pass
 
 
-def toml_content(file_path):
-    try:
-        if sys.version_info < (3, 11):  # pragma: no cover
-            import toml
-
-            return toml.load(file_path)
-
-        import tomllib
-
-        with open(file_path, "rb") as fd:
-            return tomllib.load(fd)
-
-    except ImportError as exc:
-        raise Exception(
-            "toml library not installed. Cannot load configuration."
-        ) from exc
-
-
 def setup_config(app, config=None, test_config=True, env_file=None, env_prefix=""):
     from canaille.oidc.installation import install
 
@@ -155,19 +142,20 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
             "SESSION_COOKIE_NAME": "canaille",
         }
     )
-    if not config and "CONFIG" in os.environ:
-        config = toml_content(os.environ.get("CONFIG"))
+    if HAS_TOMLKIT and not config and "CONFIG" in os.environ:
+        with open(os.environ.get("CONFIG")) as fd:
+            config = tomlkit.load(fd)
 
     env_file = env_file or os.getenv("ENV_FILE")
     try:
-        config_obj = settings_factory(
+        app.config_obj = settings_factory(
             config or {}, env_file=env_file, env_prefix=env_prefix
         )
     except ValidationError as exc:  # pragma: no cover
         app.logger.critical(str(exc))
         return False
 
-    config_dict = config_obj.model_dump()
+    config_dict = app.config_obj.model_dump()
     app.no_secret_key = config_dict["SECRET_KEY"] is None
     app.config.from_mapping(config_dict)
 
