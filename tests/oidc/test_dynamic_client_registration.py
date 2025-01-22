@@ -204,7 +204,6 @@ def test_client_registration_with_software_statement_no_scope(
             "https://client.example.test/callback2",
         ],
         "software_statement": software_statement,
-        "scope": "",
     }
     res = testclient.post_json("/oauth/register", payload, status=201)
 
@@ -220,7 +219,7 @@ def test_client_registration_with_software_statement_no_scope(
         ],
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
-        "scope": "",
+        "scope": "openid",
         "token_endpoint_auth_method": "client_secret_basic",
         "client_name": "Example Statement-based Client",
         "client_uri": "https://client.example.test/",
