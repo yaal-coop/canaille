@@ -50,6 +50,7 @@ def test_client_registration_with_authentication_static_token(
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
+        "scope": "openid",
     }
 
     assert client.client_name == "My Example Client"
