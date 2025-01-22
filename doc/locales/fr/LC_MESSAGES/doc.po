@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-20 15:18+0100\n"
-"PO-Revision-Date: 2025-01-16 08:00+0000\n"
+"PO-Revision-Date: 2025-01-23 08:02+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 0482caf34246470a9cad38fb5494ec06
-#, fuzzy
-#| msgid "[0.0.58] - Unreleased"
 msgid "[0.0.60] - Unreleased"
-msgstr "[0.0.58] - Inédit"
+msgstr "[0.0.60] - Inédit"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:31 ../../CHANGES.rst:49
 #: ../../CHANGES.rst:82 ../../CHANGES.rst:110 ../../CHANGES.rst:129
@@ -84,16 +82,22 @@ msgstr "Modifié"
 #: ../../CHANGES.rst:11 bb0b1bb963be4ae1943e288e044bde60
 msgid "Avoid displaying password strength progress bar in login form"
 msgstr ""
+"L'indicateur de force de mot de passe n'est plus affiché sur la page de "
+"connexion"
 
 #: ../../CHANGES.rst:12 588f76bac78f447485d274436de16a70
 msgid "Mysql extra depends on ``pymysql`` instead of ``mysql-connector``."
-msgstr ""
+msgstr "L'extra MySQL dépend de ``pymysql`` au lieu de ``mysql-connector``."
 
 #: ../../CHANGES.rst:13 5064e81a1a254f5cae3b89c8d59a263d
 msgid ""
 ":attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` is not mandatory "
 "anymore, but displays warnings when unset. :pr:`221`"
 msgstr ""
+"Le paramètre de configuration "
+":attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` n'est plus "
+"obligatoire, mais affiche des avertissements lorsqu'il est manquant. "
+":pr:`221`"
 
 #: ../../CHANGES.rst:16 1329245bc09c41e790e01b07835c59a9
 msgid "[0.0.59] - 2025-01-10"
@@ -4448,7 +4452,7 @@ msgstr ""
 #: ../../docstring of canaille.app.configuration.RootSettings.SECRET_KEY:3
 #: c8a65dead9084815be7bb01b4d7e10db
 msgid "You MUST set a value before deploying in production."
-msgstr ""
+msgstr "Vous DEVEZ indiquer une valeur avant de déployer en production."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.SERVER_NAME:1
 #: 29d21b789ee2499a81b40546ac5bc867
@@ -4890,13 +4894,15 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.THEME:1
 #: 4199837166354074bc5f9643319b4159
 msgid "A path to a theme."
-msgstr ""
+msgstr "Un chemin vers un thème."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.THEME:3
 #: b0c354c6e1294b42a034ed5a61303a81
 msgid ""
 "See the :doc:`theming documentation </tutorial/theming>` for more details."
 msgstr ""
+"Consultez la :doc:`theming documentation </tutorial/theming>` pour plus de "
+"détails."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.TIMEZONE:1
 #: 503564e13430483fbbdbdf3d3933c331
@@ -4914,29 +4920,18 @@ msgstr "Si non renseigné, le fuseau horaire du serveur sera utilisé."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMTPSettings:1 1032e74cacef4f1d8c4cc5a72c374dc0
-#, fuzzy
-#| msgid ""
-#| "JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace."
 msgid "The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace."
-msgstr ""
-"Paramètres de jeton Web JSON. Appartient à l'espace de nom ``CANAILLE_OIDC."
-"JWT``."
+msgstr "La configuration SMTP. Appartient à l'espace de nom ``CANAILLE.SMTP``."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMTPSettings:3 57a55ca2875c462babb31fd7b4aaa3d4
-#, fuzzy
-#| msgid ""
-#| "The SMTP configuration. Belong in the ``CANAILLE.SMTP`` namespace. If "
-#| "unset, mail related features will be disabled, such as mail verification "
-#| "or password recovery emails."
 msgid ""
 "If unset, mail related features will be disabled, such as mail verification "
 "or password recovery emails."
 msgstr ""
-"La configuration SMTP. Appartient à l'espace de nom ``CANAILLE.SMTP``. SI "
-"non renseigné, les fonctionnalités liées au mail seront désactivées, telles "
-"quel la vérification des adresses email ou bien la réinitialisation des mots "
-"de passe."
+"SI non renseigné, les fonctionnalités liées au mail seront désactivées, "
+"telles quel la vérification des adresses email ou bien la réinitialisation "
+"des mots de passe."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMTPSettings:6 9a813b531406465e94e5348aef282cd0
@@ -4990,17 +4985,11 @@ msgstr "Utiliser ou non TLS pour se connecter au serveur SMTP."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMPPSettings:1 1032e74cacef4f1d8c4cc5a72c374dc0
-#, fuzzy
-#| msgid "Belong in the ``CANAILLE_SQL`` namespace."
 msgid "The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace."
-msgstr "Appartient à l'espace de nom ``CANAILLE_SQL``."
+msgstr "La configuration SMPP. Appartient à l'espace de nom ``CANAILLE.SMPP``."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMPPSettings:3 05a0a772c0964569a863b02e60bb2b60
-#, fuzzy
-#| msgid ""
-#| "If unset, sms-related features like sms one-time passwords won't be "
-#| "enabled."
 msgid ""
 "If not set, sms related features such as sms one-time passwords will be "
 "disabled."
@@ -5597,9 +5586,6 @@ msgstr ""
 
 #: ../../canaille/backends/models.py:docstring of
 #: canaille.backends.models.Model.identifier:1 68b886ca51e94b929e6a81dece535871
-#, fuzzy
-#| msgid ""
-#| "Returns a unique value that will be used to identify the model instance."
 msgid "Return a unique value that will be used to identify the model instance."
 msgstr ""
 "Retourne une valeur unique qui sera utilisée pour identifier l'instance du "
@@ -5644,23 +5630,17 @@ msgstr "Bases : :py:class:`~canaille.backends.models.Model`"
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.Group:1
 #: b65e3b2256384c6f9f111932bf194b3e
-#, fuzzy
-#| msgid "Update models."
 msgid "Group model."
-msgstr "Mise-à-jour des modèles."
+msgstr "Modèle de Groupe."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.Group:3
 #: 1957213a8dd2445ea66f5fa8155fdec7
-#, fuzzy
-#| msgid ""
-#| "User model, based on the `SCIM Group schema <https://datatracker.ietf.org/"
-#| "doc/html/rfc7643#section-4.2>`_."
 msgid ""
 "Based on the `SCIM Group schema <https://datatracker.ietf.org/doc/html/"
 "rfc7643#section-4.2>`_."
 msgstr ""
-"Modèle utilisateur, basé sur le `schéma de Groupe SCIM <https://datatracker."
-"ietf.org/doc/html/rfc7643#section-4.2>`_."
+"Basé sur le `schéma de Groupe SCIM <https://datatracker.ietf.org/doc/html/"
+"rfc7643#section-4.2>`_."
 
 #: ../../docstring of canaille.core.models.Group.display_name:1
 #: 329f754548e54099a1f7ffcbfeab9e77
@@ -5701,22 +5681,11 @@ msgstr ""
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.User:1
 #: c92ace4f4c984172a1ef02862a550b0c
-#, fuzzy
-#| msgid "Update models."
 msgid "User model."
-msgstr "Mise-à-jour des modèles."
+msgstr "Modèle Utilisateur."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.User:3
 #: e70c0af0475547bab48542208e6960ab
-#, fuzzy
-#| msgid ""
-#| "User model, based on the `SCIM User schema <https://datatracker.ietf.org/"
-#| "doc/html/rfc7643#section-4.1>`_, `Entreprise User Schema Extension "
-#| "<https://datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_ and `SCIM "
-#| "Password Management Extension <https://datatracker.ietf.org/doc/html/"
-#| "draft-hunt-scim-password-mgmt-00.html>`_ draft. Attribute description is "
-#| "based on SCIM and put there for information purpose. The description may "
-#| "not fit the current implementation in Canaille."
 msgid ""
 "Based on the `SCIM User schema <https://datatracker.ietf.org/doc/html/"
 "rfc7643#section-4.1>`_, `Entreprise User Schema Extension <https://"
@@ -5726,12 +5695,11 @@ msgid ""
 "put there for information purpose. The description may not fit the current "
 "implementation in Canaille."
 msgstr ""
-"Modèle utilisateurs, basé sur les spécifications`SCIM User schema <https://"
-"datatracker.ietf.org/doc/html/rfc7643#section-4.1>`_, `Entreprise User "
-"Schema Extension <https://datatracker.ietf.org/doc/html/"
-"rfc7643#section-4.3>`_ et le brouillon `SCIM Password Management Extension "
-"<https://datatracker.ietf.org/doc/html/draft-hunt-scim-password-mgmt-00."
-"html>`_."
+"Basé sur les spécifications`SCIM User schema <https://datatracker.ietf.org/"
+"doc/html/rfc7643#section-4.1>`_, `Entreprise User Schema Extension <https://"
+"datatracker.ietf.org/doc/html/rfc7643#section-4.3>`_ et le brouillon `SCIM "
+"Password Management Extension <https://datatracker.ietf.org/doc/html/draft-"
+"hunt-scim-password-mgmt-00.html>`_."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.User.can:1
 #: cb1ff62500f2400f80efb9a83b666257
@@ -6321,28 +6289,20 @@ msgstr "Définition du code temporaire d'autorisation OpenID Connect."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Client:1 5165dd5a43e7441cb556b288dd912159
-#, fuzzy
-#| msgid "OpenID Connect token definition."
 msgid "OpenID Connect client definition."
-msgstr "Définition de jeton OpenID Connect."
+msgstr "Définition de client OpenID Connect."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Client:3 5b28461fe1a648319cb0c397a99b4e53
-#, fuzzy
-#| msgid ""
-#| "OpenID Connect client definition, based on the `OAuth 2.0 Dynamic Client "
-#| "Registration protocols <https://datatracker.ietf.org/doc/html/rfc7591."
-#| "html>`_ and the `OpenID Connect RP-Initiated Logout <https://openid.net/"
-#| "specs/openid-connect-rpinitiated-1_0.html>`_ specifications."
 msgid ""
 "Based on the :rfc:`OAuth 2.0 Dynamic Client Registration protocols <7591>` "
 "and the `OpenID Connect RP-Initiated Logout <https://openid.net/specs/openid-"
 "connect-rpinitiated-1_0.html>`_ specifications."
 msgstr ""
-"Définition du client OpenID Connect, basée sur les protocoles `OAuth 2.0 "
-"Dynamic Client Registration <https://datatracker.ietf.org/doc/html/rfc7591."
-"html>`_ et les spécifications `OpenID Connect RP-Initiated Logout <https://"
-"openid.net/specs/openid-connect-rpinitiated-1_0.html>`_."
+"Basée sur les protocoles `OAuth 2.0 Dynamic Client Registration <https://"
+"datatracker.ietf.org/doc/html/rfc7591.html>`_ et les spécifications `OpenID "
+"Connect RP-Initiated Logout <https://openid.net/specs/openid-connect-"
+"rpinitiated-1_0.html>`_."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_id:3
 #: e0657b683d9647658874cadf0850f835
@@ -7210,16 +7170,12 @@ msgid "Whether the app has been launched in debug mode."
 msgstr "Indique si Canaille a été lancé en mode débogage."
 
 #: ../../<autotemplate>:1 e581946d0e464f889d39a64862451e79
-#, fuzzy
-#| msgid ""
-#| "Whether the page is boosted by :attr:`~canaille.core.configuration."
-#| "CoreSettings.HTMX`."
 msgid ""
 "Whether a :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` has "
 "been defined."
 msgstr ""
-"Indique si les pages sont propulsées par :attr:`~canaille.core.configuration."
-"CoreSettings.HTMX`."
+"Indique si le paramètre "
+":attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` a été défini."
 
 #: ../../<autotemplate>:1 8e94e267a2e24fd086ff86ca5dd2d000
 msgid ""
@@ -8009,12 +7965,13 @@ msgid ""
 "any application server. The WSGI entry-point to configure in your server of "
 "choice is ``canaille:create_app``."
 msgstr ""
+"Cannaille fournit une intégration légère d'Hypercorn, mais vous pouvez "
+"utiliser n'importe quel serveur d'application. Le point d'entrée WSGI à "
+"configurer dans votre serveur est ``canaille:create_app``."
 
 #: ../tutorial/deployment.rst:14 bec6205375dd455fac442a1d77844a9b
-#, fuzzy
-#| msgid "OpenLDAP overlays integration"
 msgid "Hypercorn integration"
-msgstr "Intégration de surcouches (« overlays ») OpenLDAP"
+msgstr "Intégration Hypercorn"
 
 #: ../tutorial/deployment.rst:16 fdb19e2d659949fb97467b14048a5641
 msgid ""
@@ -8023,10 +7980,14 @@ msgid ""
 "will need the ``[server]`` extra (for instance with ``pip install "
 "canaille[server]``."
 msgstr ""
+"Pour exécuter le serveur d'application intégré Hypercorn, vous pouvez "
+"simplement exécuter la commande :ref:`cli_run`. Afin que l'intégration "
+"Hypercorn soit disponible, vous devez installer l'extra ``[server]``(par "
+"exemple avec ``pip install canaile[server]``)."
 
 #: ../tutorial/deployment.rst:19 a145c9be7a4a459599057d4c0f55a8cc
 msgid "Running the Canaille run command"
-msgstr ""
+msgstr "Exécution de la commande ``run``"
 
 #: ../tutorial/deployment.rst:26 5ff4b78ec2294a9392b85f88d4ee445e
 msgid ""
@@ -8036,24 +7997,26 @@ msgid ""
 "configuring>` to adjust it to your needs. You can write a TOML Hypercorn "
 "configuration file and pass it in parameter."
 msgstr ""
+"Par défaut le port `8000` est utilisé sur `localhost`, ce qui pourrait être "
+"suffisant, mais vous pourriez aussi avoir besoin de plus de "
+"personnalisation. Bien heureusement Hypercorn fournit une :doc:`"
+"documentation de configuration <hypercorn:how_to_guides/configuring>` pour "
+"l'ajuster à vos besoins. Vous pouvez écrire un fichier de configuration TOML "
+"et le passer en paramètre de Canaille."
 
 #: ../tutorial/deployment.rst:30 e94fa2c46c4449c9a1cc4d0ab7271426
-#, fuzzy
-#| msgid "You can adapt and load this configuration file with:"
 msgid "Running the Canaille run command with a configuration file"
-msgstr "Vous pouvez adapter et charger ce fichier de configuration avec :"
+msgstr "Exécution de la commande ``run`` avec un fichier de configuration"
 
 #: ../tutorial/deployment.rst:35 5eef65252c51407a97605e1ce71333dc
-#, fuzzy
-#| msgid "Here is a configuration file example:"
 msgid "Here is a basic Hypercorn configuration file that you can tune:"
-msgstr "Voici un exemple de fichier de configuration :"
+msgstr ""
+"Voici un exemple de fichier de configuration Hypercorn que vous pouvez "
+"éditer :"
 
 #: ../tutorial/deployment.rst:37 82934b4c9e8c4ada9337c45654f68b77
-#, fuzzy
-#| msgid "Here is a configuration file example:"
 msgid "Hypercorn toml configuration example"
-msgstr "Voici un exemple de fichier de configuration :"
+msgstr "Exemple de fichier de configuration TOML Hypercorn"
 
 #: ../tutorial/deployment.rst:47 962996fed1da4efca4a4a02feebd33ef
 msgid "Webserver"
@@ -8074,20 +8037,16 @@ msgid "Nginx"
 msgstr "Nginx"
 
 #: ../tutorial/deployment.rst:55 88e080b374de43a383b7eba9c2965280
-#, fuzzy
-#| msgid "Here is a configuration example compatible with canaille:"
 msgid "Nginx configuration example for Canaille"
-msgstr "Voici un exemple de configuration compatible avec canaille :"
+msgstr "Exemple de configuration Nginx pour Canaille"
 
 #: ../tutorial/deployment.rst:123 e2214f07b495472f96579f40c1db65fa
 msgid "Apache"
 msgstr "Apache"
 
 #: ../tutorial/deployment.rst:125 88e080b374de43a383b7eba9c2965280
-#, fuzzy
-#| msgid "Here are configuration examples for Nginx or Apache:"
 msgid "Apache configuration example for Canaille"
-msgstr "Voici des exemples de configuration pour Nginx ou Apache :"
+msgstr "Exemple de configuration Apache pour Canaille"
 
 #: ../tutorial/deployment.rst:163 9cbe3d556cc7426393b232f3d92365fa
 msgid "Recurrent jobs"
@@ -8203,20 +8162,15 @@ msgid "Get the code"
 msgstr "Récupérer le code source"
 
 #: ../tutorial/install.rst:13 3d08ef96a8624845a45354bb4d39476d
-#, fuzzy
-#| msgid ""
-#| "As the moment there is no distribution package for canaille. However, it "
-#| "can be installed with the ``pip`` package manager. Let us choose a place "
-#| "for the canaille environment, like ``/opt/canaille/env``."
 msgid ""
 "As the moment there is no distribution package for canaille. However, it can "
 "be installed with Python package managers such as ``pip``. Let us choose a "
 "place for the canaille environment, like ``/opt/canaille/env``."
 msgstr ""
 "Actuellement, les distributions ne fournissent pas de paquet pour Canaille. "
-"Cependant, il peut être installé avec le gestionnaire de paquet ``pppip``. "
-"Choisissons un endroit pour l'environnement de Canaille, comme ``/opt/"
-"canaille/env``."
+"Cependant, il peut être installé avec des gestionnaires de paquet Python "
+"tels que ``pip``. Choisissons un endroit pour l'environnement de Canaille, "
+"comme ``/opt/canaille/env``."
 
 #: ../tutorial/install.rst:27 7a1b423ba1a84e3b89da2a77f850bae3
 msgid "Extras"
@@ -8274,10 +8228,9 @@ msgid "`sms` provides the dependencies to enable sms sending;"
 msgstr "`sms` fournit les dépendances pour activer l'envoi de SMS ;"
 
 #: ../tutorial/install.rst:40 642c25512c0d49e4882561bf7f5788ed
-#, fuzzy
-#| msgid "`sms` provides the dependencies to enable sms sending;"
 msgid "`server` provides the dependencies to run a production server."
-msgstr "`sms` fournit les dépendances pour activer l'envoi de SMS ;"
+msgstr ""
+"`server` fournit les dépendances pour l'exécution d'un serveur de production."
 
 #: ../tutorial/install.rst:42 29ca33d87d8f46618e3ea5f89c4a63f1
 msgid "They can be installed with:"
