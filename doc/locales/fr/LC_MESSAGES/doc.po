@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-01-23 10:28+0100\n"
-"PO-Revision-Date: 2025-01-23 08:02+0000\n"
+"PO-Revision-Date: 2025-01-24 15:02+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -5030,8 +5030,6 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:10
 #: e662b5f42e8f488ca47ef2885a2e8c85
-#, fuzzy
-#| msgid "Here are some examples::"
 msgid "Here are some examples:"
 msgstr "Voici quelques exemples :"
 
@@ -5185,10 +5183,8 @@ msgstr ""
 
 #: ../../canaille/oidc/configuration.py:docstring of
 #: canaille.oidc.configuration.JWTSettings:3 04bb58dabe1849068f0e8fbbde1b6c8c
-#, fuzzy
-#| msgid "You can generate a RSA keypair with::"
 msgid "You can generate a RSA keypair with:"
-msgstr "Vous pouvez générer un poire de clefs RSA avec :"
+msgstr "Vous pouvez générer un paire de clefs RSA avec :"
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.ALG:1
 #: 29ec28a6230a458885f7b7aa999c8a66
@@ -6214,10 +6210,6 @@ msgstr ""
 
 #: ../../canaille/core/models.py:docstring of
 #: canaille.core.models.string_code:3 97af099fefbe45d6a996d9a721da82c3
-#, fuzzy
-#| msgid ""
-#| "For instance, parameter ``digit=6``, but ``code=123``, this method would "
-#| "return ``000123``::"
 msgid ""
 "For instance, parameter ``digit=6``, but ``code=123``, this method would "
 "return ``000123``:"
