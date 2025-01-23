@@ -115,7 +115,9 @@ def get_factory(model):
 def get_command():
     """Read information about models.
 
-    Options can be used to filter models::
+    Options can be used to filter models:
+
+    .. code-block:: console
 
         canaille get user --given-name John --last-name Doe
 
@@ -177,7 +179,9 @@ def set_factory(model):
 def set_command():
     """Update models.
 
-    The command takes an model ID and edit one or several attributes::
+    The command takes an model ID and edit one or several attributes:
+
+    .. code-block:: console
 
         canaille set user 229d112e-1bb5-452f-b2ac-f7680ffe7fb8 --given-name Jack
 
@@ -230,7 +234,9 @@ def create_factory(model):
 def create_command():
     """Create models.
 
-    The model attributes can be passed as command options::
+    The model attributes can be passed as command options:
+
+    .. code-block:: console
 
         canaille create user --given-name John --last-name Doe
 
@@ -268,7 +274,9 @@ def delete_factory(model):
 def delete_command():
     """Delete models.
 
-    The command takes a model ID and deletes it::
+    The command takes a model ID and deletes it:
+
+    .. code-block:: console
 
         canaille delete user --id 229d112e-1bb5-452f-b2ac-f7680ffe7fb8
     """

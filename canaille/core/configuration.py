@@ -173,7 +173,9 @@ class ACLSettings(BaseModel):
     - a list of those mappings. If a user values match at least one mapping,
       then the user will be part of the access control
 
-    Here are some examples::
+    Here are some examples:
+
+    .. code-block:: rst
 
         FILTER = {user_name = 'admin'}
         FILTER = [

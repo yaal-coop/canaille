@@ -40,7 +40,9 @@ class JWTMappingSettings(BaseModel):
 class JWTSettings(BaseModel):
     """JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace.
 
-    You can generate a RSA keypair with::
+    You can generate a RSA keypair with:
+
+    .. code-block:: console
 
         openssl genrsa -out private.pem 4096
         openssl rsa -in private.pem -pubout -outform PEM -out public.pem

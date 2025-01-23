@@ -544,7 +544,9 @@ def string_code(code: int, digit: int) -> str:
     """Add leading 0 if the code length does not match the defined length.
 
     For instance, parameter ``digit=6``, but ``code=123``, this method would
-    return ``000123``::
+    return ``000123``:
+
+    .. code-block:: python
 
         >>> otp.string_code(123)
         '000123'
