@@ -274,7 +274,7 @@ class CoreSettings(BaseModel):
     """If :py:data:`True`, then users will have to wait for an increasingly
     long time between each failed login attempt."""
 
-    OTP_METHOD: str = None
+    OTP_METHOD: str | None = None
     """If OTP_METHOD is defined, then users will need to authenticate themselves
     using a one-time password (OTP) via an authenticator app.
     If set to ``TOTP``, the application will use time one-time passwords,
