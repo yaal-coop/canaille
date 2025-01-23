@@ -558,4 +558,3 @@ def setup_oauth(app):
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(ClientRegistrationEndpoint)
     authorization.register_endpoint(ClientConfigurationEndpoint)
-

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from pydantic import Field
 
 
 class LDAPSettings(BaseModel):
@@ -7,7 +8,9 @@ class LDAPSettings(BaseModel):
     Belong in the ``CANAILLE_LDAP`` namespace.
     """
 
-    URI: str = "ldap://localhost"
+    URI: str = Field(
+        "ldap://localhost", examples=["ldap://localhost", "ldaps://ldap.mydomain.tld"]
+    )
     """The LDAP server URI."""
 
     ROOT_DN: str = "dc=mydomain,dc=tld"
@@ -22,7 +25,7 @@ class LDAPSettings(BaseModel):
     TIMEOUT: float = 0.0
     """The LDAP connection timeout."""
 
-    USER_BASE: str
+    USER_BASE: str = Field(..., examples=["ou=users,dc=mydomain,dc=tld"])
     """The LDAP node under which users will be looked for and saved.
 
     For instance `ou=users,dc=mydomain,dc=tld`.
@@ -42,7 +45,7 @@ class LDAPSettings(BaseModel):
     containing the value passed in the login field.
     """
 
-    GROUP_BASE: str
+    GROUP_BASE: str = Field(..., examples=["ou=groups,dc=mydomain,dc=tld"])
     """The LDAP node under which groups will be looked for and saved.
 
     For instance `"ou=groups,dc=mydomain,dc=tld"`.

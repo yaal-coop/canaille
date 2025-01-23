@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from pydantic import Field
 
 
 class SQLSettings(BaseModel):
@@ -7,7 +8,13 @@ class SQLSettings(BaseModel):
     Belong in the ``CANAILLE_SQL`` namespace.
     """
 
-    DATABASE_URI: str
+    DATABASE_URI: str = Field(
+        ...,
+        examples=[
+            "sqlite:///canaille.sqlite",
+            "postgresql://user:password@localhost/database_name",
+        ],
+    )
     """The SQL server URI.
     For example:
 
