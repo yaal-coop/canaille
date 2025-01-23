@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-20 15:18+0100\n"
+"POT-Creation-Date: 2025-01-23 10:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3726,28 +3726,6 @@ msgstr ""
 msgid "The ACL name can be freely chosen. For example:"
 msgstr ""
 
-#: ../../docstring of
-#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:4
-#: canaille.core.configuration.ACLSettings.PERMISSIONS:6
-#: canaille.core.configuration.CoreSettings.ACL:5
-#: canaille.core.configuration.CoreSettings.LOGGING:12
-#: 881bf101872546348dd1fbe1e0876ce2 14afae3efc904e2085f73676b352e16f
-#: f269c5d6271a4989a1bcfddeee3ee9c2
-msgid "..code-block:: toml"
-msgstr ""
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.ACL:7
-#: 7df785453bf2449bb5fa56a6eb3f40d2
-msgid ""
-"[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
-"[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
-msgstr ""
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.ACL:12
-#: bb75dcb394b84875a95ea5029a452027
-msgid "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
-msgstr ""
-
 #: ../../docstring of canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1
 #: 753080f7763646d1ad22a17240e53b6c
 msgid "Administration email contact."
@@ -3914,24 +3892,8 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:4
 #: canaille.core.configuration.CoreSettings.LOGGING:10
-#: fb6acd57fe244d02bbd69015275cd69c f33e86db2dc74cd0a98a6d5c0d928e73
+#: fb6acd57fe244d02bbd69015275cd69c
 msgid "For example:"
-msgstr ""
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:14
-#: a5b8c52cf10a429699e2054f42658c17
-msgid ""
-"[CANAILLE.LOGGING] version = 1 formatters.default.format = \"[%(asctime)s] - "
-"$(ip)s - %(levelname)s in %(module)s: %(message)s\" root = {level = "
-"\"INFO\", handlers = [\"canaille\"]}"
-msgstr ""
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:19
-#: 2524ebb40666405b8630a4778d4334fd
-msgid ""
-"[CANAILLE.LOGGING.handlers.canaille] class = \"logging.handlers."
-"WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
-"\"default\""
 msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1
@@ -4214,13 +4176,6 @@ msgid ""
 "manage."
 msgstr ""
 
-#: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:8
-#: 7b7a62237cca42a6bc1cf641951bd872
-msgid ""
-"PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
-"\"delete_account\", \"impersonate_users\"]"
-msgstr ""
-
 #: ../../docstring of canaille.core.configuration.ACLSettings.READ:1
 #: fd894bac29b14289abb8b997d80f2ace
 msgid ""
@@ -4374,7 +4329,7 @@ msgstr ""
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:3
 #: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:3
-#: d65e8c973f9b4574838315b2ac4fbc6b 5a38848e470044cc86d8088acba470ee
+#: d65e8c973f9b4574838315b2ac4fbc6b
 msgid ""
 "If :py:data:`None` and debug mode is enabled, then an in-memory key will be "
 "used."
@@ -4439,12 +4394,6 @@ msgstr ""
 #: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:1
 #: 4536c2d4cb2149eeb579656c7d6fef22
 msgid "The SQL server URI. For example:"
-msgstr ""
-
-#: ../../docstring of
-#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:6
-#: 07d66e79d7df497d85858df1396e191c
-msgid "DATABASE_URI = \"postgresql://user:password@localhost/database_name\""
 msgstr ""
 
 #: ../../docstring of

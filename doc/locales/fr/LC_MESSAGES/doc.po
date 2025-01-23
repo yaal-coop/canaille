@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-01-20 15:18+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-23 10:20+0100\n"
 "PO-Revision-Date: 2025-01-23 08:02+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -94,10 +94,9 @@ msgid ""
 ":attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` is not mandatory "
 "anymore, but displays warnings when unset. :pr:`221`"
 msgstr ""
-"Le paramètre de configuration "
-":attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` n'est plus "
-"obligatoire, mais affiche des avertissements lorsqu'il est manquant. "
-":pr:`221`"
+"Le paramètre de configuration :attr:`~canaille.app.configuration."
+"RootSettings.SECRET_KEY` n'est plus obligatoire, mais affiche des "
+"avertissements lorsqu'il est manquant. :pr:`221`"
 
 #: ../../CHANGES.rst:16 1329245bc09c41e790e01b07835c59a9
 msgid "[0.0.59] - 2025-01-10"
@@ -4492,30 +4491,6 @@ msgstr ""
 msgid "The ACL name can be freely chosen. For example:"
 msgstr "Le nom des ACL peut être choisi librement. Par exemple :"
 
-#: ../../docstring of
-#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:4
-#: canaille.core.configuration.ACLSettings.PERMISSIONS:6
-#: canaille.core.configuration.CoreSettings.ACL:5
-#: canaille.core.configuration.CoreSettings.LOGGING:12
-#: 881bf101872546348dd1fbe1e0876ce2 14afae3efc904e2085f73676b352e16f
-#: f269c5d6271a4989a1bcfddeee3ee9c2
-msgid "..code-block:: toml"
-msgstr "..code-block:: toml"
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.ACL:7
-#: 7df785453bf2449bb5fa56a6eb3f40d2
-msgid ""
-"[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
-"[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
-msgstr ""
-"[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
-"[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.ACL:12
-#: bb75dcb394b84875a95ea5029a452027
-msgid "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
-msgstr "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
-
 #: ../../docstring of canaille.core.configuration.CoreSettings.ADMIN_EMAIL:1
 #: 753080f7763646d1ad22a17240e53b6c
 msgid "Administration email contact."
@@ -4723,31 +4698,9 @@ msgstr ""
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:4
 #: canaille.core.configuration.CoreSettings.LOGGING:10
-#: fb6acd57fe244d02bbd69015275cd69c f33e86db2dc74cd0a98a6d5c0d928e73
+#: fb6acd57fe244d02bbd69015275cd69c
 msgid "For example:"
 msgstr "Par exemple :"
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:14
-#: a5b8c52cf10a429699e2054f42658c17
-msgid ""
-"[CANAILLE.LOGGING] version = 1 formatters.default.format = \"[%(asctime)s] - "
-"$(ip)s - %(levelname)s in %(module)s: %(message)s\" root = {level = "
-"\"INFO\", handlers = [\"canaille\"]}"
-msgstr ""
-"[CANAILLE.LOGGING] version = 1 formatters.default.format = \"[%(asctime)s] - "
-"$(ip)s - %(levelname)s in %(module)s: %(message)s\" root = {level = "
-"\"INFO\", handlers = [\"canaille\"]}"
-
-#: ../../docstring of canaille.core.configuration.CoreSettings.LOGGING:19
-#: 2524ebb40666405b8630a4778d4334fd
-msgid ""
-"[CANAILLE.LOGGING.handlers.canaille] class = \"logging.handlers."
-"WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
-"\"default\""
-msgstr ""
-"[CANAILLE.LOGGING.handlers.canaille] class = \"logging.handlers."
-"WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
-"\"default\""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1
 #: 19233db1937d4d398e9bc82d88b2aeb4
@@ -5089,15 +5042,6 @@ msgstr ""
 "Une liste de def :class:`Permission` utilisateur dans le controle d'accès "
 "seront capables de gérer."
 
-#: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:8
-#: 7b7a62237cca42a6bc1cf641951bd872
-msgid ""
-"PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
-"\"delete_account\", \"impersonate_users\"]"
-msgstr ""
-"PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
-"\"delete_account\", \"impersonate_users\"]"
-
 #: ../../docstring of canaille.core.configuration.ACLSettings.READ:1
 #: fd894bac29b14289abb8b997d80f2ace
 msgid ""
@@ -5269,7 +5213,7 @@ msgstr "La clef privée."
 
 #: ../../docstring of canaille.oidc.configuration.JWTSettings.PRIVATE_KEY:3
 #: canaille.oidc.configuration.JWTSettings.PUBLIC_KEY:3
-#: d65e8c973f9b4574838315b2ac4fbc6b 5a38848e470044cc86d8088acba470ee
+#: d65e8c973f9b4574838315b2ac4fbc6b
 msgid ""
 "If :py:data:`None` and debug mode is enabled, then an in-memory key will be "
 "used."
@@ -5344,14 +5288,6 @@ msgstr ""
 #: 4536c2d4cb2149eeb579656c7d6fef22
 msgid "The SQL server URI. For example:"
 msgstr "URI du serveur SQL. Par exemple :"
-
-#: ../../docstring of
-#: canaille.backends.sql.configuration.SQLSettings.DATABASE_URI:6
-#: 07d66e79d7df497d85858df1396e191c
-msgid "DATABASE_URI = \"postgresql://user:password@localhost/database_name\""
-msgstr ""
-"DATABASE_URI = \"postgresql://utilisateur:motdepasse@localhost/"
-"nom_de_la_BdD\""
 
 #: ../../docstring of
 #: canaille.backends.sql.configuration.SQLSettings.PASSWORD_SCHEMES:1
@@ -7174,8 +7110,8 @@ msgid ""
 "Whether a :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` has "
 "been defined."
 msgstr ""
-"Indique si le paramètre "
-":attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` a été défini."
+"Indique si le paramètre :attr:`~canaille.app.configuration.RootSettings."
+"SECRET_KEY` a été défini."
 
 #: ../../<autotemplate>:1 8e94e267a2e24fd086ff86ca5dd2d000
 msgid ""
@@ -7999,8 +7935,8 @@ msgid ""
 msgstr ""
 "Par défaut le port `8000` est utilisé sur `localhost`, ce qui pourrait être "
 "suffisant, mais vous pourriez aussi avoir besoin de plus de "
-"personnalisation. Bien heureusement Hypercorn fournit une :doc:`"
-"documentation de configuration <hypercorn:how_to_guides/configuring>` pour "
+"personnalisation. Bien heureusement Hypercorn fournit une :doc:"
+"`documentation de configuration <hypercorn:how_to_guides/configuring>` pour "
 "l'ajuster à vos besoins. Vous pouvez écrire un fichier de configuration TOML "
 "et le passer en paramètre de Canaille."
 
@@ -8751,6 +8687,50 @@ msgstr ""
 "Vous êtes fatigué d'utiliser la syntaxe *ldif* pour gérer vos utilisateurs "
 "et groupes, et préférez utiliser une ligne de commande simple et lisible par "
 "les humains."
+
+#~ msgid "..code-block:: toml"
+#~ msgstr "..code-block:: toml"
+
+#~ msgid ""
+#~ "[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
+#~ "[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
+#~ msgstr ""
+#~ "[CANAILLE.ACL.DEFAULT] PERMISSIONS = [\"edit_self\", \"use_oidc\"] READ = "
+#~ "[\"user_name\", \"groups\"] WRITE = [\"given_name\", \"family_name\"]"
+
+#~ msgid "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
+#~ msgstr "[CANAILLE.ACL.ADMIN] WRITE = [\"user_name\", \"groups\"]"
+
+#~ msgid ""
+#~ "[CANAILLE.LOGGING] version = 1 formatters.default.format = "
+#~ "\"[%(asctime)s] - $(ip)s - %(levelname)s in %(module)s: %(message)s\" "
+#~ "root = {level = \"INFO\", handlers = [\"canaille\"]}"
+#~ msgstr ""
+#~ "[CANAILLE.LOGGING] version = 1 formatters.default.format = "
+#~ "\"[%(asctime)s] - $(ip)s - %(levelname)s in %(module)s: %(message)s\" "
+#~ "root = {level = \"INFO\", handlers = [\"canaille\"]}"
+
+#~ msgid ""
+#~ "[CANAILLE.LOGGING.handlers.canaille] class = \"logging.handlers."
+#~ "WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
+#~ "\"default\""
+#~ msgstr ""
+#~ "[CANAILLE.LOGGING.handlers.canaille] class = \"logging.handlers."
+#~ "WatchedFileHandler\" filename = \"/var/log/canaille.log\" formatter = "
+#~ "\"default\""
+
+#~ msgid ""
+#~ "PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
+#~ "\"delete_account\", \"impersonate_users\"]"
+#~ msgstr ""
+#~ "PERMISSIONS = [\"manage_users\", \"manage_groups\", \"manage_oidc\", "
+#~ "\"delete_account\", \"impersonate_users\"]"
+
+#~ msgid ""
+#~ "DATABASE_URI = \"postgresql://user:password@localhost/database_name\""
+#~ msgstr ""
+#~ "DATABASE_URI = \"postgresql://utilisateur:motdepasse@localhost/"
+#~ "nom_de_la_BdD\""
 
 #~ msgid "Bêta version"
 #~ msgstr "Version bêta"
