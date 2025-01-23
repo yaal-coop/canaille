@@ -1,8 +1,10 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import Field
 from pydantic import ValidationInfo
 from pydantic import field_validator
+
+from canaille.app.configuration import BaseModel
 
 
 class SMTPSettings(BaseModel):
@@ -107,7 +109,13 @@ class ACLSettings(BaseModel):
 
     .. code-block:: toml
 
-        PERMISSIONS = ["manage_users", "manage_groups", "manage_oidc", "delete_account", "impersonate_users"]
+        PERMISSIONS = [
+            "manage_users",
+            "manage_groups",
+            "manage_oidc",
+            "delete_account",
+            "impersonate_users",
+        ]
     """
 
     READ: list[str] = [
@@ -294,61 +302,6 @@ class CoreSettings(BaseModel):
     Defaults to 2 days.
     """
 
-    LOGGING: str | dict | None = None
-    """Configures the logging output using the python logging configuration format:
-
-    - If :data:`None`, everything is logged in the standard error output.
-      The log level is :data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration.RootSettings.DEBUG`
-      setting is :py:data:`True`, else this is :py:data:`~logging.INFO`.
-    - If this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`:
-    - If this is a :class:`str`, it is expected to be a file path that will be passed
-      to :func:`logging.config.fileConfig`.
-
-    For example:
-
-    .. code-block:: toml
-
-        [CANAILLE.LOGGING]
-        version = 1
-        formatters.default.format = "[%(asctime)s] - $(ip)s - %(levelname)s in %(module)s: %(message)s"
-        root = {level = "INFO", handlers = ["canaille"]}
-
-        [CANAILLE.LOGGING.handlers.canaille]
-        class = "logging.handlers.WatchedFileHandler"
-        filename = "/var/log/canaille.log"
-        formatter = "default"
-    """
-
-    SMTP: SMTPSettings | None = None
-    """The settings related to SMTP and mail configuration.
-
-    If unset, mail-related features like password recovery won't be
-    enabled.
-    """
-
-    SMPP: SMPPSettings | None = None
-    """The settings related to SMPP configuration.
-
-    If unset, sms-related features like sms one-time passwords won't be
-    enabled.
-    """
-
-    ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
-    """Mapping of permission groups. See :class:`ACLSettings` for more details.
-
-    The ACL name can be freely chosen. For example:
-
-    .. code-block:: toml
-
-        [CANAILLE.ACL.DEFAULT]
-        PERMISSIONS = ["edit_self", "use_oidc"]
-        READ = ["user_name", "groups"]
-        WRITE = ["given_name", "family_name"]
-
-        [CANAILLE.ACL.ADMIN]
-        WRITE = ["user_name", "groups"]
-    """
-
     MIN_PASSWORD_LENGTH: int = 8
     """User password minimum length.
 
@@ -386,4 +339,59 @@ class CoreSettings(BaseModel):
     Users are forced to change their password when the lifetime of the password is over.
     The duration value is expressed in `ISO8601 format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
     For example, delay of 60 days is written "P60D".
+    """
+
+    LOGGING: str | dict | None = None
+    """Configures the logging output using the python logging configuration format:
+
+    - If :data:`None`, everything is logged in the standard error output.
+      The log level is :data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration.RootSettings.DEBUG`
+      setting is :py:data:`True`, else this is :py:data:`~logging.INFO`.
+    - If this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`:
+    - If this is a :class:`str`, it is expected to be a file path that will be passed
+      to :func:`logging.config.fileConfig`.
+
+    For example:
+
+    .. code-block:: toml
+
+        [CANAILLE.LOGGING]
+        version = 1
+        formatters.default.format = "[%(asctime)s] - $(ip)s - %(levelname)s in %(module)s: %(message)s"
+        root = {level = "INFO", handlers = ["canaille"]}
+
+        [CANAILLE.LOGGING.handlers.canaille]
+        class = "logging.handlers.WatchedFileHandler"
+        filename = "/var/log/canaille.log"
+        formatter = "default"
+    """
+
+    SMTP: SMTPSettings | None = Field(None, examples=[SMTPSettings()])
+    """The settings related to SMTP and mail configuration.
+
+    If unset, mail-related features like password recovery won't be
+    enabled.
+    """
+
+    SMPP: SMPPSettings | None = Field(None, examples=[SMPPSettings()])
+    """The settings related to SMPP configuration.
+
+    If unset, sms-related features like sms one-time passwords won't be
+    enabled.
+    """
+
+    ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
+    """Mapping of permission groups. See :class:`ACLSettings` for more details.
+
+    The ACL name can be freely chosen. For example:
+
+    .. code-block:: toml
+
+        [CANAILLE.ACL.DEFAULT]
+        PERMISSIONS = ["edit_self", "use_oidc"]
+        READ = ["user_name", "groups"]
+        WRITE = ["given_name", "family_name"]
+
+        [CANAILLE.ACL.ADMIN]
+        WRITE = ["user_name", "groups"]
     """

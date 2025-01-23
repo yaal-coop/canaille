@@ -29,6 +29,12 @@ For the sake of readability, it is omitted in the following examples.
    :prog: canaille clean
    :nested: full
 
+.. _cli_export_config:
+
+.. click:: canaille.app.commands:export_config
+   :prog: canaille export-config
+   :nested: full
+
 .. _cli_dump:
 
 .. click:: canaille.backends.commands:dump

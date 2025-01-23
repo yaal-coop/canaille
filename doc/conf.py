@@ -9,6 +9,8 @@ from unittest import mock
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath("../canaille"))
 
+from canaille.app.configuration import export_config
+from canaille.app.configuration import settings_factory
 
 # Readthedocs does not support C modules, so
 # we have to mock them.
@@ -197,3 +199,7 @@ screenshot_default_browser = "firefox"
 screenshot_default_viewport_width = 770
 screenshot_default_viewport_height = 1
 screenshot_default_full_page = True
+
+
+config_obj = settings_factory(all_options=True, init_with_examples=True)
+export_config(config_obj, "config.sample.toml")

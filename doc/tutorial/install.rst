@@ -48,15 +48,18 @@ They can be installed with:
 Configure
 =========
 
-Choose a path where to store your configuration file. You can pass any configuration path with the ``CONFIG`` environment variable.
+The :doc:`configuration documentation<../references/configuration>` describe several ways to configure Canaille,
+however the most common is to use a TOML configuration file and pass its path with the :envvar:`CONFIG` environment variable.
+A configuration file with default values can be initialized with the :ref:`export-config <cli_export_config>` command.
 
 .. code-block:: bash
+    :caption: Initialize a configuration file.
 
-    export CANAILLE_CONF_DIR=/etc/canaille
-    sudo mkdir --parents "$CANAILLE_CONF_DIR"
-    sudo cp $CANAILLE_INSTALL_DIR/env/lib/python*/site-packages/canaille/config.sample.toml "$CANAILLE_CONF_DIR/config.toml"
+    export CONFIG=/path/to/my/config.toml
+    canaille export-config
 
-You should then edit your configuration file to adapt the values to your needs. Look at the configuration details in the :doc:`configuration <../references/configuration>` page.
+You can then edit your configuration file and tune its values.
+Have a look at the :ref:`reference <references/configuration:Parameters>` to know the exhaustive list of available parameters.
 
 Install
 =======
