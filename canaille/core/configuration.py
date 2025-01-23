@@ -105,7 +105,7 @@ class ACLSettings(BaseModel):
 
     For example:
 
-    ..code-block:: toml
+    .. code-block:: toml
 
         PERMISSIONS = ["manage_users", "manage_groups", "manage_oidc", "delete_account", "impersonate_users"]
     """
@@ -304,7 +304,7 @@ class CoreSettings(BaseModel):
 
     For example:
 
-    ..code-block:: toml
+    .. code-block:: toml
 
         [CANAILLE.LOGGING]
         version = 1
@@ -336,7 +336,7 @@ class CoreSettings(BaseModel):
 
     The ACL name can be freely chosen. For example:
 
-    ..code-block:: toml
+    .. code-block:: toml
 
         [CANAILLE.ACL.DEFAULT]
         PERMISSIONS = ["edit_self", "use_oidc"]
