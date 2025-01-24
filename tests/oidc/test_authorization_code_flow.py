@@ -445,9 +445,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
         backend.delete(consent)
 
 
-def test_consent_with_openid_scope_only(
-    testclient, logged_user, client, backend
-):
+def test_consent_with_openid_scope_only(testclient, logged_user, client, backend):
     assert not backend.query(models.Consent)
 
     res = testclient.get(
@@ -467,6 +465,23 @@ def test_consent_with_openid_scope_only(
     assert "openid" in consents[0].scope
     for consent in consents:
         backend.delete(consent)
+
+
+def test_consent_with_no_scope(testclient, logged_user, client, backend):
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res.mustcontain("This client has registered with no scope.")
+
+    res.mustcontain(no="Accept")
+
 
 def test_when_consent_already_given_but_for_a_smaller_scope(
     testclient, logged_user, client, backend
