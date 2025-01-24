@@ -88,7 +88,7 @@ class ClientAddForm(Form):
     )
     scope = wtforms.StringField(
         _("Scope"),
-        validators=[wtforms.validators.Optional()],
+        validators=[wtforms.validators.DataRequired()],
         default="openid profile email",
         render_kw={"placeholder": "openid profile"},
     )
