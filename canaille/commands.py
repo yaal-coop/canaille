@@ -1,4 +1,6 @@
 import importlib.metadata
+import multiprocessing
+import sys
 
 import click
 from flask.cli import FlaskGroup
@@ -35,4 +37,9 @@ canaille.oidc.commands.register(cli)
 
 
 if __name__ == "__main__":  # pragma: no cover
+    # Needed by pyinstaller (not just on Windows)
+    # https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        multiprocessing.freeze_support()
+
     cli()

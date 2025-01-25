@@ -235,6 +235,28 @@ Documentation translation
 
 .. include:: ../locales/readme.rst
 
+Build a release
+---------------
+
+Python package
+~~~~~~~~~~~~~~
+
+The Python packaging step is took care of by uv:
+
+   .. code-block:: bash
+
+    uv build
+
+Binary file
+~~~~~~~~~~~
+
+To build a single binary of Canaille, you can use pyinstaller by installing the `release` dependency group:
+
+.. code-block:: bash
+
+    uv sync --group release
+    uv run pyinstaller --name canaille --onefile canaille/commands.py
+
 Publish a new release
 ---------------------
 
@@ -244,9 +266,9 @@ Publish a new release
 4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
 5. Increase the version number in ``pyproject.toml``;
 6. Commit with ``git commit``;
-7. Build with ``uv build``;
-8. Publish on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
+7. :ref:`Build the packages <development/contributing:Build a release>`;
+8. Publish the Python package on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
 9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine;
-10. Publish on production PyPI ``uv publish``;
+10. Publish the Python package on production PyPI ``uv publish``;
 11. Tag the commit with ``git tag XX.YY.ZZ``;
 12. Push the release commit and the new tag on the repository with ``git push --tags``.

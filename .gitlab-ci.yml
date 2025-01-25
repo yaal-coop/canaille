@@ -35,7 +35,7 @@ style:
 
 coverage:
   variables:
-    PYTHON_VERSION: "3.12"
+    PYTHON_VERSION: "3.13"
   image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
   stage: test
   script:
@@ -45,8 +45,19 @@ coverage:
     - uv run coveralls
     - uv cache prune --ci
 
+binary:
+  variables:
+    PYTHON_VERSION: "3.13"
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  stage: test
+  script:
+    - uv sync --all-extras --group release
+    - uv run pyinstaller canaille.spec
+    - ./dist/canaille --version
+    - uv cache prune --ci
+
 tests:
-  needs: ["coverage", "style"]
+  needs: ["coverage", "style", "binary"]
   parallel:
     matrix:
       - PYTHON_VERSION: ['3.10', '3.11', '3.12']

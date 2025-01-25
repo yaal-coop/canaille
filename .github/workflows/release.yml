@@ -1,0 +1,30 @@
+---
+name: release
+on:
+  push:
+    tags:
+      - '*.*.*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - name: Install apt dependencies
+        run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+      - run: |
+          export TZ=UTC
+          uv sync --group release --all-extras --no-dev
+          uv run pyinstaller canaille.spec
+          ./dist/canaille --version
+          uv cache prune --ci
+      - uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            dist/canaille
