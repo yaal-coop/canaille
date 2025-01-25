@@ -1,11 +1,14 @@
 import logging
 import os
+import pathlib
 
 import pytest
 from flask_webtest import TestApp
 
 from canaille import create_app
 from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import export_config
+from canaille.app.configuration import sanitize_rst_text
 from canaille.app.configuration import settings_factory
 from canaille.app.configuration import validate
 
@@ -335,3 +338,72 @@ def test_no_secret_key(configuration, caplog):
     res.mustcontain(
         "Your Canaille instance is not fully configured and not ready for production."
     )
+
+
+def test_sanitize_rst():
+    assert sanitize_rst_text("``somevar``") == "somevar"
+    assert sanitize_rst_text(":class:`~canaille.core.models.User`") == "User"
+    assert sanitize_rst_text(":data:`None`") == "None"
+    assert sanitize_rst_text(":py:data:`None`") == "None"
+    assert (
+        sanitize_rst_text("`Yaal Coop <https://yaal.coop>`_")
+        == "Yaal Coop (https://yaal.coop)"
+    )
+
+    assert (
+        sanitize_rst_text(""".. code-block:: python
+
+    var = "value"
+""")
+        == '    var = "value"\n'
+    )
+    assert (
+        sanitize_rst_text(""".. danger::
+
+    foobar
+""")
+        == "    foobar\n"
+    )
+
+
+def test_export_current_config(configuration, tmp_path):
+    """Check the configuration TOML export with the current app configuration."""
+    toml_export = tmp_path / "config.toml"
+
+    configuration["SECRET_KEY"] = "very-secret"
+    configuration["CANAILLE"]["SMTP"]["PORT"] = 25
+
+    config_obj = settings_factory(
+        configuration, all_options=True, init_with_examples=True
+    )
+    export_config(config_obj, toml_export)
+
+    toml_expected = (
+        pathlib.Path(__file__).parent / "fixtures" / "current-app-config.toml"
+    )
+
+    with open(toml_export) as fd:
+        actual_content = fd.read()
+
+    with open(toml_expected) as fd:
+        expected_content = fd.read()
+
+    assert actual_content == expected_content
+
+
+def test_export_default_config(tmp_path):
+    """Check the configuration TOML export with the default configuration."""
+    toml_export = tmp_path / "config.toml"
+
+    config_obj = settings_factory(all_options=True, init_with_examples=True)
+    export_config(config_obj, toml_export)
+
+    toml_expected = pathlib.Path(__file__).parent / "fixtures" / "default-config.toml"
+
+    with open(toml_export) as fd:
+        actual_content = fd.read()
+
+    with open(toml_expected) as fd:
+        expected_content = fd.read()
+
+    assert actual_content == expected_content

@@ -4,7 +4,7 @@ import sys
 from urllib.parse import urlparse
 from wsgiref.simple_server import WSGIRequestHandler
 
-from canaille.app.configuration import toml_content
+import tomlkit
 
 sys.path.insert(0, os.path.abspath(".."))
 from demo.demoapp import create_app
@@ -16,7 +16,8 @@ def create_doc_app(sphinx_app):
     conf_path = (
         pathlib.Path(__file__).parent.parent / "demo" / "conf" / "canaille-memory.toml"
     )
-    conf = toml_content(str(conf_path))
+    with open(conf_path) as fd:
+        conf = dict(tomlkit.load(fd))
     conf["CANAILLE"]["SECRET_KEY"] = "doc"
     conf["CANAILLE"]["SMTP"] = {"HOST": "localhost"}
     conf["CANAILLE"]["LANGUAGE"] = sphinx_app.config["language"]

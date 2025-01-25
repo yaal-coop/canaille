@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from pydantic import Field
+
+from canaille.app.configuration import BaseModel
 
 
 class LDAPSettings(BaseModel):

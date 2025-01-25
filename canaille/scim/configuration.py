@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from canaille.app.configuration import BaseModel
 
 
 class SCIMSettings(BaseModel):

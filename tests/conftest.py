@@ -105,10 +105,10 @@ def configuration(smtpd):
                     "FILTER": [{"user_name": "admin"}, {"family_name": "admin"}],
                     "PERMISSIONS": [
                         "manage_users",
+                        "manage_groups",
                         "manage_oidc",
                         "delete_account",
                         "impersonate_users",
-                        "manage_groups",
                     ],
                     "WRITE": [
                         "groups",

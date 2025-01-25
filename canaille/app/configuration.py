@@ -1,18 +1,31 @@
 import importlib.util
 import os
+import re
 import smtplib
 import socket
-import sys
+import textwrap
 
 from flask import current_app
+from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ValidationError
 from pydantic import create_model
+from pydantic_core import PydanticUndefined
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 
-from canaille.core.configuration import CoreSettings
+try:
+    import tomlkit
 
+    HAS_TOMLKIT = True
+except ImportError:
+    HAS_TOMLKIT = False
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+class BaseModel(PydanticBaseModel):
+    model_config = SettingsConfigDict(
+        use_attribute_docstrings=True,
+    )
 
 
 class RootSettings(BaseSettings):
@@ -42,6 +55,7 @@ class RootSettings(BaseSettings):
         extra="allow",
         env_nested_delimiter="__",
         case_sensitive=True,
+        use_attribute_docstrings=True,
     )
 
     SECRET_KEY: str | None = None
@@ -75,41 +89,64 @@ class RootSettings(BaseSettings):
     """
 
 
-def settings_factory(config, env_file=None, env_prefix=""):
+def settings_factory(
+    config=None,
+    env_file=None,
+    env_prefix="",
+    all_options=False,
+    init_with_examples=False,
+):
     """Push the backend specific configuration into CoreSettings.
 
     In the purpose to break dependency against backends libraries like python-ldap or
     sqlalchemy.
     """
-    attributes = {"CANAILLE": (CoreSettings, CoreSettings())}
+    from canaille.core.configuration import CoreSettings
 
-    if "CANAILLE_SQL" in config or any(
-        var.startswith("CANAILLE_SQL__") for var in os.environ
+    config = config or {}
+
+    default = example_settings(CoreSettings) if init_with_examples else CoreSettings()
+    attributes = {"CANAILLE": (CoreSettings, default)}
+
+    if (
+        all_options
+        or "CANAILLE_SQL" in config
+        or any(var.startswith("CANAILLE_SQL__") for var in os.environ)
     ):
         from canaille.backends.sql.configuration import SQLSettings
 
-        attributes["CANAILLE_SQL"] = ((SQLSettings | None), None)
+        default = example_settings(SQLSettings) if init_with_examples else None
+        attributes["CANAILLE_SQL"] = ((SQLSettings | None), default)
 
-    if "CANAILLE_LDAP" in config or any(
-        var.startswith("CANAILLE_LDAP__") for var in os.environ
+    if (
+        all_options
+        or "CANAILLE_LDAP" in config
+        or any(var.startswith("CANAILLE_LDAP__") for var in os.environ)
     ):
         from canaille.backends.ldap.configuration import LDAPSettings
 
-        attributes["CANAILLE_LDAP"] = ((LDAPSettings | None), None)
+        default = example_settings(LDAPSettings) if init_with_examples else None
+        attributes["CANAILLE_LDAP"] = ((LDAPSettings | None), default)
 
-    if "CANAILLE_OIDC" in config or any(
-        var.startswith("CANAILLE_OIDC__") for var in os.environ
+    if (
+        all_options
+        or "CANAILLE_OIDC" in config
+        or any(var.startswith("CANAILLE_OIDC__") for var in os.environ)
     ):
         from canaille.oidc.configuration import OIDCSettings
 
-        attributes["CANAILLE_OIDC"] = ((OIDCSettings | None), None)
+        default = example_settings(OIDCSettings) if init_with_examples else None
+        attributes["CANAILLE_OIDC"] = ((OIDCSettings | None), default)
 
-    if "CANAILLE_SCIM" in config or any(
-        var.startswith("CANAILLE_SCIM__") for var in os.environ
+    if (
+        all_options
+        or "CANAILLE_SCIM" in config
+        or any(var.startswith("CANAILLE_SCIM__") for var in os.environ)
     ):
         from canaille.scim.configuration import SCIMSettings
 
-        attributes["CANAILLE_SCIM"] = ((SCIMSettings | None), None)
+        default = example_settings(SCIMSettings) if init_with_examples else None
+        attributes["CANAILLE_SCIM"] = ((SCIMSettings | None), default)
 
     Settings = create_model(
         "Settings",
@@ -129,24 +166,6 @@ class ConfigurationException(Exception):
     pass
 
 
-def toml_content(file_path):
-    try:
-        if sys.version_info < (3, 11):  # pragma: no cover
-            import toml
-
-            return toml.load(file_path)
-
-        import tomllib
-
-        with open(file_path, "rb") as fd:
-            return tomllib.load(fd)
-
-    except ImportError as exc:
-        raise Exception(
-            "toml library not installed. Cannot load configuration."
-        ) from exc
-
-
 def setup_config(app, config=None, test_config=True, env_file=None, env_prefix=""):
     from canaille.oidc.installation import install
 
@@ -155,8 +174,9 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
             "SESSION_COOKIE_NAME": "canaille",
         }
     )
-    if not config and "CONFIG" in os.environ:
-        config = toml_content(os.environ.get("CONFIG"))
+    if HAS_TOMLKIT and not config and "CONFIG" in os.environ:
+        with open(os.environ.get("CONFIG")) as fd:
+            config = tomlkit.load(fd)
 
     env_file = env_file or os.getenv("ENV_FILE")
     try:
@@ -301,3 +321,143 @@ def validate_otp_config(config):
         raise ConfigurationException(
             "Cannot activate sms one-time password authentication without SMPP"
         )
+
+
+def sanitize_rst_text(text: str) -> str:
+    """Remove inline RST syntax."""
+    # Replace :foo:`~bar.Baz` with Baz
+    text = re.sub(r":[\w:-]+:`~[\w\.]+\.(\w+)`", r"\1", text)
+
+    # Replace :foo:`bar` and :foo:`bar <anything> with bar`
+    text = re.sub(r":[\w:-]+:`([^`<]+)(?: <[^`>]+>)?`", r"\1", text)
+
+    # Replace `label <URL>`_ with label (URL)
+    text = re.sub(r"`([^`<]+) <([^`>]+)>`_", r"\1 (\2)", text)
+
+    # Replace ``foo`` with `foo`
+    text = re.sub(r"``([^`]+)``", r"\1", text)
+
+    # Remove RST directives
+    text = re.sub(r"\.\. [\w-]+::( \w+)?\n\n", "", text)
+
+    return text
+
+
+def sanitize_comments(text: str, line_length: int) -> str:
+    """Remove RST syntax and wrap the docstring so it displays well as TOML comments."""
+
+    def is_code_block(text: str) -> bool:
+        return all(line.startswith("    ") for line in text.splitlines())
+
+    def is_list(text: str) -> bool:
+        return all(
+            line.startswith("-") or line.startswith("  ") for line in text.splitlines()
+        )
+
+    text = sanitize_rst_text(text)
+    paragraphs = text.split("\n\n")
+    paragraphs = [
+        textwrap.fill(paragraph, width=line_length)
+        if not is_code_block(paragraph) and not is_list(paragraph)
+        else paragraph
+        for paragraph in paragraphs
+    ]
+    text = "\n\n".join(paragraphs)
+    return text
+
+
+def export_object_to_toml(
+    obj,
+    with_comments: bool = True,
+    with_defaults: bool = True,
+    line_length: int = 80,
+):
+    """Create a tomlkit document from an object."""
+
+    def is_complex(obj) -> bool:
+        return isinstance(obj, list | dict | BaseModel | BaseSettings)
+
+    if isinstance(obj, BaseModel | BaseSettings):
+        doc = tomlkit.document() if isinstance(obj, BaseSettings) else tomlkit.table()
+        for field_name, field_info in obj.model_fields.items():
+            field_value = getattr(obj, field_name)
+            display_value = field_value is not None and (
+                isinstance(field_value, BaseModel | BaseSettings)
+                or field_value != field_info.default
+            )
+            display_comments = with_comments and field_info.description
+            display_default_value = (
+                with_defaults
+                and not is_complex(field_info.default)
+                and not is_complex(field_value)
+            )
+
+            if display_comments and (display_default_value or display_value):
+                sanitized = sanitize_comments(field_info.description, line_length)
+                for line in sanitized.splitlines():
+                    doc.add(tomlkit.comment(line))
+
+            if display_default_value:
+                parsed = (
+                    tomlkit.item(field_info.default).as_string()
+                    if field_info.default is not None
+                    and field_info.default is not PydanticUndefined
+                    else ""
+                )
+                doc.add(tomlkit.comment(f"{field_name} = {parsed}".strip()))
+
+            sub_value = export_object_to_toml(field_value)
+            if display_value:
+                doc.add(field_name, sub_value)
+            doc.add(tomlkit.nl())
+        return doc
+
+    elif isinstance(obj, list):
+        max_inline_items = 4
+        is_multiline = len(obj) > max_inline_items or all(
+            is_complex(item) for item in obj
+        )
+        doc = tomlkit.array().multiline(is_multiline)
+
+        for item in obj:
+            sub_value = export_object_to_toml(item)
+            doc.append(sub_value)
+        return doc
+
+    elif isinstance(obj, dict):
+        inline = all(not is_complex(item) for item in obj.values())
+        doc = tomlkit.inline_table() if inline else tomlkit.table()
+        for key, value in obj.items():
+            sub_value = export_object_to_toml(value)
+            doc.add(key, sub_value)
+        return doc
+
+    else:
+        return obj
+
+
+def export_config(model: BaseSettings, filename: str):
+    doc = export_object_to_toml(model)
+    content = tomlkit.dumps(doc)
+
+    # Remove end-of-line spaces
+    content = re.sub(r" +\n", "\n", content)
+
+    # Remove multiple new-lines
+    content = re.sub(r"\n\n+", "\n\n", content)
+
+    # Remove end-of-file new-line
+    content = re.sub(r"\n+\Z", "\n", content)
+
+    with open(filename, "w") as fd:
+        fd.write(content)
+
+
+def example_settings(model: type[BaseModel]) -> type[BaseModel]:
+    """Init a pydantic BaseModel with values passed as Field 'examples'."""
+    data = {
+        field_name: field_info.examples[0]
+        for field_name, field_info in model.model_fields.items()
+        if field_info.examples
+    }
+    return model.model_validate(data)

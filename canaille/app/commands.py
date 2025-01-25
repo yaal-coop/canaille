@@ -1,5 +1,7 @@
 import functools
+import os
 import sys
+from pathlib import Path
 
 import click
 from flask import current_app
@@ -68,6 +70,28 @@ def install():
         sys.exit(1)
 
 
+@click.command()
+@with_appcontext
+@click.option(
+    "--path", default=None, type=click.Path(), help="The path to the config file"
+)
+def export_config(path: Path | None):
+    """Export the configuration in TOML format.
+
+    The configuration is exported to the file path passed by ``--path`` if set,
+    or the :envvar:`CONFIG` environment variable if set, or a ``config.toml``
+    file in the current directory.
+    """
+    from canaille.app.configuration import export_config
+    from canaille.app.configuration import settings_factory
+
+    config_obj = settings_factory(
+        current_app.config, all_options=True, init_with_examples=True
+    )
+    config_file = path or os.getenv("CONFIG", "config.toml")
+    export_config(config_obj, config_file)
+
+
 if HAS_HYPERCORN:  # pragma: no cover
 
     @click.command()
@@ -95,5 +119,6 @@ if HAS_HYPERCORN:  # pragma: no cover
 def register(cli):
     cli.add_command(check)
     cli.add_command(install)
+    cli.add_command(export_config)
     if HAS_HYPERCORN:  # pragma: no branch
         cli.add_command(run)

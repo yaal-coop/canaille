@@ -44,7 +44,7 @@ front = [
     "flask-themer >= 2.0.0",
     "pycountry >= 23.12.7",
     "pytz >= 2022.7",
-    "toml >= 0.10.0",
+    "tomlkit>=0.13.2",
     "zxcvbn-rs-py >= 0.2.0",
 ]
 
@@ -127,7 +127,6 @@ dev = [
     "scim2-tester>=0.1.7",
     "slapd >= 0.1.5",
     "time-machine >= 2.14.1",
-    "toml >= 0.10.0",
     "tox-uv >= 1.16.0",
     # Babel 2.14 does not directly depend on setuptools
     # https://github.com/python-babel/babel/blob/40e60a1f6cf178d9f57fcc14f157ea1b2ab77361/CHANGES.rst?plain=1#L22-L24
@@ -137,6 +136,7 @@ dev = [
 ]
 doc = [
     "autodoc-pydantic >= 2.0.1",
+    "jinja-autodoc>=0.1.2",
     # used to compute sphinx uuids
     # https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-gettext_uuid
     "levenshtein>=0.26.1",
@@ -147,7 +147,7 @@ doc = [
     "sphinx-issues >= 5.0.0",
     "sphinx-click >= 6.0.0",
     "sphinx-intl>=2.3.0",
-    "jinja-autodoc>=0.1.2",
+    "tomlkit>=0.13.2",
 ]
 demo = [
     "faker",

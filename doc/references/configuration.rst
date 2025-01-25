@@ -93,8 +93,8 @@ Parameters
 Example file
 ============
 
-Here is a configuration file example:
+Here is a configuration file example that can be generated with the :ref:`canaille export-config <cli_export_config>` command:
 
-.. literalinclude :: ../../canaille/config.sample.toml
+.. literalinclude :: ../config.toml
    :language: toml
    :caption: config.toml
