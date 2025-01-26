@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.59\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-26 00:16+0100\n"
+"POT-Creation-Date: 2025-01-26 12:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2303,7 +2303,7 @@ msgstr ""
 msgid "Build a release"
 msgstr ""
 
-#: ../tutorial/install.rst:36
+#: ../tutorial/install.rst:49
 #: ../../CONTRIBUTING.rst:242
 #: 4c7facdc3f7b4a7f92435879c50b73db
 #: f7e9fad62c1e4981804cc83541c7671d
@@ -6667,134 +6667,129 @@ msgstr ""
 msgid "Deployment"
 msgstr ""
 
-#: ../tutorial/deployment.rst:5
+#: ../tutorial/deployment.rst:4
+#: de82825935d0464f87b538b185ce867e
+msgid "This page details what to install on your server to make a production-ready environment for Canaille."
+msgstr ""
+
+#: ../tutorial/deployment.rst:7
 #: aa98bb204ddc4cf8b97ed5a318e44437
 msgid "Application service"
 msgstr ""
 
-#: ../tutorial/deployment.rst:7
+#: ../tutorial/deployment.rst:9
 #: 64b0cf5ef3654a4ca08eede0339ce8ca
-msgid "After having finished Canaille installation you have to run it in a WSGI application server. Several application servers are available, like `Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
+msgid "After having finished Canaille :doc:`installation <install>` you have to run it in a WSGI application server. Several application servers are available, like `Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
 msgstr ""
 
-#: ../tutorial/deployment.rst:10
+#: ../tutorial/deployment.rst:12
 #: 44f3f154ee524010b682f9cc6ba56511
 msgid "Canaille comes with a light Hypercorn integration but you can use it with any application server. The WSGI entry-point to configure in your server of choice is ``canaille:create_app``."
 msgstr ""
 
-#: ../tutorial/deployment.rst:14
+#: ../tutorial/deployment.rst:16
 #: 21ec276d1b4b46d3ae0bb247785c020e
 msgid "Hypercorn integration"
 msgstr ""
 
-#: ../tutorial/deployment.rst:16
+#: ../tutorial/deployment.rst:18
 #: d5d997440e84499d90d9d10db082e9fa
-msgid "To run the integrated Hypercorn application server, you can simply run the :ref:`cli_run` command. For the hypercorn integration to be available, you will need the ``[server]`` extra (for instance with ``pip install canaille[server]``."
+msgid "To run the integrated Hypercorn application server, you can simply run the :ref:`cli_run` command. The hypercorn integration is embedded in the Canaille binaries. However if you use the Canaille Python package, you will need the ``[server]`` extra (for instance with ``pip install canaille[server]`` for Hypercorn to be available."
 msgstr ""
 
-#: ../tutorial/deployment.rst:19
+#: ../tutorial/deployment.rst:22
 #: b7eda0515c574daf836f4b35404679dd
 msgid "Running the Canaille run command"
 msgstr ""
 
-#: ../tutorial/deployment.rst:26
+#: ../tutorial/deployment.rst:29
 #: 9839de6380a946138d53adc855a20f76
 msgid "By default it runs on the port `8000` of localhost, this could be enough but you might want to customize it a little bit more. Fortunately Hypercorn provides a :doc:`configuration documentation <hypercorn:how_to_guides/configuring>` to adjust it to your needs. You can write a TOML Hypercorn configuration file and pass it in parameter."
 msgstr ""
 
-#: ../tutorial/deployment.rst:30
+#: ../tutorial/deployment.rst:33
 #: d1400e44f7924445bf1cb8f928e9bfbe
 msgid "Running the Canaille run command with a configuration file"
 msgstr ""
 
-#: ../tutorial/deployment.rst:35
+#: ../tutorial/deployment.rst:38
 #: 23a4fe451e234eaba0df197b7ecb18ea
 msgid "Here is a basic Hypercorn configuration file that you can tune:"
 msgstr ""
 
-#: ../tutorial/deployment.rst:37
+#: ../tutorial/deployment.rst:40
 #: 0ca2b82e32b644f6911d07cde2a266fe
 msgid "Hypercorn toml configuration example"
 msgstr ""
 
-#: ../tutorial/deployment.rst:47
+#: ../tutorial/deployment.rst:50
 #: 359916d2dd014c3a94887f1c02a1be69
 msgid "Webserver"
 msgstr ""
 
-#: ../tutorial/deployment.rst:49
+#: ../tutorial/deployment.rst:52
 #: d2e0a52d279e439ea758ef96069b2ec9
 msgid "Now you have to plug your WSGI application server to your webserver so it is accessible on the internet. Here are some webserver configuration examples you can pick:"
 msgstr ""
 
-#: ../tutorial/deployment.rst:53
+#: ../tutorial/deployment.rst:56
 #: 71e3fa008cac4484a1604fdb994d802c
 msgid "Nginx"
 msgstr ""
 
-#: ../tutorial/deployment.rst:55
+#: ../tutorial/deployment.rst:58
 #: b670a74ba2af4b79af030e18a2244ec3
 msgid "Nginx configuration example for Canaille"
 msgstr ""
 
-#: ../tutorial/deployment.rst:123
+#: ../tutorial/deployment.rst:126
 #: dad03d2880da4c1281ca3740d42908a0
 msgid "Apache"
 msgstr ""
 
-#: ../tutorial/deployment.rst:125
+#: ../tutorial/deployment.rst:128
 #: 09fe7ea93aad420c97b6c5779c9d9bae
 msgid "Apache configuration example for Canaille"
 msgstr ""
 
-#: ../tutorial/deployment.rst:163
+#: ../tutorial/deployment.rst:166
 #: c199ebcd13a7461bb864b44f60449553
 msgid "Recurrent jobs"
 msgstr ""
 
-#: ../tutorial/deployment.rst:165
+#: ../tutorial/deployment.rst:168
 #: 6ac851414c3e468ea383a3b3d84b0109
 msgid "You might want to clean up your database to avoid it growing too much. You can regularly delete expired tokens and authorization codes with:"
 msgstr ""
 
-#: ../tutorial/deployment.rst:174
+#: ../tutorial/deployment.rst:177
 #: 5b6f2d8fa56049b9a245f4fe57c50b78
 msgid "Webfinger"
 msgstr ""
 
-#: ../tutorial/deployment.rst:176
+#: ../tutorial/deployment.rst:179
 #: bc883e0a5aa04c9b833a5aa0a22faaa6
 msgid "You may want to configure a `WebFinger`_ endpoint on your main website to allow the automatic discovery of your Canaille installation based on the account name of one of your users. For instance, suppose your domain is ``mydomain.example`` and your Canaille domain is ``auth.mydomain.example`` and there is a user ``john.doe``. A third-party application could require to authenticate the user and ask them for a user account. The user would give their account ``john.doe@mydomain.example``, then the application would perform a WebFinger request at ``https://mydomain.example/.well-known/webfinger`` and the response would contain the address of the authentication server ``https://auth.mydomain.example``. With this information the third party application can redirect the user to the Canaille authentication page."
 msgstr ""
 
-#: ../tutorial/deployment.rst:178
+#: ../tutorial/deployment.rst:181
 #: bb65fc4920234c1d9f704c10ed621b38
 msgid "The difficulty here is that the WebFinger endpoint must be hosted at the top-level domain (i.e. ``mydomain.example``) while the authentication server might be hosted on a sublevel (i.e. ``auth.mydomain.example``). Canaille provides a WebFinger endpoint, but if it is not hosted at the top-level domain, a web redirection is required on the ``/.well-known/webfinger`` path."
 msgstr ""
 
-#: ../tutorial/deployment.rst:180
+#: ../tutorial/deployment.rst:183
 #: f13a3328672b4eef91b90c48bf3b0fc4
 msgid "Here are configuration examples for Nginx or Apache:"
 msgstr ""
 
-#: ../tutorial/deployment.rst:182
+#: ../tutorial/deployment.rst:185
 #: 8f02f89531464f118693c2f6ecc019e4
 msgid "Nginx webfinger configuration for a top level domain"
 msgstr ""
 
-#: ../tutorial/deployment.rst:191
+#: ../tutorial/deployment.rst:194
 #: 8efa00ba7379447991bdc076483b86f3
 msgid "Apache webfinger configuration for a top level domain"
-msgstr ""
-
-#: ../tutorial/deployment.rst:201
-#: b06abc7942b547af86d9bc18a8c0df0a
-msgid "Create the first user"
-msgstr ""
-
-#: ../tutorial/deployment.rst:203
-#: f621698c82534cf8ae5d5ac5c66acd03
-msgid "Once canaille is installed, soon enough you will need to add users. To create your first user you can use the :ref:`canaille create <cli_create>` CLI."
 msgstr ""
 
 #: ../tutorial/index.rst:2
@@ -6808,168 +6803,183 @@ msgid "Installation"
 msgstr ""
 
 #: ../tutorial/install.rst:4
-#: 464f25c7c7ba4d1580f97f63dd17d5ef
-msgid "The installation of canaille consist in several steps, some of which you can do manually or with command line tools:"
+#: 11b48f7fcecf4275adaa48840f4e3cac
+msgid "This page describes how to get and set-up Canaille."
 msgstr ""
 
-#: ../tutorial/install.rst:7
+#: ../tutorial/install.rst:6
+#: 4029a8ed97d040aabd33f370edbf72db
+msgid "*I have no time, spare me the details !*"
+msgstr ""
+
+#: ../tutorial/install.rst:20
 #: e403dd5817594e70bd556f2fbdaaa4a0
 msgid "Get the code"
 msgstr ""
 
-#: ../tutorial/install.rst:10
+#: ../tutorial/install.rst:23
 #: cc01dbe9a55641a4a69ad0682f902224
 msgid "Binaries"
 msgstr ""
 
-#: ../tutorial/install.rst:12
+#: ../tutorial/install.rst:25
 #: b5da438311a4490e9a067410b712fe46
 msgid "Canaille provides a ready-to-use single file executable for Linux. The binary installation is the easiest way to get a production-ready Canaille release, though this is not the most customizable. This is generally the recommended method to use Canaille in production."
 msgstr ""
 
-#: ../tutorial/install.rst:23
+#: ../tutorial/install.rst:36
 #: 8b420431aa774f26ab33447f739e045e
 msgid "Canaille binaries comes with lesser performances than other installation methods on startup. This is generally not an issue, since Canaille is used as a long-running service, but if this is important for you, you might want to choose another installation method."
 msgstr ""
 
-#: ../tutorial/install.rst:28
+#: ../tutorial/install.rst:41
 #: 7e44046739a7494b85e53635680ef232
 msgid "Linux packages"
 msgstr ""
 
-#: ../tutorial/install.rst:30
+#: ../tutorial/install.rst:43
 #: 2a3a1a09f6864996a9e248a8cdac015d
 msgid "At the moment, only NixOS provides a `Canaille package <Canaille_NixOS>`_. For other distros, you must use a different way to install Canaille."
 msgstr ""
 
-#: ../tutorial/install.rst:38
+#: ../tutorial/install.rst:51
 #: 13ce34f760384b47a0813bfb6c580a9b
 msgid "Canaille provides a `Python package <Canaille_PyPI>`_ that you can install with package managers like ``uv`` or ``pip``. This is the recommended method if you want fast CLI performances, if you need to customize the dependencies, or if you want to use Canaille in a development environment."
 msgstr ""
 
-#: ../tutorial/install.rst:41
+#: ../tutorial/install.rst:54
 #: 85f17405754745069639109aec55b43d
 msgid "In the following example, we use a custom virtualenv to install Canaille. Note that you should customize the ``EXTRAS`` packages, depending on your needs."
 msgstr ""
 
-#: ../tutorial/install.rst:44
+#: ../tutorial/install.rst:57
 #: 9efaa0b138a0486ab8b758b00d8307d3
 msgid "Canaille installation using a Python virtualenv"
 msgstr ""
 
-#: ../tutorial/install.rst:57
+#: ../tutorial/install.rst:70
 #: 018bee5ee8924df99594d0de720c0171
 msgid "In the rest of the documentation, we consider that your virtualenv is activated, and that the ``canaille`` command is available."
 msgstr ""
 
-#: ../tutorial/install.rst:61
+#: ../tutorial/install.rst:74
 #: 47e5df43b1d947548a402af2136a0418
 msgid "Extras"
 msgstr ""
 
-#: ../tutorial/install.rst:63
+#: ../tutorial/install.rst:76
 #: 4d4bf6f5c7114953acd3bd0e5d7c9779
 msgid "Canaille provides different package options:"
 msgstr ""
 
-#: ../tutorial/install.rst:65
+#: ../tutorial/install.rst:78
 #: f4a78e6da110474f8fff3b30e437194e
 msgid "`front` provides all the things needed to produce the user interface;"
 msgstr ""
 
-#: ../tutorial/install.rst:66
+#: ../tutorial/install.rst:79
 #: 4a8b8c6458454f74aabf3c7c8c9a5b59
 msgid "`oidc` provides the dependencies to perform OAuth2/OIDC authentication;"
 msgstr ""
 
-#: ../tutorial/install.rst:67
+#: ../tutorial/install.rst:80
 #: 17d0d5ea517b49dea50e4b2f7f416a30
 msgid "`ldap` provides the dependencies to enable the LDAP backend;"
 msgstr ""
 
-#: ../tutorial/install.rst:68
+#: ../tutorial/install.rst:81
 #: a61309e7082145dc82322d9ef0b92363
 msgid "`sqlite` provides the dependencies to enable the SQLite backend;"
 msgstr ""
 
-#: ../tutorial/install.rst:69
+#: ../tutorial/install.rst:82
 #: 0ecee8fba5d04223af3a059f56606908
 msgid "`postgresql` provides the dependencies to enable the PostgreSQL backend;"
 msgstr ""
 
-#: ../tutorial/install.rst:70
+#: ../tutorial/install.rst:83
 #: 34abe8b8a0974a72971e50638ff8517e
 msgid "`mysql` provides the dependencies to enable the MySQL backend;"
 msgstr ""
 
-#: ../tutorial/install.rst:71
+#: ../tutorial/install.rst:84
 #: e25cc189f3164424b91993aff41a4132
 msgid "`sentry` provides sentry integration to watch Canaille exceptions;"
 msgstr ""
 
-#: ../tutorial/install.rst:72
+#: ../tutorial/install.rst:85
 #: efd222133d4c4ae6be3b9b1fa1fa1468
 msgid "`otp` provides the dependencies to enable one-time password authentication;"
 msgstr ""
 
-#: ../tutorial/install.rst:73
+#: ../tutorial/install.rst:86
 #: 552acd79d186478185733b8237110cd1
 msgid "`sms` provides the dependencies to enable sms sending;"
 msgstr ""
 
-#: ../tutorial/install.rst:74
+#: ../tutorial/install.rst:87
 #: 4e42b21b5ef448afbb2d1723ebd498ea
 msgid "`server` provides the dependencies to run a production server."
 msgstr ""
 
-#: ../tutorial/install.rst:76
+#: ../tutorial/install.rst:89
 #: d6027880c43d4a9eb8cd78395c178a99
 msgid "They can be installed with:"
 msgstr ""
 
-#: ../tutorial/install.rst:83
+#: ../tutorial/install.rst:96
 #: 9ea85ec5b3af4c878779884556fb989f
 msgid "Configure"
 msgstr ""
 
-#: ../tutorial/install.rst:85
+#: ../tutorial/install.rst:98
 #: 8fa50b64fb404b7ca96726cb87aca39a
 msgid "The :doc:`configuration documentation<../references/configuration>` describe several ways to configure Canaille, however the most common is to use a TOML configuration file and pass its path with the :envvar:`CONFIG` environment variable. A configuration file with default values can be initialized with the :ref:`export-config <cli_export_config>` command."
 msgstr ""
 
-#: ../tutorial/install.rst:89
+#: ../tutorial/install.rst:102
 #: 1513e2cc4065497dbfd92d1f9b920774
 msgid "Initialize a configuration file."
 msgstr ""
 
-#: ../tutorial/install.rst:95
+#: ../tutorial/install.rst:108
 #: dfae411e71c347ebaaf30f34af410d71
 msgid "You can then edit your configuration file and tune its values. Have a look at the :ref:`reference <references/configuration:Parameters>` to know the exhaustive list of available parameters."
 msgstr ""
 
-#: ../tutorial/install.rst:100
+#: ../tutorial/install.rst:113
 #: 3cfdba669533427aad6a648d6b060244
 msgid "In the rest of the documentation, we consider that your Canaille instance is configured by one of the available methods (either with a :envvar:`CONFIG` environment var, either with ``.env`` files etc.)."
 msgstr ""
 
-#: ../tutorial/install.rst:103
+#: ../tutorial/install.rst:116
 #: 054e4bf3b4c9465284097d7500d3228b
 msgid "Install"
 msgstr ""
 
-#: ../tutorial/install.rst:105
+#: ../tutorial/install.rst:118
 #: beae74bf4f154a32a619fe571bc05331
 msgid "The :ref:`install command <cli_install>` will apply most of the things needed to get Canaille working. Depending on the configured :doc:`database <databases>` it will create the SQL tables, or install the LDAP schemas for instance."
 msgstr ""
 
-#: ../tutorial/install.rst:113
+#: ../tutorial/install.rst:126
 #: 61683cab735149cba1e75c814eb21ab2
 msgid "Check"
 msgstr ""
 
-#: ../tutorial/install.rst:115
+#: ../tutorial/install.rst:128
 #: a3ac73ceacfd4b1094eddddc3c6db17a
 msgid "After a manual installation, you can check your configuration file using the :ref:`check command <cli_install>`:"
+msgstr ""
+
+#: ../tutorial/install.rst:135
+#: 1ee2a32a0cd342b8abb212d6cfe4cb4d
+msgid "Create the first user"
+msgstr ""
+
+#: ../tutorial/install.rst:137
+#: 15d31e7c0ac74a139bf75b1f0b1a298d
+msgid "Once canaille is installed, soon enough you will need to add users. To create your first user you can use the :ref:`canaille create <cli_create>` CLI."
 msgstr ""
 
 #: ../tutorial/provisioning.rst:2

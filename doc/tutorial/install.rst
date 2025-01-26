@@ -1,7 +1,20 @@
 Installation
 ############
 
-The installation of canaille consist in several steps, some of which you can do manually or with command line tools:
+This page describes how to get and set-up Canaille.
+
+*I have no time, spare me the details !*
+
+.. parsed-literal::
+
+   wget https://github.com/yaal-coop/canaille/releases/download/\ |version|\ /canaille -o canaille
+   chmod +x canaille
+   export CONFIG=/path/to/my/config.toml
+   canaille export-config
+   $EDITOR $CONFIG
+   canaille install
+   canaille check
+   canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol
 
 Get the code
 ============
@@ -117,3 +130,18 @@ After a manual installation, you can check your configuration file using the :re
 .. code-block:: bash
 
     canaille check
+
+Create the first user
+=====================
+
+Once canaille is installed, soon enough you will need to add users.
+To create your first user you can use the :ref:`canaille create <cli_create>` CLI.
+
+.. code-block:: bash
+
+   canaille create user \
+       --user-name admin \
+       --password admin \
+       --emails admin@mydomain.example \
+       --given-name George \
+       --family-name Abitbol

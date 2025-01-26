@@ -1,10 +1,12 @@
 Deployment
 ##########
 
+This page details what to install on your server to make a production-ready environment for Canaille.
+
 Application service
 ===================
 
-After having finished Canaille installation you have to run it in a WSGI application server.
+After having finished Canaille :doc:`installation <install>` you have to run it in a WSGI application server.
 Several application servers are available, like `Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example.
 
 Canaille comes with a light Hypercorn integration but you can use it with any application server.
@@ -14,7 +16,8 @@ Hypercorn integration
 ---------------------
 
 To run the integrated Hypercorn application server, you can simply run the :ref:`cli_run` command.
-For the hypercorn integration to be available, you will need the ``[server]`` extra (for instance with ``pip install canaille[server]``.
+The hypercorn integration is embedded in the Canaille binaries.
+However if you use the Canaille Python package, you will need the ``[server]`` extra (for instance with ``pip install canaille[server]`` for Hypercorn to be available.
 
 .. code-block:: console
    :caption: Running the Canaille run command
@@ -196,16 +199,6 @@ Here are configuration examples for Nginx or Apache:
         RewriteEngine on
         RewriteRule "^/.well-know/webfinger" "https://auth.mydomain.example/.well-known/webfinger" [R,L]
     </VirtualHost>
-
-Create the first user
-=====================
-
-Once canaille is installed, soon enough you will need to add users.
-To create your first user you can use the :ref:`canaille create <cli_create>` CLI.
-
-.. code-block:: bash
-
-   canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol
 
 .. _WebFinger: https://www.rfc-editor.org/rfc/rfc7033.html
 .. _Gunicorn: https://gunicorn.org
