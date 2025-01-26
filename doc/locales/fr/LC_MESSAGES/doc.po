@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-26 00:16+0100\n"
+"POT-Creation-Date: 2025-01-26 12:01+0100\n"
 "PO-Revision-Date: 2025-01-24 15:02+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -2340,7 +2340,7 @@ msgstr "Construire la documentation dans une autre langue"
 msgid "Build a release"
 msgstr "Publier une nouvelle version"
 
-#: ../tutorial/install.rst:36 ../../CONTRIBUTING.rst:242
+#: ../tutorial/install.rst:49 ../../CONTRIBUTING.rst:242
 #: 4c7facdc3f7b4a7f92435879c50b73db f7e9fad62c1e4981804cc83541c7671d
 #, fuzzy
 #| msgid "Python"
@@ -8087,22 +8087,33 @@ msgstr ""
 msgid "Deployment"
 msgstr "Déploiement"
 
-#: ../tutorial/deployment.rst:5 aa98bb204ddc4cf8b97ed5a318e44437
+#: ../tutorial/deployment.rst:4 de82825935d0464f87b538b185ce867e
+msgid ""
+"This page details what to install on your server to make a production-ready "
+"environment for Canaille."
+msgstr ""
+
+#: ../tutorial/deployment.rst:7 aa98bb204ddc4cf8b97ed5a318e44437
 msgid "Application service"
 msgstr "Serveur d’application"
 
-#: ../tutorial/deployment.rst:7 64b0cf5ef3654a4ca08eede0339ce8ca
+#: ../tutorial/deployment.rst:9 64b0cf5ef3654a4ca08eede0339ce8ca
+#, fuzzy
+#| msgid ""
+#| "After having finished Canaille installation you have to run it in a WSGI "
+#| "application server. Several application servers are available, like "
+#| "`Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
 msgid ""
-"After having finished Canaille installation you have to run it in a WSGI "
-"application server. Several application servers are available, like "
-"`Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
+"After having finished Canaille :doc:`installation <install>` you have to run "
+"it in a WSGI application server. Several application servers are available, "
+"like `Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
 msgstr ""
 "Après avoir fini l'installation de Canaille, vous devez l'exécuter dans un "
 "serveur d'application WSGI. Il existe de nombreux serveurs d'applications "
 "que vous pouvez utiliser avec Canaille, comme `Gunicorn`_, `uWSGI`_, "
 "`uvicorn`_ ou `Hypercorn`_ par exemple."
 
-#: ../tutorial/deployment.rst:10 44f3f154ee524010b682f9cc6ba56511
+#: ../tutorial/deployment.rst:12 44f3f154ee524010b682f9cc6ba56511
 msgid ""
 "Canaille comes with a light Hypercorn integration but you can use it with "
 "any application server. The WSGI entry-point to configure in your server of "
@@ -8112,27 +8123,34 @@ msgstr ""
 "utiliser n'importe quel serveur d'application. Le point d'entrée WSGI à "
 "configurer dans votre serveur est ``canaille:create_app``."
 
-#: ../tutorial/deployment.rst:14 21ec276d1b4b46d3ae0bb247785c020e
+#: ../tutorial/deployment.rst:16 21ec276d1b4b46d3ae0bb247785c020e
 msgid "Hypercorn integration"
 msgstr "Intégration Hypercorn"
 
-#: ../tutorial/deployment.rst:16 d5d997440e84499d90d9d10db082e9fa
+#: ../tutorial/deployment.rst:18 d5d997440e84499d90d9d10db082e9fa
+#, fuzzy
+#| msgid ""
+#| "To run the integrated Hypercorn application server, you can simply run "
+#| "the :ref:`cli_run` command. For the hypercorn integration to be "
+#| "available, you will need the ``[server]`` extra (for instance with ``pip "
+#| "install canaille[server]``."
 msgid ""
 "To run the integrated Hypercorn application server, you can simply run the :"
-"ref:`cli_run` command. For the hypercorn integration to be available, you "
-"will need the ``[server]`` extra (for instance with ``pip install "
-"canaille[server]``."
+"ref:`cli_run` command. The hypercorn integration is embedded in the Canaille "
+"binaries. However if you use the Canaille Python package, you will need the "
+"``[server]`` extra (for instance with ``pip install canaille[server]`` for "
+"Hypercorn to be available."
 msgstr ""
 "Pour exécuter le serveur d'application intégré Hypercorn, vous pouvez "
 "simplement exécuter la commande :ref:`cli_run`. Afin que l'intégration "
 "Hypercorn soit disponible, vous devez installer l'extra ``[server]``(par "
 "exemple avec ``pip install canaile[server]``)."
 
-#: ../tutorial/deployment.rst:19 b7eda0515c574daf836f4b35404679dd
+#: ../tutorial/deployment.rst:22 b7eda0515c574daf836f4b35404679dd
 msgid "Running the Canaille run command"
 msgstr "Exécution de la commande ``run``"
 
-#: ../tutorial/deployment.rst:26 9839de6380a946138d53adc855a20f76
+#: ../tutorial/deployment.rst:29 9839de6380a946138d53adc855a20f76
 msgid ""
 "By default it runs on the port `8000` of localhost, this could be enough but "
 "you might want to customize it a little bit more. Fortunately Hypercorn "
@@ -8147,25 +8165,25 @@ msgstr ""
 "l'ajuster à vos besoins. Vous pouvez écrire un fichier de configuration TOML "
 "et le passer en paramètre de Canaille."
 
-#: ../tutorial/deployment.rst:30 d1400e44f7924445bf1cb8f928e9bfbe
+#: ../tutorial/deployment.rst:33 d1400e44f7924445bf1cb8f928e9bfbe
 msgid "Running the Canaille run command with a configuration file"
 msgstr "Exécution de la commande ``run`` avec un fichier de configuration"
 
-#: ../tutorial/deployment.rst:35 23a4fe451e234eaba0df197b7ecb18ea
+#: ../tutorial/deployment.rst:38 23a4fe451e234eaba0df197b7ecb18ea
 msgid "Here is a basic Hypercorn configuration file that you can tune:"
 msgstr ""
 "Voici un exemple de fichier de configuration Hypercorn que vous pouvez "
 "éditer :"
 
-#: ../tutorial/deployment.rst:37 0ca2b82e32b644f6911d07cde2a266fe
+#: ../tutorial/deployment.rst:40 0ca2b82e32b644f6911d07cde2a266fe
 msgid "Hypercorn toml configuration example"
 msgstr "Exemple de fichier de configuration TOML Hypercorn"
 
-#: ../tutorial/deployment.rst:47 359916d2dd014c3a94887f1c02a1be69
+#: ../tutorial/deployment.rst:50 359916d2dd014c3a94887f1c02a1be69
 msgid "Webserver"
 msgstr "Serveur web"
 
-#: ../tutorial/deployment.rst:49 d2e0a52d279e439ea758ef96069b2ec9
+#: ../tutorial/deployment.rst:52 d2e0a52d279e439ea758ef96069b2ec9
 msgid ""
 "Now you have to plug your WSGI application server to your webserver so it is "
 "accessible on the internet. Here are some webserver configuration examples "
@@ -8175,27 +8193,27 @@ msgstr ""
 "serveur web pour qu'il soit accessible sur internet. Voici quelques exemples "
 "de configuration de serveur web que vous pouvez utiliser :"
 
-#: ../tutorial/deployment.rst:53 71e3fa008cac4484a1604fdb994d802c
+#: ../tutorial/deployment.rst:56 71e3fa008cac4484a1604fdb994d802c
 msgid "Nginx"
 msgstr "Nginx"
 
-#: ../tutorial/deployment.rst:55 b670a74ba2af4b79af030e18a2244ec3
+#: ../tutorial/deployment.rst:58 b670a74ba2af4b79af030e18a2244ec3
 msgid "Nginx configuration example for Canaille"
 msgstr "Exemple de configuration Nginx pour Canaille"
 
-#: ../tutorial/deployment.rst:123 dad03d2880da4c1281ca3740d42908a0
+#: ../tutorial/deployment.rst:126 dad03d2880da4c1281ca3740d42908a0
 msgid "Apache"
 msgstr "Apache"
 
-#: ../tutorial/deployment.rst:125 09fe7ea93aad420c97b6c5779c9d9bae
+#: ../tutorial/deployment.rst:128 09fe7ea93aad420c97b6c5779c9d9bae
 msgid "Apache configuration example for Canaille"
 msgstr "Exemple de configuration Apache pour Canaille"
 
-#: ../tutorial/deployment.rst:163 c199ebcd13a7461bb864b44f60449553
+#: ../tutorial/deployment.rst:166 c199ebcd13a7461bb864b44f60449553
 msgid "Recurrent jobs"
 msgstr "Tâches récurrentes"
 
-#: ../tutorial/deployment.rst:165 6ac851414c3e468ea383a3b3d84b0109
+#: ../tutorial/deployment.rst:168 6ac851414c3e468ea383a3b3d84b0109
 msgid ""
 "You might want to clean up your database to avoid it growing too much. You "
 "can regularly delete expired tokens and authorization codes with:"
@@ -8204,11 +8222,11 @@ msgstr ""
 "croissance. Vous pouvez supprimer régulièrement les jetons expirés et les "
 "code d'autorisation avec :"
 
-#: ../tutorial/deployment.rst:174 5b6f2d8fa56049b9a245f4fe57c50b78
+#: ../tutorial/deployment.rst:177 5b6f2d8fa56049b9a245f4fe57c50b78
 msgid "Webfinger"
 msgstr "Webfinger"
 
-#: ../tutorial/deployment.rst:176 bc883e0a5aa04c9b833a5aa0a22faaa6
+#: ../tutorial/deployment.rst:179 bc883e0a5aa04c9b833a5aa0a22faaa6
 msgid ""
 "You may want to configure a `WebFinger`_ endpoint on your main website to "
 "allow the automatic discovery of your Canaille installation based on the "
@@ -8235,7 +8253,7 @@ msgstr ""
 "auth.mydomain.example``. Avec cette information, l'application tierce "
 "pourrait rediriger l'utilisateur vers la page d'authentification Canaille."
 
-#: ../tutorial/deployment.rst:178 bb65fc4920234c1d9f704c10ed621b38
+#: ../tutorial/deployment.rst:181 bb65fc4920234c1d9f704c10ed621b38
 msgid ""
 "The difficulty here is that the WebFinger endpoint must be hosted at the top-"
 "level domain (i.e. ``mydomain.example``) while the authentication server "
@@ -8250,31 +8268,17 @@ msgstr ""
 "pas hébergé sur le domaine de plus haut niveau, une redirection est "
 "obligatoire sur le chemin ``/.well-known/webfinger``."
 
-#: ../tutorial/deployment.rst:180 f13a3328672b4eef91b90c48bf3b0fc4
+#: ../tutorial/deployment.rst:183 f13a3328672b4eef91b90c48bf3b0fc4
 msgid "Here are configuration examples for Nginx or Apache:"
 msgstr "Voici des exemples de configuration pour Nginx ou Apache :"
 
-#: ../tutorial/deployment.rst:182 8f02f89531464f118693c2f6ecc019e4
+#: ../tutorial/deployment.rst:185 8f02f89531464f118693c2f6ecc019e4
 msgid "Nginx webfinger configuration for a top level domain"
 msgstr "Configuration webfinger Nginx pour le domaine de plus haut niveau"
 
-#: ../tutorial/deployment.rst:191 8efa00ba7379447991bdc076483b86f3
+#: ../tutorial/deployment.rst:194 8efa00ba7379447991bdc076483b86f3
 msgid "Apache webfinger configuration for a top level domain"
 msgstr "Configuration webfinger Apache pour le domaine de plus haut niveau"
-
-#: ../tutorial/deployment.rst:201 b06abc7942b547af86d9bc18a8c0df0a
-msgid "Create the first user"
-msgstr "Créer le premier utilisateur"
-
-#: ../tutorial/deployment.rst:203 f621698c82534cf8ae5d5ac5c66acd03
-msgid ""
-"Once canaille is installed, soon enough you will need to add users. To "
-"create your first user you can use the :ref:`canaille create <cli_create>` "
-"CLI."
-msgstr ""
-"Une fois Canaille installé, vous allez assez rapidement avoir besoin "
-"d'ajouter des utilisateurs. Pour créer votre premier utilisateur, vous "
-"pouvez utiliser la ligne de commande :ref:`canaille create <cli_create>`."
 
 #: ../tutorial/index.rst:2 dd9ad343824c4482866da7b6fe9ccfae
 msgid "Tutorial"
@@ -8284,27 +8288,23 @@ msgstr "Tutoriel"
 msgid "Installation"
 msgstr "Installation"
 
-#: ../tutorial/install.rst:4 464f25c7c7ba4d1580f97f63dd17d5ef
-#, fuzzy
-#| msgid ""
-#| "The installation of canaille consist in several steps, some of which you "
-#| "can do manually or with command line tool:"
-msgid ""
-"The installation of canaille consist in several steps, some of which you can "
-"do manually or with command line tools:"
+#: ../tutorial/install.rst:4 11b48f7fcecf4275adaa48840f4e3cac
+msgid "This page describes how to get and set-up Canaille."
 msgstr ""
-"L'installation de Canaille consiste en plusieurs étapes, certaines sont "
-"faisables manuellement ou l'outil en ligne de commande :"
 
-#: ../tutorial/install.rst:7 e403dd5817594e70bd556f2fbdaaa4a0
+#: ../tutorial/install.rst:6 4029a8ed97d040aabd33f370edbf72db
+msgid "*I have no time, spare me the details !*"
+msgstr ""
+
+#: ../tutorial/install.rst:20 e403dd5817594e70bd556f2fbdaaa4a0
 msgid "Get the code"
 msgstr "Récupérer le code source"
 
-#: ../tutorial/install.rst:10 cc01dbe9a55641a4a69ad0682f902224
+#: ../tutorial/install.rst:23 cc01dbe9a55641a4a69ad0682f902224
 msgid "Binaries"
 msgstr ""
 
-#: ../tutorial/install.rst:12 b5da438311a4490e9a067410b712fe46
+#: ../tutorial/install.rst:25 b5da438311a4490e9a067410b712fe46
 msgid ""
 "Canaille provides a ready-to-use single file executable for Linux. The "
 "binary installation is the easiest way to get a production-ready Canaille "
@@ -8312,7 +8312,7 @@ msgid ""
 "recommended method to use Canaille in production."
 msgstr ""
 
-#: ../tutorial/install.rst:23 8b420431aa774f26ab33447f739e045e
+#: ../tutorial/install.rst:36 8b420431aa774f26ab33447f739e045e
 msgid ""
 "Canaille binaries comes with lesser performances than other installation "
 "methods on startup. This is generally not an issue, since Canaille is used "
@@ -8320,17 +8320,17 @@ msgid ""
 "to choose another installation method."
 msgstr ""
 
-#: ../tutorial/install.rst:28 7e44046739a7494b85e53635680ef232
+#: ../tutorial/install.rst:41 7e44046739a7494b85e53635680ef232
 msgid "Linux packages"
 msgstr ""
 
-#: ../tutorial/install.rst:30 2a3a1a09f6864996a9e248a8cdac015d
+#: ../tutorial/install.rst:43 2a3a1a09f6864996a9e248a8cdac015d
 msgid ""
 "At the moment, only NixOS provides a `Canaille package <Canaille_NixOS>`_. "
 "For other distros, you must use a different way to install Canaille."
 msgstr ""
 
-#: ../tutorial/install.rst:38 13ce34f760384b47a0813bfb6c580a9b
+#: ../tutorial/install.rst:51 13ce34f760384b47a0813bfb6c580a9b
 msgid ""
 "Canaille provides a `Python package <Canaille_PyPI>`_ that you can install "
 "with package managers like ``uv`` or ``pip``. This is the recommended method "
@@ -8338,92 +8338,92 @@ msgid ""
 "dependencies, or if you want to use Canaille in a development environment."
 msgstr ""
 
-#: ../tutorial/install.rst:41 85f17405754745069639109aec55b43d
+#: ../tutorial/install.rst:54 85f17405754745069639109aec55b43d
 msgid ""
 "In the following example, we use a custom virtualenv to install Canaille. "
 "Note that you should customize the ``EXTRAS`` packages, depending on your "
 "needs."
 msgstr ""
 
-#: ../tutorial/install.rst:44 9efaa0b138a0486ab8b758b00d8307d3
+#: ../tutorial/install.rst:57 9efaa0b138a0486ab8b758b00d8307d3
 msgid "Canaille installation using a Python virtualenv"
 msgstr ""
 
-#: ../tutorial/install.rst:57 018bee5ee8924df99594d0de720c0171
+#: ../tutorial/install.rst:70 018bee5ee8924df99594d0de720c0171
 msgid ""
 "In the rest of the documentation, we consider that your virtualenv is "
 "activated, and that the ``canaille`` command is available."
 msgstr ""
 
-#: ../tutorial/install.rst:61 47e5df43b1d947548a402af2136a0418
+#: ../tutorial/install.rst:74 47e5df43b1d947548a402af2136a0418
 msgid "Extras"
 msgstr "Extras"
 
-#: ../tutorial/install.rst:63 4d4bf6f5c7114953acd3bd0e5d7c9779
+#: ../tutorial/install.rst:76 4d4bf6f5c7114953acd3bd0e5d7c9779
 msgid "Canaille provides different package options:"
 msgstr "Canaille fournit différentes options de paquet :"
 
-#: ../tutorial/install.rst:65 f4a78e6da110474f8fff3b30e437194e
+#: ../tutorial/install.rst:78 f4a78e6da110474f8fff3b30e437194e
 msgid "`front` provides all the things needed to produce the user interface;"
 msgstr ""
 "`front` fournit tous les éléments nécessaires pour produire l'interface "
 "utilisateur ;"
 
-#: ../tutorial/install.rst:66 4a8b8c6458454f74aabf3c7c8c9a5b59
+#: ../tutorial/install.rst:79 4a8b8c6458454f74aabf3c7c8c9a5b59
 msgid "`oidc` provides the dependencies to perform OAuth2/OIDC authentication;"
 msgstr ""
 "`oidc` fournit les dépendances pour exécuter une authentification OAuth2/"
 "OIDC ;"
 
-#: ../tutorial/install.rst:67 17d0d5ea517b49dea50e4b2f7f416a30
+#: ../tutorial/install.rst:80 17d0d5ea517b49dea50e4b2f7f416a30
 msgid "`ldap` provides the dependencies to enable the LDAP backend;"
 msgstr "`ldap` fournit les dépendances pour activer le backend LDAP ;"
 
-#: ../tutorial/install.rst:68 a61309e7082145dc82322d9ef0b92363
+#: ../tutorial/install.rst:81 a61309e7082145dc82322d9ef0b92363
 msgid "`sqlite` provides the dependencies to enable the SQLite backend;"
 msgstr "`sqlite` fournit les dépendances pour activer le backend SQLite ;"
 
-#: ../tutorial/install.rst:69 0ecee8fba5d04223af3a059f56606908
+#: ../tutorial/install.rst:82 0ecee8fba5d04223af3a059f56606908
 msgid ""
 "`postgresql` provides the dependencies to enable the PostgreSQL backend;"
 msgstr ""
 "`postgresql` fournit les dépendances pour activer le backend PostgreSQL :;"
 
-#: ../tutorial/install.rst:70 34abe8b8a0974a72971e50638ff8517e
+#: ../tutorial/install.rst:83 34abe8b8a0974a72971e50638ff8517e
 msgid "`mysql` provides the dependencies to enable the MySQL backend;"
 msgstr "`mysql` fournit les dépendances pour activer le backend MySQL ;"
 
-#: ../tutorial/install.rst:71 e25cc189f3164424b91993aff41a4132
+#: ../tutorial/install.rst:84 e25cc189f3164424b91993aff41a4132
 msgid "`sentry` provides sentry integration to watch Canaille exceptions;"
 msgstr ""
 "`sentry` fournit l'intégration Sentry pour visualiser les exceptions "
 "survenues dans Canaille ;"
 
-#: ../tutorial/install.rst:72 efd222133d4c4ae6be3b9b1fa1fa1468
+#: ../tutorial/install.rst:85 efd222133d4c4ae6be3b9b1fa1fa1468
 msgid ""
 "`otp` provides the dependencies to enable one-time password authentication;"
 msgstr ""
 "`otp` fournit les dépendances pour activer l'authentification à mot de passe "
 "unique (OTP) ;"
 
-#: ../tutorial/install.rst:73 552acd79d186478185733b8237110cd1
+#: ../tutorial/install.rst:86 552acd79d186478185733b8237110cd1
 msgid "`sms` provides the dependencies to enable sms sending;"
 msgstr "`sms` fournit les dépendances pour activer l'envoi de SMS ;"
 
-#: ../tutorial/install.rst:74 4e42b21b5ef448afbb2d1723ebd498ea
+#: ../tutorial/install.rst:87 4e42b21b5ef448afbb2d1723ebd498ea
 msgid "`server` provides the dependencies to run a production server."
 msgstr ""
 "`server` fournit les dépendances pour l'exécution d'un serveur de production."
 
-#: ../tutorial/install.rst:76 d6027880c43d4a9eb8cd78395c178a99
+#: ../tutorial/install.rst:89 d6027880c43d4a9eb8cd78395c178a99
 msgid "They can be installed with:"
 msgstr "Ils peuvent être installés avec :"
 
-#: ../tutorial/install.rst:83 9ea85ec5b3af4c878779884556fb989f
+#: ../tutorial/install.rst:96 9ea85ec5b3af4c878779884556fb989f
 msgid "Configure"
 msgstr "Configurer"
 
-#: ../tutorial/install.rst:85 8fa50b64fb404b7ca96726cb87aca39a
+#: ../tutorial/install.rst:98 8fa50b64fb404b7ca96726cb87aca39a
 msgid ""
 "The :doc:`configuration documentation<../references/configuration>` describe "
 "several ways to configure Canaille, however the most common is to use a TOML "
@@ -8432,31 +8432,31 @@ msgid ""
 "the :ref:`export-config <cli_export_config>` command."
 msgstr ""
 
-#: ../tutorial/install.rst:89 1513e2cc4065497dbfd92d1f9b920774
+#: ../tutorial/install.rst:102 1513e2cc4065497dbfd92d1f9b920774
 #, fuzzy
 #| msgid "Test the configuration file."
 msgid "Initialize a configuration file."
 msgstr "Test du fichier de configuration."
 
-#: ../tutorial/install.rst:95 dfae411e71c347ebaaf30f34af410d71
+#: ../tutorial/install.rst:108 dfae411e71c347ebaaf30f34af410d71
 msgid ""
 "You can then edit your configuration file and tune its values. Have a look "
 "at the :ref:`reference <references/configuration:Parameters>` to know the "
 "exhaustive list of available parameters."
 msgstr ""
 
-#: ../tutorial/install.rst:100 3cfdba669533427aad6a648d6b060244
+#: ../tutorial/install.rst:113 3cfdba669533427aad6a648d6b060244
 msgid ""
 "In the rest of the documentation, we consider that your Canaille instance is "
 "configured by one of the available methods (either with a :envvar:`CONFIG` "
 "environment var, either with ``.env`` files etc.)."
 msgstr ""
 
-#: ../tutorial/install.rst:103 054e4bf3b4c9465284097d7500d3228b
+#: ../tutorial/install.rst:116 054e4bf3b4c9465284097d7500d3228b
 msgid "Install"
 msgstr "Installer"
 
-#: ../tutorial/install.rst:105 beae74bf4f154a32a619fe571bc05331
+#: ../tutorial/install.rst:118 beae74bf4f154a32a619fe571bc05331
 msgid ""
 "The :ref:`install command <cli_install>` will apply most of the things "
 "needed to get Canaille working. Depending on the configured :doc:`database "
@@ -8468,17 +8468,31 @@ msgstr ""
 "données <databases>` configurée, il créera les tables SQL ou installera les "
 "schémas LDAP par exemple."
 
-#: ../tutorial/install.rst:113 61683cab735149cba1e75c814eb21ab2
+#: ../tutorial/install.rst:126 61683cab735149cba1e75c814eb21ab2
 msgid "Check"
 msgstr "Vérifier"
 
-#: ../tutorial/install.rst:115 a3ac73ceacfd4b1094eddddc3c6db17a
+#: ../tutorial/install.rst:128 a3ac73ceacfd4b1094eddddc3c6db17a
 msgid ""
 "After a manual installation, you can check your configuration file using "
 "the :ref:`check command <cli_install>`:"
 msgstr ""
 "Après une installation manuelle, vous pouvez vérifier votre fichier de "
 "configuration en utilisant la :ref:`commande check <cli_install>` :"
+
+#: ../tutorial/install.rst:135 1ee2a32a0cd342b8abb212d6cfe4cb4d
+msgid "Create the first user"
+msgstr "Créer le premier utilisateur"
+
+#: ../tutorial/install.rst:137 15d31e7c0ac74a139bf75b1f0b1a298d
+msgid ""
+"Once canaille is installed, soon enough you will need to add users. To "
+"create your first user you can use the :ref:`canaille create <cli_create>` "
+"CLI."
+msgstr ""
+"Une fois Canaille installé, vous allez assez rapidement avoir besoin "
+"d'ajouter des utilisateurs. Pour créer votre premier utilisateur, vous "
+"pouvez utiliser la ligne de commande :ref:`canaille create <cli_create>`."
 
 #: ../tutorial/provisioning.rst:2 b501a4006a6f4b35912e6f75c9cba45f
 msgid "Provisioning"
@@ -8944,6 +8958,17 @@ msgstr ""
 "Vous êtes fatigué d'utiliser la syntaxe *ldif* pour gérer vos utilisateurs "
 "et groupes, et préférez utiliser une ligne de commande simple et lisible par "
 "les humains."
+
+#, fuzzy
+#~| msgid ""
+#~| "The installation of canaille consist in several steps, some of which you "
+#~| "can do manually or with command line tool:"
+#~ msgid ""
+#~ "The installation of canaille consist in several steps, some of which you "
+#~ "can do manually or with command line tools:"
+#~ msgstr ""
+#~ "L'installation de Canaille consiste en plusieurs étapes, certaines sont "
+#~ "faisables manuellement ou l'outil en ligne de commande :"
 
 #~ msgid "Build with ``uv build``;"
 #~ msgstr "Construisez le paquet avec ``uv build`` ;"
