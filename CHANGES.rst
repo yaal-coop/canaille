@@ -13,6 +13,10 @@ Changed
 - Mysql extra depends on ``pymysql`` instead of ``mysql-connector``.
 - :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` is not mandatory anymore, but displays warnings when unset. :pr:`221`
 
+Fixed
+^^^^^
+- Dynamic client registration with missing ``scope`` parameter. :pr:`222`
+
 [0.0.59] - 2025-01-10
 ---------------------
 
