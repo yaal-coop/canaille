@@ -11,16 +11,6 @@ ADMIN_EMAIL = "admin@mydomain.tld"
 HOST = "localhost"
 PORT = 1025
 
-[CANAILLE_LDAP]
-URI = "ldap://127.0.0.1:5389"
-ROOT_DN = "dc=mydomain,dc=tld"
-BIND_DN = "cn=admin,dc=mydomain,dc=tld"
-BIND_PW = "admin"
-TIMEOUT = 10
-USER_BASE = "ou=users,dc=mydomain,dc=tld"
-GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
-USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
-
 [CANAILLE.ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
 READ = [
@@ -67,6 +57,16 @@ WRITE = [
 FILTER = {groups = "moderators"}
 PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
 WRITE = ["groups"]
+
+[CANAILLE_LDAP]
+URI = "ldap://127.0.0.1:5389"
+ROOT_DN = "dc=mydomain,dc=tld"
+BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+BIND_PW = "admin"
+TIMEOUT = 10
+USER_BASE = "ou=users,dc=mydomain,dc=tld"
+GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
 [CANAILLE_OIDC]
 DYNAMIC_CLIENT_REGISTRATION_OPEN = true
