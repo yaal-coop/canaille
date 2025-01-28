@@ -446,8 +446,7 @@ class ClientManagementMixin:
                 kwargs["client_secret_expires_at"], datetime.timezone.utc
             )
 
-        if "scope" in kwargs and not isinstance(kwargs["scope"], list):
-            kwargs["scope"] = kwargs["scope"].split(" ")
+        kwargs["scope"] = kwargs["scope"].split(" ")
 
         return kwargs
 
@@ -455,7 +454,12 @@ class ClientManagementMixin:
 class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):
     software_statement_alg_values_supported = ["RS256"]
 
+    def generate_client_registration_info(self, client, request):
+        return {"scope": " ".join(client.scope)}
+
     def save_client(self, client_info, client_metadata, request):
+        if "scope" not in client_metadata:
+            client_metadata["scope"] = "openid"
         client = models.Client(
             # this won't be needed when OIDC RP Initiated Logout is
             # directly implemented in authlib:
