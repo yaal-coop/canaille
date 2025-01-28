@@ -16,7 +16,7 @@ Changed
 
 Fixed
 ^^^^^
-- Dynamic client registration with missing ``scope`` parameter. :pr:`222`
+- Dynamic client registration with missing ``scope`` parameter. :issue:`221` :pr:`222`
 
 [0.0.59] - 2025-01-10
 ---------------------
