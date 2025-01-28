@@ -249,9 +249,6 @@ def revoke_token():
 @bp.route("/register", methods=["POST"])
 @csrf.exempt
 def client_registration():
-    payload = request.get_json()
-    if "scope" not in payload:
-        payload["scope"] = "openid"
     current_app.logger.debug(
         "client registration endpoint request: POST: %s",
         request.form.to_dict(flat=False),

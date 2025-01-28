@@ -194,15 +194,6 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
         ],
         software_statement=software_statement,
     )
-    test_client_registration_with_software_statement_with_different_scopes(
-        ["openid", "profile"],
-        redirect_uris=[
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
-        ],
-        software_statement=software_statement,
-        scope=["openid", "profile"],
-    )
 
 
 def test_client_registration_without_authentication_ok(testclient, backend):
