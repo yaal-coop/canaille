@@ -575,7 +575,7 @@ Fixed
 ^^^^^
 
 - Fix typos and grammar errors. :pr:`84`
-- Fix wording and punctuations. :pr:`86`
+- Fix wording and punctuation. :pr:`86`
 - Fix HTML lang tag. :issue:`122` :pr:`87`
 - Automatically trims the HTML translated strings. :pr:`91`
 - Fixed dynamic registration scope management. :issue:`123` :pr:`93`
