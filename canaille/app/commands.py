@@ -91,6 +91,7 @@ def export_config(path: Path | None):
     )
     config_file = path or os.getenv("CONFIG", DEFAULT_CONFIG_FILE)
     export_config(config_obj, config_file)
+    click.echo(f"Wrote configuration file at {config_file}")
 
 
 if HAS_HYPERCORN:  # pragma: no cover

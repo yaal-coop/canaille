@@ -10,6 +10,7 @@ env
 .ash_history
 .python_history
 config.toml
+canaille.toml
 .tox
 .coverage
 .coverage.*
