@@ -96,6 +96,6 @@ Example file
 
 Here is a configuration file example that can be generated with the :ref:`canaille export-config <cli_export_config>` command:
 
-.. literalinclude :: ../config.toml
+.. literalinclude :: ../config.sample.toml
    :language: toml
    :caption: config.toml

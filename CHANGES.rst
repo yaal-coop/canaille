@@ -10,7 +10,7 @@ Added
 
 Changed
 ^^^^^^^
-- Avoid displaying password strength progress bar in login form
+- Avoid displaying password strength progress bar in login form.
 - Mysql extra depends on ``pymysql`` instead of ``mysql-connector``.
 - :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` is not mandatory anymore, but displays warnings when unset. :pr:`221`
 
