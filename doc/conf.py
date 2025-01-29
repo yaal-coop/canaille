@@ -174,6 +174,7 @@ autodoc_pydantic_settings_show_field_summary = False
 autodoc_pydantic_settings_signature_prefix = ""
 autodoc_pydantic_field_signature_prefix = ""
 autodoc_pydantic_field_list_validators = False
+autodoc_pydantic_field_doc_policy = "docstring"
 
 # -- Translation options ------------------------------------------------------
 # Advised by https://docs.readthedocs.io/en/latest/guides/manage-translations-sphinx.html#create-translatable-files
