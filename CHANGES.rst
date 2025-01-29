@@ -6,6 +6,7 @@ Added
 - Add screenshots in the documentation. :issue:`210`
 - Implement a ``canaille run`` command that runs a production server with Hypercorn. :pr:`219`
 - Implement a ``canaille export-config`` command that create a commented config file. :pr:`223`
+- Load configuration from local ``canaille.toml`` files. :pr:`225`
 
 Changed
 ^^^^^^^

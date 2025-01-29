@@ -82,13 +82,14 @@ def export_config(path: Path | None):
     or the :envvar:`CONFIG` environment variable if set, or a ``config.toml``
     file in the current directory.
     """
+    from canaille.app.configuration import DEFAULT_CONFIG_FILE
     from canaille.app.configuration import export_config
     from canaille.app.configuration import settings_factory
 
     config_obj = settings_factory(
         current_app.config, all_options=True, init_with_examples=True
     )
-    config_file = path or os.getenv("CONFIG", "config.toml")
+    config_file = path or os.getenv("CONFIG", DEFAULT_CONFIG_FILE)
     export_config(config_obj, config_file)
 
 

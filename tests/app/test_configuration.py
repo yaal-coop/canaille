@@ -3,6 +3,7 @@ import os
 import pathlib
 
 import pytest
+import tomlkit
 from flask_webtest import TestApp
 
 from canaille import create_app
@@ -42,6 +43,46 @@ def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration)
     app = create_app(configuration)
     assert app.config["CANAILLE"]["SMTP"]["PASSWORD"] == "very-very-secret"
     del os.environ["SECRETS_DIR"]
+
+
+def test_no_configuration(configuration, tmp_path):
+    """Test that no configuration still makes valid Canaille application."""
+    os.environ["DEBUG"] = "1"
+
+    app = create_app()
+    assert app.config["CANAILLE"]["NAME"] == "Canaille"
+
+    del os.environ["DEBUG"]
+
+
+def test_environment_configuration(configuration, tmp_path):
+    """Test loading the configuration from a toml file passed by the CONFIG environment var."""
+    config_path = os.path.join(tmp_path, "config.toml")
+    with open(config_path, "w") as fd:
+        tomlkit.dump(configuration, fd)
+
+    os.environ["CONFIG"] = config_path
+    app = create_app()
+    assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "admin@mydomain.test"
+
+    del os.environ["CONFIG"]
+    os.remove(config_path)
+
+
+def test_local_configuration(configuration, tmp_path):
+    """Test loading the configuration from a local config.toml file."""
+    cwd = os.getcwd()
+    os.chdir(tmp_path)
+
+    config_path = os.path.join(tmp_path, "canaille.toml")
+    with open(config_path, "w") as fd:
+        tomlkit.dump(configuration, fd)
+
+    app = create_app()
+    assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "admin@mydomain.test"
+
+    os.chdir(cwd)
+    os.remove(config_path)
 
 
 def test_configuration_from_environment_vars(tmp_path):
@@ -325,6 +366,7 @@ def test_smpp_connection_remote_smpp_no_credentials(
 def test_no_secret_key(configuration, caplog):
     del configuration["SECRET_KEY"]
 
+    os.environ["DEBUG"] = "1"
     from canaille.app.server import app
 
     assert (
@@ -338,6 +380,7 @@ def test_no_secret_key(configuration, caplog):
     res.mustcontain(
         "Your Canaille instance is not fully configured and not ready for production."
     )
+    del os.environ["DEBUG"]
 
 
 def test_sanitize_rst():

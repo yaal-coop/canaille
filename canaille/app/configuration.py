@@ -21,6 +21,8 @@ except ImportError:
     HAS_TOMLKIT = False
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+DEFAULT_CONFIG_FILE = "canaille.toml"
+
 
 class BaseModel(PydanticBaseModel):
     model_config = SettingsConfigDict(
@@ -174,9 +176,14 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
             "SESSION_COOKIE_NAME": "canaille",
         }
     )
-    if HAS_TOMLKIT and not config and "CONFIG" in os.environ:
-        with open(os.environ.get("CONFIG")) as fd:
-            config = tomlkit.load(fd)
+    if HAS_TOMLKIT and not config:
+        if "CONFIG" in os.environ:
+            with open(os.environ.get("CONFIG")) as fd:
+                config = tomlkit.load(fd)
+
+        elif os.path.exists(DEFAULT_CONFIG_FILE):
+            with open(DEFAULT_CONFIG_FILE) as fd:
+                config = tomlkit.load(fd)
 
     env_file = env_file or os.getenv("ENV_FILE")
     try:
