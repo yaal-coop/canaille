@@ -308,9 +308,6 @@ def validate_otp_config(config):
             "You are trying to use OTP but the 'otp' extra is not installed."
         )
 
-    if config["OTP_METHOD"] not in [None, "TOTP", "HOTP"]:
-        raise ConfigurationException("Invalid OTP method")
-
     if config["EMAIL_OTP"] and not config["SMTP"]:
         raise ConfigurationException(
             "Cannot activate email one-time password authentication without SMTP"

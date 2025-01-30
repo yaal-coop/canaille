@@ -287,8 +287,8 @@ def test_invalid_otp_option(configuration, backend):
     validate(config_dict, validate_remote=False)
 
     with pytest.raises(
-        ConfigurationException,
-        match=r"Invalid OTP method",
+        ValidationError,
+        match=r"Input should be 'TOTP' or 'HOTP'",
     ):
         configuration["CANAILLE"]["OTP_METHOD"] = "invalid"
         config_obj = settings_factory(configuration)

@@ -194,6 +194,14 @@ class ACLSettings(BaseModel):
     """
 
 
+class OTPMethod(str, Enum):
+    TOTP = "TOTP"
+    """Time-based one time password."""
+
+    HOTP = "HOTP"
+    """HMAC-based one time password."""
+
+
 class CoreSettings(BaseModel):
     """The settings from the ``CANAILLE`` namespace.
 
@@ -283,7 +291,7 @@ class CoreSettings(BaseModel):
     """If :py:data:`True`, then users will have to wait for an increasingly
     long time between each failed login attempt."""
 
-    OTP_METHOD: str | None = None
+    OTP_METHOD: OTPMethod | None = None
     """If OTP_METHOD is defined, then users will need to authenticate themselves
     using a one-time password (OTP) via an authenticator app.
     If set to ``TOTP``, the application will use time one-time passwords,
