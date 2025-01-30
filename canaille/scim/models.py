@@ -127,9 +127,7 @@ def get_schemas():
     return schemas
 
 
-def user_from_canaille_to_scim(
-    user, user_class=User, enterprise_user_class=EnterpriseUser
-):
+def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
     # allow to use custom SCIM user classes if needed
     scim_user_class = user_class if user_class != User else User[EnterpriseUser]
     scim_user = scim_user_class(
@@ -139,7 +137,6 @@ def user_from_canaille_to_scim(
             last_modified=user.last_modified,
             location=url_for("scim.query_user", user=user, _external=True),
         ),
-        id=user.id,
         user_name=user.user_name,
         preferred_language=user.preferred_language,
         name=user_class.Name(
@@ -215,7 +212,10 @@ def user_from_canaille_to_scim(
     return scim_user
 
 
-# TODO : Rajouter external id dans function custom
+def user_from_canaille_to_scim_server(user):
+    scim_user = user_from_canaille_to_scim(user, User, EnterpriseUser)
+    scim_user.id = user.id
+    return scim_user
 
 
 def user_from_scim_to_canaille(scim_user: User, user):
@@ -261,9 +261,8 @@ def user_from_scim_to_canaille(scim_user: User, user):
     return user
 
 
-def group_from_canaille_to_scim(group, group_class=Group):
+def group_from_canaille_to_scim(group, group_class):
     return group_class(
-        id=group.id,
         meta=Meta(
             resource_type="Group",
             created=group.created,
@@ -282,6 +281,12 @@ def group_from_canaille_to_scim(group, group_class=Group):
         ]
         or None,
     )
+
+
+def group_from_canaille_to_scim_server(group):
+    scim_group = group_from_canaille_to_scim(group, Group)
+    scim_group.id = group.id
+    return scim_group
 
 
 def group_from_scim_to_canaille(scim_group: Group, group):
