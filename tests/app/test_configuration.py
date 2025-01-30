@@ -5,6 +5,7 @@ import pathlib
 import pytest
 import tomlkit
 from flask_webtest import TestApp
+from pydantic import ValidationError
 
 from canaille import create_app
 from canaille.app.configuration import ConfigurationException
@@ -235,8 +236,8 @@ def test_invalid_theme(configuration, backend):
     validate(config_dict, validate_remote=False)
 
     with pytest.raises(
-        ConfigurationException,
-        match=r"Cannot find theme",
+        ValidationError,
+        match=r"Path does not point to a directory",
     ):
         configuration["CANAILLE"]["THEME"] = "invalid"
         config_obj = settings_factory(configuration)
@@ -244,8 +245,8 @@ def test_invalid_theme(configuration, backend):
         validate(config_dict, validate_remote=False)
 
     with pytest.raises(
-        ConfigurationException,
-        match=r"Cannot find theme",
+        ValidationError,
+        match=r"Path does not point to a directory",
     ):
         configuration["CANAILLE"]["THEME"] = "/path/to/invalid"
         config_obj = settings_factory(configuration)

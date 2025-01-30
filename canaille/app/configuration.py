@@ -209,7 +209,6 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
 
 def validate(config, validate_remote=False):
     validate_keypair(config.get("CANAILLE_OIDC"))
-    validate_theme(config["CANAILLE"])
     validate_admin_email(config["CANAILLE"])
     validate_otp_config(config["CANAILLE"])
     if not validate_remote:
@@ -292,13 +291,6 @@ def validate_smpp_configuration(config):
         ) from exc
     except smpplib.exceptions.UnknownCommandError as exc:  # pragma: no cover
         raise ConfigurationException(exc) from exc
-
-
-def validate_theme(config):
-    if config["THEME"] is not None and not os.path.exists(
-        os.path.join(ROOT, "themes", config["THEME"])
-    ):
-        raise ConfigurationException(f"Cannot find theme '{config['THEME']}'")
 
 
 def validate_admin_email(config):

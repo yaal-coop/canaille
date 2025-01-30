@@ -1,5 +1,6 @@
 from enum import Enum
 
+from pydantic import DirectoryPath
 from pydantic import Field
 from pydantic import ValidationInfo
 from pydantic import field_validator
@@ -216,7 +217,7 @@ class CoreSettings(BaseModel):
     If unset and :attr:`LOGO` is set, then the logo will be used.
     """
 
-    THEME: str | None = None
+    THEME: DirectoryPath | None = None
     """A path to a theme.
 
     See the :doc:`theming documentation </tutorial/theming>` for more details.
