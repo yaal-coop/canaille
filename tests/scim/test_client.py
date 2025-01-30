@@ -4,20 +4,25 @@ from unittest import mock
 from canaille.app import models
 
 
-def test_scim_client_user_save_and_delete(
-    scim_client_for_preconsented_client, backend, user
-):
+def test_scim_client_user_save_and_delete(scim_client_for_preconsented_client, backend):
     User = scim_client_for_preconsented_client.get_resource_model("User")
 
     response = scim_client_for_preconsented_client.query(User)
     assert not response.resources
 
-    backend.save(user)
+    alice = models.User(
+        formatted_name="Alice Alice",
+        family_name="Alice",
+        user_name="alice",
+        emails=["john@doe.test", "johhny@doe.test"],
+    )
+    backend.save(alice)
+
     response = scim_client_for_preconsented_client.query(User)
     assert len(response.resources) == 1
-    assert response.resources[0].user_name == "user"
+    assert response.resources[0].user_name == "alice"
 
-    backend.delete(user)
+    backend.delete(alice)
     response = scim_client_for_preconsented_client.query(User)
     assert not response.resources
 
@@ -157,17 +162,24 @@ def test_failed_scim_user_creation(
     scim_client_for_preconsented_client,
     backend,
     caplog,
-    user,
 ):
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
-    backend.save(user)
+    alice = models.User(
+        formatted_name="Alice Alice",
+        family_name="Alice",
+        user_name="alice",
+        emails=["john@doe.test", "johhny@doe.test"],
+    )
+    backend.save(alice)
 
     assert (
         "canaille",
         logging.WARNING,
-        "SCIM User user creation for client Some client failed",
+        "SCIM User alice creation for client Some client failed",
     ) in caplog.record_tuples
+
+    backend.delete(alice)
 
 
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
@@ -181,7 +193,6 @@ def test_failed_scim_user_update(
 ):
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
-    backend.save(user)
     backend.save(user)
 
     assert (
@@ -202,7 +213,6 @@ def test_failed_scim_user_delete(
 ):
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
-    backend.save(user)
     backend.delete(user)
 
     assert (
