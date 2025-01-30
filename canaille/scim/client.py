@@ -16,9 +16,29 @@ def user_from_canaille_to_scim_client(user, user_class, enterprise_user_class):
     return scim_user
 
 
-def group_from_canaille_to_scim_client(group, group_class):
+def group_from_canaille_to_scim_client(group, group_class, scim_client):
     scim_group = group_from_canaille_to_scim(group, group_class)
     scim_group.external_id = group.id
+
+    if group.members:
+        distant_members = []
+        User = scim_client.get_resource_model("User")
+        for member in group.members:
+            req = SearchRequest(filter=f'externalId eq "{member.id}"')
+            response = scim_client.query(User, search_request=req)
+            if response.resources:
+                distant_members.append(response.resources[0])
+
+        scim_group.members = [
+            group_class.Members(
+                value=user.id,
+                type="User",
+                display=user.display_name,
+                ref=user.meta.location,
+            )
+            for user in distant_members or []
+        ] or None
+
     return scim_group
 
 
@@ -97,8 +117,7 @@ def execute_scim_group_action(scim, group, client_name, method):
                 f"SCIM Group {group.display_name} delete for client {client_name} failed"
             )
     elif method == "save":  # pragma: no branch
-        # TODO : récupérer infos chaque member pour constituer l'objet
-        group = group_from_canaille_to_scim_client(group, Group)
+        group = group_from_canaille_to_scim_client(group, Group, scim)
         if not scim_group:
             try:
                 scim.create(group)

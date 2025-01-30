@@ -270,22 +270,21 @@ def group_from_canaille_to_scim(group, group_class):
             location=url_for("scim.query_group", group=group, _external=True),
         ),
         display_name=group.display_name,
-        members=[
-            group_class.Members(
-                value=user.id,
-                type="User",
-                display=user.display_name,
-                ref=url_for("scim.query_user", user=user, _external=True),
-            )
-            for user in group.members or []
-        ]
-        or None,
     )
 
 
 def group_from_canaille_to_scim_server(group):
     scim_group = group_from_canaille_to_scim(group, Group)
     scim_group.id = group.id
+    scim_group.members = [
+        Group.Members(
+            value=user.id,
+            type="User",
+            display=user.display_name,
+            ref=url_for("scim.query_user", user=user, _external=True),
+        )
+        for user in group.members or []
+    ] or None
     return scim_group
 
 
