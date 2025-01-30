@@ -209,7 +209,6 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
 
 def validate(config, validate_remote=False):
     validate_keypair(config.get("CANAILLE_OIDC"))
-    validate_otp_config(config["CANAILLE"])
     if not validate_remote:
         return
 
@@ -285,18 +284,6 @@ def validate_smpp_configuration(config):
         ) from exc
     except smpplib.exceptions.UnknownCommandError as exc:  # pragma: no cover
         raise ConfigurationException(exc) from exc
-
-
-def validate_otp_config(config):
-    if config["EMAIL_OTP"] and not config["SMTP"]:
-        raise ConfigurationException(
-            "Cannot activate email one-time password authentication without SMTP"
-        )
-
-    if config["SMS_OTP"] and not config["SMPP"]:
-        raise ConfigurationException(
-            "Cannot activate sms one-time password authentication without SMPP"
-        )
 
 
 def sanitize_rst_text(text: str) -> str:

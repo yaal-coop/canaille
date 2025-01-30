@@ -311,13 +311,27 @@ class CoreSettings(BaseModel):
 
     @field_validator("OTP_METHOD", "EMAIL_OTP")
     @classmethod
-    def validate_otp_method(cls, value):
+    def validate_otp_dependency(cls, value):
         if not importlib.util.find_spec("otpauth"):  # pragma: no cover
             raise ValidationError(
                 "You are trying to use OTP but the 'otp' extra is not installed."
             )
 
         return value
+
+    @model_validator(mode="after")
+    def validate_otp_configuration(self) -> Self:
+        if self.EMAIL_OTP and not self.SMTP:
+            raise ValueError(
+                "Cannot activate email one-time password authentication without SMTP"
+            )
+
+        if self.SMS_OTP and not self.SMPP:
+            raise ValueError(
+                "Cannot activate sms one-time password authentication without SMPP"
+            )
+
+        return self
 
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.

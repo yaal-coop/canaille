@@ -241,8 +241,6 @@ def test_invalid_theme(configuration, backend):
     ):
         configuration["CANAILLE"]["THEME"] = "invalid"
         config_obj = settings_factory(configuration)
-        config_dict = config_obj.model_dump()
-        validate(config_dict, validate_remote=False)
 
     with pytest.raises(
         ValidationError,
@@ -250,8 +248,6 @@ def test_invalid_theme(configuration, backend):
     ):
         configuration["CANAILLE"]["THEME"] = "/path/to/invalid"
         config_obj = settings_factory(configuration)
-        config_dict = config_obj.model_dump()
-        validate(config_dict, validate_remote=False)
 
 
 def test_enable_password_compromission_check_with_and_without_admin_email(
@@ -288,8 +284,6 @@ def test_invalid_otp_option(configuration, backend):
     ):
         configuration["CANAILLE"]["OTP_METHOD"] = "invalid"
         config_obj = settings_factory(configuration)
-        config_dict = config_obj.model_dump()
-        validate(config_dict, validate_remote=False)
 
 
 def test_email_otp_without_smtp(configuration, backend):
@@ -299,14 +293,12 @@ def test_email_otp_without_smtp(configuration, backend):
     validate(config_dict, validate_remote=False)
 
     with pytest.raises(
-        ConfigurationException,
+        ValidationError,
         match=r"Cannot activate email one-time password authentication without SMTP",
     ):
         configuration["CANAILLE"]["SMTP"] = None
         configuration["CANAILLE"]["EMAIL_OTP"] = True
         config_obj = settings_factory(configuration)
-        config_dict = config_obj.model_dump()
-        validate(config_dict, validate_remote=False)
 
 
 def test_sms_otp_without_smpp(configuration, backend):
@@ -316,14 +308,12 @@ def test_sms_otp_without_smpp(configuration, backend):
     validate(config_dict, validate_remote=False)
 
     with pytest.raises(
-        ConfigurationException,
+        ValidationError,
         match=r"Cannot activate sms one-time password authentication without SMPP",
     ):
         configuration["CANAILLE"]["SMPP"] = None
         configuration["CANAILLE"]["SMS_OTP"] = True
         config_obj = settings_factory(configuration)
-        config_dict = config_obj.model_dump()
-        validate(config_dict, validate_remote=False)
 
 
 def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configuration):
