@@ -59,6 +59,7 @@ oidc = [
 scim = [
     "scim2-models>=0.2.2",
     "authlib >= 1.5.0",
+    "scim2-client>=0.5.1",
 ]
 
 ldap = [
@@ -138,6 +139,7 @@ dev = [
     # and neither python 3.12 due to PEP 632
     # https://peps.python.org/pep-0632/
     "setuptools >= 50.0.0; python_version>='3.12'",
+    "pytest-scim2-server>=0.1.2",
 ]
 doc = [
     "autodoc-pydantic >= 2.0.1",
@@ -164,6 +166,7 @@ demo = [
 release = [
     "pyinstaller>=6.11.1",
 ]
+scim = []
 
 [project.scripts]
 canaille = "canaille.commands:cli"

@@ -222,6 +222,7 @@ postgresql = [
 ]
 scim = [
     { name = "authlib" },
+    { name = "scim2-client" },
     { name = "scim2-models" },
     { name = "scim2-server" },
 ]
@@ -264,6 +265,7 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-httpserver" },
     { name = "pytest-lazy-fixtures" },
+    { name = "pytest-scim2-server" },
     { name = "pytest-smtpd" },
     { name = "pytest-xdist" },
     { name = "scim2-tester" },
@@ -307,6 +309,7 @@ requires-dist = [
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.0.2" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "otpauth", marker = "extra == 'otp'", specifier = ">=2.1.1" },
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
@@ -318,8 +321,9 @@ requires-dist = [
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
     { name = "requests", specifier = ">=2.32.3" },
+    { name = "scim2-client", marker = "extra == 'scim'", specifier = ">=0.5.1" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.2.2" },
-    { name = "scim2-server", marker = "extra == 'scim'", specifier = ">=0.1.2" },
+    { name = "scim2-server", marker = "extra == 'scim'", specifier = ">=0.1.3" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },
     { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
@@ -358,6 +362,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-httpserver", specifier = ">=1.1.0" },
     { name = "pytest-lazy-fixtures", specifier = ">=1.0.7" },
+    { name = "pytest-scim2-server", specifier = ">=0.1.2" },
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
     { name = "scim2-tester", specifier = ">=0.1.7" },
@@ -380,6 +385,7 @@ doc = [
     { name = "tomlkit", specifier = ">=0.13.2" },
 ]
 release = [{ name = "pyinstaller", specifier = ">=6.11.1" }]
+scim = []
 
 [[package]]
 name = "certifi"
@@ -531,7 +537,7 @@ name = "click"
 version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "platform_system == 'Windows'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a", size = 226593 }
 wheels = [
@@ -1047,6 +1053,34 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/df/48c586a5fe32a0f01324ee087459e112ebb7224f646c0b5023f5e79e9956/httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc", size = 141406 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad", size = 73517 },
+]
+
+[[package]]
+name = "hypercorn"
+version = "0.17.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "h11" },
+    { name = "h2" },
+    { name = "priority" },
+    { name = "taskgroup", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "wsproto" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7e/3a/df6c27642e0dcb7aff688ca4be982f0fb5d89f2afd3096dc75347c16140f/hypercorn-0.17.3.tar.gz", hash = "sha256:1b37802ee3ac52d2d85270700d565787ab16cf19e1462ccfa9f089ca17574165", size = 44409 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0e/3b/dfa13a8d96aa24e40ea74a975a9906cfdc2ab2f4e3b498862a57052f04eb/hypercorn-0.17.3-py3-none-any.whl", hash = "sha256:059215dec34537f9d40a69258d323f56344805efb462959e727152b0aa504547", size = 61742 },
+]
+
+[[package]]
+name = "hyperframe"
+version = "6.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/2a/4747bff0a17f7281abe73e955d60d80aae537a5d203f417fa1c2e7578ebb/hyperframe-6.0.1.tar.gz", hash = "sha256:ae510046231dc8e9ecb1a6586f63d2347bf4c8905914aa84ba585ae85f28a914", size = 25008 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/de/85a784bcc4a3779d1753a7ec2dee5de90e18c7bcf402e71b51fcf150b129/hyperframe-6.0.1-py3-none-any.whl", hash = "sha256:0ec6bafd80d8ad2195c4f03aacba3a8265e57bc4cff261e802bf39970ed02a15", size = 12389 },
 ]
 
 [[package]]
@@ -2062,6 +2096,20 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-scim2-server"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "portpicker" },
+    { name = "pytest" },
+    { name = "scim2-server" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3b/68/6871d911cde00d930d532738072bb197868f2b0b880663ef64bd91712769/pytest_scim2_server-0.1.2.tar.gz", hash = "sha256:b96585aa49684e4bed21fa41372f777daf9cf9bfc50138f0cad2ca45d7b86c78", size = 39816 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/76/06/96d292339bfff45f74a676e39735ede80ca4f59065767ea4e07be68faf70/pytest_scim2_server-0.1.2-py3-none-any.whl", hash = "sha256:a5f69fefecb336eebcca5bcc8be899597f4774025db0bfd908e6c9f9d99f6d44", size = 3266 },
+]
+
+[[package]]
 name = "pytest-smtpd"
 version = "0.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2340,16 +2388,16 @@ wheels = [
 
 [[package]]
 name = "scim2-server"
-version = "0.1.2"
+version = "0.1.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "scim2-filter-parser" },
     { name = "scim2-models" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3b/dd/9a0221a5dd2ba6964ffdcfe7817f44295a98bc16e528526f47ca359ee519/scim2_server-0.1.2.tar.gz", hash = "sha256:e8c1d0568d2fa89ffaf62073dc6b47d5fd983bf561fcc3914a41044f0cbff691", size = 80680 }
+sdist = { url = "https://files.pythonhosted.org/packages/bb/ef/eb211a71fceacf59de07b839eca255cf2d618595d514557c613f88d6800f/scim2_server-0.1.4.tar.gz", hash = "sha256:e413e4455a27ef405654bd8fbe1f64212567c8fd855d1dacdc53960a97018994", size = 83878 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3b/17/c7f49843d63a604130bb6f98aaaa9fdf4847386aac737bd843f89e9b85d2/scim2_server-0.1.2-py3-none-any.whl", hash = "sha256:07cf93294e7d6951fa744d85a6119de6030decaad6794223dd147552bd4fdba0", size = 33060 },
+    { url = "https://files.pythonhosted.org/packages/74/7a/cefba36edc7c9dd71c62fbbf6067ab817a9531b2ca3f24be859d3ed795b9/scim2_server-0.1.4-py3-none-any.whl", hash = "sha256:9ff32852fd20b65a8aa481bee6cc1b15d1d1ff0bf951703b8351892c23899b72", size = 33092 },
 ]
 
 [[package]]

@@ -1,14 +1,11 @@
 import logging
 from unittest import mock
 
-import pytest
-
 from canaille.app import models
 
 
-@pytest.mark.xdist_group(name="scim")
 def test_scim_client_user_save_and_delete(
-    scim_server, scim_client_for_preconsented_client, backend, user
+    scim_client_for_preconsented_client, backend, user
 ):
     User = scim_client_for_preconsented_client.get_resource_model("User")
 
@@ -25,9 +22,8 @@ def test_scim_client_user_save_and_delete(
     assert not response.resources
 
 
-@pytest.mark.xdist_group(name="scim")
 def test_scim_client_group_save_and_delete(
-    scim_server, scim_client_for_preconsented_client, backend, user
+    scim_client_for_preconsented_client, backend, user
 ):
     Group = scim_client_for_preconsented_client.get_resource_model("Group")
 
@@ -51,10 +47,8 @@ def test_scim_client_group_save_and_delete(
     assert not response.resources
 
 
-@pytest.mark.xdist_group(name="scim")
 def test_scim_client_change_user_groups_also_updates_group_members(
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     user,
@@ -63,9 +57,8 @@ def test_scim_client_change_user_groups_also_updates_group_members(
 ):
     Group = scim_client_for_preconsented_client.get_resource_model("Group")
 
-    res = testclient.get("/profile/user/settings", status=200)
-    res.form["groups"] = [bar_group.id]
-    res = res.form.submit(name="action", value="edit-settings")
+    user.groups = user.groups + [bar_group]
+    backend.save(user)
 
     response = scim_client_for_preconsented_client.query(Group)
     assert len(response.resources) == 1
@@ -75,14 +68,10 @@ def test_scim_client_change_user_groups_also_updates_group_members(
     assert retrieved_bar_group.members[0].value == logged_admin.id
     assert retrieved_bar_group.members[1].value == user.id
 
-    response = scim_client_for_preconsented_client.query(Group)
-
-    res = testclient.get("/profile/user/settings", status=200)
-    res.form["groups"] = []
-    res = res.form.submit(name="action", value="edit-settings")
+    user.groups = []
+    backend.save(user)
 
     response = scim_client_for_preconsented_client.query(Group)
-
     assert len(response.resources) == 1
     retrieved_bar_group = response.resources[0]
     assert retrieved_bar_group.display_name == "bar"
@@ -90,10 +79,8 @@ def test_scim_client_change_user_groups_also_updates_group_members(
     assert retrieved_bar_group.members[0].value == logged_admin.id
 
 
-@pytest.mark.xdist_group(name="scim")
 def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     foo_group,
@@ -118,19 +105,14 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     assert len(retrieved_bar_group.members) == 1
     assert retrieved_bar_group.members[0].value == admin.id
 
-    assert not backend.query(models.User, user_name="alice")
-    res = testclient.get("/profile", status=200)
-    res.form["user_name"] = "alice"
-    res.form["password1"] = "i'm a little pea"
-    res.form["password2"] = "i'm a little pea"
-    res.form["family_name"] = "alice"
-    res.form["emails-0"] = "alice@example.test"
-    res.form["groups"] = [foo_group.id, bar_group.id]
-    res = res.form.submit(name="action", value="create-profile", status=302)
-    assert ("success", "User account creation succeeded.") in res.flashes
-
-    alice = backend.get(models.User, user_name="alice")
-    assert alice
+    alice = models.User(
+        formatted_name="Alice Alice",
+        family_name="Alice",
+        user_name="alice",
+        emails=["john@doe.test", "johhny@doe.test"],
+    )
+    alice.groups = [bar_group, foo_group]
+    backend.save(alice)
 
     response = scim_client_for_preconsented_client.query(Group)
     assert len(response.resources) == 2
@@ -168,12 +150,10 @@ def test_client_doesnt_support_scim(backend, user, consent, caplog):
     ) in caplog.record_tuples
 
 
-@pytest.mark.xdist_group(name="scim")
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
 def test_failed_scim_user_creation(
     scim_mock,
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     caplog,
@@ -190,12 +170,10 @@ def test_failed_scim_user_creation(
     ) in caplog.record_tuples
 
 
-@pytest.mark.xdist_group(name="scim")
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
 def test_failed_scim_user_update(
     scim_mock,
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     caplog,
@@ -213,12 +191,10 @@ def test_failed_scim_user_update(
     ) in caplog.record_tuples
 
 
-@pytest.mark.xdist_group(name="scim")
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.delete")
 def test_failed_scim_user_delete(
     scim_mock,
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     caplog,
@@ -236,12 +212,10 @@ def test_failed_scim_user_delete(
     ) in caplog.record_tuples
 
 
-@pytest.mark.xdist_group(name="scim")
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
 def test_failed_scim_group_creation(
     scim_mock,
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     caplog,
@@ -264,12 +238,10 @@ def test_failed_scim_group_creation(
     backend.delete(group)
 
 
-@pytest.mark.xdist_group(name="scim")
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
 def test_failed_scim_group_update(
     scim_mock,
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     caplog,
@@ -286,12 +258,10 @@ def test_failed_scim_group_update(
     ) in caplog.record_tuples
 
 
-@pytest.mark.xdist_group(name="scim")
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.delete")
 def test_failed_scim_group_delete(
     scim_mock,
     testclient,
-    scim_server,
     scim_client_for_preconsented_client,
     backend,
     caplog,
