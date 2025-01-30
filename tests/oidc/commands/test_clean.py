@@ -79,4 +79,4 @@ def test_clean_command(testclient, backend, client, user):
     assert res.exit_code == 0, res.stdout
 
     assert backend.get(models.AuthorizationCode) == valid_code
-    assert backend.get(models.Token) == valid_token
+    assert backend.get(models.Token, subject=user) == valid_token

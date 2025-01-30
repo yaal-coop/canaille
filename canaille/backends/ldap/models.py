@@ -2,7 +2,6 @@ import ldap.filter
 
 import canaille.core.models
 import canaille.oidc.models
-from canaille.scim.models import propagate_group_scim_modification
 
 from .backend import LDAPBackend
 from .ldapobject import LDAPObject
@@ -52,12 +51,14 @@ class User(canaille.core.models.User, LDAPObject):
         return super().match_filter(filter)
 
     def save(self):
-        # run the instance save callback if existing
         save_callback = canaille.core.models.User.save(self)
         next(save_callback, None)
 
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:
+            yield
+
+            next(save_callback, None)
             return
 
         # The LDAP attribute memberOf cannot directly be edited,
@@ -86,7 +87,6 @@ class User(canaille.core.models.User, LDAPObject):
 
         self.state[group_attr] = new_groups
 
-        # run the instance save callback again if existing
         next(save_callback, None)
 
 
@@ -99,11 +99,6 @@ class Group(canaille.core.models.Group, LDAPObject):
         "members": "member",
         "description": "description",
     }
-
-    def save(self):
-        propagate_group_scim_modification(self, method="save")
-
-        yield
 
 
 class Client(canaille.oidc.models.Client, LDAPObject):

@@ -12,8 +12,8 @@ from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
 from canaille.core.sms import send_one_time_password_sms
-from canaille.scim.models import propagate_group_scim_modification
-from canaille.scim.models import propagate_user_scim_modification
+from canaille.scim.client import propagate_group_scim_modification
+from canaille.scim.client import propagate_user_scim_modification
 
 HOTP_LOOK_AHEAD_WINDOW = 10
 OTP_DIGITS = 6
@@ -301,9 +301,10 @@ class User(Model):
     def save(self):
         if current_app.features.has_otp and not self.secret_token:
             self.initialize_otp()
-        propagate_user_scim_modification(self, method="save")
 
         yield
+
+        propagate_user_scim_modification(self, method="save")
 
         for group in set(self.old_groups) ^ set(self.groups):
             Backend.instance.reload(group)
@@ -571,9 +572,9 @@ class Group(Model):
     description: str | None = None
 
     def save(self):
-        propagate_group_scim_modification(self, method="save")
-
         yield
+
+        propagate_group_scim_modification(self, method="save")
 
     def delete(self):
         propagate_group_scim_modification(self, method="delete")
