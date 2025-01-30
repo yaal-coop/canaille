@@ -146,6 +146,7 @@ def get_jwks():
     return {
         "keys": [
             {
+                "kid": None,
                 "use": "sig",
                 "alg": alg,
                 **jwk,
