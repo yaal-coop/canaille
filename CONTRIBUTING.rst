@@ -57,18 +57,11 @@ Canaille comes with several backends:
 Docker environment
 ~~~~~~~~~~~~~~~~~~
 
-If you want to develop with docker, your browser needs to be able to reach the `canaille` container.
-The docker-compose file exposes the right ports, but front requests are from outside the docker network:
-the `canaille` url that makes sense for docker, points nowhere from your browser.
-As exposed ports are on `localhost`, you need to tell your computer that `canaille` url means `localhost`.
+When launching Canaille with Docker, you have access to:
 
-To do that, you can add the following line to your `/etc/hosts`:
-
-.. code-block:: console
-
-    127.0.0.1   canaille
-
-To launch containers, use:
+- A canaille server at `canaille.localhost:5000 <http://canaille.localhost:5000>`__
+- A dummy client at `client1.localhost:5001 <http://client1.localhost:5001>`__
+- Another dummy client at `client2.localhost:5002 <http://client2client2..localhost:5002>`__
 
 SQL
 ^^^

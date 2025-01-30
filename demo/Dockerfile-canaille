@@ -2,8 +2,8 @@ FROM python:slim
 
 RUN \
     apt update && \
-    apt -y upgrade && \
-    apt install -y \
+    apt --yes upgrade && \
+    apt install --yes \
     gcc \
     libsasl2-dev \
     libldap2-dev \

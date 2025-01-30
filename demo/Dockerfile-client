@@ -2,11 +2,11 @@ FROM python:slim
 
 RUN \
     apt update && \
-    apt -y upgrade
+    apt --yes upgrade
 
 RUN pip install \
-    "flask<3" \
-    "authlib<2" \
+    "flask" \
+    "authlib" \
     requests
 
 WORKDIR /opt/client
