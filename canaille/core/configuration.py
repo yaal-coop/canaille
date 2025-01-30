@@ -1,7 +1,9 @@
+import importlib.util
 from enum import Enum
 
 from pydantic import DirectoryPath
 from pydantic import Field
+from pydantic import ValidationError
 from pydantic import ValidationInfo
 from pydantic import field_validator
 
@@ -305,6 +307,16 @@ class CoreSettings(BaseModel):
     """If :py:data:`True`, then users will need to authenticate themselves
     via a one-time password sent to their primary phone number."""
 
+    @field_validator("OTP_METHOD", "EMAIL_OTP")
+    @classmethod
+    def validate_otp_method(cls, value):
+        if not importlib.util.find_spec("otpauth"):  # pragma: no cover
+            raise ValidationError(
+                "You are trying to use OTP but the 'otp' extra is not installed."
+            )
+
+        return value
+
     INVITATION_EXPIRATION: int = 172800
     """The validity duration of registration invitations, in seconds.
 
@@ -388,6 +400,16 @@ class CoreSettings(BaseModel):
     If unset, sms-related features like sms one-time passwords won't be
     enabled.
     """
+
+    @field_validator("SMPP")
+    @classmethod
+    def validate_smpp(cls, value: SMPPSettings | None) -> SMPPSettings | None:
+        if not importlib.util.find_spec("smpplib"):  # pragma: no cover
+            raise ValidationError(
+                "You have configured a SMPP server but the 'sms' extra is not installed."
+            )
+
+        return value
 
     ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
     """Mapping of permission groups. See :class:`ACLSettings` for more details.

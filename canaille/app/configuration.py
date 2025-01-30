@@ -1,4 +1,3 @@
-import importlib.util
 import os
 import re
 import smtplib
@@ -269,12 +268,7 @@ def validate_smtp_configuration(config):
 
 
 def validate_smpp_configuration(config):
-    try:
-        import smpplib
-    except ImportError as exc:
-        raise ConfigurationException(
-            "You have configured a SMPP server but the 'sms' extra is not installed."
-        ) from exc
+    import smpplib
 
     host = config["HOST"]
     port = config["PORT"]
@@ -301,13 +295,6 @@ def validate_admin_email(config):
 
 
 def validate_otp_config(config):
-    if (
-        config["OTP_METHOD"] or config["EMAIL_OTP"] or config["SMS_OTP"]
-    ) and not importlib.util.find_spec("otpauth"):  # pragma: no cover
-        raise ConfigurationException(
-            "You are trying to use OTP but the 'otp' extra is not installed."
-        )
-
     if config["EMAIL_OTP"] and not config["SMTP"]:
         raise ConfigurationException(
             "Cannot activate email one-time password authentication without SMTP"
