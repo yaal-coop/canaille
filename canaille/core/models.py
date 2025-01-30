@@ -294,6 +294,10 @@ class User(Model):
     _writable_fields = None
     _permissions = None
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.old_groups = self.groups.copy()
+
     def save(self):
         if current_app.features.has_otp and not self.secret_token:
             self.initialize_otp()
@@ -301,10 +305,21 @@ class User(Model):
 
         yield
 
+        for group in set(self.old_groups) ^ set(self.groups):
+            Backend.instance.reload(group)
+            propagate_group_scim_modification(group, "save")
+
+        self.old_groups = self.groups.copy()
+
     def delete(self):
         propagate_user_scim_modification(self, method="delete")
 
         yield
+
+        for group in self.groups:
+            if Backend.instance.get(models.Group, group.id):
+                Backend.instance.reload(group)
+            propagate_group_scim_modification(group, "save")
 
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
@@ -522,18 +537,6 @@ class User(Model):
             and last_update + password_expiration
             < datetime.datetime.now(datetime.timezone.utc)
         )
-
-    def get_clients(self):
-        if self.id:
-            consents = Backend.instance.query(models.Consent, subject=self)
-            consented_clients = {t.client for t in consents}
-            preconsented_clients = [
-                client
-                for client in Backend.instance.query(models.Client)
-                if client.preconsent and client not in consented_clients
-            ]
-            return list(consented_clients) + list(preconsented_clients)
-        return []
 
 
 class Group(Model):

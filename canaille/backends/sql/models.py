@@ -126,6 +126,8 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         TZDateTime(timezone=True), nullable=True
     )
 
+    old_groups = []
+
     @property
     def password_failure_timestamps(self):
         if self._password_failure_timestamps:

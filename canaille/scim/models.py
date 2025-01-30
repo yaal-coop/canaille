@@ -18,6 +18,7 @@ from scim2_models import Resource
 from scim2_models import ResourceType
 from scim2_models import Schema
 from scim2_models import SchemaExtension
+from scim2_models import SearchRequest
 from scim2_models import ServiceProviderConfig
 from scim2_models import Sort
 from scim2_models import User
@@ -144,6 +145,7 @@ def user_from_canaille_to_scim(
             location=url_for("scim.query_user", user=user, _external=True),
         ),
         id=user.id,
+        external_id=user.id,
         user_name=user.user_name,
         preferred_language=user.preferred_language,
         name=user_class.Name(
@@ -210,12 +212,16 @@ def user_from_canaille_to_scim(
         ]
         or None,
     )
-    scim_user[enterprise_user_class] = enterprise_user_class(
-        employee_number=user.employee_number,
-        organization=user.organization,
-        department=user.department,
-    )
+    if enterprise_user_class:
+        scim_user[enterprise_user_class] = enterprise_user_class(
+            employee_number=user.employee_number,
+            organization=user.organization,
+            department=user.department,
+        )
     return scim_user
+
+
+# TODO : Rajouter external id dans function custom
 
 
 def user_from_scim_to_canaille(scim_user: User, user):
@@ -319,22 +325,14 @@ def initiate_scim_client(client):
 
 def execute_scim_user_action(scim, user, client_name, method):
     User = scim.get_resource_model("User")
-    users = scim.query(User)
 
-    distant_scim_user = None
-    if users.resources:
-        distant_scim_user = next(
-            (
-                myuser
-                for myuser in users.resources
-                if myuser.user_name == user.user_name
-            ),
-            None,
-        )
+    req = SearchRequest(filter=f'userName eq "{user.user_name}"')
+    response = scim.query(User, search_request=req)
+    distant_scim_user = response.resources[0] if response.resources else None
+
     if method == "delete" and distant_scim_user:
         try:
             scim.delete(User, distant_scim_user.id)
-            delete_user_from_groups(user, scim, client_name)
         except:
             current_app.logger.warning(
                 f"SCIM User {user.user_name} delete for client {client_name} failed"
@@ -345,7 +343,6 @@ def execute_scim_user_action(scim, user, client_name, method):
         if not distant_scim_user:
             try:
                 scim.create(scim_user)
-                update_user_groups(user, scim, client_name)
             except Exception:
                 current_app.logger.warning(
                     f"SCIM User {user.user_name} creation for client {client_name} failed"
@@ -360,22 +357,8 @@ def execute_scim_user_action(scim, user, client_name, method):
                 )
 
 
-def update_user_groups(user, scim_client, client_name):
-    for group in user.groups:
-        execute_scim_group_action(scim_client, group, client_name, "save")
-
-
-def delete_user_from_groups(user, scim_client, client_name):
-    user_groups = (
-        user.groups.copy()
-    )  # cannot use user.groups directly as it modifies the user
-    for group in user_groups:
-        group.members = [member for member in group.members if member != user]
-        execute_scim_group_action(scim_client, group, client_name, "save")
-
-
 def propagate_user_scim_modification(user, method):
-    for client in user.get_clients():
+    for client in get_clients(user):
         scim = initiate_scim_client(client)
         if scim:
             execute_scim_user_action(scim, user, client.client_name, method)
@@ -404,13 +387,12 @@ def execute_scim_group_action(scim, group, client_name, method):
                 f"SCIM Group {group.display_name} delete for client {client_name} failed"
             )
     elif method == "save":  # pragma: no branch
+        # TODO : récupérer infos chaque member pour constituer l'objet
         group = group_from_canaille_to_scim(group, Group)
         if not scim_group:
             try:
                 scim.create(group)
-                print("SALUTOS")
             except Exception:
-                print("ERRROOOORRr")
                 current_app.logger.warning(
                     f"SCIM Group {group.display_name} creation for client {client_name} failed"
                 )
@@ -428,9 +410,22 @@ def propagate_group_scim_modification(group, method):
     notifiable_clients = set()
     for member in group.members:
         if isinstance(member, models.User):
-            notifiable_clients.update(member.get_clients())
+            notifiable_clients.update(get_clients(member))
 
     for client in notifiable_clients:
         scim = initiate_scim_client(client)
         if scim:
             execute_scim_group_action(scim, group, client.client_name, method)
+
+
+def get_clients(user):
+    if user.id:
+        consents = Backend.instance.query(models.Consent, subject=user)
+        consented_clients = {t.client for t in consents}
+        preconsented_clients = [
+            client
+            for client in Backend.instance.query(models.Client)
+            if client.preconsent and client not in consented_clients
+        ]
+        return list(consented_clients) + list(preconsented_clients)
+    return []
