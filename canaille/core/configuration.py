@@ -6,6 +6,8 @@ from pydantic import Field
 from pydantic import ValidationError
 from pydantic import ValidationInfo
 from pydantic import field_validator
+from pydantic import model_validator
+from typing_extensions import Self
 
 from canaille.app.configuration import BaseModel
 
@@ -349,6 +351,14 @@ class CoreSettings(BaseModel):
     """If :py:data:`True`, Canaille will check if passwords appears in
     compromission databases such as `HIBP <https://haveibeenpwned.com>`_
     when users choose a new one."""
+
+    @model_validator(mode="after")
+    def validate_password_compromission_check(self) -> Self:
+        if self.ENABLE_PASSWORD_COMPROMISSION_CHECK and self.ADMIN_EMAIL is None:
+            raise ValueError(
+                "You must set an administration email if you want to check if users' passwords are compromised."
+            )
+        return self
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""

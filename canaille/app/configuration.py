@@ -172,6 +172,7 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
 
     app.config.from_mapping(
         {
+            # https://flask.palletsprojects.com/en/stable/config/#SESSION_COOKIE_NAME
             "SESSION_COOKIE_NAME": "canaille",
         }
     )
@@ -208,7 +209,6 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
 
 def validate(config, validate_remote=False):
     validate_keypair(config.get("CANAILLE_OIDC"))
-    validate_admin_email(config["CANAILLE"])
     validate_otp_config(config["CANAILLE"])
     if not validate_remote:
         return
@@ -285,13 +285,6 @@ def validate_smpp_configuration(config):
         ) from exc
     except smpplib.exceptions.UnknownCommandError as exc:  # pragma: no cover
         raise ConfigurationException(exc) from exc
-
-
-def validate_admin_email(config):
-    if config["ENABLE_PASSWORD_COMPROMISSION_CHECK"] and config["ADMIN_EMAIL"] is None:
-        raise ConfigurationException(
-            "You must set an administration email if you want to check if users' passwords are compromised."
-        )
 
 
 def validate_otp_config(config):
