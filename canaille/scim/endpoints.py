@@ -29,9 +29,9 @@ from .models import User
 from .models import get_resource_types
 from .models import get_schemas
 from .models import get_service_provider_config
-from .models import group_from_canaille_to_scim
+from .models import group_from_canaille_to_scim_server
 from .models import group_from_scim_to_canaille
-from .models import user_from_canaille_to_scim
+from .models import user_from_canaille_to_scim_server
 from .models import user_from_scim_to_canaille
 
 bp = Blueprint("scim", __name__, url_prefix="/scim/v2")
@@ -110,7 +110,7 @@ def query_users():
         Backend.instance.query(models.User)[req.start_index_0 : req.stop_index_0]
     )
     total = len(users)
-    scim_users = [user_from_canaille_to_scim(user) for user in users]
+    scim_users = [user_from_canaille_to_scim_server(user) for user in users]
     list_response = ListResponse[User[EnterpriseUser]](
         start_index=req.start_index,
         items_per_page=req.count,
@@ -127,7 +127,7 @@ def query_users():
 @csrf.exempt
 @require_oauth()
 def query_user(user):
-    scim_user = user_from_canaille_to_scim(user)
+    scim_user = user_from_canaille_to_scim_server(user)
     return scim_user.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
     )
@@ -142,7 +142,7 @@ def query_groups():
         Backend.instance.query(models.group)[req.start_index_0 : req.stop_index_0]
     )
     total = len(groups)
-    scim_groups = [group_from_canaille_to_scim(group) for group in groups]
+    scim_groups = [group_from_canaille_to_scim_server(group) for group in groups]
     list_response = ListResponse[Group](
         start_index=req.start_index,
         items_per_page=req.count,
@@ -159,7 +159,7 @@ def query_groups():
 @csrf.exempt
 @require_oauth()
 def query_group(group):
-    scim_group = group_from_canaille_to_scim(group)
+    scim_group = group_from_canaille_to_scim_server(group)
     return scim_group.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
     )
@@ -236,7 +236,7 @@ def create_user():
     )
     user = user_from_scim_to_canaille(request_user, models.User())
     Backend.instance.save(user)
-    response_user = user_from_canaille_to_scim(user)
+    response_user = user_from_canaille_to_scim_server(user)
     payload = response_user.model_dump_json(scim_ctx=Context.RESOURCE_CREATION_RESPONSE)
     return Response(payload, status=HTTPStatus.CREATED)
 
@@ -250,7 +250,7 @@ def create_group():
     )
     group = group_from_scim_to_canaille(request_group, models.Group())
     Backend.instance.save(group)
-    response_group = group_from_canaille_to_scim(group)
+    response_group = group_from_canaille_to_scim_server(group)
     payload = response_group.model_dump_json(
         scim_ctx=Context.RESOURCE_CREATION_RESPONSE
     )
@@ -261,7 +261,7 @@ def create_group():
 @csrf.exempt
 @require_oauth()
 def replace_user(user):
-    original_scim_user = user_from_canaille_to_scim(user)
+    original_scim_user = user_from_canaille_to_scim_server(user)
     request_scim_user = User[EnterpriseUser].model_validate(
         request.json,
         scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
@@ -269,7 +269,7 @@ def replace_user(user):
     )
     updated_user = user_from_scim_to_canaille(request_scim_user, user)
     Backend.instance.save(updated_user)
-    response_scim_user = user_from_canaille_to_scim(updated_user)
+    response_scim_user = user_from_canaille_to_scim_server(updated_user)
     payload = response_scim_user.model_dump(
         scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE
     )
@@ -280,7 +280,7 @@ def replace_user(user):
 @csrf.exempt
 @require_oauth()
 def replace_group(group):
-    original_scim_group = group_from_canaille_to_scim(group)
+    original_scim_group = group_from_canaille_to_scim_server(group)
     request_scim_group = Group.model_validate(
         request.json,
         scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
@@ -288,7 +288,7 @@ def replace_group(group):
     )
     updated_group = group_from_scim_to_canaille(request_scim_group, group)
     Backend.instance.save(updated_group)
-    response_group = group_from_canaille_to_scim(updated_group)
+    response_group = group_from_canaille_to_scim_server(updated_group)
     payload = response_group.model_dump(scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE)
     return payload
 
