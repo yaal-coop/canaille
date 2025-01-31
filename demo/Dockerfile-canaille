@@ -18,6 +18,6 @@ COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md demo/demoapp.py
 COPY canaille /opt/canaille/canaille
 RUN pip install uv
 WORKDIR /opt/canaille
-RUN uv sync --group demo --extra front --extra oidc --extra ldap --extra sqlite
+RUN uv sync --group demo --all-extras
 
 ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille-memory.toml", "--extra-files", "/opt/canaille/conf/canaille-ldap.toml", "--extra-files", "/opt/canaille/conf/canaille-sql.toml"]
