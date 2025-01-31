@@ -97,7 +97,7 @@ Configure
 
 The :doc:`configuration documentation<../references/configuration>` describe several ways to configure Canaille,
 however the most common is to use a TOML configuration file and pass its path with the :envvar:`CONFIG` environment variable.
-A configuration file with default values can be initialized with the :ref:`export-config <cli_export_config>` command.
+A configuration file with default values can be initialized with the :ref:`config dump <cli_config>` command.
 
 .. code-block:: bash
     :caption: Initialize a configuration file.

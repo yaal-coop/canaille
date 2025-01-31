@@ -94,7 +94,7 @@ Parameters
 Example file
 ============
 
-Here is a configuration file example that can be generated with the :ref:`canaille export-config <cli_export_config>` command:
+Here is a configuration file example that can be generated with the :ref:`canaille config dump <cli_config>` command:
 
 .. literalinclude :: ../config.sample.toml
    :language: toml

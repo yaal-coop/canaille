@@ -21,7 +21,7 @@ def test_export_current_config(testclient, backend, tmp_path):
 
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(
-        cli, ["export-config", "--path", str(toml_export)], catch_exceptions=False
+        cli, ["config", "dump", "--path", str(toml_export)], catch_exceptions=False
     )
     assert res.exit_code == 0, res.stdout
 
@@ -49,7 +49,7 @@ def test_export_env_config(testclient, tmp_path, backend):
 
     os.environ["CONFIG"] = str(toml_export)
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["export-config"], catch_exceptions=False)
+    res = runner.invoke(cli, ["config", "dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
 
     with open(toml_export) as fd:

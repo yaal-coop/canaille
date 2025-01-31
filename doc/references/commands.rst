@@ -11,10 +11,10 @@ For the sake of readability, it is omitted in the following examples.
 
     env CONFIG=path/to/config.toml canaille ...
 
-.. _cli_check:
+.. _cli_config:
 
-.. click:: canaille.app.commands:check
-   :prog: canaille check
+.. click:: canaille.app.commands:config
+   :prog: canaille config
    :nested: full
 
 .. _cli_run:
@@ -27,12 +27,6 @@ For the sake of readability, it is omitted in the following examples.
 
 .. click:: canaille.oidc.commands:clean
    :prog: canaille clean
-   :nested: full
-
-.. _cli_export_config:
-
-.. click:: canaille.app.commands:export_config
-   :prog: canaille export-config
    :nested: full
 
 .. _cli_dump:

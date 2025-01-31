@@ -299,7 +299,7 @@ Command Line Interface
 
 Canaille comes with a :abbr:`CLI (Command Line Interface)` to help administrators in hosting and management.
 
-There are tools to :ref:`check your configuration <cli_check>` or to :ref:`install missing parts <cli_install>`.
+There are tools to :ref:`generate and check a configuration file <cli_config>` or to :ref:`install missing parts <cli_install>`.
 You can use the CLI to :ref:`create <cli_create>`, :ref:`read <cli_get>`, :ref:`update <cli_set>` and :ref:`delete <cli_delete>` models such as :class:`users <canaille.core.models.User>`, :class:`groups <canaille.core.models.Group>` or  :class:`OIDC clients <canaille.oidc.basemodels.Client>`.
 
 There are also tools to :ref:`fill your database <cli_populate>` with random objects, for tests purpose for instance.

@@ -5,7 +5,7 @@ Added
 ^^^^^
 - Add screenshots in the documentation. :issue:`210`
 - Implement a ``canaille run`` command that runs a production server with Hypercorn. :pr:`219`
-- Implement a ``canaille export-config`` command that create a commented config file. :pr:`223`
+- Implement a ``canaille config dump`` command that create a commented config file. :pr:`223`
 - Load configuration from local ``canaille.toml`` files. :pr:`225`
 
 Changed
@@ -13,6 +13,7 @@ Changed
 - Avoid displaying password strength progress bar in login form.
 - Mysql extra depends on ``pymysql`` instead of ``mysql-connector``.
 - :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY` is not mandatory anymore, but displays warnings when unset. :pr:`221`
+- Move the ``canaille check`` command under ``canaille config``.
 
 Fixed
 ^^^^^
