@@ -236,7 +236,7 @@ Python package
 
 The Python packaging step is took care of by uv:
 
-   .. code-block:: bash
+.. code-block:: bash
 
     uv build
 
@@ -247,13 +247,13 @@ To build a single binary of Canaille, you can use pyinstaller by installing the 
 
 .. code-block:: bash
 
-    uv sync --group release
-    uv run pyinstaller --name canaille --onefile canaille/commands.py
+    uv sync --group release --all-extras --no-dev
+    uv run pyinstaller canaille.spec
 
 Publish a new release
 ---------------------
 
-1. Check that dependencies are up to date with ``uv sync --all-extras --upgrade`` and update dependencies accordingly in separated commits;
+1. Check that dependencies are up to date with ``uv sync --all-extras --all-groups --upgrade`` and update dependencies accordingly in separated commits;
 2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``;
 3. Check that the demo environments are still working, both the local and the Docker one;
 4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
@@ -261,7 +261,7 @@ Publish a new release
 6. Commit with ``git commit``;
 7. :ref:`Build the packages <development/contributing:Build a release>`;
 8. Publish the Python package on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
-9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade canaille``. Check that everything looks fine;
+9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade "canaille[front,oidc,postgresql,server,otp,sms]"``. Check that everything looks fine;
 10. Publish the Python package on production PyPI ``uv publish``;
 11. Tag the commit with ``git tag XX.YY.ZZ``;
 12. Push the release commit and the new tag on the repository with ``git push --tags``.
