@@ -5,7 +5,7 @@ cn: Jane Doe
 givenName: Jane
 sn: Doe
 uid: admin
-mail: admin@mydomain.tld
+mail: admin@example.org
 telephoneNumber: 555-000-000
 employeeNumber: 1000
 departmentNumber: east
@@ -25,7 +25,7 @@ cn: Jack Doe
 givenName: Jack
 sn: Doe
 uid: moderator
-mail: moderator@mydomain.tld
+mail: moderator@example.org
 telephoneNumber: 555-000-002
 employeeNumber: 1002
 departmentNumber: west
@@ -40,7 +40,7 @@ cn: John Doe
 givenName: John
 sn: Doe
 uid: user
-mail: user@mydomain.tld
+mail: user@example.org
 telephoneNumber: 555-000-001
 employeeNumber: 1001
 departmentNumber: west
@@ -55,7 +55,7 @@ cn: James Doe
 givenName: James
 sn: Doe
 uid: james
-mail: james@mydomain.tld
+mail: james@example.org
 telephoneNumber: 555-000-003
 
 dn: cn=users,ou=groups,dc=mydomain,dc=tld

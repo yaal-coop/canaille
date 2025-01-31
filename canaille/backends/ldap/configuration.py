@@ -10,7 +10,7 @@ class LDAPSettings(BaseModel):
     """
 
     URI: str = Field(
-        "ldap://localhost", examples=["ldap://localhost", "ldaps://ldap.mydomain.tld"]
+        "ldap://localhost", examples=["ldap://localhost", "ldaps://ldap.example.org"]
     )
     """The LDAP server URI."""
 

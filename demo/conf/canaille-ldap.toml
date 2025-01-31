@@ -5,7 +5,7 @@ DEBUG = true
 LOGO = "/static/img/canaille-head.webp"
 FAVICON = "/static/img/canaille-c.webp"
 ENABLE_REGISTRATION = true
-ADMIN_EMAIL = "admin@mydomain.tld"
+ADMIN_EMAIL = "admin@example.org"
 
 [CANAILLE.SMTP]
 HOST = "localhost"

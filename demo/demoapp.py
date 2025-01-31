@@ -26,7 +26,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="admin",
                 display_name="Jane.D",
-                emails=["admin@mydomain.tld"],
+                emails=["admin@example.org"],
                 password="admin",
                 phone_numbers=["555-000-000"],
                 profile_url="https://admin.example",
@@ -46,7 +46,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="moderator",
                 display_name="👮 Jack 👮",
-                emails=["moderator@mydomain.tld"],
+                emails=["moderator@example.org"],
                 password="moderator",
                 phone_numbers=["555-000-002"],
                 profile_url="https://moderator.example",
@@ -61,7 +61,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="user",
                 display_name="Johnny",
-                emails=["user@mydomain.tld"],
+                emails=["user@example.org"],
                 password="user",
                 phone_numbers=["555-000-001"],
                 profile_url="https://user.example",
@@ -75,7 +75,7 @@ def populate(app):
                 given_name="James",
                 family_name="Doe",
                 user_name="james",
-                emails=["james@mydomain.tld"],
+                emails=["james@example.org"],
             )
             app.backend.save(james)
 
@@ -105,7 +105,7 @@ def populate(app):
                 client_id="client1",
                 client_secret="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x",
                 client_name="Client1",
-                contacts=["admin@mydomain.tld"],
+                contacts=["admin@example.org"],
                 client_uri="http://client1.localhost:5001",
                 redirect_uris=[
                     "http://localhost:5001/login_callback",
@@ -137,7 +137,7 @@ def populate(app):
                 client_id="client2",
                 client_secret="ouFJE5WpICt6hxTyf8icXPeeklMektMY4gV0Rmf3aY60VElA",
                 client_name="Client2",
-                contacts=["admin@mydomain.tld"],
+                contacts=["admin@example.org"],
                 client_uri="http://client2.localhost:5002",
                 redirect_uris=[
                     "http://localhost:5002/login_callback",

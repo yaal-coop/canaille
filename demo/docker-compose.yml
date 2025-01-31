@@ -1,1 +1,57 @@
-docker-compose-sql.yml
+---
+version: "3"
+
+services:
+  canaille:
+    hostname: canaille.localhost
+    build:
+      context: ..
+      dockerfile: demo/Dockerfile-canaille
+    environment:
+      - AUTHLIB_INSECURE_TRANSPORT=1
+      - FLASK_DEBUG=1
+      - CONFIG=/opt/canaille/conf/canaille-sql.toml
+      - FLASK_APP=demoapp
+    volumes:
+      - ../canaille:/opt/canaille/canaille
+      - ./conf-docker:/opt/canaille/conf
+    ports:
+      - 5000:5000
+
+  client1:
+    hostname: client1.localhost
+    depends_on:
+      - canaille
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    environment:
+      - FLASK_DEBUG=1
+      - CONFIG=/opt/client/conf/client1.cfg
+      - FLASK_APP=client
+    volumes:
+      - ./client:/opt/client/client
+      - ./conf-docker:/opt/client/conf
+      - ../canaille/static:/opt/canaille/static
+    command: --port=5001
+    ports:
+      - 5001:5001
+
+  client2:
+    hostname: client2.localhost
+    depends_on:
+      - canaille
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    environment:
+      - FLASK_DEBUG=1
+      - CONFIG=/opt/client/conf/client2.cfg
+      - FLASK_APP=client
+    volumes:
+      - ./client:/opt/client/client
+      - ./conf-docker:/opt/client/conf
+      - ../canaille/static:/opt/canaille/static
+    command: --port=5002
+    ports:
+      - 5002:5002
