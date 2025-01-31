@@ -48,7 +48,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
     backend.save(user)
 
     dn = user.dn
-    assert dn == "uid=user,ou=users,dc=mydomain,dc=tld"
+    assert dn == "uid=user,ou=users,dc=example,dc=org"
     assert ldap.dn.is_dn(dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
 
@@ -71,7 +71,7 @@ def test_special_chars_in_rdn(testclient, backend):
     dn = user.dn
     assert ldap.dn.is_dn(dn)
     assert ldap.dn.dn2str(ldap.dn.str2dn(dn)) == dn
-    assert dn == "uid=\\#user,ou=users,dc=mydomain,dc=tld"
+    assert dn == "uid=\\#user,ou=users,dc=example,dc=org"
 
     assert user == backend.get(models.User, user.user_name)
     assert user == backend.get(models.User, user_name=user.user_name)

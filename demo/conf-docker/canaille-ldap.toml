@@ -58,13 +58,13 @@ WRITE = ["groups"]
 
 [CANAILLE_LDAP]
 URI = "ldap://ldap:389"
-ROOT_DN = "dc=mydomain,dc=tld"
-BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+ROOT_DN = "dc=example,dc=org"
+BIND_DN = "cn=admin,dc=example,dc=org"
 BIND_PW = "admin"
 TIMEOUT = 10
-USER_BASE = "ou=users,dc=mydomain,dc=tld"
+USER_BASE = "ou=users,dc=example,dc=org"
 USER_RDN = "uid"
-GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 [CANAILLE_OIDC]
 DYNAMIC_CLIENT_REGISTRATION_OPEN = true

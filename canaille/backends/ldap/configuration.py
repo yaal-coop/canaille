@@ -14,10 +14,10 @@ class LDAPSettings(BaseModel):
     )
     """The LDAP server URI."""
 
-    ROOT_DN: str = "dc=mydomain,dc=tld"
+    ROOT_DN: str = "dc=example,dc=org"
     """The LDAP root DN."""
 
-    BIND_DN: str = "cn=admin,dc=mydomain,dc=tld"
+    BIND_DN: str = "cn=admin,dc=example,dc=org"
     """The LDAP bind DN."""
 
     BIND_PW: str = "admin"
@@ -26,10 +26,10 @@ class LDAPSettings(BaseModel):
     TIMEOUT: float = 0.0
     """The LDAP connection timeout."""
 
-    USER_BASE: str = Field(..., examples=["ou=users,dc=mydomain,dc=tld"])
+    USER_BASE: str = Field(..., examples=["ou=users,dc=example,dc=org"])
     """The LDAP node under which users will be looked for and saved.
 
-    For instance `ou=users,dc=mydomain,dc=tld`.
+    For instance `ou=users,dc=example,dc=org`.
     """
 
     USER_CLASS: list[str] = ["inetOrgPerson"]
@@ -46,10 +46,10 @@ class LDAPSettings(BaseModel):
     containing the value passed in the login field.
     """
 
-    GROUP_BASE: str = Field(..., examples=["ou=groups,dc=mydomain,dc=tld"])
+    GROUP_BASE: str = Field(..., examples=["ou=groups,dc=example,dc=org"])
     """The LDAP node under which groups will be looked for and saved.
 
-    For instance `"ou=groups,dc=mydomain,dc=tld"`.
+    For instance `"ou=groups,dc=example,dc=org"`.
     """
 
     GROUP_CLASS: str = "groupOfNames"

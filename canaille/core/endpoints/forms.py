@@ -251,7 +251,7 @@ PROFILE_FORM_FIELDS = dict(
     profile_url=wtforms.URLField(
         _("Website"),
         render_kw={
-            "placeholder": _("https://mywebsite.tld"),
+            "placeholder": _("https://mywebsite.example"),
         },
         validators=[wtforms.validators.Optional(), is_uri],
     ),

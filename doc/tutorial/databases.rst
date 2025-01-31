@@ -52,15 +52,15 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 
     [CANAILLE_LDAP]
     URI = "ldap://ldap"
-    ROOT_DN = "dc=mydomain,dc=tld"
-    BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+    ROOT_DN = "dc=example,dc=org"
+    BIND_DN = "cn=admin,dc=example,dc=org"
     BIND_PW = "very-secret-password"
 
-    USER_BASE = "ou=users,dc=mydomain,dc=tld"
+    USER_BASE = "ou=users,dc=example,dc=org"
     USER_CLASS = "inetOrgPerson"
     USER_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
 
-    GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+    GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 If you want to use TOTP/HOTP authentication, you will need to add the ``oathHOTPToken`` class to the user:
 

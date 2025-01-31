@@ -1,23 +1,23 @@
-dn: ou=oauth,dc=mydomain,dc=tld
+dn: ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: oauth
 
-dn: ou=clients,ou=oauth,dc=mydomain,dc=tld
+dn: ou=clients,ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: clients
 
-dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld
+dn: ou=tokens,ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: tokens
 
-dn: ou=authorizations,ou=oauth,dc=mydomain,dc=tld
+dn: ou=authorizations,ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: authorizations
 
-dn: ou=consents,ou=oauth,dc=mydomain,dc=tld
+dn: ou=consents,ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: consents
 
-dn: ou=codes,ou=oauth,dc=mydomain,dc=tld
+dn: ou=codes,ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: codes

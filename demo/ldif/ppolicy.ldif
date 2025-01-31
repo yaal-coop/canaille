@@ -1,4 +1,4 @@
-dn: cn=passwordDefault,dc=mydomain,dc=tld
+dn: cn=passwordDefault,dc=example,dc=org
 objectClass: person
 objectClass: top
 objectClass: pwdPolicy

@@ -36,14 +36,14 @@ def slapd_server():
 
 def test_setup_ldap_tree(slapd_server, configuration):
     output = slapd_server.slapcat().stdout.decode("utf-8")
-    assert "dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld" not in output
+    assert "dn: ou=tokens,ou=oauth,dc=example,dc=org" not in output
     testclient = TestApp(create_app(configuration, validate=False))
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["install"])
     assert res.exit_code == 0, res.stdout
 
     output = slapd_server.slapcat().stdout.decode("utf-8")
-    assert "dn: ou=tokens,ou=oauth,dc=mydomain,dc=tld" in output
+    assert "dn: ou=tokens,ou=oauth,dc=example,dc=org" in output
 
 
 def test_install_schemas(configuration, slapd_server):
@@ -85,7 +85,7 @@ def test_install_schemas_twice(configuration, slapd_server):
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
-    configuration["CANAILLE_LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=mydomain,dc=tld"
+    configuration["CANAILLE_LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=example,dc=org"
     configuration["CANAILLE_LDAP"]["BIND_PW"] = "admin"
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()

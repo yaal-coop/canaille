@@ -404,10 +404,10 @@ DATABASE_URI = "sqlite:///canaille.sqlite"
 # URI = "ldap://localhost"
 
 # The LDAP root DN.
-# ROOT_DN = "dc=mydomain,dc=tld"
+# ROOT_DN = "dc=example,dc=org"
 
 # The LDAP bind DN.
-# BIND_DN = "cn=admin,dc=mydomain,dc=tld"
+# BIND_DN = "cn=admin,dc=example,dc=org"
 
 # The LDAP bind password.
 # BIND_PW = "admin"
@@ -417,9 +417,9 @@ DATABASE_URI = "sqlite:///canaille.sqlite"
 
 # The LDAP node under which users will be looked for and saved.
 #
-# For instance `ou=users,dc=mydomain,dc=tld`.
+# For instance `ou=users,dc=example,dc=org`.
 # USER_BASE =
-USER_BASE = "ou=users,dc=mydomain,dc=tld"
+USER_BASE = "ou=users,dc=example,dc=org"
 
 # The attribute to identify an object in the User DN.
 # USER_RDN = "uid"
@@ -433,9 +433,9 @@ USER_BASE = "ou=users,dc=mydomain,dc=tld"
 
 # The LDAP node under which groups will be looked for and saved.
 #
-# For instance `"ou=groups,dc=mydomain,dc=tld"`.
+# For instance `"ou=groups,dc=example,dc=org"`.
 # GROUP_BASE =
-GROUP_BASE = "ou=groups,dc=mydomain,dc=tld"
+GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # The object class to use for creating new groups.
 # GROUP_CLASS = "groupOfNames"

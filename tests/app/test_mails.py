@@ -219,14 +219,14 @@ def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
 def test_default_from_flask_server_name(configuration, user, smtpd, backend):
     app = create_app(configuration, backend=backend)
     app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
-    app.config["SERVER_NAME"] = "foobar.tld"
+    app.config["SERVER_NAME"] = "foobar.test"
 
     testclient = TestApp(app)
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     res = res.form.submit(status=200)
-    assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.tld"
-    assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.tld>'
+    assert smtpd.messages[0]["X-MailFrom"] == "admin@foobar.test"
+    assert smtpd.messages[0]["From"] == '"Canaille" <admin@foobar.test>'
 
 
 def test_type_from_filename():

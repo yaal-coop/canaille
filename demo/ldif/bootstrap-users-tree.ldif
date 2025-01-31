@@ -1,7 +1,7 @@
-dn: ou=users,dc=mydomain,dc=tld
+dn: ou=users,dc=example,dc=org
 objectclass: organizationalUnit
 ou: users
 
-dn: ou=groups,dc=mydomain,dc=tld
+dn: ou=groups,dc=example,dc=org
 objectclass: organizationalUnit
 ou: groups

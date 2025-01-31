@@ -22,7 +22,7 @@ schemas = [
 ]
 
 slapd = slapd.Slapd(
-    suffix="dc=mydomain,dc=tld",
+    suffix="dc=example,dc=org",
     root_cn="admin",
     root_pw="admin",
     port=5389,

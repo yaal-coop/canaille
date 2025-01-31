@@ -18,6 +18,6 @@ class CustomSlapdObject(slapd.Slapd):
         ]
 
         super().__init__(
-            suffix="dc=mydomain,dc=tld",
+            suffix="dc=example,dc=org",
             schemas=schemas,
         )
