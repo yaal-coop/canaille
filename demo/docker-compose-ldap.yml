@@ -3,6 +3,7 @@ version: "3"
 
 services:
   ldap:
+    hostname: ldap.localhost
     image: osixia/openldap
     environment:
       - LDAP_DOMAIN=example.org
@@ -22,6 +23,7 @@ services:
       - 5636:636
 
   canaille:
+    hostname: canaille.localhost
     depends_on:
       - ldap
     build:
@@ -39,6 +41,7 @@ services:
       - 5000:5000
 
   client1:
+    hostname: client1.localhost
     depends_on:
       - canaille
     build:
@@ -57,6 +60,7 @@ services:
       - 5001:5001
 
   client2:
+    hostname: client2.localhost
     depends_on:
       - canaille
     build:
