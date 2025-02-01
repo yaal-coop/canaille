@@ -2,7 +2,6 @@ SECRET_KEY = "change me before you go in production"
 DEBUG = true
 
 [CANAILLE]
-NAME = "Canaille"
 LOGO = "/static/img/canaille-head.webp"
 FAVICON = "/static/img/canaille-c.webp"
 EMAIL_CONFIRMATION = false
@@ -64,3 +63,5 @@ DYNAMIC_CLIENT_REGISTRATION_OPEN = true
 DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
     "xxxxxxx-yyyyyyy-zzzzzz",
 ]
+
+[CANAILLE_SCIM]

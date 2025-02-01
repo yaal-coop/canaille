@@ -4,6 +4,7 @@ DEBUG = true
 [CANAILLE]
 LOGO = "/static/img/canaille-head.webp"
 FAVICON = "/static/img/canaille-c.webp"
+EMAIL_CONFIRMATION = false
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@example.org"
 
@@ -59,7 +60,7 @@ PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
 WRITE = ["groups"]
 
 [CANAILLE_LDAP]
-URI = "ldap://127.0.0.1:5389"
+URI = "ldap://ldap.localhost:5389"
 ROOT_DN = "dc=example,dc=org"
 BIND_DN = "cn=admin,dc=example,dc=org"
 BIND_PW = "admin"
