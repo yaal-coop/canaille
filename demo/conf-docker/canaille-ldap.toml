@@ -57,7 +57,7 @@ PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
 WRITE = ["groups"]
 
 [CANAILLE_LDAP]
-URI = "ldap://ldap:389"
+URI = "ldap://ldap.localhost:389"
 ROOT_DN = "dc=example,dc=org"
 BIND_DN = "cn=admin,dc=example,dc=org"
 BIND_PW = "admin"
