@@ -6,8 +6,8 @@ import pytest
 
 from canaille.app import models
 from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import check_network_config
 from canaille.app.configuration import settings_factory
-from canaille.app.configuration import validate
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
 from canaille.backends.ldap.utils import Syntax
@@ -180,16 +180,10 @@ def test_operational_attribute_conversion(backend):
     }
 
 
-def test_ldap_connection_no_remote(testclient, configuration):
-    config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    validate(config_dict)
-
-
 def test_ldap_connection_remote(testclient, configuration, backend, mock_smpp):
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
-    validate(config_dict, validate_remote=True)
+    check_network_config(config_dict)
 
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
@@ -201,7 +195,7 @@ def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
         ConfigurationException,
         match=r"Could not connect to the LDAP server",
     ):
-        validate(config_dict, validate_remote=True)
+        check_network_config(config_dict)
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
@@ -213,7 +207,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration
         ConfigurationException,
         match=r"LDAP authentication failed with user",
     ):
-        validate(config_dict, validate_remote=True)
+        check_network_config(config_dict)
 
 
 def test_ldap_cannot_create_users(testclient, configuration, backend):
@@ -230,7 +224,7 @@ def test_ldap_cannot_create_users(testclient, configuration, backend):
             ConfigurationException,
             match=r"cannot create users at",
         ):
-            validate(config_dict, validate_remote=True)
+            check_network_config(config_dict)
 
 
 def test_ldap_cannot_create_groups(testclient, configuration, backend):
@@ -247,7 +241,7 @@ def test_ldap_cannot_create_groups(testclient, configuration, backend):
             ConfigurationException,
             match=r"cannot create groups at",
         ):
-            validate(config_dict, validate_remote=True)
+            check_network_config(config_dict)
 
 
 def test_login_placeholder(testclient):

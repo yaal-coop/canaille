@@ -4,7 +4,6 @@ import smtplib
 import socket
 import textwrap
 
-from flask import current_app
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ValidationError
 from pydantic import create_model
@@ -204,39 +203,17 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
     return True
 
 
-def validate(config, validate_remote=False):
-    validate_keypair(config.get("CANAILLE_OIDC"))
-    if not validate_remote:
-        return
-
+def check_network_config(config):
     from canaille.backends import Backend
 
-    Backend.instance.validate(config)
+    Backend.instance.check_network_config(config)
     if smtp_config := config["CANAILLE"]["SMTP"]:
-        validate_smtp_configuration(smtp_config)
+        test_smtp_configuration(smtp_config)
     if smpp_config := config["CANAILLE"]["SMPP"]:
-        validate_smpp_configuration(smpp_config)
+        test_smpp_configuration(smpp_config)
 
 
-def validate_keypair(config):
-    if (
-        config
-        and config["JWT"]
-        and not config["JWT"]["PUBLIC_KEY"]
-        and not current_app.debug
-    ):
-        raise ConfigurationException("No public key has been set")
-
-    if (
-        config
-        and config["JWT"]
-        and not config["JWT"]["PRIVATE_KEY"]
-        and not current_app.debug
-    ):
-        raise ConfigurationException("No private key has been set")
-
-
-def validate_smtp_configuration(config):
+def test_smtp_configuration(config):
     host = config["HOST"]
     port = config["PORT"]
     try:
@@ -263,7 +240,7 @@ def validate_smtp_configuration(config):
         raise ConfigurationException(exc) from exc
 
 
-def validate_smpp_configuration(config):
+def test_smpp_configuration(config):
     import smpplib
 
     host = config["HOST"]

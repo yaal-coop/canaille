@@ -3,7 +3,7 @@ from canaille.commands import cli
 
 def test_check_command(testclient, mock_smpp):
     runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["config", "check"])
+    res = runner.invoke(cli, ["config", "check"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
 
 

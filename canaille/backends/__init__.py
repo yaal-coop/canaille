@@ -88,8 +88,8 @@ class Backend:
         """Is called after each http request, it should close the connections to the backend."""
 
     @classmethod
-    def validate(cls, config):
-        """Validate the config part dedicated to the backend.
+    def check_network_config(cls, config):
+        """check_network_config the config part dedicated to the backend.
 
         It should raise :class:`~canaille.configuration.ConfigurationError` when
         errors are met.
@@ -179,11 +179,7 @@ class Backend:
         from canaille.app import models
 
         module = ".".join(self.__class__.__module__.split(".")[:-1] + ["models"])
-        try:
-            backend_models = importlib.import_module(module)
-        except ModuleNotFoundError:
-            return
-
+        backend_models = importlib.import_module(module)
         model_names = [
             "AuthorizationCode",
             "Client",

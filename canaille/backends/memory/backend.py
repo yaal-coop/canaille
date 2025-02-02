@@ -51,7 +51,7 @@ class MemoryBackend(Backend):
         pass
 
     @classmethod
-    def validate(cls, config):
+    def check_network_config(cls, config):
         pass
 
     @classmethod

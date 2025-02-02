@@ -118,7 +118,7 @@ class LDAPBackend(Backend):
             self._connection = None
 
     @classmethod
-    def validate(cls, config):
+    def check_network_config(cls, config):
         from canaille.app import models
 
         with cls(config).session():

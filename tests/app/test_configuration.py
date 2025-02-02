@@ -9,10 +9,10 @@ from pydantic import ValidationError
 
 from canaille import create_app
 from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import check_network_config
 from canaille.app.configuration import export_config
 from canaille.app.configuration import sanitize_rst_text
 from canaille.app.configuration import settings_factory
-from canaille.app.configuration import validate
 
 
 def test_configuration_secrets_directory(tmp_path, backend, configuration):
@@ -173,7 +173,7 @@ def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configurat
         ConfigurationException,
         match=r"Could not connect to the SMTP server",
     ):
-        validate(config_dict, validate_remote=True)
+        check_network_config(config_dict)
 
 
 def test_smtp_connection_remote_smtp_wrong_credentials(
@@ -186,7 +186,7 @@ def test_smtp_connection_remote_smtp_wrong_credentials(
         ConfigurationException,
         match=r"SMTP authentication failed with user",
     ):
-        validate(config_dict, validate_remote=True)
+        check_network_config(config_dict)
 
 
 def test_smtp_connection_remote_smtp_no_credentials(
@@ -196,7 +196,7 @@ def test_smtp_connection_remote_smtp_no_credentials(
     del configuration["CANAILLE"]["SMTP"]["PASSWORD"]
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
-    validate(config_dict, validate_remote=True)
+    check_network_config(config_dict)
 
 
 def test_smtp_bad_tls(testclient, backend, smtpd, configuration):
@@ -207,7 +207,7 @@ def test_smtp_bad_tls(testclient, backend, smtpd, configuration):
         ConfigurationException,
         match=r"SMTP AUTH extension not supported by server",
     ):
-        validate(config_dict, validate_remote=True)
+        check_network_config(config_dict)
 
 
 @pytest.fixture
@@ -230,24 +230,19 @@ def test_theme(testclient, themed_testclient, backend):
 
 
 def test_invalid_theme(configuration, backend):
-    config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-
-    validate(config_dict, validate_remote=False)
-
     with pytest.raises(
         ValidationError,
         match=r"Path does not point to a directory",
     ):
         configuration["CANAILLE"]["THEME"] = "invalid"
-        config_obj = settings_factory(configuration)
+        settings_factory(configuration)
 
     with pytest.raises(
         ValidationError,
         match=r"Path does not point to a directory",
     ):
         configuration["CANAILLE"]["THEME"] = "/path/to/invalid"
-        config_obj = settings_factory(configuration)
+        settings_factory(configuration)
 
 
 def test_enable_password_compromission_check_with_and_without_admin_email(
@@ -255,13 +250,11 @@ def test_enable_password_compromission_check_with_and_without_admin_email(
 ):
     configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = False
     configuration["CANAILLE"]["ADMIN_EMAIL"] = None
-    config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    validate(config_dict, validate_remote=False)
+    settings_factory(configuration)
 
     configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     configuration["CANAILLE"]["ADMIN_EMAIL"] = "admin_default_mail@mydomain.test"
-    config_obj = settings_factory(configuration)
+    settings_factory(configuration)
 
     with pytest.raises(
         ValidationError,
@@ -269,51 +262,36 @@ def test_enable_password_compromission_check_with_and_without_admin_email(
     ):
         configuration["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
         configuration["CANAILLE"]["ADMIN_EMAIL"] = None
-        config_obj = settings_factory(configuration)
+        settings_factory(configuration)
 
 
 def test_invalid_otp_option(configuration, backend):
-    config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-
-    validate(config_dict, validate_remote=False)
-
     with pytest.raises(
         ValidationError,
         match=r"Input should be 'TOTP' or 'HOTP'",
     ):
         configuration["CANAILLE"]["OTP_METHOD"] = "invalid"
-        config_obj = settings_factory(configuration)
+        settings_factory(configuration)
 
 
 def test_email_otp_without_smtp(configuration, backend):
-    config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-
-    validate(config_dict, validate_remote=False)
-
     with pytest.raises(
         ValidationError,
         match=r"Cannot activate email one-time password authentication without SMTP",
     ):
         configuration["CANAILLE"]["SMTP"] = None
         configuration["CANAILLE"]["EMAIL_OTP"] = True
-        config_obj = settings_factory(configuration)
+        settings_factory(configuration)
 
 
 def test_sms_otp_without_smpp(configuration, backend):
-    config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-
-    validate(config_dict, validate_remote=False)
-
     with pytest.raises(
         ValidationError,
         match=r"Cannot activate sms one-time password authentication without SMPP",
     ):
         configuration["CANAILLE"]["SMPP"] = None
         configuration["CANAILLE"]["SMS_OTP"] = True
-        config_obj = settings_factory(configuration)
+        settings_factory(configuration)
 
 
 def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configuration):
@@ -329,15 +307,15 @@ def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configurat
         ConfigurationException,
         match=r"Could not connect to the SMPP server 'invalid-smpp.com' on port '2775'",
     ):
-        validate(config_dict, validate_remote=True)
+        check_network_config(config_dict)
 
 
-def test_validate_without_smpp(configuration, backend, mock_smpp):
+def test_check_network_config_without_smpp(configuration, backend, mock_smpp):
     configuration["CANAILLE"]["SMPP"] = None
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
 
-    validate(config_dict, validate_remote=True)
+    check_network_config(config_dict)
 
 
 def test_smpp_connection_remote_smpp_no_credentials(
@@ -347,7 +325,7 @@ def test_smpp_connection_remote_smpp_no_credentials(
     del configuration["CANAILLE"]["SMPP"]["PASSWORD"]
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
-    validate(config_dict, validate_remote=True)
+    check_network_config(config_dict)
 
 
 def test_no_secret_key(configuration, caplog):

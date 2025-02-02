@@ -109,16 +109,16 @@ def dump(path: Path | None):
 @with_appcontext
 @with_backendcontext
 def check():
-    """Test the configuration file.
+    """Test the network connections defined in the configuration file.
 
     Attempt to reach the database and the SMTP server with the provided
     credentials.
     """
     from canaille.app.configuration import ConfigurationException
-    from canaille.app.configuration import validate
+    from canaille.app.configuration import check_network_config
 
     try:
-        validate(current_app.config, validate_remote=True)
+        check_network_config(current_app.config)
     except ConfigurationException as exc:
         print(exc)
         sys.exit(1)
