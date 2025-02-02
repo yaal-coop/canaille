@@ -3,6 +3,8 @@ import os
 import flask
 from flask import current_app
 
+from canaille.app import DOCUMENTATION_URL
+
 try:
     import flask_themer
 except ImportError:
@@ -55,6 +57,7 @@ def setup_jinja(app):
 
         return {
             "debug": app.debug or app.config.get("TESTING", False),
+            "documentation_url": DOCUMENTATION_URL,
             "logo_url": app.config["CANAILLE"]["LOGO"],
             "favicon_url": app.config["CANAILLE"]["FAVICON"]
             or app.config["CANAILLE"]["LOGO"],

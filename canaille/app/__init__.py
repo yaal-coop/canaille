@@ -8,6 +8,8 @@ from io import BytesIO
 from flask import current_app
 from flask import request
 
+DOCUMENTATION_URL = "https://canaille.readthedocs.io"
+
 
 def obj_to_b64(obj):
     return base64.b64encode(json.dumps(obj).encode("utf-8")).decode("utf-8")

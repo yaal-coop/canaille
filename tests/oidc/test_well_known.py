@@ -7,6 +7,13 @@ def test_oauth_authorization_server(testclient):
     assert res == {
         "authorization_endpoint": "http://canaille.test/oauth/authorize",
         "code_challenge_methods_supported": ["plain", "S256"],
+        "grant_types": [
+            "authorization_code",
+            "implicit",
+            "password",
+            "client_credentials",
+            "refresh_token",
+        ],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
         "issuer": "https://auth.mydomain.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
@@ -19,6 +26,7 @@ def test_oauth_authorization_server(testclient):
             "code id_token",
             "token id_token",
         ],
+        "revocation_endpoint": "http://canaille.test/oauth/revoke",
         "scopes_supported": [
             "openid",
             "profile",
@@ -27,6 +35,7 @@ def test_oauth_authorization_server(testclient):
             "phone",
             "groups",
         ],
+        "service_documentation": "https://canaille.readthedocs.io",
         "token_endpoint": "http://canaille.test/oauth/token",
         "token_endpoint_auth_methods_supported": [
             "client_secret_basic",
@@ -66,6 +75,13 @@ def test_openid_configuration(testclient):
         ],
         "code_challenge_methods_supported": ["plain", "S256"],
         "end_session_endpoint": "http://canaille.test/oauth/end_session",
+        "grant_types": [
+            "authorization_code",
+            "implicit",
+            "password",
+            "client_credentials",
+            "refresh_token",
+        ],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
         "issuer": "https://auth.mydomain.test",
@@ -79,6 +95,7 @@ def test_openid_configuration(testclient):
             "code id_token",
             "token id_token",
         ],
+        "revocation_endpoint": "http://canaille.test/oauth/revoke",
         "scopes_supported": [
             "openid",
             "profile",
@@ -87,6 +104,7 @@ def test_openid_configuration(testclient):
             "phone",
             "groups",
         ],
+        "service_documentation": "https://canaille.readthedocs.io",
         "subject_types_supported": ["pairwise", "public"],
         "token_endpoint": "http://canaille.test/oauth/token",
         "token_endpoint_auth_methods_supported": [

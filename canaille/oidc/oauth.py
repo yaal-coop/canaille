@@ -33,6 +33,7 @@ from flask import request
 from flask import url_for
 from werkzeug.security import gen_salt
 
+from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
 from canaille.backends import Backend
 
@@ -52,6 +53,7 @@ def oauth_authorization_server():
         ],
         "token_endpoint_auth_signing_alg_values_supported": ["RS256", "ES256"],
         "userinfo_endpoint": url_for("oidc.endpoints.userinfo", _external=True),
+        "revocation_endpoint": url_for("oidc.endpoints.revoke_token", _external=True),
         "introspection_endpoint": url_for(
             "oidc.endpoints.introspect_token", _external=True
         ),
@@ -75,8 +77,16 @@ def oauth_authorization_server():
             "code id_token",
             "token id_token",
         ],
+        "grant_types": [
+            "authorization_code",
+            "implicit",
+            "password",
+            "client_credentials",
+            "refresh_token",
+        ],
         "ui_locales_supported": g.available_language_codes,
         "code_challenge_methods_supported": ["plain", "S256"],
+        "service_documentation": DOCUMENTATION_URL,
     }
 
 

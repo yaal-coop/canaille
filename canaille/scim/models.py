@@ -18,6 +18,7 @@ from scim2_models import ServiceProviderConfig
 from scim2_models import Sort
 from scim2_models import User
 
+from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
 from canaille.backends import Backend
 
@@ -47,7 +48,7 @@ def get_service_provider_config():
             resource_type="ServiceProviderConfig",
             location=url_for("scim.query_service_provider_config", _external=True),
         ),
-        documentation_uri="https://canaille.readthedocs.io",
+        documentation_uri=DOCUMENTATION_URL,
         patch=Patch(supported=False),
         bulk=Bulk(supported=False, max_operations=0, max_payload_size=0),
         change_password=ChangePassword(supported=True),
@@ -59,7 +60,7 @@ def get_service_provider_config():
                 name="OAuth Bearer Token",
                 description="Authentication scheme using the OAuth Bearer Token Standard",
                 spec_uri="http://www.rfc-editor.org/info/rfc6750",
-                documentation_uri="https://canaille.readthedocs.io",
+                documentation_uri=DOCUMENTATION_URL,
                 type="oauthbearertoken",
                 primary=True,
             ),
