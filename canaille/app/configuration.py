@@ -167,7 +167,7 @@ class ConfigurationException(Exception):
     pass
 
 
-def setup_config(app, config=None, test_config=True, env_file=None, env_prefix=""):
+def setup_config(app, config=None, env_file=None, env_prefix=""):
     from canaille.oidc.installation import install
 
     app.config.from_mapping(
@@ -200,9 +200,6 @@ def setup_config(app, config=None, test_config=True, env_file=None, env_prefix="
 
     if app.debug:
         install(app.config, debug=True)
-
-    if test_config:
-        validate(app.config)
 
     return True
 
