@@ -25,7 +25,6 @@ def slapd_server():
         for ldif in (
             "demo/ldif/memberof-config.ldif",
             "demo/ldif/bootstrap-users-tree.ldif",
-            "demo/ldif/bootstrap-users.ldif",
         ):
             slapd.ldapadd(None, ["-f", ldif])
 
@@ -82,7 +81,23 @@ def test_install_schemas_twice(configuration, slapd_server):
     LDAPBackend.setup_schemas(config_dict)
 
 
+admin_ldif = """
+dn: uid=admin,ou=users,dc=example,dc=org
+objectclass: top
+objectclass: inetOrgPerson
+cn: Jane Doe
+givenName: Jane
+sn: Doe
+uid: admin
+mail: admin@example.org
+userPassword: {SSHA}7zQVLckaEc6cJEsS0ylVipvb2PAR/4tS
+displayName: Jane.D
+"""
+
+
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
+    slapd_server.slapadd(admin_ldif)
+
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=example,dc=org"
