@@ -1,3 +1,4 @@
+import datetime
 import logging
 from functools import wraps
 from urllib.parse import urlsplit
@@ -9,13 +10,17 @@ from flask import flash
 from flask import make_response
 from flask import redirect
 from flask import request
+from flask import session
 from flask import url_for
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.templating import render_template
+
+csrf = CSRFProtect()
 
 
 def user_needed(*args):
@@ -140,3 +145,60 @@ def redirect_to_bp_handlers(app, error):
                 if type_ in (error.code, HTTPException):  # pragma: no branch
                     return make_response(handler(error))
     return None
+
+
+def setup_flask_blueprints(app):
+    import canaille.core.endpoints
+
+    app.url_map.strict_slashes = False
+
+    app.register_blueprint(canaille.core.endpoints.bp)
+
+    if app.features.has_oidc:
+        import canaille.oidc.endpoints
+
+        app.register_blueprint(canaille.oidc.endpoints.bp)
+
+    if app.features.has_scim_server:
+        import canaille.scim.endpoints
+
+        app.register_blueprint(canaille.scim.endpoints.bp)
+
+
+def setup_flask(app):
+    from canaille.app.templating import render_template
+
+    csrf.init_app(app)
+
+    @app.before_request
+    def make_session_permanent():
+        session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(days=365)
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return render_template("error.html", description=error, error_code=400), 400
+
+    @app.errorhandler(403)
+    def unauthorized(error):
+        return render_template("error.html", description=error, error_code=403), 403
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        from canaille.app.flask import redirect_to_bp_handlers
+
+        return redirect_to_bp_handlers(app, error) or render_template(
+            "error.html", description=error, error_code=404
+        ), 404
+
+    @app.errorhandler(500)
+    def server_error(error):  # pragma: no cover
+        return render_template("error.html", description=error, error_code=500), 500
+
+
+def setup_flask_converters(app):
+    from canaille.app import models
+    from canaille.app.flask import model_converter
+
+    for model_name, model_class in models.MODELS.items():
+        app.url_map.converters[model_name.lower()] = model_converter(model_class)

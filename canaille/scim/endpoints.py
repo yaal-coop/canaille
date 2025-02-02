@@ -20,8 +20,8 @@ from scim2_models import Schema
 from scim2_models import SearchRequest
 from werkzeug.exceptions import HTTPException
 
-from canaille import csrf
 from canaille.app import models
+from canaille.app.flask import csrf
 from canaille.backends import Backend
 
 from .models import Group

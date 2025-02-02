@@ -17,8 +17,8 @@ from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.exceptions import HTTPException
 
-from canaille import csrf
 from canaille.app import models
+from canaille.app.flask import csrf
 from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
