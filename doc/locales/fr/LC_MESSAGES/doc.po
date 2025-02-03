@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-03 22:58+0100\n"
-"PO-Revision-Date: 2025-01-24 15:02+0000\n"
+"PO-Revision-Date: 2025-02-04 08:41+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 c40cc30bc9f847b1ba5d4c38c0da1c66
-#, fuzzy
-#| msgid "[0.0.26] - 2023-06-03"
 msgid "[0.0.60] - 2025-02-03"
-msgstr "[0.0.26] - 2023-06-03"
+msgstr "[0.0.60] - 2025-02-03"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:38 ../../CHANGES.rst:56
 #: ../../CHANGES.rst:89 ../../CHANGES.rst:117 ../../CHANGES.rst:136
@@ -72,20 +70,18 @@ msgstr ""
 "production avec Hypercorn. :pr:`219`"
 
 #: ../../CHANGES.rst:8 b5179b96bbf04bfb9b6a5770a72c27b5
-#, fuzzy
-#| msgid ""
-#| "Implement a ``canaille run`` command that runs a production server with "
-#| "Hypercorn. :pr:`219`"
 msgid ""
 "Implement a ``canaille config dump`` command that create a commented config "
 "file. :pr:`223`"
 msgstr ""
-"Implémentation d'une commande ``canaille run`` qui lance un serveur de "
-"production avec Hypercorn. :pr:`219`"
+"Implémentation d'une commande ``canaille config dump`` qui crée un fichier "
+"de configuration commenté. :pr:`223`"
 
 #: ../../CHANGES.rst:9 03dddf9e2747444fa5a781e5991fb2ee
 msgid "Load configuration from local ``canaille.toml`` files. :pr:`225`"
 msgstr ""
+"Chargement de la configuration depuis un fichier ``canaille.toml`` local. "
+":pr:`225`"
 
 #: ../../CHANGES.rst:12 ../../CHANGES.rst:31 ../../CHANGES.rst:45
 #: ../../CHANGES.rst:77 ../../CHANGES.rst:97 ../../CHANGES.rst:110
@@ -100,12 +96,10 @@ msgid "Changed"
 msgstr "Modifié"
 
 #: ../../CHANGES.rst:13 53e3a56d035f4c6699ab3094337105d2
-#, fuzzy
-#| msgid "Avoid displaying password strength progress bar in login form"
 msgid "Avoid displaying password strength progress bar in login form."
 msgstr ""
 "L'indicateur de force de mot de passe n'est plus affiché sur la page de "
-"connexion"
+"connexion."
 
 #: ../../CHANGES.rst:14 d7a928fab15c4ac4b7adf6daa6a52d07
 msgid "Mysql extra depends on ``pymysql`` instead of ``mysql-connector``."
@@ -122,7 +116,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:16 b5179b96bbf04bfb9b6a5770a72c27b5
 msgid "Move the ``canaille check`` command under ``canaille config``."
-msgstr ""
+msgstr "Déplacement de la commande ``canaille check`` vers ``canaille config``."
 
 #: ../../CHANGES.rst:19 ../../CHANGES.rst:26 ../../CHANGES.rst:49
 #: ../../CHANGES.rst:85 ../../CHANGES.rst:127 ../../CHANGES.rst:166
@@ -146,14 +140,12 @@ msgid "Fixed"
 msgstr "Corrigé"
 
 #: ../../CHANGES.rst:20 af980ce1a7c24702bf3042dba50ec757
-#, fuzzy
-#| msgid "Fixed dynamic registration scope management. :issue:`123` :pr:`93`"
 msgid ""
 "Dynamic client registration with missing ``scope`` parameter. :issue:`221` :"
 "pr:`222`"
 msgstr ""
-"Correction de la gestion du domaine de l’enregistrement dynamique. :issues:"
-"`123` :pr:`93`"
+"Ajout du paramètre ``scope`` manquant lors de l'enregistrement dynamique des "
+"clients. :issue:`221` :pr:`222`"
 
 #: ../../CHANGES.rst:23 8b1b5641072b4faa8d0e43b186de422d
 msgid "[0.0.59] - 2025-01-10"
@@ -1154,10 +1146,8 @@ msgid "Fix typos and grammar errors. :pr:`84`"
 msgstr "Correction de fautes de frappe et d’erreurs de grammaire. :pr:`84`"
 
 #: ../../CHANGES.rst:580 bd153d8b888a433fa73362f330b0c1d7
-#, fuzzy
-#| msgid "Fix wording and punctuations. :pr:`86`"
 msgid "Fix wording and punctuation. :pr:`86`"
-msgstr "Correction de formulations et de ponctuations. :pr:`86`"
+msgstr "Correction de formulations et de ponctuation. :pr:`86`"
 
 #: ../../CHANGES.rst:581 0eb1e97f7f6846cea707669840dfc0ec
 msgid "Fix HTML lang tag. :issue:`122` :pr:`87`"
@@ -1949,34 +1939,30 @@ msgstr "Environnement Docker"
 
 #: ../../CONTRIBUTING.rst:60 a3f1353904a84a17b9ec777f727944c6
 msgid "When launching Canaille with Docker, you have access to:"
-msgstr ""
+msgstr "Lorsque Canaille est lancé avec Docker, vous avez accès à :"
 
 #: ../../CONTRIBUTING.rst:62 d51867c840cc412787c9d39e4abaf349
-#, fuzzy
-#| msgid "A canaille server at `localhost:5000 <http://localhost:5000>`__"
 msgid ""
 "A canaille server at `canaille.localhost:5000 <http://canaille."
 "localhost:5000>`__"
 msgstr ""
-"Un serveur Canaille à l’adresse `localhost:5000 <http://localhost:5000>`__"
+"Un serveur Canaille à l’adresse `canaille.localhost:5000 "
+"<http://canaille.localhost:5000>`__"
 
 #: ../../CONTRIBUTING.rst:63 fd52a2c4dcb344a286af4d597cedfd1e
-#, fuzzy
-#| msgid "A dummy client at `localhost:5001 <http://localhost:5001>`__"
 msgid ""
 "A dummy client at `client1.localhost:5001 <http://client1.localhost:5001>`__"
 msgstr ""
-"Un client factice à l’adresse `localhost:5001 <http://localhost:5001>`__"
+"Un client factice à l’adresse `client1.localhost:5001 "
+"<http://client1.localhost:5001>`__"
 
 #: ../../CONTRIBUTING.rst:64 22caecadc7114e76845c3b467c14b3cd
-#, fuzzy
-#| msgid "Another dummy client at `localhost:5002 <http://localhost:5002>`__"
 msgid ""
 "Another dummy client at `client2.localhost:5002 <http://client2client2.."
 "localhost:5002>`__"
 msgstr ""
-"Un autre client factice à l’adresse `localhost:5002 <http://"
-"localhost:5002>`__"
+"Un autre client factice à l’adresse `client2.localhost:5002 "
+"<http://client2.localhost:5002>`__"
 
 #: ../development/specifications.rst:108 ../tutorial/databases.rst:16
 #: ../../CONTRIBUTING.rst:67 ../../CONTRIBUTING.rst:102
@@ -2314,47 +2300,41 @@ msgid "Build the documentation in another language"
 msgstr "Construire la documentation dans une autre langue"
 
 #: ../../CONTRIBUTING.rst:232 cdc4debc7f344001b0b00baf3032579a
-#, fuzzy
-#| msgid "Publish a new release"
 msgid "Build a release"
-msgstr "Publier une nouvelle version"
+msgstr "Construire une nouvelle version"
 
 #: ../tutorial/install.rst:49 ../../CONTRIBUTING.rst:235
 #: 4c7facdc3f7b4a7f92435879c50b73db f7e9fad62c1e4981804cc83541c7671d
-#, fuzzy
-#| msgid "Python"
 msgid "Python package"
-msgstr "Python"
+msgstr "Paquet Python"
 
 #: ../../CONTRIBUTING.rst:237 f8caa79fcae6462da7c3426b90d2c9eb
 msgid "The Python packaging step is took care of by uv:"
-msgstr ""
+msgstr "L'étape de création du paquet Python est gérée par *uv* :"
 
 #: ../../CONTRIBUTING.rst:244 151e87c6cbf645fb9aacaf0dd264335f
 msgid "Binary file"
-msgstr ""
+msgstr "Fichier exécutable"
 
 #: ../../CONTRIBUTING.rst:246 29523c6865e84d1eb7d205b44dedd124
 msgid ""
 "To build a single binary of Canaille, you can use pyinstaller by installing "
 "the `release` dependency group:"
 msgstr ""
+"Pour construire un exécutable unique de Canaille, vous pouvez utiliser "
+"pyinstaller en installant le groupe de dépendances `release` :"
 
 #: ../../CONTRIBUTING.rst:254 1d941a28a111423cb26ff0c797a8412a
 msgid "Publish a new release"
 msgstr "Publier une nouvelle version"
 
 #: ../../CONTRIBUTING.rst:256 dc74511803ac4bd6bc003b9019d1a93b
-#, fuzzy
-#| msgid ""
-#| "Check that dependencies are up to date with ``uv sync --all-extras --"
-#| "upgrade`` and update dependencies accordingly in separated commits;"
 msgid ""
 "Check that dependencies are up to date with ``uv sync --all-extras --all-"
 "groups --upgrade`` and update dependencies accordingly in separated commits;"
 msgstr ""
-"Vérifiez que les dépendances sont à jour avec ``uv sync --all-extras --"
-"upgrade`` et mettez à jour chaque dépendance dans un commit séparé ;"
+"Vérifiez que les dépendances sont à jour avec ``uv sync --all-extras --all-"
+"groups --upgrade`` et mettez à jour chaque dépendance dans un commit séparé ;"
 
 #: ../../CONTRIBUTING.rst:257 a11b44f9516a49eca6d8944b3be387b6
 msgid ""
@@ -2394,6 +2374,8 @@ msgid ""
 ":ref:`Build the packages <development/contributing:Build a release>` with "
 "``uv build``;"
 msgstr ""
+":ref:`Construisez les paquets <development/contributing:Build a release>` "
+"avec ``uv build``;"
 
 #: ../../CONTRIBUTING.rst:263 706d5c088f4d48a9b413baabe4fdd18a
 msgid ""
