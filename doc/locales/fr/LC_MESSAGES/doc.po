@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 10:03+0100\n"
+"POT-Creation-Date: 2025-02-03 22:58+0100\n"
 "PO-Revision-Date: 2025-01-24 15:02+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -39,8 +39,10 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 c40cc30bc9f847b1ba5d4c38c0da1c66
-msgid "[0.0.60] - Unreleased"
-msgstr "[0.0.60] - Inédit"
+#, fuzzy
+#| msgid "[0.0.26] - 2023-06-03"
+msgid "[0.0.60] - 2025-02-03"
+msgstr "[0.0.26] - 2023-06-03"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:38 ../../CHANGES.rst:56
 #: ../../CHANGES.rst:89 ../../CHANGES.rst:117 ../../CHANGES.rst:136
@@ -2343,9 +2345,13 @@ msgid "Publish a new release"
 msgstr "Publier une nouvelle version"
 
 #: ../../CONTRIBUTING.rst:256 dc74511803ac4bd6bc003b9019d1a93b
+#, fuzzy
+#| msgid ""
+#| "Check that dependencies are up to date with ``uv sync --all-extras --"
+#| "upgrade`` and update dependencies accordingly in separated commits;"
 msgid ""
-"Check that dependencies are up to date with ``uv sync --all-extras --"
-"upgrade`` and update dependencies accordingly in separated commits;"
+"Check that dependencies are up to date with ``uv sync --all-extras --all-"
+"groups --upgrade`` and update dependencies accordingly in separated commits;"
 msgstr ""
 "Vérifiez que les dépendances sont à jour avec ``uv sync --all-extras --"
 "upgrade`` et mettez à jour chaque dépendance dans un commit séparé ;"
@@ -2384,10 +2390,29 @@ msgid "Commit with ``git commit``;"
 msgstr "Commitez avec ``git commit`` ;"
 
 #: ../../CONTRIBUTING.rst:262 da47fe881bd140a0948a1b71ca9d197f
-msgid ":ref:`Build the packages <development/contributing:Build a release>`;"
+msgid ""
+":ref:`Build the packages <development/contributing:Build a release>` with "
+"``uv build``;"
 msgstr ""
 
-#: ../../CONTRIBUTING.rst:263 59e6a194497f40589f9cadbc4819dac3
+#: ../../CONTRIBUTING.rst:263 706d5c088f4d48a9b413baabe4fdd18a
+msgid ""
+"Install from the .whl generated with ``uv pip install <path/to/dist/canaille-"
+"x.x.xx-py3-none-any.whl>[front,oidc,postgresql,server,otp,sms]``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:264 e69352aa875546b0a838f072020fb153
+msgid ""
+"Test creation of a user with ``canaille config dump`` and ``canaille create "
+"user --user-name admin --password admin --emails admin@mydomain.example --"
+"given-name George --family-name Abitbol`` and ``canaille run``;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:265 0427c7ae5e6142f2bb32a5267ab9ef54
+msgid "Try to connect the user;"
+msgstr ""
+
+#: ../../CONTRIBUTING.rst:266 59e6a194497f40589f9cadbc4819dac3
 #, fuzzy
 #| msgid ""
 #| "Publish on test PyPI with ``uv publish --publish-url https://test.pypi."
@@ -2399,27 +2424,32 @@ msgstr ""
 "Publiez le paquet sur l’instance de test de PyPI avec ``uv publish --publish-"
 "url https://test.pypi.org/legacy/`` ;"
 
-#: ../../CONTRIBUTING.rst:264 a76e7b5698e146a3aeb30fd210520018
+#: ../../CONTRIBUTING.rst:267 a76e7b5698e146a3aeb30fd210520018
+#, fuzzy
+#| msgid ""
+#| "Install the test package somewhere with ``pip install --extra-index-url "
+#| "https://test.pypi.org/simple --upgrade canaille``. Check that everything "
+#| "looks fine;"
 msgid ""
 "Install the test package somewhere with ``pip install --extra-index-url "
-"https://test.pypi.org/simple --upgrade canaille``. Check that everything "
-"looks fine;"
+"https://test.pypi.org/simple --upgrade \"canaille[front,oidc,postgresql,"
+"server,otp,sms]\"``. Check that everything looks fine;"
 msgstr ""
 "Installez le paquet dans un projet quelconque avec ``pip install --extra-"
 "index-url https://test.pypi.org/simple --upgrade canaille``. Vérifiez que "
 "l’installation s’est bien passée ;"
 
-#: ../../CONTRIBUTING.rst:265 bdbcc97321eb4f72a89ace044fa421a6
+#: ../../CONTRIBUTING.rst:268 bdbcc97321eb4f72a89ace044fa421a6
 #, fuzzy
 #| msgid "Publish on production PyPI ``uv publish``;"
 msgid "Publish the Python package on production PyPI ``uv publish``;"
 msgstr "Publiez sur l’instance de production de PyPI avec ``uv publish`` ;"
 
-#: ../../CONTRIBUTING.rst:266 0cad7a4363db4ad7be4b1c69bd9b9565
+#: ../../CONTRIBUTING.rst:269 0cad7a4363db4ad7be4b1c69bd9b9565
 msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
 msgstr "Étiquetez le commit avec ``git tag XX.YY.ZZ`` ;"
 
-#: ../../CONTRIBUTING.rst:267 f4131a01f96f47ceb519fff58f04cdde
+#: ../../CONTRIBUTING.rst:270 f4131a01f96f47ceb519fff58f04cdde
 msgid ""
 "Push the release commit and the new tag on the repository with ``git push --"
 "tags``."
@@ -4056,8 +4086,10 @@ msgstr ""
 msgid "Handle Canaille configuration file."
 msgstr "Test du fichier de configuration."
 
-#: ../../canaille config check:1 87ca1bdf716e428baf705bacf87f4c09
-msgid "Test the configuration file."
+#: ../../canaille config check:1 c3e71c1ec5b545548c6f010ba00e3892
+#, fuzzy
+#| msgid "Test the configuration file."
+msgid "Test the network connections defined in the configuration file."
 msgstr "Test du fichier de configuration."
 
 #: ../../canaille config check:1 f8a49947764148aebb5a33d993153016
@@ -5363,6 +5395,20 @@ msgstr ""
 msgid "SCIM settings."
 msgstr "Paramètres SCIM."
 
+#: ../../docstring of canaille.scim.configuration.SCIMSettings.ENABLE_SERVER:1
+#: 1ee1bebd3892435980098de1b3dfee84
+#, fuzzy
+#| msgid "Indicate whether the SCIM server feature is enabled."
+msgid "Whether the SCIM server API is enabled."
+msgstr "Indique si la fonctionnalité de serveur SCIM est activée."
+
+#: ../../docstring of canaille.scim.configuration.SCIMSettings.ENABLE_SERVER:3
+#: ed0b4db3345942a2a24deb3625522f84
+msgid ""
+"When enabled, services plugged to Canaille can update users and groups using "
+"the API."
+msgstr ""
+
 #: ../../canaille/backends/sql/configuration.py:docstring of
 #: canaille.backends.sql.configuration.SQLSettings:1
 #: 92d2dc92ffa74589b25aee4f5755709f
@@ -5457,7 +5503,9 @@ msgstr "Le noeud LDAP dans lequel les groupes seront cherchés et enregistrés."
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:3
 #: 2900a3f68b294d53bf586c784b38ef6c
-msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
+#, fuzzy
+#| msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
+msgid "For instance `\"ou=groups,dc=example,dc=org\"`."
 msgstr "Par exemple `\"ou=groups,dc=mondomaine,dc=tld\"`."
 
 #: ../../docstring of
@@ -5505,7 +5553,9 @@ msgstr ""
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:3
 #: eccfba5ea42049468d3c2ecd56873d3d
-msgid "For instance `ou=users,dc=mydomain,dc=tld`."
+#, fuzzy
+#| msgid "For instance `ou=users,dc=mydomain,dc=tld`."
+msgid "For instance `ou=users,dc=example,dc=org`."
 msgstr "Par exemple `ou=users,dc=mondomainedc=tld`."
 
 #: ../../docstring of
@@ -8415,19 +8465,20 @@ msgstr ""
 msgid "Check"
 msgstr "Vérifier"
 
-#: ../tutorial/install.rst:128 a3ac73ceacfd4b1094eddddc3c6db17a
+#: ../tutorial/install.rst:128 53dcacb4539040ba96b3aaf4ab82e8df
 msgid ""
-"After a manual installation, you can check your configuration file using "
-"the :ref:`check command <cli_install>`:"
+"After a manual installation, you can test the network parameters in your "
+"configuration file using the :ref:`check command <cli_install>`. It will "
+"attempt to connect your :class:`SMTP server <canaille.core.configuration."
+"SMTPSettings>`, or your :class:`SMPP server <canaille.core.configuration."
+"SMPPSettings>` if defined."
 msgstr ""
-"Après une installation manuelle, vous pouvez vérifier votre fichier de "
-"configuration en utilisant la :ref:`commande check <cli_install>` :"
 
-#: ../tutorial/install.rst:135 1ee2a32a0cd342b8abb212d6cfe4cb4d
+#: ../tutorial/install.rst:136 1ee2a32a0cd342b8abb212d6cfe4cb4d
 msgid "Create the first user"
 msgstr "Créer le premier utilisateur"
 
-#: ../tutorial/install.rst:137 15d31e7c0ac74a139bf75b1f0b1a298d
+#: ../tutorial/install.rst:138 15d31e7c0ac74a139bf75b1f0b1a298d
 msgid ""
 "Once canaille is installed, soon enough you will need to add users. To "
 "create your first user you can use the :ref:`canaille create <cli_create>` "
@@ -8901,6 +8952,16 @@ msgstr ""
 "Vous êtes fatigué d'utiliser la syntaxe *ldif* pour gérer vos utilisateurs "
 "et groupes, et préférez utiliser une ligne de commande simple et lisible par "
 "les humains."
+
+#~ msgid "[0.0.60] - Unreleased"
+#~ msgstr "[0.0.60] - Inédit"
+
+#~ msgid ""
+#~ "After a manual installation, you can check your configuration file using "
+#~ "the :ref:`check command <cli_install>`:"
+#~ msgstr ""
+#~ "Après une installation manuelle, vous pouvez vérifier votre fichier de "
+#~ "configuration en utilisant la :ref:`commande check <cli_install>` :"
 
 #~ msgid ""
 #~ "If you want to develop with docker, your browser needs to be able to "
