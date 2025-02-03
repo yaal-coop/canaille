@@ -179,10 +179,12 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
         if "CONFIG" in os.environ:
             with open(os.environ.get("CONFIG")) as fd:
                 config = tomlkit.load(fd)
+            app.logger.info(f"Loading configuration from {os.environ['CONFIG']}")
 
         elif os.path.exists(DEFAULT_CONFIG_FILE):
             with open(DEFAULT_CONFIG_FILE) as fd:
                 config = tomlkit.load(fd)
+            app.logger.info(f"Loading configuration from {DEFAULT_CONFIG_FILE}")
 
     env_file = env_file or os.getenv("ENV_FILE")
     try:
