@@ -59,6 +59,11 @@ def create_app(
 
             setup_oauth(app)
 
+        if app.features.has_scim_client:
+            from .scim.client import setup_scim_signals
+
+            setup_scim_signals()
+
     except Exception as exc:  # pragma: no cover
         if sentry_sdk:
             sentry_sdk.capture_exception(exc)

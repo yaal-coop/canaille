@@ -1,9 +1,12 @@
 import logging
 from unittest import mock
 
+from scim2_models import EnterpriseUser
 from scim2_models import SearchRequest
 
 from canaille.app import models
+from canaille.scim.client import user_from_canaille_to_scim_client
+from canaille.scim.models import User as MyUser
 
 
 def test_scim_client_user_save_and_delete(scim_client_for_preconsented_client, backend):
@@ -175,8 +178,19 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     assert retrieved_bar_group.members[0].value == distant_scim_admin.id
 
 
-def test_client_doesnt_support_scim(backend, user, consent, caplog):
+def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplog):
     backend.save(user)
+    assert (
+        "canaille",
+        logging.INFO,
+        "SCIM protocol not supported by client Client",
+    ) in caplog.record_tuples
+
+
+def test_save_group_when_client_doesnt_support_scim(
+    backend, bar_group, consent, caplog
+):
+    backend.save(bar_group)
     assert (
         "canaille",
         logging.INFO,
@@ -321,3 +335,14 @@ def test_failed_scim_group_delete(
         logging.WARNING,
         "SCIM Group foobar delete for client Some client failed",
     ) in caplog.record_tuples
+
+
+def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
+    scim_client_for_preconsented_client, user
+):
+    User = scim_client_for_preconsented_client.get_resource_model("User")
+
+    scim_user = user_from_canaille_to_scim_client(user, User, None)
+    assert isinstance(scim_user, User)
+    assert not isinstance(scim_user, MyUser[EnterpriseUser])
+    assert EnterpriseUser not in scim_user

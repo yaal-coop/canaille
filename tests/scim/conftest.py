@@ -16,6 +16,7 @@ from canaille.scim.endpoints import bp
 def configuration(configuration):
     configuration["CANAILLE_SCIM"] = {
         "ENABLE_SERVER": True,
+        "ENABLE_CLIENT": True,
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["httpx"] = {
         "level": "INFO",

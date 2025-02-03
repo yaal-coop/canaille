@@ -166,7 +166,6 @@ demo = [
 release = [
     "pyinstaller>=6.11.1",
 ]
-scim = []
 
 [project.scripts]
 canaille = "canaille.commands:cli"

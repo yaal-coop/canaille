@@ -8,3 +8,5 @@ class SCIMSettings(BaseModel):
     """Whether the SCIM server API is enabled.
 
     When enabled, services plugged to Canaille can update users and groups using the API."""
+
+    ENABLE_CLIENT: bool = True

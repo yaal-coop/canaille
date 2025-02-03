@@ -517,3 +517,5 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # When enabled, services plugged to Canaille can update users and groups using the
 # API.
 # ENABLE_SERVER = true
+
+# ENABLE_CLIENT = true

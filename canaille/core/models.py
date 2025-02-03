@@ -7,14 +7,10 @@ from blinker import signal
 from flask import current_app
 from pydantic import TypeAdapter
 
-from canaille.app import models
-from canaille.backends import Backend
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
 from canaille.core.sms import send_one_time_password_sms
-from canaille.scim.client import propagate_group_scim_modification
-from canaille.scim.client import propagate_user_scim_modification
 
 OTP_DIGITS = 6
 OTP_VALIDITY = 600
@@ -300,10 +296,7 @@ class User(Model):
 
         yield
 
-        for group in self.groups:
-            if Backend.instance.get(models.Group, group.id):
-                Backend.instance.reload(group)
-            propagate_group_scim_modification(group, "save")
+        signal("after_user_delete").send(self)
 
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
@@ -507,10 +500,10 @@ class Group(Model):
     def save(self):
         yield
 
-        propagate_group_scim_modification(self, method="save")
+        signal("after_group_save").send(self)
 
     def delete(self):
-        propagate_group_scim_modification(self, method="delete")
+        signal("before_group_delete").send(self)
 
         yield
 
