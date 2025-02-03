@@ -33,8 +33,8 @@ def with_backendcontext(func):
 
 
 @click.command()
-@with_appcontext
-def install():
+@click.pass_context
+def install(ctx):
     """Installs canaille elements from the configuration.
 
     For instance, depending on the configuration, this can generate OIDC
@@ -43,8 +43,9 @@ def install():
     from canaille.app.configuration import ConfigurationException
     from canaille.app.installation import install
 
+    app = ctx.obj.load_app()
     try:
-        install(current_app)
+        install(app)
 
     except ConfigurationException as exc:  # pragma: no cover
         print(exc)
