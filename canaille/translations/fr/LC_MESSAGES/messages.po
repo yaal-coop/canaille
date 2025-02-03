@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-03 23:00+0100\n"
-"PO-Revision-Date: 2025-01-23 08:02+0000\n"
+"PO-Revision-Date: 2025-02-04 08:41+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: canaille/app/flask.py:38
 msgid "Your password has expired, please choose a new password."
-msgstr "Votre mot de passe a expiré, veuillez choisir un nouveau mot de passe."
+msgstr "Votre mot de passe a expiré, veuillez en choisir un nouveau."
 
 #: canaille/app/flask.py:62
 msgid "No SMTP server has been configured"
@@ -631,8 +631,6 @@ msgid "Website"
 msgstr "Site web"
 
 #: canaille/core/endpoints/forms.py:254
-#, fuzzy
-#| msgid "https://mywebsite.tld"
 msgid "https://mywebsite.example"
 msgstr "https://mon-site-internet.fr"
 
@@ -862,12 +860,7 @@ msgid "Authorization interface"
 msgstr "Interface de gestion des autorisations"
 
 #: canaille/templates/base.html:51
-#, fuzzy, python-format
-#| msgid ""
-#| "Your Canaille instance is not fully configured and not ready for "
-#| "production.<br> Have a look at your server logs and at the <a "
-#| "href=\"https://canaille.readthedocs.io/en/latest/references/configuration."
-#| "html\">documentation</a> for more details."
+#, python-format
 msgid ""
 "Your Canaille instance is not fully configured and not ready for production."
 "<br> Have a look at your server logs and at the <a "
@@ -875,8 +868,8 @@ msgid ""
 msgstr ""
 "Vous instance de Canaille n'est pas pleinement configurée, et n'est pas "
 "prête pour la production.<br> Veuillez consulter les journaux serveur ainsi "
-"que la <a href=\"https://canaille.readthedocs.io/fr/latest/references/"
-"configuration.html\">documentation</a> pour plus de détails."
+"que la <a href=\"%(documentation_url)s\">documentation</a> pour plus de "
+"détails."
 
 #: canaille/templates/base.html:74
 msgid "Profile"
