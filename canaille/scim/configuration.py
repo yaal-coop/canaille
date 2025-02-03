@@ -5,3 +5,5 @@ class SCIMSettings(BaseModel):
     """SCIM settings."""
 
     ENABLE_SERVER: bool = True
+
+    ENABLE_CLIENT: bool = True

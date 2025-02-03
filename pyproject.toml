@@ -30,6 +30,7 @@ maintainers = [{name="Éloi Rivard", email="eloi@yaal.coop"}]
 
 requires-python = ">=3.10"
 dependencies = [
+    "blinker>=1.9.0",
     "flask >= 3.0.0",
     "flask-wtf >= 1.2.1",
     "httpx>=0.28.1",
@@ -164,7 +165,6 @@ demo = [
 release = [
     "pyinstaller>=6.11.1",
 ]
-scim = []
 
 [project.scripts]
 canaille = "canaille.commands:cli"

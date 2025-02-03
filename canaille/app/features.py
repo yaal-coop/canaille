@@ -127,6 +127,24 @@ class Features:
         except ImportError:  # pragma: no cover
             return False
 
+    @property
+    def has_scim_client(self):
+        """Indicate whether the SCIM client feature is enabled.
+
+        This feature is required to make Canaille a provisioning client.
+        It is controlled by the :attr:`CANAILLE_SCIM.ENABLE_CLIENT <canaille.scim.configuration.SCIMSettings.ENABLE_CLIENT>` configuration parameter,
+        and needs the ``scim`` extra package to be installed.
+        """
+        try:
+            import scim2_client  # noqa: F401
+
+            return (
+                "CANAILLE_SCIM" in self.app.config
+                and self.app.config["CANAILLE_SCIM"]["ENABLE_CLIENT"]
+            )
+        except ImportError:  # pragma: no cover
+            return False
+
 
 def setup_features(app):
     app.features = Features(app)

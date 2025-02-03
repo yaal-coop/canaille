@@ -3,17 +3,14 @@ import secrets
 from typing import Annotated
 from typing import ClassVar
 
+from blinker import signal
 from flask import current_app
 from pydantic import TypeAdapter
 
-from canaille.app import models
-from canaille.backends import Backend
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
 from canaille.core.sms import send_one_time_password_sms
-from canaille.scim.client import propagate_group_scim_modification
-from canaille.scim.client import propagate_user_scim_modification
 
 HOTP_LOOK_AHEAD_WINDOW = 10
 OTP_DIGITS = 6
@@ -304,23 +301,16 @@ class User(Model):
 
         yield
 
-        propagate_user_scim_modification(self, method="save")
-
-        for group in set(self.old_groups) ^ set(self.groups):
-            Backend.instance.reload(group)
-            propagate_group_scim_modification(group, "save")
+        signal("after_user_save").send(self)
 
         self.old_groups = self.groups.copy()
 
     def delete(self):
-        propagate_user_scim_modification(self, method="delete")
+        signal("before_user_delete").send(self)
 
         yield
 
-        for group in self.groups:
-            if Backend.instance.get(models.Group, group.id):
-                Backend.instance.reload(group)
-            propagate_group_scim_modification(group, "save")
+        signal("after_user_delete").send(self)
 
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
@@ -574,10 +564,10 @@ class Group(Model):
     def save(self):
         yield
 
-        propagate_group_scim_modification(self, method="save")
+        signal("after_group_save").send(self)
 
     def delete(self):
-        propagate_group_scim_modification(self, method="delete")
+        signal("before_group_delete").send(self)
 
         yield
 

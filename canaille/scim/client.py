@@ -1,3 +1,4 @@
+from blinker import signal
 from flask import current_app
 from httpx import Client as httpx_client
 from scim2_client import SCIMClientError
@@ -20,24 +21,23 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
     scim_group = group_from_canaille_to_scim(group, group_class)
     scim_group.external_id = group.id
 
-    if group.members:
-        distant_members = []
-        User = scim_client.get_resource_model("User")
-        for member in group.members:
-            req = SearchRequest(filter=f'externalId eq "{member.id}"')
-            response = scim_client.query(User, search_request=req)
-            if response.resources:
-                distant_members.append(response.resources[0])
+    distant_members = []
+    User = scim_client.get_resource_model("User")
+    for member in group.members:
+        req = SearchRequest(filter=f'externalId eq "{member.id}"')
+        response = scim_client.query(User, search_request=req)
+        if response.resources:
+            distant_members.append(response.resources[0])
 
-        scim_group.members = [
-            group_class.Members(
-                value=user.id,
-                type="User",
-                display=user.display_name,
-                ref=user.meta.location,
-            )
-            for user in distant_members or []
-        ] or None
+    scim_group.members = [
+        group_class.Members(
+            value=user.id,
+            type="User",
+            display=user.display_name,
+            ref=user.meta.location,
+        )
+        for user in distant_members or []
+    ] or None
 
     return scim_group
 
@@ -138,8 +138,7 @@ def execute_scim_group_action(scim, group, client_name, method):
 def propagate_group_scim_modification(group, method):
     notifiable_clients = set()
     for member in group.members:
-        if isinstance(member, models.User):
-            notifiable_clients.update(get_clients(member))
+        notifiable_clients.update(get_clients(member))
 
     for client in notifiable_clients:
         scim = initiate_scim_client(client)
@@ -148,13 +147,45 @@ def propagate_group_scim_modification(group, method):
 
 
 def get_clients(user):
-    if user.id:
-        consents = Backend.instance.query(models.Consent, subject=user)
-        consented_clients = {t.client for t in consents}
-        preconsented_clients = [
-            client
-            for client in Backend.instance.query(models.Client)
-            if client.preconsent and client not in consented_clients
-        ]
-        return list(consented_clients) + list(preconsented_clients)
-    return []
+    consents = Backend.instance.query(models.Consent, subject=user)
+    consented_clients = {t.client for t in consents}
+    preconsented_clients = [
+        client
+        for client in Backend.instance.query(models.Client)
+        if client.preconsent and client not in consented_clients
+    ]
+    return list(consented_clients) + list(preconsented_clients)
+
+
+def after_user_save(user):
+    propagate_user_scim_modification(user, method="save")
+
+    for group in set(user.old_groups) ^ set(user.groups):
+        Backend.instance.reload(group)
+        propagate_group_scim_modification(group, "save")
+
+
+def before_user_delete(user):
+    propagate_user_scim_modification(user, method="delete")
+
+
+def after_user_delete(user):
+    for group in user.groups:
+        Backend.instance.reload(group)
+        propagate_group_scim_modification(group, "save")
+
+
+def after_group_save(group):
+    propagate_group_scim_modification(group, method="save")
+
+
+def before_group_delete(group):
+    propagate_group_scim_modification(group, method="delete")
+
+
+def setup_scim_signals():
+    signal("after_user_save").connect(after_user_save)
+    signal("before_user_delete").connect(before_user_delete)
+    signal("after_user_delete").connect(after_user_delete)
+    signal("after_group_save").connect(after_group_save)
+    signal("before_group_delete").connect(before_group_delete)

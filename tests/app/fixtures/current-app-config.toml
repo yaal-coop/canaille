@@ -511,3 +511,5 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 [CANAILLE_SCIM]
 # ENABLE_SERVER = true
+
+# ENABLE_CLIENT = true
