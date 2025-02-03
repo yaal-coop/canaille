@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-01-20 15:18+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-02-03 23:00+0100\n"
 "PO-Revision-Date: 2025-01-23 08:02+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -22,11 +22,11 @@ msgstr ""
 "X-Generator: Weblate 5.10-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: canaille/app/flask.py:33
+#: canaille/app/flask.py:38
 msgid "Your password has expired, please choose a new password."
 msgstr "Votre mot de passe a expiré, veuillez choisir un nouveau mot de passe."
 
-#: canaille/app/flask.py:57
+#: canaille/app/flask.py:62
 msgid "No SMTP server has been configured"
 msgstr "Aucun serveur SMTP n'a été configuré"
 
@@ -42,17 +42,19 @@ msgstr "Cette valeur est un doublon"
 msgid "Not a valid phone number"
 msgstr "N’est pas un numéro de téléphone valide"
 
-#: canaille/app/forms.py:57
+#: canaille/app/forms.py:58
+#, python-brace-format
 msgid "Field must be at least {minimum_password_length} characters long."
 msgstr ""
 "Ce champ doit contenir au minimum {minimum_password_length} caractères."
 
-#: canaille/app/forms.py:69
+#: canaille/app/forms.py:70
+#, python-brace-format
 msgid "Field cannot be longer than {maximum_password_length} characters."
 msgstr ""
 "Ce champ doit contenir au maximum {maximum_password_length} caractères."
 
-#: canaille/app/forms.py:120
+#: canaille/app/forms.py:121
 msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
@@ -67,14 +69,14 @@ msgstr "Le numéro de page est invalide"
 msgid "Not a valid datetime value."
 msgstr "N'est pas une date valide."
 
-#: canaille/app/mails_sending_conditions.py:16
+#: canaille/app/mails_sending_conditions.py:17
 msgid ""
 "Password compromise investigation failed. Please contact the administrators."
 msgstr ""
 "La recherche sur la compromission du mot de passe a échoué. Veuillez "
 "contacter les administrateurs."
 
-#: canaille/app/mails_sending_conditions.py:38
+#: canaille/app/mails_sending_conditions.py:39
 msgid ""
 "We have informed your administrator about the failure of the password "
 "compromise investigation."
@@ -82,7 +84,7 @@ msgstr ""
 "Nous avons informé votre administrateur de l'échec de la recherche sur la "
 "compromission du mot de passe."
 
-#: canaille/app/mails_sending_conditions.py:45
+#: canaille/app/mails_sending_conditions.py:46
 msgid ""
 "An error occurred while communicating the incident to the administrators. "
 "Please update your password as soon as possible. If this still happens, "
@@ -93,10 +95,12 @@ msgstr ""
 "Si cela se produit encore, veuillez contacter les administrateurs."
 
 #: canaille/backends/ldap/backend.py:100
+#, python-brace-format
 msgid "Could not connect to the LDAP server '{uri}'"
 msgstr "Impossible de se connecter au serveur LDAP '{uri}'"
 
 #: canaille/backends/ldap/backend.py:107
+#, python-brace-format
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 "L'authentification au serveur LDAP a échoué pour l'utilisateur '{user}'"
@@ -127,54 +131,66 @@ msgid "You should change your password."
 msgstr "Vous devriez changer votre mot de passe."
 
 #: canaille/core/endpoints/admin.py:58 canaille/core/mails.py:15
+#, python-brace-format
 msgid "Test email from {website_name}"
 msgstr "Courriel de test de {website_name}"
 
 #: canaille/core/endpoints/admin.py:128 canaille/core/endpoints/admin.py:140
 #: canaille/core/mails.py:54
+#, python-brace-format
 msgid "Password reset on {website_name}"
 msgstr "Réinitialisation du mot de passe sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:83 canaille/core/endpoints/admin.py:95
 #: canaille/core/mails.py:95
+#, python-brace-format
 msgid "Password initialization on {website_name}"
 msgstr "Initialisation de votre mot de passe sur {website_name}"
 
 #: canaille/core/mails.py:126
+#, python-brace-format
 msgid "You have been invited to create an account on {website_name}"
 msgstr "Vous êtes invités à vous créer un compte sur {website_name}"
 
 #: canaille/core/mails.py:157
+#, python-brace-format
 msgid "Confirm your address email on {website_name}"
 msgstr "Confirmez votre adresse email sur {website_name}"
 
 #: canaille/core/mails.py:188
+#, python-brace-format
 msgid "Continue your registration on {website_name}"
 msgstr "Poursuivez votre inscription sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:309 canaille/core/mails.py:221
+#, python-brace-format
 msgid "Compromised password check failure on {website_name}"
 msgstr ""
 "Échec de la vérification de la compromission du mot de passe sur "
 "{website_name}"
 
 #: canaille/core/endpoints/admin.py:347 canaille/core/mails.py:258
+#, python-brace-format
 msgid "One-time password authentication on {website_name}"
 msgstr "Mot de passe à usage unique sur {website_name}"
 
 #: canaille/core/validators.py:16
+#, python-brace-format
 msgid "The user name '{user_name}' already exists"
 msgstr "Le nom d’utilisateur '{user_name}' existe déjà"
 
 #: canaille/core/validators.py:25
+#, python-brace-format
 msgid "The email '{email}' is already used"
 msgstr "L’adresse '{email}' est déjà utilisée"
 
 #: canaille/core/validators.py:32
+#, python-brace-format
 msgid "The group '{group}' already exists"
 msgstr "Le group '{group}' existe déjà"
 
 #: canaille/core/validators.py:41
+#, python-brace-format
 msgid "The login '{login}' does not exist"
 msgstr "L'identifiant '{login}' n'existe pas"
 
@@ -182,11 +198,13 @@ msgstr "L'identifiant '{login}' n'existe pas"
 msgid "The user you are trying to remove does not exist."
 msgstr "L’utilisateur que vous essayez de retirer n’existe pas."
 
-#: canaille/core/validators.py:53
+#: canaille/core/validators.py:54
+#, python-brace-format
 msgid "The user '{user}' has already been removed from the group '{group}'"
 msgstr "L’utilisateur « {user} » a déjà été retiré du groupe « {group} »"
 
-#: canaille/core/validators.py:70
+#: canaille/core/validators.py:71
+#, python-brace-format
 msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
@@ -194,13 +212,13 @@ msgstr ""
 "Le groupe « {group} » doit garder au minimum un utilisateur, et ne peut être "
 "retiré."
 
-#: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
+#: canaille/core/endpoints/account.py:93 canaille/core/endpoints/account.py:119
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
 "Vous recevrez sous peu un courriel qui vous permettra de poursuivre votre "
 "inscription."
 
-#: canaille/core/endpoints/account.py:125
+#: canaille/core/endpoints/account.py:126
 msgid ""
 "An error happened while sending your registration mail. Please try again in "
 "a few minutes. If this still happens, please contact the administrators."
@@ -292,7 +310,7 @@ msgstr "Le profil a été mis à jour avec succès."
 msgid "Email addition failed."
 msgstr "L’ajout de l’adresse email a échoué."
 
-#: canaille/core/endpoints/account.py:638
+#: canaille/core/endpoints/account.py:639
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
@@ -312,7 +330,7 @@ msgstr "La suppression de l’adresse email a échoué."
 msgid "The email have been successfully deleted."
 msgstr "L’adresse email a correctement été supprimée."
 
-#: canaille/core/endpoints/account.py:697
+#: canaille/core/endpoints/account.py:698
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
@@ -324,7 +342,7 @@ msgstr ""
 msgid "Could not send the password initialization email"
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe"
 
-#: canaille/core/endpoints/account.py:715
+#: canaille/core/endpoints/account.py:716
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within a few minutes."
@@ -349,7 +367,7 @@ msgid "One-time password authentication has been reset"
 msgstr ""
 "L'authentification par mots de passe à usage unique a été ré-initialisée"
 
-#: canaille/core/endpoints/account.py:839
+#: canaille/core/endpoints/account.py:840
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
@@ -361,7 +379,7 @@ msgstr ""
 "verrouillé."
 
 #: canaille/core/endpoints/account.py:860 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:362
+#: canaille/core/endpoints/auth.py:363
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
@@ -391,10 +409,12 @@ msgid "The test mail has not been sent correctly"
 msgstr "Le courriel de test n’a pas été envoyé correctement"
 
 #: canaille/core/endpoints/admin.py:182
+#, python-brace-format
 msgid "Invitation on {website_name}"
 msgstr "Invitation sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:224 canaille/core/endpoints/admin.py:266
+#, python-brace-format
 msgid "Email confirmation on {website_name}"
 msgstr "Confirmation de votre adresse email sur {website_name}"
 
@@ -411,12 +431,12 @@ msgstr ""
 "Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
 "connecter"
 
-#: canaille/core/endpoints/auth.py:149
+#: canaille/core/endpoints/auth.py:150
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Vous avez été déconnecté·e. À bientôt %(user)s"
 
-#: canaille/core/endpoints/auth.py:174
+#: canaille/core/endpoints/auth.py:175
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -428,7 +448,7 @@ msgstr ""
 msgid "Could not send the password reset link."
 msgstr "Impossible d'envoyer le lien de réinitialisation."
 
-#: canaille/core/endpoints/auth.py:201
+#: canaille/core/endpoints/auth.py:202
 msgid ""
 "A password reset link has been sent at your email address. You should "
 "receive it within a few minutes."
@@ -436,7 +456,7 @@ msgstr ""
 "Un lien de ré-initialisation de votre mot de passe vous a été envoyé par "
 "courriel. Vous devriez le recevoir d'ici quelques minutes."
 
-#: canaille/core/endpoints/auth.py:213
+#: canaille/core/endpoints/auth.py:214
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -525,7 +545,7 @@ msgstr "Martin.D"
 msgid "Email addresses"
 msgstr "Adresse email"
 
-#: canaille/core/endpoints/forms.py:152 canaille/core/endpoints/forms.py:414
+#: canaille/core/endpoints/forms.py:153 canaille/core/endpoints/forms.py:415
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
@@ -611,7 +631,9 @@ msgid "Website"
 msgstr "Site web"
 
 #: canaille/core/endpoints/forms.py:254
-msgid "https://mywebsite.tld"
+#, fuzzy
+#| msgid "https://mywebsite.tld"
+msgid "https://mywebsite.example"
 msgstr "https://mon-site-internet.fr"
 
 #: canaille/core/endpoints/forms.py:259
@@ -664,12 +686,12 @@ msgstr "123456"
 msgid "Group creation failed."
 msgstr "La création du groupe a échoué."
 
-#: canaille/core/endpoints/groups.py:50
+#: canaille/core/endpoints/groups.py:51
 #, python-format
 msgid "The group %(group)s has been successfully created"
 msgstr "Le groupe %(group)s a bien été créé"
 
-#: canaille/core/endpoints/groups.py:110
+#: canaille/core/endpoints/groups.py:111
 #, python-format
 msgid "The group %(group)s has been successfully edited."
 msgstr "Le groupe %(group)s a bien été édité."
@@ -678,12 +700,12 @@ msgstr "Le groupe %(group)s a bien été édité."
 msgid "Group edition failed."
 msgstr "L'édition du groupe a échoué."
 
-#: canaille/core/endpoints/groups.py:147
+#: canaille/core/endpoints/groups.py:148
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
 
-#: canaille/core/endpoints/groups.py:164
+#: canaille/core/endpoints/groups.py:165
 #, python-format
 msgid "The group %(group)s has been successfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
@@ -840,17 +862,21 @@ msgid "Authorization interface"
 msgstr "Interface de gestion des autorisations"
 
 #: canaille/templates/base.html:51
+#, fuzzy, python-format
+#| msgid ""
+#| "Your Canaille instance is not fully configured and not ready for "
+#| "production.<br> Have a look at your server logs and at the <a "
+#| "href=\"https://canaille.readthedocs.io/en/latest/references/configuration."
+#| "html\">documentation</a> for more details."
 msgid ""
 "Your Canaille instance is not fully configured and not ready for production."
-"<br> Have a look at your server logs and at the <a href=\"https://canaille."
-"readthedocs.io/en/latest/references/configuration.html\">documentation</a> "
-"for more details."
+"<br> Have a look at your server logs and at the <a "
+"href=\"%(documentation_url)s\">documentation</a> for more details."
 msgstr ""
 "Vous instance de Canaille n'est pas pleinement configurée, et n'est pas "
 "prête pour la production.<br> Veuillez consulter les journaux serveur ainsi "
-"que la <a href="
-"\"https://canaille.readthedocs.io/fr/latest/references/configuration.html\""
-">documentation</a> pour plus de détails."
+"que la <a href=\"https://canaille.readthedocs.io/fr/latest/references/"
+"configuration.html\">documentation</a> pour plus de détails."
 
 #: canaille/templates/base.html:74
 msgid "Profile"
@@ -924,14 +950,10 @@ msgid "Version %(version)s"
 msgstr "Version %(version)s"
 
 #: canaille/templates/core/about.html:39
-msgid "Homepage"
-msgstr "Site internet"
-
-#: canaille/templates/core/about.html:40
 msgid "Documentation"
 msgstr "Documentation"
 
-#: canaille/templates/core/about.html:41
+#: canaille/templates/core/about.html:40
 msgid "Source code"
 msgstr "Code source"
 
@@ -2020,20 +2042,27 @@ msgstr "Voir une autorisation"
 msgid "The application %(name)s is requesting access to:"
 msgstr "L'application %(name)s demande un accès à :"
 
-#: canaille/templates/oidc/authorize.html:53
+#: canaille/templates/oidc/authorize.html:34
+msgid ""
+"This client has registered with no scope. A scope should be added prior to "
+"authorization."
+msgstr ""
+
+#: canaille/templates/oidc/authorize.html:37
+#: canaille/templates/oidc/authorize.html:61
 #, python-format
 msgid "You are logged in as %(name)s"
 msgstr "Vous êtes identifiés en tant que %(name)s"
 
-#: canaille/templates/oidc/authorize.html:60
+#: canaille/templates/oidc/authorize.html:68
 msgid "Deny"
 msgstr "Refuser"
 
-#: canaille/templates/oidc/authorize.html:63
+#: canaille/templates/oidc/authorize.html:71
 msgid "Switch user"
 msgstr "Changer d'utilisateur"
 
-#: canaille/templates/oidc/authorize.html:66
+#: canaille/templates/oidc/authorize.html:74
 msgid "Accept"
 msgstr "Accepter"
 
@@ -2257,6 +2286,9 @@ msgstr "URL"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Jeton"
+
+#~ msgid "Homepage"
+#~ msgstr "Site internet"
 
 #~ msgid "Password reinitialisation"
 #~ msgstr "Réinitialisation du mot de passe"
