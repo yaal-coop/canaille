@@ -217,7 +217,8 @@ def create_factory(model):
         output = json.dumps(instance, cls=Backend.instance.json_encoder)
         click.echo(output)
 
-    attributes = dict(model.attributes)
+    basemodel = [klass for klass in model.__bases__ if issubclass(klass, Model)][0]
+    attributes = dict(basemodel.attributes)
     del attributes["id"]
     for attribute, attribute_type in attributes.items():
         slug = attribute.replace("_", "-")
