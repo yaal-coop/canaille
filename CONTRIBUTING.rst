@@ -259,9 +259,12 @@ Publish a new release
 4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
 5. Increase the version number in ``pyproject.toml``;
 6. Commit with ``git commit``;
-7. :ref:`Build the packages <development/contributing:Build a release>`;
-8. Publish the Python package on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
-9. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade "canaille[front,oidc,postgresql,server,otp,sms]"``. Check that everything looks fine;
-10. Publish the Python package on production PyPI ``uv publish``;
-11. Tag the commit with ``git tag XX.YY.ZZ``;
-12. Push the release commit and the new tag on the repository with ``git push --tags``.
+7. :ref:`Build the packages <development/contributing:Build a release>` with ``uv build``;
+8. Install from the .whl generated with ``uv pip install <path/to/dist/canaille-x.x.xx-py3-none-any.whl>[front,oidc,postgresql,server,otp,sms]``;
+9. Test creation of a user with ``canaille config dump`` and ``canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol`` and ``canaille run``;
+10. Try to connect the user;
+11. Publish the Python package on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
+12. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade "canaille[front,oidc,postgresql,server,otp,sms]"``. Check that everything looks fine;
+13. Publish the Python package on production PyPI ``uv publish``;
+14. Tag the commit with ``git tag XX.YY.ZZ``;
+15. Push the release commit and the new tag on the repository with ``git push --tags``.
