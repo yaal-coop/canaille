@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-03 22:58+0100\n"
-"PO-Revision-Date: 2025-02-04 08:41+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2025-02-05 16:05+0000\n"
+"Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -2382,6 +2382,8 @@ msgid ""
 "Install from the .whl generated with ``uv pip install <path/to/dist/canaille-"
 "x.x.xx-py3-none-any.whl>[front,oidc,postgresql,server,otp,sms]``;"
 msgstr ""
+"Installez à partir du .whl généré par ``uv pip install <path/to/dist/"
+"canaille-x.x.xx-py3-none-any.whl>[front,oidc,postgresql,server,otp,sms]``;"
 
 #: ../../CONTRIBUTING.rst:264 e69352aa875546b0a838f072020fb153
 msgid ""
@@ -2389,37 +2391,33 @@ msgid ""
 "user --user-name admin --password admin --emails admin@mydomain.example --"
 "given-name George --family-name Abitbol`` and ``canaille run``;"
 msgstr ""
+"Testez la création d'un utilisateur avec ``canaille config dump`` puis ``"
+"canaille create user --user-name admin --password admin --emails admin@"
+"mydomain.example --given-name George --family-name Abitbol`` et enfin ``"
+"canaille run``;"
 
 #: ../../CONTRIBUTING.rst:265 0427c7ae5e6142f2bb32a5267ab9ef54
 msgid "Try to connect the user;"
-msgstr ""
+msgstr "Essayez de connecter l'utilisateur;"
 
 #: ../../CONTRIBUTING.rst:266 59e6a194497f40589f9cadbc4819dac3
-#, fuzzy
-#| msgid ""
-#| "Publish on test PyPI with ``uv publish --publish-url https://test.pypi."
-#| "org/legacy/``;"
 msgid ""
 "Publish the Python package on test PyPI with ``uv publish --publish-url "
 "https://test.pypi.org/legacy/``;"
 msgstr ""
 "Publiez le paquet sur l’instance de test de PyPI avec ``uv publish --publish-"
-"url https://test.pypi.org/legacy/`` ;"
+"url https://test.pypi.org/legacy/``;"
 
 #: ../../CONTRIBUTING.rst:267 a76e7b5698e146a3aeb30fd210520018
-#, fuzzy
-#| msgid ""
-#| "Install the test package somewhere with ``pip install --extra-index-url "
-#| "https://test.pypi.org/simple --upgrade canaille``. Check that everything "
-#| "looks fine;"
 msgid ""
 "Install the test package somewhere with ``pip install --extra-index-url "
 "https://test.pypi.org/simple --upgrade \"canaille[front,oidc,postgresql,"
 "server,otp,sms]\"``. Check that everything looks fine;"
 msgstr ""
 "Installez le paquet dans un projet quelconque avec ``pip install --extra-"
-"index-url https://test.pypi.org/simple --upgrade canaille``. Vérifiez que "
-"l’installation s’est bien passée ;"
+"index-url https ://test.pypi.org/simple --upgrade "
+"\"canaille[front,oidc,postgresql,server,otp,sms]\"``. Vérifiez que l’"
+"installation s’est bien passée ;"
 
 #: ../../CONTRIBUTING.rst:268 bdbcc97321eb4f72a89ace044fa421a6
 #, fuzzy
@@ -4101,10 +4099,8 @@ msgid "Options"
 msgstr "Options"
 
 #: ../../canaille config dump:1 4adc441c929a49e490b64d68abab777f
-#, fuzzy
-#| msgid "Test the configuration file."
 msgid "The path to the config file"
-msgstr "Test du fichier de configuration."
+msgstr "Le chemin du fichier de configuration."
 
 #: ../../canaille run:1 4b8012b55d2e461ba5a62b8034f7ab55
 msgid "Run Canaille in a hypercorn application server."
@@ -4475,17 +4471,18 @@ msgstr ""
 "d'environnement et le fichier de configuration ;"
 
 #: ../references/configuration.rst:70 a0f54ef6f6e2460fb39b23fbf8842310
-#, fuzzy
-#| msgid "environment file will have priority over the configuration file."
 msgid "environment file will have priority over the configuration file;"
 msgstr ""
-"Le fichier d'environnement est prioritaire sur le fichier de configuration."
+"Le fichier d'environnement est prioritaire sur le fichier de configuration;"
 
 #: ../references/configuration.rst:71 99d6d9d53c5a4a41a418e4f0a43adb2d
 msgid ""
 "if no configuration method is used, Canaille will look for a ``canaille."
 "toml`` configuration file in the current working directory."
 msgstr ""
+"si aucune méthode de configuration n'est utilisée, Canaille cherchera un "
+"fichier de configuration ``canaille.toml`` dans le répertoire de travail "
+"actuel."
 
 #: ../references/configuration.rst:74 ../references/templates.rst:0
 #: 6a3446b4c6694da39e1d3618548dd53e 440ce29a571e4f42acc8779effdc206f
@@ -5485,10 +5482,8 @@ msgstr "Le noeud LDAP dans lequel les groupes seront cherchés et enregistrés."
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_BASE:3
 #: 2900a3f68b294d53bf586c784b38ef6c
-#, fuzzy
-#| msgid "For instance `\"ou=groups,dc=mydomain,dc=tld\"`."
 msgid "For instance `\"ou=groups,dc=example,dc=org\"`."
-msgstr "Par exemple `\"ou=groups,dc=mondomaine,dc=tld\"`."
+msgstr "Par exemple `\"ou=groups,dc=exemple,dc=org\"`."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.GROUP_CLASS:1
@@ -5579,6 +5574,8 @@ msgid ""
 "Here is a configuration file example that can be generated with the :ref:"
 "`canaille config dump <cli_config>` command:"
 msgstr ""
+"Voici un exemple de fichier de configuration qui peut être généré avec la "
+"commande :ref:`canaille config dump <cli_config>` :"
 
 #: ../references/index.rst:2 157440efba2144bdbc65e8486d4a0662
 msgid "References"
@@ -8067,6 +8064,8 @@ msgid ""
 "This page details what to install on your server to make a production-ready "
 "environment for Canaille."
 msgstr ""
+"Cette page détaille ce qu'il faut installer sur votre serveur pour créer un "
+"environnement prêt pour la production de Canaille."
 
 #: ../tutorial/deployment.rst:7 aa98bb204ddc4cf8b97ed5a318e44437
 msgid "Application service"
@@ -8265,11 +8264,11 @@ msgstr "Installation"
 
 #: ../tutorial/install.rst:4 11b48f7fcecf4275adaa48840f4e3cac
 msgid "This page describes how to get and set-up Canaille."
-msgstr ""
+msgstr "Cette page décrit comment obtenir et installer Canaille."
 
 #: ../tutorial/install.rst:6 4029a8ed97d040aabd33f370edbf72db
 msgid "*I have no time, spare me the details !*"
-msgstr ""
+msgstr "*Je n'ai pas le temps, épargnez-moi les détails !*"
 
 #: ../tutorial/install.rst:20 e403dd5817594e70bd556f2fbdaaa4a0
 msgid "Get the code"
@@ -8286,6 +8285,11 @@ msgid ""
 "release, though this is not the most customizable. This is generally the "
 "recommended method to use Canaille in production."
 msgstr ""
+"Canaille fournit un fichier exécutable unique prêt à l'emploi pour Linux. "
+"L'installation binaire est le moyen le plus simple d'obtenir une version de "
+"Canaille prête pour la production, bien qu'elle ne soit pas la plus "
+"personnalisable. C'est généralement la méthode recommandée pour utiliser "
+"Canaille en production."
 
 #: ../tutorial/install.rst:36 8b420431aa774f26ab33447f739e045e
 msgid ""
@@ -8297,7 +8301,7 @@ msgstr ""
 
 #: ../tutorial/install.rst:41 7e44046739a7494b85e53635680ef232
 msgid "Linux packages"
-msgstr ""
+msgstr "Paquets Linux"
 
 #: ../tutorial/install.rst:43 2a3a1a09f6864996a9e248a8cdac015d
 msgid ""
@@ -8319,16 +8323,21 @@ msgid ""
 "Note that you should customize the ``EXTRAS`` packages, depending on your "
 "needs."
 msgstr ""
+"Dans l'exemple suivant, nous utilisons un virtualenv personnalisé pour "
+"installer Canaille. Notez que vous devez personnaliser les paquets ``EXTRAS``"
+" en fonction de vos besoins."
 
 #: ../tutorial/install.rst:57 9efaa0b138a0486ab8b758b00d8307d3
 msgid "Canaille installation using a Python virtualenv"
-msgstr ""
+msgstr "Installation de Canaille à l'aide d'un environnement virtuel Python"
 
 #: ../tutorial/install.rst:70 018bee5ee8924df99594d0de720c0171
 msgid ""
 "In the rest of the documentation, we consider that your virtualenv is "
 "activated, and that the ``canaille`` command is available."
 msgstr ""
+"Dans le reste de la documentation, nous considérons que votre virtualenv est "
+"activé, et que la commande ``canaille`` est fonctionnelle."
 
 #: ../tutorial/install.rst:74 47e5df43b1d947548a402af2136a0418
 msgid "Extras"
