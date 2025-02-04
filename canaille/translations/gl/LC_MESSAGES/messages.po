@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-03 23:00+0100\n"
+"POT-Creation-Date: 2025-02-04 09:40+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -2133,26 +2133,27 @@ msgid "The application %(name)s is requesting access to:"
 msgstr "A aplicación %(name)s está solicitando acceso a:"
 
 #: canaille/templates/oidc/authorize.html:34
+#, fuzzy, python-format
+#| msgid "The application %(client_name)s wants to disconnect your account."
 msgid ""
-"This client has registered with no scope. A scope should be added prior to "
-"authorization."
-msgstr ""
+"The application %(application_name)s does not allow user authentication."
+msgstr "A aplicación %(client_name)s quere desconectar a túa conta."
 
-#: canaille/templates/oidc/authorize.html:37
-#: canaille/templates/oidc/authorize.html:61
+#: canaille/templates/oidc/authorize.html:39
+#: canaille/templates/oidc/authorize.html:63
 #, python-format
 msgid "You are logged in as %(name)s"
 msgstr "Iniciaches sesión como %(name)s"
 
-#: canaille/templates/oidc/authorize.html:68
+#: canaille/templates/oidc/authorize.html:70
 msgid "Deny"
 msgstr "Denegar"
 
-#: canaille/templates/oidc/authorize.html:71
+#: canaille/templates/oidc/authorize.html:73
 msgid "Switch user"
 msgstr "Cambiar de usuario"
 
-#: canaille/templates/oidc/authorize.html:74
+#: canaille/templates/oidc/authorize.html:76
 msgid "Accept"
 msgstr "Aceptar"
 
