@@ -12,6 +12,7 @@ from ldap.controls.ppolicy import PasswordPolicyError
 from ldap.controls.readentry import PostReadControl
 
 from canaille.app import models
+from canaille.app.configuration import CheckResult
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
 from canaille.backends import Backend
@@ -133,11 +134,12 @@ class LDAPBackend(Backend):
                 Backend.instance.save(user)
                 Backend.instance.delete(user)
 
-            except ldap.INSUFFICIENT_ACCESS as exc:
-                raise ConfigurationException(
-                    f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
-                    f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'"
-                ) from exc
+            except ldap.INSUFFICIENT_ACCESS:
+                return CheckResult(
+                    message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                    f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'",
+                    success=False,
+                )
 
             try:
                 models.Group.ldap_object_classes()
@@ -158,14 +160,20 @@ class LDAPBackend(Backend):
                 Backend.instance.save(group)
                 Backend.instance.delete(group)
 
-            except ldap.INSUFFICIENT_ACCESS as exc:
-                raise ConfigurationException(
-                    f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
-                    f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'"
-                ) from exc
+            except ldap.INSUFFICIENT_ACCESS:
+                return CheckResult(
+                    message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                    f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'",
+                    success=False,
+                )
 
             finally:
                 Backend.instance.delete(user)
+
+        return CheckResult(
+            message="The connection to the LDAP server and permissions of the bind DN are correct",
+            success=True,
+        )
 
     @classmethod
     def login_placeholder(cls):

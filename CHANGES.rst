@@ -1,6 +1,10 @@
 [0.0.61] - Unreleased
 ---------------------
 
+Added
+^^^^^
+- Improve ``canaille config check`` output.
+
 Fixed
 ^^^^^
 - Fix SQL ``install`` command. :issue:`221`

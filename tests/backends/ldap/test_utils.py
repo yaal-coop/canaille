@@ -5,9 +5,10 @@ import ldap.dn
 import pytest
 
 from canaille.app import models
+from canaille.app.configuration import CheckResult
 from canaille.app.configuration import ConfigurationException
-from canaille.app.configuration import check_network_config
 from canaille.app.configuration import settings_factory
+from canaille.backends.ldap.backend import LDAPBackend
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.backends.ldap.ldapobject import python_attrs_to_ldap
 from canaille.backends.ldap.utils import Syntax
@@ -183,7 +184,7 @@ def test_operational_attribute_conversion(backend):
 def test_ldap_connection_remote(testclient, configuration, backend, mock_smpp):
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
-    check_network_config(config_dict)
+    LDAPBackend.check_network_config(config_dict)
 
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
@@ -195,7 +196,7 @@ def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
         ConfigurationException,
         match=r"Could not connect to the LDAP server",
     ):
-        check_network_config(config_dict)
+        LDAPBackend.check_network_config(config_dict)
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
@@ -207,7 +208,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration
         ConfigurationException,
         match=r"LDAP authentication failed with user",
     ):
-        check_network_config(config_dict)
+        LDAPBackend.check_network_config(config_dict)
 
 
 def test_ldap_cannot_create_users(testclient, configuration, backend):
@@ -220,11 +221,10 @@ def test_ldap_cannot_create_users(testclient, configuration, backend):
         raise ldap.INSUFFICIENT_ACCESS
 
     with mock.patch.object(User, "__init__", fake_init):
-        with pytest.raises(
-            ConfigurationException,
-            match=r"cannot create users at",
-        ):
-            check_network_config(config_dict)
+        assert LDAPBackend.check_network_config(config_dict) == CheckResult(
+            success=False,
+            message="LDAP user 'cn=Manager,dc=example,dc=org' cannot create users at 'ou=users'",
+        )
 
 
 def test_ldap_cannot_create_groups(testclient, configuration, backend):
@@ -237,11 +237,10 @@ def test_ldap_cannot_create_groups(testclient, configuration, backend):
         raise ldap.INSUFFICIENT_ACCESS
 
     with mock.patch.object(Group, "__init__", fake_init):
-        with pytest.raises(
-            ConfigurationException,
-            match=r"cannot create groups at",
-        ):
-            check_network_config(config_dict)
+        assert LDAPBackend.check_network_config(config_dict) == CheckResult(
+            success=False,
+            message="LDAP user 'cn=Manager,dc=example,dc=org' cannot create groups at 'ou=groups'",
+        )
 
 
 def test_login_placeholder(testclient):

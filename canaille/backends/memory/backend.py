@@ -6,6 +6,7 @@ from typing import Any
 from flask import current_app
 
 import canaille.backends.memory.models
+from canaille.app.configuration import CheckResult
 from canaille.backends import Backend
 from canaille.backends import get_lockout_delay_message
 
@@ -52,7 +53,7 @@ class MemoryBackend(Backend):
 
     @classmethod
     def check_network_config(cls, config):
-        pass
+        return CheckResult(message="Memory backend don't need configuration")
 
     @classmethod
     def login_placeholder(cls):

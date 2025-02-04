@@ -6,10 +6,12 @@ from flask_alembic import Alembic
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import Password
 
+from canaille.app.configuration import CheckResult
 from canaille.backends import Backend
 from canaille.backends import ModelEncoder
 from canaille.backends import get_lockout_delay_message
@@ -72,7 +74,9 @@ class SQLBackend(Backend):
 
     @classmethod
     def check_network_config(cls, config):
-        pass
+        sess = Session(SQLBackend.engine)
+        sess.execute(text("SELECT 1"))
+        return CheckResult(success=True, message="SQL database correctly configured")
 
     @classmethod
     def login_placeholder(cls):
