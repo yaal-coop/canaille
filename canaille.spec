@@ -7,8 +7,8 @@ import importlib.resources
 from canaille.app.i18n import available_language_codes
 from canaille import create_app
 
-with create_app({"SECRET_KEY": "foo"}).app_context():
-    codes = available_language_codes()
+with create_app().app_context():
+    codes = {code.split("_")[0] for code in available_language_codes()}
 
 with importlib.resources.path('wtforms', 'locale') as locale_path:
     wtforms_locale = str(locale_path)
@@ -21,7 +21,7 @@ def filter_wtforms_catalogs(item):
     if Path(dest).suffix != ".mo":
         return False
 
-    code = dest.split("/")[2][:2]
+    code = dest.split("/")[2].split("_")[0]
     return code in codes
 
 
@@ -30,7 +30,7 @@ def filter_babel_catalogs(item):
     if not re.match(r"babel/locale-data/\w+\.dat", dest):
         return True
 
-    code = Path(dest).stem[:2]
+    code = Path(dest).stem.split("_")[0]
     return code in codes
 
 
@@ -39,7 +39,7 @@ def filter_pycountry_catalogs(item):
     if not re.match(r"pycountry/locales/\w+/LC_MESSAGES/.+\.mo", dest):
         return True
 
-    code = dest.split("/")[2][:2]
+    code = dest.split("/")[2].split("_")[0]
     return code in codes
 
 
@@ -53,7 +53,7 @@ def filter_faker_providers(item):
     if not re.match(r"faker/providers/\w+/\w+", dest):
         return True
 
-    code = dest.split("/")[3][:2]
+    code = dest.split("/")[3].split("_")[0]
     return code in codes
 
 a = Analysis(
@@ -64,6 +64,7 @@ a = Analysis(
         ('canaille/backends/sql/migrations', 'canaille/backends/sql/migrations'),
         ('canaille/templates', 'canaille/templates'),
         ('canaille/static', 'canaille/static'),
+        ('canaille/translations', 'canaille/translations'),
         (wtforms_locale, 'wtforms/locale'),
     ],
     hiddenimports=[

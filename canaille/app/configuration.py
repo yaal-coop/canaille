@@ -18,7 +18,6 @@ try:
     HAS_TOMLKIT = True
 except ImportError:
     HAS_TOMLKIT = False
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEFAULT_CONFIG_FILE = "canaille.toml"
 
