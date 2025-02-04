@@ -8,6 +8,7 @@ Added
 Fixed
 ^^^^^
 - Fix SQL ``install`` command. :issue:`221`
+- Canaille executable did not support i18n. :issue:`227`
 
 [0.0.60] - 2025-02-03
 ---------------------
