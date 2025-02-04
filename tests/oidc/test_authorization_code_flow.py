@@ -478,7 +478,7 @@ def test_consent_with_no_scope(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res.mustcontain("This client has registered with no scope.")
+    res.mustcontain("he application Some client does not allow user authentication.")
 
     res.mustcontain(no="Accept")
 
