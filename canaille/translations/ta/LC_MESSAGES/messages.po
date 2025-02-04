@@ -1990,7 +1990,7 @@ msgstr "பயன்பாடு %(name)s அணுகலைக் கோரு�
 #| msgid "The application %(client_name)s wants to disconnect your account."
 msgid ""
 "The application %(application_name)s does not allow user authentication."
-msgstr "பயன்பாடு %(client_name)s உங்கள் கணக்கை துண்டிக்க விரும்புகின்றன."
+msgstr "பயன்பாடு %application_name)s உங்கள் கணக்கை துண்டிக்க விரும்புகின்றன."
 
 #: canaille/templates/oidc/authorize.html:39
 #: canaille/templates/oidc/authorize.html:63

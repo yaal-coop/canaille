@@ -2026,7 +2026,7 @@ msgstr "La aplicación %(name)s está solicitando acceso a:"
 #| msgid "The application %(client_name)s wants to disconnect your account."
 msgid ""
 "The application %(application_name)s does not allow user authentication."
-msgstr "La aplicación %(client_name)s quiere desconectar tu cuenta."
+msgstr "La aplicación %(application_name)s quiere desconectar tu cuenta."
 
 #: canaille/templates/oidc/authorize.html:39
 #: canaille/templates/oidc/authorize.html:63

@@ -2036,7 +2036,7 @@ msgstr "Die Anwendung %(name)s bittet um Zugang zu:"
 msgid ""
 "The application %(application_name)s does not allow user authentication."
 msgstr ""
-"Die Anwendung %(client_name)s möchte die Verbindung zu Ihrem Konto trennen."
+"Die Anwendung %(application_name)s möchte die Verbindung zu Ihrem Konto trennen."
 
 #: canaille/templates/oidc/authorize.html:39
 #: canaille/templates/oidc/authorize.html:63
