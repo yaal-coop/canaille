@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - Canaille executable did not support i18n. :issue:`227`
+- Dynamic `kid` parameter for JWKs. :issue:`222`
 
 [0.0.61] - 2025-02-04
 ---------------------

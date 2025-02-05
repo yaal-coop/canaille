@@ -2,7 +2,6 @@ import datetime
 
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
-from authlib.jose import JsonWebKey
 from authlib.oauth2.rfc6749.grants import (
     AuthorizationCodeGrant as _AuthorizationCodeGrant,
 )
@@ -31,6 +30,7 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
+from joserfc.jwk import JWKRegistry
 from werkzeug.security import gen_salt
 
 from canaille.app import DOCUMENTATION_URL
@@ -150,12 +150,14 @@ def get_jwt_config(grant=None):
 def get_jwks():
     kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
     alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
-    jwk = JsonWebKey.import_key(
-        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"], {"kty": kty}
+    jwk = JWKRegistry.import_key(
+        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"], kty
     )
+    jwk.ensure_kid()
     return {
         "keys": [
             {
+                "kid": jwk.kid,
                 "use": "sig",
                 "alg": alg,
                 **jwk,

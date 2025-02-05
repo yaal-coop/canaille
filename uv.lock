@@ -177,6 +177,7 @@ mysql = [
 ]
 oidc = [
     { name = "authlib" },
+    { name = "joserfc" },
 ]
 otp = [
     { name = "otpauth" },
@@ -271,6 +272,7 @@ requires-dist = [
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
+    { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.0.2" },
     { name = "otpauth", marker = "extra == 'otp'", specifier = ">=2.1.1" },
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
@@ -1035,6 +1037,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/af/92/b3130cbbf5591acf9ade8708c365f3238046ac7cb8ccba6e81abccb0ccff/jinja2-3.1.5.tar.gz", hash = "sha256:8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb", size = 244674 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bd/0f/2ba5fbcd631e3e88689309dbe978c5769e883e4b84ebfe7da30b43275c5a/jinja2-3.1.5-py3-none-any.whl", hash = "sha256:aba0f4dc9ed8013c424088f68a5c226f7d6097ed89b246d7749c2ec4175c6adb", size = 134596 },
+]
+
+[[package]]
+name = "joserfc"
+version = "1.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cryptography" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5e/73/06a394569ecdb6decdee8cd2a916f2391730f269225b7c2416a2a806e270/joserfc-1.0.2.tar.gz", hash = "sha256:f3c4efa35a62fc100097e4bec2584f5fd21b878eee3eb5324bc9b37d2969b2a4", size = 170521 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/01/adc0fd12a64413fced1b5c85fa7af8e12b32430ccc736b43e3d29c52f714/joserfc-1.0.2-py3-none-any.whl", hash = "sha256:8d3e0253b0b24aeaf049d7bf7a847040dd6462de24cefd0c14abfc8b353f9619", size = 60931 },
 ]
 
 [[package]]

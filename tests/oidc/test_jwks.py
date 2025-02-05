@@ -1,3 +1,5 @@
+from unittest import mock
+
 from authlib.jose import JsonWebKey
 
 
@@ -9,6 +11,7 @@ def test_jwks(testclient, keypair):
     assert res.json == {
         "keys": [
             {
+                "kid": mock.ANY,
                 "use": "sig",
                 "alg": "RS256",
                 **jwk,
