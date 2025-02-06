@@ -87,6 +87,7 @@ def oauth_authorization_server():
         "ui_locales_supported": g.available_language_codes,
         "code_challenge_methods_supported": ["plain", "S256"],
         "service_documentation": DOCUMENTATION_URL,
+        "authorization_response_iss_parameter_supported": True,
     }
 
 
