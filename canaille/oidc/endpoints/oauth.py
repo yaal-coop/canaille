@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from authlib.common.urls import add_params_to_uri
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
@@ -64,12 +65,15 @@ def authorize():
     )
     user = current_user()
 
+    # Check that the request is well-formed
     if response := authorize_guards(client):
         return response
 
+    # Check that the user is logged
     if response := authorize_login(user):
         return response
 
+    # Get the user consent if needed
     response = authorize_consent(client, user)
 
     return response
@@ -128,25 +132,39 @@ def authorize_consent(client, user):
     )
     consent = consents[0] if consents else None
 
+    # Get the authorization code, or display the user consent form
     if request.method == "GET":
-        if (
+        client_has_user_consent = (
             (client.preconsent and (not consent or not consent.revoked))
             or (
                 consent and all(scope in set(consent.scope) for scope in allowed_scopes)
             )
             and not consent.revoked
-        ):
-            return authorization.create_authorization_response(grant_user=user)
+        )
+
+        if client_has_user_consent:
+            response = authorization.create_authorization_response(grant_user=user)
+
+            # Manually implement RFC9207 until this is implemented upstream in authlib
+            # https://github.com/lepture/authlib/pull/700
+            response.location = add_params_to_uri(
+                response.location, {"iss": get_issuer()}
+            )
+
+            return response
 
         elif request.args.get("prompt") == "none":
-            response = {"error": "consent_required"}
+            response = {
+                "error": "consent_required",
+                "iss": get_issuer(),
+            }
             current_app.logger.debug("authorization endpoint response: %s", response)
             return jsonify(response)
 
         try:
             grant = authorization.get_consent_grant(end_user=user)
         except OAuth2Error as error:
-            response = dict(error.get_body())
+            response = {**dict(error.get_body()), "iss": get_issuer()}
             current_app.logger.debug("authorization endpoint response: %s", response)
             return jsonify(response)
 
@@ -192,6 +210,11 @@ def authorize_consent(client, user):
         )
 
     response = authorization.create_authorization_response(grant_user=grant_user)
+
+    # Manually implement RFC9207 until this is implemented upstream in authlib
+    # https://github.com/lepture/authlib/pull/700
+    response.location = add_params_to_uri(response.location, {"iss": get_issuer()})
+
     current_app.logger.debug("authorization endpoint response: %s", response.location)
     return response
 

@@ -879,3 +879,23 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client, bac
         res = res.form.submit(name="answer", value="accept", status=302)
 
         assert res.location.startswith(client.redirect_uris[0])
+
+
+def test_rfc9207(
+    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+):
+    """Authorization responses should contain a 'iss' parameter."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+    res = res.form.submit(name="answer", value="accept", status=302)
+    params = parse_qs(urlsplit(res.location).query)
+    issuer = params["iss"][0]
+    assert issuer == "https://auth.mydomain.test"
