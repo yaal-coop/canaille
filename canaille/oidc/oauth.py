@@ -13,6 +13,7 @@ from authlib.oauth2.rfc6749.grants import (
 )
 from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
+from authlib.oauth2.rfc7523 import JWTBearerClientAssertion
 from authlib.oauth2.rfc7591 import (
     ClientRegistrationEndpoint as _ClientRegistrationEndpoint,
 )
@@ -523,6 +524,20 @@ class CodeChallenge(_CodeChallenge):
 
 authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
+
+
+class JWTClientAuth(JWTBearerClientAssertion):
+    def resolve_client_public_key(self, client, headers):
+        if headers["alg"] == "HS256":
+            return client.client_secret
+        if headers["alg"] == "RS256":
+            return client.public_key
+
+
+authorization.register_client_auth_method(
+    JWTClientAuth.CLIENT_AUTH_METHOD,
+    JWTClientAuth(url_for("oidc.endpoints.issue_token")),
+)
 
 
 def generate_access_token(client, grant_type, user, scope):
