@@ -46,6 +46,7 @@ def test_oauth_authorization_server(testclient):
         "token_endpoint_auth_signing_alg_values_supported": ["RS256", "ES256"],
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
+        "authorization_response_iss_parameter_supported": True,
     }
 
 
@@ -117,6 +118,7 @@ def test_openid_configuration(testclient):
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
         "prompt_values_supported": ["none"],
+        "authorization_response_iss_parameter_supported": True,
     }
 
 
