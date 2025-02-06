@@ -40,6 +40,23 @@ from canaille.backends import Backend
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 
+authorization = AuthorizationServer()
+require_oauth = ResourceProtector()
+
+
+class JWTClientAuth(JWTBearerClientAssertion):
+    def resolve_client_public_key(self, client, headers):
+        if headers["alg"] == "HS256":
+            return client.client_secret
+        if headers["alg"] == "RS256":
+            return client.public_key
+
+
+authorization.register_client_auth_method(
+    JWTClientAuth.CLIENT_AUTH_METHOD,
+    JWTClientAuth(url_for("oidc.endpoints.issue_token")),
+)
+
 
 def oauth_authorization_server():
     return {
@@ -247,7 +264,12 @@ def save_authorization_code(code, request):
 
 
 class AuthorizationCodeGrant(_AuthorizationCodeGrant):
-    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+    TOKEN_ENDPOINT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        "none",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+    ]
 
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
@@ -520,24 +542,6 @@ class CodeChallenge(_CodeChallenge):
 
     def get_authorization_code_challenge_method(self, authorization_code):
         return authorization_code.challenge_method
-
-
-authorization = AuthorizationServer()
-require_oauth = ResourceProtector()
-
-
-class JWTClientAuth(JWTBearerClientAssertion):
-    def resolve_client_public_key(self, client, headers):
-        if headers["alg"] == "HS256":
-            return client.client_secret
-        if headers["alg"] == "RS256":
-            return client.public_key
-
-
-authorization.register_client_auth_method(
-    JWTClientAuth.CLIENT_AUTH_METHOD,
-    JWTClientAuth(url_for("oidc.endpoints.issue_token")),
-)
 
 
 def generate_access_token(client, grant_type, user, scope):
