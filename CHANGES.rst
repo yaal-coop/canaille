@@ -3,11 +3,11 @@
 
 Added
 ^^^^^
-- Implement :rfc:`RFC9207 <9207>`. :pr:`228`
+- Implement :rfc:`RFC9207 <9207>`. :pr:`227`
 
 Fixed
 ^^^^^
-- Client dynamic registration with the ``jwks`` parameter. :pr:`229`
+- Client dynamic registration with the ``jwks`` parameter. :pr:`228`
 
 [0.0.62] - 2025-02-05
 ---------------------
