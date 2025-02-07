@@ -121,7 +121,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "tos_uri": "oauthTermsOfServiceURI",
         "policy_uri": "oauthPolicyURI",
         "jwks_uri": "oauthJWKURI",
-        "jwk": "oauthJWK",
+        "jwks": "oauthJWK",
         "token_endpoint_auth_method": "oauthTokenEndpointAuthMethod",
         "software_id": "oauthSoftwareID",
         "software_version": "oauthSoftwareVersion",

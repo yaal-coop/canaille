@@ -219,7 +219,7 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     tos_uri: Mapped[str] = mapped_column(String, nullable=True)
     policy_uri: Mapped[str] = mapped_column(String, nullable=True)
     jwks_uri: Mapped[str] = mapped_column(String, nullable=True)
-    jwk: Mapped[str] = mapped_column(String, nullable=True)
+    jwks: Mapped[str] = mapped_column(String, nullable=True)
     token_endpoint_auth_method: Mapped[str] = mapped_column(String, nullable=True)
     software_id: Mapped[str] = mapped_column(String, nullable=True)
     software_version: Mapped[str] = mapped_column(String, nullable=True)

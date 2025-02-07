@@ -1,3 +1,4 @@
+import json
 from unittest import mock
 
 from authlib.jose import jwt
@@ -262,4 +263,61 @@ def test_client_registration_without_authentication_ok(testclient, backend):
     assert client.policy_uri == "https://example.test/policy"
     assert client.software_id == "example"
     assert client.software_version == "x.y.z"
+    backend.delete(client)
+
+
+def test_client_registration_with_jwks(testclient, backend):
+    """Nominal test case for a registration with the 'jwks' parameter."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    payload = {
+        "redirect_uris": [
+            "https://client.example.test/callback",
+            "https://client.example.test/callback2",
+        ],
+        "client_name": "My Example Client",
+        "client_uri": "https://example.test",
+        "token_endpoint_auth_method": "client_secret_basic",
+        "logo_uri": "https://client.example.test/logo.webp",
+        "grant_types": ["authorization_code", "implicit"],
+        "response_types": ["code", "token"],
+        "scope": "openid profile",
+        "jwks": {
+            "keys": [
+                {
+                    "alg": "RS256",
+                    "e": "AQAB",
+                    "kty": "RSA",
+                    "n": "wbLxLf5qi3iO_3pQPbulxfPm7p5Ameeow-On-ssQBjkaOrK9ZLHQZtCDxzEw VGmWPIe5jRx3Ot97PPHZz2ldvKN6rLlG7YiXCiijuz_an-ppWC52xa0Ue6l5iSIxS7Ot6WWyxgP0wA3JrDy85TNUYZ1O3hWSSJJjgO9RpY2JZLW_UVQFOy9HdsUHio46eTQ_vCqP9sK gRz3W5Al82ZL1iZhKye86FbgHIG4SXGjQB0kopT6DEjz_Bf-rxGmD9mu7Fx6DSn7qEXQZja35ELAvtuasYHvpMYCFUXLIlzN8H_HmsMfN-Fai7_FFsuss6Cpqt0NJUSrqxRZGOsoLj4 icJw",
+                    "use": "sig",
+                }
+            ]
+        },
+    }
+    res = testclient.post_json("/oauth/register", payload, status=201)
+
+    client = backend.get(models.Client, client_id=res.json["client_id"])
+    assert res.json["jwks"] == {
+        "keys": [
+            {
+                "alg": "RS256",
+                "e": "AQAB",
+                "kty": "RSA",
+                "n": "wbLxLf5qi3iO_3pQPbulxfPm7p5Ameeow-On-ssQBjkaOrK9ZLHQZtCDxzEw VGmWPIe5jRx3Ot97PPHZz2ldvKN6rLlG7YiXCiijuz_an-ppWC52xa0Ue6l5iSIxS7Ot6WWyxgP0wA3JrDy85TNUYZ1O3hWSSJJjgO9RpY2JZLW_UVQFOy9HdsUHio46eTQ_vCqP9sK gRz3W5Al82ZL1iZhKye86FbgHIG4SXGjQB0kopT6DEjz_Bf-rxGmD9mu7Fx6DSn7qEXQZja35ELAvtuasYHvpMYCFUXLIlzN8H_HmsMfN-Fai7_FFsuss6Cpqt0NJUSrqxRZGOsoLj4 icJw",
+                "use": "sig",
+            }
+        ]
+    }
+    assert json.loads(client.jwks) == {
+        "keys": [
+            {
+                "alg": "RS256",
+                "e": "AQAB",
+                "kty": "RSA",
+                "n": "wbLxLf5qi3iO_3pQPbulxfPm7p5Ameeow-On-ssQBjkaOrK9ZLHQZtCDxzEw VGmWPIe5jRx3Ot97PPHZz2ldvKN6rLlG7YiXCiijuz_an-ppWC52xa0Ue6l5iSIxS7Ot6WWyxgP0wA3JrDy85TNUYZ1O3hWSSJJjgO9RpY2JZLW_UVQFOy9HdsUHio46eTQ_vCqP9sK gRz3W5Al82ZL1iZhKye86FbgHIG4SXGjQB0kopT6DEjz_Bf-rxGmD9mu7Fx6DSn7qEXQZja35ELAvtuasYHvpMYCFUXLIlzN8H_HmsMfN-Fai7_FFsuss6Cpqt0NJUSrqxRZGOsoLj4 icJw",
+                "use": "sig",
+            }
+        ]
+    }
+
     backend.delete(client)

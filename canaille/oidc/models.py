@@ -35,7 +35,7 @@ class Client(BaseClient, ClientMixin):
         "tos_uri",
         "policy_uri",
         "jwks_uri",
-        "jwk",
+        "jwks",
         "token_endpoint_auth_method",
         "software_id",
         "software_version",

@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from werkzeug.security import gen_salt
 
@@ -101,7 +102,6 @@ def test_client_add(testclient, logged_admin, backend):
         "policy_uri": "https://foobar.test/policy",
         "software_id": "software",
         "software_version": "1",
-        "jwk": "jwk",
         "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [],
         "preconsent": False,
@@ -129,7 +129,6 @@ def test_client_add(testclient, logged_admin, backend):
     assert client.policy_uri == "https://foobar.test/policy"
     assert client.software_id == "software"
     assert client.software_version == "1"
-    assert client.jwk == "jwk"
     assert client.jwks_uri == "https://foobar.test/jwks.json"
     assert client.audience == [client]
     assert not client.preconsent
@@ -163,7 +162,6 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "policy_uri": "https://foobar.test/policy",
         "software_id": "software",
         "software_version": "1",
-        "jwk": "jwk",
         "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [client.id, trusted_client.id],
         "preconsent": True,
@@ -197,7 +195,6 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     assert client.policy_uri == "https://foobar.test/policy"
     assert client.software_id == "software"
     assert client.software_version == "1"
-    assert client.jwk == "jwk"
     assert client.jwks_uri == "https://foobar.test/jwks.json"
     assert client.audience == [client, trusted_client]
     assert not client.preconsent
@@ -308,3 +305,49 @@ def test_client_new_token(testclient, logged_admin, backend, client):
 
     res = res.follow()
     assert res.template == "oidc/token_view.html"
+
+
+def test_jwks_is_not_json(testclient, client, logged_admin, trusted_client, backend):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clientaddform"]["jwks"] = "invalid"
+    res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
+
+    assert (
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) in res.flashes
+    res.mustcontain("This value is not a valid JSON string.")
+
+
+def test_jwks_is_not_jwks(testclient, client, logged_admin, trusted_client, backend):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clientaddform"]["jwks"] = "{}"
+    res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
+
+    assert (
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) in res.flashes
+    res.mustcontain("This value is not a valid JWK.")
+
+
+def test_valid_jwk(testclient, client, logged_admin, trusted_client, backend):
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    jwks = {
+        "alg": "RS256",
+        "e": "AQAB",
+        "kty": "RSA",
+        "n": "wbLxLf5qi3iO_3pQPbulxfPm7p5Ameeow-On-ssQBjkaOrK9ZLHQZtCDxzEwVGmWPIe5jRx3Ot97PPHZz2ldvKN6rLlG7YiXCiijuz_an-ppWC52xa0Ue6l5iSIxS7Ot6WWyxgP0wA3JrDy85TNUYZ1O3hWSSJJjgO9RpY2JZLW_UVQFOy9HdsUHio46eTQ_vCqP9sKgRz3W5Al82ZL1iZhKye86FbgHIG4SXGjQB0kopT6DEjz_Bf-rxGmD9mu7Fx6DSn7qEXQZja35ELAvtuasYHvpMYCFUXLIlzN8H_HmsMfN-Fai7_FFsuss6Cpqt0NJUSrqxRZGOsoLj4icJw",
+        "use": "sig",
+    }
+    res.forms["clientaddform"]["jwks"] = json.dumps(jwks)
+    res = res.forms["clientaddform"].submit(status=302, name="action", value="edit")
+
+    assert (
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) not in res.flashes
+    assert ("success", "The client has been edited.") in res.flashes
+
+    backend.reload(client)
+    assert json.loads(client.jwks) == jwks
