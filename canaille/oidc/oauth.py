@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
@@ -459,6 +460,9 @@ class ClientManagementMixin:
                 kwargs["client_secret_expires_at"], datetime.timezone.utc
             )
 
+        if "jwks" in kwargs:
+            kwargs["jwks"] = json.dumps(kwargs["jwks"])
+
         kwargs["scope"] = kwargs["scope"].split(" ")
 
         return kwargs
@@ -473,6 +477,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
     def save_client(self, client_info, client_metadata, request):
         if "scope" not in client_metadata:
             client_metadata["scope"] = "openid"
+
         client = models.Client(
             # this won't be needed when OIDC RP Initiated Logout is
             # directly implemented in authlib:

@@ -68,7 +68,7 @@ def add(user):
         policy_uri=form["policy_uri"].data,
         software_id=form["software_id"].data,
         software_version=form["software_version"].data,
-        jwk=form["jwk"].data,
+        jwks=form["jwks"].data,
         jwks_uri=form["jwks_uri"].data,
         preconsent=form["preconsent"].data,
         client_secret=""
@@ -138,7 +138,7 @@ def client_edit(client):
         policy_uri=form["policy_uri"].data,
         software_id=form["software_id"].data,
         software_version=form["software_version"].data,
-        jwk=form["jwk"].data,
+        jwks=form["jwks"].data,
         jwks_uri=form["jwks_uri"].data,
         audience=form["audience"].data,
         preconsent=form["preconsent"].data,

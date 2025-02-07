@@ -1,4 +1,7 @@
+import json
+
 import wtforms
+from authlib.jose import JsonWebKey
 
 from canaille.app import models
 from canaille.app.forms import Form
@@ -16,6 +19,20 @@ class AuthorizeForm(Form):
 
 class LogoutForm(Form):
     answer = wtforms.SubmitField()
+
+
+def is_jwks(form, field):
+    try:
+        payload = json.loads(field.data)
+    except json.decoder.JSONDecodeError as exc:
+        raise wtforms.ValidationError(
+            _("This value is not a valid JSON string.")
+        ) from exc
+
+    try:
+        JsonWebKey.import_key(payload)
+    except ValueError as exc:
+        raise wtforms.ValidationError(_("This value is not a valid JWK.")) from exc
 
 
 def _client_audiences():
@@ -149,13 +166,13 @@ class ClientAddForm(Form):
         validators=[wtforms.validators.Optional()],
         render_kw={"placeholder": "1.0"},
     )
-    jwk = wtforms.StringField(
-        _("JWK"),
-        validators=[wtforms.validators.Optional()],
+    jwks = wtforms.StringField(
+        _("JWKS"),
+        validators=[wtforms.validators.Optional(), is_jwks],
         render_kw={"placeholder": ""},
     )
     jwks_uri = wtforms.URLField(
-        _("JKW URI"),
+        _("JKWS URI"),
         validators=[
             wtforms.validators.Optional(),
             is_uri,
