@@ -43,7 +43,7 @@ class RootSettings(BaseSettings):
 
         SECRET_KEY = "very-secret"
         SERVER_NAME = "auth.mydomain.example"
-        PREFERRED_URL_SCHEME = false
+        PREFERRED_URL_SCHEME = "https"
         DEBUG = false
 
         [CANAILLE]
