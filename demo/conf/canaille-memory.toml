@@ -1,5 +1,6 @@
 SECRET_KEY = "change me before you go in production"
 DEBUG = true
+SERVER_NAME = "canaille.localhost"
 
 [CANAILLE]
 LOGO = "/static/img/canaille-head.webp"
