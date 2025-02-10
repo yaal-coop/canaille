@@ -3,6 +3,7 @@ import os
 import uuid
 
 import pytest
+from authlib.jose import JsonWebKey
 from authlib.oidc.core.grants.util import generate_id_token
 from werkzeug.security import gen_salt
 
@@ -35,11 +36,24 @@ def configuration(configuration, keypair):
             "ISS": "https://auth.mydomain.test",
         }
     }
+    configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
+        "level": "DEBUG",
+        "handlers": ["wsgi"],
+    }
     return configuration
 
 
 @pytest.fixture
-def client(testclient, trusted_client, backend):
+def client_jwks():
+    raw_private_key, raw_public_key = generate_keypair()
+    private_key = JsonWebKey.import_key(raw_private_key, {"kty": "RSA"})
+    public_key = JsonWebKey.import_key(raw_public_key, {"kty": "RSA"})
+    return public_key, private_key
+
+
+@pytest.fixture
+def client(testclient, trusted_client, backend, client_jwks):
+    public_key, _ = client_jwks
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -64,7 +78,7 @@ def client(testclient, trusted_client, backend):
         scope=["openid", "email", "profile", "groups", "address", "phone"],
         tos_uri="https://mydomain.test/tos",
         policy_uri="https://mydomain.test/policy",
-        jwks_uri="https://mydomain.test/jwk",
+        jwks=public_key.as_json(),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://mydomain.test/disconnected"],
     )
@@ -77,7 +91,8 @@ def client(testclient, trusted_client, backend):
 
 
 @pytest.fixture
-def trusted_client(testclient, backend):
+def trusted_client(testclient, backend, client_jwks):
+    public_key, _ = client_jwks
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
@@ -102,7 +117,7 @@ def trusted_client(testclient, backend):
         scope=["openid", "profile", "groups"],
         tos_uri="https://myotherdomain.test/tos",
         policy_uri="https://myotherdomain.test/policy",
-        jwks_uri="https://myotherdomain.test/jwk",
+        jwks=public_key.as_json(),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
         preconsent=True,
@@ -122,14 +137,14 @@ def authorization(testclient, user, client, backend):
         code="my-code",
         client=client,
         subject=user,
-        redirect_uri="https://foobar.test/callback",
+        redirect_uri="https://mydomain.test/redirect1",
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",
         issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
         lifetime=3600,
-        challenge="challenge",
-        challenge_method="method",
+        challenge=gen_salt(48),
+        challenge_method="plain",
     )
     backend.save(a)
     yield a

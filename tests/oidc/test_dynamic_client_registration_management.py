@@ -4,7 +4,8 @@ from datetime import datetime
 from canaille.app import models
 
 
-def test_get(testclient, backend, client, user):
+def test_get(testclient, backend, client, user, client_jwks):
+    public_key, _ = client_jwks
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -44,14 +45,15 @@ def test_get(testclient, backend, client, user):
         "contacts": ["contact@mydomain.test"],
         "tos_uri": "https://mydomain.test/tos",
         "policy_uri": "https://mydomain.test/policy",
-        "jwks": None,
-        "jwks_uri": "https://mydomain.test/jwk",
+        "jwks": public_key.as_json(),
+        "jwks_uri": None,
         "software_id": None,
         "software_version": None,
     }
 
 
-def test_update(testclient, backend, client, user):
+def test_update(testclient, backend, client, user, client_jwks):
+    public_key, _ = client_jwks
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -116,7 +118,7 @@ def test_update(testclient, backend, client, user):
         "contacts": ["newcontact@example.test"],
         "tos_uri": "https://newname.example.test/tos",
         "policy_uri": "https://newname.example.test/policy",
-        "jwks": None,
+        "jwks": public_key.as_json(),
         "jwks_uri": "https://newname.example.test/my_public_keys.jwks",
         "software_id": "new_software_id",
         "software_version": "3.14",
