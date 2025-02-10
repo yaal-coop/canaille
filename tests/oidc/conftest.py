@@ -1,10 +1,12 @@
 import datetime
+import json
 import os
 import uuid
 
 import pytest
-from authlib.jose import JsonWebKey
 from authlib.oidc.core.grants.util import generate_id_token
+from joserfc.jwk import KeySet
+from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -46,14 +48,15 @@ def configuration(configuration, keypair):
 @pytest.fixture
 def client_jwks():
     raw_private_key, raw_public_key = generate_keypair()
-    private_key = JsonWebKey.import_key(raw_private_key, {"kty": "RSA"})
-    public_key = JsonWebKey.import_key(raw_public_key, {"kty": "RSA"})
+    private_key = RSAKey.import_key(raw_private_key)
+    public_key = RSAKey.import_key(raw_public_key)
     return public_key, private_key
 
 
 @pytest.fixture
 def client(testclient, trusted_client, backend, client_jwks):
     public_key, _ = client_jwks
+    key_set = KeySet([public_key]).as_dict()
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -78,7 +81,7 @@ def client(testclient, trusted_client, backend, client_jwks):
         scope=["openid", "email", "profile", "groups", "address", "phone"],
         tos_uri="https://client.test/tos",
         policy_uri="https://client.test/policy",
-        jwks=public_key.as_json(),
+        jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://client.test/disconnected"],
     )
@@ -93,6 +96,7 @@ def client(testclient, trusted_client, backend, client_jwks):
 @pytest.fixture
 def trusted_client(testclient, backend, client_jwks):
     public_key, _ = client_jwks
+    key_set = KeySet([public_key]).as_dict()
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
@@ -117,7 +121,7 @@ def trusted_client(testclient, backend, client_jwks):
         scope=["openid", "profile", "groups"],
         tos_uri="https://myotherdomain.test/tos",
         policy_uri="https://myotherdomain.test/policy",
-        jwks=public_key.as_json(),
+        jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
         preconsent=True,

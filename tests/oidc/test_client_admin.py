@@ -1,6 +1,8 @@
 import datetime
 import json
 
+from joserfc.jwk import KeySet
+from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -333,14 +335,8 @@ def test_jwks_is_not_jwks(testclient, client, logged_admin, trusted_client, back
 
 def test_valid_jwk(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    jwks = {
-        "alg": "RS256",
-        "e": "AQAB",
-        "kty": "RSA",
-        "n": "wbLxLf5qi3iO_3pQPbulxfPm7p5Ameeow-On-ssQBjkaOrK9ZLHQZtCDxzEwVGmWPIe5jRx3Ot97PPHZz2ldvKN6rLlG7YiXCiijuz_an-ppWC52xa0Ue6l5iSIxS7Ot6WWyxgP0wA3JrDy85TNUYZ1O3hWSSJJjgO9RpY2JZLW_UVQFOy9HdsUHio46eTQ_vCqP9sKgRz3W5Al82ZL1iZhKye86FbgHIG4SXGjQB0kopT6DEjz_Bf-rxGmD9mu7Fx6DSn7qEXQZja35ELAvtuasYHvpMYCFUXLIlzN8H_HmsMfN-Fai7_FFsuss6Cpqt0NJUSrqxRZGOsoLj4icJw",
-        "use": "sig",
-    }
-    res.forms["clientaddform"]["jwks"] = json.dumps(jwks)
+    keyset = KeySet([RSAKey.generate_key(1024)]).as_dict()
+    res.forms["clientaddform"]["jwks"] = json.dumps(keyset)
     res = res.forms["clientaddform"].submit(status=302, name="action", value="edit")
 
     assert (
@@ -350,4 +346,4 @@ def test_valid_jwk(testclient, client, logged_admin, trusted_client, backend):
     assert ("success", "The client has been edited.") in res.flashes
 
     backend.reload(client)
-    assert json.loads(client.jwks) == jwks
+    assert json.loads(client.jwks) == keyset

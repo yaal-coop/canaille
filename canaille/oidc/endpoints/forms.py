@@ -1,7 +1,7 @@
 import json
 
 import wtforms
-from authlib.jose import JsonWebKey
+from joserfc.jwk import KeySet
 
 from canaille.app import models
 from canaille.app.forms import Form
@@ -30,8 +30,8 @@ def is_jwks(form, field):
         ) from exc
 
     try:
-        JsonWebKey.import_key(payload)
-    except ValueError as exc:
+        KeySet.import_key_set(payload)
+    except (KeyError, ValueError) as exc:
         raise wtforms.ValidationError(_("This value is not a valid JWK.")) from exc
 
 
