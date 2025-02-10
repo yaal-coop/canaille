@@ -88,6 +88,13 @@ class RootSettings(BaseSettings):
         avoided in production environments.
     """
 
+    CACHE_TYPE: str = "SimpleCache"
+    """The cache type.
+
+    The default ``SimpleCache`` is a lightweight in-memory cache.
+    See the :ref:`Flask-Caching documentation <flask-caching>` for further details.
+    """
+
 
 def settings_factory(
     config=None,

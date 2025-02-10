@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - Implement :rfc:`RFC9207 <9207>`. :pr:`227`
+- Implement :rfc:`RFC7523 <7523>`. :issue:`112`
 
 Fixed
 ^^^^^

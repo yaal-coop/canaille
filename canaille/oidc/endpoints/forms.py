@@ -100,6 +100,7 @@ class ClientAddForm(Form):
             ("hybrid", "hybrid"),
             ("refresh_token", "refresh_token"),
             ("client_credentials", "client_credentials"),
+            ("urn:ietf:params:oauth:grant-type:jwt-bearer", "jwt-bearer"),
         ],
         default=["authorization_code", "refresh_token"],
     )
@@ -121,6 +122,8 @@ class ClientAddForm(Form):
         choices=[
             ("client_secret_basic", "client_secret_basic"),
             ("client_secret_post", "client_secret_post"),
+            ("client_secret_jwt", "client_secret_jwt"),
+            ("private_key_jwt", "private_key_jwt"),
             ("none", "none"),
         ],
         default="client_secret_basic",

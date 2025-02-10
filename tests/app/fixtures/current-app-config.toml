@@ -24,6 +24,12 @@ PREFERRED_URL_SCHEME = "http"
 #     avoided in production environments.
 # DEBUG = false
 
+# The cache type.
+#
+# The default SimpleCache is a lightweight in-memory cache. See the Flask-Caching
+# documentation for further details.
+# CACHE_TYPE = "SimpleCache"
+
 [CANAILLE]
 # Your organization name.
 #

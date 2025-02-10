@@ -31,6 +31,7 @@ maintainers = [{name="Éloi Rivard", email="eloi@yaal.coop"}]
 requires-python = ">=3.10"
 dependencies = [
     "flask >= 3.0.0",
+    "flask-caching>=2.3.0",
     "flask-wtf >= 1.2.1",
     "pydantic-settings >= 2.0.3",
     "requests>=2.32.3",

@@ -12,6 +12,7 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
+from flask_caching import Cache
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
@@ -21,6 +22,7 @@ from canaille.app.session import current_user
 from canaille.app.templating import render_template
 
 csrf = CSRFProtect()
+cache = Cache()
 
 
 def user_needed(*args):
@@ -169,6 +171,7 @@ def setup_flask(app):
     from canaille.app.templating import render_template
 
     csrf.init_app(app)
+    cache.init_app(app)
 
     @app.before_request
     def make_session_permanent():
