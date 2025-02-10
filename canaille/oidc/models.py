@@ -60,7 +60,11 @@ class Client(BaseClient, ClientMixin):
 
     def check_endpoint_auth_method(self, method, endpoint):
         if endpoint == "token":
-            return method == self.token_endpoint_auth_method
+            return method == self.token_endpoint_auth_method or (
+                method == "client_assertion_jwt"
+                and self.token_endpoint_auth_method
+                in ("client_secret_jwt", "private_key_jwt")
+            )
         return True
 
     def check_response_type(self, response_type):
