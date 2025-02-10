@@ -33,7 +33,7 @@ def configuration(configuration, keypair):
         "JWT": {
             "PUBLIC_KEY": public_key,
             "PRIVATE_KEY": private_key,
-            "ISS": "https://auth.mydomain.test",
+            "ISS": "https://auth.test",
         }
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
@@ -58,12 +58,12 @@ def client(testclient, trusted_client, backend, client_jwks):
         client_id=gen_salt(24),
         client_name="Some client",
         contacts=["contact@mydomain.test"],
-        client_uri="https://mydomain.test",
+        client_uri="https://client.test",
         redirect_uris=[
-            "https://mydomain.test/redirect1",
-            "https://mydomain.test/redirect2",
+            "https://client.test/redirect1",
+            "https://client.test/redirect2",
         ],
-        logo_uri="https://mydomain.test/logo.webp",
+        logo_uri="https://client.test/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
@@ -76,11 +76,11 @@ def client(testclient, trusted_client, backend, client_jwks):
         ],
         response_types=["code", "token", "id_token"],
         scope=["openid", "email", "profile", "groups", "address", "phone"],
-        tos_uri="https://mydomain.test/tos",
-        policy_uri="https://mydomain.test/policy",
+        tos_uri="https://client.test/tos",
+        policy_uri="https://client.test/policy",
         jwks=public_key.as_json(),
         token_endpoint_auth_method="client_secret_basic",
-        post_logout_redirect_uris=["https://mydomain.test/disconnected"],
+        post_logout_redirect_uris=["https://client.test/disconnected"],
     )
     backend.save(c)
     c.audience = [c, trusted_client]
@@ -137,7 +137,7 @@ def authorization(testclient, user, client, backend):
         code="my-code",
         client=client,
         subject=user,
-        redirect_uri="https://mydomain.test/redirect1",
+        redirect_uri="https://client.test/redirect1",
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",

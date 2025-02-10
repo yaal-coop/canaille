@@ -3,7 +3,7 @@ from flask import g
 
 def test_oauth_authorization_server(testclient):
     res = testclient.get("/.well-known/oauth-authorization-server", status=200).json
-    assert "https://auth.mydomain.test" == res["issuer"]
+    assert "https://auth.test" == res["issuer"]
     assert res == {
         "authorization_endpoint": "http://canaille.test/oauth/authorize",
         "code_challenge_methods_supported": ["plain", "S256"],
@@ -15,7 +15,7 @@ def test_oauth_authorization_server(testclient):
             "refresh_token",
         ],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
-        "issuer": "https://auth.mydomain.test",
+        "issuer": "https://auth.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
         "registration_endpoint": "http://canaille.test/oauth/register",
         "response_types_supported": [
@@ -52,7 +52,7 @@ def test_oauth_authorization_server(testclient):
 
 def test_openid_configuration(testclient):
     res = testclient.get("/.well-known/openid-configuration", status=200).json
-    assert "https://auth.mydomain.test" == res["issuer"]
+    assert "https://auth.test" == res["issuer"]
     assert res == {
         "authorization_endpoint": "http://canaille.test/oauth/authorize",
         "claims_supported": [
@@ -85,7 +85,7 @@ def test_openid_configuration(testclient):
         ],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
-        "issuer": "https://auth.mydomain.test",
+        "issuer": "https://auth.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
         "registration_endpoint": "http://canaille.test/oauth/register",
         "response_types_supported": [

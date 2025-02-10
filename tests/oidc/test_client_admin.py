@@ -184,7 +184,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     assert client.client_uri == "https://foobar.test"
     assert client.redirect_uris == [
         "https://foobar.test/callback",
-        "https://mydomain.test/redirect2",
+        "https://client.test/redirect2",
     ]
     assert client.grant_types == ["password", "authorization_code"]
     assert client.scope == ["openid", "profile"]

@@ -898,4 +898,4 @@ def test_rfc9207(
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     issuer = params["iss"][0]
-    assert issuer == "https://auth.mydomain.test"
+    assert issuer == "https://auth.test"
