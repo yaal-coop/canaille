@@ -40,7 +40,7 @@ def configuration(configuration, keypair):
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
         "level": "DEBUG",
-        "handlers": ["wsgi"],
+        "handlers": ["default"],
     }
     return configuration
 
