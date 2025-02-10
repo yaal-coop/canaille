@@ -37,6 +37,7 @@ from flask import g
 from flask import request
 from flask import url_for
 from joserfc.jwk import JWKRegistry
+from joserfc.jwk import KeySet
 from werkzeug.security import gen_salt
 
 from canaille.app import DOCUMENTATION_URL
@@ -160,19 +161,13 @@ def get_jwks():
     kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
     alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
     jwk = JWKRegistry.import_key(
-        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"], kty
+        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"],
+        kty,
+        {"alg": alg, "use": "sig"},
     )
     jwk.ensure_kid()
-    return {
-        "keys": [
-            {
-                "kid": jwk.kid,
-                "use": "sig",
-                "alg": alg,
-                **jwk,
-            }
-        ]
-    }
+    key_set = KeySet([jwk])
+    return key_set.as_dict()
 
 
 def get_client_jwks(client, kid=None):
