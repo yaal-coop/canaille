@@ -176,6 +176,7 @@ def openid_configuration():
         ],
         "subject_types_supported": ["pairwise", "public"],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
+        "userinfo_signing_alg_values_supported": ["RS256"],
         "prompt_values_supported": ["none"]
         + (["create"] if current_app.config["CANAILLE"]["ENABLE_REGISTRATION"] else []),
     }
