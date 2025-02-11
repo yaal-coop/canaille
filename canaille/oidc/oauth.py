@@ -60,7 +60,7 @@ def generate_id_token(
     auth_time=None,
     code=None,
     kid=None,
-):  # pragma: no cover
+):
     """Hotfix until the method is fixed upstream.
 
     https://github.com/lepture/authlib/pull/702
