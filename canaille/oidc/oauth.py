@@ -31,6 +31,7 @@ from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
+from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
 from flask import g
 from flask import request
@@ -46,58 +47,6 @@ from canaille.backends import Backend
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
-
-
-def generate_id_token(
-    token,
-    user_info,
-    key,
-    iss,
-    aud,
-    alg="RS256",
-    exp=3600,
-    nonce=None,
-    auth_time=None,
-    code=None,
-    kid=None,
-):
-    """Hotfix until the method is fixed upstream.
-
-    https://github.com/lepture/authlib/pull/702
-    """
-    import time
-
-    from authlib.common.encoding import to_native
-    from authlib.jose import jwt
-    from authlib.oidc.core.util import create_half_hash
-
-    now = int(time.time())
-    if auth_time is None:
-        auth_time = now
-
-    header = {"alg": alg}
-    if kid:
-        header["kid"] = kid
-
-    payload = {
-        "iss": iss,
-        "aud": aud,
-        "iat": now,
-        "exp": now + exp,
-        "auth_time": auth_time,
-    }
-    if nonce:
-        payload["nonce"] = nonce
-
-    if code:
-        payload["c_hash"] = to_native(create_half_hash(code, alg))
-
-    access_token = token.get("access_token")
-    if access_token:
-        payload["at_hash"] = to_native(create_half_hash(access_token, alg))
-
-    payload.update(user_info)
-    return to_native(jwt.encode(header, payload, key))
 
 
 def oauth_authorization_server():
@@ -200,22 +149,11 @@ def get_issuer():
 
 
 def get_jwt_config(grant=None):
-    kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
-    alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
-    exp = current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"]
-    jwk = JWKRegistry.import_key(
-        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"],
-        kty,
-        {"alg": alg, "use": "sig"},
-    )
-    jwk.ensure_kid()
-
     return {
         "key": current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
-        "kid": jwk.kid,
-        "alg": alg,
+        "alg": current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"],
         "iss": get_issuer(),
-        "exp": exp,
+        "exp": current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
     }
 
 
