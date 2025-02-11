@@ -11,6 +11,7 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.core.models import PASSWORD_MIN_DELAY
+from canaille.oidc.oauth import JWTClientAuth
 
 from . import client_credentials
 
@@ -383,6 +384,75 @@ def test_code_challenge(testclient, logged_user, client, backend):
     assert res.json["name"] == "John (johnny) Doe"
 
     client.token_endpoint_auth_method = "client_secret_basic"
+    backend.save(client)
+
+    for consent in consents:
+        backend.delete(consent)
+
+
+def test_jwt_key(testclient, logged_user, client, backend):
+    assert not backend.query(models.Consent)
+
+    client.token_endpoint_auth_method = JWTClientAuth.CLIENT_AUTH_METHOD
+    backend.save(client)
+
+    print("\n")
+    print("client auth method", client.token_endpoint_auth_method)
+    print("\n")
+
+    code_verifier = gen_salt(48)
+    code_challenge = create_s256_code_challenge(code_verifier)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            code_challenge=code_challenge,
+            code_challenge_method="S256",
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = backend.get(models.AuthorizationCode, code=code)
+    assert authcode is not None
+
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
+    assert "profile" in consents[0].scope
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="client_credentials",
+            code=code,
+            scope="openid profile",
+            code_verifier=code_verifier,
+            redirect_uri=client.redirect_uris[0],
+            client_id=client.client_id,
+        ),
+        status=200,
+    )
+    access_token = res.json["access_token"]
+
+    token = backend.get(models.Token, access_token=access_token)
+    assert token.client == client
+    assert token.subject == logged_user
+
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )
+    assert res.json["name"] == "John (johnny) Doe"
+
+    client.token_endpoint_auth_method = JWTClientAuth.CLIENT_AUTH_METHOD
     backend.save(client)
 
     for consent in consents:

@@ -52,12 +52,6 @@ class JWTClientAuth(JWTBearerClientAssertion):
             return client.public_key
 
 
-authorization.register_client_auth_method(
-    JWTClientAuth.CLIENT_AUTH_METHOD,
-    JWTClientAuth(url_for("oidc.endpoints.issue_token")),
-)
-
-
 def oauth_authorization_server():
     return {
         "issuer": get_issuer(),
@@ -594,3 +588,12 @@ def setup_oauth(app):
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(ClientRegistrationEndpoint)
     authorization.register_endpoint(ClientConfigurationEndpoint)
+    with app.app_context():
+        token_url = url_for("oidc.endpoints.issue_token")
+    authorization.register_client_auth_method(
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        JWTClientAuth(token_url),
+    )
+    print("\n")
+    print("auth methods accepted", AuthorizationCodeGrant.TOKEN_ENDPOINT_AUTH_METHODS)
+    print("\n")
