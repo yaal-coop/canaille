@@ -274,7 +274,7 @@ def revoke_token():
 def client_registration():
     current_app.logger.debug(
         "client registration endpoint request: POST: %s",
-        request.form.to_dict(flat=False),
+        request.json,
     )
     response = authorization.create_endpoint_response(
         ClientRegistrationEndpoint.ENDPOINT_NAME
@@ -286,10 +286,11 @@ def client_registration():
 @bp.route("/register/<client_id>", methods=["GET", "PUT", "DELETE"])
 @csrf.exempt
 def client_registration_management(client_id):
-    current_app.logger.debug(
-        "client registration management endpoint request: POST: %s",
-        request.form.to_dict(flat=False),
-    )
+    if request.method == "POST":
+        current_app.logger.debug(
+            "client registration management endpoint request: POST: %s",
+            request.json,
+        )
     response = authorization.create_endpoint_response(
         ClientConfigurationEndpoint.ENDPOINT_NAME
     )
