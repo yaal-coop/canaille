@@ -286,9 +286,9 @@ def client_registration():
 @bp.route("/register/<client_id>", methods=["GET", "PUT", "DELETE"])
 @csrf.exempt
 def client_registration_management(client_id):
-    if request.method == "POST":
+    if request.method == "PUT":
         current_app.logger.debug(
-            "client registration management endpoint request: POST: %s",
+            "client registration management endpoint request: PUT: %s",
             request.json,
         )
     response = authorization.create_endpoint_response(
