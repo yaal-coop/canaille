@@ -1,6 +1,16 @@
 import datetime
 import logging
 
+from canaille.core.auth import get_user_from_login
+
+
+def test_user_get_user_from_login(testclient, user):
+    """Check that 'get_user_from_login' gets users according to LOGIN_ATTRIBUTES."""
+    assert get_user_from_login(login="invalid") is None
+    assert get_user_from_login(login="user") == user
+    assert get_user_from_login(login="john@doe.test") == user
+    assert get_user_from_login(login="555-000-000") is None
+
 
 def test_signin_and_out(testclient, user, caplog):
     with testclient.session_transaction() as session:
@@ -181,3 +191,22 @@ def test_signin_locked_account(testclient, user, backend):
 
     user.lock_date = None
     backend.save(user)
+
+
+def test_login_placeholder(testclient):
+    """Check that the login form placeholders display values according to the 'LOGIN_ATTRIBUTES' configuration parameter."""
+    testclient.app.config["CANAILLE"]["LOGIN_ATTRIBUTES"] = ["user_name"]
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe"
+
+    testclient.app.config["CANAILLE"]["LOGIN_ATTRIBUTES"] = ["formatted_name"]
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "John Doe"
+
+    testclient.app.config["CANAILLE"]["LOGIN_ATTRIBUTES"] = ["emails"]
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "john.doe@example.com"
+
+    testclient.app.config["CANAILLE"]["LOGIN_ATTRIBUTES"] = ["user_name", "emails"]
+    placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
+    assert placeholder == "jdoe or john.doe@example.com"

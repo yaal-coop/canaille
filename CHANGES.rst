@@ -1,10 +1,18 @@
 [0.0.63] - 2025-02-06
 ---------------------
 
+.. warning::
+
+    This version comes with a configuration breaking change.
+    The configuration parameter ``CANAILLE_LDAP.USER_FILTER`` is removed in favor of
+    :class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`.
+
 Added
 ^^^^^
 - Implement :rfc:`RFC9207 <9207>`. :pr:`227`
 - Implement :rfc:`RFC7523 <7523>`. :issue:`112`
+- Implement the :class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`
+  configuration parameter, to tweak the login attributes. :issue:`196`
 
 Fixed
 ^^^^^

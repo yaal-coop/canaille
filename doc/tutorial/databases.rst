@@ -58,7 +58,6 @@ It is used when the ``CANAILLE_LDAP`` configuration parameter is defined. For in
 
     USER_BASE = "ou=users,dc=example,dc=org"
     USER_CLASS = "inetOrgPerson"
-    USER_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
 
     GROUP_BASE = "ou=groups,dc=example,dc=org"
 
