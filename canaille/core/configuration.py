@@ -355,9 +355,11 @@ class CoreSettings(BaseModel):
     MAX_PASSWORD_LENGTH: int = 1000
     """User password maximum length.
 
-    There is a technical of 4096 characters with the SQL backend.
-    If the value is 0, :data:`None`, or greater than 4096,
-    then 4096 will be retained.
+    .. note::
+
+        There is a technical limit of 4096 characters with the SQL backend.
+        If the value is 0, :data:`None`, or greater than 4096,
+        then 4096 will be retained.
     """
 
     ADMIN_EMAIL: str | None = None

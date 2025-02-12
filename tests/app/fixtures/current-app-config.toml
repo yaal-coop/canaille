@@ -128,8 +128,9 @@ JAVASCRIPT = false
 
 # User password maximum length.
 #
-# There is a technical of 4096 characters with the SQL backend. If the value is 0,
-# None, or greater than 4096, then 4096 will be retained.
+#     There is a technical limit of 4096 characters with the SQL backend.
+#     If the value is 0, None, or greater than 4096,
+#     then 4096 will be retained.
 # MAX_PASSWORD_LENGTH = 1000
 
 # Administration email contact.
