@@ -1,4 +1,4 @@
-[0.0.63] - 2025-02-06
+[0.0.64] - Unreleased
 ---------------------
 
 .. warning::
@@ -9,7 +9,6 @@
 
 Added
 ^^^^^
-- Implement :rfc:`RFC9207 <9207>`. :pr:`227`
 - Implement :rfc:`RFC7523 <7523>`. :issue:`112`
 - Implement the :class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`
   configuration parameter, to tweak the login attributes. :issue:`196`
@@ -18,6 +17,13 @@ Fixed
 ^^^^^
 - Client dynamic registration with the ``jwks`` parameter. :pr:`228`
 - Use a custom LDAP image in the demo environment. :issue:`136`
+
+[0.0.63] - 2025-02-06
+---------------------
+
+Added
+^^^^^
+- Implement :rfc:`RFC9207 <9207>`. :pr:`227`
 
 [0.0.62] - 2025-02-05
 ---------------------
