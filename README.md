@@ -18,9 +18,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 ## Locally
 
 ```bash
-cd demo
 # Either run the demo locally
-./run.sh
+uv sync --all-extras --group demo && uv run devserver
 # or run the demo in docker
 docker compose up
 ```

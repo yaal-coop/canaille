@@ -165,6 +165,7 @@ release = [
 
 [project.scripts]
 canaille = "canaille.commands:cli"
+devserver = "demo.run:devserver"
 
 [options.packages.find]
 exclude = [

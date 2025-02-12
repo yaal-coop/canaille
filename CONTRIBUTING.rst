@@ -53,10 +53,10 @@ to be able to hack Canaille.
 
 Initialize your development environment with:
 
+- ``uv sync --all-groups --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;
 - ``uv sync --extra front --extra oidc`` to have a minimal working development environment. This will allow you to run the tests with ``uv pytest --backend memory``.
 - ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``.
 - ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``.
-- ``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;
   Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
 
 SQL
@@ -66,7 +66,7 @@ With the SQL backend, the demo instance will load and save data in a local sqlit
 .. code-block:: console
     :caption: Run the demo instance with the SQL backend
 
-    ./demo/run.sh
+    uv run devserver
 
 Memory
 ^^^^^^
@@ -75,7 +75,7 @@ With the memory backend, all data is lost when Canaille stops.
 .. code-block:: console
     :caption: Run the demo instance with the memory backend
 
-    ./demo/run.sh --backend memory
+    uv run devserver --backend memory
 
 LDAP
 ^^^^
@@ -84,7 +84,7 @@ With the LDAP backend, all data is lost when Canaille stops.
 .. code-block:: console
     :caption: Run the demo instance with the LDAP backend
 
-    ./demo/run.sh --backend ldap
+    uv run devserver --backend ldap
 
 .. note ::
     If you want to run the demo locally with the LDAP backend, you need to have
