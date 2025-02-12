@@ -84,6 +84,7 @@ def test_openid_configuration(testclient):
             "refresh_token",
         ],
         "id_token_signing_alg_values_supported": ["RS256", "ES256", "HS256"],
+        "userinfo_signing_alg_values_supported": ["RS256"],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
         "issuer": "https://auth.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
