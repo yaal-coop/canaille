@@ -55,17 +55,8 @@ class MemoryBackend(Backend):
     def check_network_config(cls, config):
         return CheckResult(message="Memory backend don't need configuration")
 
-    @classmethod
-    def login_placeholder(cls):
-        return ""
-
     def has_account_lockability(self):
         return True
-
-    def get_user_from_login(self, login):
-        from .models import User
-
-        return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:

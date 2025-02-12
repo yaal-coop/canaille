@@ -44,6 +44,7 @@ from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
 from canaille.app.flask import cache
 from canaille.backends import Backend
+from canaille.core.auth import get_user_from_login
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
@@ -333,7 +334,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
 
     def authenticate_user(self, username, password):
-        user = Backend.instance.get_user_from_login(username)
+        user = get_user_from_login(username)
         if not user:
             return None
 
@@ -372,7 +373,7 @@ class JWTBearerGrant(_JWTBearerGrant):
         return jwk
 
     def authenticate_user(self, subject: str):
-        return Backend.instance.get_user_from_login(subject)
+        return get_user_from_login(subject)
 
     def has_granted_permission(self, client, user):
         grant = Backend.instance.get(models.Consent, client=client, subject=user)

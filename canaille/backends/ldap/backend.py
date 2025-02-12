@@ -175,22 +175,6 @@ class LDAPBackend(Backend):
             success=True,
         )
 
-    @classmethod
-    def login_placeholder(cls):
-        user_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
-        placeholders = []
-
-        if "cn={{login" in user_filter.replace(" ", ""):
-            placeholders.append(_("John Doe"))
-
-        if "uid={{login" in user_filter.replace(" ", ""):
-            placeholders.append(_("jdoe"))
-
-        if "mail={{login" in user_filter.replace(" ", "") or not placeholders:
-            placeholders.append(_("john.doe@example.com"))
-
-        return _(" or ").join(placeholders)
-
     def has_account_lockability(self):
         from .ldapobject import LDAPObject
 
@@ -198,21 +182,6 @@ class LDAPBackend(Backend):
             return "pwdEndTime" in LDAPObject.ldap_object_attributes()
         except ldap.SERVER_DOWN:  # pragma: no cover
             return False
-
-    def get_user_from_login(self, login=None):
-        from .models import User
-
-        raw_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
-        filter = (
-            (
-                current_app.jinja_env.from_string(raw_filter).render(
-                    login=ldap.filter.escape_filter_chars(login)
-                )
-            )
-            if login
-            else None
-        )
-        return self.get(User, filter=filter)
 
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:

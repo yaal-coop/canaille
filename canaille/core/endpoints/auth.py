@@ -20,6 +20,8 @@ from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.core.auth import get_user_from_login
+from canaille.core.auth import login_placeholder
 from canaille.core.endpoints.forms import TwoFactorForm
 from canaille.core.models import SEND_NEW_OTP_DELAY
 
@@ -50,12 +52,12 @@ def login():
 
     form = LoginForm(request.form or None)
     form.render_field_macro_file = "core/partial/login_field.html"
-    form["login"].render_kw["placeholder"] = Backend.instance.login_placeholder()
+    form["login"].render_kw["placeholder"] = login_placeholder()
 
     if not request.form or form.form_control():
         return render_template("core/login.html", form=form)
 
-    user = Backend.instance.get_user_from_login(form.login.data)
+    user = get_user_from_login(form.login.data)
     if user and not user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -87,7 +89,7 @@ def password():
             "core/password.html", form=form, username=session["attempt_login"]
         )
 
-    user = Backend.instance.get_user_from_login(session["attempt_login"])
+    user = get_user_from_login(session["attempt_login"])
     if user and not user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -197,7 +199,7 @@ def forgotten():
         flash(_("Could not send the password reset link."), "error")
         return render_template("core/forgotten-password.html", form=form)
 
-    user = Backend.instance.get_user_from_login(form.login.data)
+    user = get_user_from_login(form.login.data)
     success_message = _(
         "A password reset link has been sent at your email address. "
         "You should receive it within a few minutes."
@@ -288,9 +290,7 @@ def setup_two_factor_auth():
         flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
 
-    user = Backend.instance.get_user_from_login(
-        session["attempt_login_with_correct_password"]
-    )
+    user = get_user_from_login(session["attempt_login_with_correct_password"])
 
     uri = user.get_otp_authentication_setup_uri()
     base64_qr_image = get_b64encoded_qr_image(uri)
@@ -338,9 +338,7 @@ def verify_two_factor_auth():
             method=current_otp_method,
         )
 
-    user = Backend.instance.get_user_from_login(
-        session["attempt_login_with_correct_password"]
-    )
+    user = get_user_from_login(session["attempt_login_with_correct_password"])
 
     if form.validate() and user.is_otp_valid(form.otp.data, current_otp_method):
         session["remaining_otp_methods"].pop(0)
@@ -393,9 +391,7 @@ def send_mail_otp():
         flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
 
-    user = Backend.instance.get_user_from_login(
-        session["attempt_login_with_correct_password"]
-    )
+    user = get_user_from_login(session["attempt_login_with_correct_password"])
 
     if user.can_send_new_otp():
         if user.generate_and_send_otp_mail():
@@ -432,9 +428,7 @@ def send_sms_otp():
         flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
 
-    user = Backend.instance.get_user_from_login(
-        session["attempt_login_with_correct_password"]
-    )
+    user = get_user_from_login(session["attempt_login_with_correct_password"])
 
     if user.can_send_new_otp():
         if user.generate_and_send_otp_sms():

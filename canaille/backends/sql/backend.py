@@ -78,17 +78,8 @@ class SQLBackend(Backend):
         sess.execute(text("SELECT 1"))
         return CheckResult(success=True, message="SQL database correctly configured")
 
-    @classmethod
-    def login_placeholder(cls):
-        return ""
-
     def has_account_lockability(self):
         return True
-
-    def get_user_from_login(self, login):
-        from .models import User
-
-        return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:

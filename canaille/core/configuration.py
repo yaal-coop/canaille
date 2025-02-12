@@ -277,6 +277,13 @@ class CoreSettings(BaseModel):
     before the account is created.
     """
 
+    LOGIN_ATTRIBUTES: list[str] | None = ["user_name", "emails"]
+    """The attributes users can use to identify themselves,
+    generally a combination of :attr:`~canaille.core.models.User.user_name`,
+    :attr:`~canaille.core.models.User.emails` and
+    :attr:`~canaille.core.models.User.phone_numbers`.
+    """
+
     HIDE_INVALID_LOGINS: bool = True
     """If :py:data:`True`, when users try to sign in with an invalid login, a
     message is shown indicating that the password is wrong, but does not give a
