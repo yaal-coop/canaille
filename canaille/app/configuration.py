@@ -92,7 +92,7 @@ class RootSettings(BaseSettings):
     """The cache type.
 
     The default ``SimpleCache`` is a lightweight in-memory cache.
-    See the :ref:`Flask-Caching documentation <flask-caching>` for further details.
+    See the :doc:`Flask-Caching documentation <flask-caching:index>` for further details.
     """
 
 
