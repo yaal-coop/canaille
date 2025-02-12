@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-12 23:16+0100\n"
-"PO-Revision-Date: 2025-02-12 22:17+0000\n"
+"PO-Revision-Date: 2025-02-13 20:14+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10-rc\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 929333de1e954a05b8b1f16eb39735da
@@ -104,28 +104,23 @@ msgid "Fixed"
 msgstr "Corrigé"
 
 #: ../../CHANGES.rst:18 af980ce1a7c24702bf3042dba50ec757
-#, fuzzy
-#| msgid ""
-#| "Dynamic client registration with missing ``scope`` parameter. :issue:"
-#| "`221` :pr:`222`"
 msgid "Client dynamic registration with the ``jwks`` parameter. :pr:`228`"
 msgstr ""
-"Ajout du paramètre ``scope`` manquant lors de l'enregistrement dynamique des "
-"clients. :issue:`221` :pr:`222`"
+"Enregistrement dynamique des clients avec le paramètre ``jwks``. :pr:`228`"
 
 #: ../../CHANGES.rst:19 68e92bc61d504a9dbaa7770baad04b98
 msgid "Use a custom LDAP image in the demo environment. :issue:`136`"
 msgstr ""
+"Utilisation d'une image Docker LDAP personnalisée dans l'environnement de "
+"démo :issue:`136`"
 
 #: ../../CHANGES.rst:22 c40cc30bc9f847b1ba5d4c38c0da1c66
-#, fuzzy
-#| msgid "[0.0.60] - 2025-02-03"
 msgid "[0.0.63] - 2025-02-06"
-msgstr "[0.0.60] - 2025-02-03"
+msgstr "[0.0.63] - 2025-02-06"
 
 #: ../../CHANGES.rst:26 74219fe023b9459cb1c2b01e6c734591
 msgid "Implement :rfc:`RFC9207 <9207>`. :pr:`227`"
-msgstr ""
+msgstr "Implémentation de la :rfc:`RFC9207 <9207>`. :pr:`227`"
 
 #: ../../CHANGES.rst:29 c40cc30bc9f847b1ba5d4c38c0da1c66
 msgid "[0.0.62] - 2025-02-05"
@@ -134,10 +129,12 @@ msgstr "[0.0.62] - 2025-02-05"
 #: ../../CHANGES.rst:33 03ea0151fee54050a69438e3d55bbf62
 msgid "Canaille executable did not support i18n. :issue:`227`"
 msgstr ""
+"Les traductions ne fonctionnaient pas avec l'exécutable de Canaille. "
+":issue:`227`"
 
 #: ../../CHANGES.rst:34 dc35c9c80b4b4580b5138ee1bd70211e
 msgid "Dynamic `kid` parameter for JWKs. :issue:`222`"
-msgstr ""
+msgstr "Paramètre `kid` dynamique pour les JWKS. :issue:`222`"
 
 #: ../../CHANGES.rst:37 c40cc30bc9f847b1ba5d4c38c0da1c66
 msgid "[0.0.61] - 2025-02-04"
@@ -145,11 +142,11 @@ msgstr "[0.0.61] - 2025-02-04"
 
 #: ../../CHANGES.rst:41 b5179b96bbf04bfb9b6a5770a72c27b5
 msgid "Improve ``canaille config check`` output."
-msgstr ""
+msgstr "Amélioration de la sortie de ``canaille config check``."
 
 #: ../../CHANGES.rst:45 398931a76fad42db84dff796147025a5
 msgid "Fix SQL ``install`` command. :issue:`221`"
-msgstr ""
+msgstr "Correction de la commande ``install`` avec SQL. :issue:`221`"
 
 #: ../../CHANGES.rst:48 c40cc30bc9f847b1ba5d4c38c0da1c66
 msgid "[0.0.60] - 2025-02-03"
@@ -1893,25 +1890,20 @@ msgstr ""
 "localhost:5001>`__"
 
 #: ../../CONTRIBUTING.rst:24 22caecadc7114e76845c3b467c14b3cd
-#, fuzzy
-#| msgid ""
-#| "Another dummy client at `client2.localhost:5002 <http://client2client2.."
-#| "localhost:5002>`__"
 msgid ""
 "Another dummy client at `client2.localhost:5002 <http://client2."
 "localhost:5002>`__"
 msgstr ""
-"Un autre client factice à l’adresse `client2.localhost:5002 <http://client2."
-"localhost:5002>`__"
+"Un autre client factice à l’adresse `client2.localhost:5002 "
+"<http://client2.localhost:5002>`__"
 
 #: ../../CONTRIBUTING.rst:25 a67d089006404b64be3f524fb45f4cdc
-#, fuzzy
-#| msgid "A mail catcher at `localhost:1080 <http://localhost:1080>`__"
 msgid ""
 "A mail catcher at `maildump.localhost:1080 <http://maildump."
 "localhost:1080>`__"
 msgstr ""
-"Un serveur mail factice à l'adresse `localhost:1080 <http://localhost:1080>`_"
+"Un serveur mail factice à l'adresse `maildump.localhost:1080 "
+"<http://maildump.localhost:1080>`_"
 
 #: ../../CONTRIBUTING.rst:27 26e6dca78815463db197f580c669ab82
 msgid "The canaille server has some default users:"
@@ -1983,24 +1975,15 @@ msgid "Initialize your development environment with:"
 msgstr "Initialisez votre environnement de développement avec :"
 
 #: ../../CONTRIBUTING.rst:56 e805f4cd014a4c37a9c0687d86bdca9a
-#, fuzzy
-#| msgid ""
-#| "``uv sync --all-extras`` if you want to have everything at your "
-#| "fingertips. Note that it may compile some Python dependencies that would "
-#| "expect things to be installed on your system; Some dependencies of "
-#| "Canaille might need to be compiled, so you probably want to check that "
-#| "`GCC` and `cargo` are available on your computer."
 msgid ""
 "``uv sync --all-groups --all-extras`` if you want to have everything at your "
 "fingertips. Note that it may compile some Python dependencies that would "
 "expect things to be installed on your system;"
 msgstr ""
-"``uv sync --all-extras`` si vous souhaitez avoir tout à portée de main. "
-"Notez que cela requerra peut-être de compiler certaines dépendances Python, "
-"qui nécessiterons l’installation de certaines bibliothèques sur votre "
-"système ; Certaines dépendances de Canaille auront peut-être besoin d’être "
-"compilées, vous voudrez probablement vérifier que `GCC` et `cargo` sont "
-"installés sur votre système."
+"``uv sync --all-groups --all-extras`` si vous souhaitez avoir tout à portée "
+"de main. Notez que cela requerra peut-être de compiler certaines dépendances "
+"Python, qui nécessiterons l’installation de certaines bibliothèques sur "
+"votre système ;"
 
 #: ../../CONTRIBUTING.rst:57 088aa6c1d0ca4dfc9dfe3f5be4979a19
 msgid ""
@@ -2024,11 +2007,6 @@ msgstr ""
 "sql``."
 
 #: ../../CONTRIBUTING.rst:59 e805f4cd014a4c37a9c0687d86bdca9a
-#, fuzzy
-#| msgid ""
-#| "``uv sync --extra front --extra oidc --extra ldap`` to have a minimal "
-#| "working development environment with LDAP backend support. This will "
-#| "allow you to run the tests with ``uv pytest --backend ldap``."
 msgid ""
 "``uv sync --extra front --extra oidc --extra ldap`` to have a minimal "
 "working development environment with LDAP backend support. This will allow "
@@ -2039,7 +2017,9 @@ msgstr ""
 "``uv sync --extra front --extra oidc --extra ldap`` pour obtenir un "
 "environnement de développement minimal avec le support pour les bases de "
 "données LDAP. Cela vous permettra d’exécuter les tests avec ``uv pytest --"
-"backend ldap``."
+"backend ldap``. Certaines dépendances de Canaille auront peut-être besoin d’"
+"être compilées, vous voudrez probablement vérifier que `GCC` et `cargo` sont "
+"installés sur votre système."
 
 #: ../development/specifications.rst:108 ../tutorial/databases.rst:16
 #: ../../CONTRIBUTING.rst:63 ../../CONTRIBUTING.rst:108
@@ -2560,15 +2540,11 @@ msgstr ""
 "rfc7009>`_"
 
 #: ../development/specifications.rst:15 81654dc31d06424099737c93902d6e84
-#, fuzzy
-#| msgid ""
-#| "❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
-#| "Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
 msgid ""
 "✅ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
 "Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
 msgstr ""
-"❌ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
+"✅ `RFC7523: JWT Profile for OAuth 2.0 Client Authentication and "
 "Authorization Grants <https://tools.ietf.org/html/rfc7523>`_"
 
 #: ../development/specifications.rst:16 5a6793d134b64922a97edab7a7a76eb9
@@ -3816,14 +3792,6 @@ msgstr ""
 "gestion."
 
 #: ../features.rst:300 07bb602c50344092bf6c8afd8db5b1d3
-#, fuzzy
-#| msgid ""
-#| "There are tools to :ref:`check your configuration <cli_check>` or to :ref:"
-#| "`install missing parts <cli_install>`. You can use the CLI to :ref:"
-#| "`create <cli_create>`, :ref:`read <cli_get>`, :ref:`update <cli_set>` "
-#| "and :ref:`delete <cli_delete>` models such as :class:`users <canaille."
-#| "core.models.User>`, :class:`groups <canaille.core.models.Group>` or  :"
-#| "class:`OIDC clients <canaille.oidc.basemodels.Client>`."
 msgid ""
 "There are tools to :ref:`generate and check a configuration file "
 "<cli_config>` or to :ref:`install missing parts <cli_install>`. You can use "
@@ -3832,13 +3800,13 @@ msgid ""
 "<canaille.core.models.User>`, :class:`groups <canaille.core.models.Group>` "
 "or  :class:`OIDC clients <canaille.oidc.basemodels.Client>`."
 msgstr ""
-"L'interface en ligne de commande dispose d'outils pour :ref:`vérifier votre "
-"configuration <cli_check>` ou pour :ref:`installer des éléments manquants "
-"<cli_install>`. Vous pouvez utiliser le CLI pour :ref:`créer <cli_create>`, :"
-"ref:`lire <cli_get>`, :ref:`mettre à jour <cli_set>` et :ref:`supprimer "
-"<cli_delete>` des modèles comme les :class:`utilisateurs <canaille.core."
-"models.User>`, :class:`groupes <canaille.core.models.Group>` ou les  :class:"
-"`clients OIDC <canaille.oidc.basemodels.Client>`."
+"L'interface en ligne de commande dispose d'outils pour :ref:`générer et "
+"vérifier votre configuration <cli_check>` ou pour :ref:`installer des "
+"éléments manquants <cli_install>`. Vous pouvez utiliser le CLI pour :ref:`"
+"créer <cli_create>`, :ref:`lire <cli_get>`, :ref:`mettre à jour <cli_set>` "
+"et :ref:`supprimer <cli_delete>` des modèles comme les :class:`utilisateurs "
+"<canaille.core.models.User>`, :class:`groupes <canaille.core.models.Group>` "
+"ou les  :class:`clients OIDC <canaille.oidc.basemodels.Client>`."
 
 #: ../features.rst:303 c51b231187334eae802aa8ac0ffbef81
 msgid ""
@@ -4122,10 +4090,8 @@ msgstr ""
 "suivants."
 
 #: ../../canaille config:1 87ca1bdf716e428baf705bacf87f4c09
-#, fuzzy
-#| msgid "Test the configuration file."
 msgid "Handle Canaille configuration file."
-msgstr "Test du fichier de configuration."
+msgstr "Manipule le fichier de configuration de Canaille."
 
 #: ../../canaille config check:1 c3e71c1ec5b545548c6f010ba00e3892
 msgid "Test the network connections defined in the configuration file."
@@ -4149,6 +4115,9 @@ msgid ""
 "or the :envvar:`CONFIG` environment variable if set, or a ``config.toml`` "
 "file in the current directory."
 msgstr ""
+"La configuration est exportée à l'endroit indiqué par le paramètre ``--path``"
+"s'il est renseigné, ou bien la variable d'environnement :envvar:`CONFIG`, ou "
+"à défaut un fichier ``config.toml`` dans le répertoire courant."
 
 #: ../references/commands.rst:0 0ad07996b01040428bb26d4ac0f28a21
 #: 72377430688445c0be26fd6bd2060466
