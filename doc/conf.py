@@ -69,6 +69,7 @@ intersphinx_mapping = {
     "flask-caching": ("https://flask-caching.readthedocs.io/en/latest/", None),
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
     "hypercorn": ("https://hypercorn.readthedocs.io/en/latest", None),
+    "jinja": ("https://jinja.palletsprojects.com", None),
     "pydantic": ("https://docs.pydantic.dev/latest", None),
     "pytest-iam": ("https://pytest-iam.readthedocs.io/en/latest/", None),
     "wtforms": ("https://wtforms.readthedocs.io", None),

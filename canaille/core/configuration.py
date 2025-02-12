@@ -277,11 +277,21 @@ class CoreSettings(BaseModel):
     before the account is created.
     """
 
-    LOGIN_ATTRIBUTES: list[str] | None = ["user_name", "emails"]
+    LOGIN_ATTRIBUTES: list[str] | dict[str, str] = ["user_name", "emails"]
     """The attributes users can use to identify themselves,
     generally a combination of :attr:`~canaille.core.models.User.user_name`,
     :attr:`~canaille.core.models.User.emails` and
     :attr:`~canaille.core.models.User.phone_numbers`.
+
+    - When this is a :class:`list`, it expects the attribute names to match.
+    - When this is a :class:`dict`, keys are expected to be the attribute names to match,
+      and values are a :doc:`jinja:index` string with a ``login`` variable available.
+      This can be used to tune the user input, and for example remove a domain name.
+
+    .. code-block:: toml
+
+        LOGIN_ATTRIBUTES = ["user_name", "emails"]
+        LOGIN_ATTRIBUTES = {user_name = "{{ login | replace('@example.org', '') }}", emails = "{{ login }}"}
     """
 
     HIDE_INVALID_LOGINS: bool = True

@@ -12,6 +12,18 @@ def test_user_get_user_from_login(testclient, user):
     assert get_user_from_login(login="555-000-000") is None
 
 
+def test_user_get_user_from_login_dict(testclient, user):
+    """Check that 'get_user_from_login' gets users according to LOGIN_ATTRIBUTES when it is a dict."""
+    testclient.app.config["CANAILLE"]["LOGIN_ATTRIBUTES"] = {
+        "user_name": "{{ login | replace('@doe.test', '') }}",
+        "emails": "{{ login }}",
+    }
+    assert get_user_from_login(login="invalid") is None
+    assert get_user_from_login(login="user") == user
+    assert get_user_from_login(login="john@doe.test") == user
+    assert get_user_from_login(login="user@doe.test") == user
+
+
 def test_signin_and_out(testclient, user, caplog):
     with testclient.session_transaction() as session:
         assert not session.get("user_id")

@@ -7,9 +7,21 @@ from canaille.backends import Backend
 def get_user_from_login(login=None):
     from canaille.app import models
 
-    for attr_name in current_app.config["CANAILLE"]["LOGIN_ATTRIBUTES"]:
-        if user := Backend.instance.get(models.User, **{attr_name: login}):
-            return user
+    login_attributes = current_app.config["CANAILLE"]["LOGIN_ATTRIBUTES"]
+
+    if isinstance(login_attributes, list):
+        for attr_name in login_attributes:
+            if user := Backend.instance.get(models.User, **{attr_name: login}):
+                return user
+
+    if isinstance(login_attributes, dict):
+        for attr_name, template in login_attributes.items():
+            login_value = current_app.jinja_env.from_string(template).render(
+                login=login
+            )
+            if user := Backend.instance.get(models.User, **{attr_name: login_value}):
+                return user
+
     return None
 
 
