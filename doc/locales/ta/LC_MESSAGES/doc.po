@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 18:52+0100\n"
+"POT-Creation-Date: 2025-02-12 23:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -4046,6 +4046,22 @@ msgid ""
 "The attributes users can use to identify themselves, generally a combination "
 "of :attr:`~canaille.core.models.User.user_name`, :attr:`~canaille.core."
 "models.User.emails` and :attr:`~canaille.core.models.User.phone_numbers`."
+msgstr ""
+
+#: ../../docstring of
+#: canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES:6
+#: 19013adace7e489f90604896ff7a543f
+msgid "When this is a :class:`list`, it expects the attribute names to match."
+msgstr ""
+
+#: ../../docstring of
+#: canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES:7
+#: 783e3987b299485b8cd5943dc4065fd0
+msgid ""
+"When this is a :class:`dict`, keys are expected to be the attribute names to "
+"match, and values are a :doc:`jinja:index` string with a ``login`` variable "
+"available. This can be used to tune the user input, and for example remove a "
+"domain name."
 msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1

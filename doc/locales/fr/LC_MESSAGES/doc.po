@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-02-12 18:52+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-12 23:16+0100\n"
 "PO-Revision-Date: 2025-02-12 22:17+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -49,8 +49,8 @@ msgid ""
 "`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`."
 msgstr ""
 "Cette version vient avec une rupture de compatibilité dans la configuration. "
-"Le paramètre ``CANAILLE_LDAP.USER_FILTER`` est supprimé en faveur de "
-":class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`."
+"Le paramètre ``CANAILLE_LDAP.USER_FILTER`` est supprimé en faveur de :class:"
+"`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`."
 
 #: ../../CHANGES.rst:11 ../../CHANGES.rst:25 ../../CHANGES.rst:40
 #: ../../CHANGES.rst:51 ../../CHANGES.rst:84 ../../CHANGES.rst:102
@@ -78,10 +78,10 @@ msgid ""
 "LOGIN_ATTRIBUTES` configuration parameter, to tweak the login attributes. :"
 "issue:`196`"
 msgstr ""
-"Implémentation du paramètre de configuration "
-":class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES` qui "
-"permet de personnaliser les attributs des utilisateurs à utiliser comme "
-"identifiants de connexion. :issue:`196`"
+"Implémentation du paramètre de configuration :class:`~canaille.core."
+"configuration.CoreSettings.LOGIN_ATTRIBUTES` qui permet de personnaliser les "
+"attributs des utilisateurs à utiliser comme identifiants de connexion. :"
+"issue:`196`"
 
 #: ../../CHANGES.rst:17 ../../CHANGES.rst:32 ../../CHANGES.rst:44
 #: ../../CHANGES.rst:65 ../../CHANGES.rst:72 ../../CHANGES.rst:95
@@ -4908,6 +4908,22 @@ msgid ""
 "The attributes users can use to identify themselves, generally a combination "
 "of :attr:`~canaille.core.models.User.user_name`, :attr:`~canaille.core."
 "models.User.emails` and :attr:`~canaille.core.models.User.phone_numbers`."
+msgstr ""
+
+#: ../../docstring of
+#: canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES:6
+#: 19013adace7e489f90604896ff7a543f
+msgid "When this is a :class:`list`, it expects the attribute names to match."
+msgstr ""
+
+#: ../../docstring of
+#: canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES:7
+#: 783e3987b299485b8cd5943dc4065fd0
+msgid ""
+"When this is a :class:`dict`, keys are expected to be the attribute names to "
+"match, and values are a :doc:`jinja:index` string with a ``login`` variable "
+"available. This can be used to tune the user input, and for example remove a "
+"domain name."
 msgstr ""
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1
