@@ -18,13 +18,14 @@ schemas = [
     "ldif/refint-config.ldif",
     "ldif/ppolicy-config.ldif",
     "ldif/otp-config.ldif",
-    "../canaille/backends/ldap/schemas/oauth2-openldap.ldif",
+    "ldif/oauth2-openldap.ldif",
 ]
 
 slapd = slapd.Slapd(
     suffix="dc=example,dc=org",
     root_cn="admin",
     root_pw="admin",
+    host="0.0.0.0",
     port=5389,
     log_level=logging.INFO,
     schemas=schemas,

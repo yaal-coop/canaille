@@ -4,23 +4,12 @@ version: "3"
 services:
   ldap:
     hostname: ldap.localhost
-    image: osixia/openldap
-    environment:
-      - LDAP_DOMAIN=example.org
-    volumes:
-      # memberof overlay is already present in openldap docker image but only for groupOfUniqueNames. We need to overwrite it (until canaille can handle groupOfUniqueNames).
-      # https://github.com/osixia/docker-openldap/blob/master/image/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif
-      - ./ldif/memberof-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/03-memberOf.ldif:ro
-      - ./ldif/refint-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/04-refint.ldif:ro
-      - ../canaille/backends/ldap/schemas/oauth2-openldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-oauth2.ldif:ro
-      - ./ldif/ppolicy-config.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/30-ppolicy.ldif:ro
-      - ./ldif/ppolicy.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/40-ppolicy.ldif:ro
-      - ./ldif/bootstrap-users-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-users-tree.ldif:ro
-      - ./ldif/bootstrap-oidc-tree.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap-oidc-tree.ldif:ro
-    command: --copy-service --loglevel debug
+    build:
+      context: ..
+      dockerfile: demo/Dockerfile-ldap
     ports:
-      - 5389:389
-      - 5636:636
+      - 5389:5389
+      - 5636:5636
 
   canaille:
     hostname: canaille.localhost
@@ -36,7 +25,7 @@ services:
       - FLASK_APP=demoapp
     volumes:
       - ../canaille:/opt/canaille/canaille
-      - ./conf-docker:/opt/canaille/conf
+      - ./conf:/opt/canaille/conf
     ports:
       - 5000:5000
 
@@ -53,7 +42,7 @@ services:
       - FLASK_APP=client
     volumes:
       - ./client:/opt/client/client
-      - ./conf-docker:/opt/client/conf
+      - ./conf:/opt/client/conf
       - ../canaille/static:/opt/canaille/static
     command: --port=5001
     ports:
@@ -72,7 +61,7 @@ services:
       - FLASK_APP=client
     volumes:
       - ./client:/opt/client/client
-      - ./conf-docker:/opt/client/conf
+      - ./conf:/opt/client/conf
       - ../canaille/static:/opt/canaille/static
     command: --port=5002
     ports:
