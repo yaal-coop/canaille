@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 18:48+0100\n"
+"POT-Creation-Date: 2025-02-12 18:52+0100\n"
 "PO-Revision-Date: 2025-02-05 16:05+0000\n"
 "Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
@@ -4942,11 +4942,16 @@ msgid "User password maximum length."
 msgstr "Longueur minimum des mots de passe utilisateur."
 
 #: ../../docstring of
-#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:3
+#: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:5
 #: 453671e1d9bb484788e34f1004331db4
+#, fuzzy
+#| msgid ""
+#| "There is a technical of 4096 characters with the SQL backend. If the "
+#| "value is 0, :data:`None`, or greater than 4096, then 4096 will be "
+#| "retained."
 msgid ""
-"There is a technical of 4096 characters with the SQL backend. If the value "
-"is 0, :data:`None`, or greater than 4096, then 4096 will be retained."
+"There is a technical limit of 4096 characters with the SQL backend. If the "
+"value is 0, :data:`None`, or greater than 4096, then 4096 will be retained."
 msgstr ""
 "Il y a une limite technique de 4096 caractères pour les bases de données "
 "SQL. Si la valeur est 0, :data:`None`ou supérieure à 4096, alors 4096 sera "
