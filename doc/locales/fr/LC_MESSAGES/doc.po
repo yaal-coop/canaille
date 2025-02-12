@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-12 18:52+0100\n"
-"PO-Revision-Date: 2025-02-05 16:05+0000\n"
-"Last-Translator: sebastien yaal <sebastien@yaal.coop>\n"
+"PO-Revision-Date: 2025-02-12 22:17+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 c40cc30bc9f847b1ba5d4c38c0da1c66
-#, fuzzy
-#| msgid "[0.0.60] - Unreleased"
 msgid "[0.0.64] - Unreleased"
-msgstr "[0.0.60] - Inédit"
+msgstr "[0.0.64] - Inédit"
 
 #: ../../CHANGES.rst:6 933e2e0925574daa973667a17009e568
 msgid ""
@@ -50,6 +48,9 @@ msgid ""
 "parameter ``CANAILLE_LDAP.USER_FILTER`` is removed in favor of :class:"
 "`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`."
 msgstr ""
+"Cette version vient avec une rupture de compatibilité dans la configuration. "
+"Le paramètre ``CANAILLE_LDAP.USER_FILTER`` est supprimé en faveur de "
+":class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`."
 
 #: ../../CHANGES.rst:11 ../../CHANGES.rst:25 ../../CHANGES.rst:40
 #: ../../CHANGES.rst:51 ../../CHANGES.rst:84 ../../CHANGES.rst:102
@@ -69,21 +70,18 @@ msgstr "Ajouté"
 
 #: ../../CHANGES.rst:12 11ae0f5d2a8945c19cb0d11075aa51e3
 msgid "Implement :rfc:`RFC7523 <7523>`. :issue:`112`"
-msgstr ""
+msgstr "Implémentation de la :rfc:`RFC7523 <7523>`. :issue:`112`"
 
 #: ../../CHANGES.rst:13 7c938309c7b448899d8e966326111482
-#, fuzzy
-#| msgid ""
-#| "Intruder lockout, controlled by the :attr:`~canaille.core.configuration."
-#| "CoreSettings.ENABLE_INTRUDER_LOCKOUT` configuration setting. :issue:`173`"
 msgid ""
 "Implement the :class:`~canaille.core.configuration.CoreSettings."
 "LOGIN_ATTRIBUTES` configuration parameter, to tweak the login attributes. :"
 "issue:`196`"
 msgstr ""
-"Verrouillage des comptes utilisateurs après connexions infructueuses, "
-"contrôlé par le paramètre de configuration :attr:`~canaille.core."
-"configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT`. :issue:`173`"
+"Implémentation du paramètre de configuration "
+":class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES` qui "
+"permet de personnaliser les attributs des utilisateurs à utiliser comme "
+"identifiants de connexion. :issue:`196`"
 
 #: ../../CHANGES.rst:17 ../../CHANGES.rst:32 ../../CHANGES.rst:44
 #: ../../CHANGES.rst:65 ../../CHANGES.rst:72 ../../CHANGES.rst:95
@@ -130,10 +128,8 @@ msgid "Implement :rfc:`RFC9207 <9207>`. :pr:`227`"
 msgstr ""
 
 #: ../../CHANGES.rst:29 c40cc30bc9f847b1ba5d4c38c0da1c66
-#, fuzzy
-#| msgid "[0.0.60] - 2025-02-03"
 msgid "[0.0.62] - 2025-02-05"
-msgstr "[0.0.60] - 2025-02-03"
+msgstr "[0.0.62] - 2025-02-05"
 
 #: ../../CHANGES.rst:33 03ea0151fee54050a69438e3d55bbf62
 msgid "Canaille executable did not support i18n. :issue:`227`"
@@ -144,10 +140,8 @@ msgid "Dynamic `kid` parameter for JWKs. :issue:`222`"
 msgstr ""
 
 #: ../../CHANGES.rst:37 c40cc30bc9f847b1ba5d4c38c0da1c66
-#, fuzzy
-#| msgid "[0.0.60] - 2025-02-03"
 msgid "[0.0.61] - 2025-02-04"
-msgstr "[0.0.60] - 2025-02-03"
+msgstr "[0.0.61] - 2025-02-04"
 
 #: ../../CHANGES.rst:41 b5179b96bbf04bfb9b6a5770a72c27b5
 msgid "Improve ``canaille config check`` output."
@@ -2503,10 +2497,10 @@ msgstr ""
 "passée ;"
 
 #: ../../CONTRIBUTING.rst:262 bdbcc97321eb4f72a89ace044fa421a6
-#, fuzzy
-#| msgid "Publish on production PyPI ``uv publish``;"
 msgid "Publish the Python package on production PyPI ``uv publish``;"
-msgstr "Publiez sur l’instance de production de PyPI avec ``uv publish`` ;"
+msgstr ""
+"Publiez le paquet Python sur l’instance de production de PyPI avec ``uv "
+"publish`` ;"
 
 #: ../../CONTRIBUTING.rst:263 0cad7a4363db4ad7be4b1c69bd9b9565
 msgid "Tag the commit with ``git tag XX.YY.ZZ``;"
@@ -2672,15 +2666,11 @@ msgstr ""
 "html/rfc9126>`_"
 
 #: ../development/specifications.rst:28 fa4b6ba1d99b4124ae4d5616aa08f35f
-#, fuzzy
-#| msgid ""
-#| "❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification "
-#| "<https://tools.ietf.org/html/rfc9207>`_"
 msgid ""
 "✅ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification <https://"
 "tools.ietf.org/html/rfc9207>`_"
 msgstr ""
-"❌ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification <https://"
+"✅ `RFC9207: OAuth 2.0 Authorization Server Issuer Identification <https://"
 "tools.ietf.org/html/rfc9207>`_"
 
 #: ../development/specifications.rst:29 b872aea6082544dfa475182fca2ead84
@@ -4138,10 +4128,8 @@ msgid "Handle Canaille configuration file."
 msgstr "Test du fichier de configuration."
 
 #: ../../canaille config check:1 c3e71c1ec5b545548c6f010ba00e3892
-#, fuzzy
-#| msgid "Test the configuration file."
 msgid "Test the network connections defined in the configuration file."
-msgstr "Test du fichier de configuration."
+msgstr "Test des connexions réseau définies dans le fichier de configuration."
 
 #: ../../canaille config check:1 f8a49947764148aebb5a33d993153016
 msgid ""
@@ -4152,10 +4140,8 @@ msgstr ""
 "identifiants fournis."
 
 #: ../../canaille config dump:1 1084b0312c9440daa531505cf9136844
-#, fuzzy
-#| msgid "Test the configuration file."
 msgid "Export the configuration in TOML format."
-msgstr "Test du fichier de configuration."
+msgstr "Exporte le fichier de configuration au format TOML."
 
 #: ../../canaille config dump:1 a8ef6c7fa5634a6984613bcbfe80612d
 msgid ""
@@ -4611,10 +4597,8 @@ msgstr ":doc:`Authlib <authlib:flask/2/authorization-server>`"
 
 #: ../../docstring of canaille.app.configuration.RootSettings.CACHE_TYPE:1
 #: 14627eb13de143f2b882965d84ef7d90
-#, fuzzy
-#| msgid "The key type."
 msgid "The cache type."
-msgstr "Le type de clef."
+msgstr "Le type de cache."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.CACHE_TYPE:3
 #: 98e48fae70cc43efa085463ee4935fb2
@@ -4944,11 +4928,6 @@ msgstr "Longueur minimum des mots de passe utilisateur."
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH:5
 #: 453671e1d9bb484788e34f1004331db4
-#, fuzzy
-#| msgid ""
-#| "There is a technical of 4096 characters with the SQL backend. If the "
-#| "value is 0, :data:`None`, or greater than 4096, then 4096 will be "
-#| "retained."
 msgid ""
 "There is a technical limit of 4096 characters with the SQL backend. If the "
 "value is 0, :data:`None`, or greater than 4096, then 4096 will be retained."
@@ -5629,10 +5608,8 @@ msgstr ""
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_BASE:3
 #: eccfba5ea42049468d3c2ecd56873d3d
-#, fuzzy
-#| msgid "For instance `ou=users,dc=mydomain,dc=tld`."
 msgid "For instance `ou=users,dc=example,dc=org`."
-msgstr "Par exemple `ou=users,dc=mondomainedc=tld`."
+msgstr "Par exemple `ou=users,dc=example=org`."
 
 #: ../../docstring of
 #: canaille.backends.ldap.configuration.LDAPSettings.USER_CLASS:1
@@ -8498,10 +8475,8 @@ msgid ""
 msgstr ""
 
 #: ../tutorial/install.rst:102 1513e2cc4065497dbfd92d1f9b920774
-#, fuzzy
-#| msgid "Test the configuration file."
 msgid "Initialize a configuration file."
-msgstr "Test du fichier de configuration."
+msgstr "Initialise un fichier de configuration."
 
 #: ../tutorial/install.rst:108 dfae411e71c347ebaaf30f34af410d71
 msgid ""
