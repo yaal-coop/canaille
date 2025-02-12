@@ -8,6 +8,10 @@ FAVICON = "/static/img/canaille-c.webp"
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@example.org"
 
+[CANAILLE.SMTP]
+HOST = "maildump.localhost"
+PORT = 1025
+
 [CANAILLE.ACL.DEFAULT]
 PERMISSIONS = ["edit_self", "use_oidc"]
 READ = [

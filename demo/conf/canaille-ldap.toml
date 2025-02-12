@@ -5,12 +5,11 @@ SERVER_NAME = "canaille.localhost"
 [CANAILLE]
 LOGO = "/static/img/canaille-head.webp"
 FAVICON = "/static/img/canaille-c.webp"
-EMAIL_CONFIRMATION = false
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@example.org"
 
 [CANAILLE.SMTP]
-HOST = "localhost"
+HOST = "maildump.localhost"
 PORT = 1025
 
 [CANAILLE.ACL.DEFAULT]

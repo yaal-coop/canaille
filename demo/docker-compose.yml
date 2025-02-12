@@ -55,3 +55,12 @@ services:
     command: --port=5002
     ports:
       - 5002:5002
+
+  maildump:
+    hostname: maildump.localhost
+    build:
+      context: ..
+      dockerfile: demo/Dockerfile-maildump
+    ports:
+      - 1025:1025
+      - 1080:1080

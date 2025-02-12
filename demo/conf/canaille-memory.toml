@@ -9,7 +9,7 @@ ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@example.org"
 
 [CANAILLE.SMTP]
-HOST = "localhost"
+HOST = "maildump.localhost"
 PORT = 1025
 
 [CANAILLE.ACL.DEFAULT]

@@ -1,0 +1,9 @@
+FROM python:slim
+
+RUN \
+    apt update && \
+    apt --yes upgrade
+
+RUN pip install maildump
+
+ENTRYPOINT ["maildump", "--http-ip", "0.0.0.0", "--smtp-ip", "0.0.0.0"]

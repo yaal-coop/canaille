@@ -17,24 +17,12 @@ Development environment
 
 You can either run the demo locally or with Docker.
 
-The only tool required for local development is `uv`.
-Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/getting-started/installation/>`_
-to be able to hack Canaille.
-
-Initialize your development environment with:
-
-- ``uv sync --extra front --extra oidc`` to have a minimal working development environment. This will allow you to run the tests with ``uv pytest --backend memory``.
-- ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``.
-- ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``.
-- ``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;
-  Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
-
 After having launched the demo you have access to several services:
 
-- A canaille server at `localhost:5000 <http://localhost:5000>`__
-- A dummy client at `localhost:5001 <http://localhost:5001>`__
-- Another dummy client at `localhost:5002 <http://localhost:5002>`__
-- A mail catcher at `localhost:1080 <http://localhost:1080>`__
+- A canaille server at `canaille.localhost:5000 <http://canaille.localhost:5000>`__
+- A dummy client at `client1.localhost:5001 <http://client1.localhost:5001>`__
+- Another dummy client at `client2.localhost:5002 <http://client2.localhost:5002>`__
+- A mail catcher at `maildump.localhost:1080 <http://maildump.localhost:1080>`__
 
 The canaille server has some default users:
 
@@ -54,49 +42,22 @@ Canaille comes with several backends:
 - a `sql` backend, based on sqlalchemy
 - a production-ready `LDAP` backend
 
-Docker environment
-~~~~~~~~~~~~~~~~~~
-
-When launching Canaille with Docker, you have access to:
-
-- A canaille server at `canaille.localhost:5000 <http://canaille.localhost:5000>`__
-- A dummy client at `client1.localhost:5001 <http://client1.localhost:5001>`__
-- Another dummy client at `client2.localhost:5002 <http://client2client2..localhost:5002>`__
-
-SQL
-^^^
-With the SQL backend, the demo instance will load and save data in a local sqlite database.
-
-.. code-block:: console
-    :caption: Run the demo instance with the SQL backend
-
-    cd demo
-    docker compose up
-
-Memory
-^^^^^^
-With the memory backend, all data is lost when Canaille stops.
-
-.. code-block:: console
-    :caption: Run the demo instance with the memory backend
-
-    cd demo
-    docker compose --file docker-compose-memory.yml up
-
-LDAP
-^^^^
-With the LDAP backend, all data is lost when Canaille stops.
-
-.. code-block:: console
-    :caption: Run the demo instance with the LDAP backend
-
-    cd demo
-    docker compose --file docker-compose-ldap.yml up
-
 .. _local_environment:
 
 Local environment
 ~~~~~~~~~~~~~~~~~
+
+The only tool required for local development is `uv`.
+Make sure to have uv `installed on your computer <https://docs.astral.sh/uv/getting-started/installation/>`_
+to be able to hack Canaille.
+
+Initialize your development environment with:
+
+- ``uv sync --extra front --extra oidc`` to have a minimal working development environment. This will allow you to run the tests with ``uv pytest --backend memory``.
+- ``uv sync --extra front --extra oidc --extra sqlite`` to have a minimal working development environment with SQLite backend support. This will allow you to run the tests with ``uv pytest --backend sql``.
+- ``uv sync --extra front --extra oidc --extra ldap`` to have a minimal working development environment with LDAP backend support. This will allow you to run the tests with ``uv pytest --backend ldap``.
+- ``uv sync --all-extras`` if you want to have everything at your fingertips. Note that it may compile some Python dependencies that would expect things to be installed on your system;
+  Some dependencies of Canaille might need to be compiled, so you probably want to check that `GCC` and `cargo` are available on your computer.
 
 SQL
 ^^^
@@ -139,6 +100,39 @@ With the LDAP backend, all data is lost when Canaille stops.
 
         sudo apt install --yes apparmor-utils
         sudo aa-complain /usr/sbin/slapd
+
+Docker environment
+~~~~~~~~~~~~~~~~~~
+
+SQL
+^^^
+With the SQL backend, the demo instance will load and save data in a local sqlite database.
+
+.. code-block:: console
+    :caption: Run the demo instance with the SQL backend
+
+    cd demo
+    docker compose up
+
+Memory
+^^^^^^
+With the memory backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the memory backend
+
+    cd demo
+    docker compose --file docker-compose-memory.yml up
+
+LDAP
+^^^^
+With the LDAP backend, all data is lost when Canaille stops.
+
+.. code-block:: console
+    :caption: Run the demo instance with the LDAP backend
+
+    cd demo
+    docker compose --file docker-compose-ldap.yml up
 
 Populate the database
 ~~~~~~~~~~~~~~~~~~~~~
