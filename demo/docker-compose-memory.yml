@@ -14,7 +14,7 @@ services:
       - FLASK_APP=demoapp
     volumes:
       - ../canaille:/opt/canaille/canaille
-      - ./conf-docker:/opt/canaille/conf
+      - ./conf:/opt/canaille/conf
     ports:
       - 5000:5000
 
@@ -31,7 +31,7 @@ services:
       - FLASK_APP=client
     volumes:
       - ./client:/opt/client/client
-      - ./conf-docker:/opt/client/conf
+      - ./conf:/opt/client/conf
       - ../canaille/static:/opt/canaille/static
     command: --port=5001
     ports:
@@ -50,7 +50,7 @@ services:
       - FLASK_APP=client
     volumes:
       - ./client:/opt/client/client
-      - ./conf-docker:/opt/client/conf
+      - ./conf:/opt/client/conf
       - ../canaille/static:/opt/canaille/static
     command: --port=5002
     ports:

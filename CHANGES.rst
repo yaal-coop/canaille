@@ -9,6 +9,7 @@ Added
 Fixed
 ^^^^^
 - Client dynamic registration with the ``jwks`` parameter. :pr:`228`
+- Use a custom LDAP image in the demo environment. :issue:`136`
 
 [0.0.62] - 2025-02-05
 ---------------------
