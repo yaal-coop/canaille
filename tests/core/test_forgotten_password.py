@@ -1,6 +1,8 @@
 import logging
 from unittest import mock
 
+import pytest
+
 
 def test_password_forgotten_disabled(smtpd, testclient, user):
     testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
@@ -156,3 +158,42 @@ def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
     res.mustcontain("Send again")
 
     assert len(smtpd.messages) == 0
+
+
+def test_password_reset_without_trusted_hosts(
+    configuration, smtpd, testclient, backend, user
+):
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=200)
+    assert len(smtpd.messages) == 1
+    email_content = (
+        str(smtpd.messages[0].get_payload()[0]).replace("=\n", "").replace("=3D", "=")
+    )
+    assert "Please click on the link below" not in email_content
+
+
+def test_password_reset_with_trusted_hosts(
+    configuration, smtpd, testclient, backend, user
+):
+    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=200)
+    assert len(smtpd.messages) == 1
+    email_content = (
+        str(smtpd.messages[0].get_payload()[0]).replace("=\n", "").replace("=3D", "=")
+    )
+    assert "Please click on the link below" in email_content
+
+
+def test_password_reset_with_wrong_host(
+    configuration, smtpd, testclient, backend, user
+):
+    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    # Raises an attribute error but a Security Error is raised before during host validation, causing the attribute error later
+    with pytest.raises(AttributeError):
+        res.form.submit(headers={"Host": "test.test"}, status=400)
