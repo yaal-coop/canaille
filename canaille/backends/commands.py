@@ -50,7 +50,7 @@ def click_type(attribute_type):
     if typing.get_origin(attribute_type):
         attribute_type = typing.get_args(attribute_type)[0]
 
-    if typing.get_origin(attribute_type) is typing.Annotated:
+    if typing.get_origin(attribute_type) in (typing.Annotated, list):
         attribute_type = typing.get_args(attribute_type)[0]
 
     if issubclass(attribute_type, Model):
@@ -106,7 +106,10 @@ def get_factory(model):
 
     for attribute, attribute_type in model.attributes.items():
         slug = attribute.replace("_", "-")
-        click.option(f"--{slug}", type=click_type(attribute_type))(command)
+        click.option(
+            f"--{slug}",
+            type=click_type(attribute_type),
+        )(command)
 
     return command
 
