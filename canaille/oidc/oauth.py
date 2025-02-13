@@ -27,11 +27,13 @@ from authlib.oauth2.rfc7592 import (
 )
 from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
+from authlib.oauth2.rfc8414 import AuthorizationServerMetadata
 from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from authlib.oidc.core.grants.util import generate_id_token
+from authlib.oidc.discovery import OpenIDProviderMetadata
 from flask import current_app
 from flask import g
 from flask import request
@@ -51,7 +53,7 @@ JWT_JTI_CACHE_LIFETIME = 3600
 
 
 def oauth_authorization_server():
-    return {
+    payload = {
         "issuer": get_issuer(),
         "authorization_endpoint": url_for("oidc.endpoints.authorize", _external=True),
         "token_endpoint": url_for("oidc.endpoints.issue_token", _external=True),
@@ -69,7 +71,7 @@ def oauth_authorization_server():
         "introspection_endpoint": url_for(
             "oidc.endpoints.introspect_token", _external=True
         ),
-        "introspection_endpoint_auth_methods_supported": None,
+        "introspection_endpoint_auth_methods_supported": ["client_secret_basic"],
         "introspection_endpoint_auth_signing_alg_values_supported": None,
         "jwks_uri": url_for("oidc.endpoints.jwks", _external=True),
         "registration_endpoint": url_for(
@@ -105,13 +107,16 @@ def oauth_authorization_server():
         "op_policy_uri": None,
         "op_tos_uri": None,
     }
+    obj = AuthorizationServerMetadata(payload)
+    obj.validate()
+    return obj
 
 
 def openid_configuration():
     prompt_values_supported = ["none"] + (
         ["create"] if current_app.config["CANAILLE"]["ENABLE_REGISTRATION"] else []
     )
-    return {
+    payload = {
         **oauth_authorization_server(),
         "end_session_endpoint": url_for("oidc.endpoints.end_session", _external=True),
         "claim_types_supported": ["normal"],
@@ -154,6 +159,9 @@ def openid_configuration():
         "acr_values_supported": None,
         "display_values_supported": None,
     }
+    obj = OpenIDProviderMetadata(payload)
+    obj.validate()
+    return obj
 
 
 def exists_nonce(nonce, req):
