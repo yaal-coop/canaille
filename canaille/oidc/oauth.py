@@ -19,6 +19,7 @@ from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
 from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
 from authlib.oauth2.rfc7523 import JWTBearerClientAssertion
 from authlib.oauth2.rfc7523 import JWTBearerGrant as _JWTBearerGrant
+from authlib.oauth2.rfc7591 import ClientMetadataClaims as OAuth2ClientMetadataClaims
 from authlib.oauth2.rfc7591 import (
     ClientRegistrationEndpoint as _ClientRegistrationEndpoint,
 )
@@ -35,6 +36,7 @@ from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
 from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
 from authlib.oidc.core.grants.util import generate_id_token
 from authlib.oidc.discovery import OpenIDProviderMetadata
+from authlib.oidc.registration import ClientMetadataClaims as OIDCClientMetadataClaims
 from flask import current_app
 from flask import g
 from flask import request
@@ -693,5 +695,13 @@ def setup_oauth(app):
 
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
-    authorization.register_endpoint(ClientRegistrationEndpoint)
-    authorization.register_endpoint(ClientConfigurationEndpoint)
+    authorization.register_endpoint(
+        ClientRegistrationEndpoint(
+            claims_classes=[OAuth2ClientMetadataClaims, OIDCClientMetadataClaims]
+        )
+    )
+    authorization.register_endpoint(
+        ClientConfigurationEndpoint(
+            claims_classes=[OAuth2ClientMetadataClaims, OIDCClientMetadataClaims]
+        )
+    )
