@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-04 09:40+0100\n"
-"PO-Revision-Date: 2024-12-05 09:36+0000\n"
+"PO-Revision-Date: 2025-02-13 20:14+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
 "kab/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-rc\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: canaille/app/flask.py:38
@@ -935,7 +935,7 @@ msgstr ""
 #: canaille/templates/core/join.html:49 canaille/templates/core/login.html:57
 #: canaille/templates/core/password.html:41
 msgid "Forgotten password"
-msgstr ""
+msgstr "Tettuḍ awal n uɛeddi"
 
 #: canaille/templates/core/forgotten-password.html:35
 msgid ""
@@ -947,7 +947,7 @@ msgstr ""
 #: canaille/templates/core/forgotten-password.html:53
 #: canaille/templates/core/login.html:54
 msgid "Create an account"
-msgstr ""
+msgstr "Snulfu-d amiḍan"
 
 #: canaille/templates/core/forgotten-password.html:58
 msgid "Send again"
@@ -1120,7 +1120,7 @@ msgstr ""
 #: canaille/templates/core/login.html:35
 #, python-format
 msgid "Sign in at %(website)s"
-msgstr ""
+msgstr "Qqen ɣer %(website)s"
 
 #: canaille/templates/core/login.html:37
 msgid "Manage your information and your authorizations"
@@ -1137,7 +1137,7 @@ msgstr "Ddu"
 #: canaille/templates/core/verify-mfa.html:32
 #, python-format
 msgid "Sign in as %(username)s"
-msgstr ""
+msgstr "Qqen amzun d %(username)s"
 
 #: canaille/templates/core/password.html:23
 msgid "Please enter your password for this account."
