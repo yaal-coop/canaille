@@ -39,6 +39,12 @@ def send_test_mail(email):
 
 def send_password_reset_mail(user, mail):
     base_url = url_for("core.account.index", _external=True)
+    server_name = current_app.config.get("SERVER_NAME")
+    reset_hash = build_hash(
+        user.identifier,
+        mail,
+        user.password if user.has_password() else "",
+    )
     reset_url = url_for(
         "core.auth.reset",
         user=user,
@@ -59,12 +65,16 @@ def send_password_reset_mail(user, mail):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        server_name=server_name,
+        reset_hash=reset_hash,
     )
     html_body = render_template(
         "core/mails/reset.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        server_name=server_name,
+        reset_hash=reset_hash,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
     )
@@ -80,6 +90,12 @@ def send_password_reset_mail(user, mail):
 
 def send_password_initialization_mail(user, email):
     base_url = url_for("core.account.index", _external=True)
+    server_name = current_app.config.get("SERVER_NAME")
+    reset_hash = build_hash(
+        user.identifier,
+        email,
+        user.password if user.has_password() else "",
+    )
     reset_url = url_for(
         "core.auth.reset",
         user=user,
@@ -100,12 +116,16 @@ def send_password_initialization_mail(user, email):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        server_name=server_name,
+        reset_hash=reset_hash,
     )
     html_body = render_template(
         "core/mails/firstlogin.html",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        server_name=server_name,
+        reset_hash=reset_hash,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
     )
