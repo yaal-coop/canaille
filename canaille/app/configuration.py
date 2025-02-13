@@ -70,6 +70,14 @@ class RootSettings(BaseSettings):
     This sets domain name on which canaille will be served.
     """
 
+    TRUSTED_HOSTS: list[str] | None = None
+    """Validate Request.host and other attributes that use it against these trusted values. Raise a SecurityError if the host is invalid, which results in a 400 error. If it is None, all hosts are valid. Each value is either an exact match, or can start with a dot . to match any subdomain.
+
+    Validation is done during routing against this value. before_request and after_request callbacks will still be called.
+
+    Default: None
+    """
+
     PREFERRED_URL_SCHEME: str = "https"
     """The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration
     setting.
