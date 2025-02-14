@@ -222,6 +222,16 @@ Documentation translation
 
 .. include:: ../locales/readme.rst
 
+Docker image on hub.docker
+--------------------------
+NixOs is needed to create canaille-image
+Install nix with ``curl -L https://nixos.org/nix/install | sh``
+
+Create canaille-image with ``docker load < $(nix-build canaille.nix)``
+
+Run canaille-image with ``docker run -it -p 127.0.0.1:5000:5000 <image>``
+
+
 Build a release
 ---------------
 
