@@ -49,3 +49,35 @@ def test_dump_stdout(testclient, backend, user, foo_group):
             },
         ],
     }
+
+
+def test_dump_stdout_explicit_model(testclient, backend, user, foo_group):
+    """Test the full database dump command for a single model."""
+    runner = testclient.app.test_cli_runner()
+    res = runner.invoke(cli, ["dump", "user"], catch_exceptions=False)
+    assert res.exit_code == 0, res.stdout
+    assert json.loads(res.stdout) == {
+        "user": [
+            {
+                "created": mock.ANY,
+                "display_name": "Johnny",
+                "emails": [
+                    "john@doe.test",
+                ],
+                "family_name": "Doe",
+                "formatted_address": "1235, somewhere",
+                "formatted_name": "John (johnny) Doe",
+                "given_name": "John",
+                "groups": [foo_group.id],
+                "id": user.id,
+                "last_modified": mock.ANY,
+                "password": mock.ANY,
+                "phone_numbers": [
+                    "555-000-000",
+                ],
+                "preferred_language": "en",
+                "profile_url": "https://john.test",
+                "user_name": "user",
+            },
+        ]
+    }

@@ -77,12 +77,18 @@ def register(cli):
 
 
 @click.command()
+@click.argument("model", required=False, nargs=-1)
 @with_appcontext
 @with_backendcontext
-def dump():
-    """Dump all the available models."""
+def dump(model: list[str] | None):
+    """Dump all the available models.
+
+    If no argument is passed, all model instances are dumped.
+    """
     objects = {}
-    for model_name, model in MODELS.items():
+    model_names = model or MODELS.keys()
+    for model_name in model_names:
+        model = MODELS[model_name]
         objects[model_name] = list(Backend.instance.query(model))
 
     output = json.dumps(objects, cls=Backend.instance.json_encoder)

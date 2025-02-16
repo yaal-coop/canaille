@@ -1,3 +1,11 @@
+[0.0.65] - Unreleased
+---------------------
+
+Added
+^^^^^
+
+- The :ref:`cli dump <cli_dump>` command can dump only some given models.
+
 [0.0.64] - 2025-02-12
 ---------------------
 
