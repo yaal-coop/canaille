@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-12 23:16+0100\n"
-"PO-Revision-Date: 2025-02-13 20:14+0000\n"
+"PO-Revision-Date: 2025-02-19 14:10+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10-rc\n"
+"X-Generator: Weblate 5.10.1-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 929333de1e954a05b8b1f16eb39735da
@@ -4575,6 +4575,9 @@ msgid ""
 "The default ``SimpleCache`` is a lightweight in-memory cache. See the :doc:"
 "`Flask-Caching documentation <flask-caching:index>` for further details."
 msgstr ""
+"Le cache par défaut ``SimpleCache`` est un cache en-mémoire très léger. "
+"Consultez :doc:`la documentation de Flask-Caching <flask-caching:index>` "
+"pour plus d'informations."
 
 #: ../../docstring of canaille.app.configuration.RootSettings.DEBUG:1
 #: 84f165f20924476096b2f1ad6c8fa1e1
@@ -4878,12 +4881,18 @@ msgid ""
 "of :attr:`~canaille.core.models.User.user_name`, :attr:`~canaille.core."
 "models.User.emails` and :attr:`~canaille.core.models.User.phone_numbers`."
 msgstr ""
+"Les attributs utilisateurs utilisés pour les identifier, généralement une "
+"combinaison de :attr:`~canaille.core.models.User.user_name`, "
+":attr:`~canaille.core.models.User.emails` et "
+":attr:`~canaille.core.models.User.phone_numbers`."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES:6
 #: 19013adace7e489f90604896ff7a543f
 msgid "When this is a :class:`list`, it expects the attribute names to match."
 msgstr ""
+"Lorsque c'est une :class:`list`, il est attendu une correspondance des noms "
+"des attributs contenus dans la liste."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES:7
@@ -4894,6 +4903,11 @@ msgid ""
 "available. This can be used to tune the user input, and for example remove a "
 "domain name."
 msgstr ""
+"Lorsque c'est un :class:`dict`, les clés sont des noms d'attributs "
+"d'utilisateurs, et les valeurs sont une chaîne de caractères "
+":doc:`jinja:index` avec une variable ``login``disponible. Cela peut être "
+"utilisé pour transformer l'identifiant entré par l'utilisateur, par exemple "
+"pour supprimer un nom de domaine."
 
 #: ../../docstring of canaille.core.configuration.CoreSettings.LOGO:1
 #: 10d7080d848f4d5caf0f66ef0af1dd4d
@@ -5439,10 +5453,8 @@ msgstr "Paramètres SCIM."
 
 #: ../../docstring of canaille.scim.configuration.SCIMSettings.ENABLE_SERVER:1
 #: 1ee1bebd3892435980098de1b3dfee84
-#, fuzzy
-#| msgid "Indicate whether the SCIM server feature is enabled."
 msgid "Whether the SCIM server API is enabled."
-msgstr "Indique si la fonctionnalité de serveur SCIM est activée."
+msgstr "Indique si la fonctionnalité d'API SCIM est activée."
 
 #: ../../docstring of canaille.scim.configuration.SCIMSettings.ENABLE_SERVER:3
 #: ed0b4db3345942a2a24deb3625522f84
@@ -5450,6 +5462,8 @@ msgid ""
 "When enabled, services plugged to Canaille can update users and groups using "
 "the API."
 msgstr ""
+"Lorsqu'activée, les services connectés à Canaille peuvent mettre à jours les "
+"utilisateurs et les groupes dans Canaille en utilisant l'API."
 
 #: ../../canaille/backends/sql/configuration.py:docstring of
 #: canaille.backends.sql.configuration.SQLSettings:1
@@ -8115,20 +8129,15 @@ msgid "Application service"
 msgstr "Serveur d’application"
 
 #: ../tutorial/deployment.rst:9 64b0cf5ef3654a4ca08eede0339ce8ca
-#, fuzzy
-#| msgid ""
-#| "After having finished Canaille installation you have to run it in a WSGI "
-#| "application server. Several application servers are available, like "
-#| "`Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
 msgid ""
 "After having finished Canaille :doc:`installation <install>` you have to run "
 "it in a WSGI application server. Several application servers are available, "
 "like `Gunicorn`_, `uWSGI`_, `uvicorn`_ or `Hypercorn`_ for example."
 msgstr ""
-"Après avoir fini l'installation de Canaille, vous devez l'exécuter dans un "
-"serveur d'application WSGI. Il existe de nombreux serveurs d'applications "
-"que vous pouvez utiliser avec Canaille, comme `Gunicorn`_, `uWSGI`_, "
-"`uvicorn`_ ou `Hypercorn`_ par exemple."
+"Après avoir fini l':doc:`installation <install>` de Canaille, vous devez "
+"l'exécuter dans un serveur d'application WSGI. Il existe de nombreux "
+"serveurs d'applications que vous pouvez utiliser avec Canaille, comme "
+"`Gunicorn`_, `uWSGI`_, `uvicorn`_ ou `Hypercorn`_ par exemple."
 
 #: ../tutorial/deployment.rst:12 44f3f154ee524010b682f9cc6ba56511
 msgid ""
@@ -8145,12 +8154,6 @@ msgid "Hypercorn integration"
 msgstr "Intégration Hypercorn"
 
 #: ../tutorial/deployment.rst:18 d5d997440e84499d90d9d10db082e9fa
-#, fuzzy
-#| msgid ""
-#| "To run the integrated Hypercorn application server, you can simply run "
-#| "the :ref:`cli_run` command. For the hypercorn integration to be "
-#| "available, you will need the ``[server]`` extra (for instance with ``pip "
-#| "install canaille[server]``."
 msgid ""
 "To run the integrated Hypercorn application server, you can simply run the :"
 "ref:`cli_run` command. The hypercorn integration is embedded in the Canaille "
@@ -8159,9 +8162,11 @@ msgid ""
 "Hypercorn to be available."
 msgstr ""
 "Pour exécuter le serveur d'application intégré Hypercorn, vous pouvez "
-"simplement exécuter la commande :ref:`cli_run`. Afin que l'intégration "
-"Hypercorn soit disponible, vous devez installer l'extra ``[server]``(par "
-"exemple avec ``pip install canaile[server]``)."
+"simplement exécuter la commande :ref:`cli_run`. Une intégration d'Hypercorn "
+"est disponible dans l'exécutable de Canaille. Cependant si vous installez "
+"Canaille par les paquets Python, vous devez installer l'extra ``[server]``("
+"par exemple avec ``pip install canaile[server]``) pour qu'Hypercorn soit "
+"disponible."
 
 #: ../tutorial/deployment.rst:22 b7eda0515c574daf836f4b35404679dd
 msgid "Running the Canaille run command"
@@ -8319,7 +8324,7 @@ msgstr "Récupérer le code source"
 
 #: ../tutorial/install.rst:23 cc01dbe9a55641a4a69ad0682f902224
 msgid "Binaries"
-msgstr ""
+msgstr "Exécutables"
 
 #: ../tutorial/install.rst:25 b5da438311a4490e9a067410b712fe46
 msgid ""
