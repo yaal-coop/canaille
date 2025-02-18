@@ -26,6 +26,16 @@ uv sync --all-extras --group demo && uv run devserver
 docker compose --file demo/docker-compose-sql.yml up
 ```
 
+## Locally with Nix
+
+```bash
+curl -L https://nixos.org/nix/install | sh
+# if you don't have nix yet
+docker pull yaalhub/canaille:0.0.1
+docker run -it -p 127.0.0.1:5000:5000 yaalhub/canaille:0.0.1
+```
+Login: "admin", password: "admin"
+
 ## Online!
 
 You have access to:
