@@ -231,6 +231,16 @@ Create canaille-image with ``docker load < $(nix-build canaille.nix)``
 
 Run canaille-image with ``docker run -it -p 127.0.0.1:5000:5000 <image>``
 
+How to push to hub.docker
+~~~~~~~~~~~~~~~~~~~~~~~~~
+``docker tag <image> yaalhub/canaille:<tag>``
+(example : docker tag canaille-image:g2vildm07jpwvjwrfjry3i5pllyqy4kg yaalhub/canaille:0.0.1)
+``docker login -u "yaalhub"``
+``docker push yaalhub/canaille:<tag>``
+
+How to pull from hub.docker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``docker pull yaalhub/canaille:<tag>``
 
 Build a release
 ---------------
@@ -272,3 +282,4 @@ Publish a new release
 13. Publish the Python package on production PyPI ``uv publish``;
 14. Tag the commit with ``git tag XX.YY.ZZ``;
 15. Push the release commit and the new tag on the repository with ``git push --tags``.
+16. Try to :ref:`pull and run the docker image of Canaille <development/contributing:Docker image on hub.docker>` and update the ``canaille.nix`` file if necessary.
