@@ -25,3 +25,4 @@ canaille/conf/*.pem
 canaille/conf/*.pub
 canaille/conf/*.key
 .vscode
+/result
