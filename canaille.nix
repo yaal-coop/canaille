@@ -96,9 +96,9 @@ pkgs.dockerTools.buildImage {
         canaille config dump && \
         canaille config check && \
         canaille db upgrade && \
-        canaille create admin --user-name admin --password user --emails admin@mydomain.example --given-name George --family-name Abitbol && \
+        canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol && \
         canaille create group --display-name admins --members admin && \
-        echo 'connect with login \"user\" and password \"user\"' && \
+        echo 'connect with login \"admin\" and password \"admin\"' && \
         canaille run --config /opt/canaille/hypercorn.toml
       "
     ];
