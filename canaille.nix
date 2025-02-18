@@ -91,7 +91,6 @@ pkgs.dockerTools.buildImage {
         ]\n
         [CANAILLE_SCIM]\n
         ' > /opt/canaille/config.toml && \
-        canaille --version && \
         export CONFIG=/opt/canaille/config.toml && \
         canaille config dump && \
         canaille config check && \
@@ -99,6 +98,7 @@ pkgs.dockerTools.buildImage {
         canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol && \
         canaille create group --display-name admins --members admin && \
         echo 'connect with login \"admin\" and password \"admin\"' && \
+        canaille --version && \
         canaille run --config /opt/canaille/hypercorn.toml
       "
     ];
