@@ -25,10 +25,6 @@ pkgs.dockerTools.buildImage {
         mkdir -p /opt/canaille && \
         echo 'bind = [\"0.0.0.0:5000\"]' > /opt/canaille/hypercorn.toml && \
         echo '
-        SECRET_KEY = \"very-secret\"\n
-        DEBUG = 1\n
-        SERVER_NAME = \"canaille.localhost:5000\"\n
-        PREFERRED_URL_SCHEME = \"https\"\n
         [CANAILLE]\n
         LOGO = \"/static/img/canaille-head.webp\"\n
         FAVICON = \"/static/img/canaille-c.webp\"\n
@@ -37,9 +33,6 @@ pkgs.dockerTools.buildImage {
         TIMEZONE = \"UTC\"\n
         [CANAILLE_SQL]\n
         DATABASE_URI = \"sqlite:///demo.sqlite\"\n
-        [CANAILLE.SMTP]\n
-        HOST = \"mailhog.yaal.coop\"\n
-        PORT = 1025\n
         [CANAILLE.ACL.DEFAULT]\n
         PERMISSIONS = [\"edit_self\", \"use_oidc\"]\n
         READ = [
@@ -84,12 +77,6 @@ pkgs.dockerTools.buildImage {
         FILTER = {groups = \"moderators\"}\n
         PERMISSIONS = [\"manage_users\", \"manage_groups\", \"delete_account\"]\n
         WRITE = [\"groups\"]\n
-        [CANAILLE_OIDC]\n
-        DYNAMIC_CLIENT_REGISTRATION_OPEN = 1\n
-        DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
-            \"xxxxxxx-yyyyyyy-zzzzzz\",
-        ]\n
-        [CANAILLE_SCIM]\n
         ' > /opt/canaille/config.toml && \
         export CONFIG=/opt/canaille/config.toml && \
         canaille config dump && \
