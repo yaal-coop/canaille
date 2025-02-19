@@ -233,14 +233,16 @@ Run canaille-image with ``docker run -it -p 127.0.0.1:5000:5000 <image>``
 
 How to push to hub.docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-``docker tag <image> yaalhub/canaille:<tag>``
-(example : docker tag canaille-image:g2vildm07jpwvjwrfjry3i5pllyqy4kg yaalhub/canaille:0.0.1)
-``docker login -u "yaalhub"``
-``docker push yaalhub/canaille:<tag>``
+``docker tag <image> yaalcoop/canaille:<tag>``
+(example : docker tag canaille-image:g2vildm07jpwvjwrfjry3i5pllyqy4kg yaalcoop/canaille:0.0.1)
+``docker login -u "yaalcoop"``
+``docker push yaalcoop/canaille:<tag>``
+
+Think to update the new tag in the `README.md`.
 
 How to pull from hub.docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-``docker pull yaalhub/canaille:<tag>``
+``docker pull yaalcoop/canaille:<tag>``
 
 Build a release
 ---------------
