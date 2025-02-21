@@ -1,0 +1,24 @@
+FROM debian:bookworm
+
+RUN \
+    apt update && \
+    apt --yes upgrade && \
+    apt install --yes --no-install-recommends \
+    curl \
+    ca-certificates \
+    slapd \
+    ldap-utils
+
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+ENV PATH="/root/.local/bin/:$PATH"
+
+WORKDIR /opt/slapd
+COPY demo/ldap-server.py /opt/slapd/ldap-server.py
+COPY demo/ldif /opt/slapd/ldif/
+COPY canaille/backends/ldap/schemas/oauth2-openldap.ldif /opt/slapd/ldif/oauth2-openldap.ldif
+
+RUN uv init --name docker-slapd
+RUN uv add slapd
+
+ENTRYPOINT ["uv", "run", "python", "ldap-server.py"]

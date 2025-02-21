@@ -3,6 +3,7 @@ import re
 import smtplib
 import socket
 import textwrap
+from dataclasses import dataclass
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ValidationError
@@ -17,7 +18,6 @@ try:
     HAS_TOMLKIT = True
 except ImportError:
     HAS_TOMLKIT = False
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEFAULT_CONFIG_FILE = "canaille.toml"
 
@@ -43,7 +43,7 @@ class RootSettings(BaseSettings):
 
         SECRET_KEY = "very-secret"
         SERVER_NAME = "auth.mydomain.example"
-        PREFERRED_URL_SCHEME = false
+        PREFERRED_URL_SCHEME = "https"
         DEBUG = false
 
         [CANAILLE]
@@ -86,6 +86,13 @@ class RootSettings(BaseSettings):
 
         This is useful for development but should be absolutely
         avoided in production environments.
+    """
+
+    CACHE_TYPE: str = "SimpleCache"
+    """The cache type.
+
+    The default ``SimpleCache`` is a lightweight in-memory cache.
+    See the :doc:`Flask-Caching documentation <flask-caching:index>` for further details.
     """
 
 
@@ -166,6 +173,12 @@ class ConfigurationException(Exception):
     pass
 
 
+@dataclass
+class CheckResult:
+    message: str
+    success: bool | None = None
+
+
 def setup_config(app, config=None, env_file=None, env_prefix=""):
     from canaille.oidc.installation import install
 
@@ -179,10 +192,12 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
         if "CONFIG" in os.environ:
             with open(os.environ.get("CONFIG")) as fd:
                 config = tomlkit.load(fd)
+            app.logger.info(f"Loading configuration from {os.environ['CONFIG']}")
 
         elif os.path.exists(DEFAULT_CONFIG_FILE):
             with open(DEFAULT_CONFIG_FILE) as fd:
                 config = tomlkit.load(fd)
+            app.logger.info(f"Loading configuration from {DEFAULT_CONFIG_FILE}")
 
     env_file = env_file or os.getenv("ENV_FILE")
     try:
@@ -204,16 +219,25 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
 
 
 def check_network_config(config):
+    """Perform various network connection to services described in the configuration file."""
     from canaille.backends import Backend
 
-    Backend.instance.check_network_config(config)
+    results = [Backend.instance.check_network_config(config)]
+
     if smtp_config := config["CANAILLE"]["SMTP"]:
-        test_smtp_configuration(smtp_config)
+        results.append(check_smtp_connection(smtp_config))
+    else:
+        results.append(CheckResult(message="No SMTP server configured"))
+
     if smpp_config := config["CANAILLE"]["SMPP"]:
-        test_smpp_configuration(smpp_config)
+        results.append(check_smpp_connection(smpp_config))
+    else:
+        results.append(CheckResult(message="No SMPP server configured"))
+
+    return results
 
 
-def test_smtp_configuration(config):
+def check_smtp_connection(config) -> str:
     host = config["HOST"]
     port = config["PORT"]
     try:
@@ -226,21 +250,31 @@ def test_smtp_configuration(config):
                     user=config["LOGIN"],
                     password=config["PASSWORD"],
                 )
-    except (socket.gaierror, ConnectionRefusedError) as exc:
-        raise ConfigurationException(
-            f"Could not connect to the SMTP server '{host}' on port '{port}'"
-        ) from exc
+    except (socket.gaierror, ConnectionRefusedError):
+        return CheckResult(
+            message=f"Could not connect to the SMTP server '{host}' on port '{port}'",
+            success=False,
+        )
 
-    except smtplib.SMTPAuthenticationError as exc:
-        raise ConfigurationException(
-            f"SMTP authentication failed with user '{config['LOGIN']}'"
-        ) from exc
+    except smtplib.SMTPAuthenticationError:
+        return CheckResult(
+            message=f"SMTP authentication failed with user '{config['LOGIN']}'",
+            success=False,
+        )
 
     except smtplib.SMTPNotSupportedError as exc:
-        raise ConfigurationException(exc) from exc
+        return CheckResult(
+            message=str(exc),
+            success=False,
+        )
+
+    return CheckResult(
+        message="Successful SMTP connection",
+        success=True,
+    )
 
 
-def test_smpp_configuration(config):
+def check_smpp_connection(config):
     import smpplib
 
     host = config["HOST"]
@@ -252,12 +286,21 @@ def test_smpp_configuration(config):
                 client.bind_transmitter(
                     system_id=config["LOGIN"], password=config["PASSWORD"]
                 )
-    except smpplib.exceptions.ConnectionError as exc:
-        raise ConfigurationException(
-            f"Could not connect to the SMPP server '{host}' on port '{port}'"
-        ) from exc
+    except smpplib.exceptions.ConnectionError:
+        return CheckResult(
+            success=False,
+            message=f"Could not connect to the SMPP server '{host}' on port '{port}'",
+        )
     except smpplib.exceptions.UnknownCommandError as exc:  # pragma: no cover
-        raise ConfigurationException(exc) from exc
+        return CheckResult(
+            message=str(exc),
+            success=False,
+        )
+
+    return CheckResult(
+        message="Successful SMPP connection",
+        success=True,
+    )
 
 
 def sanitize_rst_text(text: str) -> str:

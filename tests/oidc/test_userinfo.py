@@ -149,11 +149,14 @@ def test_generate_user_claims(user, foo_group):
 def test_userinfo(testclient, token, user, foo_group, backend):
     token.scope = ["openid"]
     backend.save(token)
-    testclient.get(
+    res = testclient.get(
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
-        status=403,
+        status=200,
     )
+    assert res.json == {
+        "sub": "user",
+    }
 
     token.scope = ["openid", "profile"]
     backend.save(token)

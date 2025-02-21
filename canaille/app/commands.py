@@ -33,22 +33,17 @@ def with_backendcontext(func):
 
 
 @click.command()
-@with_appcontext
-def install():
+@click.pass_context
+def install(ctx):
     """Installs canaille elements from the configuration.
 
     For instance, depending on the configuration, this can generate OIDC
     keys or install LDAP schemas.
     """
-    from canaille.app.configuration import ConfigurationException
     from canaille.app.installation import install
 
-    try:
-        install(current_app)
-
-    except ConfigurationException as exc:  # pragma: no cover
-        print(exc)
-        sys.exit(1)
+    app = ctx.obj.load_app()
+    install(app)
 
 
 if HAS_HYPERCORN:  # pragma: no cover
@@ -114,13 +109,21 @@ def check():
     Attempt to reach the database and the SMTP server with the provided
     credentials.
     """
-    from canaille.app.configuration import ConfigurationException
     from canaille.app.configuration import check_network_config
 
-    try:
-        check_network_config(current_app.config)
-    except ConfigurationException as exc:
-        print(exc)
+    success = True
+    results = check_network_config(current_app.config)
+    prefix = {
+        True: click.style("OK", fg="green"),
+        False: click.style("KO", fg="red"),
+        None: click.style("--", fg="blue"),
+    }
+    for result in results:
+        success = result.success is not False and success
+        click.echo(prefix[result.success], nl=False)
+        click.echo(" " + result.message)
+
+    if not success:
         sys.exit(1)
 
 

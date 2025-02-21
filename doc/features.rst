@@ -84,8 +84,6 @@ Unless their account is :ref:`locked <feature_account_locking>`, users can authe
 
    For security reasons, it won't be told to users if they try to sign in with an unexisting logging, unless explicitly :attr:`set in the configuration <canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS>`.
 
-.. todo:: :ref:`LDAP backend <tutorial/databases:LDAP>` users can define which :class:`user field <canaille.core.models.User>` should be used as the login (such as :attr:`~canaille.core.models.User.user_name` or :attr:`~canaille.core.models.User.emails`) using a :attr:`configuration parameter <canaille.backends.ldap.configuration.LDAPSettings.USER_FILTER>`, but other backends can only login using :attr:`~canaille.core.models.User.user_name`. We are :issue:`working to improve this <196>`.
-
 .. _feature_user_registration:
 
 User registration

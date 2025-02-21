@@ -1,4 +1,5 @@
 import os
+import sys
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
@@ -11,7 +12,7 @@ def create_mo_files():
     cmd.quiet = True
     cmd.statistics = True
     cmd.finalize_options()
-    cmd.run()
+    return cmd.run()
 
 
 class CustomBuildHook(BuildHookInterface):
@@ -20,4 +21,5 @@ class CustomBuildHook(BuildHookInterface):
 
 
 if __name__ == "__main__":
-    create_mo_files({})
+    exit_code = create_mo_files()
+    sys.exit(exit_code)

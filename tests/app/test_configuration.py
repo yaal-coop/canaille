@@ -8,8 +8,10 @@ from flask_webtest import TestApp
 from pydantic import ValidationError
 
 from canaille import create_app
-from canaille.app.configuration import ConfigurationException
+from canaille.app.configuration import CheckResult
 from canaille.app.configuration import check_network_config
+from canaille.app.configuration import check_smpp_connection
+from canaille.app.configuration import check_smtp_connection
 from canaille.app.configuration import export_config
 from canaille.app.configuration import sanitize_rst_text
 from canaille.app.configuration import settings_factory
@@ -168,12 +170,11 @@ def test_disable_dotenv_file(tmp_path, configuration):
 def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configuration):
     configuration["CANAILLE"]["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    with pytest.raises(
-        ConfigurationException,
-        match=r"Could not connect to the SMTP server",
-    ):
-        check_network_config(config_dict)
+    config_dict = config_obj.model_dump()["CANAILLE"]["SMTP"]
+    assert check_smtp_connection(config_dict) == CheckResult(
+        success=False,
+        message=f"Could not connect to the SMTP server 'smtp://invalid-smtp.com' on port '{configuration['CANAILLE']['SMTP']['PORT']}'",
+    )
 
 
 def test_smtp_connection_remote_smtp_wrong_credentials(
@@ -181,12 +182,10 @@ def test_smtp_connection_remote_smtp_wrong_credentials(
 ):
     configuration["CANAILLE"]["SMTP"]["PASSWORD"] = "invalid-password"
     config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    with pytest.raises(
-        ConfigurationException,
-        match=r"SMTP authentication failed with user",
-    ):
-        check_network_config(config_dict)
+    config_dict = config_obj.model_dump()["CANAILLE"]["SMTP"]
+    assert check_smtp_connection(config_dict) == CheckResult(
+        success=False, message="SMTP authentication failed with user 'user'"
+    )
 
 
 def test_smtp_connection_remote_smtp_no_credentials(
@@ -195,19 +194,19 @@ def test_smtp_connection_remote_smtp_no_credentials(
     del configuration["CANAILLE"]["SMTP"]["LOGIN"]
     del configuration["CANAILLE"]["SMTP"]["PASSWORD"]
     config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    check_network_config(config_dict)
+    config_dict = config_obj.model_dump()["CANAILLE"]["SMTP"]
+    assert check_smtp_connection(config_dict) == CheckResult(
+        success=True, message="Successful SMTP connection"
+    )
 
 
 def test_smtp_bad_tls(testclient, backend, smtpd, configuration):
     configuration["CANAILLE"]["SMTP"]["TLS"] = False
     config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    with pytest.raises(
-        ConfigurationException,
-        match=r"SMTP AUTH extension not supported by server",
-    ):
-        check_network_config(config_dict)
+    config_dict = config_obj.model_dump()["CANAILLE"]["SMTP"]
+    assert check_smtp_connection(config_dict) == CheckResult(
+        success=False, message="SMTP AUTH extension not supported by server."
+    )
 
 
 @pytest.fixture
@@ -302,12 +301,11 @@ def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configurat
         "PASSWORD": "user",
     }
     config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    with pytest.raises(
-        ConfigurationException,
-        match=r"Could not connect to the SMPP server 'invalid-smpp.com' on port '2775'",
-    ):
-        check_network_config(config_dict)
+    config_dict = config_obj.model_dump()["CANAILLE"]["SMPP"]
+    assert check_smpp_connection(config_dict) == CheckResult(
+        success=False,
+        message="Could not connect to the SMPP server 'invalid-smpp.com' on port '2775'",
+    )
 
 
 def test_check_network_config_without_smpp(configuration, backend, mock_smpp):
@@ -315,7 +313,9 @@ def test_check_network_config_without_smpp(configuration, backend, mock_smpp):
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
 
-    check_network_config(config_dict)
+    assert CheckResult(
+        success=None, message="No SMPP server configured"
+    ) in check_network_config(config_dict)
 
 
 def test_smpp_connection_remote_smpp_no_credentials(
@@ -324,8 +324,10 @@ def test_smpp_connection_remote_smpp_no_credentials(
     del configuration["CANAILLE"]["SMPP"]["LOGIN"]
     del configuration["CANAILLE"]["SMPP"]["PASSWORD"]
     config_obj = settings_factory(configuration)
-    config_dict = config_obj.model_dump()
-    check_network_config(config_dict)
+    config_dict = config_obj.model_dump()["CANAILLE"]["SMPP"]
+    assert check_smpp_connection(config_dict) == CheckResult(
+        success=True, message="Successful SMPP connection"
+    )
 
 
 def test_no_secret_key(configuration, caplog):

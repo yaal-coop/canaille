@@ -1,11 +1,6 @@
 from canaille.app import models
 
 
-def test_user_get_user_from_login(testclient, user, backend):
-    assert backend.get_user_from_login(login="invalid") is None
-    assert backend.get_user_from_login(login="user") == user
-
-
 def test_user_has_password(testclient, backend):
     user = models.User(
         formatted_name="Temp User",

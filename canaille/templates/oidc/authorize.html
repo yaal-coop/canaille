@@ -31,7 +31,9 @@ It lists the personal information requested by the application, and offers the u
 
         {% if grant.request.scope is none %}
             <div class="ui error message">
-                {% trans %}This client has registered with no scope. A scope should be added prior to authorization.{% endtrans %}
+                {% trans application_name=client.client_name %}
+                    The application {{ application_name }} does not allow user authentication.
+                {% endtrans %}
             </div>
             <div class="ui center aligned container">
                 {{ gettext('You are logged in as %(name)s', name=user.formatted_name) }}

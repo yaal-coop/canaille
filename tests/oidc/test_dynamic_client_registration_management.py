@@ -1,10 +1,15 @@
+import json
 import warnings
 from datetime import datetime
+
+from joserfc.jwk import KeySet
 
 from canaille.app import models
 
 
-def test_get(testclient, backend, client, user):
+def test_get(testclient, backend, client, user, client_jwks):
+    public_key, _ = client_jwks
+    key_set = KeySet([public_key]).as_dict()
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -22,8 +27,8 @@ def test_get(testclient, backend, client, user):
         "client_id_issued_at": int(datetime.timestamp(client.client_id_issued_at)),
         "client_secret_expires_at": 0,
         "redirect_uris": [
-            "https://mydomain.test/redirect1",
-            "https://mydomain.test/redirect2",
+            "https://client.test/redirect1",
+            "https://client.test/redirect2",
         ],
         "registration_access_token": "static-token",
         "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
@@ -35,23 +40,26 @@ def test_get(testclient, backend, client, user):
             "hybrid",
             "refresh_token",
             "client_credentials",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         "response_types": ["code", "token", "id_token"],
         "client_name": "Some client",
-        "client_uri": "https://mydomain.test",
-        "logo_uri": "https://mydomain.test/logo.webp",
+        "client_uri": "https://client.test",
+        "logo_uri": "https://client.test/logo.webp",
         "scope": "openid email profile groups address phone",
         "contacts": ["contact@mydomain.test"],
-        "tos_uri": "https://mydomain.test/tos",
-        "policy_uri": "https://mydomain.test/policy",
-        "jwk": None,
-        "jwks_uri": "https://mydomain.test/jwk",
+        "tos_uri": "https://client.test/tos",
+        "policy_uri": "https://client.test/policy",
+        "jwks": json.dumps(key_set),
+        "jwks_uri": None,
         "software_id": None,
         "software_version": None,
     }
 
 
-def test_update(testclient, backend, client, user):
+def test_update(testclient, backend, client, user, client_jwks):
+    public_key, _ = client_jwks
+    key_set = KeySet([public_key]).as_dict()
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -116,7 +124,7 @@ def test_update(testclient, backend, client, user):
         "contacts": ["newcontact@example.test"],
         "tos_uri": "https://newname.example.test/tos",
         "policy_uri": "https://newname.example.test/policy",
-        "jwk": None,
+        "jwks": json.dumps(key_set),
         "jwks_uri": "https://newname.example.test/my_public_keys.jwks",
         "software_id": "new_software_id",
         "software_version": "3.14",

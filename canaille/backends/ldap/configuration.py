@@ -38,14 +38,6 @@ class LDAPSettings(BaseModel):
     USER_RDN: str = "uid"
     """The attribute to identify an object in the User DN."""
 
-    USER_FILTER: str = "(|(uid={{ login }})(mail={{ login }}))"
-    """Filter to match users on sign in.
-
-    For instance ``(|(uid={{ login }})(mail={{ login }}))``.
-    Jinja syntax is supported and a ``login`` variable is available,
-    containing the value passed in the login field.
-    """
-
     GROUP_BASE: str = Field(..., examples=["ou=groups,dc=example,dc=org"])
     """The LDAP node under which groups will be looked for and saved.
 

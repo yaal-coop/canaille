@@ -12,6 +12,7 @@ from ldap.controls.ppolicy import PasswordPolicyError
 from ldap.controls.readentry import PostReadControl
 
 from canaille.app import models
+from canaille.app.configuration import CheckResult
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
 from canaille.backends import Backend
@@ -133,11 +134,12 @@ class LDAPBackend(Backend):
                 Backend.instance.save(user)
                 Backend.instance.delete(user)
 
-            except ldap.INSUFFICIENT_ACCESS as exc:
-                raise ConfigurationException(
-                    f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
-                    f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'"
-                ) from exc
+            except ldap.INSUFFICIENT_ACCESS:
+                return CheckResult(
+                    message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                    f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'",
+                    success=False,
+                )
 
             try:
                 models.Group.ldap_object_classes()
@@ -158,30 +160,20 @@ class LDAPBackend(Backend):
                 Backend.instance.save(group)
                 Backend.instance.delete(group)
 
-            except ldap.INSUFFICIENT_ACCESS as exc:
-                raise ConfigurationException(
-                    f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
-                    f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'"
-                ) from exc
+            except ldap.INSUFFICIENT_ACCESS:
+                return CheckResult(
+                    message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                    f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'",
+                    success=False,
+                )
 
             finally:
                 Backend.instance.delete(user)
 
-    @classmethod
-    def login_placeholder(cls):
-        user_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
-        placeholders = []
-
-        if "cn={{login" in user_filter.replace(" ", ""):
-            placeholders.append(_("John Doe"))
-
-        if "uid={{login" in user_filter.replace(" ", ""):
-            placeholders.append(_("jdoe"))
-
-        if "mail={{login" in user_filter.replace(" ", "") or not placeholders:
-            placeholders.append(_("john.doe@example.com"))
-
-        return _(" or ").join(placeholders)
+        return CheckResult(
+            message="The connection to the LDAP server and permissions of the bind DN are correct",
+            success=True,
+        )
 
     def has_account_lockability(self):
         from .ldapobject import LDAPObject
@@ -190,21 +182,6 @@ class LDAPBackend(Backend):
             return "pwdEndTime" in LDAPObject.ldap_object_attributes()
         except ldap.SERVER_DOWN:  # pragma: no cover
             return False
-
-    def get_user_from_login(self, login=None):
-        from .models import User
-
-        raw_filter = current_app.config["CANAILLE_LDAP"]["USER_FILTER"]
-        filter = (
-            (
-                current_app.jinja_env.from_string(raw_filter).render(
-                    login=ldap.filter.escape_filter_chars(login)
-                )
-            )
-            if login
-            else None
-        )
-        return self.get(User, filter=filter)
 
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:

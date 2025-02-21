@@ -6,10 +6,12 @@ from flask_alembic import Alembic
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import Password
 
+from canaille.app.configuration import CheckResult
 from canaille.backends import Backend
 from canaille.backends import ModelEncoder
 from canaille.backends import get_lockout_delay_message
@@ -72,19 +74,12 @@ class SQLBackend(Backend):
 
     @classmethod
     def check_network_config(cls, config):
-        pass
-
-    @classmethod
-    def login_placeholder(cls):
-        return ""
+        sess = Session(SQLBackend.engine)
+        sess.execute(text("SELECT 1"))
+        return CheckResult(success=True, message="SQL database correctly configured")
 
     def has_account_lockability(self):
         return True
-
-    def get_user_from_login(self, login):
-        from .models import User
-
-        return self.get(User, user_name=login)
 
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:

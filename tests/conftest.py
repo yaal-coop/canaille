@@ -145,15 +145,23 @@ def configuration(smtpd):
                 "version": 1,
                 "formatters": {
                     "default": {
+                        "format": "[%(asctime)s] - %(levelname)s in %(module)s: %(message)s",
+                    },
+                    "wsgi": {
                         "format": "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s",
-                    }
+                    },
                 },
                 "handlers": {
-                    "wsgi": {
+                    "default": {
                         "class": "logging.StreamHandler",
                         "stream": "ext://sys.stdout",
                         "formatter": "default",
-                    }
+                    },
+                    "wsgi": {
+                        "class": "logging.StreamHandler",
+                        "stream": "ext://sys.stdout",
+                        "formatter": "wsgi",
+                    },
                 },
                 "loggers": {
                     "faker": {"level": "WARNING"},

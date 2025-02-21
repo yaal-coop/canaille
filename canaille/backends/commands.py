@@ -50,7 +50,7 @@ def click_type(attribute_type):
     if typing.get_origin(attribute_type):
         attribute_type = typing.get_args(attribute_type)[0]
 
-    if typing.get_origin(attribute_type) is typing.Annotated:
+    if typing.get_origin(attribute_type) in (typing.Annotated, list):
         attribute_type = typing.get_args(attribute_type)[0]
 
     if issubclass(attribute_type, Model):
@@ -77,12 +77,18 @@ def register(cli):
 
 
 @click.command()
+@click.argument("model", required=False, nargs=-1)
 @with_appcontext
 @with_backendcontext
-def dump():
-    """Dump all the available models."""
+def dump(model: list[str] | None):
+    """Dump all the available models.
+
+    If no argument is passed, all model instances are dumped.
+    """
     objects = {}
-    for model_name, model in MODELS.items():
+    model_names = model or MODELS.keys()
+    for model_name in model_names:
+        model = MODELS[model_name]
         objects[model_name] = list(Backend.instance.query(model))
 
     output = json.dumps(objects, cls=Backend.instance.json_encoder)
@@ -106,7 +112,10 @@ def get_factory(model):
 
     for attribute, attribute_type in model.attributes.items():
         slug = attribute.replace("_", "-")
-        click.option(f"--{slug}", type=click_type(attribute_type))(command)
+        click.option(
+            f"--{slug}",
+            type=click_type(attribute_type),
+        )(command)
 
     return command
 

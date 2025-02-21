@@ -1,9 +1,12 @@
 import datetime
+import json
 import os
 import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
+from joserfc.jwk import KeySet
+from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -32,24 +35,38 @@ def configuration(configuration, keypair):
         "JWT": {
             "PUBLIC_KEY": public_key,
             "PRIVATE_KEY": private_key,
-            "ISS": "https://auth.mydomain.test",
+            "ISS": "https://auth.test",
         }
+    }
+    configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
+        "level": "DEBUG",
+        "handlers": ["default"],
     }
     return configuration
 
 
 @pytest.fixture
-def client(testclient, trusted_client, backend):
+def client_jwks():
+    raw_private_key, raw_public_key = generate_keypair()
+    private_key = RSAKey.import_key(raw_private_key)
+    public_key = RSAKey.import_key(raw_public_key)
+    return public_key, private_key
+
+
+@pytest.fixture
+def client(testclient, trusted_client, backend, client_jwks):
+    public_key, _ = client_jwks
+    key_set = KeySet([public_key]).as_dict()
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
         contacts=["contact@mydomain.test"],
-        client_uri="https://mydomain.test",
+        client_uri="https://client.test",
         redirect_uris=[
-            "https://mydomain.test/redirect1",
-            "https://mydomain.test/redirect2",
+            "https://client.test/redirect1",
+            "https://client.test/redirect2",
         ],
-        logo_uri="https://mydomain.test/logo.webp",
+        logo_uri="https://client.test/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
@@ -59,14 +76,15 @@ def client(testclient, trusted_client, backend):
             "hybrid",
             "refresh_token",
             "client_credentials",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         response_types=["code", "token", "id_token"],
         scope=["openid", "email", "profile", "groups", "address", "phone"],
-        tos_uri="https://mydomain.test/tos",
-        policy_uri="https://mydomain.test/policy",
-        jwks_uri="https://mydomain.test/jwk",
+        tos_uri="https://client.test/tos",
+        policy_uri="https://client.test/policy",
+        jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
-        post_logout_redirect_uris=["https://mydomain.test/disconnected"],
+        post_logout_redirect_uris=["https://client.test/disconnected"],
     )
     backend.save(c)
     c.audience = [c, trusted_client]
@@ -77,7 +95,9 @@ def client(testclient, trusted_client, backend):
 
 
 @pytest.fixture
-def trusted_client(testclient, backend):
+def trusted_client(testclient, backend, client_jwks):
+    public_key, _ = client_jwks
+    key_set = KeySet([public_key]).as_dict()
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
@@ -97,12 +117,13 @@ def trusted_client(testclient, backend):
             "hybrid",
             "refresh_token",
             "client_credentials",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         response_types=["code", "token", "id_token"],
         scope=["openid", "profile", "groups"],
         tos_uri="https://myotherdomain.test/tos",
         policy_uri="https://myotherdomain.test/policy",
-        jwks_uri="https://myotherdomain.test/jwk",
+        jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
         preconsent=True,
@@ -122,14 +143,14 @@ def authorization(testclient, user, client, backend):
         code="my-code",
         client=client,
         subject=user,
-        redirect_uri="https://foobar.test/callback",
+        redirect_uri="https://client.test/redirect1",
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",
         issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
         lifetime=3600,
-        challenge="challenge",
-        challenge_method="method",
+        challenge=gen_salt(48),
+        challenge_method="plain",
     )
     backend.save(a)
     yield a

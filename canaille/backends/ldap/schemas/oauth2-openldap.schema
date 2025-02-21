@@ -359,7 +359,6 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthAudience $
               oauthPreconsent $
               oauthPostLogoutRedirectURI )
-        )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
         DESC 'OAuth 2.0 Authorization Code'

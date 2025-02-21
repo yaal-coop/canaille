@@ -277,6 +277,23 @@ class CoreSettings(BaseModel):
     before the account is created.
     """
 
+    LOGIN_ATTRIBUTES: list[str] | dict[str, str] = ["user_name", "emails"]
+    """The attributes users can use to identify themselves,
+    generally a combination of :attr:`~canaille.core.models.User.user_name`,
+    :attr:`~canaille.core.models.User.emails` and
+    :attr:`~canaille.core.models.User.phone_numbers`.
+
+    - When this is a :class:`list`, it expects the attribute names to match.
+    - When this is a :class:`dict`, keys are expected to be the attribute names to match,
+      and values are a :doc:`jinja:index` string with a ``login`` variable available.
+      This can be used to tune the user input, and for example remove a domain name.
+
+    .. code-block:: toml
+
+        LOGIN_ATTRIBUTES = ["user_name", "emails"]
+        LOGIN_ATTRIBUTES = {user_name = "{{ login | replace('@example.org', '') }}", emails = "{{ login }}"}
+    """
+
     HIDE_INVALID_LOGINS: bool = True
     """If :py:data:`True`, when users try to sign in with an invalid login, a
     message is shown indicating that the password is wrong, but does not give a
@@ -348,9 +365,11 @@ class CoreSettings(BaseModel):
     MAX_PASSWORD_LENGTH: int = 1000
     """User password maximum length.
 
-    There is a technical of 4096 characters with the SQL backend.
-    If the value is 0, :data:`None`, or greater than 4096,
-    then 4096 will be retained.
+    .. note::
+
+        There is a technical limit of 4096 characters with the SQL backend.
+        If the value is 0, :data:`None`, or greater than 4096,
+        then 4096 will be retained.
     """
 
     ADMIN_EMAIL: str | None = None

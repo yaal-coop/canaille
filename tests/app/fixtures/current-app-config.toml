@@ -24,6 +24,12 @@ PREFERRED_URL_SCHEME = "http"
 #     avoided in production environments.
 # DEBUG = false
 
+# The cache type.
+#
+# The default SimpleCache is a lightweight in-memory cache. See the Flask-Caching
+# documentation for further details.
+# CACHE_TYPE = "SimpleCache"
+
 [CANAILLE]
 # Your organization name.
 #
@@ -122,8 +128,9 @@ JAVASCRIPT = false
 
 # User password maximum length.
 #
-# There is a technical of 4096 characters with the SQL backend. If the value is 0,
-# None, or greater than 4096, then 4096 will be retained.
+#     There is a technical limit of 4096 characters with the SQL backend.
+#     If the value is 0, None, or greater than 4096,
+#     then 4096 will be retained.
 # MAX_PASSWORD_LENGTH = 1000
 
 # Administration email contact.
@@ -175,10 +182,12 @@ version = 1
 disable_existing_loggers = false
 
 [CANAILLE.LOGGING.formatters]
-default = {format = "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s"}
+default = {format = "[%(asctime)s] - %(levelname)s in %(module)s: %(message)s"}
+wsgi = {format = "[%(asctime)s] - %(ip)s - %(levelname)s in %(module)s: %(message)s"}
 
 [CANAILLE.LOGGING.handlers]
-wsgi = {class = "logging.StreamHandler", stream = "ext://sys.stdout", formatter = "default"}
+default = {class = "logging.StreamHandler", stream = "ext://sys.stdout", formatter = "default"}
+wsgi = {class = "logging.StreamHandler", stream = "ext://sys.stdout", formatter = "wsgi"}
 
 [CANAILLE.LOGGING.loggers]
 faker = {level = "WARNING"}
@@ -424,13 +433,6 @@ USER_BASE = "ou=users,dc=example,dc=org"
 # The attribute to identify an object in the User DN.
 # USER_RDN = "uid"
 
-# Filter to match users on sign in.
-#
-# For instance (|(uid={{ login }})(mail={{ login }})). Jinja syntax is supported
-# and a login variable is available, containing the value passed in the login
-# field.
-# USER_FILTER = "(|(uid={{ login }})(mail={{ login }}))"
-
 # The LDAP node under which groups will be looked for and saved.
 #
 # For instance `"ou=groups,dc=example,dc=org"`.
@@ -510,6 +512,10 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # WEBSITE = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
 
 [CANAILLE_SCIM]
+# Whether the SCIM server API is enabled.
+#
+# When enabled, services plugged to Canaille can update users and groups using the
+# API.
 # ENABLE_SERVER = true
 
 # ENABLE_CLIENT = true

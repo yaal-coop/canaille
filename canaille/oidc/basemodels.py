@@ -230,7 +230,7 @@ class Client(Model):
     parameters MUST NOT both be present in the same request or response.
     """
 
-    jwk: str | None = None
+    jwks: str | None = None
     """Client's JSON Web Key Set [RFC7517] document value, which contains the
     client's public keys.
 

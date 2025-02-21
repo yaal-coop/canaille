@@ -6,6 +6,7 @@ from canaille.app import models
 from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
+from canaille.core.auth import get_user_from_login
 
 
 def unique_user_name(form, field):
@@ -36,7 +37,7 @@ def unique_group(form, field):
 def existing_login(form, field):
     if not current_app.config["CANAILLE"][
         "HIDE_INVALID_LOGINS"
-    ] and not Backend.instance.get_user_from_login(field.data):
+    ] and not get_user_from_login(field.data):
         raise wtforms.ValidationError(
             _("The login '{login}' does not exist").format(login=field.data)
         )

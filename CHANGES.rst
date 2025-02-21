@@ -1,3 +1,57 @@
+[0.0.65] - Unreleased
+---------------------
+
+Added
+^^^^^
+
+- The :ref:`cli dump <cli_dump>` command can dump only some given models.
+
+[0.0.64] - 2025-02-12
+---------------------
+
+.. warning::
+
+    This version comes with a configuration breaking change.
+    The configuration parameter ``CANAILLE_LDAP.USER_FILTER`` is removed in favor of
+    :class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`.
+
+Added
+^^^^^
+- Implement :rfc:`RFC7523 <7523>`. :issue:`112`
+- Implement the :class:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES`
+  configuration parameter, to tweak the login attributes. :issue:`196`
+
+Fixed
+^^^^^
+- Client dynamic registration with the ``jwks`` parameter. :pr:`228`
+- Use a custom LDAP image in the demo environment. :issue:`136`
+
+[0.0.63] - 2025-02-06
+---------------------
+
+Added
+^^^^^
+- Implement :rfc:`RFC9207 <9207>`. :pr:`227`
+
+[0.0.62] - 2025-02-05
+---------------------
+
+Fixed
+^^^^^
+- Canaille executable did not support i18n. :issue:`227`
+- Dynamic `kid` parameter for JWKs. :issue:`222`
+
+[0.0.61] - 2025-02-04
+---------------------
+
+Added
+^^^^^
+- Improve ``canaille config check`` output.
+
+Fixed
+^^^^^
+- Fix SQL ``install`` command. :issue:`221`
+
 [0.0.60] - 2025-02-03
 ---------------------
 

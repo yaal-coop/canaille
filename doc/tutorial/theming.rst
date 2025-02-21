@@ -50,4 +50,4 @@ To write your custom theme and check how it is rendered, you can put the path to
 .. code-block:: console
    :caption: Run the demo instance
 
-   $ ./demo/run.sh
+   $ uv run devserver
