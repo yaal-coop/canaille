@@ -25,6 +25,8 @@ pkgs.dockerTools.buildImage {
         mkdir -p /opt/canaille && \
         echo 'bind = [\"0.0.0.0:5000\"]' > /opt/canaille/hypercorn.toml && \
         echo '
+        SERVER_NAME = \"canaille.localhost:5000\"\n
+        PREFERRED_URL_SCHEME = \"https\"\n
         [CANAILLE]\n
         LOGO = \"/static/img/canaille-head.webp\"\n
         FAVICON = \"/static/img/canaille-c.webp\"\n
