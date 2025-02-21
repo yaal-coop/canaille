@@ -509,18 +509,20 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
 
     def introspect_token(self, token):
         audience = [aud.client_id for aud in token.audience]
-        return {
+        response = {
             "active": True,
             "client_id": token.client.client_id,
             "token_type": token.type,
-            "username": token.subject.formatted_name,
             "scope": token.get_scope(),
-            "sub": token.subject.user_name,
             "aud": audience,
             "iss": get_issuer(),
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
         }
+        if token.subject:
+            response["username"] = token.subject.formatted_name
+            response["sub"] = token.subject.user_name
+        return response
 
 
 class ClientManagementMixin:

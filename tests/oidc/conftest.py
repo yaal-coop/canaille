@@ -176,6 +176,23 @@ def token(testclient, client, user, backend):
 
 
 @pytest.fixture
+def oidc_token(testclient, client, backend):
+    t = models.Token(
+        token_id=gen_salt(48),
+        access_token=gen_salt(48),
+        audience=[client],
+        client=client,
+        refresh_token=gen_salt(48),
+        scope=["openid", "profile"],
+        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        lifetime=3600,
+    )
+    backend.save(t)
+    yield t
+    backend.delete(t)
+
+
+@pytest.fixture
 def id_token(testclient, client, user, backend):
     return generate_id_token(
         {},

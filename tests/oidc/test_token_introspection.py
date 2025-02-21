@@ -27,6 +27,25 @@ def test_access_token_introspection(testclient, user, client, token):
     } == res.json
 
 
+def test_client_access_token_introspection(testclient, client, oidc_token):
+    res = testclient.post(
+        "/oauth/introspect",
+        params={"token": oidc_token.access_token},
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    assert {
+        "active": True,
+        "client_id": client.client_id,
+        "token_type": oidc_token.type,
+        "scope": oidc_token.get_scope(),
+        "aud": [client.client_id],
+        "iss": "https://auth.test",
+        "exp": oidc_token.get_expires_at(),
+        "iat": oidc_token.get_issued_at(),
+    } == res.json
+
+
 def test_refresh_token_introspection(testclient, user, client, token):
     res = testclient.post(
         "/oauth/introspect",
