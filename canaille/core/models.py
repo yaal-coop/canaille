@@ -11,7 +11,6 @@ from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
 from canaille.core.sms import send_one_time_password_sms
 
-HOTP_LOOK_AHEAD_WINDOW = 10
 OTP_DIGITS = 6
 OTP_VALIDITY = 600
 SEND_NEW_OTP_DELAY = 10
@@ -363,25 +362,6 @@ class User(Model):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
-    def initialize_otp(self):
-        self.secret_token = secrets.token_hex(32)
-        self.last_otp_login = None
-        if current_app.features.otp_method == "HOTP":
-            self.hotp_counter = 1
-
-    def generate_otp(self, counter_delta=0):
-        import otpauth
-
-        method = current_app.features.otp_method
-        if method == "TOTP":
-            totp = otpauth.TOTP(bytes(self.secret_token, "utf-8"))
-            return totp.string_code(totp.generate())
-        elif method == "HOTP":
-            hotp = otpauth.HOTP(bytes(self.secret_token, "utf-8"))
-            return hotp.string_code(hotp.generate(self.hotp_counter + counter_delta))
-        else:  # pragma: no cover
-            raise RuntimeError("Invalid one-time password method")
-
     def generate_sms_or_mail_otp(self):
         otp = string_code(secrets.randbelow(10**OTP_DIGITS), OTP_DIGITS)
         self.one_time_password = otp
@@ -402,53 +382,22 @@ class User(Model):
             return otp
         return False
 
-    def get_otp_authentication_setup_uri(self):
-        import otpauth
-
-        method = current_app.features.otp_method
-        if method == "TOTP":
-            return otpauth.TOTP(bytes(self.secret_token, "utf-8")).to_uri(
-                label=self.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
-            )
-        elif method == "HOTP":
-            return otpauth.HOTP(bytes(self.secret_token, "utf-8")).to_uri(
-                label=self.user_name,
-                issuer=current_app.config["CANAILLE"]["NAME"],
-                counter=self.hotp_counter,
-            )
-        else:  # pragma: no cover
-            raise RuntimeError("Invalid one-time password method")
-
     def is_otp_valid(self, user_otp, method):
-        if method == "TOTP":
-            return self.is_totp_valid(user_otp)
-        elif method == "HOTP":
-            return self.is_hotp_valid(user_otp)
+        if current_app.features.has_otp and method == "TOTP":
+            from canaille.app.otp import is_totp_valid
+
+            return is_totp_valid(self, user_otp)
+
+        elif current_app.features.has_otp and method == "HOTP":
+            from canaille.app.otp import is_hotp_valid
+
+            return is_hotp_valid(self, user_otp)
+
         elif method == "EMAIL_OTP" or method == "SMS_OTP":
             return self.is_email_or_sms_otp_valid(user_otp)
+
         else:  # pragma: no cover
             raise RuntimeError("Invalid one-time password method")
-
-    def is_totp_valid(self, user_otp):
-        import otpauth
-
-        return otpauth.TOTP(bytes(self.secret_token, "utf-8")).verify(user_otp)
-
-    def is_hotp_valid(self, user_otp):
-        import otpauth
-
-        counter = self.hotp_counter
-        is_valid = False
-        # if user token's counter is ahead of canaille's, try to catch up to it
-        while counter - self.hotp_counter <= HOTP_LOOK_AHEAD_WINDOW:
-            is_valid = otpauth.HOTP(bytes(self.secret_token, "utf-8")).verify(
-                user_otp, counter
-            )
-            counter += 1
-            if is_valid:
-                self.hotp_counter = counter
-                return True
-        return False
 
     def is_email_or_sms_otp_valid(self, user_otp):
         return user_otp == self.one_time_password and self.is_otp_still_valid()

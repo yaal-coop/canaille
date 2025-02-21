@@ -129,7 +129,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
 
     def save(self):
         if current_app.features.has_otp and not self.secret_token:
-            self.initialize_otp()
+            from canaille.app.otp import initialize_otp
+
+            initialize_otp(self)
 
     @property
     def password_failure_timestamps(self):

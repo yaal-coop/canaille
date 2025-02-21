@@ -53,7 +53,9 @@ class User(canaille.core.models.User, LDAPObject):
 
     def save(self):
         if current_app.features.has_otp and not self.secret_token:
-            self.initialize_otp()
+            from canaille.app.otp import initialize_otp
+
+            initialize_otp(self)
 
         group_attr = self.python_attribute_to_ldap("groups")
         if group_attr not in self.changes:

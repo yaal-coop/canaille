@@ -301,11 +301,13 @@ def reset_otp(identifier):
 
     IDENTIFIER should be a user id or user_name
     """
+    from canaille.app.otp import initialize_otp
+
     user = Backend.instance.get(models.User, identifier)
     if not user:
         raise click.ClickException(f"No user with id '{identifier}'")
 
-    user.initialize_otp()
+    initialize_otp(user)
     current_app.logger.security(
         f"Reset one-time password authentication from CLI for {user.user_name}"
     )

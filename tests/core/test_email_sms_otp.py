@@ -7,6 +7,7 @@ import time_machine
 import tests.conftest
 from canaille.app import mask_email
 from canaille.app import mask_phone
+from canaille.app.otp import generate_otp
 from canaille.core.models import OTP_VALIDITY
 from canaille.core.models import SEND_NEW_OTP_DELAY
 
@@ -605,7 +606,7 @@ def test_signin_with_multiple_otp_methods(
 
     # TOTP/HOTP
     res = testclient.get("/verify-mfa")
-    res.form["otp"] = user_otp.generate_otp()
+    res.form["otp"] = generate_otp(user_otp)
     res = res.form.submit(status=302).follow(status=200)
 
     # EMAIL_OTP

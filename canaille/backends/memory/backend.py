@@ -139,7 +139,9 @@ class MemoryBackend(Backend):
             and current_app.features.has_otp
             and not instance.secret_token
         ):
-            instance.initialize_otp()
+            from canaille.app.otp import initialize_otp
+
+            initialize_otp(instance)
 
         if not instance.id:
             instance.id = str(uuid.uuid4())
