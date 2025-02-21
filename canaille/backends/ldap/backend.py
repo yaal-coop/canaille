@@ -373,8 +373,8 @@ class LDAPBackend(Backend):
 
     def delete(self, instance):
         # run the instance delete callback if existing
-        save_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(save_callback, None)
+        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
+        next(delete_callback, None)
 
         try:
             self.connection.delete_s(instance.dn)
@@ -382,7 +382,7 @@ class LDAPBackend(Backend):
             pass
 
         # run the instance delete callback again if existing
-        next(save_callback, None)
+        next(delete_callback, None)
 
     def reload(self, instance):
         # run the instance reload callback if existing
