@@ -434,7 +434,7 @@ def profile_creation(user):
         )
 
     user = profile_create(current_app, form)
-    flash(_("User account creation succeed."), "success")
+    flash(_("User account creation succeeded."), "success")
     return redirect(url_for("core.account.profile_edition", edited_user=user))
 
 

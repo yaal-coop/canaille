@@ -22,7 +22,7 @@ def test_user_creation_edition_and_deletion(
 
     # User have been created
     res = res.form.submit(name="action", value="create-profile", status=302)
-    assert ("success", "User account creation succeed.") in res.flashes
+    assert ("success", "User account creation succeeded.") in res.flashes
     res = res.follow(status=200)
     george = backend.get(models.User, user_name="george")
     backend.reload(foo_group)
@@ -89,7 +89,7 @@ def test_user_creation_without_password(testclient, logged_moderator, backend):
     res.form["emails-0"] = "george@abitbol.test"
 
     res = res.form.submit(name="action", value="create-profile", status=302)
-    assert ("success", "User account creation succeed.") in res.flashes
+    assert ("success", "User account creation succeeded.") in res.flashes
     res = res.follow(status=200)
     george = backend.get(models.User, user_name="george")
     assert george.user_name == "george"
