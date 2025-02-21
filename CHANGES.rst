@@ -3,7 +3,8 @@
 
 Added
 ^^^^^
-
+- Instructions in CONTRIBUTING.rst to update the docker image :issue:`59`
+- Instructions in README.md to discover Canaille interface with a docker image :issue:`59`
 - The :ref:`cli dump <cli_dump>` command can dump only some given models.
 
 Fixed
