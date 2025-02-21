@@ -235,7 +235,7 @@ How to push to hub.docker
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 ``docker tag <image> yaalcoop/canaille:<tag>``
 (example : docker tag canaille-image:g2vildm07jpwvjwrfjry3i5pllyqy4kg yaalcoop/canaille:0.0.1)
-``docker login -u "yaalcoop"``
+``docker login -u <hub docker login>``
 ``docker push yaalcoop/canaille:<tag>``
 
 Think to update the new tag in the `README.md`.
