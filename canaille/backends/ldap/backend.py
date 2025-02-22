@@ -308,11 +308,7 @@ class LDAPBackend(Backend):
 
             return None
 
-    def save(self, instance):
-        # run the instance save callback if existing
-        save_callback = instance.save() if hasattr(instance, "save") else iter([])
-        next(save_callback, None)
-
+    def do_save(self, instance):
         current_object_classes = instance.get_ldap_attribute("objectClass") or []
         instance.set_ldap_attribute(
             "objectClass",
@@ -368,35 +364,18 @@ class LDAPBackend(Backend):
         instance.state = {**result.entry, **instance.changes}
         instance.changes = {}
 
-        # run the instance save callback again if existing
-        next(save_callback, None)
-
-    def delete(self, instance):
-        # run the instance delete callback if existing
-        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(delete_callback, None)
-
+    def do_delete(self, instance):
         try:
             self.connection.delete_s(instance.dn)
         except ldap.NO_SUCH_OBJECT:
             pass
 
-        # run the instance delete callback again if existing
-        next(delete_callback, None)
-
-    def reload(self, instance):
-        # run the instance reload callback if existing
-        reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
-        next(reload_callback, None)
-
+    def do_reload(self, instance):
         result = self.connection.search_s(
             instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"]
         )
         instance.changes = {}
         instance.state = result[0][1]
-
-        # run the instance reload callback again if existing
-        next(reload_callback, None)
 
 
 def setup_ldap_models(config):

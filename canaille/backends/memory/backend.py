@@ -5,7 +5,6 @@ from typing import Any
 
 from flask import current_app
 
-import canaille.backends.memory.models
 from canaille.app.configuration import CheckResult
 from canaille.backends import Backend
 from canaille.backends import get_lockout_delay_message
@@ -133,16 +132,7 @@ class MemoryBackend(Backend):
         results = self.query(model, **kwargs)
         return results[0] if results else None
 
-    def save(self, instance):
-        if (
-            isinstance(instance, canaille.backends.memory.models.User)
-            and current_app.features.has_otp
-            and not instance.secret_token
-        ):
-            from canaille.app.otp import initialize_otp
-
-            initialize_otp(instance)
-
+    def do_save(self, instance):
         if not instance.id:
             instance.id = str(uuid.uuid4())
 
@@ -156,28 +146,14 @@ class MemoryBackend(Backend):
         self.index_save(instance)
         instance._cache = {}
 
-    def delete(self, instance):
-        # run the instance delete callback if existing
-        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(delete_callback, None)
-
+    def do_delete(self, instance):
         self.index_delete(instance)
 
-        # run the instance delete callback again if existing
-        next(delete_callback, None)
-
-    def reload(self, instance):
-        # run the instance reload callback if existing
-        reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
-        next(reload_callback, None)
-
+    def do_reload(self, instance):
         instance._state = Backend.instance.get(
             instance.__class__, id=instance.id
         )._state
         instance._cache = {}
-
-        # run the instance reload callback again if existing
-        next(reload_callback, None)
 
     def index_save(self, instance):
         # update the id index

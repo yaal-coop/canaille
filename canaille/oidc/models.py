@@ -5,6 +5,7 @@ from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
+from blinker import signal
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -40,6 +41,10 @@ class Client(BaseClient, ClientMixin):
         "software_id",
         "software_version",
     ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        signal("before_client_delete").connect(self.on_delete, sender=self)
 
     def get_client_id(self):
         return self.client_id
@@ -98,7 +103,8 @@ class Client(BaseClient, ClientMixin):
         metadata["scope"] = " ".join(metadata["scope"])
         return metadata
 
-    def delete(self):
+    @classmethod
+    def on_delete(cls, self, data):
         for consent in Backend.instance.query(models.Consent, client=self):
             Backend.instance.delete(consent)
 
@@ -107,8 +113,6 @@ class Client(BaseClient, ClientMixin):
 
         for token in Backend.instance.query(models.Token, client=self):
             Backend.instance.delete(token)
-
-        yield
 
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):

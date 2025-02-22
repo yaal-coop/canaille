@@ -143,11 +143,7 @@ class SQLBackend(Backend):
             select(model).filter(*filter)
         ).scalar_one_or_none()
 
-    def save(self, instance):
-        # run the instance save callback if existing
-        if hasattr(instance, "save"):
-            instance.save()
-
+    def do_save(self, instance):
         instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
         )
@@ -157,26 +153,12 @@ class SQLBackend(Backend):
         SQLBackend.instance.db_session.add(instance)
         SQLBackend.instance.db_session.commit()
 
-    def delete(self, instance):
-        # run the instance delete callback if existing
-        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(delete_callback, None)
-
+    def do_delete(self, instance):
         SQLBackend.instance.db_session.delete(instance)
         SQLBackend.instance.db_session.commit()
 
-        # run the instance delete callback again if existing
-        next(delete_callback, None)
-
-    def reload(self, instance):
-        # run the instance reload callback if existing
-        reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
-        next(reload_callback, None)
-
+    def do_reload(self, instance):
         SQLBackend.instance.db_session.refresh(instance)
-
-        # run the instance reload callback again if existing
-        next(reload_callback, None)
 
     def record_failed_attempt(self, user):
         if user.password_failure_timestamps is None:

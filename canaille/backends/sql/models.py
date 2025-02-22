@@ -2,7 +2,6 @@ import datetime
 import typing
 import uuid
 
-from flask import current_app
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -126,12 +125,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     one_time_password_emission_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-
-    def save(self):
-        if current_app.features.has_otp and not self.secret_token:
-            from canaille.app.otp import initialize_otp
-
-            initialize_otp(self)
 
     @property
     def password_failure_timestamps(self):
