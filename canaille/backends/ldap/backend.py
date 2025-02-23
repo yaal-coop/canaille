@@ -235,7 +235,7 @@ class LDAPBackend(Backend):
             password.encode("utf-8"),
         )
 
-    def query(self, model, dn=None, filter=None, **kwargs):
+    def do_query(self, model, dn=None, filter=None, *args, **kwargs):
         from .ldapobjectquery import LDAPObjectQuery
 
         base = dn
