@@ -178,7 +178,6 @@ dependencies = [
     { name = "flask" },
     { name = "flask-caching" },
     { name = "flask-wtf" },
-    { name = "httpx" },
     { name = "pydantic-settings" },
     { name = "requests" },
     { name = "wtforms" },
@@ -222,9 +221,9 @@ postgresql = [
 ]
 scim = [
     { name = "authlib" },
+    { name = "httpx" },
     { name = "scim2-client" },
     { name = "scim2-models" },
-    { name = "scim2-server" },
 ]
 sentry = [
     { name = "sentry-sdk" },
@@ -268,6 +267,7 @@ dev = [
     { name = "pytest-scim2-server" },
     { name = "pytest-smtpd" },
     { name = "pytest-xdist" },
+    { name = "scim2-server" },
     { name = "scim2-tester" },
     { name = "setuptools", marker = "python_full_version >= '3.12'" },
     { name = "slapd" },
@@ -306,6 +306,7 @@ requires-dist = [
     { name = "flask-caching", specifier = ">=2.3.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
+    { name = "httpx", marker = "extra == 'scim'", specifier = ">=0.28.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.0.2" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -323,7 +324,6 @@ requires-dist = [
     { name = "requests", specifier = ">=2.32.3" },
     { name = "scim2-client", marker = "extra == 'scim'", specifier = ">=0.5.1" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.2.2" },
-    { name = "scim2-server", marker = "extra == 'scim'", specifier = ">=0.1.3" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },
     { name = "sqlalchemy", marker = "extra == 'sqlite'", specifier = ">=2.0.23" },
@@ -365,6 +365,7 @@ dev = [
     { name = "pytest-scim2-server", specifier = ">=0.1.2" },
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
+    { name = "scim2-server", specifier = ">=0.1.3" },
     { name = "scim2-tester", specifier = ">=0.1.7" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0" },
     { name = "slapd", specifier = ">=0.1.5" },
