@@ -5,6 +5,7 @@ import typing
 from contextlib import contextmanager
 from math import ceil
 
+from blinker import signal
 from flask import g
 
 from canaille.app import classproperty
@@ -125,10 +126,24 @@ class Backend:
 
     def save(self, instance):
         """Validate the current modifications in the database."""
+        data = {}
+        model_name = instance.__class__.__name__.lower()
+        signal(f"before_{model_name}_save").send(instance, data=data)
+        self.do_save(instance)
+        signal(f"after_{model_name}_save").send(instance, data=data)
+
+    def do_save(self, instance):
         raise NotImplementedError()
 
     def delete(self, instance):
         """Remove the current instance from the database."""
+        data = {}
+        model_name = instance.__class__.__name__.lower()
+        signal(f"before_{model_name}_delete").send(instance, data=data)
+        self.do_delete(instance)
+        signal(f"after_{model_name}_delete").send(instance, data=data)
+
+    def do_delete(self, instance):
         raise NotImplementedError()
 
     def reload(self, instance):
@@ -144,6 +159,13 @@ class Backend:
         >>> user.display_name
         George
         """
+        data = {}
+        model_name = instance.__class__.__name__.lower()
+        signal(f"before_{model_name}_reload").send(instance, data=data)
+        self.do_reload(instance)
+        signal(f"after_{model_name}_reload").send(instance, data=data)
+
+    def do_reload(self, instance):
         raise NotImplementedError()
 
     def update(self, instance, **kwargs):

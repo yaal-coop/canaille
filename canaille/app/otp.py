@@ -2,6 +2,7 @@
 
 import secrets
 
+from blinker import signal
 from flask import current_app
 
 HOTP_LOOK_AHEAD_WINDOW = 10
@@ -12,6 +13,11 @@ def initialize_otp(user):
     user.last_otp_login = None
     if current_app.features.otp_method == "HOTP":
         user.hotp_counter = 1
+
+
+def before_user_save(user, data):
+    if current_app.features.has_otp and not user.secret_token:
+        initialize_otp(user)
 
 
 def generate_otp(user, counter_delta=0):
@@ -71,3 +77,7 @@ def is_hotp_valid(user, user_otp):
             user.hotp_counter = counter
             return True
     return False
+
+
+def setup_otp(app):
+    signal("before_user_save").connect(before_user_save)

@@ -3,6 +3,7 @@ import secrets
 from typing import Annotated
 from typing import ClassVar
 
+from blinker import signal
 from flask import current_app
 from pydantic import TypeAdapter
 
@@ -289,6 +290,10 @@ class User(Model):
     _writable_fields = None
     _permissions = None
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        signal("before_user_reload").connect(self.on_reload, sender=self)
+
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
         return self.password is not None
@@ -329,11 +334,11 @@ class User(Model):
             datetime.timezone.utc
         )
 
-    def reload(self):
+    @classmethod
+    def on_reload(cls, self, data):
         self._readable = None
         self._writable = None
         self._permissions = None
-        yield
 
     @property
     def readable_fields(self):

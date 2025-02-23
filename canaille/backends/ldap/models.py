@@ -1,5 +1,5 @@
 import ldap.filter
-from flask import current_app
+from blinker import signal
 
 import canaille.core.models
 import canaille.oidc.models
@@ -9,6 +9,12 @@ from .ldapobject import LDAPObject
 
 
 class User(canaille.core.models.User, LDAPObject):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        signal("before_user_save").connect(self.before_save, sender=self)
+        signal("after_user_save").connect(self.after_save, sender=self)
+
     attribute_map = {
         "id": "entryUUID",
         "created": "createTimestamp",
@@ -51,32 +57,32 @@ class User(canaille.core.models.User, LDAPObject):
 
         return super().match_filter(filter)
 
-    def save(self):
-        if current_app.features.has_otp and not self.secret_token:
-            from canaille.app.otp import initialize_otp
-
-            initialize_otp(self)
-
-        group_attr = self.python_attribute_to_ldap("groups")
-        if group_attr not in self.changes:
+    @classmethod
+    def before_save(cls, self, data):
+        data["group_attr"] = self.python_attribute_to_ldap("groups")
+        if data["group_attr"] not in self.changes:
             return
 
         # The LDAP attribute memberOf cannot directly be edited,
         # so this is needed to update the Group.member attribute
         # instead.
-        old_groups = self.get_ldap_attribute(group_attr, lookup_changes=False) or []
-        new_groups = self.get_ldap_attribute(group_attr, lookup_state=False) or []
-        to_add = set(new_groups) - set(old_groups)
-        to_del = set(old_groups) - set(new_groups)
-        del self.changes[group_attr]
+        data["old_groups"] = (
+            self.get_ldap_attribute(data["group_attr"], lookup_changes=False) or []
+        )
+        data["new_groups"] = (
+            self.get_ldap_attribute(data["group_attr"], lookup_state=False) or []
+        )
+        data["to_add"] = set(data["new_groups"]) - set(data["old_groups"])
+        data["to_del"] = set(data["old_groups"]) - set(data["new_groups"])
+        del self.changes[data["group_attr"]]
 
-        yield
-
-        for group in to_add:
+    @classmethod
+    def after_save(cls, self, data):
+        for group in data.get("to_add", []):
             group.members = group.members + [self]
             LDAPBackend.instance.save(group)
 
-        for group in to_del:
+        for group in data.get("to_del", []):
             # LDAP groups cannot be empty because groupOfNames.member
             # is a MUST attribute.
             # https://www.rfc-editor.org/rfc/rfc2256.html#section-7.10
@@ -85,7 +91,8 @@ class User(canaille.core.models.User, LDAPObject):
             group.members = [member for member in group.members if member != self]
             LDAPBackend.instance.save(group)
 
-        self.state[group_attr] = new_groups
+        if "new_groups" in data:
+            self.state[data["group_attr"]] = data["new_groups"]
 
 
 class Group(canaille.core.models.Group, LDAPObject):
