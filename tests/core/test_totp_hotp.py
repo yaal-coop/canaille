@@ -5,7 +5,8 @@ import pytest
 import time_machine
 
 from canaille.app import models
-from canaille.core.models import HOTP_LOOK_AHEAD_WINDOW
+from canaille.app.otp import HOTP_LOOK_AHEAD_WINDOW
+from canaille.app.otp import generate_otp
 
 
 def test_otp_disabled(testclient):
@@ -46,7 +47,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
         assert "user" == session.get("attempt_login_with_correct_password")
 
     res = testclient.get("/verify-mfa")
-    res.form["otp"] = user_otp.generate_otp()
+    res.form["otp"] = generate_otp(user_otp)
     res = res.form.submit(status=302)
 
     assert (
@@ -130,7 +131,7 @@ def test_signin_expired_totp(testclient, user_otp, caplog):
         res = res.form.submit(status=302)
         res = res.follow(status=200)
 
-        res.form["otp"] = user_otp.generate_otp()
+        res.form["otp"] = generate_otp(user_otp)
         traveller.shift(datetime.timedelta(seconds=30))
         res = res.form.submit()
 
@@ -183,7 +184,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     assert u.secret_token == res.form["secret"].value
 
     res = testclient.get("/verify-mfa", status=200)
-    res.form["otp"] = u.generate_otp()
+    res.form["otp"] = generate_otp(u)
     res = res.form.submit(status=302)
 
     assert (
@@ -270,7 +271,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(
     for _x in range(3):
         res.form["otp"] = "111111"
         res = res.form.submit(status=302).follow()
-    res.form["otp"] = user_otp.generate_otp()
+    res.form["otp"] = generate_otp(user_otp)
     res = res.form.submit(status=302)
 
     assert (
@@ -321,7 +322,7 @@ def test_signin_inside_hotp_look_ahead_window(testclient, backend, user_otp, cap
 
     res = testclient.get("/verify-mfa")
 
-    res.form["otp"] = user_otp.generate_otp(HOTP_LOOK_AHEAD_WINDOW)
+    res.form["otp"] = generate_otp(user_otp, HOTP_LOOK_AHEAD_WINDOW)
     res = res.form.submit(status=302)
 
     assert (
@@ -367,7 +368,7 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user_otp, ca
 
     res = testclient.get("/verify-mfa")
 
-    res.form["otp"] = user_otp.generate_otp(HOTP_LOOK_AHEAD_WINDOW + 1)
+    res.form["otp"] = generate_otp(user_otp, HOTP_LOOK_AHEAD_WINDOW + 1)
     res = res.form.submit(status=302)
 
     assert (

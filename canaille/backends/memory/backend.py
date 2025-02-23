@@ -132,11 +132,7 @@ class MemoryBackend(Backend):
         results = self.query(model, **kwargs)
         return results[0] if results else None
 
-    def save(self, instance):
-        # run the instance save callback if existing
-        save_callback = instance.save() if hasattr(instance, "save") else iter([])
-        next(save_callback, None)
-
+    def do_save(self, instance):
         if not instance.id:
             instance.id = str(uuid.uuid4())
 
@@ -150,31 +146,14 @@ class MemoryBackend(Backend):
         self.index_save(instance)
         instance._cache = {}
 
-        # run the instance save callback again if existing
-        next(save_callback, None)
-
-    def delete(self, instance):
-        # run the instance delete callback if existing
-        delete_callback = instance.delete() if hasattr(instance, "delete") else iter([])
-        next(delete_callback, None)
-
+    def do_delete(self, instance):
         self.index_delete(instance)
 
-        # run the instance delete callback again if existing
-        next(delete_callback, None)
-
-    def reload(self, instance):
-        # run the instance reload callback if existing
-        reload_callback = instance.reload() if hasattr(instance, "reload") else iter([])
-        next(reload_callback, None)
-
+    def do_reload(self, instance):
         instance._state = Backend.instance.get(
             instance.__class__, id=instance.id
         )._state
         instance._cache = {}
-
-        # run the instance reload callback again if existing
-        next(reload_callback, None)
 
     def index_save(self, instance):
         # update the id index

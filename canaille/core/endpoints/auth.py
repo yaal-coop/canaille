@@ -281,6 +281,8 @@ def setup_two_factor_auth():
     if not current_app.features.has_otp:
         abort(404)
 
+    from canaille.app.otp import get_otp_authentication_setup_uri
+
     if current_user():
         return redirect(
             url_for("core.account.profile_edition", edited_user=current_user())
@@ -292,7 +294,7 @@ def setup_two_factor_auth():
 
     user = get_user_from_login(session["attempt_login_with_correct_password"])
 
-    uri = user.get_otp_authentication_setup_uri()
+    uri = get_otp_authentication_setup_uri(user)
     base64_qr_image = get_b64encoded_qr_image(uri)
     return render_template(
         "core/setup-mfa.html",
