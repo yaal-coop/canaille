@@ -157,10 +157,15 @@ def get_clients(user):
     return list(consented_clients) + list(preconsented_clients)
 
 
+def after_user_query(user):
+    user.old_groups = user.groups.copy()
+
+
 def after_user_save(user):
     propagate_user_scim_modification(user, method="save")
 
-    for group in set(user.old_groups) ^ set(user.groups):
+    old_groups = getattr(user, "old_groups", [])
+    for group in set(old_groups) ^ set(user.groups):
         Backend.instance.reload(group)
         propagate_group_scim_modification(group, "save")
 
@@ -184,6 +189,7 @@ def before_group_delete(group):
 
 
 def setup_scim_signals():
+    signal("after_user_query").connect(after_user_query)
     signal("after_user_save").connect(after_user_save)
     signal("before_user_delete").connect(before_user_delete)
     signal("after_user_delete").connect(after_user_delete)
