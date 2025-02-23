@@ -81,7 +81,7 @@ class MemoryBackend(Backend):
 
         self.save(user)
 
-    def query(self, model, **kwargs):
+    def do_query(self, model, *args, **kwargs):
         # if there is no filter, return all models
         if not kwargs:
             states = self.index(model).values()

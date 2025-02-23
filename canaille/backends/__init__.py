@@ -97,7 +97,7 @@ class Backend:
         """
         raise NotImplementedError()
 
-    def query(self, model, **kwargs):
+    def query(self, model, *args, **kwargs):
         """Perform a query on the database and return a collection of instances.
 
         Parameters can be any valid attribute with the expected value:
@@ -114,6 +114,13 @@ class Backend:
 
         >>> backend.query(User, first_name=["George", "Jane"])
         """
+        model_name = model.__name__.lower()
+        instances = self.do_query(model, *args, **kwargs)
+        for instance in instances:
+            signal(f"after_{model_name}_query").send(instance)
+        return instances
+
+    def do_query(self, model, *args, **kwargs):
         raise NotImplementedError()
 
     def fuzzy(self, model, query, attributes=None, **kwargs):

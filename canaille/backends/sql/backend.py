@@ -104,7 +104,7 @@ class SQLBackend(Backend):
         ).replace(microsecond=0)
         self.save(user)
 
-    def query(self, model, **kwargs):
+    def do_query(self, model, *args, **kwargs):
         filter = [
             model.attribute_filter(attribute_name, expected_value)
             for attribute_name, expected_value in kwargs.items()
