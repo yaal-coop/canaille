@@ -292,9 +292,7 @@ class User(Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.old_groups = self.groups.copy()
         signal("before_user_reload").connect(self.on_reload, sender=self)
-        signal("after_user_save").connect(self.on_save, sender=self)
 
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
@@ -341,10 +339,6 @@ class User(Model):
         self._readable = None
         self._writable = None
         self._permissions = None
-
-    @classmethod
-    def on_save(cls, self, data):
-        self.old_groups = self.groups.copy()
 
     @property
     def readable_fields(self):
