@@ -818,7 +818,6 @@ def profile_settings_edit(editor, edited_user):
                 )
 
             Backend.instance.save(edited_user)
-
             flash(_("Profile updated successfully."), "success")
             return redirect(
                 url_for("core.account.profile_settings", edited_user=edited_user)
