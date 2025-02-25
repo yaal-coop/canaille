@@ -182,4 +182,7 @@ def test_invalid_client(testclient, backend, user):
     res = testclient.put_json(
         "/oauth/register/invalid-client-id", payload, headers=headers, status=401
     )
-    assert res.json == {"error": "invalid_client"}
+    assert res.json == {
+        "error": "invalid_client",
+        "error_description": "The client does not exist on this server.",
+    }
