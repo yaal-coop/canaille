@@ -69,6 +69,33 @@ def test_client_registration_with_authentication_static_token(
     backend.delete(client)
 
 
+def test_client_registration_with_uri_fragments(testclient, backend, client, user):
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+        "static-token"
+    ]
+
+    payload = {
+        "redirect_uris": [
+            "https://client.example.test/callback",
+            "https://client.example.test/callback2#foo",
+        ],
+        "post_logout_redirect_uris": [
+            "https://client.example.test/logout_callback",
+        ],
+        "client_name": "My Example Client",
+        "token_endpoint_auth_method": "client_secret_basic",
+        "logo_uri": "https://client.example.test/logo.webp",
+        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+    }
+    headers = {"Authorization": "Bearer static-token"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+
+    res.mustcontain("Redirect URI cannot contain fragment identifiers")
+
+
 def test_client_registration_with_authentication_no_token(
     testclient, backend, client, user
 ):
