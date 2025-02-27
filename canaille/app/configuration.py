@@ -74,8 +74,6 @@ class RootSettings(BaseSettings):
     """The Flask :external:py:data:`TRUSTED_HOSTS` configuration setting.
 
     This sets trusted values for hosts and validates hosts during requests.
-
-    Default: None
     """
 
     PREFERRED_URL_SCHEME: str = "https"
