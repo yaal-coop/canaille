@@ -71,9 +71,9 @@ class RootSettings(BaseSettings):
     """
 
     TRUSTED_HOSTS: list[str] | None = None
-    """Validate Request.host and other attributes that use it against these trusted values. Raise a SecurityError if the host is invalid, which results in a 400 error. If it is None, all hosts are valid. Each value is either an exact match, or can start with a dot . to match any subdomain.
+    """The Flask :external:py:data:`TRUSTED_HOSTS` configuration setting.
 
-    Validation is done during routing against this value. before_request and after_request callbacks will still be called.
+    This sets trusted values for hosts and validates hosts during requests.
 
     Default: None
     """

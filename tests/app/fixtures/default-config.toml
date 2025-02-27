@@ -8,6 +8,13 @@
 # This sets domain name on which canaille will be served.
 # SERVER_NAME =
 
+# The Flask TRUSTED_HOSTS configuration setting.
+#
+# This sets trusted values for hosts and validates hosts during requests.
+#
+# Default: None
+# TRUSTED_HOSTS =
+
 # The Flask PREFERRED_URL_SCHEME configuration setting.
 #
 # This sets the url scheme by which canaille will be served.
