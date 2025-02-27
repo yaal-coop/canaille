@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-27 14:14+0100\n"
-"PO-Revision-Date: 2025-02-19 14:10+0000\n"
+"PO-Revision-Date: 2025-02-28 12:46+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.1-dev\n"
+"X-Generator: Weblate 5.10.2-rc\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 7ff76ed229a74a389d7167a72eefdd36
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 a3b475ed309c4af2bd7eae6e90e1f87b
-#, fuzzy
-#| msgid "[0.0.64] - Unreleased"
 msgid "[0.0.65] - Unreleased"
-msgstr "[0.0.64] - Inédit"
+msgstr "[0.0.65] - Unreleased"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:23 ../../CHANGES.rst:37
 #: ../../CHANGES.rst:52 ../../CHANGES.rst:63 ../../CHANGES.rst:96
@@ -63,6 +61,8 @@ msgstr "Ajouté"
 #: ../../CHANGES.rst:7 099d77fb3b7f4869b1d7a1997b2c6759
 msgid "The :ref:`cli dump <cli_dump>` command can dump only some given models."
 msgstr ""
+"La commande :ref:`cli dump <cli_dump>` peut n'exporter que certains modèles "
+"choisis."
 
 #: ../../CHANGES.rst:10 ../../CHANGES.rst:29 ../../CHANGES.rst:44
 #: ../../CHANGES.rst:56 ../../CHANGES.rst:77 ../../CHANGES.rst:84
@@ -94,12 +94,12 @@ msgid ""
 "Prevent clients from registering with fragment components in their redirect "
 "uri :issue:`235`"
 msgstr ""
+"Les clients OIDC ne peuvent plus s'enregistrer avec des ``redirect_uri`` "
+"contenant des fragments. :issue:`235`"
 
 #: ../../CHANGES.rst:14 b39f305d9f2e48289d44c2f380e42e6d
-#, fuzzy
-#| msgid "[0.0.4] - 2022-02-16"
 msgid "[0.0.64] - 2025-02-12"
-msgstr "[0.0.4] - 2022-02-16"
+msgstr "[0.0.64] - 2025-02-12"
 
 #: ../../CHANGES.rst:18 b2e3677b7b654906ae86aa7d7632d472
 msgid ""
@@ -4184,6 +4184,8 @@ msgstr "Retourne tous les objets disponibles."
 #: ../../canaille dump:1 c73873602b2b42e1a42810d14a25ff19
 msgid "If no argument is passed, all model instances are dumped."
 msgstr ""
+"Si aucun argument n'est passé, toutes les instances de tous les modèles sont "
+"exportées."
 
 #: ../references/commands.rst:0 e761af8082f14937b9f022777a4cd83b
 #: b1fa69c8bbb740ab847fc6dbdb0033bf e0a3e325905840b3a4b5c338810a8467
@@ -4194,7 +4196,7 @@ msgstr "Paramètres"
 
 #: ../../canaille dump:1 2cdc47836228477398ceb59de2628ac6
 msgid "Optional argument(s)"
-msgstr ""
+msgstr "Arguments optionnels"
 
 #: ../../canaille install:1 9957347534cf4ac689f350d0d4943eb5
 msgid "Installs canaille elements from the configuration."
