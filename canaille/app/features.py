@@ -136,6 +136,7 @@ class Features:
         and needs the ``scim`` extra package to be installed.
         """
         try:
+            import httpx  # noqa: F401
             import scim2_client  # noqa: F401
 
             return (
