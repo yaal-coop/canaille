@@ -127,19 +127,19 @@ def get_schemas():
     return schemas
 
 
-def user_from_canaille_to_scim(user):
-    scim_user = User[EnterpriseUser](
+def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
+    # allow to use custom SCIM user classes if needed
+    scim_user_class = user_class if user_class != User else User[EnterpriseUser]
+    scim_user = scim_user_class(
         meta=Meta(
             resource_type="User",
             created=user.created,
             last_modified=user.last_modified,
             location=url_for("scim.query_user", user=user, _external=True),
         ),
-        id=user.id,
         user_name=user.user_name,
-        # password=user.password,
         preferred_language=user.preferred_language,
-        name=User.Name(
+        name=user_class.Name(
             formatted=user.formatted_name,
             family_name=user.family_name,
             given_name=user.given_name,
@@ -150,7 +150,7 @@ def user_from_canaille_to_scim(user):
         title=user.title,
         profile_url=user.profile_url,
         emails=[
-            User.Emails(
+            user_class.Emails(
                 value=email,
                 primary=email == user.emails[0],
             )
@@ -158,14 +158,14 @@ def user_from_canaille_to_scim(user):
         ]
         or None,
         phone_numbers=[
-            User.PhoneNumbers(
+            user_class.PhoneNumbers(
                 value=phone_number, primary=phone_number == user.phone_numbers[0]
             )
             for phone_number in user.phone_numbers or []
         ]
         or None,
         addresses=[
-            User.Addresses(
+            user_class.Addresses(
                 formatted=user.formatted_address,
                 street_address=user.street,
                 postal_code=user.postal_code,
@@ -183,18 +183,18 @@ def user_from_canaille_to_scim(user):
         )
         else None,
         photos=[
-            User.Photos(
+            user_class.Photos(
                 value=url_for(
                     "core.account.photo", user=user, field="photo", _external=True
                 ),
                 primary=True,
-                type=User.Photos.Type.photo,
+                type=user_class.Photos.Type.photo,
             )
         ]
         if user.photo
         else None,
         groups=[
-            User.Groups(
+            user_class.Groups(
                 value=group.id,
                 display=group.display_name,
                 ref=url_for("scim.query_group", group=group, _external=True),
@@ -203,11 +203,18 @@ def user_from_canaille_to_scim(user):
         ]
         or None,
     )
-    scim_user[EnterpriseUser] = EnterpriseUser(
-        employee_number=user.employee_number,
-        organization=user.organization,
-        department=user.department,
-    )
+    if enterprise_user_class:
+        scim_user[enterprise_user_class] = enterprise_user_class(
+            employee_number=user.employee_number,
+            organization=user.organization,
+            department=user.department,
+        )
+    return scim_user
+
+
+def user_from_canaille_to_scim_server(user):
+    scim_user = user_from_canaille_to_scim(user, User, EnterpriseUser)
+    scim_user.id = user.id
     return scim_user
 
 
@@ -254,9 +261,8 @@ def user_from_scim_to_canaille(scim_user: User, user):
     return user
 
 
-def group_from_canaille_to_scim(group):
-    return Group(
-        id=group.id,
+def group_from_canaille_to_scim(group, group_class):
+    return group_class(
         meta=Meta(
             resource_type="Group",
             created=group.created,
@@ -264,17 +270,22 @@ def group_from_canaille_to_scim(group):
             location=url_for("scim.query_group", group=group, _external=True),
         ),
         display_name=group.display_name,
-        members=[
-            Group.Members(
-                value=user.id,
-                type="User",
-                display=user.display_name,
-                ref=url_for("scim.query_user", user=user, _external=True),
-            )
-            for user in group.members or []
-        ]
-        or None,
     )
+
+
+def group_from_canaille_to_scim_server(group):
+    scim_group = group_from_canaille_to_scim(group, Group)
+    scim_group.id = group.id
+    scim_group.members = [
+        Group.Members(
+            value=user.id,
+            type="User",
+            display=user.display_name,
+            ref=url_for("scim.query_user", user=user, _external=True),
+        )
+        for user in group.members or []
+    ] or None
+    return scim_group
 
 
 def group_from_scim_to_canaille(scim_group: Group, group):

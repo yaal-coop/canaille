@@ -5,6 +5,7 @@
 *.mo
 *.prof
 venv/*
+venv_test/
 env
 .*@neomake*
 .ash_history
@@ -25,3 +26,4 @@ canaille/conf/*.pem
 canaille/conf/*.pub
 canaille/conf/*.key
 .vscode
+dump.json
