@@ -126,7 +126,8 @@ def authorize_login(user):
 
 def authorize_consent(client, user):
     redirect_uri = request.args.get("redirect_uri")
-
+    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
+    # https://github.com/lepture/authlib/issues/712
     if not redirect_uri:
         raise InvalidRequestError('Missing "redirect_uri" in request.')
 
