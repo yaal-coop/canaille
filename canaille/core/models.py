@@ -294,10 +294,6 @@ class User(Model):
         super().__init__(*args, **kwargs)
         signal("before_user_reload").connect(self.on_reload, sender=self)
 
-        yield
-
-        signal("after_user_delete").send(self)
-
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
         return self.password is not None
@@ -496,16 +492,6 @@ class Group(Model):
     """
 
     description: str | None = None
-
-    def save(self):
-        yield
-
-        signal("after_group_save").send(self)
-
-    def delete(self):
-        signal("before_group_delete").send(self)
-
-        yield
 
 
 def string_code(code: int, digit: int) -> str:

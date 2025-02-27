@@ -214,22 +214,24 @@ def after_user_save(user, data):
         Backend.instance.reload(group)
         propagate_group_scim_modification(group, "save")
 
+    user.old_groups = user.groups.copy()
 
-def before_user_delete(user):
+
+def before_user_delete(user, data):
     propagate_user_scim_modification(user, method="delete")
 
 
-def after_user_delete(user):
+def after_user_delete(user, data):
     for group in user.groups:
         Backend.instance.reload(group)
         propagate_group_scim_modification(group, "save")
 
 
-def after_group_save(group):
+def after_group_save(group, data):
     propagate_group_scim_modification(group, method="save")
 
 
-def before_group_delete(group):
+def before_group_delete(group, data):
     propagate_group_scim_modification(group, method="delete")
 
 
