@@ -5,6 +5,7 @@ Added
 ^^^^^
 
 - The :ref:`cli dump <cli_dump>` command can dump only some given models.
+- Implement the :class:`canaille.app.configuration.RootSettings.TRUSTED_HOSTS` configuration parameter, to secure password reset e-mails.
 
 Fixed
 ^^^^^
