@@ -1,7 +1,7 @@
 import datetime
 import json
 
-import requests
+import httpx
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.jose import JsonWebKey
@@ -209,7 +209,7 @@ def get_client_jwks(client, kid=None):
 
     @cache.cached(timeout=50, key_prefix=f"jwks_{client.client_id}")
     def get_jwks():
-        return requests.get(client.jwks_uri).json()
+        return httpx.get(client.jwks_uri).json()
 
     if client.jwks_uri:
         raw_jwks = get_jwks()

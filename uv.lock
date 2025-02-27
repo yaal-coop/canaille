@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -178,8 +179,8 @@ dependencies = [
     { name = "flask" },
     { name = "flask-caching" },
     { name = "flask-wtf" },
+    { name = "httpx" },
     { name = "pydantic-settings" },
-    { name = "requests" },
     { name = "wtforms" },
 ]
 
@@ -246,7 +247,7 @@ sqlite = [
 demo = [
     { name = "faker" },
     { name = "honcho" },
-    { name = "requests" },
+    { name = "httpx" },
     { name = "slapd" },
     { name = "watchdog" },
 ]
@@ -306,6 +307,7 @@ requires-dist = [
     { name = "flask-caching", specifier = ">=2.3.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "httpx", marker = "extra == 'scim'", specifier = ">=0.28.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.0.2" },
@@ -319,7 +321,6 @@ requires-dist = [
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
-    { name = "requests", specifier = ">=2.32.3" },
     { name = "scim2-client", marker = "extra == 'scim'", specifier = ">=0.5.1" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.2.2" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
@@ -337,12 +338,13 @@ requires-dist = [
     { name = "wtforms", specifier = ">=3.1.1" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.2.0" },
 ]
+provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server"]
 
 [package.metadata.requires-dev]
 demo = [
     { name = "faker" },
     { name = "honcho" },
-    { name = "requests" },
+    { name = "httpx" },
     { name = "slapd" },
     { name = "watchdog", specifier = ">=4.0.0" },
 ]

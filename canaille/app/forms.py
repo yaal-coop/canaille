@@ -3,7 +3,7 @@ import hashlib
 import math
 import re
 
-import requests
+import httpx
 import wtforms.validators
 from flask import abort
 from flask import current_app
@@ -103,7 +103,7 @@ def compromised_password_validator(form, field):
     )
 
     try:
-        response = requests.api.get(api_url, timeout=10)
+        response = httpx.get(api_url, timeout=10)
     except Exception:
         if not request_is_partial():
             current_app.logger.exception(
