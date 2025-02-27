@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-27 14:14+0100\n"
-"PO-Revision-Date: 2025-02-04 09:58+0000\n"
+"PO-Revision-Date: 2025-02-28 12:46+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10.2-rc\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:40
@@ -293,8 +293,6 @@ msgid "Your email address have been confirmed."
 msgstr "Votre adresse email a été confirmée."
 
 #: canaille/core/endpoints/account.py:437
-#, fuzzy
-#| msgid "User account creation succeed."
 msgid "User account creation succeeded."
 msgstr "La création du compte utilisateur a réussi."
 
@@ -777,16 +775,12 @@ msgid "The access has been restored"
 msgstr "L'accès a été restauré"
 
 #: canaille/oidc/endpoints/forms.py:29
-#, fuzzy
-#| msgid "This is not a valid URL"
 msgid "This value is not a valid JSON string."
-msgstr "Cette URL n’est pas valide"
+msgstr "Cette valeur n'est pas une chaîne JSON."
 
 #: canaille/oidc/endpoints/forms.py:35
-#, fuzzy
-#| msgid "This is not a valid URL"
 msgid "This value is not a valid JWK."
-msgstr "Cette URL n’est pas valide"
+msgstr "Cette valeur n'est pas un JWK valide."
 
 #: canaille/oidc/endpoints/forms.py:52
 msgid "Contacts"
@@ -847,13 +841,11 @@ msgstr "Version du logiciel"
 
 #: canaille/oidc/endpoints/forms.py:173
 msgid "JWKS"
-msgstr ""
+msgstr "JWKS"
 
 #: canaille/oidc/endpoints/forms.py:178
-#, fuzzy
-#| msgid "JKW URI"
 msgid "JKWS URI"
-msgstr "URI du JWK"
+msgstr "URI du JWKS"
 
 #: canaille/oidc/endpoints/forms.py:186
 msgid "Pre-consent"
