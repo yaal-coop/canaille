@@ -352,4 +352,4 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 #
 # When enabled, any creation, edition or deletion of a client or a group will be
 # replicated on clients that implement the SCIM protocol.
-# ENABLE_CLIENT = true
+# ENABLE_CLIENT = false
