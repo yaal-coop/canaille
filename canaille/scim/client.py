@@ -1,9 +1,12 @@
+import datetime
+
 from blinker import signal
 from flask import current_app
 from httpx import Client as httpx_client
 from scim2_client import SCIMClientError
 from scim2_client.engines.httpx import SyncSCIMClient
 from scim2_models import SearchRequest
+from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -42,13 +45,41 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
     return scim_group
 
 
+def get_or_create_token(client):
+    """Retrieve or initialize a client token."""
+    scim_tokens = Backend.instance.query(models.Token, client=client, subject=None)
+    valid_scim_tokens = [
+        token
+        for token in scim_tokens
+        if not token.is_expired() and not token.is_revoked()
+    ]
+    if valid_scim_tokens:
+        scim_token = valid_scim_tokens[0]
+    else:
+        scim_token = models.Token(
+            token_id=gen_salt(48),
+            access_token=gen_salt(48),
+            subject=None,
+            audience=[client],
+            client=client,
+            refresh_token=gen_salt(48),
+            scope=["openid", "profile"],
+            issue_date=datetime.datetime.now(datetime.timezone.utc),
+            lifetime=3600,
+        )
+        Backend.instance.save(scim_token)
+    return scim_token
+
+
 def initiate_scim_client(client):
+    """Set up the scim2-client object that will perform the SCIM2 requests."""
     if not client:  # pragma: no cover
         return None
 
+    access_token = get_or_create_token(client).access_token
     client_httpx = httpx_client(
         base_url=client.client_uri,
-        headers={"Authorization": f"Bearer {client.get_access_token().access_token}"},
+        headers={"Authorization": f"Bearer {access_token}"},
     )
     scim = SyncSCIMClient(client_httpx)
     try:
@@ -62,6 +93,7 @@ def initiate_scim_client(client):
 
 
 def execute_scim_user_action(scim, user, client_name, method):
+    """Create/update/delete a distant user with SCIM requests."""
     User = scim.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
@@ -96,13 +128,15 @@ def execute_scim_user_action(scim, user, client_name, method):
 
 
 def propagate_user_scim_modification(user, method):
-    for client in get_clients(user):
+    """After a user edition/deletion, broadcast the event to all the clients."""
+    for client in get_clients_to_notify(user):
         scim = initiate_scim_client(client)
         if scim:
             execute_scim_user_action(scim, user, client.client_name, method)
 
 
 def execute_scim_group_action(scim, group, client_name, method):
+    """Create/update/delete a distant group with SCIM requests."""
     Group = scim.get_resource_model("Group")
 
     req = SearchRequest(filter=f'externalId eq "{group.id}"')
@@ -136,9 +170,10 @@ def execute_scim_group_action(scim, group, client_name, method):
 
 
 def propagate_group_scim_modification(group, method):
+    """After a group edition/deletion, broadcast the event to all the clients."""
     notifiable_clients = set()
     for member in group.members:
-        notifiable_clients.update(get_clients(member))
+        notifiable_clients.update(get_clients_to_notify(member))
 
     for client in notifiable_clients:
         scim = initiate_scim_client(client)
@@ -146,7 +181,8 @@ def propagate_group_scim_modification(group, method):
             execute_scim_group_action(scim, group, client.client_name, method)
 
 
-def get_clients(user):
+def get_clients_to_notify(user):
+    """Return a list of clients that should be notified of updates on 'user'."""
     consents = Backend.instance.query(models.Consent, subject=user)
     consented_clients = {t.client for t in consents}
     preconsented_clients = [
@@ -161,7 +197,12 @@ def after_user_query(user):
     user.old_groups = user.groups.copy()
 
 
-def after_user_save(user):
+def after_user_save(user, data):
+    """Update the user object on the distant applications.
+
+    As the user 'groups' attribute is read-only, it is needed
+    to manually update the distant groups when the user group membership has changed.
+    """
     propagate_user_scim_modification(user, method="save")
 
     old_groups = getattr(user, "old_groups", [])
@@ -188,7 +229,7 @@ def before_group_delete(group):
     propagate_group_scim_modification(group, method="delete")
 
 
-def setup_scim_signals():
+def setup_scim_client():
     signal("after_user_query").connect(after_user_query)
     signal("after_user_save").connect(after_user_save)
     signal("before_user_delete").connect(before_user_delete)

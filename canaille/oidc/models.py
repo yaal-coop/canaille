@@ -6,7 +6,6 @@ from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
 from blinker import signal
-from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.backends import Backend
