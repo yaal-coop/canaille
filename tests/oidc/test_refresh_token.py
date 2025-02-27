@@ -18,6 +18,7 @@ def test_refresh_token(testclient, logged_user, client, backend, caplog):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     )
     res = res.form.submit(name="answer", value="accept")
@@ -96,6 +97,7 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     ).follow()
 
@@ -154,6 +156,7 @@ def test_cannot_refresh_token_for_locked_users(
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     )
     res = res.form.submit(name="answer", value="accept")

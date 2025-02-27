@@ -19,6 +19,7 @@ def test_token_default_expiration_date(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -79,6 +80,7 @@ def test_token_custom_expiration_date(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )

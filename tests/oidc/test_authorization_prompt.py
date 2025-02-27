@@ -32,6 +32,7 @@ def test_prompt_none(testclient, logged_user, client, backend):
             scope="openid profile",
             nonce="somenonce",
             prompt="none",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=302,
     )
@@ -67,6 +68,7 @@ def test_prompt_not_logged(testclient, user, client, backend):
             scope="openid profile",
             nonce="somenonce",
             prompt="none",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -92,6 +94,7 @@ def test_prompt_no_consent(testclient, logged_user, client):
             scope="openid profile",
             nonce="somenonce",
             prompt="none",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -118,6 +121,7 @@ def test_prompt_create_logged(testclient, logged_user, client, backend):
             scope="openid profile",
             nonce="somenonce",
             prompt="create",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=302,
     )
@@ -144,6 +148,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
             scope="openid profile",
             nonce="somenonce",
             prompt="create",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=400,
     )
@@ -169,6 +174,7 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
             scope="openid profile",
             nonce="somenonce",
             prompt="create",
+            redirect_uri=trusted_client.redirect_uris[0],
         ),
     )
 

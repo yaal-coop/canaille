@@ -114,6 +114,7 @@ def test_oidc_authorization_after_revokation(
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
