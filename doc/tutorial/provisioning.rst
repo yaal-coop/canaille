@@ -1,9 +1,29 @@
 Provisioning
 ############
 
-Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol at the ``/scim/v2`` endpoint.
-The server part allows client applications to manage user profiles directly in Canaille.
-The client part allows Canaille to broadcast user and group modifications to client applications.
+Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol, so user and group modifications can be spread across an entire application ecosystem.
+
+Provisioning server
+===================
+
+Canaille acts as a provisioning server.
+This means that client applications can perform requests on the ``/scim/v2`` endpoint, using the SCIM2 protocol, to manage user and group objects.
+
+Provisioning client
+===================
+
+Canaille also acts a provisioning client.
+This means that all modifications on user and groups are spread among the client applications implementing the SCIM2 server specification.
+This ensures that the details of users and groups are always synchronized among all your client applications.
+
+Modifications are sent to client applications whether they come from the :ref:`web interface <feature_profile_management>`, the :ref:`CLI <references/commands:Command Line Interface>` or from another client application requesting the Canaille SCIM server endpoint.
+
+Canaille will attempt to authenticate against the client SCIM2 server endpoint with a Bearer token it has emitted on behalf of the client.
+Please make sure that your client application is properly configured to accept Canaille tokens.
+
+.. warning::
+
+   Note that the SCIM client feature is at early development stage and comes with poor performances at the moment.
 
 .. todo::
 
@@ -20,7 +40,8 @@ To allow clients to access the SCIM API, the client must have the ``client_crede
 This allows clients to ask an authentication token on their own behalf and use this token to perform queries.
 Currently, user tokens are not supported.
 
-Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled.
+Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`
+configuration parameter must be enabled.
 
 .. code-block:: toml
 
@@ -28,7 +49,10 @@ Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSet
    [CANAILLE_SCIM]
    ENABLE_SERVER = true
 
-To allow Canaille to act as a SCIM client and broadcast modifications to client applications, the :attr:`CANAILLE_SCIM.ENABLE_CLIENT <canaille.scim.configuration.SCIMSettings.ENABLE_CLIENT>` configuration parameter must be enabled.
+To allow Canaille to act as a SCIM client and broadcast modifications to client applications,
+the :attr:`CANAILLE_SCIM.ENABLE_CLIENT <canaille.scim.configuration.SCIMSettings.ENABLE_CLIENT>`
+configuration parameter must be enabled.
+
 
 .. code-block:: toml
 
@@ -39,7 +63,7 @@ To allow Canaille to act as a SCIM client and broadcast modifications to client 
 Implementation details
 ======================
 
-Due to technical reasons, the Canaille *User* and *Group* resources implementation subtly differs from the :rfc:`RFC7643 <7643>` definitions:
+Due to technical reasons, the server-side Canaille *User* and *Group* resources implementation subtly differs from the :rfc:`RFC7643 <7643>` definitions:
 
 - ``User.userName`` is immutable (while it is read-write in RFC7643).
 - ``User.name.familyName`` is required (while it is optional in RFC7643).
