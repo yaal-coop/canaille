@@ -31,6 +31,10 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
         response = scim_client.query(User, search_request=req)
         if response.resources:
             distant_members.append(response.resources[0])
+        else:
+            current_app.logger.warning(
+                f"Unable to find user {member.user_name} from group {group.display_name} via SCIM"
+            )
 
     scim_group.members = [
         group_class.Members(
