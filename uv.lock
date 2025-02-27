@@ -309,8 +309,6 @@ requires-dist = [
     { name = "httpx", marker = "extra == 'scim'", specifier = ">=0.28.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.0.2" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "otpauth", marker = "extra == 'otp'", specifier = ">=2.1.1" },
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },

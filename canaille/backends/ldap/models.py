@@ -94,8 +94,6 @@ class User(canaille.core.models.User, LDAPObject):
         if "new_groups" in data:
             self.state[data["group_attr"]] = data["new_groups"]
 
-        next(save_callback, None)
-
 
 class Group(canaille.core.models.Group, LDAPObject):
     attribute_map = {

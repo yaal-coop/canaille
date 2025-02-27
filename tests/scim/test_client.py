@@ -62,6 +62,38 @@ def test_scim_client_group_save_and_delete(
     assert not response.resources
 
 
+def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
+    scim_client_for_preconsented_client, backend, user, caplog
+):
+    Group = scim_client_for_preconsented_client.get_resource_model("Group")
+    User = scim_client_for_preconsented_client.get_resource_model("User")
+
+    req = SearchRequest(filter=f'externalId eq "{user.id}"')
+    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    distant_scim_user = response.resources[0] if response.resources else None
+
+    response = scim_client_for_preconsented_client.query(Group)
+    assert not response.resources
+
+    group = models.Group(
+        members=[user],
+        display_name="foobar",
+    )
+    backend.save(group)
+
+    scim_client_for_preconsented_client.delete(User, distant_scim_user.id)
+
+    backend.save(group)
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Unable to find user user from group foobar via SCIM",
+    ) in caplog.record_tuples
+
+    backend.delete(group)
+
+
 def test_scim_client_change_user_groups_also_updates_group_members(
     testclient,
     scim_client_for_preconsented_client,
