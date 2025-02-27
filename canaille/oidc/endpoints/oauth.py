@@ -16,6 +16,7 @@ from flask import request
 from flask import session
 from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
+from werkzeug.exceptions import BadRequest
 from werkzeug.exceptions import HTTPException
 
 from canaille.app import models
@@ -276,6 +277,11 @@ def client_registration():
         "client registration endpoint request: POST: %s",
         request.json,
     )
+    # Implements RFC6749 section 3.1.2 "The endpoint URI MUST NOT include a fragment component." until this is implemented upstream in authlib
+    # https://github.com/lepture/authlib/issues/714
+    if any("#" in uri for uri in request.json["redirect_uris"]):
+        raise BadRequest("Redirect URI cannot contain fragment identifiers")
+
     response = authorization.create_endpoint_response(
         ClientRegistrationEndpoint.ENDPOINT_NAME
     )
