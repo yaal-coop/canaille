@@ -6,6 +6,10 @@ Added
 
 - The :ref:`cli dump <cli_dump>` command can dump only some given models.
 
+Fixed
+^^^^^
+- Prevent clients from registering with fragment components in their redirect uri :issue:`235`
+
 [0.0.64] - 2025-02-12
 ---------------------
 
