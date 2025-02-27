@@ -9,6 +9,7 @@ Added
 Fixed
 ^^^^^
 - Prevent clients from registering with fragment components in their redirect uri :issue:`235`
+- Ensure there is a `redirect_uri` in authorization requests from clients. :issue:`232`
 
 [0.0.64] - 2025-02-12
 ---------------------

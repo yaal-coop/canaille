@@ -19,6 +19,7 @@ def test_oauth_implicit(testclient, user, client, backend):
             client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     ).follow()
     assert "text/html" == res.content_type
@@ -64,6 +65,7 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backen
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     ).follow()
     assert "text/html" == res.content_type
@@ -119,6 +121,7 @@ def test_oidc_implicit_with_group(
             client_id=client.client_id,
             scope="openid profile groups",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     ).follow()
     assert "text/html" == res.content_type

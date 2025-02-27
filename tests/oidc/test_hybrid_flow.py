@@ -14,6 +14,7 @@ def test_oauth_hybrid(testclient, backend, user, client):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     ).follow()
     assert "text/html" == res.content_type, res.json
@@ -55,6 +56,7 @@ def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, trusted_
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     )
     assert "text/html" == res.content_type, res.json

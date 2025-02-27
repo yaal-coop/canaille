@@ -6,6 +6,7 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
+from authlib.oauth2.rfc6749.errors import InvalidRequestError
 from flask import Blueprint
 from flask import abort
 from flask import current_app
@@ -124,6 +125,12 @@ def authorize_login(user):
 
 
 def authorize_consent(client, user):
+    redirect_uri = request.args.get("redirect_uri")
+    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
+    # https://github.com/lepture/authlib/issues/712
+    if not redirect_uri:
+        raise InvalidRequestError('Missing "redirect_uri" in request.')
+
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
     consents = Backend.instance.query(

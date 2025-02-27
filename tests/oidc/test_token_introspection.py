@@ -85,6 +85,7 @@ def test_full_flow(testclient, logged_user, client, user, trusted_client, backen
             client_id=client.client_id,
             scope="profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )

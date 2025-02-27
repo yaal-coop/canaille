@@ -3,8 +3,10 @@ import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 import time_machine
 from authlib.jose import jwt
+from authlib.oauth2.rfc6749.errors import InvalidRequestError
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from flask import g
 from werkzeug.security import gen_salt
@@ -27,6 +29,7 @@ def test_nominal_case(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -119,6 +122,7 @@ def test_invalid_client(testclient, logged_user, keypair):
             client_id="invalid",
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=400,
     )
@@ -186,6 +190,7 @@ def test_preconsented_client(
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=302,
     )
@@ -240,6 +245,7 @@ def test_logout_login(testclient, logged_user, client, backend):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -311,6 +317,7 @@ def test_deny(testclient, logged_user, client, backend):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -342,6 +349,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -399,6 +407,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -434,6 +443,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=302,
     )
@@ -455,6 +465,7 @@ def test_consent_with_openid_scope_only(testclient, logged_user, client, backend
             client_id=client.client_id,
             scope="openid",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -474,6 +485,7 @@ def test_consent_with_no_scope(testclient, logged_user, client, backend):
             response_type="code",
             client_id=client.client_id,
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -481,6 +493,22 @@ def test_consent_with_no_scope(testclient, logged_user, client, backend):
     res.mustcontain("he application Some client does not allow user authentication.")
 
     res.mustcontain(no="Accept")
+
+
+def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
+    with pytest.raises(
+        InvalidRequestError,
+        match=r'Missing "redirect_uri" in request.',
+    ):
+        testclient.get(
+            "/oauth/authorize",
+            params=dict(
+                response_type="code",
+                client_id=client.client_id,
+                nonce="somenonce",
+            ),
+            status=200,
+        )
 
 
 def test_when_consent_already_given_but_for_a_smaller_scope(
@@ -495,6 +523,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -531,6 +560,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
             client_id=client.client_id,
             scope="openid profile groups",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -564,6 +594,7 @@ def test_user_cannot_use_oidc(
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     )
     res = res.follow()
@@ -584,6 +615,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
             response_type="code",
             client_id=client.client_id,
             scope="openid profile",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -601,6 +633,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
             response_type="code",
             client_id=client.client_id,
             scope="profile",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -624,6 +657,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
             client_id=client.client_id,
             scope="openid profile email",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -690,6 +724,7 @@ def test_code_expired(testclient, user, client):
                 client_id=client.client_id,
                 scope="openid profile email groups address phone",
                 nonce="somenonce",
+                redirect_uri="https://client.test/redirect1",
             ),
         )
         res = res.follow()
@@ -738,6 +773,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
     ).follow()
 
@@ -782,6 +818,7 @@ def test_locked_account(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
@@ -822,6 +859,7 @@ def test_missing_client_id(
             response_type="code",
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=400,
     )
@@ -844,6 +882,7 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client, bac
                 client_id=client.client_id,
                 scope="openid profile",
                 nonce="somenonce",
+                redirect_uri="https://client.test/redirect1",
             ),
             status=200,
         )
@@ -892,6 +931,7 @@ def test_rfc9207(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )

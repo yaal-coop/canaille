@@ -49,9 +49,6 @@ class Client(BaseClient, ClientMixin):
     def get_client_id(self):
         return self.client_id
 
-    def get_default_redirect_uri(self):
-        return self.redirect_uris[0]
-
     def get_allowed_scope(self, scope):
         return util.list_to_scope(
             [scope_piece for scope_piece in self.scope if scope_piece in scope]
