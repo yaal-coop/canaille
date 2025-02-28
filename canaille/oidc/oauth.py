@@ -28,6 +28,7 @@ from authlib.oauth2.rfc7592 import (
 from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
 from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
 from authlib.oauth2.rfc8414 import AuthorizationServerMetadata
+from authlib.oauth2.rfc9207.parameter import IssuerParameter as _IssuerParameter
 from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
 from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
@@ -629,6 +630,11 @@ class CodeChallenge(_CodeChallenge):
         return authorization_code.challenge_method
 
 
+class IssuerParameter(_IssuerParameter):
+    def get_issuer(self) -> str:
+        return get_issuer()
+
+
 authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
 
@@ -677,6 +683,7 @@ def setup_oauth(app):
     authorization.register_grant(
         AuthorizationCodeGrant,
         [
+            IssuerParameter(),
             OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
             CodeChallenge(required=True),
         ],

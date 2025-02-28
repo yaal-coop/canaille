@@ -1,7 +1,6 @@
 import datetime
 import uuid
 
-from authlib.common.urls import add_params_to_uri
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
@@ -151,15 +150,7 @@ def authorize_consent(client, user):
         )
 
         if client_has_user_consent:
-            response = authorization.create_authorization_response(grant_user=user)
-
-            # Manually implement RFC9207 until this is implemented upstream in authlib
-            # https://github.com/lepture/authlib/pull/700
-            response.location = add_params_to_uri(
-                response.location, {"iss": get_issuer()}
-            )
-
-            return response
+            return authorization.create_authorization_response(grant_user=user)
 
         elif request.args.get("prompt") == "none":
             response = {
@@ -172,9 +163,8 @@ def authorize_consent(client, user):
         try:
             grant = authorization.get_consent_grant(end_user=user)
         except OAuth2Error as error:
-            response = {**dict(error.get_body()), "iss": get_issuer()}
-            current_app.logger.debug("authorization endpoint response: %s", response)
-            return jsonify(response)
+            current_app.logger.debug("authorization endpoint response: %s", error)
+            return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
 
         form = AuthorizeForm(request.form or None)
         return render_template(
@@ -218,10 +208,6 @@ def authorize_consent(client, user):
         )
 
     response = authorization.create_authorization_response(grant_user=grant_user)
-
-    # Manually implement RFC9207 until this is implemented upstream in authlib
-    # https://github.com/lepture/authlib/pull/700
-    response.location = add_params_to_uri(response.location, {"iss": get_issuer()})
 
     current_app.logger.debug("authorization endpoint response: %s", response.location)
     return response

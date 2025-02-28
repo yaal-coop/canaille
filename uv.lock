@@ -97,14 +97,14 @@ wheels = [
 
 [[package]]
 name = "authlib"
-version = "1.5.0"
+version = "1.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e7/66/e8e55b338cb6c3bbab448821fefa52687b67aec0660277676b0b4e645497/authlib-1.5.0.tar.gz", hash = "sha256:8fd8bd8f806485a532ac39a17b579982cf54688f956174f995cc938a91725423", size = 152554 }
+sdist = { url = "https://files.pythonhosted.org/packages/36/aa/e1c199d27ea06a13f9641746a9b19f15bd75b04b40b6bd72a89156c75d10/authlib-1.5.1.tar.gz", hash = "sha256:5cbc85ecb0667312c1cdc2f9095680bb735883b123fb509fde1e65b1c5df972e", size = 152534 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1c/93/8a53c74e6929cca295d9536480d7b46909760b904d9dfae6173a7c66e995/Authlib-1.5.0-py2.py3-none-any.whl", hash = "sha256:b3cc5ccfc19cf87678046b6e7cb19d402d8a631a33c40e36385232203227953a", size = 231365 },
+    { url = "https://files.pythonhosted.org/packages/b1/ae/4d289407515223677e7d105ec88bc707a115cce79464c6b56313beb0dd36/authlib-1.5.1-py2.py3-none-any.whl", hash = "sha256:8408861cbd9b4ea2ff759b00b6f02fd7d81ac5a56d0b2b22c08606c6049aae11", size = 231358 },
 ]
 
 [[package]]
