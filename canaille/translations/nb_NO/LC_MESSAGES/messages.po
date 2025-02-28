@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-27 14:14+0100\n"
+"POT-Creation-Date: 2025-02-28 19:18+0100\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -898,14 +898,14 @@ msgid "JKWS URI"
 msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:186
-msgid "Pre-consent"
-msgstr "Forhåndssamtykke"
+msgid "Trusted"
+msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:416
+#: canaille/oidc/endpoints/oauth.py:409
 msgid "You have been disconnected"
 msgstr "Du har blitt frakoblet"
 
-#: canaille/oidc/endpoints/oauth.py:433
+#: canaille/oidc/endpoints/oauth.py:426
 msgid "You have not been disconnected"
 msgstr "Du har ikke blitt koblet fra"
 
@@ -2267,6 +2267,9 @@ msgstr "Nettadresse"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Symbol"
+
+#~ msgid "Pre-consent"
+#~ msgstr "Forhåndssamtykke"
 
 #~ msgid "Homepage"
 #~ msgstr "Hjemmeside"

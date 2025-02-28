@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-27 14:14+0100\n"
+"POT-Creation-Date: 2025-02-28 19:18+0100\n"
 "PO-Revision-Date: 2024-12-16 20:00+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -852,14 +852,14 @@ msgid "JKWS URI"
 msgstr "URI de JKW"
 
 #: canaille/oidc/endpoints/forms.py:186
-msgid "Pre-consent"
-msgstr "Preconsentimiento"
+msgid "Trusted"
+msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:416
+#: canaille/oidc/endpoints/oauth.py:409
 msgid "You have been disconnected"
 msgstr "Has sido desconectado"
 
-#: canaille/oidc/endpoints/oauth.py:433
+#: canaille/oidc/endpoints/oauth.py:426
 msgid "You have not been disconnected"
 msgstr "No has sido desconectado"
 
@@ -2282,6 +2282,9 @@ msgstr "URL"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#~ msgid "Pre-consent"
+#~ msgstr "Preconsentimiento"
 
 #~ msgid "JWK"
 #~ msgstr "JWK"

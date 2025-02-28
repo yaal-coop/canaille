@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-02-27 14:14+0100\n"
+"POT-Creation-Date: 2025-02-28 19:18+0100\n"
 "PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -839,14 +839,14 @@ msgid "JKWS URI"
 msgstr "JKW யூரி"
 
 #: canaille/oidc/endpoints/forms.py:186
-msgid "Pre-consent"
-msgstr "முன் ஒப்புதல்"
+msgid "Trusted"
+msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:416
+#: canaille/oidc/endpoints/oauth.py:409
 msgid "You have been disconnected"
 msgstr "நீங்கள் துண்டிக்கப்பட்டுள்ளீர்கள்"
 
-#: canaille/oidc/endpoints/oauth.py:433
+#: canaille/oidc/endpoints/oauth.py:426
 msgid "You have not been disconnected"
 msgstr "நீங்கள் துண்டிக்கப்படவில்லை"
 
@@ -2243,6 +2243,9 @@ msgstr "முகவரி"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "கிள்ளாக்கு"
+
+#~ msgid "Pre-consent"
+#~ msgstr "முன் ஒப்புதல்"
 
 #~ msgid "JWK"
 #~ msgstr "JWK"
