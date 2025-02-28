@@ -18,7 +18,7 @@ class Client(Model):
     identifier_attribute: ClassVar[str] = "client_id"
 
     description: str | None = None
-    preconsent: bool | None = False
+    trusted: bool | None = False
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"] = []  # noqa: UP006
 

@@ -16,8 +16,8 @@ Display a list of clients for which users have given or revoked their consent.
 :type ignored_scopes: :class:`list`
 :param nb_consents: The number of consents.
 :type nb_consents: :class:`int`
-:param nb_preconsents: The number of preconsented clients.
-:type nb_preconsents: :class:`int`
+:param nb_trusted: The number of trusted clients.
+:type nb_trusted: :class:`int`
 #}
 {% extends theme('base.html') %}
 
@@ -34,7 +34,7 @@ Display a list of clients for which users have given or revoked their consent.
     <a class="item" href="{{ url_for('oidc.consents.pre_consents') }}">
         <i class="stamp icon"></i>
         {% trans %}Pre-authorized applications{% endtrans %}
-        {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents|numberformat }}</div>{% endif %}
+        {% if nb_trusted %}<div class="ui mini label">{{ nb_trusted|numberformat }}</div>{% endif %}
     </a>
 {% endblock %}
 

@@ -1,12 +1,12 @@
 {#
-.. screenshot:: |canaille|/consent/pre-consents
+.. screenshot:: |canaille|/consent/trusted-applications
    :context: user
    :align: right
    :width: 275px
 
-   The preconsented applications list.
+   The trusted applications list.
 
-The preconsented applications list.
+The trusted applications list.
 
 Display a list of trusted clients for which it is implied that users don't need to explicitly give their consent.
 
@@ -14,12 +14,12 @@ Display a list of trusted clients for which it is implied that users don't need 
 :type scope_details: :class:`dict`
 :param ignored_scopes: The scopes to hide.
 :type ignored_scopes: :class:`list`
-:param preconsented: The list of implicitly consented clients.
-:type preconsented: :class:`list` [ :class:`~canaille.oidc.basemodels.Client` ]
+:param trusted: The list of implicitly consented clients.
+:type trusted: :class:`list` [ :class:`~canaille.oidc.basemodels.Client` ]
 :param nb_consents: The number of consents.
 :type nb_consents: :class:`int`
-:param nb_preconsents: The number of preconsented clients.
-:type nb_preconsents: :class:`int`
+:param nb_trusted: The number of trusted clients.
+:type nb_trusted: :class:`int`
 #}
 {% extends theme('base.html') %}
 
@@ -36,7 +36,7 @@ Display a list of trusted clients for which it is implied that users don't need 
     <a class="active item" href="{{ url_for('oidc.consents.pre_consents') }}">
         <i class="stamp icon"></i>
         {% trans %}Pre-authorized applications{% endtrans %}
-        {% if nb_preconsents %}<div class="ui mini label">{{ nb_preconsents|numberformat }}</div>{% endif %}
+        {% if nb_trusted %}<div class="ui mini label">{{ nb_trusted|numberformat }}</div>{% endif %}
     </a>
 {% endblock %}
 
@@ -51,9 +51,9 @@ Display a list of trusted clients for which it is implied that users don't need 
             </div>
         </h2>
 
-        {% if preconsented %}
+        {% if trusted %}
             <div class="ui centered cards">
-                {% for client in preconsented %}
+                {% for client in trusted %}
                     <div class="ui card">
                         <div class="content">
                             {% if client.logo_uri %}
@@ -100,7 +100,7 @@ Display a list of trusted clients for which it is implied that users don't need 
                                 </span>
                             </div>
                         {% endif %}
-                        <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke_preconsent', client=client ) }}">
+                        <a class="ui bottom attached button" href="{{ url_for('oidc.consents.revoke_trusted', client=client ) }}">
                             <i class="remove icon"></i>
                             {% trans %}Revoke access{% endtrans %}
                         </a>

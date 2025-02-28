@@ -410,9 +410,7 @@ class JWTBearerGrant(_JWTBearerGrant):
 
     def has_granted_permission(self, client, user):
         grant = Backend.instance.get(models.Consent, client=client, subject=user)
-        has_permission = (grant and not grant.revoked) or (
-            not grant and client.preconsent
-        )
+        has_permission = (grant and not grant.revoked) or (not grant and client.trusted)
         return has_permission
 
 

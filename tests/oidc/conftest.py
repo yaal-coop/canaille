@@ -126,7 +126,7 @@ def trusted_client(testclient, backend, client_jwks):
         jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
-        preconsent=True,
+        trusted=True,
     )
     backend.save(c)
     c.audience = [c]

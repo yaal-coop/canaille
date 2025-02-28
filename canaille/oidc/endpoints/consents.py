@@ -25,10 +25,10 @@ def consents(user):
     clients = {t.client for t in consents}
 
     nb_consents = len(consents)
-    nb_preconsents = sum(
+    nb_trusted = sum(
         1
         for client in Backend.instance.query(models.Client)
-        if client.preconsent and client not in clients
+        if client.trusted and client not in clients
     )
 
     return render_template(
@@ -38,33 +38,33 @@ def consents(user):
         scope_details=SCOPE_DETAILS,
         ignored_scopes=["openid"],
         nb_consents=nb_consents,
-        nb_preconsents=nb_preconsents,
+        nb_trusted=nb_trusted,
     )
 
 
-@bp.route("/pre-consents")
+@bp.route("/trusted-applications")
 @user_needed()
 def pre_consents(user):
     consents = Backend.instance.query(models.Consent, subject=user)
     clients = {t.client for t in consents}
-    preconsented = [
+    trusted = [
         client
         for client in Backend.instance.query(models.Client)
-        if client.preconsent and client not in clients
+        if client.trusted and client not in clients
     ]
 
     nb_consents = len(consents)
-    nb_preconsents = len(preconsented)
+    nb_trusted = len(trusted)
 
     return render_template(
-        "oidc/preconsent_list.html",
+        "oidc/trusted_list.html",
         menuitem="consents",
         scope_details=SCOPE_DETAILS,
         # TODO: do not delegate this var to the templates, or set this explicitly in the templates.
         ignored_scopes=["openid"],
-        preconsented=preconsented,
+        trusted=trusted,
         nb_consents=nb_consents,
-        nb_preconsents=nb_preconsents,
+        nb_trusted=nb_trusted,
     )
 
 
@@ -106,10 +106,10 @@ def restore(user, consent):
     return redirect(url_for("oidc.consents.consents"))
 
 
-@bp.route("/revoke-preconsent/<client(required=False):client>")
+@bp.route("/revoke-trusted/<client(required=False):client>")
 @user_needed()
-def revoke_preconsent(user, client):
-    if not client or not client.preconsent:
+def revoke_trusted(user, client):
+    if not client or not client.trusted:
         flash(_("Could not revoke this access"), "error")
         return redirect(url_for("oidc.consents.consents"))
 

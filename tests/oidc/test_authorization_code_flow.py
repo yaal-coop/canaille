@@ -175,12 +175,12 @@ def test_redirect_uri(
         backend.delete(consent)
 
 
-def test_preconsented_client(
+def test_trusted_client(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
     assert not backend.query(models.Consent)
 
-    client.preconsent = True
+    client.trusted = True
     backend.save(client)
 
     res = testclient.get(

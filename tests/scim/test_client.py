@@ -9,10 +9,10 @@ from canaille.scim.client import user_from_canaille_to_scim_client
 from canaille.scim.models import User as MyUser
 
 
-def test_scim_client_user_save_and_delete(scim_client_for_preconsented_client, backend):
-    User = scim_client_for_preconsented_client.get_resource_model("User")
+def test_scim_client_user_save_and_delete(scim_client_for_trusted_client, backend):
+    User = scim_client_for_trusted_client.get_resource_model("User")
 
-    response = scim_client_for_preconsented_client.query(User)
+    response = scim_client_for_trusted_client.query(User)
     assert not response.resources
 
     alice = models.User(
@@ -23,26 +23,26 @@ def test_scim_client_user_save_and_delete(scim_client_for_preconsented_client, b
     )
     backend.save(alice)
 
-    response = scim_client_for_preconsented_client.query(User)
+    response = scim_client_for_trusted_client.query(User)
     assert len(response.resources) == 1
     assert response.resources[0].user_name == "alice"
 
     backend.delete(alice)
-    response = scim_client_for_preconsented_client.query(User)
+    response = scim_client_for_trusted_client.query(User)
     assert not response.resources
 
 
 def test_scim_client_group_save_and_delete(
-    scim_client_for_preconsented_client, backend, user
+    scim_client_for_trusted_client, backend, user
 ):
-    Group = scim_client_for_preconsented_client.get_resource_model("Group")
-    User = scim_client_for_preconsented_client.get_resource_model("User")
+    Group = scim_client_for_trusted_client.get_resource_model("Group")
+    User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert not response.resources
 
     group = models.Group(
@@ -51,28 +51,28 @@ def test_scim_client_group_save_and_delete(
     )
     backend.save(group)
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert len(response.resources) == 1
     retrieved_group = response.resources[0]
     assert retrieved_group.display_name == "foobar"
     assert retrieved_group.members[0].value == distant_scim_user.id
 
     backend.delete(group)
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert not response.resources
 
 
 def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
-    scim_client_for_preconsented_client, backend, user, caplog
+    scim_client_for_trusted_client, backend, user, caplog
 ):
-    Group = scim_client_for_preconsented_client.get_resource_model("Group")
-    User = scim_client_for_preconsented_client.get_resource_model("User")
+    Group = scim_client_for_trusted_client.get_resource_model("Group")
+    User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert not response.resources
 
     group = models.Group(
@@ -81,7 +81,7 @@ def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
     )
     backend.save(group)
 
-    scim_client_for_preconsented_client.delete(User, distant_scim_user.id)
+    scim_client_for_trusted_client.delete(User, distant_scim_user.id)
 
     backend.save(group)
 
@@ -96,27 +96,27 @@ def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
 
 def test_scim_client_change_user_groups_also_updates_group_members(
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     user,
     logged_admin,
     bar_group,
 ):
-    Group = scim_client_for_preconsented_client.get_resource_model("Group")
-    User = scim_client_for_preconsented_client.get_resource_model("User")
+    Group = scim_client_for_trusted_client.get_resource_model("Group")
+    User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     req = SearchRequest(filter=f'externalId eq "{logged_admin.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_admin = response.resources[0] if response.resources else None
 
     user.groups = user.groups + [bar_group]
     backend.save(user)
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert len(response.resources) == 1
     retrieved_bar_group = response.resources[0]
     assert retrieved_bar_group.display_name == "bar"
@@ -127,7 +127,7 @@ def test_scim_client_change_user_groups_also_updates_group_members(
     user.groups = []
     backend.save(user)
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert len(response.resources) == 1
     retrieved_bar_group = response.resources[0]
     assert retrieved_bar_group.display_name == "bar"
@@ -137,7 +137,7 @@ def test_scim_client_change_user_groups_also_updates_group_members(
 
 def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     foo_group,
     bar_group,
@@ -148,18 +148,18 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
-    Group = scim_client_for_preconsented_client.get_resource_model("Group")
-    User = scim_client_for_preconsented_client.get_resource_model("User")
+    Group = scim_client_for_trusted_client.get_resource_model("Group")
+    User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     req = SearchRequest(filter=f'externalId eq "{admin.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_admin = response.resources[0] if response.resources else None
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert len(response.resources) == 2
     retrieved_foo_group = response.resources[0]
     assert retrieved_foo_group.display_name == "foo"
@@ -180,10 +180,10 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     backend.save(alice)
 
     req = SearchRequest(filter=f'externalId eq "{alice.id}"')
-    response = scim_client_for_preconsented_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, search_request=req)
     distant_scim_alice = response.resources[0] if response.resources else None
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert len(response.resources) == 2
     retrieved_foo_group = response.resources[0]
     assert retrieved_foo_group.display_name == "foo"
@@ -198,7 +198,7 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
 
     backend.delete(alice)
 
-    response = scim_client_for_preconsented_client.query(Group)
+    response = scim_client_for_trusted_client.query(Group)
     assert len(response.resources) == 2
     retrieved_foo_group = response.resources[0]
     assert retrieved_foo_group.display_name == "foo"
@@ -234,7 +234,7 @@ def test_save_group_when_client_doesnt_support_scim(
 def test_failed_scim_user_creation(
     scim_mock,
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     caplog,
 ):
@@ -261,7 +261,7 @@ def test_failed_scim_user_creation(
 def test_failed_scim_user_update(
     scim_mock,
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     caplog,
     user,
@@ -281,7 +281,7 @@ def test_failed_scim_user_update(
 def test_failed_scim_user_delete(
     scim_mock,
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     caplog,
     user,
@@ -301,7 +301,7 @@ def test_failed_scim_user_delete(
 def test_failed_scim_group_creation(
     scim_mock,
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     caplog,
     user,
@@ -327,7 +327,7 @@ def test_failed_scim_group_creation(
 def test_failed_scim_group_update(
     scim_mock,
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     caplog,
     bar_group,
@@ -347,7 +347,7 @@ def test_failed_scim_group_update(
 def test_failed_scim_group_delete(
     scim_mock,
     testclient,
-    scim_client_for_preconsented_client,
+    scim_client_for_trusted_client,
     backend,
     caplog,
     user,
@@ -370,9 +370,9 @@ def test_failed_scim_group_delete(
 
 
 def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
-    scim_client_for_preconsented_client, user
+    scim_client_for_trusted_client, user
 ):
-    User = scim_client_for_preconsented_client.get_resource_model("User")
+    User = scim_client_for_trusted_client.get_resource_model("User")
 
     scim_user = user_from_canaille_to_scim_client(user, User, None)
     assert isinstance(scim_user, User)

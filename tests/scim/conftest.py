@@ -80,7 +80,7 @@ def scim_client(app, oidc_client, oidc_token):
 
 
 @pytest.fixture
-def scim_preconsented_client(testclient, scim2_server, backend):
+def scim_trusted_client(testclient, scim2_server, backend):
     client_uri = f"http://localhost:{scim2_server.port}"
     c = models.Client(
         client_id=gen_salt(24),
@@ -98,7 +98,7 @@ def scim_preconsented_client(testclient, scim2_server, backend):
         response_types=["code", "token", "id_token"],
         scope=["openid", "email", "profile", "groups", "address", "phone"],
         token_endpoint_auth_method="client_secret_basic",
-        preconsent=True,
+        trusted=True,
     )
     backend.save(c)
     yield c
@@ -106,12 +106,12 @@ def scim_preconsented_client(testclient, scim2_server, backend):
 
 
 @pytest.fixture
-def scim_token(testclient, scim_preconsented_client, backend):
+def scim_token(testclient, scim_trusted_client, backend):
     t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
-        audience=[scim_preconsented_client],
-        client=scim_preconsented_client,
+        audience=[scim_trusted_client],
+        client=scim_trusted_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
         issue_date=datetime.datetime.now(datetime.timezone.utc),
@@ -123,7 +123,7 @@ def scim_token(testclient, scim_preconsented_client, backend):
 
 
 @pytest.fixture
-def scim_client_for_preconsented_client(scim2_server, scim_token):
+def scim_client_for_trusted_client(scim2_server, scim_token):
     client_httpx = httpx_client(
         base_url=f"http://localhost:{scim2_server.port}",
         headers={"Authorization": f"Bearer {scim_token.access_token}"},
@@ -162,7 +162,7 @@ def client_without_scim(testclient, backend):
         jwks_uri="https://myotherdomain.test/jwk",
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
-        preconsent=True,
+        trusted=True,
     )
     backend.save(c)
     c.audience = [c]
