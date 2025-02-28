@@ -106,7 +106,7 @@ def test_client_add(testclient, logged_admin, backend):
         "software_version": "1",
         "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [],
-        "preconsent": False,
+        "trusted": False,
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
@@ -133,7 +133,7 @@ def test_client_add(testclient, logged_admin, backend):
     assert client.software_version == "1"
     assert client.jwks_uri == "https://foobar.test/jwks.json"
     assert client.audience == [client]
-    assert not client.preconsent
+    assert not client.trusted
     assert client.post_logout_redirect_uris == ["https://foobar.test/disconnected"]
 
     backend.delete(client)
@@ -166,7 +166,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "software_version": "1",
         "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [client.id, trusted_client.id],
-        "preconsent": True,
+        "trusted": True,
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
@@ -199,7 +199,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     assert client.software_version == "1"
     assert client.jwks_uri == "https://foobar.test/jwks.json"
     assert client.audience == [client, trusted_client]
-    assert not client.preconsent
+    assert not client.trusted
     assert client.post_logout_redirect_uris == ["https://foobar.test/disconnected"]
 
 
@@ -260,23 +260,23 @@ def test_client_delete_invalid_client(testclient, logged_admin, client):
 
 
 def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, backend):
-    assert not client.preconsent
+    assert not client.trusted
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["preconsent"] = True
+    res.forms["clientaddform"]["trusted"] = True
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
     backend.reload(client)
-    assert client.preconsent
+    assert client.trusted
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["preconsent"] = False
+    res.forms["clientaddform"]["trusted"] = False
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
     backend.reload(client)
-    assert not client.preconsent
+    assert not client.trusted
 
 
 def test_client_edit_invalid_uri(testclient, client, logged_admin, trusted_client):

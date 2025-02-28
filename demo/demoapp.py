@@ -161,7 +161,7 @@ def populate(app):
                 scope=["openid", "profile", "email", "groups", "address", "phone"],
                 response_types=["code", "id_token"],
                 token_endpoint_auth_method="client_secret_basic",
-                preconsent=True,
+                trusted=True,
             )
             app.backend.save(client2)
             client2.audience = [client2]

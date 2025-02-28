@@ -142,7 +142,7 @@ def authorize_consent(client, user):
     # Get the authorization code, or display the user consent form
     if request.method == "GET":
         client_has_user_consent = (
-            (client.preconsent and (not consent or not consent.revoked))
+            (client.trusted and (not consent or not consent.revoked))
             or (
                 consent and all(scope in set(consent.scope) for scope in allowed_scopes)
             )

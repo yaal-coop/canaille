@@ -189,12 +189,12 @@ def get_clients_to_notify(user):
     """Return a list of clients that should be notified of updates on 'user'."""
     consents = Backend.instance.query(models.Consent, subject=user)
     consented_clients = {t.client for t in consents}
-    preconsented_clients = [
+    trusted_clients = [
         client
         for client in Backend.instance.query(models.Client)
-        if client.preconsent and client not in consented_clients
+        if client.trusted and client not in consented_clients
     ]
-    return list(consented_clients) + list(preconsented_clients)
+    return list(consented_clients) + list(trusted_clients)
 
 
 def after_user_query(user):

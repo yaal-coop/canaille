@@ -182,8 +182,8 @@ class ClientAddForm(Form):
         ],
         render_kw={"placeholder": ""},
     )
-    preconsent = wtforms.BooleanField(
-        _("Pre-consent"),
+    trusted = wtforms.BooleanField(
+        _("Trusted"),
         validators=[wtforms.validators.Optional()],
         default=False,
     )

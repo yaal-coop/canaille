@@ -9,7 +9,7 @@ from canaille.app import models
 def test_nominal_case(testclient, logged_user, client, backend, client_jwks):
     """Test JWT grant for a client with consent."""
     now = time.time()
-    client.preconsent = True
+    client.trusted = True
     backend.save(client)
 
     _, private_key = client_jwks
@@ -53,7 +53,7 @@ def test_nominal_case(testclient, logged_user, client, backend, client_jwks):
 def test_no_jwk(testclient, logged_user, client, backend, client_jwks):
     """Test JWT grant for a client without JWKs."""
     now = time.time()
-    client.preconsent = True
+    client.trusted = True
     client.jwks = None
     backend.save(client)
 

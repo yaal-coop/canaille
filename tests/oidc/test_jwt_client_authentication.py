@@ -16,7 +16,7 @@ def test_client_jwks(
 
     authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(authorization)
-    client.preconsent = True
+    client.trusted = True
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 
@@ -66,7 +66,7 @@ def test_client_jwks_uri(
 
     authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(authorization)
-    client.preconsent = True
+    client.trusted = True
     client.jwks_uri = f"http://{httpserver.host}:{httpserver.port}{jwks_uri}"
     client.jwks = None
     client.token_endpoint_auth_method = "client_secret_jwt"
@@ -111,7 +111,7 @@ def test_client_no_jwks(
 
     authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(authorization)
-    client.preconsent = True
+    client.trusted = True
     client.jwks = None
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
@@ -156,7 +156,7 @@ def test_same_jti_twice(
 
     authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(authorization)
-    client.preconsent = True
+    client.trusted = True
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 

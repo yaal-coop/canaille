@@ -146,27 +146,27 @@ def test_oidc_authorization_after_revokation(
     assert token.subject == logged_user
 
 
-def test_preconsented_client_appears_in_consent_list(
+def test_trusted_client_appears_in_consent_list(
     testclient, client, logged_user, backend
 ):
-    assert not client.preconsent
-    res = testclient.get("/consent/pre-consents")
+    assert not client.trusted
+    res = testclient.get("/consent/trusted-applications")
     res.mustcontain(no=client.client_name)
 
-    client.preconsent = True
+    client.trusted = True
     backend.save(client)
 
-    res = testclient.get("/consent/pre-consents")
+    res = testclient.get("/consent/trusted-applications")
     res.mustcontain(client.client_name)
 
 
-def test_revoke_preconsented_client(testclient, client, logged_user, token, backend):
-    client.preconsent = True
+def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
+    client.trusted = True
     backend.save(client)
     assert not backend.get(models.Consent)
     assert not token.revoked
 
-    res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
+    res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
 
     consent = backend.get(models.Consent)
@@ -193,29 +193,29 @@ def test_revoke_preconsented_client(testclient, client, logged_user, token, back
     assert consent.issue_date
 
 
-def test_revoke_invalid_preconsented_client(testclient, logged_user):
-    res = testclient.get("/consent/revoke-preconsent/invalid", status=302)
+def test_revoke_invalid_trusted_client(testclient, logged_user):
+    res = testclient.get("/consent/revoke-trusted/invalid", status=302)
     assert ("error", "Could not revoke this access") in res.flashes
 
 
-def test_revoke_preconsented_client_with_manual_consent(
+def test_revoke_trusted_client_with_manual_consent(
     testclient, logged_user, client, consent, backend
 ):
-    client.preconsent = True
+    client.trusted = True
     backend.save(client)
-    res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
+    res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     res = res.follow()
     assert ("success", "The access has been revoked") in res.flashes
 
 
-def test_revoke_preconsented_client_with_manual_revokation(
+def test_revoke_trusted_client_with_manual_revokation(
     testclient, logged_user, client, consent, backend
 ):
-    client.preconsent = True
+    client.trusted = True
     backend.save(client)
     consent.revoke()
     backend.save(consent)
 
-    res = testclient.get(f"/consent/revoke-preconsent/{client.client_id}", status=302)
+    res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     res = res.follow()
     assert ("error", "The access is already revoked") in res.flashes

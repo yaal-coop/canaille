@@ -599,7 +599,7 @@ Added
 - Display TOS and policy URI on the consent list page. :pr:`102`
 - Admin token deletion. :pr:`100` :pr:`101`
 - Revoked consents can be restored. :pr:`103`
-- Pre-consented clients are displayed in the user consent list,
+- Trusted clients are displayed in the user consent list,
   and their consents can be revoked. :issue:`69` :pr:`103`
 - A ``populate`` command can be used to fill the database with
   random users generated with faker. :pr:`105`

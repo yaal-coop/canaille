@@ -140,7 +140,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
-        "preconsent": "oauthPreconsent",
+        "trusted": "oauthPreconsent",
         # post_logout_redirect_uris is not yet supported by authlib
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
         "audience": "oauthAudience",
