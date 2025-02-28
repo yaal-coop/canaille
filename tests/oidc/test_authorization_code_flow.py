@@ -617,7 +617,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
             scope="openid profile",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=200,
+        status=400,
     )
 
     assert res.json.get("error") == "invalid_request"
