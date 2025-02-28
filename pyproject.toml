@@ -51,14 +51,14 @@ front = [
 ]
 
 oidc = [
-    "authlib >= 1.5.0",
+    "authlib >= 1.5.1",
     "joserfc>=1.0.2",
 ]
 
 scim = [
     "httpx>=0.28.1",
     "scim2-models>=0.2.2",
-    "authlib >= 1.5.0",
+    "authlib >= 1.5.1",
     "scim2-client>=0.5.1",
 ]
 
