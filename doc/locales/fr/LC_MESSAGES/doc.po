@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-28 19:19+0100\n"
-"PO-Revision-Date: 2025-02-28 12:46+0000\n"
+"PO-Revision-Date: 2025-03-01 18:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.2-rc\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 929333de1e954a05b8b1f16eb39735da
@@ -96,6 +96,8 @@ msgid ""
 "Ensure there is a `redirect_uri` in authorization requests from clients. :"
 "issue:`232`"
 msgstr ""
+"Les clients doivent impérativement passer le paramètre `redirect_uri` dans "
+"les requêtes d'autorisation. :issue:`232`"
 
 #: ../../CHANGES.rst:15 c40cc30bc9f847b1ba5d4c38c0da1c66
 msgid "[0.0.64] - 2025-02-12"
@@ -1162,15 +1164,11 @@ msgid "Revoked consents can be restored. :pr:`103`"
 msgstr "Les consentements révoqués peuvent être restaurés. :pr:`103`"
 
 #: ../../CHANGES.rst:602 bd5b127c5d8b442dbfa12b04b43404e2
-#, fuzzy
-#| msgid ""
-#| "Pre-consented clients are displayed in the user consent list, and their "
-#| "consents can be revoked. :issue:`69` :pr:`103`"
 msgid ""
 "Trusted clients are displayed in the user consent list, and their consents "
 "can be revoked. :issue:`69` :pr:`103`"
 msgstr ""
-"Les clients pré-autorisés apparaissent dans la liste de consentement des "
+"Les applications de confiance apparaissent dans la liste de consentement des "
 "utilisateurs, et leur consentement peut être révoqué. :issue:`69` :pr:`103`"
 
 #: ../../CHANGES.rst:604 ed953ab326734b328faac7e4ce1a82d8
@@ -5494,6 +5492,9 @@ msgid ""
 "`~canaille.core.models.Group` are broadcasted to clients using the SCIM "
 "protocol."
 msgstr ""
+"Indique si l'état des :class:`utilisateurs <canaille.core.models.User>` et "
+"des :class:`groupes <canaille.core.models.Group>` sont transmis aux "
+"applications clientes via le protocole SCIM."
 
 #: ../../docstring of canaille.scim.configuration.SCIMSettings.ENABLE_CLIENT:3
 #: 2485af1053e34cbba543e17ef41b887b
@@ -5501,6 +5502,9 @@ msgid ""
 "When enabled, any creation, edition or deletion of a client or a group will "
 "be replicated on clients that implement the SCIM protocol."
 msgstr ""
+"Lorsqu'activé, toute création, édition ou suppression d'un utilisateur ou "
+"d'un groupe sera répliqué dans les applications clientes qui implémentent le "
+"protocole SCIM."
 
 #: ../../docstring of canaille.scim.configuration.SCIMSettings.ENABLE_SERVER:1
 #: 1ee1bebd3892435980098de1b3dfee84
@@ -7227,10 +7231,8 @@ msgstr ""
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_client:1
 #: 2b7a1ee200ad43ecb995a70ce250491f
-#, fuzzy
-#| msgid "Indicate whether the SCIM server feature is enabled."
 msgid "Indicate whether the SCIM client feature is enabled."
-msgstr "Indique si la fonctionnalité de serveur SCIM est activée."
+msgstr "Indique si la fonctionnalité de client SCIM est activée."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_client:3
