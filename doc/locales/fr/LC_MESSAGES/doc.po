@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-28 19:19+0100\n"
-"PO-Revision-Date: 2025-03-01 18:33+0000\n"
+"PO-Revision-Date: 2025-03-04 04:53+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -7237,22 +7237,17 @@ msgstr "Indique si la fonctionnalité de client SCIM est activée."
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_client:3
 #: 8f3f72b2bfaf4f48a9ee32521376e2f1
-#, fuzzy
-#| msgid ""
-#| "This feature is required to make Canaille a provisioning server. It is "
-#| "controlled by the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim."
-#| "configuration.SCIMSettings.ENABLE_SERVER>` configuration parameter, and "
-#| "needs the ``scim`` extra package to be installed."
 msgid ""
 "This feature is required to make Canaille a provisioning client. It is "
 "controlled by the :attr:`CANAILLE_SCIM.ENABLE_CLIENT <canaille.scim."
 "configuration.SCIMSettings.ENABLE_CLIENT>` configuration parameter, and "
 "needs the ``scim`` extra package to be installed."
 msgstr ""
-"Cette fonctionnalité est requise pour faire de Canaille un serveur de "
-"provisionnement. Elle est contrôlée par le paramètre de configuration :attr:"
-"`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings."
-"ENABLE_SERVER>`, ainsi que le paquet extra ``scim``."
+"Cette fonctionnalité est requise pour faire de Canaille un client de "
+"provisionnement. Elle est contrôlée par le paramètre de configuration :attr:`"
+"CANAILLE_SCIM.ENABLE_CLIENT "
+"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`, et nécessite que "
+"l'extra ``scim`` soit installé."
 
 #: ../../canaille/app/features.py:docstring of
 #: canaille.app.features.Features.has_scim_server:1
@@ -7913,10 +7908,8 @@ msgstr "Le nombre de consentements."
 
 #: ../../<autotemplate>:1 3ced1415ec794c068f8872c7f181cf14
 #: 3870ed29ed474ea1bb1517ec2a20c51a
-#, fuzzy
-#| msgid "The number of preconsented clients."
 msgid "The number of trusted clients."
-msgstr "Le nombre de clients avec consentement implicite."
+msgstr "Le nombre de clients de confiance."
 
 #: ../../<autotemplate>:1 cf920f5880ac418db34e44b70510589b
 msgid "The OIDC logout template."
@@ -7963,10 +7956,8 @@ msgid "A token revokation form."
 msgstr "Un formulaire de révocation de jeton."
 
 #: ../../<autotemplate>:1 dc14cc68c5ec4eab981cb1603dfed4fa
-#, fuzzy
-#| msgid "The consented applications list."
 msgid "The trusted applications list."
-msgstr "La liste d'application avec consentement explicite."
+msgstr "La liste d'applications de confiance."
 
 #: ../../<autotemplate>:1 839b3a33b14d4773ae08101f6efb454c
 msgid ""
@@ -8429,6 +8420,11 @@ msgid ""
 "as a long-running service, but if this is important for you, you might want "
 "to choose another installation method."
 msgstr ""
+"L'exécutable de Canaille offre de moins bonnes performances au démarrage que "
+"les autres méthodes. Ça n'est généralement pas un problème, puisque Canaille "
+"est utilisé comme un processus à longue durée de vie, mais si c'est "
+"important pour vous, vous voudriez sans doute choisir une autre méthode "
+"d'installation."
 
 #: ../tutorial/install.rst:41 7e44046739a7494b85e53635680ef232
 msgid "Linux packages"
@@ -8439,6 +8435,9 @@ msgid ""
 "At the moment, only NixOS provides a `Canaille package <Canaille_NixOS>`_. "
 "For other distros, you must use a different way to install Canaille."
 msgstr ""
+"Pour le moment, seul NixOS propse un `paquet Canaille <Canaille_NixOS>`_. "
+"Pour les autres distributions, vous devez choisir une autre méthode "
+"d'installation de Canaille."
 
 #: ../tutorial/install.rst:51 13ce34f760384b47a0813bfb6c580a9b
 msgid ""
