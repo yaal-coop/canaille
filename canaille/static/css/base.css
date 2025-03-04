@@ -43,10 +43,21 @@ body {
 
 .menu-container {
     margin-bottom: 1em;
+    margin-top: 1rem;
 }
 
 .menu-container .ui.item.menu {
     justify-content: normal;
+}
+
+#skip-link {
+    position:absolute;
+    top:-200px;
+}
+
+#skip-link:focus {
+    position:absolute;
+    top:8px;
 }
 
 footer {
