@@ -2,9 +2,9 @@ import base64
 import hashlib
 import hmac
 import json
-import re
 from base64 import b64encode
 from io import BytesIO
+from urllib.parse import urlparse
 
 from flask import current_app
 from flask import request
@@ -52,16 +52,10 @@ def get_current_mail_domain():
 
 
 def validate_uri(value):
-    regex = re.compile(
-        r"^(?:[A-Z0-9\\.-]+)s?://"  # scheme + ://
-        r"(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|"  # domain...
-        r"[A-Z0-9\\.-]+|"  # hostname...
-        r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"  # ...or ip
-        r"(?::\d+)?"  # optional port
-        r"(?:/?|[/?]\S+)$",
-        re.IGNORECASE,
+    parsed = urlparse(value)
+    return (parsed.scheme in ["http", "https"] or "." in parsed.scheme) and bool(
+        parsed.netloc
     )
-    return re.match(regex, value) is not None
 
 
 class classproperty:
