@@ -260,7 +260,7 @@ class CoreSettings(BaseModel):
     HTMX: bool = True
     """Accelerates webpages loading with asynchronous requests."""
 
-    EMAIL_CONFIRMATION: bool = True
+    EMAIL_CONFIRMATION: bool | None = None
     """If :py:data:`True`, users will need to click on a confirmation link sent
     by email when they want to add a new email.
 

@@ -79,7 +79,7 @@ def join():
     if not current_app.features.has_registration:
         abort(404)
 
-    if not current_app.config["CANAILLE"]["EMAIL_CONFIRMATION"]:
+    if not current_app.features.has_email_confirmation:
         return redirect(url_for(".registration"))
 
     if current_user():
