@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import hmac
 import json
 import re
 from base64 import b64encode
@@ -20,10 +21,9 @@ def b64_to_obj(string):
 
 
 def build_hash(*args):
-    return hashlib.sha256(
-        current_app.config["SECRET_KEY"].encode("utf-8")
-        + obj_to_b64(str(args)).encode("utf-8")
-    ).hexdigest()
+    key = current_app.config["SECRET_KEY"].encode("utf-8")
+    message = obj_to_b64(str(args)).encode("utf-8")
+    return hmac.new(key, message, hashlib.sha256).hexdigest()
 
 
 def default_fields():
