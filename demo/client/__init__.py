@@ -1,7 +1,5 @@
-from urllib.parse import urlsplit
-from urllib.parse import urlunsplit
-
 from authlib.common.errors import AuthlibBaseError
+from authlib.common.urls import add_params_to_uri
 from authlib.integrations.flask_client import OAuth
 from authlib.oidc.discovery import get_well_known_url
 from flask import Flask
@@ -66,11 +64,13 @@ def setup_routes(app):
         end_session_endpoint = oauth.canaille.server_metadata.get(
             "end_session_endpoint"
         )
-        end_session_url = set_parameter_in_url_query(
+        end_session_url = add_params_to_uri(
             end_session_endpoint,
-            client_id=current_app.config["OAUTH_CLIENT_ID"],
-            id_token_hint=session["id_token"],
-            post_logout_redirect_uri=url_for("logout_callback", _external=True),
+            dict(
+                client_id=current_app.config["OAUTH_CLIENT_ID"],
+                id_token_hint=session["id_token"],
+                post_logout_redirect_uri=url_for("logout_callback", _external=True),
+            ),
         )
         return redirect(end_session_url)
 
@@ -106,16 +106,3 @@ def create_app():
     setup_routes(app)
     setup_oauth(app)
     return app
-
-
-def set_parameter_in_url_query(url, **kwargs):
-    split = list(urlsplit(url))
-
-    parameters = "&".join(f"{key}={value}" for key, value in kwargs.items())
-
-    if split[3]:
-        split[3] = f"{split[3]}&{parameters}"
-    else:
-        split[3] = parameters
-
-    return urlunsplit(split)

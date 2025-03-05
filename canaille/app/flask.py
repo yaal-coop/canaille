@@ -1,8 +1,6 @@
 import datetime
 import logging
 from functools import wraps
-from urllib.parse import urlsplit
-from urllib.parse import urlunsplit
 
 from flask import abort
 from flask import current_app
@@ -76,15 +74,6 @@ def smtp_needed():
         return decorator
 
     return wrapper
-
-
-def set_parameter_in_url_query(url, **kwargs):
-    split = list(urlsplit(url))
-    pairs = split[3].split("&")
-    parameters = {pair.split("=")[0]: pair.split("=")[1] for pair in pairs if pair}
-    parameters = {**parameters, **kwargs}
-    split[3] = "&".join(f"{key}={value}" for key, value in parameters.items())
-    return urlunsplit(split)
 
 
 def request_is_boosted() -> bool:

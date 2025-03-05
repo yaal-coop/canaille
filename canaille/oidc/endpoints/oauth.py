@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from authlib.common.urls import add_params_to_uri
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
@@ -21,7 +22,6 @@ from werkzeug.exceptions import HTTPException
 
 from canaille.app import models
 from canaille.app.flask import csrf
-from canaille.app.flask import set_parameter_in_url_query
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
 from canaille.app.session import logout_user
@@ -403,7 +403,7 @@ def end_session():
     ):
         url = data["post_logout_redirect_uri"]
         if "state" in data:
-            url = set_parameter_in_url_query(url, state=data["state"])
+            url = add_params_to_uri(url, dict(state=data["state"]))
         return redirect(url)
 
     flash(_("You have been disconnected"), "success")
@@ -420,7 +420,7 @@ def end_session_submit():
 
     if request.form["answer"] == "logout":
         session["end_session_confirmation"] = True
-        url = set_parameter_in_url_query(url_for("oidc.endpoints.end_session"), **data)
+        url = add_params_to_uri(url_for("oidc.endpoints.end_session"), data)
         return redirect(url)
 
     flash(_("You have not been disconnected"), "info")
