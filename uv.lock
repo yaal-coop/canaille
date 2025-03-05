@@ -248,6 +248,7 @@ demo = [
     { name = "faker" },
     { name = "honcho" },
     { name = "httpx" },
+    { name = "requests" },
     { name = "slapd" },
     { name = "watchdog" },
 ]
@@ -345,6 +346,7 @@ demo = [
     { name = "faker" },
     { name = "honcho" },
     { name = "httpx" },
+    { name = "requests", specifier = ">=2.32.3" },
     { name = "slapd" },
     { name = "watchdog", specifier = ">=4.0.0" },
 ]

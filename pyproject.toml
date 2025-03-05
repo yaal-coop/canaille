@@ -163,6 +163,7 @@ demo = [
     "slapd",
     "httpx",
     "watchdog >= 4.0.0",
+    "requests>=2.32.3",
 ]
 release = [
     "pyinstaller>=6.11.1",
