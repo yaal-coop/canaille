@@ -118,6 +118,19 @@ footer a {
     border-radius: .28571429rem;
     overflow: hidden;
 }
+
+.pagination .ui.button:not(.disabled) {
+    color:#054ea7;
+}
+
+.pagination .ui.button.active {
+    background-color: #ddd !important;
+    cursor: default;
+    border-bottom: 4px solid #1c71d8;
+    box-sizing: content-box;
+    color:rgba(0,0,0,.95);
+}
+
 .disabled.ui.button {
     color: rgba(0,0,0,1);
 }
@@ -292,12 +305,20 @@ select.ui.multiple.dropdown option[selected] {
         box-shadow: 0 0 0 1px #ffb7b7 inset;
         color: #ffb7b7;
     }
-    .ui.right.floated.buttons.pagination .ui.button {
-        color: #F4F4F4;
+
+
+    .pagination .ui.button:not(.disabled) {
+        color: rgba(165, 171, 253, 0.87) !important;
     }
-    .ui.right.floated.buttons.pagination .ui.button.active {
-        color: #181818;
+
+    .pagination .ui.button.active {
+        background-color: #222222 !important;
+        cursor: default;
+        border-bottom: 4px solid #4e79ac;
+        box-sizing: content-box;
+        color: #F4F4F4 !important;
     }
+
     .disabled.ui.button {
         color: #ffffff;
     }
