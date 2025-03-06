@@ -367,8 +367,8 @@ class User(Model):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
-    def generate_sms_or_mail_otp(self):
-        otp = string_code(secrets.randbelow(10**OTP_DIGITS), OTP_DIGITS)
+    def generate_sms_or_mail_otp(self, length=OTP_DIGITS):
+        otp = string_code(secrets.randbelow(10**length), length)
         self.one_time_password = otp
         self.one_time_password_emission_date = datetime.datetime.now(
             datetime.timezone.utc

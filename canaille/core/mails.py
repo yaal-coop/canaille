@@ -6,6 +6,9 @@ from canaille.app.i18n import gettext as _
 from canaille.app.mails import logo
 from canaille.app.mails import send_email
 from canaille.app.templating import render_template
+from canaille.backends import Backend
+
+RESET_CODE_LENGTH = 6
 
 
 def send_test_mail(email):
@@ -40,26 +43,30 @@ def send_test_mail(email):
 def send_password_reset_mail(user, mail):
     base_url = url_for("core.account.index", _external=True)
     server_name = current_app.config.get("SERVER_NAME")
-    reset_hash = build_hash(
-        user.identifier,
-        mail,
-        user.password if user.has_password() else "",
-    )
-    reset_url = url_for(
-        "core.auth.reset",
-        user=user,
-        hash=build_hash(
-            user.identifier,
-            mail,
-            user.password if user.has_password() else "",
-        ),
-        _external=True,
-    )
     logo_cid, logo_filename, logo_raw = logo()
-
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
+
+    reset_hash = None
+    reset_url = None
+    reset_code = None
+    if current_app.features.has_trusted_hosts:
+        reset_hash = build_hash(
+            user.identifier,
+            mail,
+            user.password if user.has_password() else "",
+        )
+        reset_url = url_for(
+            "core.auth.reset",
+            user=user,
+            hash=reset_hash,
+            _external=True,
+        )
+    else:
+        reset_code = user.generate_sms_or_mail_otp(length=RESET_CODE_LENGTH)
+        Backend.instance.save(user)
+
     text_body = render_template(
         "core/mails/reset.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
@@ -67,6 +74,7 @@ def send_password_reset_mail(user, mail):
         reset_url=reset_url,
         server_name=server_name,
         reset_hash=reset_hash,
+        reset_code=reset_code,
     )
     html_body = render_template(
         "core/mails/reset.html",
@@ -75,6 +83,7 @@ def send_password_reset_mail(user, mail):
         reset_url=reset_url,
         server_name=server_name,
         reset_hash=reset_hash,
+        reset_code=reset_code,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
     )

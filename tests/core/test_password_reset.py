@@ -2,6 +2,7 @@ from canaille.core.endpoints.account import build_hash
 
 
 def test_password_reset(testclient, user, backend):
+    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     assert not backend.check_user_password(user, "foobarbaz")[0]
     hash = build_hash("user", user.preferred_email, user.password)
 
@@ -35,6 +36,7 @@ def test_password_reset(testclient, user, backend):
 
 
 def test_password_reset_multiple_emails(testclient, user, backend):
+    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     user.emails = ["foo@bar.test", "foo@baz.test"]
     backend.save(user)
 
@@ -59,6 +61,7 @@ def test_password_reset_multiple_emails(testclient, user, backend):
 
 
 def test_password_reset_bad_link(testclient, user):
+    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     res = testclient.get("/reset/user/foobarbaz")
     assert (
         "error",
@@ -67,6 +70,7 @@ def test_password_reset_bad_link(testclient, user):
 
 
 def test_password_reset_bad_password(testclient, user, backend):
+    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     hash = build_hash("user", user.preferred_email, user.password)
 
     res = testclient.get("/reset/user/" + hash, status=200)

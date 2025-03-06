@@ -148,6 +148,7 @@ def password_reset_html(user):
         reset_url=reset_url,
         server_name=server_name,
         reset_hash=reset_hash,
+        reset_code=None,
         logo=current_app.config["CANAILLE"]["LOGO"],
         title=_("Password reset on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
@@ -175,6 +176,7 @@ def password_reset_txt(user):
         reset_url=reset_url,
         server_name=server_name,
         reset_hash=reset_hash,
+        reset_code=None,
     )
 
 

@@ -21,13 +21,15 @@
                     </h3>
                 </td>
             </tr>
-            {% if config["TRUSTED_HOSTS"] is none %}
+            {% if reset_code %}
                 <tr>
                     <td colspan="2" style="background: #f8f8f9; padding: 1em 1.5em; line-height: 1.4em; font-size: 1em; margin: 0; border-radius: 0; text-align: justify; border-left: 1px solid #d4d4d5; border-right: 1px solid #d4d4d5;">
                         {% trans %}
-                            Someone, probably you, asked for a password reinitialization at {{ site_name }}. If you did not ask for this email, please ignore it. If you need to reset your password, please go to {{ server_name }}/your-user-name/{{ reset_hash }} and follow the instructions.
+                            Someone, probably you, asked for a password reinitialization at {{ site_name }}. If you did not ask for this email, please ignore it. If you need to reset your password, please enter the code below at {{ site_name }}.
                         {% endtrans %}
-                        <br>
+                        <p style="text-align: center; line-height: 2em;">{% trans %}Your code{% endtrans %}:
+                            <br><b style="font-size: 2em">{{ reset_code }}</b>
+                        </p>
                     </td>
                 </tr>
                 <tr style="margin: 0; border-radius: 0; text-align:center; border-left: 1px solid #d4d4d5; border-right: 1px solid #d4d4d5; border-bottom: 1px solid #d4d4d5;">

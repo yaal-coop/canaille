@@ -28,6 +28,7 @@ from canaille.core.models import SEND_NEW_OTP_DELAY
 from ..mails import send_password_initialization_mail
 from ..mails import send_password_reset_mail
 from .forms import FirstLoginForm
+from .forms import ForgottenPasswordCodeForm
 from .forms import ForgottenPasswordForm
 from .forms import LoginForm
 from .forms import PasswordForm
@@ -195,13 +196,15 @@ def forgotten():
     if not request.form:
         return render_template("core/forgotten-password.html", form=form)
 
+    item_name = "link" if current_app.features.has_trusted_hosts else "code"
+
     if not form.validate():
-        flash(_("Could not send the password reset link."), "error")
+        flash(_(f"Could not send the password reset {item_name}."), "error")
         return render_template("core/forgotten-password.html", form=form)
 
     user = get_user_from_login(form.login.data)
     success_message = _(
-        "A password reset link has been sent at your email address. "
+        f"A password reset {item_name} has been sent at your email address. "
         "You should receive it within a few minutes."
     )
     if current_app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] and (
@@ -237,7 +240,40 @@ def forgotten():
             "error",
         )
 
-    return render_template("core/forgotten-password.html", form=form)
+    if current_app.features.has_trusted_hosts:
+        return render_template("core/forgotten-password.html", form=form)
+    else:
+        return redirect(url_for(".forgotten_code", user=user))
+
+
+@bp.route("/reset-code/<user:user>", methods=["GET", "POST"])
+@smtp_needed()
+def forgotten_code(user):
+    if (
+        not current_app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]
+        or current_app.features.has_trusted_hosts
+    ):
+        abort(404)
+
+    if not user.can_edit_self:
+        flash(
+            _(
+                "The user '%(user)s' does not have permissions to update their password. ",
+                user=user.formatted_name,
+            ),
+            "error",
+        )
+        return redirect(url_for(".forgotten"))
+
+    form = ForgottenPasswordCodeForm(request.form)
+    if not request.form:
+        return render_template("core/forgotten-password-code.html", form=form)
+
+    if not form.validate() or not user.is_otp_valid(form.code.data, "EMAIL_OTP"):
+        flash(_("Invalid code."), "error")
+        return render_template("core/forgotten-password-code.html", form=form)
+
+    return redirect(url_for(".reset", user=user, hash=form.code.data))
 
 
 @bp.route("/reset/<user:user>/<hash>", methods=["GET", "POST"])
@@ -254,9 +290,17 @@ def reset(user, hash):
         )
         for email in user.emails
     }
-    if not user or hash not in hashes:
+    if (
+        not user
+        or (current_app.features.has_trusted_hosts and hash not in hashes)
+        or (
+            not current_app.features.has_trusted_hosts
+            and not user.is_otp_valid(hash, "EMAIL_OTP")
+        )
+    ):
+        item_name = "link" if current_app.features.has_trusted_hosts else "code"
         flash(
-            _("The password reset link that brought you here was invalid."),
+            _(f"The password reset {item_name} that brought you here was invalid."),
             "error",
         )
         return redirect(url_for("core.account.index"))

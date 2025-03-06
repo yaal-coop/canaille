@@ -187,6 +187,7 @@ def test_mail_debug_pages(testclient, logged_admin):
 
 def test_custom_from_addr(testclient, user, smtpd):
     testclient.app.config["CANAILLE"]["NAME"] = "My Canaille"
+    testclient.app.config["TRUSTED_HOSTS"] = "localhost"
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     res = res.form.submit(status=200)
@@ -196,6 +197,7 @@ def test_custom_from_addr(testclient, user, smtpd):
 
 def test_default_from_addr(testclient, user, smtpd):
     testclient.app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
+    testclient.app.config["TRUSTED_HOSTS"] = "localhost"
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     res = res.form.submit(status=200)
@@ -206,6 +208,7 @@ def test_default_from_addr(testclient, user, smtpd):
 def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
     del configuration["SERVER_NAME"]
     configuration["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
+    configuration["TRUSTED_HOSTS"] = ["localhost"]
     app = create_app(configuration, backend=backend)
 
     testclient = TestApp(app)
@@ -217,6 +220,7 @@ def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
 
 
 def test_default_from_flask_server_name(configuration, user, smtpd, backend):
+    configuration["TRUSTED_HOSTS"] = [".foobar.test"]
     app = create_app(configuration, backend=backend)
     app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     app.config["SERVER_NAME"] = "foobar.test"
