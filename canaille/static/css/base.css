@@ -60,14 +60,51 @@ body {
     top:8px;
 }
 
+/* Contrast ratio fixes */
+
+a {
+    color: #054ea7;
+}
+
+a:hover, a:focus {
+    color: #013a80;
+}
+
 footer {
     font-size: x-small;
     text-align: center;
 }
 
-footer a {
-    color: #B0B0B0;
+.teal.button.ui.icon {
+    background-color: #006970;
 }
+
+footer a {
+    color: #5b5b5e;
+    text-decoration: underline;
+}
+
+.ui.primary.button {
+    background-color: #1c71d8;
+}
+
+.ui.primary.button:hover, .ui.primary.button:focus {
+    background-color: #054ea7;
+}
+
+.ui.button:disabled, .ui.buttons .disabled.button:not(.basic), .ui.disabled.active.button, .ui.disabled.button, .ui.disabled.button:hover {
+    opacity: .65 !important;
+}
+
+.ui.menu .active.item {
+    font-weight: bold;
+}
+
+.ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.link.menu .item:focus, .ui.menu .dropdown.item:focus, .ui.menu .link.item:focus, .ui.menu a.item:focus {
+    color:#054ea7;
+}
+
+/* end of contrast ratio fixes */
 
 .ui.masthead .ui.header {
     margin-bottom: 1em;
@@ -173,6 +210,7 @@ select.ui.multiple.dropdown option[selected] {
     .logo img {
         filter: invert(.8) !important;
     }
+
     body, .ui.card .bottom, .ui.toggle.checkbox label:hover::before {
         background-color: #222222;
     }
@@ -182,9 +220,22 @@ select.ui.multiple.dropdown option[selected] {
     .ui a:visited, .ui a:visited .icon {
         color: rgba(255,255,255,.87) !important;
     }
-    .ui a, .ui a .icon {
-        color: rgba(255,255,255,.87) !important;
+    .ui a, .ui a .icon, footer a {
+        color: rgba(165, 171, 253, 0.87) !important;
     }
+
+    .ui a:hover, .ui a .icon:hover, footer a:hover, .ui a:focus, .ui a .icon:focus, footer a:focus {
+        color: rgba(202, 206, 255, 0.87) !important;
+    }
+
+    .ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.link.menu .item:focus, .ui.menu .dropdown.item:focus, .ui.menu .link.item:focus, .ui.menu a.item:focus {
+        color: rgba(202, 206, 255, 0.87) !important;
+    }
+
+    .ui.link.menu .item:hover i.icon, .ui.menu .dropdown.item:hover i.icon, .ui.menu .link.item:hover i.icon, .ui.menu a.item:hover i.icon, .ui.link.menu .item:focus i.icon, .ui.menu .dropdown.item:focus i.icon, .ui.menu .link.item:focus i.icon, .ui.menu a.item:focus i.icon {
+        color: rgba(202, 206, 255, 0.87) !important;
+    }
+
     #ellipsis-next .disabled.ui.button {
         background-color: #c0c1c2;
         opacity: 1 !important;
@@ -217,9 +268,11 @@ select.ui.multiple.dropdown option[selected] {
     }
     .ui.button {
         background-color: #282828;
+        color: #c0c1c2;
     }
     .ui.button:hover, .ui.button:focus {
         background-color: #181818;
+        color: #c0c1c2;
     }
     .ui.basic.negative.button, .ui.basic.negative.buttons .button {
         box-shadow: 0 0 0 1px #ffb7b7 inset;
@@ -232,7 +285,7 @@ select.ui.multiple.dropdown option[selected] {
         color: #181818;
     }
     .disabled.ui.button {
-        color: #c0c1c2;
+        color: #ffffff;
     }
     .ui.link.menu .item:hover, .ui.menu .dropdown.item:hover, .ui.menu .link.item:hover, .ui.menu a.item:hover, .ui.menu a.item.active:hover {
         color: rgba(255,255,255,.95);
