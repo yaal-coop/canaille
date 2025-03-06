@@ -220,6 +220,10 @@ select.ui.multiple.dropdown option[selected] {
     .ui a:visited, .ui a:visited .icon {
         color: rgba(255,255,255,.87) !important;
     }
+    nav.ui a:not(.label), nav.ui a:not(.label) .icon {
+        color: #F4F4F4 !important;
+    }
+
     .ui a:not(.label), .ui a:not(.label) .icon, footer a {
         color: rgba(165, 171, 253, 0.87) !important;
     }
@@ -234,6 +238,16 @@ select.ui.multiple.dropdown option[selected] {
 
     .ui.link.menu .item:hover i.icon, .ui.menu .dropdown.item:hover i.icon, .ui.menu .link.item:hover i.icon, .ui.menu a.item:hover i.icon, .ui.link.menu .item:focus i.icon, .ui.menu .dropdown.item:focus i.icon, .ui.menu .link.item:focus i.icon, .ui.menu a.item:focus i.icon {
         color: rgba(202, 206, 255, 0.87) !important;
+    }
+
+    .ui.primary.button, a.ui.primary.button {
+        background-color: #4e79ac !important;
+        color: #F4F4F4 !important;
+    }
+
+    .ui.primary.button:focus, .ui.primary.button:hover, a.ui.primary.button:focus, a.ui.primary.button:hover {
+        background-color: #406694 !important;
+        color: #F4F4F4 !important;
     }
 
     #ellipsis-next .disabled.ui.button {
