@@ -220,11 +220,11 @@ select.ui.multiple.dropdown option[selected] {
     .ui a:visited, .ui a:visited .icon {
         color: rgba(255,255,255,.87) !important;
     }
-    .ui a, .ui a .icon, footer a {
+    .ui a:not(.label), .ui a:not(.label) .icon, footer a {
         color: rgba(165, 171, 253, 0.87) !important;
     }
 
-    .ui a:hover, .ui a .icon:hover, footer a:hover, .ui a:focus, .ui a .icon:focus, footer a:focus {
+    .ui a:not(.label):hover, .ui a:not(.label) .icon:hover, footer a:hover, .ui a:focus, .ui a .icon:focus, footer a:focus {
         color: rgba(202, 206, 255, 0.87) !important;
     }
 
