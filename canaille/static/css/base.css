@@ -121,14 +121,29 @@ footer a {
 
 .pagination .ui.button:not(.disabled) {
     color:#054ea7;
+    background-color: rgba(0,0,0,0);
+}
+
+.ui.button.disabled {
+    color: rgba(0,0,0,0.65) !important;
+}
+
+.pagination .ui.button:not(.disabled):not(.active):hover, .pagination .ui.button:not(.disabled):not(.active):focus {
+    color:#054ea7;
+    background-color: #ddd;
 }
 
 .pagination .ui.button.active {
-    background-color: #ddd !important;
+    background-color: rgba(0,0,0,0);
     cursor: default;
     border-bottom: 4px solid #1c71d8;
     box-sizing: content-box;
     color:rgba(0,0,0,.95);
+}
+
+.pagination .ui.button:disabled, .ui.buttons .disabled.button:not(.basic), .ui.disabled.active.button, .ui.disabled.button, .ui.disabled.button:hover {
+    opacity: 1 !important;
+    background-color: rgba(0,0,0,0)
 }
 
 .disabled.ui.button {
@@ -311,12 +326,21 @@ select.ui.multiple.dropdown option[selected] {
         color: rgba(165, 171, 253, 0.87) !important;
     }
 
+    .ui.button.disabled {
+        color: rgba(255,255,255,0.65) !important;
+    }
+
     .pagination .ui.button.active {
-        background-color: #222222 !important;
+        background-color: rgba(0,0,0,0) !important;
         cursor: default;
         border-bottom: 4px solid #4e79ac;
         box-sizing: content-box;
         color: #F4F4F4 !important;
+    }
+
+    .pagination .ui.button:not(.disabled):not(.active):hover, .pagination .ui.button:not(.disabled):not(.active):focus {
+        color:#406694;
+        background-color: #181818;
     }
 
     .disabled.ui.button {
