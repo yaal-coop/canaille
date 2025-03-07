@@ -71,6 +71,7 @@ def configuration(smtpd):
         "SECRET_KEY": gen_salt(24),
         "SERVER_NAME": "canaille.test",
         "PREFERRED_URL_SCHEME": "http",
+        "TRUSTED_HOSTS": [".canaille.test", "localhost", ".foobar.test"],
         "TESTING": True,
         "CANAILLE": {
             "JAVASCRIPT": False,

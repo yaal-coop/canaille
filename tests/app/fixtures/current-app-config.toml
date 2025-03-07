@@ -13,7 +13,7 @@ SERVER_NAME = "canaille.test"
 # The Flask TRUSTED_HOSTS configuration setting.
 #
 # This sets trusted values for hosts and validates hosts during requests.
-# TRUSTED_HOSTS =
+TRUSTED_HOSTS = [".canaille.test", "localhost", ".foobar.test"]
 
 # The Flask PREFERRED_URL_SCHEME configuration setting.
 #

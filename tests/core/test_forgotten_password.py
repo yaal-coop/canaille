@@ -16,7 +16,6 @@ def test_password_forgotten_disabled(smtpd, testclient, user):
 
 
 def test_password_forgotten(smtpd, testclient, user, caplog):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = "user"
@@ -37,7 +36,6 @@ def test_password_forgotten(smtpd, testclient, user, caplog):
 
 
 def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, caplog):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     user.emails = ["foo@bar.test", "foo@baz.test", "foo@foo.com"]
     backend.save(user)
 
@@ -63,7 +61,6 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, cap
 
 
 def test_password_forgotten_invalid_form(smtpd, testclient, user):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     res = testclient.get("/reset", status=200)
 
     res.form["login"] = ""
@@ -74,7 +71,6 @@ def test_password_forgotten_invalid_form(smtpd, testclient, user):
 
 
 def test_password_forgotten_invalid(smtpd, testclient, user):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
     res = testclient.get("/reset", status=200)
 
@@ -105,7 +101,6 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
 def test_password_forgotten_invalid_when_user_cannot_self_edit(
     smtpd, testclient, user, backend
 ):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     backend.reload(user)
 
@@ -147,7 +142,6 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(
 
 @mock.patch("smtplib.SMTP")
 def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     res = testclient.get("/reset", status=200)
 
@@ -223,8 +217,6 @@ def test_password_forgotten_without_trusted_hosts_wrong_code(
 def test_password_forgotten_trying_to_access_code_page_with_trusted_hosts_enabled(
     smtpd, testclient, user
 ):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
-
     testclient.get("/reset-code/user", status=404)
 
 
@@ -232,6 +224,7 @@ def test_password_forgotten_trying_to_access_code_page_when_user_cannot_self_edi
     smtpd, testclient, user, backend
 ):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
+    testclient.app.config["TRUSTED_HOSTS"] = None
     backend.reload(user)
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
@@ -246,7 +239,6 @@ def test_password_forgotten_trying_to_access_code_page_when_user_cannot_self_edi
 def test_password_reset_with_wrong_host(
     configuration, smtpd, testclient, backend, user
 ):
-    testclient.app.config["TRUSTED_HOSTS"] = ".canaille.test"
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
     # Raises an attribute error but a Security Error is raised before during host validation, causing the attribute error later
