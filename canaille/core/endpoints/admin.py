@@ -76,8 +76,6 @@ def test_txt(user):
 @user_needed("manage_oidc")
 def password_init_html(user):
     base_url = url_for("core.account.index", _external=True)
-    server_name = current_app.config.get("SERVER_NAME")
-    reset_hash = build_hash(user.identifier, user.preferred_email, user.password)
     reset_url = url_for(
         "core.auth.reset",
         user=user,
@@ -93,8 +91,6 @@ def password_init_html(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
-        reset_hash=reset_hash,
-        server_name=server_name,
         logo=current_app.config["CANAILLE"]["LOGO"],
         title=_("Password initialization on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
@@ -106,8 +102,6 @@ def password_init_html(user):
 @user_needed("manage_oidc")
 def password_init_txt(user):
     base_url = url_for("core.account.index", _external=True)
-    server_name = current_app.config.get("SERVER_NAME")
-    reset_hash = build_hash(user.identifier, user.preferred_email, user.password)
     reset_url = url_for(
         "core.auth.reset",
         user=user,
@@ -119,8 +113,6 @@ def password_init_txt(user):
         "core/mails/firstlogin.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
-        server_name=server_name,
-        reset_hash=reset_hash,
         reset_url=reset_url,
     )
 
