@@ -125,7 +125,7 @@ Depending on the configured :doc:`database <databases>` it will create the SQL t
 Check
 =====
 
-After a manual installation, you can test the network parameters in your configuration file using the :ref:`check command <cli_install>`.
+After a manual installation, you can test the network parameters in your configuration file using the :ref:`config check command <cli_config>`.
 It will attempt to connect your :class:`SMTP server <canaille.core.configuration.SMTPSettings>`, or your :class:`SMPP server <canaille.core.configuration.SMPPSettings>` if defined.
 
 .. code-block:: bash

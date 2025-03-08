@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.64\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 19:19+0100\n"
+"POT-Creation-Date: 2025-03-08 10:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7068,7 +7068,7 @@ msgstr ""
 
 #: ../tutorial/install.rst:128
 #: 53dcacb4539040ba96b3aaf4ab82e8df
-msgid "After a manual installation, you can test the network parameters in your configuration file using the :ref:`check command <cli_install>`. It will attempt to connect your :class:`SMTP server <canaille.core.configuration.SMTPSettings>`, or your :class:`SMPP server <canaille.core.configuration.SMPPSettings>` if defined."
+msgid "After a manual installation, you can test the network parameters in your configuration file using the :ref:`config check command <cli_config>`. It will attempt to connect your :class:`SMTP server <canaille.core.configuration.SMTPSettings>`, or your :class:`SMPP server <canaille.core.configuration.SMPPSettings>` if defined."
 msgstr ""
 
 #: ../tutorial/install.rst:136
