@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-08 10:19+0100\n"
-"PO-Revision-Date: 2025-03-08 09:20+0000\n"
+"PO-Revision-Date: 2025-03-09 01:37+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -4898,7 +4898,7 @@ msgid ""
 "If this is a :class:`str`, it is expected to be a file path that will be "
 "passed to :func:`logging.config.fileConfig`."
 msgstr ""
-"Si c'est une :class:`str`, c'est supposé être un chemin de fichier qui sera "
+"Si c'est une :class:`str`, c'est supposé être un chemin de fichier qui sera "
 "passé à :func:`logging.config.fileConfig."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.PERMISSIONS:4
@@ -8602,13 +8602,6 @@ msgid "Check"
 msgstr "Vérifier"
 
 #: ../tutorial/install.rst:128 53dcacb4539040ba96b3aaf4ab82e8df
-#, fuzzy
-#| msgid ""
-#| "After a manual installation, you can test the network parameters in your "
-#| "configuration file using the :ref:`check command <cli_install>`. It will "
-#| "attempt to connect your :class:`SMTP server <canaille.core.configuration."
-#| "SMTPSettings>`, or your :class:`SMPP server <canaille.core.configuration."
-#| "SMPPSettings>` if defined."
 msgid ""
 "After a manual installation, you can test the network parameters in your "
 "configuration file using the :ref:`config check command <cli_config>`. It "
@@ -8617,10 +8610,10 @@ msgid ""
 "configuration.SMPPSettings>` if defined."
 msgstr ""
 "Après une installation manuelle, vous pouvez tester les paramètres réseau de "
-"votre configuration en utilisant la commande :ref:`config check "
-"<cli_install>`. Elle tentera d'effectuer une connexion à votre :class:"
-"`serveur SMTP <canaille.core.configuration.SMTPSettings>`, ou votre :class:"
-"`serveur SMPP <canaille.core.configuration.SMPPSettings>` s'ils sont définis."
+"votre configuration en utilisant la commande :ref:`config check <cli_config>`"
+". Elle tentera d'effectuer une connexion à votre :class:`serveur SMTP "
+"<canaille.core.configuration.SMTPSettings>`, ou votre :class:`serveur SMPP "
+"<canaille.core.configuration.SMPPSettings>` s'ils sont définis."
 
 #: ../tutorial/install.rst:136 1ee2a32a0cd342b8abb212d6cfe4cb4d
 msgid "Create the first user"
@@ -8641,23 +8634,18 @@ msgid "Provisioning"
 msgstr "Provisionnement"
 
 #: ../tutorial/provisioning.rst:4 72b2b930407b403cb8825eba45346992
-#, fuzzy
-#| msgid ""
-#| "Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol "
-#| "at the ``/scim/v2`` endpoint."
 msgid ""
 "Canaille partially implement the :rfc:`SCIM <7642>` provisioning protocol, "
 "so user and group modifications can be spread across an entire application "
 "ecosystem."
 msgstr ""
 "Canaille implémente partiellement le protocole de provisionnement :rfc:`SCIM "
-"<7642>` au terminal ``/scim/v2``."
+"<7642>`, ce qui permet aux modifications sur les utilisateurs et les groupes "
+"d'être répandues à travers l'ensemble de votre écosystème d'applications."
 
 #: ../tutorial/provisioning.rst:7 b6701bcee41d4238ac97ceb28e1831bd
-#, fuzzy
-#| msgid "Provisioning"
 msgid "Provisioning server"
-msgstr "Provisionnement"
+msgstr "Serveur de provisionnement"
 
 #: ../tutorial/provisioning.rst:9 c71c86b1993e43a891fd650a3c6ae721
 msgid ""
@@ -8665,12 +8653,14 @@ msgid ""
 "can perform requests on the ``/scim/v2`` endpoint, using the SCIM2 protocol, "
 "to manage user and group objects."
 msgstr ""
+"Canaille fonctionne comme un serveur de provisionnement. Cela signifie que "
+"les applications clientes peuvent effectuer des requêtes sur le terminal ``/"
+"scim/v2``, en utilisant le protocole SCIM2, afin de manipuler des "
+"utilisateurs et des groupes."
 
 #: ../tutorial/provisioning.rst:13 c0b139abf0a441ab8767405cf0dc708f
-#, fuzzy
-#| msgid "Provisioning"
 msgid "Provisioning client"
-msgstr "Provisionnement"
+msgstr "Client de provisionnement"
 
 #: ../tutorial/provisioning.rst:15 9f7a74ca67e94756a60aa9434e1672cf
 msgid ""
@@ -8679,6 +8669,11 @@ msgid ""
 "SCIM2 server specification. This ensures that the details of users and "
 "groups are always synchronized among all your client applications."
 msgstr ""
+"Canaille fonctionne aussi comme un client de provisionnement. Cela signifie "
+"que les modifications sur les utilisateurs et les groupes sont transmises "
+"aux applications clientes implémentant la spécification serveur SCIM2. Cela "
+"permet de s'assurer que les utilisateurs et les groupes sont toujours "
+"synchronisés dans toutes vos applications clientes."
 
 #: ../tutorial/provisioning.rst:19 db58cf0e08cd427dad0e42fac9c9f355
 msgid ""
@@ -8687,6 +8682,10 @@ msgid ""
 "commands:Command Line Interface>` or from another client application "
 "requesting the Canaille SCIM server endpoint."
 msgstr ""
+"Les modifications sont envoyées aux applications clientes, qu'elles viennent "
+"de :ref:`l'interface web <feature_profile_management>`, de la :ref:`ligne de "
+"commandes <references/commands:Command Line Interface>` ou bien d'une autre "
+"application cliente effectuant une requête sur l'API SCIM de Canaille."
 
 #: ../tutorial/provisioning.rst:21 4e1f352c30c245c694d769a7f02fbf3e
 msgid ""
@@ -8695,12 +8694,19 @@ msgid ""
 "make sure that your client application is properly configured to accept "
 "Canaille tokens."
 msgstr ""
+"Canaille va tenter de s'authentifier sur le terminal d'API SCIM2 des "
+"applications clientes avec un jeton d'authentification que Canaille aura "
+"émis au nom du client. Veuillez vous assurer que vos applications clientes "
+"sont correctement configurées pour accepter les jetons provenant de Canaille."
 
 #: ../tutorial/provisioning.rst:26 fdc44d280b5d4e1ea41ff40bfdb4f0ef
 msgid ""
 "Note that the SCIM client feature is at early development stage and comes "
 "with poor performances at the moment."
 msgstr ""
+"Notez que la fonctionnalité de client SCIM en est à un stade de "
+"développement peu avancé, et vient avec des performances limitées pour le "
+"moment."
 
 #: ../tutorial/provisioning.rst:30 d7ed870ad03b4e14aa46a317a1bf2ffa
 msgid ""
@@ -8749,35 +8755,30 @@ msgstr ""
 "<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
 
 #: ../tutorial/provisioning.rst:52 9a819ce9df8945feb1ebd52c9ef08d78
-#, fuzzy
-#| msgid ""
-#| "Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration."
-#| "SCIMSettings.ENABLE_SERVER>` configuration parameter must be enabled."
 msgid ""
 "To allow Canaille to act as a SCIM client and broadcast modifications to "
 "client applications, the :attr:`CANAILLE_SCIM.ENABLE_CLIENT <canaille.scim."
 "configuration.SCIMSettings.ENABLE_CLIENT>` configuration parameter must be "
 "enabled."
 msgstr ""
-"Alors le paramètre de configuration :attr:`CANAILLE_SCIM.ENABLE_SERVER "
-"<canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>` doit être activé."
+"Afin d'activer la fonctionnalité de client SCIM et de répandre les "
+"modifications aux applications clientes, le paramètre de configuration "
+":attr:`CANAILLE_SCIM.ENABLE_CLIENT "
+"<canaille.scim.configuration.SCIMSettings.ENABLE_CLIENT>` doit être activé."
 
 #: ../tutorial/provisioning.rst:64 436b530af0e14d1c9668ef5b54848368
 msgid "Implementation details"
 msgstr "Détails d'implémentation"
 
 #: ../tutorial/provisioning.rst:66 668a89228a0c4d4593fbc34c17f3c15b
-#, fuzzy
-#| msgid ""
-#| "Due to technical reasons, the Canaille *User* and *Group* resources "
-#| "implementation subtly differs from the :rfc:`RFC7643 <7643>` definitions:"
 msgid ""
 "Due to technical reasons, the server-side Canaille *User* and *Group* "
 "resources implementation subtly differs from the :rfc:`RFC7643 <7643>` "
 "definitions:"
 msgstr ""
-"Pour des raisons techniques, les implémentations des resources *User* et "
-"*Group* diffèrent subtilement entre Canaille et la :rfc:`RFC7643 <7643>` :"
+"Pour des raisons techniques, les implémentations côté serveur des ressources "
+"*User* et *Group* diffèrent subtilement entre Canaille et la :rfc:`RFC7643 "
+"<7643>` :"
 
 #: ../tutorial/provisioning.rst:68 f85d7d2ce9f4488bbbfd834e7ca27ae6
 msgid "``User.userName`` is immutable (while it is read-write in RFC7643)."
