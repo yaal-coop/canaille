@@ -19,6 +19,14 @@ This page describes how to get and set-up Canaille.
 Get the code
 ============
 
+Docker image
+------------
+
+A Docker image is available:
+
+    docker pull yaalcoop/canaille:latest
+    docker run -it -p 5000:5000 yaalcoop/canaille:latest
+
 Binaries
 --------
 

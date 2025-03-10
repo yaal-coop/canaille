@@ -8,7 +8,7 @@ as in *Can I access your data?* Canaille is a lightweight identity and authoriza
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 - User profile and groups management;
 - Authentication, registration, email confirmation, "I forgot my password" emails;
-- Authorization management with [OpenID Connect identity](https://openid.net/developers/how-connect-works);
+- Authorization management with [OpenID Connect](https://openid.net/developers/how-connect-works) identity;
 - Provisioning with [SCIM](https://scim.libre.sh);
 - postgresql, mariadb and OpenLDAP first-class citizenship;
 - Customizable, themable;
@@ -20,10 +20,12 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 ```bash
 git clone https://gitlab.com/yaal/canaille.git && cd canaille
-# Either run the demo locally
+
+# Either run the development server
 uv sync --all-extras --group demo && uv run devserver
-# or run the demo in docker
-docker compose --file demo/docker-compose-sql.yml up
+
+# or run the Docker image
+docker run -it -p 5000:5000 yaalcoop/canaille:latest
 ```
 
 ## Online!
