@@ -73,7 +73,7 @@ class Model:
             cls._attributes = {
                 key: value
                 for key, value in annotations.items()
-                if get_origin(value) is not ClassVar
+                if get_origin(value) is not ClassVar and not key.startswith("_")
             }
         return cls._attributes
 

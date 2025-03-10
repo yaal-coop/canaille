@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 import ldap.filter
 from blinker import signal
 
@@ -15,7 +17,7 @@ class User(canaille.core.models.User, LDAPObject):
         signal("before_user_save").connect(self.before_save, sender=self)
         signal("after_user_save").connect(self.after_save, sender=self)
 
-    attribute_map = {
+    attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
@@ -96,7 +98,7 @@ class User(canaille.core.models.User, LDAPObject):
 
 
 class Group(canaille.core.models.Group, LDAPObject):
-    attribute_map = {
+    attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
@@ -111,14 +113,14 @@ class Client(canaille.oidc.models.Client, LDAPObject):
     base = "ou=clients,ou=oauth"
     rdn_attribute = "oauthClientID"
 
-    client_info_attributes = {
+    client_info_attributes_map: ClassVar[dict[str, str]] = {
         "client_id": "oauthClientID",
         "client_secret": "oauthClientSecret",
         "client_id_issued_at": "oauthIssueDate",
         "client_secret_expires_at": "oauthClientSecretExpDate",
     }
 
-    client_metadata_attributes = {
+    client_metadata_attributes_map: ClassVar[dict[str, str]] = {
         "client_name": "oauthClientName",
         "contacts": "oauthClientContact",
         "client_uri": "oauthClientURI",
@@ -136,7 +138,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "software_version": "oauthSoftwareVersion",
     }
 
-    attribute_map = {
+    attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
@@ -144,8 +146,8 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         # post_logout_redirect_uris is not yet supported by authlib
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
         "audience": "oauthAudience",
-        **client_info_attributes,
-        **client_metadata_attributes,
+        **client_info_attributes_map,
+        **client_metadata_attributes_map,
     }
 
 
@@ -153,7 +155,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     ldap_object_class = ["oauthAuthorizationCode"]
     base = "ou=authorizations,ou=oauth"
     rdn_attribute = "oauthAuthorizationCodeID"
-    attribute_map = {
+    attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
@@ -177,7 +179,7 @@ class Token(canaille.oidc.models.Token, LDAPObject):
     ldap_object_class = ["oauthToken"]
     base = "ou=tokens,ou=oauth"
     rdn_attribute = "oauthTokenID"
-    attribute_map = {
+    attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
@@ -199,7 +201,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"
     rdn_attribute = "cn"
-    attribute_map = {
+    attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",

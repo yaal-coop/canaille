@@ -88,8 +88,8 @@ def dump(model: list[str] | None):
     objects = {}
     model_names = model or MODELS.keys()
     for model_name in model_names:
-        model = MODELS[model_name]
-        objects[model_name] = list(Backend.instance.query(model))
+        dump_model = MODELS[model_name]
+        objects[model_name] = list(Backend.instance.query(dump_model))
 
     output = json.dumps(objects, cls=Backend.instance.json_encoder)
     click.echo(output)

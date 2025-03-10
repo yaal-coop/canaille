@@ -1,4 +1,6 @@
-MODELS = {}
+from canaille.core.models import Model
+
+MODELS: dict[str, type[Model]] = {}
 
 
 def __getattr__(name):

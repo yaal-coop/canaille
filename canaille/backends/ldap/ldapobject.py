@@ -1,4 +1,5 @@
-import typing
+from typing import ClassVar
+from typing import get_origin
 
 import ldap.dn
 import ldap.filter
@@ -14,7 +15,7 @@ from .utils import python_attrs_to_ldap
 
 
 class LDAPObjectMetaclass(type):
-    ldap_to_python_class = {}
+    ldap_to_python_class: dict[str, type] = {}
 
     def __new__(cls, name, bases, attrs):
         klass = super().__new__(cls, name, bases, attrs)
@@ -38,7 +39,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     base = None
     root_dn = None
     rdn_attribute = None
-    attribute_map = None
+    attribute_map: ClassVar[dict[str, str] | None] = None
     ldap_object_class = None
 
     def __init__(self, dn=None, **kwargs):
@@ -96,7 +97,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
         ldap_name = self.python_attribute_to_ldap(name)
 
-        python_single_value = typing.get_origin(self.attributes[name]) is not list
+        python_single_value = get_origin(self.attributes[name]) is not list
         ldap_value = self.get_ldap_attribute(ldap_name)
         return cardinalize_attribute(python_single_value, ldap_value)
 

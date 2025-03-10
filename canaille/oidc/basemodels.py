@@ -185,7 +185,7 @@ class Client(Model):
     default set of scopes.
     """
 
-    contacts: list[str] = None
+    contacts: list[str] = []
     """Array of strings representing ways to contact people responsible for
     this client, typically email addresses.
 

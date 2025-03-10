@@ -2,6 +2,7 @@ import datetime
 import hashlib
 import math
 import re
+from typing import Any
 
 import httpx
 import wtforms.validators
@@ -149,7 +150,7 @@ class I18NFormMixin:
 class HTMXFormMixin:
     SEPARATOR = "-"
     render_field_macro_file = "macro/form.html"
-    render_field_extra_context = {}
+    render_field_extra_context: dict[str, Any] = {}
 
     def field_from_name(self, field_name):
         """Return a tuple containing a field and its rendering context."""

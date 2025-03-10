@@ -237,7 +237,7 @@ def check_network_config(config):
     return results
 
 
-def check_smtp_connection(config) -> str:
+def check_smtp_connection(config) -> CheckResult:
     host = config["HOST"]
     port = config["PORT"]
     try:
@@ -433,7 +433,7 @@ def export_config(model: BaseSettings, filename: str):
         fd.write(content)
 
 
-def example_settings(model: type[BaseModel]) -> type[BaseModel]:
+def example_settings(model: type[BaseModel]) -> BaseModel:
     """Init a pydantic BaseModel with values passed as Field 'examples'."""
     data = {
         field_name: field_info.examples[0]

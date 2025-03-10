@@ -286,9 +286,9 @@ class User(Model):
     one_time_password_emission_date: datetime.datetime | None = None
     """A DateTime indicating when the user last emitted an email or sms one-time password."""
 
-    _readable_fields = None
-    _writable_fields = None
-    _permissions = None
+    _readable_fields: set[str] | None = None
+    _writable_fields: set[str] | None = None
+    _permissions: set[str] | None = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -330,7 +330,7 @@ class User(Model):
     @property
     def locked(self) -> bool:
         """Whether the user account has been locked or has expired."""
-        return bool(self.lock_date) and self.lock_date < datetime.datetime.now(
+        return self.lock_date is not None and self.lock_date < datetime.datetime.now(
             datetime.timezone.utc
         )
 

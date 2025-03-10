@@ -4,10 +4,10 @@ from flask import Flask
 
 
 def create_app(
-    config: dict = None,
+    config: dict | None = None,
     backend=None,
     init_backend=None,
-    env_file: str = None,
+    env_file: str | None = None,
     env_prefix: str = "",
 ):
     """Application entry point.

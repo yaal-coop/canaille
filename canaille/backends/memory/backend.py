@@ -18,7 +18,7 @@ def listify(value):
 
 
 class MemoryBackend(Backend):
-    indexes: dict[str, dict[str, Any]] = None
+    indexes: dict[str, dict[str, Any]] | None = None
     """Associates ids and states."""
 
     attribute_indexes = None
