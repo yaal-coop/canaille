@@ -27,4 +27,3 @@ canaille/conf/*.pub
 canaille/conf/*.key
 .vscode
 dump.json
-/result

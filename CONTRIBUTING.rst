@@ -222,27 +222,46 @@ Documentation translation
 
 .. include:: ../locales/readme.rst
 
-Docker image on hub.docker
---------------------------
-NixOs is needed to create canaille-image
-Install nix with ``curl -L https://nixos.org/nix/install | sh``
+Production Docker image
+-----------------------
 
-Create canaille-image with ``docker load < $(nix-build canaille.nix)``
+Build
+~~~~~
 
-Run canaille-image with ``docker run -it -p 127.0.0.1:5000:5000 <image>``
+The ``nix-build`` command is needed to create the Canaille Docker image.
+Follow the `NixOS documentation instructions <https://nix.dev/manual/nix/stable/installation/installing-binary>`__ to install it on your system.
 
-How to push to hub.docker
-~~~~~~~~~~~~~~~~~~~~~~~~~
-``docker tag <image> yaalcoop/canaille:<tag>``
-(example : docker tag canaille-image:g2vildm07jpwvjwrfjry3i5pllyqy4kg yaalcoop/canaille:0.0.1)
-``docker login -u <hub docker login>``
-``docker push yaalcoop/canaille:<tag>``
+The Docker image can be built with the following command:
 
-Think to update the new tag in the `README.md`.
+.. code-block:: bash
 
-How to pull from hub.docker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-``docker pull yaalcoop/canaille:<tag>``
+   docker load < $(nix-build --no-out-link canaille.nix)
+
+Check the Docker image with the following command:
+
+.. code-block:: bash
+
+   docker run -it -p 5000:5000 canaille:latest
+
+Publish
+~~~~~~~
+
+.. code-block:: bash
+
+    export CANAILLE_VERSION=$(python -c "from importlib.metadata import version; print(version('canaille'))")
+    docker tag canaille:latest "yaalcoop/canaille:latest"
+    docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
+
+    docker login --username <hub docker login>
+    docker push yaalcoop/canaille:latest
+    docker push yaalcoop/canaille:${CANAILLE_VERSION}
+
+Use
+~~~
+
+.. code-block:: bash
+
+    docker pull yaalcoop/canaille:latest
 
 Build a release
 ---------------
@@ -284,4 +303,4 @@ Publish a new release
 13. Publish the Python package on production PyPI ``uv publish``;
 14. Tag the commit with ``git tag XX.YY.ZZ``;
 15. Push the release commit and the new tag on the repository with ``git push --tags``.
-16. Try to :ref:`pull and run the docker image of Canaille <development/contributing:Docker image on hub.docker>` and update the ``canaille.nix`` file if necessary.
+16. Try to :ref:`pull and run the docker image of Canaille <development/contributing:Production Docker image>` and update the ``canaille.nix`` file if necessary.

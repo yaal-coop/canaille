@@ -1,7 +1,8 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.dockerTools.buildImage {
-  name = "canaille-image";
+  name = "canaille";
+  tag = "latest";
 
   copyToRoot = pkgs.buildEnv {
     name = "canaille-env";
@@ -81,13 +82,9 @@ pkgs.dockerTools.buildImage {
         WRITE = [\"groups\"]\n
         ' > /opt/canaille/config.toml && \
         export CONFIG=/opt/canaille/config.toml && \
-        canaille config dump && \
-        canaille config check && \
         canaille db upgrade && \
         canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol && \
         canaille create group --display-name admins --members admin && \
-        echo 'connect with login \"admin\" and password \"admin\"' && \
-        canaille --version && \
         canaille run --config /opt/canaille/hypercorn.toml
       "
     ];
