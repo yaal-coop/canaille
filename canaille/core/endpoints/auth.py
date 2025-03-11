@@ -273,31 +273,18 @@ def forgotten_code(user):
         flash(_("Invalid code."), "error")
         return render_template("core/forgotten-password-code.html", form=form)
 
-    return redirect(url_for(".reset", user=user, hash=form.code.data))
+    return redirect(url_for(".reset", user=user, token=form.code.data))
 
 
-@bp.route("/reset/<user:user>/<hash>", methods=["GET", "POST"])
-def reset(user, hash):
+@bp.route("/reset/<user:user>/<token>", methods=["GET", "POST"])
+def reset(user, token):
     if not current_app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]:
         abort(404)
-
     form = PasswordResetForm(request.form)
-    hashes = {
-        build_hash(
-            user.identifier,
-            email,
-            user.password if user.has_password() else "",
-        )
-        for email in user.emails
-    }
-    if (
-        not user
-        or (current_app.features.has_trusted_hosts and hash not in hashes)
-        or (
-            not current_app.features.has_trusted_hosts
-            and not user.is_otp_valid(hash, "EMAIL_OTP")
-        )
-    ):
+
+    if current_app.features.has_trusted_hosts:
+        token = build_hash(token)
+    if not user or not user.is_otp_valid(token, "EMAIL_OTP"):
         item_name = "link" if current_app.features.has_trusted_hosts else "code"
         flash(
             _(f"The password reset {item_name} that brought you here was invalid."),
@@ -307,6 +294,8 @@ def reset(user, hash):
 
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
+        user.clear_otp()
+        Backend.instance.save(user)
         login_user(user)
 
         flash(_("Your password has been updated successfully"), "success")
@@ -317,7 +306,9 @@ def reset(user, hash):
             )
         )
 
-    return render_template("core/reset-password.html", form=form, user=user, hash=hash)
+    return render_template(
+        "core/reset-password.html", form=form, user=user, token=token
+    )
 
 
 @bp.route("/setup-mfa")

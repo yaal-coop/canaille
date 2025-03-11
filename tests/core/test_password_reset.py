@@ -1,11 +1,16 @@
-from canaille.core.endpoints.account import build_hash
+import datetime
+
+import time_machine
+
+from canaille.core.models import OTP_VALIDITY
 
 
 def test_password_reset(testclient, user, backend):
     assert not backend.check_user_password(user, "foobarbaz")[0]
-    hash = build_hash("user", user.preferred_email, user.password)
+    token = user.generate_url_safe_token()
+    backend.save(user)
 
-    res = testclient.get("/reset/user/" + hash, status=200)
+    res = testclient.get("/reset/user/" + token, status=200)
 
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobar"
@@ -26,12 +31,30 @@ def test_password_reset(testclient, user, backend):
 
     backend.reload(user)
     assert backend.check_user_password(user, "foobarbaz")[0]
+    assert not user.one_time_password
+    assert not user.one_time_password_emission_date
 
-    res = testclient.get("/reset/user/" + hash)
+    res = testclient.get("/reset/user/" + token)
     assert (
         "error",
         "The password reset link that brought you here was invalid.",
     ) in res.flashes
+
+
+def test_password_reset_expired_token(testclient, user, backend):
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
+        token = user.generate_url_safe_token()
+        backend.save(user)
+
+        res = testclient.get("/reset/user/" + token, status=200)
+
+        traveller.shift(datetime.timedelta(seconds=OTP_VALIDITY))
+
+        res = testclient.get("/reset/user/" + token)
+        assert (
+            "error",
+            "The password reset link that brought you here was invalid.",
+        ) in res.flashes
 
 
 def test_password_reset_multiple_emails(testclient, user, backend):
@@ -39,9 +62,10 @@ def test_password_reset_multiple_emails(testclient, user, backend):
     backend.save(user)
 
     assert not backend.check_user_password(user, "foobarbaz")[0]
-    hash = build_hash("user", "foo@baz.test", user.password)
+    token = user.generate_url_safe_token()
+    backend.save(user)
 
-    res = testclient.get("/reset/user/" + hash, status=200)
+    res = testclient.get("/reset/user/" + token, status=200)
 
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
@@ -51,7 +75,7 @@ def test_password_reset_multiple_emails(testclient, user, backend):
     backend.reload(user)
     assert backend.check_user_password(user, "foobarbaz")[0]
 
-    res = testclient.get("/reset/user/" + hash)
+    res = testclient.get("/reset/user/" + token)
     assert (
         "error",
         "The password reset link that brought you here was invalid.",
@@ -67,9 +91,10 @@ def test_password_reset_bad_link(testclient, user):
 
 
 def test_password_reset_bad_password(testclient, user, backend):
-    hash = build_hash("user", user.preferred_email, user.password)
+    token = user.generate_url_safe_token()
+    backend.save(user)
 
-    res = testclient.get("/reset/user/" + hash, status=200)
+    res = testclient.get("/reset/user/" + token, status=200)
 
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "typo"

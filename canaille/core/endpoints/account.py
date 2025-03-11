@@ -905,4 +905,4 @@ def reset(user):
             )
         )
 
-    return render_template("core/reset-password.html", form=form, user=user, hash=None)
+    return render_template("core/reset-password.html", form=form, user=user, token=None)
