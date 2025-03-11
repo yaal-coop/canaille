@@ -6,13 +6,13 @@ from flask import url_for
 from wtforms import StringField
 from wtforms.validators import DataRequired
 
+from canaille.app import build_hash
 from canaille.app import obj_to_b64
 from canaille.app.flask import user_needed
 from canaille.app.forms import Form
 from canaille.app.forms import email_validator
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
-from canaille.core.mails import build_hash
 from canaille.core.mails import send_test_mail
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
