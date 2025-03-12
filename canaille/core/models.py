@@ -21,6 +21,8 @@ PASSWORD_MIN_DELAY = 2
 PASSWORD_MAX_DELAY = 600
 PASSWORD_FAILURE_COUNT_INTERVAL = 600
 
+LINK_TOKEN_LENGTH = 16
+
 
 class User(Model):
     """User model.
@@ -377,7 +379,7 @@ class User(Model):
         return otp
 
     def generate_url_safe_token(self):
-        token = secrets.token_urlsafe(16)
+        token = secrets.token_urlsafe(LINK_TOKEN_LENGTH)
         self.one_time_password = build_hash(token)
         self.one_time_password_emission_date = datetime.datetime.now(
             datetime.timezone.utc
