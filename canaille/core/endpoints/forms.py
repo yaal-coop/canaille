@@ -21,6 +21,7 @@ from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
 from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
+from canaille.core.mails import RESET_CODE_LENGTH
 from canaille.core.models import OTP_DIGITS
 from canaille.core.validators import existing_group_member
 from canaille.core.validators import existing_login
@@ -59,6 +60,21 @@ class ForgottenPasswordForm(Form):
         validators=[wtforms.validators.DataRequired(), existing_login],
         render_kw={
             "placeholder": _("jane.doe@example.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
+class ForgottenPasswordCodeForm(Form):
+    code = wtforms.StringField(
+        _("Code"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            wtforms.validators.Length(min=RESET_CODE_LENGTH, max=RESET_CODE_LENGTH),
+        ],
+        render_kw={
+            "placeholder": _("123456"),
             "spellcheck": "false",
             "autocorrect": "off",
         },

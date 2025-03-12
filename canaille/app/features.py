@@ -95,6 +95,14 @@ class Features:
         )
 
     @property
+    def has_trusted_hosts(self):
+        """Indicate whether the Flask TRUSTED_HOSTS option is enabled.
+
+        It is controlled by the :attr:`TRUSTED_HOSTS <canaille.app.configuration.RootSettings.TRUSTED_HOSTS>` configuration parameter.
+        """
+        return bool(self.app.config["TRUSTED_HOSTS"])
+
+    @property
     def has_oidc(self):
         """Indicate whether the OIDC feature is enabled.
 

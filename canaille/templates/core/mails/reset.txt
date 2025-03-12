@@ -1,6 +1,12 @@
 # {% trans %}Password initialization{% endtrans %}
 
+{% if reset_code %}
+{% trans %}Someone, probably you, asked for a password reinitialization at {{ site_name }}. If you did not ask for this email, please ignore it. If you need to reset your password, please enter the code below at {{ site_name }}.{% endtrans %}
+{% trans %}Your code{% endtrans %}: {{ reset_code }}
+{% else %}
+
 {% trans %}In order to finalize your account configuration at {{ site_name }}, we need to setup your password. Please click on the link below and follow the instructions.{% endtrans %}
 
 {% trans %}Initialize password{% endtrans %}: {{ reset_url }}
+{% endif %}
 {{ site_name }}: {{ site_url }}

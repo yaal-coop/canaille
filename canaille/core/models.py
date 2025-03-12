@@ -7,6 +7,7 @@ from blinker import signal
 from flask import current_app
 from pydantic import TypeAdapter
 
+from canaille.app import build_hash
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 from canaille.core.mails import send_one_time_password_mail
@@ -367,13 +368,21 @@ class User(Model):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
-    def generate_sms_or_mail_otp(self):
-        otp = string_code(secrets.randbelow(10**OTP_DIGITS), OTP_DIGITS)
+    def generate_sms_or_mail_otp(self, length=OTP_DIGITS):
+        otp = string_code(secrets.randbelow(10**length), length)
         self.one_time_password = otp
         self.one_time_password_emission_date = datetime.datetime.now(
             datetime.timezone.utc
         )
         return otp
+
+    def generate_url_safe_token(self):
+        token = secrets.token_urlsafe(16)
+        self.one_time_password = build_hash(token)
+        self.one_time_password_emission_date = datetime.datetime.now(
+            datetime.timezone.utc
+        )
+        return token
 
     def generate_and_send_otp_mail(self):
         otp = self.generate_sms_or_mail_otp()
@@ -420,6 +429,10 @@ class User(Model):
             - self.one_time_password_emission_date
             >= datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
         )
+
+    def clear_otp(self):
+        self.one_time_password_emission_date = None
+        self.one_time_password = None
 
     def get_intruder_lockout_delay(self):
         if self.password_failure_timestamps:

@@ -6,13 +6,13 @@ from flask import url_for
 from wtforms import StringField
 from wtforms.validators import DataRequired
 
+from canaille.app import build_hash
 from canaille.app import obj_to_b64
 from canaille.app.flask import user_needed
 from canaille.app.forms import Form
 from canaille.app.forms import email_validator
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
-from canaille.core.mails import build_hash
 from canaille.core.mails import send_test_mail
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -79,7 +79,7 @@ def password_init_html(user):
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password),
+        token=user.generate_url_safe_token(),
         title=_("Password initialization on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
         ),
@@ -105,7 +105,7 @@ def password_init_txt(user):
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password),
+        token=user.generate_url_safe_token(),
         _external=True,
     )
 
@@ -121,10 +121,12 @@ def password_init_txt(user):
 @user_needed("manage_oidc")
 def password_reset_html(user):
     base_url = url_for("core.account.index", _external=True)
+    server_name = current_app.config.get("SERVER_NAME")
+    reset_token = user.generate_url_safe_token()
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password),
+        token=reset_token,
         title=_("Password reset on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
         ),
@@ -136,6 +138,9 @@ def password_reset_html(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        server_name=server_name,
+        reset_token=reset_token,
+        reset_code=None,
         logo=current_app.config["CANAILLE"]["LOGO"],
         title=_("Password reset on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
@@ -147,10 +152,12 @@ def password_reset_html(user):
 @user_needed("manage_oidc")
 def password_reset_txt(user):
     base_url = url_for("core.account.index", _external=True)
+    server_name = current_app.config.get("SERVER_NAME")
+    reset_token = user.generate_url_safe_token()
     reset_url = url_for(
         "core.auth.reset",
         user=user,
-        hash=build_hash(user.identifier, user.preferred_email, user.password),
+        token=reset_token,
         _external=True,
     )
 
@@ -159,6 +166,9 @@ def password_reset_txt(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
+        server_name=server_name,
+        reset_token=reset_token,
+        reset_code=None,
     )
 
 
