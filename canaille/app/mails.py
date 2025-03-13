@@ -5,7 +5,6 @@ import urllib.request
 from email.utils import make_msgid
 
 from flask import current_app
-from flask import request
 
 from canaille.app import get_current_domain
 from canaille.app import get_current_mail_domain
@@ -13,19 +12,16 @@ from canaille.app import get_current_mail_domain
 
 def logo():
     logo_url = current_app.config["CANAILLE"]["LOGO"]
-    if not logo_url:
+    if not logo_url or not current_app.config["SERVER_NAME"]:
         return None, None, None
 
     logo_filename = logo_url.split("/")[-1]
     if not logo_url.startswith("http"):
-        if current_app.config.get("SERVER_NAME"):
-            logo_url = "{}://{}/{}".format(
-                current_app.config.get("PREFERRED_URL_SCHEME"),
-                get_current_domain(),
-                logo_url,
-            )
-        else:
-            logo_url = f"{request.url_root}{logo_url}"
+        logo_url = "{}://{}/{}".format(
+            current_app.config.get("PREFERRED_URL_SCHEME"),
+            get_current_domain(),
+            logo_url,
+        )
 
     try:
         with urllib.request.urlopen(logo_url) as f:
