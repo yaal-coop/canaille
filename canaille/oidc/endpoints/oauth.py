@@ -27,6 +27,7 @@ from canaille.app.session import current_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.oidc.oauth import get_jwt_config
 
 from ..oauth import ClientConfigurationEndpoint
 from ..oauth import ClientRegistrationEndpoint
@@ -307,10 +308,11 @@ def jwks():
 @bp.route("/userinfo", methods=["GET", "POST"])
 @require_oauth(["profile", "openid"])
 def userinfo():
-    current_app.logger.debug("userinfo endpoint request: %s", request.args)
-    response = generate_user_info(current_token.subject, current_token.scope)
-    current_app.logger.debug("userinfo endpoint response: %s", response)
-    return jsonify(response)
+    config = get_jwt_config()
+    header = {"alg": config["alg"]}
+    userinfo = generate_user_info(current_token.subject, current_token.scope)
+    userinfo["iss"] = config["iss"]
+    return jwt.encode(header, userinfo, config["key"])
 
 
 @bp.route("/end_session", methods=["GET", "POST"])

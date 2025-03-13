@@ -1,3 +1,5 @@
+from authlib.jose import jwt
+
 from canaille.oidc.configuration import JWTSettings
 from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import generate_user_claims
@@ -146,7 +148,7 @@ def test_generate_user_claims(user, foo_group):
     }
 
 
-def test_userinfo(testclient, token, user, foo_group, backend):
+def test_userinfo(testclient, token, user, foo_group, backend, keypair):
     token.scope = ["openid"]
     backend.save(token)
     res = testclient.get(
@@ -154,9 +156,10 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         headers={"Authorization": f"Bearer {token.access_token}"},
         status=200,
     )
-    assert res.json == {
-        "sub": "user",
-    }
+    print(res)
+    res = jwt.decode(res.body, keypair[1])
+    print(res)
+    assert res == {"sub": "user", "iss": "https://auth.test"}
 
     token.scope = ["openid", "profile"]
     backend.save(token)
@@ -164,8 +167,10 @@ def test_userinfo(testclient, token, user, foo_group, backend):
         "/oauth/userinfo",
         headers={"Authorization": f"Bearer {token.access_token}"},
     )
-    assert res.json == {
+    res = jwt.decode(res.body, keypair[1])
+    assert res == {
         "sub": "user",
+        "iss": "https://auth.test",
         "given_name": "John",
         "family_name": "Doe",
         "name": "John (johnny) Doe",
