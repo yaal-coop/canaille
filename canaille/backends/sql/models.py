@@ -11,6 +11,7 @@ from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy import or_
 from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy_json import MutableJson
@@ -50,6 +51,20 @@ class SqlAlchemyModel(BackendModel):
             return getattr(cls, name).contains(value)
 
         return getattr(cls, name) == value
+
+    @classmethod
+    def is_attr_required(cls, attr_name: str) -> bool:
+        if attr_name in class_mapper(cls).relationships and hasattr(
+            cls, f"{attr_name}_id"
+        ):
+            return cls.is_attr_required(f"{attr_name}_id")
+
+        attr = getattr(cls, attr_name)
+        return not getattr(attr, "nullable", True)
+
+    @classmethod
+    def is_attr_readonly(cls, attr_name: str) -> bool:
+        return False
 
 
 membership_association_table = Table(

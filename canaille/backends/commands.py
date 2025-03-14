@@ -74,6 +74,7 @@ def register(cli):
     cli.add_command(delete_command)
     cli.add_command(reset_otp)
     cli.add_command(dump)
+    cli.add_command(restore)
 
 
 @click.command()
@@ -85,14 +86,36 @@ def dump(model: list[str] | None):
 
     If no argument is passed, all model instances are dumped.
     """
-    objects = {}
-    model_names = model or MODELS.keys()
-    for model_name in model_names:
-        dump_model = MODELS[model_name]
-        objects[model_name] = list(Backend.instance.query(dump_model))
-
-    output = json.dumps(objects, cls=Backend.instance.json_encoder)
+    payload = Backend.instance.dump(model)
+    output = json.dumps(payload, cls=Backend.instance.json_encoder)
     click.echo(output)
+
+
+@click.command()
+@click.pass_context
+@with_appcontext
+@with_backendcontext
+def restore(ctx):
+    """Restore previously dumped models.
+
+    The dumped models should be passed by the standard input.
+
+    .. code-block:: console
+
+        cat dump.json | canaille restore
+    """
+    if click.get_text_stream("stdin").isatty() or not (
+        stdin := click.get_text_stream("stdin").read().strip()
+    ):
+        raise click.ClickException("Restore input is missing")
+
+    try:
+        payload = json.loads(stdin, object_hook=Backend.instance.json_decode_hook)
+    except json.JSONDecodeError as exc:
+        message = f"Invalid JSON input.\n{exc}"
+        raise click.ClickException(message) from exc
+
+    Backend.instance.restore(payload)
 
 
 def get_factory(model):

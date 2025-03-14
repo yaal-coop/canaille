@@ -1,4 +1,5 @@
 import datetime
+import inspect
 from pathlib import Path
 
 from flask import current_app
@@ -12,9 +13,11 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import Password
 
 from canaille.app.configuration import CheckResult
+from canaille.app.models import MODELS
 from canaille.backends import Backend
 from canaille.backends import ModelEncoder
 from canaille.backends import get_lockout_delay_message
+from canaille.backends.models import Model
 
 Base = declarative_base()
 
@@ -142,6 +145,65 @@ class SQLBackend(Backend):
         return SQLBackend.instance.db_session.execute(
             select(model).filter(*filter)
         ).scalar_one_or_none()
+
+    def do_restore(self, payload):
+        # Create models without references to other models
+        for model_name, model in MODELS.items():
+            states = payload.get(model_name, [])
+            for state in states:
+                sql_state = self.filter_state(
+                    model, state, keep_non_model_and_required_attrs=True
+                )
+                sql_state = self.replace_ids_with_instances(model, sql_state)
+                obj = model(**sql_state)
+                Backend.instance.save(obj)
+
+        # Insert model references
+        for model_name, model in MODELS.items():
+            states = payload.get(model_name, [])
+            for state in states:
+                obj_id = state["id"]
+                sql_state = self.filter_state(
+                    model, state, keep_non_model_and_required_attrs=False
+                )
+                sql_state = self.replace_ids_with_instances(model, sql_state)
+                obj = Backend.instance.get(model, obj_id)
+                for attr, value in sql_state.items():
+                    setattr(obj, attr, value)
+                Backend.instance.save(obj)
+
+    @classmethod
+    def filter_state(cls, model, state, keep_non_model_and_required_attrs):
+        def filter_attribute(attr):
+            type_, _ = model.get_model_annotations(attr)
+            is_non_model = not inspect.isclass(type_) or not issubclass(type_, Model)
+            is_required = model.is_attr_required(attr)
+            is_writable = not model.is_attr_readonly(attr)
+            valid = (
+                is_writable
+                and (is_non_model or is_required) == keep_non_model_and_required_attrs
+            )
+            return valid
+
+        return {attr: value for attr, value in state.items() if filter_attribute(attr)}
+
+    @classmethod
+    def replace_ids_with_instances(cls, model, state):
+        for attr, value in state.items():
+            generic_attr_model, _ = model.get_model_annotations(attr)
+            if not generic_attr_model:
+                continue
+
+            model_name = generic_attr_model.__name__.lower()
+            backend_attr_model = MODELS.get(model_name)
+            if isinstance(value, list):
+                state[attr] = [
+                    Backend.instance.get(backend_attr_model, id_) for id_ in value
+                ]
+            else:
+                state[attr] = Backend.instance.get(backend_attr_model, value)
+
+        return state
 
     def do_save(self, instance):
         instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(

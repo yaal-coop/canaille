@@ -6,6 +6,7 @@ from typing import Any
 from flask import current_app
 
 from canaille.app.configuration import CheckResult
+from canaille.app.models import MODELS
 from canaille.backends import Backend
 from canaille.backends import get_lockout_delay_message
 
@@ -132,6 +133,12 @@ class MemoryBackend(Backend):
         results = self.query(model, **kwargs)
         return results[0] if results else None
 
+    def do_restore(self, models):
+        for model_name, states in models.items():
+            model = MODELS[model_name]
+            for state in states:
+                Backend.instance.save(model(**state))
+
     def do_save(self, instance):
         if not instance.id:
             instance.id = str(uuid.uuid4())
@@ -180,7 +187,8 @@ class MemoryBackend(Backend):
                 # add the current object in the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
                 subinstance_state.setdefault(mirror_attribute, [])
-                subinstance_state[mirror_attribute].append(instance.id)
+                if instance.id not in subinstance_state[mirror_attribute]:
+                    subinstance_state[mirror_attribute].append(instance.id)
 
                 # add the current object in the subinstance index
                 mirror_attribute_index.add(subinstance_id)
