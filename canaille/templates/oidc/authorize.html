@@ -57,6 +57,24 @@ It lists the personal information requested by the application, and offers the u
                         </div>
                     {% endif %}
                 {% endfor %}
+                {% if client.policy_uri %}
+                    <h2>{% trans application_name=client.client_name %}Read {{ application_name }}'s Privacy Policy :{% endtrans %}</h2>
+                    <div class="item">
+                        <span>
+                            <i class="large mask icon"></i>
+                            <a href="{{ client.policy_uri }}">{% trans %}Policy{% endtrans %}</a>
+                        </span>
+                    </div>
+                {% endif %}
+                {% if client.tos_uri %}
+                    <h2>{% trans application_name=client.client_name %}Read {{ application_name }}'s Terms of Service :{% endtrans %}</h2>
+                    <div class="item">
+                        <span>
+                            <i class="large file signature icon"></i>
+                            <a href="{{ client.tos_uri }}">{% trans %}Terms of service{% endtrans %}</a>
+                        </span>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="ui center aligned container">
