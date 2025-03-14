@@ -29,10 +29,15 @@ def test_nominal_case(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
+            tos_uri="https://client.test/tos",
+            policy_uri="https://client.test/policy",
             redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
+    res.mustcontain("https://client.test/tos")
+    res.mustcontain("https://client.test/policy")
+
     res = res.form.submit(name="answer", value="accept", status=302)
     assert (
         "canaille",
