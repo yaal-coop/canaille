@@ -55,6 +55,7 @@ class SqlAlchemyModel(BackendModel):
 membership_association_table = Table(
     "membership_association_table",
     Base.metadata,
+    Column("index", Integer, autoincrement=True),
     Column("user_id", ForeignKey("user.id"), primary_key=True),
     Column("group_id", ForeignKey("group.id"), primary_key=True),
 )
@@ -111,7 +112,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     title: Mapped[str] = mapped_column(String, nullable=True)
     organization: Mapped[str] = mapped_column(String, nullable=True)
     groups: Mapped[list["Group"]] = relationship(
-        secondary=membership_association_table, back_populates="members"
+        secondary=membership_association_table,
+        back_populates="members",
+        order_by=membership_association_table.c.index,
     )
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
@@ -159,13 +162,16 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     display_name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String, nullable=True)
     members: Mapped[list["User"]] = relationship(
-        secondary=membership_association_table, back_populates="groups"
+        secondary=membership_association_table,
+        back_populates="groups",
+        order_by=membership_association_table.c.index,
     )
 
 
 client_audience_association_table = Table(
     "client_audience_association_table",
     Base.metadata,
+    Column("index", Integer, autoincrement=True),
     Column("audience_id", ForeignKey("client.id"), primary_key=True, nullable=True),
     Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
 )
@@ -194,6 +200,7 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
         secondary=client_audience_association_table,
         primaryjoin=id == client_audience_association_table.c.client_id,
         secondaryjoin=id == client_audience_association_table.c.audience_id,
+        order_by=client_audience_association_table.c.index,
     )
     client_id: Mapped[str] = mapped_column(String, nullable=True)
     client_secret: Mapped[str] = mapped_column(String, nullable=True)
@@ -257,6 +264,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
 token_audience_association_table = Table(
     "token_audience_association_table",
     Base.metadata,
+    Column("index", Integer, autoincrement=True),
     Column("token_id", ForeignKey("token.id"), primary_key=True, nullable=True),
     Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
 )
@@ -296,6 +304,7 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
         secondary=token_audience_association_table,
         primaryjoin=id == token_audience_association_table.c.token_id,
         secondaryjoin=Client.id == token_audience_association_table.c.client_id,
+        order_by=token_audience_association_table.c.index,
     )
 
 

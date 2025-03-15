@@ -13,6 +13,7 @@ Fixed
 - Prevent clients from registering with fragment components in their redirect uri :issue:`235`
 - Ensure there is a `redirect_uri` in authorization requests from clients. :issue:`232`
 - Display client TOS uri and policy uri in authorization page if set during client registration
+- User group membership is ordered with the SQL backend. :issue:`169`
 
 [0.0.64] - 2025-02-12
 ---------------------
