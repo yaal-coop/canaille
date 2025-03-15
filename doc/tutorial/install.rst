@@ -48,7 +48,7 @@ This is generally the recommended method to use Canaille in production.
 Linux packages
 --------------
 
-At the moment, only NixOS provides a `Canaille package <Canaille_NixOS>`_.
+At the moment, only NixOS provides a :ref:`Canaille package <Canaille_NixOS>`_.
 For other distros, you must use a different way to install Canaille.
 
 .. _Canaille_NixOS: https://mynixos.com/nixpkgs/package/canaille
