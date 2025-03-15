@@ -24,6 +24,8 @@ Docker image
 
 A Docker image is available:
 
+.. code-block:: console
+
     docker pull yaalcoop/canaille:latest
     docker run -it -p 5000:5000 yaalcoop/canaille:latest
 
@@ -48,10 +50,10 @@ This is generally the recommended method to use Canaille in production.
 Linux packages
 --------------
 
-At the moment, only NixOS provides a :ref:`Canaille package <Canaille_NixOS>`_.
+At the moment, only `NixOS`_ provides a Canaille package.
 For other distros, you must use a different way to install Canaille.
 
-.. _Canaille_NixOS: https://mynixos.com/nixpkgs/package/canaille
+.. _NixOS: https://mynixos.com/nixpkgs/package/canaille
 
 Python package
 --------------
