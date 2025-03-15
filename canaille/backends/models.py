@@ -66,7 +66,7 @@ class Model:
                 *(
                     get_type_hints(klass, include_extras=True)
                     for klass in reversed(cls.__mro__)
-                    if issubclass(klass, Model)
+                    if issubclass(klass, Model) and not issubclass(klass, BackendModel)
                 )
             )
             # only keep types that are not ClassVar
