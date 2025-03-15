@@ -6,6 +6,7 @@ Create Date: ${create_date}
 
 """
 from collections.abc import Sequence
+from typing import Union
 
 import sqlalchemy as sa
 import sqlalchemy_utils.types.password
