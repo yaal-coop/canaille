@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-02-28 19:18+0100\n"
-"PO-Revision-Date: 2025-02-13 20:14+0000\n"
+"PO-Revision-Date: 2025-03-18 11:35+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
 "kab/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10-rc\n"
+"X-Generator: Weblate 5.11-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: canaille/app/flask.py:40
@@ -141,7 +141,7 @@ msgstr ""
 #: canaille/core/mails.py:157
 #, python-brace-format
 msgid "Confirm your address email on {website_name}"
-msgstr ""
+msgstr "Sentem tansa n imayl-ik·im deg {website_name}"
 
 #: canaille/core/mails.py:188
 #, python-brace-format
@@ -219,7 +219,7 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:280
 msgid "You are already logged in, you cannot create an account."
-msgstr ""
+msgstr "Teqqneḍ yakan, ur tezmireḍ ad d-tesnulfuḍ amiḍan."
 
 #: canaille/core/endpoints/account.py:301 canaille/core/endpoints/forms.py:263
 #: canaille/core/endpoints/forms.py:400 canaille/templates/base.html:95
@@ -267,7 +267,7 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:407
 msgid "Your email address have been confirmed."
-msgstr ""
+msgstr "Tansa-inek·inem n imayl tettwawekked-d."
 
 #: canaille/core/endpoints/account.py:437
 #, fuzzy
@@ -1123,6 +1123,8 @@ msgid ""
 "you will receive an email containing a link that will allow you to finish "
 "your registration."
 msgstr ""
+"Send ad d-tesnulfuḍ amiḍan, ttxil-k sekcem tansa imayl iṣeḥḥan. Sakkin, ad d-"
+"teṭṭfeḍ imayl aydeg yella wasaɣ ara k-yeǧǧen ad kemmleḍ ajerred-ik·im."
 
 #: canaille/templates/core/join.html:52
 #: canaille/templates/core/profile_add.html:208
@@ -1879,7 +1881,7 @@ msgstr ""
 #: canaille/templates/oidc/authorize.html:29
 #, python-format
 msgid "The application %(name)s is requesting access to:"
-msgstr ""
+msgstr "Asnas %(name)s yessutur anekcum ɣer:"
 
 #: canaille/templates/oidc/authorize.html:34
 #, python-format
@@ -1891,7 +1893,7 @@ msgstr ""
 #: canaille/templates/oidc/authorize.html:63
 #, python-format
 msgid "You are logged in as %(name)s"
-msgstr ""
+msgstr "Teqqneḍ am %(name)s"
 
 #: canaille/templates/oidc/authorize.html:70
 msgid "Deny"
@@ -1999,12 +2001,12 @@ msgstr ""
 #: canaille/templates/oidc/logout.html:23
 #, python-format
 msgid "You are currently logged in as %(username)s."
-msgstr ""
+msgstr "Aql-ik·em tura teqqneḍ am %(username)s."
 
 #: canaille/templates/oidc/logout.html:25
 #, python-format
 msgid "The application %(client_name)s wants to disconnect your account."
-msgstr ""
+msgstr "Asnas %(client_name)s yebɣa ad yessenser tuqqna n umiḍan-ik·im."
 
 #: canaille/templates/oidc/logout.html:36
 msgid "Stay logged"
