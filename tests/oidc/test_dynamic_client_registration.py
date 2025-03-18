@@ -1,7 +1,9 @@
 import json
 from unittest import mock
 
+import pytest
 from authlib.jose import jwt
+from authlib.oauth2.rfc6749.errors import InvalidRequestError
 
 from canaille.app import models
 
@@ -91,9 +93,10 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
     }
     headers = {"Authorization": "Bearer static-token"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-
-    res.mustcontain("Redirect URI cannot contain fragment identifiers")
+    with pytest.raises(
+        InvalidRequestError, match=r"Redirect URI cannot contain fragment identifiers"
+    ):
+        testclient.post_json("/oauth/register", payload, headers=headers, status=400)
 
 
 def test_client_registration_with_authentication_no_token(
