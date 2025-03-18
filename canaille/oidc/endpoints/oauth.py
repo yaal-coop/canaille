@@ -301,7 +301,7 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    return jsonify(get_jwks())
+    return jsonify(get_jwks("OLD_PUBLIC_KEY"), get_jwks("PUBLIC_KEY"))
 
 
 @bp.route("/userinfo", methods=["GET", "POST"])
