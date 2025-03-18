@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-18 15:49+0100\n"
-"PO-Revision-Date: 2025-03-09 01:37+0000\n"
+"PO-Revision-Date: 2025-03-18 15:06+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 7ff76ed229a74a389d7167a72eefdd36
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 a3b475ed309c4af2bd7eae6e90e1f87b
-#, fuzzy
-#| msgid "[0.0.65] - Unreleased"
 msgid "[0.0.66] - Unreleased"
-msgstr "[0.0.65] - Unreleased"
+msgstr "[0.0.66] - Unreleased"
 
 #: ../../CHANGES.rst:6 b2e3677b7b654906ae86aa7d7632d472
 msgid ""
