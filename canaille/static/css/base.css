@@ -202,19 +202,6 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     background: rgba(0,0,0,.05) !important;
 }
 
-/**
- * Workaround for
- * https://github.com/fomantic/Fomantic-UI/issues/2829
- */
-.ui.corner.labeled.action.input .ui.corner.label {
-    right:40px;
-    z-index: 5;
-}
-
-.ui.corner.labeled.action.input .ui.button {
-    z-index: 99;
-}
-
 /* NO JS */
 
 select.ui.multiple.dropdown {
