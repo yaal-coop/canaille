@@ -22,12 +22,15 @@ Get the code
 Docker image
 ------------
 
-A Docker image is available:
+A Docker image is available on `dockerhub`_.
 
 .. code-block:: console
 
     docker pull yaalcoop/canaille:latest
     docker run -it -p 5000:5000 yaalcoop/canaille:latest
+
+
+.. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
 Binaries
 --------
