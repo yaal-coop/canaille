@@ -396,6 +396,10 @@ class LDAPBackend(Backend):
 
     @classmethod
     def replace_uuids_with_dns(cls, model, state, uuids_dn):
+        def get_dn_from_uuid(uuid, model):
+            backend_model = MODELS.get(model.__name__.lower())
+            return uuids_dn.get(uuid) or Backend.instance.get(backend_model, id=uuid).dn
+
         def replace_attr(attr, value):
             type_, _ = model.get_model_annotations(attr)
             is_model = inspect.isclass(type_) and issubclass(type_, Model)
@@ -403,9 +407,9 @@ class LDAPBackend(Backend):
                 return value
 
             if isinstance(value, list):
-                return [uuids_dn[item] for item in value]
+                return [get_dn_from_uuid(item, type_) for item in value]
 
-            return uuids_dn[value]
+            return get_dn_from_uuid(value, type_)
 
         return {attr: replace_attr(attr, value) for attr, value in state.items()}
 
