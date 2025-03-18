@@ -1,3 +1,15 @@
+[0.0.66] - Unreleased
+---------------------
+
+.. warning::
+
+    This version comes with a configuration breaking change.
+    The :ref:`delete command <cli_delete>` don't take arguments anymore. ``canaille delete user XXX`` becomes ``canaille delete user XXX``.
+
+Added
+^^^^^
+- The :ref:`delete command <cli_delete>` can use filter parameters.
+
 [0.0.65] - 2025-03-18
 ---------------------
 

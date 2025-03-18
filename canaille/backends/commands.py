@@ -287,18 +287,39 @@ def delete_factory(model):
     @click.command(name=model.__name__.lower(), help=command_help)
     @with_appcontext
     @with_backendcontext
-    @click.argument("identifier")
-    def command(*args, identifier, **kwargs):
-        instance = Backend.instance.get(model, identifier)
-        if not instance:
-            raise click.ClickException(
-                f"No {model.__name__.lower()} with id '{identifier}'"
-            )
+    @click.option(
+        "--noconfirm",
+        is_flag=True,
+        default=False,
+        help="Ask for confirmation before deleting objects.",
+    )
+    def command(*args, noconfirm, **kwargs):
+        filter = {
+            attribute: value for attribute, value in kwargs.items() if value is not None
+        }
+        items = Backend.instance.query(model, **filter)
 
-        try:
-            Backend.instance.delete(instance)
-        except Exception as exc:  # pragma: no cover
-            raise click.ClickException(exc) from exc
+        if len(items) > 0 and not noconfirm:
+            confirmation = click.confirm(
+                f"{len(items)} will be deleted. Do you confirm?"
+            )
+            if not confirmation:
+                return
+
+        for obj in items:
+            try:
+                Backend.instance.delete(obj)
+            except Exception as exc:  # pragma: no cover
+                raise click.ClickException(exc) from exc
+
+        click.echo(f"{len(items)} item(s) deleted.")
+
+    for attribute, attribute_type in model.attributes.items():
+        slug = attribute.replace("_", "-")
+        click.option(
+            f"--{slug}",
+            type=click_type(attribute_type),
+        )(command)
 
     return command
 
@@ -307,7 +328,9 @@ def delete_factory(model):
 def delete_command():
     """Delete models.
 
-    The command takes a model ID and deletes it:
+    The command takes a model ID and deletes it.
+    By default all models are deleted, to restrict the deletion parameters like ``--id`` can be used,
+    then only the items matching the filters will be deleted:
 
     .. code-block:: console
 
