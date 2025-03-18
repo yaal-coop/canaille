@@ -1,6 +1,7 @@
 import sys
 
 from flask import Flask
+from flask_talisman import Talisman
 
 
 def create_app(
@@ -32,6 +33,7 @@ def create_app(
     from .backends import setup_backend
 
     app = Flask(__name__)
+    Talisman(app)
     with app.app_context():
         if not setup_config(
             app=app,
