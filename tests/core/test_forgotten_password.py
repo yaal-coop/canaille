@@ -1,3 +1,4 @@
+import datetime
 import logging
 from unittest import mock
 
@@ -157,6 +158,29 @@ def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
         "We encountered an issue while we sent the password recovery email.",
     ) in res.flashes
     res.mustcontain("Send again")
+
+    assert len(smtpd.messages) == 0
+
+
+def test_password_forgotten_user_disabled(smtpd, testclient, user, caplog, backend):
+    """No mail should be sent if a disabled user asks for a password reset."""
+    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    backend.save(user)
+
+    res = testclient.get("/reset", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=200)
+    assert (
+        "success",
+        "A password reset link has been sent at your email address. You should receive "
+        "it within a few minutes.",
+    ) in res.flashes
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Sending a reset password mail to john@doe.test for user",
+    ) not in caplog.record_tuples
 
     assert len(smtpd.messages) == 0
 

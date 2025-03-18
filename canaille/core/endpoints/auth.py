@@ -208,7 +208,7 @@ def forgotten():
         "You should receive it within a few minutes."
     )
     if current_app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] and (
-        not user or not user.can_edit_self
+        not user or not user.can_edit_self or user.locked
     ):
         flash(success_message, "success")
         return render_template("core/forgotten-password.html", form=form)
