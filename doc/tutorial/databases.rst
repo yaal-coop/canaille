@@ -74,6 +74,8 @@ You can find more details on the LDAP configuration in the :class:`dedicated sec
    If you want to use different schemas or LDAP servers, adaptations may be needed.
    Patches are welcome.
 
+.. _ldap_manual_schema_installation:
+
 OpenLDAP overlays integration
 -----------------------------
 
@@ -128,7 +130,7 @@ You can adapt and load those configuration files with:
     sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy.ldif
 
 otp
-~~~~~~~
+~~~
 
 If the `otp <https://www.openldap.org/software/man.cgi?query=slapo-otp>`_ overlay is configured, you will be able to add one-time password authentication in canaille.
 
@@ -154,6 +156,91 @@ You will also need to add the ``oathHOTPToken`` class to the user:
     ...
     USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
+Manual schema installation
+--------------------------
+
+Schema installation can be automatically done using the :ref:`install command <cli_install>`.
+If for some reason you prefer to install schemas manually, here is how to do.
+First of all, you need to locate the ``oauth2-openldap.ldif`` on your system, or copy it from the Canaille repository.
+
+Using ``ldapadd``
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f /path/to/oauth2-openldap.ldif
+
+Using ``slapadd``
+~~~~~~~~~~~~~~~~~
+
+Be careful to stop your ldap server before running ``slapadd``
+
+.. code-block:: bash
+
+    sudo service slapd stop
+    sudo -u openldap slapadd -n0 -l /path/to/oauth2-openldap.ldif
+    sudo service slapd start
+
+Schema update
+-------------
+
+OpenLDAP provides no way of migrating schemas.
+Canaille provides its own LDAP OIDC schemas, luckily they are quite stable, but fixes may happen.
+Updating LDAP schemas may be a tricky operation, the safest way to achieve this is to follow those steps:
+
+Backup and purge
+~~~~~~~~~~~~~~~~
+
+First, let us backup the OIDC objects and then remove them from the database.
+Please perform your own backups too, in case something unexpected happens.
+
+.. code-block:: console
+    :caption: Backup and purge OIDC related objects
+
+    canaille dump client authorizationcode consent token > dump.json
+    canaille delete client --noconfirm
+    canaille delete authorizationcode --noconfirm
+    canaille delete consent --noconfirm
+    canaille delete token --noconfirm
+
+Delete the old schema
+~~~~~~~~~~~~~~~~~~~~~
+
+You can use the ``ldapdelete`` command to remove the old schema.
+
+.. code-block:: console
+    :caption: Removing the old schema with ldapdelete
+
+    sudo ldapdelete -Q -H ldapi:/// -Y EXTERNAL cn=oauth,cn=schema,cn=config
+
+For good measure, you may then restart your ldap server.
+
+Alternatively you could use the ``slapmodify`` command.
+It is supposed to be executed while your LDAP server is turned off.
+
+.. code-block:: console
+    :caption: Removing the old schema with slapmodify
+
+    sudo slapmodify <<EOL
+    dn: cn=oauth,cn=schema,cn=config
+    changetype: delete
+    EOL
+
+Add the new schema
+~~~~~~~~~~~~~~~~~~
+
+To add the new schema, run the :ref:`install command <cli_install>` or follow instructions on the :ref:`ldap_manual_schema_installation` section.
+
+Restore the data
+~~~~~~~~~~~~~~~~
+
+Now that the schemas are updated, you can restore the saved data:
+
+.. code-block:: console
+    :caption: Restore OIDC related objects
+
+    canaille restore < dump.json
+
 Dump and restore
 ================
 
@@ -176,4 +263,4 @@ For instance, if you want to migrate from a LDAP database to a SQL database, you
     :caption: Migrating data from a LDAP directory to a SQL database
 
     env CONFIG=sql-config.toml canaille install
-    env CONFIG=ldap-config.toml canaille dump | env CONFIG=sql-config.toml canaille restore
+    env CONFIG=ldap -config.toml canaille dump | env CONFIG=sql-config.toml canaille restore
