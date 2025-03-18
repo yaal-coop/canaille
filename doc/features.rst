@@ -66,9 +66,6 @@ In a similar fashion than :ref:`profile management <feature_profile_management>`
 The group management is quite simple at the moment and consists in a group name and description, and the list of its members.
 Group membership can be use as :attr:`ACL Filter <canaille.core.configuration.ACLSettings.FILTER>` to define user permissions.
 
-.. todo::
-   At the moment adding an user to a group can only be achieved by the user settings page, but we are :issue:`working to improve this <192>`.
-
 Group management can be enable with a :attr:`dedicated user permission <canaille.core.configuration.Permission.MANAGE_GROUPS>`.
 
 .. important::
@@ -158,10 +155,6 @@ Password recovery
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`password recovery feature <canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY>` is enabled, then users can ask for a password reset email if they cannot remember their password.
 
 The email will be sent to the email addresses filled in their profile, and will contain a link that will allow them to choose a new password. .
-
-.. todo::
-
-    Check that password recovery is disabled on locked accounts.
 
 .. _feature_password_reset:
 
