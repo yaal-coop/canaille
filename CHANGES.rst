@@ -4,7 +4,7 @@
 .. warning::
 
     This version comes with a configuration breaking change.
-    The :ref:`delete command <cli_delete>` don't take arguments anymore. ``canaille delete user XXX`` becomes ``canaille delete user XXX``.
+    The :ref:`delete command <cli_delete>` don't take arguments anymore. ``canaille delete user XXX`` becomes ``canaille delete user --id XXX``.
 
 Added
 ^^^^^
