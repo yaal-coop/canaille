@@ -6,8 +6,8 @@ Added
 - Instructions in CONTRIBUTING.rst to update the docker image :issue:`59`
 - Instructions in README.md to discover Canaille interface with a docker image :issue:`59`
 - The :ref:`cli dump <cli_dump>` command can dump only some given models.
-- Implement the :class:`canaille.app.configuration.RootSettings.TRUSTED_HOSTS` configuration parameter, to secure password reset e-mails.
-- :ref:`restore <cli_restore>` command implementation. :issue:`215`
+- Implement the :class:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` configuration parameter, to secure password reset e-mails.
+- :ref:`restore <cli_restore>` command implementation. :issue:`212` :issue:`215`
 
 Fixed
 ^^^^^
