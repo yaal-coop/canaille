@@ -2103,7 +2103,7 @@ msgstr "Ha iniciado sesión como %(name)s"
 #, fuzzy, python-format
 #| msgid "The application %(name)s is requesting access to:"
 msgid "Read %(application_name)s's Privacy Policy :"
-msgstr "La aplicación %(name)s está solicitando acceso a:"
+msgstr "La aplicación %(application_name)s está solicitando acceso a:"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99

@@ -2113,7 +2113,7 @@ msgstr "Vous êtes identifiés en tant que %(name)s"
 #, fuzzy, python-format
 #| msgid "The application %(name)s is requesting access to:"
 msgid "Read %(application_name)s's Privacy Policy :"
-msgstr "L'application %(name)s demande un accès à :"
+msgstr "L'application %(application_name)s demande un accès à :"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99

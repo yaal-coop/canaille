@@ -2115,7 +2115,7 @@ msgstr "Sie sind eingeloggt als %(name)s"
 #, fuzzy, python-format
 #| msgid "The application %(name)s is requesting access to:"
 msgid "Read %(application_name)s's Privacy Policy :"
-msgstr "Die Anwendung %(name)s bittet um Zugang zu:"
+msgstr "Die Anwendung %(application_name)s bittet um Zugang zu:"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99

@@ -1940,7 +1940,7 @@ msgstr "Teqqneḍ am %(name)s"
 #, fuzzy, python-format
 #| msgid "The application %(name)s is requesting access to:"
 msgid "Read %(application_name)s's Privacy Policy :"
-msgstr "Asnas %(name)s yessutur anekcum ɣer:"
+msgstr "Asnas %(application_name)s yessutur anekcum ɣer:"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99

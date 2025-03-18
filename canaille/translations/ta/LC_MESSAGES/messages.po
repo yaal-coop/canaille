@@ -2069,7 +2069,7 @@ msgstr "நீங்கள் %(name)s என உள்நுழைந்து�
 #, fuzzy, python-format
 #| msgid "The application %(name)s is requesting access to:"
 msgid "Read %(application_name)s's Privacy Policy :"
-msgstr "பயன்பாடு %(name)s அணுகலைக் கோருகின்றன:"
+msgstr "பயன்பாடு %(application_name)s அணுகலைக் கோருகின்றன:"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99
