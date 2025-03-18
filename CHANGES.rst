@@ -1,3 +1,10 @@
+[0.0.69] - Unreleased
+---------------------
+
+Fixed
+^^^^^
+- Locked account cannot reset their password. :issue:`250`
+
 [0.0.68] - 2025-03-18
 ---------------------
 
