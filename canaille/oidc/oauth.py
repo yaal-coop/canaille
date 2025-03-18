@@ -194,11 +194,11 @@ def get_jwt_config(grant=None):
     }
 
 
-def get_jwks():
+def get_jwks(key):
     kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
     alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
     jwk = JWKRegistry.import_key(
-        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"],
+        current_app.config["CANAILLE_OIDC"]["JWT"][key],
         kty,
         {"alg": alg, "use": "sig"},
     )
