@@ -34,6 +34,7 @@ def with_backendcontext(func):
 
 @click.command()
 @click.pass_context
+@with_appcontext
 def install(ctx):
     """Installs canaille elements from the configuration.
 
