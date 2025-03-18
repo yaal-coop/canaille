@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-18 12:33+0100\n"
-"PO-Revision-Date: 2025-03-01 18:33+0000\n"
+"PO-Revision-Date: 2025-03-18 15:06+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:38
@@ -446,7 +446,7 @@ msgstr ""
 
 #: canaille/core/endpoints/auth.py:207
 msgid "You should receive it within a few minutes."
-msgstr ""
+msgstr "Vous devriez le recevoir dans quelques minutes."
 
 #: canaille/core/endpoints/auth.py:219
 #, python-format
@@ -464,19 +464,15 @@ msgstr ""
 "réinitialisation de mot de passe."
 
 #: canaille/core/endpoints/auth.py:261
-#, fuzzy, python-format
-#| msgid ""
-#| "The user '%(user)s' does not have permissions to update their password. "
-#| "We cannot send a password reset email."
+#, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
-"Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
 
 #: canaille/core/endpoints/auth.py:273
 msgid "Invalid code."
-msgstr ""
+msgstr "Code invalide."
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:59
 #: canaille/templates/core/partial/group-members.html:9
@@ -889,7 +885,7 @@ msgstr ""
 
 #: canaille/templates/base.html:62
 msgid "Skip main menu"
-msgstr ""
+msgstr "Sauter le menu principal"
 
 #: canaille/templates/base.html:75
 msgid "Profile"
@@ -1013,6 +1009,7 @@ msgstr "Mot de passe oublié"
 #: canaille/templates/core/forgotten-password-code.html:36
 msgid "Please enter the reset password code you received via email."
 msgstr ""
+"Veuillez entrer le code de réinitialisation que vous avez reçu par courriel."
 
 #: canaille/templates/core/forgotten-password-code.html:52
 #: canaille/templates/core/forgotten-password.html:53
@@ -1027,19 +1024,14 @@ msgid "Submit"
 msgstr "Valider"
 
 #: canaille/templates/core/forgotten-password.html:35
-#, fuzzy
-#| msgid ""
-#| "After this form is sent, if the email address or the login you provided "
-#| "exists, you will receive an email containing a link that will allow you "
-#| "to reset your password."
 msgid ""
 "After this form is sent, if the email address or the login you provided "
 "exists, you will receive an email containing a link or code that will allow "
 "you to reset your password."
 msgstr ""
 "Après envoi de ce formulaire, si l'identifiant ou l'adresse courriel que "
-"vous indiquez existe, vous recevrez un courriel contenant un lien qui vous "
-"permettra de ré-initialiser votre mot de passe."
+"vous indiquez existe, vous recevrez un courriel contenant un lien ou un code "
+"qui vous permettra de ré-initialiser votre mot de passe."
 
 #: canaille/templates/core/forgotten-password.html:58
 msgid "Send again"
@@ -1814,29 +1806,21 @@ msgstr ""
 
 #: canaille/templates/core/mails/reset.html:27
 #: canaille/templates/core/mails/reset.txt:4
-#, fuzzy, python-format
-#| msgid ""
-#| "Someone, probably you, asked for a password reinitialization link at "
-#| "%(site_name)s. If you did not asked for this email, please ignore it. If "
-#| "you need to reset your password, please click on the link below and "
-#| "follow the instructions."
+#, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization at "
 "%(site_name)s. If you did not ask for this email, please ignore it. If you "
 "need to reset your password, please enter the code below at %(site_name)s."
 msgstr ""
-"Quelqu'un, probablement vous, a demandé un lien de réinitialisation de votre "
+"Quelqu'un, probablement vous, a demandé un code de réinitialisation de votre "
 "mot de passe pour le site %(site_name)s. Si vous n'êtes pas à l'origine de "
 "ce message, veuillez l'ignorer. Si vous voulez réinitialiser votre mot de "
-"passe, veuillez cliquer sur le lien ci-dessous, et suivre les instructions "
-"qui vous seront soumises."
+"passe, veuillez entrer le code ci-dessous sur %(site_name)s."
 
 #: canaille/templates/core/mails/reset.html:30
 #: canaille/templates/core/mails/reset.txt:5
-#, fuzzy
-#| msgid "Source code"
 msgid "Your code"
-msgstr "Code source"
+msgstr "Votre code"
 
 #: canaille/templates/core/mails/reset.html:43
 #, python-format
@@ -2110,10 +2094,9 @@ msgid "You are logged in as %(name)s"
 msgstr "Vous êtes identifiés en tant que %(name)s"
 
 #: canaille/templates/oidc/authorize.html:61
-#, fuzzy, python-format
-#| msgid "The application %(name)s is requesting access to:"
+#, python-format
 msgid "Read %(application_name)s's Privacy Policy :"
-msgstr "L'application %(application_name)s demande un accès à :"
+msgstr "Lire la politique de confidentialité de %(application_name)s :"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99
@@ -2124,7 +2107,7 @@ msgstr "Politique de confidentialité"
 #: canaille/templates/oidc/authorize.html:70
 #, python-format
 msgid "Read %(application_name)s's Terms of Service :"
-msgstr ""
+msgstr "Lire les conditions d'utilisation de %(application_name)s :"
 
 #: canaille/templates/oidc/authorize.html:74
 #: canaille/templates/oidc/consent_list.html:107
