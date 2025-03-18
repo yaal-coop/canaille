@@ -49,9 +49,19 @@ class ModelEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
+def decode_hook(self, data):
+    for key, value in data.items():
+        try:
+            data[key] = datetime.datetime.fromisoformat(value)
+        except (ValueError, TypeError):
+            pass
+    return data
+
+
 class Backend:
     _instance = None
     json_encoder = ModelEncoder
+    json_decode_hook = decode_hook
 
     def __init__(self, config):
         self.config = config
@@ -175,6 +185,35 @@ class Backend:
     def do_reload(self, instance):
         raise NotImplementedError()
 
+    def dump(self, model: list[str] | None):
+        """Validate the current modifications in the database."""
+        data = {}
+        signal("before_dump").send(model, data=data)
+        payload = self.do_dump(model)
+        signal("after_dump").send(model, data=data)
+        return payload
+
+    def do_dump(self, model: list[str] | None = None):
+        from canaille.app.models import MODELS
+
+        payload = {}
+        model_names = model or MODELS.keys()
+        for model_name in model_names:
+            model = MODELS[model_name]
+            payload[model_name] = list(self.query(model))
+
+        return payload
+
+    def restore(self, objects):
+        """Insert a group of objects in the database."""
+        data = {}
+        signal("before_restore").send(objects, data=data)
+        self.do_restore(objects)
+        signal("after_restore").send(objects, data=data)
+
+    def do_restore(self, objects):
+        raise NotImplementedError()
+
     def update(self, instance, **kwargs):
         """Assign a whole dict to the current instance. This is useful to update models based on forms.
 
@@ -210,12 +249,12 @@ class Backend:
         module = ".".join(self.__class__.__module__.split(".")[:-1] + ["models"])
         backend_models = importlib.import_module(module)
         model_names = [
-            "AuthorizationCode",
-            "Client",
-            "Consent",
-            "Group",
-            "Token",
             "User",
+            "Group",
+            "Client",
+            "AuthorizationCode",
+            "Consent",
+            "Token",
         ]
         for model_name in model_names:
             models.register(getattr(backend_models, model_name))

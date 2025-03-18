@@ -158,6 +158,8 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     @classmethod
     def must(cls):
+        if not cls._must:
+            cls.update_ldap_attributes()
         return cls._must
 
     @classmethod
@@ -225,6 +227,16 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
                 cls._attribute_type_by_name[name] = object_class
 
         return cls._attribute_type_by_name
+
+    @classmethod
+    def is_attr_readonly(cls, attr_name) -> bool:
+        attr_name = cls.python_attribute_to_ldap(attr_name)
+        return cls.ldap_object_attributes()[attr_name].no_user_mod
+
+    @classmethod
+    def is_attr_required(cls, attr_name) -> bool:
+        attr_name = cls.python_attribute_to_ldap(attr_name)
+        return attr_name in cls.must()
 
     @classmethod
     def update_ldap_attributes(cls):

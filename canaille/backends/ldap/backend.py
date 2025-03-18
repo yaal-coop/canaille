@@ -1,3 +1,4 @@
+import inspect
 import logging
 import os
 import uuid
@@ -15,8 +16,11 @@ from canaille.app import models
 from canaille.app.configuration import CheckResult
 from canaille.app.configuration import ConfigurationException
 from canaille.app.i18n import gettext as _
+from canaille.app.models import MODELS
 from canaille.backends import Backend
+from canaille.backends import ModelEncoder
 from canaille.backends import get_lockout_delay_message
+from canaille.backends.models import Model
 
 from .utils import listify
 from .utils import python_attrs_to_ldap
@@ -55,7 +59,32 @@ def install_schema(config, schema_path):
         ) from exc
 
 
+class LDAPModelEncoder(ModelEncoder):
+    def sanitize_attr(self, obj, attr):
+        """Replace dns by uuids in model attributes."""
+        value = getattr(obj, attr)
+        type_, _ = obj.get_model_annotations(attr)
+        is_model = inspect.isclass(type_) and issubclass(type_, Model)
+        if not is_model:
+            return value
+
+        if isinstance(value, list):
+            return [item.id for item in value]
+
+        return value.id
+
+    def default(self, obj):
+        if isinstance(obj, Model):
+            sanitized_state = {
+                attr: self.sanitize_attr(obj, attr) for attr in obj.attributes
+            }
+            return {key: value for key, value in sanitized_state.items() if value}
+        return super().default(obj)
+
+
 class LDAPBackend(Backend):
+    json_encoder = LDAPModelEncoder
+
     def __init__(self, config):
         super().__init__(config)
         self._connection = None
@@ -307,6 +336,78 @@ class LDAPBackend(Backend):
                 )
 
             return None
+
+    def do_restore(self, payload):
+        # Canaille exports uuids but LDAP uuids are read-only
+        # thus uuids will probably be replaced by LDAP.
+        # However as they server as identifiers in the dumps,
+        # we need to keep a temporary uuid <-> dn mapping
+        uuids_dn = {}
+
+        # Create models without attributes that are references to other models
+        # except when those attributes are required
+        # We *could* do this in one single loop, but Client.audience is self-referencing,
+        # so it has to be created first, and then must be added to its own audience.
+        for model_name, model in MODELS.items():
+            states = payload.get(model_name, [])
+            for state in states:
+                filtered_state = self.filter_state(
+                    model, state, keep_non_model_and_required_attrs=True
+                )
+                filtered_state = self.replace_uuids_with_dns(
+                    model, filtered_state, uuids_dn
+                )
+                obj = model(**filtered_state)
+                Backend.instance.save(obj)
+                uuids_dn[state["id"]] = obj.dn
+
+        # Insert attributes that are model references
+        for model_name, model in MODELS.items():
+            states = payload.get(model_name, [])
+            for state in states:
+                obj_dn = uuids_dn[state["id"]]
+                filtered_state = self.filter_state(
+                    model,
+                    state,
+                    keep_non_model_and_required_attrs=False,
+                )
+                filtered_state = self.replace_uuids_with_dns(
+                    model, filtered_state, uuids_dn
+                )
+                obj = Backend.instance.get(model, obj_dn)
+                for attr, value in filtered_state.items():
+                    setattr(obj, attr, value)
+                Backend.instance.save(obj)
+
+    @classmethod
+    def filter_state(cls, model, state, keep_non_model_and_required_attrs):
+        def filter_attribute(attr):
+            type_, _ = model.get_model_annotations(attr)
+            is_non_model = not inspect.isclass(type_) or not issubclass(type_, Model)
+            is_required = model.is_attr_required(attr)
+            is_writable = not model.is_attr_readonly(attr)
+            valid = (
+                is_writable
+                and (is_non_model or is_required) == keep_non_model_and_required_attrs
+            )
+            return valid
+
+        return {attr: value for attr, value in state.items() if filter_attribute(attr)}
+
+    @classmethod
+    def replace_uuids_with_dns(cls, model, state, uuids_dn):
+        def replace_attr(attr, value):
+            type_, _ = model.get_model_annotations(attr)
+            is_model = inspect.isclass(type_) and issubclass(type_, Model)
+            if not is_model:
+                return value
+
+            if isinstance(value, list):
+                return [uuids_dn[item] for item in value]
+
+            return uuids_dn[value]
+
+        return {attr: replace_attr(attr, value) for attr, value in state.items()}
 
     def do_save(self, instance):
         current_object_classes = instance.get_ldap_attribute("objectClass") or []

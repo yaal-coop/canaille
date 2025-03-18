@@ -79,7 +79,7 @@ def python_to_ldap(value, syntax, encode=True):
     if syntax == Syntax.BOOLEAN and isinstance(value, bool):
         value = "TRUE" if value else "FALSE"
 
-    if syntax == Syntax.DISTINGUISHED_NAME:
+    if syntax == Syntax.DISTINGUISHED_NAME and not isinstance(value, str):
         value = value.dn if value else None
 
     if not value:
