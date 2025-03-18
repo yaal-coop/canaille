@@ -148,6 +148,8 @@ class SQLBackend(Backend):
 
     def do_restore(self, payload):
         # Create models without references to other models
+        # We *could* do this in one single loop, but Client.audience is self-referencing,
+        # so it has to be created first, and then must be added to its own audience.
         for model_name, model in MODELS.items():
             states = payload.get(model_name, [])
             for state in states:

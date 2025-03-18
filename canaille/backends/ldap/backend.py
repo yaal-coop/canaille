@@ -346,6 +346,8 @@ class LDAPBackend(Backend):
 
         # Create models without attributes that are references to other models
         # except when those attributes are required
+        # We *could* do this in one single loop, but Client.audience is self-referencing,
+        # so it has to be created first, and then must be added to its own audience.
         for model_name, model in MODELS.items():
             states = payload.get(model_name, [])
             for state in states:

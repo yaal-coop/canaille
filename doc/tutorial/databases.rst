@@ -153,3 +153,27 @@ You will also need to add the ``oathHOTPToken`` class to the user:
     [CANAILLE_LDAP]
     ...
     USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
+
+Dump and restore
+================
+
+Backups
+-------
+
+The :ref:`cli_dump` and :ref:`cli_restore` commands can be used to dump all the Canaille objects, or load them in the current database.
+Those commands can be used for backuping Canaille data.
+
+.. _database_migration:
+
+Migration
+---------
+
+The dump format is the same whatever database backend is used, and thus it can be used to migrate from a database backend to another.
+To achieve a migration, you need to have two configuration files prepared for the source database and the destination database.
+For instance, if you want to migrate from a LDAP database to a SQL database, you can execute something like this:
+
+.. code-block:: console
+    :caption: Migrating data from a LDAP directory to a SQL database
+
+    env CONFIG=sql-config.toml canaille install
+    env CONFIG=ldap-config.toml canaille dump | env CONFIG=sql-config.toml canaille restore

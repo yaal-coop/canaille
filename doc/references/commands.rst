@@ -35,6 +35,12 @@ For the sake of readability, it is omitted in the following examples.
    :prog: canaille dump
    :nested: full
 
+.. _cli_restore:
+
+.. click:: canaille.backends.commands:restore
+   :prog: canaille restore
+   :nested: full
+
 .. _cli_install:
 
 .. click:: canaille.app.commands:install

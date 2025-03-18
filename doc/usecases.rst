@@ -39,3 +39,8 @@ A CLI to quickly edit LDAP directory users
 
 Your organization has an historic :ref:`LDAP directory <feature_databases>`.
 You are tired to deal with *ldif* syntax to manage your users and group and would prefer a simple human-readable CLI.
+
+A LDAP to SQL migration tool
+============================
+
+You are tired of LDAP and want a tool to :ref:`migrate your users and groups <database_migration>` to a SQL database.
