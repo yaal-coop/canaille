@@ -60,6 +60,10 @@ class JWTSettings(BaseModel):
     If :py:data:`None` and debug mode is enabled, then an in-memory key will be used.
     """
 
+    OLD_PRIVATE_KEY: str | None = None
+
+    OLD_PUBLIC_KEY: str | None = None
+
     ISS: str | None = None
     """The URI of the identity provider."""
 

@@ -32,3 +32,16 @@ def install(config, debug=False):
     private_key, public_key = generate_keypair()
     config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"] = public_key.decode()
     config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"] = private_key.decode()
+
+
+def rotate(config):
+    # truc qui récupère les anciennes clés et les met quelques part (en conf ?)
+    config["CANAILLE_OIDC"]["JWT"]["OLD_PRIVATE_KEY"] = config["CANAILLE_OIDC"]["JWT"][
+        "PRIVATE_KEY"
+    ]
+    config["CANAILLE_OIDC"]["JWT"]["OLD_PUBLIC_KEY"] = config["CANAILLE_OIDC"]["JWT"][
+        "PUBLIC_KEY"
+    ]
+    private_key, public_key = generate_keypair()
+    config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"] = public_key.decode()
+    config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"] = private_key.decode()
