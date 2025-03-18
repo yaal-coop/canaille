@@ -15,6 +15,8 @@ Check our  :ref:`roadmap <features:Roadmap>` to see what is coming next.
 Users can interact with Canaille through its :ref:`web interface <features:Web interface>` and administrators can also use its :ref:`command line interface <feature_cli>`.
 Canaille can handle data stored in different :ref:`database backends <feature_databases>`.
 
+.. _user_and_group_management:
+
 User and group management
 *************************
 
@@ -287,6 +289,13 @@ Dynamic Client Registration
 
 Canaille implements the :doc:`Dynamic Client Registration specifications <development/specifications>`, so when the :attr:`feature is enabled <canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN>`, clients can register themselves on Canaille without an administrator intervention.
 
+.. _feature_provisioning:
+
+Application provisioning
+************************
+
+Canaille implements the :doc:`SCIM specifications <development/specifications>` and can :doc:`automatically broadcast <tutorial/provisioning>` modifications on users and groups to applications plugged to Canaille.
+
 System administration
 *********************
 
@@ -363,14 +372,7 @@ Stable version
 
 Before we push Canaille in stable version we want to achieve the following tasks:
 
-Packaging
----------
-
-- :issue:`Nix package <190>`
-- :issue:`Docker / OCI package <59>`
-
 And beyond
 ==========
 
 - :issue:`OpenID Connect certification <182>`
-- :issue:`SCIM support <116>`
