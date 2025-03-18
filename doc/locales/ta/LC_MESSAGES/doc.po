@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-18 15:49+0100\n"
+"POT-Creation-Date: 2025-03-18 16:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid ""
 "This version comes with a configuration breaking change. The :ref:`delete "
 "command <cli_delete>` don't take arguments anymore. ``canaille delete user "
-"XXX`` becomes ``canaille delete user XXX``."
+"XXX`` becomes ``canaille delete user --id XXX``."
 msgstr ""
 
 #: ../../CHANGES.rst:10 ../../CHANGES.rst:17 ../../CHANGES.rst:41
@@ -2338,7 +2338,7 @@ msgid ""
 "post-response-mode-1_0.html>`_"
 msgstr ""
 
-#: ../development/specifications.rst:34 ../features.rst:248
+#: ../development/specifications.rst:34 ../features.rst:250
 #: b2cc5a88feec4d4ea2c48d1230bb13e2 e6442f1d4f1f49ccbdb92b0bd030c8e9
 msgid "OpenID Connect"
 msgstr ""
@@ -2779,31 +2779,31 @@ msgid ""
 "`database backends <feature_databases>`."
 msgstr ""
 
-#: ../features.rst:19 87cf2680f657445ea0f97676dadd5cd0
+#: ../features.rst:21 87cf2680f657445ea0f97676dadd5cd0
 msgid "User and group management"
 msgstr ""
 
-#: ../features.rst:21 382a078d2fd8407a834f24a0b0d76449
+#: ../features.rst:23 382a078d2fd8407a834f24a0b0d76449
 msgid ""
 "Canaille web interface can be used either in :doc:`production environments "
 "<tutorial/deployment>` or locally for development purposes."
 msgstr ""
 
-#: ../features.rst:26 ../index.rst:27 aa8d3ac37c27488486ba0f5f0089542f
+#: ../features.rst:28 ../index.rst:27 aa8d3ac37c27488486ba0f5f0089542f
 #: 1594e4e443d94e06bc5a0611b517bb9a
 msgid "Profile management"
 msgstr ""
 
-#: ../features.rst:33 ../../<autotemplate>:1 b02dcdead86a467ea54349c6b03fb4ab
+#: ../features.rst:35 ../../<autotemplate>:1 b02dcdead86a467ea54349c6b03fb4ab
 #: 36404114eb5d4cee8ead572d812cddd4
 msgid "The user profile edition page."
 msgstr ""
 
-#: ../features.rst:35 7cfd0aa2a34d49f8bcd6a5b46782ab21
+#: ../features.rst:37 7cfd0aa2a34d49f8bcd6a5b46782ab21
 msgid "Canaille provides an interface to manage user profiles."
 msgstr ""
 
-#: ../features.rst:37 64af63d2497d49149d9886e3c88911a5
+#: ../features.rst:39 64af63d2497d49149d9886e3c88911a5
 msgid ""
 "The exact list of displayed fields, and whether they are :attr:`writable "
 "<canaille.core.configuration.ACLSettings.WRITE>` or :attr:`read-only "
@@ -2812,18 +2812,18 @@ msgid ""
 "ACLSettings>`."
 msgstr ""
 
-#: ../features.rst:39 767873f049ae4622b9056293d7626a0c
+#: ../features.rst:41 767873f049ae4622b9056293d7626a0c
 msgid ""
 "Depending on their ACL :class:`permissions <canaille.core.configuration."
 "Permission>`, users can either be allowed to edit their own profile, edit "
 "any user profile, or do nothing at all."
 msgstr ""
 
-#: ../features.rst:44 5aecd0954a17435aae3dab7df2ac5a1b
+#: ../features.rst:46 5aecd0954a17435aae3dab7df2ac5a1b
 msgid "Email confirmation"
 msgstr ""
 
-#: ../features.rst:46 881bde9cdafd48d6b63e6273975353c5
+#: ../features.rst:48 881bde9cdafd48d6b63e6273975353c5
 msgid ""
 "If the :attr:`email confirmation feature <canaille.core.configuration."
 "CoreSettings.EMAIL_CONFIRMATION>` is enabled, any modification or addition "
@@ -2832,28 +2832,28 @@ msgid ""
 "email address."
 msgstr ""
 
-#: ../features.rst:48 712e6936260e45f6859e7e8e5b73f0f8
+#: ../features.rst:50 712e6936260e45f6859e7e8e5b73f0f8
 msgid ""
 "Users with :attr:`user management permission <canaille.core.configuration."
 "Permission.MANAGE_USERS>` can set user emails without confirmation though."
 msgstr ""
 
-#: ../features.rst:53 b9ffc8db30164af28978b4982a24ec9c
+#: ../features.rst:55 b9ffc8db30164af28978b4982a24ec9c
 msgid "Group management"
 msgstr ""
 
-#: ../features.rst:60 1644b54cef5745b1a581065ba51e0969
+#: ../features.rst:62 1644b54cef5745b1a581065ba51e0969
 msgid "Group edition"
 msgstr ""
 
-#: ../features.rst:62 0b4c9a7da63540bd8105cd1f78a6ce49
+#: ../features.rst:64 0b4c9a7da63540bd8105cd1f78a6ce49
 msgid ""
 "In a similar fashion than :ref:`profile management "
 "<feature_profile_management>` Canaille provides an interface to manage user "
 "groups."
 msgstr ""
 
-#: ../features.rst:64 4b238303f6f84fc0ae1196cebb9a3d84
+#: ../features.rst:66 4b238303f6f84fc0ae1196cebb9a3d84
 msgid ""
 "The group management is quite simple at the moment and consists in a group "
 "name and description, and the list of its members. Group membership can be "
@@ -2861,58 +2861,58 @@ msgid ""
 "to define user permissions."
 msgstr ""
 
-#: ../features.rst:67 ../features.rst:160 ../tutorial/provisioning.rst:28
+#: ../features.rst:69 ../features.rst:162 ../tutorial/provisioning.rst:28
 #: 735bc797a0fe4ba98742999895a18b86 b2a2a756d3224b9cb3b6d8a727bf936b
 #: cb293a06bb4142b4b6e0a07dd5fef3b4
 msgid "Todo"
 msgstr ""
 
-#: ../features.rst:68 48d910bfd7124145b745516d6104a6fa
+#: ../features.rst:70 48d910bfd7124145b745516d6104a6fa
 msgid ""
 "At the moment adding an user to a group can only be achieved by the user "
 "settings page, but we are :issue:`working to improve this <192>`."
 msgstr ""
 
-#: ../features.rst:70 7047c87a748641548cec6614d43a2f2e
+#: ../features.rst:72 7047c87a748641548cec6614d43a2f2e
 msgid ""
 "Group management can be enable with a :attr:`dedicated user permission "
 "<canaille.core.configuration.Permission.MANAGE_GROUPS>`."
 msgstr ""
 
-#: ../features.rst:73 57e56305f7e84ebfa99d89ca312e11cf
+#: ../features.rst:75 57e56305f7e84ebfa99d89ca312e11cf
 msgid ""
 "Due to limitations in the :ref:`LDAP backend <tutorial/databases:LDAP>`, "
 "groups must have at least one member. Thus it is not possible to remove the "
 "last user of a group without removing the group."
 msgstr ""
 
-#: ../features.rst:79 ../index.rst:34 5f4b8c17064749a8b0b4e5b66faab39f
+#: ../features.rst:81 ../index.rst:34 5f4b8c17064749a8b0b4e5b66faab39f
 #: ca5d38027b174df38db0d726496cb560
 msgid "User authentication"
 msgstr ""
 
-#: ../features.rst:81 730c0ccdd9d543b7ac3a5ef958b0fba7
+#: ../features.rst:83 730c0ccdd9d543b7ac3a5ef958b0fba7
 msgid ""
 "Unless their account is :ref:`locked <feature_account_locking>`, users can "
 "authenticate with a login and a password."
 msgstr ""
 
-#: ../features.rst:85 54c06db509a64e4bac7130858fcce314
+#: ../features.rst:87 54c06db509a64e4bac7130858fcce314
 msgid ""
 "For security reasons, it won't be told to users if they try to sign in with "
 "an unexisting logging, unless explicitly :attr:`set in the configuration "
 "<canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS>`."
 msgstr ""
 
-#: ../features.rst:90 eeea1d3be23f42d99589da11208d156a
+#: ../features.rst:92 eeea1d3be23f42d99589da11208d156a
 msgid "User registration"
 msgstr ""
 
-#: ../features.rst:96 167ac2909e6640e9997ac2ee0261d6a0
+#: ../features.rst:98 167ac2909e6640e9997ac2ee0261d6a0
 msgid "The registration page."
 msgstr ""
 
-#: ../features.rst:98 cb501b37b79a427285d6d21c6ef60158
+#: ../features.rst:100 cb501b37b79a427285d6d21c6ef60158
 msgid ""
 "Users can create accounts on Canaille if the :attr:`registration feature "
 "<canaille.core.configuration.CoreSettings.ENABLE_REGISTRATION>` is enabled. "
@@ -2920,7 +2920,7 @@ msgid ""
 "the default :class:`ACL settings <canaille.core.configuration.ACLSettings>`."
 msgstr ""
 
-#: ../features.rst:100 672effa5dbee48208ade68c5b690fdc0
+#: ../features.rst:102 672effa5dbee48208ade68c5b690fdc0
 msgid ""
 "If :attr:`email confirmation <canaille.core.configuration.CoreSettings."
 "EMAIL_CONFIRMATION>` is also enabled, users will be sent a confirmation link "
@@ -2928,16 +2928,16 @@ msgid ""
 "finalize their registration."
 msgstr ""
 
-#: ../features.rst:105 07681f997d064659a4291495c6e7f578
+#: ../features.rst:107 07681f997d064659a4291495c6e7f578
 msgid "User invitation"
 msgstr ""
 
-#: ../features.rst:112 ../../<autotemplate>:1 e47236331fd64f78adbe529acbb4aa3d
+#: ../features.rst:114 ../../<autotemplate>:1 e47236331fd64f78adbe529acbb4aa3d
 #: 7fb360b06c0846228fb44e86abbd7f73
 msgid "The invitation form page."
 msgstr ""
 
-#: ../features.rst:114 80784c631014421da6b3d6d2d30678a9
+#: ../features.rst:116 80784c631014421da6b3d6d2d30678a9
 msgid ""
 "If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
 "configured, users with :attr:`user management permission <canaille.core."
@@ -2945,21 +2945,21 @@ msgid ""
 "one user."
 msgstr ""
 
-#: ../features.rst:116 fdb21770faef4882936b381acc5cd594
+#: ../features.rst:118 fdb21770faef4882936b381acc5cd594
 msgid ""
 "The link goes to a registration form, even if regular :ref:`user "
 "registration <feature_user_registration>` is disabled."
 msgstr ""
 
-#: ../features.rst:118 1eee283dffb845808f93ffe07a1b99f0
+#: ../features.rst:120 1eee283dffb845808f93ffe07a1b99f0
 msgid "It can be automatically sent by email to the new user."
 msgstr ""
 
-#: ../features.rst:123 10ca05c9a97842bb86ccd48abd0e6340
+#: ../features.rst:125 10ca05c9a97842bb86ccd48abd0e6340
 msgid "Account locking"
 msgstr ""
 
-#: ../features.rst:125 064d03b7e43c4d3281672dee73480dde
+#: ../features.rst:127 064d03b7e43c4d3281672dee73480dde
 msgid ""
 "If Canaille is plugged to a :ref:`backend <feature_databases>` that supports "
 "it, user accounts can be locked by users with :attr:`user management "
@@ -2967,56 +2967,56 @@ msgid ""
 "date can be set instantly or at a given date in the future."
 msgstr ""
 
-#: ../features.rst:128 b3e6c8cf27994518afd58584a2fd27c3
+#: ../features.rst:130 b3e6c8cf27994518afd58584a2fd27c3
 msgid "At the moment a user account is locked:"
 msgstr ""
 
-#: ../features.rst:130 6dc6fe293fb9425e8bd877a7bc03ee7a
+#: ../features.rst:132 6dc6fe293fb9425e8bd877a7bc03ee7a
 msgid "their open sessions will be closed;"
 msgstr ""
 
-#: ../features.rst:131 f60dd82272ef4b1c82221bbf0d8dbafc
+#: ../features.rst:133 f60dd82272ef4b1c82221bbf0d8dbafc
 msgid "they won't be able to sign in again;"
 msgstr ""
 
-#: ../features.rst:132 d881acc4623d41369db7d1c9ab7b177a
+#: ../features.rst:134 d881acc4623d41369db7d1c9ab7b177a
 msgid "no new OIDC token will be issued;"
 msgstr ""
 
-#: ../features.rst:134 adf62371ae0d40458220fb82fe9d9dfa
+#: ../features.rst:136 adf62371ae0d40458220fb82fe9d9dfa
 msgid ""
 "User accounts must be manually unlocked by an administrator for the users to "
 "regain access to those actions."
 msgstr ""
 
-#: ../features.rst:139 077a8945d5be45d2b98549ba519df03f
+#: ../features.rst:141 077a8945d5be45d2b98549ba519df03f
 msgid "Account deletion"
 msgstr ""
 
-#: ../features.rst:141 122296809a684bc4878fb4e17a24d9c4
+#: ../features.rst:143 122296809a684bc4878fb4e17a24d9c4
 msgid ""
 "Users with the :attr:`account deletion permission <canaille.core."
 "configuration.Permission.DELETE_ACCOUNT>` are allowed to delete their own "
 "account."
 msgstr ""
 
-#: ../features.rst:143 1ec92531f64b4282a384807b7c0cc298
+#: ../features.rst:145 1ec92531f64b4282a384807b7c0cc298
 msgid ""
 "Users that also have the :attr:`user management permission <canaille.core."
 "configuration.Permission.MANAGE_USERS>` are also allowed to delete other "
 "users accounts."
 msgstr ""
 
-#: ../features.rst:148 88b80212110a48a7afd05a726b15b700
+#: ../features.rst:150 88b80212110a48a7afd05a726b15b700
 msgid "Password recovery"
 msgstr ""
 
-#: ../features.rst:154 ../../<autotemplate>:1 442e3d5640ea4bfbbbf7c77180d61566
+#: ../features.rst:156 ../../<autotemplate>:1 442e3d5640ea4bfbbbf7c77180d61566
 #: 62359f0871dc4119801d0f1d8e992590
 msgid "The password reset page."
 msgstr ""
 
-#: ../features.rst:156 32ecdae0caaa453a9a6b3093f607994e
+#: ../features.rst:158 32ecdae0caaa453a9a6b3093f607994e
 msgid ""
 "If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
 "configured and the :attr:`password recovery feature <canaille.core."
@@ -3024,21 +3024,21 @@ msgid ""
 "can ask for a password reset email if they cannot remember their password."
 msgstr ""
 
-#: ../features.rst:158 91e460781f624279a80ad2e300eadf15
+#: ../features.rst:160 91e460781f624279a80ad2e300eadf15
 msgid ""
 "The email will be sent to the email addresses filled in their profile, and "
 "will contain a link that will allow them to choose a new password. ."
 msgstr ""
 
-#: ../features.rst:162 384d87c6ea3245c4bad6a2f94430bace
+#: ../features.rst:164 384d87c6ea3245c4bad6a2f94430bace
 msgid "Check that password recovery is disabled on locked accounts."
 msgstr ""
 
-#: ../features.rst:167 9a668380dcdf4ab8893ca4787b565115
+#: ../features.rst:169 9a668380dcdf4ab8893ca4787b565115
 msgid "Password reset"
 msgstr ""
 
-#: ../features.rst:169 7bf01205445d47fcb8adfed6720c9030
+#: ../features.rst:171 7bf01205445d47fcb8adfed6720c9030
 msgid ""
 "If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
 "configured, :attr:`user management permission <canaille.core.configuration."
@@ -3047,16 +3047,16 @@ msgid ""
 "retrieve the old one."
 msgstr ""
 
-#: ../features.rst:175 2e4c44ed759946649c63232445d1bde6
+#: ../features.rst:177 2e4c44ed759946649c63232445d1bde6
 msgid "Password initialization"
 msgstr ""
 
-#: ../features.rst:182 ../../<autotemplate>:1 ea223e0ccc36474487597f68dbbab192
+#: ../features.rst:184 ../../<autotemplate>:1 ea223e0ccc36474487597f68dbbab192
 #: c47e6ab6b8e442b9ac2e07caa59c4a34 b3a0bf4f225f411b968ccbf1b1d528e4
 msgid "The first login page."
 msgstr ""
 
-#: ../features.rst:184 c4db7f433a964e0eaa2e56926b236eb8
+#: ../features.rst:186 c4db7f433a964e0eaa2e56926b236eb8
 msgid ""
 "User :attr:`passwords <canaille.core.models.User.password>` are optional. If "
 "a :class:`mail server <canaille.core.configuration.SMTPSettings>` is "
@@ -3066,11 +3066,11 @@ msgid ""
 "password."
 msgstr ""
 
-#: ../features.rst:191 f39d0d7d34014a7b88047889bfe04b76
+#: ../features.rst:193 f39d0d7d34014a7b88047889bfe04b76
 msgid "Password compromission check"
 msgstr ""
 
-#: ../features.rst:193 63eee1347a7249199272426682f8a080
+#: ../features.rst:195 63eee1347a7249199272426682f8a080
 msgid ""
 "If :attr:`password compromission check feature <canaille.core.configuration."
 "CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK>` is enabled, Canaille will "
@@ -3079,11 +3079,11 @@ msgid ""
 "<canaille.core.configuration.CoreSettings.ADMIN_EMAIL>`."
 msgstr ""
 
-#: ../features.rst:198 007c1076b96b47429b59b506c18a5639
+#: ../features.rst:200 007c1076b96b47429b59b506c18a5639
 msgid "Multi-factor authentication"
 msgstr ""
 
-#: ../features.rst:200 8d91bd93597147e9bd00d4941887daa5
+#: ../features.rst:202 8d91bd93597147e9bd00d4941887daa5
 msgid ""
 "If the :attr:`one-time password feature <canaille.core.configuration."
 "CoreSettings.OTP_METHOD>` is set, then users will need to authenticate "
@@ -3102,30 +3102,30 @@ msgid ""
 "one-time password sent to their primary phone number."
 msgstr ""
 
-#: ../features.rst:209 c955d2e5379047fa860a054e22d7ecd9
+#: ../features.rst:211 c955d2e5379047fa860a054e22d7ecd9
 msgid "Intruder lockout"
 msgstr ""
 
-#: ../features.rst:211 466bb908ddda41c9b66b28d603088f5d
+#: ../features.rst:213 466bb908ddda41c9b66b28d603088f5d
 msgid ""
 "If the :attr:`intruder lockout feature <canaille.core.configuration."
 "CoreSettings.ENABLE_INTRUDER_LOCKOUT>` is enabled, then users will have to "
 "wait for an increasingly long time between each failed login attempt."
 msgstr ""
 
-#: ../features.rst:214 b9411d8a5fdf45d4858cc7dfb3635a4b
+#: ../features.rst:216 b9411d8a5fdf45d4858cc7dfb3635a4b
 msgid "Web interface"
 msgstr ""
 
-#: ../features.rst:219 550e6d9c0c7742fb9fd1f9aead59e7e2
+#: ../features.rst:221 550e6d9c0c7742fb9fd1f9aead59e7e2
 msgid "Internationalization"
 msgstr ""
 
-#: ../features.rst:221 2d29ab8d21884a36bc96c9973d836273
+#: ../features.rst:223 2d29ab8d21884a36bc96c9973d836273
 msgid "Translation state"
 msgstr ""
 
-#: ../features.rst:226 478a236ac6854fac992be16a0415a397
+#: ../features.rst:228 478a236ac6854fac992be16a0415a397
 msgid ""
 "Canaile will display in your :attr:`preferred language <canaille.core.models."
 "User.preferred_language>` if available, or your browser language if "
@@ -3135,22 +3135,22 @@ msgid ""
 "for every users."
 msgstr ""
 
-#: ../features.rst:232 710747940c5347bc9ea03785cc67843e
+#: ../features.rst:234 710747940c5347bc9ea03785cc67843e
 msgid "Lightweight"
 msgstr ""
 
-#: ../features.rst:234 7eddc33387c448abb9ce2ad194498c49
+#: ../features.rst:236 7eddc33387c448abb9ce2ad194498c49
 msgid ""
 "The web interface is lightweight, so everything should load quickly. There "
 "is a few Javascript here and there to smooth the experience, but no "
 "Javascript at all is needed to use Canaille."
 msgstr ""
 
-#: ../features.rst:238 832059971a124c0a8cd4c1fbb85c5353
+#: ../features.rst:240 832059971a124c0a8cd4c1fbb85c5353
 msgid "Customizable"
 msgstr ""
 
-#: ../features.rst:240 d9dc5f22ae1a4357a06751a5a287f2dc
+#: ../features.rst:242 d9dc5f22ae1a4357a06751a5a287f2dc
 msgid ""
 "The default theme should be good enough for most usages. It has a dark "
 "theme, display well on mobile, and let you choose a :attr:`logo <canaille."
@@ -3158,13 +3158,13 @@ msgid ""
 "configuration.CoreSettings.FAVICON>`."
 msgstr ""
 
-#: ../features.rst:243 680bbfa7c20641b38301f1f550ca1292
+#: ../features.rst:245 680bbfa7c20641b38301f1f550ca1292
 msgid ""
 "If you need more you can also use a :attr:`custom theme <canaille.core."
 "configuration.CoreSettings.THEME>`."
 msgstr ""
 
-#: ../features.rst:250 a302508666d74dd7832283f8c8b95d69
+#: ../features.rst:252 a302508666d74dd7832283f8c8b95d69
 msgid ""
 "Canaille implements a :ref:`subset<development/specifications:State of the "
 "specs in Canaille>` of the OAuth2/OpenID Connect specifications . This "
@@ -3172,58 +3172,58 @@ msgid ""
 "On)` to applications plugged to Canaille."
 msgstr ""
 
-#: ../features.rst:254 245b2a1686ca4c2bba3295bae58ba562
+#: ../features.rst:256 245b2a1686ca4c2bba3295bae58ba562
 msgid "Consent management"
 msgstr ""
 
-#: ../features.rst:261 ../../<autotemplate>:1 0595f465de224d4aac6db84347176788
+#: ../features.rst:263 ../../<autotemplate>:1 0595f465de224d4aac6db84347176788
 #: c80c20228a4e441f859bd3c2c4dca3fd
 msgid "The consent request dialog."
 msgstr ""
 
-#: ../features.rst:263 c5bad422e0794648b655b2570a0f166f
+#: ../features.rst:265 c5bad422e0794648b655b2570a0f166f
 msgid ""
 "Users can give their consent to application requesting access to their "
 "personal information, and then revoke those consent at their will."
 msgstr ""
 
-#: ../features.rst:267 9ef5761272c14e7595d282c0d256843d
+#: ../features.rst:269 9ef5761272c14e7595d282c0d256843d
 msgid "Application management"
 msgstr ""
 
-#: ../features.rst:274 ../../<autotemplate>:1 5323ffe4d101447d99b325498a26cf10
+#: ../features.rst:276 ../../<autotemplate>:1 5323ffe4d101447d99b325498a26cf10
 #: ea9b25fddd984b18a16c638926e39091
 msgid "The client addition page."
 msgstr ""
 
-#: ../features.rst:276 224f4942c0b84db2b69b434c03a44953
+#: ../features.rst:278 224f4942c0b84db2b69b434c03a44953
 msgid ""
 "Users with the right :attr:`permission <canaille.core.configuration."
 "Permission.MANAGE_OIDC>` can manager OIDC clients through the web interface."
 msgstr ""
 
-#: ../features.rst:278 e6a69423a2844a3bad6401a12f111e93
+#: ../features.rst:280 e6a69423a2844a3bad6401a12f111e93
 msgid ""
 "In some cases, it might be useful to avoid the consent page for some trusted "
 "applications, so clients can be pre-consented."
 msgstr ""
 
-#: ../features.rst:281 6726d23e95a24812892d3b9642edfa2b
+#: ../features.rst:283 6726d23e95a24812892d3b9642edfa2b
 msgid "Discovery"
 msgstr ""
 
-#: ../features.rst:283 785dc556a9124816a9ba1a8bc8ee57b0
+#: ../features.rst:285 785dc556a9124816a9ba1a8bc8ee57b0
 msgid ""
 "Canaille implements the :doc:`Discovery specifications <development/"
 "specifications>` so most of the applications plugged to Canaille can auto-"
 "configure themselves."
 msgstr ""
 
-#: ../features.rst:286 5220435d47284a17ad3a08b9a2b72286
+#: ../features.rst:288 5220435d47284a17ad3a08b9a2b72286
 msgid "Dynamic Client Registration"
 msgstr ""
 
-#: ../features.rst:288 7be8ef3292734f059a6b29e3bf70b8c9
+#: ../features.rst:290 7be8ef3292734f059a6b29e3bf70b8c9
 msgid ""
 "Canaille implements the :doc:`Dynamic Client Registration specifications "
 "<development/specifications>`, so when the :attr:`feature is enabled "
@@ -3232,22 +3232,34 @@ msgid ""
 "Canaille without an administrator intervention."
 msgstr ""
 
-#: ../features.rst:291 b9d0e13ffc244db8a032799fbe45fd39
+#: ../features.rst:295 8d03aa57348542ccb8456a9977242f8e
+msgid "Application provisioning"
+msgstr ""
+
+#: ../features.rst:297 03d7ebe6a79b4f2fa0a02385f30555d9
+msgid ""
+"Canaille implements the :doc:`SCIM specifications <development/"
+"specifications>` and can :doc:`automatically brodcast <tutorial/"
+"provisioning>` modifications on users and groups to applications plugged to "
+"Canaille."
+msgstr ""
+
+#: ../features.rst:300 b9d0e13ffc244db8a032799fbe45fd39
 msgid "System administration"
 msgstr ""
 
-#: ../features.rst:296 ../references/commands.rst:2
+#: ../features.rst:305 ../references/commands.rst:2
 #: a909a55bbe1140449e782f452a0f9742 977d73c67d6944a4abd39f4bd0c41b57
 msgid "Command Line Interface"
 msgstr ""
 
-#: ../features.rst:298 3475469739374d0eaee6508fdeb70519
+#: ../features.rst:307 3475469739374d0eaee6508fdeb70519
 msgid ""
 "Canaille comes with a :abbr:`CLI (Command Line Interface)` to help "
 "administrators in hosting and management."
 msgstr ""
 
-#: ../features.rst:300 4cd2ec0f5963483f8eeb23c29e646162
+#: ../features.rst:309 4cd2ec0f5963483f8eeb23c29e646162
 msgid ""
 "There are tools to :ref:`generate and check a configuration file "
 "<cli_config>` or to :ref:`install missing parts <cli_install>`. You can use "
@@ -3257,18 +3269,18 @@ msgid ""
 "or  :class:`OIDC clients <canaille.oidc.basemodels.Client>`."
 msgstr ""
 
-#: ../features.rst:303 d801f49d97824edea14f495338790ac8
+#: ../features.rst:312 d801f49d97824edea14f495338790ac8
 msgid ""
 "There are also tools to :ref:`fill your database <cli_populate>` with random "
 "objects, for tests purpose for instance."
 msgstr ""
 
-#: ../features.rst:308 ../tutorial/databases.rst:2
+#: ../features.rst:317 ../tutorial/databases.rst:2
 #: 8b0dc3c449d64df19d6112ff1d2ff0d5 6f318e2b087e4da2807cb61b3683ed51
 msgid "Databases"
 msgstr ""
 
-#: ../features.rst:310 daf622d0375a448d98d8132ea3110ec5
+#: ../features.rst:319 daf622d0375a448d98d8132ea3110ec5
 msgid ""
 "Canaille can handle data from the most :ref:`common SQL databases <tutorial/"
 "databases:SQL>` such as PostgreSQL, MariaDB or SQLite, as well as :ref:"
@@ -3277,76 +3289,76 @@ msgid ""
 "unit tests suites."
 msgstr ""
 
-#: ../features.rst:316 8ab4ce13b0d04c41a55cf8ff81c88c1b
+#: ../features.rst:325 8ab4ce13b0d04c41a55cf8ff81c88c1b
 msgid "Logging"
 msgstr ""
 
-#: ../features.rst:318 1e0404a7e32e4bbda5c30237b2ea6749
+#: ../features.rst:327 1e0404a7e32e4bbda5c30237b2ea6749
 msgid ""
 "Canaille writes :attr:`logs <canaille.core.configuration.CoreSettings."
 "LOGGING>` for every important event happening, to help administrators "
 "understand what is going on and debug funky situations."
 msgstr ""
 
-#: ../features.rst:320 a38d22c88c4f468392536f193c04e326
+#: ../features.rst:329 a38d22c88c4f468392536f193c04e326
 msgid ""
 "The following security events are logged with the log level \"security\" for "
 "easy retrieval :"
 msgstr ""
 
-#: ../features.rst:322 b1017ba709e6497e94ed82bc293cf93b
+#: ../features.rst:331 b1017ba709e6497e94ed82bc293cf93b
 msgid "Authentication attempt"
 msgstr ""
 
-#: ../features.rst:323 9abfecc689ee48f889979a400b2c1a9e
+#: ../features.rst:332 9abfecc689ee48f889979a400b2c1a9e
 msgid "Password update"
 msgstr ""
 
-#: ../features.rst:324 4d941058b25449888b6eed7145075172
+#: ../features.rst:333 4d941058b25449888b6eed7145075172
 msgid "Email update"
 msgstr ""
 
-#: ../features.rst:325 208955a438a24d39a53e592d5a3e0326
+#: ../features.rst:334 208955a438a24d39a53e592d5a3e0326
 msgid "Forgotten password mail sent to user"
 msgstr ""
 
-#: ../features.rst:326 03be64e842374dd0afb3a4bdad03509a
+#: ../features.rst:335 03be64e842374dd0afb3a4bdad03509a
 msgid "One-time password mail sent to user"
 msgstr ""
 
-#: ../features.rst:327 1dd9dc6877a04a2e90e246d066e5ff3f
+#: ../features.rst:336 1dd9dc6877a04a2e90e246d066e5ff3f
 msgid "Multi-factor authentication reset"
 msgstr ""
 
-#: ../features.rst:328 7fae91a6ef2140709d39b5a3bd3d319b
+#: ../features.rst:337 7fae91a6ef2140709d39b5a3bd3d319b
 msgid "Token emission"
 msgstr ""
 
-#: ../features.rst:329 18bf8f2d79fc4a019fccc59f497676f9
+#: ../features.rst:338 18bf8f2d79fc4a019fccc59f497676f9
 msgid "Token refresh"
 msgstr ""
 
-#: ../features.rst:330 9699d6142750444390f0c5b9ff7d3738
+#: ../features.rst:339 9699d6142750444390f0c5b9ff7d3738
 msgid "Token revokation"
 msgstr ""
 
-#: ../features.rst:331 e3d6c0d2c0454b96a5111a39c8b6a154
+#: ../features.rst:340 e3d6c0d2c0454b96a5111a39c8b6a154
 msgid "New consent given for client application"
 msgstr ""
 
-#: ../features.rst:332 8ea555681c36454794d8a071781ad2b9
+#: ../features.rst:341 8ea555681c36454794d8a071781ad2b9
 msgid "Consent revokation"
 msgstr ""
 
-#: ../features.rst:337 434b77231c614b1fb3b161e99021d572
+#: ../features.rst:346 434b77231c614b1fb3b161e99021d572
 msgid "Development and testing tool"
 msgstr ""
 
-#: ../features.rst:342 b1db9a65185243cf8fa11da971727f71
+#: ../features.rst:351 b1db9a65185243cf8fa11da971727f71
 msgid "Unit-testing tool"
 msgstr ""
 
-#: ../features.rst:344 a39b24bddebb4fcb819e18fae1cde97c
+#: ../features.rst:353 a39b24bddebb4fcb819e18fae1cde97c
 msgid ""
 "Thanks to its lightweight :ref:`in-memory database <tutorial/databases:"
 "Memory>` and its curated :ref:`dependency list <tutorial/install:Get the "
@@ -3355,64 +3367,48 @@ msgid ""
 "you work with python you might want to check :doc:`pytest-iam:index`."
 msgstr ""
 
-#: ../features.rst:347 a36d0541d66447beb50200fcafe7c028
+#: ../features.rst:356 a36d0541d66447beb50200fcafe7c028
 msgid "Development server"
 msgstr ""
 
-#: ../features.rst:349 945a5dcb056040dbb9b1f5ecba940ed7
+#: ../features.rst:358 945a5dcb056040dbb9b1f5ecba940ed7
 msgid ""
 "It can also being launched in your development environment, if you find that "
 "launching a Keycloak in a Docker container is too heavy for your little web "
 "application."
 msgstr ""
 
-#: ../features.rst:354 ef006716e8a541759cc65be8819b8795
+#: ../features.rst:363 ef006716e8a541759cc65be8819b8795
 msgid "Continuous Integration tools"
 msgstr ""
 
-#: ../features.rst:356 b30ba03064a84611818d4f6cac0f9674
+#: ../features.rst:365 b30ba03064a84611818d4f6cac0f9674
 msgid ""
 "It also fits well in continuous integration scenarios. Thanks to its :ref:"
 "`CLI <feature_cli>`, you can prepare data in Canaille, let your application "
 "interact with it, and then check the side effects."
 msgstr ""
 
-#: ../features.rst:359 c626937df7834136abb4999efa2e706e
+#: ../features.rst:368 c626937df7834136abb4999efa2e706e
 msgid "Roadmap"
 msgstr ""
 
-#: ../features.rst:362 d888feb396024248ae7b4b7c0c00840d
+#: ../features.rst:371 d888feb396024248ae7b4b7c0c00840d
 msgid "Stable version"
 msgstr ""
 
-#: ../features.rst:364 aef62ae429b64af88a422b3ef09d5b44
+#: ../features.rst:373 aef62ae429b64af88a422b3ef09d5b44
 msgid ""
 "Before we push Canaille in stable version we want to achieve the following "
 "tasks:"
 msgstr ""
 
-#: ../features.rst:367 ec2567bd551a495fb1a052f3a84029cc
-msgid "Packaging"
-msgstr ""
-
-#: ../features.rst:369 a6b1e2d2873a4521b69241ee8ac0098f
-msgid ":issue:`Nix package <190>`"
-msgstr ""
-
-#: ../features.rst:370 9f5ec88ef4e745b0b3d92b8ed649be01
-msgid ":issue:`Docker / OCI package <59>`"
-msgstr ""
-
-#: ../features.rst:373 8968093a056b46dc99ea5aa01d7db8b1
+#: ../features.rst:376 8968093a056b46dc99ea5aa01d7db8b1
 msgid "And beyond"
 msgstr ""
 
-#: ../features.rst:375 2fc7a4a02b8143758bc2228b3d0bfebb
+#: ../features.rst:378 2fc7a4a02b8143758bc2228b3d0bfebb
 msgid ":issue:`OpenID Connect certification <182>`"
-msgstr ""
-
-#: ../features.rst:376 b1a79ce7035342c18c9b02aa1f5c001b
-msgid ":issue:`SCIM support <116>`"
 msgstr ""
 
 #: ../index.rst:15 373429f0b70947b6aced960793a91cfb
@@ -7539,47 +7535,24 @@ msgid ""
 "might recognize in, where Canaille would fit your needs."
 msgstr ""
 
-#: ../usecases.rst:8 7fd29c39667f4e87aca3f139b2755033
-msgid "OpenID Connect provider on top of a LDAP directory"
+#: ../usecases.rst:8 e973e8477b5e476eae47432daabe9813
+msgid "A lightweight IAM for production"
 msgstr ""
 
-#: ../usecases.rst:10 45a520df4cd54a33a9311c513da77cea
+#: ../usecases.rst:10 289779b265694326945760c69ce1d8d6
 msgid ""
-"Your organization has an historic :ref:`LDAP directory <feature_databases>` "
-"and you want to add a :ref:`OpenID Connect <feature_oidc>` :abbr:`SSO "
-"(Single Sign-On)` layer on top of it, so users can use all your application "
-"while signin-in only once, without any data migration."
+"You want to :ref:`manage a single set of users and groups "
+"<user_and_group_management>`, with :ref:`multi-factor authentication "
+"<feature_multi_factor_authentication>`, :ref:`Single Sign-On <feature_oidc>` "
+"and :ref:`automatic provisioning <feature_provisioning>` of your "
+"applications."
 msgstr ""
 
-#: ../usecases.rst:13 d950baa83ebe4f5297fe0497bb8a3c32
-msgid "Profile edition of LDAP users"
-msgstr ""
-
-#: ../usecases.rst:15 3085f8165e484207bf4659b43862670d
-msgid ""
-"Your organization has a :ref:`LDAP directory <feature_databases>` and you "
-"want to provide a way to your users to :ref:`edit their personal information "
-"<feature_profile_management>` by themselves, without requiring any "
-"administrator intervention."
-msgstr ""
-
-#: ../usecases.rst:18 7dde73271b77406d97bdcd3fa3531b98
-msgid "Password recovery with a LDAP directory"
-msgstr ""
-
-#: ../usecases.rst:20 45e8874804454fae8093b9467af08d7c
-msgid ""
-"Your organization has an historic :ref:`LDAP directory <feature_databases>` "
-"and you want to provide a way to your users to :ref:`recover their password "
-"<feature_password_recovery>` when they cannot remember it, without any "
-"administrator intervention."
-msgstr ""
-
-#: ../usecases.rst:23 7d266d74683a41ebba6c0a25305ce761
+#: ../usecases.rst:13 7d266d74683a41ebba6c0a25305ce761
 msgid "A lightweight IAM for unit testing"
 msgstr ""
 
-#: ../usecases.rst:25 0c8f0e5e9c4e41a78902c67db8311eb0
+#: ../usecases.rst:15 0c8f0e5e9c4e41a78902c67db8311eb0
 msgid ""
 "You are :ref:`developing <feature_development>` an application relying on "
 "OAuth2 or OpenID Connect to authenticate the users. You don't want to mock "
@@ -7588,11 +7561,11 @@ msgid ""
 "application against different identity provider tunings."
 msgstr ""
 
-#: ../usecases.rst:28 e973e8477b5e476eae47432daabe9813
+#: ../usecases.rst:18 e973e8477b5e476eae47432daabe9813
 msgid "A lightweight IAM for developing"
 msgstr ""
 
-#: ../usecases.rst:30 a638d446cf0f4ea48c4e047449605160
+#: ../usecases.rst:20 a638d446cf0f4ea48c4e047449605160
 msgid ""
 "You are :ref:`developing <feature_development>` an application relying on "
 "OAuth2 or OpenID Connect to authenticate the users. You need a :ref:`IAM "
@@ -7600,11 +7573,11 @@ msgid ""
 "cannot bear launching a full Keycloak in a Docker container."
 msgstr ""
 
-#: ../usecases.rst:33 4a822053840741f7b560be6d2a59a767
+#: ../usecases.rst:23 4a822053840741f7b560be6d2a59a767
 msgid "A lightweight IAM for CIs"
 msgstr ""
 
-#: ../usecases.rst:35 875c095e55944ee4817a0c73a9800c44
+#: ../usecases.rst:25 875c095e55944ee4817a0c73a9800c44
 msgid ""
 "You are :ref:`developing <feature_development>` an application relying on "
 "OAuth2 or OpenID Connect to authenticate the users. You need a IAM server "
@@ -7612,22 +7585,58 @@ msgid ""
 "`continuous integration environment <feature_ci>`."
 msgstr ""
 
-#: ../usecases.rst:38 a2f6f3e4416c42d8a47db447cd21710e
+#: ../usecases.rst:28 7fd29c39667f4e87aca3f139b2755033
+msgid "OpenID Connect provider on top of a LDAP directory"
+msgstr ""
+
+#: ../usecases.rst:30 45a520df4cd54a33a9311c513da77cea
+msgid ""
+"Your organization has an historic :ref:`LDAP directory <feature_databases>` "
+"and you want to add a :ref:`OpenID Connect <feature_oidc>` :abbr:`SSO "
+"(Single Sign-On)` layer on top of it, so users can use all your application "
+"while signin-in only once, without any data migration."
+msgstr ""
+
+#: ../usecases.rst:33 d950baa83ebe4f5297fe0497bb8a3c32
+msgid "Profile edition of LDAP users"
+msgstr ""
+
+#: ../usecases.rst:35 3085f8165e484207bf4659b43862670d
+msgid ""
+"Your organization has a :ref:`LDAP directory <feature_databases>` and you "
+"want to provide a way to your users to :ref:`edit their personal information "
+"<feature_profile_management>` by themselves, without requiring any "
+"administrator intervention."
+msgstr ""
+
+#: ../usecases.rst:38 7dde73271b77406d97bdcd3fa3531b98
+msgid "Password recovery with a LDAP directory"
+msgstr ""
+
+#: ../usecases.rst:40 45e8874804454fae8093b9467af08d7c
+msgid ""
+"Your organization has an historic :ref:`LDAP directory <feature_databases>` "
+"and you want to provide a way to your users to :ref:`recover their password "
+"<feature_password_recovery>` when they cannot remember it, without any "
+"administrator intervention."
+msgstr ""
+
+#: ../usecases.rst:43 a2f6f3e4416c42d8a47db447cd21710e
 msgid "A CLI to quickly edit LDAP directory users"
 msgstr ""
 
-#: ../usecases.rst:40 8d06e1d10a634e968c974fa0990d972a
+#: ../usecases.rst:45 8d06e1d10a634e968c974fa0990d972a
 msgid ""
 "Your organization has an historic :ref:`LDAP directory <feature_databases>`. "
 "You are tired to deal with *ldif* syntax to manage your users and group and "
 "would prefer a simple human-readable CLI."
 msgstr ""
 
-#: ../usecases.rst:44 13d7467ab7d845fe96ae9b067d5b690d
+#: ../usecases.rst:49 13d7467ab7d845fe96ae9b067d5b690d
 msgid "A LDAP to SQL migration tool"
 msgstr ""
 
-#: ../usecases.rst:46 b75745dd42eb44c2867a3b0012708f9e
+#: ../usecases.rst:51 b75745dd42eb44c2867a3b0012708f9e
 msgid ""
 "You are tired of LDAP and want a tool to :ref:`migrate your users and groups "
 "<database_migration>` to a SQL database."
