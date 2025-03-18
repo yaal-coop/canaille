@@ -1,0 +1,64 @@
+{#
+    .. screenshot:: |canaille|/admin/token/EZWsi6omQRbJjWeq7rk8vcBVYz4PNbBXov97Z1D4mqxZgyQv
+       :context: admin
+       :align: right
+       :width: 275px
+
+       The token view page.
+
+    The token view template.
+
+    Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
+
+    :param form: A token revokation form.
+    :type form: :class:`~canaille.oidc.endpoints.forms.TokenRevokationForm`.
+    #}
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans %}Signing key rotation{% endtrans -%}
+{%- endblock -%}
+
+{% block script %}
+    <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
+{% endblock %}
+
+{% block submenu %}
+    <a class="item" href="{{ url_for('core.admin.mail_index') }}">
+        <i class="user mail icon"></i>
+        {% trans %}Emails{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('oidc.clients.index') }}">
+        <i class="th list icon"></i>
+        {% trans %}Clients{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('oidc.clients.add') }}">
+        <i class="plus icon"></i>
+        {% trans %}Add a client{% endtrans %}
+    </a>
+    <a class="active item" href="{{ url_for('oidc.tokens.index') }}">
+        <i class="key icon"></i>
+        {% trans %}Tokens{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
+        <i class="user secret icon"></i>
+        {% trans %}Codes{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('oidc.rotate.index') }}">
+        <i class="key icon"></i>
+        {% trans %}Key{% endtrans %}
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="loginform">
+        <h3 class="ui top attached header">
+            {% trans %}Key rotation{% endtrans %}
+        </h3>
+
+        <div class="ui attached clearing segment">
+            Ceci est une page de test
+        </div>
+    </div>
+{% endblock %}
