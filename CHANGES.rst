@@ -1,9 +1,21 @@
+[0.0.67] - Unreleased
+---------------------
+
+.. warning::
+
+    This version comes with a schema breaking change.
+    The LDAP schema has evolved. If you use the LDAP schema, please follow the :ref:`ldap_schema_update` section.
+
+Added
+^^^^^
+- Full OIDC Dynamic Client Registration implementation. :issue:`231`
+
 [0.0.66] - 2025-03-18
 ---------------------
 
 .. warning::
 
-    This version comes with a configuration breaking change.
+    This version comes with a CLI breaking change.
     The :ref:`delete command <cli_delete>` don't take arguments anymore. ``canaille delete user XXX`` becomes ``canaille delete user --id XXX``.
 
 Added

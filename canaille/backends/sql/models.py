@@ -238,8 +238,30 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     jwks_uri: Mapped[str] = mapped_column(String, nullable=True)
     jwks: Mapped[str] = mapped_column(String, nullable=True)
     token_endpoint_auth_method: Mapped[str] = mapped_column(String, nullable=True)
+    token_endpoint_auth_signing_alg: Mapped[str] = mapped_column(String, nullable=True)
+    sector_identifier_uri: Mapped[str] = mapped_column(String, nullable=True)
+    subject_type: Mapped[str] = mapped_column(String, nullable=True)
     software_id: Mapped[str] = mapped_column(String, nullable=True)
     software_version: Mapped[str] = mapped_column(String, nullable=True)
+    application_type: Mapped[str] = mapped_column(String, nullable=True)
+    id_token_signed_response_alg: Mapped[str] = mapped_column(String, nullable=True)
+    id_token_encrypted_response_alg: Mapped[str] = mapped_column(String, nullable=True)
+    id_token_encrypted_response_enc: Mapped[str] = mapped_column(String, nullable=True)
+    userinfo_signed_response_alg: Mapped[str] = mapped_column(String, nullable=True)
+    userinfo_encrypted_response_alg: Mapped[str] = mapped_column(String, nullable=True)
+    userinfo_encrypted_response_enc: Mapped[str] = mapped_column(String, nullable=True)
+    default_max_age: Mapped[int] = mapped_column(Integer, nullable=True)
+    require_auth_time: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    default_acr_values: Mapped[list[str]] = mapped_column(
+        MutableJson, nullable=True, default=[]
+    )
+    initiate_login_uri: Mapped[str] = mapped_column(String, nullable=True)
+    request_object_signing_alg: Mapped[str] = mapped_column(String, nullable=True)
+    request_object_encryption_alg: Mapped[str] = mapped_column(String, nullable=True)
+    request_object_encryption_enc: Mapped[str] = mapped_column(String, nullable=True)
+    request_uris: Mapped[list[str]] = mapped_column(
+        MutableJson, nullable=True, default=[]
+    )
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemyModel):

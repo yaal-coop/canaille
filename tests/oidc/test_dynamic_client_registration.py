@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from unittest import mock
 
 from authlib.jose import jwt
@@ -18,16 +19,16 @@ def test_client_registration_with_authentication_static_token(
 
     payload = {
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "post_logout_redirect_uris": [
-            "https://client.example.test/logout_callback",
+            "https://client.test/logout_callback",
         ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.test/logo.webp",
-        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
+        "logo_uri": "https://client.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
     }
@@ -42,29 +43,32 @@ def test_client_registration_with_authentication_static_token(
         "client_id_issued_at": mock.ANY,
         "client_name": "My Example Client",
         "client_secret_expires_at": 0,
-        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
-        "logo_uri": "https://client.example.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
+        "logo_uri": "https://client.test/logo.webp",
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
         "scope": "openid",
+        "application_type": "web",
+        "id_token_signed_response_alg": "RS256",
+        "require_auth_time": False,
     }
 
     assert client.client_name == "My Example Client"
     assert client.redirect_uris == [
-        "https://client.example.test/callback",
-        "https://client.example.test/callback2",
+        "https://client.test/callback",
+        "https://client.test/callback2",
     ]
     assert client.post_logout_redirect_uris == [
-        "https://client.example.test/logout_callback",
+        "https://client.test/logout_callback",
     ]
     assert client.token_endpoint_auth_method == "client_secret_basic"
-    assert client.logo_uri == "https://client.example.test/logo.webp"
-    assert client.jwks_uri == "https://client.example.test/my_public_keys.jwks"
+    assert client.logo_uri == "https://client.test/logo.webp"
+    assert client.jwks_uri == "https://client.test/my_public_keys.jwks"
     assert client in client.audience
     backend.delete(client)
 
@@ -105,13 +109,13 @@ def test_client_registration_with_authentication_no_token(
 
     payload = {
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.test/logo.webp",
-        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
+        "logo_uri": "https://client.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
     }
@@ -139,13 +143,13 @@ def test_client_registration_with_authentication_invalid_token(
 
     payload = {
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "client_name": "My Example Client",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.test/logo.webp",
-        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
+        "logo_uri": "https://client.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
     }
@@ -164,7 +168,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
     software_statement_payload = {
         "software_id": "4NRB1-0XZABZI9E6-5SM3R",
         "client_name": "Example Statement-based Client",
-        "client_uri": "https://client.example.test/",
+        "client_uri": "https://client.test/",
         "response_types": ["code"],
         "grant_types": ["authorization_code"],
     }
@@ -187,20 +191,23 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
             "client_id_issued_at": mock.ANY,
             "client_secret_expires_at": 0,
             "redirect_uris": [
-                "https://client.example.test/callback",
-                "https://client.example.test/callback2",
+                "https://client.test/callback",
+                "https://client.test/callback2",
             ],
             "grant_types": ["authorization_code"],
             "response_types": ["code"],
             "scope": scope_value,
             "token_endpoint_auth_method": "client_secret_basic",
             "client_name": "Example Statement-based Client",
-            "client_uri": "https://client.example.test/",
+            "client_uri": "https://client.test/",
             "software_id": "4NRB1-0XZABZI9E6-5SM3R",
+            "application_type": "web",
+            "id_token_signed_response_alg": "RS256",
+            "require_auth_time": False,
         }
         assert client.redirect_uris == [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ]
         assert client.token_endpoint_auth_method == "client_secret_basic"
         backend.delete(client)
@@ -208,8 +215,8 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
     test_client_registration_with_software_statement_with_different_scopes(
         "openid profile",
         redirect_uris=[
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         software_statement=software_statement,
         scope="openid profile",
@@ -217,8 +224,8 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
     test_client_registration_with_software_statement_with_different_scopes(
         "openid",
         redirect_uris=[
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         software_statement=software_statement,
     )
@@ -229,20 +236,20 @@ def test_client_registration_without_authentication_ok(testclient, backend):
 
     payload = {
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "client_name": "My Example Client",
-        "client_uri": "https://example.test",
+        "client_uri": "https://client.test",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.test/logo.webp",
-        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
+        "logo_uri": "https://client.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
         "scope": "openid profile",
-        "contacts": ["contact@example.test"],
-        "tos_uri": "https://example.test/uri",
-        "policy_uri": "https://example.test/policy",
+        "contacts": ["contact@test"],
+        "tos_uri": "https://client.test/uri",
+        "policy_uri": "https://client.test/policy",
         "software_id": "example",
         "software_version": "x.y.z",
     }
@@ -255,39 +262,42 @@ def test_client_registration_without_authentication_ok(testclient, backend):
         "client_secret": mock.ANY,
         "client_id_issued_at": mock.ANY,
         "client_name": "My Example Client",
-        "client_uri": "https://example.test",
+        "client_uri": "https://client.test",
         "client_secret_expires_at": 0,
-        "jwks_uri": "https://client.example.test/my_public_keys.jwks",
-        "logo_uri": "https://client.example.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
+        "logo_uri": "https://client.test/logo.webp",
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
         "scope": "openid profile",
-        "contacts": ["contact@example.test"],
-        "tos_uri": "https://example.test/uri",
-        "policy_uri": "https://example.test/policy",
+        "contacts": ["contact@test"],
+        "tos_uri": "https://client.test/uri",
+        "policy_uri": "https://client.test/policy",
         "software_id": "example",
         "software_version": "x.y.z",
+        "application_type": "web",
+        "id_token_signed_response_alg": "RS256",
+        "require_auth_time": False,
     }
     assert client.client_name == "My Example Client"
-    assert client.client_uri == "https://example.test"
+    assert client.client_uri == "https://client.test"
     assert client.redirect_uris == [
-        "https://client.example.test/callback",
-        "https://client.example.test/callback2",
+        "https://client.test/callback",
+        "https://client.test/callback2",
     ]
     assert client.token_endpoint_auth_method == "client_secret_basic"
-    assert client.logo_uri == "https://client.example.test/logo.webp"
-    assert client.jwks_uri == "https://client.example.test/my_public_keys.jwks"
+    assert client.logo_uri == "https://client.test/logo.webp"
+    assert client.jwks_uri == "https://client.test/my_public_keys.jwks"
     assert client.grant_types == ["authorization_code", "implicit"]
     assert client.response_types == ["code", "token"]
     assert client.scope == ["openid", "profile"]
-    assert client.contacts == ["contact@example.test"]
-    assert client.tos_uri == "https://example.test/uri"
-    assert client.policy_uri == "https://example.test/policy"
+    assert client.contacts == ["contact@test"]
+    assert client.tos_uri == "https://client.test/uri"
+    assert client.policy_uri == "https://client.test/policy"
     assert client.software_id == "example"
     assert client.software_version == "x.y.z"
     backend.delete(client)
@@ -299,13 +309,13 @@ def test_client_registration_with_jwks(testclient, backend):
 
     payload = {
         "redirect_uris": [
-            "https://client.example.test/callback",
-            "https://client.example.test/callback2",
+            "https://client.test/callback",
+            "https://client.test/callback2",
         ],
         "client_name": "My Example Client",
-        "client_uri": "https://example.test",
+        "client_uri": "https://client.test",
         "token_endpoint_auth_method": "client_secret_basic",
-        "logo_uri": "https://client.example.test/logo.webp",
+        "logo_uri": "https://client.test/logo.webp",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
         "scope": "openid profile",
@@ -347,4 +357,78 @@ def test_client_registration_with_jwks(testclient, backend):
         ]
     }
 
+    backend.delete(client)
+
+
+def test_client_registration_with_all_attributes(testclient, backend, user):
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
+        "DYNAMIC_CLIENT_REGISTRATION_OPEN"
+    )
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
+        "static-token"
+    ]
+
+    payload = {
+        "redirect_uris": [
+            "https://client.test/callback",
+            "https://client.test/callback2",
+        ],
+        "client_name": "My Example Client",
+        "client_uri": "https://client.test",
+        "token_endpoint_auth_method": "client_secret_basic",
+        "token_endpoint_auth_signing_alg": "RS256",
+        "logo_uri": "https://client.test/logo.webp",
+        "jwks_uri": "https://client.test/my_public_keys.jwks",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+        "tos_uri": "https://client.test/uri",
+        "policy_uri": "https://client.test/policy",
+        "sector_identifier_uri": "https://client.test/sector.json",
+        "subject_type": "public",
+        "software_id": "example-software",
+        "software_version": "x.y.z",
+        "application_type": "web",
+        "id_token_signed_response_alg": "RS256",
+        "id_token_encrypted_response_alg": "RS256",
+        "id_token_encrypted_response_enc": "A128CBC-HS256",
+        "userinfo_signed_response_alg": "RS256",
+        "userinfo_encrypted_response_alg": "RS256",
+        "userinfo_encrypted_response_enc": "A128CBC-HS256",
+        "default_max_age": 12345,
+        "require_auth_time": True,
+        "default_acr_values": ["basic", "mfa", "high"],
+        "initiate_login_uri": "https://client.test/login",
+        "request_object_signing_alg": "RS256",
+        "request_object_encryption_alg": "RS256",
+        "request_object_encryption_enc": "A128CBC-HS256",
+        "request_uris": [
+            "https://client.test/request_objects_1",
+            "https://client.test/request_objects_2",
+        ],
+        "client_secret_expires_at": 0,
+        "scope": "openid",
+    }
+    headers = {"Authorization": "Bearer static-token"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=201)
+
+    client = backend.get(models.Client, client_id=res.json["client_id"])
+    assert res.json == {
+        "client_id": client.client_id,
+        "client_secret": client.client_secret,
+        "client_id_issued_at": mock.ANY,
+        **payload,
+    }
+
+    client = backend.get(models.Client, client_id=res.json["client_id"])
+    for key, payload_value in payload.items():
+        client_value = getattr(client, key)
+
+        if isinstance(client_value, datetime):
+            client_value = client_value.timestamp()
+
+        if key == "scope":
+            client_value = " ".join(client_value)
+
+        assert client_value == payload_value
     backend.delete(client)

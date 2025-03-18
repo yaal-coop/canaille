@@ -74,8 +74,6 @@ You can find more details on the LDAP configuration in the :class:`dedicated sec
    If you want to use different schemas or LDAP servers, adaptations may be needed.
    Patches are welcome.
 
-.. _ldap_manual_schema_installation:
-
 OpenLDAP overlays integration
 -----------------------------
 
@@ -156,6 +154,8 @@ You will also need to add the ``oathHOTPToken`` class to the user:
     ...
     USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
+.. _ldap_manual_schema_installation:
+
 Manual schema installation
 --------------------------
 
@@ -180,6 +180,8 @@ Be careful to stop your ldap server before running ``slapadd``
     sudo service slapd stop
     sudo -u openldap slapadd -n0 -l /path/to/oauth2-openldap.ldif
     sudo service slapd start
+
+.. _ldap_schema_update:
 
 Schema update
 -------------
