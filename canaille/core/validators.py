@@ -20,7 +20,7 @@ def unique_user_name(form, field):
 
 def unique_email(form, field):
     if Backend.instance.get(models.User, emails=field.data) and (
-        not getattr(form, "user", None) or field.data not in form.user.emails
+        not getattr(form, "user", None) or field.data not in (form.user.emails or [])
     ):
         raise wtforms.ValidationError(
             _("The email '{email}' is already used").format(email=field.data)
