@@ -33,7 +33,14 @@ def create_app(
     from .backends import setup_backend
 
     app = Flask(__name__)
-    Talisman(app)
+    csp = {
+        "default-src": "'self'",
+        "font-src": "'self' data:",
+    }
+    Talisman(
+        app,
+        content_security_policy=csp,
+    )
     with app.app_context():
         if not setup_config(
             app=app,

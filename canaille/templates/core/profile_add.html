@@ -61,6 +61,7 @@ It is used in the registration page, and in the manual account creation page ava
                         {% block photo_field scoped %}
                             {{ profile.render_field(form.photo, display=false, class="photo-field") }}
                             {{ profile.render_field(form.photo_delete, display=false, class="photo-delete-button") }}
+                            <!-- TODO : mettre display none dans CSS -->
                             <label
                                 class="ui small bordered image photo-content"
                                 for="{{ form.photo.id }}"
