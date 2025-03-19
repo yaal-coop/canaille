@@ -220,6 +220,85 @@
 # The SMPP password.
 # PASSWORD =
 
+# Mapping of permission groups. See ACLSettings for more details.
+#
+# The ACL name can be freely chosen. For example:
+#
+#     [CANAILLE.ACL.DEFAULT]
+#     PERMISSIONS = ["edit_self", "use_oidc"]
+#     READ = ["user_name", "groups"]
+#     WRITE = ["given_name", "family_name"]
+#
+#     [CANAILLE.ACL.ADMIN]
+#     WRITE = ["user_name", "groups"]
+#
+# The default ACL gives all permissions to users with the `admin` user name, and
+# members of a group called `admin`.
+
+[CANAILLE.ACL.DEFAULT]
+
+# FILTER can be:
+#
+# - None, in which case all the users will match this access control
+# - a mapping where keys are user attributes name and the values those user
+#   attribute values. All the values must be matched for the user to be part
+#   of the access control.
+# - a list of those mappings. If a user values match at least one mapping,
+#   then the user will be part of the access control
+#
+# Here are some examples:
+#
+#     FILTER = {user_name = 'admin'}
+#     FILTER = [
+#         {groups = 'admins},
+#         {groups = 'moderators'},
+#     ]
+# FILTER =
+
+[CANAILLE.ACL.ADMIN]
+# A list of Permission users in the access control will be able to manage.
+#
+# For example:
+#
+#     PERMISSIONS = [
+#         "manage_users",
+#         "manage_groups",
+#         "manage_oidc",
+#         "delete_account",
+#         "impersonate_users",
+#     ]
+PERMISSIONS = [
+    "manage_oidc",
+    "manage_users",
+    "manage_groups",
+    "delete_account",
+    "impersonate_users",
+]
+
+# A list of User attributes that users in the ACL will be able to edit.
+WRITE = ["groups", "lock_date"]
+
+# FILTER can be:
+#
+# - None, in which case all the users will match this access control
+# - a mapping where keys are user attributes name and the values those user
+#   attribute values. All the values must be matched for the user to be part
+#   of the access control.
+# - a list of those mappings. If a user values match at least one mapping,
+#   then the user will be part of the access control
+#
+# Here are some examples:
+#
+#     FILTER = {user_name = 'admin'}
+#     FILTER = [
+#         {groups = 'admins},
+#         {groups = 'moderators'},
+#     ]
+FILTER = [
+    {user_name = "admin"},
+    {groups = "admin"},
+]
+
 [CANAILLE_SQL]
 # The SQL server URI. For example:
 #
