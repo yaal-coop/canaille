@@ -56,7 +56,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
 
         assert (
             "success",
-            "Connection successful. Welcome John (johnny) Doe",
+            "Connection successful. Welcome Johnny",
         ) in res.flashes
         assert (
             "canaille",
@@ -137,7 +137,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplo
 
         assert (
             "success",
-            "Connection successful. Welcome John (johnny) Doe",
+            "Connection successful. Welcome Johnny",
         ) in res.flashes
         assert (
             "canaille",
