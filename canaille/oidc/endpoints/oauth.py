@@ -309,7 +309,12 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    return jsonify(get_jwks("OLD_PUBLIC_KEY"), get_jwks("PUBLIC_KEY"))
+    return jsonify(
+        get_jwks("OLD_PUBLIC_KEY")
+        if current_app.config["CANAILLE_OIDC"]["JWT"]["OLD_PUBLIC_KEY"]
+        else None,
+        get_jwks("PUBLIC_KEY"),
+    )
 
 
 @bp.route("/userinfo", methods=["GET", "POST"])
