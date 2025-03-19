@@ -388,7 +388,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    if confirmation_obj.email in user.emails:
+    if confirmation_obj.email in user.emails or []:
         flash(
             _("This address email have already been confirmed."),
             "error",
@@ -402,7 +402,7 @@ def email_confirmation(data, hash):
         )
         return redirect(url_for("core.account.index"))
 
-    user.emails = user.emails + [confirmation_obj.email]
+    user.emails = (user.emails or []) + [confirmation_obj.email]
     Backend.instance.save(user)
     flash(_("Your email address have been confirmed."), "success")
     return redirect(url_for("core.account.index"))
@@ -537,7 +537,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
 
 def profile_edition_emails_form(user, edited_user, has_smtp):
     emails_form = EmailConfirmationForm(
-        request.form or None, data={"old_emails": edited_user.emails}
+        request.form or None, data={"old_emails": edited_user.emails or []}
     )
     emails_form.add_email_button = has_smtp
     emails_form.render_field_macro_file = "core/partial/emails_field.html"
@@ -563,10 +563,10 @@ def profile_edition_add_email(user, edited_user, emails_form):
 
 
 def profile_edition_remove_email(user, edited_user, email):
-    if email not in edited_user.emails:
+    if email not in (edited_user.emails or []):
         return False
 
-    if len(edited_user.emails) == 1:
+    if not edited_user.emails or len(edited_user.emails) == 1:
         return False
 
     edited_user.emails = [m for m in edited_user.emails if m != email]
@@ -596,7 +596,7 @@ def profile_edition(user, edited_user):
 
     has_email_changed = "emails" in profile_form and set(
         profile_form["emails"].data
-    ) != set(user.emails)
+    ) != set(user.emails or [])
 
     render_context = {
         "menuitem": menuitem,
@@ -689,7 +689,7 @@ def profile_settings(user, edited_user):
     if request.form.get("action") == "password-initialization-mail":
         statuses = [
             send_password_initialization_mail(edited_user, email)
-            for email in edited_user.emails
+            for email in (edited_user.emails or [])
         ]
         success = all(statuses)
         if success:
@@ -707,7 +707,8 @@ def profile_settings(user, edited_user):
 
     if request.form.get("action") == "password-reset-mail":
         statuses = [
-            send_password_reset_mail(edited_user, email) for email in edited_user.emails
+            send_password_reset_mail(edited_user, email)
+            for email in (edited_user.emails or [])
         ]
         success = all(statuses)
         if success:
