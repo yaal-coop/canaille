@@ -8,6 +8,7 @@ Added
 Fixed
 ^^^^^
 - Locked account cannot reset their password. :issue:`250`
+- Canaille has default admin ACLs. :issue:`253`
 
 [0.0.68] - 2025-03-18
 ---------------------

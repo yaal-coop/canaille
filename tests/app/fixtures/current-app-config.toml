@@ -263,6 +263,9 @@ PASSWORD = "user"
 #
 #     [CANAILLE.ACL.ADMIN]
 #     WRITE = ["user_name", "groups"]
+#
+# The default ACL gives all permissions to users with the `admin` user name, and
+# members of a group called `admin`.
 
 [CANAILLE.ACL.DEFAULT]
 
