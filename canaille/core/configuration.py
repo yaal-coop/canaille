@@ -216,6 +216,26 @@ class ACLSettings(BaseModel):
         ]
     """
 
+    @classmethod
+    def default_config(cls):
+        return {
+            "DEFAULT": ACLSettings(),
+            "ADMIN": ACLSettings(
+                PERMISSIONS=[
+                    Permission.MANAGE_OIDC,
+                    Permission.MANAGE_USERS,
+                    Permission.MANAGE_GROUPS,
+                    Permission.DELETE_ACCOUNT,
+                    Permission.IMPERSONATE_USERS,
+                ],
+                WRITE=["groups", "lock_date"],
+                FILTER=[
+                    {"user_name": "admin"},
+                    {"groups": "admin"},
+                ],
+            ),
+        }
+
 
 class OTPMethod(str, Enum):
     TOTP = "TOTP"
@@ -475,7 +495,10 @@ class CoreSettings(BaseModel):
 
         return value
 
-    ACL: dict[str, ACLSettings] | None = {"DEFAULT": ACLSettings()}
+    ACL: dict[str, ACLSettings] | None = Field(
+        default_factory=ACLSettings.default_config
+    )
+
     """Mapping of permission groups. See :class:`ACLSettings` for more details.
 
     The ACL name can be freely chosen. For example:
@@ -489,4 +512,7 @@ class CoreSettings(BaseModel):
 
         [CANAILLE.ACL.ADMIN]
         WRITE = ["user_name", "groups"]
+
+    The default ACL gives all permissions to users with the `admin` user name, and members
+    of a group called `admin`.
     """
