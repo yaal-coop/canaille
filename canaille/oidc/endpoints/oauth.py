@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+import httpx
 from authlib.common.urls import add_params_to_uri
 from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
@@ -125,10 +126,24 @@ def authorize_login(user):
 
 def authorize_consent(client, user):
     redirect_uri = request.args.get("redirect_uri")
+    request_uri = request.args.get("request_uri")
     # Ensures the request contains a redirect_uri until resolved upstream in Authlib
     # https://github.com/lepture/authlib/issues/712
     if not redirect_uri:
         raise InvalidRequestError('Missing "redirect_uri" in request.')
+
+    if request_uri:
+        response = httpx.get(request_uri)
+        if not response:
+            raise InvalidRequestError("Invalid request uri.")
+            # TODO : trouver avec quelle clef le jwt est signé
+            # et mettre les bons attributes dans la request
+            # aussi vérifier qu'ils sont identiques quand présents
+        print("REQUEST", vars(request))
+        use_request = jwt.decode(
+            response.content, current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"]
+        )
+        request.args["scope"] = use_request["scope"]
 
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
