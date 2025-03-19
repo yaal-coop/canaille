@@ -33,7 +33,7 @@ The main template inherited by almost every other templates.
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+            <meta name="htmx-config" content='{"includeIndicatorStyles": false}'>
             <link href="{{ url_for("static", filename="fomanticui/semantic.min.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="fonts/lato.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="css/base.css") }}" rel="stylesheet">
@@ -142,11 +142,6 @@ The main template inherited by almost every other templates.
                 <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
                 {% if config["CANAILLE"]["HTMX"] %}
                     <script src="{{ url_for("static", filename="htmx/htmx.min.js") }}" defer></script>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            htmx.config.requestClass = "loading"
-                        })
-                    </script>
                 {% endif %}
                 <script src="{{ url_for("static", filename="js/base.js") }}" defer></script>
             {% endif %}

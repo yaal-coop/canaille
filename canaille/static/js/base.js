@@ -7,6 +7,7 @@ function onDomChanges() {
 
 document.addEventListener('DOMContentLoaded', function() {
     $('.autofocus').focus();
+    htmx.config.requestClass = "loading"
     onDomChanges();
 });
 
