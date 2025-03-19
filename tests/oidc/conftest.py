@@ -66,6 +66,9 @@ def client(testclient, trusted_client, backend, client_jwks):
             "https://client.test/redirect1",
             "https://client.test/redirect2",
         ],
+        request_uris=[
+            "https://client.test/request1",
+        ],
         logo_uri="https://client.test/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
