@@ -170,7 +170,9 @@ def firstlogin(user):
 
     form.validate()
 
-    statuses = [send_password_initialization_mail(user, email) for email in user.emails]
+    statuses = [
+        send_password_initialization_mail(user, email) for email in (user.emails or [])
+    ]
     success = all(statuses)
     if success:
         flash(
@@ -225,7 +227,7 @@ def forgotten():
         return render_template("core/forgotten-password.html", form=form)
 
     success = True
-    for email in user.emails:
+    for email in user.emails or []:
         if not send_password_reset_mail(user, email):
             success = False
         current_app.logger.security(
@@ -434,7 +436,7 @@ def send_mail_otp():
         if user.generate_and_send_otp_mail():
             Backend.instance.save(user)
             current_app.logger.security(
-                f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.emails[0]}"
+                f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
             )
             flash(
                 "Code successfully sent!",
@@ -506,11 +508,11 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
             if user.generate_and_send_otp_mail():
                 Backend.instance.save(user)
                 flash(
-                    f"A one-time password has been sent to your email address {mask_email(user.emails[0])}. Please enter it below to login.",
+                    f"A one-time password has been sent to your email address {mask_email(user.preferred_email)}. Please enter it below to login.",
                     "info",
                 )
                 current_app.logger.security(
-                    f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.emails[0]}"
+                    f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
                 )
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:
