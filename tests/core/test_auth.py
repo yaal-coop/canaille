@@ -42,7 +42,7 @@ def test_signin_and_out(testclient, user, caplog):
 
     assert (
         "success",
-        "Connection successful. Welcome John (johnny) Doe",
+        "Connection successful. Welcome Johnny",
     ) in res.flashes
     assert (
         "canaille",

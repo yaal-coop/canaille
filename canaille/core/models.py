@@ -305,6 +305,10 @@ class User(Model):
         return field in self.readable_fields | self.writable_fields
 
     @property
+    def name(self):
+        return self.display_name or self.formatted_name or self.user_name
+
+    @property
     def preferred_email(self):
         return self.emails[0] if self.emails else None
 

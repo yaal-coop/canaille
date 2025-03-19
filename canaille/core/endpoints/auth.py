@@ -133,7 +133,7 @@ def password():
         del session["attempt_login"]
         login_user(user)
         flash(
-            _("Connection successful. Welcome %(user)s", user=user.formatted_name),
+            _("Connection successful. Welcome %(user)s", user=user.name),
             "success",
         )
         return redirect(
