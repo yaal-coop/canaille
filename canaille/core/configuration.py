@@ -258,6 +258,24 @@ class CoreSettings(BaseModel):
     Used for display purpose.
     """
 
+    @staticmethod
+    def default_database_config(cls):
+        try:
+            import sqlalchemy  # noqa: F401
+
+            return "sql"
+        except ImportError:
+            return "memory"
+
+    DATABASE: str = Field(
+        ...,
+        examples=["memory", "sql", "ldap"],
+        default_factory=default_database_config,
+    )
+    """The database backend to use.
+
+    Default is "sql" if available, else "memory"."""
+
     LOGO: str | None = "/static/img/canaille-head.webp"
     """The logo of your organization, this is useful to make your organization
     recognizable on login screens."""

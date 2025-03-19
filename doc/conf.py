@@ -204,5 +204,5 @@ screenshot_default_viewport_height = 1
 screenshot_default_full_page = True
 
 
-config_obj = settings_factory(all_options=True, init_with_examples=True)
+config_obj = settings_factory(init_with_examples=True)
 export_config(config_obj, "config.sample.toml")

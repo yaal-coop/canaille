@@ -38,6 +38,12 @@
 # Used for display purpose.
 # NAME = "Canaille"
 
+# The database backend to use.
+#
+# Default is "sql" if available, else "memory".
+# DATABASE =
+DATABASE = "memory"
+
 # The logo of your organization, this is useful to make your organization
 # recognizable on login screens.
 # LOGO = "/static/img/canaille-head.webp"
@@ -303,8 +309,7 @@ FILTER = [
 # The SQL server URI. For example:
 #
 #     DATABASE_URI = "postgresql://user:password@localhost/database_name"
-# DATABASE_URI =
-DATABASE_URI = "sqlite:///canaille.sqlite"
+# DATABASE_URI = "sqlite:///canaille.sqlite"
 
 # Password hashing scheme.
 #
@@ -362,6 +367,9 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # GROUP_NAME_ATTRIBUTE = "cn"
 
 [CANAILLE_OIDC]
+# Whether the Single Sign-On feature and the OpenID Connect API is enabled.
+# ENABLE_OIDC = true
+
 # Whether a token is needed for the RFC7591 dynamical client registration.
 #
 # If True, no token is needed to register a client. If False, dynamical client

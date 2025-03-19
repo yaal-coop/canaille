@@ -143,10 +143,10 @@ users and groups with the ``populate`` command:
 .. code-block:: console
 
     # If using docker:
-    docker compose exec canaille env CONFIG=conf-docker/canaille-ldap.toml uv run canaille populate --nb 100 users  # or docker-compose
+    docker compose exec canaille env CANAILLE__DATABASE=<backend> CONFIG=conf/canaille.toml uv run canaille populate --nb 100 users  # or docker-compose
 
     # If running in local environment
-    env CONFIG=conf/canaille-ldap.toml uv run canaille populate  --nb 100 users
+    env CANAILLE__DATABASE=<backend> CONFIG=conf/canaille.toml uv run canaille populate  --nb 100 users
 
 Adapt to use either the `ldap` or the `sql` configuration file. Note that this will not work with the memory backend.
 

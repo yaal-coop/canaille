@@ -106,7 +106,6 @@ def settings_factory(
     config=None,
     env_file=None,
     env_prefix="",
-    all_options=False,
     init_with_examples=False,
 ):
     """Push the backend specific configuration into CoreSettings.
@@ -114,52 +113,36 @@ def settings_factory(
     In the purpose to break dependency against backends libraries like python-ldap or
     sqlalchemy.
     """
+    from canaille.backends.ldap.configuration import LDAPSettings
+    from canaille.backends.sql.configuration import SQLSettings
     from canaille.core.configuration import CoreSettings
+    from canaille.oidc.configuration import OIDCSettings
+    from canaille.scim.configuration import SCIMSettings
 
     config = config or {}
 
     default = example_settings(CoreSettings) if init_with_examples else CoreSettings()
     attributes = {"CANAILLE": (CoreSettings, default)}
 
-    if (
-        all_options
-        or "CANAILLE_SQL" in config
-        or any(var.startswith("CANAILLE_SQL__") for var in os.environ)
-    ):
-        from canaille.backends.sql.configuration import SQLSettings
+    additional_settings = {
+        "CANAILLE_SQL": (SQLSettings, True),
+        "CANAILLE_LDAP": (LDAPSettings, False),
+        "CANAILLE_OIDC": (OIDCSettings, True),
+        "CANAILLE_SCIM": (SCIMSettings, True),
+    }
 
-        default = example_settings(SQLSettings) if init_with_examples else None
-        attributes["CANAILLE_SQL"] = ((SQLSettings | None), default)
+    for prefix, (setting, enabled_by_default) in additional_settings.items():
+        if init_with_examples:
+            default_value = example_settings(setting)
+            if prefix in config and config[prefix] is None:
+                del config[prefix]
 
-    if (
-        all_options
-        or "CANAILLE_LDAP" in config
-        or any(var.startswith("CANAILLE_LDAP__") for var in os.environ)
-    ):
-        from canaille.backends.ldap.configuration import LDAPSettings
+        elif enabled_by_default:
+            default_value = setting()
+        else:
+            default_value = None
 
-        default = example_settings(LDAPSettings) if init_with_examples else None
-        attributes["CANAILLE_LDAP"] = ((LDAPSettings | None), default)
-
-    if (
-        all_options
-        or "CANAILLE_OIDC" in config
-        or any(var.startswith("CANAILLE_OIDC__") for var in os.environ)
-    ):
-        from canaille.oidc.configuration import OIDCSettings
-
-        default = example_settings(OIDCSettings) if init_with_examples else None
-        attributes["CANAILLE_OIDC"] = ((OIDCSettings | None), default)
-
-    if (
-        all_options
-        or "CANAILLE_SCIM" in config
-        or any(var.startswith("CANAILLE_SCIM__") for var in os.environ)
-    ):
-        from canaille.scim.configuration import SCIMSettings
-
-        default = example_settings(SCIMSettings) if init_with_examples else None
-        attributes["CANAILLE_SCIM"] = ((SCIMSettings | None), default)
+        attributes[prefix] = ((setting | None), default_value)
 
     Settings = create_model(
         "Settings",

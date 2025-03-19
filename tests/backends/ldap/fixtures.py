@@ -29,6 +29,7 @@ def slapd_server():
 
 @pytest.fixture
 def ldap_configuration(configuration, slapd_server):
+    configuration["CANAILLE"]["DATABASE"] = "ldap"
     configuration["CANAILLE_LDAP"] = {
         "ROOT_DN": slapd_server.suffix,
         "URI": slapd_server.ldap_uri,

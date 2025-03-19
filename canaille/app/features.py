@@ -113,7 +113,10 @@ class Features:
         try:
             import authlib  # noqa: F401
 
-            return "CANAILLE_OIDC" in self.app.config
+            return (
+                "CANAILLE_OIDC" in self.app.config
+                and self.app.config["CANAILLE_OIDC"]["ENABLE_OIDC"]
+            )
         except ImportError:  # pragma: no cover
             return False
 

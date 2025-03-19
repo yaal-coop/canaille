@@ -396,16 +396,17 @@ def test_sanitize_rst():
     )
 
 
-def test_export_current_config(configuration, tmp_path):
+def test_export_current_config(backend, configuration, tmp_path):
     """Check the configuration TOML export with the current app configuration."""
+    if "memory" not in backend.__class__.__module__:
+        pytest.skip()
+
     toml_export = tmp_path / "config.toml"
 
     configuration["SECRET_KEY"] = "very-secret"
     configuration["CANAILLE"]["SMTP"]["PORT"] = 25
 
-    config_obj = settings_factory(
-        configuration, all_options=True, init_with_examples=True
-    )
+    config_obj = settings_factory(configuration, init_with_examples=True)
     export_config(config_obj, toml_export)
 
     toml_expected = (
@@ -421,11 +422,11 @@ def test_export_current_config(configuration, tmp_path):
     assert actual_content == expected_content
 
 
-def test_export_default_config(tmp_path):
+def test_export_default_config(tmp_path, backend):
     """Check the configuration TOML export with the default configuration."""
     toml_export = tmp_path / "config.toml"
 
-    config_obj = settings_factory(all_options=True, init_with_examples=True)
+    config_obj = settings_factory(init_with_examples=True)
     export_config(config_obj, toml_export)
 
     toml_expected = pathlib.Path(__file__).parent / "fixtures" / "default-config.toml"

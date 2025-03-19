@@ -19,9 +19,10 @@ services:
       context: ..
       dockerfile: dev/Dockerfile-canaille
     environment:
+      - CANAILLE__DATABASE=ldap
       - AUTHLIB_INSECURE_TRANSPORT=1
       - FLASK_DEBUG=1
-      - CONFIG=/opt/canaille/conf/canaille-ldap.toml
+      - CONFIG=/opt/canaille/conf/canaille.toml
       - FLASK_APP=devapp
     volumes:
       - ../canaille:/opt/canaille/canaille
