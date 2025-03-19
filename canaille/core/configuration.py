@@ -1,4 +1,5 @@
 import importlib.util
+import smtplib
 from enum import Enum
 
 from pydantic import DirectoryPath
@@ -10,6 +11,8 @@ from pydantic import model_validator
 from typing_extensions import Self
 
 from canaille.app.configuration import BaseModel
+
+DEFAULT_SMTP_PORT = 25
 
 
 class SMTPSettings(BaseModel):
@@ -25,7 +28,7 @@ class SMTPSettings(BaseModel):
     HOST: str | None = "localhost"
     """The SMTP host."""
 
-    PORT: int | None = 25
+    PORT: int | None = DEFAULT_SMTP_PORT
     """The SMTP port."""
 
     TLS: bool | None = False
@@ -45,6 +48,22 @@ class SMTPSettings(BaseModel):
 
     Some mail provider might require a valid sender address.
     """
+
+    @classmethod
+    def default_smtp_config(cls):
+        """Attempt to connect to a local SMTP server without authentication.
+
+        If it succeeds, then use it as default SMTP configuration.
+        """
+        try:
+            conn = smtplib.SMTP("localhost", DEFAULT_SMTP_PORT)
+            conn.ehlo()
+            config = SMTPSettings(HOST="localhost", PORT=DEFAULT_SMTP_PORT)
+            conn.quit()
+            return config
+
+        except (OSError, smtplib.SMTPException):
+            return None
 
 
 class SMPPSettings(BaseModel):
@@ -430,7 +449,9 @@ class CoreSettings(BaseModel):
         formatter = "default"
     """
 
-    SMTP: SMTPSettings | None = Field(None, examples=[SMTPSettings()])
+    SMTP: SMTPSettings | None = Field(
+        examples=[SMTPSettings()], default_factory=SMTPSettings.default_smtp_config
+    )
     """The settings related to SMTP and mail configuration.
 
     If unset, mail-related features like password recovery won't be

@@ -1,6 +1,7 @@
 import logging
 import os
 import pathlib
+from unittest import mock
 
 import pytest
 import tomlkit
@@ -207,6 +208,25 @@ def test_smtp_bad_tls(testclient, backend, smtpd, configuration):
     assert check_smtp_connection(config_dict) == CheckResult(
         success=False, message="SMTP AUTH extension not supported by server."
     )
+
+
+def test_smtp_discovery_success(testclient, backend, configuration, smtpd):
+    """If a SMTP server is configured on the default port and is accessible without authentication, it should be used."""
+    del configuration["CANAILLE"]["SMTP"]
+    with mock.patch("canaille.core.configuration.DEFAULT_SMTP_PORT", smtpd.port):
+        config_obj = settings_factory(configuration)
+        config_dict = config_obj.model_dump()["CANAILLE"]["SMTP"]
+        assert check_smtp_connection(config_dict) == CheckResult(
+            success=True, message="Successful SMTP connection"
+        )
+
+
+def test_smtp_discovery_failure(testclient, backend, configuration, smtpd):
+    """Test that something goes wrong during the SMTP server discovery."""
+    del configuration["CANAILLE"]["SMTP"]
+    with mock.patch("canaille.core.configuration.DEFAULT_SMTP_PORT", 99999):
+        config_obj = settings_factory(configuration)
+        assert config_obj.model_dump()["CANAILLE"]["SMTP"] is None
 
 
 @pytest.fixture

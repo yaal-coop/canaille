@@ -1,6 +1,10 @@
 [0.0.69] - Unreleased
 ---------------------
 
+Added
+^^^^^
+- Configuration automatically discovers local SMTP server when available. :issue:`216`
+
 Fixed
 ^^^^^
 - Locked account cannot reset their password. :issue:`250`
