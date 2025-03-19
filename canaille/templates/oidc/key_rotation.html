@@ -60,5 +60,9 @@
         <div class="ui attached clearing segment">
             Ceci est une page de test
         </div>
+        <a class="item" href="{{ url_for('oidc.rotate.rotate_keys') }}">
+            <i class="key icon"></i>
+            {% trans %}Rotate keys{% endtrans %}
+        </a>
     </div>
 {% endblock %}
