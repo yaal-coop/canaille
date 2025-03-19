@@ -70,8 +70,11 @@ a = Analysis(
     hiddenimports=[
         "canaille.app.server",
         "canaille.backends.memory.backend",
+        "canaille.backends.memory.models",
         "canaille.backends.sql.backend",
+        "canaille.backends.sql.models",
         "canaille.backends.ldap.backend",
+        "canaille.backends.ldap.models",
         # TODO: import all passlib handlers?
         "passlib.hash",
         "passlib.handlers.pbkdf2",
