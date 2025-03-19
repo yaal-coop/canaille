@@ -113,8 +113,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_txt", identifier=user.identifier, email=user.preferred_email or "email@example.org") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.email_confirmation_html", identifier=user.identifier, email=user.preferred_email or "email@example.org") }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
@@ -125,8 +125,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_txt", identifier=user.identifier, email=user.preferred_email) }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_html", identifier=user.identifier, email=user.preferred_email) }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_txt", identifier=user.identifier, email=user.preferred_email or "email@example.org") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.invitation_html", identifier=user.identifier, email=user.preferred_email or "email@example.org") }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
@@ -137,8 +137,8 @@
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("core.admin.registration_txt", email=user.preferred_email) }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("core.admin.registration_html", email=user.preferred_email) }}">HTML</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.registration_txt", email=user.preferred_email or "email@example.org") }}">TXT</a>
+                        <a class="ui button primary" href="{{ url_for("core.admin.registration_html", email=user.preferred_email or "email@example.org") }}">HTML</a>
                     </div>
                 </div>
                 <div class="middle aligned content">
