@@ -4,7 +4,9 @@ from flask import Blueprint
 from flask import abort
 from flask import current_app
 from flask import flash
+from flask import redirect
 from flask import request
+from flask import url_for
 
 from canaille.app import models
 from canaille.app.flask import render_htmx_template
@@ -13,6 +15,7 @@ from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.oidc.installation import generate_keypair
 
 from .forms import TokenRevokationForm
 
@@ -57,3 +60,27 @@ def view(user, token):
         menuitem="admin",
         form=form,
     )
+
+
+@bp.route("/rotate-keys", methods=["GET"])
+@user_needed("manage_oidc")
+def rotate_keys(user):
+    config_keys = current_app.config["CANAILLE_OIDC"]["JWT"]
+    
+    private_key, public_key = generate_keypair()
+    new_private_key = private_key.decode()
+    new_public_key = public_key.decode()
+    
+    config_keys["OLD_PRIVATE_KEY"] = config_keys["PRIVATE_KEY"]
+    config_keys["OLD_PUBLIC_KEY"] = config_keys["PUBLIC_KEY"]
+    
+    config_keys["PRIVATE_KEY"] = new_private_key
+    config_keys["PUBLIC_KEY"] = new_public_key
+    flash(
+        _(
+            "The signing keys were changed successfully."
+        ),
+        "success",
+        )
+    
+    return redirect(url_for("oidc.tokens.index"))

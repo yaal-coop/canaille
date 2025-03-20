@@ -400,6 +400,12 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # If None and debug mode is enabled, then an in-memory key will be used.
 # PUBLIC_KEY =
 
+# The storage of the previous private key.
+# OLD_PRIVATE_KEY =
+
+# The storage of the previous public key.
+# OLD_PUBLIC_KEY =
+
 # The URI of the identity provider.
 # ISS =
 

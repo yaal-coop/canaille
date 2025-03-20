@@ -35,7 +35,7 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`.
     </a>
     <a class="active item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
-        {% trans %}Tokens{% endtrans %}
+        {% trans %}Tokens & Keys{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
         <i class="user secret icon"></i>
@@ -44,6 +44,18 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`.
 {% endblock %}
 
 {% block content %}
+    <div class="ui top attached segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Key rotation{% endtrans %}
+            </div>
+        </h2>
+        <a class="item" href="{{ url_for('oidc.tokens.rotate_keys') }}">
+            <i class="key icon"></i>
+            {% trans %}Rotate keys{% endtrans %}
+        </a>
+    </div>
+
     <div class="ui top attached segment">
         <h2 class="ui center aligned header">
             <div class="content">

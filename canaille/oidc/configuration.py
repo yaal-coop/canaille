@@ -61,9 +61,11 @@ class JWTSettings(BaseModel):
     """
 
     OLD_PRIVATE_KEY: str | None = None
+    """The storage of the previous private key."""
 
     OLD_PUBLIC_KEY: str | None = None
-
+    """The storage of the previous public key."""
+    
     ISS: str | None = None
     """The URI of the identity provider."""
 
