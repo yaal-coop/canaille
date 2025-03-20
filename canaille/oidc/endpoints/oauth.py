@@ -6,7 +6,6 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
-from authlib.oauth2.rfc6749.errors import InvalidRequestError
 from flask import Blueprint
 from flask import abort
 from flask import current_app
@@ -17,7 +16,6 @@ from flask import request
 from flask import session
 from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
-from werkzeug.exceptions import BadRequest
 from werkzeug.exceptions import HTTPException
 
 from canaille.app import models
@@ -128,7 +126,12 @@ def authorize_consent(client, user):
     # Ensures the request contains a redirect_uri until resolved upstream in Authlib
     # https://github.com/lepture/authlib/issues/712
     if not redirect_uri:
-        raise InvalidRequestError('Missing "redirect_uri" in request.')
+        response = {
+            "error": "invalid_request",
+            "error_description": 'Missing "redirect_uri" in request.',
+            "iss": get_issuer(),
+        }
+        return jsonify(response), 400
 
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
@@ -273,7 +276,12 @@ def client_registration():
     # Implements RFC6749 section 3.1.2 "The endpoint URI MUST NOT include a fragment component." until this is implemented upstream in authlib
     # https://github.com/lepture/authlib/issues/714
     if any("#" in uri for uri in request.json["redirect_uris"]):
-        raise BadRequest("Redirect URI cannot contain fragment identifiers")
+        response = {
+            "error_description": "Redirect URI cannot contain fragment identifiers",
+            "error": "invalid_request",
+            "iss": get_issuer(),
+        }
+        return jsonify(response), 400
 
     response = authorization.create_endpoint_response(
         ClientRegistrationEndpoint.ENDPOINT_NAME

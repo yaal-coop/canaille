@@ -97,7 +97,11 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
 
-    res.mustcontain("Redirect URI cannot contain fragment identifiers")
+    assert res.json == {
+        "error_description": "Redirect URI cannot contain fragment identifiers",
+        "error": "invalid_request",
+        "iss": "https://auth.test",
+    }
 
 
 def test_client_registration_with_authentication_no_token(
