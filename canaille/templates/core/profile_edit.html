@@ -76,25 +76,22 @@ Displays a user profile edition form.
                             {{ profile.render_field(profile_form.photo, display=false, class="photo-field") }}
                             {{ profile.render_field(profile_form.photo_delete, display=false, class="photo-delete-button") }}
                             {% set photo = edited_user.photo and edited_user.photo %}
-                            {% if photo %}
-                                <label
-                                    class="ui small bordered image photo-content"
-                                    for="{{ profile_form.photo.id }}"
-                                    title="{{ _("Click to upload a photo") }}">
+                            <label
+                                class="ui small bordered image photo-content {% if not photo %}hidden{% endif %}"
+                                for="{{ profile_form.photo.id }}"
+                                title="{{ _("Click to upload a photo") }}">
 
-                                    <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
-                                        <i class="times icon"></i>
-                                    </a>
-                                    <img src="{% if photo %}{{ url_for("core.account.photo", user=edited_user, field="photo") }}{% endif %}" alt="User photo">
-                                </label>
-                            {% else %}
-                                <label
-                                    class="ui centered photo-placeholder"
-                                    for="{{ profile_form.photo.id }}"
-                                    title="{{ _("Click to upload a photo") }}">
-                                    <i class="massive centered portrait icon"></i>
-                                </label>
-                            {% endif %}
+                                <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
+                                    <i class="times icon"></i>
+                                </a>
+                                <img src="{% if photo %}{{ url_for("core.account.photo", user=edited_user, field="photo") }}{% endif %}" alt="User photo">
+                            </label>
+                            <label
+                                class="ui centered photo-placeholder {% if photo %}hidden{% endif %}"
+                                for="{{ profile_form.photo.id }}"
+                                title="{{ _("Click to upload a photo") }}">
+                                <i class="massive centered portrait icon"></i>
+                            </label>
                             </div>
                         {% endblock %}
 

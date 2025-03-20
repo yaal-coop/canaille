@@ -38,9 +38,10 @@ del_button=false
     {# open field container #}
     <div class="field {{ kwargs.pop('class_', '') }}
                 {%- if field.errors %} error{% endif -%}
-                {%- if disabled %} disabled{% endif -%}"
-         {%- if not display %} style="display: none"{% endif -%}
-         {%- if inline_validation %} hx-target="this" hx-swap="outerHTML"{% endif -%}
+                {%- if disabled %} disabled{% endif -%}
+                {%- if not display %} hidden{% endif -%}"
+
+         {% if inline_validation %}hx-target="this" hx-swap="outerHTML"{% endif %}
     >
 {% endif -%}
 
@@ -141,11 +142,12 @@ del_button=false
 {% endif %}
 
 {% set display_strength_indicator = field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] %}
-{% if display_strength_indicator and field.data|password_strength and not field.errors %}
+{% set strength = field.data|password_strength %}
+{% if display_strength_indicator and strength and not field.errors %}
     <div>
         <p class="progress_bar">{% trans %}Password strength{% endtrans %}</p>
-        <div class="ui indicating progress" data-percent="{{ field.data|password_strength }}">
-            <div class="bar" style="width: {{ field.data|password_strength }}%;">
+        <div class="ui indicating progress" data-percent="{{ strength }}">
+            <div class="bar strength{{ strength }}">
             </div>
         </div>
     </div>
@@ -199,9 +201,7 @@ del_button=false
 {%- endmacro %}
 
 {% macro render_checkbox(field, display=true) -%}
-    <div class="field"
-         {% if not display %}style="display: none"{% endif %}
-    >
+    <div class="field {% if not display %}hidden{% endif %}">
         <div class="ui toggle checkbox">
             {{ field(**kwargs) }}
             {{ field.label() }}
