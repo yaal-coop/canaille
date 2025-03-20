@@ -4,7 +4,6 @@ from . import authorizations
 from . import clients
 from . import consents
 from . import oauth
-from . import rotate
 from . import tokens
 from . import well_known
 
@@ -16,4 +15,3 @@ bp.register_blueprint(consents.bp)
 bp.register_blueprint(oauth.bp)
 bp.register_blueprint(well_known.bp)
 bp.register_blueprint(tokens.bp)
-bp.register_blueprint(rotate.bp)
