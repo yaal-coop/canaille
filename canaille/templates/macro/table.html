@@ -34,7 +34,7 @@ Macros for rendering table paginated with HTMX.
 
 {% macro button(form, id, page) %}
     {% if page is none %}
-        <span class="icon disabled ui button" style="border-radius: 0">
+        <span class="icon disabled ui button no-radius">
             {{ caller() }}
         </span>
     {% else %}
@@ -58,7 +58,7 @@ Macros for rendering table paginated with HTMX.
             {{ form.hidden_tag() if form.hidden_tag }}
             <input type="hidden" name="query" value="{{ form.query.data }}">
 
-            <span class="icon disabled ui button" style="border-radius: 0">
+            <span class="icon disabled ui button no-radius">
                 {% trans %}Page{% endtrans %}
             </span>
             {% if form.page.data > 1 %}

@@ -219,6 +219,39 @@ select.ui.multiple.dropdown option[selected] {
     box-shadow: 0 0 0 1px rgba(34,36,38,.15) inset;
 }
 
+.hidden {
+    display: none;
+}
+
+.about-links {
+    text-align: center
+}
+
+.no-radius {
+    border-radius: 0
+}
+
+/* PASSWORD STRENGTH */
+.strength0 {
+    width: 0%!important;
+}
+
+.strength25 {
+    width: 25%!important;
+}
+
+.strength50 {
+    width: 50%!important;
+}
+
+.strength75 {
+    width: 75%!important;
+}
+
+.strength100 {
+    width: 100%!important;
+}
+
 /* MEDIA QUERIES */
 
 @media (prefers-color-scheme: dark) {
