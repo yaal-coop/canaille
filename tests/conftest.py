@@ -75,7 +75,6 @@ def configuration(smtpd):
         "TESTING": True,
         "CANAILLE": {
             "JAVASCRIPT": False,
-            "LOGO": "/static/img/canaille-head.webp",
             "TIMEZONE": "UTC",
             "ACL": {
                 "DEFAULT": {

@@ -3,8 +3,6 @@ DEBUG = true
 SERVER_NAME = "canaille.localhost:5000"
 
 [CANAILLE]
-LOGO = "/static/img/canaille-head.webp"
-FAVICON = "/static/img/canaille-c.webp"
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@example.org"
 

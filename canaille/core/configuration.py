@@ -258,11 +258,11 @@ class CoreSettings(BaseModel):
     Used for display purpose.
     """
 
-    LOGO: str | None = None
+    LOGO: str | None = "/static/img/canaille-head.webp"
     """The logo of your organization, this is useful to make your organization
     recognizable on login screens."""
 
-    FAVICON: str | None = None
+    FAVICON: str | None = "/static/img/canaille-c.webp"
     """You favicon.
 
     If unset and :attr:`LOGO` is set, then the logo will be used.

@@ -29,8 +29,6 @@ pkgs.dockerTools.buildImage {
         SERVER_NAME = \"canaille.localhost:5000\"\n
         PREFERRED_URL_SCHEME = \"https\"\n
         [CANAILLE]\n
-        LOGO = \"/static/img/canaille-head.webp\"\n
-        FAVICON = \"/static/img/canaille-c.webp\"\n
         ENABLE_REGISTRATION = 1\n
         ADMIN_EMAIL = \"admin@example.org\"\n
         TIMEZONE = \"UTC\"\n
