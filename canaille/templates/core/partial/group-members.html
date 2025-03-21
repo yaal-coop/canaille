@@ -45,7 +45,11 @@
                     </td>
                 {% endif %}
                 {% if user.can_read("family_name") or user.can_read("given_name") %}
-                    <td>{{ watched_user.formatted_name }}</td>
+                    <td>
+                        {% if watched_user.formatted_name %}
+                            {{ watched_user.formatted_name }}
+                        {% endif %}
+                    </td>
                 {% endif %}
                 {% if user.can_manage_groups %}
                     <td>
