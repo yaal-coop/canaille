@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-18 17:11+0100\n"
-"PO-Revision-Date: 2025-03-18 15:06+0000\n"
+"PO-Revision-Date: 2025-03-22 01:09+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -39,10 +39,8 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 b39f305d9f2e48289d44c2f380e42e6d
-#, fuzzy
-#| msgid "[0.0.6] - 2022-03-08"
 msgid "[0.0.67] - 2025-03-18"
-msgstr "[0.0.6] - 2022-03-08"
+msgstr "[0.0.67] - 2025-03-18"
 
 #: ../../CHANGES.rst:6 b2e3677b7b654906ae86aa7d7632d472
 msgid ""
@@ -75,10 +73,8 @@ msgid "Full OIDC Dynamic Client Registration implementation. :issue:`231`"
 msgstr "Implémentation du flux OIDC ``client_credentials``. :issue:`207`"
 
 #: ../../CHANGES.rst:14 b39f305d9f2e48289d44c2f380e42e6d
-#, fuzzy
-#| msgid "[0.0.6] - 2022-03-08"
 msgid "[0.0.66] - 2025-03-18"
-msgstr "[0.0.6] - 2022-03-08"
+msgstr "[0.0.66] - 2025-03-18"
 
 #: ../../CHANGES.rst:18 b2e3677b7b654906ae86aa7d7632d472
 msgid ""
@@ -92,10 +88,8 @@ msgid "The :ref:`delete command <cli_delete>` can use filter parameters."
 msgstr ""
 
 #: ../../CHANGES.rst:26 b39f305d9f2e48289d44c2f380e42e6d
-#, fuzzy
-#| msgid "[0.0.6] - 2022-03-08"
 msgid "[0.0.65] - 2025-03-18"
-msgstr "[0.0.6] - 2022-03-08"
+msgstr "[0.0.65] - 2025-03-18"
 
 #: ../../CHANGES.rst:30 f9b8161b85b54f3e9cb17677d3162aa0
 msgid "Instructions in CONTRIBUTING.rst to update the docker image :issue:`59`"
@@ -1936,10 +1930,8 @@ msgid "Initial release."
 msgstr "Publication initiale."
 
 #: ../../CONTRIBUTING.rst:2 4687662aec914efab3c981c6900e49b7
-#, fuzzy
-#| msgid "Contributions"
 msgid "Contribution"
-msgstr "Contributions"
+msgstr "Contribution"
 
 #: ../../CONTRIBUTING.rst:4 fd024d56bac8472b8d29c17e9ad5bda9
 msgid "Contributions are welcome!"
@@ -2468,11 +2460,11 @@ msgstr "Construire la documentation dans une autre langue"
 
 #: ../../CONTRIBUTING.rst:226 2a0bf3be5070456da0d5175a308ac5f0
 msgid "Production Docker image"
-msgstr ""
+msgstr "Image Docker de production"
 
 #: ../../CONTRIBUTING.rst:229 5e9463598cf74f49bc2eb935a624cb01
 msgid "Build"
-msgstr ""
+msgstr "Construction"
 
 #: ../../CONTRIBUTING.rst:231 13b7a6a7ed26434b82572f1c8394e83c
 msgid ""
@@ -2483,19 +2475,19 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:234 7fc604c3cc754f45872a8de8869f439b
 msgid "The Docker image can be built with the following command:"
-msgstr ""
+msgstr "L'image Docker peut être construite à l'aide de la commande suivante :"
 
 #: ../../CONTRIBUTING.rst:240 08a5ff5383414ab6b93137878a12c1b9
 msgid "Check the Docker image with the following command:"
-msgstr ""
+msgstr "Vérifiez le contenu de l'image Docker avec la commande suivante :"
 
 #: ../../CONTRIBUTING.rst:247 040ea225b748447e84a0d3560a9e91da
 msgid "Publish"
-msgstr ""
+msgstr "Publication"
 
 #: ../../CONTRIBUTING.rst:260 ac27053bcb32423ebecd9d36811fecdf
 msgid "Use"
-msgstr ""
+msgstr "Utilisation"
 
 #: ../../CONTRIBUTING.rst:267 7a719577219542ec9961056bff061723
 msgid "Build a release"
@@ -3922,10 +3914,8 @@ msgstr ""
 "même sur Canaille sans l'intervention d'un administrateur."
 
 #: ../features.rst:295 8d03aa57348542ccb8456a9977242f8e
-#, fuzzy
-#| msgid "Application service"
 msgid "Application provisioning"
-msgstr "Serveur d’application"
+msgstr "Provisionnement d'applications"
 
 #: ../features.rst:297 03d7ebe6a79b4f2fa0a02385f30555d9
 #, fuzzy
@@ -4569,7 +4559,7 @@ msgstr "Configuration"
 
 #: ../references/configuration.rst:5 27ff67a4c51345779a2a5f6a517d3699
 msgid "Load the configuration"
-msgstr "Charge la configuration"
+msgstr "Chargement de la configuration"
 
 #: ../references/configuration.rst:7 38ab35061b914078901d1ff8932d1698
 msgid ""
