@@ -151,7 +151,7 @@ def logout():
         flash(
             _(
                 "You have been disconnected. See you next time %(user)s",
-                user=user.formatted_name,
+                user=user.name,
             ),
             "success",
         )

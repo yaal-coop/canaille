@@ -99,7 +99,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     res = testclient.get("/logout")
     assert (
         "success",
-        "You have been disconnected. See you next time John (johnny) Doe",
+        "You have been disconnected. See you next time Johnny",
     ) in res.flashes
     assert (
         "canaille",
@@ -300,7 +300,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     res = testclient.get("/logout")
     assert (
         "success",
-        "You have been disconnected. See you next time John (johnny) Doe",
+        "You have been disconnected. See you next time Johnny",
     ) in res.flashes
     assert (
         "canaille",

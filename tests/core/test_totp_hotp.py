@@ -72,7 +72,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
     res = testclient.get("/logout")
     assert (
         "success",
-        "You have been disconnected. See you next time John (johnny) Doe",
+        "You have been disconnected. See you next time Johnny",
     ) in res.flashes
     assert (
         "canaille",
