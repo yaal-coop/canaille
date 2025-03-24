@@ -1,11 +1,24 @@
 import datetime
+import logging
 import time
 import uuid
 
 from joserfc import jwt
 from werkzeug.security import gen_salt
 
+from canaille import create_app
 from canaille.app import models
+
+
+def test_no_server_name_config(configuration, caplog):
+    """Tests that SERVER_NAME is needed to enable JWT client auth."""
+    del configuration["SERVER_NAME"]
+    create_app(configuration)
+    assert (
+        "canaille",
+        logging.WARNING,
+        "The 'SERVER_NAME' configuration parameter is unset. JWT client authentication is disabled.",
+    ) in caplog.record_tuples
 
 
 def test_client_jwks(

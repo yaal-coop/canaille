@@ -675,10 +675,16 @@ def setup_oauth(app):
     authorization.register_grant(ClientCredentialsGrant)
 
     with app.app_context():
-        authorization.register_client_auth_method(
-            JWTClientAuth.CLIENT_AUTH_METHOD,
-            JWTClientAuth(url_for("oidc.endpoints.issue_token", _external=True)),
-        )
+        if not app.config["SERVER_NAME"]:
+            app.logger.warning(
+                "The 'SERVER_NAME' configuration parameter is unset. JWT client authentication is disabled."
+            )
+
+        else:
+            authorization.register_client_auth_method(
+                JWTClientAuth.CLIENT_AUTH_METHOD,
+                JWTClientAuth(url_for("oidc.endpoints.issue_token", _external=True)),
+            )
 
     authorization.register_grant(
         AuthorizationCodeGrant,
