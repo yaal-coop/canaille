@@ -19,7 +19,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 {% import 'macro/form.html' as fui %}
 
 {%- block title -%}
-    {%- trans %}Edit a client{% endtrans -%}
+    {%- trans %}Edit an application{% endtrans -%}
 {%- endblock -%}
 
 {% block submenu %}
@@ -29,11 +29,11 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
     </a>
     <a class="active item" href="{{ url_for('oidc.clients.index') }}">
         <i class="th list icon"></i>
-        {% trans %}Clients{% endtrans %}
+        {% trans %}Applications{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.clients.add') }}">
         <i class="plus icon"></i>
-        {% trans %}Add a client{% endtrans %}
+        {% trans %}Add an application{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
@@ -48,7 +48,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 {% block content %}
     <div class="ui top attached segment">
         <h2 class="ui center aligned header">
-            {% trans %}Edit a client{% endtrans %}
+            {% trans %}Edit an application{% endtrans %}
         </h2>
 
         <div class="ui form">

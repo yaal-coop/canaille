@@ -31,11 +31,11 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
     </a>
     <a class="item" href="{{ url_for('oidc.clients.index') }}">
         <i class="th list icon"></i>
-        {% trans %}Clients{% endtrans %}
+        {% trans %}Applications{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.clients.add') }}">
         <i class="plus icon"></i>
-        {% trans %}Add a client{% endtrans %}
+        {% trans %}Add an application{% endtrans %}
     </a>
     <a class="active item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
@@ -57,7 +57,7 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
             {% call fui.render_form(form, class_="token-form info") %}
                 <table class="ui celled striped table">
                     <tr>
-                        <td>{{ _("Client") }}</td>
+                        <td>{{ _("Application") }}</td>
                         <td>
                             <a href="{{ url_for("oidc.clients.edit", client=token.client) }}">
                                 {{ token.client.client_name }}

@@ -14,7 +14,7 @@
                 <td class="collapsing">
                     <a href="{{ url_for('oidc.clients.edit', client=client) }}">
                         {% if client.logo_uri %}
-                            <img class="ui avatar image" src="{{ client.logo_uri }}" alt="Client logo">
+                            <img class="ui avatar image" src="{{ client.logo_uri }}" alt="{% trans %}Application logo{% endtrans %}">
                         {% else %}
                             <i class="plug circular inverted black icon"></i>
                         {% endif %}

@@ -15,7 +15,7 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
 {% import "macro/table.html" as table %}
 
 {%- block title -%}
-    {%- trans %}Clients{% endtrans -%}
+    {%- trans %}Applications{% endtrans -%}
 {%- endblock -%}
 
 {% block submenu %}
@@ -25,11 +25,11 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
     </a>
     <a class="active item" href="{{ url_for('oidc.clients.index') }}">
         <i class="th list icon"></i>
-        {% trans %}Clients{% endtrans %}
+        {% trans %}Applications{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.clients.add') }}">
         <i class="plus icon"></i>
-        {% trans %}Add a client{% endtrans %}
+        {% trans %}Add an application{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
@@ -45,7 +45,7 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
     <div class="ui top attached segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {% trans %}Clients{% endtrans %}
+                {% trans %}Applications{% endtrans %}
             </div>
         </h2>
 
