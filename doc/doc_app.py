@@ -7,14 +7,14 @@ from wsgiref.simple_server import WSGIRequestHandler
 import tomlkit
 
 sys.path.insert(0, os.path.abspath(".."))
-from demo.demoapp import create_app
+from dev.devapp import create_app
 
 WSGIRequestHandler.log_request = lambda *args, **kwargs: None
 
 
 def create_doc_app(sphinx_app):
     conf_path = (
-        pathlib.Path(__file__).parent.parent / "demo" / "conf" / "canaille-memory.toml"
+        pathlib.Path(__file__).parent.parent / "dev" / "conf" / "canaille-memory.toml"
     )
     with open(conf_path) as fd:
         conf = dict(tomlkit.load(fd))

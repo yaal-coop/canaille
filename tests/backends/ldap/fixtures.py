@@ -13,13 +13,13 @@ def slapd_server():
         slapd.start()
         slapd.init_tree()
         for ldif in (
-            "demo/ldif/memberof-config.ldif",
-            "demo/ldif/ppolicy-config.ldif",
-            "demo/ldif/ppolicy.ldif",
-            "demo/ldif/otp-config.ldif",
+            "dev/ldif/memberof-config.ldif",
+            "dev/ldif/ppolicy-config.ldif",
+            "dev/ldif/ppolicy.ldif",
+            "dev/ldif/otp-config.ldif",
             "canaille/backends/ldap/schemas/oauth2-openldap.ldif",
-            "demo/ldif/bootstrap-users-tree.ldif",
-            "demo/ldif/bootstrap-oidc-tree.ldif",
+            "dev/ldif/bootstrap-users-tree.ldif",
+            "dev/ldif/bootstrap-oidc-tree.ldif",
         ):
             slapd.ldapadd(None, ["-f", ldif])
         yield slapd

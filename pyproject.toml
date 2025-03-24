@@ -157,7 +157,7 @@ doc = [
     "sphinx-intl>=2.3.0",
     "tomlkit>=0.13.2",
 ]
-demo = [
+devserver = [
     "faker",
     "honcho",
     "slapd",
@@ -171,7 +171,7 @@ release = [
 
 [project.scripts]
 canaille = "canaille.commands:cli"
-devserver = "demo.run:devserver"
+devserver = "dev.run:devserver"
 
 [options.packages.find]
 exclude = [

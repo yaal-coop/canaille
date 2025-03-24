@@ -58,7 +58,7 @@ PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
 WRITE = ["groups"]
 
 [CANAILLE_SQL]
-DATABASE_URI = "sqlite:///demo.sqlite"
+DATABASE_URI = "sqlite:///dev.sqlite"
 
 [CANAILLE_OIDC]
 DYNAMIC_CLIENT_REGISTRATION_OPEN = true

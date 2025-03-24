@@ -244,14 +244,6 @@ sqlite = [
 ]
 
 [package.dev-dependencies]
-demo = [
-    { name = "faker" },
-    { name = "honcho" },
-    { name = "httpx" },
-    { name = "requests" },
-    { name = "slapd" },
-    { name = "watchdog" },
-]
 dev = [
     { name = "babel" },
     { name = "coverage", extra = ["toml"] },
@@ -275,6 +267,14 @@ dev = [
     { name = "slapd" },
     { name = "time-machine" },
     { name = "tox-uv" },
+]
+devserver = [
+    { name = "faker" },
+    { name = "honcho" },
+    { name = "httpx" },
+    { name = "requests" },
+    { name = "slapd" },
+    { name = "watchdog" },
 ]
 doc = [
     { name = "autodoc-pydantic" },
@@ -342,14 +342,6 @@ requires-dist = [
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server"]
 
 [package.metadata.requires-dev]
-demo = [
-    { name = "faker" },
-    { name = "honcho" },
-    { name = "httpx" },
-    { name = "requests", specifier = ">=2.32.3" },
-    { name = "slapd" },
-    { name = "watchdog", specifier = ">=4.0.0" },
-]
 dev = [
     { name = "babel", specifier = ">=2.14.0" },
     { name = "coverage", extras = ["toml"], specifier = ">=6.0.0" },
@@ -373,6 +365,14 @@ dev = [
     { name = "slapd", specifier = ">=0.1.5" },
     { name = "time-machine", specifier = ">=2.14.1" },
     { name = "tox-uv", specifier = ">=1.16.0" },
+]
+devserver = [
+    { name = "faker" },
+    { name = "honcho" },
+    { name = "httpx" },
+    { name = "requests", specifier = ">=2.32.3" },
+    { name = "slapd" },
+    { name = "watchdog", specifier = ">=4.0.0" },
 ]
 doc = [
     { name = "autodoc-pydantic", specifier = ">=2.0.1" },

@@ -40,7 +40,7 @@ Put your file in a ``static`` subdirectory of your theme, for instance ``static/
 Development
 ===========
 
-To write your custom theme and check how it is rendered, you can put the path to your theme in a ``.env`` file and run the Canaille demo instance, as described in the :ref:`contributing guide <local_environment>`
+To write your custom theme and check how it is rendered, you can put the path to your theme in a ``.env`` file and run the Canaille development server, as described in the :ref:`contributing guide <local_environment>`
 
 .. code-block:: bash
    :caption: .env
@@ -48,6 +48,6 @@ To write your custom theme and check how it is rendered, you can put the path to
     CANAILLE__THEME=/path/to/your/theme
 
 .. code-block:: console
-   :caption: Run the demo instance
+   :caption: Run the dev server
 
    $ uv run devserver

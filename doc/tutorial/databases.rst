@@ -88,11 +88,11 @@ overlays are needed for the Canaille group membership to work correctly.
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../..//demo/ldif/memberof-config.ldif
+.. literalinclude :: ../..//dev/ldif/memberof-config.ldif
    :language: ldif
    :caption: memberof-config.ldif
 
-.. literalinclude :: ../..//demo/ldif/refint-config.ldif
+.. literalinclude :: ../..//dev/ldif/refint-config.ldif
    :language: ldif
    :caption: refint-config.ldif
 
@@ -111,11 +111,11 @@ If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-poli
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../../demo/ldif/ppolicy-config.ldif
+.. literalinclude :: ../../dev/ldif/ppolicy-config.ldif
    :language: ldif
    :caption: ppolicy-config.ldif
 
-.. literalinclude :: ../../demo/ldif/ppolicy.ldif
+.. literalinclude :: ../../dev/ldif/ppolicy.ldif
    :language: ldif
    :caption: ppolicy.ldif
 
@@ -134,7 +134,7 @@ If the `otp <https://www.openldap.org/software/man.cgi?query=slapo-otp>`_ overla
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../../demo/ldif/otp-config.ldif
+.. literalinclude :: ../../dev/ldif/otp-config.ldif
    :language: ldif
    :caption: otp-config.ldif
 

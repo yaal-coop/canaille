@@ -14,10 +14,10 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md demo/demoapp.py /opt/canaille/
+COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md dev/devapp.py /opt/canaille/
 COPY canaille /opt/canaille/canaille
 RUN pip install uv
 WORKDIR /opt/canaille
-RUN uv sync --group demo --all-extras
+RUN uv sync --group dev --all-extras
 
 ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille-memory.toml", "--extra-files", "/opt/canaille/conf/canaille-ldap.toml", "--extra-files", "/opt/canaille/conf/canaille-sql.toml"]

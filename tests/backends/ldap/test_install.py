@@ -23,8 +23,8 @@ def slapd_server():
         slapd.start()
         slapd.init_tree()
         for ldif in (
-            "demo/ldif/memberof-config.ldif",
-            "demo/ldif/bootstrap-users-tree.ldif",
+            "dev/ldif/memberof-config.ldif",
+            "dev/ldif/bootstrap-users-tree.ldif",
         ):
             slapd.ldapadd(None, ["-f", ldif])
 

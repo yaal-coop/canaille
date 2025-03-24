@@ -6,12 +6,12 @@ services:
     hostname: canaille.localhost
     build:
       context: ..
-      dockerfile: demo/Dockerfile-canaille
+      dockerfile: dev/Dockerfile-canaille
     environment:
       - AUTHLIB_INSECURE_TRANSPORT=1
       - FLASK_DEBUG=1
-      - CONFIG=/opt/canaille/conf/canaille-sql.toml
-      - FLASK_APP=demoapp
+      - CONFIG=/opt/canaille/conf/canaille-memory.toml
+      - FLASK_APP=devapp
     volumes:
       - ../canaille:/opt/canaille/canaille
       - ./conf:/opt/canaille/conf
@@ -60,7 +60,7 @@ services:
     hostname: maildump.localhost
     build:
       context: ..
-      dockerfile: demo/Dockerfile-maildump
+      dockerfile: dev/Dockerfile-maildump
     ports:
       - 1025:1025
       - 1080:1080

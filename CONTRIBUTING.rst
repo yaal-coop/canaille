@@ -15,9 +15,9 @@ the `bugtracker <https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix roo
 Development environment
 -----------------------
 
-You can either run the demo locally or with Docker.
+You can either run the development server locally or with Docker.
 
-After having launched the demo you have access to several services:
+After having launched the development server, you have access to several services:
 
 - A canaille server at `canaille.localhost:5000 <http://canaille.localhost:5000>`__
 - A dummy client at `client1.localhost:5001 <http://client1.localhost:5001>`__
@@ -61,10 +61,10 @@ Initialize your development environment with:
 
 SQL
 ^^^
-With the SQL backend, the demo instance will load and save data in a local sqlite database.
+With the SQL backend, the development server will load and save data in a local sqlite database.
 
 .. code-block:: console
-    :caption: Run the demo instance with the SQL backend
+    :caption: Run the development server with the SQL backend
 
     uv run devserver
 
@@ -73,7 +73,7 @@ Memory
 With the memory backend, all data is lost when Canaille stops.
 
 .. code-block:: console
-    :caption: Run the demo instance with the memory backend
+    :caption: Run the development server with the memory backend
 
     uv run devserver --backend memory
 
@@ -82,18 +82,18 @@ LDAP
 With the LDAP backend, all data is lost when Canaille stops.
 
 .. code-block:: console
-    :caption: Run the demo instance with the LDAP backend
+    :caption: Run the development server with the LDAP backend
 
     uv run devserver --backend ldap
 
 .. note ::
-    If you want to run the demo locally with the LDAP backend, you need to have
+    If you want to run the development server locally with the LDAP backend, you need to have
     `OpenLDAP <https://www.openldap.org/>`_ installed on your system.
     It is generally shipped under the ``slapd`` or ``openldap`` package name.
 
 .. warning ::
     On Debian or Ubuntu systems, the OpenLDAP `slapd` binary usage might be restricted by apparmor,
-    and thus makes the tests and the demo fail. This can be mitigated by removing apparmor restrictions
+    and thus makes the tests and the development server fail. This can be mitigated by removing apparmor restrictions
     on `slapd`.
 
     .. code-block:: console
@@ -106,12 +106,12 @@ Docker environment
 
 SQL
 ^^^
-With the SQL backend, the demo instance will load and save data in a local sqlite database.
+With the SQL backend, the development server will load and save data in a local sqlite database.
 
 .. code-block:: console
-    :caption: Run the demo instance with the SQL backend
+    :caption: Run the development server with the SQL backend
 
-    cd demo
+    cd dev
     docker compose up
 
 Memory
@@ -119,9 +119,9 @@ Memory
 With the memory backend, all data is lost when Canaille stops.
 
 .. code-block:: console
-    :caption: Run the demo instance with the memory backend
+    :caption: Run the development server with the memory backend
 
-    cd demo
+    cd dev
     docker compose --file docker-compose-memory.yml up
 
 LDAP
@@ -129,15 +129,15 @@ LDAP
 With the LDAP backend, all data is lost when Canaille stops.
 
 .. code-block:: console
-    :caption: Run the demo instance with the LDAP backend
+    :caption: Run the development server with the LDAP backend
 
-    cd demo
+    cd dev
     docker compose --file docker-compose-ldap.yml up
 
 Populate the database
 ~~~~~~~~~~~~~~~~~~~~~
 
-The demo database comes populated with some random users and groups. If you need more, you can generate
+The development server database comes populated with some random users and groups. If you need more, you can generate
 users and groups with the ``populate`` command:
 
 .. code-block:: console
@@ -290,7 +290,7 @@ Publish a new release
 
 1. Check that dependencies are up to date with ``uv sync --all-extras --all-groups --upgrade`` and update dependencies accordingly in separated commits;
 2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``;
-3. Check that the demo environments are still working, both the local and the Docker one;
+3. Check that the development environments are still working, both the local and the Docker one;
 4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
 5. Increase the version number in ``pyproject.toml``;
 6. Commit with ``git commit``;

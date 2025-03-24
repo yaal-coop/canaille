@@ -14,8 +14,8 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 ENV PATH="/root/.local/bin/:$PATH"
 
 WORKDIR /opt/slapd
-COPY demo/ldap-server.py /opt/slapd/ldap-server.py
-COPY demo/ldif /opt/slapd/ldif/
+COPY dev/ldap-server.py /opt/slapd/ldap-server.py
+COPY dev/ldif /opt/slapd/ldif/
 COPY canaille/backends/ldap/schemas/oauth2-openldap.ldif /opt/slapd/ldif/oauth2-openldap.ldif
 
 RUN uv init --name docker-slapd
