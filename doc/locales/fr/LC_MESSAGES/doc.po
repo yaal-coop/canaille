@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-24 10:10+0100\n"
-"PO-Revision-Date: 2025-03-22 01:09+0000\n"
+"PO-Revision-Date: 2025-03-25 19:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -42,7 +42,7 @@ msgstr ""
 #, fuzzy
 #| msgid "[0.0.66] - Unreleased"
 msgid "[0.0.69] - Unreleased"
-msgstr "[0.0.66] - Unreleased"
+msgstr "[0.0.69] - Unreleased"
 
 #: ../../CHANGES.rst:5 ../../CHANGES.rst:29 ../../CHANGES.rst:41
 #: ../../CHANGES.rst:48 ../../CHANGES.rst:72 ../../CHANGES.rst:86
@@ -65,6 +65,8 @@ msgid ""
 "Configuration automatically discovers local SMTP server when available. :"
 "issue:`216`"
 msgstr ""
+"La configuration détecte automatiquement les serveurs SMTP locaux lorsqu'ils "
+"sont disponibles. :issue:`216`"
 
 #: ../../CHANGES.rst:9 ../../CHANGES.rst:17 ../../CHANGES.rst:56
 #: ../../CHANGES.rst:78 ../../CHANGES.rst:93 ../../CHANGES.rst:105
@@ -90,26 +92,20 @@ msgstr "Corrigé"
 #: ../../CHANGES.rst:10 45bce68d2f8249b1a76d5c5a195cbb29
 msgid "Locked account cannot reset their password. :issue:`250`"
 msgstr ""
+"Les comptes verrouillés ne peuvent pas réinitialiser leurs mots de passe. "
+":issue:`250`"
 
 #: ../../CHANGES.rst:11 fffbae066fb3443eac30a62bc905b1e1
-#, fuzzy
-#| msgid "Canaille executable did not support i18n. :issue:`227`"
 msgid "Canaille has default admin ACLs. :issue:`253`"
-msgstr ""
-"Les traductions ne fonctionnaient pas avec l'exécutable de Canaille. :issue:"
-"`227`"
+msgstr "Canaille a une configuration de permissions par défaut. :issue:`253`"
 
 #: ../../CHANGES.rst:14 b39f305d9f2e48289d44c2f380e42e6d
-#, fuzzy
-#| msgid "[0.0.67] - 2025-03-18"
 msgid "[0.0.68] - 2025-03-18"
-msgstr "[0.0.67] - 2025-03-18"
+msgstr "[0.0.68] - 2025-03-18"
 
 #: ../../CHANGES.rst:18 c187841b1a2a4623a8bcee56a57d995e
-#, fuzzy
-#| msgid "Login page is responsive. :issue:`1`"
 msgid "LDAP partial restore. :issue:`257`"
-msgstr "La page de connexion est réactive. :issue:`1`"
+msgstr "Restauration partielle avec LDAP. :issue:`257`"
 
 #: ../../CHANGES.rst:21 b39f305d9f2e48289d44c2f380e42e6d
 msgid "[0.0.67] - 2025-03-18"
@@ -121,12 +117,13 @@ msgid ""
 "evolved. If you use the LDAP schema, please follow the :ref:"
 "`ldap_schema_update` section."
 msgstr ""
+"Cette version contient un changement majeur. Le schéma LDAP a évolué. Si "
+"vous utilisez LDAP, veuillez suivre la section :ref:`ldap_schema_update`."
 
 #: ../../CHANGES.rst:30 fffbae066fb3443eac30a62bc905b1e1
-#, fuzzy
-#| msgid "OIDC ``client_credentials`` flow implementation. :issue:`207`"
 msgid "Full OIDC Dynamic Client Registration implementation. :issue:`231`"
-msgstr "Implémentation du flux OIDC ``client_credentials``. :issue:`207`"
+msgstr ""
+"Implémentation complète de « OIDC Dynamic Client Registration ». :issue:`231`"
 
 #: ../../CHANGES.rst:33 b39f305d9f2e48289d44c2f380e42e6d
 msgid "[0.0.66] - 2025-03-18"
@@ -138,10 +135,15 @@ msgid ""
 "<cli_delete>` don't take arguments anymore. ``canaille delete user XXX`` "
 "becomes ``canaille delete user --id XXX``."
 msgstr ""
+"Cette version vient avec un changement majeur concernant la commande "
+"terminal. La :ref:`commande delete <cli_delete>` ne prend plus d'argument. ``"
+"canaille delete user XXX`` devient ``canaille delete user --id XXX``."
 
 #: ../../CHANGES.rst:42 099d77fb3b7f4869b1d7a1997b2c6759
 msgid "The :ref:`delete command <cli_delete>` can use filter parameters."
 msgstr ""
+"La :ref:`commande delete <cli_delete>` peut prendre des paramètres de "
+"filtrage."
 
 #: ../../CHANGES.rst:45 b39f305d9f2e48289d44c2f380e42e6d
 msgid "[0.0.65] - 2025-03-18"
