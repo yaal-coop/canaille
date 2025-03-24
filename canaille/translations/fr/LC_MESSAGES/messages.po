@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-24 22:48+0100\n"
-"PO-Revision-Date: 2025-03-18 15:06+0000\n"
+"PO-Revision-Date: 2025-03-25 19:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1463,10 +1463,8 @@ msgstr "Courriels"
 #: canaille/templates/oidc/client_list.html:48
 #: canaille/templates/oidc/token_list.html:30
 #: canaille/templates/oidc/token_view.html:34
-#, fuzzy
-#| msgid "Actions"
 msgid "Applications"
-msgstr "Actions"
+msgstr "Applications"
 
 #: canaille/templates/core/mails/admin.html:20
 #: canaille/templates/oidc/authorization_list.html:34
@@ -1478,10 +1476,8 @@ msgstr "Actions"
 #: canaille/templates/oidc/client_list.html:32
 #: canaille/templates/oidc/token_list.html:34
 #: canaille/templates/oidc/token_view.html:38
-#, fuzzy
-#| msgid "Add a client"
 msgid "Add an application"
-msgstr "Ajouter un client"
+msgstr "Ajouter une application"
 
 #: canaille/templates/core/mails/admin.html:24
 #: canaille/templates/oidc/authorization_list.html:38
@@ -2137,10 +2133,8 @@ msgstr "Créer"
 
 #: canaille/templates/oidc/client_edit.html:22
 #: canaille/templates/oidc/client_edit.html:51
-#, fuzzy
-#| msgid "Edit a client"
 msgid "Edit an application"
-msgstr "Éditer un client"
+msgstr "Éditer une application"
 
 #: canaille/templates/oidc/client_edit.html:57
 msgid "ID"
@@ -2241,10 +2235,8 @@ msgstr "Détails du jeton"
 #: canaille/templates/oidc/partial/authorization_list.html:6
 #: canaille/templates/oidc/partial/token_list.html:6
 #: canaille/templates/oidc/token_view.html:60
-#, fuzzy
-#| msgid "Actions"
 msgid "Application"
-msgstr "Actions"
+msgstr "Application"
 
 #: canaille/templates/oidc/partial/authorization_list.html:7
 #: canaille/templates/oidc/partial/token_list.html:7
@@ -2340,7 +2332,7 @@ msgstr "URL"
 
 #: canaille/templates/oidc/partial/client_list.html:17
 msgid "Application logo"
-msgstr ""
+msgstr "Logo de l'application"
 
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
