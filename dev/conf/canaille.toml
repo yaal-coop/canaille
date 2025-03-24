@@ -57,6 +57,9 @@ FILTER = {groups = "moderators"}
 PERMISSIONS = ["manage_users", "manage_groups", "delete_account"]
 WRITE = ["groups"]
 
+[CANAILLE_SQL]
+DATABASE_URI = "sqlite:///dev.sqlite"
+
 [CANAILLE_LDAP]
 URI = "ldap://ldap.localhost:5389"
 ROOT_DN = "dc=example,dc=org"

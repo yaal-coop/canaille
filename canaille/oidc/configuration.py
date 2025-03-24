@@ -81,6 +81,9 @@ class OIDCSettings(BaseModel):
     Belong in the ``CANAILLE_OIDC`` namespace.
     """
 
+    ENABLE_OIDC: bool = True
+    """Whether the Single Sign-On feature and the OpenID Connect API is enabled."""
+
     DYNAMIC_CLIENT_REGISTRATION_OPEN: bool = False
     """Whether a token is needed for the RFC7591 dynamical client registration.
 

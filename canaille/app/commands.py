@@ -93,9 +93,7 @@ def dump(path: Path | None):
     from canaille.app.configuration import export_config
     from canaille.app.configuration import settings_factory
 
-    config_obj = settings_factory(
-        current_app.config, all_options=True, init_with_examples=True
-    )
+    config_obj = settings_factory(current_app.config, init_with_examples=True)
     config_file = path or os.getenv("CONFIG", DEFAULT_CONFIG_FILE)
     export_config(config_obj, config_file)
     click.echo(f"Wrote configuration file at {config_file}")

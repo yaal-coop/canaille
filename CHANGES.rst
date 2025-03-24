@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - Configuration automatically discovers local SMTP server when available. :issue:`216`
+- :class:`~canaille.oidc.configuration.OIDCSettings.ENABLE_OIDC` configuration parameter.
 
 Fixed
 ^^^^^

@@ -10,7 +10,7 @@ class SQLSettings(BaseModel):
     """
 
     DATABASE_URI: str = Field(
-        ...,
+        "sqlite:///canaille.sqlite",
         examples=[
             "sqlite:///canaille.sqlite",
             "postgresql://user:password@localhost/database_name",
