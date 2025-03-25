@@ -1,7 +1,6 @@
 import sys
 
 from flask import Flask
-from flask_talisman import Talisman
 
 
 def create_app(
@@ -28,19 +27,12 @@ def create_app(
     from .app.i18n import setup_i18n
     from .app.logging import setup_logging
     from .app.sentry import setup_sentry
+    from .app.talisman import setup_talisman
     from .app.templating import setup_jinja
     from .app.templating import setup_themer
     from .backends import setup_backend
 
     app = Flask(__name__)
-    csp = {
-        "default-src": "'self'",
-        "font-src": "'self' data:",
-    }
-    Talisman(
-        app,
-        content_security_policy=csp,
-    )
     with app.app_context():
         if not setup_config(
             app=app,
@@ -50,6 +42,7 @@ def create_app(
         ):  # pragma: no cover
             sys.exit(1)
 
+    setup_talisman(app)
     sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
