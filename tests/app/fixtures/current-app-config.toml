@@ -28,6 +28,7 @@ PREFERRED_URL_SCHEME = "http"
 #     This is useful for development but should be absolutely
 #     avoided in production environments.
 # DEBUG = false
+DEBUG = true
 
 # The cache type.
 #
