@@ -1,5 +1,6 @@
 import datetime
 import logging
+import re
 from functools import wraps
 
 from flask import abort
@@ -90,6 +91,12 @@ def request_is_partial() -> bool:
     True for form inline validation for instance.
     """
     return request.headers.get("HX-Request", False) and not request_is_boosted()
+
+
+def partial_request_trigger() -> str | None:
+    """Return the name of the form element that triggered the HTMX request."""
+    base_name = request.headers.get("HX-Trigger-Name")
+    return re.sub("-[0-9]+$", "", base_name) if base_name else base_name
 
 
 def render_htmx_template(template, htmx_template=None, **kwargs):

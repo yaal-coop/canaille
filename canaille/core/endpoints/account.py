@@ -24,6 +24,7 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
+from canaille.app.flask import partial_request_trigger
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
@@ -609,7 +610,7 @@ def profile_edition(user, edited_user):
         return render_template("core/profile_edit.html", **render_context)
 
     if request.form.get("action") == "edit-profile" or (
-        request_is_partial() and request.headers.get("HX-Trigger-Name") in profile_form
+        request_is_partial() and partial_request_trigger() in profile_form
     ):
         if not profile_form.validate():
             flash(_("Profile edition failed."), "error")
@@ -627,7 +628,9 @@ def profile_edition(user, edited_user):
         )
 
     if request.form.get("action") == "add_email" or (
-        request_is_partial() and request.headers.get("HX-Trigger-Name") in emails_form
+        request_is_partial()
+        and emails_form
+        and partial_request_trigger() in emails_form
     ):
         if not emails_form.validate():
             flash(_("Email addition failed."), "error")
