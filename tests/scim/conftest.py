@@ -18,12 +18,6 @@ def configuration(configuration):
         "ENABLE_SERVER": True,
         "ENABLE_CLIENT": True,
     }
-    configuration["CANAILLE"]["LOGGING"]["loggers"]["httpx"] = {
-        "level": "INFO",
-    }
-    configuration["CANAILLE"]["LOGGING"]["loggers"]["httpcore"] = {
-        "level": "INFO",
-    }
     return configuration
 
 

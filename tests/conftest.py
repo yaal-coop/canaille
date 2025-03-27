@@ -165,6 +165,8 @@ def configuration(smtpd):
                 },
                 "loggers": {
                     "faker": {"level": "WARNING"},
+                    "httpx": {"level": "WARNING"},
+                    "httpcore": {"level": "WARNING"},
                     "canaille": {"level": "DEBUG", "handlers": ["wsgi"]},
                 },
                 "disable_existing_loggers": False,
