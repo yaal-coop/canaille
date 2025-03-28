@@ -201,6 +201,8 @@ wsgi = {class = "logging.StreamHandler", stream = "ext://sys.stdout", formatter 
 
 [CANAILLE.LOGGING.loggers]
 faker = {level = "WARNING"}
+httpx = {level = "WARNING"}
+httpcore = {level = "WARNING"}
 
 [CANAILLE.LOGGING.loggers.canaille]
 level = "DEBUG"
