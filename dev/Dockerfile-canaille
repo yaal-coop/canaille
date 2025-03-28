@@ -20,4 +20,4 @@ RUN pip install uv
 WORKDIR /opt/canaille
 RUN uv sync --group dev --all-extras
 
-ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille.toml", "--extra-files"]
+ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille.toml"]
