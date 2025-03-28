@@ -5,11 +5,11 @@ def test_version(testclient):
 def test_javascript(testclient):
     testclient.app.config["CANAILLE"]["JAVASCRIPT"] = True
     res = testclient.get("/about", status=200)
-    res.mustcontain("<script>")
+    res.mustcontain("</script>")
 
     testclient.app.config["CANAILLE"]["JAVASCRIPT"] = False
     res = testclient.get("/about", status=200)
-    res.mustcontain(no="<script>")
+    res.mustcontain(no="</script>")
 
 
 def test_htmx(testclient):

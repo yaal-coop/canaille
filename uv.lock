@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -178,6 +177,7 @@ dependencies = [
     { name = "blinker" },
     { name = "flask" },
     { name = "flask-caching" },
+    { name = "flask-talisman" },
     { name = "flask-wtf" },
     { name = "httpx" },
     { name = "pydantic-settings" },
@@ -306,6 +306,7 @@ requires-dist = [
     { name = "flask-alembic", marker = "extra == 'sqlite'", specifier = ">=3.1.1" },
     { name = "flask-babel", marker = "extra == 'front'", specifier = ">=4.0.0" },
     { name = "flask-caching", specifier = ">=2.3.0" },
+    { name = "flask-talisman", specifier = ">=1.1.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -339,7 +340,6 @@ requires-dist = [
     { name = "wtforms", specifier = ">=3.1.1" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.2.0" },
 ]
-provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -809,6 +809,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/e2/80/74846c8af58ed60972d64f23a6cd0c3ac0175677d7555dff9f51bf82c294/flask_caching-2.3.1.tar.gz", hash = "sha256:65d7fd1b4eebf810f844de7de6258254b3248296ee429bdcb3f741bcbf7b98c9", size = 67560 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/00/bb/82daa5e2fcecafadcc8659ce5779679d0641666f9252a4d5a2ae987b0506/Flask_Caching-2.3.1-py3-none-any.whl", hash = "sha256:d3efcf600e5925ea5a2fcb810f13b341ae984f5b52c00e9d9070392f3ca10761", size = 28916 },
+]
+
+[[package]]
+name = "flask-talisman"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/38/5c/157d51e32eaffdb34ee316261239937d66400a57cd8146176fd8ce50c43a/flask-talisman-1.1.0.tar.gz", hash = "sha256:c5f486f5f54420729f84b3c3850cd63f96e8b033a9629bee66c524ea363797ff", size = 22656 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/77/1c/a15ac936dc3ae4491c5ff089dccdccd72cd3608b15fcf4e2de961f9ee8f3/flask_talisman-1.1.0-py2.py3-none-any.whl", hash = "sha256:3c42b610ebe49b0e35ca150e179bf51aa1da01e4635b49a674868ea681046208", size = 18967 },
 ]
 
 [[package]]
