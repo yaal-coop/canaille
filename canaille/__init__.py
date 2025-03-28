@@ -26,8 +26,8 @@ def create_app(
     from .app.flask import setup_flask_converters
     from .app.i18n import setup_i18n
     from .app.logging import setup_logging
+    from .app.security import setup_security
     from .app.sentry import setup_sentry
-    from .app.talisman import setup_talisman
     from .app.templating import setup_jinja
     from .app.templating import setup_themer
     from .backends import setup_backend
@@ -47,7 +47,7 @@ def create_app(
         setup_logging(app)
         backend = setup_backend(app, backend, init_backend)
         setup_features(app)
-        setup_talisman(app)
+        setup_security(app)
         setup_flask_converters(app)
         setup_flask_blueprints(app)
         setup_jinja(app)

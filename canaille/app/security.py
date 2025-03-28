@@ -1,7 +1,9 @@
-from flask_talisman import Talisman
+def setup_security(app):
+    try:
+        from flask_talisman import Talisman
+    except ImportError:
+        return
 
-
-def setup_talisman(app):
     is_https = not app.config["TESTING"]
     csp = {
         "default-src": "'self'",

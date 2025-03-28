@@ -37,13 +37,13 @@ dependencies = [
     "pydantic-settings >= 2.0.3",
     "httpx>=0.28.1",
     "wtforms >= 3.1.1",
-    "flask-talisman>=1.1.0",
 ]
 
 [project.optional-dependencies]
 front = [
     "email_validator >= 2.0.0",
     "flask-babel >= 4.0.0",
+    "flask-talisman>=1.1.0",
     "flask-themer >= 2.0.0",
     "pycountry >= 23.12.7",
     "pytz >= 2022.7",
