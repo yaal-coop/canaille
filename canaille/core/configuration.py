@@ -311,6 +311,9 @@ class CoreSettings(BaseModel):
     This is useful for tracking errors in test and production environments.
     """
 
+    FORCE_HTTPS: bool = False
+    """Whether to force the rediction of http requests to https."""
+
     JAVASCRIPT: bool = True
     """Enables Javascript to smooth the user experience."""
 

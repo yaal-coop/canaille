@@ -73,6 +73,9 @@ DATABASE = "memory"
 # This is useful for tracking errors in test and production environments.
 # SENTRY_DSN =
 
+# Whether to force the rediction of http requests to https.
+# FORCE_HTTPS = false
+
 # Enables Javascript to smooth the user experience.
 # JAVASCRIPT = true
 

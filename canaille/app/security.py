@@ -4,7 +4,6 @@ def setup_security(app):
     except ImportError:
         return
 
-    is_https = not app.config["TESTING"]
     csp = {
         "default-src": "'self'",
         "font-src": "'self' data:",
@@ -12,6 +11,6 @@ def setup_security(app):
     Talisman(
         app,
         content_security_policy=csp,
-        force_https=is_https,
-        session_cookie_secure=is_https,
+        force_https=app.config["CANAILLE"]["FORCE_HTTPS"],
+        session_cookie_secure=app.config["CANAILLE"]["FORCE_HTTPS"],
     )
