@@ -348,7 +348,7 @@ def export_object_to_toml(
 
     if isinstance(obj, BaseModel | BaseSettings):
         doc = tomlkit.document() if isinstance(obj, BaseSettings) else tomlkit.table()
-        for field_name, field_info in obj.model_fields.items():
+        for field_name, field_info in obj.__class__.model_fields.items():
             field_value = getattr(obj, field_name)
             display_value = field_value is not None and (
                 isinstance(field_value, BaseModel | BaseSettings)
