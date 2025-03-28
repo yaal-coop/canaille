@@ -42,12 +42,12 @@ def create_app(
         ):  # pragma: no cover
             sys.exit(1)
 
-    setup_talisman(app)
     sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
         backend = setup_backend(app, backend, init_backend)
         setup_features(app)
+        setup_talisman(app)
         setup_flask_converters(app)
         setup_flask_blueprints(app)
         setup_jinja(app)
