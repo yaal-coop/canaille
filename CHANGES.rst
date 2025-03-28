@@ -47,6 +47,11 @@ Added
 [0.0.65] - 2025-03-18
 ---------------------
 
+.. important::
+
+   This version comes with security fix.
+   It is strongly advised to update to this version as soon as possible.
+
 Added
 ^^^^^
 - Instructions in CONTRIBUTING.rst to update the docker image :issue:`59`
