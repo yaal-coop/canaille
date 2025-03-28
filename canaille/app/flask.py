@@ -152,12 +152,12 @@ def setup_flask_blueprints(app):
 
     app.register_blueprint(canaille.core.endpoints.bp)
 
-    if app.features.has_oidc:
+    if app.features.has_oidc:  # pragma: no branch
         import canaille.oidc.endpoints
 
         app.register_blueprint(canaille.oidc.endpoints.bp)
 
-    if app.features.has_scim_server:
+    if app.features.has_scim_server:  # pragma: no branch
         import canaille.scim.endpoints
 
         app.register_blueprint(canaille.scim.endpoints.bp)

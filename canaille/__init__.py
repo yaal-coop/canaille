@@ -56,7 +56,7 @@ def create_app(
         setup_flask(app)
         setup_otp(app)
 
-        if app.features.has_oidc:
+        if app.features.has_oidc:  # pragma: no branch
             from .oidc.oauth import setup_oauth
 
             setup_oauth(app)
