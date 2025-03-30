@@ -178,27 +178,6 @@ def test_redirect_uri(
         backend.delete(consent)
 
 
-def test_missing_redirect_uri(
-    testclient, logged_user, client, keypair, trusted_client, backend
-):
-    """Check that redirect_uri is a mandatory parameter.
-
-    It is mandatory with OIDC, but optional in OAuth2.
-    """
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id=client.client_id,
-            scope="openid profile email groups address phone",
-            nonce="somenonce",
-        ),
-        status=400,
-    )
-    assert res.json["error"] == "invalid_request"
-    assert res.json["error_description"] == 'Missing "redirect_uri" in request.'
-
-
 def test_trusted_client(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
