@@ -52,6 +52,7 @@ def http_error_handler(error):
 
 
 @bp.route("/authorize", methods=["GET", "POST"])
+@csrf.exempt
 def authorize():
     current_app.logger.debug(
         "authorization endpoint request:\nGET: %s\nPOST: %s",
@@ -323,6 +324,7 @@ def userinfo():
 
 
 @bp.route("/end_session", methods=["GET", "POST"])
+@csrf.exempt
 def end_session():
     data = CombinedMultiDict((request.args, request.form))
     user = current_user()
@@ -420,6 +422,7 @@ def end_session():
 
 
 @bp.route("/end_session_confirm", methods=["POST"])
+@csrf.exempt
 def end_session_submit():
     form = LogoutForm(request.form)
     form.validate()
