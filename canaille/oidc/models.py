@@ -148,16 +148,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
 
     def get_auth_time(self) -> int | None:
         last_login_datetime = current_user_login_datetime()
-        return (
-            int(
-                (
-                    last_login_datetime
-                    - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
-                ).total_seconds()
-            )
-            if last_login_datetime
-            else None
-        )
+        return last_login_datetime.timestamp() if last_login_datetime else None
 
 
 class Token(BaseToken, TokenMixin):
@@ -172,20 +163,11 @@ class Token(BaseToken, TokenMixin):
     def get_scope(self):
         return " ".join(self.scope)
 
-    def get_issued_at(self):
-        return int(
-            (
-                self.issue_date
-                - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
-            ).total_seconds()
-        )
+    def get_issued_at(self) -> int:
+        return self.issue_date.timestamp()
 
-    def get_expires_at(self):
-        issue_timestamp = (
-            self.issue_date
-            - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
-        ).total_seconds()
-        return int(issue_timestamp) + int(self.lifetime)
+    def get_expires_at(self) -> int:
+        return self.get_issued_at() + int(self.lifetime)
 
     def is_refresh_token_active(self):
         if self.revokation_date:
