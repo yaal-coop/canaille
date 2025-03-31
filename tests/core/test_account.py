@@ -34,7 +34,7 @@ def test_user_deleted_in_session(testclient, backend):
     testclient.get("/profile/jake", status=403)
 
     with testclient.session_transaction() as session:
-        session["user_id"] = [u.id]
+        session["user_id"] = [(u.id, datetime.datetime.now(datetime.timezone.utc))]
 
     backend.delete(u)
 
@@ -71,7 +71,7 @@ def test_admin_self_deletion(testclient, backend):
     )
     backend.save(admin)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [admin.id]
+        sess["user_id"] = [(admin.id, datetime.datetime.now(datetime.timezone.utc))]
 
     res = testclient.get("/profile/temp/settings")
     res = res.form.submit(name="action", value="confirm-delete")
@@ -97,7 +97,7 @@ def test_user_self_deletion(testclient, backend):
     )
     backend.save(user)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [user.id]
+        sess["user_id"] = [(user.id, datetime.datetime.now(datetime.timezone.utc))]
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
     res = testclient.get("/profile/temp/settings")

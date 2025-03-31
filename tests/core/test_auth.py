@@ -1,5 +1,6 @@
 import datetime
 import logging
+from unittest import mock
 
 from canaille.core.auth import get_user_from_login
 
@@ -53,7 +54,7 @@ def test_signin_and_out(testclient, user, caplog):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user.id] == session.get("user_id")
+        assert [(user.id, mock.ANY)] == session.get("user_id")
         assert "attempt_login" not in session
 
     res = testclient.get("/login", status=302)
@@ -149,7 +150,7 @@ def test_signin_with_alternate_attribute(testclient, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user.id] == session.get("user_id")
+        assert [(user.id, mock.ANY)] == session.get("user_id")
 
 
 def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):

@@ -8,6 +8,7 @@ from authlib.oauth2.rfc6749 import util
 from blinker import signal
 
 from canaille.app import models
+from canaille.app.session import current_user_login_datetime
 from canaille.backends import Backend
 
 from .basemodels import AuthorizationCode as BaseAuthorizationCode
@@ -145,12 +146,17 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
             seconds=int(self.lifetime)
         ) < datetime.datetime.now(datetime.timezone.utc)
 
-    def get_auth_time(self):
-        return int(
-            (
-                self.issue_date
-                - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
-            ).total_seconds()
+    def get_auth_time(self) -> int | None:
+        last_login_datetime = current_user_login_datetime()
+        return (
+            int(
+                (
+                    last_login_datetime
+                    - datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+                ).total_seconds()
+            )
+            if last_login_datetime
+            else None
         )
 
 

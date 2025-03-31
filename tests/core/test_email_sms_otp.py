@@ -1,5 +1,6 @@
 import datetime
 import logging
+from unittest import mock
 
 import pytest
 import time_machine
@@ -90,7 +91,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user.id] == session.get("user_id")
+        assert [(user.id, mock.ANY)] == session.get("user_id")
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
@@ -291,7 +292,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user.id] == session.get("user_id")
+        assert [(user.id, mock.ANY)] == session.get("user_id")
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
@@ -626,7 +627,7 @@ def test_signin_with_multiple_otp_methods(
     res = main_form.submit(status=302).follow(status=302).follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [user_otp.id] == session.get("user_id")
+        assert [(user_otp.id, mock.ANY)] == session.get("user_id")
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
