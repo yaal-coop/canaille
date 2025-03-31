@@ -117,7 +117,7 @@ def oauth_authorization_server():
 
 
 def openid_configuration():
-    prompt_values_supported = ["none"] + (
+    prompt_values_supported = ["none", "login", "consent"] + (
         ["create"] if current_app.config["CANAILLE"]["ENABLE_REGISTRATION"] else []
     )
     payload = {
