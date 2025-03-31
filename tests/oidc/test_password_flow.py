@@ -1,3 +1,8 @@
+import time
+import uuid
+
+from joserfc import jwt
+
 from canaille.app import models
 
 from . import client_credentials
@@ -99,3 +104,44 @@ def test_invalid_credentials(testclient, user, client):
         "error": "invalid_request",
         "error_description": 'Invalid "username" or "password" in request.',
     }
+
+
+def test_jwt_auth(testclient, client_jwks, client, token, caplog, backend, user):
+    """Test client JWT authentication as defined per RFC7523, for a password grant."""
+    now = time.time()
+
+    client.trusted = True
+    client.token_endpoint_auth_method = "client_secret_jwt"
+    backend.save(client)
+
+    _, private_key = client_jwks
+    header = {"alg": "RS256"}
+    payload = {
+        "iss": client.client_id,
+        "sub": client.client_id,
+        "aud": "http://canaille.test/oauth/token",
+        "nbf": now - 3600,
+        "exp": now + 3600,
+        "iat": now - 1,
+        "jti": str(uuid.uuid4()),
+    }
+    client_jwt = jwt.encode(header, payload, private_key)
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="password",
+            username="user",
+            password="correct horse battery staple",
+            scope="openid profile groups",
+            client_assertion=client_jwt,
+            client_assertion_type="urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+        ),
+        status=200,
+    )
+
+    assert res.json["scope"] == "openid profile groups"
+    assert res.json["token_type"] == "Bearer"
+    access_token = res.json["access_token"]
+
+    token = backend.get(models.Token, access_token=access_token)
+    assert token is not None
