@@ -98,6 +98,7 @@ def test_nominal_case(
 
     id_token = res.json["id_token"]
     claims = jwt.decode(id_token, keypair[1])
+    assert claims.header["kid"]
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]

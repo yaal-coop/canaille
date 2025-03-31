@@ -186,11 +186,22 @@ def get_issuer():
 
 
 def get_jwt_config(grant=None):
+    kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
+    alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
+
+    jwk = JWKRegistry.import_key(
+        current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
+        kty,
+        {"alg": alg, "use": "sig"},
+    )
+    jwk.ensure_kid()
+
     return {
         "key": current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
         "alg": current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"],
         "iss": get_issuer(),
         "exp": current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
+        "kid": jwk.kid,
     }
 
 
