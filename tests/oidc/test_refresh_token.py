@@ -1,7 +1,11 @@
 import datetime
 import logging
+import time
+import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
+
+from joserfc import jwt
 
 from canaille.app import models
 
@@ -190,3 +194,42 @@ def test_cannot_refresh_token_for_locked_users(
         status=400,
     )
     assert "access_token" not in res.json
+
+
+def test_jwt_auth(testclient, client_jwks, client, token, caplog, backend, user):
+    """Test client JWT authentication as defined per RFC7523, for a refresh_token."""
+    now = time.time()
+
+    client.trusted = True
+    client.token_endpoint_auth_method = "client_secret_jwt"
+    backend.save(client)
+
+    _, private_key = client_jwks
+    header = {"alg": "RS256"}
+    payload = {
+        "iss": client.client_id,
+        "sub": client.client_id,
+        "aud": "http://canaille.test/oauth/token",
+        "nbf": now - 3600,
+        "exp": now + 3600,
+        "iat": now - 1,
+        "jti": str(uuid.uuid4()),
+    }
+    client_jwt = jwt.encode(header, payload, private_key)
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="refresh_token",
+            refresh_token=token.refresh_token,
+            client_assertion=client_jwt,
+            client_assertion_type="urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            scope=token.scope,
+            redirect_uri=client.redirect_uris[0],
+        ),
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = backend.get(models.Token, access_token=access_token)
+    assert token.client == client
+    assert token.subject == user

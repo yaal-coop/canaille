@@ -366,7 +366,12 @@ class OpenIDCode(_OpenIDCode):
 
 
 class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
-    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+    TOKEN_ENDPOINT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        "none",
+    ]
 
     def authenticate_user(self, username, password):
         user = get_user_from_login(username)
@@ -381,7 +386,12 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
 
 
 class RefreshTokenGrant(_RefreshTokenGrant):
-    TOKEN_ENDPOINT_AUTH_METHODS = ["client_secret_basic", "client_secret_post", "none"]
+    TOKEN_ENDPOINT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        "none",
+    ]
 
     def authenticate_refresh_token(self, refresh_token):
         token = Backend.instance.query(models.Token, refresh_token=refresh_token)
