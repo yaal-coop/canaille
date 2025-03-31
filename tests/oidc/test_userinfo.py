@@ -146,7 +146,33 @@ def test_generate_user_claims(user, foo_group):
     }
 
 
-def test_userinfo(testclient, token, user, foo_group, backend):
+def test_get_userinfo(testclient, token, user, foo_group, backend):
+    token.scope = ["openid"]
+    backend.save(token)
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {token.access_token}"},
+        status=200,
+    )
+    assert res.json == {
+        "sub": "user",
+    }
+
+
+def test_post_userinfo(testclient, token, user, foo_group, backend):
+    token.scope = ["openid"]
+    backend.save(token)
+    res = testclient.post(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {token.access_token}"},
+        status=200,
+    )
+    assert res.json == {
+        "sub": "user",
+    }
+
+
+def test_userinfo_scopes(testclient, token, user, foo_group, backend):
     token.scope = ["openid"]
     backend.save(token)
     res = testclient.get(
