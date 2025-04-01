@@ -46,7 +46,9 @@ def test_file_log_config(configuration, backend, tmp_path, user):
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [(user.id, datetime.datetime.now(datetime.timezone.utc))]
+        sess["user_id"] = [
+            (user.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        ]
 
     res = testclient.get("/profile/user/settings")
     res.form["password1"] = "new-password"
@@ -85,7 +87,9 @@ def test_dict_log_config(configuration, backend, tmp_path, admin):
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [(admin.id, datetime.datetime.now(datetime.timezone.utc))]
+        sess["user_id"] = [
+            (admin.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        ]
 
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"

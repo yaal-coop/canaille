@@ -262,28 +262,36 @@ def moderator(app, backend):
 @pytest.fixture
 def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [(user.id, datetime.datetime.now(datetime.timezone.utc))]
+        sess["user_id"] = [
+            (user.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        ]
     return user
 
 
 @pytest.fixture
 def logged_user_otp(user_otp, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [(user_otp.id, datetime.datetime.now(datetime.timezone.utc))]
+        sess["user_id"] = [
+            (user_otp.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        ]
     return user_otp
 
 
 @pytest.fixture
 def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [(admin.id, datetime.datetime.now(datetime.timezone.utc))]
+        sess["user_id"] = [
+            (admin.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        ]
     return admin
 
 
 @pytest.fixture
 def logged_moderator(moderator, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [(moderator.id, datetime.datetime.now(datetime.timezone.utc))]
+        sess["user_id"] = [
+            (moderator.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        ]
     return moderator
 
 
