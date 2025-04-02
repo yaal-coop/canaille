@@ -36,6 +36,10 @@ contexts = {}
 
 
 def context_login(browser, url, color_scheme, user, password=True):
+    """Create a playwright context where 'user' has been authenticated.
+
+    It helps playwright take screenshot as a logged in user.
+    """
     try:
         context = browser.new_context(
             color_scheme=color_scheme, storage_state=contexts[user]
