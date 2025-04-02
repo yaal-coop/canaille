@@ -112,10 +112,7 @@ def test_openid_configuration(testclient):
         "registration_endpoint": "http://canaille.test/oauth/register",
         "request_object_encryption_alg_values_supported": None,
         "request_object_encryption_enc_values_supported": None,
-        "request_object_signing_alg_values_supported": [
-            "none",
-            "RS256",
-        ],
+        "request_object_signing_alg_values_supported": None,
         "request_parameter_supported": False,
         "request_uri_parameter_supported": False,
         "require_request_uri_registration": False,
