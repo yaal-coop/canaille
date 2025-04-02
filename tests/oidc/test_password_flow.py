@@ -83,7 +83,7 @@ def test_invalid_user(testclient, user, client):
 
     assert res.json == {
         "error": "invalid_request",
-        "error_description": 'Invalid "username" or "password" in request.',
+        "error_description": "Invalid 'username' or 'password' in request.",
     }
 
 
@@ -102,7 +102,7 @@ def test_invalid_credentials(testclient, user, client):
 
     assert res.json == {
         "error": "invalid_request",
-        "error_description": 'Invalid "username" or "password" in request.',
+        "error_description": "Invalid 'username' or 'password' in request.",
     }
 
 

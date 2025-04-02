@@ -52,7 +52,7 @@ front = [
 ]
 
 oidc = [
-    "authlib >= 1.5.1",
+    "authlib >= 1.5.2",
     "joserfc>=1.0.2",
 ]
 

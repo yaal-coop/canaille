@@ -143,7 +143,7 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
     )
     assert res.json == {
         "error": "invalid_request",
-        "error_description": 'There is no "user" for this token.',
+        "error_description": "There is no 'user' for this token.",
     }
     token = backend.get(models.Token, access_token=access_token)
     backend.delete(token)

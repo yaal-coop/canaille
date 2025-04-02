@@ -512,7 +512,7 @@ def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
 
     assert res.json == {
         "error": "invalid_request",
-        "error_description": 'Missing "redirect_uri" in request.',
+        "error_description": "Missing 'redirect_uri' in request.",
         "iss": "https://auth.test",
     }
 
@@ -758,7 +758,7 @@ def test_code_expired(testclient, user, client):
         )
         assert res.json == {
             "error": "invalid_grant",
-            "error_description": 'Invalid "code" in request.',
+            "error_description": "Invalid 'code' in request.",
         }
 
 
@@ -808,7 +808,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
     )
     assert res.json == {
         "error": "invalid_grant",
-        "error_description": 'There is no "user" for this code.',
+        "error_description": "There is no 'user' for this code.",
     }
     backend.delete(authcode)
 

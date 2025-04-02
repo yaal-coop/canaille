@@ -129,7 +129,7 @@ def authorize_consent(client, user):
     if not redirect_uri:
         response = {
             "error": "invalid_request",
-            "error_description": 'Missing "redirect_uri" in request.',
+            "error_description": "Missing 'redirect_uri' in request.",
             "iss": get_issuer(),
         }
         return jsonify(response), 400

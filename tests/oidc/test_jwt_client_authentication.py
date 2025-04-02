@@ -236,6 +236,6 @@ def test_same_jti_twice(
 
     assert res.json == {
         "error": "invalid_client",
-        "error_description": 'Invalid claim "jti"',
+        "error_description": "Invalid claim 'jti'",
     }
     backend.delete(new_code)
