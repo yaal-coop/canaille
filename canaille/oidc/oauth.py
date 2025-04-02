@@ -544,6 +544,7 @@ class IntrospectionEndpoint(_IntrospectionEndpoint):
         if token.subject:
             response["username"] = token.subject.formatted_name
             response["sub"] = token.subject.user_name
+        print(response)
         return response
 
 

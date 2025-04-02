@@ -164,7 +164,7 @@ class Token(BaseToken, TokenMixin):
         return " ".join(self.scope)
 
     def get_issued_at(self) -> int:
-        return self.issue_date.timestamp()
+        return int(self.issue_date.timestamp())
 
     def get_expires_at(self) -> int:
         return self.get_issued_at() + int(self.lifetime)

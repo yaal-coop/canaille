@@ -6,7 +6,7 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_access_token_introspection(testclient, user, client, token):
+def test_access_token_introspection(testclient, user, client, token, backend):
     res = testclient.post(
         "/oauth/introspect",
         params={"token": token.access_token},
