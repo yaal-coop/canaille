@@ -15,6 +15,7 @@ Fixed
 - Client JWT authentication for OIDC refresh_token and password grants. :issue:`233`
 - Ensure `id_token` has a `kid` header. :issue:`245`
 - ``id_token`` session authentication time.
+- Configuration exception when a feature is configured but its dependencies are missing.
 
 [0.0.71] - 2025-03-31
 ---------------------

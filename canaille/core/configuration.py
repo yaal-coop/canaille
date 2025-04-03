@@ -4,7 +4,6 @@ from enum import Enum
 
 from pydantic import DirectoryPath
 from pydantic import Field
-from pydantic import ValidationError
 from pydantic import ValidationInfo
 from pydantic import field_validator
 from pydantic import model_validator
@@ -390,7 +389,7 @@ class CoreSettings(BaseModel):
     @classmethod
     def validate_otp_dependency(cls, value):
         if not importlib.util.find_spec("otpauth"):  # pragma: no cover
-            raise ValidationError(
+            raise ValueError(
                 "You are trying to use OTP but the 'otp' extra is not installed."
             )
 
@@ -510,7 +509,7 @@ class CoreSettings(BaseModel):
     @classmethod
     def validate_smpp(cls, value: SMPPSettings | None) -> SMPPSettings | None:
         if not importlib.util.find_spec("smpplib"):  # pragma: no cover
-            raise ValidationError(
+            raise ValueError(
                 "You have configured a SMPP server but the 'sms' extra is not installed."
             )
 
