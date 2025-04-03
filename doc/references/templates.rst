@@ -42,7 +42,6 @@ Forms
 .. automodule:: canaille.core.endpoints.forms
     :members:
     :show-inheritance:
-    :undoc-members:
 
 OIDC
 ====
@@ -60,4 +59,3 @@ Forms
 .. automodule:: canaille.oidc.endpoints.forms
     :members:
     :show-inheritance:
-    :undoc-members:
