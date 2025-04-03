@@ -869,7 +869,11 @@ def test_missing_client_id(
         ),
         status=400,
     )
-    res.mustcontain("client_id parameter is missing.")
+    assert res.json == {
+        "error": "invalid_request",
+        "error_description": "'client_id' parameter is missing.",
+        "iss": "https://auth.test",
+    }
 
 
 def test_logout_login_with_intruder_lockout(testclient, logged_user, client, backend):

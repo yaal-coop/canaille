@@ -155,6 +155,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
     assert res.json == {
         "error": "invalid_request",
         "error_description": "prompt 'create' value is not supported",
+        "iss": "https://auth.test",
     }
 
 

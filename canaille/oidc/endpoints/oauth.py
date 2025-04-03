@@ -81,10 +81,18 @@ def authorize():
 
 def authorize_guards(client):
     if "client_id" not in request.args:
-        abort(400, "client_id parameter is missing.")
+        return {
+            "error": "invalid_request",
+            "error_description": "'client_id' parameter is missing.",
+            "iss": get_issuer(),
+        }, 400
 
     if not client:
-        abort(400, "Invalid client.")
+        return {
+            "error": "invalid_client",
+            "error_description": "Invalid client.",
+            "iss": get_issuer(),
+        }, 400
 
     # https://openid.net/specs/openid-connect-prompt-create-1_0.html#name-authorization-request
     # If the OpenID Provider receives a prompt value that it does
@@ -101,6 +109,16 @@ def authorize_guards(client):
         return {
             "error": "invalid_request",
             "error_description": f"prompt '{request.args['prompt']}' value is not supported",
+            "iss": get_issuer(),
+        }, 400
+
+    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
+    # https://github.com/lepture/authlib/issues/712
+    if not request.args.get("redirect_uri"):
+        return {
+            "error": "invalid_request",
+            "error_description": "Missing 'redirect_uri' in request.",
+            "iss": get_issuer(),
         }, 400
 
 
@@ -123,17 +141,6 @@ def authorize_login(user):
 
 
 def authorize_consent(client, user):
-    redirect_uri = request.args.get("redirect_uri")
-    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
-    # https://github.com/lepture/authlib/issues/712
-    if not redirect_uri:
-        response = {
-            "error": "invalid_request",
-            "error_description": "Missing 'redirect_uri' in request.",
-            "iss": get_issuer(),
-        }
-        return jsonify(response), 400
-
     requested_scopes = request.args.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
     consents = Backend.instance.query(
