@@ -531,6 +531,8 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # WEBSITE = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
 
+# UPDATED_AT = "{% if user.last_modified %}{{ user.last_modified.timestamp() }}{% endif %}"
+
 [CANAILLE_SCIM]
 # Whether the SCIM server API is enabled.
 #
