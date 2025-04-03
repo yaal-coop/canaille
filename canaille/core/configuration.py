@@ -388,7 +388,7 @@ class CoreSettings(BaseModel):
     @field_validator("OTP_METHOD", "EMAIL_OTP")
     @classmethod
     def validate_otp_dependency(cls, value):
-        if not importlib.util.find_spec("otpauth"):  # pragma: no cover
+        if value and not importlib.util.find_spec("otpauth"):  # pragma: no cover
             raise ValueError(
                 "You are trying to use OTP but the 'otp' extra is not installed."
             )
@@ -508,7 +508,7 @@ class CoreSettings(BaseModel):
     @field_validator("SMPP")
     @classmethod
     def validate_smpp(cls, value: SMPPSettings | None) -> SMPPSettings | None:
-        if not importlib.util.find_spec("smpplib"):  # pragma: no cover
+        if value and not importlib.util.find_spec("smpplib"):  # pragma: no cover
             raise ValueError(
                 "You have configured a SMPP server but the 'sms' extra is not installed."
             )

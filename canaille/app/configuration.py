@@ -422,11 +422,14 @@ def export_config(model: BaseSettings, filename: str):
         fd.write(content)
 
 
-def example_settings(model: type[BaseModel]) -> BaseModel:
+def example_settings(model: type[BaseModel]) -> BaseModel | None:
     """Init a pydantic BaseModel with values passed as Field 'examples'."""
     data = {
         field_name: field_info.examples[0]
         for field_name, field_info in model.model_fields.items()
         if field_info.examples
     }
-    return model.model_validate(data)
+    try:
+        return model.model_validate(data)
+    except ValidationError:  # pragma: no cover
+        return None
