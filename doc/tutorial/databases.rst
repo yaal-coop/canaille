@@ -208,18 +208,7 @@ Please perform your own backups too, in case something unexpected happens.
 Delete the old schema
 ~~~~~~~~~~~~~~~~~~~~~
 
-You can use the ``ldapdelete`` command to remove the old schema.
-
-In the following command, you might adapt the schema DN, for instance use ``cn={4}oauth,cn=schema,cn=config`` instead of ``cn=oauth,cn=schema,cn=config``.
-
-.. code-block:: console
-    :caption: Removing the old schema with ldapdelete
-
-    sudo ldapdelete -Q -H ldapi:/// -Y EXTERNAL "cn=oauth,cn=schema,cn=config"
-
-For good measure, you may then restart your ldap server.
-
-Alternatively you could use the ``slapmodify`` command.
+You can use the ``slapmodify`` command to delete the old schema.
 It is supposed to be executed while your LDAP server is turned off.
 
 .. code-block:: console
