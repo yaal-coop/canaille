@@ -281,15 +281,6 @@ def client_registration():
         "client registration endpoint request: POST: %s",
         request.json,
     )
-    # Implements RFC6749 section 3.1.2 "The endpoint URI MUST NOT include a fragment component." until this is implemented upstream in authlib
-    # https://github.com/lepture/authlib/issues/714
-    if any("#" in uri for uri in request.json["redirect_uris"]):
-        response = {
-            "error_description": "Redirect URI cannot contain fragment identifiers",
-            "error": "invalid_request",
-            "iss": get_issuer(),
-        }
-        return jsonify(response), 400
 
     response = authorization.create_endpoint_response(
         ClientRegistrationEndpoint.ENDPOINT_NAME
