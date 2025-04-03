@@ -35,6 +35,9 @@ class JWTMappingSettings(BaseModel):
         "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}"
     )
     WEBSITE: str | None = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
+    UPDATED_AT: str | None = (
+        "{% if user.last_modified %}{{ user.last_modified.timestamp() }}{% endif %}"
+    )
 
 
 class JWTSettings(BaseModel):

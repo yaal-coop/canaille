@@ -6,6 +6,10 @@
     This version comes with a schema breaking change.
     The LDAP schema has evolved. If you use the LDAP schema, please follow the :ref:`ldap_schema_update` section.
 
+Added
+^^^^^
+- ``updated_at`` claim in ``id_token`` and ``userinfo`` endpoint.
+
 Fixed
 ^^^^^
 - Client JWT authentication for OIDC refresh_token and password grants. :issue:`233`

@@ -1,3 +1,5 @@
+from unittest import mock
+
 from canaille.oidc.configuration import JWTSettings
 from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import generate_user_claims
@@ -103,6 +105,7 @@ def test_generate_user_claims(user, foo_group):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "updated_at": mock.ANY,
     }
     assert generate_user_claims(user, claims_from_scope("openid profile email")) == {
         "sub": "user",
@@ -113,6 +116,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "email": "john@doe.test",
+        "updated_at": mock.ANY,
     }
     assert generate_user_claims(user, claims_from_scope("openid profile address")) == {
         "sub": "user",
@@ -123,6 +127,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "address": "1235, somewhere",
+        "updated_at": mock.ANY,
     }
     assert generate_user_claims(user, claims_from_scope("openid profile phone")) == {
         "sub": "user",
@@ -133,6 +138,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "phone_number": "555-000-000",
+        "updated_at": mock.ANY,
     }
     assert generate_user_claims(user, claims_from_scope("openid profile groups")) == {
         "sub": "user",
@@ -143,6 +149,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "groups": ["foo"],
+        "updated_at": mock.ANY,
     }
 
 
@@ -198,6 +205,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "updated_at": mock.ANY,
     }
 
     token.scope = ["openid", "profile", "email"]
@@ -215,6 +223,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "email": "john@doe.test",
+        "updated_at": mock.ANY,
     }
 
     token.scope = ["openid", "profile", "address"]
@@ -232,6 +241,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "address": "1235, somewhere",
+        "updated_at": mock.ANY,
     }
 
     token.scope = ["openid", "profile", "phone"]
@@ -249,6 +259,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "phone_number": "555-000-000",
+        "updated_at": mock.ANY,
     }
 
     token.scope = ["openid", "profile", "groups"]
@@ -266,6 +277,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "groups": ["foo"],
+        "updated_at": mock.ANY,
     }
 
 
@@ -309,6 +321,7 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
         "locale": "fr",
         "phone_number": "555-000-000",
         "website": "https://john.test",
+        "updated_at": mock.ANY,
     }
 
 
