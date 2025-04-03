@@ -21,8 +21,16 @@
                     </a>
                 </td>
                 <td><a href="{{ url_for('oidc.clients.edit', client=client) }}">{{ client.client_name }}</a></td>
-                <td><a href="{{ client.client_uri }}">{{ client.client_uri }}</a></td>
-                <td>{% if client.client_id_issued_at %}{{ client.client_id_issued_at.strftime("%d/%m/%Y %H:%M:%S") }}{% endif %}</td>
+                <td>
+                    {% if client.client_uri %}
+                        <a href="{{ client.client_uri }}">{{ client.client_uri }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if client.client_id_issued_at %}
+                        {{ client.client_id_issued_at|datetimeformat }}
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>

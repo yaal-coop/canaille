@@ -63,10 +63,10 @@ Display a list of clients for which users have given or revoked their consent.
                                 <div class="header">{{ consent.client.client_name }}</div>
                             {% endif %}
                             {% if consent.issue_date %}
-                                <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                                <div class="meta">{% trans %}From:{% endtrans %} {{ consent.issue_date|datetimeformat }}</div>
                             {% endif %}
                             {% if consent.revokation_date %}
-                                <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date.strftime("%d/%m/%Y %H:%M:%S") }}</div>
+                                <div class="meta">{% trans %}Revoked:{% endtrans %} {{ consent.revokation_date|datetimeformat }}</div>
                             {% endif %}
                             <div class="description">
                                 <p>
