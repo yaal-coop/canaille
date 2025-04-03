@@ -489,6 +489,31 @@ attributetypes ( 1.3.6.1.4.1.56207.1.1.57 NAME 'oauthRequestURI'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+attributetypes: ( 1.3.6.1.4.1.56207.1.1.58 NAME 'oauthAuthTime'
+        DESC 'Time when the End-User authentication occurred'
+        EQUALITY generalizedTimeMatch
+        ORDERING generalizedTimeOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+attributetypes: ( 1.3.6.1.4.1.56207.1.1.59 NAME 'oauthACR'
+        DESC 'Authentication Context Class Reference'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+attributetypes: ( 1.3.6.1.4.1.56207.1.1.60 NAME 'oauthAMR'
+        DESC 'Authentication Methods Reference'
+        EQUALITY caseIgnoreMatch
+        ORDERING caseIgnoreOrderingMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -552,7 +577,10 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
               oauthAuthorizationLifetime $
               oauthCodeChallenge $
               oauthCodeChallengeMethod $
-              oauthRevokationDate )
+              oauthRevokationDate $
+              oauthAuthTime $
+              oauthACR $
+              oauthAMR )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         DESC 'OAuth 2.0 Token'

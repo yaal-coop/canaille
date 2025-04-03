@@ -446,6 +446,19 @@ class AuthorizationCode(Model):
     challenge_method: str | None
     revokation_date: datetime.datetime
 
+    auth_time: datetime.datetime
+    """Time when the End-User authentication occurred."""
+
+    acr: str | None
+    """Authentication Context Class Reference.
+    String specifying an Authentication Context Class Reference value that identifies
+    the Authentication Context Class that the authentication performed satisfied."""
+
+    amr: list[str]
+    """Authentication Methods References.
+    JSON array of strings that are identifiers for authentication methods used in
+    the authentication."""
+
 
 class Token(Model):
     """OpenID Connect token definition."""

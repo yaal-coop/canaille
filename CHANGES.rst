@@ -1,6 +1,11 @@
 [0.0.72] - Unreleased
 ---------------------
 
+.. warning::
+
+    This version comes with a schema breaking change.
+    The LDAP schema has evolved. If you use the LDAP schema, please follow the :ref:`ldap_schema_update` section.
+
 Fixed
 ^^^^^
 - Client JWT authentication for OIDC refresh_token and password grants. :issue:`233`

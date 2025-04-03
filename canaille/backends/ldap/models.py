@@ -190,6 +190,9 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
         "challenge": "oauthCodeChallenge",
         "challenge_method": "oauthCodeChallengeMethod",
         "revokation_date": "oauthRevokationDate",
+        "auth_time": "oauthAuthTime",
+        "acr": "oauthACR",
+        "amr": "oauthAMR",
     }
 
 

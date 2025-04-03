@@ -296,6 +296,11 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
     revokation_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+    auth_time: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    acr: Mapped[str] = mapped_column(String, nullable=True)
+    amr: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
 
 
 token_audience_association_table = Table(
