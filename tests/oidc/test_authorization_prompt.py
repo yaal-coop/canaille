@@ -70,9 +70,9 @@ def test_prompt_not_logged(testclient, user, client, backend):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=200,
+        status=400,
     )
-    assert "login_required" == res.json.get("error")
+    assert res.json == {"error": "login_required", "iss": "https://auth.test"}
 
     backend.delete(consent)
 

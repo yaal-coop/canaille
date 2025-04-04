@@ -121,10 +121,7 @@ def authorize_guards(client, data):
 
 
 def authorize_login(user, data):
-    if not user:
-        if data.get("prompt") == "none":
-            return jsonify({"error": "login_required"})
-
+    if not user and data.get("prompt") != "none":
         session["redirect-after-login"] = request.url
 
         if data.get("prompt") == "create":
@@ -132,7 +129,7 @@ def authorize_login(user, data):
 
         return redirect(url_for("core.auth.login"))
 
-    if not user.can_use_oidc:
+    if user and not user.can_use_oidc:
         abort(
             403, "The user does not have the permission to achieve OIDC authentication."
         )
@@ -158,6 +155,12 @@ def authorize_consent(client, user, data):
             and not consent.revoked
         )
 
+        try:
+            grant = authorization.get_consent_grant(end_user=user)
+        except OAuth2Error as error:
+            current_app.logger.debug("authorization endpoint response: %s", error)
+            return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
+
         if client_has_user_consent:
             return authorization.create_authorization_response(grant_user=user)
 
@@ -168,12 +171,6 @@ def authorize_consent(client, user, data):
             }
             current_app.logger.debug("authorization endpoint response: %s", response)
             return jsonify(response)
-
-        try:
-            grant = authorization.get_consent_grant(end_user=user)
-        except OAuth2Error as error:
-            current_app.logger.debug("authorization endpoint response: %s", error)
-            return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
 
         form = AuthorizeForm(request.form or None)
         form.action = (
