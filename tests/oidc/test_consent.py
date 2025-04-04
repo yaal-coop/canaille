@@ -219,3 +219,24 @@ def test_revoke_trusted_client_with_manual_revokation(
     res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     res = res.follow()
     assert ("error", "The access is already revoked") in res.flashes
+
+
+def test_tos_policy(
+    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+):
+    """Tos and policy links must appear in the consent page."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+            tos_uri="https://client.test/tos",
+            policy_uri="https://client.test/policy",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=200,
+    )
+    res.mustcontain("https://client.test/tos")
+    res.mustcontain("https://client.test/policy")

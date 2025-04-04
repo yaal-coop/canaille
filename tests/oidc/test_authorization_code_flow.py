@@ -33,8 +33,6 @@ def test_nominal_case(
         ),
         status=200,
     )
-    res.mustcontain("https://client.test/tos")
-    res.mustcontain("https://client.test/policy")
 
     res = res.form.submit(name="answer", value="accept", status=302)
     assert (
