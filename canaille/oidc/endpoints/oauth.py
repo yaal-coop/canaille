@@ -60,27 +60,26 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
-    client = Backend.instance.get(
-        models.Client, client_id=request.args.get("client_id")
-    )
+    data = CombinedMultiDict((request.args, request.form))
+    client = Backend.instance.get(models.Client, client_id=data.get("client_id"))
     user = current_user()
 
     # Check that the request is well-formed
-    if response := authorize_guards(client):
+    if response := authorize_guards(client, data):
         return response
 
     # Check that the user is logged
-    if response := authorize_login(user):
+    if response := authorize_login(user, data):
         return response
 
     # Get the user consent if needed
-    response = authorize_consent(client, user)
+    response = authorize_consent(client, user, data)
 
     return response
 
 
-def authorize_guards(client):
-    if "client_id" not in request.args:
+def authorize_guards(client, data):
+    if not data.get("client_id"):
         return {
             "error": "invalid_request",
             "error_description": "'client_id' parameter is missing.",
@@ -102,19 +101,18 @@ def authorize_guards(client):
     # It is RECOMMENDED that the OP return an error_description
     # value identifying the invalid parameter value.
     if (
-        request.args.get("prompt")
-        and request.args["prompt"]
-        not in openid_configuration()["prompt_values_supported"]
+        data.get("prompt")
+        and data["prompt"] not in openid_configuration()["prompt_values_supported"]
     ):
         return {
             "error": "invalid_request",
-            "error_description": f"prompt '{request.args['prompt']}' value is not supported",
+            "error_description": f"prompt '{data['prompt']}' value is not supported",
             "iss": get_issuer(),
         }, 400
 
     # Ensures the request contains a redirect_uri until resolved upstream in Authlib
     # https://github.com/lepture/authlib/issues/712
-    if not request.args.get("redirect_uri"):
+    if not data.get("redirect_uri"):
         return {
             "error": "invalid_request",
             "error_description": "Missing 'redirect_uri' in request.",
@@ -122,14 +120,14 @@ def authorize_guards(client):
         }, 400
 
 
-def authorize_login(user):
+def authorize_login(user, data):
     if not user:
-        if request.args.get("prompt") == "none":
+        if data.get("prompt") == "none":
             return jsonify({"error": "login_required"})
 
         session["redirect-after-login"] = request.url
 
-        if request.args.get("prompt") == "create":
+        if data.get("prompt") == "create":
             return redirect(url_for("core.account.join"))
 
         return redirect(url_for("core.auth.login"))
@@ -140,8 +138,8 @@ def authorize_login(user):
         )
 
 
-def authorize_consent(client, user):
-    requested_scopes = request.args.get("scope", "").split(" ")
+def authorize_consent(client, user, data):
+    requested_scopes = data.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
     consents = Backend.instance.query(
         models.Consent,
@@ -151,7 +149,7 @@ def authorize_consent(client, user):
     consent = consents[0] if consents else None
 
     # Get the authorization code, or display the user consent form
-    if request.method == "GET":
+    if request.method == "GET" or "answer" not in request.form:
         client_has_user_consent = (
             (client.trusted and (not consent or not consent.revoked))
             or (
@@ -163,7 +161,7 @@ def authorize_consent(client, user):
         if client_has_user_consent:
             return authorization.create_authorization_response(grant_user=user)
 
-        elif request.args.get("prompt") == "none":
+        elif data.get("prompt") == "none":
             response = {
                 "error": "consent_required",
                 "iss": get_issuer(),
@@ -178,6 +176,12 @@ def authorize_consent(client, user):
             return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
 
         form = AuthorizeForm(request.form or None)
+        form.action = (
+            request.url
+            if request.method == "GET"
+            else add_params_to_uri(request.url, data)
+        )
+
         return render_template(
             "oidc/authorize.html",
             user=user,
