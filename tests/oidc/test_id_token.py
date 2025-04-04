@@ -9,6 +9,54 @@ from canaille.app import models
 from . import client_credentials
 
 
+def test_nominal_case(
+    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+):
+    assert not backend.query(models.Consent)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+            tos_uri="https://client.test/tos",
+            policy_uri="https://client.test/policy",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile email groups address phone",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    id_token = res.json["id_token"]
+    claims = jwt.decode(id_token, keypair[1])
+    assert claims.header["kid"]
+    assert claims["sub"] == logged_user.user_name
+    assert claims["name"] == logged_user.formatted_name
+    assert claims["aud"] == [client.client_id, trusted_client.client_id]
+
+    for consent in backend.query(models.Consent, client=client, subject=logged_user):
+        backend.delete(consent)
+
+
 def test_auth_time(
     testclient,
     user,

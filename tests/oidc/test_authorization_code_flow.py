@@ -94,12 +94,6 @@ def test_nominal_case(
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
 
-    id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert claims.header["kid"]
-    assert claims["sub"] == logged_user.user_name
-    assert claims["name"] == logged_user.formatted_name
-    assert claims["aud"] == [client.client_id, trusted_client.client_id]
     assert (
         "canaille",
         logging.SECURITY,
@@ -180,6 +174,7 @@ def test_redirect_uri(
 def test_trusted_client(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
+    """Trusted clients don't need the consent page to be displayed."""
     assert not backend.query(models.Consent)
 
     client.trusted = True
@@ -222,12 +217,6 @@ def test_trusted_client(
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
-
-    id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name == claims["sub"]
-    assert logged_user.formatted_name == claims["name"]
-    assert [client.client_id, trusted_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -650,6 +639,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
 
 
 def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
+    """If a client requests a scope larger than the scope consented by the user, the consent page must be displayed again."""
     assert not backend.query(models.Consent)
     client.scope = ["openid", "profile", "groups"]
     backend.save(client)
@@ -702,11 +692,6 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
         "openid",
         "profile",
     }
-
-    id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name == claims["sub"]
-    assert logged_user.formatted_name == claims["name"]
 
     res = testclient.get(
         "/oauth/userinfo",
