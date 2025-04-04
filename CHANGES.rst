@@ -9,6 +9,7 @@
 Added
 ^^^^^
 - ``updated_at`` claim in ``id_token`` and ``userinfo`` endpoint.
+- Support for POST method in OIDC authorization endpoint. :issue:`263`
 
 Fixed
 ^^^^^

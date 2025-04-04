@@ -15,7 +15,7 @@ from canaille.core.models import PASSWORD_MIN_DELAY
 from . import client_credentials
 
 
-def test_nominal_case(
+def test_nominal_case_get(
     testclient, logged_user, client, keypair, trusted_client, backend, caplog
 ):
     assert not backend.query(models.Consent)
@@ -27,14 +27,10 @@ def test_nominal_case(
             client_id=client.client_id,
             scope="openid profile email groups address phone",
             nonce="somenonce",
-            tos_uri="https://client.test/tos",
-            policy_uri="https://client.test/policy",
             redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
-    res.mustcontain("https://client.test/tos")
-    res.mustcontain("https://client.test/policy")
 
     res = res.form.submit(name="answer", value="accept", status=302)
     assert (
@@ -96,12 +92,100 @@ def test_nominal_case(
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
 
-    id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert claims.header["kid"]
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Issued authorization_code token for user in client Some client",
+    ) in caplog.record_tuples
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )
+    assert res.json["name"] == "John (johnny) Doe"
+
+    for consent in consents:
+        backend.delete(consent)
+
+
+def test_nominal_case_post(
+    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+):
+    """Authorization Servers MUST support the use of the HTTP GET and POST methods defined in RFC 7231 [RFC7231] at the Authorization Endpoint."""
+    assert not backend.query(models.Consent)
+
+    res = testclient.post(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email groups address phone",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "New consent for user in client Some client",
+    ) in caplog.record_tuples
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = backend.get(models.AuthorizationCode, code=code)
+    assert authcode is not None
+    assert set(authcode.scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
+
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
+    assert set(consents[0].scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile email groups address phone",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = backend.get(models.Token, access_token=access_token)
+    assert token.client == client
+    assert token.subject == logged_user
+    assert set(token.scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
+    claims = jwt.decode(access_token, keypair[1])
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
+
     assert (
         "canaille",
         logging.SECURITY,
@@ -182,6 +266,7 @@ def test_redirect_uri(
 def test_trusted_client(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
+    """Trusted clients don't need the consent page to be displayed."""
     assert not backend.query(models.Consent)
 
     client.trusted = True
@@ -224,12 +309,6 @@ def test_trusted_client(
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == logged_user
-
-    id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name == claims["sub"]
-    assert logged_user.formatted_name == claims["name"]
-    assert [client.client_id, trusted_client.client_id] == claims["aud"]
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -652,6 +731,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
 
 
 def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
+    """If a client requests a scope larger than the scope consented by the user, the consent page must be displayed again."""
     assert not backend.query(models.Consent)
     client.scope = ["openid", "profile", "groups"]
     backend.save(client)
@@ -704,11 +784,6 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
         "openid",
         "profile",
     }
-
-    id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert logged_user.user_name == claims["sub"]
-    assert logged_user.formatted_name == claims["name"]
 
     res = testclient.get(
         "/oauth/userinfo",
