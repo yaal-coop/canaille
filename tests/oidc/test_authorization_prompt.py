@@ -96,7 +96,7 @@ def test_prompt_no_consent(testclient, logged_user, client):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=200,
+        status=400,
     )
     assert "consent_required" == res.json.get("error")
 

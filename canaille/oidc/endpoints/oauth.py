@@ -100,6 +100,7 @@ def authorize_guards(client, data):
     # Request) status code and an error value of invalid_request.
     # It is RECOMMENDED that the OP return an error_description
     # value identifying the invalid parameter value.
+    # https://github.com/lepture/authlib/issues/735
     if (
         data.get("prompt")
         and data["prompt"] not in openid_configuration()["prompt_values_supported"]
@@ -147,6 +148,12 @@ def authorize_consent(client, user, data):
 
     # Get the authorization code, or display the user consent form
     if request.method == "GET" or "answer" not in request.form:
+        try:
+            grant = authorization.get_consent_grant(end_user=user)
+        except OAuth2Error as error:
+            current_app.logger.debug("authorization endpoint response: %s", error)
+            return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
+
         client_has_user_consent = (
             (client.trusted and (not consent or not consent.revoked))
             or (
@@ -154,23 +161,21 @@ def authorize_consent(client, user, data):
             )
             and not consent.revoked
         )
-
-        try:
-            grant = authorization.get_consent_grant(end_user=user)
-        except OAuth2Error as error:
-            current_app.logger.debug("authorization endpoint response: %s", error)
-            return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
-
         if client_has_user_consent:
             return authorization.create_authorization_response(grant_user=user)
 
+        # consent_required
+        # The Authorization Server requires End-User consent.
+        # This error MAY be returned when the prompt parameter value in the
+        # Authentication Request is none, but the Authentication Request cannot
+        # be completed without displaying a user interface for End-User consent.
         elif data.get("prompt") == "none":
             response = {
                 "error": "consent_required",
                 "iss": get_issuer(),
             }
             current_app.logger.debug("authorization endpoint response: %s", response)
-            return jsonify(response)
+            return response, 400
 
         form = AuthorizeForm(request.form or None)
         form.action = (
