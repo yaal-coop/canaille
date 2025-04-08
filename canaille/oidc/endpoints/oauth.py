@@ -141,9 +141,22 @@ def authorize_login(user, data, redirect_url):
         )
 
 
-def authorize_consent(client, user, data, redirect_url):
+def is_consent_needed(consent, client, data, redirect_url) -> bool:
+    if consent and consent.revoked:
+        return True
+
+    if client.trusted:
+        return False
+
     requested_scopes = data.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
+    if consent and all(scope in set(consent.scope) for scope in allowed_scopes):
+        return False
+
+    return True
+
+
+def authorize_consent(client, user, data, redirect_url):
     consents = Backend.instance.query(
         models.Consent,
         client=client,
@@ -159,14 +172,7 @@ def authorize_consent(client, user, data, redirect_url):
             current_app.logger.debug("authorization endpoint response: %s", error)
             return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
 
-        client_has_user_consent = (
-            (client.trusted and (not consent or not consent.revoked))
-            or (
-                consent and all(scope in set(consent.scope) for scope in allowed_scopes)
-            )
-            and not consent.revoked
-        )
-        if client_has_user_consent:
+        if not is_consent_needed(consent, client, data, redirect_url):
             return authorization.create_authorization_response(grant_user=user)
 
         # consent_required
@@ -204,6 +210,8 @@ def authorize_consent(client, user, data, redirect_url):
 
     if request.form["answer"] == "accept":
         grant_user = user
+        requested_scopes = data.get("scope", "").split(" ")
+        allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
 
         if consent:
             if consent.revoked:
