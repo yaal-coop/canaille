@@ -261,14 +261,25 @@ def test_prompt_login_logged(testclient, logged_user, client, backend):
     backend.delete(consent)
 
 
-def test_prompt_consent(testclient, logged_user, client, consent, backend):
+def test_prompt_consent(testclient, logged_user, client, backend):
     """If prompt=consent and users already have given their consent, then they should give it again.
 
     The Authorization Server SHOULD prompt the End-User for consent
     before returning information to the Client. If it cannot obtain
     consent, it MUST return an error, typically consent_required.
     """
-    original_consent_date = consent.issue_date
+    original_consent_date = datetime.datetime.now(
+        datetime.timezone.utc
+    ) - datetime.timedelta(minutes=1)
+    consent = models.Consent(
+        consent_id=str(uuid.uuid4()),
+        client=client,
+        subject=logged_user,
+        scope=["openid", "profile"],
+        issue_date=original_consent_date,
+    )
+    backend.save(consent)
+
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -290,3 +301,5 @@ def test_prompt_consent(testclient, logged_user, client, consent, backend):
 
     backend.reload(consent)
     assert consent.issue_date > original_consent_date
+
+    backend.delete(consent)
