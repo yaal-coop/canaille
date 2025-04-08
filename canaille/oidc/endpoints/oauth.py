@@ -61,6 +61,11 @@ def authorize():
     )
 
     data = CombinedMultiDict((request.args, request.form))
+    redirect_url = (
+        request.url
+        if request.method == "GET"
+        else add_params_to_uri(request.url, request.form)
+    )
     client = Backend.instance.get(models.Client, client_id=data.get("client_id"))
     user = current_user()
 
@@ -69,11 +74,11 @@ def authorize():
         return response
 
     # Check that the user is logged
-    if response := authorize_login(user, data):
+    if response := authorize_login(user, data, redirect_url):
         return response
 
     # Get the user consent if needed
-    response = authorize_consent(client, user, data)
+    response = authorize_consent(client, user, data, redirect_url)
 
     return response
 
@@ -121,9 +126,9 @@ def authorize_guards(client, data):
         }, 400
 
 
-def authorize_login(user, data):
+def authorize_login(user, data, redirect_url):
     if not user and data.get("prompt") != "none":
-        session["redirect-after-login"] = request.url
+        session["redirect-after-login"] = redirect_url
 
         if data.get("prompt") == "create":
             return redirect(url_for("core.account.join"))
@@ -136,7 +141,7 @@ def authorize_login(user, data):
         )
 
 
-def authorize_consent(client, user, data):
+def authorize_consent(client, user, data, redirect_url):
     requested_scopes = data.get("scope", "").split(" ")
     allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
     consents = Backend.instance.query(
@@ -178,12 +183,7 @@ def authorize_consent(client, user, data):
             return response, 400
 
         form = AuthorizeForm(request.form or None)
-        form.action = (
-            request.url
-            if request.method == "GET"
-            else add_params_to_uri(request.url, data)
-        )
-
+        form.action = redirect_url
         return render_template(
             "oidc/authorize.html",
             user=user,
@@ -196,7 +196,7 @@ def authorize_consent(client, user, data):
         )
 
     if request.form["answer"] == "logout":
-        session["redirect-after-login"] = request.url
+        session["redirect-after-login"] = redirect_url
         return redirect(url_for("core.auth.logout"))
 
     if request.form["answer"] == "deny":
