@@ -133,22 +133,23 @@ def authorize_guards(client, data):
     # Ensures the request contains a redirect_uri until resolved upstream in Authlib
     # https://github.com/lepture/authlib/issues/712
     if not data.get("redirect_uri"):
-        return {
-            "error": "invalid_request",
-            "error_description": "Missing 'redirect_uri' in request.",
-        }, 400
+        return render_template(
+            "error.html",
+            description="Missing 'redirect_uri' in request.",
+            error_code=400,
+        ), 400
 
     if not data.get("client_id"):
-        return {
-            "error": "invalid_request",
-            "error_description": "'client_id' parameter is missing.",
-        }, 400
+        return render_template(
+            "error.html",
+            description="'client_id' parameter is missing.",
+            error_code=400,
+        ), 400
 
     if not client:
-        return {
-            "error": "invalid_client",
-            "error_description": "Invalid client.",
-        }, 400
+        return render_template(
+            "error.html", description="Invalid client.", error_code=400
+        ), 400
 
     # https://openid.net/specs/openid-connect-prompt-create-1_0.html#name-authorization-request
     # If the OpenID Provider receives a prompt value that it does

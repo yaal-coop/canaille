@@ -19,10 +19,7 @@ def test_invalid_client(testclient, logged_user, keypair):
         ),
         status=400,
     )
-    assert res.json == {
-        "error": "invalid_client",
-        "error_description": "Invalid client.",
-    }
+    res.mustcontain("Invalid client.")
 
 
 def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
@@ -35,10 +32,7 @@ def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
         ),
         status=400,
     )
-    assert res.json == {
-        "error": "invalid_request",
-        "error_description": "Missing 'redirect_uri' in request.",
-    }
+    assert "Missing 'redirect_uri' in request." in str(res.html)
 
 
 def test_missing_client_id(
@@ -55,7 +49,4 @@ def test_missing_client_id(
         ),
         status=400,
     )
-    assert res.json == {
-        "error": "invalid_request",
-        "error_description": "'client_id' parameter is missing.",
-    }
+    assert "'client_id' parameter is missing." in str(res.html)
