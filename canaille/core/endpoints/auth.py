@@ -73,33 +73,30 @@ def login():
 
 @bp.route("/password", methods=("GET", "POST"))
 def password():
-    if current_user():
-        return redirect(
-            url_for("core.account.profile_edition", edited_user=current_user())
-        )
-
-    if "attempt_login" not in session:
+    if "attempt_login" not in session and not current_user():
         flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
+
+    username = (
+        session["attempt_login"]
+        if "attempt_login" in session
+        else current_user().user_name
+    )
 
     form = PasswordForm(request.form or None)
     form.render_field_macro_file = "core/partial/login_field.html"
 
     if not request.form or form.form_control():
-        return render_template(
-            "core/password.html", form=form, username=session["attempt_login"]
-        )
+        return render_template("core/password.html", form=form, username=username)
 
-    user = get_user_from_login(session["attempt_login"])
+    user = current_user() or get_user_from_login(session["attempt_login"])
     if user and not user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.firstlogin", user=user))
 
     if not form.validate() or not user:
         logout_user()
         flash(_("Login failed, please check your information"), "error")
-        return render_template(
-            "core/password.html", form=form, username=session["attempt_login"]
-        )
+        return render_template("core/password.html", form=form, username=username)
 
     success, message = Backend.instance.check_user_password(user, form.password.data)
     if not success:
@@ -108,9 +105,7 @@ def password():
             f"Failed login attempt for {session['attempt_login']}"
         )
         flash(message or _("Login failed, please check your information"), "error")
-        return render_template(
-            "core/password.html", form=form, username=session["attempt_login"]
-        )
+        return render_template("core/password.html", form=form, username=username)
 
     otp_methods = []
     if current_app.features.has_otp:
@@ -127,10 +122,10 @@ def password():
             user, otp_methods[0], url_for("core.auth.password")
         )
     else:
-        current_app.logger.security(
-            f"Succeed login attempt for {session['attempt_login']}"
-        )
-        del session["attempt_login"]
+        current_app.logger.security(f"Succeed login attempt for {username}")
+        if "attempt_login" in session:
+            del session["attempt_login"]
+
         login_user(user)
         flash(
             _("Connection successful. Welcome %(user)s", user=user.name),

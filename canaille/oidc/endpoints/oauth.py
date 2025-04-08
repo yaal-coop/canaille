@@ -19,9 +19,11 @@ from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.exceptions import HTTPException
 
 from canaille.app import models
+from canaille.app.flask import cache
 from canaille.app.flask import csrf
 from canaille.app.i18n import gettext as _
 from canaille.app.session import current_user
+from canaille.app.session import current_user_login_datetime
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
@@ -42,6 +44,8 @@ from .well_known import openid_configuration
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 
+AUTHORIZATION_REQUEST_PROCESS_TIMEOUT: int = 300
+
 
 @bp.errorhandler(HTTPException)
 def http_error_handler(error):
@@ -51,9 +55,21 @@ def http_error_handler(error):
     }, error.code
 
 
+def save_authorization_request_datetime(request_url: str, now: datetime.datetime):
+    key = f"auth-request:{request_url}"
+    if not cache.get(key):
+        cache.set(key, now.isoformat(), timeout=AUTHORIZATION_REQUEST_PROCESS_TIMEOUT)
+
+
+def get_authorization_request_datetime(request_url: str) -> datetime.datetime | None:
+    key = f"auth-request:{request_url}"
+    return datetime.datetime.fromisoformat(cache.get(key)) if cache.get(key) else None
+
+
 @bp.route("/authorize", methods=["GET", "POST"])
 @csrf.exempt
 def authorize():
+    now = datetime.datetime.now(tz=datetime.timezone.utc)
     current_app.logger.debug(
         "authorization endpoint request:\nGET: %s\nPOST: %s",
         request.args.to_dict(flat=False),
@@ -73,12 +89,12 @@ def authorize():
     if response := authorize_guards(client, data):
         return response
 
-    # Check that the user is logged
-    if response := authorize_login(user, data, redirect_url):
+    # Check that login is needed
+    if response := authorize_login(user, data, redirect_url, now):
         return response
 
     # Get the user consent if needed
-    response = authorize_consent(client, user, data, redirect_url)
+    response = authorize_consent(client, user, data, redirect_url, now)
 
     return response
 
@@ -126,23 +142,47 @@ def authorize_guards(client, data):
         }, 400
 
 
-def authorize_login(user, data, redirect_url):
-    if not user and data.get("prompt") != "none":
-        session["redirect-after-login"] = redirect_url
+def authorize_login(user, data, redirect_url, now):
+    save_authorization_request_datetime(redirect_url, now)
 
+    if not user:
         if data.get("prompt") == "create":
+            session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.account.join"))
 
-        return redirect(url_for("core.auth.login"))
+        if data.get("prompt") != "none":
+            session["redirect-after-login"] = redirect_url
+            return redirect(url_for("core.auth.login"))
 
-    if user and not user.can_use_oidc:
-        abort(
-            403, "The user does not have the permission to achieve OIDC authentication."
-        )
+    else:
+        auth_time = current_user_login_datetime()
+        if data.get(
+            "prompt"
+        ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):
+            session["redirect-after-login"] = redirect_url
+            return redirect(url_for("core.auth.password"))
+
+        max_age = auth_time + datetime.timedelta(seconds=int(data.get("max_age", 0)))
+        if data.get("max_age") and max_age < now:
+            session["redirect-after-login"] = redirect_url
+            return redirect(url_for("core.auth.password"))
+
+        if not user.can_use_oidc:
+            abort(
+                403,
+                "The user does not have the permission to achieve OIDC authentication.",
+            )
 
 
 def is_consent_needed(consent, client, data, redirect_url) -> bool:
     if consent and consent.revoked:
+        return True
+
+    if data.get(
+        "prompt"
+    ) == "consent" and consent.issue_date < get_authorization_request_datetime(
+        redirect_url
+    ):
         return True
 
     if client.trusted:
@@ -156,7 +196,7 @@ def is_consent_needed(consent, client, data, redirect_url) -> bool:
     return True
 
 
-def authorize_consent(client, user, data, redirect_url):
+def authorize_consent(client, user, data, redirect_url, now):
     consents = Backend.instance.query(
         models.Consent,
         client=client,
@@ -216,6 +256,7 @@ def authorize_consent(client, user, data, redirect_url):
         if consent:
             if consent.revoked:
                 consent.restore()
+            consent.issue_date = now
             consent.scope = client.get_allowed_scope(
                 list(set(allowed_scopes + consents[0].scope))
             ).split(" ")
@@ -225,7 +266,7 @@ def authorize_consent(client, user, data, redirect_url):
                 client=client,
                 subject=user,
                 scope=allowed_scopes,
-                issue_date=datetime.datetime.now(datetime.timezone.utc),
+                issue_date=now,
             )
         Backend.instance.save(consent)
         current_app.logger.security(

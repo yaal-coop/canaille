@@ -128,7 +128,7 @@ def test_signin_bad_csrf(testclient, user):
 
     res = testclient.get("/login", status=200)
 
-    res.form["login"] = "John (johnny) Doe"
+    res.form["login"] = "user"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
@@ -159,11 +159,6 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
     assert res.flashes == [
         ("warning", "Cannot remember the login you attempted to sign in with")
     ]
-
-
-def test_password_page_already_logged_in(testclient, logged_user):
-    res = testclient.get("/password", status=302)
-    assert res.location == "/profile/user"
 
 
 def test_wrong_login(testclient, user):
