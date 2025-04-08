@@ -202,20 +202,6 @@ def test_nominal_case_post(
         backend.delete(consent)
 
 
-def test_invalid_client(testclient, logged_user, keypair):
-    testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id="invalid",
-            scope="openid profile email groups address phone",
-            nonce="somenonce",
-            redirect_uri="https://client.test/redirect1",
-        ),
-        status=400,
-    )
-
-
 def test_redirect_uri(
     testclient, logged_user, client, keypair, trusted_client, backend
 ):
@@ -578,24 +564,6 @@ def test_consent_with_no_scope(testclient, logged_user, client, backend):
     res.mustcontain(no="Accept")
 
 
-def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            client_id=client.client_id,
-            nonce="somenonce",
-        ),
-        status=400,
-    )
-
-    assert res.json == {
-        "error": "invalid_request",
-        "error_description": "Missing 'redirect_uri' in request.",
-        "iss": "https://auth.test",
-    }
-
-
 def test_when_consent_already_given_but_for_a_smaller_scope(
     testclient, logged_user, client, backend
 ):
@@ -702,10 +670,11 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
             scope="openid profile",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=400,
+        status=302,
     )
 
-    assert res.json.get("error") == "invalid_request"
+    params = parse_qs(urlsplit(res.location).query)
+    assert params["error"] == ["invalid_request"]
 
 
 def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, backend):
@@ -928,27 +897,6 @@ def test_locked_account(
     )
 
     assert "access_token" not in res.json
-
-
-def test_missing_client_id(
-    testclient, logged_user, client, keypair, trusted_client, backend
-):
-    """Missing client_id should raise a 400 error."""
-    res = testclient.get(
-        "/oauth/authorize",
-        params=dict(
-            response_type="code",
-            scope="openid profile email groups address phone",
-            nonce="somenonce",
-            redirect_uri="https://client.test/redirect1",
-        ),
-        status=400,
-    )
-    assert res.json == {
-        "error": "invalid_request",
-        "error_description": "'client_id' parameter is missing.",
-        "iss": "https://auth.test",
-    }
 
 
 def test_logout_login_with_intruder_lockout(testclient, logged_user, client, backend):

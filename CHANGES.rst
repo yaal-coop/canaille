@@ -1,3 +1,14 @@
+[0.0.73] - Unreleased
+---------------------
+
+Added
+^^^^^
+- Support for OIDC authorization endpoint ``login`` and ``consent`` prompt parameters. :issue:`187`
+
+Fixed
+^^^^^
+- Return errors as redirection parameters in the authorization endpoint.
+
 [0.0.72] - 2025-04-07
 ---------------------
 

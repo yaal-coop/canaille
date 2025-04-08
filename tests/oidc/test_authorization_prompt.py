@@ -70,10 +70,10 @@ def test_prompt_not_logged(testclient, user, client, backend):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=400,
+        status=302,
     )
-    assert res.json == {"error": "login_required", "iss": "https://auth.test"}
-
+    params = parse_qs(urlsplit(res.location).query)
+    assert params["error"] == ["login_required"]
     backend.delete(consent)
 
 
@@ -96,9 +96,10 @@ def test_prompt_no_consent(testclient, logged_user, client):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=400,
+        status=302,
     )
-    assert "consent_required" == res.json.get("error")
+    params = parse_qs(urlsplit(res.location).query)
+    assert params["error"] == ["consent_required"]
 
 
 def test_prompt_create_logged(testclient, logged_user, client, backend):
@@ -150,13 +151,12 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
             prompt="create",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=400,
+        status=302,
     )
-    assert res.json == {
-        "error": "invalid_request",
-        "error_description": "prompt 'create' value is not supported",
-        "iss": "https://auth.test",
-    }
+
+    params = parse_qs(urlsplit(res.location).query)
+    assert params["error"] == ["invalid_request"]
+    assert params["error_description"] == ["prompt 'create' value is not supported"]
 
 
 def test_prompt_create_not_logged(testclient, trusted_client, smtpd):

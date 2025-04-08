@@ -6,6 +6,7 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
+from authlib.oidc.core.errors import ConsentRequiredError
 from flask import Blueprint
 from flask import abort
 from flask import current_app
@@ -66,6 +67,22 @@ def get_authorization_request_datetime(request_url: str) -> datetime.datetime | 
     return datetime.datetime.fromisoformat(cache.get(key)) if cache.get(key) else None
 
 
+def redirect_with_error(data, error, error_description=None):
+    """Redirect to the client application with an error.
+
+    https://openid.net/specs/openid-connect-core-1_0.html#AuthError
+    """
+    params = {"error": error, "iss": get_issuer()}
+    if error_description:
+        params["error_description"] = error_description
+
+    if data.get("state"):
+        params["state"] = data["state"]
+
+    uri = add_params_to_uri(data["redirect_uri"], params)
+    return redirect(uri)
+
+
 @bp.route("/authorize", methods=["GET", "POST"])
 @csrf.exempt
 def authorize():
@@ -94,24 +111,43 @@ def authorize():
         return response
 
     # Get the user consent if needed
-    response = authorize_consent(client, user, data, redirect_url, now)
+    try:
+        response = authorize_consent(client, user, data, redirect_url, now)
+    except OAuth2Error as exc:
+        return redirect_with_error(
+            data, error=exc.error, error_description=exc.description
+        )
 
     return response
 
 
 def authorize_guards(client, data):
+    # https://www.rfc-editor.org/rfc/rfc6749.html#section-4.1.2.1
+
+    # If the request fails due to a missing, invalid, or mismatching
+    # redirection URI, or if the client identifier is missing or invalid,
+    # the authorization server SHOULD inform the resource owner of the
+    # error and MUST NOT automatically redirect the user-agent to the
+    # invalid redirection URI.
+
+    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
+    # https://github.com/lepture/authlib/issues/712
+    if not data.get("redirect_uri"):
+        return {
+            "error": "invalid_request",
+            "error_description": "Missing 'redirect_uri' in request.",
+        }, 400
+
     if not data.get("client_id"):
         return {
             "error": "invalid_request",
             "error_description": "'client_id' parameter is missing.",
-            "iss": get_issuer(),
         }, 400
 
     if not client:
         return {
             "error": "invalid_client",
             "error_description": "Invalid client.",
-            "iss": get_issuer(),
         }, 400
 
     # https://openid.net/specs/openid-connect-prompt-create-1_0.html#name-authorization-request
@@ -126,23 +162,15 @@ def authorize_guards(client, data):
         data.get("prompt")
         and data["prompt"] not in openid_configuration()["prompt_values_supported"]
     ):
-        return {
-            "error": "invalid_request",
-            "error_description": f"prompt '{data['prompt']}' value is not supported",
-            "iss": get_issuer(),
-        }, 400
-
-    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
-    # https://github.com/lepture/authlib/issues/712
-    if not data.get("redirect_uri"):
-        return {
-            "error": "invalid_request",
-            "error_description": "Missing 'redirect_uri' in request.",
-            "iss": get_issuer(),
-        }, 400
+        return redirect_with_error(
+            data,
+            error="invalid_request",
+            error_description=f"prompt '{data['prompt']}' value is not supported",
+        )
 
 
 def authorize_login(user, data, redirect_url, now):
+    """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
 
     if not user:
@@ -175,6 +203,7 @@ def authorize_login(user, data, redirect_url, now):
 
 
 def is_consent_needed(consent, client, data, redirect_url) -> bool:
+    """Check whether the consent page must be displayed."""
     if consent and consent.revoked:
         return True
 
@@ -206,11 +235,7 @@ def authorize_consent(client, user, data, redirect_url, now):
 
     # Get the authorization code, or display the user consent form
     if request.method == "GET" or "answer" not in request.form:
-        try:
-            grant = authorization.get_consent_grant(end_user=user)
-        except OAuth2Error as error:
-            current_app.logger.debug("authorization endpoint response: %s", error)
-            return {**dict(error.get_body()), "iss": get_issuer()}, error.status_code
+        grant = authorization.get_consent_grant(end_user=user)
 
         if not is_consent_needed(consent, client, data, redirect_url):
             return authorization.create_authorization_response(grant_user=user)
@@ -221,12 +246,7 @@ def authorize_consent(client, user, data, redirect_url, now):
         # Authentication Request is none, but the Authentication Request cannot
         # be completed without displaying a user interface for End-User consent.
         elif data.get("prompt") == "none":
-            response = {
-                "error": "consent_required",
-                "iss": get_issuer(),
-            }
-            current_app.logger.debug("authorization endpoint response: %s", response)
-            return response, 400
+            raise ConsentRequiredError()
 
         form = AuthorizeForm(request.form or None)
         form.action = redirect_url
