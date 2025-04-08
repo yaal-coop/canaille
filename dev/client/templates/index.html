@@ -113,24 +113,32 @@
                     </div>
 
                     <div class="ui buttons">
-                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui huge button">
+                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui big button">
                             Identity server
                         </a>
-                        <a class="ui huge negative button" href="{{ url_for('logout') }}">
+                        <a class="ui big primary button" href="{{ url_for('login') }}">
+                            Sign in again
+                            <i class="sign in icon"></i>
+                        </a>
+                        <a class="ui big primary button" href="{{ url_for('consent') }}">
+                            Consent again
+                            <i class="sign in icon"></i>
+                        </a>
+                        <a class="ui big negative button" href="{{ url_for('logout') }}">
                             Log out
                             <i class="sign out icon"></i>
                         </a>
                     </div>
                 {% else %}
                     <div class="ui buttons">
-                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui huge button">
+                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui big button">
                             Identity server
                         </a>
-                        <a class="ui huge primary button" href="{{ url_for('register') }}">
+                        <a class="ui big primary button" href="{{ url_for('register') }}">
                             Sign up
                             <i class="handshake icon"></i>
                         </a>
-                        <a class="ui huge primary button" href="{{ url_for('login') }}">
+                        <a class="ui big primary button" href="{{ url_for('login') }}">
                             Sign in
                             <i class="sign in icon"></i>
                         </a>

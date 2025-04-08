@@ -42,8 +42,19 @@ def setup_routes(app):
 
     @app.route("/login")
     def login():
+        if "user" in session:
+            return oauth.canaille.authorize_redirect(
+                url_for("login_callback", _external=True), prompt="login"
+            )
+        else:
+            return oauth.canaille.authorize_redirect(
+                url_for("login_callback", _external=True)
+            )
+
+    @app.route("/consent")
+    def consent():
         return oauth.canaille.authorize_redirect(
-            url_for("login_callback", _external=True)
+            url_for("login_callback", _external=True), prompt="consent"
         )
 
     @app.route("/login_callback")
