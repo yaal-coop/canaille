@@ -149,7 +149,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
             scope="openid profile",
             nonce="somenonce",
             prompt="create",
-            redirect_uri="https://client.test/redirect1",
+            redirect_uri="https://myotherdomain.test/redirect1",
         ),
         status=302,
     )

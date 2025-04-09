@@ -22,7 +22,7 @@ def test_invalid_client(testclient, logged_user, keypair):
     res.mustcontain("Invalid client.")
 
 
-def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
+def test_no_redirect_uri(testclient, logged_user, client, backend):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -33,6 +33,20 @@ def test_consent_with_no_redirect_uri(testclient, logged_user, client, backend):
         status=400,
     )
     assert "Missing 'redirect_uri' in request." in str(res.html)
+
+
+def test_invalid_redirect_uri(testclient, logged_user, client, backend):
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            nonce="somenonce",
+            redirect_uri="https://invalid.test",
+        ),
+        status=400,
+    )
+    assert "Invalid 'redirect_uri' in request." in str(res.html)
 
 
 def test_missing_client_id(
