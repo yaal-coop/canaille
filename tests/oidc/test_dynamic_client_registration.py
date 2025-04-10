@@ -49,6 +49,8 @@ def test_client_registration_with_authentication_static_token(
             "https://client.test/callback",
             "https://client.test/callback2",
         ],
+        "registration_access_token": "static-token",
+        "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
@@ -197,6 +199,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
                 "https://client.test/callback",
                 "https://client.test/callback2",
             ],
+            "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
             "grant_types": ["authorization_code"],
             "response_types": ["code"],
             "scope": scope_value,
@@ -273,6 +276,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
             "https://client.test/callback",
             "https://client.test/callback2",
         ],
+        "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
@@ -420,6 +424,8 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
         "client_id": client.client_id,
         "client_secret": client.client_secret,
         "client_id_issued_at": mock.ANY,
+        "registration_access_token": "static-token",
+        "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
         **payload,
     }
 

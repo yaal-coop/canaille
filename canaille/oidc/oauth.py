@@ -600,7 +600,20 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
     software_statement_alg_values_supported = ["RS256"]
 
     def generate_client_registration_info(self, client, request):
-        return {"scope": " ".join(client.scope)}
+        payload = {
+            "scope": " ".join(client.scope),
+            "registration_client_uri": url_for(
+                "oidc.endpoints.client_registration_management",
+                client_id=client.client_id,
+                _external=True,
+            ),
+        }
+
+        if "Authorization" in request.headers:
+            access_token = request.headers["Authorization"].split(" ")[1]
+            payload["registration_access_token"] = access_token
+
+        return payload
 
     def save_client(self, client_info, client_metadata, request):
         if "scope" not in client_metadata:
