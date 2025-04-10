@@ -6,6 +6,7 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
+from authlib.oauth2.rfc6749.errors import InvalidRequestError
 from authlib.oidc.core.errors import ConsentRequiredError
 from flask import Blueprint
 from flask import abort
@@ -67,22 +68,6 @@ def get_authorization_request_datetime(request_url: str) -> datetime.datetime | 
     return datetime.datetime.fromisoformat(cache.get(key)) if cache.get(key) else None
 
 
-def redirect_with_error(data, error, error_description=None):
-    """Redirect to the client application with an error.
-
-    https://openid.net/specs/openid-connect-core-1_0.html#AuthError
-    """
-    params = {"error": error, "iss": get_issuer()}
-    if error_description:
-        params["error_description"] = error_description
-
-    if data.get("state"):
-        params["state"] = data["state"]
-
-    uri = add_params_to_uri(data["redirect_uri"], params)
-    return redirect(uri)
-
-
 @bp.route("/authorize", methods=["GET", "POST"])
 @csrf.exempt
 def authorize():
@@ -99,65 +84,33 @@ def authorize():
         if request.method == "GET"
         else add_params_to_uri(request.url, request.form)
     )
-    client = Backend.instance.get(models.Client, client_id=data.get("client_id"))
-    user = current_user()
 
-    # Check that the request is well-formed
-    if response := authorize_guards(client, data):
-        return response
-
-    # Check that login is needed
-    if response := authorize_login(user, data, redirect_url, now):
-        return response
-
-    # Get the user consent if needed
     try:
-        response = authorize_consent(client, user, data, redirect_url, now)
-    except OAuth2Error as exc:
-        return redirect_with_error(
-            data, error=exc.error, error_description=exc.description
-        )
+        # Check that the request is well-formed
+        check_prompt_value(data)
 
-    return response
+        # Check that login is needed
+        if response := authorize_login(data, redirect_url, now):
+            return response
+
+        # Get the user consent if needed
+        return authorize_consent(data, redirect_url, now)
+
+    except OAuth2Error as error:
+        if not error.redirect_uri:
+            return render_template(
+                "error.html",
+                description=error.get_error_description(),
+                error_code=error.status_code,
+            ), error.status_code
+
+        return authorization.handle_error_response(request, error)
 
 
-def authorize_guards(client, data):
-    # https://www.rfc-editor.org/rfc/rfc6749.html#section-4.1.2.1
-
-    # If the request fails due to a missing, invalid, or mismatching
-    # redirection URI, or if the client identifier is missing or invalid,
-    # the authorization server SHOULD inform the resource owner of the
-    # error and MUST NOT automatically redirect the user-agent to the
-    # invalid redirection URI.
-
-    if not data.get("client_id"):
-        return render_template(
-            "error.html",
-            description="'client_id' parameter is missing.",
-            error_code=400,
-        ), 400
-
-    if not client:
-        return render_template(
-            "error.html", description="Invalid client.", error_code=400
-        ), 400
-
-    # Ensures the request contains a redirect_uri until resolved upstream in Authlib
-    # https://github.com/lepture/authlib/issues/712
-    if not data.get("redirect_uri"):
-        return render_template(
-            "error.html",
-            description="Missing 'redirect_uri' in request.",
-            error_code=400,
-        ), 400
-
-    if not client.check_redirect_uri(data.get("redirect_uri")):
-        return render_template(
-            "error.html",
-            description="Invalid 'redirect_uri' in request.",
-            error_code=400,
-        ), 400
-
+def check_prompt_value(data):
+    # Until this is fixed upstream:
+    # https://github.com/lepture/authlib/issues/735
+    #
     # https://openid.net/specs/openid-connect-prompt-create-1_0.html#name-authorization-request
     # If the OpenID Provider receives a prompt value that it does
     # not support (not declared in the prompt_values_supported
@@ -165,21 +118,20 @@ def authorize_guards(client, data):
     # Request) status code and an error value of invalid_request.
     # It is RECOMMENDED that the OP return an error_description
     # value identifying the invalid parameter value.
-    # https://github.com/lepture/authlib/issues/735
     if (
         data.get("prompt")
         and data["prompt"] not in openid_configuration()["prompt_values_supported"]
     ):
-        return redirect_with_error(
-            data,
-            error="invalid_request",
-            error_description=f"prompt '{data['prompt']}' value is not supported",
+        raise InvalidRequestError(
+            description=f"prompt '{data['prompt']}' value is not supported",
+            redirect_uri=data.get("redirect_uri"),
         )
 
 
-def authorize_login(user, data, redirect_url, now):
+def authorize_login(data, redirect_url, now):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
+    user = current_user()
 
     if not user:
         if data.get("prompt") == "create":
@@ -198,6 +150,7 @@ def authorize_login(user, data, redirect_url, now):
             session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.auth.password"))
 
+        # https://github.com/lepture/authlib/issues/741
         max_age = auth_time + datetime.timedelta(seconds=int(data.get("max_age", 0)))
         if data.get("max_age") and max_age < now:
             session["redirect-after-login"] = redirect_url
@@ -210,8 +163,15 @@ def authorize_login(user, data, redirect_url, now):
             )
 
 
-def is_consent_needed(consent, client, data, redirect_url) -> bool:
+def is_consent_needed(grant, data, redirect_url) -> bool:
     """Check whether the consent page must be displayed."""
+    consents = Backend.instance.query(
+        models.Consent,
+        client=grant.client,
+        subject=current_user(),
+    )
+    consent = consents[0] if consents else None
+
     if consent and consent.revoked:
         return True
 
@@ -222,39 +182,67 @@ def is_consent_needed(consent, client, data, redirect_url) -> bool:
     ):
         return True
 
-    if client.trusted:
+    if grant.client.trusted:
         return False
 
     requested_scopes = data.get("scope", "").split(" ")
-    allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
+    allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
     if consent and all(scope in set(consent.scope) for scope in allowed_scopes):
         return False
 
     return True
 
 
-def authorize_consent(client, user, data, redirect_url, now):
+def create_or_update_consent(grant, data, user, now):
     consents = Backend.instance.query(
         models.Consent,
-        client=client,
+        client=grant.client,
         subject=user,
     )
     consent = consents[0] if consents else None
 
+    requested_scopes = data.get("scope", "").split(" ")
+    allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
+
+    if consent:
+        if consent.revoked:
+            consent.restore()
+        consent.issue_date = now
+        consent.scope = grant.client.get_allowed_scope(
+            list(set(allowed_scopes + consents[0].scope))
+        ).split(" ")
+    else:
+        consent = models.Consent(
+            consent_id=str(uuid.uuid4()),
+            client=grant.client,
+            subject=user,
+            scope=allowed_scopes,
+            issue_date=now,
+        )
+    Backend.instance.save(consent)
+    current_app.logger.security(
+        f"New consent for {user.user_name} in client {consent.client.client_name}"
+    )
+
+
+def authorize_consent(data, redirect_url, now):
+    user = current_user()
+    grant = authorization.get_consent_grant(end_user=user)
+
     # Get the authorization code, or display the user consent form
     if request.method == "GET" or "answer" not in request.form:
-        grant = authorization.get_consent_grant(end_user=user)
-
-        if not is_consent_needed(consent, client, data, redirect_url):
+        if not is_consent_needed(grant, data, redirect_url):
             return authorization.create_authorization_response(grant_user=user)
 
+        # https://github.com/lepture/authlib/issues/740
+        #
         # consent_required
         # The Authorization Server requires End-User consent.
         # This error MAY be returned when the prompt parameter value in the
         # Authentication Request is none, but the Authentication Request cannot
         # be completed without displaying a user interface for End-User consent.
         elif data.get("prompt") == "none":
-            raise ConsentRequiredError()
+            raise ConsentRequiredError(redirect_uri=data["redirect_uri"])
 
         form = AuthorizeForm(request.form or None)
         form.action = redirect_url
@@ -262,7 +250,7 @@ def authorize_consent(client, user, data, redirect_url, now):
             "oidc/authorize.html",
             user=user,
             grant=grant,
-            client=client,
+            client=grant.client,
             menu=False,
             scope_details=SCOPE_DETAILS,
             ignored_scopes=["openid"],
@@ -278,28 +266,7 @@ def authorize_consent(client, user, data, redirect_url, now):
 
     if request.form["answer"] == "accept":
         grant_user = user
-        requested_scopes = data.get("scope", "").split(" ")
-        allowed_scopes = client.get_allowed_scope(requested_scopes).split(" ")
-
-        if consent:
-            if consent.revoked:
-                consent.restore()
-            consent.issue_date = now
-            consent.scope = client.get_allowed_scope(
-                list(set(allowed_scopes + consents[0].scope))
-            ).split(" ")
-        else:
-            consent = models.Consent(
-                consent_id=str(uuid.uuid4()),
-                client=client,
-                subject=user,
-                scope=allowed_scopes,
-                issue_date=now,
-            )
-        Backend.instance.save(consent)
-        current_app.logger.security(
-            f"New consent for {user.user_name} in client {consent.client.client_name}"
-        )
+        create_or_update_consent(grant, data, grant_user, now)
 
     response = authorization.create_authorization_response(grant_user=grant_user)
 

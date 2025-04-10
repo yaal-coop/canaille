@@ -129,6 +129,9 @@ class Client(BaseClient, ClientMixin):
         for token in Backend.instance.query(models.Token, client=self):
             Backend.instance.delete(token)
 
+    def get_default_redirect_uri(self):
+        return None
+
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
     def get_redirect_uri(self):
