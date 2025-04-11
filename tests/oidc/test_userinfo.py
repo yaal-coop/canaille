@@ -105,7 +105,7 @@ def test_generate_user_claims(user, foo_group):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
     assert generate_user_claims(user, claims_from_scope("openid profile email")) == {
         "sub": "user",
@@ -116,7 +116,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "email": "john@doe.test",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
     assert generate_user_claims(user, claims_from_scope("openid profile address")) == {
         "sub": "user",
@@ -127,7 +127,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "address": "1235, somewhere",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
     assert generate_user_claims(user, claims_from_scope("openid profile phone")) == {
         "sub": "user",
@@ -138,7 +138,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "phone_number": "555-000-000",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
     assert generate_user_claims(user, claims_from_scope("openid profile groups")) == {
         "sub": "user",
@@ -149,7 +149,7 @@ def test_generate_user_claims(user, foo_group):
         "locale": "en",
         "website": "https://john.test",
         "groups": ["foo"],
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
 
 
@@ -205,7 +205,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
 
     token.scope = ["openid", "profile", "email"]
@@ -223,7 +223,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "email": "john@doe.test",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
 
     token.scope = ["openid", "profile", "address"]
@@ -241,7 +241,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "address": "1235, somewhere",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
 
     token.scope = ["openid", "profile", "phone"]
@@ -259,7 +259,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "phone_number": "555-000-000",
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
 
     token.scope = ["openid", "profile", "groups"]
@@ -277,7 +277,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "groups": ["foo"],
-        "updated_at": mock.ANY,
+        "updated_at": user.last_modified.timestamp(),
     }
 
 
