@@ -248,6 +248,7 @@ def claims_from_scope(scope):
             "name",
             "family_name",
             "given_name",
+            "middle_name",
             "nickname",
             "preferred_username",
             "profile",
@@ -276,6 +277,22 @@ def generate_user_info(user, scope):
     return UserInfo(**data)
 
 
+def make_address_claim(user):
+    payload = {}
+    mapping = {
+        "formatted_address": "formatted",
+        "street": "street_address",
+        "locality": "locality",
+        "region": "region",
+        "postal_code": "postal_code",
+    }
+    for user_attr, claim in mapping.items():
+        if val := getattr(user, user_attr):
+            payload[claim] = val
+
+    return payload
+
+
 def generate_user_claims(user, claims, jwt_mapping_config=None):
     jwt_mapping_config = {
         **(current_app.config["CANAILLE_OIDC"]["JWT"]["MAPPING"]),
@@ -293,6 +310,10 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
                 # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
                 # it's better to not insert a null or empty string value
                 data[claim] = formatted_claim
+
+        if claim == "address" and (address := make_address_claim(user)):
+            data[claim] = address
+
         if claim == "groups":
             data[claim] = [group.display_name for group in user.groups]
     if "updated_at" in data:

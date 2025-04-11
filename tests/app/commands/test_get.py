@@ -44,7 +44,7 @@ def test_get(testclient, backend, user):
                 "john@doe.test",
             ],
             "family_name": "Doe",
-            "formatted_address": "1235, somewhere",
+            "formatted_address": "1234, some street, 6789 some city, some state",
             "formatted_name": "John (johnny) Doe",
             "given_name": "John",
             "id": user.id,
@@ -56,6 +56,10 @@ def test_get(testclient, backend, user):
             "preferred_language": "en",
             "profile_url": "https://john.test",
             "user_name": "user",
+            "locality": "some city",
+            "postal_code": "6789",
+            "region": "some state",
+            "street": "1234, some street",
         },
     ]
 
@@ -75,7 +79,7 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
                 "john@doe.test",
             ],
             "family_name": "Doe",
-            "formatted_address": "1235, somewhere",
+            "formatted_address": "1234, some street, 6789 some city, some state",
             "formatted_name": "John (johnny) Doe",
             "given_name": "John",
             "id": user.id,
@@ -88,6 +92,10 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
             "profile_url": "https://john.test",
             "user_name": "user",
             "groups": [foo_group.id],
+            "locality": "some city",
+            "postal_code": "6789",
+            "region": "some state",
+            "street": "1234, some street",
         },
     ]
 
@@ -109,7 +117,7 @@ def test_get_datetime_filter(testclient, backend, user):
                 "john@doe.test",
             ],
             "family_name": "Doe",
-            "formatted_address": "1235, somewhere",
+            "formatted_address": "1234, some street, 6789 some city, some state",
             "formatted_name": "John (johnny) Doe",
             "given_name": "John",
             "id": user.id,
@@ -121,5 +129,9 @@ def test_get_datetime_filter(testclient, backend, user):
             "preferred_language": "en",
             "profile_url": "https://john.test",
             "user_name": "user",
+            "locality": "some city",
+            "postal_code": "6789",
+            "region": "some state",
+            "street": "1234, some street",
         },
     ]

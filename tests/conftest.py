@@ -213,7 +213,11 @@ def user(app, backend):
         preferred_language="en",
         phone_numbers=["555-000-000"],
         profile_url="https://john.test",
-        formatted_address="1235, somewhere",
+        formatted_address="1234, some street, 6789 some city, some state",
+        street="1234, some street",
+        locality="some city",
+        postal_code="6789",
+        region="some state",
     )
     backend.save(u)
     yield u
