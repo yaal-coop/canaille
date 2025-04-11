@@ -16,7 +16,7 @@ def test_set_string_by_id(testclient, backend, user):
             "john@doe.test",
         ],
         "family_name": "Doe",
-        "formatted_address": "1235, somewhere",
+        "formatted_address": "1234, some street, 6789 some city, some state",
         "formatted_name": "John (johnny) Doe",
         "given_name": "foobar",
         "id": user.id,
@@ -28,6 +28,10 @@ def test_set_string_by_id(testclient, backend, user):
         "preferred_language": "en",
         "profile_url": "https://john.test",
         "user_name": "user",
+        "locality": "some city",
+        "postal_code": "6789",
+        "region": "some state",
+        "street": "1234, some street",
     }
     backend.reload(user)
     assert user.given_name == "foobar"
@@ -45,7 +49,7 @@ def test_set_string_by_identifier(testclient, backend, user):
             "john@doe.test",
         ],
         "family_name": "Doe",
-        "formatted_address": "1235, somewhere",
+        "formatted_address": "1234, some street, 6789 some city, some state",
         "formatted_name": "John (johnny) Doe",
         "given_name": "foobar",
         "id": user.id,
@@ -57,6 +61,10 @@ def test_set_string_by_identifier(testclient, backend, user):
         "preferred_language": "en",
         "profile_url": "https://john.test",
         "user_name": "user",
+        "locality": "some city",
+        "postal_code": "6789",
+        "region": "some state",
+        "street": "1234, some street",
     }
     backend.reload(user)
     assert user.given_name == "foobar"
@@ -86,7 +94,7 @@ def test_set_multiple(testclient, backend, user):
             "bar@example.test",
         ],
         "family_name": "Doe",
-        "formatted_address": "1235, somewhere",
+        "formatted_address": "1234, some street, 6789 some city, some state",
         "formatted_name": "John (johnny) Doe",
         "given_name": "John",
         "id": user.id,
@@ -98,6 +106,10 @@ def test_set_multiple(testclient, backend, user):
         "preferred_language": "en",
         "profile_url": "https://john.test",
         "user_name": "user",
+        "locality": "some city",
+        "postal_code": "6789",
+        "region": "some state",
+        "street": "1234, some street",
     }
     backend.reload(user)
     assert user.emails == [
@@ -139,6 +151,10 @@ def test_set_remove_simple_attribute(testclient, backend, user, admin):
         "preferred_language": "en",
         "profile_url": "https://john.test",
         "user_name": "user",
+        "locality": "some city",
+        "postal_code": "6789",
+        "region": "some state",
+        "street": "1234, some street",
     }
     backend.reload(user)
     assert user.formatted_address is None
@@ -161,7 +177,7 @@ def test_set_remove_multiple_attribute(testclient, backend, user, admin, foo_gro
         ],
         "family_name": "Doe",
         "formatted_name": "John (johnny) Doe",
-        "formatted_address": "1235, somewhere",
+        "formatted_address": "1234, some street, 6789 some city, some state",
         "given_name": "John",
         "id": user.id,
         "last_modified": mock.ANY,
@@ -172,6 +188,10 @@ def test_set_remove_multiple_attribute(testclient, backend, user, admin, foo_gro
         "preferred_language": "en",
         "profile_url": "https://john.test",
         "user_name": "user",
+        "locality": "some city",
+        "postal_code": "6789",
+        "region": "some state",
+        "street": "1234, some street",
     }
     backend.reload(user)
     assert user.groups == []

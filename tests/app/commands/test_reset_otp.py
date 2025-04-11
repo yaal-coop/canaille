@@ -32,7 +32,7 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
             "john@doe.test",
         ],
         "family_name": "Doe",
-        "formatted_address": "1235, somewhere",
+        "formatted_address": "1234, some street, 6789 some city, some state",
         "formatted_name": "John (johnny) Doe",
         "given_name": "John",
         "id": user_otp.id,
@@ -46,6 +46,10 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
         "user_name": "user",
         "hotp_counter": 1,
         "secret_token": mock.ANY,
+        "locality": "some city",
+        "postal_code": "6789",
+        "region": "some state",
+        "street": "1234, some street",
     }
     assert (
         "canaille",

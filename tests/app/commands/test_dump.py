@@ -33,7 +33,7 @@ def test_dump_stdout(testclient, backend, user, foo_group):
                     "john@doe.test",
                 ],
                 "family_name": "Doe",
-                "formatted_address": "1235, somewhere",
+                "formatted_address": "1234, some street, 6789 some city, some state",
                 "formatted_name": "John (johnny) Doe",
                 "given_name": "John",
                 "groups": [foo_group.id],
@@ -46,6 +46,10 @@ def test_dump_stdout(testclient, backend, user, foo_group):
                 "preferred_language": "en",
                 "profile_url": "https://john.test",
                 "user_name": "user",
+                "locality": "some city",
+                "postal_code": "6789",
+                "region": "some state",
+                "street": "1234, some street",
             },
         ],
     }
@@ -65,7 +69,7 @@ def test_dump_stdout_explicit_model(testclient, backend, user, foo_group):
                     "john@doe.test",
                 ],
                 "family_name": "Doe",
-                "formatted_address": "1235, somewhere",
+                "formatted_address": "1234, some street, 6789 some city, some state",
                 "formatted_name": "John (johnny) Doe",
                 "given_name": "John",
                 "groups": [foo_group.id],
@@ -78,6 +82,10 @@ def test_dump_stdout_explicit_model(testclient, backend, user, foo_group):
                 "preferred_language": "en",
                 "profile_url": "https://john.test",
                 "user_name": "user",
-            },
+                "locality": "some city",
+                "postal_code": "6789",
+                "region": "some state",
+                "street": "1234, some street",
+            }
         ]
     }

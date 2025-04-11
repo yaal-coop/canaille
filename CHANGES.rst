@@ -9,6 +9,7 @@ Fixed
 ^^^^^
 - Return errors as redirection parameters in the authorization endpoint.
 - Clients without scope defined don't restrict scopes for token emission. :issue:`264`
+- Userinfo ``address`` claim was not a JSON object. :issue:`269`
 
 [0.0.72] - 2025-04-07
 ---------------------

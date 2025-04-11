@@ -12,6 +12,7 @@ def test_claims_from_scope():
         "name",
         "family_name",
         "given_name",
+        "middle_name",
         "nickname",
         "preferred_username",
         "profile",
@@ -28,6 +29,7 @@ def test_claims_from_scope():
         "name",
         "family_name",
         "given_name",
+        "middle_name",
         "nickname",
         "preferred_username",
         "profile",
@@ -46,6 +48,7 @@ def test_claims_from_scope():
         "name",
         "family_name",
         "given_name",
+        "middle_name",
         "nickname",
         "preferred_username",
         "profile",
@@ -63,6 +66,7 @@ def test_claims_from_scope():
         "name",
         "family_name",
         "given_name",
+        "middle_name",
         "nickname",
         "preferred_username",
         "profile",
@@ -81,6 +85,7 @@ def test_claims_from_scope():
         "name",
         "family_name",
         "given_name",
+        "middle_name",
         "nickname",
         "preferred_username",
         "profile",
@@ -126,7 +131,13 @@ def test_generate_user_claims(user, foo_group):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
-        "address": "1235, somewhere",
+        "address": {
+            "formatted": "1234, some street, 6789 some city, some state",
+            "locality": "some city",
+            "postal_code": "6789",
+            "region": "some state",
+            "street_address": "1234, some street",
+        },
         "updated_at": user.last_modified.timestamp(),
     }
     assert generate_user_claims(user, claims_from_scope("openid profile phone")) == {
@@ -240,7 +251,13 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
-        "address": "1235, somewhere",
+        "address": {
+            "formatted": "1234, some street, 6789 some city, some state",
+            "locality": "some city",
+            "postal_code": "6789",
+            "region": "some state",
+            "street_address": "1234, some street",
+        },
         "updated_at": user.last_modified.timestamp(),
     }
 
@@ -312,7 +329,13 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
     data = generate_user_claims(user, STANDARD_CLAIMS, default_jwt_mapping)
 
     assert data == {
-        "address": "1235, somewhere",
+        "address": {
+            "formatted": "1234, some street, 6789 some city, some state",
+            "locality": "some city",
+            "postal_code": "6789",
+            "region": "some state",
+            "street_address": "1234, some street",
+        },
         "sub": "user",
         "name": "John (johnny) Doe",
         "family_name": "Doe",
