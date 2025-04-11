@@ -591,7 +591,8 @@ class ClientManagementMixin:
         if "jwks" in kwargs:
             kwargs["jwks"] = json.dumps(kwargs["jwks"])
 
-        kwargs["scope"] = kwargs["scope"].split(" ")
+        if "scope" in kwargs:
+            kwargs["scope"] = kwargs["scope"].split(" ")
 
         return kwargs
 
@@ -601,7 +602,7 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
 
     def generate_client_registration_info(self, client, request):
         payload = {
-            "scope": " ".join(client.scope),
+            "scope": " ".join(client.scope) if client.scope else "",
             "registration_client_uri": url_for(
                 "oidc.endpoints.client_registration_management",
                 client_id=client.client_id,
@@ -616,9 +617,6 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
         return payload
 
     def save_client(self, client_info, client_metadata, request):
-        if "scope" not in client_metadata:
-            client_metadata["scope"] = "openid"
-
         client = models.Client(
             # this won't be needed when OIDC RP Initiated Logout is
             # directly implemented in authlib:
