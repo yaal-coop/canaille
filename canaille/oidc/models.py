@@ -67,15 +67,18 @@ class Client(BaseClient, ClientMixin):
     def get_client_id(self):
         return self.client_id
 
-    def get_allowed_scope(self, scope):
-        return util.list_to_scope(
-            [scope_piece for scope_piece in self.scope if scope_piece in scope]
-        )
+    def get_allowed_scope(self, scope: str) -> str:
+        allowed_scope = [
+            scope_piece
+            for scope_piece in (self.scope or scope.split())
+            if scope_piece in scope
+        ]
+        return util.list_to_scope(allowed_scope)
 
-    def check_redirect_uri(self, redirect_uri):
+    def check_redirect_uri(self, redirect_uri: str) -> bool:
         return redirect_uri in self.redirect_uris
 
-    def check_client_secret(self, client_secret):
+    def check_client_secret(self, client_secret: str) -> bool:
         return client_secret == self.client_secret
 
     def check_endpoint_auth_method(self, method, endpoint):
@@ -137,8 +140,8 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
     def get_redirect_uri(self):
         return self.redirect_uri
 
-    def get_scope(self):
-        return self.scope
+    def get_scope(self) -> str:
+        return util.list_to_scope(self.scope)
 
     def get_nonce(self):
         return self.nonce

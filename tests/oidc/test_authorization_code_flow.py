@@ -548,6 +548,7 @@ def test_consent_with_openid_scope_only(testclient, logged_user, client, backend
 
 
 def test_consent_with_no_scope(testclient, logged_user, client, backend):
+    """When no scope is passed to the authentication request, an error message should be displayed."""
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -559,7 +560,7 @@ def test_consent_with_no_scope(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res.mustcontain("he application Some client does not allow user authentication.")
+    res.mustcontain("The application Some client does not allow user authentication.")
 
     res.mustcontain(no="Accept")
 
@@ -567,6 +568,7 @@ def test_consent_with_no_scope(testclient, logged_user, client, backend):
 def test_when_consent_already_given_but_for_a_smaller_scope(
     testclient, logged_user, client, backend
 ):
+    """When consent has already be given but for a smaller scope, the consent page should be displayed again."""
     assert not backend.query(models.Consent)
 
     res = testclient.get(
@@ -700,7 +702,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
 
 
 def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
-    """If a client requests a scope larger than the scope consented by the user, the consent page must be displayed again."""
+    """If a client requests a scope larger than the scope allowed in the client configuration, the token scope should not be larger tan the client."""
     assert not backend.query(models.Consent)
     client.scope = ["openid", "profile", "groups"]
     backend.save(client)
@@ -752,6 +754,73 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
     assert set(token.scope) == {
         "openid",
         "profile",
+    }
+
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )
+    assert res.json["name"] == "John (johnny) Doe"
+
+    for consent in consents:
+        backend.delete(consent)
+
+
+def test_client_has_no_maximum_scope(testclient, logged_user, keypair, client, backend):
+    """If a client has no maximum scope defined, any scope is allowed."""
+    assert not backend.query(models.Consent)
+    client.scope = []
+    backend.save(client)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile email",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = backend.get(models.AuthorizationCode, code=code)
+    assert set(authcode.scope) == {
+        "openid",
+        "profile",
+        "email",
+    }
+
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
+    assert set(consents[0].scope) == {
+        "openid",
+        "profile",
+        "email",
+    }
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            scope="openid profile email",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = backend.get(models.Token, access_token=access_token)
+    assert set(token.scope) == {
+        "openid",
+        "profile",
+        "email",
     }
 
     res = testclient.get(

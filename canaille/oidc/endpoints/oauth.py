@@ -185,7 +185,7 @@ def is_consent_needed(grant, data, redirect_url) -> bool:
     if grant.client.trusted:
         return False
 
-    requested_scopes = data.get("scope", "").split(" ")
+    requested_scopes = data.get("scope", "")
     allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
     if consent and all(scope in set(consent.scope) for scope in allowed_scopes):
         return False
@@ -201,7 +201,7 @@ def create_or_update_consent(grant, data, user, now):
     )
     consent = consents[0] if consents else None
 
-    requested_scopes = data.get("scope", "").split(" ")
+    requested_scopes = data.get("scope", "")
     allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
 
     if consent:
@@ -209,7 +209,7 @@ def create_or_update_consent(grant, data, user, now):
             consent.restore()
         consent.issue_date = now
         consent.scope = grant.client.get_allowed_scope(
-            list(set(allowed_scopes + consents[0].scope))
+            " ".join(set(allowed_scopes + consents[0].scope))
         ).split(" ")
     else:
         consent = models.Consent(

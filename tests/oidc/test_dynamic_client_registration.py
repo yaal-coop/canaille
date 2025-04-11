@@ -54,7 +54,7 @@ def test_client_registration_with_authentication_static_token(
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
-        "scope": "openid",
+        "scope": "",
         "application_type": "web",
         "id_token_signed_response_alg": "RS256",
         "require_auth_time": False,
@@ -228,7 +228,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
         scope="openid profile",
     )
     test_client_registration_with_software_statement_with_different_scopes(
-        "openid",
+        "",
         redirect_uris=[
             "https://client.test/callback",
             "https://client.test/callback2",
