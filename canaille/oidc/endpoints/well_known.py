@@ -10,12 +10,20 @@ bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
 @bp.route("/oauth-authorization-server")
 def oauth_authorization_server_endpoint():
-    return jsonify(oauth_authorization_server())
+    return jsonify(
+        {
+            key: val
+            for key, val in oauth_authorization_server().items()
+            if val is not None
+        }
+    )
 
 
 @bp.route("/openid-configuration")
 def openid_configuration_endpoint():
-    return jsonify(openid_configuration())
+    return jsonify(
+        {key: val for key, val in openid_configuration().items() if val is not None}
+    )
 
 
 @bp.route("/webfinger")
