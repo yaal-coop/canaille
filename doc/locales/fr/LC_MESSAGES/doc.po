@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-24 10:10+0100\n"
-"PO-Revision-Date: 2025-03-25 19:33+0000\n"
+"PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -39,8 +39,6 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 b39f305d9f2e48289d44c2f380e42e6d
-#, fuzzy
-#| msgid "[0.0.66] - Unreleased"
 msgid "[0.0.69] - Unreleased"
 msgstr "[0.0.69] - Unreleased"
 
@@ -152,12 +150,14 @@ msgstr "[0.0.65] - 2025-03-18"
 #: ../../CHANGES.rst:49 f9b8161b85b54f3e9cb17677d3162aa0
 msgid "Instructions in CONTRIBUTING.rst to update the docker image :issue:`59`"
 msgstr ""
+"Instructions dans CONTRIBUTING.rst pour mettre à jour l'image Docker "
+":issue:`59`"
 
 #: ../../CHANGES.rst:50 bddc112d9d7e46859b8d1c5668f21b23
 msgid ""
 "Instructions in README.md to discover Canaille interface with a docker "
 "image :issue:`59`"
-msgstr ""
+msgstr "Instructions dans README.md pour utiliser l'image Docker :issue:`59`"
 
 #: ../../CHANGES.rst:51 099d77fb3b7f4869b1d7a1997b2c6759
 msgid "The :ref:`cli dump <cli_dump>` command can dump only some given models."
@@ -166,27 +166,21 @@ msgstr ""
 "choisis."
 
 #: ../../CHANGES.rst:52 0aefae11077f4fc49abdaaa3b1e80766
-#, fuzzy
-#| msgid ""
-#| "Implement the :class:`~canaille.core.configuration.CoreSettings."
-#| "LOGIN_ATTRIBUTES` configuration parameter, to tweak the login "
-#| "attributes. :issue:`196`"
 msgid ""
 "Implement the :class:`~canaille.app.configuration.RootSettings."
 "TRUSTED_HOSTS` configuration parameter, to secure password reset e-mails."
 msgstr ""
-"Implémentation du paramètre de configuration :class:`~canaille.core."
-"configuration.CoreSettings.LOGIN_ATTRIBUTES` qui permet de personnaliser les "
-"attributs des utilisateurs à utiliser comme identifiants de connexion. :"
-"issue:`196`"
+"Implémentation du paramètre de configuration "
+":class:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` pour "
+"sécuriser les emails de réinitialisation de mot de passe."
 
 #: ../../CHANGES.rst:53 85b4394055bf46fe970b0023358ba028
-#, fuzzy
-#| msgid "Form translations. :issue:`19` :issue:`23`"
 msgid ""
 ":ref:`restore <cli_restore>` command implementation. :issue:`212` :issue:"
 "`215`"
-msgstr "Traductions des formulaires. :issue:`19` :issue:`23`"
+msgstr ""
+"Implémentation de la commande :ref:`restore <cli_restore>`. :issue:`212` "
+":issue:`215`"
 
 #: ../../CHANGES.rst:57 d8310880b205497aaf53c3db4d5d0e25
 msgid ""
@@ -209,10 +203,14 @@ msgid ""
 "Display client TOS uri and policy uri in authorization page if set during "
 "client registration"
 msgstr ""
+"Affichage des liens vers les conditions d'utilisation et vers la politique "
+"de confidentialité sur la page de consentement"
 
 #: ../../CHANGES.rst:60 49cbfd08881c4172a26d926a1ebdeab0
 msgid "User group membership is ordered with the SQL backend. :issue:`169`"
 msgstr ""
+"Les groupes d'utilisateurs sont ordonnés avec les bases de données SQL. "
+":issue:`169`"
 
 #: ../../CHANGES.rst:63 b39f305d9f2e48289d44c2f380e42e6d
 msgid "[0.0.64] - 2025-02-12"
@@ -2003,21 +2001,17 @@ msgid "Development environment"
 msgstr "Environnement de développement"
 
 #: ../../CONTRIBUTING.rst:18 e80f15e77ffe478887dbf2b05fcafd94
-#, fuzzy
-#| msgid "You can either run the demo locally or with Docker."
 msgid "You can either run the development server locally or with Docker."
 msgstr ""
-"Vous pouvez exécuter l’instance de démonstration localement ou bien à l’aide "
-"de Docker."
+"Vous pouvez lancer le serveur de développement localement ou bien avec "
+"Docker."
 
 #: ../../CONTRIBUTING.rst:20 d29616c62ff04b71b5a0635d3a393cd5
-#, fuzzy
-#| msgid "After having launched the demo you have access to several services:"
 msgid ""
 "After having launched the development server, you have access to several "
 "services:"
 msgstr ""
-"Après avoir lancé l’instance de démonstration, vous avec accès à plusieurs "
+"Après avoir lancé le serveur de développement, vous avec accès à plusieurs "
 "services :"
 
 #: ../../CONTRIBUTING.rst:22 03e2bab2c322461789ff4b27a359e366
@@ -2176,15 +2170,11 @@ msgstr "SQL"
 
 #: ../../CONTRIBUTING.rst:64 ../../CONTRIBUTING.rst:109
 #: 116ff6ad470b45949a1dbc3e562ea85d
-#, fuzzy
-#| msgid ""
-#| "With the SQL backend, the demo instance will load and save data in a "
-#| "local sqlite database."
 msgid ""
 "With the SQL backend, the development server will load and save data in a "
 "local sqlite database."
 msgstr ""
-"Avec la base de données SQL, l’instance de démonstration chargera et "
+"Avec la base de données SQL, le serveur de développement chargera et "
 "enregistrera les données dans un fichier sqlite local."
 
 #: ../../CONTRIBUTING.rst:66 ../../CONTRIBUTING.rst:111
