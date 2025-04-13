@@ -78,7 +78,6 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
-    data = CombinedMultiDict((request.args, request.form))
     redirect_url = (
         request.url
         if request.method == "GET"
@@ -87,14 +86,14 @@ def authorize():
 
     try:
         # Check that the request is well-formed
-        check_prompt_value(data)
+        check_prompt_value()
 
         # Check that login is needed
-        if response := authorize_login(data, redirect_url, now):
+        if response := authorize_login(redirect_url, now):
             return response
 
         # Get the user consent if needed
-        return authorize_consent(data, redirect_url, now)
+        return authorize_consent(redirect_url, now)
 
     except OAuth2Error as error:
         if not error.redirect_uri:
@@ -107,7 +106,7 @@ def authorize():
         return authorization.handle_error_response(request, error)
 
 
-def check_prompt_value(data):
+def check_prompt_value():
     # Until this is fixed upstream:
     # https://github.com/lepture/authlib/issues/735
     #
@@ -119,40 +118,43 @@ def check_prompt_value(data):
     # It is RECOMMENDED that the OP return an error_description
     # value identifying the invalid parameter value.
     if (
-        data.get("prompt")
-        and data["prompt"] not in openid_configuration()["prompt_values_supported"]
+        request.values.get("prompt")
+        and request.values["prompt"]
+        not in openid_configuration()["prompt_values_supported"]
     ):
         raise InvalidRequestError(
-            description=f"prompt '{data['prompt']}' value is not supported",
-            redirect_uri=data.get("redirect_uri"),
+            description=f"prompt '{request.values['prompt']}' value is not supported",
+            redirect_uri=request.values.get("redirect_uri"),
         )
 
 
-def authorize_login(data, redirect_url, now):
+def authorize_login(redirect_url, now):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
     user = current_user()
 
     if not user:
-        if data.get("prompt") == "create":
+        if request.values.get("prompt") == "create":
             session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.account.join"))
 
-        if data.get("prompt") != "none":
+        if request.values.get("prompt") != "none":
             session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.auth.login"))
 
     else:
         auth_time = current_user_login_datetime()
-        if data.get(
+        if request.values.get(
             "prompt"
         ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):
             session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.auth.password"))
 
         # https://github.com/lepture/authlib/issues/741
-        max_age = auth_time + datetime.timedelta(seconds=int(data.get("max_age", 0)))
-        if data.get("max_age") and max_age < now:
+        max_age = auth_time + datetime.timedelta(
+            seconds=int(request.values.get("max_age", 0))
+        )
+        if request.values.get("max_age") and max_age < now:
             session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.auth.password"))
 
@@ -163,7 +165,7 @@ def authorize_login(data, redirect_url, now):
             )
 
 
-def is_consent_needed(grant, data, redirect_url) -> bool:
+def is_consent_needed(grant, redirect_url) -> bool:
     """Check whether the consent page must be displayed."""
     consents = Backend.instance.query(
         models.Consent,
@@ -175,7 +177,7 @@ def is_consent_needed(grant, data, redirect_url) -> bool:
     if consent and consent.revoked:
         return True
 
-    if data.get(
+    if request.values.get(
         "prompt"
     ) == "consent" and consent.issue_date < get_authorization_request_datetime(
         redirect_url
@@ -185,7 +187,7 @@ def is_consent_needed(grant, data, redirect_url) -> bool:
     if grant.client.trusted:
         return False
 
-    requested_scopes = data.get("scope", "")
+    requested_scopes = request.values.get("scope", "")
     allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
     if consent and all(scope in set(consent.scope) for scope in allowed_scopes):
         return False
@@ -193,7 +195,7 @@ def is_consent_needed(grant, data, redirect_url) -> bool:
     return True
 
 
-def create_or_update_consent(grant, data, user, now):
+def create_or_update_consent(grant, user, now):
     consents = Backend.instance.query(
         models.Consent,
         client=grant.client,
@@ -201,7 +203,7 @@ def create_or_update_consent(grant, data, user, now):
     )
     consent = consents[0] if consents else None
 
-    requested_scopes = data.get("scope", "")
+    requested_scopes = request.values.get("scope", "")
     allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
 
     if consent:
@@ -225,13 +227,13 @@ def create_or_update_consent(grant, data, user, now):
     )
 
 
-def authorize_consent(data, redirect_url, now):
+def authorize_consent(redirect_url, now):
     user = current_user()
     grant = authorization.get_consent_grant(end_user=user)
 
     # Get the authorization code, or display the user consent form
     if request.method == "GET" or "answer" not in request.form:
-        if not is_consent_needed(grant, data, redirect_url):
+        if not is_consent_needed(grant, redirect_url):
             return authorization.create_authorization_response(grant_user=user)
 
         # https://github.com/lepture/authlib/issues/740
@@ -241,8 +243,8 @@ def authorize_consent(data, redirect_url, now):
         # This error MAY be returned when the prompt parameter value in the
         # Authentication Request is none, but the Authentication Request cannot
         # be completed without displaying a user interface for End-User consent.
-        elif data.get("prompt") == "none":
-            raise ConsentRequiredError(redirect_uri=data["redirect_uri"])
+        elif request.values.get("prompt") == "none":
+            raise ConsentRequiredError(redirect_uri=request.values["redirect_uri"])
 
         form = AuthorizeForm(request.form or None)
         form.action = redirect_url
@@ -266,7 +268,7 @@ def authorize_consent(data, redirect_url, now):
 
     if request.form["answer"] == "accept":
         grant_user = user
-        create_or_update_consent(grant, data, grant_user, now)
+        create_or_update_consent(grant, grant_user, now)
 
     response = authorization.create_authorization_response(grant_user=grant_user)
 
