@@ -136,8 +136,8 @@ def openid_configuration():
         "userinfo_encryption_alg_values_supported": None,
         "userinfo_encryption_enc_values_supported": None,
         "prompt_values_supported": prompt_values_supported,
-        "request_parameter_supported": False,
-        "request_uri_parameter_supported": False,
+        "request_parameter_supported": True,
+        "request_uri_parameter_supported": True,
         "require_request_uri_registration": False,
         "request_object_signing_alg_values_supported": None,
         "request_object_encryption_alg_values_supported": None,
@@ -151,8 +151,8 @@ def openid_configuration():
     return obj
 
 
-def exists_nonce(nonce, req):
-    client = Backend.instance.get(models.Client, id=req.client_id)
+def exists_nonce(nonce, request):
+    client = Backend.instance.get(models.Client, id=request.payload.client_id)
     exists = Backend.instance.query(
         models.AuthorizationCode, client=client, nonce=nonce
     )
@@ -314,21 +314,21 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
 
 
 def save_authorization_code(code, request):
-    nonce = request.data.get("nonce")
+    nonce = request.payload.data.get("nonce")
     now = datetime.datetime.now(datetime.timezone.utc)
-    scope = request.client.get_allowed_scope(request.scope)
+    scope = request.client.get_allowed_scope(request.payload.scope)
     code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code=code,
         subject=request.user,
         client=request.client,
-        redirect_uri=request.redirect_uri or request.client.redirect_uris[0],
+        redirect_uri=request.payload.redirect_uri or request.client.redirect_uris[0],
         scope=scope.split(" "),
         nonce=nonce,
         issue_date=now,
         lifetime=AUTHORIZATION_CODE_LIFETIME,
-        challenge=request.data.get("code_challenge"),
-        challenge_method=request.data.get("code_challenge_method"),
+        challenge=request.payload.data.get("code_challenge"),
+        challenge_method=request.payload.data.get("code_challenge_method"),
         auth_time=g.session.last_login_datetime,
     )
     Backend.instance.save(code)
@@ -643,7 +643,9 @@ class ClientRegistrationEndpoint(
             # this won't be needed when OIDC RP Initiated Logout is
             # directly implemented in authlib:
             # https://gitlab.com/yaal/canaille/-/issues/157
-            post_logout_redirect_uris=request.data.get("post_logout_redirect_uris"),
+            post_logout_redirect_uris=request.payload.data.get(
+                "post_logout_redirect_uris"
+            ),
             **self.client_convert_data(**client_info, **client_metadata),
         )
         Backend.instance.save(client)
@@ -737,7 +739,6 @@ def setup_oauth(app):
     authorization.register_grant(
         AuthorizationCodeGrant,
         [
-            IssuerParameter(),
             OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
             CodeChallenge(required=True),
         ],
@@ -763,6 +764,7 @@ def setup_oauth(app):
         ClientRegistrationEndpoint(
             claims_classes=[
                 rfc7591.ClientMetadataClaims,
+                #                rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
             ]
         )
@@ -771,7 +773,10 @@ def setup_oauth(app):
         ClientConfigurationEndpoint(
             claims_classes=[
                 rfc7591.ClientMetadataClaims,
+                #                rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
             ]
         )
     )
+
+    authorization.register_extension(IssuerParameter())

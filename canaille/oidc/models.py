@@ -162,6 +162,12 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
     def get_auth_time(self) -> int | None:
         return self.auth_time.timestamp() if self.auth_time else None
 
+    def get_acr(self):
+        return self.acr
+
+    def get_amr(self):
+        return self.amr
+
 
 class Token(BaseToken, TokenMixin):
     @property

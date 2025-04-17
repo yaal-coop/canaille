@@ -232,7 +232,9 @@ def authorize_consent(redirect_url, now):
     # Get the authorization code, or display the user consent form
     if request.method == "GET" or "answer" not in request.form:
         if not is_consent_needed(grant, redirect_url):
-            return authorization.create_authorization_response(grant_user=user)
+            return authorization.create_authorization_response(
+                grant=grant, grant_user=user
+            )
 
         # https://github.com/lepture/authlib/issues/740
         #
@@ -268,7 +270,9 @@ def authorize_consent(redirect_url, now):
         grant_user = user
         create_or_update_consent(grant, grant_user, now)
 
-    response = authorization.create_authorization_response(grant_user=grant_user)
+    response = authorization.create_authorization_response(
+        grant=grant, grant_user=grant_user
+    )
 
     current_app.logger.debug("authorization endpoint response: %s", response.location)
     return response

@@ -99,8 +99,8 @@ def test_openid_configuration(testclient):
         "issuer": "http://canaille.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
         "registration_endpoint": "http://canaille.test/oauth/register",
-        "request_parameter_supported": False,
-        "request_uri_parameter_supported": False,
+        "request_parameter_supported": True,
+        "request_uri_parameter_supported": True,
         "require_request_uri_registration": False,
         "response_modes_supported": [
             "query",
