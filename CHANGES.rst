@@ -24,9 +24,19 @@
         with open("canaille.toml", "w") as fd:
             config = tomlkit.dump(config, fd)
 
+.. warning::
+
+    This version comes with a schema breaking change.
+    The LDAP schema has evolved. If you use the LDAP schema, please follow the :ref:`ldap_schema_update` section.
+
 Changed
 ^^^^^^^
 - Reworked the JWK configuration. :issue:`119`
+
+Added
+^^^^^
+
+- Support for :rfc:`RFC9101 JWT-Secured Authorization Request (JAR) <9101>` :issue:`254`
 
 [0.0.74] - 2025-04-24
 ---------------------
@@ -37,6 +47,11 @@ Added
 
 [0.0.73] - 2025-04-23
 ---------------------
+
+.. warning::
+
+    This version comes with a schema breaking change.
+    The LDAP schema has evolved. If you use the LDAP schema, please follow the :ref:`ldap_schema_update` section.
 
 Added
 ^^^^^

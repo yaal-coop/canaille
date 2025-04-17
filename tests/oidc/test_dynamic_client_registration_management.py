@@ -71,6 +71,7 @@ def test_get(testclient, backend, client, user, client_jwk):
         "userinfo_encrypted_response_alg": None,
         "userinfo_encrypted_response_enc": None,
         "userinfo_signed_response_alg": None,
+        "require_signed_request_object": None,
     }
 
 
@@ -163,6 +164,7 @@ def test_update(testclient, backend, client, user, client_jwk):
         "userinfo_encrypted_response_alg": None,
         "userinfo_encrypted_response_enc": None,
         "userinfo_signed_response_alg": None,
+        "require_signed_request_object": False,
     }
 
     assert client.redirect_uris == ["https://newname.example.test/callback"]

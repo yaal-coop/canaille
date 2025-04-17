@@ -141,6 +141,7 @@ def test_openid_configuration(testclient):
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
         "prompt_values_supported": ["none", "login", "consent"],
         "authorization_response_iss_parameter_supported": True,
+        "request_object_signing_alg_values_supported": ["none", "RS256"],
     }
 
 

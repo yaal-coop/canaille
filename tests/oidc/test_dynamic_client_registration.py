@@ -56,6 +56,7 @@ def test_client_registration_with_authentication_static_token(
         "application_type": "web",
         "id_token_signed_response_alg": "RS256",
         "require_auth_time": False,
+        "require_signed_request_object": False,
     }
 
     assert client.client_name == "My Example Client"
@@ -207,6 +208,7 @@ def test_client_registration_with_software_statement(testclient, backend, server
             "application_type": "web",
             "id_token_signed_response_alg": "RS256",
             "require_auth_time": False,
+            "require_signed_request_object": False,
         }
         assert client.redirect_uris == [
             "https://client.test/callback",
@@ -286,6 +288,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
         "application_type": "web",
         "id_token_signed_response_alg": "RS256",
         "require_auth_time": False,
+        "require_signed_request_object": False,
     }
     assert client.client_name == "My Example Client"
     assert client.client_uri == "https://client.test"
@@ -411,6 +414,7 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
         ],
         "client_secret_expires_at": 0,
         "scope": "openid",
+        "require_signed_request_object": True,
     }
     headers = {"Authorization": "Bearer static-token"}
 

@@ -154,6 +154,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "request_object_encryption_alg": "oauthRequestObjectEncryptionAlg",
         "request_object_encryption_enc": "oauthRequestObjectEncryptionEnc",
         "request_uris": "oauthRequestURI",
+        "require_signed_request_object": "oauthRequireSignedRequestObject",
     }
 
     attribute_map: ClassVar[dict[str, str] | None] = {

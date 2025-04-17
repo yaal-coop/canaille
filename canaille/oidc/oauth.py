@@ -14,6 +14,7 @@ from authlib.oauth2 import rfc7592
 from authlib.oauth2 import rfc7636
 from authlib.oauth2 import rfc7662
 from authlib.oauth2 import rfc8414
+from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oidc import core as oidc_core
@@ -139,7 +140,7 @@ def openid_configuration():
         "request_parameter_supported": True,
         "request_uri_parameter_supported": True,
         "require_request_uri_registration": False,
-        "request_object_signing_alg_values_supported": None,
+        "request_object_signing_alg_values_supported": ["none", "RS256"],
         "request_object_encryption_alg_values_supported": None,
         "request_object_encryption_enc_values_supported": None,
         "response_modes_supported": ["query", "fragment"],
@@ -696,6 +697,20 @@ class IssuerParameter(rfc9207.IssuerParameter):
         return get_issuer()
 
 
+class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
+    def resolve_client_public_key(self, client):
+        return get_client_jwks(client)
+
+    def get_request_object(self, request_uri: str):
+        return httpx.get(request_uri).text
+
+    def get_server_metadata(self):
+        return openid_configuration()
+
+    def get_client_require_signed_request_object(self, client):
+        return client.client_metadata.get("require_signed_request_object", False)
+
+
 authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
 
@@ -764,7 +779,7 @@ def setup_oauth(app):
         ClientRegistrationEndpoint(
             claims_classes=[
                 rfc7591.ClientMetadataClaims,
-                #                rfc9101.ClientMetadataClaims,
+                rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
             ]
         )
@@ -773,10 +788,11 @@ def setup_oauth(app):
         ClientConfigurationEndpoint(
             claims_classes=[
                 rfc7591.ClientMetadataClaims,
-                #                rfc9101.ClientMetadataClaims,
+                rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
             ]
         )
     )
 
     authorization.register_extension(IssuerParameter())
+    authorization.register_extension(JWTAuthenticationRequest())

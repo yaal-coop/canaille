@@ -58,6 +58,7 @@ class Client(BaseClient, ClientMixin):
         "request_object_encryption_alg",
         "request_object_encryption_enc",
         "request_uris",
+        "require_signed_request_object",
     ]
 
     def __init__(self, *args, **kwargs):

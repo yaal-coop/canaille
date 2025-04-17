@@ -514,6 +514,13 @@ attributetypes: ( 1.3.6.1.4.1.56207.1.1.60 NAME 'oauthAMR'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+attributetypes: ( 1.3.6.1.4.1.56207.1.1.61 NAME 'oauthRequireSignedRequestObject'
+        DESC 'Indicates where authorization request needs to be protected as Request Object and provided through either request or request_uri parameter.'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -558,7 +565,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthRequestObjectSigningAlg $
               oauthRequestObjectEncryptionAlg $
               oauthRequestObjectEncryptionEnc $
-              oauthRequestURI )
+              oauthRequestURI $
+              oauthRequireSignedRequestObject)
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
         DESC 'OAuth 2.0 Authorization Code'
