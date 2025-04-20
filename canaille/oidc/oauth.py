@@ -5,38 +5,21 @@ import httpx
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.jose import JsonWebKey
+from authlib.oauth2 import rfc6749
+from authlib.oauth2 import rfc6750
+from authlib.oauth2 import rfc7009
+from authlib.oauth2 import rfc7523
+from authlib.oauth2 import rfc7591
+from authlib.oauth2 import rfc7592
+from authlib.oauth2 import rfc7636
+from authlib.oauth2 import rfc7662
+from authlib.oauth2 import rfc8414
+from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
-from authlib.oauth2.rfc6749.grants import (
-    AuthorizationCodeGrant as _AuthorizationCodeGrant,
-)
-from authlib.oauth2.rfc6749.grants import ClientCredentialsGrant
-from authlib.oauth2.rfc6749.grants import ImplicitGrant
-from authlib.oauth2.rfc6749.grants import RefreshTokenGrant as _RefreshTokenGrant
-from authlib.oauth2.rfc6749.grants import (
-    ResourceOwnerPasswordCredentialsGrant as _ResourceOwnerPasswordCredentialsGrant,
-)
-from authlib.oauth2.rfc6750 import BearerTokenValidator as _BearerTokenValidator
-from authlib.oauth2.rfc7009 import RevocationEndpoint as _RevocationEndpoint
-from authlib.oauth2.rfc7523 import JWTBearerClientAssertion
-from authlib.oauth2.rfc7523 import JWTBearerGrant as _JWTBearerGrant
-from authlib.oauth2.rfc7591 import ClientMetadataClaims as OAuth2ClientMetadataClaims
-from authlib.oauth2.rfc7591 import (
-    ClientRegistrationEndpoint as _ClientRegistrationEndpoint,
-)
-from authlib.oauth2.rfc7592 import (
-    ClientConfigurationEndpoint as _ClientConfigurationEndpoint,
-)
-from authlib.oauth2.rfc7636 import CodeChallenge as _CodeChallenge
-from authlib.oauth2.rfc7662 import IntrospectionEndpoint as _IntrospectionEndpoint
-from authlib.oauth2.rfc8414 import AuthorizationServerMetadata
-from authlib.oauth2.rfc9207.parameter import IssuerParameter as _IssuerParameter
-from authlib.oidc.core import UserInfo
-from authlib.oidc.core.grants import OpenIDCode as _OpenIDCode
-from authlib.oidc.core.grants import OpenIDHybridGrant as _OpenIDHybridGrant
-from authlib.oidc.core.grants import OpenIDImplicitGrant as _OpenIDImplicitGrant
+from authlib.oidc import core as oidc_core
+from authlib.oidc import discovery as oidc_discovery
+from authlib.oidc import registration as oidc_registration
 from authlib.oidc.core.grants.util import generate_id_token
-from authlib.oidc.discovery import OpenIDProviderMetadata
-from authlib.oidc.registration import ClientMetadataClaims as OIDCClientMetadataClaims
 from flask import current_app
 from flask import g
 from flask import request
@@ -111,7 +94,7 @@ def oauth_authorization_server():
         "op_policy_uri": None,
         "op_tos_uri": None,
     }
-    obj = AuthorizationServerMetadata(payload)
+    obj = rfc8414.AuthorizationServerMetadata(payload)
     obj.validate()
     return obj
 
@@ -163,7 +146,7 @@ def openid_configuration():
         "acr_values_supported": None,
         "display_values_supported": None,
     }
-    obj = OpenIDProviderMetadata(payload)
+    obj = oidc_discovery.OpenIDProviderMetadata(payload)
     obj.validate()
     return obj
 
@@ -274,7 +257,7 @@ def claims_from_scope(scope):
 def generate_user_info(user, scope):
     claims = claims_from_scope(scope)
     data = generate_user_claims(user, claims)
-    return UserInfo(**data)
+    return oidc_core.UserInfo(**data)
 
 
 def make_address_claim(user):
@@ -343,7 +326,7 @@ def save_authorization_code(code, request):
     return code.code
 
 
-class JWTClientAuth(JWTBearerClientAssertion):
+class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
     def validate_jti(self, claims, jti):
         """Indicate whether the jti was used before."""
         key = "jti:{}-{}".format(claims["sub"], jti)
@@ -360,7 +343,7 @@ class JWTClientAuth(JWTBearerClientAssertion):
         return jwk
 
 
-class AuthorizationCodeGrant(_AuthorizationCodeGrant):
+class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = [
         "client_secret_basic",
         "client_secret_post",
@@ -386,7 +369,7 @@ class AuthorizationCodeGrant(_AuthorizationCodeGrant):
             return authorization_code.subject
 
 
-class OpenIDCode(_OpenIDCode):
+class OpenIDCode(oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
@@ -401,7 +384,7 @@ class OpenIDCode(_OpenIDCode):
         return [aud.client_id for aud in client.audience]
 
 
-class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
+class PasswordGrant(rfc6749.ResourceOwnerPasswordCredentialsGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = [
         "client_secret_basic",
         "client_secret_post",
@@ -421,7 +404,7 @@ class PasswordGrant(_ResourceOwnerPasswordCredentialsGrant):
         return user
 
 
-class RefreshTokenGrant(_RefreshTokenGrant):
+class RefreshTokenGrant(rfc6749.RefreshTokenGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = [
         "client_secret_basic",
         "client_secret_post",
@@ -443,7 +426,7 @@ class RefreshTokenGrant(_RefreshTokenGrant):
         Backend.instance.save(credential)
 
 
-class JWTBearerGrant(_JWTBearerGrant):
+class JWTBearerGrant(rfc7523.JWTBearerGrant):
     def resolve_issuer_client(self, issuer):
         return Backend.instance.get(models.Client, client_id=issuer)
 
@@ -462,7 +445,7 @@ class JWTBearerGrant(_JWTBearerGrant):
         return has_permission
 
 
-class OpenIDImplicitGrant(_OpenIDImplicitGrant):
+class OpenIDImplicitGrant(oidc_core.OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
@@ -477,7 +460,7 @@ class OpenIDImplicitGrant(_OpenIDImplicitGrant):
         return [aud.client_id for aud in client.audience]
 
 
-class OpenIDHybridGrant(_OpenIDHybridGrant):
+class OpenIDHybridGrant(oidc_core.OpenIDHybridGrant):
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
 
@@ -516,7 +499,7 @@ def save_token(token, request):
     Backend.instance.save(t)
 
 
-class BearerTokenValidator(_BearerTokenValidator):
+class BearerTokenValidator(rfc6750.BearerTokenValidator):
     def authenticate_token(self, token_string):
         return Backend.instance.get(models.Token, access_token=token_string)
 
@@ -538,7 +521,7 @@ def query_token(token, token_type_hint):
     return None
 
 
-class RevocationEndpoint(_RevocationEndpoint):
+class RevocationEndpoint(rfc7009.RevocationEndpoint):
     def query_token(self, token, token_type_hint):
         return query_token(token, token_type_hint)
 
@@ -547,7 +530,7 @@ class RevocationEndpoint(_RevocationEndpoint):
         Backend.instance.save(token)
 
 
-class IntrospectionEndpoint(_IntrospectionEndpoint):
+class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
     def query_token(self, token, token_type_hint):
         return query_token(token, token_type_hint)
 
@@ -620,7 +603,9 @@ class ClientManagementMixin:
         return kwargs
 
 
-class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpoint):
+class ClientRegistrationEndpoint(
+    ClientManagementMixin, rfc7591.ClientRegistrationEndpoint
+):
     software_statement_alg_values_supported = ["RS256"]
 
     def generate_client_registration_info(self, client, request):
@@ -653,7 +638,9 @@ class ClientRegistrationEndpoint(ClientManagementMixin, _ClientRegistrationEndpo
         return client
 
 
-class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEndpoint):
+class ClientConfigurationEndpoint(
+    ClientManagementMixin, rfc7592.ClientConfigurationEndpoint
+):
     def authenticate_client(self, request):
         client_id = request.uri.split("/")[-1]
         return Backend.instance.get(models.Client, client_id=client_id)
@@ -680,7 +667,7 @@ class ClientConfigurationEndpoint(ClientManagementMixin, _ClientConfigurationEnd
         }
 
 
-class CodeChallenge(_CodeChallenge):
+class CodeChallenge(rfc7636.CodeChallenge):
     def get_authorization_code_challenge(self, authorization_code):
         return authorization_code.challenge
 
@@ -688,7 +675,7 @@ class CodeChallenge(_CodeChallenge):
         return authorization_code.challenge_method
 
 
-class IssuerParameter(_IssuerParameter):
+class IssuerParameter(rfc9207.IssuerParameter):
     def get_issuer(self) -> str:
         return get_issuer()
 
@@ -727,10 +714,10 @@ def setup_oauth(app):
     authorization.init_app(app, query_client=query_client, save_token=save_token)
 
     authorization.register_grant(PasswordGrant)
-    authorization.register_grant(ImplicitGrant)
+    authorization.register_grant(rfc6749.ImplicitGrant)
     authorization.register_grant(RefreshTokenGrant)
     authorization.register_grant(JWTBearerGrant)
-    authorization.register_grant(ClientCredentialsGrant)
+    authorization.register_grant(rfc6749.ClientCredentialsGrant)
 
     with app.app_context():
         if not app.config["SERVER_NAME"]:
@@ -761,11 +748,17 @@ def setup_oauth(app):
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(
         ClientRegistrationEndpoint(
-            claims_classes=[OAuth2ClientMetadataClaims, OIDCClientMetadataClaims]
+            claims_classes=[
+                rfc7591.ClientMetadataClaims,
+                oidc_registration.ClientMetadataClaims,
+            ]
         )
     )
     authorization.register_endpoint(
         ClientConfigurationEndpoint(
-            claims_classes=[OAuth2ClientMetadataClaims, OIDCClientMetadataClaims]
+            claims_classes=[
+                rfc7591.ClientMetadataClaims,
+                oidc_registration.ClientMetadataClaims,
+            ]
         )
     )
