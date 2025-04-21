@@ -1,10 +1,10 @@
 import datetime
 from typing import ClassVar
 
-from authlib.oauth2.rfc6749 import AuthorizationCodeMixin
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
+from authlib.oidc.core import AuthorizationCodeMixin
 from blinker import signal
 
 from canaille.app import models
