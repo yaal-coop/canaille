@@ -4,13 +4,14 @@ import os
 import uuid
 
 import pytest
+from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants.util import generate_id_token
 from joserfc.jwk import JWKRegistry
 from joserfc.jwk import KeySet
 from werkzeug.security import gen_salt
 
 from canaille.app import models
-from canaille.oidc.oauth import generate_user_info
+from canaille.oidc.oauth import generate_user_claims
 from canaille.oidc.oauth import get_jwt_config
 
 
@@ -195,7 +196,7 @@ def oidc_token(testclient, client, backend):
 def id_token(testclient, client, user, backend):
     return generate_id_token(
         {},
-        generate_user_info(user, client.scope),
+        UserInfo(generate_user_claims(user)).filter(client.scope),
         aud=client.client_id,
         **get_jwt_config(None),
     )

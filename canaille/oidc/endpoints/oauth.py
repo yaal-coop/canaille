@@ -2,7 +2,6 @@ import datetime
 import uuid
 
 from authlib.common.urls import add_params_to_uri
-from authlib.integrations.flask_oauth2 import current_token
 from authlib.jose import jwt
 from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
@@ -33,10 +32,9 @@ from ..oauth import ClientConfigurationEndpoint
 from ..oauth import ClientRegistrationEndpoint
 from ..oauth import IntrospectionEndpoint
 from ..oauth import RevocationEndpoint
+from ..oauth import UserInfoEndpoint
 from ..oauth import authorization
-from ..oauth import generate_user_info
 from ..oauth import get_issuer
-from ..oauth import require_oauth
 from ..oauth import server_jwks
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
@@ -367,13 +365,12 @@ def jwks():
 
 
 @bp.route("/userinfo", methods=["GET", "POST"])
-@require_oauth(["profile", "openid"])
 @csrf.exempt
 def userinfo():
     current_app.logger.debug("userinfo endpoint request: %s", request.args)
-    response = generate_user_info(current_token.subject, current_token.scope)
+    response = authorization.create_endpoint_response(UserInfoEndpoint.ENDPOINT_NAME)
     current_app.logger.debug("userinfo endpoint response: %s", response)
-    return jsonify(response)
+    return response
 
 
 @bp.route("/end_session", methods=["GET", "POST"])

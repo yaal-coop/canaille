@@ -1,6 +1,7 @@
+from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants.util import generate_id_token
 
-from canaille.oidc.oauth import generate_user_info
+from canaille.oidc.oauth import generate_user_claims
 from canaille.oidc.oauth import get_jwt_config
 
 
@@ -154,7 +155,7 @@ def test_end_session_invalid_client_id(testclient, backend, logged_user, client)
 def test_client_hint_invalid(testclient, backend, logged_user, client):
     id_token = generate_id_token(
         {},
-        generate_user_info(logged_user, client.scope),
+        UserInfo(generate_user_claims(logged_user)).filter(client.scope),
         aud="invalid-client-id",
         **get_jwt_config(None),
     )
@@ -259,7 +260,7 @@ def test_jwt_not_issued_here(testclient, backend, logged_user, client, id_token)
 def test_client_hint_mismatch(testclient, backend, logged_user, client):
     id_token = generate_id_token(
         {},
-        generate_user_info(logged_user, client.scope),
+        UserInfo(generate_user_claims(logged_user)).filter(client.scope),
         aud="another_client_id",
         **get_jwt_config(None),
     )
@@ -306,7 +307,7 @@ def test_bad_user_id_token_mismatch(testclient, backend, logged_user, client, ad
 
     id_token = generate_id_token(
         {},
-        generate_user_info(admin, client.scope),
+        UserInfo(generate_user_claims(admin)).filter(client.scope),
         aud=client.client_id,
         **get_jwt_config(None),
     )

@@ -234,40 +234,12 @@ def get_client_jwks(client, kid=None):
     return None
 
 
-def claims_from_scope(scope):
-    claims = {"sub"}
-    if "profile" in scope:
-        claims |= {
-            "name",
-            "family_name",
-            "given_name",
-            "middle_name",
-            "nickname",
-            "preferred_username",
-            "profile",
-            "picture",
-            "website",
-            "gender",
-            "birthdate",
-            "zoneinfo",
-            "locale",
-            "updated_at",
-        }
-    if "email" in scope:
-        claims |= {"email", "email_verified"}
-    if "address" in scope:
-        claims |= {"address"}
-    if "phone" in scope:
-        claims |= {"phone_number", "phone_number_verified"}
-    if "groups" in scope:
-        claims |= {"groups"}
-    return claims
-
-
-def generate_user_info(user, scope):
-    claims = claims_from_scope(scope)
-    data = generate_user_claims(user, claims)
-    return oidc_core.UserInfo(**data)
+class UserInfo(oidc_core.UserInfo):
+    REGISTERED_CLAIMS = oidc_core.UserInfo.REGISTERED_CLAIMS + ["groups"]
+    SCOPES_CLAIMS_MAPPING = {
+        "groups": ["groups"],
+        **oidc_core.UserInfo.SCOPES_CLAIMS_MAPPING,
+    }
 
 
 def make_address_claim(user):
@@ -286,14 +258,14 @@ def make_address_claim(user):
     return payload
 
 
-def generate_user_claims(user, claims, jwt_mapping_config=None):
+def generate_user_claims(user, jwt_mapping_config=None):
     jwt_mapping_config = {
         **(current_app.config["CANAILLE_OIDC"]["USERINFO_MAPPING"]),
         **(jwt_mapping_config or {}),
     }
 
     data = {}
-    for claim in claims:
+    for claim in UserInfo.REGISTERED_CLAIMS:
         raw_claim = jwt_mapping_config.get(claim.upper())
         if raw_claim:
             formatted_claim = current_app.jinja_env.from_string(raw_claim).render(
@@ -307,7 +279,7 @@ def generate_user_claims(user, claims, jwt_mapping_config=None):
         if claim == "address" and (address := make_address_claim(user)):
             data[claim] = address
 
-        if claim == "groups":
+        if claim == "groups" and user.groups:
             data[claim] = [group.display_name for group in user.groups]
     if "updated_at" in data:
         data["updated_at"] = int(float(data["updated_at"]))
@@ -387,7 +359,7 @@ class OpenIDCode(oidc_core.OpenIDCode):
         return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
-        return generate_user_info(user, scope)
+        return UserInfo(generate_user_claims(user)).filter(scope)
 
     def get_audiences(self, request):
         client = request.client
@@ -461,7 +433,7 @@ class OpenIDImplicitGrant(oidc_core.OpenIDImplicitGrant):
         return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
-        return generate_user_info(user, scope)
+        return UserInfo(generate_user_claims(user)).filter(scope)
 
     def get_audiences(self, request):
         client = request.client
@@ -479,7 +451,7 @@ class OpenIDHybridGrant(oidc_core.OpenIDHybridGrant):
         return get_jwt_config(grant)
 
     def generate_user_info(self, user, scope):
-        return generate_user_info(user, scope)
+        return UserInfo(generate_user_claims(user)).filter(scope)
 
     def get_audiences(self, request):
         client = request.client
@@ -692,6 +664,17 @@ class CodeChallenge(rfc7636.CodeChallenge):
         return authorization_code.challenge_method
 
 
+class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
+    def get_issuer(self):
+        return get_issuer()
+
+    def generate_user_info(self, user, scope):
+        return UserInfo(generate_user_claims(user)).filter(scope)
+
+    def resolve_private_key(self):
+        return server_jwks()
+
+
 class IssuerParameter(rfc9207.IssuerParameter):
     def get_issuer(self) -> str:
         return get_issuer()
@@ -725,7 +708,7 @@ def generate_access_token(client, grant_type, user, scope):
     bearer_token_generator = authorization._token_generators["default"]
     kwargs = {
         "token": {},
-        "user_info": generate_user_info(user, scope),
+        "user_info": UserInfo(generate_user_claims(user)).filter(scope),
         "aud": audience,
         **get_jwt_config(grant_type),
     }
@@ -773,6 +756,7 @@ def setup_oauth(app):
 
     require_oauth.register_token_validator(BearerTokenValidator())
 
+    authorization.register_endpoint(UserInfoEndpoint(resource_protector=require_oauth))
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(
