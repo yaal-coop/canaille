@@ -37,7 +37,7 @@ from ..oauth import RevocationEndpoint
 from ..oauth import authorization
 from ..oauth import generate_user_info
 from ..oauth import get_issuer
-from ..oauth import get_jwks
+from ..oauth import get_public_jwks
 from ..oauth import require_oauth
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
@@ -360,7 +360,7 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    return jsonify(get_jwks())
+    return jsonify(get_public_jwks())
 
 
 @bp.route("/userinfo", methods=["GET", "POST"])

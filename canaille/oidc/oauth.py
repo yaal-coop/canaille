@@ -169,27 +169,20 @@ def get_issuer():
     return request.url_root
 
 
-def get_jwt_config(grant=None):
+def get_private_jwks():
     kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
     alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
-
     jwk = JWKRegistry.import_key(
         current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
         kty,
         {"alg": alg, "use": "sig"},
     )
     jwk.ensure_kid()
-
-    return {
-        "key": current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
-        "alg": current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"],
-        "iss": get_issuer(),
-        "exp": current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
-        "kid": jwk.kid,
-    }
+    key_set = KeySet([jwk])
+    return key_set.as_dict()
 
 
-def get_jwks():
+def get_public_jwks():
     kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
     alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
     jwk = JWKRegistry.import_key(
@@ -202,15 +195,27 @@ def get_jwks():
     return key_set.as_dict()
 
 
+def get_jwt_config(grant=None):
+    jwk = get_private_jwks()
+
+    return {
+        "key": current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
+        "alg": current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"],
+        "iss": get_issuer(),
+        "exp": current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
+        "kid": jwk["keys"][0]["kid"],
+    }
+
+
 def get_client_jwks(client, kid=None):
     """Get the client JWK set, either stored locally or by downloading them from the URI the client indicated."""
 
     @cache.cached(timeout=50, key_prefix=f"jwks_{client.client_id}")
-    def get_jwks():
+    def get_public_jwks():
         return httpx.get(client.jwks_uri).json()
 
     if client.jwks_uri:
-        raw_jwks = get_jwks()
+        raw_jwks = get_public_jwks()
         key_set = JsonWebKey.import_key_set(raw_jwks)
         jwk = key_set.find_by_kid(kid)
         return jwk
