@@ -18,7 +18,10 @@ class Client(Model):
     identifier_attribute: ClassVar[str] = "client_id"
 
     description: str | None = None
+
     trusted: bool | None = False
+    """Trusted clients don't require to display the consent page to users."""
+
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"] = []  # noqa: UP006
 
