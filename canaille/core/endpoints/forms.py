@@ -274,6 +274,7 @@ PROFILE_FORM_FIELDS = dict(
     preferred_language=wtforms.SelectField(
         _("Preferred language"),
         choices=available_language_choices,
+        default="auto",
     ),
     groups=wtforms.SelectMultipleField(
         _("Groups"),
