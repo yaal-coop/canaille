@@ -40,6 +40,13 @@ def mock_babel(app):  # pragma: no cover
         scientificformat=identity,
     )
     app.jinja_env.add_extension("jinja2.ext.i18n")
+    app.jinja_env.install_gettext_callables(
+        gettext=identity,
+        ngettext=identity,
+        newstyle=True,
+        pgettext=identity,
+        npgettext=identity,
+    )
 
 
 def setup_i18n(app):

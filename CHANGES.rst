@@ -1,3 +1,10 @@
+[0.0.74] - Unreleased
+---------------------
+
+Added
+^^^^^
+- Mock gettext when ``flask-babel`` dependency is not installed.
+
 [0.0.73] - 2025-04-23
 ---------------------
 
