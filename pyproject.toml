@@ -286,8 +286,8 @@ basepython = ["python3.10"]
 dependency_groups = ["dev", "doc"]
 uv_sync_flags = ["--all-extras"]
 commands = [
-    ["sphinx-build", "--builder", "html", "--fail-on-warning", "doc", "build/sphinx/html"],
-    ["sphinx-build", "--builder", "man", "doc", "build/sphinx/html"],
+    ["sphinx-build", "--jobs", "auto", "--builder", "html", "--fail-on-warning", "doc", "build/sphinx/html"],
+    ["sphinx-build", "--jobs", "auto", "--builder", "man", "doc", "build/sphinx/html"],
 ]
 
 [tool.tox.env.coverage]
