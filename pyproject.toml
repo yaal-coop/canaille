@@ -283,7 +283,7 @@ uv_resolution = "lowest-direct"
 basepython = ["python3.10"]
 
 [tool.tox.env.doc]
-dependency_groups = ["doc"]
+dependency_groups = ["dev", "doc"]
 uv_sync_flags = ["--all-extras"]
 commands = [
     ["sphinx-build", "--builder", "html", "--fail-on-warning", "doc", "build/sphinx/html"],
