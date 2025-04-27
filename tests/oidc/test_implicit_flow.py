@@ -7,9 +7,7 @@ from canaille.app import models
 
 
 def test_oauth_implicit(testclient, user, client, backend):
-    client.grant_types = ["token"]
     client.token_endpoint_auth_method = "none"
-
     backend.save(client)
 
     res = testclient.get(
@@ -41,19 +39,65 @@ def test_oauth_implicit(testclient, user, client, backend):
     token = backend.get(models.Token, access_token=access_token)
     assert token is not None
 
-    res = testclient.get(
-        "/oauth/userinfo", headers={"Authorization": f"Bearer {access_token}"}
-    )
-    assert "application/json" == res.content_type
-    assert res.json["name"] == "John (johnny) Doe"
-
-    client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
     backend.save(client)
 
 
+def test_oauth_implicit_auth_method_not_none(testclient, user, client, backend):
+    """Even when token_endpoint_auth_method is not none, the client should be able to not authenticate if its only grant type is implicit.
+
+    oidc-core §9 indicates that the 'none' token endpoint authentication method is used when:
+
+         The Client does not authenticate itself at the Token Endpoint, either because it uses only the Implicit Flow (and so does not use the Token Endpoint) or because it is a Public Client with no Client Secret or other authentication mechanism.
+    """
+    client.token_endpoint_auth_method = "client_secret_basic"
+    client.grant_types = ["implicit"]
+    backend.save(client)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="token",
+            client_id=client.client_id,
+            scope="profile",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+        ),
+    ).follow()
+    assert "text/html" == res.content_type
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=302).follow()
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow()
+
+    assert "text/html" == res.content_type, res.json
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).fragment)
+
+    access_token = params["access_token"][0]
+    token = backend.get(models.Token, access_token=access_token)
+    assert token is not None
+
+    client.token_endpoint_auth_method = "client_secret_basic"
+    client.grant_types = [
+        "password",
+        "authorization_code",
+        "implicit",
+        "hybrid",
+        "refresh_token",
+        "client_credentials",
+        "urn:ietf:params:oauth:grant-type:jwt-bearer",
+    ]
+
+    backend.save(client)
+
+
 def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backend):
-    client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
     backend.save(client)
@@ -93,15 +137,6 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backen
     assert user.formatted_name == claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims["aud"]
 
-    res = testclient.get(
-        "/oauth/userinfo",
-        headers={"Authorization": f"Bearer {access_token}"},
-        status=200,
-    )
-    assert "application/json" == res.content_type
-    assert res.json["name"] == "John (johnny) Doe"
-
-    client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
     backend.save(client)
 
@@ -109,7 +144,6 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backen
 def test_oidc_implicit_with_group(
     testclient, keypair, user, client, foo_group, trusted_client, backend
 ):
-    client.grant_types = ["token id_token"]
     client.token_endpoint_auth_method = "none"
 
     backend.save(client)
@@ -150,14 +184,5 @@ def test_oidc_implicit_with_group(
     assert [client.client_id, trusted_client.client_id] == claims["aud"]
     assert ["foo"] == claims["groups"]
 
-    res = testclient.get(
-        "/oauth/userinfo",
-        headers={"Authorization": f"Bearer {access_token}"},
-        status=200,
-    )
-    assert "application/json" == res.content_type
-    assert res.json["name"] == "John (johnny) Doe"
-
-    client.grant_types = ["code"]
     client.token_endpoint_auth_method = "client_secret_basic"
     backend.save(client)

@@ -83,10 +83,18 @@ class Client(BaseClient, ClientMixin):
 
     def check_endpoint_auth_method(self, method, endpoint):
         if endpoint == "token":
-            return method == self.token_endpoint_auth_method or (
-                method == "client_assertion_jwt"
-                and self.token_endpoint_auth_method
-                in ("client_secret_jwt", "private_key_jwt")
+            # hotfix for https://github.com/lepture/authlib/issues/759
+            implicit_flow_shortcut = method == "none" and self.grant_types == [
+                "implicit"
+            ]
+            return (
+                implicit_flow_shortcut
+                or method == self.token_endpoint_auth_method
+                or (
+                    method == "client_assertion_jwt"
+                    and self.token_endpoint_auth_method
+                    in ("client_secret_jwt", "private_key_jwt")
+                )
             )
         return True
 

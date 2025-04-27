@@ -727,11 +727,21 @@ def setup_oauth(app):
     authorization.__init__()
     authorization.init_app(app, query_client=query_client, save_token=save_token)
 
-    authorization.register_grant(PasswordGrant)
+    authorization.register_grant(rfc6749.ClientCredentialsGrant)
     authorization.register_grant(rfc6749.ImplicitGrant)
+    authorization.register_grant(PasswordGrant)
     authorization.register_grant(RefreshTokenGrant)
     authorization.register_grant(JWTBearerGrant)
-    authorization.register_grant(rfc6749.ClientCredentialsGrant)
+    authorization.register_grant(OpenIDImplicitGrant)
+    authorization.register_grant(OpenIDHybridGrant)
+    authorization.register_grant(
+        AuthorizationCodeGrant,
+        [
+            IssuerParameter(),
+            OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
+            CodeChallenge(required=True),
+        ],
+    )
 
     with app.app_context():
         if not app.config["SERVER_NAME"]:
@@ -744,17 +754,6 @@ def setup_oauth(app):
                 JWTClientAuth.CLIENT_AUTH_METHOD,
                 JWTClientAuth(url_for("oidc.endpoints.issue_token", _external=True)),
             )
-
-    authorization.register_grant(
-        AuthorizationCodeGrant,
-        [
-            IssuerParameter(),
-            OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
-            CodeChallenge(required=True),
-        ],
-    )
-    authorization.register_grant(OpenIDImplicitGrant)
-    authorization.register_grant(OpenIDHybridGrant)
 
     require_oauth.register_token_validator(BearerTokenValidator())
 
