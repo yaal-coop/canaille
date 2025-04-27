@@ -34,6 +34,7 @@ def create_app(
 
     app = Flask(__name__)
     with app.app_context():
+        setup_features(app)
         if not setup_config(
             app=app,
             config=config,
@@ -46,7 +47,6 @@ def create_app(
     try:
         setup_logging(app)
         backend = setup_backend(app, backend, init_backend)
-        setup_features(app)
         setup_security(app)
         setup_flask_converters(app)
         setup_flask_blueprints(app)

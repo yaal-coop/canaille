@@ -13,9 +13,9 @@ from canaille.app.configuration import CheckResult
 from canaille.app.configuration import check_network_config
 from canaille.app.configuration import check_smpp_connection
 from canaille.app.configuration import check_smtp_connection
-from canaille.app.configuration import export_config
-from canaille.app.configuration import sanitize_rst_text
 from canaille.app.configuration import settings_factory
+from canaille.app.toml import export_config
+from canaille.app.toml import sanitize_rst_text
 
 
 def test_configuration_secrets_directory(tmp_path, backend, configuration):

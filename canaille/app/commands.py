@@ -90,8 +90,8 @@ def dump(path: Path | None):
     file in the current directory.
     """
     from canaille.app.configuration import DEFAULT_CONFIG_FILE
-    from canaille.app.configuration import export_config
     from canaille.app.configuration import settings_factory
+    from canaille.app.toml import export_config
 
     config_obj = settings_factory(current_app.config, init_with_examples=True)
     config_file = path or os.getenv("CONFIG", DEFAULT_CONFIG_FILE)
