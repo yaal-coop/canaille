@@ -300,7 +300,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
     assert client.logo_uri == "https://client.test/logo.webp"
     assert client.jwks_uri == "https://client.test/my_public_keys.jwks"
     assert client.grant_types == ["authorization_code", "implicit"]
-    assert client.response_types == ["code", "token"]
+    assert set(client.response_types) == {"code", "token"}
     assert client.scope == ["openid", "profile"]
     assert client.contacts == ["contact@test"]
     assert client.tos_uri == "https://client.test/uri"

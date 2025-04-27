@@ -605,6 +605,15 @@ class ClientManagementMixin:
         if "scope" in kwargs:
             kwargs["scope"] = kwargs["scope"].split(" ")
 
+        if "response_types" in kwargs:
+            kwargs["response_types"] = list(
+                {
+                    item
+                    for response_type in kwargs["response_types"]
+                    for item in response_type.split(" ")
+                }
+            )
+
         return kwargs
 
 
