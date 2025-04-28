@@ -284,7 +284,7 @@ def make_address_claim(user):
 
 def generate_user_claims(user, claims, jwt_mapping_config=None):
     jwt_mapping_config = {
-        **(current_app.config["CANAILLE_OIDC"]["JWT"]["MAPPING"]),
+        **(current_app.config["CANAILLE_OIDC"]["USERINFO_MAPPING"]),
         **(jwt_mapping_config or {}),
     }
 

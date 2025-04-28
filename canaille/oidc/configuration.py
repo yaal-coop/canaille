@@ -1,7 +1,7 @@
 from canaille.app.configuration import BaseModel
 
 
-class JWTMappingSettings(BaseModel):
+class UserInfoMappingSettings(BaseModel):
     """Mapping between the user model and the JWT fields.
 
     Fields are evaluated with jinja.
@@ -75,8 +75,6 @@ class JWTSettings(BaseModel):
     EXP: int = 3600
     """The time the JWT will be valid, in seconds."""
 
-    MAPPING: JWTMappingSettings | None = JWTMappingSettings()
-
 
 class OIDCSettings(BaseModel):
     """OpenID Connect settings.
@@ -106,3 +104,8 @@ class OIDCSettings(BaseModel):
 
     JWT: JWTSettings = JWTSettings()
     """JSON Web Token settings."""
+
+    USERINFO_MAPPING: UserInfoMappingSettings | None = UserInfoMappingSettings()
+    """"Attribute mapping used to build an OIDC UserInfo object.
+
+    UserInfo is used to fill the id_token and the userinfo endpoint."""

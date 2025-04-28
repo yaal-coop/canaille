@@ -412,7 +412,11 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # The time the JWT will be valid, in seconds.
 # EXP = 3600
 
-[CANAILLE_OIDC.JWT.MAPPING]
+# "Attribute mapping used to build an OIDC UserInfo object.
+#
+# UserInfo is used to fill the id_token and the userinfo endpoint.
+
+[CANAILLE_OIDC.USERINFO_MAPPING]
 # SUB = "{{ user.user_name }}"
 
 # NAME = "{% if user.formatted_name %}{{ user.formatted_name }}{% endif %}"
