@@ -5,8 +5,8 @@ import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
+from joserfc.jwk import JWKRegistry
 from joserfc.jwk import KeySet
-from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -46,17 +46,13 @@ def configuration(configuration, keypair):
 
 
 @pytest.fixture
-def client_jwks():
-    raw_private_key, raw_public_key = generate_keypair()
-    private_key = RSAKey.import_key(raw_private_key)
-    public_key = RSAKey.import_key(raw_public_key)
-    return public_key, private_key
+def client_jwk():
+    return JWKRegistry.generate_key("RSA", 1024)
 
 
 @pytest.fixture
-def client(testclient, trusted_client, backend, client_jwks):
-    public_key, _ = client_jwks
-    key_set = KeySet([public_key]).as_dict()
+def client(testclient, trusted_client, backend, client_jwk):
+    key_set = KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -95,9 +91,8 @@ def client(testclient, trusted_client, backend, client_jwks):
 
 
 @pytest.fixture
-def trusted_client(testclient, backend, client_jwks):
-    public_key, _ = client_jwks
-    key_set = KeySet([public_key]).as_dict()
+def trusted_client(testclient, backend, client_jwk):
+    key_set = KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",

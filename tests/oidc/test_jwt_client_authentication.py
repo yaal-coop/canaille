@@ -22,7 +22,7 @@ def test_no_server_name_config(configuration, caplog):
 
 
 def test_client_jwks(
-    testclient, client_jwks, client, authorization, caplog, backend, user
+    testclient, client_jwk, client, authorization, caplog, backend, user
 ):
     """Test client JWT authentication as defined per RFC7523, using the client 'jwks' attribute."""
     now = time.time()
@@ -33,7 +33,6 @@ def test_client_jwks(
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 
-    _, private_key = client_jwks
     header = {"alg": "RS256"}
     payload = {
         "iss": client.client_id,
@@ -44,7 +43,7 @@ def test_client_jwks(
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
     res = testclient.post(
         "/oauth/token",
         params=dict(
@@ -66,15 +65,14 @@ def test_client_jwks(
 
 
 def test_client_jwks_uri(
-    testclient, client_jwks, client, authorization, caplog, backend, user, httpserver
+    testclient, client_jwk, client, authorization, caplog, backend, user, httpserver
 ):
     """Test client JWT authentication as defined per RFC7523, using the client 'jwks_uri' attribute."""
     now = time.time()
-    public_key, private_key = client_jwks
 
     jwks_uri = "/.well-known/jwks.json"
     httpserver.expect_request(jwks_uri).respond_with_json(
-        {"keys": [public_key.as_dict()]}
+        {"keys": [client_jwk.as_dict(private=False)]}
     )
 
     authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
@@ -95,7 +93,7 @@ def test_client_jwks_uri(
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
     res = testclient.post(
         "/oauth/token",
         params=dict(
@@ -117,7 +115,7 @@ def test_client_jwks_uri(
 
 
 def test_client_no_jwks(
-    testclient, client_jwks, client, authorization, caplog, backend, user
+    testclient, client_jwk, client, authorization, caplog, backend, user
 ):
     """Test client JWT authentication for a client without JWK being defined."""
     now = time.time()
@@ -129,7 +127,6 @@ def test_client_no_jwks(
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 
-    _, private_key = client_jwks
     header = {"alg": "RS256"}
     payload = {
         "iss": client.client_id,
@@ -140,7 +137,7 @@ def test_client_no_jwks(
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
     res = testclient.post(
         "/oauth/token",
         params=dict(
@@ -161,7 +158,7 @@ def test_client_no_jwks(
 
 
 def test_same_jti_twice(
-    testclient, client_jwks, client, authorization, caplog, backend, user
+    testclient, client_jwk, client, authorization, caplog, backend, user
 ):
     """Test authenticating twice with the same jti."""
     now = time.time()
@@ -173,7 +170,6 @@ def test_same_jti_twice(
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 
-    _, private_key = client_jwks
     header = {"alg": "RS256"}
     payload = {
         "iss": client.client_id,
@@ -184,7 +180,7 @@ def test_same_jti_twice(
         "iat": now - 1,
         "jti": jti,
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
     res = testclient.post(
         "/oauth/token",
         params=dict(
