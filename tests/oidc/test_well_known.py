@@ -26,6 +26,7 @@ def test_oauth_authorization_server(testclient):
             "code token",
             "code id_token",
             "token id_token",
+            "code id_token token",
         ],
         "revocation_endpoint": "http://canaille.test/oauth/revoke",
         "revocation_endpoint_auth_methods_supported": [
@@ -112,6 +113,7 @@ def test_openid_configuration(testclient):
             "code token",
             "code id_token",
             "token id_token",
+            "code id_token token",
         ],
         "revocation_endpoint": "http://canaille.test/oauth/revoke",
         "revocation_endpoint_auth_methods_supported": [

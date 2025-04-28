@@ -79,6 +79,7 @@ def oauth_authorization_server():
             "code token",
             "code id_token",
             "token id_token",
+            "code id_token token",
         ],
         "grant_types_supported": [
             "authorization_code",
