@@ -9,7 +9,7 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_nominal_case(testclient, user, client, keypair, trusted_client, backend):
+def test_nominal_case(testclient, user, client, trusted_client, backend):
     max_age = int(datetime.timedelta(hours=3).total_seconds())
 
     with time_machine.travel("2025-01-01 02:30:00+00:00", tick=False):
@@ -54,7 +54,7 @@ def test_nominal_case(testclient, user, client, keypair, trusted_client, backend
         backend.delete(consent)
 
 
-def test_max_age_expired(testclient, user, client, keypair, trusted_client, backend):
+def test_max_age_expired(testclient, user, client, trusted_client, backend):
     max_age = int(datetime.timedelta(minutes=15).total_seconds())
 
     with time_machine.travel("2025-01-01 02:30:00+00:00", tick=False):

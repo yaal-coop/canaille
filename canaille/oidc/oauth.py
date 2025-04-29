@@ -24,8 +24,8 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
-from joserfc.jwk import JWKRegistry
-from joserfc.jwk import KeySet
+from joserfc import jwk
+from joserfc import jws
 from werkzeug.security import gen_salt
 
 from canaille.app import DOCUMENTATION_URL
@@ -160,52 +160,54 @@ def exists_nonce(nonce, req):
     return bool(exists)
 
 
-def get_issuer():
-    if current_app.config["CANAILLE_OIDC"]["JWT"]["ISS"]:
-        return current_app.config["CANAILLE_OIDC"]["JWT"]["ISS"]
+def get_alg_for_key(key, registry=None):
+    """Find the best algorithm for the given key."""
+    registry = registry or jws.JWSRegistry()
+    recommended_and_allowed = (
+        [alg for alg in registry.recommended if alg in registry.allowed]
+        if registry.allowed
+        else registry.recommended
+    )
+    not_recommended_and_allowed = (
+        [alg for alg in registry.recommended if alg not in recommended_and_allowed]
+        if registry.allowed
+        else []
+    )
+    for alg_name in recommended_and_allowed + not_recommended_and_allowed:
+        alg = registry.get_alg(alg_name)
+        if alg.key_type == key.key_type:
+            return alg_name
 
-    if current_app.config.get("SERVER_NAME"):
-        return current_app.config.get("SERVER_NAME")
+
+def get_issuer():
+    if server_name := current_app.config.get("SERVER_NAME"):
+        scheme = current_app.config.get("PREFERRED_URL_SCHEME", "http")
+        return f"{scheme}://{server_name}"
 
     return request.url_root
 
 
-def get_private_jwks():
-    kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
-    alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
-    jwk = JWKRegistry.import_key(
-        current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
-        kty,
-        {"alg": alg, "use": "sig"},
-    )
-    jwk.ensure_kid()
-    key_set = KeySet([jwk])
-    return key_set.as_dict()
+def server_jwks(include_inactive=True):
+    keys = current_app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"]
+    if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
+        keys += current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]
 
-
-def get_public_jwks():
-    kty = current_app.config["CANAILLE_OIDC"]["JWT"]["KTY"]
-    alg = current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"]
-    jwk = JWKRegistry.import_key(
-        current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"],
-        kty,
-        {"alg": alg, "use": "sig"},
-    )
-    jwk.ensure_kid()
-    key_set = KeySet([jwk])
-    return key_set.as_dict()
+    key_objs = [jwk.JWKRegistry.import_key(key) for key in keys]
+    for obj in key_objs:
+        obj.ensure_kid()
+    return jwk.KeySet(key_objs)
 
 
 def get_jwt_config(grant=None):
-    jwk = get_private_jwks()
-
-    return {
-        "key": current_app.config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"],
-        "alg": current_app.config["CANAILLE_OIDC"]["JWT"]["ALG"],
+    jwks = server_jwks(include_inactive=False)
+    jwk = jwks.keys[0]
+    payload = {
+        "key": jwk.as_dict(),
         "iss": get_issuer(),
-        "exp": current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
-        "kid": jwk["keys"][0]["kid"],
+        "kid": jwk.kid,
+        "alg": get_alg_for_key(jwk),
     }
+    return payload
 
 
 def get_client_jwks(client, kid=None):
@@ -585,9 +587,7 @@ class ClientManagementMixin:
         return result
 
     def resolve_public_key(self, request):
-        # At the moment the only keypair accepted in software statement
-        # is the one used to issues JWTs. This might change somedays.
-        return current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"]
+        return server_jwks().as_dict(private=False)
 
     def client_convert_data(self, **kwargs):
         if "client_id_issued_at" in kwargs:

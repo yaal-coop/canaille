@@ -7,6 +7,7 @@ Tutorial
    install
    deployment
    databases
+   sso
    provisioning
    theming
    troubleshooting

@@ -83,7 +83,6 @@ Parameters
    :members:
 
 .. autopydantic_settings:: canaille.oidc.configuration.OIDCSettings
-.. autopydantic_settings:: canaille.oidc.configuration.JWTSettings
 .. autopydantic_settings:: canaille.oidc.configuration.UserInfoMappingSettings
 
 .. autopydantic_settings:: canaille.scim.configuration.SCIMSettings

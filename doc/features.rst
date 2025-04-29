@@ -266,9 +266,9 @@ Application management
    :align: right
    :width: 275px
 
-   The client addition page.
+   The client edition page.
 
-Users with the right :attr:`permission <canaille.core.configuration.Permission.MANAGE_OIDC>` can manager OIDC clients through the web interface.
+Users with the right :attr:`permission <canaille.core.configuration.Permission.MANAGE_OIDC>` can manage OIDC clients through the web interface.
 
 In some cases, it might be useful to avoid the consent page for some trusted applications, so clients can be pre-consented.
 

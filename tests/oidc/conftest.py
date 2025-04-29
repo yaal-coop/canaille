@@ -10,7 +10,6 @@ from joserfc.jwk import KeySet
 from werkzeug.security import gen_salt
 
 from canaille.app import models
-from canaille.oidc.installation import generate_keypair
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
 
@@ -24,19 +23,24 @@ def app(app, configuration, backend):
 
 
 @pytest.fixture(scope="session")
-def keypair():
-    return generate_keypair()
+def server_jwk():
+    jwk = JWKRegistry.generate_key("RSA", 1024)
+    jwk.ensure_kid()
+    return jwk
+
+
+@pytest.fixture(scope="session")
+def old_server_jwk():
+    jwk = JWKRegistry.generate_key("RSA", 1024)
+    jwk.ensure_kid()
+    return jwk
 
 
 @pytest.fixture
-def configuration(configuration, keypair):
-    private_key, public_key = keypair
+def configuration(configuration, server_jwk, old_server_jwk):
     configuration["CANAILLE_OIDC"] = {
-        "JWT": {
-            "PUBLIC_KEY": public_key,
-            "PRIVATE_KEY": private_key,
-            "ISS": "https://auth.test",
-        }
+        "ACTIVE_JWKS": [server_jwk.as_dict()],
+        "INACTIVE_JWKS": [old_server_jwk.as_dict()],
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
         "level": "DEBUG",

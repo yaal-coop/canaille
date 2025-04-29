@@ -83,6 +83,8 @@ Note that you should customize the ``EXTRAS`` packages, depending on your needs.
    In the rest of the documentation, we consider that your virtualenv is activated,
    and that the ``canaille`` command is available.
 
+.. _package_extras:
+
 Extras
 ~~~~~~
 

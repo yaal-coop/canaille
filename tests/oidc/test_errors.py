@@ -7,9 +7,7 @@ def test_json_oauth_errors(testclient):
     }
 
 
-def test_missing_client_id(
-    testclient, logged_user, client, keypair, trusted_client, backend
-):
+def test_missing_client_id(testclient, logged_user, client, trusted_client, backend):
     """Missing client_id should raise a 400 error."""
     res = testclient.get(
         "/oauth/authorize",
@@ -24,7 +22,10 @@ def test_missing_client_id(
     assert "Missing 'client_id' parameter." in str(res.html)
 
 
-def test_invalid_client(testclient, logged_user, keypair):
+def test_invalid_client(
+    testclient,
+    logged_user,
+):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(

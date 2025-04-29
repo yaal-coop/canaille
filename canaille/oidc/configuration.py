@@ -1,3 +1,6 @@
+from joserfc.jwk import RSAKey
+from pydantic import Field
+
 from canaille.app.configuration import BaseModel
 
 
@@ -40,40 +43,9 @@ class UserInfoMappingSettings(BaseModel):
     )
 
 
-class JWTSettings(BaseModel):
-    """JSON Web Token settings. Belong in the ``CANAILLE_OIDC.JWT`` namespace.
-
-    You can generate a RSA keypair with:
-
-    .. code-block:: console
-
-        openssl genrsa -out private.pem 4096
-        openssl rsa -in private.pem -pubout -outform PEM -out public.pem
-    """
-
-    PRIVATE_KEY: str | None = None
-    """The private key.
-
-    If :py:data:`None` and debug mode is enabled, then an in-memory key will be used.
-    """
-
-    PUBLIC_KEY: str | None = None
-    """The public key.
-
-    If :py:data:`None` and debug mode is enabled, then an in-memory key will be used.
-    """
-
-    ISS: str | None = None
-    """The URI of the identity provider."""
-
-    KTY: str = "RSA"
-    """The key type."""
-
-    ALG: str = "RS256"
-    """The key algorithm."""
-
-    EXP: int = 3600
-    """The time the JWT will be valid, in seconds."""
+def make_default_jwk():
+    key = RSAKey.generate_key(auto_kid=True)
+    return [key.as_dict()]
 
 
 class OIDCSettings(BaseModel):
@@ -102,8 +74,15 @@ class OIDCSettings(BaseModel):
     This adds security but may not be supported by all clients.
     """
 
-    JWT: JWTSettings = JWTSettings()
-    """JSON Web Token settings."""
+    ACTIVE_JWKS: list[dict[str, str]] | None = Field(default_factory=make_default_jwk)
+    """The active JSON Web Keys Set.
+
+    Those keys are used to sign and verify JWTs."""
+
+    INACTIVE_JWKS: list[dict[str, str]] | None = None
+    """The inactive JSON Web Keys Set.
+
+    Those keys are only used to verify JWTs."""
 
     USERINFO_MAPPING: UserInfoMappingSettings | None = UserInfoMappingSettings()
     """"Attribute mapping used to build an OIDC UserInfo object.

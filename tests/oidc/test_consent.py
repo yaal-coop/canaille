@@ -101,7 +101,7 @@ def test_someone_else_consent_restoration(
 
 
 def test_oidc_authorization_after_revokation(
-    testclient, logged_user, client, keypair, consent, backend
+    testclient, logged_user, client, consent, backend
 ):
     consent.revoke()
 
@@ -221,9 +221,7 @@ def test_revoke_trusted_client_with_manual_revokation(
     assert ("error", "The access is already revoked") in res.flashes
 
 
-def test_tos_policy(
-    testclient, logged_user, client, keypair, trusted_client, backend, caplog
-):
+def test_tos_policy(testclient, logged_user, client, trusted_client, backend, caplog):
     """Tos and policy links must appear in the consent page."""
     res = testclient.get(
         "/oauth/authorize",

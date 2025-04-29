@@ -142,7 +142,7 @@ class ClientAddForm(Form):
     )
 
     token_endpoint_auth_method = wtforms.SelectField(
-        _("Token Endpoint Auth Method"),
+        _("Token endpoint authentication method"),
         validators=[wtforms.validators.DataRequired()],
         choices=[
             ("client_secret_basic", "client_secret_basic"),
@@ -213,15 +213,16 @@ class ClientAddForm(Form):
         render_kw={"placeholder": "1.0"},
         description=_("The version of the client."),
     )
+
     jwks = wtforms.StringField(
-        _("JWKS"),
+        _("JSON Web Keys"),
         validators=[wtforms.validators.Optional(), is_jwks],
         render_kw={"placeholder": ""},
         description=_("The public JSON Web Keys of the client."),
     )
 
     jwks_uri = wtforms.URLField(
-        _("JKWS URI"),
+        _("JSON Web Keys URI"),
         validators=[
             wtforms.validators.Optional(),
             is_uri,

@@ -11,7 +11,7 @@ from . import client_credentials
 
 
 def test_nominal_case(
-    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+    testclient, logged_user, client, server_jwk, trusted_client, backend, caplog
 ):
     assert not backend.query(models.Consent)
 
@@ -46,7 +46,7 @@ def test_nominal_case(
     )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     assert claims.header["kid"]
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
@@ -60,7 +60,7 @@ def test_auth_time(
     testclient,
     user,
     client,
-    keypair,
+    server_jwk,
     backend,
 ):
     """Check that the ID token contains the user authentication time."""
@@ -108,7 +108,7 @@ def test_auth_time(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     id_token_auth_time = datetime.datetime.fromtimestamp(
         claims["auth_time"], tz=datetime.timezone.utc
     )
@@ -121,7 +121,7 @@ def test_auth_time_update(
     testclient,
     user,
     client,
-    keypair,
+    server_jwk,
     backend,
 ):
     """Certification test 'oidcc-max-age-10000'.
@@ -175,7 +175,7 @@ def test_auth_time_update(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     id_token_1_auth_time = datetime.datetime.fromtimestamp(
         claims["auth_time"], tz=datetime.timezone.utc
     )
@@ -223,7 +223,7 @@ def test_auth_time_update(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     id_token_2_auth_time = datetime.datetime.fromtimestamp(
         claims["auth_time"], tz=datetime.timezone.utc
     )

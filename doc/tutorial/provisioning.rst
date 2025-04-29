@@ -36,7 +36,7 @@ Please make sure that your client application is properly configured to accept C
 Configuration
 =============
 
-To allow clients to access the SCIM API, the client must have the ``client_credentials`` grant type configured.
+To allow clients to access the SCIM API, the client must have the :ref:`client_credentials <grant_types>` grant type configured.
 This allows clients to ask an authentication token on their own behalf and use this token to perform queries.
 Currently, user tokens are not supported.
 

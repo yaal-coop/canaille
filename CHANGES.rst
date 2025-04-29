@@ -1,3 +1,29 @@
+[0.0.75] - Unreleased
+---------------------
+
+.. warning::
+
+    This version comes with a configuration breaking change.
+
+    The OIDC configuration part have been reworked:
+
+    - ``CANAILLE_OIDC.JWT.MAPPING`` becomes ``CANAILLE_OIDC.USERINFO_MAPPING``
+    - ``CANAILLE.JWT`` is removed. You can migrate your keys with this script:
+
+    .. code-block:: python
+
+        import tomlkit
+        from joserfc import jwk
+
+        with open("canaille.toml") as fd:
+            config = tomlkit.load(fd)
+
+        key = jwk.RSAKey.import_key(config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"])
+        config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [jwk.as_dict()]
+
+        with open("canaille.toml", "w") as fd:
+            config = tomlkit.dump(config, fd)
+
 [0.0.74] - 2025-04-24
 ---------------------
 

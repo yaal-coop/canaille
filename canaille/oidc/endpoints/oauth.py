@@ -37,8 +37,8 @@ from ..oauth import RevocationEndpoint
 from ..oauth import authorization
 from ..oauth import generate_user_info
 from ..oauth import get_issuer
-from ..oauth import get_public_jwks
 from ..oauth import require_oauth
+from ..oauth import server_jwks
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
 from .forms import LogoutForm
@@ -360,7 +360,8 @@ def client_registration_management(client_id):
 
 @bp.route("/jwks.json")
 def jwks():
-    return jsonify(get_public_jwks())
+    jwks = server_jwks()
+    return jsonify(jwks.as_dict(private=False))
 
 
 @bp.route("/userinfo", methods=["GET", "POST"])
@@ -404,7 +405,7 @@ def end_session():
         try:
             id_token = jwt.decode(
                 data["id_token_hint"],
-                current_app.config["CANAILLE_OIDC"]["JWT"]["PUBLIC_KEY"],
+                server_jwks().as_dict(),
             )
         except JoseError as exc:
             return jsonify(
