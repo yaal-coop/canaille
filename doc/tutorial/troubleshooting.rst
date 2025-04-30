@@ -19,8 +19,8 @@ You can customize those commands, as long as they match the ``JWT`` section of y
 
 .. code-block:: bash
 
-    sudo openssl genrsa -out "$CANAILLE_CONF_DIR/private.pem" 4096
-    sudo openssl rsa -in "$CANAILLE_CONF_DIR/private.pem" -pubout -outform PEM -out "$CANAILLE_CONF_DIR/public.pem"
+    openssl genrsa -out private.pem 4096
+    openssl rsa -in private.pem -pubout -outform PEM -out public.pem
 
 My application return errors with the Canaille connection
 =========================================================
