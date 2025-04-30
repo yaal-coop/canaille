@@ -26,7 +26,7 @@ def upgrade() -> None:
     )
     op.execute("""
         UPDATE client_audience_association_table
-        SET 'index' = s.row_num
+        SET "index" = s.row_num
         FROM (
             SELECT audience_id, client_id, ROW_NUMBER() OVER (ORDER BY audience_id, client_id) as row_num
             FROM client_audience_association_table
@@ -42,7 +42,7 @@ def upgrade() -> None:
     )
     op.execute("""
         UPDATE membership_association_table
-        SET 'index' = s.row_num
+        SET "index" = s.row_num
         FROM (
             SELECT user_id, group_id, ROW_NUMBER() OVER (ORDER BY user_id, group_id) as row_num
             FROM membership_association_table
@@ -58,7 +58,7 @@ def upgrade() -> None:
     )
     op.execute("""
         UPDATE token_audience_association_table
-        SET 'index' = s.row_num
+        SET "index" = s.row_num
         FROM (
             SELECT token_id, client_id, ROW_NUMBER() OVER (ORDER BY token_id, client_id) as row_num
             FROM token_audience_association_table
