@@ -88,7 +88,7 @@ def test_update(testclient, backend, client, user, client_jwks):
     assert client.redirect_uris != ["https://newname.example.test/callback"]
     assert client.token_endpoint_auth_method != "none"
     assert client.grant_types != ["refresh_token"]
-    assert client.response_types != ["code", "token"]
+    assert client.response_types != ["code"]
     assert client.client_name != "new name"
     assert client.client_uri != "https://newname.example.test"
     assert client.logo_uri != "https://newname.example.test/logo.webp"
@@ -105,7 +105,7 @@ def test_update(testclient, backend, client, user, client_jwks):
         "redirect_uris": ["https://newname.example.test/callback"],
         "token_endpoint_auth_method": "none",
         "grant_types": ["refresh_token"],
-        "response_types": ["code", "token"],
+        "response_types": ["code"],
         "client_name": "new name",
         "client_uri": "https://newname.example.test",
         "logo_uri": "https://newname.example.test/logo.webp",
@@ -147,7 +147,7 @@ def test_update(testclient, backend, client, user, client_jwks):
         "require_auth_time": True,
         "token_endpoint_auth_method": "none",
         "grant_types": ["refresh_token"],
-        "response_types": ["code", "token"],
+        "response_types": ["code"],
         "client_name": "new name",
         "client_uri": "https://newname.example.test",
         "logo_uri": "https://newname.example.test/logo.webp",
@@ -170,7 +170,7 @@ def test_update(testclient, backend, client, user, client_jwks):
     assert client.redirect_uris == ["https://newname.example.test/callback"]
     assert client.token_endpoint_auth_method == "none"
     assert client.grant_types == ["refresh_token"]
-    assert client.response_types == ["code", "token"]
+    assert client.response_types == ["code"]
     assert client.client_name == "new name"
     assert client.client_uri == "https://newname.example.test"
     assert client.logo_uri == "https://newname.example.test/logo.webp"
