@@ -18,7 +18,7 @@
                         {{ authorization.subject.user_name }}
                     </a>
                 </td>
-                <td>{{ authorization.issue_date }}</td>
+                <td>{{ authorization.issue_date|datetimeformat }}</td>
             </tr>
         {% else %}
             <tr>

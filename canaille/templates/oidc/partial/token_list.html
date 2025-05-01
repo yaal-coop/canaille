@@ -32,7 +32,7 @@
                         </a>
                     {% endif %}
                 </td>
-                <td>{{ token.issue_date }}</td>
+                <td>{{ token.issue_date|datetimeformat }}</td>
             </tr>
         {% else %}
             <tr>
