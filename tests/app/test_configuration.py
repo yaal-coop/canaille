@@ -407,6 +407,7 @@ def test_export_current_config(backend, configuration, tmp_path):
     configuration["CANAILLE"]["SMTP"]["PORT"] = 25
 
     config_obj = settings_factory(configuration, init_with_examples=True)
+    config_obj.CANAILLE_OIDC.ACTIVE_JWKS = None
     export_config(config_obj, toml_export)
 
     toml_expected = (
@@ -427,6 +428,7 @@ def test_export_default_config(tmp_path, backend):
     toml_export = tmp_path / "config.toml"
 
     config_obj = settings_factory(init_with_examples=True)
+    config_obj.CANAILLE_OIDC.ACTIVE_JWKS = None
     export_config(config_obj, toml_export)
 
     toml_expected = pathlib.Path(__file__).parent / "fixtures" / "default-config.toml"
