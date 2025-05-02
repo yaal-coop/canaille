@@ -48,7 +48,9 @@ def test_oauth_hybrid(testclient, backend, user, client):
     assert res.json["name"] == "John (johnny) Doe"
 
 
-def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, trusted_client):
+def test_oidc_hybrid(
+    testclient, backend, logged_user, client, server_jwk, trusted_client
+):
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -75,7 +77,7 @@ def test_oidc_hybrid(testclient, backend, logged_user, client, keypair, trusted_
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     assert logged_user.user_name == claims["sub"]
     assert logged_user.formatted_name == claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims["aud"]

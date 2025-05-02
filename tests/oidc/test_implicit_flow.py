@@ -97,7 +97,7 @@ def test_oauth_implicit_auth_method_not_none(testclient, user, client, backend):
     backend.save(client)
 
 
-def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backend):
+def test_oidc_implicit(testclient, server_jwk, user, client, trusted_client, backend):
     client.token_endpoint_auth_method = "none"
 
     backend.save(client)
@@ -132,7 +132,7 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backen
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     assert user.user_name == claims["sub"]
     assert user.formatted_name == claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims["aud"]
@@ -142,7 +142,7 @@ def test_oidc_implicit(testclient, keypair, user, client, trusted_client, backen
 
 
 def test_oidc_implicit_with_group(
-    testclient, keypair, user, client, foo_group, trusted_client, backend
+    testclient, server_jwk, user, client, foo_group, trusted_client, backend
 ):
     client.token_endpoint_auth_method = "none"
 
@@ -178,7 +178,7 @@ def test_oidc_implicit_with_group(
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     assert user.user_name == claims["sub"]
     assert user.formatted_name == claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims["aud"]

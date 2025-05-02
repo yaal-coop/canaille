@@ -5,12 +5,11 @@ import uuid
 
 import pytest
 from authlib.oidc.core.grants.util import generate_id_token
+from joserfc.jwk import JWKRegistry
 from joserfc.jwk import KeySet
-from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
 from canaille.app import models
-from canaille.oidc.installation import generate_keypair
 from canaille.oidc.oauth import generate_user_info
 from canaille.oidc.oauth import get_jwt_config
 
@@ -24,19 +23,24 @@ def app(app, configuration, backend):
 
 
 @pytest.fixture(scope="session")
-def keypair():
-    return generate_keypair()
+def server_jwk():
+    jwk = JWKRegistry.generate_key("RSA", 1024)
+    jwk.ensure_kid()
+    return jwk
+
+
+@pytest.fixture(scope="session")
+def old_server_jwk():
+    jwk = JWKRegistry.generate_key("RSA", 1024)
+    jwk.ensure_kid()
+    return jwk
 
 
 @pytest.fixture
-def configuration(configuration, keypair):
-    private_key, public_key = keypair
+def configuration(configuration, server_jwk, old_server_jwk):
     configuration["CANAILLE_OIDC"] = {
-        "JWT": {
-            "PUBLIC_KEY": public_key,
-            "PRIVATE_KEY": private_key,
-            "ISS": "https://auth.test",
-        }
+        "ACTIVE_JWKS": [server_jwk.as_dict()],
+        "INACTIVE_JWKS": [old_server_jwk.as_dict()],
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
         "level": "DEBUG",
@@ -46,17 +50,13 @@ def configuration(configuration, keypair):
 
 
 @pytest.fixture
-def client_jwks():
-    raw_private_key, raw_public_key = generate_keypair()
-    private_key = RSAKey.import_key(raw_private_key)
-    public_key = RSAKey.import_key(raw_public_key)
-    return public_key, private_key
+def client_jwk():
+    return JWKRegistry.generate_key("RSA", 1024)
 
 
 @pytest.fixture
-def client(testclient, trusted_client, backend, client_jwks):
-    public_key, _ = client_jwks
-    key_set = KeySet([public_key]).as_dict()
+def client(testclient, trusted_client, backend, client_jwk):
+    key_set = KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -95,9 +95,8 @@ def client(testclient, trusted_client, backend, client_jwks):
 
 
 @pytest.fixture
-def trusted_client(testclient, backend, client_jwks):
-    public_key, _ = client_jwks
-    key_set = KeySet([public_key]).as_dict()
+def trusted_client(testclient, backend, client_jwk):
+    key_set = KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",

@@ -7,7 +7,7 @@ def test_issuer(testclient, user):
         "links": [
             {
                 "rel": "http://openid.net/specs/connect/1.0/issuer",
-                "href": "https://auth.test",
+                "href": "http://canaille.test",
             }
         ],
     }
@@ -22,7 +22,7 @@ def test_resource_unknown(testclient):
         "links": [
             {
                 "rel": "http://openid.net/specs/connect/1.0/issuer",
-                "href": "https://auth.test",
+                "href": "http://canaille.test",
             }
         ],
     }

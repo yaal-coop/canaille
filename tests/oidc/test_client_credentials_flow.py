@@ -3,7 +3,7 @@ from canaille.app import models
 from . import client_credentials
 
 
-def test_nominal_case(testclient, client, keypair, trusted_client, backend, caplog):
+def test_nominal_case(testclient, client, trusted_client, backend, caplog):
     res = testclient.post(
         "/oauth/token",
         params=dict(

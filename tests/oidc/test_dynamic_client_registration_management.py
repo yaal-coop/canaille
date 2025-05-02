@@ -7,9 +7,8 @@ from joserfc.jwk import KeySet
 from canaille.app import models
 
 
-def test_get(testclient, backend, client, user, client_jwks):
-    public_key, _ = client_jwks
-    key_set = KeySet([public_key]).as_dict()
+def test_get(testclient, backend, client, user, client_jwk):
+    key_set = KeySet([client_jwk]).as_dict(private=False)
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -75,9 +74,8 @@ def test_get(testclient, backend, client, user, client_jwks):
     }
 
 
-def test_update(testclient, backend, client, user, client_jwks):
-    public_key, _ = client_jwks
-    key_set = KeySet([public_key]).as_dict()
+def test_update(testclient, backend, client, user, client_jwk):
+    key_set = KeySet([client_jwk]).as_dict(private=False)
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )

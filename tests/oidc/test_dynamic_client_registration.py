@@ -166,8 +166,7 @@ def test_client_registration_with_authentication_invalid_token(
     }
 
 
-def test_client_registration_with_software_statement(testclient, backend, keypair):
-    private_key, _ = keypair
+def test_client_registration_with_software_statement(testclient, backend, server_jwk):
     testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     software_statement_payload = {
@@ -179,7 +178,7 @@ def test_client_registration_with_software_statement(testclient, backend, keypai
     }
     software_statement_header = {"alg": "RS256"}
     software_statement = jwt.encode(
-        software_statement_header, software_statement_payload, private_key
+        software_statement_header, software_statement_payload, server_jwk.as_dict()
     ).decode()
 
     def test_client_registration_with_software_statement_with_different_scopes(

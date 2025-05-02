@@ -387,32 +387,21 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # This adds security but may not be supported by all clients.
 # REQUIRE_NONCE = true
 
-# JSON Web Token settings.
-
-[CANAILLE_OIDC.JWT]
-# The private key.
+# The active JSON Web Keys Set.
 #
-# If None and debug mode is enabled, then an in-memory key will be used.
-# PRIVATE_KEY =
+# Those keys are used to sign and verify JWTs.
+# ACTIVE_JWKS =
 
-# The public key.
+# The inactive JSON Web Keys Set.
 #
-# If None and debug mode is enabled, then an in-memory key will be used.
-# PUBLIC_KEY =
+# Those keys are only used to verify JWTs.
+# INACTIVE_JWKS =
 
-# The URI of the identity provider.
-# ISS =
+# "Attribute mapping used to build an OIDC UserInfo object.
+#
+# UserInfo is used to fill the id_token and the userinfo endpoint.
 
-# The key type.
-# KTY = "RSA"
-
-# The key algorithm.
-# ALG = "RS256"
-
-# The time the JWT will be valid, in seconds.
-# EXP = 3600
-
-[CANAILLE_OIDC.JWT.MAPPING]
+[CANAILLE_OIDC.USERINFO_MAPPING]
 # SUB = "{{ user.user_name }}"
 
 # NAME = "{% if user.formatted_name %}{{ user.formatted_name }}{% endif %}"

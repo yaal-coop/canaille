@@ -1,6 +1,6 @@
 from unittest import mock
 
-from canaille.oidc.configuration import JWTSettings
+from canaille.oidc.configuration import UserInfoMappingSettings
 from canaille.oidc.oauth import claims_from_scope
 from canaille.oidc.oauth import generate_user_claims
 
@@ -325,8 +325,8 @@ STANDARD_CLAIMS = [
 def test_generate_user_standard_claims_with_default_config(testclient, backend, user):
     user.preferred_language = "fr"
 
-    default_jwt_mapping = JWTSettings().model_dump()
-    data = generate_user_claims(user, STANDARD_CLAIMS, default_jwt_mapping)
+    default_userinfo_mapping = UserInfoMappingSettings().model_dump()
+    data = generate_user_claims(user, STANDARD_CLAIMS, default_userinfo_mapping)
 
     assert data == {
         "address": {
@@ -349,10 +349,10 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
 
 
 def test_custom_config_format_claim_is_well_formated(testclient, backend, user):
-    jwt_mapping_config = JWTSettings().model_dump()
-    jwt_mapping_config["EMAIL"] = "{{ user.user_name }}@mydomain.test"
+    userinfo_mapping_config = UserInfoMappingSettings().model_dump()
+    userinfo_mapping_config["EMAIL"] = "{{ user.user_name }}@mydomain.test"
 
-    data = generate_user_claims(user, STANDARD_CLAIMS, jwt_mapping_config)
+    data = generate_user_claims(user, STANDARD_CLAIMS, userinfo_mapping_config)
 
     assert data["email"] == "user@mydomain.test"
 
@@ -363,7 +363,7 @@ def test_claim_is_omitted_if_empty(testclient, backend, user):
     user.emails = []
     backend.save(user)
 
-    default_jwt_mapping = JWTSettings().model_dump()
-    data = generate_user_claims(user, STANDARD_CLAIMS, default_jwt_mapping)
+    default_userinfo_mapping = UserInfoMappingSettings().model_dump()
+    data = generate_user_claims(user, STANDARD_CLAIMS, default_userinfo_mapping)
 
     assert "email" not in data

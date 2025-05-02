@@ -1,20 +1,8 @@
-from unittest import mock
-
-from joserfc.jwk import RSAKey
-
-
-def test_jwks(testclient, keypair):
-    _, pubkey = keypair
-    jwk = RSAKey.import_key(pubkey)
-
+def test_jwks(testclient, server_jwk, old_server_jwk):
     res = testclient.get("/oauth/jwks.json")
     assert res.json == {
         "keys": [
-            {
-                "kid": mock.ANY,
-                "use": "sig",
-                "alg": "RS256",
-                **jwk,
-            }
+            server_jwk.as_dict(private=False),
+            old_server_jwk.as_dict(private=False),
         ]
     }

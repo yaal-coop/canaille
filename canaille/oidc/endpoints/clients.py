@@ -2,7 +2,6 @@ import datetime
 
 from flask import Blueprint
 from flask import abort
-from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import request
@@ -20,6 +19,8 @@ from canaille.backends import Backend
 from .forms import ClientAddForm
 
 bp = Blueprint("clients", __name__, url_prefix="/admin/client")
+
+TOKEN_LIFETIME = 3600
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -171,7 +172,7 @@ def client_new_token(client):
         type="access_token",
         access_token=gen_salt(48),
         issue_date=now,
-        lifetime=current_app.config["CANAILLE_OIDC"]["JWT"]["EXP"],
+        lifetime=TOKEN_LIFETIME,
         scope=client.scope,
         client=client,
         audience=client.audience,

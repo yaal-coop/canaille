@@ -6,13 +6,12 @@ from joserfc import jwt
 from canaille.app import models
 
 
-def test_nominal_case(testclient, logged_user, client, backend, client_jwks):
+def test_nominal_case(testclient, logged_user, client, backend, client_jwk):
     """Test JWT grant for a client with consent."""
     now = time.time()
     client.trusted = True
     backend.save(client)
 
-    _, private_key = client_jwks
     header = {"alg": "RS256"}
     payload = {
         "iss": client.client_id,
@@ -23,7 +22,7 @@ def test_nominal_case(testclient, logged_user, client, backend, client_jwks):
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
 
     res = testclient.post(
         "/oauth/token",
@@ -50,14 +49,13 @@ def test_nominal_case(testclient, logged_user, client, backend, client_jwks):
     }
 
 
-def test_no_jwk(testclient, logged_user, client, backend, client_jwks):
+def test_no_jwk(testclient, logged_user, client, backend, client_jwk):
     """Test JWT grant for a client without JWKs."""
     now = time.time()
     client.trusted = True
     client.jwks = None
     backend.save(client)
 
-    _, private_key = client_jwks
     header = {"alg": "RS256"}
     payload = {
         "iss": client.client_id,
@@ -68,7 +66,7 @@ def test_no_jwk(testclient, logged_user, client, backend, client_jwks):
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
 
     res = testclient.post(
         "/oauth/token",

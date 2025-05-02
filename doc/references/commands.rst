@@ -23,6 +23,12 @@ For the sake of readability, it is omitted in the following examples.
    :prog: canaille run
    :nested: full
 
+.. _cli_jwk:
+
+.. click:: canaille.oidc.commands:jwk
+   :prog: canaille jwk
+   :nested: full
+
 .. _cli_clean:
 
 .. click:: canaille.oidc.commands:clean

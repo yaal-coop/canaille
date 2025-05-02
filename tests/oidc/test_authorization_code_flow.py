@@ -16,7 +16,7 @@ from . import client_credentials
 
 
 def test_nominal_case_get(
-    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+    testclient, logged_user, client, server_jwk, trusted_client, backend, caplog
 ):
     assert not backend.query(models.Consent)
 
@@ -87,7 +87,7 @@ def test_nominal_case_get(
         "address",
         "phone",
     }
-    claims = jwt.decode(access_token, keypair[1])
+    claims = jwt.decode(access_token, server_jwk.as_dict())
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
@@ -109,7 +109,7 @@ def test_nominal_case_get(
 
 
 def test_nominal_case_post(
-    testclient, logged_user, client, keypair, trusted_client, backend, caplog
+    testclient, logged_user, client, server_jwk, trusted_client, backend, caplog
 ):
     """Authorization Servers MUST support the use of the HTTP GET and POST methods defined in RFC 7231 [RFC7231] at the Authorization Endpoint."""
     assert not backend.query(models.Consent)
@@ -181,7 +181,7 @@ def test_nominal_case_post(
         "address",
         "phone",
     }
-    claims = jwt.decode(access_token, keypair[1])
+    claims = jwt.decode(access_token, server_jwk.as_dict())
     assert claims["sub"] == logged_user.user_name
     assert claims["name"] == logged_user.formatted_name
     assert claims["aud"] == [client.client_id, trusted_client.client_id]
@@ -202,9 +202,7 @@ def test_nominal_case_post(
         backend.delete(consent)
 
 
-def test_redirect_uri(
-    testclient, logged_user, client, keypair, trusted_client, backend
-):
+def test_redirect_uri(testclient, logged_user, client, trusted_client, backend):
     assert not backend.query(models.Consent)
 
     res = testclient.get(
@@ -249,9 +247,7 @@ def test_redirect_uri(
         backend.delete(consent)
 
 
-def test_trusted_client(
-    testclient, logged_user, client, keypair, trusted_client, backend
-):
+def test_trusted_client(testclient, logged_user, client, trusted_client, backend):
     """Trusted clients don't need the consent page to be displayed."""
     assert not backend.query(models.Consent)
 
@@ -636,9 +632,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
         backend.delete(consent)
 
 
-def test_user_cannot_use_oidc(
-    testclient, user, client, keypair, trusted_client, backend
-):
+def test_user_cannot_use_oidc(testclient, user, client, trusted_client, backend):
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     backend.reload(user)
 
@@ -701,7 +695,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
         backend.delete(consent)
 
 
-def test_request_scope_too_large(testclient, logged_user, keypair, client, backend):
+def test_request_scope_too_large(testclient, logged_user, client, backend):
     """If a client requests a scope larger than the scope allowed in the client configuration, the token scope should not be larger tan the client."""
     assert not backend.query(models.Consent)
     client.scope = ["openid", "profile", "groups"]
@@ -767,7 +761,7 @@ def test_request_scope_too_large(testclient, logged_user, keypair, client, backe
         backend.delete(consent)
 
 
-def test_client_has_no_maximum_scope(testclient, logged_user, keypair, client, backend):
+def test_client_has_no_maximum_scope(testclient, logged_user, client, backend):
     """If a client has no maximum scope defined, any scope is allowed."""
     assert not backend.query(models.Consent)
     client.scope = []
@@ -926,9 +920,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
     backend.delete(authcode)
 
 
-def test_locked_account(
-    testclient, logged_user, client, keypair, trusted_client, backend
-):
+def test_locked_account(testclient, logged_user, client, trusted_client, backend):
     """Users with a locked account should not be able to exchange code against tokens."""
     res = testclient.get(
         "/oauth/authorize",
@@ -1022,9 +1014,7 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client, bac
         assert res.location.startswith(client.redirect_uris[0])
 
 
-def test_rfc9207(
-    testclient, logged_user, client, keypair, trusted_client, backend, caplog
-):
+def test_rfc9207(testclient, logged_user, client, trusted_client, backend, caplog):
     """Authorization responses should contain a 'iss' parameter."""
     res = testclient.get(
         "/oauth/authorize",
@@ -1040,4 +1030,4 @@ def test_rfc9207(
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     issuer = params["iss"][0]
-    assert issuer == "https://auth.test"
+    assert issuer == "http://canaille.test"

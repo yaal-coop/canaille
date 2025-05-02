@@ -10,7 +10,7 @@ from . import client_credentials
 
 
 def test_token_default_expiration_date(
-    testclient, logged_user, client, keypair, backend
+    testclient, logged_user, client, server_jwk, backend
 ):
     res = testclient.get(
         "/oauth/authorize",
@@ -48,11 +48,11 @@ def test_token_default_expiration_date(
     token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 864000
 
-    claims = jwt.decode(access_token, keypair[1])
+    claims = jwt.decode(access_token, server_jwk.as_dict())
     assert claims["exp"] - claims["iat"] == 864000
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
+    claims = jwt.decode(id_token, server_jwk.as_dict())
     assert claims["exp"] - claims["iat"] == 3600
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -61,7 +61,7 @@ def test_token_default_expiration_date(
 
 
 def test_token_custom_expiration_date(
-    testclient, logged_user, client, keypair, backend
+    testclient, logged_user, client, server_jwk, backend
 ):
     testclient.app.config["OAUTH2_TOKEN_EXPIRES_IN"] = {
         "authorization_code": 1000,
@@ -70,7 +70,6 @@ def test_token_custom_expiration_date(
         "client_credentials": 4000,
         "urn:ietf:params:oauth:grant-type:jwt-bearer": 5000,
     }
-    testclient.app.config["CANAILLE_OIDC"]["JWT"]["EXP"] = 6000
     setup_oauth(testclient.app)
 
     res = testclient.get(
@@ -109,12 +108,13 @@ def test_token_custom_expiration_date(
     token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 1000
 
-    claims = jwt.decode(access_token, keypair[1])
+    claims = jwt.decode(access_token, server_jwk.as_dict())
     assert claims["exp"] - claims["iat"] == 1000
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, keypair[1])
-    assert claims["exp"] - claims["iat"] == 6000
+    claims = jwt.decode(id_token, server_jwk.as_dict())
+    lifetime = claims["exp"] - claims["iat"]
+    assert lifetime == 3600
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:

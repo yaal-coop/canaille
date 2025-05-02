@@ -106,7 +106,7 @@ def test_invalid_credentials(testclient, user, client):
     }
 
 
-def test_jwt_auth(testclient, client_jwks, client, token, caplog, backend, user):
+def test_jwt_auth(testclient, client_jwk, client, token, caplog, backend, user):
     """Test client JWT authentication as defined per RFC7523, for a password grant."""
     now = time.time()
 
@@ -114,7 +114,6 @@ def test_jwt_auth(testclient, client_jwks, client, token, caplog, backend, user)
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 
-    _, private_key = client_jwks
     header = {"alg": "RS256"}
     payload = {
         "iss": client.client_id,
@@ -125,7 +124,7 @@ def test_jwt_auth(testclient, client_jwks, client, token, caplog, backend, user)
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    client_jwt = jwt.encode(header, payload, private_key)
+    client_jwt = jwt.encode(header, payload, client_jwk)
     res = testclient.post(
         "/oauth/token",
         params=dict(
