@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 15:05+0200\n"
-"PO-Revision-Date: 2025-03-25 19:33+0000\n"
+"PO-Revision-Date: 2025-05-02 21:26+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.11-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:39
@@ -791,6 +791,8 @@ msgid ""
 "This is the name that will be displayed on the web interface, and notably on "
 "the consent page."
 msgstr ""
+"Le nom qui sera affiché sur l'interface web, notamment sur la page de "
+"consentement."
 
 #: canaille/oidc/endpoints/forms.py:56
 msgid "Contacts"
@@ -798,7 +800,7 @@ msgstr "Contacts"
 
 #: canaille/oidc/endpoints/forms.py:63
 msgid "Those are the email addresses of people responsible for the client."
-msgstr ""
+msgstr "Ce sont les adresses email des personnes responsables du client."
 
 #: canaille/oidc/endpoints/forms.py:68
 msgid "URI"
@@ -806,7 +808,7 @@ msgstr "URI"
 
 #: canaille/oidc/endpoints/forms.py:75
 msgid "URL string of a web page providing information about the client."
-msgstr ""
+msgstr "URL d'une page web fournissant des informations à propos du client."
 
 #: canaille/oidc/endpoints/forms.py:81
 msgid "Redirect URIs"
@@ -817,6 +819,8 @@ msgid ""
 "URIs for use in redirect-based flows such as the authorization code and "
 "implicit flows."
 msgstr ""
+"URIs qui peuvent servir au flux d'authentification comprenant des "
+"redirections, tels le code d'autorisation ou le flux implicite."
 
 #: canaille/oidc/endpoints/forms.py:96
 msgid "Post logout redirect URIs"
@@ -825,6 +829,8 @@ msgstr "URIs de redirection post-déconnexion"
 #: canaille/oidc/endpoints/forms.py:106
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr ""
+"Les URIs vers lesquelles le client peut rediriger les utilisateurs après "
+"déconnexion."
 
 #: canaille/oidc/endpoints/forms.py:111
 msgid "Grant types"
@@ -832,7 +838,7 @@ msgstr "Types de consentements"
 
 #: canaille/oidc/endpoints/forms.py:123
 msgid "Grant types that the client can use at the token endpoint."
-msgstr ""
+msgstr "Types d'octroi que le client peut utiliser sur le terminal de jetons."
 
 #: canaille/oidc/endpoints/forms.py:127
 #: canaille/templates/oidc/token_view.html:82
@@ -842,6 +848,7 @@ msgstr "Portée"
 #: canaille/oidc/endpoints/forms.py:131
 msgid "Kind of information that the client can request about users."
 msgstr ""
+"Type d'informations que le client peut demander à propos des utilisateurs."
 
 #: canaille/oidc/endpoints/forms.py:135
 msgid "Response types"
@@ -850,6 +857,7 @@ msgstr "Types de réponse"
 #: canaille/oidc/endpoints/forms.py:140
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
+"Types de réponses que le client peut utiliser sur le terminal d'autorisation."
 
 #: canaille/oidc/endpoints/forms.py:145
 msgid "Token Endpoint Auth Method"
@@ -858,6 +866,7 @@ msgstr "Méthode d'authentification du point d'accès des jetons"
 #: canaille/oidc/endpoints/forms.py:156
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr ""
+"Méthode d'authentification que le client utilise sur le terminal de jeton."
 
 #: canaille/oidc/endpoints/forms.py:161
 msgid "Token audiences"
@@ -867,6 +876,7 @@ msgstr "Audiences des jetons"
 msgid ""
 "The other clients that are intended to use the tokens emitted by this client."
 msgstr ""
+"Les autres clients qui pourront utiliser les jetons émis pour ce client."
 
 #: canaille/oidc/endpoints/forms.py:172
 msgid "Logo URI"
@@ -874,7 +884,7 @@ msgstr "URI du logo"
 
 #: canaille/oidc/endpoints/forms.py:178
 msgid "An URL for the logo of this client."
-msgstr ""
+msgstr "Une URL pour le logo de ce client."
 
 #: canaille/oidc/endpoints/forms.py:182
 msgid "Terms of service URI"
@@ -882,7 +892,7 @@ msgstr "URI des conditions d'utilisation"
 
 #: canaille/oidc/endpoints/forms.py:188
 msgid "URL to the terms of service of the client."
-msgstr ""
+msgstr "URL vers les conditions d'utilisation de ce client."
 
 #: canaille/oidc/endpoints/forms.py:192
 msgid "Policy URI"
@@ -890,7 +900,7 @@ msgstr "URI de la politique de confidentialité"
 
 #: canaille/oidc/endpoints/forms.py:198
 msgid "URL to the privacy policy of the client."
-msgstr ""
+msgstr "URL vers la politique de confidentialité de ce client."
 
 #: canaille/oidc/endpoints/forms.py:202
 msgid "Software ID"
@@ -901,16 +911,16 @@ msgid ""
 "Unique identifier for this client, that should be stable in time and common "
 "for all identity providers."
 msgstr ""
+"Identifieur unique pour ce client, qui devrait être stable dans le temps et "
+"communs à tous les fournisseurs d'identité."
 
 #: canaille/oidc/endpoints/forms.py:211
 msgid "Software Version"
 msgstr "Version du logiciel"
 
 #: canaille/oidc/endpoints/forms.py:214
-#, fuzzy
-#| msgid "Delete the client"
 msgid "The version of the client."
-msgstr "Supprimer le client"
+msgstr "La version du client."
 
 #: canaille/oidc/endpoints/forms.py:217
 msgid "JWKS"
@@ -918,7 +928,7 @@ msgstr "JWKS"
 
 #: canaille/oidc/endpoints/forms.py:220
 msgid "The public JSON Web Keys of the client."
-msgstr ""
+msgstr "Les JSON Web Keys publiques pour ce client."
 
 #: canaille/oidc/endpoints/forms.py:224
 msgid "JKWS URI"
@@ -926,7 +936,7 @@ msgstr "URI du JWKS"
 
 #: canaille/oidc/endpoints/forms.py:230
 msgid "The URI that points to the public JSON Web Keys of the client."
-msgstr ""
+msgstr "L'URI qui pointe vers les JSON Web Keys publiques de ce client."
 
 #: canaille/oidc/endpoints/forms.py:234
 msgid "Trusted"
@@ -935,6 +945,8 @@ msgstr "Application de confiance"
 #: canaille/oidc/endpoints/forms.py:237
 msgid "Whether the clients needs to display consent dialogs."
 msgstr ""
+"Les applications de confiances n'ont pas besoin d'afficher la page de "
+"consentement aux utilisateurs."
 
 #: canaille/oidc/endpoints/oauth.py:470
 msgid "You have been disconnected"
