@@ -24,6 +24,10 @@
         with open("canaille.toml", "w") as fd:
             config = tomlkit.dump(config, fd)
 
+Changed
+^^^^^^^
+- Reworked the JWK configuration. :issue:`119`
+
 [0.0.74] - 2025-04-24
 ---------------------
 
