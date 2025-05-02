@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-03-24 10:10+0100\n"
-"PO-Revision-Date: 2025-04-12 09:01+0000\n"
+"PO-Revision-Date: 2025-05-02 21:26+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.11-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 7ff76ed229a74a389d7167a72eefdd36
@@ -6819,8 +6819,7 @@ msgstr ""
 #: ../../docstring of canaille.oidc.basemodels.Client.client_uri:1
 #: e4dd2aadee4648928ef3f98922b5f787
 msgid "URL string of a web page providing information about the client."
-msgstr ""
-"URL en chaîne de caractères d'une page d'information à propos du client."
+msgstr "URL d'une page web fournissant des informations à propos du client."
 
 #: ../../docstring of canaille.oidc.basemodels.Client.client_uri:3
 #: 0001183b9f134d2cbbab4a3daf3621bc
