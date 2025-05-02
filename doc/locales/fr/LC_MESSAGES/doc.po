@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 23:21+0200\n"
-"PO-Revision-Date: 2025-05-02 21:26+0000\n"
+"PO-Revision-Date: 2025-05-03 22:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -9801,7 +9801,7 @@ msgstr "Exemple d'utilisation de scim2-cli"
 
 #: ../tutorial/sso.rst:2 e39240dc6d1240b593ef40f5ab262024
 msgid "Single Sign-On"
-msgstr ""
+msgstr "Authentification unique"
 
 #: ../tutorial/sso.rst:4 8a098271c0ef4543b3e8c05ad7158f16
 #, fuzzy
