@@ -439,10 +439,8 @@ class JWTBearerGrant(rfc7523.JWTBearerGrant):
         return Backend.instance.get(models.Client, client_id=issuer)
 
     def resolve_client_key(self, client, headers, payload):
-        jwk = get_client_jwks(client, headers.get("kid"))
-        if not jwk:
-            raise InvalidClientError(description="No matching JWK")
-        return jwk
+        jwk = server_jwks().keys[0]
+        return jwk.as_dict()
 
     def authenticate_user(self, subject: str):
         return get_user_from_login(subject)
