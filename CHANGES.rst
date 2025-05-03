@@ -19,7 +19,7 @@
             config = tomlkit.load(fd)
 
         key = jwk.RSAKey.import_key(config["CANAILLE_OIDC"]["JWT"]["PRIVATE_KEY"])
-        config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [jwk.as_dict()]
+        config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [key.as_dict()]
 
         with open("canaille.toml", "w") as fd:
             config = tomlkit.dump(config, fd)
