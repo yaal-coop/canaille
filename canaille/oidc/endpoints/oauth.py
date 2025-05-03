@@ -177,10 +177,10 @@ def is_consent_needed(grant, redirect_url) -> bool:
     if consent and consent.revoked:
         return True
 
-    if request.values.get(
-        "prompt"
-    ) == "consent" and consent.issue_date < get_authorization_request_datetime(
-        redirect_url
+    if (
+        request.values.get("prompt") == "consent"
+        and consent
+        and consent.issue_date < get_authorization_request_datetime(redirect_url)
     ):
         return True
 
