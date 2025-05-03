@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 15:05+0200\n"
-"PO-Revision-Date: 2025-05-01 19:01+0000\n"
+"PO-Revision-Date: 2025-05-03 22:01+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/canaille/"
 "canaille/ru/>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.12-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
@@ -44,7 +44,7 @@ msgstr "Неправильный номер телефона"
 #: canaille/app/forms.py:59
 #, python-brace-format
 msgid "Field must be at least {minimum_password_length} characters long."
-msgstr ""
+msgstr "Поле должно быть длиной как минимум {minimum_password_length}."
 
 #: canaille/app/forms.py:71
 #, python-brace-format
@@ -275,7 +275,7 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:408
 msgid "Your email address have been confirmed."
-msgstr ""
+msgstr "Ваш адрес электронной почты был подтвержден."
 
 #: canaille/core/endpoints/account.py:438
 msgid "User account creation succeeded."
@@ -284,7 +284,7 @@ msgstr "Создание учетной записи пользователя у
 #: canaille/core/endpoints/account.py:616
 #: canaille/core/endpoints/account.py:807
 msgid "Profile edition failed."
-msgstr ""
+msgstr "Сбой при изменении профиля."
 
 #: canaille/core/endpoints/account.py:624
 #: canaille/core/endpoints/account.py:825
@@ -300,10 +300,12 @@ msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
+"На ваш адрес электронной почты отправлено письмо. Пожалуйста, проверьте свой "
+"почтовый ящик и нажмите на ссылку проверки из письма"
 
 #: canaille/core/endpoints/account.py:648
 msgid "Could not send the verification email"
-msgstr ""
+msgstr "Не удалось отправить проверочное письмо"
 
 #: canaille/core/endpoints/account.py:658
 msgid "Email deletion failed."
@@ -311,23 +313,27 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:661
 msgid "The email have been successfully deleted."
-msgstr ""
+msgstr "Электронное письмо было успешно удалено."
 
 #: canaille/core/endpoints/account.py:701
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
 msgstr ""
+"Ссылка для инициализации пароля была отправлена по адресу электронной почты "
+"пользователя. Оно должно будет получено в течение нескольких минут."
 
 #: canaille/core/endpoints/account.py:707 canaille/core/endpoints/auth.py:181
 msgid "Could not send the password initialization email"
-msgstr ""
+msgstr "Невозможно отправить письмо с инициализацией пароля"
 
 #: canaille/core/endpoints/account.py:720
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within a few minutes."
 msgstr ""
+"Письмо со ссылкой для сброса пароля была отправлена по адресу электронной "
+"почты пользователя. Оно должно будет получено в течение нескольких минут."
 
 #: canaille/core/endpoints/account.py:726
 msgid "Could not send the password reset email"
@@ -343,7 +349,7 @@ msgstr "Эта учётная запись была разблокирована
 
 #: canaille/core/endpoints/account.py:768
 msgid "One-time password authentication has been reset"
-msgstr ""
+msgstr "Аутентификация одноразовым паролем была сброшена"
 
 #: canaille/core/endpoints/account.py:846
 #, python-format
@@ -352,7 +358,7 @@ msgstr "Пользователь %(user)s был успешно удалён"
 
 #: canaille/core/endpoints/account.py:862
 msgid "Locked users cannot be impersonated."
-msgstr ""
+msgstr "Невозможно войти как заблокированный пользователь."
 
 #: canaille/core/endpoints/account.py:866 canaille/core/endpoints/auth.py:131
 #: canaille/core/endpoints/auth.py:395
@@ -362,12 +368,12 @@ msgstr "Подключение успешно. Добро пожаловать %
 
 #: canaille/core/endpoints/account.py:904 canaille/core/endpoints/auth.py:298
 msgid "Your password has been updated successfully"
-msgstr ""
+msgstr "Ваш пароль был обновлён"
 
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:39
 #: canaille/core/endpoints/forms.py:62 canaille/core/endpoints/forms.py:172
@@ -418,7 +424,7 @@ msgstr ""
 
 #: canaille/core/endpoints/auth.py:204
 msgid "You should receive it within a few minutes."
-msgstr ""
+msgstr "Вы должны получить его в течение нескольких минут."
 
 #: canaille/core/endpoints/auth.py:216
 #, python-format
@@ -666,7 +672,7 @@ msgstr ""
 
 #: canaille/core/endpoints/groups.py:118
 msgid "Group edition failed."
-msgstr ""
+msgstr "Сбой при изменении группы."
 
 #: canaille/core/endpoints/groups.py:148
 #, python-format
@@ -700,7 +706,7 @@ msgstr "Группы к которым вы принадлежите."
 
 #: canaille/oidc/endpoints/clients.py:47
 msgid "The client has not been added. Please check your information."
-msgstr ""
+msgstr "Клиент не был добавлен. Пожалуйста, проверьте вашу информацию."
 
 #: canaille/oidc/endpoints/clients.py:82
 msgid "The client has been created."
@@ -708,29 +714,29 @@ msgstr "Клиент был создан."
 
 #: canaille/oidc/endpoints/clients.py:118
 msgid "The client has not been edited. Please check your information."
-msgstr ""
+msgstr "Клиент не был отредактирован. Пожалуйста, проверьте вашу информацию."
 
 #: canaille/oidc/endpoints/clients.py:148
 msgid "The client has been edited."
-msgstr ""
+msgstr "Клиент был отредактирован."
 
 #: canaille/oidc/endpoints/clients.py:156
 msgid "The client has been deleted."
-msgstr ""
+msgstr "Клиент был удален."
 
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
 msgid "Could not revoke this access"
-msgstr ""
+msgstr "Не удалось отменить этот доступ"
 
 #: canaille/oidc/endpoints/consents.py:78
 msgid "The access is already revoked"
-msgstr ""
+msgstr "Доступ уже был отозван"
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
 msgid "The access has been revoked"
-msgstr ""
+msgstr "Доступ был отозван"
 
 #: canaille/oidc/endpoints/consents.py:94
 msgid "Could not restore this access"
@@ -772,7 +778,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:75
 msgid "URL string of a web page providing information about the client."
-msgstr ""
+msgstr "URL-адрес веб-страницы с информацией о клиенте."
 
 #: canaille/oidc/endpoints/forms.py:81
 msgid "Redirect URIs"
@@ -856,7 +862,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:198
 msgid "URL to the privacy policy of the client."
-msgstr ""
+msgstr "URL к политике конфиденциальности клиента."
 
 #: canaille/oidc/endpoints/forms.py:202
 msgid "Software ID"
@@ -867,20 +873,20 @@ msgid ""
 "Unique identifier for this client, that should be stable in time and common "
 "for all identity providers."
 msgstr ""
+"Уникальный идентификатор для этого клиента, который должен быть стабильным "
+"во времени и общим для всех провайдеров идентификации."
 
 #: canaille/oidc/endpoints/forms.py:211
 msgid "Software Version"
 msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:214
-#, fuzzy
-#| msgid "Delete the client"
 msgid "The version of the client."
-msgstr "Удалить клиент"
+msgstr "Версия этого клиента."
 
 #: canaille/oidc/endpoints/forms.py:217
 msgid "JWKS"
-msgstr ""
+msgstr "JWKS"
 
 #: canaille/oidc/endpoints/forms.py:220
 msgid "The public JSON Web Keys of the client."
@@ -888,7 +894,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:224
 msgid "JKWS URI"
-msgstr ""
+msgstr "JKWS URI"
 
 #: canaille/oidc/endpoints/forms.py:230
 msgid "The URI that points to the public JSON Web Keys of the client."
@@ -896,7 +902,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:234
 msgid "Trusted"
-msgstr ""
+msgstr "Доверенное"
 
 #: canaille/oidc/endpoints/forms.py:237
 msgid "Whether the clients needs to display consent dialogs."
@@ -1028,11 +1034,11 @@ msgstr ""
 #: canaille/templates/core/join.html:47
 #: canaille/templates/core/profile_add.html:204
 msgid "Login page"
-msgstr ""
+msgstr "Страница входа"
 
 #: canaille/templates/core/firstlogin.html:47
 msgid "Send the initialization email"
-msgstr ""
+msgstr "Отправить письмо с инициализацией"
 
 #: canaille/templates/core/forgotten-password-code.html:18
 #: canaille/templates/core/forgotten-password-code.html:29
@@ -1041,7 +1047,7 @@ msgstr ""
 #: canaille/templates/core/join.html:49 canaille/templates/core/login.html:57
 #: canaille/templates/core/password.html:41
 msgid "Forgotten password"
-msgstr ""
+msgstr "Забыли пароль"
 
 #: canaille/templates/core/forgotten-password-code.html:36
 msgid "Please enter the reset password code you received via email."
@@ -1211,19 +1217,19 @@ msgstr ""
 
 #: canaille/templates/core/invite.html:149
 msgid "Send the invitation"
-msgstr ""
+msgstr "Отправить приглашение"
 
 #: canaille/templates/core/join.html:14 canaille/templates/core/join.html:25
 #: canaille/templates/core/profile_add.html:20
 #: canaille/templates/core/profile_add.html:48
 #: canaille/templates/core/profile_edit.html:28
 msgid "User creation"
-msgstr ""
+msgstr "Создание пользователя"
 
 #: canaille/templates/core/join.html:27
 #: canaille/templates/core/profile_add.html:51
 msgid "Create a new user account"
-msgstr ""
+msgstr "Создание новой учетной записи пользователя"
 
 #: canaille/templates/core/join.html:32
 msgid ""
@@ -1231,21 +1237,24 @@ msgid ""
 "you will receive an email containing a link that will allow you to finish "
 "your registration."
 msgstr ""
+"Прежде чем создать учётную запись, введите ваш адрес электронной почты. "
+"Затем вы получите электронное письмо, содержащее ссылку которая позволит вам "
+"завершить регистрацию."
 
 #: canaille/templates/core/login.html:35
 #, python-format
 msgid "Sign in at %(website)s"
-msgstr ""
+msgstr "Войти как %(website)s"
 
 #: canaille/templates/core/login.html:37
 msgid "Manage your information and your authorizations"
-msgstr ""
+msgstr "Управление вашей информацией и авторизациями"
 
 #: canaille/templates/core/login.html:59
 #: canaille/templates/core/mails/registration.txt:5
 #: canaille/templates/core/setup-mfa.html:64
 msgid "Continue"
-msgstr ""
+msgstr "Продолжить"
 
 #: canaille/templates/core/password.html:21
 #: canaille/templates/core/setup-mfa.html:32
@@ -1286,23 +1295,25 @@ msgstr "Настройки учётной записи"
 
 #: canaille/templates/core/profile_add.html:188
 msgid "User password is not mandatory"
-msgstr ""
+msgstr "Пароль пользователя не является обязательным"
 
 #: canaille/templates/core/profile_add.html:192
 msgid ""
 "The user will not be able to authenticate unless the password is set, but "
 "they will be able to ask for a password initialization mail."
 msgstr ""
+"Пользователь не сможет аутентифицироваться пока пароль не установлен, но "
+"сможет запросить письмо с инициализацией пароля."
 
 #: canaille/templates/core/profile_add.html:194
 msgid "The user will not be able to authenticate unless the password is set."
-msgstr ""
+msgstr "Пользователь не сможет аутентифицироваться пока пароль не установлен."
 
 #: canaille/templates/core/profile_edit.html:30
 #: canaille/templates/core/profile_edit.html:56
 #: canaille/templates/core/profile_settings.html:25
 msgid "My profile"
-msgstr ""
+msgstr "Мой профиль"
 
 #: canaille/templates/core/profile_edit.html:32
 #: canaille/templates/core/profile_edit.html:58
@@ -1320,11 +1331,11 @@ msgstr ""
 
 #: canaille/templates/core/profile_edit.html:193
 msgid "My email addresses"
-msgstr ""
+msgstr "Мои адреса электронной почты"
 
 #: canaille/templates/core/profile_edit.html:214
 msgid "Remove this email address"
-msgstr ""
+msgstr "Удалить адрес электронной почты"
 
 #: canaille/templates/core/partial/profile_field.html:31
 #: canaille/templates/core/profile_settings.html:49
@@ -1414,27 +1425,27 @@ msgstr ""
 
 #: canaille/templates/core/profile_settings.html:170
 msgid "Lock the account"
-msgstr ""
+msgstr "Заблокировать учётную запись"
 
 #: canaille/templates/core/profile_settings.html:177
 msgid "Delete the user"
-msgstr ""
+msgstr "Удалить пользователя"
 
 #: canaille/templates/core/profile_settings.html:179
 msgid "Delete my account"
-msgstr ""
+msgstr "Удалить мою учётную запись"
 
 #: canaille/templates/core/profile_settings.html:186
 msgid "Impersonate"
-msgstr ""
+msgstr "Войти как"
 
 #: canaille/templates/core/setup-mfa.html:34
 msgid "Set up multi-factor authentication."
-msgstr ""
+msgstr "Настроить многоэтапную аутентификацию."
 
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."
-msgstr ""
+msgstr "Аутентификация одноразовым паролем."
 
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:51
@@ -1555,7 +1566,7 @@ msgstr "Регистрация"
 #: canaille/templates/core/mails/compromised_password_check_failure.html:19
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
-msgstr ""
+msgstr "Ошибка проверки пароля на компрометацию"
 
 #: canaille/templates/core/mails/admin.html:171
 msgid "Email one-time password"
@@ -1579,7 +1590,7 @@ msgstr ""
 #: canaille/templates/core/mails/compromised_password_check_failure.html:32
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:6
 msgid "Follow this steps :"
-msgstr ""
+msgstr "Следуйте этим шагам:"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:33
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:7
@@ -1590,7 +1601,7 @@ msgstr ""
 #: canaille/templates/core/mails/compromised_password_check_failure.html:75
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:13
 msgid "Check if password is compromised"
-msgstr ""
+msgstr "Проверьте, скомпрометирован ли пароль"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:47
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:8
@@ -1603,16 +1614,16 @@ msgstr ""
 #: canaille/templates/core/mails/compromised_password_check_failure.html:48
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:9
 msgid "3. if the password is in the list :"
-msgstr ""
+msgstr "3. если пароль находится в списке:"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:49
 msgid "3.1. open this link and reset user's password."
-msgstr ""
+msgstr "3.1. откройте эту ссылку и сбросьте пароль пользователя."
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:57
 #, python-format
 msgid "Reset %(user_name)s's password"
-msgstr ""
+msgstr "Сброс пароля для %(user_name)s"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:64
 #, python-format
@@ -1730,7 +1741,7 @@ msgstr ""
 
 #: canaille/templates/core/mails/invitation.html:38
 msgid "Create my account"
-msgstr ""
+msgstr "Создать мою учётную запись"
 
 #: canaille/templates/core/mails/invitation.txt:3
 #, python-format
