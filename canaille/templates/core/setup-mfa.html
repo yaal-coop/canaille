@@ -40,28 +40,33 @@ Display a QR-code and the OTP secret.
                 {% endblock %}
 
                 <div class="ui segment">
-                    <h3 class="ui header">Instructions:</h3>
+                    <h3 class="ui header">{% trans %}Instructions{% endtrans %}</h3>
                     <ol class="ui list">
-                        <li class="item">Install a One-Time Password (OTP) generator application on your mobile.</li>
-                        <li class="item">Set up a new authenticator.</li>
-                        <li class="item">Scan the QR code below and click "Continue".</li>
+                        <li class="item">{% trans %}Install a One-Time Password (OTP) generator application on your mobile.{% endtrans %}</li>
+                        <li class="item">{% trans %}Set up a new authenticator.{% endtrans %}</li>
+                        <li class="item">{% trans %}Scan the QR code below and click "Continue".{% endtrans %}</li>
                     </ol>
-                    <p><strong>Note:</strong> If you can't scan the QR code, try entering the secret token in your authenticator app directly.</p>
+                    <p>
+                        <strong>{% trans %}Note:{% endtrans %}</strong>
+                        {% trans %}If you can't scan the QR code, try entering the secret token in your authenticator app directly.{% endtrans %}
+                    </p>
                 </div>
                 <div>
-                    <img src="data:image/png;base64, {{ qr_image }}" alt="Secret Token" class="ui centered medium image"/>
+                    <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui centered medium image"/>
                 </div>
                 <form class="ui segment grid action input">
-                    <label class="ui large label token-label" for="secret">Secret token:</label>
+                    <label class="ui large label token-label" for="secret">{% trans %}Secret token:{% endtrans %}</label>
                     <input type="text" id="secret" name="secret" value="{{ secret }}" readonly>
                     <button type="button" class="ui secondary right labeled icon button" onclick="copySecret(this)">
-                        Copy Secret
+                        {% trans %}Copy secret{% endtrans %}
                     </button>
                 </form>
                 {% block buttons %}
                     <div class="ui right aligned container">
                         <div class="ui stackable buttons">
-                            <a type="button" class="ui right floated primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">{{ _("Continue") }}</a>
+                            <a type="button" class="ui right floated primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">
+                                {{ _("Continue") }}
+                            </a>
                         </div>
                     </div>
                 {% endblock %}
@@ -76,9 +81,9 @@ Display a QR-code and the OTP secret.
             copyText.select();
             copyText.setSelectionRange(0, 99999); /*For mobile devices*/
             document.execCommand("copy");
-            clickedButton.textContent = "Successfully copied!";
+            clickedButton.textContent = {% trans %}"Successfully copied!"{% endtrans %};
             setTimeout(() => {
-                clickedButton.textContent = "Copy Secret";
+                clickedButton.textContent = {% trans %}"Copy secret"{% endtrans %};
             }, 2000);
         }
     </script>

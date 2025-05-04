@@ -402,7 +402,7 @@ def verify_two_factor_auth():
             )
     else:
         flash(
-            "The one-time password you entered is invalid. Please try again",
+            _("The one-time password you entered is invalid. Please try again"),
             "error",
         )
         current_app.logger.security(
@@ -434,14 +434,16 @@ def send_mail_otp():
                 f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
             )
             flash(
-                "Code successfully sent!",
+                _("Code successfully sent!"),
                 "success",
             )
         else:
-            flash("Error while sending one-time password. Please try again.", "danger")
+            flash(
+                _("Error while sending one-time password. Please try again."), "danger"
+            )
     else:
         flash(
-            f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+            _(f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."),
             "danger",
         )
 
@@ -471,14 +473,16 @@ def send_sms_otp():
                 f"Sent one-time password for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
             )
             flash(
-                "Code successfully sent!",
+                _("Code successfully sent!"),
                 "success",
             )
         else:
-            flash("Error while sending one-time password. Please try again.", "danger")
+            flash(
+                _("Error while sending one-time password. Please try again."), "danger"
+            )
     else:
         flash(
-            f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+            _(f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."),
             "danger",
         )
 
@@ -489,12 +493,14 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
     if otp_method in ["HOTP", "TOTP"]:
         if not user.last_otp_login:
             flash(
-                "You have not enabled multi-factor authentication. Please enable it first to login.",
+                _(
+                    "You have not enabled multi-factor authentication. Please enable it first to login."
+                ),
                 "info",
             )
             return redirect(url_for("core.auth.setup_two_factor_auth"))
         flash(
-            "Please enter the one-time password from your authenticator app.",
+            _("Please enter the one-time password from your authenticator app."),
             "info",
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))
@@ -502,8 +508,11 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
         if user.can_send_new_otp():
             if user.generate_and_send_otp_mail():
                 Backend.instance.save(user)
+                email = mask_email(user.preferred_email)
                 flash(
-                    f"A one-time password has been sent to your email address {mask_email(user.preferred_email)}. Please enter it below to login.",
+                    _(
+                        f"A one-time password has been sent to your email address {email}. Please enter it below to login."
+                    ),
                     "info",
                 )
                 current_app.logger.security(
@@ -512,12 +521,15 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:
                 flash(
-                    "Error while sending one-time password. Please try again.", "danger"
+                    _("Error while sending one-time password. Please try again."),
+                    "danger",
                 )
                 return redirect(fail_redirect_url)
         else:
             flash(
-                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                _(
+                    f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."
+                ),
                 "danger",
             )
             return redirect(fail_redirect_url)
@@ -526,7 +538,9 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
             if user.generate_and_send_otp_sms():
                 Backend.instance.save(user)
                 flash(
-                    f"A one-time password has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login.",
+                    _(
+                        f"A one-time password has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login."
+                    ),
                     "info",
                 )
                 current_app.logger.security(
@@ -535,13 +549,15 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
                 return redirect(url_for("core.auth.verify_two_factor_auth"))
             else:
                 flash(
-                    "Error while sending one-time password. Please try again.",
+                    _("Error while sending one-time password. Please try again."),
                     "danger",
                 )
                 return redirect(fail_redirect_url)
         else:
             flash(
-                f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds.",
+                _(
+                    f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."
+                ),
                 "danger",
             )
             return redirect(fail_redirect_url)

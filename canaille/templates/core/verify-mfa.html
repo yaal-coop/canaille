@@ -53,6 +53,7 @@ Displays a form that asks for the multi-factor authentication code.
                         </div>
                     {% endblock %}
                 {% endcall %}
+
                 {% if method == "EMAIL_OTP" or method == "SMS_OTP" %}
                     {% if method == "EMAIL_OTP" %}
                         <form action="{{ url_for('core.auth.send_mail_otp') }}" method="post">
@@ -61,7 +62,10 @@ Displays a form that asks for the multi-factor authentication code.
                         <form action="{{ url_for('core.auth.send_sms_otp') }}" method="post">
                     {% endif %}
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button class="send-code-button" type="submit">Didn't receive the code? Click here to send another one. <span id="countdown"></span></button>
+                    <button class="send-code-button" type="submit">
+                        {% trans %}Didn't receive the code? Click here to send another one. {% endtrans %}
+                        <span id="countdown"></span>
+                    </button>
                     </form>
                 {% endif %}
             </div>
