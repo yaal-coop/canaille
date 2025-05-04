@@ -39,6 +39,9 @@ def generate_otp(user, counter_delta=0):
 def get_otp_authentication_setup_uri(user):
     import otpauth
 
+    if not user.secret_token:
+        initialize_otp(user)
+
     method = current_app.features.otp_method
     if method == "TOTP":
         return otpauth.TOTP(bytes(user.secret_token, "utf-8")).to_uri(
