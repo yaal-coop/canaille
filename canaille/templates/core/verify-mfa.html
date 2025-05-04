@@ -14,6 +14,10 @@ Displays a form that asks for the multi-factor authentication code.
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/login_field.html' as login_field %}
 
+{% block script %}
+    <script src="{{ url_for("static", filename="js/verify-mfa.js") }}" defer></script>
+{% endblock %}
+
 {% block container %}
     <div class="ui container">
         <div class="content">
@@ -71,24 +75,4 @@ Displays a form that asks for the multi-factor authentication code.
             </div>
         </div>
     </div>
-{% endblock %}
-{% block script %}
-    <script>
-        countDownDuration = 10;
-        countdown = document.getElementById("countdown");
-        countdown.innerHTML = countDownDuration;
-        button = countdown.parentNode;
-        button.setAttribute("disabled", "");
-
-        x = setInterval(() => {
-            countDownDuration--;
-            if (countDownDuration <= 0) {
-                clearInterval(x);
-                countdown.innerHTML = "";
-                button.removeAttribute("disabled");
-            } else {
-                countdown.innerHTML = countDownDuration;
-            }
-        }, 1000);
-    </script>
 {% endblock %}
