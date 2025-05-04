@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 23:21+0200\n"
-"PO-Revision-Date: 2025-05-03 22:01+0000\n"
+"PO-Revision-Date: 2025-05-04 15:29+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -39,28 +39,29 @@ msgstr ""
 "<https://semver.org/lang/fr/spec/v2.0.0.html>`_."
 
 #: ../../CHANGES.rst:2 96b8ba494b1b4dd592144e6a21a47103
-#, fuzzy
-#| msgid "[0.0.69] - Unreleased"
 msgid "[0.0.75] - Unreleased"
-msgstr "[0.0.69] - Unreleased"
+msgstr "[0.0.75] - Non publié"
 
 #: ../../CHANGES.rst:6 20d7495f4b424545bd20346a221f3e78
 msgid "This version comes with a configuration breaking change."
-msgstr ""
+msgstr "Cette version vient avec un changement majeur de configuration."
 
 #: ../../CHANGES.rst:8 a1e930dc83684172b374d76e8d0ebe5e
 msgid "The OIDC configuration part have been reworked:"
-msgstr ""
+msgstr "La configuration OIDC a été retravaillée :"
 
 #: ../../CHANGES.rst:10 fc885347b9694f25b34126aec242f26e
 msgid ""
 "``CANAILLE_OIDC.JWT.MAPPING`` becomes ``CANAILLE_OIDC.USERINFO_MAPPING``"
 msgstr ""
+"``CANAILLE_OIDC.JWT.MAPPING`` devient ``CANAILLE_OIDC.USERINFO_MAPPING``"
 
 #: ../../CHANGES.rst:11 e83ba5c2a13c4265b741011a7dc96b16
 msgid ""
 "``CANAILLE.JWT`` is removed. You can migrate your keys with this script:"
 msgstr ""
+"``CANAILLE.JWT`` a été supprimé. Vous pouvez migrer vos clés grâce à ce "
+"script :"
 
 #: ../../CHANGES.rst:28 ../../CHANGES.rst:212 ../../CHANGES.rst:231
 #: ../../CHANGES.rst:245 ../../CHANGES.rst:277 ../../CHANGES.rst:297
@@ -86,16 +87,14 @@ msgid "Changed"
 msgstr "Modifié"
 
 #: ../../CHANGES.rst:29 7266184d221e46a5b1034d50a2234876
-#, fuzzy
-#| msgid "Timezone configuration entry. :issue:`137` :pr:`130`"
 msgid "Reworked the JWK configuration. :issue:`119`"
-msgstr "Paramètre de configuration des fuseaux horaire. :issue:`137` :pr:`130`"
+msgstr "Réusinage de la configuration des JSON Web Keys. :issue:`119`"
 
 #: ../../CHANGES.rst:32 460b56154f15405098a26e6a8c8a1424
 #, fuzzy
 #| msgid "[0.0.64] - 2025-02-12"
 msgid "[0.0.74] - 2025-04-24"
-msgstr "[0.0.64] - 2025-02-12"
+msgstr "[0.0.74] - 2025-04-24"
 
 #: ../../CHANGES.rst:35 ../../CHANGES.rst:42 ../../CHANGES.rst:60
 #: ../../CHANGES.rst:82 ../../CHANGES.rst:90 ../../CHANGES.rst:117
@@ -138,18 +137,22 @@ msgstr "Ajouté"
 #: ../../CHANGES.rst:36 f6dfb4fb758c4bb9a11fef21e0fa20e5
 msgid "Mock gettext when ``flask-babel`` dependency is not installed."
 msgstr ""
+"``gettext`` factice lorsque la dépendance ``flask-babel`` n'est pas "
+"installée."
 
 #: ../../CHANGES.rst:39 6b1e337702794d98a10ea0f54d50b63f
 #, fuzzy
 #| msgid "[0.0.53] - 2024-04-22"
 msgid "[0.0.73] - 2025-04-23"
-msgstr "[0.0.53] - 2024-04-22"
+msgstr "[0.0.73] - 2025-04-23"
 
 #: ../../CHANGES.rst:43 a05beda2edd24d0f8f928be174c9bdb5
 msgid ""
 "Support for OIDC authorization endpoint ``login`` and ``consent`` prompt "
 "parameters. :issue:`187`"
 msgstr ""
+"Support des valeurs ``login`` et ``consent`` du paramètre ``prompt`` du "
+"terminal d'autorisation OIDC. :issue:`187`"
 
 #: ../../CHANGES.rst:46 ../../CHANGES.rst:65 ../../CHANGES.rst:75
 #: ../../CHANGES.rst:96 ../../CHANGES.rst:105 ../../CHANGES.rst:149
@@ -203,22 +206,27 @@ msgstr "Corrigé"
 #: ../../CHANGES.rst:47 7ae18cfc980c45a788fc4a82452775d8
 msgid "Return errors as redirection parameters in the authorization endpoint."
 msgstr ""
+"Les erreurs du terminal d'autorisation sont passées en paramètres de "
+"réponses redirigées."
 
 #: ../../CHANGES.rst:48 dbe47a7db8a04f4a8f27b25e3d685e39
 msgid ""
 "Clients without scope defined don't restrict scopes for token emission. :"
 "issue:`264`"
 msgstr ""
+"Les clients sans portée définie n'appliquent pas de restriction aux portées "
+"des jetons émis à leur compte. :issue:`264`"
 
 #: ../../CHANGES.rst:49 d9b5101a3d92422e94cfd42357296f18
 msgid "Userinfo ``address`` claim was not a JSON object. :issue:`269`"
 msgstr ""
+"Le paramètre UserInfo ``address`` n'était pas un objet JSON. :issue:`269`"
 
 #: ../../CHANGES.rst:52 403c608dc69944f7a3d407658fda1d2b
 #, fuzzy
 #| msgid "[0.0.24] - 2023-04-07"
 msgid "[0.0.72] - 2025-04-07"
-msgstr "[0.0.24] - 2023-04-07"
+msgstr "[0.0.72] - 2025-04-07"
 
 #: ../../CHANGES.rst:56 ../../CHANGES.rst:113 d3a8dc633dc54ddfa9ce2e65308b1fd4
 #: dbf259079b9849f0b38402fb0951a236
@@ -233,6 +241,8 @@ msgstr ""
 #: ../../CHANGES.rst:61 1e6f03451130430c905b541cb1708770
 msgid "``updated_at`` claim in ``id_token`` and ``userinfo`` endpoint."
 msgstr ""
+"Implémentation des paramètres ``updated_at`` et ``id_token`` en réponse du "
+"terminal ``userinfo``."
 
 #: ../../CHANGES.rst:62 250bb1887dd747cb9392ee5d3642ed33
 msgid "Support for POST method in OIDC authorization endpoint. :issue:`263`"
