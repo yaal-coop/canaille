@@ -18,7 +18,7 @@ class SessionObject:
 
     @classmethod
     def from_dict(cls, payload):
-        user = current_app.backend.instance.get(models.User, payload["user"])
+        user = current_app.backend.instance.get(models.User, payload.get("user"))
         user_is_locked = (
             user and current_app.backend.has_account_lockability() and user.locked
         )
@@ -29,7 +29,9 @@ class SessionObject:
             user=user,
             last_login_datetime=datetime.datetime.fromisoformat(
                 payload["last_login_datetime"]
-            ),
+            )
+            if payload.get("last_login_datetime")
+            else None,
         )
 
     def to_dict(self):
