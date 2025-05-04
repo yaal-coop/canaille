@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 23:21+0200\n"
-"PO-Revision-Date: 2025-05-04 15:45+0000\n"
+"PO-Revision-Date: 2025-05-05 09:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -91,8 +91,6 @@ msgid "Reworked the JWK configuration. :issue:`119`"
 msgstr "Réusinage de la configuration des JSON Web Keys. :issue:`119`"
 
 #: ../../CHANGES.rst:32 460b56154f15405098a26e6a8c8a1424
-#, fuzzy
-#| msgid "[0.0.64] - 2025-02-12"
 msgid "[0.0.74] - 2025-04-24"
 msgstr "[0.0.74] - 2025-04-24"
 
@@ -141,8 +139,6 @@ msgstr ""
 "installée."
 
 #: ../../CHANGES.rst:39 6b1e337702794d98a10ea0f54d50b63f
-#, fuzzy
-#| msgid "[0.0.53] - 2024-04-22"
 msgid "[0.0.73] - 2025-04-23"
 msgstr "[0.0.73] - 2025-04-23"
 
@@ -223,8 +219,6 @@ msgstr ""
 "Le paramètre UserInfo ``address`` n'était pas un objet JSON. :issue:`269`"
 
 #: ../../CHANGES.rst:52 403c608dc69944f7a3d407658fda1d2b
-#, fuzzy
-#| msgid "[0.0.24] - 2023-04-07"
 msgid "[0.0.72] - 2025-04-07"
 msgstr "[0.0.72] - 2025-04-07"
 
@@ -247,63 +241,60 @@ msgstr ""
 #: ../../CHANGES.rst:62 250bb1887dd747cb9392ee5d3642ed33
 msgid "Support for POST method in OIDC authorization endpoint. :issue:`263`"
 msgstr ""
+"Support de la méthode d'authentification POST sur le point terminal "
+"d'autorisation. :issue:`263`"
 
 #: ../../CHANGES.rst:66 9092590397664e0fb7d9ebd7d63cf2ee
 msgid ""
 "Client JWT authentication for OIDC refresh_token and password grants. :issue:"
 "`233`"
 msgstr ""
+"Authentification cliente par JWT pour les octrois OIDC `refresh_token` et "
+"`password`. :issue:`233`"
 
 #: ../../CHANGES.rst:67 0776e30eb6d645a0ada15ab90f072133
 msgid "Ensure `id_token` has a `kid` header. :issue:`245`"
-msgstr ""
+msgstr "Assurance que les `id_token` possèdent une en-tête `kid`. :issue:`245`"
 
 #: ../../CHANGES.rst:68 01378b2a34c34cc1b87d5fb80fd868be
 msgid "``id_token`` session authentication time."
-msgstr ""
+msgstr "Inclusion de la date d'authentification dans les ``id_token``."
 
 #: ../../CHANGES.rst:69 2f7451a2fab54fe5a3fb84c05b8e30a4
 msgid ""
 "Configuration exception when a feature is configured but its dependencies "
 "are missing."
 msgstr ""
+"Exception de configuration lorsqu'une fonctionnalité est activée mais que "
+"les dépendances correspondantes sont manquantes."
 
 #: ../../CHANGES.rst:72 ce604fc24cf848009d14efcfedf5cc8d
-#, fuzzy
-#| msgid "[0.0.67] - 2025-03-18"
 msgid "[0.0.71] - 2025-03-31"
-msgstr "[0.0.67] - 2025-03-18"
+msgstr "[0.0.71] - 2025-03-31"
 
 #: ../../CHANGES.rst:76 c652f172170d476c8f04b7e09d003e37
 msgid "Remove config dump in about page."
 msgstr ""
+"Suppression de l'affichage de la configuration sur la page « à propos »."
 
 #: ../../CHANGES.rst:79 1875425a73584e7ca02bd01ac6151c42
-#, fuzzy
-#| msgid "[0.0.67] - 2025-03-18"
 msgid "[0.0.70] - 2025-03-28"
-msgstr "[0.0.67] - 2025-03-18"
+msgstr "[0.0.70] - 2025-03-28"
 
 #: ../../CHANGES.rst:83 45d101741f054ee184a5bd488e54b0ff
-#, fuzzy
-#| msgid ""
-#| "Implement the :class:`~canaille.core.configuration.CoreSettings."
-#| "LOGIN_ATTRIBUTES` configuration parameter, to tweak the login "
-#| "attributes. :issue:`196`"
 msgid ""
 "Add a :attr:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES` "
 "configuration parameter to allow to disable https forced redirections."
 msgstr ""
-"Implémentation du paramètre de configuration :class:`~canaille.core."
-"configuration.CoreSettings.LOGIN_ATTRIBUTES` qui permet de personnaliser les "
-"attributs des utilisateurs à utiliser comme identifiants de connexion. :"
-"issue:`196`"
+"Implémentation du paramètre de configuration "
+":class:`~canaille.core.configuration.CoreSettings.FORCE_HTTPS` qui permet de "
+"désactiver les redirections automatiques en HTTPS."
 
 #: ../../CHANGES.rst:87 c8b27f08b6b6407a8eca1196f1a90b55
 #, fuzzy
 #| msgid "[0.0.68] - 2025-03-18"
 msgid "[0.0.69] - 2025-03-28"
-msgstr "[0.0.68] - 2025-03-18"
+msgstr "[0.0.69] - 2025-03-28"
 
 #: ../../CHANGES.rst:91 1bcc05ebe04e400ebdd86b0e9d045c75
 msgid ""
@@ -314,20 +305,16 @@ msgstr ""
 "sont disponibles. :issue:`216`"
 
 #: ../../CHANGES.rst:92 0207c9371ae444a29a15ae8f0f5be81e
-#, fuzzy
-#| msgid ""
-#| ":attr:`~canaille.core.configuration.CoreSettings.ADMIN_EMAIL` "
-#| "configuration setting."
 msgid ""
 ":class:`~canaille.oidc.configuration.OIDCSettings.ENABLE_OIDC` configuration "
 "parameter."
 msgstr ""
-"Paramètre de configuration :attr:`~canaille.core.configuration.CoreSettings."
-"ADMIN_EMAIL`."
+"Paramètre de configuration "
+":attr:`~canaille.core.configuration.CoreSettings.ENABLE_OIDC`."
 
 #: ../../CHANGES.rst:93 7f7a829aeb434bb5b85bde0f2598f346
 msgid "Content Security Policy. :pr:`266`"
-msgstr ""
+msgstr "Implémentation de *Content Policy Security*. :pr:`266`"
 
 #: ../../CHANGES.rst:97 70bd1579b1664bbeb42a3aa0cdfac482
 msgid "Locked account cannot reset their password. :issue:`250`"
@@ -342,6 +329,8 @@ msgstr "Canaille a une configuration de permissions par défaut. :issue:`253`"
 #: ../../CHANGES.rst:99 620ed18693114650a6edddc1055937ed
 msgid "Phone number edition raising 400 with HTMX. :issue:`259`"
 msgstr ""
+"L'édition des numéros de téléphones levait une erreur HTTP 400 avec HTMX. "
+":issue:`259`"
 
 #: ../../CHANGES.rst:102 b517130d88fe44e2b3b9d0d65b3f1ce6
 msgid "[0.0.68] - 2025-03-18"
@@ -389,6 +378,8 @@ msgid ""
 "This version comes with security fix. It is strongly advised to update to "
 "this version as soon as possible."
 msgstr ""
+"Cette version apporte un correctif de sécurité. Il est vivement recommandé "
+"de mettre à jour vers cette version dès que possible."
 
 #: ../../CHANGES.rst:142 d9410bd8db2e49e189936e8c43bdefa4
 msgid "Instructions in CONTRIBUTING.rst to update the docker image :issue:`59`"
@@ -2413,10 +2404,8 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:66 ../../CONTRIBUTING.rst:111
 #: cb1dbe8d3a89435cbe3a728a1db50228 9ca2b9190b5d481681dc4ad113b77d80
-#, fuzzy
-#| msgid "Run the demo instance with the SQL backend"
 msgid "Run the development server with the SQL backend"
-msgstr "Lancer l’instance de démonstration avec la base de données SQL"
+msgstr "Lancer l’instance de développement avec la base de données SQL"
 
 #: ../tutorial/databases.rst:8 ../../CONTRIBUTING.rst:72
 #: ../../CONTRIBUTING.rst:118 df22edf06821480a9981d1f693766b2a
@@ -2433,10 +2422,8 @@ msgstr ""
 
 #: ../../CONTRIBUTING.rst:75 ../../CONTRIBUTING.rst:121
 #: 83a689b09bdf4dbab39bf83b7ff5ce2a 01285aaa1ec34396af30b5d2d1d38bea
-#, fuzzy
-#| msgid "Run the demo instance with the memory backend"
 msgid "Run the development server with the memory backend"
-msgstr "Lancer l’instance de démonstration avec la base de données en mémoire"
+msgstr "Lancer l’instance de développement avec la base de données en mémoire"
 
 #: ../development/specifications.rst:108 ../tutorial/databases.rst:45
 #: ../../CONTRIBUTING.rst:81 ../../CONTRIBUTING.rst:128
@@ -2452,24 +2439,17 @@ msgstr "Avec LDAP, toutes les données sont perdues lorsque Canaille s’arrête
 
 #: ../../CONTRIBUTING.rst:84 ../../CONTRIBUTING.rst:131
 #: 0a1dc5c8b5f9483e9e1a71a2615f4197 2133e34dd5ac420382a7408a2b5c380e
-#, fuzzy
-#| msgid "Run the demo instance with the LDAP backend"
 msgid "Run the development server with the LDAP backend"
-msgstr "Lancer l’instance de démo avec le support de LDAP"
+msgstr "Lancer l’instance de développement avec le support de LDAP"
 
 #: ../../CONTRIBUTING.rst:90 5d50170012d54cc88688e5d2329b30ce
-#, fuzzy
-#| msgid ""
-#| "If you want to run the demo locally with the LDAP backend, you need to "
-#| "have `OpenLDAP <https://www.openldap.org/>`_ installed on your system. It "
-#| "is generally shipped under the ``slapd`` or ``openldap`` package name."
 msgid ""
 "If you want to run the development server locally with the LDAP backend, you "
 "need to have `OpenLDAP <https://www.openldap.org/>`_ installed on your "
 "system. It is generally shipped under the ``slapd`` or ``openldap`` package "
 "name."
 msgstr ""
-"Si vous souhaitez exécuter l’instance de démonstration localement avec le "
+"Si vous souhaitez exécuter l’instance de développement localement avec le "
 "support pour LDAP, vous devez avoir `OpenLDAP <https://www.openldap.org/>`_ "
 "installé sur votre système. OpenLDAP est généralement fourni via les paquets "
 "nommés ``slapd`` ou ``openldap``."
@@ -2499,17 +2479,12 @@ msgid "Populate the database"
 msgstr "Remplissage de la base de données"
 
 #: ../../CONTRIBUTING.rst:140 12fbdd865a1f410099810d415516162a
-#, fuzzy
-#| msgid ""
-#| "The demo database comes populated with some random users and groups. If "
-#| "you need more, you can generate users and groups with the ``populate`` "
-#| "command:"
 msgid ""
 "The development server database comes populated with some random users and "
 "groups. If you need more, you can generate users and groups with the "
 "``populate`` command:"
 msgstr ""
-"La base de donnée de démonstration est remplie avec des utilisateurs et des "
+"La base de donnée de développement est remplie avec des utilisateurs et des "
 "groupes générés aléatoirement. Si vous avez besoin de plus, vous pouvez "
 "générer des utilisateurs et des groupes avec la commande ``populate`` :"
 
@@ -2835,15 +2810,11 @@ msgstr ""
 "run tox`` ;"
 
 #: ../../CONTRIBUTING.rst:293 8f1273acafd444f7b4f11f470fe11262
-#, fuzzy
-#| msgid ""
-#| "Check that the demo environments are still working, both the local and "
-#| "the Docker one;"
 msgid ""
 "Check that the development environments are still working, both the local "
 "and the Docker one;"
 msgstr ""
-"Vérifiez que les instances de démonstration sont toujours fonctionnelles, à "
+"Vérifiez que les instances de développement sont toujours fonctionnelles, à "
 "la fois en local et avec Docker ;"
 
 #: ../../CONTRIBUTING.rst:294 287e1e3a96d6464492f21467a77f39e8
@@ -4141,24 +4112,17 @@ msgid "Application management"
 msgstr "Gestion des applications"
 
 #: ../features.rst:269 05a9278eefa7498fa3dd0c8a186de042
-#, fuzzy
-#| msgid "The client addition page."
 msgid "The client edition page."
-msgstr "La page d'ajout d'application cliente."
+msgstr "La page d'édition d'application cliente."
 
 #: ../features.rst:271 6b6033248a8940f4861515d61d991a93
-#, fuzzy
-#| msgid ""
-#| "Users with the right :attr:`permission <canaille.core.configuration."
-#| "Permission.MANAGE_OIDC>` can manager OIDC clients through the web "
-#| "interface."
 msgid ""
 "Users with the right :attr:`permission <canaille.core.configuration."
 "Permission.MANAGE_OIDC>` can manage OIDC clients through the web interface."
 msgstr ""
-"Les utilisateurs ayant la :attr:`permission <canaille.core.configuration."
-"Permission.MANAGE_OIDC>` nécessaire peuvent gérer les clients OIDC depuis "
-"l'interface web."
+"Les utilisateurs ayant la :attr:`permission "
+"<canaille.core.configuration.Permission.MANAGE_OIDC>` nécessaire peuvent "
+"gérer les clients OIDC depuis l'interface web."
 
 #: ../features.rst:273 85c754b449e749e691c95435590b62eb
 msgid ""
@@ -4593,13 +4557,11 @@ msgstr "Un chemin vers un fichier de configuration Hypercorn au format TOML."
 
 #: ../../canaille jwk:1 89fa690a39e948e593e350e8783a1293
 msgid "JSON Web Key management."
-msgstr ""
+msgstr "Gestion des JSON Web Keys."
 
 #: ../../canaille jwk create:1 cb67f67d35244ee3be33e24a8b4708c3
-#, fuzzy
-#| msgid "JSON Web Token settings."
 msgid "JSON Web Key creation."
-msgstr "Paramètres de jeton web JSON."
+msgstr "Création d'une JSON Web Key."
 
 #: ../../canaille jwk create ec:1 270e3c9e61c04ac68636db04b6cdaecc
 msgid "Create a EC JSON Web Key."
