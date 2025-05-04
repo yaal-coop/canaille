@@ -81,9 +81,9 @@ Display a QR-code and the OTP secret.
             copyText.select();
             copyText.setSelectionRange(0, 99999); /*For mobile devices*/
             document.execCommand("copy");
-            clickedButton.textContent = {% trans %}"Successfully copied!"{% endtrans %};
+            clickedButton.textContent = "{{ _("Successfully copied!")|safe }}";
             setTimeout(() => {
-                clickedButton.textContent = {% trans %}"Copy secret"{% endtrans %};
+                clickedButton.textContent = "{{ _("Copy secret")|safe }}";
             }, 2000);
         }
     </script>
