@@ -42,8 +42,7 @@ class SessionObject:
 def current_session():
     for payload in session.get(USER_SESSION, [])[::-1]:
         if obj := SessionObject.from_dict(payload):
-            g.session = obj
-            return g.session
+            return obj
 
         session[USER_SESSION].remove(payload)
 
