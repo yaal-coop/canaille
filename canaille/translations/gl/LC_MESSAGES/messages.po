@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-02 15:05+0200\n"
+"POT-Creation-Date: 2025-05-04 17:25+0200\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -209,38 +209,38 @@ msgid ""
 "user left."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:94 canaille/core/endpoints/account.py:120
+#: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:127
+#: canaille/core/endpoints/account.py:125
 msgid ""
 "An error happened while sending your registration mail. Please try again in "
 "a few minutes. If this still happens, please contact the administrators."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:250
-#: canaille/core/endpoints/account.py:273
+#: canaille/core/endpoints/account.py:248
+#: canaille/core/endpoints/account.py:271
 #, fuzzy
 #| msgid "The invitation link that brought you here was invalid."
 msgid "The registration link that brought you here was invalid."
 msgstr "A ligazón de invitación coa que accediches non é válida."
 
-#: canaille/core/endpoints/account.py:257
+#: canaille/core/endpoints/account.py:255
 #, fuzzy
 #| msgid "The invitation link that brought you here has expired."
 msgid "The registration link that brought you here has expired."
 msgstr "A ligazón de invitación coa que accediches expirou."
 
-#: canaille/core/endpoints/account.py:266
+#: canaille/core/endpoints/account.py:264
 msgid "Your account has already been created."
 msgstr "A túa conta xa existe."
 
-#: canaille/core/endpoints/account.py:281
+#: canaille/core/endpoints/account.py:278
 msgid "You are already logged in, you cannot create an account."
 msgstr "Xa iniciaches sesión, non podes crear unha conta."
 
-#: canaille/core/endpoints/account.py:302 canaille/core/endpoints/forms.py:280
+#: canaille/core/endpoints/account.py:299 canaille/core/endpoints/forms.py:280
 #: canaille/core/endpoints/forms.py:417 canaille/templates/base.html:96
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
@@ -249,102 +249,102 @@ msgstr "Xa iniciaches sesión, non podes crear unha conta."
 msgid "Groups"
 msgstr "Grupos"
 
-#: canaille/core/endpoints/account.py:327 canaille/core/endpoints/forms.py:102
+#: canaille/core/endpoints/account.py:324 canaille/core/endpoints/forms.py:102
 #: canaille/core/endpoints/forms.py:242
 msgid "Password and confirmation do not match."
 msgstr "Os dous contrasinais non coinciden."
 
-#: canaille/core/endpoints/account.py:341
-#: canaille/core/endpoints/account.py:430
+#: canaille/core/endpoints/account.py:338
+#: canaille/core/endpoints/account.py:427
 msgid "User account creation failed."
 msgstr "Fallou a creación da conta de usuario."
 
-#: canaille/core/endpoints/account.py:350
+#: canaille/core/endpoints/account.py:347
 #, fuzzy
 #| msgid "You account has been created successfuly."
 msgid "Your account has been created successfully."
 msgstr "A túa conta creouse correctamente."
 
-#: canaille/core/endpoints/account.py:365
-#: canaille/core/endpoints/account.py:387
+#: canaille/core/endpoints/account.py:362
+#: canaille/core/endpoints/account.py:384
 #, fuzzy
 #| msgid "The invitation link that brought you here was invalid."
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "A ligazón de invitación coa que accediches non é válida."
 
-#: canaille/core/endpoints/account.py:372
+#: canaille/core/endpoints/account.py:369
 #, fuzzy
 #| msgid "The invitation link that brought you here has expired."
 msgid "The email confirmation link that brought you here has expired."
 msgstr "A ligazón de invitación coa que accediches expirou."
 
-#: canaille/core/endpoints/account.py:379
+#: canaille/core/endpoints/account.py:376
 msgid "The invitation link that brought you here was invalid."
 msgstr "A ligazón de invitación coa que accediches non é válida."
 
-#: canaille/core/endpoints/account.py:394
+#: canaille/core/endpoints/account.py:391
 msgid "This address email have already been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:401
+#: canaille/core/endpoints/account.py:398
 msgid "This address email is already associated with another account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:408
+#: canaille/core/endpoints/account.py:405
 #, fuzzy
 #| msgid "Your e-mail address."
 msgid "Your email address have been confirmed."
 msgstr "Dirección de correo electrónico."
 
-#: canaille/core/endpoints/account.py:438
+#: canaille/core/endpoints/account.py:435
 #, fuzzy
 #| msgid "User account creation succeed."
 msgid "User account creation succeeded."
 msgstr "Conta creada correctamente."
 
-#: canaille/core/endpoints/account.py:616
-#: canaille/core/endpoints/account.py:807
+#: canaille/core/endpoints/account.py:613
+#: canaille/core/endpoints/account.py:804
 msgid "Profile edition failed."
 msgstr "Fallou a actualización do perfil."
 
-#: canaille/core/endpoints/account.py:624
-#: canaille/core/endpoints/account.py:825
+#: canaille/core/endpoints/account.py:621
+#: canaille/core/endpoints/account.py:822
 #, fuzzy
 #| msgid "Profile updated successfuly."
 msgid "Profile updated successfully."
 msgstr "Perfil actualizado correctamente."
 
-#: canaille/core/endpoints/account.py:636
+#: canaille/core/endpoints/account.py:633
 #, fuzzy
 #| msgid "Profile edition failed."
 msgid "Email addition failed."
 msgstr "Fallou a actualización do perfil."
 
-#: canaille/core/endpoints/account.py:642
+#: canaille/core/endpoints/account.py:639
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:648
+#: canaille/core/endpoints/account.py:645
 #, fuzzy
 #| msgid "Could not send the password initialization email"
 msgid "Could not send the verification email"
 msgstr "Non foi posible enviar o email de inicialización do contrasinal"
 
-#: canaille/core/endpoints/account.py:658
+#: canaille/core/endpoints/account.py:655
 #, fuzzy
 #| msgid "Profile edition failed."
 msgid "Email deletion failed."
 msgstr "Fallou a actualización do perfil."
 
-#: canaille/core/endpoints/account.py:661
+#: canaille/core/endpoints/account.py:658
 #, fuzzy
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The email have been successfully deleted."
 msgstr "O usuario %(user)s eliminouse correctamente"
 
-#: canaille/core/endpoints/account.py:701
+#: canaille/core/endpoints/account.py:698
 #, fuzzy
 #| msgid ""
 #| "A password initialization link has been sent at the user email address. "
@@ -356,11 +356,11 @@ msgstr ""
 "A ligazón de inicialización do contrasinal enviouse á dirección de correo "
 "electrónico do usuario. Deberías recibilo nun prazo de 10 minutos."
 
-#: canaille/core/endpoints/account.py:707 canaille/core/endpoints/auth.py:181
+#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:181
 msgid "Could not send the password initialization email"
 msgstr "Non foi posible enviar o email de inicialización do contrasinal"
 
-#: canaille/core/endpoints/account.py:720
+#: canaille/core/endpoints/account.py:717
 #, fuzzy
 #| msgid ""
 #| "A password reset link has been sent at the user email address. It should "
@@ -372,43 +372,43 @@ msgstr ""
 "A ligazón para restablecer o contrasinal enviouse á dirección de correo "
 "electrónico do usuario. Deberías recibilo nun prazo de 10 minutos."
 
-#: canaille/core/endpoints/account.py:726
+#: canaille/core/endpoints/account.py:723
 msgid "Could not send the password reset email"
 msgstr "Non foi posible enviar o email para restablecer o contrasinal"
 
-#: canaille/core/endpoints/account.py:742
+#: canaille/core/endpoints/account.py:739
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been locked"
 msgstr "O acceso foi revogado"
 
-#: canaille/core/endpoints/account.py:753
+#: canaille/core/endpoints/account.py:750
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been unlocked"
 msgstr "O acceso foi revogado"
 
-#: canaille/core/endpoints/account.py:768
+#: canaille/core/endpoints/account.py:765
 msgid "One-time password authentication has been reset"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:846
+#: canaille/core/endpoints/account.py:843
 #, fuzzy, python-format
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The user %(user)s has been successfully deleted"
 msgstr "O usuario %(user)s eliminouse correctamente"
 
-#: canaille/core/endpoints/account.py:862
+#: canaille/core/endpoints/account.py:859
 msgid "Locked users cannot be impersonated."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:866 canaille/core/endpoints/auth.py:131
+#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
 #: canaille/core/endpoints/auth.py:395
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Acceso correcto. Benvido/a %(user)s"
 
-#: canaille/core/endpoints/account.py:904 canaille/core/endpoints/auth.py:298
+#: canaille/core/endpoints/account.py:901 canaille/core/endpoints/auth.py:298
 #, fuzzy
 #| msgid "Your password has been updated successfuly"
 msgid "Your password has been updated successfully"
@@ -451,14 +451,14 @@ msgstr "Invitación a {website_name}"
 msgid "Email confirmation on {website_name}"
 msgstr "Invitación a {website_name}"
 
-#: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:98
-#: canaille/core/endpoints/auth.py:107
+#: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:100
+#: canaille/core/endpoints/auth.py:109
 msgid "Login failed, please check your information"
 msgstr "Fallou o inicio de sesión, comproba as túas credenciais"
 
 #: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
 #: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:425
-#: canaille/core/endpoints/auth.py:462
+#: canaille/core/endpoints/auth.py:464
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 
@@ -506,6 +506,33 @@ msgstr ""
 #: canaille/core/endpoints/auth.py:270
 msgid "Invalid code."
 msgstr ""
+
+#: canaille/core/endpoints/auth.py:405
+msgid "The one-time password you entered is invalid. Please try again"
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:437 canaille/core/endpoints/auth.py:476
+#, fuzzy
+#| msgid "Profile updated successfuly."
+msgid "Code successfully sent!"
+msgstr "Perfil actualizado correctamente."
+
+#: canaille/core/endpoints/auth.py:442 canaille/core/endpoints/auth.py:481
+#: canaille/core/endpoints/auth.py:524 canaille/core/endpoints/auth.py:552
+msgid "Error while sending one-time password. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:497
+msgid ""
+"You have not enabled multi-factor authentication. Please enable it first to "
+"login."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:503
+#, fuzzy
+#| msgid "Please enter your password for this account."
+msgid "Please enter the one-time password from your authenticator app."
+msgstr "Introduce o teu contrasinal para esta conta."
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:59
 #: canaille/templates/core/partial/group-members.html:9
@@ -792,23 +819,23 @@ msgstr "Número de teléfono."
 msgid "Groups you belong to."
 msgstr "Grupos ós que pertences."
 
-#: canaille/oidc/endpoints/clients.py:47
+#: canaille/oidc/endpoints/clients.py:48
 msgid "The client has not been added. Please check your information."
 msgstr "O cliente non foi engadido. Comproba a información."
 
-#: canaille/oidc/endpoints/clients.py:82
+#: canaille/oidc/endpoints/clients.py:83
 msgid "The client has been created."
 msgstr "O cliente foi creado."
 
-#: canaille/oidc/endpoints/clients.py:118
+#: canaille/oidc/endpoints/clients.py:119
 msgid "The client has not been edited. Please check your information."
 msgstr "O cliente non foi actualizado. Comproba a información."
 
-#: canaille/oidc/endpoints/clients.py:148
+#: canaille/oidc/endpoints/clients.py:149
 msgid "The client has been edited."
 msgstr "O cliente foi actualizado."
 
-#: canaille/oidc/endpoints/clients.py:156
+#: canaille/oidc/endpoints/clients.py:157
 msgid "The client has been deleted."
 msgstr "O cliente foi eliminado."
 
@@ -915,7 +942,9 @@ msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:145
-msgid "Token Endpoint Auth Method"
+#, fuzzy
+#| msgid "Token Endpoint Auth Method"
+msgid "Token endpoint authentication method"
 msgstr "Método de autenticación para o endpoint do token"
 
 #: canaille/oidc/endpoints/forms.py:156
@@ -975,37 +1004,35 @@ msgstr "Versión do software"
 msgid "The version of the client."
 msgstr "Eliminar o cliente"
 
-#: canaille/oidc/endpoints/forms.py:217
-msgid "JWKS"
+#: canaille/oidc/endpoints/forms.py:218
+msgid "JSON Web Keys"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:220
+#: canaille/oidc/endpoints/forms.py:221
 msgid "The public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:224
-#, fuzzy
-#| msgid "JKW URI"
-msgid "JKWS URI"
-msgstr "URI de JKW"
+#: canaille/oidc/endpoints/forms.py:225
+msgid "JSON Web Keys URI"
+msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:230
+#: canaille/oidc/endpoints/forms.py:231
 msgid "The URI that points to the public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:234
+#: canaille/oidc/endpoints/forms.py:235
 msgid "Trusted"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:237
+#: canaille/oidc/endpoints/forms.py:238
 msgid "Whether the clients needs to display consent dialogs."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:470
+#: canaille/oidc/endpoints/oauth.py:469
 msgid "You have been disconnected"
 msgstr "Fuches desconectado"
 
-#: canaille/oidc/endpoints/oauth.py:488
+#: canaille/oidc/endpoints/oauth.py:487
 msgid "You have not been disconnected"
 msgstr "Non fuches desconectado"
 
@@ -1384,7 +1411,7 @@ msgstr "Xestiona a túa información e as túas autorizacións"
 
 #: canaille/templates/core/login.html:59
 #: canaille/templates/core/mails/registration.txt:5
-#: canaille/templates/core/setup-mfa.html:64
+#: canaille/templates/core/setup-mfa.html:68
 msgid "Continue"
 msgstr "Continuar"
 
@@ -1599,6 +1626,58 @@ msgstr "Suplantar"
 msgid "Set up multi-factor authentication."
 msgstr ""
 
+#: canaille/templates/core/setup-mfa.html:43
+#, fuzzy
+#| msgid "Invitation"
+msgid "Instructions"
+msgstr "Invitación"
+
+#: canaille/templates/core/setup-mfa.html:45
+msgid "Install a One-Time Password (OTP) generator application on your mobile."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:46
+msgid "Set up a new authenticator."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:47
+msgid "Scan the QR code below and click \"Continue\"."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:50
+msgid "Note:"
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:51
+msgid ""
+"If you can't scan the QR code, try entering the secret token in your "
+"authenticator app directly."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:55
+#, fuzzy
+#| msgid "Refresh token"
+msgid "Secret token"
+msgstr "Refrescar token"
+
+#: canaille/templates/core/setup-mfa.html:58
+#, fuzzy
+#| msgid "Refresh token"
+msgid "Secret token:"
+msgstr "Refrescar token"
+
+#: canaille/templates/core/setup-mfa.html:61
+msgid "Copy secret"
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:84
+msgid "\"Successfully copied!\""
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:86
+msgid "\"Copy secret\""
+msgstr ""
+
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."
 msgstr ""
@@ -1606,6 +1685,10 @@ msgstr ""
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:51
 msgid "Verify"
+msgstr ""
+
+#: canaille/templates/core/verify-mfa.html:66
+msgid "Didn't receive the code? Click here to send another one."
 msgstr ""
 
 #: canaille/templates/core/mails/admin.html:5
@@ -2554,6 +2637,11 @@ msgstr ""
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, fuzzy
+#~| msgid "JKW URI"
+#~ msgid "JKWS URI"
+#~ msgstr "URI de JKW"
 
 #~ msgid "Clients"
 #~ msgstr "Clientes"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-02 15:05+0200\n"
+"POT-Creation-Date: 2025-05-04 17:25+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -208,39 +208,39 @@ msgid ""
 "user left."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:94 canaille/core/endpoints/account.py:120
+#: canaille/core/endpoints/account.py:92 canaille/core/endpoints/account.py:118
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:127
+#: canaille/core/endpoints/account.py:125
 msgid ""
 "An error happened while sending your registration mail. Please try again in "
 "a few minutes. If this still happens, please contact the administrators."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:250
-#: canaille/core/endpoints/account.py:273
+#: canaille/core/endpoints/account.py:248
+#: canaille/core/endpoints/account.py:271
 #, fuzzy
 #| msgid "The invitation link that brought you here was invalid."
 msgid "The registration link that brought you here was invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/account.py:257
+#: canaille/core/endpoints/account.py:255
 #, fuzzy
 #| msgid "The invitation link that brought you here has expired."
 msgid "The registration link that brought you here has expired."
 msgstr "Invitasjonslenken som tok deg hit har utløpt."
 
-#: canaille/core/endpoints/account.py:266
+#: canaille/core/endpoints/account.py:264
 msgid "Your account has already been created."
 msgstr "Kontoen din har allerede blitt opprettet."
 
-#: canaille/core/endpoints/account.py:281
+#: canaille/core/endpoints/account.py:278
 #, fuzzy
 msgid "You are already logged in, you cannot create an account."
 msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 
-#: canaille/core/endpoints/account.py:302 canaille/core/endpoints/forms.py:280
+#: canaille/core/endpoints/account.py:299 canaille/core/endpoints/forms.py:280
 #: canaille/core/endpoints/forms.py:417 canaille/templates/base.html:96
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
@@ -249,110 +249,110 @@ msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
 msgid "Groups"
 msgstr "Grupper"
 
-#: canaille/core/endpoints/account.py:327 canaille/core/endpoints/forms.py:102
+#: canaille/core/endpoints/account.py:324 canaille/core/endpoints/forms.py:102
 #: canaille/core/endpoints/forms.py:242
 msgid "Password and confirmation do not match."
 msgstr "Passordet og bekreftelsen samsvarer ikke."
 
-#: canaille/core/endpoints/account.py:341
-#: canaille/core/endpoints/account.py:430
+#: canaille/core/endpoints/account.py:338
+#: canaille/core/endpoints/account.py:427
 #, fuzzy
 msgid "User account creation failed."
 msgstr "Kunne ikke opprette brukerkonto."
 
-#: canaille/core/endpoints/account.py:350
+#: canaille/core/endpoints/account.py:347
 #, fuzzy
 msgid "Your account has been created successfully."
 msgstr "Kontoen din ble opprettet."
 
-#: canaille/core/endpoints/account.py:365
-#: canaille/core/endpoints/account.py:387
+#: canaille/core/endpoints/account.py:362
+#: canaille/core/endpoints/account.py:384
 #, fuzzy
 #| msgid "The invitation link that brought you here was invalid."
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/account.py:372
+#: canaille/core/endpoints/account.py:369
 #, fuzzy
 #| msgid "The invitation link that brought you here has expired."
 msgid "The email confirmation link that brought you here has expired."
 msgstr "Invitasjonslenken som tok deg hit har utløpt."
 
-#: canaille/core/endpoints/account.py:379
+#: canaille/core/endpoints/account.py:376
 msgid "The invitation link that brought you here was invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/account.py:394
+#: canaille/core/endpoints/account.py:391
 msgid "This address email have already been confirmed."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:401
+#: canaille/core/endpoints/account.py:398
 msgid "This address email is already associated with another account."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:408
+#: canaille/core/endpoints/account.py:405
 #, fuzzy
 msgid "Your email address have been confirmed."
 msgstr "Din e-postadresse."
 
-#: canaille/core/endpoints/account.py:438
+#: canaille/core/endpoints/account.py:435
 #, fuzzy
 msgid "User account creation succeeded."
 msgstr "Brukerkonto opprettet."
 
-#: canaille/core/endpoints/account.py:616
-#: canaille/core/endpoints/account.py:807
+#: canaille/core/endpoints/account.py:613
+#: canaille/core/endpoints/account.py:804
 #, fuzzy
 msgid "Profile edition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/endpoints/account.py:624
-#: canaille/core/endpoints/account.py:825
+#: canaille/core/endpoints/account.py:621
+#: canaille/core/endpoints/account.py:822
 #, fuzzy
 #| msgid "Profile updated successfuly."
 msgid "Profile updated successfully."
 msgstr "Profil redigert."
 
-#: canaille/core/endpoints/account.py:636
+#: canaille/core/endpoints/account.py:633
 #, fuzzy
 msgid "Email addition failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/endpoints/account.py:642
+#: canaille/core/endpoints/account.py:639
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:648
+#: canaille/core/endpoints/account.py:645
 #, fuzzy
 msgid "Could not send the verification email"
 msgstr "Kunne ikke sende e-post for oppsett av passord"
 
-#: canaille/core/endpoints/account.py:658
+#: canaille/core/endpoints/account.py:655
 #, fuzzy
 msgid "Email deletion failed."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/core/endpoints/account.py:661
+#: canaille/core/endpoints/account.py:658
 #, fuzzy
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The email have been successfully deleted."
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/core/endpoints/account.py:701
+#: canaille/core/endpoints/account.py:698
 #, fuzzy
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
 msgstr "Lenke for oppsett av passord sendt til din e-postadresse."
 
-#: canaille/core/endpoints/account.py:707 canaille/core/endpoints/auth.py:181
+#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:181
 #, fuzzy
 msgid "Could not send the password initialization email"
 msgstr "Kunne ikke sende e-post for oppsett av passord"
 
-#: canaille/core/endpoints/account.py:720
+#: canaille/core/endpoints/account.py:717
 #, fuzzy
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
@@ -361,43 +361,43 @@ msgstr ""
 "Lenke for tilbakestilling av passord sendt til brukerens e-postadresse. Den "
 "bør være mottatt i løpet av et par minutter."
 
-#: canaille/core/endpoints/account.py:726
+#: canaille/core/endpoints/account.py:723
 msgid "Could not send the password reset email"
 msgstr "Kunne ikke sende e-post for tilbakestilling av passord"
 
-#: canaille/core/endpoints/account.py:742
+#: canaille/core/endpoints/account.py:739
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been locked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/endpoints/account.py:753
+#: canaille/core/endpoints/account.py:750
 #, fuzzy
 #| msgid "The access has been revoked"
 msgid "The account has been unlocked"
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/endpoints/account.py:768
+#: canaille/core/endpoints/account.py:765
 msgid "One-time password authentication has been reset"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:846
+#: canaille/core/endpoints/account.py:843
 #, fuzzy, python-format
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The user %(user)s has been successfully deleted"
 msgstr "Brukeren %(user)s ble slettet"
 
-#: canaille/core/endpoints/account.py:862
+#: canaille/core/endpoints/account.py:859
 msgid "Locked users cannot be impersonated."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:866 canaille/core/endpoints/auth.py:131
+#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
 #: canaille/core/endpoints/auth.py:395
 #, fuzzy, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Velkommen %(user)s"
 
-#: canaille/core/endpoints/account.py:904 canaille/core/endpoints/auth.py:298
+#: canaille/core/endpoints/account.py:901 canaille/core/endpoints/auth.py:298
 #, fuzzy
 msgid "Your password has been updated successfully"
 msgstr "Passordet ditt er oppdatert."
@@ -438,15 +438,15 @@ msgstr "Invitasjon på {website_name}"
 msgid "Email confirmation on {website_name}"
 msgstr "Invitasjon på {website_name}"
 
-#: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:98
-#: canaille/core/endpoints/auth.py:107
+#: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:100
+#: canaille/core/endpoints/auth.py:109
 #, fuzzy
 msgid "Login failed, please check your information"
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
 #: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
 #: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:425
-#: canaille/core/endpoints/auth.py:462
+#: canaille/core/endpoints/auth.py:464
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 
@@ -489,6 +489,31 @@ msgstr ""
 
 #: canaille/core/endpoints/auth.py:270
 msgid "Invalid code."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:405
+msgid "The one-time password you entered is invalid. Please try again"
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:437 canaille/core/endpoints/auth.py:476
+#, fuzzy
+#| msgid "Profile updated successfuly."
+msgid "Code successfully sent!"
+msgstr "Profil redigert."
+
+#: canaille/core/endpoints/auth.py:442 canaille/core/endpoints/auth.py:481
+#: canaille/core/endpoints/auth.py:524 canaille/core/endpoints/auth.py:552
+msgid "Error while sending one-time password. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:497
+msgid ""
+"You have not enabled multi-factor authentication. Please enable it first to "
+"login."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:503
+msgid "Please enter the one-time password from your authenticator app."
 msgstr ""
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:59
@@ -773,23 +798,23 @@ msgstr "Ditt telefonnummer."
 msgid "Groups you belong to."
 msgstr "Grupper du tilhører"
 
-#: canaille/oidc/endpoints/clients.py:47
+#: canaille/oidc/endpoints/clients.py:48
 msgid "The client has not been added. Please check your information."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:82
+#: canaille/oidc/endpoints/clients.py:83
 msgid "The client has been created."
 msgstr "Klienten har blitt opprettet."
 
-#: canaille/oidc/endpoints/clients.py:118
+#: canaille/oidc/endpoints/clients.py:119
 msgid "The client has not been edited. Please check your information."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:148
+#: canaille/oidc/endpoints/clients.py:149
 msgid "The client has been edited."
 msgstr "Klienten har blitt redigert."
 
-#: canaille/oidc/endpoints/clients.py:156
+#: canaille/oidc/endpoints/clients.py:157
 msgid "The client has been deleted."
 msgstr "Klienten har blitt slettet."
 
@@ -904,7 +929,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:145
 #, fuzzy
-msgid "Token Endpoint Auth Method"
+msgid "Token endpoint authentication method"
 msgstr "Identitetbekreftelsesmetode for symbol-endepunkt"
 
 #: canaille/oidc/endpoints/forms.py:156
@@ -964,35 +989,35 @@ msgstr "Programvareversjon"
 msgid "The version of the client."
 msgstr "Slett klienten"
 
-#: canaille/oidc/endpoints/forms.py:217
-msgid "JWKS"
+#: canaille/oidc/endpoints/forms.py:218
+msgid "JSON Web Keys"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:220
+#: canaille/oidc/endpoints/forms.py:221
 msgid "The public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:224
-msgid "JKWS URI"
+#: canaille/oidc/endpoints/forms.py:225
+msgid "JSON Web Keys URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:230
+#: canaille/oidc/endpoints/forms.py:231
 msgid "The URI that points to the public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:234
+#: canaille/oidc/endpoints/forms.py:235
 msgid "Trusted"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:237
+#: canaille/oidc/endpoints/forms.py:238
 msgid "Whether the clients needs to display consent dialogs."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:470
+#: canaille/oidc/endpoints/oauth.py:469
 msgid "You have been disconnected"
 msgstr "Du har blitt frakoblet"
 
-#: canaille/oidc/endpoints/oauth.py:488
+#: canaille/oidc/endpoints/oauth.py:487
 msgid "You have not been disconnected"
 msgstr "Du har ikke blitt koblet fra"
 
@@ -1338,7 +1363,7 @@ msgstr ""
 
 #: canaille/templates/core/login.html:59
 #: canaille/templates/core/mails/registration.txt:5
-#: canaille/templates/core/setup-mfa.html:64
+#: canaille/templates/core/setup-mfa.html:68
 msgid "Continue"
 msgstr "Fortsett"
 
@@ -1538,6 +1563,58 @@ msgstr ""
 msgid "Set up multi-factor authentication."
 msgstr ""
 
+#: canaille/templates/core/setup-mfa.html:43
+#, fuzzy
+#| msgid "Invitation"
+msgid "Instructions"
+msgstr "Invitasjon"
+
+#: canaille/templates/core/setup-mfa.html:45
+msgid "Install a One-Time Password (OTP) generator application on your mobile."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:46
+msgid "Set up a new authenticator."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:47
+msgid "Scan the QR code below and click \"Continue\"."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:50
+msgid "Note:"
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:51
+msgid ""
+"If you can't scan the QR code, try entering the secret token in your "
+"authenticator app directly."
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:55
+#, fuzzy
+#| msgid "Secret"
+msgid "Secret token"
+msgstr "Hemmelighet"
+
+#: canaille/templates/core/setup-mfa.html:58
+#, fuzzy
+#| msgid "Access token"
+msgid "Secret token:"
+msgstr "Tilgangssymbol"
+
+#: canaille/templates/core/setup-mfa.html:61
+msgid "Copy secret"
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:84
+msgid "\"Successfully copied!\""
+msgstr ""
+
+#: canaille/templates/core/setup-mfa.html:86
+msgid "\"Copy secret\""
+msgstr ""
+
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."
 msgstr ""
@@ -1545,6 +1622,10 @@ msgstr ""
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:51
 msgid "Verify"
+msgstr ""
+
+#: canaille/templates/core/verify-mfa.html:66
+msgid "Didn't receive the code? Click here to send another one."
 msgstr ""
 
 #: canaille/templates/core/mails/admin.html:5
