@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 23:21+0200\n"
-"PO-Revision-Date: 2025-05-04 15:29+0000\n"
+"PO-Revision-Date: 2025-05-04 15:45+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -10089,10 +10089,8 @@ msgid ""
 msgstr ""
 
 #: ../tutorial/sso.rst:111 2aabf94f59564f048c8737b095ca66a6
-#, fuzzy
-#| msgid "The authentication factor method."
 msgid "Token endpoint authentication method"
-msgstr "La méthode d'authentification multi-facteur."
+msgstr "Méthode d'authentification du point terminal des jetons"
 
 #: ../tutorial/sso.rst:113 83529672eaec4da7a28190c39347a88a
 msgid "Authentication method that the client will use at the token endpoint."
@@ -10201,7 +10199,7 @@ msgstr "Le client édité."
 
 #: ../tutorial/sso.rst:155 e6487731c83b479da3707de9ed14ba97
 msgid "JSON Web Keys"
-msgstr ""
+msgstr "JSON Web Keys"
 
 #: ../tutorial/sso.rst:157 2c70335b6b83445bbc0e5c97fa7ac999
 #, fuzzy
@@ -10211,7 +10209,7 @@ msgstr "Le nombre de clients de confiance."
 
 #: ../tutorial/sso.rst:160 a611f87d6c8a45c7bf2cd458bbe1d39a
 msgid "JSON Web Keys URI"
-msgstr ""
+msgstr "URI vers les JSON Web Keys"
 
 #: ../tutorial/sso.rst:162 3932dfc3df3247f1819f9e1947b0b2c4
 msgid "The URI that points to the public JSON Web Keys of the client."
