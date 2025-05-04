@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-02 15:05+0200\n"
-"PO-Revision-Date: 2025-05-02 21:26+0000\n"
+"PO-Revision-Date: 2025-05-04 15:29+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1523,7 +1523,7 @@ msgstr "Prendre l'identité"
 
 #: canaille/templates/core/setup-mfa.html:34
 msgid "Set up multi-factor authentication."
-msgstr "Mettre en place l'authentification multi-facteurs."
+msgstr "Mise en place l'authentification multi-facteurs."
 
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."
