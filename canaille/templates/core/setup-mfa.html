@@ -14,6 +14,10 @@ Display a QR-code and the OTP secret.
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/login_field.html' as login_field %}
 
+{% block script %}
+    <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
+{% endblock %}
+
 {% block container %}
     <div class="ui container">
         <div class="content">
@@ -56,8 +60,8 @@ Display a QR-code and the OTP secret.
                 </div>
                 <form class="ui segment grid action input">
                     <label class="ui large label token-label" for="secret">{% trans %}Secret token:{% endtrans %}</label>
-                    <input type="text" id="secret" name="secret" value="{{ secret }}" readonly>
-                    <button type="button" class="ui secondary right labeled icon button" onclick="copySecret(this)">
+                    <input type="text" id="secret" name="secret" value="{{ secret }}" class="copy-text" readonly data-copy="secret">
+                    <button type="button" class="ui secondary right labeled icon button copy-button" data-copy="secret">
                         {% trans %}Copy secret{% endtrans %}
                     </button>
                 </form>
@@ -73,18 +77,4 @@ Display a QR-code and the OTP secret.
             </div>
         </div>
     </div>
-{% endblock %}
-{% block script %}
-    <script>
-        function copySecret(clickedButton) {
-            var copyText = document.getElementById("secret");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-            document.execCommand("copy");
-            clickedButton.textContent = "{{ _("Successfully copied!")|safe }}";
-            setTimeout(() => {
-                clickedButton.textContent = "{{ _("Copy secret")|safe }}";
-            }, 2000);
-        }
-    </script>
 {% endblock %}
