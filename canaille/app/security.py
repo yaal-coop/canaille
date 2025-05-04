@@ -7,6 +7,7 @@ def setup_security(app):
     csp = {
         "default-src": "'self'",
         "font-src": "'self' data:",
+        "img-src": "'self' data:",
     }
     Talisman(
         app,
