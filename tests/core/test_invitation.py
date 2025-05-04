@@ -21,9 +21,9 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     url = res.pyquery(".copy-text")[0].value
 
     # logout
-    g.user = None
+    g.session = None
     with testclient.session_transaction() as sess:
-        del sess["user_id"]
+        del sess["sessions"]
 
     testclient.get("/logout")
     res = testclient.get(url, status=200)
@@ -52,8 +52,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
-        assert "user_id" in sess
-        del sess["user_id"]
+        del sess["sessions"]
 
     res = testclient.get(url, status=302)
     backend.delete(user)
@@ -77,9 +76,9 @@ def test_invitation_editable_user_name(
     url = res.pyquery(".copy-text")[0].value
 
     # logout
-    g.user = None
+    g.session = None
     with testclient.session_transaction() as sess:
-        del sess["user_id"]
+        del sess["sessions"]
 
     res = testclient.get(url, status=200)
 
@@ -108,8 +107,7 @@ def test_invitation_editable_user_name(
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
-        assert "user_id" in sess
-        del sess["user_id"]
+        del sess["sessions"]
     backend.delete(user)
 
 
@@ -127,9 +125,9 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     url = res.pyquery(".copy-text")[0].value
 
     # logout
-    g.user = None
+    g.session = None
     with testclient.session_transaction() as sess:
-        del sess["user_id"]
+        del sess["sessions"]
 
     res = testclient.get(url, status=200)
 
@@ -155,8 +153,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     assert user.groups == [foo_group]
 
     with testclient.session_transaction() as sess:
-        assert "user_id" in sess
-        del sess["user_id"]
+        del sess["sessions"]
 
     res = testclient.get(url, status=302)
     backend.delete(user)
@@ -267,7 +264,7 @@ def test_registration_no_password(testclient, foo_group, backend):
     assert not backend.get(models.User, user_name="someoneelse")
 
     with testclient.session_transaction() as sess:
-        assert "user_id" not in sess
+        assert "sessions" not in sess
 
 
 def test_no_registration_if_logged_in(testclient, logged_user, foo_group):

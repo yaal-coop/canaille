@@ -6,43 +6,49 @@ import time_machine
 from flask import g
 
 from canaille.app import models
+from canaille.app.session import SessionObject
 
 
 def test_index(testclient, user, backend):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
-    g.user = user
+    g.session = SessionObject(user=user)
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
-    backend.reload(g.user)
+    backend.reload(g.session.user)
     res = testclient.get("/", status=302)
     assert res.location == "/about"
 
 
 def test_user_deleted_in_session(testclient, backend):
-    u = models.User(
+    user = models.User(
         formatted_name="Jake Doe",
         family_name="Jake",
         user_name="jake",
         emails=["jake@doe.test"],
         password="correct horse battery staple",
     )
-    backend.save(u)
-    testclient.get("/profile/jake", status=403)
+    backend.save(user)
 
     with testclient.session_transaction() as session:
-        session["user_id"] = [
-            (u.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        session["sessions"] = [
+            SessionObject(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
 
-    backend.delete(u)
+    testclient.get("/profile/jake", status=200)
+
+    backend.delete(user)
+    del g.session
 
     testclient.get("/profile/jake", status=404)
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
 
 def test_impersonate(testclient, logged_admin, user):
@@ -73,8 +79,11 @@ def test_admin_self_deletion(testclient, backend):
     )
     backend.save(admin)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (admin.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=admin,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
 
     res = testclient.get("/profile/temp/settings")
@@ -88,7 +97,7 @@ def test_admin_self_deletion(testclient, backend):
     assert backend.get(models.User, user_name="temp") is None
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_id")
+        assert not sess.get("sessions")
 
 
 def test_user_self_deletion(testclient, backend):
@@ -101,8 +110,11 @@ def test_user_self_deletion(testclient, backend):
     )
     backend.save(user)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (user.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
@@ -128,7 +140,7 @@ def test_user_self_deletion(testclient, backend):
     assert backend.get(models.User, user_name="temp") is None
 
     with testclient.session_transaction() as sess:
-        assert not sess.get("user_id")
+        assert not sess.get("sessions")
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
 
@@ -231,7 +243,7 @@ def test_expired_password_redirection_and_register_new_password_for_memory_and_s
 
         traveller.shift(datetime.timedelta(days=5, minutes=1))
 
-        backend.reload(g.user)
+        backend.reload(g.session.user)
 
         res = testclient.get("/profile/user/settings")
 
@@ -280,7 +292,7 @@ def test_expired_password_redirection_and_register_new_password_for_ldap_sql_and
     ) in res.flashes
     assert res.location == "/reset/user"
     backend.reload(logged_user)
-    backend.reload(g.user)
+    backend.reload(g.session.user)
     backend.reload(user)
 
     res = testclient.get("/reset/user")

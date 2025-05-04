@@ -24,7 +24,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -64,7 +64,9 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [(user_otp.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": user_otp.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
@@ -89,7 +91,7 @@ def test_signin_wrong_otp(testclient, user_otp, caplog, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -120,7 +122,7 @@ def test_signin_expired_totp(testclient, user_otp, caplog):
 
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
         with testclient.session_transaction() as session:
-            assert not session.get("user_id")
+            assert not session.get("sessions")
 
         res = testclient.get("/login", status=200)
 
@@ -165,7 +167,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
         assert u.hotp_counter == 1
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -200,7 +202,9 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     res = res.follow(status=302)
     res = res.follow(status=200)
     with testclient.session_transaction() as session:
-        assert [(u.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": u.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
@@ -249,7 +253,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "HOTP"
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -300,7 +304,7 @@ def test_signin_inside_hotp_look_ahead_window(testclient, backend, user_otp, cap
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "HOTP"
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     assert user_otp.hotp_counter == 1
 
@@ -346,7 +350,7 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user_otp, ca
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "HOTP"
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     assert user_otp.hotp_counter == 1
 

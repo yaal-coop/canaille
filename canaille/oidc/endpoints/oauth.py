@@ -12,6 +12,7 @@ from flask import Blueprint
 from flask import abort
 from flask import current_app
 from flask import flash
+from flask import g
 from flask import jsonify
 from flask import redirect
 from flask import request
@@ -24,8 +25,6 @@ from canaille.app import models
 from canaille.app.flask import cache
 from canaille.app.flask import csrf
 from canaille.app.i18n import gettext as _
-from canaille.app.session import current_user
-from canaille.app.session import current_user_login_datetime
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
@@ -131,19 +130,9 @@ def check_prompt_value():
 def authorize_login(redirect_url, now):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
-    user = current_user()
 
-    if not user:
-        if request.values.get("prompt") == "create":
-            session["redirect-after-login"] = redirect_url
-            return redirect(url_for("core.account.join"))
-
-        if request.values.get("prompt") != "none":
-            session["redirect-after-login"] = redirect_url
-            return redirect(url_for("core.auth.login"))
-
-    else:
-        auth_time = current_user_login_datetime()
+    if user := g.session and g.session.user:
+        auth_time = g.session.last_login_datetime
         if request.values.get(
             "prompt"
         ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):
@@ -164,13 +153,22 @@ def authorize_login(redirect_url, now):
                 "The user does not have the permission to achieve OIDC authentication.",
             )
 
+    else:
+        if request.values.get("prompt") == "create":
+            session["redirect-after-login"] = redirect_url
+            return redirect(url_for("core.account.join"))
+
+        if request.values.get("prompt") != "none":
+            session["redirect-after-login"] = redirect_url
+            return redirect(url_for("core.auth.login"))
+
 
 def is_consent_needed(grant, redirect_url) -> bool:
     """Check whether the consent page must be displayed."""
     consents = Backend.instance.query(
         models.Consent,
         client=grant.client,
-        subject=current_user(),
+        subject=g.session.user,
     )
     consent = consents[0] if consents else None
 
@@ -228,7 +226,7 @@ def create_or_update_consent(grant, user, now):
 
 
 def authorize_consent(redirect_url, now):
-    user = current_user()
+    user = g.session and g.session.user
     grant = authorization.get_consent_grant(end_user=user)
 
     # Get the authorization code, or display the user consent form
@@ -378,7 +376,7 @@ def userinfo():
 @csrf.exempt
 def end_session():
     data = CombinedMultiDict((request.args, request.form))
-    user = current_user()
+    user = g.session and g.session.user
 
     if not user:
         return redirect(url_for("core.account.index"))

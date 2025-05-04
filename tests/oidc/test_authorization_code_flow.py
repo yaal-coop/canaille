@@ -317,7 +317,7 @@ def test_logout_login(testclient, logged_user, client, backend):
 
     res = res.form.submit(name="answer", value="logout")
     res = res.follow()
-    g.user = None
+    g.session = None
     res = res.follow()
     res = res.follow()
 
@@ -983,7 +983,7 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client, bac
 
         res = res.form.submit(name="answer", value="logout")
         res = res.follow()
-        g.user = None
+        g.session = None
         res = res.follow()
         res = res.follow()
 

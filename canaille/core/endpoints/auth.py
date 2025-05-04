@@ -4,6 +4,7 @@ from flask import Blueprint
 from flask import abort
 from flask import current_app
 from flask import flash
+from flask import g
 from flask import redirect
 from flask import request
 from flask import session
@@ -15,7 +16,6 @@ from canaille.app import mask_email
 from canaille.app import mask_phone
 from canaille.app.flask import smtp_needed
 from canaille.app.i18n import gettext as _
-from canaille.app.session import current_user
 from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
@@ -46,9 +46,9 @@ def global_processor():
 
 @bp.route("/login", methods=("GET", "POST"))
 def login():
-    if current_user():
+    if g.session:
         return redirect(
-            url_for("core.account.profile_edition", edited_user=current_user())
+            url_for("core.account.profile_edition", edited_user=g.session.user)
         )
 
     form = LoginForm(request.form or None)
@@ -73,14 +73,14 @@ def login():
 
 @bp.route("/password", methods=("GET", "POST"))
 def password():
-    if "attempt_login" not in session and not current_user():
+    if "attempt_login" not in session and (not g.session or not g.session.user):
         flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
 
     username = (
         session["attempt_login"]
         if "attempt_login" in session
-        else current_user().user_name
+        else g.session.user.user_name
     )
 
     form = PasswordForm(request.form or None)
@@ -89,7 +89,9 @@ def password():
     if not request.form or form.form_control():
         return render_template("core/password.html", form=form, username=username)
 
-    user = current_user() or get_user_from_login(session["attempt_login"])
+    user = (g.session and g.session.user) or get_user_from_login(
+        session["attempt_login"]
+    )
     if user and not user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.firstlogin", user=user))
 
@@ -138,9 +140,7 @@ def password():
 
 @bp.route("/logout")
 def logout():
-    user = current_user()
-
-    if user:
+    if user := g.session and g.session.user:
         current_app.logger.security(f"Logout {user.identifier}")
 
         flash(
@@ -315,9 +315,9 @@ def setup_two_factor_auth():
 
     from canaille.app.otp import get_otp_authentication_setup_uri
 
-    if current_user():
+    if g.session:
         return redirect(
-            url_for("core.account.profile_edition", edited_user=current_user())
+            url_for("core.account.profile_edition", edited_user=g.session.user)
         )
 
     if "attempt_login_with_correct_password" not in session:
@@ -338,9 +338,9 @@ def setup_two_factor_auth():
 
 @bp.route("/verify-mfa", methods=["GET", "POST"])
 def verify_two_factor_auth():
-    if current_user():
+    if g.session:
         return redirect(
-            url_for("core.account.profile_edition", edited_user=current_user())
+            url_for("core.account.profile_edition", edited_user=g.session.user)
         )
 
     if (
@@ -416,9 +416,9 @@ def send_mail_otp():
     if not current_app.features.has_email_otp:
         abort(404)
 
-    if current_user():
+    if g.session:
         return redirect(
-            url_for("core.account.profile_edition", edited_user=current_user())
+            url_for("core.account.profile_edition", edited_user=g.session.user)
         )
 
     if "attempt_login_with_correct_password" not in session:
@@ -453,9 +453,9 @@ def send_sms_otp():
     if not current_app.features.has_sms_otp:
         abort(404)
 
-    if current_user():
+    if g.session:
         return redirect(
-            url_for("core.account.profile_edition", edited_user=current_user())
+            url_for("core.account.profile_edition", edited_user=g.session.user)
         )
 
     if "attempt_login_with_correct_password" not in session:

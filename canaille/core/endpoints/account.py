@@ -39,7 +39,6 @@ from canaille.app.forms import set_readonly
 from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
-from canaille.app.session import current_user
 from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
@@ -61,11 +60,10 @@ bp = Blueprint("account", __name__)
 
 @bp.route("/")
 def index():
-    user = current_user()
-
-    if not user:
+    if not g.session:
         return redirect(url_for("core.auth.login"))
 
+    user = g.session.user
     if user.can_edit_self or user.can_manage_users:
         return redirect(url_for("core.account.profile_edition", edited_user=user))
 
@@ -83,7 +81,7 @@ def join():
     if not current_app.features.has_email_confirmation:
         return redirect(url_for(".registration"))
 
-    if current_user():
+    if g.session:
         abort(403)
 
     form = JoinForm(request.form or None)
@@ -275,8 +273,7 @@ def registration(data=None, hash=None):
             )
             return redirect(url_for("core.account.index"))
 
-    user = current_user()
-    if user:
+    if user := g.session and g.session.user:
         flash(
             _("You are already logged in, you cannot create an account."),
             "error",
@@ -533,7 +530,7 @@ def profile_edition_main_form_validation(user, edited_user, profile_form):
             edited_user.preferred_language = None
 
     Backend.instance.save(edited_user)
-    Backend.instance.reload(g.user)
+    Backend.instance.reload(user)
 
 
 def profile_edition_emails_form(user, edited_user, has_smtp):
@@ -895,7 +892,7 @@ def photo(user, field):
 @bp.route("/reset/<user:user>", methods=["GET", "POST"])
 def reset(user):
     form = PasswordResetForm(request.form)
-    if user != current_user() or not user.has_expired_password():
+    if not g.session or user != g.session.user or not user.has_expired_password():
         abort(403)
 
     if request.form and form.validate():

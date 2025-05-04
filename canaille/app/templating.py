@@ -2,6 +2,7 @@ import os
 
 import flask
 from flask import current_app
+from flask import g
 
 from canaille.app import DOCUMENTATION_URL
 
@@ -53,7 +54,6 @@ def setup_jinja(app):
     def global_processor():
         from canaille.app.flask import request_is_boosted
         from canaille.app.flask import request_is_partial
-        from canaille.app.session import current_user
 
         return {
             "debug": app.debug or app.config.get("TESTING", False),
@@ -62,7 +62,7 @@ def setup_jinja(app):
             "favicon_url": app.config["CANAILLE"]["FAVICON"]
             or app.config["CANAILLE"]["LOGO"],
             "website_name": app.config["CANAILLE"]["NAME"],
-            "user": current_user(),
+            "user": g.get("session") and g.session.user,
             "menu": True,
             "request_is_boosted": request_is_boosted(),
             "request_is_partial": request_is_partial(),

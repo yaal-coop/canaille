@@ -70,12 +70,12 @@ def setup_i18n(app):
 
 
 def locale_selector():
-    from .session import current_user
-
-    user = current_user()
     available_language_codes = getattr(g, "available_language_codes", [])
-    if user is not None and user.preferred_language in available_language_codes:
-        return user.preferred_language
+    if (
+        g.get("session")
+        and g.session.user.preferred_language in available_language_codes
+    ):
+        return g.session.user.preferred_language
 
     if current_app.config["CANAILLE"]["LANGUAGE"]:
         return current_app.config["CANAILLE"]["LANGUAGE"]

@@ -27,7 +27,7 @@ def test_user_get_user_from_login_dict(testclient, user):
 
 def test_signin_and_out(testclient, user, caplog):
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -54,7 +54,9 @@ def test_signin_and_out(testclient, user, caplog):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [(user.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
         assert "attempt_login" not in session
 
     res = testclient.get("/login", status=302)
@@ -75,7 +77,7 @@ def test_signin_and_out(testclient, user, caplog):
 
 def test_visitor_logout(testclient, user):
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/logout")
     res = res.follow(status=302)
@@ -86,12 +88,12 @@ def test_visitor_logout(testclient, user):
     ) not in res.flashes
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
 
 def test_signin_wrong_password(testclient, user, caplog):
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -110,7 +112,7 @@ def test_signin_wrong_password(testclient, user, caplog):
 
 def test_signin_password_substring(testclient, user):
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -124,7 +126,7 @@ def test_signin_password_substring(testclient, user):
 
 def test_signin_bad_csrf(testclient, user):
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -150,7 +152,9 @@ def test_signin_with_alternate_attribute(testclient, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [(user.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
 
 
 def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
@@ -183,7 +187,7 @@ def test_wrong_login(testclient, user):
 
 def test_signin_locked_account(testclient, user, backend):
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(user)

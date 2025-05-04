@@ -1,80 +1,81 @@
 import datetime
+from dataclasses import dataclass
 
 from flask import current_app
 from flask import g
 from flask import session
 
 from canaille.app import models
+from canaille.core.models import User
+
+USER_SESSION = "sessions"
 
 
-def current_user():
-    if "user" in g:
-        return g.user
+@dataclass
+class SessionObject:
+    user: User | None = None
+    last_login_datetime: datetime.datetime | None = None
 
-    for user_id, login_datetime in session.get("user_id", [])[::-1]:
-        user = current_app.backend.instance.get(models.User, user_id)
-        if user and (
-            not current_app.backend.has_account_lockability() or not user.locked
-        ):
-            g.user = user
-            g.last_login_datetime = datetime.datetime.fromisoformat(login_datetime)
-            return g.user
+    @classmethod
+    def from_dict(cls, payload):
+        user = current_app.backend.instance.get(models.User, payload["user"])
+        user_is_locked = (
+            user and current_app.backend.has_account_lockability() and user.locked
+        )
+        if not user or user_is_locked:
+            return None
 
-        session["user_id"].remove((user_id, login_datetime))
+        return SessionObject(
+            user=user,
+            last_login_datetime=datetime.datetime.fromisoformat(
+                payload["last_login_datetime"]
+            ),
+        )
 
-    if "user_id" in session and not session["user_id"]:
-        del session["user_id"]
+    def to_dict(self):
+        return {
+            "user": self.user.id,
+            "last_login_datetime": self.last_login_datetime.isoformat(),
+        }
 
-    return None
 
+def current_session():
+    for payload in session.get(USER_SESSION, [])[::-1]:
+        if obj := SessionObject.from_dict(payload):
+            g.session = obj
+            return g.session
 
-def current_user_login_datetime() -> datetime.datetime | None:
-    if "last_login_datetime" in g:
-        return g.last_login_datetime
+        session[USER_SESSION].remove(payload)
 
-    for user_id, login_datetime in session.get("user_id", [])[::-1]:
-        user = current_app.backend.instance.get(models.User, user_id)
-        if user and (
-            not current_app.backend.has_account_lockability() or not user.locked
-        ):
-            g.user = user
-            g.last_login_datetime = datetime.datetime.fromisoformat(login_datetime)
-            return g.last_login_datetime
-
-        session["user_id"].remove((user_id, login_datetime))
-
-    if "user_id" in session and not session["user_id"]:
-        del session["user_id"]
+    if USER_SESSION in session and not session[USER_SESSION]:
+        del session[USER_SESSION]
 
     return None
 
 
 def login_user(user):
     """Open a session for the user."""
-    g.user = user
-    g.last_login_datetime = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    obj = SessionObject(user=user, last_login_datetime=now)
+    g.session = obj
     try:
         previous = (
-            session["user_id"]
-            if isinstance(session["user_id"], list)
-            else [session["user_id"]]
+            session[USER_SESSION]
+            if isinstance(session[USER_SESSION], list)
+            else [session[USER_SESSION]]
         )
-        session["user_id"] = previous + [(user.id, g.last_login_datetime.isoformat())]
+        session[USER_SESSION] = previous + [obj.to_dict()]
     except KeyError:
-        session["user_id"] = [(user.id, g.last_login_datetime.isoformat())]
+        session[USER_SESSION] = [obj.to_dict()]
 
 
 def logout_user():
     """Close the user session."""
     try:
-        session["user_id"].pop()
-        if not session["user_id"]:
-            del session["user_id"]
+        session[USER_SESSION].pop()
+        if not session[USER_SESSION]:
+            del session[USER_SESSION]
     except (IndexError, KeyError):
         pass
 
-    if "user" in g:
-        del g.user
-
-    if "last_login_datetime" in g:
-        del g.last_login_datetime
+    del g.session

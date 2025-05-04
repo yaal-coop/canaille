@@ -6,6 +6,7 @@ from functools import wraps
 from flask import abort
 from flask import current_app
 from flask import flash
+from flask import g
 from flask import make_response
 from flask import redirect
 from flask import request
@@ -17,7 +18,7 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
-from canaille.app.session import current_user
+from canaille.app.session import current_session
 from canaille.app.templating import render_template
 
 csrf = CSRFProtect()
@@ -30,11 +31,10 @@ def user_needed(*args):
     def wrapper(view_function):
         @wraps(view_function)
         def decorator(*args, **kwargs):
-            user = current_user()
-            if not user or not user.can(*permissions):
+            if not g.session or not g.session.user.can(*permissions):
                 abort(403)
 
-            if user.has_expired_password():
+            if g.session.user.has_expired_password():
                 flash(
                     _("Your password has expired, please choose a new password."),
                     "info",
@@ -42,11 +42,11 @@ def user_needed(*args):
                 return redirect(
                     url_for(
                         "core.account.reset",
-                        user=user,
+                        user=g.session.user,
                     )
                 )
 
-            return view_function(*args, user=user, **kwargs)
+            return view_function(*args, user=g.session.user, **kwargs)
 
         return decorator
 
@@ -170,9 +170,11 @@ def setup_flask(app):
     cache.init_app(app)
 
     @app.before_request
-    def make_session_permanent():
+    def session_setup():
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(days=365)
+        if "session" not in g:
+            g.session = current_session()
 
     @app.errorhandler(400)
     def bad_request(error):

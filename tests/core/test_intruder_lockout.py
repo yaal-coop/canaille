@@ -13,7 +13,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     # add 500 milliseconds to account for LDAP time
     with time_machine.travel(

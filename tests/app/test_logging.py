@@ -6,6 +6,7 @@ from flask_webtest import TestApp
 
 from canaille import create_app
 from canaille.app.logging import add_log_level
+from canaille.app.session import SessionObject
 
 LOGGING_CONF_FILE_CONTENT = """
 [loggers]
@@ -46,8 +47,11 @@ def test_file_log_config(configuration, backend, tmp_path, user):
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (user.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
 
     res = testclient.get("/profile/user/settings")
@@ -87,8 +91,11 @@ def test_dict_log_config(configuration, backend, tmp_path, admin):
 
     testclient = TestApp(app)
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (admin.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=admin,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
 
     res = testclient.get("/admin/mail")

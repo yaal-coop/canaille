@@ -611,7 +611,7 @@ def test_edition_permission(
     testclient.get("/profile/user/settings", status=404)
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]
-    backend.reload(g.user)
+    backend.reload(g.session.user)
     testclient.get("/profile/user/settings", status=200)
 
 

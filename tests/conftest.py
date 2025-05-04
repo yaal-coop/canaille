@@ -13,6 +13,7 @@ from werkzeug.security import gen_salt
 
 from canaille import create_app
 from canaille.app import models
+from canaille.app.session import SessionObject
 from canaille.backends import available_backends
 
 
@@ -266,8 +267,11 @@ def moderator(app, backend):
 @pytest.fixture
 def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (user.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
     return user
 
@@ -275,8 +279,11 @@ def logged_user(user, testclient):
 @pytest.fixture
 def logged_user_otp(user_otp, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (user_otp.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=user_otp,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
     return user_otp
 
@@ -284,8 +291,11 @@ def logged_user_otp(user_otp, testclient):
 @pytest.fixture
 def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (admin.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=admin,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
     return admin
 
@@ -293,8 +303,11 @@ def logged_admin(admin, testclient):
 @pytest.fixture
 def logged_moderator(moderator, testclient):
     with testclient.session_transaction() as sess:
-        sess["user_id"] = [
-            (moderator.id, datetime.datetime.now(datetime.timezone.utc).isoformat())
+        sess["sessions"] = [
+            SessionObject(
+                user=moderator,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).to_dict()
         ]
     return moderator
 

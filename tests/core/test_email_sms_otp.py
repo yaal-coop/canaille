@@ -39,7 +39,7 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     testclient.app.config["CANAILLE"]["EMAIL_OTP"] = True
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -91,7 +91,9 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [(user.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
@@ -116,7 +118,7 @@ def test_signin_with_email_otp_failed_to_send_code(testclient, user):
     testclient.app.config["CANAILLE"]["SMTP"]["HOST"] = "invalid host"
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -141,7 +143,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog):
     testclient.app.config["CANAILLE"]["EMAIL_OTP"] = True
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -173,7 +175,7 @@ def test_signin_expired_email_otp(testclient, user, caplog):
 
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
         with testclient.session_transaction() as session:
-            assert not session.get("user_id")
+            assert not session.get("sessions")
 
         res = testclient.get("/login", status=200)
 
@@ -207,7 +209,7 @@ def test_signin_expired_sms_otp(testclient, user, caplog, mock_smpp):
 
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
         with testclient.session_transaction() as session:
-            assert not session.get("user_id")
+            assert not session.get("sessions")
 
         res = testclient.get("/login", status=200)
 
@@ -241,7 +243,7 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     testclient.app.config["CANAILLE"]["SMS_OTP"] = True
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -292,7 +294,9 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [(user.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 
@@ -317,7 +321,7 @@ def test_signin_with_sms_otp_failed_to_send_code(testclient, user):
     testclient.app.config["CANAILLE"]["SMPP"]["HOST"] = "invalid host"
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -342,7 +346,7 @@ def test_signin_wrong_sms_otp(testclient, user, caplog, mock_smpp):
     testclient.app.config["CANAILLE"]["SMS_OTP"] = True
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -587,7 +591,7 @@ def test_signin_with_multiple_otp_methods(
     testclient.app.config["CANAILLE"]["SMS_OTP"] = True
 
     with testclient.session_transaction() as session:
-        assert not session.get("user_id")
+        assert not session.get("sessions")
 
     res = testclient.get("/login", status=200)
 
@@ -627,7 +631,9 @@ def test_signin_with_multiple_otp_methods(
     res = main_form.submit(status=302).follow(status=302).follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [(user_otp.id, mock.ANY)] == session.get("user_id")
+        assert [{"user": user_otp.id, "last_login_datetime": mock.ANY}] == session.get(
+            "sessions"
+        )
         assert "attempt_login" not in session
         assert "attempt_login_with_correct_password" not in session
 

@@ -31,7 +31,6 @@ from werkzeug.security import gen_salt
 from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
 from canaille.app.flask import cache
-from canaille.app.session import current_user_login_datetime
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 
@@ -328,7 +327,7 @@ def save_authorization_code(code, request):
         lifetime=AUTHORIZATION_CODE_LIFETIME,
         challenge=request.data.get("code_challenge"),
         challenge_method=request.data.get("code_challenge_method"),
-        auth_time=current_user_login_datetime(),
+        auth_time=g.session.last_login_datetime,
     )
     Backend.instance.save(code)
     return code.code
