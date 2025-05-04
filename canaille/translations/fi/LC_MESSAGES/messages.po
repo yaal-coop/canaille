@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-04 17:25+0200\n"
+"POT-Creation-Date: 2025-05-04 17:43+0200\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -1504,16 +1504,15 @@ msgid "Secret token:"
 msgstr ""
 
 #: canaille/templates/core/setup-mfa.html:61
+#: canaille/templates/core/setup-mfa.html:86
 msgid "Copy secret"
 msgstr ""
 
 #: canaille/templates/core/setup-mfa.html:84
-msgid "\"Successfully copied!\""
-msgstr ""
-
-#: canaille/templates/core/setup-mfa.html:86
-msgid "\"Copy secret\""
-msgstr ""
+#, fuzzy
+#| msgid "Profile updated successfully."
+msgid "Successfully copied!"
+msgstr "Profiilin päivitys onnistui."
 
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."

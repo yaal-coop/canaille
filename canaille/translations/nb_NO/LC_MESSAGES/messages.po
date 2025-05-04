@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-04 17:25+0200\n"
+"POT-Creation-Date: 2025-05-04 17:43+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -1604,16 +1604,15 @@ msgid "Secret token:"
 msgstr "Tilgangssymbol"
 
 #: canaille/templates/core/setup-mfa.html:61
+#: canaille/templates/core/setup-mfa.html:86
 msgid "Copy secret"
 msgstr ""
 
 #: canaille/templates/core/setup-mfa.html:84
-msgid "\"Successfully copied!\""
-msgstr ""
-
-#: canaille/templates/core/setup-mfa.html:86
-msgid "\"Copy secret\""
-msgstr ""
+#, fuzzy
+#| msgid "Profile updated successfuly."
+msgid "Successfully copied!"
+msgstr "Profil redigert."
 
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."

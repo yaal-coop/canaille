@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-05-04 17:25+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-05-04 17:43+0200\n"
 "PO-Revision-Date: 2025-05-04 15:45+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -487,8 +487,8 @@ msgstr "Le code a été envoyé avec succès !"
 #: canaille/core/endpoints/auth.py:524 canaille/core/endpoints/auth.py:552
 msgid "Error while sending one-time password. Please try again."
 msgstr ""
-"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez "
-"ré-essayer."
+"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
+"essayer."
 
 #: canaille/core/endpoints/auth.py:497
 msgid ""
@@ -1594,16 +1594,15 @@ msgid "Secret token:"
 msgstr "Jeton secret :"
 
 #: canaille/templates/core/setup-mfa.html:61
+#: canaille/templates/core/setup-mfa.html:86
 msgid "Copy secret"
 msgstr "Copier le secret"
 
 #: canaille/templates/core/setup-mfa.html:84
-msgid "\"Successfully copied!\""
-msgstr ""
-
-#: canaille/templates/core/setup-mfa.html:86
-msgid "\"Copy secret\""
-msgstr ""
+#, fuzzy
+#| msgid "Code successfully sent!"
+msgid "Successfully copied!"
+msgstr "Le code a été envoyé avec succès !"
 
 #: canaille/templates/core/verify-mfa.html:34
 msgid "One-time password authentication."
