@@ -308,8 +308,8 @@ def reset(user, token):
     )
 
 
-@bp.route("/setup-mfa")
-def setup_two_factor_auth():
+@bp.route("/setup-otp")
+def setup_one_time_password_auth():
     if not current_app.features.has_otp:
         abort(404)
 
@@ -329,7 +329,7 @@ def setup_two_factor_auth():
     uri = get_otp_authentication_setup_uri(user)
     base64_qr_image = get_b64encoded_qr_image(uri)
     return render_template(
-        "core/setup-mfa.html",
+        "core/setup-otp.html",
         secret=user.secret_token,
         qr_image=base64_qr_image,
         otp_uri=uri,

@@ -15,7 +15,7 @@ def test_otp_disabled(testclient):
     with testclient.session_transaction() as session:
         session["remaining_otp_methods"] = ["TOTP"]
         session["attempt_login_with_correct_password"] = "id"
-    testclient.get("/setup-mfa", status=404)
+    testclient.get("/setup-otp", status=404)
     testclient.get("/verify-mfa", status=404)
 
 
@@ -178,12 +178,12 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
 
-    assert res.location == "/setup-mfa"
+    assert res.location == "/setup-otp"
     assert (
         "info",
         "You have not enabled multi-factor authentication. Please enable it first to login.",
     ) in res.flashes
-    res = testclient.get("/setup-mfa", status=200)
+    res = testclient.get("/setup-otp", status=200)
 
     res = testclient.get("/verify-mfa", status=200)
     res.form["otp"] = generate_otp(u)
@@ -231,7 +231,7 @@ def test_setup_otp_page_without_signin_in_redirects_to_login_page(
 ):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    res = testclient.get("/setup-mfa", status=302)
+    res = testclient.get("/setup-otp", status=302)
     assert res.location == "/login"
     assert res.flashes == [
         ("warning", "Cannot remember the login you attempted to sign in with")
@@ -295,7 +295,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(
 def test_setup_otp_page_already_logged_in(testclient, logged_user_otp, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    res = testclient.get("/setup-mfa", status=302)
+    res = testclient.get("/setup-otp", status=302)
     assert res.location == "/profile/user"
 
 
