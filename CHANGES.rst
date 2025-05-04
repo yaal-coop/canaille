@@ -80,7 +80,7 @@ Fixed
 
 Added
 ^^^^^
-- Add a :attr:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES` configuration
+- Add a :attr:`~canaille.core.configuration.CoreSettings.FORCE_HTTPS` configuration
   parameter to allow to disable https forced redirections.
 
 [0.0.69] - 2025-03-28
