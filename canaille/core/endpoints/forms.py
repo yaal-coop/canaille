@@ -124,12 +124,16 @@ def available_language_choices():
 PROFILE_FORM_FIELDS = dict(
     user_name=wtforms.StringField(
         _("Username"),
-        render_kw={"placeholder": _("jdoe")},
+        render_kw={"placeholder": _("jdoe"), "autocomplete": "username"},
         validators=[wtforms.validators.DataRequired(), unique_user_name],
     ),
     formatted_name=wtforms.StringField(_("Name")),
     title=wtforms.StringField(
-        _("Title"), render_kw={"placeholder": _("Vice president")}
+        _("Title"),
+        render_kw={
+            "placeholder": _("Vice president"),
+            "autocomplete": "organization-title",
+        },
     ),
     given_name=wtforms.StringField(
         _("Given name"),
@@ -172,6 +176,7 @@ PROFILE_FORM_FIELDS = dict(
                 "placeholder": _("jane.doe@example.com"),
                 "spellcheck": "false",
                 "autocorrect": "off",
+                "autocomplete": "email",
             },
         ),
         min_entries=1,
@@ -180,7 +185,7 @@ PROFILE_FORM_FIELDS = dict(
     phone_numbers=wtforms.FieldList(
         wtforms.TelField(
             _("Phone numbers"),
-            render_kw={"placeholder": _("555-000-555")},
+            render_kw={"placeholder": _("555-000-555"), "autocomplete": "tel"},
             validators=[wtforms.validators.Optional(), phone_number],
         ),
         min_entries=1,
@@ -196,24 +201,28 @@ PROFILE_FORM_FIELDS = dict(
         _("Street"),
         render_kw={
             "placeholder": _("132, Foobar Street"),
+            "autocomplete": "street-address",
         },
     ),
     postal_code=wtforms.StringField(
         _("Postal Code"),
         render_kw={
             "placeholder": "12401",
+            "autocomplete": "postal-code",
         },
     ),
     locality=wtforms.StringField(
         _("Locality"),
         render_kw={
             "placeholder": _("Gotham City"),
+            "autocomplete": "city",
         },
     ),
     region=wtforms.StringField(
         _("Region"),
         render_kw={
             "placeholder": _("North Pole"),
+            "autocomplete": "country",
         },
     ),
     photo=FileField(
@@ -262,6 +271,7 @@ PROFILE_FORM_FIELDS = dict(
         _("Organization"),
         render_kw={
             "placeholder": _("Cogip LTD."),
+            "autocomplete": "organization",
         },
     ),
     profile_url=wtforms.URLField(
@@ -466,5 +476,6 @@ class TwoFactorForm(Form):
             "placeholder": _("123456"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "autocomplete": "one-time-code",
         },
     )
