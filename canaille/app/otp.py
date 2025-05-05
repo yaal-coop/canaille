@@ -6,10 +6,11 @@ from blinker import signal
 from flask import current_app
 
 HOTP_LOOK_AHEAD_WINDOW = 10
+SECRET_TOKEN_LENGTH = 8
 
 
 def initialize_otp(user):
-    user.secret_token = secrets.token_hex(32)
+    user.secret_token = secrets.token_hex(SECRET_TOKEN_LENGTH)
     user.last_otp_login = None
     if current_app.features.otp_method == "HOTP":
         user.hotp_counter = 1
@@ -44,16 +45,18 @@ def get_otp_authentication_setup_uri(user):
 
     method = current_app.features.otp_method
     if method == "TOTP":
-        return otpauth.TOTP(user.secret_token.encode("utf-8")).to_uri(
+        otp = otpauth.TOTP(user.secret_token.encode("utf-8"))
+        return otp.to_uri(
             label=user.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
-        )
+        ), otp.b32_secret
 
     elif method == "HOTP":
-        return otpauth.HOTP(user.secret_token.encode("utf-8")).to_uri(
+        otp = otpauth.HOTP(user.secret_token.encode("utf-8"))
+        return otp.to_uri(
             label=user.user_name,
             issuer=current_app.config["CANAILLE"]["NAME"],
             counter=user.hotp_counter,
-        )
+        ), otp.b32_secret
 
     else:  # pragma: no cover
         raise RuntimeError("Invalid one-time password method")

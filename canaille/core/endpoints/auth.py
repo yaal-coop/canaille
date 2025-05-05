@@ -309,7 +309,7 @@ def reset(user, token):
 
 
 @bp.route("/setup-otp")
-def setup_one_time_password_auth():
+def setup_otp_auth():
     if not current_app.features.has_otp:
         abort(404)
 
@@ -326,11 +326,11 @@ def setup_one_time_password_auth():
 
     user = get_user_from_login(session["attempt_login_with_correct_password"])
 
-    uri = get_otp_authentication_setup_uri(user)
+    uri, secret = get_otp_authentication_setup_uri(user)
     base64_qr_image = get_b64encoded_qr_image(uri)
     return render_template(
         "core/setup-otp.html",
-        secret=user.secret_token,
+        secret=secret,
         qr_image=base64_qr_image,
         otp_uri=uri,
         user=user,
@@ -499,7 +499,7 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
                 ),
                 "info",
             )
-            return redirect(url_for("core.auth.setup_two_factor_auth"))
+            return redirect(url_for("core.auth.setup_otp_auth"))
         flash(
             _("Please enter the one-time password from your authenticator app."),
             "info",
