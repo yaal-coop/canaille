@@ -150,6 +150,38 @@ def test_signin_expired_totp(testclient, user_otp, caplog):
 
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
+def test_signin_invalid_otp(testclient, user_otp, caplog, otp_method):
+    """Test putting unicode characters in the OTP field."""
+    testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+
+    with testclient.session_transaction() as session:
+        assert not session.get("sessions")
+
+    res = testclient.get("/login", status=200)
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    res.form["otp"] = "●●●●●●"
+    res = res.form.submit()
+
+    assert (
+        "error",
+        "The one-time password you entered is invalid. Please try again",
+    ) in res.flashes
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Failed login attempt (wrong OTP) for user",
+    ) in caplog.record_tuples
+
+
+@pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 

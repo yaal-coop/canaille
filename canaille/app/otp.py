@@ -65,7 +65,12 @@ def get_otp_authentication_setup_uri(user):
 def is_totp_valid(user, user_otp):
     import otpauth
 
-    return otpauth.TOTP(bytes(user.secret_token, "utf-8")).verify(user_otp)
+    try:
+        return otpauth.TOTP(bytes(user.secret_token, "utf-8")).verify(user_otp)
+
+    # hotfix for https://github.com/authlib/otpauth/pull/13
+    except (ValueError, TypeError):
+        return False
 
 
 def is_hotp_valid(user, user_otp):
@@ -75,9 +80,14 @@ def is_hotp_valid(user, user_otp):
     is_valid = False
     # if user token's counter is ahead of canaille's, try to catch up to it
     while counter - user.hotp_counter <= HOTP_LOOK_AHEAD_WINDOW:
-        is_valid = otpauth.HOTP(bytes(user.secret_token, "utf-8")).verify(
-            user_otp, counter
-        )
+        # hotfix for https://github.com/authlib/otpauth/pull/13
+        try:
+            is_valid = otpauth.HOTP(bytes(user.secret_token, "utf-8")).verify(
+                user_otp, counter
+            )
+        except (ValueError, TypeError):
+            is_valid = False
+
         counter += 1
         if is_valid:
             user.hotp_counter = counter
