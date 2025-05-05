@@ -79,7 +79,7 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
             "HX-Trigger-Name": "emails-0",
         },
     )
-    res.mustcontain("The email &#39;john@doe.test&#39; is already used")
+    res.mustcontain("The email 'john@doe.test' is already used")
 
 
 def test_user_creation_without_password(testclient, logged_moderator, backend):
@@ -120,7 +120,7 @@ def test_username_already_taken(
     res.form["emails-0"] = "any@thing.test"
     res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
-    res.mustcontain("The user name &#39;user&#39; already exists")
+    res.mustcontain("The user name 'user' already exists")
 
 
 def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_group):
@@ -130,7 +130,7 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
     res.form["emails-0"] = "john@doe.test"
     res = res.form.submit(name="action", value="create-profile")
     assert ("error", "User account creation failed.") in res.flashes
-    res.mustcontain("The email &#39;john@doe.test&#39; is already used")
+    res.mustcontain("The email 'john@doe.test' is already used")
 
 
 def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator, backend):

@@ -136,7 +136,7 @@ def test_registration_with_email_already_taken(
     res.form["email"] = "john@doe.test"
     res = res.form.submit()
     assert res.flashes == []
-    res.mustcontain("The email &#39;john@doe.test&#39; is already used")
+    res.mustcontain("The email 'john@doe.test' is already used")
 
 
 def test_registration_with_email_validation_needs_a_valid_link(

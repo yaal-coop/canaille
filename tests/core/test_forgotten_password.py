@@ -82,7 +82,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
         "A password reset link has been sent at your email address. "
         "You should receive it within a few minutes.",
     ) in res.flashes
-    res.mustcontain(no="The login &#39;i-dont-really-exist&#39; does not exist")
+    res.mustcontain(no="The login 'i-dont-really-exist' does not exist")
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
     res = testclient.get("/reset", status=200)
@@ -94,7 +94,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
         "A password reset link has been sent at your email address. "
         "You should receive it within a few minutes.",
     ) not in res.flashes
-    res.mustcontain("The login &#39;i-dont-really-exist&#39; does not exist")
+    res.mustcontain("The login 'i-dont-really-exist' does not exist")
 
     assert len(smtpd.messages) == 0
 

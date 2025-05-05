@@ -379,7 +379,7 @@ def test_inline_validation(testclient, logged_admin, user):
             "HX-Trigger-Name": "emails-0",
         },
     )
-    res.mustcontain("The email &#39;john@doe.test&#39; is already used")
+    res.mustcontain("The email 'john@doe.test' is already used")
 
 
 def test_inline_validation_keep_indicators(testclient, logged_admin, user, backend):

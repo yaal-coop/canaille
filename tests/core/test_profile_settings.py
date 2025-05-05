@@ -11,10 +11,12 @@ from canaille.app import models
 
 def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
-    assert set(res.form["groups"].options) == {
-        (foo_group.id, True, "foo"),
-        (bar_group.id, False, "bar"),
-    }
+    # hotfix for https://github.com/Pylons/webtest/pull/268
+    trimmed_options = [
+        (*args, label.strip()) for *args, label in res.form["groups"].options
+    ]
+    assert (foo_group.id, True, "foo") in trimmed_options
+    assert (bar_group.id, False, "bar") in trimmed_options
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
@@ -85,7 +87,7 @@ def test_empty_group_removal(testclient, logged_admin, user, foo_group, backend)
     assert res.flashes == [("error", "Profile edition failed.")]
 
     res.mustcontain(
-        "The group &#39;foo&#39; cannot be removed, because it must have at least one user left."
+        "The group 'foo' cannot be removed, because it must have at least one user left."
     )
 
     backend.reload(user)

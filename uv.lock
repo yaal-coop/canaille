@@ -247,6 +247,7 @@ sqlite = [
 [package.dev-dependencies]
 dev = [
     { name = "babel" },
+    { name = "beautifulsoup4" },
     { name = "coverage", extra = ["toml"] },
     { name = "faker" },
     { name = "flask-webtest" },
@@ -346,6 +347,7 @@ provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgre
 [package.metadata.requires-dev]
 dev = [
     { name = "babel", specifier = ">=2.14.0" },
+    { name = "beautifulsoup4", specifier = ">=4.13.4" },
     { name = "coverage", extras = ["toml"], specifier = ">=6.0.0" },
     { name = "faker", specifier = ">=30.0.0" },
     { name = "flask-webtest", specifier = ">=0.1.6" },
@@ -2830,8 +2832,8 @@ name = "taskgroup"
 version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "exceptiongroup", marker = "python_full_version < '3.12'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.12'" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f0/8d/e218e0160cc1b692e6e0e5ba34e8865dbb171efeb5fc9a704544b3020605/taskgroup-0.2.2.tar.gz", hash = "sha256:078483ac3e78f2e3f973e2edbf6941374fbea81b9c5d0a96f51d297717f4752d", size = 11504, upload-time = "2025-01-03T09:24:13.761Z" }
 wheels = [

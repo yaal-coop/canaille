@@ -175,14 +175,14 @@ def test_wrong_login(testclient, user):
 
     res.form["password"] = "incorrect horse"
     res = res.form.submit(status=200)
-    res.mustcontain(no="The login &#39;invalid&#39; does not exist")
+    res.mustcontain(no="The login 'invalid' does not exist")
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
 
     res = testclient.get("/login", status=200)
     res.form["login"] = "invalid"
     res = res.form.submit(status=200)
-    res.mustcontain("The login &#39;invalid&#39; does not exist")
+    res.mustcontain("The login 'invalid' does not exist")
 
 
 def test_signin_locked_account(testclient, user, backend):

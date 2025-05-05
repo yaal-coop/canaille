@@ -211,7 +211,7 @@ def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_
     )
 
     res.mustcontain("Group creation failed.")
-    res.mustcontain("The group &#39;foo&#39; already exists")
+    res.mustcontain("The group 'foo' already exists")
 
 
 def test_invalid_group(testclient, logged_moderator):

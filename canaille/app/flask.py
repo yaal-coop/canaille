@@ -163,11 +163,33 @@ def setup_flask_blueprints(app):
         app.register_blueprint(canaille.scim.endpoints.bp)
 
 
+def beautify_html_resonses(app):
+    import html
+
+    from bs4 import BeautifulSoup
+
+    def _prettify_response(response):
+        if response.content_type == "text/html; charset=utf-8":
+            ugly = response.get_data(as_text=True)
+            soup = BeautifulSoup(ugly, "html.parser")
+            pretty = soup.prettify(formatter="html5")
+            response.direct_passthrough = False
+            pretty = html.unescape(pretty)
+            response.set_data(pretty)
+
+        return response
+
+    app.after_request(_prettify_response)
+
+
 def setup_flask(app):
     from canaille.app.templating import render_template
 
     csrf.init_app(app)
     cache.init_app(app)
+
+    if app.debug or app.config.get("TESTING", False):  # pragma: no branch
+        beautify_html_resonses(app)
 
     @app.before_request
     def session_setup():
