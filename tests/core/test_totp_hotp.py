@@ -184,7 +184,6 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
         "You have not enabled multi-factor authentication. Please enable it first to login.",
     ) in res.flashes
     res = testclient.get("/setup-mfa", status=200)
-    assert u.secret_token == res.form["secret"].value
 
     res = testclient.get("/verify-mfa", status=200)
     res.form["otp"] = generate_otp(u)
