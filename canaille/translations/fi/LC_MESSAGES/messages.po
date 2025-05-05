@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-04 17:43+0200\n"
+"POT-Creation-Date: 2025-05-05 11:32+0200\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -367,7 +367,7 @@ msgid "Locked users cannot be impersonated."
 msgstr "Lukittuja käyttäjiä ei voi esiintyä toisena henkilönä."
 
 #: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:395
+#: canaille/core/endpoints/auth.py:396
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Yhteyden muodostaminen onnistui. Tervetuloa %(user)s"
@@ -412,8 +412,8 @@ msgid "Login failed, please check your information"
 msgstr "Sisäänkirjautuminen epäonnistui; tarkista tietosi"
 
 #: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
-#: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:425
-#: canaille/core/endpoints/auth.py:464
+#: canaille/core/endpoints/auth.py:352 canaille/core/endpoints/auth.py:426
+#: canaille/core/endpoints/auth.py:465
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr "En muista kirjautumistunnusta, jolla yritit kirjautua sisään"
 
@@ -457,28 +457,28 @@ msgstr "Käyttäjällä '%(user)s' ei ole lupaa päivittää salasanaansa. "
 msgid "Invalid code."
 msgstr "Epäkelvollinen koodi."
 
-#: canaille/core/endpoints/auth.py:405
+#: canaille/core/endpoints/auth.py:406
 msgid "The one-time password you entered is invalid. Please try again"
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:437 canaille/core/endpoints/auth.py:476
+#: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
 #, fuzzy
 #| msgid "Profile updated successfully."
 msgid "Code successfully sent!"
 msgstr "Profiilin päivitys onnistui."
 
-#: canaille/core/endpoints/auth.py:442 canaille/core/endpoints/auth.py:481
-#: canaille/core/endpoints/auth.py:524 canaille/core/endpoints/auth.py:552
+#: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
+#: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
 msgid "Error while sending one-time password. Please try again."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:497
+#: canaille/core/endpoints/auth.py:498
 msgid ""
 "You have not enabled multi-factor authentication. Please enable it first to "
 "login."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:503
+#: canaille/core/endpoints/auth.py:504
 msgid "Please enter the one-time password from your authenticator app."
 msgstr ""
 
@@ -1280,13 +1280,13 @@ msgstr ""
 
 #: canaille/templates/core/login.html:59
 #: canaille/templates/core/mails/registration.txt:5
-#: canaille/templates/core/setup-mfa.html:68
+#: canaille/templates/core/setup-mfa.html:85
 msgid "Continue"
 msgstr ""
 
 #: canaille/templates/core/password.html:21
-#: canaille/templates/core/setup-mfa.html:32
-#: canaille/templates/core/verify-mfa.html:32
+#: canaille/templates/core/setup-mfa.html:36
+#: canaille/templates/core/verify-mfa.html:36
 #, python-format
 msgid "Sign in as %(username)s"
 msgstr ""
@@ -1296,7 +1296,7 @@ msgid "Please enter your password for this account."
 msgstr ""
 
 #: canaille/templates/core/password.html:39
-#: canaille/templates/core/verify-mfa.html:50
+#: canaille/templates/core/verify-mfa.html:54
 #, python-format
 msgid "I am not %(username)s"
 msgstr ""
@@ -1465,65 +1465,59 @@ msgstr ""
 msgid "Impersonate"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:34
+#: canaille/templates/core/setup-mfa.html:38
 msgid "Set up multi-factor authentication."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:43
+#: canaille/templates/core/setup-mfa.html:47
 msgid "Instructions"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:45
+#: canaille/templates/core/setup-mfa.html:49
 msgid "Install a One-Time Password (OTP) generator application on your mobile."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:46
+#: canaille/templates/core/setup-mfa.html:50
 msgid "Set up a new authenticator."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:47
+#: canaille/templates/core/setup-mfa.html:51
 msgid "Scan the QR code below and click \"Continue\"."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:50
+#: canaille/templates/core/setup-mfa.html:54
 msgid "Note:"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:51
+#: canaille/templates/core/setup-mfa.html:55
 msgid ""
 "If you can't scan the QR code, try entering the secret token in your "
 "authenticator app directly."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:55
+#: canaille/templates/core/setup-mfa.html:61
+#: canaille/templates/core/setup-mfa.html:68
 msgid "Secret token"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:58
-msgid "Secret token:"
-msgstr ""
-
-#: canaille/templates/core/setup-mfa.html:61
-#: canaille/templates/core/setup-mfa.html:86
+#: canaille/templates/core/setup-mfa.html:72
 msgid "Copy secret"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:84
-#, fuzzy
-#| msgid "Profile updated successfully."
-msgid "Successfully copied!"
-msgstr "Profiilin päivitys onnistui."
+#: canaille/templates/core/setup-mfa.html:82
+msgid "Open authenticator application"
+msgstr ""
 
-#: canaille/templates/core/verify-mfa.html:34
+#: canaille/templates/core/verify-mfa.html:38
 msgid "One-time password authentication."
 msgstr ""
 
 #: canaille/templates/core/partial/emails_field.html:14
-#: canaille/templates/core/verify-mfa.html:51
+#: canaille/templates/core/verify-mfa.html:55
 msgid "Verify"
 msgstr ""
 
-#: canaille/templates/core/verify-mfa.html:66
+#: canaille/templates/core/verify-mfa.html:70
 msgid "Didn't receive the code? Click here to send another one."
 msgstr ""
 
@@ -2342,3 +2336,8 @@ msgstr ""
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Profile updated successfully."
+#~ msgid "Successfully copied!"
+#~ msgstr "Profiilin päivitys onnistui."

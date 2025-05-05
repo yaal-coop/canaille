@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-05-04 17:43+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-05-05 11:32+0200\n"
 "PO-Revision-Date: 2025-05-05 09:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -379,7 +379,7 @@ msgstr ""
 "verrouillé."
 
 #: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:395
+#: canaille/core/endpoints/auth.py:396
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
@@ -424,8 +424,8 @@ msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
 #: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
-#: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:425
-#: canaille/core/endpoints/auth.py:464
+#: canaille/core/endpoints/auth.py:352 canaille/core/endpoints/auth.py:426
+#: canaille/core/endpoints/auth.py:465
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 "Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
@@ -474,23 +474,23 @@ msgstr ""
 msgid "Invalid code."
 msgstr "Code invalide."
 
-#: canaille/core/endpoints/auth.py:405
+#: canaille/core/endpoints/auth.py:406
 msgid "The one-time password you entered is invalid. Please try again"
 msgstr ""
 "Le code à usage unique que vous avez entré est invalide. Veuillez ré-essayer"
 
-#: canaille/core/endpoints/auth.py:437 canaille/core/endpoints/auth.py:476
+#: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
 msgid "Code successfully sent!"
 msgstr "Le code a été envoyé avec succès !"
 
-#: canaille/core/endpoints/auth.py:442 canaille/core/endpoints/auth.py:481
-#: canaille/core/endpoints/auth.py:524 canaille/core/endpoints/auth.py:552
+#: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
+#: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
 msgid "Error while sending one-time password. Please try again."
 msgstr ""
 "Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
 "essayer."
 
-#: canaille/core/endpoints/auth.py:497
+#: canaille/core/endpoints/auth.py:498
 msgid ""
 "You have not enabled multi-factor authentication. Please enable it first to "
 "login."
@@ -498,7 +498,7 @@ msgstr ""
 "Vous n'avez pas activé l'authentification à multiple facteurs. Veuillez "
 "d'abord l'activer afin de pouvoir vous identifier."
 
-#: canaille/core/endpoints/auth.py:503
+#: canaille/core/endpoints/auth.py:504
 msgid "Please enter the one-time password from your authenticator app."
 msgstr ""
 "Veuillez saisir le code à usage unique depuis votre application "
@@ -1347,13 +1347,13 @@ msgstr "Gérez vos informations et vos autorisations"
 
 #: canaille/templates/core/login.html:59
 #: canaille/templates/core/mails/registration.txt:5
-#: canaille/templates/core/setup-mfa.html:68
+#: canaille/templates/core/setup-mfa.html:85
 msgid "Continue"
 msgstr "Continuer"
 
 #: canaille/templates/core/password.html:21
-#: canaille/templates/core/setup-mfa.html:32
-#: canaille/templates/core/verify-mfa.html:32
+#: canaille/templates/core/setup-mfa.html:36
+#: canaille/templates/core/verify-mfa.html:36
 #, python-format
 msgid "Sign in as %(username)s"
 msgstr "Connexion en tant que %(username)s"
@@ -1363,7 +1363,7 @@ msgid "Please enter your password for this account."
 msgstr "Veuillez saisir votre mot de passe pour ce compte."
 
 #: canaille/templates/core/password.html:39
-#: canaille/templates/core/verify-mfa.html:50
+#: canaille/templates/core/verify-mfa.html:54
 #, python-format
 msgid "I am not %(username)s"
 msgstr "Je ne suis pas %(username)s"
@@ -1551,33 +1551,33 @@ msgstr "Supprimer mon compte"
 msgid "Impersonate"
 msgstr "Prendre l'identité"
 
-#: canaille/templates/core/setup-mfa.html:34
+#: canaille/templates/core/setup-mfa.html:38
 msgid "Set up multi-factor authentication."
 msgstr "Mise en place l'authentification multi-facteurs."
 
-#: canaille/templates/core/setup-mfa.html:43
+#: canaille/templates/core/setup-mfa.html:47
 msgid "Instructions"
 msgstr "Instructions"
 
-#: canaille/templates/core/setup-mfa.html:45
+#: canaille/templates/core/setup-mfa.html:49
 msgid "Install a One-Time Password (OTP) generator application on your mobile."
 msgstr ""
 "Installez une application de génération de code à usage unique (ou One-Time "
 "Password, OTP) sur votre mobile."
 
-#: canaille/templates/core/setup-mfa.html:46
+#: canaille/templates/core/setup-mfa.html:50
 msgid "Set up a new authenticator."
 msgstr "Mettez en place d'un nouvel authentificateur."
 
-#: canaille/templates/core/setup-mfa.html:47
+#: canaille/templates/core/setup-mfa.html:51
 msgid "Scan the QR code below and click \"Continue\"."
 msgstr "Scannez le QR code ci-dessous et cliquez sur « Continuer »."
 
-#: canaille/templates/core/setup-mfa.html:50
+#: canaille/templates/core/setup-mfa.html:54
 msgid "Note:"
 msgstr "Note :"
 
-#: canaille/templates/core/setup-mfa.html:51
+#: canaille/templates/core/setup-mfa.html:55
 msgid ""
 "If you can't scan the QR code, try entering the secret token in your "
 "authenticator app directly."
@@ -1585,33 +1585,31 @@ msgstr ""
 "Si vous ne pouvez pas scanner le QR code, tentez d'entrer le jeton secret ci-"
 "dessous dans votre application d'authentification."
 
-#: canaille/templates/core/setup-mfa.html:55
+#: canaille/templates/core/setup-mfa.html:61
+#: canaille/templates/core/setup-mfa.html:68
 msgid "Secret token"
 msgstr "Jeton secret"
 
-#: canaille/templates/core/setup-mfa.html:58
-msgid "Secret token:"
-msgstr "Jeton secret :"
-
-#: canaille/templates/core/setup-mfa.html:61
-#: canaille/templates/core/setup-mfa.html:86
+#: canaille/templates/core/setup-mfa.html:72
 msgid "Copy secret"
 msgstr "Copier le secret"
 
-#: canaille/templates/core/setup-mfa.html:84
-msgid "Successfully copied!"
-msgstr "Le code a été copié avec succès !"
+#: canaille/templates/core/setup-mfa.html:82
+#, fuzzy
+#| msgid "Pre-authorized applications"
+msgid "Open authenticator application"
+msgstr "Applications pré-autorisées"
 
-#: canaille/templates/core/verify-mfa.html:34
+#: canaille/templates/core/verify-mfa.html:38
 msgid "One-time password authentication."
 msgstr "Authentification par mot de passe à usage unique."
 
 #: canaille/templates/core/partial/emails_field.html:14
-#: canaille/templates/core/verify-mfa.html:51
+#: canaille/templates/core/verify-mfa.html:55
 msgid "Verify"
 msgstr "Confirmer"
 
-#: canaille/templates/core/verify-mfa.html:66
+#: canaille/templates/core/verify-mfa.html:70
 msgid "Didn't receive the code? Click here to send another one."
 msgstr "Vous n'avez pas reçu le code ? Cliquez ici pour en envoyer un nouveau."
 
@@ -2511,6 +2509,12 @@ msgstr "Logo de l'application"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Jeton"
+
+#~ msgid "Secret token:"
+#~ msgstr "Jeton secret :"
+
+#~ msgid "Successfully copied!"
+#~ msgstr "Le code a été copié avec succès !"
 
 #~ msgid "JWKS"
 #~ msgstr "JWKS"

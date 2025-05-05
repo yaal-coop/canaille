@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-04 17:43+0200\n"
+"POT-Creation-Date: 2025-05-05 11:32+0200\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -403,7 +403,7 @@ msgid "Locked users cannot be impersonated."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:395
+#: canaille/core/endpoints/auth.py:396
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Acceso correcto. Benvido/a %(user)s"
@@ -457,8 +457,8 @@ msgid "Login failed, please check your information"
 msgstr "Fallou o inicio de sesión, comproba as túas credenciais"
 
 #: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
-#: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:425
-#: canaille/core/endpoints/auth.py:464
+#: canaille/core/endpoints/auth.py:352 canaille/core/endpoints/auth.py:426
+#: canaille/core/endpoints/auth.py:465
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 
@@ -507,28 +507,28 @@ msgstr ""
 msgid "Invalid code."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:405
+#: canaille/core/endpoints/auth.py:406
 msgid "The one-time password you entered is invalid. Please try again"
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:437 canaille/core/endpoints/auth.py:476
+#: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
 #, fuzzy
 #| msgid "Profile updated successfuly."
 msgid "Code successfully sent!"
 msgstr "Perfil actualizado correctamente."
 
-#: canaille/core/endpoints/auth.py:442 canaille/core/endpoints/auth.py:481
-#: canaille/core/endpoints/auth.py:524 canaille/core/endpoints/auth.py:552
+#: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
+#: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
 msgid "Error while sending one-time password. Please try again."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:497
+#: canaille/core/endpoints/auth.py:498
 msgid ""
 "You have not enabled multi-factor authentication. Please enable it first to "
 "login."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:503
+#: canaille/core/endpoints/auth.py:504
 #, fuzzy
 #| msgid "Please enter your password for this account."
 msgid "Please enter the one-time password from your authenticator app."
@@ -1411,13 +1411,13 @@ msgstr "Xestiona a túa información e as túas autorizacións"
 
 #: canaille/templates/core/login.html:59
 #: canaille/templates/core/mails/registration.txt:5
-#: canaille/templates/core/setup-mfa.html:68
+#: canaille/templates/core/setup-mfa.html:85
 msgid "Continue"
 msgstr "Continuar"
 
 #: canaille/templates/core/password.html:21
-#: canaille/templates/core/setup-mfa.html:32
-#: canaille/templates/core/verify-mfa.html:32
+#: canaille/templates/core/setup-mfa.html:36
+#: canaille/templates/core/verify-mfa.html:36
 #, python-format
 msgid "Sign in as %(username)s"
 msgstr "Iniciar sesión como %(username)s"
@@ -1427,7 +1427,7 @@ msgid "Please enter your password for this account."
 msgstr "Introduce o teu contrasinal para esta conta."
 
 #: canaille/templates/core/password.html:39
-#: canaille/templates/core/verify-mfa.html:50
+#: canaille/templates/core/verify-mfa.html:54
 #, python-format
 msgid "I am not %(username)s"
 msgstr "Non son %(username)s"
@@ -1622,71 +1622,65 @@ msgstr "Eliminar a miña conta"
 msgid "Impersonate"
 msgstr "Suplantar"
 
-#: canaille/templates/core/setup-mfa.html:34
+#: canaille/templates/core/setup-mfa.html:38
 msgid "Set up multi-factor authentication."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:43
+#: canaille/templates/core/setup-mfa.html:47
 #, fuzzy
 #| msgid "Invitation"
 msgid "Instructions"
 msgstr "Invitación"
 
-#: canaille/templates/core/setup-mfa.html:45
+#: canaille/templates/core/setup-mfa.html:49
 msgid "Install a One-Time Password (OTP) generator application on your mobile."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:46
+#: canaille/templates/core/setup-mfa.html:50
 msgid "Set up a new authenticator."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:47
+#: canaille/templates/core/setup-mfa.html:51
 msgid "Scan the QR code below and click \"Continue\"."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:50
+#: canaille/templates/core/setup-mfa.html:54
 msgid "Note:"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:51
+#: canaille/templates/core/setup-mfa.html:55
 msgid ""
 "If you can't scan the QR code, try entering the secret token in your "
 "authenticator app directly."
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:55
+#: canaille/templates/core/setup-mfa.html:61
+#: canaille/templates/core/setup-mfa.html:68
 #, fuzzy
 #| msgid "Refresh token"
 msgid "Secret token"
 msgstr "Refrescar token"
 
-#: canaille/templates/core/setup-mfa.html:58
-#, fuzzy
-#| msgid "Refresh token"
-msgid "Secret token:"
-msgstr "Refrescar token"
-
-#: canaille/templates/core/setup-mfa.html:61
-#: canaille/templates/core/setup-mfa.html:86
+#: canaille/templates/core/setup-mfa.html:72
 msgid "Copy secret"
 msgstr ""
 
-#: canaille/templates/core/setup-mfa.html:84
+#: canaille/templates/core/setup-mfa.html:82
 #, fuzzy
-#| msgid "Profile updated successfuly."
-msgid "Successfully copied!"
-msgstr "Perfil actualizado correctamente."
+#| msgid "Pre-authorized applications"
+msgid "Open authenticator application"
+msgstr "Aplicacións preautorizadas"
 
-#: canaille/templates/core/verify-mfa.html:34
+#: canaille/templates/core/verify-mfa.html:38
 msgid "One-time password authentication."
 msgstr ""
 
 #: canaille/templates/core/partial/emails_field.html:14
-#: canaille/templates/core/verify-mfa.html:51
+#: canaille/templates/core/verify-mfa.html:55
 msgid "Verify"
 msgstr ""
 
-#: canaille/templates/core/verify-mfa.html:66
+#: canaille/templates/core/verify-mfa.html:70
 msgid "Didn't receive the code? Click here to send another one."
 msgstr ""
 
@@ -2636,6 +2630,16 @@ msgstr ""
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, fuzzy
+#~| msgid "Refresh token"
+#~ msgid "Secret token:"
+#~ msgstr "Refrescar token"
+
+#, fuzzy
+#~| msgid "Profile updated successfuly."
+#~ msgid "Successfully copied!"
+#~ msgstr "Perfil actualizado correctamente."
 
 #, fuzzy
 #~| msgid "JKW URI"
