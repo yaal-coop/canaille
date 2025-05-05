@@ -26,11 +26,11 @@ def generate_otp(user, counter_delta=0):
 
     method = current_app.features.otp_method
     if method == "TOTP":
-        totp = otpauth.TOTP(bytes(user.secret_token, "utf-8"))
+        totp = otpauth.TOTP(user.secret_token.encode("utf-8"))
         return totp.string_code(totp.generate())
 
     elif method == "HOTP":
-        hotp = otpauth.HOTP(bytes(user.secret_token, "utf-8"))
+        hotp = otpauth.HOTP(user.secret_token.encode("utf-8"))
         return hotp.string_code(hotp.generate(user.hotp_counter + counter_delta))
 
     else:  # pragma: no cover
@@ -66,7 +66,7 @@ def is_totp_valid(user, user_otp):
     import otpauth
 
     try:
-        return otpauth.TOTP(bytes(user.secret_token, "utf-8")).verify(user_otp)
+        return otpauth.TOTP(user.secret_token.encode("utf-8")).verify(user_otp)
 
     # hotfix for https://github.com/authlib/otpauth/pull/13
     except (ValueError, TypeError):
@@ -82,7 +82,7 @@ def is_hotp_valid(user, user_otp):
     while counter - user.hotp_counter <= HOTP_LOOK_AHEAD_WINDOW:
         # hotfix for https://github.com/authlib/otpauth/pull/13
         try:
-            is_valid = otpauth.HOTP(bytes(user.secret_token, "utf-8")).verify(
+            is_valid = otpauth.HOTP(user.secret_token.encode("utf-8")).verify(
                 user_otp, counter
             )
         except (ValueError, TypeError):
