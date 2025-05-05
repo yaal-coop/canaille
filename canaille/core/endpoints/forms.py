@@ -40,6 +40,7 @@ class LoginForm(Form):
             "spellcheck": "false",
             "autocorrect": "off",
             "inputmode": "email",
+            "autocomplete": "section-login username",
         },
     )
 
@@ -49,7 +50,7 @@ class PasswordForm(Form):
         _("Password"),
         validators=[wtforms.validators.DataRequired()],
         render_kw={
-            "autocomplete": "current-password",
+            "autocomplete": "section-login current-password",
         },
     )
 
