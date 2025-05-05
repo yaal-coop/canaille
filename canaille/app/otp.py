@@ -44,12 +44,12 @@ def get_otp_authentication_setup_uri(user):
 
     method = current_app.features.otp_method
     if method == "TOTP":
-        return otpauth.TOTP(bytes(user.secret_token, "utf-8")).to_uri(
+        return otpauth.TOTP(user.secret_token.encode("utf-8")).to_uri(
             label=user.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
         )
 
     elif method == "HOTP":
-        return otpauth.HOTP(bytes(user.secret_token, "utf-8")).to_uri(
+        return otpauth.HOTP(user.secret_token.encode("utf-8")).to_uri(
             label=user.user_name,
             issuer=current_app.config["CANAILLE"]["NAME"],
             counter=user.hotp_counter,

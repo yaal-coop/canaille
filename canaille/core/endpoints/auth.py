@@ -332,6 +332,7 @@ def setup_two_factor_auth():
         "core/setup-mfa.html",
         secret=user.secret_token,
         qr_image=base64_qr_image,
+        otp_uri=uri,
         user=user,
     )
 

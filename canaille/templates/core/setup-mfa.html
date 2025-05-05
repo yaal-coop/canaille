@@ -57,13 +57,15 @@ Display a QR-code and the OTP secret.
                 </div>
 
                 <div>
-                    <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui centered medium image"/>
+                    <a href="{{ otp_uri }}">
+                        <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui centered medium image"/>
+                    </a>
                 </div>
 
                 <br>
 
                 <div class="ui fluid labeled action input">
-                    <label class="ui label" for="secret">{% trans %}Secret token:{% endtrans %}</label>
+                    <label class="ui label" for="secret">{% trans %}Secret token{% endtrans %}</label>
                     <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
                     <button type="button" class="ui secondary icon button copy-button" data-copy="secret">
                         <i class="copy icon"></i>
@@ -76,7 +78,10 @@ Display a QR-code and the OTP secret.
                 {% block buttons %}
                     <div class="ui right aligned container">
                         <div class="ui stackable buttons">
-                            <a type="button" class="ui right floated primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">
+                            <a type="button"class="ui right button" href="{{ otp_uri }}">
+                                {% trans %}Open authenticator application{% endtrans %}
+                            </a>
+                            <a type="button" class="ui right primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">
                                 {{ _("Continue") }}
                             </a>
                         </div>
