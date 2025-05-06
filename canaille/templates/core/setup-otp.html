@@ -43,46 +43,73 @@ Display a QR-code and the OTP secret.
                     {{ flask.messages() }}
                 {% endblock %}
 
-                <div class="ui segment">
-                    <h3 class="ui header">{% trans %}Instructions{% endtrans %}</h3>
-                    <ol class="ui list">
-                        <li class="item">{% trans %}Install a One-Time Password (OTP) generator application on your mobile.{% endtrans %}</li>
-                        <li class="item">{% trans %}Set up a new authenticator.{% endtrans %}</li>
-                        <li class="item">{% trans %}Scan the QR code below and click "Continue".{% endtrans %}</li>
-                    </ol>
-                    <p>
-                        <strong>{% trans %}Note:{% endtrans %}</strong>
-                        {% trans %}If you can't scan the QR code, try entering the secret token in your authenticator app directly.{% endtrans %}
-                    </p>
+                <div class="ui attached message">
+                    <div class="header">
+                        {% trans %}One-time passcode application configuration{% endtrans %}
+                    </div>
+                    {% trans %}You need to configure an authenticator application to generate temporary codes for {{ website_name }}.{% endtrans %}
+                    {% trans %}Then, configure the authenticator application with one of the following methods:{% endtrans %}
                 </div>
 
-                <div>
-                    <a href="{{ otp_uri }}">
-                        <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui centered medium image"/>
-                    </a>
+                <div class="ui attached segment">
+                    <h3 class="ui header">
+                        {% trans %}1 - Automatic configuration{% endtrans %}
+                    </h3>
+
+                    {% trans %}
+                        If the authenticator application is installed on the device that you are currently using, you can configure it by clicking on this button:
+                    {% endtrans %}
+
+                    <div class="ui center aligned container">
+                        <a type="button"class="ui teal button" href="{{ otp_uri }}">
+                            {% trans %}Open authenticator application{% endtrans %}
+                        </a>
+                    </div>
                 </div>
 
-                <br>
+                <div class="ui attached segment">
+                    <h3 class="ui header">
+                        {% trans %}2 - QR Code scanning{% endtrans %}
+                    </h3>
 
-                <div class="ui fluid labeled action input">
-                    <label class="ui label" for="secret">{% trans %}Secret token{% endtrans %}</label>
-                    <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
-                    <button type="button" class="ui secondary icon button copy-button" data-copy="secret">
-                        <i class="copy icon"></i>
-                        {% trans %}Copy secret{% endtrans %}
-                    </button>
+                    {% trans %}
+                        If the previous button did not work or if your authenticator application is installed on another device, please open it and use it to scan the following qrcode:
+                    {% endtrans %}
+                    <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui centered medium image"/>
                 </div>
 
-                <br>
+
+                <div class="ui bottom attached segment">
+                    <h3 class="ui header">
+                        {% trans %}3 - Secret token{% endtrans %}
+                    </h3>
+
+                    {% trans %}
+                        If your device cannot scan images, you can configure your authenticator application by manually copying this secret token:
+                    {% endtrans %}
+                    <div class="ui fluid labeled action input">
+                        <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
+                        <button type="button" class="ui secondary icon button copy-button" data-copy="secret">
+                            <i class="copy icon"></i>
+                            {% trans %}Copy secret{% endtrans %}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ui top attached message">
+                    <div class="header">
+                        {% trans %}Passcode confirmation{% endtrans %}
+                    </div>
+                    {% trans %}
+                        Once your authenticator application is correctly configured, you need to generate a one-time passcode and fill it in the following page.{% endtrans %}
+                    {% trans %}When you are ready, please click on the following button:{% endtrans %}
+                </div>
 
                 {% block buttons %}
-                    <div class="ui right aligned container">
-                        <div class="ui stackable buttons">
-                            <a type="button"class="ui right button" href="{{ otp_uri }}">
-                                {% trans %}Open authenticator application{% endtrans %}
-                            </a>
-                            <a type="button" class="ui right primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">
-                                {{ _("Continue") }}
+                    <div class="ui center aligned bottom attached segment">
+                        <div class="ui stackable big buttons">
+                            <a type="button" class="ui primary button" href="{{ url_for('core.auth.verify_two_factor_auth') }}">
+                                {{ _("Next step") }}
                             </a>
                         </div>
                     </div>
