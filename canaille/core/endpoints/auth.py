@@ -497,7 +497,7 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
         if not user.last_otp_login:
             flash(
                 _(
-                    "In order to finish logging in, you need to configure an authenticator application."
+                    "In order to continue logging in, you need to configure an authenticator application."
                 ),
                 "info",
             )
