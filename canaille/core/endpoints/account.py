@@ -762,9 +762,12 @@ def profile_settings(user, edited_user):
     if request.form.get("action") == "reset-otp" and current_app.features.has_otp:
         from canaille.app.otp import initialize_otp
 
-        flash(_("One-time password authentication has been reset"), "success")
+        flash(
+            _("Authenticator application passcode authentication has been reset"),
+            "success",
+        )
         current_app.logger.security(
-            f"Reset one-time password authentication for {edited_user.user_name} by {user.user_name}"
+            f"Reset one-time passcode authentication for {edited_user.user_name} by {user.user_name}"
         )
         initialize_otp(edited_user)
         Backend.instance.save(edited_user)

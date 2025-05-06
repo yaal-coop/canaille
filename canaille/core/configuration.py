@@ -68,7 +68,7 @@ class SMTPSettings(BaseModel):
 class SMPPSettings(BaseModel):
     """The SMPP configuration. Belong in the ``CANAILLE.SMPP`` namespace.
 
-    If not set, sms related features such as sms one-time passwords will be disabled.
+    If not set, sms related features such as sms one-time passcodes will be disabled.
     """
 
     HOST: str | None = "localhost"
@@ -373,17 +373,17 @@ class CoreSettings(BaseModel):
 
     OTP_METHOD: OTPMethod | None = None
     """If OTP_METHOD is defined, then users will need to authenticate themselves
-    using a one-time password (OTP) via an authenticator app.
-    If set to ``TOTP``, the application will use time one-time passwords,
-    If set to ``HOTP``, the application will use HMAC-based one-time passwords."""
+    using a one-time passcode (OTP) via an authenticator app.
+    If set to ``TOTP``, the application will use time one-time passcodes,
+    If set to ``HOTP``, the application will use HMAC-based one-time passcodes."""
 
     EMAIL_OTP: bool = False
     """If :py:data:`True`, then users will need to authenticate themselves
-    via a one-time password sent to their primary email address."""
+    via a one-time passcode sent to their primary email address."""
 
     SMS_OTP: bool = False
     """If :py:data:`True`, then users will need to authenticate themselves
-    via a one-time password sent to their primary phone number."""
+    via a one-time passcode sent to their primary phone number."""
 
     @field_validator("OTP_METHOD", "EMAIL_OTP")
     @classmethod
@@ -399,12 +399,12 @@ class CoreSettings(BaseModel):
     def validate_otp_configuration(self) -> Self:
         if self.EMAIL_OTP and not self.SMTP:
             raise ValueError(
-                "Cannot activate email one-time password authentication without SMTP"
+                "Cannot activate email one-time passcode authentication without SMTP"
             )
 
         if self.SMS_OTP and not self.SMPP:
             raise ValueError(
-                "Cannot activate sms one-time password authentication without SMPP"
+                "Cannot activate sms one-time passcode authentication without SMPP"
             )
 
         return self
@@ -501,7 +501,7 @@ class CoreSettings(BaseModel):
     SMPP: SMPPSettings | None = Field(None, examples=[SMPPSettings()])
     """The settings related to SMPP configuration.
 
-    If unset, sms-related features like sms one-time passwords won't be
+    If unset, sms-related features like sms one-time passcodes won't be
     enabled.
     """
 

@@ -343,7 +343,7 @@ def delete_command():
 @with_backendcontext
 @click.argument("identifier")
 def reset_otp(identifier):
-    """Reset one-time password authentication for a user and display the edited user in JSON format in the standard output.
+    """Reset one-time passcode authentication for a user and display the edited user in JSON format in the standard output.
 
     IDENTIFIER should be a user id or user_name
     """
@@ -355,7 +355,7 @@ def reset_otp(identifier):
 
     initialize_otp(user)
     current_app.logger.security(
-        f"Reset one-time password authentication from CLI for {user.user_name}"
+        f"Reset one-time passcode authentication from CLI for {user.user_name}"
     )
 
     try:

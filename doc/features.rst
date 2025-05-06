@@ -192,11 +192,11 @@ If :attr:`password compromission check feature <canaille.core.configuration.Core
 Multi-factor authentication
 ===========================
 
-If the :attr:`one-time password feature <canaille.core.configuration.CoreSettings.OTP_METHOD>` is set, then users will need to authenticate themselves using a one-time password via an authenticator app.
-Two options are supported : "TOTP" for time one-time password, and "HOTP" for HMAC-based one-time password.
+If the :attr:`one-time passcode feature <canaille.core.configuration.CoreSettings.OTP_METHOD>` is set, then users will need to authenticate themselves using a one-time passcode via an authenticator app.
+Two options are supported : "TOTP" for time one-time passcode, and "HOTP" for HMAC-based one-time passcode.
 In case of lost token, TOTP/HOTP authentication can be reset by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
-If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`email one-time password feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary email address.
-If a :class:`smpp server <canaille.core.configuration.SMPPSettings>` is configured and the :attr:`sms one-time password feature <canaille.core.configuration.CoreSettings.SMS_OTP>` is enabled, then users will need to authenticate themselves via a one-time password sent to their primary phone number.
+If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`email one-time passcode feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time passcode sent to their primary email address.
+If a :class:`smpp server <canaille.core.configuration.SMPPSettings>` is configured and the :attr:`sms one-time passcode feature <canaille.core.configuration.CoreSettings.SMS_OTP>` is enabled, then users will need to authenticate themselves via a one-time passcode sent to their primary phone number.
 
 .. _feature_intruder_lockout:
 
@@ -325,7 +325,7 @@ The following security events are logged with the log level "security" for easy 
 - Password update
 - Email update
 - Forgotten password mail sent to user
-- One-time password mail sent to user
+- One-time passcode mail sent to user
 - Multi-factor authentication reset
 - Token emission
 - Token refresh

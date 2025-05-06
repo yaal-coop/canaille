@@ -130,7 +130,7 @@ You can adapt and load those configuration files with:
 otp
 ~~~
 
-If the `otp <https://www.openldap.org/software/man.cgi?query=slapo-otp>`_ overlay is configured, you will be able to add one-time password authentication in canaille.
+If the `otp <https://www.openldap.org/software/man.cgi?query=slapo-otp>`_ overlay is configured, you will be able to add one-time passcode authentication in canaille.
 
 Here is a configuration example compatible with canaille:
 

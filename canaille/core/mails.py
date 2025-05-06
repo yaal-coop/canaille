@@ -268,7 +268,7 @@ def send_one_time_password_mail(mail, otp):
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
-    subject = _("One-time password authentication on {website_name}").format(
+    subject = _("One-time passcode authentication on {website_name}").format(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(

@@ -272,8 +272,8 @@ class User(Model):
     """A DateTime indicating when the resource was locked."""
 
     last_otp_login: datetime.datetime | None = None
-    """A DateTime indicating when the user last logged in with a one-time password.
-    This attribute is currently used to check whether the user has activated one-time password authentication or not."""
+    """A DateTime indicating when the user last logged in with a one-time passcode.
+    This attribute is currently used to check whether the user has activated one-time passcode authentication or not."""
 
     secret_token: str | None = None
     """Unique token generated for each user, used for
@@ -287,7 +287,7 @@ class User(Model):
     """One time password used for email or sms multi-factor authentication."""
 
     one_time_password_emission_date: datetime.datetime | None = None
-    """A DateTime indicating when the user last emitted an email or sms one-time password."""
+    """A DateTime indicating when the user last emitted an email or sms one-time passcode."""
 
     _readable_fields: set[str] | None = None
     _writable_fields: set[str] | None = None
@@ -417,7 +417,7 @@ class User(Model):
             return self.is_email_or_sms_otp_valid(user_otp)
 
         else:  # pragma: no cover
-            raise RuntimeError("Invalid one-time password method")
+            raise RuntimeError("Invalid one-time passcode method")
 
     def is_email_or_sms_otp_valid(self, user_otp):
         return user_otp == self.one_time_password and self.is_otp_still_valid()

@@ -354,7 +354,7 @@ def email_otp_html(user):
         site_url=base_url,
         otp=otp,
         logo=current_app.config["CANAILLE"]["LOGO"],
-        title=_("One-time password authentication on {website_name}").format(
+        title=_("Passcode authentication on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
         ),
     )

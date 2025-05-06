@@ -34,7 +34,7 @@ def generate_otp(user, counter_delta=0):
         return hotp.string_code(hotp.generate(user.hotp_counter + counter_delta))
 
     else:  # pragma: no cover
-        raise RuntimeError("Invalid one-time password method")
+        raise RuntimeError("Invalid one-time passcode method")
 
 
 def get_otp_authentication_setup_uri(user):
@@ -59,7 +59,7 @@ def get_otp_authentication_setup_uri(user):
         ), otp.b32_secret
 
     else:  # pragma: no cover
-        raise RuntimeError("Invalid one-time password method")
+        raise RuntimeError("Invalid one-time passcode method")
 
 
 def is_totp_valid(user, user_otp):

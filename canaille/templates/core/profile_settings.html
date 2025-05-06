@@ -161,7 +161,7 @@ Displays the user settings edition form.
                 <div class="ui stackable buttons">
                     {% if features.has_otp and user.can_manage_users %}
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-reset-otp" id="reset-otp" formnovalidate>
-                            {% trans %}Reset one-time password authentication{% endtrans %}
+                            {% trans %}Reset authenticator application configuration{% endtrans %}
                         </button>
                     {% endif %}
 

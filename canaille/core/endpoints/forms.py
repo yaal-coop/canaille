@@ -468,7 +468,7 @@ class EmailConfirmationForm(Form):
 
 class TwoFactorForm(Form):
     otp = wtforms.StringField(
-        _("One-time password"),
+        _("Passcode"),
         validators=[
             wtforms.validators.DataRequired(),
             wtforms.validators.Length(min=OTP_DIGITS, max=OTP_DIGITS),

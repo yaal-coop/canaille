@@ -97,7 +97,7 @@ Canaille provides different package options:
 - `postgresql` provides the dependencies to enable the PostgreSQL backend;
 - `mysql` provides the dependencies to enable the MySQL backend;
 - `sentry` provides sentry integration to watch Canaille exceptions;
-- `otp` provides the dependencies to enable one-time password authentication;
+- `otp` provides the dependencies to enable one-time passcode authentication;
 - `sms` provides the dependencies to enable sms sending;
 - `server` provides the dependencies to run a production server.
 
