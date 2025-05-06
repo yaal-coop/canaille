@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:47+0200\n"
+"POT-Creation-Date: 2025-05-06 23:42+0200\n"
 "PO-Revision-Date: 2024-06-26 11:09+0000\n"
 "Last-Translator: Sascha <swi@thechameleonway.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -294,12 +294,12 @@ msgid "User account creation succeeded."
 msgstr "Benutzerkonto erfolgreich erstellt."
 
 #: canaille/core/endpoints/account.py:613
-#: canaille/core/endpoints/account.py:804
+#: canaille/core/endpoints/account.py:807
 msgid "Profile edition failed."
 msgstr "Profiländerung fehlgeschlagen."
 
 #: canaille/core/endpoints/account.py:621
-#: canaille/core/endpoints/account.py:822
+#: canaille/core/endpoints/account.py:825
 msgid "Profile updated successfully."
 msgstr "Profil erfolgreich aktualisiert."
 
@@ -335,7 +335,7 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:181
+#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:179
 msgid "Could not send the password initialization email"
 msgstr "Die E-Mail zur Kennwortinitialisierung konnte nicht gesendet werden"
 
@@ -359,29 +359,29 @@ msgstr "Das Konto wurde gesperrt"
 msgid "The account has been unlocked"
 msgstr "Das Konto wurde entsperrt"
 
-#: canaille/core/endpoints/account.py:765
+#: canaille/core/endpoints/account.py:766
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "Passwortinitialisierung auf {website_name}"
 
-#: canaille/core/endpoints/account.py:843
+#: canaille/core/endpoints/account.py:846
 #, fuzzy, python-format
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The user %(user)s has been successfully deleted"
 msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
 
-#: canaille/core/endpoints/account.py:859
+#: canaille/core/endpoints/account.py:862
 msgid "Locked users cannot be impersonated."
 msgstr "Gesperrte Benutzer können nicht imitiert werden."
 
-#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:396
+#: canaille/core/endpoints/account.py:866 canaille/core/endpoints/auth.py:133
+#: canaille/core/endpoints/auth.py:404
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Verbindung erfolgreich. Willkommen %(user)s"
 
-#: canaille/core/endpoints/account.py:901 canaille/core/endpoints/auth.py:298
+#: canaille/core/endpoints/account.py:904 canaille/core/endpoints/auth.py:301
 msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 
@@ -428,20 +428,20 @@ msgstr "Passwortinitialisierung auf {website_name}"
 msgid "Login failed, please check your information"
 msgstr "Anmeldung fehlgeschlagen, bitte überprüfen Sie Ihre Angaben"
 
-#: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
-#: canaille/core/endpoints/auth.py:352 canaille/core/endpoints/auth.py:426
-#: canaille/core/endpoints/auth.py:465
+#: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:323
+#: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:423
+#: canaille/core/endpoints/auth.py:464
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 "Sie können sich nicht an das Login erinnern, mit dem Sie versucht haben, "
 "sich anzumelden"
 
-#: canaille/core/endpoints/auth.py:148
+#: canaille/core/endpoints/auth.py:146
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Ihre Verbindung wurde unterbrochen. Bis zum nächsten Mal %(user)s"
 
-#: canaille/core/endpoints/auth.py:175
+#: canaille/core/endpoints/auth.py:173
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -449,11 +449,11 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an Ihre E-Mail-Adresse "
 "gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/auth.py:204
+#: canaille/core/endpoints/auth.py:202
 msgid "You should receive it within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:216
+#: canaille/core/endpoints/auth.py:214
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -462,13 +462,13 @@ msgstr ""
 "Der Benutzer „%(user)s“ hat nicht die Berechtigung, sein Passwort zu "
 "aktualisieren. Wir können keine E-Mail zum Zurücksetzen des Passworts senden."
 
-#: canaille/core/endpoints/auth.py:236
+#: canaille/core/endpoints/auth.py:234
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 "Beim Versand der E-Mail zur Wiederherstellung des Passworts ist ein Problem "
 "aufgetreten."
 
-#: canaille/core/endpoints/auth.py:258
+#: canaille/core/endpoints/auth.py:256
 #, fuzzy, python-format
 #| msgid ""
 #| "The user '%(user)s' does not have permissions to update their password. "
@@ -479,41 +479,41 @@ msgstr ""
 "Der Benutzer „%(user)s“ hat nicht die Berechtigung, sein Passwort zu "
 "aktualisieren. Wir können keine E-Mail zum Zurücksetzen des Passworts senden."
 
-#: canaille/core/endpoints/auth.py:270
+#: canaille/core/endpoints/auth.py:268
 msgid "Invalid code."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:406
+#: canaille/core/endpoints/auth.py:379
 msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
+#: canaille/core/endpoints/auth.py:436
+msgid "Error while sending the passcode by email. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:446 canaille/core/endpoints/auth.py:487
 #, fuzzy
 #| msgid "Profile updated successfully."
 msgid "Passcode successfully sent!"
 msgstr "Profil erfolgreich aktualisiert."
 
-#: canaille/core/endpoints/auth.py:443
-msgid "Error while sending the passcode by email. Please try again."
-msgstr ""
-
-#: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
+#: canaille/core/endpoints/auth.py:477 canaille/core/endpoints/auth.py:550
 msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:498
 msgid ""
-"In order to finish logging in, you need to configure an authenticator "
+"In order to continue logging in, you need to configure an authenticator "
 "application."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:504
+#: canaille/core/endpoints/auth.py:505
 #, fuzzy
 #| msgid "Please enter your password for this account."
 msgid "Please enter the passcode from your authenticator application."
 msgstr "Bitte geben Sie Ihr Passwort für dieses Konto ein."
 
-#: canaille/core/endpoints/auth.py:525
+#: canaille/core/endpoints/auth.py:521
 msgid "Error while sending passcode by email. Please try again."
 msgstr ""
 
@@ -1578,8 +1578,8 @@ msgstr "Passwortinitialisierung auf {website_name}"
 #: canaille/templates/core/setup-otp.html:50
 #, python-format
 msgid ""
-"You need to configure an authenticator application to generate temporary "
-"codes for %(website_name)s."
+"You need to install an authenticator application to generate one-time "
+"passcodes for %(website_name)s."
 msgstr ""
 
 #: canaille/templates/core/setup-otp.html:51

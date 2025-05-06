@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-05-06 17:47+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-05-06 23:42+0200\n"
 "PO-Revision-Date: 2025-05-06 21:43+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -298,12 +298,12 @@ msgid "User account creation succeeded."
 msgstr "La création du compte utilisateur a réussi."
 
 #: canaille/core/endpoints/account.py:613
-#: canaille/core/endpoints/account.py:804
+#: canaille/core/endpoints/account.py:807
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
 #: canaille/core/endpoints/account.py:621
-#: canaille/core/endpoints/account.py:822
+#: canaille/core/endpoints/account.py:825
 msgid "Profile updated successfully."
 msgstr "Le profil a été mis à jour avec succès."
 
@@ -339,7 +339,7 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "courriel. Il devrait arriver d'ici une quelques minutes."
 
-#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:181
+#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:179
 msgid "Could not send the password initialization email"
 msgstr "Impossible d'envoyer le courriel d'initialisation de mot de passe"
 
@@ -363,29 +363,29 @@ msgstr "Le compte a été verrouillé"
 msgid "The account has been unlocked"
 msgstr "Le compte a été déverrouillé"
 
-#: canaille/core/endpoints/account.py:765
+#: canaille/core/endpoints/account.py:766
 msgid "Authenticator application passcode authentication has been reset"
 msgstr ""
 "L'authentification par application d'authentification a été ré-initialisée"
 
-#: canaille/core/endpoints/account.py:843
+#: canaille/core/endpoints/account.py:846
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/core/endpoints/account.py:859
+#: canaille/core/endpoints/account.py:862
 msgid "Locked users cannot be impersonated."
 msgstr ""
 "Impossible de prendre l’identité d’utilisateurs dont le compte est "
 "verrouillé."
 
-#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:396
+#: canaille/core/endpoints/account.py:866 canaille/core/endpoints/auth.py:133
+#: canaille/core/endpoints/auth.py:404
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
 
-#: canaille/core/endpoints/account.py:901 canaille/core/endpoints/auth.py:298
+#: canaille/core/endpoints/account.py:904 canaille/core/endpoints/auth.py:301
 msgid "Your password has been updated successfully"
 msgstr "Votre mot de passe a correctement été mis à jour"
 
@@ -429,20 +429,20 @@ msgstr "Code de connexion pour {website_name}"
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
-#: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
-#: canaille/core/endpoints/auth.py:352 canaille/core/endpoints/auth.py:426
-#: canaille/core/endpoints/auth.py:465
+#: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:323
+#: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:423
+#: canaille/core/endpoints/auth.py:464
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr ""
 "Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
 "connecter"
 
-#: canaille/core/endpoints/auth.py:148
+#: canaille/core/endpoints/auth.py:146
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Vous avez été déconnecté·e. À bientôt %(user)s"
 
-#: canaille/core/endpoints/auth.py:175
+#: canaille/core/endpoints/auth.py:173
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -450,11 +450,11 @@ msgstr ""
 "Un lien d'initialisation de votre mot de passe vous a été envoyé par "
 "courriel. Vous devriez le recevoir d'ici une quelques minutes."
 
-#: canaille/core/endpoints/auth.py:204
+#: canaille/core/endpoints/auth.py:202
 msgid "You should receive it within a few minutes."
 msgstr "Vous devriez le recevoir dans quelques minutes."
 
-#: canaille/core/endpoints/auth.py:216
+#: canaille/core/endpoints/auth.py:214
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -463,59 +463,63 @@ msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
 "Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
 
-#: canaille/core/endpoints/auth.py:236
+#: canaille/core/endpoints/auth.py:234
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr ""
 "Nous avons rencontré un problème lors de l'envoi du courriel de "
 "réinitialisation de mot de passe."
 
-#: canaille/core/endpoints/auth.py:258
+#: canaille/core/endpoints/auth.py:256
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
 
-#: canaille/core/endpoints/auth.py:270
+#: canaille/core/endpoints/auth.py:268
 msgid "Invalid code."
 msgstr "Code invalide."
 
-#: canaille/core/endpoints/auth.py:406
+#: canaille/core/endpoints/auth.py:379
 msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 "Le code de connexion que vous avez entré est invalide. Veuillez ré-essayer"
 
-#: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
-msgid "Passcode successfully sent!"
-msgstr "Le code de connexion a été envoyé avec succès !"
-
-#: canaille/core/endpoints/auth.py:443
+#: canaille/core/endpoints/auth.py:436
 msgid "Error while sending the passcode by email. Please try again."
 msgstr ""
 "Une erreur est survenue lors de l’envoi du code de connexion par email. "
 "Veuillez ré-essayer."
 
-#: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
+#: canaille/core/endpoints/auth.py:446 canaille/core/endpoints/auth.py:487
+msgid "Passcode successfully sent!"
+msgstr "Le code de connexion a été envoyé avec succès !"
+
+#: canaille/core/endpoints/auth.py:477 canaille/core/endpoints/auth.py:550
 msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
 "Une erreur est survenue lors de l’envoi du code de connexion par SMS. "
 "Veuillez ré-essayer."
 
 #: canaille/core/endpoints/auth.py:498
+#, fuzzy
+#| msgid ""
+#| "In order to finish logging in, you need to configure an authenticator "
+#| "application."
 msgid ""
-"In order to finish logging in, you need to configure an authenticator "
+"In order to continue logging in, you need to configure an authenticator "
 "application."
 msgstr ""
 "Afin de poursuivre votre connexion, vous devez configurer une application "
 "d'authentification."
 
-#: canaille/core/endpoints/auth.py:504
+#: canaille/core/endpoints/auth.py:505
 msgid "Please enter the passcode from your authenticator application."
 msgstr ""
 "Veuillez saisir le code de connexion indiqué par votre application "
 "d'authentification."
 
-#: canaille/core/endpoints/auth.py:525
+#: canaille/core/endpoints/auth.py:521
 msgid "Error while sending passcode by email. Please try again."
 msgstr ""
 "Une erreur est survenue lors de l’envoi du code de connexion par email. "
@@ -1575,10 +1579,13 @@ msgid "Authenticator application configuration"
 msgstr "Configuration de l'application d'authentification"
 
 #: canaille/templates/core/setup-otp.html:50
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "You need to configure an authenticator application to generate temporary "
+#| "codes for %(website_name)s."
 msgid ""
-"You need to configure an authenticator application to generate temporary "
-"codes for %(website_name)s."
+"You need to install an authenticator application to generate one-time "
+"passcodes for %(website_name)s."
 msgstr ""
 "Vous devez configurer une application d'authentification afin de générer des "
 "code de connexion à usage unique pour %(website_name)s."

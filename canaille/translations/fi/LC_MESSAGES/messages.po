@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:47+0200\n"
+"POT-Creation-Date: 2025-05-06 23:42+0200\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -289,12 +289,12 @@ msgid "User account creation succeeded."
 msgstr "Käyttäjätilin luominen onnistui."
 
 #: canaille/core/endpoints/account.py:613
-#: canaille/core/endpoints/account.py:804
+#: canaille/core/endpoints/account.py:807
 msgid "Profile edition failed."
 msgstr "Profiilin muokkaaminen epäonnistui."
 
 #: canaille/core/endpoints/account.py:621
-#: canaille/core/endpoints/account.py:822
+#: canaille/core/endpoints/account.py:825
 msgid "Profile updated successfully."
 msgstr "Profiilin päivitys onnistui."
 
@@ -330,7 +330,7 @@ msgstr ""
 "Salasanan alustuslinkki on lähetetty käyttäjän sähköpostiosoitteeseen. Sen "
 "pitäisi saapua muutamassa minuutissa."
 
-#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:181
+#: canaille/core/endpoints/account.py:704 canaille/core/endpoints/auth.py:179
 msgid "Could not send the password initialization email"
 msgstr "Salasanan alustussähköpostia ei voitu lähettää"
 
@@ -354,28 +354,28 @@ msgstr "Tili on lukittu"
 msgid "The account has been unlocked"
 msgstr "Tilin lukitus on avattu"
 
-#: canaille/core/endpoints/account.py:765
+#: canaille/core/endpoints/account.py:766
 #, fuzzy
 #| msgid "One-time password authentication has been reset"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "Kertaluonteinen salasanatodennus on nollattu"
 
-#: canaille/core/endpoints/account.py:843
+#: canaille/core/endpoints/account.py:846
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "Käyttäjä %(user)s on poistettu onnistuneesti"
 
-#: canaille/core/endpoints/account.py:859
+#: canaille/core/endpoints/account.py:862
 msgid "Locked users cannot be impersonated."
 msgstr "Lukittuja käyttäjiä ei voi esiintyä toisena henkilönä."
 
-#: canaille/core/endpoints/account.py:863 canaille/core/endpoints/auth.py:133
-#: canaille/core/endpoints/auth.py:396
+#: canaille/core/endpoints/account.py:866 canaille/core/endpoints/auth.py:133
+#: canaille/core/endpoints/auth.py:404
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Yhteyden muodostaminen onnistui. Tervetuloa %(user)s"
 
-#: canaille/core/endpoints/account.py:901 canaille/core/endpoints/auth.py:298
+#: canaille/core/endpoints/account.py:904 canaille/core/endpoints/auth.py:301
 msgid "Your password has been updated successfully"
 msgstr "Salasanasi päivittäminen onnistui"
 
@@ -420,18 +420,18 @@ msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 msgid "Login failed, please check your information"
 msgstr "Sisäänkirjautuminen epäonnistui; tarkista tietosi"
 
-#: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:324
-#: canaille/core/endpoints/auth.py:352 canaille/core/endpoints/auth.py:426
-#: canaille/core/endpoints/auth.py:465
+#: canaille/core/endpoints/auth.py:77 canaille/core/endpoints/auth.py:323
+#: canaille/core/endpoints/auth.py:351 canaille/core/endpoints/auth.py:423
+#: canaille/core/endpoints/auth.py:464
 msgid "Cannot remember the login you attempted to sign in with"
 msgstr "En muista kirjautumistunnusta, jolla yritit kirjautua sisään"
 
-#: canaille/core/endpoints/auth.py:148
+#: canaille/core/endpoints/auth.py:146
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Yhteys on katkennut. Nähdään seuraavan kerran %(user)s"
 
-#: canaille/core/endpoints/auth.py:175
+#: canaille/core/endpoints/auth.py:173
 msgid ""
 "A password initialization link has been sent at your email address. You "
 "should receive it within a few minutes."
@@ -439,11 +439,11 @@ msgstr ""
 "Salasanan alustuslinkki on lähetetty sähköpostiosoitteeseesi. Sinun pitäisi "
 "saada se muutamassa minuutissa."
 
-#: canaille/core/endpoints/auth.py:204
+#: canaille/core/endpoints/auth.py:202
 msgid "You should receive it within a few minutes."
 msgstr "Sinun pitäisi saada se muutamassa minuutissa."
 
-#: canaille/core/endpoints/auth.py:216
+#: canaille/core/endpoints/auth.py:214
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -452,49 +452,49 @@ msgstr ""
 "Käyttäjällä '%(user)s' ei ole lupaa päivittää salasanaansa. Emme voi "
 "lähettää salasanan nollaamissähköpostia."
 
-#: canaille/core/endpoints/auth.py:236
+#: canaille/core/endpoints/auth.py:234
 msgid "We encountered an issue while we sent the password recovery email."
 msgstr "Havaitsimme ongelman lähettäessämme salasanan palautussähköpostin."
 
-#: canaille/core/endpoints/auth.py:258
+#: canaille/core/endpoints/auth.py:256
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 msgstr "Käyttäjällä '%(user)s' ei ole lupaa päivittää salasanaansa. "
 
-#: canaille/core/endpoints/auth.py:270
+#: canaille/core/endpoints/auth.py:268
 msgid "Invalid code."
 msgstr "Epäkelvollinen koodi."
 
-#: canaille/core/endpoints/auth.py:406
+#: canaille/core/endpoints/auth.py:379
 msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
+#: canaille/core/endpoints/auth.py:436
+msgid "Error while sending the passcode by email. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:446 canaille/core/endpoints/auth.py:487
 #, fuzzy
 #| msgid "Profile updated successfully."
 msgid "Passcode successfully sent!"
 msgstr "Profiilin päivitys onnistui."
 
-#: canaille/core/endpoints/auth.py:443
-msgid "Error while sending the passcode by email. Please try again."
-msgstr ""
-
-#: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
+#: canaille/core/endpoints/auth.py:477 canaille/core/endpoints/auth.py:550
 msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:498
 msgid ""
-"In order to finish logging in, you need to configure an authenticator "
+"In order to continue logging in, you need to configure an authenticator "
 "application."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:504
+#: canaille/core/endpoints/auth.py:505
 msgid "Please enter the passcode from your authenticator application."
 msgstr ""
 
-#: canaille/core/endpoints/auth.py:525
+#: canaille/core/endpoints/auth.py:521
 msgid "Error while sending passcode by email. Please try again."
 msgstr ""
 
@@ -1495,8 +1495,8 @@ msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 #: canaille/templates/core/setup-otp.html:50
 #, python-format
 msgid ""
-"You need to configure an authenticator application to generate temporary "
-"codes for %(website_name)s."
+"You need to install an authenticator application to generate one-time "
+"passcodes for %(website_name)s."
 msgstr ""
 
 #: canaille/templates/core/setup-otp.html:51
