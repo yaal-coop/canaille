@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:33+0200\n"
+"POT-Creation-Date: 2025-05-06 17:47+0200\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -163,10 +163,10 @@ msgstr "Email de proba de {website_name}"
 msgid "Compromised password check failure on {website_name}"
 msgstr "Restablecer contrasinal en {website_name}"
 
-#: canaille/core/endpoints/admin.py:357 canaille/core/mails.py:271
+#: canaille/core/mails.py:271
 #, fuzzy, python-brace-format
 #| msgid "Password initialization on {website_name}"
-msgid "One-time password authentication on {website_name}"
+msgid "One-time passcode authentication on {website_name}"
 msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/core/validators.py:17
@@ -389,8 +389,10 @@ msgid "The account has been unlocked"
 msgstr "O acceso foi revogado"
 
 #: canaille/core/endpoints/account.py:765
-msgid "One-time password authentication has been reset"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "Authenticator application passcode authentication has been reset"
+msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/core/endpoints/account.py:843
 #, fuzzy, python-format
@@ -451,6 +453,12 @@ msgstr "Invitación a {website_name}"
 msgid "Email confirmation on {website_name}"
 msgstr "Invitación a {website_name}"
 
+#: canaille/core/endpoints/admin.py:357
+#, fuzzy, python-brace-format
+#| msgid "Password initialization on {website_name}"
+msgid "Passcode authentication on {website_name}"
+msgstr "Inicialización do contrasinal en {website_name}"
+
 #: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:100
 #: canaille/core/endpoints/auth.py:109
 msgid "Login failed, please check your information"
@@ -508,18 +516,21 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:406
-msgid "The one-time passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
 #, fuzzy
 #| msgid "Profile updated successfuly."
-msgid "Code successfully sent!"
+msgid "Passcode successfully sent!"
 msgstr "Perfil actualizado correctamente."
 
-#: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
-#: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
-msgid "Error while sending one-time passcode. Please try again."
+#: canaille/core/endpoints/auth.py:443
+msgid "Error while sending the passcode by email. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
+msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:498
@@ -531,8 +542,12 @@ msgstr ""
 #: canaille/core/endpoints/auth.py:504
 #, fuzzy
 #| msgid "Please enter your password for this account."
-msgid "Please enter the one-time passcode from your authenticator app."
+msgid "Please enter the passcode from your authenticator application."
 msgstr "Introduce o teu contrasinal para esta conta."
+
+#: canaille/core/endpoints/auth.py:525
+msgid "Error while sending passcode by email. Please try again."
+msgstr ""
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:60
 #: canaille/templates/core/partial/group-members.html:9
@@ -762,11 +777,10 @@ msgid "New email address"
 msgstr "Correo electrónico"
 
 #: canaille/core/endpoints/forms.py:471
-#: canaille/templates/core/mails/email_otp.txt:5
 #, fuzzy
-#| msgid "Initialize password"
-msgid "One-time password"
-msgstr "Inicializar contrasinal"
+#| msgid "Password"
+msgid "Passcode"
+msgstr "Contrasinal"
 
 #: canaille/core/endpoints/groups.py:42
 msgid "Group creation failed."
@@ -1598,10 +1612,11 @@ msgid "The user won't be able to connect until their account is unlocked."
 msgstr ""
 "O usuario non poderá iniciar sesión a menos que se estableza o contrasinal"
 
-#: canaille/templates/core/modals/reset-otp.html:27
 #: canaille/templates/core/profile_settings.html:164
-msgid "Reset one-time password authentication"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "Reset authenticator application configuration"
+msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/profile_settings.html:170
 #, fuzzy
@@ -1714,8 +1729,10 @@ msgid "Next step"
 msgstr ""
 
 #: canaille/templates/core/verify-mfa.html:38
-msgid "One-time password authentication."
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time passcode authentication."
+msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:55
@@ -1839,7 +1856,7 @@ msgstr ""
 #: canaille/templates/core/mails/admin.html:167
 #, fuzzy
 #| msgid "Initialize password"
-msgid "Email one-time password"
+msgid "Email one-time passcode"
 msgstr "Inicializar contrasinal"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:28
@@ -1963,8 +1980,10 @@ msgstr "Ligazón de invitación"
 
 #: canaille/templates/core/mails/email_otp.html:19
 #: canaille/templates/core/mails/email_otp.txt:1
-msgid "One-time password authentication"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time passcode authentication"
+msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/mails/email_otp.html:27
 #, fuzzy, python-format
@@ -1974,9 +1993,9 @@ msgstr ""
 #| "you need to reset your password, please click on the \"Reset password\" "
 #| "button below and follow the instructions."
 msgid ""
-"Someone, probably you, asked for a one-time password at %(site_name)s. If "
+"Someone, probably you, asked for a one-time passcode at %(site_name)s. If "
 "you did not ask for this email, please ignore it. If you did, please enter "
-"the one-time password below at %(site_name)s to complete your authentication."
+"the one-time passcode below at %(site_name)s to complete your authentication."
 msgstr ""
 "Alguén, probablemente ti, pediu unha ligazón de reinicialización do "
 "contrasinal en %(site_name)s. Se non pediches este correo electrónico, "
@@ -1986,15 +2005,22 @@ msgstr ""
 #: canaille/templates/core/mails/email_otp.html:30
 #, fuzzy
 #| msgid "Forgotten password"
-msgid "Your one-time password"
+msgid "Your one-time passcode"
 msgstr "Esquecín o meu contrasinal"
 
 #: canaille/templates/core/mails/email_otp.txt:3
-#, python-format
+#, fuzzy, python-format
+#| msgid "Please enter your password for this account."
 msgid ""
-"Please enter the one-time password below at %(site_name)s to complete your "
+"Please enter the one-time passcode below at %(site_name)s to complete your "
 "authentication."
-msgstr ""
+msgstr "Introduce o teu contrasinal para esta conta."
+
+#: canaille/templates/core/mails/email_otp.txt:5
+#, fuzzy
+#| msgid "Initialize password"
+msgid "One-time passcode"
+msgstr "Inicializar contrasinal"
 
 #: canaille/templates/core/mails/firstlogin.html:27
 #, python-format
@@ -2250,25 +2276,38 @@ msgid "Remove"
 msgstr ""
 
 #: canaille/templates/core/modals/reset-otp.html:9
-msgid "One-time password authentication reset"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time passcode authentication reset"
+msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/modals/reset-otp.html:14
 #, fuzzy, python-format
 #| msgid ""
 #| "Are you sure you want to revoke this token? This action is unrevokable."
 msgid ""
-"Are you sure you want to reset one-time password (OTP) authentication for "
+"Are you sure you want to reset one-time passcode (OTP) authentication for "
 "%(user_name)s ? The user will have to perform OTP setup again at next login."
 msgstr ""
 "Estás seguro de que queres revogar este token? Esta acción non pode ser "
 "desfeita."
 
 #: canaille/templates/core/modals/reset-otp.html:18
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to revoke this token? This action is unrevokable."
 msgid ""
-"Are you sure you want to reset one-time password (OTP) authentication? You "
+"Are you sure you want to reset one-time passcode (OTP) authentication? You "
 "will have to perform OTP setup again at next login."
 msgstr ""
+"Estás seguro de que queres revogar este token? Esta acción non pode ser "
+"desfeita."
+
+#: canaille/templates/core/modals/reset-otp.html:27
+#, fuzzy
+#| msgid "Please enter your password for this account."
+msgid "Reset one-time passcode authentication"
+msgstr "Introduce o teu contrasinal para esta conta."
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
@@ -2323,7 +2362,7 @@ msgstr "Número de membros"
 #: canaille/templates/core/sms/sms_otp.txt:1
 #, python-format
 msgid ""
-"Here is the one-time password you requested for %(website_name)s: %(otp)s"
+"Here is the one-time passcode you requested for %(website_name)s: %(otp)s"
 msgstr ""
 
 #: canaille/templates/macro/form.html:87

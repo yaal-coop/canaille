@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:33+0200\n"
+"POT-Creation-Date: 2025-05-06 17:47+0200\n"
 "PO-Revision-Date: 2024-12-16 20:00+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -163,9 +163,10 @@ msgstr "Continúa con tu registro en {website_name}"
 msgid "Compromised password check failure on {website_name}"
 msgstr "Fallo de comprobación de contraseña comprometida en {website_name}"
 
-#: canaille/core/endpoints/admin.py:357 canaille/core/mails.py:271
-#, python-brace-format
-msgid "One-time password authentication on {website_name}"
+#: canaille/core/mails.py:271
+#, fuzzy, python-brace-format
+#| msgid "One-time password authentication on {website_name}"
+msgid "One-time passcode authentication on {website_name}"
 msgstr "Contraseña de un solo uso en {website_name}"
 
 #: canaille/core/validators.py:17
@@ -361,7 +362,9 @@ msgid "The account has been unlocked"
 msgstr "La cuenta ha sido desbloqueada"
 
 #: canaille/core/endpoints/account.py:765
-msgid "One-time password authentication has been reset"
+#, fuzzy
+#| msgid "One-time password authentication has been reset"
+msgid "Authenticator application passcode authentication has been reset"
 msgstr "Se ha restablecido la autenticación de contraseña de un solo uso"
 
 #: canaille/core/endpoints/account.py:843
@@ -412,6 +415,12 @@ msgstr "Invitación a {website_name}"
 #, python-brace-format
 msgid "Email confirmation on {website_name}"
 msgstr "Confirmación por correo electrónico en {website_name}"
+
+#: canaille/core/endpoints/admin.py:357
+#, fuzzy, python-brace-format
+#| msgid "One-time password authentication on {website_name}"
+msgid "Passcode authentication on {website_name}"
+msgstr "Contraseña de un solo uso en {website_name}"
 
 #: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:100
 #: canaille/core/endpoints/auth.py:109
@@ -473,18 +482,21 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:406
-msgid "The one-time passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
 #, fuzzy
 #| msgid "Profile updated successfully."
-msgid "Code successfully sent!"
+msgid "Passcode successfully sent!"
 msgstr "Perfil actualizado correctamente."
 
-#: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
-#: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
-msgid "Error while sending one-time passcode. Please try again."
+#: canaille/core/endpoints/auth.py:443
+msgid "Error while sending the passcode by email. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
+msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:498
@@ -498,10 +510,14 @@ msgstr ""
 #| msgid ""
 #| "Please enter the one-time password below at %(site_name)s to complete "
 #| "your authentication."
-msgid "Please enter the one-time passcode from your authenticator app."
+msgid "Please enter the passcode from your authenticator application."
 msgstr ""
 "Por favor, introduzca la contraseña de un solo uso que se indica a "
 "continuación en %(site_name)s para completar tu autenticación."
+
+#: canaille/core/endpoints/auth.py:525
+msgid "Error while sending passcode by email. Please try again."
+msgstr ""
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:60
 #: canaille/templates/core/partial/group-members.html:9
@@ -711,9 +727,10 @@ msgid "New email address"
 msgstr "Nueva dirección de correo electrónico"
 
 #: canaille/core/endpoints/forms.py:471
-#: canaille/templates/core/mails/email_otp.txt:5
-msgid "One-time password"
-msgstr "Contraseña de un solo uso"
+#, fuzzy
+#| msgid "Password"
+msgid "Passcode"
+msgstr "Contraseña"
 
 #: canaille/core/endpoints/groups.py:42
 msgid "Group creation failed."
@@ -1519,9 +1536,10 @@ msgstr "Esta cuenta de usuario está bloqueada"
 msgid "The user won't be able to connect until their account is unlocked."
 msgstr "El usuario no podrá conectarse hasta que la cuenta esté desbloqueada."
 
-#: canaille/templates/core/modals/reset-otp.html:27
 #: canaille/templates/core/profile_settings.html:164
-msgid "Reset one-time password authentication"
+#, fuzzy
+#| msgid "One-time password authentication reset"
+msgid "Reset authenticator application configuration"
 msgstr "Restablecer la autenticación de contraseña de un solo uso"
 
 #: canaille/templates/core/profile_settings.html:170
@@ -1633,7 +1651,9 @@ msgid "Next step"
 msgstr ""
 
 #: canaille/templates/core/verify-mfa.html:38
-msgid "One-time password authentication."
+#, fuzzy
+#| msgid "One-time password authentication."
+msgid "One-time passcode authentication."
 msgstr "Autenticación de contraseña de un solo uso."
 
 #: canaille/templates/core/partial/emails_field.html:14
@@ -1754,7 +1774,9 @@ msgid "Compromised password check failure"
 msgstr "Fallo de comprobación de contraseña comprometida"
 
 #: canaille/templates/core/mails/admin.html:167
-msgid "Email one-time password"
+#, fuzzy
+#| msgid "Email one-time password"
+msgid "Email one-time passcode"
 msgstr "Contraseña de un solo uso por correo electrónico"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:28
@@ -1887,15 +1909,22 @@ msgstr "Enlace de verificación"
 
 #: canaille/templates/core/mails/email_otp.html:19
 #: canaille/templates/core/mails/email_otp.txt:1
-msgid "One-time password authentication"
+#, fuzzy
+#| msgid "One-time password authentication"
+msgid "One-time passcode authentication"
 msgstr "Autenticación de contraseña de un solo uso"
 
 #: canaille/templates/core/mails/email_otp.html:27
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Someone, probably you, asked for a one-time password at %(site_name)s. If "
+#| "you did not ask for this email, please ignore it. If you did, please "
+#| "enter the one-time password below at %(site_name)s to complete your "
+#| "authentication."
 msgid ""
-"Someone, probably you, asked for a one-time password at %(site_name)s. If "
+"Someone, probably you, asked for a one-time passcode at %(site_name)s. If "
 "you did not ask for this email, please ignore it. If you did, please enter "
-"the one-time password below at %(site_name)s to complete your authentication."
+"the one-time passcode below at %(site_name)s to complete your authentication."
 msgstr ""
 "Alguien, probablemente tu, pidió una contraseña de un solo uso en "
 "%(site_name)s. Si no has pedido este correo electrónico, por favor, "
@@ -1903,17 +1932,28 @@ msgstr ""
 "continuación en %(site_name)s para completar tu autenticación."
 
 #: canaille/templates/core/mails/email_otp.html:30
-msgid "Your one-time password"
+#, fuzzy
+#| msgid "Your one-time password"
+msgid "Your one-time passcode"
 msgstr "Tu contraseña de un solo uso"
 
 #: canaille/templates/core/mails/email_otp.txt:3
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Please enter the one-time password below at %(site_name)s to complete "
+#| "your authentication."
 msgid ""
-"Please enter the one-time password below at %(site_name)s to complete your "
+"Please enter the one-time passcode below at %(site_name)s to complete your "
 "authentication."
 msgstr ""
 "Por favor, introduzca la contraseña de un solo uso que se indica a "
 "continuación en %(site_name)s para completar tu autenticación."
+
+#: canaille/templates/core/mails/email_otp.txt:5
+#, fuzzy
+#| msgid "One-time password"
+msgid "One-time passcode"
+msgstr "Contraseña de un solo uso"
 
 #: canaille/templates/core/mails/firstlogin.html:27
 #, python-format
@@ -2146,13 +2186,19 @@ msgid "Remove"
 msgstr "Quitar"
 
 #: canaille/templates/core/modals/reset-otp.html:9
-msgid "One-time password authentication reset"
+#, fuzzy
+#| msgid "One-time password authentication reset"
+msgid "One-time passcode authentication reset"
 msgstr "Restablecer la autenticación de contraseña de un solo uso"
 
 #: canaille/templates/core/modals/reset-otp.html:14
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Are you sure you want to reset one-time password (OTP) authentication for "
+#| "%(user_name)s ? The user will have to perform OTP setup again at next "
+#| "login."
 msgid ""
-"Are you sure you want to reset one-time password (OTP) authentication for "
+"Are you sure you want to reset one-time passcode (OTP) authentication for "
 "%(user_name)s ? The user will have to perform OTP setup again at next login."
 msgstr ""
 "¿Estás seguro de que deseas restablecer la autenticación de contraseña única "
@@ -2160,13 +2206,23 @@ msgstr ""
 "OTP nuevamente en el próximo inicio de sesión."
 
 #: canaille/templates/core/modals/reset-otp.html:18
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to reset one-time password (OTP) authentication? "
+#| "You will have to perform OTP setup again at next login."
 msgid ""
-"Are you sure you want to reset one-time password (OTP) authentication? You "
+"Are you sure you want to reset one-time passcode (OTP) authentication? You "
 "will have to perform OTP setup again at next login."
 msgstr ""
 "¿Estás seguro de que deseas restablecer la autenticación de contraseña única "
 "(OTP)? Tendrás que realizar la configuración de OTP nuevamente en el próximo "
 "inicio de sesión."
+
+#: canaille/templates/core/modals/reset-otp.html:27
+#, fuzzy
+#| msgid "Reset one-time password authentication"
+msgid "Reset one-time passcode authentication"
+msgstr "Restablecer la autenticación de contraseña de un solo uso"
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
@@ -2219,9 +2275,11 @@ msgid "Number of members"
 msgstr "Número de miembros"
 
 #: canaille/templates/core/sms/sms_otp.txt:1
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Here is the one-time password you requested for %(website_name)s: %(otp)s"
 msgid ""
-"Here is the one-time password you requested for %(website_name)s: %(otp)s"
+"Here is the one-time passcode you requested for %(website_name)s: %(otp)s"
 msgstr ""
 "Aquí está la contraseña de un solo uso que solicitó para %(website_name)s: "
 "%(otp)s"

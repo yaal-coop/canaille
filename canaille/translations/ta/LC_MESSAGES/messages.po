@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:33+0200\n"
+"POT-Creation-Date: 2025-05-06 17:47+0200\n"
 "PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -157,10 +157,10 @@ msgstr "{website_name} இல் உங்கள் பதிவைத் தொ
 msgid "Compromised password check failure on {website_name}"
 msgstr "வேறுபாடின்மை செய்யப்பட்ட கடவுச்சொல் சோதனை தோல்வி {website_name}"
 
-#: canaille/core/endpoints/admin.py:357 canaille/core/mails.py:271
+#: canaille/core/mails.py:271
 #, fuzzy, python-brace-format
 #| msgid "Password initialization on {website_name}"
-msgid "One-time password authentication on {website_name}"
+msgid "One-time passcode authentication on {website_name}"
 msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/core/validators.py:17
@@ -351,8 +351,10 @@ msgid "The account has been unlocked"
 msgstr "கணக்கு திறக்கப்பட்டுள்ளது"
 
 #: canaille/core/endpoints/account.py:765
-msgid "One-time password authentication has been reset"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "Authenticator application passcode authentication has been reset"
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/core/endpoints/account.py:843
 #, python-format
@@ -402,6 +404,12 @@ msgstr "{website_name} இல் அழைப்பு"
 #, python-brace-format
 msgid "Email confirmation on {website_name}"
 msgstr "{website_name}"
+
+#: canaille/core/endpoints/admin.py:357
+#, fuzzy, python-brace-format
+#| msgid "Password initialization on {website_name}"
+msgid "Passcode authentication on {website_name}"
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:100
 #: canaille/core/endpoints/auth.py:109
@@ -460,18 +468,21 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:406
-msgid "The one-time passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
 #, fuzzy
 #| msgid "Profile updated successfully."
-msgid "Code successfully sent!"
+msgid "Passcode successfully sent!"
 msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
-#: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
-#: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
-msgid "Error while sending one-time passcode. Please try again."
+#: canaille/core/endpoints/auth.py:443
+msgid "Error while sending the passcode by email. Please try again."
+msgstr ""
+
+#: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
+msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth.py:498
@@ -483,8 +494,12 @@ msgstr ""
 #: canaille/core/endpoints/auth.py:504
 #, fuzzy
 #| msgid "Please enter your password for this account."
-msgid "Please enter the one-time passcode from your authenticator app."
+msgid "Please enter the passcode from your authenticator application."
 msgstr "இந்த கணக்கிற்கான உங்கள் கடவுச்சொல்லை உள்ளிடவும்."
+
+#: canaille/core/endpoints/auth.py:525
+msgid "Error while sending passcode by email. Please try again."
+msgstr ""
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:60
 #: canaille/templates/core/partial/group-members.html:9
@@ -694,11 +709,10 @@ msgid "New email address"
 msgstr "புதிய மின்னஞ்சல் முகவரி"
 
 #: canaille/core/endpoints/forms.py:471
-#: canaille/templates/core/mails/email_otp.txt:5
 #, fuzzy
-#| msgid "Initialize password"
-msgid "One-time password"
-msgstr "கடவுச்சொல்லைத் தொடங்கவும்"
+#| msgid "Password"
+msgid "Passcode"
+msgstr "கடவுச்சொல்"
 
 #: canaille/core/endpoints/groups.py:42
 msgid "Group creation failed."
@@ -1491,10 +1505,11 @@ msgstr "இந்த பயனர் கணக்கு பூட்டப்ப
 msgid "The user won't be able to connect until their account is unlocked."
 msgstr "பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை இணைக்க முடியாது."
 
-#: canaille/templates/core/modals/reset-otp.html:27
 #: canaille/templates/core/profile_settings.html:164
-msgid "Reset one-time password authentication"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "Reset authenticator application configuration"
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/profile_settings.html:170
 msgid "Lock the account"
@@ -1605,8 +1620,10 @@ msgid "Next step"
 msgstr ""
 
 #: canaille/templates/core/verify-mfa.html:38
-msgid "One-time password authentication."
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time passcode authentication."
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:55
@@ -1726,7 +1743,7 @@ msgstr "வேறுபாடின்மை செய்யப்பட்ட �
 #: canaille/templates/core/mails/admin.html:167
 #, fuzzy
 #| msgid "Initialize password"
-msgid "Email one-time password"
+msgid "Email one-time passcode"
 msgstr "கடவுச்சொல்லைத் தொடங்கவும்"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:28
@@ -1853,8 +1870,10 @@ msgstr "சரிபார்ப்பு இணைப்பு"
 
 #: canaille/templates/core/mails/email_otp.html:19
 #: canaille/templates/core/mails/email_otp.txt:1
-msgid "One-time password authentication"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time passcode authentication"
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/mails/email_otp.html:27
 #, fuzzy, python-format
@@ -1864,9 +1883,9 @@ msgstr ""
 #| "you need to reset your password, please click on the \"Reset password\" "
 #| "button below and follow the instructions."
 msgid ""
-"Someone, probably you, asked for a one-time password at %(site_name)s. If "
+"Someone, probably you, asked for a one-time passcode at %(site_name)s. If "
 "you did not ask for this email, please ignore it. If you did, please enter "
-"the one-time password below at %(site_name)s to complete your authentication."
+"the one-time passcode below at %(site_name)s to complete your authentication."
 msgstr ""
 "யாரோ, அநேகமாக நீங்கள், கடவுச்சொல் மறுசீரமைப்பு இணைப்பை %(site_name)s இல் கேட்டீர்கள். இந்த "
 "மின்னஞ்சலை நீங்கள் கேட்கவில்லை என்றால், தயவுசெய்து அதை புறக்கணிக்கவும். உங்கள் கடவுச்சொல்லை "
@@ -1876,15 +1895,22 @@ msgstr ""
 #: canaille/templates/core/mails/email_otp.html:30
 #, fuzzy
 #| msgid "Forgotten password"
-msgid "Your one-time password"
+msgid "Your one-time passcode"
 msgstr "மறந்துவிட்ட கடவுச்சொல்"
 
 #: canaille/templates/core/mails/email_otp.txt:3
-#, python-format
+#, fuzzy, python-format
+#| msgid "Please enter your password for this account."
 msgid ""
-"Please enter the one-time password below at %(site_name)s to complete your "
+"Please enter the one-time passcode below at %(site_name)s to complete your "
 "authentication."
-msgstr ""
+msgstr "இந்த கணக்கிற்கான உங்கள் கடவுச்சொல்லை உள்ளிடவும்."
+
+#: canaille/templates/core/mails/email_otp.txt:5
+#, fuzzy
+#| msgid "Initialize password"
+msgid "One-time passcode"
+msgstr "கடவுச்சொல்லைத் தொடங்கவும்"
 
 #: canaille/templates/core/mails/firstlogin.html:27
 #, python-format
@@ -2112,8 +2138,10 @@ msgid "Remove"
 msgstr "அகற்று"
 
 #: canaille/templates/core/modals/reset-otp.html:9
-msgid "One-time password authentication reset"
-msgstr ""
+#, fuzzy
+#| msgid "Password initialization on {website_name}"
+msgid "One-time passcode authentication reset"
+msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/modals/reset-otp.html:14
 #, fuzzy, python-format
@@ -2121,17 +2149,29 @@ msgstr ""
 #| "Are you sure you want to lock the account of %(user_name)s ? The user "
 #| "won't be able to login until their account is unlocked."
 msgid ""
-"Are you sure you want to reset one-time password (OTP) authentication for "
+"Are you sure you want to reset one-time passcode (OTP) authentication for "
 "%(user_name)s ? The user will have to perform OTP setup again at next login."
 msgstr ""
 "%(user_name)s கணக்கை பூட்ட விரும்புகிறீர்களா? பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை "
 "உள்நுழைய முடியாது."
 
 #: canaille/templates/core/modals/reset-otp.html:18
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to lock the account of %(user_name)s ? The user "
+#| "won't be able to login until their account is unlocked."
 msgid ""
-"Are you sure you want to reset one-time password (OTP) authentication? You "
+"Are you sure you want to reset one-time passcode (OTP) authentication? You "
 "will have to perform OTP setup again at next login."
 msgstr ""
+"%(user_name)s கணக்கை பூட்ட விரும்புகிறீர்களா? பயனர் தங்கள் கணக்கு திறக்கப்படும் வரை "
+"உள்நுழைய முடியாது."
+
+#: canaille/templates/core/modals/reset-otp.html:27
+#, fuzzy
+#| msgid "Please enter your password for this account."
+msgid "Reset one-time passcode authentication"
+msgstr "இந்த கணக்கிற்கான உங்கள் கடவுச்சொல்லை உள்ளிடவும்."
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
@@ -2185,7 +2225,7 @@ msgstr "உறுப்பினர்களின் எண்ணிக்க�
 #: canaille/templates/core/sms/sms_otp.txt:1
 #, python-format
 msgid ""
-"Here is the one-time password you requested for %(website_name)s: %(otp)s"
+"Here is the one-time passcode you requested for %(website_name)s: %(otp)s"
 msgstr ""
 
 #: canaille/templates/macro/form.html:87
