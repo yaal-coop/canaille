@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 23:42+0200\n"
-"PO-Revision-Date: 2025-05-06 21:43+0000\n"
+"PO-Revision-Date: 2025-05-07 20:31+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -502,10 +502,6 @@ msgstr ""
 "Veuillez ré-essayer."
 
 #: canaille/core/endpoints/auth.py:498
-#, fuzzy
-#| msgid ""
-#| "In order to finish logging in, you need to configure an authenticator "
-#| "application."
 msgid ""
 "In order to continue logging in, you need to configure an authenticator "
 "application."
@@ -1579,15 +1575,12 @@ msgid "Authenticator application configuration"
 msgstr "Configuration de l'application d'authentification"
 
 #: canaille/templates/core/setup-otp.html:50
-#, fuzzy, python-format
-#| msgid ""
-#| "You need to configure an authenticator application to generate temporary "
-#| "codes for %(website_name)s."
+#, python-format
 msgid ""
 "You need to install an authenticator application to generate one-time "
 "passcodes for %(website_name)s."
 msgstr ""
-"Vous devez configurer une application d'authentification afin de générer des "
+"Vous devez installer une application d'authentification afin de générer des "
 "code de connexion à usage unique pour %(website_name)s."
 
 #: canaille/templates/core/setup-otp.html:51
@@ -1617,7 +1610,7 @@ msgstr "Ouvrir l'application d'authentification"
 
 #: canaille/templates/core/setup-otp.html:72
 msgid "2 - QR Code scanning"
-msgstr "3 - Scanner un mosaïcode"
+msgstr "2 - Scanner un mosaïcode"
 
 #: canaille/templates/core/setup-otp.html:75
 msgid ""
