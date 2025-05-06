@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:33+0200\n"
-"PO-Revision-Date: 2025-05-06 15:33+0000\n"
+"PO-Revision-Date: 2025-05-06 15:49+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1554,10 +1554,8 @@ msgid "Set up multi-factor authentication."
 msgstr "Mise en place l'authentification multi-facteurs."
 
 #: canaille/templates/core/setup-otp.html:48
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid "Authenticator application configuration"
-msgstr "Réinitialisation de l'authentification par code à usage unique"
+msgstr "Configuration de l'application d'authentification"
 
 #: canaille/templates/core/setup-otp.html:50
 #, python-format
@@ -1565,22 +1563,29 @@ msgid ""
 "You need to configure an authenticator application to generate temporary "
 "codes for %(website_name)s."
 msgstr ""
+"Vous devez configurer une application d'authentification afin de générer des "
+"code de connexion à usage unique pour %(website_name)s."
 
 #: canaille/templates/core/setup-otp.html:51
 msgid ""
 "Then, configure the authenticator application with one of the following "
 "methods:"
 msgstr ""
+"Puis, configurer votre application d'authentification à l'aide d'une des "
+"méthodes suivantes :"
 
 #: canaille/templates/core/setup-otp.html:56
 msgid "1 - Automatic configuration"
-msgstr ""
+msgstr "1 - Configuration automatique"
 
 #: canaille/templates/core/setup-otp.html:59
 msgid ""
 "If the authenticator application is installed on the device that you are "
 "currently using, you can configure it by clicking on this button:"
 msgstr ""
+"Si l'application d'authentification est installée sur l'appareil que vous "
+"utilisez actuellement, vous pouvez la configurer en cliquant sur le bouton "
+"suivant :"
 
 #: canaille/templates/core/setup-otp.html:65
 msgid "Open authenticator application"
@@ -1588,7 +1593,7 @@ msgstr "Ouvrir l'application d'authentification"
 
 #: canaille/templates/core/setup-otp.html:72
 msgid "2 - QR Code scanning"
-msgstr ""
+msgstr "3 - Scanner un mosaïcode"
 
 #: canaille/templates/core/setup-otp.html:75
 msgid ""
@@ -1596,46 +1601,50 @@ msgid ""
 "installed on another device, please open it and use it to scan the following "
 "qrcode:"
 msgstr ""
+"Si la méthode précédente ne fonctionne pas pour vous, ou si votre "
+"application d'authentification est installée sur un autre appareil, veuillez "
+"l'ouvrir et scanner le mosaïcode suivant :"
 
 #: canaille/templates/core/setup-otp.html:78
 msgid "Secret token"
 msgstr "Jeton secret"
 
 #: canaille/templates/core/setup-otp.html:84
-#, fuzzy
-#| msgid "Secret token"
 msgid "3 - Secret token"
-msgstr "Jeton secret"
+msgstr "3 - Jeton secret"
 
 #: canaille/templates/core/setup-otp.html:87
 msgid ""
 "If your device cannot scan images, you can configure your authenticator "
 "application by manually copying this secret token:"
 msgstr ""
+"Si votre appareil ne peut pas scanner des images, vous pouvez configurer "
+"votre application d'authentification manuellement en copiant ce jeton secret "
+":"
 
 #: canaille/templates/core/setup-otp.html:94
 msgid "Copy secret"
 msgstr "Copier le secret"
 
 #: canaille/templates/core/setup-otp.html:101
-#, fuzzy
-#| msgid "Password confirmation"
 msgid "Passcode confirmation"
-msgstr "Confirmation du mot de passe"
+msgstr "Confirmation du code de connexion"
 
 #: canaille/templates/core/setup-otp.html:103
 msgid ""
 "Once your authenticator application is correctly configured, you need to "
 "generate a one-time passcode and fill it in the following page."
 msgstr ""
+"Une fois votre application d'authentification correctement configurée, vous "
+"devez générer un code de connexion et l'inscrire dans la page suivante."
 
 #: canaille/templates/core/setup-otp.html:105
 msgid "When you are ready, please click on the following button:"
-msgstr ""
+msgstr "Lorsque vous êtes prêts, veuillez cliquer sur le bouton suivant :"
 
 #: canaille/templates/core/setup-otp.html:112
 msgid "Next step"
-msgstr ""
+msgstr "Étape suivante"
 
 #: canaille/templates/core/verify-mfa.html:38
 msgid "One-time password authentication."
