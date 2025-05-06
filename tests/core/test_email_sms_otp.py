@@ -54,12 +54,12 @@ def test_signin_and_out_with_email_otp(smtpd, testclient, backend, user, caplog)
     res = res.form.submit(status=302)
     assert (
         "info",
-        "A one-time password has been sent to your email address j#####n@doe.test. Please enter it below to login.",
+        "A passcode has been sent to your email address j#####n@doe.test. Please enter it below to login.",
     ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to john@doe.test",
+        "Sent one-time passcode for user to john@doe.test",
     ) in caplog.record_tuples
     res = res.follow(status=200)
     with testclient.session_transaction() as session:
@@ -133,7 +133,7 @@ def test_signin_with_email_otp_failed_to_send_code(testclient, user):
     res = res.form.submit(status=302)
     assert (
         "danger",
-        "Error while sending one-time password. Please try again.",
+        "Error while sending passcode by email. Please try again.",
     ) in res.flashes
 
     assert res.location == "/password"
@@ -161,7 +161,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog):
 
     assert (
         "error",
-        "The one-time password you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again",
     ) in res.flashes
     assert (
         "canaille",
@@ -195,7 +195,7 @@ def test_signin_expired_email_otp(testclient, user, caplog):
 
         assert (
             "error",
-            "The one-time password you entered is invalid. Please try again",
+            "The passcode you entered is invalid. Please try again",
         ) in res.flashes
         assert (
             "canaille",
@@ -230,7 +230,7 @@ def test_signin_expired_sms_otp(testclient, user, caplog, mock_smpp):
 
         assert (
             "error",
-            "The one-time password you entered is invalid. Please try again",
+            "The passcode you entered is invalid. Please try again",
         ) in res.flashes
         assert (
             "canaille",
@@ -258,12 +258,12 @@ def test_signin_and_out_with_sms_otp(testclient, backend, user, caplog, mock_smp
     res = res.form.submit(status=302)
     assert (
         "info",
-        "A one-time password has been sent to your phone number 555#####00. Please enter it below to login.",
+        "A passcode has been sent to your phone number 555#####00. Please enter it below to login.",
     ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to 555-000-000",
+        "Sent one-time passcode for user to 555-000-000",
     ) in caplog.record_tuples
     res = res.follow(status=200)
     with testclient.session_transaction() as session:
@@ -336,7 +336,7 @@ def test_signin_with_sms_otp_failed_to_send_code(testclient, user):
     res = res.form.submit(status=302)
     assert (
         "danger",
-        "Error while sending one-time password. Please try again.",
+        "Error while sending the passcode by SMS. Please try again.",
     ) in res.flashes
 
     assert res.location == "/password"
@@ -364,7 +364,7 @@ def test_signin_wrong_sms_otp(testclient, user, caplog, mock_smpp):
 
     assert (
         "error",
-        "The one-time password you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again",
     ) in res.flashes
     assert (
         "canaille",
@@ -456,12 +456,12 @@ def test_send_new_mail_otp(smtpd, testclient, backend, user, caplog):
 
     assert (
         "success",
-        "Code successfully sent!",
+        "Passcode successfully sent!",
     ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to john@doe.test",
+        "Sent one-time passcode for user to john@doe.test",
     ) in caplog.record_tuples
 
     assert res.location == "/verify-mfa"
@@ -491,7 +491,7 @@ def test_send_mail_otp_multiple_attempts(testclient, backend, user, caplog):
         res = testclient.post("/send-mail-otp", status=302)
         assert (
             "success",
-            "Code successfully sent!",
+            "Passcode successfully sent!",
         ) in res.flashes
 
 
@@ -506,7 +506,7 @@ def test_send_new_mail_otp_failed(testclient, user):
 
     assert (
         "danger",
-        "Error while sending one-time password. Please try again.",
+        "Error while sending the passcode by email. Please try again.",
     ) in res.flashes
 
     assert res.location == "/verify-mfa"
@@ -527,12 +527,12 @@ def test_send_new_sms_otp(testclient, backend, user, caplog, mock_smpp):
 
     assert (
         "success",
-        "Code successfully sent!",
+        "Passcode successfully sent!",
     ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time password for user to 555-000-000",
+        "Sent one-time passcode for user to 555-000-000",
     ) in caplog.record_tuples
 
     assert res.location == "/verify-mfa"
@@ -562,7 +562,7 @@ def test_send_sms_otp_multiple_attempts(testclient, backend, user, caplog, mock_
         res = testclient.post("/send-sms-otp", status=302)
         assert (
             "success",
-            "Code successfully sent!",
+            "Passcode successfully sent!",
         ) in res.flashes
 
 
@@ -577,7 +577,7 @@ def test_send_new_sms_otp_failed(testclient, user):
 
     assert (
         "danger",
-        "Error while sending one-time password. Please try again.",
+        "Error while sending the passcode by SMS. Please try again.",
     ) in res.flashes
 
     assert res.location == "/verify-mfa"

@@ -39,7 +39,7 @@ def test_signin_and_out_with_otp(testclient, user_otp, caplog, otp_method):
     res = res.form.submit(status=302)
     assert (
         "info",
-        "Please enter the one-time password from your authenticator app.",
+        "Please enter the passcode from your authenticator application.",
     ) in res.flashes
     res = res.follow(status=200)
 
@@ -108,7 +108,7 @@ def test_signin_wrong_otp(testclient, user_otp, caplog, otp_method):
 
     assert (
         "error",
-        "The one-time password you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again",
     ) in res.flashes
     assert (
         "canaille",
@@ -140,7 +140,7 @@ def test_signin_expired_totp(testclient, user_otp, caplog):
 
         assert (
             "error",
-            "The one-time password you entered is invalid. Please try again",
+            "The passcode you entered is invalid. Please try again",
         ) in res.flashes
         assert (
             "canaille",
@@ -172,7 +172,7 @@ def test_signin_invalid_otp(testclient, user_otp, caplog, otp_method):
 
     assert (
         "error",
-        "The one-time password you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again",
     ) in res.flashes
     assert (
         "canaille",
@@ -213,7 +213,7 @@ def test_new_user_setup_otp(testclient, backend, caplog, otp_method):
     assert res.location == "/setup-otp"
     assert (
         "info",
-        "You have not enabled multi-factor authentication. Please enable it first to login.",
+        "In order to continue logging in, you need to configure an authenticator application.",
     ) in res.flashes
     res = testclient.get("/setup-otp", status=200)
 
@@ -409,7 +409,7 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user_otp, ca
 
     assert (
         "error",
-        "The one-time password you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again",
     ) in res.flashes
     assert (
         "canaille",

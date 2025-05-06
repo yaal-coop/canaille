@@ -758,7 +758,7 @@ def test_account_reset_otp(
     assert user_otp.last_otp_login is not None
 
     res = testclient.get("/profile/user/settings")
-    res.mustcontain("Reset one-time password authentication")
+    res.mustcontain("Reset authenticator application configuration")
 
     res = res.form.submit(name="action", value="confirm-reset-otp")
     res = res.form.submit(name="action", value="reset-otp")
@@ -768,9 +768,11 @@ def test_account_reset_otp(
     assert user.last_otp_login is None
     if otp_method == "HOTP":
         assert user.hotp_counter == 1
-    res.mustcontain("One-time password authentication has been reset")
+    assert res.flashes == [
+        ("success", "Authenticator application passcode authentication has been reset")
+    ]
     assert (
         "canaille",
         logging.SECURITY,
-        "Reset one-time password authentication for user by admin",
+        "Reset one-time passcode authentication for user by admin",
     ) in caplog.record_tuples

@@ -296,7 +296,7 @@ def test_invalid_otp_option(configuration, backend):
 def test_email_otp_without_smtp(configuration, backend):
     with pytest.raises(
         ValidationError,
-        match=r"Cannot activate email one-time password authentication without SMTP",
+        match=r"Cannot activate email one-time passcode authentication without SMTP",
     ):
         configuration["CANAILLE"]["SMTP"] = None
         configuration["CANAILLE"]["EMAIL_OTP"] = True
@@ -306,7 +306,7 @@ def test_email_otp_without_smtp(configuration, backend):
 def test_sms_otp_without_smpp(configuration, backend):
     with pytest.raises(
         ValidationError,
-        match=r"Cannot activate sms one-time password authentication without SMPP",
+        match=r"Cannot activate sms one-time passcode authentication without SMPP",
     ):
         configuration["CANAILLE"]["SMPP"] = None
         configuration["CANAILLE"]["SMS_OTP"] = True

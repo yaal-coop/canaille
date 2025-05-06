@@ -116,16 +116,16 @@ JAVASCRIPT = false
 # ENABLE_INTRUDER_LOCKOUT = false
 
 # If OTP_METHOD is defined, then users will need to authenticate themselves using
-# a one-time password (OTP) via an authenticator app. If set to TOTP, the
-# application will use time one-time passwords, If set to HOTP, the application
-# will use HMAC-based one-time passwords.
+# a one-time passcode (OTP) via an authenticator app. If set to TOTP, the
+# application will use time one-time passcodes, If set to HOTP, the application
+# will use HMAC-based one-time passcodes.
 # OTP_METHOD =
 
-# If True, then users will need to authenticate themselves via a one-time password
+# If True, then users will need to authenticate themselves via a one-time passcode
 # sent to their primary email address.
 # EMAIL_OTP = false
 
-# If True, then users will need to authenticate themselves via a one-time password
+# If True, then users will need to authenticate themselves via a one-time passcode
 # sent to their primary phone number.
 # SMS_OTP = false
 
@@ -245,7 +245,7 @@ FROM_ADDR = "admin@mydomain.test"
 
 # The settings related to SMPP configuration.
 #
-# If unset, sms-related features like sms one-time passwords won't be enabled.
+# If unset, sms-related features like sms one-time passcodes won't be enabled.
 
 [CANAILLE.SMPP]
 # The SMPP host.
