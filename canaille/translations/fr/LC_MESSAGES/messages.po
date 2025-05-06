@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:47+0200\n"
-"PO-Revision-Date: 2025-05-06 15:49+0000\n"
+"PO-Revision-Date: 2025-05-06 21:43+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -170,10 +170,10 @@ msgstr ""
 "{website_name}"
 
 #: canaille/core/mails.py:271
-#, fuzzy, python-brace-format
-#| msgid "One-time password authentication on {website_name}"
+#, python-brace-format
 msgid "One-time passcode authentication on {website_name}"
-msgstr "Code de connexion à usage unique sur {website_name}"
+msgstr ""
+"Authentification par code de connexion à usage unique sur {website_name}"
 
 #: canaille/core/validators.py:17
 #, python-brace-format
@@ -364,10 +364,9 @@ msgid "The account has been unlocked"
 msgstr "Le compte a été déverrouillé"
 
 #: canaille/core/endpoints/account.py:765
-#, fuzzy
-#| msgid "One-time password authentication has been reset"
 msgid "Authenticator application passcode authentication has been reset"
-msgstr "L'authentification par code à usage unique a été ré-initialisée"
+msgstr ""
+"L'authentification par application d'authentification a été ré-initialisée"
 
 #: canaille/core/endpoints/account.py:843
 #, python-format
@@ -421,10 +420,9 @@ msgid "Email confirmation on {website_name}"
 msgstr "Confirmation de votre adresse email sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:357
-#, fuzzy, python-brace-format
-#| msgid "One-time password authentication on {website_name}"
+#, python-brace-format
 msgid "Passcode authentication on {website_name}"
-msgstr "Code de connexion à usage unique sur {website_name}"
+msgstr "Code de connexion pour {website_name}"
 
 #: canaille/core/endpoints/auth.py:67 canaille/core/endpoints/auth.py:100
 #: canaille/core/endpoints/auth.py:109
@@ -483,33 +481,25 @@ msgid "Invalid code."
 msgstr "Code invalide."
 
 #: canaille/core/endpoints/auth.py:406
-#, fuzzy
-#| msgid "The one-time passcode you entered is invalid. Please try again"
 msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
-"Le code à usage unique que vous avez entré est invalide. Veuillez ré-essayer"
+"Le code de connexion que vous avez entré est invalide. Veuillez ré-essayer"
 
 #: canaille/core/endpoints/auth.py:438 canaille/core/endpoints/auth.py:477
-#, fuzzy
-#| msgid "Code successfully sent!"
 msgid "Passcode successfully sent!"
-msgstr "Le code a été envoyé avec succès !"
+msgstr "Le code de connexion a été envoyé avec succès !"
 
 #: canaille/core/endpoints/auth.py:443
-#, fuzzy
-#| msgid "Error while sending one-time passcode. Please try again."
 msgid "Error while sending the passcode by email. Please try again."
 msgstr ""
-"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
-"essayer."
+"Une erreur est survenue lors de l’envoi du code de connexion par email. "
+"Veuillez ré-essayer."
 
 #: canaille/core/endpoints/auth.py:482 canaille/core/endpoints/auth.py:553
-#, fuzzy
-#| msgid "Error while sending one-time passcode. Please try again."
 msgid "Error while sending the passcode by SMS. Please try again."
 msgstr ""
-"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
-"essayer."
+"Une erreur est survenue lors de l’envoi du code de connexion par SMS. "
+"Veuillez ré-essayer."
 
 #: canaille/core/endpoints/auth.py:498
 msgid ""
@@ -520,20 +510,16 @@ msgstr ""
 "d'authentification."
 
 #: canaille/core/endpoints/auth.py:504
-#, fuzzy
-#| msgid "Please enter the one-time passcode from your authenticator app."
 msgid "Please enter the passcode from your authenticator application."
 msgstr ""
-"Veuillez saisir le code à usage unique depuis votre application "
+"Veuillez saisir le code de connexion indiqué par votre application "
 "d'authentification."
 
 #: canaille/core/endpoints/auth.py:525
-#, fuzzy
-#| msgid "Error while sending one-time passcode. Please try again."
 msgid "Error while sending passcode by email. Please try again."
 msgstr ""
-"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
-"essayer."
+"Une erreur est survenue lors de l’envoi du code de connexion par email. "
+"Veuillez ré-essayer."
 
 #: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:60
 #: canaille/templates/core/partial/group-members.html:9
@@ -741,10 +727,8 @@ msgid "New email address"
 msgstr "Nouvelle adresse email"
 
 #: canaille/core/endpoints/forms.py:471
-#, fuzzy
-#| msgid "Password"
 msgid "Passcode"
-msgstr "Mot de passe"
+msgstr "Code de connexion"
 
 #: canaille/core/endpoints/groups.py:42
 msgid "Group creation failed."
@@ -1562,10 +1546,9 @@ msgstr ""
 "déverrouillé."
 
 #: canaille/templates/core/profile_settings.html:164
-#, fuzzy
-#| msgid "Authenticator application configuration"
 msgid "Reset authenticator application configuration"
-msgstr "Configuration de l'application d'authentification"
+msgstr ""
+"Ré-initialisation de la configuration de l'application d'authentification"
 
 #: canaille/templates/core/profile_settings.html:170
 msgid "Lock the account"
@@ -1681,10 +1664,8 @@ msgid "Next step"
 msgstr "Étape suivante"
 
 #: canaille/templates/core/verify-mfa.html:38
-#, fuzzy
-#| msgid "One-time password authentication."
 msgid "One-time passcode authentication."
-msgstr "Authentification par code à usage unique."
+msgstr "Authentification par code de connexion à usage unique."
 
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:55
@@ -1802,8 +1783,6 @@ msgid "Compromised password check failure"
 msgstr "Échec de la vérification de la compromission du mot de passe"
 
 #: canaille/templates/core/mails/admin.html:167
-#, fuzzy
-#| msgid "Email one-time password"
 msgid "Email one-time passcode"
 msgstr "Code de connexion à usage unique envoyé par email"
 
@@ -1935,51 +1914,37 @@ msgstr "Lien de vérification"
 
 #: canaille/templates/core/mails/email_otp.html:19
 #: canaille/templates/core/mails/email_otp.txt:1
-#, fuzzy
-#| msgid "One-time password authentication"
 msgid "One-time passcode authentication"
 msgstr "Authentification par code à usage unique"
 
 #: canaille/templates/core/mails/email_otp.html:27
-#, fuzzy, python-format
-#| msgid ""
-#| "Someone, probably you, asked for a one-time password at %(site_name)s. If "
-#| "you did not ask for this email, please ignore it. If you did, please "
-#| "enter the one-time password below at %(site_name)s to complete your "
-#| "authentication."
+#, python-format
 msgid ""
 "Someone, probably you, asked for a one-time passcode at %(site_name)s. If "
 "you did not ask for this email, please ignore it. If you did, please enter "
 "the one-time passcode below at %(site_name)s to complete your authentication."
 msgstr ""
-"Quelqu'un, probablement vous, a demandé un code de connexion usage unique "
-"pour le site %(site_name)s. Si vous n'êtes pas à l'origine de ce message, "
-"veuillez l'ignorer. Si vous l'êtes, saisissez le code à usage unique ci-"
-"dessous sur %(site_name)s pour terminer votre authentification."
+"Quelqu'un, probablement vous, a demandé un code de connexion pour le site "
+"%(site_name)s. Si vous n'êtes pas à l'origine de ce message, veuillez "
+"l'ignorer. Si vous l'êtes, saisissez le code de connexion ci-dessous sur "
+"%(site_name)s pour terminer votre authentification."
 
 #: canaille/templates/core/mails/email_otp.html:30
-#, fuzzy
-#| msgid "Your one-time password"
 msgid "Your one-time passcode"
-msgstr "Votre code à usage unique"
+msgstr "Votre code de connexion"
 
 #: canaille/templates/core/mails/email_otp.txt:3
-#, fuzzy, python-format
-#| msgid ""
-#| "Please enter the one-time password below at %(site_name)s to complete "
-#| "your authentication."
+#, python-format
 msgid ""
 "Please enter the one-time passcode below at %(site_name)s to complete your "
 "authentication."
 msgstr ""
-"Veuillez saisir le code à usage unique ci-dessous à %(site_name)s pour "
+"Veuillez saisir le code de connexion ci-dessous à %(site_name)s pour "
 "terminer votre authentification."
 
 #: canaille/templates/core/mails/email_otp.txt:5
-#, fuzzy
-#| msgid "One-time password"
 msgid "One-time passcode"
-msgstr "Code à usage unique"
+msgstr "Code de connexion"
 
 #: canaille/templates/core/mails/firstlogin.html:27
 #, python-format
@@ -2208,17 +2173,11 @@ msgid "Remove"
 msgstr "Retirer"
 
 #: canaille/templates/core/modals/reset-otp.html:9
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid "One-time passcode authentication reset"
 msgstr "Réinitialisation de l'authentification par code à usage unique"
 
 #: canaille/templates/core/modals/reset-otp.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to reset one-time password (OTP) authentication for "
-#| "%(user_name)s ? The user will have to perform OTP setup again at next "
-#| "login."
+#, python-format
 msgid ""
 "Are you sure you want to reset one-time passcode (OTP) authentication for "
 "%(user_name)s ? The user will have to perform OTP setup again at next login."
@@ -2228,24 +2187,17 @@ msgstr ""
 "authentification à sa prochaine connexion."
 
 #: canaille/templates/core/modals/reset-otp.html:18
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to reset one-time password (OTP) authentication? "
-#| "You will have to perform OTP setup again at next login."
 msgid ""
 "Are you sure you want to reset one-time passcode (OTP) authentication? You "
 "will have to perform OTP setup again at next login."
 msgstr ""
-"Êtes-vous sûr de vouloir réinitialiser votre authentification par code à "
-"usage unique (OTP) ? Vous devrez procéder à la mise en place de "
-"l'authentification par mot de passe à usage unique à votre prochaine "
-"connexion."
+"Êtes-vous sûr de vouloir réinitialiser la configuration de la connexion par "
+"application d'authentification ? Vous devrez procéder à la configuration de "
+"votre application d'authentification à votre prochaine connexion."
 
 #: canaille/templates/core/modals/reset-otp.html:27
-#, fuzzy
-#| msgid "Reset one-time password authentication"
 msgid "Reset one-time passcode authentication"
-msgstr "Réinitialiser l'authentification par code à usage unique"
+msgstr "Réinitialiser la configuration de l'application d'authentification"
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
@@ -2297,13 +2249,11 @@ msgid "Number of members"
 msgstr "Nombre de membres"
 
 #: canaille/templates/core/sms/sms_otp.txt:1
-#, fuzzy, python-format
-#| msgid ""
-#| "Here is the one-time password you requested for %(website_name)s: %(otp)s"
+#, python-format
 msgid ""
 "Here is the one-time passcode you requested for %(website_name)s: %(otp)s"
 msgstr ""
-"Voici le code à usage unique que vous avez demandé pour %(website_name)s : "
+"Voici le code de connexion que vous avez demandé pour %(website_name)s : "
 "%(otp)s"
 
 #: canaille/templates/macro/form.html:87
