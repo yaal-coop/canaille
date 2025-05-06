@@ -9,6 +9,7 @@ from blinker import signal
 from flask import g
 
 from canaille.app import classproperty
+from canaille.app.i18n import gettext as _
 
 
 class ModelEncoder(json.JSONEncoder):
@@ -282,4 +283,7 @@ def available_backends():
 
 
 def get_lockout_delay_message(current_lockout_delay):
-    return f"Too much attempts. Please wait for {ceil(current_lockout_delay)} seconds before trying to login again."
+    nb_seconds = ceil(current_lockout_delay)
+    return _(
+        f"Too much attempts. Please wait for {nb_seconds} seconds before trying to login again."
+    )

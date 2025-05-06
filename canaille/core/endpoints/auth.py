@@ -553,9 +553,10 @@ def verify_sms_otp(user, fail_redirect_url):
         return redirect(fail_redirect_url)
 
     Backend.instance.save(user)
+    phone_number = mask_phone(user.phone_numbers[0])
     flash(
         _(
-            f"A passcode has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login."
+            f"A passcode has been sent to your phone number {phone_number}. Please enter it below to login."
         ),
         "info",
     )
