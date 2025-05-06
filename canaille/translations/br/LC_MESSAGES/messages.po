@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:29+0200\n"
+"POT-Creation-Date: 2025-05-06 17:33+0200\n"
 "PO-Revision-Date: 2024-08-08 19:09+0000\n"
 "Last-Translator: Moha684 <nahil82466@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1475,7 +1475,7 @@ msgstr ""
 #: canaille/templates/core/setup-otp.html:48
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "One-time passcode application configuration"
+msgid "Authenticator application configuration"
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
 #: canaille/templates/core/setup-otp.html:50

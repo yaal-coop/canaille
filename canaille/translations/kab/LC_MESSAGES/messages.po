@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:29+0200\n"
+"POT-Creation-Date: 2025-05-06 17:33+0200\n"
 "PO-Revision-Date: 2025-03-18 11:35+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1456,7 +1456,7 @@ msgid "Set up multi-factor authentication."
 msgstr ""
 
 #: canaille/templates/core/setup-otp.html:48
-msgid "One-time passcode application configuration"
+msgid "Authenticator application configuration"
 msgstr ""
 
 #: canaille/templates/core/setup-otp.html:50

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:29+0200\n"
+"POT-Creation-Date: 2025-05-06 17:33+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -1564,7 +1564,7 @@ msgstr ""
 
 #: canaille/templates/core/setup-otp.html:48
 #, fuzzy
-msgid "One-time passcode application configuration"
+msgid "Authenticator application configuration"
 msgstr "Oppsett av passord på {website_name}"
 
 #: canaille/templates/core/setup-otp.html:50

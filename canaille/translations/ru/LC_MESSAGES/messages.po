@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:29+0200\n"
+"POT-Creation-Date: 2025-05-06 17:33+0200\n"
 "PO-Revision-Date: 2025-05-03 22:01+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/canaille/"
@@ -1472,7 +1472,7 @@ msgstr "Настроить многоэтапную аутентификацию
 #: canaille/templates/core/setup-otp.html:48
 #, fuzzy
 #| msgid "One-time password authentication reset"
-msgid "One-time passcode application configuration"
+msgid "Authenticator application configuration"
 msgstr "Сброс аутентификации по одноразовому паролю"
 
 #: canaille/templates/core/setup-otp.html:50

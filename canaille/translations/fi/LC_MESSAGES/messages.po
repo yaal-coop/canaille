@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 17:29+0200\n"
+"POT-Creation-Date: 2025-05-06 17:33+0200\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -1471,7 +1471,7 @@ msgstr ""
 #: canaille/templates/core/setup-otp.html:48
 #, fuzzy
 #| msgid "One-time password authentication on {website_name}"
-msgid "One-time passcode application configuration"
+msgid "Authenticator application configuration"
 msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 
 #: canaille/templates/core/setup-otp.html:50

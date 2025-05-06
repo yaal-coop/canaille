@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-05-06 17:29+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-05-06 17:33+0200\n"
 "PO-Revision-Date: 2025-05-06 15:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -486,8 +486,8 @@ msgstr "Le code a été envoyé avec succès !"
 #: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
 msgid "Error while sending one-time passcode. Please try again."
 msgstr ""
-"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez "
-"ré-essayer."
+"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
+"essayer."
 
 #: canaille/core/endpoints/auth.py:498
 msgid ""
@@ -1556,7 +1556,7 @@ msgstr "Mise en place l'authentification multi-facteurs."
 #: canaille/templates/core/setup-otp.html:48
 #, fuzzy
 #| msgid "One-time password authentication reset"
-msgid "One-time passcode application configuration"
+msgid "Authenticator application configuration"
 msgstr "Réinitialisation de l'authentification par code à usage unique"
 
 #: canaille/templates/core/setup-otp.html:50
