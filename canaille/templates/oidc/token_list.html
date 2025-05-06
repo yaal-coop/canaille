@@ -29,10 +29,6 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`.
         <i class="th list icon"></i>
         {% trans %}Applications{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.clients.add') }}">
-        <i class="plus icon"></i>
-        {% trans %}Add an application{% endtrans %}
-    </a>
     <a class="active item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
         {% trans %}Tokens{% endtrans %}

@@ -28,6 +28,9 @@ Macros for rendering table paginated with HTMX.
             >
                 <i class="search icon"></i>
             </button>
+            {% if caller is defined %}
+                {{ caller() }}
+            {% endif %}
         </div>
     </form>
 {% endmacro %}

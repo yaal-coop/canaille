@@ -27,10 +27,6 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
         <i class="th list icon"></i>
         {% trans %}Applications{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.clients.add') }}">
-        <i class="plus icon"></i>
-        {% trans %}Add an application{% endtrans %}
-    </a>
     <a class="item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
         {% trans %}Tokens{% endtrans %}
@@ -49,7 +45,12 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
             </div>
         </h2>
 
-        {{ table.search(table_form, "table.clients") }}
+        {% call table.search(table_form, "table.clients") %}
+            <a class="ui primary button" href="{{ url_for('oidc.clients.add') }}">
+                <i class="plus icon"></i>
+                {% trans %}Add an application{% endtrans %}
+            </a>
+        {% endcall %}
     </div>
     {% include "oidc/partial/client_list.html" %}
 {% endblock %}

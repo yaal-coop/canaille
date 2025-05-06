@@ -25,13 +25,9 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
         <i class="user mail icon"></i>
         {% trans %}Emails{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.clients.index') }}">
+    <a class="active item" href="{{ url_for('oidc.clients.index') }}">
         <i class="th list icon"></i>
         {% trans %}Applications{% endtrans %}
-    </a>
-    <a class="active item" href="{{ url_for('oidc.clients.add') }}">
-        <i class="plus icon"></i>
-        {% trans %}Add an application{% endtrans %}
     </a>
     <a class="item" href="{{ url_for('oidc.tokens.index') }}">
         <i class="key icon"></i>
