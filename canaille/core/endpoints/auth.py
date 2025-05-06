@@ -491,77 +491,86 @@ def send_sms_otp():
     return redirect(url_for("core.auth.verify_two_factor_auth"))
 
 
-def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
-    if otp_method in ["HOTP", "TOTP"]:
-        if not user.last_otp_login:
-            flash(
-                _(
-                    "In order to continue logging in, you need to configure an authenticator application."
-                ),
-                "info",
-            )
-            return redirect(url_for("core.auth.setup_otp_auth"))
+def verify_hotp_totp(user):
+    if not user.last_otp_login:
         flash(
-            _("Please enter the passcode from your authenticator application."),
+            _(
+                "In order to continue logging in, you need to configure an authenticator application."
+            ),
             "info",
         )
-        return redirect(url_for("core.auth.verify_two_factor_auth"))
+        return redirect(url_for("core.auth.setup_otp_auth"))
+
+    flash(
+        _("Please enter the passcode from your authenticator application."),
+        "info",
+    )
+    return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+def verify_email_otp(user, fail_redirect_url):
+    if not user.can_send_new_otp():
+        flash(
+            _(f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."),
+            "danger",
+        )
+        return redirect(fail_redirect_url)
+
+    if not user.generate_and_send_otp_mail():
+        flash(
+            _("Error while sending passcode by email. Please try again."),
+            "danger",
+        )
+        return redirect(fail_redirect_url)
+
+    Backend.instance.save(user)
+    email = mask_email(user.preferred_email)
+    flash(
+        _(
+            f"A passcode has been sent to your email address {email}. Please enter it below to login."
+        ),
+        "info",
+    )
+    current_app.logger.security(
+        f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
+    )
+    return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+def verify_sms_otp(user, fail_redirect_url):
+    if not user.can_send_new_otp():
+        flash(
+            _(f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."),
+            "danger",
+        )
+        return redirect(fail_redirect_url)
+
+    if not user.generate_and_send_otp_sms():
+        flash(
+            _("Error while sending the passcode by SMS. Please try again."),
+            "danger",
+        )
+        return redirect(fail_redirect_url)
+
+    Backend.instance.save(user)
+    flash(
+        _(
+            f"A passcode has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login."
+        ),
+        "info",
+    )
+    current_app.logger.security(
+        f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
+    )
+    return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+
+def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
+    if otp_method in ["HOTP", "TOTP"]:
+        return verify_hotp_totp(user)
 
     elif otp_method == "EMAIL_OTP":
-        if user.can_send_new_otp():
-            if user.generate_and_send_otp_mail():
-                Backend.instance.save(user)
-                email = mask_email(user.preferred_email)
-                flash(
-                    _(
-                        f"A passcode has been sent to your email address {email}. Please enter it below to login."
-                    ),
-                    "info",
-                )
-                current_app.logger.security(
-                    f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
-                )
-                return redirect(url_for("core.auth.verify_two_factor_auth"))
-            else:
-                flash(
-                    _("Error while sending passcode by email. Please try again."),
-                    "danger",
-                )
-                return redirect(fail_redirect_url)
-        else:
-            flash(
-                _(
-                    f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."
-                ),
-                "danger",
-            )
-            return redirect(fail_redirect_url)
+        return verify_email_otp(user, fail_redirect_url)
 
-    else:  # sms
-        if user.can_send_new_otp():
-            if user.generate_and_send_otp_sms():
-                Backend.instance.save(user)
-                flash(
-                    _(
-                        f"A passcode has been sent to your phone number {mask_phone(user.phone_numbers[0])}. Please enter it below to login."
-                    ),
-                    "info",
-                )
-                current_app.logger.security(
-                    f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
-                )
-                return redirect(url_for("core.auth.verify_two_factor_auth"))
-            else:
-                flash(
-                    _("Error while sending the passcode by SMS. Please try again."),
-                    "danger",
-                )
-                return redirect(fail_redirect_url)
-        else:
-            flash(
-                _(
-                    f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."
-                ),
-                "danger",
-            )
-            return redirect(fail_redirect_url)
+    else:
+        return verify_sms_otp(user, fail_redirect_url)
