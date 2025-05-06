@@ -123,19 +123,17 @@ def password():
         return redirect_to_verify_mfa(
             user, otp_methods[0], url_for("core.auth.password")
         )
-    else:
-        current_app.logger.security(f"Succeed login attempt for {username}")
-        if "attempt_login" in session:
-            del session["attempt_login"]
 
-        login_user(user)
-        flash(
-            _("Connection successful. Welcome %(user)s", user=user.name),
-            "success",
-        )
-        return redirect(
-            session.pop("redirect-after-login", url_for("core.account.index"))
-        )
+    current_app.logger.security(f"Succeed login attempt for {username}")
+    if "attempt_login" in session:
+        del session["attempt_login"]
+
+    login_user(user)
+    flash(
+        _("Connection successful. Welcome %(user)s", user=user.name),
+        "success",
+    )
+    return redirect(session.pop("redirect-after-login", url_for("core.account.index")))
 
 
 @bp.route("/logout")
@@ -281,6 +279,7 @@ def reset(user, token):
 
     if current_app.features.has_trusted_hosts:
         token = build_hash(token)
+
     if not user or not user.is_otp_valid(token, "EMAIL_OTP"):
         item_name = "link" if current_app.features.has_trusted_hosts else "code"
         flash(
@@ -289,22 +288,22 @@ def reset(user, token):
         )
         return redirect(url_for("core.account.index"))
 
-    if request.form and form.validate():
-        Backend.instance.set_user_password(user, form.password.data)
-        user.clear_otp()
-        Backend.instance.save(user)
-        login_user(user)
-
-        flash(_("Your password has been updated successfully"), "success")
-        return redirect(
-            session.pop(
-                "redirect-after-login",
-                url_for("core.account.profile_edition", edited_user=user),
-            )
+    if not request.form or not form.validate():
+        return render_template(
+            "core/reset-password.html", form=form, user=user, token=token
         )
 
-    return render_template(
-        "core/reset-password.html", form=form, user=user, token=token
+    Backend.instance.set_user_password(user, form.password.data)
+    user.clear_otp()
+    Backend.instance.save(user)
+    login_user(user)
+
+    flash(_("Your password has been updated successfully"), "success")
+    return redirect(
+        session.pop(
+            "redirect-after-login",
+            url_for("core.account.profile_edition", edited_user=user),
+        )
     )
 
 
@@ -375,33 +374,7 @@ def verify_two_factor_auth():
 
     user = get_user_from_login(session["attempt_login_with_correct_password"])
 
-    if form.validate() and user.is_otp_valid(form.otp.data, current_otp_method):
-        session["remaining_otp_methods"].pop(0)
-        if session["remaining_otp_methods"]:
-            return redirect_to_verify_mfa(
-                user,
-                session["remaining_otp_methods"][0],
-                url_for("core.auth.verify_two_factor_auth"),
-            )
-        else:
-            user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
-            Backend.instance.save(user)
-            current_app.logger.security(
-                f"Succeed login attempt for {session['attempt_login_with_correct_password']}"
-            )
-            del session["attempt_login_with_correct_password"]
-            login_user(user)
-            flash(
-                _(
-                    "Connection successful. Welcome %(user)s",
-                    user=user.formatted_name,
-                ),
-                "success",
-            )
-            return redirect(
-                session.pop("redirect-after-login", url_for("core.account.index"))
-            )
-    else:
+    if not form.validate() or not user.is_otp_valid(form.otp.data, current_otp_method):
         flash(
             _("The passcode you entered is invalid. Please try again"),
             "error",
@@ -410,6 +383,30 @@ def verify_two_factor_auth():
             f"Failed login attempt (wrong OTP) for {session['attempt_login_with_correct_password']}"
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))
+
+    session["remaining_otp_methods"].pop(0)
+    if session["remaining_otp_methods"]:
+        return redirect_to_verify_mfa(
+            user,
+            session["remaining_otp_methods"][0],
+            url_for("core.auth.verify_two_factor_auth"),
+        )
+
+    user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
+    Backend.instance.save(user)
+    current_app.logger.security(
+        f"Succeed login attempt for {session['attempt_login_with_correct_password']}"
+    )
+    del session["attempt_login_with_correct_password"]
+    login_user(user)
+    flash(
+        _(
+            "Connection successful. Welcome %(user)s",
+            user=user.formatted_name,
+        ),
+        "success",
+    )
+    return redirect(session.pop("redirect-after-login", url_for("core.account.index")))
 
 
 @bp.route("/send-mail-otp", methods=["POST"])
@@ -428,25 +425,26 @@ def send_mail_otp():
 
     user = get_user_from_login(session["attempt_login_with_correct_password"])
 
-    if user.can_send_new_otp():
-        if user.generate_and_send_otp_mail():
-            Backend.instance.save(user)
-            current_app.logger.security(
-                f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
-            )
-            flash(
-                _("Passcode successfully sent!"),
-                "success",
-            )
-        else:
-            flash(
-                _("Error while sending the passcode by email. Please try again."),
-                "danger",
-            )
-    else:
+    if not user.can_send_new_otp():
         flash(
             _(f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."),
             "danger",
+        )
+
+    elif not user.generate_and_send_otp_mail():
+        flash(
+            _("Error while sending the passcode by email. Please try again."),
+            "danger",
+        )
+
+    else:
+        Backend.instance.save(user)
+        current_app.logger.security(
+            f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.preferred_email}"
+        )
+        flash(
+            _("Passcode successfully sent!"),
+            "success",
         )
 
     return redirect(url_for("core.auth.verify_two_factor_auth"))
@@ -468,25 +466,26 @@ def send_sms_otp():
 
     user = get_user_from_login(session["attempt_login_with_correct_password"])
 
-    if user.can_send_new_otp():
-        if user.generate_and_send_otp_sms():
-            Backend.instance.save(user)
-            current_app.logger.security(
-                f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
-            )
-            flash(
-                _("Passcode successfully sent!"),
-                "success",
-            )
-        else:
-            flash(
-                _("Error while sending the passcode by SMS. Please try again."),
-                "danger",
-            )
-    else:
+    if not user.can_send_new_otp():
         flash(
             _(f"Too many attempts. Please try again in {SEND_NEW_OTP_DELAY} seconds."),
             "danger",
+        )
+
+    elif not user.generate_and_send_otp_sms():
+        flash(
+            _("Error while sending the passcode by SMS. Please try again."),
+            "danger",
+        )
+
+    else:
+        Backend.instance.save(user)
+        current_app.logger.security(
+            f"Sent one-time passcode for {session['attempt_login_with_correct_password']} to {user.phone_numbers[0]}"
+        )
+        flash(
+            _("Passcode successfully sent!"),
+            "success",
         )
 
     return redirect(url_for("core.auth.verify_two_factor_auth"))
@@ -507,6 +506,7 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
             "info",
         )
         return redirect(url_for("core.auth.verify_two_factor_auth"))
+
     elif otp_method == "EMAIL_OTP":
         if user.can_send_new_otp():
             if user.generate_and_send_otp_mail():
@@ -536,6 +536,7 @@ def redirect_to_verify_mfa(user, otp_method, fail_redirect_url):
                 "danger",
             )
             return redirect(fail_redirect_url)
+
     else:  # sms
         if user.can_send_new_otp():
             if user.generate_and_send_otp_sms():
