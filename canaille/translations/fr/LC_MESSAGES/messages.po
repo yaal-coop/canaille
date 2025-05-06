@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:29+0200\n"
-"PO-Revision-Date: 2025-05-06 10:01+0000\n"
+"PO-Revision-Date: 2025-05-06 15:33+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -474,8 +474,6 @@ msgid "Invalid code."
 msgstr "Code invalide."
 
 #: canaille/core/endpoints/auth.py:406
-#, fuzzy
-#| msgid "The one-time password you entered is invalid. Please try again"
 msgid "The one-time passcode you entered is invalid. Please try again"
 msgstr ""
 "Le code à usage unique que vous avez entré est invalide. Veuillez ré-essayer"
@@ -486,22 +484,20 @@ msgstr "Le code a été envoyé avec succès !"
 
 #: canaille/core/endpoints/auth.py:443 canaille/core/endpoints/auth.py:482
 #: canaille/core/endpoints/auth.py:525 canaille/core/endpoints/auth.py:553
-#, fuzzy
-#| msgid "Error while sending one-time password. Please try again."
 msgid "Error while sending one-time passcode. Please try again."
 msgstr ""
-"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez ré-"
-"essayer."
+"Une erreur est survenue lors de l’envoi du code à usage unique. Veuillez "
+"ré-essayer."
 
 #: canaille/core/endpoints/auth.py:498
 msgid ""
 "In order to finish logging in, you need to configure an authenticator "
 "application."
 msgstr ""
+"Afin de poursuivre votre connexion, vous devez configurer une application "
+"d'authentification."
 
 #: canaille/core/endpoints/auth.py:504
-#, fuzzy
-#| msgid "Please enter the one-time password from your authenticator app."
 msgid "Please enter the one-time passcode from your authenticator app."
 msgstr ""
 "Veuillez saisir le code à usage unique depuis votre application "
