@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-05 11:32+0200\n"
-"PO-Revision-Date: 2025-05-05 09:33+0000\n"
+"PO-Revision-Date: 2025-05-06 10:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -172,7 +172,7 @@ msgstr ""
 #: canaille/core/endpoints/admin.py:357 canaille/core/mails.py:271
 #, python-brace-format
 msgid "One-time password authentication on {website_name}"
-msgstr "Mot de passe à usage unique sur {website_name}"
+msgstr "Code de connexion à usage unique sur {website_name}"
 
 #: canaille/core/validators.py:17
 #, python-brace-format
@@ -364,8 +364,7 @@ msgstr "Le compte a été déverrouillé"
 
 #: canaille/core/endpoints/account.py:765
 msgid "One-time password authentication has been reset"
-msgstr ""
-"L'authentification par mots de passe à usage unique a été ré-initialisée"
+msgstr "L'authentification par code à usage unique a été ré-initialisée"
 
 #: canaille/core/endpoints/account.py:843
 #, python-format
@@ -712,7 +711,7 @@ msgstr "Nouvelle adresse email"
 #: canaille/core/endpoints/forms.py:460
 #: canaille/templates/core/mails/email_otp.txt:5
 msgid "One-time password"
-msgstr "Mot de passe à usage unique"
+msgstr "Code à usage unique"
 
 #: canaille/core/endpoints/groups.py:42
 msgid "Group creation failed."
@@ -1533,7 +1532,7 @@ msgstr ""
 #: canaille/templates/core/modals/reset-otp.html:27
 #: canaille/templates/core/profile_settings.html:164
 msgid "Reset one-time password authentication"
-msgstr "Réinitialiser l'authentification par mot de passe à usage unique"
+msgstr "Réinitialiser l'authentification par code à usage unique"
 
 #: canaille/templates/core/profile_settings.html:170
 msgid "Lock the account"
@@ -1595,14 +1594,12 @@ msgid "Copy secret"
 msgstr "Copier le secret"
 
 #: canaille/templates/core/setup-mfa.html:82
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Open authenticator application"
-msgstr "Applications pré-autorisées"
+msgstr "Ouvrir l'application d'authentification"
 
 #: canaille/templates/core/verify-mfa.html:38
 msgid "One-time password authentication."
-msgstr "Authentification par mot de passe à usage unique."
+msgstr "Authentification par code à usage unique."
 
 #: canaille/templates/core/partial/emails_field.html:14
 #: canaille/templates/core/verify-mfa.html:55
@@ -1734,7 +1731,7 @@ msgstr "Échec de la vérification de la compromission du mot de passe"
 
 #: canaille/templates/core/mails/admin.html:171
 msgid "Email one-time password"
-msgstr "Mot de passe à usage unique par email"
+msgstr "Code de connexion à usage unique envoyé par email"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:28
 #, python-format
@@ -1865,7 +1862,7 @@ msgstr "Lien de vérification"
 #: canaille/templates/core/mails/email_otp.html:19
 #: canaille/templates/core/mails/email_otp.txt:1
 msgid "One-time password authentication"
-msgstr "Authentification par mot de passe à usage unique"
+msgstr "Authentification par code à usage unique"
 
 #: canaille/templates/core/mails/email_otp.html:27
 #, python-format
@@ -1874,14 +1871,14 @@ msgid ""
 "you did not ask for this email, please ignore it. If you did, please enter "
 "the one-time password below at %(site_name)s to complete your authentication."
 msgstr ""
-"Quelqu'un, probablement vous, a demandé un mot de passe à usage unique pour "
-"le site %(site_name)s. Si vous n'êtes pas à l'origine de ce message, "
-"veuillez l'ignorer. Si vous l'êtes, saisissez le mot de passe à usage unique "
-"ci-dessous sur %(site_name)s pour terminer votre authentification."
+"Quelqu'un, probablement vous, a demandé un code de connexion usage unique "
+"pour le site %(site_name)s. Si vous n'êtes pas à l'origine de ce message, "
+"veuillez l'ignorer. Si vous l'êtes, saisissez le code à usage unique ci-"
+"dessous sur %(site_name)s pour terminer votre authentification."
 
 #: canaille/templates/core/mails/email_otp.html:30
 msgid "Your one-time password"
-msgstr "Votre mot de passe à usage unique"
+msgstr "Votre code à usage unique"
 
 #: canaille/templates/core/mails/email_otp.txt:3
 #, python-format
@@ -1889,8 +1886,8 @@ msgid ""
 "Please enter the one-time password below at %(site_name)s to complete your "
 "authentication."
 msgstr ""
-"Veuillez saisir le mot de passe à usage unique ci-dessous à %(site_name)s "
-"pour terminer votre authentification."
+"Veuillez saisir le code à usage unique ci-dessous à %(site_name)s pour "
+"terminer votre authentification."
 
 #: canaille/templates/core/mails/firstlogin.html:27
 #, python-format
@@ -2120,7 +2117,7 @@ msgstr "Retirer"
 
 #: canaille/templates/core/modals/reset-otp.html:9
 msgid "One-time password authentication reset"
-msgstr "Réinitialisation de l'authentification par mot de passe à usage unique"
+msgstr "Réinitialisation de l'authentification par code à usage unique"
 
 #: canaille/templates/core/modals/reset-otp.html:14
 #, python-format
@@ -2128,17 +2125,17 @@ msgid ""
 "Are you sure you want to reset one-time password (OTP) authentication for "
 "%(user_name)s ? The user will have to perform OTP setup again at next login."
 msgstr ""
-"Êtes-vous sûrs de vouloir réinitialiser l'authentification par mot de passe "
-"à usage unique (OTP) pour %(user_name)s ? L'utilisateur devra mettre en "
-"place son authentification à sa prochaine connexion."
+"Êtes-vous sûrs de vouloir réinitialiser l'authentification par code à usage "
+"unique (OTP) pour %(user_name)s ? L'utilisateur devra mettre en place son "
+"authentification à sa prochaine connexion."
 
 #: canaille/templates/core/modals/reset-otp.html:18
 msgid ""
 "Are you sure you want to reset one-time password (OTP) authentication? You "
 "will have to perform OTP setup again at next login."
 msgstr ""
-"Êtes-vous sûr de vouloir réinitialiser votre authentification par mot de "
-"passe à usage unique (OTP) ? Vous devrez procéder à la mise en place de "
+"Êtes-vous sûr de vouloir réinitialiser votre authentification par code à "
+"usage unique (OTP) ? Vous devrez procéder à la mise en place de "
 "l'authentification par mot de passe à usage unique à votre prochaine "
 "connexion."
 
@@ -2196,8 +2193,8 @@ msgstr "Nombre de membres"
 msgid ""
 "Here is the one-time password you requested for %(website_name)s: %(otp)s"
 msgstr ""
-"Voici le mot de passe à usage unique que vous avez demandé pour "
-"%(website_name)s : %(otp)s"
+"Voici le code à usage unique que vous avez demandé pour %(website_name)s : "
+"%(otp)s"
 
 #: canaille/templates/macro/form.html:87
 #: canaille/templates/oidc/client_edit.html:60
