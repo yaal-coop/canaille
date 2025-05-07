@@ -307,23 +307,39 @@ def reset(user, token):
     )
 
 
-@bp.route("/setup-otp")
+@bp.route("/setup-otp", methods=["GET", "POST"])
 def setup_otp_auth():
     if not current_app.features.has_otp:
         abort(404)
 
     from canaille.app.otp import get_otp_authentication_setup_uri
 
-    if g.session:
-        return redirect(
-            url_for("core.account.profile_edition", edited_user=g.session.user)
-        )
-
-    if "attempt_login_with_correct_password" not in session:
+    if not g.session and "attempt_login_with_correct_password" not in session:
         flash(_("Cannot remember the login you attempted to sign in with"), "warning")
         return redirect(url_for("core.auth.login"))
 
-    user = get_user_from_login(session["attempt_login_with_correct_password"])
+    user = (
+        g.session.user
+        if g.session
+        else get_user_from_login(session["attempt_login_with_correct_password"])
+    )
+
+    form = TwoFactorForm(request.form or None)
+    form.render_field_macro_file = "core/partial/login_field.html"
+    if request.form and form.form_control():
+        if not form.validate():
+            flash(_("The passcode you entered is invalid. Please try again"), "error")
+
+        else:
+            user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
+            Backend.instance.save(user)
+            current_app.logger.security(
+                f"HOTP/TOTP authentication factor reset for {user.user_name}"
+            )
+            flash(_("Authenticator application correctly configured."), "success")
+            return redirect(
+                url_for("core.account.profile_settings" if g.session else ".auth")
+            )
 
     uri, secret = get_otp_authentication_setup_uri(user)
     base64_qr_image = get_b64encoded_qr_image(uri)
@@ -333,6 +349,8 @@ def setup_otp_auth():
         qr_image=base64_qr_image,
         otp_uri=uri,
         user=user,
+        menu=bool(g.session),
+        form=form,
     )
 
 
