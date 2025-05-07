@@ -197,7 +197,7 @@ Here are configuration examples for Nginx or Apache:
     <VirtualHost *:443>
         ServerName mydomain.example
         RewriteEngine on
-        RewriteRule "^/.well-know/webfinger" "https://auth.mydomain.example/.well-known/webfinger" [R,L]
+        RewriteRule "^/.well-known/webfinger" "https://auth.mydomain.example/.well-known/webfinger" [R,L]
     </VirtualHost>
 
 .. _WebFinger: https://www.rfc-editor.org/rfc/rfc7033.html
