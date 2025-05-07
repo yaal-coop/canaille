@@ -2608,22 +2608,18 @@ msgid "Token"
 msgstr "Token"
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "Einladung"
 
 #, fuzzy
-#~| msgid "Refresh token"
 #~ msgid "Secret token:"
 #~ msgstr "Token aktualisieren"
 
 #, fuzzy
-#~| msgid "Profile updated successfully."
 #~ msgid "Successfully copied!"
 #~ msgstr "Profil erfolgreich aktualisiert."
 
 #, fuzzy
-#~| msgid "JKW URI"
 #~ msgid "JKWS URI"
 #~ msgstr "JKW URI"
 

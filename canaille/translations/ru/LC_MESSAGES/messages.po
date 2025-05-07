@@ -2429,22 +2429,18 @@ msgid "Token"
 msgstr ""
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "Приглашение"
 
 #, fuzzy
-#~| msgid "Set up multi-factor authentication."
 #~ msgid "Set up a new authenticator."
 #~ msgstr "Настроить многоэтапную аутентификацию."
 
 #, fuzzy
-#~| msgid "Revoke token"
 #~ msgid "Secret token:"
 #~ msgstr "Отозвать токен"
 
 #, fuzzy
-#~| msgid "Profile updated successfully."
 #~ msgid "Successfully copied!"
 #~ msgstr "Профиль успешно обновлён."
 

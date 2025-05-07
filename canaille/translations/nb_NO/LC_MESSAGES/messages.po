@@ -2540,17 +2540,14 @@ msgid "Token"
 msgstr "Symbol"
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "Invitasjon"
 
 #, fuzzy
-#~| msgid "Access token"
 #~ msgid "Secret token:"
 #~ msgstr "Tilgangssymbol"
 
 #, fuzzy
-#~| msgid "Profile updated successfuly."
 #~ msgid "Successfully copied!"
 #~ msgstr "Profil redigert."
 

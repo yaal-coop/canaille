@@ -2399,6 +2399,5 @@ msgid "Token"
 msgstr ""
 
 #, fuzzy
-#~| msgid "Profile updated successfully."
 #~ msgid "Successfully copied!"
 #~ msgstr "Hizivaet eo bet an aelad gant berzh."

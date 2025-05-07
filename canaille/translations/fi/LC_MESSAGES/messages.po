@@ -2413,6 +2413,5 @@ msgid "Token"
 msgstr ""
 
 #, fuzzy
-#~| msgid "Profile updated successfully."
 #~ msgid "Successfully copied!"
 #~ msgstr "Profiilin päivitys onnistui."

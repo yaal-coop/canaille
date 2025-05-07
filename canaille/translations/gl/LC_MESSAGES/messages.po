@@ -2706,22 +2706,18 @@ msgid "Token"
 msgstr "Token"
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "Invitación"
 
 #, fuzzy
-#~| msgid "Refresh token"
 #~ msgid "Secret token:"
 #~ msgstr "Refrescar token"
 
 #, fuzzy
-#~| msgid "Profile updated successfuly."
 #~ msgid "Successfully copied!"
 #~ msgstr "Perfil actualizado correctamente."
 
 #, fuzzy
-#~| msgid "JKW URI"
 #~ msgid "JKWS URI"
 #~ msgstr "URI de JKW"
 

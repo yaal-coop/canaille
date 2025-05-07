@@ -2381,12 +2381,10 @@ msgid "Token"
 msgstr ""
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "Tinnubga"
 
 #, fuzzy
-#~| msgid "JKW URI"
 #~ msgid "JKWS URI"
 #~ msgstr "URI n JKW"
 

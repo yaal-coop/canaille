@@ -2549,22 +2549,18 @@ msgid "Token"
 msgstr "கிள்ளாக்கு"
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "அழைப்பு"
 
 #, fuzzy
-#~| msgid "Refresh token"
 #~ msgid "Secret token:"
 #~ msgstr "கிள்ளாக்கைப் புதுப்பி"
 
 #, fuzzy
-#~| msgid "Profile updated successfully."
 #~ msgid "Successfully copied!"
 #~ msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
 #, fuzzy
-#~| msgid "JKW URI"
 #~ msgid "JKWS URI"
 #~ msgstr "JKW யூரி"
 

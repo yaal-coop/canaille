@@ -2608,27 +2608,22 @@ msgid "Token"
 msgstr "Token"
 
 #, fuzzy
-#~| msgid "Invitation"
 #~ msgid "Instructions"
 #~ msgstr "Invitación"
 
 #, fuzzy
-#~| msgid "Set up multi-factor authentication."
 #~ msgid "Set up a new authenticator."
 #~ msgstr "Configurar autenticación multifactor."
 
 #, fuzzy
-#~| msgid "Refresh token"
 #~ msgid "Secret token:"
 #~ msgstr "Token de refresco"
 
 #, fuzzy
-#~| msgid "Profile updated successfully."
 #~ msgid "Successfully copied!"
 #~ msgstr "Perfil actualizado correctamente."
 
 #, fuzzy
-#~| msgid "JKW URI"
 #~ msgid "JKWS URI"
 #~ msgstr "URI de JKW"
 
