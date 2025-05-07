@@ -4,6 +4,7 @@ import pathlib
 from unittest import mock
 
 import pytest
+import smpplib
 import tomlkit
 from flask_webtest import TestApp
 from pydantic import ValidationError
@@ -192,9 +193,7 @@ def test_smtp_connection_remote_smtp_wrong_credentials(
     )
 
 
-def test_smtp_connection_remote_smtp_no_credentials(
-    testclient, backend, configuration, mock_smpp
-):
+def test_smtp_connection_remote_smtp_no_credentials(testclient, backend, configuration):
     del configuration["CANAILLE"]["SMTP"]["LOGIN"]
     del configuration["CANAILLE"]["SMTP"]["PASSWORD"]
     config_obj = settings_factory(configuration)
@@ -302,7 +301,7 @@ def test_email_otp_without_smtp(configuration, backend):
         match=r"Cannot activate email one-time passcode authentication without SMTP",
     ):
         configuration["CANAILLE"]["SMTP"] = None
-        configuration["CANAILLE"]["EMAIL_OTP"] = True
+        configuration["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["email"]
         settings_factory(configuration)
 
 
@@ -312,11 +311,14 @@ def test_sms_otp_without_smpp(configuration, backend):
         match=r"Cannot activate sms one-time passcode authentication without SMPP",
     ):
         configuration["CANAILLE"]["SMPP"] = None
-        configuration["CANAILLE"]["SMS_OTP"] = True
+        configuration["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["sms"]
         settings_factory(configuration)
 
 
-def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configuration):
+def test_smpp_connection_remote_smpp_unreachable(
+    testclient, backend, configuration, smpp_client
+):
+    smpp_client.__enter__ = mock.Mock(side_effect=smpplib.exceptions.ConnectionError())
     configuration["CANAILLE"]["SMPP"] = {
         "HOST": "invalid-smpp.com",
         "PORT": 2775,
@@ -331,7 +333,7 @@ def test_smpp_connection_remote_smpp_unreachable(testclient, backend, configurat
     )
 
 
-def test_check_network_config_without_smpp(configuration, backend, mock_smpp):
+def test_check_network_config_without_smpp(app, configuration, backend):
     configuration["CANAILLE"]["SMPP"] = None
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
@@ -341,9 +343,7 @@ def test_check_network_config_without_smpp(configuration, backend, mock_smpp):
     ) in check_network_config(config_dict)
 
 
-def test_smpp_connection_remote_smpp_no_credentials(
-    testclient, backend, configuration, mock_smpp
-):
+def test_smpp_connection_remote_smpp_no_credentials(testclient, backend, configuration):
     del configuration["CANAILLE"]["SMPP"]["LOGIN"]
     del configuration["CANAILLE"]["SMPP"]["PASSWORD"]
     config_obj = settings_factory(configuration)

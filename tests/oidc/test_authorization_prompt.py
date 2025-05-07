@@ -250,7 +250,7 @@ def test_prompt_login_logged(testclient, logged_user, client, backend):
     )
     res = res.follow()
 
-    assert res.template == "core/password.html"
+    assert res.template == "core/auth/password.html"
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302).follow()
 

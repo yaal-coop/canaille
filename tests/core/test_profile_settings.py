@@ -7,6 +7,7 @@ from flask import current_app
 from flask import g
 
 from canaille.app import models
+from tests.core.test_auth_otp import generate_otp
 
 
 def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
@@ -748,31 +749,60 @@ def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
 
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
-def test_account_reset_otp(
-    testclient, backend, caplog, logged_admin, user_otp, otp_method
-):
+def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
-    old_token = user_otp.secret_token
-    assert old_token is not None
-    assert user_otp.last_otp_login is not None
+    assert logged_user.last_otp_login is not None
 
     res = testclient.get("/profile/user/settings")
-    res.mustcontain("Reset authenticator application configuration")
+    res.mustcontain("Reset")
 
     res = res.form.submit(name="action", value="confirm-reset-otp")
     res = res.form.submit(name="action", value="reset-otp")
-    user = backend.get(models.User, id=user_otp.id)
-    assert user.secret_token is not None
-    assert user.secret_token != old_token
-    assert user.last_otp_login is None
-    if otp_method == "HOTP":
-        assert user.hotp_counter == 1
+
+    backend.reload(logged_user)
+    assert logged_user.secret_token is None
     assert res.flashes == [
         ("success", "Authenticator application passcode authentication has been reset")
     ]
     assert (
         "canaille",
         logging.SECURITY,
-        "Reset one-time passcode authentication for user by admin",
+        "Reset one-time passcode authentication for user by user",
     ) in caplog.record_tuples
+
+
+@pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
+def test_account_setup_otp(testclient, backend, logged_user, otp_method):
+    testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+
+    logged_user.secret_token = None
+    backend.save(logged_user)
+
+    res = testclient.get("/profile/user/settings")
+    res.mustcontain("Set-up")
+
+    res = res.form.submit(name="action", value="setup-otp")
+    assert res.location == "/auth/otp-setup"
+    res = res.follow()
+
+    with testclient.session_transaction() as session:
+        secret_token = (
+            session["auth"]["data"]["otp_user_secret"]
+            if "data" in session["auth"]
+            else None
+        )
+
+    res.form["otp"] = generate_otp(otp_method, secret_token)
+    res = res.form.submit(status=302)
+
+    assert res.location == "/profile/user/settings"
+    assert (
+        "success",
+        "Authenticator application correctly configured.",
+    ) in res.flashes
+
+    backend.reload(logged_user)
+    assert logged_user.secret_token
+    if otp_method == "HOTP":
+        assert logged_user.hotp_counter == 1

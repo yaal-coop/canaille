@@ -371,40 +371,39 @@ class CoreSettings(BaseModel):
     """If :py:data:`True`, then users will have to wait for an increasingly
     long time between each failed login attempt."""
 
-    OTP_METHOD: OTPMethod | None = None
-    """If OTP_METHOD is defined, then users will need to authenticate themselves
-    using a one-time passcode (OTP) via an authenticator app.
-    If set to ``TOTP``, the application will use time one-time passcodes,
+    AUTHENTICATION_FACTORS: list[str] = ["password"]
+    """"The authentication factors.
+
+    Users will need to authenticate with factors in the order of this list.
+    For instance, this will show a password form and then ask for a one-time passcode:
+
+    .. code-block:: toml
+
+        AUTHENTICATION_FACTORS = ["password", "otp"]
+    """
+
+    OTP_METHOD: OTPMethod = OTPMethod.TOTP
+    """The OTP method to use if ``OTP`` is set in :param:`~canaille.core.confirmation.CoreSettings.AUTHENTICATION_FACTORS`.
+    If set to ``TOTP``, the application will use time-based one-time passcodes,
     If set to ``HOTP``, the application will use HMAC-based one-time passcodes."""
-
-    EMAIL_OTP: bool = False
-    """If :py:data:`True`, then users will need to authenticate themselves
-    via a one-time passcode sent to their primary email address."""
-
-    SMS_OTP: bool = False
-    """If :py:data:`True`, then users will need to authenticate themselves
-    via a one-time passcode sent to their primary phone number."""
-
-    @field_validator("OTP_METHOD", "EMAIL_OTP")
-    @classmethod
-    def validate_otp_dependency(cls, value):
-        if value and not importlib.util.find_spec("otpauth"):  # pragma: no cover
-            raise ValueError(
-                "You are trying to use OTP but the 'otp' extra is not installed."
-            )
-
-        return value
 
     @model_validator(mode="after")
     def validate_otp_configuration(self) -> Self:
-        if self.EMAIL_OTP and not self.SMTP:
+        if "email" in self.AUTHENTICATION_FACTORS and not self.SMTP:
             raise ValueError(
                 "Cannot activate email one-time passcode authentication without SMTP"
             )
 
-        if self.SMS_OTP and not self.SMPP:
+        if "sms" in self.AUTHENTICATION_FACTORS and not self.SMPP:
             raise ValueError(
                 "Cannot activate sms one-time passcode authentication without SMPP"
+            )
+
+        if "otp" in self.AUTHENTICATION_FACTORS and not importlib.util.find_spec(
+            "otpauth"
+        ):  # pragma: no cover
+            raise ValueError(
+                "You are trying to use OTP but the 'otp' extra is not installed."
             )
 
         return self

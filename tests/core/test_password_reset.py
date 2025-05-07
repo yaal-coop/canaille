@@ -105,7 +105,6 @@ def test_password_reset_bad_password(testclient, user, backend):
 
 def test_unavailable_if_no_smtp(testclient, user):
     res = testclient.get("/login")
-    res.mustcontain("Forgotten password")
 
     res.form["login"] = "user"
     res = res.form.submit()
@@ -117,7 +116,6 @@ def test_unavailable_if_no_smtp(testclient, user):
     testclient.app.config["CANAILLE"]["SMTP"] = None
 
     res = testclient.get("/login")
-    res.mustcontain(no="Forgotten password")
 
     res.form["login"] = "user"
     res = res.form.submit()

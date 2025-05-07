@@ -6,14 +6,14 @@ import time_machine
 from flask import g
 
 from canaille.app import models
-from canaille.app.session import SessionObject
+from canaille.app.session import UserSession
 
 
 def test_index(testclient, user, backend):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
-    g.session = SessionObject(user=user)
+    g.session = UserSession(user=user)
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 
@@ -35,10 +35,10 @@ def test_user_deleted_in_session(testclient, backend):
 
     with testclient.session_transaction() as session:
         session["sessions"] = [
-            SessionObject(
+            UserSession(
                 user=user,
                 last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
-            ).to_dict()
+            ).serialize()
         ]
 
     testclient.get("/profile/jake", status=200)
@@ -80,10 +80,10 @@ def test_admin_self_deletion(testclient, backend):
     backend.save(admin)
     with testclient.session_transaction() as sess:
         sess["sessions"] = [
-            SessionObject(
+            UserSession(
                 user=admin,
                 last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
-            ).to_dict()
+            ).serialize()
         ]
 
     res = testclient.get("/profile/temp/settings")
@@ -111,10 +111,10 @@ def test_user_self_deletion(testclient, backend):
     backend.save(user)
     with testclient.session_transaction() as sess:
         sess["sessions"] = [
-            SessionObject(
+            UserSession(
                 user=user,
                 last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
-            ).to_dict()
+            ).serialize()
         ]
 
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = ["edit_self"]

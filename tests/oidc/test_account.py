@@ -1,13 +1,13 @@
 from flask import g
 
-from canaille.app.session import SessionObject
+from canaille.app.session import UserSession
 
 
 def test_index(testclient, user, backend):
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
-    g.session = SessionObject(user=user)
+    g.session = UserSession(user=user)
     res = testclient.get("/", status=302)
     assert res.location == "/profile/user"
 

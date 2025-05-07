@@ -17,8 +17,6 @@ def create_app(
     :param env_file: The path to an environment var file in which configuration can be loaded.
     :param env_prefix: The prefix to configuration environment vars.
     """
-    from canaille.app.otp import setup_otp
-
     from .app.configuration import setup_config
     from .app.features import setup_features
     from .app.flask import setup_flask
@@ -54,7 +52,6 @@ def create_app(
         setup_i18n(app)
         setup_themer(app)
         setup_flask(app)
-        setup_otp(app)
 
         if app.features.has_oidc:  # pragma: no branch
             from .oidc.oauth import setup_oauth

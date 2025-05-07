@@ -347,21 +347,18 @@ def reset_otp(identifier):
 
     IDENTIFIER should be a user id or user_name
     """
-    from canaille.app.otp import initialize_otp
+    from canaille.app.otp import make_otp_secret
 
     user = Backend.instance.get(models.User, identifier)
     if not user:
         raise click.ClickException(f"No user with id '{identifier}'")
 
-    initialize_otp(user)
+    user.secret_token = make_otp_secret()
+    Backend.instance.save(user)
+
     current_app.logger.security(
         f"Reset one-time passcode authentication from CLI for {user.user_name}"
     )
-
-    try:
-        Backend.instance.save(user)
-    except Exception as exc:  # pragma: no cover
-        raise click.ClickException(exc) from exc
 
     output = json.dumps(user, cls=Backend.instance.json_encoder)
     click.echo(output)

@@ -27,6 +27,8 @@ from canaille.app.i18n import gettext as _
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.core.auth import AuthenticationSession
+from canaille.core.auth import redirect_to_next_auth_step
 
 from ..oauth import ClientConfigurationEndpoint
 from ..oauth import ClientRegistrationEndpoint
@@ -135,15 +137,20 @@ def authorize_login(redirect_url, now):
             "prompt"
         ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):
             session["redirect-after-login"] = redirect_url
-            return redirect(url_for("core.auth.password"))
+            g.auth = AuthenticationSession(user_name=g.session.user.user_name)
+            g.auth.save()
+            return redirect_to_next_auth_step()
 
+        # hotfix for
         # https://github.com/lepture/authlib/issues/741
         max_age = auth_time + datetime.timedelta(
             seconds=int(request.values.get("max_age", 0))
         )
         if request.values.get("max_age") and max_age < now:
             session["redirect-after-login"] = redirect_url
-            return redirect(url_for("core.auth.password"))
+            g.auth = AuthenticationSession(user_name=g.session.user.user_name)
+            g.auth.save()
+            return redirect_to_next_auth_step()
 
         if not user.can_use_oidc:
             abort(

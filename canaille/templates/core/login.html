@@ -48,16 +48,13 @@ This page displays a form to get the user identifier.
                     {% endblock %}
 
                     {% block buttons %}
-                        <div class="ui right aligned container">
-                            <div class="ui stackable buttons">
-                                {% if features.has_registration %}
-                                    <a type="button" class="ui right floated button" href="{{ url_for('core.account.join') }}">{{ _("Create an account") }}</a>
-                                {% endif %}
-                                {% if features.has_smtp and features.has_password_recovery %}
-                                    <a type="button" class="ui right floated button" href="{{ url_for('core.auth.forgotten') }}">{{ _("Forgotten password") }}</a>
-                                {% endif %}
-                                <button type="submit" name="answer" class="ui right floated primary button" hx-boost="false">{{ _("Continue") }}</button>
+                        {% if features.has_registration %}
+                            <div class="ui left floated stackable buttons">
+                                <a type="button" class="ui right floated button" href="{{ url_for('core.account.join') }}">{{ _("Create an account") }}</a>
                             </div>
+                        {% endif %}
+                        <div class="ui right floated stackable buttons">
+                            <button type="submit" name="answer" class="ui right floated primary button" hx-boost="false">{{ _("Continue") }}</button>
                         </div>
                     {% endblock %}
                 {% endcall %}

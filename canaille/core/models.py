@@ -10,8 +10,6 @@ from pydantic import TypeAdapter
 from canaille.app import build_hash
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
-from canaille.core.mails import send_one_time_password_mail
-from canaille.core.sms import send_one_time_password_sms
 
 OTP_DIGITS = 6
 OTP_VALIDITY = 600
@@ -390,35 +388,6 @@ class User(Model):
         )
         return token
 
-    def generate_and_send_otp_mail(self):
-        otp = self.generate_sms_or_mail_otp()
-        if send_one_time_password_mail(self.preferred_email, otp):
-            return otp
-        return False
-
-    def generate_and_send_otp_sms(self):
-        otp = self.generate_sms_or_mail_otp()
-        if send_one_time_password_sms(self.phone_numbers[0], otp):
-            return otp
-        return False
-
-    def is_otp_valid(self, user_otp, method):
-        if current_app.features.has_otp and method == "TOTP":
-            from canaille.app.otp import is_totp_valid
-
-            return is_totp_valid(self, user_otp)
-
-        elif current_app.features.has_otp and method == "HOTP":
-            from canaille.app.otp import is_hotp_valid
-
-            return is_hotp_valid(self, user_otp)
-
-        elif method == "EMAIL_OTP" or method == "SMS_OTP":
-            return self.is_email_or_sms_otp_valid(user_otp)
-
-        else:  # pragma: no cover
-            raise RuntimeError("Invalid one-time passcode method")
-
     def is_email_or_sms_otp_valid(self, user_otp):
         return user_otp == self.one_time_password and self.is_otp_still_valid()
 
@@ -435,6 +404,17 @@ class User(Model):
             - self.one_time_password_emission_date
             >= datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
         )
+
+    @property
+    def next_otp_send_delay(self):
+        if self.can_send_new_otp():
+            return datetime.timedelta(seconds=0)
+
+        now = datetime.datetime.now(datetime.timezone.utc)
+        return (
+            self.one_time_password_emission_date
+            + datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
+        ) - now
 
     def clear_otp(self):
         self.one_time_password_emission_date = None

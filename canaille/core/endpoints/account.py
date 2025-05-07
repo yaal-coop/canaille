@@ -43,6 +43,7 @@ from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.core.auth import AuthenticationSession
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -760,8 +761,6 @@ def profile_settings(user, edited_user):
         return render_template("core/modals/reset-otp.html", edited_user=edited_user)
 
     if request.form.get("action") == "reset-otp" and current_app.features.has_otp:
-        from canaille.app.otp import initialize_otp
-
         flash(
             _("Authenticator application passcode authentication has been reset"),
             "success",
@@ -769,10 +768,21 @@ def profile_settings(user, edited_user):
         current_app.logger.security(
             f"Reset one-time passcode authentication for {edited_user.user_name} by {user.user_name}"
         )
-        initialize_otp(edited_user)
+        edited_user.secret_token = None
+        edited_user.hotp_counter = None
         Backend.instance.save(edited_user)
 
         return profile_settings_edit(user, edited_user)
+
+    if request.form.get("action") == "setup-otp" and current_app.features.has_otp:
+        session["redirect-after-login"] = url_for(
+            "core.account.profile_settings", edited_user=edited_user
+        )
+        g.auth = AuthenticationSession(
+            user_name=g.session.user.user_name, welcome_flash=False, remaining=["otp"]
+        )
+        g.auth.save()
+        return redirect(url_for("core.auth.otp.setup"))
 
     abort(400, f"bad form action: {request.form.get('action')}")
 
@@ -909,4 +919,6 @@ def reset(user):
             )
         )
 
-    return render_template("core/reset-password.html", form=form, user=user, token=None)
+    return render_template(
+        "core/auth/reset-password.html", form=form, user=user, token=None
+    )

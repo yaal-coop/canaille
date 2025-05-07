@@ -31,6 +31,9 @@ def test_set_string_by_id(cli_runner, backend, user):
         "postal_code": "6789",
         "region": "some state",
         "street": "1234, some street",
+        "hotp_counter": 1,
+        "last_otp_login": mock.ANY,
+        "secret_token": mock.ANY,
     }
     backend.reload(user)
     assert user.given_name == "foobar"
@@ -63,6 +66,9 @@ def test_set_string_by_identifier(cli_runner, backend, user):
         "postal_code": "6789",
         "region": "some state",
         "street": "1234, some street",
+        "hotp_counter": 1,
+        "last_otp_login": mock.ANY,
+        "secret_token": mock.ANY,
     }
     backend.reload(user)
     assert user.given_name == "foobar"
@@ -107,6 +113,9 @@ def test_set_multiple(cli_runner, backend, user):
         "postal_code": "6789",
         "region": "some state",
         "street": "1234, some street",
+        "hotp_counter": 1,
+        "last_otp_login": mock.ANY,
+        "secret_token": mock.ANY,
     }
     backend.reload(user)
     assert user.emails == [
@@ -150,6 +159,9 @@ def test_set_remove_simple_attribute(cli_runner, backend, user, admin):
         "postal_code": "6789",
         "region": "some state",
         "street": "1234, some street",
+        "hotp_counter": 1,
+        "last_otp_login": mock.ANY,
+        "secret_token": mock.ANY,
     }
     backend.reload(user)
     assert user.formatted_address is None
@@ -186,6 +198,9 @@ def test_set_remove_multiple_attribute(cli_runner, backend, user, admin, foo_gro
         "postal_code": "6789",
         "region": "some state",
         "street": "1234, some street",
+        "hotp_counter": 1,
+        "last_otp_login": mock.ANY,
+        "secret_token": mock.ANY,
     }
     backend.reload(user)
     assert user.groups == []

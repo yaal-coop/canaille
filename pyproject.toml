@@ -97,7 +97,7 @@ mysql = [
 ]
 
 otp = [
-    "otpauth>=2.1.1",
+    "otpauth>=2.2.1",
     "pillow>=11.0.0",
     "qrcode>=8.0",
 ]

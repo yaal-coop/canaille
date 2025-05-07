@@ -49,6 +49,9 @@ def test_dump_stdout(cli_runner, backend, user, foo_group):
                 "postal_code": "6789",
                 "region": "some state",
                 "street": "1234, some street",
+                "hotp_counter": 1,
+                "last_otp_login": mock.ANY,
+                "secret_token": mock.ANY,
             },
         ],
     }
@@ -84,6 +87,9 @@ def test_dump_stdout_explicit_model(cli_runner, backend, user, foo_group):
                 "postal_code": "6789",
                 "region": "some state",
                 "street": "1234, some street",
+                "hotp_counter": 1,
+                "last_otp_login": mock.ANY,
+                "secret_token": mock.ANY,
             }
         ]
     }

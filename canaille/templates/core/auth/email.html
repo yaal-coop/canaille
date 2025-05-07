@@ -1,0 +1,83 @@
+{# The multi-factor authentication code verification template.
+
+Displays a form that asks for the multi-factor authentication code.
+
+:param form: The code verification form.
+:type form: :class:`~canaille.core.endpoints.forms.TwoFactorForm`
+#}
+{% extends theme('base.html') %}
+{% import 'macro/flask.html' as flask %}
+{% import 'macro/form.html' as fui %}
+{% import 'core/partial/login_field.html' as login_field %}
+
+{% block script %}
+    <script src="{{ url_for("static", filename="js/verify-mfa.js") }}" defer></script>
+{% endblock %}
+
+{% block container %}
+    <div class="ui container">
+        <div class="content">
+            <div class="ui clearing segment">
+                {% block header %}
+                    {% if logo_url %}
+                        <a href="{{ url_for('core.account.index') }}">
+                            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+                        </a>
+                    {% else %}
+                        <i class="massive sign in icon image ui"></i>
+                    {% endif %}
+
+                    <h2 class="ui center aligned header">
+                        <div class="content">
+                            {{ _("Sign in as %(username)s", username=g.auth.user_name) }}
+                        </div>
+                        <div class="sub header">{% trans %}Email verification code.{% endtrans %}</div>
+                    </h2>
+                {% endblock %}
+
+                {% block messages %}
+                    {{ flask.messages() }}
+                {% endblock %}
+
+                {% call fui.render_form(form, hx_boost="false") %}
+                    <div class="ui icon message">
+                        <i class="envelope open outline icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                {% trans %}Check your mailbox{% endtrans %}
+                            </div>
+                            {% trans %}
+                                If the login you filled exists, an email containing a verification code has been sent to your mail address.
+                                Please fill the code in the following form to continue.
+                            {% endtrans %}
+                        </div>
+                    </div>
+
+                    {% block fields %}
+                        {{ login_field.render_field(form.otp, class="autofocus") }}
+                    {% endblock %}
+
+                    {% block buttons %}
+                        <div class="ui left floated stackable buttons">
+                            <a type="button" class="ui button" href="{{ url_for('core.auth.login') }}">
+                                {{ _("I am not %(username)s", username=g.auth.user_name) }}
+                            </a>
+                        </div>
+                        <div class="ui right floated stackable buttons">
+                            <button class="ui {% if resend_delay %}disabled {% endif %} button"
+                                    type="submit" name="action" value="resend" id="resend-button"
+                                    data-delay="{{ resend_delay.total_seconds() }}" formnovalidate
+                            >
+                                <i id="resend-icon" class="{% if resend_delay %}hourglass half{% else %}send{% endif %} icon"></i>
+                                {% trans %}Send another code{% endtrans %}
+                            </button>
+                            <button type="submit" name="action" value="confirm" class="ui primary button">
+                                {{ _("Verify") }}
+                            </button>
+                        </div>
+                    {% endblock %}
+                {% endcall %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

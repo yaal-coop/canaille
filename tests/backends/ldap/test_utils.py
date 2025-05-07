@@ -47,6 +47,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
         emails=["john@doe.test"],
     )
     backend.save(user)
+    backend.reload(user)
 
     dn = user.dn
     assert dn == "uid=user,ou=users,dc=example,dc=org"
@@ -68,6 +69,7 @@ def test_special_chars_in_rdn(testclient, backend):
         emails=["john@doe.test"],
     )
     backend.save(user)
+    backend.reload(user)
 
     dn = user.dn
     assert ldap.dn.is_dn(dn)
@@ -181,7 +183,7 @@ def test_operational_attribute_conversion(backend):
     }
 
 
-def test_ldap_connection_remote(testclient, configuration, backend, mock_smpp):
+def test_ldap_connection_remote(testclient, configuration, backend):
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
     LDAPBackend.check_network_config(config_dict)
