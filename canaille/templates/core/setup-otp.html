@@ -52,47 +52,61 @@ Display a QR-code and the OTP secret.
                 </div>
 
                 <div class="ui attached segment">
-                    <h4 class="ui header">
-                        {% trans %}1 - Automatic configuration{% endtrans %}
-                    </h4>
+                    <div class="ui two column vertically divided grid">
+                        <div class="ui row">
+                            <div class="ui column">
+                                <h4 class="ui header">
+                                    {% trans %}1 - Automatic configuration{% endtrans %}
+                                </h4>
 
-                    {% trans %}
-                        If the authenticator application is installed on the device that you are currently using, you can configure it by clicking on this button:
-                    {% endtrans %}
+                                {% trans %}
+                                    If the authenticator application is installed on the device that you are currently using, you can configure it by clicking on this button:
+                                {% endtrans %}
+                            </div>
 
-                    <div class="ui center aligned container">
-                        <a type="button"class="ui teal button" href="{{ otp_uri }}">
-                            {% trans %}Open authenticator application{% endtrans %}
-                        </a>
-                    </div>
-                </div>
+                            <div class="ui middle aligned column">
+                                <a type="button" class="ui teal fluid button" href="{{ otp_uri }}">
+                                    {% trans %}Open authenticator application{% endtrans %}
+                                </a>
+                            </div>
+                        </div>
 
-                <div class="ui attached segment">
-                    <h4 class="ui header">
-                        {% trans %}2 - QR Code scanning{% endtrans %}
-                    </h4>
+                        <div class="ui row">
+                            <div class="ui column">
+                                <h4 class="ui header">
+                                    {% trans %}2 - QR Code scanning{% endtrans %}
+                                </h4>
 
-                    {% trans %}
-                        If the previous button did not work or if your authenticator application is installed on another device, please open it and use it to scan the following qrcode:
-                    {% endtrans %}
-                    <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui centered medium image"/>
-                </div>
+                                {% trans %}
+                                    If the previous button did not work or if your authenticator application is installed on another device, please open it and use it to scan the following qrcode:
+                                {% endtrans %}
+                            </div>
+                            <div class="ui column">
+                                <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui fluid bordered image"/>
+                            </div>
+                        </div>
 
 
-                <div class="ui bottom attached segment">
-                    <h4 class="ui header">
-                        {% trans %}3 - Secret token{% endtrans %}
-                    </h4>
+                        <div class="ui row">
+                            <div class="ui column">
+                                <h4 class="ui header">
+                                    {% trans %}3 - Secret token{% endtrans %}
+                                </h4>
 
-                    {% trans %}
-                        If your device cannot scan images, you can configure your authenticator application by manually copying this secret token:
-                    {% endtrans %}
-                    <div class="ui fluid labeled action input">
-                        <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
-                        <button type="button" class="ui secondary icon button copy-button" data-copy="secret">
-                            <i class="copy icon"></i>
-                            {% trans %}Copy secret{% endtrans %}
-                        </button>
+                                {% trans %}
+                                    If your device cannot scan images, you can configure your authenticator application by manually copying this secret token:
+                                {% endtrans %}
+                            </div>
+                            <div class="ui column">
+                                <div class="ui fluid labeled action input">
+                                    <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
+                                    <button type="button" class="ui secondary icon button copy-button" data-copy="secret">
+                                        <i class="copy icon"></i>
+                                        {% trans %}Copy secret{% endtrans %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
