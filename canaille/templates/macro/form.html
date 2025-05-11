@@ -222,7 +222,7 @@ csrf=true) -%}
       action="{% if action %}{{ action }}{% elif form.action is defined %}{{ form.action }}{% endif %}"
       role="form"
       enctype="multipart/form-data"
-      class="ui form {{ class_ }}"
+      class="ui initial form {{ class_ }}"
       {% for key, value in kwargs.items() %}{{ key.replace("_", "-") }}="{{ value }}" {% endfor %}
 >
     {% if caller is defined %}
