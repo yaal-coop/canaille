@@ -30,7 +30,6 @@ def test_client_registration_with_authentication_static_token(
         "logo_uri": "https://client.test/logo.webp",
         "jwks_uri": "https://client.test/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
-        "response_types": ["code"],
     }
     headers = {"Authorization": "Bearer static-token"}
 
@@ -53,7 +52,6 @@ def test_client_registration_with_authentication_static_token(
         "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
-        "response_types": ["code"],
         "scope": "",
         "application_type": "web",
         "id_token_signed_response_alg": "RS256",
