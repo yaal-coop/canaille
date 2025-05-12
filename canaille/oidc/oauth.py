@@ -172,7 +172,9 @@ def get_alg_for_key(key, registry=None):
         if registry.allowed
         else []
     )
-    for alg_name in recommended_and_allowed + not_recommended_and_allowed:
+    for alg_name in (
+        recommended_and_allowed + not_recommended_and_allowed
+    ):  # pragma: no cover
         alg = registry.get_alg(alg_name)
         if alg.key_type == key.key_type:
             return alg_name
