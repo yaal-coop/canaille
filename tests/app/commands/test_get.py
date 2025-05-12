@@ -25,10 +25,10 @@ def test_get_list_models(testclient, backend, user):
     """Nominal case test for model get command."""
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["get"], catch_exceptions=False)
-    assert res.exit_code == 0, res.stdout
+    assert res.exit_code == 2, res.stderr
     models = ("user", "group")
     for model in models:
-        assert model in res.stdout
+        assert model in res.stderr
 
 
 def test_get(testclient, backend, user):

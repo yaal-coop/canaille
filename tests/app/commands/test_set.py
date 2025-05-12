@@ -123,7 +123,7 @@ def test_set_unknown_id(testclient, backend):
     runner = testclient.app.test_cli_runner()
     res = runner.invoke(cli, ["set", "user", "invalid", "--given-name", "foobar"])
     assert res.exit_code == 1, res.stdout
-    assert res.stdout == "Error: No user with id 'invalid'\n"
+    assert res.stderr == "Error: No user with id 'invalid'\n"
 
 
 def test_set_remove_simple_attribute(testclient, backend, user, admin):

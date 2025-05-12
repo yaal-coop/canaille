@@ -24,7 +24,7 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
             user_otp.id,
         ],
     )
-    assert res.exit_code == 0, res.stdout
+    assert res.exit_code == 0, res.stderr
     assert json.loads(res.stdout) == {
         "created": mock.ANY,
         "display_name": "Johnny",
@@ -75,4 +75,4 @@ def test_reset_otp_unknown_id(testclient):
         ],
     )
     assert res.exit_code == 1, res.stdout
-    assert res.stdout == "Error: No user with id 'invalid'\n"
+    assert res.stderr == "Error: No user with id 'invalid'\n"
