@@ -51,12 +51,15 @@ def test_configuration_nestedsecrets_directory(tmp_path, backend, configuration)
 
 def test_no_configuration(configuration, tmp_path):
     """Test that no configuration still makes valid Canaille application."""
+    cwd = os.getcwd()
+    os.chdir(tmp_path)
     os.environ["DEBUG"] = "1"
 
     app = create_app()
     assert app.config["CANAILLE"]["NAME"] == "Canaille"
 
     del os.environ["DEBUG"]
+    os.chdir(cwd)
 
 
 def test_environment_configuration(configuration, tmp_path):
