@@ -171,6 +171,37 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     assert "new_email@mydomain.test" in user.emails
 
 
+def test_confirmation_unset_smtp_enabled_email_user_validation_htmx(
+    smtpd, testclient, backend, user
+):
+    """Test that the edition of the form with HTMX don't cause errors."""
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
+
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
+        res = testclient.get("/login")
+        res.form["login"] = "user"
+        res = res.form.submit().follow()
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit()
+
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
+        res = testclient.get("/profile/user")
+
+    assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
+
+    with time_machine.travel("2020-01-01 02:00:00+00:00", tick=False):
+        res.forms["emailconfirmationform"]["new_email"] = "new_email@mydomain.test"
+        res = res.forms["emailconfirmationform"].submit(
+            name="action",
+            value="add_email",
+            headers={
+                "HX-Request": "true",
+                "HX-Trigger-Name": "new_email",
+            },
+        )
+        assert "</html>" not in res.text
+
+
 def test_confirmation_invalid_link(testclient, backend, user):
     """Random confirmation links should fail."""
     res = testclient.get("/email-confirmation/invalid/invalid")
