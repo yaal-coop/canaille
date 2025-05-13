@@ -14,7 +14,7 @@ This page describes how to get and set-up Canaille.
    $EDITOR $CONFIG
    canaille install
    canaille config check
-   canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol
+   canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol --formatted-name "George Abitbol"
 
 Get the code
 ============
@@ -160,4 +160,5 @@ To create your first user you can use the :ref:`canaille create <cli_create>` CL
        --password admin \
        --emails admin@mydomain.example \
        --given-name George \
-       --family-name Abitbol
+       --family-name Abitbol \
+       --formatted-name "George Abitbol"
