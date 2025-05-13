@@ -1,0 +1,23 @@
+FROM python:slim
+
+RUN \
+    apt update && \
+    apt --yes upgrade && \
+    apt install --yes \
+    gcc \
+    libsasl2-dev \
+    libldap2-dev \
+    libssl-dev \
+    curl
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
+COPY canaille /opt/canaille/canaille
+RUN pip install uv
+WORKDIR /opt/canaille
+RUN uv sync --all-groups --all-extras
+
+ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille.toml"]
