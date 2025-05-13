@@ -204,6 +204,10 @@ dependencies = [
     "setuptools >= 50.0.0; python_version>='3.12'",
 ]
 
+[tool.pytest.ini_options]
+# explicitly passing testpaths speeds up test collection
+testpaths = ["tests"]
+
 [tool.coverage.run]
 source = [
     "canaille",
