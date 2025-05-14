@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('htmx:load', onDomChanges);
 
+document.addEventListener('htmx:sendError', function(x) {
+    $('.network-error.nag').nag();
+});
+
 document.body.addEventListener('htmx:beforeOnLoad', function (evt) {
     if (evt.detail.xhr.status >= 400) {
         evt.detail.shouldSwap = true;

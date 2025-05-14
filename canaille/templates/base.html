@@ -43,6 +43,21 @@ The main template inherited by almost every other templates.
     </head>
 
     <body{% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %} hx-boost="true"{% endif %}>
+        {% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %}
+            <div class="ui overlay red nag network-error" style="display: block;">
+                <div class="title">
+                    {% trans %}Network error{% endtrans %}
+                </div>
+                <div>
+                    {% trans %}
+                        {{ website_name }} could not be reached.
+                        Are you sure to be connected to the internet?
+                    {% endtrans %}
+
+                </div>
+                <i class="close icon"></i>
+            </div>
+        {% endif %}
         {% if no_secret_key %}
             <div class="ui container attached menu-container">
                 <div class="ui error icon message">
