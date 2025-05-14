@@ -159,6 +159,7 @@ doc = [
     "sphinx-click >= 6.0.0",
     "sphinx-intl>=2.3.0",
     "tomlkit>=0.13.2",
+    "sphinx-copybutton>=0.5.2",
 ]
 devserver = [
     "faker",

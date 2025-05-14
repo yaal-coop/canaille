@@ -37,6 +37,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_click",
+    "sphinx_copybutton",
     "sphinx_design",
     "sphinx_issues",
     "sphinxcontrib.autodoc_pydantic",
