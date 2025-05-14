@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-06 23:42+0200\n"
+"POT-Creation-Date: 2025-05-14 12:18+0200\n"
 "PO-Revision-Date: 2024-08-08 19:09+0000\n"
 "Last-Translator: Moha684 <nahil82466@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -243,7 +243,7 @@ msgid "You are already logged in, you cannot create an account."
 msgstr "Kevreet oc'h dija, ne c'hallot ket krouiñ ur gont."
 
 #: canaille/core/endpoints/account.py:299 canaille/core/endpoints/forms.py:291
-#: canaille/core/endpoints/forms.py:428 canaille/templates/base.html:96
+#: canaille/core/endpoints/forms.py:428 canaille/templates/base.html:111
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
 #: canaille/templates/core/partial/group-members.html:15
@@ -976,7 +976,18 @@ msgstr ""
 msgid "Authorization interface"
 msgstr ""
 
-#: canaille/templates/base.html:51
+#: canaille/templates/base.html:49
+msgid "Network error"
+msgstr ""
+
+#: canaille/templates/base.html:52
+#, python-format
+msgid ""
+"%(website_name)s could not be reached. Are you sure to be connected to the "
+"internet?"
+msgstr ""
+
+#: canaille/templates/base.html:66
 #, python-format
 msgid ""
 "Your Canaille instance is not fully configured and not ready for production."
@@ -984,36 +995,36 @@ msgid ""
 "href=\"%(documentation_url)s\">documentation</a> for more details."
 msgstr ""
 
-#: canaille/templates/base.html:62
+#: canaille/templates/base.html:77
 msgid "Skip main menu"
 msgstr ""
 
-#: canaille/templates/base.html:75
+#: canaille/templates/base.html:90
 msgid "Profile"
 msgstr ""
 
-#: canaille/templates/base.html:82
+#: canaille/templates/base.html:97
 msgid "Consents"
 msgstr ""
 
-#: canaille/templates/base.html:89 canaille/templates/core/users.html:18
+#: canaille/templates/base.html:104 canaille/templates/core/users.html:18
 #: canaille/templates/core/users.html:42
 msgid "Users"
 msgstr ""
 
-#: canaille/templates/base.html:102
+#: canaille/templates/base.html:117
 msgid "Admin"
 msgstr ""
 
-#: canaille/templates/base.html:107 canaille/templates/oidc/logout.html:18
+#: canaille/templates/base.html:122 canaille/templates/oidc/logout.html:18
 msgid "Log out"
 msgstr ""
 
-#: canaille/templates/base.html:112 canaille/templates/core/password.html:43
+#: canaille/templates/base.html:127 canaille/templates/core/password.html:43
 msgid "Sign in"
 msgstr ""
 
-#: canaille/templates/base.html:137 canaille/templates/core/about.html:22
+#: canaille/templates/base.html:152 canaille/templates/core/about.html:22
 #: canaille/templates/core/about.html:33
 msgid "About Canaille"
 msgstr ""
@@ -1506,64 +1517,64 @@ msgid ""
 "methods:"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:56
+#: canaille/templates/core/setup-otp.html:59
 msgid "1 - Automatic configuration"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:59
+#: canaille/templates/core/setup-otp.html:62
 msgid ""
 "If the authenticator application is installed on the device that you are "
 "currently using, you can configure it by clicking on this button:"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:65
+#: canaille/templates/core/setup-otp.html:69
 msgid "Open authenticator application"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:72
+#: canaille/templates/core/setup-otp.html:77
 msgid "2 - QR Code scanning"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:75
+#: canaille/templates/core/setup-otp.html:80
 msgid ""
 "If the previous button did not work or if your authenticator application is "
 "installed on another device, please open it and use it to scan the following "
 "qrcode:"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:78
+#: canaille/templates/core/setup-otp.html:85
 msgid "Secret token"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:84
+#: canaille/templates/core/setup-otp.html:93
 msgid "3 - Secret token"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:87
+#: canaille/templates/core/setup-otp.html:96
 msgid ""
 "If your device cannot scan images, you can configure your authenticator "
 "application by manually copying this secret token:"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:94
+#: canaille/templates/core/setup-otp.html:105
 msgid "Copy secret"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:101
+#: canaille/templates/core/setup-otp.html:115
 msgid "Passcode confirmation"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:103
+#: canaille/templates/core/setup-otp.html:117
 msgid ""
 "Once your authenticator application is correctly configured, you need to "
 "generate a one-time passcode and fill it in the following page."
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:105
+#: canaille/templates/core/setup-otp.html:119
 msgid "When you are ready, please click on the following button:"
 msgstr ""
 
-#: canaille/templates/core/setup-otp.html:112
+#: canaille/templates/core/setup-otp.html:126
 msgid "Next step"
 msgstr ""
 
