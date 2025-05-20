@@ -1,4 +1,5 @@
 FROM python:slim
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 
 RUN \
     apt update && \
@@ -16,8 +17,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
 COPY canaille /opt/canaille/canaille
-RUN pip install uv
 WORKDIR /opt/canaille
-RUN uv sync --all-groups --all-extras
+RUN uv sync --all-extras
 
-ENTRYPOINT ["uv", "run", "flask", "run", "--host=0.0.0.0", "--extra-files", "/opt/canaille/conf/canaille.toml"]
+ENTRYPOINT ["uv", "run", "canaille", "run", "--config", "/opt/canaille/conf/canaille.toml"]
