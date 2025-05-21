@@ -31,7 +31,7 @@ class MemoryModel(BackendModel):
             values = [cls.deserialize(attribute_name, item) for item in value]
             return [item for item in values if item]
 
-        if not value:
+        if value is None or value == "":
             multiple_attribute = (
                 typing.get_origin(cls.attributes[attribute_name]) is list
             )
