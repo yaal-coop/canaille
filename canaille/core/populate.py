@@ -13,30 +13,28 @@ def fake_users(nb=1):
     faker_obj = faker.Faker(locales)
     users = list()
 
-    # TODO The day faker supports unique profiles,
-    # we should use them so the different user values would be coherent
-    # https://github.com/joke2k/faker/issues/1817
     for _ in range(nb):
         try:
             locale = random.choice(locales)
             fake = faker_obj[locale]
-            name = fake.unique.name()
+            profile = fake.unique.profile()
+            name = profile["name"]
             user = models.User(
                 formatted_name=name,
                 given_name=name.split(" ")[0],
                 family_name=name.split(" ")[1],
-                user_name=fake.unique.user_name(),
-                emails=[fake.unique.email()],
-                phone_numbers=[fake.unique.ssn()],
-                profile_url=fake.unique.uri(),
-                formatted_address=fake.unique.address(),
+                user_name=profile["username"],
+                emails=[profile["mail"]],
+                phone_numbers=[profile["ssn"]],
+                profile_url=profile["website"][0],
+                formatted_address=profile["address"],
                 street=fake.street_name(),
                 postal_code=fake.postcode(),
                 locality=fake.city(),
                 region=fake.state(),
                 employee_number=str(fake.unique.random_number()),
                 department=fake.word(),
-                title=fake.job(),
+                title=profile["job"],
                 password=fake.password(),
                 preferred_language=fake._locales[0],
             )
