@@ -4,10 +4,9 @@ from unittest import mock
 from canaille.commands import cli
 
 
-def test_set_string_by_id(testclient, backend, user):
+def test_set_string_by_id(cli_runner, backend, user):
     """Set a string attribute to a model identifier by its id."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["set", "user", user.id, "--given-name", "foobar"])
+    res = cli_runner.invoke(cli, ["set", "user", user.id, "--given-name", "foobar"])
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == {
         "created": mock.ANY,
@@ -37,10 +36,9 @@ def test_set_string_by_id(testclient, backend, user):
     assert user.given_name == "foobar"
 
 
-def test_set_string_by_identifier(testclient, backend, user):
+def test_set_string_by_identifier(cli_runner, backend, user):
     """Set a string attribute to a model identifier by its identifier."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["set", "user", "user", "--given-name", "foobar"])
+    res = cli_runner.invoke(cli, ["set", "user", "user", "--given-name", "foobar"])
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == {
         "created": mock.ANY,
@@ -70,10 +68,9 @@ def test_set_string_by_identifier(testclient, backend, user):
     assert user.given_name == "foobar"
 
 
-def test_set_multiple(testclient, backend, user):
+def test_set_multiple(cli_runner, backend, user):
     """Test setting several emails."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
+    res = cli_runner.invoke(
         cli,
         [
             "set",
@@ -118,20 +115,18 @@ def test_set_multiple(testclient, backend, user):
     ]
 
 
-def test_set_unknown_id(testclient, backend):
+def test_set_unknown_id(cli_runner, backend):
     """Error case for trying to set a value for an invalid object."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["set", "user", "invalid", "--given-name", "foobar"])
+    res = cli_runner.invoke(cli, ["set", "user", "invalid", "--given-name", "foobar"])
     assert res.exit_code == 1, res.stdout
     assert res.stderr == "Error: No user with id 'invalid'\n"
 
 
-def test_set_remove_simple_attribute(testclient, backend, user, admin):
+def test_set_remove_simple_attribute(cli_runner, backend, user, admin):
     """Test to remove a non multiple attribute."""
     assert user.formatted_address is not None
 
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["set", "user", user.id, "--formatted-address", ""])
+    res = cli_runner.invoke(cli, ["set", "user", user.id, "--formatted-address", ""])
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == {
         "created": mock.ANY,
@@ -160,14 +155,13 @@ def test_set_remove_simple_attribute(testclient, backend, user, admin):
     assert user.formatted_address is None
 
 
-def test_set_remove_multiple_attribute(testclient, backend, user, admin, foo_group):
+def test_set_remove_multiple_attribute(cli_runner, backend, user, admin, foo_group):
     """Test to remove a non multiple attribute."""
     foo_group.members = [user, admin]
     backend.save(foo_group)
     assert user.groups == [foo_group]
 
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["set", "user", user.id, "--groups", ""])
+    res = cli_runner.invoke(cli, ["set", "user", user.id, "--groups", ""])
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == {
         "created": mock.ANY,

@@ -8,7 +8,7 @@ from canaille.commands import cli
 
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
-def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
+def test_reset_otp_by_id(testclient, cli_runner, backend, caplog, user_otp, otp_method):
     """Reset one-time passcode authentication for a user by its id."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
@@ -16,8 +16,7 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
     assert old_token is not None
     assert user_otp.last_otp_login is not None
 
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
+    res = cli_runner.invoke(
         cli,
         [
             "reset-otp",
@@ -64,10 +63,9 @@ def test_reset_otp_by_id(testclient, backend, caplog, user_otp, otp_method):
         assert user_otp.hotp_counter == 1
 
 
-def test_reset_otp_unknown_id(testclient):
+def test_reset_otp_unknown_id(cli_runner):
     """Error case for trying to reset one-time passcode authentication for an invalid user."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
+    res = cli_runner.invoke(
         cli,
         [
             "reset-otp",

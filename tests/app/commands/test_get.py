@@ -21,20 +21,18 @@ def test_serialize(user):
         json.dumps({"foo": object()}, cls=ModelEncoder)
 
 
-def test_get_list_models(testclient, backend, user):
+def test_get_list_models(cli_runner, backend, user):
     """Nominal case test for model get command."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get"], catch_exceptions=False)
+    res = cli_runner.invoke(cli, ["get"], catch_exceptions=False)
     assert res.exit_code == 2, res.stderr
     models = ("user", "group")
     for model in models:
         assert model in res.stderr
 
 
-def test_get(testclient, backend, user):
+def test_get(cli_runner, backend, user):
     """Nominal case test for model get command."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["get", "user"], catch_exceptions=False)
+    res = cli_runner.invoke(cli, ["get", "user"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == [
         {
@@ -64,10 +62,9 @@ def test_get(testclient, backend, user):
     ]
 
 
-def test_get_model_filter(testclient, backend, user, admin, foo_group):
+def test_get_model_filter(cli_runner, backend, user, admin, foo_group):
     """Test model get filter."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
+    res = cli_runner.invoke(
         cli, ["get", "user", "--groups", foo_group.id], catch_exceptions=False
     )
     assert res.exit_code == 0, res.stdout
@@ -100,13 +97,11 @@ def test_get_model_filter(testclient, backend, user, admin, foo_group):
     ]
 
 
-def test_get_datetime_filter(testclient, backend, user):
+def test_get_datetime_filter(cli_runner, backend, user):
     """Test model get filter."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
+    res = cli_runner.invoke(
         cli,
         ["get", "user", "--created", user.created.isoformat()],
-        catch_exceptions=False,
     )
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == [

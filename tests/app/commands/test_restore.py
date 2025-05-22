@@ -4,7 +4,7 @@ from canaille.app import models
 from canaille.commands import cli
 
 
-def test_restore_stdin(testclient, backend):
+def test_restore_stdin(cli_runner, backend):
     """Test the full database dump command."""
     payload = {
         "group": [
@@ -43,10 +43,7 @@ def test_restore_stdin(testclient, backend):
         ],
     }
 
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
-        cli, ["restore"], catch_exceptions=False, input=json.dumps(payload)
-    )
+    res = cli_runner.invoke(cli, ["restore"], input=json.dumps(payload))
     assert res.exit_code == 0, res.stdout
 
     user = backend.get(models.User)
@@ -63,22 +60,19 @@ def test_restore_stdin(testclient, backend):
     backend.delete(user)
 
 
-def test_restore_stdin_no_input(testclient, backend):
+def test_restore_stdin_no_input(cli_runner, backend):
     """Test the restore command without input."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["restore"], catch_exceptions=False)
+    res = cli_runner.invoke(cli, ["restore"], catch_exceptions=False)
     assert res.exit_code == 1, res.stdout
 
 
-def test_restore_stdin_empty_input(testclient, backend):
+def test_restore_stdin_empty_input(cli_runner, backend):
     """Test the restore command with an empty input."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["restore"], catch_exceptions=False, input="")
+    res = cli_runner.invoke(cli, ["restore"], input="")
     assert res.exit_code == 1, res.stdout
 
 
-def test_restore_stdin_invalid_input(testclient, backend):
+def test_restore_stdin_invalid_input(cli_runner, backend):
     """Test the restore command with an invalid input."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["restore"], catch_exceptions=False, input="invalid")
+    res = cli_runner.invoke(cli, ["restore"], input="invalid")
     assert res.exit_code == 1, res.stdout

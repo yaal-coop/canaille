@@ -6,10 +6,9 @@ from canaille.app import models
 from canaille.commands import cli
 
 
-def test_create(testclient, backend, foo_group):
+def test_create(cli_runner, backend, foo_group):
     """Nominal case test for model create command."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
+    res = cli_runner.invoke(
         cli,
         [
             "create",

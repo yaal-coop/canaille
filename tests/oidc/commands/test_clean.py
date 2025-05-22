@@ -6,7 +6,7 @@ from canaille.app import models
 from canaille.commands import cli
 
 
-def test_clean_command(testclient, backend, client, user):
+def test_clean_command(cli_runner, backend, client, user):
     valid_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",
@@ -74,8 +74,7 @@ def test_clean_command(testclient, backend, client, user):
     assert expired_code.is_expired()
     assert expired_token.is_expired()
 
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["clean"])
+    res = cli_runner.invoke(cli, ["clean"])
     assert res.exit_code == 0, res.stdout
 
     assert backend.get(models.AuthorizationCode) == valid_code

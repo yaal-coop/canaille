@@ -4,10 +4,9 @@ from unittest import mock
 from canaille.commands import cli
 
 
-def test_dump_stdout(testclient, backend, user, client, trusted_client, consent, token):
+def test_dump_stdout(cli_runner, backend, user, client, trusted_client, consent, token):
     """Test the full database dump command."""
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["dump"], catch_exceptions=False)
+    res = cli_runner.invoke(cli, ["dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
     assert {

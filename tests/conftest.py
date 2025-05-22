@@ -204,6 +204,11 @@ def testclient(app):
 
 
 @pytest.fixture
+def cli_runner(app):
+    return app.test_cli_runner(catch_exceptions=False)
+
+
+@pytest.fixture
 def user(app, backend):
     u = models.User(
         formatted_name="John (johnny) Doe",

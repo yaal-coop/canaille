@@ -3,23 +3,20 @@ from canaille.commands import cli
 from canaille.core.populate import fake_users
 
 
-def test_populate_users(testclient, backend):
-    runner = testclient.app.test_cli_runner()
-
+def test_populate_users(cli_runner, backend):
     assert len(backend.query(models.User)) == 0
-    res = runner.invoke(cli, ["populate", "--nb", "10", "users"])
+    res = cli_runner.invoke(cli, ["populate", "--nb", "10", "users"])
     assert res.exit_code == 0, res.stdout
     assert len(backend.query(models.User)) == 10
     for user in backend.query(models.User):
         backend.delete(user)
 
 
-def test_populate_groups(testclient, backend):
+def test_populate_groups(cli_runner, backend):
     fake_users(10)
-    runner = testclient.app.test_cli_runner()
 
     assert len(backend.query(models.Group)) == 0
-    res = runner.invoke(cli, ["populate", "--nb", "10", "groups"])
+    res = cli_runner.invoke(cli, ["populate", "--nb", "10", "groups"])
     assert res.exit_code == 0, res.stdout
     assert len(backend.query(models.Group)) == 10
 

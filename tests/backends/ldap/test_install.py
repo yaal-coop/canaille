@@ -37,8 +37,9 @@ def test_setup_ldap_tree(slapd_server, configuration):
     output = slapd_server.slapcat().stdout.decode("utf-8")
     assert "dn: ou=tokens,ou=oauth,dc=example,dc=org" not in output
     testclient = TestApp(create_app(configuration))
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["install"])
+    cli_runner = testclient.app.test_cli_runner(catch_exceptions=False)
+
+    res = cli_runner.invoke(cli, ["install"])
     assert res.exit_code == 0, res.stdout
 
     output = slapd_server.slapcat().stdout.decode("utf-8")
@@ -126,8 +127,9 @@ def test_install_schemas_command(configuration, slapd_server):
         assert "oauthClient" not in LDAPObject.ldap_object_classes(force=True)
 
     testclient = TestApp(create_app(configuration))
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(cli, ["install"])
+    cli_runner = testclient.app.test_cli_runner(catch_exceptions=False)
+
+    res = cli_runner.invoke(cli, ["install"])
     assert res.exit_code == 0, res.stdout
 
     with LDAPBackend(config_dict).session():

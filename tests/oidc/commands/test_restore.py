@@ -4,7 +4,7 @@ from canaille.app import models
 from canaille.commands import cli
 
 
-def test_restore_stdin(testclient, backend):
+def test_restore_stdin(cli_runner, backend):
     """Test the full database dump command."""
     payload = {
         "client": [
@@ -128,10 +128,8 @@ def test_restore_stdin(testclient, backend):
             }
         ],
     }
-    runner = testclient.app.test_cli_runner()
-    res = runner.invoke(
-        cli, ["restore"], catch_exceptions=False, input=json.dumps(payload)
-    )
+
+    res = cli_runner.invoke(cli, ["restore"], input=json.dumps(payload))
     assert res.exit_code == 0, res.stdout
 
     client1 = backend.get(models.Client, client_id="M2yzGYiZgilOvQdc8vCLyzrb")
