@@ -228,40 +228,20 @@ Production Docker image
 Build
 ~~~~~
 
-The ``nix-build`` command is needed to create the Canaille Docker image.
-Follow the `NixOS documentation instructions <https://nix.dev/manual/nix/stable/installation/installing-binary>`__ to install it on your system.
-
-The Docker image can be built with the following command:
-
 .. code-block:: bash
-
-   docker load < $(nix-build --no-out-link canaille.nix)
-
-Check the Docker image with the following command:
-
-.. code-block:: bash
-
-   docker run -it -p 5000:5000 canaille:latest
+    docker build -t canaille .
 
 Publish
 ~~~~~~~
 
 .. code-block:: bash
 
-    export CANAILLE_VERSION=$(python -c "from importlib.metadata import version; print(version('canaille'))")
     docker tag canaille:latest "yaalcoop/canaille:latest"
     docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
 
     docker login --username <hub docker login>
     docker push yaalcoop/canaille:latest
     docker push yaalcoop/canaille:${CANAILLE_VERSION}
-
-Use
-~~~
-
-.. code-block:: bash
-
-    docker pull yaalcoop/canaille:latest
 
 Build a release
 ---------------
@@ -303,4 +283,4 @@ Publish a new release
 13. Publish the Python package on production PyPI ``uv publish``;
 14. Tag the commit with ``git tag XX.YY.ZZ``;
 15. Push the release commit and the new tag on the repository with ``git push --tags``.
-16. Try to :ref:`pull and run the docker image of Canaille <development/contributing:Production Docker image>` and update the ``canaille.nix`` file if necessary.
+16. Build and publish the Docker image.

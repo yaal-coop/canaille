@@ -43,6 +43,11 @@ Fixed
 ^^^^^
 - The email field was losing focus when updated with HTMX. :issue:`279`
 
+Added
+^^^^^
+- Adds a docker image on hubdocker :issue:`262`
+- Update the doc to use and update the docker image :issue:`260`
+
 [0.0.74] - 2025-04-24
 ---------------------
 

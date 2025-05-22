@@ -24,16 +24,15 @@ Docker image
 
 A Docker image is available on `dockerhub`_.
 
+- 1- Create a folder `canaille`
+- 2- Import Docker image of canaille
 .. code-block:: console
 
     docker pull yaalcoop/canaille:latest
-    docker run -it -p 5000:5000 yaalcoop/canaille:latest
-
 
 .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
-1 - Create a folder Canaille
-2 - Create a docker-compose.yml file like :
+- 3- Create a `docker-compose.yml`` file like :
 .. code-block:: yaml
     services:
         canaille:
@@ -46,22 +45,22 @@ A Docker image is available on `dockerhub`_.
             - FLASK_APP=canaille
             volumes:
             - ./conf:/opt/canaille/conf
-3 - Create a folder under Canaille named conf and a canaille.toml in it :
+- 4- Create a folder under Canaille named `conf`` and a `canaille.toml` in it :
     https://canaille.readthedocs.io/en/latest/references/configuration.html#example-file
     Add this line at the first line : 
-    .. code-block:: console
+    .. code-block:: yaml
         bind = ["0.0.0.0:5000"]
 
-4 - On your terminal :
+- 5- On your terminal :
 .. code-block:: console
     docker compose up
     
-    docker exec -it canaille-image-canaille-1 sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
+    docker exec -it <NAME> sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
 
-    docker exec -it canaille-image-canaille-1 sh -c "canaille create group --display-name admins --members admin"
+    docker exec -it <NAME> sh -c "canaille create group --display-name admins --members admin"
 
-5 - Connect as admin with login : admin  and password : admin
-6 - Update your password (and your profile)
+- 6- Connect as admin with login : admin  and password : admin
+- 7- Update your password (and your profile)
 
 Binaries
 --------
