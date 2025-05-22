@@ -10,10 +10,6 @@ RUN \
     libssl-dev \
     curl
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-ENV PATH="/root/.cargo/bin:${PATH}"
-
 COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
 COPY canaille /opt/canaille/canaille
 WORKDIR /opt/canaille
