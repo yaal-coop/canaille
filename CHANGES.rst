@@ -28,6 +28,11 @@ Changed
 ^^^^^^^
 - Reworked the JWK configuration. :issue:`119`
 
+Added
+^^^^^
+- Adds a docker image on hubdocker :issue:`262`
+- Update the doc to use and update the docker image :issue:`260`
+
 [0.0.74] - 2025-04-24
 ---------------------
 
