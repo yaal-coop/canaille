@@ -56,9 +56,9 @@ A Docker image is available on `dockerhub`_.
 .. code-block:: console
     docker compose up
     
-    docker exec -it canaille-image-canaille-1 sh -c "uv run canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
+    docker exec -it canaille-image-canaille-1 sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
 
-    docker exec -it canaille-image-canaille-1 sh -c "uv run canaille create group --display-name admins --members admin"
+    docker exec -it canaille-image-canaille-1 sh -c "canaille create group --display-name admins --members admin"
 
 5 - Connect as admin with login : admin  and password : admin
 6 - Update your password (and your profile)

@@ -19,5 +19,6 @@ COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
 COPY canaille /opt/canaille/canaille
 WORKDIR /opt/canaille
 RUN uv sync --all-extras
+ENV PATH="/opt/canaille/.venv/bin:$PATH"
 
-ENTRYPOINT ["uv", "run", "canaille", "run", "--config", "/opt/canaille/conf/canaille.toml"]
+ENTRYPOINT ["canaille", "run", "--config", "/opt/canaille/conf/canaille.toml"]
