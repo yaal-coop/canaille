@@ -205,6 +205,12 @@ class Token(BaseToken, TokenMixin):
     def check_client(self, client):
         return client.client_id == self.client.client_id
 
+    def get_user(self):
+        return self.subject
+
+    def get_client(self):
+        return self.client
+
 
 class Consent(BaseConsent):
     @property

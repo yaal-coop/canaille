@@ -32,10 +32,10 @@
 Changed
 ^^^^^^^
 - Reworked the JWK configuration. :issue:`119`
+- OIDC UserInfo endpoint is managed with Authlib. :issue:`244`
 
 Added
 ^^^^^
-
 - Support for :rfc:`RFC9101 JWT-Secured Authorization Request (JAR) <9101>` :issue:`254`
 
 [0.0.74] - 2025-04-24

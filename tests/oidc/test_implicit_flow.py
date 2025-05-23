@@ -15,7 +15,7 @@ def test_oauth_implicit(testclient, user, client, backend):
         params=dict(
             response_type="token",
             client_id=client.client_id,
-            scope="profile",
+            scope="openid profile",
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
