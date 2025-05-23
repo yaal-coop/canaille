@@ -429,6 +429,10 @@ class Client(Model):
     that signals the server that its cached value for that URI with the old fragment
     value is no longer valid."""
 
+    require_signed_request_object: bool = False
+    """Indicates where authorization request needs to be protected as Request Object and provided
+    through either request or request_uri parameter."""
+
 
 class AuthorizationCode(Model):
     """OpenID Connect temporary authorization code definition."""

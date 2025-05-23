@@ -262,6 +262,7 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     request_uris: Mapped[list[str]] = mapped_column(
         MutableJson, nullable=True, default=[]
     )
+    require_signed_request_object: Mapped[bool] = mapped_column(Boolean, nullable=True)
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemyModel):
