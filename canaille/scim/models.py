@@ -1,45 +1,69 @@
+from typing import Annotated
+from typing import Literal
+
+import scim2_models
 from flask import url_for
+from pydantic import Field
 from scim2_models import AuthenticationScheme
 from scim2_models import Bulk
 from scim2_models import ChangePassword
 from scim2_models import EnterpriseUser
 from scim2_models import ETag
 from scim2_models import Filter
-from scim2_models import Group
 from scim2_models import Meta
 from scim2_models import Mutability
 from scim2_models import Patch
+from scim2_models import Reference
 from scim2_models import Required
-from scim2_models import Resource
 from scim2_models import ResourceType
 from scim2_models import Schema
 from scim2_models import SchemaExtension
 from scim2_models import ServiceProviderConfig
 from scim2_models import Sort
-from scim2_models import User
+from scim2_models import Uniqueness
 
 from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
 from canaille.backends import Backend
 
-# At the difference of SCIM User, Canaille User need a 'family_name'
-# (because the LDAP 'sn' is mandatory) and the 'user_name'
-# attribute is immutable (because it is part of the LDAP DN).
-user_schema = User.to_schema()
-user_schema["name"].required = Required.true
-user_schema["name"]["familyName"].required = Required.true
-user_schema["userName"].mutability = Mutability.immutable
-User = Resource.from_schema(user_schema)
 
-# At the difference of the SCIM Group, Canaille Group must have a display_name.
-# and 'members' cannot be null.
-group_schema = Group.to_schema()
-group_schema["displayName"].required = Required.true
-group_schema["displayName"].mutability = Mutability.immutable
-group_schema["members"].required = Required.true
-group_schema["members"]["value"].required = Required.true
-group_schema["members"]["$ref"].required = Required.true
-Group = Resource.from_schema(group_schema)
+class User(scim2_models.User):
+    # At the difference of SCIM User, Canaille User need a 'family_name'
+    # (because the LDAP 'sn' is mandatory)
+    class Emails(scim2_models.Email):
+        pass
+
+    class PhoneNumbers(scim2_models.PhoneNumber):
+        pass
+
+    class Name(scim2_models.Name):
+        family_name: Annotated[str | None, Required.true] = None
+        formatted: Annotated[str | None, Required.true] = None
+
+    name: Annotated[Name | None, Required.true] = None
+
+    # At the difference of SCIM User, Canaille User the 'user_name'
+    # attribute is immutable (because it is part of the LDAP DN).
+    user_name: Annotated[
+        str | None, Uniqueness.server, Required.true, Mutability.immutable
+    ] = None
+
+
+class Group(scim2_models.Group):
+    class Members(scim2_models.GroupMember):
+        value: Annotated[str | None, Mutability.immutable, Required.true] = None
+
+        ref: Annotated[
+            Reference[Literal["User"] | Literal["Group"]] | None,
+            Mutability.immutable,
+            Required.true,
+        ] = Field(None, serialization_alias="$ref")
+
+    # At the difference of the SCIM Group, Canaille Group must have a display_name.
+    # and 'members' cannot be null.
+    display_name: Annotated[str | None, Required.true, Mutability.immutable] = None
+
+    members: Annotated[list[Members] | None, Required.true] = None
 
 
 def get_service_provider_config():
