@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('htmx:load', onDomChanges);
 
+/* Display a header message when the Canaille application server
+ * is unreachable.
+ */
 document.addEventListener('htmx:sendError', function(x) {
     $('.network-error.nag').nag();
 });
@@ -32,20 +35,20 @@ document.body.addEventListener('htmx:beforeOnLoad', function (evt) {
 var setAttribute_ = Element.prototype.setAttribute;
 
 Element.prototype.setAttribute = function (attr, val) {
-  if (attr.toLowerCase() !== 'style') {
-    setAttribute_.apply(this, [attr, val]);
-  } else {
-    var arr = val.split(';').map( (el, index) => el.trim() );
-    for (var i=0, tmp; i < arr.length; ++i) {
-      if (! /:/.test(arr[i]) ) continue;		// Empty or wrong
-      tmp = arr[i].split(':').map( (el, index) => el.trim() );
-      this.style[ camelize(tmp[0]) ] = tmp[1];
+    if (attr.toLowerCase() !== 'style') {
+        setAttribute_.apply(this, [attr, val]);
+    } else {
+        var arr = val.split(';').map( (el, index) => el.trim() );
+        for (var i=0, tmp; i < arr.length; ++i) {
+            if (! /:/.test(arr[i]) ) continue;
+            tmp = arr[i].split(':').map( (el, index) => el.trim() );
+            this.style[ camelize(tmp[0]) ] = tmp[1];
+        }
     }
-  }
 }
 
 function camelize(str) {
-  return str.split('-').map(
-    (word, index) => index == 0 ? word : word[0].toUpperCase() + word.slice(1)
-  ).join('');
+    return str.split('-').map(
+        (word, index) => index == 0 ? word : word[0].toUpperCase() + word.slice(1)
+    ).join('');
 }

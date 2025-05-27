@@ -44,7 +44,7 @@ The main template inherited by almost every other templates.
 
     <body{% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %} hx-boost="true"{% endif %}>
         {% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %}
-            <div class="ui overlay red nag network-error" style="display: block;">
+            <div class="ui overlay red nag network-error">
                 <div class="title">
                     {% trans %}Network error{% endtrans %}
                 </div>
