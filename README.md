@@ -28,6 +28,8 @@ uv sync --all-extras --group devserver && uv run devserver
 docker run -it -p 5000:5000 yaalcoop/canaille:latest
 ```
 
+[Read more about installation methods](https://canaille.readthedocs.io/en/latest/tutorial/install.html).
+
 ## Online!
 
 You have access to:
