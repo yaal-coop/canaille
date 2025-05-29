@@ -35,7 +35,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
         :link-type: ref
         :link: feature_user_authentication
 
-        Authentication, registration, email confirmation, "I forgot my password" emails
+        Authentication, registration, email confirmation, password reset emails, multi-factor authentication
 
     .. grid-item-card:: :abbr:`SSO (Single Sign-On)`
         :link-type: ref
