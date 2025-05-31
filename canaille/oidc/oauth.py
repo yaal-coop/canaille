@@ -281,8 +281,10 @@ def generate_user_claims(user, jwt_mapping_config=None):
 
         if claim == "groups" and user.groups:
             data[claim] = [group.display_name for group in user.groups]
-    if "updated_at" in data:
-        data["updated_at"] = int(float(data["updated_at"]))
+
+        if claim == "updated_at":
+            data[claim] = int(float(data[claim]))
+
     return data
 
 
