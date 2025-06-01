@@ -674,7 +674,7 @@ class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
         return UserInfo(generate_user_claims(user)).filter(scope)
 
     def resolve_private_key(self):
-        return server_jwks()
+        return server_jwks(include_inactive=False).as_dict()
 
 
 class IssuerParameter(rfc9207.IssuerParameter):

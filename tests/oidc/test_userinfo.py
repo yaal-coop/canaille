@@ -1,5 +1,7 @@
 from unittest import mock
 
+from joserfc import jwt
+
 from canaille.oidc.configuration import UserInfoMappingSettings
 from canaille.oidc.oauth import generate_user_claims
 
@@ -37,6 +39,34 @@ def test_get_userinfo(testclient, token, user, foo_group, backend):
     )
     assert res.json == {
         "sub": "user",
+    }
+
+
+def test_get_userinfo_jwt(testclient, token, user, client, backend, server_jwk):
+    client.userinfo_signed_response_alg = "RS256"
+    backend.save(client)
+
+    res = testclient.get(
+        "/oauth/userinfo",
+        headers={
+            "Authorization": f"Bearer {token.access_token}",
+            "Content-Type": "application/jwt",
+        },
+        status=200,
+    )
+    assert res.headers["Content-Type"] == "application/jwt"
+    token = jwt.decode(res.text, server_jwk)
+    assert token.claims == {
+        "sub": "user",
+        "name": "John (johnny) Doe",
+        "given_name": "John",
+        "family_name": "Doe",
+        "preferred_username": "Johnny",
+        "website": "https://john.test",
+        "locale": "en",
+        "updated_at": mock.ANY,
+        "iss": "http://canaille.test",
+        "aud": client.client_id,
     }
 
 
