@@ -38,6 +38,10 @@ Added
 ^^^^^
 - Support for :rfc:`RFC9101 JWT-Secured Authorization Request (JAR) <9101>` :issue:`254`
 
+Fixed
+^^^^^
+- The email field was losing focus when updated with HTMX. :issue:`279`
+
 [0.0.74] - 2025-04-24
 ---------------------
 
