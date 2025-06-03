@@ -404,21 +404,16 @@ def test_export_current_config(backend, configuration, tmp_path):
     if "memory" not in backend.__class__.__module__:
         pytest.skip()
 
-    toml_export = tmp_path / "config.toml"
-
     configuration["SECRET_KEY"] = "very-secret"
     configuration["CANAILLE"]["SMTP"]["PORT"] = 25
 
     config_obj = settings_factory(configuration, init_with_examples=True)
     config_obj.CANAILLE_OIDC.ACTIVE_JWKS = None
-    export_config(config_obj, toml_export)
+    actual_content = export_config(config_obj)
 
     toml_expected = (
         pathlib.Path(__file__).parent / "fixtures" / "current-app-config.toml"
     )
-
-    with open(toml_export) as fd:
-        actual_content = fd.read()
 
     with open(toml_expected) as fd:
         expected_content = fd.read()
@@ -428,16 +423,11 @@ def test_export_current_config(backend, configuration, tmp_path):
 
 def test_export_default_config(tmp_path, backend):
     """Check the configuration TOML export with the default configuration."""
-    toml_export = tmp_path / "config.toml"
-
     config_obj = settings_factory(init_with_examples=True)
     config_obj.CANAILLE_OIDC.ACTIVE_JWKS = None
-    export_config(config_obj, toml_export)
+    actual_content = export_config(config_obj)
 
     toml_expected = pathlib.Path(__file__).parent / "fixtures" / "default-config.toml"
-
-    with open(toml_export) as fd:
-        actual_content = fd.read()
 
     with open(toml_expected) as fd:
         expected_content = fd.read()
