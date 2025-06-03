@@ -178,3 +178,27 @@ def consent(testclient, client_without_scim, user, backend):
     backend.save(t)
     yield t
     backend.delete(t)
+
+
+@pytest.fixture
+def scim_user(app, backend):
+    u = models.User(
+        formatted_name="John (johnny) Doe",
+        given_name="John",
+        family_name="Doe",
+        user_name="user",
+        emails=["john@doe.example"],
+        password="correct horse battery staple",
+        display_name="Johnny",
+        preferred_language="en",
+        phone_numbers=["555-000-000"],
+        profile_url="https://john.test",
+        street="some street",
+        locality="some city",
+        postal_code="6789",
+        region="some state",
+        formatted_address="1234 some street",
+    )
+    backend.save(u)
+    yield u
+    backend.delete(u)
