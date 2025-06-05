@@ -127,7 +127,7 @@ def export_object_to_toml(
         return obj
 
 
-def export_config(model: BaseSettings, filename: str):
+def export_config(model: BaseSettings):
     doc = export_object_to_toml(model)
     content = tomlkit.dumps(doc)
 
@@ -140,8 +140,7 @@ def export_config(model: BaseSettings, filename: str):
     # Remove end-of-file new-line
     content = re.sub(r"\n+\Z", "\n", content)
 
-    with open(filename, "w") as fd:
-        fd.write(content)
+    return content
 
 
 def example_settings(model: type[BaseModel]) -> BaseModel | None:

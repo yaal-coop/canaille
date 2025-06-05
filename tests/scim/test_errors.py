@@ -66,6 +66,20 @@ def test_authentication_with_an_user_token(app, backend, oidc_client, user):
     assert error.status == 401
 
 
+def test_missing_field(app, backend, scim_client, scim_token):
+    scim_client.discover()
+    error = scim_client.client.post(
+        "/scim/v2/Users",
+        json={"foo": "bar"},
+        headers={"Authorization": f"Bearer {scim_token.access_token}"},
+    )
+    assert error.json == {
+        "detail": "Extra inputs are not permitted: foo",
+        "schemas": ["urn:ietf:params:scim:api:messages:2.0:Error"],
+        "status": "400",
+    }
+
+
 def test_invalid_payload(app, backend, scim_client):
     # TODO: push this test in scim2-tester
     scim_client.discover()

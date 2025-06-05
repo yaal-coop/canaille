@@ -1,5 +1,4 @@
 import functools
-import os
 import sys
 from pathlib import Path
 
@@ -85,18 +84,21 @@ def config():
 def dump(path: Path | None):
     """Export the configuration in TOML format.
 
-    The configuration is exported to the file path passed by ``--path`` if set,
-    or the :envvar:`CONFIG` environment variable if set, or a ``config.toml``
-    file in the current directory.
+    The configuration is exported to the file path passed by ``--path`` if set.
+    else it is displayed on the standard output.
     """
-    from canaille.app.configuration import DEFAULT_CONFIG_FILE
     from canaille.app.configuration import settings_factory
     from canaille.app.toml import export_config
 
     config_obj = settings_factory(current_app.config, init_with_examples=True)
-    config_file = path or os.getenv("CONFIG", DEFAULT_CONFIG_FILE)
-    export_config(config_obj, config_file)
-    click.echo(f"Wrote configuration file at {config_file}")
+    content = export_config(config_obj)
+    if not path:
+        click.echo(content, nl=False)
+
+    else:
+        with open(path, "w") as fd:
+            fd.write(content)
+        click.echo(f"Wrote configuration file at {path}")
 
 
 @config.command()

@@ -53,12 +53,9 @@ def test_export_env_config(testclient, cli_runner, tmp_path, backend):
     res = cli_runner.invoke(cli, ["config", "dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
 
-    with open(toml_export) as fd:
-        actual_content = fd.read()
-
     with open(toml_expected) as fd:
         expected_content = fd.read()
 
-    assert actual_content == expected_content
+    assert res.stdout == expected_content
 
     del os.environ["CONFIG"]

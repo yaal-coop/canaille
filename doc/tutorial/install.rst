@@ -10,7 +10,7 @@ This page describes how to get and set-up Canaille.
    wget https://github.com/yaal-coop/canaille/releases/download/\ |version|\ /canaille -o canaille
    chmod +x canaille
    export CONFIG=/path/to/my/config.toml
-   canaille config dump
+   canaille config dump --path $CONFIG
    $EDITOR $CONFIG
    canaille install
    canaille config check
@@ -118,7 +118,7 @@ A configuration file with default values can be initialized with the :ref:`confi
     :caption: Initialize a configuration file.
 
     export CONFIG=/path/to/my/config.toml
-    canaille config dump
+    canaille config dump --path $CONFIG
 
 You can then edit your configuration file and tune its values.
 Have a look at the :ref:`reference <references/configuration:Parameters>` to know the exhaustive list of available parameters.

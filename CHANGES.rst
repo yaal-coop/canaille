@@ -33,6 +33,7 @@ Changed
 ^^^^^^^
 - Reworked the JWK configuration. :issue:`119`
 - OIDC UserInfo endpoint is managed with Authlib. :issue:`244`
+- The default behavior of ``canaille config dump`` is to write the configuration in the standard output.
 
 Added
 ^^^^^
