@@ -19,16 +19,59 @@ This page describes how to get and set-up Canaille.
 Get the code
 ============
 
-Docker image
-------------
+Docker
+------
 
 A Docker image is available on `dockerhub`_.
+You can run Canaille simply by running the following command:
 
-.. code-block:: console
+.. parsed-literal::
 
-    docker pull yaalcoop/canaille:latest
-    docker run -it -p 5000:5000 yaalcoop/canaille:latest
+    docker run -it -p 5000:5000 yaalcoop/canaille:\ |version|\
 
+The service is then available on the port 5000.
+It might not be very usable as is though, as it is currently unconfigured, and thus running with a file-based database, without a front web-server.
+
+Docker Compose
+--------------
+
+Here is an example of how you can run Canaille with Docker Compose to fix those issues.
+Please note that you should adapt each of these steps to your situation.
+
+#. First, generate a configuration file that you can then modify:
+
+   .. code-block:: console
+       :caption: Initialize a default configuration file
+
+       docker run -it --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
+
+#. Create a `docker-compose.yml` which mounts your configuration file:
+
+   .. code-block:: yaml
+       :caption: `docker-compose.yml` example
+
+       services:
+           canaille:
+               hostname: canaille.localhost
+               image: yaalcoop/canaille:latest
+               ports:
+               - 5000:5000
+               volumes:
+               - ./canaille.toml:/opt/canaille/canaille.toml
+
+#. Run the container:
+
+   .. code-block:: console
+       :caption: Start canaille
+
+       docker compose up
+
+#. Create your first user:
+
+   .. code-block:: console
+       :caption: Create your first admin user
+
+       docker exec -it <NAME> sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
 
 .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 

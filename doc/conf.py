@@ -206,4 +206,6 @@ screenshot_default_full_page = True
 
 
 config_obj = settings_factory(init_with_examples=True)
-export_config(config_obj, "config.sample.toml")
+config = export_config(config_obj)
+with open("config.sample.toml", "w") as fd:
+    fd.write(config)
