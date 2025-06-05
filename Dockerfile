@@ -7,8 +7,7 @@ RUN \
     gcc \
     libsasl2-dev \
     libldap2-dev \
-    libssl-dev \
-    curl
+    libssl-dev
 
 COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
 COPY canaille /opt/canaille/canaille
