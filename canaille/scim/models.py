@@ -43,7 +43,7 @@ class User(scim2_models.User):
         str | None, Uniqueness.server, Required.true, Mutability.immutable
     ] = None
 
-    active: bool
+    active: bool | None = None
 
 
 class Group(scim2_models.Group):
