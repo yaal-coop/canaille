@@ -33,7 +33,7 @@ A Docker image is available on `dockerhub`_.
         services:
             canaille:
                 hostname: canaille.localhost
-                image: sbirlobo/cancan:latest
+                image: yaalcoop/canaille:latest
                 ports:
                 - 5000:5000
                 volumes:
@@ -43,7 +43,7 @@ A Docker image is available on `dockerhub`_.
 
     .. code-block:: console
 
-        docker run -it --entrypoint canaille sbirlobo/cancan:latest config dump > canaille.toml
+        docker run -it --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
 
     Or create a `canaille.toml` :
     https://canaille.readthedocs.io/en/latest/references/configuration.html#example-file
@@ -52,7 +52,7 @@ A Docker image is available on `dockerhub`_.
 
     .. code-block:: console
 
-        docker pull sbirlobo/cancan:latest
+        docker pull yaalcoop/canaille:latest
 
     .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
