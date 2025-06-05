@@ -38,6 +38,8 @@ Changed
 Added
 ^^^^^
 - Support for :rfc:`RFC9101 JWT-Secured Authorization Request (JAR) <9101>` :issue:`254`
+- Adds a docker image on hubdocker :issue:`262`
+- Update the doc to use and update the docker image :issue:`260`
 
 Fixed
 ^^^^^

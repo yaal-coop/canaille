@@ -24,13 +24,52 @@ Docker image
 
 A Docker image is available on `dockerhub`_.
 
-.. code-block:: console
+#. Create a folder `canaille` and enter it
 
-    docker pull yaalcoop/canaille:latest
-    docker run -it -p 5000:5000 yaalcoop/canaille:latest
+#. Create a `docker-compose.yml` file like :
+
+    .. code-block:: yaml
+
+        services:
+            canaille:
+                hostname: canaille.localhost
+                image: yaalcoop/canaille:latest
+                ports:
+                - 5000:5000
+                volumes:
+                - ./canaille.toml:/opt/canaille/canaille.toml
+
+#. [OPTIONAL] Generate a configuration file that you can then modify
+
+    .. code-block:: console
+
+        docker run -it --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
+
+    Or create a `canaille.toml` :
+    https://canaille.readthedocs.io/en/latest/references/configuration.html#example-file
+
+#. Import Docker image of canaille from `dockerhub`_ :
+
+    .. code-block:: console
+
+        docker pull yaalcoop/canaille:latest
+
+    .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
 
-.. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
+#. On your terminal :
+
+    .. code-block:: console
+        :caption: Start canaille
+        docker compose up
+
+    .. code-block:: console
+        :caption: As an example, here is how to create your first user
+        docker exec -it <NAME> sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
+
+#. Connect as admin with login : admin  and password : admin
+
+#. Update your password (and your profile)
 
 Binaries
 --------
