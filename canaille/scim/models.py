@@ -31,12 +31,6 @@ from canaille.backends import Backend
 class User(scim2_models.User):
     # At the difference of SCIM User, Canaille User need a 'family_name'
     # (because the LDAP 'sn' is mandatory)
-    class Emails(scim2_models.Email):
-        pass
-
-    class PhoneNumbers(scim2_models.PhoneNumber):
-        pass
-
     class Name(scim2_models.Name):
         family_name: Annotated[str | None, Required.true] = None
         formatted: Annotated[str | None, Required.true] = None
