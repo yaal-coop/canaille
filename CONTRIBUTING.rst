@@ -229,6 +229,7 @@ Build
 ~~~~~
 
 .. code-block:: bash
+
     docker build -t canaille .
 
 Publish
