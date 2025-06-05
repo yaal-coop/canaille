@@ -186,7 +186,7 @@ def scim_user(app, backend):
         formatted_name="John (johnny) Doe",
         given_name="John",
         family_name="Doe",
-        user_name="user",
+        user_name="scim-user",
         emails=["john@doe.example"],
         password="correct horse battery staple",
         display_name="Johnny",
