@@ -24,41 +24,51 @@ Docker image
 
 A Docker image is available on `dockerhub`_.
 
-#. Create a folder `canaille`
-#. Import Docker image of canaille
-    .. code-block:: console
+#. Create a folder `canaille` and enter it
 
-        docker pull yaalcoop/canaille:latest
+#. Create a `docker-compose.yml` file like :
 
-    .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
-
-#. Create a `docker-compose.yml`` file like :
     .. code-block:: yaml
+
         services:
             canaille:
                 hostname: canaille.localhost
-                image: yaalcoop/canaille:latest
+                image: sbirlobo/cancan:latest
                 ports:
                 - 5000:5000
-                environment:
-                - CONFIG=/opt/canaille/conf/canaille.toml
                 volumes:
-                - ./conf:/opt/canaille/conf
-#. Create a folder under Canaille named `conf`` and a `canaille.toml` in it :
+                - ./canaille.toml:/opt/canaille/canaille.toml
+
+#. [OPTIONAL] Generate a configuration file that you can then modify
+
+    .. code-block:: console
+
+        docker run -it --entrypoint canaille sbirlobo/cancan:latest config dump > canaille.toml
+
+    Or create a `canaille.toml` :
     https://canaille.readthedocs.io/en/latest/references/configuration.html#example-file
-    Add this line at the first line : 
-    .. code-block:: yaml
-        bind = ["0.0.0.0:5000"]
+
+#. Import Docker image of canaille from `dockerhub`_ :
+
+    .. code-block:: console
+
+        docker pull sbirlobo/cancan:latest
+
+    .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
+
 
 #. On your terminal :
+
     .. code-block:: console
+        :caption: Start canaille
         docker compose up
-        
+
+    .. code-block:: console
+        :caption: As an example, here is how to create your first user
         docker exec -it <NAME> sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
 
-        docker exec -it <NAME> sh -c "canaille create group --display-name admins --members admin"
-
 #. Connect as admin with login : admin  and password : admin
+
 #. Update your password (and your profile)
 
 Binaries

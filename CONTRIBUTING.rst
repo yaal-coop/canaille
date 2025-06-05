@@ -236,6 +236,8 @@ Publish
 
 .. code-block:: bash
 
+    export CANAILLE_VERSION=$(uv run python -c "from importlib.metadata import version; print(version('canaille'))")
+
     docker tag canaille:latest "yaalcoop/canaille:latest"
     docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
 
