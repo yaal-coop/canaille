@@ -179,6 +179,13 @@ def configuration(smtpd):
     return conf
 
 
+@pytest.fixture(autouse=True)
+def email_validator():
+    import email_validator
+
+    email_validator.TEST_ENVIRONMENT = True
+
+
 @pytest.fixture(scope="session")
 def jinja_cache_directory(tmp_path_factory):
     return tmp_path_factory.mktemp("cache")
