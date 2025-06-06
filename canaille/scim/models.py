@@ -1,3 +1,4 @@
+import datetime
 from typing import Annotated
 from typing import Literal
 
@@ -276,6 +277,11 @@ def user_from_scim_to_canaille(scim_user: User, user):
         for group in scim_user.groups or []
         if group.value
     ]
+    if scim_user.active is not None:
+        if not scim_user.active:
+            user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+        else:
+            user.lock_date = None
     return user
 
 
