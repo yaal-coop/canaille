@@ -189,7 +189,10 @@ def setup_flask(app):
     cache.init_app(app)
 
     if app.debug or app.config.get("TESTING", False):  # pragma: no branch
-        beautify_html_resonses(app)
+        try:
+            beautify_html_resonses(app)
+        except ImportError:
+            pass
 
     @app.before_request
     def session_setup():
