@@ -58,6 +58,9 @@ def test_get(cli_runner, backend, user):
             "postal_code": "6789",
             "region": "some state",
             "street": "1234, some street",
+            "hotp_counter": 1,
+            "last_otp_login": mock.ANY,
+            "secret_token": mock.ANY,
         },
     ]
 
@@ -93,6 +96,9 @@ def test_get_model_filter(cli_runner, backend, user, admin, foo_group):
             "postal_code": "6789",
             "region": "some state",
             "street": "1234, some street",
+            "hotp_counter": 1,
+            "last_otp_login": mock.ANY,
+            "secret_token": mock.ANY,
         },
     ]
 
@@ -128,5 +134,8 @@ def test_get_datetime_filter(cli_runner, backend, user):
             "postal_code": "6789",
             "region": "some state",
             "street": "1234, some street",
+            "hotp_counter": 1,
+            "last_otp_login": mock.ANY,
+            "secret_token": mock.ANY,
         },
     ]

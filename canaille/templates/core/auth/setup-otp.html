@@ -1,0 +1,174 @@
+{# The multi-factor authentication initialization template.
+
+Display a QR-code and the OTP secret.
+
+:param secret: The OTP secret.
+:type secret: :class:`str`
+:param qr_image: A QR-code image representing the OTP secret.
+:type qr_image: A base64 encoded :class:`str`
+#}
+{% extends theme('base.html') %}
+{% import 'macro/flask.html' as flask %}
+{% import 'macro/form.html' as fui %}
+{% import 'core/partial/login_field.html' as login_field %}
+
+{% block script %}
+    <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
+{% endblock %}
+
+{% block submenu %}
+    <a class="item" href="{{ url_for('core.account.profile_edition', edited_user=user) }}">
+        <i class="id card icon"></i>
+        {% trans %}Personal information{% endtrans %}
+    </a>
+    <a class="active item" href="{{ url_for('core.account.profile_settings', edited_user=user) }}">
+        <i class="tools icon"></i>
+        {% trans %}Account settings{% endtrans %}
+    </a>
+{% endblock %}
+
+{% block container %}
+    <div class="ui container" hx-boost="false">
+        <div class="content">
+            {% if not g.session %}
+                <div class="ui clearing segment">
+            {% endif %}
+
+            {% block header %}
+                {% if not g.session %}
+                    {% if logo_url %}
+                        <a href="{{ url_for('core.account.index') }}">
+                            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+                        </a>
+                    {% else %}
+                        <i class="massive sign in icon image ui"></i>
+                    {% endif %}
+
+                    <h2 class="ui center aligned header">
+                        <div class="content">
+                            {{ _("Sign in as %(username)s", username=g.auth.user_name) }}
+                        </div>
+                        <div class="sub header">{% trans %}Set up multi-factor authentication.{% endtrans %}</div>
+                    </h2>
+
+                {% else %}
+
+                    <div class="ui top attached segment">
+                        <h2 class="ui center aligned header">
+                            <div class="content">
+                                {% trans %}Set up multi-factor authentication.{% endtrans %}
+                            </div>
+                        </h2>
+                    </div>
+                {% endif %}
+            {% endblock %}
+
+            {% block messages %}
+                {{ flask.messages() }}
+            {% endblock %}
+
+            <div class="ui attached message">
+                <div class="header">
+                    {% trans %}Authenticator application configuration{% endtrans %}
+                </div>
+                {% trans %}You need to install an authenticator application to generate one-time passcodes for {{ website_name }}.{% endtrans %}
+                {% trans %}Then, configure the authenticator application with one of the following methods:{% endtrans %}
+            </div>
+
+            <div class="ui attached segment">
+                <div class="ui two column vertically divided grid">
+                    <div class="ui row">
+                        <div class="ui column">
+                            <h4 class="ui header">
+                                {% trans %}1 - Automatic configuration{% endtrans %}
+                            </h4>
+
+                            {% trans %}
+                                If the authenticator application is installed on the device that you are currently using, you can configure it by clicking on this button:
+                            {% endtrans %}
+                        </div>
+
+                        <div class="ui middle aligned column">
+                            <a type="button" class="ui teal fluid button" href="{{ otp_uri }}">
+                                {% trans %}Open authenticator application{% endtrans %}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ui row">
+                        <div class="ui column">
+                            <h4 class="ui header">
+                                {% trans %}2 - QR Code scanning{% endtrans %}
+                            </h4>
+
+                            {% trans %}
+                                If the previous button did not work or if your authenticator application is installed on another device, please open it and use it to scan the following qrcode:
+                            {% endtrans %}
+                        </div>
+                        <div class="ui column">
+                            <img src="data:image/png;base64, {{ qr_image }}" alt="{% trans %}Secret token{% endtrans %}" class="ui fluid bordered image"/>
+                        </div>
+                    </div>
+
+
+                    <div class="ui row">
+                        <div class="ui column">
+                            <h4 class="ui header">
+                                {% trans %}3 - Secret token{% endtrans %}
+                            </h4>
+
+                            {% trans %}
+                                If your device cannot scan images, you can configure your authenticator application by manually copying this secret token:
+                            {% endtrans %}
+                        </div>
+                        <div class="ui column">
+                            <div class="ui fluid labeled action input">
+                                <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
+                                <button class="ui teal icon button copy-button" data-copy="secret">
+                                    <i class="copy icon"></i>
+                                    {% trans %}Copy secret{% endtrans %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui top attached message">
+                <div class="header">
+                    {% trans %}Passcode confirmation{% endtrans %}
+                </div>
+                {% trans %}
+                    Once your authenticator application is correctly configured, you need to generate a one-time passcode and fill it in the form below.{% endtrans %}
+            </div>
+
+            <div class="ui attached clearing segment">
+                {% call fui.render_form(form, hx_boost="false") %}
+                    {% block fields %}
+                        {{ login_field.render_field(form.otp, class="autofocus") }}
+                    {% endblock %}
+
+                    {% block buttons %}
+                        <div class="ui clearing container">
+                            {% if not g.session %}
+                                <div class="ui left floated stackable buttons">
+                                    <a type="button" class="ui button" href="{{ url_for('core.auth.login') }}">
+                                        {{ _("I am not %(username)s", username=g.auth.user_name) }}
+                                    </a>
+                                </div>
+                            {% endif %}
+                            <div class="ui right floated stackable buttons">
+                                <button type="submit" class="ui primary button">
+                                    {{ _("Verify") }}
+                                </button>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endcall %}
+            </div>
+            {% if not g.session %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

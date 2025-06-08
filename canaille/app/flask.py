@@ -18,7 +18,7 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
-from canaille.app.session import current_session
+from canaille.app.session import current_user_session
 from canaille.app.templating import render_template
 
 csrf = CSRFProtect()
@@ -199,7 +199,7 @@ def setup_flask(app):
         session.permanent = True
         app.permanent_session_lifetime = datetime.timedelta(days=365)
         if "session" not in g:
-            g.session = current_session()
+            g.session = current_user_session()
 
     @app.errorhandler(400)
     def bad_request(error):

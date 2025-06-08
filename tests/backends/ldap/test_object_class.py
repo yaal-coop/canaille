@@ -14,19 +14,26 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
 
 
 def test_object_class_update(backend, testclient):
-    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = ["inetOrgPerson"]
+    testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
+        "inetOrgPerson",
+        "oathHOTPToken",
+    ]
     setup_ldap_models(testclient.app.config)
 
     user1 = models.User(cn="foo1", sn="bar1", user_name="baz1")
     backend.save(user1)
 
-    assert set(user1.get_ldap_attribute("objectClass")) == {"inetOrgPerson"}
+    assert set(user1.get_ldap_attribute("objectClass")) == {
+        "inetOrgPerson",
+        "oathHOTPToken",
+    }
     assert set(
         backend.get(models.User, id=user1.id).get_ldap_attribute("objectClass")
-    ) == {"inetOrgPerson"}
+    ) == {"inetOrgPerson", "oathHOTPToken"}
 
     testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
+        "oathHOTPToken",
         "extensibleObject",
     ]
     setup_ldap_models(testclient.app.config)
@@ -36,27 +43,34 @@ def test_object_class_update(backend, testclient):
 
     assert set(user2.get_ldap_attribute("objectClass")) == {
         "inetOrgPerson",
+        "oathHOTPToken",
         "extensibleObject",
     }
     assert set(
         backend.get(models.User, id=user2.id).get_ldap_attribute("objectClass")
     ) == {
         "inetOrgPerson",
+        "oathHOTPToken",
         "extensibleObject",
     }
 
     user1 = backend.get(models.User, id=user1.id)
-    assert user1.get_ldap_attribute("objectClass") == ["inetOrgPerson"]
+    assert set(user1.get_ldap_attribute("objectClass")) == {
+        "inetOrgPerson",
+        "oathHOTPToken",
+    }
 
     backend.save(user1)
     assert set(user1.get_ldap_attribute("objectClass")) == {
         "inetOrgPerson",
+        "oathHOTPToken",
         "extensibleObject",
     }
     assert set(
         backend.get(models.User, id=user1.id).get_ldap_attribute("objectClass")
     ) == {
         "inetOrgPerson",
+        "oathHOTPToken",
         "extensibleObject",
     }
 

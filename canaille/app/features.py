@@ -46,28 +46,6 @@ class Features:
             return False
 
     @property
-    def has_email_otp(self):
-        """Indicate whether the email OTP authentication factor is enabled.
-
-        It is controlled by the :attr:`CANAILLE.EMAIL_OTP <canaille.core.configuration.CoreSettings.EMAIL_OTP>` configuration parameter.
-        """
-        return bool(self.app.config["CANAILLE"]["EMAIL_OTP"])
-
-    @property
-    def has_sms_otp(self):
-        """Indicate whether the SMS OTP authentication factor is enabled.
-
-        It is controlled by the :attr:`CANAILLE.SMS_OTP <canaille.core.configuration.CoreSettings.SMS_OTP>` configuration parameter,
-        and needs the ``smpp`` extra package to be installed.
-        """
-        try:
-            import smpplib  # noqa: F401
-
-            return self.app.config["CANAILLE"]["SMS_OTP"]
-        except ImportError:  # pragma: no cover
-            return False
-
-    @property
     def has_registration(self):
         """Indicate whether the user account registration is enabled.
 

@@ -54,7 +54,7 @@ def send_password_reset_mail(user, mail):
         reset_token = user.generate_url_safe_token()
         Backend.instance.save(user)
         reset_url = url_for(
-            "core.auth.reset",
+            "core.auth.password.reset",
             user=user,
             token=reset_token,
             _external=True,
@@ -98,7 +98,7 @@ def send_password_initialization_mail(user, email):
     reset_token = user.generate_url_safe_token()
     Backend.instance.save(user)
     reset_url = url_for(
-        "core.auth.reset",
+        "core.auth.password.reset",
         user=user,
         token=reset_token,
         _external=True,

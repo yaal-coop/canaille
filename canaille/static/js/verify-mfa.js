@@ -1,16 +1,12 @@
-countDownDuration = 10;
-countdown = document.getElementById("countdown");
-countdown.innerHTML = countDownDuration;
-button = countdown.parentNode;
-button.setAttribute("disabled", "");
+button = document.getElementById("resend-button");
+icon = document.getElementById("resend-icon");
+delay = button.dataset.delay * 1000;
 
-x = setInterval(() => {
-    countDownDuration--;
-    if (countDownDuration <= 0) {
-        clearInterval(x);
-        countdown.innerHTML = "";
-        button.removeAttribute("disabled");
-    } else {
-        countdown.innerHTML = countDownDuration;
-    }
-}, 1000);
+if (delay) {
+    setTimeout(() => {
+        button.classList.remove("disabled")
+        icon.classList.remove("hourglass")
+        icon.classList.remove("half")
+        icon.classList.add("send")
+    }, delay);
+}

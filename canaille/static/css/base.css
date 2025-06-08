@@ -158,25 +158,6 @@ footer a {
     padding-left: 0;
 }
 
-.send-code-button {
-    background: none!important;
-    border: none;
-    padding: 0!important;
-    text-decoration: underline;
-    cursor: pointer;
-    color: rgba(0, 0, 0, 0.87) !important;
-    }
-
-.send-code-button:disabled {
-    text-decoration: none;
-    cursor: auto;
-    color: rgba(0, 0, 0, 0.524) !important;
-}
-
-#countdown {
-    font-size: 1.5em;
-}
-
 /* Fix button appearance for semantic-ui on webkit */
 [type=button] {
     -webkit-appearance: none;
@@ -426,13 +407,5 @@ select.ui.multiple.dropdown option[selected] {
     }
     .ui.progress {
         background: #222222;
-    }
-    .send-code-button {
-        color: rgba(255,255,255,.87) !important;
-    }
-    .send-code-button:disabled {
-        text-decoration: none;
-        cursor: auto;
-        color: rgba(255, 255, 255, 0.524) !important;
     }
 }

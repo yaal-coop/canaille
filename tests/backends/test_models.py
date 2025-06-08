@@ -13,12 +13,14 @@ def test_model_comparison(testclient, backend):
         formatted_name="foo",
     )
     backend.save(foo1)
+    backend.reload(foo1)
     bar = models.User(
         user_name="bar",
         family_name="bar",
         formatted_name="bar",
     )
     backend.save(bar)
+    backend.reload(bar)
     foo2 = backend.get(models.User, id=foo1.id)
 
     assert foo1 == foo2
@@ -42,6 +44,7 @@ def test_model_lifecycle(testclient, backend):
     assert not backend.get(models.User, id=user.id)
 
     backend.save(user)
+    backend.reload(user)
 
     assert backend.query(models.User) == [user]
     assert backend.query(models.User, id=user.id) == [user]
@@ -111,6 +114,7 @@ def test_model_indexation(testclient, backend):
         emails=["email1@user.test", "email2@user.test"],
     )
     backend.save(user)
+    backend.reload(user)
 
     assert backend.get(models.User, family_name="family_name") == user
     assert not backend.get(models.User, family_name="new_family_name")
@@ -126,6 +130,7 @@ def test_model_indexation(testclient, backend):
     assert not backend.get(models.User, emails=["email3@user.test"])
 
     backend.save(user)
+    backend.reload(user)
 
     assert not backend.get(models.User, family_name="family_name")
     assert backend.get(models.User, family_name="new_family_name") == user
@@ -143,6 +148,10 @@ def test_model_indexation(testclient, backend):
 
 
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
+    backend.reload(user)
+    backend.reload(moderator)
+    backend.reload(admin)
+
     assert set(backend.query(models.User)) == {user, moderator, admin}
     assert set(backend.fuzzy(models.User, "Jack")) == {moderator}
     assert set(backend.fuzzy(models.User, "Jack", ["formatted_name"])) == {moderator}
@@ -157,6 +166,10 @@ def test_fuzzy_unique_attribute(user, moderator, admin, backend):
 
 
 def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
+    backend.reload(user)
+    backend.reload(moderator)
+    backend.reload(admin)
+
     assert set(backend.query(models.User)) == {user, moderator, admin}
     assert set(backend.fuzzy(models.User, "jack@doe.test")) == {moderator}
     assert set(backend.fuzzy(models.User, "jack@doe.test", ["emails"])) == {moderator}

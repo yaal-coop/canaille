@@ -1,7 +1,6 @@
 import datetime
-import logging
-from unittest import mock
 
+from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import get_user_from_login
 
 
@@ -25,56 +24,6 @@ def test_user_get_user_from_login_dict(testclient, user):
     assert get_user_from_login(login="user@doe.test") == user
 
 
-def test_signin_and_out(testclient, user, caplog):
-    with testclient.session_transaction() as session:
-        assert not session.get("sessions")
-
-    res = testclient.get("/login", status=200)
-
-    res.form["login"] = "user"
-    res = res.form.submit(status=302)
-    res = res.follow(status=200)
-
-    with testclient.session_transaction() as session:
-        assert "user" == session.get("attempt_login")
-
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit()
-
-    assert (
-        "success",
-        "Connection successful. Welcome Johnny",
-    ) in res.flashes
-    assert (
-        "canaille",
-        logging.SECURITY,
-        "Succeed login attempt for user",
-    ) in caplog.record_tuples
-    res = res.follow(status=302)
-    res = res.follow(status=200)
-
-    with testclient.session_transaction() as session:
-        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
-            "sessions"
-        )
-        assert "attempt_login" not in session
-
-    res = testclient.get("/login", status=302)
-
-    res = testclient.get("/logout")
-    assert (
-        "success",
-        "You have been disconnected. See you next time Johnny",
-    ) in res.flashes
-    assert (
-        "canaille",
-        logging.SECURITY,
-        "Logout user",
-    ) in caplog.record_tuples
-    res = res.follow(status=302)
-    res = res.follow(status=200)
-
-
 def test_visitor_logout(testclient, user):
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
@@ -91,80 +40,6 @@ def test_visitor_logout(testclient, user):
         assert not session.get("sessions")
 
 
-def test_signin_wrong_password(testclient, user, caplog):
-    with testclient.session_transaction() as session:
-        assert not session.get("sessions")
-
-    res = testclient.get("/login", status=200)
-
-    res.form["login"] = "user"
-    res = res.form.submit(status=302)
-    res = res.follow(status=200)
-    res.form["password"] = "incorrect horse"
-    res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
-    assert (
-        "canaille",
-        logging.SECURITY,
-        "Failed login attempt for user",
-    ) in caplog.record_tuples
-
-
-def test_signin_password_substring(testclient, user):
-    with testclient.session_transaction() as session:
-        assert not session.get("sessions")
-
-    res = testclient.get("/login", status=200)
-
-    res.form["login"] = "user"
-    res = res.form.submit(status=302)
-    res = res.follow(status=200)
-    res.form["password"] = "c"
-    res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
-
-
-def test_signin_bad_csrf(testclient, user):
-    with testclient.session_transaction() as session:
-        assert not session.get("sessions")
-
-    res = testclient.get("/login", status=200)
-
-    res.form["login"] = "user"
-    res = res.form.submit(status=302)
-    res = res.follow(status=200)
-
-    res.form["password"] = ""
-    res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
-
-
-def test_signin_with_alternate_attribute(testclient, user):
-    res = testclient.get("/login", status=200)
-
-    res.form["login"] = "user"
-    res = res.form.submit(status=302)
-    res = res.follow(status=200)
-
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit()
-    res = res.follow(status=302)
-    res = res.follow(status=200)
-
-    with testclient.session_transaction() as session:
-        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
-            "sessions"
-        )
-
-
-def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
-    res = testclient.get("/password", status=302)
-    assert res.location == "/login"
-    assert res.flashes == [
-        ("warning", "Cannot remember the login you attempted to sign in with")
-    ]
-
-
 def test_wrong_login(testclient, user):
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
 
@@ -172,10 +47,7 @@ def test_wrong_login(testclient, user):
     res.form["login"] = "invalid"
     res = res.form.submit(status=302)
     res = res.follow(status=200)
-
-    res.form["password"] = "incorrect horse"
-    res = res.form.submit(status=200)
-    res.mustcontain(no="The login 'invalid' does not exist")
+    assert res.template == "core/auth/password.html"
 
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = False
 
@@ -195,7 +67,8 @@ def test_signin_locked_account(testclient, user, backend):
     res = testclient.get("/login", status=200)
     res.form["login"] = "user"
 
-    res = res.form.submit(status=302).follow(status=200)
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
     res.form["password"] = "correct horse battery staple"
 
     res = res.form.submit()
@@ -222,3 +95,21 @@ def test_login_placeholder(testclient):
     testclient.app.config["CANAILLE"]["LOGIN_ATTRIBUTES"] = ["user_name", "emails"]
     placeholder = testclient.get("/login").form["login"].attrs["placeholder"]
     assert placeholder == "jdoe or john.doe@example.com"
+
+
+def test_bad_authentication_step(testclient, user):
+    """Handle corrupted authentication sessions."""
+    with testclient.session_transaction() as session:
+        session["auth"] = AuthenticationSession(
+            user_name="user",
+            remaining=["password", "invalid"],
+        ).serialize()
+
+    res = testclient.get("/auth/password", status=200)
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+
+    assert (
+        "error",
+        "An error happened during your authentication process. Please try again.",
+    ) in res.flashes

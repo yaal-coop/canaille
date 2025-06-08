@@ -77,7 +77,7 @@ def test_txt(user):
 def password_init_html(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.auth.reset",
+        "core.auth.password.reset",
         user=user,
         token=user.generate_url_safe_token(),
         title=_("Password initialization on {website_name}").format(
@@ -103,7 +103,7 @@ def password_init_html(user):
 def password_init_txt(user):
     base_url = url_for("core.account.index", _external=True)
     reset_url = url_for(
-        "core.auth.reset",
+        "core.auth.password.reset",
         user=user,
         token=user.generate_url_safe_token(),
         _external=True,
@@ -124,7 +124,7 @@ def password_reset_html(user):
     server_name = current_app.config.get("SERVER_NAME")
     reset_token = user.generate_url_safe_token()
     reset_url = url_for(
-        "core.auth.reset",
+        "core.auth.password.reset",
         user=user,
         token=reset_token,
         title=_("Password reset on {website_name}").format(
@@ -155,7 +155,7 @@ def password_reset_txt(user):
     server_name = current_app.config.get("SERVER_NAME")
     reset_token = user.generate_url_safe_token()
     reset_url = url_for(
-        "core.auth.reset",
+        "core.auth.password.reset",
         user=user,
         token=reset_token,
         _external=True,
