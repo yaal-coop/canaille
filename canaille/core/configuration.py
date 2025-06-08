@@ -372,10 +372,12 @@ class CoreSettings(BaseModel):
     long time between each failed login attempt."""
 
     AUTHENTICATION_FACTORS: list[str] = ["password"]
-    """"The authentication factors.
+    """The authentication factors.
 
     Users will need to authenticate with factors in the order of this list.
     For instance, this will show a password form and then ask for a one-time passcode:
+
+    Valid factors are ``password``, ``otp``, ``email`` and ``sms``.
 
     .. code-block:: toml
 
