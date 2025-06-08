@@ -1,3 +1,20 @@
+[0.0.77] - Unreleased
+---------------------
+
+.. warning::
+
+    This version comes with a configuration breaking change.
+
+    The authentication factors configuration part have been reworked:
+
+    - ``CANAILLE.EMAIL_OTP`` and ``CANAILLE.SMS_OTP`` have been removed.
+    - ``CANAILLE.AUTHENTICATION_FACTORS`` has been introduced as a replacement.
+
+Changed
+^^^^^^^
+- The configuration parameter :attr:`~canaille.core.configuration.CoreSettings.AUTHENTICATION_FACTORS` is added.
+  The configuration parameters ``EMAIL_OTP`` and ``SMS_OTP`` are removed. :pr:`279`
+
 [0.0.76] - 2025-06-06
 ---------------------
 
