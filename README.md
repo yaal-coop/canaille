@@ -18,13 +18,16 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 ## Locally
 
+Either run the development server
+
 ```bash
 git clone https://gitlab.com/yaal/canaille.git && cd canaille
-
-# Either run the development server
 uv sync --all-extras --group devserver && uv run devserver
+```
 
-# or run the Docker image
+or run the Docker image
+
+```bash
 docker run -it -p 5000:5000 yaalcoop/canaille:latest
 ```
 
