@@ -43,7 +43,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Initialize a default configuration file
 
-       docker run -it --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
+       docker run --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
 
 #. Create a `docker-compose.yml` which mounts your configuration file.
 
