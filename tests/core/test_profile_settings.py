@@ -214,7 +214,7 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
-    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admins"}
+    current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admin"}
 
     res = testclient.get("/profile/user/settings", status=200)
 

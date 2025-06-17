@@ -39,7 +39,7 @@ WRITE = [
 ]
 
 [CANAILLE.ACL.ADMIN]
-FILTER = {groups = "admins"}
+FILTER = {groups = "admin"}
 PERMISSIONS = [
     "manage_users",
     "manage_groups",

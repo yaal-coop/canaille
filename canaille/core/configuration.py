@@ -210,7 +210,7 @@ class ACLSettings(BaseModel):
 
         FILTER = {user_name = 'admin'}
         FILTER = [
-            {groups = 'admins},
+            {groups = 'admin},
             {groups = 'moderators'},
         ]
     """

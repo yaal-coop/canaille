@@ -38,14 +38,14 @@ Docker Compose
 Here is an example of how you can run Canaille with Docker Compose to fix those issues.
 Please note that you should adapt each of these steps to your situation.
 
-#. First, generate a configuration file that you can then modify:
+#. First, generate a configuration file that you can then modify.
 
    .. code-block:: console
        :caption: Initialize a default configuration file
 
        docker run -it --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
 
-#. Create a `docker-compose.yml` which mounts your configuration file:
+#. Create a `docker-compose.yml` which mounts your configuration file.
 
    .. code-block:: yaml
        :caption: `docker-compose.yml` example
@@ -59,14 +59,15 @@ Please note that you should adapt each of these steps to your situation.
                volumes:
                - ./canaille.toml:/opt/canaille/canaille.toml
 
-#. Run the container:
+#. Run the container.
 
    .. code-block:: console
        :caption: Start canaille
 
        docker compose up
 
-#. Create your first user:
+#. Create your first user.
+   Replace ``<NAME>`` with the name of your container, as appearing in ``docker ps``.
 
    .. code-block:: console
        :caption: Create your first admin user
