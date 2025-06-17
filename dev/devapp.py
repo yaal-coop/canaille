@@ -87,7 +87,7 @@ def populate(app):
             app.backend.save(users)
 
             admins = models.Group(
-                display_name="admins",
+                display_name="admin",
                 members=[jane],
                 description="The administrators.",
             )

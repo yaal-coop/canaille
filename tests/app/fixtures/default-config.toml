@@ -250,7 +250,7 @@ DATABASE = "memory"
 #
 #     FILTER = {user_name = 'admin'}
 #     FILTER = [
-#         {groups = 'admins},
+#         {groups = 'admin},
 #         {groups = 'moderators'},
 #     ]
 # FILTER =
@@ -291,7 +291,7 @@ WRITE = ["groups", "lock_date"]
 #
 #     FILTER = {user_name = 'admin'}
 #     FILTER = [
-#         {groups = 'admins},
+#         {groups = 'admin},
 #         {groups = 'moderators'},
 #     ]
 FILTER = [
