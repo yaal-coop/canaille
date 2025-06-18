@@ -1,6 +1,6 @@
 import json
 
-from joserfc.jwk import JWKRegistry
+from joserfc import jwk
 
 from canaille.commands import cli
 
@@ -10,7 +10,7 @@ def test_create_rsa_key(cli_runner):
     res = cli_runner.invoke(cli, ["jwk", "create", "rsa"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "RSA")
+    jwk.import_key(payload, "RSA")
 
 
 def test_create_rsa_key_with_size(cli_runner):
@@ -20,7 +20,7 @@ def test_create_rsa_key_with_size(cli_runner):
     )
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "RSA")
+    jwk.import_key(payload, "RSA")
 
 
 def test_create_oct_key(cli_runner):
@@ -28,7 +28,7 @@ def test_create_oct_key(cli_runner):
     res = cli_runner.invoke(cli, ["jwk", "create", "oct"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "oct")
+    jwk.import_key(payload, "oct")
 
 
 def test_create_oct_key_with_size(cli_runner):
@@ -38,7 +38,7 @@ def test_create_oct_key_with_size(cli_runner):
     )
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "oct")
+    jwk.import_key(payload, "oct")
 
 
 def test_create_ec_key(cli_runner):
@@ -46,7 +46,7 @@ def test_create_ec_key(cli_runner):
     res = cli_runner.invoke(cli, ["jwk", "create", "ec"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "EC")
+    jwk.import_key(payload, "EC")
 
 
 def test_create_ec_key_with_crv(cli_runner):
@@ -56,7 +56,7 @@ def test_create_ec_key_with_crv(cli_runner):
     )
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "EC")
+    jwk.import_key(payload, "EC")
 
 
 def test_create_opk_key(cli_runner):
@@ -64,7 +64,7 @@ def test_create_opk_key(cli_runner):
     res = cli_runner.invoke(cli, ["jwk", "create", "okp"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "OKP")
+    jwk.import_key(payload, "OKP")
 
 
 def test_create_opk_key_with_crv(cli_runner):
@@ -74,4 +74,4 @@ def test_create_opk_key_with_crv(cli_runner):
     )
     assert res.exit_code == 0, res.stdout
     payload = json.loads(res.stdout)
-    JWKRegistry.import_key(payload, "OKP")
+    jwk.import_key(payload, "OKP")

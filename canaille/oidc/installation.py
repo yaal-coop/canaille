@@ -1,5 +1,5 @@
 def install(config, debug=False):
-    from joserfc.jwk import JWKRegistry
+    from joserfc import jwk
 
     if (
         not debug
@@ -8,5 +8,5 @@ def install(config, debug=False):
     ):
         return
 
-    jwk = JWKRegistry.generate_key("RSA", 1024)
-    config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [jwk.as_dict()]
+    key = jwk.generate_key("RSA", 1024)
+    config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [key.as_dict()]

@@ -6,8 +6,7 @@ import uuid
 import pytest
 from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants.util import generate_id_token
-from joserfc.jwk import JWKRegistry
-from joserfc.jwk import KeySet
+from joserfc import jwk
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -25,16 +24,16 @@ def app(app, configuration, backend):
 
 @pytest.fixture(scope="session")
 def server_jwk():
-    jwk = JWKRegistry.generate_key("RSA", 1024)
-    jwk.ensure_kid()
-    return jwk
+    key = jwk.generate_key("RSA", 1024)
+    key.ensure_kid()
+    return key
 
 
 @pytest.fixture(scope="session")
 def old_server_jwk():
-    jwk = JWKRegistry.generate_key("RSA", 1024)
-    jwk.ensure_kid()
-    return jwk
+    key = jwk.generate_key("RSA", 1024)
+    key.ensure_kid()
+    return key
 
 
 @pytest.fixture
@@ -52,12 +51,12 @@ def configuration(configuration, server_jwk, old_server_jwk):
 
 @pytest.fixture
 def client_jwk():
-    return JWKRegistry.generate_key("RSA", 1024)
+    return jwk.generate_key("RSA", 1024)
 
 
 @pytest.fixture
 def client(testclient, trusted_client, backend, client_jwk):
-    key_set = KeySet([client_jwk]).as_dict(private=False)
+    key_set = jwk.KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -97,7 +96,7 @@ def client(testclient, trusted_client, backend, client_jwk):
 
 @pytest.fixture
 def trusted_client(testclient, backend, client_jwk):
-    key_set = KeySet([client_jwk]).as_dict(private=False)
+    key_set = jwk.KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",

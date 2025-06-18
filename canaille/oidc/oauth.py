@@ -194,7 +194,7 @@ def server_jwks(include_inactive=True):
     if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
         keys += current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]
 
-    key_objs = [jwk.JWKRegistry.import_key(key) for key in keys]
+    key_objs = [jwk.import_key(key) for key in keys]
     for obj in key_objs:
         obj.ensure_kid()
     return jwk.KeySet(key_objs)
