@@ -299,7 +299,10 @@ def test_end_session_bad_id_token(testclient, backend, logged_user, client, id_t
         },
     )
 
-    assert res.json == {"status": "error", "message": "Invalid input segments length: "}
+    assert res.json == {
+        "status": "error",
+        "message": "decode_error: Invalid JSON Web Signature",
+    }
 
 
 def test_bad_user_id_token_mismatch(testclient, backend, logged_user, client, admin):

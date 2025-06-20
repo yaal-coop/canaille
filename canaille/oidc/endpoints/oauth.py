@@ -2,8 +2,6 @@ import datetime
 import uuid
 
 from authlib.common.urls import add_params_to_uri
-from authlib.jose import jwt
-from authlib.jose.errors import JoseError
 from authlib.oauth2 import OAuth2Error
 from authlib.oauth2.rfc6749.errors import InvalidRequestError
 from authlib.oidc.core.errors import ConsentRequiredError
@@ -17,6 +15,8 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
+from joserfc import jwt
+from joserfc.errors import JoseError
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.exceptions import HTTPException
 
@@ -411,7 +411,7 @@ def end_session():
         try:
             id_token = jwt.decode(
                 data["id_token_hint"],
-                server_jwks().as_dict(),
+                server_jwks(),
             )
         except JoseError as exc:
             return jsonify(
@@ -421,7 +421,7 @@ def end_session():
                 }
             )
 
-        if not id_token["iss"] == get_issuer():
+        if not id_token.claims["iss"] == get_issuer():
             return jsonify(
                 {
                     "status": "error",
@@ -431,8 +431,8 @@ def end_session():
 
         if "client_id" in data:
             if (
-                data["client_id"] != id_token["aud"]
-                and data["client_id"] not in id_token["aud"]
+                data["client_id"] != id_token.claims["aud"]
+                and data["client_id"] not in id_token.claims["aud"]
             ):
                 return jsonify(
                     {
@@ -443,16 +443,16 @@ def end_session():
 
         else:
             client_ids = (
-                id_token["aud"]
-                if isinstance(id_token["aud"], list)
-                else [id_token["aud"]]
+                id_token.claims["aud"]
+                if isinstance(id_token.claims["aud"], list)
+                else [id_token.claims["aud"]]
             )
             for client_id in client_ids:
                 client = Backend.instance.get(models.Client, client_id=client_id)
                 if client:
                     valid_uris.extend(client.post_logout_redirect_uris or [])
 
-        if user.user_name != id_token["sub"] and not session.get(
+        if user.user_name != id_token.claims["sub"] and not session.get(
             "end_session_confirmation"
         ):
             session["end_session_data"] = data
