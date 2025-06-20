@@ -94,7 +94,7 @@ def join():
                 ),
                 "success",
             )
-            return render_template("core/join.html", form=form)
+            return render_template("core/join.html", form=form, menu=False)
 
         payload = RegistrationPayload(
             creation_date_isoformat=datetime.datetime.now(
@@ -130,7 +130,7 @@ def join():
                 "error",
             )
 
-    return render_template("core/join.html", form=form)
+    return render_template("core/join.html", form=form, menu=False)
 
 
 @bp.route("/about")
