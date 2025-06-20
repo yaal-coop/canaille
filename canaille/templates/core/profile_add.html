@@ -25,19 +25,21 @@ It is used in the registration page, and in the manual account creation page ava
 {% endblock %}
 
 {% block submenu %}
-    <a class="item" href="{{ url_for('core.account.users') }}">
-        <i class="th list icon"></i>
-        {% trans %}View{% endtrans %}
-    </a>
-    <a class="active item" href="{{ url_for('core.account.profile_creation') }}">
-        <i class="plus icon"></i>
-        {% trans %}Add{% endtrans %}
-    </a>
-    {% if features.has_smtp %}
-        <a class="item" href="{{ url_for('core.account.user_invitation') }}">
-            <i class="paper plane icon"></i>
-            {% trans %}Invite{% endtrans %}
+    {% if user and user.can_manage_users %}
+        <a class="item" href="{{ url_for('core.account.users') }}">
+            <i class="th list icon"></i>
+            {% trans %}View{% endtrans %}
         </a>
+        <a class="active item" href="{{ url_for('core.account.profile_creation') }}">
+            <i class="plus icon"></i>
+            {% trans %}Add{% endtrans %}
+        </a>
+        {% if features.has_smtp %}
+            <a class="item" href="{{ url_for('core.account.user_invitation') }}">
+                <i class="paper plane icon"></i>
+                {% trans %}Invite{% endtrans %}
+            </a>
+        {% endif %}
     {% endif %}
 {% endblock %}
 

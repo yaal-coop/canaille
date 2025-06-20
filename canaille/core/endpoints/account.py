@@ -332,7 +332,7 @@ def registration(data=None, hash=None):
         return render_template(
             "core/profile_add.html",
             form=form,
-            menuitem="users",
+            menu=False,
         )
 
     if not form.validate():
@@ -340,7 +340,7 @@ def registration(data=None, hash=None):
         return render_template(
             "core/profile_add.html",
             form=form,
-            menuitem="users",
+            menu=False,
         )
 
     user = profile_create(current_app, form)
