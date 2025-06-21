@@ -4,9 +4,9 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 import time_machine
-from authlib.jose import jwt
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from flask import g
+from joserfc import jwt
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -87,10 +87,10 @@ def test_nominal_case_get(
         "address",
         "phone",
     }
-    claims = jwt.decode(access_token, server_jwk.as_dict())
-    assert claims["sub"] == logged_user.user_name
-    assert claims["name"] == logged_user.formatted_name
-    assert claims["aud"] == [client.client_id, trusted_client.client_id]
+    claims = jwt.decode(access_token, server_jwk)
+    assert claims.claims["sub"] == logged_user.user_name
+    assert claims.claims["name"] == logged_user.formatted_name
+    assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]
 
     assert (
         "canaille",
@@ -181,10 +181,10 @@ def test_nominal_case_post(
         "address",
         "phone",
     }
-    claims = jwt.decode(access_token, server_jwk.as_dict())
-    assert claims["sub"] == logged_user.user_name
-    assert claims["name"] == logged_user.formatted_name
-    assert claims["aud"] == [client.client_id, trusted_client.client_id]
+    claims = jwt.decode(access_token, server_jwk)
+    assert claims.claims["sub"] == logged_user.user_name
+    assert claims.claims["name"] == logged_user.formatted_name
+    assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]
 
     assert (
         "canaille",

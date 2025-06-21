@@ -3,7 +3,7 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 import time_machine
-from authlib.jose import jwt
+from joserfc import jwt
 
 from canaille.app import models
 
@@ -46,11 +46,11 @@ def test_nominal_case(
     )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
+    claims = jwt.decode(id_token, server_jwk)
     assert claims.header["kid"]
-    assert claims["sub"] == logged_user.user_name
-    assert claims["name"] == logged_user.formatted_name
-    assert claims["aud"] == [client.client_id, trusted_client.client_id]
+    assert claims.claims["sub"] == logged_user.user_name
+    assert claims.claims["name"] == logged_user.formatted_name
+    assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]
 
     for consent in backend.query(models.Consent, client=client, subject=logged_user):
         backend.delete(consent)
@@ -108,9 +108,9 @@ def test_auth_time(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
+    claims = jwt.decode(id_token, server_jwk)
     id_token_auth_time = datetime.datetime.fromtimestamp(
-        claims["auth_time"], tz=datetime.timezone.utc
+        claims.claims["auth_time"], tz=datetime.timezone.utc
     )
     assert id_token_auth_time == auth_time
 
@@ -175,9 +175,9 @@ def test_auth_time_update(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
+    claims = jwt.decode(id_token, server_jwk)
     id_token_1_auth_time = datetime.datetime.fromtimestamp(
-        claims["auth_time"], tz=datetime.timezone.utc
+        claims.claims["auth_time"], tz=datetime.timezone.utc
     )
     assert id_token_1_auth_time == auth_time
 
@@ -223,8 +223,8 @@ def test_auth_time_update(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
+    claims = jwt.decode(id_token, server_jwk)
     id_token_2_auth_time = datetime.datetime.fromtimestamp(
-        claims["auth_time"], tz=datetime.timezone.utc
+        claims.claims["auth_time"], tz=datetime.timezone.utc
     )
     assert id_token_2_auth_time == auth_time

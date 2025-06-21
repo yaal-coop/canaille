@@ -1,7 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-from authlib.jose import jwt
+from joserfc import jwt
 
 from canaille.app import models
 from canaille.oidc.oauth import setup_oauth
@@ -48,12 +48,12 @@ def test_token_default_expiration_date(
     token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 864000
 
-    claims = jwt.decode(access_token, server_jwk.as_dict())
-    assert claims["exp"] - claims["iat"] == 864000
+    claims = jwt.decode(access_token, server_jwk)
+    assert claims.claims["exp"] - claims.claims["iat"] == 864000
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
-    assert claims["exp"] - claims["iat"] == 3600
+    claims = jwt.decode(id_token, server_jwk)
+    assert claims.claims["exp"] - claims.claims["iat"] == 3600
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:
@@ -108,12 +108,12 @@ def test_token_custom_expiration_date(
     token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 1000
 
-    claims = jwt.decode(access_token, server_jwk.as_dict())
-    assert claims["exp"] - claims["iat"] == 1000
+    claims = jwt.decode(access_token, server_jwk)
+    assert claims.claims["exp"] - claims.claims["iat"] == 1000
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
-    lifetime = claims["exp"] - claims["iat"]
+    claims = jwt.decode(id_token, server_jwk)
+    lifetime = claims.claims["exp"] - claims.claims["iat"]
     assert lifetime == 3600
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)

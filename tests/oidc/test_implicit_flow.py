@@ -1,7 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
-from authlib.jose import jwt
+from joserfc import jwt
 
 from canaille.app import models
 
@@ -132,10 +132,10 @@ def test_oidc_implicit(testclient, server_jwk, user, client, trusted_client, bac
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
-    assert user.user_name == claims["sub"]
-    assert user.formatted_name == claims["name"]
-    assert [client.client_id, trusted_client.client_id] == claims["aud"]
+    claims = jwt.decode(id_token, server_jwk)
+    assert user.user_name == claims.claims["sub"]
+    assert user.formatted_name == claims.claims["name"]
+    assert [client.client_id, trusted_client.client_id] == claims.claims["aud"]
 
     client.token_endpoint_auth_method = "client_secret_basic"
     backend.save(client)
@@ -178,11 +178,11 @@ def test_oidc_implicit_with_group(
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, server_jwk.as_dict())
-    assert user.user_name == claims["sub"]
-    assert user.formatted_name == claims["name"]
-    assert [client.client_id, trusted_client.client_id] == claims["aud"]
-    assert ["foo"] == claims["groups"]
+    claims = jwt.decode(id_token, server_jwk)
+    assert user.user_name == claims.claims["sub"]
+    assert user.formatted_name == claims.claims["name"]
+    assert [client.client_id, trusted_client.client_id] == claims.claims["aud"]
+    assert ["foo"] == claims.claims["groups"]
 
     client.token_endpoint_auth_method = "client_secret_basic"
     backend.save(client)

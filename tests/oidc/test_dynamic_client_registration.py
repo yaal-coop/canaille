@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from unittest import mock
 
-from authlib.jose import jwt
+from joserfc import jwt
 
 from canaille.app import models
 
@@ -177,8 +177,8 @@ def test_client_registration_with_software_statement(testclient, backend, server
     }
     software_statement_header = {"alg": "RS256"}
     software_statement = jwt.encode(
-        software_statement_header, software_statement_payload, server_jwk.as_dict()
-    ).decode()
+        software_statement_header, software_statement_payload, server_jwk
+    )
 
     def test_client_registration_with_software_statement_with_different_scopes(
         scope_value, **kwargs

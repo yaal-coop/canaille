@@ -560,7 +560,7 @@ class ClientManagementMixin:
         return result
 
     def resolve_public_key(self, request):
-        return server_jwks().as_dict(private=False)
+        return server_jwks().keys[0].as_dict(private=False)
 
     def client_convert_data(self, **kwargs):
         if "client_id_issued_at" in kwargs:
