@@ -4,7 +4,6 @@ import json
 import httpx
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
-from authlib.jose import JsonWebKey
 from authlib.oauth2 import rfc6749
 from authlib.oauth2 import rfc6750
 from authlib.oauth2 import rfc7009
@@ -221,15 +220,15 @@ def get_client_jwks(client, kid=None):
 
     if client.jwks_uri:
         raw_jwks = get_public_jwks()
-        key_set = JsonWebKey.import_key_set(raw_jwks)
-        jwk = key_set.find_by_kid(kid)
-        return jwk
+        key_set = jwk.KeySet.import_key_set(raw_jwks)
+        key = key_set.get_by_kid(kid)
+        return key
 
     if client.jwks:
         raw_jwks = json.loads(client.jwks)
-        key_set = JsonWebKey.import_key_set(raw_jwks)
-        jwk = key_set.find_by_kid(kid)
-        return jwk
+        key_set = jwk.KeySet.import_key_set(raw_jwks)
+        key = key_set.get_by_kid(kid)
+        return key
 
     return None
 
@@ -324,7 +323,7 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
         if not jwk:
             raise InvalidClientError(description="No matching JWK")
 
-        return jwk
+        return jwk.as_dict()
 
 
 class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
@@ -684,7 +683,7 @@ class IssuerParameter(rfc9207.IssuerParameter):
 
 class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
     def resolve_client_public_key(self, client):
-        return get_client_jwks(client)
+        return get_client_jwks(client).as_dict()
 
     def get_request_object(self, request_uri: str):
         return httpx.get(request_uri).text
