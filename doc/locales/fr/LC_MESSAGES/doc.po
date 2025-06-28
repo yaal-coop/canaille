@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:48+0200\n"
-"PO-Revision-Date: 2025-05-05 09:33+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2025-06-29 20:04+0000\n"
+"Last-Translator: Lumiraptor <hmtz@gmx.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 7ff76ed229a74a389d7167a72eefdd36
@@ -223,17 +223,13 @@ msgid "[0.0.70] - 2025-03-28"
 msgstr "[0.0.70] - 2025-03-28"
 
 #: ../../CHANGES.rst:83 0aefae11077f4fc49abdaaa3b1e80766
-#, fuzzy
-#| msgid ""
-#| "Add a :attr:`~canaille.core.configuration.CoreSettings.LOGIN_ATTRIBUTES` "
-#| "configuration parameter to allow to disable https forced redirections."
 msgid ""
 "Add a :attr:`~canaille.core.configuration.CoreSettings.FORCE_HTTPS` "
 "configuration parameter to allow to disable https forced redirections."
 msgstr ""
-"Implémentation du paramètre de configuration :class:`~canaille.core."
-"configuration.CoreSettings.FORCE_HTTPS` qui permet de désactiver les "
-"redirections automatiques en HTTPS."
+"Implémentation du paramètre de configuration "
+":attr:`~canaille.core.configuration.CoreSettings.FORCE_HTTPS` qui permet de "
+"désactiver les redirections automatiques en HTTPS."
 
 #: ../../CHANGES.rst:87 b39f305d9f2e48289d44c2f380e42e6d
 #, fuzzy
