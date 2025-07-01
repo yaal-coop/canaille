@@ -24,6 +24,7 @@ def setup_routes(app):
 
     @app.route("/register")
     def register():
+        """Redirect users to the Identity Provider registration page."""
         return oauth.canaille.authorize_redirect(
             url_for("register_callback", _external=True), prompt="create"
         )
@@ -42,6 +43,7 @@ def setup_routes(app):
 
     @app.route("/login")
     def login():
+        """Redirect users to the Identity Provider login page."""
         if "user" in session:
             return oauth.canaille.authorize_redirect(
                 url_for("login_callback", _external=True), prompt="login"
@@ -53,6 +55,7 @@ def setup_routes(app):
 
     @app.route("/consent")
     def consent():
+        """Redirect users to the Identity Provider consent page."""
         return oauth.canaille.authorize_redirect(
             url_for("login_callback", _external=True), prompt="consent"
         )
@@ -71,6 +74,7 @@ def setup_routes(app):
 
     @app.route("/logout")
     def logout():
+        """Redirect users to the Identity Provider logout page."""
         oauth.canaille.load_server_metadata()
         end_session_endpoint = oauth.canaille.server_metadata.get(
             "end_session_endpoint"
