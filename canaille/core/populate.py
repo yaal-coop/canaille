@@ -55,8 +55,9 @@ def fake_groups(nb=1, nb_users_max=1):
                 display_name=fake.unique.word(),
                 description=fake.sentence(),
             )
-            nb_users = random.randrange(1, nb_users_max + 1)
-            group.members = list({random.choice(users) for _ in range(nb_users)})
+            if nb_users_max:
+                nb_users = random.randrange(1, nb_users_max + 1)
+                group.members = list({random.choice(users) for _ in range(nb_users)})
             Backend.instance.save(group)
             groups.append(group)
         except Exception:  # pragma: no cover
