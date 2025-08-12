@@ -5,11 +5,15 @@ import pytest
 from httpx import Client as httpx_client
 from scim2_client.engines.httpx import SyncSCIMClient
 from scim2_client.engines.werkzeug import TestSCIMClient
+from scim2_models import Resource
 from werkzeug.security import gen_salt
 from werkzeug.test import Client
 
 from canaille.app import models
 from canaille.scim.endpoints import bp
+from canaille.scim.endpoints import get_resource_types
+from canaille.scim.endpoints import get_schemas
+from canaille.scim.endpoints import get_service_provider_config
 
 
 @pytest.fixture
@@ -65,11 +69,18 @@ def oidc_token(testclient, oidc_client, backend):
 
 @pytest.fixture
 def scim_client(app, oidc_client, oidc_token):
+    resource_models = [
+        Resource.from_schema(schema) for schema in get_schemas().values()
+    ]
+
     return TestSCIMClient(
         Client(app),
         scim_prefix=bp.url_prefix,
         environ={"headers": {"Authorization": f"Bearer {oidc_token.access_token}"}},
         check_response_status_codes=False,
+        service_provider_config=get_service_provider_config(),
+        resource_types=get_resource_types().values(),
+        resource_models=resource_models,
     )
 
 

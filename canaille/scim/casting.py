@@ -1,17 +1,16 @@
 import datetime
 
 from flask import url_for
-from scim2_models import EnterpriseUser
 from scim2_models import Meta
 
 from canaille.app import models
 from canaille.backends import Backend
+from canaille.scim.models import EnterpriseUser
 from canaille.scim.models import Group
 from canaille.scim.models import User
 
 
 def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
-    # allow to use custom SCIM user classes if needed
     scim_user_class = user_class if user_class != User else User[EnterpriseUser]
     scim_user = scim_user_class(
         meta=Meta(
@@ -35,14 +34,13 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
         emails=[
             user_class.Emails(
                 value=email,
-                primary=email == user.emails[0],
             )
             for email in user.emails or []
         ]
         or None,
         phone_numbers=[
             user_class.PhoneNumbers(
-                value=phone_number, primary=phone_number == user.phone_numbers[0]
+                value=phone_number,
             )
             for phone_number in user.phone_numbers or []
         ]
@@ -54,7 +52,6 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
                 postal_code=user.postal_code,
                 locality=user.locality,
                 region=user.region,
-                primary=True,
             )
         ]
         if (
@@ -112,25 +109,24 @@ def user_from_scim_to_canaille(scim_user: User, user):
     user.display_name = scim_user.display_name
     user.title = scim_user.title
     user.profile_url = scim_user.profile_url
-    # Sort emails to put primary first, preserving order of others
-    emails = scim_user.emails or []
-    primary_emails = [email.value for email in emails if email.primary]
-    non_primary_emails = [email.value for email in emails if not email.primary]
-    user.emails = (primary_emails + non_primary_emails) or None
-    # Sort phone numbers to put primary first, preserving order of others
-    phone_numbers = scim_user.phone_numbers or []
-    primary_phones = [phone.value for phone in phone_numbers if phone.primary]
-    non_primary_phones = [phone.value for phone in phone_numbers if not phone.primary]
-    user.phone_numbers = (primary_phones + non_primary_phones) or None
-    user.formatted_address = (
-        scim_user.addresses[0].formatted if scim_user.addresses else None
-    )
-    user.street = scim_user.addresses[0].street_address if scim_user.addresses else None
-    user.postal_code = (
-        scim_user.addresses[0].postal_code if scim_user.addresses else None
-    )
-    user.locality = scim_user.addresses[0].locality if scim_user.addresses else None
-    user.region = scim_user.addresses[0].region if scim_user.addresses else None
+    user.emails = [email.value for email in scim_user.emails or []] or None
+    user.phone_numbers = [
+        phone.value for phone in scim_user.phone_numbers or []
+    ] or None
+
+    if scim_user.addresses:
+        address = scim_user.addresses[0]
+        user.formatted_address = address.formatted
+        user.street = address.street_address
+        user.postal_code = address.postal_code
+        user.locality = address.locality
+        user.region = address.region
+    else:
+        user.formatted_address = None
+        user.street = None
+        user.postal_code = None
+        user.locality = None
+        user.region = None
     # TODO: delete the photo
     # if scim_user.photos and scim_user.photos[0].value:
     #    user.photo = scim_user.photos[0].value
@@ -148,11 +144,10 @@ def user_from_scim_to_canaille(scim_user: User, user):
         for group in scim_user.groups or []
         if group.value
     ]
-    if scim_user.active is not None:
-        if not scim_user.active:
-            user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-        else:
-            user.lock_date = None
+    if not scim_user.active:
+        user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    else:
+        user.lock_date = None
     return user
 
 
@@ -171,10 +166,10 @@ def group_from_canaille_to_scim(group, group_class):
 def group_from_canaille_to_scim_server(group):
     scim_group = group_from_canaille_to_scim(group, Group)
     scim_group.id = group.id
+
     scim_group.members = [
         Group.Members(
-            value=user.id,
-            type="User",
+            value=user.identifier,
             display=user.display_name,
             ref=url_for("scim.query_user", user=user, _external=True),
         )
@@ -188,9 +183,8 @@ def group_from_scim_to_canaille(scim_group: Group, group):
 
     members = []
     for member in scim_group.members or []:
-        # extract the user identifier from scim/v2/Users/<identifier>
-        identifier = member.ref.split("/")[-1]
-        members.append(Backend.instance.get(models.User, identifier))
+        if user := Backend.instance.get(models.User, member.value):
+            members.append(user)
 
     group.members = members
 
