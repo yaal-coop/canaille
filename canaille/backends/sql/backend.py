@@ -53,6 +53,7 @@ class SQLBackend(Backend):
     def init_alembic(cls, app):
         app.config["ALEMBIC"] = {
             "script_location": str(Path(__file__).resolve().parent / "migrations"),
+            "path_separator": "os",
         }
         SQLBackend.alembic.init_app(app)
 
