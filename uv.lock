@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -368,7 +368,7 @@ dev = [
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
     { name = "scim2-server", specifier = ">=0.1.3" },
-    { name = "scim2-tester", specifier = ">=0.1.7" },
+    { name = "scim2-tester", specifier = ">=0.2.1" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0" },
     { name = "slapd", specifier = ">=0.1.5" },
     { name = "time-machine", specifier = ">=2.14.1" },
@@ -2497,15 +2497,15 @@ wheels = [
 
 [[package]]
 name = "scim2-tester"
-version = "0.2.0"
+version = "0.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
     { name = "scim2-client" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e4/54/6a4620de0cbde20e2da4af5b7a5b5f63423a89f1e919a68e300b6e79a8cd/scim2_tester-0.2.0.tar.gz", hash = "sha256:1437f92b47baf7fdf1a9c8213f3f1b183ff30db9cf82a4ad03c0b8ce46014437", size = 110136, upload-time = "2025-08-12T13:04:42.509Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/af/d5/1a5386fe758789bc10f62f7762214fce7e6d72716e273228ede18b298140/scim2_tester-0.2.1.tar.gz", hash = "sha256:bbb4b00b206b6baf58df92fcd849df716c437702d6ed982f74b8b0ace07b1a12", size = 111153, upload-time = "2025-08-13T16:29:40.836Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a1/b6/cca42dd05b7b6025b79bf20ad821ad7c548610136483b20915459e8946e6/scim2_tester-0.2.0-py3-none-any.whl", hash = "sha256:f20508de11087f2ecf331a59b965cf6a91a47108294183e9933d043e35bdb98f", size = 39085, upload-time = "2025-08-12T13:04:41.115Z" },
+    { url = "https://files.pythonhosted.org/packages/37/f5/6c1157f74881d4290c440fbd39446a7d4fd1421d6a5497f633d3b6017b9f/scim2_tester-0.2.1-py3-none-any.whl", hash = "sha256:37e26cc5f1f384aae86a37d533c5480a63378f5d166b810baaa6a711bae75afa", size = 39876, upload-time = "2025-08-13T16:29:39.568Z" },
 ]
 
 [[package]]
@@ -3155,16 +3155,17 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "20.33.1"
+version = "20.34.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib" },
     { name = "filelock" },
     { name = "platformdirs" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/60/4f20960df6c7b363a18a55ab034c8f2bcd5d9770d1f94f9370ec104c1855/virtualenv-20.33.1.tar.gz", hash = "sha256:1b44478d9e261b3fb8baa5e74a0ca3bc0e05f21aa36167bf9cbf850e542765b8", size = 6082160, upload-time = "2025-08-05T16:10:55.605Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/14/37fcdba2808a6c615681cd216fecae00413c9dab44fb2e57805ecf3eaee3/virtualenv-20.34.0.tar.gz", hash = "sha256:44815b2c9dee7ed86e387b842a84f20b93f7f417f95886ca1996a72a4138eb1a", size = 6003808, upload-time = "2025-08-13T14:24:07.464Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ca/ff/ded57ac5ff40a09e6e198550bab075d780941e0b0f83cbeabd087c59383a/virtualenv-20.33.1-py3-none-any.whl", hash = "sha256:07c19bc66c11acab6a5958b815cbcee30891cd1c2ccf53785a28651a0d8d8a67", size = 6060362, upload-time = "2025-08-05T16:10:52.81Z" },
+    { url = "https://files.pythonhosted.org/packages/76/06/04c8e804f813cf972e3262f3f8584c232de64f0cde9f703b46cf53a45090/virtualenv-20.34.0-py3-none-any.whl", hash = "sha256:341f5afa7eee943e4984a9207c025feedd768baff6753cd660c857ceb3e36026", size = 5983279, upload-time = "2025-08-13T14:24:05.111Z" },
 ]
 
 [[package]]
