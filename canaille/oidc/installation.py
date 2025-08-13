@@ -8,5 +8,5 @@ def install(config, debug=False):
     ):
         return
 
-    key = jwk.generate_key("RSA", 1024)
+    key = jwk.generate_key("RSA", 4096)
     config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [key.as_dict()]

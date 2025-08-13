@@ -208,6 +208,9 @@ dependencies = [
 [tool.pytest.ini_options]
 # explicitly passing testpaths speeds up test collection
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore::joserfc.errors.SecurityWarning",
+]
 
 [tool.coverage.run]
 source = [
