@@ -10,7 +10,7 @@ from scim2_tester.discovery import get_standard_resource_types
 def test_individual_filters(scim_client, tag, resource_type):
     results = check_server(
         scim_client,
-        raise_exceptions=False,
+        raise_exceptions=True,
         include_tags={tag},
         resource_types=resource_type,
     )
