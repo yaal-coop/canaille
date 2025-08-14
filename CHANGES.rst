@@ -1,3 +1,10 @@
+[0.0.79] - Unreleased
+---------------------
+
+Fixed
+^^^^^
+- SCIM server advertise that ``externalId`` fields are not supported.
+
 [0.0.78] - 2025-07-25
 ---------------------
 

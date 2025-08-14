@@ -17,6 +17,7 @@ from scim2_models import Patch
 from scim2_models import Reference
 from scim2_models import Required
 from scim2_models import ResourceType
+from scim2_models import Returned
 from scim2_models import Schema
 from scim2_models import SchemaExtension
 from scim2_models import ServiceProviderConfig
@@ -43,6 +44,8 @@ class User(scim2_models.User):
         str | None, Uniqueness.server, Required.true, Mutability.immutable
     ] = None
 
+    external_id: Annotated[str | None, Mutability.read_only, Returned.never] = None
+
 
 class Group(scim2_models.Group):
     class Members(scim2_models.GroupMember):
@@ -59,6 +62,8 @@ class Group(scim2_models.Group):
     display_name: Annotated[str | None, Required.true, Mutability.immutable] = None
 
     members: Annotated[list[Members] | None, Required.true] = None
+
+    external_id: Annotated[str | None, Mutability.read_only, Returned.never] = None
 
 
 def get_service_provider_config():
