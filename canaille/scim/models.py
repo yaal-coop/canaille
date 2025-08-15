@@ -226,6 +226,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
             for group in user.groups or []
         ]
         or None,
+        active=user.lock_date is None,
     )
     if enterprise_user_class:
         scim_user[enterprise_user_class] = enterprise_user_class(
