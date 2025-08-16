@@ -133,12 +133,15 @@ def get_resource_types():
 
 def get_schemas():
     schemas = {
-        "urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig": ServiceProviderConfig.to_schema(),
-        "urn:ietf:params:scim:schemas:core:2.0:ResourceType": ResourceType.to_schema(),
-        "urn:ietf:params:scim:schemas:core:2.0:Schema": Schema.to_schema(),
-        "urn:ietf:params:scim:schemas:core:2.0:User": User.to_schema(),
-        "urn:ietf:params:scim:schemas:core:2.0:Group": Group.to_schema(),
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": EnterpriseUser.to_schema(),
+        model.model_fields["schemas"].default[0]: model.to_schema()
+        for model in (
+            ServiceProviderConfig,
+            ResourceType,
+            Schema,
+            User,
+            Group,
+            EnterpriseUser,
+        )
     }
     for schema_id, schema in schemas.items():
         schema.meta = Meta(
