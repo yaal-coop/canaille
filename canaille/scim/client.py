@@ -10,8 +10,8 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.backends import Backend
-from canaille.scim.models import group_from_canaille_to_scim
-from canaille.scim.models import user_from_canaille_to_scim
+from canaille.scim.casting import group_from_canaille_to_scim
+from canaille.scim.casting import user_from_canaille_to_scim
 
 
 def user_from_canaille_to_scim_client(user, user_class, enterprise_user_class):

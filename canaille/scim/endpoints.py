@@ -24,15 +24,15 @@ from canaille.app import models
 from canaille.app.flask import csrf
 from canaille.backends import Backend
 
+from .casting import group_from_canaille_to_scim_server
+from .casting import group_from_scim_to_canaille
+from .casting import user_from_canaille_to_scim_server
+from .casting import user_from_scim_to_canaille
 from .models import Group
 from .models import User
 from .models import get_resource_types
 from .models import get_schemas
 from .models import get_service_provider_config
-from .models import group_from_canaille_to_scim_server
-from .models import group_from_scim_to_canaille
-from .models import user_from_canaille_to_scim_server
-from .models import user_from_scim_to_canaille
 
 bp = Blueprint("scim", __name__, url_prefix="/scim/v2")
 
