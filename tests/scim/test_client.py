@@ -5,6 +5,7 @@ from scim2_models import EnterpriseUser
 from scim2_models import SearchRequest
 
 from canaille.app import models
+from canaille.scim.casting import user_from_scim_to_canaille
 from canaille.scim.client import user_from_canaille_to_scim_client
 from canaille.scim.models import User as MyUser
 
@@ -378,3 +379,54 @@ def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
     assert isinstance(scim_user, User)
     assert not isinstance(scim_user, MyUser[EnterpriseUser])
     assert EnterpriseUser not in scim_user
+
+
+def test_user_from_scim_to_canaille_sorts_primary_emails_first(backend):
+    user = models.User()
+
+    scim_user = MyUser[EnterpriseUser](
+        emails=[
+            MyUser.Emails(value="secondary@example.com", primary=False),
+            MyUser.Emails(value="primary@example.com", primary=True),
+            MyUser.Emails(value="another@example.com", primary=False),
+        ]
+    )
+
+    user_from_scim_to_canaille(scim_user, user)
+
+    assert user.emails == [
+        "primary@example.com",
+        "secondary@example.com",
+        "another@example.com",
+    ]
+
+
+def test_user_from_scim_to_canaille_sorts_primary_phones_first(backend):
+    user = models.User()
+
+    scim_user = MyUser[EnterpriseUser](
+        phone_numbers=[
+            MyUser.PhoneNumbers(value="+1234567890", primary=False),
+            MyUser.PhoneNumbers(value="+9876543210", primary=True),
+            MyUser.PhoneNumbers(value="+5555555555", primary=False),
+        ]
+    )
+
+    user_from_scim_to_canaille(scim_user, user)
+
+    assert user.phone_numbers == ["+9876543210", "+1234567890", "+5555555555"]
+
+
+def test_user_from_scim_to_canaille_handles_no_primaries():
+    user = models.User()
+
+    scim_user = MyUser[EnterpriseUser](
+        emails=[
+            MyUser.Emails(value="first@example.com", primary=False),
+            MyUser.Emails(value="second@example.com", primary=False),
+        ]
+    )
+
+    user_from_scim_to_canaille(scim_user, user)
+
+    assert user.emails == ["first@example.com", "second@example.com"]

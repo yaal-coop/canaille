@@ -112,10 +112,16 @@ def user_from_scim_to_canaille(scim_user: User, user):
     user.display_name = scim_user.display_name
     user.title = scim_user.title
     user.profile_url = scim_user.profile_url
-    user.emails = [email.value for email in scim_user.emails or []] or None
-    user.phone_numbers = [
-        phone_number.value for phone_number in scim_user.phone_numbers or []
-    ] or None
+    # Sort emails to put primary first, preserving order of others
+    emails = scim_user.emails or []
+    primary_emails = [email.value for email in emails if email.primary]
+    non_primary_emails = [email.value for email in emails if not email.primary]
+    user.emails = (primary_emails + non_primary_emails) or None
+    # Sort phone numbers to put primary first, preserving order of others
+    phone_numbers = scim_user.phone_numbers or []
+    primary_phones = [phone.value for phone in phone_numbers if phone.primary]
+    non_primary_phones = [phone.value for phone in phone_numbers if not phone.primary]
+    user.phone_numbers = (primary_phones + non_primary_phones) or None
     user.formatted_address = (
         scim_user.addresses[0].formatted if scim_user.addresses else None
     )
