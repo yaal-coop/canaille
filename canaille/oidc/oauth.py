@@ -34,6 +34,8 @@ from canaille.app.flask import cache
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 
+from .jwk import make_default_jwk
+
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
 
@@ -722,6 +724,10 @@ def setup_oauth(app):
     app.config["OAUTH2_ACCESS_TOKEN_GENERATOR"] = (
         "canaille.oidc.oauth.generate_access_token"
     )
+
+    oidc_config = app.config.get("CANAILLE_OIDC")
+    if oidc_config and not oidc_config.get("ACTIVE_JWKS"):
+        oidc_config["ACTIVE_JWKS"] = [make_default_jwk(app.config.get("SECRET_KEY"))]
 
     # hacky, but needed for tests as somehow the same 'authorization' object is used
     # between tests

@@ -1,6 +1,3 @@
-from joserfc.jwk import RSAKey
-from pydantic import Field
-
 from canaille.app.configuration import BaseModel
 
 
@@ -43,11 +40,6 @@ class UserInfoMappingSettings(BaseModel):
     )
 
 
-def make_default_jwk():
-    key = RSAKey.generate_key(auto_kid=True)
-    return [key.as_dict()]
-
-
 class OIDCSettings(BaseModel):
     """OpenID Connect settings.
 
@@ -74,7 +66,7 @@ class OIDCSettings(BaseModel):
     This adds security but may not be supported by all clients.
     """
 
-    ACTIVE_JWKS: list[dict[str, str]] | None = Field(default_factory=make_default_jwk)
+    ACTIVE_JWKS: list[dict[str, str]] | None = None
     """The active JSON Web Keys Set.
 
     Those keys are used to sign and verify JWTs."""
