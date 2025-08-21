@@ -465,11 +465,9 @@ def end_session():
     if "end_session_confirmation" in session:
         del session["end_session_confirmation"]
 
-    if (
-        "post_logout_redirect_uri" in data
-        and data["post_logout_redirect_uri"] in valid_uris
-    ):
-        url = data["post_logout_redirect_uri"]
+    if (url := data.get("post_logout_redirect_uri")) and data[
+        "post_logout_redirect_uri"
+    ] in valid_uris:
         if "state" in data:
             url = add_params_to_uri(url, dict(state=data["state"]))
         return redirect(url)

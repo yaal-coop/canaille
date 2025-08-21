@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - SCIM server advertise that ``externalId`` fields are not supported.
+- Fix a bug happening at OIDC logout when ``post_logout_redirect_uri`` is empty.
 
 [0.0.78] - 2025-07-25
 ---------------------
