@@ -397,7 +397,7 @@ def end_session():
 
     if "client_id" in data:
         client = Backend.instance.get(models.Client, client_id=data["client_id"])
-        if client:
+        if client and client.post_logout_redirect_uris:
             valid_uris = client.post_logout_redirect_uris
 
     if (
