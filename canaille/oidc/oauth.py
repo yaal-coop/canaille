@@ -161,23 +161,10 @@ def exists_nonce(nonce, request):
     return bool(exists)
 
 
-def get_alg_for_key(key, registry=None):
+def get_alg_for_key(key):
     """Find the best algorithm for the given key."""
-    registry = registry or jws.JWSRegistry()
-    recommended_and_allowed = (
-        [alg for alg in registry.recommended if alg in registry.allowed]
-        if registry.allowed
-        else registry.recommended
-    )
-    not_recommended_and_allowed = (
-        [alg for alg in registry.recommended if alg not in recommended_and_allowed]
-        if registry.allowed
-        else []
-    )
-    for alg_name in (
-        recommended_and_allowed + not_recommended_and_allowed
-    ):  # pragma: no cover
-        alg = registry.get_alg(alg_name)
+    registry = jws.JWSRegistry()
+    for alg_name, alg in registry.algorithms.items():  # pragma: no cover
         if alg.key_type == key.key_type:
             return alg_name
 
