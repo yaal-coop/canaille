@@ -37,6 +37,7 @@ from ..oauth import RevocationEndpoint
 from ..oauth import UserInfoEndpoint
 from ..oauth import authorization
 from ..oauth import get_issuer
+from ..oauth import registry
 from ..oauth import server_jwks
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
@@ -412,6 +413,7 @@ def end_session():
             id_token = jwt.decode(
                 data["id_token_hint"],
                 server_jwks(),
+                registry=registry,
             )
         except JoseError as exc:
             return jsonify(

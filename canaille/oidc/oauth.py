@@ -39,6 +39,8 @@ from .jwk import make_default_jwk
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
 
+registry = jws.JWSRegistry(algorithms=list(jws.JWSRegistry.algorithms.keys()))
+
 
 def oauth_authorization_server():
     payload = {
@@ -185,8 +187,9 @@ def exists_nonce(nonce, request):
 
 
 def get_alg_for_key(key):
-    """Find the best algorithm for the given key."""
-    registry = jws.JWSRegistry()
+    """Find the algorithm for the given key."""
+    # TODO: Improve this when a better solution is implemented upstream
+    # https://github.com/authlib/joserfc/issues/49
     for alg_name, alg in registry.algorithms.items():  # pragma: no cover
         if alg.key_type == key.key_type:
             return alg_name
