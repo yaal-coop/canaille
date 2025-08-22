@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - JWK algorithm detection with OKP keys.
+- OIDC Client ``acess_token`` and ``refresh_token`` are unique in the SQL backend.
 
 [0.0.80] - 2025-08-22
 ---------------------

@@ -23,10 +23,10 @@ def test_token_list_pagination(testclient, logged_admin, client, backend):
     res = testclient.get("/admin/token")
     res.mustcontain("0 items")
     tokens = []
-    for _ in range(26):
+    for i in range(26):
         token = models.Token(
             token_id=gen_salt(48),
-            access_token="my-valid-token",
+            access_token=f"my-valid-token-{i}",
             client=client,
             subject=logged_admin,
             type=None,

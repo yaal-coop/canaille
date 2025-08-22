@@ -327,13 +327,13 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     )
 
     token_id: Mapped[str] = mapped_column(String, nullable=True)
-    access_token: Mapped[str] = mapped_column(String, nullable=True)
+    access_token: Mapped[str] = mapped_column(String, nullable=True, unique=True)
     client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
     client: Mapped["Client"] = relationship()
     subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
     subject: Mapped["User"] = relationship()
     type: Mapped[str] = mapped_column(String, nullable=True)
-    refresh_token: Mapped[str] = mapped_column(String, nullable=True)
+    refresh_token: Mapped[str] = mapped_column(String, nullable=True, unique=True)
     scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     issue_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
