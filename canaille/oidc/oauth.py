@@ -195,7 +195,7 @@ def server_jwks(include_inactive=True):
     if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
         keys += current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]
 
-    key_objs = [jwk.import_key(key) for key in keys]
+    key_objs = [jwk.import_key(key) for key in keys if key]
     for obj in key_objs:
         obj.ensure_kid()
     return jwk.KeySet(key_objs)
@@ -727,7 +727,9 @@ def setup_oauth(app):
 
     oidc_config = app.config.get("CANAILLE_OIDC")
     if oidc_config and not oidc_config.get("ACTIVE_JWKS"):
-        oidc_config["ACTIVE_JWKS"] = [make_default_jwk(app.config.get("SECRET_KEY"))]
+        oidc_config["ACTIVE_JWKS"] = [
+            make_default_jwk(app.config.get("SECRET_KEY")).as_dict()
+        ]
 
     # hacky, but needed for tests as somehow the same 'authorization' object is used
     # between tests

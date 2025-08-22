@@ -37,4 +37,4 @@ def make_default_jwk(seed=None):
     key = OKPKey.import_key(pem)
     key.ensure_kid()
 
-    return [key.as_dict()]
+    return key
