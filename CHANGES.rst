@@ -14,6 +14,7 @@ Added
 ^^^^^
 - Deterministic default JWK generation base on the ``SECRET_KEY``.
 - Model management CLI have ``--quiet`` and ``--ignore_errors`` parameters. :issue:`291`
+- SCIM PATCH server-side operations support. :pr:`285`
 
 [0.0.78] - 2025-07-25
 ---------------------
