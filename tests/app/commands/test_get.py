@@ -1,9 +1,11 @@
 import datetime
 import json
+import unittest.mock
 from unittest import mock
 
 import pytest
 
+from canaille.backends import Backend
 from canaille.backends import ModelEncoder
 from canaille.commands import cli
 
@@ -139,3 +141,20 @@ def test_get_datetime_filter(cli_runner, backend, user):
             "secret_token": mock.ANY,
         },
     ]
+
+
+def test_get_ignore_errors(cli_runner, backend):
+    """Test that errors are ignored with --ignore-errors."""
+
+    def mock_query(*args, **kwargs):
+        raise Exception("Simulated query error")
+
+    with unittest.mock.patch.object(Backend.instance, "query", side_effect=mock_query):
+        res = cli_runner.invoke(cli, ["get", "user"])
+        assert res.exit_code != 0
+        assert "Simulated query error" in str(res.output)
+
+    with unittest.mock.patch.object(Backend.instance, "query", side_effect=mock_query):
+        res = cli_runner.invoke(cli, ["get", "user", "--ignore-errors"])
+        assert res.exit_code == 0
+        assert res.stdout == ""

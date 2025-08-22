@@ -13,6 +13,7 @@ Fixed
 Added
 ^^^^^
 - Deterministic default JWK generation base on the ``SECRET_KEY``.
+- Model management CLI have ``--quiet`` and ``--ignore_errors`` parameters. :issue:`291`
 
 [0.0.78] - 2025-07-25
 ---------------------

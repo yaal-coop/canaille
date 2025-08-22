@@ -125,13 +125,23 @@ def get_factory(model):
     @click.command(name=model.__name__.lower(), help=command_help)
     @with_appcontext
     @with_backendcontext
-    def command(*args, **kwargs):
+    @click.option(
+        "--ignore-errors",
+        is_flag=True,
+        default=False,
+        help="Suppress error messages and return silently on failure.",
+    )
+    def command(*args, ignore_errors, **kwargs):
         filter = {
             attribute: value for attribute, value in kwargs.items() if value is not None
         }
-        items = Backend.instance.query(model, **filter)
-        output = json.dumps(list(items), cls=Backend.instance.json_encoder)
-        click.echo(output)
+        try:
+            items = Backend.instance.query(model, **filter)
+            output = json.dumps(list(items), cls=Backend.instance.json_encoder)
+            click.echo(output)
+        except Exception as exc:
+            if not ignore_errors:
+                raise click.ClickException(exc) from exc
 
     for attribute, attribute_type in model.attributes.items():
         slug = attribute.replace("_", "-")
@@ -169,12 +179,26 @@ def set_factory(model):
     @with_appcontext
     @with_backendcontext
     @click.argument("identifier")
-    def command(*args, identifier, **kwargs):
+    @click.option(
+        "--quiet",
+        is_flag=True,
+        default=False,
+        help="Suppress output to standard output.",
+    )
+    @click.option(
+        "--ignore-errors",
+        is_flag=True,
+        default=False,
+        help="Suppress errors and exit silently if the model doesn't exist or update fails.",
+    )
+    def command(*args, identifier, quiet, ignore_errors, **kwargs):
         instance = Backend.instance.get(model, identifier)
         if not instance:
-            raise click.ClickException(
-                f"No {model.__name__.lower()} with id '{identifier}'"
-            )
+            if not ignore_errors:
+                raise click.ClickException(
+                    f"No {model.__name__.lower()} with id '{identifier}'"
+                )
+            return
 
         for attribute, value in kwargs.items():
             multiple = is_multiple(model.attributes[attribute])
@@ -188,11 +212,14 @@ def set_factory(model):
 
         try:
             Backend.instance.save(instance)
-        except Exception as exc:  # pragma: no cover
-            raise click.ClickException(exc) from exc
+        except Exception as exc:
+            if not ignore_errors:
+                raise click.ClickException(exc) from exc
+            return
 
-        output = json.dumps(instance, cls=Backend.instance.json_encoder)
-        click.echo(output)
+        if not quiet:
+            output = json.dumps(instance, cls=Backend.instance.json_encoder)
+            click.echo(output)
 
     attributes = dict(model.attributes)
     del attributes["id"]
@@ -229,7 +256,19 @@ def create_factory(model):
     @click.command(name=model.__name__.lower(), help=command_help)
     @with_appcontext
     @with_backendcontext
-    def command(*args, **kwargs):
+    @click.option(
+        "--quiet",
+        is_flag=True,
+        default=False,
+        help="Suppress output to standard output.",
+    )
+    @click.option(
+        "--ignore-errors",
+        is_flag=True,
+        default=False,
+        help="Suppress errors and exit silently if creation fails.",
+    )
+    def command(*args, quiet, ignore_errors, **kwargs):
         attributes = {}
         for attribute, value in kwargs.items():
             multiple = is_multiple(model.attributes[attribute])
@@ -243,11 +282,14 @@ def create_factory(model):
 
         try:
             Backend.instance.save(instance)
-        except Exception as exc:  # pragma: no cover
-            raise click.ClickException(exc) from exc
+        except Exception as exc:
+            if not ignore_errors:
+                raise click.ClickException(exc) from exc
+            return
 
-        output = json.dumps(instance, cls=Backend.instance.json_encoder)
-        click.echo(output)
+        if not quiet:
+            output = json.dumps(instance, cls=Backend.instance.json_encoder)
+            click.echo(output)
 
     basemodel = [klass for klass in model.__bases__ if issubclass(klass, Model)][0]
     attributes = dict(basemodel.attributes)
@@ -293,11 +335,22 @@ def delete_factory(model):
         default=False,
         help="Ask for confirmation before deleting objects.",
     )
-    def command(*args, noconfirm, **kwargs):
+    @click.option(
+        "--ignore-errors",
+        is_flag=True,
+        default=False,
+        help="Skip items that fail to delete and continue with others.",
+    )
+    def command(*args, noconfirm, ignore_errors, **kwargs):
         filter = {
             attribute: value for attribute, value in kwargs.items() if value is not None
         }
-        items = Backend.instance.query(model, **filter)
+        try:
+            items = Backend.instance.query(model, **filter)
+        except Exception as exc:
+            if not ignore_errors:
+                raise click.ClickException(exc) from exc
+            return
 
         if len(items) > 0 and not noconfirm:
             confirmation = click.confirm(
@@ -306,13 +359,16 @@ def delete_factory(model):
             if not confirmation:
                 return
 
+        deleted_count = 0
         for obj in items:
             try:
                 Backend.instance.delete(obj)
-            except Exception as exc:  # pragma: no cover
-                raise click.ClickException(exc) from exc
+                deleted_count += 1
+            except Exception as exc:
+                if not ignore_errors:
+                    raise click.ClickException(exc) from exc
 
-        click.echo(f"{len(items)} item(s) deleted.")
+        click.echo(f"{deleted_count} item(s) deleted.")
 
     for attribute, attribute_type in model.attributes.items():
         slug = attribute.replace("_", "-")
