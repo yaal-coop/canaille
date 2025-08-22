@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "Canaille"
-version = "0.0.78"
+version = "0.0.79"
 description = "Lightweight identity and authorization management software"
 license = {file = "LICENSE.rst"}
 readme = "README.md"
