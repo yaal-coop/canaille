@@ -1,6 +1,8 @@
 import json
+import unittest.mock
 from unittest import mock
 
+from canaille.backends import Backend
 from canaille.commands import cli
 
 
@@ -204,3 +206,42 @@ def test_set_remove_multiple_attribute(cli_runner, backend, user, admin, foo_gro
     }
     backend.reload(user)
     assert user.groups == []
+
+
+def test_set_quiet(cli_runner, backend, user):
+    """Test that --quiet suppresses output."""
+    res = cli_runner.invoke(
+        cli, ["set", "user", user.id, "--given-name", "foobar", "--quiet"]
+    )
+    assert res.exit_code == 0, res.stdout
+    assert res.stdout == ""
+    backend.reload(user)
+    assert user.given_name == "foobar"
+
+
+def test_set_ignore_errors_unknown_id(cli_runner, backend):
+    """Test that errors are ignored with --ignore-errors for unknown id."""
+    res = cli_runner.invoke(
+        cli, ["set", "user", "invalid", "--given-name", "foobar", "--ignore-errors"]
+    )
+    assert res.exit_code == 0
+    assert res.stdout == ""
+
+
+def test_set_ignore_errors_save_failure(cli_runner, backend, user):
+    """Test that save errors are ignored with --ignore-errors."""
+
+    def mock_save(*args, **kwargs):
+        raise Exception("Simulated save error")
+
+    with unittest.mock.patch.object(Backend.instance, "save", side_effect=mock_save):
+        res = cli_runner.invoke(cli, ["set", "user", user.id, "--given-name", "foobar"])
+        assert res.exit_code != 0
+        assert "Simulated save error" in str(res.output)
+
+    with unittest.mock.patch.object(Backend.instance, "save", side_effect=mock_save):
+        res = cli_runner.invoke(
+            cli, ["set", "user", user.id, "--given-name", "foobar", "--ignore-errors"]
+        )
+        assert res.exit_code == 0
+        assert res.stdout == ""
