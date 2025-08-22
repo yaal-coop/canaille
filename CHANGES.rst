@@ -6,6 +6,11 @@ Fixed
 - JWK algorithm detection with OKP keys.
 - OIDC Client ``acess_token`` and ``refresh_token`` are unique in the SQL backend.
 
+Added
+^^^^^
+- OIDC ``iat`` claims are now float, with milli/micro-second precision. :issue:`292`
+- LDAP dates are stored with milliseconds precision and timezones.
+
 [0.0.80] - 2025-08-22
 ---------------------
 

@@ -160,7 +160,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
             seconds=int(self.lifetime)
         ) < datetime.datetime.now(datetime.timezone.utc)
 
-    def get_auth_time(self) -> int | None:
+    def get_auth_time(self) -> float | None:
         return self.auth_time.timestamp() if self.auth_time else None
 
     def get_acr(self):
@@ -173,7 +173,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
 class Token(BaseToken, TokenMixin):
     @property
     def expire_date(self):
-        return self.issue_date + datetime.timedelta(seconds=int(self.lifetime))
+        return self.issue_date + datetime.timedelta(seconds=self.lifetime)
 
     @property
     def revoked(self):
@@ -182,11 +182,11 @@ class Token(BaseToken, TokenMixin):
     def get_scope(self):
         return " ".join(self.scope)
 
-    def get_issued_at(self) -> int:
-        return int(self.issue_date.timestamp())
+    def get_issued_at(self) -> float:
+        return self.issue_date.timestamp()
 
-    def get_expires_at(self) -> int:
-        return self.get_issued_at() + int(self.lifetime)
+    def get_expires_at(self) -> float:
+        return self.get_issued_at() + self.lifetime
 
     def is_refresh_token_active(self):
         if self.revokation_date:

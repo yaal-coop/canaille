@@ -43,7 +43,8 @@ def ldap_to_python(value, syntax):
             return datetime.datetime.strptime(value, format_string).replace(
                 tzinfo=datetime.timezone.utc
             )
-        return datetime.datetime.strptime(value, "%Y%m%d%H%M%S%z")
+        format_string = "%Y%m%d%H%M%S.%f%z" if "." in value else "%Y%m%d%H%M%S%z"
+        return datetime.datetime.strptime(value, format_string)
 
     if syntax == Syntax.INTEGER:
         return int(value.decode("utf-8"))
@@ -66,9 +67,9 @@ def python_to_ldap(value, syntax, encode=True):
         if value == datetime.datetime.min:
             value = LDAP_NULL_DATE
         elif not value.tzinfo or value.tzinfo == datetime.timezone.utc:
-            value = value.strftime("%Y%m%d%H%M%SZ")
+            value = value.strftime("%Y%m%d%H%M%S.%fZ")
         else:
-            value = value.strftime("%Y%m%d%H%M%S%z")
+            value = value.strftime("%Y%m%d%H%M%S.%f%z")
 
     if syntax == Syntax.INTEGER and isinstance(value, int):
         value = str(value)
