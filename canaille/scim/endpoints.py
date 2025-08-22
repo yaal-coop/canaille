@@ -12,9 +12,9 @@ from flask import abort
 from flask import request
 from pydantic import ValidationError
 from scim2_models import Context
-from scim2_models import EnterpriseUser
 from scim2_models import Error
 from scim2_models import ListResponse
+from scim2_models import PatchOp
 from scim2_models import ResourceType
 from scim2_models import Schema
 from scim2_models import SearchRequest
@@ -28,6 +28,7 @@ from .casting import group_from_canaille_to_scim_server
 from .casting import group_from_scim_to_canaille
 from .casting import user_from_canaille_to_scim_server
 from .casting import user_from_scim_to_canaille
+from .models import EnterpriseUser
 from .models import Group
 from .models import User
 from .models import get_resource_types
@@ -76,7 +77,8 @@ def oauth2_error(error):
 def scim_error_handler(error):
     error_details = error.errors()[0]
     obj = Error(
-        status=400, detail=f"{error_details['msg']}: {' ,'.join(error_details['loc'])}"
+        status=400,
+        detail=f"{error_details['msg']}: {' ,'.join(str(loc) for loc in error_details['loc'])}",
     )
     # TODO: maybe the Pydantic <=> SCIM error code mapping could go in scim2_models
     obj.scim_type = (
@@ -293,6 +295,42 @@ def replace_group(group):
     response_group = group_from_canaille_to_scim_server(updated_group)
     payload = response_group.model_dump(scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE)
     return payload
+
+
+@bp.route("/Users/<user:user>", methods=["PATCH"])
+@csrf.exempt
+@require_oauth()
+def patch_user(user):
+    scim_user = user_from_canaille_to_scim_server(user)
+    patch_op = PatchOp[User[EnterpriseUser]].model_validate(
+        request.json, scim_ctx=Context.RESOURCE_PATCH_REQUEST
+    )
+    modified = patch_op.patch(scim_user)
+
+    if modified:
+        updated_user = user_from_scim_to_canaille(scim_user, user)
+        Backend.instance.save(updated_user)
+        scim_user = user_from_canaille_to_scim_server(updated_user)
+
+    return scim_user.model_dump(scim_ctx=Context.RESOURCE_PATCH_RESPONSE)
+
+
+@bp.route("/Groups/<group:group>", methods=["PATCH"])
+@csrf.exempt
+@require_oauth()
+def patch_group(group):
+    scim_group = group_from_canaille_to_scim_server(group)
+    patch_op = PatchOp[Group].model_validate(
+        request.json, scim_ctx=Context.RESOURCE_PATCH_REQUEST
+    )
+    modified = patch_op.patch(scim_group)
+
+    if modified:
+        updated_group = group_from_scim_to_canaille(scim_group, group)
+        Backend.instance.save(updated_group)
+        scim_group = group_from_canaille_to_scim_server(updated_group)
+
+    return scim_group.model_dump(scim_ctx=Context.RESOURCE_PATCH_RESPONSE)
 
 
 @bp.route("/Users/<user:user>", methods=["DELETE"])
