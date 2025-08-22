@@ -1,3 +1,10 @@
+[0.0.82] - Unreleased
+---------------------
+
+Fixed
+^^^^^
+- Don't display the welcome flash when redirected to a client application after login.
+
 [0.0.81] - 2025-08-23
 ---------------------
 

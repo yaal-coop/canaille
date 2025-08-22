@@ -169,20 +169,17 @@ def redirect_to_next_auth_step():
         else:
             login_user(g.auth.user)
 
-        if g.auth.welcome_flash:
+        redirection = session.pop("redirect-after-login", None)
+        if g.auth.welcome_flash and not redirection:
             flash(
                 _("Connection successful. Welcome %(user)s", user=g.session.user.name),
                 "success",
             )
 
-            current_app.logger.security(
-                f"Successful authentication for {g.auth.user_name}"
-            )
+        current_app.logger.security(f"Successful authentication for {g.auth.user_name}")
 
         del g.auth
-        return redirect(
-            session.pop("redirect-after-login", url_for("core.account.index"))
-        )
+        return redirect(redirection or url_for("core.account.index"))
 
     try:
         func = AUTHENTICATION_FACTORS[g.auth.current_step]
