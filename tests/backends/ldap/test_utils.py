@@ -104,7 +104,7 @@ def test_ldap_to_python():
             datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc),
             Syntax.GENERALIZED_TIME,
         )
-        == b"20000102030405Z"
+        == b"20000102030405.000000Z"
     )
     assert (
         python_to_ldap(
@@ -119,7 +119,7 @@ def test_ldap_to_python():
             ),
             Syntax.GENERALIZED_TIME,
         )
-        == b"20000102030405-0200"
+        == b"20000102030405.000000-0200"
     )
     assert (
         python_to_ldap(datetime.datetime.min, Syntax.GENERALIZED_TIME)
