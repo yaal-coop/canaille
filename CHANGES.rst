@@ -5,6 +5,7 @@ Fixed
 ^^^^^
 - JWK algorithm detection with OKP keys.
 - OIDC Client ``acess_token`` and ``refresh_token`` are unique in the SQL backend.
+- The OIDC metadata indicate that some more algs, including `EdDSA` are supported.
 
 Added
 ^^^^^
