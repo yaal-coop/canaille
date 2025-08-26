@@ -93,7 +93,7 @@ jobs:
           ulimit -n 1024
           export TZ=UTC
           uv sync --all-extras
-          uv run pre-commit run --all-files
+          uv run prek run --all-files
 
   bundle:
     runs-on: ubuntu-latest
