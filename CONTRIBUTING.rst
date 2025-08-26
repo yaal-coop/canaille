@@ -168,7 +168,7 @@ Code style
 We use `ruff <https://docs.astral.sh/ruff/>`_ along with other tools to format our code.
 Please run ``uv run tox -e style`` on your patches before submitting them.
 In order to perform a style check and correction at each commit you can use our
-`pre-commit <https://pre-commit.com/>`_ configuration with ``uv run pre-commit install``.
+`prek <https://github.com/authlib/authlib/pull/803>`_ configuration with ``uv run prek install``.
 
 Front
 -----
