@@ -371,8 +371,14 @@ class OpenIDCode(oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant):
-        return get_jwt_config(grant)
+    def get_jwt_config(self, grant=None):
+        # Hotfix until fixed upstream:
+        # client.id_token_signed_response_alg should be used when defined,
+        # this can only happen if 'alg' is not set
+        # https://github.com/authlib/authlib/issues/806
+        result = get_jwt_config(grant)
+        del result["alg"]
+        return result
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -446,7 +452,13 @@ class OpenIDImplicitGrant(oidc_core.OpenIDImplicitGrant):
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self, grant=None):
-        return get_jwt_config(grant)
+        # Hotfix until fixed upstream:
+        # client.id_token_signed_response_alg should be used when defined,
+        # this can only happen if 'alg' is not set
+        # https://github.com/authlib/authlib/issues/806
+        result = get_jwt_config(grant)
+        del result["alg"]
+        return result
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -464,7 +476,13 @@ class OpenIDHybridGrant(oidc_core.OpenIDHybridGrant):
         return exists_nonce(nonce, request)
 
     def get_jwt_config(self, grant=None):
-        return get_jwt_config(grant)
+        # Hotfix until fixed upstream:
+        # client.id_token_signed_response_alg should be used when defined,
+        # this can only happen if 'alg' is not set
+        # https://github.com/authlib/authlib/issues/806
+        result = get_jwt_config(grant)
+        del result["alg"]
+        return result
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
