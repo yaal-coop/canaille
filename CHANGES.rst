@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - Don't display the welcome flash when redirected to a client application after login.
+- Sign OIDC ``id_token`` according to ``id_token_signed_response_alg`` client metadata.
 
 [0.0.81] - 2025-08-23
 ---------------------
