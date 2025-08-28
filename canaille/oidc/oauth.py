@@ -204,9 +204,9 @@ def get_issuer():
 
 
 def server_jwks(include_inactive=True):
-    keys = current_app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"]
+    keys = list(current_app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"])
     if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
-        keys += current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]
+        keys += list(current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"])
 
     key_objs = [jwk.import_key(key) for key in keys if key]
     for obj in key_objs:
