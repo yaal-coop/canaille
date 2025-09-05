@@ -42,6 +42,12 @@ JWT_JTI_CACHE_LIFETIME = 3600
 registry = jws.JWSRegistry(algorithms=list(jws.JWSRegistry.algorithms.keys()))
 
 
+class AuthorizationServerMetadata(
+    rfc8414.AuthorizationServerMetadata, rfc9101.AuthorizationServerMetadata
+):
+    pass
+
+
 def oauth_authorization_server():
     payload = {
         "issuer": get_issuer(),
@@ -103,7 +109,7 @@ def oauth_authorization_server():
         "op_policy_uri": None,
         "op_tos_uri": None,
     }
-    obj = rfc8414.AuthorizationServerMetadata(payload)
+    obj = AuthorizationServerMetadata(payload)
     obj.validate()
     return obj
 
