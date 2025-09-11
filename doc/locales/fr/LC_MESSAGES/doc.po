@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:48+0200\n"
-"PO-Revision-Date: 2025-06-29 20:04+0000\n"
-"Last-Translator: Lumiraptor <hmtz@gmx.fr>\n"
+"PO-Revision-Date: 2025-09-12 16:01+0000\n"
+"Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 7ff76ed229a74a389d7167a72eefdd36
@@ -4240,10 +4240,10 @@ msgid "Forgotten password mail sent to user"
 msgstr "Mail d'oubli de mot de passe envoyé à l'utilisateur"
 
 #: ../features.rst:328 03be64e842374dd0afb3a4bdad03509a
-#, fuzzy
-#| msgid "One-time password mail sent to user"
 msgid "One-time passcode mail sent to user"
-msgstr "Le mot de passe à usage unique a correctement été envoyé par mail"
+msgstr ""
+"Le code de passe à usage unique a correctement envoyé par email à "
+"l'utilisateur"
 
 #: ../features.rst:329 1dd9dc6877a04a2e90e246d066e5ff3f
 msgid "Multi-factor authentication reset"
@@ -4509,10 +4509,8 @@ msgstr ""
 
 #: ../../canaille jwk create ec:1 okp:1 409f36b009e6456b8216e76449a1b868
 #: 15605103595341a6b9203faa9614c6f8
-#, fuzzy
-#| msgid "The key type."
 msgid "The key CRV"
-msgstr "Le type de clef."
+msgstr "La clé CRV"
 
 #: ../../canaille jwk create oct:1 e8522281784b49d4a20efa77f64f787d
 msgid "Create a Oct JSON Web Key."
@@ -4520,10 +4518,8 @@ msgstr ""
 
 #: ../../canaille jwk create oct:1 rsa:1 2c96a12bdba5480c8f9338d5ccf0bb55
 #: 5bff65e5b40b4ac880226763780fc5e6
-#, fuzzy
-#| msgid "The key type."
 msgid "The key size"
-msgstr "Le type de clef."
+msgstr "La taille de clé"
 
 #: ../../canaille jwk create okp:1 de9785f387834864bb2f160841d43113
 msgid "Create a OKP JSON Web Key."
@@ -4761,7 +4757,7 @@ msgstr "Supprime un code d'autorisation."
 #: ../../canaille delete authorizationcode:1 client:1 consent:1 group:1 token:1
 #: user:1 186aacc9d5564ec3b543a02f64130c50
 msgid "Ask for confirmation before deleting objects."
-msgstr ""
+msgstr "Demander une confirmation avant de supprimer des objets."
 
 #: ../../canaille delete client:1 075a94a5b0284ca4a751711ed05e5ae4
 msgid "Delete a client."
@@ -5053,6 +5049,8 @@ msgstr "Le paramétrage de configuration de Flask :external:py:data:`DEBUG`."
 #: bd190e2e98404c3792d1e6ba68657727
 msgid "This sets trusted values for hosts and validates hosts during requests."
 msgstr ""
+"Cela définit des valeurs approuvées pour les hôtes et valide les hôtes lors "
+"des demandes."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.CoreSettings:1 2483199ee94442fd86e4acfb8ec0e654
@@ -5111,7 +5109,7 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.DATABASE:3
 #: 4a3514dd9d004f0dbfe72e31260665ae
 msgid "Default is \"sql\" if available, else \"memory\"."
-msgstr ""
+msgstr "Par défaut, c’est \"sql\" si disponible, sinon \"memory\"."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION:1
@@ -5214,7 +5212,7 @@ msgstr ""
 #: ../../docstring of canaille.core.configuration.CoreSettings.FORCE_HTTPS:1
 #: eccc3a71774245d4add93170d1c0a5bb
 msgid "Whether to force the rediction of http requests to https."
-msgstr ""
+msgstr "Indique s’il faut forcer la redirection des requêtes http vers https."
 
 #: ../../docstring of
 #: canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS:1
@@ -5618,7 +5616,7 @@ msgstr ""
 #: canaille.core.configuration.SMTPSettings.default_smtp_config:3
 #: 9cc1f719627f4fa9877c6d71ebee8cfb
 msgid "If it succeeds, then use it as default SMTP configuration."
-msgstr ""
+msgstr "Si cela réussit, alors l'utiliser comme configuration SMTP par défaut."
 
 #: ../../canaille/core/configuration.py:docstring of
 #: canaille.core.configuration.SMPPSettings:1 cf0833a324bb410d81783ec2c338d78b
