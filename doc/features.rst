@@ -242,7 +242,12 @@ If you need more you can also use a :attr:`custom theme <canaille.core.configura
 OpenID Connect
 **************
 
-Canaille implements a :ref:`subset<development/specifications:State of the specs in Canaille>` of the OAuth2/OpenID Connect specifications .
+.. figure:: _static/oidc-certification.png
+   :align: right
+   :width: 275px
+
+Canaille implements a :ref:`subset<development/specifications:State of the specs in Canaille>` of the OAuth2/OpenID Connect specifications.
+Its implementation have been `certified by the OpenID Foundation <https://openid.net/developers/certified-openid-connect-implementations/>`_.
 This allows to provide :abbr:`SSO (Single Sign-On)` and :abbr:`SLO (Single Log-On)` to applications plugged to Canaille.
 
 Consent management
