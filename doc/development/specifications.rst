@@ -33,6 +33,12 @@ OAuth2
 OpenID Connect
 --------------
 
+.. figure:: ../_static/oidc-certification.png
+   :align: center
+
+Since version 0.0.82, `Canaille is certified by the OpenID Foundation <https://openid.net/developers/certified-openid-connect-implementations/>`_
+for the *Basic* and *Dynamic* profiles.
+
 - ✅ `OpenID Connect Core <https://openid.net/specs/openid-connect-core-1_0.html>`_
 - ✅ `OpenID Connect Discovery <https://openid.net/specs/openid-connect-discovery-1_0.html>`_
 - ✅ `OpenID Connect Dynamic Client Registration <https://openid.net/specs/openid-connect-registration-1_0.html>`_
