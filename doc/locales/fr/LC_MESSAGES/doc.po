@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:48+0200\n"
-"PO-Revision-Date: 2025-09-12 16:01+0000\n"
+"PO-Revision-Date: 2025-09-13 20:01+0000\n"
 "Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
@@ -6939,12 +6939,8 @@ msgstr ""
 
 #: ../../docstring of canaille.oidc.basemodels.AuthorizationCode.auth_time:1
 #: a2ac4feba4a849579f48e52dcab0b40f
-#, fuzzy
-#| msgid "Indicate whether the OTP authentication factor is enabled."
 msgid "Time when the End-User authentication occurred."
-msgstr ""
-"Indique si le facteur d'authentification de mot de passe à usage unique est "
-"actif."
+msgstr "Heure à laquelle l’authentification de l’utilisateur final a eu lieu."
 
 #: ../../canaille/oidc/basemodels.py:docstring of
 #: canaille.oidc.basemodels.Client:1 1a5df8a7705f4cd49e188e2e43379604
