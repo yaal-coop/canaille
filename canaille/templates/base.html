@@ -42,7 +42,7 @@ The main template inherited by almost every other templates.
         {% block style %}{% endblock %}
     </head>
 
-    <body{% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %} hx-boost="true"{% endif %}>
+    <body{% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %} hx-boost="true" hx-ext="morph"{% endif %}>
         {% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %}
             <div class="ui overlay red nag network-error">
                 <div class="title">
@@ -157,6 +157,7 @@ The main template inherited by almost every other templates.
                 <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
                 {% if config["CANAILLE"]["HTMX"] %}
                     <script src="{{ url_for("static", filename="htmx/htmx.min.js") }}" defer></script>
+                    <script src="{{ url_for("static", filename="htmx/idiomorph-ext.min.js") }}" defer></script>
                 {% endif %}
                 <script src="{{ url_for("static", filename="js/base.js") }}" defer></script>
             {% endif %}

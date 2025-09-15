@@ -14,7 +14,7 @@ Macros for rendering table paginated with HTMX.
                 hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
                 hx-trigger="keyup changed delay:500ms, search"
                 hx-target="{{ target }}"
-                hx-swap="outerHTML"
+                hx-swap="morph"
                 hx-indicator=".search-button"
             />
             <button
@@ -23,7 +23,7 @@ Macros for rendering table paginated with HTMX.
                 title="{{ _("Search") }}"
                 hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
                 hx-target="{{ target }}"
-                hx-swap="outerHTML"
+                hx-swap="morph"
                 hx-indicator=".search-button"
             >
                 <i class="search icon"></i>
@@ -46,7 +46,7 @@ Macros for rendering table paginated with HTMX.
             class="icon ui button"
             hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
             hx-target="closest table"
-            hx-swap="outerHTML"
+            hx-swap="morph"
             name="page"
             value="{{ page }}"
         >
