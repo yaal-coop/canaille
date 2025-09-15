@@ -113,3 +113,25 @@ def test_bad_authentication_step(testclient, user):
         "error",
         "An error happened during your authentication process. Please try again.",
     ) in res.flashes
+
+
+def test_get_user_from_login_partial_email_no_multiple_results(
+    testclient, user, moderator, backend
+):
+    """Test that partial email searches don't cause MultipleResultsFound errors (issue #278).
+
+    This test reproduces the SQLAlchemy bug where searching for a partial string
+    in JSON list columns would find multiple users and cause scalar_one_or_none()
+    to raise MultipleResultsFound instead of returning None.
+    """
+    # Ensure we have users with emails containing common substrings
+    user.emails = ["user@example.com"]
+    moderator.emails = ["support@example.com"]
+    backend.save(user)
+    backend.save(moderator)
+
+    result = get_user_from_login(login="u")
+
+    assert result is None
+    exact_result = get_user_from_login(login="user@example.com")
+    assert exact_result == user

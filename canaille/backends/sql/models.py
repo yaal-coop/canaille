@@ -1,4 +1,5 @@
 import datetime
+import json
 import typing
 import uuid
 
@@ -14,6 +15,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy_json import MutableJson
 from sqlalchemy_utils import PasswordType
 from sqlalchemy_utils import force_auto_coercion
@@ -48,7 +50,15 @@ class SqlAlchemyModel(BackendModel):
         multiple = typing.get_origin(cls.attributes[name]) is list
 
         if multiple:
-            return getattr(cls, name).contains(value)
+            column = getattr(cls, name)
+            column_property = getattr(cls, name).property
+            if not isinstance(column_property, ColumnProperty):
+                return column.contains(value)
+
+            # This is a JSON column with primitive values - use exact matching
+            # to prevent MultipleResultsFound when searching partial strings
+            quoted_value = json.dumps(value)  # Properly escape the value
+            return column.cast(String).like(f"%{quoted_value}%")
 
         return getattr(cls, name) == value
 
