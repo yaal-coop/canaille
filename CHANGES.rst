@@ -5,6 +5,7 @@ Fixed
 ^^^^^
 - The SCIM endpoint correctly manages patching user passwords.
 - The SQL backend can perform exact match searches on JSON list attributes. :issue:`278`
+- Fix HTMX swapping for inline validation on email fields. :issue:`279`
 
 [0.0.82] - 2025-08-26
 ---------------------
