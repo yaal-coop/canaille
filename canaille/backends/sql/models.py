@@ -102,6 +102,12 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         ),
         nullable=True,
     )
+
+    def get_password_hash(self):
+        if self.password is None:
+            return None
+        return self.password.hash.decode("utf-8")
+
     password_last_update: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )

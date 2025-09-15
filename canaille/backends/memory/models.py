@@ -71,7 +71,8 @@ class MemoryModel(BackendModel):
 
 
 class User(canaille.core.models.User, MemoryModel):
-    pass
+    def get_password_hash(self):
+        return self.password
 
 
 class Group(canaille.core.models.Group, MemoryModel):

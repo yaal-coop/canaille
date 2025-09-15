@@ -1,3 +1,10 @@
+[0.0.83] - Unreleased
+---------------------
+
+Fixed
+^^^^^
+- The SCIM endpoint correctly manages patching user passwords.
+
 [0.0.82] - 2025-08-26
 ---------------------
 

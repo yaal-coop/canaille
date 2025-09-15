@@ -7,6 +7,9 @@ def test_patch_user_replace_simple_attribute(
     app, backend, oidc_token, user, scim_client
 ):
     """Test PATCH operation to replace a simple user attribute."""
+    assert user.given_name == "John"
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
+
     patch_data = {
         "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
         "Operations": [{"op": "replace", "path": "title", "value": "Senior Developer"}],
@@ -23,6 +26,101 @@ def test_patch_user_replace_simple_attribute(
 
     backend.reload(user)
     assert user.title == "Senior Developer"
+    assert user.given_name == "John"
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
+
+
+def test_patch_user_activate_deactivate(app, backend, oidc_token, user, scim_client):
+    """Test PATCH operation to replace a boolean attribute."""
+    assert user.given_name == "John"
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
+
+    patch_data = {
+        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        "Operations": [{"op": "replace", "path": "active", "value": False}],
+    }
+    response = scim_client.client.patch(
+        f"{bp.url_prefix}/Users/{user.id}",
+        json=patch_data,
+        headers={"Authorization": f"Bearer {oidc_token.access_token}"},
+    )
+
+    assert response.status_code == 200
+    response_data = json.loads(response.data)
+    assert response_data["active"] is False
+
+    backend.reload(user)
+    assert user.lock_date
+    assert user.given_name == "John"
+
+    patch_data = {
+        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        "Operations": [{"op": "replace", "path": "active", "value": True}],
+    }
+    response = scim_client.client.patch(
+        f"{bp.url_prefix}/Users/{user.id}",
+        json=patch_data,
+        headers={"Authorization": f"Bearer {oidc_token.access_token}"},
+    )
+
+    assert response.status_code == 200
+    response_data = json.loads(response.data)
+    assert response_data["active"] is True
+
+    backend.reload(user)
+    assert not user.lock_date
+    assert user.given_name == "John"
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
+
+
+def test_patch_replace_user_password(app, backend, oidc_token, user, scim_client):
+    """Test PATCH operation to replace user passwords."""
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
+
+    patch_data = {
+        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        "Operations": [
+            {
+                "op": "replace",
+                "path": "password",
+                "value": "incorrect horse battery staple",
+            }
+        ],
+    }
+    response = scim_client.client.patch(
+        f"{bp.url_prefix}/Users/{user.id}",
+        json=patch_data,
+        headers={"Authorization": f"Bearer {oidc_token.access_token}"},
+    )
+
+    assert response.status_code == 200
+
+    backend.reload(user)
+    assert backend.check_user_password(user, "incorrect horse battery staple")[0]
+
+
+def test_patch_delete_user_password(app, backend, oidc_token, user, scim_client):
+    """Test PATCH operation to delete user passwords."""
+    assert backend.check_user_password(user, "correct horse battery staple")[0]
+
+    patch_data = {
+        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        "Operations": [
+            {
+                "op": "remove",
+                "path": "password",
+            }
+        ],
+    }
+    response = scim_client.client.patch(
+        f"{bp.url_prefix}/Users/{user.id}",
+        json=patch_data,
+        headers={"Authorization": f"Bearer {oidc_token.access_token}"},
+    )
+
+    assert response.status_code == 200
+    backend.reload(user)
+    assert not backend.check_user_password(user, "correct horse battery staple")[0]
 
 
 def test_patch_user_add_email(app, backend, oidc_token, user, scim_client):

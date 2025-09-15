@@ -17,6 +17,9 @@ class User(canaille.core.models.User, LDAPObject):
         signal("before_user_save").connect(self.before_save, sender=self)
         signal("after_user_save").connect(self.after_save, sender=self)
 
+    def get_password_hash(self):
+        return self.password
+
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
