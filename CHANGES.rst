@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - The SCIM endpoint correctly manages patching user passwords.
+- Locale guessing prefer prefix matches. :issue:`128`
 - Make the ``get`` command flags accept negative boolean. :issue:`266`
 - Remove deprecated ``X-XSS-Protection`` header example in web server configurations. :issue:`293`
 - The SQL backend can perform exact match searches on JSON list attributes. :issue:`278`

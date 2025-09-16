@@ -69,6 +69,39 @@ def setup_i18n(app):
     )
 
 
+def smart_language_match(accept_languages, available_languages):
+    """Match accepted languages to available ones, handling regional variants.
+
+    Improves upon Werkzeug's best_match by falling back to base language codes
+    when exact regional variants aren't available. For example, if 'fr-FR' is
+    requested but only 'fr' is available, returns 'fr' instead of falling back
+    to a lower priority language like 'en'.
+
+    :param accept_languages: LanguageAccept object with client's language preferences
+    :param available_languages: List of available language codes
+    :returns: Best matching language code from available_languages
+    """
+    exact_match = accept_languages.best_match(available_languages)
+
+    if exact_match and exact_match != "en":
+        return exact_match
+
+    for lang_code, _priority in accept_languages:
+        base_lang = lang_code.split("-")[0].split("_")[0]
+
+        if base_lang in available_languages:
+            return base_lang
+
+        for available in available_languages:
+            if (
+                available.startswith(base_lang + "_")
+                or available.split("_")[0] == base_lang
+            ):
+                return available
+
+    return exact_match or DEFAULT_LANGUAGE_CODE
+
+
 def locale_selector():
     available_language_codes = getattr(g, "available_language_codes", [])
     if (
@@ -80,7 +113,7 @@ def locale_selector():
     if current_app.config["CANAILLE"]["LANGUAGE"]:
         return current_app.config["CANAILLE"]["LANGUAGE"]
 
-    return request.accept_languages.best_match(available_language_codes)
+    return smart_language_match(request.accept_languages, available_language_codes)
 
 
 def timezone_selector():
