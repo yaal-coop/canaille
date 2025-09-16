@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - The SCIM endpoint correctly manages patching user passwords.
+- Remove deprecated ``X-XSS-Protection`` header example in web server configurations. :issue:`293`
 - The SQL backend can perform exact match searches on JSON list attributes. :issue:`278`
 - Fix HTMX swapping for inline validation on email fields. :issue:`279`
 
