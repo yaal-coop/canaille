@@ -1,4 +1,8 @@
+import pytest
 from flask_babel import refresh
+from werkzeug.datastructures import LanguageAccept
+
+from canaille.app.i18n import smart_language_match
 
 
 def test_preferred_language(testclient, logged_user, backend):
@@ -77,3 +81,50 @@ def test_language_config(testclient, logged_user, backend):
     assert res.pyquery("html")[0].attrib["lang"] == "fr"
     res.mustcontain(no="My profile")
     res.mustcontain("Mon profil")
+
+
+@pytest.mark.parametrize(
+    "accept_list,available,expected",
+    [
+        # Regional variant fallback to base language
+        (
+            [("fr-FR", 1), ("en-US", 0.7), ("en", 0.3)],
+            ["gl", "de", "fr", "es", "nb_NO", "en"],
+            "fr",
+        ),
+        # Exact match with underscore variant
+        (
+            [("nb-NO", 1), ("en", 0.5)],
+            ["gl", "de", "fr", "es", "nb_NO", "en"],
+            "nb_NO",
+        ),
+        # Base language matches underscore variant
+        (
+            [("nb", 1), ("en", 0.5)],
+            ["gl", "de", "fr", "es", "nb_NO", "en"],
+            "nb_NO",
+        ),
+        # Exact match (non-English)
+        (
+            [("fr", 1), ("en", 0.5)],
+            ["gl", "de", "fr", "es", "nb_NO", "en"],
+            "fr",
+        ),
+        # English preference (exact match)
+        (
+            [("en-US", 1), ("en", 0.9), ("fr", 0.3)],
+            ["gl", "de", "fr", "es", "nb_NO", "en"],
+            "en",
+        ),
+        # No match, fallback to English
+        (
+            [("zh-CN", 1), ("ja-JP", 0.9)],
+            ["gl", "de", "fr", "es", "nb_NO", "en"],
+            "en",
+        ),
+    ],
+)
+def test_smart_language_match(accept_list, available, expected):
+    accept = LanguageAccept(accept_list)
+    result = smart_language_match(accept, available)
+    assert result == expected
