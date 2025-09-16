@@ -27,7 +27,7 @@ You can run Canaille simply by running the following command:
 
 .. parsed-literal::
 
-    docker run -p 5000:5000 yaalcoop/canaille:\ |version|\
+    docker run --publish-all yaalcoop/canaille:\ |version|\
 
 The service is then available on the port 5000.
 It might not be very usable as is though, as it is currently unconfigured, and thus running with a file-based database, without a front web-server.

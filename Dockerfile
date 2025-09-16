@@ -15,5 +15,5 @@ RUN echo 'bind = ["0.0.0.0:5000"]' > /opt/canaille/hypercorn.toml
 WORKDIR /opt/canaille
 RUN uv sync --all-extras
 ENV PATH="/opt/canaille/.venv/bin:$PATH"
-
+EXPOSE 5000
 ENTRYPOINT ["canaille", "run", "--config", "/opt/canaille/hypercorn.toml"]
