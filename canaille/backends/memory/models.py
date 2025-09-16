@@ -21,7 +21,7 @@ class MemoryModel(BackendModel):
     def serialize(cls, value):
         if isinstance(value, list):
             values = [cls.serialize(item) for item in value]
-            return [item for item in values if item]
+            return [item for item in values if item is not None]
 
         return value.id if isinstance(value, MemoryModel) else value
 
@@ -29,7 +29,7 @@ class MemoryModel(BackendModel):
     def deserialize(cls, attribute_name, value):
         if isinstance(value, list):
             values = [cls.deserialize(attribute_name, item) for item in value]
-            return [item for item in values if item]
+            return [item for item in values if item is not None]
 
         if value is None or value == "":
             multiple_attribute = (

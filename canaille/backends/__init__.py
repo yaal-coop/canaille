@@ -12,6 +12,11 @@ from canaille.app import classproperty
 from canaille.app.i18n import gettext as _
 
 
+def is_meaningful_value(value):
+    """Check if a value is meaningful (not None, not empty list, not empty string, not empty bytes)."""
+    return value is not None and value != [] and value != "" and value != b""
+
+
 class ModelEncoder(json.JSONEncoder):
     """JSON serializer that can handle Canaille models."""
 
@@ -31,9 +36,9 @@ class ModelEncoder(json.JSONEncoder):
 
         result = {}
         for attribute in instance.attributes:
-            if serialized := serialize_attribute(
-                attribute, getattr(instance, attribute)
-            ):
+            value = getattr(instance, attribute)
+            serialized = serialize_attribute(attribute, value)
+            if is_meaningful_value(serialized):
                 result[attribute] = serialized
 
         return result

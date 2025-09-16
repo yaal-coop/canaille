@@ -59,6 +59,9 @@ def click_type(attribute_type):
     if attribute_type is datetime.datetime:
         return datetime.datetime.fromisoformat
 
+    if attribute_type is bool:
+        return click.BOOL
+
     return attribute_type
 
 

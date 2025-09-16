@@ -20,6 +20,7 @@ from canaille.app.models import MODELS
 from canaille.backends import Backend
 from canaille.backends import ModelEncoder
 from canaille.backends import get_lockout_delay_message
+from canaille.backends import is_meaningful_value
 from canaille.backends.models import Model
 
 from .utils import listify
@@ -78,7 +79,11 @@ class LDAPModelEncoder(ModelEncoder):
             sanitized_state = {
                 attr: self.sanitize_attr(obj, attr) for attr in obj.attributes
             }
-            return {key: value for key, value in sanitized_state.items() if value}
+            return {
+                key: value
+                for key, value in sanitized_state.items()
+                if is_meaningful_value(value)
+            }
         return super().default(obj)
 
 
@@ -432,9 +437,12 @@ class LDAPBackend(Backend):
                 name
                 for name, value in instance.changes.items()
                 if (
-                    value is None
-                    or value == []
-                    or (isinstance(value, list) and len(value) == 1 and not value[0])
+                    not is_meaningful_value(value)
+                    or (
+                        isinstance(value, list)
+                        and len(value) == 1
+                        and not is_meaningful_value(value[0])
+                    )
                 )
                 and name in instance.state
             ]
@@ -457,7 +465,7 @@ class LDAPBackend(Backend):
             changes = {
                 name: value
                 for name, value in {**instance.state, **instance.changes}.items()
-                if value and value[0]
+                if value and is_meaningful_value(value[0])
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             modlist = [(name, values) for name, values in formatted_changes.items()]
