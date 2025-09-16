@@ -8,6 +8,7 @@ Fixed
 - Remove deprecated ``X-XSS-Protection`` header example in web server configurations. :issue:`293`
 - The SQL backend can perform exact match searches on JSON list attributes. :issue:`278`
 - Fix HTMX swapping for inline validation on email fields. :issue:`279`
+- Fix Docker commands in the documentation. :issue:`283`
 
 [0.0.82] - 2025-08-26
 ---------------------
