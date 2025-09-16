@@ -27,7 +27,7 @@ You can run Canaille simply by running the following command:
 
 .. parsed-literal::
 
-    docker run -it -p 5000:5000 yaalcoop/canaille:\ |version|\
+    docker run -p 5000:5000 yaalcoop/canaille:\ |version|\
 
 The service is then available on the port 5000.
 It might not be very usable as is though, as it is currently unconfigured, and thus running with a file-based database, without a front web-server.
@@ -72,7 +72,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Create your first admin user
 
-       docker exec -it <NAME> sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
+       docker exec <NAME> sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
 
 .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
