@@ -2,6 +2,7 @@ import datetime
 from enum import Enum
 
 from canaille.backends import Backend
+from canaille.backends import is_meaningful_value
 
 LDAP_NULL_DATE = "000001010000Z"
 
@@ -83,7 +84,7 @@ def python_to_ldap(value, syntax, encode=True):
     if syntax == Syntax.DISTINGUISHED_NAME and not isinstance(value, str):
         value = value.dn if value else None
 
-    if not value:
+    if value is None:
         return None
 
     return value.encode() if encode and encodable else value
@@ -113,9 +114,12 @@ def python_attrs_to_ldap(attrs, encode=True, null_allowed=True):
     }
     if not null_allowed:
         formatted_attrs = {
-            key: [value for value in values if value]
+            key: [value for value in values if is_meaningful_value(value)]
             for key, values in formatted_attrs.items()
-            if values
+        }
+        # Remove empty lists after filtering
+        formatted_attrs = {
+            key: values for key, values in formatted_attrs.items() if values
         }
     return formatted_attrs
 
