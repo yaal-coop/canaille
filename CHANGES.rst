@@ -16,7 +16,7 @@ Changed
 ^^^^^^^
 - Replace client ``trusted`` attribute with dynamic ``TRUSTED_DOMAINS`` configuration.
   Clients are now automatically trusted based on their ``client_uri`` domain matching
-  patterns in the ``TRUSTED_DOMAINS`` setting.
+  patterns in the ``TRUSTED_DOMAINS`` setting. :issue:`290`
 
 Fixed
 ^^^^^
