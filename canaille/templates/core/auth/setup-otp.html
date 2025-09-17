@@ -11,6 +11,7 @@ Display a QR-code and the OTP secret.
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/login_field.html' as login_field %}
+{% import 'core/auth/macro.html' as auth_macro %}
 
 {% block script %}
     <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
@@ -45,10 +46,7 @@ Display a QR-code and the OTP secret.
                     {% endif %}
 
                     <h2 class="ui center aligned header">
-                        <div class="content">
-                            {{ _("Sign in as %(username)s", username=g.auth.user_name) }}
-                        </div>
-                        <div class="sub header">{% trans %}Set up multi-factor authentication.{% endtrans %}</div>
+                        {{ auth_macro.user_header(_("Set up multi-factor authentication.")) }}
                     </h2>
 
                 {% else %}
@@ -153,7 +151,7 @@ Display a QR-code and the OTP secret.
                             {% if not g.session %}
                                 <div class="ui left floated stackable buttons">
                                     <a type="button" class="ui button" href="{{ url_for('core.auth.login') }}">
-                                        {{ _("I am not %(username)s", username=g.auth.user_name) }}
+                                        {{ auth_macro.not_user_button() }}
                                     </a>
                                 </div>
                             {% endif %}

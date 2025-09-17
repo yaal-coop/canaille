@@ -200,11 +200,11 @@ del_button=false
     </div>
 {%- endmacro %}
 
-{% macro render_checkbox(field, display=true) -%}
+{% macro render_checkbox(field, display=true, label_visible=true) -%}
     <div class="field {% if not display %}hidden{% endif %}">
         <div class="ui toggle checkbox">
             {{ field(**kwargs) }}
-            {{ field.label() }}
+            {% if label_visible %}{{ field.label() }}{% endif %}
         </div>
     </div>
 {%- endmacro %}

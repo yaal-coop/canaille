@@ -12,6 +12,14 @@
     Manual migration required for LDAP backend: remove any existing ``oauthTrusted``
     attributes from client entries.
 
+Added
+^^^^^
+- Account selection screen on login page. Previously logged-in users are displayed
+  as clickable cards with photos and names for quick re-authentication. :issue:`277`
+- "Remember me" checkbox on login page. When checked (default), creates a 365-day
+  session and adds user to login history. When unchecked, session expires on
+  browser close and user is not saved to login history.
+
 Changed
 ^^^^^^^
 - Replace client ``trusted`` attribute with dynamic ``TRUSTED_DOMAINS`` configuration.
