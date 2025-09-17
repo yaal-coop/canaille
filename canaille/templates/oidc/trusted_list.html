@@ -60,9 +60,15 @@ Display a list of trusted clients for which it is implied that users don't need 
                                 <img class="right floated mini ui image" src="{{ client.logo_uri }}">
                             {% endif %}
                             {% if client.client_uri %}
-                                <a href="{{ client.client_uri }}" class="header">{{ client.client_name }}</a>
+                                <a href="{{ client.client_uri }}" class="header">
+                                    {{ client.client_name }}
+                                    <i class="small shield alternate icon" title="{% trans %}Trusted application{% endtrans %}"></i>
+                                </a>
                             {% else %}
-                                <div class="header">{{ client.client_name }}</div>
+                                <div class="header">
+                                    {{ client.client_name }}
+                                    <i class="small shield alternate icon" title="{% trans %}Trusted application{% endtrans %}"></i>
+                                </div>
                             {% endif %}
                             <div class="description">
                                 <p>

@@ -153,7 +153,7 @@ def test_trusted_client_appears_in_consent_list(
     res = testclient.get("/consent/trusted-applications")
     res.mustcontain(no=client.client_name)
 
-    client.trusted = True
+    client.client_uri = "https://client.trusted.test"
     backend.save(client)
 
     res = testclient.get("/consent/trusted-applications")
@@ -161,7 +161,7 @@ def test_trusted_client_appears_in_consent_list(
 
 
 def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
-    client.trusted = True
+    client.client_uri = "https://client.trusted.test"
     backend.save(client)
     assert not backend.get(models.Consent)
     assert not token.revoked
@@ -201,7 +201,7 @@ def test_revoke_invalid_trusted_client(testclient, logged_user):
 def test_revoke_trusted_client_with_manual_consent(
     testclient, logged_user, client, consent, backend
 ):
-    client.trusted = True
+    client.client_uri = "https://client.trusted.test"
     backend.save(client)
     res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     res = res.follow()
@@ -211,7 +211,7 @@ def test_revoke_trusted_client_with_manual_consent(
 def test_revoke_trusted_client_with_manual_revokation(
     testclient, logged_user, client, consent, backend
 ):
-    client.trusted = True
+    client.client_uri = "https://client.trusted.test"
     backend.save(client)
     consent.revoke()
     backend.save(consent)

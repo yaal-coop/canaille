@@ -1,6 +1,23 @@
 [0.0.83] - Unreleased
 ---------------------
 
+.. warning::
+
+    This version comes with a breaking change for client trust management.
+
+    The ``trusted`` attribute has been removed from OAuth clients. Client trust is now
+    determined dynamically based on the ``client_uri`` domain matching patterns in the
+    new ``TRUSTED_DOMAINS`` configuration setting.
+
+    Manual migration required for LDAP backend: remove any existing ``oauthTrusted``
+    attributes from client entries.
+
+Changed
+^^^^^^^
+- Replace client ``trusted`` attribute with dynamic ``TRUSTED_DOMAINS`` configuration.
+  Clients are now automatically trusted based on their ``client_uri`` domain matching
+  patterns in the ``TRUSTED_DOMAINS`` setting.
+
 Fixed
 ^^^^^
 - The SCIM endpoint correctly manages patching user passwords.

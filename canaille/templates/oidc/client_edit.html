@@ -45,6 +45,12 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
     <div class="ui top attached segment">
         <h2 class="ui center aligned header">
             {% trans %}Edit an application{% endtrans %}
+            {% if client.trusted %}
+                <span class="ui teal label" title="{% trans %}This application is trusted and bypasses user consent{% endtrans %}">
+                    <i class="shield alternate icon"></i>
+                    {% trans %}Trusted{% endtrans %}
+                </span>
+            {% endif %}
         </h2>
 
         <div class="ui form">

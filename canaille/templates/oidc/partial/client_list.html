@@ -20,7 +20,12 @@
                         {% endif %}
                     </a>
                 </td>
-                <td><a href="{{ url_for('oidc.clients.edit', client=client) }}">{{ client.client_name }}</a></td>
+                <td>
+                    <a href="{{ url_for('oidc.clients.edit', client=client) }}">{{ client.client_name }}</a>
+                    {% if client.trusted %}
+                        <i class="small teal shield alternate icon" title="{% trans %}This application is trusted{% endtrans %}"></i>
+                    {% endif %}
+                </td>
                 <td>
                     {% if client.client_uri %}
                         <a href="{{ client.client_uri }}">{{ client.client_uri }}</a>

@@ -106,7 +106,6 @@ def test_client_add(testclient, logged_admin, backend):
         "software_version": "1",
         "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [],
-        "trusted": False,
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
@@ -166,7 +165,6 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "software_version": "1",
         "jwks_uri": "https://foobar.test/jwks.json",
         "audience": [client.id, trusted_client.id],
-        "trusted": True,
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
@@ -263,7 +261,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, b
     assert not client.trusted
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["trusted"] = True
+    res.forms["clientaddform"]["client_uri"] = "https://client.trusted.test"
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
@@ -271,7 +269,7 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, b
     assert client.trusted
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["trusted"] = False
+    res.forms["clientaddform"]["client_uri"] = "https://untrusted.example.com"
     res = res.forms["clientaddform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
