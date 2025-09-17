@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-09-16 23:20+0200\n"
-"PO-Revision-Date: 2025-05-15 11:04+0000\n"
+"PO-Revision-Date: 2025-09-18 08:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:39
@@ -114,12 +114,10 @@ msgid "You should change your password."
 msgstr "Vous devriez changer votre mot de passe."
 
 #: canaille/core/auth.py:34 canaille/core/endpoints/auth/otp.py:83
-#, fuzzy
-#| msgid "Cannot remember the login you attempted to sign in with"
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr ""
 "Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
-"connecter"
+"connecter."
 
 #: canaille/core/auth.py:175 canaille/core/endpoints/account.py:876
 #, python-format
@@ -127,10 +125,10 @@ msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
 
 #: canaille/core/auth.py:190
-#, fuzzy
-#| msgid "An error happened whilen sending the invitation link."
 msgid "An error happened during your authentication process. Please try again."
-msgstr "Une erreur est survenue durant l'envoi du lien d'invitation"
+msgstr ""
+"Une erreur est survenue durant le processus d’authentification. Veuillez "
+"essayer à nouveau."
 
 #: canaille/core/auth.py:224
 msgid "John Doe"
@@ -698,20 +696,16 @@ msgstr ""
 #: canaille/core/endpoints/auth/email.py:97
 #: canaille/core/endpoints/auth/sms.py:97
 msgid "The new verification code have been sent."
-msgstr ""
+msgstr "Le nouveau code de vérification a été envoyé."
 
 #: canaille/core/endpoints/auth/otp.py:118
-#, fuzzy
-#| msgid "The passcode you entered is invalid. Please try again"
 msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
-"Le code de connexion que vous avez entré est invalide. Veuillez ré-essayer"
+"Le code de connexion que vous avez entré est invalide. Veuillez ré-essayer."
 
 #: canaille/core/endpoints/auth/otp.py:136
-#, fuzzy
-#| msgid "Authenticator application configuration"
 msgid "Authenticator application correctly configured."
-msgstr "Configuration de l'application d'authentification"
+msgstr "L’application d’authentification a été correctement configurée."
 
 #: canaille/core/endpoints/auth/password.py:93
 msgid ""
@@ -1417,12 +1411,6 @@ msgid "Impersonate"
 msgstr "Prendre l'identité"
 
 #: canaille/templates/core/profile_settings.html:117
-#, fuzzy
-#| msgid ""
-#| "You can change your password here by typing it once it each fields below. "
-#| "The more a password is long, the more it is strong. A good password is a "
-#| "long password that you will remember, not a complicated password that "
-#| "your use for all your accounts."
 msgid ""
 "You can change your password here by typing it once in each field below. The "
 "longer the password, the stronger it is. A good password is a long password "
@@ -1503,10 +1491,8 @@ msgstr ""
 "déverrouillé."
 
 #: canaille/templates/core/profile_settings.html:202
-#, fuzzy
-#| msgid "Open authenticator application"
 msgid "Authenticator application"
-msgstr "Ouvrir l'application d'authentification"
+msgstr "Application d'authentification"
 
 #: canaille/templates/core/profile_settings.html:209
 msgid ""
@@ -1514,10 +1500,13 @@ msgid ""
 "application anymore, you can reset its configuration. After this, you will "
 "be able to set up a new authenticator application configuration."
 msgstr ""
+"Vous avez configuré une application d’authentification. Si vous perdez l’"
+"accès à cette application, vous pouvez ré-initialiser sa configuration. "
+"Après cette étape, vous pourrez à nouveau une application d’authentification."
 
 #: canaille/templates/core/profile_settings.html:218
 msgid "Reset"
-msgstr ""
+msgstr "Ré-initialiser"
 
 #: canaille/templates/core/profile_settings.html:226
 msgid ""
@@ -1525,10 +1514,13 @@ msgid ""
 "button and follow the instructions to get your authenticator application "
 "configured."
 msgstr ""
+"Vous n’avez aucune application d’authentification configurée. Cliquez sur le "
+"bouton suivant et suivez les instructions pour configurer votre application "
+"d’authentification."
 
 #: canaille/templates/core/profile_settings.html:234
 msgid "Set-up"
-msgstr ""
+msgstr "Initialiser"
 
 #: canaille/templates/core/auth/email.html:32
 #: canaille/templates/core/auth/otp.html:32
@@ -1540,14 +1532,12 @@ msgid "Sign in as %(username)s"
 msgstr "Connexion en tant que %(username)s"
 
 #: canaille/templates/core/auth/email.html:34
-#, fuzzy
-#| msgid "Email verification"
 msgid "Email verification code."
-msgstr "Vérification de nouvelle adresse email"
+msgstr "Code de vérification par email."
 
 #: canaille/templates/core/auth/email.html:47
 msgid "Check your mailbox"
-msgstr ""
+msgstr "Vérifiez votre boîte mail"
 
 #: canaille/templates/core/auth/email.html:49
 msgid ""
@@ -1555,6 +1545,9 @@ msgid ""
 "been sent to your mail address. Please fill the code in the following form "
 "to continue."
 msgstr ""
+"Si l’identifiant que vous avez entré existe, un email contenant un code de "
+"vérification a été envoyé à votre adresse email. Veuillez entrer le code "
+"dans le formulaire suivant pour continuer."
 
 #: canaille/templates/core/auth/email.html:63
 #: canaille/templates/core/auth/otp.html:62
@@ -1567,10 +1560,8 @@ msgstr "Je ne suis pas %(username)s"
 
 #: canaille/templates/core/auth/email.html:72
 #: canaille/templates/core/auth/sms.html:73
-#, fuzzy
-#| msgid "Add another field"
 msgid "Send another code"
-msgstr "Ajouter un autre champ"
+msgstr "Envoyer un autre code"
 
 #: canaille/templates/core/auth/email.html:75
 #: canaille/templates/core/auth/otp.html:66
@@ -1632,20 +1623,16 @@ msgid "One-time passcode authentication."
 msgstr "Authentification par code de connexion à usage unique."
 
 #: canaille/templates/core/auth/otp.html:47
-#, fuzzy
-#| msgid "Open authenticator application"
 msgid "Open your authenticator application"
-msgstr "Ouvrir l'application d'authentification"
+msgstr "Ouvrir votre application d'authentification"
 
 #: canaille/templates/core/auth/otp.html:49
-#, fuzzy
-#| msgid "Please enter the passcode from your authenticator application."
 msgid ""
 "Generate a one-time passcode with your authenticator application and fill it "
 "in the form below."
 msgstr ""
-"Veuillez saisir le code de connexion indiqué par votre application "
-"d'authentification."
+"Générer un code de passe à usage unique avec votre application d’"
+"authentification et entrez le dans le formulaire ci-dessous."
 
 #: canaille/templates/core/auth/password.html:23
 msgid "Please enter your password for this account."
@@ -1734,26 +1721,21 @@ msgid "Passcode confirmation"
 msgstr "Confirmation du code de connexion"
 
 #: canaille/templates/core/auth/setup-otp.html:141
-#, fuzzy
-#| msgid ""
-#| "Once your authenticator application is correctly configured, you need to "
-#| "generate a one-time passcode and fill it in the following page."
 msgid ""
 "Once your authenticator application is correctly configured, you need to "
 "generate a one-time passcode and fill it in the form below."
 msgstr ""
 "Une fois votre application d'authentification correctement configurée, vous "
-"devez générer un code de connexion et l'inscrire dans la page suivante."
+"devez générer un code de connexion et l'inscrire dans le formulaire ci-"
+"dessous."
 
 #: canaille/templates/core/auth/sms.html:34
-#, fuzzy
-#| msgid "Email verification"
 msgid "SMS verification code."
-msgstr "Vérification de nouvelle adresse email"
+msgstr "Code de vérification par SMS."
 
 #: canaille/templates/core/auth/sms.html:47
 msgid "Check your messages"
-msgstr ""
+msgstr "Consultez vos messages"
 
 #: canaille/templates/core/auth/sms.html:49
 msgid ""
@@ -1761,6 +1743,9 @@ msgid ""
 "been sent to your phone number. Please fill the code in the following form "
 "to continue."
 msgstr ""
+"Si l’identifiant que vous avez entré existe, un SMS contenant un code de "
+"vérification a été envoyé à votre téléphone. Veuillez entrer le code dans le "
+"formulaire suivant pour continuer."
 
 #: canaille/templates/core/mails/admin.html:5
 #: canaille/templates/core/mails/admin.html:11
@@ -2263,21 +2248,20 @@ msgid "One-time passcode authentication reset"
 msgstr "Réinitialisation de l'authentification par code à usage unique"
 
 #: canaille/templates/core/modals/reset-otp.html:14
-#, fuzzy, python-format
-#| msgid "Reset authenticator application configuration"
+#, python-format
 msgid ""
 "Are you sure you want to reset the authenticator application configuration "
 "for %(user_name)s?"
 msgstr ""
-"Ré-initialisation de la configuration de l'application d'authentification"
+"Êtes-vous sûr de vouloir ré-initialiser la configuration de l’application "
+"d'authentification pour %(user_name)s ?"
 
 #: canaille/templates/core/modals/reset-otp.html:18
-#, fuzzy
-#| msgid "Reset authenticator application configuration"
 msgid ""
 "Are you sure you want to reset your authenticator application configuration?"
 msgstr ""
-"Ré-initialisation de la configuration de l'application d'authentification"
+"Êtes-vous sûr de vouloir ré-initialiser la configuration de votre "
+"application d’authentification ?"
 
 #: canaille/templates/core/modals/reset-otp.html:28
 msgid "Confirm"
@@ -2458,6 +2442,8 @@ msgstr "Éditer une application"
 #: canaille/templates/oidc/client_edit.html:49
 msgid "This application is trusted and bypasses user consent"
 msgstr ""
+"Cette application est fiable et ne nécessite pas de consentement explicite "
+"des utilisateurs"
 
 #: canaille/templates/oidc/client_edit.html:51
 msgid "Trusted"
@@ -2622,10 +2608,8 @@ msgstr "Ces applications bénéficient automatiquement d'un accès à vos donné
 
 #: canaille/templates/oidc/trusted_list.html:65
 #: canaille/templates/oidc/trusted_list.html:70
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Trusted application"
-msgstr "Applications pré-autorisées"
+msgstr "Application de confiance"
 
 #: canaille/templates/oidc/modals/delete-client.html:9
 msgid "Client deletion"
@@ -2669,10 +2653,8 @@ msgid "Application logo"
 msgstr "Logo de l'application"
 
 #: canaille/templates/oidc/partial/client_list.html:26
-#, fuzzy
-#| msgid "This account is locked"
 msgid "This application is trusted"
-msgstr "Ce compte est verrouillé"
+msgstr "Cette application est fiable"
 
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
